@@ -47,10 +47,11 @@ script:
     - printf $(git rev-parse HEAD) > .application-version
     - make travis
     - export TAG=`if [ "$TRAVIS_PULL_REQUEST_BRANCH" == "" ]; then echo "latest"; else echo branch-$(echo $TRAVIS_PULL_REQUEST_BRANCH | sed s:/:-:g); fi`
-    - docker tag eu.gcr.io/census-eq-ci/eq-survey-runner:v3 eu.gcr.io/census-eq-ci/eq-survey-runner:"$TAG"
+    - docker build -t onsdigital/eq-questionnaire-runner:$TAG -f Dockerfile .
     - echo "$DOCKER_GCR_PASSWORD" | base64 --decode | docker login -u "$DOCKER_GCR_USERNAME" --password-stdin https://eu.gcr.io
     - echo "Pushing with tag [$TAG]"
-    - docker push eu.gcr.io/census-eq-ci/eq-survey-runner:"$TAG"
+    - docker push onsdigital/eq-questionnaire-runner:$TAG
+    
 after_success:
     - pyenv global $(cat .python-version)
     - pipenv run pip install codecov
