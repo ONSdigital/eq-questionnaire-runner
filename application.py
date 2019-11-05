@@ -64,7 +64,7 @@ def add_service(logger, method_name, event_dict):  # pylint: disable=unused-argu
     """
     Add the service name to the event dict.
     """
-    event_dict['service'] = 'eq-survey-runner'
+    event_dict['service'] = 'eq-questionnaire-runner'
     return event_dict
 
 
