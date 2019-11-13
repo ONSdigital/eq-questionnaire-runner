@@ -30,7 +30,7 @@ local question(title, description) = {
         },
         {
           label: 'An address outside the UK',
-          value: 'Other',
+          value: 'An address outside the UK',
           detail_answer: {
             id: 'past-usual-address-household-answer-other',
             type: 'TextField',

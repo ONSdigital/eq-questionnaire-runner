@@ -16,12 +16,12 @@ local listIsNotEmpty(listName) = {
   isNotProxy: {
     id: 'proxy-answer',
     condition: 'equals',
-    value: 'Yes',
+    value: 'Yes, I am',
   },
   isProxy: {
     id: 'proxy-answer',
     condition: 'equals',
-    value: 'No',
+    value: 'No, I am answering on their behalf',
   },
   listIsEmpty: listIsEmpty,
   listIsNotEmpty: listIsNotEmpty,

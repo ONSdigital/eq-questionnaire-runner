@@ -41,7 +41,7 @@ local question(title) = {
         },
         {
           label: 'Elsewhere',
-          value: 'Other',
+          value: 'Elsewhere',
           detail_answer: {
             id: 'country-of-birth-answer-other',
             type: 'TextField',

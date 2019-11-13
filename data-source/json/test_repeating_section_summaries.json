@@ -262,7 +262,7 @@
                                         "options": [
                                             {
                                                 "label": "No, I’m answering for myself",
-                                                "value": "No"
+                                                "value": "No, I’m answering for myself"
                                             },
                                             {
                                                 "label": "Yes",
@@ -314,7 +314,7 @@
                                         {
                                             "condition": "equals",
                                             "id": "proxy-answer",
-                                            "value": "No"
+                                            "value": "No, I’m answering for myself"
                                         }
                                     ]
                                 },

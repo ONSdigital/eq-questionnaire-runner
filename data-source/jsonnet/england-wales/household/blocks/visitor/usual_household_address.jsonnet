@@ -25,7 +25,7 @@ local rules = import 'rules.libsonnet';
           },
           {
             label: 'An address outside the UK',
-            value: 'Other',
+            value: 'An address outside the UK',
             description: 'Select to enter answer',
             detail_answer: {
               id: 'usual-address-household-answer-other',

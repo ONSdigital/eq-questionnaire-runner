@@ -101,11 +101,11 @@
                                         "options": [
                                             {
                                                 "label": "Yes this is correct",
-                                                "value": "Yes"
+                                                "value": "Yes this is correct"
                                             },
                                             {
                                                 "label": "No I need to change this",
-                                                "value": "No"
+                                                "value": "No I need to change this"
                                             }
                                         ],
                                         "mandatory": true,
@@ -138,7 +138,7 @@
                                     "goto": {
                                         "when": [
                                             {
-                                                "value": "No",
+                                                "value": "No I need to change this",
                                                 "id": "confirm-zero-employees-answer",
                                                 "condition": "equals"
                                             }

@@ -13,7 +13,7 @@ local question(title) = {
       options: [
         {
           label: 'Never married and never registered a civil partnership',
-          value: 'Never',
+          value: 'Never married and never registered a civil partnership',
         },
         {
           label: 'Married',

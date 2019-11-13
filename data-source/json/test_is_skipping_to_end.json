@@ -90,11 +90,11 @@
                                         "options": [
                                             {
                                                 "label": "£5 Cash",
-                                                "value": "fiver"
+                                                "value": "£5 Cash"
                                             },
                                             {
                                                 "label": "£10 Amazon Voucher",
-                                                "value": "tenner"
+                                                "value": "£10 Amazon Voucher"
                                             }
                                         ],
                                         "type": "Checkbox"
@@ -184,11 +184,11 @@
                                         "options": [
                                             {
                                                 "label": "£5 Cash",
-                                                "value": "fiver"
+                                                "value": "£5 Cash"
                                             },
                                             {
                                                 "label": "£10 Amazon Voucher",
-                                                "value": "tenner"
+                                                "value": "£10 Amazon Voucher"
                                             }
                                         ],
                                         "type": "Checkbox"

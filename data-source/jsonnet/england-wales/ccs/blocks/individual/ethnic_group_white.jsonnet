@@ -41,7 +41,7 @@ local question(title, region_code) = (
           },
           {
             label: 'Any other White background',
-            value: 'Other',
+            value: 'Any other White background',
             description: 'Select to enter answer',
             detail_answer: {
               id: 'white-ethnic-group-answer-other',

@@ -21,11 +21,11 @@ local placeholders = import '../../../lib/placeholders.libsonnet';
         options: [
           {
             label: 'Yes, I am',
-            value: 'Yes',
+            value: 'Yes, I am',
           },
           {
             label: 'No, I am answering on their behalf',
-            value: 'No',
+            value: 'No, I am answering on their behalf',
           },
         ],
         type: 'Radio',

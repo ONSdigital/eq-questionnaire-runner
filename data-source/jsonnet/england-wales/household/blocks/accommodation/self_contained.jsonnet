@@ -21,7 +21,7 @@
         },
         {
           label: 'No, one or more rooms are shared with another household',
-          value: 'No',
+          value: 'No, one or more rooms are shared with another household',
         },
       ],
       type: 'Radio',

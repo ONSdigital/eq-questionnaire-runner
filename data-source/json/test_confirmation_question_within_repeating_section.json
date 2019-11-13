@@ -331,7 +331,7 @@
                                             },
                                             {
                                                 "label": "No, I need to change their date of birth",
-                                                "value": "No"
+                                                "value": "No, I need to change their date of birth"
                                             }
                                         ],
                                         "type": "Radio"
@@ -385,7 +385,7 @@
                                             {
                                                 "id": "confirm-date-of-birth-answer",
                                                 "condition": "equals",
-                                                "value": "No"
+                                                "value": "No, I need to change their date of birth"
                                             }
                                         ]
                                     }

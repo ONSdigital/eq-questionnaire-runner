@@ -25,7 +25,7 @@ local question(title) = {
         },
         {
           label: 'An address outside the UK',
-          value: 'Other',
+          value: 'An address outside the UK',
         },
       ],
       type: 'Radio',
@@ -63,7 +63,7 @@ local proxyTitle = {
           {
             id: 'past-usual-address-household-answer',
             condition: 'not equals',
-            value: 'Other',
+            value: 'An address outside the UK',
           },
           rules.under16,
         ],
@@ -76,7 +76,7 @@ local proxyTitle = {
           {
             id: 'past-usual-address-household-answer',
             condition: 'not equals',
-            value: 'Other',
+            value: 'An address outside the UK',
           },
           rules.over16,
         ],
@@ -89,7 +89,7 @@ local proxyTitle = {
           {
             id: 'past-usual-address-household-answer',
             condition: 'not equals',
-            value: 'Other',
+            value: 'An address outside the UK',
           },
           rules.estimatedAge,
         ],

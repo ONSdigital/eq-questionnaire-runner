@@ -148,7 +148,7 @@
                                             },
                                             {
                                                 "label": "I don’t like cheese",
-                                                "value": "No cheese"
+                                                "value": "I don’t like cheese"
                                             }
                                         ],
                                         "type": "Checkbox"
