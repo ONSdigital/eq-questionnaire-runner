@@ -22,9 +22,7 @@ class TestPathFinder(
                     'section_id': 'default-section',
                     'list_item_id': None,
                     'status': CompletionStatus.COMPLETED,
-                    'locations': [
-                        {'section_id': 'default-section', 'block_id': 'name-block'}
-                    ],
+                    'block_ids': ['name-block'],
                 }
             ]
         )
@@ -90,9 +88,7 @@ class TestPathFinder(
                     'section_id': 'default-section',
                     'list_item_id': None,
                     'status': CompletionStatus.COMPLETED,
-                    'locations': [
-                        {'section_id': 'default-section', 'block_id': 'number-question'}
-                    ],
+                    'block_ids': ['number-question'],
                 }
             ]
         )
@@ -137,12 +133,7 @@ class TestPathFinder(
                     'section_id': 'introduction-section',
                     'list_item_id': None,
                     'status': CompletionStatus.COMPLETED,
-                    'locations': [
-                        {
-                            'section_id': 'introduction-section',
-                            'block_id': 'introduction',
-                        }
-                    ],
+                    'block_ids': ['introduction'],
                 }
             ]
         )
@@ -177,14 +168,7 @@ class TestPathFinder(
                     'section_id': 'default-section',
                     'list_item_id': None,
                     'status': CompletionStatus.COMPLETED,
-                    'locations': [
-                        {'section_id': 'default-section', 'block_id': 'radio'},
-                        {
-                            'section_id': 'default-section',
-                            'block_id': 'test-number-block',
-                        },
-                        {'section_id': 'default-section', 'block_id': 'dessert-block'},
-                    ],
+                    'block_ids': ['radio', 'test-number-block', 'dessert-block'],
                 }
             ]
         )
@@ -205,17 +189,11 @@ class TestPathFinder(
                 {
                     'section_id': 'section',
                     'status': CompletionStatus.COMPLETED,
-                    'locations': [
-                        {
-                            'section_id': 'section',
-                            'block_id': 'primary-person-list-collector',
-                        },
-                        {'section_id': 'section', 'block_id': 'list-collector'},
-                        {'section_id': 'section', 'block_id': 'next-interstitial'},
-                        {
-                            'section_id': 'section',
-                            'block_id': 'another-list-collector-block',
-                        },
+                    'block_ids': [
+                        'primary-person-list-collector',
+                        'list-collector',
+                        'next-interstitial',
+                        'another-list-collector-block',
                     ],
                 }
             ]
@@ -286,12 +264,7 @@ class TestPathFinder(
                     'section_id': 'default-section',
                     'list_item_id': None,
                     'status': CompletionStatus.COMPLETED,
-                    'locations': [
-                        {
-                            'section_id': 'default-section',
-                            'block_id': 'mandatory-checkbox',
-                        }
-                    ],
+                    'block_ids': ['mandatory-checkbox'],
                 }
             ]
         )
@@ -319,9 +292,7 @@ class TestPathFinder(
                     'section_id': 'default-section',
                     'list_item_id': None,
                     'status': CompletionStatus.COMPLETED,
-                    'locations': [
-                        {'section_id': 'default-section', 'block_id': 'block1'}
-                    ],
+                    'block_ids': ['block1'],
                 }
             ]
         )
@@ -349,12 +320,7 @@ class TestPathFinder(
                     'section_id': 'introduction-section',
                     'list_item_id': None,
                     'status': CompletionStatus.COMPLETED,
-                    'locations': [
-                        {
-                            'section_id': 'introduction-section',
-                            'block_id': 'do-you-want-to-skip',
-                        }
-                    ],
+                    'block_ids': ['do-you-want-to-skip'],
                 }
             ]
         )
@@ -395,12 +361,7 @@ class TestPathFinder(
                     'section_id': 'default-section',
                     'list_item_id': None,
                     'status': CompletionStatus.COMPLETED,
-                    'locations': [
-                        {
-                            'section_id': 'default-section',
-                            'block_id': 'do-you-want-to-skip',
-                        }
-                    ],
+                    'block_ids': ['do-you-want-to-skip'],
                 }
             ]
         )
@@ -441,12 +402,7 @@ class TestPathFinder(
                     'section_id': 'default-section',
                     'list_item_id': None,
                     'status': CompletionStatus.COMPLETED,
-                    'locations': [
-                        {
-                            'section_id': 'default-section',
-                            'block_id': 'do-you-want-to-skip',
-                        }
-                    ],
+                    'block_ids': ['do-you-want-to-skip'],
                 }
             ]
         )
@@ -541,15 +497,9 @@ class TestPathFinder(
                     'section_id': 'default-section',
                     'list_item_id': None,
                     'status': CompletionStatus.COMPLETED,
-                    'locations': [
-                        {
-                            'section_id': 'default-section',
-                            'block_id': 'number-of-employees-total-block',
-                        },
-                        {
-                            'section_id': 'default-section',
-                            'block_id': 'confirm-zero-employees-block',
-                        },
+                    'block_ids': [
+                        'number-of-employees-total-block',
+                        'confirm-zero-employees-block',
                     ],
                 }
             ]
@@ -571,7 +521,7 @@ class TestPathFinder(
 
         self.assertEqual(
             len(
-                path_finder.progress_store.get_completed_locations(
+                path_finder.progress_store.get_completed_block_ids(
                     section_id='default-section'
                 )
             ),
@@ -595,10 +545,10 @@ class TestPathFinder(
         self.assertEqual(routing_path, expected_path)
 
         self.assertEqual(
-            path_finder.progress_store.get_completed_locations(
+            path_finder.progress_store.get_completed_block_ids(
                 section_id='default-section'
             ),
-            [progress_store.get_completed_locations(section_id='default-section')[0]],
+            [progress_store.get_completed_block_ids(section_id='default-section')[0]],
         )
         self.assertEqual(len(path_finder.answer_store), 1)
 

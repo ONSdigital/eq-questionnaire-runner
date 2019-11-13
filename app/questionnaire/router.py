@@ -139,8 +139,11 @@ class Router:
 
         if section_key in self._progress_store:
             for location in routing_path:
-                if location not in self._progress_store.get_completed_locations(
-                    section_id=section_id, list_item_id=list_item_id
+                if (
+                    location.block_id
+                    not in self._progress_store.get_completed_block_ids(
+                        section_id=section_id, list_item_id=list_item_id
+                    )
                 ):
                     return location
 
@@ -153,7 +156,7 @@ class Router:
 
         if section_key in self._progress_store:
             for location in routing_path[::-1]:
-                if location in self._progress_store.get_completed_locations(
+                if location.block_id in self._progress_store.get_completed_block_ids(
                     section_id=section_id, list_item_id=list_item_id
                 ):
                     return location
@@ -187,8 +190,12 @@ class Router:
             for location in routing_path:
                 allowable_path.append(location)
 
-                if location not in self._progress_store.get_completed_locations(
-                    section_id=location.section_id, list_item_id=location.list_item_id
+                if (
+                    location.block_id
+                    not in self._progress_store.get_completed_block_ids(
+                        section_id=location.section_id,
+                        list_item_id=location.list_item_id,
+                    )
                 ):
                     return allowable_path
 
