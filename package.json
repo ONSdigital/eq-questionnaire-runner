@@ -1,5 +1,5 @@
 {
-  "name": "eq-survey-runner",
+  "name": "eq-questionnaire-runner",
   "version": "1.0.0",
   "description": "ONS Digital eQ Survey Runner App",
   "author": {
@@ -8,7 +8,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/ONSdigital/eq-survey-runner"
+    "url": "https://github.com/ONSdigital/eq-questionnaire-runner"
   },
   "scripts": {
     "start": "make dev-compose-up && concurrently \"make run\" \"livereload . -e 'html,njk'\"",

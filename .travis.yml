@@ -21,8 +21,6 @@ env:
     - AWS_SECRET_ACCESS_KEY=dummy-secret-key
     - PATH=$PATH:/opt/jsonnet
     - PYENV_VERSION=2.7.15
-    # Codacy
-    - secure: q3hyZhRj24C5sT7T0ViTDCwhT8eVjpanTf6BkPPBI43/6NBJeF1vi4/LkfJMQa0qwYibu5zB8jtkk2VsqGRMGvj9fMufOKXGqebOsPYWUJl1MZM3t7OZS57xF9wBUenZwx1oyb/VPrFB56ctGny1XEbF4l47NmbKWD1iMWG1f3Y6PCJ7o8o62v0irmfbdYFTsWjipCQlCrKZm+KVWZD25egIDJMDpq9e0nYNoSW+5fMXDGOtV20/U/rcmW5Lfn06ppJ0C4CaKHuM+MzZtZJwtiCI2TqF0ihQl7ry7YgpqEZLPHQYQ5npIpecxP1f/6ebcAPdKKkJ2Ccutrv/7IFlJo7rWLTB7mzJ4ep11HCdo3mL+JREp1HUJLeEngXFC3lKRXPHKukUxe4Lkz1/g6kdwCUZxajGTwML84FHmqoZxKGMKhMN+0n6rO8wEUR32q4+JbO5z/oQGhtjQZkogq8vWY6+/aq328hsbmy72s23AiX+BQUHqk2QFs3T9FQiqwn4OqqX4JKzmHs838LT+dUTFgH+mWo0lalxa3Pr7cJAwhn97VSnIdU9JTC8RyPWbAHkah78PXlL9guHI1nzQTjTcMm/yTlmtE2NxTSY+ZGIV+O5pcJm3HkAjZvNi/0jjDWwBHs/rZgj1t7Eoueh8dPTSZ12LmqKuBpvkrzLKcs2zt4=
 before_install:
     - export BOTO_CONFIG=/dev/null # Workaround for https://github.com/travis-ci/travis-ci/issues/7940
     - cd /opt/pyenv/plugins/python-build/../.. && git pull origin master && cd -
@@ -45,10 +43,11 @@ script:
     - printf $(git rev-parse HEAD) > .application-version
     - make travis
     - export TAG=`if [ "$TRAVIS_PULL_REQUEST_BRANCH" == "" ]; then echo "latest"; else echo branch-$(echo $TRAVIS_PULL_REQUEST_BRANCH | sed s:/:-:g); fi`
-    - docker tag eu.gcr.io/census-eq-ci/eq-survey-runner:v3 eu.gcr.io/census-eq-ci/eq-survey-runner:"$TAG"
-    - echo "$DOCKER_GCR_PASSWORD" | base64 --decode | docker login -u "$DOCKER_GCR_USERNAME" --password-stdin https://eu.gcr.io
+    - docker tag onsdigital/eq-questionnaire-runner:latest onsdigital/eq-questionnaire-runner:$TAG
+    - docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
     - echo "Pushing with tag [$TAG]"
-    - docker push eu.gcr.io/census-eq-ci/eq-survey-runner:"$TAG"
+    - docker push onsdigital/eq-questionnaire-runner:$TAG
+
 after_success:
     - pyenv global $(cat .python-version)
     - pipenv run pip install codecov
@@ -57,4 +56,4 @@ after_success:
     - pipenv run python-codacy-coverage -r coverage.xml
 branches:
     only:
-        - v3
+        - master

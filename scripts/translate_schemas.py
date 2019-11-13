@@ -46,5 +46,7 @@ def translate_schemas(runner_directory):
 
 
 if __name__ == '__main__':
-    runner_base_directory = os.getenv('EQ_RUNNER_BASE_DIRECTORY', '../eq-survey-runner')
+    runner_base_directory = os.getenv(
+        'EQ_RUNNER_BASE_DIRECTORY', '../eq-questionnaire-runner'
+    )
     translate_schemas(runner_base_directory)

@@ -24,7 +24,7 @@ helm tiller run \
     --set googleTagManagerId=${GOOGLE_TAG_MANAGER_ID} \
     --set googleTagManagerAuth=${GOOGLE_TAG_MANAGER_AUTH} \
     --set googleTagManagerPreview=${GOOGLE_TAG_MANAGER_PREVIEW} \
-    --set image.repository=${DOCKER_REGISTRY}/eq-survey-runner \
+    --set image.repository=${DOCKER_REGISTRY}/eq-questionnaire-runner \
     --set image.tag=${IMAGE_TAG} \
     --set cookieSettingsUrl=${COOKIE_SETTINGS_URL} \
     --set resources.requests.cpu=${REQUESTED_CPU_PER_POD} \

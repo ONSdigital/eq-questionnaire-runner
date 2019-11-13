@@ -65,9 +65,6 @@ class TestQuestionnairePageTitles(IntegrationTestCase):
         self.assertEqualPageTitle('Breakfast interstitial - Interstitial Pages')
 
     def test_html_stripped_from_page_titles(self):
-        """
-        Checks for https://github.com/ONSdigital/eq-survey-runner/issues/1036
-        """
         # Given
         self.launchSurvey('test_markup')
         # When
