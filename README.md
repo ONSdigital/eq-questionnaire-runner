@@ -1,40 +1,15 @@
-# eQ Census Survey Runner v3
+# eQ Questionnaire Runner
 
-[![Build Status](https://travis-ci.com/ONSdigital/eq-survey-runner.svg?branch=v3)](https://travis-ci.com/ONSdigital/eq-survey-runner)
-[![codecov](https://codecov.io/gh/ONSdigital/eq-survey-runner/branch/v3/graph/badge.svg)](https://codecov.io/gh/ONSdigital/eq-survey-runner/branch/v3)
-[![Codacy Badge](https://api.codacy.com/project/badge/Grade/a2bc191a96e546b99a6d1c33b9b0ed62)](https://app.codacy.com/project/MebinAbraham/eq-survey-runner/dashboard?branchId=10869033)
+[![Build Status](https://travis-ci.com/ONSdigital/eq-questionnaire-runner.svg?branch=master)](https://travis-ci.com/ONSdigital/eq-questionnaire-runner)
+[![codecov](https://codecov.io/gh/ONSdigital/eq-questionnaire-runner/branch/master/graph/badge.svg)](https://codecov.io/gh/ONSdigital/eq-questionnaire-runner/branch/master)
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/4c39ddd3285748f8bfb6b70fd5aaf9cc)](https://www.codacy.com/manual/ONSDigital/eq-questionnaire-runner?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=ONSdigital/eq-questionnaire-runner&amp;utm_campaign=Badge_Grade)
 
-This version of runner looks at optimising the service to accommodate the Census.
-There are a number of major changes we need make to survey runner to develop the features required for the Census.
-These changes are a combination of fixing technical debt we've built up and adding new features.
-While these changes would be possible to implement in **_v2_**, having to develop them in such a way to be compatible with existing data and rolling deploys will add an un-acceptable overhead.
-
-The changes we're aware of now:
-
--   architecture changes:
-
-    -   block variants for proxy or past/present versions of content
-    -   piping in structured schema rather than inlined jinja filters
-    -   routing refactor for optimum performance
-    -   redesign how repeating groups and association with driving questions works
-
--   new features:
-    -   who lives here (collecting householders)
-    -   relationships
-    -   hub and spoke navigation
-    -   look up patterns (address, occupation etc)
-
-\*Existing **_v2_** schemas will be easily migrate-able to the new format when **_v3_** is stable.
-This will be clearly documented and there is the possibility of scripts being provided to migrate schemas.
-Once we know more about the implementation a decision will be made whether answer store migrations will be written for compatibility with existing data.\*
-
----
 
 ## Run with Docker
 
 Install Docker for your system: https://www.docker.com/
 
-To get eq-survey-runner running the following command will build and run the containers
+To get eq-questionnaire-runner running the following command will build and run the containers
 
 ```
 docker-compose up -d
@@ -45,7 +20,7 @@ To launch a survey, navigate to `http://localhost:8000/`
 When the containers are running you are able to access the application as normal, and code changes will be reflected in the running application.
 However, any new dependencies that are added would require a re-build.
 
-To rebuild the eq-survey-runner container, the following command can be used.
+To rebuild the eq-questionnaire-runner container, the following command can be used.
 
 ```
 docker-compose build

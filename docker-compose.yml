@@ -12,8 +12,8 @@ services:
     networks:
       - eq-env
 
-  eq-survey-runner:
-    image: eu.gcr.io/census-eq-ci/eq-survey-runner:v3
+  eq-questionnaire-runner:
+    image: onsdigital/eq-questionnaire-runner:latest
     build: ./
     env_file:
       - .development.env
@@ -33,10 +33,10 @@ services:
     image: eu.gcr.io/census-eq-ci/eq-questionnaire-launcher:latest
     environment:
       SURVEY_RUNNER_URL: http://localhost:5000
-      SURVEY_RUNNER_SCHEMA_URL: http://eq-survey-runner:5000
+      SURVEY_RUNNER_SCHEMA_URL: http://eq-questionnaire-runner:5000
     restart: always
     depends_on:
-      - eq-survey-runner
+      - eq-questionnaire-runner
     networks:
       - eq-env
     ports:
