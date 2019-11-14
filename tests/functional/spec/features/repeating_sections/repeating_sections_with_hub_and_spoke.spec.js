@@ -202,7 +202,7 @@ describe('Feature: Repeating Sections with Hub and Spoke', function () {
 
     it('When the user answers on their behalf, Then they are shown the non proxy question variant', function () {
       $(HubPage.summaryRowLink(5)).click();
-      $(ProxyPage.no()).click();
+      $(ProxyPage.noIMAnsweringForMyself()).click();
       $(ProxyPage.submit()).click();
 
       expect($(DateOfBirthPage.questionText()).getText()).to.equal('What is your date of birth?');

@@ -33,7 +33,7 @@ class TestQuestionnaireQuestionVariants(IntegrationTestCase):
         print('\n\n\n\n\n\n')
         self.assertInBody('No, I am answering on their behalf')
 
-        self.post({'proxy-answer': 'non-proxy'}, url=self.proxy_url)
+        self.post({'proxy-answer': 'Yes, I am'}, url=self.proxy_url)
         print(self.getHtmlSoup())
 
         self.assertInBody('What is your age')
@@ -45,7 +45,7 @@ class TestQuestionnaireQuestionVariants(IntegrationTestCase):
 
         self.assertInBody('Are you <em>Linus Torvalds</em>?')
 
-        proxy_answer = 'proxy' if proxy else 'non-proxy'
+        proxy_answer = 'No, I am answering on their behalf' if proxy else 'Yes, I am'
 
         self.proxy_url = self.last_url
 
@@ -67,7 +67,7 @@ class TestQuestionnaireQuestionVariants(IntegrationTestCase):
         self.post({'age-confirm-answer': 'Yes'})
 
     def complete_currency_section(self):
-        self.post({'currency-answer': 'USD'})
+        self.post({'currency-answer': 'US Dollars'})
 
         self.post({'first-number-answer': 123})
 

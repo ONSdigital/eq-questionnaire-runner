@@ -560,7 +560,7 @@ class TestPathFinder(
             answer_id='number-of-employees-total', value=0
         )
         confirm_zero_answer = Answer(
-            answer_id='confirm-zero-employees-answer', value='No'
+            answer_id='confirm-zero-employees-answer', value='No I need to change this'
         )
         answer_store.add_or_update(number_of_employees_answer)
         answer_store.add_or_update(confirm_zero_answer)
