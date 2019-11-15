@@ -12,15 +12,15 @@ class CompletionStatus:
 
 class ProgressStore:
     """
-    An object that stores and updates references to sections and locations
+    An object that stores and updates references to sections and blocks
     that have been started.
     """
 
     def __init__(self, in_progress_sections: List[Mapping] = None) -> None:
         """
-        Instantiate a ProgressStore object that tracks the status of sections and its completed locations
+        Instantiate a ProgressStore object that tracks the status of sections and its completed blocks
         Args:
-            in_progress_sections: A list of hierarchical dict containing the section status and completed locations
+            in_progress_sections: A list of hierarchical dict containing the section status and completed blocks
         """
         self._is_dirty = False  # type: bool
         self._progress = self._build_map(
@@ -33,10 +33,10 @@ class ProgressStore:
     @staticmethod
     def _build_map(section_progress_list: List[Mapping]) -> MutableMapping:
         """
-        Builds the progress_store's data structure from a list of progress dictionaries
+        Builds the progress_store's data structure from a list of progress dictionaries.
 
-        The `section_key` is tuple consisting of `section_id` and the `list_item_id`
-        The `section_progress` is a mutableMapping created from the Progress object
+        The `section_key` is tuple consisting of `section_id` and the `list_item_id`.
+        The `section_progress` is a mutableMapping created from the Progress object.
 
         Example structure:
         {
@@ -44,14 +44,7 @@ class ProgressStore:
                 'section_id': 'some-section',
                 'status': 'COMPLETED',
                 'list_item_id': 'a-list-item-id',
-                'locations': [
-                    {
-                        'section_id': 'some-section',
-                        'block_id': 'some-block',
-                        'list_name': 'people',
-                        'list_item_id': 'a-list-item-id',
-                    }
-                ],
+                'block_ids: ['some-block', 'another-block']
             }
         }
         """
@@ -98,12 +91,12 @@ class ProgressStore:
 
         return CompletionStatus.NOT_STARTED
 
-    def get_completed_locations(
+    def get_completed_block_ids(
         self, section_id: str, list_item_id: Optional[str] = None
-    ) -> List[Location]:
+    ) -> List[Optional[str]]:
         section_key = (section_id, list_item_id)
         if section_key in self._progress:
-            return self._progress[section_key].locations
+            return self._progress[section_key].block_ids
 
         return []
 
@@ -112,21 +105,21 @@ class ProgressStore:
         section_id = location.section_id
         list_item_id = location.list_item_id
 
-        locations = self.get_completed_locations(section_id, list_item_id)
+        completed_block_ids = self.get_completed_block_ids(section_id, list_item_id)
 
-        if location not in locations:
-            locations.append(location)
+        if location.block_id not in completed_block_ids:
+            completed_block_ids.append(location.block_id)
 
             section_key = (section_id, list_item_id)
 
-            if section_key not in self._progress:
+            if section_key in self._progress:
+                self._progress[section_key].block_ids = completed_block_ids
+            else:
                 self._progress[section_key] = Progress(
                     section_id=section_id,
                     list_item_id=list_item_id,
-                    locations=locations,
+                    block_ids=completed_block_ids,
                 )
-            else:
-                self._progress[section_key].locations = locations
 
             self._is_dirty = True
 
@@ -135,11 +128,11 @@ class ProgressStore:
         section_key = (location.section_id, location.list_item_id)
         if (
             section_key in self._progress
-            and location in self._progress[section_key].locations
+            and location.block_id in self._progress[section_key].block_ids
         ):
-            self._progress[section_key].locations.remove(location)
+            self._progress[section_key].block_ids.remove(location.block_id)
 
-            if not self._progress[section_key].locations:
+            if not self._progress[section_key].block_ids:
                 del self._progress[section_key]
 
             self._is_dirty = True

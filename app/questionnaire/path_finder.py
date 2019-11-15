@@ -49,8 +49,8 @@ class PathFinder:
                 block_type = block.get('type')
 
                 is_location_complete = (
-                    location
-                    in self.progress_store.get_completed_locations(
+                    location.block_id
+                    in self.progress_store.get_completed_block_ids(
                         section_id=location.section_id,
                         list_item_id=location.list_item_id,
                     )

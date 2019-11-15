@@ -88,9 +88,7 @@ class TestRouter(AppContextTestCase):
                     'section_id': 'default-section',
                     'list_item_id': None,
                     'status': CompletionStatus.COMPLETED,
-                    'locations': [
-                        {'section_id': 'default-section', 'block_id': 'name-block'}
-                    ],
+                    'block_ids': ['name-block'],
                 }
             ]
         )
@@ -164,9 +162,7 @@ class TestRouter(AppContextTestCase):
                     'section_id': 'default-section',
                     'list_item_id': None,
                     'status': CompletionStatus.COMPLETED,
-                    'locations': [
-                        {'section_id': 'default-section', 'block_id': 'name-block'}
-                    ],
+                    'block_ids': ['name-block'],
                 }
             ]
         )
@@ -184,16 +180,7 @@ class TestRouter(AppContextTestCase):
                 {
                     'section_id': 'default-section',
                     'status': CompletionStatus.COMPLETED,
-                    'locations': [
-                        {
-                            'section_id': 'default-section',
-                            'block_id': 'mandatory-checkbox',
-                        },
-                        {
-                            'section_id': 'default-section',
-                            'block_id': 'non-mandatory-checkbox',
-                        },
-                    ],
+                    'block_ids': ['mandatory-checkbox', 'non-mandatory-checkbox'],
                 }
             ]
         )
@@ -222,49 +209,18 @@ class TestRouter(AppContextTestCase):
                 {
                     'section_id': 'section',
                     'status': CompletionStatus.COMPLETED,
-                    'locations': [
-                        {
-                            'section_id': 'section',
-                            'block_id': 'primary-person-list-collector',
-                        },
-                        {'section_id': 'section', 'block_id': 'list-collector'},
-                        {'section_id': 'section', 'block_id': 'next-interstitial'},
-                        {
-                            'section_id': 'section',
-                            'block_id': 'another-list-collector-block',
-                        },
+                    'block_ids': [
+                        'primary-person-list-collector',
+                        'list-collector',
+                        'next-interstitial',
+                        'another-list-collector-block',
                     ],
                 },
                 {
                     'section_id': 'personal-details-section',
                     'status': CompletionStatus.COMPLETED,
                     'list_item_id': 'abc123',
-                    'locations': [
-                        {
-                            'section_id': 'personal-details-section',
-                            'block_id': 'proxy',
-                            'list_name': 'people',
-                            'list_item_id': 'ZywslG',
-                        },
-                        {
-                            'section_id': 'personal-details-section',
-                            'block_id': 'date-of-birth',
-                            'list_name': 'people',
-                            'list_item_id': 'ZywslG',
-                        },
-                        {
-                            'section_id': 'personal-details-section',
-                            'block_id': 'confirm-dob',
-                            'list_name': 'people',
-                            'list_item_id': 'ZywslG',
-                        },
-                        {
-                            'section_id': 'personal-details-section',
-                            'block_id': 'sex',
-                            'list_name': 'people',
-                            'list_item_id': 'ZywslG',
-                        },
-                    ],
+                    'block_ids': ['proxy', 'date-of-birth', 'confirm-dob', 'sex'],
                 },
             ]
         )
@@ -288,31 +244,19 @@ class TestRouter(AppContextTestCase):
                     'section_id': 'name-section',
                     'list_item_id': None,
                     'status': CompletionStatus.COMPLETED,
-                    'locations': [
-                        {'section_id': 'name-section', 'block_id': 'name-question'}
-                    ],
+                    'block_ids': ['name-question'],
                 },
                 {
                     'section_id': 'age-input-section',
                     'list_item_id': None,
                     'status': CompletionStatus.COMPLETED,
-                    'locations': [
-                        {
-                            'section_id': 'age-input-section',
-                            'block_id': 'dob-question-block',
-                        }
-                    ],
+                    'block_ids': ['dob-question-block'],
                 },
                 {
                     'section_id': 'age-confirmation-section',
                     'list_item_id': None,
                     'status': CompletionStatus.COMPLETED,
-                    'locations': [
-                        {
-                            'section_id': 'age-confirmation-section',
-                            'block_id': 'confirm-dob-proxy',
-                        }
-                    ],
+                    'block_ids': ['confirm-dob-proxy'],
                 },
             ]
         )
@@ -331,12 +275,7 @@ class TestRouter(AppContextTestCase):
                     'section_id': 'property-details-section',
                     'list_item_id': None,
                     'status': CompletionStatus.COMPLETED,
-                    'locations': [
-                        {
-                            'section_id': 'property-details-section',
-                            'block_id': 'insurance-type',
-                        }
-                    ],
+                    'block_ids': ['insurance-type'],
                 }
             ]
         )
@@ -369,12 +308,7 @@ class TestRouter(AppContextTestCase):
                     'section_id': 'property-details-section',
                     'list_item_id': None,
                     'status': CompletionStatus.COMPLETED,
-                    'locations': [
-                        {
-                            'section_id': 'property-details-section',
-                            'block_id': 'insurance-type',
-                        }
-                    ],
+                    'block_ids': ['insurance-type'],
                 }
             ]
         )
@@ -462,12 +396,7 @@ class TestRouter(AppContextTestCase):
             [
                 {
                     'section_id': 'household-section',
-                    'locations': [
-                        {
-                            'section_id': 'household-section',
-                            'block_id': 'does-anyone-live-here',
-                        }
-                    ],
+                    'block_ids': ['does-anyone-live-here'],
                     'status': 'COMPLETED',
                 }
             ]
@@ -497,12 +426,7 @@ class TestRouter(AppContextTestCase):
             [
                 {
                     'section_id': 'household-section',
-                    'locations': [
-                        {
-                            'section_id': 'household-section',
-                            'block_id': 'does-anyone-live-here',
-                        }
-                    ],
+                    'block_ids': ['does-anyone-live-here'],
                     'status': 'IN_PROGRESS',
                 }
             ]
