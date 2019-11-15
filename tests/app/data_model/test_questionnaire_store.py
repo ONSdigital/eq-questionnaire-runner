@@ -6,7 +6,6 @@ import simplejson as json
 from app.data_model.answer_store import AnswerStore
 from app.data_model.progress_store import ProgressStore, CompletionStatus
 from app.data_model.questionnaire_store import QuestionnaireStore
-from app.questionnaire.location import Location
 
 
 def get_basic_input():
@@ -19,9 +18,7 @@ def get_basic_input():
                 'section_id': 'a-test-section',
                 'list_item_id': 'abc123',
                 'status': CompletionStatus.COMPLETED,
-                'locations': [
-                    {'section_id': 'a-test-section', 'block_id': 'a-test-block'}
-                ],
+                'block_ids': ['a-test-block'],
             }
         ],
         'COLLECTION_METADATA': {'test-meta': 'test'},
@@ -37,7 +34,7 @@ def get_input_answers_dict():
                 'section_id': 'a-test-section',
                 'list_item_id': None,
                 'status': CompletionStatus.COMPLETED,
-                'locations': [{'block_id': 'a-test-block'}],
+                'block_ids': ['a-test-block'],
             }
         ],
         'COLLECTION_METADATA': {'test-meta': 'test'},
@@ -73,17 +70,17 @@ class TestQuestionnaireStore(TestCase):
         self.assertEqual(store.collection_metadata, expected['COLLECTION_METADATA'])
         self.assertEqual(store.answer_store, AnswerStore(expected['ANSWERS']))
 
-        expected_location = expected['PROGRESS'][0]['locations'][0]
+        expected_completed_block_ids = expected['PROGRESS'][0]['block_ids'][0]
 
         self.assertEqual(
             len(
-                store.progress_store.get_completed_locations('a-test-section', 'abc123')
+                store.progress_store.get_completed_block_ids('a-test-section', 'abc123')
             ),
             1,
         )
         self.assertEqual(
-            store.progress_store.get_completed_locations('a-test-section', 'abc123')[0],
-            Location.from_dict(location_dict=expected_location),
+            store.progress_store.get_completed_block_ids('a-test-section', 'abc123')[0],
+            expected_completed_block_ids,
         )
 
     def test_questionnaire_store_ignores_extra_json(self):
@@ -100,17 +97,17 @@ class TestQuestionnaireStore(TestCase):
         self.assertEqual(store.collection_metadata, expected['COLLECTION_METADATA'])
         self.assertEqual(store.answer_store, AnswerStore(expected['ANSWERS']))
 
-        expected_location = expected['PROGRESS'][0]['locations'][0]
+        expected_completed_block_ids = expected['PROGRESS'][0]['block_ids'][0]
 
         self.assertEqual(
             len(
-                store.progress_store.get_completed_locations('a-test-section', 'abc123')
+                store.progress_store.get_completed_block_ids('a-test-section', 'abc123')
             ),
             1,
         )
         self.assertEqual(
-            store.progress_store.get_completed_locations('a-test-section', 'abc123')[0],
-            Location.from_dict(location_dict=expected_location),
+            store.progress_store.get_completed_block_ids('a-test-section', 'abc123')[0],
+            expected_completed_block_ids,
         )
 
     def test_questionnaire_store_missing_keys(self):
