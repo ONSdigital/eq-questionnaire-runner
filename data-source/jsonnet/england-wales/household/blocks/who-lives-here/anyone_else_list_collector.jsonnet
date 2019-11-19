@@ -9,14 +9,14 @@ local anyoneElseOptionDescription(census_date) = {
 };
 
 local questionTitle = {
-  text: 'Does anyone usually live at {address}?',
+  text: 'Does anyone usually live at {household_address}?',
   placeholders: [
     placeholders.address,
   ],
 };
 
 local questionVariantTitle = {
-  text: 'Does anyone else live at {address}?',
+  text: 'Does anyone else live at {household_address}?',
   placeholders: [
     placeholders.address,
   ],
@@ -30,7 +30,7 @@ local summaryTitlePersonName = {
 };
 
 local addPersonQuestionTitle = {
-  text: 'Who do you need to add to {address}?',
+  text: 'Who do you need to add to {household_address}?',
   placeholders: [
     placeholders.address,
   ],

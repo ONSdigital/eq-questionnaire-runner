@@ -8,7 +8,7 @@ local rules = import 'rules.libsonnet';
     id: 'renewables-question',
     mandatory: false,
     title: {
-      text: 'What type of renewable energy systems does <em>{address}</em> have?',
+      text: 'What type of renewable energy systems does <em>{household_address}</em> have?',
       placeholders: [placeholders.address],
     },
     type: 'MutuallyExclusive',

@@ -6,7 +6,7 @@ local placeholders = import '../../../lib/placeholders.libsonnet';
   question: {
     id: 'own-or-rent-question',
     title: {
-      text: 'Does your household own or rent <em>{address}</em>?',
+      text: 'Does your household own or rent <em>{household_address}</em>?',
       placeholders: [placeholders.address],
     },
     type: 'General',

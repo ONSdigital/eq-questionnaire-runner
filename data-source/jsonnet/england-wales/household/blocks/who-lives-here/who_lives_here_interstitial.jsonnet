@@ -1,7 +1,7 @@
 local placeholders = import '../../../lib/placeholders.libsonnet';
 
 local contentDescription = {
-  text: 'In this section, we’re going to ask you about the people living or staying at {address}.',
+  text: 'In this section, we’re going to ask you about the people living or staying at {household_address}.',
   placeholders: [
     placeholders.address,
   ],

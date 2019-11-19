@@ -36,7 +36,7 @@
     ],
   },
   address: {
-    placeholder: 'address',
+    placeholder: 'household_address',
     value: {
       identifier: 'display_address',
       source: 'metadata',

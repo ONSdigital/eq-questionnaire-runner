@@ -26,12 +26,12 @@ local noOtherAddressOptions = {
   options: [
     {
       label: {
-        text: '{address}',
+        text: '{household_address}',
         placeholders: [
           placeholders.address,
         ],
       },
-      value: '{address}',
+      value: '{household_address}',
     },
     {
       label: 'Another address',
@@ -44,12 +44,12 @@ local otherUkAddressOptions = {
   options: [
     {
       label: {
-        text: '{address}',
+        text: '{household_address}',
         placeholders: [
           placeholders.address,
         ],
       },
-      value: '{address}',
+      value: '{household_address}',
     },
     {
       label: {
@@ -83,19 +83,19 @@ local otherNonUkAddressOptions = {
   options: [
     {
       label: {
-        text: '{address}',
+        text: '{household_address}',
         placeholders: [
           placeholders.address,
         ],
       },
-      value: '{address}',
+      value: '{household_address}',
     },
     {
       label: {
-        text: 'The address in {country}',
+        text: 'The address in {thirty_day_address_country}',
         placeholders: [
           {
-            placeholder: 'country',
+            placeholder: 'thirty_day_address_country',
             value: {
               source: 'answers',
               identifier: 'another-address-answer-other-country',
@@ -103,7 +103,7 @@ local otherNonUkAddressOptions = {
           },
         ],
       },
-      value: 'The address in {country}',
+      value: 'The address in {thirty_day_address_country}',
     },
     {
       label: 'Another address',
@@ -229,7 +229,7 @@ local otherNonUkAddressOptions = {
           {
             id: 'term-time-location-answer',
             condition: 'equals',
-            value: 'The address in {country}',
+            value: 'The address in {thirty_day_address_country}',
           },
         ],
       },

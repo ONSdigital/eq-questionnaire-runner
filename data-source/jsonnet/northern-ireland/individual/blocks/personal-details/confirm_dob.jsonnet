@@ -1,7 +1,7 @@
 local placeholders = import '../../../lib/placeholders.libsonnet';
 local rules = import 'rules.libsonnet';
 
-local question(title, yesLabel, noLabel, noValue, yesValue) = {
+local question(title, yesLabel, yesValue, noLabel, noValue) = {
   id: 'confirm-date-of-birth',
   title: title,
   type: 'General',
@@ -82,11 +82,11 @@ local proxyNoValue = 'No, I need to change their date of birth';
   id: 'confirm-dob',
   question_variants: [
     {
-      question: question(nonProxyTitle, nonProxyYesLabel, nonProxyNoLabel, nonProxyNoValue, nonProxyYesValue),
+      question: question(nonProxyTitle, nonProxyYesLabel, nonProxyYesValue, nonProxyNoLabel, nonProxyNoValue),
       when: [rules.isNotProxy],
     },
     {
-      question: question(proxyTitle, proxyYesLabel, proxyNoLabel, proxyNoValue, proxyYesValue),
+      question: question(proxyTitle, proxyYesLabel, proxyYesValue, proxyNoLabel, proxyNoValue),
       when: [rules.isProxy],
     },
   ],
@@ -97,20 +97,8 @@ local proxyNoValue = 'No, I need to change their date of birth';
         when: [
           {
             id: 'confirm-date-of-birth-answer',
-            condition: 'equals',
-            value: 'No, I need to change my date of birth',
-          },
-        ],
-      },
-    },
-    {
-      goto: {
-        block: 'date-of-birth',
-        when: [
-          {
-            id: 'confirm-date-of-birth-answer',
-            condition: 'equals',
-            value: 'No, I need to change their date of birth',
+            condition: 'equals any',
+            values: [ proxyNoValue, nonProxyNoValue],
           },
         ],
       },

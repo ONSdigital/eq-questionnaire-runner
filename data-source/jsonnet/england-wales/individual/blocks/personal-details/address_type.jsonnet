@@ -49,10 +49,10 @@ local question(title) = {
 };
 
 local ukAddressTitle = {
-  text: 'What type of address is <em>{address}</em>?',
+  text: 'What type of address is <em>{household_address}</em>?',
   placeholders: [
     {
-      placeholder: 'address',
+      placeholder: 'household_address',
       transforms: [{
         transform: 'concatenate_list',
         arguments: {

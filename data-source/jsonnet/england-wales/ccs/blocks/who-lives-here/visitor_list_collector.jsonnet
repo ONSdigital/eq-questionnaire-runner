@@ -2,7 +2,7 @@ local placeholders = import '../../../lib/placeholders.libsonnet';
 local rules = import 'rules.libsonnet';
 
 local questionTitle(census_date) = {
-  text: 'Were there any other visitors staying overnight on {census_date} at {address}?',
+  text: 'Were there any other visitors staying overnight on {census_date} at {household_address}?',
   placeholders: [
     placeholders.censusDate(census_date),
     placeholders.address,
@@ -24,7 +24,7 @@ local summaryTitlePersonName = {
 };
 
 local addVisitorQuestionTitle(census_date) = {
-  text: 'What is the name of the visitor staying overnight on {census_date} at {address}?',
+  text: 'What is the name of the visitor staying overnight on {census_date} at {household_address}?',
   placeholders: [
     placeholders.censusDate(census_date),
     placeholders.address,

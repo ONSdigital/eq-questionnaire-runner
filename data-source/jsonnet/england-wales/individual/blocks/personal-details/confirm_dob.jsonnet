@@ -99,20 +99,8 @@ local proxyNoValue = 'No, I need to change their date of birth';
         when: [
           {
             id: 'confirm-date-of-birth-answer',
-            condition: 'equals',
-            value: 'No, I need to change my date of birth',
-          },
-        ],
-      },
-    },
-    {
-      goto: {
-        block: 'date-of-birth',
-        when: [
-          {
-            id: 'confirm-date-of-birth-answer',
-            condition: 'equals',
-            value: 'No, I need to change their date of birth',
+            condition: 'equals any',
+            values: [ proxyNoValue, nonProxyNoValue]
           },
         ],
       },
