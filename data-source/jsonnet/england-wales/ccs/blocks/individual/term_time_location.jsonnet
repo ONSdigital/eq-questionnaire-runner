@@ -31,7 +31,7 @@ local noOtherAddressOptions = {
           placeholders.address,
         ],
       },
-      value: 'household-address',
+      value: '{address}',
     },
     {
       label: 'At another address',

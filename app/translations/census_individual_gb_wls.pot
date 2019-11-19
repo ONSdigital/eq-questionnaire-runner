@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2019-11-11 12:54+0000\n"
+"POT-Creation-Date: 2019-11-19 08:51+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -4195,6 +4195,18 @@ msgctxt ""
 "Answer for: During term time, where does <em>{person_name}</em> usually "
 "live?"
 msgid "The address in {country}"
+msgstr ""
+
+#. answer-id: term-time-location-answer
+msgctxt "Answer for: During term time, where do you usually live?"
+msgid "{thirty_day_address}"
+msgstr ""
+
+#. answer-id: term-time-location-answer
+msgctxt ""
+"Answer for: During term time, where does <em>{person_name}</em> usually "
+"live?"
+msgid "{thirty_day_address}"
 msgstr ""
 
 #. answer-id: past-usual-address-household-answer

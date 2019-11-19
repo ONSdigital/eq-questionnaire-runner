@@ -18,7 +18,7 @@ local question(title, description) = {
               placeholders.address,
             ],
           },
-          value: 'household-address',
+          value: '{address}',
         },
         {
           label: 'Student term-time address in the UK',

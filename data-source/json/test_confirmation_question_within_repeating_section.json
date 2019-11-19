@@ -327,7 +327,7 @@
                                                     ],
                                                     "text": "Yes, {person_name} is {age_in_years} years old"
                                                 },
-                                                "value": "Yes"
+                                                "value": "Yes, {person_name} is {age_in_years} years old"
                                             },
                                             {
                                                 "label": "No, I need to change their date of birth",

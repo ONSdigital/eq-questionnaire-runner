@@ -17,7 +17,11 @@ class TestPlaceholders(IntegrationTestCase):
             }
         )
 
-        self.post({'confirm-date-of-birth-answer-proxy': 'Yes'})
+        self.post(
+            {
+                'confirm-date-of-birth-answer-proxy': 'Yes, {person_name} is {age_in_years} years old.'
+            }
+        )
 
         self.assertInUrl('/summary/')
         self.assertInBody('What is Kevin Bacon’s date of birth?')

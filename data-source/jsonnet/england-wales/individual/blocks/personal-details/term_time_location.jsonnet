@@ -31,7 +31,7 @@ local noOtherAddressOptions = {
           placeholders.address,
         ],
       },
-      value: 'household-address',
+      value: '{address}',
     },
     {
       label: 'Another address',
@@ -49,14 +49,14 @@ local otherUkAddressOptions = {
           placeholders.address,
         ],
       },
-      value: 'household-address',
+      value: '{address}',
     },
     {
       label: {
-        text: '{address}',
+        text: '{thirty_day_address}',
         placeholders: [
           {
-            placeholder: 'address',
+            placeholder: 'thirty_day_address',
             transforms: [{
               transform: 'concatenate_list',
               arguments: {
@@ -70,7 +70,7 @@ local otherUkAddressOptions = {
           },
         ],
       },
-      value: '30-day-address',
+      value: '{thirty_day_address}',
     },
     {
       label: 'Another address',
@@ -88,7 +88,7 @@ local otherNonUkAddressOptions = {
           placeholders.address,
         ],
       },
-      value: 'household-address',
+      value: '{address}',
     },
     {
       label: {
@@ -103,7 +103,7 @@ local otherNonUkAddressOptions = {
           },
         ],
       },
-      value: '30-day-address',
+      value: 'The address in {country}',
     },
     {
       label: 'Another address',
@@ -217,7 +217,19 @@ local otherNonUkAddressOptions = {
           {
             id: 'term-time-location-answer',
             condition: 'equals',
-            value: '30-day-address',
+            value: '{thirty_day_address}',
+          },
+        ],
+      },
+    },
+    {
+      goto: {
+        group: 'submit-group',
+        when: [
+          {
+            id: 'term-time-location-answer',
+            condition: 'equals',
+            value: 'The address in {country}',
           },
         ],
       },

@@ -1,7 +1,7 @@
 local placeholders = import '../../../lib/placeholders.libsonnet';
 local rules = import 'rules.libsonnet';
 
-local question(title, yesLabel, noLabel, noValue) = {
+local question(title, yesLabel, noLabel, noValue, yesValue) = {
   id: 'confirm-date-of-birth',
   title: title,
   type: 'General',
@@ -12,7 +12,7 @@ local question(title, yesLabel, noLabel, noValue) = {
       options: [
         {
           label: yesLabel,
-          value: 'Yes',
+          value: yesValue,
         },
         {
           label: noLabel,
@@ -54,6 +54,9 @@ local nonProxyYesLabel = {
     dateOfBirthPlaceholder,
   ],
 };
+local nonProxyYesValue = 'Yes, I am {age_in_years} years old';
+local proxyYesValue = 'Yes, {person_name} is {age_in_years} years old';
+
 local nonProxyNoLabel = 'No, I need to change my date of birth';
 local nonProxyNoValue = 'No, I need to change my date of birth';
 
@@ -79,11 +82,11 @@ local proxyNoValue = 'No, I need to change their date of birth';
   id: 'confirm-dob',
   question_variants: [
     {
-      question: question(nonProxyTitle, nonProxyYesLabel, nonProxyNoLabel, nonProxyNoValue),
+      question: question(nonProxyTitle, nonProxyYesLabel, nonProxyNoLabel, nonProxyNoValue, nonProxyYesValue),
       when: [rules.isNotProxy],
     },
     {
-      question: question(proxyTitle, proxyYesLabel, proxyNoLabel, proxyNoValue),
+      question: question(proxyTitle, proxyYesLabel, proxyNoLabel, proxyNoValue, proxyYesValue),
       when: [rules.isProxy],
     },
   ],
@@ -95,7 +98,19 @@ local proxyNoValue = 'No, I need to change their date of birth';
           {
             id: 'confirm-date-of-birth-answer',
             condition: 'equals',
-            value: 'No',
+            value: 'No, I need to change my date of birth',
+          },
+        ],
+      },
+    },
+    {
+      goto: {
+        block: 'date-of-birth',
+        when: [
+          {
+            id: 'confirm-date-of-birth-answer',
+            condition: 'equals',
+            value: 'No, I need to change their date of birth',
           },
         ],
       },

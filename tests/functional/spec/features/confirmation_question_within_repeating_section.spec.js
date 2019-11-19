@@ -43,7 +43,7 @@ describe('Feature: Confirmation Question Within A Repeating Section', function (
         $(DateOfBirthPage.year()).setValue('2007');
         $(DateOfBirthPage.submit()).click();
 
-        $(ConfirmDateOfBirthPage.yes()).click();
+        $(ConfirmDateOfBirthPage.yesPersonNameIsAgeInYearsYearsOld()).click();
         $(ConfirmDateOfBirthPage.submit()).click();
 
         expect(browser.getUrl()).to.contain(SectionSummaryPage.pageName);

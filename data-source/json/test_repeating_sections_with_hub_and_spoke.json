@@ -702,7 +702,7 @@
                                                             ],
                                                             "text": "Yes, I am {age_in_years} years old"
                                                         },
-                                                        "value": "Yes"
+                                                        "value": "Yes, I am {age_in_years} years old"
                                                     },
                                                     {
                                                         "label": "No, I need to change my date of birth",
@@ -790,7 +790,7 @@
                                                             ],
                                                             "text": "Yes, {person_name} is {age_in_years} years old"
                                                         },
-                                                        "value": "Yes"
+                                                        "value": "Yes, {person_name} is {age_in_years} years old"
                                                     },
                                                     {
                                                         "label": "No, I need to change their date of birth",
