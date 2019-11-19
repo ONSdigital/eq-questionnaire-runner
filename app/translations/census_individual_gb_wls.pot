@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2019-11-19 08:51+0000\n"
+"POT-Creation-Date: 2019-11-19 13:13+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -688,7 +688,7 @@ msgstr ""
 msgid "understand and represent everyone’s interests"
 msgstr ""
 
-msgid "What type of accommodation is <em>{address}</em>?"
+msgid "What type of accommodation is <em>{household_address}</em>?"
 msgstr ""
 
 msgid "What is <em>{person_name_possessive}</em> position in this establishment?"
@@ -738,7 +738,7 @@ msgid ""
 "for more than 30 days a year."
 msgstr ""
 
-msgid "What type of address is <em>{address}</em>?"
+msgid "What type of address is <em>{household_address}</em>?"
 msgstr ""
 
 msgid "What type of address is your address in <em>{country}</em>?"
@@ -999,12 +999,12 @@ msgid "What is the address of <em>{person_name_possessive}</em> depot?"
 msgstr ""
 
 #. answer-id: accommodation-type-answer
-msgctxt "Answer for: What type of accommodation is <em>{address}</em>?"
+msgctxt "Answer for: What type of accommodation is <em>{household_address}</em>?"
 msgid "A communal establishment"
 msgstr ""
 
 #. answer-id: accommodation-type-answer
-msgctxt "Answer for: What type of accommodation is <em>{address}</em>?"
+msgctxt "Answer for: What type of accommodation is <em>{household_address}</em>?"
 msgid "A private or family household"
 msgstr ""
 
@@ -1459,42 +1459,42 @@ msgid "Postcode"
 msgstr ""
 
 #. answer-id: address-type-answer
-msgctxt "Answer for: What type of address is <em>{address}</em>?"
+msgctxt "Answer for: What type of address is <em>{household_address}</em>?"
 msgid "Armed forces base address"
 msgstr ""
 
 #. answer-id: address-type-answer
-msgctxt "Answer for: What type of address is <em>{address}</em>?"
+msgctxt "Answer for: What type of address is <em>{household_address}</em>?"
 msgid "Another address when working away from home"
 msgstr ""
 
 #. answer-id: address-type-answer
-msgctxt "Answer for: What type of address is <em>{address}</em>?"
+msgctxt "Answer for: What type of address is <em>{household_address}</em>?"
 msgid "Student’s home address"
 msgstr ""
 
 #. answer-id: address-type-answer
-msgctxt "Answer for: What type of address is <em>{address}</em>?"
+msgctxt "Answer for: What type of address is <em>{household_address}</em>?"
 msgid "Student’s term-time address"
 msgstr ""
 
 #. answer-id: address-type-answer
-msgctxt "Answer for: What type of address is <em>{address}</em>?"
+msgctxt "Answer for: What type of address is <em>{household_address}</em>?"
 msgid "Another parent or guardian’s address"
 msgstr ""
 
 #. answer-id: address-type-answer
-msgctxt "Answer for: What type of address is <em>{address}</em>?"
+msgctxt "Answer for: What type of address is <em>{household_address}</em>?"
 msgid "Partner’s address"
 msgstr ""
 
 #. answer-id: address-type-answer
-msgctxt "Answer for: What type of address is <em>{address}</em>?"
+msgctxt "Answer for: What type of address is <em>{household_address}</em>?"
 msgid "Holiday home"
 msgstr ""
 
 #. answer-id: address-type-answer
-msgctxt "Answer for: What type of address is <em>{address}</em>?"
+msgctxt "Answer for: What type of address is <em>{household_address}</em>?"
 msgid "Other"
 msgstr ""
 
@@ -4175,26 +4175,26 @@ msgstr ""
 
 #. answer-id: term-time-location-answer
 msgctxt "Answer for: During term time, where do you usually live?"
-msgid "{address}"
+msgid "{household_address}"
 msgstr ""
 
 #. answer-id: term-time-location-answer
 msgctxt "Answer for: During term time, where do you usually live?"
-msgid "The address in {country}"
+msgid "The address in {thirty_day_address_country}"
 msgstr ""
 
 #. answer-id: term-time-location-answer
 msgctxt ""
 "Answer for: During term time, where does <em>{person_name}</em> usually "
 "live?"
-msgid "{address}"
+msgid "{household_address}"
 msgstr ""
 
 #. answer-id: term-time-location-answer
 msgctxt ""
 "Answer for: During term time, where does <em>{person_name}</em> usually "
 "live?"
-msgid "The address in {country}"
+msgid "The address in {thirty_day_address_country}"
 msgstr ""
 
 #. answer-id: term-time-location-answer
@@ -4211,13 +4211,13 @@ msgstr ""
 
 #. answer-id: past-usual-address-household-answer
 msgctxt "Answer for: One year ago, what was your usual address?"
-msgid "{address}"
+msgid "{household_address}"
 msgstr ""
 
 #. answer-id: past-usual-address-household-answer
 msgctxt ""
 "Answer for: One year ago, what was <em>{person_name_possessive}</em> "
 "usual address?"
-msgid "{address}"
+msgid "{household_address}"
 msgstr ""
 

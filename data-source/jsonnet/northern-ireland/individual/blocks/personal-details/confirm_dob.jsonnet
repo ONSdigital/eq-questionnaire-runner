@@ -98,7 +98,7 @@ local proxyNoValue = 'No, I need to change their date of birth';
           {
             id: 'confirm-date-of-birth-answer',
             condition: 'equals any',
-            values: [ proxyNoValue, nonProxyNoValue],
+            values: [proxyNoValue, nonProxyNoValue],
           },
         ],
       },
