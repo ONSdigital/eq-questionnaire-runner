@@ -19,8 +19,28 @@ local walesOption = {
   value: 'English or Welsh',
 };
 
+local walesValue =
+  'English or Welsh';
+
+local englandValue =
+  'English';
+
 local nonProxyDefinitionDescription = 'Your main language is the language you use most naturally. It could be the language you use at home.';
 local proxyDefinitionDescription = 'Their main language is the language they use most naturally. It could be the language they use at home.';
+
+local routing(region_code) = (
+  local regionValue = if region_code == 'GB-WLS' then walesValue else englandValue;
+    {
+      block: 'national-identity',
+      when: [
+        {
+          id: 'language-answer',
+          condition: 'equals',
+          value: regionValue
+        },
+      ],
+    }
+  );
 
 local question(title, definitionDescription, region_code) = (
   local regionOption = if region_code == 'GB-WLS' then walesOption else englandOption;
@@ -45,7 +65,7 @@ local question(title, definitionDescription, region_code) = (
           regionOption,
           {
             label: 'Other, including British Sign Language',
-            value: 'Other, including British Sign Language',
+            value: 'Other',
             description: 'Select to enter answer',
             detail_answer: {
               id: 'language-answer-other',
@@ -75,29 +95,9 @@ function(region_code) {
   ],
   routing_rules: [
     {
-      goto: {
-        block: 'national-identity',
-        when: [
-          {
-            id: 'language-answer',
-            condition: 'equals',
-            value: 'English',
-          },
-        ],
-      },
-    },
-    {
-      goto: {
-        block: 'national-identity',
-        when: [
-          {
-            id: 'language-answer',
-            condition: 'equals',
-            value: 'English or Welsh',
-          },
-        ],
-      },
-    },
+      goto:
+      routing(region_code)
+     },
     {
       goto: {
         block: 'english',
