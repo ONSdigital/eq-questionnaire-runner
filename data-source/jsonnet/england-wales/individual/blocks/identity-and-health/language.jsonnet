@@ -65,7 +65,7 @@ local question(title, definitionDescription, region_code) = (
           regionOption,
           {
             label: 'Other, including British Sign Language',
-            value: 'Other',
+            value: 'Other, including British Sign Language',
             description: 'Select to enter answer',
             detail_answer: {
               id: 'language-answer-other',
