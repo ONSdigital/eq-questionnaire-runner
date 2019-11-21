@@ -62,7 +62,7 @@ local question(title, region_code) = (
           },
           {
             label: 'Any other religion',
-            value: 'Other',
+            value: 'Any other religion',
             description: 'Select to enter answer',
             detail_answer: {
               id: 'religion-answer-other',

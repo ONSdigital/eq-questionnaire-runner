@@ -13,7 +13,7 @@ local question(title, description) = {
       options: [
         {
           label: {
-            text: '{address}',
+            text: '{household_address}',
             placeholders: [
               placeholders.address,
             ],

@@ -68,11 +68,11 @@
                                         "options": [
                                             {
                                                 "label": "Yes, I do connect a battery",
-                                                "value": "yes"
+                                                "value": "Yes, I do connect a battery"
                                             },
                                             {
                                                 "label": "No, I don’t connect a battery",
-                                                "value": "no"
+                                                "value": "No, I don’t connect a battery"
                                             }
                                         ]
                                     }

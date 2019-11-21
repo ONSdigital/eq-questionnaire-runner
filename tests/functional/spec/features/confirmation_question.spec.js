@@ -12,7 +12,7 @@ describe('Feature: Confirmation Question', function() {
     it('When I view the summary, Then the confirmation question should not be displayed', function () {
       $(NumberOfEmployeesTotalBlockPage.numberOfEmployeesTotal()).setValue(0);
       $(NumberOfEmployeesTotalBlockPage.submit()).click();
-      $(ConfirmZeroEmployeesBlockPage.yes()).click();
+      $(ConfirmZeroEmployeesBlockPage.yesThisIsCorrect()).click();
       $(ConfirmZeroEmployeesBlockPage.submit()).click();
       expect(browser.getUrl()).to.contain(SummaryPage.pageName);
       expect($(SummaryPage.numberOfEmployeesTotal()).getText()).to.contain('0');
@@ -25,7 +25,7 @@ describe('Feature: Confirmation Question', function() {
     it('When I answer \'No\' to the confirmation question, Then I should be routed back to the source question', function () {
       browser.openQuestionnaire('test_confirmation_question.json');
       $(NumberOfEmployeesTotalBlockPage.submit()).click();
-      $(ConfirmZeroEmployeesBlockPage.no()).click();
+      $(ConfirmZeroEmployeesBlockPage.noINeedToChangeThis()).click();
       $(ConfirmZeroEmployeesBlockPage.submit()).click();
       expect(browser.getUrl()).to.contain(NumberOfEmployeesTotalBlockPage.pageName);
     });

@@ -546,7 +546,7 @@
                                         "options": [
                                             {
                                                 "label": "No, I’m answering for myself",
-                                                "value": "No"
+                                                "value": "No, I’m answering for myself"
                                             },
                                             {
                                                 "label": "Yes",
@@ -598,7 +598,7 @@
                                         {
                                             "condition": "equals",
                                             "id": "proxy-answer",
-                                            "value": "No"
+                                            "value": "No, I’m answering for myself"
                                         }
                                     ]
                                 },
@@ -702,11 +702,11 @@
                                                             ],
                                                             "text": "Yes, I am {age_in_years} years old"
                                                         },
-                                                        "value": "Yes"
+                                                        "value": "Yes, I am {age_in_years} years old"
                                                     },
                                                     {
                                                         "label": "No, I need to change my date of birth",
-                                                        "value": "No"
+                                                        "value": "No, I need to change my date of birth"
                                                     }
                                                 ],
                                                 "type": "Radio"
@@ -741,7 +741,7 @@
                                         {
                                             "condition": "equals",
                                             "id": "proxy-answer",
-                                            "value": "No"
+                                            "value": "No, I’m answering for myself"
                                         }
                                     ]
                                 },
@@ -790,11 +790,11 @@
                                                             ],
                                                             "text": "Yes, {person_name} is {age_in_years} years old"
                                                         },
-                                                        "value": "Yes"
+                                                        "value": "Yes, {person_name} is {age_in_years} years old"
                                                     },
                                                     {
                                                         "label": "No, I need to change their date of birth",
-                                                        "value": "No"
+                                                        "value": "No, I need to change their date of birth"
                                                     }
                                                 ],
                                                 "type": "Radio"
@@ -857,7 +857,19 @@
                                             {
                                                 "condition": "equals",
                                                 "id": "confirm-date-of-birth-answer",
-                                                "value": "No"
+                                                "value": "No, I need to change my date of birth"
+                                            }
+                                        ]
+                                    }
+                                },
+                                {
+                                    "goto": {
+                                        "block": "date-of-birth",
+                                        "when": [
+                                            {
+                                                "condition": "equals",
+                                                "id": "confirm-date-of-birth-answer",
+                                                "value": "No, I need to change their date of birth"
                                             }
                                         ]
                                     }
@@ -907,7 +919,7 @@
                                         {
                                             "condition": "equals",
                                             "id": "proxy-answer",
-                                            "value": "No"
+                                            "value": "No, I’m answering for myself"
                                         },
                                         {
                                             "condition": "less than or equal to",
@@ -1023,7 +1035,7 @@
                                         {
                                             "condition": "equals",
                                             "id": "proxy-answer",
-                                            "value": "No"
+                                            "value": "No, I’m answering for myself"
                                         }
                                     ]
                                 },

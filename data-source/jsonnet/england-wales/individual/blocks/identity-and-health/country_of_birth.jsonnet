@@ -33,7 +33,7 @@ local englandOptions = {
     },
     {
       label: 'Elsewhere',
-      value: 'Other',
+      value: 'Elsewhere',
       description: 'Select to enter answer',
       detail_answer: {
         id: 'country-of-birth-answer-other',
@@ -69,7 +69,7 @@ local walesOptions = {
     },
     {
       label: 'Elsewhere',
-      value: 'Other',
+      value: 'Elsewhere',
       description: 'Select to enter answer',
       detail_answer: {
         id: 'country-of-birth-answer-other',
@@ -118,7 +118,7 @@ function(region_code) {
           {
             id: 'country-of-birth-answer',
             condition: 'equals',
-            value: 'Other',
+            value: 'Elsewhere',
           },
         ],
       },

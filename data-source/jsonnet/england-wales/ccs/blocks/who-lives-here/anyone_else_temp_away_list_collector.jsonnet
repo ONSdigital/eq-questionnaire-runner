@@ -9,7 +9,7 @@ local summaryTitlePersonName = {
 };
 
 local addPersonQuestionTitle = {
-  text: 'Who do you need to add to {address}?',
+  text: 'Who do you need to add to {household_address}?',
   placeholders: [
     placeholders.address,
   ],

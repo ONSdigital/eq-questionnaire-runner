@@ -43,11 +43,11 @@
                                         "options": [
                                             {
                                                 "label": "Group 1",
-                                                "value": "group1"
+                                                "value": "Group 1"
                                             },
                                             {
                                                 "label": "Group 2",
-                                                "value": "group2"
+                                                "value": "Group 2"
                                             }
                                         ],
                                         "type": "Radio",
@@ -65,7 +65,7 @@
                                             {
                                                 "id": "which-group-answer",
                                                 "condition": "equals",
-                                                "value": "group1"
+                                                "value": "Group 1"
                                             }
                                         ]
                                     }

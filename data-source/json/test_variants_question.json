@@ -87,11 +87,11 @@
                                         "options": [
                                             {
                                                 "label": "Yes, I am",
-                                                "value": "non-proxy"
+                                                "value": "Yes, I am"
                                             },
                                             {
                                                 "label": "No, I am answering on their behalf",
-                                                "value": "proxy"
+                                                "value": "No, I am answering on their behalf"
                                             }
                                         ],
                                         "type": "Radio"
@@ -132,7 +132,7 @@
                                         {
                                             "id": "proxy-answer",
                                             "condition": "equals",
-                                            "value": "non-proxy"
+                                            "value": "Yes, I am"
                                         }
                                     ]
                                 },
@@ -173,7 +173,7 @@
                                         {
                                             "id": "proxy-answer",
                                             "condition": "equals",
-                                            "value": "proxy"
+                                            "value": "No, I am answering on their behalf"
                                         }
                                     ]
                                 }
@@ -215,7 +215,7 @@
                                         {
                                             "id": "proxy-answer",
                                             "condition": "not equals",
-                                            "value": "proxy"
+                                            "value": "No, I am answering on their behalf"
                                         }
                                     ]
                                 },
@@ -251,7 +251,7 @@
                                         {
                                             "id": "proxy-answer",
                                             "condition": "not equals",
-                                            "value": "proxy"
+                                            "value": "No, I am answering on their behalf"
                                         }
                                     ]
                                 },
@@ -306,7 +306,7 @@
                                         {
                                             "id": "proxy-answer",
                                             "condition": "equals",
-                                            "value": "proxy"
+                                            "value": "No, I am answering on their behalf"
                                         }
                                     ]
                                 },
@@ -361,7 +361,7 @@
                                         {
                                             "id": "proxy-answer",
                                             "condition": "equals",
-                                            "value": "proxy"
+                                            "value": "No, I am answering on their behalf"
                                         }
                                     ]
                                 }
@@ -416,11 +416,11 @@
                                         "options": [
                                             {
                                                 "label": "US Dollars",
-                                                "value": "USD"
+                                                "value": "US Dollars"
                                             },
                                             {
                                                 "label": "Sterling",
-                                                "value": "GBP"
+                                                "value": "Sterling"
                                             }
                                         ]
                                     }
@@ -451,7 +451,7 @@
                                         {
                                             "id": "currency-answer",
                                             "condition": "equals",
-                                            "value": "GBP"
+                                            "value": "Sterling"
                                         }
                                     ]
                                 },
@@ -475,7 +475,7 @@
                                         {
                                             "id": "currency-answer",
                                             "condition": "equals",
-                                            "value": "USD"
+                                            "value": "US Dollars"
                                         }
                                     ]
                                 }
@@ -505,7 +505,7 @@
                                         {
                                             "id": "currency-answer",
                                             "condition": "equals",
-                                            "value": "GBP"
+                                            "value": "Sterling"
                                         }
                                     ]
                                 },
@@ -529,7 +529,7 @@
                                         {
                                             "id": "currency-answer",
                                             "condition": "equals",
-                                            "value": "USD"
+                                            "value": "US Dollars"
                                         }
                                     ]
                                 }

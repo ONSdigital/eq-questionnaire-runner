@@ -31,7 +31,7 @@ local question(title) = {
         },
         {
           label: '49 hours or more',
-          value: '49 hours or more ',
+          value: '49 hours or more',
         },
       ],
       type: 'Radio',

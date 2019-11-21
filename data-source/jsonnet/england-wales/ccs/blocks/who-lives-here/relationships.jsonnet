@@ -34,7 +34,7 @@
         },
         {
           label: 'No, all household members are unrelated',
-          value: 'No',
+          value: 'No, all household members are unrelated',
         },
       ],
       type: 'Radio',

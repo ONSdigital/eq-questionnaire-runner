@@ -6,7 +6,7 @@ local placeholders = import '../../../lib/placeholders.libsonnet';
   question: {
     id: 'internet-question',
     title: {
-      text: 'How do you and the people in your household connect to the internet at {address}?',
+      text: 'How do you and the people in your household connect to the internet at {household_address}?',
       placeholders: [placeholders.address],
     },
     instruction: 'Tell respondent to turn to <strong>Showcard 6</strong>',

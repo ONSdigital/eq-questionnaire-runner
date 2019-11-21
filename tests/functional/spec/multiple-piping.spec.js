@@ -19,7 +19,7 @@ describe('Piping', function() {
         $(TextfieldPage.firstText()).setValue('Fireman');
         $(TextfieldPage.secondText()).setValue('Sam');
         $(TextfieldPage.submit()).click();
-        expect($(MultiplePipingPage.atYourAddressLabel()).getText()).to.contain('1 The ONS, Newport, NP10 8XG, Wales');
+        expect($(MultiplePipingPage.answerAddressLabel()).getText()).to.contain('1 The ONS, Newport, NP10 8XG, Wales');
     });
 
     it('Given I enter values in multiple questions, When I navigate to the multiple piping question, Then I should see both values piped into the question', function() {

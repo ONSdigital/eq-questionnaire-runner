@@ -10,7 +10,7 @@ describe('Answers not on path are not considered when routing', function() {
   });
 
   it('Given the user enters an answer on the first path, when they return to the second path, they should be routed to the valid path interstitial', function() {
-    $(InitialChoicePage.first()).click();
+    $(InitialChoicePage.goHereFirst()).click();
     $(InitialChoicePage.submit()).click();
 
     expect(browser.getUrl()).to.contain(InvalidPathPage.pageName);
@@ -25,7 +25,7 @@ describe('Answers not on path are not considered when routing', function() {
 
     // Take the second route
 
-    $(InitialChoicePage.second()).click();
+    $(InitialChoicePage.goHereSecond()).click();
     $(InitialChoicePage.submit()).click();
 
     $(ValidPathPage.answer()).setValue(321);

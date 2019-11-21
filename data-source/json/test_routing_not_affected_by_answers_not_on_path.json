@@ -41,11 +41,11 @@
                                         "options": [
                                             {
                                                 "label": "Go here first",
-                                                "value": "First"
+                                                "value": "Go here first"
                                             },
                                             {
                                                 "label": "Go here second",
-                                                "value": "Second"
+                                                "value": "Go here second"
                                             }
                                         ]
                                     }
@@ -59,7 +59,7 @@
                                             {
                                                 "id": "initial-choice-answer",
                                                 "condition": "equals",
-                                                "value": "Second"
+                                                "value": "Go here second"
                                             }
                                         ]
                                     }

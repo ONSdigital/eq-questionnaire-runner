@@ -8,7 +8,7 @@ local placeholders = import '../../../lib/placeholders.libsonnet';
     mandatory: false,
     type: 'MutuallyExclusive',
     title: {
-      text: 'Has <em>{address}</em> been designed or adapted for any of the following?',
+      text: 'Has <em>{household_address}</em> been designed or adapted for any of the following?',
       placeholders: [placeholders.address],
     },
     answers: [

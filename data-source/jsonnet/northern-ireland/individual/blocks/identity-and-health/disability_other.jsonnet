@@ -41,7 +41,7 @@ local question(title) = {
         },
         {
           label: 'Other condition',
-          value: 'Shortness of breath or difficulty breathing',
+          value: 'Other condition',
           description: 'For example cancer, diabetes or heart disease',
         },
       ],

@@ -21,11 +21,11 @@ local question(title) = {
         },
         {
           label: 'A mobility or dexterity difficulty, which requires the use of a wheelchair in the home',
-          value: 'Full mobility',
+          value: 'A mobility or dexterity difficulty, which requires the use of a wheelchair in the home',
         },
         {
           label: 'A mobility or dexterity difficulty that limits basic physical activities',
-          value: 'Slight mobility',
+          value: 'A mobility or dexterity difficulty that limits basic physical activities',
           description: 'For example walking or dressing',
         },
         {

@@ -9,15 +9,15 @@
       {
         id: 'proxy-answer',
         mandatory: false,
-        default: 'No',
+        default: 'No, they are answering on someone else’s behalf',
         options: [
           {
             label: 'Yes, they are answering for themselves',
-            value: 'Yes',
+            value: 'Yes, they are answering for themselves',
           },
           {
             label: 'No, they are answering on someone else’s behalf',
-            value: 'No',
+            value: 'No, they are answering on someone else’s behalf',
           },
         ],
         type: 'Radio',

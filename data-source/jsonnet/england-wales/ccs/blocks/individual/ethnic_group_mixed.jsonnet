@@ -24,7 +24,7 @@ local question(title) = {
         },
         {
           label: 'Any other Mixed or Multiple background',
-          value: 'Other',
+          value: 'Any other Mixed or Multiple background',
           description: 'Select to enter answer',
           detail_answer: {
             id: 'mixed-ethnic-group-answer-other',

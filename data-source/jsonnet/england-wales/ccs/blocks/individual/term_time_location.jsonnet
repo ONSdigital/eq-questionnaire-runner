@@ -26,12 +26,12 @@ local noOtherAddressOptions = {
   options: [
     {
       label: {
-        text: '{address}',
+        text: '{household_address}',
         placeholders: [
           placeholders.address,
         ],
       },
-      value: 'household-address',
+      value: '{household_address}',
     },
     {
       label: 'At another address',

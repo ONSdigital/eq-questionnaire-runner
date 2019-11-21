@@ -204,23 +204,23 @@
                                                 "options": [
                                                     {
                                                         "label": "Yes",
-                                                        "value": "yes"
+                                                        "value": "Yes"
                                                     },
                                                     {
                                                         "label": "No",
-                                                        "value": "no"
+                                                        "value": "No"
                                                     },
                                                     {
                                                         "label": "Maybe",
-                                                        "value": "maybe"
+                                                        "value": "Maybe"
                                                     },
                                                     {
                                                         "label": "I don’t know",
-                                                        "value": "know"
+                                                        "value": "I don’t know"
                                                     },
                                                     {
                                                         "label": "Can you repeat the question",
-                                                        "value": "repeat"
+                                                        "value": "Can you repeat the question"
                                                     }
                                                 ]
                                             }
@@ -247,23 +247,23 @@
                                                 "options": [
                                                     {
                                                         "label": "Yes",
-                                                        "value": "yes"
+                                                        "value": "Yes"
                                                     },
                                                     {
                                                         "label": "No",
-                                                        "value": "no"
+                                                        "value": "No"
                                                     },
                                                     {
                                                         "label": "Maybe",
-                                                        "value": "maybe"
+                                                        "value": "Maybe"
                                                     },
                                                     {
                                                         "label": "I don’t know",
-                                                        "value": "know"
+                                                        "value": "I don’t know"
                                                     },
                                                     {
                                                         "label": "Can you repeat the question",
-                                                        "value": "repeat"
+                                                        "value": "Can you repeat the question"
                                                     }
                                                 ]
                                             }
@@ -301,23 +301,23 @@
                                                 "options": [
                                                     {
                                                         "label": "Yes",
-                                                        "value": "yes"
+                                                        "value": "Yes"
                                                     },
                                                     {
                                                         "label": "No",
-                                                        "value": "no"
+                                                        "value": "No"
                                                     },
                                                     {
                                                         "label": "Maybe",
-                                                        "value": "maybe"
+                                                        "value": "Maybe"
                                                     },
                                                     {
                                                         "label": "I don’t know",
-                                                        "value": "know"
+                                                        "value": "I don’t know"
                                                     },
                                                     {
                                                         "label": "Can you repeat the question",
-                                                        "value": "repeat"
+                                                        "value": "Can you repeat the question"
                                                     }
                                                 ]
                                             }

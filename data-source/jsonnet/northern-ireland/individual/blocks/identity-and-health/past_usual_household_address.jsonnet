@@ -13,12 +13,12 @@ local question(title, description) = {
       options: [
         {
           label: {
-            text: '{address}',
+            text: '{household_address}',
             placeholders: [
               placeholders.address,
             ],
           },
-          value: 'household-address',
+          value: '{household_address}',
         },
         {
           label: 'Student term-time address in the UK',
@@ -30,7 +30,7 @@ local question(title, description) = {
         },
         {
           label: 'An address outside the UK',
-          value: 'Other',
+          value: 'An address outside the UK',
           detail_answer: {
             id: 'past-usual-address-household-answer-other',
             type: 'TextField',

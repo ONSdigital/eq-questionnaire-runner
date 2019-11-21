@@ -25,11 +25,11 @@ local question(title, description) = {
         },
         {
           label: 'Bus, minibus or coach',
-          value: 'Bus, minibus or coach ',
+          value: 'Bus, minibus or coach',
         },
         {
           label: 'Taxi',
-          value: 'Taxi ',
+          value: 'Taxi',
         },
         {
           label: 'Motorcycle, scooter or moped',

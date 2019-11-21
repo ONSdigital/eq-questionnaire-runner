@@ -41,7 +41,7 @@ local question(title) = {
         },
         {
           label: 'Any other Asian background',
-          value: 'Other',
+          value: 'Any other Asian background',
           description: 'Select to enter answer',
           detail_answer: {
             id: 'asian-ethnic-group-answer-other',

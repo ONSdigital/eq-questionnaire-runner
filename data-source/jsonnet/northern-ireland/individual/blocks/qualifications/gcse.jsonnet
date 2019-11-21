@@ -29,7 +29,7 @@ local question(title) = {
       options: [
         {
           label: '5 or more GCSEs grades A* to C or 9 to 4',
-          value: '5 or more GCSEs',
+          value: '5 or more GCSEs grades A* to C or 9 to 4',
           description: 'Include 5 or more O level passes or CSEs grades 1',
         },
         {

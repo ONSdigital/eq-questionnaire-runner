@@ -28,7 +28,7 @@ describe('Choose another section link', function () {
     $(EmploymentStatusBlockPage.workingAsAnEmployee()).click();
     $(EmploymentStatusBlockPage.submit()).click();
     $(HubPage.summaryRowLink(2)).click();
-    $(ProxyPage.no()).click();
+    $(ProxyPage.noIMAnsweringForMyself()).click();
     $(ProxyPage.submit()).click();
     expect($('body').getText()).to.not.contain('Can\'t complete this question?');
     expect($('body').getText()).to.not.have.string('Choose another section and return to this later');

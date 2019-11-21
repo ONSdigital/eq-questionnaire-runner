@@ -27,7 +27,7 @@ local question(title) = {
         },
         {
           label: 'Any other Black, Black British or Caribbean background',
-          value: 'Other',
+          value: 'Any other Black, Black British or Caribbean background',
           description: 'Select to enter answer',
           detail_answer: {
             id: 'black-ethnic-group-answer-other',

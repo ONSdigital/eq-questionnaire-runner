@@ -20,7 +20,7 @@ describe('QuestionVariants', function() {
 
     expect($(proxyBlock.questionText()).getText()).to.contain('Are you Guido van Rossum?');
 
-    $(proxyBlock.proxy()).click();
+    $(proxyBlock.noIAmAnsweringOnTheirBehalf()).click();
     $(proxyBlock.submit()).click();
 
     expect($(ageBlock.questionText()).getText()).to.contain('What age is Guido van Rossum');
@@ -38,7 +38,7 @@ describe('QuestionVariants', function() {
 
     $(basicVariantsSummary.submit()).click();
 
-    $(currencyBlock.gbp()).click();
+    $(currencyBlock.sterling()).click();
     $(currencyBlock.submit()).click();
 
     expect($(firstNumberBlock.firstNumberLabel()).getText()).to.contain('First answer in GBP');
@@ -53,7 +53,7 @@ describe('QuestionVariants', function() {
     expect($(currencySectionSummary.firstNumberAnswer()).getText()).to.contain('£');
 
     $(currencySectionSummary.currencyAnswerEdit()).click();
-    $(currencyBlock.usd()).click();
+    $(currencyBlock.usDollars()).click();
     $(currencyBlock.submit()).click();
 
     expect($(currencySectionSummary.firstNumberAnswer()).getText()).to.contain('$');

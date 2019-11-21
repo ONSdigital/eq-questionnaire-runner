@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2019-11-11 12:54+0000\n"
+"POT-Creation-Date: 2019-11-19 13:13+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -746,13 +746,13 @@ msgstr ""
 
 msgid ""
 "In this section, we’re going to ask you about the people living or "
-"staying at {address}."
+"staying at {household_address}."
 msgstr ""
 
-msgid "Do you usually live at {address}?"
+msgid "Do you usually live at {household_address}?"
 msgstr ""
 
-msgid "Who do you need to add to {address}?"
+msgid "Who do you need to add to {household_address}?"
 msgstr ""
 
 msgid "Change details for {person_name} (You)"
@@ -761,10 +761,10 @@ msgstr ""
 msgid "Change details for {person_name}"
 msgstr ""
 
-msgid "Does anyone usually live at {address}?"
+msgid "Does anyone usually live at {household_address}?"
 msgstr ""
 
-msgid "Does anyone else live at {address}?"
+msgid "Does anyone else live at {household_address}?"
 msgstr ""
 
 msgid "Are you sure you want to remove {person_name}?"
@@ -775,20 +775,22 @@ msgstr ""
 
 msgid ""
 "Apart from the people already included, is there anyone who is "
-"temporarily away or staying that you need to add to {address}?"
+"temporarily away or staying that you need to add to {household_address}?"
 msgstr ""
 
-msgid "Are there any visitors staying overnight on {census_date} at {address}?"
+msgid ""
+"Are there any visitors staying overnight on {census_date} at "
+"{household_address}?"
 msgstr ""
 
 msgid ""
 "What is the name of the visitor staying overnight on {census_date} at "
-"{address}?"
+"{household_address}?"
 msgstr ""
 
 msgid ""
 "Are there any other visitors staying overnight on {census_date} at "
-"{address}?"
+"{household_address}?"
 msgstr ""
 
 msgid "Visitors staying overnight on {census_date}"
@@ -800,19 +802,23 @@ msgstr ""
 msgid "Thinking of {first_person_name}, {second_person_name} is their <em>…</em>"
 msgstr ""
 
-msgid "What type of accommodation is <em>{address}</em>?"
+msgid "What type of accommodation is <em>{household_address}</em>?"
 msgstr ""
 
-msgid "Has <em>{address}</em> been designed or adapted for any of the following?"
+msgid ""
+"Has <em>{household_address}</em> been designed or adapted for any of the "
+"following?"
 msgstr ""
 
-msgid "What type of central heating does <em>{address}</em> have?"
+msgid "What type of central heating does <em>{household_address}</em> have?"
 msgstr ""
 
-msgid "What type of renewable energy systems does <em>{address}</em> have?"
+msgid ""
+"What type of renewable energy systems does <em>{household_address}</em> "
+"have?"
 msgstr ""
 
-msgid "Does your household own or rent <em>{address}</em>?"
+msgid "Does your household own or rent <em>{household_address}</em>?"
 msgstr ""
 
 msgid ""
@@ -1146,27 +1152,27 @@ msgid "Last name"
 msgstr ""
 
 #. answer-id: you-live-here-answer
-msgctxt "Answer for: Do you usually live at {address}?"
+msgctxt "Answer for: Do you usually live at {household_address}?"
 msgid "Yes, I usually live here"
 msgstr ""
 
 #. answer-id: you-live-here-answer
-msgctxt "Answer for: Do you usually live at {address}?"
+msgctxt "Answer for: Do you usually live at {household_address}?"
 msgid "No, I don’t usually live here"
 msgstr ""
 
 #. answer-id: first-name
-msgctxt "Answer for: Who do you need to add to {address}?"
+msgctxt "Answer for: Who do you need to add to {household_address}?"
 msgid "First name"
 msgstr ""
 
 #. answer-id: middle-names
-msgctxt "Answer for: Who do you need to add to {address}?"
+msgctxt "Answer for: Who do you need to add to {household_address}?"
 msgid "Middle names"
 msgstr ""
 
 #. answer-id: last-name
-msgctxt "Answer for: Who do you need to add to {address}?"
+msgctxt "Answer for: Who do you need to add to {household_address}?"
 msgid "Last name"
 msgstr ""
 
@@ -1201,22 +1207,22 @@ msgid "Last name"
 msgstr ""
 
 #. answer-id: anyone-else-answer
-msgctxt "Answer for: Does anyone usually live at {address}?"
+msgctxt "Answer for: Does anyone usually live at {household_address}?"
 msgid "Yes, I need to add someone"
 msgstr ""
 
 #. answer-id: anyone-else-answer
-msgctxt "Answer for: Does anyone usually live at {address}?"
+msgctxt "Answer for: Does anyone usually live at {household_address}?"
 msgid "No, no one usually lives here"
 msgstr ""
 
 #. answer-id: anyone-else-answer
-msgctxt "Answer for: Does anyone else live at {address}?"
+msgctxt "Answer for: Does anyone else live at {household_address}?"
 msgid "Yes, I need to add someone"
 msgstr ""
 
 #. answer-id: anyone-else-answer
-msgctxt "Answer for: Does anyone else live at {address}?"
+msgctxt "Answer for: Does anyone else live at {household_address}?"
 msgid "No, I do not need to add anyone"
 msgstr ""
 
@@ -1237,21 +1243,23 @@ msgstr ""
 #. answer-id: anyone-else-temp-away-answer
 msgctxt ""
 "Answer for: Apart from the people already included, is there anyone who "
-"is temporarily away or staying that you need to add to {address}?"
+"is temporarily away or staying that you need to add to "
+"{household_address}?"
 msgid "Yes, I need to add someone"
 msgstr ""
 
 #. answer-id: anyone-else-temp-away-answer
 msgctxt ""
 "Answer for: Apart from the people already included, is there anyone who "
-"is temporarily away or staying that you need to add to {address}?"
+"is temporarily away or staying that you need to add to "
+"{household_address}?"
 msgid "No, I do not need to add anyone"
 msgstr ""
 
 #. answer-id: any-visitors-answer
 msgctxt ""
 "Answer for: Are there any visitors staying overnight on {census_date} at "
-"{address}?"
+"{household_address}?"
 msgid ""
 "People who usually live somewhere else in the UK, for example "
 "boy/girlfriends, friends or relatives"
@@ -1260,7 +1268,7 @@ msgstr ""
 #. answer-id: any-visitors-answer
 msgctxt ""
 "Answer for: Are there any visitors staying overnight on {census_date} at "
-"{address}?"
+"{household_address}?"
 msgid ""
 "People staying here because it is their second address, for example, for "
 "work. Their permanent or family home is elsewhere"
@@ -1269,7 +1277,7 @@ msgstr ""
 #. answer-id: any-visitors-answer
 msgctxt ""
 "Answer for: Are there any visitors staying overnight on {census_date} at "
-"{address}?"
+"{household_address}?"
 msgid ""
 "People who usually live outside the UK who are staying in the UK for less"
 " than three months"
@@ -1278,42 +1286,42 @@ msgstr ""
 #. answer-id: any-visitors-answer
 msgctxt ""
 "Answer for: Are there any visitors staying overnight on {census_date} at "
-"{address}?"
+"{household_address}?"
 msgid "People here on holiday"
 msgstr ""
 
 #. answer-id: any-visitors-answer-exclusive
 msgctxt ""
 "Answer for: Are there any visitors staying overnight on {census_date} at "
-"{address}?"
+"{household_address}?"
 msgid "No, there are no visitors staying overnight on 13 October 2019"
 msgstr ""
 
 #. answer-id: first-name
 msgctxt ""
 "Answer for: What is the name of the visitor staying overnight on "
-"{census_date} at {address}?"
+"{census_date} at {household_address}?"
 msgid "First name"
 msgstr ""
 
 #. answer-id: last-name
 msgctxt ""
 "Answer for: What is the name of the visitor staying overnight on "
-"{census_date} at {address}?"
+"{census_date} at {household_address}?"
 msgid "Last name"
 msgstr ""
 
 #. answer-id: visitor-answer
 msgctxt ""
 "Answer for: Are there any other visitors staying overnight on "
-"{census_date} at {address}?"
+"{census_date} at {household_address}?"
 msgid "Yes, I need to add someone"
 msgstr ""
 
 #. answer-id: visitor-answer
 msgctxt ""
 "Answer for: Are there any other visitors staying overnight on "
-"{census_date} at {address}?"
+"{census_date} at {household_address}?"
 msgid "No, I do not need to add anyone"
 msgstr ""
 
@@ -1474,17 +1482,17 @@ msgid "Unrelated"
 msgstr ""
 
 #. answer-id: accommodation-type-answer
-msgctxt "Answer for: What type of accommodation is <em>{address}</em>?"
+msgctxt "Answer for: What type of accommodation is <em>{household_address}</em>?"
 msgid "Whole house or bungalow"
 msgstr ""
 
 #. answer-id: accommodation-type-answer
-msgctxt "Answer for: What type of accommodation is <em>{address}</em>?"
+msgctxt "Answer for: What type of accommodation is <em>{household_address}</em>?"
 msgid "Flat, maisonette or apartment"
 msgstr ""
 
 #. answer-id: accommodation-type-answer
-msgctxt "Answer for: What type of accommodation is <em>{address}</em>?"
+msgctxt "Answer for: What type of accommodation is <em>{household_address}</em>?"
 msgid "Caravan or other mobile or temporary structure"
 msgstr ""
 
@@ -1520,169 +1528,187 @@ msgstr ""
 
 #. answer-id: adapted-answer
 msgctxt ""
-"Answer for: Has <em>{address}</em> been designed or adapted for any of "
-"the following?"
+"Answer for: Has <em>{household_address}</em> been designed or adapted for"
+" any of the following?"
 msgid "Internal wheelchair usage"
 msgstr ""
 
 #. answer-id: adapted-answer
 msgctxt ""
-"Answer for: Has <em>{address}</em> been designed or adapted for any of "
-"the following?"
+"Answer for: Has <em>{household_address}</em> been designed or adapted for"
+" any of the following?"
 msgid "External wheelchair access"
 msgstr ""
 
 #. answer-id: adapted-answer
 msgctxt ""
-"Answer for: Has <em>{address}</em> been designed or adapted for any of "
-"the following?"
+"Answer for: Has <em>{household_address}</em> been designed or adapted for"
+" any of the following?"
 msgid "Other physical or mobility difficulties"
 msgstr ""
 
 #. answer-id: adapted-answer
 msgctxt ""
-"Answer for: Has <em>{address}</em> been designed or adapted for any of "
-"the following?"
+"Answer for: Has <em>{household_address}</em> been designed or adapted for"
+" any of the following?"
 msgid "Visual difficulties"
 msgstr ""
 
 #. answer-id: adapted-answer
 msgctxt ""
-"Answer for: Has <em>{address}</em> been designed or adapted for any of "
-"the following?"
+"Answer for: Has <em>{household_address}</em> been designed or adapted for"
+" any of the following?"
 msgid "Hearing difficulties"
 msgstr ""
 
 #. answer-id: adapted-answer
 msgctxt ""
-"Answer for: Has <em>{address}</em> been designed or adapted for any of "
-"the following?"
+"Answer for: Has <em>{household_address}</em> been designed or adapted for"
+" any of the following?"
 msgid "Other"
 msgstr ""
 
 #. answer-id: adapted-answer-other
 msgctxt ""
-"Answer for: Has <em>{address}</em> been designed or adapted for any of "
-"the following?"
+"Answer for: Has <em>{household_address}</em> been designed or adapted for"
+" any of the following?"
 msgid "Enter adaptation"
 msgstr ""
 
 #. answer-id: adapted-answer-exclusive
 msgctxt ""
-"Answer for: Has <em>{address}</em> been designed or adapted for any of "
-"the following?"
+"Answer for: Has <em>{household_address}</em> been designed or adapted for"
+" any of the following?"
 msgid "None of these"
 msgstr ""
 
 #. answer-id: central-heating-answer
-msgctxt "Answer for: What type of central heating does <em>{address}</em> have?"
+msgctxt ""
+"Answer for: What type of central heating does "
+"<em>{household_address}</em> have?"
 msgid "Oil"
 msgstr ""
 
 #. answer-id: central-heating-answer
-msgctxt "Answer for: What type of central heating does <em>{address}</em> have?"
+msgctxt ""
+"Answer for: What type of central heating does "
+"<em>{household_address}</em> have?"
 msgid "Mains gas"
 msgstr ""
 
 #. answer-id: central-heating-answer
-msgctxt "Answer for: What type of central heating does <em>{address}</em> have?"
+msgctxt ""
+"Answer for: What type of central heating does "
+"<em>{household_address}</em> have?"
 msgid "Tank or bottled gas"
 msgstr ""
 
 #. answer-id: central-heating-answer
-msgctxt "Answer for: What type of central heating does <em>{address}</em> have?"
+msgctxt ""
+"Answer for: What type of central heating does "
+"<em>{household_address}</em> have?"
 msgid "Electric"
 msgstr ""
 
 #. answer-id: central-heating-answer
-msgctxt "Answer for: What type of central heating does <em>{address}</em> have?"
+msgctxt ""
+"Answer for: What type of central heating does "
+"<em>{household_address}</em> have?"
 msgid "Wood"
 msgstr ""
 
 #. answer-id: central-heating-answer
-msgctxt "Answer for: What type of central heating does <em>{address}</em> have?"
+msgctxt ""
+"Answer for: What type of central heating does "
+"<em>{household_address}</em> have?"
 msgid "Solid fuel"
 msgstr ""
 
 #. answer-id: central-heating-answer
-msgctxt "Answer for: What type of central heating does <em>{address}</em> have?"
+msgctxt ""
+"Answer for: What type of central heating does "
+"<em>{household_address}</em> have?"
 msgid "Renewable heating system"
 msgstr ""
 
 #. answer-id: central-heating-answer
-msgctxt "Answer for: What type of central heating does <em>{address}</em> have?"
+msgctxt ""
+"Answer for: What type of central heating does "
+"<em>{household_address}</em> have?"
 msgid "Other central heating"
 msgstr ""
 
 #. answer-id: central-heating-answer-exclusive
-msgctxt "Answer for: What type of central heating does <em>{address}</em> have?"
+msgctxt ""
+"Answer for: What type of central heating does "
+"<em>{household_address}</em> have?"
 msgid "No central heating"
 msgstr ""
 
 #. answer-id: renewables-answer
 msgctxt ""
-"Answer for: What type of renewable energy systems does <em>{address}</em>"
-" have?"
+"Answer for: What type of renewable energy systems does "
+"<em>{household_address}</em> have?"
 msgid "Solar panels for electricity"
 msgstr ""
 
 #. answer-id: renewables-answer
 msgctxt ""
-"Answer for: What type of renewable energy systems does <em>{address}</em>"
-" have?"
+"Answer for: What type of renewable energy systems does "
+"<em>{household_address}</em> have?"
 msgid "Solar panels for heating water"
 msgstr ""
 
 #. answer-id: renewables-answer
 msgctxt ""
-"Answer for: What type of renewable energy systems does <em>{address}</em>"
-" have?"
+"Answer for: What type of renewable energy systems does "
+"<em>{household_address}</em> have?"
 msgid "Wind turbine"
 msgstr ""
 
 #. answer-id: renewables-answer
 msgctxt ""
-"Answer for: What type of renewable energy systems does <em>{address}</em>"
-" have?"
+"Answer for: What type of renewable energy systems does "
+"<em>{household_address}</em> have?"
 msgid "Other"
 msgstr ""
 
 #. answer-id: renewables-answer-other
 msgctxt ""
-"Answer for: What type of renewable energy systems does <em>{address}</em>"
-" have?"
+"Answer for: What type of renewable energy systems does "
+"<em>{household_address}</em> have?"
 msgid "Enter renewable energy system"
 msgstr ""
 
 #. answer-id: renewables-answer-exclusive
 msgctxt ""
-"Answer for: What type of renewable energy systems does <em>{address}</em>"
-" have?"
+"Answer for: What type of renewable energy systems does "
+"<em>{household_address}</em> have?"
 msgid "No renewable energy systems"
 msgstr ""
 
 #. answer-id: own-or-rent-answer
-msgctxt "Answer for: Does your household own or rent <em>{address}</em>?"
+msgctxt "Answer for: Does your household own or rent <em>{household_address}</em>?"
 msgid "Owns outright"
 msgstr ""
 
 #. answer-id: own-or-rent-answer
-msgctxt "Answer for: Does your household own or rent <em>{address}</em>?"
+msgctxt "Answer for: Does your household own or rent <em>{household_address}</em>?"
 msgid "Owns with a mortgage or loan"
 msgstr ""
 
 #. answer-id: own-or-rent-answer
-msgctxt "Answer for: Does your household own or rent <em>{address}</em>?"
+msgctxt "Answer for: Does your household own or rent <em>{household_address}</em>?"
 msgid "Part owns and part rents"
 msgstr ""
 
 #. answer-id: own-or-rent-answer
-msgctxt "Answer for: Does your household own or rent <em>{address}</em>?"
+msgctxt "Answer for: Does your household own or rent <em>{household_address}</em>?"
 msgid "Rents"
 msgstr ""
 
 #. answer-id: own-or-rent-answer
-msgctxt "Answer for: Does your household own or rent <em>{address}</em>?"
+msgctxt "Answer for: Does your household own or rent <em>{household_address}</em>?"
 msgid "Lives here rent-free"
 msgstr ""
 
@@ -4918,7 +4944,7 @@ msgid "Postcode"
 msgstr ""
 
 #. answer-id: anyone-else-answer
-msgctxt "Answer for: Does anyone usually live at {address}?"
+msgctxt "Answer for: Does anyone usually live at {household_address}?"
 msgid ""
 "Include partners, children, babies born on or before {census_date}, "
 "housemates, tenants and lodgers, students and schoolchildren who live "
@@ -4927,7 +4953,7 @@ msgid ""
 msgstr ""
 
 #. answer-id: anyone-else-answer
-msgctxt "Answer for: Does anyone else live at {address}?"
+msgctxt "Answer for: Does anyone else live at {household_address}?"
 msgid ""
 "Include partners, children, babies born on or before {census_date}, "
 "housemates, tenants and lodgers, students and schoolchildren who live "
@@ -5250,25 +5276,25 @@ msgstr ""
 
 #. answer-id: term-time-location-answer
 msgctxt "Answer for: During term time, where do you usually live?"
-msgid "{address}"
+msgid "{household_address}"
 msgstr ""
 
 #. answer-id: term-time-location-answer
 msgctxt ""
 "Answer for: During term time, where does <em>{person_name}</em> usually "
 "live?"
-msgid "{address}"
+msgid "{household_address}"
 msgstr ""
 
 #. answer-id: past-usual-address-household-answer
 msgctxt "Answer for: One year ago, what was your usual address?"
-msgid "{address}"
+msgid "{household_address}"
 msgstr ""
 
 #. answer-id: past-usual-address-household-answer
 msgctxt ""
 "Answer for: One year ago, what was <em>{person_name_possessive}</em> "
 "usual address?"
-msgid "{address}"
+msgid "{household_address}"
 msgstr ""
 

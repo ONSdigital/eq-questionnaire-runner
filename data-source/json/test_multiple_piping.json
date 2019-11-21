@@ -189,7 +189,7 @@
                                                         }
                                                     ]
                                                 },
-                                                "value": "at your address"
+                                                "value": "{address}"
                                             },
                                             {
                                                 "label": "at another address",

@@ -19,7 +19,7 @@ describe('Test routing using not set and set conditions on checkboxes', function
 
     $(ToppingInterstitialSetPage.submit()).click();
 
-    $(OptionalMutuallyExclusivePage.noCheese()).click();
+    $(OptionalMutuallyExclusivePage.iDonTLikeCheese()).click();
     $(OptionalMutuallyExclusivePage.submit()).click();
 
     expect(browser.getUrl()).to.contain(CheeseInterstitialSetPage.pageName);

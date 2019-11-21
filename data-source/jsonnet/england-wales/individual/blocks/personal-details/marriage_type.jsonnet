@@ -12,7 +12,7 @@ local question(title) = {
       options: [
         {
           label: 'Never married and never registered a civil partnership',
-          value: 'Never',
+          value: 'Never married and never registered a civil partnership',
         },
         {
           label: 'Married',
@@ -93,7 +93,7 @@ function(census_date) {
     },
   ],
   routing_rules: [
-    gotoRule('another-address', 'Never'),
+    gotoRule('another-address', 'Never married and never registered a civil partnership'),
     gotoRule('current-marriage-status', 'Married'),
     gotoRule('current-partnership-status', 'In a registered civil partnership'),
     gotoRule('current-marriage-status', 'Separated, but still legally married'),

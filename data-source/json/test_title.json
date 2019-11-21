@@ -43,11 +43,11 @@
                                         "options": [
                                             {
                                                 "label": "Good",
-                                                "value": "good"
+                                                "value": "Good"
                                             },
                                             {
                                                 "label": "Bad",
-                                                "value": "bad"
+                                                "value": "Bad"
                                             }
                                         ]
                                     }

@@ -26,12 +26,12 @@ local noOtherAddressOptions = {
   options: [
     {
       label: {
-        text: '{address}',
+        text: '{household_address}',
         placeholders: [
           placeholders.address,
         ],
       },
-      value: 'household-address',
+      value: '{household_address}',
     },
     {
       label: 'Another address',
@@ -44,19 +44,19 @@ local otherUkAddressOptions = {
   options: [
     {
       label: {
-        text: '{address}',
+        text: '{household_address}',
         placeholders: [
           placeholders.address,
         ],
       },
-      value: 'household-address',
+      value: '{household_address}',
     },
     {
       label: {
-        text: '{address}',
+        text: '{thirty_day_address}',
         placeholders: [
           {
-            placeholder: 'address',
+            placeholder: 'thirty_day_address',
             transforms: [{
               transform: 'concatenate_list',
               arguments: {
@@ -70,7 +70,7 @@ local otherUkAddressOptions = {
           },
         ],
       },
-      value: '30-day-address',
+      value: '{thirty_day_address}',
     },
     {
       label: 'Another address',
@@ -83,19 +83,19 @@ local otherNonUkAddressOptions = {
   options: [
     {
       label: {
-        text: '{address}',
+        text: '{household_address}',
         placeholders: [
           placeholders.address,
         ],
       },
-      value: 'household-address',
+      value: '{household_address}',
     },
     {
       label: {
-        text: 'The address in {country}',
+        text: 'The address in {thirty_day_address_country}',
         placeholders: [
           {
-            placeholder: 'country',
+            placeholder: 'thirty_day_address_country',
             value: {
               source: 'answers',
               identifier: 'another-address-answer-other-country',
@@ -103,7 +103,7 @@ local otherNonUkAddressOptions = {
           },
         ],
       },
-      value: '30-day-address',
+      value: 'The address in {thirty_day_address_country}',
     },
     {
       label: 'Another address',
@@ -217,7 +217,19 @@ local otherNonUkAddressOptions = {
           {
             id: 'term-time-location-answer',
             condition: 'equals',
-            value: '30-day-address',
+            value: '{thirty_day_address}',
+          },
+        ],
+      },
+    },
+    {
+      goto: {
+        group: 'submit-group',
+        when: [
+          {
+            id: 'term-time-location-answer',
+            condition: 'equals',
+            value: 'The address in {thirty_day_address_country}',
           },
         ],
       },

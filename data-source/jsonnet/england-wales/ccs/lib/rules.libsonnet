@@ -21,12 +21,12 @@ local estimatedAge = {
   isNotProxy: {
     id: 'proxy-answer',
     condition: 'equals',
-    value: 'Yes',
+    value: 'Yes, they are answering for themselves',
   },
   isProxy: {
     id: 'proxy-answer',
     condition: 'equals',
-    value: 'No',
+    value: 'No, they are answering on someone else’s behalf',
   },
   listIsEmpty: listIsEmpty,
   listIsNotEmpty: listIsNotEmpty,

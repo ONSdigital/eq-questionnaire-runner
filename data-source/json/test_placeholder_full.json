@@ -212,11 +212,11 @@
                                                         }
                                                     ]
                                                 },
-                                                "value": "Yes"
+                                                "value": "Yes, {person_name} is {age_in_years} years old."
                                             },
                                             {
                                                 "label": "No, I need to change their date of birth",
-                                                "value": "No"
+                                                "value": "No, I need to change their date of birth"
                                             }
                                         ],
                                         "type": "Radio"
@@ -231,7 +231,7 @@
                                             {
                                                 "id": "confirm-date-of-birth-answer-proxy",
                                                 "condition": "equals",
-                                                "value": "No"
+                                                "value": "No, I need to change their date of birth"
                                             }
                                         ]
                                     }

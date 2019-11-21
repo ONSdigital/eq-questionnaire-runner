@@ -1,7 +1,7 @@
 local placeholders = import '../../../lib/placeholders.libsonnet';
 
 local questionTitle = {
-  text: 'Do you usually live at {address}?',
+  text: 'Do you usually live at {household_address}?',
   placeholders: [
     placeholders.address,
   ],

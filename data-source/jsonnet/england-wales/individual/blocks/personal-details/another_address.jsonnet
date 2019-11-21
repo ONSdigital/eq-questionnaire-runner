@@ -31,7 +31,7 @@ local question(title) = {
         },
         {
           label: 'Yes, an address outside the UK',
-          value: 'Other',
+          value: 'Yes, an address outside the UK',
           description: 'Select to enter answer',
           detail_answer: {
             id: 'another-address-answer-other-country',
@@ -124,7 +124,7 @@ local proxyTitle = {
           {
             id: 'another-address-answer',
             condition: 'equals',
-            value: 'Other',
+            value: 'Yes, an address outside the UK',
           },
         ],
       },
