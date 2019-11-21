@@ -30,17 +30,17 @@ local proxyDefinitionDescription = 'Their main language is the language they use
 
 local routing(region_code) = (
   local regionValue = if region_code == 'GB-WLS' then walesValue else englandValue;
-    {
-      block: 'national-identity',
-      when: [
-        {
-          id: 'language-answer',
-          condition: 'equals',
-          value: regionValue
-        },
-      ],
-    }
-  );
+  {
+    block: 'national-identity',
+    when: [
+      {
+        id: 'language-answer',
+        condition: 'equals',
+        value: regionValue,
+      },
+    ],
+  }
+);
 
 local question(title, definitionDescription, region_code) = (
   local regionOption = if region_code == 'GB-WLS' then walesOption else englandOption;
@@ -96,8 +96,8 @@ function(region_code) {
   routing_rules: [
     {
       goto:
-      routing(region_code)
-     },
+        routing(region_code),
+    },
     {
       goto: {
         block: 'english',
