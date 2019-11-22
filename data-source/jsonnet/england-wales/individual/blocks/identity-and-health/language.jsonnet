@@ -9,27 +9,27 @@ local proxyTitle = {
   ],
 };
 
+local walesString =
+  'English or Welsh';
+
+local englandString =
+  'English';
+
 local englandOption = {
-  label: 'English',
-  value: 'English',
+  label: englandString,
+  value: englandString,
 };
 
 local walesOption = {
-  label: 'English or Welsh',
-  value: 'English or Welsh',
+  label: walesString,
+  value: walesString,
 };
-
-local walesValue =
-  'English or Welsh';
-
-local englandValue =
-  'English';
 
 local nonProxyDefinitionDescription = 'Your main language is the language you use most naturally. It could be the language you use at home.';
 local proxyDefinitionDescription = 'Their main language is the language they use most naturally. It could be the language they use at home.';
 
 local routing(region_code) = (
-  local regionValue = if region_code == 'GB-WLS' then walesValue else englandValue;
+  local regionValue = if region_code == 'GB-WLS' then walesString else englandString;
   {
     block: 'national-identity',
     when: [
