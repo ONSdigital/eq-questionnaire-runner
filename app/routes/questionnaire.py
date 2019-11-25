@@ -198,7 +198,7 @@ def get_section(schema, questionnaire_store, section_id, list_item_id=None):
         )
 
     return redirect(
-        router.get_last_complete_location_for_section(
+        router.get_first_incomplete_location_for_section(
             routing_path=routing_path, section_id=section_id, list_item_id=list_item_id
         ).url()
     )
