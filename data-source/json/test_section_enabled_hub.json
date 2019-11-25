@@ -34,7 +34,6 @@
                         {
                             "id": "section-1-block",
                             "type": "Question",
-                            "mandatory": false,
                             "question": {
                                 "answers": [
                                     {
@@ -65,6 +64,7 @@
                                         "type": "Checkbox"
                                     }
                                 ],
+                                "mandatory": false,
                                 "description": "This is section 1.",
                                 "id": "section-1-question",
                                 "title": "Which sections do you want to enable?",

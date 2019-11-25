@@ -20,9 +20,6 @@
             "type": "string"
         }
     ],
-    "hub": {
-        "enabled": false
-    },
     "sections": [
         {
             "id": "section-1",
@@ -33,7 +30,6 @@
                         {
                             "id": "section-1-block",
                             "type": "Question",
-                            "mandatory": false,
                             "question": {
                                 "answers": [
                                     {
