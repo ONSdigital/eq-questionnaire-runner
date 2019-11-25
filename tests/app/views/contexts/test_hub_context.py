@@ -18,7 +18,7 @@ def fixture_answer_store():
     return AnswerStore()
 
 
-@pytest.fixture(name='list_storw')
+@pytest.fixture(name='list_store')
 def fixture_list_store():
     return ListStore()
 

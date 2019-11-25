@@ -65,6 +65,26 @@ class TestRouter(AppContextTestCase):
 
         self.assertFalse(can_access_location)
 
+    def test_cant_access_location_section_disabled(self):
+        schema = load_schema_from_name('test_section_enabled_checkbox')
+
+        list_store = ListStore()
+
+        path_finder = PathFinder(
+            schema, self.answer_store, self.metadata, self.progress_store, list_store
+        )
+
+        router = Router(schema, self.progress_store, list_store, path_finder)
+
+        current_location = Location(
+            section_id='section-2', block_id='section-2-block', list_item_id=None
+        )
+        can_access_location = router.can_access_location(
+            current_location, routing_path=[]
+        )
+
+        self.assertFalse(can_access_location)
+
     def test_cant_access_location_invalid_list_item_id(self):
         schema = load_schema_from_name('test_textfield')
         path_finder = PathFinder(
