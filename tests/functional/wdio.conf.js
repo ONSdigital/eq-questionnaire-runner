@@ -20,7 +20,7 @@ exports.config = {
     // directory is where your package.json resides, so `wdio` will be called from there.
     //
     specs: [
-        './tests/functional/spec/features/enabled-sections/*hub*.js'
+        './tests/functional/spec/**/*.js'
     ],
     // Patterns to exclude.
     exclude: [
