@@ -1,6 +1,7 @@
 from typing import List, Mapping, Optional
 
 from structlog import get_logger
+from werkzeug.utils import cached_property
 
 from app.data_model.answer_store import AnswerStore
 from app.data_model.list_store import ListStore
@@ -12,6 +13,7 @@ from app.questionnaire.rules import (
     evaluate_goto,
     evaluate_skip_conditions,
     is_goto_rule,
+    is_section_enabled,
 )
 
 logger = get_logger()
@@ -31,6 +33,26 @@ class PathFinder:
         self.schema = schema
         self.progress_store = progress_store
         self.list_store = list_store
+
+    @cached_property
+    def enabled_sections(self):
+        all_sections = self.schema.get_sections()
+
+        return [
+            section
+            for section in all_sections
+            if is_section_enabled(
+                section=section,
+                answer_store=self.answer_store,
+                list_store=self.list_store,
+                metadata=self.metadata,
+                schema=self.schema,
+            )
+        ]
+
+    @cached_property
+    def enabled_section_ids(self):
+        return [section['id'] for section in self.enabled_sections]
 
     def is_path_complete(self, path):
         location = self.get_first_incomplete_location(path)
@@ -66,9 +88,8 @@ class PathFinder:
 
     def full_routing_path(self):
         path = []
+        for section_id in self.enabled_section_ids:
 
-        for section in self.schema.get_sections():
-            section_id = section['id']
             repeating_list = self.schema.get_repeating_list_for_section(section_id)
 
             if repeating_list:

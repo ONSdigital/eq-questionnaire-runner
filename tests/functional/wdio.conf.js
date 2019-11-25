@@ -20,7 +20,7 @@ exports.config = {
     // directory is where your package.json resides, so `wdio` will be called from there.
     //
     specs: [
-        './tests/functional/spec/**/*.js'
+        './tests/functional/spec/features/enabled-sections/*hub*.js'
     ],
     // Patterns to exclude.
     exclude: [
@@ -57,7 +57,7 @@ exports.config = {
         // excludeDriverLogs: ['bugreport', 'server'],
         'goog:chromeOptions': {
           args: [
-              "--headless",
+              process.env.EQ_RUN_FUNCTIONAL_TESTS_HEADLESS ? "--headless" : "--start-maximized",
               "--window-size=1280,1080",
               "--no-sandbox",
               "--disable-gpu",
@@ -96,7 +96,7 @@ exports.config = {
     // with `/`, the base url gets prepended, not including the path portion of your baseUrl.
     // If your `url` parameter starts without a scheme or `/` (like `some/path`), the base url
     // gets prepended directly.
-    baseUrl: 'http://localhost:5000',
+    baseUrl: process.env.EQ_FUNCTIONAL_TEST_ENV || "http://localhost:5000",
     //
     // Default timeout for all waitFor* commands.
     waitforTimeout: 10000,
@@ -178,6 +178,12 @@ exports.config = {
           this.url('/session?token=' + token);
         });
     },
+
+  after: function(result) {
+  if (result === 1 && !process.env.EQ_RUN_FUNCTIONAL_TESTS_HEADLESS) {
+      browser.debug();
+    }
+  },
     /**
      * Runs before a WebdriverIO command gets executed.
      * @param {String} commandName hook command name

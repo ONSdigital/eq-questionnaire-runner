@@ -1,4 +1,5 @@
 from flask import url_for
+
 from app.questionnaire.location import Location
 from app.questionnaire.path_finder import PathFinder
 from app.questionnaire.questionnaire_schema import QuestionnaireSchema
@@ -15,10 +16,7 @@ class SummaryContext:
         self._metadata = metadata
         self._schema = schema
         self._path_finder = PathFinder(
-            self._schema,
-            self._answer_store,
-            self._metadata,
-            list_store=self._list_store,
+            self._schema, self._answer_store, self._metadata, self._list_store
         )
 
         self._placeholder_renderer = PlaceholderRenderer(
@@ -57,9 +55,9 @@ class SummaryContext:
         """ NB: Does not support repeating sections """
         all_groups = []
 
-        for section in self._schema.get_sections():
+        for section_id in self._path_finder.enabled_section_ids:
             all_groups.extend(
-                self.build_groups_for_location(Location(section_id=section['id']))
+                self.build_groups_for_location(Location(section_id=section_id))
             )
 
         return all_groups

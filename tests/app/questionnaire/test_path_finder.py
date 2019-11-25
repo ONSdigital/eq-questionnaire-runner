@@ -704,3 +704,29 @@ class TestPathFinder(
         ]
 
         self.assertEqual(routing_path, expected_path)
+
+    def test_enabled_section_ids(self):
+        schema = load_schema_from_name('test_section_enabled_checkbox')
+        progress_store = ProgressStore(
+            [
+                {
+                    'section_id': 'section-1',
+                    'block_ids': ['section-1-block'],
+                    'status': 'COMPLETED',
+                }
+            ]
+        )
+
+        answer_store = AnswerStore(
+            [{'answer_id': 'section-1-answer', 'value': ['Section 2']}]
+        )
+        path_finder = PathFinder(
+            schema=schema,
+            answer_store=answer_store,
+            metadata={},
+            progress_store=progress_store,
+        )
+
+        expected_section_ids = ['section-1', 'section-2', 'summary-section']
+
+        self.assertEqual(path_finder.enabled_section_ids, expected_section_ids)

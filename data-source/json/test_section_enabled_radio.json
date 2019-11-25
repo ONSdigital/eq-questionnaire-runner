@@ -1,0 +1,126 @@
+{
+    "mime_type": "application/json/ons/eq",
+    "schema_version": "0.0.1",
+    "data_version": "0.0.3",
+    "survey_id": "0",
+    "title": "Test Section Enabled",
+    "theme": "default",
+    "description": "A questionnaire to demo section enabled key usage with radio options",
+    "metadata": [
+        {
+            "name": "user_id",
+            "type": "string"
+        },
+        {
+            "name": "period_id",
+            "type": "string"
+        },
+        {
+            "name": "ru_name",
+            "type": "string"
+        }
+    ],
+    "hub": {
+        "enabled": false
+    },
+    "sections": [
+        {
+            "id": "section-1",
+            "title": "Section 1",
+            "groups": [
+                {
+                    "blocks": [
+                        {
+                            "id": "section-1-block",
+                            "type": "Question",
+                            "mandatory": false,
+                            "question": {
+                                "answers": [
+                                    {
+                                        "id": "section-1-answer",
+                                        "label": "",
+                                        "mandatory": false,
+                                        "options": [
+                                            {
+                                                "label": "Yes, enable section 2",
+                                                "value": "Yes, enable section 2"
+                                            },
+                                            {
+                                                "label": "No, disable section 2",
+                                                "value": "No, disable section 2"
+                                            }
+                                        ],
+                                        "type": "Radio"
+                                    }
+                                ],
+                                "description": "This is section 1.",
+                                "id": "section-1-question",
+                                "title": "Do you want to enable section 2?",
+                                "type": "General"
+                            }
+                        }
+                    ],
+                    "id": "section-1-group",
+                    "title": "Section 1"
+                }
+            ]
+        },
+        {
+            "id": "section-2",
+            "title": "Section 2",
+            "enabled": [
+                {
+                    "when": [
+                        {
+                            "id": "section-1-answer",
+                            "condition": "equals",
+                            "value": "Yes, enable section 2"
+                        }
+                    ]
+                }
+            ],
+            "groups": [
+                {
+                    "blocks": [
+                        {
+                            "id": "section-2-block",
+                            "type": "Question",
+                            "question": {
+                                "answers": [
+                                    {
+                                        "id": "section-2-answer",
+                                        "label": "",
+                                        "mandatory": false,
+                                        "type": "Number"
+                                    }
+                                ],
+                                "description": "This is section 2.",
+                                "id": "section-2-question",
+                                "title": "Which section is this?.",
+                                "type": "General"
+                            }
+                        }
+                    ],
+                    "id": "section-2-group",
+                    "title": "Section 2"
+                }
+            ]
+        },
+        {
+            "id": "summary-section",
+            "title": "Summary",
+            "groups": [
+                {
+                    "blocks": [
+                        {
+                            "type": "Summary",
+                            "id": "summary"
+                        }
+                    ],
+                    "id": "summary-group",
+                    "title": "Summary"
+                }
+            ]
+        }
+    ]
+}

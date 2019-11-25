@@ -1,21 +1,24 @@
 from flask import url_for
 
-from app.helpers.path_finder_helper import path_finder
 from app.questionnaire.location import Location
 from app.questionnaire.relationship_router import RelationshipRouter
 
 
 class Router:
-    def __init__(self, schema, progress_store=None, list_store=None):
+    def __init__(self, schema, progress_store, list_store, path_finder):
         self._schema = schema
         self._progress_store = progress_store
         self._list_store = list_store
+        self._path_finder = path_finder
 
     def can_access_location(self, location: Location, routing_path):
         """
         Checks whether the location is valid and accessible.
         :return: boolean
         """
+        if location.section_id not in self._path_finder.enabled_section_ids:
+            return False
+
         if (
             location.list_item_id
             and location.list_item_id not in self._list_store[location.list_name].items
@@ -119,10 +122,12 @@ class Router:
         if incomplete_section_keys:
             section_id, list_item_id = incomplete_section_keys[0]
 
-            section_routing_path = path_finder.routing_path(
+            section_routing_path = self._path_finder.routing_path(
                 section_id=section_id, list_item_id=list_item_id
             )
-            location = path_finder.get_first_incomplete_location(section_routing_path)
+            location = self._path_finder.get_first_incomplete_location(
+                section_routing_path
+            )
 
             if location:
                 return location
@@ -202,23 +207,23 @@ class Router:
         return allowable_path
 
     def _get_incomplete_section_keys(self):
-        all_section_ids = self._schema.get_section_ids()
+        all_enabled_section_keys = []
+        for section in self._path_finder.enabled_sections:
 
-        all_section_keys = []
-        for section_id in all_section_ids:
+            section_id = section['id']
             repeating_list = self._schema.get_repeating_list_for_section(section_id)
 
             if repeating_list:
                 for list_item_id in self._list_store[repeating_list].items:
                     section_key = (section_id, list_item_id)
-                    all_section_keys.append(section_key)
+                    all_enabled_section_keys.append(section_key)
             else:
                 section_key = (section_id, None)
-                all_section_keys.append(section_key)
+                all_enabled_section_keys.append(section_key)
 
         incomplete_section_keys = [
             (section_id, list_item_id)
-            for section_id, list_item_id in all_section_keys
+            for section_id, list_item_id in all_enabled_section_keys
             if not self._progress_store.is_section_complete(section_id, list_item_id)
         ]
 

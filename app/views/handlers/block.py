@@ -81,9 +81,10 @@ class BlockHandler:
     def router(self):
         if not self._router:
             self._router = Router(
-                self._schema,
+                schema=self._schema,
                 progress_store=self._questionnaire_store.progress_store,
                 list_store=self._questionnaire_store.list_store,
+                path_finder=self._path_finder,
             )
         return self._router
 

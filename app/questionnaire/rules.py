@@ -241,6 +241,19 @@ def evaluate_skip_conditions(
     return False
 
 
+def is_section_enabled(section, schema, metadata, answer_store, list_store):
+    section_enabled_conditions = section.get('enabled', [])
+    if not section_enabled_conditions:
+        return True
+
+    for condition in section_enabled_conditions:
+        if evaluate_when_rules(
+            condition['when'], schema, metadata, answer_store, list_store
+        ):
+            return True
+    return False
+
+
 def _get_when_rule_value(
     when_rule,
     answer_store,
