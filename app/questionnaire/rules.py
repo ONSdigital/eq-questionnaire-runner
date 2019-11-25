@@ -20,7 +20,7 @@ def evaluate_comparison_rule(when, answer_value, comparison_value):
     :param comparison_value: The value to compare the answer to.
     :return (bool): The result of the evaluation
     """
-    condition = when['condition']
+    condition = when["condition"]
 
     return evaluate_condition(condition, answer_value, comparison_value)
 
@@ -33,19 +33,19 @@ def evaluate_rule(when, answer_value):
     :return (bool): The result of the evaluation
     """
 
-    match_value = when.get('value', when.get('values'))
+    match_value = when.get("value", when.get("values"))
 
-    condition = when['condition']
+    condition = when["condition"]
     # Evaluate the condition on the routing rule
     return evaluate_condition(condition, answer_value, match_value)
 
 
 def evaluate_date_rule(when, answer_store, schema, metadata, answer_value):
-    date_comparison = when['date_comparison']
+    date_comparison = when["date_comparison"]
 
     answer_value = convert_to_datetime(answer_value)
     match_value = get_date_match_value(date_comparison, answer_store, schema, metadata)
-    condition = when.get('condition')
+    condition = when.get("condition")
 
     if not answer_value or not match_value or not condition:
         return False
@@ -64,28 +64,28 @@ def evaluate_condition(condition, answer_value, match_value):
     answer_and_match = answer_value is not None and match_value is not None
 
     comparison_operators = {
-        'equals': lambda answer_value, match_value: answer_value == match_value,
-        'not equals': lambda answer_value, match_value: answer_value != match_value,
-        'equals any': lambda answer_value, match_values: answer_value in match_values,
-        'not equals any': lambda answer_value, match_values: answer_value
+        "equals": lambda answer_value, match_value: answer_value == match_value,
+        "not equals": lambda answer_value, match_value: answer_value != match_value,
+        "equals any": lambda answer_value, match_values: answer_value in match_values,
+        "not equals any": lambda answer_value, match_values: answer_value
         not in match_values,
-        'contains': lambda answer_values, match_value: answer_and_match
+        "contains": lambda answer_values, match_value: answer_and_match
         and match_value in answer_values,
-        'not contains': lambda answer_values, match_value: answer_and_match
+        "not contains": lambda answer_values, match_value: answer_and_match
         and match_value not in answer_values,
-        'contains any': lambda answer_values, match_values: answer_and_match
+        "contains any": lambda answer_values, match_values: answer_and_match
         and any(match_value in answer_values for match_value in match_values),
-        'contains all': lambda answer_values, match_values: answer_and_match
+        "contains all": lambda answer_values, match_values: answer_and_match
         and all(match_value in answer_values for match_value in match_values),
-        'set': lambda answer_value, _: answer_value not in (None, []),
-        'not set': lambda answer_value, _: answer_value in (None, []),
-        'greater than': lambda answer_value, match_value: answer_and_match
+        "set": lambda answer_value, _: answer_value not in (None, []),
+        "not set": lambda answer_value, _: answer_value in (None, []),
+        "greater than": lambda answer_value, match_value: answer_and_match
         and answer_value > match_value,
-        'greater than or equal to': lambda answer_value, match_value: answer_and_match
+        "greater than or equal to": lambda answer_value, match_value: answer_and_match
         and answer_value >= match_value,
-        'less than': lambda answer_value, match_value: answer_and_match
+        "less than": lambda answer_value, match_value: answer_and_match
         and answer_value < match_value,
-        'less than or equal to': lambda answer_value, match_value: answer_and_match
+        "less than or equal to": lambda answer_value, match_value: answer_and_match
         and answer_value <= match_value,
     }
 
@@ -97,35 +97,35 @@ def evaluate_condition(condition, answer_value, match_value):
 def get_date_match_value(date_comparison, answer_store, schema, metadata):
     match_value = None
 
-    if 'value' in date_comparison:
-        if date_comparison['value'] == 'now':
-            match_value = datetime.utcnow().strftime('%Y-%m-%d')
+    if "value" in date_comparison:
+        if date_comparison["value"] == "now":
+            match_value = datetime.utcnow().strftime("%Y-%m-%d")
         else:
-            match_value = date_comparison['value']
-    elif 'id' in date_comparison:
-        match_value = get_answer_value(date_comparison['id'], answer_store, schema)
-    elif 'meta' in date_comparison:
-        match_value = get_metadata_value(metadata, date_comparison['meta'])
+            match_value = date_comparison["value"]
+    elif "id" in date_comparison:
+        match_value = get_answer_value(date_comparison["id"], answer_store, schema)
+    elif "meta" in date_comparison:
+        match_value = get_metadata_value(metadata, date_comparison["meta"])
 
     match_value = convert_to_datetime(match_value)
 
-    if 'offset_by' in date_comparison and match_value:
-        offset = date_comparison['offset_by']
+    if "offset_by" in date_comparison and match_value:
+        offset = date_comparison["offset_by"]
         match_value = match_value + relativedelta(
-            days=offset.get('days', 0),
-            months=offset.get('months', 0),
-            years=offset.get('years', 0),
+            days=offset.get("days", 0),
+            months=offset.get("months", 0),
+            years=offset.get("years", 0),
         )
 
     return match_value
 
 
 def convert_to_datetime(value):
-    date_format = '%Y-%m'
-    if value and re.match(r'\d{4}-\d{2}-\d{2}', value):
-        date_format = '%Y-%m-%d'
-    if value and re.match(r'\d{4}$', value):
-        date_format = '%Y'
+    date_format = "%Y-%m"
+    if value and re.match(r"\d{4}-\d{2}-\d{2}", value):
+        date_format = "%Y-%m-%d"
+    if value and re.match(r"\d{4}$", value):
+        date_format = "%Y"
 
     return datetime.strptime(value, date_format) if value else None
 
@@ -150,9 +150,9 @@ def evaluate_goto(
     :param routing_path: the routing path used to evaluate if answer is on the path
     :return: True if the when condition has been met otherwise False
     """
-    if 'when' in goto_rule:
+    if "when" in goto_rule:
         return evaluate_when_rules(
-            goto_rule['when'],
+            goto_rule["when"],
             schema,
             metadata,
             answer_store,
@@ -164,7 +164,7 @@ def evaluate_goto(
 
 
 def _is_answer_on_path(schema, answer, routing_path):
-    block_id = schema.get_block_for_answer_id(answer.answer_id)['id']
+    block_id = schema.get_block_for_answer_id(answer.answer_id)["id"]
     section_id = schema.get_section_id_for_block_id(block_id)
     list_name = schema.get_repeating_list_for_section(section_id)
 
@@ -183,13 +183,13 @@ def _get_comparison_id_value(
     """
         Gets the value of a comparison id specified as an operand in a comparator
     """
-    if current_location and when_rule['comparison']['source'] == 'location':
+    if current_location and when_rule["comparison"]["source"] == "location":
         try:
-            return getattr(current_location, when_rule['comparison']['id'])
+            return getattr(current_location, when_rule["comparison"]["id"])
         except AttributeError:
             return None
 
-    answer_id = when_rule['comparison']['id']
+    answer_id = when_rule["comparison"]["id"]
     list_item_id = current_location.list_item_id if current_location else None
 
     return get_answer_value(
@@ -228,7 +228,7 @@ def evaluate_skip_conditions(
 
     for when in skip_conditions:
         condition = evaluate_when_rules(
-            when['when'],
+            when["when"],
             schema,
             metadata,
             answer_store,
@@ -255,22 +255,22 @@ def _get_when_rule_value(
     :raises: Exception if none of `id` or `meta` are provided.
     :return: The value to use in a when rule
     """
-    if 'id' in when_rule:
+    if "id" in when_rule:
         value = get_answer_value(
-            when_rule['id'],
+            when_rule["id"],
             answer_store,
             schema,
             routing_path=routing_path,
             list_item_id=list_item_id,
         )
-    elif 'meta' in when_rule:
-        value = get_metadata_value(metadata, when_rule['meta'])
-    elif 'id_selector' in when_rule:
-        value = getattr(list_store.get(when_rule['list']), when_rule['id_selector'])
-    elif 'list' in when_rule:
-        value = get_list_count(list_store, when_rule['list'])
+    elif "meta" in when_rule:
+        value = get_metadata_value(metadata, when_rule["meta"])
+    elif "id_selector" in when_rule:
+        value = getattr(list_store.get(when_rule["list"]), when_rule["id_selector"])
+    elif "list" in when_rule:
+        value = get_list_count(list_store, when_rule["list"])
     else:
-        raise Exception('The when rule is invalid')
+        raise Exception("The when rule is invalid")
 
     return value
 
@@ -309,10 +309,10 @@ def evaluate_when_rules(
             list_item_id=list_item_id,
         )
 
-        if 'date_comparison' in when_rule:
+        if "date_comparison" in when_rule:
             if not evaluate_date_rule(when_rule, answer_store, schema, metadata, value):
                 return False
-        elif 'comparison' in when_rule:
+        elif "comparison" in when_rule:
             comparison_id_value = _get_comparison_id_value(
                 when_rule, answer_store, schema, current_location, routing_path
             )
@@ -359,4 +359,4 @@ def get_list_count(list_store, list_name):
 
 
 def is_goto_rule(rule):
-    return any(key in rule.get('goto', {}) for key in ('when', 'block', 'group'))
+    return any(key in rule.get("goto", {}) for key in ("when", "block", "group"))

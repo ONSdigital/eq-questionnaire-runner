@@ -12,9 +12,9 @@ class ListCollector(Question):
     def get_next_location_url(self):
         if self._is_adding:
             add_url = url_for(
-                'questionnaire.block',
-                list_name=self.rendered_block['for_list'],
-                block_id=self.rendered_block['add_block']['id'],
+                "questionnaire.block",
+                list_name=self.rendered_block["for_list"],
+                block_id=self.rendered_block["add_block"]["id"],
             )
             return add_url
 
@@ -32,8 +32,8 @@ class ListCollector(Question):
 
     def handle_post(self):
         if (
-            self.form.data[self.rendered_block['add_answer']['id']]
-            == self.rendered_block['add_answer']['value']
+            self.form.data[self.rendered_block["add_answer"]["id"]]
+            == self.rendered_block["add_answer"]["value"]
         ):
             self._is_adding = True
             self.questionnaire_store_updater.update_answers(self.form)

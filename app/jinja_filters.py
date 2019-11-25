@@ -9,7 +9,7 @@ from jinja2 import Markup, escape, evalcontextfilter
 
 from app.questionnaire.rules import convert_to_datetime
 
-blueprint = flask.Blueprint('filters', __name__)
+blueprint = flask.Blueprint("filters", __name__)
 
 
 @blueprint.app_template_filter()
@@ -17,29 +17,29 @@ def format_number(value):
     if value or value == 0:
         return numbers.format_decimal(value, locale=flask_babel.get_locale())
 
-    return ''
+    return ""
 
 
-def get_formatted_currency(value, currency='GBP'):
+def get_formatted_currency(value, currency="GBP"):
     if value or value == 0:
         return numbers.format_currency(
             number=value, currency=currency, locale=flask_babel.get_locale()
         )
 
-    return ''
+    return ""
 
 
 @blueprint.app_template_filter()
-def get_currency_symbol(currency='GBP'):
+def get_currency_symbol(currency="GBP"):
     return numbers.get_currency_symbol(currency, locale=flask_babel.get_locale())
 
 
 @blueprint.app_template_filter()
 def format_percentage(value):
-    return '{}%'.format(value)
+    return "{}%".format(value)
 
 
-def format_unit(unit, value, length='short'):
+def format_unit(unit, value, length="short"):
     return units.format_unit(
         value=value,
         measurement_unit=unit,
@@ -48,7 +48,7 @@ def format_unit(unit, value, length='short'):
     )
 
 
-def format_unit_input_label(unit, unit_length='short'):
+def format_unit_input_label(unit, unit_length="short"):
     """
     This function is used to only get the unit of measurement text.  If the unit_length
     is long then only the plural form of the word is returned (e.g., Hours, Years, etc).
@@ -56,15 +56,15 @@ def format_unit_input_label(unit, unit_length='short'):
     :param (str) unit unit of measurement
     :param (str) unit_length length of unit text, can be one of short/long/narrow
     """
-    if unit_length == 'long':
+    if unit_length == "long":
         return units.format_unit(
             value=2,
             measurement_unit=unit,
             length=unit_length,
             locale=flask_babel.get_locale(),
-        ).replace('2 ', '')
+        ).replace("2 ", "")
     return units.format_unit(
-        value='',
+        value="",
         measurement_unit=unit,
         length=unit_length,
         locale=flask_babel.get_locale(),
@@ -74,26 +74,26 @@ def format_unit_input_label(unit, unit_length='short'):
 def format_duration(value):
     parts = []
 
-    if 'years' in value and (value['years'] > 0 or len(value) == 1):
+    if "years" in value and (value["years"] > 0 or len(value) == 1):
         parts.append(
-            flask_babel.ngettext('%(num)s year', '%(num)s years', value['years'])
+            flask_babel.ngettext("%(num)s year", "%(num)s years", value["years"])
         )
-    if 'months' in value and (
-        value['months'] > 0
+    if "months" in value and (
+        value["months"] > 0
         or len(value) == 1
-        or ('years' in value and value['years'] == 0)
+        or ("years" in value and value["years"] == 0)
     ):
         parts.append(
-            flask_babel.ngettext('%(num)s month', '%(num)s months', value['months'])
+            flask_babel.ngettext("%(num)s month", "%(num)s months", value["months"])
         )
-    return ' '.join(parts)
+    return " ".join(parts)
 
 
 def get_format_multilined_string(value):
     escaped_value = escape(value)
-    new_line_regex = r'(?:\r\n|\r|\n)+'
-    value_with_line_break_tag = re.sub(new_line_regex, '<br>', escaped_value)
-    return '{}'.format(value_with_line_break_tag)
+    new_line_regex = r"(?:\r\n|\r|\n)+"
+    value_with_line_break_tag = re.sub(new_line_regex, "<br>", escaped_value)
+    return "{}".format(value_with_line_break_tag)
 
 
 def get_format_date(value):
@@ -104,11 +104,11 @@ def get_format_date(value):
     :returns (str): Formatted datetime.
     """
     value = value[0] if isinstance(value, list) else value
-    date_format = 'd MMMM yyyy'
-    if value and re.match(r'\d{4}-\d{2}$', value):
-        date_format = 'MMMM yyyy'
-    if value and re.match(r'\d{4}$', value):
-        date_format = 'yyyy'
+    date_format = "d MMMM yyyy"
+    if value and re.match(r"\d{4}-\d{2}$", value):
+        date_format = "MMMM yyyy"
+    if value and re.match(r"\d{4}$", value):
+        date_format = "yyyy"
 
     date_to_format = convert_to_datetime(value).date()
     result = "<span class='date'>{date}</span>".format(
@@ -121,14 +121,14 @@ def get_format_date(value):
 @evalcontextfilter
 @blueprint.app_template_filter()
 def format_datetime(context, value):
-    london_date_time = datetime.strptime(value, '%Y-%m-%dT%H:%M:%S.%f')
+    london_date_time = datetime.strptime(value, "%Y-%m-%dT%H:%M:%S.%f")
     london_date = london_date_time.date()
-    formatted_date = flask_babel.format_date(london_date, format='d MMMM yyyy')
-    formatted_time = flask_babel.format_time(london_date_time, format='HH:mm')
+    formatted_date = flask_babel.format_date(london_date, format="d MMMM yyyy")
+    formatted_time = flask_babel.format_time(london_date_time, format="HH:mm")
 
     result = "<span class='date'>{date}</span>".format(
         date=flask_babel.gettext(
-            '%(date)s at %(time)s', date=formatted_date, time=formatted_time
+            "%(date)s at %(time)s", date=formatted_date, time=formatted_time
         )
     )
     return mark_safe(context, result)
@@ -136,7 +136,7 @@ def format_datetime(context, value):
 
 def get_format_date_range(start_date, end_date):
     return flask_babel.gettext(
-        '%(from_date)s to %(to_date)s',
+        "%(from_date)s to %(to_date)s",
         from_date=get_format_date(start_date),
         to_date=get_format_date(end_date),
     )
@@ -178,10 +178,10 @@ def setAttributes(dictionary, attributes):
 
 @blueprint.app_template_filter()
 def should_wrap_with_fieldset(question):
-    answers = question['answers']
+    answers = question["answers"]
 
     if len(answers) > 1 and not any(
-        answer['type'] in {'Date', 'MonthYearDate', 'Duration'} for answer in answers
+        answer["type"] in {"Date", "MonthYearDate", "Duration"} for answer in answers
     ):
         return True
 
@@ -190,7 +190,7 @@ def should_wrap_with_fieldset(question):
 
 @blueprint.app_context_processor
 def should_wrap_with_fieldset_processor():
-    return {'should_wrap_with_fieldset': should_wrap_with_fieldset}
+    return {"should_wrap_with_fieldset": should_wrap_with_fieldset}
 
 
 class LabelConfig:
@@ -208,15 +208,15 @@ class CheckboxConfig:
         self.checked = option.checked
 
         label_description = None
-        answer_option = answer['options'][index]
+        answer_option = answer["options"][index]
 
-        if answer_option and 'description' in answer_option:
-            label_description = answer_option['description']
+        if answer_option and "description" in answer_option:
+            label_description = answer_option["description"]
 
         self.label = LabelConfig(option.id, option.label.text, label_description)
 
         if option.detail_answer_id:
-            detail_answer = form['fields'][option.detail_answer_id]
+            detail_answer = form["fields"][option.detail_answer_id]
             self.other = OtherConfig(detail_answer)
 
 
@@ -228,15 +228,15 @@ class RadioConfig:
         self.checked = option.checked
 
         label_description = None
-        answer_option = answer['options'][index]
+        answer_option = answer["options"][index]
 
-        if answer_option and 'description' in answer_option:
-            label_description = answer_option['description']
+        if answer_option and "description" in answer_option:
+            label_description = answer_option["description"]
 
         self.label = LabelConfig(option.id, option.label.text, label_description)
 
         if option.detail_answer_id:
-            detail_answer = form['fields'][option.detail_answer_id]
+            detail_answer = form["fields"][option.detail_answer_id]
             self.other = OtherConfig(detail_answer)
 
 
@@ -248,10 +248,10 @@ class RelationshipRadioConfig:
         self.checked = option.checked
 
         label_description = None
-        answer_option = answer['options'][index]
+        answer_option = answer["options"][index]
 
-        if answer_option and 'description' in answer_option:
-            label_description = answer_option['description']
+        if answer_option and "description" in answer_option:
+            label_description = answer_option["description"]
 
         self.label = LabelConfig(option.id, option.label.text, label_description)
 
@@ -260,8 +260,8 @@ class RelationshipRadioConfig:
             # doesn't mess with the attribute contents (the 'pre-' is removed during minification).
             # see https://htmlmin.readthedocs.io/en/latest/quickstart.html
             self.attributes = {
-                'pre-data-title': escape(answer_option['title']),
-                'pre-data-playback': escape(answer_option['playback']),
+                "pre-data-title": escape(answer_option["title"]),
+                "pre-data-playback": escape(answer_option["playback"]),
             }
 
 
@@ -275,7 +275,7 @@ class OtherConfig:
 
 @blueprint.app_template_filter()
 def map_checkbox_config(form, answer):
-    options = form['fields'][answer['id']]
+    options = form["fields"][answer["id"]]
 
     return [CheckboxConfig(option, i, form, answer) for i, option in enumerate(options)]
 
@@ -287,7 +287,7 @@ def map_checkbox_config_processor():
 
 @blueprint.app_template_filter()
 def map_radio_config(form, answer):
-    options = form['fields'][answer['id']]
+    options = form["fields"][answer["id"]]
 
     return [RadioConfig(option, i, form, answer) for i, option in enumerate(options)]
 
@@ -299,7 +299,7 @@ def map_radio_config_processor():
 
 @blueprint.app_template_filter()
 def map_relationships_config(form, answer):
-    options = form['fields'][answer['id']]
+    options = form["fields"][answer["id"]]
 
     return [
         RelationshipRadioConfig(option, i, answer) for i, option in enumerate(options)
@@ -316,7 +316,7 @@ class SelectOptionConfig:
         self.text = option[1]
         self.value = option[0]
         self.selected = select.data == self.value
-        self.disabled = self.value == '' and select.flags.required
+        self.disabled = self.value == "" and select.flags.required
 
 
 @blueprint.app_template_filter()
@@ -334,14 +334,14 @@ class SummaryAction:
         self, block, answer, answer_title, edit_link_text, edit_link_aria_label
     ):
         self.text = edit_link_text
-        self.ariaLabel = edit_link_aria_label + ' ' + answer_title
-        self.url = block['link'] + '#' + answer['id']
+        self.ariaLabel = edit_link_aria_label + " " + answer_title
+        self.url = block["link"] + "#" + answer["id"]
 
         self.attributes = {
-            'data-qa': answer['id'] + '-edit',
-            'data-ga': 'click',
-            'data-ga-category': 'Summary',
-            'data-ga-action': 'Edit click',
+            "data-qa": answer["id"] + "-edit",
+            "data-ga": "click",
+            "data-ga-category": "Summary",
+            "data-ga-action": "Edit click",
         }
 
 
@@ -367,64 +367,64 @@ class SummaryRowItem:
         summary_type,
     ):
 
-        if 'type' in answer:
-            answer_type = answer['type']
+        if "type" in answer:
+            answer_type = answer["type"]
         else:
-            answer_type = 'calculated'
+            answer_type = "calculated"
 
         if (
             (
                 multiple_answers
-                or answer_type == 'relationship'
-                or summary_type == 'CalculatedSummary'
+                or answer_type == "relationship"
+                or summary_type == "CalculatedSummary"
             )
-            and 'label' in answer
-            and answer['label']
+            and "label" in answer
+            and answer["label"]
         ):
-            self.title = answer['label']
-            self.titleAttributes = {'data-qa': answer['id'] + '-label'}
+            self.title = answer["label"]
+            self.titleAttributes = {"data-qa": answer["id"] + "-label"}
         else:
-            self.title = question['title']
-            self.titleAttributes = {'data-qa': question['id']}
+            self.title = question["title"]
+            self.titleAttributes = {"data-qa": question["id"]}
 
-        value = answer['value']
+        value = answer["value"]
 
-        self.attributes = {'data-qa': answer['id']}
+        self.attributes = {"data-qa": answer["id"]}
 
-        if value is None or value == '':
+        if value is None or value == "":
             self.valueList = [SummaryRowItemValue(no_answer_provided)]
-        elif answer_type == 'checkbox':
+        elif answer_type == "checkbox":
             self.valueList = [
                 SummaryRowItemValue(val.label, val.detail_answer_value) for val in value
             ]
-        elif answer_type == 'currency':
+        elif answer_type == "currency":
             self.valueList = [
-                SummaryRowItemValue(get_formatted_currency(value, answer['currency']))
+                SummaryRowItemValue(get_formatted_currency(value, answer["currency"]))
             ]
-        elif answer_type in ['date', 'monthyeardate', 'yeardate']:
-            if question['type'] == 'DateRange':
+        elif answer_type in ["date", "monthyeardate", "yeardate"]:
+            if question["type"] == "DateRange":
                 self.valueList = [
                     SummaryRowItemValue(
-                        get_format_date_range(value['from'], value['to'])
+                        get_format_date_range(value["from"], value["to"])
                     )
                 ]
             else:
                 self.valueList = [SummaryRowItemValue(get_format_date(value))]
-        elif answer_type == 'duration':
+        elif answer_type == "duration":
             self.valueList = [SummaryRowItemValue(format_duration(value))]
-        elif answer_type == 'number':
+        elif answer_type == "number":
             self.valueList = [SummaryRowItemValue(format_number(value))]
-        elif answer_type == 'percentage':
+        elif answer_type == "percentage":
             self.valueList = [SummaryRowItemValue(format_percentage(value))]
-        elif answer_type == 'radio':
-            detail_answer_value = value['detail_answer_value']
-            self.valueList = [SummaryRowItemValue(value['label'], detail_answer_value)]
-        elif answer_type == 'textarea':
+        elif answer_type == "radio":
+            detail_answer_value = value["detail_answer_value"]
+            self.valueList = [SummaryRowItemValue(value["label"], detail_answer_value)]
+        elif answer_type == "textarea":
             self.valueList = [SummaryRowItemValue(get_format_multilined_string(value))]
-        elif answer_type == 'unit':
+        elif answer_type == "unit":
             self.valueList = [
                 SummaryRowItemValue(
-                    format_unit(answer['unit'], value, answer['unit_length'])
+                    format_unit(answer["unit"], value, answer["unit_length"])
                 )
             ]
         else:
@@ -449,15 +449,15 @@ class SummaryRow:
         edit_link_text,
         edit_link_aria_label,
     ):
-        self.title = question['title']
+        self.title = question["title"]
         self.rowItems = []
 
-        multiple_answers = len(question['answers']) > 1
+        multiple_answers = len(question["answers"]) > 1
 
-        if summary_type == 'CalculatedSummary' and not answers_are_editable:
+        if summary_type == "CalculatedSummary" and not answers_are_editable:
             self.total = True
 
-        for answer in question['answers']:
+        for answer in question["answers"]:
             self.rowItems.append(
                 SummaryRowItem(
                     block,
@@ -485,11 +485,11 @@ def map_summary_item_config(
 ):
     rows = []
 
-    for block in group['blocks']:
+    for block in group["blocks"]:
         rows.append(
             SummaryRow(
                 block,
-                block['question'],
+                block["question"],
                 summary_type,
                 answers_are_editable,
                 no_answer_provided,
@@ -497,7 +497,7 @@ def map_summary_item_config(
                 edit_link_aria_label,
             )
         )
-        if summary_type == 'CalculatedSummary':
+        if summary_type == "CalculatedSummary":
             rows.append(
                 SummaryRow(
                     block, calculated_question, summary_type, False, None, None, None
@@ -524,32 +524,32 @@ def map_list_collector_config(
     rows = []
 
     for list_item in list_items:
-        item_name = list_item.get('item_title')
+        item_name = list_item.get("item_title")
 
         actions = []
 
         if edit_link_text:
             actions.append(
                 {
-                    'text': edit_link_text,
-                    'ariaLabel': edit_link_aria_label.format(item_name=item_name),
-                    'url': list_item.get('edit_link'),
-                    'attributes': {'data-qa': 'change-item-link'},
+                    "text": edit_link_text,
+                    "ariaLabel": edit_link_aria_label.format(item_name=item_name),
+                    "url": list_item.get("edit_link"),
+                    "attributes": {"data-qa": "change-item-link"},
                 }
             )
 
-        if not list_item.get('primary_person') and remove_link_text:
+        if not list_item.get("primary_person") and remove_link_text:
             actions.append(
                 {
-                    'text': remove_link_text,
-                    'ariaLabel': remove_link_aria_label.format(item_name=item_name),
-                    'url': list_item.get('remove_link'),
-                    'attributes': {'data-qa': 'remove-item-link'},
+                    "text": remove_link_text,
+                    "ariaLabel": remove_link_aria_label.format(item_name=item_name),
+                    "url": list_item.get("remove_link"),
+                    "attributes": {"data-qa": "remove-item-link"},
                 }
             )
 
         rows.append(
-            {'title': item_name, 'rowItems': [{'icon': icon, 'actions': actions}]}
+            {"title": item_name, "rowItems": [{"icon": icon, "actions": actions}]}
         )
 
     return rows
@@ -562,7 +562,7 @@ def map_list_collector_config_processor():
 
 @blueprint.app_template_filter()
 def format_paragraphs(text):
-    return '\n'.join(f'<p>{paragraph}</p>' for paragraph in text.splitlines())
+    return "\n".join(f"<p>{paragraph}</p>" for paragraph in text.splitlines())
 
 
 @blueprint.app_context_processor

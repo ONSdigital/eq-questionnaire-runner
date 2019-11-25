@@ -36,7 +36,7 @@ class PathFinder:
         location = self.get_first_incomplete_location(path)
         if not location or (
             location == path[-1]
-            and self.schema.get_block(location.block_id)['type'] == 'SectionSummary'
+            and self.schema.get_block(location.block_id)["type"] == "SectionSummary"
         ):
             return True
 
@@ -46,7 +46,7 @@ class PathFinder:
         if path:
             for location in path:
                 block = self.schema.get_block(location.block_id)
-                block_type = block.get('type')
+                block_type = block.get("type")
 
                 is_location_complete = (
                     location.block_id
@@ -57,8 +57,8 @@ class PathFinder:
                 )
 
                 if not is_location_complete and block_type not in [
-                    'Summary',
-                    'Confirmation',
+                    "Summary",
+                    "Confirmation",
                 ]:
                     return location
 
@@ -68,7 +68,7 @@ class PathFinder:
         path = []
 
         for section in self.schema.get_sections():
-            section_id = section['id']
+            section_id = section["id"]
             repeating_list = self.schema.get_repeating_list_for_section(section_id)
 
             if repeating_list:
@@ -95,10 +95,10 @@ class PathFinder:
         current_location = Location(section_id=section_id, list_item_id=list_item_id)
         section = self.schema.get_section(section_id)
 
-        for group in section['groups']:
-            if 'skip_conditions' in group:
+        for group in section["groups"]:
+            if "skip_conditions" in group:
                 if evaluate_skip_conditions(
-                    group['skip_conditions'],
+                    group["skip_conditions"],
                     self.schema,
                     self.metadata,
                     self.answer_store,
@@ -108,7 +108,7 @@ class PathFinder:
                 ):
                     continue
 
-            blocks.extend(group['blocks'])
+            blocks.extend(group["blocks"])
 
         if blocks:
             path = self._build_path(blocks, path, current_location)
@@ -118,7 +118,7 @@ class PathFinder:
     @staticmethod
     def _block_index_for_block_id(blocks, block_id):
         return next(
-            (index for (index, block) in enumerate(blocks) if block['id'] == block_id),
+            (index for (index, block) in enumerate(blocks) if block["id"] == block_id),
             None,
         )
 
@@ -131,8 +131,8 @@ class PathFinder:
         while block_index < len(blocks):
             block = blocks[block_index]
 
-            is_skipping = block.get('skip_conditions') and evaluate_skip_conditions(
-                block['skip_conditions'],
+            is_skipping = block.get("skip_conditions") and evaluate_skip_conditions(
+                block["skip_conditions"],
                 self.schema,
                 self.metadata,
                 self.answer_store,
@@ -145,20 +145,20 @@ class PathFinder:
                 if repeating_list and current_location.list_item_id:
                     this_location = Location(
                         section_id=current_location.section_id,
-                        block_id=block['id'],
+                        block_id=block["id"],
                         list_name=repeating_list,
                         list_item_id=current_location.list_item_id,
                     )
                 else:
                     this_location = Location(
-                        section_id=current_location.section_id, block_id=block['id']
+                        section_id=current_location.section_id, block_id=block["id"]
                     )
 
                 if this_location not in path:
                     path.append(this_location)
 
                 # If routing rules exist then a rule must match (i.e. default goto)
-                routing_rules = block.get('routing_rules')
+                routing_rules = block.get("routing_rules")
                 if routing_rules:
                     block_index = self._evaluate_routing_rules(
                         this_location, blocks, routing_rules, block_index, path
@@ -181,7 +181,7 @@ class PathFinder:
     ):
         for rule in filter(is_goto_rule, routing_rules):
             should_goto = evaluate_goto(
-                rule['goto'],
+                rule["goto"],
                 self.schema,
                 self.metadata,
                 self.answer_store,
@@ -200,7 +200,7 @@ class PathFinder:
                 )
 
                 if next_precedes_current:
-                    self._remove_rule_answers(rule['goto'], this_location)
+                    self._remove_rule_answers(rule["goto"], this_location)
                     section_id_for_block_id = self.schema.get_section_id_for_block_id(
                         block_id=next_block_id
                     )
@@ -216,16 +216,16 @@ class PathFinder:
                 return next_block_index
 
     def _get_next_block_id(self, rule):
-        if 'group' in rule['goto']:
-            return self.schema.get_first_block_id_for_group(rule['goto']['group'])
-        return rule['goto']['block']
+        if "group" in rule["goto"]:
+            return self.schema.get_first_block_id_for_group(rule["goto"]["group"])
+        return rule["goto"]["block"]
 
     def _remove_rule_answers(self, goto_rule, this_location):
         # We're jumping backwards, so need to delete all answers from which
         # route is derived. Need to filter out conditions that don't use answers
-        if 'when' in goto_rule.keys():
-            for condition in goto_rule['when']:
-                if 'meta' not in condition.keys():
-                    self.answer_store.remove_answer(condition['id'])
+        if "when" in goto_rule.keys():
+            for condition in goto_rule["when"]:
+                if "meta" not in condition.keys():
+                    self.answer_store.remove_answer(condition["id"])
 
         self.progress_store.remove_completed_location(location=this_location)

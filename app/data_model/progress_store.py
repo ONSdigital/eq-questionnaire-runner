@@ -5,9 +5,9 @@ from app.questionnaire.location import Location
 
 
 class CompletionStatus:
-    COMPLETED = 'COMPLETED'
-    IN_PROGRESS = 'IN_PROGRESS'
-    NOT_STARTED = 'NOT_STARTED'
+    COMPLETED = "COMPLETED"
+    IN_PROGRESS = "IN_PROGRESS"
+    NOT_STARTED = "NOT_STARTED"
 
 
 class ProgressStore:
@@ -51,8 +51,8 @@ class ProgressStore:
 
         return {
             (
-                section_progress['section_id'],
-                section_progress.get('list_item_id'),
+                section_progress["section_id"],
+                section_progress.get("list_item_id"),
             ): Progress.from_dict(section_progress)
             for section_progress in section_progress_list
         }

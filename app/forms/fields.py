@@ -30,35 +30,35 @@ logger = get_logger()
 def get_field(
     answer, label, error_messages, answer_store, metadata, disable_validation=False
 ):
-    guidance = answer.get('guidance', '')
+    guidance = answer.get("guidance", "")
 
-    if answer['type'] in ['Number', 'Currency', 'Percentage', 'Unit']:
+    if answer["type"] in ["Number", "Currency", "Percentage", "Unit"]:
         field = get_number_field(
             answer, label, guidance, error_messages, answer_store, disable_validation
         )
-    elif answer['type'] == 'Date':
+    elif answer["type"] == "Date":
         field = get_date_field(
             answer, label, guidance, error_messages, answer_store, metadata
         )
-    elif answer['type'] == 'MonthYearDate':
+    elif answer["type"] == "MonthYearDate":
         field = get_month_year_field(
             answer, label, guidance, error_messages, answer_store, metadata
         )
-    elif answer['type'] == 'YearDate':
+    elif answer["type"] == "YearDate":
         field = get_year_field(
             answer, label, guidance, error_messages, answer_store, metadata
         )
-    elif answer['type'] == 'Duration':
+    elif answer["type"] == "Duration":
         field = get_duration_field(answer, label, guidance, error_messages)
     else:
         field = {
-            'Checkbox': get_select_multiple_field,
-            'Radio': get_select_field,
-            'Relationship': get_select_field,
-            'TextArea': get_text_area_field,
-            'TextField': get_string_field,
-            'Dropdown': get_dropdown_field,
-        }[answer['type']](answer, label, guidance, error_messages, disable_validation)
+            "Checkbox": get_select_multiple_field,
+            "Radio": get_select_field,
+            "Relationship": get_select_field,
+            "TextArea": get_text_area_field,
+            "TextField": get_string_field,
+            "Dropdown": get_dropdown_field,
+        }[answer["type"]](answer, label, guidance, error_messages, disable_validation)
 
     return field
 
@@ -66,7 +66,7 @@ def get_field(
 def build_choices(options):
     choices = []
     for option in options:
-        choices.append((option['value'], option['label']))
+        choices.append((option["value"], option["label"]))
     return choices
 
 
@@ -74,26 +74,26 @@ def build_choices_with_detail_answer_ids(options):
     choices = []
     for option in options:
         detail_answer_id = (
-            option['detail_answer']['id'] if option.get('detail_answer') else None
+            option["detail_answer"]["id"] if option.get("detail_answer") else None
         )
-        choices.append((option['value'], option['label'], detail_answer_id))
+        choices.append((option["value"], option["label"], detail_answer_id))
     return choices
 
 
 def get_length_validator(answer, error_messages):
     validate_with = []
     max_length = MAX_LENGTH
-    length_message = error_messages['MAX_LENGTH_EXCEEDED']
+    length_message = error_messages["MAX_LENGTH_EXCEEDED"]
 
-    if 'max_length' in answer and answer['max_length'] > 0:
-        max_length = answer['max_length']
+    if "max_length" in answer and answer["max_length"] > 0:
+        max_length = answer["max_length"]
 
     if (
-        'validation' in answer
-        and 'messages' in answer['validation']
-        and 'MAX_LENGTH_EXCEEDED' in answer['validation']['messages']
+        "validation" in answer
+        and "messages" in answer["validation"]
+        and "MAX_LENGTH_EXCEEDED" in answer["validation"]["messages"]
     ):
-        length_message = answer['validation']['messages']['MAX_LENGTH_EXCEEDED']
+        length_message = answer["validation"]["messages"]["MAX_LENGTH_EXCEEDED"]
 
     validate_with.append(validators.length(-1, max_length, message=length_message))
 
@@ -103,15 +103,15 @@ def get_length_validator(answer, error_messages):
 def get_mandatory_validator(answer, error_messages, mandatory_message_key):
     validate_with = validators.Optional()
 
-    if answer['mandatory'] is True:
+    if answer["mandatory"] is True:
         mandatory_message = error_messages[mandatory_message_key]
 
         if (
-            'validation' in answer
-            and 'messages' in answer['validation']
-            and mandatory_message_key in answer['validation']['messages']
+            "validation" in answer
+            and "messages" in answer["validation"]
+            and mandatory_message_key in answer["validation"]["messages"]
         ):
-            mandatory_message = answer['validation']['messages'][mandatory_message_key]
+            mandatory_message = answer["validation"]["messages"][mandatory_message_key]
 
         validate_with = ResponseRequired(message=mandatory_message)
 
@@ -122,7 +122,7 @@ def get_string_field(answer, label, guidance, error_messages, disable_validation
     validate_with = []
     if disable_validation is False:
         validate_with = get_mandatory_validator(
-            answer, error_messages, 'MANDATORY_TEXTFIELD'
+            answer, error_messages, "MANDATORY_TEXTFIELD"
         )
 
     return StringField(label=label, description=guidance, validators=validate_with)
@@ -134,7 +134,7 @@ def get_text_area_field(
     validate_with = []
     if disable_validation is False:
         validate_with = get_mandatory_validator(
-            answer, error_messages, 'MANDATORY_TEXTAREA'
+            answer, error_messages, "MANDATORY_TEXTAREA"
         )
         validate_with.extend(get_length_validator(answer, error_messages))
 
@@ -196,13 +196,13 @@ def get_select_multiple_field(
     validate_with = []
     if disable_validation is False:
         validate_with = get_mandatory_validator(
-            answer, error_messages, 'MANDATORY_CHECKBOX'
+            answer, error_messages, "MANDATORY_CHECKBOX"
         )
 
     return CustomSelectMultipleField(
         label=label,
         description=guidance,
-        choices=build_choices_with_detail_answer_ids(answer['options']),
+        choices=build_choices_with_detail_answer_ids(answer["options"]),
         validators=validate_with,
     )
 
@@ -222,14 +222,14 @@ def get_dropdown_field(
     validate_with = []
     if disable_validation is False:
         validate_with = get_mandatory_validator(
-            answer, error_messages, 'MANDATORY_DROPDOWN'
+            answer, error_messages, "MANDATORY_DROPDOWN"
         )
 
     return SelectField(
         label=label,
         description=guidance,
-        choices=[('', gettext('Select an answer'))] + build_choices(answer['options']),
-        default='',
+        choices=[("", gettext("Select an answer"))] + build_choices(answer["options"]),
+        default="",
         validators=validate_with,
     )
 
@@ -238,7 +238,7 @@ def get_select_field(answer, label, guidance, error_messages, disable_validation
     validate_with = []
     if disable_validation is False:
         validate_with = get_mandatory_validator(
-            answer, error_messages, 'MANDATORY_RADIO'
+            answer, error_messages, "MANDATORY_RADIO"
         )
 
     # We use a custom coerce function to avoid a defect where Python NoneType
@@ -251,7 +251,7 @@ def get_select_field(answer, label, guidance, error_messages, disable_validation
     return CustomSelectField(
         label=label,
         description=guidance,
-        choices=build_choices_with_detail_answer_ids(answer['options']),
+        choices=build_choices_with_detail_answer_ids(answer["options"]),
         validators=validate_with,
         coerce=_coerce_str_unless_none,
     )
@@ -267,7 +267,7 @@ def get_number_field(
             answer, error_messages, answer_store
         )
 
-    if answer.get('decimal_places', 0) > 0:
+    if answer.get("decimal_places", 0) > 0:
         return CustomDecimalField(
             label=label, validators=validate_with, description=guidance
         )
@@ -278,63 +278,63 @@ def get_number_field(
 
 def _get_number_field_validators(answer, error_messages, answer_store):
 
-    max_decimals = answer.get('decimal_places', 0)
+    max_decimals = answer.get("decimal_places", 0)
     if max_decimals > MAX_DECIMAL_PLACES:
         raise Exception(
-            'decimal_places: {} > system maximum: {} for answer id: {}'.format(
-                max_decimals, MAX_DECIMAL_PLACES, answer['id']
+            "decimal_places: {} > system maximum: {} for answer id: {}".format(
+                max_decimals, MAX_DECIMAL_PLACES, answer["id"]
             )
         )
     min_value, minimum_exclusive = get_schema_defined_limit(
-        answer['id'], answer.get('min_value'), answer_store
+        answer["id"], answer.get("min_value"), answer_store
     )
     if min_value is None:
         min_value = 0
     if min_value < MIN_NUMBER:
         raise Exception(
-            'min_value: {} < system minimum: {} for answer id: {}'.format(
-                min_value, MIN_NUMBER, answer['id']
+            "min_value: {} < system minimum: {} for answer id: {}".format(
+                min_value, MIN_NUMBER, answer["id"]
             )
         )
 
     max_value, maximum_exclusive = get_schema_defined_limit(
-        answer['id'], answer.get('max_value'), answer_store
+        answer["id"], answer.get("max_value"), answer_store
     )
     if max_value is None:
         max_value = MAX_NUMBER
 
     if max_value > MAX_NUMBER:
         raise Exception(
-            'max_value: {} > system maximum: {} for answer id: {}'.format(
-                max_value, MAX_NUMBER, answer['id']
+            "max_value: {} > system maximum: {} for answer id: {}".format(
+                max_value, MAX_NUMBER, answer["id"]
             )
         )
 
     if min_value > max_value:
         raise Exception(
-            'min_value: {} > max_value: {} for answer id: {}'.format(
-                min_value, max_value, answer['id']
+            "min_value: {} > max_value: {} for answer id: {}".format(
+                min_value, max_value, answer["id"]
             )
         )
 
     answer_errors = error_messages.copy()
-    if 'validation' in answer and 'messages' in answer['validation']:
-        for error_key, error_message in answer['validation']['messages'].items():
+    if "validation" in answer and "messages" in answer["validation"]:
+        for error_key, error_message in answer["validation"]["messages"].items():
             answer_errors[error_key] = error_message
 
     mandatory_or_optional = get_mandatory_validator(
-        answer, answer_errors, 'MANDATORY_NUMBER'
+        answer, answer_errors, "MANDATORY_NUMBER"
     )
 
     return mandatory_or_optional + [
-        NumberCheck(answer_errors['INVALID_NUMBER']),
+        NumberCheck(answer_errors["INVALID_NUMBER"]),
         NumberRange(
             minimum=min_value,
             minimum_exclusive=minimum_exclusive,
             maximum=max_value,
             maximum_exclusive=maximum_exclusive,
             messages=answer_errors,
-            currency=answer.get('currency'),
+            currency=answer.get("currency"),
         ),
         DecimalPlaces(max_decimals=max_decimals, messages=answer_errors),
     ]
@@ -342,20 +342,20 @@ def _get_number_field_validators(answer, error_messages, answer_store):
 
 def get_schema_defined_limit(answer_id, definition, answer_store):
     if definition:
-        if 'value' in definition:
-            value = definition['value']
+        if "value" in definition:
+            value = definition["value"]
         else:
-            source_answer_id = definition.get('answer_id')
+            source_answer_id = definition.get("answer_id")
             answer = answer_store.get_answer(source_answer_id)
             value = answer.value
             if not isinstance(value, int) and not isinstance(value, Decimal):
                 raise Exception(
-                    'answer: {} value: {} for answer id: {} is not a valid number'.format(
+                    "answer: {} value: {} for answer id: {} is not a valid number".format(
                         source_answer_id, value, answer_id
                     )
                 )
 
-        exclusive = definition.get('exclusive', False)
+        exclusive = definition.get("exclusive", False)
 
         return value, exclusive
 

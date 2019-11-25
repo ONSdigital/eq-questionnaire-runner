@@ -42,7 +42,7 @@ def use_jti_claim(jti_claim, expires):
     if jti_claim is None:
         raise ValueError
     if not _is_valid(jti_claim):
-        logger.info('jti claim is invalid', jti_claim=jti_claim)
+        logger.info("jti claim is invalid", jti_claim=jti_claim)
         raise TypeError
 
     try:
@@ -52,7 +52,7 @@ def use_jti_claim(jti_claim, expires):
 
         jti = UsedJtiClaim(jti_claim, used_at, expires)
 
-        current_app.eq['ephemeral_storage'].put_jti(jti)
+        current_app.eq["ephemeral_storage"].put_jti(jti)
     except ItemAlreadyExistsError as e:
-        logger.error('jti claim has already been used', jti_claim=jti_claim)
+        logger.error("jti claim has already been used", jti_claim=jti_claim)
         raise JtiTokenUsed(jti_claim) from e

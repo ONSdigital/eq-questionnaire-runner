@@ -12,46 +12,46 @@ class TestTextFieldSingleCheckboxOverride(IntegrationTestCase):
 
     def setUp(self):
         super().setUp()
-        self.launchSurvey('test_mutually_exclusive')
+        self.launchSurvey("test_mutually_exclusive")
         self.get(MUTUALLY_EXCLUSIVE_TEXTFIELD)
 
     def test_non_exclusive_answer(self):
         # When
-        self.post({'textfield-answer': 'John Doe'})
+        self.post({"textfield-answer": "John Doe"})
 
         # Then
-        self.assertInUrl('section-summary')
-        self.assertInBody('John Doe')
+        self.assertInUrl("section-summary")
+        self.assertInBody("John Doe")
 
     def test_exclusive_answer(self):
         # When
         self.post(
             {
-                'textfield-answer': '',
-                'textfield-exclusive-answer': ['I prefer not to say'],
+                "textfield-answer": "",
+                "textfield-exclusive-answer": ["I prefer not to say"],
             }
         )
 
         # Then
-        self.assertInUrl('section-summary')
-        self.assertInBody('I prefer not to say')
+        self.assertInUrl("section-summary")
+        self.assertInBody("I prefer not to say")
 
     def test_optional_exclusive_question(self):
         # When
-        self.post({'textfield-answer': ''})
+        self.post({"textfield-answer": ""})
 
         # Then
-        self.assertInUrl('section-summary')
-        self.assertInBody('No answer provided')
+        self.assertInUrl("section-summary")
+        self.assertInBody("No answer provided")
 
     def test_invalid_exclusive_answers(self):
         # When
         self.post(
             {
-                'textfield-answer': 'John Doe',
-                'textfield-exclusive-answer': ['I prefer not to say'],
+                "textfield-answer": "John Doe",
+                "textfield-exclusive-answer": ["I prefer not to say"],
             }
         )
 
         # Then
-        self.assertInBody('Remove an answer to continue.')
+        self.assertInBody("Remove an answer to continue.")

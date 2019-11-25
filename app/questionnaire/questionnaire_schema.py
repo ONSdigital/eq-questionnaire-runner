@@ -7,13 +7,13 @@ from flask_babel import force_locale
 from app.data_model.answer import Answer
 from app.validation.error_messages import error_messages
 
-DEFAULT_LANGUAGE_CODE = 'en'
+DEFAULT_LANGUAGE_CODE = "en"
 
 LIST_COLLECTOR_CHILDREN = [
-    'ListAddQuestion',
-    'ListEditQuestion',
-    'ListRemoveQuestion',
-    'PrimaryPersonListAddOrEditQuestion',
+    "ListAddQuestion",
+    "ListEditQuestion",
+    "ListRemoveQuestion",
+    "PrimaryPersonListAddOrEditQuestion",
 ]
 
 
@@ -24,10 +24,10 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
         self._parse_schema()
 
     def is_hub_enabled(self):
-        return self.json.get('hub', {}).get('enabled')
+        return self.json.get("hub", {}).get("enabled")
 
     def get_section_ids_required_for_hub(self):
-        return self.json.get('hub', {}).get('required_completed_sections', [])
+        return self.json.get("hub", {}).get("required_completed_sections", [])
 
     def get_sections(self):
         return self._sections_by_id.values()
@@ -40,35 +40,35 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
 
     @staticmethod
     def get_blocks_for_section(section):
-        return (block for group in section['groups'] for block in group['blocks'])
+        return (block for group in section["groups"] for block in group["blocks"])
 
     @staticmethod
     def get_driving_question_for_list(section, list_name):
         for block in QuestionnaireSchema.get_blocks_for_section(section):
             if (
-                block['type'] == 'ListCollectorDrivingQuestion'
-                and list_name == block['for_list']
+                block["type"] == "ListCollectorDrivingQuestion"
+                and list_name == block["for_list"]
             ):
                 return block
 
     def get_repeating_list_for_section(self, section_id):
-        return self._sections_by_id.get(section_id).get('repeat', {}).get('for_list')
+        return self._sections_by_id.get(section_id).get("repeat", {}).get("for_list")
 
     def get_repeating_title_for_section(self, section_id):
-        return self._sections_by_id.get(section_id).get('repeat', {}).get('title')
+        return self._sections_by_id.get(section_id).get("repeat", {}).get("title")
 
     def get_section_for_block_id(self, block_id):
         block = self.get_block(block_id)
 
-        if block.get('type') in LIST_COLLECTOR_CHILDREN:
+        if block.get("type") in LIST_COLLECTOR_CHILDREN:
             section_id = self._get_section_id_for_list_block(block)
         else:
-            section_id = self.get_group(block['parent_id'])['parent_id']
+            section_id = self.get_group(block["parent_id"])["parent_id"]
 
         return self.get_section(section_id)
 
     def get_section_id_for_block_id(self, block_id):
-        return self.get_section_for_block_id(block_id)['id']
+        return self.get_section_for_block_id(block_id)["id"]
 
     def get_groups(self):
         return self._groups_by_id.values()
@@ -82,12 +82,12 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
     def get_last_block_id_for_section(self, section_id):
         section = self.get_section(section_id)
         if section:
-            return section['groups'][-1]['blocks'][-1]['id']
+            return section["groups"][-1]["blocks"][-1]["id"]
 
     def get_first_block_id_for_group(self, group_id):
         group = self.get_group(group_id)
         if group:
-            return group['blocks'][0]['id']
+            return group["blocks"][0]["id"]
 
     def get_blocks(self):
         return self._blocks_by_id.values()
@@ -109,12 +109,12 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
     def is_answer_in_list_collector_block(self, answer_id):
         block = self.get_block_for_answer_id(answer_id)
 
-        return self.is_list_block_type(block['type'])
+        return self.is_list_block_type(block["type"])
 
     def is_answer_in_repeating_section(self, answer_id):
         block = self.get_block_for_answer_id(answer_id)
 
-        return self.is_block_in_repeating_section(block_id=block['id'])
+        return self.is_block_in_repeating_section(block_id=block["id"])
 
     def get_list_item_id_for_answer_id(self, answer_id, list_item_id):
         if (
@@ -138,7 +138,7 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
     def get_default_answer(self, answer_id):
         try:
             answer_schema = self.get_answers_by_answer_id(answer_id)[0]
-            answer = Answer(answer_schema['id'], answer_schema['default'])
+            answer = Answer(answer_schema["id"], answer_schema["default"])
         except (KeyError, TypeError):
             return None
 
@@ -146,19 +146,19 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
 
     def get_add_block_for_list_collector(self, list_collector_id):
         add_block_map = {
-            'ListCollector': 'add_block',
-            'PrimaryPersonListCollector': 'add_or_edit_block',
+            "ListCollector": "add_block",
+            "PrimaryPersonListCollector": "add_or_edit_block",
         }
         list_collector = self.get_block(list_collector_id)
 
-        return list_collector[add_block_map[list_collector['type']]]
+        return list_collector[add_block_map[list_collector["type"]]]
 
     def get_answer_ids_for_list_items(self, list_collector_id):
         """
         Get answer ids used to add items to a list.
         """
         add_block = self.get_add_block_for_list_collector(list_collector_id)
-        return self.get_answer_ids_for_block(add_block['id'])
+        return self.get_answer_ids_for_block(add_block["id"])
 
     def get_questions(self, question_id):
         """ Return a list of questions matching some question id
@@ -167,18 +167,18 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
         return self._questions_by_id.get(question_id)
 
     def group_has_questions(self, group_id):
-        for block in self.get_group(group_id)['blocks']:
-            if QuestionnaireSchema.is_question_block_type(block['type']):
+        for block in self.get_group(group_id)["blocks"]:
+            if QuestionnaireSchema.is_question_block_type(block["type"]):
                 return True
         return False
 
     @staticmethod
     def get_visible_list_blocks_for_section(section):
         list_collector_blocks = []
-        for group in section['groups']:
-            for block in group['blocks']:
-                shown = block.get('show_on_section_summary', True)
-                if block['type'] == 'ListCollector' and shown:
+        for group in section["groups"]:
+            for block in group["blocks"]:
+                shown = block.get("show_on_section_summary", True)
+                if block["type"] == "ListCollector" and shown:
                     list_collector_blocks.append(block)
         return list_collector_blocks
 
@@ -186,11 +186,11 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
     def get_answer_ids_for_question(cls, question):
         answer_ids = []
 
-        for answer in question.get('answers', []):
-            answer_ids.append(answer['id'])
-            for option in answer.get('options', []):
-                if 'detail_answer' in option:
-                    answer_ids.append(option['detail_answer']['id'])
+        for answer in question.get("answers", []):
+            answer_ids.append(answer["id"])
+            for option in answer.get("options", []):
+                if "detail_answer" in option:
+                    answer_ids.append(option["detail_answer"]["id"])
 
         return answer_ids
 
@@ -202,26 +202,26 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
         block = self.get_block(block_id)
 
         if block:
-            if block.get('question'):
-                return self.get_answer_ids_for_question(block['question'])
-            if block.get('question_variants'):
+            if block.get("question"):
+                return self.get_answer_ids_for_question(block["question"])
+            if block.get("question_variants"):
                 return self.get_answer_ids_for_question(
-                    block['question_variants'][0]['question']
+                    block["question_variants"][0]["question"]
                 )
         return []
 
     def get_summary_and_confirmation_blocks(self):
         return [
-            block['id']
+            block["id"]
             for block in self.get_blocks()
-            if block['type'] in ('Summary', 'Confirmation')
+            if block["type"] in ("Summary", "Confirmation")
         ]
 
     def get_relationship_collectors(self) -> List:
         return [
             block
             for block in self.get_blocks()
-            if block['type'] == 'RelationshipCollector'
+            if block["type"] == "RelationshipCollector"
         ]
 
     def get_relationship_collectors_by_list_name(self, list_name: str):
@@ -230,25 +230,25 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
             return [
                 block
                 for block in relationship_collectors
-                if block['for_list'] == list_name
+                if block["for_list"] == list_name
             ]
 
     @staticmethod
     def get_all_questions_for_block(block):
         all_questions = []
         if block:
-            if block.get('question'):
-                all_questions.append(block['question'])
-            elif block.get('question_variants'):
-                for variant in block['question_variants']:
-                    all_questions.append(variant['question'])
+            if block.get("question"):
+                all_questions.append(block["question"])
+            elif block.get("question_variants"):
+                for variant in block["question_variants"]:
+                    all_questions.append(variant["question"])
 
             return all_questions
         return []
 
     @staticmethod
     def is_summary_section(section):
-        for group in section['groups']:
+        for group in section["groups"]:
             if QuestionnaireSchema.is_summary_group(group):
                 return True
 
@@ -256,15 +256,15 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
 
     @staticmethod
     def is_summary_group(group):
-        for block in group['blocks']:
-            if block['type'] == 'Summary':
+        for block in group["blocks"]:
+            if block["type"] == "Summary":
                 return True
 
         return False
 
     @staticmethod
     def is_confirmation_section(section):
-        for group in section['groups']:
+        for group in section["groups"]:
             if QuestionnaireSchema.is_confirmation_group(group):
                 return True
 
@@ -272,8 +272,8 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
 
     @staticmethod
     def is_confirmation_group(group):
-        for block in group['blocks']:
-            if block['type'] == 'Confirmation':
+        for block in group["blocks"]:
+            if block["type"] == "Confirmation":
                 return True
 
         return False
@@ -281,72 +281,72 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
     @staticmethod
     def is_primary_person_block_type(block_type):
         primary_person_blocks = [
-            'PrimaryPersonListCollector',
-            'PrimaryPersonListAddOrEditQuestion',
+            "PrimaryPersonListCollector",
+            "PrimaryPersonListAddOrEditQuestion",
         ]
 
         return block_type in primary_person_blocks
 
     @staticmethod
     def is_list_block_type(block_type):
-        list_blocks = ['ListCollector'] + LIST_COLLECTOR_CHILDREN
+        list_blocks = ["ListCollector"] + LIST_COLLECTOR_CHILDREN
         return block_type in list_blocks
 
     @staticmethod
     def is_question_block_type(block_type):
         return block_type in [
-            'Question',
-            'ListCollectorDrivingQuestion',
-            'ConfirmationQuestion',
+            "Question",
+            "ListCollectorDrivingQuestion",
+            "ConfirmationQuestion",
         ]
 
     def _parse_schema(self):
         self._sections_by_id = self._get_sections_by_id()
-        self._groups_by_id = get_nested_schema_objects(self._sections_by_id, 'groups')
+        self._groups_by_id = get_nested_schema_objects(self._sections_by_id, "groups")
         self._blocks_by_id = self._get_blocks_by_id()
         self._questions_by_id = self._get_questions_by_id()
         self._answers_by_id = self._get_answers_by_id()
         self.error_messages = self._get_error_messages()
 
     def _get_section_id_for_list_block(self, block):
-        return self.get_group(self.get_block(block['parent_id'])['parent_id'])[
-            'parent_id'
+        return self.get_group(self.get_block(block["parent_id"])["parent_id"])[
+            "parent_id"
         ]
 
     def _get_blocks_by_id(self):
         blocks = defaultdict(list)
 
         for group in self._groups_by_id.values():
-            for block in group['blocks']:
-                block['parent_id'] = group['id']
-                blocks[block['id']] = block
+            for block in group["blocks"]:
+                block["parent_id"] = group["id"]
+                blocks[block["id"]] = block
 
-                if block['type'] in ('ListCollector', 'PrimaryPersonListCollector'):
+                if block["type"] in ("ListCollector", "PrimaryPersonListCollector"):
                     for nested_block_name in [
-                        'add_block',
-                        'edit_block',
-                        'remove_block',
-                        'add_or_edit_block',
+                        "add_block",
+                        "edit_block",
+                        "remove_block",
+                        "add_or_edit_block",
                     ]:
                         if block.get(nested_block_name):
                             nested_block = block[nested_block_name]
-                            nested_block['parent_id'] = block['id']
-                            blocks[nested_block['id']] = nested_block
+                            nested_block["parent_id"] = block["id"]
+                            blocks[nested_block["id"]] = nested_block
 
         return blocks
 
     def _block_for_answer(self, answer_id):
         answers = self.get_answers_by_answer_id(answer_id)
         # All matching questions / answers must be within the same block
-        questions = self.get_questions(answers[0]['parent_id'])
-        return self.get_block(questions[0]['parent_id'])
+        questions = self.get_questions(answers[0]["parent_id"])
+        return self.get_block(questions[0]["parent_id"])
 
     def _group_for_block(self, block_id):
         block = self.get_block(block_id)
-        if block['type'] in LIST_COLLECTOR_CHILDREN:
-            parent = self.get_block(block['parent_id'])
-            return self.get_group(parent['parent_id'])
-        return self.get_group(block['parent_id'])
+        if block["type"] in LIST_COLLECTOR_CHILDREN:
+            parent = self.get_block(block["parent_id"])
+            return self.get_group(parent["parent_id"])
+        return self.get_group(block["parent_id"])
 
     def _get_questions_by_id(self):
         questions_by_id = defaultdict(list)
@@ -354,8 +354,8 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
         for block in self._blocks_by_id.values():
             questions = self.get_all_questions_for_block(block)
             for question in questions:
-                question['parent_id'] = block['id']
-                questions_by_id[question['id']].append(question)
+                question["parent_id"] = block["id"]
+                questions_by_id[question["id"]].append(question)
 
         return questions_by_id
 
@@ -364,21 +364,21 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
 
         for question_set in self._questions_by_id.values():
             for question in question_set:
-                for answer in question['answers']:
-                    answer['parent_id'] = question['id']
-                    answers_by_id[answer['id']].append(answer)
-                    for option in answer.get('options', []):
-                        if 'detail_answer' in option:
-                            option['detail_answer']['parent_id'] = question['id']
-                            answers_by_id[option['detail_answer']['id']].append(
-                                option['detail_answer']
+                for answer in question["answers"]:
+                    answer["parent_id"] = question["id"]
+                    answers_by_id[answer["id"]].append(answer)
+                    for option in answer.get("options", []):
+                        if "detail_answer" in option:
+                            option["detail_answer"]["parent_id"] = question["id"]
+                            answers_by_id[option["detail_answer"]["id"]].append(
+                                option["detail_answer"]
                             )
 
         return answers_by_id
 
     def _get_sections_by_id(self):
         return OrderedDict(
-            (section['id'], section) for section in self.json.get('sections', [])
+            (section["id"], section) for section in self.json.get("sections", [])
         )
 
     def _get_error_messages(self):
@@ -386,8 +386,8 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
         with force_locale(self.language_code):
             messages = {k: str(v) for k, v in error_messages.items()}
 
-        if 'messages' in self.json:
-            messages.update(self.json['messages'])
+        if "messages" in self.json:
+            messages.update(self.json["messages"])
 
         return messages
 
@@ -407,7 +407,7 @@ def get_nested_schema_objects(parent_object, list_key):
     for parent_id, child_object in parent_object.items():
         for child_list_object in child_object.get(list_key, []):
             # patch the ID of the parent onto the object
-            child_list_object['parent_id'] = parent_id
-            nested_objects[child_list_object['id']] = child_list_object
+            child_list_object["parent_id"] = parent_id
+            nested_objects[child_list_object["id"]] = child_list_object
 
     return nested_objects

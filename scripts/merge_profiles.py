@@ -3,7 +3,7 @@
 import pstats
 from os import listdir
 
-profiling_dir = 'profiling/'
+profiling_dir = "profiling/"
 
 profiles = listdir(profiling_dir)
 
@@ -15,4 +15,4 @@ for p in profiles:
     else:
         stats.add(profiling_dir + p)
 
-stats.dump_stats('combined_profile.prof')
+stats.dump_stats("combined_profile.prof")

@@ -13,7 +13,7 @@ from app.settings import DEFAULT_LOCALE
 
 
 class MaxTextAreaField(TextAreaField):
-    def __init__(self, label='', validators=None, maxlength=10000, **kwargs):
+    def __init__(self, label="", validators=None, maxlength=10000, **kwargs):
         super(MaxTextAreaField, self).__init__(label, validators, **kwargs)
         self.maxlength = maxlength
 
@@ -37,7 +37,7 @@ class CustomIntegerField(IntegerField):
         if valuelist:
             try:
                 self.data = int(
-                    valuelist[0].replace(numbers.get_group_symbol(DEFAULT_LOCALE), '')
+                    valuelist[0].replace(numbers.get_group_symbol(DEFAULT_LOCALE), "")
                 )
             except ValueError:
                 pass
@@ -62,7 +62,7 @@ class CustomDecimalField(DecimalField):
         if valuelist:
             try:
                 self.data = Decimal(
-                    valuelist[0].replace(numbers.get_group_symbol(DEFAULT_LOCALE), '')
+                    valuelist[0].replace(numbers.get_group_symbol(DEFAULT_LOCALE), "")
                 )
             except (ValueError, TypeError, InvalidOperation):
                 pass
@@ -84,7 +84,7 @@ class CustomSelectMultipleField(SelectMultipleField):
         for i, (value, label, checked, detail_answer_id) in enumerate(
             self.iter_choices()
         ):
-            opt = self._Option(label=label, id='%s-%d' % (self.id, i), **opts)
+            opt = self._Option(label=label, id="%s-%d" % (self.id, i), **opts)
             opt.process(None, value)
             opt.detail_answer_id = detail_answer_id
             opt.checked = checked
@@ -112,7 +112,7 @@ class CustomSelectField(SelectField):
         for i, (value, label, checked, detail_answer_id) in enumerate(
             self.iter_choices()
         ):
-            opt = self._Option(label=label, id='%s-%d' % (self.id, i), **opts)
+            opt = self._Option(label=label, id="%s-%d" % (self.id, i), **opts)
             opt.process(None, value)
             opt.detail_answer_id = detail_answer_id
             opt.checked = checked
@@ -127,4 +127,4 @@ class CustomSelectField(SelectField):
             if value == self.data:
                 break
         else:
-            raise ValueError(self.gettext('Not a valid choice'))
+            raise ValueError(self.gettext("Not a valid choice"))

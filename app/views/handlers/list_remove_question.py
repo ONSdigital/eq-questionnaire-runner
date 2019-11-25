@@ -21,10 +21,10 @@ class ListRemoveQuestion(ListAction):
 
     def handle_post(self):
         if (
-            self.form.data[self.parent_block['remove_answer']['id']]
-            == self.parent_block['remove_answer']['value']
+            self.form.data[self.parent_block["remove_answer"]["id"]]
+            == self.parent_block["remove_answer"]["value"]
         ):
-            list_name = self.parent_block['for_list']
+            list_name = self.parent_block["for_list"]
             self.questionnaire_store_updater.remove_list_item_and_answers(
                 list_name, self._current_location.list_item_id
             )

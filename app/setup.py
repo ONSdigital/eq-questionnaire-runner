@@ -32,41 +32,41 @@ from app.storage.redis import RedisStorage
 from app.submitter.submitter import LogSubmitter, RabbitMQSubmitter, GCSSubmitter
 
 CACHE_HEADERS = {
-    'Cache-Control': 'no-cache, no-store, must-revalidate',
-    'Pragma': 'no-cache',
+    "Cache-Control": "no-cache, no-store, must-revalidate",
+    "Pragma": "no-cache",
 }
 
 CSP_POLICY = {
-    'default-src': ["'self'", 'https://cdn.ons.gov.uk'],
-    'font-src': [
+    "default-src": ["'self'", "https://cdn.ons.gov.uk"],
+    "font-src": [
         "'self'",
-        'data:',
-        'https://cdn.ons.gov.uk',
-        'https://fonts.gstatic.com',
+        "data:",
+        "https://cdn.ons.gov.uk",
+        "https://fonts.gstatic.com",
     ],
-    'script-src': [
+    "script-src": [
         "'self'",
-        'https://cdn.ons.gov.uk',
-        'https://www.googletagmanager.com',
+        "https://cdn.ons.gov.uk",
+        "https://www.googletagmanager.com",
         "'unsafe-inline'",
         "'unsafe-eval'",
     ],
-    'style-src': [
+    "style-src": [
         "'self'",
-        'https://cdn.ons.gov.uk',
-        'https://tagmanager.google.com',
-        'https://fonts.googleapis.com',
+        "https://cdn.ons.gov.uk",
+        "https://tagmanager.google.com",
+        "https://fonts.googleapis.com",
         "'unsafe-inline'",
     ],
-    'connect-src': ["'self'", 'https://cdn.ons.gov.uk'],
-    'frame-src': ['https://www.googletagmanager.com'],
-    'img-src': [
+    "connect-src": ["'self'", "https://cdn.ons.gov.uk"],
+    "frame-src": ["https://www.googletagmanager.com"],
+    "img-src": [
         "'self'",
-        'data:',
-        'https://cdn.ons.gov.uk',
-        'https://www.google-analytics.com',
-        'https://ssl.gstatic.com',
-        'https://www.gstatic.com',
+        "data:",
+        "https://cdn.ons.gov.uk",
+        "https://www.google-analytics.com",
+        "https://ssl.gstatic.com",
+        "https://www.gstatic.com",
     ],
 }
 
@@ -83,7 +83,7 @@ class EmulatorCredentials(credentials.Credentials):
     """
 
     def __init__(self):  # pylint: disable=super-init-not-called
-        self.token = b'seekrit'
+        self.token = b"seekrit"
         self.expiry = None
 
     @property
@@ -91,7 +91,7 @@ class EmulatorCredentials(credentials.Credentials):
         return True
 
     def refresh(self, request):  # pylint: disable=unused-argument
-        raise RuntimeError('Should never be refreshed.')
+        raise RuntimeError("Should never be refreshed.")
 
 
 class AWSReverseProxied:
@@ -99,38 +99,38 @@ class AWSReverseProxied:
         self.app = app
 
     def __call__(self, environ, start_response):
-        scheme = environ.get('HTTP_X_FORWARDED_PROTO', 'http')
+        scheme = environ.get("HTTP_X_FORWARDED_PROTO", "http")
         if scheme:
-            environ['wsgi.url_scheme'] = scheme
+            environ["wsgi.url_scheme"] = scheme
         return self.app(environ, start_response)
 
 
 def create_app(  # noqa: C901  pylint: disable=too-complex, too-many-statements
     setting_overrides=None
 ):
-    application = Flask(__name__, template_folder='../templates')
+    application = Flask(__name__, template_folder="../templates")
     application.config.from_object(settings)
 
     application.eq = {}
 
-    with open(application.config['EQ_SECRETS_FILE']) as secrets_file:
+    with open(application.config["EQ_SECRETS_FILE"]) as secrets_file:
         secrets = yaml.safe_load(secrets_file)
 
-    with open(application.config['EQ_KEYS_FILE']) as keys_file:
+    with open(application.config["EQ_KEYS_FILE"]) as keys_file:
         keys = yaml.safe_load(keys_file)
 
     validate_required_secrets(secrets)
     validate_required_keys(keys, KEY_PURPOSE_SUBMISSION)
-    application.eq['secret_store'] = SecretStore(secrets)
-    application.eq['key_store'] = KeyStore(keys)
+    application.eq["secret_store"] = SecretStore(secrets)
+    application.eq["key_store"] = KeyStore(keys)
 
     if setting_overrides:
         application.config.update(setting_overrides)
 
-    if application.config['EQ_APPLICATION_VERSION']:
+    if application.config["EQ_APPLICATION_VERSION"]:
         logger.info(
-            'starting eq survey runner',
-            version=application.config['EQ_APPLICATION_VERSION'],
+            "starting eq survey runner",
+            version=application.config["EQ_APPLICATION_VERSION"],
         )
 
     # IMPORTANT: This must be initialised *before* any other Flask plugins that add
@@ -146,28 +146,28 @@ def create_app(  # noqa: C901  pylint: disable=too-complex, too-many-statements
             logger.bind(span=span, trace=trace)
 
         logger.info(
-            'request',
+            "request",
             method=flask_request.method,
             url_path=flask_request.full_path,
-            session_cookie_present='session' in flask_request.cookies,
-            csrf_token_present='csrf_token' in cookie_session,
+            session_cookie_present="session" in flask_request.cookies,
+            csrf_token_present="csrf_token" in cookie_session,
             user_agent=flask_request.user_agent.string,
         )
 
-    if application.config['EQ_NEW_RELIC_ENABLED']:
+    if application.config["EQ_NEW_RELIC_ENABLED"]:
         setup_newrelic()
 
     setup_storage(application)
 
     setup_submitter(application)
 
-    application.eq['id_generator'] = UserIDGenerator(
-        application.config['EQ_SERVER_SIDE_STORAGE_USER_ID_ITERATIONS'],
-        application.eq['secret_store'].get_secret_by_name(
-            'EQ_SERVER_SIDE_STORAGE_USER_ID_SALT'
+    application.eq["id_generator"] = UserIDGenerator(
+        application.config["EQ_SERVER_SIDE_STORAGE_USER_ID_ITERATIONS"],
+        application.eq["secret_store"].get_secret_by_name(
+            "EQ_SERVER_SIDE_STORAGE_USER_ID_SALT"
         ),
-        application.eq['secret_store'].get_secret_by_name(
-            'EQ_SERVER_SIDE_STORAGE_USER_IK_SALT'
+        application.eq["secret_store"].get_secret_by_name(
+            "EQ_SERVER_SIDE_STORAGE_USER_IK_SALT"
         ),
     )
 
@@ -189,28 +189,28 @@ def create_app(  # noqa: C901  pylint: disable=too-complex, too-many-statements
 
     compress.init_app(application)
 
-    if application.config['EQ_DEV_MODE']:
+    if application.config["EQ_DEV_MODE"]:
         start_dev_mode(application)
 
-    if application.config['EQ_ENABLE_CACHE']:
-        cache.init_app(application, config={'CACHE_TYPE': 'simple'})
+    if application.config["EQ_ENABLE_CACHE"]:
+        cache.init_app(application, config={"CACHE_TYPE": "simple"})
     else:
         # no cache and silence warning
-        cache.init_app(application, config={'CACHE_NO_NULL_WARNING': True})
+        cache.init_app(application, config={"CACHE_NO_NULL_WARNING": True})
 
     # Switch off flask default autoescaping as schema content can contain html
     application.jinja_env.autoescape = False
 
     # pylint: disable=no-member
-    application.jinja_env.add_extension('jinja2.ext.do')
+    application.jinja_env.add_extension("jinja2.ext.do")
 
     @application.after_request
     def apply_caching(response):  # pylint: disable=unused-variable
-        if 'text/html' in response.content_type:
+        if "text/html" in response.content_type:
             for k, v in CACHE_HEADERS.items():
                 response.headers[k] = v
         else:
-            response.headers['Cache-Control'] = 'max-age=2628000, public'
+            response.headers["Cache-Control"] = "max-age=2628000, public"
 
         return response
 
@@ -220,8 +220,8 @@ def create_app(  # noqa: C901  pylint: disable=too-complex, too-many-statements
         minify html response to decrease site traffic
         """
         if (
-            application.config['EQ_ENABLE_HTML_MINIFY']
-            and response.content_type == u'text/html; charset=utf-8'
+            application.config["EQ_ENABLE_HTML_MINIFY"]
+            and response.content_type == "text/html; charset=utf-8"
         ):
             response.set_data(
                 minify(
@@ -241,7 +241,7 @@ def create_app(  # noqa: C901  pylint: disable=too-complex, too-many-statements
         # length for the cookie. The real length won't be known yet as Flask
         # serialises and adds the cookie header after this method is called.
         logger.info(
-            'response',
+            "response",
             status_code=response.status_code,
             session_modified=cookie_session.modified,
         )
@@ -253,29 +253,29 @@ def create_app(  # noqa: C901  pylint: disable=too-complex, too-many-statements
 def setup_secure_headers(application):
     csp_policy = copy.deepcopy(CSP_POLICY)
 
-    if application.config['EQ_ENABLE_LIVE_RELOAD']:
+    if application.config["EQ_ENABLE_LIVE_RELOAD"]:
         # browsersync is configured to bind on port 5075
-        csp_policy['connect-src'] += ['ws://localhost:35729']
+        csp_policy["connect-src"] += ["ws://localhost:35729"]
 
     Talisman(
         application,
         content_security_policy=csp_policy,
-        content_security_policy_nonce_in=['script-src'],
-        session_cookie_secure=application.config['EQ_ENABLE_SECURE_SESSION_COOKIE'],
+        content_security_policy_nonce_in=["script-src"],
+        session_cookie_secure=application.config["EQ_ENABLE_SECURE_SESSION_COOKIE"],
         force_https=False,  # this is handled at the firewall
         strict_transport_security=True,
         strict_transport_security_max_age=31536000,
-        frame_options='DENY',
+        frame_options="DENY",
     )
 
 
 def setup_storage(application):
-    if application.config['EQ_STORAGE_BACKEND'] == 'datastore':
+    if application.config["EQ_STORAGE_BACKEND"] == "datastore":
         setup_datastore(application)
-    elif application.config['EQ_STORAGE_BACKEND'] == 'dynamodb':
+    elif application.config["EQ_STORAGE_BACKEND"] == "dynamodb":
         setup_dynamodb(application)
     else:
-        raise Exception('Unknown EQ_STORAGE_BACKEND')
+        raise Exception("Unknown EQ_STORAGE_BACKEND")
 
     setup_redis(application)
 
@@ -283,79 +283,79 @@ def setup_storage(application):
 def setup_dynamodb(application):
     # Number of additional connection attempts
     config = Config(
-        retries={'max_attempts': application.config['EQ_DYNAMODB_MAX_RETRIES']},
-        max_pool_connections=application.config['EQ_DYNAMODB_MAX_POOL_CONNECTIONS'],
+        retries={"max_attempts": application.config["EQ_DYNAMODB_MAX_RETRIES"]},
+        max_pool_connections=application.config["EQ_DYNAMODB_MAX_POOL_CONNECTIONS"],
     )
 
     dynamodb = boto3.resource(
-        'dynamodb',
-        endpoint_url=application.config['EQ_DYNAMODB_ENDPOINT'],
+        "dynamodb",
+        endpoint_url=application.config["EQ_DYNAMODB_ENDPOINT"],
         config=config,
     )
-    application.eq['storage'] = DynamodbStorage(dynamodb)
+    application.eq["storage"] = DynamodbStorage(dynamodb)
 
 
 def setup_datastore(application):
     creds = (
         EmulatorCredentials()
-        if application.config['EQ_DATASTORE_EMULATOR_CREDENTIALS']
+        if application.config["EQ_DATASTORE_EMULATOR_CREDENTIALS"]
         else None
     )
     client = datastore.Client(_use_grpc=False, credentials=creds)
-    application.eq['storage'] = DatastoreStorage(client)
+    application.eq["storage"] = DatastoreStorage(client)
 
 
 def setup_redis(application):
     redis_client = redis.Redis(
-        host=application.config['EQ_REDIS_HOST'],
-        port=application.config['EQ_REDIS_PORT'],
+        host=application.config["EQ_REDIS_HOST"],
+        port=application.config["EQ_REDIS_PORT"],
     )
 
-    application.eq['ephemeral_storage'] = RedisStorage(redis_client)
+    application.eq["ephemeral_storage"] = RedisStorage(redis_client)
 
 
 def setup_submitter(application):
-    if application.config['EQ_SUBMISSION_BACKEND'] == 'gcs':
-        bucket_id = application.config.get('EQ_GCS_SUBMISSION_BUCKET_ID')
+    if application.config["EQ_SUBMISSION_BACKEND"] == "gcs":
+        bucket_id = application.config.get("EQ_GCS_SUBMISSION_BUCKET_ID")
 
         if not bucket_id:
-            raise Exception('Setting EQ_GCS_SUBMISSION_BUCKET_ID Missing')
+            raise Exception("Setting EQ_GCS_SUBMISSION_BUCKET_ID Missing")
 
-        application.eq['submitter'] = GCSSubmitter(bucket_name=bucket_id)
+        application.eq["submitter"] = GCSSubmitter(bucket_name=bucket_id)
 
-    elif application.config['EQ_SUBMISSION_BACKEND'] == 'rabbitmq':
-        host = application.config.get('EQ_RABBITMQ_HOST')
-        secondary_host = application.config.get('EQ_RABBITMQ_HOST_SECONDARY')
+    elif application.config["EQ_SUBMISSION_BACKEND"] == "rabbitmq":
+        host = application.config.get("EQ_RABBITMQ_HOST")
+        secondary_host = application.config.get("EQ_RABBITMQ_HOST_SECONDARY")
 
         if not host:
-            raise Exception('Setting EQ_RABBITMQ_HOST Missing')
+            raise Exception("Setting EQ_RABBITMQ_HOST Missing")
         if not secondary_host:
-            raise Exception('Setting EQ_RABBITMQ_HOST_SECONDARY Missing')
+            raise Exception("Setting EQ_RABBITMQ_HOST_SECONDARY Missing")
 
-        application.eq['submitter'] = RabbitMQSubmitter(
+        application.eq["submitter"] = RabbitMQSubmitter(
             host=host,
             secondary_host=secondary_host,
-            port=application.config['EQ_RABBITMQ_PORT'],
-            queue=application.config['EQ_RABBITMQ_QUEUE_NAME'],
-            username=application.eq['secret_store'].get_secret_by_name(
-                'EQ_RABBITMQ_USERNAME'
+            port=application.config["EQ_RABBITMQ_PORT"],
+            queue=application.config["EQ_RABBITMQ_QUEUE_NAME"],
+            username=application.eq["secret_store"].get_secret_by_name(
+                "EQ_RABBITMQ_USERNAME"
             ),
-            password=application.eq['secret_store'].get_secret_by_name(
-                'EQ_RABBITMQ_PASSWORD'
+            password=application.eq["secret_store"].get_secret_by_name(
+                "EQ_RABBITMQ_PASSWORD"
             ),
         )
 
-    elif application.config['EQ_SUBMISSION_BACKEND'] == 'log':
-        application.eq['submitter'] = LogSubmitter()
+    elif application.config["EQ_SUBMISSION_BACKEND"] == "log":
+        application.eq["submitter"] = LogSubmitter()
 
     else:
-        raise Exception('Unknown EQ_SUBMISSION_BACKEND')
+        raise Exception("Unknown EQ_SUBMISSION_BACKEND")
 
 
 def start_dev_mode(application):
-    if application.config['EQ_ENABLE_FLASK_DEBUG_TOOLBAR']:
-        application.config['DEBUG_TB_PROFILER_ENABLED'] = True
-        application.config['DEBUG_TB_INTERCEPT_REDIRECTS'] = False
+    if application.config["EQ_ENABLE_FLASK_DEBUG_TOOLBAR"]:
+        application.config["DEBUG_TB_PROFILER_ENABLED"] = True
+        application.config["DEBUG_TB_INTERCEPT_REDIRECTS"] = False
         application.debug = True
         from flask_debugtoolbar import (  # pylint: disable=import-outside-toplevel
             DebugToolbarExtension,
@@ -417,15 +417,15 @@ def add_blueprints(application):
 
 
 def setup_secure_cookies(application):
-    application.secret_key = application.eq['secret_store'].get_secret_by_name(
-        'EQ_SECRET_KEY'
+    application.secret_key = application.eq["secret_store"].get_secret_by_name(
+        "EQ_SECRET_KEY"
     )
     application.session_interface = SHA256SecureCookieSessionInterface()
 
 
 def setup_babel(application):
     application.babel = Babel(application)
-    application.jinja_env.add_extension('jinja2.ext.i18n')
+    application.jinja_env.add_extension("jinja2.ext.i18n")
 
     @application.babel.localeselector
     def get_locale():  # pylint: disable=unused-variable
@@ -439,13 +439,13 @@ def setup_babel(application):
     @application.babel.timezoneselector
     def get_timezone():  # pylint: disable=unused-variable
         # For now regardless of locale we will show times in GMT/BST
-        return 'Europe/London'
+        return "Europe/London"
 
 
 def add_safe_health_check(application):
-    @application.route('/status')
+    @application.route("/status")
     def safe_health_check():  # pylint: disable=unused-variable
-        data = {'status': 'OK', 'version': application.config['EQ_APPLICATION_VERSION']}
+        data = {"status": "OK", "version": application.config["EQ_APPLICATION_VERSION"]}
         return json.dumps(data)
 
 
@@ -456,8 +456,8 @@ def get_minimized_asset(filename):
     :return: the new file name will be .min.css or .min.js
     """
     if settings.EQ_MINIMIZE_ASSETS:
-        if 'css' in filename:
-            filename = filename.replace('.css', '.min.css')
-        elif 'js' in filename:
-            filename = filename.replace('.js', '.min.js')
+        if "css" in filename:
+            filename = filename.replace(".css", ".min.css")
+        elif "js" in filename:
+            filename = filename.replace(".js", ".min.js")
     return filename

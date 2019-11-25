@@ -6,13 +6,13 @@ from app.questionnaire.location import Location
 class ListAction(Question):
     @property
     def parent_block(self):
-        return self._schema.get_block(self.block['parent_id'])
+        return self._schema.get_block(self.block["parent_id"])
 
     @property
     def parent_location(self):
         return Location(
             section_id=self._current_location.section_id,
-            block_id=self.rendered_block['parent_id'],
+            block_id=self.rendered_block["parent_id"],
         )
 
     def is_location_valid(self):
@@ -22,20 +22,20 @@ class ListAction(Question):
 
         if (
             not can_access_parent_location
-            or self._current_location.list_name != self.parent_block['for_list']
+            or self._current_location.list_name != self.parent_block["for_list"]
         ):
             return False
 
         return True
 
     def get_previous_location_url(self):
-        block_id = self._request_args.get('previous') or self._request_args.get(
-            'return_to'
+        block_id = self._request_args.get("previous") or self._request_args.get(
+            "return_to"
         )
         return self._get_location_url(block_id)
 
     def get_next_location_url(self):
-        block_id = self._request_args.get('return_to')
+        block_id = self._request_args.get("return_to")
         return self._get_location_url(block_id)
 
     def get_context(self):

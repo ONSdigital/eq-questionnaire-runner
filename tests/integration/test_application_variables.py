@@ -7,9 +7,9 @@ class TestApplicationVariables(IntegrationTestCase):
         settings.EQ_ENABLE_FLASK_DEBUG_TOOLBAR = True
         settings.EQ_DEV_MODE = True
         settings.EQ_ENABLE_LIVE_RELOAD = True
-        settings.EQ_GOOGLE_TAG_MANAGER_ID = 'TestId'
-        settings.EQ_GOOGLE_TAG_MANAGER_AUTH = 'TestAuth'
-        settings.EQ_GOOGLE_TAG_MANAGER_PREVIEW = 'TestPreview'
+        settings.EQ_GOOGLE_TAG_MANAGER_ID = "TestId"
+        settings.EQ_GOOGLE_TAG_MANAGER_AUTH = "TestAuth"
+        settings.EQ_GOOGLE_TAG_MANAGER_PREVIEW = "TestPreview"
         super().setUp()
 
     def tearDown(self):
@@ -22,22 +22,22 @@ class TestApplicationVariables(IntegrationTestCase):
         settings.EQ_GOOGLE_TAG_MANAGER_PREVIEW = None
 
     def test_flask_toolbar_is_displayed(self):
-        self.launchSurvey('test_textfield')
+        self.launchSurvey("test_textfield")
         self.assertStatusOK()
-        self.assertInBody('flDebugToolbarHandle')
+        self.assertInBody("flDebugToolbarHandle")
 
     def test_google_analytics_code_is_present(self):
-        self.launchSurvey('test_textfield')
+        self.launchSurvey("test_textfield")
         self._client.set_cookie(
-            'localhost', key='ons_cookie_policy', value="\'usage\':true"
+            "localhost", key="ons_cookie_policy", value="'usage':true"
         )
-        self.get('/questionnaire/name-block/')
+        self.get("/questionnaire/name-block/")
         self.assertStatusOK()
-        self.assertInHead('gtm.start')
-        self.assertInHead('dataLayer = [];')
-        self.assertInBody('https://www.googletagmanager.com')
+        self.assertInHead("gtm.start")
+        self.assertInHead("dataLayer = [];")
+        self.assertInBody("https://www.googletagmanager.com")
 
     def test_livereload_script_rendered(self):
-        self.launchSurvey('test_textfield')
+        self.launchSurvey("test_textfield")
         self.assertStatusOK()
-        self.assertTrue('__bs_script__' in self.getResponseData())
+        self.assertTrue("__bs_script__" in self.getResponseData())

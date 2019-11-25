@@ -51,16 +51,16 @@ from app.views.contexts.metadata_context import (
 from app.views.contexts.summary_context import SummaryContext
 from app.views.handlers.block_factory import get_block_handler
 
-END_BLOCKS = 'Summary', 'Confirmation'
+END_BLOCKS = "Summary", "Confirmation"
 
 logger = get_logger()
 
 questionnaire_blueprint = Blueprint(
-    name='questionnaire', import_name=__name__, url_prefix='/questionnaire/'
+    name="questionnaire", import_name=__name__, url_prefix="/questionnaire/"
 )
 
 post_submission_blueprint = Blueprint(
-    name='post_submission', import_name=__name__, url_prefix='/submitted/'
+    name="post_submission", import_name=__name__, url_prefix="/submitted/"
 )
 
 
@@ -71,14 +71,14 @@ def before_questionnaire_request():
         raise NoTokenException(401)
 
     logger.bind(
-        tx_id=metadata['tx_id'],
-        schema_name=metadata['schema_name'],
-        ce_id=metadata['collection_exercise_sid'],
-        questionnaire_id=metadata['questionnaire_id'],
+        tx_id=metadata["tx_id"],
+        schema_name=metadata["schema_name"],
+        ce_id=metadata["collection_exercise_sid"],
+        questionnaire_id=metadata["questionnaire_id"],
     )
 
     logger.info(
-        'questionnaire request', method=request.method, url_path=request.full_path
+        "questionnaire request", method=request.method, url_path=request.full_path
     )
 
     handle_language()
@@ -102,11 +102,11 @@ def before_post_submission_request():
     logger.bind(tx_id=session_data.tx_id, schema_name=session_data.schema_name)
 
     logger.info(
-        'questionnaire request', method=request.method, url_path=request.full_path
+        "questionnaire request", method=request.method, url_path=request.full_path
     )
 
 
-@questionnaire_blueprint.route('/', methods=['GET'])
+@questionnaire_blueprint.route("/", methods=["GET"])
 @login_required
 @with_questionnaire_store
 @with_schema
@@ -133,19 +133,19 @@ def get_questionnaire(schema, questionnaire_store):
         router.is_survey_complete(),
     )
 
-    return render_template('hub', content=hub.get_context())
+    return render_template("hub", content=hub.get_context())
 
 
-@questionnaire_blueprint.route('/', methods=['POST'])
+@questionnaire_blueprint.route("/", methods=["POST"])
 @login_required
 @with_questionnaire_store
 @with_schema
 def post_questionnaire(schema, questionnaire_store):
     if any(
         action in request.form
-        for action in ('action[save_sign_out]', 'action[sign_out]')
+        for action in ("action[save_sign_out]", "action[sign_out]")
     ):
-        return redirect(url_for('session.get_sign_out'))
+        return redirect(url_for("session.get_sign_out"))
 
     router = Router(
         schema,
@@ -159,8 +159,8 @@ def post_questionnaire(schema, questionnaire_store):
     return redirect(router.get_first_incomplete_location_in_survey().url())
 
 
-@questionnaire_blueprint.route('sections/<section_id>/', methods=['GET'])
-@questionnaire_blueprint.route('sections/<section_id>/<list_item_id>/', methods=['GET'])
+@questionnaire_blueprint.route("sections/<section_id>/", methods=["GET"])
+@questionnaire_blueprint.route("sections/<section_id>/<list_item_id>/", methods=["GET"])
 @login_required
 @with_questionnaire_store
 @with_schema
@@ -176,7 +176,7 @@ def get_section(schema, questionnaire_store, section_id, list_item_id=None):
     section = schema.get_section(section_id)
 
     if not section:
-        return redirect(url_for('.get_questionnaire'))
+        return redirect(url_for(".get_questionnaire"))
 
     routing_path = path_finder.routing_path(
         section_id=section_id, list_item_id=list_item_id
@@ -204,10 +204,10 @@ def get_section(schema, questionnaire_store, section_id, list_item_id=None):
     )
 
 
-@questionnaire_blueprint.route('<block_id>/', methods=['GET', 'POST'])
-@questionnaire_blueprint.route('<list_name>/<block_id>/', methods=['GET', 'POST'])
+@questionnaire_blueprint.route("<block_id>/", methods=["GET", "POST"])
+@questionnaire_blueprint.route("<list_name>/<block_id>/", methods=["GET", "POST"])
 @questionnaire_blueprint.route(
-    '<list_name>/<list_item_id>/<block_id>/', methods=['GET', 'POST']
+    "<list_name>/<list_item_id>/<block_id>/", methods=["GET", "POST"]
 )
 @login_required
 @with_questionnaire_store
@@ -224,14 +224,14 @@ def block(schema, questionnaire_store, block_id, list_name=None, list_item_id=No
             request_args=request.args,
         )
     except InvalidLocationException:
-        return redirect(url_for('.get_questionnaire'))
+        return redirect(url_for(".get_questionnaire"))
 
     redirect_url = None
-    if block_handler.block['type'] == 'RelationshipCollector':
+    if block_handler.block["type"] == "RelationshipCollector":
         redirect_url = block_handler.get_first_location_url()
 
-    elif 'action[sign_out]' in request.form:
-        redirect_url = url_for('session.get_sign_out')
+    elif "action[sign_out]" in request.form:
+        redirect_url = url_for("session.get_sign_out")
 
     if redirect_url:
         return redirect(redirect_url)
@@ -240,9 +240,9 @@ def block(schema, questionnaire_store, block_id, list_name=None, list_item_id=No
         block_handler.rendered_block, schema, block_handler.current_location
     )
 
-    if request.method == 'GET' or not block_handler.form.validate():
+    if request.method == "GET" or not block_handler.form.validate():
         return _render_page(
-            block_type=block_handler.rendered_block['type'],
+            block_type=block_handler.rendered_block["type"],
             context=block_handler.get_context(),
             current_location=block_handler.current_location,
             previous_location_url=block_handler.get_previous_location_url(),
@@ -250,11 +250,11 @@ def block(schema, questionnaire_store, block_id, list_name=None, list_item_id=No
             page_title=block_handler.page_title,
         )
 
-    if 'action[save_sign_out]' in request.form:
+    if "action[save_sign_out]" in request.form:
         block_handler.save_on_sign_out()
-        return redirect(url_for('session.get_sign_out'))
+        return redirect(url_for("session.get_sign_out"))
 
-    if block_handler.block['type'] in END_BLOCKS:
+    if block_handler.block["type"] in END_BLOCKS:
         return submit_answers(schema)
 
     if block_handler.form.data:
@@ -267,7 +267,7 @@ def block(schema, questionnaire_store, block_id, list_name=None, list_item_id=No
 
 
 @questionnaire_blueprint.route(
-    '<block_id>/<list_item_id>/to/<to_list_item_id>/', methods=['GET', 'POST']
+    "<block_id>/<list_item_id>/to/<to_list_item_id>/", methods=["GET", "POST"]
 )
 @login_required
 @with_questionnaire_store
@@ -283,14 +283,14 @@ def relationship(schema, questionnaire_store, block_id, list_item_id, to_list_it
             language=flask_babel.get_locale().language,
         )
     except InvalidLocationException:
-        return redirect(url_for('.get_questionnaire'))
+        return redirect(url_for(".get_questionnaire"))
 
     block_handler.form = _generate_wtf_form(
         block_handler.rendered_block, schema, block_handler.current_location
     )
-    if request.method == 'GET' or not block_handler.form.validate():
+    if request.method == "GET" or not block_handler.form.validate():
         return _render_page(
-            block_type=block_handler.block['type'],
+            block_type=block_handler.block["type"],
             context=block_handler.get_context(),
             current_location=block_handler.current_location,
             previous_location_url=block_handler.get_previous_location_url(),
@@ -298,16 +298,16 @@ def relationship(schema, questionnaire_store, block_id, list_item_id, to_list_it
             page_title=block_handler.page_title,
         )
 
-    if 'action[save_sign_out]' in request.form:
+    if "action[save_sign_out]" in request.form:
         block_handler.save_on_sign_out()
-        return redirect(url_for('session.get_sign_out'))
+        return redirect(url_for("session.get_sign_out"))
 
     block_handler.handle_post()
     next_location_url = block_handler.get_next_location_url()
     return redirect(next_location_url)
 
 
-@post_submission_blueprint.route('thank-you/', methods=['GET'])
+@post_submission_blueprint.route("thank-you/", methods=["GET"])
 @login_required
 @with_schema
 def get_thank_you(schema):
@@ -315,25 +315,25 @@ def get_thank_you(schema):
     session_data = session_store.session_data
 
     if not session_data.submitted_time:
-        return redirect(url_for('questionnaire.get_questionnaire'))
+        return redirect(url_for("questionnaire.get_questionnaire"))
 
     metadata_context = build_metadata_context_for_survey_completed(session_data)
 
     view_submission_url = None
     view_submission_duration = 0
     if _is_submission_viewable(schema.json, session_data.submitted_time):
-        view_submission_url = url_for('.get_view_submission')
+        view_submission_url = url_for(".get_view_submission")
         view_submission_duration = humanize.naturaldelta(
-            timedelta(seconds=schema.json['view_submitted_response']['duration'])
+            timedelta(seconds=schema.json["view_submitted_response"]["duration"])
         )
 
-    cookie_session.pop('account_service_log_out_url', None)
-    cookie_session.pop('account_service_url', None)
+    cookie_session.pop("account_service_log_out_url", None)
+    cookie_session.pop("account_service_url", None)
 
     return render_template(
-        template='thank-you',
+        template="thank-you",
         metadata=metadata_context,
-        survey_id=schema.json['survey_id'],
+        survey_id=schema.json["survey_id"],
         is_view_submitted_response_enabled=is_view_submitted_response_enabled(
             schema.json
         ),
@@ -342,16 +342,16 @@ def get_thank_you(schema):
     )
 
 
-@post_submission_blueprint.route('thank-you/', methods=['POST'])
+@post_submission_blueprint.route("thank-you/", methods=["POST"])
 @login_required
 def post_thank_you():
-    if 'action[sign_out]' in request.form:
-        return redirect(url_for('session.get_sign_out'))
+    if "action[sign_out]" in request.form:
+        return redirect(url_for("session.get_sign_out"))
 
-    return redirect(url_for('post_submission.get_thank_you'))
+    return redirect(url_for("post_submission.get_thank_you"))
 
 
-@post_submission_blueprint.route('view-submission/', methods=['GET'])
+@post_submission_blueprint.route("view-submission/", methods=["GET"])
 @login_required
 @with_schema
 def get_view_submission(schema):  # pylint: too-many-locals
@@ -359,7 +359,7 @@ def get_view_submission(schema):  # pylint: too-many-locals
     session_data = get_session_store().session_data
 
     if _is_submission_viewable(schema.json, session_data.submitted_time):
-        submitted_data = current_app.eq['storage'].get_by_key(
+        submitted_data = current_app.eq["storage"].get_by_key(
             SubmittedResponse, session_data.tx_id
         )
 
@@ -367,8 +367,8 @@ def get_view_submission(schema):  # pylint: too-many-locals
 
             metadata_context = build_metadata_context_for_survey_completed(session_data)
 
-            pepper = current_app.eq['secret_store'].get_secret_by_name(
-                'EQ_SERVER_SIDE_STORAGE_ENCRYPTION_USER_PEPPER'
+            pepper = current_app.eq["secret_store"].get_secret_by_name(
+                "EQ_SERVER_SIDE_STORAGE_ENCRYPTION_USER_PEPPER"
             )
 
             encrypter = StorageEncryption(
@@ -384,10 +384,10 @@ def get_view_submission(schema):  # pylint: too-many-locals
                 pass
 
             submitted_data = json.loads(submitted_data)
-            answer_store = AnswerStore(submitted_data.get('answers'))
-            list_store = ListStore(submitted_data.get('lists'))
+            answer_store = AnswerStore(submitted_data.get("answers"))
+            list_store = ListStore(submitted_data.get("lists"))
 
-            metadata = submitted_data.get('metadata')
+            metadata = submitted_data.get("metadata")
             language_code = get_session_store().session_data.language_code
             summary_context = SummaryContext(
                 language_code, schema, answer_store, list_store, metadata
@@ -396,40 +396,40 @@ def get_view_submission(schema):  # pylint: too-many-locals
             summary_rendered_context = summary_context.build_all_groups()
 
             context = {
-                'summary': {
-                    'groups': summary_rendered_context,
-                    'answers_are_editable': False,
-                    'is_view_submission_response_enabled': is_view_submitted_response_enabled(
+                "summary": {
+                    "groups": summary_rendered_context,
+                    "answers_are_editable": False,
+                    "is_view_submission_response_enabled": is_view_submitted_response_enabled(
                         schema.json
                     ),
                 }
             }
 
             return render_template(
-                template='view-submission',
+                template="view-submission",
                 metadata=metadata_context,
                 content=context,
-                survey_id=schema.json['survey_id'],
+                survey_id=schema.json["survey_id"],
             )
 
-    return redirect(url_for('post_submission.get_thank_you'))
+    return redirect(url_for("post_submission.get_thank_you"))
 
 
-@post_submission_blueprint.route('view-submission/', methods=['POST'])
+@post_submission_blueprint.route("view-submission/", methods=["POST"])
 @login_required
 def post_view_submission():
-    if 'action[sign_out]' in request.form:
-        return redirect(url_for('session.get_sign_out'))
+    if "action[sign_out]" in request.form:
+        return redirect(url_for("session.get_sign_out"))
 
-    return redirect(url_for('post_submission.get_view_submission'))
+    return redirect(url_for("post_submission.get_view_submission"))
 
 
 def _generate_wtf_form(block_schema, schema, current_location):
     answer_store = get_answer_store(current_user)
     metadata = get_metadata(current_user)
 
-    if request.method == 'POST':
-        disable_mandatory = 'action[save_sign_out]' in request.form
+    if request.method == "POST":
+        disable_mandatory = "action[save_sign_out]" in request.form
         return post_form_for_block(
             schema,
             block_schema,
@@ -457,13 +457,13 @@ def submit_answers(schema):
     )
 
     encrypted_message = encrypt(
-        message, current_app.eq['key_store'], KEY_PURPOSE_SUBMISSION
+        message, current_app.eq["key_store"], KEY_PURPOSE_SUBMISSION
     )
-    sent = current_app.eq['submitter'].send_message(
+    sent = current_app.eq["submitter"].send_message(
         encrypted_message,
-        questionnaire_id=metadata.get('questionnaire_id'),
-        case_id=metadata.get('case_id'),
-        tx_id=metadata.get('tx_id'),
+        questionnaire_id=metadata.get("questionnaire_id"),
+        case_id=metadata.get("case_id"),
+        tx_id=metadata.get("tx_id"),
     )
 
     if not sent:
@@ -480,7 +480,7 @@ def submit_answers(schema):
 
     get_questionnaire_store(current_user.user_id, current_user.user_ik).delete()
 
-    return redirect(url_for('post_submission.get_thank_you'))
+    return redirect(url_for("post_submission.get_thank_you"))
 
 
 def _store_submitted_time_in_session(submitted_time):
@@ -491,40 +491,40 @@ def _store_submitted_time_in_session(submitted_time):
 
 
 def _store_viewable_submission(answers, lists, metadata, submitted_time):
-    pepper = current_app.eq['secret_store'].get_secret_by_name(
-        'EQ_SERVER_SIDE_STORAGE_ENCRYPTION_USER_PEPPER'
+    pepper = current_app.eq["secret_store"].get_secret_by_name(
+        "EQ_SERVER_SIDE_STORAGE_ENCRYPTION_USER_PEPPER"
     )
     encrypter = StorageEncryption(current_user.user_id, current_user.user_ik, pepper)
     encrypted_data = encrypter.encrypt_data(
-        {'answers': answers, 'lists': lists, 'metadata': metadata.copy()}
+        {"answers": answers, "lists": lists, "metadata": metadata.copy()}
     )
 
     valid_until = submitted_time + timedelta(
-        seconds=g.schema.json['view_submitted_response']['duration']
+        seconds=g.schema.json["view_submitted_response"]["duration"]
     )
 
     item = SubmittedResponse(
-        tx_id=metadata['tx_id'],
+        tx_id=metadata["tx_id"],
         data=encrypted_data,
         valid_until=valid_until.replace(tzinfo=tzutc()),
     )
 
-    current_app.eq['storage'].put(item)
+    current_app.eq["storage"].put(item)
 
 
 def is_view_submitted_response_enabled(schema):
-    view_submitted_response = schema.get('view_submitted_response')
+    view_submitted_response = schema.get("view_submitted_response")
     if view_submitted_response:
-        return view_submitted_response['enabled']
+        return view_submitted_response["enabled"]
 
     return False
 
 
 def _is_submission_viewable(schema, submitted_time):
     if is_view_submitted_response_enabled(schema) and submitted_time:
-        submitted_time = datetime.strptime(submitted_time, '%Y-%m-%dT%H:%M:%S.%f')
+        submitted_time = datetime.strptime(submitted_time, "%Y-%m-%dT%H:%M:%S.%f")
         submission_valid_until = submitted_time + timedelta(
-            seconds=schema['view_submitted_response']['duration']
+            seconds=schema["view_submitted_response"]["duration"]
         )
         return submission_valid_until > datetime.utcnow()
 
@@ -545,14 +545,14 @@ def _render_page(
         current_location=current_location,
         previous_location_url=previous_location_url,
         session_timeout=session_timeout,
-        legal_basis=schema.json.get('legal_basis'),
+        legal_basis=schema.json.get("legal_basis"),
         page_title=page_title,
     )
 
 
 def request_wants_json():
-    best = request.accept_mimetypes.best_match(['application/json', 'text/html'])
+    best = request.accept_mimetypes.best_match(["application/json", "text/html"])
     return (
-        best == 'application/json'
-        and request.accept_mimetypes[best] > request.accept_mimetypes['text/html']
+        best == "application/json"
+        and request.accept_mimetypes[best] > request.accept_mimetypes["text/html"]
     )

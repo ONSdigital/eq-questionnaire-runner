@@ -10,34 +10,34 @@ from app.data_model.questionnaire_store import QuestionnaireStore
 
 def get_basic_input():
     return {
-        'METADATA': {'test': True},
-        'ANSWERS': [{'answer_id': 'test', 'value': 'test'}],
-        'LISTS': [],
-        'PROGRESS': [
+        "METADATA": {"test": True},
+        "ANSWERS": [{"answer_id": "test", "value": "test"}],
+        "LISTS": [],
+        "PROGRESS": [
             {
-                'section_id': 'a-test-section',
-                'list_item_id': 'abc123',
-                'status': CompletionStatus.COMPLETED,
-                'block_ids': ['a-test-block'],
+                "section_id": "a-test-section",
+                "list_item_id": "abc123",
+                "status": CompletionStatus.COMPLETED,
+                "block_ids": ["a-test-block"],
             }
         ],
-        'COLLECTION_METADATA': {'test-meta': 'test'},
+        "COLLECTION_METADATA": {"test-meta": "test"},
     }
 
 
 def get_input_answers_dict():
     return {
-        'METADATA': {'test': True},
-        'ANSWERS': {'test': [{'answer_id': 'test', 'value': 'test'}]},
-        'PROGRESS': [
+        "METADATA": {"test": True},
+        "ANSWERS": {"test": [{"answer_id": "test", "value": "test"}]},
+        "PROGRESS": [
             {
-                'section_id': 'a-test-section',
-                'list_item_id': None,
-                'status': CompletionStatus.COMPLETED,
-                'block_ids': ['a-test-block'],
+                "section_id": "a-test-section",
+                "list_item_id": None,
+                "status": CompletionStatus.COMPLETED,
+                "block_ids": ["a-test-block"],
             }
         ],
-        'COLLECTION_METADATA': {'test-meta': 'test'},
+        "COLLECTION_METADATA": {"test-meta": "test"},
     }
 
 
@@ -55,8 +55,8 @@ class TestQuestionnaireStore(TestCase):
         self.storage.get_user_data = MagicMock(side_effect=get_user_data)
         self.storage.save = MagicMock(side_effect=set_output_data)
 
-        self.input_data = '{}'
-        self.output_data = ''
+        self.input_data = "{}"
+        self.output_data = ""
         self.output_version = None
 
     def test_questionnaire_store_loads_json(self):
@@ -66,20 +66,20 @@ class TestQuestionnaireStore(TestCase):
         # When
         store = QuestionnaireStore(self.storage)
         # Then
-        self.assertEqual(store.metadata.copy(), expected['METADATA'])
-        self.assertEqual(store.collection_metadata, expected['COLLECTION_METADATA'])
-        self.assertEqual(store.answer_store, AnswerStore(expected['ANSWERS']))
+        self.assertEqual(store.metadata.copy(), expected["METADATA"])
+        self.assertEqual(store.collection_metadata, expected["COLLECTION_METADATA"])
+        self.assertEqual(store.answer_store, AnswerStore(expected["ANSWERS"]))
 
-        expected_completed_block_ids = expected['PROGRESS'][0]['block_ids'][0]
+        expected_completed_block_ids = expected["PROGRESS"][0]["block_ids"][0]
 
         self.assertEqual(
             len(
-                store.progress_store.get_completed_block_ids('a-test-section', 'abc123')
+                store.progress_store.get_completed_block_ids("a-test-section", "abc123")
             ),
             1,
         )
         self.assertEqual(
-            store.progress_store.get_completed_block_ids('a-test-section', 'abc123')[0],
+            store.progress_store.get_completed_block_ids("a-test-section", "abc123")[0],
             expected_completed_block_ids,
         )
 
@@ -87,50 +87,50 @@ class TestQuestionnaireStore(TestCase):
         # Given
         expected = get_basic_input()
         expected[
-            'NOT_A_LEGAL_TOP_LEVEL_KEY'
-        ] = 'woop_woop_thats_the_sound_of_the_police'
+            "NOT_A_LEGAL_TOP_LEVEL_KEY"
+        ] = "woop_woop_thats_the_sound_of_the_police"
         self.input_data = json.dumps(expected)
         # When
         store = QuestionnaireStore(self.storage)
         # Then
-        self.assertEqual(store.metadata.copy(), expected['METADATA'])
-        self.assertEqual(store.collection_metadata, expected['COLLECTION_METADATA'])
-        self.assertEqual(store.answer_store, AnswerStore(expected['ANSWERS']))
+        self.assertEqual(store.metadata.copy(), expected["METADATA"])
+        self.assertEqual(store.collection_metadata, expected["COLLECTION_METADATA"])
+        self.assertEqual(store.answer_store, AnswerStore(expected["ANSWERS"]))
 
-        expected_completed_block_ids = expected['PROGRESS'][0]['block_ids'][0]
+        expected_completed_block_ids = expected["PROGRESS"][0]["block_ids"][0]
 
         self.assertEqual(
             len(
-                store.progress_store.get_completed_block_ids('a-test-section', 'abc123')
+                store.progress_store.get_completed_block_ids("a-test-section", "abc123")
             ),
             1,
         )
         self.assertEqual(
-            store.progress_store.get_completed_block_ids('a-test-section', 'abc123')[0],
+            store.progress_store.get_completed_block_ids("a-test-section", "abc123")[0],
             expected_completed_block_ids,
         )
 
     def test_questionnaire_store_missing_keys(self):
         # Given
         expected = get_basic_input()
-        del expected['PROGRESS']
+        del expected["PROGRESS"]
         self.input_data = json.dumps(expected)
         # When
         store = QuestionnaireStore(self.storage)
         # Then
-        self.assertEqual(store.metadata.copy(), expected['METADATA'])
-        self.assertEqual(store.collection_metadata, expected['COLLECTION_METADATA'])
-        self.assertEqual(store.answer_store, AnswerStore(expected['ANSWERS']))
+        self.assertEqual(store.metadata.copy(), expected["METADATA"])
+        self.assertEqual(store.collection_metadata, expected["COLLECTION_METADATA"])
+        self.assertEqual(store.answer_store, AnswerStore(expected["ANSWERS"]))
         self.assertEqual(store.progress_store.serialise(), [])
 
     def test_questionnaire_store_updates_storage(self):
         # Given
         expected = get_basic_input()
         store = QuestionnaireStore(self.storage)
-        store.set_metadata(expected['METADATA'])
-        store.answer_store = AnswerStore(expected['ANSWERS'])
-        store.collection_metadata = expected['COLLECTION_METADATA']
-        store.progress_store = ProgressStore(expected['PROGRESS'])
+        store.set_metadata(expected["METADATA"])
+        store.answer_store = AnswerStore(expected["ANSWERS"])
+        store.collection_metadata = expected["COLLECTION_METADATA"]
+        store.progress_store = ProgressStore(expected["PROGRESS"])
 
         # When
         store.save()  # See setUp - populates self.output_data
@@ -143,14 +143,14 @@ class TestQuestionnaireStore(TestCase):
         class NotSerializable:
             pass
 
-        non_serializable_metadata = {'test': NotSerializable()}
+        non_serializable_metadata = {"test": NotSerializable()}
 
         expected = get_basic_input()
         store = QuestionnaireStore(self.storage)
         store.set_metadata(non_serializable_metadata)
-        store.collection_metadata = expected['COLLECTION_METADATA']
-        store.answer_store = AnswerStore(expected['ANSWERS'])
-        store.progress_store = ProgressStore(expected['PROGRESS'])
+        store.collection_metadata = expected["COLLECTION_METADATA"]
+        store.answer_store = AnswerStore(expected["ANSWERS"])
+        store.progress_store = ProgressStore(expected["PROGRESS"])
 
         # When / Then
         self.assertRaises(TypeError, store.save)
@@ -159,16 +159,16 @@ class TestQuestionnaireStore(TestCase):
         # Given
         expected = get_basic_input()
         store = QuestionnaireStore(self.storage)
-        store.set_metadata(expected['METADATA'])
-        store.collection_metadata = expected['COLLECTION_METADATA']
-        store.answer_store = AnswerStore(expected['ANSWERS'])
-        store.progress_store = ProgressStore(expected['PROGRESS'])
+        store.set_metadata(expected["METADATA"])
+        store.collection_metadata = expected["COLLECTION_METADATA"]
+        store.answer_store = AnswerStore(expected["ANSWERS"])
+        store.progress_store = ProgressStore(expected["PROGRESS"])
 
         # When
         store.delete()  # See setUp - populates self.output_data
 
         # Then
-        self.assertNotIn('a-test-section', store.progress_store)
+        self.assertNotIn("a-test-section", store.progress_store)
         self.assertEqual(store.metadata.copy(), {})
         self.assertEqual(len(store.answer_store), 0)
         self.assertEqual(store.collection_metadata, {})
@@ -177,4 +177,4 @@ class TestQuestionnaireStore(TestCase):
         store = QuestionnaireStore(self.storage)
 
         with self.assertRaises(TypeError):
-            store.metadata['no'] = 'writing'
+            store.metadata["no"] = "writing"
