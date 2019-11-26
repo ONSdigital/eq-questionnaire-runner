@@ -37,10 +37,11 @@ class DateField(FormField):
         metadata,
         answer,
         error_messages,
+        location,
         **kwargs,
     ):
         form_class = get_form(
-            date_form_type, answer, answer_store, metadata, error_messages
+            date_form_type, answer, answer_store, metadata, error_messages, location
         )
         super().__init__(form_class, **kwargs)
 
@@ -104,7 +105,7 @@ class DateForm(Form):
             return None
 
 
-def get_form(form_type, answer, answer_store, metadata, error_messages):
+def get_form(form_type, answer, answer_store, metadata, error_messages, location):
     validate_with = [OptionalForm()]
 
     if answer['mandatory'] is True:
@@ -116,7 +117,7 @@ def get_form(form_type, answer, answer_store, metadata, error_messages):
 
     if 'minimum' in answer or 'maximum' in answer:
         min_max_validation = validate_min_max_date(
-            answer, answer_store, metadata, form_type.value['date_format']
+            answer, answer_store, metadata, form_type.value['date_format'], location
         )
         validate_with.append(min_max_validation)
 
@@ -158,12 +159,12 @@ def get_bespoke_message(answer, message_type):
     return None
 
 
-def validate_min_max_date(answer, answer_store, metadata, date_format):
+def validate_min_max_date(answer, answer_store, metadata, date_format, location):
     messages = None
     if 'validation' in answer:
         messages = answer['validation'].get('messages')
     minimum_date, maximum_date = get_dates_for_single_date_period_validation(
-        answer, answer_store, metadata
+        answer, answer_store, metadata, location
     )
 
     display_format = 'd MMMM yyyy'
@@ -192,7 +193,7 @@ def validate_min_max_date(answer, answer_store, metadata, date_format):
     )
 
 
-def get_dates_for_single_date_period_validation(answer, answer_store, metadata):
+def get_dates_for_single_date_period_validation(answer, answer_store, metadata, location):
     """
     Gets attributes within a minimum or maximum of a date field and validates that the entered date
     is valid.
@@ -206,11 +207,11 @@ def get_dates_for_single_date_period_validation(answer, answer_store, metadata):
 
     if 'minimum' in answer:
         minimum_referenced_date = get_referenced_offset_value(
-            answer['minimum'], answer_store, metadata
+            answer['minimum'], answer_store, metadata, location
         )
     if 'maximum' in answer:
         maximum_referenced_date = get_referenced_offset_value(
-            answer['maximum'], answer_store, metadata
+            answer['maximum'], answer_store, metadata, location
         )
 
     # Extra runtime validation that will catch invalid schemas
@@ -226,7 +227,7 @@ def get_dates_for_single_date_period_validation(answer, answer_store, metadata):
     return minimum_referenced_date, maximum_referenced_date
 
 
-def get_referenced_offset_value(answer_min_or_max, answer_store, metadata):
+def get_referenced_offset_value(answer_min_or_max, answer_store, metadata, location):
     """
     Gets value of the referenced date type, whether it is a value,
     id of an answer or a meta date. Then adds/subtracts offset from that value and returns
@@ -250,7 +251,7 @@ def get_referenced_offset_value(answer_min_or_max, answer_store, metadata):
     elif 'answer_id' in answer_min_or_max:
         schema = load_schema_from_metadata(metadata)
         answer_id = answer_min_or_max['answer_id']
-        value = get_answer_value(answer_id, answer_store, schema)
+        value = get_answer_value(answer_id, answer_store, schema, location.list_item_id)
 
     value = convert_to_datetime(value)
 

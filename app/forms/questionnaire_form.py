@@ -306,7 +306,7 @@ class QuestionnaireForm(FlaskForm):
 
 
 # pylint: disable=too-many-locals
-def get_answer_fields(question, data, error_messages, answer_store, metadata):
+def get_answer_fields(question, data, error_messages, answer_store, metadata, location):
     answer_fields = {}
     if not question:
         return answer_fields
@@ -340,13 +340,14 @@ def get_answer_fields(question, data, error_messages, answer_store, metadata):
                     detail_answer_error_messages,
                     answer_store,
                     metadata,
+                    location,
                     disable_validation=disable_validation,
                 )
 
         name = answer.get('label') or question.get('title')
 
         answer_fields[answer['id']] = get_field(
-            answer, name, error_messages, answer_store, metadata
+            answer, name, error_messages, answer_store, metadata, location
         )
     return answer_fields
 
@@ -377,7 +378,7 @@ def map_detail_answer_errors(errors, answer_json):
 
 
 def generate_form(
-    schema, question_schema, answer_store, metadata, data=None, formdata=None
+    schema, question_schema, answer_store, metadata, location, data=None, formdata=None,
 ):
     class DynamicForm(QuestionnaireForm):
         pass
@@ -388,6 +389,7 @@ def generate_form(
         schema.error_messages,
         answer_store,
         metadata,
+        location
     )
 
     for answer_id, field in answer_fields.items():

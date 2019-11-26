@@ -336,7 +336,7 @@ def get_answer_for_answer_id(answer_id, answer_store, schema, list_item_id):
 
 
 def get_answer_value(
-    answer_id, answer_store, schema, routing_path=None, list_item_id=None
+    answer_id, answer_store, schema, list_item_id=None, routing_path=None
 ):
     answer = get_answer_for_answer_id(answer_id, answer_store, schema, list_item_id)
 
