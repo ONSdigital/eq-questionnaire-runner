@@ -374,7 +374,7 @@
                                             {
                                                 "id": "age-confirm-answer",
                                                 "condition": "equals",
-                                                "value": "no"
+                                                "value": "No"
                                             }
                                         ]
                                     }
