@@ -86,10 +86,10 @@ def _submit_data(user):
             raise SubmissionFailedException()
 
         get_questionnaire_store(user.user_id, user.user_ik).delete()
-        logger.info("successfully flushed answers")
+        logger.info('successfully flushed answers')
         return True
 
-    logger.info("no answers found to flush")
+    logger.info('no answers found to flush')
     return False
 
 
