@@ -1,5 +1,4 @@
 from flask import url_for
-from werkzeug.utils import cached_property
 
 from app.questionnaire.location import Location
 from app.questionnaire.path_finder import PathFinder
