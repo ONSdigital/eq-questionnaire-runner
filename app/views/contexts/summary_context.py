@@ -1,22 +1,30 @@
 from flask import url_for
 
 from app.questionnaire.location import Location
-from app.questionnaire.path_finder import PathFinder
-from app.questionnaire.questionnaire_schema import QuestionnaireSchema
-from app.views.contexts.summary.group import Group
 from app.questionnaire.placeholder_renderer import PlaceholderRenderer
+from app.questionnaire.questionnaire_schema import QuestionnaireSchema
+from app.questionnaire.router import Router
 from app.views.contexts.list_collector import build_list_items_summary_context
+from app.views.contexts.summary.group import Group
 
 
 class SummaryContext:
-    def __init__(self, language, schema, answer_store, list_store, metadata):
+    def __init__(
+        self, language, schema, answer_store, list_store, progress_store, metadata
+    ):
         self._language = language
+        self._schema = schema
         self._answer_store = answer_store
         self._list_store = list_store
+        self._progress_store = progress_store
         self._metadata = metadata
-        self._schema = schema
-        self._path_finder = PathFinder(
-            self._schema, self._answer_store, self._metadata, self._list_store
+
+        self._router = Router(
+            self._schema,
+            self._answer_store,
+            self._list_store,
+            self._progress_store,
+            self._metadata,
         )
 
         self._placeholder_renderer = PlaceholderRenderer(
@@ -33,7 +41,7 @@ class SummaryContext:
         Does not support generating multiple sections at a time (i.e. passing no list_item_id for repeating section).
         """
         section = self._schema.get_section(location.section_id)
-        section_path = self._path_finder.routing_path(
+        section_path = self._router.path_finder.routing_path(
             location.section_id, location.list_item_id
         )
 
@@ -55,7 +63,7 @@ class SummaryContext:
         """ NB: Does not support repeating sections """
         all_groups = []
 
-        for section_id in self._path_finder.enabled_section_ids:
+        for section_id in self._router.enabled_section_ids:
             all_groups.extend(
                 self.build_groups_for_location(Location(section_id=section_id))
             )
@@ -80,7 +88,7 @@ class SummaryContext:
         visible_list_collector_blocks = self._schema.get_visible_list_blocks_for_section(
             section
         )
-        section_path = self._path_finder.routing_path(
+        section_path = self._router.path_finder.routing_path(
             section['id'], current_location.list_item_id
         )
         section_path_block_ids = [location.block_id for location in section_path]

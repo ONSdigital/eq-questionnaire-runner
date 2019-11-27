@@ -1,7 +1,6 @@
 from typing import List, Mapping, Optional
 
 from structlog import get_logger
-from werkzeug.utils import cached_property
 
 from app.data_model.answer_store import AnswerStore
 from app.data_model.list_store import ListStore
@@ -13,7 +12,6 @@ from app.questionnaire.rules import (
     evaluate_goto,
     evaluate_skip_conditions,
     is_goto_rule,
-    is_section_enabled,
 )
 
 logger = get_logger()
@@ -24,35 +22,15 @@ class PathFinder:
         self,
         schema: QuestionnaireSchema,
         answer_store: AnswerStore,
+        list_store: ListStore,
+        progress_store: ProgressStore,
         metadata: Mapping,
-        progress_store: ProgressStore = None,
-        list_store: ListStore = None,
     ):
         self.answer_store = answer_store
         self.metadata = metadata
         self.schema = schema
         self.progress_store = progress_store
         self.list_store = list_store
-
-    @cached_property
-    def enabled_sections(self):
-        all_sections = self.schema.get_sections()
-
-        return [
-            section
-            for section in all_sections
-            if is_section_enabled(
-                section=section,
-                answer_store=self.answer_store,
-                list_store=self.list_store,
-                metadata=self.metadata,
-                schema=self.schema,
-            )
-        ]
-
-    @cached_property
-    def enabled_section_ids(self):
-        return [section['id'] for section in self.enabled_sections]
 
     def is_path_complete(self, path):
         location = self.get_first_incomplete_location(path)
@@ -85,24 +63,6 @@ class PathFinder:
                     return location
 
         return None
-
-    def full_routing_path(self):
-        path = []
-        for section_id in self.enabled_section_ids:
-
-            repeating_list = self.schema.get_repeating_list_for_section(section_id)
-
-            if repeating_list:
-                for list_item_id in self.list_store[repeating_list].items:
-                    path = path + list(
-                        self.routing_path(
-                            section_id=section_id, list_item_id=list_item_id
-                        )
-                    )
-            else:
-                path = path + list(self.routing_path(section_id=section_id))
-
-        return path
 
     def routing_path(
         self, section_id: str, list_item_id: Optional[str] = None

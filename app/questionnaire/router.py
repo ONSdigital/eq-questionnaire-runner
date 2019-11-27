@@ -1,22 +1,64 @@
 from flask import url_for
+from werkzeug.utils import cached_property
 
 from app.questionnaire.location import Location
+from app.questionnaire.path_finder import PathFinder
 from app.questionnaire.relationship_router import RelationshipRouter
+from app.questionnaire.rules import evaluate_when_rules
 
 
 class Router:
-    def __init__(self, schema, progress_store, list_store, path_finder):
+    def __init__(self, schema, answer_store, list_store, progress_store, metadata):
         self._schema = schema
-        self._progress_store = progress_store
+        self._answer_store = answer_store
         self._list_store = list_store
-        self._path_finder = path_finder
+        self._progress_store = progress_store
+        self._metadata = metadata
+
+        self._path_finder = PathFinder(
+            self._schema,
+            self._answer_store,
+            self._list_store,
+            self._progress_store,
+            self._metadata,
+        )
+
+    @property
+    def path_finder(self):
+        return self._path_finder
+
+    @property
+    def enabled_section_ids(self):
+        all_sections = self._schema.get_sections()
+
+        return [
+            section['id']
+            for section in all_sections
+            if self._is_section_enabled(section=section)
+        ]
+
+    def _is_section_enabled(self, section):
+        section_enabled_conditions = section.get('enabled', [])
+        if not section_enabled_conditions:
+            return True
+
+        for condition in section_enabled_conditions:
+            if evaluate_when_rules(
+                condition['when'],
+                self._schema,
+                self._metadata,
+                self._answer_store,
+                self._list_store,
+            ):
+                return True
+        return False
 
     def can_access_location(self, location: Location, routing_path):
         """
         Checks whether the location is valid and accessible.
         :return: boolean
         """
-        if location.section_id not in self._path_finder.enabled_section_ids:
+        if location.section_id not in self.enabled_section_ids:
             return False
 
         if (
@@ -185,6 +227,26 @@ class Router:
     ) -> Location:
         return self._get_location_of_section_summary(routing_path) or routing_path[0]
 
+    def full_routing_path(self):
+        path = []
+        for section_id in self.enabled_section_ids:
+
+            repeating_list = self._schema.get_repeating_list_for_section(section_id)
+
+            if repeating_list:
+                for list_item_id in self._list_store[repeating_list].items:
+                    path = path + list(
+                        self._path_finder.routing_path(
+                            section_id=section_id, list_item_id=list_item_id
+                        )
+                    )
+            else:
+                path = path + list(
+                    self._path_finder.routing_path(section_id=section_id)
+                )
+
+        return path
+
     def _get_allowable_path(self, routing_path):
         """
         The allowable path is the completed path plus the next location
@@ -207,23 +269,22 @@ class Router:
         return allowable_path
 
     def _get_incomplete_section_keys(self):
-        all_enabled_section_keys = []
-        for section in self._path_finder.enabled_sections:
+        enabled_section_keys = []
+        for section_id in self.enabled_section_ids:
 
-            section_id = section['id']
             repeating_list = self._schema.get_repeating_list_for_section(section_id)
 
             if repeating_list:
                 for list_item_id in self._list_store[repeating_list].items:
                     section_key = (section_id, list_item_id)
-                    all_enabled_section_keys.append(section_key)
+                    enabled_section_keys.append(section_key)
             else:
                 section_key = (section_id, None)
-                all_enabled_section_keys.append(section_key)
+                enabled_section_keys.append(section_key)
 
         incomplete_section_keys = [
             (section_id, list_item_id)
-            for section_id, list_item_id in all_enabled_section_keys
+            for section_id, list_item_id in enabled_section_keys
             if not self._progress_store.is_section_complete(section_id, list_item_id)
         ]
 

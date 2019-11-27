@@ -11,9 +11,12 @@ from app.utilities.schema import load_schema_from_name
 from tests.app.app_context_test_case import AppContextTestCase
 
 
-class TestPathFinder(
-    AppContextTestCase
-):  # pylint: disable=too-many-public-methods, too-many-lines
+class TestPathFinder(AppContextTestCase):
+    answer_store = AnswerStore()
+    list_store = ListStore()
+    progress_store = ProgressStore()
+    metadata = {}
+
     def test_simple_path(self):
         schema = load_schema_from_name('test_textfield')
         progress_store = ProgressStore(
@@ -27,7 +30,7 @@ class TestPathFinder(
             ]
         )
         path_finder = PathFinder(
-            schema, AnswerStore(), metadata={}, progress_store=progress_store
+            schema, self.answer_store, self.list_store, progress_store, self.metadata
         )
 
         section_id = schema.get_section_id_for_block_id('name-block')
@@ -45,7 +48,11 @@ class TestPathFinder(
         current_section = schema.get_section('introduction-section')
 
         path_finder = PathFinder(
-            schema, AnswerStore(), metadata={}, progress_store=ProgressStore()
+            schema,
+            self.answer_store,
+            self.list_store,
+            self.progress_store,
+            self.metadata,
         )
 
         blocks = [
@@ -59,7 +66,11 @@ class TestPathFinder(
         schema = load_schema_from_name('test_checkbox')
         current_section = schema.get_section('default-section')
         path_finder = PathFinder(
-            schema, AnswerStore(), metadata={}, progress_store=ProgressStore()
+            schema,
+            self.answer_store,
+            self.list_store,
+            self.progress_store,
+            self.metadata,
         )
 
         with patch('app.questionnaire.rules.evaluate_when_rules', return_value=False):
@@ -80,8 +91,8 @@ class TestPathFinder(
         ]
 
         answer = Answer(answer_id='answer', value=123)
-        answers = AnswerStore()
-        answers.add_or_update(answer)
+        answer_store = AnswerStore()
+        answer_store.add_or_update(answer)
         progress_store = ProgressStore(
             [
                 {
@@ -93,7 +104,7 @@ class TestPathFinder(
             ]
         )
         path_finder = PathFinder(
-            schema, answer_store=answers, metadata={}, progress_store=progress_store
+            schema, answer_store, self.list_store, progress_store, self.metadata
         )
 
         routing_path = path_finder.routing_path(section_id=section_id)
@@ -112,12 +123,12 @@ class TestPathFinder(
 
         answer_1 = Answer(answer_id='answer', value=123)
 
-        answers = AnswerStore()
-        answers.add_or_update(answer_1)
+        answer_store = AnswerStore()
+        answer_store.add_or_update(answer_1)
 
         # When
         path_finder = PathFinder(
-            schema, answer_store=answers, metadata={}, progress_store=ProgressStore()
+            schema, answer_store, self.list_store, self.progress_store, self.metadata
         )
         routing_path = path_finder.routing_path(section_id=section_id)
 
@@ -146,7 +157,9 @@ class TestPathFinder(
             Location(section_id='introduction-section', block_id='confirmation'),
         ]
 
-        path_finder = PathFinder(schema, AnswerStore(), {}, progress_store)
+        path_finder = PathFinder(
+            schema, self.answer_store, self.list_store, progress_store, self.metadata
+        )
         routing_path = path_finder.routing_path(section_id=section_id)
 
         self.assertEqual(routing_path, expected_routing_path)
@@ -161,7 +174,6 @@ class TestPathFinder(
             Location(section_id='default-section', block_id='summary'),
         ]
 
-        answers = AnswerStore()
         progress_store = ProgressStore(
             [
                 {
@@ -173,7 +185,7 @@ class TestPathFinder(
             ]
         )
         path_finder = PathFinder(
-            schema, answer_store=answers, metadata={}, progress_store=progress_store
+            schema, self.answer_store, self.list_store, progress_store, self.metadata
         )
         routing_path = path_finder.routing_path(section_id=section_id)
 
@@ -181,8 +193,6 @@ class TestPathFinder(
 
     def test_routing_path_with_repeating_sections(self):
         schema = load_schema_from_name('test_repeating_sections_with_hub_and_spoke')
-
-        answers = AnswerStore()
 
         progress_store = ProgressStore(
             [
@@ -199,7 +209,7 @@ class TestPathFinder(
             ]
         )
         path_finder = PathFinder(
-            schema, answer_store=answers, metadata={}, progress_store=progress_store
+            schema, self.answer_store, self.list_store, progress_store, self.metadata
         )
 
         repeating_section_id = 'personal-details-section'
@@ -254,9 +264,9 @@ class TestPathFinder(
         answer_1 = Answer(answer_id='mandatory-checkbox-answer', value='Cheese')
         answer_2 = Answer(answer_id='non-mandatory-checkbox-answer', value='deep pan')
 
-        answers = AnswerStore()
-        answers.add_or_update(answer_1)
-        answers.add_or_update(answer_2)
+        answer_Store = AnswerStore()
+        answer_Store.add_or_update(answer_1)
+        answer_Store.add_or_update(answer_2)
 
         progress_store = ProgressStore(
             [
@@ -270,7 +280,7 @@ class TestPathFinder(
         )
 
         path_finder = PathFinder(
-            schema, answer_store=answers, metadata={}, progress_store=progress_store
+            schema, answer_Store, self.list_store, progress_store, self.metadata
         )
         routing_path = path_finder.routing_path(section_id=section_id)
 
@@ -296,10 +306,9 @@ class TestPathFinder(
                 }
             ]
         )
-        metadata = {}
 
         path_finder = PathFinder(
-            schema, AnswerStore(), metadata=metadata, progress_store=progress_store
+            schema, self.answer_store, self.list_store, progress_store, self.metadata
         )
         routing_path = path_finder.routing_path(section_id=section_id)
 
@@ -327,10 +336,7 @@ class TestPathFinder(
 
         # When
         path_finder = PathFinder(
-            schema,
-            answer_store=answer_store,
-            metadata={},
-            progress_store=progress_store,
+            schema, answer_store, self.list_store, progress_store, self.metadata
         )
         routing_path = path_finder.routing_path(section_id=section_id)
 
@@ -368,10 +374,7 @@ class TestPathFinder(
 
         # When
         path_finder = PathFinder(
-            schema,
-            answer_store=answer_store,
-            metadata={},
-            progress_store=progress_store,
+            schema, answer_store, self.list_store, progress_store, self.metadata
         )
         routing_path = path_finder.routing_path(section_id=section_id)
 
@@ -409,10 +412,7 @@ class TestPathFinder(
 
         # When
         path_finder = PathFinder(
-            schema,
-            answer_store=answer_store,
-            metadata={},
-            progress_store=progress_store,
+            schema, answer_store, self.list_store, progress_store, self.metadata
         )
         routing_path = path_finder.routing_path(section_id=section_id)
 
@@ -439,10 +439,7 @@ class TestPathFinder(
 
         # When
         path_finder = PathFinder(
-            schema,
-            answer_store=answer_store,
-            metadata={},
-            progress_store=ProgressStore(),
+            schema, answer_store, self.list_store, self.progress_store, self.metadata
         )
 
         # Then
@@ -475,10 +472,7 @@ class TestPathFinder(
 
         # When i build the path
         path_finder = PathFinder(
-            schema,
-            answer_store=answer_store,
-            metadata={},
-            progress_store=ProgressStore(),
+            schema, answer_store, self.list_store, self.progress_store, self.metadata
         )
         path = path_finder.routing_path(section_id=section_id)
 
@@ -516,7 +510,7 @@ class TestPathFinder(
         answer_store.add_or_update(confirm_zero_answer)
 
         path_finder = PathFinder(
-            schema, answer_store, metadata={}, progress_store=progress_store
+            schema, answer_store, self.list_store, progress_store, self.metadata
         )
 
         self.assertEqual(
@@ -551,182 +545,3 @@ class TestPathFinder(
             [progress_store.get_completed_block_ids(section_id='default-section')[0]],
         )
         self.assertEqual(len(path_finder.answer_store), 1)
-
-    def test_full_routing_path_without_repeating_sections(self):
-        schema = load_schema_from_name('test_checkbox')
-
-        path_finder = PathFinder(
-            schema,
-            answer_store=AnswerStore(),
-            metadata={},
-            progress_store=ProgressStore(),
-        )
-
-        routing_path = path_finder.full_routing_path()
-
-        expected_path = [
-            Location(
-                section_id='default-section',
-                block_id='mandatory-checkbox',
-                list_name=None,
-                list_item_id=None,
-            ),
-            Location(
-                section_id='default-section',
-                block_id='non-mandatory-checkbox',
-                list_name=None,
-                list_item_id=None,
-            ),
-            Location(
-                section_id='default-section',
-                block_id='summary',
-                list_name=None,
-                list_item_id=None,
-            ),
-        ]
-
-        self.assertEqual(routing_path, expected_path)
-
-    def test_full_routing_path_with_repeating_sections(self):
-        schema = load_schema_from_name('test_repeating_sections_with_hub_and_spoke')
-
-        list_store = ListStore(
-            [
-                {
-                    'items': ['abc123', '123abc'],
-                    'name': 'people',
-                    'primary_person': 'abc123',
-                }
-            ]
-        )
-
-        path_finder = PathFinder(
-            schema,
-            answer_store=AnswerStore(),
-            list_store=list_store,
-            metadata={},
-            progress_store=ProgressStore(),
-        )
-
-        routing_path = path_finder.full_routing_path()
-
-        expected_path = [
-            Location(
-                section_id='section',
-                block_id='primary-person-list-collector',
-                list_name=None,
-                list_item_id=None,
-            ),
-            Location(
-                section_id='section',
-                block_id='list-collector',
-                list_name=None,
-                list_item_id=None,
-            ),
-            Location(
-                section_id='section',
-                block_id='next-interstitial',
-                list_name=None,
-                list_item_id=None,
-            ),
-            Location(
-                section_id='section',
-                block_id='another-list-collector-block',
-                list_name=None,
-                list_item_id=None,
-            ),
-            Location(
-                section_id='section',
-                block_id='visitors-block',
-                list_name=None,
-                list_item_id=None,
-            ),
-            Location(
-                section_id='personal-details-section',
-                block_id='proxy',
-                list_name='people',
-                list_item_id='abc123',
-            ),
-            Location(
-                section_id='personal-details-section',
-                block_id='date-of-birth',
-                list_name='people',
-                list_item_id='abc123',
-            ),
-            Location(
-                section_id='personal-details-section',
-                block_id='confirm-dob',
-                list_name='people',
-                list_item_id='abc123',
-            ),
-            Location(
-                section_id='personal-details-section',
-                block_id='sex',
-                list_name='people',
-                list_item_id='abc123',
-            ),
-            Location(
-                section_id='personal-details-section',
-                block_id='personal-summary',
-                list_name='people',
-                list_item_id='abc123',
-            ),
-            Location(
-                section_id='personal-details-section',
-                block_id='proxy',
-                list_name='people',
-                list_item_id='123abc',
-            ),
-            Location(
-                section_id='personal-details-section',
-                block_id='date-of-birth',
-                list_name='people',
-                list_item_id='123abc',
-            ),
-            Location(
-                section_id='personal-details-section',
-                block_id='confirm-dob',
-                list_name='people',
-                list_item_id='123abc',
-            ),
-            Location(
-                section_id='personal-details-section',
-                block_id='sex',
-                list_name='people',
-                list_item_id='123abc',
-            ),
-            Location(
-                section_id='personal-details-section',
-                block_id='personal-summary',
-                list_name='people',
-                list_item_id='123abc',
-            ),
-        ]
-
-        self.assertEqual(routing_path, expected_path)
-
-    def test_enabled_section_ids(self):
-        schema = load_schema_from_name('test_section_enabled_checkbox')
-        progress_store = ProgressStore(
-            [
-                {
-                    'section_id': 'section-1',
-                    'block_ids': ['section-1-block'],
-                    'status': 'COMPLETED',
-                }
-            ]
-        )
-
-        answer_store = AnswerStore(
-            [{'answer_id': 'section-1-answer', 'value': ['Section 2']}]
-        )
-        path_finder = PathFinder(
-            schema=schema,
-            answer_store=answer_store,
-            metadata={},
-            progress_store=progress_store,
-        )
-
-        expected_section_ids = ['section-1', 'section-2', 'summary-section']
-
-        self.assertEqual(path_finder.enabled_section_ids, expected_section_ids)

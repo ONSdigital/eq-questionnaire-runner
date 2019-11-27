@@ -14,7 +14,7 @@ describe('Feature: Section Enabled Based On Checkbox Answers', () => {
       $(sectionOne.section1Section2()).click();
       $(sectionOne.submit()).click();
 
-      expect(browser.getUrl()).to.contain('section-2-blocks');
+      expect(browser.getUrl()).to.contain('section-2-block');
     });
 
   });

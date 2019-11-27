@@ -23,7 +23,7 @@ from app.authentication.no_token_exception import NoTokenException
 from app.data_model.answer_store import AnswerStore
 from app.data_model.app_models import SubmittedResponse
 from app.data_model.list_store import ListStore
-from app.data_model.progress_store import CompletionStatus
+from app.data_model.progress_store import CompletionStatus, ProgressStore
 from app.globals import (
     get_answer_store,
     get_metadata,
@@ -38,7 +38,6 @@ from app.helpers.session_helpers import with_questionnaire_store
 from app.helpers.template_helper import render_template
 from app.keys import KEY_PURPOSE_SUBMISSION
 from app.questionnaire.location import InvalidLocationException
-from app.questionnaire.path_finder import PathFinder
 from app.questionnaire.router import Router
 from app.storage.storage_encryption import StorageEncryption
 from app.submitter.converter import convert_answers
@@ -111,19 +110,12 @@ def before_post_submission_request():
 @with_questionnaire_store
 @with_schema
 def get_questionnaire(schema, questionnaire_store):
-    path_finder = PathFinder(
-        schema,
-        questionnaire_store.answer_store,
-        questionnaire_store.metadata,
-        questionnaire_store.progress_store,
-        questionnaire_store.list_store,
-    )
-
     router = Router(
         schema,
-        progress_store=questionnaire_store.progress_store,
-        list_store=questionnaire_store.list_store,
-        path_finder=path_finder,
+        questionnaire_store.answer_store,
+        questionnaire_store.list_store,
+        questionnaire_store.progress_store,
+        questionnaire_store.metadata,
     )
 
     if not router.can_access_hub():
@@ -140,7 +132,7 @@ def get_questionnaire(schema, questionnaire_store):
         metadata=questionnaire_store.metadata,
         schema=schema,
         survey_complete=router.is_survey_complete(),
-        path_finder=path_finder,
+        enabled_section_ids=router.enabled_section_ids,
     )
 
     return render_template('hub', content=hub.get_context())
@@ -157,23 +149,16 @@ def post_questionnaire(schema, questionnaire_store):
     ):
         return redirect(url_for('session.get_sign_out'))
 
-    path_finder = PathFinder(
-        schema,
-        questionnaire_store.answer_store,
-        questionnaire_store.metadata,
-        questionnaire_store.progress_store,
-        questionnaire_store.list_store,
-    )
-
     router = Router(
         schema,
-        progress_store=questionnaire_store.progress_store,
-        list_store=questionnaire_store.list_store,
-        path_finder=path_finder,
+        questionnaire_store.answer_store,
+        questionnaire_store.list_store,
+        questionnaire_store.progress_store,
+        questionnaire_store.metadata,
     )
 
     if schema.is_hub_enabled() and router.is_survey_complete():
-        return submit_answers(schema, questionnaire_store, path_finder)
+        return submit_answers(schema, questionnaire_store, router.full_routing_path())
 
     return redirect(router.get_first_incomplete_location_in_survey().url())
 
@@ -184,19 +169,12 @@ def post_questionnaire(schema, questionnaire_store):
 @with_questionnaire_store
 @with_schema
 def get_section(schema, questionnaire_store, section_id, list_item_id=None):
-    path_finder = PathFinder(
-        schema,
-        questionnaire_store.answer_store,
-        questionnaire_store.metadata,
-        questionnaire_store.progress_store,
-        questionnaire_store.list_store,
-    )
-
     router = Router(
         schema,
-        progress_store=questionnaire_store.progress_store,
-        list_store=questionnaire_store.list_store,
-        path_finder=path_finder,
+        questionnaire_store.answer_store,
+        questionnaire_store.list_store,
+        questionnaire_store.progress_store,
+        questionnaire_store.metadata,
     )
 
     if not schema.is_hub_enabled():
@@ -205,10 +183,10 @@ def get_section(schema, questionnaire_store, section_id, list_item_id=None):
 
     section = schema.get_section(section_id)
 
-    if not section or section_id not in path_finder.enabled_section_ids:
+    if not section or section_id not in router.enabled_section_ids:
         return redirect(url_for('.get_questionnaire'))
 
-    routing_path = path_finder.routing_path(
+    routing_path = router.path_finder.routing_path(
         section_id=section_id, list_item_id=list_item_id
     )
     section_status = questionnaire_store.progress_store.get_section_status(
@@ -285,7 +263,9 @@ def block(schema, questionnaire_store, block_id, list_name=None, list_item_id=No
         return redirect(url_for('session.get_sign_out'))
 
     if block_handler.block['type'] in END_BLOCKS:
-        return submit_answers(schema, questionnaire_store, block_handler.path_finder)
+        return submit_answers(
+            schema, questionnaire_store, block_handler.router.full_routing_path()
+        )
 
     if block_handler.form.data:
         block_handler.set_started_at_metadata()
@@ -416,11 +396,17 @@ def get_view_submission(schema):  # pylint: too-many-locals
             submitted_data = json.loads(submitted_data)
             answer_store = AnswerStore(submitted_data.get('answers'))
             list_store = ListStore(submitted_data.get('lists'))
+            progress_store = ProgressStore(submitted_data.get('progress'))
 
             metadata = submitted_data.get('metadata')
             language_code = get_session_store().session_data.language_code
             summary_context = SummaryContext(
-                language_code, schema, answer_store, list_store, metadata
+                language_code,
+                schema,
+                answer_store,
+                list_store,
+                progress_store,
+                metadata,
             )
 
             summary_rendered_context = summary_context.build_all_groups()
@@ -473,11 +459,10 @@ def _generate_wtf_form(block_schema, schema, current_location):
     )
 
 
-def submit_answers(schema, questionnaire_store, path_finder):
+def submit_answers(schema, questionnaire_store, full_routing_path):
     answer_store = questionnaire_store.answer_store
     list_store = questionnaire_store.list_store
     metadata = questionnaire_store.metadata
-    full_routing_path = path_finder.full_routing_path()
 
     message = json.dumps(
         convert_answers(schema, questionnaire_store, full_routing_path), for_json=True

@@ -4,28 +4,26 @@ from app.data_model.answer_store import AnswerStore
 from app.data_model.list_store import ListStore
 from app.data_model.progress_store import ProgressStore, CompletionStatus
 from app.questionnaire.location import Location
-from app.questionnaire.path_finder import PathFinder
 from app.questionnaire.router import Router
 from app.utilities.schema import load_schema_from_name
 from tests.app.app_context_test_case import AppContextTestCase
 
 
-class TestRouter(AppContextTestCase):
+class TestRouter(AppContextTestCase):  # pylint: disable=too-many-public-methods
+    answer_store = AnswerStore()
     list_store = ListStore()
     progress_store = ProgressStore()
-    answer_store = AnswerStore()
     metadata = {}
 
     def test_can_access_location(self):
         schema = load_schema_from_name('test_textfield')
-        path_finder = PathFinder(
+        router = Router(
             schema,
             self.answer_store,
-            self.metadata,
-            self.progress_store,
             self.list_store,
+            self.progress_store,
+            self.metadata,
         )
-        router = Router(schema, self.progress_store, self.list_store, path_finder)
 
         current_location = Location(section_id='default-section', block_id='name-block')
         routing_path = [
@@ -48,12 +46,9 @@ class TestRouter(AppContextTestCase):
                 }
             ]
         )
-
-        path_finder = PathFinder(
-            schema, self.answer_store, self.metadata, self.progress_store, list_store
+        router = Router(
+            schema, self.answer_store, list_store, self.progress_store, self.metadata
         )
-
-        router = Router(schema, self.progress_store, list_store, path_finder)
 
         current_location = Location(
             section_id='personal-details-section',
@@ -68,13 +63,13 @@ class TestRouter(AppContextTestCase):
     def test_cant_access_location_section_disabled(self):
         schema = load_schema_from_name('test_section_enabled_checkbox')
 
-        list_store = ListStore()
-
-        path_finder = PathFinder(
-            schema, self.answer_store, self.metadata, self.progress_store, list_store
+        router = Router(
+            schema,
+            self.answer_store,
+            self.list_store,
+            self.progress_store,
+            self.metadata,
         )
-
-        router = Router(schema, self.progress_store, list_store, path_finder)
 
         current_location = Location(
             section_id='section-2', block_id='section-2-block', list_item_id=None
@@ -87,14 +82,13 @@ class TestRouter(AppContextTestCase):
 
     def test_cant_access_location_invalid_list_item_id(self):
         schema = load_schema_from_name('test_textfield')
-        path_finder = PathFinder(
+        router = Router(
             schema,
             self.answer_store,
-            self.metadata,
-            self.progress_store,
             self.list_store,
+            self.progress_store,
+            self.metadata,
         )
-        router = Router(schema, self.progress_store, self.list_store, path_finder)
 
         current_location = Location(section_id='default-section', block_id='name-block')
         routing_path = []
@@ -104,14 +98,14 @@ class TestRouter(AppContextTestCase):
 
     def test_cant_access_location_not_on_allowable_path(self):
         schema = load_schema_from_name('test_unit_patterns')
-        path_finder = PathFinder(
+
+        router = Router(
             schema,
             self.answer_store,
-            self.metadata,
-            self.progress_store,
             self.list_store,
+            self.progress_store,
+            self.metadata,
         )
-        router = Router(schema, self.progress_store, self.list_store, path_finder)
 
         current_location = Location(
             section_id='default-section', block_id='set-duration-units-block'
@@ -140,11 +134,9 @@ class TestRouter(AppContextTestCase):
             ]
         )
 
-        path_finder = PathFinder(
-            schema, self.answer_store, self.metadata, progress_store, self.list_store
+        router = Router(
+            schema, self.answer_store, self.list_store, progress_store, self.metadata
         )
-
-        router = Router(schema, progress_store, self.list_store, path_finder)
 
         current_location = Location(section_id='default-section', block_id='name-block')
         routing_path = [
@@ -160,14 +152,14 @@ class TestRouter(AppContextTestCase):
 
     def test_previous_location_url(self):
         schema = load_schema_from_name('test_textfield')
-        path_finder = PathFinder(
+
+        router = Router(
             schema,
             self.answer_store,
-            self.metadata,
-            self.progress_store,
             self.list_store,
+            self.progress_store,
+            self.metadata,
         )
-        router = Router(schema, self.progress_store, self.list_store, path_finder)
 
         current_location = Location(section_id='default-section', block_id='summary')
         routing_path = [
@@ -185,14 +177,14 @@ class TestRouter(AppContextTestCase):
 
     def test_previous_location_with_hub_enabled(self):
         schema = load_schema_from_name('test_hub_and_spoke')
-        path_finder = PathFinder(
+
+        router = Router(
             schema,
             self.answer_store,
-            self.metadata,
-            self.progress_store,
             self.list_store,
+            self.progress_store,
+            self.metadata,
         )
-        router = Router(schema, self.progress_store, self.list_store, path_finder)
 
         current_location = Location(
             section_id='employment-section', block_id='employment-status'
@@ -211,15 +203,13 @@ class TestRouter(AppContextTestCase):
     def test_is_survey_not_complete(self):
         schema = load_schema_from_name('test_textfield')
 
-        path_finder = PathFinder(
+        router = Router(
             schema,
             self.answer_store,
-            self.metadata,
-            self.progress_store,
             self.list_store,
+            self.progress_store,
+            self.metadata,
         )
-
-        router = Router(schema, self.progress_store, self.list_store, path_finder)
 
         is_survey_complete = router.is_survey_complete()
 
@@ -238,11 +228,9 @@ class TestRouter(AppContextTestCase):
             ]
         )
 
-        path_finder = PathFinder(
-            schema, self.answer_store, self.metadata, progress_store, self.list_store
+        router = Router(
+            schema, self.answer_store, self.list_store, progress_store, self.metadata
         )
-
-        router = Router(schema, progress_store, self.list_store, path_finder)
 
         is_survey_complete = router.is_survey_complete()
 
@@ -271,11 +259,9 @@ class TestRouter(AppContextTestCase):
             ]
         )
 
-        path_finder = PathFinder(
-            schema, self.answer_store, self.metadata, progress_store, list_store
+        router = Router(
+            schema, self.answer_store, list_store, progress_store, self.metadata
         )
-
-        router = Router(schema, progress_store, list_store, path_finder)
 
         is_survey_complete = router.is_survey_complete()
 
@@ -309,11 +295,9 @@ class TestRouter(AppContextTestCase):
             [{'items': ['abc123'], 'name': 'people', 'primary_person': 'abc123'}]
         )
 
-        path_finder = PathFinder(
-            schema, self.answer_store, self.metadata, progress_store, list_store
+        router = Router(
+            schema, self.answer_store, list_store, progress_store, self.metadata
         )
-
-        router = Router(schema, progress_store, list_store, path_finder)
 
         is_survey_complete = router.is_survey_complete()
 
@@ -345,11 +329,9 @@ class TestRouter(AppContextTestCase):
             ]
         )
 
-        path_finder = PathFinder(
-            schema, self.answer_store, self.metadata, progress_store, self.list_store
+        router = Router(
+            schema, self.answer_store, self.list_store, progress_store, self.metadata
         )
-
-        router = Router(schema, progress_store, self.list_store, path_finder)
 
         is_survey_complete = router.is_survey_complete()
 
@@ -369,11 +351,9 @@ class TestRouter(AppContextTestCase):
             ]
         )
 
-        path_finder = PathFinder(
-            schema, self.answer_store, self.metadata, progress_store, self.list_store
+        router = Router(
+            schema, self.answer_store, self.list_store, progress_store, self.metadata
         )
-
-        router = Router(schema, progress_store, self.list_store, path_finder)
 
         section_routing_path = [
             Location(section_id='property-details-section', block_id='insurance-type'),
@@ -407,11 +387,9 @@ class TestRouter(AppContextTestCase):
             ]
         )
 
-        path_finder = PathFinder(
-            schema, self.answer_store, self.metadata, progress_store, self.list_store
+        router = Router(
+            schema, self.answer_store, self.list_store, progress_store, self.metadata
         )
-
-        router = Router(schema, progress_store, self.list_store, path_finder)
 
         section_routing_path = [
             Location(section_id='property-details-section', block_id='insurance-type'),
@@ -433,14 +411,14 @@ class TestRouter(AppContextTestCase):
         self
     ):
         schema = load_schema_from_name('test_hub_and_spoke')
-        path_finder = PathFinder(
+
+        router = Router(
             schema,
             self.answer_store,
-            self.metadata,
-            self.progress_store,
             self.list_store,
+            self.progress_store,
+            self.metadata,
         )
-        router = Router(schema, self.progress_store, self.list_store, path_finder)
 
         routing_path = [
             Location(section_id='household-section', block_id='does-anyone-live-here'),
@@ -464,14 +442,14 @@ class TestRouter(AppContextTestCase):
         self
     ):
         schema = load_schema_from_name('test_hub_and_spoke')
-        path_finder = PathFinder(
+
+        router = Router(
             schema,
             self.answer_store,
-            self.metadata,
-            self.progress_store,
             self.list_store,
+            self.progress_store,
+            self.metadata,
         )
-        router = Router(schema, self.progress_store, self.list_store, path_finder)
 
         routing_path = [Location(section_id='accommodation-section', block_id='proxy')]
         location_when_section_complete = router.get_section_return_location_when_section_complete(
@@ -487,14 +465,14 @@ class TestRouter(AppContextTestCase):
 
     def test_get_section_return_location_when_section_complete_no_section_summary(self):
         schema = load_schema_from_name('test_hub_and_spoke')
-        path_finder = PathFinder(
+
+        router = Router(
             schema,
             self.answer_store,
-            self.metadata,
-            self.progress_store,
             self.list_store,
+            self.progress_store,
+            self.metadata,
         )
-        router = Router(schema, self.progress_store, self.list_store, path_finder)
 
         routing_path = [
             Location(section_id='employment-section', block_id='employment-status'),
@@ -522,11 +500,9 @@ class TestRouter(AppContextTestCase):
             ]
         )
 
-        path_finder = PathFinder(
-            schema, self.answer_store, self.metadata, progress_store, self.list_store
+        router = Router(
+            schema, self.answer_store, self.list_store, progress_store, self.metadata
         )
-
-        router = Router(schema, progress_store, self.list_store, path_finder)
 
         routing_path = [
             Location(section_id='household-section', block_id='does-anyone-live-here'),
@@ -557,15 +533,9 @@ class TestRouter(AppContextTestCase):
             ]
         )
 
-        list_store = ListStore()
-        path_finder = PathFinder(
-            schema=schema,
-            answer_store=AnswerStore(),
-            metadata={},
-            progress_store=progress_store,
-            list_store=list_store,
+        router = Router(
+            schema, self.answer_store, self.list_store, progress_store, self.metadata
         )
-        router = Router(schema, progress_store, list_store, path_finder)
 
         routing_path = [
             Location(section_id='household-section', block_id='does-anyone-live-here'),
@@ -585,3 +555,180 @@ class TestRouter(AppContextTestCase):
 
             next_location = router.get_next_location_url(current_location, routing_path)
             self.assertEqual(next_location, expected_location)
+
+    def test_enabled_section_ids(self):
+        schema = load_schema_from_name('test_section_enabled_checkbox')
+        progress_store = ProgressStore(
+            [
+                {
+                    'section_id': 'section-1',
+                    'block_ids': ['section-1-block'],
+                    'status': 'COMPLETED',
+                }
+            ]
+        )
+
+        answer_store = AnswerStore(
+            [{'answer_id': 'section-1-answer', 'value': ['Section 2']}]
+        )
+        router = Router(
+            schema=schema,
+            answer_store=answer_store,
+            list_store=ListStore(),
+            progress_store=progress_store,
+            metadata={},
+        )
+
+        expected_section_ids = ['section-1', 'section-2', 'summary-section']
+
+        self.assertEqual(router.enabled_section_ids, expected_section_ids)
+
+    def test_full_routing_path_without_repeating_sections(self):
+        schema = load_schema_from_name('test_checkbox')
+
+        router = Router(
+            schema,
+            self.answer_store,
+            self.list_store,
+            self.progress_store,
+            self.metadata,
+        )
+
+        routing_path = router.full_routing_path()
+
+        expected_path = [
+            Location(
+                section_id='default-section',
+                block_id='mandatory-checkbox',
+                list_name=None,
+                list_item_id=None,
+            ),
+            Location(
+                section_id='default-section',
+                block_id='non-mandatory-checkbox',
+                list_name=None,
+                list_item_id=None,
+            ),
+            Location(
+                section_id='default-section',
+                block_id='summary',
+                list_name=None,
+                list_item_id=None,
+            ),
+        ]
+
+        self.assertEqual(routing_path, expected_path)
+
+    def test_full_routing_path_with_repeating_sections(self):
+        schema = load_schema_from_name('test_repeating_sections_with_hub_and_spoke')
+
+        list_store = ListStore(
+            [
+                {
+                    'items': ['abc123', '123abc'],
+                    'name': 'people',
+                    'primary_person': 'abc123',
+                }
+            ]
+        )
+
+        router = Router(
+            schema, self.answer_store, list_store, self.progress_store, self.metadata
+        )
+
+        routing_path = router.full_routing_path()
+
+        expected_path = [
+            Location(
+                section_id='section',
+                block_id='primary-person-list-collector',
+                list_name=None,
+                list_item_id=None,
+            ),
+            Location(
+                section_id='section',
+                block_id='list-collector',
+                list_name=None,
+                list_item_id=None,
+            ),
+            Location(
+                section_id='section',
+                block_id='next-interstitial',
+                list_name=None,
+                list_item_id=None,
+            ),
+            Location(
+                section_id='section',
+                block_id='another-list-collector-block',
+                list_name=None,
+                list_item_id=None,
+            ),
+            Location(
+                section_id='section',
+                block_id='visitors-block',
+                list_name=None,
+                list_item_id=None,
+            ),
+            Location(
+                section_id='personal-details-section',
+                block_id='proxy',
+                list_name='people',
+                list_item_id='abc123',
+            ),
+            Location(
+                section_id='personal-details-section',
+                block_id='date-of-birth',
+                list_name='people',
+                list_item_id='abc123',
+            ),
+            Location(
+                section_id='personal-details-section',
+                block_id='confirm-dob',
+                list_name='people',
+                list_item_id='abc123',
+            ),
+            Location(
+                section_id='personal-details-section',
+                block_id='sex',
+                list_name='people',
+                list_item_id='abc123',
+            ),
+            Location(
+                section_id='personal-details-section',
+                block_id='personal-summary',
+                list_name='people',
+                list_item_id='abc123',
+            ),
+            Location(
+                section_id='personal-details-section',
+                block_id='proxy',
+                list_name='people',
+                list_item_id='123abc',
+            ),
+            Location(
+                section_id='personal-details-section',
+                block_id='date-of-birth',
+                list_name='people',
+                list_item_id='123abc',
+            ),
+            Location(
+                section_id='personal-details-section',
+                block_id='confirm-dob',
+                list_name='people',
+                list_item_id='123abc',
+            ),
+            Location(
+                section_id='personal-details-section',
+                block_id='sex',
+                list_name='people',
+                list_item_id='123abc',
+            ),
+            Location(
+                section_id='personal-details-section',
+                block_id='personal-summary',
+                list_name='people',
+                list_item_id='123abc',
+            ),
+        ]
+
+        self.assertEqual(routing_path, expected_path)
