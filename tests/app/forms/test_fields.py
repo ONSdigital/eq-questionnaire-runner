@@ -137,6 +137,7 @@ class TestFields(AppContextTestCase):
             error_messages,
             self.answer_store,
             self.metadata,
+            location=None
         )
 
         self.assertEqual(unbound_field.field_class, StringField)
@@ -161,6 +162,7 @@ class TestFields(AppContextTestCase):
             error_messages,
             self.answer_store,
             self.metadata,
+            location=None
         )
 
         self.assertEqual(unbound_field.field_class, MaxTextAreaField)
@@ -187,6 +189,7 @@ class TestFields(AppContextTestCase):
                 date_json,
                 date_json['label'],
                 error_messages,
+                None,
                 self.answer_store,
                 self.metadata,
             )
@@ -219,6 +222,7 @@ class TestFields(AppContextTestCase):
                 error_messages,
                 self.answer_store,
                 self.metadata,
+                location=None
             )
 
         self.assertEqual(unbound_field.field_class, DateField)
@@ -249,6 +253,7 @@ class TestFields(AppContextTestCase):
                 error_messages,
                 self.answer_store,
                 self.metadata,
+                location=None
             )
 
         self.assertEqual(unbound_field.field_class, DateField)
@@ -280,6 +285,7 @@ class TestFields(AppContextTestCase):
                 error_messages,
                 self.answer_store,
                 self.metadata,
+                location=None
             )
 
         self.assertEqual(unbound_field.field_class, FormField)
@@ -316,6 +322,7 @@ class TestFields(AppContextTestCase):
             error_messages,
             self.answer_store,
             self.metadata,
+            location=None
         )
 
         expected_choices = [
@@ -349,6 +356,7 @@ class TestFields(AppContextTestCase):
                 error_messages,
                 self.answer_store,
                 self.metadata,
+                location=None
             )
 
         expected_choices = [('', 'Select an answer')] + [
@@ -394,6 +402,7 @@ class TestFields(AppContextTestCase):
             error_messages,
             self.answer_store,
             self.metadata,
+            location=None
         )
 
         expected_choices = [
@@ -431,6 +440,7 @@ class TestFields(AppContextTestCase):
             error_messages,
             self.answer_store,
             self.metadata,
+            location=None
         )
 
         self.assertEqual(unbound_field.field_class, CustomIntegerField)
@@ -460,6 +470,7 @@ class TestFields(AppContextTestCase):
             error_messages,
             self.answer_store,
             self.metadata,
+            location=None
         )
 
         self.assertEqual(unbound_field.field_class, CustomDecimalField)
@@ -489,6 +500,7 @@ class TestFields(AppContextTestCase):
             error_messages,
             self.answer_store,
             self.metadata,
+            location=None,
         )
 
         self.assertEqual(unbound_field.field_class, CustomIntegerField)
@@ -519,6 +531,7 @@ class TestFields(AppContextTestCase):
             error_messages,
             self.answer_store,
             self.metadata,
+            location=None
         )
 
         self.assertEqual(unbound_field.field_class, CustomIntegerField)
@@ -538,4 +551,5 @@ class TestFields(AppContextTestCase):
                 error_messages,
                 self.answer_store,
                 self.metadata,
+                location=None
             )

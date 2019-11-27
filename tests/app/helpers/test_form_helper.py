@@ -79,6 +79,7 @@ class TestFormHelper(AppContextTestCase):
                     'date-range-to-answer-month': '09',
                     'date-range-to-answer-year': '2017',
                 },
+                location=None,
             )
 
             self.assertTrue(hasattr(form, 'date-range-from-answer'))
@@ -106,6 +107,7 @@ class TestFormHelper(AppContextTestCase):
                 metadata=None,
                 request_form={},
                 disable_mandatory=True,
+                location=None,
             )
 
             self.assertTrue(hasattr(form, 'date-range-from-answer'))
@@ -144,6 +146,7 @@ class TestFormHelper(AppContextTestCase):
                         'other-answer-mandatory': 'Old other text',
                     }
                 ),
+                location=None,
             )
 
             self.assertTrue(hasattr(form, 'radio-mandatory-answer'))
@@ -179,6 +182,7 @@ class TestFormHelper(AppContextTestCase):
                 answer_store,
                 metadata=None,
                 request_form=request_form,
+                location=None,
             )
 
             other_text_field = getattr(form, 'other-answer-mandatory')

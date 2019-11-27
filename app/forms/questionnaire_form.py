@@ -16,11 +16,12 @@ logger = logging.getLogger(__name__)
 
 
 class QuestionnaireForm(FlaskForm):
-    def __init__(self, schema, question_schema, answer_store, metadata, **kwargs):
+    def __init__(self, schema, question_schema, answer_store, metadata, location, **kwargs):
         self.schema = schema
         self.question = question_schema
         self.answer_store = answer_store
         self.metadata = metadata
+        self.location = location,
         self.question_errors = {}
         self.options_with_detail_answer = {}
 
@@ -216,10 +217,10 @@ class QuestionnaireForm(FlaskForm):
 
     def _get_period_range_for_single_date(self, date_from, date_to):
         from_min_period_date, from_max_period_date = get_dates_for_single_date_period_validation(
-            date_from, self.answer_store, self.metadata
+            date_from, self.answer_store, self.metadata, location=None
         )
         to_min_period_date, to_max_period_date = get_dates_for_single_date_period_validation(
-            date_to, self.answer_store, self.metadata
+            date_to, self.answer_store, self.metadata, location=None
         )
 
         min_period_date = from_min_period_date or from_max_period_date
@@ -400,5 +401,5 @@ def generate_form(
         formdata = MultiDict(formdata)
 
     return DynamicForm(
-        schema, question_schema, answer_store, metadata, data=data, formdata=formdata
+        schema, question_schema, answer_store, metadata, location=None, data=data, formdata=formdata
     )

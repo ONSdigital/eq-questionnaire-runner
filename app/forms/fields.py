@@ -46,7 +46,7 @@ def get_field(
         )
     elif answer['type'] == 'YearDate':
         field = get_year_field(
-            answer, label, guidance, error_messages, answer_store, metadata
+            answer, label, guidance, error_messages, answer_store, metadata, location
         )
     elif answer['type'] == 'Duration':
         field = get_duration_field(answer, label, guidance, error_messages)
@@ -174,7 +174,7 @@ def get_month_year_field(
     )
 
 
-def get_year_field(answer, label, guidance, error_messages, answer_store, metadata):
+def get_year_field(answer, label, guidance, error_messages, answer_store, metadata, location):
     return DateField(
         DateFormType.Year,
         answer_store,
@@ -183,6 +183,7 @@ def get_year_field(answer, label, guidance, error_messages, answer_store, metada
         error_messages,
         label=label,
         description=guidance,
+        location=location,
     )
 
 

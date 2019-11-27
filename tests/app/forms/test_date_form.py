@@ -31,6 +31,7 @@ class TestDateForm(AppContextTestCase):
                 AnswerStore(),
                 {},
                 error_messages=error_messages,
+                location=None,
             )
 
         self.assertTrue(hasattr(form, 'day'))
@@ -48,6 +49,7 @@ class TestDateForm(AppContextTestCase):
                 {},
                 {},
                 error_messages=error_messages,
+                location=None,
             )
 
         self.assertFalse(hasattr(form, 'day'))
@@ -64,6 +66,7 @@ class TestDateForm(AppContextTestCase):
             {},
             {},
             error_messages=error_messages,
+            location=None,
         )
 
         self.assertFalse(hasattr(form, 'day'))
@@ -81,6 +84,7 @@ class TestDateForm(AppContextTestCase):
                 AnswerStore(),
                 {},
                 error_messages=error_messages,
+                location=None,
             )
 
         self.assertIsNone(form().data)
@@ -96,6 +100,7 @@ class TestDateForm(AppContextTestCase):
                 {},
                 {},
                 error_messages=error_messages,
+                location=None,
             )
 
         self.assertIsNone(form().data)
@@ -110,6 +115,7 @@ class TestDateForm(AppContextTestCase):
             {},
             {},
             error_messages=error_messages,
+            location=None,
         )
 
         self.assertIsNone(form().data)
@@ -129,6 +135,7 @@ class TestDateForm(AppContextTestCase):
                     {},
                     schema.get_answers_by_answer_id('single-date-answer')[0],
                     error_messages,
+                    location=None,
                 )
 
             test_form = TestForm(data=data)
@@ -150,6 +157,7 @@ class TestDateForm(AppContextTestCase):
                     {},
                     schema.get_answers_by_answer_id('month-year-answer')[0],
                     error_messages,
+                    location=None,
                 )
 
             test_form = TestForm(data=data)
@@ -169,6 +177,7 @@ class TestDateForm(AppContextTestCase):
                 {},
                 schema.get_answers_by_answer_id('year-date-answer')[0],
                 error_messages,
+                location=None,
             )
 
         test_form = TestForm(data=data)
@@ -187,6 +196,7 @@ class TestDateForm(AppContextTestCase):
                 AnswerStore(),
                 test_metadata,
                 error_messages=error_messages,
+                location=None,
             )
 
         self.assertTrue(hasattr(form, 'day'))
@@ -215,6 +225,7 @@ class TestDateForm(AppContextTestCase):
                 AnswerStore(),
                 {},
                 error_messages=error_messages,
+                location=None,
             )
 
             self.assertTrue(hasattr(form, 'day'))
@@ -224,14 +235,14 @@ class TestDateForm(AppContextTestCase):
     def test_get_referenced_offset_value_for_value(self):
         answer_minimum = {'value': '2017-06-11', 'offset_by': {'days': 10}}
 
-        value = get_referenced_offset_value(answer_minimum, AnswerStore(), {})
+        value = get_referenced_offset_value(answer_minimum, AnswerStore(), {}, {})
 
         self.assertEqual(value, convert_to_datetime('2017-06-21'))
 
     def test_get_referenced_offset_value_for_now_value(self):
         answer_minimum = {'value': 'now', 'offset_by': {'days': 10}}
 
-        value = get_referenced_offset_value(answer_minimum, AnswerStore(), {})
+        value = get_referenced_offset_value(answer_minimum, AnswerStore(), {}, {})
 
         self.assertEqual(
             datetime.date(value), (datetime.now().date() + relativedelta(days=10))
@@ -242,7 +253,7 @@ class TestDateForm(AppContextTestCase):
         answer_minimum = {'meta': 'date', 'offset_by': {'days': -10}}
 
         value = get_referenced_offset_value(
-            answer_minimum, AnswerStore(), test_metadata
+            answer_minimum, AnswerStore(), test_metadata, {}
         )
 
         self.assertEqual(value, convert_to_datetime('2018-02-10'))
@@ -260,14 +271,14 @@ class TestDateForm(AppContextTestCase):
 
         answer_maximum = {'answer_id': 'date', 'offset_by': {'months': 1}}
 
-        value = get_referenced_offset_value(answer_maximum, store, {})
+        value = get_referenced_offset_value(answer_maximum, store, {}, None)
 
         self.assertEqual(value, convert_to_datetime('2018-04-20'))
 
     def test_get_referenced_offset_value_with_no_offset(self):
         answer_minimum = {'value': '2017-06-11'}
 
-        value = get_referenced_offset_value(answer_minimum, AnswerStore(), {})
+        value = get_referenced_offset_value(answer_minimum, AnswerStore(), {}, {})
 
         self.assertEqual(value, convert_to_datetime('2017-06-11'))
 
@@ -291,7 +302,7 @@ class TestDateForm(AppContextTestCase):
         }
 
         offset_dates = get_dates_for_single_date_period_validation(
-            answer, store, metadata=test_metadata
+            answer, store, metadata=test_metadata, location=None
         )
 
         self.assertEqual(
@@ -308,7 +319,7 @@ class TestDateForm(AppContextTestCase):
         }
 
         with self.assertRaises(Exception) as ite:
-            get_dates_for_single_date_period_validation(answer, AnswerStore(), {})
+            get_dates_for_single_date_period_validation(answer, AnswerStore(), {}, {})
             self.assertEqual(
                 'The minimum offset date is greater than the maximum offset date for date-answer.',
                 str(ite.exception),
