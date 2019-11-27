@@ -8,47 +8,37 @@ describe('Feature: Section Enabled Based On Checkbox Answers', () => {
     browser.openQuestionnaire('test_section_enabled_checkbox.json');
   });
 
-  describe('Given the user selects `Section 2`', () => {
+  it('When the user selects `Section 2` and submits, Then, section 2 should be displayed', () => {
+    $(sectionOne.section1Section2()).click();
+    $(sectionOne.submit()).click();
 
-    it('When the user submits and proceed to the next page, Then, section 2 should be displayed', () => {
-      $(sectionOne.section1Section2()).click();
-      $(sectionOne.submit()).click();
-
-      expect(browser.getUrl()).to.contain('section-2-block');
-    });
-
+    expect(browser.getUrl()).to.contain('section-2-block');
   });
 
-  describe('Given the user selects `Section 3`', () => {
-    it('When the user submits and proceed to the next page, Then, section 2 should not be displayed and section 3 should be displayed', () => {
-      $(sectionOne.section1Section3()).click();
-      $(sectionOne.submit()).click();
+  it('When the user selects `Section 3` and submits, Then, section 2 should not be displayed and section 3 should be displayed', () => {
+    $(sectionOne.section1Section3()).click();
+    $(sectionOne.submit()).click();
 
-      expect(browser.getUrl()).to.contain('section-3-block');
-    });
+    expect(browser.getUrl()).to.contain('section-3-block');
   });
 
-  describe('Given the user selects `Section 2` and `Section 3`', () => {
-    it('When the user submits and proceed to the next page, Then, section 2 and section 3 should be displayed', () => {
-      $(sectionOne.section1Section2()).click();
-      $(sectionOne.section1Section3()).click();
-      $(sectionOne.submit()).click();
+  it('When the user selects `Section 2` and `Section 3` and submits, Then, section 2 and section 3 should be displayed', () => {
+    $(sectionOne.section1Section2()).click();
+    $(sectionOne.section1Section3()).click();
+    $(sectionOne.submit()).click();
 
-      expect(browser.getUrl()).to.contain('section-2-block');
-      $(sectionTwo.submit()).click();
-      expect(browser.getUrl()).to.contain('section-3-block');
-    });
+    expect(browser.getUrl()).to.contain('section-2-block');
+    $(sectionTwo.submit()).click();
+    expect(browser.getUrl()).to.contain('section-3-block');
   });
 
-  describe('Given the user selects `Neither`', () => {
-    it('When the user submits the answer, Then, they should be taken straight to the summary', () => {
-      $(sectionOne.section1ExclusiveNeither()).click();
-      $(sectionOne.submit()).click();
+  it('When the user selects `Neither` and submits, Then, they should be taken straight to the summary', () => {
+    $(sectionOne.section1ExclusiveNeither()).click();
+    $(sectionOne.submit()).click();
 
-      expect(browser.getUrl()).to.contain('summary');
-      expect($(summary.section2Question()).isExisting()).to.be.false;
-      expect($(summary.section3Question()).isExisting()).to.be.false;
-    });
+    expect(browser.getUrl()).to.contain('summary');
+    expect($(summary.section2Question()).isExisting()).to.be.false;
+    expect($(summary.section3Question()).isExisting()).to.be.false;
   });
 
 });

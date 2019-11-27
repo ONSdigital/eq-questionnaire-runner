@@ -32,38 +32,6 @@ class PathFinder:
         self.progress_store = progress_store
         self.list_store = list_store
 
-    def is_path_complete(self, path):
-        location = self.get_first_incomplete_location(path)
-        if not location or (
-            location == path[-1]
-            and self.schema.get_block(location.block_id)['type'] == 'SectionSummary'
-        ):
-            return True
-
-        return False
-
-    def get_first_incomplete_location(self, path):
-        if path:
-            for location in path:
-                block = self.schema.get_block(location.block_id)
-                block_type = block.get('type')
-
-                is_location_complete = (
-                    location.block_id
-                    in self.progress_store.get_completed_block_ids(
-                        section_id=location.section_id,
-                        list_item_id=location.list_item_id,
-                    )
-                )
-
-                if not is_location_complete and block_type not in [
-                    'Summary',
-                    'Confirmation',
-                ]:
-                    return location
-
-        return None
-
     def routing_path(
         self, section_id: str, list_item_id: Optional[str] = None
     ) -> RoutingPath:

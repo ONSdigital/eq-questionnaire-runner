@@ -23,10 +23,6 @@ class Router:
         )
 
     @property
-    def path_finder(self):
-        return self._path_finder
-
-    @property
     def enabled_section_ids(self):
         all_sections = self._schema.get_sections()
 
@@ -35,22 +31,6 @@ class Router:
             for section in all_sections
             if self._is_section_enabled(section=section)
         ]
-
-    def _is_section_enabled(self, section):
-        section_enabled_conditions = section.get('enabled', [])
-        if not section_enabled_conditions:
-            return True
-
-        for condition in section_enabled_conditions:
-            if evaluate_when_rules(
-                condition['when'],
-                self._schema,
-                self._metadata,
-                self._answer_store,
-                self._list_store,
-            ):
-                return True
-        return False
 
     def can_access_location(self, location: Location, routing_path):
         """
@@ -85,6 +65,9 @@ class Router:
             self._progress_store.is_section_complete(section_id)
             for section_id in self._schema.get_section_ids_required_for_hub()
         )
+
+    def section_routing_path(self, section_id, list_item_id=None):
+        return self._path_finder.routing_path(section_id, list_item_id)
 
     def get_next_location_url(self, location, routing_path):
         """
@@ -166,9 +149,7 @@ class Router:
             section_routing_path = self._path_finder.routing_path(
                 section_id=section_id, list_item_id=list_item_id
             )
-            location = self._path_finder.get_first_incomplete_location(
-                section_routing_path
-            )
+            location = self._get_first_incomplete_location(section_routing_path)
 
             if location:
                 return location
@@ -221,6 +202,16 @@ class Router:
 
         return True
 
+    def is_path_complete(self, path):
+        location = self._get_first_incomplete_location(path)
+        if not location or (
+            location == path[-1]
+            and self._schema.get_block(location.block_id)['type'] == 'SectionSummary'
+        ):
+            return True
+
+        return False
+
     def get_section_return_location_when_section_complete(
         self, routing_path
     ) -> Location:
@@ -246,6 +237,24 @@ class Router:
 
         return path
 
+    def _get_first_incomplete_location(self, path):
+        for location in path:
+            block = self._schema.get_block(location.block_id)
+            block_type = block.get('type')
+
+            is_location_complete = (
+                location.block_id
+                in self._progress_store.get_completed_block_ids(
+                    section_id=location.section_id, list_item_id=location.list_item_id
+                )
+            )
+
+            if not is_location_complete and block_type not in [
+                'Summary',
+                'Confirmation',
+            ]:
+                return location
+
     def _get_allowable_path(self, routing_path):
         """
         The allowable path is the completed path plus the next location
@@ -270,7 +279,6 @@ class Router:
     def _get_incomplete_section_keys(self):
         enabled_section_keys = []
         for section_id in self.enabled_section_ids:
-
             repeating_list = self._schema.get_repeating_list_for_section(section_id)
 
             if repeating_list:
@@ -309,3 +317,19 @@ class Router:
             block = self._schema.get_block(location.block_id)
             if block['type'] == 'SectionSummary':
                 return location
+
+    def _is_section_enabled(self, section):
+        section_enabled_conditions = section.get('enabled', [])
+        if not section_enabled_conditions:
+            return True
+
+        for condition in section_enabled_conditions:
+            if evaluate_when_rules(
+                condition['when'],
+                self._schema,
+                self._metadata,
+                self._answer_store,
+                self._list_store,
+            ):
+                return True
+        return False

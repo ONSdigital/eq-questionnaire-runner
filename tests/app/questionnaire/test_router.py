@@ -200,7 +200,30 @@ class TestRouter(AppContextTestCase):  # pylint: disable=too-many-public-methods
 
         self.assertEqual(previous_location_url, expected_location_url)
 
-    def test_is_survey_not_complete(self):
+    def test_is_path_complete(self):
+        schema = load_schema_from_name('test_textfield')
+        progress_store = ProgressStore(
+            [
+                {
+                    'section_id': 'default-section',
+                    'list_item_id': None,
+                    'status': CompletionStatus.IN_PROGRESS,
+                    'block_ids': ['name-block'],
+                }
+            ]
+        )
+
+        router = Router(
+            schema, self.answer_store, self.list_store, progress_store, self.metadata
+        )
+
+        routing_path = router.section_routing_path(section_id='default-section')
+
+        is_path_complete = router.is_path_complete(routing_path)
+
+        self.assertTrue(is_path_complete)
+
+    def test_is_path_not_complete(self):
         schema = load_schema_from_name('test_textfield')
 
         router = Router(
@@ -211,9 +234,11 @@ class TestRouter(AppContextTestCase):  # pylint: disable=too-many-public-methods
             self.metadata,
         )
 
-        is_survey_complete = router.is_survey_complete()
+        routing_path = router.section_routing_path(section_id='default-section')
 
-        self.assertFalse(is_survey_complete)
+        is_path_complete = router.is_path_complete(routing_path)
+
+        self.assertFalse(is_path_complete)
 
     def test_is_survey_complete(self):
         schema = load_schema_from_name('test_textfield')
@@ -235,6 +260,21 @@ class TestRouter(AppContextTestCase):  # pylint: disable=too-many-public-methods
         is_survey_complete = router.is_survey_complete()
 
         self.assertTrue(is_survey_complete)
+
+    def test_is_survey_not_complete(self):
+        schema = load_schema_from_name('test_textfield')
+
+        router = Router(
+            schema,
+            self.answer_store,
+            self.list_store,
+            self.progress_store,
+            self.metadata,
+        )
+
+        is_survey_complete = router.is_survey_complete()
+
+        self.assertFalse(is_survey_complete)
 
     def test_is_survey_not_complete_with_repeating_sections(self):
         schema = load_schema_from_name('test_repeating_sections_with_hub_and_spoke')

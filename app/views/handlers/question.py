@@ -81,7 +81,7 @@ class Question(BlockHandler):
         self.questionnaire_store_updater.add_completed_location()
 
         if self.questionnaire_store_updater.is_dirty:
-            self._routing_path = self.path_finder.routing_path(
+            self._routing_path = self.router.section_routing_path(
                 section_id=self._current_location.section_id,
                 list_item_id=self._current_location.list_item_id,
             )

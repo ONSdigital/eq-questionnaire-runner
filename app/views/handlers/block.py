@@ -64,10 +64,6 @@ class BlockHandler:
         return self._placeholder_renderer
 
     @property
-    def path_finder(self):
-        return self.router.path_finder
-
-    @property
     def router(self):
         if not self._router:
             self._router = Router(
@@ -118,7 +114,7 @@ class BlockHandler:
             collection_metadata['started_at'] = started_at
 
     def _get_routing_path(self):
-        return self.path_finder.routing_path(
+        return self.router.section_routing_path(
             section_id=self._current_location.section_id,
             list_item_id=self._current_location.list_item_id,
         )
@@ -126,7 +122,7 @@ class BlockHandler:
     def _update_section_completeness(self, location: Optional[Location] = None):
         section_status = (
             CompletionStatus.COMPLETED
-            if self.path_finder.is_path_complete(self._routing_path)
+            if self.router.is_path_complete(self._routing_path)
             else CompletionStatus.IN_PROGRESS
         )
 

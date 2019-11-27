@@ -41,7 +41,7 @@ class SummaryContext:
         Does not support generating multiple sections at a time (i.e. passing no list_item_id for repeating section).
         """
         section = self._schema.get_section(location.section_id)
-        section_path = self._router.path_finder.routing_path(
+        section_path = self._router.section_routing_path(
             location.section_id, location.list_item_id
         )
 
@@ -88,7 +88,7 @@ class SummaryContext:
         visible_list_collector_blocks = self._schema.get_visible_list_blocks_for_section(
             section
         )
-        section_path = self._router.path_finder.routing_path(
+        section_path = self._router.section_routing_path(
             section['id'], current_location.list_item_id
         )
         section_path_block_ids = [location.block_id for location in section_path]
