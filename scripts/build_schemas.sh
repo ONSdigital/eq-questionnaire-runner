@@ -2,7 +2,7 @@
 
 set -e
 
-rm -rf data/en && mkdir -p data/en
+mkdir -p data/en
 
 # Build schema for each region
 for region_code in GB-WLS GB-ENG GB-NIR; do
