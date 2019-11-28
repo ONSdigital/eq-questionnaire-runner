@@ -194,7 +194,7 @@ exports.config = {
                 languageCode: language,
                 sexualIdentity: sexualIdentity,
                 includeLogoutUrl: includeLogoutUrl
-            })
+            });
             this.url('/session?token=' + token);
         });
     },
