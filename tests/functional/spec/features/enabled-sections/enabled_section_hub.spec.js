@@ -6,7 +6,7 @@ describe('Feature: Section Enabled With Hub', () => {
     browser.openQuestionnaire('test_section_enabled_hub.json');
   });
 
-  it('When the user selects `Section 2` and submits, Then, only section 2 should be displayed on the hub', () => {
+  it('When the user selects `Section 2` and submits, Then only section 2 should be displayed on the hub', () => {
     $(sectionOne.section1Section2()).click();
     $(sectionOne.submit()).click();
 
@@ -16,7 +16,7 @@ describe('Feature: Section Enabled With Hub', () => {
     expect($(hubPage.summaryRowState(3)).isDisplayed()).to.be.false;
   });
 
-  it('When the user selects `Section 3` and submits, Then, section 2 should not be displayed and section 3 should be displayed', () => {
+  it('When the user selects `Section 3` and submits, Then section 2 should not be displayed and section 3 should be displayed', () => {
     $(sectionOne.section1Section3()).click();
     $(sectionOne.submit()).click();
 
@@ -26,7 +26,7 @@ describe('Feature: Section Enabled With Hub', () => {
     expect($(hubPage.summaryRowState(3)).isDisplayed()).to.be.false;
   });
 
-  it('When the user selects `Section 2` and `Section 3` and submits, Then, section 2 and section 3 should be displayed', () => {
+  it('When the user selects `Section 2` and `Section 3` and submits, Then section 2 and section 3 should be displayed', () => {
     $(sectionOne.section1Section2()).click();
     $(sectionOne.section1Section3()).click();
     $(sectionOne.submit()).click();
@@ -38,7 +38,7 @@ describe('Feature: Section Enabled With Hub', () => {
     expect($(hubPage.summaryRowTitle(3)).getText()).to.equal('Section 3');
   });
 
-  it('When the user selects `Neither` and submits,  Then, hub should not display any other section and should be in the `Completed` state.', () => {
+  it('When the user selects `Neither` and submits,  Then hub should not display any other section and should be in the `Completed` state.', () => {
     $(sectionOne.section1ExclusiveNeither()).click();
     $(sectionOne.submit()).click();
 

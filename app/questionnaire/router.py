@@ -24,11 +24,9 @@ class Router:
 
     @property
     def enabled_section_ids(self):
-        all_sections = self._schema.get_sections()
-
         return [
             section['id']
-            for section in all_sections
+            for section in self._schema.get_sections()
             if self._is_section_enabled(section=section)
         ]
 
@@ -319,11 +317,10 @@ class Router:
                 return location
 
     def _is_section_enabled(self, section):
-        section_enabled_conditions = section.get('enabled', [])
-        if not section_enabled_conditions:
+        if 'enabled' not in section:
             return True
 
-        for condition in section_enabled_conditions:
+        for condition in section['enabled']:
             if evaluate_when_rules(
                 condition['when'],
                 self._schema,

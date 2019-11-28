@@ -181,9 +181,7 @@ def get_section(schema, questionnaire_store, section_id, list_item_id=None):
         redirect_location = router.get_first_incomplete_location_in_survey()
         return redirect(redirect_location.url())
 
-    section = schema.get_section(section_id)
-
-    if not section or section_id not in router.enabled_section_ids:
+    if section_id not in router.enabled_section_ids:
         return redirect(url_for('.get_questionnaire'))
 
     routing_path = router.section_routing_path(

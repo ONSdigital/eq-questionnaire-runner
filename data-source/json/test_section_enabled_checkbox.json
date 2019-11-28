@@ -104,7 +104,7 @@
                                 ],
                                 "description": "This is section 2.",
                                 "id": "section-2-question",
-                                "title": "Which section is this?.",
+                                "title": "Which section is this?",
                                 "type": "General"
                             }
                         }
@@ -145,7 +145,7 @@
                                 ],
                                 "description": "This is section 3.",
                                 "id": "section-3-question",
-                                "title": "Which section is this?.",
+                                "title": "Which section is this?",
                                 "type": "General"
                             }
                         }

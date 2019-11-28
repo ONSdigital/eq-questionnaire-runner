@@ -8,21 +8,21 @@ describe('Feature: Section Enabled Based On Checkbox Answers', () => {
     browser.openQuestionnaire('test_section_enabled_checkbox.json');
   });
 
-  it('When the user selects `Section 2` and submits, Then, section 2 should be displayed', () => {
+  it('When the user selects `Section 2` and submits, Then section 2 should be displayed', () => {
     $(sectionOne.section1Section2()).click();
     $(sectionOne.submit()).click();
 
     expect(browser.getUrl()).to.contain('section-2-block');
   });
 
-  it('When the user selects `Section 3` and submits, Then, section 2 should not be displayed and section 3 should be displayed', () => {
+  it('When the user selects `Section 3` and submits, Then section 2 should not be displayed and section 3 should be displayed', () => {
     $(sectionOne.section1Section3()).click();
     $(sectionOne.submit()).click();
 
     expect(browser.getUrl()).to.contain('section-3-block');
   });
 
-  it('When the user selects `Section 2` and `Section 3` and submits, Then, section 2 and section 3 should be displayed', () => {
+  it('When the user selects `Section 2` and `Section 3` and submits, Then section 2 and section 3 should be displayed', () => {
     $(sectionOne.section1Section2()).click();
     $(sectionOne.section1Section3()).click();
     $(sectionOne.submit()).click();
@@ -32,7 +32,7 @@ describe('Feature: Section Enabled Based On Checkbox Answers', () => {
     expect(browser.getUrl()).to.contain('section-3-block');
   });
 
-  it('When the user selects `Neither` and submits, Then, they should be taken straight to the summary', () => {
+  it('When the user selects `Neither` and submits, Then they should be taken straight to the summary', () => {
     $(sectionOne.section1ExclusiveNeither()).click();
     $(sectionOne.submit()).click();
 
