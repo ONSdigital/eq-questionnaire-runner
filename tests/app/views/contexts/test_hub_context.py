@@ -1,5 +1,14 @@
+# pylint: disable=redefined-outer-name
+import pytest
+
 from app.data_model.progress_store import CompletionStatus
+from app.questionnaire.router import Router
 from app.views.contexts.hub_context import HubContext
+
+
+@pytest.fixture
+def router(schema, answer_store, list_store, progress_store):
+    return Router(schema, answer_store, list_store, progress_store, metadata={})
 
 
 def test_get_not_started_row_for_section(
