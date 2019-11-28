@@ -139,10 +139,10 @@ class Router:
         return None
 
     def get_first_incomplete_location_in_survey(self):
-        incomplete_section_keys = self._get_incomplete_section_keys()
+        first_incomplete_section_key = self._get_first_incomplete_section_key()
 
-        if incomplete_section_keys:
-            section_id, list_item_id = incomplete_section_keys[0]
+        if first_incomplete_section_key:
+            section_id, list_item_id = first_incomplete_section_key
 
             section_routing_path = self._path_finder.routing_path(
                 section_id=section_id, list_item_id=list_item_id
@@ -180,13 +180,10 @@ class Router:
                     return location
 
     def is_survey_complete(self):
-        incomplete_section_keys = self._get_incomplete_section_keys()
+        first_incomplete_section_key = self._get_first_incomplete_section_key()
 
-        if incomplete_section_keys:
-            if len(incomplete_section_keys) > 1:
-                return False
-
-            section_id = incomplete_section_keys[0][0]
+        if first_incomplete_section_key:
+            section_id = first_incomplete_section_key[0]
             if self._does_section_only_contain_summary(section_id):
                 return True
             return False
@@ -211,7 +208,6 @@ class Router:
     def full_routing_path(self):
         path = []
         for section_id in self.enabled_section_ids:
-
             repeating_list = self._schema.get_repeating_list_for_section(section_id)
 
             if repeating_list:
@@ -261,7 +257,7 @@ class Router:
 
         return allowable_path
 
-    def _get_incomplete_section_keys(self):
+    def get_enabled_section_keys(self):
         enabled_section_keys = []
         for section_id in self.enabled_section_ids:
             repeating_list = self._schema.get_repeating_list_for_section(section_id)
@@ -274,13 +270,14 @@ class Router:
                 section_key = (section_id, None)
                 enabled_section_keys.append(section_key)
 
-        incomplete_section_keys = [
-            (section_id, list_item_id)
-            for section_id, list_item_id in enabled_section_keys
-            if not self._progress_store.is_section_complete(section_id, list_item_id)
-        ]
+        return enabled_section_keys
 
-        return incomplete_section_keys
+    def _get_first_incomplete_section_key(self):
+        enabled_section_keys = self.get_enabled_section_keys()
+
+        for section_id, list_item_id in enabled_section_keys:
+            if not self._progress_store.is_section_complete(section_id, list_item_id):
+                return section_id, list_item_id
 
     # This is horrible and only necessary as currently a section can be defined that only
     # contains a Summary or Confirmation. The ideal solution is to move Summary/Confirmation
