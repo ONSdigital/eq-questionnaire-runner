@@ -164,12 +164,7 @@ class Router:
 
         if section_key in self._progress_store:
             for location in routing_path:
-                if (
-                    location.block_id
-                    not in self._progress_store.get_completed_block_ids(
-                        section_id=section_id, list_item_id=list_item_id
-                    )
-                ):
+                if not self._is_location_complete(location):
                     return location
 
         return routing_path[0]
@@ -181,9 +176,7 @@ class Router:
 
         if section_key in self._progress_store:
             for location in routing_path[::-1]:
-                if location.block_id in self._progress_store.get_completed_block_ids(
-                    section_id=section_id, list_item_id=list_item_id
-                ):
+                if self._is_location_complete(location):
                     return location
 
     def is_survey_complete(self):
@@ -235,19 +228,19 @@ class Router:
 
         return path
 
+    def _is_location_complete(self, location):
+        completed_block_ids = self._progress_store.get_completed_block_ids(
+            location.section_id, location.list_item_id
+        )
+
+        return location.block_id in completed_block_ids
+
     def _get_first_incomplete_location(self, path):
         for location in path:
             block = self._schema.get_block(location.block_id)
             block_type = block.get('type')
 
-            is_location_complete = (
-                location.block_id
-                in self._progress_store.get_completed_block_ids(
-                    section_id=location.section_id, list_item_id=location.list_item_id
-                )
-            )
-
-            if not is_location_complete and block_type not in [
+            if not self._is_location_complete(location) and block_type not in [
                 'Summary',
                 'Confirmation',
             ]:
@@ -263,13 +256,7 @@ class Router:
             for location in routing_path:
                 allowable_path.append(location)
 
-                if (
-                    location.block_id
-                    not in self._progress_store.get_completed_block_ids(
-                        section_id=location.section_id,
-                        list_item_id=location.list_item_id,
-                    )
-                ):
+                if not self._is_location_complete(location):
                     return allowable_path
 
         return allowable_path
