@@ -1,36 +1,5 @@
-import pytest
-
-from app.data_model.answer_store import AnswerStore
-from app.data_model.list_store import ListStore
-from app.data_model.progress_store import ProgressStore, CompletionStatus
-from app.questionnaire.questionnaire_schema import QuestionnaireSchema
-from app.questionnaire.router import Router
+from app.data_model.progress_store import CompletionStatus
 from app.views.contexts.hub_context import HubContext
-
-
-@pytest.fixture(name='schema')
-def fixture_schema():
-    return QuestionnaireSchema({})
-
-
-@pytest.fixture(name='answer_store')
-def fixture_answer_store():
-    return AnswerStore()
-
-
-@pytest.fixture(name='list_store')
-def fixture_list_store():
-    return ListStore()
-
-
-@pytest.fixture(name='progress_store')
-def fixture_progress_store():
-    return ProgressStore()
-
-
-@pytest.fixture(name='router')
-def fixture_router(schema, answer_store, list_store, progress_store):
-    return Router(schema, answer_store, list_store, progress_store, metadata={})
 
 
 def test_get_not_started_row_for_section(

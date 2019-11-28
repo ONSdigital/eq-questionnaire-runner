@@ -3,8 +3,10 @@ from mock import MagicMock
 
 from app.data_model.answer_store import AnswerStore
 from app.data_model.list_store import ListStore
+from app.data_model.progress_store import ProgressStore
 from app.forms.questionnaire_form import QuestionnaireForm
 from app.questionnaire.questionnaire_schema import QuestionnaireSchema
+from app.questionnaire.router import Router
 
 
 @pytest.fixture
@@ -138,6 +140,26 @@ def form():
 @pytest.fixture
 def schema():
     return MagicMock(QuestionnaireSchema({}))
+
+
+@pytest.fixture
+def answer_store():
+    return AnswerStore()
+
+
+@pytest.fixture
+def list_store():
+    return ListStore()
+
+
+@pytest.fixture
+def progress_store():
+    return ProgressStore()
+
+
+@pytest.fixture
+def router(schema, answer_store, list_store, progress_store):
+    return Router(schema, answer_store, list_store, progress_store, metadata={})
 
 
 @pytest.fixture

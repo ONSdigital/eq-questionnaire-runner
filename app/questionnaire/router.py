@@ -236,10 +236,10 @@ class Router:
             block = self._schema.get_block(location.block_id)
             block_type = block.get('type')
 
-            if not self._is_location_complete(location) and block_type not in [
+            if not self._is_location_complete(location) and block_type not in {
                 'Summary',
                 'Confirmation',
-            ]:
+            }:
                 return location
 
     def _get_allowable_path(self, routing_path):
@@ -290,7 +290,7 @@ class Router:
             blocks = groups[0].get('blocks')
             if len(blocks) == 1:
                 block_type = blocks[0].get('type')
-                if block_type in ['Summary', 'Confirmation']:
+                if block_type in {'Summary', 'Confirmation'}:
                     return True
         return False
 

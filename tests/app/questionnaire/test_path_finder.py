@@ -264,9 +264,9 @@ class TestPathFinder(AppContextTestCase):
         answer_1 = Answer(answer_id='mandatory-checkbox-answer', value='Cheese')
         answer_2 = Answer(answer_id='non-mandatory-checkbox-answer', value='deep pan')
 
-        answer_Store = AnswerStore()
-        answer_Store.add_or_update(answer_1)
-        answer_Store.add_or_update(answer_2)
+        answer_store = AnswerStore()
+        answer_store.add_or_update(answer_1)
+        answer_store.add_or_update(answer_2)
 
         progress_store = ProgressStore(
             [
@@ -280,7 +280,7 @@ class TestPathFinder(AppContextTestCase):
         )
 
         path_finder = PathFinder(
-            schema, answer_Store, self.list_store, progress_store, self.metadata
+            schema, answer_store, self.list_store, progress_store, self.metadata
         )
         routing_path = path_finder.routing_path(section_id=section_id)
 
