@@ -1,10 +1,11 @@
+import simplejson as json
 from flask import Blueprint, Response, request, session, current_app
-from sdc.crypto.encrypter import encrypt
 from sdc.crypto.decrypter import decrypt
-
+from sdc.crypto.encrypter import encrypt
+from structlog import get_logger
 
 from app.authentication.user import User
-from app.globals import get_answer_store, get_questionnaire_store
+from app.globals import get_answer_store, get_questionnaire_store, get_metadata
 from app.keys import KEY_PURPOSE_AUTHENTICATION, KEY_PURPOSE_SUBMISSION
 from app.questionnaire.path_finder import PathFinder
 from app.submitter.converter import convert_answers
@@ -12,6 +13,8 @@ from app.submitter.submission_failed import SubmissionFailedException
 from app.utilities.schema import load_schema_from_metadata
 
 flush_blueprint = Blueprint('flush', __name__)
+
+logger = get_logger()
 
 
 @flush_blueprint.route('/flush', methods=['POST'])
@@ -35,6 +38,9 @@ def flush_data():
 
     if roles and 'flusher' in roles:
         user = _get_user(decrypted_token['response_id'])
+        metadata = get_metadata(user)
+        if 'tx_id' in metadata:
+            logger.bind(tx_id=metadata['tx_id'])
         if _submit_data(user):
             return Response(status=200)
         return Response(status=404)
@@ -58,9 +64,13 @@ def _submit_data(user):
         )
         full_routing_path = path_finder.full_routing_path()
 
-        message = convert_answers(
-            schema, questionnaire_store, full_routing_path, flushed=True
+        message = json.dumps(
+            convert_answers(
+                schema, questionnaire_store, full_routing_path, flushed=True
+            ),
+            for_json=True,
         )
+
         encrypted_message = encrypt(
             message, current_app.eq['key_store'], KEY_PURPOSE_SUBMISSION
         )
@@ -76,8 +86,10 @@ def _submit_data(user):
             raise SubmissionFailedException()
 
         get_questionnaire_store(user.user_id, user.user_ik).delete()
+        logger.info('successfully flushed answers')
         return True
 
+    logger.info('no answers found to flush')
     return False
 
 
