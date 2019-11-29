@@ -23,7 +23,7 @@ class QuestionnaireForm(FlaskForm):
         self.question = question_schema
         self.answer_store = answer_store
         self.metadata = metadata
-        self.location = (location,)
+        self.location = location
         self.question_errors = {}
         self.options_with_detail_answer = {}
 

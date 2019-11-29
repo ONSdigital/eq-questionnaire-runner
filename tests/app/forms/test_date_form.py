@@ -1,7 +1,7 @@
 from datetime import datetime
 
 from dateutil.relativedelta import relativedelta
-from mock import patch, MagicMock
+from mock import patch
 from wtforms import Form
 
 from app.data_model.answer_store import AnswerStore, Answer
