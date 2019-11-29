@@ -15,9 +15,9 @@ from app.forms.date_form import (
 )
 from app.questionnaire.questionnaire_schema import QuestionnaireSchema
 from app.questionnaire.rules import convert_to_datetime
+from app.questionnaire.location import Location
 from app.utilities.schema import load_schema_from_name
 from tests.app.app_context_test_case import AppContextTestCase
-from app.questionnaire.location import Location
 
 
 class TestDateForm(AppContextTestCase):
