@@ -216,11 +216,12 @@ class TestDateForm(AppContextTestCase):
             'app.questionnaire.questionnaire_schema.QuestionnaireSchema.get_answers_by_answer_id',
             return_value=[answer],
         ), self.app_request_context('/'):
+            minimum_date, maximum_date = get_date_limits(answer, AnswerStore(), {})
             form = get_form(
                 DateFormType.YearMonthDay,
                 answer,
-                None,
-                None,
+                minimum_date,
+                maximum_date,
                 error_messages=error_messages,
             )
 

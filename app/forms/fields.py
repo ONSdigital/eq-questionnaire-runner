@@ -42,7 +42,7 @@ def get_field(
         field = get_number_field(
             answer, label, guidance, error_messages, answer_store, disable_validation
         )
-    elif answer['type'] in date_form_types.keys():
+    elif answer['type'] in date_form_types:
         minimum_date, maximum_date = get_date_limits(answer, answer_store, metadata)
         field = DateField(
             date_form_types[answer['type']],

@@ -200,7 +200,7 @@ def get_date_limits(answer, answer_store, metadata):
     """
     date_references = {'minimum': None, 'maximum': None}
 
-    for limit in date_references.keys():
+    for limit in date_references:
         if limit in answer:
             date_references[limit] = get_referenced_date(
                 answer[limit], answer_store, metadata
