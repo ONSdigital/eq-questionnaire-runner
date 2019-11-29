@@ -16,12 +16,14 @@ logger = logging.getLogger(__name__)
 
 
 class QuestionnaireForm(FlaskForm):
-    def __init__(self, schema, question_schema, answer_store, metadata, location, **kwargs):
+    def __init__(
+        self, schema, question_schema, answer_store, metadata, location, **kwargs
+    ):
         self.schema = schema
         self.question = question_schema
         self.answer_store = answer_store
         self.metadata = metadata
-        self.location = location,
+        self.location = (location,)
         self.question_errors = {}
         self.options_with_detail_answer = {}
 
@@ -379,7 +381,7 @@ def map_detail_answer_errors(errors, answer_json):
 
 
 def generate_form(
-    schema, question_schema, answer_store, metadata, location, data=None, formdata=None,
+    schema, question_schema, answer_store, metadata, location, data=None, formdata=None
 ):
     class DynamicForm(QuestionnaireForm):
         pass
@@ -390,7 +392,7 @@ def generate_form(
         schema.error_messages,
         answer_store,
         metadata,
-        location
+        location,
     )
 
     for answer_id, field in answer_fields.items():
@@ -401,5 +403,11 @@ def generate_form(
         formdata = MultiDict(formdata)
 
     return DynamicForm(
-        schema, question_schema, answer_store, metadata, location=None, data=data, formdata=formdata
+        schema,
+        question_schema,
+        answer_store,
+        metadata,
+        location=None,
+        data=data,
+        formdata=formdata,
     )

@@ -193,7 +193,9 @@ def validate_min_max_date(answer, answer_store, metadata, date_format, location)
     )
 
 
-def get_dates_for_single_date_period_validation(answer, answer_store, metadata, location):
+def get_dates_for_single_date_period_validation(
+    answer, answer_store, metadata, location
+):
     """
     Gets attributes within a minimum or maximum of a date field and validates that the entered date
     is valid.
@@ -252,9 +254,11 @@ def get_referenced_offset_value(answer_min_or_max, answer_store, metadata, locat
         schema = load_schema_from_metadata(metadata)
         answer_id = answer_min_or_max['answer_id']
         if location:
-            value = get_answer_value(answer_id, answer_store, schema, location.list_item_id)
+            value = get_answer_value(
+                answer_id, answer_store, schema, location.list_item_id
+            )
         else:
-            value = get_answer_value(answer_id, answer_store, schema, None)
+            value = get_answer_value(answer_id, answer_store, schema)
 
     value = convert_to_datetime(value)
 

@@ -1,7 +1,7 @@
 from datetime import datetime
 
 from dateutil.relativedelta import relativedelta
-from mock import patch
+from mock import patch, MagicMock
 from wtforms import Form
 
 from app.data_model.answer_store import AnswerStore, Answer
@@ -17,6 +17,7 @@ from app.questionnaire.questionnaire_schema import QuestionnaireSchema
 from app.questionnaire.rules import convert_to_datetime
 from app.utilities.schema import load_schema_from_name
 from tests.app.app_context_test_case import AppContextTestCase
+from app.questionnaire.location import Location
 
 
 class TestDateForm(AppContextTestCase):
@@ -271,7 +272,36 @@ class TestDateForm(AppContextTestCase):
 
         answer_maximum = {'answer_id': 'date', 'offset_by': {'months': 1}}
 
-        value = get_referenced_offset_value(answer_maximum, store, {}, None)
+        value = get_referenced_offset_value(answer_maximum, store, {}, {})
+
+        self.assertEqual(value, convert_to_datetime('2018-04-20'))
+
+    # pylint: disable=unused-argument
+    @patch(
+        'app.forms.date_form.load_schema_from_metadata',
+        return_value=QuestionnaireSchema({}),
+    )
+    def test_get_referenced_offset_value_with_list_item_id(self, schema_mock):
+        list_item_id = 'abcde'
+        answer_store = AnswerStore()
+
+        test_answer_id = Answer(
+            answer_id='date', value='2018-03-20', list_item_id='abcde'
+        )
+
+        location = Location(section_id='test', list_item_id=list_item_id)
+
+        answer_store.add_or_update(test_answer_id)
+
+        answer_maximum = {'answer_id': 'date', 'offset_by': {'months': 1}}
+
+        with patch(
+            'app.questionnaire.questionnaire_schema.QuestionnaireSchema.get_list_item_id_for_answer_id',
+            return_value=list_item_id,
+        ):
+            value = get_referenced_offset_value(
+                answer_maximum, answer_store, {}, location
+            )
 
         self.assertEqual(value, convert_to_datetime('2018-04-20'))
 

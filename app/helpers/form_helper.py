@@ -30,12 +30,23 @@ def get_form_for_location(
     mapped_answers = get_mapped_answers(schema, answer_store, location=location)
 
     return generate_form(
-        schema, block_json.get('question'), answer_store, metadata, data=mapped_answers, location=location
+        schema,
+        block_json.get('question'),
+        answer_store,
+        metadata,
+        data=mapped_answers,
+        location=location,
     )
 
 
 def post_form_for_block(
-    schema, block_json, answer_store, metadata, request_form, location, disable_mandatory=False,
+    schema,
+    block_json,
+    answer_store,
+    metadata,
+    request_form,
+    location,
+    disable_mandatory=False,
 ):
     """
     Returns the form necessary for the location given a post request, plus any template arguments
@@ -55,7 +66,9 @@ def post_form_for_block(
 
     data = clear_detail_answer_field(request_form, question)
 
-    return generate_form(schema, question, answer_store, metadata, location, formdata=data)
+    return generate_form(
+        schema, question, answer_store, metadata, location, formdata=data
+    )
 
 
 def disable_mandatory_answers(block):

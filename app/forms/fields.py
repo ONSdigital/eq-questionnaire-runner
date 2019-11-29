@@ -28,7 +28,13 @@ logger = get_logger()
 
 
 def get_field(
-    answer, label, error_messages, answer_store, metadata, location, disable_validation=False
+    answer,
+    label,
+    error_messages,
+    answer_store,
+    metadata,
+    location=None,
+    disable_validation=False,
 ):
     guidance = answer.get('guidance', '')
 
@@ -146,7 +152,9 @@ def get_text_area_field(
     )
 
 
-def get_date_field(answer, label, guidance, error_messages, answer_store, metadata, location):
+def get_date_field(
+    answer, label, guidance, error_messages, answer_store, metadata, location
+):
     return DateField(
         DateFormType.YearMonthDay,
         answer_store,
@@ -174,7 +182,9 @@ def get_month_year_field(
     )
 
 
-def get_year_field(answer, label, guidance, error_messages, answer_store, metadata, location):
+def get_year_field(
+    answer, label, guidance, error_messages, answer_store, metadata, location
+):
     return DateField(
         DateFormType.Year,
         answer_store,
