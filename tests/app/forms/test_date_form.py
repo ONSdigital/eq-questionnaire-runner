@@ -6,12 +6,13 @@ from wtforms import Form
 
 from app.data_model.answer_store import AnswerStore, Answer
 from app.forms.date_form import (
-    get_referenced_offset_value,
-    get_dates_for_single_date_period_validation,
+    transform_date_by_offset,
+    get_date_limits,
     validate_mandatory_date,
     get_form,
     DateFormType,
     DateField,
+    get_referenced_date,
 )
 from app.questionnaire.questionnaire_schema import QuestionnaireSchema
 from app.questionnaire.rules import convert_to_datetime
@@ -28,8 +29,8 @@ class TestDateForm(AppContextTestCase):
             form = get_form(
                 DateFormType.YearMonthDay,
                 schema.get_answers_by_answer_id('single-date-answer')[0],
-                AnswerStore(),
-                {},
+                None,
+                None,
                 error_messages=error_messages,
             )
 
@@ -45,8 +46,8 @@ class TestDateForm(AppContextTestCase):
             form = get_form(
                 DateFormType.YearMonth,
                 schema.get_answers_by_answer_id('month-year-answer')[0],
-                {},
-                {},
+                None,
+                None,
                 error_messages=error_messages,
             )
 
@@ -61,8 +62,8 @@ class TestDateForm(AppContextTestCase):
         form = get_form(
             DateFormType.Year,
             schema.get_answers_by_answer_id('year-date-answer')[0],
-            {},
-            {},
+            None,
+            None,
             error_messages=error_messages,
         )
 
@@ -78,8 +79,8 @@ class TestDateForm(AppContextTestCase):
             form = get_form(
                 DateFormType.YearMonthDay,
                 schema.get_answers_by_answer_id('single-date-answer')[0],
-                AnswerStore(),
-                {},
+                None,
+                None,
                 error_messages=error_messages,
             )
 
@@ -93,8 +94,8 @@ class TestDateForm(AppContextTestCase):
             form = get_form(
                 DateFormType.YearMonth,
                 schema.get_answers_by_answer_id('month-year-answer')[0],
-                {},
-                {},
+                None,
+                None,
                 error_messages=error_messages,
             )
 
@@ -107,8 +108,8 @@ class TestDateForm(AppContextTestCase):
         form = get_form(
             DateFormType.Year,
             schema.get_answers_by_answer_id('year-date-answer')[0],
-            {},
-            {},
+            None,
+            None,
             error_messages=error_messages,
         )
 
@@ -125,8 +126,8 @@ class TestDateForm(AppContextTestCase):
             class TestForm(Form):
                 field = DateField(
                     DateFormType.YearMonthDay,
-                    AnswerStore(),
-                    {},
+                    None,
+                    None,
                     schema.get_answers_by_answer_id('single-date-answer')[0],
                     error_messages,
                 )
@@ -146,8 +147,8 @@ class TestDateForm(AppContextTestCase):
             class TestForm(Form):
                 field = DateField(
                     DateFormType.YearMonth,
-                    {},
-                    {},
+                    None,
+                    None,
                     schema.get_answers_by_answer_id('month-year-answer')[0],
                     error_messages,
                 )
@@ -165,8 +166,8 @@ class TestDateForm(AppContextTestCase):
         class TestForm(Form):
             field = DateField(
                 DateFormType.Year,
-                {},
-                {},
+                None,
+                None,
                 schema.get_answers_by_answer_id('year-date-answer')[0],
                 error_messages,
             )
@@ -180,12 +181,18 @@ class TestDateForm(AppContextTestCase):
         error_messages = schema.error_messages
         test_metadata = {'ref_p_start_date': '2017-02-20'}
 
+        answer = schema.get_answers_by_answer_id('date-range-from')[0]
+
+        minimum_date, maximum_date = get_date_limits(
+            answer, AnswerStore(), test_metadata
+        )
+
         with self.app_request_context('/'):
             form = get_form(
                 DateFormType.YearMonthDay,
-                schema.get_answers_by_answer_id('date-range-from')[0],
-                AnswerStore(),
-                test_metadata,
+                answer,
+                minimum_date,
+                maximum_date,
                 error_messages=error_messages,
             )
 
@@ -212,8 +219,8 @@ class TestDateForm(AppContextTestCase):
             form = get_form(
                 DateFormType.YearMonthDay,
                 answer,
-                AnswerStore(),
-                {},
+                None,
+                None,
                 error_messages=error_messages,
             )
 
@@ -222,16 +229,18 @@ class TestDateForm(AppContextTestCase):
             self.assertTrue(hasattr(form, 'year'))
 
     def test_get_referenced_offset_value_for_value(self):
-        answer_minimum = {'value': '2017-06-11', 'offset_by': {'days': 10}}
+        answer_minimum = {'value': '2017-06-11'}
 
-        value = get_referenced_offset_value(answer_minimum, AnswerStore(), {})
+        minimum_date = get_referenced_date(answer_minimum, AnswerStore(), {})
+        minimum_date = transform_date_by_offset(minimum_date, {'days': 10})
 
-        self.assertEqual(value, convert_to_datetime('2017-06-21'))
+        self.assertEqual(minimum_date, convert_to_datetime('2017-06-21'))
 
     def test_get_referenced_offset_value_for_now_value(self):
-        answer_minimum = {'value': 'now', 'offset_by': {'days': 10}}
+        answer_minimum = {'value': 'now'}
 
-        value = get_referenced_offset_value(answer_minimum, AnswerStore(), {})
+        value = get_referenced_date(answer_minimum, AnswerStore(), {})
+        value = transform_date_by_offset(value, {'days': 10})
 
         self.assertEqual(
             datetime.date(value), (datetime.now().date() + relativedelta(days=10))
@@ -239,13 +248,12 @@ class TestDateForm(AppContextTestCase):
 
     def test_get_referenced_offset_value_for_meta(self):
         test_metadata = {'date': '2018-02-20'}
-        answer_minimum = {'meta': 'date', 'offset_by': {'days': -10}}
+        answer_minimum = {'meta': 'date'}
 
-        value = get_referenced_offset_value(
-            answer_minimum, AnswerStore(), test_metadata
-        )
+        minimum_date = get_referenced_date(answer_minimum, AnswerStore(), test_metadata)
+        minimum_date = transform_date_by_offset(minimum_date, {'days': -10})
 
-        self.assertEqual(value, convert_to_datetime('2018-02-10'))
+        self.assertEqual(minimum_date, convert_to_datetime('2018-02-10'))
 
     # pylint: disable=unused-argument
     @patch(
@@ -258,16 +266,18 @@ class TestDateForm(AppContextTestCase):
         test_answer_id = Answer(answer_id='date', value='2018-03-20')
         store.add_or_update(test_answer_id)
 
-        answer_maximum = {'answer_id': 'date', 'offset_by': {'months': 1}}
+        answer_maximum = {'answer_id': 'date'}
 
-        value = get_referenced_offset_value(answer_maximum, store, {})
+        value = get_referenced_date(answer_maximum, store, {})
+        value = transform_date_by_offset(value, {'months': 1})
 
         self.assertEqual(value, convert_to_datetime('2018-04-20'))
 
     def test_get_referenced_offset_value_with_no_offset(self):
         answer_minimum = {'value': '2017-06-11'}
 
-        value = get_referenced_offset_value(answer_minimum, AnswerStore(), {})
+        value = get_referenced_date(answer_minimum, AnswerStore(), {})
+        value = transform_date_by_offset(value, {})
 
         self.assertEqual(value, convert_to_datetime('2017-06-11'))
 
@@ -290,9 +300,7 @@ class TestDateForm(AppContextTestCase):
             'maximum': {'answer_id': 'date', 'offset_by': {'years': 1}},
         }
 
-        offset_dates = get_dates_for_single_date_period_validation(
-            answer, store, metadata=test_metadata
-        )
+        offset_dates = get_date_limits(answer, store, metadata=test_metadata)
 
         self.assertEqual(
             offset_dates,
@@ -308,7 +316,7 @@ class TestDateForm(AppContextTestCase):
         }
 
         with self.assertRaises(Exception) as ite:
-            get_dates_for_single_date_period_validation(answer, AnswerStore(), {})
+            get_date_limits(answer, AnswerStore(), {})
             self.assertEqual(
                 'The minimum offset date is greater than the maximum offset date for date-answer.',
                 str(ite.exception),

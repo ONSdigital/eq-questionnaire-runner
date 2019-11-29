@@ -11,7 +11,7 @@ from app.forms.custom_fields import (
     CustomSelectMultipleField,
     CustomSelectField,
 )
-from app.forms.date_form import DateField, DateFormType
+from app.forms.date_form import DateField, DateFormType, get_date_limits
 from app.forms.duration_form import get_duration_form
 from app.validation.validators import (
     NumberCheck,
@@ -32,21 +32,26 @@ def get_field(
 ):
     guidance = answer.get('guidance', '')
 
+    date_form_types = {
+        'Date': DateFormType.YearMonthDay,
+        'MonthYearDate': DateFormType.YearMonth,
+        'YearDate': DateFormType.Year,
+    }
+
     if answer['type'] in ['Number', 'Currency', 'Percentage', 'Unit']:
         field = get_number_field(
             answer, label, guidance, error_messages, answer_store, disable_validation
         )
-    elif answer['type'] == 'Date':
-        field = get_date_field(
-            answer, label, guidance, error_messages, answer_store, metadata
-        )
-    elif answer['type'] == 'MonthYearDate':
-        field = get_month_year_field(
-            answer, label, guidance, error_messages, answer_store, metadata
-        )
-    elif answer['type'] == 'YearDate':
-        field = get_year_field(
-            answer, label, guidance, error_messages, answer_store, metadata
+    elif answer['type'] in date_form_types.keys():
+        minimum_date, maximum_date = get_date_limits(answer, answer_store, metadata)
+        field = DateField(
+            date_form_types[answer['type']],
+            minimum_date,
+            maximum_date,
+            answer,
+            error_messages,
+            label=label,
+            description=guidance,
         )
     elif answer['type'] == 'Duration':
         field = get_duration_field(answer, label, guidance, error_messages)
@@ -143,44 +148,6 @@ def get_text_area_field(
         description=guidance,
         validators=validate_with,
         maxlength=MAX_LENGTH,
-    )
-
-
-def get_date_field(answer, label, guidance, error_messages, answer_store, metadata):
-    return DateField(
-        DateFormType.YearMonthDay,
-        answer_store,
-        metadata,
-        answer,
-        error_messages,
-        label=label,
-        description=guidance,
-    )
-
-
-def get_month_year_field(
-    answer, label, guidance, error_messages, answer_store, metadata
-):
-    return DateField(
-        DateFormType.YearMonth,
-        answer_store,
-        metadata,
-        answer,
-        error_messages,
-        label=label,
-        description=guidance,
-    )
-
-
-def get_year_field(answer, label, guidance, error_messages, answer_store, metadata):
-    return DateField(
-        DateFormType.Year,
-        answer_store,
-        metadata,
-        answer,
-        error_messages,
-        label=label,
-        description=guidance,
     )
 
 

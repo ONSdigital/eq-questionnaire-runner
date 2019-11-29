@@ -33,14 +33,14 @@ class DateField(FormField):
     def __init__(
         self,
         date_form_type: DateFormType,
-        answer_store,
-        metadata,
+        minimum_date,
+        maximum_date,
         answer,
         error_messages,
         **kwargs,
     ):
         form_class = get_form(
-            date_form_type, answer, answer_store, metadata, error_messages
+            date_form_type, answer, minimum_date, maximum_date, error_messages
         )
         super().__init__(form_class, **kwargs)
 
@@ -104,7 +104,7 @@ class DateForm(Form):
             return None
 
 
-def get_form(form_type, answer, answer_store, metadata, error_messages):
+def get_form(form_type, answer, minimum_date, maximum_date, error_messages):
     validate_with = [OptionalForm()]
 
     if answer['mandatory'] is True:
@@ -114,9 +114,12 @@ def get_form(form_type, answer, answer_store, metadata, error_messages):
 
     validate_with.append(DateCheck(error_message))
 
-    if 'minimum' in answer or 'maximum' in answer:
+    if minimum_date or maximum_date:
+        messages = None
+        if 'validation' in answer:
+            messages = answer['validation'].get('messages')
         min_max_validation = validate_min_max_date(
-            answer, answer_store, metadata, form_type.value['date_format']
+            minimum_date, maximum_date, messages, form_type.value['date_format']
         )
         validate_with.append(min_max_validation)
 
@@ -158,14 +161,7 @@ def get_bespoke_message(answer, message_type):
     return None
 
 
-def validate_min_max_date(answer, answer_store, metadata, date_format):
-    messages = None
-    if 'validation' in answer:
-        messages = answer['validation'].get('messages')
-    minimum_date, maximum_date = get_dates_for_single_date_period_validation(
-        answer, answer_store, metadata
-    )
-
+def validate_min_max_date(minimum_date, maximum_date, messages, date_format):
     display_format = 'd MMMM yyyy'
     if date_format == 'yyyy-mm':
         display_format = 'MMMM yyyy'
@@ -192,7 +188,7 @@ def validate_min_max_date(answer, answer_store, metadata, date_format):
     )
 
 
-def get_dates_for_single_date_period_validation(answer, answer_store, metadata):
+def get_date_limits(answer, answer_store, metadata):
     """
     Gets attributes within a minimum or maximum of a date field and validates that the entered date
     is valid.
@@ -202,64 +198,73 @@ def get_dates_for_single_date_period_validation(answer, answer_store, metadata):
     :param metadata: metadata for reference meta dates
     :return: attributes
     """
-    minimum_referenced_date, maximum_referenced_date = None, None
+    date_references = {'minimum': None, 'maximum': None}
 
-    if 'minimum' in answer:
-        minimum_referenced_date = get_referenced_offset_value(
-            answer['minimum'], answer_store, metadata
-        )
-    if 'maximum' in answer:
-        maximum_referenced_date = get_referenced_offset_value(
-            answer['maximum'], answer_store, metadata
-        )
+    for limit in date_references.keys():
+        if limit in answer:
+            date_references[limit] = get_referenced_date(
+                answer[limit], answer_store, metadata
+            )
+
+            if 'offset_by' in answer[limit]:
+                offset = answer[limit]['offset_by']
+                date_references[limit] = transform_date_by_offset(
+                    date_references[limit], offset
+                )
 
     # Extra runtime validation that will catch invalid schemas
     # Similar validation in schema validator
-    if minimum_referenced_date and maximum_referenced_date:
-        if minimum_referenced_date > maximum_referenced_date:
+    if date_references['minimum'] and date_references['maximum']:
+        if date_references['minimum'] > date_references['maximum']:
             raise Exception(
                 'The minimum offset date is greater than the maximum offset date for {}.'.format(
                     answer['id']
                 )
             )
 
-    return minimum_referenced_date, maximum_referenced_date
+    return date_references['minimum'], date_references['maximum']
 
 
-def get_referenced_offset_value(answer_min_or_max, answer_store, metadata):
+def transform_date_by_offset(date_to_offset, offset):
     """
-    Gets value of the referenced date type, whether it is a value,
-    id of an answer or a meta date. Then adds/subtracts offset from that value and returns
+    Adds/subtracts offset from a date and returns
     the new offset value
 
-    :param answer_min_or_max: The minimum or maximum object which contains
-    the referenced value.
+    :param date_to_offset: The date to offset
+    :param offset: The object which contains the offset.
+    :return: date value
+    """
+    date_to_offset += relativedelta(
+        years=offset.get('years', 0),
+        months=offset.get('months', 0),
+        days=offset.get('days', 0),
+    )
+
+    return date_to_offset
+
+
+def get_referenced_date(answer_schema, answer_store, metadata):
+    """
+    Gets value of the referenced date type, whether it is a value,
+    id of an answer or a meta date.
+
+    :param answer_schema: The object which contains the referenced value.
     :param answer_store: The current answer store
     :param metadata: metadata for reference meta dates
     :return: date value
     """
     value = None
 
-    if 'value' in answer_min_or_max:
-        if answer_min_or_max['value'] == 'now':
+    if 'value' in answer_schema:
+        if answer_schema['value'] == 'now':
             value = datetime.utcnow().strftime('%Y-%m-%d')
         else:
-            value = answer_min_or_max['value']
-    elif 'meta' in answer_min_or_max:
-        value = get_metadata_value(metadata, answer_min_or_max['meta'])
-    elif 'answer_id' in answer_min_or_max:
+            value = answer_schema['value']
+    elif 'meta' in answer_schema:
+        value = get_metadata_value(metadata, answer_schema['meta'])
+    elif 'answer_id' in answer_schema:
         schema = load_schema_from_metadata(metadata)
-        answer_id = answer_min_or_max['answer_id']
+        answer_id = answer_schema['answer_id']
         value = get_answer_value(answer_id, answer_store, schema)
 
-    value = convert_to_datetime(value)
-
-    if 'offset_by' in answer_min_or_max:
-        offset = answer_min_or_max['offset_by']
-        value += relativedelta(
-            years=offset.get('years', 0),
-            months=offset.get('months', 0),
-            days=offset.get('days', 0),
-        )
-
-    return value
+    return convert_to_datetime(value)

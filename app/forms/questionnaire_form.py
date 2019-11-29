@@ -8,7 +8,7 @@ from flask_wtf import FlaskForm
 from werkzeug.datastructures import MultiDict
 from wtforms import validators
 
-from app.forms.date_form import get_dates_for_single_date_period_validation
+from app.forms.date_form import get_date_limits
 from app.forms.fields import get_field
 from app.validation.validators import DateRangeCheck, SumCheck, MutuallyExclusiveCheck
 
@@ -215,10 +215,10 @@ class QuestionnaireForm(FlaskForm):
         return True
 
     def _get_period_range_for_single_date(self, date_from, date_to):
-        from_min_period_date, from_max_period_date = get_dates_for_single_date_period_validation(
+        from_min_period_date, from_max_period_date = get_date_limits(
             date_from, self.answer_store, self.metadata
         )
-        to_min_period_date, to_max_period_date = get_dates_for_single_date_period_validation(
+        to_min_period_date, to_max_period_date = get_date_limits(
             date_to, self.answer_store, self.metadata
         )
 
