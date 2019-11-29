@@ -39,9 +39,11 @@ def get_field(
     }
 
     if answer['type'] in ['Number', 'Currency', 'Percentage', 'Unit']:
-        field = get_number_field(
-            answer, label, guidance, error_messages, answer_store, disable_validation
+        dependencies = get_number_field_dependencies(answer, answer_store)
+        number_field_validators = get_number_field_validators(
+            answer, dependencies, error_messages, disable_validation
         )
+        field = get_number_field(answer, label, guidance, number_field_validators)
     elif answer['type'] in date_form_types:
         minimum_date, maximum_date = get_date_limits(answer, answer_store, metadata)
         field = DateField(
@@ -54,7 +56,9 @@ def get_field(
             description=guidance,
         )
     elif answer['type'] == 'Duration':
-        field = get_duration_field(answer, label, guidance, error_messages)
+        field = FormField(
+            get_duration_form(answer, error_messages), label=label, description=guidance
+        )
     else:
         field = {
             'Checkbox': get_select_multiple_field,
@@ -123,6 +127,17 @@ def get_mandatory_validator(answer, error_messages, mandatory_message_key):
     return [validate_with]
 
 
+def get_number_field(answer, label, guidance, validate_with):
+    if answer.get('decimal_places', 0) > 0:
+        return CustomDecimalField(
+            label=label, validators=validate_with, description=guidance
+        )
+
+    return CustomIntegerField(
+        label=label, validators=validate_with, description=guidance
+    )
+
+
 def get_string_field(answer, label, guidance, error_messages, disable_validation=False):
     validate_with = []
     if disable_validation is False:
@@ -148,12 +163,6 @@ def get_text_area_field(
         description=guidance,
         validators=validate_with,
         maxlength=MAX_LENGTH,
-    )
-
-
-def get_duration_field(answer, label, guidance, error_messages):
-    return FormField(
-        get_duration_form(answer, error_messages), label=label, description=guidance
     )
 
 
@@ -224,67 +233,79 @@ def get_select_field(answer, label, guidance, error_messages, disable_validation
     )
 
 
-def get_number_field(
-    answer, label, guidance, error_messages, answer_store, disable_validation=False
+def get_number_field_validators(
+    answer, dependencies, error_messages, disable_validation=False
 ):
     validate_with = []
 
     if disable_validation is False:
+        check_number_field_dependencies(answer, dependencies)
+
         validate_with = _get_number_field_validators(
-            answer, error_messages, answer_store
+            answer, dependencies, error_messages
         )
-
-    if answer.get('decimal_places', 0) > 0:
-        return CustomDecimalField(
-            label=label, validators=validate_with, description=guidance
-        )
-    return CustomIntegerField(
-        label=label, validators=validate_with, description=guidance
-    )
+    return validate_with
 
 
-def _get_number_field_validators(answer, error_messages, answer_store):
-
+def get_number_field_dependencies(answer, answer_store):
     max_decimals = answer.get('decimal_places', 0)
-    if max_decimals > MAX_DECIMAL_PLACES:
+
+    min_value = 0
+
+    if answer.get('min_value'):
+        min_value = get_schema_defined_limit(
+            answer['id'], answer.get('min_value'), answer_store
+        )
+
+    max_value = MAX_NUMBER
+
+    if answer.get('max_value'):
+        max_value = get_schema_defined_limit(
+            answer['id'], answer.get('max_value'), answer_store
+        )
+
+    return {
+        'max_decimals': max_decimals,
+        'min_exclusive': answer.get('min_value', {}).get('exclusive', False),
+        'max_exclusive': answer.get('max_value', {}).get('exclusive', False),
+        'min_value': min_value,
+        'max_value': max_value,
+    }
+
+
+def check_number_field_dependencies(answer, dependencies):
+    if dependencies['max_decimals'] > MAX_DECIMAL_PLACES:
         raise Exception(
             'decimal_places: {} > system maximum: {} for answer id: {}'.format(
-                max_decimals, MAX_DECIMAL_PLACES, answer['id']
+                dependencies['max_decimals'], MAX_DECIMAL_PLACES, answer['id']
             )
         )
-    min_value, minimum_exclusive = get_schema_defined_limit(
-        answer['id'], answer.get('min_value'), answer_store
-    )
-    if min_value is None:
-        min_value = 0
-    if min_value < MIN_NUMBER:
+
+    if dependencies['min_value'] < MIN_NUMBER:
         raise Exception(
             'min_value: {} < system minimum: {} for answer id: {}'.format(
-                min_value, MIN_NUMBER, answer['id']
+                dependencies['min_value'], MIN_NUMBER, answer['id']
             )
         )
 
-    max_value, maximum_exclusive = get_schema_defined_limit(
-        answer['id'], answer.get('max_value'), answer_store
-    )
-    if max_value is None:
-        max_value = MAX_NUMBER
-
-    if max_value > MAX_NUMBER:
+    if dependencies['max_value'] > MAX_NUMBER:
         raise Exception(
             'max_value: {} > system maximum: {} for answer id: {}'.format(
-                max_value, MAX_NUMBER, answer['id']
+                dependencies['max_value'], MAX_NUMBER, answer['id']
             )
         )
 
-    if min_value > max_value:
+    if dependencies['min_value'] > dependencies['max_value']:
         raise Exception(
             'min_value: {} > max_value: {} for answer id: {}'.format(
-                min_value, max_value, answer['id']
+                dependencies['min_value'], dependencies['max_value'], answer['id']
             )
         )
 
+
+def _get_number_field_validators(answer, dependencies, error_messages):
     answer_errors = error_messages.copy()
+
     if 'validation' in answer and 'messages' in answer['validation']:
         for error_key, error_message in answer['validation']['messages'].items():
             answer_errors[error_key] = error_message
@@ -296,34 +317,32 @@ def _get_number_field_validators(answer, error_messages, answer_store):
     return mandatory_or_optional + [
         NumberCheck(answer_errors['INVALID_NUMBER']),
         NumberRange(
-            minimum=min_value,
-            minimum_exclusive=minimum_exclusive,
-            maximum=max_value,
-            maximum_exclusive=maximum_exclusive,
+            minimum=dependencies['min_value'],
+            minimum_exclusive=dependencies['min_exclusive'],
+            maximum=dependencies['max_value'],
+            maximum_exclusive=dependencies['max_exclusive'],
             messages=answer_errors,
             currency=answer.get('currency'),
         ),
-        DecimalPlaces(max_decimals=max_decimals, messages=answer_errors),
+        DecimalPlaces(
+            max_decimals=dependencies['max_decimals'], messages=answer_errors
+        ),
     ]
 
 
 def get_schema_defined_limit(answer_id, definition, answer_store):
-    if definition:
-        if 'value' in definition:
-            value = definition['value']
-        else:
-            source_answer_id = definition.get('answer_id')
-            answer = answer_store.get_answer(source_answer_id)
-            value = answer.value
-            if not isinstance(value, int) and not isinstance(value, Decimal):
-                raise Exception(
-                    'answer: {} value: {} for answer id: {} is not a valid number'.format(
-                        source_answer_id, value, answer_id
-                    )
-                )
+    if 'value' in definition:
+        return definition['value']
 
-        exclusive = definition.get('exclusive', False)
+    source_answer_id = definition.get('answer_id')
+    answer = answer_store.get_answer(source_answer_id)
+    value = answer.value
 
-        return value, exclusive
+    if not isinstance(value, int) and not isinstance(value, Decimal):
+        raise Exception(
+            'answer: {} value: {} for answer id: {} is not a valid number'.format(
+                source_answer_id, value, answer_id
+            )
+        )
 
-    return None, False
+    return value
