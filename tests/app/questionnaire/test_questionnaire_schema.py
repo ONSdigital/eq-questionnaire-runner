@@ -623,7 +623,7 @@ def test_get_all_when_rules_by_list_name():
     }
 
     schema = QuestionnaireSchema(survey_json)
-    when_blocks = schema.get_sections_associated_to_list_name('list')
+    when_blocks = schema.get_sections_dependent_on_list('list')
 
     assert len(when_blocks) == 1
     assert 'section2' in when_blocks

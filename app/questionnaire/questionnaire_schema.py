@@ -39,7 +39,7 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
     def get_section(self, section_id: str):
         return self._sections_by_id.get(section_id)
 
-    def get_sections_associated_to_list_name(self, list_name: str) -> Set:
+    def get_sections_dependent_on_list(self, list_name: str) -> Set:
         try:
             return self._list_name_to_section_map[list_name]
         except KeyError:
@@ -47,29 +47,14 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
             self._list_name_to_section_map[list_name] = sections
             return sections
 
-    def _sections_associated_to_list_name(self, list_name: str) -> Set:
-        sections = set()
+    def _sections_associated_to_list_name(self, list_name: str) -> List:
+        sections = []
         for block in self.get_blocks():
-            for when_rule in self._lookup_nested_when_rules(block):
+            for when_rule in _get_nested_values_by_key(block, 'when'):
                 for rule in when_rule:
                     if rule.get('list') == list_name:
-                        sections.add(self.get_section_id_for_block_id(block['id']))
+                        sections.append(self.get_section_id_for_block_id(block['id']))
         return sections
-
-    def _lookup_nested_when_rules(self, block):
-        try:
-            for k, v in block.items():
-                if k == 'when':
-                    yield v
-                if isinstance(v, dict):
-                    for result in self._lookup_nested_when_rules(v):
-                        yield result
-                elif isinstance(v, list):
-                    for d in v:
-                        for result in self._lookup_nested_when_rules(d):
-                            yield result
-        except AttributeError:
-            pass
 
     @staticmethod
     def get_blocks_for_section(section):
@@ -444,3 +429,17 @@ def get_nested_schema_objects(parent_object, list_key):
             nested_objects[child_list_object['id']] = child_list_object
 
     return nested_objects
+
+
+def _get_nested_values_by_key(block, key):
+    try:
+        for k, v in block.items():
+            if k == key:
+                yield v
+            if isinstance(v, dict):
+                yield from _get_nested_values_by_key(v, key)
+            elif isinstance(v, list):
+                for d in v:
+                    yield from _get_nested_values_by_key(d, key)
+    except AttributeError:
+        pass

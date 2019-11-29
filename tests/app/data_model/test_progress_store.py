@@ -1,3 +1,5 @@
+import pytest
+
 from app.data_model.progress import Progress
 from app.data_model.progress_store import ProgressStore, CompletionStatus
 from app.questionnaire.location import Location
@@ -471,3 +473,44 @@ def test_remove_progress_for_list_item_id():
 
     assert ('s4', '123abc') not in store
     assert store.get_completed_block_ids(section_id='s4', list_item_id='123abc') == []
+
+
+@pytest.mark.parametrize(
+    'test_input, expected',
+    [
+        ({('s1', None), ('s2', None)}, [('s1', None), ('s2', None)]),
+        (None, [('s1', None), ('s2', None), ('s4', '123abc')]),
+    ],
+)
+def test_section_keys_by_status(test_input, expected):
+    completed = [
+        {
+            'section_id': 's1',
+            'list_item_id': None,
+            'status': CompletionStatus.COMPLETED,
+            'block_ids': ['one', 'two'],
+        },
+        {
+            'section_id': 's2',
+            'list_item_id': None,
+            'status': CompletionStatus.IN_PROGRESS,
+            'block_ids': ['three'],
+        },
+        {
+            'section_id': 's3',
+            'list_item_id': 'abc123',
+            'status': CompletionStatus.NOT_STARTED,
+            'block_ids': ['three'],
+        },
+        {
+            'section_id': 's4',
+            'list_item_id': '123abc',
+            'status': CompletionStatus.COMPLETED,
+            'block_ids': ['not-three'],
+        },
+    ]
+
+    store = ProgressStore(completed)
+    section_keys = store.get_in_progress_and_completed_sections(test_input)
+
+    assert sorted(section_keys) == expected

@@ -49,32 +49,18 @@ class ListAction(Question):
             self.parent_location.block_id
         )
         self.questionnaire_store_updater.remove_answers(answer_ids_to_remove)
-        self.evaluate_sections()
+        self.evaluate_and_update_section_status()
         self.questionnaire_store_updater.save()
 
-    def evaluate_sections(self):
-        sections_to_evaluate = self._sections_to_evaluate()
-        section_paths = self._routing_paths(sections_to_evaluate)
-        for section_path in section_paths:
-            self._update_section_completeness(
-                Location(section_path[0][0]), section_path[1]
-            )
-
-    def _sections_to_evaluate(self):
-        list_name = self._schema.get_block(self.rendered_block['parent_id'])['for_list']
-        associated_sections = self._schema.get_sections_associated_to_list_name(
-            list_name
-        )
-        associated_sections = {(element, None) for element in associated_sections}
-        return self.questionnaire_store_updater.sections_to_evaluate(
-            associated_sections
+    def evaluate_and_update_section_status(self):
+        sections_to_evaluate = (
+            self.questionnaire_store_updater._progress_store.get_in_progress_and_completed_sections()
         )
 
-    def _routing_paths(self, sections_to_evaluate: List[str]):
-        return [
-            (section_id, self.path_finder.routing_path(section_id[0]))
-            for section_id in sections_to_evaluate
-        ]
+        for section_id, list_item_id in sections_to_evaluate:
+            routing_path = self.path_finder.routing_path(section_id)
+            location = Location(section_id, list_item_id)
+            self._update_section_completeness(location, routing_path)
 
     def _get_location_url(self, block_id):
         if block_id and self._schema.is_block_valid(block_id):
