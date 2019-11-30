@@ -13,6 +13,7 @@ from app.forms.date_form import (
     DateFormType,
     DateField,
     get_referenced_date,
+    get_date_form_validators,
 )
 from app.questionnaire.questionnaire_schema import QuestionnaireSchema
 from app.questionnaire.rules import convert_to_datetime
@@ -26,13 +27,14 @@ class TestDateForm(AppContextTestCase):
         error_messages = schema.error_messages
 
         with self.app_request_context('/'):
-            form = get_form(
+            validators = get_date_form_validators(
                 DateFormType.YearMonthDay,
                 schema.get_answers_by_answer_id('single-date-answer')[0],
                 None,
                 None,
                 error_messages=error_messages,
             )
+            form = get_form(DateFormType.YearMonthDay, validators)
 
         self.assertTrue(hasattr(form, 'day'))
         self.assertTrue(hasattr(form, 'month'))
@@ -43,13 +45,14 @@ class TestDateForm(AppContextTestCase):
         error_messages = schema.error_messages
 
         with self.app_request_context('/'):
-            form = get_form(
+            validators = get_date_form_validators(
                 DateFormType.YearMonth,
                 schema.get_answers_by_answer_id('month-year-answer')[0],
                 None,
                 None,
                 error_messages=error_messages,
             )
+            form = get_form(DateFormType.YearMonth, validators)
 
         self.assertFalse(hasattr(form, 'day'))
         self.assertTrue(hasattr(form, 'month'))
@@ -59,13 +62,14 @@ class TestDateForm(AppContextTestCase):
         schema = load_schema_from_name('test_dates')
         error_messages = schema.error_messages
 
-        form = get_form(
+        validators = get_date_form_validators(
             DateFormType.Year,
             schema.get_answers_by_answer_id('year-date-answer')[0],
             None,
             None,
             error_messages=error_messages,
         )
+        form = get_form(DateFormType.Year, validators)
 
         self.assertFalse(hasattr(form, 'day'))
         self.assertFalse(hasattr(form, 'month'))
@@ -76,13 +80,14 @@ class TestDateForm(AppContextTestCase):
         error_messages = schema.error_messages
 
         with self.app_request_context('/'):
-            form = get_form(
+            validators = get_date_form_validators(
                 DateFormType.YearMonthDay,
                 schema.get_answers_by_answer_id('single-date-answer')[0],
                 None,
                 None,
                 error_messages=error_messages,
             )
+            form = get_form(DateFormType.YearMonthDay, validators)
 
         self.assertIsNone(form().data)
 
@@ -91,13 +96,14 @@ class TestDateForm(AppContextTestCase):
         error_messages = schema.error_messages
 
         with self.app_request_context('/'):
-            form = get_form(
+            validators = get_date_form_validators(
                 DateFormType.YearMonth,
                 schema.get_answers_by_answer_id('month-year-answer')[0],
                 None,
                 None,
                 error_messages=error_messages,
             )
+            form = get_form(DateFormType.YearMonth, validators)
 
         self.assertIsNone(form().data)
 
@@ -105,13 +111,14 @@ class TestDateForm(AppContextTestCase):
         schema = load_schema_from_name('test_dates')
         error_messages = schema.error_messages
 
-        form = get_form(
+        validators = get_date_form_validators(
             DateFormType.Year,
             schema.get_answers_by_answer_id('year-date-answer')[0],
             None,
             None,
             error_messages=error_messages,
         )
+        form = get_form(DateFormType.Year, validators)
 
         self.assertIsNone(form().data)
 
@@ -188,13 +195,14 @@ class TestDateForm(AppContextTestCase):
         )
 
         with self.app_request_context('/'):
-            form = get_form(
+            validators = get_date_form_validators(
                 DateFormType.YearMonthDay,
                 answer,
                 minimum_date,
                 maximum_date,
                 error_messages=error_messages,
             )
+            form = get_form(DateFormType.YearMonthDay, validators)
 
         self.assertTrue(hasattr(form, 'day'))
         self.assertTrue(hasattr(form, 'month'))
@@ -217,13 +225,14 @@ class TestDateForm(AppContextTestCase):
             return_value=[answer],
         ), self.app_request_context('/'):
             minimum_date, maximum_date = get_date_limits(answer, AnswerStore(), {})
-            form = get_form(
+            validators = get_date_form_validators(
                 DateFormType.YearMonthDay,
                 answer,
                 minimum_date,
                 maximum_date,
                 error_messages=error_messages,
             )
+            form = get_form(DateFormType.YearMonthDay, validators)
 
             self.assertTrue(hasattr(form, 'day'))
             self.assertTrue(hasattr(form, 'month'))

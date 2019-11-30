@@ -4,13 +4,7 @@ from wtforms.validators import StopValidation, ValidationError
 
 from app.validation.error_messages import error_messages
 from app.validation.validators import NumberCheck, DecimalPlaces
-from app.forms.fields import (
-    get_number_field,
-    CustomDecimalField,
-    MAX_DECIMAL_PLACES,
-    get_number_field_dependencies,
-    get_number_field_validators,
-)
+from app.forms.fields import CustomDecimalField, MAX_DECIMAL_PLACES, get_field
 from app.data_model.answer_store import AnswerStore
 
 
@@ -147,11 +141,9 @@ class TestNumberValidator(unittest.TestCase):
         label = answer['label']
         returned_error_messages = answer['validation']['messages']
 
-        dependencies = get_number_field_dependencies(answer, AnswerStore())
-        number_field_validators = get_number_field_validators(
-            answer, dependencies, error_messages, False
+        decimal_field = get_field(
+            answer, label, error_messages, AnswerStore(), None, False
         )
-        decimal_field = get_number_field(answer, label, '', number_field_validators)
 
         self.assertTrue(decimal_field.field_class == CustomDecimalField)
 
@@ -193,12 +185,9 @@ class TestNumberValidator(unittest.TestCase):
         returned_error_messages = answer['validation']['messages']
 
         with self.assertRaises(Exception) as ite:
-            dependencies = get_number_field_dependencies(answer, AnswerStore())
-            number_field_validators = get_number_field_validators(
-                answer, dependencies, returned_error_messages, False
+            get_field(
+                answer, label, returned_error_messages, AnswerStore(), None, False
             )
-
-            get_number_field(answer, label, '', number_field_validators)
 
             self.assertEqual(
                 str(ite.exception),

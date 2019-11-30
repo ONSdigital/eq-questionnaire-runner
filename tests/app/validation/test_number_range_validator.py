@@ -5,12 +5,7 @@ from wtforms.validators import ValidationError
 from app.jinja_filters import format_number
 from app.validation.error_messages import error_messages
 from app.validation.validators import NumberRange
-from app.forms.fields import (
-    get_number_field,
-    get_number_field_dependencies,
-    CustomIntegerField,
-    get_number_field_validators,
-)
+from app.forms.fields import CustomIntegerField, get_field
 from app.data_model.answer_store import Answer, AnswerStore
 
 
@@ -116,13 +111,9 @@ class TestNumberRangeValidator(unittest.TestCase):
         }
         label = answer['label']
         returned_error_messages = answer['validation']['messages']
-
-        dependencies = get_number_field_dependencies(answer, self.store)
-        number_field_validators = get_number_field_validators(
-            answer, dependencies, error_messages, False
+        integer_field = get_field(
+            answer, label, error_messages, self.store, None, False
         )
-
-        integer_field = get_number_field(answer, label, '', number_field_validators)
 
         self.assertTrue(integer_field.field_class == CustomIntegerField)
 
@@ -163,12 +154,9 @@ class TestNumberRangeValidator(unittest.TestCase):
         label = answer['label']
         returned_error_messages = answer['validation']['messages']
 
-        dependencies = get_number_field_dependencies(answer, self.store)
-        number_field_validators = get_number_field_validators(
-            answer, dependencies, error_messages, False
+        integer_field = get_field(
+            answer, label, error_messages, self.store, None, False
         )
-
-        integer_field = get_number_field(answer, label, '', number_field_validators)
 
         self.assertTrue(integer_field.field_class == CustomIntegerField)
 
@@ -204,12 +192,9 @@ class TestNumberRangeValidator(unittest.TestCase):
         label = answer['label']
         error_message = error_messages['NUMBER_TOO_LARGE'] % dict(max=max_value)
 
-        dependencies = get_number_field_dependencies(answer, self.store)
-        number_field_validators = get_number_field_validators(
-            answer, dependencies, error_messages, False
+        integer_field = get_field(
+            answer, label, error_messages, self.store, None, False
         )
-
-        integer_field = get_number_field(answer, label, '', number_field_validators)
 
         self.assertTrue(integer_field.field_class == CustomIntegerField)
 
@@ -243,12 +228,9 @@ class TestNumberRangeValidator(unittest.TestCase):
         label = answer['label']
         error_message = error_messages['NUMBER_TOO_SMALL'] % dict(min=min_value)
 
-        dependencies = get_number_field_dependencies(answer, self.store)
-        number_field_validators = get_number_field_validators(
-            answer, dependencies, error_messages, False
+        integer_field = get_field(
+            answer, label, error_messages, self.store, None, False
         )
-
-        integer_field = get_number_field(answer, label, '', number_field_validators)
 
         self.assertTrue(integer_field.field_class == CustomIntegerField)
 
@@ -288,12 +270,9 @@ class TestNumberRangeValidator(unittest.TestCase):
         }
         label = answer['label']
         returned_error_messages = answer['validation']['messages']
-        dependencies = get_number_field_dependencies(answer, self.store)
-        number_field_validators = get_number_field_validators(
-            answer, dependencies, returned_error_messages, False
+        integer_field = get_field(
+            answer, label, returned_error_messages, self.store, None, False
         )
-
-        integer_field = get_number_field(answer, label, '', number_field_validators)
 
         self.assertTrue(integer_field.field_class == CustomIntegerField)
 
@@ -338,12 +317,9 @@ class TestNumberRangeValidator(unittest.TestCase):
         }
         label = answer['label']
         returned_error_messages = answer['validation']['messages']
-        dependencies = get_number_field_dependencies(answer, self.store)
-        number_field_validators = get_number_field_validators(
-            answer, dependencies, returned_error_messages, False
+        integer_field = get_field(
+            answer, label, returned_error_messages, self.store, None, False
         )
-
-        integer_field = get_number_field(answer, label, '', number_field_validators)
 
         self.assertTrue(integer_field.field_class == CustomIntegerField)
 
@@ -387,12 +363,9 @@ class TestNumberRangeValidator(unittest.TestCase):
         label = answer['label']
         returned_error_messages = answer['validation']['messages']
 
-        dependencies = get_number_field_dependencies(answer, self.store)
-        number_field_validators = get_number_field_validators(
-            answer, dependencies, returned_error_messages, False
+        integer_field = get_field(
+            answer, label, returned_error_messages, self.store, None, False
         )
-
-        integer_field = get_number_field(answer, label, '', number_field_validators)
 
         for validator in integer_field.kwargs['validators']:
             if isinstance(validator, NumberRange):
@@ -420,12 +393,7 @@ class TestNumberRangeValidator(unittest.TestCase):
         returned_error_messages = answer['validation']['messages']
 
         with self.assertRaises(Exception) as ite:
-            dependencies = get_number_field_dependencies(answer, self.store)
-            number_field_validators = get_number_field_validators(
-                answer, dependencies, returned_error_messages, False
-            )
-
-            get_number_field(answer, label, '', number_field_validators)
+            get_field(answer, label, returned_error_messages, self.store, None, False)
 
         self.assertEqual(
             str(ite.exception),
@@ -451,12 +419,7 @@ class TestNumberRangeValidator(unittest.TestCase):
         returned_error_messages = answer['validation']['messages']
 
         with self.assertRaises(Exception) as ite:
-            dependencies = get_number_field_dependencies(answer, self.store)
-            number_field_validators = get_number_field_validators(
-                answer, dependencies, returned_error_messages, False
-            )
-
-            get_number_field(answer, label, '', number_field_validators)
+            get_field(answer, label, returned_error_messages, self.store, None, False)
 
         self.assertEqual(
             str(ite.exception),
@@ -483,12 +446,7 @@ class TestNumberRangeValidator(unittest.TestCase):
         returned_error_messages = answer['validation']['messages']
 
         with self.assertRaises(Exception) as ite:
-            dependencies = get_number_field_dependencies(answer, self.store)
-            number_field_validators = get_number_field_validators(
-                answer, dependencies, returned_error_messages, False
-            )
-
-            get_number_field(answer, label, '', number_field_validators)
+            get_field(answer, label, returned_error_messages, self.store, None, False)
 
         self.assertEqual(
             str(ite.exception),
@@ -515,12 +473,7 @@ class TestNumberRangeValidator(unittest.TestCase):
         returned_error_messages = answer['validation']['messages']
 
         with self.assertRaises(Exception) as ite:
-            dependencies = get_number_field_dependencies(answer, self.store)
-            number_field_validators = get_number_field_validators(
-                answer, dependencies, returned_error_messages, False
-            )
-
-            get_number_field(answer, label, '', number_field_validators)
+            get_field(answer, label, returned_error_messages, self.store, None, False)
 
         self.assertEqual(
             str(ite.exception),
@@ -544,12 +497,9 @@ class TestNumberRangeValidator(unittest.TestCase):
         label = answer['label']
         returned_error_messages = answer['validation']['messages']
 
-        dependencies = get_number_field_dependencies(answer, self.store)
-        number_field_validators = get_number_field_validators(
-            answer, dependencies, returned_error_messages, False
+        integer_field = get_field(
+            answer, label, returned_error_messages, self.store, None, False
         )
-
-        integer_field = get_number_field(answer, label, '', number_field_validators)
 
         self.assertTrue(integer_field.field_class == CustomIntegerField)
 
@@ -590,12 +540,9 @@ class TestNumberRangeValidator(unittest.TestCase):
         label = answer['label']
         returned_error_messages = answer['validation']['messages']
 
-        dependencies = get_number_field_dependencies(answer, self.store)
-        number_field_validators = get_number_field_validators(
-            answer, dependencies, returned_error_messages, False
+        integer_field = get_field(
+            answer, label, returned_error_messages, self.store, None, False
         )
-
-        integer_field = get_number_field(answer, label, '', number_field_validators)
 
         self.assertTrue(integer_field.field_class == CustomIntegerField)
 

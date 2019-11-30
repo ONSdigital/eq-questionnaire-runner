@@ -40,10 +40,15 @@ def get_field(
 
     if answer['type'] in ['Number', 'Currency', 'Percentage', 'Unit']:
         dependencies = get_number_field_dependencies(answer, answer_store)
-        number_field_validators = get_number_field_validators(
+        validate_with = get_number_field_validators(
             answer, dependencies, error_messages, disable_validation
         )
-        field = get_number_field(answer, label, guidance, number_field_validators)
+        field_type = (
+            CustomDecimalField
+            if answer.get('decimal_places', 0) > 0
+            else CustomIntegerField
+        )
+        field = field_type(label=label, validators=validate_with, description=guidance)
     elif answer['type'] in date_form_types:
         minimum_date, maximum_date = get_date_limits(answer, answer_store, metadata)
         field = DateField(
@@ -125,17 +130,6 @@ def get_mandatory_validator(answer, error_messages, mandatory_message_key):
         validate_with = ResponseRequired(message=mandatory_message)
 
     return [validate_with]
-
-
-def get_number_field(answer, label, guidance, validate_with):
-    if answer.get('decimal_places', 0) > 0:
-        return CustomDecimalField(
-            label=label, validators=validate_with, description=guidance
-        )
-
-    return CustomIntegerField(
-        label=label, validators=validate_with, description=guidance
-    )
 
 
 def get_string_field(answer, label, guidance, error_messages, disable_validation=False):

@@ -39,9 +39,11 @@ class DateField(FormField):
         error_messages,
         **kwargs,
     ):
-        form_class = get_form(
+        validate_with = get_date_form_validators(
             date_form_type, answer, minimum_date, maximum_date, error_messages
         )
+
+        form_class = get_form(date_form_type, validate_with)
         super().__init__(form_class, **kwargs)
 
     def process(self, formdata, data=None):
@@ -104,7 +106,27 @@ class DateForm(Form):
             return None
 
 
-def get_form(form_type, answer, minimum_date, maximum_date, error_messages):
+def get_form(form_type, validate_with):
+    class CustomDateForm(DateForm):
+        pass
+
+    if form_type in DateFormType:
+        # Validation is only ever added to the 1 field that shows in all 3 variants
+        # This is to prevent an error message for each input box
+        CustomDateForm.year = StringField(validators=validate_with)
+
+    if form_type in [DateFormType.YearMonth, DateFormType.YearMonthDay]:
+        CustomDateForm.month = StringField()
+
+    if form_type == DateFormType.YearMonthDay:
+        CustomDateForm.day = StringField()
+
+    return CustomDateForm
+
+
+def get_date_form_validators(
+    form_type, answer, minimum_date, maximum_date, error_messages
+):
     validate_with = [OptionalForm()]
 
     if answer['mandatory'] is True:
@@ -123,21 +145,7 @@ def get_form(form_type, answer, minimum_date, maximum_date, error_messages):
         )
         validate_with.append(min_max_validation)
 
-    class CustomDateForm(DateForm):
-        pass
-
-    if form_type in DateFormType:
-        # Validation is only ever added to the 1 field that shows in all 3 variants
-        # This is to prevent an error message for each input box
-        CustomDateForm.year = StringField(validators=validate_with)
-
-    if form_type in [DateFormType.YearMonth, DateFormType.YearMonthDay]:
-        CustomDateForm.month = StringField()
-
-    if form_type == DateFormType.YearMonthDay:
-        CustomDateForm.day = StringField()
-
-    return CustomDateForm
+    return validate_with
 
 
 def validate_mandatory_date(error_messages, answer):
