@@ -2,10 +2,11 @@ import unittest
 from unittest.mock import Mock, patch
 from wtforms.validators import ValidationError
 
+from app.forms.custom_fields import CustomIntegerField
+from app.forms.field_factory import FieldFactory
 from app.jinja_filters import format_number
 from app.validation.error_messages import error_messages
 from app.validation.validators import NumberRange
-from app.forms.fields import CustomIntegerField, get_field
 from app.data_model.answer_store import Answer, AnswerStore
 
 
@@ -111,9 +112,10 @@ class TestNumberRangeValidator(unittest.TestCase):
         }
         label = answer['label']
         returned_error_messages = answer['validation']['messages']
-        integer_field = get_field(
-            answer, label, error_messages, self.store, None, False
+        field_factory = FieldFactory(
+            answer, label, returned_error_messages, self.store, None, False
         )
+        integer_field = field_factory.get_field()
 
         self.assertTrue(integer_field.field_class == CustomIntegerField)
 
@@ -154,9 +156,10 @@ class TestNumberRangeValidator(unittest.TestCase):
         label = answer['label']
         returned_error_messages = answer['validation']['messages']
 
-        integer_field = get_field(
+        field_factory = FieldFactory(
             answer, label, error_messages, self.store, None, False
         )
+        integer_field = field_factory.get_field()
 
         self.assertTrue(integer_field.field_class == CustomIntegerField)
 
@@ -192,9 +195,10 @@ class TestNumberRangeValidator(unittest.TestCase):
         label = answer['label']
         error_message = error_messages['NUMBER_TOO_LARGE'] % dict(max=max_value)
 
-        integer_field = get_field(
+        field_factory = FieldFactory(
             answer, label, error_messages, self.store, None, False
         )
+        integer_field = field_factory.get_field()
 
         self.assertTrue(integer_field.field_class == CustomIntegerField)
 
@@ -228,9 +232,10 @@ class TestNumberRangeValidator(unittest.TestCase):
         label = answer['label']
         error_message = error_messages['NUMBER_TOO_SMALL'] % dict(min=min_value)
 
-        integer_field = get_field(
+        field_factory = FieldFactory(
             answer, label, error_messages, self.store, None, False
         )
+        integer_field = field_factory.get_field()
 
         self.assertTrue(integer_field.field_class == CustomIntegerField)
 
@@ -270,9 +275,11 @@ class TestNumberRangeValidator(unittest.TestCase):
         }
         label = answer['label']
         returned_error_messages = answer['validation']['messages']
-        integer_field = get_field(
+
+        field_factory = FieldFactory(
             answer, label, returned_error_messages, self.store, None, False
         )
+        integer_field = field_factory.get_field()
 
         self.assertTrue(integer_field.field_class == CustomIntegerField)
 
@@ -317,9 +324,10 @@ class TestNumberRangeValidator(unittest.TestCase):
         }
         label = answer['label']
         returned_error_messages = answer['validation']['messages']
-        integer_field = get_field(
+        field_factory = FieldFactory(
             answer, label, returned_error_messages, self.store, None, False
         )
+        integer_field = field_factory.get_field()
 
         self.assertTrue(integer_field.field_class == CustomIntegerField)
 
@@ -363,9 +371,10 @@ class TestNumberRangeValidator(unittest.TestCase):
         label = answer['label']
         returned_error_messages = answer['validation']['messages']
 
-        integer_field = get_field(
+        field_factory = FieldFactory(
             answer, label, returned_error_messages, self.store, None, False
         )
+        integer_field = field_factory.get_field()
 
         for validator in integer_field.kwargs['validators']:
             if isinstance(validator, NumberRange):
@@ -393,7 +402,10 @@ class TestNumberRangeValidator(unittest.TestCase):
         returned_error_messages = answer['validation']['messages']
 
         with self.assertRaises(Exception) as ite:
-            get_field(answer, label, returned_error_messages, self.store, None, False)
+            field_factory = FieldFactory(
+                answer, label, returned_error_messages, self.store, None, False
+            )
+            field_factory.get_field()
 
         self.assertEqual(
             str(ite.exception),
@@ -419,7 +431,10 @@ class TestNumberRangeValidator(unittest.TestCase):
         returned_error_messages = answer['validation']['messages']
 
         with self.assertRaises(Exception) as ite:
-            get_field(answer, label, returned_error_messages, self.store, None, False)
+            field_factory = FieldFactory(
+                answer, label, returned_error_messages, self.store, None, False
+            )
+            field_factory.get_field()
 
         self.assertEqual(
             str(ite.exception),
@@ -446,7 +461,10 @@ class TestNumberRangeValidator(unittest.TestCase):
         returned_error_messages = answer['validation']['messages']
 
         with self.assertRaises(Exception) as ite:
-            get_field(answer, label, returned_error_messages, self.store, None, False)
+            field_factory = FieldFactory(
+                answer, label, returned_error_messages, self.store, None, False
+            )
+            field_factory.get_field()
 
         self.assertEqual(
             str(ite.exception),
@@ -473,7 +491,10 @@ class TestNumberRangeValidator(unittest.TestCase):
         returned_error_messages = answer['validation']['messages']
 
         with self.assertRaises(Exception) as ite:
-            get_field(answer, label, returned_error_messages, self.store, None, False)
+            field_factory = FieldFactory(
+                answer, label, returned_error_messages, self.store, None, False
+            )
+            field_factory.get_field()
 
         self.assertEqual(
             str(ite.exception),
@@ -497,9 +518,10 @@ class TestNumberRangeValidator(unittest.TestCase):
         label = answer['label']
         returned_error_messages = answer['validation']['messages']
 
-        integer_field = get_field(
+        field_factory = FieldFactory(
             answer, label, returned_error_messages, self.store, None, False
         )
+        integer_field = field_factory.get_field()
 
         self.assertTrue(integer_field.field_class == CustomIntegerField)
 
@@ -540,9 +562,10 @@ class TestNumberRangeValidator(unittest.TestCase):
         label = answer['label']
         returned_error_messages = answer['validation']['messages']
 
-        integer_field = get_field(
+        field_factory = FieldFactory(
             answer, label, returned_error_messages, self.store, None, False
         )
+        integer_field = field_factory.get_field()
 
         self.assertTrue(integer_field.field_class == CustomIntegerField)
 

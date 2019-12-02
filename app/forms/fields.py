@@ -1,18 +1,14 @@
 from decimal import Decimal
 from flask_babel import gettext
 from structlog import get_logger
-from wtforms import FormField, SelectField, StringField
+from wtforms import SelectField, StringField
 from wtforms import validators
 
 from app.forms.custom_fields import (
     MaxTextAreaField,
-    CustomIntegerField,
-    CustomDecimalField,
     CustomSelectMultipleField,
     CustomSelectField,
 )
-from app.forms.date_form import DateField, DateFormType, get_date_limits
-from app.forms.duration_form import get_duration_form
 from app.validation.validators import (
     NumberCheck,
     NumberRange,
@@ -25,56 +21,6 @@ MAX_NUMBER = 9999999999
 MIN_NUMBER = -999999999
 MAX_DECIMAL_PLACES = 6
 logger = get_logger()
-
-
-def get_field(
-    answer, label, error_messages, answer_store, metadata, disable_validation=False
-):
-    guidance = answer.get('guidance', '')
-
-    date_form_types = {
-        'Date': DateFormType.YearMonthDay,
-        'MonthYearDate': DateFormType.YearMonth,
-        'YearDate': DateFormType.Year,
-    }
-
-    if answer['type'] in ['Number', 'Currency', 'Percentage', 'Unit']:
-        dependencies = get_number_field_dependencies(answer, answer_store)
-        validate_with = get_number_field_validators(
-            answer, dependencies, error_messages, disable_validation
-        )
-        field_type = (
-            CustomDecimalField
-            if answer.get('decimal_places', 0) > 0
-            else CustomIntegerField
-        )
-        field = field_type(label=label, validators=validate_with, description=guidance)
-    elif answer['type'] in date_form_types:
-        minimum_date, maximum_date = get_date_limits(answer, answer_store, metadata)
-        field = DateField(
-            date_form_types[answer['type']],
-            minimum_date,
-            maximum_date,
-            answer,
-            error_messages,
-            label=label,
-            description=guidance,
-        )
-    elif answer['type'] == 'Duration':
-        field = FormField(
-            get_duration_form(answer, error_messages), label=label, description=guidance
-        )
-    else:
-        field = {
-            'Checkbox': get_select_multiple_field,
-            'Radio': get_select_field,
-            'Relationship': get_select_field,
-            'TextArea': get_text_area_field,
-            'TextField': get_string_field,
-            'Dropdown': get_dropdown_field,
-        }[answer['type']](answer, label, guidance, error_messages, disable_validation)
-
-    return field
 
 
 def build_choices(options):

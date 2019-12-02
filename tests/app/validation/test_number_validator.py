@@ -2,9 +2,11 @@ import unittest
 from unittest.mock import Mock, patch
 from wtforms.validators import StopValidation, ValidationError
 
+from app.forms.custom_fields import CustomDecimalField
+from app.forms.field_factory import FieldFactory
 from app.validation.error_messages import error_messages
 from app.validation.validators import NumberCheck, DecimalPlaces
-from app.forms.fields import CustomDecimalField, MAX_DECIMAL_PLACES, get_field
+from app.forms.fields import MAX_DECIMAL_PLACES
 from app.data_model.answer_store import AnswerStore
 
 
@@ -141,9 +143,10 @@ class TestNumberValidator(unittest.TestCase):
         label = answer['label']
         returned_error_messages = answer['validation']['messages']
 
-        decimal_field = get_field(
+        field_factory = FieldFactory(
             answer, label, error_messages, AnswerStore(), None, False
         )
+        decimal_field = field_factory.get_field()
 
         self.assertTrue(decimal_field.field_class == CustomDecimalField)
 
@@ -185,9 +188,10 @@ class TestNumberValidator(unittest.TestCase):
         returned_error_messages = answer['validation']['messages']
 
         with self.assertRaises(Exception) as ite:
-            get_field(
+            field_factory = FieldFactory(
                 answer, label, returned_error_messages, AnswerStore(), None, False
             )
+            field_factory.get_field()
 
             self.assertEqual(
                 str(ite.exception),

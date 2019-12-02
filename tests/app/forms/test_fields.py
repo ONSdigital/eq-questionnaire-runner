@@ -5,12 +5,12 @@ from app.forms.custom_fields import (
     MaxTextAreaField,
     CustomSelectMultipleField,
     CustomSelectField,
-)
-from app.forms.date_form import DateField
-from app.forms.fields import (
     CustomIntegerField,
     CustomDecimalField,
-    get_field,
+)
+from app.forms.date_form import DateField
+from app.forms.field_factory import FieldFactory
+from app.forms.fields import (
     get_mandatory_validator,
     get_length_validator,
     _coerce_str_unless_none,
@@ -131,13 +131,14 @@ class TestFields(AppContextTestCase):
             'guidance': '<p>Please enter your job title in the space provided.</p>',
             'type': 'TextField',
         }
-        unbound_field = get_field(
+        field_factory = FieldFactory(
             textfield_json,
             textfield_json['label'],
             error_messages,
             self.answer_store,
             self.metadata,
         )
+        unbound_field = field_factory.get_field()
 
         self.assertEqual(unbound_field.field_class, StringField)
         self.assertEqual(unbound_field.kwargs['label'], textfield_json['label'])
@@ -155,13 +156,14 @@ class TestFields(AppContextTestCase):
             'type': 'TextArea',
         }
 
-        unbound_field = get_field(
+        field_factory = FieldFactory(
             textarea_json,
             textarea_json['label'],
             error_messages,
             self.answer_store,
             self.metadata,
         )
+        unbound_field = field_factory.get_field()
 
         self.assertEqual(unbound_field.field_class, MaxTextAreaField)
         self.assertEqual(unbound_field.kwargs['label'], textarea_json['label'])
@@ -183,13 +185,14 @@ class TestFields(AppContextTestCase):
         }
 
         with self.app_request_context('/'):
-            unbound_field = get_field(
+            field_factory = FieldFactory(
                 date_json,
                 date_json['label'],
                 error_messages,
                 self.answer_store,
                 self.metadata,
             )
+            unbound_field = field_factory.get_field()
 
         self.assertEqual(unbound_field.field_class, DateField)
         self.assertEqual(unbound_field.kwargs['label'], date_json['label'])
@@ -213,13 +216,14 @@ class TestFields(AppContextTestCase):
         }
 
         with self.app_request_context('/'):
-            unbound_field = get_field(
+            field_factory = FieldFactory(
                 date_json,
                 date_json['label'],
                 error_messages,
                 self.answer_store,
                 self.metadata,
             )
+            unbound_field = field_factory.get_field()
 
         self.assertEqual(unbound_field.field_class, DateField)
         self.assertEqual(unbound_field.kwargs['label'], date_json['label'])
@@ -243,13 +247,14 @@ class TestFields(AppContextTestCase):
         }
 
         with self.app_request_context('/'):
-            unbound_field = get_field(
+            field_factory = FieldFactory(
                 date_json,
                 date_json['label'],
                 error_messages,
                 self.answer_store,
                 self.metadata,
             )
+            unbound_field = field_factory.get_field()
 
         self.assertEqual(unbound_field.field_class, DateField)
         self.assertEqual(unbound_field.kwargs['label'], date_json['label'])
@@ -274,13 +279,14 @@ class TestFields(AppContextTestCase):
         }
 
         with self.app_request_context('/'):
-            unbound_field = get_field(
+            field_factory = FieldFactory(
                 date_json,
                 date_json['label'],
                 error_messages,
                 self.answer_store,
                 self.metadata,
             )
+            unbound_field = field_factory.get_field()
 
         self.assertEqual(unbound_field.field_class, FormField)
         self.assertEqual(unbound_field.kwargs['label'], date_json['label'])
@@ -310,13 +316,14 @@ class TestFields(AppContextTestCase):
             'type': 'Radio',
         }
 
-        unbound_field = get_field(
+        field_factory = FieldFactory(
             radio_json,
             radio_json['label'],
             error_messages,
             self.answer_store,
             self.metadata,
         )
+        unbound_field = field_factory.get_field()
 
         expected_choices = [
             (option['label'], option['value'], None) for option in radio_json['options']
@@ -343,13 +350,14 @@ class TestFields(AppContextTestCase):
         }
 
         with self.app_request_context('/'):
-            unbound_field = get_field(
+            field_factory = FieldFactory(
                 dropdown_json,
                 dropdown_json['label'],
                 error_messages,
                 self.answer_store,
                 self.metadata,
             )
+            unbound_field = field_factory.get_field()
 
         expected_choices = [('', 'Select an answer')] + [
             (option['label'], option['value']) for option in dropdown_json['options']
@@ -388,13 +396,14 @@ class TestFields(AppContextTestCase):
             'type': 'Checkbox',
         }
 
-        unbound_field = get_field(
+        field_factory = FieldFactory(
             checkbox_json,
             checkbox_json['label'],
             error_messages,
             self.answer_store,
             self.metadata,
         )
+        unbound_field = field_factory.get_field()
 
         expected_choices = [
             (option['value'], option['label'], None)
@@ -425,13 +434,14 @@ class TestFields(AppContextTestCase):
             },
         }
 
-        unbound_field = get_field(
+        field_factory = FieldFactory(
             integer_json,
             integer_json['label'],
             error_messages,
             self.answer_store,
             self.metadata,
         )
+        unbound_field = field_factory.get_field()
 
         self.assertEqual(unbound_field.field_class, CustomIntegerField)
         self.assertEqual(unbound_field.kwargs['label'], integer_json['label'])
@@ -454,13 +464,14 @@ class TestFields(AppContextTestCase):
             },
         }
 
-        unbound_field = get_field(
+        field_factory = FieldFactory(
             decimal_json,
             decimal_json['label'],
             error_messages,
             self.answer_store,
             self.metadata,
         )
+        unbound_field = field_factory.get_field()
 
         self.assertEqual(unbound_field.field_class, CustomDecimalField)
         self.assertEqual(unbound_field.kwargs['label'], decimal_json['label'])
@@ -483,13 +494,14 @@ class TestFields(AppContextTestCase):
             },
         }
 
-        unbound_field = get_field(
+        field_factory = FieldFactory(
             currency_json,
             currency_json['label'],
             error_messages,
             self.answer_store,
             self.metadata,
         )
+        unbound_field = field_factory.get_field()
 
         self.assertEqual(unbound_field.field_class, CustomIntegerField)
         self.assertEqual(unbound_field.kwargs['label'], currency_json['label'])
@@ -513,13 +525,14 @@ class TestFields(AppContextTestCase):
             },
         }
 
-        unbound_field = get_field(
+        field_factory = FieldFactory(
             percentage_json,
             percentage_json['label'],
             error_messages,
             self.answer_store,
             self.metadata,
         )
+        unbound_field = field_factory.get_field()
 
         self.assertEqual(unbound_field.field_class, CustomIntegerField)
         self.assertEqual(unbound_field.kwargs['label'], percentage_json['label'])
@@ -532,10 +545,11 @@ class TestFields(AppContextTestCase):
         invalid_field_type = 'Football'
         # When / Then
         with self.assertRaises(KeyError):
-            get_field(
+            field_factory = FieldFactory(
                 {'type': invalid_field_type},
                 'Football Field',
                 error_messages,
                 self.answer_store,
                 self.metadata,
             )
+            field_factory.get_field()

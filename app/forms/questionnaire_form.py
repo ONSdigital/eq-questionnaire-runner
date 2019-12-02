@@ -9,7 +9,7 @@ from werkzeug.datastructures import MultiDict
 from wtforms import validators
 
 from app.forms.date_form import get_date_limits
-from app.forms.fields import get_field
+from app.forms.field_factory import FieldFactory
 from app.validation.validators import DateRangeCheck, SumCheck, MutuallyExclusiveCheck
 
 logger = logging.getLogger(__name__)
@@ -312,42 +312,18 @@ def get_answer_fields(question, data, error_messages, answer_store, metadata):
         return answer_fields
 
     for answer in question.get('answers', []):
+        field_factory = FieldFactory(
+            answer, answer.get('label'), error_messages, answer_store, metadata
+        )
 
         for option in answer.get('options', []):
-            disable_validation = False
             if 'detail_answer' in option:
-                detail_answer = option['detail_answer']
-                detail_answer_error_messages = (
-                    detail_answer['validation']['messages']
-                    if detail_answer.get('validation')
-                    else error_messages
-                )
-                if isinstance(data, MultiDict):
-                    option_value_in_data = option['value'] in data.to_dict(
-                        flat=False
-                    ).get(answer['id'], [])
-                else:
-                    option_value_in_data = option['value'] in dict(data).get(
-                        answer['id'], []
-                    )
+                answer_fields[
+                    option['detail_answer']['id']
+                ] = field_factory.get_option_field(option, data)
 
-                if not option_value_in_data:
-                    disable_validation = True
+        answer_fields[answer['id']] = field_factory.get_field()
 
-                answer_fields[detail_answer['id']] = get_field(
-                    detail_answer,
-                    detail_answer.get('label'),
-                    detail_answer_error_messages,
-                    answer_store,
-                    metadata,
-                    disable_validation=disable_validation,
-                )
-
-        name = answer.get('label') or question.get('title')
-
-        answer_fields[answer['id']] = get_field(
-            answer, name, error_messages, answer_store, metadata
-        )
     return answer_fields
 
 
@@ -394,7 +370,6 @@ def generate_form(
         setattr(DynamicForm, answer_id, field)
 
     if formdata:
-        formdata = MultiDict(formdata)
         formdata = MultiDict(formdata)
 
     return DynamicForm(
