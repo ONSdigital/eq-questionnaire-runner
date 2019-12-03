@@ -47,13 +47,13 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
             self._list_name_to_section_map[list_name] = sections
             return sections
 
-    def _sections_associated_to_list_name(self, list_name: str) -> List:
-        sections = []
+    def _sections_associated_to_list_name(self, list_name: str) -> Set:
+        sections = set()
         for block in self.get_blocks():
             for when_rule in _get_nested_values_by_key(block, 'when'):
                 for rule in when_rule:
                     if rule.get('list') == list_name:
-                        sections.append(self.get_section_id_for_block_id(block['id']))
+                        sections.add(self.get_section_id_for_block_id(block['id']))
         return sections
 
     @staticmethod

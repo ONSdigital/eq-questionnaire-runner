@@ -4,6 +4,7 @@ from typing import List, Optional, Tuple, Union
 
 from app.data_model.answer_store import Answer
 from app.data_model.relationship_store import Relationship, RelationshipStore
+from app.data_model.progress_store import CompletionStatus
 from app.questionnaire.location import Location
 
 
@@ -194,11 +195,12 @@ class QuestionnaireStoreUpdater:
         self._progress_store.remove_completed_location(location)
 
     def update_section_status(
-        self, section_status: str, section_id: str, list_item_id: Optional[str] = None
+        self, is_complete: bool, section_id: str, list_item_id: Optional[str] = None
     ):
-        self._progress_store.update_section_status(
-            section_status, section_id, list_item_id
+        status = (
+            CompletionStatus.COMPLETED if is_complete else CompletionStatus.IN_PROGRESS
         )
+        self._progress_store.update_section_status(status, section_id, list_item_id)
 
     def get_in_progress_and_completed_sections(self):
         return self._progress_store.get_in_progress_and_completed_sections()

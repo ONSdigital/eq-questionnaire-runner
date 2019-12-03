@@ -56,9 +56,12 @@ class ListAction(Question):
         )
 
         for section_id, list_item_id in sections_to_evaluate:
-            routing_path = self.path_finder.routing_path(section_id)
-            location = Location(section_id, list_item_id)
-            self._update_section_completeness(location, routing_path)
+            path = self.router.section_routing_path(section_id, list_item_id)
+            self.questionnaire_store_updater.update_section_status(
+                is_complete=self.router.is_path_complete(path),
+                section_id=section_id,
+                list_item_id=list_item_id,
+            )
 
     def _get_location_url(self, block_id):
         if block_id and self._schema.is_block_valid(block_id):

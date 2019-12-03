@@ -3,7 +3,6 @@ from typing import Optional
 
 from structlog import get_logger
 
-from app.data_model.progress_store import CompletionStatus
 from app.questionnaire.location import InvalidLocationException, Location
 from app.questionnaire.placeholder_renderer import PlaceholderRenderer
 from app.questionnaire.questionnaire_store_updater import QuestionnaireStoreUpdater
@@ -119,20 +118,11 @@ class BlockHandler:
             list_item_id=self._current_location.list_item_id,
         )
 
-    def _update_section_completeness(
-        self, location: Optional[Location] = None, routing_path: Optional = None
-    ):
-        routing_path = routing_path if routing_path else self._routing_path
-        section_status = (
-            CompletionStatus.COMPLETED
-            if self.router.is_path_complete(self._routing_path)
-            else CompletionStatus.IN_PROGRESS
-        )
-
+    def _update_section_completeness(self, location: Optional[Location] = None):
         location = location or self._current_location
 
         self.questionnaire_store_updater.update_section_status(
-            section_status=section_status,
+            is_complete=self.router.is_path_complete(self._routing_path),
             section_id=location.section_id,
             list_item_id=location.list_item_id,
         )
