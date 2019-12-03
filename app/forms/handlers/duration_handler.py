@@ -1,10 +1,10 @@
 from wtforms import FormField
 
 from app.forms.duration_form import get_duration_form
-from app.forms.handlers.field_handler import FieldHandler
+from app.forms.handlers.string_handler import StringHandler
 
 
-class DurationHandler(FieldHandler):
+class DurationHandler(StringHandler):
     MANDATORY_MESSAGE = 'MANDATORY_RADIO'
 
     def get_field(self):

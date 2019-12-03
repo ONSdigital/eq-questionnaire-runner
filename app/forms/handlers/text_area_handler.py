@@ -2,10 +2,10 @@ from werkzeug.utils import cached_property
 from wtforms import validators
 
 from app.forms.custom_fields import MaxTextAreaField
-from app.forms.handlers.field_handler import FieldHandler
+from app.forms.handlers.string_handler import StringHandler
 
 
-class TextAreaHandler(FieldHandler):
+class TextAreaHandler(StringHandler):
     MANDATORY_MESSAGE = 'MANDATORY_TEXTAREA'
 
     @cached_property
@@ -17,7 +17,7 @@ class TextAreaHandler(FieldHandler):
 
     def get_length_validator(self):
         validate_with = []
-        max_length = FieldHandler.MAX_LENGTH
+        max_length = StringHandler.MAX_LENGTH
         length_message = self.error_messages['MAX_LENGTH_EXCEEDED']
 
         if 'max_length' in self.answer and self.answer['max_length'] > 0:
@@ -41,5 +41,5 @@ class TextAreaHandler(FieldHandler):
             label=self.label,
             description=self.guidance,
             validators=self.validators,
-            maxlength=FieldHandler.MAX_LENGTH,
+            maxlength=StringHandler.MAX_LENGTH,
         )

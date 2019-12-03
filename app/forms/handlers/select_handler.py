@@ -1,8 +1,8 @@
 from app.forms.custom_fields import CustomSelectField
-from app.forms.handlers.field_handler import FieldHandler
+from app.forms.handlers.string_handler import StringHandler
 
 
-class SelectHandler(FieldHandler):
+class SelectHandler(StringHandler):
     MANDATORY_MESSAGE = 'MANDATORY_RADIO'
 
     @staticmethod

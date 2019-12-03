@@ -1,8 +1,8 @@
 from app.forms.date_form import DateFormType, DateField, get_date_limits
-from app.forms.handlers.field_handler import FieldHandler
+from app.forms.handlers.string_handler import StringHandler
 
 
-class DateHandler(FieldHandler):
+class DateHandler(StringHandler):
     MANDATORY_MESSAGE = 'MANDATORY_RADIO'
     DATE_FIELD_MAP = {
         'Date': DateFormType.YearMonthDay,

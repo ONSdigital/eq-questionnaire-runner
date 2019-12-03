@@ -1,10 +1,10 @@
 from flask_babel import gettext
 from wtforms import SelectField
 
-from app.forms.handlers.field_handler import FieldHandler
+from app.forms.handlers.string_handler import StringHandler
 
 
-class DropdownHandler(FieldHandler):
+class DropdownHandler(StringHandler):
     MANDATORY_MESSAGE = 'MANDATORY_DROPDOWN'
 
     def get_field(self):

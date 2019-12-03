@@ -1,13 +1,13 @@
 from werkzeug.utils import cached_property
 
 from app.forms.custom_fields import CustomDecimalField, CustomIntegerField
-from app.forms.handlers.field_handler import FieldHandler
+from app.forms.handlers.string_handler import StringHandler
 from decimal import Decimal
 
 from app.validation.validators import NumberCheck, NumberRange, DecimalPlaces
 
 
-class NumberHandler(FieldHandler):
+class NumberHandler(StringHandler):
     MAX_NUMBER = 9999999999
     MIN_NUMBER = -999999999
     MAX_DECIMAL_PLACES = 6
