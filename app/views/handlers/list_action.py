@@ -1,5 +1,3 @@
-from typing import List
-
 from app.views.handlers.question import Question
 from app.views.contexts.question import build_question_context
 from app.questionnaire.location import Location
