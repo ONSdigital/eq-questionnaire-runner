@@ -52,7 +52,7 @@ class ListAction(Question):
 
     def evaluate_and_update_section_status(self):
         sections_to_evaluate = (
-            self.questionnaire_store_updater._progress_store.get_in_progress_and_completed_sections()
+            self.questionnaire_store_updater.get_in_progress_and_completed_sections()
         )
 
         for section_id, list_item_id in sections_to_evaluate:

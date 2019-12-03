@@ -200,6 +200,9 @@ class QuestionnaireStoreUpdater:
             section_status, section_id, list_item_id
         )
 
+    def get_in_progress_and_completed_sections(self):
+        return self._progress_store.get_in_progress_and_completed_sections()
+
     def _update_questionnaire_store_with_form_data(self, form_data):
         answer_ids_for_question = self._schema.get_answer_ids_for_question(
             self._current_question

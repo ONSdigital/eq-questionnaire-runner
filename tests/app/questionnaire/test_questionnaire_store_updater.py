@@ -302,4 +302,3 @@ class TestQuestionnaireStoreUpdater(unittest.TestCase):
                     'test-relationship-collector'
                 )
             )
-
