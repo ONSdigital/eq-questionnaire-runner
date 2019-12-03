@@ -4,13 +4,14 @@ import pytest
 
 from app.data_model.answer_store import AnswerStore, Answer
 from app.data_model.list_store import ListStore
+from app.data_model.progress_store import ProgressStore
 from app.questionnaire.location import Location
-from app.views.contexts.summary_context import SummaryContext
+from app.questionnaire.questionnaire_schema import DEFAULT_LANGUAGE_CODE
+from app.utilities.schema import load_schema_from_name
 from app.views.contexts.calculated_summary import (
     build_view_context_for_calculated_summary,
 )
-from app.utilities.schema import load_schema_from_name
-from app.questionnaire.questionnaire_schema import DEFAULT_LANGUAGE_CODE
+from app.views.contexts.summary_context import SummaryContext
 from tests.app.app_context_test_case import AppContextTestCase
 
 
@@ -66,6 +67,7 @@ class TestSummaryContext(TestStandardSummaryContext):
         self.schema = load_schema_from_name('test_summary')
         self.answer_store = AnswerStore()
         self.list_store = ListStore()
+        self.progress_store = ProgressStore()
         self.block_type = 'Summary'
         self.rendered_block = {
             'parent_id': 'summary-group',
@@ -82,6 +84,7 @@ class TestSummaryContext(TestStandardSummaryContext):
             self.language,
             self.schema,
             self.answer_store,
+            self.progress_store,
             self.list_store,
             self.metadata,
         )
@@ -95,6 +98,7 @@ class TestSectionSummaryContext(TestStandardSummaryContext):
         self.schema = load_schema_from_name('test_section_summary')
         self.answer_store = AnswerStore()
         self.list_store = ListStore()
+        self.progress_store = ProgressStore()
         self.block_type = 'SectionSummary'
 
     def test_build_summary_rendering_context(self):
@@ -102,6 +106,7 @@ class TestSectionSummaryContext(TestStandardSummaryContext):
             self.language,
             self.schema,
             self.answer_store,
+            self.progress_store,
             self.list_store,
             self.metadata,
         )
@@ -121,6 +126,7 @@ class TestSectionSummaryContext(TestStandardSummaryContext):
             self.language,
             self.schema,
             self.answer_store,
+            self.progress_store,
             self.list_store,
             self.metadata,
         )
@@ -153,6 +159,7 @@ class TestCalculatedSummaryContext(TestStandardSummaryContext):
         ]
         self.answer_store = AnswerStore(answers)
         self.list_store = ListStore()
+        self.progress_store = ProgressStore()
         self.block_type = 'CalculatedSummary'
 
     @patch('app.jinja_filters.flask_babel.get_locale', Mock(return_value='en_GB'))
@@ -162,12 +169,13 @@ class TestCalculatedSummaryContext(TestStandardSummaryContext):
         )
 
         context = build_view_context_for_calculated_summary(
+            'en',
+            current_location,
             self.schema,
             self.answer_store,
             self.list_store,
+            self.progress_store,
             self.metadata,
-            current_location,
-            language='en',
         )
 
         self.check_context(context)
@@ -200,12 +208,13 @@ class TestCalculatedSummaryContext(TestStandardSummaryContext):
         skip_answer = Answer('skip-fourth-block-answer', 'Yes')
         self.answer_store.add_or_update(skip_answer)
         context = build_view_context_for_calculated_summary(
+            'en',
+            current_location,
             self.schema,
             self.answer_store,
             self.list_store,
+            self.progress_store,
             self.metadata,
-            current_location,
-            language='en',
         )
 
         self.check_context(context)
@@ -235,12 +244,13 @@ class TestCalculatedSummaryContext(TestStandardSummaryContext):
         )
 
         context = build_view_context_for_calculated_summary(
+            'cy',
+            current_location,
             self.schema,
             self.answer_store,
             self.list_store,
+            self.progress_store,
             self.metadata,
-            current_location,
-            language='cy',
         )
 
         self.check_context(context)
@@ -268,12 +278,13 @@ class TestCalculatedSummaryContext(TestStandardSummaryContext):
         )
 
         context = build_view_context_for_calculated_summary(
+            'en',
+            current_location,
             self.schema,
             self.answer_store,
             self.list_store,
+            self.progress_store,
             self.metadata,
-            current_location,
-            language='en',
         )
 
         self.check_context(context)
@@ -302,12 +313,13 @@ class TestCalculatedSummaryContext(TestStandardSummaryContext):
         )
 
         context = build_view_context_for_calculated_summary(
+            'cy',
+            current_location,
             self.schema,
             self.answer_store,
             self.list_store,
+            self.progress_store,
             self.metadata,
-            current_location,
-            language='cy',
         )
 
         self.check_context(context)
@@ -347,6 +359,7 @@ def test_context_for_section_list_summary(people_answer_store):
                 {'items': ['gTrlio'], 'name': 'visitors'},
             ]
         ),
+        ProgressStore(),
         {},
     )
     context = summary_context.section_summary(current_location)
@@ -409,6 +422,7 @@ def test_context_for_driving_question_summary_empty_list():
         schema,
         AnswerStore([{'answer_id': 'anyone-usually-live-at-answer', 'value': 'No'}]),
         ListStore(),
+        ProgressStore(),
         {},
     )
 
@@ -447,6 +461,7 @@ def test_context_for_driving_question_summary():
             ]
         ),
         ListStore([{'items': ['PlwgoG'], 'name': 'people'}]),
+        ProgressStore(),
         {},
     )
 
@@ -496,6 +511,7 @@ def test_titles_for_repeating_section_summary(people_answer_store):
                 {'items': ['gTrlio'], 'name': 'visitors'},
             ]
         ),
+        ProgressStore(),
         {},
     )
 

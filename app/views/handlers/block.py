@@ -5,7 +5,6 @@ from structlog import get_logger
 
 from app.data_model.progress_store import CompletionStatus
 from app.questionnaire.location import InvalidLocationException, Location
-from app.questionnaire.path_finder import PathFinder
 from app.questionnaire.placeholder_renderer import PlaceholderRenderer
 from app.questionnaire.questionnaire_store_updater import QuestionnaireStoreUpdater
 from app.questionnaire.router import Router
@@ -25,7 +24,6 @@ class BlockHandler:
         self.block = self._schema.get_block(current_location.block_id)
 
         self._questionnaire_store_updater = None
-        self._path_finder = None
         self._placeholder_renderer = None
         self._router = None
         self._routing_path = self._get_routing_path()
@@ -53,18 +51,6 @@ class BlockHandler:
         return self._questionnaire_store_updater
 
     @property
-    def path_finder(self):
-        if not self._path_finder:
-            self._path_finder = PathFinder(
-                self._schema,
-                self._questionnaire_store.answer_store,
-                self._questionnaire_store.metadata,
-                self._questionnaire_store.progress_store,
-                self._questionnaire_store.list_store,
-            )
-        return self._path_finder
-
-    @property
     def placeholder_renderer(self):
         if not self._placeholder_renderer:
             self._placeholder_renderer = PlaceholderRenderer(
@@ -81,9 +67,11 @@ class BlockHandler:
     def router(self):
         if not self._router:
             self._router = Router(
-                self._schema,
-                progress_store=self._questionnaire_store.progress_store,
+                schema=self._schema,
+                answer_store=self._questionnaire_store.answer_store,
                 list_store=self._questionnaire_store.list_store,
+                progress_store=self._questionnaire_store.progress_store,
+                metadata=self._questionnaire_store.metadata,
             )
         return self._router
 
@@ -126,7 +114,7 @@ class BlockHandler:
             collection_metadata['started_at'] = started_at
 
     def _get_routing_path(self):
-        return self.path_finder.routing_path(
+        return self.router.section_routing_path(
             section_id=self._current_location.section_id,
             list_item_id=self._current_location.list_item_id,
         )
@@ -134,7 +122,7 @@ class BlockHandler:
     def _update_section_completeness(self, location: Optional[Location] = None):
         section_status = (
             CompletionStatus.COMPLETED
-            if self.path_finder.is_path_complete(self._routing_path)
+            if self.router.is_path_complete(self._routing_path)
             else CompletionStatus.IN_PROGRESS
         )
 
