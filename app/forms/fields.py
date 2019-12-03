@@ -1,288 +1,32 @@
-from decimal import Decimal
-from flask_babel import gettext
-from structlog import get_logger
-from wtforms import SelectField, StringField
-from wtforms import validators
+from app.forms.handlers.date_handler import DateHandler
+from app.forms.handlers.dropdown_handler import DropdownHandler
+from app.forms.handlers.duration_handler import DurationHandler
+from app.forms.handlers.number_handler import NumberHandler
+from app.forms.handlers.select_handler import SelectHandler
+from app.forms.handlers.select_multiple_handler import SelectMultipleHandler
+from app.forms.handlers.string_handler import StringHandler
+from app.forms.handlers.text_area_handler import TextAreaHandler
 
-from app.forms.custom_fields import (
-    MaxTextAreaField,
-    CustomSelectMultipleField,
-    CustomSelectField,
-)
-from app.validation.validators import (
-    NumberCheck,
-    NumberRange,
-    ResponseRequired,
-    DecimalPlaces,
-)
-
-MAX_LENGTH = 2000
-MAX_NUMBER = 9999999999
-MIN_NUMBER = -999999999
-MAX_DECIMAL_PLACES = 6
-logger = get_logger()
-
-
-def build_choices(options):
-    choices = []
-    for option in options:
-        choices.append((option['value'], option['label']))
-    return choices
+FIELD_HANDLER_MAPPINGS = {
+    'Checkbox': SelectMultipleHandler,
+    'Radio': SelectHandler,
+    'Relationship': SelectHandler,
+    'TextArea': TextAreaHandler,
+    'TextField': StringHandler,
+    'Dropdown': DropdownHandler,
+    'Number': NumberHandler,
+    'Currency': NumberHandler,
+    'Unit': NumberHandler,
+    'Percentage': NumberHandler,
+    'Date': DateHandler,
+    'MonthYearDate': DateHandler,
+    'YearDate': DateHandler,
+    'Duration': DurationHandler,
+}
 
 
-def build_choices_with_detail_answer_ids(options):
-    choices = []
-    for option in options:
-        detail_answer_id = (
-            option['detail_answer']['id'] if option.get('detail_answer') else None
-        )
-        choices.append((option['value'], option['label'], detail_answer_id))
-    return choices
+def get_field(answer, error_messages, answer_store, metadata, disable_validation=False):
 
-
-def get_length_validator(answer, error_messages):
-    validate_with = []
-    max_length = MAX_LENGTH
-    length_message = error_messages['MAX_LENGTH_EXCEEDED']
-
-    if 'max_length' in answer and answer['max_length'] > 0:
-        max_length = answer['max_length']
-
-    if (
-        'validation' in answer
-        and 'messages' in answer['validation']
-        and 'MAX_LENGTH_EXCEEDED' in answer['validation']['messages']
-    ):
-        length_message = answer['validation']['messages']['MAX_LENGTH_EXCEEDED']
-
-    validate_with.append(validators.length(-1, max_length, message=length_message))
-
-    return validate_with
-
-
-def get_mandatory_validator(answer, error_messages, mandatory_message_key):
-    validate_with = validators.Optional()
-
-    if answer['mandatory'] is True:
-        mandatory_message = error_messages[mandatory_message_key]
-
-        if (
-            'validation' in answer
-            and 'messages' in answer['validation']
-            and mandatory_message_key in answer['validation']['messages']
-        ):
-            mandatory_message = answer['validation']['messages'][mandatory_message_key]
-
-        validate_with = ResponseRequired(message=mandatory_message)
-
-    return [validate_with]
-
-
-def get_string_field(answer, label, guidance, error_messages, disable_validation=False):
-    validate_with = []
-    if disable_validation is False:
-        validate_with = get_mandatory_validator(
-            answer, error_messages, 'MANDATORY_TEXTFIELD'
-        )
-
-    return StringField(label=label, description=guidance, validators=validate_with)
-
-
-def get_text_area_field(
-    answer, label, guidance, error_messages, disable_validation=False
-):
-    validate_with = []
-    if disable_validation is False:
-        validate_with = get_mandatory_validator(
-            answer, error_messages, 'MANDATORY_TEXTAREA'
-        )
-        validate_with.extend(get_length_validator(answer, error_messages))
-
-    return MaxTextAreaField(
-        label=label,
-        description=guidance,
-        validators=validate_with,
-        maxlength=MAX_LENGTH,
-    )
-
-
-def get_select_multiple_field(
-    answer, label, guidance, error_messages, disable_validation=False
-):
-    validate_with = []
-    if disable_validation is False:
-        validate_with = get_mandatory_validator(
-            answer, error_messages, 'MANDATORY_CHECKBOX'
-        )
-
-    return CustomSelectMultipleField(
-        label=label,
-        description=guidance,
-        choices=build_choices_with_detail_answer_ids(answer['options']),
-        validators=validate_with,
-    )
-
-
-def _coerce_str_unless_none(value):
-    """
-    Coerces a value using str() unless that value is None
-    :param value: Any value that can be coerced using str() or None
-    :return: str(value) or None if value is None
-    """
-    return str(value) if value is not None else None
-
-
-def get_dropdown_field(
-    answer, label, guidance, error_messages, disable_validation=False
-):
-    validate_with = []
-    if disable_validation is False:
-        validate_with = get_mandatory_validator(
-            answer, error_messages, 'MANDATORY_DROPDOWN'
-        )
-
-    return SelectField(
-        label=label,
-        description=guidance,
-        choices=[('', gettext('Select an answer'))] + build_choices(answer['options']),
-        default='',
-        validators=validate_with,
-    )
-
-
-def get_select_field(answer, label, guidance, error_messages, disable_validation=False):
-    validate_with = []
-    if disable_validation is False:
-        validate_with = get_mandatory_validator(
-            answer, error_messages, 'MANDATORY_RADIO'
-        )
-
-    # We use a custom coerce function to avoid a defect where Python NoneType
-    # is coerced to the string 'None' which clashes with legitimate Radio field
-    # values of 'None'; i.e. there is no way to differentiate between the user
-    # not providing an answer and them selecting the 'None' option otherwise.
-    # https://github.com/ONSdigital/eq-survey-runner/issues/1013
-    # See related WTForms PR: https://github.com/wtforms/wtforms/pull/288
-
-    return CustomSelectField(
-        label=label,
-        description=guidance,
-        choices=build_choices_with_detail_answer_ids(answer['options']),
-        validators=validate_with,
-        coerce=_coerce_str_unless_none,
-    )
-
-
-def get_number_field_validators(
-    answer, dependencies, error_messages, disable_validation=False
-):
-    validate_with = []
-
-    if disable_validation is False:
-        check_number_field_dependencies(answer, dependencies)
-
-        validate_with = _get_number_field_validators(
-            answer, dependencies, error_messages
-        )
-    return validate_with
-
-
-def get_number_field_dependencies(answer, answer_store):
-    max_decimals = answer.get('decimal_places', 0)
-
-    min_value = 0
-
-    if answer.get('min_value'):
-        min_value = get_schema_defined_limit(
-            answer['id'], answer.get('min_value'), answer_store
-        )
-
-    max_value = MAX_NUMBER
-
-    if answer.get('max_value'):
-        max_value = get_schema_defined_limit(
-            answer['id'], answer.get('max_value'), answer_store
-        )
-
-    return {
-        'max_decimals': max_decimals,
-        'min_exclusive': answer.get('min_value', {}).get('exclusive', False),
-        'max_exclusive': answer.get('max_value', {}).get('exclusive', False),
-        'min_value': min_value,
-        'max_value': max_value,
-    }
-
-
-def check_number_field_dependencies(answer, dependencies):
-    if dependencies['max_decimals'] > MAX_DECIMAL_PLACES:
-        raise Exception(
-            'decimal_places: {} > system maximum: {} for answer id: {}'.format(
-                dependencies['max_decimals'], MAX_DECIMAL_PLACES, answer['id']
-            )
-        )
-
-    if dependencies['min_value'] < MIN_NUMBER:
-        raise Exception(
-            'min_value: {} < system minimum: {} for answer id: {}'.format(
-                dependencies['min_value'], MIN_NUMBER, answer['id']
-            )
-        )
-
-    if dependencies['max_value'] > MAX_NUMBER:
-        raise Exception(
-            'max_value: {} > system maximum: {} for answer id: {}'.format(
-                dependencies['max_value'], MAX_NUMBER, answer['id']
-            )
-        )
-
-    if dependencies['min_value'] > dependencies['max_value']:
-        raise Exception(
-            'min_value: {} > max_value: {} for answer id: {}'.format(
-                dependencies['min_value'], dependencies['max_value'], answer['id']
-            )
-        )
-
-
-def _get_number_field_validators(answer, dependencies, error_messages):
-    answer_errors = error_messages.copy()
-
-    if 'validation' in answer and 'messages' in answer['validation']:
-        for error_key, error_message in answer['validation']['messages'].items():
-            answer_errors[error_key] = error_message
-
-    mandatory_or_optional = get_mandatory_validator(
-        answer, answer_errors, 'MANDATORY_NUMBER'
-    )
-
-    return mandatory_or_optional + [
-        NumberCheck(answer_errors['INVALID_NUMBER']),
-        NumberRange(
-            minimum=dependencies['min_value'],
-            minimum_exclusive=dependencies['min_exclusive'],
-            maximum=dependencies['max_value'],
-            maximum_exclusive=dependencies['max_exclusive'],
-            messages=answer_errors,
-            currency=answer.get('currency'),
-        ),
-        DecimalPlaces(
-            max_decimals=dependencies['max_decimals'], messages=answer_errors
-        ),
-    ]
-
-
-def get_schema_defined_limit(answer_id, definition, answer_store):
-    if 'value' in definition:
-        return definition['value']
-
-    source_answer_id = definition.get('answer_id')
-    answer = answer_store.get_answer(source_answer_id)
-    value = answer.value
-
-    if not isinstance(value, int) and not isinstance(value, Decimal):
-        raise Exception(
-            'answer: {} value: {} for answer id: {} is not a valid number'.format(
-                source_answer_id, value, answer_id
-            )
-        )
-
-    return value
+    return FIELD_HANDLER_MAPPINGS[answer.get('type')](
+        answer, error_messages, answer_store, metadata, disable_validation
+    ).get_field()

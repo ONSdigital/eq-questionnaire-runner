@@ -9,7 +9,7 @@ from werkzeug.datastructures import MultiDict
 from wtforms import validators
 
 from app.forms.date_form import get_date_limits
-from app.forms.field_factory import FieldFactory
+from app.forms.fields import get_field
 from app.validation.validators import DateRangeCheck, SumCheck, MutuallyExclusiveCheck
 
 logger = logging.getLogger(__name__)
@@ -305,6 +305,12 @@ class QuestionnaireForm(FlaskForm):
         return attr.raw_data[0] if attr.raw_data else ''
 
 
+def _option_value_in_data(answer, option, data):
+    data_to_inspect = data.to_dict(flat=False) if isinstance(data, MultiDict) else data
+
+    return option['value'] in dict(data_to_inspect).get(answer['id'], [])
+
+
 # pylint: disable=too-many-locals
 def get_answer_fields(question, data, error_messages, answer_store, metadata):
     answer_fields = {}
@@ -312,17 +318,27 @@ def get_answer_fields(question, data, error_messages, answer_store, metadata):
         return answer_fields
 
     for answer in question.get('answers', []):
-        field_factory = FieldFactory(
-            answer, answer.get('label'), error_messages, answer_store, metadata
-        )
-
         for option in answer.get('options', []):
             if 'detail_answer' in option:
-                answer_fields[
-                    option['detail_answer']['id']
-                ] = field_factory.get_option_field(option, data)
+                disable_validation = not _option_value_in_data(answer, option, data)
+                detail_answer = option['detail_answer']
+                detail_answer_error_messages = (
+                    detail_answer['validation']['messages']
+                    if detail_answer.get('validation')
+                    else error_messages
+                )
 
-        answer_fields[answer['id']] = field_factory.get_field()
+                answer_fields[option['detail_answer']['id']] = get_field(
+                    detail_answer,
+                    detail_answer_error_messages,
+                    answer_store,
+                    metadata,
+                    disable_validation=disable_validation,
+                )
+
+        answer_fields[answer['id']] = get_field(
+            answer, error_messages, answer_store, metadata
+        )
 
     return answer_fields
 
