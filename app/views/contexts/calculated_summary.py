@@ -4,22 +4,22 @@ from app.jinja_filters import (
     format_unit,
     format_percentage,
 )
+from app.questionnaire.location import Location
 from app.questionnaire.questionnaire_schema import QuestionnaireSchema
+from app.questionnaire.router import Router
 from app.questionnaire.schema_utils import (
     choose_question_to_display,
     get_answer_ids_in_block,
 )
-from app.questionnaire.path_finder import PathFinder
-from app.questionnaire.location import Location
 from app.views.contexts.summary.group import Group
 
 
 def build_groups_for_section(
-    answer_store, list_store, metadata, schema, section, language
+    language, section, schema, answer_store, list_store, progress_store, metadata
 ):
-    path_finder = PathFinder(schema, answer_store, metadata, list_store=list_store)
+    router = Router(schema, answer_store, list_store, progress_store, metadata)
 
-    section_path = path_finder.routing_path(section['id'])
+    section_path = router.section_routing_path(section['id'])
 
     location = Location(section['id'])
 
@@ -39,7 +39,13 @@ def build_groups_for_section(
 
 
 def build_view_context_for_calculated_summary(
-    schema, answer_store, list_store, metadata, current_location, language
+    language,
+    current_location,
+    schema,
+    answer_store,
+    list_store,
+    progress_store,
+    metadata,
 ):
     block = schema.get_block(current_location.block_id)
 
@@ -48,7 +54,13 @@ def build_view_context_for_calculated_summary(
     )
 
     groups = build_groups_for_section(
-        answer_store, list_store, metadata, schema, calculated_section, language
+        language,
+        calculated_section,
+        schema,
+        answer_store,
+        list_store,
+        progress_store,
+        metadata,
     )
 
     formatted_total = _get_formatted_total(

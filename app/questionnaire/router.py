@@ -1,21 +1,43 @@
 from flask import url_for
 
-from app.helpers.path_finder_helper import path_finder
 from app.questionnaire.location import Location
+from app.questionnaire.path_finder import PathFinder
 from app.questionnaire.relationship_router import RelationshipRouter
+from app.questionnaire.rules import evaluate_when_rules
 
 
 class Router:
-    def __init__(self, schema, progress_store=None, list_store=None):
+    def __init__(self, schema, answer_store, list_store, progress_store, metadata):
         self._schema = schema
-        self._progress_store = progress_store
+        self._answer_store = answer_store
         self._list_store = list_store
+        self._progress_store = progress_store
+        self._metadata = metadata
+
+        self._path_finder = PathFinder(
+            self._schema,
+            self._answer_store,
+            self._list_store,
+            self._progress_store,
+            self._metadata,
+        )
+
+    @property
+    def enabled_section_ids(self):
+        return [
+            section['id']
+            for section in self._schema.get_sections()
+            if self._is_section_enabled(section=section)
+        ]
 
     def can_access_location(self, location: Location, routing_path):
         """
         Checks whether the location is valid and accessible.
         :return: boolean
         """
+        if location.section_id not in self.enabled_section_ids:
+            return False
+
         if (
             location.list_item_id
             and location.list_item_id not in self._list_store[location.list_name].items
@@ -41,6 +63,9 @@ class Router:
             self._progress_store.is_section_complete(section_id)
             for section_id in self._schema.get_section_ids_required_for_hub()
         )
+
+    def section_routing_path(self, section_id, list_item_id=None):
+        return self._path_finder.routing_path(section_id, list_item_id)
 
     def get_next_location_url(self, location, routing_path):
         """
@@ -114,15 +139,15 @@ class Router:
         return None
 
     def get_first_incomplete_location_in_survey(self):
-        incomplete_section_keys = self._get_incomplete_section_keys()
+        first_incomplete_section_key = self._get_first_incomplete_section_key()
 
-        if incomplete_section_keys:
-            section_id, list_item_id = incomplete_section_keys[0]
+        if first_incomplete_section_key:
+            section_id, list_item_id = first_incomplete_section_key
 
-            section_routing_path = path_finder.routing_path(
+            section_routing_path = self._path_finder.routing_path(
                 section_id=section_id, list_item_id=list_item_id
             )
-            location = path_finder.get_first_incomplete_location(section_routing_path)
+            location = self._get_first_incomplete_location(section_routing_path)
 
             if location:
                 return location
@@ -136,13 +161,9 @@ class Router:
         self, routing_path, section_id, list_item_id=None
     ):
         section_key = (section_id, list_item_id)
-        completed_locations = self._progress_store.get_completed_block_ids(
-            section_id=section_id, list_item_id=list_item_id
-        )
-
         if section_key in self._progress_store:
             for location in routing_path:
-                if location.block_id not in completed_locations:
+                if not self._is_location_complete(location):
                     return location
 
         return routing_path[0]
@@ -151,32 +172,73 @@ class Router:
         self, routing_path, section_id, list_item_id=None
     ):
         section_key = (section_id, list_item_id)
-        completed_locations = self._progress_store.get_completed_block_ids(
-            section_id=section_id, list_item_id=list_item_id
-        )
         if section_key in self._progress_store:
             for location in routing_path[::-1]:
-                if location.block_id in completed_locations:
+                if self._is_location_complete(location):
                     return location
 
     def is_survey_complete(self):
-        incomplete_section_keys = self._get_incomplete_section_keys()
+        first_incomplete_section_key = self._get_first_incomplete_section_key()
 
-        if incomplete_section_keys:
-            if len(incomplete_section_keys) > 1:
-                return False
-
-            section_id = incomplete_section_keys[0][0]
+        if first_incomplete_section_key:
+            section_id = first_incomplete_section_key[0]
             if self._does_section_only_contain_summary(section_id):
                 return True
             return False
 
         return True
 
+    def is_path_complete(self, path):
+        location = self._get_first_incomplete_location(path)
+        if not location or (
+            location == path[-1]
+            and self._schema.get_block(location.block_id)['type'] == 'SectionSummary'
+        ):
+            return True
+
+        return False
+
     def get_section_return_location_when_section_complete(
         self, routing_path
     ) -> Location:
         return self._get_location_of_section_summary(routing_path) or routing_path[0]
+
+    def full_routing_path(self):
+        path = []
+        for section_id in self.enabled_section_ids:
+            repeating_list = self._schema.get_repeating_list_for_section(section_id)
+
+            if repeating_list:
+                for list_item_id in self._list_store[repeating_list].items:
+                    path = path + list(
+                        self._path_finder.routing_path(
+                            section_id=section_id, list_item_id=list_item_id
+                        )
+                    )
+            else:
+                path = path + list(
+                    self._path_finder.routing_path(section_id=section_id)
+                )
+
+        return path
+
+    def _is_location_complete(self, location):
+        completed_block_ids = self._progress_store.get_completed_block_ids(
+            location.section_id, location.list_item_id
+        )
+
+        return location.block_id in completed_block_ids
+
+    def _get_first_incomplete_location(self, path):
+        for location in path:
+            block = self._schema.get_block(location.block_id)
+            block_type = block.get('type')
+
+            if not self._is_location_complete(location) and block_type not in {
+                'Summary',
+                'Confirmation',
+            }:
+                return location
 
     def _get_allowable_path(self, routing_path):
         """
@@ -188,39 +250,32 @@ class Router:
             for location in routing_path:
                 allowable_path.append(location)
 
-                if (
-                    location.block_id
-                    not in self._progress_store.get_completed_block_ids(
-                        section_id=location.section_id,
-                        list_item_id=location.list_item_id,
-                    )
-                ):
+                if not self._is_location_complete(location):
                     return allowable_path
 
         return allowable_path
 
-    def _get_incomplete_section_keys(self):
-        all_section_ids = self._schema.get_section_ids()
-
-        all_section_keys = []
-        for section_id in all_section_ids:
+    def get_enabled_section_keys(self):
+        enabled_section_keys = []
+        for section_id in self.enabled_section_ids:
             repeating_list = self._schema.get_repeating_list_for_section(section_id)
 
             if repeating_list:
                 for list_item_id in self._list_store[repeating_list].items:
                     section_key = (section_id, list_item_id)
-                    all_section_keys.append(section_key)
+                    enabled_section_keys.append(section_key)
             else:
                 section_key = (section_id, None)
-                all_section_keys.append(section_key)
+                enabled_section_keys.append(section_key)
 
-        incomplete_section_keys = [
-            (section_id, list_item_id)
-            for section_id, list_item_id in all_section_keys
-            if not self._progress_store.is_section_complete(section_id, list_item_id)
-        ]
+        return enabled_section_keys
 
-        return incomplete_section_keys
+    def _get_first_incomplete_section_key(self):
+        enabled_section_keys = self.get_enabled_section_keys()
+
+        for section_id, list_item_id in enabled_section_keys:
+            if not self._progress_store.is_section_complete(section_id, list_item_id):
+                return section_id, list_item_id
 
     # This is horrible and only necessary as currently a section can be defined that only
     # contains a Summary or Confirmation. The ideal solution is to move Summary/Confirmation
@@ -233,7 +288,7 @@ class Router:
             blocks = groups[0].get('blocks')
             if len(blocks) == 1:
                 block_type = blocks[0].get('type')
-                if block_type in ['Summary', 'Confirmation']:
+                if block_type in {'Summary', 'Confirmation'}:
                     return True
         return False
 
@@ -242,3 +297,18 @@ class Router:
             block = self._schema.get_block(location.block_id)
             if block['type'] == 'SectionSummary':
                 return location
+
+    def _is_section_enabled(self, section):
+        if 'enabled' not in section:
+            return True
+
+        for condition in section['enabled']:
+            if evaluate_when_rules(
+                condition['when'],
+                self._schema,
+                self._metadata,
+                self._answer_store,
+                self._list_store,
+            ):
+                return True
+        return False

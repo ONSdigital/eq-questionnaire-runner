@@ -1,3 +1,9 @@
+clean:
+	rm -rf data
+
+build-schemas:
+	pipenv run ./scripts/build_schemas.sh
+
 build:
 	pipenv run ./scripts/build.sh
 

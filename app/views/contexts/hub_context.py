@@ -2,11 +2,10 @@ from typing import List, Mapping, Union
 
 from flask import url_for
 from flask_babel import lazy_gettext
-
 from werkzeug.utils import cached_property
 
-from app.questionnaire.placeholder_renderer import PlaceholderRenderer
 from app.data_model.progress_store import CompletionStatus, ProgressStore
+from app.questionnaire.placeholder_renderer import PlaceholderRenderer
 
 
 class HubContext:
@@ -58,6 +57,7 @@ class HubContext:
         metadata,
         schema,
         survey_complete: bool,
+        enabled_section_ids,
     ) -> None:
         self._language = language
         self._progress_store = progress_store
@@ -67,6 +67,7 @@ class HubContext:
         self._schema = schema
         self._survey_complete = survey_complete
         self._placeholder_renderer = None
+        self._enabled_section_ids = enabled_section_ids
 
     @cached_property
     def placeholder_renderer(self):
@@ -148,11 +149,9 @@ class HubContext:
     def _get_rows(self) -> List[Mapping[str, Union[str, List]]]:
         rows = []
 
-        for section in self._schema.get_sections():
+        for section_id in self._enabled_section_ids:
 
-            section_title = section['title']
-            section_id = section['id']
-
+            section_title = self._schema.get_title_for_section(section_id)
             repeating_list = self._schema.get_repeating_list_for_section(section_id)
 
             if repeating_list:
