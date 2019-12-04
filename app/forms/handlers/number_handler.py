@@ -1,5 +1,3 @@
-from werkzeug.utils import cached_property
-
 from app.forms.custom_fields import CustomDecimalField, CustomIntegerField
 from app.forms.handlers.string_handler import StringHandler
 from decimal import Decimal
@@ -20,7 +18,7 @@ class NumberHandler(StringHandler):
         )
         self.dependencies = self.get_number_field_dependencies()
 
-    @cached_property
+    @property
     def validators(self):
         validate_with = []
 

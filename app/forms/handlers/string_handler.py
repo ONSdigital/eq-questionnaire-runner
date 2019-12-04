@@ -9,12 +9,19 @@ class StringHandler:
     MANDATORY_MESSAGE = 'MANDATORY_TEXTFIELD'
 
     def __init__(
-        self, answer, error_messages, answer_store, metadata, disable_validation=False
+        self,
+        answer,
+        error_messages,
+        answer_store,
+        metadata,
+        location=None,
+        disable_validation=False,
     ):
         self.answer = answer
         self.error_messages = error_messages
         self.answer_store = answer_store
         self.metadata = metadata
+        self.location = location
         self.disable_validation = disable_validation
 
     @cached_property
