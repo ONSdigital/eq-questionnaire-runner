@@ -79,7 +79,7 @@ class ProgressStore:
         self, filter_by: Set[str] = None
     ) -> List:
         statuses = {CompletionStatus.COMPLETED, CompletionStatus.IN_PROGRESS}
-        sections: Iterable = (self.section_keys_by_status(statuses) or [])
+        sections: Iterable = self.section_keys_by_status(statuses) or []
 
         if filter_by is None:
             return list(sections)
