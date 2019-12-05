@@ -96,6 +96,15 @@ describe('List Collector', function() {
       $(ListCollectorAddPage.submit()).click();
     });
 
+    it('The user is returned to the list collector when the cancel link is clicked.', function() {
+      $(ListCollectorPage.yes()).click();
+      $(ListCollectorPage.submit()).click();
+      $(ListCollectorAddPage.firstName()).setValue('Someone');
+      $(ListCollectorAddPage.lastName()).setValue('Else');
+      $(ListCollectorAddPage.cancelAndReturn()).click();
+      expect(browser.getUrl()).to.contain(ListCollectorPage.pageName);
+    });
+
     it('The collector shows everyone on the summary', function() {
       const peopleExpected = ['Samuel Clemens', 'Olivia Clemens', 'Suzy Clemens', 'Clara Clemens', 'Jean Clemens'];
 

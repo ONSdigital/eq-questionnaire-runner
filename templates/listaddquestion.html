@@ -1,1 +1,13 @@
-{% include 'question.html' %}
+{% extends 'question.html' %}
+
+{% block cancel_and_return %}
+  {% if previous_location_url %}
+    {% if content.block.cancel_text %}
+        <p class="u-mt-xl" id="cancel-and-return">
+           {{ content.block.cancel_text.text }} <a href="{{ previous_location_url }}"> {{ content.block.cancel_text.action_text }}</a></p>
+    {% else %}
+        <p class="u-mt-xl" id="cancel-and-return">
+        <a href="{{ previous_location_url }}">{{ _("Cancel and return to the previous question") }}</a></p>
+    {% endif %}
+  {% endif %}
+{% endblock cancel_and_return %}
