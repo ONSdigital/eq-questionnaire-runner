@@ -134,7 +134,9 @@ class DateHandler(StringHandler):
             answer_id = referenced_date['answer_id']
             list_item_id = self.location.list_item_id if self.location else None
 
-            value = get_answer_value(answer_id, self.answer_store, schema, list_item_id)
+            value = get_answer_value(
+                answer_id, self.answer_store, schema, list_item_id=list_item_id
+            )
 
         return convert_to_datetime(value)
 

@@ -14,7 +14,7 @@ class StringHandler:
         error_messages,
         answer_store,
         metadata,
-        location=None,
+        location,
         disable_validation=False,
     ):
         self.answer = answer

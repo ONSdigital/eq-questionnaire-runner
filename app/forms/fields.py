@@ -25,12 +25,15 @@ FIELD_HANDLER_MAPPINGS = {
 }
 
 
-def get_field(answer, error_messages, answer_store, metadata, disable_validation=False):
+def get_field(
+    answer, error_messages, answer_store, metadata, location, disable_validation=False
+):
 
     return FIELD_HANDLER_MAPPINGS[answer.get('type')](
         answer,
         error_messages,
         answer_store,
         metadata,
+        location,
         disable_validation=disable_validation,
     ).get_field()
