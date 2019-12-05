@@ -1,4 +1,4 @@
-from typing import Iterable, List, Set, Tuple, Union, Mapping, MutableMapping, Optional
+from typing import Iterable, List, Set, Mapping, MutableMapping, Optional
 
 from app.data_model.progress import Progress
 from app.questionnaire.location import Location
@@ -68,26 +68,27 @@ class ProgressStore:
             {CompletionStatus.COMPLETED}
         )
 
-    def section_keys_by_status(
-        self, statuses: Iterable[str]
-    ) -> Set[Tuple[str, Optional[str]]]:
+    def section_keys_by_status(self, statuses: Iterable[str]) -> Set[str]:
         return {
             section_key
             for section_key, section_progress in self._progress.items()
             if section_progress.status in statuses
         }
 
-    def get_in_progress_and_completed_sections(
+    def get_in_progress_and_completed_section_ids(
         self, filter_by: Set[str] = None
-    ) -> Union[List, None]:
-        completed_sections = self.section_keys_by_status(
-            {CompletionStatus.COMPLETED, CompletionStatus.IN_PROGRESS}
-        )
-        return (
-            list(completed_sections)
-            if filter_by is None
-            else list(completed_sections & filter_by)
-        )
+    ) -> List:
+        statuses = {CompletionStatus.COMPLETED, CompletionStatus.IN_PROGRESS}
+        sections: Iterable = (self.section_keys_by_status(statuses) or [])
+
+        if filter_by is None:
+            return list(sections)
+
+        return [
+            t
+            for t in sections
+            if any(filter_element in t for filter_element in filter_by)
+        ]
 
     def update_section_status(
         self, section_status: str, section_id: str, list_item_id: Optional[str] = None

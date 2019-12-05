@@ -436,10 +436,13 @@ def get_nested_schema_objects(parent_object, list_key):
 
 def _get_nested_values_by_key(block, key):
     for k, v in block.items():
-        if k == key:
-            yield v
-        if isinstance(v, dict):
-            yield from _get_nested_values_by_key(v, key)
-        elif isinstance(v, list):
-            for d in v:
-                yield from _get_nested_values_by_key(d, key)
+        try:
+            if k == key:
+                yield v
+            if isinstance(v, dict):
+                yield from _get_nested_values_by_key(v, key)
+            elif isinstance(v, list):
+                for d in v:
+                    yield from _get_nested_values_by_key(d, key)
+        except AttributeError:
+            continue

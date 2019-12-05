@@ -478,11 +478,17 @@ def test_remove_progress_for_list_item_id():
 @pytest.mark.parametrize(
     'test_input, expected',
     [
-        ({('s1', None), ('s2', None)}, [('s1', None), ('s2', None)]),
-        (None, [('s1', None), ('s2', None), ('s4', '123abc')]),
+        # No repeating sections
+        ({'s1', 's2'}, [('s1', None), ('s2', None)]),
+        # Repeating sections and non repeating sections
+        ({'s1', 's4'}, [('s1', None), ('s4', '123abc')]),
+        # Only repeating sections
+        ({'s4', 's5'}, [('s4', '123abc'), ('s5', '456def')]),
+        # No filter_by paramater specified
+        (None, [('s1', None), ('s2', None), ('s4', '123abc'), ('s5', '456def')]),
     ],
 )
-def test_section_keys_by_status(test_input, expected):
+def test_in_progress_and_completed_section_ids(test_input, expected):
     completed = [
         {
             'section_id': 's1',
@@ -508,9 +514,15 @@ def test_section_keys_by_status(test_input, expected):
             'status': CompletionStatus.COMPLETED,
             'block_ids': ['not-three'],
         },
+        {
+            'section_id': 's5',
+            'list_item_id': '456def',
+            'status': CompletionStatus.IN_PROGRESS,
+            'block_ids': ['not-three'],
+        },
     ]
 
     store = ProgressStore(completed)
-    section_keys = store.get_in_progress_and_completed_sections(test_input)
+    section_keys = store.get_in_progress_and_completed_section_ids(test_input)
 
     assert sorted(section_keys) == expected

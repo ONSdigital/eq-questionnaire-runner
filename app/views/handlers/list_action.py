@@ -51,8 +51,11 @@ class ListAction(Question):
         self.questionnaire_store_updater.save()
 
     def evaluate_and_update_section_status(self):
-        sections_to_evaluate = (
-            self.questionnaire_store_updater.get_in_progress_and_completed_sections()
+        list_name = self.parent_block['for_list']
+        filter_by = self._schema.get_sections_dependent_on_list(list_name)
+
+        sections_to_evaluate = self.questionnaire_store_updater.get_in_progress_and_completed_section_ids(
+            filter_by
         )
 
         for section_id, list_item_id in sections_to_evaluate:
