@@ -22,66 +22,15 @@ class PathFinder:
         self,
         schema: QuestionnaireSchema,
         answer_store: AnswerStore,
+        list_store: ListStore,
+        progress_store: ProgressStore,
         metadata: Mapping,
-        progress_store: ProgressStore = None,
-        list_store: ListStore = None,
     ):
         self.answer_store = answer_store
         self.metadata = metadata
         self.schema = schema
         self.progress_store = progress_store
         self.list_store = list_store
-
-    def is_path_complete(self, path):
-        location = self.get_first_incomplete_location(path)
-        if not location or (
-            location == path[-1]
-            and self.schema.get_block(location.block_id)['type'] == 'SectionSummary'
-        ):
-            return True
-
-        return False
-
-    def get_first_incomplete_location(self, path):
-        if path:
-            for location in path:
-                block = self.schema.get_block(location.block_id)
-                block_type = block.get('type')
-
-                is_location_complete = (
-                    location.block_id
-                    in self.progress_store.get_completed_block_ids(
-                        section_id=location.section_id,
-                        list_item_id=location.list_item_id,
-                    )
-                )
-
-                if not is_location_complete and block_type not in [
-                    'Summary',
-                    'Confirmation',
-                ]:
-                    return location
-
-        return None
-
-    def full_routing_path(self):
-        path = []
-
-        for section in self.schema.get_sections():
-            section_id = section['id']
-            repeating_list = self.schema.get_repeating_list_for_section(section_id)
-
-            if repeating_list:
-                for list_item_id in self.list_store[repeating_list].items:
-                    path = path + list(
-                        self.routing_path(
-                            section_id=section_id, list_item_id=list_item_id
-                        )
-                    )
-            else:
-                path = path + list(self.routing_path(section_id=section_id))
-
-        return path
 
     def routing_path(
         self, section_id: str, list_item_id: Optional[str] = None

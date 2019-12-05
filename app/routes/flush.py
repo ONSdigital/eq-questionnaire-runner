@@ -7,7 +7,7 @@ from structlog import get_logger
 from app.authentication.user import User
 from app.globals import get_answer_store, get_questionnaire_store, get_metadata
 from app.keys import KEY_PURPOSE_AUTHENTICATION, KEY_PURPOSE_SUBMISSION
-from app.questionnaire.path_finder import PathFinder
+from app.questionnaire.router import Router
 from app.submitter.converter import convert_answers
 from app.submitter.submission_failed import SubmissionFailedException
 from app.utilities.schema import load_schema_from_metadata
@@ -59,10 +59,8 @@ def _submit_data(user):
 
         schema = load_schema_from_metadata(metadata)
 
-        path_finder = PathFinder(
-            schema, answer_store, metadata, progress_store, list_store
-        )
-        full_routing_path = path_finder.full_routing_path()
+        router = Router(schema, answer_store, list_store, progress_store, metadata)
+        full_routing_path = router.full_routing_path()
 
         message = json.dumps(
             convert_answers(

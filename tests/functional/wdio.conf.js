@@ -56,13 +56,13 @@ exports.config = {
         // excludeDriverLogs: ['*'], // pass '*' to exclude all driver session logs
         // excludeDriverLogs: ['bugreport', 'server'],
         'goog:chromeOptions': {
-          args: [
-              "--headless",
-              "--window-size=1280,1080",
-              "--no-sandbox",
-              "--disable-gpu",
-              "--disable-extensions"
-          ]
+            args: [
+                process.env.EQ_RUN_FUNCTIONAL_TESTS_HEADLESS ? "--headless" : "--start-maximized",
+                "--window-size=1280,1080",
+                "--no-sandbox",
+                "--disable-gpu",
+                "--disable-extensions"
+            ]
         }
     }],
     //
@@ -96,7 +96,7 @@ exports.config = {
     // with `/`, the base url gets prepended, not including the path portion of your baseUrl.
     // If your `url` parameter starts without a scheme or `/` (like `some/path`), the base url
     // gets prepended directly.
-    baseUrl: 'http://localhost:5000',
+    baseUrl: process.env.EQ_FUNCTIONAL_TEST_ENV || "http://localhost:5000",
     //
     // Default timeout for all waitFor* commands.
     waitforTimeout: 10000,
@@ -173,10 +173,36 @@ exports.config = {
 
         global.expect = chai.expect;
 
-        browser.addCommand('openQuestionnaire', async function (schema, { userId = JwtHelper.getRandomString(10), collectionId = JwtHelper.getRandomString(10), responseId = JwtHelper.getRandomString(16), periodId = '201605', periodStr = 'May 2016', region = 'GB-ENG', language = 'en', sexualIdentity = false, includeLogoutUrl = false } = {}){
-          const token = await JwtHelper.generateToken(schema, {userId, collectionId, responseId: responseId, periodId: periodId, periodStr: periodStr, regionCode: region, languageCode: language, sexualIdentity: sexualIdentity, includeLogoutUrl: includeLogoutUrl})
-          this.url('/session?token=' + token);
+        browser.addCommand('openQuestionnaire', async function (schema, {
+            userId = JwtHelper.getRandomString(10),
+            collectionId = JwtHelper.getRandomString(10),
+            responseId = JwtHelper.getRandomString(16),
+            periodId = '201605',
+            periodStr = 'May 2016',
+            region = 'GB-ENG',
+            language = 'en',
+            sexualIdentity = false,
+            includeLogoutUrl = false
+        } = {}) {
+            const token = await JwtHelper.generateToken(schema, {
+                userId,
+                collectionId,
+                responseId: responseId,
+                periodId: periodId,
+                periodStr: periodStr,
+                regionCode: region,
+                languageCode: language,
+                sexualIdentity: sexualIdentity,
+                includeLogoutUrl: includeLogoutUrl
+            });
+            this.url('/session?token=' + token);
         });
+    },
+
+    after: function (result) {
+        if (result === 1 && !process.env.EQ_RUN_FUNCTIONAL_TESTS_HEADLESS) {
+            browser.debug();
+        }
     },
     /**
      * Runs before a WebdriverIO command gets executed.
@@ -259,10 +285,10 @@ exports.config = {
     // onComplete: function(exitCode, config, capabilities, results) {
     // },
     /**
-    * Gets executed when a refresh happens.
-    * @param {String} oldSessionId session ID of the old session
-    * @param {String} newSessionId session ID of the new session
-    */
+     * Gets executed when a refresh happens.
+     * @param {String} oldSessionId session ID of the old session
+     * @param {String} newSessionId session ID of the new session
+     */
     //onReload: function(oldSessionId, newSessionId) {
     //}
 };
