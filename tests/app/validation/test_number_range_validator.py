@@ -382,9 +382,7 @@ class TestNumberRangeValidator(unittest.TestCase):
         returned_error_messages = answer['validation']['messages']
 
         with self.assertRaises(Exception) as ite:
-            integer_field = get_field(
-                answer, returned_error_messages, self.store, None, False
-            )
+            get_field(answer, returned_error_messages, self.store, None, False)
 
         self.assertEqual(
             str(ite.exception),
@@ -409,9 +407,7 @@ class TestNumberRangeValidator(unittest.TestCase):
         returned_error_messages = answer['validation']['messages']
 
         with self.assertRaises(Exception) as ite:
-            integer_field = get_field(
-                answer, returned_error_messages, self.store, None, False
-            )
+            get_field(answer, returned_error_messages, self.store, None, False)
 
         self.assertEqual(
             str(ite.exception),
@@ -437,9 +433,7 @@ class TestNumberRangeValidator(unittest.TestCase):
         returned_error_messages = answer['validation']['messages']
 
         with self.assertRaises(Exception) as ite:
-            integer_field = get_field(
-                answer, returned_error_messages, self.store, None, False
-            )
+            get_field(answer, returned_error_messages, self.store, None, False)
 
         self.assertEqual(
             str(ite.exception),
@@ -465,9 +459,7 @@ class TestNumberRangeValidator(unittest.TestCase):
         returned_error_messages = answer['validation']['messages']
 
         with self.assertRaises(Exception) as ite:
-            integer_field = get_field(
-                answer, returned_error_messages, self.store, None, False
-            )
+            get_field(answer, returned_error_messages, self.store, None, False)
 
         self.assertEqual(
             str(ite.exception),

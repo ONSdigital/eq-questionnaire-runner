@@ -344,7 +344,7 @@ def get_answer_fields(question, data, error_messages, answer_store, metadata, lo
                 )
 
         answer_fields[answer['id']] = get_field(
-            answer, error_messages, answer_store, metadata
+            answer, error_messages, answer_store, metadata, location
         )
 
     return answer_fields
@@ -376,7 +376,13 @@ def map_detail_answer_errors(errors, answer_json):
 
 
 def generate_form(
-    schema, question_schema, answer_store, metadata, location, data=None, formdata=None
+    schema,
+    question_schema,
+    answer_store,
+    metadata,
+    location=None,
+    data=None,
+    formdata=None,
 ):
     class DynamicForm(QuestionnaireForm):
         pass

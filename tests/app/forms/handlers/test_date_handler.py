@@ -1,3 +1,4 @@
+# pylint: disable=unused-argument
 from datetime import datetime
 from mock import patch
 
@@ -18,11 +19,7 @@ from app.utilities.schema import load_schema_from_name
 def test_generate_date_form_creates_empty_form(app):
     schema = load_schema_from_name('test_dates')
     handler = DateHandler(
-        schema.get_answers_by_answer_id('single-date-answer')[0],
-        schema.error_messages,
-        AnswerStore(),
-        {},
-        location=None,
+        schema.get_answers_by_answer_id('single-date-answer')[0], schema.error_messages
     )
     form = get_form(DateFormType.YearMonthDay, handler.validators)
 
@@ -34,11 +31,7 @@ def test_generate_date_form_creates_empty_form(app):
 def test_generate_month_year_date_form_creates_empty_form(app):
     schema = load_schema_from_name('test_dates')
     handler = DateHandler(
-        schema.get_answers_by_answer_id('month-year-answer')[0],
-        schema.error_messages,
-        AnswerStore(),
-        {},
-        location=None,
+        schema.get_answers_by_answer_id('month-year-answer')[0], schema.error_messages
     )
     form = get_form(DateFormType.YearMonth, handler.validators)
 
@@ -51,11 +44,7 @@ def test_generate_year_date_form_creates_empty_form(app):
     schema = load_schema_from_name('test_dates')
     error_messages = schema.error_messages
     handler = DateHandler(
-        schema.get_answers_by_answer_id('year-date-answer')[0],
-        error_messages,
-        AnswerStore(),
-        {},
-        location=None,
+        schema.get_answers_by_answer_id('year-date-answer')[0], error_messages
     )
     form = get_form(DateFormType.Year, handler.validators)
 
@@ -69,11 +58,7 @@ def test_date_form_empty_data(app):
     error_messages = schema.error_messages
 
     handler = DateHandler(
-        schema.get_answers_by_answer_id('single-date-answer')[0],
-        error_messages,
-        AnswerStore(),
-        {},
-        location=None,
+        schema.get_answers_by_answer_id('single-date-answer')[0], error_messages
     )
     form = get_form(DateFormType.YearMonthDay, handler.validators)
 
@@ -85,11 +70,7 @@ def test_month_year_date_form_empty_data(app):
     error_messages = schema.error_messages
 
     handler = DateHandler(
-        schema.get_answers_by_answer_id('month-year-answer')[0],
-        error_messages,
-        AnswerStore(),
-        {},
-        location=None,
+        schema.get_answers_by_answer_id('month-year-answer')[0], error_messages
     )
     form = get_form(DateFormType.YearMonth, handler.validators)
 
@@ -101,11 +82,7 @@ def test_year_date_form_empty_data(app):
     error_messages = schema.error_messages
 
     handler = DateHandler(
-        schema.get_answers_by_answer_id('year-date-answer')[0],
-        error_messages,
-        AnswerStore(),
-        {},
-        location=None,
+        schema.get_answers_by_answer_id('year-date-answer')[0], error_messages
     )
     form = get_form(DateFormType.Year, handler.validators)
 
@@ -119,11 +96,7 @@ def test_date_form_format_data(app):
     data = {'field': '2000-01-01'}
 
     handler = DateHandler(
-        schema.get_answers_by_answer_id('single-date-answer')[0],
-        error_messages,
-        AnswerStore(),
-        {},
-        location=None,
+        schema.get_answers_by_answer_id('single-date-answer')[0], error_messages
     )
 
     class TestForm(Form):
@@ -141,11 +114,7 @@ def test_month_year_date_form_format_data(app):
     data = {'field': '2000-01'}
 
     handler = DateHandler(
-        schema.get_answers_by_answer_id('month-year-answer')[0],
-        error_messages,
-        AnswerStore(),
-        {},
-        location=None,
+        schema.get_answers_by_answer_id('month-year-answer')[0], error_messages
     )
 
     class TestForm(Form):
@@ -163,11 +132,7 @@ def test_year_date_form_format_data(app):
     data = {'field': '2000'}
 
     handler = DateHandler(
-        schema.get_answers_by_answer_id('year-date-answer')[0],
-        error_messages,
-        AnswerStore(),
-        {},
-        location=None,
+        schema.get_answers_by_answer_id('year-date-answer')[0], error_messages
     )
 
     class TestForm(Form):
@@ -184,9 +149,7 @@ def test_generate_date_form_validates_single_date_period(app):
     handler = DateHandler(
         schema.get_answers_by_answer_id('date-range-from')[0],
         schema.error_messages,
-        AnswerStore(),
-        test_metadata,
-        location=None,
+        metadata=test_metadata,
     )
     form = get_form(DateFormType.YearMonthDay, handler.validators)
 
@@ -206,7 +169,7 @@ def test_generate_date_form_validates_single_date_period_with_bespoke_message(ap
         'maximum': {'value': '2017-06-11', 'offset_by': {'days': 20}},
         'validation': {'messages': {'SINGLE_DATE_PERIOD_TOO_LATE': 'Test Message'}},
     }
-    handler = DateHandler(answer, error_messages, AnswerStore(), {}, location=None)
+    handler = DateHandler(answer, error_messages)
     form = get_form(DateFormType.YearMonthDay, handler.validators)
 
     assert hasattr(form, 'day')
@@ -217,7 +180,7 @@ def test_generate_date_form_validates_single_date_period_with_bespoke_message(ap
 def test_get_referenced_offset_value_for_value(app):
     answer = {'minimum': {'value': '2017-06-11'}}
 
-    handler = DateHandler(answer, {}, AnswerStore(), {}, location=None)
+    handler = DateHandler(answer)
     minimum_date, _ = handler.get_date_limits()
     minimum_date = handler.transform_date_by_offset(minimum_date, {'days': 10})
 
@@ -227,7 +190,7 @@ def test_get_referenced_offset_value_for_value(app):
 def test_get_referenced_offset_value_for_now_value(app):
     answer = {'minimum': {'value': 'now'}}
 
-    handler = DateHandler(answer, {}, AnswerStore(), {}, location=None)
+    handler = DateHandler(answer)
     minimum_date, _ = handler.get_date_limits()
     minimum_date = handler.transform_date_by_offset(minimum_date, {'days': 10})
 
@@ -240,7 +203,7 @@ def test_get_referenced_offset_value_for_meta(app):
     test_metadata = {'date': '2018-02-20'}
     answer = {'minimum': {'meta': 'date'}}
 
-    handler = DateHandler(answer, {}, AnswerStore(), test_metadata, location=None)
+    handler = DateHandler(answer, metadata=test_metadata)
     minimum_date, _ = handler.get_date_limits()
     minimum_date = handler.transform_date_by_offset(minimum_date, {'days': -10})
 
@@ -258,7 +221,7 @@ def test_get_referenced_offset_value_for_answer_id(app):
 
     answer = {'maximum': {'answer_id': 'date'}}
 
-    handler = DateHandler(answer, {}, answer_store, {}, location=None)
+    handler = DateHandler(answer, answer_store=answer_store)
     _, maximum_date = handler.get_date_limits()
     maximum_date = handler.transform_date_by_offset(maximum_date, {'months': 1})
 
@@ -287,7 +250,7 @@ def test_get_referenced_offset_value_with_list_item_id(app, schema_mock):
 
     answer = {'maximum': {'answer_id': 'date', 'offset_by': {'months': 1}}}
 
-    handler = DateHandler(answer, {}, answer_store, {}, location)
+    handler = DateHandler(answer, answer_store=answer_store, location=location)
     _, maximum_date = handler.get_date_limits()
 
     assert maximum_date == convert_to_datetime('2018-04-20')
@@ -296,7 +259,7 @@ def test_get_referenced_offset_value_with_list_item_id(app, schema_mock):
 def test_get_referenced_offset_value_with_no_offset(app):
     answer = {'minimum': {'value': '2017-06-11'}}
 
-    handler = DateHandler(answer, {}, AnswerStore(), {}, location=None)
+    handler = DateHandler(answer)
     minimum_date, _ = handler.get_date_limits()
     minimum_date = handler.transform_date_by_offset(minimum_date, {})
 
@@ -320,7 +283,7 @@ def test_minimum_and_maximum_offset_dates(app):
         'maximum': {'answer_id': 'date', 'offset_by': {'years': 1}},
     }
 
-    handler = DateHandler(answer, {}, store, metadata=test_metadata, location=None)
+    handler = DateHandler(answer, answer_store=store, metadata=test_metadata)
     offset_dates = handler.get_date_limits()
 
     assert offset_dates == (
@@ -337,14 +300,14 @@ def test_greater_minimum_date_than_maximum_date(app):
         'maximum': {'value': '2018-01-15', 'offset_by': {'days': 10}},
     }
 
-    handler = DateHandler(answer, {}, AnswerStore(), metadata={}, location=None)
+    handler = DateHandler(answer)
 
     with pytest.raises(Exception) as ite:
         handler.get_date_limits()
 
         assert (
-            'The minimum offset date is greater than the maximum offset date for date-answer.'
-            == str(ite.exception)
+            str(ite.exception)
+            == 'The minimum offset date is greater than the maximum offset date for date-answer.'
         )
 
 
@@ -360,9 +323,7 @@ def test_validate_mandatory_date(app):
         'validation': {'messages': {'MANDATORY_DATE': 'Test Mandatory Date Message'}},
     }
 
-    handler = DateHandler(
-        answer, error_messages, AnswerStore(), metadata={}, location=None
-    )
+    handler = DateHandler(answer, error_messages)
     validator = handler.get_mandatory_validator('MANDATORY_DATE')
 
     assert validator[0].message == 'Test Mandatory Date Message'

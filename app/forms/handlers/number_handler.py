@@ -1,7 +1,7 @@
-from app.forms.custom_fields import CustomDecimalField, CustomIntegerField
-from app.forms.handlers.string_handler import StringHandler
 from decimal import Decimal
 
+from app.forms.custom_fields import CustomDecimalField, CustomIntegerField
+from app.forms.handlers.string_handler import StringHandler
 from app.validation.validators import NumberCheck, NumberRange, DecimalPlaces
 
 
@@ -11,10 +11,16 @@ class NumberHandler(StringHandler):
     MAX_DECIMAL_PLACES = 6
 
     def __init__(
-        self, answer, error_messages, answer_store, metadata, disable_validation=False
+        self,
+        answer,
+        error_messages,
+        answer_store,
+        metadata,
+        location,
+        disable_validation=False,
     ):
         super().__init__(
-            answer, error_messages, answer_store, metadata, disable_validation
+            answer, error_messages, answer_store, metadata, location, disable_validation
         )
         self.dependencies = self.get_number_field_dependencies()
 

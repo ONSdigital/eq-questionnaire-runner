@@ -1,6 +1,7 @@
 from werkzeug.utils import cached_property
 from wtforms import validators, StringField
 
+from app.data_model.answer_store import AnswerStore
 from app.validation.validators import ResponseRequired
 
 
@@ -11,16 +12,16 @@ class StringHandler:
     def __init__(
         self,
         answer,
-        error_messages,
-        answer_store,
-        metadata,
-        location,
+        error_messages=None,
+        answer_store=AnswerStore(),
+        metadata=None,
+        location=None,
         disable_validation=False,
     ):
         self.answer = answer
-        self.error_messages = error_messages
+        self.error_messages = error_messages or {}
         self.answer_store = answer_store
-        self.metadata = metadata
+        self.metadata = metadata or {}
         self.location = location
         self.disable_validation = disable_validation
 
