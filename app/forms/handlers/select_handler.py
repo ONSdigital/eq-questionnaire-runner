@@ -24,7 +24,9 @@ class SelectHandler(FieldHandler):
         return CustomSelectField(
             label=self.label,
             description=self.guidance,
-            choices=self.build_choices_with_detail_answer_ids(self.answer['options']),
+            choices=self.build_choices_with_detail_answer_ids(
+                self.answer_schema['options']
+            ),
             validators=self.validators,
             coerce=self.coerce_str_unless_none,
         )

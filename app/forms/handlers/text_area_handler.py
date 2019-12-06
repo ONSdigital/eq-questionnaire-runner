@@ -21,15 +21,15 @@ class TextAreaHandler(FieldHandler):
         max_length = self.MAX_LENGTH
         length_message = self.error_messages['MAX_LENGTH_EXCEEDED']
 
-        if 'max_length' in self.answer and self.answer['max_length'] > 0:
-            max_length = self.answer['max_length']
+        if 'max_length' in self.answer_schema and self.answer_schema['max_length'] > 0:
+            max_length = self.answer_schema['max_length']
 
         if (
-            'validation' in self.answer
-            and 'messages' in self.answer['validation']
-            and 'MAX_LENGTH_EXCEEDED' in self.answer['validation']['messages']
+            'validation' in self.answer_schema
+            and 'messages' in self.answer_schema['validation']
+            and 'MAX_LENGTH_EXCEEDED' in self.answer_schema['validation']['messages']
         ):
-            length_message = self.answer['validation']['messages'][
+            length_message = self.answer_schema['validation']['messages'][
                 'MAX_LENGTH_EXCEEDED'
             ]
 

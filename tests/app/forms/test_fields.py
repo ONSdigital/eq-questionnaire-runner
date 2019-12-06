@@ -249,7 +249,6 @@ class TestFields(AppContextTestCase):
         self.assertEqual(unbound_field.kwargs['choices'], expected_choices)
 
     def test__coerce_str_unless_none(self):
-        # pylint: disable=protected-access
         self.assertEqual(SelectHandler.coerce_str_unless_none(1), '1')
         self.assertEqual(SelectHandler.coerce_str_unless_none('bob'), 'bob')
         self.assertEqual(SelectHandler.coerce_str_unless_none(12323245), '12323245')

@@ -37,7 +37,7 @@ class DateHandler(FieldHandler):
 
         validate_with = [OptionalForm()]
 
-        if self.answer['mandatory'] is True:
+        if self.answer_schema['mandatory'] is True:
             validate_with = self.validate_mandatory_date()
 
         error_message = self.get_bespoke_message('INVALID_DATE')
@@ -46,8 +46,8 @@ class DateHandler(FieldHandler):
 
         if minimum_date or maximum_date:
             messages = None
-            if 'validation' in self.answer:
-                messages = self.answer['validation'].get('messages')
+            if 'validation' in self.answer_schema:
+                messages = self.answer_schema['validation'].get('messages')
             min_max_validation = self.validate_min_max_date(
                 minimum_date,
                 maximum_date,
@@ -77,11 +77,11 @@ class DateHandler(FieldHandler):
 
     def get_bespoke_message(self, message_type):
         if (
-            'validation' in self.answer
-            and 'messages' in self.answer['validation']
-            and message_type in self.answer['validation']['messages']
+            'validation' in self.answer_schema
+            and 'messages' in self.answer_schema['validation']
+            and message_type in self.answer_schema['validation']['messages']
         ):
-            return self.answer['validation']['messages'][message_type]
+            return self.answer_schema['validation']['messages'][message_type]
 
         return None
 
@@ -120,7 +120,7 @@ class DateHandler(FieldHandler):
         :return: date value
         """
         value = None
-        referenced_date = self.answer[limit]
+        referenced_date = self.answer_schema[limit]
 
         if 'value' in referenced_date:
             if referenced_date['value'] == 'now':
@@ -168,11 +168,11 @@ class DateHandler(FieldHandler):
         date_references = {'minimum': None, 'maximum': None}
 
         for limit in date_references:
-            if limit in self.answer:
+            if limit in self.answer_schema:
                 date_references[limit] = self.get_referenced_date(limit)
 
-                if 'offset_by' in self.answer[limit]:
-                    offset = self.answer[limit]['offset_by']
+                if 'offset_by' in self.answer_schema[limit]:
+                    offset = self.answer_schema[limit]['offset_by']
                     date_references[limit] = DateHandler.transform_date_by_offset(
                         date_references[limit], offset
                     )
@@ -183,7 +183,7 @@ class DateHandler(FieldHandler):
             if date_references['minimum'] > date_references['maximum']:
                 raise Exception(
                     'The minimum offset date is greater than the maximum offset date for {}.'.format(
-                        self.answer['id']
+                        self.answer_schema['id']
                     )
                 )
 

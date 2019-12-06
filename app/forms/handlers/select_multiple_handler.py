@@ -9,6 +9,8 @@ class SelectMultipleHandler(FieldHandler):
         return CustomSelectMultipleField(
             label=self.label,
             description=self.guidance,
-            choices=self.build_choices_with_detail_answer_ids(self.answer['options']),
+            choices=self.build_choices_with_detail_answer_ids(
+                self.answer_schema['options']
+            ),
             validators=self.validators,
         )

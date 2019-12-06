@@ -1,7 +1,9 @@
 from decimal import Decimal
 
+from app.data_model.answer_store import AnswerStore
 from app.forms.custom_fields import CustomDecimalField, CustomIntegerField
 from app.forms.handlers.field_handler import FieldHandler
+from app.questionnaire.location import Location
 from app.validation.validators import NumberCheck, NumberRange, DecimalPlaces
 
 
@@ -12,15 +14,20 @@ class NumberHandler(FieldHandler):
 
     def __init__(
         self,
-        answer,
-        error_messages,
-        answer_store,
-        metadata,
-        location,
-        disable_validation=False,
+        answer_schema: dict,
+        error_messages: dict = None,
+        answer_store: AnswerStore = None,
+        metadata: dict = None,
+        location: Location = None,
+        disable_validation: bool = False,
     ):
         super().__init__(
-            answer, error_messages, answer_store, metadata, location, disable_validation
+            answer_schema,
+            error_messages,
+            answer_store,
+            metadata,
+            location,
+            disable_validation,
         )
         self.dependencies = self.get_number_field_dependencies()
 
@@ -37,7 +44,7 @@ class NumberHandler(FieldHandler):
     def get_field(self):
         field_type = (
             CustomDecimalField
-            if self.answer.get('decimal_places', 0) > 0
+            if self.answer_schema.get('decimal_places', 0) > 0
             else CustomIntegerField
         )
         return field_type(
@@ -45,26 +52,30 @@ class NumberHandler(FieldHandler):
         )
 
     def get_number_field_dependencies(self):
-        max_decimals = self.answer.get('decimal_places', 0)
+        max_decimals = self.answer_schema.get('decimal_places', 0)
 
         min_value = 0
 
-        if self.answer.get('min_value'):
+        if self.answer_schema.get('min_value'):
             min_value = self.get_schema_defined_limit(
-                self.answer['id'], self.answer.get('min_value')
+                self.answer_schema['id'], self.answer_schema.get('min_value')
             )
 
         max_value = self.MAX_NUMBER
 
-        if self.answer.get('max_value'):
+        if self.answer_schema.get('max_value'):
             max_value = self.get_schema_defined_limit(
-                self.answer['id'], self.answer.get('max_value')
+                self.answer_schema['id'], self.answer_schema.get('max_value')
             )
 
         return {
             'max_decimals': max_decimals,
-            'min_exclusive': self.answer.get('min_value', {}).get('exclusive', False),
-            'max_exclusive': self.answer.get('max_value', {}).get('exclusive', False),
+            'min_exclusive': self.answer_schema.get('min_value', {}).get(
+                'exclusive', False
+            ),
+            'max_exclusive': self.answer_schema.get('max_value', {}).get(
+                'exclusive', False
+            ),
             'min_value': min_value,
             'max_value': max_value,
         }
@@ -72,8 +83,11 @@ class NumberHandler(FieldHandler):
     def _get_number_field_validators(self, dependencies):
         answer_errors = self.error_messages.copy()
 
-        if 'validation' in self.answer and 'messages' in self.answer['validation']:
-            for error_key, error_message in self.answer['validation'][
+        if (
+            'validation' in self.answer_schema
+            and 'messages' in self.answer_schema['validation']
+        ):
+            for error_key, error_message in self.answer_schema['validation'][
                 'messages'
             ].items():
                 answer_errors[error_key] = error_message
@@ -88,7 +102,7 @@ class NumberHandler(FieldHandler):
                 maximum=dependencies['max_value'],
                 maximum_exclusive=dependencies['max_exclusive'],
                 messages=answer_errors,
-                currency=self.answer.get('currency'),
+                currency=self.answer_schema.get('currency'),
             ),
             DecimalPlaces(
                 max_decimals=dependencies['max_decimals'], messages=answer_errors
@@ -101,21 +115,21 @@ class NumberHandler(FieldHandler):
                 'decimal_places: {} > system maximum: {} for answer id: {}'.format(
                     dependencies['max_decimals'],
                     self.MAX_DECIMAL_PLACES,
-                    self.answer['id'],
+                    self.answer_schema['id'],
                 )
             )
 
         if dependencies['min_value'] < self.MIN_NUMBER:
             raise Exception(
                 'min_value: {} < system minimum: {} for answer id: {}'.format(
-                    dependencies['min_value'], self.MIN_NUMBER, self.answer['id']
+                    dependencies['min_value'], self.MIN_NUMBER, self.answer_schema['id']
                 )
             )
 
         if dependencies['max_value'] > self.MAX_NUMBER:
             raise Exception(
                 'max_value: {} > system maximum: {} for answer id: {}'.format(
-                    dependencies['max_value'], self.MAX_NUMBER, self.answer['id']
+                    dependencies['max_value'], self.MAX_NUMBER, self.answer_schema['id']
                 )
             )
 
@@ -124,7 +138,7 @@ class NumberHandler(FieldHandler):
                 'min_value: {} > max_value: {} for answer id: {}'.format(
                     dependencies['min_value'],
                     dependencies['max_value'],
-                    self.answer['id'],
+                    self.answer_schema['id'],
                 )
             )
 

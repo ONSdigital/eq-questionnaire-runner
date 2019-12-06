@@ -12,7 +12,7 @@ class DropdownHandler(FieldHandler):
             label=self.label,
             description=self.guidance,
             choices=[('', gettext('Select an answer'))]
-            + self.build_choices(self.answer['options']),
+            + self.build_choices(self.answer_schema['options']),
             default='',
             validators=self.validators,
         )
