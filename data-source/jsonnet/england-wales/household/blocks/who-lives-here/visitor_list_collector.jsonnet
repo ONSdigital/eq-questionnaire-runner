@@ -102,7 +102,7 @@ function(census_date) {
     type: 'ListAddQuestion',
     cancel_text: {
       text: 'Don’t need to add anyone else?',
-      action_text: 'Return to the previous page'
+      action_text: 'Return to the previous page',
     },
     question: {
       id: 'visitor-add-question',
