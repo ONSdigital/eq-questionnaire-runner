@@ -75,19 +75,19 @@ class ProgressStore:
             if section_progress.status in statuses
         }
 
-    def get_in_progress_and_completed_section_ids(
-        self, filter_by: Set[str] = None
+    def get_in_progress_and_completed_section_keys(
+        self, section_ids_to_filter_by: Set[str] = None
     ) -> List:
         statuses = {CompletionStatus.COMPLETED, CompletionStatus.IN_PROGRESS}
-        sections: Iterable = self.section_keys_by_status(statuses) or []
+        section_keys: Iterable = self.section_keys_by_status(statuses) or []
 
-        if filter_by is None:
-            return list(sections)
+        if section_ids_to_filter_by is None:
+            return list(section_keys)
 
         return [
-            t
-            for t in sections
-            if any(filter_element in t for filter_element in filter_by)
+            section_key
+            for section_key in section_keys
+            if any(section_id in section_key for section_id in section_ids_to_filter_by)
         ]
 
     def update_section_status(

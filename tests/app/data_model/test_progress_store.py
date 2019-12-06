@@ -523,6 +523,6 @@ def test_in_progress_and_completed_section_ids(test_input, expected):
     ]
 
     store = ProgressStore(completed)
-    section_keys = store.get_in_progress_and_completed_section_ids(test_input)
+    section_keys = store.get_in_progress_and_completed_section_keys(test_input)
 
     assert sorted(section_keys) == expected
