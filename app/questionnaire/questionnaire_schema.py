@@ -50,7 +50,7 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
     def _sections_associated_to_list_name(self, list_name: str) -> Set:
         sections = set()
         for block in self.get_blocks():
-            for when_rule in _get_nested_values_by_key(block, 'when'):
+            for when_rule in _get_values_for_key(block, 'when'):
                 for rule in when_rule:
                     if rule.get('list') == list_name:
                         sections.add(self.get_section_id_for_block_id(block['id']))
@@ -434,15 +434,15 @@ def get_nested_schema_objects(parent_object, list_key):
     return nested_objects
 
 
-def _get_nested_values_by_key(block, key):
+def _get_values_for_key(block, key):
     for k, v in block.items():
         try:
             if k == key:
                 yield v
             if isinstance(v, dict):
-                yield from _get_nested_values_by_key(v, key)
+                yield from _get_values_for_key(v, key)
             elif isinstance(v, list):
                 for d in v:
-                    yield from _get_nested_values_by_key(d, key)
+                    yield from _get_values_for_key(d, key)
         except AttributeError:
             continue
