@@ -1,11 +1,11 @@
 from decimal import Decimal
 
 from app.forms.custom_fields import CustomDecimalField, CustomIntegerField
-from app.forms.handlers.string_handler import StringHandler
+from app.forms.handlers.field_handler import FieldHandler
 from app.validation.validators import NumberCheck, NumberRange, DecimalPlaces
 
 
-class NumberHandler(StringHandler):
+class NumberHandler(FieldHandler):
     MAX_NUMBER = 9999999999
     MIN_NUMBER = -999999999
     MAX_DECIMAL_PLACES = 6

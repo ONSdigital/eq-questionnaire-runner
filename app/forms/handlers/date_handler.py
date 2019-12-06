@@ -4,7 +4,7 @@ from dateutil.relativedelta import relativedelta
 from werkzeug.utils import cached_property
 
 from app.forms.date_form import DateFormType, DateField
-from app.forms.handlers.string_handler import StringHandler
+from app.forms.handlers.field_handler import FieldHandler
 from app.questionnaire.rules import (
     get_answer_value,
     convert_to_datetime,
@@ -19,7 +19,7 @@ from app.validation.validators import (
 )
 
 
-class DateHandler(StringHandler):
+class DateHandler(FieldHandler):
     MANDATORY_MESSAGE = 'MANDATORY_RADIO'
     DATE_FIELD_MAP = {
         'Date': DateFormType.YearMonthDay,
