@@ -145,13 +145,13 @@ class NumberHandler(FieldHandler):
                 )
             )
 
-    def get_schema_defined_limit(self, answer_id, definition):
+    def get_schema_defined_limit(self, answer_id, definition) -> Union[int, Decimal]:
         if 'value' in definition:
             return definition['value']
 
         source_answer_id = definition.get('answer_id')
         answer = self.answer_store.get_answer(source_answer_id)
-        value = answer.value
+        value = answer.value if answer else None
 
         if not isinstance(value, int) and not isinstance(value, Decimal):
             raise Exception(
