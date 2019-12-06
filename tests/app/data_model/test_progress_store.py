@@ -488,7 +488,9 @@ def test_remove_progress_for_list_item_id():
         (None, [('s1', None), ('s2', None), ('s4', '123abc'), ('s5', '456def')]),
     ],
 )
-def test_in_progress_and_completed_section_ids(test_input, expected):
+def test_in_progress_and_completed_section_ids(
+    section_ids_to_filter_by, expected_section_keys
+):
     completed = [
         {
             'section_id': 's1',
@@ -523,6 +525,8 @@ def test_in_progress_and_completed_section_ids(test_input, expected):
     ]
 
     store = ProgressStore(completed)
-    section_keys = store.get_in_progress_and_completed_section_keys(test_input)
+    section_keys = store.get_in_progress_and_completed_section_keys(
+        section_ids_to_filter_by
+    )
 
-    assert sorted(section_keys) == expected
+    assert sorted(section_keys) == expected_section_keys
