@@ -177,6 +177,7 @@ def single_question_schema():
         'sections': [
             {
                 'id': 'section1',
+                'title': 'Section 1',
                 'groups': [
                     {
                         'id': 'group1',
@@ -188,11 +189,11 @@ def single_question_schema():
                                 'title': 'Block 1',
                                 'question': {
                                     'id': 'question1',
-                                    'title': 'Question 1, Yes',
+                                    'title': 'Question 1',
                                     'answers': [
                                         {
                                             'id': 'answer1',
-                                            'label': 'Answer 1 Variant 1',
+                                            'label': 'Answer 1',
                                             'default': 'test',
                                         }
                                     ],

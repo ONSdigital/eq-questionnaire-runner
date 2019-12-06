@@ -249,12 +249,11 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
             return all_questions
         return []
 
-    @staticmethod
-    def is_summary_section(section):
+    @classmethod
+    def is_summary_section(cls, section):
         for group in section['groups']:
-            if QuestionnaireSchema.is_summary_group(group):
+            if cls.is_summary_group(group):
                 return True
-
         return False
 
     @staticmethod
@@ -262,15 +261,13 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
         for block in group['blocks']:
             if block['type'] == 'Summary':
                 return True
-
         return False
 
-    @staticmethod
-    def is_confirmation_section(section):
+    @classmethod
+    def is_confirmation_section(cls, section):
         for group in section['groups']:
-            if QuestionnaireSchema.is_confirmation_group(group):
+            if cls.is_confirmation_group(group):
                 return True
-
         return False
 
     @staticmethod
