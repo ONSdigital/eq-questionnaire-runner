@@ -33,8 +33,6 @@ class TestQuestionnaireListChangeEvaluatesSections(IntegrationTestCase):
 
         self.post(action='save_continue')
         self.post(action='save_continue')
-        self.post(action='save_continue')
-        self.post(action='save_continue')
         self.post()
         self.assertEqualUrl('/questionnaire/')
 
