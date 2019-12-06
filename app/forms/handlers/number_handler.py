@@ -1,4 +1,7 @@
 from decimal import Decimal
+from typing import Union
+
+from wtforms import IntegerField, DecimalField
 
 from app.data_model.answer_store import AnswerStore
 from app.forms.custom_fields import CustomDecimalField, CustomIntegerField
@@ -41,7 +44,7 @@ class NumberHandler(FieldHandler):
             validate_with = self._get_number_field_validators(self.dependencies)
         return validate_with
 
-    def get_field(self):
+    def get_field(self) -> Union[DecimalField, IntegerField]:
         field_type = (
             CustomDecimalField
             if self.answer_schema.get('decimal_places', 0) > 0

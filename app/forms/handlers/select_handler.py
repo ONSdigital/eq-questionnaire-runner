@@ -20,7 +20,7 @@ class SelectHandler(FieldHandler):
     # not providing an answer and them selecting the 'None' option otherwise.
     # https://github.com/ONSdigital/eq-survey-runner/issues/1013
     # See related WTForms PR: https://github.com/wtforms/wtforms/pull/288
-    def get_field(self):
+    def get_field(self) -> CustomSelectField:
         return CustomSelectField(
             label=self.label,
             description=self.guidance,

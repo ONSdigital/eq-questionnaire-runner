@@ -7,7 +7,7 @@ from app.forms.handlers.field_handler import FieldHandler
 class DropdownHandler(FieldHandler):
     MANDATORY_MESSAGE = 'MANDATORY_DROPDOWN'
 
-    def get_field(self):
+    def get_field(self) -> SelectField:
         return SelectField(
             label=self.label,
             description=self.guidance,

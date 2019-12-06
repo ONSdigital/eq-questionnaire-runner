@@ -37,7 +37,7 @@ class TextAreaHandler(FieldHandler):
 
         return validate_with
 
-    def get_field(self):
+    def get_field(self) -> MaxTextAreaField:
         return MaxTextAreaField(
             label=self.label,
             description=self.guidance,

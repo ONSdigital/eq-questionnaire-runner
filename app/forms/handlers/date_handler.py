@@ -58,7 +58,7 @@ class DateHandler(FieldHandler):
 
         return validate_with
 
-    def get_field(self):
+    def get_field(self) -> DateField:
         return DateField(
             self.DATE_FIELD_MAP[self.answer_type],
             self.validators,
