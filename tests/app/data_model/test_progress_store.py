@@ -476,7 +476,7 @@ def test_remove_progress_for_list_item_id():
 
 
 @pytest.mark.parametrize(
-    'test_input, expected',
+    'section_ids_to_filter_by, expected_section_keys',
     [
         # No repeating sections
         ({'s1', 's2'}, [('s1', None), ('s2', None)]),
