@@ -52,15 +52,15 @@ class ListAction(Question):
 
     def evaluate_and_update_section_status(self):
         list_name = self.parent_block['for_list']
-        section_ids_to_filter_by = self._schema.get_sections_dependent_on_list(
+        section_ids_to_filter_by = self._schema.get_section_ids_dependent_on_list(
             list_name
         )
 
-        sections_to_evaluate = self.questionnaire_store_updater.get_in_progress_and_completed_section_ids(
+        section_ids_to_evaluate = self.questionnaire_store_updater.get_in_progress_and_completed_section_ids(
             section_ids_to_filter_by
         )
 
-        for section_id, list_item_id in sections_to_evaluate:
+        for section_id, list_item_id in section_ids_to_evaluate:
             path = self.router.section_routing_path(section_id, list_item_id)
             self.questionnaire_store_updater.update_section_status(
                 is_complete=self.router.is_path_complete(path),

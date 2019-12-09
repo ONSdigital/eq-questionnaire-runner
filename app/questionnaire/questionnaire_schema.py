@@ -39,22 +39,22 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
     def get_section(self, section_id: str):
         return self._sections_by_id.get(section_id)
 
-    def get_sections_dependent_on_list(self, list_name: str) -> Set:
+    def get_section_ids_dependent_on_list(self, list_name: str) -> Set:
         try:
             return self._list_name_to_section_map[list_name]
         except KeyError:
-            sections = self._sections_associated_to_list_name(list_name)
-            self._list_name_to_section_map[list_name] = sections
-            return sections
+            section_ids = self._section_ids_associated_to_list_name(list_name)
+            self._list_name_to_section_map[list_name] = section_ids
+            return section_ids
 
-    def _sections_associated_to_list_name(self, list_name: str) -> Set:
-        sections = set()
+    def _section_ids_associated_to_list_name(self, list_name: str) -> Set:
+        section_ids = set()
         for block in self.get_blocks():
             for when_rule in _get_values_for_key(block, 'when'):
                 for rule in when_rule:
                     if rule.get('list') == list_name:
-                        sections.add(self.get_section_id_for_block_id(block['id']))
-        return sections
+                        section_ids.add(self.get_section_id_for_block_id(block['id']))
+        return section_ids
 
     @staticmethod
     def get_blocks_for_section(section):
