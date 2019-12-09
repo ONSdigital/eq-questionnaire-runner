@@ -314,7 +314,7 @@ def test_get_relationship_collectors(mock_relationship_collector_schema):
 
     assert len(collectors) == 2
     assert collectors[0]['id'] == 'relationships'
-    assert collectors[1]['id'] == 'relationships-that-dont-point-to-list-collector'
+    assert collectors[1]['id'] == 'not-people-relationship-collector'
 
 
 def test_get_relationship_collectors_by_list_name(mock_relationship_collector_schema):

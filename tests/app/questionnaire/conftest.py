@@ -516,7 +516,7 @@ def mock_relationship_collector_schema():
                             },
                             {
                                 'type': 'RelationshipCollector',
-                                'id': 'relationships-that-dont-point-to-list-collector',
+                                'id': 'not-people-relationship-collector',
                                 'for_list': 'not-people',
                                 'question': {},
                             },
