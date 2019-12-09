@@ -308,30 +308,30 @@ def test_get_default_answer_single_question(single_question_schema):
     assert answer.value == 'test'
 
 
-def test_get_relationship_collectors(relationship_collector_schema):
-    schema = QuestionnaireSchema(relationship_collector_schema)
-    answer = schema.get_relationship_collectors()
+def test_get_relationship_collectors(mock_relationship_collector_schema):
+    schema = QuestionnaireSchema(mock_relationship_collector_schema)
+    collectors = schema.get_relationship_collectors()
 
-    assert len(answer) == 2
-    assert answer[0]['id'] == 'relationships'
-    assert answer[1]['id'] == 'relationships-that-dont-point-to-list-collector'
+    assert len(collectors) == 2
+    assert collectors[0]['id'] == 'relationships'
+    assert collectors[1]['id'] == 'relationships-that-dont-point-to-list-collector'
 
 
-def test_get_relationship_collectors_by_list_name(relationship_collector_schema):
-    schema = QuestionnaireSchema(relationship_collector_schema)
-    answer = schema.get_relationship_collectors_by_list_name('people')
+def test_get_relationship_collectors_by_list_name(mock_relationship_collector_schema):
+    schema = QuestionnaireSchema(mock_relationship_collector_schema)
+    collectors = schema.get_relationship_collectors_by_list_name('people')
 
-    assert len(answer) == 1
-    assert answer[0]['id'] == 'relationships'
+    assert len(collectors) == 1
+    assert collectors[0]['id'] == 'relationships'
 
 
 def test_get_relationship_collectors_by_list_name_no_collectors(
-    relationship_collector_schema
+    mock_relationship_collector_schema
 ):
-    schema = QuestionnaireSchema(relationship_collector_schema)
-    answer = schema.get_relationship_collectors_by_list_name('not-a-list')
+    schema = QuestionnaireSchema(mock_relationship_collector_schema)
+    collectors = schema.get_relationship_collectors_by_list_name('not-a-list')
 
-    assert not answer
+    assert not collectors
 
 
 def test_get_list_item_id_for_answer_id_without_list_item_id(
