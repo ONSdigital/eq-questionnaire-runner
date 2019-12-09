@@ -25,7 +25,7 @@ class QuestionPage extends BasePage {
 
   previous() { return 'a[id="top-previous"]'; }
 
-  cancelAndReturn() { return 'p[id="cancel-and-return"]'; }
+  cancelAndReturn() { return 'a[id="cancel-and-return"]'; }
 
   displayedName() { return '[data-qa="block-title"]'; }
 
