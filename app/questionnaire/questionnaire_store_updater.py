@@ -202,7 +202,7 @@ class QuestionnaireStoreUpdater:
         )
         self._progress_store.update_section_status(status, section_id, list_item_id)
 
-    def get_in_progress_and_completed_section_ids(
+    def get_in_progress_and_completed_section_keys(
         self, section_ids_to_filter_by: Set[str] = None
     ):
         return self._progress_store.get_in_progress_and_completed_section_keys(

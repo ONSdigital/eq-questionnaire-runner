@@ -1,4 +1,5 @@
 from app.questionnaire.questionnaire_schema import QuestionnaireSchema
+from app.questionnaire.questionnaire_schema import _get_values_for_key
 from tests.app.app_context_test_case import AppContextTestCase
 
 
@@ -764,3 +765,21 @@ def test_get_answer_within_list_collector_with_list_item_id(
     )
 
     assert list_item_id == expected_list_item_id
+
+
+def test_get_values_for_key_ignores_variants():
+    block = {'question_variants': [{'when': 'test'}]}
+    result = list(_get_values_for_key(block, 'when', {'question_variants'}))
+    assert result == []
+
+
+def test_get_values_for_key_ignores_multiple_keys():
+    block = {
+        'question_variants': [{'when': 'test'}],
+        'content_variants': [{'when': 'test'}],
+    }
+    result = list(
+        _get_values_for_key(block, 'when', {'question_variants', 'content_variants'})
+    )
+    assert result == []
+

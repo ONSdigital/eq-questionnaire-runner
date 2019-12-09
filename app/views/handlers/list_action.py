@@ -56,7 +56,7 @@ class ListAction(Question):
             list_name
         )
 
-        section_ids_to_evaluate = self.questionnaire_store_updater.get_in_progress_and_completed_section_ids(
+        section_ids_to_evaluate = self.questionnaire_store_updater.get_in_progress_and_completed_section_keys(
             section_ids_to_filter_by
         )
 
