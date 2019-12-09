@@ -569,4 +569,3 @@ def test_section_keys():
     assert sorted(section_keys) == sorted(
         [('s1', None), ('s2', None), ('s3', 'abc123')]
     )
-
