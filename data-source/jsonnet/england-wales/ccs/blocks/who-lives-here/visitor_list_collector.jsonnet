@@ -83,10 +83,7 @@ function(census_date) {
   add_block: {
     id: 'add-visitor',
     type: 'ListAddQuestion',
-    cancel_text: {
-      text: 'Don’t need to add anyone else?',
-      action_text: 'Return to the previous page',
-    },
+    cancel_text: 'Don’t need to add anyone else?',
     question: {
       id: 'visitor-add-question',
       type: 'General',

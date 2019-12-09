@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2019-12-06 09:30+0000\n"
+"POT-Creation-Date: 2019-12-09 09:25+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -750,9 +750,6 @@ msgid ""
 msgstr ""
 
 msgid "Do you usually live at {household_address}?"
-msgstr ""
-
-msgid "Don’t need to add anyone else?"
 msgstr ""
 
 msgid "Who do you need to add to {household_address}?"
