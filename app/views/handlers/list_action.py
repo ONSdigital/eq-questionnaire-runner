@@ -56,11 +56,11 @@ class ListAction(Question):
             list_name
         )
 
-        section_ids_to_evaluate = self.questionnaire_store_updater.get_in_progress_and_completed_section_keys(
+        section_keys_to_evaluate = self.questionnaire_store_updater.get_in_progress_and_completed_section_keys(
             section_ids_to_filter_by
         )
 
-        for section_id, list_item_id in section_ids_to_evaluate:
+        for section_id, list_item_id in section_keys_to_evaluate:
             path = self.router.section_routing_path(section_id, list_item_id)
             self.questionnaire_store_updater.update_section_status(
                 is_complete=self.router.is_path_complete(path),
