@@ -782,4 +782,3 @@ def test_get_values_for_key_ignores_multiple_keys():
         _get_values_for_key(block, 'when', {'question_variants', 'content_variants'})
     )
     assert result == []
-
