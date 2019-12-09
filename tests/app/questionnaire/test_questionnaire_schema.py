@@ -150,10 +150,7 @@ def test_is_summary():
             {
                 'id': 'section-1',
                 'groups': [
-                    {
-                        'id': 'group-1',
-                        'blocks': [{'id': 'block-1', 'type': 'Summary'}],
-                    }
+                    {'id': 'group-1', 'blocks': [{'id': 'block-1', 'type': 'Summary'}]}
                 ],
             }
         ]
