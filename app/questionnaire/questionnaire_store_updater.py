@@ -1,6 +1,6 @@
 from itertools import combinations
 
-from typing import List, Optional, Set, Tuple, Union
+from typing import Iterable, List, Optional, Tuple, Union
 
 from app.data_model.answer_store import Answer
 from app.data_model.relationship_store import Relationship, RelationshipStore
@@ -202,12 +202,10 @@ class QuestionnaireStoreUpdater:
         )
         self._progress_store.update_section_status(status, section_id, list_item_id)
 
-    def get_in_progress_and_completed_section_keys(
-        self, section_ids_to_filter_by: Set[str] = None
+    def section_keys(
+        self, section_ids: Iterable[str] = None, statuses: Iterable[str] = None
     ):
-        return self._progress_store.get_in_progress_and_completed_section_keys(
-            section_ids_to_filter_by
-        )
+        return self._progress_store.section_keys(section_ids, statuses)
 
     def _update_questionnaire_store_with_form_data(self, form_data):
         answer_ids_for_question = self._schema.get_answer_ids_for_question(

@@ -1,6 +1,7 @@
 from app.views.handlers.question import Question
 from app.views.contexts.question import build_question_context
 from app.questionnaire.location import Location
+from app.data_model.progress_store import CompletionStatus
 
 
 class ListAction(Question):
@@ -52,12 +53,10 @@ class ListAction(Question):
 
     def evaluate_and_update_section_status(self):
         list_name = self.parent_block['for_list']
-        section_ids_to_filter_by = self._schema.get_section_ids_dependent_on_list(
-            list_name
-        )
+        section_ids = self._schema.get_section_ids_dependent_on_list(list_name)
 
-        section_keys_to_evaluate = self.questionnaire_store_updater.get_in_progress_and_completed_section_keys(
-            section_ids_to_filter_by
+        section_keys_to_evaluate = self.questionnaire_store_updater.section_keys(
+            section_ids, {CompletionStatus.COMPLETED, CompletionStatus.IN_PROGRESS}
         )
 
         for section_id, list_item_id in section_keys_to_evaluate:

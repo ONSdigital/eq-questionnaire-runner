@@ -1,13 +1,18 @@
-from typing import Iterable, List, Set, Mapping, MutableMapping, Optional
+from dataclasses import astuple, dataclass
+from typing import Iterable, List, Mapping, MutableMapping, Optional
 
 from app.data_model.progress import Progress
 from app.questionnaire.location import Location
 
 
+@dataclass
 class CompletionStatus:
-    COMPLETED = 'COMPLETED'
-    IN_PROGRESS = 'IN_PROGRESS'
-    NOT_STARTED = 'NOT_STARTED'
+    COMPLETED: str = 'COMPLETED'
+    IN_PROGRESS: str = 'IN_PROGRESS'
+    NOT_STARTED: str = 'NOT_STARTED'
+
+    def __iter__(self):
+        return iter(astuple(self))
 
 
 class ProgressStore:
@@ -64,30 +69,29 @@ class ProgressStore:
     def is_section_complete(
         self, section_id: str, list_item_id: Optional[str] = None
     ) -> bool:
-        return (section_id, list_item_id) in self.section_keys_by_status(
-            {CompletionStatus.COMPLETED}
+        return (section_id, list_item_id) in self.section_keys(
+            statuses={CompletionStatus.COMPLETED}
         )
 
-    def section_keys_by_status(self, statuses: Iterable[str]) -> Set[str]:
-        return {
+    def section_keys(
+        self, section_ids: Iterable[str] = None, statuses: Iterable[str] = None
+    ):
+        if not statuses:
+            statuses = {*CompletionStatus()}
+
+        section_keys = {
             section_key
             for section_key, section_progress in self._progress.items()
             if section_progress.status in statuses
         }
 
-    def get_in_progress_and_completed_section_keys(
-        self, section_ids_to_filter_by: Set[str] = None
-    ) -> List:
-        statuses = {CompletionStatus.COMPLETED, CompletionStatus.IN_PROGRESS}
-        section_keys: Iterable = self.section_keys_by_status(statuses) or []
-
-        if section_ids_to_filter_by is None:
+        if section_ids is None:
             return list(section_keys)
 
         return [
             section_key
             for section_key in section_keys
-            if any(section_id in section_key for section_id in section_ids_to_filter_by)
+            if any(section_id in section_key for section_id in section_ids)
         ]
 
     def update_section_status(
