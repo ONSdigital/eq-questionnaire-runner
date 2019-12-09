@@ -50,7 +50,9 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
     def _section_ids_associated_to_list_name(self, list_name: str) -> Set:
         section_ids = set()
         for block in self.get_blocks():
-            for when_rule in _get_values_for_key(block, 'when'):
+            for when_rule in _get_values_for_key(
+                block, 'when', ignore_keys={'question_variant', 'content_variant'}
+            ):
                 for rule in when_rule:
                     if rule.get('list') == list_name:
                         section_ids.add(self.get_section_id_for_block_id(block['id']))
@@ -434,9 +436,13 @@ def get_nested_schema_objects(parent_object, list_key):
     return nested_objects
 
 
-def _get_values_for_key(block, key):
+def _get_values_for_key(block, key, ignore_keys=None):
+    if not ignore_keys:
+        ignore_keys = []
     for k, v in block.items():
         try:
+            if k in ignore_keys:
+                continue
             if k == key:
                 yield v
             if isinstance(v, dict):
