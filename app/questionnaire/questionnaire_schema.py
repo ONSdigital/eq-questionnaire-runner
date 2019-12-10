@@ -42,9 +42,9 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
     def get_blocks_for_section(section):
         return (block for group in section['groups'] for block in group['blocks'])
 
-    @staticmethod
-    def get_driving_question_for_list(section, list_name):
-        for block in QuestionnaireSchema.get_blocks_for_section(section):
+    @classmethod
+    def get_driving_question_for_list(cls, section, list_name):
+        for block in cls.get_blocks_for_section(section):
             if (
                 block['type'] == 'ListCollectorDrivingQuestion'
                 and list_name == block['for_list']
@@ -171,7 +171,7 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
 
     def group_has_questions(self, group_id):
         for block in self.get_group(group_id)['blocks']:
-            if QuestionnaireSchema.is_question_block_type(block['type']):
+            if self.is_question_block_type(block['type']):
                 return True
         return False
 
