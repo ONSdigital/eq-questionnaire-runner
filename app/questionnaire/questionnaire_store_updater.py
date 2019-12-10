@@ -202,11 +202,10 @@ class QuestionnaireStoreUpdater:
         )
         self._progress_store.update_section_status(status, section_id, list_item_id)
 
-    def section_keys(
-        self, section_ids: Iterable[str] = None, statuses: Iterable[str] = None
-    ):
+    def started_section_keys(self, section_ids: Iterable[str] = None):
         return self._progress_store.section_keys(
-            statuses=statuses, section_ids=section_ids
+            statuses={CompletionStatus.COMPLETED, CompletionStatus.IN_PROGRESS},
+            section_ids=section_ids,
         )
 
     def _update_questionnaire_store_with_form_data(self, form_data):

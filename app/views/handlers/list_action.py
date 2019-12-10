@@ -55,9 +55,8 @@ class ListAction(Question):
         list_name = self.parent_block['for_list']
         section_ids = self._schema.get_section_ids_dependent_on_list(list_name)
 
-        section_keys_to_evaluate = self.questionnaire_store_updater.section_keys(
-            statuses={CompletionStatus.COMPLETED, CompletionStatus.IN_PROGRESS},
-            section_ids=section_ids,
+        section_keys_to_evaluate = self.questionnaire_store_updater.started_section_keys(
+            section_ids=section_ids
         )
 
         for section_id, list_item_id in section_keys_to_evaluate:
