@@ -205,7 +205,9 @@ class QuestionnaireStoreUpdater:
     def section_keys(
         self, section_ids: Iterable[str] = None, statuses: Iterable[str] = None
     ):
-        return self._progress_store.section_keys(section_ids, statuses)
+        return self._progress_store.section_keys(
+            statuses=statuses, section_ids=section_ids
+        )
 
     def _update_questionnaire_store_with_form_data(self, form_data):
         answer_ids_for_question = self._schema.get_answer_ids_for_question(
