@@ -1,7 +1,6 @@
 from app.views.handlers.question import Question
 from app.views.contexts.question import build_question_context
 from app.questionnaire.location import Location
-from app.data_model.progress_store import CompletionStatus
 
 
 class ListAction(Question):

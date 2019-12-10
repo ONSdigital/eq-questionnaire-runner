@@ -79,14 +79,14 @@ class ProgressStore:
         if not statuses:
             statuses = {*CompletionStatus()}
 
-        section_keys = {
+        section_keys = [
             section_key
             for section_key, section_progress in self._progress.items()
             if section_progress.status in statuses
-        }
+        ]
 
         if section_ids is None:
-            return list(section_keys)
+            return section_keys
 
         return [
             section_key

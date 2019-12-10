@@ -168,15 +168,6 @@ class Router:
 
         return routing_path[0]
 
-    def get_last_complete_location_for_section(
-        self, routing_path, section_id, list_item_id=None
-    ):
-        section_key = (section_id, list_item_id)
-        if section_key in self._progress_store:
-            for location in routing_path[::-1]:
-                if self._is_location_complete(location):
-                    return location
-
     def is_survey_complete(self):
         first_incomplete_section_key = self._get_first_incomplete_section_key()
 

@@ -437,8 +437,7 @@ def get_nested_schema_objects(parent_object, list_key):
 
 
 def _get_values_for_key(block, key, ignore_keys=None):
-    if not ignore_keys:
-        ignore_keys = []
+    ignore_keys = ignore_keys or []
     for k, v in block.items():
         try:
             if k in ignore_keys:
