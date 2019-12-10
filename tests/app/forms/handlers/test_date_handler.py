@@ -302,7 +302,7 @@ def test_greater_minimum_date_than_maximum_date(app):
     handler = DateHandler(answer)
 
     with pytest.raises(Exception) as ite:
-        handler.get_date_limit()
+        handler.get_date_limit('minimum')
 
         assert (
             str(ite.exception)

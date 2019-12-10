@@ -1,4 +1,3 @@
-from decimal import Decimal
 from typing import Union
 
 from wtforms import IntegerField, DecimalField
@@ -109,7 +108,7 @@ class NumberHandler(FieldHandler):
             ),
         ]
 
-    def get_value_from_schema(self, definition) -> Union[int, Decimal]:
+    def get_value_from_schema(self, definition):
         if 'value' in definition:
             return definition['value']
 
