@@ -15,7 +15,13 @@ def get_item_title(list_block_summary, list_item_id, is_primary, placeholder_ren
 
 
 def build_list_items_summary_context(
-    list_collector_block, schema, answer_store, list_store, language, return_to=None
+    list_collector_block,
+    schema,
+    answer_store,
+    list_store,
+    language,
+    metadata,
+    return_to=None,
 ):
     list_name = list_collector_block['for_list']
     list_item_ids = list_store[list_name].items
@@ -23,7 +29,7 @@ def build_list_items_summary_context(
     primary_person = list_store[list_name].primary_person
 
     placeholder_renderer = PlaceholderRenderer(
-        language, schema=schema, answer_store=answer_store
+        language, schema=schema, answer_store=answer_store, metadata=metadata
     )
 
     list_items = []
@@ -67,13 +73,18 @@ def build_list_items_summary_context(
 
 
 def build_list_collector_context(
-    list_collector_block, schema, answer_store, list_store, language, form
+    list_collector_block, schema, answer_store, list_store, language, form, metadata
 ):
     question_context = build_question_context(list_collector_block, form)
     list_collector_context = {
         'list': {
             'list_items': build_list_items_summary_context(
-                list_collector_block, schema, answer_store, list_store, language
+                list_collector_block,
+                schema,
+                answer_store,
+                list_store,
+                language,
+                metadata,
             ),
             'editable': True,
         }
