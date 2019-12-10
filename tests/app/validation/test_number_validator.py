@@ -2,11 +2,11 @@ import unittest
 from unittest.mock import Mock, patch
 from wtforms.validators import StopValidation, ValidationError
 
-from app.forms.custom_fields import CustomDecimalField
-from app.forms.handlers.number_handler import NumberHandler
+from app.forms.fields.custom_decimal_field import CustomDecimalField
+from app.forms.field_handlers.number_handler import NumberHandler
 from app.validation.error_messages import error_messages
 from app.validation.validators import NumberCheck, DecimalPlaces
-from app.forms.fields import get_field
+from app.forms.field_factory import get_field
 from app.data_model.answer_store import AnswerStore
 
 

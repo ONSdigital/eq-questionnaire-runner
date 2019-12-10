@@ -4,13 +4,15 @@ from typing import Union
 from wtforms import IntegerField, DecimalField
 
 from app.data_model.answer_store import AnswerStore
-from app.forms.custom_fields import CustomDecimalField, CustomIntegerField
-from app.forms.handlers.field_handler import FieldHandler
+from app.forms.fields.custom_decimal_field import CustomDecimalField
+from app.forms.fields.custom_integer_field import CustomIntegerField
+from app.forms.field_handlers.field_handler import FieldHandler
 from app.questionnaire.location import Location
 from app.validation.validators import NumberCheck, NumberRange, DecimalPlaces
 
 
 class NumberHandler(FieldHandler):
+    MANDATORY_MESSAGE = 'MANDATORY_TEXTFIELD'
     MAX_NUMBER = 9999999999
     MIN_NUMBER = -999999999
     MAX_DECIMAL_PLACES = 6
@@ -39,9 +41,10 @@ class NumberHandler(FieldHandler):
         validate_with = []
 
         if self.disable_validation is False:
-            self.check_number_field_dependencies(self.dependencies)
-
-            validate_with = self._get_number_field_validators(self.dependencies)
+            parent_validators = super().validators
+            validate_with = parent_validators + self._get_number_field_validators(
+                self.dependencies
+            )
         return validate_with
 
     def get_field(self) -> Union[DecimalField, IntegerField]:
@@ -60,16 +63,12 @@ class NumberHandler(FieldHandler):
         min_value = 0
 
         if self.answer_schema.get('min_value'):
-            min_value = self.get_schema_defined_limit(
-                self.answer_schema['id'], self.answer_schema.get('min_value')
-            )
+            min_value = self.get_value_from_schema(self.answer_schema.get('min_value'))
 
         max_value = self.MAX_NUMBER
 
         if self.answer_schema.get('max_value'):
-            max_value = self.get_schema_defined_limit(
-                self.answer_schema['id'], self.answer_schema.get('max_value')
-            )
+            max_value = self.get_value_from_schema(self.answer_schema.get('max_value'))
 
         return {
             'max_decimals': max_decimals,
@@ -95,9 +94,7 @@ class NumberHandler(FieldHandler):
             ].items():
                 answer_errors[error_key] = error_message
 
-        mandatory_or_optional = self.get_mandatory_validator('MANDATORY_NUMBER')
-
-        return mandatory_or_optional + [
+        return [
             NumberCheck(answer_errors['INVALID_NUMBER']),
             NumberRange(
                 minimum=dependencies['min_value'],
@@ -112,52 +109,11 @@ class NumberHandler(FieldHandler):
             ),
         ]
 
-    def check_number_field_dependencies(self, dependencies):
-        if dependencies['max_decimals'] > self.MAX_DECIMAL_PLACES:
-            raise Exception(
-                'decimal_places: {} > system maximum: {} for answer id: {}'.format(
-                    dependencies['max_decimals'],
-                    self.MAX_DECIMAL_PLACES,
-                    self.answer_schema['id'],
-                )
-            )
-
-        if dependencies['min_value'] < self.MIN_NUMBER:
-            raise Exception(
-                'min_value: {} < system minimum: {} for answer id: {}'.format(
-                    dependencies['min_value'], self.MIN_NUMBER, self.answer_schema['id']
-                )
-            )
-
-        if dependencies['max_value'] > self.MAX_NUMBER:
-            raise Exception(
-                'max_value: {} > system maximum: {} for answer id: {}'.format(
-                    dependencies['max_value'], self.MAX_NUMBER, self.answer_schema['id']
-                )
-            )
-
-        if dependencies['min_value'] > dependencies['max_value']:
-            raise Exception(
-                'min_value: {} > max_value: {} for answer id: {}'.format(
-                    dependencies['min_value'],
-                    dependencies['max_value'],
-                    self.answer_schema['id'],
-                )
-            )
-
-    def get_schema_defined_limit(self, answer_id, definition) -> Union[int, Decimal]:
+    def get_value_from_schema(self, definition) -> Union[int, Decimal]:
         if 'value' in definition:
             return definition['value']
 
         source_answer_id = definition.get('answer_id')
         answer = self.answer_store.get_answer(source_answer_id)
-        value = answer.value if answer else None
 
-        if not isinstance(value, int) and not isinstance(value, Decimal):
-            raise Exception(
-                'answer: {} value: {} for answer id: {} is not a valid number'.format(
-                    source_answer_id, value, answer_id
-                )
-            )
-
-        return value
+        return answer.value if answer else None

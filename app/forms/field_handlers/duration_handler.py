@@ -1,7 +1,7 @@
 from wtforms import FormField
 
 from app.forms.duration_form import get_duration_form
-from app.forms.handlers.field_handler import FieldHandler
+from app.forms.field_handlers.field_handler import FieldHandler
 
 
 class DurationHandler(FieldHandler):

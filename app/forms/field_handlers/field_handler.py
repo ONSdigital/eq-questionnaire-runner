@@ -30,7 +30,7 @@ class FieldHandler(ABC):
     @cached_property
     def validators(self):
         if not self.disable_validation:
-            return self.get_mandatory_validator(self.MANDATORY_MESSAGE)
+            return self.get_mandatory_validator()
         return []
 
     @cached_property
@@ -45,42 +45,26 @@ class FieldHandler(ABC):
     def guidance(self):
         return self.answer_schema.get('guidance', '')
 
-    def get_mandatory_validator(self, mandatory_message_key: str):
+    def get_validation_message(self, message_key):
+        message = self.error_messages[message_key]
+
+        if (
+            'validation' in self.answer_schema
+            and 'messages' in self.answer_schema['validation']
+            and message_key in self.answer_schema['validation']['messages']
+        ):
+            message = self.answer_schema['validation']['messages'][message_key]
+        return message
+
+    def get_mandatory_validator(self):
         validate_with = validators.Optional()
 
         if self.answer_schema['mandatory'] is True:
-            mandatory_message = self.error_messages[mandatory_message_key]
-
-            if (
-                'validation' in self.answer_schema
-                and 'messages' in self.answer_schema['validation']
-                and mandatory_message_key
-                in self.answer_schema['validation']['messages']
-            ):
-                mandatory_message = self.answer_schema['validation']['messages'][
-                    mandatory_message_key
-                ]
+            mandatory_message = self.get_validation_message(self.MANDATORY_MESSAGE)
 
             validate_with = ResponseRequired(message=mandatory_message)
 
         return [validate_with]
-
-    @staticmethod
-    def build_choices(options: dict):
-        choices = []
-        for option in options:
-            choices.append((option['value'], option['label']))
-        return choices
-
-    @staticmethod
-    def build_choices_with_detail_answer_ids(options: dict):
-        choices = []
-        for option in options:
-            detail_answer_id = (
-                option['detail_answer']['id'] if option.get('detail_answer') else None
-            )
-            choices.append((option['value'], option['label'], detail_answer_id))
-        return choices
 
     @abstractmethod
     def get_field(self) -> Field:

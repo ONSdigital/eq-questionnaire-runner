@@ -1,16 +1,15 @@
 from wtforms import StringField, FormField, SelectField
 
 from app.data_model.answer_store import AnswerStore
-from app.forms.custom_fields import (
-    MaxTextAreaField,
-    CustomSelectMultipleField,
-    CustomSelectField,
-    CustomIntegerField,
-    CustomDecimalField,
-)
+from app.forms.fields.max_text_area_field import MaxTextAreaField
+from app.forms.fields.custom_select_multiple_field import CustomSelectMultipleField
+from app.forms.fields.custom_select_field import CustomSelectField
+from app.forms.fields.custom_integer_field import CustomIntegerField
+from app.forms.fields.custom_decimal_field import CustomDecimalField
+
 from app.forms.date_form import DateField
-from app.forms.fields import get_field
-from app.forms.handlers.select_handler import SelectHandler
+from app.forms.field_factory import get_field
+from app.forms.field_handlers.select_handler import SelectHandler
 from app.validation.error_messages import error_messages
 from tests.app.app_context_test_case import AppContextTestCase
 

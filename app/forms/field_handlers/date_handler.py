@@ -4,7 +4,7 @@ from dateutil.relativedelta import relativedelta
 from werkzeug.utils import cached_property
 
 from app.forms.date_form import DateFormType, DateField
-from app.forms.handlers.field_handler import FieldHandler
+from app.forms.field_handlers.field_handler import FieldHandler
 from app.questionnaire.rules import (
     get_answer_value,
     convert_to_datetime,
@@ -20,11 +20,16 @@ from app.validation.validators import (
 
 
 class DateHandler(FieldHandler):
-    MANDATORY_MESSAGE = 'MANDATORY_RADIO'
+    MANDATORY_MESSAGE = 'MANDATORY_DATE'
     DATE_FIELD_MAP = {
         'Date': DateFormType.YearMonthDay,
         'MonthYearDate': DateFormType.YearMonth,
         'YearDate': DateFormType.Year,
+    }
+    DATE_FORMAT_MAP = {
+        DateFormType.YearMonthDay: 'yyyy-mm-dd',
+        DateFormType.YearMonth: 'yyyy-mm',
+        DateFormType.Year: 'yyyy',
     }
 
     @cached_property
@@ -33,28 +38,23 @@ class DateHandler(FieldHandler):
 
     @cached_property
     def validators(self):
-        minimum_date, maximum_date = self.get_date_limits()
-
         validate_with = [OptionalForm()]
 
         if self.answer_schema['mandatory'] is True:
-            validate_with = self.validate_mandatory_date()
+            validate_with = [
+                DateRequired(message=self.get_validation_message('MANDATORY_DATE'))
+            ]
 
-        error_message = self.get_bespoke_message('INVALID_DATE')
+        error_message = self.get_validation_message('INVALID_DATE')
 
         validate_with.append(DateCheck(error_message))
 
+        minimum_date = self.get_date_limit('minimum')
+        maximum_date = self.get_date_limit('maximum')
+
         if minimum_date or maximum_date:
-            messages = None
-            if 'validation' in self.answer_schema:
-                messages = self.answer_schema['validation'].get('messages')
-            min_max_validation = self.validate_min_max_date(
-                minimum_date,
-                maximum_date,
-                messages,
-                self.form_type.value['date_format'],
-            )
-            validate_with.append(min_max_validation)
+            min_max_validator = self.get_min_max_validator(minimum_date, maximum_date)
+            validate_with.append(min_max_validator)
 
         return validate_with
 
@@ -66,28 +66,11 @@ class DateHandler(FieldHandler):
             description=self.guidance,
         )
 
-    def validate_mandatory_date(self):
-        error_message = (
-            self.get_bespoke_message('MANDATORY_DATE')
-            or self.error_messages['MANDATORY_DATE']
-        )
-
-        validate_with = [DateRequired(message=error_message)]
-        return validate_with
-
-    def get_bespoke_message(self, message_type):
-        if (
-            'validation' in self.answer_schema
-            and 'messages' in self.answer_schema['validation']
-            and message_type in self.answer_schema['validation']['messages']
-        ):
-            return self.answer_schema['validation']['messages'][message_type]
-
-        return None
-
-    @staticmethod
-    def validate_min_max_date(minimum_date, maximum_date, messages, date_format):
+    def get_min_max_validator(self, minimum_date, maximum_date):
+        messages = self.answer_schema.get('validation', {}).get('messages')
+        date_format = self.DATE_FORMAT_MAP[self.form_type]
         display_format = 'd MMMM yyyy'
+
         if date_format == 'yyyy-mm':
             display_format = 'MMMM yyyy'
             minimum_date = (
@@ -158,33 +141,20 @@ class DateHandler(FieldHandler):
 
         return date_to_offset
 
-    def get_date_limits(self):
+    def get_date_limit(self, limit_key):
         """
         Gets attributes within a minimum or maximum of a date field and validates that the entered date
         is valid.
 
         :return: attributes
         """
-        date_references = {'minimum': None, 'maximum': None}
+        limit = None
 
-        for limit in date_references:
-            if limit in self.answer_schema:
-                date_references[limit] = self.get_referenced_date(limit)
+        if limit_key in self.answer_schema:
+            limit = self.get_referenced_date(limit_key)
 
-                if 'offset_by' in self.answer_schema[limit]:
-                    offset = self.answer_schema[limit]['offset_by']
-                    date_references[limit] = DateHandler.transform_date_by_offset(
-                        date_references[limit], offset
-                    )
+            if 'offset_by' in self.answer_schema[limit_key]:
+                offset = self.answer_schema[limit_key]['offset_by']
+                limit = self.transform_date_by_offset(limit, offset)
 
-        # Extra runtime validation that will catch invalid schemas
-        # Similar validation in schema validator
-        if date_references['minimum'] and date_references['maximum']:
-            if date_references['minimum'] > date_references['maximum']:
-                raise Exception(
-                    'The minimum offset date is greater than the maximum offset date for {}.'.format(
-                        self.answer_schema['id']
-                    )
-                )
-
-        return date_references['minimum'], date_references['maximum']
+        return limit

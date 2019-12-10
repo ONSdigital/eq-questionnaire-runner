@@ -1,6 +1,6 @@
 from wtforms import StringField
 
-from app.forms.handlers.field_handler import FieldHandler
+from app.forms.field_handlers.field_handler import FieldHandler
 
 
 class StringHandler(FieldHandler):

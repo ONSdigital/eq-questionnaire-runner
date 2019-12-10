@@ -1,5 +1,5 @@
-from app.forms.custom_fields import CustomSelectField
-from app.forms.handlers.field_handler import FieldHandler
+from app.forms.fields.custom_select_field import CustomSelectField
+from app.forms.field_handlers.field_handler import FieldHandler
 
 
 class SelectHandler(FieldHandler):
@@ -13,6 +13,16 @@ class SelectHandler(FieldHandler):
         :return: str(value) or None if value is None
         """
         return str(value) if value is not None else None
+
+    @staticmethod
+    def build_choices_with_detail_answer_ids(options: dict):
+        choices = []
+        for option in options:
+            detail_answer_id = (
+                option['detail_answer']['id'] if option.get('detail_answer') else None
+            )
+            choices.append((option['value'], option['label'], detail_answer_id))
+        return choices
 
     # We use a custom coerce function to avoid a defect where Python NoneType
     # is coerced to the string 'None' which clashes with legitimate Radio field

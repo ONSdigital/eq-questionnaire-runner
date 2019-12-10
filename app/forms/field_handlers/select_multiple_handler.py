@@ -1,8 +1,8 @@
-from app.forms.custom_fields import CustomSelectMultipleField
-from app.forms.handlers.field_handler import FieldHandler
+from app.forms.fields.custom_select_multiple_field import CustomSelectMultipleField
+from app.forms.field_handlers.select_handler import SelectHandler
 
 
-class SelectMultipleHandler(FieldHandler):
+class SelectMultipleHandler(SelectHandler):
     MANDATORY_MESSAGE = 'MANDATORY_CHECKBOX'
 
     def get_field(self) -> CustomSelectMultipleField:

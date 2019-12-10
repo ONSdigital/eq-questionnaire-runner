@@ -2,8 +2,8 @@ import unittest
 from unittest.mock import Mock, patch
 from wtforms.validators import ValidationError
 
-from app.forms.custom_fields import CustomIntegerField
-from app.forms.fields import get_field
+from app.forms.fields.custom_integer_field import CustomIntegerField
+from app.forms.field_factory import get_field
 from app.jinja_filters import format_number
 from app.validation.error_messages import error_messages
 from app.validation.validators import NumberRange
@@ -95,6 +95,31 @@ class TestNumberRangeValidator(unittest.TestCase):
             validator(mock_form, mock_field)
         except ValidationError:
             self.fail('Valid integer raised ValidationError')
+
+    def test_answer_id_invalid_type(self):
+        answer = {
+            'max_value': {'answer_id': 'set-maximum-cat'},
+            'label': 'Range Test 10 to 20',
+            'mandatory': False,
+            'validation': {
+                'messages': {
+                    'INVALID_NUMBER': 'Please only enter whole numbers into the field.',
+                    'NUMBER_TOO_SMALL': 'The minimum value allowed is 10. Please correct your answer.',
+                    'NUMBER_TOO_LARGE': 'The maximum value allowed is 20. Please correct your answer.',
+                }
+            },
+            'id': 'test-range',
+            'type': 'Currency',
+        }
+        returned_error_messages = answer['validation']['messages']
+
+        with self.assertRaises(Exception) as ite:
+            get_field(answer, returned_error_messages, self.store, None, False)
+
+            self.assertEqual(
+                str(ite.exception),
+                'answer: set-maximum-cat value: cat for answer id: test-range is not a valid number',
+            )
 
     def test_manual_min(self):
         answer = {
@@ -364,108 +389,6 @@ class TestNumberRangeValidator(unittest.TestCase):
         self.assertEqual(test_validator.maximum, 9999999999)
         self.assertEqual(test_validator.minimum, 0)
 
-    def test_min_less_than_system_limits(self):
-        answer = {
-            'min_value': {'value': -1000000000},
-            'id': 'test-range',
-            'label': 'Range Test 10 to 20',
-            'mandatory': False,
-            'validation': {
-                'messages': {
-                    'INVALID_NUMBER': 'Please only enter whole numbers into the field.',
-                    'NUMBER_TOO_SMALL': 'The minimum value allowed is 10. Please correct your answer.',
-                    'NUMBER_TOO_LARGE': 'The maximum value allowed is 20. Please correct your answer.',
-                }
-            },
-            'type': 'Currency',
-        }
-        returned_error_messages = answer['validation']['messages']
-
-        with self.assertRaises(Exception) as ite:
-            get_field(answer, returned_error_messages, self.store, None, False)
-
-        self.assertEqual(
-            str(ite.exception),
-            'min_value: -1000000000 < system minimum: -999999999 for answer id: test-range',
-        )
-
-    def test_max_greater_than_system_limits(self):
-        answer = {
-            'max_value': {'value': 10000000000},
-            'id': 'test-range',
-            'label': 'Range Test 10 to 20',
-            'mandatory': False,
-            'validation': {
-                'messages': {
-                    'INVALID_NUMBER': 'Please only enter whole numbers into the field.',
-                    'NUMBER_TOO_SMALL': 'The minimum value allowed is 10. Please correct your answer.',
-                    'NUMBER_TOO_LARGE': 'The maximum value allowed is 20. Please correct your answer.',
-                }
-            },
-            'type': 'Currency',
-        }
-        returned_error_messages = answer['validation']['messages']
-
-        with self.assertRaises(Exception) as ite:
-            get_field(answer, returned_error_messages, self.store, None, False)
-
-        self.assertEqual(
-            str(ite.exception),
-            'max_value: 10000000000 > system maximum: 9999999999 for answer id: test-range',
-        )
-
-    def test_min_greater_than_max(self):
-        answer = {
-            'min_value': {'value': 20},
-            'max_value': {'value': 10},
-            'id': 'test-range',
-            'label': 'Range Test 10 to 20',
-            'mandatory': False,
-            'validation': {
-                'messages': {
-                    'INVALID_NUMBER': 'Please only enter whole numbers into the field.',
-                    'NUMBER_TOO_SMALL': 'The minimum value allowed is 10. Please correct your answer.',
-                    'NUMBER_TOO_LARGE': 'The maximum value allowed is 20. Please correct your answer.',
-                }
-            },
-            'type': 'Currency',
-        }
-        returned_error_messages = answer['validation']['messages']
-
-        with self.assertRaises(Exception) as ite:
-            get_field(answer, returned_error_messages, self.store, None, False)
-
-        self.assertEqual(
-            str(ite.exception),
-            'min_value: 20 > max_value: 10 for answer id: test-range',
-        )
-
-    def test_answer_id_invalid_type(self):
-
-        answer = {
-            'max_value': {'answer_id': 'set-maximum-cat'},
-            'label': 'Range Test 10 to 20',
-            'mandatory': False,
-            'validation': {
-                'messages': {
-                    'INVALID_NUMBER': 'Please only enter whole numbers into the field.',
-                    'NUMBER_TOO_SMALL': 'The minimum value allowed is 10. Please correct your answer.',
-                    'NUMBER_TOO_LARGE': 'The maximum value allowed is 20. Please correct your answer.',
-                }
-            },
-            'id': 'test-range',
-            'type': 'Currency',
-        }
-        returned_error_messages = answer['validation']['messages']
-
-        with self.assertRaises(Exception) as ite:
-            get_field(answer, returned_error_messages, self.store, None, False)
-
-        self.assertEqual(
-            str(ite.exception),
-            'answer: set-maximum-cat value: cat for answer id: test-range is not a valid number',
-        )
-
     def test_manual_min_exclusive(self):
         answer = {
             'min_value': {'value': 10, 'exclusive': True},
@@ -480,6 +403,7 @@ class TestNumberRangeValidator(unittest.TestCase):
             'id': 'test-range',
             'type': 'Currency',
         }
+
         returned_error_messages = answer['validation']['messages']
 
         integer_field = get_field(

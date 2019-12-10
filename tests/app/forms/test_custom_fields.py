@@ -1,11 +1,9 @@
 import unittest
 from unittest.mock import Mock
 from wtforms.fields import Field
-from app.forms.custom_fields import (
-    MaxTextAreaField,
-    CustomIntegerField,
-    CustomDecimalField,
-)
+from app.forms.fields.max_text_area_field import MaxTextAreaField
+from app.forms.fields.custom_integer_field import CustomIntegerField
+from app.forms.fields.custom_decimal_field import CustomDecimalField
 
 
 class TestMaxTextAreaField(unittest.TestCase):
