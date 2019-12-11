@@ -520,7 +520,7 @@ def test_get_all_questions_for_block_question():
     assert all_questions[0]['answers'][0]['id'] == 'answer1'
 
 
-def test_get_all_when_rules_by_list_name():
+def test_get_section_ids_by_list_name():
     survey_json = {
         'sections': [
             {

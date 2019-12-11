@@ -47,24 +47,10 @@ class ListAction(Question):
             self.parent_location.block_id
         )
         self.questionnaire_store_updater.remove_answers(answer_ids_to_remove)
-        self.evaluate_and_update_section_status()
-        self.questionnaire_store_updater.save()
-
-    def evaluate_and_update_section_status(self):
-        list_name = self.parent_block['for_list']
-        section_ids = self._schema.get_section_ids_dependent_on_list(list_name)
-
-        section_keys_to_evaluate = self.questionnaire_store_updater.started_section_keys(
-            section_ids=section_ids
+        self.evaluate_and_update_section_status_on_list_change(
+            self.parent_block['for_list']
         )
-
-        for section_id, list_item_id in section_keys_to_evaluate:
-            path = self.router.section_routing_path(section_id, list_item_id)
-            self.questionnaire_store_updater.update_section_status(
-                is_complete=self.router.is_path_complete(path),
-                section_id=section_id,
-                list_item_id=list_item_id,
-            )
+        self.questionnaire_store_updater.save()
 
     def _get_location_url(self, block_id):
         if block_id and self._schema.is_block_valid(block_id):
