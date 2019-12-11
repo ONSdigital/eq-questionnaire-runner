@@ -49,13 +49,23 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
 
     def _section_ids_associated_to_list_name(self, list_name: str) -> Set:
         section_ids = set()
-        for block in self.get_blocks():
-            for when_rule in _get_values_for_key(
-                block, 'when', ignore_keys={'question_variant', 'content_variant'}
+
+        for section in self.get_sections():
+            if section['id'] in section_ids:
+                continue
+
+            ignore_keys = {'question_variants', 'content_variants'}
+            when_rules = [
+                when_rule
+                for when_rule in _get_values_for_key(section, 'when', ignore_keys)
+            ]
+            if any(
+                rule.get('list') == list_name
+                for when_rule in when_rules
+                for rule in when_rule
             ):
-                for rule in when_rule:
-                    if rule.get('list') == list_name:
-                        section_ids.add(self.get_section_id_for_block_id(block['id']))
+                section_ids.add(section['id'])
+
         return section_ids
 
     @staticmethod
