@@ -51,9 +51,6 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
         section_ids: List = []
 
         for section in self.get_sections():
-            if section['id'] in section_ids:
-                continue
-
             ignore_keys = {'question_variants', 'content_variants'}
             when_rules = _get_values_for_key(section, 'when', ignore_keys)
 
