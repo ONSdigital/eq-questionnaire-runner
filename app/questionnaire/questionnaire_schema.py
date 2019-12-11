@@ -1,6 +1,6 @@
 from collections import OrderedDict, defaultdict
 
-from typing import List, Set, Union
+from typing import List, Union
 
 from flask_babel import force_locale
 
@@ -39,7 +39,7 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
     def get_section(self, section_id: str):
         return self._sections_by_id.get(section_id)
 
-    def get_section_ids_dependent_on_list(self, list_name: str) -> Set:
+    def get_section_ids_dependent_on_list(self, list_name: str) -> List:
         try:
             return self._list_name_to_section_map[list_name]
         except KeyError:
@@ -47,24 +47,22 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
             self._list_name_to_section_map[list_name] = section_ids
             return section_ids
 
-    def _section_ids_associated_to_list_name(self, list_name: str) -> Set:
-        section_ids = set()
+    def _section_ids_associated_to_list_name(self, list_name: str) -> List:
+        section_ids: List = []
 
         for section in self.get_sections():
             if section['id'] in section_ids:
                 continue
 
             ignore_keys = {'question_variants', 'content_variants'}
-            when_rules = [
-                when_rule
-                for when_rule in _get_values_for_key(section, 'when', ignore_keys)
-            ]
+            when_rules = _get_values_for_key(section, 'when', ignore_keys)
+
             if any(
                 rule.get('list') == list_name
                 for when_rule in when_rules
                 for rule in when_rule
             ):
-                section_ids.add(section['id'])
+                section_ids.append(section['id'])
 
         return section_ids
 
