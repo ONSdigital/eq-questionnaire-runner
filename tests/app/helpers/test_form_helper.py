@@ -11,7 +11,7 @@ from app.questionnaire.location import Location
 from app.utilities.schema import load_schema_from_name
 from app.questionnaire.relationship_location import RelationshipLocation
 from app.data_model.answer_store import AnswerStore
-from app.validation.validators import DateRequired, OptionalForm
+from app.forms.validators import DateRequired, OptionalForm
 
 
 class TestFormHelper(AppContextTestCase):

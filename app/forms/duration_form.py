@@ -1,6 +1,6 @@
 from wtforms import Form
 
-from app.forms.fields.custom_integer_field import CustomIntegerField
+from app.forms.fields.integer_field_with_separator import IntegerFieldWithSeparator
 
 
 class DurationForm(Form):
@@ -46,10 +46,10 @@ def get_duration_form(answer, error_messages):
         answer_errors = _get_answer_errors(answer, error_messages)
 
     if 'years' in answer['units']:
-        CustomDurationForm.years = CustomIntegerField()
+        CustomDurationForm.years = IntegerFieldWithSeparator()
 
     if 'months' in answer['units']:
-        CustomDurationForm.months = CustomIntegerField()
+        CustomDurationForm.months = IntegerFieldWithSeparator()
 
     return CustomDurationForm
 

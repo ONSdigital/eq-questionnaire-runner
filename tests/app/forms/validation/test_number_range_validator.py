@@ -3,11 +3,11 @@ from unittest.mock import Mock, patch
 from wtforms.validators import ValidationError
 
 from app.forms.field_handlers.number_handler import NumberHandler
-from app.forms.fields.custom_integer_field import CustomIntegerField
+from app.forms.fields.integer_field_with_separator import IntegerFieldWithSeparator
 from app.forms.field_factory import get_field
 from app.jinja_filters import format_number
-from app.validation.error_messages import error_messages
-from app.validation.validators import NumberRange
+from app.forms.error_messages import error_messages
+from app.forms.validators import NumberRange
 from app.data_model.answer_store import Answer, AnswerStore
 
 
@@ -141,7 +141,7 @@ class TestNumberRangeValidator(unittest.TestCase):
             answer, returned_error_messages, self.store, None, False
         )
 
-        self.assertTrue(integer_field.field_class == CustomIntegerField)
+        self.assertTrue(integer_field.field_class == IntegerFieldWithSeparator)
 
         for validator in integer_field.kwargs['validators']:
             if isinstance(validator, NumberRange):
@@ -181,7 +181,7 @@ class TestNumberRangeValidator(unittest.TestCase):
 
         integer_field = get_field(answer, error_messages, self.store, None, False)
 
-        self.assertTrue(integer_field.field_class == CustomIntegerField)
+        self.assertTrue(integer_field.field_class == IntegerFieldWithSeparator)
 
         for validator in integer_field.kwargs['validators']:
             if isinstance(validator, NumberRange):
@@ -216,7 +216,7 @@ class TestNumberRangeValidator(unittest.TestCase):
 
         integer_field = get_field(answer, error_messages, self.store, None, False)
 
-        self.assertTrue(integer_field.field_class == CustomIntegerField)
+        self.assertTrue(integer_field.field_class == IntegerFieldWithSeparator)
 
         for validator in integer_field.kwargs['validators']:
             if isinstance(validator, NumberRange):
@@ -249,7 +249,7 @@ class TestNumberRangeValidator(unittest.TestCase):
 
         integer_field = get_field(answer, error_messages, self.store, None, False)
 
-        self.assertTrue(integer_field.field_class == CustomIntegerField)
+        self.assertTrue(integer_field.field_class == IntegerFieldWithSeparator)
 
         for validator in integer_field.kwargs['validators']:
             if isinstance(validator, NumberRange):
@@ -291,7 +291,7 @@ class TestNumberRangeValidator(unittest.TestCase):
             answer, returned_error_messages, self.store, None, False
         )
 
-        self.assertTrue(integer_field.field_class == CustomIntegerField)
+        self.assertTrue(integer_field.field_class == IntegerFieldWithSeparator)
 
         for validator in integer_field.kwargs['validators']:
             if isinstance(validator, NumberRange):
@@ -338,7 +338,7 @@ class TestNumberRangeValidator(unittest.TestCase):
             answer, returned_error_messages, self.store, None, False
         )
 
-        self.assertTrue(integer_field.field_class == CustomIntegerField)
+        self.assertTrue(integer_field.field_class == IntegerFieldWithSeparator)
 
         for validator in integer_field.kwargs['validators']:
             if isinstance(validator, NumberRange):
@@ -411,7 +411,7 @@ class TestNumberRangeValidator(unittest.TestCase):
             answer, returned_error_messages, self.store, None, False
         )
 
-        self.assertTrue(integer_field.field_class == CustomIntegerField)
+        self.assertTrue(integer_field.field_class == IntegerFieldWithSeparator)
 
         for validator in integer_field.kwargs['validators']:
             if isinstance(validator, NumberRange):
@@ -453,7 +453,7 @@ class TestNumberRangeValidator(unittest.TestCase):
             answer, returned_error_messages, self.store, None, False
         )
 
-        self.assertTrue(integer_field.field_class == CustomIntegerField)
+        self.assertTrue(integer_field.field_class == IntegerFieldWithSeparator)
 
         for validator in integer_field.kwargs['validators']:
             if isinstance(validator, NumberRange):

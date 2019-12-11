@@ -6,7 +6,7 @@ from wtforms import DecimalField
 from app.settings import DEFAULT_LOCALE
 
 
-class CustomDecimalField(DecimalField):
+class DecimalFieldWithSeparator(DecimalField):
     """
     The default wtforms field coerces data to an number and raises
     cast errors outside of it's validation chain. In order to stop

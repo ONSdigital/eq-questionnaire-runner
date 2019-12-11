@@ -4,7 +4,7 @@ from wtforms import IntegerField
 from app.settings import DEFAULT_LOCALE
 
 
-class CustomIntegerField(IntegerField):
+class IntegerFieldWithSeparator(IntegerField):
     """
     The default wtforms field coerces data to an int and raises
     cast errors outside of it's validation chain. In order to stop

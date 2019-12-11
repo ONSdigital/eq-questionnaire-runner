@@ -2,15 +2,17 @@ from wtforms import StringField, FormField, SelectField
 
 from app.data_model.answer_store import AnswerStore
 from app.forms.fields.max_text_area_field import MaxTextAreaField
-from app.forms.fields.custom_select_multiple_field import CustomSelectMultipleField
-from app.forms.fields.custom_select_field import CustomSelectField
-from app.forms.fields.custom_integer_field import CustomIntegerField
-from app.forms.fields.custom_decimal_field import CustomDecimalField
+from app.forms.fields.multiple_select_field_with_detail_answer import (
+    MultipleSelectFieldWithDetailAnswer,
+)
+from app.forms.fields.select_field_with_detail_answer import SelectFieldWithDetailAnswer
+from app.forms.fields.integer_field_with_separator import IntegerFieldWithSeparator
+from app.forms.fields.decimal_field_with_separator import DecimalFieldWithSeparator
 
 from app.forms.date_form import DateField
 from app.forms.field_factory import get_field
 from app.forms.field_handlers.select_handler import SelectHandler
-from app.validation.error_messages import error_messages
+from app.forms.error_messages import error_messages
 from tests.app.app_context_test_case import AppContextTestCase
 
 
@@ -210,7 +212,7 @@ class TestFields(AppContextTestCase):
             (option['label'], option['value'], None) for option in radio_json['options']
         ]
 
-        self.assertEqual(unbound_field.field_class, CustomSelectField)
+        self.assertEqual(unbound_field.field_class, SelectFieldWithDetailAnswer)
         self.assertTrue(
             unbound_field.kwargs['coerce'], SelectHandler.coerce_str_unless_none
         )
@@ -282,7 +284,7 @@ class TestFields(AppContextTestCase):
             for option in checkbox_json['options']
         ]
 
-        self.assertEqual(unbound_field.field_class, CustomSelectMultipleField)
+        self.assertEqual(unbound_field.field_class, MultipleSelectFieldWithDetailAnswer)
         self.assertEqual(unbound_field.kwargs['label'], checkbox_json['label'])
         self.assertEqual(unbound_field.kwargs['description'], checkbox_json['guidance'])
         self.assertEqual(unbound_field.kwargs['choices'], expected_choices)
@@ -310,7 +312,7 @@ class TestFields(AppContextTestCase):
             integer_json, error_messages, self.answer_store, self.metadata
         )
 
-        self.assertEqual(unbound_field.field_class, CustomIntegerField)
+        self.assertEqual(unbound_field.field_class, IntegerFieldWithSeparator)
         self.assertEqual(unbound_field.kwargs['label'], integer_json['label'])
         self.assertEqual(unbound_field.kwargs['description'], integer_json['guidance'])
 
@@ -335,7 +337,7 @@ class TestFields(AppContextTestCase):
             decimal_json, error_messages, self.answer_store, self.metadata
         )
 
-        self.assertEqual(unbound_field.field_class, CustomDecimalField)
+        self.assertEqual(unbound_field.field_class, DecimalFieldWithSeparator)
         self.assertEqual(unbound_field.kwargs['label'], decimal_json['label'])
         self.assertEqual(unbound_field.kwargs['description'], decimal_json['guidance'])
 
@@ -360,7 +362,7 @@ class TestFields(AppContextTestCase):
             currency_json, error_messages, self.answer_store, self.metadata
         )
 
-        self.assertEqual(unbound_field.field_class, CustomIntegerField)
+        self.assertEqual(unbound_field.field_class, IntegerFieldWithSeparator)
         self.assertEqual(unbound_field.kwargs['label'], currency_json['label'])
         self.assertEqual(unbound_field.kwargs['description'], currency_json['guidance'])
 
@@ -386,7 +388,7 @@ class TestFields(AppContextTestCase):
             percentage_json, error_messages, self.answer_store, self.metadata
         )
 
-        self.assertEqual(unbound_field.field_class, CustomIntegerField)
+        self.assertEqual(unbound_field.field_class, IntegerFieldWithSeparator)
         self.assertEqual(unbound_field.kwargs['label'], percentage_json['label'])
         self.assertEqual(
             unbound_field.kwargs['description'], percentage_json['description']

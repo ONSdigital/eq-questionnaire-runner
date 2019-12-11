@@ -3,15 +3,15 @@ from typing import Union
 from wtforms import IntegerField, DecimalField
 
 from app.data_model.answer_store import AnswerStore
-from app.forms.fields.custom_decimal_field import CustomDecimalField
-from app.forms.fields.custom_integer_field import CustomIntegerField
+from app.forms.fields.decimal_field_with_separator import DecimalFieldWithSeparator
+from app.forms.fields.integer_field_with_separator import IntegerFieldWithSeparator
 from app.forms.field_handlers.field_handler import FieldHandler
 from app.questionnaire.location import Location
-from app.validation.validators import NumberCheck, NumberRange, DecimalPlaces
+from app.forms.validators import NumberCheck, NumberRange, DecimalPlaces
 
 
 class NumberHandler(FieldHandler):
-    MANDATORY_MESSAGE = 'MANDATORY_NUMBER'
+    MANDATORY_MESSAGE_KEY = 'MANDATORY_NUMBER'
     MAX_NUMBER = 9999999999
 
     def __init__(
@@ -31,7 +31,7 @@ class NumberHandler(FieldHandler):
             location,
             disable_validation,
         )
-        self.dependencies = self.get_number_field_dependencies()
+        self.references = self.get_field_references()
 
     @property
     def max_decimals(self):
@@ -40,30 +40,30 @@ class NumberHandler(FieldHandler):
     @property
     def validators(self):
         validate_with = []
-
         if self.disable_validation is False:
-            parent_validators = super().validators
-            validate_with = parent_validators + self._get_number_field_validators(
-                self.dependencies
-            )
+            validate_with = super().validators + self._get_number_field_validators()
         return validate_with
 
     def get_field(self) -> Union[DecimalField, IntegerField]:
-        field_type = CustomDecimalField if self.max_decimals > 0 else CustomIntegerField
+        field_type = (
+            DecimalFieldWithSeparator
+            if self.max_decimals > 0
+            else IntegerFieldWithSeparator
+        )
         return field_type(
             label=self.label, validators=self.validators, description=self.guidance
         )
 
-    def get_number_field_dependencies(self):
+    def get_field_references(self):
         min_value = 0
 
         if self.answer_schema.get('min_value'):
-            min_value = self.get_value_from_schema(self.answer_schema.get('min_value'))
+            min_value = self.get_definition_value(self.answer_schema.get('min_value'))
 
         max_value = self.MAX_NUMBER
 
         if self.answer_schema.get('max_value'):
-            max_value = self.get_value_from_schema(self.answer_schema.get('max_value'))
+            max_value = self.get_definition_value(self.answer_schema.get('max_value'))
 
         return {
             'min_exclusive': self.answer_schema.get('min_value', {}).get(
@@ -76,7 +76,7 @@ class NumberHandler(FieldHandler):
             'max_value': max_value,
         }
 
-    def _get_number_field_validators(self, dependencies):
+    def _get_number_field_validators(self):
         answer_errors = self.error_messages.copy()
 
         if (
@@ -91,17 +91,17 @@ class NumberHandler(FieldHandler):
         return [
             NumberCheck(answer_errors['INVALID_NUMBER']),
             NumberRange(
-                minimum=dependencies['min_value'],
-                minimum_exclusive=dependencies['min_exclusive'],
-                maximum=dependencies['max_value'],
-                maximum_exclusive=dependencies['max_exclusive'],
+                minimum=self.references['min_value'],
+                minimum_exclusive=self.references['min_exclusive'],
+                maximum=self.references['max_value'],
+                maximum_exclusive=self.references['max_exclusive'],
                 messages=answer_errors,
                 currency=self.answer_schema.get('currency'),
             ),
             DecimalPlaces(max_decimals=self.max_decimals, messages=answer_errors),
         ]
 
-    def get_value_from_schema(self, definition):
+    def get_definition_value(self, definition):
         if 'value' in definition:
             return definition['value']
 

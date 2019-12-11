@@ -181,7 +181,7 @@ def test_get_referenced_offset_value_for_value(app):
     answer = {'minimum': {'value': '2017-06-11'}}
 
     handler = DateHandler(answer)
-    minimum_date = handler.get_date_limit('minimum')
+    minimum_date = handler.get_date_value('minimum')
     minimum_date = handler.transform_date_by_offset(minimum_date, {'days': 10})
 
     assert minimum_date == convert_to_datetime('2017-06-21')
@@ -191,7 +191,7 @@ def test_get_referenced_offset_value_for_now_value(app):
     answer = {'minimum': {'value': 'now'}}
 
     handler = DateHandler(answer)
-    minimum_date = handler.get_date_limit('minimum')
+    minimum_date = handler.get_date_value('minimum')
     minimum_date = handler.transform_date_by_offset(minimum_date, {'days': 10})
 
     assert datetime.date(minimum_date) == (
@@ -204,7 +204,7 @@ def test_get_referenced_offset_value_for_meta(app):
     answer = {'minimum': {'meta': 'date'}}
 
     handler = DateHandler(answer, metadata=test_metadata)
-    minimum_date = handler.get_date_limit('minimum')
+    minimum_date = handler.get_date_value('minimum')
     minimum_date = handler.transform_date_by_offset(minimum_date, {'days': -10})
 
     assert minimum_date == convert_to_datetime('2018-02-10')
@@ -222,7 +222,7 @@ def test_get_referenced_offset_value_for_answer_id(app):
     answer = {'maximum': {'answer_id': 'date'}}
 
     handler = DateHandler(answer, answer_store=answer_store)
-    maximum_date = handler.get_date_limit('maximum')
+    maximum_date = handler.get_date_value('maximum')
     maximum_date = handler.transform_date_by_offset(maximum_date, {'months': 1})
 
     assert maximum_date == convert_to_datetime('2018-04-20')
@@ -251,7 +251,7 @@ def test_get_referenced_offset_value_with_list_item_id(app, schema_mock):
     answer = {'maximum': {'answer_id': 'date', 'offset_by': {'months': 1}}}
 
     handler = DateHandler(answer, answer_store=answer_store, location=location)
-    maximum_date = handler.get_date_limit('maximum')
+    maximum_date = handler.get_date_value('maximum')
 
     assert maximum_date == convert_to_datetime('2018-04-20')
 
@@ -260,7 +260,7 @@ def test_get_referenced_offset_value_with_no_offset(app):
     answer = {'minimum': {'value': '2017-06-11'}}
 
     handler = DateHandler(answer)
-    minimum_date = handler.get_date_limit('minimum')
+    minimum_date = handler.get_date_value('minimum')
     minimum_date = handler.transform_date_by_offset(minimum_date, {})
 
     assert minimum_date == convert_to_datetime('2017-06-11')
@@ -284,8 +284,8 @@ def test_minimum_and_maximum_offset_dates(app):
     }
 
     handler = DateHandler(answer, answer_store=store, metadata=test_metadata)
-    minimum_date = handler.get_date_limit('minimum')
-    maximum_date = handler.get_date_limit('maximum')
+    minimum_date = handler.get_date_value('minimum')
+    maximum_date = handler.get_date_value('maximum')
 
     assert minimum_date == convert_to_datetime('2018-02-10')
     assert maximum_date == convert_to_datetime('2019-03-20')
@@ -302,7 +302,7 @@ def test_greater_minimum_date_than_maximum_date(app):
     handler = DateHandler(answer)
 
     with pytest.raises(Exception) as ite:
-        handler.get_date_limit('minimum')
+        handler.get_date_value('minimum')
 
         assert (
             str(ite.exception)
@@ -325,4 +325,4 @@ def test_validate_mandatory_date(app):
     handler = DateHandler(answer, error_messages)
     validator = handler.get_mandatory_validator()
 
-    assert validator[0].message == 'Test Mandatory Date Message'
+    assert validator.message == 'Test Mandatory Date Message'

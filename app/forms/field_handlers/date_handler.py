@@ -11,7 +11,7 @@ from app.questionnaire.rules import (
     get_metadata_value,
 )
 from app.utilities.schema import load_schema_from_metadata
-from app.validation.validators import (
+from app.forms.validators import (
     SingleDatePeriodCheck,
     OptionalForm,
     DateCheck,
@@ -20,7 +20,7 @@ from app.validation.validators import (
 
 
 class DateHandler(FieldHandler):
-    MANDATORY_MESSAGE = 'MANDATORY_DATE'
+    MANDATORY_MESSAGE_KEY = 'MANDATORY_DATE'
     DATE_FIELD_MAP = {
         'Date': DateFormType.YearMonthDay,
         'MonthYearDate': DateFormType.YearMonth,
@@ -49,8 +49,8 @@ class DateHandler(FieldHandler):
 
         validate_with.append(DateCheck(error_message))
 
-        minimum_date = self.get_date_limit('minimum')
-        maximum_date = self.get_date_limit('maximum')
+        minimum_date = self.get_date_value('minimum')
+        maximum_date = self.get_date_value('maximum')
 
         if minimum_date or maximum_date:
             min_max_validator = self.get_min_max_validator(minimum_date, maximum_date)
@@ -60,10 +60,7 @@ class DateHandler(FieldHandler):
 
     def get_field(self) -> DateField:
         return DateField(
-            self.DATE_FIELD_MAP[self.answer_type],
-            self.validators,
-            label=self.label,
-            description=self.guidance,
+            self.form_type, self.validators, label=self.label, description=self.guidance
         )
 
     def get_min_max_validator(self, minimum_date, maximum_date):
@@ -95,7 +92,7 @@ class DateHandler(FieldHandler):
             maximum_date=maximum_date,
         )
 
-    def get_referenced_date(self, limit):
+    def get_referenced_date(self, key):
         """
         Gets value of the referenced date type, whether it is a value,
         id of an answer or a meta date.
@@ -103,7 +100,7 @@ class DateHandler(FieldHandler):
         :return: date value
         """
         value = None
-        referenced_date = self.answer_schema[limit]
+        referenced_date = self.answer_schema[key]
 
         if 'value' in referenced_date:
             if referenced_date['value'] == 'now':
@@ -141,20 +138,20 @@ class DateHandler(FieldHandler):
 
         return date_to_offset
 
-    def get_date_limit(self, limit_key):
+    def get_date_value(self, key):
         """
         Gets attributes within a minimum or maximum of a date field and validates that the entered date
         is valid.
 
         :return: attributes
         """
-        limit = None
+        date_value = None
 
-        if limit_key in self.answer_schema:
-            limit = self.get_referenced_date(limit_key)
+        if key in self.answer_schema:
+            date_value = self.get_referenced_date(key)
 
-            if 'offset_by' in self.answer_schema[limit_key]:
-                offset = self.answer_schema[limit_key]['offset_by']
-                limit = self.transform_date_by_offset(limit, offset)
+            if 'offset_by' in self.answer_schema[key]:
+                offset = self.answer_schema[key]['offset_by']
+                date_value = self.transform_date_by_offset(date_value, offset)
 
-        return limit
+        return date_value

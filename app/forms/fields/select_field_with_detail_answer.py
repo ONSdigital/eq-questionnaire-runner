@@ -1,7 +1,7 @@
 from wtforms import SelectField
 
 
-class CustomSelectField(SelectField):
+class SelectFieldWithDetailAnswer(SelectField):
     """
     This custom field allows us to add the additional detail_answer_id to choices/options.
     This saves us having to later map options with their detail_answer.

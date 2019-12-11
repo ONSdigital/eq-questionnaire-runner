@@ -5,11 +5,11 @@ from wtforms import validators, Field
 
 from app.data_model.answer_store import AnswerStore
 from app.questionnaire.location import Location
-from app.validation.validators import ResponseRequired
+from app.forms.validators import ResponseRequired
 
 
 class FieldHandler(ABC):
-    MANDATORY_MESSAGE = ''
+    MANDATORY_MESSAGE_KEY = ''
 
     def __init__(
         self,
@@ -30,7 +30,7 @@ class FieldHandler(ABC):
     @cached_property
     def validators(self):
         if not self.disable_validation:
-            return self.get_mandatory_validator()
+            return [self.get_mandatory_validator()]
         return []
 
     @cached_property
@@ -55,14 +55,12 @@ class FieldHandler(ABC):
         return message
 
     def get_mandatory_validator(self):
-        validate_with = validators.Optional()
-
         if self.answer_schema['mandatory'] is True:
-            mandatory_message = self.get_validation_message(self.MANDATORY_MESSAGE)
+            mandatory_message = self.get_validation_message(self.MANDATORY_MESSAGE_KEY)
 
-            validate_with = ResponseRequired(message=mandatory_message)
+            return ResponseRequired(message=mandatory_message)
 
-        return [validate_with]
+        return validators.Optional()
 
     @abstractmethod
     def get_field(self) -> Field:

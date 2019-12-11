@@ -7,7 +7,7 @@ from app.forms.field_handlers.field_handler import FieldHandler
 
 class TextAreaHandler(FieldHandler):
     MAX_LENGTH = 2000
-    MANDATORY_MESSAGE = 'MANDATORY_TEXTAREA'
+    MANDATORY_MESSAGE_KEY = 'MANDATORY_TEXTAREA'
 
     @cached_property
     def validators(self):

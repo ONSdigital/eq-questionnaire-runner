@@ -2,9 +2,9 @@ import unittest
 from unittest.mock import Mock, patch
 from wtforms.validators import StopValidation, ValidationError
 
-from app.forms.fields.custom_decimal_field import CustomDecimalField
-from app.validation.error_messages import error_messages
-from app.validation.validators import NumberCheck, DecimalPlaces
+from app.forms.fields.decimal_field_with_separator import DecimalFieldWithSeparator
+from app.forms.error_messages import error_messages
+from app.forms.validators import NumberCheck, DecimalPlaces
 from app.forms.field_factory import get_field
 from app.data_model.answer_store import AnswerStore
 
@@ -143,7 +143,7 @@ class TestNumberValidator(unittest.TestCase):
 
         decimal_field = get_field(answer, error_messages, AnswerStore(), None, False)
 
-        self.assertTrue(decimal_field.field_class == CustomDecimalField)
+        self.assertTrue(decimal_field.field_class == DecimalFieldWithSeparator)
 
         for validator in decimal_field.kwargs['validators']:
             if isinstance(validator, DecimalPlaces):

@@ -10,7 +10,7 @@ from wtforms import validators
 
 from app.forms.field_factory import get_field
 from app.forms.field_handlers.date_handler import DateHandler
-from app.validation.validators import DateRangeCheck, SumCheck, MutuallyExclusiveCheck
+from app.forms.validators import DateRangeCheck, SumCheck, MutuallyExclusiveCheck
 
 logger = logging.getLogger(__name__)
 
@@ -221,12 +221,12 @@ class QuestionnaireForm(FlaskForm):
         handler = DateHandler(
             date_from, {}, self.answer_store, self.metadata, location=self.location
         )
-        from_min_period_date = handler.get_date_limit('minimum')
-        from_max_period_date = handler.get_date_limit('maximum')
+        from_min_period_date = handler.get_date_value('minimum')
+        from_max_period_date = handler.get_date_value('maximum')
 
         handler.answer_schema = date_to
-        to_min_period_date = handler.get_date_limit('minimum')
-        to_max_period_date = handler.get_date_limit('maximum')
+        to_min_period_date = handler.get_date_value('minimum')
+        to_max_period_date = handler.get_date_value('maximum')
 
         min_period_date = from_min_period_date or from_max_period_date
         max_period_date = to_max_period_date or to_min_period_date

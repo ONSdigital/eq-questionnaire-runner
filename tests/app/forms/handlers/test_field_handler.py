@@ -2,7 +2,7 @@ from wtforms import validators
 
 from app.data_model.answer_store import AnswerStore
 from app.forms.field_handlers.string_handler import StringHandler
-from app.validation.validators import ResponseRequired
+from app.forms.validators import ResponseRequired
 
 
 def test_get_mandatory_validator_optional():
@@ -11,7 +11,7 @@ def test_get_mandatory_validator_optional():
     text_area_handler = StringHandler(answer, None, AnswerStore(), {})
     validate_with = text_area_handler.get_mandatory_validator()
 
-    assert isinstance(validate_with[0], validators.Optional)
+    assert isinstance(validate_with, validators.Optional)
 
 
 def test_get_mandatory_validator_mandatory():
@@ -26,8 +26,8 @@ def test_get_mandatory_validator_mandatory():
 
     validate_with = text_area_handler.get_mandatory_validator()
 
-    assert isinstance(validate_with[0], ResponseRequired)
-    assert validate_with[0].message == 'This is the default mandatory message'
+    assert isinstance(validate_with, ResponseRequired)
+    assert validate_with.message == 'This is the default mandatory message'
 
 
 def test_get_mandatory_validator_mandatory_with_error():
@@ -48,5 +48,5 @@ def test_get_mandatory_validator_mandatory_with_error():
     )
     validate_with = text_area_handler.get_mandatory_validator()
 
-    assert isinstance(validate_with[0], ResponseRequired)
-    assert validate_with[0].message == 'This is the mandatory message for an answer'
+    assert isinstance(validate_with, ResponseRequired)
+    assert validate_with.message == 'This is the mandatory message for an answer'

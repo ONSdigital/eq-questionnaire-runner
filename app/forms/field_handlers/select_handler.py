@@ -1,9 +1,9 @@
-from app.forms.fields.custom_select_field import CustomSelectField
+from app.forms.fields.select_field_with_detail_answer import SelectFieldWithDetailAnswer
 from app.forms.field_handlers.field_handler import FieldHandler
 
 
 class SelectHandler(FieldHandler):
-    MANDATORY_MESSAGE = 'MANDATORY_RADIO'
+    MANDATORY_MESSAGE_KEY = 'MANDATORY_RADIO'
 
     @staticmethod
     def coerce_str_unless_none(value):
@@ -30,8 +30,8 @@ class SelectHandler(FieldHandler):
     # not providing an answer and them selecting the 'None' option otherwise.
     # https://github.com/ONSdigital/eq-survey-runner/issues/1013
     # See related WTForms PR: https://github.com/wtforms/wtforms/pull/288
-    def get_field(self) -> CustomSelectField:
-        return CustomSelectField(
+    def get_field(self) -> SelectFieldWithDetailAnswer:
+        return SelectFieldWithDetailAnswer(
             label=self.label,
             description=self.guidance,
             choices=self.build_choices_with_detail_answer_ids(

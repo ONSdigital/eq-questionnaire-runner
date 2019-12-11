@@ -5,7 +5,7 @@ from app.forms.field_handlers.field_handler import FieldHandler
 
 
 class DropdownHandler(FieldHandler):
-    MANDATORY_MESSAGE = 'MANDATORY_DROPDOWN'
+    MANDATORY_MESSAGE_KEY = 'MANDATORY_DROPDOWN'
 
     @staticmethod
     def build_choices(options: dict):
