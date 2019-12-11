@@ -46,14 +46,12 @@ class FieldHandler(ABC):
         return self.answer_schema.get('guidance', '')
 
     def get_validation_message(self, message_key):
-        message = self.error_messages[message_key]
-
-        if (
-            'validation' in self.answer_schema
-            and 'messages' in self.answer_schema['validation']
-            and message_key in self.answer_schema['validation']['messages']
-        ):
-            message = self.answer_schema['validation']['messages'][message_key]
+        message = (
+            self.answer_schema.get('validation', {})
+            .get('messages', {})
+            .get(message_key)
+            or self.error_messages[message_key]
+        )
         return message
 
     def get_mandatory_validator(self):

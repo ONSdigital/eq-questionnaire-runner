@@ -9,7 +9,7 @@ class DropdownHandler(FieldHandler):
 
     @staticmethod
     def build_choices(options: dict):
-        choices = []
+        choices = [('', gettext('Select an answer'))]
         for option in options:
             choices.append((option['value'], option['label']))
         return choices
@@ -18,8 +18,7 @@ class DropdownHandler(FieldHandler):
         return SelectField(
             label=self.label,
             description=self.guidance,
-            choices=[('', gettext('Select an answer'))]
-            + self.build_choices(self.answer_schema['options']),
+            choices=self.build_choices(self.answer_schema['options']),
             default='',
             validators=self.validators,
         )

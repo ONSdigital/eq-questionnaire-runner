@@ -11,10 +11,8 @@ from app.validation.validators import NumberCheck, NumberRange, DecimalPlaces
 
 
 class NumberHandler(FieldHandler):
-    MANDATORY_MESSAGE = 'MANDATORY_TEXTFIELD'
+    MANDATORY_MESSAGE = 'MANDATORY_NUMBER'
     MAX_NUMBER = 9999999999
-    MIN_NUMBER = -999999999
-    MAX_DECIMAL_PLACES = 6
 
     def __init__(
         self,
@@ -36,6 +34,10 @@ class NumberHandler(FieldHandler):
         self.dependencies = self.get_number_field_dependencies()
 
     @property
+    def max_decimals(self):
+        return self.answer_schema.get('decimal_places', 0)
+
+    @property
     def validators(self):
         validate_with = []
 
@@ -47,18 +49,12 @@ class NumberHandler(FieldHandler):
         return validate_with
 
     def get_field(self) -> Union[DecimalField, IntegerField]:
-        field_type = (
-            CustomDecimalField
-            if self.answer_schema.get('decimal_places', 0) > 0
-            else CustomIntegerField
-        )
+        field_type = CustomDecimalField if self.max_decimals > 0 else CustomIntegerField
         return field_type(
             label=self.label, validators=self.validators, description=self.guidance
         )
 
     def get_number_field_dependencies(self):
-        max_decimals = self.answer_schema.get('decimal_places', 0)
-
         min_value = 0
 
         if self.answer_schema.get('min_value'):
@@ -70,7 +66,6 @@ class NumberHandler(FieldHandler):
             max_value = self.get_value_from_schema(self.answer_schema.get('max_value'))
 
         return {
-            'max_decimals': max_decimals,
             'min_exclusive': self.answer_schema.get('min_value', {}).get(
                 'exclusive', False
             ),
@@ -103,9 +98,7 @@ class NumberHandler(FieldHandler):
                 messages=answer_errors,
                 currency=self.answer_schema.get('currency'),
             ),
-            DecimalPlaces(
-                max_decimals=dependencies['max_decimals'], messages=answer_errors
-            ),
+            DecimalPlaces(max_decimals=self.max_decimals, messages=answer_errors),
         ]
 
     def get_value_from_schema(self, definition):

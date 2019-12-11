@@ -2,6 +2,7 @@ import unittest
 from unittest.mock import Mock, patch
 from wtforms.validators import ValidationError
 
+from app.forms.field_handlers.number_handler import NumberHandler
 from app.forms.fields.custom_integer_field import CustomIntegerField
 from app.forms.field_factory import get_field
 from app.jinja_filters import format_number
@@ -386,8 +387,8 @@ class TestNumberRangeValidator(unittest.TestCase):
             if isinstance(validator, NumberRange):
                 test_validator = validator
 
-        self.assertEqual(test_validator.maximum, 9999999999)
-        self.assertEqual(test_validator.minimum, 0)
+                self.assertEqual(test_validator.maximum, NumberHandler.MAX_NUMBER)
+                self.assertEqual(test_validator.minimum, 0)
 
     def test_manual_min_exclusive(self):
         answer = {

@@ -3,7 +3,6 @@ from unittest.mock import Mock, patch
 from wtforms.validators import StopValidation, ValidationError
 
 from app.forms.fields.custom_decimal_field import CustomDecimalField
-from app.forms.field_handlers.number_handler import NumberHandler
 from app.validation.error_messages import error_messages
 from app.validation.validators import NumberCheck, DecimalPlaces
 from app.forms.field_factory import get_field
@@ -165,29 +164,3 @@ class TestNumberValidator(unittest.TestCase):
             test_validator(mock_form, decimal_field)
         except ValidationError:
             self.fail('Valid decimal raised ValidationError')
-
-    def test_manual_decimal_too_large(self):
-        answer = {
-            'decimal_places': 10,
-            'label': 'Range Test 10 to 20',
-            'mandatory': False,
-            'validation': {
-                'messages': {
-                    'INVALID_NUMBER': 'Please only enter whole numbers into the field.',
-                    'INVALID_DECIMAL': 'Please enter a number to 2 decimal places.',
-                }
-            },
-            'id': 'test-range',
-            'type': 'Currency',
-        }
-        returned_error_messages = answer['validation']['messages']
-
-        with self.assertRaises(Exception) as ite:
-            get_field(answer, returned_error_messages, AnswerStore(), None, False)
-
-            self.assertEqual(
-                str(ite.exception),
-                'decimal_places: 10 > system maximum: {} for answer id: test-range'.format(
-                    NumberHandler.MAX_DECIMAL_PLACES
-                ),
-            )
