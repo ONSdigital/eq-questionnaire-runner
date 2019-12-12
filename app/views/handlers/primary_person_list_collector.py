@@ -38,11 +38,10 @@ class PrimaryPersonListCollector(Question):
             self._primary_person_id = self.questionnaire_store_updater.add_primary_person(
                 list_name
             )
-            self.evaluate_and_update_section_status_on_list_change(list_name)
-
-            self.questionnaire_store_updater.save()
 
         else:
             self.questionnaire_store_updater.remove_primary_person(list_name)
-            self.evaluate_and_update_section_status_on_list_change(list_name)
-            return super().handle_post()
+            super().handle_post()
+
+        self.evaluate_and_update_section_status_on_list_change(list_name)
+        self.questionnaire_store_updater.save()
