@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2019-12-09 09:25+0000\n"
+"POT-Creation-Date: 2019-12-12 15:49+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -282,11 +282,7 @@ msgstr ""
 msgid "Your response is legally required"
 msgstr ""
 
-#: templates/listaddquestion.html:7
-msgid "Return to the previous page"
-msgstr ""
-
-#: templates/listaddquestion.html:10
+#: templates/listaddquestion.html:9
 msgid "Cancel and return to the previous page"
 msgstr ""
 
@@ -514,7 +510,7 @@ msgstr ""
 msgid "Previous"
 msgstr ""
 
-#: templates/layouts/_questionnaire.html:27
+#: templates/layouts/_questionnaire.html:29
 msgid "Save and continue"
 msgstr ""
 
