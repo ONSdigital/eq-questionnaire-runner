@@ -27,7 +27,6 @@ class PrimaryPersonListCollector(Question):
 
     def handle_post(self):
         list_name = self.rendered_block['for_list']
-        self.evaluate_and_update_section_status_on_list_change(list_name)
 
         if (
             self.form.data[self.rendered_block['add_or_edit_answer']['id']]
