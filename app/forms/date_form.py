@@ -9,9 +9,9 @@ logger = logging.getLogger(__name__)
 
 
 class DateFormType(Enum):
-    YearMonthDay = 'yyyy-mm-dd'
-    YearMonth = 'yyyy-mm'
-    Year = 'yyyy'
+    YearMonthDay = 1
+    YearMonth = 2
+    Year = 3
 
 
 class DateField(FormField):
