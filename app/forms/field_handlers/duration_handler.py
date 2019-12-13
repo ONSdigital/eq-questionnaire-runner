@@ -5,7 +5,7 @@ from app.forms.field_handlers.field_handler import FieldHandler
 
 
 class DurationHandler(FieldHandler):
-    MANDATORY_MESSAGE_KEY = 'MANDATORY_RADIO'
+    MANDATORY_MESSAGE_KEY = 'MANDATORY_DURATION'
 
     def get_field(self) -> FormField:
         return FormField(

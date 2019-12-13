@@ -8,6 +8,8 @@ from app.forms.fields.integer_field_with_separator import IntegerFieldWithSepara
 from app.forms.field_handlers.field_handler import FieldHandler
 from app.questionnaire.location import Location
 from app.forms.validators import NumberCheck, NumberRange, DecimalPlaces
+from app.questionnaire.rules import get_answer_value
+from app.utilities.schema import load_schema_from_metadata
 
 
 class NumberHandler(FieldHandler):
@@ -58,12 +60,12 @@ class NumberHandler(FieldHandler):
         min_value = 0
 
         if self.answer_schema.get('min_value'):
-            min_value = self.get_definition_value(self.answer_schema.get('min_value'))
+            min_value = self.get_schema_value(self.answer_schema.get('min_value'))
 
         max_value = self.MAX_NUMBER
 
         if self.answer_schema.get('max_value'):
-            max_value = self.get_definition_value(self.answer_schema.get('max_value'))
+            max_value = self.get_schema_value(self.answer_schema.get('max_value'))
 
         return {
             'min_exclusive': self.answer_schema.get('min_value', {}).get(
@@ -100,12 +102,3 @@ class NumberHandler(FieldHandler):
             ),
             DecimalPlaces(max_decimals=self.max_decimals, messages=answer_errors),
         ]
-
-    def get_definition_value(self, definition):
-        if 'value' in definition:
-            return definition['value']
-
-        source_answer_id = definition.get('answer_id')
-        answer = self.answer_store.get_answer(source_answer_id)
-
-        return answer.value if answer else None

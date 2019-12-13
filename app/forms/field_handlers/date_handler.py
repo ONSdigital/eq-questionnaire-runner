@@ -42,7 +42,9 @@ class DateHandler(FieldHandler):
 
         if self.answer_schema['mandatory'] is True:
             validate_with = [
-                DateRequired(message=self.get_validation_message('MANDATORY_DATE'))
+                DateRequired(
+                    message=self.get_validation_message(self.MANDATORY_MESSAGE_KEY)
+                )
             ]
 
         error_message = self.get_validation_message('INVALID_DATE')
@@ -99,24 +101,10 @@ class DateHandler(FieldHandler):
 
         :return: date value
         """
-        value = None
-        referenced_date = self.answer_schema[key]
+        value = self.get_schema_value(self.answer_schema[key])
 
-        if 'value' in referenced_date:
-            if referenced_date['value'] == 'now':
-                value = datetime.utcnow().strftime('%Y-%m-%d')
-            else:
-                value = referenced_date['value']
-        elif 'meta' in referenced_date:
-            value = get_metadata_value(self.metadata, referenced_date['meta'])
-        elif 'answer_id' in referenced_date:
-            schema = load_schema_from_metadata(self.metadata)
-            answer_id = referenced_date['answer_id']
-            list_item_id = self.location.list_item_id if self.location else None
-
-            value = get_answer_value(
-                answer_id, self.answer_store, schema, list_item_id=list_item_id
-            )
+        if value == 'now':
+            value = datetime.utcnow().strftime('%Y-%m-%d')
 
         return convert_to_datetime(value)
 
