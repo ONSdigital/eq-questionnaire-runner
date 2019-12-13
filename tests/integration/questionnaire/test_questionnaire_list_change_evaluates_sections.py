@@ -56,7 +56,7 @@ class TestQuestionnaireListChangeEvaluatesSections(IntegrationTestCase):
         self.get('/questionnaire/sections/accommodation-section/')
         self.post(action='save_continue')
         self.post(action='save_continue')
-        self.assertInUrl('accommodation-section-summary/')
+        self.assertEqualUrl('/questionnaire/accommodation-section-summary/')
         self.post()
 
         self.assertInSelector('Completed', 'tbody:nth-child(2) td:nth-child(2)')
