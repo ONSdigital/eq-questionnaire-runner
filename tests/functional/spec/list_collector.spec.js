@@ -105,6 +105,39 @@ describe('List Collector', function() {
       expect(browser.getUrl()).to.contain(ListCollectorPage.pageName);
     });
 
+    it('The user is returned to the list collector when the cancel link is clicked on the edit page.', function() {
+      $(ListCollectorPage.yes()).click();
+      $(ListCollectorPage.submit()).click();
+      $(ListCollectorAddPage.firstName()).setValue('Someone');
+      $(ListCollectorAddPage.lastName()).setValue('Else');
+      $(ListCollectorAddPage.submit()).click();
+      $(ListCollectorPage.listEditLink(1)).click();
+      $(ListCollectorEditPage.cancelAndReturn()).click();
+      expect(browser.getUrl()).to.contain(ListCollectorPage.pageName);
+    });
+
+    it('The user is returned to the list collector when the cancel link is clicked on the remove page.', function() {
+      $(ListCollectorPage.yes()).click();
+      $(ListCollectorPage.submit()).click();
+      $(ListCollectorAddPage.firstName()).setValue('Someone');
+      $(ListCollectorAddPage.lastName()).setValue('Else');
+      $(ListCollectorAddPage.submit()).click();
+      $(ListCollectorPage.listRemoveLink(1)).click();
+      $(ListCollectorRemovePage.cancelAndReturn()).click();
+      expect(browser.getUrl()).to.contain(ListCollectorPage.pageName);
+    });
+
+    it('The user is returned to the list collector when the cancel link is clicked on the edit page.', function() {
+      $(ListCollectorPage.yes()).click();
+      $(ListCollectorPage.submit()).click();
+      $(ListCollectorAddPage.firstName()).setValue('Someone');
+      $(ListCollectorAddPage.lastName()).setValue('Else');
+      $(ListCollectorAddPage.submit()).click();
+      $(ListCollectorPage.listEditLink(1)).click();
+      $(ListCollectorEditPage.cancelAndReturn()).click();
+      expect(browser.getUrl()).to.contain(ListCollectorPage.pageName);
+    });
+
     it('The collector shows everyone on the summary', function() {
       const peopleExpected = ['Samuel Clemens', 'Olivia Clemens', 'Suzy Clemens', 'Clara Clemens', 'Jean Clemens'];
 
