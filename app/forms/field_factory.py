@@ -1,4 +1,3 @@
-from app.data_model.answer_store import AnswerStore
 from app.forms.field_handlers.date_handler import DateHandler
 from app.forms.field_handlers.dropdown_handler import DropdownHandler
 from app.forms.field_handlers.duration_handler import DurationHandler
@@ -7,7 +6,6 @@ from app.forms.field_handlers.select_handler import SelectHandler
 from app.forms.field_handlers.select_multiple_handler import SelectMultipleHandler
 from app.forms.field_handlers.string_handler import StringHandler
 from app.forms.field_handlers.text_area_handler import TextAreaHandler
-from app.questionnaire.location import Location
 
 FIELD_HANDLER_MAPPINGS = {
     'Checkbox': SelectMultipleHandler,
@@ -28,12 +26,12 @@ FIELD_HANDLER_MAPPINGS = {
 
 
 def get_field(
-    answer: dict,
-    error_messages: dict,
-    answer_store: AnswerStore,
-    metadata: dict,
-    location: Location = None,
-    disable_validation: bool = False,
+    answer,
+    error_messages,
+    answer_store,
+    metadata=None,
+    location=None,
+    disable_validation=False,
 ):
     return FIELD_HANDLER_MAPPINGS[answer.get('type')](
         answer,

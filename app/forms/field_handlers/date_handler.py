@@ -5,12 +5,7 @@ from werkzeug.utils import cached_property
 
 from app.forms.date_form import DateFormType, DateField
 from app.forms.field_handlers.field_handler import FieldHandler
-from app.questionnaire.rules import (
-    get_answer_value,
-    convert_to_datetime,
-    get_metadata_value,
-)
-from app.utilities.schema import load_schema_from_metadata
+from app.questionnaire.rules import convert_to_datetime
 from app.forms.validators import (
     SingleDatePeriodCheck,
     OptionalForm,

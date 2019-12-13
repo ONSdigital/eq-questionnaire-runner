@@ -67,9 +67,9 @@ class FieldHandler(ABC):
     def get_schema_value(self, schema_element):
         if 'meta' in schema_element:
             return get_metadata_value(self.metadata, schema_element['meta'])
-        elif 'value' in schema_element:
+        if 'value' in schema_element:
             return schema_element['value']
-        elif 'answer_id' in schema_element:
+        if 'answer_id' in schema_element:
             schema = load_schema_from_metadata(self.metadata)
             answer_id = schema_element.get('answer_id')
             list_item_id = self.location.list_item_id if self.location else None

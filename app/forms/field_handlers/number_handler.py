@@ -8,8 +8,6 @@ from app.forms.fields.integer_field_with_separator import IntegerFieldWithSepara
 from app.forms.field_handlers.field_handler import FieldHandler
 from app.questionnaire.location import Location
 from app.forms.validators import NumberCheck, NumberRange, DecimalPlaces
-from app.questionnaire.rules import get_answer_value
-from app.utilities.schema import load_schema_from_metadata
 
 
 class NumberHandler(FieldHandler):

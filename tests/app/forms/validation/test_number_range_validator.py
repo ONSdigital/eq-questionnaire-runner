@@ -338,7 +338,7 @@ class TestNumberRangeValidator(unittest.TestCase):
             answer,
             returned_error_messages,
             self.store,
-            {"schema_name": "test_numbers"},
+            {'schema_name': 'test_numbers'},
             None,
             False,
         )
