@@ -191,3 +191,12 @@ class TestQuestionnaireListCollector(IntegrationTestCase):
 
         self.assertInBody('Are any of these people related to one another?')
         self.assertInBody('Marie Claire Doe')
+
+    def test_cancel_text_displayed_on_add_block_if_exists(self):
+        self.launchSurvey('test_list_collector')
+
+        self.post(action='start_questionnaire')
+
+        self.post({'anyone-else': 'Yes'})
+
+        self.assertInBody("Don't need to add anyone else?")
