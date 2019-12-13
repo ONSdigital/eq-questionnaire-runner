@@ -49,3 +49,25 @@ class TestQuestionnaireListChangeEvaluatesSections(IntegrationTestCase):
 
         self.get('questionnaire/sections/accommodation-section/')
         self.assertEqualUrl('/questionnaire/own-or-rent/')
+
+    def test_with_primary_person(self):
+        self.launchSurvey('test_list_change_evaluates_sections_primary_person')
+
+        self.get('/questionnaire/sections/accommodation-section/')
+        self.post(action='save_continue')
+        self.post(action='save_continue')
+        self.assertInUrl('accommodation-section-summary/')
+        self.post()
+
+        self.assertInSelector('Completed', 'tbody:nth-child(2) td:nth-child(2)')
+
+        self.get('/questionnaire/sections/who-lives-here')
+        self.assertEqualUrl('/questionnaire/primary-person-list-collector/')
+        self.post({'you-live-here': 'Yes'})
+        self.add_person('John', 'Doe')
+        self.post({'anyone-else': 'No'})
+
+        self.assertEqualUrl('/questionnaire/')
+        self.assertInSelector(
+            'Partially completed', 'tbody:nth-child(2) td:nth-child(2)'
+        )
