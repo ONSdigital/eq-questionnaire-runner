@@ -42,5 +42,6 @@ class PrimaryPersonListCollector(Question):
             self.questionnaire_store_updater.remove_primary_person(list_name)
             super().handle_post()
 
-        self.evaluate_and_update_section_status_on_list_change(list_name)
-        self.questionnaire_store_updater.save()
+        if self.questionnaire_store_updater.is_dirty:
+            self.evaluate_and_update_section_status_on_list_change(list_name)
+            self.questionnaire_store_updater.save()
