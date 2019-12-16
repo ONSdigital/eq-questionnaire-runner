@@ -123,7 +123,7 @@ local otherNonUkAddressOptions = {
         {
           id: 'another-address-answer',
           condition: 'equals',
-          value: 'Other',
+          value: 'Yes, an address outside the UK',
         },
       ],
     },
@@ -134,7 +134,7 @@ local otherNonUkAddressOptions = {
         {
           id: 'another-address-answer',
           condition: 'equals',
-          value: 'Other',
+          value: 'Yes, an address outside the UK',
         },
       ],
     },
