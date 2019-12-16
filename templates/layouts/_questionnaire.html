@@ -21,8 +21,6 @@
       </div>
   {% endblock %}
 
-  {% block cancel_and_return %}{% endblock %}
-
   {% block submit_button %}
       {{
           onsButton({
@@ -35,6 +33,8 @@
           })
       }}
   {% endblock %}
+
+  {% block cancel_and_return %}{% endblock %}
 
   {% if content.return_to_hub_url %}
       <p class="u-mt-xl">{{ _("Can't complete this question?") }}<br>

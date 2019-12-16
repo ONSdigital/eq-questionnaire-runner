@@ -216,7 +216,7 @@ class TestQuestionnaireListCollector(IntegrationTestCase):
 
         self.assertInBody("Don't need to add anyone else?")
 
-    def test_cancel_text_displayed_on_edit_block_if_exists(self):
+    def test_cancel_text_displayed_on_remove_block_if_exists(self):
         self.launchSurvey('test_list_collector')
 
         self.post(action='start_questionnaire')
