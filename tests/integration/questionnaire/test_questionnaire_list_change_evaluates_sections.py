@@ -19,10 +19,12 @@ class TestQuestionnaireListChangeEvaluatesSections(IntegrationTestCase):
         selected = self.getHtmlSoup().select(selector)
         return selected[0].get('href')
 
-    def test_happy_path(self):
+    def test_wihout_primary_person(self):
         self.launchSurvey('test_list_change_evaluates_sections')
 
         self.get('/questionnaire/sections/who-lives-here')
+        self.assertEqualUrl('/questionnaire/primary-person-list-collector/')
+        self.post({'you-live-here': 'No'})
         self.assertEqualUrl('/questionnaire/list-collector/')
 
         self.post({'anyone-else': 'No'})
@@ -37,7 +39,8 @@ class TestQuestionnaireListChangeEvaluatesSections(IntegrationTestCase):
         self.assertEqualUrl('/questionnaire/')
 
         self.get('/questionnaire/sections/who-lives-here')
-        self.assertEqualUrl('/questionnaire/list-collector/')
+        self.assertEqualUrl('/questionnaire/primary-person-list-collector/')
+        self.post({'you-live-here': 'No'})
 
         self.add_person('John', 'Doe')
         self.post({'anyone-else': 'No'})
@@ -51,7 +54,7 @@ class TestQuestionnaireListChangeEvaluatesSections(IntegrationTestCase):
         self.assertEqualUrl('/questionnaire/own-or-rent/')
 
     def test_with_primary_person(self):
-        self.launchSurvey('test_list_change_evaluates_sections_primary_person')
+        self.launchSurvey('test_list_change_evaluates_sections')
 
         self.get('/questionnaire/sections/accommodation-section/')
         self.post(action='save_continue')
