@@ -52,7 +52,7 @@ def test_get_questions(single_question_schema):
     assert questions[0]['title'] == 'Question 1'
 
 
-def test_schema_answers(single_question_schema):
+def test_get_answer_ids(single_question_schema):
     schema = QuestionnaireSchema(single_question_schema)
     answers = schema.get_answer_ids()
     assert len(answers) == 1
