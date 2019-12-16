@@ -55,38 +55,31 @@ class NumberHandler(FieldHandler):
         )
 
     def get_field_references(self):
-        min_value = 0
+        schema_min_value = self.answer_schema.get('min_value', {})
+        schema_max_value = self.answer_schema.get('max_value', {})
 
-        if self.answer_schema.get('min_value'):
-            min_value = self.get_schema_value(self.answer_schema.get('min_value'))
-
-        max_value = self.MAX_NUMBER
-
-        if self.answer_schema.get('max_value'):
-            max_value = self.get_schema_value(self.answer_schema.get('max_value'))
+        min_value = self.get_schema_value(schema_min_value) if schema_min_value else 0
+        max_value = (
+            self.get_schema_value(schema_max_value)
+            if schema_max_value
+            else self.MAX_NUMBER
+        )
 
         return {
-            'min_exclusive': self.answer_schema.get('min_value', {}).get(
-                'exclusive', False
-            ),
-            'max_exclusive': self.answer_schema.get('max_value', {}).get(
-                'exclusive', False
-            ),
+            'min_exclusive': schema_min_value.get('exclusive', False),
+            'max_exclusive': schema_max_value.get('exclusive', False),
             'min_value': min_value,
             'max_value': max_value,
         }
 
     def _get_number_field_validators(self):
         answer_errors = self.error_messages.copy()
+        schema_validation_messages = self.answer_schema.get('validation', {}).get(
+            'messages', {}
+        )
 
-        if (
-            'validation' in self.answer_schema
-            and 'messages' in self.answer_schema['validation']
-        ):
-            for error_key, error_message in self.answer_schema['validation'][
-                'messages'
-            ].items():
-                answer_errors[error_key] = error_message
+        for error_key, error_message in schema_validation_messages.items():
+            answer_errors[error_key] = error_message
 
         return [
             NumberCheck(answer_errors['INVALID_NUMBER']),
