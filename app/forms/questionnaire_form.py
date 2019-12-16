@@ -317,7 +317,6 @@ def _option_value_in_data(answer, option, data):
     return option['value'] in dict(data_to_inspect).get(answer['id'], [])
 
 
-# pylint: disable=too-many-locals
 def get_answer_fields(question, data, error_messages, answer_store, metadata, location):
     answer_fields = {}
     if not question:
