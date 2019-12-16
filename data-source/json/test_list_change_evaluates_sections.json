@@ -3,9 +3,9 @@
     "schema_version": "0.0.1",
     "data_version": "0.0.3",
     "survey_id": "0",
-    "title": "Test ListCollector Evaluate Sections for Primary Person",
+    "title": "Test ListCollector Evaluate Sections",
     "theme": "default",
-    "description": "A questionnaire to test that changes to a primary person list update section completeness",
+    "description": "A questionnaire to test that changes to a list update section completeness",
     "metadata": [
         {
             "name": "user_id",
