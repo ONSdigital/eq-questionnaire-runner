@@ -230,4 +230,3 @@ class TestQuestionnaireListCollector(IntegrationTestCase):
         self.get(remove_link)
 
         self.assertInBody("Don't need to add anyone else?")
-
