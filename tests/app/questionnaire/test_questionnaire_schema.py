@@ -36,6 +36,13 @@ def test_get_group(single_question_schema):
     assert group['title'] == 'Group 1'
 
 
+def test_get_questions(single_question_schema):
+    schema = QuestionnaireSchema(single_question_schema)
+    questions = schema.get_questions('question1')
+
+    assert questions[0]['title'] == 'Question 1'
+
+
 def test_get_questions_with_variants(question_variant_schema):
     schema = QuestionnaireSchema(question_variant_schema)
     questions = schema.get_questions('question1')
@@ -45,20 +52,13 @@ def test_get_questions_with_variants(question_variant_schema):
     assert questions[1]['title'] == 'Question 1, No'
 
 
-def test_get_questions(single_question_schema):
-    schema = QuestionnaireSchema(single_question_schema)
-    questions = schema.get_questions('question1')
-
-    assert questions[0]['title'] == 'Question 1'
-
-
 def test_get_answer_ids(single_question_schema):
     schema = QuestionnaireSchema(single_question_schema)
     answers = schema.get_answer_ids()
     assert len(answers) == 1
 
 
-def test_get_answers_with_variants(question_variant_schema):
+def test_get_answers_by_answer_id_with_variants(question_variant_schema):
     schema = QuestionnaireSchema(question_variant_schema)
     answers = schema.get_answers_by_answer_id('answer1')
     assert len(answers) == 2
@@ -66,123 +66,11 @@ def test_get_answers_with_variants(question_variant_schema):
     assert answers[1]['label'] == 'Answer 1 Variant 2'
 
 
-def test_get_answers(single_question_schema):
+def test_get_answers_by_answer_id(single_question_schema):
     schema = QuestionnaireSchema(single_question_schema)
     answers = schema.get_answers_by_answer_id('answer1')
     assert len(answers) == 1
     assert answers[0]['label'] == 'Answer 1'
-
-
-def test_get_summary_and_confirmation_blocks_returns_only_summary():
-    survey_json = {
-        'sections': [
-            {
-                'id': 'section1',
-                'groups': [
-                    {
-                        'id': 'group1',
-                        'blocks': [
-                            {'id': 'questionnaire-block', 'type': 'Question'},
-                            {'id': 'summary-block', 'type': 'Summary'},
-                            {'id': 'confirmation-block', 'type': 'Confirmation'},
-                        ],
-                    }
-                ],
-            }
-        ]
-    }
-
-    schema = QuestionnaireSchema(survey_json)
-
-    summary_and_confirmation_blocks = schema.get_summary_and_confirmation_blocks()
-
-    assert len(summary_and_confirmation_blocks) == 2
-    assert 'summary-block' in summary_and_confirmation_blocks
-    assert 'confirmation-block' in summary_and_confirmation_blocks
-
-
-def test_group_has_questions_returns_true_when_group_has_questionnaire_blocks():
-    survey_json = {
-        'sections': [
-            {
-                'id': 'section1',
-                'groups': [
-                    {
-                        'id': 'question-group',
-                        'blocks': [
-                            {'id': 'introduction', 'type': 'Introduction'},
-                            {'id': 'question', 'type': 'Question'},
-                        ],
-                    }
-                ],
-            }
-        ]
-    }
-
-    schema = QuestionnaireSchema(survey_json)
-
-    assert schema.group_has_questions('question-group')
-
-
-def test_group_has_questions_returns_false_when_group_doesnt_have_questionnaire_blocks():
-    survey_json = {
-        'sections': [
-            {
-                'id': 'section1',
-                'groups': [
-                    {
-                        'id': 'non-question-group',
-                        'blocks': [{'id': 'summary-block', 'type': 'Summary'}],
-                    }
-                ],
-            }
-        ]
-    }
-
-    schema = QuestionnaireSchema(survey_json)
-
-    assert not schema.group_has_questions('non-question-group')
-
-
-def test_is_summary():
-    survey_json = {
-        'sections': [
-            {
-                'id': 'section-1',
-                'groups': [
-                    {'id': 'group-1', 'blocks': [{'id': 'block-1', 'type': 'Summary'}]}
-                ],
-            }
-        ]
-    }
-
-    schema = QuestionnaireSchema(survey_json)
-    assert schema.is_summary_section(schema.get_section('section-1'))
-    assert schema.is_summary_group(schema.get_group('group-1'))
-    assert not schema.is_confirmation_section(schema.get_section('section-1'))
-    assert not schema.is_confirmation_group(schema.get_group('group-1'))
-
-
-def test_is_confirmation():
-    survey_json = {
-        'sections': [
-            {
-                'id': 'section-1',
-                'groups': [
-                    {
-                        'id': 'group-1',
-                        'blocks': [{'id': 'block-1', 'type': 'Confirmation'}],
-                    }
-                ],
-            }
-        ]
-    }
-
-    schema = QuestionnaireSchema(survey_json)
-    assert schema.is_confirmation_section(schema.get_section('section-1'))
-    assert schema.is_confirmation_group(schema.get_group('group-1'))
-    assert not schema.is_summary_section(schema.get_section('section-1'))
-    assert not schema.is_summary_group(schema.get_group('group-1'))
 
 
 def test_get_group_for_list_collector_child_block():
