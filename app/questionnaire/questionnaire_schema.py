@@ -67,9 +67,9 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
     def get_blocks_for_section(section):
         return (block for group in section['groups'] for block in group['blocks'])
 
-    @staticmethod
-    def get_driving_question_for_list(section, list_name):
-        for block in QuestionnaireSchema.get_blocks_for_section(section):
+    @classmethod
+    def get_driving_question_for_list(cls, section, list_name):
+        for block in cls.get_blocks_for_section(section):
             if (
                 block['type'] == 'ListCollectorDrivingQuestion'
                 and list_name == block['for_list']
@@ -194,12 +194,6 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
         """
         return self._questions_by_id.get(question_id)
 
-    def group_has_questions(self, group_id):
-        for block in self.get_group(group_id)['blocks']:
-            if QuestionnaireSchema.is_question_block_type(block['type']):
-                return True
-        return False
-
     @staticmethod
     def get_visible_list_blocks_for_section(section):
         list_collector_blocks = []
@@ -238,13 +232,6 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
                 )
         return []
 
-    def get_summary_and_confirmation_blocks(self):
-        return [
-            block['id']
-            for block in self.get_blocks()
-            if block['type'] in ('Summary', 'Confirmation')
-        ]
-
     def get_relationship_collectors(self) -> List:
         return [
             block
@@ -273,38 +260,6 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
 
             return all_questions
         return []
-
-    @staticmethod
-    def is_summary_section(section):
-        for group in section['groups']:
-            if QuestionnaireSchema.is_summary_group(group):
-                return True
-
-        return False
-
-    @staticmethod
-    def is_summary_group(group):
-        for block in group['blocks']:
-            if block['type'] == 'Summary':
-                return True
-
-        return False
-
-    @staticmethod
-    def is_confirmation_section(section):
-        for group in section['groups']:
-            if QuestionnaireSchema.is_confirmation_group(group):
-                return True
-
-        return False
-
-    @staticmethod
-    def is_confirmation_group(group):
-        for block in group['blocks']:
-            if block['type'] == 'Confirmation':
-                return True
-
-        return False
 
     @staticmethod
     def is_primary_person_block_type(block_type):

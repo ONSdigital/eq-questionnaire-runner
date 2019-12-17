@@ -177,6 +177,7 @@ def single_question_schema():
         'sections': [
             {
                 'id': 'section1',
+                'title': 'Section 1',
                 'groups': [
                     {
                         'id': 'group1',
@@ -188,11 +189,11 @@ def single_question_schema():
                                 'title': 'Block 1',
                                 'question': {
                                     'id': 'question1',
-                                    'title': 'Question 1, Yes',
+                                    'title': 'Question 1',
                                     'answers': [
                                         {
                                             'id': 'answer1',
-                                            'label': 'Answer 1 Variant 1',
+                                            'label': 'Answer 1',
                                             'default': 'test',
                                         }
                                     ],
@@ -415,6 +416,111 @@ def list_collector_variant_schema():
     }
 
 
+@pytest.fixture
+def sections_dependent_on_list_schema():
+    return {
+        'sections': [
+            {
+                'id': 'section1',
+                'groups': [
+                    {
+                        'id': 'group1',
+                        'blocks': [
+                            {
+                                'id': 'list-collector',
+                                'type': 'ListCollector',
+                                'for_list': 'list',
+                                'question': {},
+                                'add_block': {
+                                    'id': 'add-block',
+                                    'type': 'ListAddQuestion',
+                                    'question': {},
+                                },
+                                'edit_block': {
+                                    'id': 'edit-block',
+                                    'type': 'ListEditQuestion',
+                                    'question': {},
+                                },
+                                'remove_block': {
+                                    'id': 'remove-block',
+                                    'type': 'ListRemoveQuestion',
+                                    'question': {},
+                                },
+                            }
+                        ],
+                    }
+                ],
+            },
+            {
+                'id': 'section2',
+                'groups': [
+                    {
+                        'id': 'group2',
+                        'blocks': [
+                            {
+                                'type': 'Question',
+                                'id': 'block2',
+                                'question': {
+                                    'answers': [
+                                        {
+                                            'id': 'answer1',
+                                            'mandatory': True,
+                                            'type': 'General',
+                                        }
+                                    ],
+                                    'id': 'question1',
+                                    'title': {'text': 'Does anyone else live here?'},
+                                    'type': 'General',
+                                },
+                                'when': [
+                                    {
+                                        'condition': 'greater than',
+                                        'list': 'list',
+                                        'value': 0,
+                                    }
+                                ],
+                            }
+                        ],
+                    }
+                ],
+            },
+            {
+                'id': 'section3',
+                'groups': [
+                    {
+                        'id': 'group3',
+                        'blocks': [
+                            {
+                                'type': 'Question',
+                                'id': 'block3',
+                                'question': {
+                                    'answers': [
+                                        {
+                                            'id': 'answer1',
+                                            'mandatory': True,
+                                            'type': 'General',
+                                        }
+                                    ],
+                                    'id': 'question1',
+                                    'title': {'text': 'Does anyone else live here?'},
+                                    'type': 'General',
+                                },
+                                'when': [
+                                    {
+                                        'condition': 'greater than',
+                                        'list': 'not-the-list',
+                                        'value': 0,
+                                    }
+                                ],
+                            }
+                        ],
+                    }
+                ],
+            },
+        ]
+    }
+
+
 @pytest.fixture()
 def content_variant_schema():
     return {
@@ -496,9 +602,8 @@ def question_schema():
     }
 
 
-# pylint: disable=line-too-long
 @pytest.fixture()
-def relationship_collector_schema():
+def mock_relationship_collector_schema():
     return {
         'sections': [
             {
@@ -509,272 +614,16 @@ def relationship_collector_schema():
                         'title': 'List',
                         'blocks': [
                             {
-                                'id': 'block1',
-                                'type': 'ListCollector',
-                                'for_list': 'people',
-                                'add_answer': {'id': 'answer1', 'value': 'Yes'},
-                                'remove_answer': {
-                                    'id': 'remove-confirmation',
-                                    'value': 'Yes',
-                                },
-                                'question_variants': [
-                                    {
-                                        'question': {
-                                            'id': 'confirmation-question',
-                                            'type': 'General',
-                                            'title': 'Collector, Yes',
-                                            'answers': [
-                                                {
-                                                    'id': 'answer1',
-                                                    'label': 'Collector Answer 1 Variant Yes',
-                                                }
-                                            ],
-                                        },
-                                        'when': [
-                                            {
-                                                'id': 'when-answer',
-                                                'condition': 'equals',
-                                                'value': 'yes',
-                                            }
-                                        ],
-                                    },
-                                    {
-                                        'question': {
-                                            'id': 'confirmation-question',
-                                            'type': 'General',
-                                            'title': 'Collector, No',
-                                            'answers': [
-                                                {
-                                                    'id': 'answer1',
-                                                    'label': 'Collector Answer 1 Variant No',
-                                                }
-                                            ],
-                                        },
-                                        'when': [
-                                            {
-                                                'id': 'when-answer',
-                                                'condition': 'equals',
-                                                'value': 'no',
-                                            }
-                                        ],
-                                    },
-                                ],
-                                'add_block': {
-                                    'id': 'add-person',
-                                    'type': 'Question',
-                                    'question_variants': [
-                                        {
-                                            'question': {
-                                                'id': 'add-question',
-                                                'type': 'General',
-                                                'title': 'Add, Yes',
-                                                'answers': [
-                                                    {
-                                                        'id': 'answer1',
-                                                        'label': 'Answer 1 Variant Yes',
-                                                    }
-                                                ],
-                                            },
-                                            'when': [
-                                                {
-                                                    'id': 'when-answer',
-                                                    'condition': 'equals',
-                                                    'value': 'yes',
-                                                }
-                                            ],
-                                        },
-                                        {
-                                            'question': {
-                                                'id': 'add-question',
-                                                'type': 'General',
-                                                'title': 'Add, No',
-                                                'answers': [
-                                                    {
-                                                        'id': 'answer1',
-                                                        'label': 'Answer 1 Variant Yes',
-                                                    }
-                                                ],
-                                            },
-                                            'when': [
-                                                {
-                                                    'id': 'when-answer',
-                                                    'condition': 'equals',
-                                                    'value': 'no',
-                                                }
-                                            ],
-                                        },
-                                    ],
-                                },
-                                'edit_block': {
-                                    'id': 'edit-person',
-                                    'type': 'Question',
-                                    'question_variants': [
-                                        {
-                                            'question': {
-                                                'id': 'edit-question',
-                                                'type': 'General',
-                                                'title': 'Edit, Yes',
-                                                'answers': [
-                                                    {
-                                                        'id': 'answer1',
-                                                        'label': 'Answer 1 Variant Yes',
-                                                    }
-                                                ],
-                                            },
-                                            'when': [
-                                                {
-                                                    'id': 'when-answer',
-                                                    'condition': 'equals',
-                                                    'value': 'yes',
-                                                }
-                                            ],
-                                        },
-                                        {
-                                            'question': {
-                                                'id': 'edit-question',
-                                                'type': 'General',
-                                                'title': 'Edit, No',
-                                                'answers': [
-                                                    {
-                                                        'id': 'answer1',
-                                                        'label': 'Answer 1 Variant No',
-                                                    }
-                                                ],
-                                            },
-                                            'when': [
-                                                {
-                                                    'id': 'when-answer',
-                                                    'condition': 'equals',
-                                                    'value': 'no',
-                                                }
-                                            ],
-                                        },
-                                    ],
-                                },
-                                'remove_block': {
-                                    'id': 'remove-person',
-                                    'type': 'Question',
-                                    'question_variants': [
-                                        {
-                                            'question': {
-                                                'id': 'remove-question',
-                                                'type': 'General',
-                                                'title': 'Remove, Yes',
-                                                'answers': [
-                                                    {
-                                                        'id': 'answer1',
-                                                        'label': 'Answer 1 Variant Yes',
-                                                    }
-                                                ],
-                                            },
-                                            'when': [
-                                                {
-                                                    'id': 'when-answer',
-                                                    'condition': 'equals',
-                                                    'value': 'yes',
-                                                }
-                                            ],
-                                        },
-                                        {
-                                            'question': {
-                                                'id': 'remove-question',
-                                                'type': 'General',
-                                                'title': 'Remove, No',
-                                                'answers': [
-                                                    {
-                                                        'id': 'answer1',
-                                                        'label': 'Answer 1 Variant No',
-                                                    }
-                                                ],
-                                            },
-                                            'when': [
-                                                {
-                                                    'id': 'when-answer',
-                                                    'condition': 'equals',
-                                                    'value': 'no',
-                                                }
-                                            ],
-                                        },
-                                    ],
-                                },
-                            },
-                            {
                                 'type': 'RelationshipCollector',
                                 'id': 'relationships',
-                                'title': 'This will iterate over the people list, capturing the one way relationships.',
                                 'for_list': 'people',
-                                'question': {
-                                    'id': 'relationship-question',
-                                    'type': 'General',
-                                    'title': 'Thinking of {first_person_name}, {second_person_name} is their <em>…</em>',
-                                    'answers': [
-                                        {
-                                            'id': 'relationship-answer',
-                                            'mandatory': True,
-                                            'type': 'Relationship',
-                                            'playback': '{second_person_name} is {first_person_name_possessive} <em>…</em>',
-                                            'options': [
-                                                {
-                                                    'label': 'Husband or Wife',
-                                                    'value': 'Husband or Wife',
-                                                    'title': 'Thinking of {first_person_name}, {second_person_name} is their <em>husband or wife</em>',
-                                                    'playback': '{second_person_name} is {first_person_name_possessive} <em>husband or wife</em>',
-                                                },
-                                                {
-                                                    'label': 'Legally registered civil partner',
-                                                    'value': 'Legally registered civil partner',
-                                                    'title': 'Thinking of {first_person_name}, {second_person_name} is their <em>legally registered civil partner</em>',
-                                                    'playback': '{second_person_name} is {first_person_name_possessive} <em>legally registered civil partner</em>',
-                                                },
-                                                {
-                                                    'label': 'Son or daughter',
-                                                    'value': 'Son or daughter',
-                                                    'title': 'Thinking of {first_person_name}, {second_person_name} is their <em>son or daughter</em>',
-                                                    'playback': '{second_person_name} is {first_person_name_possessive} <em>son or daughter</em>',
-                                                },
-                                            ],
-                                        }
-                                    ],
-                                },
+                                'question': {},
                             },
                             {
                                 'type': 'RelationshipCollector',
-                                'id': 'relationships-that-dont-point-to-list-collector',
-                                'title': 'This will iterate over the people list, capturing the one way relationships.',
+                                'id': 'not-people-relationship-collector',
                                 'for_list': 'not-people',
-                                'question': {
-                                    'id': 'relationship-question',
-                                    'type': 'General',
-                                    'title': 'Thinking of {first_person_name}, {second_person_name} is their <em>…</em>',
-                                    'answers': [
-                                        {
-                                            'id': 'relationship-answer',
-                                            'mandatory': True,
-                                            'type': 'Relationship',
-                                            'playback': '{second_person_name} is {first_person_name_possessive} <em>…</em>',
-                                            'options': [
-                                                {
-                                                    'label': 'Husband or Wife',
-                                                    'value': 'Husband or Wife',
-                                                    'title': 'Thinking of {first_person_name}, {second_person_name} is their <em>husband or wife</em>',
-                                                    'playback': '{second_person_name} is {first_person_name_possessive} <em>husband or wife</em>',
-                                                },
-                                                {
-                                                    'label': 'Legally registered civil partner',
-                                                    'value': 'Legally registered civil partner',
-                                                    'title': 'Thinking of {first_person_name}, {second_person_name} is their <em>legally registered civil partner</em>',
-                                                    'playback': '{second_person_name} is {first_person_name_possessive} <em>legally registered civil partner</em>',
-                                                },
-                                                {
-                                                    'label': 'Son or daughter',
-                                                    'value': 'Son or daughter',
-                                                    'title': 'Thinking of {first_person_name}, {second_person_name} is their <em>son or daughter</em>',
-                                                    'playback': '{second_person_name} is {first_person_name_possessive} <em>son or daughter</em>',
-                                                },
-                                            ],
-                                        }
-                                    ],
-                                },
+                                'question': {},
                             },
                         ],
                     }
