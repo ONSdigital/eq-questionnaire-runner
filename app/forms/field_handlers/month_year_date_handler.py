@@ -7,6 +7,7 @@ from app.forms.validators import SingleDatePeriodCheck
 
 class MonthYearDateHandler(DateHandler):
     DATE_FORMAT = 'yyyy-mm'
+    DISPLAY_FORMAT = 'MMMM yyyy'
 
     def get_field(self) -> MonthYearDateField:
         return MonthYearDateField(
@@ -16,7 +17,6 @@ class MonthYearDateHandler(DateHandler):
     def get_min_max_validator(self, minimum_date, maximum_date):
         messages = self.answer_schema.get('validation', {}).get('messages')
 
-        display_format = 'MMMM yyyy'
         minimum_date = (
             minimum_date.replace(day=1) if minimum_date else None
         )  # First day of Month
@@ -26,7 +26,7 @@ class MonthYearDateHandler(DateHandler):
 
         return SingleDatePeriodCheck(
             messages=messages,
-            date_format=display_format,
+            date_format=self.DISPLAY_FORMAT,
             minimum_date=minimum_date,
             maximum_date=maximum_date,
         )

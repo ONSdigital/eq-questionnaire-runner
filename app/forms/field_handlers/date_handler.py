@@ -17,6 +17,7 @@ from app.forms.validators import (
 class DateHandler(FieldHandler):
     MANDATORY_MESSAGE_KEY = 'MANDATORY_DATE'
     DATE_FORMAT = 'yyyy-mm-dd'
+    DISPLAY_FORMAT = 'd MMMM yyyy'
 
     @cached_property
     def validators(self):
@@ -47,11 +48,10 @@ class DateHandler(FieldHandler):
 
     def get_min_max_validator(self, minimum_date, maximum_date):
         messages = self.answer_schema.get('validation', {}).get('messages')
-        display_format = 'd MMMM yyyy'
 
         return SingleDatePeriodCheck(
             messages=messages,
-            date_format=display_format,
+            date_format=self.DISPLAY_FORMAT,
             minimum_date=minimum_date,
             maximum_date=maximum_date,
         )

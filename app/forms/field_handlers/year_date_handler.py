@@ -5,6 +5,7 @@ from app.forms.validators import SingleDatePeriodCheck
 
 class YearDateHandler(DateHandler):
     DATE_FORMAT = 'yyyy'
+    DISPLAY_FORMAT = 'yyyy'
 
     def get_field(self) -> YearDateField:
         return YearDateField(
@@ -14,7 +15,6 @@ class YearDateHandler(DateHandler):
     def get_min_max_validator(self, minimum_date, maximum_date):
         messages = self.answer_schema.get('validation', {}).get('messages')
 
-        display_format = 'yyyy'
         minimum_date = (
             minimum_date.replace(month=1, day=1) if minimum_date else None
         )  # January 1st
@@ -24,7 +24,7 @@ class YearDateHandler(DateHandler):
 
         return SingleDatePeriodCheck(
             messages=messages,
-            date_format=display_format,
+            date_format=self.DISPLAY_FORMAT,
             minimum_date=minimum_date,
             maximum_date=maximum_date,
         )
