@@ -96,7 +96,7 @@ describe('List Collector', function() {
       $(ListCollectorAddPage.submit()).click();
     });
 
-    it('The user is returned to the list collector when the cancel link is clicked.', function() {
+    it('The user is returned to the list collector when the cancel link is clicked on the add page.', function() {
       $(ListCollectorPage.yes()).click();
       $(ListCollectorPage.submit()).click();
       $(ListCollectorAddPage.firstName()).setValue('Someone');
