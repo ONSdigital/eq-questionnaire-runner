@@ -7,30 +7,25 @@ logger = logging.getLogger(__name__)
 
 
 def get_form_class(validators):
-    class DateForm(Form):
-        # Validation is only ever added to the 1 field that shows in all 3 variants
-        # This is to prevent an error message for each input box
+    class YearMonthDateForm(Form):
         year = StringField(validators=validators)
         month = StringField()
-        day = StringField()
 
         @cached_property
         def data(self):
             data = super().data
 
             try:
-                return '{year:04d}-{month:02d}-{day:02d}'.format(
-                    year=int(data['year']),
-                    month=int(data['month']),
-                    day=int(data['day']),
+                return '{year:04d}-{month:02d}'.format(
+                    year=int(data['year']), month=int(data['month'])
                 )
             except (TypeError, ValueError):
                 return None
 
-    return DateForm
+    return YearMonthDateForm
 
 
-class DateField(FormField):
+class MonthYearDateField(FormField):
     def __init__(self, validators, **kwargs):
         form_class = get_form_class(validators)
         super().__init__(form_class, **kwargs)
@@ -38,6 +33,6 @@ class DateField(FormField):
     def process(self, formdata, data=None):
         if data is not None:
             substrings = data.split('-')
-            data = {'year': substrings[0], 'month': substrings[1], 'day': substrings[2]}
+            data = {'year': substrings[0], 'month': substrings[1]}
 
         super().process(formdata, data)

@@ -2,6 +2,7 @@ from wtforms import StringField, FormField, SelectField
 
 from app.data_model.answer_store import AnswerStore
 from app.forms.fields.max_text_area_field import MaxTextAreaField
+from app.forms.fields.month_year_date_field import MonthYearDateField
 from app.forms.fields.multiple_select_field_with_detail_answer import (
     MultipleSelectFieldWithDetailAnswer,
 )
@@ -13,6 +14,7 @@ from app.forms.fields.date_field import DateField
 from app.forms.field_factory import get_field
 from app.forms.field_handlers.select_handler import SelectHandler
 from app.forms.error_messages import error_messages
+from app.forms.fields.year_date_field import YearDateField
 from tests.app.app_context_test_case import AppContextTestCase
 
 
@@ -123,7 +125,7 @@ class TestFields(AppContextTestCase):
                 date_json, error_messages, self.answer_store, self.metadata
             )
 
-        self.assertEqual(unbound_field.field_class, DateField)
+        self.assertEqual(unbound_field.field_class, MonthYearDateField)
         self.assertEqual(unbound_field.kwargs['label'], date_json['label'])
         self.assertEqual(unbound_field.kwargs['description'], date_json['guidance'])
 
@@ -149,7 +151,7 @@ class TestFields(AppContextTestCase):
                 date_json, error_messages, self.answer_store, self.metadata
             )
 
-        self.assertEqual(unbound_field.field_class, DateField)
+        self.assertEqual(unbound_field.field_class, YearDateField)
         self.assertEqual(unbound_field.kwargs['label'], date_json['label'])
         self.assertEqual(unbound_field.kwargs['description'], date_json['guidance'])
 

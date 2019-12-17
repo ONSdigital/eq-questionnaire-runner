@@ -2,7 +2,6 @@ from datetime import datetime
 
 from dateutil.relativedelta import relativedelta
 from werkzeug.utils import cached_property
-from wtforms import StringField, Form
 
 from app.forms.field_handlers.field_handler import FieldHandler
 from app.forms.fields.date_field import DateField
@@ -18,29 +17,6 @@ from app.forms.validators import (
 class DateHandler(FieldHandler):
     MANDATORY_MESSAGE_KEY = 'MANDATORY_DATE'
     DATE_FORMAT = 'yyyy-mm-dd'
-
-    def get_form_class(self):
-        class YearMonthDayDateForm(Form):
-            # Validation is only ever added to the 1 field that shows in all 3 variants
-            # This is to prevent an error message for each input box
-            year = StringField(validators=self.validators)
-            month = StringField()
-            day = StringField()
-
-            @cached_property
-            def data(self):
-                data = super().data
-
-                try:
-                    return '{year:04d}-{month:02d}-{day:02d}'.format(
-                        year=int(data['year']),
-                        month=int(data['month']),
-                        day=int(data['day']),
-                    )
-                except (TypeError, ValueError):
-                    return None
-
-        return YearMonthDayDateForm
 
     @cached_property
     def validators(self):
@@ -67,8 +43,7 @@ class DateHandler(FieldHandler):
         return validate_with
 
     def get_field(self) -> DateField:
-        form_class = self.get_form_class()
-        return DateField(form_class, label=self.label, description=self.guidance)
+        return DateField(self.validators, label=self.label, description=self.guidance)
 
     def get_min_max_validator(self, minimum_date, maximum_date):
         messages = self.answer_schema.get('validation', {}).get('messages')
