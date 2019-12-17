@@ -20,16 +20,14 @@ class DateHandler(FieldHandler):
     DATE_FORMAT = 'yyyy-mm-dd'
 
     def get_form_class(self):
-        class CustomDateForm(DateForm):
-            pass
+        class YearMonthDayDateForm(DateForm):
+            # Validation is only ever added to the 1 field that shows in all 3 variants
+            # This is to prevent an error message for each input box
+            year = StringField(validators=self.validators)
+            month = StringField()
+            day = StringField()
 
-        # Validation is only ever added to the 1 field that shows in all 3 variants
-        # This is to prevent an error message for each input box
-        CustomDateForm.year = StringField(validators=self.validators)
-        CustomDateForm.month = StringField()
-        CustomDateForm.day = StringField()
-
-        return CustomDateForm
+        return YearMonthDayDateForm
 
     @cached_property
     def validators(self):

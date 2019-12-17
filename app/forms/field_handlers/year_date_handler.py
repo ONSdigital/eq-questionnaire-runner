@@ -9,12 +9,10 @@ class YearDateHandler(DateHandler):
     DATE_FORMAT = 'yyyy'
 
     def get_form_class(self):
-        class CustomDateForm(DateForm):
-            pass
+        class YearDateForm(DateForm):
+            year = StringField(validators=self.validators)
 
-        CustomDateForm.year = StringField(validators=self.validators)
-
-        return CustomDateForm
+        return YearDateForm
 
     def get_min_max_validator(self, minimum_date, maximum_date):
         messages = self.answer_schema.get('validation', {}).get('messages')
