@@ -430,10 +430,7 @@
                                         "mandatory": false,
                                         "type": "Radio",
                                         "default": "Yes",
-                                        "options": [
-                                            { "label": "Yes", "value": "Yes" },
-                                            { "label": "No", "value": "No" }
-                                        ]
+                                        "options": [{ "label": "Yes", "value": "Yes" }, { "label": "No", "value": "No" }]
                                     }
                                 ]
                             },
