@@ -5,114 +5,38 @@ from mock import patch
 
 import pytest
 from dateutil.relativedelta import relativedelta
-from wtforms import Form, validators
 
 from app.data_model.answer import Answer
 from app.data_model.answer_store import AnswerStore
 from app.forms.field_handlers.date_handler import DateHandler
-from app.forms.field_handlers.month_year_date_handler import MonthYearDateHandler
-from app.forms.field_handlers.year_date_handler import YearDateHandler
-from app.forms.fields import date_field, month_year_date_field, year_date_field
+from app.forms.fields import date_field
 from app.questionnaire.location import Location
 from app.questionnaire.questionnaire_schema import QuestionnaireSchema
 from app.questionnaire.rules import convert_to_datetime
 from app.utilities.schema import load_schema_from_name
 
 
-def test_generate_date_form_creates_empty_form(app):
-    form_class = date_field.get_form_class([validators.Optional()])
+def test_date_field_created_with_guidance():
+    date_json = {
+        'guidance': 'Please enter a date',
+        'id': 'period-to',
+        'label': 'Period to',
+        'mandatory': True,
+        'type': 'Date',
+        'validation': {
+            'messages': {
+                'INVALID_DATE': 'The date entered is not valid.  Please correct your answer.',
+                'MANDATORY_DATE': 'Please provide an answer to continue.',
+            }
+        },
+    }
 
-    assert hasattr(form_class, 'day')
-    assert hasattr(form_class, 'month')
-    assert hasattr(form_class, 'year')
+    date_handler = DateHandler(date_json)
+    unbound_field = date_handler.get_field()
 
-
-def test_generate_month_year_date_form_creates_empty_form(app):
-    form_class = month_year_date_field.get_form_class([validators.Optional()])
-
-    assert not hasattr(form_class, 'day')
-    assert hasattr(form_class, 'month')
-    assert hasattr(form_class, 'year')
-
-
-def test_generate_year_date_form_creates_empty_form(app):
-    form_class = year_date_field.get_form_class([validators.Optional()])
-
-    assert not hasattr(form_class, 'day')
-    assert not hasattr(form_class, 'month')
-    assert hasattr(form_class, 'year')
-
-
-def test_date_form_empty_data(app):
-    form = date_field.get_form_class([validators.Optional()])
-
-    assert form().data is None
-
-
-def test_month_year_date_form_empty_data(app):
-    form = month_year_date_field.get_form_class([validators.Optional()])
-
-    assert form().data is None
-
-
-def test_year_date_form_empty_data(app):
-    form = year_date_field.get_form_class([validators.Optional()])
-
-    assert form().data is None
-
-
-def test_date_form_format_data(app):
-    schema = load_schema_from_name('test_dates')
-    error_messages = schema.error_messages
-
-    data = {'field': '2000-01-01'}
-
-    handler = DateHandler(
-        schema.get_answers_by_answer_id('single-date-answer')[0], error_messages
-    )
-
-    class TestForm(Form):
-        field = handler.get_field()
-
-    test_form = TestForm(data=data)
-
-    assert test_form.field.data == '2000-01-01'
-
-
-def test_month_year_date_form_format_data(app):
-    schema = load_schema_from_name('test_dates')
-    error_messages = schema.error_messages
-
-    data = {'field': '2000-01'}
-
-    handler = MonthYearDateHandler(
-        schema.get_answers_by_answer_id('month-year-answer')[0], error_messages
-    )
-
-    class TestForm(Form):
-        field = handler.get_field()
-
-    test_form = TestForm(data=data)
-
-    assert test_form.field.data == '2000-01'
-
-
-def test_year_date_form_format_data(app):
-    schema = load_schema_from_name('test_dates')
-    error_messages = schema.error_messages
-
-    data = {'field': '2000'}
-
-    handler = YearDateHandler(
-        schema.get_answers_by_answer_id('year-date-answer')[0], error_messages
-    )
-
-    class TestForm(Form):
-        field = handler.get_field()
-
-    test_form = TestForm(data=data)
-
-    assert test_form.field.data == '2000'
+    assert unbound_field.field_class == date_field.DateField
+    assert unbound_field.kwargs['label'] == date_json['label']
+    assert unbound_field.kwargs['description'] == date_json['guidance']
 
 
 def test_generate_date_form_validates_single_date_period(app):
