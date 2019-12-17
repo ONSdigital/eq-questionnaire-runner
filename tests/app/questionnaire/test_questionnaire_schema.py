@@ -1,4 +1,5 @@
 from app.questionnaire.questionnaire_schema import QuestionnaireSchema
+from app.questionnaire.questionnaire_schema import _get_values_for_key
 
 
 def test_get_sections(single_question_schema):
@@ -137,6 +138,14 @@ def test_get_all_questions_for_block_question():
     assert all_questions[0]['answers'][0]['id'] == 'answer1'
 
 
+def test_get_section_ids_by_list_name(sections_dependent_on_list_schema):
+    schema = QuestionnaireSchema(sections_dependent_on_list_schema)
+    when_blocks = schema.get_section_ids_dependent_on_list('list')
+
+    assert len(when_blocks) == 1
+    assert 'section2' in when_blocks
+
+
 def test_get_all_questions_for_block_question_variants():
     block = {
         'id': 'block1',
@@ -272,3 +281,20 @@ def test_get_answer_within_list_collector_with_list_item_id(
     )
 
     assert list_item_id == expected_list_item_id
+
+
+def test_get_values_for_key_ignores_variants():
+    block = {'question_variants': [{'when': 'test'}]}
+    result = list(_get_values_for_key(block, 'when', {'question_variants'}))
+    assert result == []
+
+
+def test_get_values_for_key_ignores_multiple_keys():
+    block = {
+        'question_variants': [{'when': 'test'}],
+        'content_variants': [{'when': 'test'}],
+    }
+    result = list(
+        _get_values_for_key(block, 'when', {'question_variants', 'content_variants'})
+    )
+    assert result == []

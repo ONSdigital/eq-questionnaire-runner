@@ -196,10 +196,7 @@
                                             "description": "<strong>Exclude:</strong>"
                                         },
                                         {
-                                            "list": [
-                                                "terminals and computers solely used for Electronic Point of Sale (EPOS)",
-                                                "computer controlled machinery"
-                                            ]
+                                            "list": ["terminals and computers solely used for Electronic Point of Sale (EPOS)", "computer controlled machinery"]
                                         }
                                     ]
                                 },
@@ -212,10 +209,7 @@
                                                 {
                                                     "arguments": {
                                                         "items": {
-                                                            "identifier": [
-                                                                "trad_as",
-                                                                "ru_name"
-                                                            ],
+                                                            "identifier": ["trad_as", "ru_name"],
                                                             "source": "metadata"
                                                         }
                                                     },
@@ -236,9 +230,7 @@
                                             {
                                                 "condition": "equals any",
                                                 "id": "answerb88e4433-d708-4045-bbbe-ec0e0a578be8",
-                                                "values": [
-                                                    "Yes, we use computers"
-                                                ]
+                                                "values": ["Yes, we use computers"]
                                             }
                                         ]
                                     }
@@ -307,10 +299,7 @@
                                                 {
                                                     "arguments": {
                                                         "items": {
-                                                            "identifier": [
-                                                                "trad_as",
-                                                                "ru_name"
-                                                            ],
+                                                            "identifier": ["trad_as", "ru_name"],
                                                             "source": "metadata"
                                                         }
                                                     },
@@ -406,10 +395,7 @@
                                                 {
                                                     "arguments": {
                                                         "items": {
-                                                            "identifier": [
-                                                                "trad_as",
-                                                                "ru_name"
-                                                            ],
+                                                            "identifier": ["trad_as", "ru_name"],
                                                             "source": "metadata"
                                                         }
                                                     },
@@ -430,9 +416,7 @@
                                             {
                                                 "condition": "equals any",
                                                 "id": "answer1828",
-                                                "values": [
-                                                    "Yes, we have internet access"
-                                                ]
+                                                "values": ["Yes, we have internet access"]
                                             }
                                         ]
                                     }
@@ -501,10 +485,7 @@
                                                 {
                                                     "arguments": {
                                                         "items": {
-                                                            "identifier": [
-                                                                "trad_as",
-                                                                "ru_name"
-                                                            ],
+                                                            "identifier": ["trad_as", "ru_name"],
                                                             "source": "metadata"
                                                         }
                                                     },
@@ -585,10 +566,7 @@
                                                 {
                                                     "arguments": {
                                                         "items": {
-                                                            "identifier": [
-                                                                "trad_as",
-                                                                "ru_name"
-                                                            ],
+                                                            "identifier": ["trad_as", "ru_name"],
                                                             "source": "metadata"
                                                         }
                                                     },
@@ -609,9 +587,7 @@
                                             {
                                                 "condition": "equals any",
                                                 "id": "answer1830",
-                                                "values": [
-                                                    "Yes, we use a fixed broadband connection"
-                                                ]
+                                                "values": ["Yes, we use a fixed broadband connection"]
                                             }
                                         ]
                                     }
@@ -675,10 +651,7 @@
                                                 {
                                                     "arguments": {
                                                         "items": {
-                                                            "identifier": [
-                                                                "trad_as",
-                                                                "ru_name"
-                                                            ],
+                                                            "identifier": ["trad_as", "ru_name"],
                                                             "source": "metadata"
                                                         }
                                                     },
@@ -759,10 +732,7 @@
                                                 {
                                                     "arguments": {
                                                         "items": {
-                                                            "identifier": [
-                                                                "trad_as",
-                                                                "ru_name"
-                                                            ],
+                                                            "identifier": ["trad_as", "ru_name"],
                                                             "source": "metadata"
                                                         }
                                                     },
@@ -783,9 +753,7 @@
                                             {
                                                 "condition": "equals any",
                                                 "id": "answer1835",
-                                                "values": [
-                                                    "Yes, we have a website"
-                                                ]
+                                                "values": ["Yes, we have a website"]
                                             }
                                         ]
                                     }
@@ -954,10 +922,7 @@
                                                 {
                                                     "arguments": {
                                                         "items": {
-                                                            "identifier": [
-                                                                "trad_as",
-                                                                "ru_name"
-                                                            ],
+                                                            "identifier": ["trad_as", "ru_name"],
                                                             "source": "metadata"
                                                         }
                                                     },
@@ -1067,10 +1032,7 @@
                                                 {
                                                     "arguments": {
                                                         "items": {
-                                                            "identifier": [
-                                                                "trad_as",
-                                                                "ru_name"
-                                                            ],
+                                                            "identifier": ["trad_as", "ru_name"],
                                                             "source": "metadata"
                                                         }
                                                     },
@@ -1091,9 +1053,7 @@
                                             {
                                                 "condition": "equals any",
                                                 "id": "answer1868",
-                                                "values": [
-                                                    "Yes, we received orders via a website or ‘app’"
-                                                ]
+                                                "values": ["Yes, we received orders via a website or ‘app’"]
                                             }
                                         ]
                                     }
@@ -1150,10 +1110,7 @@
                                                 {
                                                     "arguments": {
                                                         "items": {
-                                                            "identifier": [
-                                                                "trad_as",
-                                                                "ru_name"
-                                                            ],
+                                                            "identifier": ["trad_as", "ru_name"],
                                                             "source": "metadata"
                                                         }
                                                     },
@@ -1287,14 +1244,9 @@
                                 ],
                                 "calculations": [
                                     {
-                                        "answers_to_calculate": [
-                                            "answer05718a5c-7a65-4775-b28f-e2787cfa6ac1",
-                                            "answer2565ef7d-9fda-4485-b05c-1e4678fa97cd"
-                                        ],
+                                        "answers_to_calculate": ["answer05718a5c-7a65-4775-b28f-e2787cfa6ac1", "answer2565ef7d-9fda-4485-b05c-1e4678fa97cd"],
                                         "calculation_type": "sum",
-                                        "conditions": [
-                                            "equals"
-                                        ],
+                                        "conditions": ["equals"],
                                         "value": 100
                                     }
                                 ],
@@ -1373,10 +1325,7 @@
                                                 {
                                                     "arguments": {
                                                         "items": {
-                                                            "identifier": [
-                                                                "trad_as",
-                                                                "ru_name"
-                                                            ],
+                                                            "identifier": ["trad_as", "ru_name"],
                                                             "source": "metadata"
                                                         }
                                                     },
@@ -1397,10 +1346,7 @@
                                             {
                                                 "condition": "contains all",
                                                 "id": "answer1872",
-                                                "values": [
-                                                    "Via this business’ own website or ‘app’",
-                                                    "Via an e-commerce market place website or ‘app’"
-                                                ]
+                                                "values": ["Via this business’ own website or ‘app’", "Via an e-commerce market place website or ‘app’"]
                                             }
                                         ]
                                     }
@@ -1452,14 +1398,9 @@
                                 ],
                                 "calculations": [
                                     {
-                                        "answers_to_calculate": [
-                                            "answer7f9aa610-1122-48c3-9ba1-521891b0a11f",
-                                            "answer981e53d9-69df-40b9-9349-5a44cf6ad419"
-                                        ],
+                                        "answers_to_calculate": ["answer7f9aa610-1122-48c3-9ba1-521891b0a11f", "answer981e53d9-69df-40b9-9349-5a44cf6ad419"],
                                         "calculation_type": "sum",
-                                        "conditions": [
-                                            "equals"
-                                        ],
+                                        "conditions": ["equals"],
                                         "value": 100
                                     }
                                 ],
@@ -1543,10 +1484,7 @@
                                                 {
                                                     "arguments": {
                                                         "items": {
-                                                            "identifier": [
-                                                                "trad_as",
-                                                                "ru_name"
-                                                            ],
+                                                            "identifier": ["trad_as", "ru_name"],
                                                             "source": "metadata"
                                                         }
                                                     },
@@ -1567,10 +1505,7 @@
                                             {
                                                 "condition": "contains all",
                                                 "id": "answer1876",
-                                                "values": [
-                                                    "UK",
-                                                    "Other EU countries"
-                                                ]
+                                                "values": ["UK", "Other EU countries"]
                                             }
                                         ]
                                     }
@@ -1582,10 +1517,7 @@
                                             {
                                                 "condition": "contains all",
                                                 "id": "answer1876",
-                                                "values": [
-                                                    "UK",
-                                                    "Rest of the world"
-                                                ]
+                                                "values": ["UK", "Rest of the world"]
                                             }
                                         ]
                                     }
@@ -1597,10 +1529,7 @@
                                             {
                                                 "condition": "contains all",
                                                 "id": "answer1876",
-                                                "values": [
-                                                    "Other EU countries",
-                                                    "Rest of the world"
-                                                ]
+                                                "values": ["Other EU countries", "Rest of the world"]
                                             }
                                         ]
                                     }
@@ -1612,11 +1541,7 @@
                                             {
                                                 "condition": "contains all",
                                                 "id": "answer1876",
-                                                "values": [
-                                                    "UK",
-                                                    "Other EU countries",
-                                                    "Rest of the world"
-                                                ]
+                                                "values": ["UK", "Other EU countries", "Rest of the world"]
                                             }
                                         ]
                                     }
@@ -1699,9 +1624,7 @@
                                             "answer8794a304-c6fe-40a8-9309-04c8c66736ed"
                                         ],
                                         "calculation_type": "sum",
-                                        "conditions": [
-                                            "equals"
-                                        ],
+                                        "conditions": ["equals"],
                                         "value": 100
                                     }
                                 ],
@@ -1722,10 +1645,7 @@
                                                 {
                                                     "arguments": {
                                                         "items": {
-                                                            "identifier": [
-                                                                "trad_as",
-                                                                "ru_name"
-                                                            ],
+                                                            "identifier": ["trad_as", "ru_name"],
                                                             "source": "metadata"
                                                         }
                                                     },
@@ -1809,10 +1729,7 @@
                                                 {
                                                     "arguments": {
                                                         "items": {
-                                                            "identifier": [
-                                                                "trad_as",
-                                                                "ru_name"
-                                                            ],
+                                                            "identifier": ["trad_as", "ru_name"],
                                                             "source": "metadata"
                                                         }
                                                     },
@@ -1833,9 +1750,7 @@
                                             {
                                                 "condition": "equals any",
                                                 "id": "answer1878",
-                                                "values": [
-                                                    "Yes, we received orders via EDI-type messages"
-                                                ]
+                                                "values": ["Yes, we received orders via EDI-type messages"]
                                             }
                                         ]
                                     }
@@ -1902,10 +1817,7 @@
                                                 {
                                                     "arguments": {
                                                         "items": {
-                                                            "identifier": [
-                                                                "trad_as",
-                                                                "ru_name"
-                                                            ],
+                                                            "identifier": ["trad_as", "ru_name"],
                                                             "source": "metadata"
                                                         }
                                                     },
@@ -1991,10 +1903,7 @@
                                                 {
                                                     "arguments": {
                                                         "items": {
-                                                            "identifier": [
-                                                                "trad_as",
-                                                                "ru_name"
-                                                            ],
+                                                            "identifier": ["trad_as", "ru_name"],
                                                             "source": "metadata"
                                                         }
                                                     },
@@ -2015,10 +1924,7 @@
                                             {
                                                 "condition": "contains all",
                                                 "id": "answer1881",
-                                                "values": [
-                                                    "UK",
-                                                    "Other EU countries"
-                                                ]
+                                                "values": ["UK", "Other EU countries"]
                                             }
                                         ]
                                     }
@@ -2030,10 +1936,7 @@
                                             {
                                                 "condition": "contains all",
                                                 "id": "answer1881",
-                                                "values": [
-                                                    "UK",
-                                                    "Rest of the world"
-                                                ]
+                                                "values": ["UK", "Rest of the world"]
                                             }
                                         ]
                                     }
@@ -2045,10 +1948,7 @@
                                             {
                                                 "condition": "contains all",
                                                 "id": "answer1881",
-                                                "values": [
-                                                    "Other EU countries",
-                                                    "Rest of the world"
-                                                ]
+                                                "values": ["Other EU countries", "Rest of the world"]
                                             }
                                         ]
                                     }
@@ -2060,11 +1960,7 @@
                                             {
                                                 "condition": "contains all",
                                                 "id": "answer1881",
-                                                "values": [
-                                                    "UK",
-                                                    "Other EU countries",
-                                                    "Rest of the world"
-                                                ]
+                                                "values": ["UK", "Other EU countries", "Rest of the world"]
                                             }
                                         ]
                                     }
@@ -2147,9 +2043,7 @@
                                             "answerbfedc667-482f-4115-89fe-92601b0aae19"
                                         ],
                                         "calculation_type": "sum",
-                                        "conditions": [
-                                            "equals"
-                                        ],
+                                        "conditions": ["equals"],
                                         "value": 100
                                     }
                                 ],
@@ -2170,10 +2064,7 @@
                                                 {
                                                     "arguments": {
                                                         "items": {
-                                                            "identifier": [
-                                                                "trad_as",
-                                                                "ru_name"
-                                                            ],
+                                                            "identifier": ["trad_as", "ru_name"],
                                                             "source": "metadata"
                                                         }
                                                     },
@@ -2277,10 +2168,7 @@
                                                 {
                                                     "arguments": {
                                                         "items": {
-                                                            "identifier": [
-                                                                "trad_as",
-                                                                "ru_name"
-                                                            ],
+                                                            "identifier": ["trad_as", "ru_name"],
                                                             "source": "metadata"
                                                         }
                                                     },
@@ -2446,10 +2334,7 @@
                                                 {
                                                     "arguments": {
                                                         "items": {
-                                                            "identifier": [
-                                                                "trad_as",
-                                                                "ru_name"
-                                                            ],
+                                                            "identifier": ["trad_as", "ru_name"],
                                                             "source": "metadata"
                                                         }
                                                     },
@@ -2470,9 +2355,7 @@
                                             {
                                                 "condition": "equals any",
                                                 "id": "answer1ecfb94e-384e-4aeb-84aa-95da13970a02",
-                                                "values": [
-                                                    "Yes, we buy cloud computing services"
-                                                ]
+                                                "values": ["Yes, we buy cloud computing services"]
                                             }
                                         ]
                                     }
@@ -2548,10 +2431,7 @@
                                                 {
                                                     "arguments": {
                                                         "items": {
-                                                            "identifier": [
-                                                                "trad_as",
-                                                                "ru_name"
-                                                            ],
+                                                            "identifier": ["trad_as", "ru_name"],
                                                             "source": "metadata"
                                                         }
                                                     },
@@ -2739,10 +2619,7 @@
                                                 {
                                                     "arguments": {
                                                         "items": {
-                                                            "identifier": [
-                                                                "trad_as",
-                                                                "ru_name"
-                                                            ],
+                                                            "identifier": ["trad_as", "ru_name"],
                                                             "source": "metadata"
                                                         }
                                                     },
@@ -2902,10 +2779,7 @@
                                                 {
                                                     "arguments": {
                                                         "items": {
-                                                            "identifier": [
-                                                                "trad_as",
-                                                                "ru_name"
-                                                            ],
+                                                            "identifier": ["trad_as", "ru_name"],
                                                             "source": "metadata"
                                                         }
                                                     },
@@ -3010,10 +2884,7 @@
                                                 {
                                                     "arguments": {
                                                         "items": {
-                                                            "identifier": [
-                                                                "trad_as",
-                                                                "ru_name"
-                                                            ],
+                                                            "identifier": ["trad_as", "ru_name"],
                                                             "source": "metadata"
                                                         }
                                                     },
@@ -3034,9 +2905,7 @@
                                             {
                                                 "condition": "equals any",
                                                 "id": "answera26934bd-a7a6-4f5c-b6e6-8248ca22eb41",
-                                                "values": [
-                                                    "Yes, another business performed big data analysis for us"
-                                                ]
+                                                "values": ["Yes, another business performed big data analysis for us"]
                                             }
                                         ]
                                     }
@@ -3096,10 +2965,7 @@
                                                 {
                                                     "arguments": {
                                                         "items": {
-                                                            "identifier": [
-                                                                "trad_as",
-                                                                "ru_name"
-                                                            ],
+                                                            "identifier": ["trad_as", "ru_name"],
                                                             "source": "metadata"
                                                         }
                                                     },
@@ -3161,10 +3027,7 @@
                                                 {
                                                     "arguments": {
                                                         "items": {
-                                                            "identifier": [
-                                                                "trad_as",
-                                                                "ru_name"
-                                                            ],
+                                                            "identifier": ["trad_as", "ru_name"],
                                                             "source": "metadata"
                                                         }
                                                     },
@@ -3274,10 +3137,7 @@
                                                 {
                                                     "arguments": {
                                                         "items": {
-                                                            "identifier": [
-                                                                "trad_as",
-                                                                "ru_name"
-                                                            ],
+                                                            "identifier": ["trad_as", "ru_name"],
                                                             "source": "metadata"
                                                         }
                                                     },
@@ -3344,10 +3204,7 @@
                                                 {
                                                     "arguments": {
                                                         "items": {
-                                                            "identifier": [
-                                                                "trad_as",
-                                                                "ru_name"
-                                                            ],
+                                                            "identifier": ["trad_as", "ru_name"],
                                                             "source": "metadata"
                                                         }
                                                     },
@@ -3400,10 +3257,7 @@
                                                 {
                                                     "arguments": {
                                                         "items": {
-                                                            "identifier": [
-                                                                "trad_as",
-                                                                "ru_name"
-                                                            ],
+                                                            "identifier": ["trad_as", "ru_name"],
                                                             "source": "metadata"
                                                         }
                                                     },
@@ -3424,9 +3278,7 @@
                                             {
                                                 "condition": "equals any",
                                                 "id": "answer1826",
-                                                "values": [
-                                                    "Yes, we recruited or tried to recruit ICT or IT specialists"
-                                                ]
+                                                "values": ["Yes, we recruited or tried to recruit ICT or IT specialists"]
                                             }
                                         ]
                                     }
@@ -3477,10 +3329,7 @@
                                                 {
                                                     "arguments": {
                                                         "items": {
-                                                            "identifier": [
-                                                                "trad_as",
-                                                                "ru_name"
-                                                            ],
+                                                            "identifier": ["trad_as", "ru_name"],
                                                             "source": "metadata"
                                                         }
                                                     },
@@ -3534,10 +3383,7 @@
                                                 {
                                                     "arguments": {
                                                         "items": {
-                                                            "identifier": [
-                                                                "trad_as",
-                                                                "ru_name"
-                                                            ],
+                                                            "identifier": ["trad_as", "ru_name"],
                                                             "source": "metadata"
                                                         }
                                                     },
@@ -3625,10 +3471,7 @@
                                             "description": "Include:"
                                         },
                                         {
-                                            "list": [
-                                                "printing services provided by parent or affiliate businesses",
-                                                "use of rented or leased 3D printers"
-                                            ]
+                                            "list": ["printing services provided by parent or affiliate businesses", "use of rented or leased 3D printers"]
                                         }
                                     ]
                                 },
@@ -3641,10 +3484,7 @@
                                                 {
                                                     "arguments": {
                                                         "items": {
-                                                            "identifier": [
-                                                                "trad_as",
-                                                                "ru_name"
-                                                            ],
+                                                            "identifier": ["trad_as", "ru_name"],
                                                             "source": "metadata"
                                                         }
                                                     },
@@ -3665,9 +3505,7 @@
                                             {
                                                 "condition": "equals any",
                                                 "id": "answerba8af347-cbf7-4591-a5ea-01e9ab3613f3",
-                                                "values": [
-                                                    "Yes, we use 3D printers"
-                                                ]
+                                                "values": ["Yes, we use 3D printers"]
                                             }
                                         ]
                                     }
@@ -3730,10 +3568,7 @@
                                                 {
                                                     "arguments": {
                                                         "items": {
-                                                            "identifier": [
-                                                                "trad_as",
-                                                                "ru_name"
-                                                            ],
+                                                            "identifier": ["trad_as", "ru_name"],
                                                             "source": "metadata"
                                                         }
                                                     },
@@ -3943,10 +3778,7 @@
                                                 {
                                                     "arguments": {
                                                         "items": {
-                                                            "identifier": [
-                                                                "trad_as",
-                                                                "ru_name"
-                                                            ],
+                                                            "identifier": ["trad_as", "ru_name"],
                                                             "source": "metadata"
                                                         }
                                                     },
@@ -4018,10 +3850,7 @@
                                                 {
                                                     "arguments": {
                                                         "items": {
-                                                            "identifier": [
-                                                                "trad_as",
-                                                                "ru_name"
-                                                            ],
+                                                            "identifier": ["trad_as", "ru_name"],
                                                             "source": "metadata"
                                                         }
                                                     },
@@ -4042,9 +3871,7 @@
                                             {
                                                 "condition": "equals any",
                                                 "id": "answer1ea69f67-1d89-4029-80dc-e25e3d552a7f",
-                                                "values": [
-                                                    "Yes, we use service robots"
-                                                ]
+                                                "values": ["Yes, we use service robots"]
                                             }
                                         ]
                                     }
@@ -4129,10 +3956,7 @@
                                                 {
                                                     "arguments": {
                                                         "items": {
-                                                            "identifier": [
-                                                                "trad_as",
-                                                                "ru_name"
-                                                            ],
+                                                            "identifier": ["trad_as", "ru_name"],
                                                             "source": "metadata"
                                                         }
                                                     },
@@ -4247,10 +4071,7 @@
                                                 {
                                                     "arguments": {
                                                         "items": {
-                                                            "identifier": [
-                                                                "trad_as",
-                                                                "ru_name"
-                                                            ],
+                                                            "identifier": ["trad_as", "ru_name"],
                                                             "source": "metadata"
                                                         }
                                                     },
