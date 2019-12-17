@@ -36,10 +36,6 @@ class FieldHandler(ABC):
         return []
 
     @cached_property
-    def answer_type(self):
-        return self.answer_schema.get('type')
-
-    @cached_property
     def label(self):
         return self.answer_schema.get('label')
 

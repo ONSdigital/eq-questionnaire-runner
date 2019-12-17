@@ -8,8 +8,9 @@ from wtforms import Form
 
 from app.data_model.answer import Answer
 from app.data_model.answer_store import AnswerStore
-from app.forms.date_form import DateFormType, get_form
 from app.forms.field_handlers.date_handler import DateHandler
+from app.forms.field_handlers.year_month_date_handler import YearMonthDateHandler
+from app.forms.field_handlers.year_date_handler import YearDateHandler
 from app.questionnaire.location import Location
 from app.questionnaire.questionnaire_schema import QuestionnaireSchema
 from app.questionnaire.rules import convert_to_datetime
@@ -21,7 +22,7 @@ def test_generate_date_form_creates_empty_form(app):
     handler = DateHandler(
         schema.get_answers_by_answer_id('single-date-answer')[0], schema.error_messages
     )
-    form = get_form(DateFormType.YearMonthDay, handler.validators)
+    form = handler.get_form_class()
 
     assert hasattr(form, 'day')
     assert hasattr(form, 'month')
@@ -30,10 +31,10 @@ def test_generate_date_form_creates_empty_form(app):
 
 def test_generate_month_year_date_form_creates_empty_form(app):
     schema = load_schema_from_name('test_dates')
-    handler = DateHandler(
+    handler = YearMonthDateHandler(
         schema.get_answers_by_answer_id('month-year-answer')[0], schema.error_messages
     )
-    form = get_form(DateFormType.YearMonth, handler.validators)
+    form = handler.get_form_class()
 
     assert not hasattr(form, 'day')
     assert hasattr(form, 'month')
@@ -43,10 +44,10 @@ def test_generate_month_year_date_form_creates_empty_form(app):
 def test_generate_year_date_form_creates_empty_form(app):
     schema = load_schema_from_name('test_dates')
     error_messages = schema.error_messages
-    handler = DateHandler(
+    handler = YearDateHandler(
         schema.get_answers_by_answer_id('year-date-answer')[0], error_messages
     )
-    form = get_form(DateFormType.Year, handler.validators)
+    form = handler.get_form_class()
 
     assert not hasattr(form, 'day')
     assert not hasattr(form, 'month')
@@ -57,10 +58,10 @@ def test_date_form_empty_data(app):
     schema = load_schema_from_name('test_dates')
     error_messages = schema.error_messages
 
-    handler = DateHandler(
+    handler = YearMonthDateHandler(
         schema.get_answers_by_answer_id('single-date-answer')[0], error_messages
     )
-    form = get_form(DateFormType.YearMonthDay, handler.validators)
+    form = handler.get_form_class()
 
     assert form().data is None
 
@@ -69,10 +70,10 @@ def test_month_year_date_form_empty_data(app):
     schema = load_schema_from_name('test_dates')
     error_messages = schema.error_messages
 
-    handler = DateHandler(
+    handler = YearMonthDateHandler(
         schema.get_answers_by_answer_id('month-year-answer')[0], error_messages
     )
-    form = get_form(DateFormType.YearMonth, handler.validators)
+    form = handler.get_form_class()
 
     assert form().data is None
 
@@ -81,10 +82,10 @@ def test_year_date_form_empty_data(app):
     schema = load_schema_from_name('test_dates')
     error_messages = schema.error_messages
 
-    handler = DateHandler(
+    handler = YearDateHandler(
         schema.get_answers_by_answer_id('year-date-answer')[0], error_messages
     )
-    form = get_form(DateFormType.Year, handler.validators)
+    form = handler.get_form_class()
 
     assert form().data is None
 
@@ -113,7 +114,7 @@ def test_month_year_date_form_format_data(app):
 
     data = {'field': '2000-01'}
 
-    handler = DateHandler(
+    handler = YearMonthDateHandler(
         schema.get_answers_by_answer_id('month-year-answer')[0], error_messages
     )
 
@@ -131,7 +132,7 @@ def test_year_date_form_format_data(app):
 
     data = {'field': '2000'}
 
-    handler = DateHandler(
+    handler = YearDateHandler(
         schema.get_answers_by_answer_id('year-date-answer')[0], error_messages
     )
 
@@ -151,7 +152,7 @@ def test_generate_date_form_validates_single_date_period(app):
         schema.error_messages,
         metadata=test_metadata,
     )
-    form = get_form(DateFormType.YearMonthDay, handler.validators)
+    form = handler.get_form_class()
 
     assert hasattr(form, 'day')
     assert hasattr(form, 'month')
@@ -170,7 +171,7 @@ def test_generate_date_form_validates_single_date_period_with_bespoke_message(ap
         'validation': {'messages': {'SINGLE_DATE_PERIOD_TOO_LATE': 'Test Message'}},
     }
     handler = DateHandler(answer, error_messages)
-    form = get_form(DateFormType.YearMonthDay, handler.validators)
+    form = handler.get_form_class()
 
     assert hasattr(form, 'day')
     assert hasattr(form, 'month')

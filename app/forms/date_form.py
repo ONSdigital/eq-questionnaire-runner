@@ -1,22 +1,13 @@
 import logging
 
-from enum import Enum
-
 from werkzeug.utils import cached_property
-from wtforms import Form, StringField, FormField
+from wtforms import Form, FormField
 
 logger = logging.getLogger(__name__)
 
 
-class DateFormType(Enum):
-    YearMonthDay = 1
-    YearMonth = 2
-    Year = 3
-
-
 class DateField(FormField):
-    def __init__(self, date_form_type: DateFormType, validators, **kwargs):
-        form_class = get_form(date_form_type, validators)
+    def __init__(self, form_class, **kwargs):
         super().__init__(form_class, **kwargs)
 
     def process(self, formdata, data=None):
@@ -58,21 +49,3 @@ class DateForm(Form):
 
         except (TypeError, ValueError):
             return None
-
-
-def get_form(form_type, validate_with):
-    class CustomDateForm(DateForm):
-        pass
-
-    if form_type in DateFormType:
-        # Validation is only ever added to the 1 field that shows in all 3 variants
-        # This is to prevent an error message for each input box
-        CustomDateForm.year = StringField(validators=validate_with)
-
-    if form_type in [DateFormType.YearMonth, DateFormType.YearMonthDay]:
-        CustomDateForm.month = StringField()
-
-    if form_type == DateFormType.YearMonthDay:
-        CustomDateForm.day = StringField()
-
-    return CustomDateForm

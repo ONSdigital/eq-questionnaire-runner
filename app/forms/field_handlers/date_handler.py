@@ -2,8 +2,9 @@ from datetime import datetime
 
 from dateutil.relativedelta import relativedelta
 from werkzeug.utils import cached_property
+from wtforms import StringField
 
-from app.forms.date_form import DateFormType, DateField
+from app.forms.date_form import DateField, DateForm
 from app.forms.field_handlers.field_handler import FieldHandler
 from app.questionnaire.rules import convert_to_datetime
 from app.forms.validators import (
@@ -16,20 +17,19 @@ from app.forms.validators import (
 
 class DateHandler(FieldHandler):
     MANDATORY_MESSAGE_KEY = 'MANDATORY_DATE'
-    DATE_FIELD_MAP = {
-        'Date': DateFormType.YearMonthDay,
-        'MonthYearDate': DateFormType.YearMonth,
-        'YearDate': DateFormType.Year,
-    }
-    DATE_FORMAT_MAP = {
-        DateFormType.YearMonthDay: 'yyyy-mm-dd',
-        DateFormType.YearMonth: 'yyyy-mm',
-        DateFormType.Year: 'yyyy',
-    }
+    DATE_FORMAT = 'yyyy-mm-dd'
 
-    @cached_property
-    def form_type(self):
-        return self.DATE_FIELD_MAP[self.answer_type]
+    def get_form_class(self):
+        class CustomDateForm(DateForm):
+            pass
+
+        # Validation is only ever added to the 1 field that shows in all 3 variants
+        # This is to prevent an error message for each input box
+        CustomDateForm.year = StringField(validators=self.validators)
+        CustomDateForm.month = StringField()
+        CustomDateForm.day = StringField()
+
+        return CustomDateForm
 
     @cached_property
     def validators(self):
@@ -56,31 +56,12 @@ class DateHandler(FieldHandler):
         return validate_with
 
     def get_field(self) -> DateField:
-        return DateField(
-            self.form_type, self.validators, label=self.label, description=self.guidance
-        )
+        form_class = self.get_form_class()
+        return DateField(form_class, label=self.label, description=self.guidance)
 
     def get_min_max_validator(self, minimum_date, maximum_date):
         messages = self.answer_schema.get('validation', {}).get('messages')
-        date_format = self.DATE_FORMAT_MAP[self.form_type]
         display_format = 'd MMMM yyyy'
-
-        if date_format == 'yyyy-mm':
-            display_format = 'MMMM yyyy'
-            minimum_date = (
-                minimum_date.replace(day=1) if minimum_date else None
-            )  # First day of Month
-            maximum_date = (
-                maximum_date + relativedelta(day=31) if maximum_date else None
-            )  # Last day of month
-        elif date_format == 'yyyy':
-            display_format = 'yyyy'
-            minimum_date = (
-                minimum_date.replace(month=1, day=1) if minimum_date else None
-            )  # January 1st
-            maximum_date = (
-                maximum_date.replace(month=12, day=31) if maximum_date else None
-            )  # Last day of december
 
         return SingleDatePeriodCheck(
             messages=messages,
