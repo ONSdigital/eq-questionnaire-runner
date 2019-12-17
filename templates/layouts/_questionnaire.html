@@ -34,12 +34,11 @@
       }}
   {% endblock %}
 
-  {% block cancel_and_return %}{% endblock %}
-
-  {% if content.return_to_hub_url %}
+  {% block cancel_and_return %}
+    {% if content.return_to_hub_url %}
       <p class="u-mt-xl">{{ _("Can't complete this question?") }}<br>
       <a href="{{ content.return_to_hub_url }}">{{ _("Choose another section and return to this later") }}</a></p>
-  {% endif %}
-
+    {% endif %}
+  {% endblock %}
 
 {% endblock %}
