@@ -9,7 +9,7 @@ from app.forms.fields.select_field_with_detail_answer import SelectFieldWithDeta
 from app.forms.fields.integer_field_with_separator import IntegerFieldWithSeparator
 from app.forms.fields.decimal_field_with_separator import DecimalFieldWithSeparator
 
-from app.forms.date_form import DateField
+from app.forms.fields.date_field import DateField
 from app.forms.field_factory import get_field
 from app.forms.field_handlers.select_handler import SelectHandler
 from app.forms.error_messages import error_messages

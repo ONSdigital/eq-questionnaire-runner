@@ -1,7 +1,7 @@
 from dateutil.relativedelta import relativedelta
-from wtforms import StringField
+from werkzeug.utils import cached_property
+from wtforms import StringField, Form
 
-from app.forms.date_form import DateForm
 from app.forms.field_handlers.date_handler import DateHandler
 from app.forms.validators import SingleDatePeriodCheck
 
@@ -10,9 +10,20 @@ class YearMonthDateHandler(DateHandler):
     DATE_FORMAT = 'yyyy-mm'
 
     def get_form_class(self):
-        class YearMonthDateForm(DateForm):
+        class YearMonthDateForm(Form):
             year = StringField(validators=self.validators)
             month = StringField()
+
+            @cached_property
+            def data(self):
+                data = super().data
+
+                try:
+                    return '{year:04d}-{month:02d}'.format(
+                        year=int(data['year']), month=int(data['month'])
+                    )
+                except (TypeError, ValueError):
+                    return None
 
         return YearMonthDateForm
 

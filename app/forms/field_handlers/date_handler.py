@@ -2,10 +2,10 @@ from datetime import datetime
 
 from dateutil.relativedelta import relativedelta
 from werkzeug.utils import cached_property
-from wtforms import StringField
+from wtforms import StringField, Form
 
-from app.forms.date_form import DateField, DateForm
 from app.forms.field_handlers.field_handler import FieldHandler
+from app.forms.fields.date_field import DateField
 from app.questionnaire.rules import convert_to_datetime
 from app.forms.validators import (
     SingleDatePeriodCheck,
@@ -20,12 +20,25 @@ class DateHandler(FieldHandler):
     DATE_FORMAT = 'yyyy-mm-dd'
 
     def get_form_class(self):
-        class YearMonthDayDateForm(DateForm):
+        class YearMonthDayDateForm(Form):
             # Validation is only ever added to the 1 field that shows in all 3 variants
             # This is to prevent an error message for each input box
             year = StringField(validators=self.validators)
             month = StringField()
             day = StringField()
+
+            @cached_property
+            def data(self):
+                data = super().data
+
+                try:
+                    return '{year:04d}-{month:02d}-{day:02d}'.format(
+                        year=int(data['year']),
+                        month=int(data['month']),
+                        day=int(data['day']),
+                    )
+                except (TypeError, ValueError):
+                    return None
 
         return YearMonthDayDateForm
 
