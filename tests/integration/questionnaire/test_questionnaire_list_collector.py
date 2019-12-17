@@ -199,7 +199,7 @@ class TestQuestionnaireListCollector(IntegrationTestCase):
 
         self.post({'anyone-else': 'Yes'})
 
-        self.assertInBody("Don't need to add anyone else?")
+        self.assertInBody("Don’t need to add anyone else?")
 
     def test_cancel_text_displayed_on_edit_block_if_exists(self):
         self.launchSurvey('test_list_collector')
@@ -214,7 +214,7 @@ class TestQuestionnaireListCollector(IntegrationTestCase):
 
         self.get(change_link)
 
-        self.assertInBody("Don't need to add anyone else?")
+        self.assertInBody("Don’t need to change anything?")
 
     def test_cancel_text_displayed_on_remove_block_if_exists(self):
         self.launchSurvey('test_list_collector')
@@ -229,4 +229,4 @@ class TestQuestionnaireListCollector(IntegrationTestCase):
 
         self.get(remove_link)
 
-        self.assertInBody("Don't need to add anyone else?")
+        self.assertInBody("Don’t need to remove this person?")
