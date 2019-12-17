@@ -47,6 +47,9 @@ class ListAction(Question):
             self.parent_location.block_id
         )
         self.questionnaire_store_updater.remove_answers(answer_ids_to_remove)
+        self.evaluate_and_update_section_status_on_list_change(
+            self.parent_block['for_list']
+        )
         self.questionnaire_store_updater.save()
 
     def _get_location_url(self, block_id):

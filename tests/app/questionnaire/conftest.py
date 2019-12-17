@@ -352,6 +352,111 @@ def list_collector_variant_schema():
     }
 
 
+@pytest.fixture
+def sections_dependent_on_list_schema():
+    return {
+        'sections': [
+            {
+                'id': 'section1',
+                'groups': [
+                    {
+                        'id': 'group1',
+                        'blocks': [
+                            {
+                                'id': 'list-collector',
+                                'type': 'ListCollector',
+                                'for_list': 'list',
+                                'question': {},
+                                'add_block': {
+                                    'id': 'add-block',
+                                    'type': 'ListAddQuestion',
+                                    'question': {},
+                                },
+                                'edit_block': {
+                                    'id': 'edit-block',
+                                    'type': 'ListEditQuestion',
+                                    'question': {},
+                                },
+                                'remove_block': {
+                                    'id': 'remove-block',
+                                    'type': 'ListRemoveQuestion',
+                                    'question': {},
+                                },
+                            }
+                        ],
+                    }
+                ],
+            },
+            {
+                'id': 'section2',
+                'groups': [
+                    {
+                        'id': 'group2',
+                        'blocks': [
+                            {
+                                'type': 'Question',
+                                'id': 'block2',
+                                'question': {
+                                    'answers': [
+                                        {
+                                            'id': 'answer1',
+                                            'mandatory': True,
+                                            'type': 'General',
+                                        }
+                                    ],
+                                    'id': 'question1',
+                                    'title': {'text': 'Does anyone else live here?'},
+                                    'type': 'General',
+                                },
+                                'when': [
+                                    {
+                                        'condition': 'greater than',
+                                        'list': 'list',
+                                        'value': 0,
+                                    }
+                                ],
+                            }
+                        ],
+                    }
+                ],
+            },
+            {
+                'id': 'section3',
+                'groups': [
+                    {
+                        'id': 'group3',
+                        'blocks': [
+                            {
+                                'type': 'Question',
+                                'id': 'block3',
+                                'question': {
+                                    'answers': [
+                                        {
+                                            'id': 'answer1',
+                                            'mandatory': True,
+                                            'type': 'General',
+                                        }
+                                    ],
+                                    'id': 'question1',
+                                    'title': {'text': 'Does anyone else live here?'},
+                                    'type': 'General',
+                                },
+                                'when': [
+                                    {
+                                        'condition': 'greater than',
+                                        'list': 'not-the-list',
+                                        'value': 0,
+                                    }
+                                ],
+                            }
+                        ],
+                    }
+                ],
+            },
+        ]
+    }
+
+
 @pytest.fixture()
 def content_variant_schema():
     return {
