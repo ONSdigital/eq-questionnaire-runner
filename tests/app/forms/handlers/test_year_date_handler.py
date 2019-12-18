@@ -2,7 +2,7 @@ from app.forms.field_handlers.year_date_handler import YearDateHandler
 from app.forms.fields.year_date_field import YearDateField
 
 
-def test_year_date_field_created_with_guidance():
+def test_get_field():
     date_json = {
         'guidance': '',
         'id': 'month-year-answer',

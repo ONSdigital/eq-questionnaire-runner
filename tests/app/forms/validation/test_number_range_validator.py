@@ -4,7 +4,7 @@ from wtforms.validators import ValidationError
 
 from app.forms.field_handlers.number_handler import NumberHandler
 from app.forms.fields.integer_field_with_separator import IntegerFieldWithSeparator
-from app.forms.field_factory import get_field
+from app.forms.field_factory import get_field_handler
 from app.jinja_filters import format_number
 from app.forms.error_messages import error_messages
 from app.forms.validators import NumberRange
@@ -112,9 +112,9 @@ class TestNumberRangeValidator(unittest.TestCase):
             'type': 'Currency',
         }
         returned_error_messages = answer['validation']['messages']
-        integer_field = get_field(
+        integer_field = get_field_handler(
             answer, returned_error_messages, self.store, {}, None, False
-        )
+        ).get_field()
 
         self.assertTrue(integer_field.field_class == IntegerFieldWithSeparator)
 
@@ -154,7 +154,9 @@ class TestNumberRangeValidator(unittest.TestCase):
         }
         returned_error_messages = answer['validation']['messages']
 
-        integer_field = get_field(answer, error_messages, self.store, {}, None, False)
+        integer_field = get_field_handler(
+            answer, error_messages, self.store, {}, None, False
+        ).get_field()
 
         self.assertTrue(integer_field.field_class == IntegerFieldWithSeparator)
 
@@ -189,7 +191,9 @@ class TestNumberRangeValidator(unittest.TestCase):
         }
         error_message = error_messages['NUMBER_TOO_LARGE'] % dict(max=max_value)
 
-        integer_field = get_field(answer, error_messages, self.store, {}, None, False)
+        integer_field = get_field_handler(
+            answer, error_messages, self.store, {}, None, False
+        ).get_field()
 
         self.assertTrue(integer_field.field_class == IntegerFieldWithSeparator)
 
@@ -222,7 +226,9 @@ class TestNumberRangeValidator(unittest.TestCase):
         }
         error_message = error_messages['NUMBER_TOO_SMALL'] % dict(min=min_value)
 
-        integer_field = get_field(answer, error_messages, self.store, {}, None, False)
+        integer_field = get_field_handler(
+            answer, error_messages, self.store, {}, None, False
+        ).get_field()
 
         self.assertTrue(integer_field.field_class == IntegerFieldWithSeparator)
 
@@ -262,9 +268,9 @@ class TestNumberRangeValidator(unittest.TestCase):
         }
         returned_error_messages = answer['validation']['messages']
 
-        integer_field = get_field(
+        integer_field = get_field_handler(
             answer, returned_error_messages, self.store, {}, None, False
-        )
+        ).get_field()
 
         self.assertTrue(integer_field.field_class == IntegerFieldWithSeparator)
 
@@ -309,14 +315,14 @@ class TestNumberRangeValidator(unittest.TestCase):
         }
         returned_error_messages = answer['validation']['messages']
 
-        integer_field = get_field(
+        integer_field = get_field_handler(
             answer,
             returned_error_messages,
             self.store,
             {'schema_name': 'test_numbers'},
             None,
             False,
-        )
+        ).get_field()
 
         self.assertTrue(integer_field.field_class == IntegerFieldWithSeparator)
 
@@ -359,9 +365,9 @@ class TestNumberRangeValidator(unittest.TestCase):
         }
         returned_error_messages = answer['validation']['messages']
 
-        integer_field = get_field(
+        integer_field = get_field_handler(
             answer, returned_error_messages, self.store, {}, None, False
-        )
+        ).get_field()
 
         for validator in integer_field.kwargs['validators']:
             if isinstance(validator, NumberRange):
@@ -387,9 +393,9 @@ class TestNumberRangeValidator(unittest.TestCase):
 
         returned_error_messages = answer['validation']['messages']
 
-        integer_field = get_field(
+        integer_field = get_field_handler(
             answer, returned_error_messages, self.store, {}, None, False
-        )
+        ).get_field()
 
         self.assertTrue(integer_field.field_class == IntegerFieldWithSeparator)
 
@@ -429,9 +435,9 @@ class TestNumberRangeValidator(unittest.TestCase):
         }
         returned_error_messages = answer['validation']['messages']
 
-        integer_field = get_field(
+        integer_field = get_field_handler(
             answer, returned_error_messages, self.store, {}, None, False
-        )
+        ).get_field()
 
         self.assertTrue(integer_field.field_class == IntegerFieldWithSeparator)
 

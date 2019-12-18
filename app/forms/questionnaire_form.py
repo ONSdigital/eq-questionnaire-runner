@@ -8,7 +8,7 @@ from flask_wtf import FlaskForm
 from werkzeug.datastructures import MultiDict
 from wtforms import validators
 
-from app.forms.field_factory import get_field
+from app.forms.field_factory import get_field_handler
 from app.forms.field_handlers.date_handler import DateHandler
 from app.forms.validators import DateRangeCheck, SumCheck, MutuallyExclusiveCheck
 
@@ -333,18 +333,18 @@ def get_answer_fields(question, data, error_messages, answer_store, metadata, lo
                     else error_messages
                 )
 
-                answer_fields[option['detail_answer']['id']] = get_field(
+                answer_fields[option['detail_answer']['id']] = get_field_handler(
                     detail_answer,
                     detail_answer_error_messages,
                     answer_store,
                     metadata,
                     location,
                     disable_validation=disable_validation,
-                )
+                ).get_field()
 
-        answer_fields[answer['id']] = get_field(
+        answer_fields[answer['id']] = get_field_handler(
             answer, error_messages, answer_store, metadata, location
-        )
+        ).get_field()
 
     return answer_fields
 

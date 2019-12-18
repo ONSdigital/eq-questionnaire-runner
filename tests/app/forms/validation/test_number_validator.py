@@ -5,7 +5,7 @@ from wtforms.validators import StopValidation, ValidationError
 from app.forms.fields.decimal_field_with_separator import DecimalFieldWithSeparator
 from app.forms.error_messages import error_messages
 from app.forms.validators import NumberCheck, DecimalPlaces
-from app.forms.field_factory import get_field
+from app.forms.field_factory import get_field_handler
 from app.data_model.answer_store import AnswerStore
 
 
@@ -141,7 +141,9 @@ class TestNumberValidator(unittest.TestCase):
         }
         returned_error_messages = answer['validation']['messages']
 
-        decimal_field = get_field(answer, error_messages, AnswerStore(), None, False)
+        decimal_field = get_field_handler(
+            answer, error_messages, AnswerStore(), None, False
+        ).get_field()
 
         self.assertTrue(decimal_field.field_class == DecimalFieldWithSeparator)
 

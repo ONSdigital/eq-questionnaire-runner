@@ -27,7 +27,7 @@ FIELD_HANDLER_MAPPINGS = {
 }
 
 
-def get_field(
+def get_field_handler(
     answer,
     error_messages,
     answer_store,
@@ -42,4 +42,4 @@ def get_field(
         metadata=metadata,
         location=location,
         disable_validation=disable_validation,
-    ).get_field()
+    )

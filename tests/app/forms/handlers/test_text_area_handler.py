@@ -1,5 +1,35 @@
+from wtforms import Form
+
 from app.data_model.answer_store import AnswerStore
 from app.forms.field_handlers.text_area_handler import TextAreaHandler
+from app.forms.fields.max_text_area_field import MaxTextAreaField
+
+
+def test_get_field():
+    textarea_json = {
+        'guidance': '',
+        'id': 'answer',
+        'label': 'Enter your comments',
+        'mandatory': False,
+        'q_code': '0',
+        'type': 'TextArea',
+        'validation': {
+            'messages': {
+                'MAX_LENGTH_EXCEEDED': 'A message with characters %(max)d placeholder'
+            }
+        },
+    }
+
+    text_area_handler = TextAreaHandler(textarea_json)
+
+    class TestForm(Form):
+        test_field = text_area_handler.get_field()
+
+    form = TestForm()
+
+    assert isinstance(form.test_field, MaxTextAreaField)
+    assert form.test_field.label.text == textarea_json['label']
+    assert form.test_field.description == textarea_json['guidance']
 
 
 def test_get_length_validator():
