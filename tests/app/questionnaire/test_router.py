@@ -413,40 +413,6 @@ class TestRouter(AppContextTestCase):  # pylint: disable=too-many-public-methods
             ),
         )
 
-    def test_get_last_complete_location_in_section(self):
-        schema = load_schema_from_name('test_section_summary')
-
-        progress_store = ProgressStore(
-            [
-                {
-                    'section_id': 'property-details-section',
-                    'list_item_id': None,
-                    'status': CompletionStatus.COMPLETED,
-                    'block_ids': ['insurance-type'],
-                }
-            ]
-        )
-
-        router = Router(
-            schema, self.answer_store, self.list_store, progress_store, self.metadata
-        )
-
-        section_routing_path = [
-            Location(section_id='property-details-section', block_id='insurance-type'),
-            Location(
-                section_id='property-details-section', block_id='insurance-address'
-            ),
-        ]
-
-        last_complete_location = router.get_last_complete_location_for_section(
-            routing_path=section_routing_path, section_id='property-details-section'
-        )
-
-        self.assertEqual(
-            last_complete_location,
-            Location(section_id='property-details-section', block_id='insurance-type'),
-        )
-
     def test_get_section_return_location_when_section_complete_section_summary_mid_section(
         self
     ):

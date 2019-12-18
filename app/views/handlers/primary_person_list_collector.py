@@ -26,6 +26,8 @@ class PrimaryPersonListCollector(Question):
         return build_question_context(self.rendered_block, self.form)
 
     def handle_post(self):
+        list_name = self.rendered_block['for_list']
+
         if (
             self.form.data[self.rendered_block['add_or_edit_answer']['id']]
             == self.rendered_block['add_or_edit_answer']['value']
@@ -33,11 +35,17 @@ class PrimaryPersonListCollector(Question):
             self._is_adding = True
             self.questionnaire_store_updater.update_answers(self.form)
             self._primary_person_id = self.questionnaire_store_updater.add_primary_person(
-                self.rendered_block['for_list']
+                list_name
             )
+            self.evaluate_and_update_section_status_on_list_change(list_name)
             self.questionnaire_store_updater.save()
         else:
-            self.questionnaire_store_updater.remove_primary_person(
-                self.rendered_block['for_list']
-            )
-            return super().handle_post()
+            self.questionnaire_store_updater.remove_primary_person(list_name)
+
+            # This method could determine the current section's status incorrectly, as
+            # the call to update the answer store takes place in
+            # `super().handle_post()`. The section status will eventually get
+            # determined correctly when the parent class' `update_section_status`
+            # method is called.
+            self.evaluate_and_update_section_status_on_list_change(list_name)
+            super().handle_post()

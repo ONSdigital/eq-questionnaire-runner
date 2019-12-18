@@ -75,11 +75,11 @@ describe('Feature: Hub and Spoke', function () {
       expect($(HubPage.summaryRowState(1)).getText()).to.contain('Partially completed');
     });
 
-    it('When the user return to the Hub and restarts the same section, Then they should be returned to the last completed question', function () {
+    it('When the user returns to the Hub and restarts the same section, Then they should be redirected to the first incomplete block', function () {
       browser.url(HubPage.url());
       $(HubPage.summaryRowLink(1)).click();
       let expectedUrl = browser.getUrl();
-      expect(expectedUrl).to.contain(EmploymentStatusBlockPage.url());
+      expect(expectedUrl).to.contain(EmploymentTypeBlockPage.url());
     });
   });
 
