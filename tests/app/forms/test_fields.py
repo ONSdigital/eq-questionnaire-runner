@@ -137,7 +137,7 @@ class TestFields(AppContextTestCase):
 
         self.assertEqual(unbound_field.field_class, SelectFieldWithDetailAnswer)
         self.assertTrue(
-            unbound_field.kwargs['coerce'], SelectHandler.coerce_str_unless_none
+            unbound_field.kwargs['coerce'] == SelectHandler.coerce_str_unless_none
         )
         self.assertEqual(unbound_field.kwargs['label'], radio_json['label'])
         self.assertEqual(unbound_field.kwargs['description'], radio_json['guidance'])
@@ -171,14 +171,6 @@ class TestFields(AppContextTestCase):
         self.assertEqual(unbound_field.kwargs['description'], '')
         self.assertEqual(unbound_field.kwargs['default'], '')
         self.assertEqual(unbound_field.kwargs['choices'], expected_choices)
-
-    def test__coerce_str_unless_none(self):
-        self.assertEqual(SelectHandler.coerce_str_unless_none(1), '1')
-        self.assertEqual(SelectHandler.coerce_str_unless_none('bob'), 'bob')
-        self.assertEqual(SelectHandler.coerce_str_unless_none(12323245), '12323245')
-        self.assertEqual(SelectHandler.coerce_str_unless_none('9887766'), '9887766')
-        self.assertEqual(SelectHandler.coerce_str_unless_none('None'), 'None')
-        self.assertEqual(SelectHandler.coerce_str_unless_none(None), None)
 
     def test_checkbox_field(self):
         checkbox_json = {
