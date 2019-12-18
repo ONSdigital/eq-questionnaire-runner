@@ -5,8 +5,17 @@ from app.forms.fields.decimal_field_with_separator import DecimalFieldWithSepara
 from app.forms.fields.integer_field_with_separator import IntegerFieldWithSeparator
 
 
+def get_test_form(answer_schema):
+    handler = NumberHandler(answer_schema)
+
+    class TestForm(Form):
+        test_field = handler.get_field()
+
+    return TestForm()
+
+
 def test_integer_field():
-    integer_json = {
+    answer_schema = {
         'alias': 'chewies_age',
         'guidance': '',
         'id': 'chewies-age-answer',
@@ -23,20 +32,15 @@ def test_integer_field():
         },
     }
 
-    handler = NumberHandler(integer_json)
-
-    class TestForm(Form):
-        test_field = handler.get_field()
-
-    form = TestForm()
+    form = get_test_form(answer_schema)
 
     assert isinstance(form.test_field, IntegerFieldWithSeparator)
-    assert form.test_field.label.text == integer_json['label']
-    assert form.test_field.description == integer_json['guidance']
+    assert form.test_field.label.text == answer_schema['label']
+    assert form.test_field.description == answer_schema['guidance']
 
 
 def test_decimal_field():
-    decimal_json = {
+    answer_schema = {
         'guidance': '',
         'id': 'lightsaber-cost-answer',
         'label': 'How hot is a lightsaber in degrees C?',
@@ -52,20 +56,15 @@ def test_decimal_field():
         },
     }
 
-    handler = NumberHandler(decimal_json)
-
-    class TestForm(Form):
-        test_field = handler.get_field()
-
-    form = TestForm()
+    form = get_test_form(answer_schema)
 
     assert isinstance(form.test_field, DecimalFieldWithSeparator)
-    assert form.test_field.label.text == decimal_json['label']
-    assert form.test_field.description == decimal_json['guidance']
+    assert form.test_field.label.text == answer_schema['label']
+    assert form.test_field.description == answer_schema['guidance']
 
 
 def test_currency_field():
-    currency_json = {
+    answer_schema = {
         'guidance': '',
         'id': 'a04a516d-502d-4068-bbed-a43427c68cd9',
         'mandatory': False,
@@ -81,20 +80,15 @@ def test_currency_field():
         },
     }
 
-    handler = NumberHandler(currency_json)
-
-    class TestForm(Form):
-        test_field = handler.get_field()
-
-    form = TestForm()
+    form = get_test_form(answer_schema)
 
     assert isinstance(form.test_field, IntegerFieldWithSeparator)
-    assert form.test_field.label.text == currency_json['label']
-    assert form.test_field.description == currency_json['guidance']
+    assert form.test_field.label.text == answer_schema['label']
+    assert form.test_field.description == answer_schema['guidance']
 
 
 def test_percentage_field():
-    percentage_json = {
+    answer_schema = {
         'description': '',
         'id': 'percentage-turnover-2016-market-new-answer',
         'label': 'New to the market in 2014-2016',
@@ -111,13 +105,8 @@ def test_percentage_field():
         },
     }
 
-    handler = NumberHandler(percentage_json)
-
-    class TestForm(Form):
-        test_field = handler.get_field()
-
-    form = TestForm()
+    form = get_test_form(answer_schema)
 
     assert isinstance(form.test_field, IntegerFieldWithSeparator)
-    assert form.test_field.label.text == percentage_json['label']
-    assert form.test_field.description == percentage_json['description']
+    assert form.test_field.label.text == answer_schema['label']
+    assert form.test_field.description == answer_schema['description']
