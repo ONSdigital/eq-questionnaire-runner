@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2019-12-17 07:54+0000\n"
+"POT-Creation-Date: 2019-12-18 15:04+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -344,6 +344,9 @@ msgid "There are no householders"
 msgstr ""
 
 msgid "There are no visitors"
+msgstr ""
+
+msgid "Don’t need to add anyone?"
 msgstr ""
 
 msgid "2019 Census Test"
