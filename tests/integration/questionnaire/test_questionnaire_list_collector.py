@@ -191,3 +191,42 @@ class TestQuestionnaireListCollector(IntegrationTestCase):
 
         self.assertInBody('Are any of these people related to one another?')
         self.assertInBody('Marie Claire Doe')
+
+    def test_cancel_text_displayed_on_add_block_if_exists(self):
+        self.launchSurvey('test_list_collector')
+
+        self.post(action='start_questionnaire')
+
+        self.post({'anyone-else': 'Yes'})
+
+        self.assertInBody('Don’t need to add anyone else?')
+
+    def test_cancel_text_displayed_on_edit_block_if_exists(self):
+        self.launchSurvey('test_list_collector')
+
+        self.post(action='start_questionnaire')
+
+        self.post({'anyone-else': 'Yes'})
+
+        self.add_person('Someone', 'Else')
+
+        change_link = self.get_link('1', 'Change')
+
+        self.get(change_link)
+
+        self.assertInBody('Don’t need to change anything?')
+
+    def test_cancel_text_displayed_on_remove_block_if_exists(self):
+        self.launchSurvey('test_list_collector')
+
+        self.post(action='start_questionnaire')
+
+        self.post({'anyone-else': 'Yes'})
+
+        self.add_person('Someone', 'Else')
+
+        remove_link = self.get_link('1', 'Remove')
+
+        self.get(remove_link)
+
+        self.assertInBody('Don’t need to remove this person?')
