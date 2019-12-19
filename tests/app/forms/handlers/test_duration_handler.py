@@ -11,7 +11,7 @@ def test_get_field():
         'mandatory': True,
         'options': [],
         'type': 'Duration',
-        'units': ['years', 'months']
+        'units': ['years', 'months'],
     }
 
     text_area_handler = DurationHandler(date_json)
