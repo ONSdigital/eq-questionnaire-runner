@@ -41,17 +41,6 @@ describe('Feature: Combined question level and single validation for MM-YYYY dat
          expect($(DateRangePage.errorNumber(2)).isExisting()).to.be.false;
       });
 
-      it('When I enter a year that contains more than 4 characters, Then I should see only a single invalid date error', function() {
-         $(DateRangePage.dateRangeFromMonth()).setValue(10);
-         $(DateRangePage.dateRangeFromYear()).setValue(10001);
-
-         $(DateRangePage.dateRangeToMonth()).setValue(4);
-         $(DateRangePage.dateRangeToYear()).setValue(2017);
-         $(DateRangePage.submit()).click();
-         expect($(DateRangePage.errorNumber(1)).getText()).to.contain('Enter a valid date');
-         expect($(DateRangePage.errorNumber(2)).isExisting()).to.be.false;
-      });
-
       it('When I enter a single dates that are too early/late, Then I should see a single validation errors', function() {
          $(DateRangePage.dateRangeFromMonth()).setValue(10);
          $(DateRangePage.dateRangeFromYear()).setValue(2016);
