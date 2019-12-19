@@ -2,9 +2,6 @@ import unittest
 from unittest.mock import Mock, patch
 from wtforms.validators import ValidationError
 
-from app.forms.field_handlers.number_handler import NumberHandler
-from app.forms.fields.integer_field_with_separator import IntegerFieldWithSeparator
-from app.forms.field_factory import get_field_handler
 from app.jinja_filters import format_number
 from app.forms.error_messages import error_messages
 from app.forms.validators import NumberRange

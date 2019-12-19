@@ -1,3 +1,4 @@
+# pylint: disable=unused-argument
 from wtforms import Form
 
 from app.forms.field_handlers.number_handler import NumberHandler
