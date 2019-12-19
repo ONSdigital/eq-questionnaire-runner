@@ -176,6 +176,31 @@ def test_manual_max(app):
     )
 
 
+def test_manual_decimal(app):
+    answer_schema = {
+        'decimal_places': 2,
+        'label': 'Range Test 10 to 20',
+        'mandatory': False,
+        'validation': {
+            'messages': {
+                'INVALID_NUMBER': 'Please only enter whole numbers into the field.',
+                'INVALID_DECIMAL': 'Please enter a number to 2 decimal places.',
+            }
+        },
+        'id': 'test-range',
+        'type': 'Currency',
+    }
+
+    test_form_class = get_test_form_class(answer_schema)
+    form = test_form_class(DummyPostData(test_field=['1.234']))
+    form.validate()
+
+    assert (
+        form.errors['test_field'][0]
+        == answer_schema['validation']['messages']['INVALID_DECIMAL']
+    )
+
+
 def test_zero_max(app):
     max_value = 0
 

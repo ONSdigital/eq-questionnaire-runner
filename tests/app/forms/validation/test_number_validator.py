@@ -2,11 +2,8 @@ import unittest
 from unittest.mock import Mock, patch
 from wtforms.validators import StopValidation, ValidationError
 
-from app.forms.fields.decimal_field_with_separator import DecimalFieldWithSeparator
 from app.forms.error_messages import error_messages
 from app.forms.validators import NumberCheck, DecimalPlaces
-from app.forms.field_factory import get_field_handler
-from app.data_model.answer_store import AnswerStore
 
 
 # pylint: disable=no-member
@@ -124,45 +121,3 @@ class TestNumberValidator(unittest.TestCase):
             validator(mock_form, mock_field)
         except StopValidation:
             self.fail('Valid number raised StopValidation')
-
-    def test_manual_decimal(self):
-        answer = {
-            'decimal_places': 2,
-            'label': 'Range Test 10 to 20',
-            'mandatory': False,
-            'validation': {
-                'messages': {
-                    'INVALID_NUMBER': 'Please only enter whole numbers into the field.',
-                    'INVALID_DECIMAL': 'Please enter a number to 2 decimal places.',
-                }
-            },
-            'id': 'test-range',
-            'type': 'Currency',
-        }
-        returned_error_messages = answer['validation']['messages']
-
-        decimal_field = get_field_handler(
-            answer, error_messages, AnswerStore(), None, False
-        ).get_field()
-
-        self.assertTrue(decimal_field.field_class == DecimalFieldWithSeparator)
-
-        for validator in decimal_field.kwargs['validators']:
-            if isinstance(validator, DecimalPlaces):
-                test_validator = validator
-
-        mock_form = Mock()
-        decimal_field.raw_data = ['1.234']
-
-        with self.assertRaises(ValidationError) as ite:
-            test_validator(mock_form, decimal_field)
-
-            self.assertEqual(
-                str(ite.exception), returned_error_messages['INVALID_DECIMAL']
-            )
-
-        try:
-            decimal_field.raw_data = ['1.23']
-            test_validator(mock_form, decimal_field)
-        except ValidationError:
-            self.fail('Valid decimal raised ValidationError')
