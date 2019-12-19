@@ -1,4 +1,5 @@
 # pylint: disable=unused-argument
+from werkzeug.datastructures import MultiDict
 from wtforms import Form
 
 from app.forms.field_handlers.number_handler import NumberHandler
@@ -14,14 +15,6 @@ def get_test_form_class(answer_schema, messages=None):
         test_field = handler.get_field()
 
     return TestForm
-
-
-class DummyPostData(dict):
-    def getlist(self, key):
-        v = self[key]
-        if not isinstance(v, (list, tuple)):
-            v = [v]
-        return v
 
 
 def test_integer_field():
@@ -140,7 +133,7 @@ def test_manual_min(app):
     }
 
     test_form_class = get_test_form_class(answer_schema)
-    form = test_form_class(DummyPostData(test_field=['9']))
+    form = test_form_class(MultiDict({'test_field': '9'}))
 
     form.validate()
 
@@ -166,7 +159,7 @@ def test_manual_max(app):
     }
 
     test_form_class = get_test_form_class(answer_schema)
-    form = test_form_class(DummyPostData(test_field=['21']))
+    form = test_form_class(MultiDict({'test_field': '21'}))
 
     form.validate()
 
@@ -192,7 +185,7 @@ def test_manual_decimal(app):
     }
 
     test_form_class = get_test_form_class(answer_schema)
-    form = test_form_class(DummyPostData(test_field=['1.234']))
+    form = test_form_class(MultiDict({'test_field': '1.234'}))
     form.validate()
 
     assert (
@@ -214,7 +207,7 @@ def test_zero_max(app):
     error_message = error_messages['NUMBER_TOO_LARGE'] % dict(max=max_value)
 
     test_form_class = get_test_form_class(answer_schema, messages=error_messages)
-    form = test_form_class(DummyPostData(test_field=['1']))
+    form = test_form_class(MultiDict({'test_field': '1'}))
     form.validate()
 
     assert form.errors['test_field'][0] == error_message
@@ -233,7 +226,7 @@ def test_zero_min(app):
     error_message = error_messages['NUMBER_TOO_SMALL'] % dict(min=min_value)
 
     test_form_class = get_test_form_class(answer_schema, messages=error_messages)
-    form = test_form_class(DummyPostData(test_field=['-1']))
+    form = test_form_class(MultiDict({'test_field': '-1'}))
     form.validate()
 
     assert form.errors['test_field'][0] == error_message
@@ -257,7 +250,7 @@ def test_value_range(app):
     }
 
     test_form_class = get_test_form_class(answer_schema)
-    form = test_form_class(DummyPostData(test_field=['9']))
+    form = test_form_class(MultiDict({'test_field': '9'}))
     form.validate()
 
     assert (
@@ -283,7 +276,7 @@ def test_manual_min_exclusive(app):
 
     test_form_class = get_test_form_class(answer_schema)
 
-    form = test_form_class(DummyPostData(test_field=['10']))
+    form = test_form_class(MultiDict({'test_field': '10'}))
     form.validate()
 
     assert (
@@ -309,7 +302,7 @@ def test_manual_max_exclusive(app):
 
     test_form_class = get_test_form_class(answer_schema)
 
-    form = test_form_class(DummyPostData(test_field=['20']))
+    form = test_form_class(MultiDict({'test_field': '20'}))
     form.validate()
 
     assert (
