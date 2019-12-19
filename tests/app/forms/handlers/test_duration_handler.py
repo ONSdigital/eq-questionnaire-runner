@@ -10,15 +10,8 @@ def test_get_field():
         'label': 'Duration',
         'mandatory': True,
         'options': [],
-        'q_code': '11',
         'type': 'Duration',
-        'units': ['years', 'months'],
-        'validation': {
-            'messages': {
-                'INVALID_DURATION': 'The duration entered is not valid.  Please correct your answer.',
-                'MANDATORY_DURATION': 'Please provide a duration to continue.',
-            }
-        },
+        'units': ['years', 'months']
     }
 
     text_area_handler = DurationHandler(date_json)
