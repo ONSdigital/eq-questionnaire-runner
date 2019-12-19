@@ -25,11 +25,7 @@ def test_integer_field():
         'mandatory': False,
         'label': 'How old is Chewy?',
         'type': 'Number',
-        'validation': {
-            'messages': {
-                'INVALID_NUMBER': 'Please enter your age.'
-            }
-        },
+        'validation': {'messages': {'INVALID_NUMBER': 'Please enter your age.'}},
     }
 
     form_class = get_test_form_class(answer_schema)
@@ -50,7 +46,7 @@ def test_decimal_field():
         'decimal_places': 2,
         'validation': {
             'messages': {
-                'INVALID_NUMBER': 'Please only enter whole numbers into the field.',
+                'INVALID_NUMBER': 'Please only enter whole numbers into the field.'
             }
         },
     }
@@ -72,7 +68,7 @@ def test_currency_field():
         'type': 'Currency',
         'validation': {
             'messages': {
-                'INVALID_NUMBER': 'Please only enter whole numbers into the field.',
+                'INVALID_NUMBER': 'Please only enter whole numbers into the field.'
             }
         },
     }
