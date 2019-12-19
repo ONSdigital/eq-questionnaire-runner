@@ -10,8 +10,6 @@ def test_get_field():
         'id': 'month-year-answer',
         'label': 'Date',
         'mandatory': True,
-        'options': [],
-        'q_code': '11',
         'type': 'MonthYearDate',
         'validation': {
             'messages': {

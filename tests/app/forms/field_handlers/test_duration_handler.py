@@ -9,7 +9,6 @@ def test_get_field():
         'id': 'year-month-answer',
         'label': 'Duration',
         'mandatory': True,
-        'options': [],
         'type': 'Duration',
         'units': ['years', 'months'],
     }

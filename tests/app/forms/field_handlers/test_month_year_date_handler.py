@@ -10,8 +10,6 @@ def test_month_year_date_field_created_with_guidance():
         'id': 'month-year-answer',
         'label': 'Date',
         'mandatory': True,
-        'options': [],
-        'q_code': '11',
         'type': 'MonthYearDate',
         'validation': {
             'messages': {
