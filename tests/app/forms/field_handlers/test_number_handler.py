@@ -27,9 +27,7 @@ def test_integer_field():
         'type': 'Number',
         'validation': {
             'messages': {
-                'NUMBER_TOO_LARGE': 'No one lives that long, not even Yoda',
-                'NUMBER_TOO_SMALL': 'Negative age you can not be.',
-                'INVALID_NUMBER': 'Please enter your age.',
+                'INVALID_NUMBER': 'Please enter your age.'
             }
         },
     }
@@ -52,8 +50,6 @@ def test_decimal_field():
         'decimal_places': 2,
         'validation': {
             'messages': {
-                'NUMBER_TOO_LARGE': 'Thats hotter then the sun, Jar Jar Binks you must be',
-                'NUMBER_TOO_SMALL': 'How can it be negative?',
                 'INVALID_NUMBER': 'Please only enter whole numbers into the field.',
             }
         },
@@ -76,8 +72,6 @@ def test_currency_field():
         'type': 'Currency',
         'validation': {
             'messages': {
-                'NUMBER_TOO_LARGE': 'How much, fool you must be',
-                'NUMBER_TOO_SMALL': 'How can it be negative?',
                 'INVALID_NUMBER': 'Please only enter whole numbers into the field.',
             }
         },
@@ -232,7 +226,7 @@ def test_zero_min(app):
     assert form.errors['test_field'][0] == error_message
 
 
-def test_value_range(app):
+def test_value_min_and_max(app):
     answer_schema = {
         'min_value': {'value': 10},
         'max_value': {'value': 20},
@@ -256,6 +250,14 @@ def test_value_range(app):
     assert (
         form.errors['test_field'][0]
         == answer_schema['validation']['messages']['NUMBER_TOO_SMALL']
+    )
+
+    form = test_form_class(MultiDict({'test_field': '22'}))
+    form.validate()
+
+    assert (
+        form.errors['test_field'][0]
+        == answer_schema['validation']['messages']['NUMBER_TOO_LARGE']
     )
 
 
