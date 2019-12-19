@@ -18,9 +18,8 @@ class TextAreaHandler(FieldHandler):
 
     @cached_property
     def max_length(self):
-        if 'max_length' in self.answer_schema and self.answer_schema['max_length'] > 0:
-            return self.answer_schema['max_length']
-        return self.MAX_LENGTH
+        max_length = self.answer_schema.get('max_length', 0)
+        return max_length if max_length > 0 else self.MAX_LENGTH
 
     def get_length_validator(self):
         length_message = self.get_validation_message('MAX_LENGTH_EXCEEDED')
