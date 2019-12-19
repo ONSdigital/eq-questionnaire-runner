@@ -1,4 +1,4 @@
-from wtforms import FormField
+from wtforms import FormField, Form
 
 from app.forms.field_handlers.duration_handler import DurationHandler
 
@@ -14,9 +14,13 @@ def test_get_field():
         'units': ['years', 'months'],
     }
 
-    text_area_handler = DurationHandler(date_json)
-    unbound_field = text_area_handler.get_field()
+    handler = DurationHandler(date_json)
 
-    assert unbound_field.field_class == FormField
-    assert unbound_field.kwargs['label'] == date_json['label']
-    assert unbound_field.kwargs['description'] == date_json['guidance']
+    class TestForm(Form):
+        test_field = handler.get_field()
+
+    form = TestForm()
+
+    assert isinstance(form.test_field, FormField)
+    assert form.test_field.label.text == date_json['label']
+    assert form.test_field.description == date_json['guidance']

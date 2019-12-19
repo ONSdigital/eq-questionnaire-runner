@@ -1,3 +1,5 @@
+from wtforms import Form
+
 from app.forms.field_handlers.year_date_handler import YearDateHandler
 from app.forms.fields.year_date_field import YearDateField
 
@@ -19,9 +21,13 @@ def test_get_field():
         },
     }
 
-    date_handler = YearDateHandler(date_json)
-    unbound_field = date_handler.get_field()
+    handler = YearDateHandler(date_json)
 
-    assert unbound_field.field_class == YearDateField
-    assert unbound_field.kwargs['label'] == date_json['label']
-    assert unbound_field.kwargs['description'] == date_json['guidance']
+    class TestForm(Form):
+        test_field = handler.get_field()
+
+    form = TestForm()
+
+    assert isinstance(form.test_field, YearDateField)
+    assert form.test_field.label.text == date_json['label']
+    assert form.test_field.description == date_json['guidance']

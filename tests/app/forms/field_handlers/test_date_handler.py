@@ -5,6 +5,7 @@ from mock import patch
 
 import pytest
 from dateutil.relativedelta import relativedelta
+from wtforms import Form
 
 from app.data_model.answer import Answer
 from app.data_model.answer_store import AnswerStore
@@ -31,12 +32,16 @@ def test_date_field_created_with_guidance():
         },
     }
 
-    date_handler = DateHandler(date_json)
-    unbound_field = date_handler.get_field()
+    handler = DateHandler(date_json)
 
-    assert unbound_field.field_class == date_field.DateField
-    assert unbound_field.kwargs['label'] == date_json['label']
-    assert unbound_field.kwargs['description'] == date_json['guidance']
+    class TestForm(Form):
+        test_field = handler.get_field()
+
+    form = TestForm()
+
+    assert isinstance(form.test_field, date_field.DateField)
+    assert form.test_field.label.text == date_json['label']
+    assert form.test_field.description == date_json['guidance']
 
 
 def test_generate_date_form_validates_single_date_period(app):

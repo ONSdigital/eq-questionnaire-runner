@@ -1,3 +1,5 @@
+from wtforms import Form
+
 from app.forms.field_handlers.month_year_date_handler import MonthYearDateHandler
 from app.forms.fields.month_year_date_field import MonthYearDateField
 
@@ -19,9 +21,13 @@ def test_month_year_date_field_created_with_guidance():
         },
     }
 
-    date_handler = MonthYearDateHandler(date_json)
-    unbound_field = date_handler.get_field()
+    handler = MonthYearDateHandler(date_json)
 
-    assert unbound_field.field_class == MonthYearDateField
-    assert unbound_field.kwargs['label'] == date_json['label']
-    assert unbound_field.kwargs['description'] == date_json['guidance']
+    class TestForm(Form):
+        test_field = handler.get_field()
+
+    form = TestForm()
+
+    assert isinstance(form.test_field, MonthYearDateField)
+    assert form.test_field.label.text == date_json['label']
+    assert form.test_field.description == date_json['guidance']
