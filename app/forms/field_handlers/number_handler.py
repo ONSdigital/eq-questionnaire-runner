@@ -1,5 +1,6 @@
 from typing import Union
 
+from werkzeug.utils import cached_property
 from wtforms import IntegerField, DecimalField
 
 from app.data_model.answer_store import AnswerStore
@@ -33,11 +34,11 @@ class NumberHandler(FieldHandler):
         )
         self.references = self.get_field_references()
 
-    @property
+    @cached_property
     def max_decimals(self):
         return self.answer_schema.get('decimal_places', 0)
 
-    @property
+    @cached_property
     def validators(self):
         validate_with = []
         if self.disable_validation is False:
