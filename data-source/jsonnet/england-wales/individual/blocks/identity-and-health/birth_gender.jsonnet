@@ -16,6 +16,7 @@ local question(title) = {
     {
       id: 'birth-gender-answer',
       mandatory: false,
+      voluntary: true,
       label: '',
       options: [
         {
@@ -34,7 +35,7 @@ local question(title) = {
           },
         },
       ],
-      type: 'Checkbox',
+      type: 'Radio',
     },
   ],
 };

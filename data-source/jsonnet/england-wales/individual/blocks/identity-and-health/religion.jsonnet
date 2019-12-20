@@ -29,6 +29,7 @@ local question(title, region_code) = (
       {
         id: 'religion-answer',
         mandatory: false,
+        voluntary: true,
         label: '',
         options: [
           {
@@ -72,7 +73,7 @@ local question(title, region_code) = (
             },
           },
         ],
-        type: 'Checkbox',
+        type: 'Radio',
       },
     ],
   }

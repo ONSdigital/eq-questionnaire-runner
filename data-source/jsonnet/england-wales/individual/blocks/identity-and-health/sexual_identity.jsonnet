@@ -16,6 +16,7 @@ local question(title, label) = {
     {
       id: 'sexual-identity-answer',
       mandatory: false,
+      voluntary: true,
       label: '',
       options: [
         {
@@ -42,7 +43,7 @@ local question(title, label) = {
           },
         },
       ],
-      type: 'Checkbox',
+      type: 'Radio',
     },
   ],
 };
