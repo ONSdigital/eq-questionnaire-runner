@@ -4,7 +4,7 @@
 {% set survey_title = survey_title or _("ONS Business Surveys") %}
 
 {% block main %}
-  {% do page | setAttribute("feedback", "") %}
+  {% do pageConfig | setAttribute("feedback", "") %}
 
   <h1>{{ _("Privacy and data protection") }}</h1>
   <p>{{ _("The information you provide when you fill in your census rehearsal questionnaire is protected by law.") }}</p>

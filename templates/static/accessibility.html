@@ -2,7 +2,7 @@
 {% import 'macros/helpers.html' as helpers %}
 
 {% block main %}
-  {% do page | setAttribute("feedback", "") %}
+  {% do pageConfig | setAttribute("feedback", "") %}
 
   {% set contact_us_url = "https://census.gov.uk/contact-us/" %}
 

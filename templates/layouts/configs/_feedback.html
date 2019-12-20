@@ -1,11 +1,11 @@
-{% do page | setAttribute("feedback", {
+{% do pageConfig | setAttribute("feedback", {
   "id": "feedback",
     "title": _("Give us feedback and help us improve this service"),
     "pageTitle": {
-      "value": page.title
+      "value": pageConfig.title
     },
     "pageURL": {
-      "value": page.url
+      "value": pageConfig.url
     },
     "mailto": {
       "address": "census2021.feedback@ons.gov.uk",
