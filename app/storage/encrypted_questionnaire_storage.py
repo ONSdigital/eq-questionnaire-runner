@@ -12,7 +12,7 @@ logger = get_logger()
 class EncryptedQuestionnaireStorage:
     def __init__(self, user_id, user_ik, pepper):
         if user_id is None:
-            raise ValueError('User id must be set')
+            raise ValueError("User id must be set")
 
         self._user_id = user_id
         self.encrypter = StorageEncryption(user_id, user_ik, pepper)
@@ -24,7 +24,7 @@ class EncryptedQuestionnaireStorage:
             self._user_id, encrypted_data, QuestionnaireStore.LATEST_VERSION
         )
 
-        current_app.eq['storage'].put(questionnaire_state)
+        current_app.eq["storage"].put(questionnaire_state)
 
     def get_user_data(self):
         questionnaire_state = self._find_questionnaire_state()
@@ -38,14 +38,14 @@ class EncryptedQuestionnaireStorage:
         return None, None
 
     def delete(self):
-        logger.debug('deleting users data', user_id=self._user_id)
+        logger.debug("deleting users data", user_id=self._user_id)
         questionnaire_state = self._find_questionnaire_state()
         if questionnaire_state:
-            current_app.eq['storage'].delete(questionnaire_state)
+            current_app.eq["storage"].delete(questionnaire_state)
 
     def _find_questionnaire_state(self):
-        logger.debug('getting questionnaire data', user_id=self._user_id)
-        return current_app.eq['storage'].get_by_key(QuestionnaireState, self._user_id)
+        logger.debug("getting questionnaire data", user_id=self._user_id)
+        return current_app.eq["storage"].get_by_key(QuestionnaireState, self._user_id)
 
     def _get_snappy_compressed_data(self, data):
         decrypted_data = self.encrypter.decrypt_data(data)

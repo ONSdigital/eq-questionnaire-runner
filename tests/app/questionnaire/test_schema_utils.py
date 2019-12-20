@@ -11,18 +11,18 @@ from app.questionnaire.schema_utils import (
 
 def compare_transformed_block(base_block, transformed_block, title):
     assert transformed_block != base_block
-    assert 'question_variants' not in transformed_block
-    assert transformed_block['question']['title'] == title
+    assert "question_variants" not in transformed_block
+    assert transformed_block["question"]["title"] == title
 
 
 def test_transform_variants_with_question_variants(question_variant_schema):
     schema = QuestionnaireSchema(question_variant_schema)
     answer_store = AnswerStore({})
-    answer_store.add_or_update(Answer(answer_id='when-answer', value='no'))
+    answer_store.add_or_update(Answer(answer_id="when-answer", value="no"))
     metadata = {}
 
-    block = schema.get_block('block1')
-    section_id = schema.get_section_id_for_block_id(block['id'])
+    block = schema.get_block("block1")
+    section_id = schema.get_section_id_for_block_id(block["id"])
 
     transformed_block = transform_variants(
         block,
@@ -30,12 +30,12 @@ def test_transform_variants_with_question_variants(question_variant_schema):
         metadata,
         answer_store,
         ListStore({}),
-        Location(section_id=section_id, block_id=block['id']),
+        Location(section_id=section_id, block_id=block["id"]),
     )
 
-    compare_transformed_block(block, transformed_block, 'Question 1, No')
+    compare_transformed_block(block, transformed_block, "Question 1, No")
 
-    answer_store.add_or_update(Answer(answer_id='when-answer', value='yes'))
+    answer_store.add_or_update(Answer(answer_id="when-answer", value="yes"))
 
     transformed_block = transform_variants(
         block,
@@ -43,20 +43,20 @@ def test_transform_variants_with_question_variants(question_variant_schema):
         metadata,
         answer_store,
         ListStore({}),
-        Location(section_id=section_id, block_id=block['id']),
+        Location(section_id=section_id, block_id=block["id"]),
     )
 
-    compare_transformed_block(block, transformed_block, 'Question 1, Yes')
+    compare_transformed_block(block, transformed_block, "Question 1, Yes")
 
 
 def test_transform_variants_with_content(content_variant_schema):
     schema = QuestionnaireSchema(content_variant_schema)
     answer_store = AnswerStore({})
-    answer_store.add_or_update(Answer(answer_id='age-answer', value='18'))
+    answer_store.add_or_update(Answer(answer_id="age-answer", value="18"))
     metadata = {}
 
-    block = schema.get_block('block1')
-    section_id = schema.get_section_id_for_block_id(block['id'])
+    block = schema.get_block("block1")
+    section_id = schema.get_section_id_for_block_id(block["id"])
 
     transformed_block = transform_variants(
         block,
@@ -64,12 +64,12 @@ def test_transform_variants_with_content(content_variant_schema):
         metadata,
         answer_store,
         ListStore({}),
-        Location(section_id=section_id, block_id=block['id']),
+        Location(section_id=section_id, block_id=block["id"]),
     )
 
     assert transformed_block != block
-    assert 'content_variants' not in transformed_block
-    assert transformed_block['content'][0]['title'] == 'You are over 16'
+    assert "content_variants" not in transformed_block
+    assert transformed_block["content"][0]["title"] == "You are over 16"
 
 
 def test_transform_variants_with_no_variants(question_schema):
@@ -77,8 +77,8 @@ def test_transform_variants_with_no_variants(question_schema):
     answer_store = AnswerStore({})
     metadata = {}
 
-    block = schema.get_block('block1')
-    section_id = schema.get_section_id_for_block_id(block['id'])
+    block = schema.get_block("block1")
+    section_id = schema.get_section_id_for_block_id(block["id"])
 
     transformed_block = transform_variants(
         block,
@@ -86,7 +86,7 @@ def test_transform_variants_with_no_variants(question_schema):
         metadata,
         answer_store,
         ListStore({}),
-        Location(section_id=section_id, block_id=block['id']),
+        Location(section_id=section_id, block_id=block["id"]),
     )
 
     assert transformed_block == block
@@ -95,11 +95,11 @@ def test_transform_variants_with_no_variants(question_schema):
 def test_transform_variants_list_collector(list_collector_variant_schema):
     schema = QuestionnaireSchema(list_collector_variant_schema)
     answer_store = AnswerStore({})
-    answer_store.add_or_update(Answer(answer_id='when-answer', value='no'))
+    answer_store.add_or_update(Answer(answer_id="when-answer", value="no"))
     metadata = {}
 
-    block = schema.get_block('block1')
-    section_id = schema.get_section_id_for_block_id(block['id'])
+    block = schema.get_block("block1")
+    section_id = schema.get_section_id_for_block_id(block["id"])
 
     transformed_block = transform_variants(
         block,
@@ -107,20 +107,20 @@ def test_transform_variants_list_collector(list_collector_variant_schema):
         metadata,
         answer_store,
         ListStore({}),
-        Location(section_id=section_id, block_id=block['id']),
+        Location(section_id=section_id, block_id=block["id"]),
     )
 
     compare_transformed_block(
-        block['add_block'], transformed_block['add_block'], 'Add, No'
+        block["add_block"], transformed_block["add_block"], "Add, No"
     )
     compare_transformed_block(
-        block['remove_block'], transformed_block['remove_block'], 'Remove, No'
+        block["remove_block"], transformed_block["remove_block"], "Remove, No"
     )
     compare_transformed_block(
-        block['edit_block'], transformed_block['edit_block'], 'Edit, No'
+        block["edit_block"], transformed_block["edit_block"], "Edit, No"
     )
 
-    answer_store.add_or_update(Answer(answer_id='when-answer', value='yes'))
+    answer_store.add_or_update(Answer(answer_id="when-answer", value="yes"))
 
     transformed_block = transform_variants(
         block,
@@ -128,83 +128,83 @@ def test_transform_variants_list_collector(list_collector_variant_schema):
         metadata,
         answer_store,
         ListStore({}),
-        Location(section_id=section_id, block_id=block['id']),
+        Location(section_id=section_id, block_id=block["id"]),
     )
 
     compare_transformed_block(
-        block['add_block'], transformed_block['add_block'], 'Add, Yes'
+        block["add_block"], transformed_block["add_block"], "Add, Yes"
     )
     compare_transformed_block(
-        block['remove_block'], transformed_block['remove_block'], 'Remove, Yes'
+        block["remove_block"], transformed_block["remove_block"], "Remove, Yes"
     )
     compare_transformed_block(
-        block['edit_block'], transformed_block['edit_block'], 'Edit, Yes'
+        block["edit_block"], transformed_block["edit_block"], "Edit, Yes"
     )
 
 
 def test_choose_content_to_display(content_variant_schema):
     schema = QuestionnaireSchema(content_variant_schema)
     answer_store = AnswerStore({})
-    answer_store.add_or_update(Answer(answer_id='age-answer', value='18'))
+    answer_store.add_or_update(Answer(answer_id="age-answer", value="18"))
     metadata = {}
 
-    block = schema.get_block('block1')
-    section_id = schema.get_section_id_for_block_id(block['id'])
+    block = schema.get_block("block1")
+    section_id = schema.get_section_id_for_block_id(block["id"])
 
     content_to_display = choose_content_to_display(
-        schema.get_block('block1'),
+        schema.get_block("block1"),
         schema,
         metadata,
         answer_store,
         ListStore({}),
-        Location(section_id=section_id, block_id=block['id']),
+        Location(section_id=section_id, block_id=block["id"]),
     )
 
-    assert content_to_display[0]['title'] == 'You are over 16'
+    assert content_to_display[0]["title"] == "You are over 16"
 
     answer_store = AnswerStore({})
 
     content_to_display = choose_content_to_display(
-        schema.get_block('block1'),
+        schema.get_block("block1"),
         schema,
         metadata,
         answer_store,
         ListStore({}),
-        Location(section_id=section_id, block_id=block['id']),
+        Location(section_id=section_id, block_id=block["id"]),
     )
 
-    assert content_to_display[0]['title'] == 'You are ageless'
+    assert content_to_display[0]["title"] == "You are ageless"
 
 
 def test_choose_question_to_display(question_variant_schema):
     schema = QuestionnaireSchema(question_variant_schema)
     answer_store = AnswerStore({})
-    answer_store.add_or_update(Answer(answer_id='when-answer', value='yes'))
+    answer_store.add_or_update(Answer(answer_id="when-answer", value="yes"))
     metadata = {}
 
-    block = schema.get_block('block1')
-    section_id = schema.get_section_id_for_block_id(block['id'])
+    block = schema.get_block("block1")
+    section_id = schema.get_section_id_for_block_id(block["id"])
 
     question_to_display = choose_question_to_display(
-        schema.get_block('block1'),
+        schema.get_block("block1"),
         schema,
         metadata,
         answer_store,
         ListStore({}),
-        Location(section_id=section_id, block_id=block['id']),
+        Location(section_id=section_id, block_id=block["id"]),
     )
 
-    assert question_to_display['title'] == 'Question 1, Yes'
+    assert question_to_display["title"] == "Question 1, Yes"
 
     answer_store = AnswerStore({})
 
     question_to_display = choose_question_to_display(
-        schema.get_block('block1'),
+        schema.get_block("block1"),
         schema,
         metadata,
         answer_store,
         ListStore({}),
-        Location(section_id=section_id, block_id=block['id']),
+        Location(section_id=section_id, block_id=block["id"]),
     )
 
-    assert question_to_display['title'] == 'Question 1, No'
+    assert question_to_display["title"] == "Question 1, No"

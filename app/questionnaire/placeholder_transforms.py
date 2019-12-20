@@ -15,12 +15,12 @@ class PlaceholderTransforms:
 
     def __init__(self, language):
         self.language = language
-        self.locale = DEFAULT_LOCALE if language in ['en', 'eo'] else language
+        self.locale = DEFAULT_LOCALE if language in ["en", "eo"] else language
 
-    input_date_format = '%Y-%m-%d'
-    input_date_format_month_year_only = '%Y-%m'
+    input_date_format = "%Y-%m-%d"
+    input_date_format_month_year_only = "%Y-%m"
 
-    def format_currency(self, number=None, currency='GBP'):
+    def format_currency(self, number=None, currency="GBP"):
         return format_currency(number, currency, locale=self.locale)
 
     def format_date(self, date_to_format, date_format):
@@ -29,10 +29,10 @@ class PlaceholderTransforms:
 
     @staticmethod
     def format_list(list_to_format):
-        formatted_list = '<ul>'
+        formatted_list = "<ul>"
         for item in list_to_format:
-            formatted_list += '<li>{}</li>'.format(item)
-        formatted_list += '</ul>'
+            formatted_list += "<li>{}</li>".format(item)
+        formatted_list += "</ul>"
 
         return formatted_list
 
@@ -60,16 +60,16 @@ class PlaceholderTransforms:
         return delimiter.join(filtered_list)
 
     def format_possessive(self, string_to_format):
-        if string_to_format and self.language == 'en':
+        if string_to_format and self.language == "en":
             lowered_string = string_to_format.lower()
 
-            if lowered_string.endswith("'s") or lowered_string.endswith('’s'):
-                return string_to_format[:-2] + '’s'
+            if lowered_string.endswith("'s") or lowered_string.endswith("’s"):
+                return string_to_format[:-2] + "’s"
 
-            if lowered_string[-1:] == 's':
-                return string_to_format + '’'
+            if lowered_string[-1:] == "s":
+                return string_to_format + "’"
 
-            return string_to_format + '’s'
+            return string_to_format + "’s"
 
         return string_to_format
 
@@ -77,7 +77,7 @@ class PlaceholderTransforms:
         if number or number == 0:
             return format_decimal(number, locale=self.locale)
 
-        return ''
+        return ""
 
     @staticmethod
     def calculate_years_difference(first_date, second_date):
@@ -97,7 +97,7 @@ class PlaceholderTransforms:
         Convert `date` from string into `datetime` object. `date` can be 'YYYY-MM-DD', 'YYYY-MM'
         or 'now'. Note that in the shorthand YYYY-MM format, day_of_month is assumed to be 1.
         """
-        if date == 'now':
+        if date == "now":
             return datetime.now(tz=tzutc())
 
         try:
@@ -121,4 +121,4 @@ class PlaceholderTransforms:
         for item in self.remove_empty_from_list(items):
             return item
 
-        return ''
+        return ""

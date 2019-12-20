@@ -2,14 +2,14 @@ from app.data_model.relationship_store import Relationship, RelationshipStore
 
 relationships = [
     {
-        'list_item_id': '123456',
-        'to_list_item_id': '789101',
-        'relationship': 'Husband or Wife',
+        "list_item_id": "123456",
+        "to_list_item_id": "789101",
+        "relationship": "Husband or Wife",
     },
     {
-        'list_item_id': '123456',
-        'to_list_item_id': 'ghijkl',
-        'relationship': 'Husband or Wife',
+        "list_item_id": "123456",
+        "to_list_item_id": "ghijkl",
+        "relationship": "Husband or Wife",
     },
 ]
 
@@ -63,7 +63,7 @@ def test_add_relationship_that_already_exists():
 def test_get_relationship():
     relationship_store = RelationshipStore(relationships)
     relationship = relationship_store.get_relationship(
-        list_item_id='123456', to_list_item_id='789101'
+        list_item_id="123456", to_list_item_id="789101"
     )
     assert relationship
 
@@ -71,14 +71,14 @@ def test_get_relationship():
 def test_get_relationship_that_doesnt_exist():
     relationship_store = RelationshipStore(relationships)
     relationship = relationship_store.get_relationship(
-        list_item_id='123456', to_list_item_id='yyyyyy'
+        list_item_id="123456", to_list_item_id="yyyyyy"
     )
     assert not relationship
 
 
 def test_remove_id_in_multiple_relationships():
     relationship_store = RelationshipStore(relationships)
-    relationship_store.remove_all_relationships_for_list_item_id('123456')
+    relationship_store.remove_all_relationships_for_list_item_id("123456")
 
     assert not relationship_store
     assert relationship_store.is_dirty
@@ -86,7 +86,7 @@ def test_remove_id_in_multiple_relationships():
 
 def test_remove_id_in_single_relationship():
     relationship_store = RelationshipStore(relationships)
-    relationship_store.remove_all_relationships_for_list_item_id('789101')
+    relationship_store.remove_all_relationships_for_list_item_id("789101")
     remaining_relationship = Relationship(**relationships[1])
 
     assert len(relationship_store) == 1
@@ -103,7 +103,7 @@ def test_update_existing_relationship():
     relationship_store = RelationshipStore(relationships)
 
     relationship = Relationship(**relationships[0])
-    relationship.relationship = 'test'
+    relationship.relationship = "test"
 
     relationship_store.add_or_update(relationship)
 
@@ -111,5 +111,5 @@ def test_update_existing_relationship():
     updated_relationship = relationship_store.get_relationship(
         relationship.list_item_id, relationship.to_list_item_id
     )
-    assert updated_relationship.relationship == 'test'
+    assert updated_relationship.relationship == "test"
     assert relationship_store.is_dirty

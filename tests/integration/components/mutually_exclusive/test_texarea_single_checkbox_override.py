@@ -12,46 +12,46 @@ class TestTextAreaSingleCheckboxOverride(IntegrationTestCase):
 
     def setUp(self):
         super().setUp()
-        self.launchSurvey('test_mutually_exclusive')
+        self.launchSurvey("test_mutually_exclusive")
         self.get(MUTUALLY_EXCLUSIVE_TEXTAREA)
 
     def test_non_exclusive_answer(self):
         # When
-        self.post({'textarea-answer': 'John Doe'})
+        self.post({"textarea-answer": "John Doe"})
 
         # Then
-        self.assertInUrl('section-summary')
-        self.assertInBody('John Doe')
+        self.assertInUrl("section-summary")
+        self.assertInBody("John Doe")
 
     def test_exclusive_answer(self):
         # When
         self.post(
             {
-                'textarea-answer': '',
-                'textarea-exclusive-answer': ['I prefer not to say'],
+                "textarea-answer": "",
+                "textarea-exclusive-answer": ["I prefer not to say"],
             }
         )
 
         # Then
-        self.assertInUrl('section-summary')
-        self.assertInBody('I prefer not to say')
+        self.assertInUrl("section-summary")
+        self.assertInBody("I prefer not to say")
 
     def test_optional_exclusive_question(self):
         # When
-        self.post({'textarea-answer': ''})
+        self.post({"textarea-answer": ""})
 
         # Then
-        self.assertInUrl('section-summary')
-        self.assertInBody('No answer provided')
+        self.assertInUrl("section-summary")
+        self.assertInBody("No answer provided")
 
     def test_invalid_exclusive_answers(self):
         # When
         self.post(
             {
-                'textarea-answer': 'John Doe',
-                'textarea-exclusive-answer': ['I prefer not to say'],
+                "textarea-answer": "John Doe",
+                "textarea-exclusive-answer": ["I prefer not to say"],
             }
         )
 
         # Then
-        self.assertInBody('Remove an answer to continue.')
+        self.assertInBody("Remove an answer to continue.")

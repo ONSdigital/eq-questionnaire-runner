@@ -23,7 +23,7 @@ class IntegerFieldWithSeparator(IntegerField):
         if valuelist:
             try:
                 self.data = int(
-                    valuelist[0].replace(numbers.get_group_symbol(DEFAULT_LOCALE), '')
+                    valuelist[0].replace(numbers.get_group_symbol(DEFAULT_LOCALE), "")
                 )
             except ValueError:
                 pass

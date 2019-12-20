@@ -19,9 +19,9 @@ def build_groups_for_section(
 ):
     router = Router(schema, answer_store, list_store, progress_store, metadata)
 
-    section_path = router.section_routing_path(section['id'])
+    section_path = router.section_routing_path(section["id"])
 
-    location = Location(section['id'])
+    location = Location(section["id"])
 
     return [
         Group(
@@ -34,7 +34,7 @@ def build_groups_for_section(
             location,
             language,
         ).serialize()
-        for group in section['groups']
+        for group in section["groups"]
     ]
 
 
@@ -73,15 +73,15 @@ def build_view_context_for_calculated_summary(
     )
 
     context = {
-        'summary': {
-            'groups': groups,
-            'answers_are_editable': True,
-            'calculated_question': _get_calculated_question(
-                block['calculation'], formatted_total
+        "summary": {
+            "groups": groups,
+            "answers_are_editable": True,
+            "calculated_question": _get_calculated_question(
+                block["calculation"], formatted_total
             ),
-            'title': block.get('title') % dict(total=formatted_total),
-            'collapsible': block.get('collapsible', False),
-            'summary_type': 'CalculatedSummary',
+            "title": block.get("title") % dict(total=formatted_total),
+            "collapsible": block.get("collapsible", False),
+            "summary_type": "CalculatedSummary",
         }
     }
 
@@ -95,14 +95,14 @@ def _build_calculated_summary_section(
     section_id = schema.get_section_id_for_block_id(current_location.block_id)
     group = schema.get_group_for_block_id(current_location.block_id)
     blocks = []
-    answers_to_calculate = rendered_block['calculation']['answers_to_calculate']
+    answers_to_calculate = rendered_block["calculation"]["answers_to_calculate"]
     blocks_to_calculate = [
         schema.get_block_for_answer_id(answer_id) for answer_id in answers_to_calculate
     ]
-    unique_blocks = list({block['id']: block for block in blocks_to_calculate}.values())
+    unique_blocks = list({block["id"]: block for block in blocks_to_calculate}.values())
 
     for block in unique_blocks:
-        if QuestionnaireSchema.is_question_block_type(block['type']):
+        if QuestionnaireSchema.is_question_block_type(block["type"]):
             transformed_block = _remove_unwanted_questions_answers(
                 block,
                 answers_to_calculate,
@@ -117,7 +117,7 @@ def _build_calculated_summary_section(
             ):
                 blocks.append(transformed_block)
 
-    return {'id': section_id, 'groups': [{'id': group['id'], 'blocks': blocks}]}
+    return {"id": section_id, "groups": [{"id": group["id"], "blocks": blocks}]}
 
 
 def _remove_unwanted_questions_answers(
@@ -147,15 +147,15 @@ def _remove_unwanted_questions_answers(
     for answer_id in answer_ids_to_keep:
         matching_answers.extend(schema.get_answers_by_answer_id(answer_id))
 
-    questions_to_keep = [answer['parent_id'] for answer in matching_answers]
+    questions_to_keep = [answer["parent_id"] for answer in matching_answers]
 
-    if block_question['id'] in questions_to_keep:
+    if block_question["id"] in questions_to_keep:
         answers_to_keep = [
             answer
-            for answer in block_question['answers']
-            if answer['id'] in answer_ids_to_keep
+            for answer in block_question["answers"]
+            if answer["id"] in answer_ids_to_keep
         ]
-        block_question['answers'] = answers_to_keep
+        block_question["answers"] = answers_to_keep
 
     return reduced_block
 
@@ -164,9 +164,9 @@ def _get_formatted_total(
     groups, metadata, answer_store, list_store, schema, current_location
 ):
     calculated_total = 0
-    answer_format = {'type': None}
+    answer_format = {"type": None}
     for group in groups:
-        for block in group['blocks']:
+        for block in group["blocks"]:
             question = choose_question_to_display(
                 block,
                 schema,
@@ -175,36 +175,36 @@ def _get_formatted_total(
                 list_store,
                 current_location=current_location,
             )
-            for answer in question['answers']:
-                if not answer_format['type']:
+            for answer in question["answers"]:
+                if not answer_format["type"]:
                     answer_format = {
-                        'type': answer['type'],
-                        'unit': answer.get('unit'),
-                        'unit_length': answer.get('unit_length'),
-                        'currency': answer.get('currency'),
+                        "type": answer["type"],
+                        "unit": answer.get("unit"),
+                        "unit_length": answer.get("unit_length"),
+                        "currency": answer.get("currency"),
                     }
-                answer_value = answer.get('value') or 0
+                answer_value = answer.get("value") or 0
                 calculated_total += answer_value
 
-    if answer_format['type'] == 'currency':
-        return get_formatted_currency(calculated_total, answer_format['currency'])
+    if answer_format["type"] == "currency":
+        return get_formatted_currency(calculated_total, answer_format["currency"])
 
-    if answer_format['type'] == 'unit':
+    if answer_format["type"] == "unit":
         return format_unit(
-            answer_format['unit'], calculated_total, answer_format['unit_length']
+            answer_format["unit"], calculated_total, answer_format["unit_length"]
         )
 
-    if answer_format['type'] == 'percentage':
+    if answer_format["type"] == "percentage":
         return format_percentage(calculated_total)
 
     return format_number(calculated_total)
 
 
 def _get_calculated_question(calculation_question, formatted_total):
-    calculation_title = calculation_question.get('title')
+    calculation_title = calculation_question.get("title")
 
     return {
-        'title': calculation_title,
-        'id': 'calculated-summary-question',
-        'answers': [{'id': 'calculated-summary-answer', 'value': formatted_total}],
+        "title": calculation_title,
+        "id": "calculated-summary-question",
+        "answers": [{"id": "calculated-summary-answer", "value": formatted_total}],
     }

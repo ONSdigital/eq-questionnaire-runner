@@ -15,27 +15,27 @@ from app.forms.validators import (
 
 
 class DateHandler(FieldHandler):
-    MANDATORY_MESSAGE_KEY = 'MANDATORY_DATE'
-    DATE_FORMAT = 'yyyy-mm-dd'
-    DISPLAY_FORMAT = 'd MMMM yyyy'
+    MANDATORY_MESSAGE_KEY = "MANDATORY_DATE"
+    DATE_FORMAT = "yyyy-mm-dd"
+    DISPLAY_FORMAT = "d MMMM yyyy"
 
     @cached_property
     def validators(self):
         validate_with = [OptionalForm()]
 
-        if self.answer_schema['mandatory'] is True:
+        if self.answer_schema["mandatory"] is True:
             validate_with = [
                 DateRequired(
                     message=self.get_validation_message(self.MANDATORY_MESSAGE_KEY)
                 )
             ]
 
-        error_message = self.get_validation_message('INVALID_DATE')
+        error_message = self.get_validation_message("INVALID_DATE")
 
         validate_with.append(DateCheck(error_message))
 
-        minimum_date = self.get_date_value('minimum')
-        maximum_date = self.get_date_value('maximum')
+        minimum_date = self.get_date_value("minimum")
+        maximum_date = self.get_date_value("maximum")
 
         if minimum_date or maximum_date:
             min_max_validator = self.get_min_max_validator(minimum_date, maximum_date)
@@ -47,7 +47,7 @@ class DateHandler(FieldHandler):
         return DateField(self.validators, label=self.label, description=self.guidance)
 
     def get_min_max_validator(self, minimum_date, maximum_date):
-        messages = self.answer_schema.get('validation', {}).get('messages')
+        messages = self.answer_schema.get("validation", {}).get("messages")
 
         return SingleDatePeriodCheck(
             messages=messages,
@@ -65,8 +65,8 @@ class DateHandler(FieldHandler):
         """
         value = self.get_schema_value(self.answer_schema[key])
 
-        if value == 'now':
-            value = datetime.utcnow().strftime('%Y-%m-%d')
+        if value == "now":
+            value = datetime.utcnow().strftime("%Y-%m-%d")
 
         return convert_to_datetime(value)
 
@@ -81,9 +81,9 @@ class DateHandler(FieldHandler):
         :return: date value
         """
         date_to_offset += relativedelta(
-            years=offset.get('years', 0),
-            months=offset.get('months', 0),
-            days=offset.get('days', 0),
+            years=offset.get("years", 0),
+            months=offset.get("months", 0),
+            days=offset.get("days", 0),
         )
 
         return date_to_offset
@@ -100,8 +100,8 @@ class DateHandler(FieldHandler):
         if key in self.answer_schema:
             date_value = self.get_referenced_date(key)
 
-            if 'offset_by' in self.answer_schema[key]:
-                offset = self.answer_schema[key]['offset_by']
+            if "offset_by" in self.answer_schema[key]:
+                offset = self.answer_schema[key]["offset_by"]
                 date_value = self.transform_date_by_offset(date_value, offset)
 
         return date_value

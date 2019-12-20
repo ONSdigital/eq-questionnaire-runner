@@ -17,7 +17,7 @@ class TestJtiClaimStorage(AppContextTestCase):
 
         # When
 
-        with patch('app.storage.redis.RedisStorage.put_jti') as add:
+        with patch("app.storage.redis.RedisStorage.put_jti") as add:
             use_jti_claim(jti_token, expires)
 
             # Then
@@ -40,7 +40,7 @@ class TestJtiClaimStorage(AppContextTestCase):
         # When
         with self.assertRaises(JtiTokenUsed) as err:
             with patch(
-                'app.storage.redis.RedisStorage.put_jti',
+                "app.storage.redis.RedisStorage.put_jti",
                 side_effect=[ItemAlreadyExistsError()],
             ):
                 use_jti_claim(jti_token, expires)
@@ -52,7 +52,7 @@ class TestJtiClaimStorage(AppContextTestCase):
         )
 
     def test_should_raise_type_error_invalid_uuid(self):
-        jti_token = 'jti_token'
+        jti_token = "jti_token"
         expires = datetime.now(tz=tzutc()) + timedelta(seconds=60)
 
         with self.assertRaises(TypeError):

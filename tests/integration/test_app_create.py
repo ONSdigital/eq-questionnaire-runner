@@ -29,7 +29,7 @@ class TestCreateApp(unittest.TestCase):  # pylint: disable=too-many-public-metho
 
         Returns a list of contexts."""
         patches = [
-            patch('app.setup.settings.{}'.format(k), v)
+            patch("app.setup.settings.{}".format(k), v)
             for k, v in self._setting_overrides.items()
         ]
         for p in patches:
@@ -44,14 +44,14 @@ class TestCreateApp(unittest.TestCase):  # pylint: disable=too-many-public-metho
     # Should new relic have direct access to settings?
     # Probably better for create app to have the control
     def test_setups_newrelic(self):
-        with patch('newrelic.agent.initialize') as new_relic:
-            settings.EQ_NEW_RELIC_ENABLED = 'True'
+        with patch("newrelic.agent.initialize") as new_relic:
+            settings.EQ_NEW_RELIC_ENABLED = "True"
             create_app(self._setting_overrides)
             self.assertEqual(new_relic.call_count, 1)
 
     def test_sets_content_length(self):
         self.assertGreater(
-            create_app(self._setting_overrides).config['MAX_CONTENT_LENGTH'], 0
+            create_app(self._setting_overrides).config["MAX_CONTENT_LENGTH"], 0
         )
 
     def test_enforces_secure_session(self):
@@ -62,7 +62,7 @@ class TestCreateApp(unittest.TestCase):  # pylint: disable=too-many-public-metho
 
         # This is derived from EQ_ENABLE_SECURE_SESSION_COOKIE which is false
         # when running tests
-        self.assertFalse(application.config['SESSION_COOKIE_SECURE'])
+        self.assertFalse(application.config["SESSION_COOKIE_SECURE"])
 
     # localisation may not be used but is currently attached...
     def test_adds_i18n_to_application(self):
@@ -70,58 +70,58 @@ class TestCreateApp(unittest.TestCase):  # pylint: disable=too-many-public-metho
         self.assertIsInstance(babel, Babel)
 
     def test_adds_logging_of_request_ids(self):
-        with patch('app.setup.logger') as logger:
+        with patch("app.setup.logger") as logger:
             self._setting_overrides.update(
-                {'EQ_DEV_MODE': True, 'EQ_APPLICATION_VERSION': False}
+                {"EQ_DEV_MODE": True, "EQ_APPLICATION_VERSION": False}
             )
             application = create_app(self._setting_overrides)
 
-            application.test_client().get('/')
+            application.test_client().get("/")
             self.assertEqual(1, logger.new.call_count)
             _, kwargs = logger.new.call_args
-            self.assertTrue(UUID(kwargs['request_id'], version=4))
+            self.assertTrue(UUID(kwargs["request_id"], version=4))
 
     def test_adds_logging_of_span_and_trace(self):
-        with patch('app.setup.logger') as logger:
+        with patch("app.setup.logger") as logger:
             self._setting_overrides.update(
-                {'EQ_DEV_MODE': True, 'EQ_APPLICATION_VERSION': False}
+                {"EQ_DEV_MODE": True, "EQ_APPLICATION_VERSION": False}
             )
             application = create_app(self._setting_overrides)
 
             x_cloud_headers = {
-                'X-Cloud-Trace-Context': '0123456789/0123456789012345678901;o=1'
+                "X-Cloud-Trace-Context": "0123456789/0123456789012345678901;o=1"
             }
-            application.test_client().get('/', headers=x_cloud_headers)
+            application.test_client().get("/", headers=x_cloud_headers)
 
             self.assertEqual(1, logger.bind.call_count)
             _, kwargs = logger.bind.call_args
-            self.assertTrue(kwargs['span'] == '0123456789012345678901')
-            self.assertTrue(kwargs['trace'] == '0123456789')
+            self.assertTrue(kwargs["span"] == "0123456789012345678901")
+            self.assertTrue(kwargs["trace"] == "0123456789")
 
     def test_enforces_secure_headers(self):
-        self._setting_overrides['EQ_ENABLE_LIVE_RELOAD'] = False
+        self._setting_overrides["EQ_ENABLE_LIVE_RELOAD"] = False
 
         with create_app(self._setting_overrides).test_client() as client:
             headers = client.get(
-                '/',
+                "/",
                 headers={
-                    'X-Forwarded-Proto': 'https'
+                    "X-Forwarded-Proto": "https"
                 },  # set protocal so that talisman sets HSTS headers
             ).headers
 
             self.assertEqual(
-                'no-cache, no-store, must-revalidate', headers['Cache-Control']
+                "no-cache, no-store, must-revalidate", headers["Cache-Control"]
             )
-            self.assertEqual('no-cache', headers['Pragma'])
+            self.assertEqual("no-cache", headers["Pragma"])
             self.assertEqual(
-                'max-age=31536000; includeSubDomains',
-                headers['Strict-Transport-Security'],
+                "max-age=31536000; includeSubDomains",
+                headers["Strict-Transport-Security"],
             )
-            self.assertEqual('DENY', headers['X-Frame-Options'])
-            self.assertEqual('1; mode=block', headers['X-Xss-Protection'])
-            self.assertEqual('nosniff', headers['X-Content-Type-Options'])
+            self.assertEqual("DENY", headers["X-Frame-Options"])
+            self.assertEqual("1; mode=block", headers["X-Xss-Protection"])
+            self.assertEqual("nosniff", headers["X-Content-Type-Options"])
 
-            csp_policy_parts = headers['Content-Security-Policy'].split('; ')
+            csp_policy_parts = headers["Content-Security-Policy"].split("; ")
             self.assertIn("default-src 'self' https://cdn.ons.gov.uk", csp_policy_parts)
             self.assertIn(
                 f"script-src 'self' https://cdn.ons.gov.uk https://www.googletagmanager.com 'unsafe-inline' 'unsafe-eval' 'nonce-{request.csp_nonce}'",
@@ -140,7 +140,7 @@ class TestCreateApp(unittest.TestCase):  # pylint: disable=too-many-public-metho
                 csp_policy_parts,
             )
             self.assertIn(
-                'frame-src https://www.googletagmanager.com', csp_policy_parts
+                "frame-src https://www.googletagmanager.com", csp_policy_parts
             )
             self.assertIn("connect-src 'self' https://cdn.ons.gov.uk", csp_policy_parts)
 
@@ -152,81 +152,81 @@ class TestCreateApp(unittest.TestCase):  # pylint: disable=too-many-public-metho
 
     def test_eq_submission_backend_not_set(self):
         # Given
-        self._setting_overrides['EQ_SUBMISSION_BACKEND'] = ''
+        self._setting_overrides["EQ_SUBMISSION_BACKEND"] = ""
 
         # When
         with self.assertRaises(Exception) as ex:
             create_app(self._setting_overrides)
 
         # Then
-        assert 'Unknown EQ_SUBMISSION_BACKEND' in str(ex.exception)
+        assert "Unknown EQ_SUBMISSION_BACKEND" in str(ex.exception)
 
     def test_adds_gcs_submitter_to_the_application(self):
         # Given
-        self._setting_overrides['EQ_SUBMISSION_BACKEND'] = 'gcs'
-        self._setting_overrides['EQ_GCS_SUBMISSION_BUCKET_ID'] = '123'
+        self._setting_overrides["EQ_SUBMISSION_BACKEND"] = "gcs"
+        self._setting_overrides["EQ_GCS_SUBMISSION_BUCKET_ID"] = "123"
 
         # When
-        with patch('google.cloud.storage.Client'):
+        with patch("google.cloud.storage.Client"):
             application = create_app(self._setting_overrides)
 
         # Then
-        assert isinstance(application.eq['submitter'], GCSSubmitter)
+        assert isinstance(application.eq["submitter"], GCSSubmitter)
 
     def test_gcs_submitter_bucket_id_not_set_raises_exception(self):
         # Given
-        self._setting_overrides['EQ_SUBMISSION_BACKEND'] = 'gcs'
+        self._setting_overrides["EQ_SUBMISSION_BACKEND"] = "gcs"
 
         # WHEN
         with self.assertRaises(Exception) as ex:
             create_app(self._setting_overrides)
 
         # Then
-        assert 'Setting EQ_GCS_SUBMISSION_BUCKET_ID Missing' in str(ex.exception)
+        assert "Setting EQ_GCS_SUBMISSION_BUCKET_ID Missing" in str(ex.exception)
 
     def test_adds_rabbit_submitter_to_the_application(self):
         # Given
-        self._setting_overrides['EQ_SUBMISSION_BACKEND'] = 'rabbitmq'
-        self._setting_overrides['EQ_RABBITMQ_HOST'] = 'host-1'
-        self._setting_overrides['EQ_RABBITMQ_HOST_SECONDARY'] = 'host-2'
+        self._setting_overrides["EQ_SUBMISSION_BACKEND"] = "rabbitmq"
+        self._setting_overrides["EQ_RABBITMQ_HOST"] = "host-1"
+        self._setting_overrides["EQ_RABBITMQ_HOST_SECONDARY"] = "host-2"
 
         # When
         application = create_app(self._setting_overrides)
 
         # Then
-        assert isinstance(application.eq['submitter'], RabbitMQSubmitter)
+        assert isinstance(application.eq["submitter"], RabbitMQSubmitter)
 
     def test_rabbit_submitter_host_not_set_raises_exception(self):
         # Given
-        self._setting_overrides['EQ_SUBMISSION_BACKEND'] = 'rabbitmq'
-        self._setting_overrides['EQ_RABBITMQ_HOST'] = ''
+        self._setting_overrides["EQ_SUBMISSION_BACKEND"] = "rabbitmq"
+        self._setting_overrides["EQ_RABBITMQ_HOST"] = ""
 
         # When
         with self.assertRaises(Exception) as ex:
             create_app(self._setting_overrides)
 
         # Then
-        assert 'Setting EQ_RABBITMQ_HOST Missing' in str(ex.exception)
+        assert "Setting EQ_RABBITMQ_HOST Missing" in str(ex.exception)
 
     def test_rabbit_submitter_secondary_host_not_set_raises_exception(self):
         # Given
-        self._setting_overrides['EQ_SUBMISSION_BACKEND'] = 'rabbitmq'
-        self._setting_overrides['EQ_RABBITMQ_HOST'] = 'host-1'
-        self._setting_overrides['EQ_RABBITMQ_HOST_SECONDARY'] = ''
+        self._setting_overrides["EQ_SUBMISSION_BACKEND"] = "rabbitmq"
+        self._setting_overrides["EQ_RABBITMQ_HOST"] = "host-1"
+        self._setting_overrides["EQ_RABBITMQ_HOST_SECONDARY"] = ""
 
         # When
         with self.assertRaises(Exception) as ex:
             create_app(self._setting_overrides)
 
         # Then
-        assert 'Setting EQ_RABBITMQ_HOST_SECONDARY Missing' in str(ex.exception)
+        assert "Setting EQ_RABBITMQ_HOST_SECONDARY Missing" in str(ex.exception)
 
     def test_defaults_to_adding_the_log_submitter_to_the_application(self):
         # When
         application = create_app(self._setting_overrides)
 
         # Then
-        assert isinstance(application.eq['submitter'], LogSubmitter)
+        assert isinstance(application.eq["submitter"], LogSubmitter)
 
     def test_emulator_credentials(self):
         creds = EmulatorCredentials()
@@ -237,22 +237,22 @@ class TestCreateApp(unittest.TestCase):  # pylint: disable=too-many-public-metho
             creds.refresh(None)
 
     def test_setup_datastore(self):
-        self._setting_overrides['EQ_STORAGE_BACKEND'] = 'datastore'
+        self._setting_overrides["EQ_STORAGE_BACKEND"] = "datastore"
 
-        with patch('google.cloud.datastore.Client'):
+        with patch("google.cloud.datastore.Client"):
             application = create_app(self._setting_overrides)
 
-        self.assertIsInstance(application.eq['storage'], DatastoreStorage)
+        self.assertIsInstance(application.eq["storage"], DatastoreStorage)
 
     def test_setup_dynamodb(self):
-        self._setting_overrides['EQ_STORAGE_BACKEND'] = 'dynamodb'
+        self._setting_overrides["EQ_STORAGE_BACKEND"] = "dynamodb"
 
         application = create_app(self._setting_overrides)
 
-        self.assertIsInstance(application.eq['storage'], DynamodbStorage)
+        self.assertIsInstance(application.eq["storage"], DynamodbStorage)
 
     def test_invalid_storage(self):
-        self._setting_overrides['EQ_STORAGE_BACKEND'] = 'invalid'
+        self._setting_overrides["EQ_STORAGE_BACKEND"] = "invalid"
 
         with self.assertRaises(Exception):
             create_app(self._setting_overrides)

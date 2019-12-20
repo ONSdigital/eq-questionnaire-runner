@@ -6,12 +6,12 @@ from app.helpers.template_helper import safe_content
 class Content(BlockHandler):
     @property
     def rendered_block(self):
-        return self._render_block(self.block['id'])
+        return self._render_block(self.block["id"])
 
     def get_context(self):
         return {
-            'block': self.rendered_block,
-            'metadata': dict(self._questionnaire_store.metadata),
+            "block": self.rendered_block,
+            "metadata": dict(self._questionnaire_store.metadata),
         }
 
     def _render_block(self, block_id):
@@ -32,12 +32,12 @@ class Content(BlockHandler):
         )
 
     def _get_page_title(self, transformed_block):
-        content = transformed_block.get('content')
+        content = transformed_block.get("content")
         if content:
-            if isinstance(content['title'], str):
-                content_title = content['title']
+            if isinstance(content["title"], str):
+                content_title = content["title"]
             else:
-                content_title = content['title']['text']
+                content_title = content["title"]["text"]
 
             page_title = f'{content_title} - {self._schema.json["title"]}'
 

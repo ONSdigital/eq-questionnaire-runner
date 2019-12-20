@@ -15,15 +15,15 @@ def test_get_not_started_row_for_section(
     schema, progress_store, answer_store, list_store, router
 ):
     expected = {
-        'title': 'Breakfast',
-        'rowItems': [
+        "title": "Breakfast",
+        "rowItems": [
             {
-                'valueList': [{'text': 'Not started'}],
-                'actions': [
+                "valueList": [{"text": "Not started"}],
+                "actions": [
                     {
-                        'text': 'Start section',
-                        'ariaLabel': 'Start Breakfast section',
-                        'url': 'http://some/url',
+                        "text": "Start section",
+                        "ariaLabel": "Start Breakfast section",
+                        "url": "http://some/url",
                     }
                 ],
             }
@@ -42,9 +42,9 @@ def test_get_not_started_row_for_section(
     )
 
     actual = hub.get_row_context_for_section(
-        section_name='Breakfast',
+        section_name="Breakfast",
         section_status=CompletionStatus.NOT_STARTED,
-        section_url='http://some/url',
+        section_url="http://some/url",
     )
 
     assert expected == actual
@@ -54,16 +54,16 @@ def test_get_completed_row_for_section(
     schema, progress_store, answer_store, list_store, router
 ):
     expected = {
-        'title': 'Breakfast',
-        'rowItems': [
+        "title": "Breakfast",
+        "rowItems": [
             {
-                'icon': 'check-green',
-                'valueList': [{'text': 'Completed'}],
-                'actions': [
+                "icon": "check-green",
+                "valueList": [{"text": "Completed"}],
+                "actions": [
                     {
-                        'text': 'View answers',
-                        'ariaLabel': 'View answers for Breakfast',
-                        'url': 'http://some/url',
+                        "text": "View answers",
+                        "ariaLabel": "View answers for Breakfast",
+                        "url": "http://some/url",
                     }
                 ],
             }
@@ -82,9 +82,9 @@ def test_get_completed_row_for_section(
     )
 
     actual = hub.get_row_context_for_section(
-        section_name='Breakfast',
+        section_name="Breakfast",
         section_status=CompletionStatus.COMPLETED,
-        section_url='http://some/url',
+        section_url="http://some/url",
     )
 
     assert expected == actual
@@ -103,10 +103,10 @@ def test_get_context(schema, progress_store, answer_store, list_store, router):
     )
 
     expected_context = {
-        'title': 'Choose another section to complete',
-        'description': 'You must complete all sections in order to submit this survey',
-        'rows': [],
-        'submit_button': 'Continue',
+        "title": "Choose another section to complete",
+        "description": "You must complete all sections in order to submit this survey",
+        "rows": [],
+        "submit_button": "Continue",
     }
 
     assert expected_context == hub.get_context()

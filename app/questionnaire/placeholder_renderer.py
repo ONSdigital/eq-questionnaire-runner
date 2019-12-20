@@ -17,18 +17,18 @@ def find_pointers_containing(input_data, search_key, pointer=None):
     """
     if isinstance(input_data, dict):
         if search_key in input_data:
-            yield pointer or ''
+            yield pointer or ""
         for k, v in input_data.items():
             if isinstance(v, dict) and search_key in v:
-                yield pointer + '/' + k if pointer else '/' + k
+                yield pointer + "/" + k if pointer else "/" + k
             else:
                 yield from find_pointers_containing(
-                    v, search_key, pointer + '/' + k if pointer else '/' + k
+                    v, search_key, pointer + "/" + k if pointer else "/" + k
                 )
     elif isinstance(input_data, list):
         for index, item in enumerate(input_data):
             yield from find_pointers_containing(
-                item, search_key, '{}/{}'.format(pointer, index)
+                item, search_key, "{}/{}".format(pointer, index)
             )
 
 
@@ -62,19 +62,19 @@ class PlaceholderRenderer:
             location=self._location,
         )
 
-        if 'text' not in placeholder_data or 'placeholders' not in placeholder_data:
-            raise ValueError('No placeholder found to render')
+        if "text" not in placeholder_data or "placeholders" not in placeholder_data:
+            raise ValueError("No placeholder found to render")
 
-        transformed_values = placeholder_parser(placeholder_data['placeholders'])
+        transformed_values = placeholder_parser(placeholder_data["placeholders"])
 
-        return placeholder_data['text'].format(**transformed_values)
+        return placeholder_data["text"].format(**transformed_values)
 
     def render(self, dict_to_render, list_item_id):
         """
         Transform the current schema json to a fully rendered dictionary
         """
         rendered_data = deepcopy(dict_to_render)
-        pointers = find_pointers_containing(rendered_data, 'placeholders')
+        pointers = find_pointers_containing(rendered_data, "placeholders")
 
         for pointer in pointers:
             rendered_text = self.render_pointer(rendered_data, pointer, list_item_id)

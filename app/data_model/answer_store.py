@@ -40,7 +40,7 @@ class AnswerStore:
     def _build_map(answers: List[Dict]):
         """ Builds the answer_store's data structure from a list of answer dictionaries"""
         return {
-            (answer['answer_id'], answer.get('list_item_id')): Answer.from_dict(answer)
+            (answer["answer_id"], answer.get("list_item_id")): Answer.from_dict(answer)
             for answer in answers
         }
 
@@ -48,7 +48,7 @@ class AnswerStore:
     def _validate(answer):
         if not isinstance(answer, Answer):
             raise TypeError(
-                f'Method only supports Answer argument type, found type: {type(answer)}'
+                f"Method only supports Answer argument type, found type: {type(answer)}"
             )
 
     @property
