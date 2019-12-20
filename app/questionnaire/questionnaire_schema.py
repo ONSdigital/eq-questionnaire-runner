@@ -5,7 +5,7 @@ from typing import List, Union
 from flask_babel import force_locale
 
 from app.data_model.answer import Answer
-from app.validation.error_messages import error_messages
+from app.forms.error_messages import error_messages
 
 DEFAULT_LANGUAGE_CODE = 'en'
 

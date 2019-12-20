@@ -5,7 +5,7 @@ from mock import patch
 
 from app.forms.questionnaire_form import generate_form
 from app.utilities.schema import load_schema_from_name
-from app.validation.validators import ResponseRequired
+from app.forms.validators import ResponseRequired
 from app.data_model.answer_store import AnswerStore, Answer
 
 from tests.app.app_context_test_case import AppContextTestCase

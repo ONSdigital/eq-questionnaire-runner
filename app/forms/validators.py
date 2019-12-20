@@ -12,7 +12,7 @@ from wtforms.compat import string_types
 
 from app.jinja_filters import format_number, get_formatted_currency
 from app.questionnaire.rules import convert_to_datetime
-from app.validation.error_messages import error_messages
+from app.forms.error_messages import error_messages
 
 logger = get_logger()
 

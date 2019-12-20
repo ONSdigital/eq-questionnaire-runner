@@ -1,4 +1,4 @@
-from app.validation.error_messages import error_messages
+from app.forms.error_messages import error_messages
 from tests.integration.integration_test_case import IntegrationTestCase
 
 

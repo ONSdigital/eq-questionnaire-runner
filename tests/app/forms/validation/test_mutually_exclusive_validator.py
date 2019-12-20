@@ -2,8 +2,8 @@ import unittest
 
 from wtforms.validators import ValidationError
 
-from app.validation.error_messages import error_messages
-from app.validation.validators import MutuallyExclusiveCheck
+from app.forms.error_messages import error_messages
+from app.forms.validators import MutuallyExclusiveCheck
 
 
 class TestMutuallyExclusive(unittest.TestCase):

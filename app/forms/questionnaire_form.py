@@ -8,19 +8,22 @@ from flask_wtf import FlaskForm
 from werkzeug.datastructures import MultiDict
 from wtforms import validators
 
-from app.forms.date_form import get_dates_for_single_date_period_validation
-from app.forms.fields import get_field
-from app.validation.validators import DateRangeCheck, SumCheck, MutuallyExclusiveCheck
+from app.forms.field_factory import get_field_handler
+from app.forms.field_handlers.date_handler import DateHandler
+from app.forms.validators import DateRangeCheck, SumCheck, MutuallyExclusiveCheck
 
 logger = logging.getLogger(__name__)
 
 
 class QuestionnaireForm(FlaskForm):
-    def __init__(self, schema, question_schema, answer_store, metadata, **kwargs):
+    def __init__(
+        self, schema, question_schema, answer_store, metadata, location, **kwargs
+    ):
         self.schema = schema
         self.question = question_schema
         self.answer_store = answer_store
         self.metadata = metadata
+        self.location = location
         self.question_errors = {}
         self.options_with_detail_answer = {}
 
@@ -215,12 +218,15 @@ class QuestionnaireForm(FlaskForm):
         return True
 
     def _get_period_range_for_single_date(self, date_from, date_to):
-        from_min_period_date, from_max_period_date = get_dates_for_single_date_period_validation(
-            date_from, self.answer_store, self.metadata
+        handler = DateHandler(
+            date_from, {}, self.answer_store, self.metadata, location=self.location
         )
-        to_min_period_date, to_max_period_date = get_dates_for_single_date_period_validation(
-            date_to, self.answer_store, self.metadata
-        )
+        from_min_period_date = handler.get_date_value('minimum')
+        from_max_period_date = handler.get_date_value('maximum')
+
+        handler.answer_schema = date_to
+        to_min_period_date = handler.get_date_value('minimum')
+        to_max_period_date = handler.get_date_value('maximum')
 
         min_period_date = from_min_period_date or from_max_period_date
         max_period_date = to_max_period_date or to_min_period_date
@@ -305,49 +311,41 @@ class QuestionnaireForm(FlaskForm):
         return attr.raw_data[0] if attr.raw_data else ''
 
 
-# pylint: disable=too-many-locals
-def get_answer_fields(question, data, error_messages, answer_store, metadata):
+def _option_value_in_data(answer, option, data):
+    data_to_inspect = data.to_dict(flat=False) if isinstance(data, MultiDict) else data
+
+    return option['value'] in dict(data_to_inspect).get(answer['id'], [])
+
+
+def get_answer_fields(question, data, error_messages, answer_store, metadata, location):
     answer_fields = {}
     if not question:
         return answer_fields
 
     for answer in question.get('answers', []):
-
         for option in answer.get('options', []):
-            disable_validation = False
             if 'detail_answer' in option:
+                disable_validation = not _option_value_in_data(answer, option, data)
                 detail_answer = option['detail_answer']
                 detail_answer_error_messages = (
                     detail_answer['validation']['messages']
                     if detail_answer.get('validation')
                     else error_messages
                 )
-                if isinstance(data, MultiDict):
-                    option_value_in_data = option['value'] in data.to_dict(
-                        flat=False
-                    ).get(answer['id'], [])
-                else:
-                    option_value_in_data = option['value'] in dict(data).get(
-                        answer['id'], []
-                    )
 
-                if not option_value_in_data:
-                    disable_validation = True
-
-                answer_fields[detail_answer['id']] = get_field(
+                answer_fields[option['detail_answer']['id']] = get_field_handler(
                     detail_answer,
-                    detail_answer.get('label'),
                     detail_answer_error_messages,
                     answer_store,
                     metadata,
+                    location,
                     disable_validation=disable_validation,
-                )
+                ).get_field()
 
-        name = answer.get('label') or question.get('title')
+        answer_fields[answer['id']] = get_field_handler(
+            answer, error_messages, answer_store, metadata, location
+        ).get_field()
 
-        answer_fields[answer['id']] = get_field(
-            answer, name, error_messages, answer_store, metadata
-        )
     return answer_fields
 
 
@@ -377,7 +375,13 @@ def map_detail_answer_errors(errors, answer_json):
 
 
 def generate_form(
-    schema, question_schema, answer_store, metadata, data=None, formdata=None
+    schema,
+    question_schema,
+    answer_store,
+    metadata,
+    location=None,
+    data=None,
+    formdata=None,
 ):
     class DynamicForm(QuestionnaireForm):
         pass
@@ -388,6 +392,7 @@ def generate_form(
         schema.error_messages,
         answer_store,
         metadata,
+        location,
     )
 
     for answer_id, field in answer_fields.items():
@@ -395,8 +400,13 @@ def generate_form(
 
     if formdata:
         formdata = MultiDict(formdata)
-        formdata = MultiDict(formdata)
 
     return DynamicForm(
-        schema, question_schema, answer_store, metadata, data=data, formdata=formdata
+        schema,
+        question_schema,
+        answer_store,
+        metadata,
+        location,
+        data=data,
+        formdata=formdata,
     )
