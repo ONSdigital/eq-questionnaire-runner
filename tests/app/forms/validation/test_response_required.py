@@ -2,7 +2,7 @@ import unittest
 from unittest.mock import Mock
 from wtforms.validators import StopValidation
 
-from app.validation.validators import ResponseRequired
+from app.forms.validators import ResponseRequired
 
 
 class TestResponseRequiredValidator(unittest.TestCase):

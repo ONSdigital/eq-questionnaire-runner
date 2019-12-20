@@ -14,6 +14,9 @@ local question(title) = {
       minimum: {
         answer_id: 'date-of-birth-answer',
       },
+      maximum: {
+        value: 'now',
+      },
     },
   ],
 };

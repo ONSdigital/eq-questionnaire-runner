@@ -1,14 +1,32 @@
 from app.forms.duration_form import get_duration_form
-from app.validation.error_messages import error_messages
+from app.forms.error_messages import error_messages
 from tests.app.app_context_test_case import AppContextTestCase
 
 
 class TestDurationForm(AppContextTestCase):
-    def test_empty(self):
-        form_class = get_duration_form(
-            {'mandatory': False, 'units': ['years', 'months']}, error_messages
+    def test_init(self):
+        answer_schema = {
+            'mandatory': False,
+            'units': ['years', 'months'],
+            'validation': {
+                'messages': {
+                    'INVALID_DURATION': 'The duration entered is not valid.  Please correct your answer.',
+                    'MANDATORY_DURATION': 'Please provide a duration to continue.',
+                }
+            },
+        }
+        form_class = get_duration_form(answer_schema, error_messages)
+        form = form_class()
+
+        self.assertIsNone(form.data)
+        self.assertEqual(
+            form.answer_errors['INVALID_DURATION'],
+            answer_schema['validation']['messages']['INVALID_DURATION'],
         )
-        self.assertIsNone(form_class().data)
+        self.assertEqual(
+            form.answer_errors['MANDATORY_DURATION'],
+            answer_schema['validation']['messages']['MANDATORY_DURATION'],
+        )
 
     def test_zero(self):
         form_class = get_duration_form(

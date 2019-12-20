@@ -450,6 +450,7 @@ def _generate_wtf_form(block_schema, schema, current_location):
             answer_store,
             metadata,
             request.form,
+            current_location,
             disable_mandatory,
         )
     return get_form_for_location(
