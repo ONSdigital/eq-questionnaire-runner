@@ -1,10 +1,20 @@
 {% from "components/radios/_macro.njk" import onsRadios %}
 
-{{ onsRadios({
+{% set config = {
   "id": answer["id"],
   "name": answer["id"],
   "legend": question_title,
   "legendClasses": "u-vh",
   "radios": map_radio_config(form, answer),
   "error": error
-}) }}
+} %}
+
+{% if 'voluntary' in answer and answer["voluntary"] %}
+  {% set config = config | setAttribute("clearRadios", {
+    "text": _("Clear selection"),
+    "ariaClearText": "You can clear your answer using the clear selection button after the radio inputs",
+    "ariaClearedText": "You have cleared your answer"
+  }) %}
+{% endif %}
+
+{{ onsRadios(config) }}
