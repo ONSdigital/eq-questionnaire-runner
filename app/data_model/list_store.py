@@ -10,7 +10,7 @@ logger = get_logger()
 
 
 def random_string(length):
-    return ''.join(random.choice(ascii_letters) for _ in range(length))
+    return "".join(random.choice(ascii_letters) for _ in range(length))
 
 
 class ListModel:
@@ -30,15 +30,15 @@ class ListModel:
         return self.items == other.items and self.primary_person == other.primary_person
 
     def serialise(self):
-        serialised = {'items': self.items, 'name': self.name}
+        serialised = {"items": self.items, "name": self.name}
 
         if self.primary_person:
-            serialised['primary_person'] = self.primary_person
+            serialised["primary_person"] = self.primary_person
 
         return serialised
 
     def __repr__(self):
-        return f'<ListModel name={self.name} items={self.items}, primary_person={self.primary_person}>'
+        return f"<ListModel name={self.name} items={self.items}, primary_person={self.primary_person}>"
 
 
 class ListStore:
@@ -94,13 +94,13 @@ class ListStore:
         del self._lists[list_name]
 
     def __repr__(self):
-        return f'<ListStore lists={self._lists}>'
+        return f"<ListStore lists={self._lists}>"
 
     @staticmethod
     def _build_map(list_models: List[Mapping]):
         """ Builds the list_store data structure from a list of dictionaries"""
         return {
-            list_model['name']: ListModel(**list_model) for list_model in list_models
+            list_model["name"]: ListModel(**list_model) for list_model in list_models
         }
 
     def get(self, item: str):

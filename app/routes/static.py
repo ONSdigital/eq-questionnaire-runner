@@ -6,7 +6,7 @@ from app.helpers.template_helper import render_template
 
 logger = get_logger()
 
-static_blueprint = Blueprint(name='static', import_name=__name__)
+static_blueprint = Blueprint(name="static", import_name=__name__)
 
 
 @static_blueprint.before_request
@@ -14,11 +14,11 @@ def before_static_request():
     handle_language()
 
 
-@static_blueprint.route('/privacy', methods=['GET'])
+@static_blueprint.route("/privacy", methods=["GET"])
 def privacy():
-    return render_template('static/privacy')
+    return render_template("static/privacy")
 
 
-@static_blueprint.route('/accessibility', methods=['GET'])
+@static_blueprint.route("/accessibility", methods=["GET"])
 def accessibility():
-    return render_template('static/accessibility')
+    return render_template("static/accessibility")

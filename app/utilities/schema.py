@@ -13,15 +13,15 @@ from app.setup import cache
 
 logger = get_logger()
 
-DEFAULT_SCHEMA_DIR = 'data'
+DEFAULT_SCHEMA_DIR = "data"
 
 LANGUAGES_MAP = {
-    'test_language': [['en', 'cy']],
-    'ccs_household_gb_eng': [['en', 'cy']],
-    'census_household_gb_wls': [['en', 'cy']],
-    'census_individual_gb_wls': [['en', 'cy']],
-    'census_household_gb_nir': [['en'], ['en', 'ga'], ['en', 'eo']],
-    'census_individual_gb_nir': [['en'], ['en', 'ga'], ['en', 'eo']],
+    "test_language": [["en", "cy"]],
+    "ccs_household_gb_eng": [["en", "cy"]],
+    "census_household_gb_wls": [["en", "cy"]],
+    "census_individual_gb_wls": [["en", "cy"]],
+    "census_household_gb_nir": [["en"], ["en", "ga"], ["en", "eo"]],
+    "census_individual_gb_nir": [["en"], ["en", "ga"], ["en", "eo"]],
 }
 
 
@@ -33,13 +33,13 @@ def get_allowed_languages(schema_name, launch_language):
 
 
 def load_schema_from_metadata(metadata):
-    if metadata.get('survey_url'):
+    if metadata.get("survey_url"):
         return load_schema_from_url(
-            metadata['survey_url'], metadata.get('language_code')
+            metadata["survey_url"], metadata.get("language_code")
         )
 
     return load_schema_from_name(
-        metadata.get('schema_name'), language_code=metadata.get('language_code')
+        metadata.get("schema_name"), language_code=metadata.get("language_code")
     )
 
 
@@ -57,17 +57,17 @@ def load_schema_from_name(schema_name, language_code=None):
 
 def transform_case_type(case_type_input):
     census_case_types = {
-        'HH': 'household',
-        'HI': 'individual',
-        'CE': 'communal_establishment',
-        'CI': 'communal_individual',
+        "HH": "household",
+        "HI": "individual",
+        "CE": "communal_establishment",
+        "CI": "communal_individual",
     }
 
     return census_case_types[case_type_input]
 
 
 def transform_region_code(region_code_input):
-    return region_code_input.lower().replace('-', '_')
+    return region_code_input.lower().replace("-", "_")
 
 
 def transform_survey(survey_input):
@@ -79,14 +79,14 @@ def get_schema_name_from_census_params(survey, case_type, region_code):
         case_type_transformed = transform_case_type(case_type)
     except KeyError:
         raise ValueError(
-            'Invalid case_type parameter was specified. Must be one of `HH`, `HI`, `CE`, `CI`'
+            "Invalid case_type parameter was specified. Must be one of `HH`, `HI`, `CE`, `CI`"
         )
 
     region_code_transformed = transform_region_code(region_code)
     survey_transformed = transform_survey(survey)
 
     schema_name = (
-        f'{survey_transformed}_{case_type_transformed}_{region_code_transformed}'
+        f"{survey_transformed}_{case_type_transformed}_{region_code_transformed}"
     )
     return schema_name
 
@@ -109,18 +109,18 @@ def _load_schema_file(schema_name, language_code):
         schema_path = get_schema_file_path(schema_name, DEFAULT_LANGUAGE_CODE)
 
     logger.info(
-        'loading schema',
+        "loading schema",
         schema_name=schema_name,
         language_code=language_code,
         schema_path=schema_path,
     )
 
     try:
-        with open(schema_path, encoding='utf8') as json_data:
+        with open(schema_path, encoding="utf8") as json_data:
             return json.load(json_data, use_decimal=True)
 
     except FileNotFoundError as e:
-        logger.error('no schema file exists', filename=schema_path)
+        logger.error("no schema file exists", filename=schema_path)
         raise e
 
 
@@ -128,16 +128,16 @@ def _load_schema_file(schema_name, language_code):
 def load_schema_from_url(survey_url, language_code):
     language_code = language_code or DEFAULT_LANGUAGE_CODE
     logger.info(
-        'loading schema from URL', survey_url=survey_url, language_code=language_code
+        "loading schema from URL", survey_url=survey_url, language_code=language_code
     )
 
-    constructed_survey_url = '{}?language={}'.format(survey_url, language_code)
+    constructed_survey_url = "{}?language={}".format(survey_url, language_code)
 
     req = requests.get(constructed_survey_url)
     schema_response = req.content.decode()
 
     if req.status_code == 404:
-        logger.error('no schema exists', survey_url=constructed_survey_url)
+        logger.error("no schema exists", survey_url=constructed_survey_url)
         raise NotFound
 
     return QuestionnaireSchema(json.loads(schema_response), language_code)
@@ -149,5 +149,5 @@ def get_schema_path(language_code, schema_dir=DEFAULT_SCHEMA_DIR):
 
 def get_schema_file_path(schema_name, language_code):
     schema_dir = get_schema_path(language_code)
-    schema_filename = f'{schema_name}.json'
+    schema_filename = f"{schema_name}.json"
     return os.path.join(schema_dir, schema_filename)

@@ -12,35 +12,35 @@ from app.submitter.converter import convert_answers
 from app.submitter.submission_failed import SubmissionFailedException
 from app.utilities.schema import load_schema_from_metadata
 
-flush_blueprint = Blueprint('flush', __name__)
+flush_blueprint = Blueprint("flush", __name__)
 
 logger = get_logger()
 
 
-@flush_blueprint.route('/flush', methods=['POST'])
+@flush_blueprint.route("/flush", methods=["POST"])
 def flush_data():
     if session:
         session.clear()
 
-    encrypted_token = request.args.get('token')
+    encrypted_token = request.args.get("token")
 
     if not encrypted_token or encrypted_token is None:
         return Response(status=403)
 
     decrypted_token = decrypt(
         token=encrypted_token,
-        key_store=current_app.eq['key_store'],
+        key_store=current_app.eq["key_store"],
         key_purpose=KEY_PURPOSE_AUTHENTICATION,
-        leeway=current_app.config['EQ_JWT_LEEWAY_IN_SECONDS'],
+        leeway=current_app.config["EQ_JWT_LEEWAY_IN_SECONDS"],
     )
 
-    roles = decrypted_token.get('roles')
+    roles = decrypted_token.get("roles")
 
-    if roles and 'flusher' in roles:
-        user = _get_user(decrypted_token['response_id'])
+    if roles and "flusher" in roles:
+        user = _get_user(decrypted_token["response_id"])
         metadata = get_metadata(user)
-        if 'tx_id' in metadata:
-            logger.bind(tx_id=metadata['tx_id'])
+        if "tx_id" in metadata:
+            logger.bind(tx_id=metadata["tx_id"])
         if _submit_data(user):
             return Response(status=200)
         return Response(status=404)
@@ -70,29 +70,29 @@ def _submit_data(user):
         )
 
         encrypted_message = encrypt(
-            message, current_app.eq['key_store'], KEY_PURPOSE_SUBMISSION
+            message, current_app.eq["key_store"], KEY_PURPOSE_SUBMISSION
         )
 
-        sent = current_app.eq['submitter'].send_message(
+        sent = current_app.eq["submitter"].send_message(
             encrypted_message,
-            tx_id=metadata.get('tx_id'),
-            questionnaire_id=metadata.get('questionnaire_id'),
-            case_id=metadata.get('case_id'),
+            tx_id=metadata.get("tx_id"),
+            questionnaire_id=metadata.get("questionnaire_id"),
+            case_id=metadata.get("case_id"),
         )
 
         if not sent:
             raise SubmissionFailedException()
 
         get_questionnaire_store(user.user_id, user.user_ik).delete()
-        logger.info('successfully flushed answers')
+        logger.info("successfully flushed answers")
         return True
 
-    logger.info('no answers found to flush')
+    logger.info("no answers found to flush")
     return False
 
 
 def _get_user(response_id):
-    id_generator = current_app.eq['id_generator']
+    id_generator = current_app.eq["id_generator"]
     user_id = id_generator.generate_id(response_id)
     user_ik = id_generator.generate_ik(response_id)
     return User(user_id, user_ik)

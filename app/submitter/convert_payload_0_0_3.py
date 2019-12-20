@@ -56,15 +56,15 @@ def add_list_collector_answers(
     """ Add answers from list_collector for a specific location.
     Output is added to the `answers_payload` argument."""
     list_collector_block = schema.get_block(location.block_id)
-    block_type = list_collector_block['type']
+    block_type = list_collector_block["type"]
 
     if schema.is_list_block_type(block_type) or schema.is_primary_person_block_type(
         block_type
     ):
         answers_ids_in_add_block = schema.get_answer_ids_for_list_items(
-            list_collector_block['id']
+            list_collector_block["id"]
         )
-        list_name = list_collector_block['for_list']
+        list_name = list_collector_block["for_list"]
         list_item_ids = list_store[list_name].items
 
         for list_item_id in list_item_ids:

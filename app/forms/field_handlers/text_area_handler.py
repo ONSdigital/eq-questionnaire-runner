@@ -7,7 +7,7 @@ from app.forms.field_handlers.field_handler import FieldHandler
 
 class TextAreaHandler(FieldHandler):
     MAX_LENGTH = 2000
-    MANDATORY_MESSAGE_KEY = 'MANDATORY_TEXTAREA'
+    MANDATORY_MESSAGE_KEY = "MANDATORY_TEXTAREA"
 
     @cached_property
     def validators(self):
@@ -18,11 +18,11 @@ class TextAreaHandler(FieldHandler):
 
     @cached_property
     def max_length(self):
-        max_length = self.answer_schema.get('max_length', 0)
+        max_length = self.answer_schema.get("max_length", 0)
         return max_length if max_length > 0 else self.MAX_LENGTH
 
     def get_length_validator(self):
-        length_message = self.get_validation_message('MAX_LENGTH_EXCEEDED')
+        length_message = self.get_validation_message("MAX_LENGTH_EXCEEDED")
 
         return validators.length(-1, self.max_length, message=length_message)
 

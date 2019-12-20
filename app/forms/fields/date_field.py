@@ -19,10 +19,10 @@ def get_form_class(validators):
             data = super().data
 
             try:
-                return '{year:04d}-{month:02d}-{day:02d}'.format(
-                    year=int(data['year']),
-                    month=int(data['month']),
-                    day=int(data['day']),
+                return "{year:04d}-{month:02d}-{day:02d}".format(
+                    year=int(data["year"]),
+                    month=int(data["month"]),
+                    day=int(data["day"]),
                 )
             except (TypeError, ValueError):
                 return None
@@ -37,7 +37,7 @@ class DateField(FormField):
 
     def process(self, formdata, data=None):
         if data is not None:
-            substrings = data.split('-')
-            data = {'year': substrings[0], 'month': substrings[1], 'day': substrings[2]}
+            substrings = data.split("-")
+            data = {"year": substrings[0], "month": substrings[1], "day": substrings[2]}
 
         super().process(formdata, data)

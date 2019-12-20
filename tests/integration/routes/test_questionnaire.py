@@ -12,13 +12,13 @@ class TestQuestionnaire(IntegrationTestCase):
         self._application_context.push()
 
         storage = Mock()
-        data = {'METADATA': 'test', 'ANSWERS': [], 'PROGRESS': []}
+        data = {"METADATA": "test", "ANSWERS": [], "PROGRESS": []}
         storage.get_user_data = Mock(
             return_value=(json.dumps(data), QuestionnaireStore.LATEST_VERSION)
         )
 
         self.question_store = QuestionnaireStore(storage)
-        self.mock_context = {'block': {'question': {'title': 'Testing title'}}}
+        self.mock_context = {"block": {"question": {"title": "Testing title"}}}
 
     def tearDown(self):
         self._application_context.pop()

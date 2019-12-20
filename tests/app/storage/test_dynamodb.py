@@ -15,23 +15,23 @@ class TestDynamo(AppContextTestCase):
 
         super().setUp()
 
-        client = boto3.resource('dynamodb', endpoint_url=None)
+        client = boto3.resource("dynamodb", endpoint_url=None)
         self.ddb = DynamodbStorage(client)
 
         for config in TABLE_CONFIG.values():
-            table_name = current_app.config[config['table_name_key']]
+            table_name = current_app.config[config["table_name_key"]]
             if table_name:
                 client.create_table(  # pylint: disable=no-member
                     TableName=table_name,
                     AttributeDefinitions=[
-                        {'AttributeName': config['key_field'], 'AttributeType': 'S'}
+                        {"AttributeName": config["key_field"], "AttributeType": "S"}
                     ],
                     KeySchema=[
-                        {'AttributeName': config['key_field'], 'KeyType': 'HASH'}
+                        {"AttributeName": config["key_field"], "KeyType": "HASH"}
                     ],
                     ProvisionedThroughput={
-                        'ReadCapacityUnits': 1,
-                        'WriteCapacityUnits': 1,
+                        "ReadCapacityUnits": 1,
+                        "WriteCapacityUnits": 1,
                     },
                 )
 
@@ -55,15 +55,15 @@ class TestDynamo(AppContextTestCase):
     def test_delete(self):
         self._put_item(1)
         self._assert_item(1)
-        model = QuestionnaireState('someuser', 'data', 1)
+        model = QuestionnaireState("someuser", "data", 1)
         self.ddb.delete(model)
         self._assert_item(None)
 
     def _assert_item(self, version):
-        item = self.ddb.get_by_key(QuestionnaireState, 'someuser')
+        item = self.ddb.get_by_key(QuestionnaireState, "someuser")
         actual_version = item.version if item else None
         self.assertEqual(actual_version, version)
 
     def _put_item(self, version, overwrite=True):
-        model = QuestionnaireState('someuser', 'data', version)
+        model = QuestionnaireState("someuser", "data", version)
         self.ddb.put(model, overwrite)

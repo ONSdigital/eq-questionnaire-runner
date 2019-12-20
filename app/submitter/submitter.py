@@ -11,9 +11,9 @@ logger = get_logger()
 class LogSubmitter:
     @staticmethod
     def send_message(message, tx_id, questionnaire_id, case_id=None):
-        logger.info('sending message')
+        logger.info("sending message")
         logger.info(
-            'message payload',
+            "message payload",
             message=message,
             questionnaire_id=questionnaire_id,
             case_id=case_id,
@@ -29,16 +29,16 @@ class GCSSubmitter:
         self.bucket = client.get_bucket(bucket_name)
 
     def send_message(self, message, tx_id, questionnaire_id, case_id=None):
-        logger.info('sending message')
+        logger.info("sending message")
 
         blob = self.bucket.blob(tx_id)
 
-        blob.metadata = {'tx_id': tx_id, 'questionnaire_id': questionnaire_id}
+        blob.metadata = {"tx_id": tx_id, "questionnaire_id": questionnaire_id}
 
         if case_id:
-            blob.metadata['case_id'] = case_id
+            blob.metadata["case_id"] = case_id
 
-        blob.upload_from_string(str(message).encode('utf8'))
+        blob.upload_from_string(str(message).encode("utf8"))
 
         return True
 
@@ -47,44 +47,44 @@ class RabbitMQSubmitter:
     def __init__(self, host, secondary_host, port, queue, username=None, password=None):
         self.queue = queue
         if username and password:
-            self.rabbitmq_url = 'amqp://{username}:{password}@{host}:{port}/%2F'.format(
+            self.rabbitmq_url = "amqp://{username}:{password}@{host}:{port}/%2F".format(
                 username=username, password=password, host=host, port=port
             )
-            self.rabbitmq_secondary_url = 'amqp://{username}:{password}@{host}:{port}/%2F'.format(
+            self.rabbitmq_secondary_url = "amqp://{username}:{password}@{host}:{port}/%2F".format(
                 username=username, password=password, host=secondary_host, port=port
             )
         else:
-            self.rabbitmq_url = 'amqp://{host}:{port}/%2F'.format(host=host, port=port)
-            self.rabbitmq_secondary_url = 'amqp://{host}:{port}/%2F'.format(
+            self.rabbitmq_url = "amqp://{host}:{port}/%2F".format(host=host, port=port)
+            self.rabbitmq_secondary_url = "amqp://{host}:{port}/%2F".format(
                 host=secondary_host, port=port
             )
 
     def _connect(self):
         try:
             logger.info(
-                'attempt to open connection', server='primary', category='rabbitmq'
+                "attempt to open connection", server="primary", category="rabbitmq"
             )
             return BlockingConnection(URLParameters(self.rabbitmq_url))
         except AMQPError as e:
             logger.error(
-                'unable to open connection',
+                "unable to open connection",
                 exc_info=e,
-                server='primary',
-                category='rabbitmq',
+                server="primary",
+                category="rabbitmq",
             )
             try:
                 logger.info(
-                    'attempt to open connection',
-                    server='secondary',
-                    category='rabbitmq',
+                    "attempt to open connection",
+                    server="secondary",
+                    category="rabbitmq",
                 )
                 return BlockingConnection(URLParameters(self.rabbitmq_secondary_url))
             except AMQPError as err:
                 logger.error(
-                    'unable to open connection',
+                    "unable to open connection",
                     exc_info=e,
-                    server='secondary',
-                    category='rabbitmq',
+                    server="secondary",
+                    category="rabbitmq",
                 )
                 raise err
 
@@ -92,10 +92,10 @@ class RabbitMQSubmitter:
     def _disconnect(connection):
         try:
             if connection:
-                logger.info('attempt to close connection', category='rabbitmq')
+                logger.info("attempt to close connection", category="rabbitmq")
                 connection.close()
         except AMQPError as e:
-            logger.error('unable to close connection', exc_info=e, category='rabbitmq')
+            logger.error("unable to close connection", exc_info=e, category="rabbitmq")
 
     def send_message(self, message, tx_id, questionnaire_id, case_id=None):
         """
@@ -107,8 +107,8 @@ class RabbitMQSubmitter:
         :return: a boolean value indicating if it was successful
         """
         message_as_string = str(message)
-        logger.info('sending message', category='rabbitmq')
-        logger.info('message payload', message=message_as_string, category='rabbitmq')
+        logger.info("sending message", category="rabbitmq")
+        logger.info("message payload", message=message_as_string, category="rabbitmq")
         connection = None
         try:
             connection = self._connect()
@@ -117,26 +117,26 @@ class RabbitMQSubmitter:
             channel.queue_declare(queue=self.queue, durable=True)
             properties = BasicProperties(headers={}, delivery_mode=2)
 
-            properties.headers['tx_id'] = tx_id
-            properties.headers['questionnaire_id'] = questionnaire_id
+            properties.headers["tx_id"] = tx_id
+            properties.headers["questionnaire_id"] = questionnaire_id
 
             if case_id:
-                properties.headers['case_id'] = case_id
+                properties.headers["case_id"] = case_id
 
             published = channel.basic_publish(
-                exchange='',
+                exchange="",
                 routing_key=self.queue,
                 body=message_as_string,
                 mandatory=True,
                 properties=properties,
             )
             if published:
-                logger.info('sent message', category='rabbitmq')
+                logger.info("sent message", category="rabbitmq")
             else:
-                logger.error('unable to send message', category='rabbitmq')
+                logger.error("unable to send message", category="rabbitmq")
             return published
         except AMQPError as e:
-            logger.error('unable to send message', exc_info=e, category='rabbitmq')
+            logger.error("unable to send message", exc_info=e, category="rabbitmq")
             return False
         finally:
             if connection:

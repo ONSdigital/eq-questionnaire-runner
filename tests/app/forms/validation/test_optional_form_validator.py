@@ -15,9 +15,9 @@ class TestOptionalFormValidator(unittest.TestCase):
         mock_month = Mock()
         mock_year = Mock()
 
-        mock_day.raw_data = ['']
+        mock_day.raw_data = [""]
         mock_month.raw_data = []
-        mock_year.raw_data = ['']
+        mock_year.raw_data = [""]
 
         mock_form.__iter__ = Mock(return_value=iter([mock_day, mock_month, mock_year]))
 
@@ -26,7 +26,7 @@ class TestOptionalFormValidator(unittest.TestCase):
         with self.assertRaises(StopValidation) as ite:
             validator(mock_form, mock_field)
 
-        self.assertEqual('', str(ite.exception))
+        self.assertEqual("", str(ite.exception))
 
     def test_month_year_optional_month_empty(self):
         validator = OptionalForm()
@@ -37,7 +37,7 @@ class TestOptionalFormValidator(unittest.TestCase):
         mock_year = Mock()
 
         mock_month.raw_data = []
-        mock_year.raw_data = ['']
+        mock_year.raw_data = [""]
 
         mock_form.__iter__ = Mock(return_value=iter([mock_month, mock_year]))
 
@@ -46,7 +46,7 @@ class TestOptionalFormValidator(unittest.TestCase):
         with self.assertRaises(StopValidation) as ite:
             validator(mock_form, mock_field)
 
-        self.assertEqual('', str(ite.exception))
+        self.assertEqual("", str(ite.exception))
 
     def test_date_optional_missing_day(self):
 
@@ -58,9 +58,9 @@ class TestOptionalFormValidator(unittest.TestCase):
         mock_month = Mock()
         mock_year = Mock()
 
-        mock_day.raw_data = ['']
-        mock_month.raw_data = ['01']
-        mock_year.raw_data = ['2015']
+        mock_day.raw_data = [""]
+        mock_month.raw_data = ["01"]
+        mock_year.raw_data = ["2015"]
 
         mock_form.__iter__ = Mock(return_value=iter([mock_day, mock_month, mock_year]))
 
@@ -69,7 +69,7 @@ class TestOptionalFormValidator(unittest.TestCase):
         try:
             validator(mock_form, mock_field)
         except StopValidation:
-            self.fail('Date that needs checking raised StopValidation')
+            self.fail("Date that needs checking raised StopValidation")
 
     def test_month_year_optional_missing_year(self):
 
@@ -80,8 +80,8 @@ class TestOptionalFormValidator(unittest.TestCase):
         mock_month = Mock()
         mock_year = Mock()
 
-        mock_month.raw_data = ['01']
-        mock_year.raw_data = ['']
+        mock_month.raw_data = ["01"]
+        mock_year.raw_data = [""]
 
         mock_form.__iter__ = Mock(return_value=iter([mock_month, mock_year]))
 
@@ -90,4 +90,4 @@ class TestOptionalFormValidator(unittest.TestCase):
         try:
             validator(mock_form, mock_field)
         except StopValidation:
-            self.fail('Date that needs checking raised StopValidation')
+            self.fail("Date that needs checking raised StopValidation")

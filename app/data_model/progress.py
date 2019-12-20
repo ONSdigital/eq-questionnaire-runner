@@ -14,10 +14,10 @@ class Progress:
     @classmethod
     def from_dict(cls, progress_dict: Mapping) -> Progress:
         return cls(
-            section_id=progress_dict['section_id'],
-            block_ids=progress_dict['block_ids'],
-            status=progress_dict['status'],
-            list_item_id=progress_dict.get('list_item_id'),
+            section_id=progress_dict["section_id"],
+            block_ids=progress_dict["block_ids"],
+            status=progress_dict["status"],
+            list_item_id=progress_dict.get("list_item_id"),
         )
 
     def for_json(self) -> Mapping:

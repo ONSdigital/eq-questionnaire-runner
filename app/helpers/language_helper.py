@@ -11,10 +11,10 @@ from app.utilities.schema import get_allowed_languages
 # to work (http://babel.pocoo.org/en/latest/locale.html).
 
 LANGUAGE_TEXT = {
-    'en': 'English',
-    'cy': 'Cymraeg',
-    'ga': 'Gaeilge',
-    'eo': 'Ulstér Scotch',
+    "en": "English",
+    "cy": "Cymraeg",
+    "ga": "Gaeilge",
+    "eo": "Ulstér Scotch",
 }
 
 
@@ -26,7 +26,7 @@ def handle_language():
             session_store.session_data.schema_name, launch_language
         )
 
-        request_language = request.args.get('language_code')
+        request_language = request.args.get("language_code")
         if request_language and request_language in g.allowed_languages:
             session_store.session_data.language_code = request_language
             session_store.save()
@@ -34,25 +34,25 @@ def handle_language():
 
 def get_languages_context():
     context = []
-    allowed_languages = g.get('allowed_languages')
+    allowed_languages = g.get("allowed_languages")
     if allowed_languages and len(allowed_languages) > 1:
         for language in allowed_languages:
             context.append(_get_language_context(language))
-        return {'languages': context}
+        return {"languages": context}
     return None
 
 
 def _get_language_context(language_code):
     return {
-        'ISOCode': language_code,
-        'url': '?language_code=' + language_code,
-        'text': LANGUAGE_TEXT.get(language_code),
-        'current': language_code == get_locale().language,
+        "ISOCode": language_code,
+        "url": "?language_code=" + language_code,
+        "text": LANGUAGE_TEXT.get(language_code),
+        "current": language_code == get_locale().language,
     }
 
 
 def _get_launch_language():
     metadata = get_metadata(current_user)
     if metadata:
-        return metadata['language_code']
+        return metadata["language_code"]
     return DEFAULT_LANGUAGE_CODE

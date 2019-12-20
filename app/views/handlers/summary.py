@@ -16,6 +16,6 @@ class Summary(Content):
             self._questionnaire_store.metadata,
         )
         collapsible = self._schema.get_block(self._current_location.block_id).get(
-            'collapsible', False
+            "collapsible", False
         )
         return summary_context.summary(collapsible)

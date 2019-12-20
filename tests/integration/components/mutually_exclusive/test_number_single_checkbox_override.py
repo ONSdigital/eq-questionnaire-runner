@@ -12,43 +12,43 @@ class TestNumberSingleCheckboxOverride(IntegrationTestCase):
 
     def setUp(self):
         super().setUp()
-        self.launchSurvey('test_mutually_exclusive')
+        self.launchSurvey("test_mutually_exclusive")
         self.get(MUTUALLY_EXCLUSIVE_NUMBER)
 
     def test_non_exclusive_answer(self):
         # When
-        self.post({'number-answer': '1234567'})
+        self.post({"number-answer": "1234567"})
 
         # Then
-        self.assertInUrl('section-summary')
-        self.assertInBody('1,234,567')
+        self.assertInUrl("section-summary")
+        self.assertInBody("1,234,567")
 
     def test_exclusive_answer(self):
         # When
         self.post(
-            {'number-answer': '', 'number-exclusive-answer': ['I prefer not to say']}
+            {"number-answer": "", "number-exclusive-answer": ["I prefer not to say"]}
         )
 
         # Then
-        self.assertInUrl('section-summary')
-        self.assertInBody('I prefer not to say')
+        self.assertInUrl("section-summary")
+        self.assertInBody("I prefer not to say")
 
     def test_optional_exclusive_question(self):
         # When
-        self.post({'number-answer': ''})
+        self.post({"number-answer": ""})
 
         # Then
-        self.assertInUrl('section-summary')
-        self.assertInBody('No answer provided')
+        self.assertInUrl("section-summary")
+        self.assertInBody("No answer provided")
 
     def test_invalid_exclusive_answers(self):
         # When
         self.post(
             {
-                'number-answer': '1234567',
-                'number-exclusive-answer': ['I prefer not to say'],
+                "number-answer": "1234567",
+                "number-exclusive-answer": ["I prefer not to say"],
             }
         )
 
         # Then
-        self.assertInBody('Remove an answer to continue.')
+        self.assertInBody("Remove an answer to continue.")
