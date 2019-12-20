@@ -17,7 +17,7 @@ class SelectFieldWithDetailAnswer(SelectField):
         for i, (value, label, checked, detail_answer_id) in enumerate(
             self.iter_choices()
         ):
-            opt = self._Option(label=label, id='%s-%d' % (self.id, i), **opts)
+            opt = self._Option(label=label, id="%s-%d" % (self.id, i), **opts)
             opt.process(None, value)
             opt.detail_answer_id = detail_answer_id
             opt.checked = checked
@@ -32,4 +32,4 @@ class SelectFieldWithDetailAnswer(SelectField):
             if value == self.data:
                 break
         else:
-            raise ValueError(self.gettext('Not a valid choice'))
+            raise ValueError(self.gettext("Not a valid choice"))

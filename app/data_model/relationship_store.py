@@ -87,8 +87,8 @@ class RelationshipStore:
     def _build_map(relationships):
         return {
             (
-                relationship['list_item_id'],
-                relationship['to_list_item_id'],
+                relationship["list_item_id"],
+                relationship["to_list_item_id"],
             ): Relationship(**relationship)
             for relationship in relationships
         }

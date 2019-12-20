@@ -31,7 +31,7 @@ def get_form_for_location(
 
     return generate_form(
         schema,
-        block_json.get('question'),
+        block_json.get("question"),
         answer_store,
         metadata,
         location=location,
@@ -62,7 +62,7 @@ def post_form_for_block(
     if disable_mandatory:
         block_json = disable_mandatory_answers(block_json)
 
-    question = block_json.get('question')
+    question = block_json.get("question")
 
     data = clear_detail_answer_field(request_form, question)
 
@@ -74,12 +74,12 @@ def post_form_for_block(
 def disable_mandatory_answers(block):
     def set_mandatory_to_false(question):
         # Here Be Dragons: This loop modifies the input in place.
-        for answer in question.get('answers', []):
-            if answer.get('mandatory', True) is True:
-                answer['mandatory'] = False
+        for answer in question.get("answers", []):
+            if answer.get("mandatory", True) is True:
+                answer["mandatory"] = False
 
-    if block.get('question'):
-        set_mandatory_to_false(block['question'])
+    if block.get("question"):
+        set_mandatory_to_false(block["question"])
 
     return block
 
@@ -95,11 +95,11 @@ def clear_detail_answer_field(data, question):
     """
     form_data = MultiDict(data)
     if question:
-        for answer in question.get('answers', []):
-            for option in answer.get('options', []):
-                if 'detail_answer' in option:
-                    if option['value'] not in form_data.getlist(answer['id']):
-                        form_data[option['detail_answer']['id']] = ''
+        for answer in question.get("answers", []):
+            for option in answer.get("options", []):
+                if "detail_answer" in option:
+                    if option["value"] not in form_data.getlist(answer["id"]):
+                        form_data[option["detail_answer"]["id"]] = ""
 
     return form_data
 

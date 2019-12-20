@@ -15,20 +15,20 @@ from app.setup import create_app
 from tests.app.app_context_test_case import MockDatastore
 from tests.integration.create_token import TokenGenerator
 
-EQ_USER_AUTHENTICATION_RRM_PRIVATE_KEY_KID = '709eb42cfee5570058ce0711f730bfbb7d4c8ade'
-SR_USER_AUTHENTICATION_PUBLIC_KEY_KID = 'e19091072f920cbf3ca9f436ceba309e7d814a62'
+EQ_USER_AUTHENTICATION_RRM_PRIVATE_KEY_KID = "709eb42cfee5570058ce0711f730bfbb7d4c8ade"
+SR_USER_AUTHENTICATION_PUBLIC_KEY_KID = "e19091072f920cbf3ca9f436ceba309e7d814a62"
 
-EQ_SUBMISSION_SDX_PRIVATE_KEY = '2225f01580a949801274a5f3e6861947018aff5b'
-EQ_SUBMISSION_SR_PRIVATE_SIGNING_KEY = 'fe425f951a0917d7acdd49230b23a5c405c28510'
+EQ_SUBMISSION_SDX_PRIVATE_KEY = "2225f01580a949801274a5f3e6861947018aff5b"
+EQ_SUBMISSION_SR_PRIVATE_SIGNING_KEY = "fe425f951a0917d7acdd49230b23a5c405c28510"
 
-KEYS_FOLDER = './tests/data/jwt-test-keys'
+KEYS_FOLDER = "./tests/data/jwt-test-keys"
 
 
 def get_file_contents(filename, trim=False):
-    with open(os.path.join(KEYS_FOLDER, filename), 'r') as f:
+    with open(os.path.join(KEYS_FOLDER, filename), "r") as f:
         data = f.read()
         if trim:
-            data = data.rstrip('\r\n')
+            data = data.rstrip("\r\n")
     return data
 
 
@@ -43,10 +43,10 @@ class IntegrationTestCase(unittest.TestCase):  # pylint: disable=too-many-public
         self._set_up_app()
 
     def _set_up_app(self):
-        self._ds = patch('app.setup.datastore.Client', MockDatastore)
+        self._ds = patch("app.setup.datastore.Client", MockDatastore)
         self._ds.start()
 
-        self._redis = patch('app.setup.redis.Redis', fakeredis.FakeStrictRedis)
+        self._redis = patch("app.setup.redis.Redis", fakeredis.FakeStrictRedis)
         self._redis.start()
 
         from application import (  # pylint: disable=import-outside-toplevel
@@ -55,39 +55,39 @@ class IntegrationTestCase(unittest.TestCase):  # pylint: disable=too-many-public
 
         configure_logging()
 
-        setting_overrides = {'EQ_ENABLE_HTML_MINIFY': False}
+        setting_overrides = {"EQ_ENABLE_HTML_MINIFY": False}
 
         self._application = create_app(setting_overrides)
 
         self._key_store = KeyStore(
             {
-                'keys': {
+                "keys": {
                     EQ_USER_AUTHENTICATION_RRM_PRIVATE_KEY_KID: {
-                        'purpose': KEY_PURPOSE_AUTHENTICATION,
-                        'type': 'private',
-                        'value': get_file_contents(
-                            'sdc-rrm-authentication-signing-private-v1.pem'
+                        "purpose": KEY_PURPOSE_AUTHENTICATION,
+                        "type": "private",
+                        "value": get_file_contents(
+                            "sdc-rrm-authentication-signing-private-v1.pem"
                         ),
                     },
                     SR_USER_AUTHENTICATION_PUBLIC_KEY_KID: {
-                        'purpose': KEY_PURPOSE_AUTHENTICATION,
-                        'type': 'public',
-                        'value': get_file_contents(
-                            'sdc-sr-authentication-encryption-public-v1.pem'
+                        "purpose": KEY_PURPOSE_AUTHENTICATION,
+                        "type": "public",
+                        "value": get_file_contents(
+                            "sdc-sr-authentication-encryption-public-v1.pem"
                         ),
                     },
                     EQ_SUBMISSION_SDX_PRIVATE_KEY: {
-                        'purpose': KEY_PURPOSE_SUBMISSION,
-                        'type': 'private',
-                        'value': get_file_contents(
-                            'sdc-sdx-submission-encryption-private-v1.pem'
+                        "purpose": KEY_PURPOSE_SUBMISSION,
+                        "type": "private",
+                        "value": get_file_contents(
+                            "sdc-sdx-submission-encryption-private-v1.pem"
                         ),
                     },
                     EQ_SUBMISSION_SR_PRIVATE_SIGNING_KEY: {
-                        'purpose': KEY_PURPOSE_SUBMISSION,
-                        'type': 'public',
-                        'value': get_file_contents(
-                            'sdc-sr-submission-signing-private-v1.pem'
+                        "purpose": KEY_PURPOSE_SUBMISSION,
+                        "type": "public",
+                        "value": get_file_contents(
+                            "sdc-sr-submission-signing-private-v1.pem"
                         ),
                     },
                 }
@@ -106,7 +106,7 @@ class IntegrationTestCase(unittest.TestCase):  # pylint: disable=too-many-public
         self._ds.stop()
         self._redis.stop()
 
-    def launchSurvey(self, schema_name='test_dates', **payload_kwargs):
+    def launchSurvey(self, schema_name="test_dates", **payload_kwargs):
         """
         Launch a survey as an authenticated user and follow re-directs
         :param schema_name: The name of the schema to load
@@ -114,11 +114,11 @@ class IntegrationTestCase(unittest.TestCase):  # pylint: disable=too-many-public
         token = self.token_generator.create_token(
             schema_name=schema_name, **payload_kwargs
         )
-        self.get('/session?token=' + token)
+        self.get("/session?token=" + token)
 
     def dumpAnswers(self):
 
-        self.get('/dump/answers')
+        self.get("/dump/answers")
 
         # Then I get a 200 OK response
         self.assertStatusOK()
@@ -129,7 +129,7 @@ class IntegrationTestCase(unittest.TestCase):  # pylint: disable=too-many-public
 
     def dumpSubmission(self):
 
-        self.get('/dump/submission')
+        self.get("/dump/submission")
 
         # Then I get a 200 OK response
         self.assertStatusOK()
@@ -139,7 +139,7 @@ class IntegrationTestCase(unittest.TestCase):  # pylint: disable=too-many-public
         return dump_submission
 
     def dump_debug(self):
-        self.get('/dump/debug')
+        self.get("/dump/debug")
         self.assertStatusOK()
         return json.loads(self.getResponseData())
 
@@ -164,8 +164,8 @@ class IntegrationTestCase(unittest.TestCase):  # pylint: disable=too-many-public
         self,
         post_data=None,
         url=None,
-        action='save_continue',
-        action_value='',
+        action="save_continue",
+        action_value="",
         **kwargs,
     ):
         """
@@ -185,10 +185,10 @@ class IntegrationTestCase(unittest.TestCase):  # pylint: disable=too-many-public
 
         _post_data = (post_data.copy() or {}) if post_data else {}
         if self.last_csrf_token is not None:
-            _post_data.update({'csrf_token': self.last_csrf_token})
+            _post_data.update({"csrf_token": self.last_csrf_token})
 
         if action:
-            _post_data.update({f'action[{action}]': action_value})
+            _post_data.update({f"action[{action}]": action_value})
 
         environ, response = self._client.post(
             url, data=_post_data, as_tuple=True, follow_redirects=True, **kwargs
@@ -199,9 +199,9 @@ class IntegrationTestCase(unittest.TestCase):  # pylint: disable=too-many-public
     def _cache_response(self, environ, response):
         self.last_csrf_token = self._extract_csrf_token(response.get_data(True))
         self.last_response = response
-        self.last_url = environ['PATH_INFO']
-        if environ['QUERY_STRING']:
-            self.last_url += '?' + environ['QUERY_STRING']
+        self.last_url = environ["PATH_INFO"]
+        if environ["QUERY_STRING"]:
+            self.last_url += "?" + environ["QUERY_STRING"]
 
     @staticmethod
     def _extract_csrf_token(html):
@@ -221,8 +221,8 @@ class IntegrationTestCase(unittest.TestCase):  # pylint: disable=too-many-public
         """
             Returns the last received response cookie session
         """
-        cookie = self.last_response.headers['Set-Cookie']
-        cookie_session = cookie.split('session=.')[1].split(';')[0]
+        cookie = self.last_response.headers["Set-Cookie"]
+        cookie_session = cookie.split("session=.")[1].split(";")[0]
         decoded_cookie_session = decode_flask_cookie(cookie_session)
         return json.loads(decoded_cookie_session)
 
@@ -232,41 +232,41 @@ class IntegrationTestCase(unittest.TestCase):  # pylint: disable=too-many-public
         See https://www.crummy.com/software/BeautifulSoup/bs4/doc/
         :return: a BeautifulSoup object for the response data
         """
-        return BeautifulSoup(self.getResponseData(), 'html.parser')
+        return BeautifulSoup(self.getResponseData(), "html.parser")
 
     # Extra Helper Assertions
     def assertInHead(self, content):
-        self.assertInSelector(content, 'head')
+        self.assertInSelector(content, "head")
 
     # Extra Helper Assertions
     def assertInBody(self, content):
-        self.assertInSelector(content, 'body')
+        self.assertInSelector(content, "body")
 
     # Extra Helper Assertions
     def assertNotInHead(self, content):
-        self.assertNotInSelector(content, 'head')
+        self.assertNotInSelector(content, "head")
 
     # Extra Helper Assertions
     def assertNotInBody(self, content):
-        self.assertNotInSelector(content, 'body')
+        self.assertNotInSelector(content, "body")
 
     def assertInSelector(self, content, selector):
         data = self.getHtmlSoup().select(selector)
-        message = '\n{} not in \n{}'.format(content, data)
+        message = "\n{} not in \n{}".format(content, data)
 
         # intentionally not using assertIn to avoid duplicating the output message
         self.assertTrue(content in str(data), msg=message)
 
     def assertInSelectorCSS(self, content, *selectors):
         data = self.getHtmlSoup().find(*selectors)
-        message = '\n{} not in \n{}'.format(content, data)
+        message = "\n{} not in \n{}".format(content, data)
 
         # intentionally not using assertIn to avoid duplicating the output message
         self.assertTrue(content in str(data), msg=message)
 
     def assertNotInSelector(self, content, selector):
         data = self.getHtmlSoup().select(selector)
-        message = '\n{} in \n{}'.format(content, data)
+        message = "\n{} in \n{}".format(content, data)
 
         # intentionally not using assertIn to avoid duplicating the output message
         self.assertFalse(content in str(data), msg=message)
@@ -304,36 +304,36 @@ class IntegrationTestCase(unittest.TestCase):  # pylint: disable=too-many-public
         if self.last_response is not None:
             self.assertEqual(self.last_response.status_code, status_code)
         else:
-            self.fail('last_response is invalid')
+            self.fail("last_response is invalid")
 
     def assertEqualUrl(self, url):
         if self.last_url:
             self.assertEqual(url, self.last_url)
         else:
-            self.fail('last_url is invalid')
+            self.fail("last_url is invalid")
 
     def assertInUrl(self, content):
         if self.last_url:
             self.assertIn(content, self.last_url)
         else:
-            self.fail('last_url is invalid')
+            self.fail("last_url is invalid")
 
     def assertNotInUrl(self, content):
         if self.last_url:
             self.assertNotIn(content, self.last_url)
         else:
-            self.fail('last_url is invalid')
+            self.fail("last_url is invalid")
 
     def assertRegexUrl(self, regex):
         if self.last_url:
             self.assertRegex(text=self.last_url, expected_regex=regex)
         else:
-            self.fail('last_url is invalid')
+            self.fail("last_url is invalid")
 
 
 def decode_flask_cookie(cookie):
     """Decode a Flask cookie."""
-    data = cookie.split('.')[0]
+    data = cookie.split(".")[0]
     data = base64_decode(data)
     data = zlib.decompress(data)
-    return data.decode('utf-8')
+    return data.decode("utf-8")

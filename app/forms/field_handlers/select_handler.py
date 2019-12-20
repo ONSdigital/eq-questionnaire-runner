@@ -3,7 +3,7 @@ from app.forms.field_handlers.field_handler import FieldHandler
 
 
 class SelectHandler(FieldHandler):
-    MANDATORY_MESSAGE_KEY = 'MANDATORY_RADIO'
+    MANDATORY_MESSAGE_KEY = "MANDATORY_RADIO"
 
     @staticmethod
     def coerce_str_unless_none(value):
@@ -19,9 +19,9 @@ class SelectHandler(FieldHandler):
         choices = []
         for option in options:
             detail_answer_id = (
-                option['detail_answer']['id'] if option.get('detail_answer') else None
+                option["detail_answer"]["id"] if option.get("detail_answer") else None
             )
-            choices.append((option['value'], option['label'], detail_answer_id))
+            choices.append((option["value"], option["label"], detail_answer_id))
         return choices
 
     # We use a custom coerce function to avoid a defect where Python NoneType
@@ -35,7 +35,7 @@ class SelectHandler(FieldHandler):
             label=self.label,
             description=self.guidance,
             choices=self.build_choices_with_detail_answer_ids(
-                self.answer_schema['options']
+                self.answer_schema["options"]
             ),
             validators=self.validators,
             coerce=self.coerce_str_unless_none,

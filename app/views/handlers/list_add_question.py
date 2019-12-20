@@ -9,7 +9,7 @@ class ListAddQuestion(ListAction):
 
     def handle_post(self):
         self.questionnaire_store_updater.add_list_item_and_answers(
-            self.form, self.parent_block['for_list']
+            self.form, self.parent_block["for_list"]
         )
         self.questionnaire_store_updater.update_answers(self.form)
 

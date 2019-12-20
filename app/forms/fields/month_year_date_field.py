@@ -16,8 +16,8 @@ def get_form_class(validators):
             data = super().data
 
             try:
-                return '{year:04d}-{month:02d}'.format(
-                    year=int(data['year']), month=int(data['month'])
+                return "{year:04d}-{month:02d}".format(
+                    year=int(data["year"]), month=int(data["month"])
                 )
             except (TypeError, ValueError):
                 return None
@@ -32,7 +32,7 @@ class MonthYearDateField(FormField):
 
     def process(self, formdata, data=None):
         if data is not None:
-            substrings = data.split('-')
-            data = {'year': substrings[0], 'month': substrings[1]}
+            substrings = data.split("-")
+            data = {"year": substrings[0], "month": substrings[1]}
 
         super().process(formdata, data)

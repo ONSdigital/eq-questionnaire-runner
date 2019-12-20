@@ -6,7 +6,7 @@ from app.forms.validators import ResponseRequired
 
 
 def test_get_mandatory_validator_optional():
-    answer = {'mandatory': False}
+    answer = {"mandatory": False}
 
     text_area_handler = StringHandler(answer, None, AnswerStore(), {})
     validate_with = text_area_handler.get_mandatory_validator()
@@ -15,11 +15,11 @@ def test_get_mandatory_validator_optional():
 
 
 def test_get_mandatory_validator_mandatory():
-    answer = {'mandatory': True}
+    answer = {"mandatory": True}
 
     text_area_handler = StringHandler(
         answer,
-        {'MANDATORY_TEXTFIELD': 'This is the default mandatory message'},
+        {"MANDATORY_TEXTFIELD": "This is the default mandatory message"},
         AnswerStore(),
         {},
     )
@@ -27,26 +27,26 @@ def test_get_mandatory_validator_mandatory():
     validate_with = text_area_handler.get_mandatory_validator()
 
     assert isinstance(validate_with, ResponseRequired)
-    assert validate_with.message == 'This is the default mandatory message'
+    assert validate_with.message == "This is the default mandatory message"
 
 
 def test_get_mandatory_validator_mandatory_with_error():
     answer = {
-        'mandatory': True,
-        'validation': {
-            'messages': {
-                'MANDATORY_TEXTFIELD': 'This is the mandatory message for an answer'
+        "mandatory": True,
+        "validation": {
+            "messages": {
+                "MANDATORY_TEXTFIELD": "This is the mandatory message for an answer"
             }
         },
     }
 
     text_area_handler = StringHandler(
         answer,
-        {'MANDATORY_TEXTFIELD': 'This is the default mandatory message'},
+        {"MANDATORY_TEXTFIELD": "This is the default mandatory message"},
         AnswerStore(),
         {},
     )
     validate_with = text_area_handler.get_mandatory_validator()
 
     assert isinstance(validate_with, ResponseRequired)
-    assert validate_with.message == 'This is the mandatory message for an answer'
+    assert validate_with.message == "This is the mandatory message for an answer"

@@ -61,7 +61,7 @@ class SessionStore:
                 self.user_id, self.user_ik, self.pepper
             ).encrypt_data(vars(self.session_data))
 
-            current_app.eq['storage'].put(self._eq_session)
+            current_app.eq["storage"].put(self._eq_session)
 
         return self
 
@@ -70,7 +70,7 @@ class SessionStore:
         deletes user session from database
         """
         if self._eq_session:
-            current_app.eq['storage'].delete(self._eq_session)
+            current_app.eq["storage"].delete(self._eq_session)
 
             self._eq_session = None
             self.eq_session_id = None
@@ -79,10 +79,10 @@ class SessionStore:
 
     def _load(self):
         logger.debug(
-            'finding eq_session_id in database', eq_session_id=self.eq_session_id
+            "finding eq_session_id in database", eq_session_id=self.eq_session_id
         )
 
-        self._eq_session = current_app.eq['storage'].get_by_key(
+        self._eq_session = current_app.eq["storage"].get_by_key(
             EQSession, self.eq_session_id
         )
 
@@ -109,13 +109,13 @@ class SessionStore:
                 )
 
             logger.debug(
-                'found matching eq_session for eq_session_id in database',
+                "found matching eq_session for eq_session_id in database",
                 session_id=self._eq_session.eq_session_id,
                 user_id=self._eq_session.user_id,
             )
         else:
             logger.debug(
-                'eq_session_id not found in database', eq_session_id=self.eq_session_id
+                "eq_session_id not found in database", eq_session_id=self.eq_session_id
             )
 
         return self._eq_session

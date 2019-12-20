@@ -4,7 +4,7 @@ from app.forms.field_handlers.field_handler import FieldHandler
 
 
 class StringHandler(FieldHandler):
-    MANDATORY_MESSAGE_KEY = 'MANDATORY_TEXTFIELD'
+    MANDATORY_MESSAGE_KEY = "MANDATORY_TEXTFIELD"
 
     def get_field(self) -> StringField:
         return StringField(

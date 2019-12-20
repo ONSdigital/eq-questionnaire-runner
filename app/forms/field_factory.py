@@ -10,20 +10,20 @@ from app.forms.field_handlers.text_area_handler import TextAreaHandler
 from app.forms.field_handlers.year_date_handler import YearDateHandler
 
 FIELD_HANDLER_MAPPINGS = {
-    'Checkbox': SelectMultipleHandler,
-    'Radio': SelectHandler,
-    'Relationship': SelectHandler,
-    'TextArea': TextAreaHandler,
-    'TextField': StringHandler,
-    'Dropdown': DropdownHandler,
-    'Number': NumberHandler,
-    'Currency': NumberHandler,
-    'Unit': NumberHandler,
-    'Percentage': NumberHandler,
-    'Date': DateHandler,
-    'MonthYearDate': MonthYearDateHandler,
-    'YearDate': YearDateHandler,
-    'Duration': DurationHandler,
+    "Checkbox": SelectMultipleHandler,
+    "Radio": SelectHandler,
+    "Relationship": SelectHandler,
+    "TextArea": TextAreaHandler,
+    "TextField": StringHandler,
+    "Dropdown": DropdownHandler,
+    "Number": NumberHandler,
+    "Currency": NumberHandler,
+    "Unit": NumberHandler,
+    "Percentage": NumberHandler,
+    "Date": DateHandler,
+    "MonthYearDate": MonthYearDateHandler,
+    "YearDate": YearDateHandler,
+    "Duration": DurationHandler,
 }
 
 
@@ -35,7 +35,7 @@ def get_field_handler(
     location=None,
     disable_validation=False,
 ):
-    return FIELD_HANDLER_MAPPINGS[answer.get('type')](
+    return FIELD_HANDLER_MAPPINGS[answer.get("type")](
         answer,
         error_messages=error_messages,
         answer_store=answer_store,

@@ -11,7 +11,7 @@ from app.utilities.schema import load_schema_from_metadata
 
 
 class FieldHandler(ABC):
-    MANDATORY_MESSAGE_KEY = ''
+    MANDATORY_MESSAGE_KEY = ""
 
     def __init__(
         self,
@@ -37,23 +37,23 @@ class FieldHandler(ABC):
 
     @cached_property
     def label(self):
-        return self.answer_schema.get('label')
+        return self.answer_schema.get("label")
 
     @cached_property
     def guidance(self):
-        return self.answer_schema.get('guidance', '')
+        return self.answer_schema.get("guidance", "")
 
     def get_validation_message(self, message_key):
         message = (
-            self.answer_schema.get('validation', {})
-            .get('messages', {})
+            self.answer_schema.get("validation", {})
+            .get("messages", {})
             .get(message_key)
             or self.error_messages[message_key]
         )
         return message
 
     def get_mandatory_validator(self):
-        if self.answer_schema['mandatory'] is True:
+        if self.answer_schema["mandatory"] is True:
             mandatory_message = self.get_validation_message(self.MANDATORY_MESSAGE_KEY)
 
             return ResponseRequired(message=mandatory_message)
@@ -61,13 +61,13 @@ class FieldHandler(ABC):
         return validators.Optional()
 
     def get_schema_value(self, schema_element):
-        if 'meta' in schema_element:
-            return get_metadata_value(self.metadata, schema_element['meta'])
-        if 'value' in schema_element:
-            return schema_element['value']
-        if 'answer_id' in schema_element:
+        if "meta" in schema_element:
+            return get_metadata_value(self.metadata, schema_element["meta"])
+        if "value" in schema_element:
+            return schema_element["value"]
+        if "answer_id" in schema_element:
             schema = load_schema_from_metadata(self.metadata)
-            answer_id = schema_element.get('answer_id')
+            answer_id = schema_element.get("answer_id")
             list_item_id = self.location.list_item_id if self.location else None
 
             return get_answer_value(

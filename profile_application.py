@@ -9,7 +9,7 @@ from app.setup import create_app  # NOQA
 
 def setup_profiling(application):
 
-    profiling_dir = 'profiling'
+    profiling_dir = "profiling"
 
     if os.path.exists(profiling_dir):
         shutil.rmtree(profiling_dir)
@@ -21,6 +21,6 @@ def setup_profiling(application):
     application.debug = True
 
 
-app = create_app({'PROFILE': True})
+app = create_app({"PROFILE": True})
 setup_profiling(app)
 app.run(debug=True)

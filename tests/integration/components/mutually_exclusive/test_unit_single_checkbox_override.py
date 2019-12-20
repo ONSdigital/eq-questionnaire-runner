@@ -12,38 +12,38 @@ class TestUnitSingleCheckboxOverride(IntegrationTestCase):
 
     def setUp(self):
         super().setUp()
-        self.launchSurvey('test_mutually_exclusive')
+        self.launchSurvey("test_mutually_exclusive")
         self.get(MUTUALLY_EXCLUSIVE_UNIT)
 
     def test_non_exclusive_answer(self):
         # When
-        self.post({'unit-answer': '123'})
+        self.post({"unit-answer": "123"})
 
         # Then
-        self.assertInUrl('section-summary')
-        self.assertInBody('123')
+        self.assertInUrl("section-summary")
+        self.assertInBody("123")
 
     def test_exclusive_answer(self):
         # When
-        self.post({'unit-answer': '', 'unit-exclusive-answer': ['I prefer not to say']})
+        self.post({"unit-answer": "", "unit-exclusive-answer": ["I prefer not to say"]})
 
         # Then
-        self.assertInUrl('section-summary')
-        self.assertInBody('I prefer not to say')
+        self.assertInUrl("section-summary")
+        self.assertInBody("I prefer not to say")
 
     def test_optional_exclusive_question(self):
         # When
-        self.post({'unit-answer': ''})
+        self.post({"unit-answer": ""})
 
         # Then
-        self.assertInUrl('section-summary')
-        self.assertInBody('No answer provided')
+        self.assertInUrl("section-summary")
+        self.assertInBody("No answer provided")
 
     def test_invalid_exclusive_answers(self):
         # When
         self.post(
-            {'unit-answer': '123', 'unit-exclusive-answer': ['I prefer not to say']}
+            {"unit-answer": "123", "unit-exclusive-answer": ["I prefer not to say"]}
         )
 
         # Then
-        self.assertInBody('Remove an answer to continue.')
+        self.assertInBody("Remove an answer to continue.")

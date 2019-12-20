@@ -42,7 +42,7 @@ class Timestamp(fields.Field):
     def _serialize(self, value, attr, obj, **kwargs):
         if value:
             # Timezone aware datetime to timestamp
-            return int(value.replace(tzinfo=tzutc()).strftime('%s'))
+            return int(value.replace(tzinfo=tzutc()).strftime("%s"))
 
     def _deserialize(self, value, attr, data, **kwargs):
         if value:
@@ -67,8 +67,8 @@ class QuestionnaireStateSchema(Schema, DateTimeSchemaMixin):
 
     @post_load
     def make_model(self, data):
-        created_at = data.pop('created_at', None)
-        updated_at = data.pop('updated_at', None)
+        created_at = data.pop("created_at", None)
+        updated_at = data.pop("updated_at", None)
         model = QuestionnaireState(**data)
         model.created_at = created_at
         model.updated_at = updated_at
@@ -85,8 +85,8 @@ class EQSessionSchema(Schema, DateTimeSchemaMixin):
 
     @post_load
     def make_model(self, data):
-        created_at = data.pop('created_at', None)
-        updated_at = data.pop('updated_at', None)
+        created_at = data.pop("created_at", None)
+        updated_at = data.pop("updated_at", None)
         model = EQSession(**data)
         model.created_at = created_at
         model.updated_at = updated_at

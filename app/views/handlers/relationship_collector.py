@@ -14,7 +14,7 @@ class RelationshipCollector(Question):
             block_id = self._current_location.block_id
             section_id = self._current_location.section_id
             list_items = self._questionnaire_store.list_store[
-                self._schema.get_block(block_id)['for_list']
+                self._schema.get_block(block_id)["for_list"]
             ].items
             relationship_router = RelationshipRouter(
                 section_id=section_id, block_id=block_id, list_item_ids=list_items
@@ -51,7 +51,7 @@ class RelationshipCollector(Question):
         )
         if not previous_location_url:
             parent_location = Location(
-                section_id=self._current_location.section_id, block_id=self.block['id']
+                section_id=self._current_location.section_id, block_id=self.block["id"]
             )
             previous_location_url = self.router.get_previous_location_url(
                 parent_location, self._routing_path
@@ -66,7 +66,7 @@ class RelationshipCollector(Question):
             return next_location_url
 
         parent_location = Location(
-            section_id=self._current_location.section_id, block_id=self.block['id']
+            section_id=self._current_location.section_id, block_id=self.block["id"]
         )
         return self.router.get_next_location_url(parent_location, self._routing_path)
 
@@ -79,7 +79,7 @@ class RelationshipCollector(Question):
 
         parent_location = Location(
             section_id=self._current_location.section_id,
-            block_id=self.rendered_block['id'],
+            block_id=self.rendered_block["id"],
         )
         self.questionnaire_store_updater.remove_completed_location(parent_location)
 
@@ -95,7 +95,7 @@ class RelationshipCollector(Question):
         if self._is_last_relationship():
             parent_location = Location(
                 section_id=self._current_location.section_id,
-                block_id=self.rendered_block['id'],
+                block_id=self.rendered_block["id"],
             )
             self.questionnaire_store_updater.add_completed_location(
                 location=parent_location

@@ -16,17 +16,17 @@ NOW = datetime.datetime.now(tz=tzutc()).replace(microsecond=0)
 
 class TestAppModels(AppContextTestCase):
     def test_submitted_response(self):
-        self._test_model(SubmittedResponse('txid', 'somedata', NOW))
+        self._test_model(SubmittedResponse("txid", "somedata", NOW))
 
     def test_questionnaire_state(self):
-        new_model = self._test_model(QuestionnaireState('someuser', 'somedata', 1))
+        new_model = self._test_model(QuestionnaireState("someuser", "somedata", 1))
 
         self.assertGreaterEqual(new_model.created_at, NOW)
         self.assertGreaterEqual(new_model.updated_at, NOW)
 
     def test_eq_session(self):
         new_model = self._test_model(
-            EQSession('sessionid', 'someuser', 'somedata', NOW)
+            EQSession("sessionid", "someuser", "somedata", NOW)
         )
 
         self.assertGreaterEqual(new_model.created_at, NOW)
@@ -34,11 +34,11 @@ class TestAppModels(AppContextTestCase):
         self.assertGreaterEqual(new_model.expires_at, NOW)
 
     def test_used_jti_claim(self):
-        self._test_model(UsedJtiClaim('claimid', NOW, NOW))
+        self._test_model(UsedJtiClaim("claimid", NOW, NOW))
 
     def _test_model(self, orig):
         config = TABLE_CONFIG[type(orig)]
-        schema = config['schema']()
+        schema = config["schema"]()
 
         item = schema.dump(orig)
         new_model = schema.load(item)

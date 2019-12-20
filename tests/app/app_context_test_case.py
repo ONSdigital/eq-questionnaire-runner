@@ -31,7 +31,7 @@ class MockDatastore:
 
     # pylint: disable=no-self-use
     def key(self, *path_args, **kwargs):
-        return Key(*path_args, project='local', **kwargs)
+        return Key(*path_args, project="local", **kwargs)
 
 
 class AppContextTestCase(unittest.TestCase):
@@ -44,17 +44,17 @@ class AppContextTestCase(unittest.TestCase):
     setting_overrides = {}
 
     def setUp(self):
-        self._ds = patch('app.setup.datastore.Client', MockDatastore)
+        self._ds = patch("app.setup.datastore.Client", MockDatastore)
         self._ds.start()
 
-        self._redis = patch('app.setup.redis.Redis', fakeredis.FakeStrictRedis)
+        self._redis = patch("app.setup.redis.Redis", fakeredis.FakeStrictRedis)
         self._redis.start()
 
-        setting_overrides = {'LOGIN_DISABLED': self.LOGIN_DISABLED}
+        setting_overrides = {"LOGIN_DISABLED": self.LOGIN_DISABLED}
         setting_overrides.update(self.setting_overrides)
         self._app = create_app(setting_overrides)
 
-        self._app.config['SERVER_NAME'] = 'test.localdomain'
+        self._app.config["SERVER_NAME"] = "test.localdomain"
         self._app_context = self._app.app_context()
         self._app_context.push()
 

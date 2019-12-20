@@ -32,10 +32,10 @@ class Location:
 
     @classmethod
     def from_dict(cls, location_dict: Mapping):
-        section_id = location_dict['section_id']
-        block_id = location_dict['block_id']
-        list_item_id = location_dict.get('list_item_id')
-        list_name = location_dict.get('list_name')
+        section_id = location_dict["section_id"]
+        block_id = location_dict["block_id"]
+        list_item_id = location_dict.get("list_item_id")
+        list_name = location_dict.get("list_name")
         return cls(
             section_id=section_id,
             block_id=block_id,
@@ -57,7 +57,7 @@ class Location:
         :return:
         """
         return url_for(
-            'questionnaire.block',
+            "questionnaire.block",
             block_id=self.block_id,
             list_name=self.list_name,
             list_item_id=self.list_item_id,

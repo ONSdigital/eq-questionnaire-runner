@@ -14,9 +14,9 @@ class Group:
         location,
         language,
     ):
-        self.id = group_schema['id']
+        self.id = group_schema["id"]
 
-        self.title = group_schema.get('title')
+        self.title = group_schema.get("title")
 
         self.location = location
 
@@ -38,11 +38,11 @@ class Group:
 
         block_ids_on_path = [location.block_id for location in path]
 
-        for block in group_schema['blocks']:
+        for block in group_schema["blocks"]:
             if (
-                block['id'] in block_ids_on_path
-                and block['type'] == 'Question'
-                and block.get('show_on_section_summary', True)
+                block["id"] in block_ids_on_path
+                and block["type"] == "Question"
+                and block.get("show_on_section_summary", True)
             ):
                 blocks.extend(
                     [
@@ -56,6 +56,6 @@ class Group:
 
     def serialize(self):
         return self.placeholder_renderer.render(
-            {'id': self.id, 'title': self.title, 'blocks': self.blocks},
+            {"id": self.id, "title": self.title, "blocks": self.blocks},
             self.location.list_item_id,
         )

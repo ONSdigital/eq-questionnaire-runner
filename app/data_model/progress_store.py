@@ -7,9 +7,9 @@ from app.questionnaire.location import Location
 
 @dataclass
 class CompletionStatus:
-    COMPLETED: str = 'COMPLETED'
-    IN_PROGRESS: str = 'IN_PROGRESS'
-    NOT_STARTED: str = 'NOT_STARTED'
+    COMPLETED: str = "COMPLETED"
+    IN_PROGRESS: str = "IN_PROGRESS"
+    NOT_STARTED: str = "NOT_STARTED"
 
     def __iter__(self):
         return iter(astuple(self))
@@ -56,8 +56,8 @@ class ProgressStore:
 
         return {
             (
-                section_progress['section_id'],
-                section_progress.get('list_item_id'),
+                section_progress["section_id"],
+                section_progress.get("list_item_id"),
             ): Progress.from_dict(section_progress)
             for section_progress in section_progress_list
         }
