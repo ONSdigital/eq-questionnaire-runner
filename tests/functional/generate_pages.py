@@ -237,6 +237,10 @@ RELATIONSHIP_PLAYBACK_GETTER = r"""  playback() { return '[class*="relationships
 
 """
 
+CLEAR_SELECTION_BUTTON_GETTER = r"""  clearSelectionButton() { return '.js-clear-btn'; }
+
+"""
+
 CONSTRUCTOR = Template(
     r"""  constructor() {
     super('${block_id}');
@@ -312,6 +316,8 @@ def process_answer(answer, page_spec, long_names, page_name):
 
     if answer['type'] in ('Radio', 'Checkbox'):
         process_options(answer['id'], answer['options'], page_spec, prefix)
+        if answer['type'] == 'Radio':
+            page_spec.write(CLEAR_SELECTION_BUTTON_GETTER)
 
     elif answer['type'] in 'Relationship':
         process_options(answer['id'], answer['options'], page_spec, prefix)
