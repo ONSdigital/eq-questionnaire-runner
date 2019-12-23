@@ -191,21 +191,14 @@
                             },
                             "summary": {
                                 "title": {
-                                    "text": "Household members on {census_date}",
+                                    "text": "Household members staying overnight at {household_address}",
                                     "placeholders": [
                                         {
-                                            "placeholder": "census_date",
-                                            "transforms": [
-                                                {
-                                                    "arguments": {
-                                                        "date_format": "d MMMM yyyy",
-                                                        "date_to_format": {
-                                                            "value": "2019-10-13"
-                                                        }
-                                                    },
-                                                    "transform": "format_date"
-                                                }
-                                            ]
+                                            "placeholder": "household_address",
+                                            "value": {
+                                                "identifier": "display_address",
+                                                "source": "metadata"
+                                            }
                                         }
                                     ]
                                 },

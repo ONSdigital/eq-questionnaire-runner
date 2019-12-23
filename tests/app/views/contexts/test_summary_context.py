@@ -350,17 +350,17 @@ def test_context_for_section_list_summary(people_answer_store):
     )
 
     summary_context = SummaryContext(
-        DEFAULT_LANGUAGE_CODE,
-        schema,
-        people_answer_store,
-        ListStore(
+        language=DEFAULT_LANGUAGE_CODE,
+        schema=schema,
+        answer_store=people_answer_store,
+        list_store=ListStore(
             [
                 {'items': ['PlwgoG', 'UHPLbX'], 'name': 'people'},
                 {'items': ['gTrlio'], 'name': 'visitors'},
             ]
         ),
-        ProgressStore(),
-        {},
+        progress_store=ProgressStore(),
+        metadata={'display_address': '70 Abingdon Road, Goathill'},
     )
     context = summary_context.section_summary(current_location)
 
@@ -386,7 +386,7 @@ def test_context_for_section_list_summary(people_answer_store):
                 ],
                 'editable': True,
             },
-            'title': 'Household members on 13 October 2019',
+            'title': 'Household members staying overnight at 70 Abingdon Road, Goathill',
             'list_name': 'people',
         },
         {
