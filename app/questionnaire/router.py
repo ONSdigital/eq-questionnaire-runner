@@ -25,7 +25,7 @@ class Router:
     @property
     def enabled_section_ids(self):
         return [
-            section['id']
+            section["id"]
             for section in self._schema.get_sections()
             if self._is_section_enabled(section=section)
         ]
@@ -49,7 +49,7 @@ class Router:
         if location in allowable_path:
             block = self._schema.get_block(location.block_id)
             if (
-                block['type'] in ['Confirmation', 'Summary']
+                block["type"] in ["Confirmation", "Summary"]
                 and not self.is_survey_complete()
             ):
                 return False
@@ -72,9 +72,9 @@ class Router:
         Get the first incomplete block in section/survey if trying to access the section/survey end,
         and the section/survey is incomplete or gets the next default location if the above is false.
         """
-        current_block_type = self._schema.get_block(location.block_id)['type']
+        current_block_type = self._schema.get_block(location.block_id)["type"]
         last_block_location = routing_path[-1]
-        last_block_type = self._schema.get_block(last_block_location.block_id)['type']
+        last_block_type = self._schema.get_block(last_block_location.block_id)["type"]
         hub_enabled = self._schema.is_hub_enabled()
 
         # A section summary doesn't always have to be the last block
@@ -82,17 +82,17 @@ class Router:
             hub_enabled
             and (
                 location.block_id == last_block_location.block_id
-                or current_block_type == 'SectionSummary'
+                or current_block_type == "SectionSummary"
             )
             and self._progress_store.is_section_complete(
                 location.section_id, location.list_item_id
             )
         ):
-            return url_for('.get_questionnaire')
+            return url_for(".get_questionnaire")
 
         # If the section is complete and contains a SectionSummary, return the SectionSummary location
         if (
-            last_block_type == 'SectionSummary'
+            last_block_type == "SectionSummary"
             and current_block_type != last_block_type
             and self._progress_store.is_section_complete(
                 location.section_id, location.list_item_id
@@ -122,11 +122,11 @@ class Router:
         if location_index != 0:
             previous_location = routing_path[location_index - 1]
             previous_block = self._schema.get_block(previous_location.block_id)
-            if previous_block['type'] == 'RelationshipCollector':
-                list_items = self._list_store.get(previous_block['for_list']).items
+            if previous_block["type"] == "RelationshipCollector":
+                list_items = self._list_store.get(previous_block["for_list"]).items
                 relationship_router = RelationshipRouter(
                     section_id=location.section_id,
-                    block_id=previous_block['id'],
+                    block_id=previous_block["id"],
                     list_item_ids=list_items,
                 )
                 return relationship_router.get_last_location_url()
@@ -134,7 +134,7 @@ class Router:
             return previous_location.url()
 
         if self.can_access_hub():
-            return url_for('questionnaire.get_questionnaire')
+            return url_for("questionnaire.get_questionnaire")
 
         return None
 
@@ -161,23 +161,12 @@ class Router:
         self, routing_path, section_id, list_item_id=None
     ):
         section_key = (section_id, list_item_id)
-
         if section_key in self._progress_store:
             for location in routing_path:
                 if not self._is_location_complete(location):
                     return location
 
         return routing_path[0]
-
-    def get_last_complete_location_for_section(
-        self, routing_path, section_id, list_item_id=None
-    ):
-        section_key = (section_id, list_item_id)
-
-        if section_key in self._progress_store:
-            for location in routing_path[::-1]:
-                if self._is_location_complete(location):
-                    return location
 
     def is_survey_complete(self):
         first_incomplete_section_key = self._get_first_incomplete_section_key()
@@ -194,7 +183,7 @@ class Router:
         location = self._get_first_incomplete_location(path)
         if not location or (
             location == path[-1]
-            and self._schema.get_block(location.block_id)['type'] == 'SectionSummary'
+            and self._schema.get_block(location.block_id)["type"] == "SectionSummary"
         ):
             return True
 
@@ -234,11 +223,11 @@ class Router:
     def _get_first_incomplete_location(self, path):
         for location in path:
             block = self._schema.get_block(location.block_id)
-            block_type = block.get('type')
+            block_type = block.get("type")
 
             if not self._is_location_complete(location) and block_type not in {
-                'Summary',
-                'Confirmation',
+                "Summary",
+                "Confirmation",
             }:
                 return location
 
@@ -285,28 +274,28 @@ class Router:
     # removed.
     def _does_section_only_contain_summary(self, section_id):
         section = self._schema.get_section(section_id)
-        groups = section.get('groups')
+        groups = section.get("groups")
         if len(groups) == 1:
-            blocks = groups[0].get('blocks')
+            blocks = groups[0].get("blocks")
             if len(blocks) == 1:
-                block_type = blocks[0].get('type')
-                if block_type in {'Summary', 'Confirmation'}:
+                block_type = blocks[0].get("type")
+                if block_type in {"Summary", "Confirmation"}:
                     return True
         return False
 
     def _get_location_of_section_summary(self, routing_path):
         for location in routing_path[::-1]:
             block = self._schema.get_block(location.block_id)
-            if block['type'] == 'SectionSummary':
+            if block["type"] == "SectionSummary":
                 return location
 
     def _is_section_enabled(self, section):
-        if 'enabled' not in section:
+        if "enabled" not in section:
             return True
 
-        for condition in section['enabled']:
+        for condition in section["enabled"]:
             if evaluate_when_rules(
-                condition['when'],
+                condition["when"],
                 self._schema,
                 self._metadata,
                 self._answer_store,

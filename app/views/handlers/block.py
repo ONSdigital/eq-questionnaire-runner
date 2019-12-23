@@ -3,7 +3,6 @@ from typing import Optional
 
 from structlog import get_logger
 
-from app.data_model.progress_store import CompletionStatus
 from app.questionnaire.location import InvalidLocationException, Location
 from app.questionnaire.placeholder_renderer import PlaceholderRenderer
 from app.questionnaire.questionnaire_store_updater import QuestionnaireStoreUpdater
@@ -32,7 +31,7 @@ class BlockHandler:
 
         if not self.is_location_valid():
             raise InvalidLocationException(
-                f'location {self._current_location} is not valid'
+                f"location {self._current_location} is not valid"
             )
 
     @property
@@ -46,7 +45,7 @@ class BlockHandler:
                 self._current_location,
                 self._schema,
                 self._questionnaire_store,
-                self.block.get('question'),
+                self.block.get("question"),
             )
         return self._questionnaire_store_updater
 
@@ -103,15 +102,15 @@ class BlockHandler:
 
     def set_started_at_metadata(self):
         collection_metadata = self._questionnaire_store.collection_metadata
-        if not collection_metadata.get('started_at'):
+        if not collection_metadata.get("started_at"):
             started_at = datetime.utcnow().isoformat()
 
             logger.info(
-                'Survey started. Writing started_at time to collection metadata',
+                "Survey started. Writing started_at time to collection metadata",
                 started_at=started_at,
             )
 
-            collection_metadata['started_at'] = started_at
+            collection_metadata["started_at"] = started_at
 
     def _get_routing_path(self):
         return self.router.section_routing_path(
@@ -120,16 +119,10 @@ class BlockHandler:
         )
 
     def _update_section_completeness(self, location: Optional[Location] = None):
-        section_status = (
-            CompletionStatus.COMPLETED
-            if self.router.is_path_complete(self._routing_path)
-            else CompletionStatus.IN_PROGRESS
-        )
-
         location = location or self._current_location
 
         self.questionnaire_store_updater.update_section_status(
-            section_status=section_status,
+            is_complete=self.router.is_path_complete(self._routing_path),
             section_id=location.section_id,
             list_item_id=location.list_item_id,
         )

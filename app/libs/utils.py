@@ -4,7 +4,7 @@ def convert_tx_id(tx_id):
     :param tx_id: tx_id to be converted
     :return: String in the form of xxxx-xxxx-xxxx-xxxx
     """
-    return (tx_id[:4] + '-' + tx_id[4:])[:19]
+    return (tx_id[:4] + "-" + tx_id[4:])[:19]
 
 
 # Converts a dict into an object with the key names as property names

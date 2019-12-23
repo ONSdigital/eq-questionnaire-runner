@@ -122,11 +122,10 @@ describe('Feature: Repeating Sections with Hub and Spoke', function () {
 
     });
 
-    it('When the user continues with a partially completed repeating section, Then they are taken to the last complete block', function () {
+    it('When the user continues with a partially completed repeating section, Then they are taken to the first incomplete block', function() {
       $(HubPage.summaryRowLink(2)).click();
 
-      expect($(ConfirmDateOfBirthPage.questionText()).getText()).to.equal('Marcus Twin is 19 years old. Is this correct?');
-      expect($(ConfirmDateOfBirthPage.confirmDateOfBirthYesPersonNameIsAgeInYearsYearsOld()).isSelected()).to.be.true;
+        expect($(SexPage.questionText()).getText()).to.equal('What is Marcus Twin’s sex?');
     });
 
     it('When the user completes a repeating section, Then that section should be marked as \'Completed\' on the Hub', function () {

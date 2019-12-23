@@ -14,9 +14,9 @@ logger = get_logger()
 class UserIDGenerator:
     def __init__(self, iterations, user_id_salt, user_ik_salt):
         if user_id_salt is None:
-            raise ValueError('user_id_salt is required')
+            raise ValueError("user_id_salt is required")
         if user_ik_salt is None:
-            raise ValueError('user_ik_salt is required')
+            raise ValueError("user_ik_salt is required")
 
         self._iterations = iterations
         self._user_id_salt = user_id_salt

@@ -13,7 +13,7 @@ from app.questionnaire.router import Router
 from app.submitter.converter import convert_answers
 from app.utilities.schema import load_schema_from_session_data
 
-dump_blueprint = Blueprint('dump', __name__)
+dump_blueprint = Blueprint("dump", __name__)
 
 
 def requires_schema(func):
@@ -27,9 +27,9 @@ def requires_schema(func):
     return wrapper
 
 
-@dump_blueprint.route('/dump/debug', methods=['GET'])
+@dump_blueprint.route("/dump/debug", methods=["GET"])
 @login_required
-@role_required('dumper')
+@role_required("dumper")
 def dump_debug():
     questionnaire_store = get_questionnaire_store(
         current_user.user_id, current_user.user_ik
@@ -37,9 +37,9 @@ def dump_debug():
     return questionnaire_store.serialise()
 
 
-@dump_blueprint.route('/dump/routing-path', methods=['GET'])
+@dump_blueprint.route("/dump/routing-path", methods=["GET"])
 @login_required
-@role_required('dumper')
+@role_required("dumper")
 @with_questionnaire_store
 @requires_schema
 def dump_routing(schema, questionnaire_store):
@@ -51,13 +51,13 @@ def dump_routing(schema, questionnaire_store):
         questionnaire_store.metadata,
     )
 
-    response = {'routing_path': router.full_routing_path()}
+    response = {"routing_path": router.full_routing_path()}
     return json.dumps(response, for_json=True), 200
 
 
-@dump_blueprint.route('/dump/submission', methods=['GET'])
+@dump_blueprint.route("/dump/submission", methods=["GET"])
 @login_required
-@role_required('dumper')
+@role_required("dumper")
 @with_questionnaire_store
 @requires_schema
 def dump_submission(schema, questionnaire_store):
@@ -74,6 +74,6 @@ def dump_submission(schema, questionnaire_store):
         current_user.user_id, current_user.user_ik
     )
     response = {
-        'submission': convert_answers(schema, questionnaire_store, routing_path)
+        "submission": convert_answers(schema, questionnaire_store, routing_path)
     }
     return json.dumps(response, for_json=True), 200

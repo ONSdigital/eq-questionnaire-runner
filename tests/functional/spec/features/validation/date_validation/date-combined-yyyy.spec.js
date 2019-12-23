@@ -32,14 +32,6 @@ describe('Feature: Combined question level and single validation for MM-YYYY dat
          expect($(DateRangePage.errorNumber(1)).getText()).to.contain('Enter a reporting period greater than or equal to 2 years.');
       });
 
-      it('When I enter an invalid year, Then I should see a single validation error', function() {
-         $(DateRangePage.dateRangeFromYear()).setValue(2016);
-         $(DateRangePage.dateRangeToYear()).setValue(20167);
-         $(DateRangePage.submit()).click();
-         expect($(DateRangePage.errorNumber(1)).getText()).to.contain('Enter a valid date.');
-         expect($(DateRangePage.errorNumber(2)).isExisting()).to.be.false;
-      });
-
       it('When I enter valid dates, Then I should see the summary page', function() {
          $(DateRangePage.dateRangeFromYear()).setValue(2016);
          // Min range

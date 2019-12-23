@@ -66,6 +66,7 @@
                             "add_block": {
                                 "id": "add-person",
                                 "type": "ListAddQuestion",
+                                "cancel_text": "Don’t need to add anyone else?",
                                 "question": {
                                     "id": "add-question",
                                     "type": "General",
@@ -89,6 +90,7 @@
                             "edit_block": {
                                 "id": "edit-person",
                                 "type": "ListEditQuestion",
+                                "cancel_text": "Don’t need to change anything?",
                                 "question": {
                                     "id": "edit-question",
                                     "type": "General",
@@ -112,6 +114,7 @@
                             "remove_block": {
                                 "id": "remove-person",
                                 "type": "ListRemoveQuestion",
+                                "cancel_text": "Don’t need to remove this person?",
                                 "question": {
                                     "id": "remove-question",
                                     "type": "General",

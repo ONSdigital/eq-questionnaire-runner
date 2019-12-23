@@ -44,19 +44,19 @@ class QuestionnaireStore:
 
     def _deserialise(self, data):
         json_data = json.loads(data, use_decimal=True)
-        self.progress_store = ProgressStore(json_data.get('PROGRESS'))
-        self.set_metadata(json_data.get('METADATA', {}))
-        self.answer_store = AnswerStore(json_data.get('ANSWERS'))
-        self.list_store = ListStore.deserialise(json_data.get('LISTS'))
-        self.collection_metadata = json_data.get('COLLECTION_METADATA', {})
+        self.progress_store = ProgressStore(json_data.get("PROGRESS"))
+        self.set_metadata(json_data.get("METADATA", {}))
+        self.answer_store = AnswerStore(json_data.get("ANSWERS"))
+        self.list_store = ListStore.deserialise(json_data.get("LISTS"))
+        self.collection_metadata = json_data.get("COLLECTION_METADATA", {})
 
     def serialise(self):
         data = {
-            'METADATA': self._metadata,
-            'ANSWERS': list(self.answer_store),
-            'LISTS': self.list_store.serialise(),
-            'PROGRESS': self.progress_store.serialise(),
-            'COLLECTION_METADATA': self.collection_metadata,
+            "METADATA": self._metadata,
+            "ANSWERS": list(self.answer_store),
+            "LISTS": self.list_store.serialise(),
+            "PROGRESS": self.progress_store.serialise(),
+            "COLLECTION_METADATA": self.collection_metadata,
         }
         return json.dumps(data, for_json=True)
 

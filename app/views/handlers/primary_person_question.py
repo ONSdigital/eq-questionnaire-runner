@@ -8,7 +8,7 @@ class PrimaryPersonQuestion(Question):
     def parent_location(self):
         return Location(
             section_id=self._current_location.section_id,
-            block_id=self.rendered_block['parent_id'],
+            block_id=self.rendered_block["parent_id"],
         )
 
     def is_location_valid(self):

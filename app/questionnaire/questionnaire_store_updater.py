@@ -1,9 +1,10 @@
 from itertools import combinations
 
-from typing import List, Optional, Tuple, Union
+from typing import Iterable, List, Optional, Tuple, Union
 
 from app.data_model.answer_store import Answer
 from app.data_model.relationship_store import Relationship, RelationshipStore
+from app.data_model.progress_store import CompletionStatus
 from app.questionnaire.location import Location
 
 
@@ -11,7 +12,7 @@ class QuestionnaireStoreUpdater:
     """ Component responsible for any actions that need to happen as a result of updating the questionnaire_store
     """
 
-    EMPTY_ANSWER_VALUES: Tuple = (None, [], '')
+    EMPTY_ANSWER_VALUES: Tuple = (None, [], "")
 
     def __init__(self, current_location, schema, questionnaire_store, current_question):
         self._current_location = current_location
@@ -70,8 +71,8 @@ class QuestionnaireStoreUpdater:
         )
         if target_relationship_collectors:
             for target in target_relationship_collectors:
-                block_id = target['id']
-                section_id = self._schema.get_section_for_block_id(block_id)['id']
+                block_id = target["id"]
+                section_id = self._schema.get_section_for_block_id(block_id)["id"]
                 self.remove_completed_location(Location(section_id, block_id))
 
     def update_relationship_question_completeness(self, list_name: str) -> None:
@@ -87,7 +88,7 @@ class QuestionnaireStoreUpdater:
         for collector in relationship_collectors:
 
             relationship_answer_id = self._schema.get_relationship_answer_id_for_block(
-                collector['id']
+                collector["id"]
             )
             relationship_answers = self._get_relationships_in_answer_store(
                 relationship_answer_id
@@ -95,16 +96,16 @@ class QuestionnaireStoreUpdater:
 
             if relationship_answers:
                 pairs = {
-                    (answer['list_item_id'], answer['to_list_item_id'])
+                    (answer["list_item_id"], answer["to_list_item_id"])
                     for answer in relationship_answers
                 }
 
                 expected_pairs = set(combinations(list_items, 2))
                 if expected_pairs == pairs:
-                    section_id = self._schema.get_section_for_block_id(collector['id'])[
-                        'id'
+                    section_id = self._schema.get_section_for_block_id(collector["id"])[
+                        "id"
                     ]
-                    location = Location(section_id, collector['id'])
+                    location = Location(section_id, collector["id"])
                     self.add_completed_location(location)
 
     def _get_relationship_collectors_by_list_name(self, list_name: str):
@@ -166,7 +167,7 @@ class QuestionnaireStoreUpdater:
             return None
 
         relationship_answer_ids = [
-            self._schema.get_relationship_answer_id_for_block(block['id'])
+            self._schema.get_relationship_answer_id_for_block(block["id"])
             for block in assosciated_relationship_collectors
         ]
 
@@ -179,7 +180,7 @@ class QuestionnaireStoreUpdater:
             answers_to_keep = [
                 value
                 for value in answer.value
-                if list_item_id not in {value['to_list_item_id'], value['list_item_id']}
+                if list_item_id not in {value["to_list_item_id"], value["list_item_id"]}
             ]
             answer.value = answers_to_keep
             self._answer_store.add_or_update(answer)
@@ -194,10 +195,17 @@ class QuestionnaireStoreUpdater:
         self._progress_store.remove_completed_location(location)
 
     def update_section_status(
-        self, section_status: str, section_id: str, list_item_id: Optional[str] = None
+        self, is_complete: bool, section_id: str, list_item_id: Optional[str] = None
     ):
-        self._progress_store.update_section_status(
-            section_status, section_id, list_item_id
+        status = (
+            CompletionStatus.COMPLETED if is_complete else CompletionStatus.IN_PROGRESS
+        )
+        self._progress_store.update_section_status(status, section_id, list_item_id)
+
+    def started_section_keys(self, section_ids: Iterable[str] = None):
+        return self._progress_store.section_keys(
+            statuses={CompletionStatus.COMPLETED, CompletionStatus.IN_PROGRESS},
+            section_ids=section_ids,
         )
 
     def _update_questionnaire_store_with_form_data(self, form_data):

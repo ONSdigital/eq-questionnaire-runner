@@ -22,19 +22,19 @@ login_manager = LoginManager()
 
 @login_manager.user_loader
 def user_loader(user_id):
-    logger.debug('loading user', user_id=user_id)
+    logger.debug("loading user", user_id=user_id)
     return load_user()
 
 
 @login_manager.request_loader
 def request_load_user(request):  # pylint: disable=unused-argument
-    logger.debug('load user')
+    logger.debug("load user")
     return load_user()
 
 
 @user_logged_out.connect_via(ANY)
 def when_user_logged_out(sender_app, user):  # pylint: disable=unused-argument
-    logger.debug('log out user')
+    logger.debug("log out user")
     session_store = get_session_store()
     if session_store:
         session_store.delete()
@@ -46,7 +46,7 @@ def _extend_session_expiry(session_store):
     Extends the expiration time of the session
     :param session_store:
     """
-    session_timeout = cookie_session.get('expires_in')
+    session_timeout = cookie_session.get("expires_in")
     if session_timeout:
         new_expiration_time = datetime.now(tz=tzutc()) + timedelta(
             seconds=session_timeout
@@ -60,7 +60,7 @@ def _extend_session_expiry(session_store):
         ):
             session_store.expiration_time = new_expiration_time
             session_store.save()
-            logger.debug('session expiry extended')
+            logger.debug("session expiry extended")
 
 
 def _is_session_valid(session_store):
@@ -86,7 +86,7 @@ def load_user():
     session_store = get_session_store()
 
     if session_store and session_store.user_id and _is_session_valid(session_store):
-        logger.debug('session exists')
+        logger.debug("session exists")
 
         user_id = session_store.user_id
         user_ik = cookie_session.get(USER_IK)
@@ -99,7 +99,7 @@ def load_user():
 
         return user
 
-    logger.info('session does not exist')
+    logger.info("session does not exist")
 
     cookie_session.pop(USER_IK, None)
     return None
@@ -111,20 +111,20 @@ def _create_session_data_from_metadata(metadata):
     :param metadata: metadata parsed from jwt token
     """
     session_data = SessionData(
-        tx_id=metadata.get('tx_id'),
-        schema_name=metadata.get('schema_name'),
-        period_str=metadata.get('period_str'),
-        language_code=metadata.get('language_code'),
-        survey_url=metadata.get('survey_url'),
-        ru_name=metadata.get('ru_name'),
-        ru_ref=metadata.get('ru_ref'),
-        response_id=metadata.get('response_id'),
-        questionnaire_id=metadata.get('questionnaire_id'),
-        case_id=metadata.get('case_id'),
-        case_ref=metadata.get('case_ref'),
-        trad_as=metadata.get('trad_as'),
-        account_service_url=metadata.get('account_service_url'),
-        account_service_log_out_url=metadata.get('account_service_log_out_url'),
+        tx_id=metadata.get("tx_id"),
+        schema_name=metadata.get("schema_name"),
+        period_str=metadata.get("period_str"),
+        language_code=metadata.get("language_code"),
+        survey_url=metadata.get("survey_url"),
+        ru_name=metadata.get("ru_name"),
+        ru_ref=metadata.get("ru_ref"),
+        response_id=metadata.get("response_id"),
+        questionnaire_id=metadata.get("questionnaire_id"),
+        case_id=metadata.get("case_id"),
+        case_ref=metadata.get("case_ref"),
+        trad_as=metadata.get("trad_as"),
+        account_service_url=metadata.get("account_service_url"),
+        account_service_log_out_url=metadata.get("account_service_log_out_url"),
     )
     return session_data
 
@@ -139,9 +139,9 @@ def store_session(metadata):
     cookie_session.clear()
 
     # get the hashed user id for eq
-    id_generator = current_app.eq['id_generator']
-    user_id = id_generator.generate_id(metadata['response_id'])
-    user_ik = id_generator.generate_ik(metadata['response_id'])
+    id_generator = current_app.eq["id_generator"]
+    user_id = id_generator.generate_id(metadata["response_id"])
+    user_ik = id_generator.generate_ik(metadata["response_id"])
 
     eq_session_id = str(uuid4())
 
@@ -156,20 +156,20 @@ def store_session(metadata):
     questionnaire_store.set_metadata(metadata)
     questionnaire_store.save()
 
-    logger.info('user authenticated')
+    logger.info("user authenticated")
 
 
 def decrypt_token(encrypted_token):
     if not encrypted_token:
-        raise NoTokenException('Please provide a token')
+        raise NoTokenException("Please provide a token")
 
-    logger.debug('decrypting token')
+    logger.debug("decrypting token")
     decrypted_token = decrypt(
         token=encrypted_token,
-        key_store=current_app.eq['key_store'],
+        key_store=current_app.eq["key_store"],
         key_purpose=KEY_PURPOSE_AUTHENTICATION,
-        leeway=current_app.config['EQ_JWT_LEEWAY_IN_SECONDS'],
+        leeway=current_app.config["EQ_JWT_LEEWAY_IN_SECONDS"],
     )
 
-    logger.debug('token decrypted')
+    logger.debug("token decrypted")
     return decrypted_token

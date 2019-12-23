@@ -1,13 +1,18 @@
-from typing import List, Tuple, Mapping, MutableMapping, Optional
+from dataclasses import astuple, dataclass
+from typing import Iterable, List, Mapping, MutableMapping, Optional
 
 from app.data_model.progress import Progress
 from app.questionnaire.location import Location
 
 
+@dataclass
 class CompletionStatus:
-    COMPLETED = 'COMPLETED'
-    IN_PROGRESS = 'IN_PROGRESS'
-    NOT_STARTED = 'NOT_STARTED'
+    COMPLETED: str = "COMPLETED"
+    IN_PROGRESS: str = "IN_PROGRESS"
+    NOT_STARTED: str = "NOT_STARTED"
+
+    def __iter__(self):
+        return iter(astuple(self))
 
 
 class ProgressStore:
@@ -51,8 +56,8 @@ class ProgressStore:
 
         return {
             (
-                section_progress['section_id'],
-                section_progress.get('list_item_id'),
+                section_progress["section_id"],
+                section_progress.get("list_item_id"),
             ): Progress.from_dict(section_progress)
             for section_progress in section_progress_list
         }
@@ -64,13 +69,29 @@ class ProgressStore:
     def is_section_complete(
         self, section_id: str, list_item_id: Optional[str] = None
     ) -> bool:
-        return (section_id, list_item_id) in self._completed_section_keys()
+        return (section_id, list_item_id) in self.section_keys(
+            statuses={CompletionStatus.COMPLETED}
+        )
 
-    def _completed_section_keys(self) -> List[Tuple[str, Optional[str]]]:
-        return [
+    def section_keys(
+        self, statuses: Iterable[str] = None, section_ids: Iterable[str] = None
+    ):
+        if not statuses:
+            statuses = {*CompletionStatus()}
+
+        section_keys = [
             section_key
             for section_key, section_progress in self._progress.items()
-            if section_progress.status == CompletionStatus.COMPLETED
+            if section_progress.status in statuses
+        ]
+
+        if section_ids is None:
+            return section_keys
+
+        return [
+            section_key
+            for section_key in section_keys
+            if any(section_id in section_key for section_id in section_ids)
         ]
 
     def update_section_status(

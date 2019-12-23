@@ -15,7 +15,7 @@ def _choose_variant(
         return block[single_key]
 
     for variant in block.get(variants_key, []):
-        when_rules = variant.get('when', [])
+        when_rules = variant.get("when", [])
         if evaluate_when_rules(
             when_rules,
             schema,
@@ -36,8 +36,8 @@ def choose_question_to_display(
         metadata,
         answer_store,
         list_store,
-        variants_key='question_variants',
-        single_key='question',
+        variants_key="question_variants",
+        single_key="question",
         current_location=current_location,
     )
 
@@ -51,8 +51,8 @@ def choose_content_to_display(
         metadata,
         answer_store,
         list_store,
-        variants_key='content_variants',
-        single_key='content',
+        variants_key="content_variants",
+        single_key="content",
         current_location=current_location,
     )
 
@@ -62,26 +62,26 @@ def transform_variants(
 ):
     output_block = block.copy()
 
-    if 'question_variants' in block:
+    if "question_variants" in block:
         question = choose_question_to_display(
             block, schema, metadata, answer_store, list_store, current_location
         )
-        output_block.pop('question_variants', None)
-        output_block.pop('question', None)
+        output_block.pop("question_variants", None)
+        output_block.pop("question", None)
 
-        output_block['question'] = question
+        output_block["question"] = question
 
-    if 'content_variants' in block:
+    if "content_variants" in block:
         content = choose_content_to_display(
             block, schema, metadata, answer_store, list_store, current_location
         )
-        output_block.pop('content_variants', None)
-        output_block.pop('content', None)
+        output_block.pop("content_variants", None)
+        output_block.pop("content", None)
 
-        output_block['content'] = content
+        output_block["content"] = content
 
-    if block['type'] in ('ListCollector', 'PrimaryPersonListCollector'):
-        list_operations = ['add_block', 'edit_block', 'remove_block']
+    if block["type"] in ("ListCollector", "PrimaryPersonListCollector"):
+        list_operations = ["add_block", "edit_block", "remove_block"]
         for list_operation in list_operations:
             if block.get(list_operation):
                 output_block[list_operation] = transform_variants(
@@ -97,9 +97,9 @@ def transform_variants(
 
 
 def get_answer_ids_in_block(block):
-    question = block['question']
+    question = block["question"]
     answer_ids = []
-    for answer in question['answers']:
-        answer_ids.append(answer['id'])
+    for answer in question["answers"]:
+        answer_ids.append(answer["id"])
 
     return answer_ids
