@@ -18,6 +18,10 @@
         {
             "name": "ru_name",
             "type": "string"
+        },
+        {
+            "name": "display_address",
+            "type": "string"
         }
     ],
     "sections": [
