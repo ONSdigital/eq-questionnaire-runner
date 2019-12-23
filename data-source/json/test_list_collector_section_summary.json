@@ -47,7 +47,7 @@
                                 "question": {
                                     "id": "primary-person-add-or-edit-question",
                                     "type": "General",
-                                    "title": "What is your name",
+                                    "title": "What is your name?",
                                     "answers": [
                                         {
                                             "id": "first-name",
@@ -67,7 +67,18 @@
                             "question": {
                                 "id": "primary-confirmation-question",
                                 "type": "General",
-                                "title": "Do you live here?",
+                                "title": {
+                                    "placeholders": [
+                                        {
+                                            "placeholder": "household_address",
+                                            "value": {
+                                                "identifier": "display_address",
+                                                "source": "metadata"
+                                            }
+                                        }
+                                    ],
+                                    "text": "Do you live at <em>{household_address}</em>?"
+                                },
                                 "answers": [
                                     {
                                         "id": "you-live-here",
@@ -102,7 +113,18 @@
                             "question": {
                                 "id": "confirmation-question",
                                 "type": "General",
-                                "title": "Does anyone else live here?",
+                                "title": {
+                                    "placeholders": [
+                                        {
+                                            "placeholder": "household_address",
+                                            "value": {
+                                                "identifier": "display_address",
+                                                "source": "metadata"
+                                            }
+                                        }
+                                    ],
+                                    "text": "Does anyone else live at <em>{household_address}</em>?"
+                                },
                                 "answers": [
                                     {
                                         "id": "anyone-else",
@@ -195,8 +217,22 @@
                             },
                             "summary": {
                                 "title": {
-                                    "text": "Household members staying overnight at {household_address}",
+                                    "text": "Household members staying overnight on {census_date} at {household_address}",
                                     "placeholders": [
+                                        {
+                                            "placeholder": "census_date",
+                                            "transforms": [
+                                                {
+                                                    "arguments": {
+                                                        "date_format": "d MMMM yyyy",
+                                                        "date_to_format": {
+                                                            "value": "2019-10-13"
+                                                        }
+                                                    },
+                                                    "transform": "format_date"
+                                                }
+                                            ]
+                                        },
                                         {
                                             "placeholder": "household_address",
                                             "value": {
@@ -246,7 +282,18 @@
                             "question": {
                                 "id": "confirmation-visitor-question",
                                 "type": "General",
-                                "title": "Are there any other visitors staying overnight?",
+                                "title": {
+                                    "placeholders": [
+                                        {
+                                            "placeholder": "household_address",
+                                            "value": {
+                                                "identifier": "display_address",
+                                                "source": "metadata"
+                                            }
+                                        }
+                                    ],
+                                    "text": "Are there any other visitors staying overnight at <em>{household_address}</em>?"
+                                },
                                 "answers": [
                                     {
                                         "id": "any-more-visitors",
@@ -339,7 +386,7 @@
                             },
                             "summary": {
                                 "title": {
-                                    "text": "Visitors staying overnight on {census_date}",
+                                    "text": "Visitors staying overnight on {census_date} at {household_address}",
                                     "placeholders": [
                                         {
                                             "placeholder": "census_date",
@@ -354,6 +401,13 @@
                                                     "transform": "format_date"
                                                 }
                                             ]
+                                        },
+                                        {
+                                            "placeholder": "household_address",
+                                            "value": {
+                                                "identifier": "display_address",
+                                                "source": "metadata"
+                                            }
                                         }
                                     ]
                                 },
@@ -391,17 +445,19 @@
             ]
         },
         {
-            "id": "summary-section",
-            "title": "Summary",
+            "id": "confirmation-section",
+            "title": "Confirmation",
             "groups": [
                 {
-                    "id": "summary-group",
-                    "title": "Summary",
+                    "id": "confirmation-group",
+                    "title": "Confirmtion",
                     "blocks": [
                         {
                             "id": "summary",
-                            "type": "Summary",
-                            "collapsible": true
+                            "type": "Confirmation",
+                            "content": {
+                                "title": "Thank you for your answers, please submit your answers."
+                            }
                         }
                     ]
                 }

@@ -386,7 +386,7 @@ def test_context_for_section_list_summary(people_answer_store):
                 ],
                 "editable": True,
             },
-            "title": "Household members staying overnight at 70 Abingdon Road, Goathill",
+            "title": "Household members staying overnight on 13 October 2019 at 70 Abingdon Road, Goathill",
             "list_name": "people",
         },
         {
@@ -404,7 +404,7 @@ def test_context_for_section_list_summary(people_answer_store):
                 ],
                 "editable": True,
             },
-            "title": "Visitors staying overnight on 13 October 2019",
+            "title": "Visitors staying overnight on 13 October 2019 at 70 Abingdon Road, Goathill",
             "list_name": "visitors",
         },
     ]
