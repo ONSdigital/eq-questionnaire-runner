@@ -450,7 +450,7 @@
             "groups": [
                 {
                     "id": "confirmation-group",
-                    "title": "Confirmtion",
+                    "title": "Confirmation",
                     "blocks": [
                         {
                             "id": "summary",
