@@ -1,0 +1,17 @@
+platform: linux
+image_resource:
+  type: docker-image
+  source:
+    repository: alpine
+inputs:
+  - name: eq-questionnaire-runner
+outputs:
+  - name: compiled-eq-questionnaire-runner
+run:
+  path: sh
+  args:
+    - -exc
+    - |
+      cd eq-questionnaire-runner
+      cp -R ./. ../compiled-eq-questionnaire-runner
+      cp .git/HEAD ../compiled-eq-questionnaire-runner/.application-version
