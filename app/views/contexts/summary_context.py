@@ -122,6 +122,7 @@ class SummaryContext:
                 self._answer_store,
                 self._list_store,
                 self._language,
+                self._metadata,
                 return_to=current_location.block_id,
             )
 
