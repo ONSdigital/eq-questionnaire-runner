@@ -89,6 +89,10 @@ function(region_code, census_date, census_month_year_date) {
   navigation: {
     visible: false,
   },
+  view_submitted_response: {
+    enabled: true,
+    duration: 900,
+  },
   metadata: [
     {
       name: 'user_id',
