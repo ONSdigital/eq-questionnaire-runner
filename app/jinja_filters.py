@@ -217,7 +217,11 @@ class CheckboxConfig:
 
         if option.detail_answer_id:
             detail_answer = form["fields"][option.detail_answer_id]
-            self.other = OtherConfig(detail_answer)
+            if 'open' in answer_option['detail_answer']:
+                answer_open = answer_option['detail_answer']['open']
+            else:
+                answer_open = False
+            self.other = OtherConfig(detail_answer, answer_open)
 
 
 class RadioConfig:
@@ -237,7 +241,11 @@ class RadioConfig:
 
         if option.detail_answer_id:
             detail_answer = form["fields"][option.detail_answer_id]
-            self.other = OtherConfig(detail_answer)
+            if 'open' in answer_option['detail_answer']:
+                answer_open = answer_option['detail_answer']['open']
+            else:
+                answer_open = False
+            self.other = OtherConfig(detail_answer, answer_open)
 
 
 class RelationshipRadioConfig:
@@ -266,7 +274,8 @@ class RelationshipRadioConfig:
 
 
 class OtherConfig:
-    def __init__(self, detail_answer):
+    def __init__(self, detail_answer, answer_open):
+        self.open = answer_open
         self.id = detail_answer.id
         self.name = detail_answer.name
         self.value = escape(detail_answer._value())  # pylint: disable=protected-access
