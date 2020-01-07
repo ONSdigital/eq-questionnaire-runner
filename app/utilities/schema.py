@@ -1,7 +1,10 @@
 import os
+from pathlib import Path
+
 import requests
 import simplejson as json
 
+from glob import glob
 from structlog import get_logger
 from werkzeug.exceptions import NotFound
 
@@ -13,7 +16,7 @@ from app.setup import cache
 
 logger = get_logger()
 
-DEFAULT_SCHEMA_DIR = "data"
+DEFAULT_SCHEMA_DIR = "schemas"
 
 LANGUAGES_MAP = {
     "test_language": [["en", "cy"]],
@@ -97,16 +100,19 @@ def _load_schema_file(schema_name, language_code):
     :param schema_name: The name of the schema e.g. census_household
     :param language_code: ISO 2-character code for language e.g. 'en', 'cy'
     """
-    schema_path = get_schema_file_path(schema_name, language_code)
+    schema_path_map = get_schema_path_map()
 
-    if language_code != DEFAULT_LANGUAGE_CODE and not os.path.exists(schema_path):
+    if (
+        language_code != DEFAULT_LANGUAGE_CODE
+        and schema_name not in schema_path_map[language_code]
+    ):
         logger.info(
             "couldn't find requested language schema, falling back to 'en'",
             schema_file=schema_name,
             language_code=language_code,
-            schema_path=schema_path,
         )
-        schema_path = get_schema_file_path(schema_name, DEFAULT_LANGUAGE_CODE)
+
+    schema_path = schema_path_map[language_code or DEFAULT_LANGUAGE_CODE][schema_name]
 
     logger.info(
         "loading schema",
@@ -151,3 +157,23 @@ def get_schema_file_path(schema_name, language_code):
     schema_dir = get_schema_path(language_code)
     schema_filename = f"{schema_name}.json"
     return os.path.join(schema_dir, schema_filename)
+
+
+def get_schema_path_map_for_language(language_code=DEFAULT_LANGUAGE_CODE):
+    schema_dir = get_schema_path(language_code)
+    test_schema_dir = get_schema_path(language_code, "tests/schemas")
+
+    return {
+        Path(schema_file).with_suffix('').name: schema_file
+        for schema_file in glob(f"{schema_dir}/*.json")
+        + glob(f"{test_schema_dir}/*.json")
+    }
+
+
+def get_schema_path_map():
+    language_map_codes = ["en", "cy", "ga", "eo"]
+
+    return {
+        language_code: get_schema_path_map_for_language(language_code)
+        for language_code in language_map_codes
+    }

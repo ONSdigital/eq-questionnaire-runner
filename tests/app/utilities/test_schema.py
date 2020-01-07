@@ -1,6 +1,7 @@
 import pytest
 from app.utilities.schema import (
     get_allowed_languages,
+    get_schema_path_map,
     get_schema_name_from_census_params,
 )
 
@@ -44,3 +45,9 @@ def test_transform_schema_name_bad_case_type_raises_error():
 )
 def test_get_allowed_languages(schema_name, launch_language, expected):
     assert get_allowed_languages(schema_name, launch_language) == expected
+
+
+def test_get_schema_path_map():
+    schema_path_map = get_schema_path_map()
+
+    assert schema_path_map is False
