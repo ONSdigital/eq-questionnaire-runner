@@ -8,8 +8,5 @@ cd "${DIR}"/.. || exit
 echo "Loading Templates"
 "${DIR}"/load_templates.sh
 
-echo "Building schemas"
-"${DIR}"/build_schemas.sh
-
-echo "Translating schemas"
-make translate
+echo "Downloading schemas"
+"${DIR}"/load_schemas.sh

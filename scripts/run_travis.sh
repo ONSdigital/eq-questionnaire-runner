@@ -5,14 +5,11 @@
 
 set -e
 
-echo "Building"
-./scripts/build.sh
+echo "Downloading Dependencies"
+./scripts/load.sh
 
 echo "Running schema tests"
 ./scripts/test_schemas.sh
-
-echo "Running translation tests"
-python -m scripts.extract_translation_templates --test
 
 echo "Running lint tests"
 ./scripts/run_lint.sh
