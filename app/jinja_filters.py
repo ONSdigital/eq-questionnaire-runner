@@ -217,8 +217,8 @@ class CheckboxConfig:
 
         if option.detail_answer_id:
             detail_answer = form["fields"][option.detail_answer_id]
-            if 'open' in answer_option['detail_answer']:
-                answer_open = answer_option['detail_answer']['open']
+            if "open" in answer_option["detail_answer"]:
+                answer_open = answer_option["detail_answer"]["open"]
             else:
                 answer_open = False
             self.other = OtherConfig(detail_answer, answer_open)
@@ -241,8 +241,8 @@ class RadioConfig:
 
         if option.detail_answer_id:
             detail_answer = form["fields"][option.detail_answer_id]
-            if 'open' in answer_option['detail_answer']:
-                answer_open = answer_option['detail_answer']['open']
+            if "open" in answer_option["detail_answer"]:
+                answer_open = answer_option["detail_answer"]["open"]
             else:
                 answer_open = False
             self.other = OtherConfig(detail_answer, answer_open)
