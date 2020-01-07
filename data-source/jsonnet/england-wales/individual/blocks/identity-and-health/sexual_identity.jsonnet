@@ -39,10 +39,11 @@ local question(title, label) = {
             type: 'TextField',
             mandatory: false,
             label: label,
+            open: true,
           },
         },
       ],
-      type: 'Checkbox',
+      type: 'Radio',
     },
   ],
 };
