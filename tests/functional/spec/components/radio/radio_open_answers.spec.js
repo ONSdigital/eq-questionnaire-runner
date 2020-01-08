@@ -9,12 +9,12 @@ describe('Component: Radio', function() {
     });
 
     it('When I view a write-in radio and the open option is set to true, detail answer label should be displayed', function() {
-      expect($(RadioOpenTruePage.otherLabel()).ixsDisplayed()).to.be.true;
-     });
+      expect($(RadioOpenTruePage.otherLabel()).isDisplayed()).to.be.true;
+    });
 
     it('When I view a write-in radio and the open option is set to false, detail answer label should not be displayed', function() {
       expect($(RadioOpenFalsePage.otherLabel()).isDisplayed()).to.be.false;
-     });
+    });
 
     it('When I view a write-in radio and the open option is not set, detail answer label should not be displayed', function() {
       expect($(RadioOpenNonePage.otherLabel()).isDisplayed()).to.be.false;
