@@ -77,7 +77,7 @@
 										"id": "radio-open-false-answer-other",
 										"label": "Enter your favourite food",
 										"mandatory": false,
-										"open": true,
+										"open": false,
 										"type": "TextField"
 									},
 									"label": "Other",
@@ -109,7 +109,6 @@
 										"id": "radio-open-none-answer-other",
 										"label": "Enter your favourite colour",
 										"mandatory": false,
-										"open": true,
 										"type": "TextField"
 									},
 									"label": "Other",
