@@ -78,6 +78,7 @@
                                                 "value": "Other",
                                                 "detail_answer": {
                                                     "mandatory": true,
+                                                    "open": true,
                                                     "id": "other-answer-mandatory",
                                                     "label": "Please specify other",
                                                     "type": "TextField"

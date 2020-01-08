@@ -13,7 +13,7 @@ class TestOpenRadio(IntegrationTestCase):
 class TestOpenCheckbox(IntegrationTestCase):
     def setUp(self):
         super().setUp()
-        self.launchSurvey("test_radio_open_checkbox")
+        self.launchSurvey("test_checkbox")
 
     def test_label_doesnt_appear(self):
-        self.assertInBody("Enter your favourite drink")
+        self.assertInBody("Please specify other")
