@@ -10,7 +10,7 @@ class SchemaLoaderTest(AppContextTestCase):
         self.assertIsNotNone(load_schema_from_name("test_dates"))
 
     def test_load_schema_with_invalid_schema_name(self):
-        with self.assertRaises(KeyError):
+        with self.assertRaises(FileNotFoundError):
             load_schema_from_name("test_0309")
 
     def test_load_schema_with_default_language_code(self):

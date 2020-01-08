@@ -2,7 +2,7 @@ import time
 
 from httmock import urlmatch, HTTMock, response
 
-from app.utilities.schema import get_schema_file_path
+from app.utilities.schema import SCHEMA_PATH_MAP
 from tests.integration.create_token import PAYLOAD
 from tests.integration.integration_test_case import IntegrationTestCase
 
@@ -157,7 +157,7 @@ class TestLoginWithGetRequest(IntegrationTestCase):
     @staticmethod
     @urlmatch(netloc=r"eq-survey-register", path=r"\/my-test-schema")
     def survey_url_mock(_url, _request):
-        schema_path = get_schema_file_path("test_textarea", language_code="en")
+        schema_path = SCHEMA_PATH_MAP["en"]["test_textarea"]
 
         with open(schema_path, encoding="utf8") as json_data:
             return json_data.read()
@@ -318,7 +318,7 @@ class TestLoginWIthPostRequest(IntegrationTestCase):
     @staticmethod
     @urlmatch(netloc=r"eq-survey-register", path=r"\/my-test-schema")
     def survey_url_mock(_url, _request):
-        schema_path = get_schema_file_path("test_textarea", language_code="en")
+        schema_path = SCHEMA_PATH_MAP["en"]["test_textarea"]
 
         with open(schema_path, encoding="utf8") as json_data:
             return json_data.read()

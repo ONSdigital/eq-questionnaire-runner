@@ -50,4 +50,7 @@ def test_get_allowed_languages(schema_name, launch_language, expected):
 def test_get_schema_path_map():
     schema_path_map = get_schema_path_map()
 
-    assert schema_path_map is False
+    assert "en" in schema_path_map.keys()
+    assert "cy" in schema_path_map.keys()
+    assert "ga" in schema_path_map.keys()
+    assert "eo" in schema_path_map.keys()
