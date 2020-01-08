@@ -1,0 +1,129 @@
+{
+	"mime_type": "application/json/ons/eq",
+	"schema_version": "0.0.1",
+	"data_version": "0.0.3",
+	"survey_id": "0",
+	"title": "Radio Open",
+	"theme": "default",
+	"metadata": [{
+			"name": "user_id",
+			"type": "string"
+		},
+		{
+			"name": "period_id",
+			"type": "string"
+		},
+		{
+			"name": "ru_name",
+			"type": "string"
+		}
+	],
+	"sections": [{
+		"id": "section-1",
+		"groups": [{
+			"id": "radio",
+			"title": "Radio Open",
+			"blocks": [{
+					"type": "Question",
+					"id": "radio-open-true",
+					"question": {
+						"type": "General",
+						"id": "radio-open-true-question",
+						"title": "What is your favourite drink?",
+						"answers": [{
+							"type": "Radio",
+							"id": "radio-open-true-answer",
+							"mandatory": false,
+							"voluntary": true,
+							"options": [{
+									"label": "Coffee",
+									"value": "Coffee"
+								},
+								{
+									"description": "Select to enter answer",
+									"detail_answer": {
+										"id": "radio-open-true-answer-other",
+										"label": "Enter your favourite drink",
+										"mandatory": false,
+										"open": true,
+										"type": "TextField"
+									},
+									"label": "Other",
+									"value": "Other"
+								}
+							]
+						}]
+					}
+				},
+				{
+					"type": "Question",
+					"id": "radio-open-false",
+					"question": {
+						"type": "General",
+						"id": "radio-open-false-question",
+						"title": "What is your favourite food?",
+						"answers": [{
+							"type": "Radio",
+							"id": "radio-open-false-answer",
+							"mandatory": false,
+							"voluntary": false,
+							"options": [{
+									"label": "Ice cream",
+									"value": "Ice cream"
+								},
+								{
+									"description": "Select to enter answer",
+									"detail_answer": {
+										"id": "radio-open-false-answer-other",
+										"label": "Enter your favourite food",
+										"mandatory": false,
+										"open": true,
+										"type": "TextField"
+									},
+									"label": "Other",
+									"value": "Other"
+								}
+							]
+						}]
+					}
+				},
+				{
+					"type": "Question",
+					"id": "radio-open-none",
+					"question": {
+						"type": "General",
+						"id": "radio-open-none-question",
+						"title": "What is your favourite colour?",
+						"answers": [{
+							"type": "Radio",
+							"id": "radio-open-none-answer",
+							"mandatory": false,
+							"voluntary": false,
+							"options": [{
+									"label": "Blue",
+									"value": "Blue"
+								},
+								{
+									"description": "Select to enter answer",
+									"detail_answer": {
+										"id": "radio-open-none-answer-other",
+										"label": "Enter your favourite colour",
+										"mandatory": false,
+										"open": true,
+										"type": "TextField"
+									},
+									"label": "Other",
+									"value": "Other"
+								}
+							]
+						}]
+					}
+				},
+				{
+					"type": "Summary",
+					"id": "summary"
+				}
+			]
+		}]
+	}]
+}
