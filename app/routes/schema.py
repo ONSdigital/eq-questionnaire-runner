@@ -1,6 +1,3 @@
-from os import listdir
-from os.path import isfile, join
-
 from flask import Blueprint, jsonify
 from app.utilities.schema import load_schema_from_name, SCHEMA_PATH_MAP
 
