@@ -4,24 +4,22 @@ describe('Component: Radio', function() {
     const RadioOpenFalsePage = require('../../../generated_pages/radio_open/radio-open-false.page.js');
     const RadioOpenNonePage = require('../../../generated_pages/radio_open/radio-open-none.page.js');
 
-
-    it('When I view a write-in radio and the open option is set to true, detail answer label should be displayed', function() {
+    beforeEach(function() {
       browser.openQuestionnaire('test_radio_open.json');
       $(RadioOpenTruePage.coffee()).click();
+    });
+
+    it('When I view a write-in radio and the open option is set to true, detail answer label should be displayed', function() {
       expect($(RadioOpenTruePage.otherDetail()).isDisplayed()).to.be.true;
     });
 
     it('When I view a write-in radio and the open option is set to false, detail answer label should not be displayed', function() {
-      browser.openQuestionnaire('test_radio_open.json');
-      $(RadioOpenTruePage.coffee()).click();
       $(RadioOpenTruePage.submit()).click();
       $(RadioOpenFalsePage.iceCream()).click();
       expect($(RadioOpenFalsePage.otherDetail()).isDisplayed()).to.be.false;
     });
 
     it('When I view a write-in radio and the open option is not set, detail answer label should not be displayed', function() {
-      browser.openQuestionnaire('test_radio_open.json');
-      $(RadioOpenTruePage.coffee()).click();
       $(RadioOpenFalsePage.submit()).click();
       $(RadioOpenFalsePage.iceCream()).click();
       $(RadioOpenFalsePage.submit()).click();
