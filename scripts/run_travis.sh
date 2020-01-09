@@ -5,9 +5,6 @@
 
 set -e
 
-echo "Downloading Dependencies"
-./scripts/load.sh
-
 echo "Running schema tests"
 ./scripts/test_schemas.sh
 

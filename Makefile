@@ -10,8 +10,10 @@ load-schemas:
 load-templates:
 	pipenv run ./scripts/load_templates.sh
 
-load:
-	./scripts/load.sh
+load: load-schemas load-templates
+
+build: load
+	make translate
 
 lint:
 	pipenv run ./scripts/run_lint.sh
@@ -28,7 +30,10 @@ test-functional:
 test-schemas:
 	pipenv run ./scripts/test_schemas.sh
 
-run: load
+translate:
+	pipenv run pybabel compile -d app/translations
+
+run: build
 	ln -sf .development.env .env
 	pipenv run flask run
 
@@ -48,6 +53,6 @@ dev-compose-down-linux:
 profile:
 	pipenv run python profile_application.py
 
-travis: clean
+travis: build
 	ln -sf .development.env .env
 	pipenv run ./scripts/run_travis.sh

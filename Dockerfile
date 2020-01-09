@@ -5,12 +5,10 @@ EXPOSE 5000
 RUN apt update && apt install -y curl unzip libsnappy-dev build-essential
 
 COPY . /runner
-RUN mkdir -p /runner/schemas
+RUN mkdir -p /runner
 WORKDIR /runner
 
 ENV EQ_RUNNER_BASE_DIRECTORY=/runner
-RUN make clean
-RUN make load
 
 ENV GUNICORN_WORKERS 3
 ENV GUNICORN_KEEP_ALIVE 2
@@ -21,5 +19,6 @@ COPY Pipfile.lock Pipfile.lock
 RUN pip install pipenv==2018.11.26
 
 RUN pipenv install --deploy --system
+RUN make build
 
 CMD ["sh", "docker-entrypoint.sh"]
