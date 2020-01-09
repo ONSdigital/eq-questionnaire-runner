@@ -6,7 +6,7 @@ describe('Given I start a Radio survey with a write-in option', function() {
   beforeEach(function() {
     browser.openQuestionnaire('test_radio_open.json');
     $(RadioOpenTruePage.coffee()).click();
-   });
+  });
 
   it('When I view a write-in radio and the open option is set to true, detail answer label should be displayed', function() {
     expect($(RadioOpenTruePage.otherDetail()).isDisplayed()).to.be.true;
