@@ -11,7 +11,7 @@ load-templates:
 	pipenv run ./scripts/load_templates.sh
 
 load:
-	pipenv run ./scripts/load.sh
+	./scripts/load.sh
 
 lint:
 	pipenv run ./scripts/run_lint.sh
