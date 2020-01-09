@@ -9,13 +9,13 @@ describe('Given I start a Radio survey with a write-in option', function() {
   });
 
   it('When I view a write-in radio and the open option is set to true, detail answer label should be displayed', function() {
-    expect($(RadioOpenTruePage.otherDetail()).isDisplayed()).to.be.true;
+    expect($(RadioOpenTruePage.otherDetail()).isDisplayed()).to.equal(true);
   });
 
   it('When I view a write-in radio and the open option is set to false, detail answer label should not be displayed', function() {
     $(RadioOpenTruePage.submit()).click();
     $(RadioOpenFalsePage.iceCream()).click();
-    expect($(RadioOpenFalsePage.otherDetail()).isDisplayed()).to.be.false;
+    expect($(RadioOpenFalsePage.otherDetail()).isDisplayed()).to.equal(false);
   });
 
   it('When I view a write-in radio and the open option is not set, detail answer label should not be displayed', function() {
@@ -23,6 +23,6 @@ describe('Given I start a Radio survey with a write-in option', function() {
     $(RadioOpenFalsePage.iceCream()).click();
     $(RadioOpenFalsePage.submit()).click();
     $(RadioOpenNonePage.blue()).click();
-    expect($(RadioOpenNonePage.otherDetail()).isDisplayed()).to.be.false;
+    expect($(RadioOpenNonePage.otherDetail()).isDisplayed()).to.equal(false);
   });
 });
