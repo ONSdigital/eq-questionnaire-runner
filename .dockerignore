@@ -56,9 +56,6 @@ venv
 .DS_Store
 
 node_modules/
-tests/results
-tests/coverage
-tests/a11y
 
 
 **/_sprite.scss
@@ -80,8 +77,14 @@ htmlcov/
 *errorShots*
 
 # Ignore any generated pages for the functional tests
-tests/functional/generated_pages
-tests/
+tests/app
+tests/fixtures
+tests/functional
+tests/integration
+tests/jwt-test-keys
+tests/results
+tests/coverage
+tests/a11y
 
 # Ignore Design-System templates
 templates/components
