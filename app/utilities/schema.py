@@ -15,7 +15,7 @@ from app.setup import cache
 
 logger = get_logger()
 
-DEFAULT_SCHEMA_DIR = "schemas"
+SCHEMA_DIRS = ["schemas", "test_schemas"]
 
 LANGUAGES_MAP = {
     "test_language": [["en", "cy"]],
@@ -27,18 +27,19 @@ LANGUAGES_MAP = {
 }
 
 
-def get_schema_path(language_code, schema_dir=DEFAULT_SCHEMA_DIR):
-    return os.path.join(schema_dir, language_code)
-
-
 def get_schema_path_map_for_language(language_code=DEFAULT_LANGUAGE_CODE):
-    schema_dir = get_schema_path(language_code)
-    test_schema_dir = get_schema_path(language_code, "tests/schemas")
+    schema_dirs = [
+        os.path.join(schema_dir, language_code) for schema_dir in SCHEMA_DIRS
+    ]
+
+    schema_files = []
+
+    for schema_dir in schema_dirs:
+        schema_files.extend(glob(f"{schema_dir}/*.json"))
 
     return {
         Path(schema_file).with_suffix("").name: schema_file
-        for schema_file in glob(f"{schema_dir}/*.json")
-        + glob(f"{test_schema_dir}/*.json")
+        for schema_file in schema_files
     }
 
 
