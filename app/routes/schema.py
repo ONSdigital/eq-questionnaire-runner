@@ -2,7 +2,7 @@ from os import listdir
 from os.path import isfile, join
 
 from flask import Blueprint, jsonify
-from app.utilities.schema import load_schema_from_name
+from app.utilities.schema import load_schema_from_name, SCHEMA_PATH_MAP
 
 schema_blueprint = Blueprint("schema", __name__)
 
@@ -18,11 +18,5 @@ def get_schema_json_from_name(schema_name):
 
 @schema_blueprint.route("/schemas", methods=["GET"])
 def list_schemas():
-    schema_path = "data/en"
-    schema_names = [
-        f.replace(".json", "")
-        for f in listdir(schema_path)
-        if isfile(join(schema_path, f)) and f.endswith(".json")
-    ]
-
-    return jsonify(schema_names)
+    schemas = list(SCHEMA_PATH_MAP["en"].keys())
+    return jsonify(schemas)
