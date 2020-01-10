@@ -28,6 +28,7 @@ class ListCollector(Question):
             self._questionnaire_store.list_store,
             self._language,
             self.form,
+            self._questionnaire_store.metadata,
         )
 
     def handle_post(self):

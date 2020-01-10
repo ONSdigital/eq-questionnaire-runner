@@ -16,6 +16,7 @@ def test_build_list_collector_context(
         people_list_store,
         DEFAULT_LANGUAGE_CODE,
         form,
+        metadata=None,
     )
 
     assert all(keys in context.keys() for keys in ["block", "form", "list"])
@@ -47,6 +48,7 @@ def test_build_list_summary_context(
         people_answer_store,
         people_list_store,
         DEFAULT_LANGUAGE_CODE,
+        metadata=None,
     )
 
     assert expected == actual
@@ -64,6 +66,7 @@ def test_assert_primary_person_string_appended(
         people_answer_store,
         people_list_store,
         DEFAULT_LANGUAGE_CODE,
+        metadata=None,
     )
 
     assert list_item_context[0]["primary_person"] is True
