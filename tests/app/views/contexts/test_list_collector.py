@@ -1,6 +1,6 @@
 import pytest
 from app.utilities.schema import load_schema_from_name
-from app.views.contexts import list_collector
+from app.views.contexts import list_collector_context
 from app.questionnaire.questionnaire_schema import DEFAULT_LANGUAGE_CODE
 
 
@@ -9,7 +9,7 @@ def test_build_list_collector_context(
     list_collector_block, schema, people_answer_store, people_list_store, form
 ):
 
-    context = list_collector.build_list_collector_context(
+    context = list_collector_context.build_list_collector_context(
         list_collector_block,
         schema,
         people_answer_store,
@@ -42,7 +42,7 @@ def test_build_list_summary_context(
             "primary_person": False,
         },
     ]
-    actual = list_collector.build_list_items_summary_context(
+    actual = list_collector_context.build_list_items_summary_context(
         list_collector_block,
         schema,
         people_answer_store,
@@ -60,7 +60,7 @@ def test_assert_primary_person_string_appended(
 ):
     schema = load_schema_from_name("test_list_collector_primary_person")
     people_list_store["people"].primary_person = "PlwgoG"
-    list_item_context = list_collector.build_list_items_summary_context(
+    list_item_context = list_collector_context.build_list_items_summary_context(
         list_collector_block,
         schema,
         people_answer_store,

@@ -7,8 +7,10 @@ from werkzeug.utils import cached_property
 from app.data_model.progress_store import CompletionStatus, ProgressStore
 from app.questionnaire.placeholder_renderer import PlaceholderRenderer
 
+from app.views.contexts.context import Context
 
-class HubContext:
+
+class HubContext(Context):
     HUB_CONTENT_STATES = {
         "COMPLETE": {
             "title": lazy_gettext("Submit survey"),

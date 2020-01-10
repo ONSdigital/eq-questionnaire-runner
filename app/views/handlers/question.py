@@ -5,7 +5,7 @@ from app.helpers.template_helper import safe_content
 from app.questionnaire.location import Location
 from app.questionnaire.questionnaire_store_updater import QuestionnaireStoreUpdater
 from app.questionnaire.schema_utils import transform_variants
-from app.views.contexts.list_collector import build_list_items_summary_context
+from app.views.contexts.list_collector_context import ListCollectorContext
 from app.views.contexts.question import build_question_context
 from app.views.handlers.block import BlockHandler
 
@@ -64,7 +64,7 @@ class Question(BlockHandler):
 
         if "list_summary" in self.rendered_block:
             context["list"] = {
-                "list_items": build_list_items_summary_context(
+                "list_items": ListCollectorContext.build_list_items_summary_context(
                     self.rendered_block["list_summary"],
                     self._schema,
                     self._questionnaire_store.answer_store,
