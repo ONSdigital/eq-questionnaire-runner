@@ -30,6 +30,12 @@ test-functional:
 test-schemas:
 	pipenv run ./scripts/test_schemas.sh
 
+translation-templates:
+	pipenv run python -m scripts.extract_translation_templates
+
+test-translation-templates:
+	pipenv run python -m scripts.extract_translation_templates --test
+
 translate:
 	pipenv run pybabel compile -d app/translations
 
