@@ -5,6 +5,7 @@ from app.utilities.schema import (
     get_allowed_languages,
     get_schema_path_map,
     get_schema_name_from_census_params,
+    get_schema_path_map_for_language,
 )
 
 
@@ -56,3 +57,13 @@ def test_get_schema_path_map():
         language_code in schema_path_map.keys() for language_code in ["en", "cy"]
     )
     assert all(os.path.exists(path) for path in schema_path_map["en"].values())
+
+
+def test_get_schema_path_map_for_language():
+    schema_path_map_for_language = get_schema_path_map_for_language("en")
+
+    assert all(os.path.exists(path) for path in schema_path_map_for_language.values())
+    assert all(
+        os.path.basename(path).replace(".json", "") == schema_name
+        for schema_name, path in schema_path_map_for_language.items()
+    )
