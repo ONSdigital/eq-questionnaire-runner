@@ -27,7 +27,7 @@ LANGUAGES_MAP = {
 }
 
 
-def get_schema_path_map_for_language(language_code=DEFAULT_LANGUAGE_CODE):
+def get_schema_path_map_for_language(language_code):
     schema_dirs = [
         os.path.join(schema_dir, language_code) for schema_dir in SCHEMA_DIRS
     ]
