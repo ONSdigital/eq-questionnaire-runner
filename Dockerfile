@@ -8,8 +8,6 @@ COPY . /runner
 RUN mkdir -p /runner
 WORKDIR /runner
 
-ENV EQ_RUNNER_BASE_DIRECTORY=/runner
-
 ENV GUNICORN_WORKERS 3
 ENV GUNICORN_KEEP_ALIVE 2
 
