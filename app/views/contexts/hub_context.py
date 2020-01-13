@@ -2,10 +2,8 @@ from typing import List, Mapping, Union
 
 from flask import url_for
 from flask_babel import lazy_gettext
-from werkzeug.utils import cached_property
 
-from app.data_model.progress_store import CompletionStatus, ProgressStore
-from app.questionnaire.placeholder_renderer import PlaceholderRenderer
+from app.data_model.progress_store import CompletionStatus
 
 from app.views.contexts.context import Context
 
@@ -50,41 +48,11 @@ class HubContext(Context):
         },
     }
 
-    def __init__(
-        self,
-        language,
-        progress_store: ProgressStore,
-        list_store,
-        answer_store,
-        metadata,
-        schema,
-        survey_complete: bool,
-        enabled_section_ids,
-    ) -> None:
-        self._language = language
-        self._progress_store = progress_store
-        self._list_store = list_store
-        self._answer_store = answer_store
-        self._metadata = metadata
-        self._schema = schema
-        self._survey_complete = survey_complete
-        self._placeholder_renderer = None
-        self._enabled_section_ids = enabled_section_ids
-
-    @cached_property
-    def placeholder_renderer(self):
-        return PlaceholderRenderer(
-            language=self._language,
-            schema=self._schema,
-            answer_store=self._answer_store,
-            metadata=self._metadata,
-        )
-
-    def get_context(self) -> Mapping:
+    def get_context(self, survey_complete, enabled_section_ids) -> Mapping:
         context = self.HUB_CONTENT_STATES[
-            "COMPLETE" if self._survey_complete else "INCOMPLETE"
+            "COMPLETE" if survey_complete else "INCOMPLETE"
         ]
-        context["rows"] = self._get_rows()
+        context["rows"] = self._get_rows(enabled_section_ids)
 
         return context
 
@@ -131,7 +99,7 @@ class HubContext(Context):
     def _get_row_for_repeating_section(self, section_id, list_item_id):
         repeating_title = self._schema.get_repeating_title_for_section(section_id)
 
-        title = self.placeholder_renderer.render_placeholder(
+        title = self._placeholder_renderer.render_placeholder(
             repeating_title, list_item_id
         )
 
@@ -148,10 +116,10 @@ class HubContext(Context):
             self.get_section_url(section_id, list_item_id),
         )
 
-    def _get_rows(self) -> List[Mapping[str, Union[str, List]]]:
+    def _get_rows(self, enabled_section_ids) -> List[Mapping[str, Union[str, List]]]:
         rows = []
 
-        for section_id in self._enabled_section_ids:
+        for section_id in enabled_section_ids:
 
             section_title = self._schema.get_title_for_section(section_id)
             repeating_list = self._schema.get_repeating_list_for_section(section_id)

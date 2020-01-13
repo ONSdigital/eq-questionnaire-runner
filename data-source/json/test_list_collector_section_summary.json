@@ -438,7 +438,7 @@
                         },
                         {
                             "id": "people-list-section-summary",
-                            "title": "List",
+                            "title": "List Collector Summary",
                             "type": "ListCollectorSummary"
                         }
                     ]

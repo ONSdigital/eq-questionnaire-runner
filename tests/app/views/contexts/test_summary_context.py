@@ -11,6 +11,7 @@ from app.utilities.schema import load_schema_from_name
 from app.views.contexts.calculated_summary import (
     build_view_context_for_calculated_summary,
 )
+from app.views.contexts.list_collector_summary_context import ListCollectorSummaryContext
 from app.views.contexts.summary_context import SummaryContext
 from tests.app.app_context_test_case import AppContextTestCase
 
@@ -134,7 +135,7 @@ class TestSectionSummaryContext(TestStandardSummaryContext):
 
         self.check_context(context)
         self.check_summary_rendering_context(context["summary"]["groups"])
-        self.assertEqual(len(context["summary"]), 6)
+        self.assertEqual(len(context["summary"]), 5)
         self.assertTrue("title" in context["summary"])
 
 
@@ -349,7 +350,7 @@ def test_context_for_section_list_summary(people_answer_store):
         block_id="people-list-section-summary", section_id="section"
     )
 
-    summary_context = SummaryContext(
+    list_collector_summary_context = ListCollectorSummaryContext(
         language=DEFAULT_LANGUAGE_CODE,
         schema=schema,
         answer_store=people_answer_store,
@@ -362,7 +363,7 @@ def test_context_for_section_list_summary(people_answer_store):
         progress_store=ProgressStore(),
         metadata={"display_address": "70 Abingdon Road, Goathill"},
     )
-    context = summary_context.section_summary(current_location)
+    context = list_collector_summary_context.get_list_summaries(current_location)
 
     expected = [
         {
@@ -409,7 +410,7 @@ def test_context_for_section_list_summary(people_answer_store):
         },
     ]
 
-    assert context["summary"]["list_summaries"] == expected
+    assert context == expected
 
 
 @pytest.mark.usefixtures("app")
@@ -417,7 +418,7 @@ def test_context_for_driving_question_summary_empty_list():
     schema = load_schema_from_name("test_list_collector_driving_question")
     current_location = Location(block_id="summary", section_id="section")
 
-    summary_context = SummaryContext(
+    list_collector_summary_context = ListCollectorSummaryContext(
         DEFAULT_LANGUAGE_CODE,
         schema,
         AnswerStore([{"answer_id": "anyone-usually-live-at-answer", "value": "No"}]),
@@ -426,7 +427,7 @@ def test_context_for_driving_question_summary_empty_list():
         {},
     )
 
-    context = summary_context.section_summary(current_location)
+    context = list_collector_summary_context.get_list_summaries(current_location)
 
     expected = [
         {
@@ -438,7 +439,7 @@ def test_context_for_driving_question_summary_empty_list():
         }
     ]
 
-    assert context["summary"]["list_summaries"] == expected
+    assert context == expected
 
 
 @pytest.mark.usefixtures("app")
@@ -446,7 +447,7 @@ def test_context_for_driving_question_summary():
     schema = load_schema_from_name("test_list_collector_driving_question")
     current_location = Location(block_id="summary", section_id="section")
 
-    summary_context = SummaryContext(
+    list_collector_summary_context = ListCollectorSummaryContext(
         DEFAULT_LANGUAGE_CODE,
         schema,
         AnswerStore(
@@ -465,7 +466,7 @@ def test_context_for_driving_question_summary():
         {},
     )
 
-    context = summary_context.section_summary(current_location)
+    context = list_collector_summary_context.get_list_summaries(current_location)
 
     expected = [
         {
@@ -488,7 +489,7 @@ def test_context_for_driving_question_summary():
         }
     ]
 
-    assert context["summary"]["list_summaries"] == expected
+    assert context == expected
 
 
 @pytest.mark.usefixtures("app")

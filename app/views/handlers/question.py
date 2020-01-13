@@ -63,14 +63,19 @@ class Question(BlockHandler):
         context["return_to_hub_url"] = self.get_return_to_hub_url()
 
         if "list_summary" in self.rendered_block:
+
+            list_collector_context = ListCollectorContext(
+                language=self._language,
+                schema=self._schema,
+                answer_store=self._questionnaire_store.answer_store,
+                list_store=self._questionnaire_store.list_store,
+                progress_store=self._questionnaire_store.progress_store,
+                metadata=self._questionnaire_store.metadata
+            )
+
             context["list"] = {
-                "list_items": ListCollectorContext.build_list_items_summary_context(
-                    self.rendered_block["list_summary"],
-                    self._schema,
-                    self._questionnaire_store.answer_store,
-                    self._questionnaire_store.list_store,
-                    self._language,
-                    self._questionnaire_store.metadata,
+                "list_items": list_collector_context.build_list_items_summary_context(
+                    self.rendered_block["list_summary"]
                 ),
                 "editable": False,
             }

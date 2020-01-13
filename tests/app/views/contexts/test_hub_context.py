@@ -36,9 +36,7 @@ def test_get_not_started_row_for_section(
         list_store=list_store,
         schema=schema,
         answer_store=answer_store,
-        metadata={},
-        survey_complete=False,
-        enabled_section_ids=router.enabled_section_ids,
+        metadata={}
     )
 
     actual = hub.get_row_context_for_section(
@@ -76,9 +74,7 @@ def test_get_completed_row_for_section(
         list_store=list_store,
         schema=schema,
         answer_store=answer_store,
-        metadata={},
-        survey_complete=False,
-        enabled_section_ids=router.enabled_section_ids,
+        metadata={}
     )
 
     actual = hub.get_row_context_for_section(
@@ -98,8 +94,6 @@ def test_get_context(schema, progress_store, answer_store, list_store, router):
         schema=schema,
         answer_store=answer_store,
         metadata={},
-        survey_complete=False,
-        enabled_section_ids=router.enabled_section_ids,
     )
 
     expected_context = {
@@ -109,4 +103,5 @@ def test_get_context(schema, progress_store, answer_store, list_store, router):
         "submit_button": "Continue",
     }
 
-    assert expected_context == hub.get_context()
+    assert expected_context == hub.get_context(survey_complete=False,
+                                               enabled_section_ids=router.enabled_section_ids)
