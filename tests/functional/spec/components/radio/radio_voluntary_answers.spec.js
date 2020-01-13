@@ -28,7 +28,7 @@ describe('Component: Radio', function() {
       $(RadioVoluntaryTruePage.previous()).click();
       expect($(RadioVoluntaryTruePage.coffee()).isSelected()).to.equal(false);
       expect($(RadioVoluntaryTruePage.clearSelectionButton()).isDisplayed()).to.equal(false);
-     });
+    });
 
     it('When I select a non-voluntary radio option, Then the clear button should not be displayed on the page', function() {
       $(RadioVoluntaryTruePage.submit()).click();
