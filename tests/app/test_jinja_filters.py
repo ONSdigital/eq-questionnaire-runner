@@ -17,7 +17,6 @@ from app.jinja_filters import (
     RadioConfig,
 )
 from tests.app.app_context_test_case import AppContextTestCase
-from tests.app.forms.field_handlers.test_number_handler import get_test_form_class
 
 
 class TestJinjaFilters(AppContextTestCase):  # pylint: disable=too-many-public-methods
