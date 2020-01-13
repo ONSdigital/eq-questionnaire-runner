@@ -5,7 +5,6 @@ EXPOSE 5000
 RUN apt update && apt install -y curl unzip libsnappy-dev build-essential
 
 COPY . /runner
-RUN mkdir -p /runner
 WORKDIR /runner
 
 ENV GUNICORN_WORKERS 3
