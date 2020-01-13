@@ -5,24 +5,24 @@ const RadioOpenNonePage = require('../../../generated_pages/radio_open/radio-ope
 describe('Given I start a Radio survey with a write-in option', function() {
   beforeEach(function() {
     browser.openQuestionnaire('test_radio_open.json');
-    $(RadioOpenTruePage.coffee()).click();
   });
 
-  it('When I view a write-in radio and the open option is set to true, detail answer label should be displayed', function() {
+  it('When I view a write-in radio and the open option is set to true, Then the detail answer label should be displayed', function() {
+    $(RadioOpenTruePage.coffee()).click();
     expect($(RadioOpenTruePage.otherDetail()).isDisplayed()).to.equal(true);
   });
 
-  it('When I view a write-in radio and the open option is set to false, detail answer label should not be displayed', function() {
+  it('When I view a write-in radio and the open option is set to false, Then the detail answer label should not be displayed', function() {
+    $(RadioOpenTruePage.coffee()).click();
     $(RadioOpenTruePage.submit()).click();
-    $(RadioOpenFalsePage.iceCream()).click();
     expect($(RadioOpenFalsePage.otherDetail()).isDisplayed()).to.equal(false);
   });
 
-  it('When I view a write-in radio and the open option is not set, detail answer label should not be displayed', function() {
+  it('When I view a write-in radio and the open option is not set, Then the detail answer label should not be displayed', function() {
+    $(RadioOpenTruePage.coffee()).click();
     $(RadioOpenFalsePage.submit()).click();
     $(RadioOpenFalsePage.iceCream()).click();
     $(RadioOpenFalsePage.submit()).click();
-    $(RadioOpenNonePage.blue()).click();
     expect($(RadioOpenNonePage.otherDetail()).isDisplayed()).to.equal(false);
   });
 });
