@@ -28,14 +28,10 @@ LANGUAGES_MAP = {
 
 
 def get_schema_path_map_for_language(language_code):
-    schema_dirs = [
-        os.path.join(schema_dir, language_code) for schema_dir in SCHEMA_DIRS
-    ]
-
     schema_files = []
 
-    for schema_dir in schema_dirs:
-        schema_files.extend(glob(f"{schema_dir}/*.json"))
+    for schema_dir in SCHEMA_DIRS:
+        schema_files.extend(glob(f"{schema_dir}/{language_code}/*.json"))
 
     return {
         Path(schema_file).with_suffix("").name: schema_file
