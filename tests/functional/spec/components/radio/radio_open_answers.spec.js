@@ -1,6 +1,6 @@
-const RadioOpenTruePage = require('../../../generated_pages/radio_open/radio-open-true.page.js');
-const RadioOpenFalsePage = require('../../../generated_pages/radio_open/radio-open-false.page.js');
-const RadioOpenNonePage = require('../../../generated_pages/radio_open/radio-open-none.page.js');
+const RadioOpenTruePage = require('../../../generated_pages/radio_detail_answer_open/radio-open-true.page.js');
+const RadioOpenFalsePage = require('../../../generated_pages/radio_detail_answer_open/radio-open-false.page.js');
+const RadioOpenNonePage = require('../../../generated_pages/radio_detail_answer_open/radio-open-none.page.js');
 
 describe('Given I start a Radio survey with a write-in option', function() {
   beforeEach(function() {
