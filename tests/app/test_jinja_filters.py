@@ -161,7 +161,8 @@ class TestJinjaFilters(AppContextTestCase):  # pylint: disable=too-many-public-m
     def test_get_formatted_currency_with_no_value(self):
         self.assertEqual(get_formatted_currency(""), "")
 
-    def test_radio_class_open_attribute(self):
+    @staticmethod
+    def test_radio_class_open_attribute():
         answer = {
             "type": "Radio",
             "id": "radio-answer-numeric-detail",
