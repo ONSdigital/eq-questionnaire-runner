@@ -157,8 +157,8 @@ def _load_schema_file(schema_name, language_code):
         schema_path=schema_path,
     )
 
-    with open(schema_path, encoding="utf8") as json_data:
-        return json.load(json_data, use_decimal=True)
+    with open(schema_path, encoding="utf8") as json_file:
+        return json.load(json_file, use_decimal=True)
 
 
 @cache.memoize()
