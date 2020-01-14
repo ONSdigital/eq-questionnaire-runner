@@ -188,7 +188,7 @@ class TestJinjaFilters(AppContextTestCase):  # pylint: disable=too-many-public-m
         option.detail_answer_id = "other-answer"
         radio = RadioConfig(option=option, index=0, form=MagicMock(), answer=answer)
 
-        assert radio.other.visible is True
+        assert radio.other.open is True
 
 
 def test_map_list_collector_config_no_actions():
