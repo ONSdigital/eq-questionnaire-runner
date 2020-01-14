@@ -3,7 +3,7 @@
 	"schema_version": "0.0.1",
 	"data_version": "0.0.3",
 	"survey_id": "0",
-	"title": "Radio Open",
+	"title": "Radio Visible",
 	"theme": "default",
 	"metadata": [{
 			"name": "user_id",
@@ -25,14 +25,14 @@
 			"title": "Radio Open",
 			"blocks": [{
 					"type": "Question",
-					"id": "radio-open-true",
+					"id": "radio-visible-true",
 					"question": {
 						"type": "General",
-						"id": "radio-open-true-question",
+						"id": "radio-visible-true-question",
 						"title": "What is your favourite drink?",
 						"answers": [{
 							"type": "Radio",
-							"id": "radio-open-true-answer",
+							"id": "radio-visible-true-answer",
 							"mandatory": false,
 							"voluntary": true,
 							"options": [{
@@ -42,10 +42,10 @@
 								{
 									"description": "Enter answer",
 									"detail_answer": {
-										"id": "radio-open-true-answer-other",
+										"id": "radio-visible-true-answer-other",
 										"label": "Enter your favourite drink",
 										"mandatory": false,
-										"open": true,
+										"visible": true,
 										"type": "TextField"
 									},
 									"label": "Other",
@@ -57,14 +57,14 @@
 				},
 				{
 					"type": "Question",
-					"id": "radio-open-false",
+					"id": "radio-visible-false",
 					"question": {
 						"type": "General",
-						"id": "radio-open-false-question",
+						"id": "radio-visible-false-question",
 						"title": "What is your favourite food?",
 						"answers": [{
 							"type": "Radio",
-							"id": "radio-open-false-answer",
+							"id": "radio-visible-false-answer",
 							"mandatory": false,
 							"voluntary": false,
 							"options": [{
@@ -74,10 +74,10 @@
 								{
 									"description": "Select to enter answer",
 									"detail_answer": {
-										"id": "radio-open-false-answer-other",
+										"id": "radio-visible-false-answer-other",
 										"label": "Enter your favourite food",
 										"mandatory": false,
-										"open": false,
+										"visible": false,
 										"type": "TextField"
 									},
 									"label": "Other",
@@ -89,14 +89,14 @@
 				},
 				{
 					"type": "Question",
-					"id": "radio-open-none",
+					"id": "radio-visible-none",
 					"question": {
 						"type": "General",
-						"id": "radio-open-none-question",
+						"id": "radio-visible-none-question",
 						"title": "What is your favourite colour?",
 						"answers": [{
 							"type": "Radio",
-							"id": "radio-open-none-answer",
+							"id": "radio-visible-none-answer",
 							"mandatory": false,
 							"voluntary": false,
 							"options": [{
@@ -106,7 +106,7 @@
 								{
 									"description": "Select to enter answer",
 									"detail_answer": {
-										"id": "radio-open-none-answer-other",
+										"id": "radio-visible-none-answer-other",
 										"label": "Enter your favourite colour",
 										"mandatory": false,
 										"type": "TextField"

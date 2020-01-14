@@ -31,7 +31,7 @@ local question(title) = {
             type: 'TextField',
             mandatory: false,
             label: 'Enter gender',
-            open: true,
+            visible: true,
           },
         },
       ],

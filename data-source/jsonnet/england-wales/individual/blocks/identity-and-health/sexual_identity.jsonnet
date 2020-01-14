@@ -39,7 +39,7 @@ local question(title, label) = {
             type: 'TextField',
             mandatory: false,
             label: label,
-            open: true,
+            visible: true,
           },
         },
       ],

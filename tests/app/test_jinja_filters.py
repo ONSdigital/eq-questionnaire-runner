@@ -162,7 +162,7 @@ class TestJinjaFilters(AppContextTestCase):  # pylint: disable=too-many-public-m
         self.assertEqual(get_formatted_currency(""), "")
 
     @staticmethod
-    def test_radio_class_open_attribute():
+    def test_radio_class_visible_attribute():
         answer = {
             "type": "Radio",
             "id": "radio-answer-numeric-detail",
@@ -177,7 +177,7 @@ class TestJinjaFilters(AppContextTestCase):  # pylint: disable=too-many-public-m
                         "label": "Please enter a number of items",
                         "type": "Number",
                         "parent_id": "radio-question-numeric-detail",
-                        "open": True,
+                        "visible": True,
                     },
                 }
             ],
@@ -188,7 +188,7 @@ class TestJinjaFilters(AppContextTestCase):  # pylint: disable=too-many-public-m
         option.detail_answer_id = "other-answer"
         radio = RadioConfig(option=option, index=0, form=MagicMock(), answer=answer)
 
-        assert radio.other.open is True
+        assert radio.other.visible is True
 
 
 def test_map_list_collector_config_no_actions():
