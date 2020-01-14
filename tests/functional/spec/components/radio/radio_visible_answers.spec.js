@@ -4,7 +4,7 @@ const RadioVisibleNonePage = require('../../../generated_pages/radio_detail_answ
 
 describe('Given I start a Radio survey with a write-in option', function() {
   beforeEach(function() {
-    browser.visibleQuestionnaire('test_radio_detail_answer_visible.json');
+    browser.openQuestionnaire('test_radio_detail_answer_visible.json');
   });
 
   it('When I view a write-in radio and the visible option is set to true, Then the detail answer label should be displayed', function() {
