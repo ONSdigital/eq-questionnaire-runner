@@ -270,7 +270,7 @@ class RelationshipRadioConfig:
 
 class OtherConfig:
     def __init__(self, detail_answer, answer_visible=False):
-        self.visible = answer_visible
+        self.open = answer_visible
         self.id = detail_answer.id
         self.name = detail_answer.name
         self.value = escape(detail_answer._value())  # pylint: disable=protected-access
