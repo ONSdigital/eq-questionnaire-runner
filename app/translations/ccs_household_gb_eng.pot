@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2020-01-03 12:41+0000\n"
+"POT-Creation-Date: 2020-01-15 11:10+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -181,9 +181,6 @@ msgid "Tell respondent to turn to <strong>Showcard 11</strong>"
 msgstr ""
 
 msgid "Tell respondent to turn to <strong>Showcard 12</strong>"
-msgstr ""
-
-msgid "Don’t need to add anyone?"
 msgstr ""
 
 msgid "2019 Census Coverage Survey Test"
