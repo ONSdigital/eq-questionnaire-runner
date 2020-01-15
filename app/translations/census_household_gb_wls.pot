@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2020-01-03 12:41+0000\n"
+"POT-Creation-Date: 2020-01-15 10:55+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -305,9 +305,6 @@ msgstr ""
 msgid "Exclude anything they do as part of their paid employment"
 msgstr ""
 
-msgid "An option to enter gender will follow"
-msgstr ""
-
 msgid ""
 "The next set of questions is about any qualifications you have ever "
 "achieved in Wales, England or worldwide, including equivalents, even if "
@@ -469,9 +466,6 @@ msgid "There are no householders"
 msgstr ""
 
 msgid "There are no visitors"
-msgstr ""
-
-msgid "Don’t need to add anyone?"
 msgstr ""
 
 msgid "2019 Census Test"
@@ -3829,7 +3823,7 @@ msgstr ""
 msgctxt ""
 "Answer for: Is your gender the same as the sex you were registered at "
 "birth?"
-msgid "Enter gender"
+msgid "Enter your gender"
 msgstr ""
 
 #. answer-id: birth-gender-answer
@@ -3850,7 +3844,7 @@ msgstr ""
 msgctxt ""
 "Answer for: Is <em>{person_name_possessive}</em> gender the same as the "
 "sex they were registered at birth?"
-msgid "Enter gender"
+msgid "Enter their gender"
 msgstr ""
 
 #. answer-id: apprenticeship-answer
