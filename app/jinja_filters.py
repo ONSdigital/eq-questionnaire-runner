@@ -237,9 +237,7 @@ class RadioConfig:
 
         if option.detail_answer_id:
             detail_answer = form["fields"][option.detail_answer_id]
-            answer_visible = False
-            if "visible" in answer_option["detail_answer"]:
-                answer_visible = answer_option["detail_answer"]["visible"]
+            answer_visible = answer_option["detail_answer"].get("visible", False)
             self.other = OtherConfig(detail_answer, answer_visible)
 
 

@@ -40,7 +40,6 @@
 									"value": "Coffee"
 								},
 								{
-									"description": "Enter answer",
 									"detail_answer": {
 										"id": "radio-visible-true-answer-other",
 										"label": "Enter your favourite drink",
