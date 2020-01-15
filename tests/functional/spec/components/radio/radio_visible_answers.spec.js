@@ -8,6 +8,10 @@ describe('Given I start a Radio survey with a write-in option', function() {
   });
 
   it('When I view a write-in radio and the visible option is set to true, Then the detail answer label should be displayed', function() {
+    expect($(RadioVisibleTruePage.otherDetail()).isDisplayed()).to.equal(true);
+  });
+
+  it('When I view a write-in radio and the visible option is set to true, Then after choosing non write-in option the detail answer label should be displayed', function() {
     $(RadioVisibleTruePage.coffee()).click();
     expect($(RadioVisibleTruePage.otherDetail()).isDisplayed()).to.equal(true);
   });
