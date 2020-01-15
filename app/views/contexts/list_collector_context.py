@@ -7,9 +7,10 @@ from app.views.contexts.question import build_question_context
 
 
 class ListCollectorContext(Context):
-
     @staticmethod
-    def get_item_title(list_block_summary, list_item_id, is_primary, placeholder_renderer):
+    def get_item_title(
+        list_block_summary, list_item_id, is_primary, placeholder_renderer
+    ):
         rendered_summary = placeholder_renderer.render(list_block_summary, list_item_id)
 
         if is_primary:
@@ -24,7 +25,10 @@ class ListCollectorContext(Context):
         primary_person = self._list_store[list_name].primary_person
 
         placeholder_renderer = PlaceholderRenderer(
-            self._language, schema=self._schema, answer_store=self._answer_store, metadata=self._metadata
+            self._language,
+            schema=self._schema,
+            answer_store=self._answer_store,
+            metadata=self._metadata,
         )
 
         list_items = []

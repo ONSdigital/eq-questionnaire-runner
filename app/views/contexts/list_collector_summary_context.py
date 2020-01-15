@@ -6,7 +6,6 @@ from app.views.contexts.context import Context
 
 
 class ListCollectorSummaryContext(Context):
-
     def build_view_context(self, current_location):
 
         block = self._schema.get_block(current_location.block_id)
@@ -60,7 +59,9 @@ class ListCollectorSummaryContext(Context):
                 self._metadata,
             )
 
-            list_items = list_context.build_list_items_summary_context(list_collector_block, current_location.block_id)
+            list_items = list_context.build_list_items_summary_context(
+                list_collector_block, current_location.block_id
+            )
 
             list_summary = {
                 "title": rendered_summary["title"],

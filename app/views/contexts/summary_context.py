@@ -4,7 +4,6 @@ from app.views.contexts.summary.group import Group
 
 
 class SummaryContext(Context):
-
     def build_groups_for_location(self, location):
         """
         Build a groups context for a particular location.
@@ -76,6 +75,6 @@ class SummaryContext(Context):
                 "answers_are_editable": True,
                 "collapsible": block.get("collapsible", False),
                 "summary_type": "SectionSummary",
-                "title": self.get_title_for_location(current_location)
+                "title": self.get_title_for_location(current_location),
             }
         }

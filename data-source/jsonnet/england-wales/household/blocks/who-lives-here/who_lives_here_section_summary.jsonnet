@@ -1,4 +1,5 @@
 {
   id: 'who-lives-here-section-summary',
-  type: 'SectionSummary',
+  title: 'People who live here',
+  type: 'ListCollectorSummary',
 }

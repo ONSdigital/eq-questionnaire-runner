@@ -1,4 +1,6 @@
-from app.views.contexts.list_collector_summary_context import ListCollectorSummaryContext
+from app.views.contexts.list_collector_summary_context import (
+    ListCollectorSummaryContext,
+)
 from app.views.handlers.content import Content
 
 

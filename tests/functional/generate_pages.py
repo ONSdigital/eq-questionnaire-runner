@@ -382,13 +382,31 @@ def process_calculated_summary(answers, page_spec):
         page_spec.write(CALCULATED_SUMMARY_LABEL_GETTER.substitute(answer_context))
 
 
-def process_summary(schema_data, page_spec):
+def process_list_collector_summary(schema_data, page_spec):
     for section in schema_data["sections"]:
         list_collector_blocks = QuestionnaireSchema.get_visible_list_blocks_for_section(
             section
         )
+        for list_instance, list_block in enumerate(list_collector_blocks):
+            list_context = {"list_name": list_block["for_list"]}
+            page_spec.write(
+                LIST_SECTION_SUMMARY_ADD_LINK_GETTER.substitute(list_context)
+            )
+            page_spec.write(
+                LIST_SECTION_SUMMARY_EDIT_LINK_GETTER.substitute(list_context)
+            )
+            page_spec.write(
+                LIST_SECTION_SUMMARY_REMOVE_LINK_GETTER.substitute(list_context)
+            )
+            page_spec.write(LIST_SECTION_SUMMARY_LABEL_GETTER.substitute(list_context))
+
+
+def process_summary(schema_data, page_spec):
+    for section in schema_data["sections"]:
         for group in section["groups"]:
             for block in group["blocks"]:
+                if block["type"] == "SectionSummary":
+                    page_spec.write(SUMMARY_SHOW_ALL_BUTTON.substitute())
                 for question in get_all_questions(block):
                     question_context = {
                         "questionId": question["id"],
@@ -415,6 +433,7 @@ def process_summary(schema_data, page_spec):
                         page_spec.write(
                             SUMMARY_ANSWER_GETTER.substitute(answer_context)
                         )
+
                         page_spec.write(
                             SUMMARY_ANSWER_EDIT_GETTER.substitute(answer_context)
                         )
@@ -422,30 +441,6 @@ def process_summary(schema_data, page_spec):
                     page_spec.write(
                         SUMMARY_QUESTION_GETTER.substitute(question_context)
                     )
-
-                if block["type"] == "SectionSummary":
-                    page_spec.write(SUMMARY_SHOW_ALL_BUTTON.substitute())
-
-                    for list_instance, list_block in enumerate(list_collector_blocks):
-                        list_context = {"list_name": list_block["for_list"]}
-                        page_spec.write(
-                            LIST_SECTION_SUMMARY_ADD_LINK_GETTER.substitute(
-                                list_context
-                            )
-                        )
-                        page_spec.write(
-                            LIST_SECTION_SUMMARY_EDIT_LINK_GETTER.substitute(
-                                list_context
-                            )
-                        )
-                        page_spec.write(
-                            LIST_SECTION_SUMMARY_REMOVE_LINK_GETTER.substitute(
-                                list_context
-                            )
-                        )
-                        page_spec.write(
-                            LIST_SECTION_SUMMARY_LABEL_GETTER.substitute(list_context)
-                        )
 
             group_context = {
                 "group_id_camel": camel_case(generate_pascal_case_from_id(group["id"])),
@@ -593,6 +588,8 @@ def process_block(
         page_spec.write(CONSTRUCTOR.substitute(block_context))
         if block["type"] in ("Summary", "SectionSummary"):
             process_summary(schema_data, page_spec)
+        elif block["type"] == "ListCollectorSummary":
+            process_list_collector_summary(schema_data, page_spec)
         elif block["type"] == "CalculatedSummary":
             process_calculated_summary(
                 block["calculation"]["answers_to_calculate"], page_spec

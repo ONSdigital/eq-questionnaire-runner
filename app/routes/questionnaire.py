@@ -124,14 +124,18 @@ def get_questionnaire(schema, questionnaire_store):
 
     language_code = get_session_store().session_data.language_code
 
-    hub = HubContext(language=language_code,
-                             schema=schema,
-                             answer_store=questionnaire_store.answer_store,
-                             list_store=questionnaire_store.list_store,
-                             progress_store=questionnaire_store.progress_store,
-                             metadata=questionnaire_store.metadata)
+    hub = HubContext(
+        language=language_code,
+        schema=schema,
+        answer_store=questionnaire_store.answer_store,
+        list_store=questionnaire_store.list_store,
+        progress_store=questionnaire_store.progress_store,
+        metadata=questionnaire_store.metadata,
+    )
 
-    hub_context = hub.get_context(router.is_survey_complete(), router.enabled_section_ids)
+    hub_context = hub.get_context(
+        router.is_survey_complete(), router.enabled_section_ids
+    )
 
     return render_template("hub", content=hub_context)
 

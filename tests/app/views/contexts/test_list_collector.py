@@ -1,6 +1,5 @@
 import pytest
 from app.utilities.schema import load_schema_from_name
-from app.views.contexts import list_collector_context
 from app.questionnaire.questionnaire_schema import DEFAULT_LANGUAGE_CODE
 from app.views.contexts.list_collector_context import ListCollectorContext
 
@@ -19,10 +18,7 @@ def test_build_list_collector_context(
         metadata=None,
     )
 
-    list_context = context.build_list_collector_context(
-        list_collector_block,
-        form
-    )
+    list_context = context.build_list_collector_context(list_collector_block, form)
 
     assert all(keys in list_context.keys() for keys in ["block", "form", "list"])
 
@@ -58,8 +54,7 @@ def test_build_list_summary_context(
     )
 
     actual = context.build_list_items_summary_context(
-        list_collector_block=list_collector_block,
-        return_to=None,
+        list_collector_block=list_collector_block, return_to=None
     )
 
     assert expected == actual
@@ -82,8 +77,7 @@ def test_assert_primary_person_string_appended(
     )
 
     list_item_context = context.build_list_items_summary_context(
-        list_collector_block=list_collector_block,
-        return_to=None,
+        list_collector_block=list_collector_block, return_to=None
     )
 
     assert list_item_context[0]["primary_person"] is True

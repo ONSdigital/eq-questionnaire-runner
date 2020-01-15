@@ -29,4 +29,3 @@ class Context(ABC):
             answer_store=self._answer_store,
             metadata=self._metadata,
         )
-
