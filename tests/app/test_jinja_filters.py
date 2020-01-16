@@ -1,5 +1,5 @@
 # coding: utf-8
-from unittest.mock import patch
+from unittest.mock import patch, MagicMock
 
 from jinja2 import Undefined
 from mock import Mock
@@ -14,6 +14,7 @@ from app.jinja_filters import (
     format_duration,
     get_formatted_currency,
     map_list_collector_config,
+    RadioConfig,
 )
 from tests.app.app_context_test_case import AppContextTestCase
 
@@ -159,6 +160,35 @@ class TestJinjaFilters(AppContextTestCase):  # pylint: disable=too-many-public-m
 
     def test_get_formatted_currency_with_no_value(self):
         self.assertEqual(get_formatted_currency(""), "")
+
+    @staticmethod
+    def test_radio_class_visible_attribute():
+        answer = {
+            "type": "Radio",
+            "id": "radio-answer-numeric-detail",
+            "mandatory": False,
+            "options": [
+                {
+                    "label": "Other",
+                    "value": "Other",
+                    "detail_answer": {
+                        "mandatory": False,
+                        "id": "other-answer",
+                        "label": "Please enter a number of items",
+                        "type": "Number",
+                        "parent_id": "radio-question-numeric-detail",
+                        "visible": True,
+                    },
+                }
+            ],
+            "parent_id": "radio-question-numeric-detail",
+        }
+
+        option = Mock()
+        option.detail_answer_id = "other-answer"
+        radio = RadioConfig(option=option, index=0, form=MagicMock(), answer=answer)
+
+        assert radio.other.open is True
 
 
 def test_map_list_collector_config_no_actions():
