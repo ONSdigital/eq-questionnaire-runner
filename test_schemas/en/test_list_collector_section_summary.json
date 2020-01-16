@@ -439,6 +439,13 @@
                         {
                             "id": "people-list-section-summary",
                             "type": "SectionSummary"
+                        },
+                        {
+                            "type": "Interstitial",
+                            "id": "final-path-interstitial",
+                            "content": {
+                                "title": "Interstitial to make this section incomplete from section summary"
+                            }
                         }
                     ]
                 }
