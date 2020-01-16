@@ -39,6 +39,9 @@ test-translation-templates:
 translate:
 	pipenv run pybabel compile -d app/translations
 
+run-validator:
+	pipenv run ./scripts/run_validator.sh
+
 run: build
 	ln -sf .development.env .env
 	pipenv run flask run

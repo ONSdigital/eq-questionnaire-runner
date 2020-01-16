@@ -5,6 +5,9 @@
 
 set -e
 
+echo "Starting Validator"
+./scripts/run_validator.sh
+
 echo "Running schema tests"
 ./scripts/test_schemas.sh
 
