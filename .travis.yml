@@ -38,7 +38,6 @@ cache:
 script:
     - set -e
     - printf $(git rev-parse HEAD) > .application-version
-    - make load-schemas
     - make travis
     - export TAG=`if [ "$TRAVIS_PULL_REQUEST_BRANCH" == "" ]; then echo "latest"; else echo branch-$(echo $TRAVIS_PULL_REQUEST_BRANCH | sed s:/:-:g); fi`
     - docker tag onsdigital/eq-questionnaire-runner:latest onsdigital/eq-questionnaire-runner:$TAG
