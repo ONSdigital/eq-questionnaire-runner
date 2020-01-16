@@ -219,16 +219,6 @@ class TestLoginWIthPostRequest(IntegrationTestCase):
         # Then
         self.assertStatusForbidden()
 
-    def test_login_with_valid_token_no_schema_name(self):
-        # Given
-        token = self.token_generator.create_token("")
-
-        # When
-        self.post(url=f"/session?token={token}")
-
-        # Then
-        self.assertStatusForbidden()
-
     def test_http_head_request_to_login_returns_successfully_and_post_still_works(self):
         # Given
         token = self.token_generator.create_token("test_checkbox")
