@@ -33,16 +33,16 @@ local question(title, label) = {
         {
           label: 'Other sexual orientation',
           value: 'Other sexual orientation',
-          description: 'Select to enter answer',
           detail_answer: {
             id: 'sexual-identity-answer-other',
             type: 'TextField',
             mandatory: false,
             label: label,
+            visible: true,
           },
         },
       ],
-      type: 'Checkbox',
+      type: 'Radio',
     },
   ],
 };

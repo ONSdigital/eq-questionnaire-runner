@@ -237,7 +237,8 @@ class RadioConfig:
 
         if option.detail_answer_id:
             detail_answer = form["fields"][option.detail_answer_id]
-            self.other = OtherConfig(detail_answer)
+            answer_visible = answer_option["detail_answer"].get("visible", False)
+            self.other = OtherConfig(detail_answer, answer_visible)
 
 
 class RelationshipRadioConfig:
@@ -266,7 +267,8 @@ class RelationshipRadioConfig:
 
 
 class OtherConfig:
-    def __init__(self, detail_answer):
+    def __init__(self, detail_answer, answer_visible=False):
+        self.open = answer_visible
         self.id = detail_answer.id
         self.name = detail_answer.name
         self.value = escape(detail_answer._value())  # pylint: disable=protected-access

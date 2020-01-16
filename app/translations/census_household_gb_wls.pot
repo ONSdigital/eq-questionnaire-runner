@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2020-01-03 12:41+0000\n"
+"POT-Creation-Date: 2020-01-15 12:32+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -303,9 +303,6 @@ msgid "Exclude anything you do as part of your paid employment"
 msgstr ""
 
 msgid "Exclude anything they do as part of their paid employment"
-msgstr ""
-
-msgid "An option to enter gender will follow"
 msgstr ""
 
 msgid ""
@@ -3829,7 +3826,7 @@ msgstr ""
 msgctxt ""
 "Answer for: Is your gender the same as the sex you were registered at "
 "birth?"
-msgid "Enter gender"
+msgid "Enter your gender"
 msgstr ""
 
 #. answer-id: birth-gender-answer
@@ -3850,7 +3847,7 @@ msgstr ""
 msgctxt ""
 "Answer for: Is <em>{person_name_possessive}</em> gender the same as the "
 "sex they were registered at birth?"
-msgid "Enter gender"
+msgid "Enter their gender"
 msgstr ""
 
 #. answer-id: apprenticeship-answer
