@@ -58,8 +58,4 @@ done
 
 echo -e "\\n${green}$passed Passed${default} - ${red}$failed Failed${default}"
 
-if [ "$run_docker" == true ]; then
-    docker rm -f "$validator"
-fi
-
 exit "$exit"
