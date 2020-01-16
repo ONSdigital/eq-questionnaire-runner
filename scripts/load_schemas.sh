@@ -9,6 +9,6 @@ SCHEMAS_VERSION="v0.0.1"
 TEMP_DIR=$(mktemp -d)
 
 curl -L --url "https://github.com/ONSdigital/eq-questionnaire-schemas/releases/download/$SCHEMAS_VERSION/schemas.zip" --output "${TEMP_DIR}/schemas.zip"
-rm -rf schemas
 unzip "${TEMP_DIR}/schemas.zip" -d ./
 rm -rf "${TEMP_DIR}"
+

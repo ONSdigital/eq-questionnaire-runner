@@ -1,18 +1,13 @@
 clean:
-	rm -rf schemas/en
-	rm -rf schemas/cy
-	rm -rf schemas/eo
-	rm -rf schemas/ga
+	rm -rf schemas
 
-load-schemas:
+load-schemas: clean
 	./scripts/load_schemas.sh
 
 load-templates:
 	./scripts/load_templates.sh
 
-load: load-schemas load-templates
-
-build: load
+build: load-templates
 	make translate
 
 lint:
