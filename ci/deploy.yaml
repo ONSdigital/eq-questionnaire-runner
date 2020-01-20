@@ -12,6 +12,7 @@ params:
   EQ_KEYS_FILE:
   EQ_SECRETS_FILE:
   DOCKER_REGISTRY:
+  IMAGE_TAG:
   GOOGLE_TAG_MANAGER_ID:
   GOOGLE_TAG_MANAGER_AUTH:
   GOOGLE_TAG_MANAGER_PREVIEW:
@@ -46,9 +47,8 @@ run:
       [[ "${#PROJECT_ID[@]}" = 1 ]] || exit 1
 
       SUBMISSION_BUCKET_NAME=${PROJECT_ID}-survey-runner-submission
-      IMAGE_TAG=$(cat .git/HEAD | xargs echo -n)
 
       gcloud container clusters get-credentials survey-runner --region ${REGION} --project ${PROJECT_ID}
       ./k8s/deploy_credentials.sh
-      SUBMISSION_BUCKET_NAME="$SUBMISSION_BUCKET_NAME" IMAGE_TAG="$IMAGE_TAG" ./k8s/deploy_app.sh
+      SUBMISSION_BUCKET_NAME="$SUBMISSION_BUCKET_NAME" DOCKER_REGISTRY="$DOCKER_REGISTRY" IMAGE_TAG="$IMAGE_TAG" ./k8s/deploy_app.sh
 
