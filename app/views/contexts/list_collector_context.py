@@ -1,7 +1,6 @@
 from flask import url_for
 from flask_babel import lazy_gettext
 
-from app.questionnaire.placeholder_renderer import PlaceholderRenderer
 from app.views.contexts.context import Context
 from app.views.contexts.question import build_question_context
 
@@ -24,13 +23,6 @@ class ListCollectorContext(Context):
 
         primary_person = self._list_store[list_name].primary_person
 
-        placeholder_renderer = PlaceholderRenderer(
-            self._language,
-            schema=self._schema,
-            answer_store=self._answer_store,
-            metadata=self._metadata,
-        )
-
         list_items = []
 
         for list_item_id in list_item_ids:
@@ -43,7 +35,7 @@ class ListCollectorContext(Context):
                         list_collector_block["summary"],
                         list_item_id,
                         is_primary,
-                        placeholder_renderer,
+                        self._placeholder_renderer,
                     ),
                     "primary_person": is_primary,
                 }

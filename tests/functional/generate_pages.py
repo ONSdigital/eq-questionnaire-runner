@@ -405,8 +405,6 @@ def process_summary(schema_data, page_spec):
     for section in schema_data["sections"]:
         for group in section["groups"]:
             for block in group["blocks"]:
-                if block["type"] == "SectionSummary":
-                    page_spec.write(SUMMARY_SHOW_ALL_BUTTON.substitute())
                 for question in get_all_questions(block):
                     question_context = {
                         "questionId": question["id"],
@@ -441,6 +439,9 @@ def process_summary(schema_data, page_spec):
                     page_spec.write(
                         SUMMARY_QUESTION_GETTER.substitute(question_context)
                     )
+
+                if block["type"] == "SectionSummary":
+                    page_spec.write(SUMMARY_SHOW_ALL_BUTTON.substitute())
 
             group_context = {
                 "group_id_camel": camel_case(generate_pascal_case_from_id(group["id"])),
