@@ -19,7 +19,6 @@ env:
     - AWS_DEFAULT_REGION=eu-west-1
     - AWS_ACCESS_KEY_ID=dummy-access-key
     - AWS_SECRET_ACCESS_KEY=dummy-secret-key
-    - PATH=$PATH:/opt/jsonnet
     - PYENV_VERSION=2.7.15
 before_install:
     - export BOTO_CONFIG=/dev/null # Workaround for https://github.com/travis-ci/travis-ci/issues/7940
@@ -30,13 +29,11 @@ before_install:
     - pip install -U pip pipenv wheel
     - pipenv install --dev --deploy
     - pipenv check
-    - pushd /opt && if [ ! -e jsonnet/Makefile ]; then git clone --branch v0.13.0 --depth 1 https://github.com/google/jsonnet.git; fi && cd jsonnet && make && popd
 cache:
     - yarn
     - pip
     - directories:
         - /opt/python/
-        - /opt/jsonnet/
         - /home/travis/.local/share/
 script:
     - set -e

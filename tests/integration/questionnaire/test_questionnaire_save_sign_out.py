@@ -99,7 +99,7 @@ class TestSaveSignOut(IntegrationTestCase):
         self.post(action=None)
         self.assertInUrl("/thank-you")
 
-    def test_regression_relaunch_after_add_visitor(self):
+    def test_relaunch_from_list_collector_section_summary(self):
         """
         If the who lives here section is completed to the
         add visitor block, users are redirected correctly
@@ -107,30 +107,22 @@ class TestSaveSignOut(IntegrationTestCase):
         """
 
         # Given I am completing a census household survey
-        self.launchSurvey("census_household_gb_eng", display_address="test address")
-        self.post({"action": "save_continue"})
+        self.launchSurvey(
+            "test_list_collector_section_summary", display_address="test address"
+        )
 
-        # When I add three household members
-        self.post({"you-live-here-answer": "Yes, I usually live here"})
+        self.post({"you-live-here": "Yes"})
         self.post({"first-name": "Joe", "last-name": "Bloggs"})
-        self.post({"anyone-else-answer": "Yes, I need to add someone"})
-        self.post({"first-name": "Joe", "last-name": "Bloggs"})
-        self.post({"anyone-else-answer": "Yes, I need to add someone"})
-        self.post({"first-name": "Joe", "last-name": "Bloggs"})
-        self.post({"anyone-else-answer": "No, I do not need to add anyone"})
-        self.post({"anyone-else-temp-away-answer": "No, I do not need to add anyone"})
-
-        # And I add a visitor
-        self.post({"any-visitors-answer": "People here on holiday"})
-        self.post({"visitor-answer": "Yes, I need to add someone"})
-        self.post({"first-name": "Jane", "last-name": "Bloggs"})
-        self.post({"visitor-answer": "No, I do not need to add anyone"})
+        self.post({"anyone-else": "No"})
+        self.post({"any-more-visitors": "No"})
 
         # And I sign out
-        self.assertInUrl("/who-lives-here-section-summary")
+        self.assertInUrl("/people-list-section-summary")
         self.post(action="sign_out")
 
         # When I launch the survey again, I should be taken to the who lives here
         # section summary
-        self.launchSurvey("census_household_gb_eng", display_address="test address")
-        self.assertInUrl("/who-lives-here-section-summary")
+        self.launchSurvey(
+            "test_list_collector_section_summary", display_address="test address"
+        )
+        self.assertInUrl("/people-list-section-summary")

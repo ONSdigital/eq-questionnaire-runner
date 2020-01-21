@@ -5,8 +5,8 @@
 
 set -e
 
-echo "Building"
-./scripts/build.sh
+echo "Starting Validator"
+./scripts/run_validator.sh
 
 echo "Running schema tests"
 ./scripts/test_schemas.sh
