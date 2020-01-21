@@ -6,11 +6,11 @@ from app.views.contexts.question import build_question_context
 
 
 class ListCollectorContext(Context):
-    @staticmethod
-    def get_item_title(
-        list_block_summary, list_item_id, is_primary, placeholder_renderer
-    ):
-        rendered_summary = placeholder_renderer.render(list_block_summary, list_item_id)
+    def get_item_title(self, list_block_summary, list_item_id, is_primary):
+
+        rendered_summary = self._placeholder_renderer.render(
+            list_block_summary, list_item_id
+        )
 
         if is_primary:
             rendered_summary["item_title"] += lazy_gettext(" (You)")
@@ -32,10 +32,7 @@ class ListCollectorContext(Context):
             if "summary" in list_collector_block:
                 list_item_context = {
                     "item_title": self.get_item_title(
-                        list_collector_block["summary"],
-                        list_item_id,
-                        is_primary,
-                        self._placeholder_renderer,
+                        list_collector_block["summary"], list_item_id, is_primary
                     ),
                     "primary_person": is_primary,
                 }

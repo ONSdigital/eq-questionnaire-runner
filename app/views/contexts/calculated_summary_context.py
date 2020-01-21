@@ -6,7 +6,6 @@ from app.jinja_filters import (
 )
 from app.questionnaire.location import Location
 from app.questionnaire.questionnaire_schema import QuestionnaireSchema
-from app.questionnaire.router import Router
 from app.questionnaire.schema_utils import (
     choose_question_to_display,
     get_answer_ids_in_block,
@@ -17,15 +16,8 @@ from app.views.contexts.summary.group import Group
 
 class CalculatedSummaryContext(Context):
     def build_groups_for_section(self, section):
-        router = Router(
-            self._schema,
-            self._answer_store,
-            self._list_store,
-            self._progress_store,
-            self._metadata,
-        )
 
-        section_path = router.section_routing_path(section["id"])
+        section_path = self._router.section_routing_path(section["id"])
 
         location = Location(section["id"])
 
