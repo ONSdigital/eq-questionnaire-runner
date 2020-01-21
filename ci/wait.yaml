@@ -12,5 +12,5 @@ run:
   args:
     - -exc
     - |
-      cd eq-questionnaire-runner
-      until wget -qO- https://${RUNNER_FQDN}/status 2>&1 | grep ${git rev-parse @{0}}; do sleep 5; done
+      survey_runner_version=$(cat eq-questionnaire-runner/.git/HEAD | xargs echo -n)
+      until wget -qO- https://${RUNNER_FQDN}/status 2>&1 | grep $survey_runner_version; do sleep 5; done
