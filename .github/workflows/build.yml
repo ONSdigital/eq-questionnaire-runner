@@ -13,7 +13,7 @@ jobs:
       - uses: actions/setup-python@v1
         with:
           python-version: ${{ env.PYTHON_VERSION }}
-      - name: Install apt Dependencies
+      - name: Install apt dependencies
         run: sudo apt-get install libsnappy-dev libgconf-2-4
       - name: Install Pipenv
         run: pip install pipenv==2018.11.26
@@ -23,7 +23,7 @@ jobs:
         with:
           path: ~/.local/share/virtualenvs/
           key: ${{ runner.os }}-${{ env.PYTHON_VERSION }}-virtualenvs-${{ hashFiles('Pipfile.lock') }}
-      - name: Install Virtual Environment
+      - name: Install virtual environment
         if: steps.cache-virtualenv.outputs.cache-hit != 'true'
         run: pipenv install --dev
   node-dependencies:
@@ -55,11 +55,11 @@ jobs:
       - uses: actions/setup-python@v1
         with:
           python-version: ${{ env.PYTHON_VERSION }}
-      - name: Install apt Dependencies
+      - name: Install apt dependencies
         run: sudo apt-get install libsnappy-dev libgconf-2-4
-      - name: Write App Version
+      - name: Write app version
         run: printf $(git rev-parse HEAD) > .application-version
-      - name: Install Pipenv
+      - name: Install pipenv
         run: pip install pipenv==2018.11.26
       - name: Cache virtualenv
         id: cache-virtualenv
@@ -67,14 +67,14 @@ jobs:
         with:
           path: ~/.local/share/virtualenvs/
           key: ${{ runner.os }}-${{ env.PYTHON_VERSION }}-virtualenvs-${{ hashFiles('Pipfile.lock') }}
-      - name: Install Virtual Environment
+      - name: Install virtual environment
         if: steps.cache-virtualenv.outputs.cache-hit != 'true'
         run: pipenv install --dev
-      - name: Load Templates
+      - name: Load templates
         run: ./scripts/load_templates.sh
-      - name: Compile Translations
+      - name: Compile translations
         run: make translate
-      - name: Run Travis Steps
+      - name: Run travis steps
         run: ln -sf .development.env .env
       - name: Running translation tests
         run: pipenv run python -m scripts.extract_translation_templates --test
@@ -108,7 +108,7 @@ jobs:
         - uses: actions/setup-python@v1
           with:
             python-version: ${{ env.PYTHON_VERSION }}
-        - name: Install Pipenv
+        - name: Install pipenv
           run: pip install pipenv==2018.11.26
         - name: Cache virtualenv
           id: cache-virtualenv
@@ -129,13 +129,13 @@ jobs:
           run: yarn install
         - name: Functional tests spec lint
           run: ./scripts/lint_functional_test_specs.sh
-        - name: Javascript Linting Check
+        - name: Javascript linting check
           run: yarn lint
         - name: Docker compose
           run: docker-compose --version && docker-compose up --build -d
-        - name: Functional Tests
+        - name: Functional tests
           run: ./scripts/run_tests_functional.sh
-        - name: Docker Compose Shutdown
+        - name: Docker compose shutdown
           run: docker-compose kill
   docker-push:
       runs-on: ubuntu-latest
