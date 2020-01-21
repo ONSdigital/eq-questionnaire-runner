@@ -8,8 +8,8 @@ set -e
 echo "Starting Validator"
 ./scripts/run_validator.sh
 
-echo "Running schema tests"
-./scripts/test_schemas.sh
+echo "Running schema validation"
+./scripts/validate_test_schemas.sh
 
 echo "Running translation tests"
 python -m scripts.extract_translation_templates --test

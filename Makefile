@@ -22,8 +22,8 @@ test-unit:
 test-functional:
 	pipenv run ./scripts/run_tests_functional.sh
 
-test-schemas:
-	pipenv run ./scripts/test_schemas.sh
+validate-test-schemas:
+	pipenv run ./scripts/validate_test_schemas.sh
 
 translation-templates:
 	pipenv run python -m scripts.extract_translation_templates

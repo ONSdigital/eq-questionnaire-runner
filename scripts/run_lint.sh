@@ -18,9 +18,6 @@ function display_result {
   fi
 }
 
-./scripts/lint_functional_test_specs.sh
-display_result $? 1 "Functional tests spec lint"
-
 flake8 --max-complexity 10 --count
 display_result $? 1 "Flake 8 code style check"
 
@@ -36,6 +33,7 @@ display_result $? 1 "Mypy type check"
 
 black --check . --exclude node_modules
 display_result $? 1 "Python code formatting check"
+<<<<<<< HEAD
 
 yarn lint
 display_result $? 1 "Javascript linting check"
