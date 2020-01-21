@@ -3,7 +3,7 @@
 # Run project through linting
 #
 # NOTE: This script expects to be run from the project root with
-# ./scripts/run_lint.sh
+# ./scripts/run_lint_python.sh
 
 function display_result {
   RESULT=$1
@@ -33,6 +33,3 @@ display_result $? 1 "Mypy type check"
 
 black --check . --exclude node_modules
 display_result $? 1 "Python code formatting check"
-
-yarn lint
-display_result $? 1 "Javascript linting check"

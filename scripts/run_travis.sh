@@ -14,8 +14,11 @@ echo "Running schema validation"
 echo "Running translation tests"
 python -m scripts.extract_translation_templates --test
 
-echo "Running lint tests"
-./scripts/run_lint.sh
+echo "Running python lint tests"
+./scripts/run_lint_python.sh
+
+echo "Running js lint tests"
+yarn lint
 
 echo "Running unit tests"
 ./scripts/run_tests_unit.sh

@@ -11,7 +11,7 @@ build: load-templates
 	make translate
 
 lint:
-	pipenv run ./scripts/run_lint.sh
+	pipenv run ./scripts/run_lint_python.sh
 
 test:
 	pipenv run ./scripts/run_tests.sh
