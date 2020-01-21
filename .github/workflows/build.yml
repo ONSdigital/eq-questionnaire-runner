@@ -8,13 +8,13 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
+      - run: |
+          echo "::set-env name=PYTHON_VERSION::$(cat .python-version)"
       - uses: actions/setup-python@v1
         with:
-          python-version: '3.7'
+          python-version: ${{ env.PYTHON_VERSION }}
       - name: Install apt Dependencies
         run: sudo apt-get install libsnappy-dev libgconf-2-4
-      - run: |
-          echo "::set-env name=PYTHON_VERSION::$(python -V 2>&1)"
       - name: Install Pipenv
         run: pip install pipenv==2018.11.26
       - name: Cache virtualenv
@@ -50,15 +50,15 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
+      - run: |
+          echo "::set-env name=PYTHON_VERSION::$(cat .python-version)"
       - uses: actions/setup-python@v1
         with:
-          python-version: '3.7'
+          python-version: ${{ env.PYTHON_VERSION }}
       - name: Install apt Dependencies
         run: sudo apt-get install libsnappy-dev libgconf-2-4
       - name: Write App Version
         run: printf $(git rev-parse HEAD) > .application-version
-      - run: |
-          echo "::set-env name=PYTHON_VERSION::$(python -V 2>&1)"
       - name: Install Pipenv
         run: pip install pipenv==2018.11.26
       - name: Cache virtualenv
@@ -103,11 +103,11 @@ jobs:
         - uses: actions/setup-node@v1
           with:
             node-version: '8.16.0'
+        - run: |
+            echo "::set-env name=PYTHON_VERSION::$(cat .python-version)"
         - uses: actions/setup-python@v1
           with:
-            python-version: '3.7'
-        - run: |
-            echo "::set-env name=PYTHON_VERSION::$(python -V 2>&1)"
+            python-version: ${{ env.PYTHON_VERSION }}
         - name: Install Pipenv
           run: pip install pipenv==2018.11.26
         - name: Cache virtualenv
