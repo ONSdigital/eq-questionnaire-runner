@@ -37,8 +37,5 @@ display_result $? 1 "Mypy type check"
 black --check . --exclude node_modules
 display_result $? 1 "Python code formatting check"
 
-./scripts/lint_jsonnet.sh
-display_result $? 1 "Jsonnet linting check"
-
 yarn lint
 display_result $? 1 "Javascript linting check"

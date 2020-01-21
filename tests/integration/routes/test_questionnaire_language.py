@@ -59,7 +59,7 @@ class TestQuestionnaireLanguage(IntegrationTestCase):
         self.assertInBody("1 Chwefror 1999")
 
     def test_error_messages(self):
-        # load a english survey
+        # load a welsh survey
         self.launchSurvey("test_language", language_code="cy")
         # Submit and check the error message is in Welsh
         self.post({})

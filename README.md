@@ -186,11 +186,11 @@ You can also individually run the `generate_pages` and `test_functional` yarn sc
 
 To generate the pages manually you can run the `generate_pages` scripts with the schema directory. Run it from the `tests/functional` directory as follows:
 
-`./generate_pages.py ../../data/en/ ./generated_pages -r "../../base_pages"`
+`./generate_pages.py ../../test_schemas/en/ ./generated_pages -r "../../base_pages"`
 
 To generate a spec file with the imports included, you can use the `generate_pages.py` script on a single schema with the `-s` argument.
 
-`./generate_pages.py ../../data/en/test_multiple_piping.json ./temp_directory -r "../../base_pages" -s spec/test_multiple_piping.spec.js`
+`./generate_pages.py ../../test_schemas/en/test_multiple_piping.json ./temp_directory -r "../../base_pages" -s spec/test_multiple_piping.spec.js`
 
 If you have already built the generated pages, then the functional tests can be executed with:
 
@@ -280,7 +280,7 @@ We use flask-babel to do internationalisation. To extract messages from source a
 make translation-templates
 ```
 
-```make translation-templates``` is a command that uses pybabel to extract static messages and eq-translations to extract schema messages
+```make translation-templates``` is a command that uses pybabel to extract static messages.
 
 
 This will extract messages and place them in the .pot files ready for translation.
@@ -288,14 +288,6 @@ This will extract messages and place them in the .pot files ready for translatio
 These .pot files will then need to be translated. The translation process is documented in Confluence [here](https://collaborate2.ons.gov.uk/confluence/display/SDC/Translation+Process)
 
 Once we have the translated .po files they can be added to the source code and used by the application
-
----
-
-### Translating the schemas
-
-The schemas can be translated assuming `.po` files are available. This can be done through ```make translate``` and will be done automatically as part of the build process.
-
-If the .po file being added is a new po file it will also need to be added to the translate_schemas.py build script
 
 ## Environment Variables
 

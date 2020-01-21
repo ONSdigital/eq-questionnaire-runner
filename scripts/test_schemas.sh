@@ -1,17 +1,5 @@
 #!/usr/bin/env bash
 
-run_docker=true
-if [ "$1" == "--local" ] || [ "$2" == "--local" ]; then
-    run_docker=false
-fi
-
-if [ "$run_docker" == true ]; then
-    branch=v3
-    docker pull onsdigital/eq-schema-validator:$branch
-    validator="$(docker run -d -p 5001:5000 onsdigital/eq-schema-validator:$branch)"
-    sleep 3
-fi
-
 green="$(tput setaf 2)"
 red="$(tput setaf 1)"
 default="$(tput sgr0)"
@@ -40,7 +28,7 @@ done
 exit=0
 
 if [ $# -eq 0 ] || [ "$1" == "--local" ]; then
-    file_path="./data/en"
+    file_path="./test_schemas"
 else
     file_path="$1"
 fi
@@ -69,9 +57,5 @@ for schema in $(find $file_path -name '*.json'); do
 done
 
 echo -e "\\n${green}$passed Passed${default} - ${red}$failed Failed${default}"
-
-if [ "$run_docker" == true ]; then
-    docker rm -f "$validator"
-fi
 
 exit "$exit"
