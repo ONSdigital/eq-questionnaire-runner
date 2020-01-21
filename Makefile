@@ -1,11 +1,14 @@
 clean:
-	rm -rf data
+	rm -rf schemas
 
-build-schemas:
-	pipenv run ./scripts/build_schemas.sh
+load-schemas: clean
+	./scripts/load_schemas.sh
 
-build:
-	pipenv run ./scripts/build.sh
+load-templates:
+	./scripts/load_templates.sh
+
+build: load-templates
+	make translate
 
 lint:
 	pipenv run ./scripts/run_lint.sh
@@ -22,18 +25,17 @@ test-functional:
 test-schemas:
 	pipenv run ./scripts/test_schemas.sh
 
-translate:
-	pipenv run pybabel compile -d app/translations
-	pipenv run python -m scripts.translate_schemas
-
 translation-templates:
 	pipenv run python -m scripts.extract_translation_templates
 
 test-translation-templates:
 	pipenv run python -m scripts.extract_translation_templates --test
 
-load-templates:
-	pipenv run ./scripts/load_templates.sh
+translate:
+	pipenv run pybabel compile -d app/translations
+
+run-validator:
+	pipenv run ./scripts/run_validator.sh
 
 run: build
 	ln -sf .development.env .env
@@ -55,6 +57,6 @@ dev-compose-down-linux:
 profile:
 	pipenv run python profile_application.py
 
-travis:
+travis: build
 	ln -sf .development.env .env
 	pipenv run ./scripts/run_travis.sh

@@ -9,8 +9,8 @@ DESIGN_SYSTEM_VERSION="14.4.1"
 TEMP_DIR=$(mktemp -d)
 
 curl -L --url "https://github.com/ONSdigital/design-system/releases/download/$DESIGN_SYSTEM_VERSION/templates.zip" --output ${TEMP_DIR}/templates.zip
-unzip ${TEMP_DIR}/templates.zip -d ${TEMP_DIR}/templates
+unzip "${TEMP_DIR}/templates.zip" -d "${TEMP_DIR}/templates"
 rm -rf templates/components
 rm -rf templates/layout
-mv ${TEMP_DIR}/templates/templates/* templates/
-rm -rf ${TEMP_DIR}
+mv "${TEMP_DIR}/templates/templates/"* templates/
+rm -rf "${TEMP_DIR}"
