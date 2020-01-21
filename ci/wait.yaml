@@ -12,4 +12,5 @@ run:
   args:
     - -exc
     - |
-      until wget -qO- https://${RUNNER_FQDN}/status 2>&1 | grep "\"status\": \"OK\""; do sleep 5; done
+      cd eq-questionnaire-runner
+      until wget -qO- https://${RUNNER_FQDN}/status 2>&1 | grep ${git rev-parse @{0}}; do sleep 5; done
