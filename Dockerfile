@@ -16,6 +16,7 @@ COPY Pipfile.lock Pipfile.lock
 RUN pip install pipenv==2018.11.26
 
 RUN pipenv install --deploy --system
+RUN make load-schemas
 RUN make build
 
 CMD ["sh", "docker-entrypoint.sh"]
