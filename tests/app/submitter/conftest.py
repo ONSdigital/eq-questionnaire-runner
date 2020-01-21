@@ -46,6 +46,8 @@ def fake_metadata():
             "ru_name": "Apple",
             "return_by": "2016-07-07",
             "case_id": str(uuid.uuid4()),
+            "case_type": "HI",
+            "channel": "RH",
             "display_address": "68 Abingdon Road, Goathill",
             "questionnaire_id": "0123456789000000",
             "case_ref": "1000000000000001",

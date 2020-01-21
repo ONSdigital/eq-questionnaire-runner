@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
 
-import os
 import sys
 import subprocess
 import tempfile
@@ -10,20 +9,9 @@ import difflib
 
 import coloredlogs
 
-from eq_translations.entrypoints import handle_extract_template
-
 logger = logging.getLogger(__name__)
 
 coloredlogs.install(level="DEBUG", logger=logger, fmt="%(message)s")
-
-SCHEMAS_TO_EXTRACT = [
-    "test_language",
-    "ccs_household_gb_eng",
-    "census_individual_gb_wls",
-    "census_individual_gb_nir",
-    "census_household_gb_wls",
-    "census_household_gb_nir",
-]
 
 
 def get_template_content(filename, ignore_context=False):
@@ -91,26 +79,6 @@ def compare_files(source_dir, target_dir, filename):
     return contents_match
 
 
-def build_schema_templates(output_dir):
-
-    for schema_name in SCHEMAS_TO_EXTRACT:
-        template_file = f"{schema_name}.pot"
-        schema_file = f"{schema_name}.json"
-
-        logger.info("Building %s/%s", output_dir, template_file)
-
-        handle_extract_template(f"data/en/{schema_file}", output_dir)
-
-        logger.info("Built %s/%s", output_dir, template_file)
-
-
-def check_schema_templates(source_dir, target_dir):
-    return all(
-        compare_files(source_dir, target_dir, f"{schema_name}.pot")
-        for schema_name in SCHEMAS_TO_EXTRACT
-    )
-
-
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(
         description="Extract translation templates from runner"
@@ -124,12 +92,10 @@ if __name__ == "__main__":
     if args.test:
         with tempfile.TemporaryDirectory(dir="/tmp") as temp_dir:
             build_static_template(f"{temp_dir}/messages.pot")
-            build_schema_templates(temp_dir)
 
             static_success = compare_files("app/translations", temp_dir, "messages.pot")
-            dynamic_success = check_schema_templates("app/translations", temp_dir)
 
-            if not all((dynamic_success, static_success)):
+            if not static_success:
                 logger.error(
                     "Translation templates are not up to date. Run make translation-templates to fix this"
                 )
@@ -139,4 +105,3 @@ if __name__ == "__main__":
         sys.exit(0)
 
     build_static_template("app/translations/messages.pot")
-    build_schema_templates(os.getcwd() + "/app/translations")

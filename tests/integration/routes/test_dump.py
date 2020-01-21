@@ -82,9 +82,6 @@ class TestDumpSubmission(IntegrationTestCase):
                 "case_id": actual["submission"]["case_id"],
                 "response_id": "1234567890123456",
                 "questionnaire_id": actual["submission"]["questionnaire_id"],
-                "region_code": "GB-ENG",
-                "channel": "RH",
-                "case_type": "HI",
                 "collection": {
                     "period": "201604",
                     "exercise_sid": "789",
@@ -128,9 +125,6 @@ class TestDumpSubmission(IntegrationTestCase):
                 "case_id": actual["submission"]["case_id"],
                 "response_id": "1234567890123456",
                 "questionnaire_id": actual["submission"]["questionnaire_id"],
-                "region_code": "GB-ENG",
-                "channel": "RH",
-                "case_type": "HI",
                 "collection": {
                     "period": "201604",
                     "exercise_sid": "789",
@@ -180,9 +174,6 @@ class TestDumpSubmission(IntegrationTestCase):
                 "case_id": actual["submission"]["case_id"],
                 "response_id": "1234567890123456",
                 "questionnaire_id": actual["submission"]["questionnaire_id"],
-                "region_code": "GB-ENG",
-                "channel": "RH",
-                "case_type": "HI",
                 "collection": {
                     "period": "201604",
                     "exercise_sid": "789",
