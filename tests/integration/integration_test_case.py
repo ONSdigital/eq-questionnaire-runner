@@ -196,6 +196,11 @@ class IntegrationTestCase(unittest.TestCase):  # pylint: disable=too-many-public
 
         self._cache_response(environ, response)
 
+    def previous(self):
+        selector = "#top-previous"
+        selected = self.getHtmlSoup().select(selector)
+        return self.get(selected[0].get("href"))
+
     def _cache_response(self, environ, response):
         self.last_csrf_token = self._extract_csrf_token(response.get_data(True))
         self.last_response = response
