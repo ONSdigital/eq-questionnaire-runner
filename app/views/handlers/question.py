@@ -158,7 +158,7 @@ class Question(BlockHandler):
 
     def clear_radio_answers(self):
         answer_ids_to_remove = []
-        for answer in self.rendered_block.get("question").get("answers"):
+        for answer in self.rendered_block["question"]["answers"]:
             if answer["type"] == "Radio":
                 answer_ids_to_remove.append(answer["id"])
 
