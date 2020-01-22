@@ -146,7 +146,7 @@ jobs:
         - name: Tag
           run: |
             export BRANCH=$(git rev-parse --abbrev-ref HEAD)
-            export TAG=`if [ "$BRANCH" == "" ]; then echo "latest"; else echo branch-$BRANCH; fi`
+            export TAG=`if [ "$BRANCH" == "" ]; then echo "latest"; else echo "branch-$BRANCH"; fi`
             echo "::set-env name=TAG::$TAG"
         - name: Build
           run: docker build -t onsdigital/eq-questionnaire-runner:$TAG .
