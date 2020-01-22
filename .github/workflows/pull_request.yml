@@ -141,6 +141,8 @@ jobs:
       runs-on: ubuntu-latest
       steps:
         - uses: actions/checkout@v2
+        - name: Write app version
+          run: printf $(git rev-parse HEAD) > .application-version
         - name: Tag
           run: |
             export BRANCH=$(git rev-parse --abbrev-ref HEAD)
