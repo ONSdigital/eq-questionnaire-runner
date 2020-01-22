@@ -9,6 +9,6 @@ class TestQuestionnaireRadioVoluntary(IntegrationTestCase):
         self.launchSurvey("test_radio_voluntary")
         self.post({"radio-voluntary-true-answer": "Coffee"})
         self.previous()
-        self.post({"action[clear_radios]": ""})
-        self.post({})
+        self.post(action="clear_radios")
+        self.post()
         self.assertNotInBody("Coffee")

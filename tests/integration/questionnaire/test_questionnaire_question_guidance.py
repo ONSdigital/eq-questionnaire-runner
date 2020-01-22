@@ -14,7 +14,7 @@ class TestQuestionnaireQuestionGuidance(IntegrationTestCase):
         self.assertInBody("This one has no list or description")
 
         # When we continue to the next page with combinations of the guidance descriptions
-        self.post(action="save_continue")
+        self.post()
 
         # Then I am presented with the description guidance correctly
         self.assertInBody("No title above this text, list below")
@@ -22,7 +22,7 @@ class TestQuestionnaireQuestionGuidance(IntegrationTestCase):
         self.assertInBody("Just description, no title above this text, no list below")
 
         # When we continue to the next page with combinations of the guidance lists
-        self.post(action="save_continue")
+        self.post()
 
         # Then I am presented with the lists guidance correctly
         self.assertInBody("Title, no description, list follows")
@@ -31,7 +31,7 @@ class TestQuestionnaireQuestionGuidance(IntegrationTestCase):
         self.assertInBody(">List with no title or description 1<")
 
         # When we continue to the description content guidance page
-        self.post(action="save_continue")
+        self.post()
 
         # I can see the description content guidance
         self.assertInBody("Test show guidance content description")
@@ -40,7 +40,7 @@ class TestQuestionnaireQuestionGuidance(IntegrationTestCase):
         self.assertInBody("The text here is for description")
 
         # When we continue to the title content guidance page
-        self.post(action="save_continue")
+        self.post()
 
         # I can see the title content guidance
         self.assertInBody("Test show guidance content title")
@@ -49,7 +49,7 @@ class TestQuestionnaireQuestionGuidance(IntegrationTestCase):
         self.assertInBody("The text here is for a title")
 
         # When we continue to the list content guidance page
-        self.post(action="save_continue")
+        self.post()
 
         # I can see the list content guidance
         self.assertInBody("Test show guidance content list")
@@ -60,7 +60,7 @@ class TestQuestionnaireQuestionGuidance(IntegrationTestCase):
         self.assertInBody("One more")
 
         # When we continue to the test all guidance page
-        self.post(action="save_continue")
+        self.post()
 
         # When we navigate to the block with all guidance features enabled
         # Then we are presented with the question guidance with all features enabled
@@ -83,9 +83,9 @@ class TestQuestionnaireQuestionGuidance(IntegrationTestCase):
         self.assertInBody("Guidance <b>other</b> description text")
 
         # When we continue we go to the summary page
-        self.post(action="save_continue")
+        self.post()
         self.assertInUrl("summary")
 
         # And Submit my answers
-        self.post(action="submit_answers")
+        self.post()
         self.assertInUrl("thank-you")

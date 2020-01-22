@@ -33,8 +33,8 @@ class TestQuestionnaireListChangeEvaluatesSections(IntegrationTestCase):
         self.get("/questionnaire/sections/accommodation-section/")
         self.assertEqualUrl("/questionnaire/accommodation-type/")
 
-        self.post(action="save_continue")
-        self.post(action="save_continue")
+        self.post()
+        self.post()
         self.post()
         self.assertEqualUrl("/questionnaire/")
 
@@ -57,8 +57,8 @@ class TestQuestionnaireListChangeEvaluatesSections(IntegrationTestCase):
         self.launchSurvey("test_list_change_evaluates_sections")
 
         self.get("/questionnaire/sections/accommodation-section/")
-        self.post(action="save_continue")
-        self.post(action="save_continue")
+        self.post()
+        self.post()
         self.assertEqualUrl("/questionnaire/accommodation-section-summary/")
         self.post()
 

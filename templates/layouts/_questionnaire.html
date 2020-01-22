@@ -7,7 +7,7 @@
 {% set form = content.form %}
 
 {% block main %}
-  <button type="submit" name="action[save_continue]" class="u-d-no" hidden></button>
+  <button type="submit" class="u-d-no" hidden></button>
   {% if previous_location_url %}
     <div class="u-mb-s">
       <a {{ helpers.track('click', 'Navigation', 'Previous link click', position )}} href="{{ previous_location_url }}" id="top-previous">{{ _("Previous") }}</a>
@@ -26,7 +26,6 @@
       {{
           onsButton({
               "text": continue_button_text | default(_("Save and continue")),
-              "name": "action[save_continue]",
               "classes": "u-mt-xl",
               "attributes": {
                   "data-qa": "btn-submit"

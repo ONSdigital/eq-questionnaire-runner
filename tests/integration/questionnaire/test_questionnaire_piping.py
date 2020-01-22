@@ -9,11 +9,11 @@ class TestQuestionnairePiping(IntegrationTestCase):
         self.launchSurvey("test_multiple_piping")
         self.post(action="start_questionnaire")
         self.post({"address-line-1": "44 hill side"})
-        self.post(action="save_continue")
+        self.post()
 
         # When
         self.post({"first-text": "Joe", "second-text": 'Bloggs "Junior"'})
-        self.post(action="save_continue")
+        self.post()
 
         # Then
         self.get(self.last_url)
@@ -30,11 +30,11 @@ class TestQuestionnairePiping(IntegrationTestCase):
         self.launchSurvey("test_multiple_piping")
         self.post(action="start_questionnaire")
         self.post({"address-line-1": "44 hill side"})
-        self.post(action="save_continue")
+        self.post()
 
         # When
         self.post({"first-text": "Joe", "second-text": "Bloggs <b>Junior</b>"})
-        self.post(action="save_continue")
+        self.post()
 
         # Then
         self.get(self.last_url)
@@ -53,11 +53,11 @@ class TestQuestionnairePiping(IntegrationTestCase):
         self.launchSurvey("test_multiple_piping")
         self.post(action="start_questionnaire")
         self.post({"address-line-1": "44 hill side"})
-        self.post(action="save_continue")
+        self.post()
 
         # When
         self.post({"first-text": "Joe", "second-text": "Bloggs\\John Doe"})
-        self.post(action="save_continue")
+        self.post()
 
         # Then
         self.get(self.last_url)
@@ -69,11 +69,11 @@ class TestQuestionnairePiping(IntegrationTestCase):
         self.launchSurvey("test_multiple_piping")
         self.post(action="start_questionnaire")
         self.post({"address-line-1": "44 hill side", "town-city": "newport"})
-        self.post(action="save_continue")
+        self.post()
 
         # When
         self.post({"first-text": "Joe", "second-text": "Bloggs\\John Doe"})
-        self.post(action="save_continue")
+        self.post()
 
         # Then
         self.get(self.last_url)
@@ -90,12 +90,12 @@ class TestQuestionnairePiping(IntegrationTestCase):
         self.launchSurvey("test_multiple_piping")
         self.post(action="start_questionnaire")
         self.post({"address-line-1": "44 hill side", "town-city": "newport"})
-        self.post(action="save_continue")
+        self.post()
         self.post({"first-text": "Joe", "second-text": "Bloggs\\John Doe"})
-        self.post(action="save_continue")
+        self.post()
 
         # When
-        self.post({})
+        self.post()
 
         # Then
         self.assertStatusOK()
