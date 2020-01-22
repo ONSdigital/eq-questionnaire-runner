@@ -9,7 +9,7 @@
   "error": error
 } %}
 
-{% if 'voluntary' in answer and answer["voluntary"] %}
+{% if answer.voluntary %}
   {% set config = config | setAttribute("clearRadios", {
     "text": _("Clear selection"),
     "name": "action[clear_radios]",
