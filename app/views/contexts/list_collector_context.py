@@ -7,7 +7,6 @@ from app.views.contexts.question import build_question_context
 
 class ListCollectorContext(Context):
     def get_item_title(self, list_block_summary, list_item_id, is_primary):
-
         rendered_summary = self._placeholder_renderer.render(
             list_block_summary, list_item_id
         )

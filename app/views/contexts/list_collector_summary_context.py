@@ -7,7 +7,6 @@ from app.views.contexts.context import Context
 
 class ListCollectorSummaryContext(Context):
     def build_view_context(self, current_location):
-
         block = self._schema.get_block(current_location.block_id)
 
         return {

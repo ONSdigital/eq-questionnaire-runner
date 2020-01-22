@@ -16,7 +16,6 @@ from app.views.contexts.summary.group import Group
 
 class CalculatedSummaryContext(Context):
     def build_groups_for_section(self, section):
-
         section_path = self._router.section_routing_path(section["id"])
 
         location = Location(section["id"])
