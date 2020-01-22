@@ -56,7 +56,3 @@ dev-compose-down-linux:
 
 profile:
 	pipenv run python profile_application.py
-
-travis: build
-	ln -sf .development.env .env
-	pipenv run ./scripts/run_travis.sh
