@@ -387,7 +387,7 @@ def process_list_collector_summary(schema_data, page_spec):
         list_collector_blocks = QuestionnaireSchema.get_visible_list_blocks_for_section(
             section
         )
-        for list_instance, list_block in enumerate(list_collector_blocks):
+        for list_block in list_collector_blocks:
             list_context = {"list_name": list_block["for_list"]}
             page_spec.write(
                 LIST_SECTION_SUMMARY_ADD_LINK_GETTER.substitute(list_context)
