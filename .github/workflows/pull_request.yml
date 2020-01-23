@@ -1,9 +1,6 @@
 name: CI
 
 on:
-  push:
-    branches:
-      - master
   pull_request:
     branches:
       - master
@@ -63,7 +60,7 @@ jobs:
       - name: Install apt dependencies
         run: sudo apt-get install libsnappy-dev libgconf-2-4
       - name: Write app version
-        run: printf "${{ github.event.pull_request.head.sha }}" > .application-version
+        run: printf "${{ github.event.push.head }}" > .application-version
       - name: Install pipenv
         run: pip install pipenv==2018.11.26
       - name: Cache virtualenv
@@ -147,7 +144,7 @@ jobs:
       steps:
         - uses: actions/checkout@v2
         - name: Write app version
-          run: printf "${{ github.event.pull_request.head.sha }}" > .application-version
+          run: printf "${{ github.event.push.head }}" > .application-version
         - name: Tag
           run: |
             export BRANCH=${{ github.event.pull_request.head.ref }}

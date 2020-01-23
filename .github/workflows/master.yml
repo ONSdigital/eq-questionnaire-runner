@@ -1,0 +1,27 @@
+name: CI
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  docker-push:
+      runs-on: ubuntu-latest
+      steps:
+        - uses: actions/checkout@v2
+        - name: Write app version
+          run: printf "${{ github.event.pull_request.head.sha }}" > .application-version
+        - name: Tag
+          run: |
+            export BRANCH=${{ github.event.push.head }}
+            export TAG=`if [ "$BRANCH" == "" ]; then echo "latest"; else echo "branch-$BRANCH"; fi`
+            echo "::set-env name=TAG::$TAG"
+        - name: Build
+          run: docker build -t onsdigital/eq-questionnaire-runner:$TAG .
+        - name: Push
+          run: |
+            docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{secrets.DOCKER_PASSWORD}}
+            echo "Pushing with tag [$TAG]"
+            docker push onsdigital/eq-questionnaire-runner:$TAG
+
