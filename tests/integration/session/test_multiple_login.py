@@ -32,15 +32,7 @@ class MultipleClientTestCase(IntegrationTestCase):
         dump_submission = json.loads(cache.get("last_response").get_data(True))
         return dump_submission
 
-    def post(
-        self,
-        client,
-        post_data=None,
-        url=None,
-        action="save_continue",
-        action_value="",
-        **kwargs,
-    ):
+    def post(self, client, post_data=None, url=None, action=None, **kwargs):
         cache = self.cache[client]
 
         if url is None:
@@ -54,7 +46,7 @@ class MultipleClientTestCase(IntegrationTestCase):
             _post_data.update({"csrf_token": last_csrf_token})
 
         if action:
-            _post_data.update({"action[{action}]".format(action=action): action_value})
+            _post_data.update({"action[{action}]".format(action=action): ""})
 
         environ, response = client.post(
             url, data=_post_data, as_tuple=True, follow_redirects=True, **kwargs
@@ -103,8 +95,8 @@ class TestMultipleLogin(MultipleClientTestCase):
         self.assertIn(input_data, last_response_b.get_data(True))
 
         # user A continues through playback page and submits
-        self.post(self.client_a, {})
-        self.post(self.client_a, action=None)
+        self.post(self.client_a)
+        self.post(self.client_a)
 
         # user B tries to submit value
         self.post(self.client_b, {"name-answer": "bar baz"})

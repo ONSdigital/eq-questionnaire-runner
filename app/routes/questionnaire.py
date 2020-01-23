@@ -210,6 +210,7 @@ def get_section(schema, questionnaire_store, section_id, list_item_id=None):
     )
 
 
+# pylint: disable=too-many-return-statements
 @questionnaire_blueprint.route("<block_id>/", methods=["GET", "POST"])
 @questionnaire_blueprint.route("<list_name>/<block_id>/", methods=["GET", "POST"])
 @questionnaire_blueprint.route(
@@ -232,15 +233,15 @@ def block(schema, questionnaire_store, block_id, list_name=None, list_item_id=No
     except InvalidLocationException:
         return redirect(url_for(".get_questionnaire"))
 
-    redirect_url = None
     if block_handler.block["type"] == "RelationshipCollector":
-        redirect_url = block_handler.get_first_location_url()
+        return redirect(block_handler.get_first_location_url())
 
-    elif "action[sign_out]" in request.form:
-        redirect_url = url_for("session.get_sign_out")
+    if "action[sign_out]" in request.form:
+        return redirect(url_for("session.get_sign_out"))
 
-    if redirect_url:
-        return redirect(redirect_url)
+    if "action[clear_radios]" in request.form:
+        block_handler.clear_radio_answers()
+        return redirect(request.url)
 
     block_handler.form = _generate_wtf_form(
         block_handler.rendered_block, schema, block_handler.current_location
@@ -362,7 +363,7 @@ def post_thank_you():
 @post_submission_blueprint.route("view-submission/", methods=["GET"])
 @login_required
 @with_schema
-def get_view_submission(schema):  # pylint: too-many-locals
+def get_view_submission(schema):
 
     session_data = get_session_store().session_data
 

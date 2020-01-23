@@ -21,11 +21,11 @@ class TestQuestionnaireQuestionVariants(IntegrationTestCase):
 
         self.complete_first_section(proxy=True)
 
-        self.post(action="save_continue")
+        self.post()
 
         self.complete_currency_section()
 
-        self.post(action="save_continue")
+        self.post()
 
         # Now change an answer which has variants depending on it
         self.get(url=self.proxy_url)
