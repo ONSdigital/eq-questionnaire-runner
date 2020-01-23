@@ -164,7 +164,6 @@ jobs:
           run: docker build -t eu.gcr.io/census-eq-ci/eq-questionnaire-runner:$TAG .
         - name: Push to GCR
           run: |
-            docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{secrets.DOCKER_PASSWORD}}
             echo "$DOCKER_GCR_PASSWORD" | base64 --decode | docker login -u "$DOCKER_GCR_USERNAME" --password-stdin https://eu.gcr.io
             echo "Pushing with tag [$TAG]"
             docker push onsdigital/eq-questionnaire-runner:$TAG
