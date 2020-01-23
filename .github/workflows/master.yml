@@ -11,7 +11,7 @@ jobs:
       steps:
         - uses: actions/checkout@v2
         - name: Write app version
-          run: printf "$GITHUB_SHA" > .application-version
+          run: printf "${{ env.GITHUB_SHA }}" > .application-version
         - name: Build
           run: docker build -t onsdigital/eq-questionnaire-runner:latest .
         - name: Push
