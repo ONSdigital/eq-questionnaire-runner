@@ -8,11 +8,11 @@ with open("tests/fixtures/blns.json") as blns:
 class TestTextArea(IntegrationTestCase):
     def test_empty_submission(self):
         self.launchSurvey("test_textarea")
-        self.post(action="save_continue")
+        self.post()
 
         self.assertInBody("No answer provided")
 
-        self.post(action=None)
+        self.post()
         self.assertInUrl("thank-you")
 
     def test_too_many_characters(self):
@@ -27,7 +27,7 @@ class TestTextArea(IntegrationTestCase):
 
         self.assertInBody("Less than 20 chars")
 
-        self.post(action=None)
+        self.post()
         self.assertInUrl("thank-you")
 
     def test_big_list_of_naughty_strings(self):

@@ -54,7 +54,7 @@ class TestQuestionnaireHub(IntegrationTestCase):
         self.post(action="submit")
         self.post({"employment-status-answer": "Working as an employee"})
         self.post(action="submit")
-        self.post({})
+        self.post()
         self.post(action="submit")
         self.post(action="submit")
         self.post({"does-anyone-live-here-answer": "No"})
@@ -113,7 +113,7 @@ class TestQuestionnaireHub(IntegrationTestCase):
         # Given the hub is enabled and a section is complete
         self.launchSurvey("test_hub_and_spoke")
         self.get("/questionnaire/sections/accommodation-section/")
-        self.post({})
+        self.post()
         self.post(action="submit")
         self.assertInBody("View answers")
         self.assertEqualUrl(HUB_URL)

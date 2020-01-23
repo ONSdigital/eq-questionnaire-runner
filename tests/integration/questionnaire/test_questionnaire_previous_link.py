@@ -27,7 +27,7 @@ class TestQuestionnairePreviousLink(IntegrationTestCase):
         # When ee proceed through the questionnaire
         self.post(action="start_questionnaire")
         self.post({"breakfast-answer": "Eggs"})
-        self.post(action=None)
+        self.post()
         self.assertInUrl("thank-you")
         self.assertNotInUrl("Previous")
 

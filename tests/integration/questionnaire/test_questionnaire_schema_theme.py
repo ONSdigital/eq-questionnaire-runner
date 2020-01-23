@@ -10,5 +10,5 @@ class TestSchemaTheme(IntegrationTestCase):
         self.assertInUrl("name-block")
         self.post({"name": "Pete"})
         self.assertInUrl("confirmation")
-        self.post(action=None)
+        self.post()
         self.assertInBody("Thank you for submitting your census")

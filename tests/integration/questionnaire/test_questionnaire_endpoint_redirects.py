@@ -73,7 +73,7 @@ class TestQuestionnaireEndpointRedirects(IntegrationTestCase):
         # Given we submit a survey
         self.launchSurvey("test_percentage", roles=["dumper"])
         self.post({"answer": "99"})
-        self.post(action=None)
+        self.post()
 
         # When we start the survey again
         self.launchSurvey("test_percentage", roles=["dumper"])
@@ -87,7 +87,7 @@ class TestQuestionnaireEndpointRedirects(IntegrationTestCase):
         # Given we complete the test_percentage survey and are on the thank you page
         self.launchSurvey("test_percentage", roles=["dumper"])
         self.post({"answer": "99"})
-        self.post(action=None)
+        self.post()
 
         # When we try to get the summary
         self.get("questionnaire/summary")
@@ -99,7 +99,7 @@ class TestQuestionnaireEndpointRedirects(IntegrationTestCase):
         # Given we complete the test_percentage survey and are on the thank you page
         self.launchSurvey("test_percentage", roles=["dumper"])
         self.post({"answer": "99"})
-        self.post(action=None)
+        self.post()
 
         # When we try to get the thank-you page
         self.get("submitted/thank-you")
@@ -111,7 +111,7 @@ class TestQuestionnaireEndpointRedirects(IntegrationTestCase):
         # Given we have submitted the test_percentage survey
         self.launchSurvey("test_percentage", roles=["dumper"])
         self.post({"answer": "99"})
-        self.post(action=None)
+        self.post()
 
         # When we try to submit the survey again
         self.get(url="/questionnaire/summary")
