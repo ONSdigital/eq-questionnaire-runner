@@ -58,7 +58,7 @@ jobs:
       - name: Install apt dependencies
         run: sudo apt-get install libsnappy-dev libgconf-2-4
       - name: Write app version
-        run: printf $(git rev-parse HEAD) > .application-version
+        run: printf "${{ github.event.pull_request.head.sha }}" > .application-version
       - name: Install pipenv
         run: pip install pipenv==2018.11.26
       - name: Cache virtualenv
@@ -142,12 +142,10 @@ jobs:
       steps:
         - uses: actions/checkout@v2
         - name: Write app version
-          run: |
-            printf $(git rev-parse HEAD) > .application-version
-            cat .application-version
+          run: printf "${{ github.event.pull_request.head.sha }}" > .application-version
         - name: Tag
           run: |
-            export BRANCH=$(git rev-parse --abbrev-ref HEAD)
+            export BRANCH=${{ github.event.pull_request.head.sha }}
             export TAG=`if [ "$BRANCH" == "" ]; then echo "latest"; else echo "branch-$BRANCH"; fi`
             echo "::set-env name=TAG::$TAG"
         - name: Build
