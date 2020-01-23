@@ -148,11 +148,19 @@ jobs:
             export BRANCH=${{ github.event.pull_request.head.ref }}
             export TAG=`if [ "$BRANCH" == "" ]; then echo "latest"; else echo "branch-$BRANCH"; fi`
             echo "::set-env name=TAG::$TAG"
-        - name: Build
+        - name: Build DockerHub Image
           run: docker build -t onsdigital/eq-questionnaire-runner:$TAG .
-        - name: Push
+        - name: Push to DockerHub
           run: |
             docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{secrets.DOCKER_PASSWORD}}
+            echo "Pushing with tag [$TAG]"
+            docker push onsdigital/eq-questionnaire-runner:$TAG
+        - name: Build GCR Image
+          run: docker build -t eu.gcr.io/census-eq-ci/eq-questionnaire-runner:$TAG .
+        - name: Push to GCR
+          run: |
+            docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{secrets.DOCKER_PASSWORD}}
+            echo "$DOCKER_GCR_PASSWORD" | base64 --decode | docker login -u "$DOCKER_GCR_USERNAME" --password-stdin https://eu.gcr.io
             echo "Pushing with tag [$TAG]"
             docker push onsdigital/eq-questionnaire-runner:$TAG
 
