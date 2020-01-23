@@ -3,7 +3,7 @@
 # Run project through linting
 #
 # NOTE: This script expects to be run from the project root with
-# ./scripts/run_lint.sh
+# ./scripts/run_lint_python.sh
 
 function display_result {
   RESULT=$1
@@ -17,9 +17,6 @@ function display_result {
     echo -e "\033[32m$TEST passed\033[0m"
   fi
 }
-
-./scripts/lint_functional_test_specs.sh
-display_result $? 1 "Functional tests spec lint"
 
 flake8 --max-complexity 10 --count
 display_result $? 1 "Flake 8 code style check"
@@ -36,6 +33,3 @@ display_result $? 1 "Mypy type check"
 
 black --check . --exclude node_modules
 display_result $? 1 "Python code formatting check"
-
-yarn lint
-display_result $? 1 "Javascript linting check"

@@ -35,7 +35,7 @@ class TestThankYou(IntegrationTestCase):
         # We submit the form
         self.post(form_data)
         # Submit answers
-        self.post(action=None)
+        self.post()
 
         # check we're on the thank you page and there's no sign out
         self.assertInUrl("thank-you")
@@ -55,7 +55,7 @@ class TestThankYou(IntegrationTestCase):
         )
 
         # Submit answers
-        self.post(action=None)
+        self.post()
 
         # Ensure we're on the thank you page
         self.assertInUrl("thank-you")
