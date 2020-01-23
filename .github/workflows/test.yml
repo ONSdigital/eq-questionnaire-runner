@@ -1,7 +1,12 @@
-name: PR
+name: CI
 
 on:
-  pull_request
+  push:
+    branches:
+      - master
+  pull_request:
+    branches:
+      - master
 
 jobs:
   python-dependencies:
