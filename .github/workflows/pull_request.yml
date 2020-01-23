@@ -58,7 +58,7 @@ jobs:
       - name: Install apt dependencies
         run: sudo apt-get install libsnappy-dev libgconf-2-4
       - name: Write app version
-        run: printf "${{ github.event.pull_request.head.ref }}" > .application-version
+        run: printf "${{ github.event.pull_request.head.sha }}" > .application-version
       - name: Install pipenv
         run: pip install pipenv==2018.11.26
       - name: Cache virtualenv
