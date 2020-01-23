@@ -142,10 +142,11 @@ jobs:
       steps:
         - uses: actions/checkout@v2
         - name: Write app version
-          run: printf $(git rev-parse HEAD) > .application-version
+          run: |
+            printf $(git rev-parse HEAD) > .application-version
+            cat .application-version
         - name: Tag
           run: |
-            cat .application-version
             export BRANCH=$(git rev-parse --abbrev-ref HEAD)
             export TAG=`if [ "$BRANCH" == "" ]; then echo "latest"; else echo "branch-$BRANCH"; fi`
             echo "::set-env name=TAG::$TAG"
