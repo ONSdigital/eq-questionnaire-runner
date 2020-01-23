@@ -11,7 +11,7 @@ jobs:
       steps:
         - uses: actions/checkout@v2
         - name: Write app version
-          run: printf "${{ github.event.pull_request.head.sha }}" > .application-version
+          run: printf "${{ github.event.push.head }}" > .application-version
         - name: Build
           run: docker build -t onsdigital/eq-questionnaire-runner:latest .
         - name: Push
