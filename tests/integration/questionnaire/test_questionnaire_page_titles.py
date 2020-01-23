@@ -41,7 +41,7 @@ class TestQuestionnairePageTitles(IntegrationTestCase):
         self.post(action="start_questionnaire")
         self.post({"breakfast-answer": ""})
         # When submit
-        self.post(action=None)
+        self.post()
         # Then
         self.assertEqualPageTitle(
             "We’ve received your answers - Final confirmation to submit"
