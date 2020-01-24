@@ -40,25 +40,6 @@
     {% include 'partials/summary/summary.html' %}
   </div>
 
-  {% if content.summary.list_summaries %}
-    {% for list_summary in content.summary.list_summaries %}
-      <div data-qa="{{list_summary.list_name}}-list-summary">
-        <h2>{{list_summary.title}}</h2>
-          {% if list_summary.list %}
-            {% set list = list_summary.list %}
-            {% include 'partials/summary/list-summary.html' %}
-          {% else %}
-            <div class="u-mb-s">
-              {{ list_summary.empty_list_text }}
-            </div>
-          {% endif %}
-          <div class="u-mb-l">
-            <a data-qa="add-item-link" href="{{list_summary.add_link}}">{{list_summary.add_link_text}}</a>
-          </div>
-      </div>
-    {% endfor %}
-  {% endif %}
-
   {% if content.summary.is_view_submission_response_enabled %}
     <div class="u-mt-m u-mb-s u-mb-m@s" data-qa="view-submission-text">
       <div class="u-fs-r--b">{{ _("You will have the opportunity to view and print a copy of your answers after submitting this survey") }}</div>

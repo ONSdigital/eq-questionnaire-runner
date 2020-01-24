@@ -316,7 +316,8 @@
                         },
                         {
                             "id": "group-summary",
-                            "type": "SectionSummary"
+                            "title": "List Collector Summary",
+                            "type": "ListCollectorSummary"
                         }
                     ]
                 }

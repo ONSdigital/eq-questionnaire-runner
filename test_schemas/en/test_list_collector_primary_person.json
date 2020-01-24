@@ -299,7 +299,8 @@
                         },
                         {
                             "id": "group-summary",
-                            "type": "SectionSummary"
+                            "title": "Primary Person List Collector Summary",
+                            "type": "ListCollectorSummary"
                         }
                     ]
                 }

@@ -1,39 +1,9 @@
-from flask import url_for
-
 from app.questionnaire.location import Location
-from app.questionnaire.placeholder_renderer import PlaceholderRenderer
-from app.questionnaire.questionnaire_schema import QuestionnaireSchema
-from app.questionnaire.router import Router
-from app.views.contexts.list_collector import build_list_items_summary_context
+from app.views.contexts.context import Context
 from app.views.contexts.summary.group import Group
 
 
-class SummaryContext:
-    def __init__(
-        self, language, schema, answer_store, list_store, progress_store, metadata
-    ):
-        self._language = language
-        self._schema = schema
-        self._answer_store = answer_store
-        self._list_store = list_store
-        self._progress_store = progress_store
-        self._metadata = metadata
-
-        self._router = Router(
-            self._schema,
-            self._answer_store,
-            self._list_store,
-            self._progress_store,
-            self._metadata,
-        )
-
-        self._placeholder_renderer = PlaceholderRenderer(
-            language=self._language,
-            schema=self._schema,
-            answer_store=self._answer_store,
-            metadata=self._metadata,
-        )
-
+class SummaryContext(Context):
     def build_groups_for_location(self, location):
         """
         Build a groups context for a particular location.
@@ -83,64 +53,6 @@ class SummaryContext:
         }
         return context
 
-    def get_list_summaries(self, current_location):
-        section = self._schema.get_section(current_location.section_id)
-        visible_list_collector_blocks = self._schema.get_visible_list_blocks_for_section(
-            section
-        )
-        section_path = self._router.section_routing_path(
-            section["id"], current_location.list_item_id
-        )
-        section_path_block_ids = [location.block_id for location in section_path]
-        list_summaries = []
-
-        for list_collector_block in visible_list_collector_blocks:
-            add_link = url_for(
-                "questionnaire.block",
-                list_name=list_collector_block["for_list"],
-                block_id=list_collector_block["add_block"]["id"],
-                return_to=current_location.block_id,
-            )
-
-            if list_collector_block["id"] not in section_path_block_ids:
-                driving_question_block = QuestionnaireSchema.get_driving_question_for_list(
-                    section, list_collector_block["for_list"]
-                )
-
-                if driving_question_block:
-                    add_link = url_for(
-                        "questionnaire.block", block_id=driving_question_block["id"]
-                    )
-
-            rendered_summary = self._placeholder_renderer.render(
-                list_collector_block["summary"], current_location.list_item_id
-            )
-
-            list_items = build_list_items_summary_context(
-                list_collector_block,
-                self._schema,
-                self._answer_store,
-                self._list_store,
-                self._language,
-                self._metadata,
-                return_to=current_location.block_id,
-            )
-
-            list_summary = {
-                "title": rendered_summary["title"],
-                "add_link": add_link,
-                "add_link_text": rendered_summary["add_link_text"],
-                "empty_list_text": rendered_summary["empty_list_text"],
-                "list_name": list_collector_block["for_list"],
-            }
-
-            if list_items:
-                list_summary["list"] = {"list_items": list_items, "editable": True}
-
-            list_summaries.append(list_summary)
-
-        return list_summaries
-
     def get_title_for_location(self, location):
         title = self._schema.get_section(location.section_id).get("title")
 
@@ -164,6 +76,5 @@ class SummaryContext:
                 "collapsible": block.get("collapsible", False),
                 "summary_type": "SectionSummary",
                 "title": self.get_title_for_location(current_location),
-                "list_summaries": self.get_list_summaries(current_location),
             }
         }

@@ -106,4 +106,3 @@ templates/layout
 *.mo
 
 .vim/
-data/

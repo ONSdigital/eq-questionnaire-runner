@@ -286,7 +286,7 @@ class Router:
     def _get_location_of_section_summary(self, routing_path):
         for location in routing_path[::-1]:
             block = self._schema.get_block(location.block_id)
-            if block["type"] == "SectionSummary":
+            if block["type"] in ["SectionSummary", "ListCollectorSummary"]:
                 return location
 
     def _is_section_enabled(self, section):

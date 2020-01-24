@@ -438,7 +438,8 @@
                         },
                         {
                             "id": "people-list-section-summary",
-                            "type": "SectionSummary"
+                            "title": "List Collector Summary",
+                            "type": "ListCollectorSummary"
                         },
                         {
                             "type": "Interstitial",
