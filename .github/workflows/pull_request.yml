@@ -144,7 +144,9 @@ jobs:
       steps:
         - uses: actions/checkout@v2
         - name: Write app version
-          run: printf "$GITHUB_SHA" > .application-version
+          run: |
+            echo "Writing SHA $GITHUB_SHA to .application_version"
+            printf "$GITHUB_SHA" > .application-version
         - name: Tag
           run: |
             export BRANCH=${{ github.event.pull_request.head.ref }}
