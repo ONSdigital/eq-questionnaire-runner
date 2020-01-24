@@ -37,7 +37,7 @@ run:
 
       gcloud auth activate-service-account --key-file ${GOOGLE_APPLICATION_CREDENTIALS}
 
-      cd eq-questionnaire-runner
+      cd eq-questionnaire-runner-repo
 
       helm init --client-only
       helm plugin install https://github.com/rimusz/helm-tiller
