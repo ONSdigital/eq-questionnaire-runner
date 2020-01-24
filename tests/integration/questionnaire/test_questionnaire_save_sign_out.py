@@ -74,7 +74,7 @@ class TestSaveSignOut(IntegrationTestCase):
         self.post({"answer": "This is an answer"})
         token = self.last_csrf_token
 
-        self.post(action=None)
+        self.post()
         self.assertInUrl("thank-you")
 
         self.last_csrf_token = token
@@ -92,11 +92,11 @@ class TestSaveSignOut(IntegrationTestCase):
         self.post({"answer": "This is an answer"})
         token = self.last_csrf_token
 
-        self.post(action=None)
+        self.post()
         self.assertInUrl("thank-you")
 
         self.last_csrf_token = token
-        self.post(action=None)
+        self.post()
         self.assertInUrl("/thank-you")
 
     def test_relaunch_from_list_collector_section_summary(self):

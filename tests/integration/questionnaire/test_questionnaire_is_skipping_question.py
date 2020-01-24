@@ -20,12 +20,12 @@ class TestQuestionnaireChangeAnswer(IntegrationTestCase):
         self.post({"test-skipping-answer": "No"})
         self.assertInBody("Check your answers before continuing")
         self.assertInBody("Were you forced to complete section 1?")
-        self.post(action="save_continue")
+        self.post()
 
         self.post({"test-skipping-answer-2": "No"})
         self.assertInBody("Check your answers before continuing")
         self.assertInBody("Were you forced to complete section 2?")
-        self.post(action="save_continue")
+        self.post()
 
         self.assertInBody("Check your answers before submitting")
         self.assertInBody("Were you forced to complete section 1?")

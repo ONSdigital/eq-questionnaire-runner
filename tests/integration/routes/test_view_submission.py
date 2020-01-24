@@ -25,7 +25,7 @@ class TestViewSubmission(IntegrationTestCase):
         self.post(form_data)
 
         # Submit answers
-        self.post(action=None)
+        self.post()
 
     def test_view_submission(self):
 
@@ -55,7 +55,7 @@ class TestViewSubmission(IntegrationTestCase):
     def test_view_submission_post_no_action(self):
         self.get("submitted/view-submission")
 
-        self.post(action=None)
+        self.post()
         self.assertInUrl("view-submission")
 
 
@@ -82,7 +82,7 @@ class TestCantViewSubmission(IntegrationTestCase):
         self.assertInUrl("summary")
 
         # Submit answers
-        self.post(action=None)
+        self.post()
 
         # check we're on the thank you page
         self.assertInUrl("thank-you")
@@ -137,7 +137,7 @@ class TestViewSubmissionTradingAs(IntegrationTestCase):
         self.post(form_data)
 
         # Submit answers
-        self.post(action=None)
+        self.post()
 
         # go to the view submission page
         self.get("submitted/view-submission")
@@ -195,7 +195,7 @@ class TestViewSubmissionTradingAs(IntegrationTestCase):
             self.post(form_data)
 
             # Submit answers
-            self.post(action=None)
+            self.post()
 
             # go to the view submission page
             self.get("submitted/view-submission")
@@ -254,7 +254,7 @@ class TestViewSubmissionTradingAs(IntegrationTestCase):
             self.post(form_data)
 
             # Submit answers
-            self.post(action=None)
+            self.post()
 
             # go to the view submission page
             self.get("submitted/view-submission")
@@ -299,7 +299,7 @@ class TestViewSubmissionTradingAs(IntegrationTestCase):
             }
 
             self.post(form_data)
-            self.post(action=None)
+            self.post()
             self.get("submitted/view-submission")
 
             self.assertInUrl("view-submission")
@@ -327,7 +327,7 @@ class TestViewSubmissionCompression(IntegrationTestCase):
             }
             self.post(form_data)
 
-            self.post(action=None)
+            self.post()
 
             # go to the view submission page
             self.get("submitted/view-submission")

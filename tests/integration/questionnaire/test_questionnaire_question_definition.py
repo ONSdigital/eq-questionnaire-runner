@@ -32,9 +32,9 @@ class TestQuestionnaireQuestionDefinition(IntegrationTestCase):
         )
 
         # When we continue we go to the summary page
-        self.post(action="save_continue")
+        self.post()
         self.assertInUrl("summary")
 
         # And Submit my answers
-        self.post(action="submit_answers")
+        self.post()
         self.assertInUrl("thank-you")

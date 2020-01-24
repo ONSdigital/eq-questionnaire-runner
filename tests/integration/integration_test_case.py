@@ -160,14 +160,7 @@ class IntegrationTestCase(unittest.TestCase):  # pylint: disable=too-many-public
 
         self._cache_response(environ, response)
 
-    def post(
-        self,
-        post_data=None,
-        url=None,
-        action="save_continue",
-        action_value="",
-        **kwargs,
-    ):
+    def post(self, post_data=None, url=None, action=None, **kwargs):
         """
         POSTs to the specified URL with post_data and performs a GET
         with the URL from the re-direct.
@@ -188,13 +181,18 @@ class IntegrationTestCase(unittest.TestCase):  # pylint: disable=too-many-public
             _post_data.update({"csrf_token": self.last_csrf_token})
 
         if action:
-            _post_data.update({f"action[{action}]": action_value})
+            _post_data.update({f"action[{action}]": ""})
 
         environ, response = self._client.post(
             url, data=_post_data, as_tuple=True, follow_redirects=True, **kwargs
         )
 
         self._cache_response(environ, response)
+
+    def previous(self):
+        selector = "#top-previous"
+        selected = self.getHtmlSoup().select(selector)
+        return self.get(selected[0].get("href"))
 
     def _cache_response(self, environ, response):
         self.last_csrf_token = self._extract_csrf_token(response.get_data(True))
