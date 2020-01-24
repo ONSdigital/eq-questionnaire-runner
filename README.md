@@ -135,12 +135,12 @@ Or set the `GOOGLE_CLOUD_PROJECT` environment variable to your gcp project id.
 
 ## Frontend Tests
 
-The frontend tests use NodeJS to run. You will need to have node version 8.X to run these tests. To do this, do the following commands:
+The frontend tests use NodeJS to run. You will need to have node version 12.X to run these tests. To do this, do the following commands:
 
 ```
 brew install nvm
-nvm install 8
-nvm use 8
+nvm install 12
+nvm use 12
 ```
 
 Install yarn with:
