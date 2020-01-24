@@ -126,16 +126,18 @@ def get_questionnaire(schema, questionnaire_store):
 
     hub = HubContext(
         language=language_code,
-        progress_store=questionnaire_store.progress_store,
-        list_store=questionnaire_store.list_store,
-        answer_store=questionnaire_store.answer_store,
-        metadata=questionnaire_store.metadata,
         schema=schema,
-        survey_complete=router.is_survey_complete(),
-        enabled_section_ids=router.enabled_section_ids,
+        answer_store=questionnaire_store.answer_store,
+        list_store=questionnaire_store.list_store,
+        progress_store=questionnaire_store.progress_store,
+        metadata=questionnaire_store.metadata,
     )
 
-    return render_template("hub", content=hub.get_context())
+    hub_context = hub.get_context(
+        router.is_survey_complete(), router.enabled_section_ids
+    )
+
+    return render_template("hub", content=hub_context)
 
 
 @questionnaire_blueprint.route("/", methods=["POST"])
