@@ -4,7 +4,7 @@ image_resource:
   source:
     repository: alpine
 inputs:
-  - name: eq-questionnaire-runner
+  - name: eq-questionnaire-runner-repo
 outputs:
   - name: compiled-eq-questionnaire-runner
 run:
