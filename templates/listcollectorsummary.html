@@ -1,0 +1,29 @@
+{% extends 'layouts/_questionnaire.html' %}
+{% from "components/panel/_macro.njk" import onsPanel %}
+
+{% import 'macros/helpers.html' as helpers %}
+
+{% set save_on_signout = true %}
+
+{% block form_content %}
+
+  <h1>{{content.summary.title}}</h1>
+
+  {% for list_summary in content.summary.list_summaries %}
+    <div data-qa="{{list_summary.list_name}}-list-summary">
+      <h2>{{list_summary.title}}</h2>
+        {% if list_summary.list %}
+          {% set list = list_summary.list %}
+          {% include 'partials/summary/list-summary.html' %}
+        {% else %}
+          <div class="u-mb-s">
+            {{ list_summary.empty_list_text }}
+          </div>
+        {% endif %}
+        <div class="u-mb-l">
+          <a data-qa="add-item-link" href="{{list_summary.add_link}}">{{list_summary.add_link_text}}</a>
+        </div>
+    </div>
+  {% endfor %}
+
+{% endblock -%}
