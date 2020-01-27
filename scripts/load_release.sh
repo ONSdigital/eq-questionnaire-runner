@@ -8,13 +8,13 @@ if [ $# -eq 0 ] || [ "$1" == "" ] && [ "$2" == "" ]; then
     echo "Usage: load_release.sh {REPO_NAME} {TAG_NAME}"
 elif [ "$2" == "" ]; then
     REPO_NAME="$1"
-    TAG_NAME="$(curl https://api.github.com/repos/${REPO_NAME}/releases | jq '.[0].name' | tr -d '"')"
+    TAG_NAME=$(curl "https://api.github.com/repos/${REPO_NAME}/releases" | jq '.[0].name' | tr -d '"')
 else
     REPO_NAME="$1"
     TAG_NAME="$2"
 fi
 
-DOWNLOAD_URL=$(curl https://api.github.com/repos/${REPO_NAME}/releases/tags/${TAG_NAME} | jq '.assets[0].browser_download_url' | tr -d '"')
+DOWNLOAD_URL=$(curl "https://api.github.com/repos/${REPO_NAME}/releases/tags/${TAG_NAME}" | jq '.assets[0].browser_download_url' | tr -d '"')
 RELEASE_NAME=${DOWNLOAD_URL##*/}
 
 echo "Fetching ${DOWNLOAD_URL}"
