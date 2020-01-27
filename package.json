@@ -12,9 +12,9 @@
   },
   "scripts": {
     "start": "make dev-compose-up && concurrently \"make run\" \"livereload . -e 'html,njk'\"",
-    "lint": "yarn lint:tests && yarn lint:data-source",
+    "lint": "yarn lint:tests && yarn lint:test-schemas",
     "lint:tests": "rm -rf ./tests/functional/generated_pages && eslint tests/functional/spec --fix",
-    "lint:data-source": "eslint data-source/json/*.json --fix",
+    "lint:test-schemas": "eslint test_schemas/*/*.json --fix",
     "test_functional": "./node_modules/.bin/wdio tests/functional/wdio.conf.js",
     "generate_pages": "rm -rf ./tests/functional/generated_pages && pipenv run python -m tests.functional.generate_pages schemas/en/ ./tests/functional/generated_pages -r '../../base_pages' && pipenv run python -m tests.functional.generate_pages test_schemas/en/ ./tests/functional/generated_pages -r '../../base_pages'",
     "format": "yarn format:data-source && yarn format:python",
