@@ -149,7 +149,7 @@ Install yarn with:
 npm i -g yarn
 ```
 
-Fetch npm dependencies (Note that this overrides the python version defined in `.python-version`):
+Fetch npm dependencies:
 
 ```
 yarn
@@ -157,12 +157,12 @@ yarn
 
 Available commands:
 
-| Command                | Task                                                                                                    |
-| ---------------------- | ------------------------------------------------------------------------------------------------------- |
-| `yarn test_functional` | Runs the functional tests through ChimpJS (requires app running on localhost:5000 and generated pages). |
-| `yarn generate_pages`  | Generates the functional test pages.                                                                    |
-| `yarn lint`            | Lints the JS, reporting errors/warnings.                                                                |
-| `yarn format`          | Format the json schemas.                                                                                |
+| Command                | Task                                                                                                      |
+| ---------------------- | --------------------------------------------------------------------------------------------------------- |
+| `yarn test_functional` | Runs the functional tests through Webdriver (requires app running on localhost:5000 and generated pages). |
+| `yarn generate_pages`  | Generates the functional test pages.                                                                      |
+| `yarn lint`            | Lints the JS, reporting errors/warnings.                                                                  |
+| `yarn format`          | Format the json schemas.                                                                                  |
 
 ---
 
