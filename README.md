@@ -152,7 +152,7 @@ npm i -g yarn
 Fetch npm dependencies (Note that this overrides the python version defined in `.python-version`):
 
 ```
-PYENV_VERSION=system yarn
+yarn
 ```
 
 Available commands:
