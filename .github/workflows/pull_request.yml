@@ -58,7 +58,7 @@ jobs:
         with:
           python-version: ${{ env.PYTHON_VERSION }}
       - name: Install apt dependencies
-        run: sudo apt-get install libsnappy-dev libgconf-2-4
+        run: sudo apt-get install libsnappy-dev libgconf-2-4 jq
       - name: Write app version
         run: printf "${{ github.event.pull_request.head.sha }}" > .application-version
       - name: Install pipenv
@@ -73,7 +73,7 @@ jobs:
         if: steps.cache-virtualenv.outputs.cache-hit != 'true'
         run: pipenv install --dev
       - name: Load templates
-        run: ./scripts/load_templates.sh
+        run: make load-templates
       - name: Compile translations
         run: make translate
       - name: Link env vars
