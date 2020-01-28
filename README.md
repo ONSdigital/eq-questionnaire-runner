@@ -36,10 +36,10 @@ docker-compose build --no-cache
 
 ### Pre-Requisites
 
-In order to run locally you'll need Node.js, snappy, pyenv and Jsonnet installed
+In order to run locally you'll need Node.js, snappy, pyenv, jq and Jsonnet installed
 
 ```
-brew install snappy npm pyenv jsonnet
+brew install snappy npm pyenv jsonnet jq
 ```
 
 Note that npm currently requires Python 2.x for some of the setup steps,

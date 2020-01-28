@@ -1,11 +1,13 @@
 clean:
 	rm -rf schemas
+	rm -rf templates/components
+	rm -rf templates/layout
 
-load-schemas: clean
-	./scripts/load_schemas.sh
+load-schemas:
+	./scripts/load_release.sh onsdigital/eq-questionnaire-schemas v0.0.2
 
 load-templates:
-	./scripts/load_templates.sh
+	./scripts/load_release.sh onsdigital/design-system 14.4.3
 
 build: load-templates
 	make translate
