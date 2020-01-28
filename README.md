@@ -135,12 +135,12 @@ Or set the `GOOGLE_CLOUD_PROJECT` environment variable to your gcp project id.
 
 ## Frontend Tests
 
-The frontend tests use NodeJS to run. You will need to have node version 8.X to run these tests. To do this, do the following commands:
+The frontend tests use NodeJS to run. You will need to have node version 12.X to run these tests. To do this, do the following commands:
 
 ```
 brew install nvm
-nvm install 8
-nvm use 8
+nvm install 12
+nvm use 12
 ```
 
 Install yarn with:
@@ -149,20 +149,20 @@ Install yarn with:
 npm i -g yarn
 ```
 
-Fetch npm dependencies (Note that this overrides the python version defined in `.python-version`):
+Fetch npm dependencies:
 
 ```
-PYENV_VERSION=system yarn
+yarn
 ```
 
 Available commands:
 
-| Command                | Task                                                                                                    |
-| ---------------------- | ------------------------------------------------------------------------------------------------------- |
-| `yarn test_functional` | Runs the functional tests through ChimpJS (requires app running on localhost:5000 and generated pages). |
-| `yarn generate_pages`  | Generates the functional test pages.                                                                    |
-| `yarn lint`            | Lints the JS, reporting errors/warnings.                                                                |
-| `yarn format`          | Format the json schemas.                                                                                |
+| Command                | Task                                                                                                      |
+| ---------------------- | --------------------------------------------------------------------------------------------------------- |
+| `yarn test_functional` | Runs the functional tests through Webdriver (requires app running on localhost:5000 and generated pages). |
+| `yarn generate_pages`  | Generates the functional test pages.                                                                      |
+| `yarn lint`            | Lints the JS, reporting errors/warnings.                                                                  |
+| `yarn format`          | Format the json schemas.                                                                                  |
 
 ---
 
