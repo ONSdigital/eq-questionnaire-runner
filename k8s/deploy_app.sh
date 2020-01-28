@@ -1,20 +1,20 @@
 #!/usr/bin/env bash
-
-set -e
+set -euxo pipefail
 
 if [[ -z "$SUBMISSION_BUCKET_NAME" ]]; then
   echo "SUBMISSION_BUCKET_NAME is mandatory"
   exit 1
 fi
 
-DOCKER_REGISTRY="${DOCKER_REGISTRY:-eu.gcr.io/census-eq-ci}"
-IMAGE_TAG="${IMAGE_TAG:-latest}"
-REQUESTED_CPU_PER_POD="${REQUESTED_CPU_PER_POD:-3}"
-ROLLING_UPDATE_MAX_UNAVAILABLE="${ROLLING_UPDATE_MAX_UNAVAILABLE:-1}"
-ROLLING_UPDATE_MAX_SURGE="${ROLLING_UPDATE_MAX_SURGE:-1}"
-MIN_REPLICAS="${MIN_REPLICAS:-3}"
-MAX_REPLICAS="${MAX_REPLICAS:-10}"
-TARGET_CPU_UTILIZATION_PERCENTAGE="${TARGET_CPU_UTILIZATION_PERCENTAGE:-50}"
+gcloud auth activate-service-account --key-file ${GOOGLE_APPLICATION_CREDENTIALS}
+
+helm init --client-only
+helm plugin install https://github.com/rimusz/helm-tiller
+
+SUBMISSION_BUCKET_NAME=${PROJECT_ID}-survey-runner-submission
+
+gcloud container clusters get-credentials survey-runner --region ${REGION} --project ${PROJECT_ID}
+SUBMISSION_BUCKET_NAME="$SUBMISSION_BUCKET_NAME" DOCKER_REGISTRY="$DOCKER_REGISTRY" IMAGE_TAG="$IMAGE_TAG" ./k8s/deploy_app.sh
 
 helm tiller run \
     helm upgrade --install \

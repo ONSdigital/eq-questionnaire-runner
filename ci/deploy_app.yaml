@@ -1,0 +1,37 @@
+platform: linux
+image_resource:
+  type: docker-image
+  source:
+    repository: theorf/google-cloud-sdk-helm
+inputs:
+  - name: eq-questionnaire-runner-repo
+params:
+  GOOGLE_APPLICATION_CREDENTIALS: '/root/gcloud-service-key.json'
+  SERVICE_ACCOUNT_JSON: ((gcp.service_account_json))
+  DOCKER_REGISTRY: 'eu.gcr.io/census-eq-ci'
+  IMAGE_TAG: 'latest'
+  REQUESTED_CPU_PER_POD: 3
+  ROLLING_UPDATE_MAX_UNAVAILABLE: 1
+  ROLLING_UPDATE_MAX_SURGE: 1
+  MIN_REPLICAS: 3
+  MAX_REPLICAS: 10
+  TARGET_CPU_UTILIZATION_PERCENTAGE: 50
+  PROJECT_ID:
+  GOOGLE_TAG_MANAGER_ID:
+  GOOGLE_TAG_MANAGER_AUTH:
+  GOOGLE_TAG_MANAGER_PREVIEW:
+  COOKIE_SETTINGS_URL:
+  REGION: 'europe-west2'
+run:
+  path: bash
+  args:
+    - -exc
+    - |
+      apt-get install -y procps
+
+      cat >$GOOGLE_APPLICATION_CREDENTIALS <<EOL
+      $SERVICE_ACCOUNT_JSON
+      EOL
+
+      cd eq-questionnaire-runner-repo
+      ./k8s/deploy_app.sh
