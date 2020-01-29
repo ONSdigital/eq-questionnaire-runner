@@ -88,7 +88,7 @@ jobs:
       runs-on: ubuntu-latest
       services:
         validator:
-          image: onsdigital/eq-schema-validator:v3
+          image: onsdigital/eq-questionnaire-validator:latest
           ports:
             - 5001:5000
       steps:
@@ -146,9 +146,7 @@ jobs:
         - name: Write app version
           run: printf "${{ github.event.pull_request.head.sha }}" > .application-version
         - name: Tag
-          run: |
-            export BRANCH=${{ github.event.pull_request.head.ref }}
-            echo "::set-env name=TAG::branch-$BRANCH"
+          run: echo "::set-env name=TAG::${{ github.event.pull_request.head.ref }}"
         - name: Build
           run: docker build -t onsdigital/eq-questionnaire-runner:$TAG .
         - name: Push
