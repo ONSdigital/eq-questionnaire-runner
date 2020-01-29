@@ -154,9 +154,6 @@ def create_app(  # noqa: C901  pylint: disable=too-complex, too-many-statements
             user_agent=flask_request.user_agent.string,
         )
 
-    if application.config["EQ_NEW_RELIC_ENABLED"]:
-        setup_newrelic()
-
     setup_storage(application)
 
     setup_submitter(application)

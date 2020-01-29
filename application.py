@@ -11,6 +11,8 @@ from structlog.processors import TimeStamper
 from structlog.stdlib import LoggerFactory, add_log_level
 from structlog.threadlocal import wrap_dict
 
+from app.new_relic import setup_newrelic
+
 
 def configure_logging():
     log_level = logging.INFO
@@ -70,6 +72,10 @@ def add_service(logger, method_name, event_dict):  # pylint: disable=unused-argu
 
 # Initialise logging before the rest of the application
 configure_logging()
+
+if os.getenv("EQ_NEW_RELIC_ENABLED", False):
+    setup_newrelic()
+
 from app.setup import create_app  # pylint: disable=wrong-import-position # NOQA
 
 application = create_app()
