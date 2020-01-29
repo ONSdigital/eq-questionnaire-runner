@@ -92,10 +92,10 @@ spec:
             - name: EQ_REDIS_HOST
               valueFrom:
                 configMapKeyRef:
-                  name: runner-config
+                  name: runner-redis-config
                   key: redis_host
             - name: EQ_REDIS_PORT
               valueFrom:
                 configMapKeyRef:
-                  name: runner-config
+                  name: runner-redis-config
                   key: redis_port
