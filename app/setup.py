@@ -24,7 +24,6 @@ from app.authentication.user_id_generator import UserIDGenerator
 from app.globals import get_session_store
 from app.keys import KEY_PURPOSE_SUBMISSION
 from app.helpers import get_span_and_trace
-from app.new_relic import setup_newrelic
 from app.secrets import SecretStore, validate_required_secrets
 from app.storage.datastore import DatastoreStorage
 from app.storage.dynamodb import DynamodbStorage
@@ -153,9 +152,6 @@ def create_app(  # noqa: C901  pylint: disable=too-complex, too-many-statements
             csrf_token_present="csrf_token" in cookie_session,
             user_agent=flask_request.user_agent.string,
         )
-
-    if application.config["EQ_NEW_RELIC_ENABLED"]:
-        setup_newrelic()
 
     setup_storage(application)
 

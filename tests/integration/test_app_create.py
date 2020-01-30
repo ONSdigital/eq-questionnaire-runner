@@ -41,14 +41,6 @@ class TestCreateApp(unittest.TestCase):  # pylint: disable=too-many-public-metho
     def test_returns_application(self):
         self.assertIsInstance(create_app(self._setting_overrides), Flask)
 
-    # Should new relic have direct access to settings?
-    # Probably better for create app to have the control
-    def test_setups_newrelic(self):
-        with patch("newrelic.agent.initialize") as new_relic:
-            settings.EQ_NEW_RELIC_ENABLED = "True"
-            create_app(self._setting_overrides)
-            self.assertEqual(new_relic.call_count, 1)
-
     def test_sets_content_length(self):
         self.assertGreater(
             create_app(self._setting_overrides).config["MAX_CONTENT_LENGTH"], 0
