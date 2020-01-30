@@ -8,7 +8,6 @@ metadata:
     helm.sh/chart: {{ include "chart.chart" . }}
     app.kubernetes.io/instance: {{ .Release.Name }}
     app.kubernetes.io/managed-by: {{ .Release.Service }}
-    date: {{ .Release.Time.Seconds }}
   annotations:
       kubernetes.io/ingress.global-static-ip-name: survey-runner
       ingress.gcp.kubernetes.io/pre-shared-cert: runner
