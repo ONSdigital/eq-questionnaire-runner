@@ -9,7 +9,7 @@ fi
 gcloud auth activate-service-account --key-file ${GOOGLE_APPLICATION_CREDENTIALS}
 
 helm init --client-only
-helm plugin install https://github.com/rimusz/helm-tiller
+helm plugin install https://github.com/rimusz/helm-tiller || true
 
 gcloud container clusters get-credentials survey-runner --region ${REGION} --project ${PROJECT_ID}
 SUBMISSION_BUCKET_NAME="$SUBMISSION_BUCKET_NAME" DOCKER_REGISTRY="$DOCKER_REGISTRY" IMAGE_TAG="$IMAGE_TAG" ./k8s/deploy_app.sh
