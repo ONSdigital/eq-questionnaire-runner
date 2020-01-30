@@ -6,7 +6,7 @@ if [ -n "$SECRETS_S3_BUCKET" ]; then
 fi
 
 if [ "$EQ_NEW_RELIC_ENABLED" == "True" ]; then
-    newrelic-admin run-program gunicorn -w $GUNICORN_WORKERS --keep-alive $GUNICORN_KEEP_ALIVE --worker-class gevent -b 0.0.0.0:5000 application:application
+    newrelic-admin run-program gunicorn -w "$GUNICORN_WORKERS" --keep-alive "$GUNICORN_KEEP_ALIVE" --worker-class gevent -b 0.0.0.0:5000 application:application
 else
-    gunicorn -w $GUNICORN_WORKERS --keep-alive $GUNICORN_KEEP_ALIVE --worker-class gevent -b 0.0.0.0:5000 application:application
+    gunicorn -w "$GUNICORN_WORKERS" --keep-alive "$GUNICORN_KEEP_ALIVE" --worker-class gevent -b 0.0.0.0:5000 application:application
 fi
