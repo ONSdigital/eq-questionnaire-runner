@@ -22,6 +22,7 @@ params:
   GOOGLE_TAG_MANAGER_PREVIEW:
   COOKIE_SETTINGS_URL:
   REGION: 'europe-west2'
+  SUBMISSION_BUCKET_NAME: survey-runner-submission
 run:
   path: bash
   args:
