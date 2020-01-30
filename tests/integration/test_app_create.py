@@ -6,7 +6,6 @@ from mock import patch
 from flask import Flask, request
 from flask_babel import Babel
 
-from app import settings
 from app.setup import create_app, EmulatorCredentials
 from app.storage.datastore import DatastoreStorage
 from app.storage.dynamodb import DynamodbStorage
