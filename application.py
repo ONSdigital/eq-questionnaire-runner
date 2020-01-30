@@ -73,7 +73,7 @@ def add_service(logger, method_name, event_dict):  # pylint: disable=unused-argu
 # Initialise logging before the rest of the application
 configure_logging()
 
-if os.getenv("EQ_NEW_RELIC_ENABLED", False):
+if os.getenv("EQ_NEW_RELIC_ENABLED", False) == "True":
     setup_newrelic()
 
 from app.setup import create_app  # pylint: disable=wrong-import-position # NOQA
