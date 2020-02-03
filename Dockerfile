@@ -19,4 +19,4 @@ RUN pipenv install --deploy --system
 RUN make load-schemas
 RUN make build
 
-CMD ["sh", "docker-entrypoint.sh"]
+CMD ["sh", "run.sh"]
