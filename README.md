@@ -211,26 +211,13 @@ To run the tests against a remote deployment you will need to specify the enviro
 
 ---
 
-## Deployment with [Helm](https://helm.sh/)
+## Deployment with [Concourse](https://concourse-ci.org/)
 
-To deploy this application with helm, you must have a kubernetes cluster already running and be logged into the cluster.
-
-Log in to the cluster using:
-
-```
-gcloud container clusters get-credentials survey-runner --region <region> --project <gcp_project_id>
-```
-
-You need to have Helm installed locally
-
-1. Install Helm with `brew install kubernetes-helm` and then run `helm init --client-only`
-
-2. Install Helm Tiller plugin for _Tillerless_ deploys `helm plugin install https://github.com/rimusz/helm-tiller`
-
+To deploy this application with concourse, you must have a Kubernetes cluster already provisioned and be logged in to a Concourse instance that has access to the cluster.
 
 ### Deploying credentials
 
-Before deploying the app to a cluster you need to create the application credentials on Kubernetes. This can be done via Concourse using the following task commands:
+Before deploying the app you need to create credentials on Kubernetes. This can be done via Concourse using the following task commands:
 
 ```sh
 EQ_KEYS_FILE=<path_to_keys_file> EQ_SECRETS_FILE=<path_to_secrets_file> \
