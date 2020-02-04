@@ -238,17 +238,24 @@ PROJECT_ID=my-project-id REGION=europe-west2 fly -t census-eq execute \
 The following environment variables should be set when deploying the app.
 - PROJECT_ID
 - SUBMISSION_BUCKET_NAME
-- DOCKER_REGISTRY *(optional)*
-- IMAGE_TAG *(optional)*
-- GOOGLE_TAG_MANAGER_ID *(optional)*
-- GOOGLE_TAG_MANAGER_AUTH *(optional)*
-- GOOGLE_TAG_MANAGER_PREVIEW *(optional)*
-- REQUESTED_CPU_PER_POD *(optional)* - No. of CPUs to request per Pod
-- ROLLING_UPDATE_MAX_UNAVAILABLE *(optional)* - Specifies the maximum number of Pods that can be unavailable during the update process.
-- ROLLING_UPDATE_MAX_SURGE *(optional)* - Specifies the maximum number of Pods that can be created over the desired number of Pods.
-- MIN_REPLICAS *(optional)* - Minimum no. of replicated Pods
-- MAX_REPLICAS *(optional)* - Maximum no. of replicated Pods
-- TARGET_CPU_UTILIZATION_PERCENTAGE *(optional)* - The average CPU utilization usage before auto scaling applies
+
+There are further *optional* environment variables that can also be set if neded:
+
+```
+| Variable Name                             | Default                | Description                                                                          |
+|-------------------------------------------|------------------------|--------------------------------------------------------------------------------------|
+| DOCKER_REGISTRY                           | eu.gcr.io/census-eq-ci |                                                                                      |
+| IMAGE_TAG                                 | latest                 |                                                                                      |
+| GOOGLE_TAG_MANAGER_ID                     |                        |                                                                                      |
+| GOOGLE_TAG_MANAGER_AUTH                   |                        |                                                                                      |
+| GOOGLE_TAG_MANAGER_PREVIEW                |                        |                                                                                      |
+| REQUESTED_CPU_PER_POD                     | 3                      | No. of CPUs to request per Pod                                                       |
+| ROLLING_UPDATE_MAX_UNAVAILABLE            | 1                      | The maximum number of Pods that can be unavailable during the update process.        |
+| ROLLING_UPDATE_MAX_SURGE                  | 1                      | The maximum number of Pods that can be created over the desired number of Pods.      |
+| MIN_REPLICAS                              | 3                      | Minimum no. of replicated Pods                                                       |
+| MAX_REPLICAS                              | 10                     | Maximum no. of replicated Pods                                                       |
+| TARGET_CPU_UTILIZATION_PERCENTAGE         | 50                     | The average CPU utilization usage before auto scaling applies                        |
+```
 
 To deploy the app to the cluster via concourse, run the following task command:
 
