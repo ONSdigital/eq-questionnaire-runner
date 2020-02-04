@@ -8,11 +8,14 @@ set -e
 echo "Starting Validator"
 ./scripts/run_validator.sh
 
-echo "Running schema tests"
-./scripts/test_schemas.sh schemas/en
+echo "Running schema validation"
+./scripts/validate_test_schemas.sh test_schemas/en
 
-echo "Running lint tests"
-./scripts/run_lint.sh
+echo "Running python lint tests"
+./scripts/run_lint_python.sh
+
+echo "Running js lint tests"
+yarn lint
 
 echo "Running unit tests"
 ./scripts/run_tests_unit.sh

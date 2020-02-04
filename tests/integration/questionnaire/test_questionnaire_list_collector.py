@@ -141,11 +141,11 @@ class TestQuestionnaireListCollector(IntegrationTestCase):
 
         self.post({"anyone-else": "No"})
 
-        self.post(action="save_continue")
+        self.post()
 
         self.post({"another-anyone-else": "No"})
 
-        self.assertInBody("Check your answers before continuing")
+        self.assertInBody("List Collector Summary")
 
         self.post()
 
@@ -162,11 +162,11 @@ class TestQuestionnaireListCollector(IntegrationTestCase):
 
         self.post({"anyone-else": "No"})
 
-        self.post(action="save_continue")
+        self.post()
 
         self.post({"another-anyone-else": "No"})
 
-        self.assertInBody("Check your answers before continuing")
+        self.assertInBody("List Collector Summary")
 
         self.post()
 
@@ -185,7 +185,7 @@ class TestQuestionnaireListCollector(IntegrationTestCase):
 
         self.post({"anyone-else": "No"})
 
-        self.post(action="save_continue")
+        self.post()
 
         self.post({"another-anyone-else": "No"})
 

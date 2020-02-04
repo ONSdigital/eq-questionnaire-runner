@@ -1,17 +1,19 @@
 clean:
 	rm -rf schemas
+	rm -rf templates/components
+	rm -rf templates/layout
 
-load-schemas: clean
-	./scripts/load_schemas.sh
+load-schemas:
+	./scripts/load_release.sh onsdigital/eq-questionnaire-schemas v0.0.2
 
 load-templates:
-	./scripts/load_templates.sh
+	./scripts/load_release.sh onsdigital/design-system 14.4.4
 
 build: load-templates
 	make translate
 
 lint:
-	pipenv run ./scripts/run_lint.sh
+	pipenv run ./scripts/run_lint_python.sh
 
 test:
 	pipenv run ./scripts/run_tests.sh
@@ -22,8 +24,8 @@ test-unit:
 test-functional:
 	pipenv run ./scripts/run_tests_functional.sh
 
-test-schemas:
-	pipenv run ./scripts/test_schemas.sh
+validate-test-schemas:
+	pipenv run ./scripts/validate_test_schemas.sh
 
 translation-templates:
 	pipenv run python -m scripts.extract_translation_templates
@@ -56,7 +58,3 @@ dev-compose-down-linux:
 
 profile:
 	pipenv run python profile_application.py
-
-travis: build
-	ln -sf .development.env .env
-	pipenv run ./scripts/run_travis.sh

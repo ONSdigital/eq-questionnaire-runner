@@ -12,7 +12,7 @@ def router(schema, answer_store, list_store, progress_store):
 
 
 def test_get_not_started_row_for_section(
-    schema, progress_store, answer_store, list_store, router
+    schema, progress_store, answer_store, list_store
 ):
     expected = {
         "title": "Breakfast",
@@ -37,8 +37,6 @@ def test_get_not_started_row_for_section(
         schema=schema,
         answer_store=answer_store,
         metadata={},
-        survey_complete=False,
-        enabled_section_ids=router.enabled_section_ids,
     )
 
     actual = hub.get_row_context_for_section(
@@ -51,7 +49,7 @@ def test_get_not_started_row_for_section(
 
 
 def test_get_completed_row_for_section(
-    schema, progress_store, answer_store, list_store, router
+    schema, progress_store, answer_store, list_store
 ):
     expected = {
         "title": "Breakfast",
@@ -77,8 +75,6 @@ def test_get_completed_row_for_section(
         schema=schema,
         answer_store=answer_store,
         metadata={},
-        survey_complete=False,
-        enabled_section_ids=router.enabled_section_ids,
     )
 
     actual = hub.get_row_context_for_section(
@@ -98,8 +94,6 @@ def test_get_context(schema, progress_store, answer_store, list_store, router):
         schema=schema,
         answer_store=answer_store,
         metadata={},
-        survey_complete=False,
-        enabled_section_ids=router.enabled_section_ids,
     )
 
     expected_context = {
@@ -109,4 +103,6 @@ def test_get_context(schema, progress_store, answer_store, list_store, router):
         "submit_button": "Continue",
     }
 
-    assert expected_context == hub.get_context()
+    assert expected_context == hub.get_context(
+        survey_complete=False, enabled_section_ids=router.enabled_section_ids
+    )

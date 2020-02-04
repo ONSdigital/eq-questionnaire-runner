@@ -2,7 +2,7 @@ FROM python:3.7-slim-stretch
 
 EXPOSE 5000
 
-RUN apt update && apt install -y curl unzip libsnappy-dev build-essential
+RUN apt update && apt install -y curl unzip libsnappy-dev build-essential jq
 
 COPY . /runner
 WORKDIR /runner
