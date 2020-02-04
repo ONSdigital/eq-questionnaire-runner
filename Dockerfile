@@ -20,4 +20,4 @@ RUN pipenv install --deploy --system
 RUN make load-schemas
 RUN make build
 
-CMD ["sh", "run.sh"]
+CMD ["sh", "run_gunicorn.sh"]

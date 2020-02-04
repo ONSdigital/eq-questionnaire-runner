@@ -45,7 +45,7 @@ run: build
 
 gunicorn:
 	ln -sf .development.env .env
-	pipenv run ./run.sh
+	pipenv run ./run_gunicorn.sh
 
 dev-compose-up:
 	docker-compose pull eq-questionnaire-launcher
