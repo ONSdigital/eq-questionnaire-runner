@@ -241,7 +241,6 @@ The following environment variables should be set when deploying the app.
 
 There are further *optional* environment variables that can also be set if neded:
 
-```
 | Variable Name                             | Default                | Description                                                                          |
 |-------------------------------------------|------------------------|--------------------------------------------------------------------------------------|
 | DOCKER_REGISTRY                           | eu.gcr.io/census-eq-ci |                                                                                      |
@@ -255,7 +254,6 @@ There are further *optional* environment variables that can also be set if neded
 | MIN_REPLICAS                              | 3                      | Minimum no. of replicated Pods                                                       |
 | MAX_REPLICAS                              | 10                     | Maximum no. of replicated Pods                                                       |
 | TARGET_CPU_UTILIZATION_PERCENTAGE         | 50                     | The average CPU utilization usage before auto scaling applies                        |
-```
 
 To deploy the app to the cluster via concourse, run the following task command:
 
@@ -296,7 +294,6 @@ Once we have the translated .po files they can be added to the source code and u
 
 The following env variables can be used
 
-```
 | Variable Name                             | Default               | Description                                                                                   |
 |-------------------------------------------|-----------------------|-----------------------------------------------------------------------------------------------|
 | EQ_SESSION_TIMEOUT_SECONDS                | 2700 (45 mins)        | The duration of the flask session                                                             |
@@ -338,7 +335,6 @@ The following env variables can be used
 | NEW_RELIC_LICENSE_KEY                     |                       | Enable new relic monitoring by supplying a New Relic licence key                              |
 | NEW_RELIC_APP_NAME                        |                       | The name to display for the application in New Relic                                          |
 | COOKIE_SETTINGS_URL                       |                       | URL for the Webstie Cookie Settings page                                                      |
-```
 
 The following env variables can be used when running tests
 
