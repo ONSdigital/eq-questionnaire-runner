@@ -42,9 +42,6 @@ In order to run locally you'll need Node.js, snappy, pyenv, jq and Jsonnet insta
 brew install snappy npm pyenv jsonnet jq
 ```
 
-Note that npm currently requires Python 2.x for some of the setup steps,
-it doesn't work with Python 3.
-
 ### Setup
 
 It is preferable to use the version of Python locally that matches that

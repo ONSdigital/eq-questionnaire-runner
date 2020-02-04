@@ -43,6 +43,10 @@ run: build
 	ln -sf .development.env .env
 	pipenv run flask run
 
+gunicorn:
+	ln -sf .development.env .env
+	pipenv run ./run_gunicorn.sh
+
 dev-compose-up:
 	docker-compose pull eq-questionnaire-launcher
 	docker-compose -f docker-compose-dev-mac.yml up -d
