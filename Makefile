@@ -7,7 +7,7 @@ load-schemas:
 	./scripts/load_release.sh onsdigital/eq-questionnaire-schemas v0.0.2
 
 load-templates:
-	./scripts/load_release.sh onsdigital/design-system 14.4.4
+	./scripts/load_release.sh onsdigital/design-system 14.4.6
 
 build: load-templates
 	make translate
