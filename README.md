@@ -213,7 +213,7 @@ To run the tests against a remote deployment you will need to specify the enviro
 
 ## Deployment with [Concourse](https://concourse-ci.org/)
 
-To deploy this application with concourse, you must have a Kubernetes cluster already provisioned and be logged in to a Concourse instance that has access to the cluster.
+To deploy this application with Concourse, you must have a Kubernetes cluster already provisioned and be logged in to a Concourse instance that has access to the cluster.
 
 ### Deploying credentials
 
