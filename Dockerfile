@@ -9,6 +9,7 @@ WORKDIR /runner
 
 ENV GUNICORN_WORKERS 3
 ENV GUNICORN_KEEP_ALIVE 2
+ENV GUNICORN_CMD_ARGS -c gunicorn_config.py
 
 COPY Pipfile Pipfile
 COPY Pipfile.lock Pipfile.lock
@@ -19,4 +20,4 @@ RUN pipenv install --deploy --system
 RUN make load-schemas
 RUN make build
 
-CMD ["sh", "docker-entrypoint.sh"]
+CMD ["sh", "run_gunicorn.sh"]

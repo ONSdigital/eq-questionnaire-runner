@@ -40,7 +40,7 @@ flask-login = "*"
 flask-wtf = "*"
 gevent = {version = "*",platform_python_implementation = "=='CPython'"}
 google-cloud-datastore = "*"
-grpcio = "*"
+grpcio = "==1.25.0"
 gunicorn = "*"
 newrelic = "*"
 pika = "*"

@@ -74,7 +74,6 @@ tests/a11y
 .elasticbeanstalk/*
 !.elasticbeanstalk/*.cfg.yml
 !.elasticbeanstalk/*.global.yml
-newrelic.ini
 .application-version
 
 # Added to prevent committing coverage reports.
