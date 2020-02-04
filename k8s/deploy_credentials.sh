@@ -11,14 +11,12 @@ if [[ -z "$EQ_SECRETS_FILE" ]]; then
   exit 1
 fi
 
-  gcloud auth activate-service-account --key-file ${GOOGLE_APPLICATION_CREDENTIALS}
+  gcloud auth activate-service-account --key-file "${GOOGLE_APPLICATION_CREDENTIALS}"
 
   helm init --client-only
   helm plugin install https://github.com/rimusz/helm-tiller
 
-  SUBMISSION_BUCKET_NAME=${PROJECT_ID}-survey-runner-submission
-
-  gcloud container clusters get-credentials survey-runner --region ${REGION} --project ${PROJECT_ID}
+  gcloud container clusters get-credentials survey-runner --region "${REGION}" --project "${PROJECT_ID}"
 
 kubectl create secret generic keys \
     --from-file=keys.yml=${EQ_KEYS_FILE} \

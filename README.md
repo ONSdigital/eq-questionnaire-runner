@@ -1,6 +1,6 @@
 # eQ Questionnaire Runner
 
-[![Build Status](https://travis-ci.com/ONSdigital/eq-questionnaire-runner.svg?branch=master)](https://travis-ci.com/ONSdigital/eq-questionnaire-runner)
+![Build Status](https://github.com/ONSdigital/eq-questionnaire-runner/workflows/Master/badge.svg)
 [![codecov](https://codecov.io/gh/ONSdigital/eq-questionnaire-runner/branch/master/graph/badge.svg)](https://codecov.io/gh/ONSdigital/eq-questionnaire-runner/branch/master)
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/4c39ddd3285748f8bfb6b70fd5aaf9cc)](https://www.codacy.com/manual/ONSDigital/eq-questionnaire-runner?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=ONSdigital/eq-questionnaire-runner&amp;utm_campaign=Badge_Grade)
 
@@ -230,21 +230,26 @@ You need to have Helm installed locally
 
 ### Deploying credentials
 
-Before deploying the app to a cluster you need to create the application credentials on Kubernetes. Run the following command to provision the credentials:
+Before deploying the app to a cluster you need to create the application credentials on Kubernetes. This can be done via Concourse using the following task commands:
 
-```
-EQ_KEYS_FILE=PATH_TO_KEYS_FILE EQ_SECRETS_FILE=PATH_TO_SECRETS_FILE ./k8s/deploy_credentials.sh
+```sh
+EQ_KEYS_FILE=<path_to_keys_file> EQ_SECRETS_FILE=<path_to_secrets_file> \
+PROJECT_ID=<project_id> REGION=<cluster_region> fly -t census-eq execute \
+--config ci/deploy_credentials.yaml --input eq-questionnaire-runner-repo=.
 ```
 
 For example:
 
 ```
-EQ_KEYS_FILE=dev-keys.yml EQ_SECRETS_FILE=dev-secrets.yml ./k8s/deploy_credentials.sh
+EQ_KEYS_FILE=dev-keys.yml EQ_SECRETS_FILE=dev-secrets.yml \
+PROJECT_ID=my-project-id REGION=europe-west2 fly -t census-eq execute \
+--config ci/deploy_credentials.yaml --input eq-questionnaire-runner-repo=.
 ```
 
 ### Deploying the app
 
-The following environment variables can be set when deploying the app.
+The following environment variables should be set when deploying the app.
+- PROJECT_ID
 - SUBMISSION_BUCKET_NAME
 - DOCKER_REGISTRY *(optional)*
 - IMAGE_TAG *(optional)*
@@ -258,16 +263,20 @@ The following environment variables can be set when deploying the app.
 - MAX_REPLICAS *(optional)* - Maximum no. of replicated Pods
 - TARGET_CPU_UTILIZATION_PERCENTAGE *(optional)* - The average CPU utilization usage before auto scaling applies
 
-To deploy the app to the cluster, run the following command:
+To deploy the app to the cluster via concourse, run the following task command:
 
-```
-./k8s/deploy_app.sh
+```sh
+fly -t census-eq execute --config ci/deploy_app.yaml \
+--input eq-questionnaire-runner-repo=.
 ```
 
 For example:
 
-```
-SUBMISSION_BUCKET_NAME=census-eq-dev-1234567-survey-runner-submission ./k8s/deploy_app.sh
+```sh
+PROJECT_ID=my-project-id \
+SUBMISSION_BUCKET_NAME=census-eq-dev-1234567-survey-runner-submission \
+fly -t census-eq execute --config ci/deploy_app.yaml \
+--input eq-questionnaire-runner-repo=.
 ```
 
 ---
