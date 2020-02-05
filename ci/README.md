@@ -2,7 +2,7 @@
 
 To deploy this application with Concourse, you must have a Kubernetes cluster already provisioned and be logged in to a Concourse instance that has access to the cluster.
 
-### Deploying credentials
+## Deploying credentials
 
 Before deploying the app you need to create credentials on Kubernetes. This can be done via Concourse using the following task commands:
 
@@ -28,7 +28,7 @@ fly -t census-eq execute \
   --input eq-questionnaire-runner-repo=.
 ```
 
-### Deploying the app
+## Deploying the app
 
 The following environment variables should be set when deploying the app.
 
@@ -68,4 +68,3 @@ fly -t census-eq execute \
   --config ci/deploy_app.yaml \
   --input eq-questionnaire-runner-repo=.
 ```
-
