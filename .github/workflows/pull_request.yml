@@ -86,13 +86,10 @@ jobs:
         run: pipenv run ./scripts/run_tests_unit.sh
   validate-schemas:
       runs-on: ubuntu-latest
-      services:
-        validator:
-          image: onsdigital/eq-questionnaire-validator:latest
-          ports:
-            - 5001:5000
       steps:
         - uses: actions/checkout@v2
+        - name: Run validator
+          run: ./scripts/run_validator.sh
         - name: Running schema tests
           run: ./scripts/validate_test_schemas.sh
   test-functional:
