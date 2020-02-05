@@ -207,68 +207,9 @@ To run the tests against a remote deployment you will need to specify the enviro
 `EQ_FUNCTIONAL_TEST_ENV=https://staging-new-surveys.dev.eq.ons.digital/ yarn test_functional`
 
 ---
+## Deploying
 
-## Deployment with [Concourse](https://concourse-ci.org/)
-
-To deploy this application with Concourse, you must have a Kubernetes cluster already provisioned and be logged in to a Concourse instance that has access to the cluster.
-
-### Deploying credentials
-
-Before deploying the app you need to create credentials on Kubernetes. This can be done via Concourse using the following task commands:
-
-```sh
-EQ_KEYS_FILE=<path_to_keys_file> EQ_SECRETS_FILE=<path_to_secrets_file> \
-PROJECT_ID=<project_id> REGION=<cluster_region> fly -t census-eq execute \
---config ci/deploy_credentials.yaml --input eq-questionnaire-runner-repo=.
-```
-
-For example:
-
-```
-EQ_KEYS_FILE=dev-keys.yml EQ_SECRETS_FILE=dev-secrets.yml \
-PROJECT_ID=my-project-id REGION=europe-west2 fly -t census-eq execute \
---config ci/deploy_credentials.yaml --input eq-questionnaire-runner-repo=.
-```
-
-### Deploying the app
-
-The following environment variables should be set when deploying the app.
--  PROJECT_ID
--  SUBMISSION_BUCKET_NAME
-
-There are further *optional* environment variables that can also be set if neded:
-
-| Variable Name                             | Default                | Description                                                                          |
-|-------------------------------------------|------------------------|--------------------------------------------------------------------------------------|
-| DOCKER_REGISTRY                           | eu.gcr.io/census-eq-ci |                                                                                      |
-| IMAGE_TAG                                 | latest                 |                                                                                      |
-| GOOGLE_TAG_MANAGER_ID                     |                        |                                                                                      |
-| GOOGLE_TAG_MANAGER_AUTH                   |                        |                                                                                      |
-| GOOGLE_TAG_MANAGER_PREVIEW                |                        |                                                                                      |
-| REQUESTED_CPU_PER_POD                     | 3                      | No. of CPUs to request per Pod                                                       |
-| ROLLING_UPDATE_MAX_UNAVAILABLE            | 1                      | The maximum number of Pods that can be unavailable during the update process.        |
-| ROLLING_UPDATE_MAX_SURGE                  | 1                      | The maximum number of Pods that can be created over the desired number of Pods.      |
-| MIN_REPLICAS                              | 3                      | Minimum no. of replicated Pods                                                       |
-| MAX_REPLICAS                              | 10                     | Maximum no. of replicated Pods                                                       |
-| TARGET_CPU_UTILIZATION_PERCENTAGE         | 50                     | The average CPU utilization usage before auto scaling applies                        |
-
-To deploy the app to the cluster via concourse, run the following task command:
-
-```sh
-fly -t census-eq execute --config ci/deploy_app.yaml \
---input eq-questionnaire-runner-repo=.
-```
-
-For example:
-
-```sh
-PROJECT_ID=my-project-id \
-SUBMISSION_BUCKET_NAME=census-eq-dev-1234567-survey-runner-submission \
-fly -t census-eq execute --config ci/deploy_app.yaml \
---input eq-questionnaire-runner-repo=.
-```
-
----
+See the [CI README](./ci/README.md).
 
 ## Internationalisation
 
