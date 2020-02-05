@@ -88,7 +88,7 @@ jobs:
       runs-on: ubuntu-latest
       services:
         validator:
-          image: onsdigital/eq-questionnaire-validator:latest
+          image: onsdigital/eq-questionnaire-validator:add-lookup-to-textfield
           ports:
             - 5001:5000
       steps:
