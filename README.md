@@ -233,8 +233,8 @@ PROJECT_ID=my-project-id REGION=europe-west2 fly -t census-eq execute \
 ### Deploying the app
 
 The following environment variables should be set when deploying the app.
-  - PROJECT_ID
-  - SUBMISSION_BUCKET_NAME
+- PROJECT_ID
+- SUBMISSION_BUCKET_NAME
 
 There are further *optional* environment variables that can also be set if neded:
 
