@@ -209,7 +209,67 @@ To run the tests against a remote deployment you will need to specify the enviro
 ---
 ## Deploying
 
-See the [CI README](./ci/README.md).
+For deploying with Concourse see the [CI README](./ci/README.md).
+
+### Deployment with [Helm](https://helm.sh/)
+
+To deploy this application with helm, you must have a kubernetes cluster already running and be logged into the cluster.
+
+Log in to the cluster using:
+
+```
+gcloud container clusters get-credentials survey-runner --region <region> --project <gcp_project_id>
+```
+
+You need to have Helm installed locally
+
+1. Install Helm with `brew install kubernetes-helm` and then run `helm init --client-only`
+
+2. Install Helm Tiller plugin for _Tillerless_ deploys `helm plugin install https://github.com/rimusz/helm-tiller`
+
+
+### Deploying credentials
+
+Before deploying the app to a cluster you need to create the application credentials on Kubernetes. Run the following command to provision the credentials:
+
+```
+EQ_KEYS_FILE=PATH_TO_KEYS_FILE EQ_SECRETS_FILE=PATH_TO_SECRETS_FILE ./k8s/deploy_credentials.sh
+```
+
+For example:
+
+```
+EQ_KEYS_FILE=dev-keys.yml EQ_SECRETS_FILE=dev-secrets.yml ./k8s/deploy_credentials.sh
+```
+
+### Deploying the app
+
+The following environment variables can be set when deploying the app.
+- SUBMISSION_BUCKET_NAME
+- DOCKER_REGISTRY *(optional)*
+- IMAGE_TAG *(optional)*
+- GOOGLE_TAG_MANAGER_ID *(optional)*
+- GOOGLE_TAG_MANAGER_AUTH *(optional)*
+- GOOGLE_TAG_MANAGER_PREVIEW *(optional)*
+- REQUESTED_CPU_PER_POD *(optional)* - No. of CPUs to request per Pod
+- ROLLING_UPDATE_MAX_UNAVAILABLE *(optional)* - Specifies the maximum number of Pods that can be unavailable during the update process.
+- ROLLING_UPDATE_MAX_SURGE *(optional)* - Specifies the maximum number of Pods that can be created over the desired number of Pods.
+- MIN_REPLICAS *(optional)* - Minimum no. of replicated Pods
+- MAX_REPLICAS *(optional)* - Maximum no. of replicated Pods
+- TARGET_CPU_UTILIZATION_PERCENTAGE *(optional)* - The average CPU utilization usage before auto scaling applies
+
+To deploy the app to the cluster, run the following command:
+
+```
+./k8s/deploy_app.sh
+```
+
+For example:
+
+```
+SUBMISSION_BUCKET_NAME=census-eq-dev-1234567-survey-runner-submission ./k8s/deploy_app.sh
+```
+---
 
 ## Internationalisation
 
