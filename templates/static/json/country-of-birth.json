@@ -1,0 +1,1352 @@
+[
+  {
+    "code": 4,
+    "en-gb": "Afghanistan",
+    "cy": "Afghanistan"
+  },
+  {
+    "code": 248,
+    "en-gb": "Aland islands",
+    "cy": "ynysoedd Aland"
+  },
+  {
+    "code": 8,
+    "en-gb": "Albania",
+    "cy": "Albania"
+  },
+  {
+    "code": 12,
+    "en-gb": "Algeria",
+    "cy": "Algeria"
+  },
+  {
+    "code": 16,
+    "en-gb": "American samoa",
+    "cy": "Samoa Americanaidd"
+  },
+  {
+    "code": 20,
+    "en-gb": "Andorra",
+    "cy": "andorra"
+  },
+  {
+    "code": 24,
+    "en-gb": "Angola",
+    "cy": "Angola"
+  },
+  {
+    "code": 660,
+    "en-gb": "Anguilla",
+    "cy": "anguilla"
+  },
+  {
+    "code": 10,
+    "en-gb": "Antarctica",
+    "cy": "Antarctica"
+  },
+  {
+    "code": 989,
+    "en-gb": "Antarctica and oceania",
+    "cy": "Antarctica a oceania"
+  },
+  {
+    "code": 28,
+    "en-gb": "Antigua and barbuda",
+    "cy": "Antigua a Barbuda"
+  },
+  {
+    "code": 32,
+    "en-gb": "Argentina",
+    "cy": "Ariannin"
+  },
+  {
+    "code": 51,
+    "en-gb": "Armenia",
+    "cy": "armenia"
+  },
+  {
+    "code": 533,
+    "en-gb": "Aruba",
+    "cy": "Aruba"
+  },
+  {
+    "code": 991,
+    "en-gb": "At sea",
+    "cy": "ar y môr"
+  },
+  {
+    "code": 36,
+    "en-gb": "Australia",
+    "cy": "Awstralia"
+  },
+  {
+    "code": 40,
+    "en-gb": "Austria",
+    "cy": "Awstria"
+  },
+  {
+    "code": 31,
+    "en-gb": "Azerbaijan",
+    "cy": "Azerbaijan"
+  },
+  {
+    "code": 48,
+    "en-gb": "Bahrain",
+    "cy": "Bahrain"
+  },
+  {
+    "code": 50,
+    "en-gb": "Bangladesh",
+    "cy": "Bangladesh"
+  },
+  {
+    "code": 52,
+    "en-gb": "Barbados",
+    "cy": "Barbados"
+  },
+  {
+    "code": 112,
+    "en-gb": "Belarus",
+    "cy": "Belarws"
+  },
+  {
+    "code": 56,
+    "en-gb": "Belgium",
+    "cy": "Gwlad Belg"
+  },
+  {
+    "code": 84,
+    "en-gb": "Belize",
+    "cy": "Belize"
+  },
+  {
+    "code": 204,
+    "en-gb": "Benin",
+    "cy": "Benin"
+  },
+  {
+    "code": 60,
+    "en-gb": "Bermuda",
+    "cy": "bermuda"
+  },
+  {
+    "code": 64,
+    "en-gb": "Bhutan",
+    "cy": "Bhutan"
+  },
+  {
+    "code": 68,
+    "en-gb": "Bolivia",
+    "cy": "Bolivia"
+  },
+  {
+    "code": 535,
+    "en-gb": "Bonaire, sint eustasius and saba",
+    "cy": "Bonaire, eustasius sint a saba"
+  },
+  {
+    "code": 70,
+    "en-gb": "Bosnia and herzegovina",
+    "cy": "Bosnia a Herzegovina"
+  },
+  {
+    "code": 72,
+    "en-gb": "Botswana",
+    "cy": "Botswana"
+  },
+  {
+    "code": 74,
+    "en-gb": "Bouvet island",
+    "cy": "ynys Bouvet"
+  },
+  {
+    "code": 76,
+    "en-gb": "Brazil",
+    "cy": "brasil"
+  },
+  {
+    "code": 86,
+    "en-gb": "British indian ocean territory",
+    "cy": "diriogaeth Brydeinig Cefnfor indian"
+  },
+  {
+    "code": 92,
+    "en-gb": "British virgin islands",
+    "cy": "ynysoedd forwyn Prydeinig"
+  },
+  {
+    "code": 96,
+    "en-gb": "Brunei",
+    "cy": "Brunei"
+  },
+  {
+    "code": 100,
+    "en-gb": "Bulgaria",
+    "cy": "Bwlgaria"
+  },
+  {
+    "code": 854,
+    "en-gb": "Burkina faso",
+    "cy": "Burkina Faso"
+  },
+  {
+    "code": 104,
+    "en-gb": "Burma",
+    "cy": "Burma"
+  },
+  {
+    "code": 108,
+    "en-gb": "Burundi",
+    "cy": "Burundi"
+  },
+  {
+    "code": 132,
+    "en-gb": "Cabo verde",
+    "cy": "Cabo verde"
+  },
+  {
+    "code": 116,
+    "en-gb": "Cambodia",
+    "cy": "Cambodia"
+  },
+  {
+    "code": 120,
+    "en-gb": "Cameroon",
+    "cy": "Cameroon"
+  },
+  {
+    "code": 124,
+    "en-gb": "Canada",
+    "cy": "canada"
+  },
+  {
+    "code": 912,
+    "en-gb": "Canary islands",
+    "cy": "ynysoedd Canary"
+  },
+  {
+    "code": 132,
+    "en-gb": "Cape verde",
+    "cy": "cape verde"
+  },
+  {
+    "code": 136,
+    "en-gb": "Cayman islands",
+    "cy": "ynysoedd Cayman"
+  },
+  {
+    "code": 140,
+    "en-gb": "Central african republic",
+    "cy": "Central african weriniaeth"
+  },
+  {
+    "code": 148,
+    "en-gb": "Chad",
+    "cy": "Chad"
+  },
+  {
+    "code": 931,
+    "en-gb": "Channel islands",
+    "cy": "ynysoedd y sianel"
+  },
+  {
+    "code": 152,
+    "en-gb": "Chile",
+    "cy": "Chile"
+  },
+  {
+    "code": 156,
+    "en-gb": "China",
+    "cy": "Tsieina"
+  },
+  {
+    "code": 162,
+    "en-gb": "Christmas island",
+    "cy": "ynys y nadolig"
+  },
+  {
+    "code": 166,
+    "en-gb": "Cocos (keeling) islands",
+    "cy": "Cocos (Keeling) Ynysoedd"
+  },
+  {
+    "code": 170,
+    "en-gb": "Colombia",
+    "cy": "Colombia"
+  },
+  {
+    "code": 174,
+    "en-gb": "Comoros",
+    "cy": "Comoros"
+  },
+  {
+    "code": 178,
+    "en-gb": "Congo",
+    "cy": "Congo"
+  },
+  {
+    "code": 180,
+    "en-gb": "Congo (democratic republic)",
+    "cy": "Congo (weriniaeth ddemocrataidd)"
+  },
+  {
+    "code": 184,
+    "en-gb": "Cook islands",
+    "cy": "ynysoedd Cook"
+  },
+  {
+    "code": 188,
+    "en-gb": "Costa rica",
+    "cy": "Costa Rica"
+  },
+  {
+    "code": 384,
+    "en-gb": "Cote d'ivoire",
+    "cy": "Cote d'Ivoire"
+  },
+  {
+    "code": 191,
+    "en-gb": "Croatia",
+    "cy": "Croatia"
+  },
+  {
+    "code": 192,
+    "en-gb": "Cuba",
+    "cy": "Cuba"
+  },
+  {
+    "code": 531,
+    "en-gb": "Curacao",
+    "cy": "Curacao"
+  },
+  {
+    "code": 901,
+    "en-gb": "Cyprus (european union)",
+    "cy": "Cyprus (undeb ewropeaidd)"
+  },
+  {
+    "code": 902,
+    "en-gb": "Cyprus (non-european union)",
+    "cy": "Cyprus (heb fod yn undeb ewropeaidd)"
+  },
+  {
+    "code": 203,
+    "en-gb": "Czech republic",
+    "cy": "gweriniaeth Tsiec"
+  },
+  {
+    "code": 971,
+    "en-gb": "Czechoslovakia",
+    "cy": "Tsiecoslofacia"
+  },
+  {
+    "code": 208,
+    "en-gb": "Denmark",
+    "cy": "Denmarc"
+  },
+  {
+    "code": 262,
+    "en-gb": "Djibouti",
+    "cy": "Djibouti"
+  },
+  {
+    "code": 212,
+    "en-gb": "Dominica",
+    "cy": "Dominica"
+  },
+  {
+    "code": 214,
+    "en-gb": "Dominican republic",
+    "cy": "Dominica gweriniaeth"
+  },
+  {
+    "code": 626,
+    "en-gb": "East timor",
+    "cy": "Dwyrain timor"
+  },
+  {
+    "code": 218,
+    "en-gb": "Ecuador",
+    "cy": "Ecuador"
+  },
+  {
+    "code": 818,
+    "en-gb": "Egypt",
+    "cy": "Yr Aifft"
+  },
+  {
+    "code": 222,
+    "en-gb": "El salvador",
+    "cy": "El salvador"
+  },
+  {
+    "code": 226,
+    "en-gb": "Equatorial guinea",
+    "cy": "cyhydedd gini"
+  },
+  {
+    "code": 232,
+    "en-gb": "Eritrea",
+    "cy": "Eritrea"
+  },
+  {
+    "code": 233,
+    "en-gb": "Estonia",
+    "cy": "estonia"
+  },
+  {
+    "code": 748,
+    "en-gb": "Eswatini",
+    "cy": "Eswatini"
+  },
+  {
+    "code": 231,
+    "en-gb": "Ethiopia",
+    "cy": "Ethiopia"
+  },
+  {
+    "code": 238,
+    "en-gb": "Falkland islands",
+    "cy": "ynysoedd y falklands"
+  },
+  {
+    "code": 234,
+    "en-gb": "Faroe islands",
+    "cy": "ynysoedd Faroe"
+  },
+  {
+    "code": 242,
+    "en-gb": "Fiji",
+    "cy": "Fiji"
+  },
+  {
+    "code": 246,
+    "en-gb": "Finland",
+    "cy": "Y Ffindir"
+  },
+  {
+    "code": 250,
+    "en-gb": "France",
+    "cy": "france"
+  },
+  {
+    "code": 254,
+    "en-gb": "French guiana",
+    "cy": "Giana Ffrengig"
+  },
+  {
+    "code": 258,
+    "en-gb": "French polynesia",
+    "cy": "polynesia Ffrangeg"
+  },
+  {
+    "code": 260,
+    "en-gb": "French southern territories",
+    "cy": "tiriogaethau ddeheuol Ffrangeg"
+  },
+  {
+    "code": 266,
+    "en-gb": "Gabon",
+    "cy": "Gabon"
+  },
+  {
+    "code": 270,
+    "en-gb": "Gambia",
+    "cy": "Gambia"
+  },
+  {
+    "code": 268,
+    "en-gb": "Georgia",
+    "cy": "Georgia"
+  },
+  {
+    "code": 276,
+    "en-gb": "Germany",
+    "cy": "Yr Almaen"
+  },
+  {
+    "code": 288,
+    "en-gb": "Ghana",
+    "cy": "ghana"
+  },
+  {
+    "code": 292,
+    "en-gb": "Gibraltar",
+    "cy": "Gibraltar"
+  },
+  {
+    "code": 925,
+    "en-gb": "Great britain",
+    "cy": "Prydain Fawr"
+  },
+  {
+    "code": 300,
+    "en-gb": "Greece",
+    "cy": "Gwlad Groeg"
+  },
+  {
+    "code": 901,
+    "en-gb": "Greek cyprus",
+    "cy": "cyprus Groeg"
+  },
+  {
+    "code": 304,
+    "en-gb": "Greenland",
+    "cy": "Ynys Las"
+  },
+  {
+    "code": 308,
+    "en-gb": "Grenada",
+    "cy": "grenada"
+  },
+  {
+    "code": 312,
+    "en-gb": "Guadeloupe",
+    "cy": "Guadeloupe"
+  },
+  {
+    "code": 316,
+    "en-gb": "Guam",
+    "cy": "Guam"
+  },
+  {
+    "code": 320,
+    "en-gb": "Guatemala",
+    "cy": "Guatemala"
+  },
+  {
+    "code": 831,
+    "en-gb": "Guernsey",
+    "cy": "Guernsey"
+  },
+  {
+    "code": 324,
+    "en-gb": "Guinea",
+    "cy": "Guinea"
+  },
+  {
+    "code": 624,
+    "en-gb": "Guinea-bissau",
+    "cy": "Guinea-bissau"
+  },
+  {
+    "code": 328,
+    "en-gb": "Guyana",
+    "cy": "Guyana"
+  },
+  {
+    "code": 332,
+    "en-gb": "Haiti",
+    "cy": "Haiti"
+  },
+  {
+    "code": 334,
+    "en-gb": "Heard island and mcdonald islands",
+    "cy": "ynys ac mcdonald ynysoedd Heard"
+  },
+  {
+    "code": 340,
+    "en-gb": "Honduras",
+    "cy": "Honduras"
+  },
+  {
+    "code": 344,
+    "en-gb": "Hong kong",
+    "cy": "hong kong"
+  },
+  {
+    "code": 348,
+    "en-gb": "Hungary",
+    "cy": "Hwngari"
+  },
+  {
+    "code": 352,
+    "en-gb": "Iceland",
+    "cy": "Gwlad yr Iâ"
+  },
+  {
+    "code": 992,
+    "en-gb": "In the air",
+    "cy": "Yn yr awyr"
+  },
+  {
+    "code": 356,
+    "en-gb": "India",
+    "cy": "India"
+  },
+  {
+    "code": 360,
+    "en-gb": "Indonesia",
+    "cy": "Indonesia"
+  },
+  {
+    "code": 364,
+    "en-gb": "Iran",
+    "cy": "Iran"
+  },
+  {
+    "code": 368,
+    "en-gb": "Iraq",
+    "cy": "Irac"
+  },
+  {
+    "code": 373,
+    "en-gb": "Island of ireland",
+    "cy": "Ynys iwerddon"
+  },
+  {
+    "code": 833,
+    "en-gb": "Isle of man",
+    "cy": "Ynys dyn"
+  },
+  {
+    "code": 376,
+    "en-gb": "Israel",
+    "cy": "Israel"
+  },
+  {
+    "code": 380,
+    "en-gb": "Italy",
+    "cy": "Yr Eidal"
+  },
+  {
+    "code": 384,
+    "en-gb": "Ivory coast",
+    "cy": "Arfordir Ifori"
+  },
+  {
+    "code": 388,
+    "en-gb": "Jamaica",
+    "cy": "jamaica"
+  },
+  {
+    "code": 392,
+    "en-gb": "Japan",
+    "cy": "Japan"
+  },
+  {
+    "code": 832,
+    "en-gb": "Jersey",
+    "cy": "Jersey"
+  },
+  {
+    "code": 400,
+    "en-gb": "Jordan",
+    "cy": "Jordan"
+  },
+  {
+    "code": 398,
+    "en-gb": "Kazakhstan",
+    "cy": "Kazakhstan"
+  },
+  {
+    "code": 404,
+    "en-gb": "Kenya",
+    "cy": "Kenya"
+  },
+  {
+    "code": 296,
+    "en-gb": "Kiribati",
+    "cy": "Kiribati"
+  },
+  {
+    "code": 951,
+    "en-gb": "Kosovo",
+    "cy": "Kosovo"
+  },
+  {
+    "code": 414,
+    "en-gb": "Kuwait",
+    "cy": "Kuwait"
+  },
+  {
+    "code": 417,
+    "en-gb": "Kyrgyzstan",
+    "cy": "Kyrgyzstan"
+  },
+  {
+    "code": 418,
+    "en-gb": "Laos",
+    "cy": "Laos"
+  },
+  {
+    "code": 428,
+    "en-gb": "Latvia",
+    "cy": "Latfia"
+  },
+  {
+    "code": 422,
+    "en-gb": "Lebanon",
+    "cy": "Lebanon"
+  },
+  {
+    "code": 426,
+    "en-gb": "Lesotho",
+    "cy": "Lesotho"
+  },
+  {
+    "code": 430,
+    "en-gb": "Liberia",
+    "cy": "Liberia"
+  },
+  {
+    "code": 434,
+    "en-gb": "Libya",
+    "cy": "Libya"
+  },
+  {
+    "code": 438,
+    "en-gb": "Liechtenstein",
+    "cy": "Liechtenstein"
+  },
+  {
+    "code": 440,
+    "en-gb": "Lithuania",
+    "cy": "Lithuania"
+  },
+  {
+    "code": 442,
+    "en-gb": "Luxembourg",
+    "cy": "Lwcsembwrg"
+  },
+  {
+    "code": 446,
+    "en-gb": "Macao",
+    "cy": "Macao"
+  },
+  {
+    "code": 807,
+    "en-gb": "Macedonia",
+    "cy": "Macedonia"
+  },
+  {
+    "code": 450,
+    "en-gb": "Madagascar",
+    "cy": "Madagascar"
+  },
+  {
+    "code": 454,
+    "en-gb": "Malawi",
+    "cy": "Malawi"
+  },
+  {
+    "code": 458,
+    "en-gb": "Malaysia",
+    "cy": "Malaysia"
+  },
+  {
+    "code": 462,
+    "en-gb": "Maldives",
+    "cy": "Maldives"
+  },
+  {
+    "code": 466,
+    "en-gb": "Mali",
+    "cy": "Mali"
+  },
+  {
+    "code": 470,
+    "en-gb": "Malta",
+    "cy": "malta"
+  },
+  {
+    "code": 584,
+    "en-gb": "Marshall islands",
+    "cy": "ynysoedd Marshall"
+  },
+  {
+    "code": 474,
+    "en-gb": "Martinique",
+    "cy": "Martinique"
+  },
+  {
+    "code": 478,
+    "en-gb": "Mauritania",
+    "cy": "Mauritania"
+  },
+  {
+    "code": 480,
+    "en-gb": "Mauritius",
+    "cy": "mauritius"
+  },
+  {
+    "code": 175,
+    "en-gb": "Mayotte",
+    "cy": "Mayotte"
+  },
+  {
+    "code": 484,
+    "en-gb": "Mexico",
+    "cy": "Mecsico"
+  },
+  {
+    "code": 583,
+    "en-gb": "Micronesia",
+    "cy": "Micronesia"
+  },
+  {
+    "code": 498,
+    "en-gb": "Moldova",
+    "cy": "Moldofa"
+  },
+  {
+    "code": 492,
+    "en-gb": "Monaco",
+    "cy": "Monaco"
+  },
+  {
+    "code": 496,
+    "en-gb": "Mongolia",
+    "cy": "mongolia"
+  },
+  {
+    "code": 499,
+    "en-gb": "Montenegro",
+    "cy": "montenegro"
+  },
+  {
+    "code": 500,
+    "en-gb": "Montserrat",
+    "cy": "Montserrat"
+  },
+  {
+    "code": 504,
+    "en-gb": "Morocco",
+    "cy": "Moroco"
+  },
+  {
+    "code": 508,
+    "en-gb": "Mozambique",
+    "cy": "Mozambique"
+  },
+  {
+    "code": 104,
+    "en-gb": "Myanmar",
+    "cy": "Myanmar"
+  },
+  {
+    "code": 516,
+    "en-gb": "Namibia",
+    "cy": "Namibia"
+  },
+  {
+    "code": 520,
+    "en-gb": "Nauru",
+    "cy": "Nauru"
+  },
+  {
+    "code": 524,
+    "en-gb": "Nepal",
+    "cy": "nepal"
+  },
+  {
+    "code": 528,
+    "en-gb": "Netherlands",
+    "cy": "Yr Iseldiroedd"
+  },
+  {
+    "code": 540,
+    "en-gb": "New caledonia",
+    "cy": "CALEDONIA newydd"
+  },
+  {
+    "code": 554,
+    "en-gb": "New zealand",
+    "cy": "Seland Newydd"
+  },
+  {
+    "code": 558,
+    "en-gb": "Nicaragua",
+    "cy": "nicaragua"
+  },
+  {
+    "code": 562,
+    "en-gb": "Niger",
+    "cy": "niger"
+  },
+  {
+    "code": 566,
+    "en-gb": "Nigeria",
+    "cy": "nigeria"
+  },
+  {
+    "code": 570,
+    "en-gb": "Niue",
+    "cy": "Niue"
+  },
+  {
+    "code": 574,
+    "en-gb": "Norfolk island",
+    "cy": "Norfolk ynys"
+  },
+  {
+    "code": 408,
+    "en-gb": "North korea",
+    "cy": "Gogledd Corea"
+  },
+  {
+    "code": 902,
+    "en-gb": "Northern cyprus",
+    "cy": "cyprus Northern"
+  },
+  {
+    "code": 580,
+    "en-gb": "Northern mariana islands",
+    "cy": "ynysoedd Mariana Northern"
+  },
+  {
+    "code": 578,
+    "en-gb": "Norway",
+    "cy": "Norwy"
+  },
+  {
+    "code": 275,
+    "en-gb": "Occupied palestinian territories",
+    "cy": "tiriogaethau Palesteinaidd Occupied"
+  },
+  {
+    "code": 512,
+    "en-gb": "Oman",
+    "cy": "Oman"
+  },
+  {
+    "code": 586,
+    "en-gb": "Pakistan",
+    "cy": "Pakistan"
+  },
+  {
+    "code": 585,
+    "en-gb": "Palau",
+    "cy": "Palau"
+  },
+  {
+    "code": 591,
+    "en-gb": "Panama",
+    "cy": "Panama"
+  },
+  {
+    "code": 598,
+    "en-gb": "Papua new guinea",
+    "cy": "Papwa Gini Newydd"
+  },
+  {
+    "code": 600,
+    "en-gb": "Paraguay",
+    "cy": "Paraguay"
+  },
+  {
+    "code": 604,
+    "en-gb": "Peru",
+    "cy": "Peru"
+  },
+  {
+    "code": 608,
+    "en-gb": "Philippines",
+    "cy": "Philippines"
+  },
+  {
+    "code": 612,
+    "en-gb": "Pitcairn, henderson, ducie and oeno islands",
+    "cy": "Pitcairn, Henderson, Ducie ac oeno ynysoedd"
+  },
+  {
+    "code": 616,
+    "en-gb": "Poland",
+    "cy": "gwlad pwyl"
+  },
+  {
+    "code": 620,
+    "en-gb": "Portugal",
+    "cy": "Portiwgal"
+  },
+  {
+    "code": 630,
+    "en-gb": "Puerto rico",
+    "cy": "puerto rico"
+  },
+  {
+    "code": 634,
+    "en-gb": "Qatar",
+    "cy": "Qatar"
+  },
+  {
+    "code": 638,
+    "en-gb": "Reunion",
+    "cy": "aduniad"
+  },
+  {
+    "code": 642,
+    "en-gb": "Romania",
+    "cy": "Romania"
+  },
+  {
+    "code": 643,
+    "en-gb": "Russia",
+    "cy": "Rwsia"
+  },
+  {
+    "code": 646,
+    "en-gb": "Rwanda",
+    "cy": "Rwanda"
+  },
+  {
+    "code": 882,
+    "en-gb": "Samoa",
+    "cy": "Samoa"
+  },
+  {
+    "code": 674,
+    "en-gb": "San marino",
+    "cy": "san Marino"
+  },
+  {
+    "code": 678,
+    "en-gb": "Sao tome and principe",
+    "cy": "Sao Tome a Principe"
+  },
+  {
+    "code": 682,
+    "en-gb": "Saudi arabia",
+    "cy": "Saudi Arabia"
+  },
+  {
+    "code": 686,
+    "en-gb": "Senegal",
+    "cy": "sénégal"
+  },
+  {
+    "code": 688,
+    "en-gb": "Serbia",
+    "cy": "Serbia"
+  },
+  {
+    "code": 974,
+    "en-gb": "Serbia and montenegro",
+    "cy": "Serbia a montenegro"
+  },
+  {
+    "code": 690,
+    "en-gb": "Seychelles",
+    "cy": "Seychelles"
+  },
+  {
+    "code": 694,
+    "en-gb": "Sierra leone",
+    "cy": "Sierra leone"
+  },
+  {
+    "code": 702,
+    "en-gb": "Singapore",
+    "cy": "Singapore"
+  },
+  {
+    "code": 534,
+    "en-gb": "Sint maarten (dutch part)",
+    "cy": "Maarten Sint (dutch ran)"
+  },
+  {
+    "code": 703,
+    "en-gb": "Slovakia",
+    "cy": "Slofacia"
+  },
+  {
+    "code": 705,
+    "en-gb": "Slovenia",
+    "cy": "slofenia"
+  },
+  {
+    "code": 90,
+    "en-gb": "Solomon islands",
+    "cy": "ynysoedd solomon"
+  },
+  {
+    "code": 706,
+    "en-gb": "Somalia",
+    "cy": "Somalia"
+  },
+  {
+    "code": 710,
+    "en-gb": "South africa",
+    "cy": "De Affrica"
+  },
+  {
+    "code": 239,
+    "en-gb": "South georgia and the south sandwich islands",
+    "cy": "De Georgia ac Ynysoedd Sandwich y De"
+  },
+  {
+    "code": 410,
+    "en-gb": "South korea",
+    "cy": "De Corea"
+  },
+  {
+    "code": 728,
+    "en-gb": "South sudan",
+    "cy": "South sudan"
+  },
+  {
+    "code": 901,
+    "en-gb": "Southern cyprus",
+    "cy": "cyprus Southern"
+  },
+  {
+    "code": 913,
+    "en-gb": "Spain",
+    "cy": "Sbaen"
+  },
+  {
+    "code": 144,
+    "en-gb": "Sri lanka",
+    "cy": "Sri Lanka"
+  },
+  {
+    "code": 652,
+    "en-gb": "St barthelemy",
+    "cy": "St barthelemy"
+  },
+  {
+    "code": 654,
+    "en-gb": "St helena",
+    "cy": "St Helena"
+  },
+  {
+    "code": 659,
+    "en-gb": "St kitts and nevis",
+    "cy": "Kitts St a Nevis"
+  },
+  {
+    "code": 662,
+    "en-gb": "St lucia",
+    "cy": "St Lucia"
+  },
+  {
+    "code": 663,
+    "en-gb": "St martin (french part)",
+    "cy": "St martin (french ran)"
+  },
+  {
+    "code": 666,
+    "en-gb": "St pierre and miquelon",
+    "cy": "St Pierre a Miquelon"
+  },
+  {
+    "code": 670,
+    "en-gb": "St vincent and the grenadines",
+    "cy": "St Vincent a'r Grenadines"
+  },
+  {
+    "code": 729,
+    "en-gb": "Sudan",
+    "cy": "Sudan"
+  },
+  {
+    "code": 740,
+    "en-gb": "Surinam",
+    "cy": "Swrinam"
+  },
+  {
+    "code": 744,
+    "en-gb": "Svalbard and jan mayen",
+    "cy": "Svalbard a Jan Mayen"
+  },
+  {
+    "code": 748,
+    "en-gb": "Swaziland",
+    "cy": "Swaziland"
+  },
+  {
+    "code": 752,
+    "en-gb": "Sweden",
+    "cy": "Sweden"
+  },
+  {
+    "code": 756,
+    "en-gb": "Switzerland",
+    "cy": "Y Swistir"
+  },
+  {
+    "code": 760,
+    "en-gb": "Syria",
+    "cy": "Syria"
+  },
+  {
+    "code": 158,
+    "en-gb": "Taiwan",
+    "cy": "Taiwan"
+  },
+  {
+    "code": 762,
+    "en-gb": "Tajikistan",
+    "cy": "Tajikistan"
+  },
+  {
+    "code": 834,
+    "en-gb": "Tanzania",
+    "cy": "Tanzania"
+  },
+  {
+    "code": 764,
+    "en-gb": "Thailand",
+    "cy": "thailand"
+  },
+  {
+    "code": 44,
+    "en-gb": "The bahamas",
+    "cy": "y bahamas"
+  },
+  {
+    "code": 626,
+    "en-gb": "Timor-leste",
+    "cy": "Timor-leste"
+  },
+  {
+    "code": 768,
+    "en-gb": "Togo",
+    "cy": "I fynd"
+  },
+  {
+    "code": 772,
+    "en-gb": "Tokelau",
+    "cy": "Tokelau"
+  },
+  {
+    "code": 776,
+    "en-gb": "Tonga",
+    "cy": "Tonga"
+  },
+  {
+    "code": 780,
+    "en-gb": "Trinidad and tobago",
+    "cy": "Trinidad a Tobago"
+  },
+  {
+    "code": 788,
+    "en-gb": "Tunisia",
+    "cy": "Tunisia"
+  },
+  {
+    "code": 792,
+    "en-gb": "Turkey",
+    "cy": "Twrci"
+  },
+  {
+    "code": 902,
+    "en-gb": "Turkish cyprus",
+    "cy": "cyprus Twrcaidd"
+  },
+  {
+    "code": 795,
+    "en-gb": "Turkmenistan",
+    "cy": "Turkmenistan"
+  },
+  {
+    "code": 796,
+    "en-gb": "Turks and caicos islands",
+    "cy": "Ynysoedd Turks a Caicos ynysoedd"
+  },
+  {
+    "code": 798,
+    "en-gb": "Tuvalu",
+    "cy": "Tuvalu"
+  },
+  {
+    "code": 800,
+    "en-gb": "Uganda",
+    "cy": "uganda"
+  },
+  {
+    "code": 804,
+    "en-gb": "Ukraine",
+    "cy": "Wcráin"
+  },
+  {
+    "code": 784,
+    "en-gb": "United arab emirates",
+    "cy": "Emiradau Arabaidd Unedig"
+  },
+  {
+    "code": 926,
+    "en-gb": "United kingdom",
+    "cy": "deyrnas unedig"
+  },
+  {
+    "code": 840,
+    "en-gb": "United states",
+    "cy": "Unol Daleithiau"
+  },
+  {
+    "code": 581,
+    "en-gb": "United states minor outlying islands",
+    "cy": "Dywed Unedig mân ynysoedd anghysbell"
+  },
+  {
+    "code": 850,
+    "en-gb": "United states virgin islands",
+    "cy": "Dywed Unedig ynysoedd forwyn"
+  },
+  {
+    "code": 858,
+    "en-gb": "Uruguay",
+    "cy": "Uruguay"
+  },
+  {
+    "code": 972,
+    "en-gb": "Ussr",
+    "cy": "Undeb Sofietaidd"
+  },
+  {
+    "code": 860,
+    "en-gb": "Uzbekistan",
+    "cy": "Uzbekistan"
+  },
+  {
+    "code": 548,
+    "en-gb": "Vanuatu",
+    "cy": "Vanuatu"
+  },
+  {
+    "code": 336,
+    "en-gb": "Vatican city",
+    "cy": "dinas Fatican"
+  },
+  {
+    "code": 862,
+    "en-gb": "Venezuela",
+    "cy": "venezuela"
+  },
+  {
+    "code": 704,
+    "en-gb": "Vietnam",
+    "cy": "Vietnam"
+  },
+  {
+    "code": 876,
+    "en-gb": "Wallis and futuna",
+    "cy": "Wallis a Futuna"
+  },
+  {
+    "code": 732,
+    "en-gb": "Western sahara",
+    "cy": "sahara Gorllewin"
+  },
+  {
+    "code": 887,
+    "en-gb": "Yemen",
+    "cy": "Yemen"
+  },
+  {
+    "code": 973,
+    "en-gb": "Yugoslavia",
+    "cy": "Iwgoslafia"
+  },
+  {
+    "code": 894,
+    "en-gb": "Zambia",
+    "cy": "Zambia"
+  },
+  {
+    "code": 716,
+    "en-gb": "Zimbabwe",
+    "cy": "Zimbabwe"
+  }
+]

@@ -3,14 +3,9 @@
     "schema_version": "0.0.1",
     "data_version": "0.0.3",
     "survey_id": "001",
-    "title": "Other input fields",
+    "title": "Textfield Typeahead",
     "theme": "default",
     "description": "A questionnaire to test textfields",
-    "messages": {
-        "NUMBER_TOO_LARGE": "Number is too large",
-        "NUMBER_TOO_SMALL": "Number cannot be less than zero",
-        "INVALID_NUMBER": "Please enter an integer"
-    },
     "metadata": [
         {
             "name": "user_id",
@@ -40,7 +35,7 @@
                                         "id": "country-answer",
                                         "label": "What is your country of birth?",
                                         "mandatory": false,
-                                        "url": "https://gist.githubusercontent.com/rmccar/c123023fa6bd1b137d7f960c3ffa1fed/raw/368a3ea741f72c62c735c319ff7e33e3c1bfdc53/country-of-birth.json",
+                                        "url": "/json/countries",
                                         "type": "TextField"
                                     }
                                 ],
