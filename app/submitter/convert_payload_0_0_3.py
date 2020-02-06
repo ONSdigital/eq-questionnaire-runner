@@ -34,28 +34,29 @@ def convert_answers_to_payload_0_0_3(
     """
     answers_payload = AnswerStore()
 
-    for location in full_routing_path:
+    for routing_path in full_routing_path:
+        for block_id in routing_path:
+            add_list_collector_answers(
+                answer_store, list_store, schema, block_id, answers_payload
+            )
 
-        add_list_collector_answers(
-            answer_store, list_store, schema, location, answers_payload
-        )
-
-        answer_ids = schema.get_answer_ids_for_block(location.block_id)
-        answers_in_block = answer_store.get_answers_by_answer_id(
-            answer_ids, list_item_id=location.list_item_id
-        )
-        for answer_in_block in answers_in_block:
-            answers_payload.add_or_update(answer_in_block)
+            answer_ids = schema.get_answer_ids_for_block(block_id)
+            answers_in_block = answer_store.get_answers_by_answer_id(
+                answer_ids, list_item_id=routing_path.list_item_id
+            )
+            for answer_in_block in answers_in_block:
+                answers_payload.add_or_update(answer_in_block)
 
     return list(answers_payload.answer_map.values())
 
 
 def add_list_collector_answers(
-    answer_store, list_store, schema, location, answers_payload
+    answer_store, list_store, schema, block_id, answers_payload
 ):
-    """ Add answers from list_collector for a specific location.
+    """ Add answers from list_collector for a specific block_id.
     Output is added to the `answers_payload` argument."""
-    list_collector_block = schema.get_block(location.block_id)
+
+    list_collector_block = schema.get_block(block_id)
     block_type = list_collector_block["type"]
 
     if schema.is_list_block_type(block_type) or schema.is_primary_person_block_type(

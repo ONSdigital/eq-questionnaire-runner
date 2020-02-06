@@ -113,7 +113,7 @@ class BlockHandler:
             collection_metadata["started_at"] = started_at
 
     def _get_routing_path(self):
-        return self.router.section_routing_path(
+        return self.router.routing_path(
             section_id=self._current_location.section_id,
             list_item_id=self._current_location.list_item_id,
         )

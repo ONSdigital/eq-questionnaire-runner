@@ -5,6 +5,7 @@ from app.data_model.list_store import ListStore
 from app.data_model.progress_store import ProgressStore, CompletionStatus
 from app.questionnaire.location import Location
 from app.questionnaire.router import Router
+from app.questionnaire.routing_path import RoutingPath
 from app.utilities.schema import load_schema_from_name
 from tests.app.app_context_test_case import AppContextTestCase
 
@@ -26,10 +27,10 @@ class TestRouter(AppContextTestCase):  # pylint: disable=too-many-public-methods
         )
 
         current_location = Location(section_id="default-section", block_id="name-block")
-        routing_path = [
-            Location(section_id="default-section", block_id="name-block"),
-            Location(section_id="default-section", block_id="summary"),
-        ]
+        routing_path = RoutingPath(
+            ["name-block", "summary"], section_id="default-section"
+        )
+
         can_access_location = router.can_access_location(current_location, routing_path)
 
         self.assertTrue(can_access_location)
@@ -110,15 +111,18 @@ class TestRouter(AppContextTestCase):  # pylint: disable=too-many-public-methods
         current_location = Location(
             section_id="default-section", block_id="set-duration-units-block"
         )
-        routing_path = [
-            Location(section_id="default-section", block_id="set-length-units-block"),
-            Location(section_id="default-section", block_id="set-duration-units-block"),
-            Location(section_id="default-section", block_id="set-area-units-block"),
-            Location(section_id="default-section", block_id="set-volume-units-block"),
-            Location(section_id="default-section", block_id="summary"),
-        ]
-        can_access_location = router.can_access_location(current_location, routing_path)
+        routing_path = RoutingPath(
+            [
+                "set-length-units-block",
+                "set-duration-units-block",
+                "set-area-units-block",
+                "set-volume-units-block",
+                "summary",
+            ],
+            section_id="default-section",
+        )
 
+        can_access_location = router.can_access_location(current_location, routing_path)
         self.assertFalse(can_access_location)
 
     def test_next_location_url(self):
@@ -139,10 +143,9 @@ class TestRouter(AppContextTestCase):  # pylint: disable=too-many-public-methods
         )
 
         current_location = Location(section_id="default-section", block_id="name-block")
-        routing_path = [
-            Location(section_id="default-section", block_id="name-block"),
-            Location(section_id="default-section", block_id="summary"),
-        ]
+        routing_path = RoutingPath(
+            ["name-block", "summary"], section_id="default-section"
+        )
         next_location = router.get_next_location_url(current_location, routing_path)
         expected_location = Location(
             section_id="default-section", block_id="summary"
@@ -162,10 +165,10 @@ class TestRouter(AppContextTestCase):  # pylint: disable=too-many-public-methods
         )
 
         current_location = Location(section_id="default-section", block_id="summary")
-        routing_path = [
-            Location(section_id="default-section", block_id="name-block"),
-            Location(section_id="default-section", block_id="summary"),
-        ]
+
+        routing_path = RoutingPath(
+            ["name-block", "summary"], section_id="default-section"
+        )
         previous_location_url = router.get_previous_location_url(
             current_location, routing_path
         )
@@ -189,10 +192,9 @@ class TestRouter(AppContextTestCase):  # pylint: disable=too-many-public-methods
         current_location = Location(
             section_id="employment-section", block_id="employment-status"
         )
-        routing_path = [
-            Location(section_id="employment-section", block_id="employment-status"),
-            Location(section_id="employment-section", block_id="employment-type"),
-        ]
+        routing_path = RoutingPath(
+            ["employment-status", "employment-status"], section_id="employment-section"
+        )
         previous_location_url = router.get_previous_location_url(
             current_location, routing_path
         )
@@ -217,7 +219,7 @@ class TestRouter(AppContextTestCase):  # pylint: disable=too-many-public-methods
             schema, self.answer_store, self.list_store, progress_store, self.metadata
         )
 
-        routing_path = router.section_routing_path(section_id="default-section")
+        routing_path = router.routing_path(section_id="default-section")
 
         is_path_complete = router.is_path_complete(routing_path)
 
@@ -234,7 +236,7 @@ class TestRouter(AppContextTestCase):  # pylint: disable=too-many-public-methods
             self.metadata,
         )
 
-        routing_path = router.section_routing_path(section_id="default-section")
+        routing_path = router.routing_path(section_id="default-section")
 
         is_path_complete = router.is_path_complete(routing_path)
 
@@ -401,15 +403,13 @@ class TestRouter(AppContextTestCase):  # pylint: disable=too-many-public-methods
             schema, self.answer_store, self.list_store, progress_store, self.metadata
         )
 
-        section_routing_path = [
-            Location(section_id="property-details-section", block_id="insurance-type"),
-            Location(
-                section_id="property-details-section", block_id="insurance-address"
-            ),
-        ]
+        section_routing_path = RoutingPath(
+            ["insurance-type", "insurance-address"],
+            section_id="property-details-section",
+        )
 
         incomplete = router.get_first_incomplete_location_for_section(
-            routing_path=section_routing_path, section_id="property-details-section"
+            routing_path=section_routing_path
         )
 
         self.assertEqual(
@@ -432,14 +432,10 @@ class TestRouter(AppContextTestCase):  # pylint: disable=too-many-public-methods
             self.metadata,
         )
 
-        routing_path = [
-            Location(section_id="household-section", block_id="does-anyone-live-here"),
-            Location(section_id="household-section", block_id="household-summary"),
-            Location(
-                section_id="who-lives-here-section",
-                block_id="how-many-people-live-here",
-            ),
-        ]
+        routing_path = RoutingPath(
+            ["does-anyone-live-here", "household-summary", "how-many-people-live-here"],
+            section_id="household-section",
+        )
 
         location_when_section_complete = router.get_section_return_location_when_section_complete(
             routing_path=routing_path
@@ -463,9 +459,9 @@ class TestRouter(AppContextTestCase):  # pylint: disable=too-many-public-methods
             self.metadata,
         )
 
-        routing_path = [Location(section_id="accommodation-section", block_id="proxy")]
+        full_routing_path = [RoutingPath(["proxy"], section_id="accommodation-section")]
         location_when_section_complete = router.get_section_return_location_when_section_complete(
-            routing_path=routing_path
+            routing_path=full_routing_path
         )
         self.assertEqual(
             location_when_section_complete,
@@ -486,10 +482,9 @@ class TestRouter(AppContextTestCase):  # pylint: disable=too-many-public-methods
             self.metadata,
         )
 
-        routing_path = [
-            Location(section_id="employment-section", block_id="employment-status"),
-            Location(section_id="employment-section", block_id="employment-type"),
-        ]
+        routing_path = RoutingPath(
+            ["employment-status", "employment-type"], section_id="employment-section"
+        )
 
         location_when_section_complete = router.get_section_return_location_when_section_complete(
             routing_path=routing_path
@@ -516,13 +511,10 @@ class TestRouter(AppContextTestCase):  # pylint: disable=too-many-public-methods
             schema, self.answer_store, self.list_store, progress_store, self.metadata
         )
 
-        routing_path = [
-            Location(section_id="household-section", block_id="does-anyone-live-here"),
-            Location(section_id="household-section", block_id="household-summary"),
-            Location(
-                section_id="household-section", block_id="how-many-people-live-here"
-            ),
-        ]
+        routing_path = RoutingPath(
+            ["does-anyone-live-here", "household-summary", "how-many-people-live-here"],
+            section_id="household-section",
+        )
 
         with self.app_request_context("/questionnaire"):
             current_location = Location(
@@ -549,13 +541,10 @@ class TestRouter(AppContextTestCase):  # pylint: disable=too-many-public-methods
             schema, self.answer_store, self.list_store, progress_store, self.metadata
         )
 
-        routing_path = [
-            Location(section_id="household-section", block_id="does-anyone-live-here"),
-            Location(section_id="household-section", block_id="household-summary"),
-            Location(
-                section_id="household-section", block_id="how-many-people-live-here"
-            ),
-        ]
+        routing_path = RoutingPath(
+            ["does-anyone-live-here", "household-summary", "how-many-people-live-here"],
+            section_id="household-section",
+        )
 
         with self.app_request_context("/questionnaire"):
             current_location = Location(
@@ -609,24 +598,10 @@ class TestRouter(AppContextTestCase):  # pylint: disable=too-many-public-methods
         routing_path = router.full_routing_path()
 
         expected_path = [
-            Location(
+            RoutingPath(
+                ["mandatory-checkbox", "non-mandatory-checkbox", "summary"],
                 section_id="default-section",
-                block_id="mandatory-checkbox",
-                list_name=None,
-                list_item_id=None,
-            ),
-            Location(
-                section_id="default-section",
-                block_id="non-mandatory-checkbox",
-                list_name=None,
-                list_item_id=None,
-            ),
-            Location(
-                section_id="default-section",
-                block_id="summary",
-                list_name=None,
-                list_item_id=None,
-            ),
+            )
         ]
 
         self.assertEqual(routing_path, expected_path)
@@ -651,93 +626,27 @@ class TestRouter(AppContextTestCase):  # pylint: disable=too-many-public-methods
         routing_path = router.full_routing_path()
 
         expected_path = [
-            Location(
+            RoutingPath(
+                [
+                    "primary-person-list-collector",
+                    "list-collector",
+                    "next-interstitial",
+                    "another-list-collector-block",
+                    "visitors-block",
+                ],
                 section_id="section",
-                block_id="primary-person-list-collector",
                 list_name=None,
                 list_item_id=None,
             ),
-            Location(
-                section_id="section",
-                block_id="list-collector",
-                list_name=None,
-                list_item_id=None,
-            ),
-            Location(
-                section_id="section",
-                block_id="next-interstitial",
-                list_name=None,
-                list_item_id=None,
-            ),
-            Location(
-                section_id="section",
-                block_id="another-list-collector-block",
-                list_name=None,
-                list_item_id=None,
-            ),
-            Location(
-                section_id="section",
-                block_id="visitors-block",
-                list_name=None,
-                list_item_id=None,
-            ),
-            Location(
+            RoutingPath(
+                ["proxy", "date-of-birth", "confirm-dob", "sex", "personal-summary"],
                 section_id="personal-details-section",
-                block_id="proxy",
                 list_name="people",
                 list_item_id="abc123",
             ),
-            Location(
+            RoutingPath(
+                ["proxy", "date-of-birth", "confirm-dob", "sex", "personal-summary"],
                 section_id="personal-details-section",
-                block_id="date-of-birth",
-                list_name="people",
-                list_item_id="abc123",
-            ),
-            Location(
-                section_id="personal-details-section",
-                block_id="confirm-dob",
-                list_name="people",
-                list_item_id="abc123",
-            ),
-            Location(
-                section_id="personal-details-section",
-                block_id="sex",
-                list_name="people",
-                list_item_id="abc123",
-            ),
-            Location(
-                section_id="personal-details-section",
-                block_id="personal-summary",
-                list_name="people",
-                list_item_id="abc123",
-            ),
-            Location(
-                section_id="personal-details-section",
-                block_id="proxy",
-                list_name="people",
-                list_item_id="123abc",
-            ),
-            Location(
-                section_id="personal-details-section",
-                block_id="date-of-birth",
-                list_name="people",
-                list_item_id="123abc",
-            ),
-            Location(
-                section_id="personal-details-section",
-                block_id="confirm-dob",
-                list_name="people",
-                list_item_id="123abc",
-            ),
-            Location(
-                section_id="personal-details-section",
-                block_id="sex",
-                list_name="people",
-                list_item_id="123abc",
-            ),
-            Location(
-                section_id="personal-details-section",
-                block_id="personal-summary",
                 list_name="people",
                 list_item_id="123abc",
             ),
