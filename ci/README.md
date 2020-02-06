@@ -42,12 +42,12 @@ The following environment variables must be set when deploying the app.
 | TARGET_CPU_UTILIZATION_PERCENTAGE         | The average CPU utilization usage before auto scaling applies                        |
 | PROJECT_ID                                | The ID of the GCP target project                                                     |
 | SUBMISSION_BUCKET_NAME                    | The name of the bucket that submissions will be stored in                            |
+| DOCKER_REGISTRY                           | The FQDN of the target Docker registry                                               |
 
 There are further *optional* environment variables that can also be set if needed:
 
 | Variable Name                             | Default                | Description                                                                          |
 |-------------------------------------------|------------------------|--------------------------------------------------------------------------------------|
-| DOCKER_REGISTRY                           | eu.gcr.io/census-eq-ci |                                                                                      |
 | IMAGE_TAG                                 | latest                 |                                                                                      |
 | GOOGLE_TAG_MANAGER_ID                     |                        |                                                                                      |
 | GOOGLE_TAG_MANAGER_AUTH                   |                        |                                                                                      |
