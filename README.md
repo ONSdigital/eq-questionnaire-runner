@@ -93,7 +93,7 @@ make dev-compose-up-linux
 https://github.com/ONSDigital/eq-questionnaire-launcher
 
 ```
-docker run -e SURVEY_RUNNER_SCHEMA_URL=http://docker.for.mac.host.internal:5000 -it -p 8000:8000 eu.gcr.io/census-eq-ci/eq-questionnaire-launcher:latest
+docker run -e SURVEY_RUNNER_SCHEMA_URL=http://docker.for.mac.host.internal:5000 -it -p 8000:8000 <docker-registry>/eq-questionnaire-launcher:latest
 ```
 
 ##### Storage backend
@@ -267,7 +267,7 @@ To deploy the app to the cluster, run the following command:
 For example:
 
 ```
-SUBMISSION_BUCKET_NAME=census-eq-dev-1234567-survey-runner-submission ./k8s/deploy_app.sh
+SUBMISSION_BUCKET_NAME=project-id-survey-runner-submission ./k8s/deploy_app.sh
 ```
 ---
 

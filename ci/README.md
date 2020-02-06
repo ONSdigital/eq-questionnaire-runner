@@ -16,18 +16,6 @@ fly -t <target-concourse> execute \
   --input eq-questionnaire-runner-repo=.
 ```
 
-For example:
-
-```sh
-EQ_KEYS_FILE=dev-keys.yml \
-EQ_SECRETS_FILE=dev-secrets.yml \
-PROJECT_ID=my-project-id \
-REGION=europe-west2 \
-fly -t census-eq execute \
-  --config ci/deploy_credentials.yaml \
-  --input eq-questionnaire-runner-repo=.
-```
-
 ## Deploying the app
 
 The following environment variables must be set when deploying the app.
@@ -57,14 +45,6 @@ To deploy the app to the cluster via concourse, use the following task command:
 
 ```sh
 fly -t <target-concourse> execute \
-  --config ci/deploy_app.yaml \
-  --input eq-questionnaire-runner-repo=.
-```
-
-For example:
-
-```sh
-fly -t census-eq execute \
   --config ci/deploy_app.yaml \
   --input eq-questionnaire-runner-repo=.
 ```
