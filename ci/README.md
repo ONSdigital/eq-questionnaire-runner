@@ -30,7 +30,7 @@ fly -t census-eq execute \
 
 ## Deploying the app
 
-The following environment variables should be set when deploying the app.
+The following environment variables must be set when deploying the app.
 
 | Variable Name                             | Description                                                                          |
 |-------------------------------------------|--------------------------------------------------------------------------------------|
