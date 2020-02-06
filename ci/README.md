@@ -43,7 +43,7 @@ The following environment variables should be set when deploying the app.
 | PROJECT_ID                                | The ID of the GCP target project                                                     |
 | SUBMISSION_BUCKET_NAME                    | The name of the bucket that submissions will be stored in                            |
 
-There are further *optional* environment variables that can also be set if neded:
+There are further *optional* environment variables that can also be set if needed:
 
 | Variable Name                             | Default                | Description                                                                          |
 |-------------------------------------------|------------------------|--------------------------------------------------------------------------------------|
