@@ -244,30 +244,27 @@ EQ_KEYS_FILE=dev-keys.yml EQ_SECRETS_FILE=dev-secrets.yml ./k8s/deploy_credentia
 
 ### Deploying the app
 
-The following environment variables can be set when deploying the app.
+The following environment variables should be set when deploying the app.
+- PROJECT_ID
 - SUBMISSION_BUCKET_NAME
+- REQUESTED_CPU_PER_POD - No. of CPUs to request per Pod
+- MIN_REPLICAS - Minimum no. of replicated Pods
+- MAX_REPLICAS - Maximum no. of replicated Pods
+
+The following environment variables are optional:
 - DOCKER_REGISTRY *(optional)*
 - IMAGE_TAG *(optional)*
 - GOOGLE_TAG_MANAGER_ID *(optional)*
 - GOOGLE_TAG_MANAGER_AUTH *(optional)*
 - GOOGLE_TAG_MANAGER_PREVIEW *(optional)*
-- REQUESTED_CPU_PER_POD *(optional)* - No. of CPUs to request per Pod
 - ROLLING_UPDATE_MAX_UNAVAILABLE *(optional)* - Specifies the maximum number of Pods that can be unavailable during the update process.
 - ROLLING_UPDATE_MAX_SURGE *(optional)* - Specifies the maximum number of Pods that can be created over the desired number of Pods.
-- MIN_REPLICAS *(optional)* - Minimum no. of replicated Pods
-- MAX_REPLICAS *(optional)* - Maximum no. of replicated Pods
 - TARGET_CPU_UTILIZATION_PERCENTAGE *(optional)* - The average CPU utilization usage before auto scaling applies
 
 To deploy the app to the cluster, run the following command:
 
 ```
 ./k8s/deploy_app.sh
-```
-
-For example:
-
-```
-SUBMISSION_BUCKET_NAME=project-id-survey-runner-submission ./k8s/deploy_app.sh
 ```
 ---
 

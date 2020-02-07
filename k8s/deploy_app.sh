@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-set -euxo pipefail
+set -e
 
 if [[ -z "$SUBMISSION_BUCKET_NAME" ]]; then
   echo "SUBMISSION_BUCKET_NAME is mandatory"
