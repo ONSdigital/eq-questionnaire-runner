@@ -19,7 +19,7 @@
   "error": error
 } %}
 
-{% if answer.url %}
+{% if answer.suggestions_url %}
   {% set config = config | setAttribute("typeahead", {
     "instructions": _("Use up and down keys to navigate suggestions once you\'ve typed more than two characters. Use the enter key to select a suggestion. Touch device users, explore by touch or with swipe gestures."),
     "ariaYouHaveSelected": _("You have selected"),
@@ -30,7 +30,7 @@
     "moreResults": _("Continue entering to improve suggestions"),
     "resultsTitle": _("Suggestions"),
     "noResults": _("No results found"),
-    "typeaheadData": answer.url
+    "typeaheadData": answer.suggestions_url
   }) %}
 {% endif %}
 
