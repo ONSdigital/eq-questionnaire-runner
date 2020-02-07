@@ -13,7 +13,6 @@ PROJECT_ID=<project_id> \
 REGION=<cluster_region> \
 fly -t <target-concourse> execute \
   --config ci/deploy_credentials.yaml \
-  --input eq-questionnaire-runner-repo=.
 ```
 
 ## Deploying the app

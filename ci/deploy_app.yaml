@@ -8,9 +8,9 @@ inputs:
 params:
   GOOGLE_APPLICATION_CREDENTIALS: '/root/gcloud-service-key.json'
   SERVICE_ACCOUNT_JSON: ((gcp.service_account_json))
-  IMAGE_TAG: 'latest'
   REGION: 'europe-west2'
   DOCKER_REGISTRY:
+  IMAGE_TAG:
   REQUESTED_CPU_PER_POD:
   ROLLING_UPDATE_MAX_UNAVAILABLE:
   ROLLING_UPDATE_MAX_SURGE:

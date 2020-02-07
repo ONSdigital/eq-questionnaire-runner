@@ -93,7 +93,7 @@ make dev-compose-up-linux
 https://github.com/ONSDigital/eq-questionnaire-launcher
 
 ```
-docker run -e SURVEY_RUNNER_SCHEMA_URL=http://docker.for.mac.host.internal:5000 -it -p 8000:8000 <docker-registry>/eq-questionnaire-launcher:latest
+docker run -e SURVEY_RUNNER_SCHEMA_URL=http://docker.for.mac.host.internal:5000 -it -p 8000:8000 onsdigital/eq-questionnaire-launcher:latest
 ```
 
 ##### Storage backend
@@ -244,7 +244,7 @@ EQ_KEYS_FILE=dev-keys.yml EQ_SECRETS_FILE=dev-secrets.yml ./k8s/deploy_credentia
 
 ### Deploying the app
 
-The following environment variables should be set when deploying the app.
+The following environment variables must be set when deploying the app.
 
 | Variable Name                             | Description                                                                          |
 |-------------------------------------------|--------------------------------------------------------------------------------------|
