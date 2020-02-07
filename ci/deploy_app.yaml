@@ -4,7 +4,7 @@ image_resource:
   source:
     repository: theorf/google-cloud-sdk-helm
 inputs:
-  - name: eq-questionnaire-runner-repo
+  - name: eq-questionnaire-runner
 params:
   GOOGLE_APPLICATION_CREDENTIALS: '/root/gcloud-service-key.json'
   SERVICE_ACCOUNT_JSON: ((gcp.service_account_json))
