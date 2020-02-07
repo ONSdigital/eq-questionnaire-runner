@@ -9,3 +9,7 @@ class TestStatic(IntegrationTestCase):
     def test_accessibility(self):
         self.get("/accessibility")
         self.assertInBody("How accessible is this questionnaire?")
+
+    def test_countries(self):
+        self.get("/json/countries")
+        assert self.getResponseData() is not {}
