@@ -18,7 +18,7 @@ fly -t <target-concourse> execute \
 
 ## Deploying the app
 
-In addition to the environment variables specified in [Deploying](../README.md#Deploying), when deploying with concourse the following must also be set.
+In addition to the environment variables specified in [Deploying the app](../README.md#deploying-the-app), when deploying with concourse the following must also be set.
 
 | Variable Name                             | Description                                                                          |
 |-------------------------------------------|--------------------------------------------------------------------------------------|
