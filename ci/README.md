@@ -18,33 +18,17 @@ fly -t <target-concourse> execute \
 
 ## Deploying the app
 
-The following environment variables must be set when deploying the app.
+In addition to the environment variables specified in [Deploying](../README.md#Deploying), when deploying with concourse the following must also be set.
 
 | Variable Name                             | Description                                                                          |
 |-------------------------------------------|--------------------------------------------------------------------------------------|
-| REQUESTED_CPU_PER_POD                     | No. of CPUs to request per Pod                                                       |
-| ROLLING_UPDATE_MAX_UNAVAILABLE            | The maximum number of Pods that can be unavailable during the update process.        |
-| ROLLING_UPDATE_MAX_SURGE                  | The maximum number of Pods that can be created over the desired number of Pods.      |
-| MIN_REPLICAS                              | Minimum no. of replicated Pods                                                       |
-| MAX_REPLICAS                              | Maximum no. of replicated Pods                                                       |
-| TARGET_CPU_UTILIZATION_PERCENTAGE         | The average CPU utilization usage before auto scaling applies                        |
 | PROJECT_ID                                | The ID of the GCP target project                                                     |
-| SUBMISSION_BUCKET_NAME                    | The name of the bucket that submissions will be stored in                            |
-| DOCKER_REGISTRY                           | The FQDN of the target Docker registry                                               |
+| REGION                                    | What region to authenticate against                                                  |
 
-There are further *optional* environment variables that can also be set if needed:
-
-| Variable Name                             | Default                | Description                                                                          |
-|-------------------------------------------|------------------------|--------------------------------------------------------------------------------------|
-| IMAGE_TAG                                 | latest                 |                                                                                      |
-| GOOGLE_TAG_MANAGER_ID                     |                        |                                                                                      |
-| GOOGLE_TAG_MANAGER_AUTH                   |                        |                                                                                      |
-| GOOGLE_TAG_MANAGER_PREVIEW                |                        |                                                                                      |
 
 To deploy the app to the cluster via concourse, use the following task command:
 
 ```sh
 fly -t <target-concourse> execute \
   --config ci/deploy_app.yaml \
-  --input eq-questionnaire-runner-repo=.
 ```

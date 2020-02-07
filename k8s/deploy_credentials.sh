@@ -11,8 +11,6 @@ if [[ -z "$EQ_SECRETS_FILE" ]]; then
   exit 1
 fi
 
-gcloud container clusters get-credentials survey-runner --region "${REGION}" --project "${PROJECT_ID}"
-
 kubectl create secret generic keys \
     --from-file=keys.yml=${EQ_KEYS_FILE} \
     --dry-run -o yaml | kubectl apply -f -
