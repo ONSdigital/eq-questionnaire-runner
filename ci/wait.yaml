@@ -4,7 +4,7 @@ image_resource:
   source:
     repository: alpine
 inputs:
-  - name: eq-questionnaire-runner-repo
+  - name: eq-questionnaire-runner
 params:
   RUNNER_FQDN:
 run:
@@ -12,5 +12,5 @@ run:
   args:
     - -exc
     - |
-      survey_runner_version=$(cat eq-questionnaire-runner-repo/.git/HEAD | xargs echo -n)
+      survey_runner_version=$(cat eq-questionnaire-runner/.git/HEAD | xargs echo -n)
       until wget -qO- https://${RUNNER_FQDN}/status 2>&1 | grep $survey_runner_version; do sleep 5; done
