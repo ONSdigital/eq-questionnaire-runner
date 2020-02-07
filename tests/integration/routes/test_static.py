@@ -12,4 +12,4 @@ class TestStatic(IntegrationTestCase):
 
     def test_countries(self):
         self.get("/json/countries")
-        assert self.getResponseData() is not {}
+        assert self.getResponseData() != {}
