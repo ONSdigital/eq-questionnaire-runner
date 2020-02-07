@@ -38,8 +38,8 @@ run:
 
       gcloud container clusters get-credentials survey-runner --region "${REGION}" --project "${PROJECT_ID}"
 
-      helm2 init --client-only
-      helm2 plugin install https://github.com/rimusz/helm-tiller
+      helm init --client-only
+      helm  plugin install https://github.com/rimusz/helm-tiller
 
       cd eq-questionnaire-runner
       ./k8s/deploy_app.sh
