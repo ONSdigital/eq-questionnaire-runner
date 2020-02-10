@@ -1,6 +1,7 @@
 from unittest.mock import Mock, patch
 
 from app.data_model.answer_store import AnswerStore
+from app.data_model.list_store import ListStore
 from app.questionnaire.placeholder_renderer import (
     PlaceholderRenderer,
     find_pointers_containing,
@@ -202,3 +203,82 @@ class TestPlaceholderRenderer(AppContextTestCase):
         with self.assertRaises(ValueError):
             dict_to_render = {"invalid": {"no": "placeholders", "in": "this"}}
             renderer.render_pointer(dict_to_render, "/invalid", list_item_id=None)
+
+
+def test_renders_text_plural_from_answers():
+    answer_store = AnswerStore([{"answer_id": "number-of-people", "value": 1}])
+    renderer = PlaceholderRenderer(
+        language="en", answer_store=answer_store, schema=Mock()
+    )
+
+    rendered_text = renderer.render_placeholder(
+        {
+            "text_plural": {
+                "forms": {
+                    "one": "Yes, {number_of_people} person lives here",
+                    "other": "Yes, {number_of_people} people live here",
+                },
+                "count": {"source": "answers", "identifier": "number-of-people"},
+            },
+            "placeholders": [
+                {
+                    "placeholder": "number_of_people",
+                    "value": {"source": "answers", "identifier": "number-of-people"},
+                }
+            ],
+        },
+        None,
+    )
+
+    assert rendered_text == "Yes, 1 person lives here"
+
+
+def test_renders_text_plural_from_list():
+    renderer = PlaceholderRenderer(language="en", list_store=ListStore(), schema=Mock())
+
+    rendered_text = renderer.render_placeholder(
+        {
+            "text_plural": {
+                "forms": {
+                    "one": "Yes, {number_of_people} person lives here",
+                    "other": "Yes, {number_of_people} people live here",
+                },
+                "count": {"source": "list", "identifier": "household"},
+            },
+            "placeholders": [
+                {
+                    "placeholder": "number_of_people",
+                    "value": {"source": "list", "identifier": "household"},
+                }
+            ],
+        },
+        None,
+    )
+
+    assert rendered_text == "Yes, 0 people live here"
+
+
+def test_renders_text_plural_from_metadata():
+    metadata = {"some_value": 100}
+    renderer = PlaceholderRenderer(language="en", metadata=metadata, schema=Mock())
+
+    rendered_text = renderer.render_placeholder(
+        {
+            "text_plural": {
+                "forms": {
+                    "one": "Yes, {number_of_people} person lives here",
+                    "other": "Yes, {number_of_people} people live here",
+                },
+                "count": {"source": "metadata", "identifier": "some_value"},
+            },
+            "placeholders": [
+                {
+                    "placeholder": "number_of_people",
+                    "value": {"source": "metadata", "identifier": "some_value"},
+                }
+            ],
+        },
+        None,
+    )
+
+    assert rendered_text == "Yes, 100 people live here"

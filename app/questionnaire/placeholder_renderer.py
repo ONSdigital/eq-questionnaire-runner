@@ -5,31 +5,8 @@ from jsonpointer import set_pointer, resolve_pointer
 from app.data_model.answer_store import AnswerStore
 from app.questionnaire.placeholder_parser import PlaceholderParser
 
-
-def find_pointers_containing(input_data, search_key, pointer=None):
-    """
-    Recursive function which lists pointers which contain a search key
-
-    :param input_data: the input data to search
-    :param search_key: the key to search for
-    :param pointer: the key to search for
-    :return: generator of the json pointer paths
-    """
-    if isinstance(input_data, dict):
-        if search_key in input_data:
-            yield pointer or ""
-        for k, v in input_data.items():
-            if isinstance(v, dict) and search_key in v:
-                yield pointer + "/" + k if pointer else "/" + k
-            else:
-                yield from find_pointers_containing(
-                    v, search_key, pointer + "/" + k if pointer else "/" + k
-                )
-    elif isinstance(input_data, list):
-        for index, item in enumerate(input_data):
-            yield from find_pointers_containing(
-                item, search_key, "{}/{}".format(pointer, index)
-            )
+from app.questionnaire.plural_forms import get_plural_form_key
+from app.questionnaire.schema_utils import find_pointers_containing
 
 
 class PlaceholderRenderer:
@@ -39,11 +16,18 @@ class PlaceholderRenderer:
     """
 
     def __init__(
-        self, language, schema, answer_store=None, metadata=None, location=None
+        self,
+        language,
+        schema,
+        answer_store=None,
+        list_store=None,
+        metadata=None,
+        location=None,
     ):
         self._language = language
         self._schema = schema
         self._answer_store = answer_store or AnswerStore()
+        self._list_store = list_store
         self._metadata = metadata
         self._location = location
 
@@ -51,6 +35,16 @@ class PlaceholderRenderer:
         pointer_data = resolve_pointer(dict_to_render, pointer_to_render)
 
         return self.render_placeholder(pointer_data, list_item_id)
+
+    def get_plural_count(self, schema_partial):
+        source = schema_partial["source"]
+        source_id = schema_partial["identifier"]
+
+        if source == "answers":
+            return self._answer_store.get_answer(source_id).value
+        if source == "list":
+            return len(self._list_store[source_id].items)
+        return self._metadata[source_id]
 
     def render_placeholder(self, placeholder_data, list_item_id):
         placeholder_parser = PlaceholderParser(
@@ -60,9 +54,17 @@ class PlaceholderRenderer:
             metadata=self._metadata,
             list_item_id=list_item_id,
             location=self._location,
+            list_store=self._list_store,
         )
 
-        if "text" not in placeholder_data or "placeholders" not in placeholder_data:
+        if "text_plural" in placeholder_data:
+            plural_schema = placeholder_data["text_plural"]
+            count = self.get_plural_count(plural_schema["count"])
+
+            plural_form_key = get_plural_form_key(count, self._language)
+            placeholder_data["text"] = plural_schema["forms"][plural_form_key]
+
+        if "text" not in placeholder_data and "placeholders" not in placeholder_data:
             raise ValueError("No placeholder found to render")
 
         transformed_values = placeholder_parser(placeholder_data["placeholders"])
