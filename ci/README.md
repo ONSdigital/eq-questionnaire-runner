@@ -12,7 +12,7 @@ EQ_SECRETS_FILE=<path_to_secrets_file> \
 PROJECT_ID=<project_id> \
 REGION=<cluster_region> \
 fly -t <target-concourse> execute \
-  --config ci/deploy_credentials.yaml \
+  --config ci/deploy_credentials.yaml
 ```
 
 ## Deploying the app
