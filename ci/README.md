@@ -28,5 +28,5 @@ To deploy the app to the cluster via concourse, use the following task command:
 
 ```sh
 fly -t <target-concourse> execute \
-  --config ci/deploy_app.yaml \
+  --config ci/deploy_app.yaml
 ```
