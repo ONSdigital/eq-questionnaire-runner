@@ -150,7 +150,7 @@ jobs:
             printf $SHA > .application-version
         - name: Build
           run: >
-            docker build -t onsdigital/eq-questionnaire-runner:$TAG -t eu.gcr.io/census-eq-ci/eq-questionnaire-runner:$TAG
+            docker build -t onsdigital/eq-questionnaire-runner:$TAG -t ${{ secrets.GCR_NAME }}/eq-questionnaire-runner:$TAG
             -t eu.gcr.io/census-eq-ci/eq-questionnaire-runner:$SHA .
         - name: Push to DockerHub
           run: |
@@ -161,5 +161,5 @@ jobs:
           run: |
             echo ${{ secrets.DOCKER_GCR_PASSWORD }} | base64 --decode | docker login --username ${{ secrets.DOCKER_GCR_USERNAME }} --password-stdin https://eu.gcr.io
             echo "Pushing to GCR with tags [$TAG, $SHA]"
-            docker push eu.gcr.io/census-eq-ci/eq-questionnaire-runner
+            docker push ${{ secrets.GCR_NAME}}/eq-questionnaire-runner
 
