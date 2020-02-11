@@ -90,18 +90,14 @@ class PlaceholderTransforms:
         if time.years:
             if time.years == 1:
                 return f'{time.years} {lazy_gettext("year")}'
-            else:
-                return f'{time.years} {lazy_gettext("years")}'
-        elif time.months:
+            return f'{time.years} {lazy_gettext("years")}'
+        if time.months:
             if time.months == 1:
                 return f'{time.months} {lazy_gettext("month")}'
-            else:
-                return f'{time.months} {lazy_gettext("months")}'
-        else:
-            if time.days == 1:
-                return f'{time.days} {lazy_gettext("day")}'
-            else:
-                return f'{time.days} {lazy_gettext("days")}'
+            return f'{time.months} {lazy_gettext("months")}'
+        if time.days == 1:
+            return f'{time.days} {lazy_gettext("day")}'
+        return f'{time.days} {lazy_gettext("days")}'
 
     @staticmethod
     def parse_date(date):
