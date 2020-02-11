@@ -4,6 +4,7 @@ from babel.numbers import format_currency, format_decimal
 from babel.dates import format_datetime
 from dateutil.relativedelta import relativedelta
 from dateutil.tz import tzutc
+from flask_babel import lazy_gettext
 
 from app.settings import DEFAULT_LOCALE
 
@@ -80,13 +81,27 @@ class PlaceholderTransforms:
         return ""
 
     @staticmethod
-    def calculate_years_difference(first_date, second_date):
-        return str(
-            relativedelta(
-                PlaceholderTransforms.parse_date(second_date),
-                PlaceholderTransforms.parse_date(first_date),
-            ).years
+    def calculate_difference(first_date, second_date):
+        time = relativedelta(
+            PlaceholderTransforms.parse_date(second_date),
+            PlaceholderTransforms.parse_date(first_date),
         )
+
+        if time.years:
+            if time.years == 1:
+                return f'{time.years} {lazy_gettext("year")}'
+            else:
+                return f'{time.years} {lazy_gettext("years")}'
+        elif time.months:
+            if time.months == 1:
+                return f'{time.months} {lazy_gettext("month")}'
+            else:
+                return f'{time.months} {lazy_gettext("months")}'
+        else:
+            if time.days == 1:
+                return f'{time.days} {lazy_gettext("day")}'
+            else:
+                return f'{time.days} {lazy_gettext("days")}'
 
     @staticmethod
     def parse_date(date):
