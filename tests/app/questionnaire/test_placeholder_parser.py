@@ -215,10 +215,10 @@ def test_multiple_metadata_list_transform_placeholder():
 def test_mixed_transform_placeholder():
     placeholder_list = [
         {
-            "placeholder": "age_in_years",
+            "placeholder": "age",
             "transforms": [
                 {
-                    "transform": "calculate_years_difference",
+                    "transform": "calculate_difference",
                     "arguments": {
                         "first_date": {
                             "source": "answers",
@@ -243,16 +243,16 @@ def test_mixed_transform_placeholder():
     )
     placeholders = parser(placeholder_list)
 
-    assert placeholders["age_in_years"] == "20"
+    assert placeholders["age"] == "20 years"
 
 
 def test_mixed_transform_placeholder_value():
     placeholder_list = [
         {
-            "placeholder": "age_in_years",
+            "placeholder": "age",
             "transforms": [
                 {
-                    "transform": "calculate_years_difference",
+                    "transform": "calculate_difference",
                     "arguments": {
                         "first_date": {
                             "source": "answers",
@@ -273,7 +273,7 @@ def test_mixed_transform_placeholder_value():
     )
     placeholders = parser(placeholder_list)
 
-    assert placeholders["age_in_years"] == "20"
+    assert placeholders["age"] == "20 years"
 
 
 def test_chain_transform_placeholder():
