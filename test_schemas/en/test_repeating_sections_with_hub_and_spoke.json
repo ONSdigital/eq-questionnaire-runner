@@ -683,7 +683,7 @@
                                                         "label": {
                                                             "placeholders": [
                                                                 {
-                                                                    "placeholder": "age_in_years",
+                                                                    "placeholder": "age",
                                                                     "transforms": [
                                                                         {
                                                                             "arguments": {
@@ -695,14 +695,14 @@
                                                                                     "value": "now"
                                                                                 }
                                                                             },
-                                                                            "transform": "calculate_years_difference"
+                                                                            "transform": "calculate_difference"
                                                                         }
                                                                     ]
                                                                 }
                                                             ],
-                                                            "text": "Yes, I am {age_in_years} years old"
+                                                            "text": "Yes, I am {age} old"
                                                         },
-                                                        "value": "Yes, I am {age_in_years} years old"
+                                                        "value": "Yes, I am {age} old"
                                                     },
                                                     {
                                                         "label": "No, I need to change my date of birth",
@@ -716,7 +716,7 @@
                                         "title": {
                                             "placeholders": [
                                                 {
-                                                    "placeholder": "age_in_years",
+                                                    "placeholder": "age",
                                                     "transforms": [
                                                         {
                                                             "arguments": {
@@ -728,12 +728,12 @@
                                                                     "value": "now"
                                                                 }
                                                             },
-                                                            "transform": "calculate_years_difference"
+                                                            "transform": "calculate_difference"
                                                         }
                                                     ]
                                                 }
                                             ],
-                                            "text": "You are {age_in_years} years old. Is this correct?"
+                                            "text": "You are {age} old. Is this correct?"
                                         },
                                         "type": "General"
                                     },
@@ -771,7 +771,7 @@
                                                                     ]
                                                                 },
                                                                 {
-                                                                    "placeholder": "age_in_years",
+                                                                    "placeholder": "age",
                                                                     "transforms": [
                                                                         {
                                                                             "arguments": {
@@ -783,14 +783,14 @@
                                                                                     "value": "now"
                                                                                 }
                                                                             },
-                                                                            "transform": "calculate_years_difference"
+                                                                            "transform": "calculate_difference"
                                                                         }
                                                                     ]
                                                                 }
                                                             ],
-                                                            "text": "Yes, {person_name} is {age_in_years} years old"
+                                                            "text": "Yes, {person_name} is {age} old"
                                                         },
-                                                        "value": "Yes, {person_name} is {age_in_years} years old"
+                                                        "value": "Yes, {person_name} is {age} old"
                                                     },
                                                     {
                                                         "label": "No, I need to change their date of birth",
@@ -819,7 +819,7 @@
                                                     ]
                                                 },
                                                 {
-                                                    "placeholder": "age_in_years",
+                                                    "placeholder": "age",
                                                     "transforms": [
                                                         {
                                                             "arguments": {
@@ -831,12 +831,12 @@
                                                                     "value": "now"
                                                                 }
                                                             },
-                                                            "transform": "calculate_years_difference"
+                                                            "transform": "calculate_difference"
                                                         }
                                                     ]
                                                 }
                                             ],
-                                            "text": "{person_name} is {age_in_years} years old. Is this correct?"
+                                            "text": "{person_name} is {age} old. Is this correct?"
                                         },
                                         "type": "General"
                                     },

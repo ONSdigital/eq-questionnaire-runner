@@ -57,7 +57,7 @@
                                             "placeholder": "age",
                                             "transforms": [
                                                 {
-                                                    "transform": "calculate_years_difference",
+                                                    "transform": "calculate_difference",
                                                     "arguments": {
                                                         "first_date": {
                                                             "source": "answers",
