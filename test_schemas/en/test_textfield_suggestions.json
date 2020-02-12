@@ -35,7 +35,7 @@
                                         "id": "country-answer",
                                         "label": "What is your country of birth?",
                                         "mandatory": false,
-                                        "url": "/json/countries",
+                                        "suggestions_url": "/json/countries",
                                         "type": "TextField"
                                     }
                                 ],

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2020-02-06 10:49+0000\n"
+"POT-Creation-Date: 2020-02-11 08:42+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -635,36 +635,14 @@ msgid ""
 msgstr ""
 
 #: templates/partials/answers/textfield.html:25
-msgid "You have selected"
-msgstr ""
-
-#: templates/partials/answers/textfield.html:26
-msgid "Enter 3 or more characters for suggestions."
-msgstr ""
-
-#: templates/partials/answers/textfield.html:27
-msgid "There is one suggestion available."
-msgstr ""
-
-#: templates/partials/answers/textfield.html:28
-msgid "There are {n} suggestions available."
-msgstr ""
-
-#: templates/partials/answers/textfield.html:29
-msgid ""
-"Results have been limited to 10 suggestions. Type more characters to "
-"improve your search."
-msgstr ""
-
-#: templates/partials/answers/textfield.html:30
 msgid "Continue entering to improve suggestions"
 msgstr ""
 
-#: templates/partials/answers/textfield.html:31
+#: templates/partials/answers/textfield.html:26
 msgid "Suggestions"
 msgstr ""
 
-#: templates/partials/answers/textfield.html:32
+#: templates/partials/answers/textfield.html:27
 msgid "No results found"
 msgstr ""
 
