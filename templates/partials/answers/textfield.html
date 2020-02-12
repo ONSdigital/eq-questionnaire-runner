@@ -2,7 +2,7 @@
 
 {% set input = form.fields[answer.id] if input is undefined else input %}
 
-{{ onsInput({
+{% set config = {
   "id": answer.id,
   "name": input.name,
   "value": input._value() | e,
@@ -17,4 +17,21 @@
   "legendClasses": "u-vh",
   "mutuallyExclusive": mutuallyExclusive,
   "error": error
-}) }}
+} %}
+
+{% if answer.suggestions_url %}
+  {% set config = config | setAttribute("typeahead", {
+    "instructions": _("Use up and down keys to navigate suggestions once you\'ve typed more than two characters. Use the enter key to select a suggestion. Touch device users, explore by touch or with swipe gestures."),
+    "moreResults": _("Continue entering to improve suggestions"),
+    "resultsTitle": _("Suggestions"),
+    "noResults": _("No results found"),
+    "ariaYouHaveSelected": "You have selected",
+    "ariaMinChars": "Enter 3 or more characters for suggestions.",
+    "ariaOneResult": "There is one suggestion available.",
+    "ariaNResults": "There are {n} suggestions available.",
+    "ariaLimitedResults": "Results have been limited to 10 suggestions. Type more characters to improve your search.",
+    "typeaheadData": answer.suggestions_url
+  }) %}
+{% endif %}
+
+{{ onsInput(config) }}
