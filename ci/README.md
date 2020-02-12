@@ -30,3 +30,5 @@ To deploy the app to the cluster via concourse, use the following task command:
 fly -t <target-concourse> execute \
   --config ci/deploy_app.yaml
 ```
+
+*Please note*: For Helm to deploy a branch of eq-questionnaire-runner succesfully, the `IMAGE_TAG` env var should be the same name as the branch you wish to deploy. For example, if you wish to deploy `my-branch` the image tag should also be set to `my-branch`. The `IMAGE_TAG` for `master` is `latest`.

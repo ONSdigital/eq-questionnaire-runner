@@ -7,6 +7,7 @@ inputs:
   - name: eq-questionnaire-runner
 params:
   RUNNER_FQDN:
+  IMAGE_TAG:
 run:
   path: sh
   args:
