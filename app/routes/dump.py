@@ -51,7 +51,15 @@ def dump_routing(schema, questionnaire_store):
         questionnaire_store.metadata,
     )
 
-    response = {"routing_path": router.full_routing_path()}
+    response = [
+        {
+            "section_id": routing_path.section_id,
+            "list_item_id": routing_path.list_item_id,
+            "routing_path": routing_path.block_ids,
+        }
+        for routing_path in router.full_routing_path()
+    ]
+
     return json.dumps(response, for_json=True), 200
 
 

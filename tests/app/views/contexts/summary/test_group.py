@@ -55,10 +55,7 @@ def fixture_schema():
 
 @pytest.fixture(name="path")
 def fixture_path():
-    return [
-        Location("section", "number-question-one"),
-        Location("section", "number-question-two"),
-    ]
+    return ["number-question-one", "number-question-two"]
 
 
 def test_group_serialize_show_on_summary_false(

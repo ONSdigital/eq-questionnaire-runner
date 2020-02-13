@@ -5,6 +5,7 @@ from app.data_model.list_store import ListStore
 from app.questionnaire.location import Location
 from app.questionnaire.questionnaire_schema import QuestionnaireSchema
 from app.questionnaire.relationship_location import RelationshipLocation
+from app.questionnaire.routing_path import RoutingPath
 from app.questionnaire.rules import (
     evaluate_rule,
     evaluate_goto,
@@ -758,7 +759,7 @@ class TestRules(AppContextTestCase):  # pylint: disable=too-many-public-methods
                         answer_store=answer_store,
                         list_store=ListStore(),
                         current_location=current_location,
-                        routing_path=None,
+                        routing_path_block_ids=None,
                     ),
                     expected_result,
                 )
@@ -878,14 +879,13 @@ class TestRules(AppContextTestCase):  # pylint: disable=too-many-public-methods
         answer = Answer(answer_id="some-answer", value="some value")
         answer_store.add_or_update(answer)
 
-        routing_path = [
-            Location(
-                section_id="some-section",
-                block_id="test_block_id",
-                list_name="people",
-                list_item_id="abc123",
-            )
-        ]
+        routing_path = RoutingPath(
+            ["test_block_id", "some-block"],
+            section_id="some-section",
+            list_name="people",
+            list_item_id="abc123",
+        )
+
         current_location = Location(
             section_id="some-section",
             block_id="some-block",
@@ -906,7 +906,7 @@ class TestRules(AppContextTestCase):  # pylint: disable=too-many-public-methods
                         answer_store=answer_store,
                         list_store=ListStore(),
                         current_location=current_location,
-                        routing_path=routing_path,
+                        routing_path_block_ids=routing_path,
                     )
                 )
 
@@ -951,7 +951,7 @@ class TestRules(AppContextTestCase):  # pylint: disable=too-many-public-methods
                         answer_store=answer_store,
                         list_store=ListStore(),
                         current_location=current_location,
-                        routing_path=routing_path,
+                        routing_path_block_ids=routing_path,
                     )
                 )
 
@@ -989,7 +989,7 @@ class TestRules(AppContextTestCase):  # pylint: disable=too-many-public-methods
                     answer_store=answer_store,
                     list_store=ListStore(),
                     current_location=current_location,
-                    routing_path=routing_path,
+                    routing_path_block_ids=routing_path,
                 )
             )
 
