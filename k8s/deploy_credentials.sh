@@ -1,6 +1,5 @@
 #!/usr/bin/env bash
-
-set -e
+set -euxo pipefail
 
 if [[ -z "$EQ_KEYS_FILE" ]]; then
   echo "EQ_KEYS_FILE not provided"

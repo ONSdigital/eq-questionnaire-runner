@@ -21,10 +21,9 @@ class ListCollectorSummaryContext(Context):
         visible_list_collector_blocks = self._schema.get_visible_list_blocks_for_section(
             section
         )
-        section_path = self._router.section_routing_path(
+        routing_path = self._router.routing_path(
             section["id"], current_location.list_item_id
         )
-        section_path_block_ids = [location.block_id for location in section_path]
         list_summaries = []
 
         for list_collector_block in visible_list_collector_blocks:
@@ -35,7 +34,7 @@ class ListCollectorSummaryContext(Context):
                 return_to=current_location.block_id,
             )
 
-            if list_collector_block["id"] not in section_path_block_ids:
+            if list_collector_block["id"] not in routing_path:
                 driving_question_block = QuestionnaireSchema.get_driving_question_for_list(
                     section, list_collector_block["for_list"]
                 )

@@ -6,7 +6,7 @@ class Group:
     def __init__(
         self,
         group_schema,
-        path,
+        routing_path,
         answer_store,
         list_store,
         metadata,
@@ -21,7 +21,13 @@ class Group:
         self.location = location
 
         self.blocks = self._build_blocks(
-            group_schema, path, answer_store, list_store, metadata, schema, location
+            group_schema,
+            routing_path,
+            answer_store,
+            list_store,
+            metadata,
+            schema,
+            location,
         )
         self.placeholder_renderer = PlaceholderRenderer(
             language=language,
@@ -32,15 +38,13 @@ class Group:
 
     @staticmethod
     def _build_blocks(
-        group_schema, path, answer_store, list_store, metadata, schema, location
+        group_schema, routing_path, answer_store, list_store, metadata, schema, location
     ):
         blocks = []
 
-        block_ids_on_path = [location.block_id for location in path]
-
         for block in group_schema["blocks"]:
             if (
-                block["id"] in block_ids_on_path
+                block["id"] in routing_path
                 and block["type"] == "Question"
                 and block.get("show_on_section_summary", True)
             ):

@@ -11,14 +11,14 @@ class SummaryContext(Context):
         Does not support generating multiple sections at a time (i.e. passing no list_item_id for repeating section).
         """
         section = self._schema.get_section(location.section_id)
-        section_path = self._router.section_routing_path(
+        routing_path = self._router.routing_path(
             location.section_id, location.list_item_id
         )
 
         return [
             Group(
                 group,
-                section_path,
+                routing_path,
                 self._answer_store,
                 self._list_store,
                 self._metadata,
