@@ -7,10 +7,10 @@ To deploy this application with Concourse, you must have a Kubernetes cluster al
 Before deploying the app you need to create credentials on Kubernetes. This can be done via Concourse using the following task commands:
 
 ```sh
+REGION=<cluster_region> \
+PROJECT_ID=<project_id> \
 EQ_KEYS_FILE=<path_to_keys_file> \
 EQ_SECRETS_FILE=<path_to_secrets_file> \
-PROJECT_ID=<project_id> \
-REGION=<cluster_region> \
 fly -t <target-concourse> execute \
   --config ci/deploy_credentials.yaml
 ```
