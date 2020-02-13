@@ -21,8 +21,8 @@ In addition to the environment variables specified in [Deploying the app](../REA
 
 | Variable Name                             | Description                                                                          |
 |-------------------------------------------|--------------------------------------------------------------------------------------|
-| PROJECT_ID                                | The ID of the GCP target project                                                     |
 | REGION                                    | What region to authenticate against                                                  |
+| PROJECT_ID                                | The ID of the GCP target project                                                     |
 
 To deploy the app to the cluster via concourse, use the following task command:
 

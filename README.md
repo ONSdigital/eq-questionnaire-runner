@@ -259,12 +259,12 @@ The following environment variables are optional:
 
 | Variable Name                             | Description                                                                          |
 |-------------------------------------------|--------------------------------------------------------------------------------------|
-| ROLLING_UPDATE_MAX_UNAVAILABLE            | The maximum number of Pods that can be unavailable during the update process.        |
-| ROLLING_UPDATE_MAX_SURGE                  | The maximum number of Pods that can be created over the desired number of Pods.      |
-| TARGET_CPU_UTILIZATION_PERCENTAGE         | The average CPU utilization usage before auto scaling applies                        |
 | GOOGLE_TAG_MANAGER_ID                     |                                                                                      |
 | GOOGLE_TAG_MANAGER_AUTH                   |                                                                                      |
 | GOOGLE_TAG_MANAGER_PREVIEW                |                                                                                      |
+| ROLLING_UPDATE_MAX_UNAVAILABLE            | The maximum number of Pods that can be unavailable during the update process.        |
+| ROLLING_UPDATE_MAX_SURGE                  | The maximum number of Pods that can be created over the desired number of Pods.      |
+| TARGET_CPU_UTILIZATION_PERCENTAGE         | The average CPU utilization usage before auto scaling applies                        |
 
 To deploy the app to the cluster, run the following command:
 
