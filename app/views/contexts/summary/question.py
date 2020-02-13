@@ -1,5 +1,3 @@
-import collections
-
 from jinja2 import escape
 
 from app.views.contexts.summary.answer import Answer
@@ -74,9 +72,6 @@ class Question:
 
     def _build_checkbox_answers(self, answer, answer_schema, answer_store):
         multiple_answers = []
-        CheckboxSummaryAnswer = collections.namedtuple(
-            "CheckboxSummaryAnswer", "label detail_answer_value"
-        )
         for option in answer_schema["options"]:
             if option["value"] in answer:
                 detail_answer_value = self._get_detail_answer_value(
@@ -84,9 +79,10 @@ class Question:
                 )
 
                 multiple_answers.append(
-                    CheckboxSummaryAnswer(
-                        label=option["label"], detail_answer_value=detail_answer_value
-                    )
+                    {
+                        "label": option["label"],
+                        "detail_answer_value": detail_answer_value,
+                    }
                 )
 
         return multiple_answers or None

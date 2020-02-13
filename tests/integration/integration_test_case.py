@@ -282,9 +282,7 @@ class IntegrationTestCase(unittest.TestCase):  # pylint: disable=too-many-public
         )
 
     def assertEqualPageTitle(self, title):
-        self.assertEqual(
-            self.getHtmlSoup().title.string, title
-        )  # pylint: disable=no-member
+        self.assertEqual(title, self.getHtmlSoup().title.string)
 
     def assertStatusOK(self):
         self.assertStatusCode(200)
