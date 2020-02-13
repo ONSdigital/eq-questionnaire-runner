@@ -366,6 +366,12 @@ class TestRouter(AppContextTestCase):  # pylint: disable=too-many-public-methods
                     "status": CompletionStatus.COMPLETED,
                     "block_ids": ["confirm-dob-proxy"],
                 },
+                {
+                    "section_id": "mutually-exclusive-checkbox-section",
+                    "list_item_id": None,
+                    "status": CompletionStatus.COMPLETED,
+                    "block_ids": ["mutually-exclusive-checkbox"],
+                },
             ]
         )
 
