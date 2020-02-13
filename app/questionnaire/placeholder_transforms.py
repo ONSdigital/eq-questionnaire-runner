@@ -1,10 +1,9 @@
 from datetime import datetime
 
 from babel.numbers import format_currency, format_decimal
-from babel.dates import format_datetime
-from dateutil.relativedelta import relativedelta
+from babel.dates import format_datetime, format_timedelta
 from dateutil.tz import tzutc
-from flask_babel import lazy_gettext
+import flask_babel
 
 from app.settings import DEFAULT_LOCALE
 
@@ -82,22 +81,11 @@ class PlaceholderTransforms:
 
     @staticmethod
     def calculate_difference(first_date, second_date):
-        time = relativedelta(
-            PlaceholderTransforms.parse_date(second_date),
-            PlaceholderTransforms.parse_date(first_date),
+        timedelta = (PlaceholderTransforms.parse_date(second_date)) - (
+            PlaceholderTransforms.parse_date(first_date)
         )
-
-        if time.years:
-            if time.years == 1:
-                return f'{time.years} {lazy_gettext("year")}'
-            return f'{time.years} {lazy_gettext("years")}'
-        if time.months:
-            if time.months == 1:
-                return f'{time.months} {lazy_gettext("month")}'
-            return f'{time.months} {lazy_gettext("months")}'
-        if time.days == 1:
-            return f'{time.days} {lazy_gettext("day")}'
-        return f'{time.days} {lazy_gettext("days")}'
+        time = format_timedelta(timedelta, locale=flask_babel.get_locale())
+        return time
 
     @staticmethod
     def parse_date(date):
