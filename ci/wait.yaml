@@ -1,0 +1,16 @@
+platform: linux
+image_resource:
+  type: docker-image
+  source:
+    repository: alpine
+inputs:
+  - name: eq-questionnaire-runner
+params:
+  RUNNER_FQDN:
+run:
+  path: sh
+  args:
+    - -exc
+    - |
+      survey_runner_version=$(cat eq-questionnaire-runner/.git/HEAD | xargs echo -n)
+      until wget -qO- https://${RUNNER_FQDN}/status 2>&1 | grep $survey_runner_version; do sleep 5; done
