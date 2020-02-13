@@ -186,9 +186,7 @@ def get_section(schema, questionnaire_store, section_id, list_item_id=None):
     if section_id not in router.enabled_section_ids:
         return redirect(url_for(".get_questionnaire"))
 
-    routing_path = router.section_routing_path(
-        section_id=section_id, list_item_id=list_item_id
-    )
+    routing_path = router.routing_path(section_id=section_id, list_item_id=list_item_id)
     section_status = questionnaire_store.progress_store.get_section_status(
         section_id=section_id, list_item_id=list_item_id
     )
@@ -200,14 +198,12 @@ def get_section(schema, questionnaire_store, section_id, list_item_id=None):
 
     if section_status == CompletionStatus.NOT_STARTED:
         return redirect(
-            router.get_first_incomplete_location_for_section(
-                routing_path, section_id=section_id, list_item_id=list_item_id
-            ).url()
+            router.get_first_incomplete_location_for_section(routing_path).url()
         )
 
     return redirect(
         router.get_first_incomplete_location_for_section(
-            routing_path=routing_path, section_id=section_id, list_item_id=list_item_id
+            routing_path=routing_path
         ).url()
     )
 
