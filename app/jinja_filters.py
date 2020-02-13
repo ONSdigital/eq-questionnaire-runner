@@ -397,7 +397,8 @@ class SummaryRowItem:
             self.valueList = [SummaryRowItemValue(no_answer_provided)]
         elif answer_type == "checkbox":
             self.valueList = [
-                SummaryRowItemValue(val.label, val.detail_answer_value) for val in value
+                SummaryRowItemValue(option["label"], option["detail_answer_value"])
+                for option in value
             ]
         elif answer_type == "currency":
             self.valueList = [

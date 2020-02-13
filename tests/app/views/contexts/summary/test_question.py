@@ -193,8 +193,8 @@ class TestQuestion(AppContextTestCase):  # pylint: disable=too-many-public-metho
 
         # Then
         self.assertEqual(len(question.answers[0]["value"]), 2)
-        self.assertEqual(question.answers[0]["value"][0].label, "Light Side label")
-        self.assertEqual(question.answers[0]["value"][1].label, "Dark Side label")
+        self.assertEqual(question.answers[0]["value"][0]["label"], "Light Side label")
+        self.assertEqual(question.answers[0]["value"][1]["label"], "Dark Side label")
 
     def test_checkbox_button_detail_answer_empty(self):
         # Given
@@ -228,8 +228,8 @@ class TestQuestion(AppContextTestCase):  # pylint: disable=too-many-public-metho
 
         # Then
         self.assertEqual(len(question.answers[0]["value"]), 1)
-        self.assertEqual(question.answers[0]["value"][0].label, "Other option label")
-        self.assertEqual(question.answers[0]["value"][0].detail_answer_value, None)
+        self.assertEqual(question.answers[0]["value"][0]["label"], "Other option label")
+        self.assertEqual(question.answers[0]["value"][0]["detail_answer_value"], None)
 
     def test_checkbox_answer_with_detail_answer_returns_the_value(self):
         # Given
@@ -266,7 +266,7 @@ class TestQuestion(AppContextTestCase):  # pylint: disable=too-many-public-metho
 
         # Then
         self.assertEqual(len(question.answers[0]["value"]), 2)
-        self.assertEqual(question.answers[0]["value"][1].detail_answer_value, "Test")
+        self.assertEqual(question.answers[0]["value"][1]["detail_answer_value"], "Test")
 
     def test_checkbox_answer_with_numeric_detail_answer_returns_number(self):
         # Given
@@ -303,7 +303,7 @@ class TestQuestion(AppContextTestCase):  # pylint: disable=too-many-public-metho
 
         # Then
         self.assertEqual(len(question.answers[0]["value"]), 2)
-        self.assertEqual(question.answers[0]["value"][1].detail_answer_value, 2)
+        self.assertEqual(question.answers[0]["value"][1]["detail_answer_value"], 2)
 
     def test_checkbox_button_other_option_text(self):
         # Given
@@ -339,8 +339,10 @@ class TestQuestion(AppContextTestCase):  # pylint: disable=too-many-public-metho
 
         # Then
         self.assertEqual(len(question.answers[0]["value"]), 2)
-        self.assertEqual(question.answers[0]["value"][0].label, "Light Side")
-        self.assertEqual(question.answers[0]["value"][1].detail_answer_value, "Neither")
+        self.assertEqual(question.answers[0]["value"][0]["label"], "Light Side")
+        self.assertEqual(
+            question.answers[0]["value"][1]["detail_answer_value"], "Neither"
+        )
 
     def test_checkbox_button_none_selected_should_be_none(self):
         # Given
