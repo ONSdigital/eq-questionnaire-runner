@@ -1,0 +1,45 @@
+platform: linux
+image_resource:
+  type: docker-image
+  source:
+    repository: theorf/google-cloud-sdk-helm
+inputs:
+  - name: eq-questionnaire-runner
+params:
+  SERVICE_ACCOUNT_JSON: ((gcp.service_account_json))
+  REGION: 'europe-west2'
+  PROJECT_ID:
+  SUBMISSION_BUCKET_NAME:
+  GOOGLE_TAG_MANAGER_ID:
+  GOOGLE_TAG_MANAGER_AUTH:
+  GOOGLE_TAG_MANAGER_PREVIEW:
+  DOCKER_REGISTRY:
+  IMAGE_TAG:
+  COOKIE_SETTINGS_URL:
+  REQUESTED_CPU_PER_POD:
+  ROLLING_UPDATE_MAX_UNAVAILABLE:
+  ROLLING_UPDATE_MAX_SURGE:
+  MIN_REPLICAS:
+  MAX_REPLICAS:
+  TARGET_CPU_UTILIZATION_PERCENTAGE:
+run:
+  path: bash
+  args:
+    - -exc
+    - |
+      apt-get install -y procps
+
+      export GOOGLE_APPLICATION_CREDENTIALS=/root/gcloud-service-key.json
+      cat >$GOOGLE_APPLICATION_CREDENTIALS <<EOL
+      $SERVICE_ACCOUNT_JSON
+      EOL
+
+      gcloud auth activate-service-account --key-file "${GOOGLE_APPLICATION_CREDENTIALS}"
+
+      gcloud container clusters get-credentials survey-runner --region "${REGION}" --project "${PROJECT_ID}"
+
+      helm init --client-only
+      helm  plugin install https://github.com/rimusz/helm-tiller
+
+      cd eq-questionnaire-runner
+      ./k8s/deploy_app.sh
