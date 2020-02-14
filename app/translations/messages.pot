@@ -8,14 +8,14 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2020-02-11 08:42+0000\n"
+"POT-Creation-Date: 2020-02-14 11:48+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Generated-By: Babel 2.8.0\n"
+"Generated-By: Babel 2.7.0\n"
 
 #: app/forms/validators.py:340 app/jinja_filters.py:79
 #, python-format
@@ -188,6 +188,24 @@ msgstr ""
 msgid "Northern Ireland Statistics and Research Agency logo"
 msgstr ""
 
+#: app/questionnaire/placeholder_transforms.py:91
+msgid "{number_of_years} year"
+msgid_plural "{number_of_years} years"
+msgstr[0] ""
+msgstr[1] ""
+
+#: app/questionnaire/placeholder_transforms.py:94
+msgid "{number_of_months} month"
+msgid_plural "{number_of_months} months"
+msgstr[0] ""
+msgstr[1] ""
+
+#: app/questionnaire/placeholder_transforms.py:96
+msgid "{number_of_days} day"
+msgid_plural "{number_of_days} days"
+msgstr[0] ""
+msgstr[1] ""
+
 #: app/views/contexts/hub_context.py:14 app/views/contexts/hub_context.py:16
 msgid "Submit survey"
 msgstr ""
@@ -278,7 +296,7 @@ msgid ""
 "%(telephone_number)s or email %(email_address)s"
 msgstr ""
 
-#: templates/introduction.html:36
+#: templates/introduction.html:38
 msgid "Your response is legally required"
 msgstr ""
 
@@ -389,33 +407,33 @@ msgstr ""
 msgid "We have received your answers and you do not need to do anything else."
 msgstr ""
 
-#: templates/view-submission.html:5
+#: templates/view-submission.html:7
 msgid "Submission"
 msgstr ""
 
-#: templates/view-submission.html:8
+#: templates/view-submission.html:10
 msgid "Submitted answers"
 msgstr ""
 
-#: templates/view-submission.html:17
+#: templates/view-submission.html:19
 #, python-format
 msgid ""
 "Your answers were submitted for <span>%(ru_name)s</span> "
 "(%(trading_as_name)s) on %(submitted_time)s"
 msgstr ""
 
-#: templates/view-submission.html:22
+#: templates/view-submission.html:24
 #, python-format
 msgid ""
 "Your answers were submitted for <span>%(ru_name)s</span> on "
 "%(submitted_time)s"
 msgstr ""
 
-#: templates/view-submission.html:27
+#: templates/view-submission.html:29
 msgid "Transaction ID"
 msgstr ""
 
-#: templates/view-submission.html:34
+#: templates/view-submission.html:36
 msgid "Print this page"
 msgstr ""
 
@@ -579,23 +597,23 @@ msgstr ""
 msgid "Hide this"
 msgstr ""
 
-#: templates/partials/question.html:33
+#: templates/partials/question.html:39
 msgid "Selecting this will clear your answer"
 msgstr ""
 
-#: templates/partials/question.html:34
+#: templates/partials/question.html:40
 msgid "cleared"
 msgstr ""
 
-#: templates/partials/question.html:37
+#: templates/partials/question.html:43
 msgid "Selecting this will deselect any selected options"
 msgstr ""
 
-#: templates/partials/question.html:38 templates/partials/question.html:46
+#: templates/partials/question.html:44 templates/partials/question.html:52
 msgid "deselected"
 msgstr ""
 
-#: templates/partials/question.html:42
+#: templates/partials/question.html:48
 msgid "Or"
 msgstr ""
 
@@ -647,22 +665,22 @@ msgid "No results found"
 msgstr ""
 
 #: templates/partials/introduction/preview.html:29
-#: templates/partials/summary/collapsible-summary.html:11
+#: templates/partials/summary/collapsible-summary.html:13
 msgid "Show"
 msgstr ""
 
 #: templates/partials/introduction/preview.html:30
-#: templates/partials/summary/collapsible-summary.html:12
+#: templates/partials/summary/collapsible-summary.html:14
 msgid "Hide"
 msgstr ""
 
 #: templates/partials/introduction/preview.html:48
-#: templates/partials/summary/collapsible-summary.html:38
+#: templates/partials/summary/collapsible-summary.html:41
 msgid "Show all"
 msgstr ""
 
 #: templates/partials/introduction/preview.html:49
-#: templates/partials/summary/collapsible-summary.html:39
+#: templates/partials/summary/collapsible-summary.html:42
 msgid "Hide all"
 msgstr ""
 
@@ -670,19 +688,19 @@ msgstr ""
 msgid "Start survey"
 msgstr ""
 
-#: templates/partials/summary/collapsible-summary.html:25
-#: templates/partials/summary/summary.html:7
+#: templates/partials/summary/collapsible-summary.html:27
+#: templates/partials/summary/summary.html:9
 msgid "No answer provided"
 msgstr ""
 
-#: templates/partials/summary/collapsible-summary.html:25
+#: templates/partials/summary/collapsible-summary.html:27
 #: templates/partials/summary/list-summary.html:9
-#: templates/partials/summary/summary.html:7
+#: templates/partials/summary/summary.html:9
 msgid "Change"
 msgstr ""
 
-#: templates/partials/summary/collapsible-summary.html:25
-#: templates/partials/summary/summary.html:7
+#: templates/partials/summary/collapsible-summary.html:27
+#: templates/partials/summary/summary.html:9
 msgid "Change your answer for:"
 msgstr ""
 
