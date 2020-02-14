@@ -1,8 +1,8 @@
 from datetime import datetime
-from dateutil.relativedelta import relativedelta
 from babel.numbers import format_currency, format_decimal
 from babel.dates import format_datetime
 from dateutil.tz import tzutc
+from dateutil.relativedelta import relativedelta
 from flask_babel import ngettext
 
 from app.settings import DEFAULT_LOCALE
@@ -88,12 +88,18 @@ class PlaceholderTransforms:
         )
 
         if time.years:
-            year_string = ngettext('{number_of_years} year', '{number_of_years} years', time.years)
+            year_string = ngettext(
+                "{number_of_years} year", "{number_of_years} years", time.years
+            )
             return year_string.format(number_of_years=time.years)
         if time.months:
-            month_string = ngettext('{number_of_months} month', '{number_of_months} months', time.months)
+            month_string = ngettext(
+                "{number_of_months} month", "{number_of_months} months", time.months
+            )
             return month_string.format(number_of_months=time.months)
-        day_string = ngettext('{number_of_days} day', '{number_of_days} days', time.days)
+        day_string = ngettext(
+            "{number_of_days} day", "{number_of_days} days", time.days
+        )
         return day_string.format(number_of_days=time.days)
 
     @staticmethod
