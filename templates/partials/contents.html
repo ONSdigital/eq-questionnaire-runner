@@ -1,6 +1,10 @@
 {% for item in contents %}
   {%- if item.title -%}
-    <strong class="u-mb-s">{{item.title}}</strong>
+    {%- if title_type == 'interstitial' -%}
+      <h2>{{item.title}}</h2>
+    {%- else -%}
+      <strong class="u-mb-s">{{item.title}}</strong>
+    {%- endif -%}
   {% endif %}
   {%- if item.description -%}
     <p>{{item.description}}</p>

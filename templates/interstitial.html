@@ -4,25 +4,12 @@
 
 {% set continue_button_text = _("Continue") %}
 
+{% set title_type = "interstitial" %}
+
 {% block form_content %}
   {% if block.content.title %}
     <h1>{{ block.content.title }}</h1>
   {% endif %}
-
-  {% for item in block.content.contents %}
-    {%- if item.title -%}
-      <h2>{{item.title}}</h2>
-    {% endif %}
-    {%- if item.description -%}
-      <p>{{item.description}}</p>
-    {% endif %}
-    {%- if item.list -%}
-      <ul>
-        {%- for list_item in item.list -%}
-          <li>{{list_item}}</li>
-        {% endfor %}
-      </ul>
-    {% endif %}
-  {% endfor %}
-
+  {% set contents = block.content.contents %}
+  {% include 'partials/contents.html' %}
 {% endblock form_content %}
