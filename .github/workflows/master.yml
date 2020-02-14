@@ -23,4 +23,4 @@ jobs:
           run: |
             echo ${{ secrets.DOCKER_GCR_PASSWORD }} | base64 --decode | docker login --username ${{ secrets.DOCKER_GCR_USERNAME }} --password-stdin https://eu.gcr.io
             echo "Pushing to GCR with tags [latest, $GITHUB_SHA]"
-            docker push ${{ secrets.GCR_NAME}}/eq-questionnaire-runner
+            docker push ${{ secrets.GCR_NAME }}/eq-questionnaire-runner
