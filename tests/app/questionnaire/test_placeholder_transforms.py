@@ -71,36 +71,36 @@ class TestPlaceholderParser(unittest.TestCase):
 
     def test_calculate_difference(self):
         assert (
-            PlaceholderTransforms.calculate_difference("2016-06-10", "2019-06-10")
+            PlaceholderTransforms.calculate_date_difference("2016-06-10", "2019-06-10")
             == "3 years"
         )
         assert (
-            PlaceholderTransforms.calculate_difference("2018-06-10", "2019-06-10")
+            PlaceholderTransforms.calculate_date_difference("2018-06-10", "2019-06-10")
             == "1 year"
         )
         assert (
-            PlaceholderTransforms.calculate_difference("2010-01-01", "2018-12-31")
+            PlaceholderTransforms.calculate_date_difference("2010-01-01", "2018-12-31")
             == "8 years"
         )
         assert (
-            PlaceholderTransforms.calculate_difference("2011-01", "2015-04")
+            PlaceholderTransforms.calculate_date_difference("2011-01", "2015-04")
             == "4 years"
         )
         assert (
-            PlaceholderTransforms.calculate_difference("2019-06-10", "2019-08-11")
+            PlaceholderTransforms.calculate_date_difference("2019-06-10", "2019-08-11")
             == "2 months"
         )
         assert (
-            PlaceholderTransforms.calculate_difference("2019-07-10", "2019-08-11")
+            PlaceholderTransforms.calculate_date_difference("2019-07-10", "2019-08-11")
             == "1 month"
         )
         assert (
-            PlaceholderTransforms.calculate_difference("2019-07-10", "2019-07-11")
+            PlaceholderTransforms.calculate_date_difference("2019-07-10", "2019-07-11")
             == "1 day"
         )
-        assert PlaceholderTransforms.calculate_difference("now", "now") == "0 days"
+        assert PlaceholderTransforms.calculate_date_difference("now", "now") == "0 days"
         with self.assertRaises(ValueError):
-            PlaceholderTransforms.calculate_difference("2018", "now")
+            PlaceholderTransforms.calculate_date_difference("2018", "now")
 
     def test_concatenate_list(self):
         list_to_concatenate = ["Milk", "Eggs", "Flour", "Water"]

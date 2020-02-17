@@ -57,7 +57,7 @@ class TestPlaceholderRenderer(AppContextTestCase):
                                         "placeholder": "age",
                                         "transforms": [
                                             {
-                                                "transform": "calculate_difference",
+                                                "transform": "calculate_date_difference",
                                                 "arguments": {
                                                     "first_date": {
                                                         "source": "answers",
@@ -91,7 +91,7 @@ class TestPlaceholderRenderer(AppContextTestCase):
 
     def test_renders_pointer(self):
         mock_transform = {
-            "transform": "calculate_difference",
+            "transform": "calculate_date_difference",
             "arguments": {
                 "first_date": {
                     "source": "answers",
@@ -126,7 +126,7 @@ class TestPlaceholderRenderer(AppContextTestCase):
 
     def test_renders_json(self):
         mock_transform = {
-            "transform": "calculate_difference",
+            "transform": "calculate_date_difference",
             "arguments": {
                 "first_date": {
                     "source": "answers",
@@ -159,7 +159,7 @@ class TestPlaceholderRenderer(AppContextTestCase):
 
     def test_renders_json_uses_language(self):
         mock_transform = {
-            "transform": "calculate_difference",
+            "transform": "calculate_date_difference",
             "arguments": {
                 "first_date": {
                     "source": "answers",

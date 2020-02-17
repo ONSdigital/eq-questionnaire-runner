@@ -320,7 +320,7 @@
                                                                             "value": "now"
                                                                         }
                                                                     },
-                                                                    "transform": "calculate_difference"
+                                                                    "transform": "calculate_date_difference"
                                                                 }
                                                             ]
                                                         }
@@ -368,7 +368,7 @@
                                                             "value": "now"
                                                         }
                                                     },
-                                                    "transform": "calculate_difference"
+                                                    "transform": "calculate_date_difference"
                                                 }
                                             ]
                                         }

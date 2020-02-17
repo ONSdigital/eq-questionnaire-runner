@@ -80,7 +80,7 @@ class PlaceholderTransforms:
         return ""
 
     @staticmethod
-    def calculate_difference(first_date, second_date):
+    def calculate_date_difference(first_date, second_date):
 
         time = relativedelta(
             PlaceholderTransforms.parse_date(second_date),

@@ -218,7 +218,7 @@ def test_mixed_transform_placeholder():
             "placeholder": "age",
             "transforms": [
                 {
-                    "transform": "calculate_difference",
+                    "transform": "calculate_date_difference",
                     "arguments": {
                         "first_date": {
                             "source": "answers",
@@ -252,7 +252,7 @@ def test_mixed_transform_placeholder_value():
             "placeholder": "age",
             "transforms": [
                 {
-                    "transform": "calculate_difference",
+                    "transform": "calculate_date_difference",
                     "arguments": {
                         "first_date": {
                             "source": "answers",
