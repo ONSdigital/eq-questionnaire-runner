@@ -1,6 +1,6 @@
 {% for item in contents %}
   {%- if item.title -%}
-    {%- if block.type == 'Interstitial' -%}
+    {%- if block and block.type == 'Interstitial' -%}
       <h2>{{item.title}}</h2>
     {%- else -%}
       <strong class="u-mb-s">{{item.title}}</strong>
