@@ -100,3 +100,9 @@ spec:
                 configMapKeyRef:
                   name: runner-config
                   key: redis_port
+            - name: EQ_NEW_RELIC_ENABLED
+              value: "{{- .Values.eqNewRelicEnabled }}"
+            - name: NEW_RELIC_LICENSE_KEY
+              value: "{{- .Values.newRelicLicenceKey }}"
+            - name: NEW_RELIC_APP_NAME
+              value: "{{- .Values.newRelicAppName }}"

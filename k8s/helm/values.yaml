@@ -11,6 +11,9 @@ submissionBucket: ""
 googleTagManagerId: ""
 googleTagManagerAuth: ""
 googleTagManagerPreview: ""
+eqNewRelicEnabled: "False"
+newRelicLicenceKey: ""
+newRelicAppName: ""
 
 service:
   type: NodePort
