@@ -92,11 +92,13 @@ class PlaceholderTransforms:
                 "{number_of_years} year", "{number_of_years} years", time.years
             )
             return year_string.format(number_of_years=time.years)
+
         if time.months:
             month_string = ngettext(
                 "{number_of_months} month", "{number_of_months} months", time.months
             )
             return month_string.format(number_of_months=time.months)
+
         day_string = ngettext(
             "{number_of_days} day", "{number_of_days} days", time.days
         )
