@@ -1,4 +1,5 @@
 from app.data_model.answer_store import AnswerStore
+from app.data_model.list_store import ListStore
 from app.questionnaire.placeholder_parser import PlaceholderParser
 from app.questionnaire.questionnaire_schema import QuestionnaireSchema
 
@@ -274,6 +275,24 @@ def test_mixed_transform_placeholder_value():
     placeholders = parser(placeholder_list)
 
     assert placeholders["age"] == "20 years"
+
+
+def test_list_source_count():
+    placeholder_list = [
+        {
+            "placeholder": "number_of_people",
+            "value": {"source": "list", "identifier": "people"},
+        }
+    ]
+
+    list_store = ListStore()
+    list_store.add_list_item("people")
+    list_store.add_list_item("people")
+
+    parser = PlaceholderParser(language="en", list_store=list_store)
+    placeholders = parser(placeholder_list)
+
+    assert placeholders["number_of_people"] == 2
 
 
 def test_chain_transform_placeholder():
