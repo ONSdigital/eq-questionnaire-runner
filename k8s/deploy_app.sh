@@ -23,6 +23,6 @@ helm tiller run \
     --set-string autoscaler.minReplicas=${MIN_REPLICAS} \
     --set-string autoscaler.maxReplicas=${MAX_REPLICAS} \
     --set-string autoscaler.targetCPUUtilizationPercentage=${TARGET_CPU_UTILIZATION_PERCENTAGE} \
-    --set-string eqNewRelicEnabled=${EQ_NEW_RELIC_ENABLED} \
-    --set-string newRelicLicenceKey=${NEW_RELIC_LICENSE_KEY} \
-    --set-string newRelicAppName=${NEW_RELIC_APP_NAME}
+    --set-string newRelic.enabled=${EQ_NEW_RELIC_ENABLED} \
+    --set-string newRelic.licenceKey=${NEW_RELIC_LICENSE_KEY} \
+    --set-string newRelic.appName=${NEW_RELIC_APP_NAME}

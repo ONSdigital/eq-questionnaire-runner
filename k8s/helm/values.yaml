@@ -8,12 +8,15 @@ image:
   pullPolicy: Always
 
 submissionBucket: ""
+
 googleTagManagerId: ""
 googleTagManagerAuth: ""
 googleTagManagerPreview: ""
-eqNewRelicEnabled: "False"
-newRelicLicenceKey: ""
-newRelicAppName: ""
+
+newRelic:
+  enabled: "False"
+  licenceKey: ""
+  appName: ""
 
 service:
   type: NodePort

@@ -101,8 +101,8 @@ spec:
                   name: runner-config
                   key: redis_port
             - name: EQ_NEW_RELIC_ENABLED
-              value: "{{- .Values.eqNewRelicEnabled }}"
+              value: "{{- .Values.newRelic.enabled }}"
             - name: NEW_RELIC_LICENSE_KEY
-              value: "{{- .Values.newRelicLicenceKey }}"
+              value: "{{- .Values.newRelic.licenceKey }}"
             - name: NEW_RELIC_APP_NAME
-              value: "{{- .Values.newRelicAppName }}"
+              value: "{{- .Values.newRelic.appName }}"
