@@ -136,7 +136,7 @@
                             "question": {
                                 "id": "confirm-date-of-birth-proxy",
                                 "title": {
-                                    "text": "{person_name} is {age_in_years} years old. Is this correct?",
+                                    "text": "{person_name} is {age} old. Is this correct?",
                                     "placeholders": [
                                         {
                                             "placeholder": "person_name",
@@ -154,10 +154,10 @@
                                             ]
                                         },
                                         {
-                                            "placeholder": "age_in_years",
+                                            "placeholder": "age",
                                             "transforms": [
                                                 {
-                                                    "transform": "calculate_years_difference",
+                                                    "transform": "calculate_date_difference",
                                                     "arguments": {
                                                         "first_date": {
                                                             "source": "answers",
@@ -180,7 +180,7 @@
                                         "options": [
                                             {
                                                 "label": {
-                                                    "text": "Yes, {person_name} is {age_in_years} years old.",
+                                                    "text": "Yes, {person_name} is {age} old.",
                                                     "placeholders": [
                                                         {
                                                             "placeholder": "person_name",
@@ -198,10 +198,10 @@
                                                             ]
                                                         },
                                                         {
-                                                            "placeholder": "age_in_years",
+                                                            "placeholder": "age",
                                                             "transforms": [
                                                                 {
-                                                                    "transform": "calculate_years_difference",
+                                                                    "transform": "calculate_date_difference",
                                                                     "arguments": {
                                                                         "first_date": {
                                                                             "source": "answers",
@@ -216,7 +216,7 @@
                                                         }
                                                     ]
                                                 },
-                                                "value": "Yes, {person_name} is {age_in_years} years old."
+                                                "value": "Yes, {person_name} is {age} old."
                                             },
                                             {
                                                 "label": "No, I need to change their date of birth",

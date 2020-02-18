@@ -20,9 +20,7 @@ class TestPlaceholders(IntegrationTestCase):
         )
 
         self.post(
-            {
-                "confirm-date-of-birth-answer-proxy": "Yes, {person_name} is {age_in_years} years old."
-            }
+            {"confirm-date-of-birth-answer-proxy": "Yes, {person_name} is {age} old."}
         )
 
         self.post(
