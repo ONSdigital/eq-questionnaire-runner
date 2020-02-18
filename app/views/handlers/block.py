@@ -58,6 +58,7 @@ class BlockHandler:
                 answer_store=self._questionnaire_store.answer_store,
                 metadata=self._questionnaire_store.metadata,
                 location=self._current_location,
+                list_store=self._questionnaire_store.list_store,
             )
 
         return self._placeholder_renderer
