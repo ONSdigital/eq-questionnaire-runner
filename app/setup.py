@@ -36,7 +36,10 @@ CACHE_HEADERS = {
 }
 
 CSP_POLICY = {
-    "default-src": ["'self'", "https://cdn.ons.gov.uk"],
+    "default-src": [
+        "'self'",
+        "https://cdn.ons.gov.uk"
+    ],
     "font-src": [
         "'self'",
         "data:",
@@ -57,7 +60,11 @@ CSP_POLICY = {
         "https://fonts.googleapis.com",
         "'unsafe-inline'",
     ],
-    "connect-src": ["'self'", "https://cdn.ons.gov.uk"],
+    "connect-src": [
+        "'self'",
+        "https://cdn.ons.gov.uk",
+        "https://cdn.eq.census-gcp.onsdigital.uk",
+    ],
     "frame-src": ["https://www.googletagmanager.com"],
     "img-src": [
         "'self'",
