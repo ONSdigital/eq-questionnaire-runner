@@ -1,6 +1,4 @@
-import json
-
-from flask import Blueprint, jsonify
+from flask import Blueprint
 from structlog import get_logger
 
 from app.helpers.language_helper import handle_language
