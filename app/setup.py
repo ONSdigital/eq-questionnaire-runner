@@ -36,10 +36,7 @@ CACHE_HEADERS = {
 }
 
 CSP_POLICY = {
-    "default-src": [
-        "'self'",
-        "https://cdn.ons.gov.uk"
-    ],
+    "default-src": ["'self'", "https://cdn.ons.gov.uk"],
     "font-src": [
         "'self'",
         "data:",
