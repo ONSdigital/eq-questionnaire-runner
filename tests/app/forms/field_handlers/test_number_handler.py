@@ -2,6 +2,8 @@
 from werkzeug.datastructures import MultiDict
 from wtforms import Form
 
+from app.data_model.answer import Answer
+from app.data_model.answer_store import AnswerStore
 from app.forms.field_handlers.number_handler import NumberHandler
 from app.forms.fields.decimal_field_with_separator import DecimalFieldWithSeparator
 from app.forms.fields.integer_field_with_separator import IntegerFieldWithSeparator
@@ -329,3 +331,31 @@ def test_default_range():
 
     assert field_references["max_value"] == NumberHandler.MAX_NUMBER
     assert field_references["min_value"] == 0
+
+
+def test_get_schema_value_answer_store():
+    answer_schema = {
+        "id": "test-range",
+        "label": "",
+        "description": "Range Test",
+        "mandatory": False,
+        "type": "Number",
+        "decimal_places": 2,
+        "max_value": {"answer_id": "set-maximum"},
+        "min_value": {"answer_id": "set-minimum"},
+    }
+    mock_metadata = {"schema_name": "test_numbers", "language_code": "en"}
+    answer_store = AnswerStore()
+
+    answer_store.add_or_update(Answer(answer_id="set-maximum", value=10))
+    answer_store.add_or_update(Answer(answer_id="set-minimum", value=1))
+
+    number_handler = NumberHandler(
+        answer_schema, answer_store=answer_store, metadata=mock_metadata
+    )
+
+    max_value = number_handler.get_schema_value(answer_schema["max_value"])
+    min_value = number_handler.get_schema_value(answer_schema["min_value"])
+
+    assert max_value == 10
+    assert min_value == 1
