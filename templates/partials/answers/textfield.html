@@ -32,6 +32,9 @@
     "ariaLimitedResults": "Results have been limited to 10 suggestions. Type more characters to improve your search.",
     "typeaheadData": answer.suggestions_url
   }) %}
+  {% set config = config | setAttribute("other", {
+    "autocomplete": "off"
+  }) %}
 {% endif %}
 
 {{ onsInput(config) }}
