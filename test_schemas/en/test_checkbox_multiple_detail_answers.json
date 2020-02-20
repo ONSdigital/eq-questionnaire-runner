@@ -81,6 +81,7 @@
                                                 "label": "Your choice",
                                                 "q_code": "6",
                                                 "description": "Choose any other topping",
+                                                "max_length": 200,
                                                 "value": "Your choice",
                                                 "detail_answer": {
                                                     "mandatory": true,
