@@ -11,10 +11,10 @@ until [ "$checks" == 0 ]; do
         docker pull onsdigital/eq-questionnaire-validator:$branch
         docker run -d -p 5001:5000 "onsdigital/eq-questionnaire-validator:$branch"
         if [ "$checks"  != 1 ]; then
-            echo -e "Retrying...${default}\\n"
+            echo -e "Retrying...\\n"
             sleep 5
         else
-            echo -e "Exiting...${default}\\n"
+            echo -e "Exiting..\\n"
             exit 1
         fi
         (( checks-- ))
