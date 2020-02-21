@@ -120,16 +120,20 @@ class HubContext(Context):
         rows = []
 
         for section_id in enabled_section_ids:
+            show_on_hub = self._schema.get_show_on_hub_for_section(section_id)
 
-            section_title = self._schema.get_title_for_section(section_id)
-            repeating_list = self._schema.get_repeating_list_for_section(section_id)
+            if show_on_hub:
+                section_title = self._schema.get_title_for_section(section_id)
+                repeating_list = self._schema.get_repeating_list_for_section(section_id)
 
-            if repeating_list:
-                for list_item_id in self._list_store[repeating_list].items:
-                    rows.append(
-                        self._get_row_for_repeating_section(section_id, list_item_id)
-                    )
-            else:
-                rows.append(self._get_row_for_section(section_title, section_id))
+                if repeating_list:
+                    for list_item_id in self._list_store[repeating_list].items:
+                        rows.append(
+                            self._get_row_for_repeating_section(
+                                section_id, list_item_id
+                            )
+                        )
+                else:
+                    rows.append(self._get_row_for_section(section_title, section_id))
 
         return rows

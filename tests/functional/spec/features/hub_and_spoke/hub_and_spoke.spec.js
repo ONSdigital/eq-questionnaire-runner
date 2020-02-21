@@ -5,6 +5,8 @@ const HowManyPeopleLiveHere = require('../../../generated_pages/hub_and_spoke/ho
 const ProxyPage = require('../../../generated_pages/hub_and_spoke/proxy.page.js');
 const AccomodationDetailsSummaryBlockPage = require('../../../generated_pages/hub_and_spoke/accommodation-details-summary.page.js');
 const DoesAnyoneLiveHere = require('../../../generated_pages/hub_and_spoke/does-anyone-live-here.page.js');
+const Relationships = require('../../../generated_pages/hub_and_spoke/relationships.page.js');
+const RelationshipsSummary = require('../../../generated_pages/hub_and_spoke/relationships-summary.page.js');
 
 const HubPage = require('../../../base_pages/hub.page.js');
 
@@ -20,6 +22,11 @@ describe('Feature: Hub and Spoke', function () {
     expect($(HubPage.summaryRowState(2)).getText()).to.contain('Not started');
   });
 
+  it('When a user views the Hub, any section with show_on_hub set to false should not appear', function () {
+    browser.openQuestionnaire(hub_and_spoke_schema);
+    expect($(HubPage.submit()).getText()).not.to.contain('Relationships');
+  });
+
 
   describe('Given a user is on the Hub page', function () {
     it('When the user click the \'Save and sign out\' button then they should be on the signed out page', function () {
@@ -32,7 +39,6 @@ describe('Feature: Hub and Spoke', function () {
       expect(expectedUrl).to.contain('/signed-out');
     });
   });
-
 
   describe('Given a user has not started a section', function () {
     beforeEach('Open survey', function () {
@@ -161,7 +167,7 @@ describe('Feature: Hub and Spoke', function () {
     });
   });
 
-  describe('Given a user has completed all sections', function () {
+  describe.only('Given a user has completed all sections', function () {
     beforeEach('Complete all sections', function () {
       browser.openQuestionnaire(hub_and_spoke_schema);
       $(HubPage.summaryRowLink(1)).click();
@@ -177,6 +183,10 @@ describe('Feature: Hub and Spoke', function () {
       $(DoesAnyoneLiveHere.no()).click();
       $(DoesAnyoneLiveHere.submit()).click();
       $(HouseholdSummary.submit()).click();
+      $(HubPage.submit()).click();
+      $(Relationships.yes()).click();
+      $(Relationships.submit()).click();
+      $(RelationshipsSummary.submit()).click();
     });
 
     it('It should return them to the hub', function () {
@@ -214,18 +224,6 @@ describe('Feature: Hub and Spoke', function () {
     });
   });
 
-    describe('Given the user has completed a section with a summary mid section', function () {
-      it('When the user clicks \'View answers\' it will return to that section summary', function () {
-        browser.openQuestionnaire('test_hub_and_spoke.json');
-        $(HubPage.summaryRowLink(3)).click();
-        $(DoesAnyoneLiveHere.no()).click();
-        $(DoesAnyoneLiveHere.submit()).click();
-        $(HouseholdSummary.submit()).click();
-        $(HubPage.summaryRowLink(3)).click();
-        let expectedUrl = browser.getUrl();
-        expect(expectedUrl).to.contain(HouseholdSummary.url());
-      });
-    });
     describe('Given a section is complete and the user has been returned to a section summary by clicking the \'View answers\' link ', function () {
       beforeEach('Complete section', function () {
         browser.openQuestionnaire(hub_and_spoke_schema);

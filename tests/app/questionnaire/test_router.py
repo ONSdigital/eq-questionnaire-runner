@@ -419,36 +419,7 @@ class TestRouter(AppContextTestCase):  # pylint: disable=too-many-public-methods
             ),
         )
 
-    def test_get_section_return_location_when_section_complete_section_summary_mid_section(
-        self
-    ):
-        schema = load_schema_from_name("test_hub_and_spoke")
-
-        router = Router(
-            schema,
-            self.answer_store,
-            self.list_store,
-            self.progress_store,
-            self.metadata,
-        )
-
-        routing_path = RoutingPath(
-            ["does-anyone-live-here", "household-summary", "how-many-people-live-here"],
-            section_id="household-section",
-        )
-
-        location_when_section_complete = router.get_section_return_location_when_section_complete(
-            routing_path=routing_path
-        )
-
-        self.assertEqual(
-            location_when_section_complete,
-            Location(section_id="household-section", block_id="household-summary"),
-        )
-
-    def get_section_return_location_when_section_complete_section_summary_last_block(
-        self
-    ):
+    def get_section_return_location_when_section_complete_section_summary(self):
         schema = load_schema_from_name("test_hub_and_spoke")
 
         router = Router(
@@ -494,68 +465,6 @@ class TestRouter(AppContextTestCase):  # pylint: disable=too-many-public-methods
             location_when_section_complete,
             Location(section_id="employment-section", block_id="employment-status"),
         )
-
-    def test_get_next_location_url_for_mid_section_summary_when_section_complete(self):
-        schema = load_schema_from_name("test_hub_and_spoke")
-        progress_store = ProgressStore(
-            [
-                {
-                    "section_id": "household-section",
-                    "block_ids": ["does-anyone-live-here"],
-                    "status": "COMPLETED",
-                }
-            ]
-        )
-
-        router = Router(
-            schema, self.answer_store, self.list_store, progress_store, self.metadata
-        )
-
-        routing_path = RoutingPath(
-            ["does-anyone-live-here", "household-summary", "how-many-people-live-here"],
-            section_id="household-section",
-        )
-
-        with self.app_request_context("/questionnaire"):
-            current_location = Location(
-                section_id="household-section", block_id="household-summary"
-            )
-            next_location = router.get_next_location_url(current_location, routing_path)
-            self.assertEqual(next_location, url_for("questionnaire.get_questionnaire"))
-
-    def test_get_next_location_url_for_mid_section_summary_when_section_in_progress(
-        self
-    ):
-        schema = load_schema_from_name("test_hub_and_spoke")
-        progress_store = ProgressStore(
-            [
-                {
-                    "section_id": "household-section",
-                    "block_ids": ["does-anyone-live-here"],
-                    "status": "IN_PROGRESS",
-                }
-            ]
-        )
-
-        router = Router(
-            schema, self.answer_store, self.list_store, progress_store, self.metadata
-        )
-
-        routing_path = RoutingPath(
-            ["does-anyone-live-here", "household-summary", "how-many-people-live-here"],
-            section_id="household-section",
-        )
-
-        with self.app_request_context("/questionnaire"):
-            current_location = Location(
-                section_id="household-section", block_id="household-summary"
-            )
-            expected_location = Location(
-                section_id="household-section", block_id="how-many-people-live-here"
-            ).url()
-
-            next_location = router.get_next_location_url(current_location, routing_path)
-            self.assertEqual(next_location, expected_location)
 
     def test_enabled_section_ids(self):
         schema = load_schema_from_name("test_section_enabled_checkbox")
