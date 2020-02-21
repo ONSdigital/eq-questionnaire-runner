@@ -27,6 +27,35 @@
         {
             "id": "section",
             "title": "People",
+            "summary": [
+                {
+                    "type": "List",
+                    "for_list": "people",
+                    "title": "Household members",
+                    "add_link_text": "Add someone to this household",
+                    "empty_list_text": "There are no householders",
+                    "item_title": {
+                        "text": "{person_name}",
+                        "placeholders": [
+                            {
+                                "placeholder": "person_name",
+                                "transforms": [
+                                    {
+                                        "arguments": {
+                                            "delimiter": " ",
+                                            "list_to_concatenate": {
+                                                "identifier": ["first-name", "last-name"],
+                                                "source": "answers"
+                                            }
+                                        },
+                                        "transform": "concatenate_list"
+                                    }
+                                ]
+                            }
+                        ]
+                    }
+                }
+            ],
             "groups": [
                 {
                     "id": "group",
@@ -101,7 +130,6 @@
                             "id": "anyone-else-live-at",
                             "type": "ListCollector",
                             "for_list": "people",
-                            "show_on_section_summary": true,
                             "add_answer": {
                                 "id": "anyone-else-live-at-answer",
                                 "value": "Yes"
@@ -225,9 +253,7 @@
                                             ]
                                         }
                                     ]
-                                },
-                                "add_link_text": "Add someone to this household",
-                                "empty_list_text": "There are no householders"
+                                }
                             }
                         },
                         {
