@@ -1,7 +1,7 @@
-from werkzeug.utils import cached_property
-from app.forms.fields.max_string_field import MaxStringField
 from wtforms import validators
+from werkzeug.utils import cached_property
 
+from app.forms.fields.max_string_field import MaxStringField
 from app.forms.field_handlers.field_handler import FieldHandler
 
 
@@ -13,7 +13,7 @@ class StringHandler(FieldHandler):
         validate_with = super().validators
 
         if self.disable_validation is False:
-            validate_with.append(self.get_length_validator())
+            validate_with.append(self.get_length_validator)
 
         return validate_with
 

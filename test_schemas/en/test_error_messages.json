@@ -56,14 +56,6 @@
                                         "type": "Currency",
                                         "currency": "GBP",
                                         "decimal_places": 2
-                                    },
-                                    {
-                                        "id": "test-textfield",
-                                        "description": "",
-                                        "label": "String more than 10 characters",
-                                        "mandatory": false,
-                                        "type": "TextField",
-                                        "max_length": 10
                                     }
                                 ],
                                 "description": "",
