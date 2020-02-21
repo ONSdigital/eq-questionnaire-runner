@@ -326,7 +326,7 @@
                         {
                             "id": "group-summary",
                             "title": "Primary Person List Collector Summary",
-                            "type": "ListCollectorSummary"
+                            "type": "SectionSummary"
                         }
                     ]
                 }

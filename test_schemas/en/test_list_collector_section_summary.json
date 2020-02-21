@@ -539,7 +539,7 @@
                         {
                             "id": "people-list-section-summary",
                             "title": "List Collector Summary",
-                            "type": "ListCollectorSummary"
+                            "type": "SectionSummary"
                         },
                         {
                             "type": "Interstitial",

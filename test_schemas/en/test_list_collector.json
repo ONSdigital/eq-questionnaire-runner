@@ -342,7 +342,7 @@
                         {
                             "id": "group-summary",
                             "title": "List Collector Summary",
-                            "type": "ListCollectorSummary"
+                            "type": "SectionSummary"
                         }
                     ]
                 }

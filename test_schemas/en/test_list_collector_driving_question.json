@@ -257,7 +257,7 @@
                             }
                         },
                         {
-                            "type": "ListCollectorSummary",
+                            "type": "SectionSummary",
                             "title": "List Collector Driving Question Summary",
                             "id": "summary"
                         }

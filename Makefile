@@ -1,3 +1,5 @@
+.PHONY: run-validator
+
 clean:
 	rm -rf schemas
 	rm -rf templates/components
@@ -24,7 +26,7 @@ test-unit:
 test-functional:
 	pipenv run ./scripts/run_tests_functional.sh
 
-validate-test-schemas:
+validate-test-schemas: run-validator
 	pipenv run ./scripts/validate_test_schemas.sh
 
 translation-templates:
