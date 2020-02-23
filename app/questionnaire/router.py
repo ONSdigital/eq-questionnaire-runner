@@ -187,6 +187,16 @@ class Router:
             list_name=routing_path.list_name,
         )
 
+    def is_survey_complete(self):
+        first_incomplete_section_key = self._get_first_incomplete_section_key()
+        if first_incomplete_section_key:
+            section_id = first_incomplete_section_key[0]
+            if self._does_section_only_contain_summary(section_id):
+                return True
+            return False
+
+        return True
+
     def get_section_return_location_when_section_complete(self, routing_path):
 
         last_block_id = routing_path[-1]
@@ -205,16 +215,6 @@ class Router:
             list_name=routing_path.list_name,
             list_item_id=routing_path.list_item_id,
         )
-
-    def is_survey_complete(self):
-        first_incomplete_section_key = self._get_first_incomplete_section_key()
-        if first_incomplete_section_key:
-            section_id = first_incomplete_section_key[0]
-            if self._does_section_only_contain_summary(section_id):
-                return True
-            return False
-
-        return True
 
     def is_path_complete(self, routing_path):
         location = self._get_first_incomplete_location(routing_path)
