@@ -167,7 +167,7 @@ describe('Feature: Hub and Spoke', function () {
     });
   });
 
-  describe.only('Given a user has completed all sections', function () {
+  describe('Given a user has completed all sections', function () {
     beforeEach('Complete all sections', function () {
       browser.openQuestionnaire(hub_and_spoke_schema);
       $(HubPage.summaryRowLink(1)).click();

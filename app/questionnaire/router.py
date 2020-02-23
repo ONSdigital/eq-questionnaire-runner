@@ -197,6 +197,15 @@ class Router:
 
         return True
 
+    def is_path_complete(self, routing_path):
+        location = self._get_first_incomplete_location(routing_path)
+        if not location or (
+            location.block_id == routing_path[-1]
+            and self._schema.get_block(location.block_id)["type"] == "SectionSummary"
+        ):
+            return True
+        return False
+
     def get_section_return_location_when_section_complete(self, routing_path):
 
         last_block_id = routing_path[-1]
@@ -215,15 +224,6 @@ class Router:
             list_name=routing_path.list_name,
             list_item_id=routing_path.list_item_id,
         )
-
-    def is_path_complete(self, routing_path):
-        location = self._get_first_incomplete_location(routing_path)
-        if not location or (
-            location.block_id == routing_path[-1]
-            and self._schema.get_block(location.block_id)["type"] == "SectionSummary"
-        ):
-            return True
-        return False
 
     def full_routing_path(self):
         full_routing_path = []
