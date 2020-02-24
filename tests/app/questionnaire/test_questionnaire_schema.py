@@ -13,6 +13,29 @@ def test_get_section(single_question_schema):
     assert section["title"] == "Section 1"
 
 
+def test_get_summary_for_section(section_with_custom_summary):
+    schema = QuestionnaireSchema(section_with_custom_summary)
+    section_summary = schema.get_summary_for_section("section")
+
+    expected_keys = {
+        "type",
+        "for_list",
+        "title",
+        "add_link_text",
+        "empty_list_text",
+        "item_title",
+    }
+
+    assert len(section_summary) == 1
+    assert section_summary[0].keys() == expected_keys
+
+
+def test_get_summary_for_section_doesnt_exist(section_with_custom_summary):
+    del section_with_custom_summary["sections"][0]["summary"]
+    schema = QuestionnaireSchema(section_with_custom_summary)
+    assert schema.get_summary_for_section("section") is None
+
+
 def test_get_blocks(single_question_schema):
     schema = QuestionnaireSchema(single_question_schema)
     assert len(schema.get_blocks()) == 1

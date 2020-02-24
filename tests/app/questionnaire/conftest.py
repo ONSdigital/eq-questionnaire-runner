@@ -569,6 +569,69 @@ def mock_relationship_collector_schema():
     }
 
 
+@pytest.fixture()
+def section_with_custom_summary():
+    return {
+        "sections": [
+            {
+                "id": "section",
+                "summary": [
+                    {
+                        "type": "List",
+                        "for_list": "people",
+                        "title": "Householders",
+                        "add_link_text": "Add a person",
+                        "empty_list_text": "No householders",
+                        "item_title": {
+                            "text": "{person_name}",
+                            "placeholders": [
+                                {
+                                    "placeholder": "person_name",
+                                    "transforms": [
+                                        {
+                                            "arguments": {
+                                                "delimiter": " ",
+                                                "list_to_concatenate": {
+                                                    "identifier": [
+                                                        "first-name",
+                                                        "last-name",
+                                                    ],
+                                                    "source": "answers",
+                                                },
+                                            },
+                                            "transform": "concatenate_list",
+                                        }
+                                    ],
+                                }
+                            ],
+                        },
+                    }
+                ],
+                "groups": [
+                    {
+                        "id": "group",
+                        "title": "List",
+                        "blocks": [
+                            {
+                                "type": "RelationshipCollector",
+                                "id": "relationships",
+                                "for_list": "people",
+                                "question": {},
+                            },
+                            {
+                                "type": "RelationshipCollector",
+                                "id": "not-people-relationship-collector",
+                                "for_list": "not-people",
+                                "question": {},
+                            },
+                        ],
+                    }
+                ],
+            }
+        ]
+    }
+
+
 @pytest.fixture
 def section_with_repeating_list():
     return {

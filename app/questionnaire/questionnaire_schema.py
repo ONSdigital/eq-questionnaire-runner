@@ -79,6 +79,9 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
     def get_title_for_section(self, section_id):
         return self._sections_by_id.get(section_id).get("title")
 
+    def get_summary_for_section(self, section_id: str):
+        return self._sections_by_id.get(section_id).get("summary")
+
     def get_repeating_list_for_section(self, section_id):
         return self._sections_by_id.get(section_id).get("repeat", {}).get("for_list")
 
