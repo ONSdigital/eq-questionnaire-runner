@@ -102,7 +102,7 @@ def test_get_referenced_offset_value_for_now_value(app):
 
 def test_get_referenced_offset_value_for_meta(app):
     test_metadata = {"date": "2018-02-20"}
-    answer = {"minimum": {"meta": "date"}}
+    answer = {"minimum": {"value": {"identifier": "date", "source": "metadata"}}}
 
     handler = DateHandler(answer, metadata=test_metadata)
     minimum_date = handler.get_date_value("minimum")
@@ -185,7 +185,10 @@ def test_minimum_and_maximum_offset_dates(app):
     answer = {
         "id": "date_answer",
         "type": "Date",
-        "minimum": {"meta": "date", "offset_by": {"days": -10}},
+        "minimum": {
+            "value": {"identifier": "date", "source": "metadata"},
+            "offset_by": {"days": -10},
+        },
         "maximum": {
             "value": {"identifier": "date", "source": "answers"},
             "offset_by": {"years": 1},

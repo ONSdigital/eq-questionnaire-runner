@@ -114,7 +114,10 @@
                                         "mandatory": true,
                                         "type": "Date",
                                         "minimum": {
-                                            "meta": "ref_p_start_date",
+                                            "value": {
+                                                "source": "metadata",
+                                                "identifier": "ref_p_start_date"
+                                            },
                                             "offset_by": {
                                                 "days": -19
                                             }
