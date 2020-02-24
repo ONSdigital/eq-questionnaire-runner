@@ -38,10 +38,10 @@
                                         "mandatory": true,
                                         "type": "Number",
                                         "decimal_places": 2,
-                                        "min_value": {
+                                        "minimum": {
                                             "value": 0
                                         },
-                                        "max_value": {
+                                        "maximum": {
                                             "value": 1000
                                         }
                                     },
@@ -52,10 +52,10 @@
                                         "mandatory": true,
                                         "type": "Number",
                                         "decimal_places": 2,
-                                        "min_value": {
+                                        "minimum": {
                                             "value": 1001
                                         },
-                                        "max_value": {
+                                        "maximum": {
                                             "value": 10000
                                         }
                                     }
@@ -110,10 +110,10 @@
                                         "mandatory": false,
                                         "type": "Number",
                                         "decimal_places": 2,
-                                        "max_value": {
+                                        "maximum": {
                                             "answer_id": "set-maximum"
                                         },
-                                        "min_value": {
+                                        "minimum": {
                                             "answer_id": "set-minimum"
                                         }
                                     },
@@ -156,11 +156,11 @@
                                         "mandatory": false,
                                         "type": "Number",
                                         "decimal_places": 2,
-                                        "max_value": {
+                                        "maximum": {
                                             "answer_id": "set-maximum",
                                             "exclusive": true
                                         },
-                                        "min_value": {
+                                        "minimum": {
                                             "answer_id": "set-minimum",
                                             "exclusive": true
                                         }
@@ -171,7 +171,7 @@
                                         "label": "Min Test (123 to 9,999,999,999)",
                                         "mandatory": false,
                                         "type": "Number",
-                                        "min_value": {
+                                        "minimum": {
                                             "value": 123
                                         }
                                     },
@@ -181,7 +181,7 @@
                                         "label": "Max Test (0 to 1,234)",
                                         "mandatory": false,
                                         "type": "Number",
-                                        "max_value": {
+                                        "maximum": {
                                             "value": 1234
                                         }
                                     },
@@ -191,7 +191,7 @@
                                         "label": "Min Exclusive Test (124 to 9,999,999,999 - 123 Exclusive)",
                                         "mandatory": false,
                                         "type": "Number",
-                                        "min_value": {
+                                        "minimum": {
                                             "value": 123,
                                             "exclusive": true
                                         }
@@ -202,7 +202,7 @@
                                         "label": "Max Exclusive Test (0 to 1,233 - 1,234 Exclusive)",
                                         "mandatory": false,
                                         "type": "Number",
-                                        "max_value": {
+                                        "maximum": {
                                             "value": 1234,
                                             "exclusive": true
                                         }
@@ -213,7 +213,7 @@
                                         "label": "Percent Test (0 to 100)",
                                         "mandatory": false,
                                         "type": "Percentage",
-                                        "max_value": {
+                                        "maximum": {
                                             "value": 100
                                         }
                                     },
@@ -257,10 +257,10 @@
                                         "type": "Currency",
                                         "currency": "GBP",
                                         "decimal_places": 2,
-                                        "max_value": {
+                                        "maximum": {
                                             "answer_id": "set-maximum"
                                         },
-                                        "min_value": {
+                                        "minimum": {
                                             "answer_id": "set-minimum"
                                         }
                                     }

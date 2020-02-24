@@ -253,11 +253,11 @@
                                         "id": "answerc5d3639c-dc1d-4ccc-a386-2df94b367dc3",
                                         "label": "Percentage who use computers",
                                         "mandatory": true,
-                                        "max_value": {
+                                        "maximum": {
                                             "exclusive": false,
                                             "value": 100
                                         },
-                                        "min_value": {
+                                        "minimum": {
                                             "exclusive": false,
                                             "value": 0
                                         },
@@ -439,11 +439,11 @@
                                         "id": "answerfddb2dbd-1054-414c-ad70-bb397db1b5c8",
                                         "label": "Percentage of people with internet access",
                                         "mandatory": true,
-                                        "max_value": {
+                                        "maximum": {
                                             "answer_id": "answerc5d3639c-dc1d-4ccc-a386-2df94b367dc3",
                                             "exclusive": false
                                         },
-                                        "min_value": {
+                                        "minimum": {
                                             "exclusive": false,
                                             "value": 0
                                         },
@@ -1076,11 +1076,11 @@
                                         "id": "answer9cc30dc1-89fd-4a8d-8495-8d816f9f3ce1",
                                         "label": "Percentage turnover from orders via website or ‘app’",
                                         "mandatory": true,
-                                        "max_value": {
+                                        "maximum": {
                                             "exclusive": false,
                                             "value": 100
                                         },
-                                        "min_value": {
+                                        "minimum": {
                                             "exclusive": false,
                                             "value": 0
                                         },
@@ -1215,11 +1215,11 @@
                                         "id": "answer05718a5c-7a65-4775-b28f-e2787cfa6ac1",
                                         "label": "Sales to private customers (B2C)",
                                         "mandatory": true,
-                                        "max_value": {
+                                        "maximum": {
                                             "exclusive": false,
                                             "value": 100
                                         },
-                                        "min_value": {
+                                        "minimum": {
                                             "exclusive": false,
                                             "value": 0
                                         },
@@ -1231,11 +1231,11 @@
                                         "id": "answer2565ef7d-9fda-4485-b05c-1e4678fa97cd",
                                         "label": "Sales to other businesses (B2B) and public authorities (B2G)",
                                         "mandatory": true,
-                                        "max_value": {
+                                        "maximum": {
                                             "exclusive": false,
                                             "value": 100
                                         },
-                                        "min_value": {
+                                        "minimum": {
                                             "exclusive": false,
                                             "value": 0
                                         },
@@ -1369,11 +1369,11 @@
                                         "id": "answer7f9aa610-1122-48c3-9ba1-521891b0a11f",
                                         "label": "Percentage of orders from your business’ own website or ‘app’",
                                         "mandatory": true,
-                                        "max_value": {
+                                        "maximum": {
                                             "exclusive": false,
                                             "value": 100
                                         },
-                                        "min_value": {
+                                        "minimum": {
                                             "exclusive": false,
                                             "value": 0
                                         },
@@ -1385,11 +1385,11 @@
                                         "id": "answer981e53d9-69df-40b9-9349-5a44cf6ad419",
                                         "label": "Percentage of orders from an e-commerce market place website or ‘app’",
                                         "mandatory": true,
-                                        "max_value": {
+                                        "maximum": {
                                             "exclusive": false,
                                             "value": 100
                                         },
-                                        "min_value": {
+                                        "minimum": {
                                             "exclusive": false,
                                             "value": 0
                                         },
@@ -1564,11 +1564,11 @@
                                         "id": "answerb5dbdafd-0c0d-4512-8372-06a864672d29",
                                         "label": "UK",
                                         "mandatory": true,
-                                        "max_value": {
+                                        "maximum": {
                                             "exclusive": false,
                                             "value": 100
                                         },
-                                        "min_value": {
+                                        "minimum": {
                                             "exclusive": false,
                                             "value": 0
                                         },
@@ -1580,11 +1580,11 @@
                                         "id": "answerce1c8c54-b803-4d8d-bbc2-3f79ba2b5004",
                                         "label": "Other EU countries",
                                         "mandatory": true,
-                                        "max_value": {
+                                        "maximum": {
                                             "exclusive": false,
                                             "value": 100
                                         },
-                                        "min_value": {
+                                        "minimum": {
                                             "exclusive": false,
                                             "value": 0
                                         },
@@ -1605,11 +1605,11 @@
                                         "id": "answer8794a304-c6fe-40a8-9309-04c8c66736ed",
                                         "label": "Rest of the World",
                                         "mandatory": true,
-                                        "max_value": {
+                                        "maximum": {
                                             "exclusive": false,
                                             "value": 100
                                         },
-                                        "min_value": {
+                                        "minimum": {
                                             "exclusive": false,
                                             "value": 0
                                         },
@@ -1773,11 +1773,11 @@
                                         "id": "answer95e76ade-2713-4ba4-927a-756101448a7f",
                                         "label": "Percentage of turnover received from EDI type messages",
                                         "mandatory": true,
-                                        "max_value": {
+                                        "maximum": {
                                             "exclusive": false,
                                             "value": 100
                                         },
-                                        "min_value": {
+                                        "minimum": {
                                             "exclusive": false,
                                             "value": 0
                                         },
@@ -1983,11 +1983,11 @@
                                         "id": "answer9d2bc425-2ed2-4743-8ee6-1f7215af29a1",
                                         "label": "UK",
                                         "mandatory": true,
-                                        "max_value": {
+                                        "maximum": {
                                             "exclusive": false,
                                             "value": 100
                                         },
-                                        "min_value": {
+                                        "minimum": {
                                             "exclusive": false,
                                             "value": 0
                                         },
@@ -1999,11 +1999,11 @@
                                         "id": "answera4eccc5c-69c2-4da5-9452-59503cb21f6f",
                                         "label": "Other EU countries",
                                         "mandatory": true,
-                                        "max_value": {
+                                        "maximum": {
                                             "exclusive": false,
                                             "value": 100
                                         },
-                                        "min_value": {
+                                        "minimum": {
                                             "exclusive": false,
                                             "value": 0
                                         },
@@ -2024,11 +2024,11 @@
                                         "id": "answerbfedc667-482f-4115-89fe-92601b0aae19",
                                         "label": "Rest of the World",
                                         "mandatory": true,
-                                        "max_value": {
+                                        "maximum": {
                                             "exclusive": false,
                                             "value": 100
                                         },
-                                        "min_value": {
+                                        "minimum": {
                                             "exclusive": false,
                                             "value": 0
                                         },
