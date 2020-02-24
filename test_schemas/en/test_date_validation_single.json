@@ -132,7 +132,10 @@
                                         "mandatory": true,
                                         "type": "Date",
                                         "minimum": {
-                                            "answer_id": "date",
+                                            "value": {
+                                                "source": "answers",
+                                                "identifier": "date"
+                                            },
                                             "offset_by": {
                                                 "months": 1,
                                                 "days": 10

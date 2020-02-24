@@ -440,7 +440,10 @@
                                         "label": "Percentage of people with internet access",
                                         "mandatory": true,
                                         "maximum": {
-                                            "answer_id": "answerc5d3639c-dc1d-4ccc-a386-2df94b367dc3",
+                                            "value": {
+                                                "source": "answers",
+                                                "identifier": "answerc5d3639c-dc1d-4ccc-a386-2df94b367dc3"
+                                            },
                                             "exclusive": false
                                         },
                                         "minimum": {

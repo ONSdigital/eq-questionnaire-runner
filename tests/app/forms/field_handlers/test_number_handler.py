@@ -341,8 +341,8 @@ def test_get_schema_value_answer_store():
         "mandatory": False,
         "type": "Number",
         "decimal_places": 2,
-        "maximum": {"answer_id": "set-maximum"},
-        "minimum": {"answer_id": "set-minimum"},
+        "maximum": {"value": {"identifier": "set-maximum", "source": "answers"}},
+        "minimum": {"value": {"identifier": "set-minimum", "source": "answers"}},
     }
     mock_metadata = {"schema_name": "test_numbers", "language_code": "en"}
     answer_store = AnswerStore()

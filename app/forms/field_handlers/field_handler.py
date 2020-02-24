@@ -64,15 +64,18 @@ class FieldHandler(ABC):
         if "meta" in schema_element:
             return get_metadata_value(self.metadata, schema_element["meta"])
         if "value" in schema_element:
-            return schema_element["value"]
-        if "answer_id" in schema_element:
-            schema = load_schema_from_metadata(self.metadata)
-            answer_id = schema_element.get("answer_id")
-            list_item_id = self.location.list_item_id if self.location else None
+            if (
+                type(schema_element["value"]) is dict
+                and schema_element["value"]["source"] == "answers"
+            ):
+                schema = load_schema_from_metadata(self.metadata)
+                answer_id = schema_element["value"].get("identifier")
+                list_item_id = self.location.list_item_id if self.location else None
 
-            return get_answer_value(
-                answer_id, self.answer_store, schema, list_item_id=list_item_id
-            )
+                return get_answer_value(
+                    answer_id, self.answer_store, schema, list_item_id=list_item_id
+                )
+            return schema_element["value"]
 
     @abstractmethod
     def get_field(self) -> Field:

@@ -61,9 +61,7 @@ class NumberHandler(FieldHandler):
 
         minimum = self.get_schema_value(schema_minimum) if schema_minimum else 0
         maximum = (
-            self.get_schema_value(schema_maximum)
-            if schema_maximum
-            else self.MAX_NUMBER
+            self.get_schema_value(schema_maximum) if schema_maximum else self.MAX_NUMBER
         )
 
         return {

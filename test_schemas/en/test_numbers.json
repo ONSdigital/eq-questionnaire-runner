@@ -111,10 +111,16 @@
                                         "type": "Number",
                                         "decimal_places": 2,
                                         "maximum": {
-                                            "answer_id": "set-maximum"
+                                            "value": {
+                                                "source": "answers",
+                                                "identifier": "set-maximum"
+                                            }
                                         },
                                         "minimum": {
-                                            "answer_id": "set-minimum"
+                                            "value": {
+                                                "source": "answers",
+                                                "identifier": "set-minimum"
+                                            }
                                         }
                                     },
                                     {
@@ -157,11 +163,17 @@
                                         "type": "Number",
                                         "decimal_places": 2,
                                         "maximum": {
-                                            "answer_id": "set-maximum",
+                                            "value": {
+                                                "source": "answers",
+                                                "identifier": "set-maximum"
+                                            },
                                             "exclusive": true
                                         },
                                         "minimum": {
-                                            "answer_id": "set-minimum",
+                                            "value": {
+                                                "source": "answers",
+                                                "identifier": "set-minimum"
+                                            },
                                             "exclusive": true
                                         }
                                     },
@@ -258,10 +270,16 @@
                                         "currency": "GBP",
                                         "decimal_places": 2,
                                         "maximum": {
-                                            "answer_id": "set-maximum"
+                                            "value": {
+                                                "source": "answers",
+                                                "identifier": "set-maximum"
+                                            }
                                         },
                                         "minimum": {
-                                            "answer_id": "set-minimum"
+                                            "value": {
+                                                "source": "answers",
+                                                "identifier": "set-minimum"
+                                            }
                                         }
                                     }
                                 ],
