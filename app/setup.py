@@ -57,7 +57,11 @@ CSP_POLICY = {
         "https://fonts.googleapis.com",
         "'unsafe-inline'",
     ],
-    "connect-src": ["'self'", "https://cdn.ons.gov.uk"],
+    "connect-src": [
+        "'self'",
+        "https://cdn.ons.gov.uk",
+        "https://cdn.eq.census-gcp.onsdigital.uk",
+    ],
     "frame-src": ["https://www.googletagmanager.com"],
     "img-src": [
         "'self'",
