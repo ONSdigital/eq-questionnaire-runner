@@ -1,3 +1,6 @@
+from itertools import chain
+from typing import Iterable, Mapping
+
 from flask import url_for
 
 from app.questionnaire.location import Location
@@ -71,14 +74,22 @@ class SummaryContext(Context):
         return title
 
     def section_summary(self, current_location):
-        section = self._schema.get_section(current_location.block_id)
-        section_summary = self._schema.get_section_summary(section.section_id)
-        if section_summary:
-            return self.custom_section_summary(
-                current_location, section_summary, section
-            )
-
+        section_id = self._schema.get_section_id_for_block_id(current_location.block_id)
+        section = self._schema.get_section(section_id)
+        section_summary = self._schema.get_summary_for_section(section_id)
         block = self._schema.get_block(current_location.block_id)
+
+        if section_summary:
+            return {
+                "summary": {
+                    "title": block["title"],
+                    "list_summaries": self.custom_section_summary(
+                        current_location, section_summary, section
+                    ),
+                    "summary_type": "SectionSummary",
+                }
+            }
+
         return {
             "summary": {
                 "groups": self.build_groups_for_location(current_location),
@@ -89,37 +100,42 @@ class SummaryContext(Context):
             }
         }
 
-    def custom_section_summary(self, current_location, section_summary, section):
-        block = self._schema.get_block(current_location.block_id)
-
+    def custom_section_summary(
+        self, current_location, section_summary: Iterable[Mapping], section
+    ):
         summaries = [
-            self.get_list_summary(summary, current_location, section)
+            self.get_list_summaries(summary, current_location, section)
             for summary in section_summary
             if summary["type"] == "List"
         ]
 
-        return {"summary": {"title": block["title"], "list_summaries": summaries}}
+        return list(chain.from_iterable(summaries))
 
-    def get_list_summary(self, summary, current_location, section):
-        visible_list_collector_blocks = self._schema.get_visible_list_blocks_for_section(
-            section
-        )
+    def get_list_summaries(
+        self, summary: Mapping, current_location, section: Mapping
+    ) -> Iterable[Mapping]:
         routing_path = self._router.routing_path(
             section["id"], current_location.list_item_id
         )
-        list_summaries = []
 
-        for list_collector_block in visible_list_collector_blocks:
+        list_collector_blocks = [
+            list_collector
+            for list_collector in self._schema.get_list_collectors_for_section(section)
+            if list_collector["for_list"] == summary["for_list"]
+        ]
+
+        list_summaries = []
+        for list_collector_block in list_collector_blocks:
             add_link = url_for(
                 "questionnaire.block",
-                list_name=list_collector_block["for_list"],
+                list_name=summary["for_list"],
                 block_id=list_collector_block["add_block"]["id"],
                 return_to=current_location.block_id,
             )
 
             if list_collector_block["id"] not in routing_path:
                 driving_question_block = QuestionnaireSchema.get_driving_question_for_list(
-                    section, list_collector_block["for_list"]
+                    section, summary["for_list"]
                 )
 
                 if driving_question_block:
@@ -128,7 +144,7 @@ class SummaryContext(Context):
                     )
 
             rendered_summary = self._placeholder_renderer.render(
-                list_collector_block["summary"], current_location.list_item_id
+                summary, current_location.list_item_id
             )
 
             list_context = ListCollectorContext(
@@ -149,13 +165,11 @@ class SummaryContext(Context):
                 "add_link": add_link,
                 "add_link_text": rendered_summary["add_link_text"],
                 "empty_list_text": rendered_summary["empty_list_text"],
-                "list_name": list_collector_block["for_list"],
+                "list_name": summary["for_list"],
             }
 
             if list_items:
                 list_summary["list"] = {"list_items": list_items, "editable": True}
 
             list_summaries.append(list_summary)
-
         return list_summaries
-

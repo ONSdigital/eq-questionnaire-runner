@@ -16,15 +16,33 @@
       <strong>{{ _("Please submit this survey to complete it") }}</strong>
       <p>{{ _("Check your answers before submitting") }}</p>
     {% endcall %}
-  {% elif content.summary.summary_type in ('SectionSummary') %}
-    {% set group = content.summary.groups %}
-
-    <h1>{{content.summary.title}}</h1>
-      {% call onsPanel({
-        "classes": "print__hidden u-mb-l"
-      }) %}
-        <p>{{ _("Check your answers before continuing to the next section") }}</p>
-      {% endcall %}
+  {% elif content.summary.summary_type == 'SectionSummary' %}
+    {% if content.summary.list_summaries %}
+        <h1>{{content.summary.title}}</h1>{% for list_summary in content.summary.list_summaries %}
+        <div data-qa="{{list_summary.list_name}}-list-summary">
+          <h2>{{list_summary.title}}</h2>
+            {% if list_summary.list %}
+              {% set list = list_summary.list %}
+              {% include 'partials/summary/list-summary.html' %}
+            {% else %}
+              <div class="u-mb-s">
+                {{ list_summary.empty_list_text }}
+              </div>
+            {% endif %}
+            <div class="u-mb-l">
+              <a data-qa="add-item-link" href="{{list_summary.add_link}}">{{list_summary.add_link_text}}</a>
+            </div>
+        </div>
+      {% endfor %}
+    {% elif content.summary.groups %}
+      {% set group = content.summary.groups %}
+      <h1>{{content.summary.title}}</h1>
+        {% call onsPanel({
+          "classes": "print__hidden u-mb-l"
+        }) %}
+          <p>{{ _("Check your answers before continuing to the next section") }}</p>
+        {% endcall %}
+    {% endif %}
   {% elif content.summary.summary_type == 'CalculatedSummary' %}
     <h1 data-qa="calculated-summary-title">{{content.summary.title}}</h1>
 

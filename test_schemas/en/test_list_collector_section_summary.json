@@ -85,7 +85,7 @@
                     "type": "List",
                     "for_list": "visitors",
                     "title": {
-                        "text": "Vistors staying overnight on {census_date} at {household_address}",
+                        "text": "Visitors staying overnight on {census_date} at {household_address}",
                         "placeholders": [
                             {
                                 "placeholder": "census_date",
