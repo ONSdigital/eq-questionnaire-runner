@@ -430,7 +430,10 @@ class TestRouter(AppContextTestCase):  # pylint: disable=too-many-public-methods
             self.metadata,
         )
 
-        routing_path = RoutingPath(["proxy", "accommodation-details-summary"], section_id="accommodation-section")
+        routing_path = RoutingPath(
+            ["proxy", "accommodation-details-summary"],
+            section_id="accommodation-section",
+        )
         location_when_section_complete = router.get_section_return_location_when_section_complete(
             routing_path=routing_path
         )
