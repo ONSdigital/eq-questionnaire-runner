@@ -160,9 +160,7 @@ class SummaryContext(Context):
                 "add_link_text": rendered_summary["add_link_text"],
                 "empty_list_text": rendered_summary["empty_list_text"],
                 "list_name": summary["for_list"],
+                "list": {"list_items": list_items, "editable": True},
             }
-
-            if list_items:
-                list_summary["list"] = {"list_items": list_items, "editable": True}
 
             yield list_summary
