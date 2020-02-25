@@ -206,14 +206,16 @@ class Router:
             return True
         return False
 
-    def get_section_return_location_when_section_complete(self, routing_path):
+    def get_section_return_location_when_section_complete(
+        self, routing_path
+    ) -> Location:
 
         last_block_id = routing_path[-1]
         block = self._schema.get_block(last_block_id)
 
-        if block["type"] == "SectionSummary":
+        if block["type"] in ["SectionSummary", "ListCollectorSummary"]:
             return Location(
-                block_id=routing_path[-1],
+                block_id=last_block_id,
                 section_id=routing_path.section_id,
                 list_name=routing_path.list_name,
                 list_item_id=routing_path.list_item_id,

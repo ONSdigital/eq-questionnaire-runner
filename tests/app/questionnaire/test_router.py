@@ -419,7 +419,7 @@ class TestRouter(AppContextTestCase):  # pylint: disable=too-many-public-methods
             ),
         )
 
-    def get_section_return_location_when_section_complete_section_summary(self):
+    def test_get_section_return_location_when_section_complete_section_summary(self):
         schema = load_schema_from_name("test_hub_and_spoke")
 
         router = Router(
@@ -430,9 +430,9 @@ class TestRouter(AppContextTestCase):  # pylint: disable=too-many-public-methods
             self.metadata,
         )
 
-        full_routing_path = [RoutingPath(["proxy"], section_id="accommodation-section")]
+        routing_path = RoutingPath(["proxy", "accommodation-details-summary"], section_id="accommodation-section")
         location_when_section_complete = router.get_section_return_location_when_section_complete(
-            routing_path=full_routing_path
+            routing_path=routing_path
         )
         self.assertEqual(
             location_when_section_complete,
