@@ -397,7 +397,8 @@ class SummaryRowItem:
             self.valueList = [SummaryRowItemValue(no_answer_provided)]
         elif answer_type == "checkbox":
             self.valueList = [
-                SummaryRowItemValue(val.label, val.detail_answer_value) for val in value
+                SummaryRowItemValue(option["label"], option["detail_answer_value"])
+                for option in value
             ]
         elif answer_type == "currency":
             self.valueList = [
@@ -451,7 +452,7 @@ class SummaryRow:
         edit_link_text,
         edit_link_aria_label,
     ):
-        self.title = question["title"]
+        self.rowTitle = question["title"]
         self.rowItems = []
 
         multiple_answers = len(question["answers"]) > 1
@@ -551,7 +552,7 @@ def map_list_collector_config(
             )
 
         rows.append(
-            {"title": item_name, "rowItems": [{"icon": icon, "actions": actions}]}
+            {"rowTitle": item_name, "rowItems": [{"icon": icon, "actions": actions}]}
         )
 
     return rows

@@ -1,35 +1,28 @@
 #!/usr/bin/env bash
-
-set -e
+set -exo pipefail
 
 if [[ -z "$SUBMISSION_BUCKET_NAME" ]]; then
   echo "SUBMISSION_BUCKET_NAME is mandatory"
   exit 1
 fi
 
-DOCKER_REGISTRY="${DOCKER_REGISTRY:-eu.gcr.io/census-eq-ci}"
-IMAGE_TAG="${IMAGE_TAG:-latest}"
-REQUESTED_CPU_PER_POD="${REQUESTED_CPU_PER_POD:-3}"
-ROLLING_UPDATE_MAX_UNAVAILABLE="${ROLLING_UPDATE_MAX_UNAVAILABLE:-1}"
-ROLLING_UPDATE_MAX_SURGE="${ROLLING_UPDATE_MAX_SURGE:-1}"
-MIN_REPLICAS="${MIN_REPLICAS:-3}"
-MAX_REPLICAS="${MAX_REPLICAS:-10}"
-TARGET_CPU_UTILIZATION_PERCENTAGE="${TARGET_CPU_UTILIZATION_PERCENTAGE:-50}"
-
 helm tiller run \
     helm upgrade --install \
     survey-runner \
     k8s/helm \
-    --set submissionBucket=${SUBMISSION_BUCKET_NAME} \
-    --set googleTagManagerId=${GOOGLE_TAG_MANAGER_ID} \
-    --set googleTagManagerAuth=${GOOGLE_TAG_MANAGER_AUTH} \
-    --set googleTagManagerPreview=${GOOGLE_TAG_MANAGER_PREVIEW} \
-    --set image.repository=${DOCKER_REGISTRY}/eq-questionnaire-runner \
-    --set image.tag=${IMAGE_TAG} \
-    --set cookieSettingsUrl=${COOKIE_SETTINGS_URL} \
-    --set resources.requests.cpu=${REQUESTED_CPU_PER_POD} \
-    --set rollingUpdate.maxUnavailable=${ROLLING_UPDATE_MAX_UNAVAILABLE} \
-    --set rollingUpdate.maxSurge=${ROLLING_UPDATE_MAX_SURGE} \
-    --set autoscaler.minReplicas=${MIN_REPLICAS} \
-    --set autoscaler.maxReplicas=${MAX_REPLICAS} \
-    --set autoscaler.targetCPUUtilizationPercentage=${TARGET_CPU_UTILIZATION_PERCENTAGE}
+    --set-string submissionBucket="${SUBMISSION_BUCKET_NAME}" \
+    --set-string googleTagManagerId="${GOOGLE_TAG_MANAGER_ID}" \
+    --set-string googleTagManagerAuth="${GOOGLE_TAG_MANAGER_AUTH}" \
+    --set-string googleTagManagerPreview="${GOOGLE_TAG_MANAGER_PREVIEW}" \
+    --set-string image.repository="${DOCKER_REGISTRY}/eq-questionnaire-runner" \
+    --set-string image.tag="${IMAGE_TAG}" \
+    --set-string cookieSettingsUrl="${COOKIE_SETTINGS_URL}" \
+    --set-string resources.requests.cpu="${REQUESTED_CPU_PER_POD}" \
+    --set-string rollingUpdate.maxUnavailable="${ROLLING_UPDATE_MAX_UNAVAILABLE}" \
+    --set-string rollingUpdate.maxSurge="${ROLLING_UPDATE_MAX_SURGE}" \
+    --set-string autoscaler.minReplicas="${MIN_REPLICAS}" \
+    --set-string autoscaler.maxReplicas="${MAX_REPLICAS}" \
+    --set-string autoscaler.targetCPUUtilizationPercentage="${TARGET_CPU_UTILIZATION_PERCENTAGE}" \
+    --set-string newRelic.enabled="${EQ_NEW_RELIC_ENABLED}" \
+    --set-string newRelic.licenseKey="${NEW_RELIC_LICENSE_KEY}" \
+    --set-string newRelic.appName="${NEW_RELIC_APP_NAME}"

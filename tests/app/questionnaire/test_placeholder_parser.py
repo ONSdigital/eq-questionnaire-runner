@@ -1,4 +1,5 @@
 from app.data_model.answer_store import AnswerStore
+from app.data_model.list_store import ListStore
 from app.questionnaire.placeholder_parser import PlaceholderParser
 from app.questionnaire.questionnaire_schema import QuestionnaireSchema
 
@@ -215,10 +216,10 @@ def test_multiple_metadata_list_transform_placeholder():
 def test_mixed_transform_placeholder():
     placeholder_list = [
         {
-            "placeholder": "age_in_years",
+            "placeholder": "age",
             "transforms": [
                 {
-                    "transform": "calculate_years_difference",
+                    "transform": "calculate_date_difference",
                     "arguments": {
                         "first_date": {
                             "source": "answers",
@@ -243,16 +244,16 @@ def test_mixed_transform_placeholder():
     )
     placeholders = parser(placeholder_list)
 
-    assert placeholders["age_in_years"] == "20"
+    assert placeholders["age"] == "20 years"
 
 
 def test_mixed_transform_placeholder_value():
     placeholder_list = [
         {
-            "placeholder": "age_in_years",
+            "placeholder": "age",
             "transforms": [
                 {
-                    "transform": "calculate_years_difference",
+                    "transform": "calculate_date_difference",
                     "arguments": {
                         "first_date": {
                             "source": "answers",
@@ -273,7 +274,25 @@ def test_mixed_transform_placeholder_value():
     )
     placeholders = parser(placeholder_list)
 
-    assert placeholders["age_in_years"] == "20"
+    assert placeholders["age"] == "20 years"
+
+
+def test_list_source_count():
+    placeholder_list = [
+        {
+            "placeholder": "number_of_people",
+            "value": {"source": "list", "identifier": "people"},
+        }
+    ]
+
+    list_store = ListStore()
+    list_store.add_list_item("people")
+    list_store.add_list_item("people")
+
+    parser = PlaceholderParser(language="en", list_store=list_store)
+    placeholders = parser(placeholder_list)
+
+    assert placeholders["number_of_people"] == 2
 
 
 def test_chain_transform_placeholder():

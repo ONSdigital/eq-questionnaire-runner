@@ -4,7 +4,6 @@ from datetime import datetime
 
 from dateutil.relativedelta import relativedelta
 
-from app.questionnaire.location import Location
 
 MAX_REPEATS = 25
 
@@ -137,7 +136,7 @@ def evaluate_goto(
     answer_store,
     list_store,
     current_location,
-    routing_path=None,
+    routing_path_block_ids=None,
 ):
     """
     Determine whether a goto rule will be satisfied based on a given answer
@@ -147,7 +146,7 @@ def evaluate_goto(
     :param answer_store: store of answers to evaluate
     :param list_store: store of lists to evaluate
     :param current_location: the location to use when evaluating when rules
-    :param routing_path: the routing path used to evaluate if answer is on the path
+    :param routing_path_block_ids: the routing path block ids used to evaluate if answer is on the path
     :return: True if the when condition has been met otherwise False
     """
     if "when" in goto_rule:
@@ -158,27 +157,18 @@ def evaluate_goto(
             answer_store,
             list_store,
             current_location,
-            routing_path=routing_path,
+            routing_path_block_ids=routing_path_block_ids,
         )
     return True
 
 
-def _is_answer_on_path(schema, answer, routing_path):
+def _is_answer_on_path(schema, answer, routing_path_block_ids):
     block_id = schema.get_block_for_answer_id(answer.answer_id)["id"]
-    section_id = schema.get_section_id_for_block_id(block_id)
-    list_name = schema.get_repeating_list_for_section(section_id)
-
-    location = Location(
-        section_id=section_id,
-        block_id=block_id,
-        list_item_id=answer.list_item_id,
-        list_name=list_name,
-    )
-    return location in routing_path
+    return block_id in routing_path_block_ids
 
 
 def _get_comparison_id_value(
-    when_rule, answer_store, schema, current_location=None, routing_path=None
+    when_rule, answer_store, schema, current_location=None, routing_path_block_ids=None
 ):
     """
         Gets the value of a comparison id specified as an operand in a comparator
@@ -196,8 +186,8 @@ def _get_comparison_id_value(
         answer_id,
         answer_store,
         schema,
-        routing_path=routing_path,
         list_item_id=list_item_id,
+        routing_path_block_ids=routing_path_block_ids,
     )
 
 
@@ -208,7 +198,7 @@ def evaluate_skip_conditions(
     answer_store,
     list_store,
     current_location,
-    routing_path=None,
+    routing_path_block_ids=None,
 ):
     """
     Determine whether a skip condition will be satisfied based on a given answer
@@ -218,7 +208,7 @@ def evaluate_skip_conditions(
     :param answer_store: store of answers to evaluate
     :param list_store: store of lists to evaluate
     :param current_location: the location to use when evaluating when rules
-    :param routing_path: the routing path used to evaluate if answer is on the path
+    :param routing_path_block_ids: the routing path block ids used to evaluate if answer is on the path
     :return: True if the when condition has been met otherwise False
     """
     no_skip_condition = skip_conditions is None or len(skip_conditions) == 0
@@ -234,7 +224,7 @@ def evaluate_skip_conditions(
             answer_store,
             list_store,
             current_location,
-            routing_path=routing_path,
+            routing_path_block_ids=routing_path_block_ids,
         )
         if condition is True:
             return True
@@ -247,8 +237,8 @@ def _get_when_rule_value(
     list_store,
     schema,
     metadata,
-    routing_path=None,
     list_item_id=None,
+    routing_path_block_ids=None,
 ):
     """
     Get the value from a when rule.
@@ -260,8 +250,8 @@ def _get_when_rule_value(
             when_rule["id"],
             answer_store,
             schema,
-            routing_path=routing_path,
             list_item_id=list_item_id,
+            routing_path_block_ids=routing_path_block_ids,
         )
     elif "meta" in when_rule:
         value = get_metadata_value(metadata, when_rule["meta"])
@@ -282,7 +272,7 @@ def evaluate_when_rules(
     answer_store,
     list_store,
     current_location=None,
-    routing_path=None,
+    routing_path_block_ids=None,
 ):
     """
     Whether the skip condition has been met.
@@ -292,7 +282,7 @@ def evaluate_when_rules(
     :param answer_store: store of answers to evaluate
     :param list_store: store of lists to evaluate
     :param current_location: The location to use when evaluating when rules
-    :param routing_path: The location to use when evaluating when rules
+    :param routing_path_block_ids: The routing path block ids to use when evaluating when rules
     :return: True if the when condition has been met otherwise False
     """
     for when_rule in when_rules:
@@ -305,8 +295,8 @@ def evaluate_when_rules(
             list_store,
             schema,
             metadata,
-            routing_path=routing_path,
             list_item_id=list_item_id,
+            routing_path_block_ids=routing_path_block_ids,
         )
 
         if "date_comparison" in when_rule:
@@ -314,7 +304,11 @@ def evaluate_when_rules(
                 return False
         elif "comparison" in when_rule:
             comparison_id_value = _get_comparison_id_value(
-                when_rule, answer_store, schema, current_location, routing_path
+                when_rule,
+                answer_store,
+                schema,
+                current_location,
+                routing_path_block_ids,
             )
             if not evaluate_comparison_rule(when_rule, value, comparison_id_value):
                 return False
@@ -336,15 +330,15 @@ def get_answer_for_answer_id(answer_id, answer_store, schema, list_item_id):
 
 
 def get_answer_value(
-    answer_id, answer_store, schema, routing_path=None, list_item_id=None
+    answer_id, answer_store, schema, list_item_id=None, routing_path_block_ids=None
 ):
     answer = get_answer_for_answer_id(answer_id, answer_store, schema, list_item_id)
 
     if not answer:
         return None
 
-    if routing_path:
-        if _is_answer_on_path(schema, answer, routing_path):
+    if routing_path_block_ids:
+        if _is_answer_on_path(schema, answer, routing_path_block_ids):
             return answer.value
     else:
         return answer.value

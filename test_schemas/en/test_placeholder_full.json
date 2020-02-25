@@ -19,6 +19,10 @@
             "type": "string"
         },
         {
+            "name": "display_address",
+            "type": "string"
+        },
+        {
             "name": "ru_name",
             "type": "string"
         }
@@ -132,7 +136,7 @@
                             "question": {
                                 "id": "confirm-date-of-birth-proxy",
                                 "title": {
-                                    "text": "{person_name} is {age_in_years} years old. Is this correct?",
+                                    "text": "{person_name} is {age} old. Is this correct?",
                                     "placeholders": [
                                         {
                                             "placeholder": "person_name",
@@ -150,10 +154,10 @@
                                             ]
                                         },
                                         {
-                                            "placeholder": "age_in_years",
+                                            "placeholder": "age",
                                             "transforms": [
                                                 {
-                                                    "transform": "calculate_years_difference",
+                                                    "transform": "calculate_date_difference",
                                                     "arguments": {
                                                         "first_date": {
                                                             "source": "answers",
@@ -176,7 +180,7 @@
                                         "options": [
                                             {
                                                 "label": {
-                                                    "text": "Yes, {person_name} is {age_in_years} years old.",
+                                                    "text": "Yes, {person_name} is {age} old.",
                                                     "placeholders": [
                                                         {
                                                             "placeholder": "person_name",
@@ -194,10 +198,10 @@
                                                             ]
                                                         },
                                                         {
-                                                            "placeholder": "age_in_years",
+                                                            "placeholder": "age",
                                                             "transforms": [
                                                                 {
-                                                                    "transform": "calculate_years_difference",
+                                                                    "transform": "calculate_date_difference",
                                                                     "arguments": {
                                                                         "first_date": {
                                                                             "source": "answers",
@@ -212,7 +216,7 @@
                                                         }
                                                     ]
                                                 },
-                                                "value": "Yes, {person_name} is {age_in_years} years old."
+                                                "value": "Yes, {person_name} is {age} old."
                                             },
                                             {
                                                 "label": "No, I need to change their date of birth",
@@ -246,6 +250,73 @@
                     ],
                     "id": "group",
                     "title": ""
+                }
+            ]
+        },
+        {
+            "id": "mutually-exclusive-checkbox-section",
+            "title": "Checkbox",
+            "groups": [
+                {
+                    "id": "mutually-exclusive-mandatory-group",
+                    "title": "",
+                    "blocks": [
+                        {
+                            "type": "Question",
+                            "id": "mutually-exclusive-checkbox",
+                            "question": {
+                                "id": "mutually-exclusive-checkbox-question",
+                                "type": "MutuallyExclusive",
+                                "title": "Were you a resident at any of the following addresses?",
+                                "mandatory": true,
+                                "answers": [
+                                    {
+                                        "id": "checkbox-answer",
+                                        "label": "Select an answer",
+                                        "type": "Checkbox",
+                                        "mandatory": false,
+                                        "options": [
+                                            {
+                                                "label": {
+                                                    "placeholders": [
+                                                        {
+                                                            "placeholder": "household_address",
+                                                            "value": {
+                                                                "identifier": "display_address",
+                                                                "source": "metadata"
+                                                            }
+                                                        }
+                                                    ],
+                                                    "text": "{household_address}"
+                                                },
+                                                "value": "{household_address}"
+                                            },
+                                            {
+                                                "label": "7 Evelyn Street, Barry",
+                                                "value": "7 Evelyn Street, Barry"
+                                            },
+                                            {
+                                                "label": "251 Argae Lane, Barry",
+                                                "value": "251 Argae Lane, Barry"
+                                            }
+                                        ]
+                                    },
+                                    {
+                                        "id": "checkbox-exclusive-answer",
+                                        "mandatory": false,
+                                        "type": "Checkbox",
+                                        "options": [
+                                            {
+                                                "label": "I prefer not to say",
+                                                "description": "Some description",
+                                                "value": "I prefer not to say"
+                                            }
+                                        ]
+                                    }
+                                ]
+                            }
+                        }
+                    ]
                 }
             ]
         },

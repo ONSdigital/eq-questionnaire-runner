@@ -1,0 +1,143 @@
+{
+    "mime_type": "application/json/ons/eq",
+    "schema_version": "0.0.1",
+    "data_version": "0.0.3",
+    "survey_id": "0",
+    "title": "Test Plural Forms",
+    "theme": "default",
+    "description": "A questionnaire to test different forms of plurals",
+    "metadata": [
+        {
+            "name": "user_id",
+            "type": "string"
+        },
+        {
+            "name": "period_id",
+            "type": "string"
+        },
+        {
+            "name": "ru_name",
+            "type": "string"
+        }
+    ],
+    "sections": [
+        {
+            "id": "plural-section",
+            "title": "Test Plural Section",
+            "groups": [
+                {
+                    "id": "plural-group",
+                    "title": "Test Plurals",
+                    "blocks": [
+                        {
+                            "type": "Question",
+                            "id": "number-of-people-block",
+                            "question": {
+                                "answers": [
+                                    {
+                                        "id": "number-of-people-answer",
+                                        "label": "How many people live here?",
+                                        "mandatory": true,
+                                        "type": "Number",
+                                        "min_value": {
+                                            "value": 0
+                                        },
+                                        "max_value": {
+                                            "value": 100
+                                        }
+                                    }
+                                ],
+                                "description": "",
+                                "id": "number-of-people-question",
+                                "title": "",
+                                "type": "General"
+                            }
+                        },
+                        {
+                            "type": "Question",
+                            "id": "confirm-number-of-people",
+                            "question": {
+                                "type": "General",
+                                "id": "total-people-question",
+                                "title": {
+                                    "text_plural": {
+                                        "forms": {
+                                            "one": "{number_of_people} person lives here, is this correct?",
+                                            "other": "{number_of_people} people live here, is this correct?"
+                                        },
+                                        "count": {
+                                            "source": "answers",
+                                            "identifier": "number-of-people-answer"
+                                        }
+                                    },
+                                    "placeholders": [
+                                        {
+                                            "placeholder": "number_of_people",
+                                            "value": {
+                                                "source": "answers",
+                                                "identifier": "number-of-people-answer"
+                                            }
+                                        }
+                                    ]
+                                },
+                                "answers": [
+                                    {
+                                        "id": "confirm-count",
+                                        "mandatory": true,
+                                        "type": "Radio",
+                                        "options": [
+                                            {
+                                                "label": {
+                                                    "text_plural": {
+                                                        "forms": {
+                                                            "one": "Yes, {number_of_people} person lives here",
+                                                            "other": "Yes, {number_of_people} people live here"
+                                                        },
+                                                        "count": {
+                                                            "source": "answers",
+                                                            "identifier": "number-of-people-answer"
+                                                        }
+                                                    },
+                                                    "placeholders": [
+                                                        {
+                                                            "placeholder": "number_of_people",
+                                                            "value": {
+                                                                "source": "answers",
+                                                                "identifier": "number-of-people-answer"
+                                                            }
+                                                        }
+                                                    ]
+                                                },
+                                                "value": "Yes"
+                                            },
+                                            {
+                                                "label": "No",
+                                                "value": "No"
+                                            }
+                                        ]
+                                    }
+                                ]
+                            }
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "submit-answers",
+            "title": "Submit answers",
+            "groups": [
+                {
+                    "blocks": [
+                        {
+                            "type": "Summary",
+                            "id": "summary"
+                        }
+                    ],
+                    "id": "confirmation-group",
+                    "title": "Submit answers"
+                }
+            ]
+        }
+    ]
+}

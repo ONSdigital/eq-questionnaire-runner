@@ -1,0 +1,60 @@
+{
+    "mime_type": "application/json/ons/eq",
+    "schema_version": "0.0.1",
+    "data_version": "0.0.3",
+    "survey_id": "001",
+    "title": "Textfield Suggestions",
+    "theme": "default",
+    "description": "A questionnaire to test textfield suggestions",
+    "metadata": [
+        {
+            "name": "user_id",
+            "type": "string"
+        },
+        {
+            "name": "period_id",
+            "type": "string"
+        },
+        {
+            "name": "ru_name",
+            "type": "string"
+        }
+    ],
+    "sections": [
+        {
+            "id": "default-section",
+            "groups": [
+                {
+                    "blocks": [
+                        {
+                            "type": "Question",
+                            "id": "country-block",
+                            "question": {
+                                "answers": [
+                                    {
+                                        "id": "country-answer",
+                                        "label": "What is your country of birth?",
+                                        "mandatory": false,
+                                        "suggestions_url": "https://cdn.eq.census-gcp.onsdigital.uk/data/countries-of-birth.json",
+                                        "type": "TextField"
+                                    }
+                                ],
+                                "description": "",
+                                "id": "country-of-birth-question",
+                                "title": "",
+                                "type": "General"
+                            },
+                            "routing_rules": []
+                        },
+                        {
+                            "type": "Summary",
+                            "id": "summary"
+                        }
+                    ],
+                    "id": "group",
+                    "title": ""
+                }
+            ]
+        }
+    ]
+}
