@@ -198,12 +198,21 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
         return self._questions_by_id.get(question_id)
 
     @staticmethod
-    def get_list_collectors_for_section(section):
-        return [
+    def get_list_collectors_for_section(section, for_list=None):
+        section_list_collectors = [
             block
             for group in section["groups"]
             for block in group["blocks"]
             if block["type"] == "ListCollector"
+        ]
+
+        if not for_list:
+            return section_list_collectors
+
+        return [
+            list_collector
+            for list_collector in section_list_collectors
+            if list_collector["for_list"] == for_list
         ]
 
     @classmethod

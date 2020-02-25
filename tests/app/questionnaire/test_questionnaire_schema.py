@@ -321,3 +321,25 @@ def test_get_values_for_key_ignores_multiple_keys():
         _get_values_for_key(block, "when", {"question_variants", "content_variants"})
     )
     assert result == []
+
+
+def test_get_list_collectors_for_section(list_collector_variant_schema):
+    schema = QuestionnaireSchema(list_collector_variant_schema)
+    section = schema.get_section("section")
+
+    result = QuestionnaireSchema.get_list_collectors_for_section(section)
+
+    assert len(result) == 1
+    assert result[0]["id"] == "block1"
+
+    filtered_result = QuestionnaireSchema.get_list_collectors_for_section(
+        section, for_list="people"
+    )
+
+    assert filtered_result == result
+
+    no_result = QuestionnaireSchema.get_list_collectors_for_section(
+        section, for_list="not-valid"
+    )
+
+    assert len(no_result) == 0
