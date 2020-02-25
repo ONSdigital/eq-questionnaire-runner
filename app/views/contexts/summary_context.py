@@ -1,5 +1,4 @@
-from itertools import chain
-from typing import Iterable, Mapping
+from typing import Iterable, Iterator, Mapping
 
 from flask import url_for
 
@@ -83,8 +82,10 @@ class SummaryContext(Context):
             return {
                 "summary": {
                     "title": block["title"],
-                    "list_summaries": self.custom_section_summary(
-                        current_location, section_summary, section
+                    "list_summaries": list(
+                        self._custom_section_summary(
+                            current_location, section_summary, section
+                        )
                     ),
                     "summary_type": "SectionSummary",
                 }
@@ -100,31 +101,24 @@ class SummaryContext(Context):
             }
         }
 
-    def custom_section_summary(
+    def _custom_section_summary(
         self, current_location, section_summary: Iterable[Mapping], section
     ):
-        summaries = [
-            self.get_list_summaries(summary, current_location, section)
-            for summary in section_summary
-            if summary["type"] == "List"
-        ]
+        for summary in section_summary:
+            if summary["type"] == "List":
+                yield from self._get_list_summaries(summary, current_location, section)
 
-        return list(chain.from_iterable(summaries))
-
-    def get_list_summaries(
+    def _get_list_summaries(
         self, summary: Mapping, current_location, section: Mapping
-    ) -> Iterable[Mapping]:
+    ) -> Iterator[Mapping]:
         routing_path = self._router.routing_path(
             section["id"], current_location.list_item_id
         )
 
-        list_collector_blocks = [
-            list_collector
-            for list_collector in self._schema.get_list_collectors_for_section(section)
-            if list_collector["for_list"] == summary["for_list"]
-        ]
+        list_collector_blocks = self._schema.get_list_collectors_for_section(
+            section, for_list=summary["for_list"]
+        )
 
-        list_summaries = []
         for list_collector_block in list_collector_blocks:
             add_link = url_for(
                 "questionnaire.block",
@@ -171,5 +165,4 @@ class SummaryContext(Context):
             if list_items:
                 list_summary["list"] = {"list_items": list_items, "editable": True}
 
-            list_summaries.append(list_summary)
-        return list_summaries
+            yield list_summary

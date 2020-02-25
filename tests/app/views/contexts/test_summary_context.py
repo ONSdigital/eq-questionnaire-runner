@@ -378,50 +378,56 @@ def test_context_for_section_list_summary(people_answer_store):
     )
     context = summary_context.section_summary(current_location)
 
-    expected = [
-        {
-            "add_link": "/questionnaire/people/add-person/?return_to=people-list-section-summary",
-            "add_link_text": "Add someone to this household",
-            "empty_list_text": "There are no householders",
-            "list": {
-                "list_items": [
-                    {
-                        "edit_link": "/questionnaire/people/PlwgoG/edit-person/?return_to=people-list-section-summary",
-                        "item_title": "Toni Morrison",
-                        "primary_person": False,
-                        "remove_link": "/questionnaire/people/PlwgoG/remove-person/?return_to=people-list-section-summary",
+    expected = {
+        "summary": {
+            "list_summaries": [
+                {
+                    "add_link": "/questionnaire/people/add-person/?return_to=people-list-section-summary",
+                    "add_link_text": "Add someone to this household",
+                    "empty_list_text": "There are no householders",
+                    "list": {
+                        "list_items": [
+                            {
+                                "edit_link": "/questionnaire/people/PlwgoG/edit-person/?return_to=people-list-section-summary",
+                                "item_title": "Toni Morrison",
+                                "primary_person": False,
+                                "remove_link": "/questionnaire/people/PlwgoG/remove-person/?return_to=people-list-section-summary",
+                            },
+                            {
+                                "edit_link": "/questionnaire/people/UHPLbX/edit-person/?return_to=people-list-section-summary",
+                                "item_title": "Barry Pheloung",
+                                "primary_person": False,
+                                "remove_link": "/questionnaire/people/UHPLbX/remove-person/?return_to=people-list-section-summary",
+                            },
+                        ],
+                        "editable": True,
                     },
-                    {
-                        "edit_link": "/questionnaire/people/UHPLbX/edit-person/?return_to=people-list-section-summary",
-                        "item_title": "Barry Pheloung",
-                        "primary_person": False,
-                        "remove_link": "/questionnaire/people/UHPLbX/remove-person/?return_to=people-list-section-summary",
+                    "title": "Household members staying overnight on 13 October 2019 at 70 Abingdon Road, Goathill",
+                    "list_name": "people",
+                },
+                {
+                    "add_link": "/questionnaire/visitors/add-visitor/?return_to=people-list-section-summary",
+                    "add_link_text": "Add another visitor to this household",
+                    "empty_list_text": "There are no visitors",
+                    "list": {
+                        "list_items": [
+                            {
+                                "edit_link": "/questionnaire/visitors/gTrlio/edit-visitor-person/?return_to=people-list-section-summary",
+                                "item_title": "",
+                                "primary_person": False,
+                                "remove_link": "/questionnaire/visitors/gTrlio/remove-visitor/?return_to=people-list-section-summary",
+                            }
+                        ],
+                        "editable": True,
                     },
-                ],
-                "editable": True,
-            },
-            "title": "Household members staying overnight on 13 October 2019 at 70 Abingdon Road, Goathill",
-            "list_name": "people",
-        },
-        {
-            "add_link": "/questionnaire/visitors/add-visitor/?return_to=people-list-section-summary",
-            "add_link_text": "Add another visitor to this household",
-            "empty_list_text": "There are no visitors",
-            "list": {
-                "list_items": [
-                    {
-                        "edit_link": "/questionnaire/visitors/gTrlio/edit-visitor-person/?return_to=people-list-section-summary",
-                        "item_title": "",
-                        "primary_person": False,
-                        "remove_link": "/questionnaire/visitors/gTrlio/remove-visitor/?return_to=people-list-section-summary",
-                    }
-                ],
-                "editable": True,
-            },
-            "title": "Visitors staying overnight on 13 October 2019 at 70 Abingdon Road, Goathill",
-            "list_name": "visitors",
-        },
-    ]
+                    "title": "Visitors staying overnight on 13 October 2019 at 70 Abingdon Road, Goathill",
+                    "list_name": "visitors",
+                },
+            ],
+            "summary_type": "SectionSummary",
+            "title": "List Collector Summary",
+        }
+    }
 
     assert context == expected
 
@@ -442,15 +448,21 @@ def test_context_for_driving_question_summary_empty_list():
 
     context = summary_context.section_summary(current_location)
 
-    expected = [
-        {
-            "add_link": "/questionnaire/anyone-usually-live-at/",
-            "add_link_text": "Add someone to this household",
-            "empty_list_text": "There are no householders",
-            "title": "Household members",
-            "list_name": "people",
+    expected = {
+        "summary": {
+            "list_summaries": [
+                {
+                    "add_link": "/questionnaire/anyone-usually-live-at/",
+                    "add_link_text": "Add someone to this household",
+                    "empty_list_text": "There are no householders",
+                    "title": "Household members",
+                    "list_name": "people",
+                }
+            ],
+            "summary_type": "SectionSummary",
+            "title": "List Collector Driving Question Summary",
         }
-    ]
+    }
 
     assert context == expected
 
@@ -481,26 +493,32 @@ def test_context_for_driving_question_summary():
 
     context = summary_context.section_summary(current_location)
 
-    expected = [
-        {
-            "add_link": "/questionnaire/people/add-person/?return_to=summary",
-            "add_link_text": "Add someone to this household",
-            "empty_list_text": "There are no householders",
-            "list": {
-                "list_items": [
-                    {
-                        "edit_link": "/questionnaire/people/PlwgoG/edit-person/?return_to=summary",
-                        "item_title": "Toni Morrison",
-                        "primary_person": False,
-                        "remove_link": "/questionnaire/people/PlwgoG/remove-person/?return_to=summary",
-                    }
-                ],
-                "editable": True,
-            },
-            "title": "Household members",
-            "list_name": "people",
+    expected = {
+        "summary": {
+            "list_summaries": [
+                {
+                    "add_link": "/questionnaire/people/add-person/?return_to=summary",
+                    "add_link_text": "Add someone to this household",
+                    "empty_list_text": "There are no householders",
+                    "list": {
+                        "list_items": [
+                            {
+                                "edit_link": "/questionnaire/people/PlwgoG/edit-person/?return_to=summary",
+                                "item_title": "Toni Morrison",
+                                "primary_person": False,
+                                "remove_link": "/questionnaire/people/PlwgoG/remove-person/?return_to=summary",
+                            }
+                        ],
+                        "editable": True,
+                    },
+                    "title": "Household members",
+                    "list_name": "people",
+                }
+            ],
+            "summary_type": "SectionSummary",
+            "title": "List Collector Driving Question Summary",
         }
-    ]
+    }
 
     assert context == expected
 
