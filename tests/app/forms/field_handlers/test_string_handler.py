@@ -1,4 +1,4 @@
-from wtforms import StringField, Form
+from wtforms import StringField, Form, validators
 
 from app.data_model.answer_store import AnswerStore
 from app.forms.field_handlers.string_handler import StringHandler
@@ -27,14 +27,14 @@ def test_string_field():
 def test_get_length_validator():
     string_handler = StringHandler(
         {},
-        {"MAX_LENGTH_EXCEEDED": "This is the default max length of %(max)d message"},
+        {},
         AnswerStore(),
         {},
     )
 
     validator = string_handler.get_length_validator
 
-    assert validator.message == "This is the default max length of %(max)d message"
+    assert type(validator) == validators.Length
 
 
 def test_get_length_validator_with_message_override():
@@ -57,7 +57,7 @@ def test_get_length_validator_with_max_length_override():
     answer = {"max_length": 30}
 
     string_handler = StringHandler(
-        answer, {"MAX_LENGTH_EXCEEDED": "%(max)d characters"}, AnswerStore(), {}
+        answer, {}, AnswerStore(), {}
     )
     validator = string_handler.get_length_validator
 

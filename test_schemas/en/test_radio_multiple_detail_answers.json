@@ -65,8 +65,7 @@
                                                     "type": "TextField",
                                                     "validation": {
                                                         "messages": {
-                                                            "MANDATORY_TEXTFIELD": "Enter your favourite to continue",
-                                                             "MAX_LENGTH_EXCEEDED": "Your answer is too long, it has to be less than %(max)d characters."
+                                                            "MANDATORY_TEXTFIELD": "Enter your favourite to continue"
                                                         }
                                                     }
                                                 }
