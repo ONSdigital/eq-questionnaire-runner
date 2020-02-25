@@ -322,7 +322,7 @@ class Router:
     def _get_location_of_section_summary(self, routing_path):
         for block_id in routing_path[::-1]:
             block = self._schema.get_block(block_id)
-            if block["type"] in ["SectionSummary", "ListCollectorSummary"]:
+            if block["type"] == "SectionSummary":
                 return Location(
                     block_id=block_id,
                     section_id=routing_path.section_id,
