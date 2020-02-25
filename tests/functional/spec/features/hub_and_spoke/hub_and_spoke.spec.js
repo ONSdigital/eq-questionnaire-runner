@@ -27,7 +27,6 @@ describe('Feature: Hub and Spoke', function () {
     expect($(HubPage.submit()).getText()).not.to.contain('Relationships');
   });
 
-
   describe('Given a user is on the Hub page', function () {
     it('When the user click the \'Save and sign out\' button then they should be on the signed out page', function () {
       browser.openQuestionnaire(hub_and_spoke_schema);
