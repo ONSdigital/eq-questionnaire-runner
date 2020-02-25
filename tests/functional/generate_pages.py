@@ -388,9 +388,9 @@ def process_calculated_summary(answers, page_spec):
         page_spec.write(CALCULATED_SUMMARY_LABEL_GETTER.substitute(answer_context))
 
 
-def process_list_collector_summary(schema_data, page_spec):
+def process_summary(schema_data, page_spec):
     for section in schema_data["sections"]:
-        list_collector_blocks = QuestionnaireSchema.get_visible_list_blocks_for_section(
+        list_collector_blocks = QuestionnaireSchema.get_list_collectors_for_section(
             section
         )
         for list_block in list_collector_blocks:
@@ -406,8 +406,6 @@ def process_list_collector_summary(schema_data, page_spec):
             )
             page_spec.write(LIST_SECTION_SUMMARY_LABEL_GETTER.substitute(list_context))
 
-
-def process_summary(schema_data, page_spec):
     for section in schema_data["sections"]:
         for group in section["groups"]:
             for block in group["blocks"]:
@@ -595,8 +593,6 @@ def process_block(
         page_spec.write(CONSTRUCTOR.substitute(block_context))
         if block["type"] in ("Summary", "SectionSummary"):
             process_summary(schema_data, page_spec)
-        elif block["type"] == "ListCollectorSummary":
-            process_list_collector_summary(schema_data, page_spec)
         elif block["type"] == "CalculatedSummary":
             process_calculated_summary(
                 block["calculation"]["answers_to_calculate"], page_spec
@@ -669,7 +665,7 @@ if __name__ == "__main__":
                 for file in [os.path.join(root, file) for file in files]:
                     filename = os.path.basename(file)
                     logger.info("File %s", filename)
-                    if filename[0] is ".":
+                    if filename[0] == ".":
                         continue
                     output_dir = os.path.join(
                         args.OUT_DIRECTORY, filename.split(".")[0].replace("test_", "")
