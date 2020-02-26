@@ -26,8 +26,8 @@ class StringHandler(FieldHandler):
 
     @cached_property
     def max_length(self):
-        max_length = self.answer_schema.get("max_length", 0)
-        return max_length if max_length > 0 else self.MAX_LENGTH
+        return self.answer_schema.get("max_length", self.MAX_LENGTH)
+
 
     def get_field(self) -> StringField:
         return StringField(
