@@ -25,12 +25,7 @@ def test_string_field():
 
 
 def test_get_length_validator():
-    string_handler = StringHandler(
-        {},
-        {},
-        AnswerStore(),
-        {},
-    )
+    string_handler = StringHandler({}, {}, AnswerStore(), {})
 
     validator = string_handler.get_length_validator
 
@@ -56,9 +51,7 @@ def test_get_length_validator_with_message_override():
 def test_get_length_validator_with_max_length_override():
     answer = {"max_length": 30}
 
-    string_handler = StringHandler(
-        answer, {}, AnswerStore(), {}
-    )
+    string_handler = StringHandler(answer, {}, AnswerStore(), {})
     validator = string_handler.get_length_validator
 
     assert validator.max == 30

@@ -32,7 +32,5 @@ class StringHandler(FieldHandler):
 
     def get_field(self) -> StringField:
         return StringField(
-            label=self.label,
-            description=self.guidance,
-            validators=self.validators
+            label=self.label, description=self.guidance, validators=self.validators
         )
