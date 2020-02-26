@@ -6,7 +6,7 @@ from app.forms.field_handlers.field_handler import FieldHandler
 
 
 class StringHandler(FieldHandler):
-    MAX_LENGTH = 10000
+    MAX_LENGTH = 10_000
     MANDATORY_MESSAGE_KEY = "MANDATORY_TEXTFIELD"
 
     @cached_property
