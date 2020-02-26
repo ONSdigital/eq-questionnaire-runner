@@ -3,7 +3,7 @@
 {% set select = form.fields[answer['id']] %}
 
 {{ onsSelect({
-  "id": answer.id,
+  "id": answer.id + '-select',
   "name": select.name,
   "label": {
     "text": answer.label,

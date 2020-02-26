@@ -3,7 +3,7 @@
 {% set input = form.fields[answer['id']] %}
 
 {{ onsInput({
-  "id": answer.id,
+  "id": answer.id + '-input',
   "classes": "js-totaliser-input-calculated" if answer.calculated,
   "type": "number",
   "label": {
@@ -11,7 +11,7 @@
     "description": answer.description
   },
   "value": input._value() | e,
-  "name": input.name,
+  "name": input.name + '-input',
   "attributes": {
     "data-qa": "input-text"
   },

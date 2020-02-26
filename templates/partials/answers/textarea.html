@@ -3,8 +3,8 @@
 {% set input = form.fields[answer['id']] %}
 
 {{ onsTextarea({
-  "id": answer.id,
-  "name": input.name,
+  "id": answer.id + 'input',
+  "name": input.name + 'input',
   "label": {
     "text": answer.label,
     "description": answer.description

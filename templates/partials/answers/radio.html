@@ -1,7 +1,8 @@
 {% from "components/radios/_macro.njk" import onsRadios %}
 
 {% set config = {
-  "name": answer["id"],
+  "name": answer["id"] + '-fieldset',
+  "id": answer['id'] + '-fieldset',
   "legend": question_title,
   "legendClasses": "u-vh",
   "radios": map_radio_config(form, answer),

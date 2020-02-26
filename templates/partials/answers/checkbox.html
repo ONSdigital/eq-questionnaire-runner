@@ -2,6 +2,8 @@
 
 {{ onsCheckboxes({
   "legend": question_title,
+  "id": answer['id'] + '-fieldset',
+  "name": answer['id'] + '-fieldset',
   "legendClasses": "u-vh",
   "checkboxesLabel": '' if answer.label == '' else answer.label or _("Select all that apply"),
   "checkboxes": map_checkbox_config(form, answer),
