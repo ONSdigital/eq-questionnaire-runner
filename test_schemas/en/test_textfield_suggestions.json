@@ -35,7 +35,7 @@
                                         "id": "country-answer",
                                         "label": "What is your country of birth?",
                                         "mandatory": false,
-                                        "suggestions_url": "/json/countries",
+                                        "suggestions_url": "https://cdn.eq.census-gcp.onsdigital.uk/data/countries-of-birth.json",
                                         "type": "TextField"
                                     }
                                 ],
