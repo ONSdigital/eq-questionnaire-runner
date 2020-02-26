@@ -211,9 +211,9 @@ class Router:
     ) -> Location:
 
         last_block_id = routing_path[-1]
-        block = self._schema.get_block(last_block_id)
+        last_block = self._schema.get_block(last_block_id)
 
-        if block["type"] in ["SectionSummary", "ListCollectorSummary"]:
+        if last_block["type"] in ["SectionSummary", "ListCollectorSummary"]:
             return Location(
                 block_id=last_block_id,
                 section_id=routing_path.section_id,
