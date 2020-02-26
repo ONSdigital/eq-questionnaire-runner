@@ -244,7 +244,7 @@ def test_map_list_collector_config():
                     "icon": "icon",
                 }
             ],
-            "title": "Mark Bloggs (You)",
+            "rowTitle": "Mark Bloggs (You)",
         },
         {
             "rowItems": [
@@ -266,7 +266,7 @@ def test_map_list_collector_config():
                     "icon": "icon",
                 }
             ],
-            "title": "Joe Bloggs",
+            "rowTitle": "Joe Bloggs",
         },
     ]
 
