@@ -455,6 +455,7 @@ def test_context_for_driving_question_summary_empty_list():
                     "add_link": "/questionnaire/anyone-usually-live-at/",
                     "add_link_text": "Add someone to this household",
                     "empty_list_text": "There are no householders",
+                    "list": {"editable": True, "list_items": []},
                     "title": "Household members",
                     "list_name": "people",
                 }
