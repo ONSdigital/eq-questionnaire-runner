@@ -1,6 +1,5 @@
-from wtforms import validators
 from werkzeug.utils import cached_property
-from wtforms import StringField
+from wtforms import StringField, validators
 
 
 from app.forms.field_handlers.field_handler import FieldHandler

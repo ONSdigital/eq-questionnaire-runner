@@ -29,7 +29,7 @@ def test_get_length_validator():
 
     validator = string_handler.get_length_validator
 
-    assert type(validator) == validators.Length
+    assert isinstance(validator, validators.Length)
 
 
 def test_get_length_validator_with_message_override():
