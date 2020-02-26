@@ -22,7 +22,7 @@ describe('Feature: Hub and Spoke', function () {
     expect($(HubPage.summaryRowState(2)).getText()).to.contain('Not started');
   });
 
-  it('When a user views the Hub, any section with show_on_hub set to false should not appear', function () {
+  it('When a user views the Hub, any section with show_on_hub set to false should not appear', function() {
     browser.openQuestionnaire(hub_and_spoke_schema);
     expect($(HubPage.submit()).getText()).not.to.contain('Relationships');
   });
