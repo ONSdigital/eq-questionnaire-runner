@@ -66,10 +66,7 @@
                                                     "arguments": {
                                                         "delimiter": " ",
                                                         "list_to_concatenate": {
-                                                            "identifier": [
-                                                                "first-name",
-                                                                "last-name"
-                                                            ],
+                                                            "identifier": ["first-name", "last-name"],
                                                             "source": "answers"
                                                         }
                                                     },
@@ -95,6 +92,104 @@
                                         "label": "Dyddiad Geni",
                                         "mandatory": true,
                                         "type": "Date"
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "type": "Question",
+                            "id": "number-of-people-block",
+                            "question": {
+                                "answers": [
+                                    {
+                                        "id": "number-of-people-answer",
+                                        "label": "Nifer y preswylwyr cartrefi",
+                                        "mandatory": true,
+                                        "type": "Number",
+                                        "min_value": {
+                                            "value": 0
+                                        },
+                                        "max_value": {
+                                            "value": 100
+                                        }
+                                    }
+                                ],
+                                "description": "",
+                                "id": "number-of-people-question",
+                                "title": "Faint o bobl sy\u2019n byw ar eich cartref?",
+                                "type": "General"
+                            }
+                        },
+                        {
+                            "type": "Question",
+                            "id": "confirm-number-of-people",
+                            "question": {
+                                "type": "General",
+                                "id": "total-people-question",
+                                "title": {
+                                    "text_plural": {
+                                        "forms": {
+                                            "one": "Mae {number_of_people} person yn byw yma, ydy hyn yn gywir? (one)",
+                                            "other": "Mae {number_of_people} pherson yn byw yma, ydy hyn yn gywir? (other)",
+                                            "zero": "Mae {number_of_people} person yn byw yma, ydy hyn yn gywir? (zero)",
+                                            "two": "Mae {number_of_people} person yn byw yma, ydy hyn yn gywir? (two)",
+                                            "few": "Mae {number_of_people} pherson yn byw yma, ydy hyn yn gywir? (few)",
+                                            "many": "Mae {number_of_people} pherson yn byw yma, ydy hyn yn gywir? (many)"
+                                        },
+                                        "count": {
+                                            "source": "answers",
+                                            "identifier": "number-of-people-answer"
+                                        }
+                                    },
+                                    "placeholders": [
+                                        {
+                                            "placeholder": "number_of_people",
+                                            "value": {
+                                                "source": "answers",
+                                                "identifier": "number-of-people-answer"
+                                            }
+                                        }
+                                    ]
+                                },
+                                "answers": [
+                                    {
+                                        "id": "confirm-count",
+                                        "mandatory": true,
+                                        "type": "Radio",
+                                        "options": [
+                                            {
+                                                "label": {
+                                                    "text_plural": {
+                                                        "forms": {
+                                                            "one": "Ydy, mae {number_of_people} person yn byw yma (one)",
+                                                            "other": "Ydy, mae {number_of_people} pherson yn byw yma (other)",
+                                                            "zero": "Ydy, mae {number_of_people} person yn byw yma (zero)",
+                                                            "two": "Ydy, mae {number_of_people} person yn byw yma (two)",
+                                                            "few": "Ydy, mae {number_of_people} pherson yn byw yma (few)",
+                                                            "many": "Ydy, mae {number_of_people} pherson yn byw yma (many)"
+                                                        },
+                                                        "count": {
+                                                            "source": "answers",
+                                                            "identifier": "number-of-people-answer"
+                                                        }
+                                                    },
+                                                    "placeholders": [
+                                                        {
+                                                            "placeholder": "number_of_people",
+                                                            "value": {
+                                                                "source": "answers",
+                                                                "identifier": "number-of-people-answer"
+                                                            }
+                                                        }
+                                                    ]
+                                                },
+                                                "value": "Yes"
+                                            },
+                                            {
+                                                "label": "Na",
+                                                "value": "No"
+                                            }
+                                        ]
                                     }
                                 ]
                             }
