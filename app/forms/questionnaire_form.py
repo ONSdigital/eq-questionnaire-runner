@@ -327,15 +327,9 @@ def get_answer_fields(question, data, error_messages, answer_store, metadata, lo
             if "detail_answer" in option:
                 disable_validation = not _option_value_in_data(answer, option, data)
                 detail_answer = option["detail_answer"]
-                detail_answer_error_messages = (
-                    detail_answer["validation"]["messages"]
-                    if detail_answer.get("validation")
-                    else error_messages
-                )
-
                 answer_fields[option["detail_answer"]["id"]] = get_field_handler(
                     detail_answer,
-                    detail_answer_error_messages,
+                    error_messages,
                     answer_store,
                     metadata,
                     location,
