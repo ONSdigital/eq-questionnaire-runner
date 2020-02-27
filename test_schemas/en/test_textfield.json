@@ -39,6 +39,7 @@
                                     {
                                         "id": "name-answer",
                                         "label": "What is your name?",
+                                        "max_length": 20,
                                         "mandatory": false,
                                         "q_code": "0",
                                         "type": "TextField"
