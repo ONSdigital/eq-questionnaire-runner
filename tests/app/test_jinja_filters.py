@@ -163,7 +163,7 @@ class TestJinjaFilters(AppContextTestCase):  # pylint: disable=too-many-public-m
         self.assertEqual(get_formatted_currency(""), "")
 
     def test_get_width_class_for_number_no_max_value(self):
-        self.assertIsNone(get_width_class_for_number({}))
+        self.assertEqual(get_width_class_for_number({}), "input--w-10")
 
     def test_get_width_class_for_number_single_digit(self):
         answer = {"max_value": {"value": 1}}

@@ -8,6 +8,7 @@ from babel import units, numbers
 from jinja2 import Markup, escape, evalcontextfilter
 
 from app.questionnaire.rules import convert_to_datetime
+from app.settings import MAX_NUMBER
 
 blueprint = flask.Blueprint("filters", __name__)
 
@@ -198,9 +199,7 @@ def get_width_class_for_number(answer):
     allowable_widths = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 20]
 
     min_value = answer.get("min_value", {}).get("value", 0)
-    max_value = answer.get("max_value", {}).get("value")
-    if not max_value:
-        return None
+    max_value = answer.get("max_value", {}).get("value", MAX_NUMBER)
 
     min_value_width = len(str(min_value))
     max_value_width = len(str(max_value))
