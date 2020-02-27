@@ -210,7 +210,7 @@ def get_width_class_for_number(answer):
 
     for allowable_width in allowable_widths:
         if width <= allowable_width:
-            return "input--w-" + str(allowable_width)
+            return f"input--w-{allowable_width}"
 
 
 @blueprint.app_context_processor
