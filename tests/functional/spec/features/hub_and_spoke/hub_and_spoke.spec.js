@@ -22,9 +22,16 @@ describe('Feature: Hub and Spoke', function () {
     expect($(HubPage.summaryRowState(2)).getText()).to.contain('Not started');
   });
 
+  it('When a user views the Hub, any section with show_on_hub set to true should appear', function() {
+    browser.openQuestionnaire(hub_and_spoke_schema);
+    expect($(HubPage.summaryItems()).getText()).to.contain('Employment');
+    expect($(HubPage.summaryItems()).getText()).to.contain('Accommodation');
+    expect($(HubPage.summaryItems()).getText()).to.contain('Household residents');
+  });
+
   it('When a user views the Hub, any section with show_on_hub set to false should not appear', function() {
     browser.openQuestionnaire(hub_and_spoke_schema);
-    expect($(HubPage.submit()).getText()).not.to.contain('Relationships');
+    expect($(HubPage.summaryItems()).getText()).not.to.contain('Relationships');
   });
 
   describe('Given a user is on the Hub page', function () {
