@@ -382,7 +382,7 @@ def test_context_for_section_list_summary(people_answer_store):
         "summary": {
             "answers_are_editable": True,
             "collapsible": False,
-            "groups": [
+            "custom_summary": [
                 {
                     "add_link": "/questionnaire/people/add-person/?return_to=people-list-section-summary",
                     "add_link_text": "Add someone to this household",
@@ -455,7 +455,7 @@ def test_context_for_driving_question_summary_empty_list():
         "summary": {
             "answers_are_editable": True,
             "collapsible": False,
-            "groups": [
+            "custom_summary": [
                 {
                     "add_link": "/questionnaire/anyone-usually-live-at/?return_to=summary",
                     "add_link_text": "Add someone to this household",
@@ -504,7 +504,7 @@ def test_context_for_driving_question_summary():
         "summary": {
             "answers_are_editable": True,
             "collapsible": False,
-            "groups": [
+            "custom_summary": [
                 {
                     "add_link": "/questionnaire/people/add-person/?return_to=summary",
                     "add_link_text": "Add someone to this household",
