@@ -6,6 +6,7 @@ from app.forms.field_handlers.number_handler import NumberHandler
 from app.forms.fields.decimal_field_with_separator import DecimalFieldWithSeparator
 from app.forms.fields.integer_field_with_separator import IntegerFieldWithSeparator
 from app.forms.error_messages import error_messages
+from app.settings import MAX_NUMBER
 
 
 def get_test_form_class(answer_schema, messages=None):
@@ -327,5 +328,5 @@ def test_default_range():
     handler = NumberHandler(answer)
     field_references = handler.get_field_references()
 
-    assert field_references["max_value"] == NumberHandler.MAX_NUMBER
+    assert field_references["max_value"] == MAX_NUMBER
     assert field_references["min_value"] == 0
