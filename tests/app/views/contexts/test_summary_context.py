@@ -380,12 +380,15 @@ def test_context_for_section_list_summary(people_answer_store):
 
     expected = {
         "summary": {
-            "list_summaries": [
+            "answers_are_editable": True,
+            "collapsible": False,
+            "groups": [
                 {
                     "add_link": "/questionnaire/people/add-person/?return_to=people-list-section-summary",
                     "add_link_text": "Add someone to this household",
                     "empty_list_text": "There are no householders",
                     "list": {
+                        "editable": True,
                         "list_items": [
                             {
                                 "edit_link": "/questionnaire/people/PlwgoG/edit-person/?return_to=people-list-section-summary",
@@ -400,10 +403,10 @@ def test_context_for_section_list_summary(people_answer_store):
                                 "remove_link": "/questionnaire/people/UHPLbX/remove-person/?return_to=people-list-section-summary",
                             },
                         ],
-                        "editable": True,
                     },
                     "title": "Household members staying overnight on 13 October 2019 at 70 Abingdon Road, Goathill",
                     "list_name": "people",
+                    "type": "List",
                 },
                 {
                     "add_link": "/questionnaire/visitors/add-visitor/?return_to=people-list-section-summary",
@@ -420,8 +423,9 @@ def test_context_for_section_list_summary(people_answer_store):
                         ],
                         "editable": True,
                     },
-                    "title": "Visitors staying overnight on 13 October 2019 at 70 Abingdon Road, Goathill",
                     "list_name": "visitors",
+                    "title": "Visitors staying overnight on 13 October 2019 at 70 Abingdon Road, Goathill",
+                    "type": "List",
                 },
             ],
             "summary_type": "SectionSummary",
@@ -447,17 +451,19 @@ def test_context_for_driving_question_summary_empty_list():
     )
 
     context = summary_context.section_summary(current_location)
-
     expected = {
         "summary": {
-            "list_summaries": [
+            "answers_are_editable": True,
+            "collapsible": False,
+            "groups": [
                 {
-                    "add_link": "/questionnaire/anyone-usually-live-at/",
+                    "add_link": "/questionnaire/anyone-usually-live-at/?return_to=summary",
                     "add_link_text": "Add someone to this household",
                     "empty_list_text": "There are no householders",
                     "list": {"editable": True, "list_items": []},
                     "title": "Household members",
                     "list_name": "people",
+                    "type": "List",
                 }
             ],
             "summary_type": "SectionSummary",
@@ -496,7 +502,9 @@ def test_context_for_driving_question_summary():
 
     expected = {
         "summary": {
-            "list_summaries": [
+            "answers_are_editable": True,
+            "collapsible": False,
+            "groups": [
                 {
                     "add_link": "/questionnaire/people/add-person/?return_to=summary",
                     "add_link_text": "Add someone to this household",
@@ -514,6 +522,7 @@ def test_context_for_driving_question_summary():
                     },
                     "title": "Household members",
                     "list_name": "people",
+                    "type": "List",
                 }
             ],
             "summary_type": "SectionSummary",

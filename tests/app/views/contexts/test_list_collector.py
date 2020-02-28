@@ -6,7 +6,7 @@ from app.views.contexts.list_collector_context import ListCollectorContext
 
 @pytest.mark.usefixtures("app")
 def test_build_list_collector_context(
-    list_collector_block, schema, people_answer_store, people_list_store, form
+    list_collector_block, schema, people_answer_store, people_list_store
 ):
 
     context = ListCollectorContext(
@@ -18,9 +18,10 @@ def test_build_list_collector_context(
         metadata=None,
     )
 
-    list_context = context.build_list_collector_context(list_collector_block, form)
-
-    assert all(keys in list_context.keys() for keys in ["block", "form", "list"])
+    list_context = context(list_collector_block)
+    assert all(
+        keys in list_context["list"].keys() for keys in ["list_items", "editable"]
+    )
 
 
 @pytest.mark.usefixtures("app")
@@ -53,11 +54,8 @@ def test_build_list_summary_context(
         metadata=None,
     )
 
-    actual = context.build_list_items_summary_context(
-        list_collector_block=list_collector_block, return_to=None
-    )
-
-    assert expected == actual
+    actual = context(list_collector_block=list_collector_block, return_to=None)
+    assert expected == actual["list"]["list_items"]
 
 
 @pytest.mark.usefixtures("app")
@@ -76,10 +74,11 @@ def test_assert_primary_person_string_appended(
         metadata=None,
     )
 
-    list_item_context = context.build_list_items_summary_context(
-        list_collector_block=list_collector_block, return_to=None
-    )
+    list_item_context = context(list_collector_block)
 
-    assert list_item_context[0]["primary_person"] is True
-    assert list_item_context[0]["item_title"] == "Toni Morrison (You)"
-    assert list_item_context[1]["item_title"] == "Barry Pheloung"
+    assert list_item_context["list"]["list_items"][0]["primary_person"] is True
+    assert (
+        list_item_context["list"]["list_items"][0]["item_title"]
+        == "Toni Morrison (You)"
+    )
+    assert list_item_context["list"]["list_items"][1]["item_title"] == "Barry Pheloung"

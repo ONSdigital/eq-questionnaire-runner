@@ -2,6 +2,7 @@ from flask import url_for
 
 from app.views.handlers.question import Question
 from app.views.contexts.list_collector_context import ListCollectorContext
+from app.views.contexts.question import build_question_context
 
 
 class ListCollector(Question):
@@ -29,7 +30,8 @@ class ListCollector(Question):
             self._questionnaire_store.progress_store,
             self._questionnaire_store.metadata,
         )
-        return list_context.build_list_collector_context(self.rendered_block, self.form)
+        question_context = build_question_context(self.rendered_block, self.form)
+        return {**question_context, **list_context(self.rendered_block)}
 
     def handle_post(self):
         if (

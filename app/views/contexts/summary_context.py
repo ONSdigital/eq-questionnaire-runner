@@ -1,4 +1,4 @@
-from typing import Iterable, Iterator, Mapping
+from typing import Iterator, Mapping
 
 from flask import url_for
 
@@ -60,7 +60,7 @@ class SummaryContext(Context):
         return context
 
     def get_title_for_location(self, location):
-        title = self._schema.get_section(location.section_id).get("title")
+        title = self._schema.get_block(location.block_id).get("title")
 
         if location.list_item_id:
             repeating_title = self._schema.get_repeating_title_for_section(
@@ -78,37 +78,33 @@ class SummaryContext(Context):
         section_summary = self._schema.get_summary_for_section(section_id)
         block = self._schema.get_block(current_location.block_id)
 
-        if section_summary:
-            return {
-                "summary": {
-                    "title": block["title"],
-                    "list_summaries": list(
-                        self._custom_section_summary(
-                            current_location, section_summary, section
-                        )
-                    ),
-                    "summary_type": "SectionSummary",
-                }
-            }
-
-        return {
+        summary_context = {
             "summary": {
-                "groups": self.build_groups_for_location(current_location),
+                "title": self.get_title_for_location(current_location),
+                "summary_type": "SectionSummary",
                 "answers_are_editable": True,
                 "collapsible": block.get("collapsible", False),
-                "summary_type": "SectionSummary",
-                "title": self.get_title_for_location(current_location),
             }
         }
 
-    def _custom_section_summary(
-        self, current_location, section_summary: Iterable[Mapping], section
-    ):
-        for summary in section_summary:
-            if summary["type"] == "List":
-                yield from self._get_list_summaries(summary, current_location, section)
+        if not section_summary:
+            summary_context["summary"]["groups"] = self.build_groups_for_location(
+                current_location
+            )
+            return summary_context
 
-    def _get_list_summaries(
+        list_summaries = []
+        for summary_element in section_summary:
+            if summary_element["type"] == "List":
+                for list_block in self._get_list_summary_element(
+                    summary_element, current_location, section
+                ):
+                    list_summaries.append(list_block)
+
+        summary_context["summary"]["list_summaries"] = list_summaries
+        return summary_context
+
+    def _get_list_summary_element(
         self, summary: Mapping, current_location, section: Mapping
     ) -> Iterator[Mapping]:
         routing_path = self._router.routing_path(
@@ -134,12 +130,10 @@ class SummaryContext(Context):
 
                 if driving_question_block:
                     add_link = url_for(
-                        "questionnaire.block", block_id=driving_question_block["id"]
+                        "questionnaire.block",
+                        block_id=driving_question_block["id"],
+                        return_to=current_location.block_id,
                     )
-
-            rendered_summary = self._placeholder_renderer.render(
-                summary, current_location.list_item_id
-            )
 
             list_context = ListCollectorContext(
                 self._language,
@@ -150,17 +144,19 @@ class SummaryContext(Context):
                 self._metadata,
             )
 
-            list_items = list_context.build_list_items_summary_context(
+            rendered_list_context = list_context(
                 list_collector_block, current_location.block_id
             )
+            rendered_summary = self._placeholder_renderer.render(
+                summary, current_location.list_item_id
+            )
 
-            list_summary = {
+            yield {
                 "title": rendered_summary["title"],
+                "type": summary["type"],
                 "add_link": add_link,
                 "add_link_text": rendered_summary["add_link_text"],
                 "empty_list_text": rendered_summary["empty_list_text"],
                 "list_name": summary["for_list"],
-                "list": {"list_items": list_items, "editable": True},
+                **rendered_list_context,
             }
-
-            yield list_summary
