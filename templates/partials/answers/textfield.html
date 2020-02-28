@@ -3,7 +3,7 @@
 {% set input = form.fields[answer.id] if input is undefined else input %}
 
 {% set config = {
-  "id": answer['id'],
+  "id": answer.id,
   "name": input.name,
   "value": input._value() | e,
   "label": {
