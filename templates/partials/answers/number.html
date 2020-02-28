@@ -3,7 +3,7 @@
 {% set input = form.fields[answer['id']] %}
 
 {{ onsInput({
-  "id": answer.id + '-field',
+  "id": answer['id'],
   "type": "number",
   "label": {
     "text": answer.label,

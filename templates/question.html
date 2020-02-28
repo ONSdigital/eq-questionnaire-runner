@@ -23,7 +23,7 @@
       <ul class="list list--bare">
         {% for answer_id, error in form.mapped_errors %}
           <li class="list__item">
-            {{ loop.index }}) <a class="js-inpagelink" href="#{{answer_id}}">{{ error }}</a>
+            {{ loop.index }}) <a class="js-inpagelink" href="#{{answer_id}}-error">{{ error }}</a>
           </li>
         {% endfor %}
       </ul>
