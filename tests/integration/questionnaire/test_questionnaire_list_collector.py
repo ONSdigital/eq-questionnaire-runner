@@ -147,6 +147,22 @@ class TestQuestionnaireListCollector(IntegrationTestCase):
 
         self.assertInBody("List Collector Summary")
 
+        self.assertInBody("Household members")
+
+        john_remove_link = self.get_link("2", "Remove")
+
+        mary_remove_link = self.get_link("1", "Remove")
+
+        self.get(john_remove_link)
+
+        self.post({"remove-confirmation": "Yes"})
+
+        self.get(mary_remove_link)
+
+        self.post({"remove-confirmation": "Yes"})
+
+        self.assertInBody("There are no householders")
+
         self.post()
 
         self.post()
