@@ -3,7 +3,7 @@
 {% set input = form.fields[answer['id']] %}
 
 {{ onsInput({
-  "id": answer.id + '-input',
+  "id": answer.id + '-field',
   "type": "number",
   "classes": "js-totaliser-input-calculated" if answer.calculated,
   "name": input.name,

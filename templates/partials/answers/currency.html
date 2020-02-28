@@ -3,9 +3,9 @@
 {% set input = form.fields[answer['id']] %}
 
 {{ onsInput({
-  "id": answer.id + '-input',
+  "id": answer.id + '-field',
   "type": "number",
-  "name": answer.id + '-input',
+  "name": answer.id + '-field',
   "value": input._value() | e,
   "label": {
     "text": answer.label,

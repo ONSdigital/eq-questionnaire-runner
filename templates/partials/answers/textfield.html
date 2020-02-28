@@ -3,8 +3,8 @@
 {% set input = form.fields[answer.id] if input is undefined else input %}
 
 {% set config = {
-  "id": answer.id + '-input',
-  "name": input.name + '-input',
+  "id": answer.id + '-field',
+  "name": input.name + '-field',
   "value": input._value() | e,
   "label": {
     "text": answer.label,
