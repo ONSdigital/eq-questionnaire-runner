@@ -31,7 +31,7 @@
         {% if summary.type == 'List' %}
           <div data-qa="{{summary.list_name}}-list-summary">
             <h2>{{summary.title}}</h2>
-            {% if summary.list %}
+            {% if summary.list.list_items %}
               {% set list = summary.list %}
               {% include 'partials/summary/list-summary.html' %}
             {% else %}
