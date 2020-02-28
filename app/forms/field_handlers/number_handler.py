@@ -7,13 +7,13 @@ from app.data_model.answer_store import AnswerStore
 from app.forms.fields.decimal_field_with_separator import DecimalFieldWithSeparator
 from app.forms.fields.integer_field_with_separator import IntegerFieldWithSeparator
 from app.forms.field_handlers.field_handler import FieldHandler
-from app.questionnaire.location import Location
 from app.forms.validators import NumberCheck, NumberRange, DecimalPlaces
+from app.questionnaire.location import Location
+from app.settings import MAX_NUMBER
 
 
 class NumberHandler(FieldHandler):
     MANDATORY_MESSAGE_KEY = "MANDATORY_NUMBER"
-    MAX_NUMBER = 9999999999
 
     def __init__(
         self,
@@ -61,9 +61,7 @@ class NumberHandler(FieldHandler):
 
         min_value = self.get_schema_value(schema_min_value) if schema_min_value else 0
         max_value = (
-            self.get_schema_value(schema_max_value)
-            if schema_max_value
-            else self.MAX_NUMBER
+            self.get_schema_value(schema_max_value) if schema_max_value else MAX_NUMBER
         )
 
         return {
