@@ -4,7 +4,7 @@
 
 {% set config = {
   "id": answer.id + '-field',
-  "name": input.name + '-field',
+  "name": input.name,
   "value": input._value() | e,
   "label": {
     "text": answer.label,
