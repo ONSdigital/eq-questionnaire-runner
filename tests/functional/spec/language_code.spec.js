@@ -15,7 +15,7 @@ const PLURAL_TEST_DATA_SETS = [
     answer: {
       en: 'Yes, 0 people live here',
       cy: 'Ydy, mae 0 person yn byw yma (zero)'
-    },
+    }
   },
   {
     count: 1,
@@ -26,7 +26,7 @@ const PLURAL_TEST_DATA_SETS = [
     answer: {
       en: 'Yes, 1 person lives here',
       cy: 'Ydy, mae 1 person yn byw yma (one)'
-    },
+    }
   },
   {
     count: 2,
@@ -37,7 +37,7 @@ const PLURAL_TEST_DATA_SETS = [
     answer: {
       en: 'Yes, 2 people live here',
       cy: 'Ydy, mae 2 person yn byw yma (two)'
-    },
+    }
   },
   {
     count: 3,
@@ -48,7 +48,7 @@ const PLURAL_TEST_DATA_SETS = [
     answer: {
       en: 'Yes, 3 people live here',
       cy: 'Ydy, mae 3 pherson yn byw yma (few)'
-    },
+    }
   },
   {
     count: 6,
@@ -59,7 +59,7 @@ const PLURAL_TEST_DATA_SETS = [
     answer: {
       en: 'Yes, 6 people live here',
       cy: 'Ydy, mae 6 pherson yn byw yma (many)'
-    },
+    }
   },
   {
     count: 4,
@@ -70,7 +70,7 @@ const PLURAL_TEST_DATA_SETS = [
     answer: {
       en: 'Yes, 4 people live here',
       cy: 'Ydy, mae 4 pherson yn byw yma (other)'
-    },
+    }
   },
   {
     count: 5,
@@ -81,7 +81,7 @@ const PLURAL_TEST_DATA_SETS = [
     answer: {
       en: 'Yes, 5 people live here',
       cy: 'Ydy, mae 5 pherson yn byw yma (other)'
-    },
+    }
   },
   {
     count: 10,
@@ -92,7 +92,7 @@ const PLURAL_TEST_DATA_SETS = [
     answer: {
       en: 'Yes, 10 people live here',
       cy: 'Ydy, mae 10 pherson yn byw yma (other)'
-    },
+    }
   }
 ];
 
