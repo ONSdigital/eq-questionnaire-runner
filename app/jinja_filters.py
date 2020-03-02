@@ -8,6 +8,7 @@ from babel import units, numbers
 from jinja2 import Markup, escape, evalcontextfilter
 
 from app.questionnaire.rules import convert_to_datetime
+from app.settings import MAX_NUMBER
 
 blueprint = flask.Blueprint("filters", __name__)
 
@@ -191,6 +192,30 @@ def should_wrap_with_fieldset(question):
 @blueprint.app_context_processor
 def should_wrap_with_fieldset_processor():
     return {"should_wrap_with_fieldset": should_wrap_with_fieldset}
+
+
+@blueprint.app_template_filter()
+def get_width_class_for_number(answer):
+    allowable_widths = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 20]
+
+    min_value = answer.get("min_value", {}).get("value", 0)
+    max_value = answer.get("max_value", {}).get("value", MAX_NUMBER)
+
+    min_value_width = len(str(min_value))
+    max_value_width = len(str(max_value))
+
+    width = min_value_width if min_value_width > max_value_width else max_value_width
+
+    width += answer.get("decimal_places", 0)
+
+    for allowable_width in allowable_widths:
+        if width <= allowable_width:
+            return f"input--w-{allowable_width}"
+
+
+@blueprint.app_context_processor
+def get_width_class_for_number_processor():
+    return {"get_width_class_for_number": get_width_class_for_number}
 
 
 class LabelConfig:
