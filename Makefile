@@ -4,7 +4,7 @@ clean:
 	rm -rf templates/layout
 
 load-schemas:
-	./scripts/load_release.sh onsdigital/eq-questionnaire-schemas v0.0.5
+	./scripts/load_release.sh onsdigital/eq-questionnaire-schemas v0.0.6
 
 load-templates:
 	./scripts/load_release.sh onsdigital/design-system 16.0.0

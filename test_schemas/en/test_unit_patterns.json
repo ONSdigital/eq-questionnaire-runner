@@ -39,7 +39,7 @@
                                         "type": "Unit",
                                         "unit": "length-centimeter",
                                         "unit_length": "short",
-                                        "max_value": {
+                                        "maximum": {
                                             "value": 1000
                                         }
                                     },
@@ -51,7 +51,7 @@
                                         "type": "Unit",
                                         "unit": "length-meter",
                                         "unit_length": "short",
-                                        "max_value": {
+                                        "maximum": {
                                             "value": 1000
                                         }
                                     },
@@ -63,7 +63,7 @@
                                         "type": "Unit",
                                         "unit": "length-kilometer",
                                         "unit_length": "short",
-                                        "max_value": {
+                                        "maximum": {
                                             "value": 1000
                                         }
                                     },
@@ -75,7 +75,7 @@
                                         "type": "Unit",
                                         "unit": "length-mile",
                                         "unit_length": "short",
-                                        "max_value": {
+                                        "maximum": {
                                             "value": 1000
                                         }
                                     }
@@ -99,7 +99,7 @@
                                         "type": "Unit",
                                         "unit": "duration-hour",
                                         "unit_length": "long",
-                                        "max_value": {
+                                        "maximum": {
                                             "value": 99
                                         }
                                     },
@@ -111,7 +111,7 @@
                                         "type": "Unit",
                                         "unit": "duration-year",
                                         "unit_length": "long",
-                                        "max_value": {
+                                        "maximum": {
                                             "value": 99
                                         }
                                     }

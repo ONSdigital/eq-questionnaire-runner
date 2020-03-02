@@ -104,7 +104,7 @@
                                         "label": "Your age",
                                         "unit_length": "long",
                                         "mandatory": true,
-                                        "max_value": {
+                                        "maximum": {
                                             "value": 118
                                         }
                                     }

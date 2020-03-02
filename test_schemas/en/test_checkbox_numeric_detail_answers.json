@@ -65,7 +65,7 @@
                                                     "id": "other-answer",
                                                     "label": "Please specify other",
                                                     "type": "Number",
-                                                    "max_value": {
+                                                    "maximum": {
                                                         "value": 20
                                                     }
                                                 }

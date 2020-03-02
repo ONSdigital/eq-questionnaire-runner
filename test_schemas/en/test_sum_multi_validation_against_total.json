@@ -42,7 +42,7 @@
                                         "mandatory": true,
                                         "type": "Number",
                                         "decimal_places": 2,
-                                        "min_value": {
+                                        "minimum": {
                                             "value": 0,
                                             "exclusive": true
                                         }

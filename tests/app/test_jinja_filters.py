@@ -162,31 +162,31 @@ class TestJinjaFilters(AppContextTestCase):  # pylint: disable=too-many-public-m
     def test_get_formatted_currency_with_no_value(self):
         self.assertEqual(get_formatted_currency(""), "")
 
-    def test_get_width_class_for_number_no_max_value(self):
+    def test_get_width_class_for_number_no_maximum(self):
         self.assertEqual(get_width_class_for_number({}), "input--w-10")
 
     def test_get_width_class_for_number_single_digit(self):
-        answer = {"max_value": {"value": 1}}
+        answer = {"maximum": {"value": 1}}
         self.assertEqual(get_width_class_for_number(answer), "input--w-1")
 
     def test_get_width_class_for_number_multiple_digits(self):
-        answer = {"max_value": {"value": 123456}}
+        answer = {"maximum": {"value": 123456}}
         self.assertEqual(get_width_class_for_number(answer), "input--w-6")
 
     def test_get_width_class_for_number_roundup(self):
-        answer = {"max_value": {"value": 12345678901}}
+        answer = {"maximum": {"value": 12345678901}}
         self.assertEqual(get_width_class_for_number(answer), "input--w-20")
 
-    def test_get_width_class_for_number_min_value_longer_than_max_value(self):
-        answer = {"min_value": {"value": -123456}, "max_value": {"value": 1234}}
+    def test_get_width_class_for_number_min_value_longer_than_maximum(self):
+        answer = {"minimum": {"value": -123456}, "maximum": {"value": 1234}}
         self.assertEqual(get_width_class_for_number(answer), "input--w-7")
 
     def test_get_width_class_for_number_decimal_places(self):
-        answer = {"decimal_places": 2, "max_value": {"value": 123456}}
+        answer = {"decimal_places": 2, "maximum": {"value": 123456}}
         self.assertEqual(get_width_class_for_number(answer), "input--w-8")
 
     def test_get_width_class_for_number_large_number(self):
-        answer = {"max_value": {"value": 123456789012345678901}}
+        answer = {"maximum": {"value": 123456789012345678901}}
         self.assertIsNone(get_width_class_for_number(answer))
 
     @staticmethod
