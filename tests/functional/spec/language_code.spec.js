@@ -10,88 +10,88 @@ const PLURAL_TEST_DATA_SETS = [
     count: 0,
     question_title: {
       en: '0 people live here, is this correct?',
-      cy: 'Mae 0 person yn byw yma, ydy hyn yn gywir? (zero)',
+      cy: 'Mae 0 person yn byw yma, ydy hyn yn gywir? (zero)'
     },
     answer: {
       en: 'Yes, 0 people live here',
-      cy: 'Ydy, mae 0 person yn byw yma (zero)',
+      cy: 'Ydy, mae 0 person yn byw yma (zero)'
     },
   },
   {
     count: 1,
     question_title: {
       en: '1 person lives here, is this correct?',
-      cy: 'Mae 1 person yn byw yma, ydy hyn yn gywir? (one)',
+      cy: 'Mae 1 person yn byw yma, ydy hyn yn gywir? (one)'
     },
     answer: {
       en: 'Yes, 1 person lives here',
-      cy: 'Ydy, mae 1 person yn byw yma (one)',
+      cy: 'Ydy, mae 1 person yn byw yma (one)'
     },
   },
   {
     count: 2,
     question_title: {
       en: '2 people live here, is this correct?',
-      cy: 'Mae 2 person yn byw yma, ydy hyn yn gywir? (two)',
+      cy: 'Mae 2 person yn byw yma, ydy hyn yn gywir? (two)'
     },
     answer: {
       en: 'Yes, 2 people live here',
-      cy: 'Ydy, mae 2 person yn byw yma (two)',
+      cy: 'Ydy, mae 2 person yn byw yma (two)'
     },
   },
   {
     count: 3,
     question_title: {
       en: '3 people live here, is this correct?',
-      cy: 'Mae 3 pherson yn byw yma, ydy hyn yn gywir? (few)',
+      cy: 'Mae 3 pherson yn byw yma, ydy hyn yn gywir? (few)'
     },
     answer: {
       en: 'Yes, 3 people live here',
-      cy: 'Ydy, mae 3 pherson yn byw yma (few)',
+      cy: 'Ydy, mae 3 pherson yn byw yma (few)'
     },
   },
   {
     count: 6,
     question_title: {
       en: '6 people live here, is this correct?',
-      cy: 'Mae 6 pherson yn byw yma, ydy hyn yn gywir? (many)',
+      cy: 'Mae 6 pherson yn byw yma, ydy hyn yn gywir? (many)'
     },
     answer: {
       en: 'Yes, 6 people live here',
-      cy: 'Ydy, mae 6 pherson yn byw yma (many)',
+      cy: 'Ydy, mae 6 pherson yn byw yma (many)'
     },
   },
   {
     count: 4,
     question_title: {
       en: '4 people live here, is this correct?',
-      cy: 'Mae 4 pherson yn byw yma, ydy hyn yn gywir? (other)',
+      cy: 'Mae 4 pherson yn byw yma, ydy hyn yn gywir? (other)'
     },
     answer: {
       en: 'Yes, 4 people live here',
-      cy: 'Ydy, mae 4 pherson yn byw yma (other)',
+      cy: 'Ydy, mae 4 pherson yn byw yma (other)'
     },
   },
   {
     count: 5,
     question_title: {
       en: '5 people live here, is this correct?',
-      cy: 'Mae 5 pherson yn byw yma, ydy hyn yn gywir? (other)',
+      cy: 'Mae 5 pherson yn byw yma, ydy hyn yn gywir? (other)'
     },
     answer: {
       en: 'Yes, 5 people live here',
-      cy: 'Ydy, mae 5 pherson yn byw yma (other)',
+      cy: 'Ydy, mae 5 pherson yn byw yma (other)'
     },
   },
   {
     count: 10,
     question_title: {
       en: '10 people live here, is this correct?',
-      cy: 'Mae 10 pherson yn byw yma, ydy hyn yn gywir? (other)',
+      cy: 'Mae 10 pherson yn byw yma, ydy hyn yn gywir? (other)'
     },
     answer: {
       en: 'Yes, 10 people live here',
-      cy: 'Ydy, mae 10 pherson yn byw yma (other)',
+      cy: 'Ydy, mae 10 pherson yn byw yma (other)'
     },
   },
 ];
