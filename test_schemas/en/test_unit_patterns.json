@@ -38,7 +38,10 @@
                                         "mandatory": false,
                                         "type": "Unit",
                                         "unit": "length-centimeter",
-                                        "unit_length": "short"
+                                        "unit_length": "short",
+                                        "max_value": {
+                                            "value": 1000
+                                        }
                                     },
                                     {
                                         "id": "metres",
@@ -47,7 +50,10 @@
                                         "mandatory": false,
                                         "type": "Unit",
                                         "unit": "length-meter",
-                                        "unit_length": "short"
+                                        "unit_length": "short",
+                                        "max_value": {
+                                            "value": 1000
+                                        }
                                     },
                                     {
                                         "id": "kilometres",
@@ -56,7 +62,10 @@
                                         "mandatory": false,
                                         "type": "Unit",
                                         "unit": "length-kilometer",
-                                        "unit_length": "short"
+                                        "unit_length": "short",
+                                        "max_value": {
+                                            "value": 1000
+                                        }
                                     },
                                     {
                                         "id": "miles",
@@ -65,7 +74,10 @@
                                         "mandatory": false,
                                         "type": "Unit",
                                         "unit": "length-mile",
-                                        "unit_length": "short"
+                                        "unit_length": "short",
+                                        "max_value": {
+                                            "value": 1000
+                                        }
                                     }
                                 ],
                                 "description": "",
@@ -86,7 +98,10 @@
                                         "mandatory": false,
                                         "type": "Unit",
                                         "unit": "duration-hour",
-                                        "unit_length": "long"
+                                        "unit_length": "long",
+                                        "max_value": {
+                                            "value": 99
+                                        }
                                     },
                                     {
                                         "id": "duration-year",
@@ -95,7 +110,10 @@
                                         "mandatory": false,
                                         "type": "Unit",
                                         "unit": "duration-year",
-                                        "unit_length": "long"
+                                        "unit_length": "long",
+                                        "max_value": {
+                                            "value": 99
+                                        }
                                     }
                                 ],
                                 "description": "",
