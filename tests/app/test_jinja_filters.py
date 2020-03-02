@@ -225,8 +225,8 @@ def test_map_list_collector_config_no_actions():
     output = map_list_collector_config(list_items, "icon")
 
     expected = [
-        {"rowItems": [{"actions": [], "icon": "icon"}], "title": "Mark Bloggs"},
-        {"rowItems": [{"actions": [], "icon": "icon"}], "title": "Joe Bloggs"},
+        {"rowItems": [{"actions": [], "icon": "icon"}], "rowTitle": "Mark Bloggs"},
+        {"rowItems": [{"actions": [], "icon": "icon"}], "rowTitle": "Joe Bloggs"},
     ]
 
     assert output == expected
