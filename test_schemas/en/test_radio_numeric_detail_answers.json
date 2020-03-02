@@ -68,7 +68,7 @@
                                                     "id": "other-answer",
                                                     "label": "Please enter a number of items",
                                                     "type": "Number",
-                                                    "max_value": {
+                                                    "maximum": {
                                                         "value": 20
                                                     }
                                                 }

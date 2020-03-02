@@ -10,13 +10,13 @@ describe('Units', function() {
       $(SetLengthUnitsBlockPage.submit()).click();
       expect($(SetDurationUnitsBlockPage.durationHourUnit()).getText()).to.equal('hours');
       expect($(SetDurationUnitsBlockPage.durationYearUnit()).getText()).to.equal('years');
-      $(SetDurationUnitsBlockPage.durationHour()).setValue(123);
-      $(SetDurationUnitsBlockPage.durationYear()).setValue(321);
+      $(SetDurationUnitsBlockPage.durationHour()).setValue(6);
+      $(SetDurationUnitsBlockPage.durationYear()).setValue(20);
       $(SetDurationUnitsBlockPage.submit()).click();
       $(SetAreaUnitsBlockPage.submit()).click();
       $(SetVolumeUnitsBlockPage.submit()).click();
-      expect($(SummaryPage.durationHour()).getText()).to.equal('123 hours');
-      expect($(SummaryPage.durationYear()).getText()).to.equal('321 years');
+      expect($(SummaryPage.durationHour()).getText()).to.equal('6 hours');
+      expect($(SummaryPage.durationYear()).getText()).to.equal('20 years');
     });
 
   it('Given we set a language code for welsh and run the questionnaire, when we enter values for durations, they should be displayed on the summary with their units.', function() {
@@ -24,13 +24,13 @@ describe('Units', function() {
     $(SetLengthUnitsBlockPage.submit()).click();
     expect($(SetDurationUnitsBlockPage.durationHourUnit()).getText()).to.equal('awr');
     expect($(SetDurationUnitsBlockPage.durationYearUnit()).getText()).to.equal('flynedd');
-    $(SetDurationUnitsBlockPage.durationHour()).setValue(123);
-    $(SetDurationUnitsBlockPage.durationYear()).setValue(321);
+    $(SetDurationUnitsBlockPage.durationHour()).setValue(6);
+    $(SetDurationUnitsBlockPage.durationYear()).setValue(20);
     $(SetDurationUnitsBlockPage.submit()).click();
     $(SetAreaUnitsBlockPage.submit()).click();
     $(SetVolumeUnitsBlockPage.submit()).click();
-    expect($(SummaryPage.durationHour()).getText()).to.equal('123 awr');
-    expect($(SummaryPage.durationYear()).getText()).to.equal('321 mlynedd');
+    expect($(SummaryPage.durationHour()).getText()).to.equal('6 awr');
+    expect($(SummaryPage.durationYear()).getText()).to.equal('20 mlynedd');
   });
 });
 

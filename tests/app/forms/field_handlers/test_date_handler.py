@@ -102,7 +102,7 @@ def test_get_referenced_offset_value_for_now_value(app):
 
 def test_get_referenced_offset_value_for_meta(app):
     test_metadata = {"date": "2018-02-20"}
-    answer = {"minimum": {"meta": "date"}}
+    answer = {"minimum": {"value": {"identifier": "date", "source": "metadata"}}}
 
     handler = DateHandler(answer, metadata=test_metadata)
     minimum_date = handler.get_date_value("minimum")
@@ -120,7 +120,7 @@ def test_get_referenced_offset_value_for_answer_id(app):
     test_answer_id = Answer(answer_id="date", value="2018-03-20")
     answer_store.add_or_update(test_answer_id)
 
-    answer = {"maximum": {"answer_id": "date"}}
+    answer = {"maximum": {"value": {"identifier": "date", "source": "answers"}}}
 
     handler = DateHandler(answer, answer_store=answer_store)
     maximum_date = handler.get_date_value("maximum")
@@ -149,7 +149,12 @@ def test_get_referenced_offset_value_with_list_item_id(app, schema_mock):
 
     answer_store.add_or_update(test_answer_id)
 
-    answer = {"maximum": {"answer_id": "date", "offset_by": {"months": 1}}}
+    answer = {
+        "maximum": {
+            "value": {"identifier": "date", "source": "answers"},
+            "offset_by": {"months": 1},
+        }
+    }
 
     handler = DateHandler(answer, answer_store=answer_store, location=location)
     maximum_date = handler.get_date_value("maximum")
@@ -180,8 +185,14 @@ def test_minimum_and_maximum_offset_dates(app):
     answer = {
         "id": "date_answer",
         "type": "Date",
-        "minimum": {"meta": "date", "offset_by": {"days": -10}},
-        "maximum": {"answer_id": "date", "offset_by": {"years": 1}},
+        "minimum": {
+            "value": {"identifier": "date", "source": "metadata"},
+            "offset_by": {"days": -10},
+        },
+        "maximum": {
+            "value": {"identifier": "date", "source": "answers"},
+            "offset_by": {"years": 1},
+        },
     }
 
     handler = DateHandler(answer, answer_store=store, metadata=test_metadata)

@@ -2,10 +2,13 @@
 from werkzeug.datastructures import MultiDict
 from wtforms import Form
 
+from app.data_model.answer import Answer
+from app.data_model.answer_store import AnswerStore
 from app.forms.field_handlers.number_handler import NumberHandler
 from app.forms.fields.decimal_field_with_separator import DecimalFieldWithSeparator
 from app.forms.fields.integer_field_with_separator import IntegerFieldWithSeparator
 from app.forms.error_messages import error_messages
+from app.settings import MAX_NUMBER
 
 
 def get_test_form_class(answer_schema, messages=None):
@@ -89,7 +92,7 @@ def test_percentage_field():
         "mandatory": False,
         "q_code": "0810",
         "type": "Percentage",
-        "max_value": {"value": 100},
+        "maximum": {"value": 100},
         "validation": {
             "messages": {
                 "NUMBER_TOO_LARGE": "How much, fool you must be",
@@ -109,7 +112,7 @@ def test_percentage_field():
 
 def test_manual_min(app):
     answer_schema = {
-        "min_value": {"value": 10},
+        "minimum": {"value": 10},
         "label": "Min Test",
         "mandatory": False,
         "validation": {
@@ -135,7 +138,7 @@ def test_manual_min(app):
 
 def test_manual_max(app):
     answer_schema = {
-        "max_value": {"value": 20},
+        "maximum": {"value": 20},
         "label": "Max Test",
         "mandatory": False,
         "validation": {
@@ -185,16 +188,16 @@ def test_manual_decimal(app):
 
 
 def test_zero_max(app):
-    max_value = 0
+    maximum = 0
 
     answer_schema = {
-        "max_value": {"value": max_value},
+        "maximum": {"value": maximum},
         "label": "Max Test",
         "mandatory": False,
         "id": "test-range",
         "type": "Currency",
     }
-    error_message = error_messages["NUMBER_TOO_LARGE"] % dict(max=max_value)
+    error_message = error_messages["NUMBER_TOO_LARGE"] % dict(max=maximum)
 
     test_form_class = get_test_form_class(answer_schema, messages=error_messages)
     form = test_form_class(MultiDict({"test_field": "1"}))
@@ -204,16 +207,16 @@ def test_zero_max(app):
 
 
 def test_zero_min(app):
-    min_value = 0
+    minimum = 0
 
     answer_schema = {
-        "max_value": {"value": min_value},
+        "maximum": {"value": minimum},
         "label": "Max Test",
         "mandatory": False,
         "id": "test-range",
         "type": "Currency",
     }
-    error_message = error_messages["NUMBER_TOO_SMALL"] % dict(min=min_value)
+    error_message = error_messages["NUMBER_TOO_SMALL"] % dict(min=minimum)
 
     test_form_class = get_test_form_class(answer_schema, messages=error_messages)
     form = test_form_class(MultiDict({"test_field": "-1"}))
@@ -224,8 +227,8 @@ def test_zero_min(app):
 
 def test_value_min_and_max(app):
     answer_schema = {
-        "min_value": {"value": 10},
-        "max_value": {"value": 20},
+        "minimum": {"value": 10},
+        "maximum": {"value": 20},
         "label": "Range Test 10 to 20",
         "mandatory": False,
         "validation": {
@@ -259,7 +262,7 @@ def test_value_min_and_max(app):
 
 def test_manual_min_exclusive(app):
     answer_schema = {
-        "min_value": {"value": 10, "exclusive": True},
+        "minimum": {"value": 10, "exclusive": True},
         "label": "Min Test",
         "mandatory": False,
         "validation": {
@@ -285,7 +288,7 @@ def test_manual_min_exclusive(app):
 
 def test_manual_max_exclusive(app):
     answer_schema = {
-        "max_value": {"value": 20, "exclusive": True},
+        "maximum": {"value": 20, "exclusive": True},
         "label": "Max Test",
         "mandatory": False,
         "validation": {
@@ -327,5 +330,33 @@ def test_default_range():
     handler = NumberHandler(answer)
     field_references = handler.get_field_references()
 
-    assert field_references["max_value"] == NumberHandler.MAX_NUMBER
-    assert field_references["min_value"] == 0
+    assert field_references["maximum"] == MAX_NUMBER
+    assert field_references["minimum"] == 0
+
+
+def test_get_schema_value_answer_store():
+    answer_schema = {
+        "id": "test-range",
+        "label": "",
+        "description": "Range Test",
+        "mandatory": False,
+        "type": "Number",
+        "decimal_places": 2,
+        "maximum": {"value": {"identifier": "set-maximum", "source": "answers"}},
+        "minimum": {"value": {"identifier": "set-minimum", "source": "answers"}},
+    }
+    mock_metadata = {"schema_name": "test_numbers", "language_code": "en"}
+    answer_store = AnswerStore()
+
+    answer_store.add_or_update(Answer(answer_id="set-maximum", value=10))
+    answer_store.add_or_update(Answer(answer_id="set-minimum", value=1))
+
+    number_handler = NumberHandler(
+        answer_schema, answer_store=answer_store, metadata=mock_metadata
+    )
+
+    maximum = number_handler.get_schema_value(answer_schema["maximum"])
+    minimum = number_handler.get_schema_value(answer_schema["minimum"])
+
+    assert maximum == 10
+    assert minimum == 1
