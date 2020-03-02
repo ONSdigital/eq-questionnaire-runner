@@ -4,8 +4,8 @@ from flask import url_for
 
 from app.questionnaire.location import Location
 from app.questionnaire.questionnaire_schema import QuestionnaireSchema
-from app.views.contexts.context import Context
-from app.views.contexts.list_collector_context import ListCollectorContext
+from app.views.contexts import Context
+from app.views.contexts import ListContext
 from app.views.contexts.summary.group import Group
 
 
@@ -16,7 +16,7 @@ class SummaryContext(Context):
         super().__init__(
             language, schema, answer_store, list_store, progress_store, metadata
         )
-        self.list_context = ListCollectorContext(
+        self.list_context = ListContext(
             self._language,
             self._schema,
             self._answer_store,

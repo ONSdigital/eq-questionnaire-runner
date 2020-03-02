@@ -3,10 +3,10 @@ from functools import partial
 from flask import url_for
 from flask_babel import lazy_gettext
 
-from app.views.contexts.context import Context
+from app.views.contexts import Context
 
 
-class ListCollectorContext(Context):
+class ListContext(Context):
     def __call__(self, list_collector_block, return_to=None):
         return {
             "list": {

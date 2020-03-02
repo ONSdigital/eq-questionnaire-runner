@@ -1,7 +1,7 @@
 import pytest
 from app.utilities.schema import load_schema_from_name
 from app.questionnaire.questionnaire_schema import DEFAULT_LANGUAGE_CODE
-from app.views.contexts.list_collector_context import ListCollectorContext
+from app.views.contexts import ListContext
 
 
 @pytest.mark.usefixtures("app")
@@ -9,7 +9,7 @@ def test_build_list_collector_context(
     list_collector_block, schema, people_answer_store, people_list_store
 ):
 
-    context = ListCollectorContext(
+    context = ListContext(
         language=DEFAULT_LANGUAGE_CODE,
         progress_store={},
         list_store=people_list_store,
@@ -45,7 +45,7 @@ def test_build_list_summary_context(
         },
     ]
 
-    context = ListCollectorContext(
+    context = ListContext(
         language=DEFAULT_LANGUAGE_CODE,
         progress_store={},
         list_store=people_list_store,
@@ -65,7 +65,7 @@ def test_assert_primary_person_string_appended(
     schema = load_schema_from_name("test_list_collector_primary_person")
     people_list_store["people"].primary_person = "PlwgoG"
 
-    context = ListCollectorContext(
+    context = ListContext(
         language=DEFAULT_LANGUAGE_CODE,
         progress_store={},
         list_store=people_list_store,

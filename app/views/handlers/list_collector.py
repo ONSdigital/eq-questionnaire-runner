@@ -1,7 +1,7 @@
 from flask import url_for
 
 from app.views.handlers.question import Question
-from app.views.contexts.list_collector_context import ListCollectorContext
+from app.views.contexts import ListContext
 from app.views.contexts.question import build_question_context
 
 
@@ -22,7 +22,7 @@ class ListCollector(Question):
         return super().get_next_location_url()
 
     def get_context(self):
-        list_context = ListCollectorContext(
+        list_context = ListContext(
             self._language,
             self._schema,
             self._questionnaire_store.answer_store,
