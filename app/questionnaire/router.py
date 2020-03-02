@@ -75,13 +75,9 @@ class Router:
         last_block_type = self._schema.get_block(last_block_id)["type"]
         hub_enabled = self._schema.is_hub_enabled()
 
-        # A section summary doesn't always have to be the last block
         if (
             hub_enabled
-            and (
-                location.block_id == last_block_id
-                or current_block_type == "SectionSummary"
-            )
+            and location.block_id == last_block_id
             and self._progress_store.is_section_complete(
                 location.section_id, location.list_item_id
             )
@@ -214,15 +210,21 @@ class Router:
         self, routing_path
     ) -> Location:
 
-        section_summary_location = self._get_location_of_section_summary(routing_path)
-        if section_summary_location:
-            return section_summary_location
+        last_block_id = routing_path[-1]
+        last_block = self._schema.get_block(last_block_id)
 
+        if last_block["type"] in ["SectionSummary", "ListCollectorSummary"]:
+            return Location(
+                block_id=last_block_id,
+                section_id=routing_path.section_id,
+                list_name=routing_path.list_name,
+                list_item_id=routing_path.list_item_id,
+            )
         return Location(
             block_id=routing_path[0],
             section_id=routing_path.section_id,
-            list_item_id=routing_path.list_item_id,
             list_name=routing_path.list_name,
+            list_item_id=routing_path.list_item_id,
         )
 
     def full_routing_path(self):
@@ -318,17 +320,6 @@ class Router:
                 if block_type in {"Summary", "Confirmation"}:
                     return True
         return False
-
-    def _get_location_of_section_summary(self, routing_path):
-        for block_id in routing_path[::-1]:
-            block = self._schema.get_block(block_id)
-            if block["type"] in ["SectionSummary", "ListCollectorSummary"]:
-                return Location(
-                    block_id=block_id,
-                    section_id=routing_path.section_id,
-                    list_item_id=routing_path.list_item_id,
-                    list_name=routing_path.list_name,
-                )
 
     def _is_section_enabled(self, section):
         if "enabled" not in section:
