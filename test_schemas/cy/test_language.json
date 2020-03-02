@@ -103,7 +103,7 @@
                                 "answers": [
                                     {
                                         "id": "number-of-people-answer",
-                                        "label": "Nifer y preswylwyr cartrefi",
+                                        "label": "Nifer o breswylwyr yn y cartref",
                                         "mandatory": true,
                                         "type": "Number",
                                         "min_value": {
