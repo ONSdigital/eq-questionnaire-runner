@@ -6,7 +6,7 @@ from wtforms import validators, Field
 from app.data_model.answer_store import AnswerStore
 from app.questionnaire.location import Location
 from app.forms.validators import ResponseRequired
-from app.questionnaire.rules import get_answer_value, get_metadata_value
+from app.questionnaire.rules import get_answer_value
 from app.utilities.schema import load_schema_from_metadata
 
 
@@ -58,18 +58,19 @@ class FieldHandler(ABC):
         return validators.Optional()
 
     def get_schema_value(self, schema_element):
-        if "meta" in schema_element:
-            return get_metadata_value(self.metadata, schema_element["meta"])
-        if "value" in schema_element:
-            return schema_element["value"]
-        if "answer_id" in schema_element:
-            schema = load_schema_from_metadata(self.metadata)
-            answer_id = schema_element.get("answer_id")
-            list_item_id = self.location.list_item_id if self.location else None
+        if isinstance(schema_element["value"], dict):
+            if schema_element["value"]["source"] == "metadata":
+                identifier = schema_element["value"].get("identifier")
+                return self.metadata.get(identifier)
+            if schema_element["value"]["source"] == "answers":
+                schema = load_schema_from_metadata(self.metadata)
+                answer_id = schema_element["value"].get("identifier")
+                list_item_id = self.location.list_item_id if self.location else None
 
-            return get_answer_value(
-                answer_id, self.answer_store, schema, list_item_id=list_item_id
-            )
+                return get_answer_value(
+                    answer_id, self.answer_store, schema, list_item_id=list_item_id
+                )
+        return schema_element["value"]
 
     @abstractmethod
     def get_field(self) -> Field:

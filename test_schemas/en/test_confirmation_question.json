@@ -164,8 +164,11 @@
                                         "mandatory": false,
                                         "q_code": "51",
                                         "type": "Number",
-                                        "max_value": {
-                                            "answer_id": "number-of-employees-total"
+                                        "maximum": {
+                                            "value": {
+                                                "source": "answers",
+                                                "identifier": "number-of-employees-total"
+                                            }
                                         }
                                     },
                                     {
@@ -174,8 +177,11 @@
                                         "mandatory": false,
                                         "q_code": "52",
                                         "type": "Number",
-                                        "max_value": {
-                                            "answer_id": "number-of-employees-total"
+                                        "maximum": {
+                                            "value": {
+                                                "source": "answers",
+                                                "identifier": "number-of-employees-total"
+                                            }
                                         }
                                     }
                                 ],

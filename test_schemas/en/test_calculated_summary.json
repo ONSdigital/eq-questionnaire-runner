@@ -223,7 +223,7 @@
                                         "label": "Fifth answer label percentage total",
                                         "mandatory": true,
                                         "type": "Percentage",
-                                        "max_value": {
+                                        "maximum": {
                                             "value": 100
                                         }
                                     },
@@ -250,7 +250,7 @@
                                         "label": "Sixth answer label percentage total",
                                         "mandatory": true,
                                         "type": "Percentage",
-                                        "max_value": {
+                                        "maximum": {
                                             "value": 100
                                         }
                                     },
