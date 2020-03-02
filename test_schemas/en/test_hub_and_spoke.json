@@ -224,10 +224,6 @@
                             "type": "Question"
                         },
                         {
-                            "id": "household-summary",
-                            "type": "SectionSummary"
-                        },
-                        {
                             "id": "how-many-people-live-here",
                             "question": {
                                 "answers": [
@@ -267,6 +263,10 @@
                                     ]
                                 }
                             ]
+                        },
+                        {
+                            "id": "household-summary",
+                            "type": "SectionSummary"
                         }
                     ],
                     "id": "household-question-group",
@@ -275,6 +275,49 @@
             ],
             "id": "household-section",
             "title": "Household residents"
+        },
+         {
+            "id": "relationships-section",
+            "title": "Relationships",
+            "show_on_hub": false,
+            "groups": [
+                {
+                    "blocks": [
+                        {
+                            "id": "relationships",
+                            "question": {
+                                "answers": [
+                                    {
+                                        "id": "relationships-answer",
+                                        "mandatory": false,
+                                        "options": [
+                                            {
+                                                "label": "No",
+                                                "value": "No"
+                                            },
+                                            {
+                                                "label": "Yes",
+                                                "value": "Yes"
+                                            }
+                                        ],
+                                        "type": "Radio"
+                                    }
+                                ],
+                                "id": "relationship-question",
+                                "title": "Are any of the people living here related?",
+                                "type": "General"
+                            },
+                            "type": "Question"
+                        },
+                        {
+                            "id": "relationships-summary",
+                            "type": "SectionSummary"
+                        }
+                    ],
+                    "id": "relationship-group",
+                    "title": ""
+                }
+            ]
         }
     ]
 }
