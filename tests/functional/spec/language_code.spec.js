@@ -93,7 +93,7 @@ const PLURAL_TEST_DATA_SETS = [
       en: 'Yes, 10 people live here',
       cy: 'Ydy, mae 10 pherson yn byw yma (other)'
     },
-  },
+  }
 ];
 
 describe('Language Code', function() {
