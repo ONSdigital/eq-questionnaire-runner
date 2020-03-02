@@ -203,9 +203,8 @@ describe('Language Code', function() {
   });
 
   describe('Given a launch language of English and a question with plural forms, When I select switch languages, Then the plural forms are displayed correctly for the chosen language', function() {
-
-    for (let dataSet of PLURAL_TEST_DATA_SETS) {
-      let numberOfPeople = dataSet['count'];
+    for (const dataSet of PLURAL_TEST_DATA_SETS) {
+      const numberOfPeople = dataSet.count;
 
       it(`Test plural count: ${numberOfPeople}`, function() {
         browser.openQuestionnaire('test_language.json', {
