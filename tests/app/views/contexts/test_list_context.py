@@ -25,6 +25,22 @@ def test_build_list_collector_context(
 
 
 @pytest.mark.usefixtures("app")
+def test_build_list_summary_context_no_summary_block(
+    list_collector_block, schema, people_answer_store, people_list_store
+):
+    del list_collector_block["summary"]
+    context = ListContext(
+        language=DEFAULT_LANGUAGE_CODE,
+        progress_store={},
+        list_store=people_list_store,
+        schema=schema,
+        answer_store=people_answer_store,
+        metadata=None,
+    )
+    assert context(list_collector_block) is None
+
+
+@pytest.mark.usefixtures("app")
 def test_build_list_summary_context(
     list_collector_block, people_answer_store, people_list_store
 ):

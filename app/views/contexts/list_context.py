@@ -8,6 +8,9 @@ from app.views.contexts import Context
 
 class ListContext(Context):
     def __call__(self, list_collector_block, return_to=None):
+        if "summary" not in list_collector_block:
+            return None
+
         return {
             "list": {
                 "list_items": list(
@@ -36,23 +39,22 @@ class ListContext(Context):
             is_primary = list_item_id == primary_person
             list_item_context = {}
 
-            if "summary" in list_collector_block:
-                list_item_context = {
-                    "item_title": self._get_item_title(
-                        list_collector_block["summary"], list_item_id, is_primary
-                    ),
-                    "primary_person": is_primary,
-                }
+            list_item_context = {
+                "item_title": self._get_item_title(
+                    list_collector_block["summary"], list_item_id, is_primary
+                ),
+                "primary_person": is_primary,
+            }
 
-                if "edit_block" in list_collector_block:
-                    list_item_context["edit_link"] = partial_url_for(
-                        block_id=list_collector_block["edit_block"]["id"]
-                    )
+            if "edit_block" in list_collector_block:
+                list_item_context["edit_link"] = partial_url_for(
+                    block_id=list_collector_block["edit_block"]["id"]
+                )
 
-                if "remove_block" in list_collector_block:
-                    list_item_context["remove_link"] = partial_url_for(
-                        block_id=list_collector_block["remove_block"]["id"]
-                    )
+            if "remove_block" in list_collector_block:
+                list_item_context["remove_link"] = partial_url_for(
+                    block_id=list_collector_block["remove_block"]["id"]
+                )
 
             yield list_item_context
 
