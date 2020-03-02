@@ -10,6 +10,21 @@ from app.views.contexts.summary.group import Group
 
 
 class SummaryContext(Context):
+    def __init__(
+        self, language, schema, answer_store, list_store, progress_store, metadata
+    ):
+        super().__init__(
+            language, schema, answer_store, list_store, progress_store, metadata
+        )
+        self.list_context = ListCollectorContext(
+            self._language,
+            self._schema,
+            self._answer_store,
+            self._list_store,
+            self._progress_store,
+            self._metadata,
+        )
+
     def build_groups_for_location(self, location):
         """
         Build a groups context for a particular location.
@@ -110,13 +125,35 @@ class SummaryContext(Context):
     def _list_summary_element(
         self, summary: Mapping, current_location, section: Mapping
     ) -> Iterator[Mapping]:
-        routing_path = self._router.routing_path(
-            section["id"], current_location.list_item_id
-        )
-
         list_collector_block = self._schema.get_list_collectors_for_section(
             section, for_list=summary["for_list"]
         )[0]
+
+        add_link = self._add_link(
+            summary, current_location, section, list_collector_block
+        )
+
+        rendered_list_context = self.list_context(
+            list_collector_block, current_location.block_id
+        )
+        rendered_summary = self._placeholder_renderer.render(
+            summary, current_location.list_item_id
+        )
+
+        return {
+            "title": rendered_summary["title"],
+            "type": summary["type"],
+            "add_link": add_link,
+            "add_link_text": rendered_summary["add_link_text"],
+            "empty_list_text": rendered_summary["empty_list_text"],
+            "list_name": summary["for_list"],
+            **rendered_list_context,
+        }
+
+    def _add_link(self, summary, current_location, section, list_collector_block):
+        routing_path = self._router.routing_path(
+            section["id"], current_location.list_item_id
+        )
 
         add_link = url_for(
             "questionnaire.block",
@@ -136,29 +173,4 @@ class SummaryContext(Context):
                     block_id=driving_question_block["id"],
                     return_to=current_location.block_id,
                 )
-
-        list_context = ListCollectorContext(
-            self._language,
-            self._schema,
-            self._answer_store,
-            self._list_store,
-            self._progress_store,
-            self._metadata,
-        )
-
-        rendered_list_context = list_context(
-            list_collector_block, current_location.block_id
-        )
-        rendered_summary = self._placeholder_renderer.render(
-            summary, current_location.list_item_id
-        )
-
-        return {
-            "title": rendered_summary["title"],
-            "type": summary["type"],
-            "add_link": add_link,
-            "add_link_text": rendered_summary["add_link_text"],
-            "empty_list_text": rendered_summary["empty_list_text"],
-            "list_name": summary["for_list"],
-            **rendered_list_context,
-        }
+        return add_link
