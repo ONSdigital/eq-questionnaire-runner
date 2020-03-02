@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2020-02-27 10:11+0000\n"
+"POT-Creation-Date: 2020-03-02 10:15+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,26 +17,26 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 2.8.0\n"
 
-#: app/forms/validators.py:340 app/jinja_filters.py:79
+#: app/forms/validators.py:340 app/jinja_filters.py:80
 #, python-format
 msgid "%(num)s year"
 msgid_plural "%(num)s years"
 msgstr[0] ""
 msgstr[1] ""
 
-#: app/forms/validators.py:344 app/jinja_filters.py:87
+#: app/forms/validators.py:344 app/jinja_filters.py:88
 #, python-format
 msgid "%(num)s month"
 msgid_plural "%(num)s months"
 msgstr[0] ""
 msgstr[1] ""
 
-#: app/jinja_filters.py:130
+#: app/jinja_filters.py:131
 #, python-format
 msgid "%(date)s at %(time)s"
 msgstr ""
 
-#: app/jinja_filters.py:141
+#: app/jinja_filters.py:142
 #, python-format
 msgid "%(from_date)s to %(to_date)s"
 msgstr ""
@@ -615,6 +615,10 @@ msgstr ""
 
 #: templates/partials/question.html:42
 msgid "Or"
+msgstr ""
+
+#: templates/partials/answers/checkbox.html:7
+msgid "Select all that apply"
 msgstr ""
 
 #: templates/partials/answers/date.html:23
