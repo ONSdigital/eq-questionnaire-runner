@@ -271,7 +271,7 @@
                                         "label": "Enter the percentage increase of your income",
                                         "mandatory": false,
                                         "type": "Percentage",
-                                        "max_value": {
+                                        "maximum": {
                                             "value": 100
                                         }
                                     },

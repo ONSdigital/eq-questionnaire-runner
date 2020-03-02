@@ -692,8 +692,6 @@ class TestQuestionnaireForm(
 
             schema = load_schema_from_name("test_date_validation_range")
 
-            question_schema = schema.get_block("date-range-block").get("question")
-
             question_schema = {
                 "id": "date-range-question",
                 "type": "DateRange",
@@ -710,7 +708,10 @@ class TestQuestionnaireForm(
                         "label": "Period to",
                         "mandatory": True,
                         "type": "Date",
-                        "maximum": {"answer_id": "date", "offset_by": {"days": 5}},
+                        "maximum": {
+                            "value": {"identifier": "date", "source": "answers"},
+                            "offset_by": {"days": 5},
+                        },
                     },
                 ],
             }

@@ -56,19 +56,19 @@ class NumberHandler(FieldHandler):
         )
 
     def get_field_references(self):
-        schema_min_value = self.answer_schema.get("min_value", {})
-        schema_max_value = self.answer_schema.get("max_value", {})
+        schema_minimum = self.answer_schema.get("minimum", {})
+        schema_maximum = self.answer_schema.get("maximum", {})
 
-        min_value = self.get_schema_value(schema_min_value) if schema_min_value else 0
-        max_value = (
-            self.get_schema_value(schema_max_value) if schema_max_value else MAX_NUMBER
+        minimum = self.get_schema_value(schema_minimum) if schema_minimum else 0
+        maximum = (
+            self.get_schema_value(schema_maximum) if schema_maximum else MAX_NUMBER
         )
 
         return {
-            "min_exclusive": schema_min_value.get("exclusive", False),
-            "max_exclusive": schema_max_value.get("exclusive", False),
-            "min_value": min_value,
-            "max_value": max_value,
+            "min_exclusive": schema_minimum.get("exclusive", False),
+            "max_exclusive": schema_maximum.get("exclusive", False),
+            "minimum": minimum,
+            "maximum": maximum,
         }
 
     def _get_number_field_validators(self):
@@ -83,9 +83,9 @@ class NumberHandler(FieldHandler):
         return [
             NumberCheck(answer_errors["INVALID_NUMBER"]),
             NumberRange(
-                minimum=self.references["min_value"],
+                minimum=self.references["minimum"],
                 minimum_exclusive=self.references["min_exclusive"],
-                maximum=self.references["max_value"],
+                maximum=self.references["maximum"],
                 maximum_exclusive=self.references["max_exclusive"],
                 messages=answer_errors,
                 currency=self.answer_schema.get("currency"),

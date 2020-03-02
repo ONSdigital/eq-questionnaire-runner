@@ -330,9 +330,3 @@ def test_chain_transform_placeholder():
 
     placeholders = parser(placeholder_list)
     assert placeholders["persons_name"] == "Joe Bloggs’"
-
-
-# pylint: disable=protected-access
-def test_get_list_item_id(parser_with_list_item_id):
-    assert parser_with_list_item_id._get_list_item_id() == "test-list-item-id"
-    assert parser_with_list_item_id._get_list_item_id("list_item_id") == "list_item_id"

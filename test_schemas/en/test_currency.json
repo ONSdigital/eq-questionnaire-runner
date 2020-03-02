@@ -50,7 +50,7 @@
                                         "type": "Currency",
                                         "currency": "GBP",
                                         "decimal_places": 2,
-                                        "max_value": {
+                                        "maximum": {
                                             "value": 10000
                                         }
                                     },
@@ -62,7 +62,7 @@
                                         "type": "Currency",
                                         "currency": "USD",
                                         "decimal_places": 2,
-                                        "max_value": {
+                                        "maximum": {
                                             "value": 10000
                                         }
                                     },
@@ -74,7 +74,7 @@
                                         "type": "Currency",
                                         "currency": "EUR",
                                         "decimal_places": 2,
-                                        "max_value": {
+                                        "maximum": {
                                             "value": 10000
                                         }
                                     },
@@ -85,7 +85,7 @@
                                         "q_code": "0",
                                         "type": "Currency",
                                         "currency": "JPY",
-                                        "max_value": {
+                                        "maximum": {
                                             "value": 1000000
                                         }
                                     }

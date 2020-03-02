@@ -42,7 +42,7 @@
                                         "mandatory": false,
                                         "q_code": "0",
                                         "type": "Percentage",
-                                        "max_value": {
+                                        "maximum": {
                                             "value": 100
                                         }
                                     }
