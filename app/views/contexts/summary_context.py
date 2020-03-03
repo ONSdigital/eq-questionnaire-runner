@@ -16,6 +16,7 @@ class SummaryContext(Context):
         super().__init__(
             language, schema, answer_store, list_store, progress_store, metadata
         )
+
         self.list_context = ListContext(
             self._language,
             self._schema,
@@ -128,6 +129,7 @@ class SummaryContext(Context):
         list_collector_block = self._schema.get_list_collectors_for_section(
             section, for_list=summary["for_list"]
         )[0]
+        list_collector_block["summary"] = summary
 
         add_link = self._add_link(
             summary, current_location, section, list_collector_block
@@ -136,17 +138,18 @@ class SummaryContext(Context):
         rendered_list_context = self.list_context(
             list_collector_block, current_location.block_id
         )
+
         rendered_summary = self._placeholder_renderer.render(
             summary, current_location.list_item_id
         )
 
         return {
             "title": rendered_summary["title"],
-            "type": summary["type"],
+            "type": rendered_summary["type"],
             "add_link": add_link,
             "add_link_text": rendered_summary["add_link_text"],
             "empty_list_text": rendered_summary["empty_list_text"],
-            "list_name": summary["for_list"],
+            "list_name": rendered_summary["for_list"],
             **rendered_list_context,
         }
 
