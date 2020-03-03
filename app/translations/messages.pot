@@ -8,14 +8,14 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2020-03-03 14:41+0000\n"
+"POT-Creation-Date: 2020-03-03 16:34+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Generated-By: Babel 2.7.0\n"
+"Generated-By: Babel 2.8.0\n"
 
 #: app/forms/validators.py:340 app/jinja_filters.py:80
 #, python-format
@@ -296,7 +296,7 @@ msgid ""
 "%(telephone_number)s or email %(email_address)s"
 msgstr ""
 
-#: templates/introduction.html:38
+#: templates/introduction.html:36
 msgid "Your response is legally required"
 msgstr ""
 
@@ -407,33 +407,33 @@ msgstr ""
 msgid "We have received your answers and you do not need to do anything else."
 msgstr ""
 
-#: templates/view-submission.html:7
+#: templates/view-submission.html:5
 msgid "Submission"
 msgstr ""
 
-#: templates/view-submission.html:10
+#: templates/view-submission.html:8
 msgid "Submitted answers"
 msgstr ""
 
-#: templates/view-submission.html:19
+#: templates/view-submission.html:17
 #, python-format
 msgid ""
 "Your answers were submitted for <span>%(ru_name)s</span> "
 "(%(trading_as_name)s) on %(submitted_time)s"
 msgstr ""
 
-#: templates/view-submission.html:24
+#: templates/view-submission.html:22
 #, python-format
 msgid ""
 "Your answers were submitted for <span>%(ru_name)s</span> on "
 "%(submitted_time)s"
 msgstr ""
 
-#: templates/view-submission.html:29
+#: templates/view-submission.html:27
 msgid "Transaction ID"
 msgstr ""
 
-#: templates/view-submission.html:36
+#: templates/view-submission.html:34
 msgid "Print this page"
 msgstr ""
 
@@ -597,23 +597,23 @@ msgstr ""
 msgid "Hide this"
 msgstr ""
 
-#: templates/partials/question.html:39
+#: templates/partials/question.html:33
 msgid "Selecting this will clear your answer"
 msgstr ""
 
-#: templates/partials/question.html:40
+#: templates/partials/question.html:34
 msgid "cleared"
 msgstr ""
 
-#: templates/partials/question.html:43
+#: templates/partials/question.html:37
 msgid "Selecting this will deselect any selected options"
 msgstr ""
 
-#: templates/partials/question.html:44 templates/partials/question.html:52
+#: templates/partials/question.html:38 templates/partials/question.html:46
 msgid "deselected"
 msgstr ""
 
-#: templates/partials/question.html:48
+#: templates/partials/question.html:42
 msgid "Or"
 msgstr ""
 
@@ -665,22 +665,22 @@ msgid "No results found"
 msgstr ""
 
 #: templates/partials/introduction/preview.html:29
-#: templates/partials/summary/collapsible-summary.html:13
+#: templates/partials/summary/collapsible-summary.html:11
 msgid "Show"
 msgstr ""
 
 #: templates/partials/introduction/preview.html:30
-#: templates/partials/summary/collapsible-summary.html:14
+#: templates/partials/summary/collapsible-summary.html:12
 msgid "Hide"
 msgstr ""
 
 #: templates/partials/introduction/preview.html:48
-#: templates/partials/summary/collapsible-summary.html:41
+#: templates/partials/summary/collapsible-summary.html:38
 msgid "Show all"
 msgstr ""
 
 #: templates/partials/introduction/preview.html:49
-#: templates/partials/summary/collapsible-summary.html:42
+#: templates/partials/summary/collapsible-summary.html:39
 msgid "Hide all"
 msgstr ""
 
@@ -688,19 +688,19 @@ msgstr ""
 msgid "Start survey"
 msgstr ""
 
-#: templates/partials/summary/collapsible-summary.html:27
-#: templates/partials/summary/summary.html:9
+#: templates/partials/summary/collapsible-summary.html:25
+#: templates/partials/summary/summary.html:7
 msgid "No answer provided"
 msgstr ""
 
-#: templates/partials/summary/collapsible-summary.html:27
+#: templates/partials/summary/collapsible-summary.html:25
 #: templates/partials/summary/list-summary.html:9
-#: templates/partials/summary/summary.html:9
+#: templates/partials/summary/summary.html:7
 msgid "Change"
 msgstr ""
 
-#: templates/partials/summary/collapsible-summary.html:27
-#: templates/partials/summary/summary.html:9
+#: templates/partials/summary/collapsible-summary.html:25
+#: templates/partials/summary/summary.html:7
 msgid "Change your answer for:"
 msgstr ""
 
