@@ -22,8 +22,9 @@
       <p>{{ ngettext('This <strong>must be corrected</strong> to continue', 'These <strong>must be corrected</strong> to continue', form.mapped_errors | length) }}.</p>
       <ul class="list list--bare">
         {% for answer_id, error in form.mapped_errors %}
+          {% set hrefValue = answer_id + '-error' if answer_id != 'date-range-question' else answer_id %}
           <li class="list__item">
-            {{ loop.index }}) <a class="js-inpagelink" href="#{{answer_id}}-error">{{ error }}</a>
+            {{ loop.index }}) <a class="js-inpagelink" href="#{{hrefValue}}">{{ error }}</a>
           </li>
         {% endfor %}
       </ul>
