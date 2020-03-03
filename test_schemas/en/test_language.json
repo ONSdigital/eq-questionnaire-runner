@@ -106,10 +106,10 @@
                                         "label": "Number of household residents",
                                         "mandatory": true,
                                         "type": "Number",
-                                        "min_value": {
+                                        "minimum": {
                                             "value": 0
                                         },
-                                        "max_value": {
+                                        "maximum": {
                                             "value": 100
                                         }
                                     }
