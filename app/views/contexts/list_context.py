@@ -7,7 +7,7 @@ from app.views.contexts import Context
 
 
 class ListContext(Context):
-    def __call__(self, list_collector_block, return_to=None):
+    def __call__(self, list_collector_block, return_to=None, editable=True):
         if "summary" not in list_collector_block:
             return None
 
@@ -18,11 +18,13 @@ class ListContext(Context):
                         list_collector_block, return_to=return_to
                     )
                 ),
-                "editable": True,
+                "editable": editable,
             }
         }
 
-    def _build_list_items_summary_context(self, list_collector_block, return_to):
+    def _build_list_items_summary_context(
+        self, list_collector_block, return_to, editable=True
+    ):
         list_name = list_collector_block["for_list"]
         list_item_ids = self._list_store[list_name].items
         primary_person = self._list_store[list_name].primary_person
@@ -46,15 +48,16 @@ class ListContext(Context):
                 "primary_person": is_primary,
             }
 
-            if "edit_block" in list_collector_block:
-                list_item_context["edit_link"] = partial_url_for(
-                    block_id=list_collector_block["edit_block"]["id"]
-                )
+            if editable:
+                if "edit_block" in list_collector_block:
+                    list_item_context["edit_link"] = partial_url_for(
+                        block_id=list_collector_block["edit_block"]["id"]
+                    )
 
-            if "remove_block" in list_collector_block:
-                list_item_context["remove_link"] = partial_url_for(
-                    block_id=list_collector_block["remove_block"]["id"]
-                )
+                if "remove_block" in list_collector_block:
+                    list_item_context["remove_link"] = partial_url_for(
+                        block_id=list_collector_block["remove_block"]["id"]
+                    )
 
             yield list_item_context
 
