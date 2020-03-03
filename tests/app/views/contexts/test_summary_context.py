@@ -376,7 +376,7 @@ def test_context_for_section_list_summary(people_answer_store):
         progress_store=ProgressStore(),
         metadata={"display_address": "70 Abingdon Road, Goathill"},
     )
-    context = summary_context.section_summary(current_location)
+    context = summary_context.custom_section_summary(current_location)
 
     expected = {
         "summary": {
@@ -450,7 +450,7 @@ def test_context_for_driving_question_summary_empty_list():
         {},
     )
 
-    context = summary_context.section_summary(current_location)
+    context = summary_context.custom_section_summary(current_location)
     expected = {
         "summary": {
             "answers_are_editable": True,
@@ -498,7 +498,7 @@ def test_context_for_driving_question_summary():
         {},
     )
 
-    context = summary_context.section_summary(current_location)
+    context = summary_context.custom_section_summary(current_location)
 
     expected = {
         "summary": {

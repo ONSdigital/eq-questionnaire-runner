@@ -16,4 +16,12 @@ class SectionSummary(Content):
             self._questionnaire_store.progress_store,
             self._questionnaire_store.metadata,
         )
-        return summary_context.section_summary(self._current_location)
+
+        section_id = self._schema.get_section_id_for_block_id(self.block["id"])
+        custom_section_summary = self._schema.get_summary_for_section(section_id)
+
+        return (
+            summary_context.section_summary(self._current_location)
+            if not custom_section_summary
+            else summary_context.custom_section_summary(self._current_location)
+        )

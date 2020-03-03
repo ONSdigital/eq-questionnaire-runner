@@ -75,10 +75,27 @@ class SummaryContext(Context):
         }
         return context
 
+    def custom_section_summary(self, current_location):
+        summary_context, section = self._common_section_summary_context(
+            current_location
+        )
+        custom_section_summary = list(
+            self._custom_summary_elements(section["summary"], current_location, section)
+        )
+
+        summary_context["summary"]["custom_summary"] = custom_section_summary
+        return summary_context
+
     def section_summary(self, current_location):
+        summary_context, _ = self._common_section_summary_context(current_location)
+        summary_context["summary"]["groups"] = self.build_groups_for_location(
+            current_location
+        )
+        return summary_context
+
+    def _common_section_summary_context(self, current_location):
         section_id = self._schema.get_section_id_for_block_id(current_location.block_id)
         section = self._schema.get_section(section_id)
-        section_summary = self._schema.get_summary_for_section(section_id)
         block = self._schema.get_block(current_location.block_id)
 
         summary_context = {
@@ -90,18 +107,7 @@ class SummaryContext(Context):
             }
         }
 
-        if not section_summary:
-            summary_context["summary"]["groups"] = self.build_groups_for_location(
-                current_location
-            )
-            return summary_context
-
-        custom_summary = list(
-            self._custom_summary_elements(section_summary, current_location, section)
-        )
-
-        summary_context["summary"]["custom_summary"] = custom_summary
-        return summary_context
+        return summary_context, section
 
     def _title_for_location(self, location):
         title = self._schema.get_block(location.block_id).get("title")
