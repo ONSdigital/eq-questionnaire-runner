@@ -117,7 +117,9 @@ jobs:
             key: ${{ runner.os }}-${{ env.PYTHON_VERSION }}-virtualenvs-${{ hashFiles('Pipfile.lock') }}
         - name: Install virtual environment
           if: steps.cache-virtualenv.outputs.cache-hit != 'true'
-          run: pipenv install --dev
+          run: |
+            sudo apt-get install libsnappy-dev libgconf-2-4
+            pipenv install --dev
         - name: Get yarn cache
           id: get-yarn-cache
           run: echo "::set-output name=dir::$(yarn cache dir)"
