@@ -47,7 +47,6 @@ class CustomSectionSummaryContext(SectionSummaryContext):
         list_collector_block = self._schema.get_list_collectors_for_section(
             section, for_list=summary["for_list"]
         )[0]
-        list_collector_block["summary"] = summary
 
         add_link = self._add_link(
             summary, current_location, section, list_collector_block
