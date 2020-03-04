@@ -9,7 +9,11 @@ from app.questionnaire.location import Location
 from app.questionnaire.questionnaire_schema import DEFAULT_LANGUAGE_CODE
 from app.utilities.schema import load_schema_from_name
 from app.views.contexts.calculated_summary_context import CalculatedSummaryContext
-from app.views.contexts.summary_context import SummaryContext
+from app.views.contexts import (
+    CustomSectionSummaryContext,
+    FinalSummaryContext,
+    SectionSummaryContext,
+)
 from tests.app.app_context_test_case import AppContextTestCase
 
 
@@ -78,7 +82,7 @@ class TestSummaryContext(TestStandardSummaryContext):
         )
 
     def test_build_summary_rendering_context(self):
-        summary_context = SummaryContext(
+        summary_context = FinalSummaryContext(
             self.language,
             self.schema,
             self.answer_store,
@@ -100,7 +104,7 @@ class TestSectionSummaryContext(TestStandardSummaryContext):
         self.block_type = "SectionSummary"
 
     def test_build_summary_rendering_context(self):
-        summary_context = SummaryContext(
+        summary_context = SectionSummaryContext(
             self.language,
             self.schema,
             self.answer_store,
@@ -120,7 +124,7 @@ class TestSectionSummaryContext(TestStandardSummaryContext):
             section_id="property-details-section", block_id="property-details-summary"
         )
 
-        summary_context = SummaryContext(
+        summary_context = SectionSummaryContext(
             self.language,
             self.schema,
             self.answer_store,
@@ -128,7 +132,7 @@ class TestSectionSummaryContext(TestStandardSummaryContext):
             self.list_store,
             self.metadata,
         )
-        context = summary_context.section_summary(current_location)
+        context = summary_context(current_location)
 
         self.check_context(context)
         self.check_summary_rendering_context(context["summary"]["groups"])
@@ -363,7 +367,7 @@ def test_context_for_section_list_summary(people_answer_store):
         block_id="people-list-section-summary", section_id="section"
     )
 
-    summary_context = SummaryContext(
+    summary_context = CustomSectionSummaryContext(
         language=DEFAULT_LANGUAGE_CODE,
         schema=schema,
         answer_store=people_answer_store,
@@ -376,7 +380,7 @@ def test_context_for_section_list_summary(people_answer_store):
         progress_store=ProgressStore(),
         metadata={"display_address": "70 Abingdon Road, Goathill"},
     )
-    context = summary_context.custom_section_summary(current_location)
+    context = summary_context(current_location)
 
     expected = {
         "summary": {
@@ -441,7 +445,7 @@ def test_context_for_driving_question_summary_empty_list():
     schema = load_schema_from_name("test_list_collector_driving_question")
     current_location = Location(block_id="summary", section_id="section")
 
-    summary_context = SummaryContext(
+    summary_context = CustomSectionSummaryContext(
         DEFAULT_LANGUAGE_CODE,
         schema,
         AnswerStore([{"answer_id": "anyone-usually-live-at-answer", "value": "No"}]),
@@ -450,7 +454,7 @@ def test_context_for_driving_question_summary_empty_list():
         {},
     )
 
-    context = summary_context.custom_section_summary(current_location)
+    context = summary_context(current_location)
     expected = {
         "summary": {
             "answers_are_editable": True,
@@ -479,7 +483,7 @@ def test_context_for_driving_question_summary():
     schema = load_schema_from_name("test_list_collector_driving_question")
     current_location = Location(block_id="summary", section_id="section")
 
-    summary_context = SummaryContext(
+    summary_context = CustomSectionSummaryContext(
         DEFAULT_LANGUAGE_CODE,
         schema,
         AnswerStore(
@@ -498,7 +502,7 @@ def test_context_for_driving_question_summary():
         {},
     )
 
-    context = summary_context.custom_section_summary(current_location)
+    context = summary_context(current_location)
 
     expected = {
         "summary": {
@@ -543,7 +547,7 @@ def test_titles_for_repeating_section_summary(people_answer_store):
         list_item_id="PlwgoG",
     )
 
-    summary_context = SummaryContext(
+    summary_context = SectionSummaryContext(
         DEFAULT_LANGUAGE_CODE,
         schema,
         people_answer_store,
@@ -557,7 +561,7 @@ def test_titles_for_repeating_section_summary(people_answer_store):
         {},
     )
 
-    context = summary_context.section_summary(current_location)
+    context = summary_context(current_location)
 
     assert context["summary"]["title"] == "Toni Morrison"
 
@@ -568,5 +572,5 @@ def test_titles_for_repeating_section_summary(people_answer_store):
         list_item_id="UHPLbX",
     )
 
-    context = summary_context.section_summary(new_location)
+    context = summary_context(new_location)
     assert context["summary"]["title"] == "Barry Pheloung"

@@ -1,13 +1,10 @@
-from app.views.contexts.summary_context import SummaryContext
+from app.views.contexts import FinalSummaryContext
 from app.views.handlers.content import Content
 
 
 class Summary(Content):
-    def __init__(self, *args):
-        super().__init__(*args)
-
     def get_context(self):
-        summary_context = SummaryContext(
+        final_summary_context = FinalSummaryContext(
             self._language,
             self._schema,
             self._questionnaire_store.answer_store,
@@ -18,4 +15,4 @@ class Summary(Content):
         collapsible = self._schema.get_block(self._current_location.block_id).get(
             "collapsible", False
         )
-        return summary_context.summary(collapsible)
+        return final_summary_context(collapsible)
