@@ -1,18 +1,18 @@
-from app.views.contexts.final_summary_context import FinalSummaryContext
+from .summary_context import SummaryContext
 
 
-class SectionSummaryContext(FinalSummaryContext):
+class SectionSummaryContext(SummaryContext):
     def __call__(self, current_location):
-        summary_context = self._section_summary_context(current_location)
-        summary_context["summary"]["groups"] = self.build_groups_for_location(
+        section_summary_context = self._section_summary_context(current_location)
+        section_summary_context["summary"]["groups"] = self.build_groups_for_location(
             current_location
         )
-        return summary_context
+        return section_summary_context
 
     def _section_summary_context(self, current_location):
         block = self._schema.get_block(current_location.block_id)
 
-        summary_context = {
+        return {
             "summary": {
                 "title": self._title_for_location(current_location),
                 "summary_type": "SectionSummary",
@@ -20,8 +20,6 @@ class SectionSummaryContext(FinalSummaryContext):
                 "collapsible": block.get("collapsible", False),
             }
         }
-
-        return summary_context
 
     def _title_for_location(self, location):
         title = self._schema.get_block(location.block_id).get("title")

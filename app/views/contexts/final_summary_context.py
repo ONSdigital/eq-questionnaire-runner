@@ -1,9 +1,8 @@
 from app.questionnaire.location import Location
-from app.views.contexts import Context
-from app.views.contexts.summary.group import Group
+from .summary_context import SummaryContext
 
 
-class FinalSummaryContext(Context):
+class FinalSummaryContext(SummaryContext):
     def __call__(
         self,
         collapsible=True,
@@ -22,31 +21,6 @@ class FinalSummaryContext(Context):
             }
         }
         return context
-
-    def build_groups_for_location(self, location):
-        """
-        Build a groups context for a particular location.
-
-        Does not support generating multiple sections at a time (i.e. passing no list_item_id for repeating section).
-        """
-        section = self._schema.get_section(location.section_id)
-        routing_path = self._router.routing_path(
-            location.section_id, location.list_item_id
-        )
-
-        return [
-            Group(
-                group,
-                routing_path,
-                self._answer_store,
-                self._list_store,
-                self._metadata,
-                self._schema,
-                location,
-                self._language,
-            ).serialize()
-            for group in section["groups"]
-        ]
 
     def build_all_groups(self):
         """ NB: Does not support repeating sections """
