@@ -32,13 +32,18 @@ class Question(BlockHandler):
         )
 
     def _get_list_add_question_url(self, params):
+        block_id = params["block_id"]
         list_name = params["list_name"]
-        is_list_empty = not self._questionnaire_store.list_store[list_name].items
+        list_items = self._questionnaire_store.list_store[list_name].items
+        section_id = self._schema.get_section_id_for_block_id(block_id)
 
-        if is_list_empty:
-            block_id = params["block_id"]
-            section_id = self._schema.get_section_id_for_block_id(block_id)
-
+        # deals with scenarios where a list is populated by only a
+        # primary person - so still need to go to the list add question
+        if (
+            len(list_items) == 1
+            and list_items[0]
+            == self._questionnaire_store.list_store[list_name].primary_person
+        ) or not list_items:
             return Location(
                 section_id=section_id, block_id=block_id, list_name=list_name
             ).url(previous=self.current_location.block_id)

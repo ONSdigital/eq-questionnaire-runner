@@ -20,7 +20,7 @@ describe('Answer Action: Redirect To List Add Question (Checkbox)', function () 
       browser.openQuestionnaire('test_answer_action_redirect_to_list_add_question_checkbox.json');
     });
 
-    it('When the user selects "No", Then, they should be taken to straight the list collector.', function () {
+    it('When the user selects "No", Then, they should be taken to the list collector.', function () {
         $(AnyoneUsuallyLiveAt.no()).click();
         $(AnyoneUsuallyLiveAt.submit()).click();
         expect(browser.getUrl()).to.contain(AnyoneLiveAtListCollector.pageName);
