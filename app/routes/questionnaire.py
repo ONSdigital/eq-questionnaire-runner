@@ -397,7 +397,7 @@ def get_view_submission(schema):
 
             metadata = submitted_data.get("metadata")
             language_code = get_session_store().session_data.language_code
-            summary_context = FinalSummaryContext(
+            final_summary_context = FinalSummaryContext(
                 language_code,
                 schema,
                 answer_store,
@@ -406,17 +406,14 @@ def get_view_submission(schema):
                 metadata,
             )
 
-            summary_rendered_context = summary_context.build_all_groups()
-
-            context = {
-                "summary": {
-                    "groups": summary_rendered_context,
-                    "answers_are_editable": False,
-                    "is_view_submission_response_enabled": is_view_submitted_response_enabled(
-                        schema.json
-                    ),
-                }
-            }
+            is_view_submission_response_enabled = is_view_submitted_response_enabled(
+                schema.json
+            )
+            context = final_summary_context(
+                answers_are_editable=False,
+                is_view_submission_response_enabled=is_view_submission_response_enabled,
+            )
+            del context["summary"]["summary_type"]
 
             return render_template(
                 template="view-submission",

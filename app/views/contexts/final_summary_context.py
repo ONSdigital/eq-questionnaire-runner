@@ -4,14 +4,20 @@ from app.views.contexts.summary.group import Group
 
 
 class FinalSummaryContext(Context):
-    def __call__(self, collapsible):
+    def __call__(
+        self,
+        collapsible=True,
+        answers_are_editable=True,
+        is_view_submission_response_enabled=False,
+    ):
         groups = self.build_all_groups()
 
         context = {
             "summary": {
                 "groups": groups,
-                "answers_are_editable": True,
+                "answers_are_editable": answers_are_editable,
                 "collapsible": collapsible,
+                "is_view_submission_response_enabled": is_view_submission_response_enabled,
                 "summary_type": "Summary",
             }
         }
@@ -52,22 +58,6 @@ class FinalSummaryContext(Context):
             )
 
         return all_groups
-
-    def _section_summary_context(self, current_location):
-        section_id = self._schema.get_section_id_for_block_id(current_location.block_id)
-        section = self._schema.get_section(section_id)
-        block = self._schema.get_block(current_location.block_id)
-
-        summary_context = {
-            "summary": {
-                "title": self._title_for_location(current_location),
-                "summary_type": "SectionSummary",
-                "answers_are_editable": True,
-                "collapsible": block.get("collapsible", False),
-            }
-        }
-
-        return summary_context, section
 
     def _title_for_location(self, location):
         title = self._schema.get_block(location.block_id).get("title")

@@ -24,15 +24,17 @@ class CustomSectionSummaryContext(SectionSummaryContext):
         )
 
     def __call__(self, current_location):
-        summary_context = self._section_summary_context(current_location)
+        custom_section_summary_context = self._section_summary_context(current_location)
         section = self._schema.get_section(current_location.section_id)
 
         custom_section_summary = list(
             self._custom_summary_elements(section["summary"], current_location, section)
         )
 
-        summary_context["summary"]["custom_summary"] = custom_section_summary
-        return summary_context
+        custom_section_summary_context["summary"][
+            "custom_summary"
+        ] = custom_section_summary
+        return custom_section_summary_context
 
     def _custom_summary_elements(self, section_summary, current_location, section):
         for summary_element in section_summary:
