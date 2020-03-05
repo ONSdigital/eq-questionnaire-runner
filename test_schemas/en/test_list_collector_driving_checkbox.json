@@ -1,0 +1,804 @@
+{
+    "mime_type":"application/json/ons/eq",
+    "schema_version":"0.0.1",
+    "data_version":"0.0.3",
+    "survey_id":"0",
+    "title":"Test driving checkbox question",
+    "theme":"default",
+    "description":"A questionnaire to test driving checkbox question",
+    "metadata":[
+        {
+            "name":"user_id",
+            "type":"string"
+        },
+        {
+            "name":"period_id",
+            "type":"string"
+        },
+        {
+            "name":"ru_name",
+            "type":"string"
+        }
+    ],
+    "sections":[
+        {
+            "id":"section",
+            "groups":[
+                {
+                    "id":"group",
+                    "title":"Primary Person",
+                    "blocks":[
+                        {
+                            "id":"people-who-live-here-interstitial",
+                            "content":{
+                                "title":"People who live here",
+                                "contents":[
+                                    {
+                                        "description":"In this section we are counting the people at 12 Lovely Villas on 21 March 2021."
+                                    },
+                                    {
+                                        "description":"You will need to know",
+                                        "list":[
+                                            "Names of people living at this address, including anyone currently away",
+                                            "Name of visitors staying overnight in the household on 21 March 2021"
+                                        ]
+                                    }
+                                ]
+                            },
+                            "type":"Interstitial"
+                        },
+                        {
+                            "id":"primary-person-list-collector",
+                            "type":"PrimaryPersonListCollector",
+                            "for_list":"people",
+                            "add_or_edit_answer":{
+                                "id":"you-live-here",
+                                "value":"Yes, I usually live here"
+                            },
+                            "add_or_edit_block":{
+                                "id":"add-or-edit-primary-person",
+                                "type":"PrimaryPersonListAddOrEditQuestion",
+                                "question":{
+                                    "id":"primary-person-add-or-edit-question",
+                                    "type":"General",
+                                    "title":"What is your name?",
+                                    "answers":[
+                                        {
+                                            "id":"first-name",
+                                            "label":"First name",
+                                            "mandatory":true,
+                                            "type":"TextField"
+                                        },
+                                        {
+                                            "id":"middle-name",
+                                            "label":"Middle name",
+                                            "mandatory":false,
+                                            "type":"TextField"
+                                        },
+                                        {
+                                            "id":"last-name",
+                                            "label":"Last name",
+                                            "mandatory":true,
+                                            "type":"TextField"
+                                        }
+                                    ]
+                                }
+                            },
+                            "question":{
+                                "id":"primary-confirmation-question",
+                                "type":"General",
+                                "title":"Do you live at 12 Lovely Villas?",
+                                "answers":[
+                                    {
+                                        "id":"you-live-here",
+                                        "mandatory":true,
+                                        "type":"Radio",
+                                        "options":[
+                                            {
+                                                "label":"Yes, I usually live here",
+                                                "value":"Yes, I usually live here"
+                                            },
+                                            {
+                                                "label":"No, I don’t usually live here",
+                                                "value":"No, I don’t usually live here"
+                                            }
+                                        ]
+                                    }
+                                ],
+                                "definitions":[
+                                    {
+                                        "contents":[
+                                            {
+                                                "description":"It means the address at which you generally spend most time. For most people, this will be their permanent or family home."
+                                            },
+                                            {
+                                                "description":"<strong>Full-time students</strong>, include yourself at your term time address."
+                                            },
+                                            {
+                                                "description":"<strong>Armed forces members</strong>, include yourself at your home address if you have one."
+                                            }
+                                        ],
+                                        "title":"What does “usually live” mean?"
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "type":"ListCollectorDrivingQuestion",
+                            "id":"anyone-usually-live-at",
+                            "for_list":"people",
+                            "question_variants":[
+                                {
+                                    "question":{
+                                        "type":"General",
+                                        "id":"anyone-usually-live-at-question",
+                                        "title":"Do any of the following also usually live at 12 Lovely Villas on 21 March?",
+                                        "type":"MutuallyExclusive",
+                                        "answers":[
+                                            {
+                                                "type":"Checkbox",
+                                                "id":"anyone-usually-live-at-answer",
+                                                "mandatory":false,
+                                                "options":[
+                                                    {
+                                                        "label":"Family Members and partners",
+                                                        "value":"Family Members and partners",
+                                                        "description":"Include babies born on or before 21 March, children, students and/or schoolchildren who live away during term time",
+                                                        "action":{
+                                                            "params":{
+                                                                "block_id":"add-person",
+                                                                "list_name":"people"
+                                                            },
+                                                            "type":"RedirectToListAddQuestion"
+                                                        }
+                                                    },
+                                                    {
+                                                        "label":"Housemates, tenants or lodgers",
+                                                        "value":"Housemates, tenants or lodgers",
+                                                        "action":{
+                                                            "params":{
+                                                                "block_id":"add-person",
+                                                                "list_name":"people"
+                                                            },
+                                                            "type":"RedirectToListAddQuestion"
+                                                        }
+                                                    },
+                                                    {
+                                                        "label":"People who usually live outside the UK who are staying in the UK for 3 months or more",
+                                                        "value":"outside uk",
+                                                        "action":{
+                                                            "params":{
+                                                                "block_id":"add-person",
+                                                                "list_name":"people"
+                                                            },
+                                                            "type":"RedirectToListAddQuestion"
+                                                        }
+                                                    },
+                                                    {
+                                                        "label":"People temporarily away",
+                                                        "value":"People temporarily away",
+                                                        "description":"For example, in holiday, working away, in the armed forces, abroad for up to a year, living in an establishment such as a care home for up to 6 months",
+                                                        "action":{
+                                                            "params":{
+                                                                "block_id":"add-person",
+                                                                "list_name":"people"
+                                                            },
+                                                            "type":"RedirectToListAddQuestion"
+                                                        }
+                                                    },
+                                                    {
+                                                        "label":"People staying temporarily who usually live in the UK but do not have another UK address",
+                                                        "value":"outside uk",
+                                                        "action":{
+                                                            "params":{
+                                                                "block_id":"add-person",
+                                                                "list_name":"people"
+                                                            },
+                                                            "type":"RedirectToListAddQuestion"
+                                                        }
+                                                    }
+                                                ]
+                                            },
+                                            {
+                                                "id":"anyone-usually-live-at-answer-exclusive",
+                                                "mandatory":false,
+                                                "options":[
+                                                    {
+                                                        "label":"None of the these apply, I am the only person who usually lives here",
+                                                        "value":"None"
+                                                    }
+                                                ],
+                                                "type":"Checkbox"
+                                            }
+                                        ]
+                                    },
+                                    "when":[
+                                        {
+                                            "id":"you-live-here",
+                                            "condition":"equals",
+                                            "value":"Yes, I usually live here"
+                                        }
+                                    ]
+                                },
+                                {
+                                    "question":{
+                                        "type":"General",
+                                        "id":"anyone-usually-live-at-question",
+                                        "title":"Do any of the following usually live at 12 Lovely Villas on 21 March?",
+                                        "type":"MutuallyExclusive",
+                                        "answers":[
+                                            {
+                                                "type":"Checkbox",
+                                                "id":"anyone-usually-live-at-answer",
+                                                "mandatory":false,
+                                                "options":[
+                                                    {
+                                                        "label":"Family Members and partners",
+                                                        "value":"Family Members and partners",
+                                                        "description":"Include babies born on or before 21 March, children, students and/or schoolchildren who live away during term time",
+                                                        "action":{
+                                                            "params":{
+                                                                "block_id":"add-person",
+                                                                "list_name":"people"
+                                                            },
+                                                            "type":"RedirectToListAddQuestion"
+                                                        }
+                                                    },
+                                                    {
+                                                        "label":"Housemates, tenants or lodgers",
+                                                        "value":"Housemates, tenants or lodgers",
+                                                        "action":{
+                                                            "params":{
+                                                                "block_id":"add-person",
+                                                                "list_name":"people"
+                                                            },
+                                                            "type":"RedirectToListAddQuestion"
+                                                        }
+                                                    },
+                                                    {
+                                                        "label":"People who usually live outside the UK who are staying in the UK for 3 months or more",
+                                                        "value":"outside uk",
+                                                        "action":{
+                                                            "params":{
+                                                                "block_id":"add-person",
+                                                                "list_name":"people"
+                                                            },
+                                                            "type":"RedirectToListAddQuestion"
+                                                        }
+                                                    },
+                                                    {
+                                                        "label":"People temporarily away",
+                                                        "value":"People temporarily away",
+                                                        "description":"For example, in holiday, working away, in the armed forces, abroad for up to a year, living in an establishment such as a care home for up to 6 months",
+                                                        "action":{
+                                                            "params":{
+                                                                "block_id":"add-person",
+                                                                "list_name":"people"
+                                                            },
+                                                            "type":"RedirectToListAddQuestion"
+                                                        }
+                                                    },
+                                                    {
+                                                        "label":"People staying temporarily who usually live in the UK but do not have another UK address",
+                                                        "value":"outside uk",
+                                                        "action":{
+                                                            "params":{
+                                                                "block_id":"add-person",
+                                                                "list_name":"people"
+                                                            },
+                                                            "type":"RedirectToListAddQuestion"
+                                                        }
+                                                    }
+                                                ]
+                                            },
+                                            {
+                                                "id":"anyone-usually-live-at-answer-exclusive",
+                                                "mandatory":false,
+                                                "options":[
+                                                    {
+                                                        "label":"None of the these apply, no-one usually lives here",
+                                                        "value":"None"
+                                                    }
+                                                ],
+                                                "type":"Checkbox"
+                                            }
+                                        ]
+                                    }
+                                }
+                            ],
+                            "routing_rules":[
+                                {
+                                    "goto":{
+                                        "block":"list-collector-temporary-away-stay",
+                                        "when":[
+                                            {
+                                                "id":"anyone-usually-live-at-answer-exclusive",
+                                                "condition":"contains",
+                                                "value":"None"
+                                            }
+                                        ]
+                                    }
+                                },
+                                {
+                                    "goto":{
+                                        "block":"list-collector"
+                                    }
+                                }
+                            ]
+                        },
+                        {
+                            "id":"list-collector",
+                            "type":"ListCollector",
+                            "for_list":"people",
+                            "add_answer":{
+                                "id":"anyone-else",
+                                "value":"Yes, I need to add a person"
+                            },
+                            "remove_answer":{
+                                "id":"remove-confirmation",
+                                "value":"Yes"
+                            },
+                            "question":{
+                                "id":"confirmation-question",
+                                "type":"General",
+                                "title":"Does anyone else live here?",
+                                "answers":[
+                                    {
+                                        "id":"anyone-else",
+                                        "mandatory":true,
+                                        "type":"Radio",
+                                        "options":[
+                                            {
+                                                "label":"Yes, I need to add a person",
+                                                "value":"Yes, I need to add a person"
+                                            },
+                                            {
+                                                "label":"No, I do not need to add a person",
+                                                "value":"No, I do not need to add a person"
+                                            }
+                                        ]
+                                    }
+                                ]
+                            },
+                            "add_block":{
+                                "id":"add-person",
+                                "type":"ListAddQuestion",
+                                "question_variants":[
+                                    {
+                                        "question":{
+                                            "id":"add-question",
+                                            "type":"General",
+                                            "title":"Who lives at 12 Lovely Villas?",
+                                            "answers":[
+                                                {
+                                                    "id":"first-name",
+                                                    "label":"First name",
+                                                    "mandatory":true,
+                                                    "type":"TextField"
+                                                },
+                                                {
+                                                    "id":"middle-name",
+                                                    "label":"Middle name",
+                                                    "mandatory":false,
+                                                    "type":"TextField"
+                                                },
+                                                {
+                                                    "id":"last-name",
+                                                    "label":"Last name",
+                                                    "mandatory":true,
+                                                    "type":"TextField"
+                                                }
+                                            ]
+                                        },
+                                        "when":[
+                                            {
+                                                "condition":"equals",
+                                                "list":"people",
+                                                "value":0
+                                            }
+                                        ]
+                                    },
+                                    {
+                                        "question":{
+                                            "id":"add-question",
+                                            "type":"General",
+                                            "title":"Who else lives at 12 Lovely Villas?",
+                                            "answers":[
+                                                {
+                                                    "id":"first-name",
+                                                    "label":"First name",
+                                                    "mandatory":true,
+                                                    "type":"TextField"
+                                                },
+                                                {
+                                                    "id":"middle-name",
+                                                    "label":"Middle name",
+                                                    "mandatory":false,
+                                                    "type":"TextField"
+                                                },
+                                                {
+                                                    "id":"last-name",
+                                                    "label":"Last name",
+                                                    "mandatory":true,
+                                                    "type":"TextField"
+                                                }
+                                            ]
+                                        }
+                                    }
+                                ]
+                            },
+                            "edit_block":{
+                                "id":"edit-person",
+                                "type":"ListEditQuestion",
+                                "question":{
+                                    "id":"edit-question",
+                                    "type":"General",
+                                    "title":{
+                                        "text":"Change details for {first_name} {last_name}",
+                                        "placeholders":[
+                                            {
+                                                "placeholder":"first_name",
+                                                "value":{
+                                                    "source":"answers",
+                                                    "identifier":"first-name"
+                                                }
+                                            },
+                                            {
+                                                "placeholder":"last_name",
+                                                "value":{
+                                                    "source":"answers",
+                                                    "identifier":"last-name"
+                                                }
+                                            }
+                                        ]
+                                    },
+                                    "answers":[
+                                        {
+                                            "id":"first-name",
+                                            "label":"First name",
+                                            "mandatory":true,
+                                            "type":"TextField"
+                                        },
+                                        {
+                                            "id":"last-name",
+                                            "label":"Last name",
+                                            "mandatory":true,
+                                            "type":"TextField"
+                                        }
+                                    ]
+                                }
+                            },
+                            "remove_block":{
+                                "id":"remove-person",
+                                "type":"ListRemoveQuestion",
+                                "question":{
+                                    "id":"remove-question",
+                                    "type":"General",
+                                    "title":"Are you sure you want to remove this person?",
+                                    "answers":[
+                                        {
+                                            "id":"remove-confirmation",
+                                            "mandatory":true,
+                                            "type":"Radio",
+                                            "options":[
+                                                {
+                                                    "label":"Yes",
+                                                    "value":"Yes"
+                                                },
+                                                {
+                                                    "label":"No",
+                                                    "value":"No"
+                                                }
+                                            ]
+                                        }
+                                    ]
+                                }
+                            },
+                            "summary":{
+                                "add_link_text":"Add someone to this household",
+                                "empty_list_text":"There are no householders",
+                                "title":"Household members",
+                                "item_title":{
+                                    "text":"{person_name}",
+                                    "placeholders":[
+                                        {
+                                            "placeholder":"person_name",
+                                            "transforms":[
+                                                {
+                                                    "arguments":{
+                                                        "delimiter":" ",
+                                                        "list_to_concatenate":{
+                                                            "identifier":[
+                                                                "first-name",
+                                                                "last-name"
+                                                            ],
+                                                            "source":"answers"
+                                                        }
+                                                    },
+                                                    "transform":"concatenate_list"
+                                                }
+                                            ]
+                                        }
+                                    ]
+                                }
+                            }
+                        },
+                        {
+                            "id":"list-collector-temporary-away-stay",
+                            "type":"ListCollector",
+                            "for_list":"people",
+                            "add_answer":{
+                                "id":"anyone-else-temporary-away-stay",
+                                "value":"Yes, I need to add someone"
+                            },
+                            "remove_answer":{
+                                "id":"remove-confirmation-temporary-away-stay",
+                                "value":"Yes"
+                            },
+                            "question":{
+                                "id":"confirmation-question-temporary-away-stay",
+                                "type":"General",
+                                "title":{
+                                    "text_plural":{
+                                        "forms":{
+                                            "one":"You said {number_of_people} person lives at 12 Lovely Villas. Do you need to add anyone?",
+                                            "other":"You said {number_of_people} people lives at 12 Lovely Villas. Do you need to add anyone?"
+                                        },
+                                        "count":{
+                                            "source":"list",
+                                            "identifier":"people"
+                                        }
+                                    },
+                                    "placeholders":[
+                                        {
+                                            "placeholder":"number_of_people",
+                                            "value":{
+                                                "source":"list",
+                                                "identifier":"people"
+                                            }
+                                        }
+                                    ]
+                                },
+                                "answers":[
+                                    {
+                                        "id":"anyone-else-temporary-away-stay",
+                                        "mandatory":true,
+                                        "type":"Radio",
+                                        "options":[
+                                            {
+                                                "label":"Yes, I need to add someone",
+                                                "value":"Yes, I need to add someone"
+                                            },
+                                            {
+                                                "label":{
+                                                    "text_plural":{
+                                                        "forms":{
+                                                            "one":"No there is {number_of_people} person living here",
+                                                            "other":"No there are {number_of_people} people living here"
+                                                        },
+                                                        "count":{
+                                                            "source":"list",
+                                                            "identifier":"people"
+                                                        }
+                                                    },
+                                                    "placeholders":[
+                                                        {
+                                                            "placeholder":"number_of_people",
+                                                            "value":{
+                                                                "source":"list",
+                                                                "identifier":"people"
+                                                            }
+                                                        }
+                                                    ]
+                                                },
+                                                "value":"No there are {number_of_people} people living here"
+                                            }
+                                        ]
+                                    }
+                                ],
+                                "guidance":{
+                                    "contents":[
+                                        {
+                                            "title":"Temporary away"
+                                        },
+                                        {
+                                            "list":[
+                                                "People who work away from home within the UK if this is their permanent or family home",
+                                                "Members of the armed forces if this is their permanent or family home",
+                                                "People who are temporarily outside the UK for less than <strong>12 months</strong>",
+                                                "Other people who usually live here but are temporarily away"
+                                            ]
+                                        },
+                                        {
+                                            "title":"Temporarily staying"
+                                        },
+                                        {
+                                            "list":[
+                                                "People staying temporarily who usually live in the UK but do not have another UK address for example, relatives, friends",
+                                                "People who usually live outside the UK who are staying in the UK for <strong>3 months or more</strong>"
+                                            ]
+                                        }
+                                    ]
+                                }
+                            },
+                            "add_block":{
+                                "id":"add-person-temporary-away-stay",
+                                "type":"ListAddQuestion",
+                                "question_variants":[
+                                    {
+                                        "question":{
+                                            "id":"add-question-temporary-away-stay",
+                                            "type":"General",
+                                            "title":"Who lives at 12 Lovely Villas?",
+                                            "answers":[
+                                                {
+                                                    "id":"first-name",
+                                                    "label":"First name",
+                                                    "mandatory":true,
+                                                    "type":"TextField"
+                                                },
+                                                {
+                                                    "id":"middle-name",
+                                                    "label":"Middle name",
+                                                    "mandatory":false,
+                                                    "type":"TextField"
+                                                },
+                                                {
+                                                    "id":"last-name",
+                                                    "label":"Last name",
+                                                    "mandatory":true,
+                                                    "type":"TextField"
+                                                }
+                                            ]
+                                        },
+                                        "when":[
+                                            {
+                                                "condition":"equals",
+                                                "list":"people",
+                                                "value":0
+                                            }
+                                        ]
+                                    },
+                                    {
+                                        "question":{
+                                            "id":"add-question-temporary-away-stay",
+                                            "type":"General",
+                                            "title":"Who else lives at 12 Lovely Villas?",
+                                            "answers":[
+                                                {
+                                                    "id":"first-name",
+                                                    "label":"First name",
+                                                    "mandatory":true,
+                                                    "type":"TextField"
+                                                },
+                                                {
+                                                    "id":"middle-name",
+                                                    "label":"Middle name",
+                                                    "mandatory":false,
+                                                    "type":"TextField"
+                                                },
+                                                {
+                                                    "id":"last-name",
+                                                    "label":"Last name",
+                                                    "mandatory":true,
+                                                    "type":"TextField"
+                                                }
+                                            ]
+                                        }
+                                    }
+                                ]
+                            },
+                            "edit_block":{
+                                "id":"edit-person-temporary-away-stay",
+                                "type":"ListEditQuestion",
+                                "question":{
+                                    "id":"edit-question-temporary-away-stay",
+                                    "type":"General",
+                                    "title":{
+                                        "text":"Change details for {first_name} {last_name}",
+                                        "placeholders":[
+                                            {
+                                                "placeholder":"first_name",
+                                                "value":{
+                                                    "source":"answers",
+                                                    "identifier":"first-name"
+                                                }
+                                            },
+                                            {
+                                                "placeholder":"last_name",
+                                                "value":{
+                                                    "source":"answers",
+                                                    "identifier":"last-name"
+                                                }
+                                            }
+                                        ]
+                                    },
+                                    "answers":[
+                                        {
+                                            "id":"first-name",
+                                            "label":"First name",
+                                            "mandatory":true,
+                                            "type":"TextField"
+                                        },
+                                        {
+                                            "id":"last-name",
+                                            "label":"Last name",
+                                            "mandatory":true,
+                                            "type":"TextField"
+                                        }
+                                    ]
+                                }
+                            },
+                            "remove_block":{
+                                "id":"remove-person-temporary-away-stay",
+                                "type":"ListRemoveQuestion",
+                                "question":{
+                                    "id":"remove-question-temporary-away-stay",
+                                    "type":"General",
+                                    "title":"Are you sure you want to remove this person?",
+                                    "answers":[
+                                        {
+                                            "id":"remove-confirmation-temporary-away-stay",
+                                            "mandatory":true,
+                                            "type":"Radio",
+                                            "options":[
+                                                {
+                                                    "label":"Yes",
+                                                    "value":"Yes"
+                                                },
+                                                {
+                                                    "label":"No",
+                                                    "value":"No"
+                                                }
+                                            ]
+                                        }
+                                    ]
+                                }
+                            },
+                            "summary":{
+                                "add_link_text":"Add someone to this household",
+                                "empty_list_text":"There are no householders",
+                                "title":"Household members",
+                                "item_title":{
+                                    "text":"{person_name}",
+                                    "placeholders":[
+                                        {
+                                            "placeholder":"person_name",
+                                            "transforms":[
+                                                {
+                                                    "arguments":{
+                                                        "delimiter":" ",
+                                                        "list_to_concatenate":{
+                                                            "identifier":[
+                                                                "first-name",
+                                                                "last-name"
+                                                            ],
+                                                            "source":"answers"
+                                                        }
+                                                    },
+                                                    "transform":"concatenate_list"
+                                                }
+                                            ]
+                                        }
+                                    ]
+                                }
+                            }
+                        },
+                        {
+                            "id":"last-block",
+                            "content":{
+                                "title":"The end",
+                                "contents":[
+                                    {
+                                        "description":"To check what will be submitted use /dump/debug"
+                                    }
+                                ]
+                            },
+                            "type":"Interstitial"
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}
