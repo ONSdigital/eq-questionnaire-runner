@@ -7,27 +7,25 @@
 {% set save_on_signout = true %}
 
 {% block form_content %}
-  {% block summary %}
-      {% if content.summary.summary_type == 'Summary' %}
-        <h1>{{ _("Check your answers and submit") }}</h1>
+  {% if content.summary.summary_type == 'Summary' %}
+    <h1>{{ _("Check your answers and submit") }}</h1>
 
-        {% call onsPanel({
-          "classes": "print__hidden u-mb-l"
-        }) %}
-          <strong>{{ _("Please submit this survey to complete it") }}</strong>
-          <p>{{ _("Check your answers before submitting") }}</p>
-        {% endcall %}
-      {% elif content.summary.summary_type == 'CalculatedSummary' %}
-        <h1 data-qa="calculated-summary-title">{{content.summary.title}}</h1>
+    {% call onsPanel({
+      "classes": "print__hidden u-mb-l"
+    }) %}
+      <strong>{{ _("Please submit this survey to complete it") }}</strong>
+      <p>{{ _("Check your answers before submitting") }}</p>
+    {% endcall %}
+  {% elif content.summary.summary_type == 'CalculatedSummary' %}
+    <h1 data-qa="calculated-summary-title">{{content.summary.title}}</h1>
 
-        {% call onsPanel({
-          "type": "success",
-          "classes": "print__hidden u-mb-l"
-        }) %}
-          <p>{{ _("Please review your answers and confirm these are correct") }}.</p>
-        {% endcall %}
-      {% endif %}
-  {% endblock %}
+    {% call onsPanel({
+      "type": "success",
+      "classes": "print__hidden u-mb-l"
+    }) %}
+      <p>{{ _("Please review your answers and confirm these are correct") }}.</p>
+    {% endcall %}
+  {% endif %}
 
   <div class="u-mb-m">
     {% include 'partials/summary/summary.html' %}

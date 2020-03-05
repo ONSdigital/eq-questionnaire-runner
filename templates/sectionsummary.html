@@ -1,5 +1,12 @@
-{% extends 'summary.html' %}
-{% block summary %}
+{% extends 'confirmation.html' %}
+{% from "components/panel/_macro.njk" import onsPanel %}
+
+{% import 'macros/helpers.html' as helpers %}
+
+{% set summary_page_title = _("Summary") + " - " + survey_title %}
+{% set save_on_signout = true %}
+
+{% block form_content %}
   {% if content.summary.groups %}
     {% set group = content.summary.groups %}
     <h1>{{content.summary.title}}</h1>
@@ -28,5 +35,16 @@
           </div>
         {% endif %}
       {% endfor %}
-    {% endif %}
+  {% endif %}
+
+  <div class="u-mb-m">
+    {% include 'partials/summary/summary.html' %}
+  </div>
+
+  {% if content.summary.is_view_submission_response_enabled %}
+    <div class="u-mt-m u-mb-s u-mb-m@s" data-qa="view-submission-text">
+      <div class="u-fs-r--b">{{ _("You will have the opportunity to view and print a copy of your answers after submitting this survey") }}</div>
+    </div>
+  {% endif %}
+
 {% endblock %}
