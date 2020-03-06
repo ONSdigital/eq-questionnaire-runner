@@ -109,6 +109,71 @@
             ]
         },
         {
+            "id": "additional-family-members",
+            "title": "Additional Family Members",
+            "groups": [
+                {
+                    "id": "additional-family-members-group",
+                    "title": "",
+                    "blocks": [
+                        {
+                            "type": "Question",
+                            "id": "additional-family-members-block",
+                            "question": {
+                                "description": "",
+                                "id": "additional-family-members-question",
+                                "title": "Please enter the number of additional family members",
+                                "type": "General",
+                                "answers": [
+                                    {
+                                        "id": "additional-family-members-answer",
+                                        "description": "",
+                                        "label": "Additional Family Members",
+                                        "mandatory": false,
+                                        "type": "Number",
+                                        "default": 0
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "id": "family-size-interstitial",
+                            "content": {
+                                "title": "Family Size",
+                                "contents": [
+                                    {
+                                        "description": {
+                                            "text": "Your family size is <em>{size}</em>",
+                                            "placeholders": [
+                                                {
+                                                    "placeholder": "size",
+                                                    "transforms": [
+                                                        {
+                                                            "transform": "add",
+                                                            "arguments": {
+                                                                "lhs": {
+                                                                    "source": "answers",
+                                                                    "identifier": "additional-family-members-answer"
+                                                                },
+                                                                "rhs": {
+                                                                    "value": 1
+                                                                }
+                                                            }
+                                                        }
+                                                    ]
+                                                }
+                                            ]
+                                        }
+                                    }
+                                ]
+                            },
+                            "type": "Interstitial"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
             "id": "summary-section",
             "title": "Summary",
             "groups": [

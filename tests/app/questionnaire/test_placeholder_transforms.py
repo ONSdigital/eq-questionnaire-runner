@@ -118,6 +118,10 @@ class TestPlaceholderParser(unittest.TestCase):
             == "Milk, Eggs, Flour, Water"
         )
 
+    def test_add(self):
+        assert self.transforms.add(1, 2) == 3
+        assert self.transforms.add("1", 2) == 3
+
     def test_remove_empty_from_list(self):
         list_to_filter = [None, 0, False, "", "String"]
 

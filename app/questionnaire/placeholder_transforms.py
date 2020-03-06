@@ -125,6 +125,13 @@ class PlaceholderTransforms:
                 date, PlaceholderTransforms.input_date_format_month_year_only
             ).replace(tzinfo=tzutc())
 
+    @staticmethod
+    def add(lhs, rhs):
+        if isinstance(lhs, str):
+            return int(lhs) + rhs
+        else:
+            return lhs + rhs
+
     def first_non_empty_item(self, items):
         """
         :param items: anything that is iterable
