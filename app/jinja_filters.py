@@ -408,11 +408,11 @@ class SummaryRowItem:
             and "label" in answer
             and answer["label"]
         ):
-            self.itemTitle = answer["label"]
-            self.titleAttributes = {"data-qa": answer["id"] + "-label"}
+            self.rowTitle = answer["label"]
+            self.rowAttributes = {"data-qa": answer["id"] + "-label"}
         else:
-            self.itemTitle = question["title"]
-            self.titleAttributes = {"data-qa": question["id"]}
+            self.rowTitle = question["title"]
+            self.rowTitleAttributes = {"data-qa": question["id"]}
 
         value = answer["value"]
 
@@ -461,7 +461,7 @@ class SummaryRowItem:
         if answers_are_editable:
             self.actions = [
                 SummaryAction(
-                    block, answer, self.itemTitle, edit_link_text, edit_link_aria_label
+                    block, answer, self.rowTitle, edit_link_text, edit_link_aria_label
                 )
             ]
 
