@@ -129,8 +129,7 @@ class PlaceholderTransforms:
     def add(lhs, rhs):
         if isinstance(lhs, str):
             return int(lhs) + rhs
-        else:
-            return lhs + rhs
+        return lhs + rhs
 
     def first_non_empty_item(self, items):
         """
