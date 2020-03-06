@@ -1,15 +1,24 @@
 from app.questionnaire.location import Location
-from .summary_context import SummaryContext
+from .context import Context
+from .section_summary_context import SectionSummaryContext
 
 
-class FinalSummaryContext(SummaryContext):
+class FinalSummaryContext(Context):
     def __call__(
         self,
         collapsible=True,
         answers_are_editable=True,
         is_view_submission_response_enabled=False,
     ):
-        groups = self.build_all_groups()
+        section_summary_context = SectionSummaryContext(
+            self._language,
+            self._schema,
+            self._answer_store,
+            self._list_store,
+            self._progress_store,
+            self._metadata,
+        )
+        groups = list(self._build_all_groups(section_summary_context))
 
         context = {
             "summary": {
@@ -22,26 +31,10 @@ class FinalSummaryContext(SummaryContext):
         }
         return context
 
-    def build_all_groups(self):
+    def _build_all_groups(self, section_summary_context):
         """ NB: Does not support repeating sections """
-        all_groups = []
-
         for section_id in self._router.enabled_section_ids:
-            all_groups.extend(
-                self.build_groups_for_location(Location(section_id=section_id))
-            )
-
-        return all_groups
-
-    def _title_for_location(self, location):
-        title = self._schema.get_block(location.block_id).get("title")
-
-        if location.list_item_id:
-            repeating_title = self._schema.get_repeating_title_for_section(
-                location.section_id
-            )
-            if repeating_title:
-                title = self._placeholder_renderer.render_placeholder(
-                    repeating_title, location.list_item_id
-                )
-        return title
+            for group in section_summary_context(Location(section_id=section_id))[
+                "summary"
+            ]["groups"]:
+                yield group
