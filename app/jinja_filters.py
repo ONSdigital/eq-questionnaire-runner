@@ -477,7 +477,7 @@ class SummaryRow:
         edit_link_text,
         edit_link_aria_label,
     ):
-        self.groupTitle = question["title"]
+        self.rowTitle = question["title"]
         self.rowItems = []
 
         multiple_answers = len(question["answers"]) > 1
