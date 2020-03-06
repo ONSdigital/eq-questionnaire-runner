@@ -221,7 +221,6 @@
                                 },
                                 {
                                     "question":{
-                                        "type":"General",
                                         "id":"anyone-usually-live-at-question",
                                         "title":"Do any of the following usually live at 12 Lovely Villas on 21 March?",
                                         "type":"MutuallyExclusive",
