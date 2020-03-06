@@ -409,7 +409,7 @@ class SummaryRowItem:
             and answer["label"]
         ):
             self.rowTitle = answer["label"]
-            self.rowAttributes = {"data-qa": answer["id"] + "-label"}
+            self.rowTitleAttributes = {"data-qa": answer["id"] + "-label"}
         else:
             self.rowTitle = question["title"]
             self.rowTitleAttributes = {"data-qa": question["id"]}
