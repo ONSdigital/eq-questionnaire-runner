@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2020-03-04 09:48+0000\n"
+"POT-Creation-Date: 2020-03-06 14:52+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -210,7 +210,7 @@ msgstr[1] ""
 msgid "Submit survey"
 msgstr ""
 
-#: app/views/contexts/hub_context.py:15 templates/summary.html:17
+#: app/views/contexts/hub_context.py:15 templates/summary.html:16
 msgid "Please submit this survey to complete it"
 msgstr ""
 
@@ -325,8 +325,18 @@ msgid_plural "These <strong>must be corrected</strong> to continue"
 msgstr[0] ""
 msgstr[1] ""
 
-#: templates/sectionsummary.html:9
+#: templates/sectionsummary.html:6 templates/summary.html:6
+msgid "Summary"
+msgstr ""
+
+#: templates/sectionsummary.html:16
 msgid "Check your answers before continuing to the next section"
+msgstr ""
+
+#: templates/sectionsummary.html:46 templates/summary.html:36
+msgid ""
+"You will have the opportunity to view and print a copy of your answers "
+"after submitting this survey"
 msgstr ""
 
 #: templates/signed-out.html:3
@@ -341,26 +351,16 @@ msgstr ""
 msgid "Return to your account"
 msgstr ""
 
-#: templates/summary.html:6
-msgid "Summary"
-msgstr ""
-
-#: templates/summary.html:12
+#: templates/summary.html:11
 msgid "Check your answers and submit"
 msgstr ""
 
-#: templates/summary.html:18
+#: templates/summary.html:17
 msgid "Check your answers before submitting"
 msgstr ""
 
-#: templates/summary.html:27
+#: templates/summary.html:26
 msgid "Please review your answers and confirm these are correct"
-msgstr ""
-
-#: templates/summary.html:38
-msgid ""
-"You will have the opportunity to view and print a copy of your answers "
-"after submitting this survey"
 msgstr ""
 
 #: templates/thank-you.html:4
