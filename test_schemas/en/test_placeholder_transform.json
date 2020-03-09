@@ -174,6 +174,82 @@
             ]
         },
         {
+            "id": "total-items",
+            "title": "Total Amount of Items",
+            "groups": [
+                {
+                    "id": "total-items-group",
+                    "title": "",
+                    "blocks": [
+                        {
+                            "type": "Question",
+                            "id": "total-items-block",
+                            "question": {
+                                "description": "",
+                                "id": "total-items-question",
+                                "title": "Please enter the number of items",
+                                "type": "General",
+                                "answers": [
+                                    {
+                                        "id": "total-items-answer",
+                                        "description": "",
+                                        "label": "Number of Items",
+                                        "mandatory": false,
+                                        "type": "Number",
+                                        "default": 0
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "id": "add-item-interstitial",
+                            "content": {
+                                "title": "Additional Item",
+                                "contents": [
+                                    {
+                                        "description": {
+                                            "text": "Do you want to add <em>{item}</em> item?",
+                                            "placeholders": [
+                                                {
+                                                    "placeholder": "item",
+                                                    "transforms": [
+                                                        {
+                                                            "transform": "add",
+                                                            "arguments": {
+                                                                "lhs": {
+                                                                    "source": "answers",
+                                                                    "identifier": "total-items-answer"
+                                                                },
+                                                                "rhs": {
+                                                                    "value": 1
+                                                                }
+                                                            }
+                                                        },
+                                                        {
+                                                            "arguments": {
+                                                                "number_to_format": {
+                                                                    "source": "previous_transform"
+                                                                },
+                                                                "determiner": {
+                                                                    "value": "a_or_an"
+                                                                }
+                                                            },
+                                                            "transform": "format_ordinal"
+                                                        }
+                                                    ]
+                                                }
+                                            ]
+                                        }
+                                    }
+                                ]
+                            },
+                            "type": "Interstitial"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
             "id": "summary-section",
             "title": "Summary",
             "groups": [

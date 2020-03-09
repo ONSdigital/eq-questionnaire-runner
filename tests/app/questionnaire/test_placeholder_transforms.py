@@ -122,6 +122,18 @@ class TestPlaceholderParser(unittest.TestCase):
         assert self.transforms.add(1, 2) == 3
         assert self.transforms.add("1", 2) == 3
 
+    def test_format_ordinal(self):
+        assert self.transforms.format_ordinal(1, "a_or_an") == "a 1st"
+        assert self.transforms.format_ordinal(2, "a_or_an") == "a 2nd"
+        assert self.transforms.format_ordinal(3, "a_or_an") == "a 3rd"
+        assert self.transforms.format_ordinal(4, "a_or_an") == "a 4th"
+        assert self.transforms.format_ordinal(8, "a_or_an") == "an 8th"
+        assert self.transforms.format_ordinal(1, None) == "1st"
+        assert self.transforms.format_ordinal(2, None) == "2nd"
+        assert self.transforms.format_ordinal(3, None) == "3rd"
+        assert self.transforms.format_ordinal(4, None) == "4th"
+        assert self.transforms.format_ordinal(21, None) == "21st"
+
     def test_remove_empty_from_list(self):
         list_to_filter = [None, 0, False, "", "String"]
 

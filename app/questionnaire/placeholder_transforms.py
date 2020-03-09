@@ -131,6 +131,23 @@ class PlaceholderTransforms:
             return int(lhs) + rhs
         return lhs + rhs
 
+    @staticmethod
+    def format_ordinal(number_to_format, determiner=None):
+        number_to_format = str(number_to_format)
+        if number_to_format in ["1", "21"]:
+            number_to_format += "st"
+        elif number_to_format in ["2", "22"]:
+            number_to_format += "nd"
+        elif number_to_format in ["3", "23"]:
+            number_to_format += "rd"
+        else:
+            number_to_format += "th"
+        if determiner == "a_or_an":
+            if number_to_format in ["8th", "18th"]:
+                return "an " + str(number_to_format)
+            return "a " + str(number_to_format)
+        return number_to_format
+
     def first_non_empty_item(self, items):
         """
         :param items: anything that is iterable
