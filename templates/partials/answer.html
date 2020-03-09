@@ -20,7 +20,7 @@
 {% if errors | length > 0 %}
   {% set error = {
     "text": errors[0],
-    "id": answer.id + '-error',
+    "id": answer.id ~ '-error',
     "attributes": {
       "data-ga": "error",
       "data-ga-category": "Error",
