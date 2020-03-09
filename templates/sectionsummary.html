@@ -1,11 +1,21 @@
-{% extends 'confirmation.html' %}
+{% extends 'layouts/_questionnaire.html' %}
 {% from "components/panel/_macro.njk" import onsPanel %}
+{% from "components/button/_macro.njk" import onsButton %}
 
 {% import 'macros/helpers.html' as helpers %}
 
 {% set summary_page_title = _("Summary") + " - " + survey_title %}
 {% set save_on_signout = true %}
 
+{{
+  onsButton({
+    "text": _("Continue"),
+    "classes": "btn--loader js-btn-submit",
+    "attributes": {
+      "data-qa": "btn-submit"
+    }
+  })
+}}
 {% block form_content %}
   {% if content.summary.groups %}
     {% set group = content.summary.groups %}

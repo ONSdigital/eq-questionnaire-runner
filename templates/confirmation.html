@@ -6,17 +6,7 @@
 {% set page_title = summary_page_title | default(_("Submit answers") + " - " + survey_title) %}
 
 {% block submit_button %}
-  {% if content.summary and content.summary.summary_type == 'SectionSummary' %}
-    {{
-      onsButton({
-        "text": _("Continue"),
-        "classes": "btn--loader js-btn-submit",
-        "attributes": {
-          "data-qa": "btn-submit"
-        }
-      })
-    }}
-  {% elif content.summary and content.summary.summary_type == 'CalculatedSummary' %}
+    {% if content.summary and content.summary.summary_type == 'CalculatedSummary' %}
     {{
       onsButton({
         "text": _("Yes, I confirm these are correct"),
