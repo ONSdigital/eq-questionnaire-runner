@@ -209,7 +209,7 @@ class TestQuestionnaireHub(IntegrationTestCase):
 
     def test_hub_section_required_but_enabled_false(self):
         # Given the hub is enabled and there are two required sections
-        self.launchSurvey("test_hub_required_and_enabled")
+        self.launchSurvey("test_hub_section_required_and_enabled")
 
         # When I answer 'No' to the first section, meaning the second section is not enabled
         self.post({"household-relationships-answer": "No"})
@@ -221,7 +221,7 @@ class TestQuestionnaireHub(IntegrationTestCase):
 
     def test_hub_section_required_but_enabled_true(self):
         # Given the hub is enabled and there are two required sections
-        self.launchSurvey("test_hub_required_and_enabled")
+        self.launchSurvey("test_hub_section_required_and_enabled")
 
         # When I answer 'Yes' to the first section, meaning the second section is enabled
         self.post({"household-relationships-answer": "Yes"})
