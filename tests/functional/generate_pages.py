@@ -187,6 +187,10 @@ SUMMARY_QUESTION_GETTER = Template(
 """
 )
 
+COLLAPSIBLE_SUMMARY_GETTER = r"""  collapsibleSummary() { return '#summary-accordion'; }
+
+"""
+
 CALCULATED_SUMMARY_LABEL_GETTER = Template(
     r"""  ${answerName}Label() { return '[data-qa=${answerId}-label]'; }
 
@@ -407,7 +411,7 @@ def process_list_collector_summary(schema_data, page_spec):
             page_spec.write(LIST_SECTION_SUMMARY_LABEL_GETTER.substitute(list_context))
 
 
-def process_summary(schema_data, page_spec):
+def process_summary(schema_data, page_spec, collapsible):
     for section in schema_data["sections"]:
         for group in section["groups"]:
             for block in group["blocks"]:
@@ -449,11 +453,17 @@ def process_summary(schema_data, page_spec):
                 if block["type"] == "SectionSummary":
                     page_spec.write(SUMMARY_SHOW_ALL_BUTTON.substitute())
 
-            group_context = {
-                "group_id_camel": camel_case(generate_pascal_case_from_id(group["id"])),
-                "group_id": group["id"],
-            }
-            page_spec.write(SUMMARY_TITLE_GETTER.substitute(group_context))
+            if not collapsible:
+                group_context = {
+                    "group_id_camel": camel_case(
+                        generate_pascal_case_from_id(group["id"])
+                    ),
+                    "group_id": group["id"],
+                }
+                page_spec.write(SUMMARY_TITLE_GETTER.substitute(group_context))
+
+    if collapsible:
+        page_spec.write(COLLAPSIBLE_SUMMARY_GETTER)
 
 
 def long_names_required(question, num_questions):
@@ -594,7 +604,8 @@ def process_block(
         page_spec.write(CLASS_NAME.substitute(block_context))
         page_spec.write(CONSTRUCTOR.substitute(block_context))
         if block["type"] in ("Summary", "SectionSummary"):
-            process_summary(schema_data, page_spec)
+            collapsible = block.get("collapsible", False)
+            process_summary(schema_data, page_spec, collapsible)
         elif block["type"] == "ListCollectorSummary":
             process_list_collector_summary(schema_data, page_spec)
         elif block["type"] == "CalculatedSummary":
