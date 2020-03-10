@@ -60,7 +60,7 @@ describe('Example Test', function() {
   });
 
   it('Given..., When..., Then...', function() {
-  
+
   });
 });
 
@@ -390,9 +390,11 @@ def process_calculated_summary(answers, page_spec):
 
 def process_summary(schema_data, page_spec):
     for section in schema_data["sections"]:
-        list_collector_blocks = QuestionnaireSchema.get_list_collectors_for_section(
-            section
-        )
+        list_collector_blocks = [
+            summary_element
+            for summary_element in section.get("summary", [])
+            if summary_element["type"] == "List"
+        ]
         for list_block in list_collector_blocks:
             list_context = {"list_name": list_block["for_list"]}
             page_spec.write(
