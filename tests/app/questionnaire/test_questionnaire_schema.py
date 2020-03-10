@@ -327,7 +327,9 @@ def test_get_list_collectors_for_section(list_collector_variant_schema):
     schema = QuestionnaireSchema(list_collector_variant_schema)
     section = schema.get_section("section")
 
-    result = QuestionnaireSchema.get_list_collectors_for_section(section)
+    result = QuestionnaireSchema.get_list_collectors_for_section(
+        section, for_list="people"
+    )
 
     assert len(result) == 1
     assert result[0]["id"] == "block1"
