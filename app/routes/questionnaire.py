@@ -406,13 +406,7 @@ def get_view_submission(schema):
                 metadata,
             )
 
-            is_view_submission_response_enabled = is_view_submitted_response_enabled(
-                schema.json
-            )
-            context = final_summary_context(
-                answers_are_editable=False,
-                is_view_submission_response_enabled=is_view_submission_response_enabled,
-            )
+            context = final_summary_context(answers_are_editable=False)
 
             return render_template(
                 template="view-submission",

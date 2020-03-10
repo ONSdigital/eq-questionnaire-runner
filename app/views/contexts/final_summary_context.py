@@ -4,12 +4,7 @@ from .section_summary_context import SectionSummaryContext
 
 
 class FinalSummaryContext(Context):
-    def __call__(
-        self,
-        collapsible=True,
-        answers_are_editable=True,
-        is_view_submission_response_enabled=False,
-    ):
+    def __call__(self, collapsible=True, answers_are_editable=True):
         groups = list(self._build_all_groups())
 
         context = {
@@ -17,7 +12,6 @@ class FinalSummaryContext(Context):
                 "groups": groups,
                 "answers_are_editable": answers_are_editable,
                 "collapsible": collapsible,
-                "is_view_submission_response_enabled": is_view_submission_response_enabled,
                 "summary_type": "Summary",
             }
         }
