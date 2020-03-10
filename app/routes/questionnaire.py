@@ -413,7 +413,6 @@ def get_view_submission(schema):
                 answers_are_editable=False,
                 is_view_submission_response_enabled=is_view_submission_response_enabled,
             )
-            del context["summary"]["summary_type"]
 
             return render_template(
                 template="view-submission",
