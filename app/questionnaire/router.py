@@ -60,6 +60,7 @@ class Router:
         return self._schema.is_hub_enabled() and all(
             self._progress_store.is_section_complete(section_id)
             for section_id in self._schema.get_section_ids_required_for_hub()
+            if section_id in self.enabled_section_ids
         )
 
     def routing_path(self, section_id, list_item_id=None):

@@ -206,3 +206,25 @@ class TestQuestionnaireHub(IntegrationTestCase):
         visitor_repeating_section_url = section_urls[3].attrs["href"]
         self.get(visitor_repeating_section_url)
         self.assertInBody("What is <em>Joe Public’s</em> date of birth?")
+
+    def test_hub_section_required_but_enabled_false(self):
+        # Given the hub is enabled and there are two required sections
+        self.launchSurvey("test_hub_section_required_and_enabled")
+
+        # When I answer 'No' to the first section, meaning the second section is not enabled
+        self.post({"household-relationships-answer": "No"})
+
+        # Then I should be redirected to the hub and can submit my answers without completing the other section
+        self.assertEqualUrl(HUB_URL)
+        self.post(action="submit")
+        self.assertEqualUrl("/submitted/thank-you/")
+
+    def test_hub_section_required_but_enabled_true(self):
+        # Given the hub is enabled and there are two required sections
+        self.launchSurvey("test_hub_section_required_and_enabled")
+
+        # When I answer 'Yes' to the first section, meaning the second section is enabled
+        self.post({"household-relationships-answer": "Yes"})
+
+        # Then I should be redirected to the second section
+        self.assertEqualUrl("/questionnaire/relationships-count/")
