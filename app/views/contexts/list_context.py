@@ -39,7 +39,6 @@ class ListContext(Context):
             )
 
             is_primary = list_item_id == primary_person
-            list_item_context = {}
 
             list_item_context = {
                 "item_title": self._get_item_title(
