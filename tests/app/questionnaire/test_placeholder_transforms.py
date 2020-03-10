@@ -128,6 +128,7 @@ class TestPlaceholderParser(unittest.TestCase):
         assert self.transforms.format_ordinal(3, "a_or_an") == "a 3rd"
         assert self.transforms.format_ordinal(4, "a_or_an") == "a 4th"
         assert self.transforms.format_ordinal(8, "a_or_an") == "an 8th"
+        assert self.transforms.format_ordinal(11, "a_or_an") == "a 11th"
         assert self.transforms.format_ordinal(1, None) == "1st"
         assert self.transforms.format_ordinal(2, None) == "2nd"
         assert self.transforms.format_ordinal(3, None) == "3rd"
