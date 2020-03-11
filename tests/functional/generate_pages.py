@@ -60,7 +60,7 @@ describe('Example Test', function() {
   });
 
   it('Given..., When..., Then...', function() {
-  
+
   });
 });
 
@@ -81,19 +81,19 @@ CLASS_NAME = Template(
 )
 
 QUESTION_DEFINITION_TITLE_GETTER = Template(
-    r"""  definitionTitle${definitionIndex}() { return '.details:nth-child(${definitionIndex}) > .details__summary'; }
+    r"""  definitionTitle${definitionIndex}() { return '.collapsible:nth-child(${definitionIndex}) > .collapsible__heading'; }
 
 """
 )
 
 QUESTION_DEFINITION_CONTENT_GETTER = Template(
-    r"""  definitionContent${definitionIndex}() { return '.details:nth-child(${definitionIndex}) > .details__content'; }
+    r"""  definitionContent${definitionIndex}() { return '.collapsible:nth-child(${definitionIndex}) > .collapsible__content'; }
 
 """
 )
 
 QUESTION_DEFINITION_BUTTON_GETTER = Template(
-    r"""  definitionButton${definitionIndex}() { return '.details:nth-child(${definitionIndex}) .js-collapsible-button'; }
+    r"""  definitionButton${definitionIndex}() { return '.collapsible:nth-child(${definitionIndex}) .js-collapsible-button'; }
 
 """
 )
