@@ -133,22 +133,27 @@ class PlaceholderTransforms:
 
     @staticmethod
     def format_ordinal(number_to_format, determiner=None):
-        number_to_format = str(number_to_format)
-        if number_to_format.endswith(("11", "12", "13")):
-            number_to_format += "th"
-        elif number_to_format.endswith("1"):
-            number_to_format += "st"
-        elif number_to_format.endswith("2"):
-            number_to_format += "nd"
-        elif number_to_format.endswith("3"):
-            number_to_format += "rd"
+        number_to_format_str = str(number_to_format)
+
+        if number_to_format_str.endswith(("11", "12", "13")):
+            suffix = "th"
+        elif number_to_format_str.endswith("1"):
+            suffix = "st"
+        elif number_to_format_str.endswith("2"):
+            suffix = "nd"
+        elif number_to_format_str.endswith("3"):
+            suffix = "rd"
         else:
-            number_to_format += "th"
+            suffix = "th"
         if determiner == "a_or_an":
-            if number_to_format.startswith("8") or number_to_format == "18th":
-                return "an " + str(number_to_format)
-            return "a " + str(number_to_format)
-        return number_to_format
+            a_or_an = (
+                "an"
+                if number_to_format_str.startswith("8") or number_to_format == 18
+                else "a"
+            )
+            return f"{a_or_an} {number_to_format}{suffix}"
+
+        return f"{number_to_format}{suffix}"
 
     def first_non_empty_item(self, items):
         """
