@@ -1,10 +1,10 @@
-{% from "components/details/_macro.njk" import onsDetails %}
+{% from "components/collapsible/_macro.njk" import onsCollapsible %}
 
 {% for definition in question.definitions %}
-  {% call onsDetails({
+  {% call onsCollapsible({
       "title": definition.title,
       "classes": "u-mb-s",
-      "summaryAttributes": {
+      "headingAttributes": {
         "data-ga": "click",
         "data-ga-category": "Question definition",
         "data-ga-action": "Open panel",
