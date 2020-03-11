@@ -1,8 +1,8 @@
 {% from "components/relationships/_macro.njk" import onsRelationships %}
 
 {{ onsRelationships({
-  "id": answer["id"],
-  "name": answer["id"],
+  "id": answer.id,
+  "name": answer.id,
   "legend": question["title"],
   "legendClasses": "u-vh",
   "playback": answer["playback"],

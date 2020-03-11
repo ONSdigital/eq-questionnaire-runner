@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2020-02-17 13:05+0000\n"
+"POT-Creation-Date: 2020-03-02 10:15+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,26 +17,26 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 2.8.0\n"
 
-#: app/forms/validators.py:340 app/jinja_filters.py:79
+#: app/forms/validators.py:340 app/jinja_filters.py:80
 #, python-format
 msgid "%(num)s year"
 msgid_plural "%(num)s years"
 msgstr[0] ""
 msgstr[1] ""
 
-#: app/forms/validators.py:344 app/jinja_filters.py:87
+#: app/forms/validators.py:344 app/jinja_filters.py:88
 #, python-format
 msgid "%(num)s month"
 msgid_plural "%(num)s months"
 msgstr[0] ""
 msgstr[1] ""
 
-#: app/jinja_filters.py:130
+#: app/jinja_filters.py:131
 #, python-format
 msgid "%(date)s at %(time)s"
 msgstr ""
 
-#: app/jinja_filters.py:141
+#: app/jinja_filters.py:142
 #, python-format
 msgid "%(from_date)s to %(to_date)s"
 msgstr ""
@@ -194,13 +194,13 @@ msgid_plural "{number_of_years} years"
 msgstr[0] ""
 msgstr[1] ""
 
-#: app/questionnaire/placeholder_transforms.py:96
+#: app/questionnaire/placeholder_transforms.py:97
 msgid "{number_of_months} month"
 msgid_plural "{number_of_months} months"
 msgstr[0] ""
 msgstr[1] ""
 
-#: app/questionnaire/placeholder_transforms.py:100
+#: app/questionnaire/placeholder_transforms.py:102
 msgid "{number_of_days} day"
 msgid_plural "{number_of_days} days"
 msgstr[0] ""
@@ -675,12 +675,12 @@ msgid "Hide"
 msgstr ""
 
 #: templates/partials/introduction/preview.html:48
-#: templates/partials/summary/collapsible-summary.html:38
+#: templates/partials/summary/collapsible-summary.html:46
 msgid "Show all"
 msgstr ""
 
 #: templates/partials/introduction/preview.html:49
-#: templates/partials/summary/collapsible-summary.html:39
+#: templates/partials/summary/collapsible-summary.html:47
 msgid "Hide all"
 msgstr ""
 
@@ -688,31 +688,31 @@ msgstr ""
 msgid "Start survey"
 msgstr ""
 
-#: templates/partials/summary/collapsible-summary.html:25
-#: templates/partials/summary/summary.html:7
+#: templates/partials/summary/collapsible-summary.html:29
+#: templates/partials/summary/summary.html:12
 msgid "No answer provided"
 msgstr ""
 
-#: templates/partials/summary/collapsible-summary.html:25
-#: templates/partials/summary/list-summary.html:9
-#: templates/partials/summary/summary.html:7
+#: templates/partials/summary/collapsible-summary.html:29
+#: templates/partials/summary/list-summary.html:13
+#: templates/partials/summary/summary.html:12
 msgid "Change"
 msgstr ""
 
-#: templates/partials/summary/collapsible-summary.html:25
-#: templates/partials/summary/summary.html:7
+#: templates/partials/summary/collapsible-summary.html:29
+#: templates/partials/summary/summary.html:12
 msgid "Change your answer for:"
 msgstr ""
 
-#: templates/partials/summary/list-summary.html:10
+#: templates/partials/summary/list-summary.html:14
 msgid "Change details for {item_name}"
 msgstr ""
 
-#: templates/partials/summary/list-summary.html:11
+#: templates/partials/summary/list-summary.html:15
 msgid "Remove"
 msgstr ""
 
-#: templates/partials/summary/list-summary.html:12
+#: templates/partials/summary/list-summary.html:16
 msgid "Remove {item_name}"
 msgstr ""
 
