@@ -77,10 +77,12 @@ class SectionSummaryContext(Context):
         }
 
     def _title_for_location(self, location):
+        title = self._schema.get_section(location.section_id).get("title")
         if location.block_id:
-            title = self._schema.get_block(location.block_id).get("title")
-        else:
-            title = self._schema.get_section(location.section_id).get("title")
+            try:
+                title = self._schema.get_block(location.block_id).get("title")
+            except KeyError:
+                pass
 
         if location.list_item_id:
             repeating_title = self._schema.get_repeating_title_for_section(
