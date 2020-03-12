@@ -25,13 +25,26 @@ class SectionSummaryContext(Context):
         )
 
     def __call__(self, current_location):
-        section_summary_context = self._section_summary_context(current_location)
-        section_summary_context["summary"].update(self._build_summary(current_location))
-        return section_summary_context
+        try:
+            block = self._schema.get_block(current_location.block_id)
+            collapsible = block.get("collapsible", False)
+        except AttributeError:
+            collapsible = False
+
+        summary = self._build_summary(current_location)
+        return {
+            "summary": {
+                "title": self._title_for_location(current_location),
+                "summary_type": "SectionSummary",
+                "answers_are_editable": True,
+                "collapsible": collapsible,
+                **summary,
+            }
+        }
 
     def _build_summary(self, location):
         """
-        Build a groups context for a particular location.
+        Build a summary context for a particular location.
 
         Does not support generating multiple sections at a time (i.e. passing no list_item_id for repeating section).
         """
@@ -61,22 +74,6 @@ class SectionSummaryContext(Context):
                 ).serialize()
                 for group in section["groups"]
             ]
-        }
-
-    def _section_summary_context(self, current_location):
-        try:
-            block = self._schema.get_block(current_location.block_id)
-            collapsible = block.get("collapsible", False)
-        except AttributeError:
-            collapsible = False
-
-        return {
-            "summary": {
-                "title": self._title_for_location(current_location),
-                "summary_type": "SectionSummary",
-                "answers_are_editable": True,
-                "collapsible": collapsible,
-            }
         }
 
     def _title_for_location(self, location):
