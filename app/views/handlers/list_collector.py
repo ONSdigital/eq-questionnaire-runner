@@ -22,6 +22,8 @@ class ListCollector(Question):
         return super().get_next_location_url()
 
     def get_context(self):
+        question_context = build_question_context(self.rendered_block, self.form)
+
         list_context = ListContext(
             self._language,
             self._schema,
@@ -30,8 +32,14 @@ class ListCollector(Question):
             self._questionnaire_store.progress_store,
             self._questionnaire_store.metadata,
         )
-        question_context = build_question_context(self.rendered_block, self.form)
-        return {**question_context, **list_context(self.rendered_block)}
+        list_context = list_context(
+            self.rendered_block["summary"],
+            for_list=self.rendered_block["for_list"],
+            edit_block=self.rendered_block["edit_block"],
+            remove_block=self.rendered_block["remove_block"],
+        )
+
+        return {**question_context, **list_context}
 
     def handle_post(self):
         if (

@@ -72,7 +72,14 @@ class Question(BlockHandler):
                 metadata=self._questionnaire_store.metadata,
             )
 
-            context.update(list_collector_context(self.rendered_block["list_summary"]))
+            context.update(
+                list_collector_context(
+                    self.rendered_block["list_summary"]["summary"],
+                    for_list=self.rendered_block["list_summary"]["for_list"],
+                    edit_block=self.rendered_block.get("edit_block"),
+                    remove_block=self.rendered_block.get("remove_block"),
+                )
+            )
             context["list"]["editable"] = False
 
         return context

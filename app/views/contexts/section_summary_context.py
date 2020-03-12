@@ -116,7 +116,11 @@ class SectionSummaryContext(Context):
         )
 
         rendered_list_context = self.list_context(
-            list_collector_block, current_location.block_id
+            list_collector_block["summary"],
+            for_list=list_collector_block["for_list"],
+            return_to=current_location.block_id,
+            edit_block=list_collector_block["edit_block"],
+            remove_block=list_collector_block["remove_block"],
         )
 
         rendered_summary = self._placeholder_renderer.render(

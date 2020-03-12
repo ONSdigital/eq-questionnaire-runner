@@ -8,7 +8,6 @@ from app.views.contexts import ListContext
 def test_build_list_collector_context(
     list_collector_block, schema, people_answer_store, people_list_store
 ):
-
     context = ListContext(
         language=DEFAULT_LANGUAGE_CODE,
         progress_store={},
@@ -18,7 +17,8 @@ def test_build_list_collector_context(
         metadata=None,
     )
 
-    list_context = context(list_collector_block)
+    list_context = context(list_collector_block["summary"], for_list="people")
+
     assert all(
         keys in list_context["list"].keys() for keys in ["list_items", "editable"]
     )
@@ -26,9 +26,8 @@ def test_build_list_collector_context(
 
 @pytest.mark.usefixtures("app")
 def test_build_list_summary_context_no_summary_block(
-    list_collector_block, schema, people_answer_store, people_list_store
+    schema, people_answer_store, people_list_store
 ):
-    del list_collector_block["summary"]
     context = ListContext(
         language=DEFAULT_LANGUAGE_CODE,
         progress_store={},
@@ -37,7 +36,10 @@ def test_build_list_summary_context_no_summary_block(
         answer_store=people_answer_store,
         metadata=None,
     )
-    assert context(list_collector_block) is None
+
+    assert context(None, for_list="people") == {
+        "list": {"editable": True, "list_items": []}
+    }
 
 
 @pytest.mark.usefixtures("app")
@@ -70,7 +72,14 @@ def test_build_list_summary_context(
         metadata=None,
     )
 
-    actual = context(list_collector_block=list_collector_block, return_to=None)
+    actual = context(
+        list_collector_block["summary"],
+        for_list="people",
+        return_to=None,
+        edit_block=list_collector_block["edit_block"],
+        remove_block=list_collector_block["remove_block"],
+    )
+
     assert expected == actual["list"]["list_items"]
 
 
@@ -90,7 +99,9 @@ def test_assert_primary_person_string_appended(
         metadata=None,
     )
 
-    list_item_context = context(list_collector_block)
+    list_item_context = context(
+        list_collector_block["summary"], for_list=list_collector_block["for_list"]
+    )
 
     assert list_item_context["list"]["list_items"][0]["primary_person"] is True
     assert (
