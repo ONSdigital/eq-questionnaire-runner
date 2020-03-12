@@ -26,12 +26,10 @@ class SectionSummaryContext(Context):
 
     def __call__(self, current_location):
         section_summary_context = self._section_summary_context(current_location)
-        section_summary_context["summary"].update(
-            self._build_groups_for_location(current_location)
-        )
+        section_summary_context["summary"].update(self._build_summary(current_location))
         return section_summary_context
 
-    def _build_groups_for_location(self, location):
+    def _build_summary(self, location):
         """
         Build a groups context for a particular location.
 
