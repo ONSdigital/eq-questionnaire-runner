@@ -76,11 +76,11 @@ class Question(BlockHandler):
                 list_collector_context(
                     self.rendered_block["list_summary"]["summary"],
                     for_list=self.rendered_block["list_summary"]["for_list"],
+                    editable=False,
                     edit_block=self.rendered_block.get("edit_block"),
                     remove_block=self.rendered_block.get("remove_block"),
                 )
             )
-            context["list"]["editable"] = False
 
         return context
 
