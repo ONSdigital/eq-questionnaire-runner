@@ -135,16 +135,11 @@ class PlaceholderTransforms:
     def format_ordinal(number_to_format, determiner=None):
         number_to_format_str = str(number_to_format)
 
-        if number_to_format_str.endswith(("11", "12", "13")):
+        if 11 <= number_to_format % 100 <= 13:
             suffix = "th"
-        elif number_to_format_str.endswith("1"):
-            suffix = "st"
-        elif number_to_format_str.endswith("2"):
-            suffix = "nd"
-        elif number_to_format_str.endswith("3"):
-            suffix = "rd"
         else:
-            suffix = "th"
+            suffix = {1: "st", 2: "nd", 3: "rd"}.get(number_to_format % 10, "th")
+
         if determiner == "a_or_an":
             a_or_an = (
                 "an"
