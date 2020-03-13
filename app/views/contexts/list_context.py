@@ -17,7 +17,7 @@ class ListContext(Context):
         remove_block_id=None,
     ):
         list_items = list(
-            self._build_list_items_summary_context(
+            self._build_list_items_context(
                 summary_definition,
                 for_list,
                 return_to=return_to,
@@ -27,7 +27,7 @@ class ListContext(Context):
         )
         return {"list": {"list_items": list_items, "editable": editable}}
 
-    def _build_list_items_summary_context(
+    def _build_list_items_context(
         self,
         summary_definition,
         for_list,
