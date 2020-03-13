@@ -127,8 +127,8 @@ class PlaceholderTransforms:
 
     @staticmethod
     def add(lhs, rhs):
-        if isinstance(lhs, str):
-            return int(lhs) + rhs
+        if any([isinstance(lhs, str), isinstance(rhs, str)]):
+            return int(lhs) + int(rhs)
         return lhs + rhs
 
     @staticmethod
