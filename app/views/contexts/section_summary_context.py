@@ -80,7 +80,7 @@ class SectionSummaryContext(Context):
         title = self._schema.get_section(location.section_id).get("title")
         if location.block_id:
             try:
-                title = self._schema.get_block(location.block_id).get("title")
+                title = self._schema.get_block(location.block_id)["title"]
             except KeyError:
                 pass
 
@@ -116,8 +116,8 @@ class SectionSummaryContext(Context):
             list_collector_block["summary"],
             for_list=list_collector_block["for_list"],
             return_to=current_location.block_id,
-            edit_block=list_collector_block["edit_block"],
-            remove_block=list_collector_block["remove_block"],
+            edit_block_id=list_collector_block["edit_block"]["id"],
+            remove_block_id=list_collector_block["remove_block"]["id"],
         )
 
         rendered_summary = self._placeholder_renderer.render(

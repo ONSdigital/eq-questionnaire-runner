@@ -13,16 +13,16 @@ class ListContext(Context):
         for_list,
         return_to=None,
         editable=True,
-        edit_block=None,
-        remove_block=None,
+        edit_block_id=None,
+        remove_block_id=None,
     ):
         list_items = list(
             self._build_list_items_summary_context(
                 summary_definition,
                 for_list,
                 return_to=return_to,
-                edit_block=edit_block,
-                remove_block=remove_block,
+                edit_block_id=edit_block_id,
+                remove_block_id=remove_block_id,
             )
         )
         return {"list": {"list_items": list_items, "editable": editable}}
@@ -33,8 +33,8 @@ class ListContext(Context):
         for_list,
         return_to,
         editable=True,
-        edit_block=None,
-        remove_block=None,
+        edit_block_id=None,
+        remove_block_id=None,
     ):
         if not summary_definition:
             return None
@@ -61,14 +61,14 @@ class ListContext(Context):
             }
 
             if editable:
-                if edit_block:
+                if edit_block_id:
                     list_item_context["edit_link"] = partial_url_for(
-                        block_id=edit_block["id"]
+                        block_id=edit_block_id
                     )
 
-                if remove_block:
+                if remove_block_id:
                     list_item_context["remove_link"] = partial_url_for(
-                        block_id=remove_block["id"]
+                        block_id=remove_block_id
                     )
 
             yield list_item_context

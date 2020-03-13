@@ -4,7 +4,6 @@
 
 {% import 'macros/helpers.html' as helpers %}
 
-{% set summary_page_title = _("Summary") + " - " + survey_title %}
 {% set save_on_signout = true %}
 
 {{
@@ -25,9 +24,9 @@
       }) %}
         <p>{{ _("Check your answers before continuing to the next section") }}</p>
       {% endcall %}
-      <div class="u-mb-m">
-        {% include 'partials/summary/summary.html' %}
-      </div>
+    <div class="u-mb-m">
+      {% include 'partials/summary/summary.html' %}
+    </div>
   {% elif content.summary.custom_summary %}
     <h1>{{content.summary.title}}</h1>
     {% for summary in content.summary.custom_summary %}
@@ -49,7 +48,6 @@
         {% endif %}
       {% endfor %}
   {% endif %}
-
 
   {% if content.summary.is_view_submission_response_enabled %}
     <div class="u-mt-m u-mb-s u-mb-m@s" data-qa="view-submission-text">

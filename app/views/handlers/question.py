@@ -77,8 +77,10 @@ class Question(BlockHandler):
                     self.rendered_block["list_summary"]["summary"],
                     for_list=self.rendered_block["list_summary"]["for_list"],
                     editable=False,
-                    edit_block=self.rendered_block.get("edit_block"),
-                    remove_block=self.rendered_block.get("remove_block"),
+                    edit_block_id=self.rendered_block.get("edit_block", {}).get("id"),
+                    remove_block_id=self.rendered_block.get("remove_block", {}).get(
+                        "id"
+                    ),
                 )
             )
 
