@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2020-03-13 09:49+0000\n"
+"POT-Creation-Date: 2020-03-16 14:48+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -263,7 +263,7 @@ msgstr ""
 msgid "Start {section_name} section"
 msgstr ""
 
-#: app/views/contexts/list_context.py:82
+#: app/views/contexts/list_context.py:88
 msgid " (You)"
 msgstr ""
 
@@ -329,12 +329,6 @@ msgstr[1] ""
 msgid "Check your answers before continuing to the next section"
 msgstr ""
 
-#: templates/sectionsummary.html:54 templates/summary.html:36
-msgid ""
-"You will have the opportunity to view and print a copy of your answers "
-"after submitting this survey"
-msgstr ""
-
 #: templates/signed-out.html:3
 msgid "Signed out"
 msgstr ""
@@ -361,6 +355,12 @@ msgstr ""
 
 #: templates/summary.html:26
 msgid "Please review your answers and confirm these are correct"
+msgstr ""
+
+#: templates/summary.html:36
+msgid ""
+"You will have the opportunity to view and print a copy of your answers "
+"after submitting this survey"
 msgstr ""
 
 #: templates/thank-you.html:4
