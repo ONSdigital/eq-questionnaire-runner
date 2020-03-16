@@ -77,7 +77,7 @@ def test_build_list_summary_context(
         for_list="people",
         return_to=None,
         edit_block_id=list_collector_block["edit_block"]["id"],
-        remove_block=list_collector_block["remove_block"]["id"],
+        remove_block_id=list_collector_block["remove_block"]["id"],
     )
 
     assert expected == actual["list"]["list_items"]
