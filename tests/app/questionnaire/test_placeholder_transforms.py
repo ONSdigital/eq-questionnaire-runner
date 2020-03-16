@@ -118,6 +118,35 @@ class TestPlaceholderParser(unittest.TestCase):
             == "Milk, Eggs, Flour, Water"
         )
 
+    def test_add(self):
+        assert self.transforms.add(1, 2) == 3
+        assert self.transforms.add("1", 2) == 3
+        assert self.transforms.add("1", "2") == 3
+
+    def test_format_ordinal_with_determiner(self):
+        assert self.transforms.format_ordinal(1, "a_or_an") == "a 1st"
+        assert self.transforms.format_ordinal(2, "a_or_an") == "a 2nd"
+        assert self.transforms.format_ordinal(3, "a_or_an") == "a 3rd"
+        assert self.transforms.format_ordinal(4, "a_or_an") == "a 4th"
+        assert self.transforms.format_ordinal(8, "a_or_an") == "an 8th"
+        assert self.transforms.format_ordinal(11, "a_or_an") == "an 11th"
+        assert self.transforms.format_ordinal(12, "a_or_an") == "a 12th"
+        assert self.transforms.format_ordinal(13, "a_or_an") == "a 13th"
+        assert self.transforms.format_ordinal(18, "a_or_an") == "an 18th"
+        assert self.transforms.format_ordinal(21, "a_or_an") == "a 21st"
+        assert self.transforms.format_ordinal(22, "a_or_an") == "a 22nd"
+        assert self.transforms.format_ordinal(23, "a_or_an") == "a 23rd"
+        assert self.transforms.format_ordinal(111, "a_or_an") == "a 111th"
+        assert self.transforms.format_ordinal(112, "a_or_an") == "a 112th"
+        assert self.transforms.format_ordinal(113, "a_or_an") == "a 113th"
+
+    def test_format_ordinal_without_determiner(self):
+        assert self.transforms.format_ordinal(1) == "1st"
+        assert self.transforms.format_ordinal(2) == "2nd"
+        assert self.transforms.format_ordinal(3) == "3rd"
+        assert self.transforms.format_ordinal(4) == "4th"
+        assert self.transforms.format_ordinal(21) == "21st"
+
     def test_remove_empty_from_list(self):
         list_to_filter = [None, 0, False, "", "String"]
 

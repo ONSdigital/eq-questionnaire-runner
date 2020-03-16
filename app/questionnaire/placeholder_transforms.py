@@ -125,6 +125,30 @@ class PlaceholderTransforms:
                 date, PlaceholderTransforms.input_date_format_month_year_only
             ).replace(tzinfo=tzutc())
 
+    @staticmethod
+    def add(lhs, rhs):
+        if any([isinstance(lhs, str), isinstance(rhs, str)]):
+            return int(lhs) + int(rhs)
+        return lhs + rhs
+
+    @staticmethod
+    def format_ordinal(number_to_format, determiner=None):
+
+        if 11 <= number_to_format % 100 <= 13:
+            suffix = "th"
+        else:
+            suffix = {1: "st", 2: "nd", 3: "rd"}.get(number_to_format % 10, "th")
+
+        if determiner == "a_or_an":
+            a_or_an = (
+                "an"
+                if str(number_to_format).startswith("8") or number_to_format in [11, 18]
+                else "a"
+            )
+            return f"{a_or_an} {number_to_format}{suffix}"
+
+        return f"{number_to_format}{suffix}"
+
     def first_non_empty_item(self, items):
         """
         :param items: anything that is iterable
