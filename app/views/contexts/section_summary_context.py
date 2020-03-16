@@ -10,11 +10,8 @@ from .summary import Group
 
 class SectionSummaryContext(Context):
     def __call__(self, current_location):
-        try:
-            block = self._schema.get_block(current_location.block_id)
-            collapsible = block.get("collapsible", False)
-        except AttributeError:
-            collapsible = False
+        block = self._schema.get_block(current_location.block_id)
+        collapsible = block.get("collapsible", False)
 
         summary = self._build_summary(current_location)
         return {

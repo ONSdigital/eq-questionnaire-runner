@@ -72,7 +72,6 @@ class Question(BlockHandler):
                 self._questionnaire_store.metadata,
                 self.rendered_block["list_summary"]["summary"],
                 self.rendered_block["list_summary"]["for_list"],
-                editable=False,
             )
 
             context.update(list_context.get_context())

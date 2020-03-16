@@ -18,7 +18,6 @@ class ListContext(Context):
         summary_definition,
         for_list,
         return_to=None,
-        editable=True,
         edit_block_id=None,
         remove_block_id=None,
     ):
@@ -29,14 +28,20 @@ class ListContext(Context):
         self._summary_definition = summary_definition
         self._for_list = for_list
         self._return_to = return_to
-        self._editable = editable
         self._edit_block_id = edit_block_id
         self._remove_block_id = remove_block_id
+        self._editable = self._edit_block_id or self._remove_block_id
 
         list_items = (
             list(self._build_list_items_context()) if summary_definition else []
         )
-        self._context = {"list": {"list_items": list_items, "editable": editable}}
+
+        self._context = {
+            "list": {
+                "list_items": list_items,
+                "editable": any([edit_block_id, remove_block_id]),
+            }
+        }
 
     def get_context(self):
         return self._context

@@ -43,7 +43,7 @@ def test_build_list_summary_context_no_summary_block(
 
     list_context = list_context.get_context()
 
-    assert list_context == {"list": {"editable": True, "list_items": []}}
+    assert list_context == {"list": {"editable": False, "list_items": []}}
 
 
 @pytest.mark.usefixtures("app")
