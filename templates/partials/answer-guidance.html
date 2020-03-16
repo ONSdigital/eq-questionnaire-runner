@@ -1,9 +1,9 @@
-{% from "components/details/_macro.njk" import onsDetails %}
+{% from "components/collapsible/_macro.njk" import onsCollapsible %}
 
-{% call onsDetails({
+{% call onsCollapsible({
   "classes": "u-mt-s",
   "title": _(answer_guidance.schema_item.show_guidance),
-  "summaryAttributes": {
+  "headingAttributes": {
     "data-ga": "click",
     "data-ga-category": "Answer guidance",
     "data-ga-action": "Open panel",
