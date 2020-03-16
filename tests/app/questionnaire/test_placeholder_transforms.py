@@ -141,11 +141,11 @@ class TestPlaceholderParser(unittest.TestCase):
         assert self.transforms.format_ordinal(113, "a_or_an") == "a 113th"
 
     def test_format_ordinal_without_determiner(self):
-        assert self.transforms.format_ordinal(1, None) == "1st"
-        assert self.transforms.format_ordinal(2, None) == "2nd"
-        assert self.transforms.format_ordinal(3, None) == "3rd"
-        assert self.transforms.format_ordinal(4, None) == "4th"
-        assert self.transforms.format_ordinal(21, None) == "21st"
+        assert self.transforms.format_ordinal(1) == "1st"
+        assert self.transforms.format_ordinal(2) == "2nd"
+        assert self.transforms.format_ordinal(3) == "3rd"
+        assert self.transforms.format_ordinal(4) == "4th"
+        assert self.transforms.format_ordinal(21) == "21st"
 
     def test_remove_empty_from_list(self):
         list_to_filter = [None, 0, False, "", "String"]
