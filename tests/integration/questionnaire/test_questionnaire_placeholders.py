@@ -42,12 +42,6 @@ class TestPlaceholders(IntegrationTestCase):
 
         self.post({"total-retail-turnover-internet-sales-answer": 3000})
 
-        self.post({"additional-family-members-answer": 12})
-
-        self.assertInBody("Your family size is <em>13</em>")
-
-        self.post()
-
         self.post({"total-items-answer": 2})
 
         self.assertInBody("Do you want to add <em>a 3rd</em> item?")
