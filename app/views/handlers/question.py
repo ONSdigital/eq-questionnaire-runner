@@ -63,26 +63,19 @@ class Question(BlockHandler):
         context["return_to_hub_url"] = self.get_return_to_hub_url()
 
         if "list_summary" in self.rendered_block:
-            list_collector_context = ListContext(
-                language=self._language,
-                schema=self._schema,
-                answer_store=self._questionnaire_store.answer_store,
-                list_store=self._questionnaire_store.list_store,
-                progress_store=self._questionnaire_store.progress_store,
-                metadata=self._questionnaire_store.metadata,
+            list_context = ListContext(
+                self._language,
+                self._schema,
+                self._questionnaire_store.answer_store,
+                self._questionnaire_store.list_store,
+                self._questionnaire_store.progress_store,
+                self._questionnaire_store.metadata,
+                self.rendered_block["list_summary"]["summary"],
+                self.rendered_block["list_summary"]["for_list"],
+                editable=False,
             )
 
-            context.update(
-                list_collector_context(
-                    self.rendered_block["list_summary"]["summary"],
-                    for_list=self.rendered_block["list_summary"]["for_list"],
-                    editable=False,
-                    edit_block_id=self.rendered_block.get("edit_block", {}).get("id"),
-                    remove_block_id=self.rendered_block.get("remove_block", {}).get(
-                        "id"
-                    ),
-                )
-            )
+            context.update(list_context.get_context())
 
         return context
 

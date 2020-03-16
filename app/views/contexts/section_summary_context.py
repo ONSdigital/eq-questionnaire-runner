@@ -1,4 +1,4 @@
-from typing import Iterator, Mapping
+from typing import Mapping
 
 from flask import url_for
 
@@ -9,21 +9,6 @@ from .summary import Group
 
 
 class SectionSummaryContext(Context):
-    def __init__(
-        self, language, schema, answer_store, list_store, progress_store, metadata
-    ):
-        super().__init__(
-            language, schema, answer_store, list_store, progress_store, metadata
-        )
-        self.list_context = ListContext(
-            self._language,
-            self._schema,
-            self._answer_store,
-            self._list_store,
-            self._progress_store,
-            self._metadata,
-        )
-
     def __call__(self, current_location):
         try:
             block = self._schema.get_block(current_location.block_id)
@@ -102,7 +87,7 @@ class SectionSummaryContext(Context):
 
     def _list_summary_element(
         self, summary: Mapping, current_location, section: Mapping
-    ) -> Iterator[Mapping]:
+    ) -> Mapping:
         list_collector_block = self._schema.get_list_collectors_for_section(
             section, for_list=summary["for_list"]
         )[0]
@@ -111,7 +96,13 @@ class SectionSummaryContext(Context):
             summary, current_location, section, list_collector_block
         )
 
-        rendered_list_context = self.list_context(
+        list_context = ListContext(
+            self._language,
+            self._schema,
+            self._answer_store,
+            self._list_store,
+            self._progress_store,
+            self._metadata,
             list_collector_block["summary"],
             for_list=list_collector_block["for_list"],
             return_to=current_location.block_id,
@@ -130,7 +121,7 @@ class SectionSummaryContext(Context):
             "add_link_text": rendered_summary["add_link_text"],
             "empty_list_text": rendered_summary["empty_list_text"],
             "list_name": rendered_summary["for_list"],
-            **rendered_list_context,
+            **list_context.get_context(),
         }
 
     def _add_link(self, summary, current_location, section, list_collector_block):
