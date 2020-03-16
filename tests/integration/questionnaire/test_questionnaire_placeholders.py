@@ -51,4 +51,4 @@ class TestPlaceholders(IntegrationTestCase):
         self.assertInUrl("/summary/")
         self.assertInBody("Please enter the total retail turnover")
         self.assertInBody("Please enter the value of internet sales")
-        self.assertInBody("Please enter the number of additional family members")
+        self.assertInBody("Please enter the number of items")
