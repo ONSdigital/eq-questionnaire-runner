@@ -323,24 +323,24 @@ def test_get_values_for_key_ignores_multiple_keys():
     assert result == []
 
 
-def test_get_list_collectors_for_section(list_collector_variant_schema):
+def test_get_list_collectors_for_list(list_collector_variant_schema):
     schema = QuestionnaireSchema(list_collector_variant_schema)
     section = schema.get_section("section")
 
-    result = QuestionnaireSchema.get_list_collectors_for_section(
+    result = QuestionnaireSchema.get_list_collectors_for_list(
         section, for_list="people"
     )
 
     assert len(result) == 1
     assert result[0]["id"] == "block1"
 
-    filtered_result = QuestionnaireSchema.get_list_collectors_for_section(
+    filtered_result = QuestionnaireSchema.get_list_collectors_for_list(
         section, for_list="people"
     )
 
     assert filtered_result == result
 
-    no_result = QuestionnaireSchema.get_list_collectors_for_section(
+    no_result = QuestionnaireSchema.get_list_collectors_for_list(
         section, for_list="not-valid"
     )
 

@@ -204,7 +204,7 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
         return self._questions_by_id.get(question_id)
 
     @staticmethod
-    def get_list_collectors_for_section(section, for_list):
+    def get_list_collectors_for_list(section, for_list):
         return [
             block
             for group in section["groups"]
