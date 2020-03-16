@@ -46,9 +46,10 @@ class TestPlaceholders(IntegrationTestCase):
 
         self.assertInBody("Do you want to add <em>a 3rd</em> item?")
 
-        self.post()
+        self.post({"add-item-question": "Yes"})
 
         self.assertInUrl("/summary/")
         self.assertInBody("Please enter the total retail turnover")
         self.assertInBody("Please enter the value of internet sales")
         self.assertInBody("Please enter the number of items")
+        self.assertInBody("Do you want to add <em>a 3rd</em> item?")
