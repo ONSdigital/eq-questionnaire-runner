@@ -1,10 +1,10 @@
-from app.views.contexts import FinalSummaryContext
+from app.views.contexts import QuestionnaireSummaryContext
 from app.views.handlers.content import Content
 
 
 class Summary(Content):
     def get_context(self):
-        final_summary_context = FinalSummaryContext(
+        questionnaire_summary_context = QuestionnaireSummaryContext(
             self._language,
             self._schema,
             self._questionnaire_store.answer_store,
@@ -17,6 +17,6 @@ class Summary(Content):
         is_view_submitted_response_enabled = {
             "is_view_submission_response_enabled": self._schema.is_view_submitted_response_enabled()
         }
-        context = final_summary_context(collapsible)
+        context = questionnaire_summary_context(collapsible)
         context["summary"].update(is_view_submitted_response_enabled)
         return context

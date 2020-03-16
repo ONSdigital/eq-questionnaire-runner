@@ -47,7 +47,7 @@ from app.views.contexts.hub_context import HubContext
 from app.views.contexts.metadata_context import (
     build_metadata_context_for_survey_completed,
 )
-from app.views.contexts import FinalSummaryContext
+from app.views.contexts import QuestionnaireSummaryContext
 from app.views.handlers.block_factory import get_block_handler
 
 END_BLOCKS = "Summary", "Confirmation"
@@ -397,7 +397,7 @@ def get_view_submission(schema):
 
             metadata = submitted_data.get("metadata")
             language_code = get_session_store().session_data.language_code
-            final_summary_context = FinalSummaryContext(
+            questionnaire_summary_context = QuestionnaireSummaryContext(
                 language_code,
                 schema,
                 answer_store,
@@ -406,7 +406,7 @@ def get_view_submission(schema):
                 metadata,
             )
 
-            context = final_summary_context(answers_are_editable=False)
+            context = questionnaire_summary_context(answers_are_editable=False)
 
             return render_template(
                 template="view-submission",

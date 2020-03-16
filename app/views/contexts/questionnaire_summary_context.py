@@ -3,7 +3,7 @@ from .context import Context
 from .section_summary_context import SectionSummaryContext
 
 
-class FinalSummaryContext(Context):
+class QuestionnaireSummaryContext(Context):
     def __call__(self, collapsible=True, answers_are_editable=True):
         groups = list(self._build_all_groups())
 
