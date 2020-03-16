@@ -408,11 +408,11 @@ class SummaryRowItem:
             and "label" in answer
             and answer["label"]
         ):
-            self.title = answer["label"]
-            self.titleAttributes = {"data-qa": answer["id"] + "-label"}
+            self.rowTitle = answer["label"]
+            self.rowTitleAttributes = {"data-qa": answer["id"] + "-label"}
         else:
-            self.title = question["title"]
-            self.titleAttributes = {"data-qa": question["id"]}
+            self.rowTitle = question["title"]
+            self.rowTitleAttributes = {"data-qa": question["id"]}
 
         value = answer["value"]
 
@@ -461,7 +461,7 @@ class SummaryRowItem:
         if answers_are_editable:
             self.actions = [
                 SummaryAction(
-                    block, answer, self.title, edit_link_text, edit_link_aria_label
+                    block, answer, self.rowTitle, edit_link_text, edit_link_aria_label
                 )
             ]
 
@@ -477,7 +477,7 @@ class SummaryRow:
         edit_link_text,
         edit_link_aria_label,
     ):
-        self.title = question["title"]
+        self.rowTitle = question["title"]
         self.rowItems = []
 
         multiple_answers = len(question["answers"]) > 1
@@ -577,7 +577,7 @@ def map_list_collector_config(
             )
 
         rows.append(
-            {"title": item_name, "rowItems": [{"icon": icon, "actions": actions}]}
+            {"rowTitle": item_name, "rowItems": [{"icon": icon, "actions": actions}]}
         )
 
     return rows

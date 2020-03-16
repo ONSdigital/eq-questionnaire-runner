@@ -63,7 +63,7 @@ class HubContext(Context):
         section_content = self.SECTION_CONTENT_STATES[section_status]
 
         context: Mapping = {
-            "title": section_name,
+            "rowTitle": section_name,
             "rowItems": [
                 {
                     "valueList": [{"text": section_content["text"]}],

@@ -30,3 +30,26 @@ class TestPlaceholders(IntegrationTestCase):
         self.assertInUrl("/summary/")
         self.assertInBody("What is Kevin Bacon’s date of birth?")
         self.assertInBody("68 Abingdon Road, Goathill")
+
+    def test_placeholders_rendered_in_pages(self):
+        self.launchSurvey("test_placeholder_transform")
+        self.assertInBody("Please enter the total retail turnover")
+        self.post({"total-retail-turnover-answer": 2000})
+
+        self.assertInBody(
+            "Of the <em>£2,000.00</em> total retail turnover, what was the value of internet sales?"
+        )
+
+        self.post({"total-retail-turnover-internet-sales-answer": 3000})
+
+        self.post({"total-items-answer": 2})
+
+        self.assertInBody("Do you want to add <em>a 3rd</em> item?")
+
+        self.post({"add-item-question": "Yes"})
+
+        self.assertInUrl("/summary/")
+        self.assertInBody("Please enter the total retail turnover")
+        self.assertInBody("Please enter the value of internet sales")
+        self.assertInBody("Please enter the number of items")
+        self.assertInBody("Do you want to add <em>a 3rd</em> item?")
