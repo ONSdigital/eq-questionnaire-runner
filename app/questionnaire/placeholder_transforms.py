@@ -133,7 +133,6 @@ class PlaceholderTransforms:
 
     @staticmethod
     def format_ordinal(number_to_format, determiner=None):
-        number_to_format_str = str(number_to_format)
 
         if 11 <= number_to_format % 100 <= 13:
             suffix = "th"
@@ -143,7 +142,7 @@ class PlaceholderTransforms:
         if determiner == "a_or_an":
             a_or_an = (
                 "an"
-                if number_to_format_str.startswith("8") or number_to_format in [11, 18]
+                if str(number_to_format).startswith("8") or number_to_format in [11, 18]
                 else "a"
             )
             return f"{a_or_an} {number_to_format}{suffix}"
