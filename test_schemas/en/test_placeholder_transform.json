@@ -137,60 +137,60 @@
                             }
                         },
                         {
-                        "id": "add-item",
-                        "question": {
-                        "answers": [
-                            {
-                                "id": "add-item-answer",
-                                "mandatory": false,
-                                "options": [
-                                 {
-                                    "label": "Yes",
-                                    "value": "Yes"
-                                 },
-                                 {
-                                    "label": "No",
-                                    "value": "No"
-                                 }
-                                ],
-                                "type": "Radio"
-                            }
-                            ],
-                            "id": "add-item-question",
-                            "title": {
-                                 "placeholders": [
+                            "id": "add-item",
+                            "question": {
+                                "answers": [
                                     {
-                                        "placeholder": "item",
-                                        "transforms": [
+                                        "id": "add-item-answer",
+                                        "mandatory": false,
+                                        "options": [
                                             {
-                                                "transform": "add",
-                                                "arguments": {
-                                                    "lhs": {
-                                                        "source": "answers",
-                                                        "identifier": "total-items-answer"
-                                                    },
-                                                    "rhs": {
-                                                        "value": 1
-                                                    }
-                                                }
+                                                "label": "Yes",
+                                                "value": "Yes"
                                             },
                                             {
-                                                "arguments": {
-                                                    "number_to_format": {
-                                                        "source": "previous_transform"
-                                                    },
-                                                    "determiner": {
-                                                        "value": "a_or_an"
-                                                    }
-                                                },
-                                                "transform": "format_ordinal"
+                                                "label": "No",
+                                                "value": "No"
                                             }
-                                        ]
+                                        ],
+                                        "type": "Radio"
                                     }
                                 ],
-                                 "text": "Do you want to add <em>{item}</em> item?"
-                            },
-                            "type": "General"
+                                "id": "add-item-question",
+                                "title": {
+                                    "placeholders": [
+                                        {
+                                            "placeholder": "item",
+                                            "transforms": [
+                                                {
+                                                    "transform": "add",
+                                                    "arguments": {
+                                                        "lhs": {
+                                                            "source": "answers",
+                                                            "identifier": "total-items-answer"
+                                                        },
+                                                        "rhs": {
+                                                            "value": 1
+                                                        }
+                                                    }
+                                                },
+                                                {
+                                                    "arguments": {
+                                                        "number_to_format": {
+                                                            "source": "previous_transform"
+                                                        },
+                                                        "determiner": {
+                                                            "value": "a_or_an"
+                                                        }
+                                                    },
+                                                    "transform": "format_ordinal"
+                                                }
+                                            ]
+                                        }
+                                    ],
+                                    "text": "Do you want to add <em>{item}</em> item?"
+                                },
+                                "type": "General"
                             },
                             "type": "Question"
                         }
