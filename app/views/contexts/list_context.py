@@ -30,7 +30,6 @@ class ListContext(Context):
         self._return_to = return_to
         self._edit_block_id = edit_block_id
         self._remove_block_id = remove_block_id
-        self._editable = self._edit_block_id or self._remove_block_id
 
         list_items = (
             list(self._build_list_items_context()) if summary_definition else []
@@ -66,16 +65,15 @@ class ListContext(Context):
                 "primary_person": is_primary,
             }
 
-            if self._editable:
-                if self._edit_block_id:
-                    list_item_context["edit_link"] = partial_url_for(
-                        block_id=self._edit_block_id
-                    )
+            if self._edit_block_id:
+                list_item_context["edit_link"] = partial_url_for(
+                    block_id=self._edit_block_id
+                )
 
-                if self._remove_block_id:
-                    list_item_context["remove_link"] = partial_url_for(
-                        block_id=self._remove_block_id
-                    )
+            if self._remove_block_id:
+                list_item_context["remove_link"] = partial_url_for(
+                    block_id=self._remove_block_id
+                )
 
             yield list_item_context
 
