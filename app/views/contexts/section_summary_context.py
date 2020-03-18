@@ -103,11 +103,6 @@ class SectionSummaryContext(Context):
             self._list_store,
             self._progress_store,
             self._metadata,
-            list_collector_block["summary"],
-            for_list=list_collector_block["for_list"],
-            return_to=current_location.block_id,
-            edit_block_id=list_collector_block["edit_block"]["id"],
-            remove_block_id=list_collector_block["remove_block"]["id"],
         )
 
         rendered_summary = self._placeholder_renderer.render(
@@ -121,7 +116,13 @@ class SectionSummaryContext(Context):
             "add_link_text": rendered_summary["add_link_text"],
             "empty_list_text": rendered_summary["empty_list_text"],
             "list_name": rendered_summary["for_list"],
-            **list_context.get_context(),
+            **list_context(
+                list_collector_block["summary"],
+                for_list=list_collector_block["for_list"],
+                return_to=current_location.block_id,
+                edit_block_id=list_collector_block["edit_block"]["id"],
+                remove_block_id=list_collector_block["remove_block"]["id"],
+            ),
         }
 
     def _add_link(self, summary, current_location, section, list_collector_block):
