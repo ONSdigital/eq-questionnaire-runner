@@ -241,8 +241,15 @@ class CheckboxConfig:
         self.label = LabelConfig(option.id, option.label.text, label_description)
 
         if option.detail_answer_id:
+            detail_answer_option = None
+
+            if "detail_answer" in answer_option:
+                detail_answer_option = answer_option["detail_answer"]
+
             detail_answer = form["fields"][option.detail_answer_id]
-            self.other = OtherConfig(detail_answer)
+            self.other = OtherConfig(
+                detail_answer=detail_answer, detail_answer_option=detail_answer_option
+            )
 
 
 class RadioConfig:
@@ -261,9 +268,18 @@ class RadioConfig:
         self.label = LabelConfig(option.id, option.label.text, label_description)
 
         if option.detail_answer_id:
+            detail_answer_option = None
+
+            if "detail_answer" in answer_option:
+                detail_answer_option = answer_option["detail_answer"]
+
             detail_answer = form["fields"][option.detail_answer_id]
             answer_visible = answer_option["detail_answer"].get("visible", False)
-            self.other = OtherConfig(detail_answer, answer_visible)
+            self.other = OtherConfig(
+                detail_answer=detail_answer,
+                answer_visible=answer_visible,
+                detail_answer_option=detail_answer_option,
+            )
 
 
 class RelationshipRadioConfig:
@@ -292,12 +308,15 @@ class RelationshipRadioConfig:
 
 
 class OtherConfig:
-    def __init__(self, detail_answer, answer_visible=False):
+    def __init__(self, detail_answer, answer_visible=False, detail_answer_option=None):
         self.open = answer_visible
         self.id = detail_answer.id
         self.name = detail_answer.name
         self.value = escape(detail_answer._value())  # pylint: disable=protected-access
         self.label = LabelConfig(detail_answer.id, detail_answer.label.text)
+        if detail_answer_option:
+            if detail_answer_option["type"] == "Number":
+                self.classes = get_width_class_for_number(detail_answer_option)
 
 
 @blueprint.app_template_filter()
