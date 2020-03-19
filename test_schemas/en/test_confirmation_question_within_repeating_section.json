@@ -1,5 +1,6 @@
 {
     "mime_type": "application/json/ons/eq",
+    "language": "en",
     "schema_version": "0.0.1",
     "survey_id": "139",
     "theme": "default",
@@ -430,7 +431,10 @@
                                         "mandatory": false,
                                         "type": "Radio",
                                         "default": "Yes",
-                                        "options": [{ "label": "Yes", "value": "Yes" }, { "label": "No", "value": "No" }]
+                                        "options": [
+                                            { "label": "Yes", "value": "Yes" },
+                                            { "label": "No", "value": "No" }
+                                        ]
                                     }
                                 ]
                             },
