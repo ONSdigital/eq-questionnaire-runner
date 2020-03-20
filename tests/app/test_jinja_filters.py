@@ -233,9 +233,7 @@ class TestJinjaFilters(AppContextTestCase):  # pylint: disable=too-many-public-m
                         "id": "other-answer",
                         "label": "Please enter a number of items",
                         "type": "Number",
-                        "maximum": {
-                            "value": 20
-                        },
+                        "maximum": {"value": 20},
                         "parent_id": "radio-question-numeric-detail",
                         "visible": False,
                     },
