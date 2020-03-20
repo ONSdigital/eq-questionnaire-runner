@@ -50,14 +50,14 @@ describe('Section Summary', function() {
       expect(browser.getUrl()).to.contain(QuestionnaireSummaryPage.pageName);
     });
 
-    it("When I select edit from Final Summary and don't change an answer, Then I should be taken to the Section Summary", function() {
+    it('When I select edit from Final Summary and don\'t change an answer, Then I should be taken to the Section Summary', function() {
       $(QuestionnaireSummaryPage.summaryShowAllButton()).click();
       $(QuestionnaireSummaryPage.insuranceAddressAnswerEdit()).click();
       $(InsuranceAddressPage.submit()).click();
       expect(browser.getUrl()).to.contain(PropertyDetailsSummaryPage.pageName);
     });
 
-    it("When I select edit from Final Summary and change an answer that doesn't affect completeness, Then I should be taken to the Section Summary", function() {
+    it('When I select edit from Final Summary and change an answer that doesn\'t affect completeness, Then I should be taken to the Section Summary', function() {
       $(QuestionnaireSummaryPage.summaryShowAllButton()).click();
       $(QuestionnaireSummaryPage.insuranceAddressAnswerEdit()).click();
       $(InsuranceAddressPage.answer()).setValue('Test Address');
