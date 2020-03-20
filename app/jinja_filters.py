@@ -241,8 +241,10 @@ class CheckboxConfig:
         self.label = LabelConfig(option.id, option.label.text, label_description)
 
         if option.detail_answer_id:
-            detail_answer = form["fields"][option.detail_answer_id]
-            self.other = OtherConfig(detail_answer)
+            detail_answer_field = form["fields"][option.detail_answer_id]
+            detail_answer_schema = answer_option["detail_answer"]
+
+            self.other = OtherConfig(detail_answer_field, detail_answer_schema)
 
 
 class RadioConfig:
@@ -261,9 +263,10 @@ class RadioConfig:
         self.label = LabelConfig(option.id, option.label.text, label_description)
 
         if option.detail_answer_id:
-            detail_answer = form["fields"][option.detail_answer_id]
-            answer_visible = answer_option["detail_answer"].get("visible", False)
-            self.other = OtherConfig(detail_answer, answer_visible)
+            detail_answer_field = form["fields"][option.detail_answer_id]
+            detail_answer_schema = answer_option["detail_answer"]
+
+            self.other = OtherConfig(detail_answer_field, detail_answer_schema)
 
 
 class RelationshipRadioConfig:
@@ -292,12 +295,16 @@ class RelationshipRadioConfig:
 
 
 class OtherConfig:
-    def __init__(self, detail_answer, answer_visible=False):
-        self.open = answer_visible
-        self.id = detail_answer.id
-        self.name = detail_answer.name
-        self.value = escape(detail_answer._value())  # pylint: disable=protected-access
-        self.label = LabelConfig(detail_answer.id, detail_answer.label.text)
+    def __init__(self, detail_answer_field, detail_answer_schema):
+        self.id = detail_answer_field.id
+        self.name = detail_answer_field.name
+        self.value = escape(
+            detail_answer_field._value()
+        )  # pylint: disable=protected-access
+        self.label = LabelConfig(detail_answer_field.id, detail_answer_field.label.text)
+        self.open = detail_answer_schema.get("visible", False)
+        if detail_answer_schema["type"] == "Number":
+            self.classes = get_width_class_for_number(detail_answer_schema)
 
 
 @blueprint.app_template_filter()
