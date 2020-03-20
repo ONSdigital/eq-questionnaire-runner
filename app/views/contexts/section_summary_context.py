@@ -10,19 +10,14 @@ from .summary import Group
 
 class SectionSummaryContext(Context):
     def __call__(self, current_location):
-        try:
-            block = self._schema.get_block(current_location.block_id)
-            collapsible = block.get("collapsible", False)
-        except AttributeError:
-            collapsible = False
-
+        block = self._schema.get_block(current_location.block_id)
         summary = self._build_summary(current_location)
+
         return {
             "summary": {
                 "title": self._title_for_location(current_location),
                 "summary_type": "SectionSummary",
                 "answers_are_editable": True,
-                "collapsible": collapsible,
                 **summary,
             }
         }
@@ -34,18 +29,27 @@ class SectionSummaryContext(Context):
         Does not support generating multiple sections at a time (i.e. passing no list_item_id for repeating section).
         """
         section = self._schema.get_section(location.section_id)
-        if section.get("summary"):
-            return {
+        collapsible = {
+            "collapsible": section.get("summary", {}).get("collapsible", False)
+        }
+
+        if section.get("summary", {}).get("items"):
+            summary_elements = {
                 "custom_summary": list(
-                    self._custom_summary_elements(section["summary"], location, section)
+                    self._custom_summary_elements(
+                        section["summary"]["items"], location, section
+                    )
                 )
             }
+
+            return {**collapsible, **summary_elements}
 
         routing_path = self._router.routing_path(
             location.section_id, location.list_item_id
         )
 
         return {
+            **collapsible,
             "groups": [
                 Group(
                     group,
@@ -58,7 +62,7 @@ class SectionSummaryContext(Context):
                     self._language,
                 ).serialize()
                 for group in section["groups"]
-            ]
+            ],
         }
 
     def _title_for_location(self, location):

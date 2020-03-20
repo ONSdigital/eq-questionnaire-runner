@@ -28,15 +28,17 @@
         {
             "id": "section",
             "title": "People",
-            "summary": [
-                {
-                    "type": "List",
-                    "for_list": "people",
-                    "title": "Household members",
-                    "add_link_text": "Add someone to this household",
-                    "empty_list_text": "There are no householders"
-                }
-            ],
+            "summary": {
+                "items": [
+                    {
+                        "type": "List",
+                        "for_list": "people",
+                        "title": "Household members",
+                        "add_link_text": "Add someone to this household",
+                        "empty_list_text": "There are no householders"
+                    }
+                ]
+            },
             "groups": [
                 {
                     "id": "group",

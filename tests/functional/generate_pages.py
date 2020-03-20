@@ -394,12 +394,12 @@ def process_calculated_summary(answers, page_spec):
 
 def process_summary(schema_data, page_spec, collapsible):
     for section in schema_data["sections"]:
-        list_collector_blocks = [
+        list_summaries = [
             summary_element
             for summary_element in section.get("summary", [])
             if summary_element["type"] == "List"
         ]
-        for list_block in list_collector_blocks:
+        for list_block in list_summaries:
             list_context = {"list_name": list_block["for_list"]}
             page_spec.write(
                 LIST_SECTION_SUMMARY_ADD_LINK_GETTER.substitute(list_context)

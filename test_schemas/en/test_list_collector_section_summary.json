@@ -29,72 +29,74 @@
         {
             "id": "section",
             "title": "People who live here and overnight visitors",
-            "summary": [
-                {
-                    "type": "List",
-                    "for_list": "people",
-                    "title": {
-                        "text": "Household members staying overnight on {census_date} at {household_address}",
-                        "placeholders": [
-                            {
-                                "placeholder": "census_date",
-                                "transforms": [
-                                    {
-                                        "arguments": {
-                                            "date_format": "d MMMM yyyy",
-                                            "date_to_format": {
-                                                "value": "2019-10-13"
-                                            }
-                                        },
-                                        "transform": "format_date"
+            "summary": {
+                "items": [
+                    {
+                        "type": "List",
+                        "for_list": "people",
+                        "title": {
+                            "text": "Household members staying overnight on {census_date} at {household_address}",
+                            "placeholders": [
+                                {
+                                    "placeholder": "census_date",
+                                    "transforms": [
+                                        {
+                                            "arguments": {
+                                                "date_format": "d MMMM yyyy",
+                                                "date_to_format": {
+                                                    "value": "2019-10-13"
+                                                }
+                                            },
+                                            "transform": "format_date"
+                                        }
+                                    ]
+                                },
+                                {
+                                    "placeholder": "household_address",
+                                    "value": {
+                                        "identifier": "display_address",
+                                        "source": "metadata"
                                     }
-                                ]
-                            },
-                            {
-                                "placeholder": "household_address",
-                                "value": {
-                                    "identifier": "display_address",
-                                    "source": "metadata"
                                 }
-                            }
-                        ]
+                            ]
+                        },
+                        "add_link_text": "Add someone to this household",
+                        "empty_list_text": "There are no householders"
                     },
-                    "add_link_text": "Add someone to this household",
-                    "empty_list_text": "There are no householders"
-                },
-                {
-                    "type": "List",
-                    "for_list": "visitors",
-                    "title": {
-                        "text": "Visitors staying overnight on {census_date} at {household_address}",
-                        "placeholders": [
-                            {
-                                "placeholder": "census_date",
-                                "transforms": [
-                                    {
-                                        "arguments": {
-                                            "date_format": "d MMMM yyyy",
-                                            "date_to_format": {
-                                                "value": "2019-10-13"
-                                            }
-                                        },
-                                        "transform": "format_date"
+                    {
+                        "type": "List",
+                        "for_list": "visitors",
+                        "title": {
+                            "text": "Visitors staying overnight on {census_date} at {household_address}",
+                            "placeholders": [
+                                {
+                                    "placeholder": "census_date",
+                                    "transforms": [
+                                        {
+                                            "arguments": {
+                                                "date_format": "d MMMM yyyy",
+                                                "date_to_format": {
+                                                    "value": "2019-10-13"
+                                                }
+                                            },
+                                            "transform": "format_date"
+                                        }
+                                    ]
+                                },
+                                {
+                                    "placeholder": "household_address",
+                                    "value": {
+                                        "identifier": "display_address",
+                                        "source": "metadata"
                                     }
-                                ]
-                            },
-                            {
-                                "placeholder": "household_address",
-                                "value": {
-                                    "identifier": "display_address",
-                                    "source": "metadata"
                                 }
-                            }
-                        ]
-                    },
-                    "add_link_text": "Add another visitor to this household",
-                    "empty_list_text": "There are no visitors"
-                }
-            ],
+                            ]
+                        },
+                        "add_link_text": "Add another visitor to this household",
+                        "empty_list_text": "There are no visitors"
+                    }
+                ]
+            },
             "groups": [
                 {
                     "id": "group",
