@@ -88,6 +88,14 @@ class SectionSummaryContext(Context):
     def _list_summary_element(
         self, summary: Mapping, current_location, section: Mapping
     ) -> Mapping:
+        list_collector_block = self._schema.get_list_collectors_for_list(
+            section, for_list=summary["for_list"]
+        )[0]
+
+        add_link = self._add_link(
+            summary, current_location, section, list_collector_block
+        )
+
         list_context = ListContext(
             self._language,
             self._schema,
@@ -96,35 +104,6 @@ class SectionSummaryContext(Context):
             self._progress_store,
             self._metadata,
         )
-
-        list_collector_blocks = self._get_blocks_on_path(
-            section["id"],
-            current_location.list_item_id,
-            for_list=summary["for_list"],
-            block_type="ListCollector",
-        )
-
-        if list_collector_blocks:
-            list_summary = list_collector_blocks[0]["summary"]
-            edit_block_id = list_collector_blocks[0]["edit_block"]["id"]
-            remove_block_id = list_collector_blocks[0]["remove_block"]["id"]
-        else:
-            list_collector_blocks = self._get_blocks_on_path(
-                section["id"],
-                current_location.list_item_id,
-                summary["for_list"],
-                "ListCollectorDrivingQuestion",
-            )
-
-            list_collector_block = self._schema.get_list_collectors_for_list(
-                section, for_list=summary["for_list"]
-            )
-
-            list_summary = list_collector_block[0]["summary"]
-            edit_block_id = list_collector_block[0]["edit_block"]
-            remove_block_id = list_collector_block[0]["remove_block"]["id"]
-
-        add_link = self._add_link(summary, current_location, list_collector_blocks[0])
 
         rendered_summary = self._placeholder_renderer.render(
             summary, current_location.list_item_id
@@ -138,36 +117,35 @@ class SectionSummaryContext(Context):
             "empty_list_text": rendered_summary["empty_list_text"],
             "list_name": rendered_summary["for_list"],
             **list_context(
-                list_summary,
-                for_list=list_collector_blocks[0]["for_list"],
+                list_collector_block["summary"],
+                for_list=list_collector_block["for_list"],
                 return_to=current_location.block_id,
-                edit_block_id=edit_block_id,
-                remove_block_id=remove_block_id,
+                edit_block_id=list_collector_block["edit_block"]["id"],
+                remove_block_id=list_collector_block["remove_block"]["id"],
             ),
         }
 
-    def _get_blocks_on_path(self, section_id, list_item_id, for_list, block_type):
-        return [
-            block
-            for block in [
-                self._schema.get_block(block_id)
-                for block_id in self._router.routing_path(section_id, list_item_id)
-            ]
-            if block["type"] == block_type and block["for_list"] == for_list
-        ]
+    def _add_link(self, summary, current_location, section, list_collector_block):
+        routing_path = self._router.routing_path(
+            section["id"], current_location.list_item_id
+        )
 
-    @staticmethod
-    def _add_link(summary, current_location, list_collector_block):
-        if list_collector_block["type"] == "ListCollector":
-            return url_for(
-                "questionnaire.block",
-                list_name=summary["for_list"],
-                block_id=list_collector_block["add_block"]["id"],
-                return_to=current_location.block_id,
-            )
-
-        return url_for(
+        add_link = url_for(
             "questionnaire.block",
-            block_id=list_collector_block["id"],
+            list_name=summary["for_list"],
+            block_id=list_collector_block["add_block"]["id"],
             return_to=current_location.block_id,
         )
+
+        if list_collector_block["id"] not in routing_path:
+            driving_question_block = QuestionnaireSchema.get_driving_question_for_list(
+                section, summary["for_list"]
+            )
+
+            if driving_question_block:
+                add_link = url_for(
+                    "questionnaire.block",
+                    block_id=driving_question_block["id"],
+                    return_to=current_location.block_id,
+                )
+        return add_link
