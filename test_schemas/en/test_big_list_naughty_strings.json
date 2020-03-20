@@ -3597,6 +3597,7 @@
     "description": "A questionnaire to test textareas.",
     "data_version": "0.0.3",
     "theme": "default",
+    "language": "en",
     "schema_version": "0.0.1",
     "survey_id": "0"
 }
