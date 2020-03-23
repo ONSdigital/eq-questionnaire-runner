@@ -575,38 +575,40 @@ def section_with_custom_summary():
         "sections": [
             {
                 "id": "section",
-                "summary": [
-                    {
-                        "type": "List",
-                        "for_list": "people",
-                        "title": "Householders",
-                        "add_link_text": "Add a person",
-                        "empty_list_text": "No householders",
-                        "item_title": {
-                            "text": "{person_name}",
-                            "placeholders": [
-                                {
-                                    "placeholder": "person_name",
-                                    "transforms": [
-                                        {
-                                            "arguments": {
-                                                "delimiter": " ",
-                                                "list_to_concatenate": {
-                                                    "identifier": [
-                                                        "first-name",
-                                                        "last-name",
-                                                    ],
-                                                    "source": "answers",
+                "summary": {
+                    "items": [
+                        {
+                            "type": "List",
+                            "for_list": "people",
+                            "title": "Householders",
+                            "add_link_text": "Add a person",
+                            "empty_list_text": "No householders",
+                            "item_title": {
+                                "text": "{person_name}",
+                                "placeholders": [
+                                    {
+                                        "placeholder": "person_name",
+                                        "transforms": [
+                                            {
+                                                "arguments": {
+                                                    "delimiter": " ",
+                                                    "list_to_concatenate": {
+                                                        "identifier": [
+                                                            "first-name",
+                                                            "last-name",
+                                                        ],
+                                                        "source": "answers",
+                                                    },
                                                 },
-                                            },
-                                            "transform": "concatenate_list",
-                                        }
-                                    ],
-                                }
-                            ],
-                        },
-                    }
-                ],
+                                                "transform": "concatenate_list",
+                                            }
+                                        ],
+                                    }
+                                ],
+                            },
+                        }
+                    ]
+                },
                 "groups": [
                     {
                         "id": "group",
