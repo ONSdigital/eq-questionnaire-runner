@@ -133,25 +133,21 @@ class SectionSummaryContext(Context):
             section["id"], current_location.list_item_id
         )
 
-        add_link = url_for(
-            "questionnaire.block",
-            list_name=summary["for_list"],
-            block_id=list_collector_block["add_block"]["id"],
-            return_to=current_location.block_id,
-        )
-
-        if list_collector_block["id"] not in routing_path:
-            driving_question_block = QuestionnaireSchema.get_driving_question_for_list(
-                section, summary["for_list"]
+        if list_collector_block["id"] in routing_path:
+            return url_for(
+                "questionnaire.block",
+                list_name=summary["for_list"],
+                block_id=list_collector_block["add_block"]["id"],
+                return_to=current_location.block_id,
             )
 
-            if driving_question_block:
-                add_link = url_for(
-                    "questionnaire.block",
-                    block_id=driving_question_block["id"],
-                    return_to=current_location.block_id,
-                )
-            else:
-                return None
+        driving_question_block = QuestionnaireSchema.get_driving_question_for_list(
+            section, summary["for_list"]
+        )
 
-        return add_link
+        if driving_question_block:
+            return url_for(
+                "questionnaire.block",
+                block_id=driving_question_block["id"],
+                return_to=current_location.block_id,
+            )
