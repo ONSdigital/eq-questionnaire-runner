@@ -396,7 +396,7 @@ def process_summary(schema_data, page_spec, collapsible):
     for section in schema_data["sections"]:
         list_summaries = [
             summary_element
-            for summary_element in section.get("summary", [])
+            for summary_element in section.get("summary", {}).get("items", [])
             if summary_element["type"] == "List"
         ]
         for list_block in list_summaries:
