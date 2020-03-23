@@ -25,9 +25,6 @@
         {
             "id": "mutually-exclusive-checkbox-section",
             "title": "Checkbox",
-            "summary": {
-              "collapsible": true
-            },
             "groups": [
                 {
                     "id": "mutually-exclusive-mandatory-group",
@@ -631,7 +628,8 @@
                     "blocks": [
                         {
                             "id": "summary",
-                            "type": "Summary"
+                            "type": "Summary",
+                            "collapsible": true
                         }
                     ]
                 }
