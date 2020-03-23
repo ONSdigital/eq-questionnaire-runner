@@ -32,9 +32,6 @@
         {
             "id": "property-details-section",
             "title": "Property Details Section",
-            "summary": {
-                "collapsible": true
-            },
             "groups": [
                 {
                     "id": "property-details",
@@ -208,7 +205,8 @@
                     "blocks": [
                         {
                             "id": "summary",
-                            "type": "Summary"
+                            "type": "Summary",
+                            "collapsible": true
                         }
                     ]
                 }
