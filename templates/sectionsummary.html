@@ -41,9 +41,11 @@
                 {{ summary.empty_list_text }}
               </div>
             {% endif %}
-            <div class="u-mb-l">
-              <a data-qa="add-item-link" href="{{summary.add_link}}">{{summary.add_link_text}}</a>
-            </div>
+            {% if summary.add_link %}
+                <div class="u-mb-l">
+                  <a data-qa="add-item-link" href="{{summary.add_link}}">{{summary.add_link_text}}</a>
+                </div>
+            {% endif %}
           </div>
         {% endif %}
       {% endfor %}

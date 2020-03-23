@@ -151,4 +151,7 @@ class SectionSummaryContext(Context):
                     block_id=driving_question_block["id"],
                     return_to=current_location.block_id,
                 )
+            else:
+                return None
+
         return add_link
