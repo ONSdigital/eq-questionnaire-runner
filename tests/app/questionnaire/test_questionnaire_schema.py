@@ -26,8 +26,8 @@ def test_get_summary_for_section(section_with_custom_summary):
         "item_title",
     }
 
-    assert len(section_summary) == 1
-    assert section_summary[0].keys() == expected_keys
+    assert len(section_summary["items"]) == 1
+    assert section_summary["items"][0].keys() == expected_keys
 
 
 def test_get_summary_for_section_doesnt_exist(section_with_custom_summary):
