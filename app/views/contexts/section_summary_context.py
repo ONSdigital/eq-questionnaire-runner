@@ -10,7 +10,6 @@ from .summary import Group
 
 class SectionSummaryContext(Context):
     def __call__(self, current_location):
-        block = self._schema.get_block(current_location.block_id)
         summary = self._build_summary(current_location)
 
         return {
