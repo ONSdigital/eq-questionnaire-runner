@@ -30,3 +30,13 @@ To deploy the app to the cluster via Concourse, use the following task command:
 fly -t <target-concourse> execute \
   --config ci/deploy_app.yaml
 ```
+
+## Backing up questionnaire state
+
+Questionnaire state can be backed up using the `backup_questionnaire_state.yaml` task. This can be done via Concourse using the following command:
+
+```sh
+PROJECT_ID=<project_id> \
+fly -t <target-concourse> execute \
+  --config ci/backup_questionnaire_state.yaml
+```
