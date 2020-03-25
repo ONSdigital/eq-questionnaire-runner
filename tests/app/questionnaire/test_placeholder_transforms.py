@@ -69,7 +69,8 @@ class TestPlaceholderParser(unittest.TestCase):
             welsh_transforms.format_possessive("Alice Aardvark’s") == "Alice Aardvark’s"
         )
 
-    def test_calculate_difference(self):
+    @staticmethod
+    def test_calculate_difference():
         assert (
             PlaceholderTransforms.calculate_date_difference("2016-06-10", "2019-06-10")
             == "3 years"
