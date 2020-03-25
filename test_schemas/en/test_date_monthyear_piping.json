@@ -123,8 +123,9 @@
                                     {
                                         "id": "answerd2e614c3-61ec-4ef8-b926-96001c074d9b",
                                         "mandatory": false,
+                                        "max_length": 20,
                                         "type": "TextField",
-                                        "label": "another question",
+                                        "label": "What is your name?",
                                         "description": ""
                                     }
                                 ]
