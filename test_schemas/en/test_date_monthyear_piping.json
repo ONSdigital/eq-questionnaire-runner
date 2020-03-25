@@ -2,6 +2,7 @@
     "eq_id": "383415c4-d8b9-4f08-8c50-d3452c21dd01",
     "form_type": "383415c4-d8b9-4f08-8c50-d3452c21dd01",
     "mime_type": "application/json/ons/eq",
+    "language": "en",
     "schema_version": "0.0.1",
     "data_version": "0.0.3",
     "survey_id": "daterangepipingtest",
