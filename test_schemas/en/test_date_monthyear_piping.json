@@ -1,0 +1,198 @@
+{
+    "eq_id": "383415c4-d8b9-4f08-8c50-d3452c21dd01",
+    "form_type": "383415c4-d8b9-4f08-8c50-d3452c21dd01",
+    "mime_type": "application/json/ons/eq",
+    "schema_version": "0.0.1",
+    "data_version": "0.0.3",
+    "survey_id": "daterangepipingtest",
+    "title": "Date range piping test",
+    "hub": {
+        "enabled": false
+    },
+    "sections": [
+        {
+            "id": "sectionfa6dd93d-09e6-4b7d-8118-028404a2fa34",
+            "groups": [
+                {
+                    "id": "groupfa6dd93d-09e6-4b7d-8118-028404a2fa34",
+                    "title": "",
+                    "blocks": [
+                        {
+                            "type": "Introduction",
+                            "id": "introduction-block",
+                            "primary_content": [
+                                {
+                                    "id": "primary",
+                                    "title": {
+                                        "text": "You are completing this for {trad_as} ({ru_name})",
+                                        "placeholders": [
+                                            {
+                                                "placeholder": "trad_as",
+                                                "value": {
+                                                    "source": "metadata",
+                                                    "identifier": "trad_as"
+                                                }
+                                            },
+                                            {
+                                                "placeholder": "ru_name",
+                                                "value": {
+                                                    "source": "metadata",
+                                                    "identifier": "ru_name"
+                                                }
+                                            }
+                                        ]
+                                    },
+                                    "contents": [
+                                        {
+                                            "description": "<li>Data should relate to all sites in England, Scotland, Wales and Northern Ireland unless otherwise stated. </li><li>You can provide info estimates if actual figures aren&#x2019;t available.</li><li>We will treat your data securely and confidentially.</li>"
+                                        }
+                                    ]
+                                }
+                            ],
+                            "preview_content": {
+                                "id": "preview",
+                                "title": "Information you need",
+                                "contents": [
+                                    {
+                                        "description": "You can select the dates of the period you are reporting for, if the given dates are not appropriate."
+                                    }
+                                ],
+                                "questions": []
+                            },
+                            "secondary_content": [
+                                {
+                                    "id": "secondary-content",
+                                    "contents": [
+                                        {
+                                            "title": "How we use your data",
+                                            "list": [
+                                                "You cannot appeal your selection. Your business was selected to give us a comprehensive view of the UK economy.",
+                                                "The information you provide contributes to Gross Domestic Product (GDP)."
+                                            ]
+                                        }
+                                    ]
+                                }
+                            ]
+                        },
+                        {
+                            "id": "block020b3469-d81e-4c43-a41f-654b7370ef4f",
+                            "type": "Question",
+                            "question": {
+                                "id": "question020b3469-d81e-4c43-a41f-654b7370ef4f",
+                                "title": "Date to pipe",
+                                "type": "General",
+                                "answers": [
+                                    {
+                                        "id": "answer3b98a5f9-8919-4b35-854f-655c835dfdc4",
+                                        "mandatory": false,
+                                        "type": "MonthYearDate",
+                                        "label": "Enter date",
+                                        "description": ""
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "id": "blockfb5a7269-9281-4898-8136-28f9703f0c95",
+                            "type": "Question",
+                            "question": {
+                                "id": "questionfb5a7269-9281-4898-8136-28f9703f0c95",
+                                "title": {
+                                    "text": "Piped date is {answer3b98a5f9_8919_4b35_854f_655c835dfdc4}",
+                                    "placeholders": [
+                                        {
+                                            "placeholder": "answer3b98a5f9_8919_4b35_854f_655c835dfdc4",
+                                            "transforms": [
+                                                {
+                                                    "transform": "format_date",
+                                                    "arguments": {
+                                                        "date_to_format": {
+                                                            "source": "answers",
+                                                            "identifier": "answer3b98a5f9-8919-4b35-854f-655c835dfdc4"
+                                                        },
+                                                        "date_format": "MMMM yyyy"
+                                                    }
+                                                }
+                                            ]
+                                        }
+                                    ]
+                                },
+                                "type": "General",
+                                "answers": [
+                                    {
+                                        "id": "answerd2e614c3-61ec-4ef8-b926-96001c074d9b",
+                                        "mandatory": false,
+                                        "type": "TextField",
+                                        "label": "another question",
+                                        "description": ""
+                                    }
+                                ]
+                            }
+                        }
+                    ]
+                },
+                {
+                    "id": "confirmation-group",
+                    "title": "confirmation",
+                    "blocks": [
+                        {
+                            "type": "Confirmation",
+                            "id": "confirmation",
+                            "content": {
+                                "title": "Submission",
+                                "contents": [
+                                    {
+                                        "title": "You are now ready to submit this survey",
+                                        "list": [
+                                            "You will not be able to access or change your answers on submitting the questionnaire",
+                                            "If you wish to review your answers please select the relevant completed sections"
+                                        ]
+                                    }
+                                ]
+                            }
+                        }
+                    ]
+                }
+            ]
+        }
+    ],
+    "theme": "default",
+    "legal_basis": "Notice is given under section 1 of the Statistics of Trade Act 1947.",
+    "navigation": {
+        "visible": false
+    },
+    "metadata": [
+        {
+            "name": "user_id",
+            "type": "string"
+        },
+        {
+            "name": "period_id",
+            "type": "string"
+        },
+        {
+            "name": "ru_name",
+            "type": "string"
+        },
+        {
+            "name": "trad_as",
+            "type": "string"
+        },
+        {
+            "name": "ref_p_start_date",
+            "type": "date"
+        },
+        {
+            "name": "ref_p_end_date",
+            "type": "date"
+        },
+        {
+            "name": "employment_date",
+            "type": "date"
+        }
+    ],
+    "view_submitted_response": {
+        "enabled": true,
+        "duration": 900
+    }
+}
