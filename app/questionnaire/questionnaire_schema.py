@@ -27,6 +27,9 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
     def is_hub_enabled(self):
         return self.json.get("hub", {}).get("enabled")
 
+    def is_view_submitted_response_enabled(self):
+        return self.json.get("view_submitted_response", {}).get("enabled", False)
+
     def get_section_ids_required_for_hub(self):
         return self.json.get("hub", {}).get("required_completed_sections", [])
 
@@ -81,6 +84,9 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
 
     def get_show_on_hub_for_section(self, section_id):
         return self._sections_by_id.get(section_id).get("show_on_hub", True)
+
+    def get_summary_for_section(self, section_id: str):
+        return self._sections_by_id.get(section_id).get("summary")
 
     def get_repeating_list_for_section(self, section_id):
         return self._sections_by_id.get(section_id).get("repeat", {}).get("for_list")
@@ -198,14 +204,13 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
         return self._questions_by_id.get(question_id)
 
     @staticmethod
-    def get_visible_list_blocks_for_section(section):
-        list_collector_blocks = []
-        for group in section["groups"]:
-            for block in group["blocks"]:
-                shown = block.get("show_on_section_summary", True)
-                if block["type"] == "ListCollector" and shown:
-                    list_collector_blocks.append(block)
-        return list_collector_blocks
+    def get_list_collectors_for_list(section, for_list):
+        return [
+            block
+            for group in section["groups"]
+            for block in group["blocks"]
+            if block["type"] == "ListCollector" and block["for_list"] == for_list
+        ]
 
     @classmethod
     def get_answer_ids_for_question(cls, question):

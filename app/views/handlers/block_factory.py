@@ -4,7 +4,6 @@ from app.views.handlers.calculated_summary import CalculatedSummary
 from app.views.handlers.content import Content
 from app.views.handlers.list_add_question import ListAddQuestion
 from app.views.handlers.list_collector import ListCollector
-from app.views.handlers.list_collector_summary import ListCollectorSummary
 from app.views.handlers.list_edit_question import ListEditQuestion
 from app.views.handlers.list_remove_question import ListRemoveQuestion
 from app.views.handlers.primary_person_list_collector import PrimaryPersonListCollector
@@ -30,7 +29,6 @@ BLOCK_MAPPINGS = {
     "Confirmation": Content,
     "Summary": Summary,
     "SectionSummary": SectionSummary,
-    "ListCollectorSummary": ListCollectorSummary,
     "CalculatedSummary": CalculatedSummary,
 }
 
