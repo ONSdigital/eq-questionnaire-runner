@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2020-03-02 10:15+0000\n"
+"POT-Creation-Date: 2020-03-16 14:48+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -222,8 +222,8 @@ msgstr ""
 msgid "You must complete all sections in order to submit this survey"
 msgstr ""
 
-#: app/views/contexts/hub_context.py:23 templates/confirmation.html:12
-#: templates/interstitial.html:5
+#: app/views/contexts/hub_context.py:23 templates/interstitial.html:5
+#: templates/sectionsummary.html:11
 msgid "Continue"
 msgstr ""
 
@@ -263,19 +263,19 @@ msgstr ""
 msgid "Start {section_name} section"
 msgstr ""
 
-#: app/views/contexts/list_collector_context.py:16
+#: app/views/contexts/list_context.py:88
 msgid " (You)"
 msgstr ""
 
-#: templates/confirmation.html:6 templates/confirmation.html:37
+#: templates/confirmation.html:6 templates/confirmation.html:27
 msgid "Submit answers"
 msgstr ""
 
-#: templates/confirmation.html:22
+#: templates/confirmation.html:12
 msgid "Yes, I confirm these are correct"
 msgstr ""
 
-#: templates/confirmation.html:42
+#: templates/confirmation.html:32
 msgid "Submitting"
 msgstr ""
 
@@ -325,6 +325,10 @@ msgid_plural "These <strong>must be corrected</strong> to continue"
 msgstr[0] ""
 msgstr[1] ""
 
+#: templates/sectionsummary.html:25
+msgid "Check your answers before continuing to the next section"
+msgstr ""
+
 #: templates/signed-out.html:3
 msgid "Signed out"
 msgstr ""
@@ -350,14 +354,10 @@ msgid "Check your answers before submitting"
 msgstr ""
 
 #: templates/summary.html:26
-msgid "Check your answers before continuing to the next section"
-msgstr ""
-
-#: templates/summary.html:35
 msgid "Please review your answers and confirm these are correct"
 msgstr ""
 
-#: templates/summary.html:45
+#: templates/summary.html:36
 msgid ""
 "You will have the opportunity to view and print a copy of your answers "
 "after submitting this survey"
@@ -675,12 +675,12 @@ msgid "Hide"
 msgstr ""
 
 #: templates/partials/introduction/preview.html:48
-#: templates/partials/summary/collapsible-summary.html:46
+#: templates/partials/summary/collapsible-summary.html:54
 msgid "Show all"
 msgstr ""
 
 #: templates/partials/introduction/preview.html:49
-#: templates/partials/summary/collapsible-summary.html:47
+#: templates/partials/summary/collapsible-summary.html:55
 msgid "Hide all"
 msgstr ""
 
@@ -688,19 +688,19 @@ msgstr ""
 msgid "Start survey"
 msgstr ""
 
-#: templates/partials/summary/collapsible-summary.html:29
-#: templates/partials/summary/summary.html:12
+#: templates/partials/summary/collapsible-summary.html:33
+#: templates/partials/summary/summary.html:16
 msgid "No answer provided"
 msgstr ""
 
-#: templates/partials/summary/collapsible-summary.html:29
+#: templates/partials/summary/collapsible-summary.html:34
 #: templates/partials/summary/list-summary.html:13
-#: templates/partials/summary/summary.html:12
+#: templates/partials/summary/summary.html:17
 msgid "Change"
 msgstr ""
 
-#: templates/partials/summary/collapsible-summary.html:29
-#: templates/partials/summary/summary.html:12
+#: templates/partials/summary/collapsible-summary.html:35
+#: templates/partials/summary/summary.html:18
 msgid "Change your answer for:"
 msgstr ""
 

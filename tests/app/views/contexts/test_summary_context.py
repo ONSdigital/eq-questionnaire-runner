@@ -9,10 +9,7 @@ from app.questionnaire.location import Location
 from app.questionnaire.questionnaire_schema import DEFAULT_LANGUAGE_CODE
 from app.utilities.schema import load_schema_from_name
 from app.views.contexts.calculated_summary_context import CalculatedSummaryContext
-from app.views.contexts.list_collector_summary_context import (
-    ListCollectorSummaryContext,
-)
-from app.views.contexts.summary_context import SummaryContext
+from app.views.contexts import QuestionnaireSummaryContext, SectionSummaryContext
 from tests.app.app_context_test_case import AppContextTestCase
 
 
@@ -49,7 +46,7 @@ class TestStandardSummaryContext(AppContextTestCase):
             )
 
     def check_summary_rendering_context(self, summary_rendering_context):
-        for group in summary_rendering_context:
+        for group in summary_rendering_context["summary"]["groups"]:
             self.assertTrue("id" in group)
             self.assertTrue("blocks" in group)
             for block in group["blocks"]:
@@ -81,7 +78,7 @@ class TestSummaryContext(TestStandardSummaryContext):
         )
 
     def test_build_summary_rendering_context(self):
-        summary_context = SummaryContext(
+        questionnaire_summary_context = QuestionnaireSummaryContext(
             self.language,
             self.schema,
             self.answer_store,
@@ -89,7 +86,8 @@ class TestSummaryContext(TestStandardSummaryContext):
             self.list_store,
             self.metadata,
         )
-        summary_groups = summary_context.build_all_groups()
+
+        summary_groups = questionnaire_summary_context()
         self.check_summary_rendering_context(summary_groups)
 
 
@@ -103,7 +101,7 @@ class TestSectionSummaryContext(TestStandardSummaryContext):
         self.block_type = "SectionSummary"
 
     def test_build_summary_rendering_context(self):
-        summary_context = SummaryContext(
+        section_summary_context = SectionSummaryContext(
             self.language,
             self.schema,
             self.answer_store,
@@ -112,7 +110,7 @@ class TestSectionSummaryContext(TestStandardSummaryContext):
             self.metadata,
         )
 
-        single_section_context = summary_context.build_groups_for_location(
+        single_section_context = section_summary_context(
             Location(section_id="property-details-section")
         )
 
@@ -123,7 +121,7 @@ class TestSectionSummaryContext(TestStandardSummaryContext):
             section_id="property-details-section", block_id="property-details-summary"
         )
 
-        summary_context = SummaryContext(
+        summary_context = SectionSummaryContext(
             self.language,
             self.schema,
             self.answer_store,
@@ -131,10 +129,10 @@ class TestSectionSummaryContext(TestStandardSummaryContext):
             self.list_store,
             self.metadata,
         )
-        context = summary_context.section_summary(current_location)
+        context = summary_context(current_location)
 
         self.check_context(context)
-        self.check_summary_rendering_context(context["summary"]["groups"])
+        self.check_summary_rendering_context(context)
         self.assertEqual(len(context["summary"]), 5)
         self.assertTrue("title" in context["summary"])
 
@@ -183,7 +181,7 @@ class TestCalculatedSummaryContext(TestStandardSummaryContext):
         )
 
         self.check_context(context)
-        self.check_summary_rendering_context(context["summary"]["groups"])
+        self.check_summary_rendering_context(context)
         self.assertEqual(len(context["summary"]), 6)
         context_summary = context["summary"]
         self.assertTrue("title" in context_summary)
@@ -226,7 +224,7 @@ class TestCalculatedSummaryContext(TestStandardSummaryContext):
         )
 
         self.check_context(context)
-        self.check_summary_rendering_context(context["summary"]["groups"])
+        self.check_summary_rendering_context(context)
         self.assertEqual(len(context["summary"]), 6)
         context_summary = context["summary"]
         self.assertTrue("title" in context_summary)
@@ -265,7 +263,7 @@ class TestCalculatedSummaryContext(TestStandardSummaryContext):
         )
 
         self.check_context(context)
-        self.check_summary_rendering_context(context["summary"]["groups"])
+        self.check_summary_rendering_context(context)
         self.assertEqual(len(context["summary"]), 6)
         context_summary = context["summary"]
         self.assertTrue("title" in context_summary)
@@ -302,7 +300,7 @@ class TestCalculatedSummaryContext(TestStandardSummaryContext):
         )
 
         self.check_context(context)
-        self.check_summary_rendering_context(context["summary"]["groups"])
+        self.check_summary_rendering_context(context)
         self.assertEqual(len(context["summary"]), 6)
         context_summary = context["summary"]
         self.assertTrue("title" in context_summary)
@@ -340,7 +338,7 @@ class TestCalculatedSummaryContext(TestStandardSummaryContext):
         )
 
         self.check_context(context)
-        self.check_summary_rendering_context(context["summary"]["groups"])
+        self.check_summary_rendering_context(context)
         self.assertEqual(len(context["summary"]), 6)
         context_summary = context["summary"]
         self.assertTrue("title" in context_summary)
@@ -366,7 +364,7 @@ def test_context_for_section_list_summary(people_answer_store):
         block_id="people-list-section-summary", section_id="section"
     )
 
-    list_collector_summary_context = ListCollectorSummaryContext(
+    summary_context = SectionSummaryContext(
         language=DEFAULT_LANGUAGE_CODE,
         schema=schema,
         answer_store=people_answer_store,
@@ -379,52 +377,62 @@ def test_context_for_section_list_summary(people_answer_store):
         progress_store=ProgressStore(),
         metadata={"display_address": "70 Abingdon Road, Goathill"},
     )
-    context = list_collector_summary_context.get_list_summaries(current_location)
+    context = summary_context(current_location)
 
-    expected = [
-        {
-            "add_link": "/questionnaire/people/add-person/?return_to=people-list-section-summary",
-            "add_link_text": "Add someone to this household",
-            "empty_list_text": "There are no householders",
-            "list": {
-                "list_items": [
-                    {
-                        "edit_link": "/questionnaire/people/PlwgoG/edit-person/?return_to=people-list-section-summary",
-                        "item_title": "Toni Morrison",
-                        "primary_person": False,
-                        "remove_link": "/questionnaire/people/PlwgoG/remove-person/?return_to=people-list-section-summary",
+    expected = {
+        "summary": {
+            "answers_are_editable": True,
+            "collapsible": False,
+            "custom_summary": [
+                {
+                    "add_link": "/questionnaire/people/add-person/?return_to=people-list-section-summary",
+                    "add_link_text": "Add someone to this household",
+                    "empty_list_text": "There are no householders",
+                    "list": {
+                        "editable": True,
+                        "list_items": [
+                            {
+                                "edit_link": "/questionnaire/people/PlwgoG/edit-person/?return_to=people-list-section-summary",
+                                "item_title": "Toni Morrison",
+                                "primary_person": False,
+                                "remove_link": "/questionnaire/people/PlwgoG/remove-person/?return_to=people-list-section-summary",
+                            },
+                            {
+                                "edit_link": "/questionnaire/people/UHPLbX/edit-person/?return_to=people-list-section-summary",
+                                "item_title": "Barry Pheloung",
+                                "primary_person": False,
+                                "remove_link": "/questionnaire/people/UHPLbX/remove-person/?return_to=people-list-section-summary",
+                            },
+                        ],
                     },
-                    {
-                        "edit_link": "/questionnaire/people/UHPLbX/edit-person/?return_to=people-list-section-summary",
-                        "item_title": "Barry Pheloung",
-                        "primary_person": False,
-                        "remove_link": "/questionnaire/people/UHPLbX/remove-person/?return_to=people-list-section-summary",
+                    "title": "Household members staying overnight on 13 October 2019 at 70 Abingdon Road, Goathill",
+                    "list_name": "people",
+                    "type": "List",
+                },
+                {
+                    "add_link": "/questionnaire/visitors/add-visitor/?return_to=people-list-section-summary",
+                    "add_link_text": "Add another visitor to this household",
+                    "empty_list_text": "There are no visitors",
+                    "list": {
+                        "list_items": [
+                            {
+                                "edit_link": "/questionnaire/visitors/gTrlio/edit-visitor-person/?return_to=people-list-section-summary",
+                                "item_title": "",
+                                "primary_person": False,
+                                "remove_link": "/questionnaire/visitors/gTrlio/remove-visitor/?return_to=people-list-section-summary",
+                            }
+                        ],
+                        "editable": True,
                     },
-                ],
-                "editable": True,
-            },
-            "title": "Household members staying overnight on 13 October 2019 at 70 Abingdon Road, Goathill",
-            "list_name": "people",
-        },
-        {
-            "add_link": "/questionnaire/visitors/add-visitor/?return_to=people-list-section-summary",
-            "add_link_text": "Add another visitor to this household",
-            "empty_list_text": "There are no visitors",
-            "list": {
-                "list_items": [
-                    {
-                        "edit_link": "/questionnaire/visitors/gTrlio/edit-visitor-person/?return_to=people-list-section-summary",
-                        "item_title": "",
-                        "primary_person": False,
-                        "remove_link": "/questionnaire/visitors/gTrlio/remove-visitor/?return_to=people-list-section-summary",
-                    }
-                ],
-                "editable": True,
-            },
-            "title": "Visitors staying overnight on 13 October 2019 at 70 Abingdon Road, Goathill",
-            "list_name": "visitors",
-        },
-    ]
+                    "list_name": "visitors",
+                    "title": "Visitors staying overnight on 13 October 2019 at 70 Abingdon Road, Goathill",
+                    "type": "List",
+                },
+            ],
+            "summary_type": "SectionSummary",
+            "title": "List Collector Summary",
+        }
+    }
 
     assert context == expected
 
@@ -434,7 +442,7 @@ def test_context_for_driving_question_summary_empty_list():
     schema = load_schema_from_name("test_list_collector_driving_question")
     current_location = Location(block_id="summary", section_id="section")
 
-    list_collector_summary_context = ListCollectorSummaryContext(
+    summary_context = SectionSummaryContext(
         DEFAULT_LANGUAGE_CODE,
         schema,
         AnswerStore([{"answer_id": "anyone-usually-live-at-answer", "value": "No"}]),
@@ -443,17 +451,26 @@ def test_context_for_driving_question_summary_empty_list():
         {},
     )
 
-    context = list_collector_summary_context.get_list_summaries(current_location)
-
-    expected = [
-        {
-            "add_link": "/questionnaire/anyone-usually-live-at/",
-            "add_link_text": "Add someone to this household",
-            "empty_list_text": "There are no householders",
-            "title": "Household members",
-            "list_name": "people",
+    context = summary_context(current_location)
+    expected = {
+        "summary": {
+            "answers_are_editable": True,
+            "collapsible": False,
+            "custom_summary": [
+                {
+                    "add_link": "/questionnaire/anyone-usually-live-at/?return_to=summary",
+                    "add_link_text": "Add someone to this household",
+                    "empty_list_text": "There are no householders",
+                    "list": {"editable": True, "list_items": []},
+                    "title": "Household members",
+                    "list_name": "people",
+                    "type": "List",
+                }
+            ],
+            "summary_type": "SectionSummary",
+            "title": "List Collector Driving Question Summary",
         }
-    ]
+    }
 
     assert context == expected
 
@@ -463,7 +480,7 @@ def test_context_for_driving_question_summary():
     schema = load_schema_from_name("test_list_collector_driving_question")
     current_location = Location(block_id="summary", section_id="section")
 
-    list_collector_summary_context = ListCollectorSummaryContext(
+    summary_context = SectionSummaryContext(
         DEFAULT_LANGUAGE_CODE,
         schema,
         AnswerStore(
@@ -482,28 +499,37 @@ def test_context_for_driving_question_summary():
         {},
     )
 
-    context = list_collector_summary_context.get_list_summaries(current_location)
+    context = summary_context(current_location)
 
-    expected = [
-        {
-            "add_link": "/questionnaire/people/add-person/?return_to=summary",
-            "add_link_text": "Add someone to this household",
-            "empty_list_text": "There are no householders",
-            "list": {
-                "list_items": [
-                    {
-                        "edit_link": "/questionnaire/people/PlwgoG/edit-person/?return_to=summary",
-                        "item_title": "Toni Morrison",
-                        "primary_person": False,
-                        "remove_link": "/questionnaire/people/PlwgoG/remove-person/?return_to=summary",
-                    }
-                ],
-                "editable": True,
-            },
-            "title": "Household members",
-            "list_name": "people",
+    expected = {
+        "summary": {
+            "answers_are_editable": True,
+            "collapsible": False,
+            "custom_summary": [
+                {
+                    "add_link": "/questionnaire/people/add-person/?return_to=summary",
+                    "add_link_text": "Add someone to this household",
+                    "empty_list_text": "There are no householders",
+                    "list": {
+                        "list_items": [
+                            {
+                                "edit_link": "/questionnaire/people/PlwgoG/edit-person/?return_to=summary",
+                                "item_title": "Toni Morrison",
+                                "primary_person": False,
+                                "remove_link": "/questionnaire/people/PlwgoG/remove-person/?return_to=summary",
+                            }
+                        ],
+                        "editable": True,
+                    },
+                    "title": "Household members",
+                    "list_name": "people",
+                    "type": "List",
+                }
+            ],
+            "summary_type": "SectionSummary",
+            "title": "List Collector Driving Question Summary",
         }
-    ]
+    }
 
     assert context == expected
 
@@ -518,7 +544,7 @@ def test_titles_for_repeating_section_summary(people_answer_store):
         list_item_id="PlwgoG",
     )
 
-    summary_context = SummaryContext(
+    section_summary_context = SectionSummaryContext(
         DEFAULT_LANGUAGE_CODE,
         schema,
         people_answer_store,
@@ -532,7 +558,7 @@ def test_titles_for_repeating_section_summary(people_answer_store):
         {},
     )
 
-    context = summary_context.section_summary(current_location)
+    context = section_summary_context(current_location)
 
     assert context["summary"]["title"] == "Toni Morrison"
 
@@ -543,5 +569,5 @@ def test_titles_for_repeating_section_summary(people_answer_store):
         list_item_id="UHPLbX",
     )
 
-    context = summary_context.section_summary(new_location)
+    context = section_summary_context(new_location)
     assert context["summary"]["title"] == "Barry Pheloung"

@@ -25,6 +25,17 @@
         {
             "id": "section",
             "title": "Who Lives Here",
+            "summary": {
+                "items": [
+                    {
+                        "type": "List",
+                        "for_list": "people",
+                        "title": "Household members",
+                        "add_link_text": "Add someone to this household",
+                        "empty_list_text": "There are no householders"
+                    }
+                ]
+            },
             "groups": [
                 {
                     "id": "group",
@@ -140,8 +151,6 @@
                                 }
                             },
                             "summary": {
-                                "add_link_text": "Add someone to this household",
-                                "empty_list_text": "There are no householders",
                                 "title": "Household members",
                                 "item_title": {
                                     "text": "{person_name}",
@@ -290,8 +299,6 @@
                                 }
                             },
                             "summary": {
-                                "add_link_text": "Add someone to this household",
-                                "empty_list_text": "There are no householders",
                                 "title": "Household members",
                                 "item_title": {
                                     "text": "{person_name}",
@@ -318,7 +325,7 @@
                         {
                             "id": "group-summary",
                             "title": "List Collector Summary",
-                            "type": "ListCollectorSummary"
+                            "type": "SectionSummary"
                         }
                     ]
                 }

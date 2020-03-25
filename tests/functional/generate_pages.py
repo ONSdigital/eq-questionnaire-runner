@@ -392,12 +392,14 @@ def process_calculated_summary(answers, page_spec):
         page_spec.write(CALCULATED_SUMMARY_LABEL_GETTER.substitute(answer_context))
 
 
-def process_list_collector_summary(schema_data, page_spec):
+def process_summary(schema_data, page_spec, collapsible):
     for section in schema_data["sections"]:
-        list_collector_blocks = QuestionnaireSchema.get_visible_list_blocks_for_section(
-            section
-        )
-        for list_block in list_collector_blocks:
+        list_summaries = [
+            summary_element
+            for summary_element in section.get("summary", {}).get("items", [])
+            if summary_element["type"] == "List"
+        ]
+        for list_block in list_summaries:
             list_context = {"list_name": list_block["for_list"]}
             page_spec.write(
                 LIST_SECTION_SUMMARY_ADD_LINK_GETTER.substitute(list_context)
@@ -410,8 +412,6 @@ def process_list_collector_summary(schema_data, page_spec):
             )
             page_spec.write(LIST_SECTION_SUMMARY_LABEL_GETTER.substitute(list_context))
 
-
-def process_summary(schema_data, page_spec, collapsible):
     for section in schema_data["sections"]:
         for group in section["groups"]:
             for block in group["blocks"]:
@@ -606,8 +606,6 @@ def process_block(
         if block["type"] in ("Summary", "SectionSummary"):
             collapsible = block.get("collapsible", False)
             process_summary(schema_data, page_spec, collapsible)
-        elif block["type"] == "ListCollectorSummary":
-            process_list_collector_summary(schema_data, page_spec)
         elif block["type"] == "CalculatedSummary":
             process_calculated_summary(
                 block["calculation"]["answers_to_calculate"], page_spec
@@ -680,7 +678,7 @@ if __name__ == "__main__":
                 for file in [os.path.join(root, file) for file in files]:
                     filename = os.path.basename(file)
                     logger.info("File %s", filename)
-                    if filename[0] is ".":
+                    if filename[0] == ".":
                         continue
                     output_dir = os.path.join(
                         args.OUT_DIRECTORY, filename.split(".")[0].replace("test_", "")
