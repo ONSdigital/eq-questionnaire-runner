@@ -86,8 +86,8 @@
                                     {
                                         "id": "answer3b98a5f9-8919-4b35-854f-655c835dfdc4",
                                         "mandatory": false,
-                                        "type": "MonthYearDate",
-                                        "label": "Enter date",
+                                        "type": "YearDate",
+                                        "label": "Enter year",
                                         "description": ""
                                     }
                                 ]
@@ -111,7 +111,7 @@
                                                             "source": "answers",
                                                             "identifier": "answer3b98a5f9-8919-4b35-854f-655c835dfdc4"
                                                         },
-                                                        "date_format": "MMMM yyyy"
+                                                        "date_format": "yyyy"
                                                     }
                                                 }
                                             ]

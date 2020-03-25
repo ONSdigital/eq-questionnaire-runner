@@ -19,6 +19,7 @@ class PlaceholderTransforms:
 
     input_date_format = "%Y-%m-%d"
     input_date_format_month_year_only = "%Y-%m"
+    input_date_format_year_only = "%Y"
 
     def format_currency(self, number=None, currency="GBP"):
         return format_currency(number, currency, locale=self.locale)
@@ -116,14 +117,19 @@ class PlaceholderTransforms:
         if date == "now":
             return datetime.now(tz=tzutc())
 
-        try:
+        if len(date) > 7:
             return datetime.strptime(
                 date, PlaceholderTransforms.input_date_format
             ).replace(tzinfo=tzutc())
-        except ValueError:
+
+        if len(date) > 4:
             return datetime.strptime(
                 date, PlaceholderTransforms.input_date_format_month_year_only
             ).replace(tzinfo=tzutc())
+
+        return datetime.strptime(
+            date, PlaceholderTransforms.input_date_format_year_only
+        ).replace(tzinfo=tzutc())
 
     @staticmethod
     def add(lhs, rhs):
