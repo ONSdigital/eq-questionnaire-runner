@@ -105,7 +105,6 @@ class TestPlaceholderParser(unittest.TestCase):
         )
         assert PlaceholderTransforms.calculate_date_difference("now", "now") == "0 days"
 
-
     def test_concatenate_list(self):
         list_to_concatenate = ["Milk", "Eggs", "Flour", "Water"]
 
