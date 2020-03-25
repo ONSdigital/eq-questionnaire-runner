@@ -87,6 +87,10 @@ class TestPlaceholderParser(unittest.TestCase):
             == "4 years"
         )
         assert (
+            PlaceholderTransforms.calculate_date_difference("2011", "2015")
+            == "4 years"
+        )
+        assert (
             PlaceholderTransforms.calculate_date_difference("2019-06-10", "2019-08-11")
             == "2 months"
         )
@@ -99,8 +103,7 @@ class TestPlaceholderParser(unittest.TestCase):
             == "1 day"
         )
         assert PlaceholderTransforms.calculate_date_difference("now", "now") == "0 days"
-        with self.assertRaises(ValueError):
-            PlaceholderTransforms.calculate_date_difference("2018", "now")
+
 
     def test_concatenate_list(self):
         list_to_concatenate = ["Milk", "Eggs", "Flour", "Water"]
