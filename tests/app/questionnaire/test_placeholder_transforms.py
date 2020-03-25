@@ -88,8 +88,7 @@ class TestPlaceholderParser(unittest.TestCase):
             == "4 years"
         )
         assert (
-            PlaceholderTransforms.calculate_date_difference("2011", "2015")
-            == "4 years"
+            PlaceholderTransforms.calculate_date_difference("2011", "2015") == "4 years"
         )
         assert (
             PlaceholderTransforms.calculate_date_difference("2019-06-10", "2019-08-11")
