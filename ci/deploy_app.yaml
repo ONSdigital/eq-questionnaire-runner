@@ -3,7 +3,7 @@ image_resource:
   type: docker-image
   source:
     repository: ((image_registry))/eq-app-deploy-image
-    tag: ((build_image_version))
+    tag: ((deploy_image_version))
 inputs:
   - name: eq-questionnaire-runner
 params:
