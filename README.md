@@ -223,7 +223,7 @@ gcloud container clusters get-credentials survey-runner --region <region> --proj
 
 You need to have Helm installed locally
 
-1. Install Helm: https://helm.sh/docs/intro/install/. For Homebrew (macOS), install using: `brew install helm`
+1. Install Helm: <https://helm.sh/docs/intro/install/>. For Homebrew (macOS), install using: `brew install helm`
 
 
 ### Deploying credentials
