@@ -6,9 +6,8 @@ if [[ -z "$SUBMISSION_BUCKET_NAME" ]]; then
   exit 1
 fi
 
-helm tiller run \
-    helm upgrade --install \
-    survey-runner \
+helm upgrade --install \
+    questionnaire-runner \
     k8s/helm \
     --set-string submissionBucket="${SUBMISSION_BUCKET_NAME}" \
     --set-string googleTagManagerId="${GOOGLE_TAG_MANAGER_ID}" \
