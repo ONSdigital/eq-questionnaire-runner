@@ -29,7 +29,7 @@ We store a number of properties in the `session` cookie:
 
   | Property | Description |
   |----------|-------------|
-  | eq-session-id | The session identifier |
+  | eq_session_id | The session identifier |
   | user_ik  | The user half of the encryption key |
   | csrf_token | The CSRF token (generated for each request) |
   | account_service_url | The link back to the launch service |
@@ -45,4 +45,4 @@ We store a number of properties in the `session` cookie:
  
 ## Additional information
 
-- A `ons_cookie_policy` cookie is set in the front end and is used to enable/disable Google tracking.
+- An `ons_cookie_policy` cookie is set in the front end and is used to enable/disable Google tracking.
