@@ -42,6 +42,3 @@ run:
 
       cd eq-questionnaire-runner
       ./k8s/deploy_app.sh
-
-      kubectl rollout restart deployment.v1.apps/runner
-      kubectl rollout status deployment.v1.apps/runner
