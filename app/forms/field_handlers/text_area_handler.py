@@ -31,5 +31,6 @@ class TextAreaHandler(FieldHandler):
             label=self.label,
             description=self.guidance,
             validators=self.validators,
+            rows=self.answer_schema.get('rows', 8),
             maxlength=self.max_length,
         )
