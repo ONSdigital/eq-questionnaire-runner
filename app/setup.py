@@ -257,6 +257,8 @@ def setup_secure_headers(application):
         # browsersync is configured to bind on port 5075
         csp_policy["connect-src"] += ["ws://localhost:35729"]
 
+    application.config["SESSION_COOKIE_SAMESITE"] = "Strict"
+
     Talisman(
         application,
         content_security_policy=csp_policy,
