@@ -74,6 +74,7 @@ def test_get_length_validator_with_max_length_override():
 
     assert validator.max == 30
 
+
 def test_get_textarea_rows_with_default():
     answer = {
         "id": "answer",
