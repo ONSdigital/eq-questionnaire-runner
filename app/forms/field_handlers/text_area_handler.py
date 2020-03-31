@@ -7,6 +7,7 @@ from app.forms.field_handlers.field_handler import FieldHandler
 
 class TextAreaHandler(FieldHandler):
     MAX_LENGTH = 2000
+    DEFAULT_ROWS = 8
     MANDATORY_MESSAGE_KEY = "MANDATORY_TEXTAREA"
 
     @cached_property
@@ -31,6 +32,6 @@ class TextAreaHandler(FieldHandler):
             label=self.label,
             description=self.guidance,
             validators=self.validators,
-            rows=self.answer_schema.get('rows', 8),
+            rows=self.answer_schema.get("rows", self.DEFAULT_ROWS),
             maxlength=self.max_length,
         )
