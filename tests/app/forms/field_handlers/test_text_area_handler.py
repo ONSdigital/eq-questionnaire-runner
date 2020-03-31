@@ -74,19 +74,34 @@ def test_get_length_validator_with_max_length_override():
 
     assert validator.max == 30
 
-
-def test_get_textarea_row_length():
+def test_get_textarea_rows_with_default():
     answer = {
-        "guidance": "",
+        "id": "answer",
+        "label": "Enter your comments",
+        "mandatory": False,
+        "type": "TextArea",
+    }
+
+    text_area_handler = TextAreaHandler(answer)
+
+    class TestForm(Form):
+        test_field = text_area_handler.get_field()
+
+    form = TestForm()
+
+    assert form.test_field.rows == 8
+
+
+def test_get_textarea_rows():
+    answer = {
         "id": "answer",
         "rows": 3,
         "label": "Enter your comments",
         "mandatory": False,
-        "q_code": "0",
         "type": "TextArea",
     }
 
-    text_area_handler = TextAreaHandler(answer, {}, AnswerStore(), {})
+    text_area_handler = TextAreaHandler(answer)
 
     class TestForm(Form):
         test_field = text_area_handler.get_field()
