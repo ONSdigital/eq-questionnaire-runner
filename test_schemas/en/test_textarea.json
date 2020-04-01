@@ -40,6 +40,7 @@
                                     {
                                         "id": "answer",
                                         "label": "Enter your comments",
+                                        "rows": 3,
                                         "mandatory": false,
                                         "q_code": "0",
                                         "type": "TextArea",
