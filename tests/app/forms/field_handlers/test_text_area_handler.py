@@ -75,7 +75,7 @@ def test_get_length_validator_with_max_length_override():
     assert validator.max == 30
 
 
-def test_get_textarea_rows_with_default():
+def test_get_text_area_rows_with_default():
     answer = {
         "id": "answer",
         "label": "Enter your comments",
@@ -93,7 +93,7 @@ def test_get_textarea_rows_with_default():
     assert form.test_field.rows == 8
 
 
-def test_get_textarea_rows():
+def test_get_text_area_rows():
     answer = {
         "id": "answer",
         "rows": 3,
