@@ -252,4 +252,4 @@ class TestSessionStoreEncoding(AppContextTestCase):
         session_model = EQSession(
             session_id, user_id, jwe_token.serialize(compact=True)
         )
-        current_app.eq["storage"].put(session_model)
+        current_app.eq["ephemeral_storage"].put(session_model)

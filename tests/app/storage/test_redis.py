@@ -23,7 +23,7 @@ class TestDatastore(AppContextTestCase):
 
         jti = UsedJtiClaim(str(uuid.uuid4()), used_at, expires)
 
-        self.redis.put_jti(jti)
+        self.redis.put(jti)
 
         set_data = self.mock_client.get(jti.jti_claim)
 
@@ -35,7 +35,7 @@ class TestDatastore(AppContextTestCase):
 
         jti = UsedJtiClaim(str(uuid.uuid4()), used_at, expires)
 
-        self.redis.put_jti(jti)
+        self.redis.put(jti)
 
         with self.assertRaises(ItemAlreadyExistsError):
-            self.redis.put_jti(jti)
+            self.redis.put(jti)
