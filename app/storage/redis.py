@@ -39,9 +39,7 @@ class RedisStorage:
         item = schema.dump(model)
 
         record_created = self.redis.set(
-            name=model.eq_session_id,
-            value=json.dumps(item),
-            nx=False,
+            name=model.eq_session_id, value=json.dumps(item), nx=False
         )
 
         if not record_created:
