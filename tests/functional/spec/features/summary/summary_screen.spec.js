@@ -1,14 +1,18 @@
-const RadioPage = require('../../../generated_pages/summary/radio.page.js');
-const TestNumberPage = require('../../../generated_pages/summary/test-number-block.page.js');
+const AddressBlockPage = require('../../../generated_pages/summary/address.page.js');
 const DessertBlockPage = require('../../../generated_pages/summary/dessert-block.page.js');
+const NameBlockPage = require('../../../generated_pages/summary/name.page.js');
+const RadioPage = require('../../../generated_pages/summary/radio.page.js');
 const SummaryPage = require('../../../generated_pages/summary/summary.page.js');
+const TestNumberPage = require('../../../generated_pages/summary/test-number-block.page.js');
+
+const BaseSummaryPage = require('../../../base_pages/summary.page.js');
 
 describe('Summary Screen', function() {
   beforeEach('Load the survey', function () {
     browser.openQuestionnaire('test_summary.json');
   });
 
-  it('Given a survey has been completed when a summary page is displayed then it should contain all answers', function() {
+  it('Given a survey has been completed when a summary page is displayed then it should contain all answers, concatenated correctly if set', function() {
     completeAllQuestions();
 
     expect($(SummaryPage.radioAnswer()).getText()).to.contain('Bacon');
@@ -16,7 +20,8 @@ describe('Summary Screen', function() {
     expect($(SummaryPage.squareKilometres()).getText()).to.contain('123,456 km²');
     expect($(SummaryPage.testDecimal()).getText()).to.contain('123,456.78');
     expect($(SummaryPage.dessertGroupTitle()).getText()).to.contain('Dessert');
-
+    expect($(BaseSummaryPage.summaryRowState(1)).getText()).to.contain('John Smith');
+    expect($(BaseSummaryPage.summaryRowState(2)).getText()).to.contain('Cardiff Road\nNewport\nNP10 8XG');
     expect($$(SummaryPage.summaryGroupTitle())).to.be.empty;
   });
 
@@ -56,6 +61,8 @@ describe('Summary Screen', function() {
   });
 
   it('Given a number value of zero is entered when on the summary screen then formatted 0 should be displayed', function() {
+    $(NameBlockPage.submit()).click();
+    $(AddressBlockPage.submit()).click();
     $(RadioPage.submit()).click();
     $(TestNumberPage.testCurrency()).setValue('0');
     $(TestNumberPage.submit()).click();
@@ -65,6 +72,8 @@ describe('Summary Screen', function() {
   });
 
   it('Given no value is entered when on the summary screen then the correct response should be displayed', function() {
+    $(NameBlockPage.submit()).click();
+    $(AddressBlockPage.submit()).click();
     $(RadioPage.submit()).click();
     $(TestNumberPage.submit()).click();
     $(DessertBlockPage.submit()).click();
@@ -72,7 +81,25 @@ describe('Summary Screen', function() {
     expect($(SummaryPage.testCurrency()).getText()).to.contain('No answer provided');
   });
 
+  it('Given no values are entered in a question with multiple answers and concatenation set, when on the summary screen then the correct response should be displayed', function() {
+    $(NameBlockPage.submit()).click();
+    $(AddressBlockPage.submit()).click();
+    $(RadioPage.submit()).click();
+    $(TestNumberPage.submit()).click();
+    $(DessertBlockPage.submit()).click();
+    expect(browser.getUrl()).to.contain(SummaryPage.pageName);
+    expect($(BaseSummaryPage.summaryRowState(1)).getText()).to.contain('No answer provided');
+  });
+
+
   function completeAllQuestions() {
+    $(NameBlockPage.first()).setValue('John');
+    $(NameBlockPage.last()).setValue('Smith');
+    $(NameBlockPage.submit()).click();
+    $(AddressBlockPage.addressLine1()).setValue('Cardiff Road');
+    $(AddressBlockPage.townCity()).setValue('Newport');
+    $(AddressBlockPage.postcode()).setValue('NP10 8XG');
+    $(AddressBlockPage.submit()).click();
     $(RadioPage.bacon()).click();
     $(RadioPage.submit()).click();
     $(TestNumberPage.testCurrency()).setValue('1234');

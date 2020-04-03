@@ -70,6 +70,103 @@ class TestQuestion(AppContextTestCase):  # pylint: disable=too-many-public-metho
         self.assertEqual(question.title, "Age")
         self.assertEqual(len(question.answers), 1)
 
+    def test_concatenate_textfield_answers_space(self):
+
+        # Given
+        self.answer_store.add_or_update(Answer(answer_id="first-name", value="John"))
+        self.answer_store.add_or_update(Answer(answer_id="last-name", value="Smith"))
+
+        first_name_schema = {
+            "id": "first-name",
+            "label": "First name",
+            "mandatory": True,
+            "type": "TextField",
+        }
+        middle_name_schema = {
+            "id": "middle-name",
+            "label": "Middle name",
+            "mandatory": False,
+            "type": "TextField",
+        }
+        last_name_schema = {
+            "id": "last-name",
+            "label": "Last name",
+            "mandatory": True,
+            "type": "TextField",
+        }
+
+        question_schema = {
+            "id": "question_id",
+            "title": "question_title",
+            "type": "GENERAL",
+            "answers": [first_name_schema, middle_name_schema, last_name_schema],
+            "summary": {"concatenation_type": "Space"},
+        }
+
+        # When
+        question = Question(question_schema, self.answer_store, self.schema, None)
+
+        # Then
+        self.assertEqual(question.answers[0]["value"], "John Smith")
+        self.assertEqual(len(question.answers), 1)
+
+    def test_concatenate_textfield_answers_new_line(self):
+
+        # Given
+        self.answer_store.add_or_update(
+            Answer(answer_id="address-line-1", value="Cardiff Rd")
+        )
+        self.answer_store.add_or_update(Answer(answer_id="town-city", value="Newport"))
+        self.answer_store.add_or_update(Answer(answer_id="postcode", value="NP10 8XG"))
+
+        address_line_1 = {
+            "id": "address-line-1",
+            "label": "Address line 1",
+            "mandatory": False,
+            "type": "TextField",
+        }
+        address_line_2 = {
+            "id": "address-line-2",
+            "label": "Address line 2",
+            "mandatory": False,
+            "type": "TextField",
+        }
+        town_city = {
+            "id": "town-city",
+            "label": "Town or City",
+            "mandatory": False,
+            "type": "TextField",
+        }
+        county = {
+            "id": "county",
+            "label": "County",
+            "mandatory": False,
+            "type": "TextField",
+        }
+        postcode = {
+            "id": "postcode",
+            "label": "Postcode",
+            "mandatory": False,
+            "type": "TextField",
+        }
+
+        question_schema = {
+            "id": "question_id",
+            "title": "question_title",
+            "type": "GENERAL",
+            "answers": [address_line_1, address_line_2, town_city, county, postcode],
+            "summary": {"concatenation_type": "NewLine"},
+        }
+
+        # When
+        question = Question(question_schema, self.answer_store, self.schema, None)
+
+        # Then
+        self.assertEqual(
+            question.answers[0]["value"], "Cardiff Rd<br/>Newport<br/>NP10 8XG"
+        )
+        self.assertEqual(len(question.answers), 1)
+
     def test_create_question_with_multiple_answers(self):
         # Given
         self.answer_store.add_or_update(Answer(answer_id="answer_1", value="Han"))
