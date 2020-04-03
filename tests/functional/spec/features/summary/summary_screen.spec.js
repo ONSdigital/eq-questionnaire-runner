@@ -91,7 +91,6 @@ describe('Summary Screen', function() {
     expect($(BaseSummaryPage.summaryRowState(1)).getText()).to.contain('No answer provided');
   });
 
-
   function completeAllQuestions() {
     $(NameBlockPage.first()).setValue('John');
     $(NameBlockPage.last()).setValue('Smith');
@@ -114,4 +113,3 @@ describe('Summary Screen', function() {
     expect(expectedUrl).to.contain(SummaryPage.pageName);
   }
 });
-

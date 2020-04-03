@@ -10,7 +10,7 @@ class ThankYouPage extends QuestionPage {
     return '[data-qa="view-submission-text"]';
   }
 
-summaryRowState(number = 1) {
+  summaryRowState(number = 1) {
     return 'tbody:nth-child(' + number + ') tr td.summary__values';
   }
 }
