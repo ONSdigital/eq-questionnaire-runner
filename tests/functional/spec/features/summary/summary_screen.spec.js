@@ -96,7 +96,7 @@ describe('Summary Screen', function() {
     $(NameBlockPage.first()).setValue('John');
     $(NameBlockPage.last()).setValue('Smith');
     $(NameBlockPage.submit()).click();
-    $(AddressBlockPage.addressLine1()).setValue('Cardiff Road');
+    $(AddressBlockPage.line1()).setValue('Cardiff Road');
     $(AddressBlockPage.townCity()).setValue('Newport');
     $(AddressBlockPage.postcode()).setValue('NP10 8XG');
     $(AddressBlockPage.submit()).click();
