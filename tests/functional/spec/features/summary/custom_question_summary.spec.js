@@ -5,7 +5,7 @@ const SummaryPage = require('../../../generated_pages/custom_question_summary/su
 const BaseSummaryPage = require('../../../base_pages/summary.page.js');
 
 describe('Summary Screen', function() {
-  beforeEach('Load the survey', function () {
+  beforeEach('Load the survey', function() {
     browser.openQuestionnaire('test_custom_question_summary.json');
   });
 
@@ -30,9 +30,5 @@ describe('Summary Screen', function() {
     $(AddressBlockPage.townCity()).setValue('Newport');
     $(AddressBlockPage.postcode()).setValue('NP10 8XG');
     $(AddressBlockPage.submit()).click();
-
-    let expectedUrl = browser.getUrl();
-
-    expect(expectedUrl).to.contain(SummaryPage.pageName);
   }
 });
