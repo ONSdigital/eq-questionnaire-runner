@@ -28,12 +28,17 @@ class Question:
 
     def _build_answers(self, answer_store, question_schema):
 
-        summary_answers = []
         if self.summary:
-            return self._concatenate_textfield_answers(
-                answer_store, self.summary["concatenation_type"]
-            )
+            return [
+                {
+                    "id": f"{self.id}-concatenated-answer",
+                    "value": self._concatenate_textfield_answers(
+                        answer_store, self.summary["concatenation_type"]
+                    ),
+                }
+            ]
 
+        summary_answers = []
         for answer_schema in self.answer_schemas:
             answer_value = self._get_answer(answer_store, answer_schema["id"])
             answer = self._build_answer(
@@ -52,26 +57,16 @@ class Question:
 
     def _concatenate_textfield_answers(self, answer_store, concatenation_type):
 
-        concatenated_answer = ""
         answer_separators = {"NewLine": "<br/>", "Space": " "}
+        answer_separator = answer_separators.get(concatenation_type, " ")
 
-        answer_separator = answer_separators.get(concatenation_type)
-
-        for answer_schema in self.answer_schemas:
-            answer_value = self._get_answer(answer_store, answer_schema["id"])
-
-            if answer_value:
-                if answer_separator and concatenated_answer:
-                    answer_value = f"{answer_separator}{answer_value}"
-                concatenated_answer += str(answer_value)
-
-        return [
-            {
-                "id": f"{self.id}-concatenated-answer",
-                "value": concatenated_answer,
-                "type": "textfield",
-            }
+        answer_values = [
+            self._get_answer(answer_store, answer_schema["id"])
+            for answer_schema in self.answer_schemas
         ]
+        return answer_separator.join(
+            [answer_value for answer_value in answer_values if answer_value]
+        )
 
     def _build_answer(
         self, answer_store, question_schema, answer_schema, answer_value=None

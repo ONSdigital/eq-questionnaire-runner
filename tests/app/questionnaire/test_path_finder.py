@@ -154,14 +154,7 @@ class TestPathFinder(AppContextTestCase):
         schema = load_schema_from_name("test_summary")
         section_id = schema.get_section_id_for_block_id("dessert-block")
         expected_path = RoutingPath(
-            [
-                "name",
-                "address",
-                "radio",
-                "test-number-block",
-                "dessert-block",
-                "summary",
-            ],
+            ["radio", "test-number-block", "dessert-block", "summary"],
             section_id="default-section",
         )
 

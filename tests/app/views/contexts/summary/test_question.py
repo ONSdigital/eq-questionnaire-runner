@@ -98,7 +98,7 @@ class TestQuestion(AppContextTestCase):  # pylint: disable=too-many-public-metho
         question_schema = {
             "id": "question_id",
             "title": "question_title",
-            "type": "GENERAL",
+            "type": "General",
             "answers": [first_name_schema, middle_name_schema, last_name_schema],
             "summary": {"concatenation_type": "Space"},
         }
@@ -153,7 +153,7 @@ class TestQuestion(AppContextTestCase):  # pylint: disable=too-many-public-metho
         question_schema = {
             "id": "question_id",
             "title": "question_title",
-            "type": "GENERAL",
+            "type": "General",
             "answers": [address_line_1, address_line_2, town_city, county, postcode],
             "summary": {"concatenation_type": "NewLine"},
         }
