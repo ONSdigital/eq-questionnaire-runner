@@ -99,3 +99,23 @@ def test_repr():
     assert "primary_person=primaryperson" in repr(test_list)
     assert "items=['primaryperson']" in repr(test_list)
     assert "primaryperson" in repr(list_store)
+
+
+def test_get_first_item_from_list():
+    new_list = ListStore()
+    first_id = new_list.add_list_item("people")
+    second_id = new_list.add_list_item("people")
+
+    assert first_id == new_list.get_first_item_from_list("people")
+    assert second_id != new_list.get_first_item_from_list("people")
+
+
+def test_get_item_from_list_returns_none_if_empty():
+    new_list = ListStore()
+
+    person = new_list.add_list_item("people")
+    new_list.delete_list_item("people", person)
+
+    value = new_list.get_first_item_from_list("people")
+
+    assert value is None

@@ -174,3 +174,7 @@ class ListStore:
             return cls()
 
         return cls(existing_items=serialised)
+
+    def get_first_item_from_list(self, list_name):
+        if list_name in self._lists:
+            return self._lists[list_name].items[0]
