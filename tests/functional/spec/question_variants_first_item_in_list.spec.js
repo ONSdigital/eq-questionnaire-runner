@@ -4,7 +4,6 @@ const ListStatusQuestion = require('../generated_pages/variants_first_item_in_li
 
 const HubPage = require('../base_pages/hub.page.js');
 
-
 describe('Question Variants First Item in List', function() {
   it('Given I am the first person on the list, When the when rule is set, Then I should the correct question variant', function() {
     browser.openQuestionnaire('test_variants_first_item_in_list.json');
@@ -21,7 +20,7 @@ describe('Question Variants First Item in List', function() {
   });
 
   it('Given I am the second person on the list, When the when rule is set, Then I should the correct question variant', function() {
-    browser.openQuestionnaire('test_variants_first_item_in_list.json')
+    browser.openQuestionnaire('test_variants_first_item_in_list.json');
     $(HubPage.submit()).click();
     $(ListCollectorPage.yes()).click();
     $(ListCollectorPage.submit()).click();
