@@ -1,7 +1,7 @@
 {
   "name": "eq-questionnaire-runner",
   "version": "1.0.0",
-  "description": "ONS Digital eQ Survey Runner App",
+  "description": "ONS Digital eQ Questionnaire Runner App",
   "author": {
     "name": "ONS Digital",
     "url": "http://onsdigital.github.io/"
