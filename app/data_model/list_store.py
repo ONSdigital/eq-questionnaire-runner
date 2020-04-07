@@ -40,6 +40,10 @@ class ListModel:
     def __repr__(self):
         return f"<ListModel name={self.name} items={self.items}, primary_person={self.primary_person}>"
 
+    @property
+    def first(self):
+        return self.items[0]
+
 
 class ListStore:
     """ Storage for lists.
@@ -174,7 +178,3 @@ class ListStore:
             return cls()
 
         return cls(existing_items=serialised)
-
-    def get_first_item_from_list(self, list_name):
-        if list_name in self._lists:
-            return self._lists[list_name].items[0]

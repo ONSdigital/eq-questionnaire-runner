@@ -256,10 +256,7 @@ def _get_when_rule_value(
     elif "meta" in when_rule:
         value = get_metadata_value(metadata, when_rule["meta"])
     elif "id_selector" in when_rule:
-        if when_rule["id_selector"] == "first":
-            value = list_store.get_first_item_from_list(when_rule["list"])
-        else:
-            value = getattr(list_store.get(when_rule["list"]), when_rule["id_selector"])
+        value = getattr(list_store.get(when_rule["list"]), when_rule["id_selector"])
     elif "list" in when_rule:
         value = get_list_count(list_store, when_rule["list"])
     else:
