@@ -48,7 +48,6 @@ class ListModel:
             logger.error("unable to access first item in list, list is empty")
 
 
-
 class ListStore:
     """ Storage for lists.
 
