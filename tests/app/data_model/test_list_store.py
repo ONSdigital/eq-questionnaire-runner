@@ -106,9 +106,8 @@ def test_first():
     assert test_list.first == "abcde"
 
 
-def test_first_returns_none_when_list_is_empty():
+def test_first_raises_index_error_when_list_is_empty():
     new_list = ListModel("people", [])
 
-    value = new_list.first
-
-    assert value is None
+    with pytest.raises(IndexError):
+        new_list.first
