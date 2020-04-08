@@ -99,3 +99,16 @@ def test_repr():
     assert "primary_person=primaryperson" in repr(test_list)
     assert "items=['primaryperson']" in repr(test_list)
     assert "primaryperson" in repr(list_store)
+
+
+def test_first():
+    test_list = ListModel("people", ["abcde", "12345"])
+    assert test_list.first == "abcde"
+
+
+def test_first_returns_none_when_list_is_empty():
+    new_list = ListModel("people", [])
+
+    value = new_list.first
+
+    assert value is None
