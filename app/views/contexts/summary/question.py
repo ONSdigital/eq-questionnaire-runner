@@ -10,7 +10,7 @@ class Question:
         self.type = question_schema["type"]
         self.schema = schema
         self.answer_schemas = iter(question_schema["answers"])
-
+        self.summary = question_schema.get("summary")
         self.title = (
             question_schema.get("title") or question_schema["answers"][0]["label"]
         )
@@ -27,8 +27,18 @@ class Question:
         return None
 
     def _build_answers(self, answer_store, question_schema):
-        summary_answers = []
 
+        if self.summary:
+            return [
+                {
+                    "id": f"{self.id}-concatenated-answer",
+                    "value": self._concatenate_textfield_answers(
+                        answer_store, self.summary["concatenation_type"]
+                    ),
+                }
+            ]
+
+        summary_answers = []
         for answer_schema in self.answer_schemas:
             answer_value = self._get_answer(answer_store, answer_schema["id"])
             answer = self._build_answer(
@@ -43,8 +53,20 @@ class Question:
             if exclusive_option:
                 return summary_answers[-1:]
             return summary_answers[:-1]
-
         return summary_answers
+
+    def _concatenate_textfield_answers(self, answer_store, concatenation_type):
+
+        answer_separators = {"Newline": "<br>", "Space": " "}
+        answer_separator = answer_separators.get(concatenation_type, " ")
+
+        answer_values = [
+            self._get_answer(answer_store, answer_schema["id"])
+            for answer_schema in self.answer_schemas
+        ]
+        return answer_separator.join(
+            [answer_value for answer_value in answer_values if answer_value]
+        )
 
     def _build_answer(
         self, answer_store, question_schema, answer_schema, answer_value=None
