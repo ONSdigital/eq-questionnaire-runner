@@ -109,5 +109,9 @@ def test_first():
 def test_first_raises_index_error_when_list_is_empty():
     new_list = ListModel("people", [])
 
-    with pytest.raises(IndexError):
+    with pytest.raises(IndexError) as error:
         new_list.first
+
+    assert "unable to access first item in list, list is empty" in str(error.value)
+
+
