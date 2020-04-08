@@ -155,7 +155,7 @@ class TestQuestion(AppContextTestCase):  # pylint: disable=too-many-public-metho
             "title": "question_title",
             "type": "General",
             "answers": [address_line_1, address_line_2, town_city, county, postcode],
-            "summary": {"concatenation_type": "NewLine"},
+            "summary": {"concatenation_type": "Newline"},
         }
 
         # When
@@ -163,7 +163,7 @@ class TestQuestion(AppContextTestCase):  # pylint: disable=too-many-public-metho
 
         # Then
         self.assertEqual(
-            question.answers[0]["value"], "Cardiff Rd<br/>Newport<br/>NP10 8XG"
+            question.answers[0]["value"], "Cardiff Rd<br>Newport<br>NP10 8XG"
         )
         self.assertEqual(len(question.answers), 1)
 

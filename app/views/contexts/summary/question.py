@@ -57,7 +57,7 @@ class Question:
 
     def _concatenate_textfield_answers(self, answer_store, concatenation_type):
 
-        answer_separators = {"NewLine": "<br/>", "Space": " "}
+        answer_separators = {"Newline": "<br>", "Space": " "}
         answer_separator = answer_separators.get(concatenation_type, " ")
 
         answer_values = [
