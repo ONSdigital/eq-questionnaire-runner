@@ -45,7 +45,7 @@ class ListModel:
         try:
             return self.items[0]
         except IndexError:
-            raise IndexError("unable to access first item in list, list is empty")
+            raise IndexError(f"unable to access first item in list, list '{self.name}' is empty")
 
 
 class ListStore:
