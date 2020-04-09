@@ -112,4 +112,6 @@ def test_first_raises_index_error_when_list_is_empty():
     with pytest.raises(IndexError) as error:
         new_list.first  # pylint: disable=pointless-statement
 
-    assert "unable to access first item in list, list 'people' is empty" in str(error.value)
+    assert "unable to access first item in list, list 'people' is empty" in str(
+        error.value
+    )
