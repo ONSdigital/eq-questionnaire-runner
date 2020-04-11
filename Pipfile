@@ -24,7 +24,6 @@ httmock = "*"
 moto = "*"
 freezegun = "*"
 pytest-xdist = "*"
-pytest-sugar = "*"
 fakeredis = "*"
 mypy = "*"
 black = "==19.3b0"
@@ -40,7 +39,7 @@ flask-login = "*"
 flask-wtf = "*"
 gevent = {version = "*",platform_python_implementation = "=='CPython'"}
 google-cloud-datastore = "*"
-grpcio = "==1.25.0"
+grpcio = "*"
 gunicorn = "*"
 newrelic = "*"
 pika = "*"
@@ -61,9 +60,10 @@ redis = "==3.2.1"
 flask-compress = "*"
 htmlmin = "*"
 coloredlogs = "*"
+pytest = "*"
 
 [requires]
-python_version = "3.7"
+python_version = "3.8"
 
 [pipenv]
 allow_prereleases = false
