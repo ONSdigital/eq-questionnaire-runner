@@ -54,6 +54,11 @@ spec:
               secretKeyRef:
                 name: author-runner-secrets
                 key: EQ_SUBMITTED_RESPONSES_TABLE_NAME
+          - name: EQ_QUESTIONNAIRE_STATE_TABLE_NAME
+            valueFrom:
+              secretKeyRef:
+                name: author-runner-secrets
+                key: EQ_QUESTIONNAIRE_STATE_TABLE_NAME
 ---
 kind: Service
 apiVersion: v1
