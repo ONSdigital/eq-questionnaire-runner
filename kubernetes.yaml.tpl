@@ -33,6 +33,22 @@ spec:
         image: eu.gcr.io/GOOGLE_CLOUD_PROJECT/eq-author-runner:COMMIT_SHA
         ports:
         - containerPort: 5000
+        env:
+          - name: EQ_STORAGE_BACKEND
+            valueFrom:
+              secretKeyRef:
+                name: author-runner-secrets
+                key: EQ_STORAGE_BACKEND
+          - name: EQ_REDIS_HOST
+            valueFrom:
+              secretKeyRef:
+                name: author-runner-secrets
+                key: EQ_REDIS_HOST
+          - name: EQ_REDIS_PORT
+            valueFrom:
+              secretKeyRef:
+                name: author-runner-secrets
+                key: EQ_REDIS_PORT
 ---
 kind: Service
 apiVersion: v1
