@@ -74,6 +74,12 @@ spec:
               secretKeyRef:
                 name: author-runner-secrets
                 key: EQ_SECRETS_FILE
+          - name: EQ_KEYS_FILE
+            valueFrom:
+              secretKeyRef:
+                name: author-runner-secrets
+                key: EQ_KEYS_FILE
+
 
 ---
 kind: Service
