@@ -134,6 +134,7 @@
                                         "id":"anyone-usually-live-at-question",
                                         "title":"Do any of the following also usually live at 12 Lovely Villas on 21 March?",
                                         "type":"MutuallyExclusive",
+                                        "mandatory": false,
                                         "answers":[
                                             {
                                                 "type":"Checkbox",
@@ -221,10 +222,11 @@
                                     ]
                                 },
                                 {
-                                    "question":{
+                                    "question": {
                                         "id":"anyone-usually-live-at-question",
                                         "title":"Do any of the following usually live at 12 Lovely Villas on 21 March?",
                                         "type":"MutuallyExclusive",
+                                        "mandatory": false,
                                         "answers":[
                                             {
                                                 "type":"Checkbox",
@@ -302,7 +304,14 @@
                                                 "type":"Checkbox"
                                             }
                                         ]
-                                    }
+                                    },
+                                    "when":[
+                                        {
+                                            "id":"you-live-here",
+                                            "condition":"equals",
+                                            "value":"No, I don’t usually live here"
+                                        }
+                                    ]
                                 }
                             ],
                             "routing_rules":[
@@ -398,7 +407,7 @@
                                         ]
                                     },
                                     {
-                                        "question":{
+                                        "question": {
                                             "id":"add-question",
                                             "type":"General",
                                             "title":"Who else lives at 12 Lovely Villas?",
@@ -422,7 +431,14 @@
                                                     "type":"TextField"
                                                 }
                                             ]
-                                        }
+                                        },
+                                        "when":[
+                                            {
+                                                "condition": "greater than",
+                                                "list": "people",
+                                                "value": 0
+                                            }
+                                        ]
                                     }
                                 ]
                             },
@@ -494,8 +510,6 @@
                                 }
                             },
                             "summary":{
-                                "add_link_text":"Add someone to this household",
-                                "empty_list_text":"There are no householders",
                                 "title":"Household members",
                                 "item_title":{
                                     "text":"{person_name}",
@@ -683,7 +697,14 @@
                                                     "type":"TextField"
                                                 }
                                             ]
-                                        }
+                                        },
+                                        "when":[
+                                            {
+                                                "condition":"greater than",
+                                                "list":"people",
+                                                "value":0
+                                            }
+                                        ]
                                     }
                                 ]
                             },
@@ -755,8 +776,6 @@
                                 }
                             },
                             "summary":{
-                                "add_link_text":"Add someone to this household",
-                                "empty_list_text":"There are no householders",
                                 "title":"Household members",
                                 "item_title":{
                                     "text":"{person_name}",
