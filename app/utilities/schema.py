@@ -23,7 +23,7 @@ LANGUAGES_MAP = {
     "census_individual_gb_wls": [["en", "cy"]],
     "census_household_gb_nir": [["en"], ["en", "ga"], ["en", "eo"]],
     "census_individual_gb_nir": [["en"], ["en", "ga"], ["en", "eo"]],
-    "census_communal_establishment_gb_wls": [["en", "cy"]]
+    "census_communal_establishment_gb_wls": [["en", "cy"]],
 }
 
 
