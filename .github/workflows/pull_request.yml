@@ -73,7 +73,7 @@ jobs:
         if: steps.cache-virtualenv.outputs.cache-hit != 'true'
         run: pipenv install requests
       - name: Check schemas version
-        run: python ./scripts/schemas_check.py
+        run: pipenv run python ./scripts/schemas_check.py
   test-unit:
     needs: python-dependencies
     runs-on: ubuntu-18.04
