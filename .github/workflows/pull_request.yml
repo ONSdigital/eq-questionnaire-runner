@@ -47,7 +47,7 @@ jobs:
       - name: Install yarn deps
         if: steps.cache-yarn.outputs.cache-hit != 'true'
         run: yarn
-  check-schemas:
+  check-schemas-version:
     needs: python-dependencies
     runs-on: ubuntu-18.04
     steps:
@@ -69,7 +69,7 @@ jobs:
         if: steps.cache-virtualenv.outputs.cache-hit != 'true'
         run: pipenv install --dev
       - name: Check schemas version
-        run: pipenv run python ./scripts/schemas_check.py
+        run: pipenv run python ./scripts/schemas_version_check.py
   test-unit:
     needs: python-dependencies
     runs-on: ubuntu-18.04
