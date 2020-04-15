@@ -79,6 +79,11 @@ spec:
               secretKeyRef:
                 name: author-runner-secrets
                 key: EQ_KEYS_FILE
+          - name: EQ_SUBMISSION_BACKEND
+            valueFrom:
+              secretKeyRef:
+                name: author-runner-secrets
+                key: EQ_SUBMISSION_BACKEND
 
 
 ---
