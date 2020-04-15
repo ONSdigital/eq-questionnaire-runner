@@ -47,6 +47,13 @@ jobs:
       - name: Install yarn deps
         if: steps.cache-yarn.outputs.cache-hit != 'true'
         run: yarn
+  check-schemas:
+    needs: python-dependencies
+    runs-on: ubuntu-18.04
+    steps:
+      - uses: actions/checkout@v2
+      - name: Check schemas version
+        run: python ./scripts/schemas_check.py
   test-unit:
     needs: python-dependencies
     runs-on: ubuntu-18.04
