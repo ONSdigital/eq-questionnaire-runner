@@ -57,10 +57,6 @@ jobs:
       - uses: actions/setup-python@v1
         with:
           python-version: ${{ env.PYTHON_VERSION }}
-      - name: Install apt dependencies
-        run: sudo apt-get install libsnappy-dev libgconf-2-4 jq
-      - name: Write app version
-        run: printf "${{ github.event.pull_request.head.sha }}" > .application-version
       - name: Install pipenv
         run: pip install pipenv==2018.11.26
       - name: Cache virtualenv
@@ -71,7 +67,7 @@ jobs:
           key: ${{ runner.os }}-${{ env.PYTHON_VERSION }}-virtualenvs-${{ hashFiles('Pipfile.lock') }}
       - name: Install virtual environment
         if: steps.cache-virtualenv.outputs.cache-hit != 'true'
-        run: pipenv install requests
+        run: pipenv install --dev
       - name: Check schemas version
         run: pipenv run python ./scripts/schemas_check.py
   test-unit:
