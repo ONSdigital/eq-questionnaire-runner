@@ -24,9 +24,20 @@ In addition to the environment variables specified in [Deploying the app](../REA
 | REGION                                    | What region to authenticate against                                                  |
 | PROJECT_ID                                | The ID of the GCP target project                                                     |
 
-To deploy the app to the cluster via Concourse, use the following task command:
-
+To deploy the app to the cluster via Concourse, use the following task command, specifying the `image_registry` and the `deploy_image_version` variables:
 ```sh
 fly -t <target-concourse> execute \
-  --config ci/deploy_app.yaml
+  --config ci/deploy_app.yaml \
+  -v image_registry=<docker-registry> \
+  -v deploy_image_version=<image-tag>
+```
+
+## Backing up questionnaire state
+
+Questionnaire state can be backed up using the `backup_questionnaire_state.yaml` task. This can be done via Concourse using the following command:
+
+```sh
+PROJECT_ID=<project_id> \
+fly -t <target-concourse> execute \
+  --config ci/backup_questionnaire_state.yaml
 ```

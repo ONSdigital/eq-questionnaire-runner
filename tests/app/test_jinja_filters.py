@@ -218,6 +218,36 @@ class TestJinjaFilters(AppContextTestCase):  # pylint: disable=too-many-public-m
 
         assert radio.other.open is True
 
+    @staticmethod
+    def test_radio_class_detail_answer_display_width_with_max_value():
+        answer = {
+            "type": "Radio",
+            "id": "radio-answer-numeric-detail",
+            "mandatory": False,
+            "options": [
+                {
+                    "label": "Other",
+                    "value": "Other",
+                    "detail_answer": {
+                        "mandatory": False,
+                        "id": "other-answer",
+                        "label": "Please enter a number of items",
+                        "type": "Number",
+                        "maximum": {"value": 20},
+                        "parent_id": "radio-question-numeric-detail",
+                        "visible": False,
+                    },
+                }
+            ],
+            "parent_id": "radio-question-numeric-detail",
+        }
+
+        option = Mock()
+        option.detail_answer_id = "other-answer"
+        radio = RadioConfig(option=option, index=0, form=MagicMock(), answer=answer)
+
+        assert radio.other.classes == "input--w-2"
+
 
 def test_map_list_collector_config_no_actions():
     list_items = [{"item_title": "Mark Bloggs"}, {"item_title": "Joe Bloggs"}]
@@ -225,8 +255,8 @@ def test_map_list_collector_config_no_actions():
     output = map_list_collector_config(list_items, "icon")
 
     expected = [
-        {"rowItems": [{"actions": [], "icon": "icon"}], "title": "Mark Bloggs"},
-        {"rowItems": [{"actions": [], "icon": "icon"}], "title": "Joe Bloggs"},
+        {"rowItems": [{"actions": [], "icon": "icon"}], "rowTitle": "Mark Bloggs"},
+        {"rowItems": [{"actions": [], "icon": "icon"}], "rowTitle": "Joe Bloggs"},
     ]
 
     assert output == expected
@@ -272,7 +302,7 @@ def test_map_list_collector_config():
                     "icon": "icon",
                 }
             ],
-            "title": "Mark Bloggs (You)",
+            "rowTitle": "Mark Bloggs (You)",
         },
         {
             "rowItems": [
@@ -294,7 +324,7 @@ def test_map_list_collector_config():
                     "icon": "icon",
                 }
             ],
-            "title": "Joe Bloggs",
+            "rowTitle": "Joe Bloggs",
         },
     ]
 

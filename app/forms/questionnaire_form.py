@@ -304,7 +304,8 @@ class QuestionnaireForm(FlaskForm):
         return ordered_errors
 
     def answer_errors(self, input_id):
-        return [error[1] for error in self.map_errors() if input_id == error[0]]
+        error_id = _get_error_id(input_id)
+        return [error[1] for error in self.map_errors() if error_id == error[0]]
 
     def get_data(self, answer_id):
         attr = getattr(self, answer_id)
@@ -349,10 +350,12 @@ def map_subfield_errors(errors, answer_id):
     if isinstance(errors[answer_id], dict):
         for error_list in errors[answer_id].values():
             for error in error_list:
-                subfield_errors.append((answer_id, error))
+                error_id = _get_error_id(answer_id)
+                subfield_errors.append((error_id, error))
     else:
         for error in errors[answer_id]:
-            subfield_errors.append((answer_id, error))
+            error_id = _get_error_id(answer_id)
+            subfield_errors.append((error_id, error))
 
     return subfield_errors
 
@@ -363,9 +366,14 @@ def map_detail_answer_errors(errors, answer_json):
     for option in answer_json["options"]:
         if "detail_answer" in option and option["detail_answer"]["id"] in errors:
             for error in errors[option["detail_answer"]["id"]]:
-                detail_answer_errors.append((answer_json["id"], error))
+                error_id = _get_error_id(answer_json["id"])
+                detail_answer_errors.append((error_id, error))
 
     return detail_answer_errors
+
+
+def _get_error_id(answer_id):
+    return f"{answer_id}-error"
 
 
 def generate_form(

@@ -30,7 +30,7 @@ class HubPage extends BasePage {
 
   switchLanguage(language_code) { return 'a[href="?language_code=' + language_code + '"]'; }
 
-  summaryItems() { return '#main-content > div.summary.u-mt-m.summary--hub > table.summary__items'; }
+  summaryItems() { return 'table.summary__items'; }
 
   summaryRowState(number = 1) {
     return 'tbody:nth-child(' + number + ') tr td.summary__values';

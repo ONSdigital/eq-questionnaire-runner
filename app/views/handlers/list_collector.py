@@ -1,7 +1,8 @@
 from flask import url_for
 
 from app.views.handlers.question import Question
-from app.views.contexts.list_collector_context import ListCollectorContext
+from app.views.contexts import ListContext
+from app.views.contexts.question import build_question_context
 
 
 class ListCollector(Question):
@@ -21,7 +22,9 @@ class ListCollector(Question):
         return super().get_next_location_url()
 
     def get_context(self):
-        list_context = ListCollectorContext(
+        question_context = build_question_context(self.rendered_block, self.form)
+
+        list_context = ListContext(
             self._language,
             self._schema,
             self._questionnaire_store.answer_store,
@@ -29,7 +32,16 @@ class ListCollector(Question):
             self._questionnaire_store.progress_store,
             self._questionnaire_store.metadata,
         )
-        return list_context.build_list_collector_context(self.rendered_block, self.form)
+
+        return {
+            **question_context,
+            **list_context(
+                self.rendered_block["summary"],
+                for_list=self.rendered_block["for_list"],
+                edit_block_id=self.rendered_block["edit_block"]["id"],
+                remove_block_id=self.rendered_block["remove_block"]["id"],
+            ),
+        }
 
     def handle_post(self):
         if (

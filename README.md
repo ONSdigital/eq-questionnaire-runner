@@ -223,9 +223,7 @@ gcloud container clusters get-credentials survey-runner --region <region> --proj
 
 You need to have Helm installed locally
 
-1. Install Helm with `brew install kubernetes-helm` and then run `helm init --client-only`
-
-2. Install Helm Tiller plugin for _Tillerless_ deploys `helm plugin install https://github.com/rimusz/helm-tiller`
+1. Install Helm: <https://helm.sh/docs/intro/install/>. For Homebrew (macOS), install using: `brew install helm`
 
 
 ### Deploying credentials

@@ -4,10 +4,10 @@ clean:
 	rm -rf templates/layout
 
 load-schemas:
-	./scripts/load_release.sh onsdigital/eq-questionnaire-schemas v0.0.6
+	./scripts/load_release.sh onsdigital/eq-questionnaire-schemas v0.1.2
 
 load-templates:
-	./scripts/load_release.sh onsdigital/design-system 14.4.7
+	./scripts/load_release.sh onsdigital/design-system 17.0.0
 
 build: load-templates
 	make translate

@@ -1,5 +1,6 @@
 {
     "mime_type": "application/json/ons/eq",
+    "language": "en",
     "schema_version": "0.0.1",
     "data_version": "0.0.3",
     "survey_id": "0",
@@ -27,6 +28,17 @@
         {
             "id": "section",
             "title": "People",
+            "summary": {
+                "items": [
+                    {
+                        "type": "List",
+                        "for_list": "people",
+                        "title": "Household members",
+                        "add_link_text": "Add someone to this household",
+                        "empty_list_text": "There are no householders"
+                    }
+                ]
+            },
             "groups": [
                 {
                     "id": "group",
@@ -101,7 +113,6 @@
                             "id": "anyone-else-live-at",
                             "type": "ListCollector",
                             "for_list": "people",
-                            "show_on_section_summary": true,
                             "add_answer": {
                                 "id": "anyone-else-live-at-answer",
                                 "value": "Yes"
@@ -225,13 +236,11 @@
                                             ]
                                         }
                                     ]
-                                },
-                                "add_link_text": "Add someone to this household",
-                                "empty_list_text": "There are no householders"
+                                }
                             }
                         },
                         {
-                            "type": "ListCollectorSummary",
+                            "type": "SectionSummary",
                             "title": "List Collector Driving Question Summary",
                             "id": "summary"
                         }

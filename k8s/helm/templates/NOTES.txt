@@ -1,1 +1,1 @@
-Survey Runner Application deployed.
+Questionnaire Runner Application deployed.
