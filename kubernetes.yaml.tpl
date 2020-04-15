@@ -64,6 +64,11 @@ spec:
               secretKeyRef:
                 name: author-runner-secrets
                 key: EQ_SESSION_TABLE_NAME
+          - name: EQ_USED_JTI_CLAIM_TABLE_NAME
+            valueFrom:
+              secretKeyRef:
+                name: author-runner-secrets
+                key: EQ_USED_JTI_CLAIM_TABLE_NAME
 ---
 kind: Service
 apiVersion: v1
