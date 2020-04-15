@@ -1,4 +1,5 @@
 import logging
+import sys
 import requests
 
 from requests.exceptions import RequestException
@@ -24,5 +25,6 @@ try:
         latest_tag = response.json()[0]["tag_name"]
         if latest_tag != get_schema_version():
             logger.error("eq-questionnaire-schemas is out of date, update makefile")
+            sys.exit(1)
 except RequestException:
     logger.error("Can't check eq-questionnaire-schemas release version")
