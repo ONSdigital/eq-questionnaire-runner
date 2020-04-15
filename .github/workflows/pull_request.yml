@@ -71,7 +71,7 @@ jobs:
           key: ${{ runner.os }}-${{ env.PYTHON_VERSION }}-virtualenvs-${{ hashFiles('Pipfile.lock') }}
       - name: Install virtual environment
         if: steps.cache-virtualenv.outputs.cache-hit != 'true'
-        run: pipenv install --dev
+        run: pipenv install requests
       - name: Check schemas version
         run: python ./scripts/schemas_check.py
   test-unit:
