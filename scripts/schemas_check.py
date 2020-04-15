@@ -12,7 +12,7 @@ def get_schema_version():
     for line in contents:
         if "onsdigital/eq-questionnaire-schemas" not in line:
             continue
-        version = line.split(' ')[-1].strip()
+        version = line.split(" ")[-1].strip()
         return version
 
 
