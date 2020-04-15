@@ -1,6 +1,6 @@
-import requests
 import logging
 import re
+import requests
 
 from requests.exceptions import RequestException
 
