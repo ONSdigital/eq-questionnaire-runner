@@ -80,6 +80,8 @@ def convert_answers(schema, questionnaire_store, routing_path, flushed=False):
         payload["channel"] = metadata["channel"]
     if metadata.get("case_type"):
         payload["case_type"] = metadata["case_type"]
+    if metadata.get("form_type"):
+        payload["form_type"] = metadata["form_type"]
     if metadata.get("region_code"):
         payload["region_code"] = metadata["region_code"]
     if collection_metadata.get("started_at"):
