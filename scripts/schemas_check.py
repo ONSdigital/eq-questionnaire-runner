@@ -21,9 +21,7 @@ try:
                 version = mo.group()
                 break
         if latest_tag != version:
-            logger.error(
-                f"eq-questionnaire-schemas is out of date (current version: {latest_tag}), update makefile"
-            )
+            logger.error("eq-questionnaire-schemas is out of date, update makefile")
 
 except RequestException:
     logger.error("Can't check eq-questionnaire-schemas release version")
