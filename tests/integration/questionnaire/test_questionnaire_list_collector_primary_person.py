@@ -45,6 +45,10 @@ class TestQuestionnaireListCollector(IntegrationTestCase):
 
         self.post({"anyone-usually-live-at-answer": "Yes"})
 
+        self.assertInBody("What is the name of the person")
+
+        self.post({"first-name": "James", "last-name": "May"})
+
         self.assertInBody("James May")
 
     def test_cannot_remove_primary_person_from_list_collector(self):
