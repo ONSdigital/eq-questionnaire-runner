@@ -65,6 +65,7 @@ post_submission_blueprint = Blueprint(
 
 @questionnaire_blueprint.before_request
 def before_questionnaire_request():
+    logger.info(current_app)
     metadata = get_metadata(current_user)
     if not metadata:
         raise NoTokenException(401)
