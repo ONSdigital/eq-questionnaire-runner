@@ -21,7 +21,7 @@ try:
         file.close()
         with FileInput("Makefile", inplace=True) as file:
             for line in file:
-                print(line.replace(version, latest_tag), end='')
+                print(line.replace(version, latest_tag), end='')  # noqa: T001
         file.close()
     else:
         sys.exit(1)
