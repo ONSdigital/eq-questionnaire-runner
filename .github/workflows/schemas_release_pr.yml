@@ -1,7 +1,8 @@
 name: Schemas release PR
 
 on:
-  repository_dispatch
+  repository_dispatch:
+      types: schemas_release
 
 jobs:
   python-dependencies:
