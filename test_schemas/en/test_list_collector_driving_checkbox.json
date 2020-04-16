@@ -133,6 +133,18 @@
                                     "question":{
                                         "id":"anyone-usually-live-at-question",
                                         "title":"Do any of the following also usually live at 12 Lovely Villas on 21 March?",
+                                        "guidance": {
+                                            "contents": [
+                                                {
+                                                    "title": "Outcomes",
+                                                    "list": [
+                                                        "“Yes” and list <strong>is</strong> empty - Takes you to the list collector‘s <strong>add</strong> question.",
+                                                        "“Yes” and list is <strong>not</strong> empty - Takes you directly to the list collector.",
+                                                        "“No” - Takes you directly to the list collector."
+                                                    ]
+                                                }
+                                            ]
+                                        },
                                         "type":"MutuallyExclusive",
                                         "mandatory": false,
                                         "answers":[
@@ -225,6 +237,18 @@
                                     "question": {
                                         "id":"anyone-usually-live-at-question",
                                         "title":"Do any of the following usually live at 12 Lovely Villas on 21 March?",
+                                        "guidance": {
+                                            "contents": [
+                                                {
+                                                    "title": "Outcomes",
+                                                    "list": [
+                                                        "“Yes” and list <strong>is</strong> empty - Takes you to the list collector‘s <strong>add</strong> question.",
+                                                        "“Yes” and list is <strong>not</strong> empty - Takes you directly to the list collector.",
+                                                        "“No” - Takes you directly to the list collector."
+                                                    ]
+                                                }
+                                            ]
+                                        },
                                         "type":"MutuallyExclusive",
                                         "mandatory": false,
                                         "answers":[
