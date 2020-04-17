@@ -13,7 +13,7 @@ try:
     )
     if response.status_code == 200:
         latest_tag = response.json()["tag_name"]
-        file = open("schemas_version.txt", "w")
+        file = open(".schemas-version", "w")
         file.write(latest_tag)
         file.close()
     else:
