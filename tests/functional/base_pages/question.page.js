@@ -35,7 +35,7 @@ class QuestionPage extends BasePage {
 
   saveSignOut() { return '[data-qa="btn-save-sign-out"]'; }
 
-  summaryShowAllButton() {return '.js-collapsible-all';}
+  summaryShowAllButton() {return '.js-collapsible-all'; }
 
   switchLanguage(language_code) { return 'a[href="?language_code=' + language_code + '"]'; }
 

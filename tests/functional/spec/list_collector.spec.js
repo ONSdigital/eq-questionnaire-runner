@@ -185,7 +185,7 @@ describe('List Collector', function() {
     it('The questionnaire shows the confirmation page when no more people to add', function() {
       $(AnotherListCollectorPage.no()).click();
       $(AnotherListCollectorPage.submit()).click();
-      expect(browser.getUrl()).to.contain(SectionSummaryPage.pageName);
+      expect(browser.getUrl()).to.contain('/sections/section/');
     });
 
     it('The questionnaire allows submission', function() {

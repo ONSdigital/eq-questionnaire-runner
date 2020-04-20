@@ -83,11 +83,13 @@ class Router:
         ):
 
             if has_section_summary:
-                return self._section_summary_url(location)
+                return self.get_section_summary_url(location)
             if hub_enabled:
                 return url_for(".get_questionnaire")
 
         if self.is_survey_complete() and not hub_enabled:
+            if has_section_summary:
+                return self.get_section_summary_url(location)
             last_section_id = self._schema.get_section_ids()[-1]
             last_block_id = self._schema.get_last_block_id_for_section(last_section_id)
             return Location(section_id=last_section_id, block_id=last_block_id).url()
@@ -317,7 +319,7 @@ class Router:
         return False
 
     @staticmethod
-    def _section_summary_url(location):
+    def get_section_summary_url(location):
         return url_for(
             "questionnaire.get_section",
             section_id=location.section_id,

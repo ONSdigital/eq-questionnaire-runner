@@ -1,5 +1,5 @@
 const InsuranceAddressPage = require('../../../generated_pages/section_summary/insurance-address.page.js');
-const InsuranceTypePage = require('../../../generated_pages/section_summary/insurance-type.page.js');;
+const InsuranceTypePage = require('../../../generated_pages/section_summary/insurance-type.page.js');
 const HouseType = require('../../../generated_pages/section_summary/house-type.page.js');
 const QuestionnaireSummaryPage = require('../../../generated_pages/section_summary/summary.page.js');
 

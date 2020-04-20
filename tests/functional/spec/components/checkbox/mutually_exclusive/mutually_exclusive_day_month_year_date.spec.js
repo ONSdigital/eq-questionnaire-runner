@@ -80,7 +80,6 @@ describe('Component: Mutually Exclusive Day Month Year Date With Single Checkbox
         expect($(DatePage.dateExclusiveIPreferNotToSay()).isSelected()).to.be.false;
 
         $(DatePage.submit()).click();
-
         expect($(SectionSummaryPage.summaryRowValue(1)).getText()).to.have.string('17 March 2018');
         expect($(SectionSummaryPage.summaryItems()).getText()).to.not.have.string('I prefer not to say');
 
