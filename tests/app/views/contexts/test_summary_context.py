@@ -401,11 +401,11 @@ def test_context_for_section_list_summary(people_answer_store):
                                 "primary_person": False,
                                 "remove_link": "/questionnaire/people/UHPLbX/remove-person/?return_to_summary=section",
                             },
-                        ]
+                        ],
                     },
                     "list_name": "people",
                     "title": "Household members staying overnight on 13 October 2019 at 70 Abingdon Road, Goathill",
-                    "type": "List"
+                    "type": "List",
                 },
                 {
                     "add_link": "/questionnaire/visitors/add-visitor/?return_to_summary=section",
@@ -424,7 +424,7 @@ def test_context_for_section_list_summary(people_answer_store):
                     },
                     "list_name": "visitors",
                     "title": "Visitors staying overnight on 13 October 2019 at 70 Abingdon Road, Goathill",
-                    "type": "List"
+                    "type": "List",
                 },
             ],
             "summary_type": "SectionSummary",
@@ -462,7 +462,7 @@ def test_context_for_driving_question_summary_empty_list():
                     "list_name": "people",
                     "list": {"list_items": [], "editable": True},
                     "title": "Household members",
-                    "type": "List"
+                    "type": "List",
                 }
             ],
             "summary_type": "SectionSummary",
@@ -517,7 +517,7 @@ def test_context_for_driving_question_summary():
                                 "edit_link": "/questionnaire/people/PlwgoG/edit-person/?return_to_summary=section",
                                 "remove_link": "/questionnaire/people/PlwgoG/remove-person/?return_to_summary=section",
                             }
-                        ]
+                        ],
                     },
                     "list_name": "people",
                     "title": "Household members",

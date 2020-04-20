@@ -195,7 +195,7 @@ describe('List Collector', function() {
     });
   });
 
-  describe.only('Given I start a list collector survey and complete to Section Summary', function() {
+  describe('Given I start a list collector survey and complete to Section Summary', function() {
 
     beforeEach(function() {
       browser.openQuestionnaire('test_list_collector_section_summary.json');

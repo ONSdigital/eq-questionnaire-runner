@@ -38,7 +38,7 @@ describe('Section Summary', function() {
     });
   });
 
-  describe.only('Given I start a Test Section Summary survey and complete to Final Summary', function() {
+  describe('Given I start a Test Section Summary survey and complete to Final Summary', function() {
     beforeEach(function() {
       browser.openQuestionnaire('test_section_summary.json');
       $(InsuranceTypePage.both()).click();
