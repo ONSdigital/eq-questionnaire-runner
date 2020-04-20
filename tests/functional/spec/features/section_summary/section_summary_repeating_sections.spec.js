@@ -66,7 +66,7 @@ describe('Feature: Repeating Section Summaries', function () {
       });
 
       it('renders the correct date of birth answer', function() {
-        expect($(SectionSummaryPage.summaryRowValues(2)).getText()).to.contain('30 November 1835');
+        expect($(SectionSummaryPage.summaryRowValue(2)).getText()).to.contain('30 November 1835');
       });
     });
   });

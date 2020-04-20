@@ -7,10 +7,10 @@ const AnyoneElseLiveAtListCollectorRemovePage = require('../generated_pages/list
 const SectionSummaryPage = require('../base_pages/section-summary.page.js');
 
   function checkPeopleInList(peopleExpected) {
-    $(SectionSummaryPage.listCollectorHouseholdRowTitle(1)).waitForDisplayed();
+    $(SectionSummaryPage.listCollectorPeopleRowTitle(1)).waitForDisplayed();
 
     for (let i=1; i<=peopleExpected.length; i++) {
-      expect($(SectionSummaryPage.listCollectorHouseholdRowTitle(i)).getText()).to.equal(peopleExpected[i-1]);
+      expect($(SectionSummaryPage.listCollectorPeopleRowTitle(i)).getText()).to.equal(peopleExpected[i-1]);
     }
   }
 
@@ -61,7 +61,7 @@ describe('List Collector Driving Question', function() {
       $(AnyoneElseLiveAtListCollectorAddPage.submit()).click();
       $(AnyoneElseLiveAtListCollectorPage.no()).click();
       $(AnyoneElseLiveAtListCollectorPage.submit()).click();
-      $(SectionSummaryPage.listCollectorHouseholdRowRemove(1)).click();
+      $(SectionSummaryPage.listCollectorPeopleRowRemove(1)).click();
       $(AnyoneElseLiveAtListCollectorRemovePage.yes()).click();
       $(AnyoneElseLiveAtListCollectorRemovePage.submit()).click();
       $(SectionSummaryPage.listCollectorPeopleRowAdd()).click();

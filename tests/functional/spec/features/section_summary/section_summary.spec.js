@@ -13,14 +13,14 @@ describe('Section Summary', function() {
       $(InsuranceTypePage.both()).click();
       $(InsuranceTypePage.submit()).click();
       $(InsuranceAddressPage.submit()).click();
-      expect($(SectionSummaryPage.summaryRowValues(1)).getText()).to.contain('Both');
+      expect($(SectionSummaryPage.summaryRowValue(1)).getText()).to.contain('Both');
     });
 
     it('When I have selected an answer to edit and edit it, Then I should return to the section summary with new value displayed', function() {
       $(SectionSummaryPage.summaryRowAction(2)).click();
       $(InsuranceAddressPage.answer()).setValue('Test Address');
       $(InsuranceAddressPage.submit()).click();
-      expect($(SectionSummaryPage.summaryRowValues(2)).getText()).to.contain('Test Address');
+      expect($(SectionSummaryPage.summaryRowValue(2)).getText()).to.contain('Test Address');
     });
 
     it('When I continue on the section summary page, Then I should be taken to the next section', function() {

@@ -221,8 +221,8 @@ describe('List Collector', function() {
     });
 
     it('The section summary should display contents of the list collector', function() {
-      expect($(SectionSummaryPage.listCollectorHouseholdRowTitle(1)).getText()).to.contain('Marcus Twin (You)');
-      expect($(SectionSummaryPage.listCollectorHouseholdRowTitle(2)).getText()).to.contain('Samuel Clemens');
+      expect($(SectionSummaryPage.listCollectorPeopleRowTitle(1)).getText()).to.contain('Marcus Twin (You)');
+      expect($(SectionSummaryPage.listCollectorPeopleRowTitle(2)).getText()).to.contain('Samuel Clemens');
       expect($(SectionSummaryPage.listCollectorVisitorRowTitle(1)).getText()).to.contain('Olivia Clemens');
     });
 
@@ -235,18 +235,18 @@ describe('List Collector', function() {
     });
 
     it('When the user removes an item from the list, They should return to the section summary and it should display the updated list', function() {
-      $(SectionSummaryPage.listCollectorHouseholdRowRemove(2)).click();
+      $(SectionSummaryPage.listCollectorPeopleRowRemove(2)).click();
       $(SectionSummaryListCollectorRemovePage.yes()).click();
       $(SectionSummaryListCollectorRemovePage.submit()).click();
-      expect($(SectionSummaryPage.listCollectorHouseholdRowTitle(2)).isExisting()).to.equal(false);
+      expect($(SectionSummaryPage.listCollectorPeopleRowTitle(2)).isExisting()).to.equal(false);
     });
 
     it('When the user updates the list, They should return to the section summary and it should display the updated list', function() {
-      $(SectionSummaryPage.listCollectorHouseholdRowChange(1)).click();
+      $(SectionSummaryPage.listCollectorPeopleRowChange(1)).click();
       $(SectionSummaryListCollectorEditPage.firstName()).setValue('Mark');
       $(SectionSummaryListCollectorEditPage.lastName()).setValue('Twain');
       $(SectionSummaryListCollectorEditPage.submit()).click();
-      expect($(SectionSummaryPage.listCollectorHouseholdRowTitle(1)).getText()).to.contain('Mark Twain (You)');
+      expect($(SectionSummaryPage.listCollectorPeopleRowTitle(1)).getText()).to.contain('Mark Twain (You)');
     });
   });
 });

@@ -17,7 +17,6 @@ class QuestionPage extends BasePage {
 
   alert() { return '[data-qa="error-body"]';  }
 
-
   error() { return '.js-inpagelink'; }
 
   errorHeader() { return '#main-content > div.panel.panel--error.u-mb-s > div.panel__header > div'; }

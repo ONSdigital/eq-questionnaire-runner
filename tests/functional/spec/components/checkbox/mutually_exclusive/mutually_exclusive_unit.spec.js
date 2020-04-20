@@ -23,7 +23,7 @@ describe('Component: Mutually Exclusive Unit With Single Checkbox Override', fun
 
       $(UnitPage.submit()).click();
 
-      expect($(SectionSummaryPage.summaryRowValues(1)).getText()).to.have.string('I prefer not to say');
+      expect($(SectionSummaryPage.summaryRowValue(1)).getText()).to.have.string('I prefer not to say');
       expect($(SectionSummaryPage.summaryItems()).getText()).to.not.have.string('10');
     });
   });
@@ -43,7 +43,7 @@ describe('Component: Mutually Exclusive Unit With Single Checkbox Override', fun
 
       $(UnitPage.submit()).click();
 
-      expect($(SectionSummaryPage.summaryRowValues(1)).getText()).to.have.string('10');
+      expect($(SectionSummaryPage.summaryRowValue(1)).getText()).to.have.string('10');
       expect($(SectionSummaryPage.summaryItems()).getText()).to.not.have.string('I prefer not to say');
     });
   });
@@ -62,7 +62,7 @@ describe('Component: Mutually Exclusive Unit With Single Checkbox Override', fun
 
       $(UnitPage.submit()).click();
 
-      expect($(SectionSummaryPage.summaryRowValues(1)).getText()).to.have.string('10');
+      expect($(SectionSummaryPage.summaryRowValue(1)).getText()).to.have.string('10');
       expect($(SectionSummaryPage.summaryItems()).getText()).to.not.have.string('I prefer not to say');
     });
   });
@@ -79,7 +79,7 @@ describe('Component: Mutually Exclusive Unit With Single Checkbox Override', fun
       // Then
       $(UnitPage.submit()).click();
 
-      expect($(SectionSummaryPage.summaryRowValues(1)).getText()).to.have.string('I prefer not to say');
+      expect($(SectionSummaryPage.summaryRowValue(1)).getText()).to.have.string('I prefer not to say');
       expect($(SectionSummaryPage.summaryItems()).getText()).to.not.have.string('10');
     });
   });
@@ -94,7 +94,7 @@ describe('Component: Mutually Exclusive Unit With Single Checkbox Override', fun
       $(UnitPage.submit()).click();
 
       // Then
-      expect($(SectionSummaryPage.summaryRowValues(1)).getText()).to.contain('No answer provided');
+      expect($(SectionSummaryPage.summaryRowValue(1)).getText()).to.contain('No answer provided');
     });
   });
 });

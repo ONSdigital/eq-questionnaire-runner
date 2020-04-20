@@ -48,7 +48,7 @@ describe('Feature: Confirmation Question Within A Repeating Section', function (
         $(ConfirmDateOfBirthPage.submit()).click();
 
         expect(browser.getUrl()).to.contain('sections/default-section/');
-        expect($(SectionSummaryPage.listCollectorHouseholdRowTitle(2)).isExisting()).to.be.false;
+        expect($(SectionSummaryPage.listCollectorPeopleRowTitle(2)).isExisting()).to.be.false;
       });
     });
 

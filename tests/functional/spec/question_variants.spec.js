@@ -34,7 +34,7 @@ describe('QuestionVariants', function() {
     $(ageConfirmationBlock.submit()).click();
 
     expect($(SectionSummaryPage.summaryRowTitle(1)).getText()).to.contain('What age is Guido van Rossum');
-    expect($(SectionSummaryPage.summaryRowValues(1)).getText()).to.contain('63');
+    expect($(SectionSummaryPage.summaryRowValue(1)).getText()).to.contain('63');
 
     $(SectionSummaryPage.submit()).click();
 
@@ -49,14 +49,14 @@ describe('QuestionVariants', function() {
     $(secondNumberBlock.secondNumber()).setValue(321);
     $(secondNumberBlock.submit()).click();
 
-    expect($(SectionSummaryPage.summaryRowValues(1)).getText()).to.contain('Sterling');
-    expect($(SectionSummaryPage.summaryRowValues(2)).getText()).to.contain('£');
+    expect($(SectionSummaryPage.summaryRowValue(1)).getText()).to.contain('Sterling');
+    expect($(SectionSummaryPage.summaryRowValue(2)).getText()).to.contain('£');
 
     $(SectionSummaryPage.summaryRowAction(1)).click();
     $(currencyBlock.usDollars()).click();
     $(currencyBlock.submit()).click();
 
-    expect($(SectionSummaryPage.summaryRowValues(2)).getText()).to.contain('$');
+    expect($(SectionSummaryPage.summaryRowValue(2)).getText()).to.contain('$');
 
     });
 });

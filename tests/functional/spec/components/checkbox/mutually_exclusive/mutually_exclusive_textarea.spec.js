@@ -22,7 +22,7 @@ describe('Component: Mutually Exclusive TextArea With Single Checkbox Override',
 
       $(TextFieldPage.submit()).click();
 
-      expect($(SectionSummaryPage.summaryRowValues(1)).getText()).to.have.string('Blue');
+      expect($(SectionSummaryPage.summaryRowValue(1)).getText()).to.have.string('Blue');
       expect($(SectionSummaryPage.summaryItems()).getText()).to.not.have.string('I prefer not to say');
     });
   });
@@ -39,7 +39,7 @@ describe('Component: Mutually Exclusive TextArea With Single Checkbox Override',
       // Then
       $(TextFieldPage.submit()).click();
 
-      expect($(SectionSummaryPage.summaryRowValues(1)).getText()).to.have.string('I prefer not to say');
+      expect($(SectionSummaryPage.summaryRowValue(1)).getText()).to.have.string('I prefer not to say');
       expect($(SectionSummaryPage.summaryItems()).getText()).to.not.have.string('Blue');
     });
   });
@@ -54,7 +54,7 @@ describe('Component: Mutually Exclusive TextArea With Single Checkbox Override',
       $(TextFieldPage.submit()).click();
 
       // Then
-      expect($(SectionSummaryPage.summaryRowValues(1)).getText()).to.contain('No answer provided');
+      expect($(SectionSummaryPage.summaryRowValue(1)).getText()).to.contain('No answer provided');
     });
   });
 });
