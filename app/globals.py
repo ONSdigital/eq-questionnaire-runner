@@ -39,6 +39,7 @@ def get_session_store():
     from app.data_model.session_store import SessionStore
 
     if USER_IK not in cookie_session or EQ_SESSION_ID not in cookie_session:
+        logger.info("Hello Martyn")
         return None
 
     # Sets up a single SessionStore instance per request.
