@@ -30,16 +30,9 @@ def get_questionnaire_store(user_id, user_ik):
 
 # pylint: disable=import-outside-toplevel
 def get_session_store():
-
-    logger.info("Pepper")
-    logger.info(current_app.eq["secret_store"].get_secret_by_name(
-            "EQ_SERVER_SIDE_STORAGE_ENCRYPTION_USER_PEPPER"
-        ))
-
     from app.data_model.session_store import SessionStore
 
     if USER_IK not in cookie_session or EQ_SESSION_ID not in cookie_session:
-        logger.info("Hello Martyn")
         return None
 
     # Sets up a single SessionStore instance per request.
