@@ -32,7 +32,12 @@ def get_questionnaire_store(user_id, user_ik):
 def get_session_store():
 
     logger.info("Cookie session")
-    logger.info(cookie_session)
+    logger.info(cookie_session.USER_IK)
+    logger.info(cookie_session.EQ_SESSION_ID)
+    logger.info("Pepper")
+    logger.info(current_app.eq["secret_store"].get_secret_by_name(
+            "EQ_SERVER_SIDE_STORAGE_ENCRYPTION_USER_PEPPER"
+        ))
 
     from app.data_model.session_store import SessionStore
 
@@ -46,8 +51,7 @@ def get_session_store():
         pepper = current_app.eq["secret_store"].get_secret_by_name(
             "EQ_SERVER_SIDE_STORAGE_ENCRYPTION_USER_PEPPER"
         )
-        logger.info("Pepper")
-        logger.info(pepper)
+
         store = g._session_store = SessionStore(
             cookie_session[USER_IK], pepper, cookie_session[EQ_SESSION_ID]
         )
