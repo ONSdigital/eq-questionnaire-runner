@@ -84,6 +84,11 @@ spec:
               secretKeyRef:
                 name: author-runner-secrets
                 key: EQ_SUBMISSION_BACKEND
+          - name: EQ_SESSION_TIMEOUT_SECONDS
+            valueFrom:
+              secretKeyRef:
+                name: author-runner-secrets
+                key: EQ_SESSION_TIMEOUT_SECONDS
 
 
 ---
