@@ -11,14 +11,13 @@ try:
     response = requests.get(
         "https://api.github.com/repos/ONSdigital/eq-questionnaire-schemas/releases/latest"
     )
-    if response.status_code == 200:
-        latest_tag = response.json()["tag_name"]
-        file = open(".schemas-version", "w")
-        file.write(latest_tag)
-        file.close()
-    else:
-        logger.error("Can't check schemas version")
-        sys.exit(1)
-except RequestException:
-    logger.error("Can't check schemas version")
+    if response.status_code != 200:
+        raise RequestException(f"Got a {response.status_code} status code.")
+    latest_tag = response.json()["tag_name"]
+    file = open(".schemas-version", "w")
+    file.write(latest_tag)
+    file.close()
+
+except RequestException as ex:
+    logger.error(f"Can't check schemas version - {ex}.")
     sys.exit(1)
