@@ -244,7 +244,7 @@ describe('Feature: Hub and Spoke', function () {
         expect(expectedUrl).to.contain(HubPage.url());
       });
 
-      it('When there are changes which would set the section to in_progress it routes accordingly', function () {
+      it('When there are changes, which would set the section to in_progress it routes accordingly', function () {
         $(HubPage.summaryRowLink(3)).click();
         $(SectionSummaryPage.summaryRowAction(1)).click();
         $(DoesAnyoneLiveHere.yes()).click();

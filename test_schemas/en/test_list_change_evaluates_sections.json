@@ -279,7 +279,7 @@
                             "routing_rules": [
                                 {
                                     "goto": {
-                                        "block": "accommodation-section-summary",
+                                        "section": "end",
                                         "when": [
                                             {
                                                 "condition": "equals",

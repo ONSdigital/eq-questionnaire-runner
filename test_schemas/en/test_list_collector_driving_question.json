@@ -92,7 +92,7 @@
                             "routing_rules": [
                                 {
                                     "goto": {
-                                        "block": "summary",
+                                        "section": "end",
                                         "when": [
                                             {
                                                 "id": "anyone-usually-live-at-answer",
