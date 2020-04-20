@@ -94,7 +94,7 @@ def login():
             "account_service_log_out_url"
         )
     logger.info("user id")
-    logger.info(cookie_session.get("USER_IK", "not found"))
+    logger.info(cookie_session.get("user_ik", "not found"))
     return redirect(url_for("questionnaire.get_questionnaire"))
 
 
