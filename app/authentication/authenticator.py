@@ -84,7 +84,9 @@ def load_user():
     :return: A user object if a JWT token is available in the session
     """
     session_store = get_session_store()
-
+    print(session_store)
+    print(session_store.user_id)
+    print(_is_session_valid(session_store))
     if session_store and session_store.user_id and _is_session_valid(session_store):
         logger.debug("session exists")
 
