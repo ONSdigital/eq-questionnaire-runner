@@ -45,9 +45,12 @@ def get_session_store():
         pepper = current_app.eq["secret_store"].get_secret_by_name(
             "EQ_SERVER_SIDE_STORAGE_ENCRYPTION_USER_PEPPER"
         )
+        logger.info(pepper)
         store = g._session_store = SessionStore(
             cookie_session[USER_IK], pepper, cookie_session[EQ_SESSION_ID]
         )
+
+    logger.info(store)
 
     return store
 
