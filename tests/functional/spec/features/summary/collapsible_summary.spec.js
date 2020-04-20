@@ -3,7 +3,6 @@ const InsuranceTypePage = require('../../../generated_pages/section_summary/insu
 const HouseType = require('../../../generated_pages/section_summary/house-type.page.js');
 const QuestionnaireSummaryPage = require('../../../generated_pages/section_summary/summary.page.js');
 
-
 const SectionSummaryPage = require('../../../base_pages/section-summary.page.js');
 
 describe('Collapsible Summary', function() {

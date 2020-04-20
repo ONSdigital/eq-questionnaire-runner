@@ -159,29 +159,23 @@ class TestRouter(AppContextTestCase):  # pylint: disable=too-many-public-methods
             [
                 {
                     "section_id": "variant-proxy-section",
-                    "block_ids": [
-                        "name-block",
-                        "proxy-block"
-                    ],
-                    "status": "COMPLETED"
+                    "block_ids": ["name-block", "proxy-block"],
+                    "status": "COMPLETED",
                 },
                 {
                     "section_id": "basic-question-variant-section",
-                    "block_ids": [
-                        "age-block",
-                        "age-confirmation-block"
-                    ],
-                    "status": "COMPLETED"
+                    "block_ids": ["age-block", "age-confirmation-block"],
+                    "status": "COMPLETED",
                 },
                 {
                     "section_id": "currency-section",
                     "block_ids": [
                         "currency-block",
                         "first-number-block",
-                        "second-number-block"
+                        "second-number-block",
                     ],
-                    "status": "COMPLETED"
-                }
+                    "status": "COMPLETED",
+                },
             ]
         )
 
@@ -189,12 +183,17 @@ class TestRouter(AppContextTestCase):  # pylint: disable=too-many-public-methods
             schema, self.answer_store, self.list_store, progress_store, self.metadata
         )
 
-        current_location = Location(section_id="currency-section", block_id="currency-block")
+        current_location = Location(
+            section_id="currency-section", block_id="currency-block"
+        )
         routing_path = RoutingPath(
-            ["currency-block", "first-number-block", "second-number-block"], section_id="currency-section"
+            ["currency-block", "first-number-block", "second-number-block"],
+            section_id="currency-section",
         )
         next_location = router.get_next_location_url(current_location, routing_path)
-        expected_location = router.get_section_summary_url(Location(section_id="currency-section"))
+        expected_location = router.get_section_summary_url(
+            Location(section_id="currency-section")
+        )
 
         self.assertEqual(next_location, expected_location)
 

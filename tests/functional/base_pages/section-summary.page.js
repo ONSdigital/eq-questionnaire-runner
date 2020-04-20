@@ -1,7 +1,6 @@
 const BasePage = require('./base.page');
 
 class SectionSummaryPage extends BasePage {
-
   displayedName() { return 'h1'; }
 
   displayedDescription() { return 'p > strong'; }
