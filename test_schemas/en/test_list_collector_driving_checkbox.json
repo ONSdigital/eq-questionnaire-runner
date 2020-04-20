@@ -668,7 +668,7 @@
                         {
                             "type":"ListCollectorDrivingQuestion",
                             "id":"visitors-staying-at",
-                            "for_list":"people",
+                            "for_list":"visitors",
                             "question": {
                                 "id":"visitors-staying-at-question",
                                 "title":"Apart from everyone already included, who else is staying overnight on 21 March 2021 at 12 Lovely Villas?",
@@ -697,7 +697,7 @@
                                                 "action":{
                                                     "params":{
                                                         "block_id":"visitors-add-person",
-                                                        "list_name":"people"
+                                                        "list_name":"visitors"
                                                     },
                                                     "type":"RedirectToListAddQuestion"
                                                 }
@@ -732,13 +732,13 @@
                                 },
                                 {
                                     "goto":{
-                                        "block":"list-collector"
+                                        "block":"visitors-list-collector"
                                     }
                                 }
                             ]
                         },
                         {
-                            "id":"visitor-list-collector",
+                            "id":"visitors-list-collector",
                             "type":"ListCollector",
                             "for_list":"visitors",
                             "add_answer":{
