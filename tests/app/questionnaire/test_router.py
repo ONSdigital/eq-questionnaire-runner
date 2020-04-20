@@ -196,7 +196,7 @@ class TestRouter(AppContextTestCase):  # pylint: disable=too-many-public-methods
         next_location = router.get_next_location_url(current_location, routing_path)
         expected_location = router.get_section_summary_url(Location(section_id="currency-section"))
 
-        self.assertEquals(next_location, expected_location)
+        self.assertEqual(next_location, expected_location)
 
     def test_previous_location_url(self):
         schema = load_schema_from_name("test_textfield")

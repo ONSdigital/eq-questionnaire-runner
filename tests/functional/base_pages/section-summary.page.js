@@ -46,18 +46,11 @@ class SectionSummaryPage extends BasePage {
 
   summaryItems() { return 'table.summary__items'; }
 
-  summaryRowAction(number = 1) {
-    return 'tbody:nth-child(' + number + ') tr td.summary__actions a';
-  }
+  summaryRowAction(number = 1) { return 'tbody:nth-child(' + number + ') tr td.summary__actions a'; }
 
-  summaryRowTitle(number = 1) {
-    return 'tbody:nth-child(' + number + ') tr td.summary__item-title';
-  }
+  summaryRowTitle(number = 1) { return 'tbody:nth-child(' + number + ') tr td.summary__item-title'; }
 
-  summaryRowValue(number = 1) {
-    return 'tbody:nth-child(' + number + ') tr td.summary__values';
-  }
-
+  summaryRowValue(number = 1) { return 'tbody:nth-child(' + number + ') tr td.summary__values'; }
 }
 
 module.exports = new SectionSummaryPage();

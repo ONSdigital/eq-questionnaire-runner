@@ -15,7 +15,7 @@ class QuestionPage extends BasePage {
 
   questionText() { return 'h1'; }
 
-  alert() { return '[data-qa="error-body"]';  }
+  alert() { return '[data-qa="error-body"]'; }
 
   error() { return '.js-inpagelink'; }
 
