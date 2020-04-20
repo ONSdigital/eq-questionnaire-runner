@@ -19,5 +19,5 @@ try:
     file.close()
 
 except RequestException as ex:
-    logger.error(f"Can't check schemas version - {ex}.")
+    logger.error("Can't check schemas version - %s." % ex)
     sys.exit(1)
