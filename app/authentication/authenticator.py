@@ -83,7 +83,6 @@ def load_user():
     Checks for the present of the JWT in the users sessions
     :return: A user object if a JWT token is available in the session
     """
-    logger.info("user-id" + cookie_session.get(USER_IK, "not found"))
     session_store = get_session_store()
 
     if session_store and session_store.user_id and _is_session_valid(session_store):
