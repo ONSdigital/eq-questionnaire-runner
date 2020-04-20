@@ -1,5 +1,6 @@
 const MandatoryCheckboxPage = require('../../../../generated_pages/mutually_exclusive/mutually-exclusive-checkbox.page');
-const SummaryPage = require('../../../../generated_pages/mutually_exclusive/mandatory-section-summary.page');
+
+const SectionSummaryPage = require('../../../../base_pages/section-summary.page.js');
 
 describe('Component: Mutually Exclusive Checkbox With Single Checkbox Override', function() {
   beforeEach(function() {
@@ -31,8 +32,8 @@ describe('Component: Mutually Exclusive Checkbox With Single Checkbox Override',
 
       $(MandatoryCheckboxPage.submit()).click();
 
-      expect($(SummaryPage.checkboxExclusiveAnswer()).getText()).to.have.string('I prefer not to say');
-      expect($(SummaryPage.checkboxExclusiveAnswer()).getText()).to.not.have.string('British\nIrish');
+      expect($(SectionSummaryPage.summaryRowValues(1)).getText()).to.have.string('I prefer not to say');
+      expect($(SectionSummaryPage.summaryItems()).getText()).to.not.have.string('British\nIrish');
 
     });
   });
@@ -44,7 +45,7 @@ describe('Component: Mutually Exclusive Checkbox With Single Checkbox Override',
       $(MandatoryCheckboxPage.submit()).click();
 
       // When
-      $(SummaryPage.previous()).click();
+      $(SectionSummaryPage.previous()).click();
 
       // Then
       expect($(MandatoryCheckboxPage.checkboxExclusiveIPreferNotToSay()).isSelected()).to.be.true;
@@ -68,8 +69,8 @@ describe('Component: Mutually Exclusive Checkbox With Single Checkbox Override',
 
       $(MandatoryCheckboxPage.submit()).click();
 
-      expect($(SummaryPage.checkboxAnswer()).getText()).to.have.string('British\nIrish');
-      expect($(SummaryPage.checkboxAnswer()).getText()).to.not.have.string('I prefer not to say');
+      expect($(SectionSummaryPage.summaryRowValues(1)).getText()).to.have.string('British\nIrish');
+      expect($(SectionSummaryPage.summaryItems()).getText()).to.not.have.string('I prefer not to say');
     });
   });
 
@@ -88,8 +89,8 @@ describe('Component: Mutually Exclusive Checkbox With Single Checkbox Override',
 
       $(MandatoryCheckboxPage.submit()).click();
 
-      expect($(SummaryPage.checkboxAnswer()).getText()).to.have.string('British\nIrish');
-      expect($(SummaryPage.checkboxAnswer()).getText()).to.not.have.string('I prefer not to say');
+      expect($(SectionSummaryPage.summaryRowValues(1)).getText()).to.have.string('British\nIrish');
+      expect($(SectionSummaryPage.summaryItems()).getText()).to.not.have.string('I prefer not to say');
     });
   });
 
@@ -106,8 +107,8 @@ describe('Component: Mutually Exclusive Checkbox With Single Checkbox Override',
       $(MandatoryCheckboxPage.submit()).click();
 
       // Then
-      expect($(SummaryPage.checkboxExclusiveAnswer()).getText()).to.have.string('I prefer not to say');
-      expect($(SummaryPage.checkboxExclusiveAnswer()).getText()).to.not.have.string('British\nIrish');
+      expect($(SectionSummaryPage.summaryRowValues(1)).getText()).to.have.string('I prefer not to say');
+      expect($(SectionSummaryPage.summaryItems()).getText()).to.not.have.string('British\nIrish');
     });
   });
 

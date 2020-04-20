@@ -1,13 +1,11 @@
 const EmploymentStatusBlockPage = require('../../../generated_pages/hub_and_spoke/employment-status.page.js');
 const EmploymentTypeBlockPage = require('../../../generated_pages/hub_and_spoke/employment-type.page.js');
-const HouseholdSummary = require('../../../generated_pages/hub_and_spoke/household-summary.page.js');
 const HowManyPeopleLiveHere = require('../../../generated_pages/hub_and_spoke/how-many-people-live-here.page.js');
 const ProxyPage = require('../../../generated_pages/hub_and_spoke/proxy.page.js');
-const AccomodationDetailsSummaryBlockPage = require('../../../generated_pages/hub_and_spoke/accommodation-details-summary.page.js');
 const DoesAnyoneLiveHere = require('../../../generated_pages/hub_and_spoke/does-anyone-live-here.page.js');
 const Relationships = require('../../../generated_pages/hub_and_spoke/relationships.page.js');
-const RelationshipsSummary = require('../../../generated_pages/hub_and_spoke/relationships-summary.page.js');
 
+const SectionSummaryPage = require('../../../base_pages/section-summary.page.js');
 const HubPage = require('../../../base_pages/hub.page.js');
 
 
@@ -173,7 +171,7 @@ describe('Feature: Hub and Spoke', function () {
     });
   });
 
-  describe('Given a user has completed all sections', function () {
+  describe.only('Given a user has completed all sections', function () {
     beforeEach('Complete all sections', function () {
       browser.openQuestionnaire(hub_and_spoke_schema);
       $(HubPage.summaryRowLink(1)).click();
@@ -184,15 +182,15 @@ describe('Feature: Hub and Spoke', function () {
       $(HubPage.submit()).click();
       $(ProxyPage.yes()).click();
       $(ProxyPage.submit()).click();
-      $(AccomodationDetailsSummaryBlockPage.submit()).click();
+      $(SectionSummaryPage.submit()).click();
       $(HubPage.submit()).click();
       $(DoesAnyoneLiveHere.no()).click();
       $(DoesAnyoneLiveHere.submit()).click();
-      $(HouseholdSummary.submit()).click();
+      $(SectionSummaryPage.submit()).click();
       $(HubPage.submit()).click();
       $(Relationships.yes()).click();
       $(Relationships.submit()).click();
-      $(RelationshipsSummary.submit()).click();
+      $(SectionSummaryPage.submit()).click();
     });
 
     it('It should return them to the hub', function () {
@@ -236,22 +234,22 @@ describe('Feature: Hub and Spoke', function () {
         $(HubPage.summaryRowLink(3)).click();
         $(DoesAnyoneLiveHere.no()).click();
         $(DoesAnyoneLiveHere.submit()).click();
-        $(HouseholdSummary.submit()).click();
+        $(SectionSummaryPage.submit()).click();
       });
 
       it('When there are no changes, continue returns directly to the hub', function () {
         $(HubPage.summaryRowLink(3)).click();
-        $(HouseholdSummary.submit()).click();
+        $(SectionSummaryPage.submit()).click();
         let expectedUrl = browser.getUrl();
         expect(expectedUrl).to.contain(HubPage.url());
       });
 
       it('When there are changes which would set the section to in_progress it routes accordingly', function () {
         $(HubPage.summaryRowLink(3)).click();
-        $(HouseholdSummary.doesAnyoneLiveHereAnswerEdit()).click();
+        $(SectionSummaryPage.summaryRowAction(1)).click();
         $(DoesAnyoneLiveHere.yes()).click();
         $(DoesAnyoneLiveHere.submit()).click();
-        $(HouseholdSummary.submit()).click();
+        $(SectionSummaryPage.submit()).click();
         let expectedUrl = browser.getUrl();
         expect(expectedUrl).to.contain(HowManyPeopleLiveHere.url());
       });

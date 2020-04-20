@@ -1,5 +1,6 @@
 const TextFieldPage = require('../../../../generated_pages/mutually_exclusive/mutually-exclusive-textfield.page');
-const SummaryPage = require('../../../../generated_pages/mutually_exclusive/optional-textfield-section-summary.page');
+
+const SectionSummaryPage = require('../../../../base_pages/section-summary.page.js');
 
 describe('Component: Mutually Exclusive Textfield With Single Checkbox Override', function() {
   beforeEach(function() {
@@ -22,8 +23,8 @@ describe('Component: Mutually Exclusive Textfield With Single Checkbox Override'
 
       $(TextFieldPage.submit()).click();
 
-      expect($(SummaryPage.textfieldExclusiveAnswer()).getText()).to.have.string('I prefer not to say');
-      expect($(SummaryPage.textfieldExclusiveAnswer()).getText()).to.not.have.string('Blue');
+      expect($(SectionSummaryPage.summaryRowValues(1)).getText()).to.have.string('I prefer not to say');
+      expect($(SectionSummaryPage.summaryItems()).getText()).to.not.have.string('Blue');
     });
   });
 
@@ -42,8 +43,8 @@ describe('Component: Mutually Exclusive Textfield With Single Checkbox Override'
 
       $(TextFieldPage.submit()).click();
 
-      expect($(SummaryPage.textfieldAnswer()).getText()).to.have.string('Blue');
-      expect($(SummaryPage.textfieldAnswer()).getText()).to.not.have.string('I prefer not to say');
+      expect($(SectionSummaryPage.summaryRowValues(1)).getText()).to.have.string('Blue');
+      expect($(SectionSummaryPage.summaryItems()).getText()).to.not.have.string('I prefer not to say');
     });
   });
 
@@ -61,8 +62,8 @@ describe('Component: Mutually Exclusive Textfield With Single Checkbox Override'
 
       $(TextFieldPage.submit()).click();
 
-      expect($(SummaryPage.textfieldAnswer()).getText()).to.have.string('Blue');
-      expect($(SummaryPage.textfieldAnswer()).getText()).to.not.have.string('I prefer not to say');
+      expect($(SectionSummaryPage.summaryRowValues(1)).getText()).to.have.string('Blue');
+      expect($(SectionSummaryPage.summaryItems()).getText()).to.not.have.string('I prefer not to say');
     });
   });
 
@@ -78,8 +79,8 @@ describe('Component: Mutually Exclusive Textfield With Single Checkbox Override'
       // Then
       $(TextFieldPage.submit()).click();
 
-      expect($(SummaryPage.textfieldExclusiveAnswer()).getText()).to.have.string('I prefer not to say');
-      expect($(SummaryPage.textfieldExclusiveAnswer()).getText()).to.not.have.string('Blue');
+      expect($(SectionSummaryPage.summaryRowValues(1)).getText()).to.have.string('I prefer not to say');
+      expect($(SectionSummaryPage.summaryItems()).getText()).to.not.have.string('Blue');
     });
   });
 
@@ -93,7 +94,7 @@ describe('Component: Mutually Exclusive Textfield With Single Checkbox Override'
       $(TextFieldPage.submit()).click();
 
       // Then
-      expect($(SummaryPage.textfieldAnswer()).getText()).to.contain('No answer provided');
+      expect($(SectionSummaryPage.summaryRowValues(1)).getText()).to.contain('No answer provided');
     });
   });
 });

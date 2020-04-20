@@ -16,7 +16,7 @@ class TestCheckboxSingleCheckboxOverride(IntegrationTestCase):
         self.post({"checkbox-answer": ["British", "Irish"]})
 
         # Then
-        self.assertInUrl("section-summary")
+        self.assertInUrl("/sections/mutually-exclusive-checkbox-section/")
         self.assertInBody("British")
         self.assertInBody("Irish")
 
@@ -25,7 +25,7 @@ class TestCheckboxSingleCheckboxOverride(IntegrationTestCase):
         self.post({"checkbox-exclusive-answer": ["I prefer not to say"]})
 
         # Then
-        self.assertInUrl("section-summary")
+        self.assertInUrl("/sections/mutually-exclusive-checkbox-section/")
         self.assertInBody("I prefer not to say")
 
     def test_mandatory_exclusive_question(self):

@@ -1,5 +1,5 @@
 const CurrencyPage = require('../../../../generated_pages/mutually_exclusive/mutually-exclusive-currency.page');
-const SummaryPage = require('../../../../generated_pages/mutually_exclusive/optional-currency-section-summary.page');
+const SectionSummaryPage = require('../../../../base_pages/section-summary.page.js');
 
 describe('Component: Mutually Exclusive Currency With Single Checkbox Override', function() {
   beforeEach(function() {
@@ -22,8 +22,8 @@ describe('Component: Mutually Exclusive Currency With Single Checkbox Override',
 
       $(CurrencyPage.submit()).click();
 
-      expect($(SummaryPage.currencyExclusiveAnswer()).getText()).to.have.string('I prefer not to say');
-      expect($(SummaryPage.currencyExclusiveAnswer()).getText()).to.not.have.string('123');
+      expect($(SectionSummaryPage.summaryRowValues(1)).getText()).to.have.string('I prefer not to say');
+      expect($(SectionSummaryPage.summaryItems()).getText()).to.not.have.string('123');
     });
   });
 
@@ -42,8 +42,8 @@ describe('Component: Mutually Exclusive Currency With Single Checkbox Override',
 
       $(CurrencyPage.submit()).click();
 
-      expect($(SummaryPage.currencyAnswer()).getText()).to.have.string('123');
-      expect($(SummaryPage.currencyAnswer()).getText()).to.not.have.string('I prefer not to say');
+      expect($(SectionSummaryPage.summaryRowValues(1)).getText()).to.have.string('123');
+      expect($(SectionSummaryPage.summaryItems()).getText()).to.not.have.string('I prefer not to say');
     });
   });
 
@@ -61,8 +61,8 @@ describe('Component: Mutually Exclusive Currency With Single Checkbox Override',
 
       $(CurrencyPage.submit()).click();
 
-      expect($(SummaryPage.currencyAnswer()).getText()).to.have.string('123');
-      expect($(SummaryPage.currencyAnswer()).getText()).to.not.have.string('I prefer not to say');
+      expect($(SectionSummaryPage.summaryRowValues(1)).getText()).to.have.string('123');
+      expect($(SectionSummaryPage.summaryItems()).getText()).to.not.have.string('I prefer not to say');
     });
   });
 
@@ -78,8 +78,8 @@ describe('Component: Mutually Exclusive Currency With Single Checkbox Override',
       // Then
       $(CurrencyPage.submit()).click();
 
-      expect($(SummaryPage.currencyExclusiveAnswer()).getText()).to.have.string('I prefer not to say');
-      expect($(SummaryPage.currencyExclusiveAnswer()).getText()).to.not.have.string('123');
+      expect($(SectionSummaryPage.summaryRowValues(1)).getText()).to.have.string('I prefer not to say');
+      expect($(SectionSummaryPage.summaryItems()).getText()).to.not.have.string('123');
     });
   });
 
@@ -93,7 +93,7 @@ describe('Component: Mutually Exclusive Currency With Single Checkbox Override',
       $(CurrencyPage.submit()).click();
 
       // Then
-      expect($(SummaryPage.currencyAnswer()).getText()).to.contain('No answer provided');
+      expect($(SectionSummaryPage.summaryRowValues(1)).getText()).to.contain('No answer provided');
     });
   });
 });

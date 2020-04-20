@@ -360,9 +360,7 @@ class TestCalculatedSummaryContext(TestStandardSummaryContext):
 @pytest.mark.usefixtures("app")
 def test_context_for_section_list_summary(people_answer_store):
     schema = load_schema_from_name("test_list_collector_section_summary")
-    current_location = Location(
-        block_id="people-list-section-summary", section_id="section"
-    )
+    current_location = Location(section_id="section")
 
     summary_context = SectionSummaryContext(
         language=DEFAULT_LANGUAGE_CODE,
@@ -385,52 +383,52 @@ def test_context_for_section_list_summary(people_answer_store):
             "collapsible": False,
             "custom_summary": [
                 {
-                    "add_link": "/questionnaire/people/add-person/?return_to=people-list-section-summary",
+                    "add_link": "/questionnaire/people/add-person/?return_to_summary=section",
                     "add_link_text": "Add someone to this household",
                     "empty_list_text": "There are no householders",
                     "list": {
                         "editable": True,
                         "list_items": [
                             {
-                                "edit_link": "/questionnaire/people/PlwgoG/edit-person/?return_to=people-list-section-summary",
+                                "edit_link": "/questionnaire/people/PlwgoG/edit-person/?return_to_summary=section",
                                 "item_title": "Toni Morrison",
                                 "primary_person": False,
-                                "remove_link": "/questionnaire/people/PlwgoG/remove-person/?return_to=people-list-section-summary",
+                                "remove_link": "/questionnaire/people/PlwgoG/remove-person/?return_to_summary=section",
                             },
                             {
-                                "edit_link": "/questionnaire/people/UHPLbX/edit-person/?return_to=people-list-section-summary",
+                                "edit_link": "/questionnaire/people/UHPLbX/edit-person/?return_to_summary=section",
                                 "item_title": "Barry Pheloung",
                                 "primary_person": False,
-                                "remove_link": "/questionnaire/people/UHPLbX/remove-person/?return_to=people-list-section-summary",
+                                "remove_link": "/questionnaire/people/UHPLbX/remove-person/?return_to_summary=section",
                             },
-                        ],
+                        ]
                     },
-                    "title": "Household members staying overnight on 13 October 2019 at 70 Abingdon Road, Goathill",
                     "list_name": "people",
-                    "type": "List",
+                    "title": "Household members staying overnight on 13 October 2019 at 70 Abingdon Road, Goathill",
+                    "type": "List"
                 },
                 {
-                    "add_link": "/questionnaire/visitors/add-visitor/?return_to=people-list-section-summary",
+                    "add_link": "/questionnaire/visitors/add-visitor/?return_to_summary=section",
                     "add_link_text": "Add another visitor to this household",
                     "empty_list_text": "There are no visitors",
                     "list": {
                         "list_items": [
                             {
-                                "edit_link": "/questionnaire/visitors/gTrlio/edit-visitor-person/?return_to=people-list-section-summary",
+                                "edit_link": "/questionnaire/visitors/gTrlio/edit-visitor-person/?return_to_summary=section",
                                 "item_title": "",
                                 "primary_person": False,
-                                "remove_link": "/questionnaire/visitors/gTrlio/remove-visitor/?return_to=people-list-section-summary",
+                                "remove_link": "/questionnaire/visitors/gTrlio/remove-visitor/?return_to_summary=section",
                             }
                         ],
                         "editable": True,
                     },
                     "list_name": "visitors",
                     "title": "Visitors staying overnight on 13 October 2019 at 70 Abingdon Road, Goathill",
-                    "type": "List",
+                    "type": "List"
                 },
             ],
             "summary_type": "SectionSummary",
-            "title": "List Collector Summary",
+            "title": "People who live here and overnight visitors",
         }
     }
 
@@ -440,7 +438,7 @@ def test_context_for_section_list_summary(people_answer_store):
 @pytest.mark.usefixtures("app")
 def test_context_for_driving_question_summary_empty_list():
     schema = load_schema_from_name("test_list_collector_driving_question")
-    current_location = Location(block_id="summary", section_id="section")
+    current_location = Location(section_id="section")
 
     summary_context = SectionSummaryContext(
         DEFAULT_LANGUAGE_CODE,
@@ -458,13 +456,13 @@ def test_context_for_driving_question_summary_empty_list():
             "collapsible": False,
             "custom_summary": [
                 {
-                    "add_link": "/questionnaire/anyone-usually-live-at/?return_to=summary",
+                    "add_link": "/questionnaire/anyone-usually-live-at/?return_to_summary=section",
                     "add_link_text": "Add someone to this household",
                     "empty_list_text": "There are no householders",
-                    "list": {"editable": True, "list_items": []},
-                    "title": "Household members",
                     "list_name": "people",
-                    "type": "List",
+                    "list": {"list_items": [], "editable": True},
+                    "title": "Household members",
+                    "type": "List"
                 }
             ],
             "summary_type": "SectionSummary",
@@ -478,7 +476,7 @@ def test_context_for_driving_question_summary_empty_list():
 @pytest.mark.usefixtures("app")
 def test_context_for_driving_question_summary():
     schema = load_schema_from_name("test_list_collector_driving_question")
-    current_location = Location(block_id="summary", section_id="section")
+    current_location = Location(section_id="section")
 
     summary_context = SectionSummaryContext(
         DEFAULT_LANGUAGE_CODE,
@@ -507,22 +505,22 @@ def test_context_for_driving_question_summary():
             "collapsible": False,
             "custom_summary": [
                 {
-                    "add_link": "/questionnaire/people/add-person/?return_to=summary",
+                    "add_link": "/questionnaire/people/add-person/?return_to_summary=section",
                     "add_link_text": "Add someone to this household",
                     "empty_list_text": "There are no householders",
                     "list": {
+                        "editable": True,
                         "list_items": [
                             {
-                                "edit_link": "/questionnaire/people/PlwgoG/edit-person/?return_to=summary",
                                 "item_title": "Toni Morrison",
                                 "primary_person": False,
-                                "remove_link": "/questionnaire/people/PlwgoG/remove-person/?return_to=summary",
+                                "edit_link": "/questionnaire/people/PlwgoG/edit-person/?return_to_summary=section",
+                                "remove_link": "/questionnaire/people/PlwgoG/remove-person/?return_to_summary=section",
                             }
-                        ],
-                        "editable": True,
+                        ]
                     },
-                    "title": "Household members",
                     "list_name": "people",
+                    "title": "Household members",
                     "type": "List",
                 }
             ],
@@ -538,10 +536,7 @@ def test_context_for_driving_question_summary():
 def test_titles_for_repeating_section_summary(people_answer_store):
     schema = load_schema_from_name("test_repeating_sections_with_hub_and_spoke")
     current_location = Location(
-        block_id="personal-summary",
-        section_id="personal-details-section",
-        list_name="people",
-        list_item_id="PlwgoG",
+        section_id="personal-details-section", list_name="people", list_item_id="PlwgoG"
     )
 
     section_summary_context = SectionSummaryContext(

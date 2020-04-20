@@ -3,7 +3,8 @@ const AddPersonPage = require('../../generated_pages/confirmation_question_withi
 const CarerPage = require('../../generated_pages/confirmation_question_within_repeating_section/carer-block.page');
 const DateOfBirthPage = require('../../generated_pages/confirmation_question_within_repeating_section/dob-block.page');
 const ConfirmDateOfBirthPage = require('../../generated_pages/confirmation_question_within_repeating_section/confirm-dob-block.page');
-const SectionSummaryPage = require('../../generated_pages/confirmation_question_within_repeating_section/section-summary.page');
+
+const SectionSummaryPage = require('../../base_pages/section-summary.page.js');
 
 describe('Feature: Confirmation Question Within A Repeating Section', function () {
   describe('Given I am in a repeating section', function () {
@@ -46,8 +47,8 @@ describe('Feature: Confirmation Question Within A Repeating Section', function (
         $(ConfirmDateOfBirthPage.yesPersonNameIsAgeOld()).click();
         $(ConfirmDateOfBirthPage.submit()).click();
 
-        expect(browser.getUrl()).to.contain(SectionSummaryPage.pageName);
-        expect($(SectionSummaryPage.confirmDateOfBirth()).isExisting()).to.be.false;
+        expect(browser.getUrl()).to.contain('sections/default-section/');
+        expect($(SectionSummaryPage.listCollectorHouseholdRowTitle(2)).isExisting()).to.be.false;
       });
     });
 

@@ -4,11 +4,10 @@ const PrimaryPersonAddPage = require('../../../generated_pages/repeating_section
 const FirstListCollectorPage = require('../../../generated_pages/repeating_section_summaries/list-collector.page');
 const FirstListCollectorAddPage = require('../../../generated_pages/repeating_section_summaries/list-collector-add.page');
 
-const PersonalSummaryPage = require('../../../generated_pages/repeating_section_summaries/personal-summary.page');
-
 const ProxyPage = require('../../../generated_pages/repeating_section_summaries/proxy.page');
 const DateOfBirthPage = require('../../../generated_pages/repeating_section_summaries/date-of-birth.page');
 
+const SectionSummaryPage = require('../../../base_pages/section-summary.page.js');
 const HubPage = require('../../../base_pages/hub.page.js');
 
 
@@ -59,15 +58,15 @@ describe('Feature: Repeating Section Summaries', function () {
       });
 
       it('shows their name in the section summary title', function() {
-        expect($(PersonalSummaryPage.questionText()).getText()).to.contain('Mark Twain');
+        expect($(SectionSummaryPage.displayedName()).getText()).to.contain('Mark Twain');
       });
 
       it('renders their name as part of the question title on the section summary', function() {
-        expect($(PersonalSummaryPage.dateOfBirthQuestion()).getText()).to.contain('Mark Twain’s');
+        expect($(SectionSummaryPage.summaryRowTitle(2)).getText()).to.contain('Mark Twain’s');
       });
 
       it('renders the correct date of birth answer', function() {
-        expect($(PersonalSummaryPage.dateOfBirthAnswer()).getText()).to.contain('30 November 1835');
+        expect($(SectionSummaryPage.summaryRowValues(2)).getText()).to.contain('30 November 1835');
       });
     });
   });

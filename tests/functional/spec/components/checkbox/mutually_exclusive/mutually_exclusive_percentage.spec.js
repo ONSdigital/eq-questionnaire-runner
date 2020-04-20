@@ -1,5 +1,6 @@
 const PercentagePage = require('../../../../generated_pages/mutually_exclusive/mutually-exclusive-percentage.page');
-const SummaryPage = require('../../../../generated_pages/mutually_exclusive/optional-percentage-section-summary.page');
+
+const SectionSummaryPage = require('../../../../base_pages/section-summary.page.js');
 
 describe('Component: Mutually Exclusive Percentage With Single Checkbox Override', function() {
   beforeEach(function() {
@@ -22,8 +23,8 @@ describe('Component: Mutually Exclusive Percentage With Single Checkbox Override
 
       $(PercentagePage.submit()).click();
 
-      expect($(SummaryPage.percentageExclusiveAnswer()).getText()).to.have.string('I prefer not to say');
-      expect($(SummaryPage.percentageExclusiveAnswer()).getText()).to.not.have.string('99');
+      expect($(SectionSummaryPage.summaryRowValues(1)).getText()).to.have.string('I prefer not to say');
+      expect($(SectionSummaryPage.summaryItems()).getText()).to.not.have.string('99');
 
     });
   });
@@ -43,8 +44,8 @@ describe('Component: Mutually Exclusive Percentage With Single Checkbox Override
 
       $(PercentagePage.submit()).click();
 
-      expect($(SummaryPage.percentageAnswer()).getText()).to.have.string('99');
-      expect($(SummaryPage.percentageAnswer()).getText()).to.not.have.string('I prefer not to say');
+      expect($(SectionSummaryPage.summaryRowValues(1)).getText()).to.have.string('99');
+      expect($(SectionSummaryPage.summaryItems()).getText()).to.not.have.string('I prefer not to say');
 
     });
   });
@@ -63,8 +64,8 @@ describe('Component: Mutually Exclusive Percentage With Single Checkbox Override
 
       $(PercentagePage.submit()).click();
 
-      expect($(SummaryPage.percentageAnswer()).getText()).to.have.string('99');
-      expect($(SummaryPage.percentageAnswer()).getText()).to.not.have.string('I prefer not to say');
+      expect($(SectionSummaryPage.summaryRowValues(1)).getText()).to.have.string('99');
+      expect($(SectionSummaryPage.summaryItems()).getText()).to.not.have.string('I prefer not to say');
     });
   });
 
@@ -80,8 +81,8 @@ describe('Component: Mutually Exclusive Percentage With Single Checkbox Override
       // Then
       $(PercentagePage.submit()).click();
 
-      expect($(SummaryPage.percentageExclusiveAnswer()).getText()).to.have.string('I prefer not to say');
-      expect($(SummaryPage.percentageExclusiveAnswer()).getText()).to.not.have.string('British\nIrish');
+      expect($(SectionSummaryPage.summaryRowValues(1)).getText()).to.have.string('I prefer not to say');
+      expect($(SectionSummaryPage.summaryItems()).getText()).to.not.have.string('British\nIrish');
     });
   });
 
@@ -95,7 +96,7 @@ describe('Component: Mutually Exclusive Percentage With Single Checkbox Override
       $(PercentagePage.submit()).click();
 
       // Then
-      expect($(SummaryPage.percentageAnswer()).getText()).to.contain('No answer provided');
+      expect($(SectionSummaryPage.summaryRowValues(1)).getText()).to.contain('No answer provided');
     });
   });
 });

@@ -31,6 +31,7 @@
         {
             "id": "test-skipping-section",
             "title": "Section 1",
+            "summary": {},
             "groups": [
                 {
                     "blocks": [
@@ -75,7 +76,7 @@
                                 },
                                 {
                                     "goto": {
-                                        "group": "test-skipping-section-summary-group"
+                                        "section": "end"
                                     }
                                 }
                             ]
@@ -109,22 +110,13 @@
                     ],
                     "id": "test-skipping-group",
                     "title": "Section 1"
-                },
-                {
-                    "id": "test-skipping-section-summary-group",
-                    "title": "Section 1 Summary",
-                    "blocks": [
-                        {
-                            "id": "test-skipping-section-summary",
-                            "type": "SectionSummary"
-                        }
-                    ]
                 }
             ]
         },
         {
             "id": "test-skipping-section-2",
             "title": "Section 2",
+            "summary": {},
             "groups": [
                 {
                     "blocks": [
@@ -169,7 +161,7 @@
                                 },
                                 {
                                     "goto": {
-                                        "group": "test-skipping-section-summary-group-2"
+                                        "section": "end"
                                     }
                                 }
                             ]
@@ -203,16 +195,6 @@
                     ],
                     "id": "test-skipping-group-2",
                     "title": "Section 2"
-                },
-                {
-                    "id": "test-skipping-section-summary-group-2",
-                    "title": "Section 2 Summary",
-                    "blocks": [
-                        {
-                            "id": "test-skipping-section-summary-2",
-                            "type": "SectionSummary"
-                        }
-                    ]
                 }
             ]
         },

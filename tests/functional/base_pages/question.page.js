@@ -17,6 +17,7 @@ class QuestionPage extends BasePage {
 
   alert() { return '[data-qa="error-body"]';  }
 
+
   error() { return '.js-inpagelink'; }
 
   errorHeader() { return '#main-content > div.panel.panel--error.u-mb-s > div.panel__header > div'; }
@@ -34,6 +35,8 @@ class QuestionPage extends BasePage {
   submit() { return '[data-qa="btn-submit"]'; }
 
   saveSignOut() { return '[data-qa="btn-save-sign-out"]'; }
+
+  summaryShowAllButton() {return '.js-collapsible-all';}
 
   switchLanguage(language_code) { return 'a[href="?language_code=' + language_code + '"]'; }
 

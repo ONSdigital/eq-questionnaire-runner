@@ -7,7 +7,6 @@ const ListCollectorAddPage = require('../generated_pages/list_collector/list-col
 const ListCollectorEditPage = require('../generated_pages/list_collector/list-collector-edit.page.js');
 const ListCollectorRemovePage = require('../generated_pages/list_collector/list-collector-remove.page.js');
 const NextInterstitialPage = require('../generated_pages/list_collector/next-interstitial.page.js');
-const SummaryPage = require('../generated_pages/list_collector/group-summary.page.js');
 
 const PrimaryPersonListCollectorPage = require('../generated_pages/list_collector_section_summary/primary-person-list-collector.page.js');
 const PrimaryPersonListCollectorAddPage = require('../generated_pages/list_collector_section_summary/primary-person-list-collector-add.page.js');
@@ -17,9 +16,10 @@ const SectionSummaryListCollectorEditPage = require('../generated_pages/list_col
 const SectionSummaryListCollectorRemovePage = require('../generated_pages/list_collector_section_summary/list-collector-remove.page.js');
 const VisitorListCollectorPage = require('../generated_pages/list_collector_section_summary/visitor-list-collector.page.js');
 const VisitorListCollectorAddPage = require('../generated_pages/list_collector_section_summary/visitor-list-collector-add.page.js');
-const PeopleListSectionSummaryPage = require('../generated_pages/list_collector_section_summary/people-list-section-summary.page.js');
 const ConfirmationPage = require('../generated_pages/list_collector/confirmation.page.js');
 
+
+const SectionSummaryPage = require('../base_pages/section-summary.page.js');
 
 describe('List Collector', function() {
   function checkPeopleInList(peopleExpected) {
@@ -185,17 +185,17 @@ describe('List Collector', function() {
     it('The questionnaire shows the confirmation page when no more people to add', function() {
       $(AnotherListCollectorPage.no()).click();
       $(AnotherListCollectorPage.submit()).click();
-      expect(browser.getUrl()).to.contain(SummaryPage.pageName);
+      expect(browser.getUrl()).to.contain(SectionSummaryPage.pageName);
     });
 
     it('The questionnaire allows submission', function() {
-      $(SummaryPage.submit()).click();
+      $(SectionSummaryPage.submit()).click();
       $(ConfirmationPage.submit()).click();
       expect(browser.getUrl()).to.contain('thank-you');
     });
   });
 
-  describe('Given I start a list collector survey and complete to Section Summary', function() {
+  describe.only('Given I start a list collector survey and complete to Section Summary', function() {
 
     beforeEach(function() {
       browser.openQuestionnaire('test_list_collector_section_summary.json');
@@ -221,32 +221,32 @@ describe('List Collector', function() {
     });
 
     it('The section summary should display contents of the list collector', function() {
-      expect($(PeopleListSectionSummaryPage.peopleListLabel(1)).getText()).to.contain('Marcus Twin (You)');
-      expect($(PeopleListSectionSummaryPage.peopleListLabel(2)).getText()).to.contain('Samuel Clemens');
-      expect($(PeopleListSectionSummaryPage.visitorsListLabel(1)).getText()).to.contain('Olivia Clemens');
+      expect($(SectionSummaryPage.listCollectorHouseholdRowTitle(1)).getText()).to.contain('Marcus Twin (You)');
+      expect($(SectionSummaryPage.listCollectorHouseholdRowTitle(2)).getText()).to.contain('Samuel Clemens');
+      expect($(SectionSummaryPage.listCollectorVisitorRowTitle(1)).getText()).to.contain('Olivia Clemens');
     });
 
     it('When the user adds an item to the list, They should return to the section summary and it should display the updated list', function() {
-      $(PeopleListSectionSummaryPage.visitorsListAddLink(1)).click();
+      $(SectionSummaryPage.listCollectorVisitorRowAdd()).click();
       $(VisitorListCollectorAddPage.firstNameVisitor()).setValue('Joe');
       $(VisitorListCollectorAddPage.lastNameVisitor()).setValue('Bloggs');
       $(VisitorListCollectorAddPage.submit()).click();
-      expect($(PeopleListSectionSummaryPage.visitorsListLabel(2)).getText()).to.contain('Joe Bloggs');
+      expect($(SectionSummaryPage.listCollectorVisitorRowTitle(2)).getText()).to.contain('Joe Bloggs');
     });
 
     it('When the user removes an item from the list, They should return to the section summary and it should display the updated list', function() {
-      $(PeopleListSectionSummaryPage.peopleListRemoveLink(2)).click();
+      $(SectionSummaryPage.listCollectorHouseholdRowRemove(2)).click();
       $(SectionSummaryListCollectorRemovePage.yes()).click();
       $(SectionSummaryListCollectorRemovePage.submit()).click();
-      expect($(PeopleListSectionSummaryPage.visitorsListLabel(2)).isExisting()).to.equal(false);
+      expect($(SectionSummaryPage.listCollectorHouseholdRowTitle(2)).isExisting()).to.equal(false);
     });
 
     it('When the user updates the list, They should return to the section summary and it should display the updated list', function() {
-      $(PeopleListSectionSummaryPage.peopleListEditLink(1)).click();
+      $(SectionSummaryPage.listCollectorHouseholdRowChange(1)).click();
       $(SectionSummaryListCollectorEditPage.firstName()).setValue('Mark');
       $(SectionSummaryListCollectorEditPage.lastName()).setValue('Twain');
       $(SectionSummaryListCollectorEditPage.submit()).click();
-      expect($(PeopleListSectionSummaryPage.peopleListLabel(1)).getText()).to.contain('Mark Twain (You)');
+      expect($(SectionSummaryPage.listCollectorHouseholdRowTitle(1)).getText()).to.contain('Mark Twain (You)');
     });
   });
 });

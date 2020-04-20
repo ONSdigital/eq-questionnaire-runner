@@ -202,7 +202,7 @@ class TestPathFinder(AppContextTestCase):
         )
 
         expected_path = RoutingPath(
-            ["proxy", "date-of-birth", "confirm-dob", "sex", "personal-summary"],
+            ["proxy", "date-of-birth", "confirm-dob", "sex"],
             section_id="personal-details-section",
             list_name="people",
             list_item_id="abc123",

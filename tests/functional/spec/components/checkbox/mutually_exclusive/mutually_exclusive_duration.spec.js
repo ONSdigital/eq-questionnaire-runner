@@ -1,5 +1,6 @@
 const DurationPage = require('../../../../generated_pages/mutually_exclusive/mutually-exclusive-duration.page');
-const SummaryPage = require('../../../../generated_pages/mutually_exclusive/optional-duration-section-summary.page');
+
+const SectionSummaryPage = require('../../../../base_pages/section-summary.page.js');
 
 describe('Component: Mutually Exclusive Duration With Single Checkbox Override', function() {
   beforeEach(function() {
@@ -26,8 +27,8 @@ describe('Component: Mutually Exclusive Duration With Single Checkbox Override',
 
       $(DurationPage.submit()).click();
 
-      expect($(SummaryPage.durationExclusiveAnswer()).getText()).to.have.string('I prefer not to say');
-      expect($(SummaryPage.durationExclusiveAnswer()).getText()).to.not.have.string('1 year 7 months');
+      expect($(SectionSummaryPage.summaryRowValues(1)).getText()).to.have.string('I prefer not to say');
+      expect($(SectionSummaryPage.summaryItems()).getText()).to.not.have.string('1 year 7 months');
     });
   });
 
@@ -48,8 +49,8 @@ describe('Component: Mutually Exclusive Duration With Single Checkbox Override',
 
       $(DurationPage.submit()).click();
 
-      expect($(SummaryPage.durationAnswer()).getText()).to.have.string('1 year 7 months');
-      expect($(SummaryPage.durationAnswer()).getText()).to.not.have.string('I prefer not to say');
+      expect($(SectionSummaryPage.summaryRowValues(1)).getText()).to.have.string('1 year 7 months');
+      expect($(SectionSummaryPage.summaryItems()).getText()).to.not.have.string('I prefer not to say');
     });
   });
 
@@ -69,8 +70,8 @@ describe('Component: Mutually Exclusive Duration With Single Checkbox Override',
 
       $(DurationPage.submit()).click();
 
-      expect($(SummaryPage.durationAnswer()).getText()).to.have.string('1 year 7 months');
-      expect($(SummaryPage.durationAnswer()).getText()).to.not.have.string('I prefer not to say');
+      expect($(SectionSummaryPage.summaryRowValues(1)).getText()).to.have.string('1 year 7 months');
+      expect($(SectionSummaryPage.summaryItems()).getText()).to.not.have.string('I prefer not to say');
     });
   });
 
@@ -87,8 +88,8 @@ describe('Component: Mutually Exclusive Duration With Single Checkbox Override',
       // Then
       $(DurationPage.submit()).click();
 
-      expect($(SummaryPage.durationExclusiveAnswer()).getText()).to.have.string('I prefer not to say');
-      expect($(SummaryPage.durationExclusiveAnswer()).getText()).to.not.have.string('1 year 7 months');
+      expect($(SectionSummaryPage.summaryRowValues(1)).getText()).to.have.string('I prefer not to say');
+      expect($(SectionSummaryPage.summaryItems()).getText()).to.not.have.string('1 year 7 months');
     });
   });
 
@@ -103,7 +104,7 @@ describe('Component: Mutually Exclusive Duration With Single Checkbox Override',
       $(DurationPage.submit()).click();
 
       // Then
-      expect($(SummaryPage.durationAnswer()).getText()).to.contain('No answer provided');
+      expect($(SectionSummaryPage.summaryRowValues(1)).getText()).to.contain('No answer provided');
     });
   });
 });

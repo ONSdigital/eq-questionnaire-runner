@@ -13,13 +13,12 @@ const VisitorsListCollectorAddPage = require('../../../generated_pages/repeating
 const VisitorsListCollectorRemovePage = require('../../../generated_pages/repeating_sections_with_hub_and_spoke/visitors-block-remove.page');
 const VisitorsDateOfBirthPage = require('../../../generated_pages/repeating_sections_with_hub_and_spoke/visitors-date-of-birth.page');
 
-const PersonalSummaryPage = require('../../../generated_pages/repeating_sections_with_hub_and_spoke/personal-summary.page');
-
 const ProxyPage = require('../../../generated_pages/repeating_sections_with_hub_and_spoke/proxy.page');
 const DateOfBirthPage = require('../../../generated_pages/repeating_sections_with_hub_and_spoke/date-of-birth.page');
 const ConfirmDateOfBirthPage = require('../../../generated_pages/repeating_sections_with_hub_and_spoke/confirm-dob.page');
 const SexPage = require('../../../generated_pages/repeating_sections_with_hub_and_spoke/sex.page');
 
+const SectionSummaryPage = require('../../../base_pages/section-summary.page.js');
 const HubPage = require('../../../base_pages/hub.page.js');
 
 
@@ -144,7 +143,7 @@ describe('Feature: Repeating Sections with Hub and Spoke', function () {
       $(SexPage.female()).click();
       $(SexPage.submit()).click();
 
-      $(PersonalSummaryPage.submit()).click();
+      $(SectionSummaryPage.submit()).click();
 
       expect(browser.getUrl()).to.contain(HubPage.url());
       expect($(HubPage.summaryRowState(3)).getText()).to.equal('Completed');
@@ -154,7 +153,7 @@ describe('Feature: Repeating Sections with Hub and Spoke', function () {
 
     it('When the user clicks \'View answers\' for a completed repeating section, Then they are taken to the summary', function () {
       $(HubPage.summaryRowLink(3)).click();
-      expect(browser.getUrl()).to.contain(PersonalSummaryPage.url().split('/').slice(-1)[0]);
+      expect(browser.getUrl()).to.contain('/sections/personal-details-section');
     });
 
     it('When the user adds 2 visitors to the household then a section for each visitor should be display on the hub', function () {
@@ -243,16 +242,16 @@ describe('Feature: Repeating Sections with Hub and Spoke', function () {
       $(HubPage.submit()).click();
       $(SexPage.male()).click();
       $(SexPage.submit()).click();
-      $(PersonalSummaryPage.submit()).click();
+      $(SectionSummaryPage.submit()).click();
 
       $(HubPage.submit()).click();
       $(SexPage.submit()).click();
-      $(PersonalSummaryPage.submit()).click();
+      $(SectionSummaryPage.submit()).click();
 
       $(HubPage.submit()).click();
       $(SexPage.female()).click();
       $(SexPage.submit()).click();
-      $(PersonalSummaryPage.submit()).click();
+      $(SectionSummaryPage.submit()).click();
 
       $(HubPage.submit()).click();
       $(VisitorsDateOfBirthPage.day()).setValue('03');

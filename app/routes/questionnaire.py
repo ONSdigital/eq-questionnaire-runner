@@ -1,5 +1,4 @@
 from datetime import datetime, timedelta
-
 import flask_babel
 import humanize
 import simplejson as json
@@ -37,7 +36,7 @@ from app.helpers.schema_helpers import with_schema
 from app.helpers.session_helpers import with_questionnaire_store
 from app.helpers.template_helper import render_template
 from app.keys import KEY_PURPOSE_SUBMISSION
-from app.questionnaire.location import InvalidLocationException
+from app.questionnaire.location import InvalidLocationException, Location
 from app.questionnaire.router import Router
 from app.storage.storage_encryption import StorageEncryption
 from app.submitter.converter import convert_answers
@@ -47,7 +46,7 @@ from app.views.contexts.hub_context import HubContext
 from app.views.contexts.metadata_context import (
     build_metadata_context_for_survey_completed,
 )
-from app.views.contexts import QuestionnaireSummaryContext
+from app.views.contexts import QuestionnaireSummaryContext, SectionSummaryContext
 from app.views.handlers.block_factory import get_block_handler
 
 END_BLOCKS = "Summary", "Confirmation"
@@ -110,6 +109,7 @@ def before_post_submission_request():
 @with_questionnaire_store
 @with_schema
 def get_questionnaire(schema, questionnaire_store):
+
     router = Router(
         schema,
         questionnaire_store.answer_store,
@@ -165,8 +165,11 @@ def post_questionnaire(schema, questionnaire_store):
     return redirect(router.get_first_incomplete_location_in_survey().url())
 
 
-@questionnaire_blueprint.route("sections/<section_id>/", methods=["GET"])
-@questionnaire_blueprint.route("sections/<section_id>/<list_item_id>/", methods=["GET"])
+# pylint: disable=too-many-return-statements
+@questionnaire_blueprint.route("sections/<section_id>/", methods=["GET", "POST"])
+@questionnaire_blueprint.route(
+    "sections/<section_id>/<list_item_id>/", methods=["GET", "POST"]
+)
 @login_required
 @with_questionnaire_store
 @with_schema
@@ -179,14 +182,47 @@ def get_section(schema, questionnaire_store, section_id, list_item_id=None):
         questionnaire_store.metadata,
     )
 
-    if not schema.is_hub_enabled():
-        redirect_location = router.get_first_incomplete_location_in_survey()
-        return redirect(redirect_location.url())
+    if request.method == "POST":
+        if schema.is_hub_enabled():
+            return redirect(url_for(".get_questionnaire"))
+        return redirect(router.get_first_incomplete_location_in_survey().url())
 
     if section_id not in router.enabled_section_ids:
         return redirect(url_for(".get_questionnaire"))
 
     routing_path = router.routing_path(section_id=section_id, list_item_id=list_item_id)
+
+    if router.can_access_section_summary(section_id, list_item_id):
+        list_name = schema.get_repeating_list_for_section(section_id)
+        section_title = schema.get_title_for_section(section_id)
+        location = Location(
+            section_id=section_id, list_name=list_name, list_item_id=list_item_id
+        )
+        section_summary_context = SectionSummaryContext(
+            flask_babel.get_locale().language,
+            schema,
+            questionnaire_store.answer_store,
+            questionnaire_store.list_store,
+            questionnaire_store.progress_store,
+            questionnaire_store.metadata,
+        )
+        context = section_summary_context(location)
+
+        return _render_page(
+            block_type="SectionSummary",
+            context=context,
+            current_location=location,
+            previous_location_url=router.get_section_return_location_when_section_complete(
+                routing_path
+            ).url(),
+            schema=schema,
+            page_title=section_title,
+        )
+
+    if not schema.is_hub_enabled():
+        redirect_location = router.get_first_incomplete_location_in_survey()
+        return redirect(redirect_location.url())
+
     section_status = questionnaire_store.progress_store.get_section_status(
         section_id=section_id, list_item_id=list_item_id
     )

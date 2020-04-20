@@ -27,7 +27,7 @@
     "sections": [
         {
             "id": "section",
-            "title": "People",
+            "title": "List Collector Driving Question Summary",
             "summary": {
                 "items": [
                     {
@@ -238,11 +238,6 @@
                                     ]
                                 }
                             }
-                        },
-                        {
-                            "type": "SectionSummary",
-                            "title": "List Collector Driving Question Summary",
-                            "id": "summary"
                         }
                     ]
                 }

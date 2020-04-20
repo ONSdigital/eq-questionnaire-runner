@@ -357,8 +357,7 @@ def test_unit_answer(fake_questionnaire_store):
 def test_primary_person_list_item_conversion(fake_questionnaire_store):
     routing_path = [
         RoutingPath(
-            ["primary-person-list-collector", "list-collector", "group-summary"],
-            section_id="section-1",
+            ["primary-person-list-collector", "list-collector"], section_id="section-1"
         )
     ]
 
@@ -400,12 +399,7 @@ def test_primary_person_list_item_conversion(fake_questionnaire_store):
 def test_list_item_conversion(fake_questionnaire_store):
     routing_path = [
         RoutingPath(
-            [
-                "list-collector",
-                "next-interstitial",
-                "another-list-collector-block",
-                "group-summary",
-            ],
+            ["list-collector", "next-interstitial", "another-list-collector-block"],
             section_id="section-1",
         )
     ]
@@ -447,12 +441,7 @@ def test_list_item_conversion_empty_list(fake_questionnaire_store):
     do not have answers yet."""
     routing_path = [
         RoutingPath(
-            [
-                "list-collector",
-                "next-interstitial",
-                "another-list-collector-block",
-                "group-summary",
-            ],
+            ["list-collector", "next-interstitial", "another-list-collector-block"],
             section_id="section-1",
         )
     ]
@@ -510,8 +499,7 @@ def test_default_answers_not_present_when_not_answered(fake_questionnaire_store)
 def test_list_structure_in_payload_is_as_expected(fake_questionnaire_store):
     routing_path = [
         RoutingPath(
-            ["primary-person-list-collector", "list-collector", "group-summary"],
-            section_id="section-1",
+            ["primary-person-list-collector", "list-collector"], section_id="section-1"
         )
     ]
 
@@ -553,12 +541,7 @@ def test_list_structure_in_payload_is_as_expected(fake_questionnaire_store):
 def test_primary_person_not_in_payload_when_not_answered(fake_questionnaire_store):
     routing_path = [
         RoutingPath(
-            [
-                "list-collector",
-                "next-interstitial",
-                "another-list-collector-block",
-                "group-summary",
-            ],
+            ["list-collector", "next-interstitial", "another-list-collector-block"],
             section_id="section-1",
         )
     ]
