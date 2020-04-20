@@ -93,7 +93,7 @@ def login():
         cookie_session["account_service_log_out_url"] = claims.get(
             "account_service_log_out_url"
         )
-    logger.info(cookie_session.USER_IK)
+    logger.info("user id" + cookie_session.USER_IK)
     return redirect(url_for("questionnaire.get_questionnaire"))
 
 
