@@ -31,7 +31,7 @@ def get_questionnaire_store(user_id, user_ik):
 # pylint: disable=import-outside-toplevel
 def get_session_store():
 
-    logger.info("Cookie session = " + cookie_session)
+    print(cookie_session)
 
     from app.data_model.session_store import SessionStore
 
@@ -45,12 +45,12 @@ def get_session_store():
         pepper = current_app.eq["secret_store"].get_secret_by_name(
             "EQ_SERVER_SIDE_STORAGE_ENCRYPTION_USER_PEPPER"
         )
-        logger.info("pepper = " + pepper)
+        print(pepper)
         store = g._session_store = SessionStore(
             cookie_session[USER_IK], pepper, cookie_session[EQ_SESSION_ID]
         )
 
-    logger.info("store = " + store)
+    print(store)
 
     return store
 
