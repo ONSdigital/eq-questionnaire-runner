@@ -30,6 +30,9 @@ def get_questionnaire_store(user_id, user_ik):
 
 # pylint: disable=import-outside-toplevel
 def get_session_store():
+
+    logger.info(cookie_session)
+
     from app.data_model.session_store import SessionStore
 
     if USER_IK not in cookie_session or EQ_SESSION_ID not in cookie_session:
