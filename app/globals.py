@@ -47,9 +47,6 @@ def get_session_store():
             cookie_session[USER_IK], pepper, cookie_session[EQ_SESSION_ID]
         )
 
-    logger.info("Store")
-    logger.info(store)
-
     return store
 
 
