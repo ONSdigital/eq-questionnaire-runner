@@ -5,30 +5,7 @@ on:
       types: schemas_release
 
 jobs:
-  python-dependencies:
-    runs-on: ubuntu-18.04
-    steps:
-      - uses: actions/checkout@v2
-      - run: |
-          echo "::set-env name=PYTHON_VERSION::$(cat .python-version)"
-      - uses: actions/setup-python@v1
-        with:
-          python-version: ${{ env.PYTHON_VERSION }}
-      - name: Install apt dependencies
-        run: sudo apt-get install libsnappy-dev libgconf-2-4
-      - name: Install Pipenv
-        run: pip install pipenv==2018.11.26
-      - name: Cache virtualenv
-        id: cache-virtualenv
-        uses: actions/cache@v1
-        with:
-          path: ~/.local/share/virtualenvs/
-          key: ${{ runner.os }}-${{ env.PYTHON_VERSION }}-virtualenvs-${{ hashFiles('Pipfile.lock') }}
-      - name: Install virtual environment
-        if: steps.cache-virtualenv.outputs.cache-hit != 'true'
-        run: pipenv install --dev
   create-pull-request:
-    needs: python-dependencies
     runs-on: ubuntu-18.04
     steps:
       - uses: actions/checkout@v2
@@ -46,5 +23,5 @@ jobs:
           author: ${{ github.actor }} <${{ github.actor }}@users.noreply.github.com>
           commit-message: Update schemas to version ${{ env.SCHEMAS_VERSION }}
           title: Update schemas to version ${{ env.SCHEMAS_VERSION }}
-          body: This is an auto-generated PR with schema release update.
+          body: This is an auto-generated PR.
           branch: schema-release-${{ env.SCHEMAS_VERSION }}
