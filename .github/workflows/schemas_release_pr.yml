@@ -1,8 +1,9 @@
 name: Schemas release PR
 
 on:
-  repository_dispatch:
-      types: schemas_release
+  pull_request:
+    branches:
+      - master
 
 jobs:
   python-dependencies:
@@ -28,16 +29,19 @@ jobs:
         if: steps.cache-virtualenv.outputs.cache-hit != 'true'
         run: pipenv install --dev
 
-  update-schemas-version:
+
+  create-pull-request:
     needs: python-dependencies
     runs-on: ubuntu-18.04
     steps:
       - uses: actions/checkout@v2
+        with:
+          ref: 'master'
       - run: |
-          echo "::set-env name=PYTHON_VERSION::$(cat .python-version)"
+              echo "::set-env name=PYTHON_VERSION::$(cat .python-version)"
       - uses: actions/setup-python@v1
         with:
-          python-version: ${{ env.PYTHON_VERSION }}
+         python-version: ${{ env.PYTHON_VERSION }}
       - name: Install pipenv
         run: pip install pipenv==2018.11.26
       - name: Cache virtualenv
@@ -51,14 +55,6 @@ jobs:
         run: pipenv install --dev
       - name: Update schemas version
         run: pipenv run python ./scripts/update_schemas_version.py
-
-  create-pull-request:
-    needs: update-schemas-version
-    runs-on: ubuntu-18.04
-    steps:
-      - uses: actions/checkout@v2
-        with:
-          ref: 'master'
       - run: |
           echo "::set-env name=SCHEMAS_VERSION::$(cat .schemas-version)"
       - name: Create Pull Request
