@@ -55,7 +55,7 @@ describe("List Collector Driving Checkbox Question", function() {
   });
 
   describe("Given the user chooses yes from the second list collector", function() {
-    it("Then they are taken to the correc list add screen", function() {
+    it("Then they are taken to the correct list add screen", function() {
       $(SummaryPage.previous()).click();
       $(ListCollectorTemporaryAwayPage.yesINeedToAddSomeone()).click();
       $(ListCollectorTemporaryAwayPage.submit()).click();
