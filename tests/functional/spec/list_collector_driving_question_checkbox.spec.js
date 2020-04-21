@@ -1,5 +1,6 @@
 const checkPeopleInList = require("../helpers");
 const HubPage = require("../base_pages/hub.page.js");
+
 const PrimaryPersonListCollectorPage = require("../generated_pages/list_collector_driving_checkbox/primary-person-list-collector.page.js");
 const PrimaryPersonListCollectorAddPage = require("../generated_pages/list_collector_driving_checkbox/primary-person-list-collector-add.page.js");
 const AnyoneUsuallyLiveAtPage = require("../generated_pages/list_collector_driving_checkbox/anyone-usually-live-at.page.js");

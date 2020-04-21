@@ -37,16 +37,17 @@ class Question(BlockHandler):
         list_items = self._questionnaire_store.list_store[list_name].items
         section_id = self._schema.get_section_id_for_block_id(block_id)
 
-        # deals with scenarios where a list is populated by only a
-        # primary person - so still need to go to the list add question
-        if (
-            len(list_items) == 1
-            and list_items[0]
-            == self._questionnaire_store.list_store[list_name].primary_person
-        ) or not list_items:
+        if self._is_list_just_primary(list_items, list_name) or not list_items:
             return Location(
                 section_id=section_id, block_id=block_id, list_name=list_name
             ).url(previous=self.current_location.block_id)
+
+    def _is_list_just_primary(self, list_items, list_name):
+        return (
+            len(list_items) == 1
+            and list_items[0]
+            == self._questionnaire_store.list_store[list_name].primary_person
+        )
 
     def _get_answer_action(self):
         answers = self.rendered_block["question"]["answers"]
