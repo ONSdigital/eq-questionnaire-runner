@@ -1,23 +1,8 @@
-import sys
-import logging
+# https://gist.github.com/lukechilds/a83e1d7127b78fef38c2914c4ececc3c
+get_latest_release() {
+  curl --silent "https://api.github.com/repos/$1/releases/latest" | # Get latest release from GitHub api
+    grep '"tag_name":' |                                            # Get tag line
+    sed -E 's/.*"([^"]+)".*/\1/'                                    # Pluck JSON value
+}
 
-import requests
-
-from requests.exceptions import RequestException
-
-logger = logging.getLogger(__name__)
-
-try:
-    response = requests.get(
-        "https://api.github.com/repos/ONSdigital/eq-questionnaire-schemas/releases/latest"
-    )
-    if response.status_code != 200:
-        raise RequestException(f"Got a {response.status_code} status code.")
-    latest_tag = response.json()["tag_name"]
-    file = open(".schemas-version", "w")
-    file.write(latest_tag)
-    file.close()
-
-except RequestException as ex:
-    logger.error("Can't check schemas version - %s.", ex)
-    sys.exit(1)
+get_latest_release "onsdigital/eq-questionnaire-schemas" > .schemas-version
