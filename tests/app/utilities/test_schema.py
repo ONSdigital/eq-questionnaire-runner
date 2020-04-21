@@ -9,26 +9,22 @@ from app.utilities.schema import (
 )
 
 
-def test_transform_schema_name_good_scenarios():
+def test_valid_schema_names_from_census_params():
     assert (
-        get_schema_name_from_census_params("census", "HI", "GB-WLS")
+        get_schema_name_from_census_params("census", "I", "GB-WLS")
         == "census_individual_gb_wls"
     )
     assert (
-        get_schema_name_from_census_params("census", "HH", "GB-WLS")
+        get_schema_name_from_census_params("census", "H", "GB-WLS")
         == "census_household_gb_wls"
     )
     assert (
-        get_schema_name_from_census_params("census", "CE", "GB-WLS")
+        get_schema_name_from_census_params("census", "C", "GB-WLS")
         == "census_communal_establishment_gb_wls"
     )
-    assert (
-        get_schema_name_from_census_params("census", "CI", "GB-WLS")
-        == "census_communal_individual_gb_wls"
-    )
 
 
-def test_transform_schema_name_bad_case_type_raises_error():
+def test_get_schema_name_from_census_params_invalid_form_type():
     with pytest.raises(ValueError):
         get_schema_name_from_census_params("census", "bad", "GB-WLS")
 

@@ -1,3 +1,4 @@
+# pylint: disable=too-many-lines
 from unittest.mock import patch, Mock
 
 from app.data_model.answer_store import AnswerStore, Answer
@@ -1062,6 +1063,39 @@ class TestRules(AppContextTestCase):  # pylint: disable=too-many-public-methods
                 {},
                 answer_store,
                 list_store,
+                current_location=current_location,
+            )
+        )
+
+    def test_when_rule_returns_first_item_in_list(self):
+        answer_store = AnswerStore()
+        list_store = ListStore(
+            existing_items=[{"name": "people", "items": ["abcdef", "12345"]}]
+        )
+
+        current_location = Location(
+            section_id="some-section",
+            block_id="some-block",
+            list_name="people",
+            list_item_id="abcdef",
+        )
+
+        when_rules = [
+            {
+                "list": "people",
+                "id_selector": "first",
+                "condition": "equals",
+                "comparison": {"source": "location", "id": "list_item_id"},
+            }
+        ]
+
+        self.assertTrue(
+            evaluate_when_rules(
+                when_rules=when_rules,
+                schema=get_schema(),
+                metadata={},
+                answer_store=answer_store,
+                list_store=list_store,
                 current_location=current_location,
             )
         )

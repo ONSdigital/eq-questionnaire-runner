@@ -99,3 +99,19 @@ def test_repr():
     assert "primary_person=primaryperson" in repr(test_list)
     assert "items=['primaryperson']" in repr(test_list)
     assert "primaryperson" in repr(list_store)
+
+
+def test_first():
+    test_list = ListModel("people", ["abcde", "12345"])
+    assert test_list.first == "abcde"
+
+
+def test_first_raises_index_error_when_list_is_empty():
+    new_list = ListModel("people", [])
+
+    with pytest.raises(IndexError) as error:
+        new_list.first  # pylint: disable=pointless-statement
+
+    assert "unable to access first item in list, list 'people' is empty" in str(
+        error.value
+    )
