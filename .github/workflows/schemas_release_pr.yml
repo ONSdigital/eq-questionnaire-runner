@@ -54,9 +54,12 @@ jobs:
         run: pipenv run python ./scripts/update_schemas_version.py
 
   create-pull-request:
+    needs: update-schemas-version
     runs-on: ubuntu-18.04
     steps:
       - uses: actions/checkout@v2
+        with:
+          ref: 'master'
       - run: |
           echo "::set-env name=RELEASE_TAG::$(cat .schemas-version)"
       - name: Create Pull Request
