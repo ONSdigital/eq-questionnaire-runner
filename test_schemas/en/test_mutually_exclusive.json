@@ -1,5 +1,6 @@
 {
     "mime_type": "application/json/ons/eq",
+    "language": "en",
     "schema_version": "0.0.1",
     "data_version": "0.0.3",
     "survey_id": "0",
@@ -271,7 +272,7 @@
                                         "label": "Enter the percentage increase of your income",
                                         "mandatory": false,
                                         "type": "Percentage",
-                                        "max_value": {
+                                        "maximum": {
                                             "value": 100
                                         }
                                     },

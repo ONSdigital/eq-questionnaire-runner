@@ -17,4 +17,11 @@ describe('Textfield', function() {
     $(SummaryPage.nameAnswerEdit()).click();
     $(TextFieldPage.name()).getValue();
   });
+
+  it('Given the string entered to the textfield is too long, When the user submits, then the correct error message is displayed', function() {
+    browser.openQuestionnaire('test_textfield.json');
+    $(TextFieldPage.name()).setValue('This string is too long');
+    $(TextFieldPage.submit()).click();
+    expect($(TextFieldPage.errorNumber(1)).getText()).to.contain('Your answer is too long, it has to be less than 20 characters.');
+  });
 });

@@ -110,7 +110,7 @@ describe('Feature: Repeating Sections with Hub and Spoke', function () {
       $(DateOfBirthPage.year()).setValue('2000');
       $(DateOfBirthPage.submit()).click();
 
-      $(ConfirmDateOfBirthPage.confirmDateOfBirthYesPersonNameIsAgeInYearsYearsOld()).click();
+      $(ConfirmDateOfBirthPage.confirmDateOfBirthYesPersonNameIsAgeOld()).click();
       $(ConfirmDateOfBirthPage.submit()).click();
 
       browser.url(HubPage.url());
@@ -138,7 +138,7 @@ describe('Feature: Repeating Sections with Hub and Spoke', function () {
       $(DateOfBirthPage.year()).setValue('1995');
       $(DateOfBirthPage.submit()).click();
 
-      $(ConfirmDateOfBirthPage.confirmDateOfBirthYesPersonNameIsAgeInYearsYearsOld()).click();
+      $(ConfirmDateOfBirthPage.confirmDateOfBirthYesPersonNameIsAgeOld()).click();
       $(ConfirmDateOfBirthPage.submit()).click();
 
       $(SexPage.female()).click();
@@ -213,7 +213,7 @@ describe('Feature: Repeating Sections with Hub and Spoke', function () {
 
       expect($(ConfirmDateOfBirthPage.questionText()).getText()).to.equal('You are 49 years old. Is this correct?');
 
-      $(ConfirmDateOfBirthPage.confirmDateOfBirthYesIAmAgeInYearsYearsOld()).click();
+      $(ConfirmDateOfBirthPage.confirmDateOfBirthYesIAmAgeOld()).click();
       $(ConfirmDateOfBirthPage.submit()).click();
 
       expect($(SexPage.questionText()).getText()).to.equal('What is your sex?');
@@ -231,7 +231,7 @@ describe('Feature: Repeating Sections with Hub and Spoke', function () {
       $(DateOfBirthPage.year()).setValue('1990');
       $(DateOfBirthPage.submit()).click();
 
-      $(ConfirmDateOfBirthPage.confirmDateOfBirthYesPersonNameIsAgeInYearsYearsOld()).click();
+      $(ConfirmDateOfBirthPage.confirmDateOfBirthYesPersonNameIsAgeOld()).click();
       $(ConfirmDateOfBirthPage.submit()).click();
 
       expect($(SexPage.questionText()).getText()).to.equal('What is Samuel Clemens’ sex?');

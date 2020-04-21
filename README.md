@@ -1,6 +1,6 @@
 # eQ Questionnaire Runner
 
-[![Build Status](https://travis-ci.com/ONSdigital/eq-questionnaire-runner.svg?branch=master)](https://travis-ci.com/ONSdigital/eq-questionnaire-runner)
+![Build Status](https://github.com/ONSdigital/eq-questionnaire-runner/workflows/Master/badge.svg)
 [![codecov](https://codecov.io/gh/ONSdigital/eq-questionnaire-runner/branch/master/graph/badge.svg)](https://codecov.io/gh/ONSdigital/eq-questionnaire-runner/branch/master)
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/4c39ddd3285748f8bfb6b70fd5aaf9cc)](https://www.codacy.com/manual/ONSDigital/eq-questionnaire-runner?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=ONSdigital/eq-questionnaire-runner&amp;utm_campaign=Badge_Grade)
 
@@ -36,14 +36,11 @@ docker-compose build --no-cache
 
 ### Pre-Requisites
 
-In order to run locally you'll need Node.js, snappy, pyenv and Jsonnet installed
+In order to run locally you'll need Node.js, snappy, pyenv, jq and Jsonnet installed
 
 ```
-brew install snappy npm pyenv jsonnet
+brew install snappy npm pyenv jsonnet jq
 ```
-
-Note that npm currently requires Python 2.x for some of the setup steps,
-it doesn't work with Python 3.
 
 ### Setup
 
@@ -96,7 +93,7 @@ make dev-compose-up-linux
 https://github.com/ONSDigital/eq-questionnaire-launcher
 
 ```
-docker run -e SURVEY_RUNNER_SCHEMA_URL=http://docker.for.mac.host.internal:5000 -it -p 8000:8000 eu.gcr.io/census-eq-ci/eq-questionnaire-launcher:latest
+docker run -e SURVEY_RUNNER_SCHEMA_URL=http://docker.for.mac.host.internal:5000 -it -p 8000:8000 onsdigital/eq-questionnaire-launcher:latest
 ```
 
 ##### Storage backend
@@ -135,12 +132,12 @@ Or set the `GOOGLE_CLOUD_PROJECT` environment variable to your gcp project id.
 
 ## Frontend Tests
 
-The frontend tests use NodeJS to run. You will need to have node version 8.X to run these tests. To do this, do the following commands:
+The frontend tests use NodeJS to run. You will need to have node version 12.X to run these tests. To do this, do the following commands:
 
 ```
 brew install nvm
-nvm install 8
-nvm use 8
+nvm install 12
+nvm use 12
 ```
 
 Install yarn with:
@@ -149,20 +146,20 @@ Install yarn with:
 npm i -g yarn
 ```
 
-Fetch npm dependencies (Note that this overrides the python version defined in `.python-version`):
+Fetch npm dependencies:
 
 ```
-PYENV_VERSION=system yarn
+yarn
 ```
 
 Available commands:
 
-| Command                | Task                                                                                                    |
-| ---------------------- | ------------------------------------------------------------------------------------------------------- |
-| `yarn test_functional` | Runs the functional tests through ChimpJS (requires app running on localhost:5000 and generated pages). |
-| `yarn generate_pages`  | Generates the functional test pages.                                                                    |
-| `yarn lint`            | Lints the JS, reporting errors/warnings.                                                                |
-| `yarn format`          | Format the json schemas.                                                                                |
+| Command                | Task                                                                                                      |
+| ---------------------- | --------------------------------------------------------------------------------------------------------- |
+| `yarn test_functional` | Runs the functional tests through Webdriver (requires app running on localhost:5000 and generated pages). |
+| `yarn generate_pages`  | Generates the functional test pages.                                                                      |
+| `yarn lint`            | Lints the JS, reporting errors/warnings.                                                                  |
+| `yarn format`          | Format the json schemas.                                                                                  |
 
 ---
 
@@ -210,8 +207,11 @@ To run the tests against a remote deployment you will need to specify the enviro
 `EQ_FUNCTIONAL_TEST_ENV=https://staging-new-surveys.dev.eq.ons.digital/ yarn test_functional`
 
 ---
+## Deploying
 
-## Deployment with [Helm](https://helm.sh/)
+For deploying with Concourse see the [CI README](./ci/README.md).
+
+### Deployment with [Helm](https://helm.sh/)
 
 To deploy this application with helm, you must have a kubernetes cluster already running and be logged into the cluster.
 
@@ -223,9 +223,7 @@ gcloud container clusters get-credentials survey-runner --region <region> --proj
 
 You need to have Helm installed locally
 
-1. Install Helm with `brew install kubernetes-helm` and then run `helm init --client-only`
-
-2. Install Helm Tiller plugin for _Tillerless_ deploys `helm plugin install https://github.com/rimusz/helm-tiller`
+1. Install Helm: <https://helm.sh/docs/intro/install/>. For Homebrew (macOS), install using: `brew install helm`
 
 
 ### Deploying credentials
@@ -244,32 +242,36 @@ EQ_KEYS_FILE=dev-keys.yml EQ_SECRETS_FILE=dev-secrets.yml ./k8s/deploy_credentia
 
 ### Deploying the app
 
-The following environment variables can be set when deploying the app.
-- SUBMISSION_BUCKET_NAME
-- DOCKER_REGISTRY *(optional)*
-- IMAGE_TAG *(optional)*
-- GOOGLE_TAG_MANAGER_ID *(optional)*
-- GOOGLE_TAG_MANAGER_AUTH *(optional)*
-- GOOGLE_TAG_MANAGER_PREVIEW *(optional)*
-- REQUESTED_CPU_PER_POD *(optional)* - No. of CPUs to request per Pod
-- ROLLING_UPDATE_MAX_UNAVAILABLE *(optional)* - Specifies the maximum number of Pods that can be unavailable during the update process.
-- ROLLING_UPDATE_MAX_SURGE *(optional)* - Specifies the maximum number of Pods that can be created over the desired number of Pods.
-- MIN_REPLICAS *(optional)* - Minimum no. of replicated Pods
-- MAX_REPLICAS *(optional)* - Maximum no. of replicated Pods
-- TARGET_CPU_UTILIZATION_PERCENTAGE *(optional)* - The average CPU utilization usage before auto scaling applies
+The following environment variables must be set when deploying the app.
+
+| Variable Name                             | Description                                                                          |
+|-------------------------------------------|--------------------------------------------------------------------------------------|
+| SUBMISSION_BUCKET_NAME                    | The name of the bucket that submissions will be stored in                            |
+| DOCKER_REGISTRY                           | The FQDN of the target Docker registry                                               |
+| IMAGE_TAG                                 |                                                                                      |
+| REQUESTED_CPU_PER_POD                     | No. of CPUs to request per Pod                                                       |
+| MIN_REPLICAS                              | Minimum no. of replicated Pods                                                       |
+| MAX_REPLICAS                              | Maximum no. of replicated Pods                                                       |
+
+The following environment variables are optional:
+
+| Variable Name                      | Default | Description                                                                       |
+|------------------------------------| --------|-----------------------------------------------------------------------------------|
+| ROLLING_UPDATE_MAX_UNAVAILABLE     | 25%     | The maximum number of Pods that can be unavailable during the update process.     |
+| ROLLING_UPDATE_MAX_SURGE           | 25%     | The maximum number of Pods that can be created over the desired number of Pods.   |
+| TARGET_CPU_UTILIZATION_PERCENTAGE  |         | The average CPU utilization usage before auto scaling applies                     |
+| GOOGLE_TAG_MANAGER_ID              |         |                                                                                   |
+| GOOGLE_TAG_MANAGER_AUTH            |         |                                                                                   |
+| GOOGLE_TAG_MANAGER_PREVIEW         |         |                                                                                   |
+| EQ_NEW_RELIC_ENABLED               | False   | Enable New Relic monitoring                                                       |
+| NEW_RELIC_LICENSE_KEY              |         | New Relic license key                                                             |
+| NEW_RELIC_APP_NAME                 |         | Display name for the application in New Relic                                     |
 
 To deploy the app to the cluster, run the following command:
 
 ```
 ./k8s/deploy_app.sh
 ```
-
-For example:
-
-```
-SUBMISSION_BUCKET_NAME=census-eq-dev-1234567-survey-runner-submission ./k8s/deploy_app.sh
-```
-
 ---
 
 ## Internationalisation
@@ -293,7 +295,6 @@ Once we have the translated .po files they can be added to the source code and u
 
 The following env variables can be used
 
-```
 | Variable Name                             | Default               | Description                                                                                   |
 |-------------------------------------------|-----------------------|-----------------------------------------------------------------------------------------------|
 | EQ_SESSION_TIMEOUT_SECONDS                | 2700 (45 mins)        | The duration of the flask session                                                             |
@@ -332,10 +333,9 @@ The following env variables can be used
 | EQ_SESSION_TABLE_NAME                     |                       |                                                                                               |
 | EQ_USED_JTI_CLAIM_TABLE_NAME              |                       |                                                                                               |
 | EQ_NEW_RELIC_ENABLED                      | False                 | Enable New Relic monitoring                                                                   |
-| NEW_RELIC_LICENSE_KEY                     |                       | Enable new relic monitoring by supplying a New Relic licence key                              |
+| NEW_RELIC_LICENSE_KEY                     |                       | Enable new relic monitoring by supplying a New Relic license key                              |
 | NEW_RELIC_APP_NAME                        |                       | The name to display for the application in New Relic                                          |
 | COOKIE_SETTINGS_URL                       |                       | URL for the Webstie Cookie Settings page                                                      |
-```
 
 The following env variables can be used when running tests
 

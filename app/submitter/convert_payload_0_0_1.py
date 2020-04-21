@@ -1,6 +1,7 @@
 from collections import OrderedDict
 from datetime import datetime
 
+from app.questionnaire.location import Location
 from app.questionnaire.schema_utils import choose_question_to_display
 
 
@@ -21,23 +22,28 @@ def convert_answers_to_payload_0_0_1(
     :return: data in a formatted form
     """
     data = OrderedDict()
-    for location in routing_path:
-        answer_ids = schema.get_answer_ids_for_block(location.block_id)
+    for block_id in routing_path:
+        answer_ids = schema.get_answer_ids_for_block(block_id)
         answers_in_block = answer_store.get_answers_by_answer_id(
-            answer_ids, location.list_item_id
+            answer_ids, routing_path.list_item_id
         )
 
         for answer_in_block in answers_in_block:
             answer_schema = None
 
             block = schema.get_block_for_answer_id(answer_in_block.answer_id)
+            current_location = Location(
+                block_id=block_id,
+                section_id=routing_path.section_id,
+                list_item_id=routing_path.list_item_id,
+            )
             question = choose_question_to_display(
                 block,
                 schema,
                 metadata,
                 answer_store,
                 list_store,
-                current_location=location,
+                current_location=current_location,
             )
             for answer in question["answers"]:
                 if answer["id"] == answer_in_block.answer_id:

@@ -16,9 +16,17 @@
         <p><strong>{{ content.description }}</strong></p>
     {% endcall %}
     {{ onsSummary({
-        "hub": true,
-        "classes": "u-mt-m",
-        "rows": content.rows
+      "hub": true,
+      "classes": "u-mt-m",
+      "summaries": [
+        {
+          "groups": [
+            {
+              "rows": content.rows
+            }
+          ]
+        }
+      ]
     }) }}
     {{
         onsButton({

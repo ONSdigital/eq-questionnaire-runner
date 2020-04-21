@@ -1,1 +1,53 @@
-{% extends 'summary.html' %}
+{% extends 'layouts/_questionnaire.html' %}
+{% from "components/panel/_macro.njk" import onsPanel %}
+{% from "components/button/_macro.njk" import onsButton %}
+
+{% import 'macros/helpers.html' as helpers %}
+
+{% set save_on_signout = true %}
+
+{{
+  onsButton({
+    "text": _("Continue"),
+    "classes": "btn--loader js-btn-submit",
+    "attributes": {
+      "data-qa": "btn-submit"
+    }
+  })
+}}
+{% block form_content %}
+  {% if content.summary.groups %}
+    {% set group = content.summary.groups %}
+    <h1>{{content.summary.title}}</h1>
+      {% call onsPanel({
+        "classes": "print__hidden u-mb-l"
+      }) %}
+        <p>{{ _("Check your answers before continuing to the next section") }}</p>
+      {% endcall %}
+    <div class="u-mb-m">
+      {% include 'partials/summary/summary.html' %}
+    </div>
+  {% elif content.summary.custom_summary %}
+    <h1>{{content.summary.title}}</h1>
+    {% for summary in content.summary.custom_summary %}
+      {% if summary.type == 'List' %}
+        <div data-qa="{{summary.list_name}}-list-summary">
+          <h2>{{summary.title}}</h2>
+          {% if summary.list.list_items %}
+            {% set list = summary.list %}
+            {% include 'partials/summary/list-summary.html' %}
+            {% else %}
+              <div class="u-mb-s">
+                {{ summary.empty_list_text }}
+              </div>
+            {% endif %}
+            {% if summary.add_link %}
+                <div class="u-mb-l">
+                  <a data-qa="add-item-link" href="{{summary.add_link}}">{{summary.add_link_text}}</a>
+                </div>
+            {% endif %}
+          </div>
+        {% endif %}
+      {% endfor %}
+  {% endif %}
+{% endblock %}

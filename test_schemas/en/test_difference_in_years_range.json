@@ -1,5 +1,6 @@
 {
     "mime_type": "application/json/ons/eq",
+    "language": "en",
     "schema_version": "0.0.1",
     "data_version": "0.0.3",
     "survey_id": "023",
@@ -63,7 +64,7 @@
                                             "placeholder": "time_away",
                                             "transforms": [
                                                 {
-                                                    "transform": "calculate_years_difference",
+                                                    "transform": "calculate_date_difference",
                                                     "arguments": {
                                                         "first_date": {
                                                             "source": "answers",

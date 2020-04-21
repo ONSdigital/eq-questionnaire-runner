@@ -53,6 +53,8 @@ class TestThankYou(IntegrationTestCase):
                 "date-of-birth-answer-year": 1999,
             }
         )
+        self.post({"number-of-people-answer": 0})
+        self.post({"confirm-count": "Yes"})
 
         # Submit answers
         self.post()

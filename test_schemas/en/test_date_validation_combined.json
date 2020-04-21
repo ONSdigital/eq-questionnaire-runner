@@ -1,5 +1,6 @@
 {
     "mime_type": "application/json/ons/eq",
+    "language": "en",
     "schema_version": "0.0.1",
     "data_version": "0.0.3",
     "survey_id": "023",
@@ -109,7 +110,10 @@
                                         "mandatory": true,
                                         "type": "Date",
                                         "minimum": {
-                                            "meta": "ref_p_start_date",
+                                            "value": {
+                                                "source": "metadata",
+                                                "identifier": "ref_p_start_date"
+                                            },
                                             "offset_by": {
                                                 "days": -19
                                             }
@@ -121,7 +125,10 @@
                                         "mandatory": true,
                                         "type": "Date",
                                         "maximum": {
-                                            "meta": "ref_p_end_date",
+                                            "value": {
+                                                "source": "metadata",
+                                                "identifier": "ref_p_end_date"
+                                            },
                                             "offset_by": {
                                                 "days": 20
                                             }

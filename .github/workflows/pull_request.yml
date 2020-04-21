@@ -1,16 +1,13 @@
-name: CI
+name: PR
 
 on:
-  push:
-    branches:
-      - master
   pull_request:
     branches:
       - master
 
 jobs:
   python-dependencies:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-18.04
     steps:
       - uses: actions/checkout@v2
       - run: |
@@ -32,12 +29,12 @@ jobs:
         if: steps.cache-virtualenv.outputs.cache-hit != 'true'
         run: pipenv install --dev
   node-dependencies:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-18.04
     steps:
       - uses: actions/checkout@v2
       - uses: actions/setup-node@v1
         with:
-          node-version: '8.16.0'
+          node-version: '12.14.1'
       - name: Get yarn cache
         id: get-yarn-cache
         run: echo "::set-output name=dir::$(yarn cache dir)"
@@ -52,7 +49,7 @@ jobs:
         run: yarn
   test-unit:
     needs: python-dependencies
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-18.04
     steps:
       - uses: actions/checkout@v2
       - run: |
@@ -61,7 +58,7 @@ jobs:
         with:
           python-version: ${{ env.PYTHON_VERSION }}
       - name: Install apt dependencies
-        run: sudo apt-get install libsnappy-dev libgconf-2-4
+        run: sudo apt-get install libsnappy-dev libgconf-2-4 jq
       - name: Write app version
         run: printf "${{ github.event.pull_request.head.sha }}" > .application-version
       - name: Install pipenv
@@ -76,7 +73,7 @@ jobs:
         if: steps.cache-virtualenv.outputs.cache-hit != 'true'
         run: pipenv install --dev
       - name: Load templates
-        run: ./scripts/load_templates.sh
+        run: make load-templates
       - name: Compile translations
         run: make translate
       - name: Link env vars
@@ -88,26 +85,23 @@ jobs:
       - name: Running unit tests
         run: pipenv run ./scripts/run_tests_unit.sh
   validate-schemas:
-      runs-on: ubuntu-latest
-      services:
-        validator:
-          image: onsdigital/eq-schema-validator:v3
-          ports:
-            - 5001:5000
+      runs-on: ubuntu-18.04
       steps:
         - uses: actions/checkout@v2
+        - name: Run validator
+          run: ./scripts/run_validator.sh
         - name: Running schema tests
           run: ./scripts/validate_test_schemas.sh
   test-functional:
       needs: [python-dependencies, node-dependencies]
-      runs-on: ubuntu-latest
+      runs-on: ubuntu-18.04
       env:
         EQ_RUN_FUNCTIONAL_TESTS_HEADLESS: True
       steps:
         - uses: actions/checkout@v2
         - uses: actions/setup-node@v1
           with:
-            node-version: '8.16.0'
+            node-version: '12.14.1'
         - run: |
             echo "::set-env name=PYTHON_VERSION::$(cat .python-version)"
         - uses: actions/setup-python@v1
@@ -121,6 +115,11 @@ jobs:
           with:
             path: ~/.local/share/virtualenvs/
             key: ${{ runner.os }}-${{ env.PYTHON_VERSION }}-virtualenvs-${{ hashFiles('Pipfile.lock') }}
+        - name: Install virtual environment
+          if: steps.cache-virtualenv.outputs.cache-hit != 'true'
+          run: |
+            sudo apt-get install libsnappy-dev libgconf-2-4
+            pipenv install --dev
         - name: Get yarn cache
           id: get-yarn-cache
           run: echo "::set-output name=dir::$(yarn cache dir)"
@@ -143,21 +142,22 @@ jobs:
         - name: Docker compose shutdown
           run: docker-compose kill
   docker-push:
-      runs-on: ubuntu-latest
+      runs-on: ubuntu-18.04
       steps:
         - uses: actions/checkout@v2
+        - name: Set Tag and SHA
+          run: |
+            echo "::set-env name=TAG::${{ github.event.pull_request.head.ref }}"
+            echo "::set-env name=SHA::${{ github.event.pull_request.head.sha }}"
         - name: Write app version
-          run: printf "${{ github.event.pull_request.head.sha }}" > .application-version
-        - name: Tag
           run: |
-            export BRANCH=${{ github.event.pull_request.head.ref }}
-            export TAG=`if [ "$BRANCH" == "" ]; then echo "latest"; else echo "branch-$BRANCH"; fi`
-            echo "::set-env name=TAG::$TAG"
+            echo "Writing SHA $SHA to .application_version"
+            printf $SHA > .application-version
         - name: Build
-          run: docker build -t onsdigital/eq-questionnaire-runner:$TAG .
-        - name: Push
+          run: >
+            docker build -t onsdigital/eq-questionnaire-runner:$TAG .
+        - name: Push to Docker Hub
           run: |
-            docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{secrets.DOCKER_PASSWORD}}
-            echo "Pushing with tag [$TAG]"
-            docker push onsdigital/eq-questionnaire-runner:$TAG
-
+            echo ${{ secrets.DOCKER_PASSWORD }} | docker login -u ${{ secrets.DOCKER_USERNAME }} --password-stdin
+            echo "Pushing to DockerHub with tag $TAG"
+            docker push onsdigital/eq-questionnaire-runner

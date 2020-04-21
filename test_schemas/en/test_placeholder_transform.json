@@ -1,5 +1,6 @@
 {
     "mime_type": "application/json/ons/eq",
+    "language": "en",
     "schema_version": "0.0.1",
     "data_version": "0.0.3",
     "survey_id": "0",
@@ -105,6 +106,96 @@
                     ],
                     "id": "retail-confirmation-group",
                     "title": ""
+                }
+            ]
+        },
+        {
+            "id": "total-items",
+            "title": "Total Amount of Items",
+            "groups": [
+                {
+                    "id": "total-items-group",
+                    "title": "",
+                    "blocks": [
+                        {
+                            "type": "Question",
+                            "id": "total-items-block",
+                            "question": {
+                                "description": "",
+                                "id": "total-items-question",
+                                "title": "Please enter the number of items",
+                                "type": "General",
+                                "answers": [
+                                    {
+                                        "id": "total-items-answer",
+                                        "description": "",
+                                        "label": "Number of Items",
+                                        "mandatory": false,
+                                        "type": "Number",
+                                        "default": 0
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "id": "add-item",
+                            "question": {
+                                "answers": [
+                                    {
+                                        "id": "add-item-answer",
+                                        "mandatory": false,
+                                        "options": [
+                                            {
+                                                "label": "Yes",
+                                                "value": "Yes"
+                                            },
+                                            {
+                                                "label": "No",
+                                                "value": "No"
+                                            }
+                                        ],
+                                        "type": "Radio"
+                                    }
+                                ],
+                                "id": "add-item-question",
+                                "title": {
+                                    "placeholders": [
+                                        {
+                                            "placeholder": "item",
+                                            "transforms": [
+                                                {
+                                                    "transform": "add",
+                                                    "arguments": {
+                                                        "lhs": {
+                                                            "source": "answers",
+                                                            "identifier": "total-items-answer"
+                                                        },
+                                                        "rhs": {
+                                                            "value": 1
+                                                        }
+                                                    }
+                                                },
+                                                {
+                                                    "arguments": {
+                                                        "number_to_format": {
+                                                            "source": "previous_transform"
+                                                        },
+                                                        "determiner": {
+                                                            "value": "a_or_an"
+                                                        }
+                                                    },
+                                                    "transform": "format_ordinal"
+                                                }
+                                            ]
+                                        }
+                                    ],
+                                    "text": "Do you want to add <em>{item}</em> item?"
+                                },
+                                "type": "General"
+                            },
+                            "type": "Question"
+                        }
+                    ]
                 }
             ]
         },

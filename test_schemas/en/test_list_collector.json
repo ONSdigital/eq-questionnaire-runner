@@ -1,5 +1,6 @@
 {
     "mime_type": "application/json/ons/eq",
+    "language": "en",
     "schema_version": "0.0.1",
     "data_version": "0.0.3",
     "survey_id": "0",
@@ -24,6 +25,17 @@
         {
             "id": "section",
             "title": "Who Lives Here",
+            "summary": {
+                "items": [
+                    {
+                        "type": "List",
+                        "for_list": "people",
+                        "title": "Household members",
+                        "add_link_text": "Add someone to this household",
+                        "empty_list_text": "There are no householders"
+                    }
+                ]
+            },
             "groups": [
                 {
                     "id": "group",
@@ -139,8 +151,6 @@
                                 }
                             },
                             "summary": {
-                                "add_link_text": "Add someone to this household",
-                                "empty_list_text": "There are no householders",
                                 "title": "Household members",
                                 "item_title": {
                                     "text": "{person_name}",
@@ -289,8 +299,6 @@
                                 }
                             },
                             "summary": {
-                                "add_link_text": "Add someone to this household",
-                                "empty_list_text": "There are no householders",
                                 "title": "Household members",
                                 "item_title": {
                                     "text": "{person_name}",
@@ -316,6 +324,7 @@
                         },
                         {
                             "id": "group-summary",
+                            "title": "List Collector Summary",
                             "type": "SectionSummary"
                         }
                     ]

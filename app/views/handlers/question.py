@@ -5,7 +5,7 @@ from app.helpers.template_helper import safe_content
 from app.questionnaire.location import Location
 from app.questionnaire.questionnaire_store_updater import QuestionnaireStoreUpdater
 from app.questionnaire.schema_utils import transform_variants
-from app.views.contexts.list_collector import build_list_items_summary_context
+from app.views.contexts import ListContext
 from app.views.contexts.question import build_question_context
 from app.views.handlers.block import BlockHandler
 
@@ -63,17 +63,22 @@ class Question(BlockHandler):
         context["return_to_hub_url"] = self.get_return_to_hub_url()
 
         if "list_summary" in self.rendered_block:
-            context["list"] = {
-                "list_items": build_list_items_summary_context(
-                    self.rendered_block["list_summary"],
-                    self._schema,
-                    self._questionnaire_store.answer_store,
-                    self._questionnaire_store.list_store,
-                    self._language,
-                    self._questionnaire_store.metadata,
-                ),
-                "editable": False,
-            }
+            list_context = ListContext(
+                self._language,
+                self._schema,
+                self._questionnaire_store.answer_store,
+                self._questionnaire_store.list_store,
+                self._questionnaire_store.progress_store,
+                self._questionnaire_store.metadata,
+            )
+
+            context.update(
+                list_context(
+                    self.rendered_block["list_summary"]["summary"],
+                    self.rendered_block["list_summary"]["for_list"],
+                )
+            )
+
         return context
 
     def handle_post(self):
@@ -82,7 +87,7 @@ class Question(BlockHandler):
         self.questionnaire_store_updater.add_completed_location()
 
         if self.questionnaire_store_updater.is_dirty:
-            self._routing_path = self.router.section_routing_path(
+            self._routing_path = self.router.routing_path(
                 section_id=self._current_location.section_id,
                 list_item_id=self._current_location.list_item_id,
             )
@@ -114,11 +119,12 @@ class Question(BlockHandler):
             self._current_location,
         )
 
-        self.page_title = self._get_page_title(variant_block)
-
         rendered_question = self.placeholder_renderer.render(
-            variant_block.pop("question"), self._current_location.list_item_id
+            variant_block["question"], self._current_location.list_item_id
         )
+
+        if variant_block["question"]:
+            self.page_title = self._get_page_title(variant_block["question"])
 
         return {**variant_block, **{"question": rendered_question}}
 
@@ -129,17 +135,15 @@ class Question(BlockHandler):
         ):
             return url_for(".get_questionnaire")
 
-    def _get_page_title(self, transformed_block):
-        question = transformed_block.get("question")
-        if question:
-            if isinstance(question["title"], str):
-                question_title = question["title"]
-            else:
-                question_title = question["title"]["text"]
+    def _get_page_title(self, question):
+        if isinstance(question["title"], str):
+            question_title = question["title"]
+        elif "text_plural" in question["title"]:
+            question_title = question["title"]["text_plural"]["forms"]["other"]
+        else:
+            question_title = question["title"]["text"]
 
-            page_title = f'{question_title} - {self._schema.json["title"]}'
-
-            return safe_content(page_title)
+        return safe_content(f'{question_title} - {self._schema.json["title"]}')
 
     def evaluate_and_update_section_status_on_list_change(self, list_name):
         section_ids = self._schema.get_section_ids_dependent_on_list(list_name)
@@ -149,7 +153,7 @@ class Question(BlockHandler):
         )
 
         for section_id, list_item_id in section_keys_to_evaluate:
-            path = self.router.section_routing_path(section_id, list_item_id)
+            path = self.router.routing_path(section_id, list_item_id)
             self.questionnaire_store_updater.update_section_status(
                 is_complete=self.router.is_path_complete(path),
                 section_id=section_id,

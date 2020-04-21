@@ -16,9 +16,10 @@ class TestQuestionnaireForm(
 ):  # noqa: C901  pylint: disable=too-many-public-methods
     @staticmethod
     def _error_exists(answer_id, msg, mapped_errors):
+        error_id = f"{answer_id}-error"
         return any(
-            a_id == answer_id and str(msg) in ordered_errors
-            for a_id, ordered_errors in mapped_errors
+            e_id == error_id and str(msg) in ordered_errors
+            for e_id, ordered_errors in mapped_errors
         )
 
     def test_form_ids_match_block_answer_ids(self):
@@ -692,8 +693,6 @@ class TestQuestionnaireForm(
 
             schema = load_schema_from_name("test_date_validation_range")
 
-            question_schema = schema.get_block("date-range-block").get("question")
-
             question_schema = {
                 "id": "date-range-question",
                 "type": "DateRange",
@@ -710,7 +709,10 @@ class TestQuestionnaireForm(
                         "label": "Period to",
                         "mandatory": True,
                         "type": "Date",
-                        "maximum": {"answer_id": "date", "offset_by": {"days": 5}},
+                        "maximum": {
+                            "value": {"identifier": "date", "source": "answers"},
+                            "offset_by": {"days": 5},
+                        },
                     },
                 ],
             }

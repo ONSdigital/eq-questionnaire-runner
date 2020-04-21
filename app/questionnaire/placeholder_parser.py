@@ -20,12 +20,14 @@ class PlaceholderParser:
         metadata=None,
         list_item_id=None,
         location=None,
+        list_store=None,
     ):
 
         self._schema = schema
         self._answer_store = answer_store or AnswerStore()
         self._metadata = metadata
         self._list_item_id = list_item_id
+        self._list_store = list_store
         self._location = location
         self._transformer = PlaceholderTransforms(language)
         self._placeholder_map = {}
@@ -60,6 +62,8 @@ class PlaceholderParser:
 
         if source == "answers":
             return self._lookup_answer(source_id, self._list_item_id)
+        if source == "list":
+            return len(self._list_store[source_id].items)
         return self._metadata[source_id]
 
     def _parse_transforms(self, transform_list: Sequence[Mapping]):

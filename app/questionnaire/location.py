@@ -43,13 +43,6 @@ class Location:
             list_item_id=list_item_id,
         )
 
-    def for_json(self) -> Mapping:
-        """
-        Used to serialise a location to json.
-        """
-        attributes = vars(self)
-        return {k: v for k, v in attributes.items() if v is not None}
-
     def url(self, **kwargs) -> str:
         """
         Return the survey runner url that this location represents

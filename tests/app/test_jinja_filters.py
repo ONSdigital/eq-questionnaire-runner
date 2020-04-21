@@ -13,6 +13,7 @@ from app.jinja_filters import (
     format_unit_input_label,
     format_duration,
     get_formatted_currency,
+    get_width_class_for_number,
     map_list_collector_config,
     RadioConfig,
 )
@@ -161,6 +162,33 @@ class TestJinjaFilters(AppContextTestCase):  # pylint: disable=too-many-public-m
     def test_get_formatted_currency_with_no_value(self):
         self.assertEqual(get_formatted_currency(""), "")
 
+    def test_get_width_class_for_number_no_maximum(self):
+        self.assertEqual(get_width_class_for_number({}), "input--w-10")
+
+    def test_get_width_class_for_number_single_digit(self):
+        answer = {"maximum": {"value": 1}}
+        self.assertEqual(get_width_class_for_number(answer), "input--w-1")
+
+    def test_get_width_class_for_number_multiple_digits(self):
+        answer = {"maximum": {"value": 123456}}
+        self.assertEqual(get_width_class_for_number(answer), "input--w-6")
+
+    def test_get_width_class_for_number_roundup(self):
+        answer = {"maximum": {"value": 12345678901}}
+        self.assertEqual(get_width_class_for_number(answer), "input--w-20")
+
+    def test_get_width_class_for_number_min_value_longer_than_maximum(self):
+        answer = {"minimum": {"value": -123456}, "maximum": {"value": 1234}}
+        self.assertEqual(get_width_class_for_number(answer), "input--w-7")
+
+    def test_get_width_class_for_number_decimal_places(self):
+        answer = {"decimal_places": 2, "maximum": {"value": 123456}}
+        self.assertEqual(get_width_class_for_number(answer), "input--w-8")
+
+    def test_get_width_class_for_number_large_number(self):
+        answer = {"maximum": {"value": 123456789012345678901}}
+        self.assertIsNone(get_width_class_for_number(answer))
+
     @staticmethod
     def test_radio_class_visible_attribute():
         answer = {
@@ -190,6 +218,36 @@ class TestJinjaFilters(AppContextTestCase):  # pylint: disable=too-many-public-m
 
         assert radio.other.open is True
 
+    @staticmethod
+    def test_radio_class_detail_answer_display_width_with_max_value():
+        answer = {
+            "type": "Radio",
+            "id": "radio-answer-numeric-detail",
+            "mandatory": False,
+            "options": [
+                {
+                    "label": "Other",
+                    "value": "Other",
+                    "detail_answer": {
+                        "mandatory": False,
+                        "id": "other-answer",
+                        "label": "Please enter a number of items",
+                        "type": "Number",
+                        "maximum": {"value": 20},
+                        "parent_id": "radio-question-numeric-detail",
+                        "visible": False,
+                    },
+                }
+            ],
+            "parent_id": "radio-question-numeric-detail",
+        }
+
+        option = Mock()
+        option.detail_answer_id = "other-answer"
+        radio = RadioConfig(option=option, index=0, form=MagicMock(), answer=answer)
+
+        assert radio.other.classes == "input--w-2"
+
 
 def test_map_list_collector_config_no_actions():
     list_items = [{"item_title": "Mark Bloggs"}, {"item_title": "Joe Bloggs"}]
@@ -197,8 +255,8 @@ def test_map_list_collector_config_no_actions():
     output = map_list_collector_config(list_items, "icon")
 
     expected = [
-        {"rowItems": [{"actions": [], "icon": "icon"}], "title": "Mark Bloggs"},
-        {"rowItems": [{"actions": [], "icon": "icon"}], "title": "Joe Bloggs"},
+        {"rowItems": [{"actions": [], "icon": "icon"}], "rowTitle": "Mark Bloggs"},
+        {"rowItems": [{"actions": [], "icon": "icon"}], "rowTitle": "Joe Bloggs"},
     ]
 
     assert output == expected
@@ -244,7 +302,7 @@ def test_map_list_collector_config():
                     "icon": "icon",
                 }
             ],
-            "title": "Mark Bloggs (You)",
+            "rowTitle": "Mark Bloggs (You)",
         },
         {
             "rowItems": [
@@ -266,7 +324,7 @@ def test_map_list_collector_config():
                     "icon": "icon",
                 }
             ],
-            "title": "Joe Bloggs",
+            "rowTitle": "Joe Bloggs",
         },
     ]
 

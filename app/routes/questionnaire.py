@@ -47,7 +47,7 @@ from app.views.contexts.hub_context import HubContext
 from app.views.contexts.metadata_context import (
     build_metadata_context_for_survey_completed,
 )
-from app.views.contexts.summary_context import SummaryContext
+from app.views.contexts import QuestionnaireSummaryContext
 from app.views.handlers.block_factory import get_block_handler
 
 END_BLOCKS = "Summary", "Confirmation"
@@ -126,16 +126,18 @@ def get_questionnaire(schema, questionnaire_store):
 
     hub = HubContext(
         language=language_code,
-        progress_store=questionnaire_store.progress_store,
-        list_store=questionnaire_store.list_store,
-        answer_store=questionnaire_store.answer_store,
-        metadata=questionnaire_store.metadata,
         schema=schema,
-        survey_complete=router.is_survey_complete(),
-        enabled_section_ids=router.enabled_section_ids,
+        answer_store=questionnaire_store.answer_store,
+        list_store=questionnaire_store.list_store,
+        progress_store=questionnaire_store.progress_store,
+        metadata=questionnaire_store.metadata,
     )
 
-    return render_template("hub", content=hub.get_context())
+    hub_context = hub.get_context(
+        router.is_survey_complete(), router.enabled_section_ids
+    )
+
+    return render_template("hub", content=hub_context)
 
 
 @questionnaire_blueprint.route("/", methods=["POST"])
@@ -184,9 +186,7 @@ def get_section(schema, questionnaire_store, section_id, list_item_id=None):
     if section_id not in router.enabled_section_ids:
         return redirect(url_for(".get_questionnaire"))
 
-    routing_path = router.section_routing_path(
-        section_id=section_id, list_item_id=list_item_id
-    )
+    routing_path = router.routing_path(section_id=section_id, list_item_id=list_item_id)
     section_status = questionnaire_store.progress_store.get_section_status(
         section_id=section_id, list_item_id=list_item_id
     )
@@ -198,14 +198,12 @@ def get_section(schema, questionnaire_store, section_id, list_item_id=None):
 
     if section_status == CompletionStatus.NOT_STARTED:
         return redirect(
-            router.get_first_incomplete_location_for_section(
-                routing_path, section_id=section_id, list_item_id=list_item_id
-            ).url()
+            router.get_first_incomplete_location_for_section(routing_path).url()
         )
 
     return redirect(
         router.get_first_incomplete_location_for_section(
-            routing_path=routing_path, section_id=section_id, list_item_id=list_item_id
+            routing_path=routing_path
         ).url()
     )
 
@@ -399,7 +397,7 @@ def get_view_submission(schema):
 
             metadata = submitted_data.get("metadata")
             language_code = get_session_store().session_data.language_code
-            summary_context = SummaryContext(
+            questionnaire_summary_context = QuestionnaireSummaryContext(
                 language_code,
                 schema,
                 answer_store,
@@ -408,17 +406,7 @@ def get_view_submission(schema):
                 metadata,
             )
 
-            summary_rendered_context = summary_context.build_all_groups()
-
-            context = {
-                "summary": {
-                    "groups": summary_rendered_context,
-                    "answers_are_editable": False,
-                    "is_view_submission_response_enabled": is_view_submitted_response_enabled(
-                        schema.json
-                    ),
-                }
-            }
+            context = questionnaire_summary_context(answers_are_editable=False)
 
             return render_template(
                 template="view-submission",

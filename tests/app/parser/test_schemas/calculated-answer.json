@@ -1,6 +1,7 @@
 {
     "mime_type": "application/json/ons/eq",
-    "schema_version": "0.0.1",
+    "language": "en",
+    "schema_version":  "0.0.1",
     "data_version": "0.0.1",
     "survey_id": "0",
     "title": "Total field test survey",
@@ -28,7 +29,7 @@
                                             "label": "Percentage 1",
                                             "mandatory": false,
                                             "q_code": "0810",
-                                            "type": "Percentage", "max_value": {"value": 100},
+                                            "type": "Percentage", "maximum": {"value": 100},
                                             "validation": {
                                                 "messages" : {
                                                     "NUMBER_TOO_LARGE": "The maximum value allowed is 100. Please correct your answer."
@@ -41,7 +42,7 @@
                                             "label": "Percentage 2",
                                             "mandatory": false,
                                             "q_code": "0820",
-                                            "type": "Percentage", "max_value": {"value": 100},
+                                            "type": "Percentage", "maximum": {"value": 100},
                                             "validation": {
                                                 "messages" : {
                                                     "NUMBER_TOO_LARGE": "The maximum value allowed is 100. Please correct your answer."
@@ -54,7 +55,7 @@
                                             "label": "Percentage 3",
                                             "mandatory": false,
                                             "q_code": "0830",
-                                            "type": "Percentage", "max_value": {"value": 100},
+                                            "type": "Percentage", "maximum": {"value": 100},
                                             "validation": {
                                                 "messages" : {
                                                     "NUMBER_TOO_LARGE": "The maximum value allowed is 100. Please correct your answer."
@@ -67,7 +68,7 @@
                                             "label": "Percentage 4",
                                             "mandatory": false,
                                             "q_code": "0840",
-                                            "type": "Percentage", "max_value": {"value": 100},
+                                            "type": "Percentage", "maximum": {"value": 100},
                                             "validation": {
                                                 "messages" : {
                                                     "NUMBER_TOO_LARGE": "The maximum value allowed is 100. Please correct your answer."
@@ -83,7 +84,7 @@
                                             "q_code": "10002",
                                             "type": "Percentage",
                                             "decimal_places": 2,
-                                            "max_value": {
+                                            "maximum": {
                                               "value": 100
                                             },
                                             "validation": {

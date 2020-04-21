@@ -5,8 +5,8 @@ import pytest
 from app.data_model.answer_store import Answer, AnswerStore
 from app.data_model.list_store import ListStore
 from app.data_model.progress_store import ProgressStore, CompletionStatus
-from app.questionnaire.location import Location
 from app.questionnaire.path_finder import PathFinder
+from app.questionnaire.routing_path import RoutingPath
 from app.utilities.schema import load_schema_from_name
 from tests.app.app_context_test_case import AppContextTestCase
 
@@ -36,10 +36,9 @@ class TestPathFinder(AppContextTestCase):
         section_id = schema.get_section_id_for_block_id("name-block")
         routing_path = path_finder.routing_path(section_id=section_id)
 
-        assumed_routing_path = [
-            Location(section_id="default-section", block_id="name-block"),
-            Location(section_id="default-section", block_id="summary"),
-        ]
+        assumed_routing_path = RoutingPath(
+            ["name-block", "summary"], section_id="default-section"
+        )
 
         self.assertEqual(routing_path, assumed_routing_path)
 
@@ -55,12 +54,8 @@ class TestPathFinder(AppContextTestCase):
             self.metadata,
         )
 
-        blocks = [
-            b.block_id
-            for b in path_finder.routing_path(section_id=current_section["id"])
-        ]
-
-        self.assertIn("introduction", blocks)
+        routing_path = path_finder.routing_path(section_id=current_section["id"])
+        self.assertIn("introduction", routing_path)
 
     def test_introduction_not_in_path_when_not_in_schema(self):
         schema = load_schema_from_name("test_checkbox")
@@ -74,21 +69,17 @@ class TestPathFinder(AppContextTestCase):
         )
 
         with patch("app.questionnaire.rules.evaluate_when_rules", return_value=False):
-            blocks = [
-                b.block_id
-                for b in path_finder.routing_path(section_id=current_section["id"])
-            ]
+            routing_path = path_finder.routing_path(section_id=current_section["id"])
 
-        self.assertNotIn("introduction", blocks)
+        self.assertNotIn("introduction", routing_path)
 
     def test_routing_path_with_conditional_path(self):
         schema = load_schema_from_name("test_routing_number_equals")
         section_id = schema.get_section_id_for_block_id("number-question")
-        expected_path = [
-            Location(section_id="default-section", block_id="number-question"),
-            Location(section_id="default-section", block_id="correct-answer"),
-            Location(section_id="default-section", block_id="summary"),
-        ]
+        expected_path = RoutingPath(
+            ["number-question", "correct-answer", "summary"],
+            section_id="default-section",
+        )
 
         answer = Answer(answer_id="answer", value=123)
         answer_store = AnswerStore()
@@ -115,11 +106,10 @@ class TestPathFinder(AppContextTestCase):
         # Given
         schema = load_schema_from_name("test_routing_number_equals")
         section_id = schema.get_section_id_for_block_id("number-question")
-        expected_path = [
-            Location(section_id="default-section", block_id="number-question"),
-            Location(section_id="default-section", block_id="correct-answer"),
-            Location(section_id="default-section", block_id="summary"),
-        ]
+        expected_path = RoutingPath(
+            ["number-question", "correct-answer", "summary"],
+            section_id="default-section",
+        )
 
         answer_1 = Answer(answer_id="answer", value=123)
 
@@ -148,14 +138,10 @@ class TestPathFinder(AppContextTestCase):
                 }
             ]
         )
-        expected_routing_path = [
-            Location(section_id="introduction-section", block_id="introduction"),
-            Location(
-                section_id="introduction-section",
-                block_id="general-business-information-completed",
-            ),
-            Location(section_id="introduction-section", block_id="confirmation"),
-        ]
+        expected_routing_path = RoutingPath(
+            ["introduction", "general-business-information-completed", "confirmation"],
+            section_id="introduction-section",
+        )
 
         path_finder = PathFinder(
             schema, self.answer_store, self.list_store, progress_store, self.metadata
@@ -167,12 +153,10 @@ class TestPathFinder(AppContextTestCase):
     def test_routing_path(self):
         schema = load_schema_from_name("test_summary")
         section_id = schema.get_section_id_for_block_id("dessert-block")
-        expected_path = [
-            Location(section_id="default-section", block_id="radio"),
-            Location(section_id="default-section", block_id="test-number-block"),
-            Location(section_id="default-section", block_id="dessert-block"),
-            Location(section_id="default-section", block_id="summary"),
-        ]
+        expected_path = RoutingPath(
+            ["radio", "test-number-block", "dessert-block", "summary"],
+            section_id="default-section",
+        )
 
         progress_store = ProgressStore(
             [
@@ -217,49 +201,22 @@ class TestPathFinder(AppContextTestCase):
             section_id=repeating_section_id, list_item_id="abc123"
         )
 
-        expected_path = [
-            Location(
-                section_id="personal-details-section",
-                block_id="proxy",
-                list_name="people",
-                list_item_id="abc123",
-            ),
-            Location(
-                section_id="personal-details-section",
-                block_id="date-of-birth",
-                list_name="people",
-                list_item_id="abc123",
-            ),
-            Location(
-                section_id="personal-details-section",
-                block_id="confirm-dob",
-                list_name="people",
-                list_item_id="abc123",
-            ),
-            Location(
-                section_id="personal-details-section",
-                block_id="sex",
-                list_name="people",
-                list_item_id="abc123",
-            ),
-            Location(
-                section_id="personal-details-section",
-                block_id="personal-summary",
-                list_name="people",
-                list_item_id="abc123",
-            ),
-        ]
+        expected_path = RoutingPath(
+            ["proxy", "date-of-birth", "confirm-dob", "sex", "personal-summary"],
+            section_id="personal-details-section",
+            list_name="people",
+            list_item_id="abc123",
+        )
 
         self.assertEqual(routing_path, expected_path)
 
     def test_routing_path_empty_routing_rules(self):
         schema = load_schema_from_name("test_checkbox")
         section_id = schema.get_section_id_for_block_id("mandatory-checkbox")
-        expected_path = [
-            Location(section_id="default-section", block_id="mandatory-checkbox"),
-            Location(section_id="default-section", block_id="non-mandatory-checkbox"),
-            Location(section_id="default-section", block_id="summary"),
-        ]
+        expected_path = RoutingPath(
+            ["mandatory-checkbox", "non-mandatory-checkbox", "summary"],
+            section_id="default-section",
+        )
 
         answer_1 = Answer(answer_id="mandatory-checkbox-answer", value="Cheese")
         answer_2 = Answer(answer_id="non-mandatory-checkbox-answer", value="deep pan")
@@ -289,12 +246,9 @@ class TestPathFinder(AppContextTestCase):
     def test_routing_path_with_conditional_value_not_in_metadata(self):
         schema = load_schema_from_name("test_metadata_routing")
         section_id = schema.get_section_id_for_block_id("block1")
-        expected_path = [
-            Location(section_id="default-section", block_id="block1"),
-            Location(section_id="default-section", block_id="block2"),
-            Location(section_id="default-section", block_id="block3"),
-            Location(section_id="default-section", block_id="summary"),
-        ]
+        expected_path = RoutingPath(
+            ["block1", "block2", "block3", "summary"], section_id="default-section"
+        )
 
         progress_store = ProgressStore(
             [
@@ -341,11 +295,10 @@ class TestPathFinder(AppContextTestCase):
         routing_path = path_finder.routing_path(section_id=section_id)
 
         # Then
-        expected_routing_path = [
-            Location(section_id="default-section", block_id="do-you-want-to-skip"),
-            Location(section_id="default-section", block_id="a-non-skipped-block"),
-            Location(section_id="default-section", block_id="summary"),
-        ]
+        expected_routing_path = RoutingPath(
+            ["do-you-want-to-skip", "a-non-skipped-block", "summary"],
+            section_id="default-section",
+        )
 
         with patch(
             "app.questionnaire.path_finder.evaluate_skip_conditions", return_value=True
@@ -379,11 +332,10 @@ class TestPathFinder(AppContextTestCase):
         routing_path = path_finder.routing_path(section_id=section_id)
 
         # Then
-        expected_routing_path = [
-            Location(section_id="default-section", block_id="do-you-want-to-skip"),
-            Location(section_id="default-section", block_id="last-group-block"),
-            Location(section_id="default-section", block_id="summary"),
-        ]
+        expected_routing_path = RoutingPath(
+            ["do-you-want-to-skip", "last-group-block", "summary"],
+            section_id="default-section",
+        )
 
         with patch(
             "app.questionnaire.path_finder.evaluate_skip_conditions", return_value=True
@@ -417,12 +369,10 @@ class TestPathFinder(AppContextTestCase):
         routing_path = path_finder.routing_path(section_id=section_id)
 
         # Then
-        expected_routing_path = [
-            Location(section_id="default-section", block_id="do-you-want-to-skip"),
-            Location(section_id="default-section", block_id="should-skip"),
-            Location(section_id="default-section", block_id="last-group-block"),
-            Location(section_id="default-section", block_id="summary"),
-        ]
+        expected_routing_path = RoutingPath(
+            ["do-you-want-to-skip", "should-skip", "last-group-block", "summary"],
+            section_id="default-section",
+        )
 
         with patch(
             "app.questionnaire.path_finder.evaluate_skip_conditions", return_value=False
@@ -477,8 +427,8 @@ class TestPathFinder(AppContextTestCase):
         path = path_finder.routing_path(section_id=section_id)
 
         # Then it should route me straight to Group2 and not Group1
-        self.assertNotIn(Location(section_id=section_id, block_id="group1-block"), path)
-        self.assertIn(Location(section_id=section_id, block_id="group2-block"), path)
+        self.assertNotIn("group1-block", path)
+        self.assertIn("group2-block", path)
 
     def test_remove_answer_and_block_if_routing_backwards(self):
         schema = load_schema_from_name("test_confirmation_question")
@@ -525,17 +475,14 @@ class TestPathFinder(AppContextTestCase):
 
         routing_path = path_finder.routing_path(section_id=section_id)
 
-        expected_path = [
-            Location(
-                section_id="default-section", block_id="number-of-employees-total-block"
-            ),
-            Location(
-                section_id="default-section", block_id="confirm-zero-employees-block"
-            ),
-            Location(
-                section_id="default-section", block_id="number-of-employees-total-block"
-            ),
-        ]
+        expected_path = RoutingPath(
+            [
+                "number-of-employees-total-block",
+                "confirm-zero-employees-block",
+                "number-of-employees-total-block",
+            ],
+            section_id="default-section",
+        )
         self.assertEqual(routing_path, expected_path)
 
         self.assertEqual(

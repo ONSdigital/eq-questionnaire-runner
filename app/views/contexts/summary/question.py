@@ -1,5 +1,3 @@
-import collections
-
 from jinja2 import escape
 
 from app.views.contexts.summary.answer import Answer
@@ -12,7 +10,7 @@ class Question:
         self.type = question_schema["type"]
         self.schema = schema
         self.answer_schemas = iter(question_schema["answers"])
-
+        self.summary = question_schema.get("summary")
         self.title = (
             question_schema.get("title") or question_schema["answers"][0]["label"]
         )
@@ -29,8 +27,18 @@ class Question:
         return None
 
     def _build_answers(self, answer_store, question_schema):
-        summary_answers = []
 
+        if self.summary:
+            return [
+                {
+                    "id": f"{self.id}-concatenated-answer",
+                    "value": self._concatenate_textfield_answers(
+                        answer_store, self.summary["concatenation_type"]
+                    ),
+                }
+            ]
+
+        summary_answers = []
         for answer_schema in self.answer_schemas:
             answer_value = self._get_answer(answer_store, answer_schema["id"])
             answer = self._build_answer(
@@ -45,8 +53,20 @@ class Question:
             if exclusive_option:
                 return summary_answers[-1:]
             return summary_answers[:-1]
-
         return summary_answers
+
+    def _concatenate_textfield_answers(self, answer_store, concatenation_type):
+
+        answer_separators = {"Newline": "<br>", "Space": " "}
+        answer_separator = answer_separators.get(concatenation_type, " ")
+
+        answer_values = [
+            self._get_answer(answer_store, answer_schema["id"])
+            for answer_schema in self.answer_schemas
+        ]
+        return answer_separator.join(
+            [answer_value for answer_value in answer_values if answer_value]
+        )
 
     def _build_answer(
         self, answer_store, question_schema, answer_schema, answer_value=None
@@ -74,9 +94,6 @@ class Question:
 
     def _build_checkbox_answers(self, answer, answer_schema, answer_store):
         multiple_answers = []
-        CheckboxSummaryAnswer = collections.namedtuple(
-            "CheckboxSummaryAnswer", "label detail_answer_value"
-        )
         for option in answer_schema["options"]:
             if option["value"] in answer:
                 detail_answer_value = self._get_detail_answer_value(
@@ -84,9 +101,10 @@ class Question:
                 )
 
                 multiple_answers.append(
-                    CheckboxSummaryAnswer(
-                        label=option["label"], detail_answer_value=detail_answer_value
-                    )
+                    {
+                        "label": option["label"],
+                        "detail_answer_value": detail_answer_value,
+                    }
                 )
 
         return multiple_answers or None

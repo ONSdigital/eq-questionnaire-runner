@@ -256,12 +256,13 @@ class TestDumpRoute(IntegrationTestCase):
         # And the JSON response contains the data I submitted
         actual = json.loads(self.getResponseData())
         # tx_id and submitted_at are dynamic; so copy them over
-        expected = {
-            "routing_path": [
-                {"section_id": "default-section", "block_id": "radio-mandatory"},
-                {"section_id": "default-section", "block_id": "summary"},
-            ]
-        }
+        expected = [
+            {
+                "section_id": "default-section",
+                "list_item_id": None,
+                "routing_path": ["radio-mandatory", "summary"],
+            }
+        ]
 
         assert actual == expected
 
@@ -283,10 +284,11 @@ class TestDumpRoute(IntegrationTestCase):
         actual = json.loads(self.getResponseData())
 
         # tx_id and submitted_at are dynamic; so copy them over
-        expected = {
-            "routing_path": [
-                {"section_id": "default-section", "block_id": "radio-mandatory"},
-                {"section_id": "default-section", "block_id": "summary"},
-            ]
-        }
+        expected = [
+            {
+                "section_id": "default-section",
+                "list_item_id": None,
+                "routing_path": ["radio-mandatory", "summary"],
+            }
+        ]
         assert actual == expected

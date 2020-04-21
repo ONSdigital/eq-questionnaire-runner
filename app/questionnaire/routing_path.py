@@ -1,35 +1,38 @@
 class RoutingPath:
-    """Holds a list of locations and optimizes for `in` comparisons
+    """Holds a list of block_ids and has section_id, list_item_id and list_name attributes
     """
 
-    def __init__(self, path):
-        self._values = tuple(path)
-        self._set = frozenset(path)
+    def __init__(self, block_ids, section_id, list_item_id=None, list_name=None):
+        self.block_ids = tuple(block_ids)
+        self.section_id = section_id
+        self.list_item_id = list_item_id
+        self.list_name = list_name
 
     def __len__(self):
-        return len(self._values)
+        return len(self.block_ids)
 
-    def __getitem__(self, key):
-        return self._values[key]
+    def __getitem__(self, index):
+        return self.block_ids[index]
 
     def __iter__(self):
-        return iter(self._values)
+        return iter(self.block_ids)
 
     def __reversed__(self):
-        return reversed(self._values)
-
-    def __contains__(self, key):
-        return key in self._set
+        return reversed(self.block_ids)
 
     def __eq__(self, other):
-        other_values = other
         if isinstance(other, RoutingPath):
-            other_values = other._values  # pylint: disable=protected-access
+            return (
+                self.block_ids == other.block_ids
+                and self.section_id == other.section_id
+                and self.list_item_id == other.list_item_id
+                and self.list_name == other.list_name
+            )
 
-        elif isinstance(other, list):
-            other_values = tuple(other)
+        if isinstance(other, list):
+            return self.block_ids == tuple(other)
 
-        return self._values == other_values
+        return self.block_ids == other
 
     def index(self, *args):
-        return self._values.index(*args)
+        return self.block_ids.index(*args)

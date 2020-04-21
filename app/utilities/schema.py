@@ -87,15 +87,14 @@ def load_schema_from_name(schema_name, language_code=None):
     return QuestionnaireSchema(schema_json, language_code)
 
 
-def transform_case_type(case_type_input):
-    census_case_types = {
-        "HH": "household",
-        "HI": "individual",
-        "CE": "communal_establishment",
-        "CI": "communal_individual",
+def transform_form_type(form_type):
+    census_form_types = {
+        "H": "household",
+        "I": "individual",
+        "C": "communal_establishment",
     }
 
-    return census_case_types[case_type_input]
+    return census_form_types[form_type]
 
 
 def transform_region_code(region_code_input):
@@ -106,19 +105,19 @@ def transform_survey(survey_input):
     return survey_input.lower()
 
 
-def get_schema_name_from_census_params(survey, case_type, region_code):
+def get_schema_name_from_census_params(survey, form_type, region_code):
     try:
-        case_type_transformed = transform_case_type(case_type)
+        form_type_transformed = transform_form_type(form_type)
     except KeyError:
         raise ValueError(
-            "Invalid case_type parameter was specified. Must be one of `HH`, `HI`, `CE`, `CI`"
+            "Invalid form_type parameter was specified. Must be one of `H`, `I`, `C`"
         )
 
     region_code_transformed = transform_region_code(region_code)
     survey_transformed = transform_survey(survey)
 
     schema_name = (
-        f"{survey_transformed}_{case_type_transformed}_{region_code_transformed}"
+        f"{survey_transformed}_{form_type_transformed}_{region_code_transformed}"
     )
     return schema_name
 

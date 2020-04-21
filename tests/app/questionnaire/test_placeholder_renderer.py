@@ -1,6 +1,7 @@
-from unittest.mock import Mock
+from unittest.mock import Mock, patch
 
 from app.data_model.answer_store import AnswerStore
+from app.data_model.list_store import ListStore
 from app.questionnaire.placeholder_renderer import (
     PlaceholderRenderer,
     find_pointers_containing,
@@ -9,6 +10,7 @@ from app.questionnaire.questionnaire_schema import QuestionnaireSchema
 from tests.app.app_context_test_case import AppContextTestCase
 
 
+@patch("app.jinja_filters.flask_babel.get_locale", Mock(return_value="en_GB"))
 class TestPlaceholderRenderer(AppContextTestCase):
     def setUp(self):
         super().setUp()
@@ -24,7 +26,7 @@ class TestPlaceholderRenderer(AppContextTestCase):
                     "options": [
                         {
                             "label": {
-                                "text": "{person_name_possessive} age is {age_in_years}. Is this correct?",
+                                "text": "{person_name_possessive} age is {age}. Is this correct?",
                                 "placeholders": [
                                     {
                                         "placeholder": "person_name_possessive",
@@ -53,10 +55,10 @@ class TestPlaceholderRenderer(AppContextTestCase):
                                         ],
                                     },
                                     {
-                                        "placeholder": "age_in_years",
+                                        "placeholder": "age",
                                         "transforms": [
                                             {
-                                                "transform": "calculate_years_difference",
+                                                "transform": "calculate_date_difference",
                                                 "arguments": {
                                                     "first_date": {
                                                         "source": "answers",
@@ -90,7 +92,7 @@ class TestPlaceholderRenderer(AppContextTestCase):
 
     def test_renders_pointer(self):
         mock_transform = {
-            "transform": "calculate_years_difference",
+            "transform": "calculate_date_difference",
             "arguments": {
                 "first_date": {
                     "source": "answers",
@@ -121,11 +123,11 @@ class TestPlaceholderRenderer(AppContextTestCase):
             self.question_json, "/answers/0/options/0/label", list_item_id=None
         )
 
-        assert rendered == "Hal Abelson’s age is 28. Is this correct?"
+        assert rendered == "Hal Abelson’s age is 28 years. Is this correct?"
 
     def test_renders_json(self):
         mock_transform = {
-            "transform": "calculate_years_difference",
+            "transform": "calculate_date_difference",
             "arguments": {
                 "first_date": {
                     "source": "answers",
@@ -154,11 +156,11 @@ class TestPlaceholderRenderer(AppContextTestCase):
         rendered_schema = renderer.render(json_to_render, list_item_id=None)
         rendered_label = rendered_schema["answers"][0]["options"][0]["label"]
 
-        assert rendered_label == "Alfred Aho’s age is 33. Is this correct?"
+        assert rendered_label == "Alfred Aho’s age is 33 years. Is this correct?"
 
     def test_renders_json_uses_language(self):
         mock_transform = {
-            "transform": "calculate_years_difference",
+            "transform": "calculate_date_difference",
             "arguments": {
                 "first_date": {
                     "source": "answers",
@@ -187,7 +189,7 @@ class TestPlaceholderRenderer(AppContextTestCase):
         rendered_schema = renderer.render(json_to_render, list_item_id=None)
         rendered_label = rendered_schema["answers"][0]["options"][0]["label"]
 
-        assert rendered_label == "Alfred Aho age is 33. Is this correct?"
+        assert rendered_label == "Alfred Aho age is 33 years. Is this correct?"
 
     def test_errors_on_invalid_pointer(self):
         renderer = PlaceholderRenderer(language="en", schema=Mock())
@@ -201,3 +203,82 @@ class TestPlaceholderRenderer(AppContextTestCase):
         with self.assertRaises(ValueError):
             dict_to_render = {"invalid": {"no": "placeholders", "in": "this"}}
             renderer.render_pointer(dict_to_render, "/invalid", list_item_id=None)
+
+
+def test_renders_text_plural_from_answers():
+    answer_store = AnswerStore([{"answer_id": "number-of-people", "value": 1}])
+    renderer = PlaceholderRenderer(
+        language="en", answer_store=answer_store, schema=Mock()
+    )
+
+    rendered_text = renderer.render_placeholder(
+        {
+            "text_plural": {
+                "forms": {
+                    "one": "Yes, {number_of_people} person lives here",
+                    "other": "Yes, {number_of_people} people live here",
+                },
+                "count": {"source": "answers", "identifier": "number-of-people"},
+            },
+            "placeholders": [
+                {
+                    "placeholder": "number_of_people",
+                    "value": {"source": "answers", "identifier": "number-of-people"},
+                }
+            ],
+        },
+        None,
+    )
+
+    assert rendered_text == "Yes, 1 person lives here"
+
+
+def test_renders_text_plural_from_list():
+    renderer = PlaceholderRenderer(language="en", list_store=ListStore(), schema=Mock())
+
+    rendered_text = renderer.render_placeholder(
+        {
+            "text_plural": {
+                "forms": {
+                    "one": "Yes, {number_of_people} person lives here",
+                    "other": "Yes, {number_of_people} people live here",
+                },
+                "count": {"source": "list", "identifier": "household"},
+            },
+            "placeholders": [
+                {
+                    "placeholder": "number_of_people",
+                    "value": {"source": "list", "identifier": "household"},
+                }
+            ],
+        },
+        None,
+    )
+
+    assert rendered_text == "Yes, 0 people live here"
+
+
+def test_renders_text_plural_from_metadata():
+    metadata = {"some_value": 100}
+    renderer = PlaceholderRenderer(language="en", metadata=metadata, schema=Mock())
+
+    rendered_text = renderer.render_placeholder(
+        {
+            "text_plural": {
+                "forms": {
+                    "one": "Yes, {number_of_people} person lives here",
+                    "other": "Yes, {number_of_people} people live here",
+                },
+                "count": {"source": "metadata", "identifier": "some_value"},
+            },
+            "placeholders": [
+                {
+                    "placeholder": "number_of_people",
+                    "value": {"source": "metadata", "identifier": "some_value"},
+                }
+            ],
+        },
+        None,
+    )
+
+    assert rendered_text == "Yes, 100 people live here"

@@ -8,6 +8,7 @@ from babel import units, numbers
 from jinja2 import Markup, escape, evalcontextfilter
 
 from app.questionnaire.rules import convert_to_datetime
+from app.settings import MAX_NUMBER
 
 blueprint = flask.Blueprint("filters", __name__)
 
@@ -193,6 +194,30 @@ def should_wrap_with_fieldset_processor():
     return {"should_wrap_with_fieldset": should_wrap_with_fieldset}
 
 
+@blueprint.app_template_filter()
+def get_width_class_for_number(answer):
+    allowable_widths = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 20]
+
+    min_value = answer.get("minimum", {}).get("value", 0)
+    max_value = answer.get("maximum", {}).get("value", MAX_NUMBER)
+
+    min_value_width = len(str(min_value))
+    max_value_width = len(str(max_value))
+
+    width = min_value_width if min_value_width > max_value_width else max_value_width
+
+    width += answer.get("decimal_places", 0)
+
+    for allowable_width in allowable_widths:
+        if width <= allowable_width:
+            return f"input--w-{allowable_width}"
+
+
+@blueprint.app_context_processor
+def get_width_class_for_number_processor():
+    return {"get_width_class_for_number": get_width_class_for_number}
+
+
 class LabelConfig:
     def __init__(self, _for, text, description=None):
         self._for = _for
@@ -216,8 +241,10 @@ class CheckboxConfig:
         self.label = LabelConfig(option.id, option.label.text, label_description)
 
         if option.detail_answer_id:
-            detail_answer = form["fields"][option.detail_answer_id]
-            self.other = OtherConfig(detail_answer)
+            detail_answer_field = form["fields"][option.detail_answer_id]
+            detail_answer_schema = answer_option["detail_answer"]
+
+            self.other = OtherConfig(detail_answer_field, detail_answer_schema)
 
 
 class RadioConfig:
@@ -236,9 +263,10 @@ class RadioConfig:
         self.label = LabelConfig(option.id, option.label.text, label_description)
 
         if option.detail_answer_id:
-            detail_answer = form["fields"][option.detail_answer_id]
-            answer_visible = answer_option["detail_answer"].get("visible", False)
-            self.other = OtherConfig(detail_answer, answer_visible)
+            detail_answer_field = form["fields"][option.detail_answer_id]
+            detail_answer_schema = answer_option["detail_answer"]
+
+            self.other = OtherConfig(detail_answer_field, detail_answer_schema)
 
 
 class RelationshipRadioConfig:
@@ -267,12 +295,16 @@ class RelationshipRadioConfig:
 
 
 class OtherConfig:
-    def __init__(self, detail_answer, answer_visible=False):
-        self.open = answer_visible
-        self.id = detail_answer.id
-        self.name = detail_answer.name
-        self.value = escape(detail_answer._value())  # pylint: disable=protected-access
-        self.label = LabelConfig(detail_answer.id, detail_answer.label.text)
+    def __init__(self, detail_answer_field, detail_answer_schema):
+        self.id = detail_answer_field.id
+        self.name = detail_answer_field.name
+        self.value = escape(
+            detail_answer_field._value()
+        )  # pylint: disable=protected-access
+        self.label = LabelConfig(detail_answer_field.id, detail_answer_field.label.text)
+        self.open = detail_answer_schema.get("visible", False)
+        if detail_answer_schema["type"] == "Number":
+            self.classes = get_width_class_for_number(detail_answer_schema)
 
 
 @blueprint.app_template_filter()
@@ -383,11 +415,11 @@ class SummaryRowItem:
             and "label" in answer
             and answer["label"]
         ):
-            self.title = answer["label"]
-            self.titleAttributes = {"data-qa": answer["id"] + "-label"}
+            self.rowTitle = answer["label"]
+            self.rowTitleAttributes = {"data-qa": answer["id"] + "-label"}
         else:
-            self.title = question["title"]
-            self.titleAttributes = {"data-qa": question["id"]}
+            self.rowTitle = question["title"]
+            self.rowTitleAttributes = {"data-qa": question["id"]}
 
         value = answer["value"]
 
@@ -397,7 +429,8 @@ class SummaryRowItem:
             self.valueList = [SummaryRowItemValue(no_answer_provided)]
         elif answer_type == "checkbox":
             self.valueList = [
-                SummaryRowItemValue(val.label, val.detail_answer_value) for val in value
+                SummaryRowItemValue(option["label"], option["detail_answer_value"])
+                for option in value
             ]
         elif answer_type == "currency":
             self.valueList = [
@@ -435,7 +468,7 @@ class SummaryRowItem:
         if answers_are_editable:
             self.actions = [
                 SummaryAction(
-                    block, answer, self.title, edit_link_text, edit_link_aria_label
+                    block, answer, self.rowTitle, edit_link_text, edit_link_aria_label
                 )
             ]
 
@@ -451,7 +484,7 @@ class SummaryRow:
         edit_link_text,
         edit_link_aria_label,
     ):
-        self.title = question["title"]
+        self.rowTitle = question["title"]
         self.rowItems = []
 
         multiple_answers = len(question["answers"]) > 1
@@ -551,7 +584,7 @@ def map_list_collector_config(
             )
 
         rows.append(
-            {"title": item_name, "rowItems": [{"icon": icon, "actions": actions}]}
+            {"rowTitle": item_name, "rowItems": [{"icon": icon, "actions": actions}]}
         )
 
     return rows

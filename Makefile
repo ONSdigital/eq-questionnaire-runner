@@ -1,11 +1,13 @@
 clean:
 	rm -rf schemas
+	rm -rf templates/components
+	rm -rf templates/layout
 
-load-schemas: clean
-	./scripts/load_schemas.sh
+load-schemas:
+	./scripts/load_release.sh onsdigital/eq-questionnaire-schemas v0.1.2
 
 load-templates:
-	./scripts/load_templates.sh
+	./scripts/load_release.sh onsdigital/design-system 17.0.0
 
 build: load-templates
 	make translate
@@ -40,6 +42,10 @@ run-validator:
 run: build
 	ln -sf .development.env .env
 	pipenv run flask run
+
+gunicorn:
+	ln -sf .development.env .env
+	pipenv run ./run_gunicorn.sh
 
 dev-compose-up:
 	docker-compose pull eq-questionnaire-launcher
