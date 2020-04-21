@@ -27,7 +27,7 @@ def fake_census_metadata_runner(fake_metadata_runner):
     del fake_metadata_runner["schema_name"]
 
     fake_metadata_runner["survey"] = "CENSUS"
-    fake_metadata_runner["case_type"] = "HI"
+    fake_metadata_runner["form_type"] = "I"
     fake_metadata_runner["region_code"] = "GB-ENG"
 
     return fake_metadata_runner
