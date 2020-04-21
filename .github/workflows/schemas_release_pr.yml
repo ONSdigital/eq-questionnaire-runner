@@ -60,14 +60,14 @@ jobs:
         with:
           ref: 'master'
       - run: |
-          echo "::set-env name=RELEASE_TAG::$(cat .schemas-version)"
+          echo "::set-env name=SCHEMAS_VERSION::$(cat .schemas-version)"
       - name: Create Pull Request
         uses: peter-evans/create-pull-request@v2
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           committer: GitHub <noreply@github.com>
           author: ${{ github.actor }} <${{ github.actor }}@users.noreply.github.com>
-          commit-message: Update schemas to version ${{ env.RELEASE_TAG }}
-          title: Update schemas to version ${{ env.RELEASE_TAG }}
+          commit-message: Update schemas to version ${{ env.SCHEMAS_VERSION }}
+          title: Update schemas to version ${{ env.SCHEMAS_VERSION }}
           body: This is an auto-generated PR with schema release update.
-          branch: schema-release-${{ env.RELEASE_TAG }}
+          branch: schema-release-${{ env.SCHEMAS_VERSION }}
