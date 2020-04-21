@@ -79,7 +79,9 @@ def login():
         questionnaire_id=questionnaire_id,
     )
     logger.info("decrypted token and parsed metadata")
+
     store_session(claims)
+
     cookie_session["theme"] = g.schema.json["theme"]
     cookie_session["survey_title"] = g.schema.json["title"]
     cookie_session["expires_in"] = get_session_timeout_in_seconds(g.schema)
@@ -91,7 +93,7 @@ def login():
         cookie_session["account_service_log_out_url"] = claims.get(
             "account_service_log_out_url"
         )
-    
+
     return redirect(url_for("questionnaire.get_questionnaire"))
 
 
