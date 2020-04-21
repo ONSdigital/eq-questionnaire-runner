@@ -36,7 +36,7 @@ jobs:
     steps:
       - uses: actions/checkout@v2
         with:
-          ref: 'master'
+          ref: 'test-open-pr'
       - run: |
               echo "::set-env name=PYTHON_VERSION::$(cat .python-version)"
       - uses: actions/setup-python@v1
