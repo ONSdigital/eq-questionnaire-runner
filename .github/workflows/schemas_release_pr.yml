@@ -23,5 +23,5 @@ jobs:
           author: ${{ github.actor }} <${{ github.actor }}@users.noreply.github.com>
           commit-message: Update schemas to version ${{ env.SCHEMAS_VERSION }}
           title: Update schemas to version ${{ env.SCHEMAS_VERSION }}
-          body: This is an auto-generated PR.
+          body: This is an auto-generated PR. Schema release https://github.com/ONSdigital/eq-questionnaire-schemas/releases/tag/${{ env.SCHEMAS_VERSION }}.
           branch: schema-release-${{ env.SCHEMAS_VERSION }}
