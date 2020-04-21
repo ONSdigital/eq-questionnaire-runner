@@ -30,7 +30,7 @@ describe('List Collector Driving Question', function() {
 
       const peopleExpected = ['Marcus Twin', 'Suzy Clemens'];
 
-      checkPeopleInList(peopleExpected, SummaryPage);
+      checkPeopleInList(peopleExpected, SummaryPage.peopleListLabel);
     });
    });
 
