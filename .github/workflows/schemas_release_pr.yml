@@ -1,8 +1,9 @@
 name: Schemas release PR
 
 on:
-  repository_dispatch:
-      types: schemas_release
+  pull_request:
+    branches:
+      - master
 
 jobs:
   python-dependencies:
@@ -56,12 +57,14 @@ jobs:
     runs-on: ubuntu-18.04
     steps:
       - uses: actions/checkout@v2
+      - run: |
+          echo "::set-env name=RELEASE_TAG::$(cat .schemas-version)"
       - name: Create Pull Request
         uses: peter-evans/create-pull-request@v2
         with:
           committer: GitHub <noreply@github.com>
           author: ${{ github.actor }} <${{ github.actor }}@users.noreply.github.com>
-          commit-message: Update schema release version
-          title: Automated Schema Release Updates
+          commit-message: Update schemas to version ${{ env.RELEASE_TAG }}
+          title: Update schemas to version ${{ env.RELEASE_TAG }}
           body: This is an auto-generated PR with schema release update.
-          branch: schema-release
+          branch: schema-release-${{ env.RELEASE_TAG }}
