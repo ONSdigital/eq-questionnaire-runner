@@ -83,6 +83,7 @@ class RunnerMetadataSchema(Schema, StripWhitespaceMixin):
     survey_url = VALIDATORS["url"](required=False)
     language_code = VALIDATORS["string"](required=False)
     channel = VALIDATORS["string"](required=False, validate=validate.Length(min=1))
+    case_type = VALIDATORS["string"](required=False)
 
     # Either schema_name OR the three census parameters are required. Should be required after census.
     schema_name = VALIDATORS["string"](required=False)
@@ -91,8 +92,8 @@ class RunnerMetadataSchema(Schema, StripWhitespaceMixin):
     survey = VALIDATORS["string"](
         required=False, validate=validate.OneOf(("CENSUS", "CCS")), missing="CENSUS"
     )
-    case_type = VALIDATORS["string"](
-        required=False, validate=validate.OneOf(("HH", "HI", "CE", "CI"))
+    form_type = VALIDATORS["string"](
+        required=False, validate=validate.OneOf(("H", "I", "C"))
     )
     region_code = VALIDATORS["string"](required=False, validate=RegionCode())
 
@@ -104,13 +105,13 @@ class RunnerMetadataSchema(Schema, StripWhitespaceMixin):
         """
         individual_schema_claims = (
             data.get("survey"),
-            data.get("case_type"),
+            data.get("form_type"),
             data.get("region_code"),
         )
         if not data.get("schema_name"):
             if not all(individual_schema_claims):
                 raise ValidationError(
-                    "Either 'schema_name' or 'survey' and 'case_type' and 'region_code' must be defined"
+                    "Either 'schema_name' or 'survey' and 'form_type' and 'region_code' must be defined"
                 )
 
     @post_load
@@ -121,11 +122,11 @@ class RunnerMetadataSchema(Schema, StripWhitespaceMixin):
         """
         if data.get("schema_name"):
             logger.info(
-                "Using schema_name claim to specify schema, overriding survey, case_type and region_code"
+                "Using schema_name claim to specify schema, overriding survey, form_type and region_code"
             )
         else:
             data["schema_name"] = get_schema_name_from_census_params(
-                data.get("survey"), data.get("case_type"), data.get("region_code")
+                data.get("survey"), data.get("form_type"), data.get("region_code")
             )
         return data
 

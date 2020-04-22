@@ -7,7 +7,7 @@ from app.storage.metadata_parser import (
     validate_runner_claims,
     validate_questionnaire_claims,
 )
-from app.utilities.schema import transform_region_code, transform_case_type
+from app.utilities.schema import transform_region_code, transform_form_type
 
 
 def test_spaces_are_stripped_from_string_fields(fake_metadata_runner):
@@ -151,17 +151,16 @@ def test_census_params_without_schema_name(fake_census_metadata_runner):
     assert claims["schema_name"] == "census_individual_gb_eng"
 
 
-def test_case_type_transform():
-    assert transform_case_type("HI") == "individual"
-    assert transform_case_type("HH") == "household"
-    assert transform_case_type("CE") == "communal_establishment"
-    assert transform_case_type("CI") == "communal_individual"
+def test_form_type_transform():
+    assert transform_form_type("I") == "individual"
+    assert transform_form_type("H") == "household"
+    assert transform_form_type("C") == "communal_establishment"
 
     with pytest.raises(KeyError):
-        transform_case_type("household")
+        transform_form_type("household")
 
     with pytest.raises(KeyError):
-        transform_case_type("BAD")
+        transform_form_type("BAD")
 
 
 @pytest.mark.parametrize(
@@ -192,8 +191,8 @@ def test_bad_survey_parameter(fake_census_metadata_runner):
         validate_runner_claims(fake_census_metadata_runner)
 
 
-def test_bad_case_type_parameter(fake_census_metadata_runner):
-    fake_census_metadata_runner["case_type"] = "bad_case_type"
+def test_bad_form_type_parameter(fake_census_metadata_runner):
+    fake_census_metadata_runner["form_type"] = "bad_form_type"
     with pytest.raises(ValidationError):
         validate_runner_claims(fake_census_metadata_runner)
 
@@ -207,7 +206,7 @@ def test_bad_region_code_parameter(fake_census_metadata_runner):
 def test_no_census_params_and_no_schema_name_raises_error(fake_census_metadata_runner):
     fake_census_metadata_runner.pop("schema_name", None)
     fake_census_metadata_runner.pop("region_code", None)
-    fake_census_metadata_runner.pop("case_type", None)
+    fake_census_metadata_runner.pop("form_type", None)
     fake_census_metadata_runner.pop("survey", None)
 
     with pytest.raises(ValidationError):
