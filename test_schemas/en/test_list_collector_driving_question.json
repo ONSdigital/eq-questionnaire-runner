@@ -57,9 +57,9 @@
                                         {
                                             "title": "Outcomes",
                                             "list": [
-                                                "“Yes” and list <strong>is</strong> empty - Takes you to the list collector‘s <strong>add</strong> question.",
-                                                "“Yes” and list is <strong>not</strong> empty - Takes you directly to the list collector.",
-                                                "“No” - Takes you directly to the list collector."
+                                                "`None of the these apply, I am the only person who usually lives here` - Takes you directly to the list collector.",
+                                                "Any of the other checkboxes and the list <strong>is</strong> empty - Takes you to the list collector‘s <strong>add</strong> question.",
+                                                "Any of the other checkboxes and the list <strong>is not</strong> empty - Takes you directly to the list collector."
                                             ]
                                         }
                                     ]

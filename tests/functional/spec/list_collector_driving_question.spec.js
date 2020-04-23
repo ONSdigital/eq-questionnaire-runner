@@ -1,3 +1,4 @@
+const checkPeopleInList = require('../helpers');
 const HubPage = require('../base_pages/hub.page.js');
 const AnyoneUsuallyLiveAtPage = require('../generated_pages/list_collector_driving_question/anyone-usually-live-at.page.js');
 const AnyoneElseLiveAtListCollectorPage = require('../generated_pages/list_collector_driving_question/anyone-else-live-at.page.js');
@@ -5,15 +6,6 @@ const AnyoneElseLiveAtListCollectorAddPage = require('../generated_pages/list_co
 const AnyoneElseLiveAtListCollectorRemovePage = require('../generated_pages/list_collector_driving_question/anyone-else-live-at-remove.page.js');
 
 const SectionSummaryPage = require('../base_pages/section-summary.page.js');
-
-  function checkPeopleInList(peopleExpected) {
-    $(SectionSummaryPage.listCollectorPeopleRowTitle(1)).waitForDisplayed();
-
-    for (let i=1; i<=peopleExpected.length; i++) {
-      expect($(SectionSummaryPage.listCollectorPeopleRowTitle(i)).getText()).to.equal(peopleExpected[i-1]);
-    }
-  }
-
 
 describe('List Collector Driving Question', function() {
   beforeEach('Load the survey', function() {
@@ -38,7 +30,7 @@ describe('List Collector Driving Question', function() {
 
       const peopleExpected = ['Marcus Twin', 'Suzy Clemens'];
 
-      checkPeopleInList(peopleExpected);
+      checkPeopleInList(peopleExpected, SummaryPage.peopleListLabel);
     });
    });
 
