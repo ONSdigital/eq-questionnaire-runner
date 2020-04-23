@@ -2,26 +2,42 @@ name: Schemas release PR
 
 on:
   repository_dispatch:
-      types: schemas_release
+    types: schemas_release
 
 jobs:
   create-pull-request:
     runs-on: ubuntu-18.04
     steps:
-      - uses: actions/checkout@v2
+      - name: Update and commit schemas version
+        uses: actions/checkout@v2
         with:
           ref: 'master'
-      - name: Update schemas version
-        run: ./scripts/update_schemas_version.sh
       - run: |
-          echo "::set-env name=SCHEMAS_VERSION::$(cat .schemas-version)"
+          TAG="${{ github.event.client_payload.tag }}"
+          echo "::set-env name=SCHEMAS_VERSION::$TAG"
+
+          # Import GPG key to sign the commit
+          echo "${{ secrets.GPG_PRIVATE_KEY }}" | base64 --decode | gpg --import --no-tty --batch --yes
+
+          # Set Git GPG program and signing key
+          git config --global gpg.program $(which gpg)
+          git config --global user.signingkey "${{ secrets.GPG_KEY_ID }}"
+
+          # Update Git user details to match gpg key
+          git config user.name "${{ secrets.GIT_USER_NAME }}"
+          git config user.email "${{ secrets.GIT_USER_EMAIL }}"
+
+          # Update and commit schemas version file
+          echo $TAG > .schemas-version
+          git add -A
+          git commit -S -m "Update schemas version to $TAG"
       - name: Create Pull Request
         uses: peter-evans/create-pull-request@v2
         with:
-          token: ${{ secrets.GITHUB_TOKEN }}
-          committer: GitHub <noreply@github.com>
-          author: ${{ github.actor }} <${{ github.actor }}@users.noreply.github.com>
-          commit-message: Update schemas to version ${{ env.SCHEMAS_VERSION }}
-          title: Update schemas to version ${{ env.SCHEMAS_VERSION }}
-          body: This is an auto-generated PR. Schema release https://github.com/ONSdigital/eq-questionnaire-schemas/releases/tag/${{ env.SCHEMAS_VERSION }}.
-          branch: schema-release-${{ env.SCHEMAS_VERSION }}
+          token: "${{ secrets.GITHUB_TOKEN }}"
+          commit-message: "Update schemas to version ${{ env.SCHEMAS_VERSION }}"
+          title: "Update schemas to version ${{ env.SCHEMAS_VERSION }}"
+          body: |
+            This is an auto-generated PR.
+            Schemas release: https://github.com/ONSdigital/eq-questionnaire-schemas/releases/tag/${{ env.SCHEMAS_VERSION }}
+          branch: "schemas-release-${{ env.SCHEMAS_VERSION }}"
