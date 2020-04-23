@@ -1,7 +1,6 @@
 const BasePage = require('./base.page');
 
 class IntroductionPage extends BasePage {
-
   constructor(pageName) {
     super(pageName);
   }
@@ -27,11 +26,11 @@ class IntroductionPage extends BasePage {
   }
 
   legalResponse() {
-      return '[data-qa="legal-response"]';
+    return '[data-qa="legal-response"]';
   }
 
   legalBasis() {
-      return '[data-qa="legal-basis"]';
+    return '[data-qa="legal-basis"]';
   }
 
   introDescription() {

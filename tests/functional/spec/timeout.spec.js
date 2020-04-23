@@ -1,7 +1,7 @@
 const TimeoutBlockPage = require('../generated_pages/timeout/timeout-block.page.js');
 
 describe('Timeout', function() {
-  before('Open Survey', function(){
+  before('Open Survey', function() {
     browser.openQuestionnaire('test_timeout.json');
   });
 

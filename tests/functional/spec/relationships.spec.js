@@ -12,7 +12,6 @@ describe('Relationships', function() {
       browser.openQuestionnaire(schema);
     });
 
-
     it('When I have one household member, Then I will be not be asked about relationships', function() {
       $(ListCollectorPage.yes()).click();
       $(ListCollectorPage.submit()).click();
@@ -67,7 +66,7 @@ describe('Relationships', function() {
         expect(browser.getUrl()).to.contain(ListCollectorPage.pageName);
       });
 
-      it('And go to the first relationship, Then the \'Brother or Sister\' option should have the text \'Including half brother or half sister\'', function() {
+      it("And go to the first relationship, Then the 'Brother or Sister' option should have the text 'Including half brother or half sister'", function() {
         $(ListCollectorPage.no()).click();
         $(ListCollectorPage.submit()).click();
         expect($(RelationshipsPage.brotherOrSisterLabel()).getText()).to.contain('Including half brother or half sister');
@@ -116,7 +115,7 @@ describe('Relationships', function() {
         expect($(RelationshipsPage.husbandOrWife()).isSelected()).to.be.true;
       });
 
-      it('And go to the first relationship, Then the person\'s name should be in the question title and playback text', function() {
+      it("And go to the first relationship, Then the person's name should be in the question title and playback text", function() {
         $(ListCollectorPage.no()).click();
         $(ListCollectorPage.submit()).click();
         expect($(ListCollectorPage.questionText()).getText()).to.contain('Marcus Twin');
@@ -138,7 +137,7 @@ describe('Relationships', function() {
         expect($(RelationshipsPage.playback()).getText()).to.contain('Marcus Twin');
       });
 
-      it('And go to the first relationship and click \'Save and sign out\', Then I should be signed out', function() {
+      it("And go to the first relationship and click 'Save and sign out', Then I should be signed out", function() {
         $(ListCollectorPage.no()).click();
         $(ListCollectorPage.submit()).click();
         $(RelationshipsPage.husbandOrWife()).click();
@@ -146,7 +145,7 @@ describe('Relationships', function() {
         expect(browser.getUrl()).to.not.contain('questionnaire');
       });
 
-      it('And go to the first relationship, select a relationship and click \'Save and sign out\', Then I should be signed out', function() {
+      it("And go to the first relationship, select a relationship and click 'Save and sign out', Then I should be signed out", function() {
         $(ListCollectorPage.no()).click();
         $(ListCollectorPage.submit()).click();
         $(RelationshipsPage.saveSignOut()).click();
@@ -242,6 +241,5 @@ describe('Relationships', function() {
       $(ListCollectorAddPage.lastName()).setValue('Clemens');
       $(ListCollectorAddPage.submit()).click();
     }
-
   });
 });

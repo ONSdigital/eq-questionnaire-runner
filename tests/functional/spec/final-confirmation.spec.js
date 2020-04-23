@@ -4,7 +4,7 @@ const IntroductionPage = require('../base_pages/introduction.page');
 const introductionPage = new IntroductionPage('introduction');
 
 describe('Confirmation Page', function() {
-  beforeEach('Load the survey', function () {
+  beforeEach('Load the survey', function() {
     browser.openQuestionnaire('test_final_confirmation.json');
     $(introductionPage.getStarted()).click();
   });

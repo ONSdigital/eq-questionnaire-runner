@@ -1,7 +1,6 @@
 const QuestionPage = require('./question.page');
 
 class ThankYouPage extends QuestionPage {
-
   constructor() {
     super('summary');
   }

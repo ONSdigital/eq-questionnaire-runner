@@ -12,7 +12,7 @@ describe('SaveSignOut', function() {
   const responseId = JwtHelper.getRandomString(16);
 
   it('Given I am completing a survey, when I select save and complete later, then I am redirected to sign out page and my session is cleared', function() {
-    browser.openQuestionnaire('test_numbers.json', { userId: 'test_user', responseId: responseId } );
+    browser.openQuestionnaire('test_numbers.json', { userId: 'test_user', responseId: responseId });
     $(SetMinMax.setMinimum()).setValue('10');
     $(SetMinMax.setMaximum()).setValue('1020');
     $(SetMinMax.submit()).click();
@@ -26,7 +26,7 @@ describe('SaveSignOut', function() {
   });
 
   it('Given I have started a questionnaire, when I return to the questionnaire, then I am returned to the page I was on and can then complete the survey', function() {
-    browser.openQuestionnaire('test_numbers.json', { userId: 'test_user', responseId: responseId } );
+    browser.openQuestionnaire('test_numbers.json', { userId: 'test_user', responseId: responseId });
 
     $(TestMinMax.testRange()).setValue('10');
     $(TestMinMax.testMin()).setValue('123');

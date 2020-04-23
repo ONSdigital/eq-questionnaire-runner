@@ -3,7 +3,7 @@ const DrinkPage = require('../generated_pages/skip_condition_not_set/drink-block
 const SummaryPage = require('../generated_pages/skip_condition_not_set/summary.page');
 
 describe('Skip Conditions - Not Set', function() {
-  beforeEach('Load the survey', function () {
+  beforeEach('Load the survey', function() {
     browser.openQuestionnaire('test_skip_condition_not_set.json');
   });
 

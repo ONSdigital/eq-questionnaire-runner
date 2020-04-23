@@ -20,13 +20,12 @@ const VisitorListCollectorAddPage = require('../generated_pages/list_collector_s
 const PeopleListSectionSummaryPage = require('../generated_pages/list_collector_section_summary/people-list-section-summary.page.js');
 const ConfirmationPage = require('../generated_pages/list_collector/confirmation.page.js');
 
-
 describe('List Collector', function() {
   function checkPeopleInList(peopleExpected) {
     $(ListCollectorPage.listLabel(1)).waitForDisplayed();
 
-    for (let i=1; i<=peopleExpected.length; i++) {
-        expect($(ListCollectorPage.listLabel(i)).getText()).to.equal(peopleExpected[i-1]);
+    for (let i = 1; i <= peopleExpected.length; i++) {
+      expect($(ListCollectorPage.listLabel(i)).getText()).to.equal(peopleExpected[i - 1]);
     }
   }
 
@@ -196,7 +195,6 @@ describe('List Collector', function() {
   });
 
   describe('Given I start a list collector survey and complete to Section Summary', function() {
-
     beforeEach(function() {
       browser.openQuestionnaire('test_list_collector_section_summary.json');
       $(PrimaryPersonListCollectorPage.yes()).click();

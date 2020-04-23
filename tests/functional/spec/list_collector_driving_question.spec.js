@@ -6,7 +6,6 @@ const AnyoneElseLiveAtListCollectorAddPage = require('../generated_pages/list_co
 const AnyoneElseLiveAtListCollectorRemovePage = require('../generated_pages/list_collector_driving_question/anyone-else-live-at-remove.page.js');
 const SummaryPage = require('../generated_pages/list_collector_driving_question/summary.page.js');
 
-
 describe('List Collector Driving Question', function() {
   beforeEach('Load the survey', function() {
     browser.openQuestionnaire('test_list_collector_driving_question.json');
@@ -32,7 +31,7 @@ describe('List Collector Driving Question', function() {
 
       checkPeopleInList(peopleExpected, SummaryPage.peopleListLabel);
     });
-   });
+  });
 
   describe('Given the user answers no to the driving question', function() {
     it('The summary add link returns to the driving question', function() {
@@ -42,7 +41,6 @@ describe('List Collector Driving Question', function() {
       expect(browser.getUrl()).to.contain(AnyoneUsuallyLiveAtPage.url());
     });
   });
-
 
   describe('Given the user answers yes to the driving question, adds someone and later removes them', function() {
     it('The summary add link should return to the original list collector', function() {

@@ -42,7 +42,6 @@ describe('Checkbox with "other" option', function() {
     expect(browser.getUrl()).to.contain(NonMandatoryCheckboxPage.pageName);
   });
 
-
   it('Given a non-mandatory checkbox answer, when the user does not select an option, then "No answer provided" should be displayed on the summary screen', function() {
     // When
     $(MandatoryCheckboxPage.other()).click();

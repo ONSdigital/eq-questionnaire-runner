@@ -5,7 +5,7 @@ describe('Textarea', function() {
   const textarea_schema = 'test_textarea.json';
   const textarea_limit = `${TextareaBlock.answer()} + [data-charcount-singular]`;
 
-  beforeEach(function(){
+  beforeEach(function() {
     browser.openQuestionnaire(textarea_schema);
   });
   it('Given a textarea option, a user should be able to click the label of the textarea to focus', function() {

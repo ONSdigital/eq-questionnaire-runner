@@ -2,7 +2,7 @@ const DurationPage = require('../generated_pages/durations/duration-block.page.j
 const SummaryPage = require('../generated_pages/durations/summary.page.js');
 
 describe('Durations', function() {
-  beforeEach('Load the survey', function () {
+  beforeEach('Load the survey', function() {
     browser.openQuestionnaire('test_durations.json');
   });
 
@@ -91,4 +91,3 @@ describe('Durations', function() {
     expect($(DurationPage.errorNumber(1)).getText()).to.contain('Enter a duration to continue.');
   });
 });
-

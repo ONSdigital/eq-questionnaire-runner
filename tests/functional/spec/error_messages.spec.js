@@ -1,7 +1,7 @@
 const TestErrorsPage = require('../generated_pages/error_messages/test-errors.page.js');
 
 describe('Error Messages', function() {
-  beforeEach(function(){
+  beforeEach(function() {
     browser.openQuestionnaire('test_error_messages.json');
   });
 
@@ -35,7 +35,6 @@ describe('Error Messages', function() {
     expect($(TestErrorsPage.testCurrencyErrorItem()).getText()).to.contain('Enter a number rounded to 2 decimal places.');
   });
 
-
   it('Given a survey has an error when errors message is clicked then the correct answer is focused', function() {
     $(TestErrorsPage.testNumber()).setValue('cat');
     $(TestErrorsPage.testPercent()).setValue('101');
@@ -50,4 +49,3 @@ describe('Error Messages', function() {
     expect($(TestErrorsPage.testNumber()).isFocused()).to.be.true;
   });
 });
-

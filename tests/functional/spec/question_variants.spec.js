@@ -13,7 +13,7 @@ describe('QuestionVariants', function() {
     browser.openQuestionnaire('test_variants_question.json');
   });
 
-  it('Given I am completing the survey, then the correct questions are shown based on my previous answers', function () {
+  it('Given I am completing the survey, then the correct questions are shown based on my previous answers', function() {
     $(nameBlock.firstName()).setValue('Guido');
     $(nameBlock.lastName()).setValue('van Rossum');
     $(nameBlock.submit()).click();
@@ -57,6 +57,5 @@ describe('QuestionVariants', function() {
     $(currencyBlock.submit()).click();
 
     expect($(currencySectionSummary.firstNumberAnswer()).getText()).to.contain('$');
-
-    });
+  });
 });

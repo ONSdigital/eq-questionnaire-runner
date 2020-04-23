@@ -17,7 +17,7 @@
     "lint:test-schemas": "eslint test_schemas/*/*.json",
     "test_functional": "./node_modules/.bin/wdio tests/functional/wdio.conf.js",
     "generate_pages": "rm -rf ./tests/functional/generated_pages && pipenv run python -m tests.functional.generate_pages schemas/en/ ./tests/functional/generated_pages -r '../../base_pages' && pipenv run python -m tests.functional.generate_pages test_schemas/en/ ./tests/functional/generated_pages -r '../../base_pages'",
-    "format": "prettier test_schemas/*/*.json --write"
+    "format": "prettier --single-quote test_schemas/*/*.json --write && prettier --single-quote tests/functional/**/*.js --write"
   },
   "devDependencies": {
     "@wdio/cli": "^5.15.2",

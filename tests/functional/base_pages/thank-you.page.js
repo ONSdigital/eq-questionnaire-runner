@@ -1,7 +1,6 @@
 const QuestionPage = require('./question.page');
 
 class ThankYouPage extends QuestionPage {
-
   constructor() {
     super('thank-you');
   }
@@ -21,6 +20,5 @@ class ThankYouPage extends QuestionPage {
   signOut() {
     return '[data-qa="btn-sign-out"]';
   }
-
 }
 module.exports = new ThankYouPage();

@@ -6,8 +6,7 @@ const DateYearDatePage = require('../generated_pages/dates/date-year-date-block.
 const SummaryPage = require('../generated_pages/dates/summary.page');
 
 describe('Date checks', function() {
-
-  beforeEach('Load the survey', function () {
+  beforeEach('Load the survey', function() {
     browser.openQuestionnaire('test_dates.json');
   });
 
@@ -50,7 +49,6 @@ describe('Date checks', function() {
     expect($(SummaryPage.yearDateAnswer()).getText()).to.contain('2005');
   });
 
-
   it('Given the test_dates survey is selected when the from date is greater than the to date then an error message is shown', function() {
     // When the from date is greater than the to date
     $(DateRangePage.dateRangeFromday()).setValue(1);
@@ -64,13 +62,12 @@ describe('Date checks', function() {
     $(DateRangePage.submit()).click();
 
     // Then an error message is shown
-    expect($(DateRangePage.errorNumber(1)).getText()).to.contain('Enter a \'period to\' date later than the \'period from\' date.');
+    expect($(DateRangePage.errorNumber(1)).getText()).to.contain("Enter a 'period to' date later than the 'period from' date.");
 
     // Then clicking error should focus on first input field
     $(DateRangePage.errorNumber(1)).click();
     expect($(DateRangePage.dateRangeFromday()).isFocused()).to.be.true;
   });
-
 
   it('Given the test_dates survey is selected when the from date and the to date are the same then an error message is shown', function() {
     // When the from date is greater than the to date
@@ -85,9 +82,8 @@ describe('Date checks', function() {
     $(DateRangePage.submit()).click();
 
     // Then an error message is shown
-    expect($(DateRangePage.errorNumber(1)).getText()).to.contain('Enter a \'period to\' date later than the \'period from\' date.');
+    expect($(DateRangePage.errorNumber(1)).getText()).to.contain("Enter a 'period to' date later than the 'period from' date.");
   });
-
 
   it('Given the test_dates survey is selected when an invalid date is entered in a date range then an error message is shown', function() {
     // When the from date is greater than the to date
@@ -104,7 +100,6 @@ describe('Date checks', function() {
     // Then an error message is shown
     expect($(DateRangePage.errorNumber(1)).getText()).to.contain('Enter a valid date.');
   });
-
 
   it('Given the test_dates survey is selected when the year (month year type) is left empty then an error message is shown', function() {
     $(DateRangePage.dateRangeFromday()).setValue(1);
@@ -125,10 +120,7 @@ describe('Date checks', function() {
     expect($(DateMonthYearPage.errorNumber(1)).getText()).to.contain('Enter a valid date.');
   });
 
-
-  it('Given the test_dates survey is selected, ' +
-  'When an error message is shown and it is corrected, ' +
-  'Then the next question is displayed', function() {
+  it('Given the test_dates survey is selected, ' + 'When an error message is shown and it is corrected, ' + 'Then the next question is displayed', function() {
     $(DateRangePage.dateRangeFromday()).setValue(1);
     $(DateRangePage.dateRangeFrommonth()).setValue(1);
     $(DateRangePage.dateRangeFromyear()).setValue(2016);
@@ -150,7 +142,6 @@ describe('Date checks', function() {
 
     expect(browser.getUrl()).to.contain(DateSinglePage.url());
   });
-
 
   it('Given the test_dates survey is selected when an error message is shown then when it is corrected, it goes to the summary page and the information is correct', function() {
     $(DateRangePage.dateRangeFromday()).setValue(1);
@@ -178,7 +169,6 @@ describe('Date checks', function() {
     // Then an error message is shown
     expect($(DateNonMandatoryPage.errorNumber(1)).getText()).to.contain('Enter a valid date');
   });
-
 
   it('Given the test_dates survey is selected, when a user clicks the day label then the day subfield should gain the focus', function() {
     $(DateRangePage.dateRangeFromday()).setValue(1);

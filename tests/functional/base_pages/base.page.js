@@ -1,5 +1,4 @@
 class BasePage {
-
   constructor(pageName) {
     this.pageName = pageName;
   }
@@ -7,7 +6,6 @@ class BasePage {
   isOpen() {
     return browser.getUrl().should.eventually.contain(this.pageName);
   }
-
 }
 
 module.exports = BasePage;

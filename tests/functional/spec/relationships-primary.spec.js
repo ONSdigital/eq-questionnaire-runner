@@ -13,7 +13,6 @@ describe('Relationships - Primary Person', function() {
     });
 
     it('When I add household members, Then I will be asked my relationships as a primary person', function() {
-
       addPrimaryAndTwoOthers();
 
       $(ListCollectorPage.no()).click();
@@ -22,7 +21,6 @@ describe('Relationships - Primary Person', function() {
     });
 
     it('When I add household members, Then non-primary relationships will be asked as a non primary person', function() {
-
       addPrimaryAndTwoOthers();
 
       $(ListCollectorPage.no()).click();
@@ -55,7 +53,6 @@ describe('Relationships - Primary Person', function() {
       expect($(RelationshipsPage.questionText()).getText()).to.contain('Samuel Clemens is your');
     });
 
-
     function addPrimaryAndTwoOthersAndCompleteRelationships() {
       addPrimaryAndTwoOthers();
 
@@ -84,7 +81,6 @@ describe('Relationships - Primary Person', function() {
       $(ListCollectorAddPage.firstName()).setValue('Olivia');
       $(ListCollectorAddPage.lastName()).setValue('Clemens');
       $(ListCollectorAddPage.submit()).click();
-
     }
   });
 });
