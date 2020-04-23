@@ -170,12 +170,7 @@ class Router:
                         list_name=routing_path.list_name,
                     )
 
-        return Location(
-            block_id=routing_path[0],
-            section_id=routing_path.section_id,
-            list_item_id=routing_path.list_item_id,
-            list_name=routing_path.list_name,
-        )
+        return self.get_first_location_in_section(routing_path)
 
     def is_survey_complete(self):
         first_incomplete_section_key = self._get_first_incomplete_section_key()
@@ -188,16 +183,21 @@ class Router:
         return True
 
     def is_path_complete(self, routing_path):
-        location = self._get_first_incomplete_location(routing_path)
-        if not location:
-            return True
-        return False
+        return not bool(self._get_first_incomplete_location(routing_path))
 
     @staticmethod
-    def get_section_return_location_when_section_complete(routing_path) -> Location:
-
+    def get_first_location_in_section(routing_path) -> Location:
         return Location(
             block_id=routing_path[0],
+            section_id=routing_path.section_id,
+            list_name=routing_path.list_name,
+            list_item_id=routing_path.list_item_id,
+        )
+
+    @staticmethod
+    def get_last_location_in_section(routing_path) -> Location:
+        return Location(
+            block_id=routing_path[-1],
             section_id=routing_path.section_id,
             list_name=routing_path.list_name,
             list_item_id=routing_path.list_item_id,
@@ -220,11 +220,6 @@ class Router:
                     self._path_finder.routing_path(section_id=section_id)
                 )
         return full_routing_path
-
-    def can_access_section_summary(self, section_id, list_item_id):
-        return self._schema.is_summary_in_section(
-            section_id
-        ) and self._progress_store.is_section_complete(section_id, list_item_id)
 
     def _is_block_complete(self, block_id, section_id, list_item_id):
         completed_block_ids = self._progress_store.get_completed_block_ids(

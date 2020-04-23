@@ -76,7 +76,7 @@
                                 },
                                 {
                                     "goto": {
-                                        "section": "end"
+                                        "section": "End"
                                     }
                                 }
                             ]
@@ -161,7 +161,7 @@
                                 },
                                 {
                                     "goto": {
-                                        "section": "end"
+                                        "section": "End"
                                     }
                                 }
                             ]

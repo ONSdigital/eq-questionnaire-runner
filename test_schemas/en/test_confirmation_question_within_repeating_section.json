@@ -394,7 +394,7 @@
                                 },
                                 {
                                     "goto": {
-                                        "section": "end"
+                                        "section": "End"
                                     }
                                 }
                             ]

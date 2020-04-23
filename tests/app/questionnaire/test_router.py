@@ -478,7 +478,7 @@ class TestRouter(AppContextTestCase):  # pylint: disable=too-many-public-methods
             ["employment-status", "employment-type"], section_id="employment-section"
         )
 
-        location_when_section_complete = router.get_section_return_location_when_section_complete(
+        location_when_section_complete = router.get_first_incomplete_location_for_section(
             routing_path=routing_path
         )
 

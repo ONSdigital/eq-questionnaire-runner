@@ -46,8 +46,9 @@ from app.views.contexts.hub_context import HubContext
 from app.views.contexts.metadata_context import (
     build_metadata_context_for_survey_completed,
 )
-from app.views.contexts import QuestionnaireSummaryContext, SectionSummaryContext
+from app.views.contexts import QuestionnaireSummaryContext
 from app.views.handlers.block_factory import get_block_handler
+from app.views.handlers.section_summary import SectionSummary
 
 END_BLOCKS = "Summary", "Confirmation"
 
@@ -109,7 +110,6 @@ def before_post_submission_request():
 @with_questionnaire_store
 @with_schema
 def get_questionnaire(schema, questionnaire_store):
-
     router = Router(
         schema,
         questionnaire_store.answer_store,
@@ -182,41 +182,27 @@ def get_section(schema, questionnaire_store, section_id, list_item_id=None):
         questionnaire_store.metadata,
     )
 
-    if request.method == "POST":
-        if schema.is_hub_enabled():
-            return redirect(url_for(".get_questionnaire"))
-        return redirect(router.get_first_incomplete_location_in_survey().url())
-
     if section_id not in router.enabled_section_ids:
         return redirect(url_for(".get_questionnaire"))
 
-    routing_path = router.routing_path(section_id=section_id, list_item_id=list_item_id)
+    location = Location(
+        section_id=section_id,
+        list_name=schema.get_repeating_list_for_section(section_id),
+        list_item_id=list_item_id,
+    )
+    section_summary = SectionSummary(schema, questionnaire_store, location, router)
 
-    if router.can_access_section_summary(section_id, list_item_id):
-        list_name = schema.get_repeating_list_for_section(section_id)
-        section_title = schema.get_title_for_section(section_id)
-        location = Location(
-            section_id=section_id, list_name=list_name, list_item_id=list_item_id
-        )
-        section_summary_context = SectionSummaryContext(
-            flask_babel.get_locale().language,
-            schema,
-            questionnaire_store.answer_store,
-            questionnaire_store.list_store,
-            questionnaire_store.progress_store,
-            questionnaire_store.metadata,
-        )
-        context = section_summary_context(location)
+    if request.method == "POST":
+        return redirect(section_summary.get_next_location_url())
 
+    if section_summary.can_access_section_summary():
         return _render_page(
             block_type="SectionSummary",
-            context=context,
-            current_location=location,
-            previous_location_url=router.get_section_return_location_when_section_complete(
-                routing_path
-            ).url(),
+            context=section_summary.context(),
+            current_location=section_summary.current_location,
+            previous_location_url=section_summary.get_previous_location_url(),
             schema=schema,
-            page_title=section_title,
+            page_title=section_summary.page_title,
         )
 
     if not schema.is_hub_enabled():
@@ -227,10 +213,10 @@ def get_section(schema, questionnaire_store, section_id, list_item_id=None):
         section_id=section_id, list_item_id=list_item_id
     )
 
+    routing_path = router.routing_path(section_id=section_id, list_item_id=list_item_id)
+
     if section_status == CompletionStatus.COMPLETED:
-        return redirect(
-            router.get_section_return_location_when_section_complete(routing_path).url()
-        )
+        return redirect(router.get_first_location_in_section(routing_path).url())
 
     if section_status == CompletionStatus.NOT_STARTED:
         return redirect(
