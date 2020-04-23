@@ -35,7 +35,7 @@
                                 "id": "name-question",
                                 "title": "Name",
                                 "type": "General",
-                                 "summary": {
+                                "summary": {
                                     "concatenation_type": "Space"
                                 },
                                 "answers": [
@@ -70,7 +70,7 @@
                                 "id": "address-question",
                                 "title": "Address details",
                                 "type": "General",
-                                 "summary": {
+                                "summary": {
                                     "concatenation_type": "Newline"
                                 },
                                 "answers": [

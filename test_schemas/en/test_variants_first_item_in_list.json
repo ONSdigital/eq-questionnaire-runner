@@ -201,78 +201,78 @@
                         {
                             "id": "list-status",
                             "question_variants": [
-                            {
-                            "question": {
-                                  "answers": [
-                                     {
-                                        "id": "list-status-answer",
-                                        "mandatory": false,
-                                        "options": [
+                                {
+                                    "question": {
+                                        "answers": [
+                                            {
+                                                "id": "list-status-answer",
+                                                "mandatory": false,
+                                                "options": [
+                                                    {
+                                                        "label": "Yes",
+                                                        "value": "Yes"
+                                                    },
+                                                    {
+                                                        "label": "No",
+                                                        "value": "No"
+                                                    }
+                                                ],
+                                                "type": "Radio"
+                                            }
+                                        ],
+                                        "id": "list-status-question",
+                                        "title": "You are the first person in the list",
+                                        "type": "General"
+                                    },
+                                    "when": [
                                         {
-                                            "label": "Yes",
-                                            "value": "Yes"
-                                        },
-                                        {
-                                            "label": "No",
-                                            "value": "No"
+                                            "list": "people",
+                                            "id_selector": "first",
+                                            "condition": "equals",
+                                            "comparison": {
+                                                "source": "location",
+                                                "id": "list_item_id"
+                                            }
                                         }
-                                    ],
-                                    "type": "Radio"
-                                 }
-                              ],
-                              "id": "list-status-question",
-                              "title": "You are the first person in the list",
-                              "type": "General"
-                           },
-                           "when": [
+                                    ]
+                                },
                                 {
-                                    "list": "people",
-                                    "id_selector": "first",
-                                    "condition": "equals",
-                                    "comparison": {
-                                        "source": "location",
-                                        "id": "list_item_id"
-                                    }
+                                    "question": {
+                                        "answers": [
+                                            {
+                                                "id": "list-status-answer",
+                                                "mandatory": false,
+                                                "options": [
+                                                    {
+                                                        "label": "Yes",
+                                                        "value": "Yes"
+                                                    },
+                                                    {
+                                                        "label": "No",
+                                                        "value": "No"
+                                                    }
+                                                ],
+                                                "type": "Radio"
+                                            }
+                                        ],
+                                        "id": "list-status-question",
+                                        "title": "You are not the first person in the list",
+                                        "type": "General"
+                                    },
+                                    "when": [
+                                        {
+                                            "list": "people",
+                                            "id_selector": "first",
+                                            "condition": "not equals",
+                                            "comparison": {
+                                                "source": "location",
+                                                "id": "list_item_id"
+                                            }
+                                        }
+                                    ]
                                 }
-                            ]
-                        },
-                        {
-                           "question": {
-                              "answers": [
-                                 {
-                                    "id": "list-status-answer",
-                                    "mandatory": false,
-                                    "options": [
-                                       {
-                                          "label": "Yes",
-                                          "value": "Yes"
-                                       },
-                                       {
-                                          "label": "No",
-                                          "value": "No"
-                                       }
-                                    ],
-                                    "type": "Radio"
-                                 }
-                              ],
-                                "id": "list-status-question",
-                                "title": "You are not the first person in the list",
-                                  "type": "General"
-                            },
-                            "when": [
-                                {
-                                    "list": "people",
-                                    "id_selector": "first",
-                                    "condition": "not equals",
-                                    "comparison": {
-                                        "source": "location",
-                                        "id": "list_item_id"
-                                    }
-                                }
-                            ]
-                        }
-                        ],
-                        "type": "Question"
+                            ],
+                            "type": "Question"
                         },
                         {
                             "id": "personal-summary",
