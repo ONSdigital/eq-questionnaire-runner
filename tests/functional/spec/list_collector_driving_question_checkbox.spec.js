@@ -41,7 +41,11 @@ describe('List Collector Driving Checkbox Question', function() {
   });
 
   describe('Given the primary person is removed', function() {
+<<<<<<< HEAD
     it("Then they aren't shown on the summary screen", function() {
+=======
+    it('Then they aren\'t shown on the summary screen', function() {
+>>>>>>> master
       $(SummaryPage.previous()).click();
       $(ListCollectorTemporaryAwayPage.previous()).click();
       $(ListCollectorPage.previous()).click();

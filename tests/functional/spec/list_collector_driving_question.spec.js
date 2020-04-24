@@ -6,6 +6,7 @@ const AnyoneElseLiveAtListCollectorAddPage = require('../generated_pages/list_co
 const AnyoneElseLiveAtListCollectorRemovePage = require('../generated_pages/list_collector_driving_question/anyone-else-live-at-remove.page.js');
 const SummaryPage = require('../generated_pages/list_collector_driving_question/summary.page.js');
 
+
 describe('List Collector Driving Question', function() {
   beforeEach('Load the survey', function() {
     browser.openQuestionnaire('test_list_collector_driving_question.json');
