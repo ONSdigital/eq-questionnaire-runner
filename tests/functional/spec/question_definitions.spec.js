@@ -1,9 +1,9 @@
-const DefinitionPage = require('../generated_pages/question_definition/definition-block.page');
+const DefinitionPage = require("../generated_pages/question_definition/definition-block.page");
 
-describe('Component: Definition', function() {
-  describe('Given I start a survey which contains question definition', function() {
+describe("Component: Definition", function() {
+  describe("Given I start a survey which contains question definition", function() {
     beforeEach(function() {
-      browser.openQuestionnaire('test_question_definition.json');
+      browser.openQuestionnaire("test_question_definition.json");
     });
 
     it('When I click the title link, then the description and "Hide this" button should be visible', function() {

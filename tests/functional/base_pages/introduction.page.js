@@ -1,4 +1,4 @@
-const BasePage = require('./base.page');
+const BasePage = require("./base.page");
 
 class IntroductionPage extends BasePage {
   constructor(pageName) {
@@ -6,7 +6,7 @@ class IntroductionPage extends BasePage {
   }
 
   myAccountLink() {
-    return '#my-account';
+    return "#my-account";
   }
 
   signOut() {
@@ -14,15 +14,15 @@ class IntroductionPage extends BasePage {
   }
 
   getStarted() {
-    return '.qa-btn-get-started';
+    return ".qa-btn-get-started";
   }
 
   useOfInformation() {
-    return '#use-of-information';
+    return "#use-of-information";
   }
 
   useOfData() {
-    return '#how-we-use-your-data';
+    return "#how-we-use-your-data";
   }
 
   legalResponse() {
@@ -34,7 +34,7 @@ class IntroductionPage extends BasePage {
   }
 
   introDescription() {
-    return '#use-of-information p';
+    return "#use-of-information p";
   }
 
   introTitleDescription() {

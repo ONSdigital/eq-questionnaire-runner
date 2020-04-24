@@ -1,11 +1,11 @@
-const RoutingCheckboxContains = require('../generated_pages/routing_checkbox_contains/country-checkbox.page');
-const ContainsAllPage = require('../generated_pages/routing_checkbox_contains/country-interstitial-all.page');
-const ContainsAnyPage = require('../generated_pages/routing_checkbox_contains/country-interstitial-any.page');
-const ResponseSummaryPage = require('../generated_pages/routing_checkbox_contains/summary.page');
+const RoutingCheckboxContains = require("../generated_pages/routing_checkbox_contains/country-checkbox.page");
+const ContainsAllPage = require("../generated_pages/routing_checkbox_contains/country-interstitial-all.page");
+const ContainsAnyPage = require("../generated_pages/routing_checkbox_contains/country-interstitial-any.page");
+const ResponseSummaryPage = require("../generated_pages/routing_checkbox_contains/summary.page");
 
-describe('Routing Checkbox Contains Condition.', function() {
+describe("Routing Checkbox Contains Condition.", function() {
   beforeEach(function() {
-    browser.openQuestionnaire('test_routing_checkbox_contains.json');
+    browser.openQuestionnaire("test_routing_checkbox_contains.json");
   });
 
   it('Given a list of checkbox options, when I have don\'t select "Liechtenstein" and select the option "India" or the option "Azerbaijan" or both then I should be routed to the "contains any" condition page', function() {

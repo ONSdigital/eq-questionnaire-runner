@@ -1,4 +1,4 @@
-const BasePage = require('./base.page');
+const BasePage = require("./base.page");
 
 class QuestionPage extends BasePage {
   constructor(pageName) {
@@ -7,19 +7,19 @@ class QuestionPage extends BasePage {
   }
 
   url() {
-    return '/questionnaire/' + this.pageName;
+    return "/questionnaire/" + this.pageName;
   }
 
   myAccountLink() {
-    return '#my-account';
+    return "#my-account";
   }
 
   summaryQuestionText() {
-    return '.summary__item-title';
+    return ".summary__item-title";
   }
 
   questionText() {
-    return 'h1';
+    return "h1";
   }
 
   alert() {
@@ -27,15 +27,15 @@ class QuestionPage extends BasePage {
   }
 
   error() {
-    return '.js-inpagelink';
+    return ".js-inpagelink";
   }
 
   errorHeader() {
-    return '#main-content > div.panel.panel--error.u-mb-s > div.panel__header > div';
+    return "#main-content > div.panel.panel--error.u-mb-s > div.panel__header > div";
   }
 
   errorNumber(number = 1) {
-    return '[data-qa="error-body"] ul > li:nth-child(' + number + ') > a';
+    return '[data-qa="error-body"] ul > li:nth-child(' + number + ") > a";
   }
 
   previous() {

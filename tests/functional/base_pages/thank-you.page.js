@@ -1,8 +1,8 @@
-const QuestionPage = require('./question.page');
+const QuestionPage = require("./question.page");
 
 class ThankYouPage extends QuestionPage {
   constructor() {
-    super('thank-you');
+    super("thank-you");
   }
 
   submissionSuccessfulTitle() {

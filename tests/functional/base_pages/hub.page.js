@@ -1,4 +1,4 @@
-const BasePage = require('./base.page');
+const BasePage = require("./base.page");
 
 class HubPage extends BasePage {
   constructor(pageName) {
@@ -6,11 +6,11 @@ class HubPage extends BasePage {
   }
 
   url() {
-    return '/questionnaire/';
+    return "/questionnaire/";
   }
 
   myAccountLink() {
-    return '#my-account';
+    return "#my-account";
   }
 
   alert() {
@@ -18,15 +18,15 @@ class HubPage extends BasePage {
   }
 
   error() {
-    return '.js-inpagelink';
+    return ".js-inpagelink";
   }
 
   errorHeader() {
-    return '#main-content > div.panel.panel--error.u-mb-s > div.panel__header > div';
+    return "#main-content > div.panel.panel--error.u-mb-s > div.panel__header > div";
   }
 
   errorNumber(number = 1) {
-    return '[data-qa="error-body"] ul > li:nth-child(' + number + ') > a';
+    return '[data-qa="error-body"] ul > li:nth-child(' + number + ") > a";
   }
 
   previous() {
@@ -34,11 +34,11 @@ class HubPage extends BasePage {
   }
 
   displayedName() {
-    return 'h1';
+    return "h1";
   }
 
   displayedDescription() {
-    return 'p > strong';
+    return "p > strong";
   }
 
   submit() {
@@ -54,19 +54,19 @@ class HubPage extends BasePage {
   }
 
   summaryItems() {
-    return 'table.summary__items';
+    return "table.summary__items";
   }
 
   summaryRowState(number = 1) {
-    return 'tbody:nth-child(' + number + ') tr td.summary__values';
+    return "tbody:nth-child(" + number + ") tr td.summary__values";
   }
 
   summaryRowLink(number = 1) {
-    return 'tbody:nth-child(' + number + ') tr td.summary__actions a';
+    return "tbody:nth-child(" + number + ") tr td.summary__actions a";
   }
 
   summaryRowTitle(number = 1) {
-    return 'tbody:nth-child(' + number + ') tr td.summary__item-title';
+    return "tbody:nth-child(" + number + ") tr td.summary__item-title";
   }
 }
 

@@ -1,4 +1,4 @@
-const QuestionPage = require('./question.page');
+const QuestionPage = require("./question.page");
 
 class CalculatedSummaryPage extends QuestionPage {
   constructor(pageName) {
@@ -10,11 +10,11 @@ class CalculatedSummaryPage extends QuestionPage {
   }
 
   calculatedSummaryQuestion() {
-    return '[data-qa=calculated-summary-question]';
+    return "[data-qa=calculated-summary-question]";
   }
 
   calculatedSummaryAnswer() {
-    return '[data-qa=calculated-summary-answer]';
+    return "[data-qa=calculated-summary-answer]";
   }
 }
 
