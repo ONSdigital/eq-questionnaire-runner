@@ -49,8 +49,8 @@ class HubPage extends BasePage {
     return '[data-qa="btn-save-sign-out"]';
   }
 
-  switchLanguage(language_code) {
-    return 'a[href="?language_code=' + language_code + '"]';
+  switchLanguage(languageCode) {
+    return 'a[href="?language_code=' + languageCode + '"]';
   }
 
   summaryItems() {
