@@ -37,6 +37,10 @@ class SectionSummaryPage extends BasePage {
     return '[data-qa=visitors-list-summary] tbody:nth-child(' + number + ') tr td.summary__item-title';
   }
 
+  listLabel(instance) { return `tbody:nth-child(${instance}) td:first-child`; }
+
+  peopleListLabel(listItemInstance) { return 'div[data-qa="people-list-summary"] tbody:nth-child(' + listItemInstance + ') td:first-child'; }
+
   previous() { return 'a[id="top-previous"]'; }
 
   submit() { return '[data-qa="btn-submit"]'; }

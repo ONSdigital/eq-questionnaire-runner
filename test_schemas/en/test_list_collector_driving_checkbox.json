@@ -665,11 +665,6 @@
                                     ]
                                 }
                             }
-                        },
-                        {
-                            "id": "who-lives-here-summary",
-                            "title": "Who Lives Here Summary",
-                            "type": "SectionSummary"
                         }
                     ]
                 }
