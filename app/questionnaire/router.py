@@ -66,7 +66,7 @@ class Router:
     def routing_path(self, section_id, list_item_id=None):
         return self._path_finder.routing_path(section_id, list_item_id)
 
-    def get_next_location_url(self, location, routing_path):
+    def get_next_location_url(self, location, routing_path, return_to_summary=False):
         """
         Get the first incomplete block in section/survey if trying to access the section/survey end,
         and the section/survey is incomplete or gets the next default location if the above is false.
@@ -76,10 +76,9 @@ class Router:
         has_section_summary = self._schema.is_summary_in_section(location.section_id)
 
         if (
-            last_block_id == location.block_id
-            and self._progress_store.is_section_complete(
-                location.section_id, location.list_item_id
-            )
+            return_to_summary or last_block_id == location.block_id
+        ) and self._progress_store.is_section_complete(
+            location.section_id, location.list_item_id
         ):
 
             if has_section_summary:
@@ -88,11 +87,7 @@ class Router:
                 return url_for(".get_questionnaire")
 
         if self.is_survey_complete() and not hub_enabled:
-            if has_section_summary:
-                return self.get_section_summary_url(location)
-            last_section_id = self._schema.get_section_ids()[-1]
-            last_block_id = self._schema.get_last_block_id_for_section(last_section_id)
-            return Location(section_id=last_section_id, block_id=last_block_id).url()
+            return self.get_last_section_last_block_location().url()
 
         block_id_index = routing_path.index(location.block_id)
         # At end of routing path, so go to next incomplete location
@@ -151,10 +146,7 @@ class Router:
             if location:
                 return location
 
-        last_section_id = self._schema.get_section_ids()[-1]
-        last_block_id = self._schema.get_last_block_id_for_section(last_section_id)
-
-        return Location(section_id=last_section_id, block_id=last_block_id)
+        return self.get_last_section_last_block_location()
 
     def get_first_incomplete_location_for_section(self, routing_path):
         section_id = routing_path.section_id
@@ -320,3 +312,8 @@ class Router:
             section_id=location.section_id,
             list_item_id=location.list_item_id,
         )
+
+    def get_last_section_last_block_location(self):
+        last_section_id = self._schema.get_section_ids()[-1]
+        last_block_id = self._schema.get_last_block_id_for_section(last_section_id)
+        return Location(section_id=last_section_id, block_id=last_block_id)

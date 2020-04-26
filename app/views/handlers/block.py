@@ -93,7 +93,9 @@ class BlockHandler:
 
     def get_next_location_url(self):
         return self.router.get_next_location_url(
-            self._current_location, self._routing_path
+            self._current_location,
+            self._routing_path,
+            self._request_args.get("return_to_summary"),
         )
 
     def handle_post(self):
