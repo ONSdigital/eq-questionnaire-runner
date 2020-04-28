@@ -174,6 +174,7 @@ def post_questionnaire(schema, questionnaire_store):
 @with_questionnaire_store
 @with_schema
 def get_section(schema, questionnaire_store, section_id, list_item_id=None):
+
     router = Router(
         schema,
         questionnaire_store.answer_store,
@@ -185,49 +186,43 @@ def get_section(schema, questionnaire_store, section_id, list_item_id=None):
     if section_id not in router.enabled_section_ids:
         return redirect(url_for(".get_questionnaire"))
 
-    location = Location(
-        section_id=section_id,
-        list_name=schema.get_repeating_list_for_section(section_id),
-        list_item_id=list_item_id,
-    )
-    section_summary = SectionSummary(schema, questionnaire_store, location, router)
-
-    if request.method == "POST":
-        return redirect(section_summary.get_next_location_url())
-
-    if section_summary.can_access_section_summary():
-        return _render_page(
-            block_type="SectionSummary",
-            context=section_summary.context(),
-            current_location=section_summary.current_location,
-            previous_location_url=section_summary.get_previous_location_url(),
-            schema=schema,
-            page_title=section_summary.page_title,
+    if request.method == "GET":
+        section_status = questionnaire_store.progress_store.get_section_status(
+            section_id=section_id, list_item_id=list_item_id
         )
 
-    if not schema.is_hub_enabled():
-        redirect_location = router.get_first_incomplete_location_in_survey()
-        return redirect(redirect_location.url())
+        routing_path = router.routing_path(
+            section_id=section_id, list_item_id=list_item_id
+        )
 
-    section_status = questionnaire_store.progress_store.get_section_status(
-        section_id=section_id, list_item_id=list_item_id
-    )
+        if section_status != CompletionStatus.COMPLETED:
+            return redirect(
+                router.get_first_incomplete_location_for_section(routing_path).url()
+            )
 
-    routing_path = router.routing_path(section_id=section_id, list_item_id=list_item_id)
+        if schema.is_summary_in_section(section_id):
+            section_summary = _get_section_summary(
+                list_item_id, questionnaire_store, schema, section_id
+            )
+            return _render_page(
+                block_type="SectionSummary",
+                context=section_summary.context(),
+                current_location=section_summary.current_location,
+                previous_location_url=section_summary.get_previous_location_url(),
+                schema=schema,
+                page_title=section_summary.page_title,
+            )
 
-    if section_status == CompletionStatus.COMPLETED:
-        return redirect(router.get_first_location_in_section(routing_path).url())
-
-    if section_status == CompletionStatus.NOT_STARTED:
         return redirect(
-            router.get_first_incomplete_location_for_section(routing_path).url()
+            router.get_first_incomplete_location_for_section(
+                routing_path=routing_path
+            ).url()
         )
 
-    return redirect(
-        router.get_first_incomplete_location_for_section(
-            routing_path=routing_path
-        ).url()
+    section_summary = _get_section_summary(
+        list_item_id, questionnaire_store, schema, section_id
     )
+    return redirect(section_summary.get_next_location_url())
 
 
 # pylint: disable=too-many-return-statements
@@ -578,3 +573,15 @@ def request_wants_json():
         best == "application/json"
         and request.accept_mimetypes[best] > request.accept_mimetypes["text/html"]
     )
+
+
+def _get_section_summary(list_item_id, questionnaire_store, schema, section_id):
+    location = Location(
+        section_id=section_id,
+        list_name=schema.get_repeating_list_for_section(section_id),
+        list_item_id=list_item_id,
+    )
+    section_summary = SectionSummary(
+        schema, questionnaire_store, location, flask_babel.get_locale().language
+    )
+    return section_summary

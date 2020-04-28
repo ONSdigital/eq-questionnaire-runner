@@ -1,32 +1,32 @@
-import flask_babel
 from flask import url_for
 
+from app.questionnaire.router import Router
 from app.views.contexts import SectionSummaryContext
 
 
 class SectionSummary:
-    def __init__(self, schema, questionnaire_store, current_location, router):
+    def __init__(self, schema, questionnaire_store, current_location, language):
         self._schema = schema
         self._questionnaire_store = questionnaire_store
         self.current_location = current_location
-        self._router = router
+        self._language = language
+        self.page_title = schema.get_title_for_section(self.current_location.section_id)
         self._section_id = current_location.section_id
         self._list_item_id = current_location.list_item_id
-        self._routing_path = router.routing_path(
-            section_id=self._section_id, list_item_id=self._list_item_id
+        self._router = Router(
+            schema,
+            questionnaire_store.answer_store,
+            questionnaire_store.list_store,
+            questionnaire_store.progress_store,
+            questionnaire_store.metadata,
         )
-        self.page_title = schema.get_title_for_section(self.current_location.section_id)
-
-    def can_access_section_summary(self):
-        return self._schema.is_summary_in_section(
-            self.current_location.section_id
-        ) and self._questionnaire_store.progress_store.is_section_complete(
-            self._section_id, self._list_item_id
+        self._routing_path = self._router.routing_path(
+            section_id=self._section_id, list_item_id=self._list_item_id
         )
 
     def context(self):
         section_summary_context = SectionSummaryContext(
-            flask_babel.get_locale().language,
+            self._language,
             self._schema,
             self._questionnaire_store.answer_store,
             self._questionnaire_store.list_store,
