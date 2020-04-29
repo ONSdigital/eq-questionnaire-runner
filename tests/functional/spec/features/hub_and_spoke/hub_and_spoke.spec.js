@@ -228,30 +228,30 @@ describe('Feature: Hub and Spoke', function () {
     });
   });
 
-    describe('Given a section is complete and the user has been returned to a section summary by clicking the \'View answers\' link ', function () {
-      beforeEach('Complete section', function () {
-        browser.openQuestionnaire(hub_and_spoke_schema);
-        $(HubPage.summaryRowLink(3)).click();
-        $(DoesAnyoneLiveHere.no()).click();
-        $(DoesAnyoneLiveHere.submit()).click();
-        $(SectionSummaryPage.submit()).click();
-      });
+  describe('Given a section is complete and the user has been returned to a section summary by clicking the \'View answers\' link ', function () {
+    beforeEach('Complete section', function () {
+      browser.openQuestionnaire(hub_and_spoke_schema);
+      $(HubPage.summaryRowLink(3)).click();
+      $(DoesAnyoneLiveHere.no()).click();
+      $(DoesAnyoneLiveHere.submit()).click();
+      $(SectionSummaryPage.submit()).click();
+    });
 
-      it('When there are no changes, continue returns directly to the hub', function () {
-        $(HubPage.summaryRowLink(3)).click();
-        $(SectionSummaryPage.submit()).click();
-        let expectedUrl = browser.getUrl();
-        expect(expectedUrl).to.contain(HubPage.url());
-      });
+    it('When there are no changes, continue returns directly to the hub', function () {
+      $(HubPage.summaryRowLink(3)).click();
+      $(SectionSummaryPage.submit()).click();
+      let expectedUrl = browser.getUrl();
+      expect(expectedUrl).to.contain(HubPage.url());
+    });
 
-      it('When there are changes, which would set the section to in_progress it routes accordingly', function () {
-        $(HubPage.summaryRowLink(3)).click();
-        $(SectionSummaryPage.summaryRowAction(1)).click();
-        $(DoesAnyoneLiveHere.yes()).click();
-        $(DoesAnyoneLiveHere.submit()).click();
-        $(SectionSummaryPage.submit()).click();
-        let expectedUrl = browser.getUrl();
-        expect(expectedUrl).to.contain(HowManyPeopleLiveHere.url());
-      });
+    it('When there are changes, which would set the section to in_progress it routes accordingly', function () {
+      $(HubPage.summaryRowLink(3)).click();
+      $(SectionSummaryPage.summaryRowAction(1)).click();
+      $(DoesAnyoneLiveHere.yes()).click();
+      $(DoesAnyoneLiveHere.submit()).click();
+      $(SectionSummaryPage.submit()).click();
+      let expectedUrl = browser.getUrl();
+      expect(expectedUrl).to.contain(HowManyPeopleLiveHere.url());
+    });
   });
 });

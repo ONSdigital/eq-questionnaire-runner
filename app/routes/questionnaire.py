@@ -180,7 +180,7 @@ def get_section(schema, questionnaire_store, section_id, list_item_id=None):
             questionnaire_store=questionnaire_store,
             section_id=section_id,
             list_item_id=list_item_id,
-            language=flask_babel.get_locale().language
+            language=flask_babel.get_locale().language,
         )
     except InvalidLocationException:
         return redirect(url_for(".get_questionnaire"))

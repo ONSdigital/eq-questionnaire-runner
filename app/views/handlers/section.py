@@ -60,17 +60,21 @@ class SectionHandler:
         if section_status != CompletionStatus.COMPLETED:
             return self._router.get_first_incomplete_location_for_section(
                 self._routing_path
-                ).url()
+            ).url()
 
         return self._router.get_first_incomplete_location_for_section(
             routing_path=self._routing_path
-            ).url()
+        ).url()
 
     def get_page_title(self):
         return self._schema.get_title_for_section(self._section_id)
 
     def can_display_summary(self):
-        return self._schema.is_summary_in_section(self._section_id) and self._questionnaire_store.progress_store.is_section_complete(self._section_id, self._list_item_id)
+        return self._schema.is_summary_in_section(
+            self._section_id
+        ) and self._questionnaire_store.progress_store.is_section_complete(
+            self._section_id, self._list_item_id
+        )
 
     def _is_valid_location(self):
         return self._section_id in self._router.enabled_section_ids

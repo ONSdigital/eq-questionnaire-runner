@@ -73,7 +73,8 @@ class Router:
         """
 
         is_section_complete = self._progress_store.is_section_complete(
-            location.section_id, location.list_item_id)
+            location.section_id, location.list_item_id
+        )
 
         is_last_block_in_section = routing_path[-1] == location.block_id
 
