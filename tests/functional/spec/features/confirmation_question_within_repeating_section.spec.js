@@ -5,7 +5,6 @@ const DateOfBirthPage = require('../../generated_pages/confirmation_question_wit
 const ConfirmDateOfBirthPage = require('../../generated_pages/confirmation_question_within_repeating_section/confirm-dob-block.page');
 
 const ListCollectorSummary = require('../../base_pages/list-collector-summary.page.js');
-const SectionSummaryPage = require('../../base_pages/section-summary.page.js');
 
 describe('Feature: Confirmation Question Within A Repeating Section', function () {
   describe('Given I am in a repeating section', function () {

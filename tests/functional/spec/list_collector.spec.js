@@ -18,7 +18,7 @@ const VisitorListCollectorPage = require('../generated_pages/list_collector_sect
 const VisitorListCollectorAddPage = require('../generated_pages/list_collector_section_summary/visitor-list-collector-add.page.js');
 const ConfirmationPage = require('../generated_pages/list_collector/confirmation.page.js');
 
-const ListCollectorSummary = require('../base_pages/list-collector-summary.page.js');;
+const ListCollectorSummary = require('../base_pages/list-collector-summary.page.js');
 const SectionSummaryPage = require('../base_pages/section-summary.page.js');
 
 describe('List Collector', function() {
