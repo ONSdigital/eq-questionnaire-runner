@@ -22,7 +22,7 @@ from app.authentication.no_token_exception import NoTokenException
 from app.data_model.answer_store import AnswerStore
 from app.data_model.app_models import SubmittedResponse
 from app.data_model.list_store import ListStore
-from app.data_model.progress_store import CompletionStatus, ProgressStore
+from app.data_model.progress_store import ProgressStore
 from app.globals import (
     get_answer_store,
     get_metadata,
@@ -36,7 +36,7 @@ from app.helpers.schema_helpers import with_schema
 from app.helpers.session_helpers import with_questionnaire_store
 from app.helpers.template_helper import render_template
 from app.keys import KEY_PURPOSE_SUBMISSION
-from app.questionnaire.location import InvalidLocationException, Location
+from app.questionnaire.location import InvalidLocationException
 from app.questionnaire.router import Router
 from app.storage.storage_encryption import StorageEncryption
 from app.submitter.converter import convert_answers
@@ -48,7 +48,7 @@ from app.views.contexts.metadata_context import (
 )
 from app.views.contexts import QuestionnaireSummaryContext
 from app.views.handlers.block_factory import get_block_handler
-from app.views.handlers.section_summary import SectionSummary
+from app.views.handlers.section import SectionHandler
 
 END_BLOCKS = "Summary", "Confirmation"
 
@@ -174,55 +174,31 @@ def post_questionnaire(schema, questionnaire_store):
 @with_questionnaire_store
 @with_schema
 def get_section(schema, questionnaire_store, section_id, list_item_id=None):
-
-    router = Router(
-        schema,
-        questionnaire_store.answer_store,
-        questionnaire_store.list_store,
-        questionnaire_store.progress_store,
-        questionnaire_store.metadata,
-    )
-
-    if section_id not in router.enabled_section_ids:
+    try:
+        section_handler = SectionHandler(
+            schema=schema,
+            questionnaire_store=questionnaire_store,
+            section_id=section_id,
+            list_item_id=list_item_id,
+            language=flask_babel.get_locale().language
+        )
+    except InvalidLocationException:
         return redirect(url_for(".get_questionnaire"))
 
     if request.method == "GET":
-        section_status = questionnaire_store.progress_store.get_section_status(
-            section_id=section_id, list_item_id=list_item_id
-        )
-
-        routing_path = router.routing_path(
-            section_id=section_id, list_item_id=list_item_id
-        )
-
-        if section_status != CompletionStatus.COMPLETED:
-            return redirect(
-                router.get_first_incomplete_location_for_section(routing_path).url()
-            )
-
-        if schema.is_summary_in_section(section_id):
-            section_summary = _get_section_summary(
-                list_item_id, questionnaire_store, schema, section_id
-            )
+        if section_handler.can_display_summary():
             return _render_page(
                 block_type="SectionSummary",
-                context=section_summary.context(),
-                current_location=section_summary.current_location,
-                previous_location_url=section_summary.get_previous_location_url(),
+                context=section_handler.context(),
+                current_location=section_handler.current_location,
+                previous_location_url=section_handler.get_previous_location_url(),
                 schema=schema,
-                page_title=section_summary.page_title,
+                page_title=section_handler.get_page_title(),
             )
 
-        return redirect(
-            router.get_first_incomplete_location_for_section(
-                routing_path=routing_path
-            ).url()
-        )
+        return redirect(section_handler.get_section_resume_url())
 
-    section_summary = _get_section_summary(
-        list_item_id, questionnaire_store, schema, section_id
-    )
-    return redirect(section_summary.get_next_location_url())
+    return redirect(section_handler.get_next_location_url())
 
 
 # pylint: disable=too-many-return-statements
@@ -573,15 +549,3 @@ def request_wants_json():
         best == "application/json"
         and request.accept_mimetypes[best] > request.accept_mimetypes["text/html"]
     )
-
-
-def _get_section_summary(list_item_id, questionnaire_store, schema, section_id):
-    location = Location(
-        section_id=section_id,
-        list_name=schema.get_repeating_list_for_section(section_id),
-        list_item_id=list_item_id,
-    )
-    section_summary = SectionSummary(
-        schema, questionnaire_store, location, flask_babel.get_locale().language
-    )
-    return section_summary

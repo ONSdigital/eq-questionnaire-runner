@@ -72,14 +72,12 @@ class Router:
         whether it be a summary the hub or the next incomplete location.
         """
 
-        if not self._progress_store.is_section_complete(
-            location.section_id, location.list_item_id
-        ):
-            return self.get_next_block_url(location, routing_path)
+        is_section_complete = self._progress_store.is_section_complete(
+            location.section_id, location.list_item_id)
 
         is_last_block_in_section = routing_path[-1] == location.block_id
 
-        if return_to_summary or is_last_block_in_section:
+        if is_section_complete and (return_to_summary or is_last_block_in_section):
             has_section_summary = self._schema.is_summary_in_section(
                 location.section_id
             )
