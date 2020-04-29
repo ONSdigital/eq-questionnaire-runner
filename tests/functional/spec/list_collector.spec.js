@@ -242,7 +242,7 @@ describe('List Collector', function() {
     });
 
     it('When the user updates the list, They should return to the section summary and it should display the updated list', function() {
-      $(SectionSummaryPage.listCollectorPeopleRowChange(1)).click();
+      $(ListCollectorSummary.listCollectorPeopleRowChange(1)).click();
       $(SectionSummaryListCollectorEditPage.firstName()).setValue('Mark');
       $(SectionSummaryListCollectorEditPage.lastName()).setValue('Twain');
       $(SectionSummaryListCollectorEditPage.submit()).click();
