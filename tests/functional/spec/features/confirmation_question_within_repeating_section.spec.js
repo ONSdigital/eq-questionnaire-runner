@@ -4,6 +4,7 @@ const CarerPage = require('../../generated_pages/confirmation_question_within_re
 const DateOfBirthPage = require('../../generated_pages/confirmation_question_within_repeating_section/dob-block.page');
 const ConfirmDateOfBirthPage = require('../../generated_pages/confirmation_question_within_repeating_section/confirm-dob-block.page');
 
+const ListCollectorSummary = require('../../base_pages/list-collector-summary.page.js');
 const SectionSummaryPage = require('../../base_pages/section-summary.page.js');
 
 describe('Feature: Confirmation Question Within A Repeating Section', function () {
@@ -48,7 +49,7 @@ describe('Feature: Confirmation Question Within A Repeating Section', function (
         $(ConfirmDateOfBirthPage.submit()).click();
 
         expect(browser.getUrl()).to.contain('sections/default-section/');
-        expect($(SectionSummaryPage.listCollectorPeopleRowTitle(2)).isExisting()).to.equal(false);
+        expect($(ListCollectorSummary.listCollectorPeopleRowTitle(2)).isExisting()).to.equal(false);
       });
     });
 

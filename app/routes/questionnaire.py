@@ -165,7 +165,6 @@ def post_questionnaire(schema, questionnaire_store):
     return redirect(router.get_first_incomplete_location_in_survey().url())
 
 
-# pylint: disable=too-many-return-statements
 @questionnaire_blueprint.route("sections/<section_id>/", methods=["GET", "POST"])
 @questionnaire_blueprint.route(
     "sections/<section_id>/<list_item_id>/", methods=["GET", "POST"]
@@ -188,7 +187,7 @@ def get_section(schema, questionnaire_store, section_id, list_item_id=None):
     if request.method == "GET":
         if section_handler.can_display_summary():
             return _render_page(
-                block_type="SectionSummary",
+                template="SectionSummary",
                 context=section_handler.context(),
                 current_location=section_handler.current_location,
                 previous_location_url=section_handler.get_previous_location_url(),
@@ -240,7 +239,7 @@ def block(schema, questionnaire_store, block_id, list_name=None, list_item_id=No
 
     if request.method == "GET" or not block_handler.form.validate():
         return _render_page(
-            block_type=block_handler.rendered_block["type"],
+            template=block_handler.rendered_block["type"],
             context=block_handler.get_context(),
             current_location=block_handler.current_location,
             previous_location_url=block_handler.get_previous_location_url(),
@@ -290,7 +289,7 @@ def relationship(schema, questionnaire_store, block_id, list_item_id, to_list_it
     )
     if request.method == "GET" or not block_handler.form.validate():
         return _render_page(
-            block_type=block_handler.block["type"],
+            template=block_handler.block["type"],
             context=block_handler.get_context(),
             current_location=block_handler.current_location,
             previous_location_url=block_handler.get_previous_location_url(),
@@ -525,7 +524,7 @@ def _is_submission_viewable(schema, submitted_time):
 
 
 def _render_page(
-    block_type, context, current_location, previous_location_url, schema, page_title
+    template, context, current_location, previous_location_url, schema, page_title
 ):
     if request_wants_json():
         return jsonify(context)
@@ -533,7 +532,7 @@ def _render_page(
     session_timeout = get_session_timeout_in_seconds(schema)
 
     return render_template(
-        template=block_type,
+        template=template,
         content=context,
         current_location=current_location,
         previous_location_url=previous_location_url,

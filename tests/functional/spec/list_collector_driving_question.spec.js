@@ -5,6 +5,7 @@ const AnyoneElseLiveAtListCollectorPage = require('../generated_pages/list_colle
 const AnyoneElseLiveAtListCollectorAddPage = require('../generated_pages/list_collector_driving_question/anyone-else-live-at-add.page.js');
 const AnyoneElseLiveAtListCollectorRemovePage = require('../generated_pages/list_collector_driving_question/anyone-else-live-at-remove.page.js');
 
+const ListCollectorSummary = require('../base_pages/list-collector-summary.page.js');
 const SectionSummaryPage = require('../base_pages/section-summary.page.js');
 
 describe('List Collector Driving Question', function() {
@@ -30,7 +31,7 @@ describe('List Collector Driving Question', function() {
 
       const peopleExpected = ['Marcus Twin', 'Suzy Clemens'];
 
-      checkPeopleInList(peopleExpected, SectionSummaryPage.peopleListLabel);
+      checkPeopleInList(peopleExpected, ListCollectorSummary.peopleListLabel);
     });
    });
 
@@ -38,7 +39,7 @@ describe('List Collector Driving Question', function() {
     it('The summary add link returns to the driving question', function() {
       $(AnyoneUsuallyLiveAtPage.no()).click();
       $(AnyoneUsuallyLiveAtPage.submit()).click();
-      $(SectionSummaryPage.listCollectorPeopleRowAdd()).click();
+      $(ListCollectorSummary.listCollectorPeopleRowAdd()).click();
       expect(browser.getUrl()).to.contain(AnyoneUsuallyLiveAtPage.url());
     });
   });
@@ -53,10 +54,10 @@ describe('List Collector Driving Question', function() {
       $(AnyoneElseLiveAtListCollectorAddPage.submit()).click();
       $(AnyoneElseLiveAtListCollectorPage.no()).click();
       $(AnyoneElseLiveAtListCollectorPage.submit()).click();
-      $(SectionSummaryPage.listCollectorPeopleRowRemove(1)).click();
+      $(ListCollectorSummary.listCollectorPeopleRowRemove(1)).click();
       $(AnyoneElseLiveAtListCollectorRemovePage.yes()).click();
       $(AnyoneElseLiveAtListCollectorRemovePage.submit()).click();
-      $(SectionSummaryPage.listCollectorPeopleRowAdd()).click();
+      $(ListCollectorSummary.listCollectorPeopleRowAdd()).click();
       expect(browser.getUrl()).to.contain(AnyoneElseLiveAtListCollectorAddPage.pageName);
     });
   });

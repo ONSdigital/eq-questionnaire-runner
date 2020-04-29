@@ -62,9 +62,7 @@ class SectionHandler:
                 self._routing_path
             ).url()
 
-        return self._router.get_first_incomplete_location_for_section(
-            routing_path=self._routing_path
-        ).url()
+        return self._router.get_first_location_in_section(self._routing_path).url()
 
     def get_page_title(self):
         return self._schema.get_title_for_section(self._section_id)

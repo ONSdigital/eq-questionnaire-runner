@@ -9,8 +9,8 @@ const ListCollectorPage = require('../generated_pages/list_collector_driving_che
 const ListCollectorTemporaryAwayPage = require('../generated_pages/list_collector_driving_checkbox/list-collector-temporary-away-stay.page');
 const ListCollectorTemporaryAwayAddPage = require('../generated_pages/list_collector_driving_checkbox/list-collector-temporary-away-stay-add.page');
 
+const ListCollectorSummary = require('../base_pages/list-collector-summary.page.js');
 const SectionSummaryPage = require('../base_pages/section-summary.page.js');
-
 
 const beforeSetup = () => {
   browser.openQuestionnaire('test_list_collector_driving_checkbox.json');
@@ -38,7 +38,7 @@ describe('List Collector Driving Checkbox Question', function() {
       $(ListCollectorTemporaryAwayPage.submit()).click();
 
       const householdMembersExpected = ['Marcus Twin (You)', 'Suzy Clemens'];
-      checkPeopleInList(householdMembersExpected, SectionSummaryPage.peopleListLabel);
+      checkPeopleInList(householdMembersExpected, ListCollectorSummary.peopleListLabel);
     });
   });
 
@@ -55,7 +55,7 @@ describe('List Collector Driving Checkbox Question', function() {
       $(ListCollectorTemporaryAwayPage.submit()).click();
 
       const householdMembersExpected = ['Suzy Clemens'];
-      checkPeopleInList(householdMembersExpected, SectionSummaryPage.peopleListLabel);
+      checkPeopleInList(householdMembersExpected, ListCollectorSummary.peopleListLabel);
     });
   });
 
@@ -71,7 +71,7 @@ describe('List Collector Driving Checkbox Question', function() {
       $(ListCollectorTemporaryAwayPage.submit()).click();
 
       const householdMembersExpected = ['Suzy Clemens', 'Christopher Pike'];
-      checkPeopleInList(householdMembersExpected, SectionSummaryPage.peopleListLabel);
+      checkPeopleInList(householdMembersExpected, ListCollectorSummary.peopleListLabel);
     });
   });
 });

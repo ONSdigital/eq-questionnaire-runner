@@ -35,19 +35,19 @@ class ListAction(Question):
 
     def get_previous_location_url(self):
         if self._request_args.get("return_to_summary"):
-            return self.return_to_summary()
+            return self.get_section_summary_url()
 
         block_id = self._request_args.get("previous")
         return self._get_location_url(block_id)
 
-    def return_to_summary(self):
+    def get_section_summary_url(self):
         return url_for(
             "questionnaire.get_section", section_id=self.parent_location.section_id
         )
 
     def get_next_location_url(self):
         if self._request_args.get("return_to_summary"):
-            return self.return_to_summary()
+            return self.get_section_summary_url()
         return self.parent_location.url()
 
     def get_context(self):
