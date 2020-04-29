@@ -162,7 +162,7 @@ describe('Relationships', function() {
       });
     });
 
-    describe.only('When I have added one or more household members after answering the relationships question,', function() {
+    describe('When I have added one or more household members after answering the relationships question,', function() {
       beforeEach('add three people and complete their relationships', function() {
         addThreePeopleAndCompleteRelationships();
       });
