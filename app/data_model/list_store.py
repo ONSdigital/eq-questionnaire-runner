@@ -40,6 +40,15 @@ class ListModel:
     def __repr__(self):
         return f"<ListModel name={self.name} items={self.items}, primary_person={self.primary_person}>"
 
+    @property
+    def first(self):
+        try:
+            return self.items[0]
+        except IndexError:
+            raise IndexError(
+                f"unable to access first item in list, list '{self.name}' is empty"
+            )
+
 
 class ListStore:
     """ Storage for lists.

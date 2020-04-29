@@ -4,9 +4,9 @@
     "schema_version": "0.0.1",
     "data_version": "0.0.3",
     "survey_id": "0",
-    "title": "Test ListCollectorDrivingQuestion",
+    "title": "Repeating Section Summaries",
     "theme": "default",
-    "description": "A questionnaire to test ListCollectorDrivingQuestion",
+    "description": "A questionnaire to repeating section summary functionality",
     "metadata": [
         {
             "name": "user_id",
@@ -27,94 +27,18 @@
     "sections": [
         {
             "id": "section",
-            "title": "People",
-            "summary": {
-                "items": [
-                    {
-                        "type": "List",
-                        "for_list": "people",
-                        "title": "Household members",
-                        "add_link_text": "Add someone to this household",
-                        "empty_list_text": "There are no householders"
-                    }
-                ]
-            },
+            "title": "Household",
             "groups": [
                 {
                     "id": "group",
                     "title": "List",
                     "blocks": [
                         {
-                            "type": "ListCollectorDrivingQuestion",
-                            "id": "anyone-usually-live-at",
-                            "for_list": "people",
-                            "question": {
-                                "type": "General",
-                                "id": "anyone-usually-live-at-question",
-                                "title": "Does anyone usually live at 1 Pleasant Lane?",
-                                "guidance": {
-                                    "contents": [
-                                        {
-                                            "title": "Outcomes",
-                                            "list": [
-                                                "`None of the these apply, I am the only person who usually lives here` - Takes you directly to the list collector.",
-                                                "Any of the other checkboxes and the list <strong>is</strong> empty - Takes you to the list collector‘s <strong>add</strong> question.",
-                                                "Any of the other checkboxes and the list <strong>is not</strong> empty - Takes you directly to the list collector."
-                                            ]
-                                        }
-                                    ]
-                                },
-                                "answers": [
-                                    {
-                                        "type": "Radio",
-                                        "id": "anyone-usually-live-at-answer",
-                                        "mandatory": true,
-                                        "options": [
-                                            {
-                                                "label": "Yes",
-                                                "value": "Yes",
-                                                "action": {
-                                                    "type": "RedirectToListAddQuestion",
-                                                    "params": {
-                                                        "block_id": "add-person",
-                                                        "list_name": "people"
-                                                    }
-                                                }
-                                            },
-                                            {
-                                                "label": "No",
-                                                "value": "No"
-                                            }
-                                        ]
-                                    }
-                                ]
-                            },
-                            "routing_rules": [
-                                {
-                                    "goto": {
-                                        "block": "summary",
-                                        "when": [
-                                            {
-                                                "id": "anyone-usually-live-at-answer",
-                                                "condition": "equals",
-                                                "value": "No"
-                                            }
-                                        ]
-                                    }
-                                },
-                                {
-                                    "goto": {
-                                        "block": "anyone-else-live-at"
-                                    }
-                                }
-                            ]
-                        },
-                        {
-                            "id": "anyone-else-live-at",
+                            "id": "list-collector",
                             "type": "ListCollector",
                             "for_list": "people",
                             "add_answer": {
-                                "id": "anyone-else-live-at-answer",
+                                "id": "anyone-else",
                                 "value": "Yes"
                             },
                             "remove_answer": {
@@ -124,10 +48,10 @@
                             "question": {
                                 "id": "confirmation-question",
                                 "type": "General",
-                                "title": "Does anyone else live at 1 Pleasant Lane?",
+                                "title": "Does anyone else live here?",
                                 "answers": [
                                     {
-                                        "id": "anyone-else-live-at-answer",
+                                        "id": "anyone-else",
                                         "mandatory": true,
                                         "type": "Radio",
                                         "options": [
@@ -238,11 +162,121 @@
                                     ]
                                 }
                             }
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "personal-details-section",
+            "title": "Personal Details",
+            "repeat": {
+                "for_list": "people",
+                "title": {
+                    "text": "{person_name}",
+                    "placeholders": [
+                        {
+                            "placeholder": "person_name",
+                            "transforms": [
+                                {
+                                    "transform": "concatenate_list",
+                                    "arguments": {
+                                        "list_to_concatenate": {
+                                            "source": "answers",
+                                            "identifier": ["first-name", "last-name"]
+                                        },
+                                        "delimiter": " "
+                                    }
+                                }
+                            ]
+                        }
+                    ]
+                }
+            },
+            "groups": [
+                {
+                    "id": "personal-details-group",
+                    "title": "Personal Details",
+                    "blocks": [
+                        {
+                            "id": "list-status",
+                            "question_variants": [
+                                {
+                                    "question": {
+                                        "answers": [
+                                            {
+                                                "id": "list-status-answer",
+                                                "mandatory": false,
+                                                "options": [
+                                                    {
+                                                        "label": "Yes",
+                                                        "value": "Yes"
+                                                    },
+                                                    {
+                                                        "label": "No",
+                                                        "value": "No"
+                                                    }
+                                                ],
+                                                "type": "Radio"
+                                            }
+                                        ],
+                                        "id": "list-status-question",
+                                        "title": "You are the first person in the list",
+                                        "type": "General"
+                                    },
+                                    "when": [
+                                        {
+                                            "list": "people",
+                                            "id_selector": "first",
+                                            "condition": "equals",
+                                            "comparison": {
+                                                "source": "location",
+                                                "id": "list_item_id"
+                                            }
+                                        }
+                                    ]
+                                },
+                                {
+                                    "question": {
+                                        "answers": [
+                                            {
+                                                "id": "list-status-answer",
+                                                "mandatory": false,
+                                                "options": [
+                                                    {
+                                                        "label": "Yes",
+                                                        "value": "Yes"
+                                                    },
+                                                    {
+                                                        "label": "No",
+                                                        "value": "No"
+                                                    }
+                                                ],
+                                                "type": "Radio"
+                                            }
+                                        ],
+                                        "id": "list-status-question",
+                                        "title": "You are not the first person in the list",
+                                        "type": "General"
+                                    },
+                                    "when": [
+                                        {
+                                            "list": "people",
+                                            "id_selector": "first",
+                                            "condition": "not equals",
+                                            "comparison": {
+                                                "source": "location",
+                                                "id": "list_item_id"
+                                            }
+                                        }
+                                    ]
+                                }
+                            ],
+                            "type": "Question"
                         },
                         {
-                            "type": "SectionSummary",
-                            "title": "List Collector Driving Question Summary",
-                            "id": "summary"
+                            "id": "personal-summary",
+                            "type": "SectionSummary"
                         }
                     ]
                 }

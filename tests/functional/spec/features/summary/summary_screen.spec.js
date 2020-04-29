@@ -1,7 +1,7 @@
-const RadioPage = require('../../../generated_pages/summary/radio.page.js');
-const TestNumberPage = require('../../../generated_pages/summary/test-number-block.page.js');
 const DessertBlockPage = require('../../../generated_pages/summary/dessert-block.page.js');
+const RadioPage = require('../../../generated_pages/summary/radio.page.js');
 const SummaryPage = require('../../../generated_pages/summary/summary.page.js');
+const TestNumberPage = require('../../../generated_pages/summary/test-number-block.page.js');
 
 describe('Summary Screen', function() {
   beforeEach('Load the survey', function () {
@@ -16,7 +16,6 @@ describe('Summary Screen', function() {
     expect($(SummaryPage.squareKilometres()).getText()).to.contain('123,456 km²');
     expect($(SummaryPage.testDecimal()).getText()).to.contain('123,456.78');
     expect($(SummaryPage.dessertGroupTitle()).getText()).to.contain('Dessert');
-
     expect($$(SummaryPage.summaryGroupTitle())).to.be.empty;
   });
 
@@ -87,4 +86,3 @@ describe('Summary Screen', function() {
     expect(expectedUrl).to.contain(SummaryPage.pageName);
   }
 });
-
