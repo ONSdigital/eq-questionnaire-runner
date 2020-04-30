@@ -173,7 +173,7 @@ exports.config = {
 
     global.expect = chai.expect;
 
-    browser.addCommand("openQuestionnaire", async (
+    browser.addCommand("openQuestionnaire", async function(
       schema,
       {
         userId = JwtHelper.getRandomString(10),
@@ -186,7 +186,7 @@ exports.config = {
         sexualIdentity = false,
         includeLogoutUrl = false
       } = {}
-    ) => {
+    ) {
       const token = await JwtHelper.generateToken(schema, {
         userId,
         collectionId,
