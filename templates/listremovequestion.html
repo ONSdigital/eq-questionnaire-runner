@@ -1,1 +1,11 @@
 {% extends 'list-action.tmpl' %}
+
+{% block cancel_and_return %}
+  {% if previous_location_url %}
+    <p class="u-mt-l">
+      {% if content.block.cancel_text %}
+        {{ content.block.cancel_text }} <br>
+      {% endif %}
+    </p>
+  {% endif %}
+{% endblock cancel_and_return %}
