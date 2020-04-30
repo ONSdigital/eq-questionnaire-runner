@@ -1,6 +1,5 @@
 const DatePage = require('../../../../generated_pages/mutually_exclusive/mutually-exclusive-date.page');
-
-const SectionSummaryPage = require('../../../../base_pages/section-summary.page.js');
+const SummaryPage = require('../../../../generated_pages/mutually_exclusive/mutually-exclusive-date-section-summary.page');
 
 describe('Component: Mutually Exclusive Day Month Year Date With Single Checkbox Override', function() {
   beforeEach(function() {
@@ -29,8 +28,8 @@ describe('Component: Mutually Exclusive Day Month Year Date With Single Checkbox
 
         $(DatePage.submit()).click();
 
-        expect($(SectionSummaryPage.summaryRowValue(1)).getText()).to.have.string('I prefer not to say');
-        expect($(SectionSummaryPage.summaryItems()).getText()).to.not.have.string('17 March 2018');
+        expect($(SummaryPage.dateExclusiveAnswer()).getText()).to.have.string('I prefer not to say');
+        expect($(SummaryPage.dateExclusiveAnswer()).getText()).to.not.have.string('17 March 2018');
 
     });
   });
@@ -56,8 +55,8 @@ describe('Component: Mutually Exclusive Day Month Year Date With Single Checkbox
 
         $(DatePage.submit()).click();
 
-        expect($(SectionSummaryPage.summaryRowValue(1)).getText()).to.have.string('17 March 2018');
-        expect($(SectionSummaryPage.summaryItems()).getText()).to.not.have.string('I prefer not to say');
+        expect($(SummaryPage.dateAnswer()).getText()).to.have.string('17 March 2018');
+        expect($(SummaryPage.dateAnswer()).getText()).to.not.have.string('I prefer not to say');
 
     });
   });
@@ -80,8 +79,8 @@ describe('Component: Mutually Exclusive Day Month Year Date With Single Checkbox
         expect($(DatePage.dateExclusiveIPreferNotToSay()).isSelected()).to.be.false;
 
         $(DatePage.submit()).click();
-        expect($(SectionSummaryPage.summaryRowValue(1)).getText()).to.have.string('17 March 2018');
-        expect($(SectionSummaryPage.summaryItems()).getText()).to.not.have.string('I prefer not to say');
+        expect($(SummaryPage.dateAnswer()).getText()).to.have.string('17 March 2018');
+        expect($(SummaryPage.dateAnswer()).getText()).to.not.have.string('I prefer not to say');
 
     });
   });
@@ -101,8 +100,8 @@ describe('Component: Mutually Exclusive Day Month Year Date With Single Checkbox
         // Then
         $(DatePage.submit()).click();
 
-        expect($(SectionSummaryPage.summaryRowValue(1)).getText()).to.have.string('I prefer not to say');
-        expect($(SectionSummaryPage.summaryItems()).getText()).to.not.have.string('17 March 2018');
+        expect($(SummaryPage.dateExclusiveAnswer()).getText()).to.have.string('I prefer not to say');
+        expect($(SummaryPage.dateExclusiveAnswer()).getText()).to.not.have.string('17 March 2018');
 
     });
   });
@@ -120,7 +119,7 @@ describe('Component: Mutually Exclusive Day Month Year Date With Single Checkbox
         $(DatePage.submit()).click();
 
         // Then
-        expect($(SectionSummaryPage.summaryRowValue(1)).getText()).to.contain('No answer provided');
+        expect($(SummaryPage.dateAnswer()).getText()).to.contain('No answer provided');
     });
   });
 });

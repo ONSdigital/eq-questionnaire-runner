@@ -1,6 +1,6 @@
 const TextFieldPage = require('../../../../generated_pages/mutually_exclusive/mutually-exclusive-textarea.page');
+const SummaryPage = require('../../../../generated_pages/mutually_exclusive/mutually-exclusive-textarea-section-summary.page');
 
-const SectionSummaryPage = require('../../../../base_pages/section-summary.page.js');
 
 describe('Component: Mutually Exclusive TextArea With Single Checkbox Override', function() {
   beforeEach(function() {
@@ -22,8 +22,8 @@ describe('Component: Mutually Exclusive TextArea With Single Checkbox Override',
 
       $(TextFieldPage.submit()).click();
 
-      expect($(SectionSummaryPage.summaryRowValue(1)).getText()).to.have.string('Blue');
-      expect($(SectionSummaryPage.summaryItems()).getText()).to.not.have.string('I prefer not to say');
+      expect($(SummaryPage.textareaAnswer()).getText()).to.have.string('Blue');
+      expect($(SummaryPage.textareaAnswer()).getText()).to.not.have.string('I prefer not to say');
     });
   });
 
@@ -39,8 +39,8 @@ describe('Component: Mutually Exclusive TextArea With Single Checkbox Override',
       // Then
       $(TextFieldPage.submit()).click();
 
-      expect($(SectionSummaryPage.summaryRowValue(1)).getText()).to.have.string('I prefer not to say');
-      expect($(SectionSummaryPage.summaryItems()).getText()).to.not.have.string('Blue');
+      expect($(SummaryPage.textareaExclusiveAnswer()).getText()).to.have.string('I prefer not to say');
+      expect($(SummaryPage.textareaExclusiveAnswer()).getText()).to.not.have.string('Blue');
     });
   });
 
@@ -54,7 +54,7 @@ describe('Component: Mutually Exclusive TextArea With Single Checkbox Override',
       $(TextFieldPage.submit()).click();
 
       // Then
-      expect($(SectionSummaryPage.summaryRowValue(1)).getText()).to.contain('No answer provided');
+      expect($(SummaryPage.textareaAnswer()).getText()).to.contain('No answer provided');
     });
   });
 });

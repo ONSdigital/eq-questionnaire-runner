@@ -1,10 +1,11 @@
 const InsuranceAddressPage = require('../../../generated_pages/section_summary/insurance-address.page.js');
 const InsuranceTypePage = require('../../../generated_pages/section_summary/insurance-type.page.js');
 const AddressDurationPage = require('../../../generated_pages/section_summary/address-duration.page.js');
+const PropertyDetailsSummaryPage = require('../../../generated_pages/section_summary/property-details-section-summary.page.js');
 const HouseType = require('../../../generated_pages/section_summary/house-type.page.js');
-const QuestionnaireSummaryPage = require('../../../generated_pages/section_summary/summary.page.js');
+const HouseholdDetailsSummaryPage = require('../../../generated_pages/section_summary/house-details-section-summary.page.js');
 
-const SectionSummaryPage = require('../../../base_pages/section-summary.page.js');
+const QuestionnaireSummaryPage = require('../../../generated_pages/section_summary/summary.page.js');
 
 describe('Section Summary', function() {
   describe('Given I start a Test Section Summary survey and complete to Section Summary', function() {
@@ -13,23 +14,23 @@ describe('Section Summary', function() {
       $(InsuranceTypePage.both()).click();
       $(InsuranceTypePage.submit()).click();
       $(InsuranceAddressPage.submit()).click();
-      expect($(SectionSummaryPage.summaryRowValue(1)).getText()).to.contain('Both');
+      expect($(PropertyDetailsSummaryPage.insuranceTypeAnswer()).getText()).to.contain('Both');
     });
 
     it('When I have selected an answer to edit and edit it, Then I should return to the section summary with new value displayed', function() {
-      $(SectionSummaryPage.summaryRowAction(2)).click();
+      $(PropertyDetailsSummaryPage.insuranceAddressAnswerEdit()).click();
       $(InsuranceAddressPage.answer()).setValue('Test Address');
       $(InsuranceAddressPage.submit()).click();
-      expect($(SectionSummaryPage.summaryRowValue(2)).getText()).to.contain('Test Address');
+      expect($(PropertyDetailsSummaryPage.insuranceAddressAnswer()).getText()).to.contain('Test Address');
     });
 
     it('When I continue on the section summary page, Then I should be taken to the next section', function() {
-      $(SectionSummaryPage.submit()).click();
+      $(PropertyDetailsSummaryPage.submit()).click();
       expect(browser.getUrl()).to.contain(HouseType.pageName);
     });
 
     it('When I select edit from Section Summary but change routing, Then I should be stepped through the section', function() {
-      $(SectionSummaryPage.summaryRowAction(1)).click();
+      $(PropertyDetailsSummaryPage.insuranceTypeAnswerEdit()).click();
       $(InsuranceTypePage.contents()).click();
       $(InsuranceTypePage.submit()).click();
       expect(browser.getUrl()).to.contain(InsuranceAddressPage.pageName);
@@ -44,9 +45,9 @@ describe('Section Summary', function() {
       $(InsuranceTypePage.both()).click();
       $(InsuranceTypePage.submit()).click();
       $(InsuranceAddressPage.submit()).click();
-      $(SectionSummaryPage.submit()).click();
+      $(PropertyDetailsSummaryPage.submit()).click();
       $(HouseType.submit()).click();
-      $(SectionSummaryPage.submit()).click();
+      $(HouseholdDetailsSummaryPage.submit()).click();
       expect(browser.getUrl()).to.contain('/questionnaire/summary/');
     });
 

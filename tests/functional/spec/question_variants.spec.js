@@ -1,12 +1,13 @@
 const ageBlock = require('../generated_pages/variants_question/age-block.page.js');
 const ageConfirmationBlock = require('../generated_pages/variants_question/age-confirmation-block.page.js');
+const basicVariantsSummary = require('../generated_pages/variants_question/basic-question-variant-section-summary.page.js');
 const currencyBlock = require('../generated_pages/variants_question/currency-block.page.js');
+const currencySectionSummary = require('../generated_pages/variants_question/currency-section-summary.page.js');
 const firstNumberBlock = require('../generated_pages/variants_question/first-number-block.page.js');
 const nameBlock = require('../generated_pages/variants_question/name-block.page.js');
 const proxyBlock = require('../generated_pages/variants_question/proxy-block.page.js');
 const secondNumberBlock = require('../generated_pages/variants_question/second-number-block.page.js');
 
-const SectionSummaryPage = require('../base_pages/section-summary.page.js');
 
 describe('QuestionVariants', function() {
   beforeEach(function() {
@@ -33,10 +34,10 @@ describe('QuestionVariants', function() {
     $(ageConfirmationBlock.ageConfirmYes()).click();
     $(ageConfirmationBlock.submit()).click();
 
-    expect($(SectionSummaryPage.summaryRowTitle(1)).getText()).to.contain('What age is Guido van Rossum');
-    expect($(SectionSummaryPage.summaryRowValue(1)).getText()).to.contain('63');
+    expect($(basicVariantsSummary.ageQuestion()).getText()).to.contain('What age is Guido van Rossum');
+    expect($(basicVariantsSummary.ageAnswer()).getText()).to.contain('63');
 
-    $(SectionSummaryPage.submit()).click();
+    $(basicVariantsSummary.submit()).click();
 
     $(currencyBlock.sterling()).click();
     $(currencyBlock.submit()).click();
@@ -49,14 +50,14 @@ describe('QuestionVariants', function() {
     $(secondNumberBlock.secondNumber()).setValue(321);
     $(secondNumberBlock.submit()).click();
 
-    expect($(SectionSummaryPage.summaryRowValue(1)).getText()).to.contain('Sterling');
-    expect($(SectionSummaryPage.summaryRowValue(2)).getText()).to.contain('£');
+    expect($(currencySectionSummary.currencyAnswer()).getText()).to.contain('Sterling');
+    expect($(currencySectionSummary.firstNumberAnswer()).getText()).to.contain('£');
 
-    $(SectionSummaryPage.summaryRowAction(1)).click();
+    $(currencySectionSummary.currencyAnswerEdit()).click();
     $(currencyBlock.usDollars()).click();
     $(currencyBlock.submit()).click();
 
-    expect($(SectionSummaryPage.summaryRowValue(2)).getText()).to.contain('$');
+    expect($(currencySectionSummary.firstNumberAnswer()).getText()).to.contain('$');
 
     });
 });

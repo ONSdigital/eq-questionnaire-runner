@@ -68,8 +68,8 @@ class Router:
 
     def get_next_location_url(self, location, routing_path, return_to_summary=False):
         """
-        Get the next location in the section. If the section is complete determine where to go next,
-        whether it be a summary the hub or the next incomplete location.
+        Get the next location in the section. If the section is complete, determine where to go next,
+        whether it be a summary, the hub or the next incomplete location.
         """
 
         is_section_complete = self._progress_store.is_section_complete(

@@ -4,8 +4,8 @@ const AnyoneUsuallyLiveAtPage = require('../generated_pages/list_collector_drivi
 const AnyoneElseLiveAtListCollectorPage = require('../generated_pages/list_collector_driving_question/anyone-else-live-at.page.js');
 const AnyoneElseLiveAtListCollectorAddPage = require('../generated_pages/list_collector_driving_question/anyone-else-live-at-add.page.js');
 const AnyoneElseLiveAtListCollectorRemovePage = require('../generated_pages/list_collector_driving_question/anyone-else-live-at-remove.page.js');
+const SectionSummaryPage = require('../generated_pages/list_collector_driving_question/section-summary.page.js');
 
-const ListCollectorSummary = require('../base_pages/list-collector-summary.page.js');
 
 describe('List Collector Driving Question', function() {
   beforeEach('Load the survey', function() {
@@ -30,7 +30,7 @@ describe('List Collector Driving Question', function() {
 
       const peopleExpected = ['Marcus Twin', 'Suzy Clemens'];
 
-      checkPeopleInList(peopleExpected, ListCollectorSummary.peopleListLabel);
+      checkPeopleInList(peopleExpected, SectionSummaryPage.peopleListLabel);
     });
    });
 
@@ -38,7 +38,7 @@ describe('List Collector Driving Question', function() {
     it('The summary add link returns to the driving question', function() {
       $(AnyoneUsuallyLiveAtPage.no()).click();
       $(AnyoneUsuallyLiveAtPage.submit()).click();
-      $(ListCollectorSummary.listCollectorPeopleRowAdd()).click();
+      $(SectionSummaryPage.listCollectorPeopleRowAdd()).click();
       expect(browser.getUrl()).to.contain(AnyoneUsuallyLiveAtPage.url());
     });
   });
@@ -53,10 +53,10 @@ describe('List Collector Driving Question', function() {
       $(AnyoneElseLiveAtListCollectorAddPage.submit()).click();
       $(AnyoneElseLiveAtListCollectorPage.no()).click();
       $(AnyoneElseLiveAtListCollectorPage.submit()).click();
-      $(ListCollectorSummary.listCollectorPeopleRowRemove(1)).click();
+      $(SectionSummaryPage.peopleListRemoveLink(1)).click();
       $(AnyoneElseLiveAtListCollectorRemovePage.yes()).click();
       $(AnyoneElseLiveAtListCollectorRemovePage.submit()).click();
-      $(ListCollectorSummary.listCollectorPeopleRowAdd()).click();
+      $(SectionSummaryPage.peopleListAddLink()).click();
       expect(browser.getUrl()).to.contain(AnyoneElseLiveAtListCollectorAddPage.pageName);
     });
   });

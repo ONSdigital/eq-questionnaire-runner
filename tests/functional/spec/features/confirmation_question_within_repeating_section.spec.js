@@ -4,12 +4,13 @@ const CarerPage = require('../../generated_pages/confirmation_question_within_re
 const DateOfBirthPage = require('../../generated_pages/confirmation_question_within_repeating_section/dob-block.page');
 const ConfirmDateOfBirthPage = require('../../generated_pages/confirmation_question_within_repeating_section/confirm-dob-block.page');
 
-const ListCollectorSummary = require('../../base_pages/list-collector-summary.page.js');
+const DefaultSectionSummary = require('../../generated_pages/confirmation_question_within_repeating_section/default-section-summary.page');
+
 
 describe('Feature: Confirmation Question Within A Repeating Section', function () {
   describe('Given I am in a repeating section', function () {
     beforeEach('Add a person', function () {
-      browser.openQuestionnaire('test_confirmation_question_within_repeating_section.json');
+      browser.openQuestifonnaire('test_confirmation_question_within_repeating_section.json');
       $(DoesAnyoneLiveHerePage.yes()).click();
       $(DoesAnyoneLiveHerePage.submit()).click();
       $(AddPersonPage.firstName()).setValue('John');
@@ -48,7 +49,7 @@ describe('Feature: Confirmation Question Within A Repeating Section', function (
         $(ConfirmDateOfBirthPage.submit()).click();
 
         expect(browser.getUrl()).to.contain('sections/default-section/');
-        expect($(ListCollectorSummary.listCollectorPeopleRowTitle(2)).isExisting()).to.equal(false);
+        expect($(DefaultSectionSummary.listCollectorPeopleRowTitle(2)).isExisting()).to.equal(false);
       });
     });
 

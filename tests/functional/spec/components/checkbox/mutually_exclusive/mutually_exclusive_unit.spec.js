@@ -1,6 +1,5 @@
 const UnitPage = require('../../../../generated_pages/mutually_exclusive/mutually-exclusive-unit.page');
-
-const SectionSummaryPage = require('../../../../base_pages/section-summary.page.js');
+const SummaryPage = require('../../../../generated_pages/mutually_exclusive/mutually-exclusive-unit-section-summary.page');
 
 describe('Component: Mutually Exclusive Unit With Single Checkbox Override', function() {
   beforeEach(function() {
@@ -23,8 +22,8 @@ describe('Component: Mutually Exclusive Unit With Single Checkbox Override', fun
 
       $(UnitPage.submit()).click();
 
-      expect($(SectionSummaryPage.summaryRowValue(1)).getText()).to.have.string('I prefer not to say');
-      expect($(SectionSummaryPage.summaryItems()).getText()).to.not.have.string('10');
+      expect($(SummaryPage.unitExclusiveAnswer()).getText()).to.have.string('I prefer not to say');
+      expect($(SummaryPage.unitExclusiveAnswer()).getText()).to.not.have.string('10');
     });
   });
 
@@ -43,8 +42,8 @@ describe('Component: Mutually Exclusive Unit With Single Checkbox Override', fun
 
       $(UnitPage.submit()).click();
 
-      expect($(SectionSummaryPage.summaryRowValue(1)).getText()).to.have.string('10');
-      expect($(SectionSummaryPage.summaryItems()).getText()).to.not.have.string('I prefer not to say');
+      expect($(SummaryPage.unitAnswer()).getText()).to.have.string('10');
+      expect($(SummaryPage.unitAnswer()).getText()).to.not.have.string('I prefer not to say');
     });
   });
 
@@ -62,8 +61,8 @@ describe('Component: Mutually Exclusive Unit With Single Checkbox Override', fun
 
       $(UnitPage.submit()).click();
 
-      expect($(SectionSummaryPage.summaryRowValue(1)).getText()).to.have.string('10');
-      expect($(SectionSummaryPage.summaryItems()).getText()).to.not.have.string('I prefer not to say');
+      expect($(SummaryPage.unitAnswer()).getText()).to.have.string('10');
+      expect($(SummaryPage.unitAnswer()).getText()).to.not.have.string('I prefer not to say');
     });
   });
 
@@ -79,8 +78,8 @@ describe('Component: Mutually Exclusive Unit With Single Checkbox Override', fun
       // Then
       $(UnitPage.submit()).click();
 
-      expect($(SectionSummaryPage.summaryRowValue(1)).getText()).to.have.string('I prefer not to say');
-      expect($(SectionSummaryPage.summaryItems()).getText()).to.not.have.string('10');
+      expect($(SummaryPage.unitExclusiveAnswer()).getText()).to.have.string('I prefer not to say');
+      expect($(SummaryPage.unitExclusiveAnswer()).getText()).to.not.have.string('10');
     });
   });
 
@@ -94,7 +93,7 @@ describe('Component: Mutually Exclusive Unit With Single Checkbox Override', fun
       $(UnitPage.submit()).click();
 
       // Then
-      expect($(SectionSummaryPage.summaryRowValue(1)).getText()).to.contain('No answer provided');
+      expect($(SummaryPage.unitAnswer()).getText()).to.contain('No answer provided');
     });
   });
 });

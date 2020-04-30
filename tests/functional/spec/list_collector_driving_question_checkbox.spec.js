@@ -8,9 +8,7 @@ const ListCollectorAddPage = require('../generated_pages/list_collector_driving_
 const ListCollectorPage = require('../generated_pages/list_collector_driving_checkbox/list-collector.page.js');
 const ListCollectorTemporaryAwayPage = require('../generated_pages/list_collector_driving_checkbox/list-collector-temporary-away-stay.page');
 const ListCollectorTemporaryAwayAddPage = require('../generated_pages/list_collector_driving_checkbox/list-collector-temporary-away-stay-add.page');
-
-const ListCollectorSummary = require('../base_pages/list-collector-summary.page.js');
-const SectionSummaryPage = require('../base_pages/section-summary.page.js');
+const SummaryPage = require('../generated_pages/list_collector_driving_checkbox/section-summary.page');
 
 const beforeSetup = () => {
   browser.openQuestionnaire('test_list_collector_driving_checkbox.json');
@@ -38,13 +36,13 @@ describe('List Collector Driving Checkbox Question', function() {
       $(ListCollectorTemporaryAwayPage.submit()).click();
 
       const householdMembersExpected = ['Marcus Twin (You)', 'Suzy Clemens'];
-      checkPeopleInList(householdMembersExpected, ListCollectorSummary.peopleListLabel);
+      checkPeopleInList(householdMembersExpected, SummaryPage.peopleListLabel);
     });
   });
 
   describe('Given the primary person is removed', function() {
     it('Then they aren\'t shown on the summary screen', function() {
-      $(SectionSummaryPage.previous()).click();
+      $(SummaryPage.previous()).click();
       $(ListCollectorTemporaryAwayPage.previous()).click();
       $(ListCollectorPage.previous()).click();
       $(AnyoneUsuallyLiveAtPage.previous()).click();
@@ -55,13 +53,13 @@ describe('List Collector Driving Checkbox Question', function() {
       $(ListCollectorTemporaryAwayPage.submit()).click();
 
       const householdMembersExpected = ['Suzy Clemens'];
-      checkPeopleInList(householdMembersExpected, ListCollectorSummary.peopleListLabel);
+      checkPeopleInList(householdMembersExpected, SummaryPage.peopleListLabel);
     });
   });
 
   describe('Given the user chooses yes from the second list collector', function() {
     it('Then they are taken to the correct list add screen', function() {
-      $(SectionSummaryPage.previous()).click();
+      $(SummaryPage.previous()).click();
       $(ListCollectorTemporaryAwayPage.yesINeedToAddSomeone()).click();
       $(ListCollectorTemporaryAwayPage.submit()).click();
       $(ListCollectorTemporaryAwayAddPage.firstName()).setValue('Christopher');
@@ -71,7 +69,7 @@ describe('List Collector Driving Checkbox Question', function() {
       $(ListCollectorTemporaryAwayPage.submit()).click();
 
       const householdMembersExpected = ['Suzy Clemens', 'Christopher Pike'];
-      checkPeopleInList(householdMembersExpected, ListCollectorSummary.peopleListLabel);
+      checkPeopleInList(householdMembersExpected, SummaryPage.peopleListLabel);
     });
   });
 });

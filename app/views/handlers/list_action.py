@@ -34,7 +34,7 @@ class ListAction(Question):
         return True
 
     def get_previous_location_url(self):
-        if self._request_args.get("return_to_summary"):
+        if self._return_to_summary:
             return self.get_section_summary_url()
 
         block_id = self._request_args.get("previous")
@@ -46,7 +46,7 @@ class ListAction(Question):
         )
 
     def get_next_location_url(self):
-        if self._request_args.get("return_to_summary"):
+        if self._return_to_summary:
             return self.get_section_summary_url()
         return self.parent_location.url()
 

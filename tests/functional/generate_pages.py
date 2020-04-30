@@ -128,8 +128,8 @@ ANSWER_GETTER = Template(
 """
 )
 
-BLOCK_DESCRIPTION = Template(
-    r"""  ${block_name}Description() {
+TYPE_DESCRIPTION = Template(
+    r"""  ${type_name}Description() {
     return 'div.block__description';
   }
 
@@ -247,7 +247,7 @@ CLEAR_SELECTION_BUTTON_GETTER = r"""  clearSelectionButton() { return '.js-clear
 
 CONSTRUCTOR = Template(
     r"""  constructor() {
-    super('${block_id}');
+    super('${type_id}');
   }
 
 """
@@ -392,7 +392,7 @@ def process_calculated_summary(answers, page_spec):
         page_spec.write(CALCULATED_SUMMARY_LABEL_GETTER.substitute(answer_context))
 
 
-def process_summary(schema_data, page_spec, collapsible):
+def process_summary(schema_data, page_spec, collapsible, section_summary=False):
     for section in schema_data["sections"]:
         list_summaries = [
             summary_element
@@ -428,7 +428,7 @@ def process_summary(schema_data, page_spec, collapsible):
                             "answerName": camel_case(answer_name),
                             "answerId": answer["id"],
                         }
-                        if block["type"] == "SectionSummary":
+                        if section_summary:
                             page_spec.write(
                                 SECTION_SUMMARY_ANSWER_GETTER.substitute(answer_context)
                             )
@@ -450,7 +450,7 @@ def process_summary(schema_data, page_spec, collapsible):
                         SUMMARY_QUESTION_GETTER.substitute(question_context)
                     )
 
-                if block["type"] == "SectionSummary":
+                if section_summary:
                     page_spec.write(SUMMARY_SHOW_ALL_BUTTON.substitute())
 
             if not collapsible:
@@ -595,24 +595,23 @@ def process_block(
             "basePageFile": base_page_file,
             "pageDir": dir_out.split("/")[-1],
             "pageFile": page_filename,
-            "block_id": block["id"],
-            "block_name": camel_case(generate_pascal_case_from_id(block["id"])),
+            "type_id": block["id"],
+            "type_name": camel_case(generate_pascal_case_from_id(block["id"])),
             "relativeRequirePath": relative_require,
         }
-
         page_spec.write(HEADER.substitute(block_context))
         page_spec.write(CLASS_NAME.substitute(block_context))
         page_spec.write(CONSTRUCTOR.substitute(block_context))
-        if block["type"] in ("Summary", "SectionSummary"):
+        if block["type"] in "Summary":
             collapsible = block.get("collapsible", False)
-            process_summary(schema_data, page_spec, collapsible)
+            process_summary(schema_data, page_spec, collapsible, section_summary=False)
         elif block["type"] == "CalculatedSummary":
             process_calculated_summary(
                 block["calculation"]["answers_to_calculate"], page_spec
             )
         else:
             if block.get("description"):
-                page_spec.write(BLOCK_DESCRIPTION.substitute(block_context))
+                page_spec.write(TYPE_DESCRIPTION.substitute(block_context))
 
             all_questions = get_all_questions(block)
             num_questions = len(all_questions)
@@ -629,8 +628,7 @@ def process_block(
         page_spec.write(FOOTER.substitute(block_context))
 
         if spec_file:
-            with open(spec_file, "a") as required_template_spec:
-                required_template_spec.write(SPEC_PAGE_IMPORT.substitute(block_context))
+            append_spec_page_import(block_context, spec_file)
 
 
 def process_schema(in_schema, out_dir, spec_file, require_path=".."):
@@ -647,9 +645,59 @@ def process_schema(in_schema, out_dir, spec_file, require_path=".."):
         os.mkdir(out_dir)
 
     for section in data["sections"]:
+        if "summary" in section:
+            process_section_summary(
+                section["id"], out_dir, data, spec_file, require_path
+            )
         for group in section["groups"]:
             for block in group["blocks"]:
                 process_block(block, out_dir, data, spec_file, require_path)
+
+
+def process_section_summary(
+    section_id,
+    dir_out,
+    schema_data,
+    spec_file,
+    relative_require="..",
+    page_filename=None,
+):
+
+    logger.debug("Processing section summary: %s", section_id)
+
+    if not page_filename:
+        page_filename = f"{section_id}-summary.page.js"
+
+    page_path = os.path.join(dir_out, page_filename)
+
+    logger.info("creating %s...", page_path)
+
+    with open(page_path, "w") as page_spec:
+
+        section_context = {
+            "pageName": generate_pascal_case_from_id(section_id),
+            "basePage": "QuestionPage",
+            "basePageFile": "question.page",
+            "pageDir": dir_out.split("/")[-1],
+            "pageFile": page_filename,
+            "type_id": section_id,
+            "type_name": camel_case(generate_pascal_case_from_id(section_id)),
+            "relativeRequirePath": relative_require,
+        }
+
+        page_spec.write(HEADER.substitute(section_context))
+        page_spec.write(CLASS_NAME.substitute(section_context))
+        page_spec.write(CONSTRUCTOR.substitute(section_context))
+        process_summary(schema_data, page_spec, False, section_summary=True)
+        page_spec.write(FOOTER.substitute(section_context))
+
+        if spec_file:
+            append_spec_page_import(section_context, spec_file)
+
+
+def append_spec_page_import(context, spec_file):
+    with open(spec_file, "a") as required_template_spec:
+        required_template_spec.write(SPEC_PAGE_IMPORT.substitute(context))
 
 
 if __name__ == "__main__":

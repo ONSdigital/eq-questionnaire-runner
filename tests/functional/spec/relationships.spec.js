@@ -2,10 +2,8 @@ const ListCollectorPage = require('../generated_pages/relationships/list-collect
 const ListCollectorAddPage = require('../generated_pages/relationships/list-collector-add.page.js');
 const ListCollectorRemovePage = require('../generated_pages/relationships/list-collector-remove.page.js');
 const RelationshipsPage = require('../generated_pages/relationships/relationships.page.js');
-const RelationshipsInterstitialPage = require('../generated_pages/relationships/relationship-interstitial.page');
-
-const ListCollectorSummary = require('../base_pages/list-collector-summary.page.js');
-const SectionSummaryPage = require('../base_pages/section-summary.page.js');
+const RelationshipsInterstitialPage = require('../generated_pages/relationships/relationship-interstitial.page.js');
+const SectionSummaryPage = require('../generated_pages/relationships/section-summary.page.js');
 
 describe('Relationships', function() {
   const schema = 'test_relationships.json';
@@ -168,14 +166,14 @@ describe('Relationships', function() {
       });
 
       it('Then I delete one of the original household members I will not be asked for the original members relationships again', function() {
-        $(ListCollectorSummary.listCollectorPeopleRowRemove(1)).click();
+        $(SectionSummaryPage.peopleListRemoveLink(1)).click();
         $(ListCollectorRemovePage.yes()).click();
         $(ListCollectorRemovePage.submit()).click();
         expect(browser.getUrl()).to.contain('/sections/section/');
       });
 
       it('Then I add another household member I will be asked for about all relationships', function() {
-        $(ListCollectorSummary.listCollectorPeopleRowAdd()).click();
+        $(SectionSummaryPage.peopleListAddLink()).click();
         $(ListCollectorAddPage.firstName()).setValue('Tom');
         $(ListCollectorAddPage.lastName()).setValue('Bowden');
         $(ListCollectorAddPage.submit()).click();

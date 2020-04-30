@@ -68,9 +68,7 @@ class RelationshipCollector(Question):
             return next_location_url
 
         return self.router.get_next_location_url(
-            self.parent_location,
-            self._routing_path,
-            self._request_args.get("return_to_summary"),
+            self.parent_location, self._routing_path, self._return_to_summary
         )
 
     def save_on_sign_out(self):

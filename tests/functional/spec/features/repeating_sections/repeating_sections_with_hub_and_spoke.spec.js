@@ -18,7 +18,7 @@ const DateOfBirthPage = require('../../../generated_pages/repeating_sections_wit
 const ConfirmDateOfBirthPage = require('../../../generated_pages/repeating_sections_with_hub_and_spoke/confirm-dob.page');
 const SexPage = require('../../../generated_pages/repeating_sections_with_hub_and_spoke/sex.page');
 
-const SectionSummaryPage = require('../../../base_pages/section-summary.page.js');
+const PersonalDetailsSummaryPage = require('../../../generated_pages/repeating_sections_with_hub_and_spoke/personal-details-section-summary.page');
 const HubPage = require('../../../base_pages/hub.page.js');
 
 
@@ -143,7 +143,7 @@ describe('Feature: Repeating Sections with Hub and Spoke', function () {
       $(SexPage.female()).click();
       $(SexPage.submit()).click();
 
-      $(SectionSummaryPage.submit()).click();
+      $(PersonalDetailsSummaryPage.submit()).click();
 
       expect(browser.getUrl()).to.contain(HubPage.url());
       expect($(HubPage.summaryRowState(3)).getText()).to.equal('Completed');
@@ -242,16 +242,16 @@ describe('Feature: Repeating Sections with Hub and Spoke', function () {
       $(HubPage.submit()).click();
       $(SexPage.male()).click();
       $(SexPage.submit()).click();
-      $(SectionSummaryPage.submit()).click();
+      $(PersonalDetailsSummaryPage.submit()).click();
 
       $(HubPage.submit()).click();
       $(SexPage.submit()).click();
-      $(SectionSummaryPage.submit()).click();
+      $(PersonalDetailsSummaryPage.submit()).click();
 
       $(HubPage.submit()).click();
       $(SexPage.female()).click();
       $(SexPage.submit()).click();
-      $(SectionSummaryPage.submit()).click();
+      $(PersonalDetailsSummaryPage.submit()).click();
 
       $(HubPage.submit()).click();
       $(VisitorsDateOfBirthPage.day()).setValue('03');

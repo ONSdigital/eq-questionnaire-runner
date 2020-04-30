@@ -22,9 +22,7 @@ class PrimaryPersonQuestion(Question):
 
     def get_next_location_url(self):
         return self.router.get_next_location_url(
-            self.parent_location,
-            self._routing_path,
-            self._request_args.get("return_to_summary"),
+            self.parent_location, self._routing_path, self._return_to_summary
         )
 
     def get_context(self):
