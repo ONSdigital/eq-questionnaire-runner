@@ -15,11 +15,8 @@ class Group:
         language,
     ):
         self.id = group_schema["id"]
-
         self.title = group_schema.get("title")
-
         self.location = location
-
         self.blocks = self._build_blocks(
             group_schema,
             routing_path,
