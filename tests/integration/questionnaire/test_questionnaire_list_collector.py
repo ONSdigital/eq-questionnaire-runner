@@ -245,4 +245,4 @@ class TestQuestionnaireListCollector(IntegrationTestCase):
 
         self.get(remove_link)
 
-        self.assertInBody("Don’t need to remove this person?")
+        self.assertNotInBody("Don’t need to remove this person?")
