@@ -38,7 +38,7 @@ describe('List Collector Driving Question', function() {
     it('The summary add link returns to the driving question', function() {
       $(AnyoneUsuallyLiveAtPage.no()).click();
       $(AnyoneUsuallyLiveAtPage.submit()).click();
-      $(SectionSummaryPage.listCollectorPeopleRowAdd()).click();
+      $(SectionSummaryPage.peopleListAddLink()).click();
       expect(browser.getUrl()).to.contain(AnyoneUsuallyLiveAtPage.url());
     });
   });
