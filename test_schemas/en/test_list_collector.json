@@ -326,6 +326,43 @@
                             "id": "group-summary",
                             "title": "List Collector Summary",
                             "type": "SectionSummary"
+                        },
+                        {
+                            "type": "Question",
+                            "id": "test-number-block",
+                            "question": {
+                                "answers": [
+                                    {
+                                        "id": "test-currency",
+                                        "description": "",
+                                        "label": "Currency Test",
+                                        "mandatory": false,
+                                        "type": "Currency",
+                                        "currency": "GBP"
+                                    },
+                                    {
+                                        "id": "square-kilometres",
+                                        "description": "",
+                                        "label": "Kilometres Square",
+                                        "mandatory": false,
+                                        "type": "Unit",
+                                        "unit_length": "short",
+                                        "unit": "area-square-kilometer"
+                                    },
+                                    {
+                                        "id": "test-decimal",
+                                        "description": "",
+                                        "label": "Decimal test to 2 decimal places",
+                                        "mandatory": false,
+                                        "type": "Number",
+                                        "decimal_places": 2
+                                    }
+                                ],
+                                "description": "",
+                                "id": "test-number-range-question",
+                                "title": "Please enter test values (none mandatory)",
+                                "type": "General"
+                            }
                         }
                     ]
                 }
@@ -338,11 +375,9 @@
                 {
                     "blocks": [
                         {
-                            "type": "Confirmation",
-                            "id": "confirmation",
-                            "content": {
-                                "title": "Thank you for your answers, do you wish to submit"
-                            }
+                            "id": "questionnaire-summary",
+                            "title": "Questionnaire Summary",
+                            "type": "Summary"
                         }
                     ],
                     "id": "confirmation-group",

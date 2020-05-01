@@ -28,8 +28,14 @@ class QuestionnaireSummaryContext(Context):
             self._metadata,
         )
 
-        for section_id in self._router.enabled_section_ids:
-            for group in section_summary_context(
-                Location(section_id=section_id), use_custom_section_summaries=False
-            )["summary"]["groups"]:
+        section_ids = [
+            section_id
+            for section_id in self._router.enabled_section_ids
+            if not self._schema.get_summary_for_section(section_id)
+        ]
+
+        for section_id in section_ids:
+            for group in section_summary_context(Location(section_id=section_id))[
+                "summary"
+            ]["groups"]:
                 yield group

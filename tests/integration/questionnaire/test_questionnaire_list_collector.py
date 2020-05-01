@@ -167,7 +167,7 @@ class TestQuestionnaireListCollector(IntegrationTestCase):
 
         self.post()
 
-        self.assertInUrl("thank-you")
+        self.assertInUrl("questionnaire-summary")
 
     def test_optional_list_collector_submission(self):
         self.launchSurvey("test_list_collector")
@@ -188,7 +188,7 @@ class TestQuestionnaireListCollector(IntegrationTestCase):
 
         self.post()
 
-        self.assertInUrl("thank-you")
+        self.assertInUrl("questionnaire-summary")
 
     def test_list_summary_on_question(self):
         self.launchSurvey("test_list_summary_on_question")
@@ -246,3 +246,24 @@ class TestQuestionnaireListCollector(IntegrationTestCase):
         self.get(remove_link)
 
         self.assertInBody("Don’t need to remove this person?")
+
+    def test_summary_does_not_display_answers(self):
+        self.launchSurvey("test_list_collector")
+
+        self.post(action="start_questionnaire")
+
+        self.post({"anyone-else": "No"})
+
+        self.post()
+
+        self.assertEqualUrl("/questionnaire/another-list-collector-block/")
+
+        self.post({"another-anyone-else": "No"})
+
+        self.post()
+
+        self.assertEqualUrl("/questionnaire/test-number-block/")
+
+        self.post({"test-currency": 12})
+
+        self.assertNotInBody("£12.00")
