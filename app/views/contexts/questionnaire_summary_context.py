@@ -30,6 +30,6 @@ class QuestionnaireSummaryContext(Context):
 
         for section_id in self._router.enabled_section_ids:
             for group in section_summary_context(
-                Location(section_id=section_id), use_custom_section_summaries=True
+                Location(section_id=section_id), use_custom_section_summaries=False
             )["summary"]["groups"]:
                 yield group
