@@ -9,8 +9,8 @@ from .summary import Group
 
 
 class SectionSummaryContext(Context):
-    def __call__(self, current_location, use_custom_section_summaries=True):
-        summary = self._build_summary(current_location, use_custom_section_summaries)
+    def __call__(self, current_location):
+        summary = self._build_summary(current_location)
 
         return {
             "summary": {
@@ -21,7 +21,7 @@ class SectionSummaryContext(Context):
             }
         }
 
-    def _build_summary(self, location, use_custom_section_summaries):
+    def _build_summary(self, location):
         """
         Build a summary context for a particular location.
 
@@ -32,7 +32,7 @@ class SectionSummaryContext(Context):
             "collapsible": section.get("summary", {}).get("collapsible", False)
         }
 
-        if section.get("summary", {}).get("items") and use_custom_section_summaries:
+        if section.get("summary", {}).get("items"):
             summary_elements = {
                 "custom_summary": list(
                     self._custom_summary_elements(
