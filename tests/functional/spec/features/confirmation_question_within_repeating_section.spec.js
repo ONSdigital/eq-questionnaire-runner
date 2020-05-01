@@ -10,7 +10,7 @@ const DefaultSectionSummary = require('../../generated_pages/confirmation_questi
 describe('Feature: Confirmation Question Within A Repeating Section', function () {
   describe('Given I am in a repeating section', function () {
     beforeEach('Add a person', function () {
-      browser.openQuestifonnaire('test_confirmation_question_within_repeating_section.json');
+      browser.openQuestionnaire('test_confirmation_question_within_repeating_section.json');
       $(DoesAnyoneLiveHerePage.yes()).click();
       $(DoesAnyoneLiveHerePage.submit()).click();
       $(AddPersonPage.firstName()).setValue('John');

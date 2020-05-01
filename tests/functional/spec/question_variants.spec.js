@@ -8,7 +8,6 @@ const nameBlock = require('../generated_pages/variants_question/name-block.page.
 const proxyBlock = require('../generated_pages/variants_question/proxy-block.page.js');
 const secondNumberBlock = require('../generated_pages/variants_question/second-number-block.page.js');
 
-
 describe('QuestionVariants', function() {
   beforeEach(function() {
     browser.openQuestionnaire('test_variants_question.json');
