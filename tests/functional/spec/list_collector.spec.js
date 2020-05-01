@@ -115,8 +115,8 @@ describe("List Collector", function() {
       expect(browser.getUrl()).to.contain(ListCollectorPage.pageName);
     });
 
-    it('The collector shows everyone on the summary', function() {
-      const peopleExpected = ['Samuel Clemens', 'Olivia Clemens', 'Suzy Clemens', 'Clara Clemens', 'Jean Clemens'];
+    it("The collector shows everyone on the summary", function() {
+      const peopleExpected = ["Samuel Clemens", "Olivia Clemens", "Suzy Clemens", "Clara Clemens", "Jean Clemens"];
       checkPeopleInList(peopleExpected);
     });
 
