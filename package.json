@@ -18,8 +18,8 @@
     "test_functional": "./node_modules/.bin/wdio tests/functional/wdio.conf.js",
     "generate_pages": "rm -rf ./tests/functional/generated_pages && pipenv run python -m tests.functional.generate_pages schemas/en/ ./tests/functional/generated_pages -r '../../base_pages' && pipenv run python -m tests.functional.generate_pages test_schemas/en/ ./tests/functional/generated_pages -r '../../base_pages'",
     "format": "yarn format:tests && yarn format:test-schemas",
-    "format:tests": "prettier tests/functional/**/*.js --write",
-    "format:test-schemas": "prettier test_schemas/*/*.json --write"
+    "format:tests": "prettier tests/functional/**/*.js --write && eslint --fix tests/functional/**/*.js",
+    "format:test-schemas": "prettier test_schemas/*/*.json --write && eslint --fix test_schemas/*/*.json"
   },
   "devDependencies": {
     "@wdio/cli": "^5.15.2",
