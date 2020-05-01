@@ -1,10 +1,12 @@
+SCHEMAS_VERSION=`cat .schemas-version`
+
 clean:
 	rm -rf schemas
 	rm -rf templates/components
 	rm -rf templates/layout
 
 load-schemas:
-	./scripts/load_release.sh onsdigital/eq-questionnaire-schemas v0.1.3
+	./scripts/load_release.sh onsdigital/eq-questionnaire-schemas $(SCHEMAS_VERSION)
 
 load-templates:
 	./scripts/load_release.sh onsdigital/design-system 17.0.0
