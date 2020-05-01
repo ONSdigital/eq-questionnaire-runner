@@ -105,3 +105,6 @@ templates/layout
 *.mo
 
 .vim/
+
+# Ignore CTAGS
+tags
