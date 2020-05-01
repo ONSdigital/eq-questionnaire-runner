@@ -1,4 +1,4 @@
-const BasePage = require("./base.page");
+import BasePage from './base.page';
 
 class IntroductionPage extends BasePage {
   constructor(pageName) {

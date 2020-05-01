@@ -1,4 +1,4 @@
-const BasePage = require("./base.page");
+import BasePage from './base.page';
 
 class HubPage extends BasePage {
   constructor(pageName) {
@@ -26,7 +26,7 @@ class HubPage extends BasePage {
   }
 
   errorNumber(number = 1) {
-    return '[data-qa="error-body"] ul > li:nth-child(' + number + ") > a";
+    return `[data-qa="error-body"] ul > li:nth-child(${number}) > a`;
   }
 
   previous() {
@@ -50,7 +50,7 @@ class HubPage extends BasePage {
   }
 
   switchLanguage(languageCode) {
-    return 'a[href="?language_code=' + languageCode + '"]';
+    return `a[href="?language_code=${languageCode}"]`;
   }
 
   summaryItems() {
@@ -58,15 +58,15 @@ class HubPage extends BasePage {
   }
 
   summaryRowState(number = 1) {
-    return "tbody:nth-child(" + number + ") tr td.summary__values";
+    return `tbody:nth-child(${number}) tr td.summary__values`;
   }
 
   summaryRowLink(number = 1) {
-    return "tbody:nth-child(" + number + ") tr td.summary__actions a";
+    return `tbody:nth-child(${number}) tr td.summary__actions a`;
   }
 
   summaryRowTitle(number = 1) {
-    return "tbody:nth-child(" + number + ") tr td.summary__item-title";
+    return `tbody:nth-child(${number}) tr td.summary__item-title`;
   }
 }
 

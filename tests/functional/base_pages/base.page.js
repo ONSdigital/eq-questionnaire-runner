@@ -1,4 +1,4 @@
-class BasePage {
+export default class BasePage {
   constructor(pageName) {
     this.pageName = pageName;
   }
@@ -7,5 +7,3 @@ class BasePage {
     return browser.getUrl().should.eventually.contain(this.pageName);
   }
 }
-
-module.exports = BasePage;
