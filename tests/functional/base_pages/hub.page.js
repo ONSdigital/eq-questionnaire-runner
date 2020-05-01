@@ -1,4 +1,4 @@
-import BasePage from './base.page';
+import BasePage from "./base.page";
 
 class HubPage extends BasePage {
   constructor(pageName) {

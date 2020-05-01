@@ -1,4 +1,4 @@
-import BasePage from './base.page';
+import BasePage from "./base.page";
 
 class QuestionPage extends BasePage {
   constructor(pageName) {
@@ -35,7 +35,7 @@ class QuestionPage extends BasePage {
   }
 
   errorNumber(number = 1) {
-    return `[data-qa="error-body"] ul > li:nth-child(${number }) > a`;
+    return `[data-qa="error-body"] ul > li:nth-child(${number}) > a`;
   }
 
   previous() {
