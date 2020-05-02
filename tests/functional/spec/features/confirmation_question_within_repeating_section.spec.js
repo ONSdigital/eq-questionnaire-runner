@@ -49,7 +49,7 @@ describe('Feature: Confirmation Question Within A Repeating Section', function (
         $(ConfirmDateOfBirthPage.submit()).click();
 
         expect(browser.getUrl()).to.contain('sections/default-section/');
-        expect($(DefaultSectionSummary.listCollectorPeopleRowTitle(2)).isExisting()).to.equal(false);
+        expect($(DefaultSectionSummary.confirmDateOfBirth()).isExisting()).to.be.false;
       });
     });
 
