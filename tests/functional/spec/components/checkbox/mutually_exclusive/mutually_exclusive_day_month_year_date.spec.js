@@ -1,5 +1,5 @@
 const DatePage = require('../../../../generated_pages/mutually_exclusive/mutually-exclusive-date.page');
-const SummaryPage = require('../../../../generated_pages/mutually_exclusive/optional-date-section-summary.page');
+const SummaryPage = require('../../../../generated_pages/mutually_exclusive/mutually-exclusive-date-section-summary.page');
 
 describe('Component: Mutually Exclusive Day Month Year Date With Single Checkbox Override', function() {
   beforeEach(function() {
@@ -79,7 +79,6 @@ describe('Component: Mutually Exclusive Day Month Year Date With Single Checkbox
         expect($(DatePage.dateExclusiveIPreferNotToSay()).isSelected()).to.be.false;
 
         $(DatePage.submit()).click();
-
         expect($(SummaryPage.dateAnswer()).getText()).to.have.string('17 March 2018');
         expect($(SummaryPage.dateAnswer()).getText()).to.not.have.string('I prefer not to say');
 

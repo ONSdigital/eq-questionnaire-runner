@@ -10,8 +10,8 @@ from app.views.handlers.primary_person_list_collector import PrimaryPersonListCo
 from app.views.handlers.primary_person_question import PrimaryPersonQuestion
 from app.views.handlers.question import Question
 from app.views.handlers.relationship_collector import RelationshipCollector
-from app.views.handlers.section_summary import SectionSummary
 from app.views.handlers.summary import Summary
+
 
 BLOCK_MAPPINGS = {
     "Question": Question,
@@ -28,7 +28,6 @@ BLOCK_MAPPINGS = {
     "Interstitial": Content,
     "Confirmation": Content,
     "Summary": Summary,
-    "SectionSummary": SectionSummary,
     "CalculatedSummary": CalculatedSummary,
 }
 
@@ -44,6 +43,7 @@ def get_block_handler(
     request_args=None,
 ):
     block = schema.get_block(block_id)
+
     if not block:
         raise InvalidLocationException(
             f"block id {block_id} is not valid for this schema"

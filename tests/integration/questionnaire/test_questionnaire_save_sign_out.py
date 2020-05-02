@@ -99,30 +99,18 @@ class TestSaveSignOut(IntegrationTestCase):
         self.post()
         self.assertInUrl("/thank-you")
 
-    def test_relaunch_from_list_collector_section_summary(self):
-        """
-        If the who lives here section is completed to the
-        add visitor block, users are redirected correctly
-        when signing back in.
-        """
+    def test_relaunch_from_section_summary(self):
 
-        # Given I am completing a census household survey
-        self.launchSurvey(
-            "test_list_collector_section_summary", display_address="test address"
-        )
+        # Given
+        self.launchSurvey("test_section_summary", display_address="test address")
 
-        self.post({"you-live-here": "Yes"})
-        self.post({"first-name": "Joe", "last-name": "Bloggs"})
-        self.post({"anyone-else": "No"})
-        self.post({"any-more-visitors": "No"})
+        self.post({"insurance-type-answer": "Both"})
+        self.post({"insurance-address-answer": "Address"})
 
         # And I sign out
-        self.assertInUrl("/people-list-section-summary")
+        self.assertInUrl("/sections/property-details-section/")
         self.post(action="sign_out")
 
-        # When I launch the survey again, I should be taken to the who lives here
-        # section summary
-        self.launchSurvey(
-            "test_list_collector_section_summary", display_address="test address"
-        )
-        self.assertInUrl("/people-list-section-summary")
+        # When I launch the survey again, I should go to the next incomplete location
+        self.launchSurvey("test_section_summary", display_address="test address")
+        self.assertInUrl("/questionnaire/house-type/")

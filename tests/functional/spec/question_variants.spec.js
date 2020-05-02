@@ -1,6 +1,6 @@
 const ageBlock = require('../generated_pages/variants_question/age-block.page.js');
 const ageConfirmationBlock = require('../generated_pages/variants_question/age-confirmation-block.page.js');
-const basicVariantsSummary = require('../generated_pages/variants_question/basic-variants-summary.page.js');
+const basicVariantsSummary = require('../generated_pages/variants_question/basic-question-variant-section-summary.page.js');
 const currencyBlock = require('../generated_pages/variants_question/currency-block.page.js');
 const currencySectionSummary = require('../generated_pages/variants_question/currency-section-summary.page.js');
 const firstNumberBlock = require('../generated_pages/variants_question/first-number-block.page.js');

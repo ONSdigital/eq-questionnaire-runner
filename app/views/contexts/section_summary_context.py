@@ -65,12 +65,8 @@ class SectionSummaryContext(Context):
         }
 
     def _title_for_location(self, location):
-        title = None
-        if location.block_id:
-            title = self._schema.get_block(location.block_id).get("title")
-        if not title:
-            title = self._schema.get_section(location.section_id).get("title")
 
+        title = self._schema.get_section(location.section_id).get("title")
         if location.list_item_id:
             repeating_title = self._schema.get_repeating_title_for_section(
                 location.section_id
@@ -122,7 +118,7 @@ class SectionSummaryContext(Context):
             **list_context(
                 list_collector_block["summary"],
                 for_list=list_collector_block["for_list"],
-                return_to=current_location.block_id,
+                return_to_summary=True,
                 edit_block_id=list_collector_block["edit_block"]["id"],
                 remove_block_id=list_collector_block["remove_block"]["id"],
             ),
@@ -138,7 +134,7 @@ class SectionSummaryContext(Context):
                 "questionnaire.block",
                 list_name=summary["for_list"],
                 block_id=list_collector_block["add_block"]["id"],
-                return_to=current_location.block_id,
+                return_to_summary=True,
             )
 
         driving_question_block = QuestionnaireSchema.get_driving_question_for_list(
@@ -149,5 +145,5 @@ class SectionSummaryContext(Context):
             return url_for(
                 "questionnaire.block",
                 block_id=driving_question_block["id"],
-                return_to=current_location.block_id,
+                return_to_summary=True,
             )

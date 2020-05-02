@@ -25,6 +25,7 @@
         {
             "id": "mutually-exclusive-checkbox-section",
             "title": "Checkbox",
+            "summary": {},
             "groups": [
                 {
                     "id": "mutually-exclusive-mandatory-group",
@@ -82,22 +83,13 @@
                             }
                         }
                     ]
-                },
-                {
-                    "id": "mandatory-mutually-exclusive-summary-group",
-                    "title": "",
-                    "blocks": [
-                        {
-                            "type": "SectionSummary",
-                            "id": "mandatory-section-summary"
-                        }
-                    ]
                 }
             ]
         },
         {
             "id": "mutually-exclusive-date-section",
             "title": "Date",
+            "summary": {},
             "groups": [
                 {
                     "id": "mutually-exclusive-date-group",
@@ -133,22 +125,13 @@
                             }
                         }
                     ]
-                },
-                {
-                    "id": "mutually-exclusive-date-section-summary",
-                    "title": "",
-                    "blocks": [
-                        {
-                            "type": "SectionSummary",
-                            "id": "optional-date-section-summary"
-                        }
-                    ]
                 }
             ]
         },
         {
             "id": "mutually-exclusive-currency-section",
             "title": "Currency",
+            "summary": {},
             "groups": [
                 {
                     "id": "mutually-exclusive-currency-group",
@@ -185,22 +168,13 @@
                             }
                         }
                     ]
-                },
-                {
-                    "id": "mutually-exclusive-currency-section-summary",
-                    "title": "",
-                    "blocks": [
-                        {
-                            "type": "SectionSummary",
-                            "id": "optional-currency-section-summary"
-                        }
-                    ]
                 }
             ]
         },
         {
             "id": "mutually-exclusive-number-section",
             "title": "Number",
+            "summary": {},
             "groups": [
                 {
                     "id": "mutually-exclusive-number-group",
@@ -237,22 +211,13 @@
                             }
                         }
                     ]
-                },
-                {
-                    "id": "mutually-exclusive-number-section-summary",
-                    "title": "",
-                    "blocks": [
-                        {
-                            "type": "SectionSummary",
-                            "id": "optional-number-section-summary"
-                        }
-                    ]
                 }
             ]
         },
         {
             "id": "mutually-exclusive-percentage-section",
             "title": "Percentage",
+            "summary": {},
             "groups": [
                 {
                     "id": "mutually-exclusive-percentage-group",
@@ -291,22 +256,13 @@
                             }
                         }
                     ]
-                },
-                {
-                    "id": "mutually-exclusive-percentage-section-summary",
-                    "title": "",
-                    "blocks": [
-                        {
-                            "type": "SectionSummary",
-                            "id": "optional-percentage-section-summary"
-                        }
-                    ]
                 }
             ]
         },
         {
             "id": "mutually-exclusive-textfield-section",
             "title": "Textfield",
+            "summary": {},
             "groups": [
                 {
                     "id": "mutually-exclusive-textfield-group",
@@ -342,22 +298,13 @@
                             }
                         }
                     ]
-                },
-                {
-                    "id": "mutually-exclusive-textfield-section-summary",
-                    "title": "",
-                    "blocks": [
-                        {
-                            "type": "SectionSummary",
-                            "id": "optional-textfield-section-summary"
-                        }
-                    ]
                 }
             ]
         },
         {
             "id": "mutually-exclusive-month-year-date-section",
             "title": "Month Year Date",
+            "summary": {},
             "groups": [
                 {
                     "id": "mutually-exclusive-month-year-date-group",
@@ -396,22 +343,13 @@
                             }
                         }
                     ]
-                },
-                {
-                    "id": "mutually-exclusive-month-year-section-summary",
-                    "title": "",
-                    "blocks": [
-                        {
-                            "type": "SectionSummary",
-                            "id": "optional-month-year-section-summary"
-                        }
-                    ]
                 }
             ]
         },
         {
             "id": "mutually-exclusive-year-date-section",
             "title": "Year Date",
+            "summary": {},
             "groups": [
                 {
                     "id": "mutually-exclusive-year-date-group",
@@ -450,22 +388,13 @@
                             }
                         }
                     ]
-                },
-                {
-                    "id": "mutually-exclusive-year-section-summary",
-                    "title": "",
-                    "blocks": [
-                        {
-                            "type": "SectionSummary",
-                            "id": "optional-year-section-summary"
-                        }
-                    ]
                 }
             ]
         },
         {
             "id": "mutually-exclusive-unit-section",
             "title": "Unit",
+            "summary": {},
             "groups": [
                 {
                     "id": "mutually-exclusive-unit-group",
@@ -503,22 +432,13 @@
                             }
                         }
                     ]
-                },
-                {
-                    "id": "mutually-exclusive-unit-section-summary",
-                    "title": "",
-                    "blocks": [
-                        {
-                            "type": "SectionSummary",
-                            "id": "optional-unit-section-summary"
-                        }
-                    ]
                 }
             ]
         },
         {
             "id": "mutually-exclusive-duration-section",
             "title": "Duration",
+            "summary": {},
             "groups": [
                 {
                     "id": "mutually-exclusive-duration-group",
@@ -555,22 +475,13 @@
                             }
                         }
                     ]
-                },
-                {
-                    "id": "mutually-exclusive-duration-section-summary",
-                    "title": "",
-                    "blocks": [
-                        {
-                            "type": "SectionSummary",
-                            "id": "optional-duration-section-summary"
-                        }
-                    ]
                 }
             ]
         },
         {
             "id": "mutually-exclusive-textarea-section",
             "title": "TextArea",
+            "summary": {},
             "groups": [
                 {
                     "id": "mutually-exclusive-textarea-group",
@@ -603,16 +514,6 @@
                                     }
                                 ]
                             }
-                        }
-                    ]
-                },
-                {
-                    "id": "mutually-exclusive-textarea-section-summary",
-                    "title": "",
-                    "blocks": [
-                        {
-                            "type": "SectionSummary",
-                            "id": "optional-textarea-section-summary"
                         }
                     ]
                 }

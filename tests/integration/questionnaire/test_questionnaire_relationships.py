@@ -24,7 +24,8 @@ class TestQuestionnaireRelationships(IntegrationTestCase):
         self.post({"anyone-else": "No"})
 
         self.post({"relationship-answer": "Husband or Wife"})
-        self.assertInUrl("/questionnaire/confirmation")
+        self.post()
+        self.assertInUrl("/questionnaire/sections/")
 
     def test_go_to_relationships_not_on_path(self):
         self.launchSurvey("test_relationships")
@@ -75,8 +76,8 @@ class TestQuestionnaireRelationships(IntegrationTestCase):
         self.post({"relationship-answer": "Husband or Wife"})
         self.post({"relationship-answer": "Husband or Wife"})
         self.post({"relationship-answer": "Husband or Wife"})
-
-        self.assertInUrl("/questionnaire/confirmation")
+        self.post()
+        self.assertInUrl("/questionnaire/sections/section/")
 
     def test_relationships_removed_when_list_item_removed(self):
         self.launchSurvey("test_relationships", roles=["dumper"])
