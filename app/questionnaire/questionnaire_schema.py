@@ -148,6 +148,9 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
 
         return self.is_list_block_type(block["type"])
 
+    def is_summary_in_section(self, section_id: str):
+        return "summary" in self._sections_by_id.get(section_id)
+
     def is_answer_in_repeating_section(self, answer_id):
         block = self.get_block_for_answer_id(answer_id)
 

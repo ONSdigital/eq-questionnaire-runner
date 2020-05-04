@@ -1,11 +1,8 @@
 const PrimaryPersonPage = require('../../../generated_pages/repeating_section_summaries/primary-person-list-collector.page');
 const PrimaryPersonAddPage = require('../../../generated_pages/repeating_section_summaries/primary-person-list-collector-add.page');
-
 const FirstListCollectorPage = require('../../../generated_pages/repeating_section_summaries/list-collector.page');
 const FirstListCollectorAddPage = require('../../../generated_pages/repeating_section_summaries/list-collector-add.page');
-
-const PersonalSummaryPage = require('../../../generated_pages/repeating_section_summaries/personal-summary.page');
-
+const PersonalSummaryPage = require('../../../generated_pages/repeating_section_summaries/personal-details-section-summary.page');
 const ProxyPage = require('../../../generated_pages/repeating_section_summaries/proxy.page');
 const DateOfBirthPage = require('../../../generated_pages/repeating_section_summaries/date-of-birth.page');
 

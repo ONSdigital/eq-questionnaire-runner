@@ -125,7 +125,7 @@ class TestQuestionnaireHub(IntegrationTestCase):
         self.get("/questionnaire/sections/accommodation-section/")
 
         # Then I should be redirected to the last completed question in the section
-        self.assertEqualUrl("/questionnaire/accommodation-details-summary/")
+        self.assertEqualUrl("/questionnaire/sections/accommodation-section/")
 
     def test_hub_inaccessible_if_sections_required_and_incomplete(self):
         self.launchSurvey("test_hub_complete_sections")

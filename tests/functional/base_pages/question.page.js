@@ -15,7 +15,7 @@ class QuestionPage extends BasePage {
 
   questionText() { return 'h1'; }
 
-  alert() { return '[data-qa="error-body"]';  }
+  alert() { return '[data-qa="error-body"]'; }
 
   error() { return '.js-inpagelink'; }
 
@@ -32,6 +32,8 @@ class QuestionPage extends BasePage {
   displayedDescription() { return '[data-qa="block-description"]'; }
 
   submit() { return '[data-qa="btn-submit"]'; }
+
+  summaryShowAllButton() { return '.js-collapsible-all'; }
 
   saveSignOut() { return '[data-qa="btn-save-sign-out"]'; }
 

@@ -369,10 +369,6 @@
                                     }
                                 }
                             }
-                        },
-                        {
-                            "id": "group-summary",
-                            "type": "SectionSummary"
                         }
                     ]
                 }

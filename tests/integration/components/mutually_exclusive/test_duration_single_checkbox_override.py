@@ -20,7 +20,7 @@ class TestDurationSingleCheckboxOverride(IntegrationTestCase):
         self.post({"duration-answer-months": "11", "duration-answer-years": "1"})
 
         # Then
-        self.assertInUrl("section-summary")
+        self.assertInUrl("/sections/mutually-exclusive-duration-section/")
         self.assertInBody("1 year 11 months")
 
     def test_exclusive_answer(self):
@@ -34,7 +34,7 @@ class TestDurationSingleCheckboxOverride(IntegrationTestCase):
         )
 
         # Then
-        self.assertInUrl("section-summary")
+        self.assertInUrl("/sections/mutually-exclusive-duration-section/")
         self.assertInBody("I prefer not to say")
 
     def test_optional_exclusive_question(self):
@@ -42,7 +42,7 @@ class TestDurationSingleCheckboxOverride(IntegrationTestCase):
         self.post({"duration-answer-months": "", "duration-answer-years": ""})
 
         # Then
-        self.assertInUrl("section-summary")
+        self.assertInUrl("/sections/mutually-exclusive-duration-section/")
         self.assertInBody("No answer provided")
 
     def test_invalid_exclusive_answers(self):

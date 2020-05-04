@@ -1,9 +1,10 @@
 const InsuranceAddressPage = require('../../../generated_pages/section_summary/insurance-address.page.js');
 const InsuranceTypePage = require('../../../generated_pages/section_summary/insurance-type.page.js');
 const AddressDurationPage = require('../../../generated_pages/section_summary/address-duration.page.js');
-const PropertyDetailsSummaryPage = require('../../../generated_pages/section_summary/property-details-summary.page.js');
+const PropertyDetailsSummaryPage = require('../../../generated_pages/section_summary/property-details-section-summary.page.js');
 const HouseType = require('../../../generated_pages/section_summary/house-type.page.js');
-const HouseholdDetailsSummaryPage = require('../../../generated_pages/section_summary/household-details-summary.page.js');
+const HouseholdDetailsSummaryPage = require('../../../generated_pages/section_summary/house-details-section-summary.page.js');
+
 const QuestionnaireSummaryPage = require('../../../generated_pages/section_summary/summary.page.js');
 
 describe('Section Summary', function() {
@@ -47,14 +48,14 @@ describe('Section Summary', function() {
       $(PropertyDetailsSummaryPage.submit()).click();
       $(HouseType.submit()).click();
       $(HouseholdDetailsSummaryPage.submit()).click();
-      expect(browser.getUrl()).to.contain(QuestionnaireSummaryPage.pageName);
+      expect(browser.getUrl()).to.contain('/questionnaire/summary/');
     });
 
     it('When I select edit from Final Summary and don\'t change an answer, Then I should be taken to the Section Summary', function() {
       $(QuestionnaireSummaryPage.summaryShowAllButton()).click();
       $(QuestionnaireSummaryPage.insuranceAddressAnswerEdit()).click();
       $(InsuranceAddressPage.submit()).click();
-      expect(browser.getUrl()).to.contain(PropertyDetailsSummaryPage.pageName);
+      expect(browser.getUrl()).to.contain('/sections/property-details-section/');
     });
 
     it('When I select edit from Final Summary and change an answer that doesn\'t affect completeness, Then I should be taken to the Section Summary', function() {
@@ -62,7 +63,7 @@ describe('Section Summary', function() {
       $(QuestionnaireSummaryPage.insuranceAddressAnswerEdit()).click();
       $(InsuranceAddressPage.answer()).setValue('Test Address');
       $(InsuranceAddressPage.submit()).click();
-      expect(browser.getUrl()).to.contain(PropertyDetailsSummaryPage.pageName);
+      expect(browser.getUrl()).to.contain('/sections/property-details-section/');
     });
 
     it('When I select edit from Final Summary and change an answer that affects completeness, Then I should be stepped through the section', function() {
