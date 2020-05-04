@@ -23,6 +23,7 @@ class Block:
             list_name=self.location.list_name,
             block_id=block_id,
             list_item_id=self.location.list_item_id,
+            return_to_summary=True,
         )
 
     @staticmethod

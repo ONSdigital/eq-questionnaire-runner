@@ -20,7 +20,7 @@ class TestNumberSingleCheckboxOverride(IntegrationTestCase):
         self.post({"number-answer": "1234567"})
 
         # Then
-        self.assertInUrl("section-summary")
+        self.assertInUrl("/sections/mutually-exclusive-number-section/")
         self.assertInBody("1,234,567")
 
     def test_exclusive_answer(self):
@@ -30,7 +30,7 @@ class TestNumberSingleCheckboxOverride(IntegrationTestCase):
         )
 
         # Then
-        self.assertInUrl("section-summary")
+        self.assertInUrl("/sections/mutually-exclusive-number-section/")
         self.assertInBody("I prefer not to say")
 
     def test_optional_exclusive_question(self):
@@ -38,7 +38,7 @@ class TestNumberSingleCheckboxOverride(IntegrationTestCase):
         self.post({"number-answer": ""})
 
         # Then
-        self.assertInUrl("section-summary")
+        self.assertInUrl("/sections/mutually-exclusive-number-section/")
         self.assertInBody("No answer provided")
 
     def test_invalid_exclusive_answers(self):

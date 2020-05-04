@@ -8,7 +8,7 @@ const ListCollectorAddPage = require('../generated_pages/list_collector_driving_
 const ListCollectorPage = require('../generated_pages/list_collector_driving_checkbox/list-collector.page.js');
 const ListCollectorTemporaryAwayPage = require('../generated_pages/list_collector_driving_checkbox/list-collector-temporary-away-stay.page');
 const ListCollectorTemporaryAwayAddPage = require('../generated_pages/list_collector_driving_checkbox/list-collector-temporary-away-stay-add.page');
-const SummaryPage = require('../generated_pages/list_collector_driving_checkbox/who-lives-here-summary.page');
+const SummaryPage = require('../generated_pages/list_collector_driving_checkbox/section-summary.page');
 
 const beforeSetup = () => {
   browser.openQuestionnaire('test_list_collector_driving_checkbox.json');
@@ -48,6 +48,9 @@ describe('List Collector Driving Checkbox Question', function() {
       $(AnyoneUsuallyLiveAtPage.previous()).click();
       $(PrimaryPersonListCollectorPage.noIDonTUsuallyLiveHere()).click();
       $(PrimaryPersonListCollectorPage.submit()).click();
+      $(AnyoneUsuallyLiveAtPage.submit()).click();
+      $(ListCollectorPage.submit()).click();
+      $(ListCollectorTemporaryAwayPage.submit()).click();
 
       const householdMembersExpected = ['Suzy Clemens'];
       checkPeopleInList(householdMembersExpected, SummaryPage.peopleListLabel);

@@ -353,4 +353,6 @@ def get_list_count(list_store, list_name):
 
 
 def is_goto_rule(rule):
-    return any(key in rule.get("goto", {}) for key in ("when", "block", "group"))
+    return any(
+        key in rule.get("goto", {}) for key in ("when", "block", "group", "section")
+    )

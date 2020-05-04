@@ -1,5 +1,5 @@
 const DurationPage = require('../../../../generated_pages/mutually_exclusive/mutually-exclusive-duration.page');
-const SummaryPage = require('../../../../generated_pages/mutually_exclusive/optional-duration-section-summary.page');
+const SummaryPage = require('../../../../generated_pages/mutually_exclusive/mutually-exclusive-duration-section-summary.page');
 
 describe('Component: Mutually Exclusive Duration With Single Checkbox Override', function() {
   beforeEach(function() {
