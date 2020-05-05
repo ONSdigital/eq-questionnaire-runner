@@ -1,13 +1,12 @@
-const BasePage = require('./base.page');
+import BasePage from "./base.page";
 
 class IntroductionPage extends BasePage {
-
   constructor(pageName) {
     super(pageName);
   }
 
   myAccountLink() {
-    return '#my-account';
+    return "#my-account";
   }
 
   signOut() {
@@ -15,27 +14,27 @@ class IntroductionPage extends BasePage {
   }
 
   getStarted() {
-    return '.qa-btn-get-started';
+    return ".qa-btn-get-started";
   }
 
   useOfInformation() {
-    return '#use-of-information';
+    return "#use-of-information";
   }
 
   useOfData() {
-    return '#how-we-use-your-data';
+    return "#how-we-use-your-data";
   }
 
   legalResponse() {
-      return '[data-qa="legal-response"]';
+    return '[data-qa="legal-response"]';
   }
 
   legalBasis() {
-      return '[data-qa="legal-basis"]';
+    return '[data-qa="legal-basis"]';
   }
 
   introDescription() {
-    return '#use-of-information p';
+    return "#use-of-information p";
   }
 
   introTitleDescription() {
