@@ -22,7 +22,7 @@ class TestYearDateSingleCheckboxOverride(IntegrationTestCase):
         self.post({"year-date-answer-year": "2018"})
 
         # Then
-        self.assertInUrl("section-summary")
+        self.assertInUrl("/sections/mutually-exclusive-year-date-section/")
         self.assertInBody("2018")
 
     def test_exclusive_answer(self):
@@ -35,7 +35,7 @@ class TestYearDateSingleCheckboxOverride(IntegrationTestCase):
         )
 
         # Then
-        self.assertInUrl("section-summary")
+        self.assertInUrl("/sections/mutually-exclusive-year-date-section/")
         self.assertInBody("I prefer not to say")
 
     def test_optional_exclusive_question(self):
@@ -43,7 +43,7 @@ class TestYearDateSingleCheckboxOverride(IntegrationTestCase):
         self.post()
 
         # Then
-        self.assertInUrl("section-summary")
+        self.assertInUrl("/sections/mutually-exclusive-year-date-section/")
         self.assertInBody("No answer provided")
 
     def test_invalid_exclusive_answers(self):

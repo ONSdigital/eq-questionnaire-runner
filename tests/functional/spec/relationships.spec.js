@@ -1,8 +1,9 @@
-const ListCollectorPage = require("../generated_pages/relationships/list-collector.page.js");
-const ListCollectorAddPage = require("../generated_pages/relationships/list-collector-add.page.js");
-const ListCollectorRemovePage = require("../generated_pages/relationships/list-collector-remove.page.js");
-const RelationshipsPage = require("../generated_pages/relationships/relationships.page.js");
-const ConfirmationPage = require("../generated_pages/relationships/confirmation.page.js");
+const ListCollectorPage = require('../generated_pages/relationships/list-collector.page.js');
+const ListCollectorAddPage = require('../generated_pages/relationships/list-collector-add.page.js');
+const ListCollectorRemovePage = require('../generated_pages/relationships/list-collector-remove.page.js');
+const RelationshipsPage = require('../generated_pages/relationships/relationships.page.js');
+const RelationshipsInterstitialPage = require('../generated_pages/relationships/relationship-interstitial.page.js');
+const SectionSummaryPage = require('../generated_pages/relationships/section-summary.page.js');
 
 describe("Relationships", function() {
   const schema = "test_relationships.json";
@@ -20,7 +21,7 @@ describe("Relationships", function() {
       $(ListCollectorAddPage.submit()).click();
       $(ListCollectorPage.no()).click();
       $(ListCollectorPage.submit()).click();
-      expect(browser.getUrl()).to.contain(ConfirmationPage.pageName);
+      expect(browser.getUrl()).to.contain('/sections/section/');
     });
 
     it("When I add two household members, Then I will be asked about one relationship", function() {
@@ -39,7 +40,8 @@ describe("Relationships", function() {
       expect(browser.getUrl()).to.contain(RelationshipsPage.pageName);
       $(RelationshipsPage.husbandOrWife()).click();
       $(RelationshipsPage.submit()).click();
-      expect(browser.getUrl()).to.contain(ConfirmationPage.pageName);
+      $(RelationshipsInterstitialPage.submit()).click();
+      expect(browser.getUrl()).to.contain('/sections/section/');
     });
 
     describe("When I add three household members,", function() {
@@ -56,14 +58,15 @@ describe("Relationships", function() {
         $(RelationshipsPage.submit()).click();
         $(RelationshipsPage.husbandOrWife()).click();
         $(RelationshipsPage.submit()).click();
-        expect(browser.getUrl()).to.contain(ConfirmationPage.pageName);
+        $(RelationshipsInterstitialPage.submit()).click();
+        expect(browser.getUrl()).to.contain('/sections/section/');
       });
 
       it("And go to the first relationship, Then the previous link should return to the list collector", function() {
         $(ListCollectorPage.no()).click();
         $(ListCollectorPage.submit()).click();
         $(RelationshipsPage.previous()).click();
-        expect(browser.getUrl()).to.contain(ListCollectorPage.pageName);
+        expect(browser.getUrl()).to.contain('/questionnaire/list-collector/');
       });
 
       it("And go to the first relationship, Then the 'Brother or Sister' option should have the text 'Including half brother or half sister'", function() {
@@ -78,11 +81,16 @@ describe("Relationships", function() {
         $(RelationshipsPage.husbandOrWife()).click();
         $(RelationshipsPage.submit()).click();
         $(RelationshipsPage.previous()).click();
+        $(RelationshipsInterstitialPage.submit()).click();
         expect(browser.getUrl()).to.contain(RelationshipsPage.pageName);
         expect($(RelationshipsPage.questionText()).getText()).to.contain("Marcus");
       });
 
+<<<<<<< HEAD
       it("And go to the confirmation page, Then the previous link should return to the last relationship", function() {
+=======
+      it('And go to the section summary, Then the previous link should return to the last relationship Interstitial', function() {
+>>>>>>> master
         $(ListCollectorPage.no()).click();
         $(ListCollectorPage.submit()).click();
         $(RelationshipsPage.husbandOrWife()).click();
@@ -91,8 +99,10 @@ describe("Relationships", function() {
         $(RelationshipsPage.submit()).click();
         $(RelationshipsPage.husbandOrWife()).click();
         $(RelationshipsPage.submit()).click();
-        expect(browser.getUrl()).to.contain(ConfirmationPage.pageName);
-        $(ConfirmationPage.previous()).click();
+        $(RelationshipsInterstitialPage.submit()).click();
+        expect(browser.getUrl()).to.contain('/sections/section/');
+        $(SectionSummaryPage.previous()).click();
+        $(RelationshipsInterstitialPage.previous()).click();
         expect(browser.getUrl()).to.contain(RelationshipsPage.pageName);
         expect($(RelationshipsPage.questionText()).getText()).to.contain("Olivia");
       });
@@ -106,13 +116,13 @@ describe("Relationships", function() {
         $(RelationshipsPage.submit()).click();
         $(RelationshipsPage.husbandOrWife()).click();
         $(RelationshipsPage.submit()).click();
-        expect(browser.getUrl()).to.contain(ConfirmationPage.pageName);
-        $(ConfirmationPage.previous()).click();
+        $(RelationshipsInterstitialPage.submit()).click();
+        expect(browser.getUrl()).to.contain('/sections/section/');
+        $(SectionSummaryPage.previous()).click();
+        $(RelationshipsInterstitialPage.previous()).click();
         expect($(RelationshipsPage.husbandOrWife()).isSelected()).to.be.true;
-        $(ConfirmationPage.previous()).click();
+        $(RelationshipsPage.previous()).click();
         expect($(RelationshipsPage.legallyRegisteredCivilPartner()).isSelected()).to.be.true;
-        $(ConfirmationPage.previous()).click();
-        expect($(RelationshipsPage.husbandOrWife()).isSelected()).to.be.true;
       });
 
       it("And go to the first relationship, Then the person's name should be in the question title and playback text", function() {
@@ -158,6 +168,7 @@ describe("Relationships", function() {
         addThreePeopleAndCompleteRelationships();
       });
 
+<<<<<<< HEAD
       it("Then I delete one of the original household members I will not be asked for the original members relationships again", function() {
         browser.url("/questionnaire/list-collector");
         $(ListCollectorPage.listRemoveLink(3)).click();
@@ -174,26 +185,46 @@ describe("Relationships", function() {
         $(ListCollectorPage.submit()).click();
         $(ListCollectorAddPage.firstName()).setValue("Tom");
         $(ListCollectorAddPage.lastName()).setValue("Bowden");
+=======
+      it('Then I delete one of the original household members I will not be asked for the original members relationships again', function() {
+        $(SectionSummaryPage.peopleListRemoveLink(1)).click();
+        $(ListCollectorRemovePage.yes()).click();
+        $(ListCollectorRemovePage.submit()).click();
+        expect(browser.getUrl()).to.contain('/sections/section/');
+      });
+
+      it('Then I add another household member I will be asked for about all relationships', function() {
+        $(SectionSummaryPage.peopleListAddLink()).click();
+        $(ListCollectorAddPage.firstName()).setValue('Tom');
+        $(ListCollectorAddPage.lastName()).setValue('Bowden');
+>>>>>>> master
         $(ListCollectorAddPage.submit()).click();
-        $(ListCollectorPage.no()).click();
-        $(ListCollectorPage.submit()).click();
         expect($(RelationshipsPage.husbandOrWife()).isSelected()).to.be.true;
         $(RelationshipsPage.submit()).click();
         expect($(RelationshipsPage.legallyRegisteredCivilPartner()).isSelected()).to.be.true;
         $(RelationshipsPage.submit()).click();
+<<<<<<< HEAD
         expect($(RelationshipsPage.playback()).getText()).to.contain("Tom Bowden is Marcus Twin’s …");
 
+=======
+        expect($(RelationshipsPage.playback()).getText()).to.contain('Tom Bowden is Marcus Twin’s …');
+>>>>>>> master
         $(RelationshipsPage.sonOrDaughter()).click();
         $(RelationshipsPage.submit()).click();
         expect($(RelationshipsPage.husbandOrWife()).isSelected()).to.be.true;
         $(RelationshipsPage.submit()).click();
+<<<<<<< HEAD
         expect($(RelationshipsPage.playback()).getText()).to.contain("Tom Bowden is Samuel Clemens’ …");
 
+=======
+        expect($(RelationshipsPage.playback()).getText()).to.contain('Tom Bowden is Samuel Clemens’ …');
+>>>>>>> master
         $(RelationshipsPage.sonOrDaughter()).click();
         $(RelationshipsPage.submit()).click();
         browser.pause(20000);
         expect($(RelationshipsPage.playback()).getText()).to.contain("Tom Bowden is Olivia Clemens’ …");
       });
+<<<<<<< HEAD
 
       it("When I add a household member after answering the relationships question but remove them again before exiting the list-collector block, Then I will not be asked for the original household members relationships to the new member", function() {
         browser.url("/questionnaire/list-collector");
@@ -209,6 +240,8 @@ describe("Relationships", function() {
         $(ListCollectorPage.submit()).click();
         expect(browser.getUrl()).to.contain("/questionnaire/confirmation");
       });
+=======
+>>>>>>> master
     });
 
     function addThreePeopleAndCompleteRelationships() {
@@ -222,6 +255,7 @@ describe("Relationships", function() {
       $(RelationshipsPage.submit()).click();
       $(RelationshipsPage.husbandOrWife()).click();
       $(RelationshipsPage.submit()).click();
+      $(RelationshipsInterstitialPage.submit()).click();
     }
 
     function addThreePeople() {

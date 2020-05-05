@@ -22,7 +22,7 @@ class TestQuestionnaireListChangeEvaluatesSections(IntegrationTestCase):
     def test_wihout_primary_person(self):
         self.launchSurvey("test_list_change_evaluates_sections")
 
-        self.get("/questionnaire/sections/who-lives-here")
+        self.get("/questionnaire/sections/who-lives-here/")
         self.assertEqualUrl("/questionnaire/primary-person-list-collector/")
         self.post({"you-live-here": "No"})
         self.assertEqualUrl("/questionnaire/list-collector/")
@@ -38,7 +38,7 @@ class TestQuestionnaireListChangeEvaluatesSections(IntegrationTestCase):
         self.post()
         self.assertEqualUrl("/questionnaire/")
 
-        self.get("/questionnaire/sections/who-lives-here")
+        self.get("/questionnaire/sections/who-lives-here/")
         self.assertEqualUrl("/questionnaire/primary-person-list-collector/")
         self.post({"you-live-here": "No"})
 
@@ -59,12 +59,12 @@ class TestQuestionnaireListChangeEvaluatesSections(IntegrationTestCase):
         self.get("/questionnaire/sections/accommodation-section/")
         self.post()
         self.post()
-        self.assertEqualUrl("/questionnaire/accommodation-section-summary/")
+        self.assertEqualUrl("/questionnaire/sections/accommodation-section/")
         self.post()
 
         self.assertInSelector("Completed", "tbody:nth-child(2) td:nth-child(2)")
 
-        self.get("/questionnaire/sections/who-lives-here")
+        self.get("/questionnaire/sections/who-lives-here/")
         self.assertEqualUrl("/questionnaire/primary-person-list-collector/")
         self.post({"you-live-here": "Yes"})
         self.add_person("John", "Doe")

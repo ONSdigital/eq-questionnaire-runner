@@ -28,17 +28,6 @@
         {
             "id": "who-lives-here",
             "title": "Who Lives Here",
-            "summary": {
-                "items": [
-                    {
-                        "type": "List",
-                        "for_list": "people",
-                        "title": "Household members",
-                        "add_link_text": "Add someone to this household",
-                        "empty_list_text": "There are no householders"
-                    }
-                ]
-            },
             "groups": [
                 {
                     "id": "group",
@@ -232,7 +221,7 @@
                 }
             ]
         },
-        {
+        {   "summary": {},
             "groups": [
                 {
                     "blocks": [
@@ -290,7 +279,7 @@
                             "routing_rules": [
                                 {
                                     "goto": {
-                                        "block": "accommodation-section-summary",
+                                        "section": "End",
                                         "when": [
                                             {
                                                 "condition": "equals",
@@ -333,10 +322,6 @@
                                 "type": "General"
                             },
                             "type": "Question"
-                        },
-                        {
-                            "id": "accommodation-section-summary",
-                            "type": "SectionSummary"
                         }
                     ],
                     "id": "accommodation-group",

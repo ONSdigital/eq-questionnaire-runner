@@ -498,18 +498,6 @@
                                     ]
                                 }
                             }
-                        },
-                        {
-                            "id": "people-list-section-summary",
-                            "title": "List Collector Summary",
-                            "type": "SectionSummary"
-                        },
-                        {
-                            "type": "Interstitial",
-                            "id": "final-path-interstitial",
-                            "content": {
-                                "title": "Interstitial to make this section incomplete from section summary"
-                            }
                         }
                     ]
                 }

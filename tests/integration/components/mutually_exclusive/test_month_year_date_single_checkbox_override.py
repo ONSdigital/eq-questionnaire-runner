@@ -27,7 +27,7 @@ class TestMonthYearDateSingleCheckboxOverride(IntegrationTestCase):
         )
 
         # Then
-        self.assertInUrl("section-summary")
+        self.assertInUrl("/sections/mutually-exclusive-month-year-date-section/")
         self.assertInBody("October 2018")
 
     def test_exclusive_answer(self):
@@ -41,7 +41,7 @@ class TestMonthYearDateSingleCheckboxOverride(IntegrationTestCase):
         )
 
         # Then
-        self.assertInUrl("section-summary")
+        self.assertInUrl("/sections/mutually-exclusive-month-year-date-section/")
         self.assertInBody("I prefer not to say")
 
     def test_optional_exclusive_question(self):
@@ -49,7 +49,7 @@ class TestMonthYearDateSingleCheckboxOverride(IntegrationTestCase):
         self.post()
 
         # Then
-        self.assertInUrl("section-summary")
+        self.assertInUrl("/sections/mutually-exclusive-month-year-date-section/")
         self.assertInBody("No answer provided")
 
     def test_invalid_exclusive_answers(self):

@@ -106,6 +106,7 @@
         },
         {
             "id": "basic-question-variant-section",
+            "summary": {},
             "groups": [
                 {
                     "id": "basic-question-variant-group",
@@ -382,14 +383,10 @@
                                 },
                                 {
                                     "goto": {
-                                        "block": "basic-variants-summary"
+                                        "section": "End"
                                     }
                                 }
                             ]
-                        },
-                        {
-                            "id": "basic-variants-summary",
-                            "type": "SectionSummary"
                         }
                     ]
                 }
@@ -397,6 +394,7 @@
         },
         {
             "id": "currency-section",
+            "summary": {},
             "groups": [
                 {
                     "id": "currency-group",
@@ -535,10 +533,6 @@
                                     ]
                                 }
                             ]
-                        },
-                        {
-                            "type": "SectionSummary",
-                            "id": "currency-section-summary"
                         }
                     ]
                 }

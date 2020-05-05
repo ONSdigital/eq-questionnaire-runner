@@ -170,6 +170,7 @@
         {
             "id": "personal-details-section",
             "title": "Personal Details",
+            "summary": {},
             "repeat": {
                 "for_list": "people",
                 "title": {
@@ -273,10 +274,6 @@
                                 }
                             ],
                             "type": "Question"
-                        },
-                        {
-                            "id": "personal-summary",
-                            "type": "SectionSummary"
                         }
                     ]
                 }
