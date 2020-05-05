@@ -295,6 +295,31 @@ def test_list_source_count():
     assert placeholders["number_of_people"] == 2
 
 
+def test_list_source_count_in_transform():
+    placeholder_list = [
+        {
+            "placeholder": "number_of_people",
+            "transforms": [
+                {
+                    "transform": "add",
+                    "arguments": {
+                        "lhs": {"source": "list", "identifier": "people"},
+                        "rhs": {"value": 1},
+                    },
+                }
+            ],
+        }
+    ]
+
+    list_store = ListStore()
+    list_store.add_list_item("people")
+
+    parser = PlaceholderParser(language="en", list_store=list_store)
+    placeholders = parser(placeholder_list)
+
+    assert placeholders["number_of_people"] == 2
+
+
 def test_chain_transform_placeholder():
     placeholder_list = [
         {
