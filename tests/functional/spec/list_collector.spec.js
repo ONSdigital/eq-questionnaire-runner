@@ -7,7 +7,7 @@ const ListCollectorAddPage = require('../generated_pages/list_collector/list-col
 const ListCollectorEditPage = require('../generated_pages/list_collector/list-collector-edit.page.js');
 const ListCollectorRemovePage = require('../generated_pages/list_collector/list-collector-remove.page.js');
 const NextInterstitialPage = require('../generated_pages/list_collector/next-interstitial.page.js');
-const SummaryPage = require('../generated_pages/list_collector/group-summary.page.js');
+const SummaryPage = require('../generated_pages/list_collector/section-summary.page.js');
 
 const PrimaryPersonListCollectorPage = require('../generated_pages/list_collector_section_summary/primary-person-list-collector.page.js');
 const PrimaryPersonListCollectorAddPage = require('../generated_pages/list_collector_section_summary/primary-person-list-collector-add.page.js');
@@ -17,9 +17,8 @@ const SectionSummaryListCollectorEditPage = require('../generated_pages/list_col
 const SectionSummaryListCollectorRemovePage = require('../generated_pages/list_collector_section_summary/list-collector-remove.page.js');
 const VisitorListCollectorPage = require('../generated_pages/list_collector_section_summary/visitor-list-collector.page.js');
 const VisitorListCollectorAddPage = require('../generated_pages/list_collector_section_summary/visitor-list-collector-add.page.js');
-const PeopleListSectionSummaryPage = require('../generated_pages/list_collector_section_summary/people-list-section-summary.page.js');
+const PeopleListSectionSummaryPage = require('../generated_pages/list_collector_section_summary/section-summary.page.js');
 const ConfirmationPage = require('../generated_pages/list_collector/confirmation.page.js');
-
 
 describe('List Collector', function() {
   function checkPeopleInList(peopleExpected) {
@@ -116,17 +115,6 @@ describe('List Collector', function() {
       expect(browser.getUrl()).to.contain(ListCollectorPage.pageName);
     });
 
-    it('The user is returned to the list collector when the cancel link is clicked on the remove page.', function() {
-      $(ListCollectorPage.yes()).click();
-      $(ListCollectorPage.submit()).click();
-      $(ListCollectorAddPage.firstName()).setValue('Someone');
-      $(ListCollectorAddPage.lastName()).setValue('Else');
-      $(ListCollectorAddPage.submit()).click();
-      $(ListCollectorPage.listRemoveLink(1)).click();
-      $(ListCollectorRemovePage.cancelAndReturn()).click();
-      expect(browser.getUrl()).to.contain(ListCollectorPage.pageName);
-    });
-
     it('The collector shows everyone on the summary', function() {
       const peopleExpected = ['Samuel Clemens', 'Olivia Clemens', 'Suzy Clemens', 'Clara Clemens', 'Jean Clemens'];
 
@@ -185,7 +173,7 @@ describe('List Collector', function() {
     it('The questionnaire shows the confirmation page when no more people to add', function() {
       $(AnotherListCollectorPage.no()).click();
       $(AnotherListCollectorPage.submit()).click();
-      expect(browser.getUrl()).to.contain(SummaryPage.pageName);
+      expect(browser.getUrl()).to.contain('/sections/section/');
     });
 
     it('The questionnaire allows submission', function() {

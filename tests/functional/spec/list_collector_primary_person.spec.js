@@ -3,11 +3,10 @@ const ListCollectorAddPage = require('../generated_pages/list_collector_primary_
 const ListCollectorEditPage = require('../generated_pages/list_collector_primary_person/list-collector-edit.page.js');
 const PrimaryPersonListCollectorPage = require('../generated_pages/list_collector_primary_person/primary-person-list-collector.page.js');
 const PrimaryPersonListCollectorAddPage = require('../generated_pages/list_collector_primary_person/primary-person-list-collector-add.page.js');
-const SectionSummaryPage = require('../generated_pages/list_collector/group-summary.page.js');
+const SectionSummaryPage = require('../generated_pages/list_collector/section-summary.page.js');
 const ConfirmationPage = require('../generated_pages/list_collector/confirmation.page.js');
 const ThankYouPage = require('../base_pages/thank-you.page.js');
 const AnyoneUsuallyLiveAtPage = require('../generated_pages/list_collector_primary_person/anyone-usually-live-at.page.js');
-
 
 describe('Primary Person List Collector Survey', function() {
   describe('Given the user starts on the \'do you live here\' question', function() {
@@ -109,6 +108,7 @@ describe('Primary Person List Collector Survey', function() {
     it('When the user says they do not live there, then an empty list is displayed', function() {
       $(PrimaryPersonListCollectorPage.no()).click();
       $(PrimaryPersonListCollectorPage.submit()).click();
+      $(AnyoneUsuallyLiveAtPage.no()).click();
       expect($(ListCollectorPage.listLabel(1)).isExisting()).to.be.false;
     });
 

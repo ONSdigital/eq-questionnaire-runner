@@ -178,6 +178,7 @@
         {
             "id": "default-section",
             "title": "Questions",
+            "summary": {},
             "repeat": {
                 "for_list": "people",
                 "title": {
@@ -393,7 +394,7 @@
                                 },
                                 {
                                     "goto": {
-                                        "block": "section-summary"
+                                        "section": "End"
                                     }
                                 }
                             ]
@@ -439,10 +440,6 @@
                                 ]
                             },
                             "type": "Question"
-                        },
-                        {
-                            "id": "section-summary",
-                            "type": "SectionSummary"
                         }
                     ]
                 }

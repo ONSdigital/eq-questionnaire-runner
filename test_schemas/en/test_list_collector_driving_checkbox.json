@@ -667,11 +667,6 @@
                             }
                         },
                         {
-                            "id": "who-lives-here-summary",
-                            "title": "Who Lives Here Summary",
-                            "type": "SectionSummary"
-                        },
-                        {
                             "id": "summary",
                             "title": "Questionnaire Summary",
                             "type": "Summary"

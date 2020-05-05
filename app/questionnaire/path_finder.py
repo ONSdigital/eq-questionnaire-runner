@@ -145,6 +145,9 @@ class PathFinder:
             )
 
             if should_goto:
+                if "End" in rule["goto"].get("section", ""):
+                    return None
+
                 next_block_id = self._get_next_block_id(rule)
                 next_block_index = PathFinder._block_index_for_block_id(
                     blocks, next_block_id

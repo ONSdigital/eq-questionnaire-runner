@@ -24,7 +24,7 @@
     "sections": [
         {
             "id": "section",
-            "title": "Who Lives Here",
+            "title": "List Collector Summary",
             "summary": {
                 "items": [
                     {
@@ -321,11 +321,6 @@
                                     ]
                                 }
                             }
-                        },
-                        {
-                            "id": "group-summary",
-                            "title": "List Collector Summary",
-                            "type": "SectionSummary"
                         },
                         {
                             "type": "Question",

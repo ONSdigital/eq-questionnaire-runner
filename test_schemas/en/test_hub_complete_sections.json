@@ -155,6 +155,7 @@
         {
             "id": "accommodation-section",
             "title": "Accommodation",
+            "summary": {},
             "groups": [
                 {
                     "blocks": [
@@ -184,10 +185,6 @@
                                 "type": "General"
                             },
                             "type": "Question"
-                        },
-                        {
-                            "id": "accommodation-details-summary",
-                            "type": "SectionSummary"
                         }
                     ],
                     "id": "checkboxes",
