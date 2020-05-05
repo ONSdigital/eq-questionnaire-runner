@@ -1,14 +1,14 @@
 const checkPeopleInList = require("../helpers");
 const HubPage = require("../base_pages/hub.page.js");
 
-const PrimaryPersonListCollectorPage = require('../generated_pages/list_collector_driving_checkbox/primary-person-list-collector.page.js');
-const PrimaryPersonListCollectorAddPage = require('../generated_pages/list_collector_driving_checkbox/primary-person-list-collector-add.page.js');
-const AnyoneUsuallyLiveAtPage = require('../generated_pages/list_collector_driving_checkbox/anyone-usually-live-at.page.js');
-const ListCollectorAddPage = require('../generated_pages/list_collector_driving_checkbox/list-collector-add.page.js');
-const ListCollectorPage = require('../generated_pages/list_collector_driving_checkbox/list-collector.page.js');
-const ListCollectorTemporaryAwayPage = require('../generated_pages/list_collector_driving_checkbox/list-collector-temporary-away-stay.page');
-const ListCollectorTemporaryAwayAddPage = require('../generated_pages/list_collector_driving_checkbox/list-collector-temporary-away-stay-add.page');
-const SummaryPage = require('../generated_pages/list_collector_driving_checkbox/section-summary.page');
+const PrimaryPersonListCollectorPage = require("../generated_pages/list_collector_driving_checkbox/primary-person-list-collector.page.js");
+const PrimaryPersonListCollectorAddPage = require("../generated_pages/list_collector_driving_checkbox/primary-person-list-collector-add.page.js");
+const AnyoneUsuallyLiveAtPage = require("../generated_pages/list_collector_driving_checkbox/anyone-usually-live-at.page.js");
+const ListCollectorAddPage = require("../generated_pages/list_collector_driving_checkbox/list-collector-add.page.js");
+const ListCollectorPage = require("../generated_pages/list_collector_driving_checkbox/list-collector.page.js");
+const ListCollectorTemporaryAwayPage = require("../generated_pages/list_collector_driving_checkbox/list-collector-temporary-away-stay.page");
+const ListCollectorTemporaryAwayAddPage = require("../generated_pages/list_collector_driving_checkbox/list-collector-temporary-away-stay-add.page");
+const SummaryPage = require("../generated_pages/list_collector_driving_checkbox/section-summary.page");
 
 const beforeSetup = () => {
   browser.openQuestionnaire("test_list_collector_driving_checkbox.json");

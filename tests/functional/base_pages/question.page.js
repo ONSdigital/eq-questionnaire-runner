@@ -58,7 +58,9 @@ class QuestionPage extends BasePage {
     return '[data-qa="btn-submit"]';
   }
 
-  summaryShowAllButton() { return '.js-collapsible-all'; }
+  summaryShowAllButton() {
+    return ".js-collapsible-all";
+  }
 
   saveSignOut() {
     return '[data-qa="btn-save-sign-out"]';
