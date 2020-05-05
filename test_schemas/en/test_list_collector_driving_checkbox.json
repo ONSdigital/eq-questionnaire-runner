@@ -665,11 +665,6 @@
                                     ]
                                 }
                             }
-                        },
-                        {
-                            "id": "summary",
-                            "title": "Questionnaire Summary",
-                            "type": "Summary"
                         }
                     ]
                 }

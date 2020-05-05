@@ -336,7 +336,7 @@
                                         "currency": "GBP"
                                     },
                                     {
-                                        "id": "square-kilometres",
+                                        "id": "test-square-kilometres",
                                         "description": "",
                                         "label": "Kilometres Square",
                                         "mandatory": false,
@@ -355,7 +355,7 @@
                                 ],
                                 "description": "",
                                 "id": "test-number-range-question",
-                                "title": "Please enter test values (none mandatory)",
+                                "title": "Please enter test values (non-mandatory)",
                                 "type": "General"
                             }
                         }
