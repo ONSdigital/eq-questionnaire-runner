@@ -1,6 +1,6 @@
 from app.questionnaire.location import Location
 from .context import Context
-from .section_summary_context import SectionSummaryContext
+from .summary import Group
 
 
 class QuestionnaireSummaryContext(Context):
@@ -19,23 +19,20 @@ class QuestionnaireSummaryContext(Context):
 
     def _build_all_groups(self):
         """ NB: Does not support repeating sections """
-        section_summary_context = SectionSummaryContext(
-            self._language,
-            self._schema,
-            self._answer_store,
-            self._list_store,
-            self._progress_store,
-            self._metadata,
-        )
+        for section_id in self._router.enabled_section_ids:
+            for group in self._schema.get_section(section_id)["groups"]:
+                location = Location(section_id=section_id)
+                routing_path = self._router.routing_path(
+                    location.section_id, location.list_item_id
+                )
 
-        section_ids = [
-            section_id
-            for section_id in self._router.enabled_section_ids
-            if not self._schema.get_summary_for_section(section_id)
-        ]
-
-        for section_id in section_ids:
-            for group in section_summary_context(Location(section_id=section_id))[
-                "summary"
-            ]["groups"]:
-                yield group
+                yield Group(
+                    group,
+                    routing_path,
+                    self._answer_store,
+                    self._list_store,
+                    self._metadata,
+                    self._schema,
+                    location,
+                    self._language,
+                ).serialize()
