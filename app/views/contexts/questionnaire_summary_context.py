@@ -21,7 +21,7 @@ class QuestionnaireSummaryContext(Context):
         """ NB: Does not support repeating sections """
         for section_id in self._router.enabled_section_ids:
             section = self._schema.get_section(section_id)
-            if section.get("summary"):
+            if section.get("summary", {}).get("items"):
                 break
 
             for group in section["groups"]:
