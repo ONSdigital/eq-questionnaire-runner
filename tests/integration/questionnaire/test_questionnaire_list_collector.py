@@ -245,10 +245,12 @@ class TestQuestionnaireListCollector(IntegrationTestCase):
 
         self.post({"another-anyone-else": "No"})
 
-        self.post()
+        self.assertEqualUrl("/questionnaire/test-number-block/")
+
+        self.post({"test-currency": 12})
 
         self.assertEqualUrl("/questionnaire/sections/section/")
 
-        self.post({"test-currency": 12})
+        self.post()
 
         self.assertNotInBody("£12.00")

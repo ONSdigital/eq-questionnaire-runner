@@ -4,7 +4,7 @@ const ListCollectorEditPage = require('../generated_pages/list_collector_primary
 const PrimaryPersonListCollectorPage = require('../generated_pages/list_collector_primary_person/primary-person-list-collector.page.js');
 const PrimaryPersonListCollectorAddPage = require('../generated_pages/list_collector_primary_person/primary-person-list-collector-add.page.js');
 const SectionSummaryPage = require('../generated_pages/list_collector/section-summary.page.js');
-const ConfirmationPage = require('../generated_pages/list_collector/confirmation.page.js');
+const ConfirmationPage = require('../generated_pages/list_collector_primary_person/confirmation.page.js');
 const ThankYouPage = require('../base_pages/thank-you.page.js');
 const AnyoneUsuallyLiveAtPage = require('../generated_pages/list_collector_primary_person/anyone-usually-live-at.page.js');
 

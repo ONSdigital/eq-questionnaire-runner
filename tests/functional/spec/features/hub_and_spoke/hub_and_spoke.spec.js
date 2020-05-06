@@ -251,7 +251,6 @@ describe('Feature: Hub and Spoke', function () {
       $(HouseholdSummary.doesAnyoneLiveHereAnswerEdit()).click();
       $(DoesAnyoneLiveHere.yes()).click();
       $(DoesAnyoneLiveHere.submit()).click();
-      $(HouseholdSummary.submit()).click();
       let expectedUrl = browser.getUrl();
       expect(expectedUrl).to.contain(HowManyPeopleLiveHere.url());
     });

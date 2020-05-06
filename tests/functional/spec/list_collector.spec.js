@@ -8,6 +8,8 @@ const ListCollectorEditPage = require('../generated_pages/list_collector/list-co
 const ListCollectorRemovePage = require('../generated_pages/list_collector/list-collector-remove.page.js');
 const NextInterstitialPage = require('../generated_pages/list_collector/next-interstitial.page.js');
 const SummaryPage = require('../generated_pages/list_collector/section-summary.page.js');
+const SectionPage = require('../generated_pages/list_collector/section-summary.page');
+const TestNumberBlockPage = require('../generated_pages/list_collector/test-number-block.page.js');
 
 const PrimaryPersonListCollectorPage = require('../generated_pages/list_collector_section_summary/primary-person-list-collector.page.js');
 const PrimaryPersonListCollectorAddPage = require('../generated_pages/list_collector_section_summary/primary-person-list-collector-add.page.js');
@@ -18,7 +20,6 @@ const SectionSummaryListCollectorRemovePage = require('../generated_pages/list_c
 const VisitorListCollectorPage = require('../generated_pages/list_collector_section_summary/visitor-list-collector.page.js');
 const VisitorListCollectorAddPage = require('../generated_pages/list_collector_section_summary/visitor-list-collector-add.page.js');
 const PeopleListSectionSummaryPage = require('../generated_pages/list_collector_section_summary/section-summary.page.js');
-const ConfirmationPage = require('../generated_pages/list_collector/confirmation.page.js');
 
 describe('List Collector', function() {
   function checkPeopleInList(peopleExpected) {
@@ -173,12 +174,13 @@ describe('List Collector', function() {
     it('The questionnaire shows the confirmation page when no more people to add', function() {
       $(AnotherListCollectorPage.no()).click();
       $(AnotherListCollectorPage.submit()).click();
+      $(TestNumberBlockPage.submit()).click();
       expect(browser.getUrl()).to.contain('/sections/section/');
     });
 
     it('The questionnaire allows submission', function() {
+      $(SectionPage.submit()).click();
       $(SummaryPage.submit()).click();
-      $(ConfirmationPage.submit()).click();
       expect(browser.getUrl()).to.contain('thank-you');
     });
   });

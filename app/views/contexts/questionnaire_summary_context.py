@@ -20,8 +20,13 @@ class QuestionnaireSummaryContext(Context):
     def _build_all_groups(self):
         """ NB: Does not support repeating sections """
         for section_id in self._router.enabled_section_ids:
-            for group in self._schema.get_section(section_id)["groups"]:
+            section = self._schema.get_section(section_id)
+            if section.get("summary"):
+                break
+
+            for group in section["groups"]:
                 location = Location(section_id=section_id)
+
                 routing_path = self._router.routing_path(
                     location.section_id, location.list_item_id
                 )
