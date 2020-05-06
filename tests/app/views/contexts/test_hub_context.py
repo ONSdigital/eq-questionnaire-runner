@@ -3,6 +3,7 @@ import pytest
 
 from app.data_model.progress_store import CompletionStatus
 from app.questionnaire.router import Router
+from app.utilities.schema import load_schema_from_name
 from app.views.contexts.hub_context import HubContext
 
 
@@ -105,4 +106,54 @@ def test_get_context(schema, progress_store, answer_store, list_store, router):
 
     assert expected_context == hub.get_context(
         survey_complete=False, enabled_section_ids=router.enabled_section_ids
+    )
+
+
+def test_get_context_custom_guidance_incomplete(
+    progress_store, answer_store, list_store, router
+):
+    schema = load_schema_from_name("test_hub_and_spoke")
+    hub_context = HubContext(
+        language=None,
+        progress_store=progress_store,
+        list_store=list_store,
+        schema=schema,
+        answer_store=answer_store,
+        metadata={},
+    )
+
+    expected_context = {
+        "title": "Choose another section to complete",
+        "description": "You must complete all sections in the hub and spoke questionnaire in order to submit",
+        "rows": [],
+        "submit_button": "Continue",
+    }
+
+    assert expected_context == hub_context.get_context(
+        survey_complete=False, enabled_section_ids=router.enabled_section_ids
+    )
+
+
+def test_get_context_custom_guidance_complete(
+    progress_store, answer_store, list_store, router
+):
+    schema = load_schema_from_name("test_hub_and_spoke")
+    hub_context = HubContext(
+        language=None,
+        progress_store=progress_store,
+        list_store=list_store,
+        schema=schema,
+        answer_store=answer_store,
+        metadata={},
+    )
+
+    expected_context = {
+        "title": "Submit survey",
+        "description": "Please submit the hub and spoke questionnaire to complete it",
+        "rows": [],
+        "submit_button": "Submit hub and spoke questionnaire",
+    }
+
+    assert expected_context == hub_context.get_context(
+        survey_complete=True, enabled_section_ids=router.enabled_section_ids
     )

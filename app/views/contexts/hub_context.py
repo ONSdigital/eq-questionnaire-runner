@@ -49,10 +49,13 @@ class HubContext(Context):
     }
 
     def get_context(self, survey_complete, enabled_section_ids) -> Mapping:
-        context = self.HUB_CONTENT_STATES[
-            "COMPLETE" if survey_complete else "INCOMPLETE"
-        ]
+        survey_status = "COMPLETE" if survey_complete else "INCOMPLETE"
+        context = self.HUB_CONTENT_STATES[survey_status]
         context["rows"] = self._get_rows(enabled_section_ids)
+        hub_guidance = self._schema.get_guidance_for_hub().get(survey_status, {})
+
+        if hub_guidance:
+            context.update(hub_guidance)
 
         return context
 
@@ -61,7 +64,6 @@ class HubContext(Context):
     ) -> Mapping[str, Union[str, List]]:
 
         section_content = self.SECTION_CONTENT_STATES[section_status]
-
         context: Mapping = {
             "rowTitle": section_name,
             "rowItems": [

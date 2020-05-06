@@ -34,6 +34,11 @@ describe('Feature: Hub and Spoke', function () {
     expect($(HubPage.summaryItems()).getText()).not.to.contain('Relationships');
   });
 
+  it('When there is custom guidance, it should be display correctly on the hub', function () {
+      expect($(HubPage.displayedDescription()).getText()).to.contain('You must complete all sections in the hub and spoke questionnaire in order to submit');
+
+    });
+
   describe('Given a user is on the Hub page', function () {
     it('When the user click the \'Save and sign out\' button then they should be on the signed out page', function () {
       browser.openQuestionnaire(hub_and_spoke_schema);
@@ -210,6 +215,12 @@ describe('Feature: Hub and Spoke', function () {
       let expectedUrl = browser.getUrl();
       expect(expectedUrl).to.contain('thank-you');
     });
+
+    it('When there is custom guidance, it should be display correctly on the hub', function () {
+      expect($(HubPage.displayedDescription()).getText()).to.contain('Please submit this hub and spoke questionnaire to complete it');
+      expect($(HubPage.submit()).getText()).to.contain('Submit hub and spoke questionnaire');
+    });
+
   });
 
   describe('Given a user opens a schema with required sections', function () {

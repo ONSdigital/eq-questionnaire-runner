@@ -22,7 +22,16 @@
         }
     ],
     "hub": {
-        "enabled": true
+        "enabled": true,
+        "guidance": {
+            "COMPLETE": {
+                "description": "Please submit the hub and spoke questionnaire to complete it",
+                "submit_button": "Submit hub and spoke questionnaire"
+            },
+            "INCOMPLETE": {
+                "description": "You must complete all sections in the hub and spoke questionnaire in order to submit"
+            }
+        }
     },
     "sections": [
         {

@@ -265,7 +265,7 @@ describe('Feature: Repeating Sections with Hub and Spoke', function () {
       $(VisitorsDateOfBirthPage.year()).setValue('1999');
       $(VisitorsDateOfBirthPage.submit()).click();
 
-      expect($(HubPage.submit()).getText()).to.equal('Submit survey');
+      expect($(HubPage.submit()).getText()).to.equal('Submit hub and spoke questionnaire');
       expect($(HubPage.displayedName()).getText()).to.equal('Submit survey');
     });
 
