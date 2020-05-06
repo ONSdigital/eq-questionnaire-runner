@@ -217,7 +217,7 @@ describe('Feature: Hub and Spoke', function () {
     });
 
     it('When there is custom guidance, it should be display correctly on the hub', function () {
-      expect($(HubPage.displayedDescription()).getText()).to.contain('Please submit this hub and spoke questionnaire to complete it');
+      expect($(HubPage.displayedDescription()).getText()).to.contain('Please submit the hub and spoke questionnaire to complete it');
       expect($(HubPage.submit()).getText()).to.contain('Submit hub and spoke questionnaire');
     });
 
