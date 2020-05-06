@@ -1,9 +1,8 @@
-const QuestionPage = require('./question.page');
+const QuestionPage = require("./question.page");
 
 class ThankYouPage extends QuestionPage {
-
   constructor() {
-    super('summary');
+    super("summary");
   }
 
   viewSubmissionText() {
@@ -11,7 +10,7 @@ class ThankYouPage extends QuestionPage {
   }
 
   summaryRowState(number = 1) {
-    return 'tbody:nth-child(' + number + ') tr td.summary__values';
+    return `tbody:nth-child(${number}) tr td.summary__values`;
   }
 }
 
