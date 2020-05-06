@@ -1,27 +1,27 @@
-const AnotherListCollectorPage = require('../generated_pages/list_collector/another-list-collector-block.page.js');
-const AnotherListCollectorAddPage = require('../generated_pages/list_collector/another-list-collector-block-add.page.js');
-const AnotherListCollectorEditPage = require('../generated_pages/list_collector/another-list-collector-block-edit.page.js');
-const AnotherListCollectorRemovePage = require('../generated_pages/list_collector/another-list-collector-block-remove.page.js');
-const ListCollectorPage = require('../generated_pages/list_collector/list-collector.page.js');
-const ListCollectorAddPage = require('../generated_pages/list_collector/list-collector-add.page.js');
-const ListCollectorEditPage = require('../generated_pages/list_collector/list-collector-edit.page.js');
-const ListCollectorRemovePage = require('../generated_pages/list_collector/list-collector-remove.page.js');
-const NextInterstitialPage = require('../generated_pages/list_collector/next-interstitial.page.js');
-const SummaryPage = require('../generated_pages/list_collector/section-summary.page.js');
-const SectionPage = require('../generated_pages/list_collector/section-summary.page');
-const TestNumberBlockPage = require('../generated_pages/list_collector/test-number-block.page.js');
+const AnotherListCollectorPage = require("../generated_pages/list_collector/another-list-collector-block.page.js");
+const AnotherListCollectorAddPage = require("../generated_pages/list_collector/another-list-collector-block-add.page.js");
+const AnotherListCollectorEditPage = require("../generated_pages/list_collector/another-list-collector-block-edit.page.js");
+const AnotherListCollectorRemovePage = require("../generated_pages/list_collector/another-list-collector-block-remove.page.js");
+const ListCollectorPage = require("../generated_pages/list_collector/list-collector.page.js");
+const ListCollectorAddPage = require("../generated_pages/list_collector/list-collector-add.page.js");
+const ListCollectorEditPage = require("../generated_pages/list_collector/list-collector-edit.page.js");
+const ListCollectorRemovePage = require("../generated_pages/list_collector/list-collector-remove.page.js");
+const NextInterstitialPage = require("../generated_pages/list_collector/next-interstitial.page.js");
+const SummaryPage = require("../generated_pages/list_collector/section-summary.page.js");
+const SectionPage = require("../generated_pages/list_collector/section-summary.page");
+const TestNumberBlockPage = require("../generated_pages/list_collector/test-number-block.page.js");
 
-const PrimaryPersonListCollectorPage = require('../generated_pages/list_collector_section_summary/primary-person-list-collector.page.js');
-const PrimaryPersonListCollectorAddPage = require('../generated_pages/list_collector_section_summary/primary-person-list-collector-add.page.js');
-const SectionSummaryListCollectorPage = require('../generated_pages/list_collector_section_summary/list-collector.page.js');
-const SectionSummaryListCollectorAddPage = require('../generated_pages/list_collector_section_summary/list-collector-add.page.js');
-const SectionSummaryListCollectorEditPage = require('../generated_pages/list_collector_section_summary/list-collector-edit.page.js');
-const SectionSummaryListCollectorRemovePage = require('../generated_pages/list_collector_section_summary/list-collector-remove.page.js');
-const VisitorListCollectorPage = require('../generated_pages/list_collector_section_summary/visitor-list-collector.page.js');
-const VisitorListCollectorAddPage = require('../generated_pages/list_collector_section_summary/visitor-list-collector-add.page.js');
-const PeopleListSectionSummaryPage = require('../generated_pages/list_collector_section_summary/section-summary.page.js');
+const PrimaryPersonListCollectorPage = require("../generated_pages/list_collector_section_summary/primary-person-list-collector.page.js");
+const PrimaryPersonListCollectorAddPage = require("../generated_pages/list_collector_section_summary/primary-person-list-collector-add.page.js");
+const SectionSummaryListCollectorPage = require("../generated_pages/list_collector_section_summary/list-collector.page.js");
+const SectionSummaryListCollectorAddPage = require("../generated_pages/list_collector_section_summary/list-collector-add.page.js");
+const SectionSummaryListCollectorEditPage = require("../generated_pages/list_collector_section_summary/list-collector-edit.page.js");
+const SectionSummaryListCollectorRemovePage = require("../generated_pages/list_collector_section_summary/list-collector-remove.page.js");
+const VisitorListCollectorPage = require("../generated_pages/list_collector_section_summary/visitor-list-collector.page.js");
+const VisitorListCollectorAddPage = require("../generated_pages/list_collector_section_summary/visitor-list-collector-add.page.js");
+const PeopleListSectionSummaryPage = require("../generated_pages/list_collector_section_summary/section-summary.page.js");
 
-describe('List Collector', function() {
+describe("List Collector", function() {
   function checkPeopleInList(peopleExpected) {
     $(ListCollectorPage.listLabel(1)).waitForDisplayed();
 
@@ -174,13 +174,13 @@ describe('List Collector', function() {
       $(AnotherListCollectorPage.no()).click();
       $(AnotherListCollectorPage.submit()).click();
       $(TestNumberBlockPage.submit()).click();
-      expect(browser.getUrl()).to.contain('/sections/section/');
+      expect(browser.getUrl()).to.contain("/sections/section/");
     });
 
-    it('The questionnaire allows submission', function() {
+    it("The questionnaire allows submission", function() {
       $(SectionPage.submit()).click();
       $(SummaryPage.submit()).click();
-      expect(browser.getUrl()).to.contain('thank-you');
+      expect(browser.getUrl()).to.contain("thank-you");
     });
   });
 
