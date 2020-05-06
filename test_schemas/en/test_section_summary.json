@@ -136,7 +136,7 @@
         {
             "id": "house-details-section",
             "title": "House Details Section",
-            "summary" : {},
+            "summary": {},
             "groups": [
                 {
                     "id": "house-details",

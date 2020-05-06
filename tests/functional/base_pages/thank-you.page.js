@@ -1,9 +1,8 @@
-const QuestionPage = require('./question.page');
+const QuestionPage = require("./question.page");
 
 class ThankYouPage extends QuestionPage {
-
   constructor() {
-    super('thank-you');
+    super("thank-you");
   }
 
   submissionSuccessfulTitle() {
@@ -21,6 +20,5 @@ class ThankYouPage extends QuestionPage {
   signOut() {
     return '[data-qa="btn-sign-out"]';
   }
-
 }
 module.exports = new ThankYouPage();
