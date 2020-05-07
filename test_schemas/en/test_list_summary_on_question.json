@@ -369,43 +369,6 @@
                                     }
                                 }
                             }
-                        },
-                        {
-                            "type": "Question",
-                            "id": "test-number-block",
-                            "question": {
-                                "answers": [
-                                    {
-                                        "id": "test-currency",
-                                        "description": "",
-                                        "label": "Currency Test",
-                                        "mandatory": false,
-                                        "type": "Currency",
-                                        "currency": "GBP"
-                                    },
-                                    {
-                                        "id": "test-square-kilometres",
-                                        "description": "",
-                                        "label": "Kilometres Square",
-                                        "mandatory": false,
-                                        "type": "Unit",
-                                        "unit_length": "short",
-                                        "unit": "area-square-kilometer"
-                                    },
-                                    {
-                                        "id": "test-decimal",
-                                        "description": "",
-                                        "label": "Decimal test to 2 decimal places",
-                                        "mandatory": false,
-                                        "type": "Number",
-                                        "decimal_places": 2
-                                    }
-                                ],
-                                "description": "",
-                                "id": "test-number-range-question",
-                                "title": "Please enter test values (non-mandatory)",
-                                "type": "General"
-                            }
                         }
                     ]
                 }

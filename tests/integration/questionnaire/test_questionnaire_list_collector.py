@@ -165,7 +165,7 @@ class TestQuestionnaireListCollector(IntegrationTestCase):
 
         self.post()
 
-        self.assertInUrl("summary")
+        self.assertInUrl("confirmation")
 
     def test_optional_list_collector_submission(self):
         self.launchSurvey("test_list_collector")
@@ -184,7 +184,7 @@ class TestQuestionnaireListCollector(IntegrationTestCase):
 
         self.post()
 
-        self.assertInUrl("summary")
+        self.assertInUrl("confirmation")
 
     def test_list_summary_on_question(self):
         self.launchSurvey("test_list_summary_on_question")
@@ -206,10 +206,6 @@ class TestQuestionnaireListCollector(IntegrationTestCase):
         self.assertInBody("Marie Claire Doe")
 
         self.post({"radio-mandatory-answer": "No, all household members are unrelated"})
-
-        self.assertInBody("Please enter test values")
-
-        self.post({"test-currency": 12})
 
         self.assertInUrl("/sections/section/")
 

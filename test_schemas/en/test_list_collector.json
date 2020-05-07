@@ -333,9 +333,11 @@
                 {
                     "blocks": [
                         {
-                            "id": "questionnaire-summary",
-                            "title": "Questionnaire Summary",
-                            "type": "Summary"
+                            "type": "Confirmation",
+                            "id": "confirmation",
+                            "content": {
+                                "title": "Thank you for your answers, do you wish to submit"
+                            }
                         }
                     ],
                     "id": "confirmation-group",
