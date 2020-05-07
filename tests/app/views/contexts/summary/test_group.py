@@ -31,7 +31,6 @@ def fixture_schema():
             {
                 "type": "Question",
                 "id": "number-question-two",
-                "show_on_section_summary": False,
                 "question": {
                     "answers": [
                         {
@@ -56,76 +55,3 @@ def fixture_schema():
 @pytest.fixture(name="path")
 def fixture_path():
     return ["number-question-one", "number-question-two"]
-
-
-def test_group_serialize_show_on_summary_false(
-    app, schema, path
-):  # pylint: disable=unused-argument
-
-    answer_store = AnswerStore()
-    list_store = ListStore()
-    metadata = None
-
-    group = Group(
-        schema,
-        path,
-        answer_store,
-        list_store,
-        metadata,
-        None,
-        Location("test", "test"),
-        "en",
-    )
-
-    assert len(group.blocks) == 1
-    assert group.blocks[0]["id"] == "number-question-one"
-
-
-def test_group_serialize_show_on_summary_not_set(
-    app, schema, path
-):  # pylint: disable=unused-argument
-
-    answer_store = AnswerStore()
-    list_store = ListStore()
-    metadata = None
-
-    del schema["blocks"][1]["show_on_section_summary"]
-
-    group = Group(
-        schema,
-        path,
-        answer_store,
-        list_store,
-        metadata,
-        None,
-        Location("test", "test"),
-        "en",
-    )
-
-    assert len(group.blocks) == 2
-    assert group.blocks[1]["id"] == "number-question-two"
-
-
-def test_group_serialize_show_on_summary_true(
-    app, schema, path
-):  # pylint: disable=unused-argument
-    answer_store = AnswerStore()
-    list_store = ListStore()
-    metadata = None
-
-    schema["blocks"][0]["show_on_section_summary"] = True
-    schema["blocks"][1]["show_on_section_summary"] = True
-
-    group = Group(
-        schema,
-        path,
-        answer_store,
-        list_store,
-        metadata,
-        None,
-        Location("test", "test"),
-        "en",
-    )
-
-    assert len(group.blocks) == 2
-    assert group.blocks[1]["id"] == "number-question-two"
