@@ -419,10 +419,7 @@
                     "blocks": [
                         {
                             "type": "Summary",
-                            "id": "summary",
-                            "content": {
-                                "title": "Thank you for your answers, do you wish to submit"
-                            }
+                            "id": "summary"
                         }
                     ],
                     "id": "confirmation-group",
