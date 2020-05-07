@@ -165,7 +165,9 @@ class TestQuestionnaireListCollector(IntegrationTestCase):
 
         self.post()
 
-        self.assertInUrl("confirmation")
+        self.post()
+
+        self.assertInUrl("thank-you")
 
     def test_optional_list_collector_submission(self):
         self.launchSurvey("test_list_collector")
@@ -180,7 +182,7 @@ class TestQuestionnaireListCollector(IntegrationTestCase):
 
         self.post({"another-anyone-else": "No"})
 
-        self.assertInBody("Household members")
+        self.assertInBody("List Collector Summary")
 
         self.post()
 
