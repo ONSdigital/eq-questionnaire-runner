@@ -9,7 +9,6 @@ const ListCollectorRemovePage = require("../generated_pages/list_collector/list-
 const NextInterstitialPage = require("../generated_pages/list_collector/next-interstitial.page.js");
 const SummaryPage = require("../generated_pages/list_collector/section-summary.page.js");
 const SectionPage = require("../generated_pages/list_collector/section-summary.page");
-const TestNumberBlockPage = require("../generated_pages/list_collector/test-number-block.page.js");
 
 const PrimaryPersonListCollectorPage = require("../generated_pages/list_collector_section_summary/primary-person-list-collector.page.js");
 const PrimaryPersonListCollectorAddPage = require("../generated_pages/list_collector_section_summary/primary-person-list-collector-add.page.js");
@@ -173,7 +172,6 @@ describe("List Collector", function() {
     it("The questionnaire shows the confirmation page when no more people to add", function() {
       $(AnotherListCollectorPage.no()).click();
       $(AnotherListCollectorPage.submit()).click();
-      $(TestNumberBlockPage.submit()).click();
       expect(browser.getUrl()).to.contain("/sections/section/");
     });
 

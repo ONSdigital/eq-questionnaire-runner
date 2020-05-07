@@ -145,8 +145,6 @@ class TestQuestionnaireListCollector(IntegrationTestCase):
 
         self.post({"another-anyone-else": "No"})
 
-        self.post()
-
         self.assertInBody("List Collector Summary")
 
         self.assertInBody("Household members")
@@ -167,7 +165,7 @@ class TestQuestionnaireListCollector(IntegrationTestCase):
 
         self.post()
 
-        self.assertInUrl("questionnaire-summary")
+        self.assertInUrl("confirmation")
 
     def test_optional_list_collector_submission(self):
         self.launchSurvey("test_list_collector")
@@ -182,13 +180,11 @@ class TestQuestionnaireListCollector(IntegrationTestCase):
 
         self.post({"another-anyone-else": "No"})
 
-        self.post()
-
-        self.assertInBody("List Collector Summary")
+        self.assertInBody("Household members")
 
         self.post()
 
-        self.assertInUrl("questionnaire-summary")
+        self.assertInUrl("confirmation")
 
     def test_list_summary_on_question(self):
         self.launchSurvey("test_list_summary_on_question")
@@ -206,7 +202,22 @@ class TestQuestionnaireListCollector(IntegrationTestCase):
         self.post({"another-anyone-else": "No"})
 
         self.assertInBody("Are any of these people related to one another?")
+
         self.assertInBody("Marie Claire Doe")
+
+        self.post({"radio-mandatory-answer": "No, all household members are unrelated"})
+
+        self.assertInBody("Please enter test values")
+
+        self.post({"test-currency": 12})
+
+        self.assertInUrl("/sections/section/")
+
+        self.post()
+
+        self.assertInUrl("/summary/")
+
+        self.assertNotInBody("£12.00")
 
     def test_cancel_text_displayed_on_add_block_if_exists(self):
         self.launchSurvey("test_list_collector")
@@ -231,26 +242,3 @@ class TestQuestionnaireListCollector(IntegrationTestCase):
         self.get(change_link)
 
         self.assertInBody("Don’t need to change anything?")
-
-    def test_summary_does_not_display_answers(self):
-        self.launchSurvey("test_list_collector")
-
-        self.post(action="start_questionnaire")
-
-        self.post({"anyone-else": "No"})
-
-        self.post()
-
-        self.assertEqualUrl("/questionnaire/another-list-collector-block/")
-
-        self.post({"another-anyone-else": "No"})
-
-        self.assertEqualUrl("/questionnaire/test-number-block/")
-
-        self.post({"test-currency": 12})
-
-        self.assertEqualUrl("/questionnaire/sections/section/")
-
-        self.post()
-
-        self.assertNotInBody("£12.00")
