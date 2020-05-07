@@ -165,7 +165,7 @@ class TestQuestionnaireListCollector(IntegrationTestCase):
 
         self.post()
 
-        self.assertInUrl("confirmation")
+        self.assertInUrl("summary")
 
     def test_optional_list_collector_submission(self):
         self.launchSurvey("test_list_collector")
@@ -184,7 +184,7 @@ class TestQuestionnaireListCollector(IntegrationTestCase):
 
         self.post()
 
-        self.assertInUrl("confirmation")
+        self.assertInUrl("summary")
 
     def test_list_summary_on_question(self):
         self.launchSurvey("test_list_summary_on_question")
