@@ -109,10 +109,10 @@ def test_get_context(schema, progress_store, answer_store, list_store, router):
     )
 
 
-def test_get_context_custom_guidance_incomplete(
+def test_get_context_custom_content_incomplete(
     progress_store, answer_store, list_store, router
 ):
-    schema = load_schema_from_name("test_hub_and_spoke")
+    schema = load_schema_from_name("test_hub_and_spoke_custom_content")
     hub_context = HubContext(
         language=None,
         progress_store=progress_store,
@@ -134,10 +134,10 @@ def test_get_context_custom_guidance_incomplete(
     )
 
 
-def test_get_context_custom_guidance_complete(
+def test_get_context_custom_content_complete(
     progress_store, answer_store, list_store, router
 ):
-    schema = load_schema_from_name("test_hub_and_spoke")
+    schema = load_schema_from_name("test_hub_and_spoke_custom_content")
     hub_context = HubContext(
         language=None,
         progress_store=progress_store,

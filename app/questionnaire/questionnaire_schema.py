@@ -27,12 +27,6 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
     def get_hub(self):
         return self.json.get("hub", {})
 
-    def get_hub_submission_button(self):
-        return self.get_hub().get("submission", {}).get("button")
-
-    def get_hub_title_guidance(self, status):
-        return self.get_hub().get(status)
-
     def is_hub_enabled(self):
         return self.get_hub().get("enabled")
 

@@ -52,14 +52,14 @@ class HubContext(Context):
         survey_status = "complete" if survey_complete else "incomplete"
         context = self.HUB_CONTENT_STATES[survey_status]
         context["rows"] = self._get_rows(enabled_section_ids)
-        title_guidance = self._schema.get_hub_title_guidance(survey_status)
-        submission_button = self._schema.get_hub_submission_button()
+        custom_hub_content = self._schema.get_hub().get(survey_status)
+        submission_button_text = self._schema.get_hub().get("submission", {}).get("button")
 
-        if title_guidance:
-            context.update(title_guidance)
+        if custom_hub_content:
+            context.update(custom_hub_content)
 
-        if survey_status == "complete" and submission_button:
-            context["submit_button"] = submission_button
+        if survey_complete and submission_button_text:
+            context["submit_button"] = submission_button_text
 
         return context
 

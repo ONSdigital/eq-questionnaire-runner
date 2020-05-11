@@ -22,17 +22,7 @@
         }
     ],
     "hub": {
-        "enabled": true,
-        "complete": {
-            "title": "Title displayed on hub when complete",
-            "guidance": "Guidance displayed on hub when complete"
-        },
-        "incomplete": {
-            "guidance": "Guidance displayed on hub when incomplete"
-        },
-        "submission": {
-            "button": "Submission text"
-        }
+        "enabled": true
     },
     "sections": [
         {

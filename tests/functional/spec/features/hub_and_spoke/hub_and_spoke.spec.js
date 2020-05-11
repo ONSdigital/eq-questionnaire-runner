@@ -35,7 +35,7 @@ describe('Feature: Hub and Spoke', function () {
   });
 
   it('When there is custom guidance, it should be displayed correctly on the hub', function () {
-      expect($(HubPage.displayedGuidance()).getText()).to.contain('Guidance displayed on hub when incomplete');
+      expect($(HubPage.displayedGuidance()).getText()).to.contain('You must complete all sections in order to submit this survey');
 
     });
 
@@ -206,8 +206,8 @@ describe('Feature: Hub and Spoke', function () {
     });
 
     it('When the user returns to the Hub, Then the Hub should be in a completed state', function () {
-      expect($(HubPage.submit()).getText()).to.contain('Submission text');
-      expect($(HubPage.displayedName()).getText()).to.contain('Title displayed on hub when complete');
+      expect($(HubPage.submit()).getText()).to.contain('Submit survey');
+      expect($(HubPage.displayedName()).getText()).to.contain('Submit survey');
     });
 
     it('When the user submits, it should show the thankyou page', function () {
@@ -217,8 +217,8 @@ describe('Feature: Hub and Spoke', function () {
     });
 
     it('When there is custom guidance, it should be displayed correctly on the hub', function () {
-      expect($(HubPage.displayedGuidance()).getText()).to.contain('Guidance displayed on hub when complete');
-      expect($(HubPage.submit()).getText()).to.contain('Submission text');
+      expect($(HubPage.displayedGuidance()).getText()).to.contain('Please submit this survey to complete it');
+      expect($(HubPage.submit()).getText()).to.contain('Submit survey');
     });
 
   });

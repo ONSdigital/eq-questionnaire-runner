@@ -1,0 +1,28 @@
+const HouseholdSummary = require('../../../generated_pages/hub_and_spoke_custom_content/household-section-summary.page.js');
+const HowManyPeopleLiveHere = require('../../../generated_pages/hub_and_spoke_custom_content/how-many-people-live-here.page.js');
+const DoesAnyoneLiveHere = require('../../../generated_pages/hub_and_spoke_custom_content/does-anyone-live-here.page.js');
+
+const HubPage = require('../../../base_pages/hub.page.js');
+
+
+describe('Feature: Hub and Spoke with custom content', function () {
+  const hub_and_spoke_schema = 'test_hub_and_spoke_custom_content.json';
+
+  it('When the questionnaire is incomplete, then the custom guidance should be displayed correctly', function () {
+    browser.openQuestionnaire(hub_and_spoke_schema);
+    expect($(HubPage.displayedGuidance()).getText()).to.contain('Guidance displayed on hub when incomplete');
+  });
+
+  it('When the questionnaire is complete, then the custom guidance should be displayed correctly', function() {
+    browser.openQuestionnaire(hub_and_spoke_schema);
+    $(HubPage.summaryRowLink(1)).click();
+    $(DoesAnyoneLiveHere.yes()).click();
+    $(DoesAnyoneLiveHere.submit()).click();
+    $(HowManyPeopleLiveHere.answer1()).click();
+    $(HowManyPeopleLiveHere.submit()).click();
+    $(HouseholdSummary.submit()).click();
+    expect($(HubPage.displayedName()).getText()).to.contain('Title displayed on hub when complete');
+    expect($(HubPage.displayedGuidance()).getText()).to.contain('Guidance displayed on hub when complete');
+    expect($(HubPage.submit()).getText()).to.contain('Submission text');
+  });
+});
