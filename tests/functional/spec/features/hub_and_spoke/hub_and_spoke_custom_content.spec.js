@@ -8,12 +8,12 @@ const HubPage = require('../../../base_pages/hub.page.js');
 describe('Feature: Hub and Spoke with custom content', function () {
   const hub_and_spoke_schema = 'test_hub_and_spoke_custom_content.json';
 
-  it('When the questionnaire is incomplete, then the custom guidance should be displayed correctly', function () {
+  it('When the questionnaire is incomplete, then custom content should be displayed correctly', function () {
     browser.openQuestionnaire(hub_and_spoke_schema);
     expect($(HubPage.displayedGuidance()).getText()).to.contain('Guidance displayed on hub when incomplete');
   });
 
-  it('When the questionnaire is complete, then the custom guidance should be displayed correctly', function() {
+  it('When the questionnaire is complete, then custom content should be displayed correctly', function() {
     browser.openQuestionnaire(hub_and_spoke_schema);
     $(HubPage.summaryRowLink(1)).click();
     $(DoesAnyoneLiveHere.yes()).click();

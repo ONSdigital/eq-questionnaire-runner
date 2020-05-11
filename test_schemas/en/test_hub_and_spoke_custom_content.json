@@ -6,7 +6,7 @@
     "survey_id": "0",
     "title": "Hub & Spoke",
     "theme": "default",
-    "description": "A questionnaire to demo hub and spoke functionality",
+    "description": "A questionnaire to demo hub and spoke custom content functionality",
     "metadata": [
         {
             "name": "user_id",
