@@ -34,7 +34,7 @@ describe('Feature: Hub and Spoke', function () {
     expect($(HubPage.summaryItems()).getText()).not.to.contain('Relationships');
   });
 
-  it('When there is custom guidance, it should be display correctly on the hub', function () {
+  it('When there is custom guidance, it should be displayed correctly on the hub', function () {
       expect($(HubPage.displayedGuidance()).getText()).to.contain('Guidance displayed on hub when incomplete');
 
     });
@@ -216,7 +216,7 @@ describe('Feature: Hub and Spoke', function () {
       expect(expectedUrl).to.contain('thank-you');
     });
 
-    it('When there is custom guidance, it should be display correctly on the hub', function () {
+    it('When there is custom guidance, it should be displayed correctly on the hub', function () {
       expect($(HubPage.displayedGuidance()).getText()).to.contain('Guidance displayed on hub when complete');
       expect($(HubPage.submit()).getText()).to.contain('Submission text');
     });
