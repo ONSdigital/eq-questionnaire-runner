@@ -92,6 +92,7 @@ class Question(BlockHandler):
 
         self.questionnaire_store_updater.add_completed_location()
 
+        # pylint: disable=using-constant-test
         if self.questionnaire_store_updater.is_dirty:
             self._routing_path = self.router.routing_path(
                 section_id=self._current_location.section_id,

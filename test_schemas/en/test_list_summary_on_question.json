@@ -381,11 +381,8 @@
                 {
                     "blocks": [
                         {
-                            "type": "Confirmation",
-                            "id": "confirmation",
-                            "content": {
-                                "title": "Thank you for your answers, do you wish to submit"
-                            }
+                            "type": "Summary",
+                            "id": "summary"
                         }
                     ],
                     "id": "confirmation-group",

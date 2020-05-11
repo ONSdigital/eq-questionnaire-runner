@@ -20,16 +20,19 @@ class QuestionnaireSummaryContext(Context):
     def _build_all_groups(self):
         """ NB: Does not support repeating sections """
         section_summary_context = SectionSummaryContext(
-            self._language,
-            self._schema,
-            self._answer_store,
-            self._list_store,
-            self._progress_store,
-            self._metadata,
+            language=self._language,
+            schema=self._schema,
+            answer_store=self._answer_store,
+            list_store=self._list_store,
+            progress_store=self._progress_store,
+            metadata=self._metadata,
         )
 
         for section_id in self._router.enabled_section_ids:
-            for group in section_summary_context(Location(section_id=section_id))[
-                "summary"
-            ]["groups"]:
+            section = self._schema.get_section(section_id)
+            if section.get("summary", {}).get("items"):
+                break
+
+            location = Location(section_id=section_id)
+            for group in section_summary_context(location)["summary"]["groups"]:
                 yield group
