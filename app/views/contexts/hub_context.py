@@ -53,7 +53,9 @@ class HubContext(Context):
         context = self.HUB_CONTENT_STATES[survey_status]
         context["rows"] = self._get_rows(enabled_section_ids)
         custom_hub_content = self._schema.get_hub().get(survey_status)
-        submission_button_text = self._schema.get_hub().get("submission", {}).get("button")
+        submission_button_text = (
+            self._schema.get_hub().get("submission", {}).get("button")
+        )
 
         if custom_hub_content:
             context.update(custom_hub_content)
