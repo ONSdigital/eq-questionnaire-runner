@@ -10,14 +10,14 @@ from app.views.contexts.context import Context
 
 class HubContext(Context):
     HUB_CONTENT_STATES = {
-        "COMPLETE": {
+        "complete": {
             "title": lazy_gettext("Submit survey"),
-            "description": lazy_gettext("Please submit this survey to complete it"),
+            "guidance": lazy_gettext("Please submit this survey to complete it"),
             "submit_button": lazy_gettext("Submit survey"),
         },
-        "INCOMPLETE": {
+        "incomplete": {
             "title": lazy_gettext("Choose another section to complete"),
-            "description": lazy_gettext(
+            "guidance": lazy_gettext(
                 "You must complete all sections in order to submit this survey"
             ),
             "submit_button": lazy_gettext("Continue"),
@@ -49,13 +49,17 @@ class HubContext(Context):
     }
 
     def get_context(self, survey_complete, enabled_section_ids) -> Mapping:
-        survey_status = "COMPLETE" if survey_complete else "INCOMPLETE"
+        survey_status = "complete" if survey_complete else "incomplete"
         context = self.HUB_CONTENT_STATES[survey_status]
         context["rows"] = self._get_rows(enabled_section_ids)
-        hub_guidance = self._schema.get_guidance_for_hub().get(survey_status, {})
+        title_guidance = self._schema.get_hub_title_guidance(survey_status)
+        submission_button = self._schema.get_hub_submission_button()
 
-        if hub_guidance:
-            context.update(hub_guidance)
+        if title_guidance:
+            context.update(title_guidance)
+
+        if survey_status == "complete" and submission_button:
+            context["submit_button"] = submission_button
 
         return context
 

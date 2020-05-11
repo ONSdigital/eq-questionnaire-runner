@@ -265,8 +265,8 @@ describe('Feature: Repeating Sections with Hub and Spoke', function () {
       $(VisitorsDateOfBirthPage.year()).setValue('1999');
       $(VisitorsDateOfBirthPage.submit()).click();
 
-      expect($(HubPage.submit()).getText()).to.equal('Submit hub and spoke questionnaire');
-      expect($(HubPage.displayedName()).getText()).to.equal('Submit survey');
+      expect($(HubPage.submit()).getText()).to.equal('Submission text');
+      expect($(HubPage.displayedName()).getText()).to.equal('Title displayed on hub when complete');
     });
 
     it('When the user adds a new member to the household, Then the Hub should not be in the completed state', function () {
@@ -295,7 +295,7 @@ describe('Feature: Repeating Sections with Hub and Spoke', function () {
       expect($(HubPage.submit()).getText()).to.not.equal('Submit survey');
       expect($(HubPage.submit()).getText()).to.equal('Continue');
 
-      expect($(HubPage.displayedName()).getText()).to.not.equal('Submit survey');
+      expect($(HubPage.displayedName()).getText()).to.not.equal('Title displayed on hub when complete survey');
       expect($(HubPage.displayedName()).getText()).to.equal('Choose another section to complete');
     });
 

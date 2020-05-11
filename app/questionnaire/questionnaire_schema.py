@@ -24,17 +24,23 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
         self._parse_schema()
         self._list_name_to_section_map = {}
 
+    def get_hub(self):
+        return self.json.get("hub", {})
+
+    def get_hub_submission_button(self):
+        return self.get_hub().get("submission", {}).get("button")
+
+    def get_hub_title_guidance(self, status):
+        return self.get_hub().get(status)
+
     def is_hub_enabled(self):
-        return self.json.get("hub", {}).get("enabled")
+        return self.get_hub().get("enabled")
+
+    def get_section_ids_required_for_hub(self):
+        return self.get_hub().get("required_completed_sections", [])
 
     def is_view_submitted_response_enabled(self):
         return self.json.get("view_submitted_response", {}).get("enabled", False)
-
-    def get_section_ids_required_for_hub(self):
-        return self.json.get("hub", {}).get("required_completed_sections", [])
-
-    def get_guidance_for_hub(self):
-        return self.json.get("hub", {}).get("guidance", {})
 
     def get_sections(self):
         return self._sections_by_id.values()

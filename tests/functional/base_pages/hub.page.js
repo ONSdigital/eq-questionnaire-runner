@@ -37,7 +37,7 @@ class HubPage extends BasePage {
     return "h1";
   }
 
-  displayedDescription() {
+  displayedGuidance() {
     return "p > strong";
   }
 

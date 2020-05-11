@@ -99,7 +99,7 @@ def test_get_context(schema, progress_store, answer_store, list_store, router):
 
     expected_context = {
         "title": "Choose another section to complete",
-        "description": "You must complete all sections in order to submit this survey",
+        "guidance": "You must complete all sections in order to submit this survey",
         "rows": [],
         "submit_button": "Continue",
     }
@@ -124,7 +124,7 @@ def test_get_context_custom_guidance_incomplete(
 
     expected_context = {
         "title": "Choose another section to complete",
-        "description": "You must complete all sections in the hub and spoke questionnaire in order to submit",
+        "guidance": "Guidance displayed on hub when incomplete",
         "rows": [],
         "submit_button": "Continue",
     }
@@ -148,10 +148,10 @@ def test_get_context_custom_guidance_complete(
     )
 
     expected_context = {
-        "title": "Submit survey",
-        "description": "Please submit the hub and spoke questionnaire to complete it",
+        "title": "Title displayed on hub when complete",
+        "guidance": "Guidance displayed on hub when complete",
         "rows": [],
-        "submit_button": "Submit hub and spoke questionnaire",
+        "submit_button": "Submission text",
     }
 
     assert expected_context == hub_context.get_context(
