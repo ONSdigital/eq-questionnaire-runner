@@ -211,11 +211,30 @@ class TestQuestionnaireListCollector(IntegrationTestCase):
 
         self.assertInUrl("/sections/section/")
 
+        self.assertInBody("Marie Claire Doe")
+
+    def test_questionnaire_summary_with_custom_section_summary(self):
+        self.launchSurvey("test_list_summary_on_question")
+
+        self.post(action="start_questionnaire")
+
+        self.post({"anyone-else": "Yes"})
+
+        self.add_person("Marie Claire", "Doe")
+
+        self.post({"anyone-else": "No"})
+
         self.post()
 
-        self.assertInUrl("/summary/")
+        self.post({"another-anyone-else": "No"})
 
-        self.assertNotInBody("£12.00")
+        self.post({"radio-mandatory-answer": "No, all household members are unrelated"})
+
+        self.post()
+
+        self.assertInBody("Check your answers and submit")
+
+        self.assertNotInBody("No, all household members are unrelated")
 
     def test_cancel_text_displayed_on_add_block_if_exists(self):
         self.launchSurvey("test_list_collector")
