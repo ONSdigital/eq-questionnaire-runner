@@ -1,6 +1,7 @@
 from datetime import datetime
 from babel.numbers import format_currency, format_decimal
 from babel.dates import format_datetime
+from babel.units import format_unit
 from dateutil.tz import tzutc
 from dateutil.relativedelta import relativedelta
 from flask_babel import ngettext
@@ -22,6 +23,13 @@ class PlaceholderTransforms:
 
     def format_currency(self, number=None, currency="GBP"):
         return format_currency(number, currency, locale=self.locale)
+
+    def format_unit(self, number=None, unit=None, length="short"):
+        return format_unit(
+            value=number,
+            measurement_unit=unit,
+            length=length,
+            locale=self.locale)
 
     def format_date(self, date_to_format, date_format):
         date_to_format = datetime.strptime(date_to_format, self.input_date_format)
