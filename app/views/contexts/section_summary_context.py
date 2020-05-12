@@ -28,11 +28,10 @@ class SectionSummaryContext(Context):
         Does not support generating multiple sections at a time (i.e. passing no list_item_id for repeating section).
         """
         section = self._schema.get_section(location.section_id)
-        collapsible = {
-            "collapsible": section.get("summary", {}).get("collapsible", False)
-        }
+        summary = section.get("summary", {})
+        collapsible = {"collapsible": summary.get("collapsible", False)}
 
-        if section.get("summary", {}).get("items"):
+        if summary.get("items"):
             summary_elements = {
                 "custom_summary": list(
                     self._custom_summary_elements(
