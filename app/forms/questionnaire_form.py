@@ -29,11 +29,12 @@ class QuestionnaireForm(FlaskForm):
 
         super().__init__(**kwargs)
 
-    def validate(self):
+    def validate(self, extra_validators=None):
         """
         Validate this form as usual and check for any form-level validation errors based on question type
         :return: boolean
         """
+        super(QuestionnaireForm, self).validate(extra_validators)
         valid_fields = FlaskForm.validate(self)
         valid_date_range_form = True
         valid_calculated_form = True

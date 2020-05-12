@@ -1073,7 +1073,7 @@ class TestQuestionnaireForm(
             )
 
             detail_answer_field = getattr(form, "your-choice-answer-mandatory")
-            self.assertEqual(detail_answer_field.validators, [])
+            self.assertEqual(detail_answer_field.validators, ())
 
     def test_answer_with_detail_answer_errors_are_correctly_mapped(self):
         with self.app_request_context():
