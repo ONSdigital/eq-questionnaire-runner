@@ -15,11 +15,8 @@ class Group:
         language,
     ):
         self.id = group_schema["id"]
-
         self.title = group_schema.get("title")
-
         self.location = location
-
         self.blocks = self._build_blocks(
             group_schema,
             routing_path,
@@ -43,11 +40,7 @@ class Group:
         blocks = []
 
         for block in group_schema["blocks"]:
-            if (
-                block["id"] in routing_path
-                and block["type"] == "Question"
-                and block.get("show_on_section_summary", True)
-            ):
+            if block["id"] in routing_path and block["type"] == "Question":
                 blocks.extend(
                     [
                         Block(
