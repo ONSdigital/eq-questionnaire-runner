@@ -186,9 +186,7 @@ class TestQuestionnaireListCollector(IntegrationTestCase):
 
         self.post()
 
-        self.post()
-
-        self.assertInUrl("thank-you")
+        self.assertInUrl("confirmation")
 
     def test_list_summary_on_question(self):
         self.launchSurvey("test_list_summary_on_question")
@@ -206,7 +204,37 @@ class TestQuestionnaireListCollector(IntegrationTestCase):
         self.post({"another-anyone-else": "No"})
 
         self.assertInBody("Are any of these people related to one another?")
+
         self.assertInBody("Marie Claire Doe")
+
+        self.post({"radio-mandatory-answer": "No, all household members are unrelated"})
+
+        self.assertInUrl("/sections/section/")
+
+        self.assertInBody("Marie Claire Doe")
+
+    def test_questionnaire_summary_with_custom_section_summary(self):
+        self.launchSurvey("test_list_summary_on_question")
+
+        self.post(action="start_questionnaire")
+
+        self.post({"anyone-else": "Yes"})
+
+        self.add_person("Marie Claire", "Doe")
+
+        self.post({"anyone-else": "No"})
+
+        self.post()
+
+        self.post({"another-anyone-else": "No"})
+
+        self.post({"radio-mandatory-answer": "No, all household members are unrelated"})
+
+        self.post()
+
+        self.assertInBody("Check your answers and submit")
+
+        self.assertNotInBody("No, all household members are unrelated")
 
     def test_cancel_text_displayed_on_add_block_if_exists(self):
         self.launchSurvey("test_list_collector")
