@@ -9,20 +9,6 @@ from app.views.contexts.context import Context
 
 
 class HubContext(Context):
-    HUB_CONTENT_STATES = {
-        "complete": {
-            "title": lazy_gettext("Submit survey"),
-            "guidance": lazy_gettext("Please submit this survey to complete it"),
-            "submit_button": lazy_gettext("Submit survey"),
-        },
-        "incomplete": {
-            "title": lazy_gettext("Choose another section to complete"),
-            "guidance": lazy_gettext(
-                "You must complete all sections in order to submit this survey"
-            ),
-            "submit_button": lazy_gettext("Continue"),
-        },
-    }
 
     SECTION_CONTENT_STATES = {
         CompletionStatus.COMPLETED: {
@@ -49,21 +35,29 @@ class HubContext(Context):
     }
 
     def get_context(self, survey_complete, enabled_section_ids) -> Mapping:
-        survey_status = "complete" if survey_complete else "incomplete"
-        context = self.HUB_CONTENT_STATES[survey_status]
-        context["rows"] = self._get_rows(enabled_section_ids)
-        custom_hub_content = self._schema.get_hub().get(survey_status)
-        submission_button_text = (
-            self._schema.get_hub().get("submission", {}).get("button")
-        )
+        hub = self._schema.get_hub()
+        rows = self._get_rows(enabled_section_ids)
+        custom_text = hub.get("complete" if survey_complete else "incomplete", {})
 
-        if custom_hub_content:
-            context.update(custom_hub_content)
+        if survey_complete:
+            return {
+                "title": custom_text.get("title") or lazy_gettext("Submit survey"),
+                "guidance": custom_text.get("guidance")
+                or lazy_gettext("Please submit this survey to complete it"),
+                "submit_button": hub.get("submission", {}).get("button")
+                or lazy_gettext("Submit survey"),
+                "rows": rows,
+            }
 
-        if survey_complete and submission_button_text:
-            context["submit_button"] = submission_button_text
-
-        return context
+        return {
+            "title": lazy_gettext("Choose another section to complete"),
+            "guidance": custom_text.get("guidance")
+            or lazy_gettext(
+                "You must complete all sections in order to submit this survey"
+            ),
+            "submit_button": lazy_gettext("Continue"),
+            "rows": rows,
+        }
 
     def get_row_context_for_section(
         self, section_name: str, section_status: str, section_url: str

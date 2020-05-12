@@ -87,7 +87,8 @@ def test_get_completed_row_for_section(
     assert expected == actual
 
 
-def test_get_context(schema, progress_store, answer_store, list_store, router):
+def test_get_context(progress_store, answer_store, list_store, router):
+    schema = load_schema_from_name("test_hub_and_spoke")
     hub = HubContext(
         language=None,
         progress_store=progress_store,
