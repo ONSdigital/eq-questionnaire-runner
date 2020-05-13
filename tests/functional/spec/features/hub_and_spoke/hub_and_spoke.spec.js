@@ -210,6 +210,7 @@ describe('Feature: Hub and Spoke', function () {
       let expectedUrl = browser.getUrl();
       expect(expectedUrl).to.contain('thank-you');
     });
+  });
 
   describe('Given a user opens a schema with required sections', function () {
     beforeEach('Load survey',  function(){
