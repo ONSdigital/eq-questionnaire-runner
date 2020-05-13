@@ -211,8 +211,6 @@ describe('Feature: Hub and Spoke', function () {
       expect(expectedUrl).to.contain('thank-you');
     });
 
-    it('When there is custom guidance, it should be displayed correctly on the hub', function () {
-
   describe('Given a user opens a schema with required sections', function () {
     beforeEach('Load survey',  function(){
       browser.openQuestionnaire('test_hub_complete_sections.json');
