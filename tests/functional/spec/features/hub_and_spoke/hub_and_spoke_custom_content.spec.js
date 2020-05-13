@@ -10,7 +10,9 @@ describe('Feature: Hub and Spoke with custom content', function () {
 
   it('When the questionnaire is incomplete, then custom content should be displayed correctly', function () {
     browser.openQuestionnaire(hub_and_spoke_schema);
-    expect($(HubPage.displayedGuidance()).getText()).to.contain('Guidance displayed on hub when incomplete');
+    expect($(HubPage.displayedName()).getText()).to.contain('Choose another section to complete');
+    expect($(HubPage.displayedGuidance()).getText()).to.contain('Guidance displayed on hub when complete');
+    expect($(HubPage.submit()).getText()).to.contain('Continue');
   });
 
   it('When the questionnaire is complete, then custom content should be displayed correctly', function() {

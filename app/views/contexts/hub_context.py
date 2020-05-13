@@ -35,29 +35,33 @@ class HubContext(Context):
     }
 
     def get_context(self, survey_complete, enabled_section_ids) -> Mapping:
-        hub_context = self._schema.get_hub()
+        hub_schema = self._schema.get_hub()
         rows = self._get_rows(enabled_section_ids)
-        custom_text = hub_context.get(
+        custom_text = hub_schema.get(
             "complete" if survey_complete else "incomplete", {}
         )
 
         if survey_complete:
-            return {
-                "title": custom_text.get("title") or lazy_gettext("Submit survey"),
-                "guidance": custom_text.get("guidance")
-                or lazy_gettext("Please submit this survey to complete it"),
-                "submit_button": hub_context.get("submission", {}).get("button")
-                or lazy_gettext("Submit survey"),
-                "rows": rows,
-            }
+            title = custom_text.get("title") or lazy_gettext("Submit survey")
+            guidance = custom_text.get("guidance") or lazy_gettext(
+                "Please submit this survey to complete it"
+            )
+
+            submit_button = hub_schema.get("submission", {}).get(
+                "button"
+            ) or lazy_gettext("Submit survey")
+
+        else:
+            title = lazy_gettext("Choose another section to complete")
+            guidance = custom_text.get("guidance") or lazy_gettext(
+                "You must complete all sections in order to submit this survey"
+            )
+            submit_button = lazy_gettext("Continue")
 
         return {
-            "title": lazy_gettext("Choose another section to complete"),
-            "guidance": custom_text.get("guidance")
-            or lazy_gettext(
-                "You must complete all sections in order to submit this survey"
-            ),
-            "submit_button": lazy_gettext("Continue"),
+            "title": title,
+            "guidance": guidance,
+            "submit_button": submit_button,
             "rows": rows,
         }
 
