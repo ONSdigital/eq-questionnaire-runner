@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2020-03-16 14:48+0000\n"
+"POT-Creation-Date: 2020-05-12 09:11+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -206,64 +206,64 @@ msgid_plural "{number_of_days} days"
 msgstr[0] ""
 msgstr[1] ""
 
-#: app/views/contexts/hub_context.py:14 app/views/contexts/hub_context.py:16
+#: app/views/contexts/hub_context.py:15
+msgid "Completed"
+msgstr ""
+
+#: app/views/contexts/hub_context.py:17
+msgid "View answers"
+msgstr ""
+
+#: app/views/contexts/hub_context.py:18
+msgid "View answers for {section_name}"
+msgstr ""
+
+#: app/views/contexts/hub_context.py:22
+msgid "Partially completed"
+msgstr ""
+
+#: app/views/contexts/hub_context.py:24
+msgid "Continue with section"
+msgstr ""
+
+#: app/views/contexts/hub_context.py:25
+msgid "Continue with {section_name} section"
+msgstr ""
+
+#: app/views/contexts/hub_context.py:29
+msgid "Not started"
+msgstr ""
+
+#: app/views/contexts/hub_context.py:31
+msgid "Start section"
+msgstr ""
+
+#: app/views/contexts/hub_context.py:32
+msgid "Start {section_name} section"
+msgstr ""
+
+#: app/views/contexts/hub_context.py:44 app/views/contexts/hub_context.py:48
 msgid "Submit survey"
 msgstr ""
 
-#: app/views/contexts/hub_context.py:15 templates/summary.html:16
+#: app/views/contexts/hub_context.py:46 templates/summary.html:16
 msgid "Please submit this survey to complete it"
 msgstr ""
 
-#: app/views/contexts/hub_context.py:19
+#: app/views/contexts/hub_context.py:53
 msgid "Choose another section to complete"
 msgstr ""
 
-#: app/views/contexts/hub_context.py:20
+#: app/views/contexts/hub_context.py:55
 msgid "You must complete all sections in order to submit this survey"
 msgstr ""
 
-#: app/views/contexts/hub_context.py:23 templates/interstitial.html:5
+#: app/views/contexts/hub_context.py:58 templates/interstitial.html:5
 #: templates/sectionsummary.html:11
 msgid "Continue"
 msgstr ""
 
-#: app/views/contexts/hub_context.py:29
-msgid "Completed"
-msgstr ""
-
-#: app/views/contexts/hub_context.py:31
-msgid "View answers"
-msgstr ""
-
-#: app/views/contexts/hub_context.py:32
-msgid "View answers for {section_name}"
-msgstr ""
-
-#: app/views/contexts/hub_context.py:36
-msgid "Partially completed"
-msgstr ""
-
-#: app/views/contexts/hub_context.py:38
-msgid "Continue with section"
-msgstr ""
-
-#: app/views/contexts/hub_context.py:39
-msgid "Continue with {section_name} section"
-msgstr ""
-
-#: app/views/contexts/hub_context.py:43
-msgid "Not started"
-msgstr ""
-
-#: app/views/contexts/hub_context.py:45
-msgid "Start section"
-msgstr ""
-
-#: app/views/contexts/hub_context.py:46
-msgid "Start {section_name} section"
-msgstr ""
-
-#: app/views/contexts/list_context.py:88
+#: app/views/contexts/list_context.py:84
 msgid " (You)"
 msgstr ""
 
@@ -637,11 +637,11 @@ msgstr ""
 msgid "Clear selection"
 msgstr ""
 
-#: templates/partials/answers/textarea.html:14
+#: templates/partials/answers/textarea.html:15
 msgid "You have {x} character remaining"
 msgstr ""
 
-#: templates/partials/answers/textarea.html:15
+#: templates/partials/answers/textarea.html:16
 msgid "You have {x} characters remaining"
 msgstr ""
 
