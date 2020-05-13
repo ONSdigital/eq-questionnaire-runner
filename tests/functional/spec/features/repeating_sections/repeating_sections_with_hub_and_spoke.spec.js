@@ -295,7 +295,7 @@ describe('Feature: Repeating Sections with Hub and Spoke', function () {
       expect($(HubPage.submit()).getText()).to.not.equal('Submit survey');
       expect($(HubPage.submit()).getText()).to.equal('Continue');
 
-      expect($(HubPage.displayedName()).getText()).to.not.equal('Title displayed on hub when complete survey');
+      expect($(HubPage.displayedName()).getText()).to.not.equal('Submit survey');
       expect($(HubPage.displayedName()).getText()).to.equal('Choose another section to complete');
     });
 
