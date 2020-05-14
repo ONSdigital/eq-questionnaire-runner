@@ -83,12 +83,8 @@ class PlaceholderParser:
         transformed_value = None
 
         for transform in transform_list:
-            list_item_id = self._get_list_item_id(
-                transform.get("arguments", {})
-                .get("list_to_concatenate", {})
-                .get("list_item_selector", {})
-                .get("id")
-            )
+            list_item_id = self._get_list_item_id(transform)
+
             transform_args: Dict[str, Union[None, str, List[str]]] = {}
             for arg_key, arg_value in transform["arguments"].items():
                 if not isinstance(arg_value, dict):
@@ -108,7 +104,16 @@ class PlaceholderParser:
 
         return transformed_value
 
-    def _get_list_item_id(self, list_item_selector=None):
+    def _get_list_item_id(self, transform):
+        list_item_selector = transform.get("arguments", {}).get("list_to_concatenate", {}).get("list_item_selector", {}).get("id")
+        first_list_item = transform.get("arguments", {}).get("first", {}).get("identifier")
+
         if list_item_selector:
             return getattr(self._location, list_item_selector)
+        elif first_list_item:
+            del transform["arguments"]["first"]
+            if self._list_store:
+                return self._list_store._lists[first_list_item].first
+            else:
+                return self._list_item_id
         return self._list_item_id
