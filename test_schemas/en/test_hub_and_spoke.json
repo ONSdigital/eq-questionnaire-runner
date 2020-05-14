@@ -154,7 +154,7 @@
         {
             "id": "accommodation-section",
             "title": "Accommodation",
-            "summary": {},
+            "summary": { "show_on_completion": true },
             "groups": [
                 {
                     "blocks": [
@@ -192,7 +192,7 @@
             ]
         },
         {
-            "summary": {},
+            "summary": { "show_on_completion": true },
             "groups": [
                 {
                     "blocks": [
@@ -275,7 +275,7 @@
             "id": "relationships-section",
             "title": "Relationships",
             "show_on_hub": false,
-            "summary": {},
+            "summary": { "show_on_completion": true },
             "groups": [
                 {
                     "blocks": [

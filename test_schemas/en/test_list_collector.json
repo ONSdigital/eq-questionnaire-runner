@@ -26,6 +26,7 @@
             "id": "section",
             "title": "List Collector Summary",
             "summary": {
+                "show_on_completion": true,
                 "items": [
                     {
                         "type": "List",

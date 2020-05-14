@@ -32,7 +32,7 @@
         {
             "id": "property-details-section",
             "title": "Property Details Section",
-            "summary": {},
+            "summary": { "show_on_completion": true },
             "groups": [
                 {
                     "id": "property-details",
@@ -136,7 +136,7 @@
         {
             "id": "house-details-section",
             "title": "House Details Section",
-            "summary": {},
+            "summary": { "show_on_completion": true },
             "groups": [
                 {
                     "id": "house-details",
