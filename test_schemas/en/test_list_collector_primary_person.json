@@ -24,15 +24,16 @@
     "sections": [
         {
             "id": "section",
+            "title": "Household members",
             "summary": {
                 "items": [
-                  {
-                      "type": "List",
-                      "for_list": "people",
-                      "title": "Household members",
-                      "add_link_text": "Add someone to this household",
-                      "empty_list_text": "There are no householders"
-                  }
+                    {
+                        "type": "List",
+                        "for_list": "people",
+                        "title": "Household members",
+                        "add_link_text": "Add someone to this household",
+                        "empty_list_text": "There are no householders"
+                    }
                 ]
             },
             "groups": [
@@ -123,18 +124,23 @@
                                     }
                                 ],
                                 "id": "anyone-usually-live-at-question",
-                                "title": "Does anyone usually live at your address?",
+                                "title": "Does anyone else live at your address?",
                                 "type": "General"
                             },
                             "routing_rules": [
                                 {
                                     "goto": {
-                                        "block": "group-summary",
+                                        "section": "End",
                                         "when": [
                                             {
                                                 "condition": "equals",
                                                 "id": "anyone-usually-live-at-answer",
                                                 "value": "No"
+                                            },
+                                            {
+                                                "condition": "less than",
+                                                "list": "people",
+                                                "value": 1
                                             }
                                         ]
                                     }
@@ -305,11 +311,6 @@
                                     ]
                                 }
                             }
-                        },
-                        {
-                            "id": "group-summary",
-                            "title": "Primary Person List Collector Summary",
-                            "type": "SectionSummary"
                         }
                     ]
                 }

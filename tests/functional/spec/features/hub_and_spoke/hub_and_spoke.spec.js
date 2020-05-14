@@ -1,12 +1,12 @@
 const EmploymentStatusBlockPage = require('../../../generated_pages/hub_and_spoke/employment-status.page.js');
 const EmploymentTypeBlockPage = require('../../../generated_pages/hub_and_spoke/employment-type.page.js');
-const HouseholdSummary = require('../../../generated_pages/hub_and_spoke/household-summary.page.js');
+const HouseholdSummary = require('../../../generated_pages/hub_and_spoke/household-section-summary.page.js');
 const HowManyPeopleLiveHere = require('../../../generated_pages/hub_and_spoke/how-many-people-live-here.page.js');
 const ProxyPage = require('../../../generated_pages/hub_and_spoke/proxy.page.js');
-const AccomodationDetailsSummaryBlockPage = require('../../../generated_pages/hub_and_spoke/accommodation-details-summary.page.js');
+const AccomodationDetailsSummaryBlockPage = require('../../../generated_pages/hub_and_spoke/accommodation-section-summary.page.js');
 const DoesAnyoneLiveHere = require('../../../generated_pages/hub_and_spoke/does-anyone-live-here.page.js');
 const Relationships = require('../../../generated_pages/hub_and_spoke/relationships.page.js');
-const RelationshipsSummary = require('../../../generated_pages/hub_and_spoke/relationships-summary.page.js');
+const RelationshipsSummary = require('../../../generated_pages/hub_and_spoke/relationships-section-summary.page.js');
 
 const HubPage = require('../../../base_pages/hub.page.js');
 
@@ -201,7 +201,7 @@ describe('Feature: Hub and Spoke', function () {
     });
 
     it('When the user returns to the Hub, Then the Hub should be in a completed state', function () {
-      expect($(HubPage.submit()).getText()).to.contain('Submit');
+      expect($(HubPage.submit()).getText()).to.contain('Submit survey');
       expect($(HubPage.displayedName()).getText()).to.contain('Submit survey');
     });
 
@@ -230,30 +230,30 @@ describe('Feature: Hub and Spoke', function () {
     });
   });
 
-    describe('Given a section is complete and the user has been returned to a section summary by clicking the \'View answers\' link ', function () {
-      beforeEach('Complete section', function () {
-        browser.openQuestionnaire(hub_and_spoke_schema);
-        $(HubPage.summaryRowLink(3)).click();
-        $(DoesAnyoneLiveHere.no()).click();
-        $(DoesAnyoneLiveHere.submit()).click();
-        $(HouseholdSummary.submit()).click();
-      });
+  describe('Given a section is complete and the user has been returned to a section summary by clicking the \'View answers\' link ', function () {
+    beforeEach('Complete section', function () {
+      browser.openQuestionnaire(hub_and_spoke_schema);
+      $(HubPage.summaryRowLink(3)).click();
+      $(DoesAnyoneLiveHere.no()).click();
+      $(DoesAnyoneLiveHere.submit()).click();
+      $(HouseholdSummary.submit()).click();
+    });
 
-      it('When there are no changes, continue returns directly to the hub', function () {
-        $(HubPage.summaryRowLink(3)).click();
-        $(HouseholdSummary.submit()).click();
-        let expectedUrl = browser.getUrl();
-        expect(expectedUrl).to.contain(HubPage.url());
-      });
+    it('When there are no changes, continue returns directly to the hub', function () {
+      $(HubPage.summaryRowLink(3)).click();
+      $(HouseholdSummary.submit()).click();
+      let expectedUrl = browser.getUrl();
+      expect(expectedUrl).to.contain(HubPage.url());
+    });
 
-      it('When there are changes which would set the section to in_progress it routes accordingly', function () {
-        $(HubPage.summaryRowLink(3)).click();
-        $(HouseholdSummary.doesAnyoneLiveHereAnswerEdit()).click();
-        $(DoesAnyoneLiveHere.yes()).click();
-        $(DoesAnyoneLiveHere.submit()).click();
-        $(HouseholdSummary.submit()).click();
-        let expectedUrl = browser.getUrl();
-        expect(expectedUrl).to.contain(HowManyPeopleLiveHere.url());
-      });
+    it('When there are changes, which would set the section to in_progress it routes accordingly', function () {
+      $(HubPage.summaryRowLink(3)).click();
+      $(HouseholdSummary.doesAnyoneLiveHereAnswerEdit()).click();
+      $(DoesAnyoneLiveHere.yes()).click();
+      $(DoesAnyoneLiveHere.submit()).click();
+      $(HouseholdSummary.submit()).click();
+      let expectedUrl = browser.getUrl();
+      expect(expectedUrl).to.contain(HowManyPeopleLiveHere.url());
+    });
   });
 });

@@ -419,32 +419,6 @@ class TestRouter(AppContextTestCase):  # pylint: disable=too-many-public-methods
             ),
         )
 
-    def test_get_section_return_location_when_section_complete_section_summary(self):
-        schema = load_schema_from_name("test_hub_and_spoke")
-
-        router = Router(
-            schema,
-            self.answer_store,
-            self.list_store,
-            self.progress_store,
-            self.metadata,
-        )
-
-        routing_path = RoutingPath(
-            ["proxy", "accommodation-details-summary"],
-            section_id="accommodation-section",
-        )
-        location_when_section_complete = router.get_section_return_location_when_section_complete(
-            routing_path=routing_path
-        )
-        self.assertEqual(
-            location_when_section_complete,
-            Location(
-                section_id="accommodation-section",
-                block_id="accommodation-details-summary",
-            ),
-        )
-
     def test_get_section_return_location_when_section_complete_no_section_summary(self):
         schema = load_schema_from_name("test_hub_and_spoke")
 
@@ -460,7 +434,7 @@ class TestRouter(AppContextTestCase):  # pylint: disable=too-many-public-methods
             ["employment-status", "employment-type"], section_id="employment-section"
         )
 
-        location_when_section_complete = router.get_section_return_location_when_section_complete(
+        location_when_section_complete = router.get_first_incomplete_location_for_section(
             routing_path=routing_path
         )
 
@@ -551,13 +525,13 @@ class TestRouter(AppContextTestCase):  # pylint: disable=too-many-public-methods
                 list_item_id=None,
             ),
             RoutingPath(
-                ["proxy", "date-of-birth", "confirm-dob", "sex", "personal-summary"],
+                ["proxy", "date-of-birth", "confirm-dob", "sex"],
                 section_id="personal-details-section",
                 list_name="people",
                 list_item_id="abc123",
             ),
             RoutingPath(
-                ["proxy", "date-of-birth", "confirm-dob", "sex", "personal-summary"],
+                ["proxy", "date-of-birth", "confirm-dob", "sex"],
                 section_id="personal-details-section",
                 list_name="people",
                 list_item_id="123abc",

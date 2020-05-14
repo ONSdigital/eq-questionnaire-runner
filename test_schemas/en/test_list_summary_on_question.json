@@ -26,15 +26,15 @@
             "id": "section",
             "title": "Who Lives Here",
             "summary": {
-              "items": [
-                {
-                    "type": "List",
-                    "for_list": "people",
-                    "title": "Household members",
-                    "add_link_text": "Add someone to this household",
-                    "empty_list_text": "There are no householders"
-                }
-              ]
+                "items": [
+                    {
+                        "type": "List",
+                        "for_list": "people",
+                        "title": "Household members",
+                        "add_link_text": "Add someone to this household",
+                        "empty_list_text": "There are no householders"
+                    }
+                ]
             },
             "groups": [
                 {
@@ -369,10 +369,6 @@
                                     }
                                 }
                             }
-                        },
-                        {
-                            "id": "group-summary",
-                            "type": "SectionSummary"
                         }
                     ]
                 }
@@ -385,11 +381,8 @@
                 {
                     "blocks": [
                         {
-                            "type": "Confirmation",
-                            "id": "confirmation",
-                            "content": {
-                                "title": "Thank you for your answers, do you wish to submit"
-                            }
+                            "type": "Summary",
+                            "id": "summary"
                         }
                     ],
                     "id": "confirmation-group",

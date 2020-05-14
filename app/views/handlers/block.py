@@ -28,6 +28,7 @@ class BlockHandler:
         self._routing_path = self._get_routing_path()
         self.form = None
         self.page_title = None
+        self._return_to_summary = self._request_args.get("return_to_summary")
 
         if not self.is_location_valid():
             raise InvalidLocationException(
@@ -93,7 +94,7 @@ class BlockHandler:
 
     def get_next_location_url(self):
         return self.router.get_next_location_url(
-            self._current_location, self._routing_path
+            self._current_location, self._routing_path, self._return_to_summary
         )
 
     def handle_post(self):

@@ -24,14 +24,17 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
         self._parse_schema()
         self._list_name_to_section_map = {}
 
+    def get_hub(self):
+        return self.json.get("hub", {})
+
     def is_hub_enabled(self):
-        return self.json.get("hub", {}).get("enabled")
+        return self.get_hub().get("enabled")
+
+    def get_section_ids_required_for_hub(self):
+        return self.get_hub().get("required_completed_sections", [])
 
     def is_view_submitted_response_enabled(self):
         return self.json.get("view_submitted_response", {}).get("enabled", False)
-
-    def get_section_ids_required_for_hub(self):
-        return self.json.get("hub", {}).get("required_completed_sections", [])
 
     def get_sections(self):
         return self._sections_by_id.values()
@@ -147,6 +150,9 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
         block = self.get_block_for_answer_id(answer_id)
 
         return self.is_list_block_type(block["type"])
+
+    def is_summary_in_section(self, section_id: str):
+        return "summary" in self._sections_by_id.get(section_id)
 
     def is_answer_in_repeating_section(self, answer_id):
         block = self.get_block_for_answer_id(answer_id)

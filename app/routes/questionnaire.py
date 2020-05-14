@@ -1,5 +1,4 @@
 from datetime import datetime, timedelta
-
 import flask_babel
 import humanize
 import simplejson as json
@@ -23,7 +22,7 @@ from app.authentication.no_token_exception import NoTokenException
 from app.data_model.answer_store import AnswerStore
 from app.data_model.app_models import SubmittedResponse
 from app.data_model.list_store import ListStore
-from app.data_model.progress_store import CompletionStatus, ProgressStore
+from app.data_model.progress_store import ProgressStore
 from app.globals import (
     get_answer_store,
     get_metadata,
@@ -49,6 +48,7 @@ from app.views.contexts.metadata_context import (
 )
 from app.views.contexts import QuestionnaireSummaryContext
 from app.views.handlers.block_factory import get_block_handler
+from app.views.handlers.section import SectionHandler
 
 END_BLOCKS = "Summary", "Confirmation"
 
@@ -165,47 +165,39 @@ def post_questionnaire(schema, questionnaire_store):
     return redirect(router.get_first_incomplete_location_in_survey().url())
 
 
-@questionnaire_blueprint.route("sections/<section_id>/", methods=["GET"])
-@questionnaire_blueprint.route("sections/<section_id>/<list_item_id>/", methods=["GET"])
+@questionnaire_blueprint.route("sections/<section_id>/", methods=["GET", "POST"])
+@questionnaire_blueprint.route(
+    "sections/<section_id>/<list_item_id>/", methods=["GET", "POST"]
+)
 @login_required
 @with_questionnaire_store
 @with_schema
 def get_section(schema, questionnaire_store, section_id, list_item_id=None):
-    router = Router(
-        schema,
-        questionnaire_store.answer_store,
-        questionnaire_store.list_store,
-        questionnaire_store.progress_store,
-        questionnaire_store.metadata,
-    )
-
-    if not schema.is_hub_enabled():
-        redirect_location = router.get_first_incomplete_location_in_survey()
-        return redirect(redirect_location.url())
-
-    if section_id not in router.enabled_section_ids:
+    try:
+        section_handler = SectionHandler(
+            schema=schema,
+            questionnaire_store=questionnaire_store,
+            section_id=section_id,
+            list_item_id=list_item_id,
+            language=flask_babel.get_locale().language,
+        )
+    except InvalidLocationException:
         return redirect(url_for(".get_questionnaire"))
 
-    routing_path = router.routing_path(section_id=section_id, list_item_id=list_item_id)
-    section_status = questionnaire_store.progress_store.get_section_status(
-        section_id=section_id, list_item_id=list_item_id
-    )
+    if request.method == "GET":
+        if section_handler.can_display_summary():
+            return _render_page(
+                template="SectionSummary",
+                context=section_handler.context(),
+                current_location=section_handler.current_location,
+                previous_location_url=section_handler.get_previous_location_url(),
+                schema=schema,
+                page_title=section_handler.get_page_title(),
+            )
 
-    if section_status == CompletionStatus.COMPLETED:
-        return redirect(
-            router.get_section_return_location_when_section_complete(routing_path).url()
-        )
+        return redirect(section_handler.get_section_resume_url())
 
-    if section_status == CompletionStatus.NOT_STARTED:
-        return redirect(
-            router.get_first_incomplete_location_for_section(routing_path).url()
-        )
-
-    return redirect(
-        router.get_first_incomplete_location_for_section(
-            routing_path=routing_path
-        ).url()
-    )
+    return redirect(section_handler.get_next_location_url())
 
 
 # pylint: disable=too-many-return-statements
@@ -247,7 +239,7 @@ def block(schema, questionnaire_store, block_id, list_name=None, list_item_id=No
 
     if request.method == "GET" or not block_handler.form.validate():
         return _render_page(
-            block_type=block_handler.rendered_block["type"],
+            template=block_handler.rendered_block["type"],
             context=block_handler.get_context(),
             current_location=block_handler.current_location,
             previous_location_url=block_handler.get_previous_location_url(),
@@ -297,7 +289,7 @@ def relationship(schema, questionnaire_store, block_id, list_item_id, to_list_it
     )
     if request.method == "GET" or not block_handler.form.validate():
         return _render_page(
-            block_type=block_handler.block["type"],
+            template=block_handler.block["type"],
             context=block_handler.get_context(),
             current_location=block_handler.current_location,
             previous_location_url=block_handler.get_previous_location_url(),
@@ -532,7 +524,7 @@ def _is_submission_viewable(schema, submitted_time):
 
 
 def _render_page(
-    block_type, context, current_location, previous_location_url, schema, page_title
+    template, context, current_location, previous_location_url, schema, page_title
 ):
     if request_wants_json():
         return jsonify(context)
@@ -540,7 +532,7 @@ def _render_page(
     session_timeout = get_session_timeout_in_seconds(schema)
 
     return render_template(
-        template=block_type,
+        template=template,
         content=context,
         current_location=current_location,
         previous_location_url=previous_location_url,

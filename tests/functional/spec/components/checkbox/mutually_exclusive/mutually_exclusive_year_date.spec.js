@@ -1,5 +1,6 @@
 const YearDatePage = require('../../../../generated_pages/mutually_exclusive/mutually-exclusive-year-date.page');
-const SummaryPage = require('../../../../generated_pages/mutually_exclusive/optional-year-section-summary.page');
+const SummaryPage = require('../../../../generated_pages/mutually_exclusive/mutually-exclusive-year-date-section-summary.page');
+
 
 describe('Component: Mutually Exclusive Year Date With Single Checkbox Override', function() {
   beforeEach(function() {

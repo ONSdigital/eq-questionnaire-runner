@@ -1,3 +1,5 @@
+from flask import url_for
+
 from app.views.handlers.question import Question
 from app.views.contexts.question import build_question_context
 from app.questionnaire.location import Location
@@ -32,14 +34,21 @@ class ListAction(Question):
         return True
 
     def get_previous_location_url(self):
-        block_id = self._request_args.get("previous") or self._request_args.get(
-            "return_to"
-        )
+        if self._return_to_summary:
+            return self.get_section_summary_url()
+
+        block_id = self._request_args.get("previous")
         return self._get_location_url(block_id)
 
+    def get_section_summary_url(self):
+        return url_for(
+            "questionnaire.get_section", section_id=self.parent_location.section_id
+        )
+
     def get_next_location_url(self):
-        block_id = self._request_args.get("return_to")
-        return self._get_location_url(block_id)
+        if self._return_to_summary:
+            return self.get_section_summary_url()
+        return self.parent_location.url()
 
     def get_context(self):
         return build_question_context(self.rendered_block, self.form)

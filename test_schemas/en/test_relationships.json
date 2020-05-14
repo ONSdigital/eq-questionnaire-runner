@@ -25,6 +25,17 @@
     "sections": [
         {
             "id": "section",
+            "summary": {
+                "items": [
+                    {
+                        "add_link_text": "Add someone to this household",
+                        "empty_list_text": "There are no householders",
+                        "for_list": "people",
+                        "title": "Household members",
+                        "type": "List"
+                    }
+                ]
+            },
             "groups": [
                 {
                     "id": "group",
@@ -678,11 +689,43 @@
                             ]
                         },
                         {
-                            "type": "Confirmation",
-                            "id": "confirmation",
+                            "id": "relationship-interstitial",
                             "content": {
-                                "title": "Thank you for your answers, do you wish to submit"
-                            }
+                                "title": "Relationship section",
+                                "contents": [
+                                    {
+                                        "description": "You have successfully completed the relationship section."
+                                    }
+                                ]
+                            },
+                            "type": "Interstitial",
+                            "skip_conditions": [
+                                {
+                                    "when": [
+                                        {
+                                            "list": "people",
+                                            "condition": "less than",
+                                            "value": 2
+                                        }
+                                    ]
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "summary-section",
+            "title": "Summary",
+            "groups": [
+                {
+                    "id": "summary-group",
+                    "title": "Summary",
+                    "blocks": [
+                        {
+                            "id": "summary",
+                            "type": "Summary"
                         }
                     ]
                 }

@@ -32,6 +32,7 @@
         {
             "id": "property-details-section",
             "title": "Property Details Section",
+            "summary": {},
             "groups": [
                 {
                     "id": "property-details",
@@ -129,22 +130,13 @@
                             ]
                         }
                     ]
-                },
-                {
-                    "id": "property-details-summary-group",
-                    "title": "Property Details Summary",
-                    "blocks": [
-                        {
-                            "id": "property-details-summary",
-                            "type": "SectionSummary"
-                        }
-                    ]
                 }
             ]
         },
         {
             "id": "house-details-section",
             "title": "House Details Section",
+            "summary": {},
             "groups": [
                 {
                     "id": "house-details",
@@ -180,16 +172,6 @@
                                     }
                                 ]
                             }
-                        }
-                    ]
-                },
-                {
-                    "id": "household-details-summary-group",
-                    "title": "Household Details Summary",
-                    "blocks": [
-                        {
-                            "id": "household-details-summary",
-                            "type": "SectionSummary"
                         }
                     ]
                 }
