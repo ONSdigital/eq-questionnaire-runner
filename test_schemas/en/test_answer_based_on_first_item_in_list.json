@@ -277,28 +277,22 @@
                         },
                         {
                             "type": "Question",
-                            "id": "radio-non-mandatory",
+                            "id": "favourite-drink",
                             "question": {
-                                "type": "General",
-                                "id": "radio-non-mandatory-question",
-                                "title": "What is you favourite breakfast beverage?",
                                 "answers": [
                                     {
-                                        "type": "Radio",
-                                        "id": "radio-non-mandatory-answer",
+                                        "id": "favourite-drink-answer",
+                                        "label": "What is your favourite drink",
+                                        "max_length": 20,
                                         "mandatory": false,
-                                        "options": [
-                                            {
-                                                "label": "Coffee",
-                                                "value": "Coffee"
-                                            },
-                                            {
-                                                "label": "Tea",
-                                                "value": "Tea"
-                                            }
-                                        ]
+                                        "q_code": "0",
+                                        "type": "TextField"
                                     }
-                                ]
+                                ],
+                                "description": "",
+                                "id": "favourite-drink-question",
+                                "title": "",
+                                "type": "General"
                             }
                         },
                         {
@@ -312,19 +306,19 @@
                                                 "mandatory": false,
                                                 "options": [
                                                     {
-                                                        "label": "Yes",
-                                                        "value": "Yes"
+                                                        "label": "Tea",
+                                                        "value": "Tea"
                                                     },
                                                     {
-                                                        "label": "No",
-                                                        "value": "No"
+                                                        "label": "Coffee",
+                                                        "value": "Coffee"
                                                     }
                                                 ],
                                                 "type": "Radio"
                                             }
                                         ],
                                         "id": "list-status-question-2",
-                                        "title": "You are the first person in the list",
+                                        "title": "What is your second favourite drink?",
                                         "type": "General"
                                     },
                                     "when": [
@@ -358,7 +352,7 @@
                                                                             "arguments": {
                                                                                 "value": {
                                                                                     "source": "answers",
-                                                                                    "identifier": "radio-non-mandatory-answer"
+                                                                                    "identifier": "favourite-drink-answer"
                                                                                 },
                                                                                 "first": {
                                                                                     "source": "list",
@@ -373,15 +367,15 @@
                                                         "value": "{answer}"
                                                     },
                                                     {
-                                                        "label": "No",
-                                                        "value": "No"
+                                                        "label": "Other",
+                                                        "value": "Other"
                                                     }
                                                 ],
                                                 "type": "Radio"
                                             }
                                         ],
                                         "id": "list-status-question-2",
-                                        "title": "You are not the first person in the list",
+                                        "title": "What is your second favourite drink?",
                                         "type": "General"
                                     },
                                     "when": [

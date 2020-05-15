@@ -114,6 +114,4 @@ class PlaceholderParser:
             del transform["arguments"]["first"]
             if self._list_store:
                 return self._list_store._lists[first_list_item].first
-            else:
-                return self._list_item_id
         return self._list_item_id
