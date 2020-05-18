@@ -1,5 +1,5 @@
 from collections import OrderedDict, defaultdict
-from typing import List, Union
+from typing import List, Union, Mapping
 
 from flask_babel import force_locale
 
