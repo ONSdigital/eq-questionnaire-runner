@@ -645,22 +645,30 @@ msgstr ""
 msgid "You have {x} characters remaining"
 msgstr ""
 
-#: templates/partials/answers/textfield.html:24
+#: templates/partials/answers/textfield.html:25
+msgid "{x} character too many"
+msgstr ""
+
+#: templates/partials/answers/textfield.html:26
+msgid "{x} characters too many"
+msgstr ""
+
+#: templates/partials/answers/textfield.html:32
 msgid ""
 "Use up and down keys to navigate suggestions once you've typed more than "
 "two characters. Use the enter key to select a suggestion. Touch device "
 "users, explore by touch or with swipe gestures."
 msgstr ""
 
-#: templates/partials/answers/textfield.html:25
+#: templates/partials/answers/textfield.html:33
 msgid "Continue entering to improve suggestions"
 msgstr ""
 
-#: templates/partials/answers/textfield.html:26
+#: templates/partials/answers/textfield.html:34
 msgid "Suggestions"
 msgstr ""
 
-#: templates/partials/answers/textfield.html:27
+#: templates/partials/answers/textfield.html:35
 msgid "No results found"
 msgstr ""
 
