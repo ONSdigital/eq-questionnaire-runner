@@ -79,11 +79,11 @@ class Router:
         is_last_block_in_section = routing_path[-1] == location.block_id
 
         if is_section_complete and (return_to_summary or is_last_block_in_section):
-            is_summary_in_section = self._schema.is_summary_in_section(
+            show_summary_on_completion = self._schema.show_summary_on_completion_for_section(
                 location.section_id
             )
 
-            if is_summary_in_section:
+            if show_summary_on_completion:
                 return url_for(
                     "questionnaire.get_section",
                     section_id=location.section_id,

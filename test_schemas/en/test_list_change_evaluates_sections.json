@@ -222,7 +222,7 @@
             ]
         },
         {
-            "summary": {},
+            "summary": { "show_on_completion": true },
             "groups": [
                 {
                     "blocks": [

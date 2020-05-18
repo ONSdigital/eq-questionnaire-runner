@@ -30,6 +30,7 @@
             "id": "section",
             "title": "People who live here and overnight visitors",
             "summary": {
+                "show_on_completion": true,
                 "items": [
                     {
                         "type": "List",

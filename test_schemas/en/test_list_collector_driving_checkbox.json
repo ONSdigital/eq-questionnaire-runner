@@ -29,6 +29,7 @@
             "id": "section",
             "title": "Who lives here?",
             "summary": {
+                "show_on_completion": true,
                 "items": [
                     {
                         "type": "List",
