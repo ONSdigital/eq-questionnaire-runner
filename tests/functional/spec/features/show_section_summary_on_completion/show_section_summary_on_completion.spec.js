@@ -12,8 +12,8 @@ describe('Feature: Show section summary on completion', () => {
         browser.openQuestionnaire("test_show_section_summary_on_completion.json");
     });
 
-    describe('Given I am completing a section with thee summary turned off for the forward journey', () => {
-        it('When I reach the end of that section, Then I go straight to the hub' , () => {
+    describe('Given I am completing a section with the summary turned off for the forward journey', () => {
+        it('When I reach the end of that section, then I go straight to the hub' , () => {
             $(employmentStatusBlockPage.workingAsAnEmployee()).click();
             $(employmentStatusBlockPage.submit()).click();
 
@@ -21,21 +21,21 @@ describe('Feature: Show section summary on completion', () => {
         });
     });
 
-    describe('Given I am completed a section with the summary turned off for the forward journey', () => {
-        it('When I return to a completed section from the hub, Then I am returned to that section summary' , () => {
+    describe('Given I have completed a section with the summary turned off for the forward journey', () => {
+        it('When I return to a completed section from the hub, then I am returned to that section summary' , () => {
             $(hubPage.summaryRowLink(1)).click();
 
             expect(browser.getUrl()).to.contain(employmentSectionSummary.url());
         });
     });
 
-    describe('Given I am completing a survey with the summary turned on for the forward journey', () => {
+    describe('Given I am completing a section with the summary turned on for the forward journey', () => {
         before("Get to hub", () => {
             browser.url(hubPage.url());
         });
 
         it('When I reach the end of that section, ' +
-            'Then I will be taken to the section summary to enable me to amend an individual answer' , () => {
+            'then I will be taken to the section summary to enable me to amend an answer' , () => {
             $(hubPage.summaryRowLink(2)).click();
             $(proxyQuestionPage.noIMAnsweringForMyself()).click();
             $(proxyQuestionPage.submit()).click();
@@ -49,7 +49,7 @@ describe('Feature: Show section summary on completion', () => {
             browser.url(hubPage.url());
         });
 
-        it('When I return to a completed section from the hub, Then I am returned to that section summary' , () => {
+        it('When I return to a completed section from the hub, then I am returned to the correct section summary' , () => {
             $(hubPage.summaryRowLink(2)).click();
 
             expect(browser.getUrl()).to.contain(accommodationSectionSummary.url());
