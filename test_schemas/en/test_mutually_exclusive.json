@@ -25,7 +25,7 @@
         {
             "id": "mutually-exclusive-checkbox-section",
             "title": "Checkbox",
-            "summary": {},
+            "summary": { "show_on_completion": true },
             "groups": [
                 {
                     "id": "mutually-exclusive-mandatory-group",
@@ -89,7 +89,7 @@
         {
             "id": "mutually-exclusive-date-section",
             "title": "Date",
-            "summary": {},
+            "summary": { "show_on_completion": true },
             "groups": [
                 {
                     "id": "mutually-exclusive-date-group",
@@ -131,7 +131,7 @@
         {
             "id": "mutually-exclusive-currency-section",
             "title": "Currency",
-            "summary": {},
+            "summary": { "show_on_completion": true },
             "groups": [
                 {
                     "id": "mutually-exclusive-currency-group",
@@ -174,7 +174,7 @@
         {
             "id": "mutually-exclusive-number-section",
             "title": "Number",
-            "summary": {},
+            "summary": { "show_on_completion": true },
             "groups": [
                 {
                     "id": "mutually-exclusive-number-group",
@@ -217,7 +217,7 @@
         {
             "id": "mutually-exclusive-percentage-section",
             "title": "Percentage",
-            "summary": {},
+            "summary": { "show_on_completion": true },
             "groups": [
                 {
                     "id": "mutually-exclusive-percentage-group",
@@ -262,7 +262,7 @@
         {
             "id": "mutually-exclusive-textfield-section",
             "title": "Textfield",
-            "summary": {},
+            "summary": { "show_on_completion": true },
             "groups": [
                 {
                     "id": "mutually-exclusive-textfield-group",
@@ -304,7 +304,7 @@
         {
             "id": "mutually-exclusive-month-year-date-section",
             "title": "Month Year Date",
-            "summary": {},
+            "summary": { "show_on_completion": true },
             "groups": [
                 {
                     "id": "mutually-exclusive-month-year-date-group",
@@ -349,7 +349,7 @@
         {
             "id": "mutually-exclusive-year-date-section",
             "title": "Year Date",
-            "summary": {},
+            "summary": { "show_on_completion": true },
             "groups": [
                 {
                     "id": "mutually-exclusive-year-date-group",
@@ -394,7 +394,7 @@
         {
             "id": "mutually-exclusive-unit-section",
             "title": "Unit",
-            "summary": {},
+            "summary": { "show_on_completion": true },
             "groups": [
                 {
                     "id": "mutually-exclusive-unit-group",
@@ -438,7 +438,7 @@
         {
             "id": "mutually-exclusive-duration-section",
             "title": "Duration",
-            "summary": {},
+            "summary": { "show_on_completion": true },
             "groups": [
                 {
                     "id": "mutually-exclusive-duration-group",
@@ -481,7 +481,7 @@
         {
             "id": "mutually-exclusive-textarea-section",
             "title": "TextArea",
-            "summary": {},
+            "summary": { "show_on_completion": true },
             "groups": [
                 {
                     "id": "mutually-exclusive-textarea-group",

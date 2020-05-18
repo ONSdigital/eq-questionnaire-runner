@@ -26,6 +26,7 @@
             "id": "section",
             "title": "Household members",
             "summary": {
+                "show_on_completion": true,
                 "items": [
                     {
                         "type": "List",

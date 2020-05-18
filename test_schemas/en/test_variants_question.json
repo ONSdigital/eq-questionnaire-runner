@@ -106,7 +106,7 @@
         },
         {
             "id": "basic-question-variant-section",
-            "summary": {},
+            "summary": { "show_on_completion": true },
             "groups": [
                 {
                     "id": "basic-question-variant-group",
@@ -394,7 +394,7 @@
         },
         {
             "id": "currency-section",
-            "summary": {},
+            "summary": { "show_on_completion": true },
             "groups": [
                 {
                     "id": "currency-group",

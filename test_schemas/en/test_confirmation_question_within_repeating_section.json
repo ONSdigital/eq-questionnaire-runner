@@ -178,7 +178,7 @@
         {
             "id": "default-section",
             "title": "Questions",
-            "summary": {},
+            "summary": { "show_on_completion": true },
             "repeat": {
                 "for_list": "people",
                 "title": {

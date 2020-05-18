@@ -576,6 +576,7 @@ def section_with_custom_summary():
             {
                 "id": "section",
                 "summary": {
+                    "show_on_completion": True,
                     "items": [
                         {
                             "type": "List",
@@ -607,7 +608,7 @@ def section_with_custom_summary():
                                 ],
                             },
                         }
-                    ]
+                    ],
                 },
                 "groups": [
                     {

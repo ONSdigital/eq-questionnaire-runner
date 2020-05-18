@@ -30,10 +30,15 @@ def test_get_summary_for_section(section_with_custom_summary):
     assert section_summary["items"][0].keys() == expected_keys
 
 
-def test_get_summary_for_section_doesnt_exist(section_with_custom_summary):
+def test_get_summary_for_section_does_not_exist(section_with_custom_summary):
     del section_with_custom_summary["sections"][0]["summary"]
     schema = QuestionnaireSchema(section_with_custom_summary)
-    assert schema.get_summary_for_section("section") is None
+    assert not schema.get_summary_for_section("section")
+
+
+def test_get_show_on_completion_for_section(section_with_custom_summary):
+    schema = QuestionnaireSchema(section_with_custom_summary)
+    assert schema.show_summary_on_completion_for_section(section_id="section") is True
 
 
 def test_get_blocks(single_question_schema):

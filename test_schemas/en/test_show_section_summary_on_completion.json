@@ -4,9 +4,9 @@
     "schema_version": "0.0.1",
     "data_version": "0.0.3",
     "survey_id": "0",
-    "title": "Hub & Spoke",
+    "title": "Show summary on section completion",
     "theme": "default",
-    "description": "A questionnaire to demo hub and spoke functionality",
+    "description": "A questionnaire to demo the `show_on_completion` functionality",
     "metadata": [
         {
             "name": "user_id",
@@ -29,6 +29,9 @@
         {
             "id": "employment-section",
             "title": "Employment",
+            "summary": {
+                "show_on_completion": false
+            },
             "groups": [
                 {
                     "id": "radio",
@@ -155,7 +158,9 @@
         {
             "id": "accommodation-section",
             "title": "Accommodation",
-            "summary": { "show_on_completion": true },
+            "summary": {
+                "show_on_completion": true
+            },
             "groups": [
                 {
                     "blocks": [

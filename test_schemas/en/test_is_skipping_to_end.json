@@ -31,7 +31,7 @@
         {
             "id": "test-skipping-section",
             "title": "Section 1",
-            "summary": {},
+            "summary": { "show_on_completion": true },
             "groups": [
                 {
                     "blocks": [
@@ -116,7 +116,7 @@
         {
             "id": "test-skipping-section-2",
             "title": "Section 2",
-            "summary": {},
+            "summary": { "show_on_completion": true },
             "groups": [
                 {
                     "blocks": [
