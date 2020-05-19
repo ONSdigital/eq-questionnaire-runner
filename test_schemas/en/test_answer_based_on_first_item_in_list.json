@@ -346,21 +346,15 @@
                                                             "placeholders": [
                                                                 {
                                                                     "placeholder": "answer",
-                                                                    "transforms": [
-                                                                        {
-                                                                            "transform": "first_item",
-                                                                            "arguments": {
-                                                                                "value": {
-                                                                                    "source": "answers",
-                                                                                    "identifier": "favourite-drink-answer"
-                                                                                },
-                                                                                "first": {
-                                                                                    "source": "list",
-                                                                                    "identifier": "people"
-                                                                                }
-                                                                            }
+                                                                    "value": {
+                                                                        "source": "answers",
+                                                                        "identifier": "favourite-drink-answer",
+                                                                        "list_item_selector": {
+                                                                            "source": "list",
+                                                                            "id": "people",
+                                                                            "id_selector": "first"
                                                                         }
-                                                                    ]
+                                                                    }
                                                                 }
                                                             ]
                                                     },

@@ -52,19 +52,22 @@ class PlaceholderParser:
 
     def _resolve_value_source(self, value_source, list_item_id):
         if value_source["source"] == "answers":
-            return self._resolve_answer_value(value_source["identifier"], list_item_id)
+            return self._resolve_answer_value(value_source, list_item_id)
         if value_source["source"] == "metadata":
             return self._resolve_metadata_value(value_source["identifier"])
         if value_source["source"] == "list":
             return len(self._list_store[value_source["identifier"]].items)
 
-    def _resolve_answer_value(self, identifier, list_item_id):
-        if isinstance(identifier, list):
+    def _resolve_answer_value(self, value_source, list_item_id):
+        if list_item_id is None:
+            list_item_id = self._get_list_item_id_from_value_source(value_source)
+
+        if isinstance(value_source["identifier"], list):
             return [
                 self._lookup_answer(each_identifier, list_item_id)
-                for each_identifier in identifier
+                for each_identifier in value_source["identifier"]
             ]
-        return self._lookup_answer(identifier, list_item_id)
+        return self._lookup_answer(value_source["identifier"], list_item_id)
 
     def _resolve_metadata_value(self, identifier):
         if isinstance(identifier, list):
@@ -77,7 +80,7 @@ class PlaceholderParser:
         try:
             return self._parse_transforms(placeholder["transforms"])
         except KeyError:
-            return self._resolve_value_source(placeholder["value"], self._list_item_id)
+            return self._resolve_value_source(placeholder["value"], list_item_id=None)
 
     def _parse_transforms(self, transform_list: Sequence[Mapping]):
         transformed_value = None
@@ -106,12 +109,13 @@ class PlaceholderParser:
 
     def _get_list_item_id(self, transform):
         list_item_selector = transform.get("arguments", {}).get("list_to_concatenate", {}).get("list_item_selector", {}).get("id")
-        first_list_item = transform.get("arguments", {}).get("first", {}).get("identifier")
-
         if list_item_selector:
             return getattr(self._location, list_item_selector)
-        elif first_list_item:
-            del transform["arguments"]["first"]
-            if self._list_store:
-                return self._list_store._lists[first_list_item].first
+        return None
+
+    def _get_list_item_id_from_value_source(self, value_source):
+        list_item_selector = value_source.get("list_item_selector", {})
+        if list_item_selector:
+            if list_item_selector["id_selector"] == "first":
+                return self._list_store._lists[list_item_selector["id"]].first
         return self._list_item_id
