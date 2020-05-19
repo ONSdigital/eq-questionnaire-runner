@@ -82,7 +82,7 @@ class SessionStore:
             "finding eq_session_id in database", eq_session_id=self.eq_session_id
         )
 
-        self._eq_session = current_app.eq["ephemeral_storage"].get_by_key(
+        self._eq_session = current_app.eq["ephemeral_storage"].get(
             EQSession, self.eq_session_id
         )
 

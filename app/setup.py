@@ -25,9 +25,9 @@ from app.globals import get_session_store
 from app.keys import KEY_PURPOSE_SUBMISSION
 from app.helpers import get_span_and_trace
 from app.secrets import SecretStore, validate_required_secrets
-from app.storage.datastore import DatastoreStorage
-from app.storage.dynamodb import DynamodbStorage
-from app.storage.redis import RedisStorage
+from app.storage.datastore import Datastore
+from app.storage.dynamodb import Dynamodb
+from app.storage.redis import Redis
 from app.submitter.submitter import LogSubmitter, RabbitMQSubmitter, GCSSubmitter
 
 CACHE_HEADERS = {
@@ -294,7 +294,7 @@ def setup_dynamodb(application):
         endpoint_url=application.config["EQ_DYNAMODB_ENDPOINT"],
         config=config,
     )
-    application.eq["storage"] = DynamodbStorage(dynamodb)
+    application.eq["storage"] = Dynamodb(dynamodb)
 
 
 def setup_datastore(application):
@@ -304,7 +304,7 @@ def setup_datastore(application):
         else None
     )
     client = datastore.Client(_use_grpc=False, credentials=creds)
-    application.eq["storage"] = DatastoreStorage(client)
+    application.eq["storage"] = Datastore(client)
 
 
 def setup_redis(application):
@@ -313,7 +313,7 @@ def setup_redis(application):
         port=application.config["EQ_REDIS_PORT"],
     )
 
-    application.eq["ephemeral_storage"] = RedisStorage(redis_client)
+    application.eq["ephemeral_storage"] = Redis(redis_client)
 
 
 def setup_submitter(application):

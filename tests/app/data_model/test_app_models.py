@@ -8,7 +8,7 @@ from app.data_model.app_models import (
     UsedJtiClaim,
     SubmittedResponse,
 )
-from app.storage.dynamodb import TABLE_CONFIG
+from app.storage.storage import StorageModel
 from tests.app.app_context_test_case import AppContextTestCase
 
 NOW = datetime.datetime.now(tz=tzutc()).replace(microsecond=0)
@@ -37,7 +37,7 @@ class TestAppModels(AppContextTestCase):
         self._test_model(UsedJtiClaim("claimid", NOW, NOW))
 
     def _test_model(self, orig):
-        config = TABLE_CONFIG[type(orig)]
+        config = StorageModel.TABLE_CONFIG[type(orig)]
         schema = config["schema"]()
 
         item = schema.dump(orig)

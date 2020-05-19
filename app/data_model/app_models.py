@@ -24,17 +24,17 @@ class EQSession:
 
 
 class UsedJtiClaim:
-    def __init__(self, jti_claim, used_at, expires):
+    def __init__(self, jti_claim, used_at, expires_at):
         self.jti_claim = jti_claim
         self.used_at = used_at
-        self.expires = expires
+        self.expires_at = expires_at
 
 
 class SubmittedResponse:
-    def __init__(self, tx_id, data, valid_until):
+    def __init__(self, tx_id, data, expires_at):
         self.tx_id = tx_id
         self.data = data
-        self.valid_until = valid_until
+        self.expires_at = expires_at
 
 
 # pylint: disable=no-self-use
@@ -96,7 +96,7 @@ class EQSessionSchema(Schema, DateTimeSchemaMixin):
 class UsedJtiClaimSchema(Schema):
     jti_claim = fields.Str()
     used_at = fields.DateTime()
-    expires = Timestamp()
+    expires_at = Timestamp()
 
     @post_load
     def make_model(self, data):
@@ -106,7 +106,7 @@ class UsedJtiClaimSchema(Schema):
 class SubmittedResponseSchema(Schema):
     tx_id = fields.Str()
     data = fields.Str()
-    valid_until = Timestamp()
+    expires_at = Timestamp()
 
     @post_load
     def make_model(self, data):
