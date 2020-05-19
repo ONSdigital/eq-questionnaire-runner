@@ -50,7 +50,7 @@ class TestQuestionnaireStore(TestCase):
         def set_output_data(data):
             self.output_data = data
 
-        # StorageHandler class mocking
+        # Storage class mocking
         self.storage = MagicMock()
         self.storage.get_user_data = MagicMock(side_effect=get_user_data)
         self.storage.save = MagicMock(side_effect=set_output_data)
