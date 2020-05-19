@@ -1,4 +1,4 @@
-from abc import abstractmethod
+from abc import abstractmethod, ABC
 
 from flask import current_app
 
@@ -64,7 +64,7 @@ class StorageModel:
         return current_app.config[self._config["table_name_key"]]
 
 
-class StorageHandler:
+class StorageHandler(ABC):
     def __init__(self, client):
         self.client = client
 
