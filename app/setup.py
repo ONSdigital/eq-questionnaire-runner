@@ -17,17 +17,16 @@ from google.cloud import datastore
 from htmlmin.main import minify
 from sdc.crypto.key_store import KeyStore, validate_required_keys
 from structlog import get_logger
+
 from app import settings
 from app.authentication.authenticator import login_manager
 from app.authentication.cookie_session import SHA256SecureCookieSessionInterface
 from app.authentication.user_id_generator import UserIDGenerator
 from app.globals import get_session_store
-from app.keys import KEY_PURPOSE_SUBMISSION
 from app.helpers import get_span_and_trace
+from app.keys import KEY_PURPOSE_SUBMISSION
 from app.secrets import SecretStore, validate_required_secrets
-from app.storage.datastore import Datastore
-from app.storage.dynamodb import Dynamodb
-from app.storage.redis import Redis
+from app.storage import Datastore, Dynamodb, Redis
 from app.submitter.submitter import LogSubmitter, RabbitMQSubmitter, GCSSubmitter
 
 CACHE_HEADERS = {
