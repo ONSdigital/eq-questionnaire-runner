@@ -7,8 +7,6 @@ import os
 import re
 from string import Template
 
-from app.questionnaire.questionnaire_schema import QuestionnaireSchema
-
 logger = logging.getLogger(__name__)
 logging.basicConfig(level=logging.INFO)
 
@@ -79,6 +77,10 @@ CLASS_NAME = Template(
 
 """
 )
+
+SECTION_SUMMARY_PAGE_URL = r"""  url() { return "/questionnaire/sections/" + this.pageName; }
+
+"""
 
 QUESTION_DEFINITION_TITLE_GETTER = Template(
     r"""  definitionTitle${definitionIndex}() { return '.collapsible:nth-child(${definitionIndex}) > .collapsible__heading'; }
@@ -678,6 +680,7 @@ def process_section_summary(
         page_spec.write(HEADER.substitute(section_context))
         page_spec.write(CLASS_NAME.substitute(section_context))
         page_spec.write(CONSTRUCTOR.substitute(section_context))
+        page_spec.write(SECTION_SUMMARY_PAGE_URL)
         write_summary_spec(False, page_spec, section, True)
         page_spec.write(FOOTER.substitute(section_context))
 

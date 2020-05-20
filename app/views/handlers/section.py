@@ -65,7 +65,7 @@ class SectionHandler:
         return self._schema.get_title_for_section(self._section_id)
 
     def can_display_summary(self):
-        return self._schema.is_summary_in_section(
+        return self._schema.get_summary_for_section(
             self._section_id
         ) and self._questionnaire_store.progress_store.is_section_complete(
             self._section_id, self._list_item_id

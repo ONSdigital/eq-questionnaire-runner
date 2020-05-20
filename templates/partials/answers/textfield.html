@@ -19,6 +19,14 @@
   "error": error
 } %}
 
+{% if answer.max_length %}
+  {% set config = config | setAttribute("charCheck", {
+    "limit": answer.max_length,
+    "charCountOverLimitSingular": _("{x} character too many"),
+    "charCountOverLimitPlural": _("{x} characters too many")
+  }) %}
+{% endif %}
+
 {% if answer.suggestions_url %}
   {% set config = config | setAttribute("typeahead", {
     "instructions": _("Use up and down keys to navigate suggestions once you\'ve typed more than two characters. Use the enter key to select a suggestion. Touch device users, explore by touch or with swipe gestures."),

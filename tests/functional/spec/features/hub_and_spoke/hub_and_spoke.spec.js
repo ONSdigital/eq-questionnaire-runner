@@ -201,7 +201,7 @@ describe('Feature: Hub and Spoke', function () {
     });
 
     it('When the user returns to the Hub, Then the Hub should be in a completed state', function () {
-      expect($(HubPage.submit()).getText()).to.contain('Submit');
+      expect($(HubPage.submit()).getText()).to.contain('Submit survey');
       expect($(HubPage.displayedName()).getText()).to.contain('Submit survey');
     });
 
