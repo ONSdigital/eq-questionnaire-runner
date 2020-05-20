@@ -26,7 +26,7 @@ describe("Answer Option Based on First Item in List", function() {
     expect($(ListStatusTwoQuestion.listStatus2TeaLabel()).getText()).to.contain("Tea");
   });
 
-    it("Given I am the the second person in the list, When I get to the question page, Then I should see the correct answer option", function() {
+  it("Given I am the the second person in the list, When I get to the question page, Then I should see the correct answer option", function() {
     browser.openQuestionnaire("test_answer_based_on_first_item_in_list.json");
     $(HubPage.submit()).click();
     $(ListCollectorPage.yes()).click();
