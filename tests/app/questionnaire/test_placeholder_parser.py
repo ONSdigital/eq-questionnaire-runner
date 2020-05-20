@@ -355,3 +355,36 @@ def test_chain_transform_placeholder():
 
     placeholders = parser(placeholder_list)
     assert placeholders["persons_name"] == "Joe Bloggs’"
+
+def test_placeholder_resolves_answer_value_based_on_first_item_in_list():
+    placeholder_list = [
+        {
+            "placeholder": "answer",
+            "value": {
+                "source": "answers",
+                "identifier": "favourite-drink-answer",
+                "list_item_selector": {
+                    "source": "list",
+                    "id": "people",
+                    "id_selector": "first"
+                }
+            }
+        }
+    ]
+
+    list_store = ListStore([
+        {
+            "items": ["abc123", "123abc"],
+            "name": "people"
+        }
+    ])
+
+    answer_store = AnswerStore([{"answer_id": "favourite-drink-answer", "value": "Coffee", "list_item_id": "abc123" }])
+
+    parser = PlaceholderParser(language="en",
+                               list_store =list_store,
+                               answer_store=answer_store
+                               )
+
+    placeholders = parser(placeholder_list)
+    assert str(placeholders["answer"]) == "Coffee"

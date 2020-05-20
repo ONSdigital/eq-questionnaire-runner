@@ -162,6 +162,3 @@ class PlaceholderTransforms:
             return item
 
         return ""
-
-    def first_item(self, value):
-        return str(value)
