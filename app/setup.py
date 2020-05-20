@@ -27,7 +27,7 @@ from app.helpers import get_span_and_trace
 from app.keys import KEY_PURPOSE_SUBMISSION
 from app.secrets import SecretStore, validate_required_secrets
 from app.storage import Datastore, Dynamodb, Redis
-from app.submitter.submitter import LogSubmitter, RabbitMQSubmitter, GCSSubmitter
+from app.submitter import LogSubmitter, RabbitMQSubmitter, GCSSubmitter
 
 CACHE_HEADERS = {
     "Cache-Control": "no-cache, no-store, must-revalidate",

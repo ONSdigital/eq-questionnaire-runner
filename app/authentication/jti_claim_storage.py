@@ -34,7 +34,7 @@ def use_jti_claim(jti_claim, expires_at):
     """
     Use a jti claim
     :param jti_claim: jti claim to mark as used.
-    :param expires_at: the datetime the jti claim expires at.
+    :param expires_at: the datetime at which the jti claim expires.
     :raises ValueError: when jti_claim is None.
     :raises TypeError: when jti_claim is not a valid uuid4.
     :raises JtiTokenUsed: when jti_claim has already been used.

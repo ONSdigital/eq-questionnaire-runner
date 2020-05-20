@@ -2,7 +2,7 @@ from google.api_core.retry import Retry
 from google.cloud.datastore import Entity
 from structlog import get_logger
 
-from app.storage.storage import StorageModel, StorageHandler
+from .storage import StorageModel, StorageHandler
 
 logger = get_logger()
 
@@ -10,7 +10,7 @@ logger = get_logger()
 class Datastore(StorageHandler):
     @Retry()
     def put(self, model, overwrite=True):
-        if overwrite is False:
+        if not overwrite:
             raise NotImplementedError("Unique key checking not supported")
 
         storage_model = StorageModel(model=model)

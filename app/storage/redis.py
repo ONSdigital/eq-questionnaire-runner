@@ -2,7 +2,7 @@ import json
 
 from app.data_model.app_models import EQSession, UsedJtiClaim
 from app.storage.errors import ItemAlreadyExistsError
-from app.storage.storage import StorageModel, StorageHandler
+from .storage import StorageModel, StorageHandler
 
 
 class Redis(StorageHandler):
