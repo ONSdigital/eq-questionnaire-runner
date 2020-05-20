@@ -28,5 +28,5 @@ class Context(ABC):
             schema=self._schema,
             answer_store=self._answer_store,
             metadata=self._metadata,
-            list_store=self._list_store
+            list_store=self._list_store,
         )

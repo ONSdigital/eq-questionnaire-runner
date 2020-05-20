@@ -31,7 +31,7 @@ class Group:
             schema=schema,
             answer_store=answer_store,
             metadata=metadata,
-            list_store=list_store
+            list_store=list_store,
         )
 
     @staticmethod

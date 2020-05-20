@@ -96,9 +96,7 @@ class PlaceholderParser:
                 elif arg_value["source"] == "previous_transform":
                     transform_args[arg_key] = transformed_value
                 else:
-                    transform_args[arg_key] = self._resolve_value_source(
-                        arg_value
-                    )
+                    transform_args[arg_key] = self._resolve_value_source(arg_value)
 
             transformed_value = getattr(self._transformer, transform["transform"])(
                 **transform_args
@@ -112,5 +110,8 @@ class PlaceholderParser:
             if list_item_selector["source"] == "location":
                 return getattr(self._location, list_item_selector["id"])
             if list_item_selector["source"] == "list":
-                return getattr(self._list_store[list_item_selector["id"]], list_item_selector["id_selector"])
+                return getattr(
+                    self._list_store[list_item_selector["id"]],
+                    list_item_selector["id_selector"],
+                )
         return self._list_item_id
