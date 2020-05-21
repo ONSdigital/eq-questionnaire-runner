@@ -1,4 +1,5 @@
 import json
+from datetime import datetime
 
 from app.data_model.app_models import EQSession, UsedJtiClaim
 from app.storage.errors import ItemAlreadyExistsError
@@ -20,10 +21,11 @@ class Redis(StorageHandler):
             raise ItemAlreadyExistsError()
 
     def _put_jti(self, jti):
+        expires_in_seconds = int((jti.expires_at - jti.used_at).total_seconds())
         record_created = self.client.set(
             name=jti.jti_claim,
             value=int(jti.used_at.timestamp()),
-            ex=int((jti.expires_at - jti.used_at).total_seconds()),
+            ex=expires_in_seconds,
             nx=True,
         )
 
@@ -31,8 +33,18 @@ class Redis(StorageHandler):
 
     def _put_session(self, model):
         storage_model = StorageModel(model=model)
+        expires_at_datetime = datetime.utcfromtimestamp(
+            storage_model.item["expires_at"]
+        )
+        expires_in_seconds = int(
+            (expires_at_datetime - datetime.utcnow()).total_seconds()
+        )
+
         record_created = self.client.set(
-            name=model.eq_session_id, value=json.dumps(storage_model.item), nx=False
+            name=model.eq_session_id,
+            value=json.dumps(storage_model.item),
+            ex=expires_in_seconds,
+            nx=False,
         )
 
         return record_created
