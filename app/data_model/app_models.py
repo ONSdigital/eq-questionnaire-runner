@@ -14,13 +14,13 @@ class QuestionnaireState:
 
 
 class EQSession:
-    def __init__(self, eq_session_id, user_id, session_data=None, expires_at=None):
+    def __init__(self, eq_session_id, user_id, expires_at, session_data=None):
         self.eq_session_id = eq_session_id
         self.user_id = user_id
         self.session_data = session_data
         self.created_at = datetime.now(tz=tzutc())
         self.updated_at = datetime.now(tz=tzutc())
-        self.expires_at = expires_at
+        self.expires_at = expires_at.replace(tzinfo=tzutc())
 
 
 class UsedJtiClaim:
@@ -79,9 +79,7 @@ class EQSessionSchema(Schema, DateTimeSchemaMixin):
     eq_session_id = fields.Str()
     user_id = fields.Str()
     session_data = fields.Str()
-    expires_at = Timestamp(
-        allow_none=True
-    )  # To cater in flight data (Should never actually be None)
+    expires_at = Timestamp()
 
     @post_load
     def make_model(self, data):

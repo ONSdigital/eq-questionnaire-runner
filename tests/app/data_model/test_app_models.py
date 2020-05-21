@@ -26,7 +26,12 @@ class TestAppModels(AppContextTestCase):
 
     def test_eq_session(self):
         new_model = self._test_model(
-            EQSession("sessionid", "someuser", "somedata", NOW)
+            EQSession(
+                eq_session_id="sessionid",
+                user_id="someuser",
+                session_data="somedata",
+                expires_at=NOW,
+            )
         )
 
         self.assertGreaterEqual(new_model.created_at, NOW)

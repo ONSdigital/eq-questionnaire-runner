@@ -11,7 +11,7 @@ from app.data_model.app_models import UsedJtiClaim, EQSession, QuestionnaireStat
 from app.storage.storage import StorageModel
 from tests.app.app_context_test_case import AppContextTestCase
 
-NOW = datetime.now(tz=tzutc()).replace(microsecond=0)
+EXPIRES_AT = datetime.now(tz=tzutc()).replace(microsecond=0) + timedelta(minutes=1)
 
 
 class TestRedis(AppContextTestCase):
@@ -51,7 +51,7 @@ class TestRedis(AppContextTestCase):
             eq_session_id="sessionid",
             user_id="someuser",
             session_data="somedata",
-            expires_at=NOW,
+            expires_at=EXPIRES_AT,
         )
         stored_data = self.mock_client.get(eq_session.eq_session_id)
         self.assertIsNone(stored_data)
@@ -69,7 +69,7 @@ class TestRedis(AppContextTestCase):
             eq_session_id="sessionid",
             user_id="someuser",
             session_data="somedata",
-            expires_at=NOW,
+            expires_at=EXPIRES_AT,
         )
         stored_data = self.mock_client.get(eq_session.eq_session_id)
         self.assertIsNone(stored_data)
@@ -96,7 +96,7 @@ class TestRedis(AppContextTestCase):
             eq_session_id="sessionid",
             user_id="someuser",
             session_data="somedata",
-            expires_at=NOW,
+            expires_at=EXPIRES_AT,
         )
         self.redis.put(eq_session)
         session = self.redis.get(EQSession, "sessionid")
