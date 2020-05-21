@@ -31,10 +31,8 @@ class Redis(StorageHandler):
 
     def _put_session(self, model):
         storage_model = StorageModel(model=model)
-        item = storage_model.item
-
         record_created = self.client.set(
-            name=model.eq_session_id, value=json.dumps(item), nx=False
+            name=model.eq_session_id, value=json.dumps(storage_model.item), nx=False
         )
 
         return record_created

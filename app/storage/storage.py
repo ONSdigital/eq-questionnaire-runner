@@ -1,4 +1,5 @@
 from abc import abstractmethod, ABC
+from functools import cached_property
 
 from flask import current_app
 
@@ -41,25 +42,25 @@ class StorageModel:
 
         self._config = self.TABLE_CONFIG[self._model_type]
 
-    @property
+    @cached_property
     def schema(self):
         return self._config["schema"]()
 
-    @property
+    @cached_property
     def key_field(self):
         return self._config["key_field"]
 
-    @property
+    @cached_property
     def item(self):
         if self._model:
             return self.schema.dump(self._model)
 
-    @property
+    @cached_property
     def key_value(self):
         if self._model:
             return getattr(self._model, self.key_field)
 
-    @property
+    @cached_property
     def table_name(self):
         return current_app.config[self._config["table_name_key"]]
 

@@ -14,11 +14,10 @@ class Datastore(StorageHandler):
             raise NotImplementedError("Unique key checking not supported")
 
         storage_model = StorageModel(model=model)
-        item = storage_model.item
 
         key = self.client.key(storage_model.table_name, storage_model.key_value)
-        entity = Entity(key=key, exclude_from_indexes=tuple(item.keys()))
-        entity.update(item)
+        entity = Entity(key=key, exclude_from_indexes=tuple(storage_model.item.keys()))
+        entity.update(storage_model.item)
 
         self.client.put(entity)
 

@@ -7,8 +7,7 @@ from .storage import StorageModel, StorageHandler
 class Dynamodb(StorageHandler):
     def put(self, model, overwrite=True):
         storage_model = StorageModel(model=model)
-        table_name = storage_model.table_name
-        table = self.client.Table(table_name)
+        table = self.client.Table(storage_model.table_name)
 
         put_kwargs = {"Item": storage_model.item}
         if not overwrite:
@@ -29,8 +28,7 @@ class Dynamodb(StorageHandler):
 
     def get(self, model_type, key_value):
         storage_model = StorageModel(model_type=model_type)
-        table_name = storage_model.table_name
-        table = self.client.Table(table_name)
+        table = self.client.Table(storage_model.table_name)
         key = {storage_model.key_field: key_value}
 
         response = table.get_item(Key=key, ConsistentRead=True)
@@ -41,8 +39,7 @@ class Dynamodb(StorageHandler):
 
     def delete(self, model):
         storage_model = StorageModel(model=model)
-        table_name = storage_model.table_name
-        table = self.client.Table(table_name)
+        table = self.client.Table(storage_model.table_name)
         key = {storage_model.key_field: storage_model.key_value}
 
         response = table.delete_item(Key=key)
