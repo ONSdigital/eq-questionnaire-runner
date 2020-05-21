@@ -63,7 +63,7 @@ class SessionStore:
                 self.user_id, self.user_ik, self.pepper
             ).encrypt_data(vars(self.session_data))
 
-            current_app.eq["ephemeral_storage"].put(self._eq_session)
+            current_app.eq["ephemeral_storage"].put(self._eq_session, overwrite=True)
 
         return self
 

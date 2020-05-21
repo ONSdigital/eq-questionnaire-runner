@@ -51,8 +51,7 @@ def use_jti_claim(jti_claim, expires_at):
         expires_at += timedelta(seconds=60)
 
         jti = UsedJtiClaim(jti_claim, used_at, expires_at)
-
-        current_app.eq["ephemeral_storage"].put(jti)
+        current_app.eq["ephemeral_storage"].put(jti, overwrite=False)
     except ItemAlreadyExistsError as e:
         logger.error("jti claim has already been used", jti_claim=jti_claim)
         raise JtiTokenUsed(jti_claim) from e

@@ -21,6 +21,9 @@ class EQSession:
         self.created_at = datetime.now(tz=tzutc())
         self.updated_at = datetime.now(tz=tzutc())
         self.expires_at = expires_at.replace(tzinfo=tzutc())
+        self.expires_in_seconds = int(
+            (self.expires_at - self.updated_at).total_seconds()
+        )
 
 
 class UsedJtiClaim:
@@ -28,6 +31,7 @@ class UsedJtiClaim:
         self.jti_claim = jti_claim
         self.used_at = used_at
         self.expires_at = expires_at
+        self.expires_in_seconds = int((expires_at - self.used_at).total_seconds())
 
 
 class SubmittedResponse:

@@ -1,13 +1,13 @@
 import json
-from datetime import datetime, timedelta
 import uuid
+from datetime import datetime, timedelta
 
 import fakeredis
 from dateutil.tz import tzutc
 
+from app.data_model.app_models import UsedJtiClaim, EQSession
 from app.storage.errors import ItemAlreadyExistsError
 from app.storage.redis import Redis
-from app.data_model.app_models import UsedJtiClaim, EQSession, QuestionnaireState
 from app.storage.storage import StorageModel
 from tests.app.app_context_test_case import AppContextTestCase
 
@@ -28,7 +28,7 @@ class TestRedis(AppContextTestCase):
 
         jti = UsedJtiClaim(str(uuid.uuid4()), used_at, expires_at)
 
-        self.redis.put(jti)
+        self.redis.put(jti, overwrite=False)
 
         stored_data = self.mock_client.get(jti.jti_claim)
 
@@ -40,10 +40,10 @@ class TestRedis(AppContextTestCase):
 
         jti = UsedJtiClaim(str(uuid.uuid4()), used_at, expires_at)
 
-        self.redis.put(jti)
+        self.redis.put(jti, overwrite=False)
 
         with self.assertRaises(ItemAlreadyExistsError):
-            self.redis.put(jti)
+            self.redis.put(jti, overwrite=False)
 
     def test_put_session(self):
         # given
@@ -107,16 +107,3 @@ class TestRedis(AppContextTestCase):
 
         # Then
         self.assertIsNone(self.redis.get(EQSession, "sessionid"))
-
-    def test_put_invalid_model(self):
-        invalid_model = QuestionnaireState(
-            user_id="someuser", state_data="data", version=1
-        )
-
-        with self.assertRaises(NotImplementedError) as exception:
-            self.redis.put(invalid_model)
-
-        self.assertEqual(
-            exception.exception.args[0],
-            "Only UsedJtiClaimSchema and EQSessionSchema supported",
-        )
