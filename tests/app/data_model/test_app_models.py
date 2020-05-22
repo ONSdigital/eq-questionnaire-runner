@@ -39,7 +39,7 @@ class TestAppModels(AppContextTestCase):
         self.assertGreaterEqual(new_model.expires_at, NOW)
 
     def test_used_jti_claim(self):
-        self._test_model(UsedJtiClaim("claimid", NOW, NOW))
+        self._test_model(UsedJtiClaim("claimid", NOW))
 
     def _test_model(self, orig):
         config = StorageModel.TABLE_CONFIG[type(orig)]

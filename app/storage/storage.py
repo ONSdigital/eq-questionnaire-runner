@@ -4,13 +4,13 @@ from functools import cached_property
 from flask import current_app
 
 from app.data_model import app_models
-from app.data_model.app_models import UsedJtiClaim
 
 
 class StorageModel:
     TABLE_CONFIG = {
         app_models.SubmittedResponse: {
             "key_field": "tx_id",
+            "expiry_field": "expires_at",
             "table_name_key": "EQ_SUBMITTED_RESPONSES_TABLE_NAME",
             "schema": app_models.SubmittedResponseSchema,
         },
@@ -21,11 +21,13 @@ class StorageModel:
         },
         app_models.EQSession: {
             "key_field": "eq_session_id",
+            "expiry_field": "expires_at",
             "table_name_key": "EQ_SESSION_TABLE_NAME",
             "schema": app_models.EQSessionSchema,
         },
         app_models.UsedJtiClaim: {
             "key_field": "jti_claim",
+            "expiry_field": "expires_at",
             "table_name_key": "EQ_USED_JTI_CLAIM_TABLE_NAME",
             "schema": app_models.UsedJtiClaimSchema,
         },
@@ -52,11 +54,12 @@ class StorageModel:
         return self._config["key_field"]
 
     @cached_property
+    def expiry_field(self):
+        return self._config.get("expiry_field")
+
+    @cached_property
     def item(self):
         if self._model:
-            if isinstance(self._model, UsedJtiClaim):
-                return int(self._model.used_at.timestamp())
-
             return self.schema.dump(self._model)
 
     @cached_property

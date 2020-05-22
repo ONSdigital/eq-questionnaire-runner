@@ -21,17 +21,12 @@ class EQSession:
         self.created_at = datetime.now(tz=tzutc())
         self.updated_at = datetime.now(tz=tzutc())
         self.expires_at = expires_at.replace(tzinfo=tzutc())
-        self.expires_in_seconds = int(
-            (self.expires_at - self.updated_at).total_seconds()
-        )
 
 
 class UsedJtiClaim:
-    def __init__(self, jti_claim, used_at, expires_at):
+    def __init__(self, jti_claim, expires_at):
         self.jti_claim = jti_claim
-        self.used_at = used_at
-        self.expires_at = expires_at
-        self.expires_in_seconds = int((expires_at - self.used_at).total_seconds())
+        self.expires_at = expires_at.replace(tzinfo=tzutc())
 
 
 class SubmittedResponse:
@@ -97,7 +92,6 @@ class EQSessionSchema(Schema, DateTimeSchemaMixin):
 
 class UsedJtiClaimSchema(Schema):
     jti_claim = fields.Str()
-    used_at = fields.DateTime()
     expires_at = Timestamp()
 
     @post_load

@@ -22,23 +22,23 @@ class TestRedis(AppContextTestCase):
 
         self.redis = Redis(self.mock_client)
 
-    def test_put_jti(self):
+    def test_put_jti_stores_empty_value(self):
         used_at = datetime.now()
         expires_at = used_at + timedelta(seconds=60)
 
-        jti = UsedJtiClaim(str(uuid.uuid4()), used_at, expires_at)
+        jti = UsedJtiClaim(str(uuid.uuid4()), expires_at)
 
         self.redis.put(jti, overwrite=False)
 
         stored_data = self.mock_client.get(jti.jti_claim)
 
-        self.assertEqual(int(jti.used_at.timestamp()), int(stored_data))
+        self.assertEqual(b"", stored_data)
 
     def test_duplicate_put_jti_fails(self):
         used_at = datetime.now()
         expires_at = used_at + timedelta(seconds=60)
 
-        jti = UsedJtiClaim(str(uuid.uuid4()), used_at, expires_at)
+        jti = UsedJtiClaim(str(uuid.uuid4()), expires_at)
 
         self.redis.put(jti, overwrite=False)
 
@@ -53,14 +53,14 @@ class TestRedis(AppContextTestCase):
             session_data="somedata",
             expires_at=EXPIRES_AT,
         )
-        stored_data = self.mock_client.get(eq_session.eq_session_id)
+        stored_data = self.redis.get(EQSession, eq_session.eq_session_id)
         self.assertIsNone(stored_data)
 
         # when
         self.redis.put(eq_session)
 
         # Then
-        stored_data = self.mock_client.get(eq_session.eq_session_id)
+        stored_data = self.redis.get(EQSession, eq_session.eq_session_id)
         self.assertIsNotNone(stored_data)
 
     def test_get_session(self):
@@ -71,20 +71,16 @@ class TestRedis(AppContextTestCase):
             session_data="somedata",
             expires_at=EXPIRES_AT,
         )
-        stored_data = self.mock_client.get(eq_session.eq_session_id)
+        stored_data = self.redis.get(EQSession, eq_session.eq_session_id)
         self.assertIsNone(stored_data)
         self.redis.put(eq_session)
 
         # When
-        stored_data = self.mock_client.get(eq_session.eq_session_id)
+        stored_data = self.redis.get(EQSession, eq_session.eq_session_id)
 
         # Then
-        storage_model = StorageModel(model_type=EQSession)
-        storage_model.schema.load(json.loads(stored_data.decode("utf-8")))
-        parsed_data = storage_model.schema.load(json.loads(stored_data.decode("utf-8")))
-
         for k, v in eq_session.__dict__.items():
-            parsed_value = getattr(parsed_data, k)
+            parsed_value = getattr(stored_data, k)
             if isinstance(v, datetime):
                 self.assertGreaterEqual(v, parsed_value)
             else:
@@ -107,3 +103,22 @@ class TestRedis(AppContextTestCase):
 
         # Then
         self.assertIsNone(self.redis.get(EQSession, "sessionid"))
+
+    def test_redis_does_not_store_key_field_in_value(self):
+        # Given
+        eq_session = EQSession(
+            eq_session_id="sessionid",
+            user_id="someuser",
+            session_data="somedata",
+            expires_at=EXPIRES_AT,
+        )
+        stored_data = self.redis.get(EQSession, eq_session.eq_session_id)
+        self.assertIsNone(stored_data)
+        self.redis.put(eq_session)
+
+        # When
+        stored_data = self.mock_client.get(eq_session.eq_session_id)
+
+        storage_model = StorageModel(model_type=EQSession)
+
+        assert storage_model.key_field not in json.loads(stored_data)
