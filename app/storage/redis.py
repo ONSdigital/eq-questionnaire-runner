@@ -7,10 +7,13 @@ from .storage import StorageModel, StorageHandler
 class Redis(StorageHandler):
     def put(self, model, overwrite=True):
         storage_model = StorageModel(model=model)
+        item = storage_model.item
+        if isinstance(item, dict):
+            item = json.dumps(item)
 
         record_created = self.client.set(
             name=storage_model.key_value,
-            value=storage_model.item,
+            value=item,
             ex=model.expires_in_seconds,
             nx=not overwrite,
         )

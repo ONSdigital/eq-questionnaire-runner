@@ -1,11 +1,10 @@
-import json
 from abc import abstractmethod, ABC
 from functools import cached_property
 
 from flask import current_app
 
 from app.data_model import app_models
-from app.data_model.app_models import UsedJtiClaim, EQSession
+from app.data_model.app_models import UsedJtiClaim
 
 
 class StorageModel:
@@ -57,9 +56,6 @@ class StorageModel:
         if self._model:
             if isinstance(self._model, UsedJtiClaim):
                 return int(self._model.used_at.timestamp())
-
-            if isinstance(self._model, EQSession):
-                return json.dumps(self.schema.dump(self._model))
 
             return self.schema.dump(self._model)
 

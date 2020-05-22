@@ -41,11 +41,10 @@ def test_storage_model_properties(app):  # pylint: disable=unused-argument
     assert storage_model.table_name == "dev-eq-session"
 
     expected_schema = EQSessionSchema().dump(eq_session)
-    item = json.loads(storage_model.item)
 
-    assert item["eq_session_id"] == expected_schema["eq_session_id"]
-    assert item["user_id"] == expected_schema["user_id"]
-    assert item["session_data"] == expected_schema["session_data"]
-    assert item["created_at"] == expected_schema["created_at"]
-    assert item["expires_at"] == expected_schema["expires_at"]
-    assert item["updated_at"] >= expected_schema["updated_at"]
+    assert storage_model.item["eq_session_id"] == expected_schema["eq_session_id"]
+    assert storage_model.item["user_id"] == expected_schema["user_id"]
+    assert storage_model.item["session_data"] == expected_schema["session_data"]
+    assert storage_model.item["created_at"] == expected_schema["created_at"]
+    assert storage_model.item["expires_at"] == expected_schema["expires_at"]
+    assert storage_model.item["updated_at"] >= expected_schema["updated_at"]
