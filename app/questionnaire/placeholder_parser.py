@@ -59,7 +59,6 @@ class PlaceholderParser:
             return len(self._list_store[value_source["identifier"]].items)
 
     def _resolve_answer_value(self, value_source):
-
         list_item_id = self._get_list_item_id_from_value_source(value_source)
 
         if isinstance(value_source["identifier"], list):
@@ -86,7 +85,6 @@ class PlaceholderParser:
         transformed_value = None
 
         for transform in transform_list:
-
             transform_args: Dict[str, Union[None, str, List[str]]] = {}
             for arg_key, arg_value in transform["arguments"].items():
                 if not isinstance(arg_value, dict):
@@ -105,7 +103,7 @@ class PlaceholderParser:
         return transformed_value
 
     def _get_list_item_id_from_value_source(self, value_source):
-        list_item_selector = value_source.get("list_item_selector", {})
+        list_item_selector = value_source.get("list_item_selector")
         if list_item_selector:
             if list_item_selector["source"] == "location":
                 return getattr(self._location, list_item_selector["id"])
