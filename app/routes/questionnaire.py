@@ -467,7 +467,7 @@ def submit_answers(schema, questionnaire_store, full_routing_path):
 
     if is_view_submitted_response_enabled(schema.json):
         _store_viewable_submission(
-            answer_store.serialise(), list_store.serialise(), metadata, submitted_time
+            answer_store.serialize(), list_store.serialize(), metadata, submitted_time
         )
 
     get_questionnaire_store(current_user.user_id, current_user.user_ik).delete()

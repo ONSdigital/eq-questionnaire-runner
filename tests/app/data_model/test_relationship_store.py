@@ -17,7 +17,7 @@ relationships = [
 def test_serialisation():
     relationship_store = RelationshipStore(relationships)
 
-    assert relationship_store.serialise() == relationships
+    assert relationship_store.serialize() == relationships
 
 
 def test_deserialisation():
