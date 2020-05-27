@@ -68,11 +68,11 @@ class StorageModel:
     def table_name(self):
         return current_app.config[self._config["table_name_key"]]
 
-    def serialise(self):
+    def serialize(self):
         if self._model:
             return self._schema.dump(self._model)
 
-    def deserialise(self, serialised_item):
+    def deserialize(self, serialised_item):
         return self._schema.load(serialised_item)
 
 
