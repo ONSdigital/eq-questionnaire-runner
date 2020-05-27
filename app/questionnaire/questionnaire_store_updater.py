@@ -60,7 +60,7 @@ class QuestionnaireStoreUpdater:
         relationship = Relationship(list_item_id, to_list_item_id, relationship_answer)
         relationship_store.add_or_update(relationship)
         self._answer_store.add_or_update(
-            Answer(relationship_answer_id, relationship_store.serialize())
+            Answer(relationship_answer_id, relationship_store.serialise())
         )
 
     def remove_completed_relationship_locations_for_list_name(

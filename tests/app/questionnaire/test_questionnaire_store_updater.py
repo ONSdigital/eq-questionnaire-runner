@@ -14,12 +14,12 @@ from app.questionnaire.questionnaire_schema import QuestionnaireSchema
 
 
 def fake_list_store():
-    serialized = [
+    serialised = [
         {"name": "people", "primary_person": "abcdef", "items": ["abcdef", "xyzabc"]},
         {"name": "pets", "items": ["tuvwxy"]},
     ]
 
-    return ListStore.deserialize(serialized)
+    return ListStore.deserialise(serialised)
 
 
 class TestQuestionnaireStoreUpdater(unittest.TestCase):
@@ -251,7 +251,7 @@ class TestQuestionnaireStoreUpdater(unittest.TestCase):
                 "test-relationship-collector"
             )
 
-        completed = self.progress_store.serialize()
+        completed = self.progress_store.serialise()
         self.assertEqual(len(completed), 0)
 
     def test_remove_completed_relationship_locations_for_list_name_no_locations(self):
@@ -259,7 +259,7 @@ class TestQuestionnaireStoreUpdater(unittest.TestCase):
             "section",
             Location(section_id="section", block_id="test-relationship-collector"),
         )
-        initial_progress_store = self.progress_store.serialize()
+        initial_progress_store = self.progress_store.serialise()
         list_store = fake_list_store()
         questionnaire_store = MagicMock(
             spec=QuestionnaireStore,
@@ -279,7 +279,7 @@ class TestQuestionnaireStoreUpdater(unittest.TestCase):
                 "test-relationship-collector"
             )
 
-        self.assertEqual(self.progress_store.serialize(), initial_progress_store)
+        self.assertEqual(self.progress_store.serialise(), initial_progress_store)
 
     def test_update_relationship_question_completeness_no_relationship_collectors(self):
         list_store = fake_list_store()

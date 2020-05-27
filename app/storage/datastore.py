@@ -14,11 +14,11 @@ class Datastore(StorageHandler):
             raise NotImplementedError("Unique key checking not supported")
 
         storage_model = StorageModel(model=model, model_type=type(model))
-        serialized_item = storage_model.serialize()
+        serialised_item = storage_model.serialise()
 
         key = self.client.key(storage_model.table_name, storage_model.key_value)
-        entity = Entity(key=key, exclude_from_indexes=tuple(serialized_item.keys()))
-        entity.update(serialized_item)
+        entity = Entity(key=key, exclude_from_indexes=tuple(serialised_item.keys()))
+        entity.update(serialised_item)
 
         self.client.put(entity)
 
@@ -27,9 +27,9 @@ class Datastore(StorageHandler):
         storage_model = StorageModel(model_type=model_type)
         key = self.client.key(storage_model.table_name, key_value)
 
-        serialized_item = self.client.get(key)
-        if serialized_item:
-            return storage_model.deserialize(serialized_item)
+        serialised_item = self.client.get(key)
+        if serialised_item:
+            return storage_model.deserialise(serialised_item)
 
     @Retry()
     def delete(self, model):

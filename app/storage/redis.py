@@ -7,14 +7,14 @@ from .storage import StorageModel, StorageHandler
 class Redis(StorageHandler):
     def put(self, model, overwrite=True):
         storage_model = StorageModel(model=model, model_type=type(model))
-        serialized_item = storage_model.serialize()
-        serialized_item.pop(storage_model.key_field)
+        serialised_item = storage_model.serialise()
+        serialised_item.pop(storage_model.key_field)
 
-        if len(serialized_item) == 1 and storage_model.expiry_field in serialized_item:
+        if len(serialised_item) == 1 and storage_model.expiry_field in serialised_item:
             # Don't store a value if the only key that is not the key_field is the expiry_field
             value = ""
         else:
-            value = json.dumps(serialized_item)
+            value = json.dumps(serialised_item)
 
         record_created = self.client.set(
             name=storage_model.key_value,
@@ -34,7 +34,7 @@ class Redis(StorageHandler):
             item_dict = json.loads(item.decode("utf-8"))
             item_dict[storage_model.key_field] = key_value
 
-            return storage_model.deserialize(item_dict)
+            return storage_model.deserialise(item_dict)
 
     def delete(self, model):
         storage_model = StorageModel(model=model, model_type=type(model))

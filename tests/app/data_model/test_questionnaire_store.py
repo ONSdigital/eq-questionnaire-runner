@@ -121,7 +121,7 @@ class TestQuestionnaireStore(TestCase):
         self.assertEqual(store.metadata.copy(), expected["METADATA"])
         self.assertEqual(store.collection_metadata, expected["COLLECTION_METADATA"])
         self.assertEqual(store.answer_store, AnswerStore(expected["ANSWERS"]))
-        self.assertEqual(store.progress_store.serialize(), [])
+        self.assertEqual(store.progress_store.serialise(), [])
 
     def test_questionnaire_store_updates_storage(self):
         # Given

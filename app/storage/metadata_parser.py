@@ -29,8 +29,8 @@ class RegionCode(validate.Regexp):
 
 class UUIDString(fields.UUID):
     """ Currently, runner cannot handle UUID objects in metadata
-    Since all metadata is serialized and deserialized to JSON.
-    This custom field deserializes UUIDs to strings.
+    Since all metadata is serialised and deserialised to JSON.
+    This custom field deserialises UUIDs to strings.
     """
 
     def _deserialize(self, *args, **kwargs):  # pylint: disable=arguments-differ
@@ -39,8 +39,8 @@ class UUIDString(fields.UUID):
 
 class DateString(fields.DateTime):
     """ Currently, runner cannot handle Date objects in metadata
-    Since all metadata is serialized and deserialized to JSON.
-    This custom field deserializes Dates to strings.
+    Since all metadata is serialised and deserialised to JSON.
+    This custom field deserialises Dates to strings.
     """
 
     def _deserialize(self, *args, **kwargs):  # pylint: disable=arguments-differ

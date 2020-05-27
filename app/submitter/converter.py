@@ -96,7 +96,7 @@ def convert_answers(schema, questionnaire_store, routing_path, flushed=False):
             "answers": convert_answers_to_payload_0_0_3(
                 answer_store, list_store, schema, routing_path
             ),
-            "lists": list_store.serialize(),
+            "lists": list_store.serialise(),
         }
     elif schema.json["data_version"] == "0.0.1":
         payload["data"] = convert_answers_to_payload_0_0_1(

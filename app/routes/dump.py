@@ -34,7 +34,7 @@ def dump_debug():
     questionnaire_store = get_questionnaire_store(
         current_user.user_id, current_user.user_ik
     )
-    return questionnaire_store.serialize()
+    return questionnaire_store.serialise()
 
 
 @dump_blueprint.route("/dump/routing-path", methods=["GET"])

@@ -25,29 +25,29 @@ def test_storage_model_properties(
     assert storage_model.expires_in.total_seconds() > 0
 
 
-def test_serialize(fake_eq_session):
+def test_serialise(fake_eq_session):
     expected_schema = EQSessionSchema().dump(fake_eq_session)
 
     storage_model = StorageModel(
         model=fake_eq_session, model_type=type(fake_eq_session)
     )
-    serialized_item = storage_model.serialize()
+    serialised_item = storage_model.serialise()
 
-    assert serialized_item["eq_session_id"] == expected_schema["eq_session_id"]
-    assert serialized_item["user_id"] == expected_schema["user_id"]
-    assert serialized_item["session_data"] == expected_schema["session_data"]
-    assert serialized_item["created_at"] == expected_schema["created_at"]
-    assert serialized_item["expires_at"] == expected_schema["expires_at"]
-    assert serialized_item["updated_at"] >= expected_schema["updated_at"]
+    assert serialised_item["eq_session_id"] == expected_schema["eq_session_id"]
+    assert serialised_item["user_id"] == expected_schema["user_id"]
+    assert serialised_item["session_data"] == expected_schema["session_data"]
+    assert serialised_item["created_at"] == expected_schema["created_at"]
+    assert serialised_item["expires_at"] == expected_schema["expires_at"]
+    assert serialised_item["updated_at"] >= expected_schema["updated_at"]
 
 
-def test_deserialize(fake_eq_session):
+def test_deserialise(fake_eq_session):
     storage_model = StorageModel(
         model=fake_eq_session, model_type=type(fake_eq_session)
     )
-    serialized_item = storage_model.serialize()
+    serialised_item = storage_model.serialise()
 
     assert (
-        storage_model.deserialize(serialized_item).__dict__
-        == EQSessionSchema().load(serialized_item).__dict__
+        storage_model.deserialise(serialised_item).__dict__
+        == EQSessionSchema().load(serialised_item).__dict__
     )

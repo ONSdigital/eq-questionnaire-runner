@@ -12,9 +12,9 @@ def test_list_serialisation():
     second_id = new_list.add_list_item("people", primary_person=True)
     additional_list_id = new_list.add_list_item("pets")
 
-    serialized = new_list.serialize()
+    serialised = new_list.serialise()
 
-    assert serialized == [
+    assert serialised == [
         {"name": "people", "primary_person": second_id, "items": [second_id, first_id]},
         {"name": "pets", "items": [additional_list_id]},
     ]
@@ -27,16 +27,16 @@ def test_deserialisation():
     second_id = new_list._generate_identifier()
     additional_id = new_list._generate_identifier()
 
-    serialized = [
+    serialised = [
         {"name": "people", "primary_person": second_id, "items": [first_id, second_id]},
         {"name": "pets", "items": [additional_id]},
     ]
 
-    deserialized = ListStore.deserialize(serialized)
+    deserialised = ListStore.deserialise(serialised)
 
-    assert deserialized["people"].items == [first_id, second_id]
-    assert deserialized["people"].primary_person == second_id
-    assert deserialized["pets"].items == [additional_id]
+    assert deserialised["people"].items == [first_id, second_id]
+    assert deserialised["people"].primary_person == second_id
+    assert deserialised["pets"].items == [additional_id]
 
 
 def test_unique_id_generation():
@@ -86,7 +86,7 @@ def test_list_representation_equal():
 
 def test_repr():
     test_list = ListModel("people", ["primaryperson"], primary_person="primaryperson")
-    serialized = [
+    serialised = [
         {
             "name": "people",
             "primary_person": "primaryperson",
@@ -94,7 +94,7 @@ def test_repr():
         }
     ]
 
-    list_store = ListStore.deserialize(serialized)
+    list_store = ListStore.deserialise(serialised)
 
     assert "primary_person=primaryperson" in repr(test_list)
     assert "items=['primaryperson']" in repr(test_list)
