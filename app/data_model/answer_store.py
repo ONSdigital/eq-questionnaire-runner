@@ -131,5 +131,5 @@ class AnswerStore:
             del self.answer_map[key]
             self._is_dirty = True
 
-    def serialise(self):
+    def serialize(self):
         return list(self.answer_map.values())
