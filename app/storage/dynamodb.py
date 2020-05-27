@@ -6,10 +6,10 @@ from .storage import StorageModel, StorageHandler
 
 class Dynamodb(StorageHandler):
     def put(self, model, overwrite=True):
-        storage_model = StorageModel(model=model)
+        storage_model = StorageModel(model=model, model_type=type(model))
         table = self.client.Table(storage_model.table_name)
 
-        put_kwargs = {"Item": storage_model.item}
+        put_kwargs = {"Item": storage_model.serialise()}
         if not overwrite:
             put_kwargs[
                 "ConditionExpression"
@@ -32,13 +32,13 @@ class Dynamodb(StorageHandler):
         key = {storage_model.key_field: key_value}
 
         response = table.get_item(Key=key, ConsistentRead=True)
-        item = response.get("Item")
+        serialised_item = response.get("Item")
 
-        if item:
-            return storage_model.schema.load(item)
+        if serialised_item:
+            return storage_model.deserialise(serialised_item)
 
     def delete(self, model):
-        storage_model = StorageModel(model=model)
+        storage_model = StorageModel(model=model, model_type=type(model))
         table = self.client.Table(storage_model.table_name)
         key = {storage_model.key_field: storage_model.key_value}
 

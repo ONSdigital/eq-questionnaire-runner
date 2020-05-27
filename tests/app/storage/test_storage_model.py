@@ -1,20 +1,7 @@
-from datetime import datetime
-
 import pytest
-from dateutil.tz import tzutc
 
-from app.data_model.app_models import EQSession, EQSessionSchema
+from app.data_model.app_models import EQSessionSchema
 from app.storage.storage import StorageModel
-
-NOW = datetime.now(tz=tzutc()).replace(microsecond=0)
-
-
-def test_model_or_model_type_not_provided():
-
-    with pytest.raises(ValueError) as ex:
-        StorageModel()
-
-    assert "One of model/model_type is required" in str(ex)
 
 
 def test_non_existent_model_type():
@@ -24,26 +11,43 @@ def test_non_existent_model_type():
     assert "Invalid model_type provided" in str(ex)
 
 
-def test_storage_model_properties(app):  # pylint: disable=unused-argument
-    eq_session = EQSession(
-        eq_session_id="sessionid",
-        user_id="someuser",
-        session_data="somedata",
-        expires_at=NOW,
+def test_storage_model_properties(
+    app, fake_eq_session
+):  # pylint: disable=unused-argument
+    storage_model = StorageModel(
+        model=fake_eq_session, model_type=type(fake_eq_session)
     )
 
-    storage_model = StorageModel(model=eq_session)
-
-    assert isinstance(storage_model.schema, EQSessionSchema)
     assert storage_model.key_field == "eq_session_id"
     assert storage_model.key_value == "sessionid"
+    assert storage_model.expiry_field == "expires_at"
     assert storage_model.table_name == "dev-eq-session"
+    assert storage_model.expires_in.total_seconds() > 0
 
-    expected_schema = EQSessionSchema().dump(eq_session)
 
-    assert storage_model.item["eq_session_id"] == expected_schema["eq_session_id"]
-    assert storage_model.item["user_id"] == expected_schema["user_id"]
-    assert storage_model.item["session_data"] == expected_schema["session_data"]
-    assert storage_model.item["created_at"] == expected_schema["created_at"]
-    assert storage_model.item["expires_at"] == expected_schema["expires_at"]
-    assert storage_model.item["updated_at"] >= expected_schema["updated_at"]
+def test_serialise(fake_eq_session):
+    expected_schema = EQSessionSchema().dump(fake_eq_session)
+
+    storage_model = StorageModel(
+        model=fake_eq_session, model_type=type(fake_eq_session)
+    )
+    serialised_item = storage_model.serialise()
+
+    assert serialised_item["eq_session_id"] == expected_schema["eq_session_id"]
+    assert serialised_item["user_id"] == expected_schema["user_id"]
+    assert serialised_item["session_data"] == expected_schema["session_data"]
+    assert serialised_item["created_at"] == expected_schema["created_at"]
+    assert serialised_item["expires_at"] == expected_schema["expires_at"]
+    assert serialised_item["updated_at"] >= expected_schema["updated_at"]
+
+
+def test_deserialise(fake_eq_session):
+    storage_model = StorageModel(
+        model=fake_eq_session, model_type=type(fake_eq_session)
+    )
+    serialised_item = storage_model.serialise()
+
+    assert (
+        storage_model.deserialise(serialised_item).__dict__
+        == EQSessionSchema().load(serialised_item).__dict__
+    )
