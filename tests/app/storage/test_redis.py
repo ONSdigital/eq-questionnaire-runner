@@ -1,6 +1,7 @@
 import json
 import uuid
 from datetime import datetime, timedelta
+from unittest import mock
 
 import fakeredis
 from dateutil.tz import tzutc
@@ -122,3 +123,39 @@ class TestRedis(AppContextTestCase):
         storage_model = StorageModel(model_type=EQSession)
 
         assert storage_model.key_field not in json.loads(stored_data)
+
+    def test_get_redis_expiry_when_expiry_set(self):
+        # Given
+        eq_session = EQSession(
+            eq_session_id="sessionid",
+            user_id="someuser",
+            session_data="somedata",
+            expires_at=EXPIRES_AT,
+        )
+        # When
+        self.redis.put(eq_session)
+
+        # Then
+        expires_in = self.mock_client.ttl(eq_session.eq_session_id)
+        assert expires_in > 0
+
+    def test_get_redis_expiry_when_expiry_not_set(self):
+        # Given
+        eq_session = EQSession(
+            eq_session_id="sessionid",
+            user_id="someuser",
+            session_data="somedata",
+            expires_at=EXPIRES_AT,
+        )
+
+        # When
+        with mock.patch(
+            "app.storage.storage.StorageModel.expiry_field",
+            new_callable=mock.PropertyMock,
+        ) as mock_expiry_field:
+            mock_expiry_field.return_value = None
+            self.redis.put(eq_session)
+
+        # Then
+        expires_in = self.mock_client.ttl(eq_session.eq_session_id)
+        assert expires_in == -1
