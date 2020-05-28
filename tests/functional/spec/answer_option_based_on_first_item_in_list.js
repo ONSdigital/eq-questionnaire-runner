@@ -8,7 +8,7 @@ const SummaryPage = require("../generated_pages/answer_based_on_first_item_in_li
 const HubPage = require("../base_pages/hub.page.js");
 
 describe('Placeholder Based on First Item in List"', function() {
-  beforeEach(function()  {
+  beforeEach(function() {
     browser.openQuestionnaire("test_placeholder_based_on_first_item_in_list.json");
   });
 
