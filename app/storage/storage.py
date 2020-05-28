@@ -1,8 +1,6 @@
 from abc import abstractmethod, ABC
-from datetime import datetime
 from functools import cached_property
 
-from dateutil.tz import tzutc
 from flask import current_app
 
 from app.data_model import app_models
@@ -35,9 +33,8 @@ class StorageModel:
         },
     }
 
-    def __init__(self, model_type, model=None):
+    def __init__(self, model_type):
         self._model_type = model_type
-        self._model = model
 
         if self._model_type not in self.TABLE_CONFIG:
             raise KeyError("Invalid model_type provided")
@@ -54,23 +51,11 @@ class StorageModel:
         return self._config.get("expiry_field")
 
     @cached_property
-    def expires_in(self):
-        if self._model and self.expiry_field:
-            expiry_at = getattr(self._model, self.expiry_field)
-            return expiry_at - datetime.now(tz=tzutc())
-
-    @cached_property
-    def key_value(self):
-        if self._model:
-            return getattr(self._model, self.key_field)
-
-    @cached_property
     def table_name(self):
         return current_app.config[self._config["table_name_key"]]
 
-    def serialize(self):
-        if self._model:
-            return self._schema.dump(self._model)
+    def serialize(self, model_to_serialise):
+        return self._schema.dump(model_to_serialise)
 
     def deserialize(self, serialised_item):
         return self._schema.load(serialised_item)

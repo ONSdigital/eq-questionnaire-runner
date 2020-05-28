@@ -14,24 +14,18 @@ def test_non_existent_model_type():
 def test_storage_model_properties(
     app, fake_eq_session
 ):  # pylint: disable=unused-argument
-    storage_model = StorageModel(
-        model=fake_eq_session, model_type=type(fake_eq_session)
-    )
+    storage_model = StorageModel(model_type=type(fake_eq_session))
 
     assert storage_model.key_field == "eq_session_id"
-    assert storage_model.key_value == "sessionid"
     assert storage_model.expiry_field == "expires_at"
     assert storage_model.table_name == "dev-eq-session"
-    assert storage_model.expires_in.total_seconds() > 0
 
 
 def test_serialize(fake_eq_session):
     expected_schema = EQSessionSchema().dump(fake_eq_session)
 
-    storage_model = StorageModel(
-        model=fake_eq_session, model_type=type(fake_eq_session)
-    )
-    serialized_item = storage_model.serialize()
+    storage_model = StorageModel(model_type=type(fake_eq_session))
+    serialized_item = storage_model.serialize(fake_eq_session)
 
     assert serialized_item["eq_session_id"] == expected_schema["eq_session_id"]
     assert serialized_item["user_id"] == expected_schema["user_id"]
@@ -42,10 +36,8 @@ def test_serialize(fake_eq_session):
 
 
 def test_deserialize(fake_eq_session):
-    storage_model = StorageModel(
-        model=fake_eq_session, model_type=type(fake_eq_session)
-    )
-    serialized_item = storage_model.serialize()
+    storage_model = StorageModel(model_type=type(fake_eq_session))
+    serialized_item = storage_model.serialize(fake_eq_session)
 
     assert (
         storage_model.deserialize(serialized_item).__dict__
