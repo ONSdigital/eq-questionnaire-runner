@@ -121,7 +121,7 @@ def test_uuid_deserialisation(fake_metadata_runner):
     assert isinstance(claims["tx_id"], str)
 
 
-def test_unknown_claims_are_not_deserialised(fake_metadata_runner):
+def test_unknown_claims_are_not_deserialized(fake_metadata_runner):
     fake_metadata_runner["unknown_key"] = "some value"
     claims = validate_runner_claims(fake_metadata_runner)
     assert "unknown_key" not in claims

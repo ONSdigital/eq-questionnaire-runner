@@ -29,13 +29,13 @@ class ListModel:
             return NotImplemented
         return self.items == other.items and self.primary_person == other.primary_person
 
-    def serialise(self):
-        serialised = {"items": self.items, "name": self.name}
+    def serialize(self):
+        serialized = {"items": self.items, "name": self.name}
 
         if self.primary_person:
-            serialised["primary_person"] = self.primary_person
+            serialized["primary_person"] = self.primary_person
 
-        return serialised
+        return serialized
 
     def __repr__(self):
         return f"<ListModel name={self.name} items={self.items}, primary_person={self.primary_person}>"
@@ -69,7 +69,7 @@ class ListStore:
     }
     ```
 
-    serialises to:
+    serializes to:
 
     ```
     [
@@ -174,12 +174,12 @@ class ListStore:
 
         return list_item_id
 
-    def serialise(self):
-        return [list_model.serialise() for list_model in self._lists.values()]
+    def serialize(self):
+        return [list_model.serialize() for list_model in self._lists.values()]
 
     @classmethod
-    def deserialise(cls, serialised: list):
-        if not serialised:
+    def deserialize(cls, serialized: list):
+        if not serialized:
             return cls()
 
-        return cls(existing_items=serialised)
+        return cls(existing_items=serialized)
