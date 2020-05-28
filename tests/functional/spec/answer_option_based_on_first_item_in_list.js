@@ -9,13 +9,13 @@ const HubPage = require("../base_pages/hub.page.js");
 
 describe('Placeholder Based on First Item in List"', function() {
   beforeEach(("Open questionnaire") => {
-    browser.openQuestionnaire('test_placeholder_based_on_first_item_in_list.json');
+    browser.openQuestionnaire("test_placeholder_based_on_first_item_in_list.json");
   });
 
-  describe('Given I am the first person in the list', function() {
-    it('When I get to the question page, Then I should see the default answer option', function() {
+  describe("Given I am the first person in the list", function() {
+    it("When I get to the question page, Then I should see the default answer option", function() {
       // Given
-	  $(HubPage.submit()).click();
+      $(HubPage.submit()).click();
       $(ListCollectorPage.yes()).click();
       $(ListCollectorPage.submit()).click();
       $(ListCollectorAddPage.firstName()).setValue("Marcus");
@@ -24,19 +24,19 @@ describe('Placeholder Based on First Item in List"', function() {
       $(ListCollectorPage.no()).click();
       $(ListCollectorPage.submit()).click();
 
-	  // When
-	  $(HubPage.submit()).click();
+      // When
+      $(HubPage.submit()).click();
       $(ListStatusInterstitial.submit()).click();
       $(FavouriteDrinkQuestion.answer()).setValue("Orange Juice");
       $(FavouriteDrinkQuestion.submit()).click();
 
-	  // Then
+      // Then
       expect($(ListStatusQuestion.listStatus2TeaLabel()).getText()).to.contain("Tea");
     });
   });
 
-  describe('Given I am not the first person in the list', function() {
-    it('When I get to the question page, Then I should see the correct answer option', function() {
+  describe("Given I am not the first person in the list", function() {
+    it("When I get to the question page, Then I should see the correct answer option", function() {
       // Given
       $(HubPage.submit()).click();
       $(ListCollectorPage.yes()).click();
@@ -69,3 +69,4 @@ describe('Placeholder Based on First Item in List"', function() {
       expect($(ListStatusQuestion.listStatus2TeaLabel()).getText()).to.contain("Orange Juice");
     });
   });
+});
