@@ -200,30 +200,15 @@
                     "title": "Personal Details",
                     "blocks": [
                         {
-                            "id": "list-status",
-                            "question_variants": [
+                            "content_variants": [
                                 {
-                                    "question": {
-                                        "answers": [
+                                    "content": {
+                                        "contents": [
                                             {
-                                                "id": "list-status-answer",
-                                                "mandatory": false,
-                                                "options": [
-                                                    {
-                                                        "label": "Yes",
-                                                        "value": "Yes"
-                                                    },
-                                                    {
-                                                        "label": "No",
-                                                        "value": "No"
-                                                    }
-                                                ],
-                                                "type": "Radio"
+                                                "description": "You are the first person in the list"
                                             }
                                         ],
-                                        "id": "list-status-question",
-                                        "title": "You are the first person in the list",
-                                        "type": "General"
+                                        "title": "List Status"
                                     },
                                     "when": [
                                         {
@@ -238,27 +223,13 @@
                                     ]
                                 },
                                 {
-                                    "question": {
-                                        "answers": [
+                                    "content": {
+                                        "contents": [
                                             {
-                                                "id": "list-status-answer",
-                                                "mandatory": false,
-                                                "options": [
-                                                    {
-                                                        "label": "Yes",
-                                                        "value": "Yes"
-                                                    },
-                                                    {
-                                                        "label": "No",
-                                                        "value": "No"
-                                                    }
-                                                ],
-                                                "type": "Radio"
+                                                "description": "You are not the first person in the list"
                                             }
                                         ],
-                                        "id": "list-status-question",
-                                        "title": "You are not the first person in the list",
-                                        "type": "General"
+                                        "title": "List Status"
                                     },
                                     "when": [
                                         {
@@ -273,7 +244,8 @@
                                     ]
                                 }
                             ],
-                            "type": "Question"
+                            "id": "list-status",
+                            "type": "Interstitial"
                         },
                         {
                             "type": "Question",
