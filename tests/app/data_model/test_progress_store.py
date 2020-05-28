@@ -28,9 +28,9 @@ def test_serialisation():
         list_item_id="abc123",
     )
 
-    serialised = store.serialise()
+    serialized = store.serialize()
 
-    assert serialised == [
+    assert serialized == [
         Progress.from_dict(
             {
                 "section_id": "s1",
@@ -99,7 +99,7 @@ def test_clear():
 
     store.clear()
 
-    assert store.serialise() == []
+    assert store.serialize() == []
     assert store.is_dirty
 
 
