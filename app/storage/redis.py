@@ -20,8 +20,11 @@ class Redis(StorageHandler):
             value = json.dumps(serialized_item)
 
         key_value = getattr(model, storage_model.key_field)
-        expiry_at = getattr(model, storage_model.expiry_field)
-        expires_in = expiry_at - datetime.now(tz=tzutc())
+
+        expires_in = None
+        if storage_model.expiry_field:
+            expiry_at = getattr(model, storage_model.expiry_field)
+            expires_in = expiry_at - datetime.now(tz=tzutc())
 
         record_created = self.client.set(
             name=key_value, value=value, ex=expires_in, nx=not overwrite
