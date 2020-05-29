@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2020-05-12 09:11+0100\n"
+"POT-Creation-Date: 2020-05-29 09:16+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -206,61 +206,73 @@ msgid_plural "{number_of_days} days"
 msgstr[0] ""
 msgstr[1] ""
 
-#: app/views/contexts/hub_context.py:15
+#: app/views/contexts/hub_context.py:16
 msgid "Completed"
 msgstr ""
 
-#: app/views/contexts/hub_context.py:17
+#: app/views/contexts/hub_context.py:18
 msgid "View answers"
 msgstr ""
 
-#: app/views/contexts/hub_context.py:18
+#: app/views/contexts/hub_context.py:19
 msgid "View answers for {section_name}"
 msgstr ""
 
-#: app/views/contexts/hub_context.py:22
+#: app/views/contexts/hub_context.py:23
 msgid "Partially completed"
 msgstr ""
 
-#: app/views/contexts/hub_context.py:24
+#: app/views/contexts/hub_context.py:25
 msgid "Continue with section"
 msgstr ""
 
-#: app/views/contexts/hub_context.py:25
+#: app/views/contexts/hub_context.py:26
 msgid "Continue with {section_name} section"
 msgstr ""
 
-#: app/views/contexts/hub_context.py:29
+#: app/views/contexts/hub_context.py:30
 msgid "Not started"
 msgstr ""
 
-#: app/views/contexts/hub_context.py:31
+#: app/views/contexts/hub_context.py:32
 msgid "Start section"
 msgstr ""
 
-#: app/views/contexts/hub_context.py:32
+#: app/views/contexts/hub_context.py:33
 msgid "Start {section_name} section"
 msgstr ""
 
-#: app/views/contexts/hub_context.py:44 app/views/contexts/hub_context.py:48
+#: app/views/contexts/hub_context.py:47 app/views/contexts/hub_context.py:54
+msgid "Submit census"
+msgstr ""
+
+#: app/views/contexts/hub_context.py:48
+msgid "Please submit this census to complete it"
+msgstr ""
+
+#: app/views/contexts/hub_context.py:56 app/views/contexts/hub_context.py:63
 msgid "Submit survey"
 msgstr ""
 
-#: app/views/contexts/hub_context.py:46 templates/summary.html:16
+#: app/views/contexts/hub_context.py:57 templates/summary.html:16
 msgid "Please submit this survey to complete it"
 msgstr ""
 
-#: app/views/contexts/hub_context.py:53
+#: app/views/contexts/hub_context.py:65 app/views/contexts/hub_context.py:71
 msgid "Choose another section to complete"
 msgstr ""
 
-#: app/views/contexts/hub_context.py:55
-msgid "You must complete all sections in order to submit this survey"
+#: app/views/contexts/hub_context.py:66
+msgid "You must complete all sections in order to submit this census"
 msgstr ""
 
-#: app/views/contexts/hub_context.py:58 templates/interstitial.html:5
-#: templates/sectionsummary.html:11
+#: app/views/contexts/hub_context.py:69 app/views/contexts/hub_context.py:75
+#: templates/interstitial.html:5 templates/sectionsummary.html:11
 msgid "Continue"
+msgstr ""
+
+#: app/views/contexts/hub_context.py:72
+msgid "You must complete all sections in order to submit this survey"
 msgstr ""
 
 #: app/views/contexts/list_context.py:84
@@ -296,7 +308,7 @@ msgid ""
 "%(telephone_number)s or email %(email_address)s"
 msgstr ""
 
-#: templates/introduction.html:36
+#: templates/introduction.html:38
 msgid "Your response is legally required"
 msgstr ""
 
@@ -407,33 +419,33 @@ msgstr ""
 msgid "We have received your answers and you do not need to do anything else."
 msgstr ""
 
-#: templates/view-submission.html:5
+#: templates/view-submission.html:7
 msgid "Submission"
 msgstr ""
 
-#: templates/view-submission.html:8
+#: templates/view-submission.html:10
 msgid "Submitted answers"
 msgstr ""
 
-#: templates/view-submission.html:17
+#: templates/view-submission.html:19
 #, python-format
 msgid ""
 "Your answers were submitted for <span>%(ru_name)s</span> "
 "(%(trading_as_name)s) on %(submitted_time)s"
 msgstr ""
 
-#: templates/view-submission.html:22
+#: templates/view-submission.html:24
 #, python-format
 msgid ""
 "Your answers were submitted for <span>%(ru_name)s</span> on "
 "%(submitted_time)s"
 msgstr ""
 
-#: templates/view-submission.html:27
+#: templates/view-submission.html:29
 msgid "Transaction ID"
 msgstr ""
 
-#: templates/view-submission.html:34
+#: templates/view-submission.html:36
 msgid "Print this page"
 msgstr ""
 
@@ -597,23 +609,23 @@ msgstr ""
 msgid "Hide this"
 msgstr ""
 
-#: templates/partials/question.html:33
+#: templates/partials/question.html:39
 msgid "Selecting this will clear your answer"
 msgstr ""
 
-#: templates/partials/question.html:34
+#: templates/partials/question.html:40
 msgid "cleared"
 msgstr ""
 
-#: templates/partials/question.html:37
+#: templates/partials/question.html:43
 msgid "Selecting this will deselect any selected options"
 msgstr ""
 
-#: templates/partials/question.html:38 templates/partials/question.html:46
+#: templates/partials/question.html:44 templates/partials/question.html:52
 msgid "deselected"
 msgstr ""
 
-#: templates/partials/question.html:42
+#: templates/partials/question.html:48
 msgid "Or"
 msgstr ""
 
@@ -673,22 +685,22 @@ msgid "No results found"
 msgstr ""
 
 #: templates/partials/introduction/preview.html:29
-#: templates/partials/summary/collapsible-summary.html:11
+#: templates/partials/summary/collapsible-summary.html:13
 msgid "Show"
 msgstr ""
 
 #: templates/partials/introduction/preview.html:30
-#: templates/partials/summary/collapsible-summary.html:12
+#: templates/partials/summary/collapsible-summary.html:14
 msgid "Hide"
 msgstr ""
 
 #: templates/partials/introduction/preview.html:48
-#: templates/partials/summary/collapsible-summary.html:54
+#: templates/partials/summary/collapsible-summary.html:57
 msgid "Show all"
 msgstr ""
 
 #: templates/partials/introduction/preview.html:49
-#: templates/partials/summary/collapsible-summary.html:55
+#: templates/partials/summary/collapsible-summary.html:58
 msgid "Hide all"
 msgstr ""
 
@@ -696,19 +708,19 @@ msgstr ""
 msgid "Start survey"
 msgstr ""
 
-#: templates/partials/summary/collapsible-summary.html:33
-#: templates/partials/summary/summary.html:16
+#: templates/partials/summary/collapsible-summary.html:35
+#: templates/partials/summary/summary.html:17
 msgid "No answer provided"
 msgstr ""
 
-#: templates/partials/summary/collapsible-summary.html:34
+#: templates/partials/summary/collapsible-summary.html:36
 #: templates/partials/summary/list-summary.html:13
-#: templates/partials/summary/summary.html:17
+#: templates/partials/summary/summary.html:18
 msgid "Change"
 msgstr ""
 
-#: templates/partials/summary/collapsible-summary.html:35
-#: templates/partials/summary/summary.html:18
+#: templates/partials/summary/collapsible-summary.html:37
+#: templates/partials/summary/summary.html:19
 msgid "Change your answer for:"
 msgstr ""
 
