@@ -68,7 +68,6 @@
                                     }
                                 ],
                                 "id": "paid-work-question",
-                                "mandatory": true,
                                 "title": "In the last seven days, have you done any paid work?",
                                 "type": "General"
                             }
@@ -95,7 +94,6 @@
                                     }
                                 ],
                                 "id": "unpaid-work-question",
-                                "mandatory": true,
                                 "title": "In the last seven days, have you done any unpaid work?",
                                 "type": "General"
                             }
@@ -228,7 +226,7 @@
                             "type": "Question"
                         }
                     ],
-                    "id": "Interests-group",
+                    "id": "interests-group",
                     "title": "Interests"
                 }
             ]
