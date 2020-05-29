@@ -13,7 +13,7 @@ describe("Component: Definition", function() {
       browser.openQuestionnaire("test_placeholder_based_on_first_item_in_list.json");
     });
 
-    it('Given I am the first person in the list, When I get to the question page, Then I should see the default answer option', function() {
+    it("Given I am the first person in the list, When I get to the question page, Then I should see the default answer option", function() {
       // Given
       $(HubPage.submit()).click();
       $(ListCollectorPage.yes()).click();
@@ -34,7 +34,7 @@ describe("Component: Definition", function() {
       expect($(ListStatusQuestion.listStatus2TeaLabel()).getText()).to.contain("Tea");
     });
 
-    it('Given I am not the first person in the list, When I get to the question page, Then I should see the correct answer option', function() {
+    it("Given I am not the first person in the list, When I get to the question page, Then I should see the correct answer option", function() {
       // Given
       $(HubPage.submit()).click();
       $(ListCollectorPage.yes()).click();
