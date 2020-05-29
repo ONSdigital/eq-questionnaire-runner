@@ -26,7 +26,9 @@ class PrimaryPersonQuestion(Question):
         )
 
     def get_context(self):
-        return build_question_context(self.rendered_block, self.form)
+        return build_question_context(
+            self.rendered_block, self.form, self.get_last_viewed_question_guidance()
+        )
 
     def handle_post(self):
         self.questionnaire_store_updater.update_answers(self.form)

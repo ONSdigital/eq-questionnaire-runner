@@ -92,7 +92,7 @@ class Router:
             if self._schema.is_hub_enabled():
                 return url_for(".get_questionnaire")
 
-            return self.get_first_incomplete_location_in_survey().url()
+            return self.get_first_incomplete_location_in_survey_url()
 
         return self.get_next_block_url(location, routing_path)
 
@@ -125,7 +125,9 @@ class Router:
 
         return None
 
-    def get_first_incomplete_location_in_survey(self):
+    def get_first_incomplete_location_in_survey_url(
+        self, last_viewed_question_guidance=False
+    ):
         first_incomplete_section_key = self._get_first_incomplete_section_key()
 
         if first_incomplete_section_key:
@@ -134,12 +136,18 @@ class Router:
             section_routing_path = self._path_finder.routing_path(
                 section_id=section_id, list_item_id=list_item_id
             )
+
             location = self._get_first_incomplete_location(section_routing_path)
 
             if location:
-                return location
+                if (
+                    last_viewed_question_guidance
+                    and location.block_id != section_routing_path[0]
+                ):
+                    return location.url(last_viewed_question_guidance=True)
+                return location.url()
 
-        return self.get_last_location_in_survey()
+        return self.get_last_location_in_survey().url()
 
     def get_first_incomplete_location_for_section(self, routing_path):
         section_id = routing_path.section_id

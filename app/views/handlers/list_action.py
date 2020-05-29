@@ -51,7 +51,9 @@ class ListAction(Question):
         return self.parent_location.url()
 
     def get_context(self):
-        return build_question_context(self.rendered_block, self.form)
+        return build_question_context(
+            self.rendered_block, self.form, self.get_last_viewed_question_guidance()
+        )
 
     def handle_post(self):
         # Clear the answer from the confirmation question on the list collector question

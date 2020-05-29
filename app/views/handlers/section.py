@@ -3,6 +3,7 @@ from flask import url_for
 from app.questionnaire.location import InvalidLocationException, Location
 from app.questionnaire.router import Router
 from app.views.contexts import SectionSummaryContext
+from app.data_model.progress_store import CompletionStatus
 
 
 class SectionHandler:
@@ -46,20 +47,28 @@ class SectionHandler:
     def get_next_location_url(self):
         if self._schema.is_hub_enabled():
             return url_for(".get_questionnaire")
-        return self._router.get_first_incomplete_location_in_survey().url()
+        return self._router.get_first_incomplete_location_in_survey_url()
 
     def get_previous_location_url(self):
         return self._router.get_last_location_in_section(self._routing_path).url()
 
     def get_section_resume_url(self):
-        is_section_complete = self._questionnaire_store.progress_store.is_section_complete(
-            section_id=self._section_id, list_item_id=self._list_item_id
+
+        section_status = self._questionnaire_store.progress_store.get_section_status(
+            self._section_id, self._list_item_id
         )
-        if is_section_complete:
+        if CompletionStatus.COMPLETED == section_status:
             return self._router.get_first_location_in_section(self._routing_path).url()
-        return self._router.get_first_incomplete_location_for_section(
+
+        first_incomplete_location_for_section = self._router.get_first_incomplete_location_for_section(
             self._routing_path
-        ).url()
+        )
+        if CompletionStatus.IN_PROGRESS == section_status:
+            return first_incomplete_location_for_section.url(
+                last_viewed_question_guidance=True
+            )
+
+        return first_incomplete_location_for_section.url()
 
     def get_page_title(self):
         return self._schema.get_title_for_section(self._section_id)

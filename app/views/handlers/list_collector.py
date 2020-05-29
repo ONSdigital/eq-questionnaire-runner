@@ -22,7 +22,9 @@ class ListCollector(Question):
         return super().get_next_location_url()
 
     def get_context(self):
-        question_context = build_question_context(self.rendered_block, self.form)
+        question_context = build_question_context(
+            self.rendered_block, self.form, self.get_last_viewed_question_guidance()
+        )
 
         list_context = ListContext(
             self._language,
