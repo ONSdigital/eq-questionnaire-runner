@@ -176,7 +176,7 @@ class ProgressStore:
 
             self._is_dirty = True
 
-    def serialise(self) -> List:
+    def serialize(self) -> List:
         return list(self._progress.values())
 
     def clear(self) -> None:
