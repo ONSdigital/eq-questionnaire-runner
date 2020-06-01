@@ -29,9 +29,7 @@ class BlockHandler:
         self.form = None
         self.page_title = None
         self._return_to_summary = self._request_args.get("return_to_summary")
-        self.last_viewed_question_guidance = self._request_args.get(
-            "last_viewed_question_guidance"
-        )
+        self.resume = self._request_args.get("resume")
 
         if not self.is_location_valid():
             raise InvalidLocationException(

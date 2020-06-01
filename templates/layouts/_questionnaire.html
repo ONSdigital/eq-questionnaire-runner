@@ -19,7 +19,7 @@
 
   {% block form_content %}
       <div class="group" id="{{current_location.group_id}}">
-        {% if last_viewed_question_guidance and last_viewed_question_guidance.show %}
+        {% if last_viewed_question_guidance %}
           {% include 'partials/last_viewed_question_guidance.html' %}
         {% endif %}
         {% include 'partials/block.html' %}

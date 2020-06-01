@@ -62,10 +62,6 @@ class QuestionPage extends BasePage {
     return "#last-viewed-question-guidance > div.panel__body > a";
   }
 
-  mainContent() {
-    return "#main-content";
-  }
-
   submit() {
     return '[data-qa="btn-submit"]';
   }

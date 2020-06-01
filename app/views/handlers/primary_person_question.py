@@ -1,5 +1,4 @@
 from app.questionnaire.location import Location
-from app.views.contexts.question import build_question_context
 from app.views.handlers.question import Question
 
 
@@ -23,11 +22,6 @@ class PrimaryPersonQuestion(Question):
     def get_next_location_url(self):
         return self.router.get_next_location_url(
             self.parent_location, self._routing_path, self._return_to_summary
-        )
-
-    def get_context(self):
-        return build_question_context(
-            self.rendered_block, self.form, self.get_last_viewed_question_guidance()
         )
 
     def handle_post(self):

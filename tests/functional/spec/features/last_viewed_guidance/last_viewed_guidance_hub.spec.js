@@ -13,8 +13,6 @@ const HubPage = require('../../../base_pages/hub.page.js');
 
 describe('Last viewed question guidance', function () {
 
-  const last_viewed_question_text = 'This is the last viewed question in this section'
-  const last_viewed_question_url_arg='last_viewed_question_guidance=True'
   const responseId = JwtHelper.getRandomString(16);
 
   describe('Given the hub has a required section, which has not been completed', function () {
@@ -24,16 +22,14 @@ describe('Last viewed question guidance', function () {
 
     it('When the respondent launches the survey, then last question guidance is not shown', function () {
       expect(browser.getUrl()).to.contain(WorkInterstitialPage.url());
-      expect(browser.getUrl()).not.to.contain(last_viewed_question_url_arg);
-      expect($(WorkInterstitialPage.mainContent()).getText()).not.to.contain(last_viewed_question_text);
+      expect($(WorkInterstitialPage.lastViewedQuestionGuidance()).isExisting()).to.be.false;
     });
 
     it('When the respondent saves and resumes from a section which is not started, then last question guidance is not shown', function () {
       $(WorkInterstitialPage.saveSignOut()).click();
       browser.openQuestionnaire('test_last_viewed_question_guidance_hub.json', { userId: "test_user", responseId: responseId });
       expect(browser.getUrl()).to.contain(WorkInterstitialPage.url());
-      expect(browser.getUrl()).not.to.contain(last_viewed_question_url_arg);
-      expect($(WorkInterstitialPage.mainContent()).getText()).not.to.contain(last_viewed_question_text);
+      expect($(WorkInterstitialPage.lastViewedQuestionGuidance()).isExisting()).to.be.false;
 
     });
 
@@ -41,9 +37,8 @@ describe('Last viewed question guidance', function () {
       $(WorkInterstitialPage.submit()).click();
       $(PaidWorkPage.saveSignOut()).click();
       browser.openQuestionnaire('test_last_viewed_question_guidance_hub.json', { userId: "test_user", responseId: responseId });
-      expect(browser.getUrl()).to.contain(last_viewed_question_url_arg);
       expect($(PaidWorkPage.lastViewedQuestionGuidanceLink()).getAttribute('href')).to.contain(WorkInterstitialPage.url());
-      expect($(PaidWorkPage.lastViewedQuestionGuidance()).getText()).to.contain(last_viewed_question_text);
+      expect($(PaidWorkPage.lastViewedQuestionGuidance()).isExisting()).to.be.true;
     });
   });
 
@@ -61,8 +56,7 @@ describe('Last viewed question guidance', function () {
     it('When the respondent selects a section which is not started, then last question guidance is not shown', function () {
         $(HubPage.summaryRowLink(2)).click();
         expect(browser.getUrl()).to.contain(GcsesPage.url());
-        expect(browser.getUrl()).to.not.contain(last_viewed_question_url_arg);
-        expect($(GcsesPage.mainContent()).getText()).not.to.contain(last_viewed_question_text);
+        expect($(GcsesPage.lastViewedQuestionGuidance()).isExisting()).to.be.false;
       });
 
     it('When the respondent selects a section which is in progress, then last question guidance is shown', function () {
@@ -72,9 +66,8 @@ describe('Last viewed question guidance', function () {
         browser.url(HubPage.url());
         $(HubPage.summaryRowLink(2)).click();
         expect(browser.getUrl()).to.contain(ALevelsPage.url());
-        expect(browser.getUrl()).to.contain(last_viewed_question_url_arg);
         expect($(ALevelsPage.lastViewedQuestionGuidanceLink()).getAttribute('href')).to.contain(GcsesPage.url());
-        expect($(ALevelsPage.lastViewedQuestionGuidance()).getText()).to.contain('This is the last viewed question in this section');
+        expect($(ALevelsPage.lastViewedQuestionGuidance()).isExisting()).to.be.true;
       });
 
     it('When the respondent selects a section which is complete , then last question guidance is not shown on the summary or any link clicked from the summary', function () {
@@ -83,18 +76,15 @@ describe('Last viewed question guidance', function () {
         $(EducationSectionSummaryPage.submit()).click();
         $(HubPage.summaryRowLink(2)).click();
         expect(browser.getUrl()).to.contain(EducationSectionSummaryPage.url());
-        expect(browser.getUrl()).not.to.contain(last_viewed_question_url_arg);
         $(EducationSectionSummaryPage.alevelsAnswerEdit()).click()
-        expect(browser.getUrl()).not.to.contain(last_viewed_question_url_arg);
-        expect($(ALevelsPage.mainContent()).getText()).not.to.contain(last_viewed_question_text);
+        expect($(ALevelsPage.lastViewedQuestionGuidance()).isExisting()).to.be.false;
     });
 
     it('When the user clicks continue on the hub and it takes you to a section which is not started, then last question guidance is not shown', function () {
         browser.url(HubPage.url());
         $(HubPage.submit()).click();
         expect(browser.getUrl()).to.contain(SportsPage.url());
-        expect(browser.getUrl()).not.to.contain(last_viewed_question_url_arg);
-        expect($(SportsPage.mainContent()).getText()).not.to.contain(last_viewed_question_text);
+        expect($(SportsPage.lastViewedQuestionGuidance()).isExisting()).to.be.false;
 
       });
 
@@ -105,9 +95,8 @@ describe('Last viewed question guidance', function () {
         browser.url(HubPage.url());
         $(HubPage.submit()).click();
         expect(browser.getUrl()).to.contain(HobbiesPage.url());
-        expect(browser.getUrl()).to.contain(last_viewed_question_url_arg);
         expect($(HobbiesPage.lastViewedQuestionGuidanceLink()).getAttribute('href')).to.contain(SportsPage.url());
-        expect($(HobbiesPage.lastViewedQuestionGuidance()).getText()).to.contain(last_viewed_question_text);
+        expect($(HobbiesPage.lastViewedQuestionGuidance()).isExisting()).to.be.true;
       });
 
     it('When the user clicks continue on the hub and it takes you to a section which is complete but doesnt have a summary, then last question guidance is not shown', function () {
@@ -115,8 +104,7 @@ describe('Last viewed question guidance', function () {
         $(HobbiesPage.submit()).click();
         $(HubPage.summaryRowLink(3)).click();
         expect(browser.getUrl()).to.contain(SportsPage.url());
-        expect(browser.getUrl()).not.to.contain(last_viewed_question_url_arg);
-        expect($(SportsPage.mainContent()).getText()).not.to.contain(last_viewed_question_text);
+        expect($(SportsPage.lastViewedQuestionGuidance()).isExisting()).to.be.false
       });
     });
   });

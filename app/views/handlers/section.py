@@ -3,7 +3,6 @@ from flask import url_for
 from app.questionnaire.location import InvalidLocationException, Location
 from app.questionnaire.router import Router
 from app.views.contexts import SectionSummaryContext
-from app.data_model.progress_store import CompletionStatus
 
 
 class SectionHandler:
@@ -52,23 +51,8 @@ class SectionHandler:
     def get_previous_location_url(self):
         return self._router.get_last_location_in_section(self._routing_path).url()
 
-    def get_section_resume_url(self):
-
-        section_status = self._questionnaire_store.progress_store.get_section_status(
-            self._section_id, self._list_item_id
-        )
-        if CompletionStatus.COMPLETED == section_status:
-            return self._router.get_first_location_in_section(self._routing_path).url()
-
-        first_incomplete_location_for_section = self._router.get_first_incomplete_location_for_section(
-            self._routing_path
-        )
-        if CompletionStatus.IN_PROGRESS == section_status:
-            return first_incomplete_location_for_section.url(
-                last_viewed_question_guidance=True
-            )
-
-        return first_incomplete_location_for_section.url()
+    def get_resume_url(self):
+        return self._router.get_section_resume_url(self._routing_path)
 
     def get_page_title(self):
         return self._schema.get_title_for_section(self._section_id)

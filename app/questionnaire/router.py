@@ -125,9 +125,7 @@ class Router:
 
         return None
 
-    def get_first_incomplete_location_in_survey_url(
-        self, last_viewed_question_guidance=False
-    ):
+    def get_first_incomplete_location_in_survey_url(self):
         first_incomplete_section_key = self._get_first_incomplete_section_key()
 
         if first_incomplete_section_key:
@@ -136,34 +134,19 @@ class Router:
             section_routing_path = self._path_finder.routing_path(
                 section_id=section_id, list_item_id=list_item_id
             )
-
-            location = self._get_first_incomplete_location(section_routing_path)
-
-            if location:
-                if (
-                    last_viewed_question_guidance
-                    and location.block_id != section_routing_path[0]
-                ):
-                    return location.url(last_viewed_question_guidance=True)
-                return location.url()
+            return self.get_section_resume_url(section_routing_path)
 
         return self.get_last_location_in_survey().url()
 
-    def get_first_incomplete_location_for_section(self, routing_path):
-        section_id = routing_path.section_id
-        list_item_id = routing_path.list_item_id
-        section_key = (section_id, list_item_id)
-        if section_key in self._progress_store:
-            for block_id in routing_path:
-                if not self._is_block_complete(block_id, section_id, list_item_id):
-                    return Location(
-                        block_id=block_id,
-                        section_id=routing_path.section_id,
-                        list_item_id=routing_path.list_item_id,
-                        list_name=routing_path.list_name,
-                    )
+    def get_section_resume_url(self, routing_path):
+        section_key = (routing_path.section_id, routing_path.list_item_id)
 
-        return self.get_first_location_in_section(routing_path)
+        if section_key in self._progress_store:
+            location = self._get_first_incomplete_location(routing_path)
+            if location:
+                return location.url(resume=True)
+
+        return self.get_first_location_in_section(routing_path).url()
 
     def is_survey_complete(self):
         first_incomplete_section_key = self._get_first_incomplete_section_key()

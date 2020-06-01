@@ -1,9 +1,8 @@
-def build_question_context(rendered_block, form, last_viewed_question_guidance=False):
+def build_question_context(rendered_block, form):
     question = rendered_block["question"]
 
     context = {
         "block": rendered_block,
-        "last_viewed_question_guidance": last_viewed_question_guidance or {},
         "form": {
             "errors": form.errors,
             "question_errors": form.question_errors,

@@ -65,10 +65,11 @@ class Question(BlockHandler):
                     return action
 
     def get_context(self):
-        context = build_question_context(
-            self.rendered_block, self.form, self.get_last_viewed_question_guidance()
-        )
+        context = build_question_context(self.rendered_block, self.form)
         context["return_to_hub_url"] = self.get_return_to_hub_url()
+        context[
+            "last_viewed_question_guidance"
+        ] = self.get_last_viewed_question_guidance_context()
 
         if "list_summary" in self.rendered_block:
             list_context = ListContext(
@@ -89,16 +90,12 @@ class Question(BlockHandler):
 
         return context
 
-    def get_last_viewed_question_guidance(self):
-        if self.last_viewed_question_guidance:
+    def get_last_viewed_question_guidance_context(self):
+        if self.resume:
             first_location_in_section_url = self._router.get_first_location_in_section(
                 self._routing_path
             ).url()
-            if self._current_location != first_location_in_section_url:
-                return {
-                    "show": True,
-                    "first_location_in_section_url": first_location_in_section_url,
-                }
+            return {"first_location_in_section_url": first_location_in_section_url}
 
     def handle_post(self):
         self.questionnaire_store_updater.update_answers(self.form)

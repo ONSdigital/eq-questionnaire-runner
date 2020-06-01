@@ -51,9 +51,7 @@ class TestQuestionnaireListChangeEvaluatesSections(IntegrationTestCase):
         )
 
         self.get("questionnaire/sections/accommodation-section/")
-        self.assertEqualUrl(
-            "/questionnaire/own-or-rent/?last_viewed_question_guidance=True"
-        )
+        self.assertEqualUrl("/questionnaire/own-or-rent/?resume=True")
 
     def test_with_primary_person(self):
         self.launchSurvey("test_list_change_evaluates_sections")

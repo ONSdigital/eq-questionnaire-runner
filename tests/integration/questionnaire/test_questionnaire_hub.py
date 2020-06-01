@@ -107,12 +107,10 @@ class TestQuestionnaireHub(IntegrationTestCase):
         self.assertEqualUrl(HUB_URL)
 
         # When I navigate to the url for a hub's section that is in-progress
-        self.get("/questionnaire/employment-type/?last_viewed_question_guidance=True")
+        self.get("/questionnaire/employment-type/?resume=True")
 
         # Then I should be redirected to the first incomplete question in the section
-        self.assertEqualUrl(
-            "/questionnaire/employment-type/?last_viewed_question_guidance=True"
-        )
+        self.assertEqualUrl("/questionnaire/employment-type/?resume=True")
 
     def test_hub_section_url_when_hub_enabled_and_section_complete(self):
         # Given the hub is enabled and a section is complete
