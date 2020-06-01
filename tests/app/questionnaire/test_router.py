@@ -417,7 +417,9 @@ class TestRouter(AppContextTestCase):  # pylint: disable=too-many-public-methods
             "http://test.localdomain/questionnaire/insurance-address/?resume=True",
         )
 
-    def test_get_section_return_location_url_when_section_complete_no_section_summary(self):
+    def test_get_section_return_location_url_when_section_complete_no_section_summary(
+        self,
+    ):
         schema = load_schema_from_name("test_hub_and_spoke")
 
         router = Router(
