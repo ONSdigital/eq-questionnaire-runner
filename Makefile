@@ -17,6 +17,10 @@ build: load-templates
 lint:
 	pipenv run ./scripts/run_lint_python.sh
 
+format:
+	yarn format
+	pipenv run black .
+
 test:
 	pipenv run ./scripts/run_tests.sh
 
