@@ -359,7 +359,7 @@ def get_view_submission(schema):
     session_data = get_session_store().session_data
 
     if _is_submission_viewable(schema.json, session_data.submitted_time):
-        submitted_data = current_app.eq["storage"].get_by_key(
+        submitted_data = current_app.eq["storage"].get(
             SubmittedResponse, session_data.tx_id
         )
 
@@ -492,14 +492,14 @@ def _store_viewable_submission(answers, lists, metadata, submitted_time):
         {"answers": answers, "lists": lists, "metadata": metadata.copy()}
     )
 
-    valid_until = submitted_time + timedelta(
+    expires_at = submitted_time + timedelta(
         seconds=g.schema.json["view_submitted_response"]["duration"]
     )
 
     item = SubmittedResponse(
         tx_id=metadata["tx_id"],
         data=encrypted_data,
-        valid_until=valid_until.replace(tzinfo=tzutc()),
+        expires_at=expires_at.replace(tzinfo=tzutc()),
     )
 
     current_app.eq["storage"].put(item)
@@ -516,10 +516,11 @@ def is_view_submitted_response_enabled(schema):
 def _is_submission_viewable(schema, submitted_time):
     if is_view_submitted_response_enabled(schema) and submitted_time:
         submitted_time = datetime.strptime(submitted_time, "%Y-%m-%dT%H:%M:%S.%f")
-        submission_valid_until = submitted_time + timedelta(
+        submission_expires_at = submitted_time + timedelta(
             seconds=schema["view_submitted_response"]["duration"]
         )
-        return submission_valid_until > datetime.utcnow()
+        is_submission_viewable = submission_expires_at > datetime.utcnow()
+        return is_submission_viewable
 
     return False
 
