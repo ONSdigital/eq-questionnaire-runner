@@ -39,7 +39,7 @@ class SessionStore:
         if self._eq_session and self._eq_session.expires_at:
             self._eq_session.expires_at = expires_at
 
-    def create(self, eq_session_id, user_id, session_data, expires_at=None):
+    def create(self, eq_session_id, user_id, session_data, expires_at):
         """
         Create a new eq_session and associate it with the user_id specified
         """
@@ -47,7 +47,9 @@ class SessionStore:
         self.user_id = user_id
         self.session_data = session_data
         self._eq_session = EQSession(
-            self.eq_session_id, self.user_id, expires_at=expires_at
+            eq_session_id=self.eq_session_id,
+            user_id=self.user_id,
+            expires_at=expires_at,
         )
 
         return self
@@ -61,7 +63,7 @@ class SessionStore:
                 self.user_id, self.user_ik, self.pepper
             ).encrypt_data(vars(self.session_data))
 
-            current_app.eq["storage"].put(self._eq_session)
+            current_app.eq["ephemeral_storage"].put(self._eq_session, overwrite=True)
 
         return self
 
@@ -70,7 +72,7 @@ class SessionStore:
         deletes user session from database
         """
         if self._eq_session:
-            current_app.eq["storage"].delete(self._eq_session)
+            current_app.eq["ephemeral_storage"].delete(self._eq_session)
 
             self._eq_session = None
             self.eq_session_id = None
@@ -82,7 +84,7 @@ class SessionStore:
             "finding eq_session_id in database", eq_session_id=self.eq_session_id
         )
 
-        self._eq_session = current_app.eq["storage"].get_by_key(
+        self._eq_session = current_app.eq["ephemeral_storage"].get(
             EQSession, self.eq_session_id
         )
 
