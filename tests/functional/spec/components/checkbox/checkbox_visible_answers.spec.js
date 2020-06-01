@@ -26,7 +26,7 @@ describe('Given I start a checkbox survey with a write-in option', function() {
 
   it('When I view a write-in checkbox and the visible option is not set, Then the detail answer label should not be displayed', function() {
     $(CheckboxVisibleTruePage.coffee()).click();
-    $(CheckboxVisibleFalsePage.submit()).click();
+    $(CheckboxVisibleTruePage.submit()).click();
     $(CheckboxVisibleFalsePage.iceCream()).click();
     $(CheckboxVisibleFalsePage.submit()).click();
     expect($(CheckboxVisibleNonePage.otherDetail()).isDisplayed()).to.equal(false);
@@ -34,9 +34,11 @@ describe('Given I start a checkbox survey with a write-in option', function() {
 
   it('When I view a mutually exclusive, write-in checkbox and the visible option is set to true, Then the detail answer label should be displayed', function() {
     $(CheckboxVisibleTruePage.coffee()).click();
-    $(CheckboxVisibleFalsePage.submit()).click();
+    $(CheckboxVisibleTruePage.submit()).click();
     $(CheckboxVisibleFalsePage.iceCream()).click();
+    $(CheckboxVisibleFalsePage.submit()).click();
     $(CheckboxVisibleNonePage.blue()).click();
+    $(CheckboxVisibleNonePage.submit()).click();
     expect($(MutuallyExclusivePage.otherDetail()).isDisplayed()).to.equal(true);
   });
 });
