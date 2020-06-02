@@ -84,8 +84,8 @@ class TestFlushData(IntegrationTestCase):
 
     def test_flush_errors_when_submission_fails(self):
         self.submitter_instance.send_message.return_value = (
-            False
-        )  # pylint: disable=no-member
+            False  # pylint: disable=no-member
+        )
 
         self.post(
             url="/flush?token="
