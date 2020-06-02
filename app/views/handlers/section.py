@@ -46,20 +46,13 @@ class SectionHandler:
     def get_next_location_url(self):
         if self._schema.is_hub_enabled():
             return url_for(".get_questionnaire")
-        return self._router.get_first_incomplete_location_in_survey().url()
+        return self._router.get_first_incomplete_location_in_survey_url()
 
     def get_previous_location_url(self):
         return self._router.get_last_location_in_section(self._routing_path).url()
 
-    def get_section_resume_url(self):
-        is_section_complete = self._questionnaire_store.progress_store.is_section_complete(
-            section_id=self._section_id, list_item_id=self._list_item_id
-        )
-        if is_section_complete:
-            return self._router.get_first_location_in_section(self._routing_path).url()
-        return self._router.get_first_incomplete_location_for_section(
-            self._routing_path
-        ).url()
+    def get_resume_url(self):
+        return self._router.get_section_resume_url(self._routing_path)
 
     def get_page_title(self):
         return self._schema.get_title_for_section(self._section_id)

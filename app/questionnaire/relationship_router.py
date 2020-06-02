@@ -10,7 +10,9 @@ class RelationshipRouter:
     def can_access_location(self, location):
         return location in self.path
 
-    def get_first_location_url(self):
+    def get_first_location_url(self, resume=False):
+        if resume:
+            return self.path[0].url(resume=resume)
         return self.path[0].url()
 
     def get_last_location_url(self):
