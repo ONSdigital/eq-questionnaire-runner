@@ -6,7 +6,8 @@
   },
   "extends": [
     "standard",
-    "eslint:recommended"
+    "eslint:recommended",
+    "plugin:import/recommended"
   ],
   "globals": {
     "$": true,
