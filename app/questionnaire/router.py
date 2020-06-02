@@ -142,7 +142,7 @@ class Router:
         section_key = (routing_path.section_id, routing_path.list_item_id)
 
         if section_key in self._progress_store:
-            location = self._get_first_incomplete_location(routing_path)
+            location = self._get_first_incomplete_location_in_section(routing_path)
             if location:
                 return location.url(resume=True)
 
@@ -159,7 +159,7 @@ class Router:
         return True
 
     def is_path_complete(self, routing_path):
-        return not bool(self._get_first_incomplete_location(routing_path))
+        return not bool(self._get_first_incomplete_location_in_section(routing_path))
 
     @staticmethod
     def get_first_location_in_section(routing_path) -> Location:
@@ -204,7 +204,7 @@ class Router:
 
         return block_id in completed_block_ids
 
-    def _get_first_incomplete_location(self, routing_path):
+    def _get_first_incomplete_location_in_section(self, routing_path):
         for block_id in routing_path:
             block = self._schema.get_block(block_id)
             block_type = block.get("type")

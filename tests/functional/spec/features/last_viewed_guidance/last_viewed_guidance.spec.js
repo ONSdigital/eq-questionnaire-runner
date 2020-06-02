@@ -6,11 +6,14 @@ const PrimaryPersonListCollectorPage = require('../../../generated_pages/last_vi
 
 describe('Last viewed question guidance', function () {
 
-  const responseId = JwtHelper.getRandomString(16);
+  const resumableLaunchParams = {
+    responseId: JwtHelper.getRandomString(16),
+    userId: "test_user"
+  };
 
-  describe('Given a standard survey', function () {
+  describe('Given the last viewed question guidance questionnaire', function () {
     before('Open survey', function () {
-      browser.openQuestionnaire('test_last_viewed_question_guidance.json', { userId: "test_user", responseId: responseId });
+      browser.openQuestionnaire('test_last_viewed_question_guidance.json', resumableLaunchParams);
     });
 
     it('When the respondent first launches the survey, then last question guidance is not shown', function () {
@@ -20,7 +23,7 @@ describe('Last viewed question guidance', function () {
 
     it('When the respondent resumes on the first block of a section, then last question guidance is not shown' , function () {
       $(HouseholdInterstitialPage.saveSignOut()).click();
-      browser.openQuestionnaire('test_last_viewed_question_guidance.json', { userId: "test_user", responseId: responseId });
+      browser.openQuestionnaire('test_last_viewed_question_guidance.json', resumableLaunchParams);
       expect(browser.getUrl()).to.contain(HouseholdInterstitialPage.url());
       expect($(HouseholdInterstitialPage.lastViewedQuestionGuidance()).isExisting()).to.be.false;
     });
@@ -28,14 +31,14 @@ describe('Last viewed question guidance', function () {
     it('When the respondent saves and resumes from a section which is in progress, then last question guidance is shown', function () {
       $(HouseholdInterstitialPage.submit()).click();
       $(AddressConfirmationPage.saveSignOut()).click();
-      browser.openQuestionnaire('test_last_viewed_question_guidance.json', { userId: "test_user", responseId: responseId });
+      browser.openQuestionnaire('test_last_viewed_question_guidance.json', resumableLaunchParams);
       expect(browser.getUrl()).to.contain(AddressConfirmationPage.url());
       expect($(AddressConfirmationPage.lastViewedQuestionGuidanceLink()).getAttribute('href')).to.contain(HouseholdInterstitialPage.url());
       expect($(AddressConfirmationPage.lastViewedQuestionGuidance()).isExisting()).to.be.true;
 
     });
 
-    it('When the respondent answers the next question and saves and continues, then last question guidance is not shown', function () {
+    it('When the respondent answers the question and saves and continues, then last question guidance is not shown on the next question, function () {
       $(AddressConfirmationPage.yes()).click();
       $(AddressConfirmationPage.submit()).click();
       expect(browser.getUrl()).to.contain(PrimaryPersonListCollectorPage.url());

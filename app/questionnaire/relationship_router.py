@@ -12,7 +12,7 @@ class RelationshipRouter:
 
     def get_first_location_url(self, resume=False):
         if resume:
-            return self.path[0].url(resume=True)
+            return self.path[0].url(resume=resume)
         return self.path[0].url()
 
     def get_last_location_url(self):

@@ -13,11 +13,14 @@ const HubPage = require('../../../base_pages/hub.page.js');
 
 describe('Last viewed question guidance', function () {
 
-  const responseId = JwtHelper.getRandomString(16);
+  const resumableLaunchParams = {
+    responseId: JwtHelper.getRandomString(16),
+    userId: "test_user"
+  };
 
   describe('Given the hub has a required section, which has not been completed', function () {
     before('Open survey', function () {
-      browser.openQuestionnaire('test_last_viewed_question_guidance_hub.json', { userId: "test_user", responseId: responseId });
+      browser.openQuestionnaire('test_last_viewed_question_guidance_hub.json', resumableLaunchParams);
     });
 
     it('When the respondent launches the survey, then last question guidance is not shown', function () {
@@ -27,7 +30,7 @@ describe('Last viewed question guidance', function () {
 
     it('When the respondent saves and resumes from a section which is not started, then last question guidance is not shown', function () {
       $(WorkInterstitialPage.saveSignOut()).click();
-      browser.openQuestionnaire('test_last_viewed_question_guidance_hub.json', { userId: "test_user", responseId: responseId });
+      browser.openQuestionnaire('test_last_viewed_question_guidance_hub.json', resumableLaunchParams);
       expect(browser.getUrl()).to.contain(WorkInterstitialPage.url());
       expect($(WorkInterstitialPage.lastViewedQuestionGuidance()).isExisting()).to.be.false;
 
@@ -36,7 +39,7 @@ describe('Last viewed question guidance', function () {
     it('When the respondent saves and resumes from a section which is in progress, then last question guidance is shown', function () {
       $(WorkInterstitialPage.submit()).click();
       $(PaidWorkPage.saveSignOut()).click();
-      browser.openQuestionnaire('test_last_viewed_question_guidance_hub.json', { userId: "test_user", responseId: responseId });
+      browser.openQuestionnaire('test_last_viewed_question_guidance_hub.json', resumableLaunchParams);
       expect($(PaidWorkPage.lastViewedQuestionGuidanceLink()).getAttribute('href')).to.contain(WorkInterstitialPage.url());
       expect($(PaidWorkPage.lastViewedQuestionGuidance()).isExisting()).to.be.true;
     });
@@ -73,6 +76,7 @@ describe('Last viewed question guidance', function () {
     it('When the respondent selects a section which is complete , then last question guidance is not shown on the summary or any link clicked from the summary', function () {
         $(ALevelsPage.yes()).click();
         $(ALevelsPage.submit()).click();
+        expect($(EducationSectionSummaryPage.lastViewedQuestionGuidance()).isExisting()).to.be.false;
         $(EducationSectionSummaryPage.submit()).click();
         $(HubPage.summaryRowLink(2)).click();
         expect(browser.getUrl()).to.contain(EducationSectionSummaryPage.url());
@@ -108,5 +112,3 @@ describe('Last viewed question guidance', function () {
       });
     });
   });
-
-
