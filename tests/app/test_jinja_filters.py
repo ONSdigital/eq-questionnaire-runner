@@ -244,7 +244,9 @@ class TestJinjaFilters(AppContextTestCase):  # pylint: disable=too-many-public-m
 
         option = Mock()
         option.detail_answer_id = "other-answer"
-        checkbox = CheckboxConfig(option=option, index=0, form=MagicMock(), answer=answer)
+        checkbox = CheckboxConfig(
+            option=option, index=0, form=MagicMock(), answer=answer
+        )
 
         assert checkbox.other.open is True
 
@@ -273,7 +275,9 @@ class TestJinjaFilters(AppContextTestCase):  # pylint: disable=too-many-public-m
 
         option = Mock()
         option.detail_answer_id = "other-answer"
-        checkbox = CheckboxConfig(option=option, index=0, form=MagicMock(), answer=answer)
+        checkbox = CheckboxConfig(
+            option=option, index=0, form=MagicMock(), answer=answer
+        )
 
         assert checkbox.other.open is True
 

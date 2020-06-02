@@ -40,7 +40,6 @@
                                         "type": "Checkbox",
                                         "id": "checkbox-visible-true-answer",
                                         "mandatory": false,
-                                        "voluntary": true,
                                         "options": [
                                             {
                                                 "label": "Coffee",
@@ -74,7 +73,6 @@
                                         "type": "Checkbox",
                                         "id": "checkbox-visible-false-answer",
                                         "mandatory": false,
-                                        "voluntary": false,
                                         "options": [
                                             {
                                                 "label": "Ice cream",
@@ -109,7 +107,6 @@
                                         "type": "Checkbox",
                                         "id": "checkbox-visible-none-answer",
                                         "mandatory": false,
-                                        "voluntary": false,
                                         "options": [
                                             {
                                                 "label": "Blue",
@@ -140,51 +137,51 @@
                                         "label": "",
                                         "mandatory": false,
                                         "options": [
-                                        {
-                                            "label": "Football",
-                                            "value": "Football"
-                                        },
-                                        {
-                                            "label": "Rugby",
-                                            "value": "Rugby"
-                                        },
-                                        {
-                                            "label": "Cricket",
-                                            "value": "Cricket"
-                                        },
-                                        {
-                                            "detail_answer": {
-                                                "id": "mutually-exclusive-answer-other",
-                                                "label": "Please specify your favourite sport",
-                                                "mandatory": false,
-                                                "max_length": 100,
-                                                "type": "TextField",
-                                                "visible": true
+                                            {
+                                                "label": "Football",
+                                                "value": "Football"
                                             },
-                                            "label": "Other",
-                                            "value": "Other"
-                                        }
-                                    ],
-                                    "type": "Checkbox"
+                                            {
+                                                "label": "Rugby",
+                                                "value": "Rugby"
+                                            },
+                                            {
+                                                "label": "Cricket",
+                                                "value": "Cricket"
+                                            },
+                                            {
+                                                "detail_answer": {
+                                                    "id": "mutually-exclusive-answer-other",
+                                                    "label": "Please specify your favourite sport",
+                                                    "mandatory": false,
+                                                    "max_length": 100,
+                                                    "type": "TextField",
+                                                    "visible": true
+                                                },
+                                                "label": "Other",
+                                                "value": "Other"
+                                            }
+                                        ],
+                                        "type": "Checkbox"
                                     },
                                     {
                                         "id": "mutually-exclusive-answer-exclusive",
                                         "mandatory": false,
                                         "options": [
-                                        {
-                                            "label": "None",
-                                            "value": "None"
-                                        }
+                                            {
+                                                "label": "None",
+                                                "value": "None"
+                                            }
                                         ],
-                                    "type": "Checkbox"
+                                        "type": "Checkbox"
                                     }
                                 ],
-                              "id": "mutually-exclusive-question",
-                              "mandatory": false,
-                              "title": "What is your favourite sport?",
-                              "type": "MutuallyExclusive"
+                                "id": "mutually-exclusive-question",
+                                "mandatory": false,
+                                "title": "What is your favourite sport?",
+                                "type": "MutuallyExclusive"
                             },
-                        "type": "Question"
+                            "type": "Question"
                         },
                         {
                             "type": "Summary",
