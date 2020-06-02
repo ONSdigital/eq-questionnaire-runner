@@ -38,7 +38,7 @@ describe('Last viewed question guidance', function () {
 
     });
 
-    it('When the respondent answers the question and saves and continues, then last question guidance is not shown on the next question, function () {
+    it('When the respondent answers the question and saves and continues, then last question guidance is not shown on the next question', function () {
       $(AddressConfirmationPage.yes()).click();
       $(AddressConfirmationPage.submit()).click();
       expect(browser.getUrl()).to.contain(PrimaryPersonListCollectorPage.url());
