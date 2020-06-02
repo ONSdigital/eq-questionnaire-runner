@@ -77,7 +77,7 @@ CLASS_NAME = Template(
 """
 )
 
-SECTION_SUMMARY_PAGE_URL = r"""  url() { return "/questionnaire/sections/" + this.pageName; }
+SECTION_SUMMARY_PAGE_URL = r"""  url() { return `/questionnaire/sections/${this.pageName}`; }
 
 """
 
@@ -215,7 +215,7 @@ LIST_SUMMARY_LIST_GETTER = r"""  listSummary() { return `.list__item`; }
 """
 
 LIST_SECTION_SUMMARY_LABEL_GETTER = Template(
-    r"""  ${list_name}ListLabel(listItemInstance) { return `div[data-qa="${list_name}-list-summary"] tbody:nth-child(' + listItemInstance + ') td:first-child`; }
+    r"""  ${list_name}ListLabel(listItemInstance) { return `div[data-qa="${list_name}-list-summary"] tbody:nth-child(` + listItemInstance + `) td:first-child`; }
 
 """
 )
@@ -227,13 +227,13 @@ LIST_SECTION_SUMMARY_ADD_LINK_GETTER = Template(
 )
 
 LIST_SECTION_SUMMARY_EDIT_LINK_GETTER = Template(
-    r"""  ${list_name}ListEditLink(listItemInstance) { return `div[data-qa="${list_name}-list-summary"] tbody:nth-child(' + listItemInstance + ') td:last-child a[data-qa="change-item-link"]`; }
+    r"""  ${list_name}ListEditLink(listItemInstance) { return `div[data-qa="${list_name}-list-summary"] tbody:nth-child(` + listItemInstance + `) td:last-child a[data-qa="change-item-link"]`; }
 
 """
 )
 
 LIST_SECTION_SUMMARY_REMOVE_LINK_GETTER = Template(
-    r"""  ${list_name}ListRemoveLink(listItemInstance) { return `div[data-qa="${list_name}-list-summary"] tbody:nth-child(' + listItemInstance + ') td:last-child a[data-qa="remove-item-link"]`; }
+    r"""  ${list_name}ListRemoveLink(listItemInstance) { return `div[data-qa="${list_name}-list-summary"] tbody:nth-child(` + listItemInstance + `) td:last-child a[data-qa="remove-item-link"]`; }
 
 """
 )
@@ -289,7 +289,7 @@ def process_options(answer_id, options, page_spec, base_prefix):
         if option["value"][0].isalpha():
             prefix = base_prefix
         else:
-            prefix = base_prefix + "Answer"
+            prefix = f"{base_prefix}Answer"
 
         option_name = camel_case(prefix + generate_pascal_case_from_id(option["value"]))
         option_id = "{name}-{index}".format(name=answer_id, index=index)

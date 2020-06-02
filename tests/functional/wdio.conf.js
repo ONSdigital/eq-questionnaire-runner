@@ -215,7 +215,7 @@ exports.config = {
         sexualIdentity,
         includeLogoutUrl,
       });
-      this.url("/session?token=" + token);
+      this.url(`/session?token=${token}`);
     });
   },
   // beforeCommand: function (commandName, args) {
