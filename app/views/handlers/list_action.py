@@ -1,7 +1,6 @@
 from flask import url_for
 
 from app.views.handlers.question import Question
-from app.views.contexts.question import build_question_context
 from app.questionnaire.location import Location
 
 
@@ -49,9 +48,6 @@ class ListAction(Question):
         if self._return_to_summary:
             return self.get_section_summary_url()
         return self.parent_location.url()
-
-    def get_context(self):
-        return build_question_context(self.rendered_block, self.form)
 
     def handle_post(self):
         # Clear the answer from the confirmation question on the list collector question

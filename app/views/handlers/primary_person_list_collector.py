@@ -1,7 +1,6 @@
 from flask import url_for
 
 from app.views.handlers.question import Question
-from app.views.contexts.question import build_question_context
 
 
 class PrimaryPersonListCollector(Question):
@@ -21,9 +20,6 @@ class PrimaryPersonListCollector(Question):
             return add_or_edit_url
 
         return super().get_next_location_url()
-
-    def get_context(self):
-        return build_question_context(self.rendered_block, self.form)
 
     def handle_post(self):
         list_name = self.rendered_block["for_list"]

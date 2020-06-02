@@ -48,6 +48,8 @@ class RelationshipCollector(Question):
         return True
 
     def get_first_location_url(self):
+        if self.resume:
+            return self.relationship_router.get_first_location_url(self.resume)
         return self.relationship_router.get_first_location_url()
 
     def get_previous_location_url(self):
