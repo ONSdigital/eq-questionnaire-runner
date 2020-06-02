@@ -18,7 +18,7 @@
 {% set question_warning %}
   {%- if question.warning -%}
     {% call onsPanel({
-      "id": "question-warning-" + question.id,
+      "id": "question-warning-" ~ question.id,
       "type": "warn"
     }) %}
       <p>{{question.warning}}</p>
@@ -30,7 +30,7 @@
   {%- if question.guidance -%}
     {% set contents = question.guidance.contents %}
     {% call onsPanel({
-      "id": "question-guidance-" + question.id,
+      "id": "question-guidance-" ~ question.id,
       "classes": "u-mb-m"
     }) %}
       {% set contents = question.guidance.contents %}
