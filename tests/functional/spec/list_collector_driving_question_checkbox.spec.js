@@ -15,11 +15,11 @@ const beforeSetup = () => {
   $(HubPage.submit()).click();
 };
 
-describe("List Collector Driving Checkbox Question", function() {
+describe("List Collector Driving Checkbox Question", () => {
   before("Load the survey", beforeSetup);
 
-  describe("Given a happy journey through the list collectors", function() {
-    it("All of the household members and visitors are shown in the summary", function() {
+  describe("Given a happy journey through the list collectors", () => {
+    it("All of the household members and visitors are shown in the summary", () => {
       $(PrimaryPersonListCollectorPage.yesIUsuallyLiveHere()).click();
       $(PrimaryPersonListCollectorPage.submit()).click();
       $(PrimaryPersonListCollectorAddPage.firstName()).setValue("Marcus");
@@ -40,8 +40,8 @@ describe("List Collector Driving Checkbox Question", function() {
     });
   });
 
-  describe("Given the primary person is removed", function() {
-    it("Then they aren't shown on the summary screen", function() {
+  describe("Given the primary person is removed", () => {
+    it("Then they aren't shown on the summary screen", () => {
       $(SummaryPage.previous()).click();
       $(ListCollectorTemporaryAwayPage.previous()).click();
       $(ListCollectorPage.previous()).click();
@@ -57,8 +57,8 @@ describe("List Collector Driving Checkbox Question", function() {
     });
   });
 
-  describe("Given the user chooses yes from the second list collector", function() {
-    it("Then they are taken to the correct list add screen", function() {
+  describe("Given the user chooses yes from the second list collector", () => {
+    it("Then they are taken to the correct list add screen", () => {
       $(SummaryPage.previous()).click();
       $(ListCollectorTemporaryAwayPage.yesINeedToAddSomeone()).click();
       $(ListCollectorTemporaryAwayPage.submit()).click();
@@ -74,10 +74,10 @@ describe("List Collector Driving Checkbox Question", function() {
   });
 });
 
-describe("Given the user says no one else lives in the house", function() {
+describe("Given the user says no one else lives in the house", () => {
   before("Load the survey", beforeSetup);
 
-  it("The user is asked if they need to add anyone that is temporarily away", function() {
+  it("The user is asked if they need to add anyone that is temporarily away", () => {
     $(PrimaryPersonListCollectorPage.yesIUsuallyLiveHere()).click();
     $(PrimaryPersonListCollectorPage.submit()).click();
     $(PrimaryPersonListCollectorAddPage.firstName()).setValue("Marcus");
@@ -90,9 +90,9 @@ describe("Given the user says no one else lives in the house", function() {
   });
 });
 
-describe("Given a person does not live in the house", function() {
+describe("Given a person does not live in the house", () => {
   before("Load the survey", beforeSetup);
-  it("The user is asked whether they live there", function() {
+  it("The user is asked whether they live there", () => {
     $(PrimaryPersonListCollectorPage.noIDonTUsuallyLiveHere()).click();
     $(PrimaryPersonListCollectorPage.submit()).click();
     expect($(AnyoneUsuallyLiveAtPage.questionText()).getText()).to.equal("Do any of the following usually live at 12 Lovely Villas on 21 March?");

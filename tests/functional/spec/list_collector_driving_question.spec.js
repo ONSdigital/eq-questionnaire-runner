@@ -6,14 +6,14 @@ const AnyoneElseLiveAtListCollectorAddPage = require("../generated_pages/list_co
 const AnyoneElseLiveAtListCollectorRemovePage = require("../generated_pages/list_collector_driving_question/anyone-else-live-at-remove.page.js");
 const SectionSummaryPage = require("../generated_pages/list_collector_driving_question/section-summary.page.js");
 
-describe("List Collector Driving Question", function() {
-  beforeEach("Load the survey", function() {
+describe("List Collector Driving Question", () => {
+  beforeEach("Load the survey", () => {
     browser.openQuestionnaire("test_list_collector_driving_question.json");
     $(HubPage.submit()).click();
   });
 
-  describe("Given a happy journey through the list collector", function() {
-    it("The collector shows all of the household members in the summary", function() {
+  describe("Given a happy journey through the list collector", () => {
+    it("The collector shows all of the household members in the summary", () => {
       $(AnyoneUsuallyLiveAtPage.yes()).click();
       $(AnyoneUsuallyLiveAtPage.submit()).click();
       $(AnyoneElseLiveAtListCollectorAddPage.firstName()).setValue("Marcus");
@@ -33,8 +33,8 @@ describe("List Collector Driving Question", function() {
     });
   });
 
-  describe("Given the user answers no to the driving question", function() {
-    it("The summary add link returns to the driving question", function() {
+  describe("Given the user answers no to the driving question", () => {
+    it("The summary add link returns to the driving question", () => {
       $(AnyoneUsuallyLiveAtPage.no()).click();
       $(AnyoneUsuallyLiveAtPage.submit()).click();
       $(SectionSummaryPage.peopleListAddLink()).click();
@@ -42,8 +42,8 @@ describe("List Collector Driving Question", function() {
     });
   });
 
-  describe("Given the user answers yes to the driving question, adds someone and later removes them", function() {
-    it("The summary add link should return to the original list collector", function() {
+  describe("Given the user answers yes to the driving question, adds someone and later removes them", () => {
+    it("The summary add link should return to the original list collector", () => {
       $(AnyoneUsuallyLiveAtPage.yes()).click();
       $(AnyoneUsuallyLiveAtPage.submit()).click();
       $(AnyoneElseLiveAtListCollectorAddPage.firstName()).setValue("Marcus");

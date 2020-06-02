@@ -5,15 +5,15 @@ const RelationshipsPage = require("../generated_pages/relationships/relationship
 const RelationshipsInterstitialPage = require("../generated_pages/relationships/relationship-interstitial.page.js");
 const SectionSummaryPage = require("../generated_pages/relationships/section-summary.page.js");
 
-describe("Relationships", function() {
+describe("Relationships", () => {
   const schema = "test_relationships.json";
 
-  describe("Given I am completing the test_relationships survey,", function() {
-    beforeEach("load the survey", function() {
+  describe("Given I am completing the test_relationships survey,", () => {
+    beforeEach("load the survey", () => {
       browser.openQuestionnaire(schema);
     });
 
-    it("When I have one household member, Then I will be not be asked about relationships", function() {
+    it("When I have one household member, Then I will be not be asked about relationships", () => {
       $(ListCollectorPage.yes()).click();
       $(ListCollectorPage.submit()).click();
       $(ListCollectorAddPage.firstName()).setValue("Marcus");
@@ -24,7 +24,7 @@ describe("Relationships", function() {
       expect(browser.getUrl()).to.contain("/sections/section/");
     });
 
-    it("When I add two household members, Then I will be asked about one relationship", function() {
+    it("When I add two household members, Then I will be asked about one relationship", () => {
       $(ListCollectorPage.yes()).click();
       $(ListCollectorPage.submit()).click();
       $(ListCollectorAddPage.firstName()).setValue("Marcus");
@@ -44,12 +44,12 @@ describe("Relationships", function() {
       expect(browser.getUrl()).to.contain("/sections/section/");
     });
 
-    describe("When I add three household members,", function() {
-      beforeEach("add three people", function() {
+    describe("When I add three household members,", () => {
+      beforeEach("add three people", () => {
         addThreePeople();
       });
 
-      it("Then I will be asked about all relationships", function() {
+      it("Then I will be asked about all relationships", () => {
         $(ListCollectorPage.no()).click();
         $(ListCollectorPage.submit()).click();
         $(RelationshipsPage.husbandOrWife()).click();
@@ -62,20 +62,20 @@ describe("Relationships", function() {
         expect(browser.getUrl()).to.contain("/sections/section/");
       });
 
-      it("And go to the first relationship, Then the previous link should return to the list collector", function() {
+      it("And go to the first relationship, Then the previous link should return to the list collector", () => {
         $(ListCollectorPage.no()).click();
         $(ListCollectorPage.submit()).click();
         $(RelationshipsPage.previous()).click();
         expect(browser.getUrl()).to.contain("/questionnaire/list-collector/");
       });
 
-      it("And go to the first relationship, Then the 'Brother or Sister' option should have the text 'Including half brother or half sister'", function() {
+      it("And go to the first relationship, Then the 'Brother or Sister' option should have the text 'Including half brother or half sister'", () => {
         $(ListCollectorPage.no()).click();
         $(ListCollectorPage.submit()).click();
         expect($(RelationshipsPage.brotherOrSisterLabel()).getText()).to.contain("Including half brother or half sister");
       });
 
-      it("And go to the second relationship, Then the previous link should return to the first relationship", function() {
+      it("And go to the second relationship, Then the previous link should return to the first relationship", () => {
         $(ListCollectorPage.no()).click();
         $(ListCollectorPage.submit()).click();
         $(RelationshipsPage.husbandOrWife()).click();
@@ -86,7 +86,7 @@ describe("Relationships", function() {
         expect($(RelationshipsPage.questionText()).getText()).to.contain("Marcus");
       });
 
-      it("And go to the section summary, Then the previous link should return to the last relationship Interstitial", function() {
+      it("And go to the section summary, Then the previous link should return to the last relationship Interstitial", () => {
         $(ListCollectorPage.no()).click();
         $(ListCollectorPage.submit()).click();
         $(RelationshipsPage.husbandOrWife()).click();
@@ -103,7 +103,7 @@ describe("Relationships", function() {
         expect($(RelationshipsPage.questionText()).getText()).to.contain("Olivia");
       });
 
-      it("When I add all relationships and return to the relationships, Then the relationships should be populated", function() {
+      it("When I add all relationships and return to the relationships, Then the relationships should be populated", () => {
         $(ListCollectorPage.no()).click();
         $(ListCollectorPage.submit()).click();
         $(RelationshipsPage.husbandOrWife()).click();
@@ -121,21 +121,21 @@ describe("Relationships", function() {
         expect($(RelationshipsPage.legallyRegisteredCivilPartner()).isSelected()).to.be.true;
       });
 
-      it("And go to the first relationship, Then the person's name should be in the question title and playback text", function() {
+      it("And go to the first relationship, Then the person's name should be in the question title and playback text", () => {
         $(ListCollectorPage.no()).click();
         $(ListCollectorPage.submit()).click();
         expect($(ListCollectorPage.questionText()).getText()).to.contain("Marcus Twin");
         expect($(RelationshipsPage.playback()).getText()).to.contain("Marcus Twin");
       });
 
-      it("And go to the first relationship and submit without selecting an option, Then an error should be displayed", function() {
+      it("And go to the first relationship and submit without selecting an option, Then an error should be displayed", () => {
         $(ListCollectorPage.no()).click();
         $(ListCollectorPage.submit()).click();
         $(RelationshipsPage.submit()).click();
         expect($(RelationshipsPage.error()).isDisplayed()).to.be.true;
       });
 
-      it("And go to a non existent relationship, Then I should be redirected to the first relationship", function() {
+      it("And go to a non existent relationship, Then I should be redirected to the first relationship", () => {
         $(ListCollectorPage.no()).click();
         $(ListCollectorPage.submit()).click();
         browser.url("/questionnaire/relationships/fake-id/to/another-fake-id");
@@ -143,7 +143,7 @@ describe("Relationships", function() {
         expect($(RelationshipsPage.playback()).getText()).to.contain("Marcus Twin");
       });
 
-      it("And go to the first relationship and click 'Save and sign out', Then I should be signed out", function() {
+      it("And go to the first relationship and click 'Save and sign out', Then I should be signed out", () => {
         $(ListCollectorPage.no()).click();
         $(ListCollectorPage.submit()).click();
         $(RelationshipsPage.husbandOrWife()).click();
@@ -151,7 +151,7 @@ describe("Relationships", function() {
         expect(browser.getUrl()).to.not.contain("questionnaire");
       });
 
-      it("And go to the first relationship, select a relationship and click 'Save and sign out', Then I should be signed out", function() {
+      it("And go to the first relationship, select a relationship and click 'Save and sign out', Then I should be signed out", () => {
         $(ListCollectorPage.no()).click();
         $(ListCollectorPage.submit()).click();
         $(RelationshipsPage.saveSignOut()).click();
@@ -159,19 +159,19 @@ describe("Relationships", function() {
       });
     });
 
-    describe("When I have added one or more household members after answering the relationships question,", function() {
-      beforeEach("add three people and complete their relationships", function() {
+    describe("When I have added one or more household members after answering the relationships question,", () => {
+      beforeEach("add three people and complete their relationships", () => {
         addThreePeopleAndCompleteRelationships();
       });
 
-      it("Then I delete one of the original household members I will not be asked for the original members relationships again", function() {
+      it("Then I delete one of the original household members I will not be asked for the original members relationships again", () => {
         $(SectionSummaryPage.peopleListRemoveLink(1)).click();
         $(ListCollectorRemovePage.yes()).click();
         $(ListCollectorRemovePage.submit()).click();
         expect(browser.getUrl()).to.contain("/sections/section/");
       });
 
-      it("Then I add another household member I will be asked for about all relationships", function() {
+      it("Then I add another household member I will be asked for about all relationships", () => {
         $(SectionSummaryPage.peopleListAddLink()).click();
         $(ListCollectorAddPage.firstName()).setValue("Tom");
         $(ListCollectorAddPage.lastName()).setValue("Bowden");

@@ -1,14 +1,14 @@
-const IncorrectAnswerPage = require('../../../generated_pages/routing_date_equals/incorrect-answer.page.js');
-const CorrectAnswerPage =   require('../../../generated_pages/routing_date_equals/correct-answer.page.js');
+const IncorrectAnswerPage = require("../../../generated_pages/routing_date_equals/incorrect-answer.page.js");
+const CorrectAnswerPage = require("../../../generated_pages/routing_date_equals/correct-answer.page.js");
 
-describe('Feature: Routing on a Date', function () {
-  describe('Equals', function () {
-    describe('Given I start date routing equals survey', function () {
-      const ComparisonDateQuestionPage = require('../../../generated_pages/routing_date_equals/comparison-date-block.page');
-      const DateQuestionPage = require('../../../generated_pages/routing_date_equals/date-question.page');
+describe("Feature: Routing on a Date", () => {
+  describe("Equals", () => {
+    describe("Given I start date routing equals survey", () => {
+      const ComparisonDateQuestionPage = require("../../../generated_pages/routing_date_equals/comparison-date-block.page");
+      const DateQuestionPage = require("../../../generated_pages/routing_date_equals/date-question.page");
 
-      beforeEach(function() {
-        browser.openQuestionnaire('test_routing_date_equals.json');
+      beforeEach(() => {
+        browser.openQuestionnaire("test_routing_date_equals.json");
 
         $(ComparisonDateQuestionPage.day()).setValue(31);
         $(ComparisonDateQuestionPage.month()).setValue(3);
@@ -16,7 +16,7 @@ describe('Feature: Routing on a Date', function () {
         $(ComparisonDateQuestionPage.submit()).click();
       });
 
-      it('When I enter the same date, Then I should be routed to the correct page', function () {
+      it("When I enter the same date, Then I should be routed to the correct page", () => {
         $(DateQuestionPage.day()).setValue(31);
         $(DateQuestionPage.month()).setValue(3);
         $(DateQuestionPage.year()).setValue(2020);
@@ -24,7 +24,7 @@ describe('Feature: Routing on a Date', function () {
         expect(browser.getUrl()).to.contain(CorrectAnswerPage.pageName);
       });
 
-      it('When I enter the yesterday date, Then I should be routed to the correct page', function () {
+      it("When I enter the yesterday date, Then I should be routed to the correct page", () => {
         $(DateQuestionPage.day()).setValue(30);
         $(DateQuestionPage.month()).setValue(3);
         $(DateQuestionPage.year()).setValue(2020);
@@ -32,7 +32,7 @@ describe('Feature: Routing on a Date', function () {
         expect(browser.getUrl()).to.contain(CorrectAnswerPage.pageName);
       });
 
-      it('When I enter the tomorrow date, Then I should be routed to the correct page', function () {
+      it("When I enter the tomorrow date, Then I should be routed to the correct page", () => {
         $(DateQuestionPage.day()).setValue(1);
         $(DateQuestionPage.month()).setValue(4);
         $(DateQuestionPage.year()).setValue(2020);
@@ -40,7 +40,7 @@ describe('Feature: Routing on a Date', function () {
         expect(browser.getUrl()).to.contain(CorrectAnswerPage.pageName);
       });
 
-      it('When I enter the last month date, Then I should be routed to the correct page', function () {
+      it("When I enter the last month date, Then I should be routed to the correct page", () => {
         $(DateQuestionPage.day()).setValue(29);
         $(DateQuestionPage.month()).setValue(2);
         $(DateQuestionPage.year()).setValue(2020);
@@ -48,7 +48,7 @@ describe('Feature: Routing on a Date', function () {
         expect(browser.getUrl()).to.contain(CorrectAnswerPage.pageName);
       });
 
-      it('When I enter the next month date, Then I should be routed to the correct page', function () {
+      it("When I enter the next month date, Then I should be routed to the correct page", () => {
         $(DateQuestionPage.day()).setValue(30);
         $(DateQuestionPage.month()).setValue(4);
         $(DateQuestionPage.year()).setValue(2020);
@@ -56,7 +56,7 @@ describe('Feature: Routing on a Date', function () {
         expect(browser.getUrl()).to.contain(CorrectAnswerPage.pageName);
       });
 
-      it('When I enter the last year date, Then I should be routed to the correct page', function () {
+      it("When I enter the last year date, Then I should be routed to the correct page", () => {
         $(DateQuestionPage.day()).setValue(31);
         $(DateQuestionPage.month()).setValue(3);
         $(DateQuestionPage.year()).setValue(2019);
@@ -64,7 +64,7 @@ describe('Feature: Routing on a Date', function () {
         expect(browser.getUrl()).to.contain(CorrectAnswerPage.pageName);
       });
 
-      it('When I enter the next year date, Then I should be routed to the correct page', function () {
+      it("When I enter the next year date, Then I should be routed to the correct page", () => {
         $(DateQuestionPage.day()).setValue(31);
         $(DateQuestionPage.month()).setValue(3);
         $(DateQuestionPage.year()).setValue(2021);
@@ -72,7 +72,7 @@ describe('Feature: Routing on a Date', function () {
         expect(browser.getUrl()).to.contain(CorrectAnswerPage.pageName);
       });
 
-      it('When I enter an incorrect date, Then I should be routed to the incorrect page', function () {
+      it("When I enter an incorrect date, Then I should be routed to the incorrect page", () => {
         $(DateQuestionPage.day()).setValue(1);
         $(DateQuestionPage.month()).setValue(3);
         $(DateQuestionPage.year()).setValue(2020);
@@ -82,98 +82,97 @@ describe('Feature: Routing on a Date', function () {
     });
   });
 
-  describe('Not Equals', function () {
-    describe('Given I start date routing not equals survey', function () {
-      const DateQuestionPage = require('../../../generated_pages/routing_date_not_equals/date-question.page');
+  describe("Not Equals", () => {
+    describe("Given I start date routing not equals survey", () => {
+      const DateQuestionPage = require("../../../generated_pages/routing_date_not_equals/date-question.page");
 
-      beforeEach(function() {
-        browser.openQuestionnaire('test_routing_date_not_equals.json');
+      beforeEach(() => {
+        browser.openQuestionnaire("test_routing_date_not_equals.json");
       });
 
-      it('When I enter a different date to 28/02/2018, Then I should be routed to the correct page', function () {
+      it("When I enter a different date to 28/02/2018, Then I should be routed to the correct page", () => {
         $(DateQuestionPage.day()).setValue(27);
         $(DateQuestionPage.month()).setValue(2);
         $(DateQuestionPage.year()).setValue(2018);
         $(DateQuestionPage.submit()).click();
 
-        let expectedUrl = browser.getUrl();
+        const expectedUrl = browser.getUrl();
 
         expect(expectedUrl).to.contain(CorrectAnswerPage.pageName);
       });
 
-      it('When I enter 28/02/2018, Then I should be routed to the incorrect page', function () {
+      it("When I enter 28/02/2018, Then I should be routed to the incorrect page", () => {
         $(DateQuestionPage.day()).setValue(28);
         $(DateQuestionPage.month()).setValue(2);
         $(DateQuestionPage.year()).setValue(2018);
         $(DateQuestionPage.submit()).click();
 
-        let expectedUrl = browser.getUrl();
+        const expectedUrl = browser.getUrl();
 
         expect(expectedUrl).to.contain(IncorrectAnswerPage.pageName);
       });
     });
   });
 
-  describe('Greater Than', function () {
-    describe('Given I start date routing greater than survey', function () {
-      const DateQuestionPage = require('../../../generated_pages/routing_date_greater_than/date-question.page');
+  describe("Greater Than", () => {
+    describe("Given I start date routing greater than survey", () => {
+      const DateQuestionPage = require("../../../generated_pages/routing_date_greater_than/date-question.page");
 
-      beforeEach(function() {
-        browser.openQuestionnaire('test_routing_date_greater_than.json');
+      beforeEach(() => {
+        browser.openQuestionnaire("test_routing_date_greater_than.json");
       });
 
-      it('When I enter a date greater than March 2017, Then I should be routed to the correct page', function () {
+      it("When I enter a date greater than March 2017, Then I should be routed to the correct page", () => {
         $(DateQuestionPage.Month()).setValue(4);
         $(DateQuestionPage.Year()).setValue(2017);
         $(DateQuestionPage.submit()).click();
 
-        let expectedUrl = browser.getUrl();
+        const expectedUrl = browser.getUrl();
 
         expect(expectedUrl).to.contain(CorrectAnswerPage.pageName);
       });
 
-      it('When I enter a date less than or equal to March 2017, Then I should be routed to the incorrect page', function () {
+      it("When I enter a date less than or equal to March 2017, Then I should be routed to the incorrect page", () => {
         $(DateQuestionPage.Month()).setValue(3);
         $(DateQuestionPage.Year()).setValue(2017);
         $(DateQuestionPage.submit()).click();
 
-        let expectedUrl = browser.getUrl();
+        const expectedUrl = browser.getUrl();
 
         expect(expectedUrl).to.contain(IncorrectAnswerPage.pageName);
       });
     });
   });
 
-  describe('Less Than', function () {
-    describe('Given I start date routing less than survey', function () {
-      const DateQuestionPage = require('../../../generated_pages/routing_date_less_than/date-question.page');
+  describe("Less Than", () => {
+    describe("Given I start date routing less than survey", () => {
+      const DateQuestionPage = require("../../../generated_pages/routing_date_less_than/date-question.page");
 
       // TODAY
-      let today = new Date();
+      const today = new Date();
 
       // YESTERDAY
-      let yesterday = new Date(today);
+      const yesterday = new Date(today);
       yesterday.setDate(today.getDate() - 1);
 
-      let dd_yesterday = yesterday.getDate(); // yesterday
-      let mm_yesterday = yesterday.getMonth()+1; //January is 0!
-      let yyyy_yesterday = yesterday.getFullYear();
+      const dayYesterday = yesterday.getDate(); // yesterday
+      const monthYesterday = yesterday.getMonth() + 1; // January is 0!
+      const yearYesterday = yesterday.getFullYear();
 
-      beforeEach(function() {
-        browser.openQuestionnaire('test_routing_date_less_than.json');
+      beforeEach(() => {
+        browser.openQuestionnaire("test_routing_date_less_than.json");
       });
 
-      it('When I enter a date less than today, Then I should be routed to the correct page', function () {
-        $(DateQuestionPage.day()).setValue(dd_yesterday);
-        $(DateQuestionPage.month()).setValue(mm_yesterday);
-        $(DateQuestionPage.year()).setValue(yyyy_yesterday);
+      it("When I enter a date less than today, Then I should be routed to the correct page", () => {
+        $(DateQuestionPage.day()).setValue(dayYesterday);
+        $(DateQuestionPage.month()).setValue(monthYesterday);
+        $(DateQuestionPage.year()).setValue(yearYesterday);
         $(DateQuestionPage.submit()).click();
 
-        let browserUrl = browser.getUrl();
+        const browserUrl = browser.getUrl();
 
         expect(browserUrl).to.contain(CorrectAnswerPage.pageName);
       });
     });
   });
-
 });

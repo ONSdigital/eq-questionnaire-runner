@@ -313,7 +313,9 @@ def process_answer(answer, page_spec, long_names, page_name):
 
     answer_name = generate_pascal_case_from_id(answer["id"])
     answer_name = answer_name.replace(page_name, "")
-    answer_name = answer_name.replace("Answer", "")
+
+    if not answer_name.replace("Answer", "").isdigit():
+        answer_name = answer_name.replace("Answer", "")
 
     prefix = camel_case(answer_name) if answer_name and long_names else ""
 
@@ -351,6 +353,9 @@ def process_answer(answer, page_spec, long_names, page_name):
             "answerName": camel_case(answer_name),
             "answerId": answer["id"],
         }
+
+        if "currency" in answer_name:
+            a = 1
 
         page_spec.write(ANSWER_GETTER.substitute(answer_context))
         page_spec.write(ANSWER_LABEL_GETTER.substitute(answer_context))
@@ -428,6 +433,8 @@ def write_summary_spec(collapsible, page_spec, section, section_summary):
                 }
                 for answer in question.get("answers", []):
                     answer_name = generate_pascal_case_from_id(answer["id"])
+
+                    print(answer_name)
                     answer_context = {
                         "answerName": camel_case(answer_name),
                         "answerId": answer["id"],

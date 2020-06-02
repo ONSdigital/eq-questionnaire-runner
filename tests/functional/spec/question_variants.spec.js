@@ -8,12 +8,12 @@ const nameBlock = require("../generated_pages/variants_question/name-block.page.
 const proxyBlock = require("../generated_pages/variants_question/proxy-block.page.js");
 const secondNumberBlock = require("../generated_pages/variants_question/second-number-block.page.js");
 
-describe("QuestionVariants", function() {
-  beforeEach(function() {
+describe("QuestionVariants", () => {
+  beforeEach(() => {
     browser.openQuestionnaire("test_variants_question.json");
   });
 
-  it("Given I am completing the survey, then the correct questions are shown based on my previous answers", function() {
+  it("Given I am completing the survey, then the correct questions are shown based on my previous answers", () => {
     $(nameBlock.firstName()).setValue("Guido");
     $(nameBlock.lastName()).setValue("van Rossum");
     $(nameBlock.submit()).click();

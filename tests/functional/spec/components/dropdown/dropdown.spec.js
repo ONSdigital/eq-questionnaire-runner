@@ -1,40 +1,39 @@
-describe('Component: Dropdown', function() {
-  //Mandatory
-  describe('Given I start a Mandatory Dropdown survey', function() {
+describe("Component: Dropdown", () => {
+  // Mandatory
+  describe("Given I start a Mandatory Dropdown survey", () => {
+    const DropdownMandatoryPage = require("../../../generated_pages/dropdown_mandatory/dropdown-mandatory.page");
+    const DropdownSummaryPage = require("../../../generated_pages/dropdown_mandatory/summary.page");
+    const schema = "test_dropdown_mandatory.json";
 
-    const DropdownMandatoryPage = require('../../../generated_pages/dropdown_mandatory/dropdown-mandatory.page');
-    const DropdownSummaryPage = require('../../../generated_pages/dropdown_mandatory/summary.page');
-    const schema = 'test_dropdown_mandatory.json';
-
-    beforeEach(function(){
+    beforeEach(() => {
       browser.openQuestionnaire(schema);
     });
 
-    it('When I have selected a dropdown option, Then the selected option should be displayed in the summary', function() {
-      $(DropdownMandatoryPage.answer()).selectByAttribute('value', "Rugby is better!");
+    it("When I have selected a dropdown option, Then the selected option should be displayed in the summary", () => {
+      $(DropdownMandatoryPage.answer()).selectByAttribute("value", "Rugby is better!");
       $(DropdownMandatoryPage.submit()).click();
       expect($(DropdownSummaryPage.dropdownMandatoryAnswer()).getText()).to.contain("Rugby is better!");
     });
 
-    it('When I have not selected a dropdown option and click Continue, Then the default error message should be displayed', function() {
+    it("When I have not selected a dropdown option and click Continue, Then the default error message should be displayed", () => {
       $(DropdownMandatoryPage.submit()).click();
       expect($(DropdownMandatoryPage.errorNumber(1)).getText()).to.contain("Select an answer to continue.");
     });
 
-    it('When I have selected a dropdown option and I try to select a default (disabled) dropdown option, Then the already selected option should be displayed in summary', function() {
-      $(DropdownMandatoryPage.answer()).selectByAttribute('value', "Liverpool");
-      $(DropdownMandatoryPage.answer()).selectByAttribute('value', "");
+    it("When I have selected a dropdown option and I try to select a default (disabled) dropdown option, Then the already selected option should be displayed in summary", () => {
+      $(DropdownMandatoryPage.answer()).selectByAttribute("value", "Liverpool");
+      $(DropdownMandatoryPage.answer()).selectByAttribute("value", "");
       $(DropdownMandatoryPage.submit()).click();
       expect($(DropdownSummaryPage.dropdownMandatoryAnswer()).getText()).to.contain("Liverpool");
     });
 
-    it('When I click the dropdown label, Then the dropdown should be focused', function() {
+    it("When I click the dropdown label, Then the dropdown should be focused", () => {
       $(DropdownMandatoryPage.answerLabel()).click();
       expect($(DropdownMandatoryPage.answer()).isFocused()).to.be.true;
     });
 
-    it('When I\'m on the summary page and I click Edit then Continue, Then the answer on the summary page should be unchanged', function() {
-      $(DropdownMandatoryPage.answer()).selectByAttribute('value', "Rugby is better!");
+    it("When I'm on the summary page and I click Edit then Continue, Then the answer on the summary page should be unchanged", () => {
+      $(DropdownMandatoryPage.answer()).selectByAttribute("value", "Rugby is better!");
       $(DropdownMandatoryPage.submit()).click();
       expect($(DropdownSummaryPage.dropdownMandatoryAnswer()).getText()).to.contain("Rugby is better!");
       $(DropdownSummaryPage.dropdownMandatoryAnswerEdit()).click();
@@ -42,65 +41,62 @@ describe('Component: Dropdown', function() {
       expect($(DropdownSummaryPage.dropdownMandatoryAnswer()).getText()).to.contain("Rugby is better!");
     });
 
-    it('When I\'m on the summary page and I click Edit and change the answer, Then the newly selected answer should be displayed in the summary', function() {
-      $(DropdownMandatoryPage.answer()).selectByAttribute('value', "Rugby is better!");
+    it("When I'm on the summary page and I click Edit and change the answer, Then the newly selected answer should be displayed in the summary", () => {
+      $(DropdownMandatoryPage.answer()).selectByAttribute("value", "Rugby is better!");
       $(DropdownMandatoryPage.submit()).click();
       expect($(DropdownSummaryPage.dropdownMandatoryAnswer()).getText()).to.contain("Rugby is better!");
       $(DropdownSummaryPage.dropdownMandatoryAnswerEdit()).click();
       $(DropdownMandatoryPage.submit()).click();
       expect($(DropdownSummaryPage.dropdownMandatoryAnswer()).getText()).to.contain("Rugby is better!");
       $(DropdownSummaryPage.dropdownMandatoryAnswerEdit()).click();
-      $(DropdownMandatoryPage.answer()).selectByAttribute('value', "Liverpool");
+      $(DropdownMandatoryPage.answer()).selectByAttribute("value", "Liverpool");
       $(DropdownMandatoryPage.submit()).click();
       expect($(DropdownSummaryPage.dropdownMandatoryAnswer()).getText()).to.contain("Liverpool");
     });
   });
 
-  describe('Given I start a Mandatory With Overridden Error Dropdown survey', function() {
+  describe("Given I start a Mandatory With Overridden Error Dropdown survey", () => {
+    const DropdownMandatoryPage = require("../../../generated_pages/dropdown_mandatory_with_overridden_error/dropdown-mandatory-with-overridden-error.page");
 
-    const DropdownMandatoryPage = require('../../../generated_pages/dropdown_mandatory_with_overridden_error/dropdown-mandatory-with-overridden-error.page');
-
-    before(function() {
-      browser.openQuestionnaire('test_dropdown_mandatory_with_overridden_error.json');
+    before(() => {
+      browser.openQuestionnaire("test_dropdown_mandatory_with_overridden_error.json");
     });
 
-    it('When I have not selected a dropdown option and click Continue, Then the overridden error message should be displayed', function() {
-        $(DropdownMandatoryPage.submit()).click();
-        expect($(DropdownMandatoryPage.errorNumber(1)).getText()).to.contain("Overridden test error message.");
+    it("When I have not selected a dropdown option and click Continue, Then the overridden error message should be displayed", () => {
+      $(DropdownMandatoryPage.submit()).click();
+      expect($(DropdownMandatoryPage.errorNumber(1)).getText()).to.contain("Overridden test error message.");
     });
   });
 
-  //Optional
-  describe('Given I start a Optional Dropdown survey', function() {
+  // Optional
+  describe("Given I start a Optional Dropdown survey", () => {
+    const DropdownOptionalPage = require("../../../generated_pages/dropdown_optional/dropdown-optional.page");
+    const DropdownSummaryPage = require("../../../generated_pages/dropdown_optional/summary.page");
+    const schema = "test_dropdown_optional.json";
 
-    const DropdownOptionalPage = require('../../../generated_pages/dropdown_optional/dropdown-optional.page');
-    const DropdownSummaryPage = require('../../../generated_pages/dropdown_optional/summary.page');
-    const schema = 'test_dropdown_optional.json';
-
-    beforeEach(function(){
+    beforeEach(() => {
       browser.openQuestionnaire(schema);
     });
 
-    it('When I have not selected a dropdown option, Then the summary should display "No answer provided"', function() {
+    it('When I have not selected a dropdown option, Then the summary should display "No answer provided"', () => {
       $(DropdownOptionalPage.submit()).click();
       expect($(DropdownSummaryPage.dropdownOptionalAnswer()).getText()).to.contain("No answer provided");
     });
 
-    it('When I have selected a dropdown option, Then the selected option should be displayed in the summary', function() {
-      $(DropdownOptionalPage.answer()).selectByAttribute('value', "Rugby is better!");
+    it("When I have selected a dropdown option, Then the selected option should be displayed in the summary", () => {
+      $(DropdownOptionalPage.answer()).selectByAttribute("value", "Rugby is better!");
       $(DropdownOptionalPage.submit()).click();
       expect($(DropdownSummaryPage.dropdownOptionalAnswer()).getText()).to.contain("Rugby is better!");
     });
 
-    it('When I have selected a dropdown option and I reselect the default option (Select an answer), Then the summary should display "No answer provided"', function() {
-      $(DropdownOptionalPage.answer()).selectByAttribute('value', "Chelsea");
+    it('When I have selected a dropdown option and I reselect the default option (Select an answer), Then the summary should display "No answer provided"', () => {
+      $(DropdownOptionalPage.answer()).selectByAttribute("value", "Chelsea");
       $(DropdownOptionalPage.submit()).click();
       expect($(DropdownSummaryPage.dropdownOptionalAnswer()).getText()).to.contain("Chelsea");
       $(DropdownSummaryPage.dropdownOptionalAnswerEdit()).click();
-      $(DropdownOptionalPage.answer()).selectByAttribute('value', "");
+      $(DropdownOptionalPage.answer()).selectByAttribute("value", "");
       $(DropdownOptionalPage.submit()).click();
       expect($(DropdownSummaryPage.dropdownOptionalAnswer()).getText()).to.contain("No answer provided");
     });
   });
-
 });

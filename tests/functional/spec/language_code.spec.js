@@ -96,8 +96,8 @@ const PLURAL_TEST_DATA_SETS = [
   }
 ];
 
-describe("Language Code", function() {
-  it("Given a launch language of Welsh, I should see Welsh text", function() {
+describe("Language Code", () => {
+  it("Given a launch language of Welsh, I should see Welsh text", () => {
     browser.openQuestionnaire("test_language.json", {
       language: "cy"
     });
@@ -127,7 +127,7 @@ describe("Language Code", function() {
     expect($(ThankYouPage.submissionSuccessfulTitle()).getText()).to.contain("Diolch am gyflwyno eich cyfrifiad");
   });
 
-  it("Given a launch language of English, I should see English text", function() {
+  it("Given a launch language of English, I should see English text", () => {
     browser.openQuestionnaire("test_language.json", {
       language: "en"
     });
@@ -156,7 +156,7 @@ describe("Language Code", function() {
     expect($(ThankYouPage.submissionSuccessfulTitle()).getText()).to.contain("Thank you for submitting your census");
   });
 
-  it("Given a launch language of English, When I select Cymraeg, Then the language should be switched to Welsh", function() {
+  it("Given a launch language of English, When I select Cymraeg, Then the language should be switched to Welsh", () => {
     browser.openQuestionnaire("test_language.json", {
       language: "en"
     });
@@ -192,7 +192,7 @@ describe("Language Code", function() {
     expect($(ThankYouPage.submissionSuccessfulTitle()).getText()).to.contain("Thank you for submitting your census");
   });
 
-  it("Given a launch language of Welsh, When I select English, Then the language should be switched to English", function() {
+  it("Given a launch language of Welsh, When I select English, Then the language should be switched to English", () => {
     browser.openQuestionnaire("test_language.json", {
       language: "cy"
     });
@@ -202,11 +202,11 @@ describe("Language Code", function() {
     expect($(NamePage.questionText()).getText()).to.contain("Please enter a name");
   });
 
-  describe("Given a launch language of English and a question with plural forms, When I select switch languages, Then the plural forms are displayed correctly for the chosen language", function() {
+  describe("Given a launch language of English and a question with plural forms, When I select switch languages, Then the plural forms are displayed correctly for the chosen language", () => {
     for (const dataSet of PLURAL_TEST_DATA_SETS) {
       const numberOfPeople = dataSet.count;
 
-      it(`Test plural count: ${numberOfPeople}`, function() {
+      it(`Test plural count: ${numberOfPeople}`, () => {
         browser.openQuestionnaire("test_language.json", {
           language: "en"
         });
