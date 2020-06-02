@@ -75,7 +75,7 @@ export function generateToken(
     locality = "",
     townName = "",
     postcode = "",
-    displayAddress = ""
+    displayAddress = "",
   }
 ) {
   const schemaParts = schemaRegEx.exec(schema);
@@ -84,7 +84,7 @@ export function generateToken(
   const oHeader = {
     alg: "RS256",
     typ: "JWT",
-    kid: "709eb42cfee5570058ce0711f730bfbb7d4c8ade"
+    kid: "709eb42cfee5570058ce0711f730bfbb7d4c8ade",
   };
 
   // Payload
@@ -116,7 +116,7 @@ export function generateToken(
     region_code: regionCode,
     language_code: languageCode,
     sexual_identity: sexualIdentity,
-    account_service_url: "http://localhost:8000"
+    account_service_url: "http://localhost:8000",
   };
 
   if (includeLogoutUrl) {
@@ -140,14 +140,14 @@ export function generateToken(
   return JWK.asKey(webKey.toJSON())
     .then((jwk) => {
       const cfg = {
-        contentAlg: "A256GCM"
+        contentAlg: "A256GCM",
       };
       const recipient = {
         key: jwk,
         header: {
           alg: "RSA-OAEP",
-          kid: encryptionKeyKid
-        }
+          kid: encryptionKeyKid,
+        },
       };
       const jwe = JWE.createEncrypt(cfg, recipient);
       return jwe.update(sJWT).final();

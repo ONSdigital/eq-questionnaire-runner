@@ -55,10 +55,10 @@ exports.config = {
           "--window-size=1280,1080",
           "--no-sandbox",
           "--disable-gpu",
-          "--disable-extensions"
-        ]
-      }
-    }
+          "--disable-extensions",
+        ],
+      },
+    },
   ],
   //
   // ===================
@@ -134,7 +134,7 @@ exports.config = {
   mochaOpts: {
     ui: "bdd",
     timeout: 60000,
-    compilers: ["js:babel-register"]
+    compilers: ["js:babel-register"],
   },
   //
   // =====
@@ -184,13 +184,13 @@ exports.config = {
    * @param {String} commandName hook command name
    * @param {Array} args arguments that command would receive
    */
-  before: function(capabilities, specs) {
+  before: function (capabilities, specs) {
     const chai = require("chai");
     const JwtHelper = require("./jwt_helper");
 
     global.expect = chai.expect;
 
-    browser.addCommand("openQuestionnaire", async function(
+    browser.addCommand("openQuestionnaire", async function (
       schema,
       {
         userId = JwtHelper.getRandomString(10),
@@ -201,7 +201,7 @@ exports.config = {
         region = "GB-ENG",
         language = "en",
         sexualIdentity = false,
-        includeLogoutUrl = false
+        includeLogoutUrl = false,
       } = {}
     ) {
       const token = await JwtHelper.generateToken(schema, {
@@ -213,7 +213,7 @@ exports.config = {
         regionCode: region,
         languageCode: language,
         sexualIdentity,
-        includeLogoutUrl
+        includeLogoutUrl,
       });
       this.url("/session?token=" + token);
     });
@@ -279,11 +279,11 @@ exports.config = {
    * @param {Array.<Object>} capabilities list of capabilities details
    * @param {Array.<String>} specs List of spec file paths that ran
    */
-  after: function(result) {
+  after: function (result) {
     if (result === 1 && !process.env.EQ_RUN_FUNCTIONAL_TESTS_HEADLESS) {
       browser.debug();
     }
-  }
+  },
   // afterSession: function (config, capabilities, specs) {
   // },
   /**

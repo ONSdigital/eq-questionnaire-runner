@@ -13,8 +13,8 @@
   "scripts": {
     "start": "make dev-compose-up && concurrently \"make run\" \"livereload . -e 'html,njk'\"",
     "lint": "yarn lint:tests && yarn lint:test-schemas",
-    "lint:tests": "prettier --check tests/functional/**/*.js && eslint tests/functional/**/*.js",
-    "lint:test-schemas": "prettier --check test_schemas/*/*.json && eslint test_schemas/**/*.json",
+    "lint:tests": "prettier --check \"tests/functional/**/*.js\" && eslint \"tests/functional/**/*.js\"",
+    "lint:test-schemas": "prettier --check \"test_schemas/*/*.json\" && eslint \"test_schemas/**/*.json\"",
     "test_functional": "./node_modules/.bin/wdio tests/functional/wdio.conf.js",
     "generate_pages": "rm -rf ./tests/functional/generated_pages && pipenv run python -m tests.functional.generate_pages test_schemas/en/ ./tests/functional/generated_pages -r '../../base_pages'",
     "format": "yarn format:tests && yarn format:test-schemas",
