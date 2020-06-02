@@ -100,7 +100,7 @@ jobs:
       steps:
         - uses: actions/checkout@v2
         - name: Update to latest stable Chrome
-          run: sudo apt-get upgrade google-chrome-stable -y
+          run: sudo apt-get update && sudo apt-get upgrade google-chrome-stable -y
         - uses: actions/setup-node@v1
           with:
             node-version: '12.14.1'
