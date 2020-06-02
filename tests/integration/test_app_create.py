@@ -7,8 +7,8 @@ from flask import Flask, request
 from flask_babel import Babel
 
 from app.setup import create_app, EmulatorCredentials
-from app.storage.datastore import DatastoreStorage
-from app.storage.dynamodb import DynamodbStorage
+from app.storage.datastore import Datastore
+from app.storage.dynamodb import Dynamodb
 from app.submitter.submitter import LogSubmitter, RabbitMQSubmitter, GCSSubmitter
 
 
@@ -236,14 +236,14 @@ class TestCreateApp(unittest.TestCase):  # pylint: disable=too-many-public-metho
         with patch("google.cloud.datastore.Client"):
             application = create_app(self._setting_overrides)
 
-        self.assertIsInstance(application.eq["storage"], DatastoreStorage)
+        self.assertIsInstance(application.eq["storage"], Datastore)
 
     def test_setup_dynamodb(self):
         self._setting_overrides["EQ_STORAGE_BACKEND"] = "dynamodb"
 
         application = create_app(self._setting_overrides)
 
-        self.assertIsInstance(application.eq["storage"], DynamodbStorage)
+        self.assertIsInstance(application.eq["storage"], Dynamodb)
 
     def test_invalid_storage(self):
         self._setting_overrides["EQ_STORAGE_BACKEND"] = "invalid"

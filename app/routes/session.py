@@ -98,13 +98,16 @@ def login():
 
 
 def validate_jti(decrypted_token):
-    expires = datetime.utcfromtimestamp(decrypted_token["exp"]).replace(tzinfo=tzutc())
-    if expires < datetime.now(tz=tzutc()):
+    expires_at = datetime.utcfromtimestamp(decrypted_token["exp"]).replace(
+        tzinfo=tzutc()
+    )
+    jwt_expired = expires_at < datetime.now(tz=tzutc())
+    if jwt_expired:
         raise Unauthorized
 
     jti_claim = decrypted_token.get("jti")
     try:
-        use_jti_claim(jti_claim, expires)
+        use_jti_claim(jti_claim, expires_at)
     except JtiTokenUsed as e:
         raise Unauthorized from e
     except (TypeError, ValueError) as e:

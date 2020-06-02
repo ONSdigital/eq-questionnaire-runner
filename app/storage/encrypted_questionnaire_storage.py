@@ -45,7 +45,7 @@ class EncryptedQuestionnaireStorage:
 
     def _find_questionnaire_state(self):
         logger.debug("getting questionnaire data", user_id=self._user_id)
-        return current_app.eq["storage"].get_by_key(QuestionnaireState, self._user_id)
+        return current_app.eq["storage"].get(QuestionnaireState, self._user_id)
 
     def _get_snappy_compressed_data(self, data):
         decrypted_data = self.encrypter.decrypt_data(data)

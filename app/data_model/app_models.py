@@ -14,27 +14,26 @@ class QuestionnaireState:
 
 
 class EQSession:
-    def __init__(self, eq_session_id, user_id, session_data=None, expires_at=None):
+    def __init__(self, eq_session_id, user_id, expires_at, session_data=None):
         self.eq_session_id = eq_session_id
         self.user_id = user_id
         self.session_data = session_data
         self.created_at = datetime.now(tz=tzutc())
         self.updated_at = datetime.now(tz=tzutc())
-        self.expires_at = expires_at
+        self.expires_at = expires_at.replace(tzinfo=tzutc())
 
 
 class UsedJtiClaim:
-    def __init__(self, jti_claim, used_at, expires):
+    def __init__(self, jti_claim, expires_at):
         self.jti_claim = jti_claim
-        self.used_at = used_at
-        self.expires = expires
+        self.expires_at = expires_at.replace(tzinfo=tzutc())
 
 
 class SubmittedResponse:
-    def __init__(self, tx_id, data, valid_until):
+    def __init__(self, tx_id, data, expires_at):
         self.tx_id = tx_id
         self.data = data
-        self.valid_until = valid_until
+        self.expires_at = expires_at
 
 
 # pylint: disable=no-self-use
@@ -79,9 +78,7 @@ class EQSessionSchema(Schema, DateTimeSchemaMixin):
     eq_session_id = fields.Str()
     user_id = fields.Str()
     session_data = fields.Str()
-    expires_at = Timestamp(
-        allow_none=True
-    )  # To cater in flight data (Should never actually be None)
+    expires_at = Timestamp()
 
     @post_load
     def make_model(self, data):
@@ -95,8 +92,7 @@ class EQSessionSchema(Schema, DateTimeSchemaMixin):
 
 class UsedJtiClaimSchema(Schema):
     jti_claim = fields.Str()
-    used_at = fields.DateTime()
-    expires = Timestamp()
+    expires_at = Timestamp()
 
     @post_load
     def make_model(self, data):
@@ -106,7 +102,7 @@ class UsedJtiClaimSchema(Schema):
 class SubmittedResponseSchema(Schema):
     tx_id = fields.Str()
     data = fields.Str()
-    valid_until = Timestamp()
+    expires_at = Timestamp()
 
     @post_load
     def make_model(self, data):
