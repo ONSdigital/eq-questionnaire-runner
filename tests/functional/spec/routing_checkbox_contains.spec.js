@@ -1,7 +1,7 @@
-const RoutingCheckboxContains = require("../generated_pages/routing_checkbox_contains/country-checkbox.page");
-const ContainsAllPage = require("../generated_pages/routing_checkbox_contains/country-interstitial-all.page");
-const ContainsAnyPage = require("../generated_pages/routing_checkbox_contains/country-interstitial-any.page");
-const ResponseSummaryPage = require("../generated_pages/routing_checkbox_contains/summary.page");
+import RoutingCheckboxContains from "../generated_pages/routing_checkbox_contains/country-checkbox.page";
+import ContainsAllPage from "../generated_pages/routing_checkbox_contains/country-interstitial-all.page";
+import ContainsAnyPage from "../generated_pages/routing_checkbox_contains/country-interstitial-any.page";
+import ResponseSummaryPage from "../generated_pages/routing_checkbox_contains/summary.page";
 
 describe("Routing Checkbox Contains Condition.", () => {
   beforeEach(() => {

@@ -1,5 +1,5 @@
-const RadioNumericDetailPage = require("../../../generated_pages/radio_numeric_detail_answers/radio-numeric-detail.page");
-const SummaryPage = require("../../../generated_pages/radio_numeric_detail_answers/summary.page");
+import RadioNumericDetailPage from "../../../generated_pages/radio_numeric_detail_answers/radio-numeric-detail.page";
+import SummaryPage from "../../../generated_pages/radio_numeric_detail_answers/summary.page";
 
 describe('Radio with a numeric "detail_answer" option', () => {
   beforeEach(() => {

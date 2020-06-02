@@ -1,5 +1,5 @@
-const DateRangePage = require("../../../../generated_pages/date_validation_range/date-range-block.page");
-const SummaryPage = require("../../../../generated_pages/date_validation_range/summary.page");
+import DateRangePage from "../../../../generated_pages/date_validation_range/date-range-block.page";
+import SummaryPage from "../../../../generated_pages/date_validation_range/summary.page";
 
 describe("Feature: Question level validation for date ranges", () => {
   beforeEach(() => {

@@ -1,4 +1,4 @@
-const TimeoutBlockPage = require("../generated_pages/timeout/timeout-block.page.js");
+import TimeoutBlockPage from "../generated_pages/timeout/timeout-block.page.js";
 
 describe("Timeout", () => {
   before("Open Survey", () => {

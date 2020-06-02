@@ -1,5 +1,5 @@
-const Comparison1Page = require("../../../generated_pages/skip_condition_answer_comparison/comparison-1.page.js");
-const Comparison2Page = require("../../../generated_pages/skip_condition_answer_comparison/comparison-2.page.js");
+import Comparison1Page from "../../../generated_pages/skip_condition_answer_comparison/comparison-1.page.js";
+import Comparison2Page from "../../../generated_pages/skip_condition_answer_comparison/comparison-2.page.js";
 
 describe("Test skip condition answer comparisons", () => {
   beforeEach(() => {

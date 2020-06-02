@@ -1,4 +1,4 @@
-const TestErrorsPage = require("../generated_pages/error_messages/test-errors.page.js");
+import TestErrorsPage from "../generated_pages/error_messages/test-errors.page.js";
 
 describe("Error Messages", () => {
   beforeEach(() => {

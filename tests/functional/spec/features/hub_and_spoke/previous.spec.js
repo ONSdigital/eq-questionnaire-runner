@@ -1,7 +1,7 @@
-const EmploymentStatusBlockPage = require("../../../generated_pages/hub_and_spoke/employment-status.page.js");
-const EmploymentTypePage = require("../../../generated_pages/hub_and_spoke/employment-type.page.js");
-const HubPage = require("../../../base_pages/hub.page.js");
-const ProxyPage = require("../../../generated_pages/hub_and_spoke/proxy.page.js");
+import EmploymentStatusBlockPage from "../../../generated_pages/hub_and_spoke/employment-status.page.js";
+import EmploymentTypePage from "../../../generated_pages/hub_and_spoke/employment-type.page.js";
+import HubPage from "../../../base_pages/hub.page.js";
+import ProxyPage from "../../../generated_pages/hub_and_spoke/proxy.page.js";
 const schema = "test_hub_complete_sections.json";
 
 describe("Choose another section link", () => {

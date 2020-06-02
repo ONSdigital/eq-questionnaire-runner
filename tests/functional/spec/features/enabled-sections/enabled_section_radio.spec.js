@@ -1,5 +1,5 @@
-const sectionOne = require("../../../generated_pages/section_enabled_radio/section-1-block.page");
-const summary = require("../../../generated_pages/section_enabled_radio//summary.page");
+import sectionOne from "../../../generated_pages/section_enabled_radio/section-1-block.page";
+import summary from "../../../generated_pages/section_enabled_radio//summary.page";
 
 describe("Feature: Section Enabled Based On Radio Answers", () => {
   beforeEach("Open survey", () => {

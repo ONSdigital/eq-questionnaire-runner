@@ -1,19 +1,19 @@
-const FirstNumberBlockPage = require("../../generated_pages/calculated_summary/first-number-block.page.js");
-const SecondNumberBlockPage = require("../../generated_pages/calculated_summary/second-number-block.page.js");
-const ThirdNumberBlockPage = require("../../generated_pages/calculated_summary/third-number-block.page.js");
-const ThirdAndAHalfNumberBlockPage = require("../../generated_pages/calculated_summary/third-and-a-half-number-block.page.js");
-const SkipFourthBlockPage = require("../../generated_pages/calculated_summary/skip-fourth-block.page.js");
-const FourthNumberBlockPage = require("../../generated_pages/calculated_summary/fourth-number-block.page.js");
-const FourthAndAHalfNumberBlockPage = require("../../generated_pages/calculated_summary/fourth-and-a-half-number-block.page.js");
-const FifthNumberBlockPage = require("../../generated_pages/calculated_summary/fifth-number-block.page.js");
-const SixthNumberBlockPage = require("../../generated_pages/calculated_summary/sixth-number-block.page.js");
-const CurrencyTotalPlaybackPageWithFourth = require("../../generated_pages/calculated_summary/currency-total-playback-with-fourth.page.js");
-const CurrencyTotalPlaybackPageSkippedFourth = require("../../generated_pages/calculated_summary/currency-total-playback-skipped-fourth.page.js");
-const UnitTotalPlaybackPage = require("../../generated_pages/calculated_summary/unit-total-playback.page.js");
-const PercentageTotalPlaybackPage = require("../../generated_pages/calculated_summary/percentage-total-playback.page.js");
-const NumberTotalPlaybackPage = require("../../generated_pages/calculated_summary/number-total-playback.page.js");
-const SummaryPage = require("../../base_pages/summary.page.js");
-const ThankYouPage = require("../../base_pages/thank-you.page.js");
+import FirstNumberBlockPage from "../../generated_pages/calculated_summary/first-number-block.page.js";
+import SecondNumberBlockPage from "../../generated_pages/calculated_summary/second-number-block.page.js";
+import ThirdNumberBlockPage from "../../generated_pages/calculated_summary/third-number-block.page.js";
+import ThirdAndAHalfNumberBlockPage from "../../generated_pages/calculated_summary/third-and-a-half-number-block.page.js";
+import SkipFourthBlockPage from "../../generated_pages/calculated_summary/skip-fourth-block.page.js";
+import FourthNumberBlockPage from "../../generated_pages/calculated_summary/fourth-number-block.page.js";
+import FourthAndAHalfNumberBlockPage from "../../generated_pages/calculated_summary/fourth-and-a-half-number-block.page.js";
+import FifthNumberBlockPage from "../../generated_pages/calculated_summary/fifth-number-block.page.js";
+import SixthNumberBlockPage from "../../generated_pages/calculated_summary/sixth-number-block.page.js";
+import CurrencyTotalPlaybackPageWithFourth from "../../generated_pages/calculated_summary/currency-total-playback-with-fourth.page.js";
+import CurrencyTotalPlaybackPageSkippedFourth from "../../generated_pages/calculated_summary/currency-total-playback-skipped-fourth.page.js";
+import UnitTotalPlaybackPage from "../../generated_pages/calculated_summary/unit-total-playback.page.js";
+import PercentageTotalPlaybackPage from "../../generated_pages/calculated_summary/percentage-total-playback.page.js";
+import NumberTotalPlaybackPage from "../../generated_pages/calculated_summary/number-total-playback.page.js";
+import SummaryPage from "../../base_pages/summary.page.js";
+import ThankYouPage from "../../base_pages/thank-you.page.js";
 
 describe("Feature: Calculated Summary", () => {
   describe("Given I have a Calculated Summary", () => {

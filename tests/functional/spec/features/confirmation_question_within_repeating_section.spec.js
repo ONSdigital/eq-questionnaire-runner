@@ -1,10 +1,9 @@
-const DoesAnyoneLiveHerePage = require("../../generated_pages/confirmation_question_within_repeating_section/list-collector.page");
-const AddPersonPage = require("../../generated_pages/confirmation_question_within_repeating_section/list-collector-add.page");
-const CarerPage = require("../../generated_pages/confirmation_question_within_repeating_section/carer-block.page");
-const DateOfBirthPage = require("../../generated_pages/confirmation_question_within_repeating_section/dob-block.page");
-const ConfirmDateOfBirthPage = require("../../generated_pages/confirmation_question_within_repeating_section/confirm-dob-block.page");
-
-const DefaultSectionSummary = require("../../generated_pages/confirmation_question_within_repeating_section/default-section-summary.page");
+import DoesAnyoneLiveHerePage from "../../generated_pages/confirmation_question_within_repeating_section/list-collector.page";
+import AddPersonPage from "../../generated_pages/confirmation_question_within_repeating_section/list-collector-add.page";
+import CarerPage from "../../generated_pages/confirmation_question_within_repeating_section/carer-block.page";
+import DateOfBirthPage from "../../generated_pages/confirmation_question_within_repeating_section/dob-block.page";
+import ConfirmDateOfBirthPage from "../../generated_pages/confirmation_question_within_repeating_section/confirm-dob-block.page";
+import DefaultSectionSummary from "../../generated_pages/confirmation_question_within_repeating_section/default-section-summary.page";
 
 describe("Feature: Confirmation Question Within A Repeating Section", () => {
   describe("Given I am in a repeating section", () => {

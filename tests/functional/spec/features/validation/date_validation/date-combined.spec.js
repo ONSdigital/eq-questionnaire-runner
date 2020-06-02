@@ -1,5 +1,5 @@
-const DateRangePage = require("../../../../generated_pages/date_validation_combined/date-range-block.page");
-const SummaryPage = require("../../../../generated_pages/date_validation_combined/summary.page");
+import DateRangePage from "../../../../generated_pages/date_validation_combined/date-range-block.page";
+import SummaryPage from "../../../../generated_pages/date_validation_combined/summary.page";
 
 describe("Feature: Combined question level and single validation for dates", () => {
   before(() => {

@@ -1,6 +1,6 @@
-const SetMinMax = require("../generated_pages/numbers/set-min-max-block.page.js");
-const TestMinMax = require("../generated_pages/numbers/test-min-max-block.page.js");
-const SummaryPage = require("../generated_pages/numbers/summary.page");
+import SetMinMax from "../generated_pages/numbers/set-min-max-block.page.js";
+import TestMinMax from "../generated_pages/numbers/test-min-max-block.page.js";
+import SummaryPage from "../generated_pages/numbers/summary.page";
 
 describe("NumericRange", () => {
   const numberSchema = "test_numbers.json";

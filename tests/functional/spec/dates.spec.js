@@ -1,9 +1,9 @@
-const DateRangePage = require("../generated_pages/dates/date-range-block.page");
-const DateMonthYearPage = require("../generated_pages/dates/date-month-year-block.page");
-const DateSinglePage = require("../generated_pages/dates/date-single-block.page");
-const DateNonMandatoryPage = require("../generated_pages/dates/date-non-mandatory-block.page");
-const DateYearDatePage = require("../generated_pages/dates/date-year-date-block.page");
-const SummaryPage = require("../generated_pages/dates/summary.page");
+import DateRangePage from "../generated_pages/dates/date-range-block.page";
+import DateMonthYearPage from "../generated_pages/dates/date-month-year-block.page";
+import DateSinglePage from "../generated_pages/dates/date-single-block.page";
+import DateNonMandatoryPage from "../generated_pages/dates/date-non-mandatory-block.page";
+import DateYearDatePage from "../generated_pages/dates/date-year-date-block.page";
+import SummaryPage from "../generated_pages/dates/summary.page";
 
 describe("Date checks", () => {
   beforeEach("Load the survey", () => {

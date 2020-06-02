@@ -1,5 +1,5 @@
-const MandatoryRadioPage = require("../../../generated_pages/radio_multiple_detail_answers/radio-mandatory.page");
-const SummaryPage = require("../../../generated_pages/radio_multiple_detail_answers/summary.page");
+import MandatoryRadioPage from "../../../generated_pages/radio_multiple_detail_answers/radio-mandatory.page";
+import SummaryPage from "../../../generated_pages/radio_multiple_detail_answers/summary.page";
 
 describe('Radio with multiple "detail_answer" options', () => {
   const radioSchema = "test_radio_multiple_detail_answers.json";

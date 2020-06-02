@@ -1,12 +1,11 @@
-const PrimaryPersonPage = require("../../../generated_pages/repeating_section_summaries/primary-person-list-collector.page");
-const PrimaryPersonAddPage = require("../../../generated_pages/repeating_section_summaries/primary-person-list-collector-add.page");
-const FirstListCollectorPage = require("../../../generated_pages/repeating_section_summaries/list-collector.page");
-const FirstListCollectorAddPage = require("../../../generated_pages/repeating_section_summaries/list-collector-add.page");
-const PersonalSummaryPage = require("../../../generated_pages/repeating_section_summaries/personal-details-section-summary.page");
-const ProxyPage = require("../../../generated_pages/repeating_section_summaries/proxy.page");
-const DateOfBirthPage = require("../../../generated_pages/repeating_section_summaries/date-of-birth.page");
-
-const HubPage = require("../../../base_pages/hub.page.js");
+import PrimaryPersonPage from "../../../generated_pages/repeating_section_summaries/primary-person-list-collector.page";
+import PrimaryPersonAddPage from "../../../generated_pages/repeating_section_summaries/primary-person-list-collector-add.page";
+import FirstListCollectorPage from "../../../generated_pages/repeating_section_summaries/list-collector.page";
+import FirstListCollectorAddPage from "../../../generated_pages/repeating_section_summaries/list-collector-add.page";
+import PersonalSummaryPage from "../../../generated_pages/repeating_section_summaries/personal-details-section-summary.page";
+import ProxyPage from "../../../generated_pages/repeating_section_summaries/proxy.page";
+import DateOfBirthPage from "../../../generated_pages/repeating_section_summaries/date-of-birth.page";
+import HubPage from "../../../base_pages/hub.page.js";
 
 describe("Feature: Repeating Section Summaries", () => {
   describe("Given the user has added some members to the household and is on the Hub", () => {

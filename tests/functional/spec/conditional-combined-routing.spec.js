@@ -1,7 +1,7 @@
-const ConditionalCombinedRoutingPage = require("../generated_pages/conditional_combined_routing/conditional-routing-block.page");
-const ResponseAny = require("../generated_pages/conditional_combined_routing/response-any.page");
-const ResponseNotAny = require("../generated_pages/conditional_combined_routing/response-not-any.page");
-const ResponseSummaryPage = require("../generated_pages/conditional_combined_routing/summary.page");
+import ConditionalCombinedRoutingPage from "../generated_pages/conditional_combined_routing/conditional-routing-block.page";
+import ResponseAny from "../generated_pages/conditional_combined_routing/response-any.page";
+import ResponseNotAny from "../generated_pages/conditional_combined_routing/response-not-any.page";
+import ResponseSummaryPage from "../generated_pages/conditional_combined_routing/summary.page";
 
 describe("Conditional combined routing.", () => {
   beforeEach(() => {

@@ -1,5 +1,5 @@
-const PercentagePage = require("../../../../generated_pages/mutually_exclusive/mutually-exclusive-percentage.page");
-const SummaryPage = require("../../../../generated_pages/mutually_exclusive/mutually-exclusive-percentage-section-summary.page");
+import PercentagePage from "../../../../generated_pages/mutually_exclusive/mutually-exclusive-percentage.page";
+import SummaryPage from "../../../../generated_pages/mutually_exclusive/mutually-exclusive-percentage-section-summary.page";
 
 describe("Component: Mutually Exclusive Percentage With Single Checkbox Override", () => {
   beforeEach(() => {

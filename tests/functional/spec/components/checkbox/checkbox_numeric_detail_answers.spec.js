@@ -1,5 +1,5 @@
-const CheckboxNumericDetailPage = require("../../../generated_pages/checkbox_numeric_detail_answers/checkbox-numeric-detail.page");
-const SummaryPage = require("../../../generated_pages/checkbox_numeric_detail_answers/summary.page");
+import CheckboxNumericDetailPage from "../../../generated_pages/checkbox_numeric_detail_answers/checkbox-numeric-detail.page";
+import SummaryPage from "../../../generated_pages/checkbox_numeric_detail_answers/summary.page";
 
 describe('Checkbox with a numeric "detail_answer" option', () => {
   beforeEach(() => {

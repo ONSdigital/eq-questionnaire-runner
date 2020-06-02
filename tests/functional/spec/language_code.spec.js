@@ -1,9 +1,9 @@
-const NamePage = require("../generated_pages/language/name-block.page");
-const DobPage = require("../generated_pages/language/dob-block.page");
-const NumberOfPeoplePage = require("../generated_pages/language/number-of-people-block.page");
-const ConfirmNumberOfPeoplePage = require("../generated_pages/language/confirm-number-of-people.page");
-const SummaryPage = require("../generated_pages/language/summary.page");
-const ThankYouPage = require("../base_pages/thank-you.page.js");
+import NamePage from "../generated_pages/language/name-block.page";
+import DobPage from "../generated_pages/language/dob-block.page";
+import NumberOfPeoplePage from "../generated_pages/language/number-of-people-block.page";
+import ConfirmNumberOfPeoplePage from "../generated_pages/language/confirm-number-of-people.page";
+import SummaryPage from "../generated_pages/language/summary.page";
+import ThankYouPage from "../base_pages/thank-you.page.js";
 
 const PLURAL_TEST_DATA_SETS = [
   {

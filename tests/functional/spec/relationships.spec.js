@@ -1,9 +1,9 @@
-const ListCollectorPage = require("../generated_pages/relationships/list-collector.page.js");
-const ListCollectorAddPage = require("../generated_pages/relationships/list-collector-add.page.js");
-const ListCollectorRemovePage = require("../generated_pages/relationships/list-collector-remove.page.js");
-const RelationshipsPage = require("../generated_pages/relationships/relationships.page.js");
-const RelationshipsInterstitialPage = require("../generated_pages/relationships/relationship-interstitial.page.js");
-const SectionSummaryPage = require("../generated_pages/relationships/section-summary.page.js");
+import ListCollectorPage from "../generated_pages/relationships/list-collector.page.js";
+import ListCollectorAddPage from "../generated_pages/relationships/list-collector-add.page.js";
+import ListCollectorRemovePage from "../generated_pages/relationships/list-collector-remove.page.js";
+import RelationshipsPage from "../generated_pages/relationships/relationships.page.js";
+import RelationshipsInterstitialPage from "../generated_pages/relationships/relationship-interstitial.page.js";
+import SectionSummaryPage from "../generated_pages/relationships/section-summary.page.js";
 
 describe("Relationships", () => {
   const schema = "test_relationships.json";

@@ -1,9 +1,9 @@
-const YouLiveHerePage = require("../generated_pages/list_collector_variants/you-live-here-block.page.js");
-const ListCollectorPage = require("../generated_pages/list_collector_variants/list-collector.page.js");
-const ListCollectorAddPage = require("../generated_pages/list_collector_variants/list-collector-add.page.js");
-const ListCollectorEditPage = require("../generated_pages/list_collector_variants/list-collector-edit.page.js");
-const ListCollectorRemovePage = require("../generated_pages/list_collector_variants/list-collector-remove.page.js");
-const ConfirmationPage = require("../generated_pages/list_collector_variants/confirmation.page.js");
+import YouLiveHerePage from "../generated_pages/list_collector_variants/you-live-here-block.page.js";
+import ListCollectorPage from "../generated_pages/list_collector_variants/list-collector.page.js";
+import ListCollectorAddPage from "../generated_pages/list_collector_variants/list-collector-add.page.js";
+import ListCollectorEditPage from "../generated_pages/list_collector_variants/list-collector-edit.page.js";
+import ListCollectorRemovePage from "../generated_pages/list_collector_variants/list-collector-remove.page.js";
+import ConfirmationPage from "../generated_pages/list_collector_variants/confirmation.page.js";
 
 describe("List Collector With Variants", () => {
   function checkPeopleInList(peopleExpected) {

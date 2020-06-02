@@ -1,12 +1,11 @@
-const JwtHelper = require("../jwt_helper");
-const SetMinMax = require("../generated_pages/numbers/set-min-max-block.page.js");
-const TestMinMax = require("../generated_pages/numbers/test-min-max-block.page.js");
-const SummaryPage = require("../generated_pages/numbers/summary.page");
-
-const IntroductionPage = require("../generated_pages/introduction/introduction.page");
-const IntroInterstitialPage = require("../generated_pages/introduction/general-business-information-completed.page");
-const IntroConfirmationPage = require("../generated_pages/introduction/confirmation.page");
-const IntroThankYouPagePage = require("../base_pages/thank-you.page");
+import JwtHelper from "../jwt_helper";
+import SetMinMax from "../generated_pages/numbers/set-min-max-block.page.js";
+import TestMinMax from "../generated_pages/numbers/test-min-max-block.page.js";
+import SummaryPage from "../generated_pages/numbers/summary.page";
+import IntroductionPage from "../generated_pages/introduction/introduction.page";
+import IntroInterstitialPage from "../generated_pages/introduction/general-business-information-completed.page";
+import IntroConfirmationPage from "../generated_pages/introduction/confirmation.page";
+import IntroThankYouPagePage from "../base_pages/thank-you.page";
 
 describe("SaveSignOut", () => {
   const responseId = JwtHelper.getRandomString(16);

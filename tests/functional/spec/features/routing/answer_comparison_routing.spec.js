@@ -1,5 +1,5 @@
-const RouteComparison1Page = require("../../../generated_pages/routing_answer_comparison/route-comparison-1.page.js");
-const RouteComparison2Page = require("../../../generated_pages/routing_answer_comparison/route-comparison-2.page.js");
+import RouteComparison1Page from "../../../generated_pages/routing_answer_comparison/route-comparison-1.page.js";
+import RouteComparison2Page from "../../../generated_pages/routing_answer_comparison/route-comparison-2.page.js";
 
 describe("Test routing skip", () => {
   beforeEach(() => {

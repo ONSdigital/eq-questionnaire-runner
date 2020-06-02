@@ -1,6 +1,6 @@
-const TotalAnswerPage = require("../../../../generated_pages/sum_multi_validation_against_total/total-block.page");
-const BreakdownAnswerPage = require("../../../../generated_pages/sum_multi_validation_against_total/breakdown-block.page");
-const SummaryPage = require("../../../../generated_pages/sum_multi_validation_against_total/summary.page");
+import TotalAnswerPage from "../../../../generated_pages/sum_multi_validation_against_total/total-block.page";
+import BreakdownAnswerPage from "../../../../generated_pages/sum_multi_validation_against_total/breakdown-block.page";
+import SummaryPage from "../../../../generated_pages/sum_multi_validation_against_total/summary.page";
 
 describe("Feature: Sum of grouped answers validation against total (Multi Rule Equals)", () => {
   beforeEach(() => {

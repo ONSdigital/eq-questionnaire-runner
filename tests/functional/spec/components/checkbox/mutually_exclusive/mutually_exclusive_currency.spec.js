@@ -1,5 +1,5 @@
-const CurrencyPage = require("../../../../generated_pages/mutually_exclusive/mutually-exclusive-currency.page");
-const SummaryPage = require("../../../../generated_pages/mutually_exclusive/mutually-exclusive-currency-section-summary.page");
+import CurrencyPage from "../../../../generated_pages/mutually_exclusive/mutually-exclusive-currency.page";
+import SummaryPage from "../../../../generated_pages/mutually_exclusive/mutually-exclusive-currency-section-summary.page";
 
 describe("Component: Mutually Exclusive Currency With Single Checkbox Override", () => {
   beforeEach(() => {

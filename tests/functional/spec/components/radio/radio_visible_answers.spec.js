@@ -1,6 +1,6 @@
-const RadioVisibleTruePage = require("../../../generated_pages/radio_detail_answer_visible/radio-visible-true.page.js");
-const RadioVisibleFalsePage = require("../../../generated_pages/radio_detail_answer_visible/radio-visible-false.page.js");
-const RadioVisibleNonePage = require("../../../generated_pages/radio_detail_answer_visible/radio-visible-none.page.js");
+import RadioVisibleTruePage from "../../../generated_pages/radio_detail_answer_visible/radio-visible-true.page.js";
+import RadioVisibleFalsePage from "../../../generated_pages/radio_detail_answer_visible/radio-visible-false.page.js";
+import RadioVisibleNonePage from "../../../generated_pages/radio_detail_answer_visible/radio-visible-none.page.js";
 
 describe("Given I start a Radio survey with a write-in option", () => {
   beforeEach(() => {

@@ -7,7 +7,7 @@ class QuestionPage extends BasePage {
   }
 
   url() {
-    return "/questionnaire/" + this.pageName;
+    return `/questionnaire/${this.pageName}`;
   }
 
   myAccountLink() {
@@ -75,4 +75,4 @@ class QuestionPage extends BasePage {
   }
 }
 
-module.exports = QuestionPage;
+export default QuestionPage;

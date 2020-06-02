@@ -37,7 +37,7 @@ exports.config = {
   // and 30 processes will get spawned. The property handles how many capabilities
   // from the same test should run tests.
   //
-  maxInstances: 1,
+  maxInstances: 2,
   // If you have trouble getting all important capabilities together, check out the
   // Sauce Labs platform configurator - a great tool to configure your capabilities:
   // https://docs.saucelabs.com/reference/platforms-configurator
@@ -68,7 +68,7 @@ exports.config = {
   //
   // Level of logging verbosity: trace | debug | info | warn | error | silent
   logLevel: "error",
-  outputDir: "/Users/abrahm/Documents/Projects/eq-questionnaire-runner/wdio/",
+  outputDir: "tests/functional/logs/",
   //
   // Set specific log levels per logger
   // loggers:

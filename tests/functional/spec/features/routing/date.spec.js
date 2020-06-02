@@ -1,82 +1,85 @@
-const IncorrectAnswerPage = require("../../../generated_pages/routing_date_equals/incorrect-answer.page.js");
-const CorrectAnswerPage = require("../../../generated_pages/routing_date_equals/correct-answer.page.js");
+import IncorrectAnswerPage from "../../../generated_pages/routing_date_equals/incorrect-answer.page.js";
+import CorrectAnswerPage from "../../../generated_pages/routing_date_equals/correct-answer.page.js";
+
+import DateEqualsComparisonQuestionPage from "../../../generated_pages/routing_date_equals/comparison-date-block.page";
+import DateEqualsQuestionPage from "../../../generated_pages/routing_date_equals/date-question.page";
+import DateNotEqualsQuestionPage from "../../../generated_pages/routing_date_not_equals/date-question.page";
+import DateGreaterThanQuestionPage from "../../../generated_pages/routing_date_greater_than/date-question.page";
+import DateLessThanQuestionPage from "../../../generated_pages/routing_date_less_than/date-question.page";
 
 describe("Feature: Routing on a Date", () => {
   describe("Equals", () => {
     describe("Given I start date routing equals survey", () => {
-      const ComparisonDateQuestionPage = require("../../../generated_pages/routing_date_equals/comparison-date-block.page");
-      const DateQuestionPage = require("../../../generated_pages/routing_date_equals/date-question.page");
-
       beforeEach(() => {
         browser.openQuestionnaire("test_routing_date_equals.json");
 
-        $(ComparisonDateQuestionPage.day()).setValue(31);
-        $(ComparisonDateQuestionPage.month()).setValue(3);
-        $(ComparisonDateQuestionPage.year()).setValue(2020);
-        $(ComparisonDateQuestionPage.submit()).click();
+        $(DateEqualsComparisonQuestionPage.day()).setValue(31);
+        $(DateEqualsComparisonQuestionPage.month()).setValue(3);
+        $(DateEqualsComparisonQuestionPage.year()).setValue(2020);
+        $(DateEqualsComparisonQuestionPage.submit()).click();
       });
 
       it("When I enter the same date, Then I should be routed to the correct page", () => {
-        $(DateQuestionPage.day()).setValue(31);
-        $(DateQuestionPage.month()).setValue(3);
-        $(DateQuestionPage.year()).setValue(2020);
-        $(DateQuestionPage.submit()).click();
+        $(DateEqualsQuestionPage.day()).setValue(31);
+        $(DateEqualsQuestionPage.month()).setValue(3);
+        $(DateEqualsQuestionPage.year()).setValue(2020);
+        $(DateEqualsQuestionPage.submit()).click();
         expect(browser.getUrl()).to.contain(CorrectAnswerPage.pageName);
       });
 
       it("When I enter the yesterday date, Then I should be routed to the correct page", () => {
-        $(DateQuestionPage.day()).setValue(30);
-        $(DateQuestionPage.month()).setValue(3);
-        $(DateQuestionPage.year()).setValue(2020);
-        $(DateQuestionPage.submit()).click();
+        $(DateEqualsQuestionPage.day()).setValue(30);
+        $(DateEqualsQuestionPage.month()).setValue(3);
+        $(DateEqualsQuestionPage.year()).setValue(2020);
+        $(DateEqualsQuestionPage.submit()).click();
         expect(browser.getUrl()).to.contain(CorrectAnswerPage.pageName);
       });
 
       it("When I enter the tomorrow date, Then I should be routed to the correct page", () => {
-        $(DateQuestionPage.day()).setValue(1);
-        $(DateQuestionPage.month()).setValue(4);
-        $(DateQuestionPage.year()).setValue(2020);
-        $(DateQuestionPage.submit()).click();
+        $(DateEqualsQuestionPage.day()).setValue(1);
+        $(DateEqualsQuestionPage.month()).setValue(4);
+        $(DateEqualsQuestionPage.year()).setValue(2020);
+        $(DateEqualsQuestionPage.submit()).click();
         expect(browser.getUrl()).to.contain(CorrectAnswerPage.pageName);
       });
 
       it("When I enter the last month date, Then I should be routed to the correct page", () => {
-        $(DateQuestionPage.day()).setValue(29);
-        $(DateQuestionPage.month()).setValue(2);
-        $(DateQuestionPage.year()).setValue(2020);
-        $(DateQuestionPage.submit()).click();
+        $(DateEqualsQuestionPage.day()).setValue(29);
+        $(DateEqualsQuestionPage.month()).setValue(2);
+        $(DateEqualsQuestionPage.year()).setValue(2020);
+        $(DateEqualsQuestionPage.submit()).click();
         expect(browser.getUrl()).to.contain(CorrectAnswerPage.pageName);
       });
 
       it("When I enter the next month date, Then I should be routed to the correct page", () => {
-        $(DateQuestionPage.day()).setValue(30);
-        $(DateQuestionPage.month()).setValue(4);
-        $(DateQuestionPage.year()).setValue(2020);
-        $(DateQuestionPage.submit()).click();
+        $(DateEqualsQuestionPage.day()).setValue(30);
+        $(DateEqualsQuestionPage.month()).setValue(4);
+        $(DateEqualsQuestionPage.year()).setValue(2020);
+        $(DateEqualsQuestionPage.submit()).click();
         expect(browser.getUrl()).to.contain(CorrectAnswerPage.pageName);
       });
 
       it("When I enter the last year date, Then I should be routed to the correct page", () => {
-        $(DateQuestionPage.day()).setValue(31);
-        $(DateQuestionPage.month()).setValue(3);
-        $(DateQuestionPage.year()).setValue(2019);
-        $(DateQuestionPage.submit()).click();
+        $(DateEqualsQuestionPage.day()).setValue(31);
+        $(DateEqualsQuestionPage.month()).setValue(3);
+        $(DateEqualsQuestionPage.year()).setValue(2019);
+        $(DateEqualsQuestionPage.submit()).click();
         expect(browser.getUrl()).to.contain(CorrectAnswerPage.pageName);
       });
 
       it("When I enter the next year date, Then I should be routed to the correct page", () => {
-        $(DateQuestionPage.day()).setValue(31);
-        $(DateQuestionPage.month()).setValue(3);
-        $(DateQuestionPage.year()).setValue(2021);
-        $(DateQuestionPage.submit()).click();
+        $(DateEqualsQuestionPage.day()).setValue(31);
+        $(DateEqualsQuestionPage.month()).setValue(3);
+        $(DateEqualsQuestionPage.year()).setValue(2021);
+        $(DateEqualsQuestionPage.submit()).click();
         expect(browser.getUrl()).to.contain(CorrectAnswerPage.pageName);
       });
 
       it("When I enter an incorrect date, Then I should be routed to the incorrect page", () => {
-        $(DateQuestionPage.day()).setValue(1);
-        $(DateQuestionPage.month()).setValue(3);
-        $(DateQuestionPage.year()).setValue(2020);
-        $(ComparisonDateQuestionPage.submit()).click();
+        $(DateEqualsQuestionPage.day()).setValue(1);
+        $(DateEqualsQuestionPage.month()).setValue(3);
+        $(DateEqualsQuestionPage.year()).setValue(2020);
+        $(DateEqualsComparisonQuestionPage.submit()).click();
         expect(browser.getUrl()).to.contain(CorrectAnswerPage.pageName);
       });
     });
@@ -84,17 +87,15 @@ describe("Feature: Routing on a Date", () => {
 
   describe("Not Equals", () => {
     describe("Given I start date routing not equals survey", () => {
-      const DateQuestionPage = require("../../../generated_pages/routing_date_not_equals/date-question.page");
-
       beforeEach(() => {
         browser.openQuestionnaire("test_routing_date_not_equals.json");
       });
 
       it("When I enter a different date to 28/02/2018, Then I should be routed to the correct page", () => {
-        $(DateQuestionPage.day()).setValue(27);
-        $(DateQuestionPage.month()).setValue(2);
-        $(DateQuestionPage.year()).setValue(2018);
-        $(DateQuestionPage.submit()).click();
+        $(DateNotEqualsQuestionPage.day()).setValue(27);
+        $(DateNotEqualsQuestionPage.month()).setValue(2);
+        $(DateNotEqualsQuestionPage.year()).setValue(2018);
+        $(DateNotEqualsQuestionPage.submit()).click();
 
         const expectedUrl = browser.getUrl();
 
@@ -102,10 +103,10 @@ describe("Feature: Routing on a Date", () => {
       });
 
       it("When I enter 28/02/2018, Then I should be routed to the incorrect page", () => {
-        $(DateQuestionPage.day()).setValue(28);
-        $(DateQuestionPage.month()).setValue(2);
-        $(DateQuestionPage.year()).setValue(2018);
-        $(DateQuestionPage.submit()).click();
+        $(DateNotEqualsQuestionPage.day()).setValue(28);
+        $(DateNotEqualsQuestionPage.month()).setValue(2);
+        $(DateNotEqualsQuestionPage.year()).setValue(2018);
+        $(DateNotEqualsQuestionPage.submit()).click();
 
         const expectedUrl = browser.getUrl();
 
@@ -116,16 +117,14 @@ describe("Feature: Routing on a Date", () => {
 
   describe("Greater Than", () => {
     describe("Given I start date routing greater than survey", () => {
-      const DateQuestionPage = require("../../../generated_pages/routing_date_greater_than/date-question.page");
-
       beforeEach(() => {
         browser.openQuestionnaire("test_routing_date_greater_than.json");
       });
 
       it("When I enter a date greater than March 2017, Then I should be routed to the correct page", () => {
-        $(DateQuestionPage.Month()).setValue(4);
-        $(DateQuestionPage.Year()).setValue(2017);
-        $(DateQuestionPage.submit()).click();
+        $(DateGreaterThanQuestionPage.Month()).setValue(4);
+        $(DateGreaterThanQuestionPage.Year()).setValue(2017);
+        $(DateGreaterThanQuestionPage.submit()).click();
 
         const expectedUrl = browser.getUrl();
 
@@ -133,9 +132,9 @@ describe("Feature: Routing on a Date", () => {
       });
 
       it("When I enter a date less than or equal to March 2017, Then I should be routed to the incorrect page", () => {
-        $(DateQuestionPage.Month()).setValue(3);
-        $(DateQuestionPage.Year()).setValue(2017);
-        $(DateQuestionPage.submit()).click();
+        $(DateGreaterThanQuestionPage.Month()).setValue(3);
+        $(DateGreaterThanQuestionPage.Year()).setValue(2017);
+        $(DateGreaterThanQuestionPage.submit()).click();
 
         const expectedUrl = browser.getUrl();
 
@@ -146,8 +145,6 @@ describe("Feature: Routing on a Date", () => {
 
   describe("Less Than", () => {
     describe("Given I start date routing less than survey", () => {
-      const DateQuestionPage = require("../../../generated_pages/routing_date_less_than/date-question.page");
-
       // TODAY
       const today = new Date();
 
@@ -164,10 +161,10 @@ describe("Feature: Routing on a Date", () => {
       });
 
       it("When I enter a date less than today, Then I should be routed to the correct page", () => {
-        $(DateQuestionPage.day()).setValue(dayYesterday);
-        $(DateQuestionPage.month()).setValue(monthYesterday);
-        $(DateQuestionPage.year()).setValue(yearYesterday);
-        $(DateQuestionPage.submit()).click();
+        $(DateLessThanQuestionPage.day()).setValue(dayYesterday);
+        $(DateLessThanQuestionPage.month()).setValue(monthYesterday);
+        $(DateLessThanQuestionPage.year()).setValue(yearYesterday);
+        $(DateLessThanQuestionPage.submit()).click();
 
         const browserUrl = browser.getUrl();
 

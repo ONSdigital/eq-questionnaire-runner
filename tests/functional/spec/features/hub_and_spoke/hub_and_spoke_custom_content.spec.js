@@ -1,8 +1,7 @@
-const HouseholdSummary = require("../../../generated_pages/hub_and_spoke_custom_content/household-section-summary.page.js");
-const HowManyPeopleLiveHere = require("../../../generated_pages/hub_and_spoke_custom_content/how-many-people-live-here.page.js");
-const DoesAnyoneLiveHere = require("../../../generated_pages/hub_and_spoke_custom_content/does-anyone-live-here.page.js");
-
-const HubPage = require("../../../base_pages/hub.page.js");
+import HouseholdSummary from "../../../generated_pages/hub_and_spoke_custom_content/household-section-summary.page.js";
+import HowManyPeopleLiveHere from "../../../generated_pages/hub_and_spoke_custom_content/how-many-people-live-here.page.js";
+import DoesAnyoneLiveHere from "../../../generated_pages/hub_and_spoke_custom_content/does-anyone-live-here.page.js";
+import HubPage from "../../../base_pages/hub.page.js";
 
 describe("Feature: Hub and Spoke with custom content", () => {
   const hubAndSpokeSchema = "test_hub_and_spoke_custom_content.json";

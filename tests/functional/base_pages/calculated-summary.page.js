@@ -1,4 +1,4 @@
-const QuestionPage = require("./question.page");
+import QuestionPage from "./question.page";
 
 class CalculatedSummaryPage extends QuestionPage {
   constructor(pageName) {
@@ -18,4 +18,4 @@ class CalculatedSummaryPage extends QuestionPage {
   }
 }
 
-module.exports = CalculatedSummaryPage;
+export default CalculatedSummaryPage;

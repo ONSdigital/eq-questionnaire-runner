@@ -1,7 +1,7 @@
-const AnyoneLiveAtListCollector = require("../generated_pages/answer_action_redirect_to_list_add_question_checkbox/anyone-else-live-at.page");
-const AnyoneLiveAtListCollectorAddPage = require("../generated_pages/answer_action_redirect_to_list_add_question_checkbox/anyone-else-live-at-add.page");
-const AnyoneLiveAtListCollectorRemovePage = require("../generated_pages/answer_action_redirect_to_list_add_question_checkbox/anyone-else-live-at-remove.page");
-const AnyoneUsuallyLiveAt = require("../generated_pages/answer_action_redirect_to_list_add_question_checkbox/anyone-usually-live-at.page");
+import AnyoneLiveAtListCollector from "../generated_pages/answer_action_redirect_to_list_add_question_checkbox/anyone-else-live-at.page";
+import AnyoneLiveAtListCollectorAddPage from "../generated_pages/answer_action_redirect_to_list_add_question_checkbox/anyone-else-live-at-add.page";
+import AnyoneLiveAtListCollectorRemovePage from "../generated_pages/answer_action_redirect_to_list_add_question_checkbox/anyone-else-live-at-remove.page";
+import AnyoneUsuallyLiveAt from "../generated_pages/answer_action_redirect_to_list_add_question_checkbox/anyone-usually-live-at.page";
 
 function checkPeopleInList(peopleExpected) {
   $(AnyoneLiveAtListCollector.listLabel(1)).waitForDisplayed();

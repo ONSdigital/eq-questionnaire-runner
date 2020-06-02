@@ -43,10 +43,10 @@ parser.add_argument(
     'Defaults to ".."',
 )
 
-SPEC_PAGE_HEADER = "const helpers = require('../helpers');\n\n"
+SPEC_PAGE_HEADER = "import helpers from '../helpers';\n\n"
 
 SPEC_PAGE_IMPORT = Template(
-    r"""const ${pageName}Page = require('../generated_pages/${pageDir}/${pageFile}');
+    r"""import ${pageName}Page from '../generated_pages/${pageDir}/${pageFile}';
 """
 )
 
@@ -67,7 +67,7 @@ describe('Example Test', function() {
 
 HEADER = Template(
     r"""// >>> WARNING THIS PAGE WAS AUTO-GENERATED - DO NOT EDIT!!! <<<
-const $basePage = require('$relativeRequirePath/$basePageFile');
+import $basePage from '$relativeRequirePath/$basePageFile';
 
 """
 )
@@ -257,7 +257,8 @@ CONSTRUCTOR = Template(
 
 FOOTER = Template(
     r"""}
-module.exports = new ${pageName}Page();
+
+export default new ${pageName}Page();
 """
 )
 
@@ -353,9 +354,6 @@ def process_answer(answer, page_spec, long_names, page_name):
             "answerName": camel_case(answer_name),
             "answerId": answer["id"],
         }
-
-        if "currency" in answer_name:
-            a = 1
 
         page_spec.write(ANSWER_GETTER.substitute(answer_context))
         page_spec.write(ANSWER_LABEL_GETTER.substitute(answer_context))

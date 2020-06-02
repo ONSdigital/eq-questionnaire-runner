@@ -1,11 +1,10 @@
-const InsuranceAddressPage = require("../../../generated_pages/section_summary/insurance-address.page.js");
-const InsuranceTypePage = require("../../../generated_pages/section_summary/insurance-type.page.js");
-const AddressDurationPage = require("../../../generated_pages/section_summary/address-duration.page.js");
-const PropertyDetailsSummaryPage = require("../../../generated_pages/section_summary/property-details-section-summary.page.js");
-const HouseType = require("../../../generated_pages/section_summary/house-type.page.js");
-const HouseholdDetailsSummaryPage = require("../../../generated_pages/section_summary/house-details-section-summary.page.js");
-
-const QuestionnaireSummaryPage = require("../../../generated_pages/section_summary/summary.page.js");
+import InsuranceAddressPage from "../../../generated_pages/section_summary/insurance-address.page.js";
+import InsuranceTypePage from "../../../generated_pages/section_summary/insurance-type.page.js";
+import AddressDurationPage from "../../../generated_pages/section_summary/address-duration.page.js";
+import PropertyDetailsSummaryPage from "../../../generated_pages/section_summary/property-details-section-summary.page.js";
+import HouseType from "../../../generated_pages/section_summary/house-type.page.js";
+import HouseholdDetailsSummaryPage from "../../../generated_pages/section_summary/house-details-section-summary.page.js";
+import QuestionnaireSummaryPage from "../../../generated_pages/section_summary/summary.page.js";
 
 describe("Section Summary", () => {
   describe("Given I start a Test Section Summary survey and complete to Section Summary", () => {

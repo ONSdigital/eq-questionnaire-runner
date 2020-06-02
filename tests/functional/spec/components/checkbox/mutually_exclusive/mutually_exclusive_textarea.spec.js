@@ -1,5 +1,5 @@
-const TextFieldPage = require("../../../../generated_pages/mutually_exclusive/mutually-exclusive-textarea.page");
-const SummaryPage = require("../../../../generated_pages/mutually_exclusive/mutually-exclusive-textarea-section-summary.page");
+import TextFieldPage from "../../../../generated_pages/mutually_exclusive/mutually-exclusive-textarea.page";
+import SummaryPage from "../../../../generated_pages/mutually_exclusive/mutually-exclusive-textarea-section-summary.page";
 
 describe("Component: Mutually Exclusive TextArea With Single Checkbox Override", () => {
   beforeEach(() => {

@@ -1,14 +1,13 @@
-const EmploymentStatusBlockPage = require("../../../generated_pages/hub_and_spoke/employment-status.page.js");
-const EmploymentTypeBlockPage = require("../../../generated_pages/hub_and_spoke/employment-type.page.js");
-const HouseholdSummary = require("../../../generated_pages/hub_and_spoke/household-section-summary.page.js");
-const HowManyPeopleLiveHere = require("../../../generated_pages/hub_and_spoke/how-many-people-live-here.page.js");
-const ProxyPage = require("../../../generated_pages/hub_and_spoke/proxy.page.js");
-const AccomodationDetailsSummaryBlockPage = require("../../../generated_pages/hub_and_spoke/accommodation-section-summary.page.js");
-const DoesAnyoneLiveHere = require("../../../generated_pages/hub_and_spoke/does-anyone-live-here.page.js");
-const Relationships = require("../../../generated_pages/hub_and_spoke/relationships.page.js");
-const RelationshipsSummary = require("../../../generated_pages/hub_and_spoke/relationships-section-summary.page.js");
-
-const HubPage = require("../../../base_pages/hub.page.js");
+import EmploymentStatusBlockPage from "../../../generated_pages/hub_and_spoke/employment-status.page.js";
+import EmploymentTypeBlockPage from "../../../generated_pages/hub_and_spoke/employment-type.page.js";
+import HouseholdSummary from "../../../generated_pages/hub_and_spoke/household-section-summary.page.js";
+import HowManyPeopleLiveHere from "../../../generated_pages/hub_and_spoke/how-many-people-live-here.page.js";
+import ProxyPage from "../../../generated_pages/hub_and_spoke/proxy.page.js";
+import AccomodationDetailsSummaryBlockPage from "../../../generated_pages/hub_and_spoke/accommodation-section-summary.page.js";
+import DoesAnyoneLiveHere from "../../../generated_pages/hub_and_spoke/does-anyone-live-here.page.js";
+import Relationships from "../../../generated_pages/hub_and_spoke/relationships.page.js";
+import RelationshipsSummary from "../../../generated_pages/hub_and_spoke/relationships-section-summary.page.js";
+import HubPage from "../../../base_pages/hub.page.js";
 
 describe("Feature: Hub and Spoke", () => {
   const hubAndSpokeSchema = "test_hub_and_spoke.json";

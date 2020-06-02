@@ -1,5 +1,5 @@
-const MandatoryCheckboxPage = require("../../../generated_pages/checkbox_multiple_detail_answers/mandatory-checkbox.page");
-const SummaryPage = require("../../../generated_pages/checkbox_multiple_detail_answers/summary.page");
+import MandatoryCheckboxPage from "../../../generated_pages/checkbox_multiple_detail_answers/mandatory-checkbox.page";
+import SummaryPage from "../../../generated_pages/checkbox_multiple_detail_answers/summary.page";
 
 describe('Checkbox with multiple "detail_answer" options', () => {
   const checkboxSchema = "test_checkbox_multiple_detail_answers.json";

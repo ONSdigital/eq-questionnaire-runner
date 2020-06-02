@@ -1,5 +1,5 @@
-const PersonalDetailPage = require("../generated_pages/multiple_answers/personal-details-block.page.js");
-const SummaryPage = require("../generated_pages/multiple_answers/summary.page.js");
+import PersonalDetailPage from "../generated_pages/multiple_answers/personal-details-block.page.js";
+import SummaryPage from "../generated_pages/multiple_answers/summary.page.js";
 
 describe("Multiple Answers", () => {
   it("Given I complete a survey that has multiple answers for a question when I edit an answer then I appear on the page to edit my answer", () => {

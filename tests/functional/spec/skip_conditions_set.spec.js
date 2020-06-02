@@ -1,6 +1,6 @@
-const FoodPage = require("../generated_pages/skip_condition_set/food-block.page");
-const DrinkPage = require("../generated_pages/skip_condition_set/drink-block.page");
-const SummaryPage = require("../generated_pages/skip_condition_set/summary.page");
+import FoodPage from "../generated_pages/skip_condition_set/food-block.page";
+import DrinkPage from "../generated_pages/skip_condition_set/drink-block.page";
+import SummaryPage from "../generated_pages/skip_condition_set/summary.page";
 
 describe("Skip Conditions - Set", () => {
   beforeEach("Load the survey", () => {

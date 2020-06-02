@@ -1,5 +1,5 @@
-const sectionOne = require("../../../generated_pages/section_enabled_hub/section-1-block.page");
-const hubPage = require("../../../base_pages/hub.page");
+import sectionOne from "../../../generated_pages/section_enabled_hub/section-1-block.page";
+import hubPage from "../../../base_pages/hub.page";
 
 describe("Feature: Section Enabled With Hub", () => {
   beforeEach("Open survey", () => {

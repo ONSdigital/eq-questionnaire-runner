@@ -1,7 +1,7 @@
-const DessertBlockPage = require("../../../generated_pages/summary/dessert-block.page.js");
-const RadioPage = require("../../../generated_pages/summary/radio.page.js");
-const SummaryPage = require("../../../generated_pages/summary/summary.page.js");
-const TestNumberPage = require("../../../generated_pages/summary/test-number-block.page.js");
+import DessertBlockPage from "../../../generated_pages/summary/dessert-block.page.js";
+import RadioPage from "../../../generated_pages/summary/radio.page.js";
+import SummaryPage from "../../../generated_pages/summary/summary.page.js";
+import TestNumberPage from "../../../generated_pages/summary/test-number-block.page.js";
 
 describe("Summary Screen", () => {
   beforeEach("Load the survey", () => {

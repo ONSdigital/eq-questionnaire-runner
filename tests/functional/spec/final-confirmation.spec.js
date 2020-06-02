@@ -1,6 +1,6 @@
-const BreakfastPage = require("../generated_pages/final_confirmation/breakfast.page.js");
-const ConfirmationPage = require("../generated_pages/final_confirmation/confirmation.page.js");
-const IntroductionPage = require("../base_pages/introduction.page");
+import BreakfastPage from "../generated_pages/final_confirmation/breakfast.page.js";
+import ConfirmationPage from "../generated_pages/final_confirmation/confirmation.page.js";
+import IntroductionPage from "../base_pages/introduction.page";
 const introductionPage = new IntroductionPage("introduction");
 
 describe("Confirmation Page", () => {

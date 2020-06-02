@@ -70,4 +70,4 @@ class HubPage extends BasePage {
   }
 }
 
-module.exports = new HubPage();
+export default new HubPage();

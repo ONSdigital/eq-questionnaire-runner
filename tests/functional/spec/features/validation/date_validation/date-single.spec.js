@@ -1,6 +1,6 @@
-const DatePage = require("../../../../generated_pages/date_validation_single/date-block.page");
-const DatePeriodPage = require("../../../../generated_pages/date_validation_single/date-range-block.page");
-const SummaryPage = require("../../../../generated_pages/date_validation_single/summary.page");
+import DatePage from "../../../../generated_pages/date_validation_single/date-block.page";
+import DatePeriodPage from "../../../../generated_pages/date_validation_single/date-range-block.page";
+import SummaryPage from "../../../../generated_pages/date_validation_single/summary.page";
 
 describe("Feature: Validation for single date periods", () => {
   beforeEach(() => {

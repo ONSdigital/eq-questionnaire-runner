@@ -1,5 +1,5 @@
-const DurationPage = require("../generated_pages/durations/duration-block.page.js");
-const SummaryPage = require("../generated_pages/durations/summary.page.js");
+import DurationPage from "../generated_pages/durations/duration-block.page.js";
+import SummaryPage from "../generated_pages/durations/summary.page.js";
 
 describe("Durations", () => {
   beforeEach("Load the survey", () => {

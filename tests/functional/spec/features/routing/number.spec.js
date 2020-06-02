@@ -1,6 +1,6 @@
-const NumberQuestionPage = require("../../../generated_pages/routing_number_equals/number-question.page");
-const CorrectAnswerPage = require("../../../generated_pages/routing_number_equals/correct-answer.page");
-const IncorrectAnswerPage = require("../../../generated_pages/routing_number_equals/incorrect-answer.page");
+import NumberQuestionPage from "../../../generated_pages/routing_number_equals/number-question.page";
+import CorrectAnswerPage from "../../../generated_pages/routing_number_equals/correct-answer.page";
+import IncorrectAnswerPage from "../../../generated_pages/routing_number_equals/incorrect-answer.page";
 
 describe("Feature: Routing on a Number", () => {
   describe("Equals", () => {

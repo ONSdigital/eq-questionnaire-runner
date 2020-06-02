@@ -1,4 +1,4 @@
-const MandatoryCheckboxPage = require("../../generated_pages/placeholder_playback_list/mandatory-checkbox.page");
+import MandatoryCheckboxPage from "../../generated_pages/placeholder_playback_list/mandatory-checkbox.page";
 
 describe("Feature: Playback Confirmation", () => {
   beforeEach("Open the schema", () => {

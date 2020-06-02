@@ -1,8 +1,8 @@
+import RadioVoluntaryTruePage from "../../../generated_pages/radio_voluntary/radio-voluntary-true.page.js";
+import RadioVoluntaryFalsePage from "../../../generated_pages/radio_voluntary/radio-voluntary-false.page.js";
+
 describe("Component: Radio", () => {
   describe("Given I start a Voluntary Radio survey", () => {
-    const RadioVoluntaryTruePage = require("../../../generated_pages/radio_voluntary/radio-voluntary-true.page.js");
-    const RadioVoluntaryFalsePage = require("../../../generated_pages/radio_voluntary/radio-voluntary-false.page.js");
-
     before(() => {
       browser.openQuestionnaire("test_radio_voluntary.json");
     });

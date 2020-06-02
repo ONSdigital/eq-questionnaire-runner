@@ -1,8 +1,7 @@
-const AddressBlockPage = require("../../../generated_pages/custom_question_summary/address.page.js");
-const NameBlockPage = require("../../../generated_pages/custom_question_summary/name.page.js");
-const SummaryPage = require("../../../generated_pages/custom_question_summary/summary.page.js");
-
-const BaseSummaryPage = require("../../../base_pages/summary.page.js");
+import AddressBlockPage from "../../../generated_pages/custom_question_summary/address.page.js";
+import NameBlockPage from "../../../generated_pages/custom_question_summary/name.page.js";
+import SummaryPage from "../../../generated_pages/custom_question_summary/summary.page.js";
+import BaseSummaryPage from "../../../base_pages/summary.page.js";
 
 describe("Summary Screen", () => {
   beforeEach("Load the survey", () => {

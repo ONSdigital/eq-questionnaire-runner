@@ -1,6 +1,6 @@
-const MandatoryCheckboxPage = require("../generated_pages/checkbox/mandatory-checkbox.page");
-const NonMandatoryCheckboxPage = require("../generated_pages/checkbox/non-mandatory-checkbox.page");
-const SummaryPage = require("../generated_pages/checkbox/summary.page");
+import MandatoryCheckboxPage from "../generated_pages/checkbox/mandatory-checkbox.page";
+import NonMandatoryCheckboxPage from "../generated_pages/checkbox/non-mandatory-checkbox.page";
+import SummaryPage from "../generated_pages/checkbox/summary.page";
 
 describe('Checkbox with "other" option', () => {
   beforeEach("Load the survey", () => {
@@ -97,7 +97,7 @@ describe('Checkbox with "other" option', () => {
     $(NonMandatoryCheckboxPage.submit()).click();
     // Then
 
-    const listLength = $$(SummaryPage.mandatoryCheckboxAnswer() + " li").length;
+    const listLength = $$(`${SummaryPage.mandatoryCheckboxAnswer()} li`).length;
 
     // Then
     expect(listLength).to.equal(0);
@@ -110,7 +110,7 @@ describe('Checkbox with "other" option', () => {
     $(MandatoryCheckboxPage.submit()).click();
     $(NonMandatoryCheckboxPage.submit()).click();
 
-    const listLength = $$(SummaryPage.mandatoryCheckboxAnswer() + " li").length;
+    const listLength = $$(`${SummaryPage.mandatoryCheckboxAnswer()} li`).length;
 
     // Then
     expect(listLength).to.equal(2);

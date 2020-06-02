@@ -1,5 +1,5 @@
-const TextareaBlock = require("../generated_pages/textarea/textarea-block.page.js");
-const TextareaSummary = require("../generated_pages/textarea/textarea-summary.page.js");
+import TextareaBlock from "../generated_pages/textarea/textarea-block.page.js";
+import TextareaSummary from "../generated_pages/textarea/textarea-summary.page.js";
 
 describe("Textarea", () => {
   const textareaSchema = "test_textarea.json";

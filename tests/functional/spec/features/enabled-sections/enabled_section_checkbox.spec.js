@@ -1,6 +1,6 @@
-const sectionOne = require("../../../generated_pages/section_enabled_checkbox/section-1-block.page");
-const sectionTwo = require("../../../generated_pages/section_enabled_checkbox/section-2-block.page");
-const summary = require("../../../generated_pages/section_enabled_checkbox/summary.page");
+import sectionOne from "../../../generated_pages/section_enabled_checkbox/section-1-block.page";
+import sectionTwo from "../../../generated_pages/section_enabled_checkbox/section-2-block.page";
+import summary from "../../../generated_pages/section_enabled_checkbox/summary.page";
 
 describe("Feature: Section Enabled Based On Checkbox Answers", () => {
   beforeEach("Open survey", () => {

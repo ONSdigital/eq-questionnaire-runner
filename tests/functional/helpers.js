@@ -6,4 +6,4 @@ const checkPeopleInList = (peopleExpected, listLabel) => {
   }
 };
 
-module.exports = checkPeopleInList;
+export default checkPeopleInList;

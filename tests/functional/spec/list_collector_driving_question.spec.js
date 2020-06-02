@@ -1,10 +1,10 @@
-const checkPeopleInList = require("../helpers");
-const HubPage = require("../base_pages/hub.page.js");
-const AnyoneUsuallyLiveAtPage = require("../generated_pages/list_collector_driving_question/anyone-usually-live-at.page.js");
-const AnyoneElseLiveAtListCollectorPage = require("../generated_pages/list_collector_driving_question/anyone-else-live-at.page.js");
-const AnyoneElseLiveAtListCollectorAddPage = require("../generated_pages/list_collector_driving_question/anyone-else-live-at-add.page.js");
-const AnyoneElseLiveAtListCollectorRemovePage = require("../generated_pages/list_collector_driving_question/anyone-else-live-at-remove.page.js");
-const SectionSummaryPage = require("../generated_pages/list_collector_driving_question/section-summary.page.js");
+import checkPeopleInList from "../helpers";
+import HubPage from "../base_pages/hub.page.js";
+import AnyoneUsuallyLiveAtPage from "../generated_pages/list_collector_driving_question/anyone-usually-live-at.page.js";
+import AnyoneElseLiveAtListCollectorPage from "../generated_pages/list_collector_driving_question/anyone-else-live-at.page.js";
+import AnyoneElseLiveAtListCollectorAddPage from "../generated_pages/list_collector_driving_question/anyone-else-live-at-add.page.js";
+import AnyoneElseLiveAtListCollectorRemovePage from "../generated_pages/list_collector_driving_question/anyone-else-live-at-remove.page.js";
+import SectionSummaryPage from "../generated_pages/list_collector_driving_question/section-summary.page.js";
 
 describe("List Collector Driving Question", () => {
   beforeEach("Load the survey", () => {

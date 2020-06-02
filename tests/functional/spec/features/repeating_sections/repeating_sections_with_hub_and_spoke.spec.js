@@ -1,25 +1,20 @@
-const PrimaryPersonPage = require("../../../generated_pages/repeating_sections_with_hub_and_spoke/primary-person-list-collector.page");
-const PrimaryPersonAddPage = require("../../../generated_pages/repeating_sections_with_hub_and_spoke/primary-person-list-collector-add.page");
-
-const FirstListCollectorPage = require("../../../generated_pages/repeating_sections_with_hub_and_spoke/list-collector.page");
-const FirstListCollectorAddPage = require("../../../generated_pages/repeating_sections_with_hub_and_spoke/list-collector-add.page");
-
-const SecondListCollectorInterstitialPage = require("../../../generated_pages/repeating_sections_with_hub_and_spoke/next-interstitial.page");
-const SecondListCollectorPage = require("../../../generated_pages/repeating_sections_with_hub_and_spoke/another-list-collector-block.page");
-const SecondListCollectorAddPage = require("../../../generated_pages/repeating_sections_with_hub_and_spoke/another-list-collector-block-add.page");
-
-const VisitorsListCollectorPage = require("../../../generated_pages/repeating_sections_with_hub_and_spoke/visitors-block.page");
-const VisitorsListCollectorAddPage = require("../../../generated_pages/repeating_sections_with_hub_and_spoke/visitors-block-add.page");
-const VisitorsListCollectorRemovePage = require("../../../generated_pages/repeating_sections_with_hub_and_spoke/visitors-block-remove.page");
-const VisitorsDateOfBirthPage = require("../../../generated_pages/repeating_sections_with_hub_and_spoke/visitors-date-of-birth.page");
-
-const ProxyPage = require("../../../generated_pages/repeating_sections_with_hub_and_spoke/proxy.page");
-const DateOfBirthPage = require("../../../generated_pages/repeating_sections_with_hub_and_spoke/date-of-birth.page");
-const ConfirmDateOfBirthPage = require("../../../generated_pages/repeating_sections_with_hub_and_spoke/confirm-dob.page");
-const SexPage = require("../../../generated_pages/repeating_sections_with_hub_and_spoke/sex.page");
-
-const PersonalDetailsSummaryPage = require("../../../generated_pages/repeating_sections_with_hub_and_spoke/personal-details-section-summary.page");
-const HubPage = require("../../../base_pages/hub.page.js");
+import PrimaryPersonPage from "../../../generated_pages/repeating_sections_with_hub_and_spoke/primary-person-list-collector.page";
+import PrimaryPersonAddPage from "../../../generated_pages/repeating_sections_with_hub_and_spoke/primary-person-list-collector-add.page";
+import FirstListCollectorPage from "../../../generated_pages/repeating_sections_with_hub_and_spoke/list-collector.page";
+import FirstListCollectorAddPage from "../../../generated_pages/repeating_sections_with_hub_and_spoke/list-collector-add.page";
+import SecondListCollectorInterstitialPage from "../../../generated_pages/repeating_sections_with_hub_and_spoke/next-interstitial.page";
+import SecondListCollectorPage from "../../../generated_pages/repeating_sections_with_hub_and_spoke/another-list-collector-block.page";
+import SecondListCollectorAddPage from "../../../generated_pages/repeating_sections_with_hub_and_spoke/another-list-collector-block-add.page";
+import VisitorsListCollectorPage from "../../../generated_pages/repeating_sections_with_hub_and_spoke/visitors-block.page";
+import VisitorsListCollectorAddPage from "../../../generated_pages/repeating_sections_with_hub_and_spoke/visitors-block-add.page";
+import VisitorsListCollectorRemovePage from "../../../generated_pages/repeating_sections_with_hub_and_spoke/visitors-block-remove.page";
+import VisitorsDateOfBirthPage from "../../../generated_pages/repeating_sections_with_hub_and_spoke/visitors-date-of-birth.page";
+import ProxyPage from "../../../generated_pages/repeating_sections_with_hub_and_spoke/proxy.page";
+import DateOfBirthPage from "../../../generated_pages/repeating_sections_with_hub_and_spoke/date-of-birth.page";
+import ConfirmDateOfBirthPage from "../../../generated_pages/repeating_sections_with_hub_and_spoke/confirm-dob.page";
+import SexPage from "../../../generated_pages/repeating_sections_with_hub_and_spoke/sex.page";
+import PersonalDetailsSummaryPage from "../../../generated_pages/repeating_sections_with_hub_and_spoke/personal-details-section-summary.page";
+import HubPage from "../../../base_pages/hub.page.js";
 
 describe("Feature: Repeating Sections with Hub and Spoke", () => {
   describe("Given the user has added some members to the household and is on the Hub", () => {

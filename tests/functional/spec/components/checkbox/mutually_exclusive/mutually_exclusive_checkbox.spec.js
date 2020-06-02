@@ -1,5 +1,5 @@
-const MandatoryCheckboxPage = require("../../../../generated_pages/mutually_exclusive/mutually-exclusive-checkbox.page");
-const SummaryPage = require("../../../../generated_pages/mutually_exclusive/mutually-exclusive-checkbox-section-summary.page");
+import MandatoryCheckboxPage from "../../../../generated_pages/mutually_exclusive/mutually-exclusive-checkbox.page";
+import SummaryPage from "../../../../generated_pages/mutually_exclusive/mutually-exclusive-checkbox-section-summary.page";
 
 describe("Component: Mutually Exclusive Checkbox With Single Checkbox Override", () => {
   beforeEach(() => {

@@ -1,10 +1,10 @@
-const ToppingCheckboxPage = require("../../../generated_pages/routing_checkbox_set_not_set/topping-checkbox.page.js");
-const ToppingInterstitialNotSetPage = require("../../../generated_pages/routing_checkbox_set_not_set/topping-interstitial-not-set.page.js");
-const ToppingInterstitialSetPage = require("../../../generated_pages/routing_checkbox_set_not_set/topping-interstitial-set.page.js");
-const OptionalMutuallyExclusivePage = require("../../../generated_pages/routing_checkbox_set_not_set/optional-mutually-exclusive.page.js");
-const CheeseInterstitialNotSetPage = require("../../../generated_pages/routing_checkbox_set_not_set/cheese-interstitial-not-set.page.js");
-const CheeseInterstitialSetPage = require("../../../generated_pages/routing_checkbox_set_not_set/cheese-interstitial-set.page.js");
-const SummaryPage = require("../../../generated_pages/routing_checkbox_set_not_set/summary.page.js");
+import ToppingCheckboxPage from "../../../generated_pages/routing_checkbox_set_not_set/topping-checkbox.page.js";
+import ToppingInterstitialNotSetPage from "../../../generated_pages/routing_checkbox_set_not_set/topping-interstitial-not-set.page.js";
+import ToppingInterstitialSetPage from "../../../generated_pages/routing_checkbox_set_not_set/topping-interstitial-set.page.js";
+import OptionalMutuallyExclusivePage from "../../../generated_pages/routing_checkbox_set_not_set/optional-mutually-exclusive.page.js";
+import CheeseInterstitialNotSetPage from "../../../generated_pages/routing_checkbox_set_not_set/cheese-interstitial-not-set.page.js";
+import CheeseInterstitialSetPage from "../../../generated_pages/routing_checkbox_set_not_set/cheese-interstitial-set.page.js";
+import SummaryPage from "../../../generated_pages/routing_checkbox_set_not_set/summary.page.js";
 
 describe("Test routing using not set and set conditions on checkboxes", () => {
   beforeEach(() => {

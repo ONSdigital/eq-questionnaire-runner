@@ -1,8 +1,8 @@
-const QuestionPageOne = require("../../../generated_pages/default/number-question-one.page.js");
-const QuestionPageTwo = require("../../../generated_pages/default/number-question-two.page.js");
-const Summary = require("../../../generated_pages/default/summary.page.js");
-const QuestionPageOneSkip = require("../../../generated_pages/default_with_skip/number-question-one.page.js");
-const QuestionPageThreeSkip = require("../../../generated_pages/default_with_skip/number-question-three.page.js");
+import QuestionPageOne from "../../../generated_pages/default/number-question-one.page.js";
+import QuestionPageTwo from "../../../generated_pages/default/number-question-two.page.js";
+import Summary from "../../../generated_pages/default/summary.page.js";
+import QuestionPageOneSkip from "../../../generated_pages/default_with_skip/number-question-one.page.js";
+import QuestionPageThreeSkip from "../../../generated_pages/default_with_skip/number-question-three.page.js";
 
 describe("Feature: Default Value", () => {
   it('Given I start default schema, When I do not answer a question, Then "no answer provided" is displayed on the Summary page', () => {

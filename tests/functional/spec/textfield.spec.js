@@ -1,5 +1,5 @@
-const TextFieldPage = require("../generated_pages/textfield/name-block.page.js");
-const SummaryPage = require("../generated_pages/textfield/summary.page.js");
+import TextFieldPage from "../generated_pages/textfield/name-block.page.js";
+import SummaryPage from "../generated_pages/textfield/summary.page.js";
 
 describe("Textfield", () => {
   it("Given a textfield option, a user should be able to click the label of the textfield to focus", () => {

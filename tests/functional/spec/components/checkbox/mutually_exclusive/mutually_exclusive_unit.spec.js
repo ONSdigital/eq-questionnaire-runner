@@ -1,5 +1,5 @@
-const UnitPage = require("../../../../generated_pages/mutually_exclusive/mutually-exclusive-unit.page");
-const SummaryPage = require("../../../../generated_pages/mutually_exclusive/mutually-exclusive-unit-section-summary.page");
+import UnitPage from "../../../../generated_pages/mutually_exclusive/mutually-exclusive-unit.page";
+import SummaryPage from "../../../../generated_pages/mutually_exclusive/mutually-exclusive-unit-section-summary.page";
 
 describe("Component: Mutually Exclusive Unit With Single Checkbox Override", () => {
   beforeEach(() => {

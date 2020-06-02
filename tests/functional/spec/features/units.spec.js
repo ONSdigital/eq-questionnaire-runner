@@ -1,8 +1,8 @@
-const SetLengthUnitsBlockPage = require("../../generated_pages/unit_patterns/set-length-units-block.page.js");
-const SetDurationUnitsBlockPage = require("../../generated_pages/unit_patterns/set-duration-units-block.page.js");
-const SetAreaUnitsBlockPage = require("../../generated_pages/unit_patterns/set-area-units-block.page.js");
-const SetVolumeUnitsBlockPage = require("../../generated_pages/unit_patterns/set-volume-units-block.page.js");
-const SummaryPage = require("../../generated_pages/unit_patterns/summary.page.js");
+import SetLengthUnitsBlockPage from "../../generated_pages/unit_patterns/set-length-units-block.page.js";
+import SetDurationUnitsBlockPage from "../../generated_pages/unit_patterns/set-duration-units-block.page.js";
+import SetAreaUnitsBlockPage from "../../generated_pages/unit_patterns/set-area-units-block.page.js";
+import SetVolumeUnitsBlockPage from "../../generated_pages/unit_patterns/set-volume-units-block.page.js";
+import SummaryPage from "../../generated_pages/unit_patterns/summary.page.js";
 
 describe("Units", () => {
   it("Given we do not set a language code and run the questionnaire, when we enter values for durations, they should be displayed on the summary with their units.", () => {

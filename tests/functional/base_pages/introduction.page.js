@@ -42,4 +42,4 @@ class IntroductionPage extends BasePage {
   }
 }
 
-module.exports = IntroductionPage;
+export default IntroductionPage;
