@@ -119,8 +119,8 @@ def get_questionnaire(schema, questionnaire_store):
     )
 
     if not router.can_access_hub():
-        redirect_location = router.get_first_incomplete_location_in_survey()
-        return redirect(redirect_location.url())
+        redirect_location_url = router.get_first_incomplete_location_in_survey_url()
+        return redirect(redirect_location_url)
 
     language_code = get_session_store().session_data.language_code
 
@@ -162,7 +162,7 @@ def post_questionnaire(schema, questionnaire_store):
     if schema.is_hub_enabled() and router.is_survey_complete():
         return submit_answers(schema, questionnaire_store, router.full_routing_path())
 
-    return redirect(router.get_first_incomplete_location_in_survey().url())
+    return redirect(router.get_first_incomplete_location_in_survey_url())
 
 
 @questionnaire_blueprint.route("sections/<section_id>/", methods=["GET", "POST"])
@@ -195,7 +195,7 @@ def get_section(schema, questionnaire_store, section_id, list_item_id=None):
                 page_title=section_handler.get_page_title(),
             )
 
-        return redirect(section_handler.get_section_resume_url())
+        return redirect(section_handler.get_resume_url())
 
     return redirect(section_handler.get_next_location_url())
 
@@ -280,6 +280,7 @@ def relationship(schema, questionnaire_store, block_id, list_item_id, to_list_it
             to_list_item_id=to_list_item_id,
             questionnaire_store=questionnaire_store,
             language=flask_babel.get_locale().language,
+            request_args=request.args,
         )
     except InvalidLocationException:
         return redirect(url_for(".get_questionnaire"))

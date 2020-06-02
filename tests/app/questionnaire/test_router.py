@@ -385,7 +385,7 @@ class TestRouter(AppContextTestCase):  # pylint: disable=too-many-public-methods
 
         self.assertTrue(is_survey_complete)
 
-    def test_get_first_incomplete_location_in_section(self):
+    def test_get_first_incomplete_location_url_in_section(self):
         schema = load_schema_from_name("test_section_summary")
 
         progress_store = ProgressStore(
@@ -408,18 +408,18 @@ class TestRouter(AppContextTestCase):  # pylint: disable=too-many-public-methods
             section_id="property-details-section",
         )
 
-        incomplete = router.get_first_incomplete_location_for_section(
+        section_resume_url = router.get_section_resume_url(
             routing_path=section_routing_path
         )
 
         self.assertEqual(
-            incomplete,
-            Location(
-                section_id="property-details-section", block_id="insurance-address"
-            ),
+            section_resume_url,
+            "http://test.localdomain/questionnaire/insurance-address/?resume=True",
         )
 
-    def test_get_section_return_location_when_section_complete_no_section_summary(self):
+    def test_get_section_return_location_url_when_section_complete_no_section_summary(
+        self,
+    ):
         schema = load_schema_from_name("test_hub_and_spoke")
 
         router = Router(
@@ -434,13 +434,11 @@ class TestRouter(AppContextTestCase):  # pylint: disable=too-many-public-methods
             ["employment-status", "employment-type"], section_id="employment-section"
         )
 
-        location_when_section_complete = router.get_first_incomplete_location_for_section(
-            routing_path=routing_path
-        )
+        section_resume_url = router.get_section_resume_url(routing_path=routing_path)
 
         self.assertEqual(
-            location_when_section_complete,
-            Location(section_id="employment-section", block_id="employment-status"),
+            section_resume_url,
+            "http://test.localdomain/questionnaire/employment-status/",
         )
 
     def test_enabled_section_ids(self):

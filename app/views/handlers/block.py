@@ -28,7 +28,8 @@ class BlockHandler:
         self._routing_path = self._get_routing_path()
         self.form = None
         self.page_title = None
-        self._return_to_summary = self._request_args.get("return_to_summary")
+        self._return_to_summary = "return_to_summary" in request_args
+        self.resume = "resume" in request_args
 
         if not self.is_location_valid():
             raise InvalidLocationException(
