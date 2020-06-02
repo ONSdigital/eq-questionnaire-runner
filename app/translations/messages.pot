@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2020-05-29 10:06+0100\n"
+"POT-Creation-Date: 2020-06-02 13:09+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -602,11 +602,9 @@ msgid "This is the last viewed question in this section"
 msgstr ""
 
 #: templates/partials/last_viewed_question_guidance.html:10
-msgid "You can also"
-msgstr ""
-
-#: templates/partials/last_viewed_question_guidance.html:11
-msgid "go back to the start of the section"
+msgid ""
+"You can also <a id='section-start-link' href='{url}'>go back to the start"
+" of the section</a>"
 msgstr ""
 
 #: templates/partials/question.html:39

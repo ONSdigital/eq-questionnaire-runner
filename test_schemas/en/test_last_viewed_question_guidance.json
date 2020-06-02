@@ -4,9 +4,9 @@
     "schema_version": "0.0.1",
     "data_version": "0.0.3",
     "survey_id": "0",
-    "title": "Test PrimaryPersonListCollector",
+    "title": "Test last viewed question guidance",
     "theme": "default",
-    "description": "A questionnaire to test Primary Person ListCollector",
+    "description": "A questionnaire to test last viewed question guidance on different block types",
     "metadata": [
         {
             "name": "user_id",
