@@ -1,25 +1,29 @@
 {
-  "extends": [
-    "standard",
-    "eslint:recommended"
-  ],
-  "parserOptions": {
-    "ecmaVersion": 11,
-    "ecmaFeatures": {
-      "modules": true
-    }
-  },
   "env": {
     "node": true,
     "es6": true,
     "mocha": true
   },
+  "extends": [
+    "standard",
+    "eslint:recommended"
+  ],
   "globals": {
     "$": true,
     "$$": true,
     "browser": true,
     "expect": true
   },
+  "parserOptions": {
+    "ecmaVersion": 11,
+    "ecmaFeatures": {
+      "modules": true
+    }
+  },
+  "plugins": [
+    "json",
+    "chai-friendly"
+  ],
   "rules": {
     "chai-friendly/no-unused-expressions": 2,
     "consistent-return": 0,
@@ -37,16 +41,12 @@
     "no-console": [
       2
     ],
-    "no-dupe-class-members": 0,
+    "no-dupe-class-members": 0,  // Need to fix generate_pages.py to enable this.
     "no-underscore-dangle": 0,
     "no-unused-expressions": 0,
-    "no-unused-vars": [
-      1
-    ],
+    "no-unused-vars": 1,
     "no-useless-constructor": 0,
-    "no-var": [
-      1
-    ],
+    "no-var": 1,
     "prefer-arrow-callback": [
       "error",
       {
@@ -76,11 +76,12 @@
     "strict": [
       2,
       "never"
+    ],
+    "padded-blocks": [
+      "error",
+      {
+        "blocks": "never"
+      }
     ]
-    // Need to fix generate_pages.py to enable this.
-  },
-  "plugins": [
-    "json",
-    "chai-friendly"
-  ]
+  }
 }

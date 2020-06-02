@@ -1,4 +1,3 @@
-import JwtHelper from "../jwt_helper";
 import SetMinMax from "../generated_pages/numbers/set-min-max-block.page.js";
 import TestMinMax from "../generated_pages/numbers/test-min-max-block.page.js";
 import SummaryPage from "../generated_pages/numbers/summary.page";
@@ -6,9 +5,10 @@ import IntroductionPage from "../generated_pages/introduction/introduction.page"
 import IntroInterstitialPage from "../generated_pages/introduction/general-business-information-completed.page";
 import IntroConfirmationPage from "../generated_pages/introduction/confirmation.page";
 import IntroThankYouPagePage from "../base_pages/thank-you.page";
+import { getRandomString } from "../jwt_helper";
 
 describe("SaveSignOut", () => {
-  const responseId = JwtHelper.getRandomString(16);
+  const responseId = getRandomString(16);
 
   it("Given I am completing a survey, when I select save and complete later, then I am redirected to sign out page and my session is cleared", () => {
     browser.openQuestionnaire("test_numbers.json", { userId: "test_user", responseId });

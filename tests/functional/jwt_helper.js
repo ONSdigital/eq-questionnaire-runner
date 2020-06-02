@@ -2,8 +2,8 @@ import KJUR from "jsrsasign";
 import uuid from "uuid/v1";
 import JSONWebKey from "json-web-key";
 import jose from "node-jose";
-
 import crypto from "crypto";
+
 const JWK = jose.JWK;
 const JWE = jose.JWE;
 
