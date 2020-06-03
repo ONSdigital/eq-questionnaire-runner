@@ -38,6 +38,7 @@
                                 "id": "mutually-exclusive-checkbox-question",
                                 "type": "MutuallyExclusive",
                                 "title": "What is your nationality?",
+                                "warning": "This is important",
                                 "mandatory": true,
                                 "answers": [
                                     {
