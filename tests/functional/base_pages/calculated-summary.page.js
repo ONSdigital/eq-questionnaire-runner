@@ -1,10 +1,6 @@
 import QuestionPage from "./question.page";
 
 class CalculatedSummaryPage extends QuestionPage {
-  constructor(pageName) {
-    super(pageName);
-  }
-
   calculatedSummaryTitle() {
     return '[data-qa="calculated-summary-title"]';
   }

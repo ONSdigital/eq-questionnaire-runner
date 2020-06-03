@@ -1,10 +1,6 @@
 import BasePage from "./base.page";
 
 class HubPage extends BasePage {
-  constructor(pageName) {
-    super(pageName);
-  }
-
   url() {
     return "/questionnaire/";
   }

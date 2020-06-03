@@ -1,10 +1,6 @@
 import BasePage from "./base.page";
 
 class IntroductionPage extends BasePage {
-  constructor(pageName) {
-    super(pageName);
-  }
-
   myAccountLink() {
     return "#my-account";
   }

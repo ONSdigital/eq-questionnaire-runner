@@ -41,7 +41,6 @@
     "no-console": 2,
     "no-dupe-class-members": 0,  //TODO: Update generate_pages.py to not recreate class members.
     "no-unused-expressions": 0,
-    "no-useless-constructor": 0,
     "no-var": 2,
     "prefer-arrow-callback": [
       2,
