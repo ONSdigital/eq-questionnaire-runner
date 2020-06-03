@@ -1,0 +1,11 @@
+{% from "components/panel/_macro.njk" import onsPanel %}
+{% call onsPanel({
+    "id": "last-viewed-question-guidance",
+    "classes": "u-mb-m"
+    }) %}
+  <strong>
+    {{ _("This is the last viewed question in this section") }}
+  </strong>
+  <br>
+{{ _("You can also <a id='section-start-link' href='{url}'>go back to the start of the section</a>").format(url = last_viewed_question_guidance.first_location_in_section_url)}}
+{% endcall %}
