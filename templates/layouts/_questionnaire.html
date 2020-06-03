@@ -5,6 +5,7 @@
 
 {% set block = content.block %}
 {% set form = content.form %}
+{% set last_viewed_question_guidance = content.last_viewed_question_guidance %}
 
 {% block main %}
   <button type="submit" class="u-d-no" hidden></button>
@@ -18,6 +19,9 @@
 
   {% block form_content %}
       <div class="group" id="{{current_location.group_id}}">
+        {% if last_viewed_question_guidance %}
+          {% include 'partials/last_viewed_question_guidance.html' %}
+        {% endif %}
         {% include 'partials/block.html' %}
       </div>
   {% endblock %}

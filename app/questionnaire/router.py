@@ -92,7 +92,7 @@ class Router:
             if self._schema.is_hub_enabled():
                 return url_for(".get_questionnaire")
 
-            return self.get_first_incomplete_location_in_survey().url()
+            return self.get_first_incomplete_location_in_survey_url()
 
         return self.get_next_block_url(location, routing_path)
 
@@ -125,7 +125,7 @@ class Router:
 
         return None
 
-    def get_first_incomplete_location_in_survey(self):
+    def get_first_incomplete_location_in_survey_url(self):
         first_incomplete_section_key = self._get_first_incomplete_section_key()
 
         if first_incomplete_section_key:
@@ -134,28 +134,19 @@ class Router:
             section_routing_path = self._path_finder.routing_path(
                 section_id=section_id, list_item_id=list_item_id
             )
-            location = self._get_first_incomplete_location(section_routing_path)
+            return self.get_section_resume_url(section_routing_path)
 
-            if location:
-                return location
+        return self.get_last_location_in_survey().url()
 
-        return self.get_last_location_in_survey()
+    def get_section_resume_url(self, routing_path):
+        section_key = (routing_path.section_id, routing_path.list_item_id)
 
-    def get_first_incomplete_location_for_section(self, routing_path):
-        section_id = routing_path.section_id
-        list_item_id = routing_path.list_item_id
-        section_key = (section_id, list_item_id)
         if section_key in self._progress_store:
-            for block_id in routing_path:
-                if not self._is_block_complete(block_id, section_id, list_item_id):
-                    return Location(
-                        block_id=block_id,
-                        section_id=routing_path.section_id,
-                        list_item_id=routing_path.list_item_id,
-                        list_name=routing_path.list_name,
-                    )
+            location = self._get_first_incomplete_location_in_section(routing_path)
+            if location:
+                return location.url(resume=True)
 
-        return self.get_first_location_in_section(routing_path)
+        return self.get_first_location_in_section(routing_path).url()
 
     def is_survey_complete(self):
         first_incomplete_section_key = self._get_first_incomplete_section_key()
@@ -168,7 +159,7 @@ class Router:
         return True
 
     def is_path_complete(self, routing_path):
-        return not bool(self._get_first_incomplete_location(routing_path))
+        return not bool(self._get_first_incomplete_location_in_section(routing_path))
 
     @staticmethod
     def get_first_location_in_section(routing_path) -> Location:
@@ -213,7 +204,7 @@ class Router:
 
         return block_id in completed_block_ids
 
-    def _get_first_incomplete_location(self, routing_path):
+    def _get_first_incomplete_location_in_section(self, routing_path):
         for block_id in routing_path:
             block = self._schema.get_block(block_id)
             block_type = block.get("type")
