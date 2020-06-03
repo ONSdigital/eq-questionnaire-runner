@@ -4,7 +4,7 @@ const CheckboxVisibleNonePage = require('../../../generated_pages/checkbox_detai
 const MutuallyExclusivePage = require('../../../generated_pages/checkbox_detail_answer_visible/mutually-exclusive.page.js');
 
 
-describe('Given I start a checkbox survey with a write-in option', function() {
+describe('Given the checkbox detail_answer questionnaire, when a checkbox has a detail_answer with visible set to true then the detail_answer should be shown', function() {
   beforeEach(function() {
     browser.openQuestionnaire('test_checkbox_detail_answer_visible.json');
   });

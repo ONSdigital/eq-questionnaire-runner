@@ -220,7 +220,7 @@ class TestJinjaFilters(AppContextTestCase):  # pylint: disable=too-many-public-m
         assert radio.other.open is True
 
     @staticmethod
-    def test_checkbox_class_visible_attribute():
+    def test_checkbox_detail_answer_visible_attribute():
         answer = {
             "type": "Checkbox",
             "id": "checkbox-answer-numeric-detail",
@@ -251,7 +251,7 @@ class TestJinjaFilters(AppContextTestCase):  # pylint: disable=too-many-public-m
         assert checkbox.other.open is True
 
     @staticmethod
-    def test_checkbox_class_visible_attribute_mutually_exclusive():
+    def test_checkbox_mutually_exclusive_detail_answer_visible_attribute():
         answer = {
             "type": "MutuallyExclusive",
             "id": "answer-numeric-detail-exclusive",
