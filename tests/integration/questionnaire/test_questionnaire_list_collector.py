@@ -267,4 +267,7 @@ class TestQuestionnaireListCollector(IntegrationTestCase):
         self.add_person("Someone", "Else")
         remove_link = self.get_link("1", "Remove")
         self.get(remove_link)
+        self.assertIsNotNone(
+            self.getHtmlSoup().select("#question-warning-remove-question")
+        )
         self.assertInBody("All of the information about this person will be deleted")
