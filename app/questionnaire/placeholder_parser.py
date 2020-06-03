@@ -50,21 +50,23 @@ class PlaceholderParser:
             return escape(answer.value)
         return None
 
-    def _resolve_value_source(self, value_source, list_item_id):
+    def _resolve_value_source(self, value_source):
         if value_source["source"] == "answers":
-            return self._resolve_answer_value(value_source["identifier"], list_item_id)
+            return self._resolve_answer_value(value_source)
         if value_source["source"] == "metadata":
             return self._resolve_metadata_value(value_source["identifier"])
         if value_source["source"] == "list":
             return len(self._list_store[value_source["identifier"]].items)
 
-    def _resolve_answer_value(self, identifier, list_item_id):
-        if isinstance(identifier, list):
+    def _resolve_answer_value(self, value_source):
+        list_item_id = self._get_list_item_id_from_value_source(value_source)
+
+        if isinstance(value_source["identifier"], list):
             return [
                 self._lookup_answer(each_identifier, list_item_id)
-                for each_identifier in identifier
+                for each_identifier in value_source["identifier"]
             ]
-        return self._lookup_answer(identifier, list_item_id)
+        return self._lookup_answer(value_source["identifier"], list_item_id)
 
     def _resolve_metadata_value(self, identifier):
         if isinstance(identifier, list):
@@ -77,18 +79,12 @@ class PlaceholderParser:
         try:
             return self._parse_transforms(placeholder["transforms"])
         except KeyError:
-            return self._resolve_value_source(placeholder["value"], self._list_item_id)
+            return self._resolve_value_source(placeholder["value"])
 
     def _parse_transforms(self, transform_list: Sequence[Mapping]):
         transformed_value = None
 
         for transform in transform_list:
-            list_item_id = self._get_list_item_id(
-                transform.get("arguments", {})
-                .get("list_to_concatenate", {})
-                .get("list_item_selector", {})
-                .get("id")
-            )
             transform_args: Dict[str, Union[None, str, List[str]]] = {}
             for arg_key, arg_value in transform["arguments"].items():
                 if not isinstance(arg_value, dict):
@@ -98,9 +94,7 @@ class PlaceholderParser:
                 elif arg_value["source"] == "previous_transform":
                     transform_args[arg_key] = transformed_value
                 else:
-                    transform_args[arg_key] = self._resolve_value_source(
-                        arg_value, list_item_id
-                    )
+                    transform_args[arg_key] = self._resolve_value_source(arg_value)
 
             transformed_value = getattr(self._transformer, transform["transform"])(
                 **transform_args
@@ -108,7 +102,14 @@ class PlaceholderParser:
 
         return transformed_value
 
-    def _get_list_item_id(self, list_item_selector=None):
+    def _get_list_item_id_from_value_source(self, value_source):
+        list_item_selector = value_source.get("list_item_selector")
         if list_item_selector:
-            return getattr(self._location, list_item_selector)
+            if list_item_selector["source"] == "location":
+                return getattr(self._location, list_item_selector["id"])
+            if list_item_selector["source"] == "list":
+                return getattr(
+                    self._list_store[list_item_selector["id"]],
+                    list_item_selector["id_selector"],
+                )
         return self._list_item_id

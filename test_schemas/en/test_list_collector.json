@@ -132,6 +132,7 @@
                                     "id": "remove-question",
                                     "type": "General",
                                     "title": "Are you sure you want to remove this person?",
+                                    "warning": "All of the information about this person will be deleted",
                                     "answers": [
                                         {
                                             "id": "remove-confirmation",
