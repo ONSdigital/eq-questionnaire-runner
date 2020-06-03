@@ -39,7 +39,7 @@
     "new-cap": 2,
     "no-alert": 1,
     "no-console": 2,
-    "no-dupe-class-members": 0,  // Need to fix generate_pages.py to enable this.
+    "no-dupe-class-members": 0,  //TODO: Update generate_pages.py to not recreate class members.
     "no-unused-expressions": 0,
     "no-useless-constructor": 0,
     "no-var": 2,
