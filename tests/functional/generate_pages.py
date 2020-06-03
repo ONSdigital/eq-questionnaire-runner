@@ -53,7 +53,7 @@ SPEC_PAGE_IMPORT = Template(
 SPEC_EXAMPLE_TEST = Template(
     r"""
 describe("Example Test", () => {
-  beforeEach"Load the survey", () => {
+  beforeEach("Load the survey", () => {
     browser.openQuestionnaire(schema);
   });
 
