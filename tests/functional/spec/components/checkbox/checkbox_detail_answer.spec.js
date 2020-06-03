@@ -4,35 +4,30 @@ const CheckboxVisibleNonePage = require('../../../generated_pages/checkbox_detai
 const MutuallyExclusivePage = require('../../../generated_pages/checkbox_detail_answer_visible/mutually-exclusive.page.js');
 
 
-describe('Given the checkbox detail_answer questionnaire, when a checkbox has a detail_answer with visible set to true then the detail_answer should be shown', function() {
+describe('Given the checkbox detail_answer questionnaire,', function() {
   beforeEach(function() {
     browser.openQuestionnaire('test_checkbox_detail_answer_visible.json');
   });
-
-  it('When I view a write-in checkbox and the visible option is set to true, Then the detail answer label should be displayed', function() {
+  it('When a checkbox has a detail_answer with visible set to true, Then the detail answer write-in field should be shown', function() {
     expect($(CheckboxVisibleTruePage.otherDetail()).isDisplayed()).to.be.true;
   });
-
-  it('When I view a write-in checkbox and the visible option is set to true, Then after choosing non write-in option the detail answer label should be displayed', function() {
+  it('When a checkbox has a detail_answer with visible set to true and another answer is checked, then the detail answer write-in field should still be shown', function() {
     $(CheckboxVisibleTruePage.coffee()).click();
     expect($(CheckboxVisibleTruePage.otherDetail()).isDisplayed()).to.be.true;
   });
-
-  it('When I view a write-in checkbox and the visible option is set to false, Then the detail answer label should not be displayed', function() {
+  it('When a checkbox has a detail_answer with visible set to false, Then the detail answer write-in field should not be shown', function() {
     $(CheckboxVisibleTruePage.coffee()).click();
     $(CheckboxVisibleTruePage.submit()).click();
     expect($(CheckboxVisibleFalsePage.otherDetail()).isDisplayed()).to.be.false;
   });
-
-  it('When I view a write-in checkbox and the visible option is not set, Then the detail answer label should not be displayed', function() {
+  it('When a checkbox has a detail_answer with visible not set, Then the detail answer write-in field should not be shown', function() {
     $(CheckboxVisibleTruePage.coffee()).click();
     $(CheckboxVisibleTruePage.submit()).click();
     $(CheckboxVisibleFalsePage.iceCream()).click();
     $(CheckboxVisibleFalsePage.submit()).click();
     expect($(CheckboxVisibleNonePage.otherDetail()).isDisplayed()).to.be.false;
   });
-
-  it('When I view a mutually exclusive, write-in checkbox and the visible option is set to true, Then the detail answer label should be displayed', function() {
+  it('When a mutually exclusive checkbox has a detail_answer with visible set to true, Then the detail answer write-in field should be shown', function() {
     $(CheckboxVisibleTruePage.coffee()).click();
     $(CheckboxVisibleTruePage.submit()).click();
     $(CheckboxVisibleFalsePage.iceCream()).click();
