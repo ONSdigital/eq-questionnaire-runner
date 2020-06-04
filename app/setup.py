@@ -8,7 +8,6 @@ import yaml
 from botocore.config import Config
 from flask import Flask, request as flask_request, session as cookie_session
 from flask_babel import Babel
-from flask_caching import Cache
 from flask_compress import Compress
 from flask_talisman import Talisman
 from flask_wtf.csrf import CSRFProtect
@@ -72,7 +71,6 @@ CSP_POLICY = {
     ],
 }
 
-cache = Cache()
 compress = Compress()
 
 logger = get_logger()
@@ -190,12 +188,6 @@ def create_app(  # noqa: C901  pylint: disable=too-complex, too-many-statements
 
     if application.config["EQ_DEV_MODE"]:
         start_dev_mode(application)
-
-    if application.config["EQ_ENABLE_CACHE"]:
-        cache.init_app(application, config={"CACHE_TYPE": "simple"})
-    else:
-        # no cache and silence warning
-        cache.init_app(application, config={"CACHE_NO_NULL_WARNING": True})
 
     # Switch off flask default autoescaping as schema content can contain html
     application.jinja_env.autoescape = False

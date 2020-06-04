@@ -1,3 +1,5 @@
+from copy import deepcopy
+
 from app.jinja_filters import (
     get_formatted_currency,
     format_number,
@@ -9,6 +11,7 @@ from app.questionnaire.questionnaire_schema import QuestionnaireSchema
 from app.questionnaire.schema_utils import (
     choose_question_to_display,
     get_answer_ids_in_block,
+    transform_variants,
 )
 from app.views.contexts.context import Context
 from app.views.contexts.summary.group import Group
@@ -94,16 +97,16 @@ class CalculatedSummaryContext(Context):
         """
         Evaluates questions in a block and removes any questions not containing a relevant answer
         """
-        block_question = choose_question_to_display(
+        transformed_block = transform_variants(
             block,
             self._schema,
+            self._metadata,
             self._answer_store,
             self._list_store,
-            self._metadata,
             current_location=current_location,
         )
-
-        reduced_block = block.copy()
+        transformed_block = deepcopy(transformed_block)
+        block_question = transformed_block["question"]
 
         matching_answers = []
         for answer_id in answer_ids_to_keep:
@@ -119,7 +122,7 @@ class CalculatedSummaryContext(Context):
             ]
             block_question["answers"] = answers_to_keep
 
-        return reduced_block
+        return transformed_block
 
     def _get_formatted_total(self, groups, current_location):
         calculated_total = 0
