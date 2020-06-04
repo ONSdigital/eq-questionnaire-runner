@@ -47,7 +47,7 @@
                                         "max_length": 20,
                                         "validation": {
                                             "messages": {
-                                                "MAX_LENGTH_EXCEEDED": "Your answer has to be less than %(max)d characters long"
+                                                "MAX_LENGTH_EXCEEDED": "You have entered too many characters. Enter up to %(max)d characters"
                                             }
                                         }
                                     }
