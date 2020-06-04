@@ -22,6 +22,6 @@ describe("Textfield", () => {
     browser.openQuestionnaire("test_textfield.json");
     $(TextFieldPage.name()).setValue("This string is too long");
     $(TextFieldPage.submit()).click();
-    expect($(TextFieldPage.errorNumber(1)).getText()).to.contain("Your answer is too long, it has to be less than 20 characters.");
+    expect($(TextFieldPage.errorNumber(1)).getText()).to.contain("You have entered too many characters. Enter up to 20 characters.");
   });
 });

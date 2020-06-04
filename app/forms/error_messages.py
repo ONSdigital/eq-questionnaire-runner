@@ -36,7 +36,7 @@ error_messages = {
         "Enter a number rounded to %(max)d decimal places."
     ),
     "MAX_LENGTH_EXCEEDED": lazy_gettext(
-        "Your answer is too long, it has to be less than %(max)d characters."
+        "You have entered too many characters. Enter up to %(max)d characters."
     ),
     "INVALID_DATE": lazy_gettext("Enter a valid date."),
     "INVALID_DATE_RANGE": lazy_gettext(

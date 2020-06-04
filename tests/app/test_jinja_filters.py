@@ -16,6 +16,7 @@ from app.jinja_filters import (
     get_width_class_for_number,
     map_list_collector_config,
     RadioConfig,
+    CheckboxConfig,
 )
 from tests.app.app_context_test_case import AppContextTestCase
 
@@ -217,6 +218,68 @@ class TestJinjaFilters(AppContextTestCase):  # pylint: disable=too-many-public-m
         radio = RadioConfig(option=option, index=0, form=MagicMock(), answer=answer)
 
         assert radio.other.open is True
+
+    @staticmethod
+    def test_checkbox_detail_answer_visible_attribute():
+        answer = {
+            "type": "Checkbox",
+            "id": "checkbox-answer-numeric-detail",
+            "mandatory": False,
+            "options": [
+                {
+                    "label": "Other",
+                    "value": "Other",
+                    "detail_answer": {
+                        "mandatory": False,
+                        "id": "other-answer",
+                        "label": "Please enter a number of items",
+                        "type": "Number",
+                        "parent_id": "checkbox-question-numeric-detail",
+                        "visible": True,
+                    },
+                }
+            ],
+            "parent_id": "checkbox-question-numeric-detail",
+        }
+
+        option = Mock()
+        option.detail_answer_id = "other-answer"
+        checkbox = CheckboxConfig(
+            option=option, index=0, form=MagicMock(), answer=answer
+        )
+
+        assert checkbox.other.open is True
+
+    @staticmethod
+    def test_checkbox_mutually_exclusive_detail_answer_visible_attribute():
+        answer = {
+            "type": "MutuallyExclusive",
+            "id": "answer-numeric-detail-exclusive",
+            "mandatory": False,
+            "options": [
+                {
+                    "label": "Other",
+                    "value": "Other",
+                    "detail_answer": {
+                        "mandatory": False,
+                        "id": "other-answer",
+                        "label": "Please enter a number of items",
+                        "type": "Number",
+                        "parent_id": "checkbox-question-numeric-exclusive",
+                        "visible": True,
+                    },
+                }
+            ],
+            "parent_id": "question-numeric-detail-exclusive",
+        }
+
+        option = Mock()
+        option.detail_answer_id = "other-answer"
+        checkbox = CheckboxConfig(
+            option=option, index=0, form=MagicMock(), answer=answer
+        )
+
+        assert checkbox.other.open is True
 
     @staticmethod
     def test_radio_class_detail_answer_display_width_with_max_value():

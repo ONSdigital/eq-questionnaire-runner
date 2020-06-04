@@ -19,7 +19,9 @@ class TestTextArea(IntegrationTestCase):
         self.launchSurvey("test_textarea")
         self.post({"answer": "This is longer than twenty characters"})
 
-        self.assertInBody("Your answer has to be less than 20 characters")
+        self.assertInBody(
+            "You have entered too many characters. Enter up to 20 characters"
+        )
 
     def test_acceptable_submission(self):
         self.launchSurvey("test_textarea")
