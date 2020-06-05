@@ -54,6 +54,7 @@
                                 "id": "breakdown-question",
                                 "title": "Breakdown",
                                 "type": "Calculated",
+                                "warning": "These answers must add up to the total provided in the previous question",
                                 "calculations": [
                                     {
                                         "calculation_type": "sum",

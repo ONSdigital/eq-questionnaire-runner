@@ -1,20 +1,20 @@
-const SetMinMax = require("../generated_pages/numbers/set-min-max-block.page.js");
-const TestMinMax = require("../generated_pages/numbers/test-min-max-block.page.js");
-const SummaryPage = require("../generated_pages/numbers/summary.page");
+import SetMinMax from "../generated_pages/numbers/set-min-max-block.page.js";
+import TestMinMax from "../generated_pages/numbers/test-min-max-block.page.js";
+import SummaryPage from "../generated_pages/numbers/summary.page";
 
-describe("NumericRange", function() {
-  const number_schema = "test_numbers.json";
+describe("NumericRange", () => {
+  const numberSchema = "test_numbers.json";
 
-  beforeEach(function() {
-    browser.openQuestionnaire(number_schema);
+  beforeEach(() => {
+    browser.openQuestionnaire(numberSchema);
   });
 
-  it("Answer labels should have descriptions displayed", function() {
+  it("Answer labels should have descriptions displayed", () => {
     expect($(SetMinMax.setMinimumLabelDescription()).getText()).to.contain("This is a description of the minimum value");
     expect($(SetMinMax.setMaximumLabelDescription()).getText()).to.contain("This is a description of the maximum value");
   });
 
-  it("Given a max and min set, a user should be able to complete the survey obeying those ranges", function() {
+  it("Given a max and min set, a user should be able to complete the survey obeying those ranges", () => {
     $(SetMinMax.setMinimum()).setValue("10");
     $(SetMinMax.setMaximum()).setValue("1020");
     $(SetMinMax.submit()).click();
@@ -26,7 +26,7 @@ describe("NumericRange", function() {
     expect(browser.getUrl()).to.contain(SummaryPage.pageName);
   });
 
-  it("Given values outside of the allowed range then the correct error messages are displayed", function() {
+  it("Given values outside of the allowed range then the correct error messages are displayed", () => {
     $(SetMinMax.setMinimum()).setValue("10");
     $(SetMinMax.setMaximum()).setValue("1020");
     $(SetMinMax.submit()).click();
@@ -49,7 +49,7 @@ describe("NumericRange", function() {
     expect($(TestMinMax.errorNumber(8)).getText()).to.contain("Enter an answer more than or equal to £10.00.");
   });
 
-  it("Given values outside of the allowed decimal places then the correct error messages are displayed", function() {
+  it("Given values outside of the allowed decimal places then the correct error messages are displayed", () => {
     $(SetMinMax.setMinimum()).setValue("10");
     $(SetMinMax.setMaximum()).setValue("1020");
     $(SetMinMax.submit()).click();

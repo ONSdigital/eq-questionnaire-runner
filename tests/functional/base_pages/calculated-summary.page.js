@@ -1,10 +1,6 @@
-const QuestionPage = require("./question.page");
+import QuestionPage from "./question.page";
 
 class CalculatedSummaryPage extends QuestionPage {
-  constructor(pageName) {
-    super(pageName);
-  }
-
   calculatedSummaryTitle() {
     return '[data-qa="calculated-summary-title"]';
   }
@@ -18,4 +14,4 @@ class CalculatedSummaryPage extends QuestionPage {
   }
 }
 
-module.exports = CalculatedSummaryPage;
+export default CalculatedSummaryPage;

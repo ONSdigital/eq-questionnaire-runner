@@ -43,21 +43,21 @@ parser.add_argument(
     'Defaults to ".."',
 )
 
-SPEC_PAGE_HEADER = "const helpers = require('../helpers');\n\n"
+SPEC_PAGE_HEADER = "import helpers from '../helpers';\n\n"
 
 SPEC_PAGE_IMPORT = Template(
-    r"""const ${pageName}Page = require('../generated_pages/${pageDir}/${pageFile}');
+    r"""import ${pageName}Page from '../generated_pages/${pageDir}/${pageFile}';
 """
 )
 
 SPEC_EXAMPLE_TEST = Template(
     r"""
-describe('Example Test', function() {
-  beforeEach('Load the survey', function() {
-    browser.openQuestionnaire('${schema}');
+describe("Example Test", () => {
+  beforeEach("Load the survey", () => {
+    browser.openQuestionnaire(schema);
   });
 
-  it('Given..., When..., Then...', function() {
+  it("Given..., When..., Then...", () => {
 
   });
 });
@@ -67,42 +67,41 @@ describe('Example Test', function() {
 
 HEADER = Template(
     r"""// >>> WARNING THIS PAGE WAS AUTO-GENERATED - DO NOT EDIT!!! <<<
-const $basePage = require('$relativeRequirePath/$basePageFile');
+import $basePage from "$relativeRequirePath/$basePageFile";
 
 """
 )
 
 CLASS_NAME = Template(
     r"""class ${pageName}Page extends $basePage {
-
 """
 )
 
-SECTION_SUMMARY_PAGE_URL = r"""  url() { return "/questionnaire/sections/" + this.pageName; }
+SECTION_SUMMARY_PAGE_URL = r"""  url() { return `/questionnaire/sections/${this.pageName}`; }
 
 """
 
 QUESTION_DEFINITION_TITLE_GETTER = Template(
-    r"""  definitionTitle${definitionIndex}() { return '.collapsible:nth-child(${definitionIndex}) > .collapsible__heading'; }
+    r"""  definitionTitle${definitionIndex}() { return `.collapsible:nth-child(${definitionIndex}) > .collapsible__heading`; }
 
 """
 )
 
 QUESTION_DEFINITION_CONTENT_GETTER = Template(
-    r"""  definitionContent${definitionIndex}() { return '.collapsible:nth-child(${definitionIndex}) > .collapsible__content'; }
+    r"""  definitionContent${definitionIndex}() { return `.collapsible:nth-child(${definitionIndex}) > .collapsible__content`; }
 
 """
 )
 
 QUESTION_DEFINITION_BUTTON_GETTER = Template(
-    r"""  definitionButton${definitionIndex}() { return '.collapsible:nth-child(${definitionIndex}) .js-collapsible-button'; }
+    r"""  definitionButton${definitionIndex}() { return `.collapsible:nth-child(${definitionIndex}) .js-collapsible-button`; }
 
 """
 )
 
 ANSWER_LABEL_GETTER = Template(
     r"""  ${answerName}Label() {
-    return '[for=${answerId}]';
+    return `[for=${answerId}]`;
   }
 
 """
@@ -110,21 +109,21 @@ ANSWER_LABEL_GETTER = Template(
 
 ANSWER_ERROR_GETTER = Template(
     r"""  ${answerName}ErrorItem() {
-    return '[data-qa=error-body] div.panel__body > ul';
+    return `[data-qa=error-body] div.panel__body > ul`;
   }
 
 """
 )
 
 ANSWER_LABEL_DESCRIPTION_GETTER = Template(
-    r"""  ${answerName}LabelDescription() { return 'label[for=${answerId}] > .label__description'; }
+    r"""  ${answerName}LabelDescription() { return `label[for=${answerId}] > .label__description`; }
 
 """
 )
 
 ANSWER_GETTER = Template(
     r"""  ${answerName}() {
-    return '#${answerId}';
+    return `#${answerId}`;
   }
 
 """
@@ -132,7 +131,7 @@ ANSWER_GETTER = Template(
 
 BLOCK_DESCRIPTION = Template(
     r"""  ${block_name}Description() {
-    return 'div.block__description';
+    return `div.block__description`;
   }
 
 """
@@ -140,61 +139,61 @@ BLOCK_DESCRIPTION = Template(
 
 ANSWER_UNIT_TYPE_GETTER = Template(
     r"""  ${answerName}Unit() {
-    return '#${answerId}-type';
+    return `#${answerId}-type`;
   }
 
 """
 )
 
 SECTION_SUMMARY_ANSWER_GETTER = Template(
-    r"""  ${answerName}() { return '[data-qa="${answerId}"]'; }
+    r"""  ${answerName}() { return `[data-qa="${answerId}"]`; }
 
 """
 )
 
 SECTION_SUMMARY_ANSWER_EDIT_GETTER = Template(
-    r"""  ${answerName}Edit() { return '[data-qa="${answerId}-edit"]'; }
+    r"""  ${answerName}Edit() { return `[data-qa="${answerId}-edit"]`; }
 
 """
 )
 
 SUMMARY_ANSWER_GETTER = Template(
-    r"""  ${answerName}() { return '[data-qa="${answerId}"]'; }
+    r"""  ${answerName}() { return `[data-qa="${answerId}"]`; }
 
 """
 )
 
 
 SUMMARY_ANSWER_EDIT_GETTER = Template(
-    r"""  ${answerName}Edit() { return '[data-qa="${answerId}-edit"]'; }
+    r"""  ${answerName}Edit() { return `[data-qa="${answerId}-edit"]`; }
 
 """
 )
 
 SUMMARY_TITLE_GETTER = Template(
-    r"""  ${group_id_camel}Title() { return '#${group_id}'; }
+    r"""  ${group_id_camel}Title() { return `#${group_id}`; }
 
 """
 )
 
 SUMMARY_SHOW_ALL_BUTTON = Template(
-    r"""  summaryShowAllButton() { return '.js-collapsible-all'; }
+    r"""  summaryShowAllButton() { return `.js-collapsible-all`; }
 
 """
 )
 
 SUMMARY_QUESTION_GETTER = Template(
-    r"""  ${questionName}() { return '[data-qa=${questionId}]'; }
+    r"""  ${questionName}() { return `[data-qa=${questionId}]`; }
 
 """
 )
 
-COLLAPSIBLE_SUMMARY_GETTER = r"""  collapsibleSummary() { return '#summary-accordion'; }
+COLLAPSIBLE_SUMMARY_GETTER = r"""  collapsibleSummary() { return `#summary-accordion`; }
 
 """
 
 CALCULATED_SUMMARY_LABEL_GETTER = Template(
-    r"""  ${answerName}Label() { return '[data-qa=${answerId}-label]'; }
+    r"""  ${answerName}Label() { return `[data-qa=${answerId}-label]`; }
 
 """
 )
@@ -211,45 +210,45 @@ LIST_SUMMARY_REMOVE_LINK_GETTER = r"""  listRemoveLink(instance) { return `tbody
 
 """
 
-LIST_SUMMARY_LIST_GETTER = r"""  listSummary() { return '.list__item'; }
+LIST_SUMMARY_LIST_GETTER = r"""  listSummary() { return `.list__item`; }
 
 """
 
 LIST_SECTION_SUMMARY_LABEL_GETTER = Template(
-    r"""  ${list_name}ListLabel(listItemInstance) { return 'div[data-qa="${list_name}-list-summary"] tbody:nth-child(' + listItemInstance + ') td:first-child'; }
+    r"""  ${list_name}ListLabel(listItemInstance) { return `div[data-qa="${list_name}-list-summary"] tbody:nth-child(` + listItemInstance + `) td:first-child`; }
 
 """
 )
 
 LIST_SECTION_SUMMARY_ADD_LINK_GETTER = Template(
-    r"""  ${list_name}ListAddLink() { return 'div[data-qa="${list_name}-list-summary"] a[data-qa="add-item-link"]'; }
+    r"""  ${list_name}ListAddLink() { return `div[data-qa="${list_name}-list-summary"] a[data-qa="add-item-link"]`; }
 
 """
 )
 
 LIST_SECTION_SUMMARY_EDIT_LINK_GETTER = Template(
-    r"""  ${list_name}ListEditLink(listItemInstance) { return 'div[data-qa="${list_name}-list-summary"] tbody:nth-child(' + listItemInstance + ') td:last-child a[data-qa="change-item-link"]'; }
+    r"""  ${list_name}ListEditLink(listItemInstance) { return `div[data-qa="${list_name}-list-summary"] tbody:nth-child(` + listItemInstance + `) td:last-child a[data-qa="change-item-link"]`; }
 
 """
 )
 
 LIST_SECTION_SUMMARY_REMOVE_LINK_GETTER = Template(
-    r"""  ${list_name}ListRemoveLink(listItemInstance) { return 'div[data-qa="${list_name}-list-summary"] tbody:nth-child(' + listItemInstance + ') td:last-child a[data-qa="remove-item-link"]'; }
+    r"""  ${list_name}ListRemoveLink(listItemInstance) { return `div[data-qa="${list_name}-list-summary"] tbody:nth-child(` + listItemInstance + `) td:last-child a[data-qa="remove-item-link"]`; }
 
 """
 )
 
-RELATIONSHIP_PLAYBACK_GETTER = r"""  playback() { return '[class*="relationships__playback"]'; }
+RELATIONSHIP_PLAYBACK_GETTER = r"""  playback() { return `[class*="relationships__playback"]`; }
 
 """
 
-CLEAR_SELECTION_BUTTON_GETTER = r"""  clearSelectionButton() { return '.js-clear-btn'; }
+CLEAR_SELECTION_BUTTON_GETTER = r"""  clearSelectionButton() { return `.js-clear-btn`; }
 
 """
 
 CONSTRUCTOR = Template(
     r"""  constructor() {
-    super('${page_id}');
+    super(`${page_id}`);
   }
 
 """
@@ -257,7 +256,8 @@ CONSTRUCTOR = Template(
 
 FOOTER = Template(
     r"""}
-module.exports = new ${pageName}Page();
+
+export default new ${pageName}Page();
 """
 )
 
@@ -289,7 +289,7 @@ def process_options(answer_id, options, page_spec, base_prefix):
         if option["value"][0].isalpha():
             prefix = base_prefix
         else:
-            prefix = base_prefix + "Answer"
+            prefix = f"{base_prefix}Answer"
 
         option_name = camel_case(prefix + generate_pascal_case_from_id(option["value"]))
         option_id = "{name}-{index}".format(name=answer_id, index=index)
@@ -313,7 +313,9 @@ def process_answer(answer, page_spec, long_names, page_name):
 
     answer_name = generate_pascal_case_from_id(answer["id"])
     answer_name = answer_name.replace(page_name, "")
-    answer_name = answer_name.replace("Answer", "")
+
+    if not answer_name.replace("Answer", "").isdigit():
+        answer_name = answer_name.replace("Answer", "")
 
     prefix = camel_case(answer_name) if answer_name and long_names else ""
 
@@ -428,6 +430,7 @@ def write_summary_spec(collapsible, page_spec, section, section_summary):
                 }
                 for answer in question.get("answers", []):
                     answer_name = generate_pascal_case_from_id(answer["id"])
+
                     answer_context = {
                         "answerName": camel_case(answer_name),
                         "answerId": answer["id"],

@@ -1,7 +1,7 @@
-const SuggestionsPage = require("../generated_pages/textfield_suggestions/country-block.page.js");
+import SuggestionsPage from "../generated_pages/textfield_suggestions/country-block.page.js";
 
-describe("Suggestions", function() {
-  it("Given I open a textfield with a suggestions url, when I have entered text, then it will show suggestions", function() {
+describe("Suggestions", () => {
+  it("Given I open a textfield with a suggestions url, when I have entered text, then it will show suggestions", () => {
     browser.openQuestionnaire("test_textfield_suggestions.json");
     $(SuggestionsPage.country()).setValue("Uni");
     $("#country-answer-listbox li").waitForDisplayed();

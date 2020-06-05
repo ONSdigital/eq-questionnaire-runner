@@ -64,7 +64,7 @@ def relationship_answer_store():
 
 
 @pytest.fixture()
-def store_to_serialise():
+def store_to_serialize():
     answer_store = AnswerStore()
 
     answer_store.add_or_update(
@@ -176,10 +176,10 @@ def test_remove_all_answers_for_list_item_id_doesnt_exist(relationship_answer_st
     assert len(relationship_answer_store) == len_before
 
 
-def test_list_serialisation(store_to_serialise):
-    serialised_store = list(store_to_serialise)
+def test_list_serialisation(store_to_serialize):
+    serialized_store = list(store_to_serialize)
 
-    assert serialised_store == [
+    assert serialized_store == [
         Answer.from_dict(
             {"answer_id": "answer1", "value": 10, "list_item_id": "abc123"}
         ),
@@ -190,11 +190,11 @@ def test_list_serialisation(store_to_serialise):
     ]
 
 
-def test_serialise_and_deserialise(basic_answer_store):
-    json_serialised = json.dumps(basic_answer_store.serialise(), for_json=True)
-    deserialised = AnswerStore(json.loads(json_serialised))
+def test_serialize_and_deserialize(basic_answer_store):
+    json_serialized = json.dumps(basic_answer_store.serialize(), for_json=True)
+    deserialized = AnswerStore(json.loads(json_serialized))
 
-    assert deserialised == basic_answer_store
+    assert deserialized == basic_answer_store
 
 
 def test_bad_answer_type(basic_answer_store):

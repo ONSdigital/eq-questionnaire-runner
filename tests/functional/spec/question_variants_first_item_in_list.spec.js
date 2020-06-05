@@ -1,11 +1,10 @@
-const ListCollectorPage = require("../generated_pages/variants_first_item_in_list/list-collector.page.js");
-const ListCollectorAddPage = require("../generated_pages/variants_first_item_in_list/list-collector-add.page.js");
-const ListStatusQuestion = require("../generated_pages/variants_first_item_in_list/list-status.page.js");
+import ListCollectorPage from "../generated_pages/variants_first_item_in_list/list-collector.page.js";
+import ListCollectorAddPage from "../generated_pages/variants_first_item_in_list/list-collector-add.page.js";
+import ListStatusQuestion from "../generated_pages/variants_first_item_in_list/list-status.page.js";
+import HubPage from "../base_pages/hub.page.js";
 
-const HubPage = require("../base_pages/hub.page.js");
-
-describe("Question Variants First Item in List", function() {
-  it("Given I am the first person on the list, When the when rule is set, Then I should the correct question variant", function() {
+describe("Question Variants First Item in List", () => {
+  it("Given I am the first person on the list, When the when rule is set, Then I should the correct question variant", () => {
     browser.openQuestionnaire("test_variants_first_item_in_list.json");
     $(HubPage.submit()).click();
     $(ListCollectorPage.yes()).click();
@@ -19,7 +18,7 @@ describe("Question Variants First Item in List", function() {
     expect($(ListStatusQuestion.questionText()).getText()).to.contain("You are the first person in the list");
   });
 
-  it("Given I am the second person on the list, When the when rule is set, Then I should the correct question variant", function() {
+  it("Given I am the second person on the list, When the when rule is set, Then I should the correct question variant", () => {
     browser.openQuestionnaire("test_variants_first_item_in_list.json");
     $(HubPage.submit()).click();
     $(ListCollectorPage.yes()).click();

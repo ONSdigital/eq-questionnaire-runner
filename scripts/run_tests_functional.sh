@@ -21,8 +21,6 @@ function display_result {
 }
 
 # Run Functional tests
-npm config set python python2.7
-
 echo "Generating functional test pages"
 yarn generate_pages
 

@@ -7,7 +7,7 @@ class QuestionPage extends BasePage {
   }
 
   url() {
-    return "/questionnaire/" + this.pageName;
+    return `/questionnaire/${this.pageName}`;
   }
 
   myAccountLink() {
@@ -54,6 +54,14 @@ class QuestionPage extends BasePage {
     return '[data-qa="block-description"]';
   }
 
+  lastViewedQuestionGuidance() {
+    return "#last-viewed-question-guidance";
+  }
+
+  lastViewedQuestionGuidanceLink() {
+    return "#last-viewed-question-guidance > div.panel__body > a";
+  }
+
   submit() {
     return '[data-qa="btn-submit"]';
   }
@@ -75,4 +83,4 @@ class QuestionPage extends BasePage {
   }
 }
 
-module.exports = QuestionPage;
+export default QuestionPage;

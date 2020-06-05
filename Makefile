@@ -9,13 +9,17 @@ load-schemas:
 	./scripts/load_release.sh onsdigital/eq-questionnaire-schemas $(SCHEMAS_VERSION)
 
 load-templates:
-	./scripts/load_release.sh onsdigital/design-system 17.1.4
+	./scripts/load_release.sh onsdigital/design-system 17.2.0
 
 build: load-templates
 	make translate
 
 lint:
 	pipenv run ./scripts/run_lint_python.sh
+
+format:
+	yarn format
+	pipenv run black .
 
 test:
 	pipenv run ./scripts/run_tests.sh

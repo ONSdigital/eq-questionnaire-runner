@@ -119,8 +119,8 @@ def get_questionnaire(schema, questionnaire_store):
     )
 
     if not router.can_access_hub():
-        redirect_location = router.get_first_incomplete_location_in_survey()
-        return redirect(redirect_location.url())
+        redirect_location_url = router.get_first_incomplete_location_in_survey_url()
+        return redirect(redirect_location_url)
 
     language_code = get_session_store().session_data.language_code
 
@@ -162,7 +162,7 @@ def post_questionnaire(schema, questionnaire_store):
     if schema.is_hub_enabled() and router.is_survey_complete():
         return submit_answers(schema, questionnaire_store, router.full_routing_path())
 
-    return redirect(router.get_first_incomplete_location_in_survey().url())
+    return redirect(router.get_first_incomplete_location_in_survey_url())
 
 
 @questionnaire_blueprint.route("sections/<section_id>/", methods=["GET", "POST"])
@@ -195,7 +195,7 @@ def get_section(schema, questionnaire_store, section_id, list_item_id=None):
                 page_title=section_handler.get_page_title(),
             )
 
-        return redirect(section_handler.get_section_resume_url())
+        return redirect(section_handler.get_resume_url())
 
     return redirect(section_handler.get_next_location_url())
 
@@ -280,6 +280,7 @@ def relationship(schema, questionnaire_store, block_id, list_item_id, to_list_it
             to_list_item_id=to_list_item_id,
             questionnaire_store=questionnaire_store,
             language=flask_babel.get_locale().language,
+            request_args=request.args,
         )
     except InvalidLocationException:
         return redirect(url_for(".get_questionnaire"))
@@ -358,7 +359,7 @@ def get_view_submission(schema):
     session_data = get_session_store().session_data
 
     if _is_submission_viewable(schema.json, session_data.submitted_time):
-        submitted_data = current_app.eq["storage"].get_by_key(
+        submitted_data = current_app.eq["storage"].get(
             SubmittedResponse, session_data.tx_id
         )
 
@@ -467,7 +468,7 @@ def submit_answers(schema, questionnaire_store, full_routing_path):
 
     if is_view_submitted_response_enabled(schema.json):
         _store_viewable_submission(
-            answer_store.serialise(), list_store.serialise(), metadata, submitted_time
+            answer_store.serialize(), list_store.serialize(), metadata, submitted_time
         )
 
     get_questionnaire_store(current_user.user_id, current_user.user_ik).delete()
@@ -491,14 +492,14 @@ def _store_viewable_submission(answers, lists, metadata, submitted_time):
         {"answers": answers, "lists": lists, "metadata": metadata.copy()}
     )
 
-    valid_until = submitted_time + timedelta(
+    expires_at = submitted_time + timedelta(
         seconds=g.schema.json["view_submitted_response"]["duration"]
     )
 
     item = SubmittedResponse(
         tx_id=metadata["tx_id"],
         data=encrypted_data,
-        valid_until=valid_until.replace(tzinfo=tzutc()),
+        expires_at=expires_at.replace(tzinfo=tzutc()),
     )
 
     current_app.eq["storage"].put(item)
@@ -515,10 +516,11 @@ def is_view_submitted_response_enabled(schema):
 def _is_submission_viewable(schema, submitted_time):
     if is_view_submitted_response_enabled(schema) and submitted_time:
         submitted_time = datetime.strptime(submitted_time, "%Y-%m-%dT%H:%M:%S.%f")
-        submission_valid_until = submitted_time + timedelta(
+        submission_expires_at = submitted_time + timedelta(
             seconds=schema["view_submitted_response"]["duration"]
         )
-        return submission_valid_until > datetime.utcnow()
+        is_submission_viewable = submission_expires_at > datetime.utcnow()
+        return is_submission_viewable
 
     return False
 

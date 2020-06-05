@@ -1,0 +1,235 @@
+{
+    "mime_type": "application/json/ons/eq",
+    "language": "en",
+    "schema_version": "0.0.1",
+    "data_version": "0.0.3",
+    "survey_id": "0",
+    "title": "Hub & Spoke Last viewed question guidance",
+    "theme": "default",
+    "description": "A questionnaire to demo last viewed question guidance on hub and spoke",
+    "metadata": [
+        {
+            "name": "user_id",
+            "type": "string"
+        },
+        {
+            "name": "period_id",
+            "type": "string"
+        },
+        {
+            "name": "ru_name",
+            "type": "string"
+        }
+    ],
+    "hub": {
+        "enabled": true,
+        "required_completed_sections": ["work-section"]
+    },
+    "sections": [
+        {
+            "id": "work-section",
+            "title": "Work",
+            "groups": [
+                {
+                    "id": "radio",
+                    "title": "Radio Optional",
+                    "blocks": [
+                        {
+                            "id": "work-interstitial",
+                            "content": {
+                                "title": "Work interstitial",
+                                "contents": [
+                                    {
+                                        "description": "The following section concerns paid and unpaid work"
+                                    }
+                                ]
+                            },
+                            "type": "Interstitial"
+                        },
+                        {
+                            "type": "Question",
+                            "id": "paid-work",
+                            "question": {
+                                "answers": [
+                                    {
+                                        "id": "paid-work-answer",
+                                        "mandatory": false,
+                                        "options": [
+                                            {
+                                                "label": "Yes",
+                                                "value": "Yes"
+                                            },
+                                            {
+                                                "label": "No",
+                                                "value": "No"
+                                            }
+                                        ],
+                                        "type": "Radio"
+                                    }
+                                ],
+                                "id": "paid-work-question",
+                                "title": "In the last seven days, have you done any paid work?",
+                                "type": "General"
+                            }
+                        },
+                        {
+                            "type": "Question",
+                            "id": "unpaid-work",
+                            "question": {
+                                "answers": [
+                                    {
+                                        "id": "unpaid-work-answer",
+                                        "mandatory": false,
+                                        "options": [
+                                            {
+                                                "label": "Yes",
+                                                "value": "Yes"
+                                            },
+                                            {
+                                                "label": "No",
+                                                "value": "No"
+                                            }
+                                        ],
+                                        "type": "Radio"
+                                    }
+                                ],
+                                "id": "unpaid-work-question",
+                                "title": "In the last seven days, have you done any unpaid work?",
+                                "type": "General"
+                            }
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "education-section",
+            "title": "Education",
+            "summary": { "show_on_completion": true },
+            "groups": [
+                {
+                    "blocks": [
+                        {
+                            "id": "gcses",
+                            "question": {
+                                "answers": [
+                                    {
+                                        "id": "gcse-answer",
+                                        "mandatory": true,
+                                        "options": [
+                                            {
+                                                "label": "Yes",
+                                                "value": "Yes"
+                                            },
+                                            {
+                                                "label": "No",
+                                                "value": "No"
+                                            }
+                                        ],
+                                        "type": "Radio"
+                                    }
+                                ],
+                                "id": "gcse-question",
+                                "title": "Do you have any GCSEs?",
+                                "type": "General"
+                            },
+                            "type": "Question"
+                        },
+                        {
+                            "id": "a-levels",
+                            "question": {
+                                "answers": [
+                                    {
+                                        "id": "alevels-answer",
+                                        "mandatory": true,
+                                        "options": [
+                                            {
+                                                "label": "Yes",
+                                                "value": "Yes"
+                                            },
+                                            {
+                                                "label": "No",
+                                                "value": "No"
+                                            }
+                                        ],
+                                        "type": "Radio"
+                                    }
+                                ],
+                                "id": "alevels-question",
+                                "title": "Do you have any A-levels?",
+                                "type": "General"
+                            },
+                            "type": "Question"
+                        }
+                    ],
+                    "id": "education-group",
+                    "title": "Education"
+                }
+            ]
+        },
+        {
+            "id": "interests-section",
+            "title": "Interests (no summary)",
+            "groups": [
+                {
+                    "blocks": [
+                        {
+                            "id": "sports",
+                            "question": {
+                                "answers": [
+                                    {
+                                        "id": "sports-answer",
+                                        "mandatory": true,
+                                        "options": [
+                                            {
+                                                "label": "Yes",
+                                                "value": "Yes"
+                                            },
+                                            {
+                                                "label": "No",
+                                                "value": "No"
+                                            }
+                                        ],
+                                        "type": "Radio"
+                                    }
+                                ],
+                                "id": "sports-question",
+                                "title": "Do play any sports?",
+                                "type": "General"
+                            },
+                            "type": "Question"
+                        },
+                        {
+                            "id": "hobbies",
+                            "question": {
+                                "answers": [
+                                    {
+                                        "id": "hobbies-answer",
+                                        "mandatory": true,
+                                        "options": [
+                                            {
+                                                "label": "Yes",
+                                                "value": "Yes"
+                                            },
+                                            {
+                                                "label": "No",
+                                                "value": "No"
+                                            }
+                                        ],
+                                        "type": "Radio"
+                                    }
+                                ],
+                                "id": "hobbies-question",
+                                "title": "Do you have any hobbies?",
+                                "type": "General"
+                            },
+                            "type": "Question"
+                        }
+                    ],
+                    "id": "interests-group",
+                    "title": "Interests"
+                }
+            ]
+        }
+    ]
+}
