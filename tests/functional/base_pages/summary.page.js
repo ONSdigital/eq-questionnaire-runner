@@ -1,4 +1,4 @@
-const QuestionPage = require("./question.page");
+import QuestionPage from "./question.page";
 
 class ThankYouPage extends QuestionPage {
   constructor() {
@@ -14,4 +14,4 @@ class ThankYouPage extends QuestionPage {
   }
 }
 
-module.exports = new ThankYouPage();
+export default new ThankYouPage();
