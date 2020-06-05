@@ -1,10 +1,10 @@
-const IntroductionPage = require("../generated_pages/introduction/introduction.page");
+import IntroductionPage from "../generated_pages/introduction/introduction.page";
 
-describe("Introduction page", function() {
-  const introduction_schema = "test_introduction.json";
+describe("Introduction page", () => {
+  const introductionSchema = "test_introduction.json";
 
-  it("Given I start a survey, When I view the introduction page then I should be able to see introduction information", function() {
-    browser.openQuestionnaire(introduction_schema);
+  it("Given I start a survey, When I view the introduction page then I should be able to see introduction information", () => {
+    browser.openQuestionnaire(introductionSchema);
     expect($(IntroductionPage.useOfData()).getText()).to.contain("How we use your data");
     expect($(IntroductionPage.useOfInformation()).getText()).to.contain("What you need to do next");
     expect($(IntroductionPage.legalResponse()).getText()).to.contain("Your response is legally required");

@@ -1,25 +1,24 @@
-const checkPeopleInList = require("../helpers");
-const HubPage = require("../base_pages/hub.page.js");
-
-const PrimaryPersonListCollectorPage = require("../generated_pages/list_collector_driving_checkbox/primary-person-list-collector.page.js");
-const PrimaryPersonListCollectorAddPage = require("../generated_pages/list_collector_driving_checkbox/primary-person-list-collector-add.page.js");
-const AnyoneUsuallyLiveAtPage = require("../generated_pages/list_collector_driving_checkbox/anyone-usually-live-at.page.js");
-const ListCollectorAddPage = require("../generated_pages/list_collector_driving_checkbox/list-collector-add.page.js");
-const ListCollectorPage = require("../generated_pages/list_collector_driving_checkbox/list-collector.page.js");
-const ListCollectorTemporaryAwayPage = require("../generated_pages/list_collector_driving_checkbox/list-collector-temporary-away-stay.page");
-const ListCollectorTemporaryAwayAddPage = require("../generated_pages/list_collector_driving_checkbox/list-collector-temporary-away-stay-add.page");
-const SummaryPage = require("../generated_pages/list_collector_driving_checkbox/section-summary.page");
+import checkPeopleInList from "../helpers";
+import HubPage from "../base_pages/hub.page.js";
+import PrimaryPersonListCollectorPage from "../generated_pages/list_collector_driving_checkbox/primary-person-list-collector.page.js";
+import PrimaryPersonListCollectorAddPage from "../generated_pages/list_collector_driving_checkbox/primary-person-list-collector-add.page.js";
+import AnyoneUsuallyLiveAtPage from "../generated_pages/list_collector_driving_checkbox/anyone-usually-live-at.page.js";
+import ListCollectorAddPage from "../generated_pages/list_collector_driving_checkbox/list-collector-add.page.js";
+import ListCollectorPage from "../generated_pages/list_collector_driving_checkbox/list-collector.page.js";
+import ListCollectorTemporaryAwayPage from "../generated_pages/list_collector_driving_checkbox/list-collector-temporary-away-stay.page";
+import ListCollectorTemporaryAwayAddPage from "../generated_pages/list_collector_driving_checkbox/list-collector-temporary-away-stay-add.page";
+import SummaryPage from "../generated_pages/list_collector_driving_checkbox/section-summary.page";
 
 const beforeSetup = () => {
   browser.openQuestionnaire("test_list_collector_driving_checkbox.json");
   $(HubPage.submit()).click();
 };
 
-describe("List Collector Driving Checkbox Question", function() {
+describe("List Collector Driving Checkbox Question", () => {
   before("Load the survey", beforeSetup);
 
-  describe("Given a happy journey through the list collectors", function() {
-    it("All of the household members and visitors are shown in the summary", function() {
+  describe("Given a happy journey through the list collectors", () => {
+    it("All of the household members and visitors are shown in the summary", () => {
       $(PrimaryPersonListCollectorPage.yesIUsuallyLiveHere()).click();
       $(PrimaryPersonListCollectorPage.submit()).click();
       $(PrimaryPersonListCollectorAddPage.firstName()).setValue("Marcus");
@@ -40,8 +39,8 @@ describe("List Collector Driving Checkbox Question", function() {
     });
   });
 
-  describe("Given the primary person is removed", function() {
-    it("Then they aren't shown on the summary screen", function() {
+  describe("Given the primary person is removed", () => {
+    it("Then they aren't shown on the summary screen", () => {
       $(SummaryPage.previous()).click();
       $(ListCollectorTemporaryAwayPage.previous()).click();
       $(ListCollectorPage.previous()).click();
@@ -57,8 +56,8 @@ describe("List Collector Driving Checkbox Question", function() {
     });
   });
 
-  describe("Given the user chooses yes from the second list collector", function() {
-    it("Then they are taken to the correct list add screen", function() {
+  describe("Given the user chooses yes from the second list collector", () => {
+    it("Then they are taken to the correct list add screen", () => {
       $(SummaryPage.previous()).click();
       $(ListCollectorTemporaryAwayPage.yesINeedToAddSomeone()).click();
       $(ListCollectorTemporaryAwayPage.submit()).click();
@@ -74,10 +73,10 @@ describe("List Collector Driving Checkbox Question", function() {
   });
 });
 
-describe("Given the user says no one else lives in the house", function() {
+describe("Given the user says no one else lives in the house", () => {
   before("Load the survey", beforeSetup);
 
-  it("The user is asked if they need to add anyone that is temporarily away", function() {
+  it("The user is asked if they need to add anyone that is temporarily away", () => {
     $(PrimaryPersonListCollectorPage.yesIUsuallyLiveHere()).click();
     $(PrimaryPersonListCollectorPage.submit()).click();
     $(PrimaryPersonListCollectorAddPage.firstName()).setValue("Marcus");
@@ -90,9 +89,9 @@ describe("Given the user says no one else lives in the house", function() {
   });
 });
 
-describe("Given a person does not live in the house", function() {
+describe("Given a person does not live in the house", () => {
   before("Load the survey", beforeSetup);
-  it("The user is asked whether they live there", function() {
+  it("The user is asked whether they live there", () => {
     $(PrimaryPersonListCollectorPage.noIDonTUsuallyLiveHere()).click();
     $(PrimaryPersonListCollectorPage.submit()).click();
     expect($(AnyoneUsuallyLiveAtPage.questionText()).getText()).to.equal("Do any of the following usually live at 12 Lovely Villas on 21 March?");

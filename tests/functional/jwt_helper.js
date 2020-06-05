@@ -1,11 +1,11 @@
-const KJUR = require("jsrsasign");
-const uuid = require("uuid/v1");
-const JSONWebKey = require("json-web-key");
-const jose = require("node-jose");
+import KJUR from "jsrsasign";
+import uuid from "uuid/v1";
+import JSONWebKey from "json-web-key";
+import jose from "node-jose";
+import crypto from "crypto";
+
 const JWK = jose.JWK;
 const JWE = jose.JWE;
-
-const crypto = require("crypto");
 
 const signingKeyString =
   "-----BEGIN RSA PRIVATE KEY-----\n" +
@@ -49,16 +49,16 @@ const encryptionKeyString =
 
 const schemaRegEx = /^([a-z0-9]+)_(\w+)\.json/;
 
-function getRandomString(length) {
+export function getRandomString(length) {
   let result = "";
-  let characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+  const characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
   for (let i = 0; i < length; i++) {
     result += characters.charAt(Math.floor(Math.random() * characters.length));
   }
   return result;
 }
 
-function generateToken(
+export function generateToken(
   schema,
   {
     userId,
@@ -75,20 +75,20 @@ function generateToken(
     locality = "",
     townName = "",
     postcode = "",
-    displayAddress = ""
+    displayAddress = "",
   }
 ) {
-  let schemaParts = schemaRegEx.exec(schema);
+  const schemaParts = schemaRegEx.exec(schema);
 
   // Header
-  let oHeader = {
+  const oHeader = {
     alg: "RS256",
     typ: "JWT",
-    kid: "709eb42cfee5570058ce0711f730bfbb7d4c8ade"
+    kid: "709eb42cfee5570058ce0711f730bfbb7d4c8ade",
   };
 
   // Payload
-  let oPayload = {
+  const oPayload = {
     tx_id: uuid(),
     jti: uuid(),
     iat: KJUR.jws.IntDate.get("now"),
@@ -100,7 +100,7 @@ function generateToken(
     questionnaire_id: questionnaireId,
     ru_name: "Apple",
     trad_as: "Apple",
-    schema_name: schemaParts[1] + "_" + schemaParts[2],
+    schema_name: `${schemaParts[1]}_${schemaParts[2]}`,
     collection_exercise_sid: collectionId,
     period_id: periodId,
     period_str: periodStr,
@@ -108,58 +108,53 @@ function generateToken(
     ref_p_end_date: "2017-02-01",
     employment_date: "2016-06-10",
     return_by: "2017-03-01",
-    country: country,
-    locality: locality,
+    country,
+    locality,
     town_name: townName,
-    postcode: postcode,
+    postcode,
     display_address: displayAddress,
     region_code: regionCode,
     language_code: languageCode,
     sexual_identity: sexualIdentity,
-    account_service_url: "http://localhost:8000"
+    account_service_url: "http://localhost:8000",
   };
 
   if (includeLogoutUrl) {
-    oPayload["account_service_log_out_url"] = "http://localhost:8000";
+    oPayload.account_service_log_out_url = "http://localhost:8000";
   }
 
   // Sign JWT, password=616161
-  let sHeader = JSON.stringify(oHeader);
-  let sPayload = JSON.stringify(oPayload);
+  const sHeader = JSON.stringify(oHeader);
+  const sPayload = JSON.stringify(oPayload);
 
-  let prvKey = KJUR.KEYUTIL.getKey(signingKeyString, "digitaleq");
+  const prvKey = KJUR.KEYUTIL.getKey(signingKeyString, "digitaleq");
 
-  let sJWT = KJUR.jws.JWS.sign("RS256", sHeader, sPayload, prvKey);
+  const sJWT = KJUR.jws.JWS.sign("RS256", sHeader, sPayload, prvKey);
 
-  let webKey = JSONWebKey.fromPEM(encryptionKeyString);
+  const webKey = JSONWebKey.fromPEM(encryptionKeyString);
 
-  let shasum = crypto.createHash("sha1");
+  const shasum = crypto.createHash("sha1");
   shasum.update(encryptionKeyString);
-  let encryptionKeyKid = shasum.digest("hex");
+  const encryptionKeyKid = shasum.digest("hex");
 
   return JWK.asKey(webKey.toJSON())
-    .then(function(jwk) {
-      let cfg = {
-        contentAlg: "A256GCM"
+    .then((jwk) => {
+      const cfg = {
+        contentAlg: "A256GCM",
       };
-      let recipient = {
+      const recipient = {
         key: jwk,
         header: {
           alg: "RSA-OAEP",
-          kid: encryptionKeyKid
-        }
+          kid: encryptionKeyKid,
+        },
       };
-      let jwe = JWE.createEncrypt(cfg, recipient);
+      const jwe = JWE.createEncrypt(cfg, recipient);
       return jwe.update(sJWT).final();
     })
-    .then(function(result) {
-      let token = result.protected + "." + result.recipients[0].encrypted_key + "." + result.iv + "." + result.ciphertext + "." + result.tag;
+    .then((result) => {
+      const token = `${result.protected}.${result.recipients[0].encrypted_key}.${result.iv}.${result.ciphertext}.${result.tag}`;
 
       return token;
     });
 }
-
-module.exports = {
-  getRandomString,
-  generateToken
-};

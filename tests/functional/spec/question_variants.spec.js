@@ -1,19 +1,19 @@
-const ageBlock = require("../generated_pages/variants_question/age-block.page.js");
-const ageConfirmationBlock = require("../generated_pages/variants_question/age-confirmation-block.page.js");
-const basicVariantsSummary = require("../generated_pages/variants_question/basic-question-variant-section-summary.page.js");
-const currencyBlock = require("../generated_pages/variants_question/currency-block.page.js");
-const currencySectionSummary = require("../generated_pages/variants_question/currency-section-summary.page.js");
-const firstNumberBlock = require("../generated_pages/variants_question/first-number-block.page.js");
-const nameBlock = require("../generated_pages/variants_question/name-block.page.js");
-const proxyBlock = require("../generated_pages/variants_question/proxy-block.page.js");
-const secondNumberBlock = require("../generated_pages/variants_question/second-number-block.page.js");
+import ageBlock from "../generated_pages/variants_question/age-block.page.js";
+import ageConfirmationBlock from "../generated_pages/variants_question/age-confirmation-block.page.js";
+import basicVariantsSummary from "../generated_pages/variants_question/basic-question-variant-section-summary.page.js";
+import currencyBlock from "../generated_pages/variants_question/currency-block.page.js";
+import currencySectionSummary from "../generated_pages/variants_question/currency-section-summary.page.js";
+import firstNumberBlock from "../generated_pages/variants_question/first-number-block.page.js";
+import nameBlock from "../generated_pages/variants_question/name-block.page.js";
+import proxyBlock from "../generated_pages/variants_question/proxy-block.page.js";
+import secondNumberBlock from "../generated_pages/variants_question/second-number-block.page.js";
 
-describe("QuestionVariants", function() {
-  beforeEach(function() {
+describe("QuestionVariants", () => {
+  beforeEach(() => {
     browser.openQuestionnaire("test_variants_question.json");
   });
 
-  it("Given I am completing the survey, then the correct questions are shown based on my previous answers", function() {
+  it("Given I am completing the survey, then the correct questions are shown based on my previous answers", () => {
     $(nameBlock.firstName()).setValue("Guido");
     $(nameBlock.lastName()).setValue("van Rossum");
     $(nameBlock.submit()).click();
