@@ -750,7 +750,9 @@ class TestQuestionnaireForm(
         with self.app_request_context():
             schema = load_schema_from_name("test_sum_equal_validation_against_total")
 
-            question_schema = deepcopy(schema.get_block("breakdown-block").get("question"))
+            question_schema = deepcopy(
+                schema.get_block("breakdown-block").get("question")
+            )
 
             question_schema["calculations"] = [
                 {
@@ -787,7 +789,9 @@ class TestQuestionnaireForm(
         with self.app_request_context():
             schema = load_schema_from_name("test_sum_equal_validation_against_total")
 
-            question_schema = deepcopy(schema.get_block("breakdown-block").get("question"))
+            question_schema = deepcopy(
+                schema.get_block("breakdown-block").get("question")
+            )
 
             question_schema["validation"] = {
                 "messages": {"TOTAL_SUM_NOT_EQUALS": "Test Message"}
