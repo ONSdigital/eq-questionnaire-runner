@@ -8,9 +8,6 @@ exports.config = {
   // on a remote machine).
   runner: "local",
   //
-  // Override default path ('/wd/hub') for chromedriver service.
-  path: "/",
-  //
   // ==================
   // Specify Test Files
   // ==================
@@ -40,15 +37,14 @@ exports.config = {
   // and 30 processes will get spawned. The property handles how many capabilities
   // from the same test should run tests.
   //
+  maxInstances: 2,
   // If you have trouble getting all important capabilities together, check out the
   // Sauce Labs platform configurator - a great tool to configure your capabilities:
   // https://docs.saucelabs.com/reference/platforms-configurator
   //
   capabilities: [
     {
-      //
       browserName: "chrome",
-      maxInstances: 2,
       // If outputDir is provided WebdriverIO can capture driver session logs
       // it is possible to configure which logTypes to include/exclude.
       // excludeDriverLogs: ['*'], // pass '*' to exclude all driver session logs
@@ -59,10 +55,10 @@ exports.config = {
           "--window-size=1280,1080",
           "--no-sandbox",
           "--disable-gpu",
-          "--disable-extensions"
-        ]
-      }
-    }
+          "--disable-extensions",
+        ],
+      },
+    },
   ],
   //
   // ===================
@@ -72,6 +68,7 @@ exports.config = {
   //
   // Level of logging verbosity: trace | debug | info | warn | error | silent
   logLevel: "error",
+  outputDir: "tests/functional/logs/",
   //
   // Set specific log levels per logger
   // loggers:
@@ -101,8 +98,8 @@ exports.config = {
   waitforTimeout: 10000,
   //
   // Default timeout in milliseconds for request
-  // if Selenium Grid doesn't send response
-  connectionRetryTimeout: 90000,
+  // if browser driver or grid doesn't send response
+  connectionRetryTimeout: 120000,
   //
   // Default request retries count
   connectionRetryCount: 3,
@@ -124,18 +121,20 @@ exports.config = {
   // The number of times to retry the entire specfile when it fails as a whole
   // specFileRetries: 1,
   //
+  // Whether or not retried specfiles should be retried immediately or deferred to the end of the queue
+  // specFileRetriesDeferred: false,
+  //
   // Test reporter for stdout.
   // The only one supported by default is 'dot'
   // see also: https://webdriver.io/docs/dot-reporter.html
   reporters: ["spec"],
-
   //
   // Options to be passed to Mocha.
   // See the full list at http://mochajs.org/
   mochaOpts: {
     ui: "bdd",
     timeout: 60000,
-    compilers: ['js:babel-register']
+    compilers: ["js:babel-register"],
   },
   //
   // =====
@@ -153,6 +152,17 @@ exports.config = {
   // onPrepare: function (config, capabilities) {
   // },
   /**
+   * Gets executed before a worker process is spawned and can be used to initialise specific service
+   * for that worker as well as modify runtime environments in an async fashion.
+   * @param  {String} cid      capability id (e.g 0-0)
+   * @param  {[type]} caps     object containing capabilities for session that will be spawn in the worker
+   * @param  {[type]} specs    specs to be run in the worker process
+   * @param  {[type]} args     object that will be merged with the main configuration once worker is initialised
+   * @param  {[type]} execArgv list of string arguments passed to the worker process
+   */
+  // onWorkerStart: function (cid, caps, specs, args, execArgv) {
+  // },
+  /**
    * Gets executed just before initialising the webdriver session and test framework. It allows you
    * to manipulate configurations depending on the capability or spec.
    * @param {Object} config wdio configuration object
@@ -167,13 +177,20 @@ exports.config = {
    * @param {Array.<Object>} capabilities list of capabilities details
    * @param {Array.<String>} specs List of spec file paths that are to be run
    */
-  before: function(capabilities, specs) {
+  // before: function (capabilities, specs) {
+  // },
+  /**
+   * Runs before a WebdriverIO command gets executed.
+   * @param {String} commandName hook command name
+   * @param {Array} args arguments that command would receive
+   */
+  before: function (capabilities, specs) {
     const chai = require("chai");
     const JwtHelper = require("./jwt_helper");
 
     global.expect = chai.expect;
 
-    browser.addCommand("openQuestionnaire", async function(
+    browser.addCommand("openQuestionnaire", async function (
       schema,
       {
         userId = JwtHelper.getRandomString(10),
@@ -184,34 +201,23 @@ exports.config = {
         region = "GB-ENG",
         language = "en",
         sexualIdentity = false,
-        includeLogoutUrl = false
+        includeLogoutUrl = false,
       } = {}
     ) {
       const token = await JwtHelper.generateToken(schema, {
         userId,
         collectionId,
-        responseId: responseId,
-        periodId: periodId,
-        periodStr: periodStr,
+        responseId,
+        periodId,
+        periodStr,
         regionCode: region,
         languageCode: language,
-        sexualIdentity: sexualIdentity,
-        includeLogoutUrl: includeLogoutUrl
+        sexualIdentity,
+        includeLogoutUrl,
       });
-      this.url("/session?token=" + token);
+      this.url(`/session?token=${token}`);
     });
   },
-
-  after: function(result) {
-    if (result === 1 && !process.env.EQ_RUN_FUNCTIONAL_TESTS_HEADLESS) {
-      browser.debug();
-    }
-  }
-  /**
-   * Runs before a WebdriverIO command gets executed.
-   * @param {String} commandName hook command name
-   * @param {Array} args arguments that command would receive
-   */
   // beforeCommand: function (commandName, args) {
   // },
   /**
@@ -221,28 +227,26 @@ exports.config = {
   // beforeSuite: function (suite) {
   // },
   /**
-   * Function to be executed before a test (in Mocha/Jasmine) or a step (in Cucumber) starts.
-   * @param {Object} test test details
+   * Function to be executed before a test (in Mocha/Jasmine) starts.
    */
-  // beforeTest: function (test) {
+  // beforeTest: function (test, context) {
   // },
   /**
    * Hook that gets executed _before_ a hook within the suite starts (e.g. runs before calling
    * beforeEach in Mocha)
    */
-  // beforeHook: function () {
+  // beforeHook: function (test, context) {
   // },
   /**
    * Hook that gets executed _after_ a hook within the suite starts (e.g. runs after calling
    * afterEach in Mocha)
    */
-  // afterHook: function () {
+  // afterHook: function (test, context, { error, result, duration, passed, retries }) {
   // },
   /**
-   * Function to be executed after a test (in Mocha/Jasmine) or a step (in Cucumber) starts.
-   * @param {Object} test test details
+   * Function to be executed after a test (in Mocha/Jasmine).
    */
-  // afterTest: function(test) {
+  // afterTest: function(test, context, { error, result, duration, passed, retries }) {
   // },
 
   /**
@@ -275,6 +279,11 @@ exports.config = {
    * @param {Array.<Object>} capabilities list of capabilities details
    * @param {Array.<String>} specs List of spec file paths that ran
    */
+  after: function (result) {
+    if (result === 1 && !process.env.EQ_RUN_FUNCTIONAL_TESTS_HEADLESS) {
+      browser.debug();
+    }
+  },
   // afterSession: function (config, capabilities, specs) {
   // },
   /**
@@ -292,6 +301,6 @@ exports.config = {
    * @param {String} oldSessionId session ID of the old session
    * @param {String} newSessionId session ID of the new session
    */
-  //onReload: function(oldSessionId, newSessionId) {
-  //}
+  // onReload: function(oldSessionId, newSessionId) {
+  // }
 };

@@ -1,6 +1,6 @@
+from functools import cached_property
 from typing import Union
 
-from werkzeug.utils import cached_property
 from wtforms import IntegerField, DecimalField
 
 from app.data_model.answer_store import AnswerStore

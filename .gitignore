@@ -108,3 +108,6 @@ templates/layout
 
 # Ignore CTAGS
 tags
+
+# Ignore wdio/chromedriver logs
+tests/functional/logs/
