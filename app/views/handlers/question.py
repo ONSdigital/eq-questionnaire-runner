@@ -1,7 +1,8 @@
-from flask import url_for
-from werkzeug.utils import cached_property
-from app.helpers.template_helper import safe_content
+from functools import cached_property
 
+from flask import url_for
+
+from app.helpers.template_helper import safe_content
 from app.questionnaire.location import Location
 from app.questionnaire.questionnaire_store_updater import QuestionnaireStoreUpdater
 from app.questionnaire.schema_utils import transform_variants
@@ -18,6 +19,15 @@ class Question(BlockHandler):
     @cached_property
     def rendered_block(self):
         return self._render_block(self.block["id"])
+
+    @cached_property
+    def questionnaire_store_updater(self):
+        return QuestionnaireStoreUpdater(
+            self._current_location,
+            self._schema,
+            self._questionnaire_store,
+            self.rendered_block.get("question"),
+        )
 
     def get_next_location_url(self):
         answer_action = self._get_answer_action()
@@ -92,7 +102,7 @@ class Question(BlockHandler):
 
     def get_last_viewed_question_guidance_context(self):
         if self.resume:
-            first_location_in_section_url = self._router.get_first_location_in_section(
+            first_location_in_section_url = self.router.get_first_location_in_section(
                 self._routing_path
             ).url()
             return {"first_location_in_section_url": first_location_in_section_url}
@@ -112,17 +122,6 @@ class Question(BlockHandler):
         self._update_section_completeness()
 
         self.questionnaire_store_updater.save()
-
-    @cached_property
-    def questionnaire_store_updater(self):
-        if not self._questionnaire_store_updater:
-            self._questionnaire_store_updater = QuestionnaireStoreUpdater(
-                self._current_location,
-                self._schema,
-                self._questionnaire_store,
-                self.rendered_block.get("question"),
-            )
-        return self._questionnaire_store_updater
 
     def _render_block(self, block_id):
         block_schema = self._schema.get_block(block_id)
@@ -148,7 +147,7 @@ class Question(BlockHandler):
     def get_return_to_hub_url(self):
         if (
             self.rendered_block["type"] in ["Question", "ConfirmationQuestion"]
-            and self._router.can_access_hub()
+            and self.router.can_access_hub()
         ):
             return url_for(".get_questionnaire")
 

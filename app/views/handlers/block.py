@@ -1,4 +1,5 @@
 from datetime import datetime
+from functools import cached_property
 from typing import Optional
 
 from structlog import get_logger
@@ -22,9 +23,6 @@ class BlockHandler:
         self._request_args = request_args or {}
         self.block = self._schema.get_block(current_location.block_id)
 
-        self._questionnaire_store_updater = None
-        self._placeholder_renderer = None
-        self._router = None
         self._routing_path = self._get_routing_path()
         self.form = None
         self.page_title = None
@@ -40,42 +38,35 @@ class BlockHandler:
     def current_location(self):
         return self._current_location
 
-    @property
+    @cached_property
     def questionnaire_store_updater(self):
-        if not self._questionnaire_store_updater:
-            self._questionnaire_store_updater = QuestionnaireStoreUpdater(
-                self._current_location,
-                self._schema,
-                self._questionnaire_store,
-                self.block.get("question"),
-            )
-        return self._questionnaire_store_updater
+        return QuestionnaireStoreUpdater(
+            self._current_location,
+            self._schema,
+            self._questionnaire_store,
+            self.block.get("question"),
+        )
 
-    @property
+    @cached_property
     def placeholder_renderer(self):
-        if not self._placeholder_renderer:
-            self._placeholder_renderer = PlaceholderRenderer(
-                self._language,
-                schema=self._schema,
-                answer_store=self._questionnaire_store.answer_store,
-                metadata=self._questionnaire_store.metadata,
-                location=self._current_location,
-                list_store=self._questionnaire_store.list_store,
-            )
+        return PlaceholderRenderer(
+            self._language,
+            schema=self._schema,
+            answer_store=self._questionnaire_store.answer_store,
+            metadata=self._questionnaire_store.metadata,
+            location=self._current_location,
+            list_store=self._questionnaire_store.list_store,
+        )
 
-        return self._placeholder_renderer
-
-    @property
+    @cached_property
     def router(self):
-        if not self._router:
-            self._router = Router(
-                schema=self._schema,
-                answer_store=self._questionnaire_store.answer_store,
-                list_store=self._questionnaire_store.list_store,
-                progress_store=self._questionnaire_store.progress_store,
-                metadata=self._questionnaire_store.metadata,
-            )
-        return self._router
+        return Router(
+            schema=self._schema,
+            answer_store=self._questionnaire_store.answer_store,
+            list_store=self._questionnaire_store.list_store,
+            progress_store=self._questionnaire_store.progress_store,
+            metadata=self._questionnaire_store.metadata,
+        )
 
     def save_on_sign_out(self):
         self.questionnaire_store_updater.update_answers(self.form)
