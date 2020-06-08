@@ -1,4 +1,5 @@
 # pylint: disable=too-many-lines
+from copy import deepcopy
 from decimal import Decimal
 
 from mock import patch
@@ -536,8 +537,6 @@ class TestQuestionnaireForm(
         with self.app_request_context():
             schema = load_schema_from_name("test_date_validation_range")
 
-            question_schema = schema.get_block("date-range-block").get("question")
-
             question_schema = {
                 "id": "date-range-question",
                 "type": "DateRange",
@@ -636,8 +635,6 @@ class TestQuestionnaireForm(
     def test_invalid_maximum_period_limit_and_single_date_periods(self):
         with self.app_request_context():
             schema = load_schema_from_name("test_date_validation_range")
-
-            question_schema = schema.get_block("date-range-block").get("question")
 
             question_schema = {
                 "id": "date-range-question",
@@ -753,7 +750,7 @@ class TestQuestionnaireForm(
         with self.app_request_context():
             schema = load_schema_from_name("test_sum_equal_validation_against_total")
 
-            question_schema = schema.get_block("breakdown-block").get("question")
+            question_schema = deepcopy(schema.get_block("breakdown-block").get("question"))
 
             question_schema["calculations"] = [
                 {
@@ -790,7 +787,7 @@ class TestQuestionnaireForm(
         with self.app_request_context():
             schema = load_schema_from_name("test_sum_equal_validation_against_total")
 
-            question_schema = schema.get_block("breakdown-block").get("question")
+            question_schema = deepcopy(schema.get_block("breakdown-block").get("question"))
 
             question_schema["validation"] = {
                 "messages": {"TOTAL_SUM_NOT_EQUALS": "Test Message"}
