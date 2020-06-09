@@ -1,4 +1,5 @@
 from collections import OrderedDict
+from copy import deepcopy
 from werkzeug.datastructures import MultiDict
 from tests.app.app_context_test_case import AppContextTestCase
 
@@ -39,7 +40,7 @@ class TestFormHelper(AppContextTestCase):
         with self.app_request_context():
             schema = load_schema_from_name("test_date_range")
 
-            block_json = schema.get_block("date-block")
+            block_json = deepcopy(schema.get_block("date-block"))
             location = Location(section_id="default-section", block_id="date-block")
 
             form = get_form_for_location(
@@ -98,7 +99,7 @@ class TestFormHelper(AppContextTestCase):
         with self.app_request_context():
             schema = load_schema_from_name("test_date_range")
 
-            block_json = schema.get_block("date-block")
+            block_json = deepcopy(schema.get_block("date-block"))
 
             form = post_form_for_block(
                 schema,

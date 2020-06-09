@@ -1,7 +1,7 @@
 from datetime import datetime
+from functools import cached_property
 
 from dateutil.relativedelta import relativedelta
-from werkzeug.utils import cached_property
 
 from app.forms.field_handlers.field_handler import FieldHandler
 from app.forms.fields.date_field import DateField

@@ -1,6 +1,6 @@
 from abc import abstractmethod, ABC
+from functools import cached_property
 
-from werkzeug.utils import cached_property
 from wtforms import validators, Field
 
 from app.data_model.answer_store import AnswerStore

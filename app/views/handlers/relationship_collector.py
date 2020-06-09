@@ -1,26 +1,21 @@
+from functools import cached_property
+
 from app.questionnaire.location import Location
 from app.questionnaire.relationship_router import RelationshipRouter
 from app.views.handlers.question import Question
 
 
 class RelationshipCollector(Question):
-    def __init__(self, *args):
-        self._relationship_router = None
-        super().__init__(*args)
-
-    @property
+    @cached_property
     def relationship_router(self):
-        if not self._relationship_router:
-            block_id = self._current_location.block_id
-            section_id = self._current_location.section_id
-            list_items = self._questionnaire_store.list_store[
-                self._schema.get_block(block_id)["for_list"]
-            ].items
-            relationship_router = RelationshipRouter(
-                section_id=section_id, block_id=block_id, list_item_ids=list_items
-            )
-            self._relationship_router = relationship_router
-        return self._relationship_router
+        block_id = self._current_location.block_id
+        section_id = self._current_location.section_id
+        list_items = self._questionnaire_store.list_store[
+            self._schema.get_block(block_id)["for_list"]
+        ].items
+        return RelationshipRouter(
+            section_id=section_id, block_id=block_id, list_item_ids=list_items
+        )
 
     @property
     def parent_location(self):

@@ -1,6 +1,6 @@
+from functools import cached_property
 import logging
 
-from werkzeug.utils import cached_property
 from wtforms import FormField, Form, StringField
 
 logger = logging.getLogger(__name__)
