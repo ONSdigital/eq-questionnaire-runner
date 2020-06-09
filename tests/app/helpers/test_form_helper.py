@@ -1,5 +1,4 @@
 from collections import OrderedDict
-from copy import deepcopy
 from werkzeug.datastructures import MultiDict
 from tests.app.app_context_test_case import AppContextTestCase
 
@@ -12,7 +11,7 @@ from app.questionnaire.location import Location
 from app.utilities.schema import load_schema_from_name
 from app.questionnaire.relationship_location import RelationshipLocation
 from app.data_model.answer_store import AnswerStore
-from app.forms.validators import DateRequired, OptionalForm
+from app.forms.validators import DateRequired
 
 
 class TestFormHelper(AppContextTestCase):
@@ -35,31 +34,6 @@ class TestFormHelper(AppContextTestCase):
 
             self.assertIsInstance(period_from_field.year.validators[0], DateRequired)
             self.assertIsInstance(period_to_field.year.validators[0], DateRequired)
-
-    def test_get_form_and_disable_mandatory_answers(self):
-        with self.app_request_context():
-            schema = load_schema_from_name("test_date_range")
-
-            block_json = deepcopy(schema.get_block("date-block"))
-            location = Location(section_id="default-section", block_id="date-block")
-
-            form = get_form_for_location(
-                schema,
-                block_json,
-                location,
-                AnswerStore(),
-                metadata=None,
-                disable_mandatory=True,
-            )
-
-            period_from_field = getattr(form, "date-range-from-answer", None)
-            period_to_field = getattr(form, "date-range-to-answer", None)
-
-            assert period_from_field
-            assert period_to_field
-
-            self.assertIsInstance(period_from_field.year.validators[0], OptionalForm)
-            self.assertIsInstance(period_to_field.year.validators[0], OptionalForm)
 
     def test_post_form_for_block_location(self):
         with self.app_request_context():
@@ -94,31 +68,6 @@ class TestFormHelper(AppContextTestCase):
 
             self.assertEqual(period_from_field.data, "2015-05-01")
             self.assertEqual(period_to_field.data, "2017-09-01")
-
-    def test_post_form_and_disable_mandatory(self):
-        with self.app_request_context():
-            schema = load_schema_from_name("test_date_range")
-
-            block_json = deepcopy(schema.get_block("date-block"))
-
-            form = post_form_for_block(
-                schema,
-                block_json,
-                AnswerStore(),
-                metadata=None,
-                request_form={},
-                disable_mandatory=True,
-                location=None,
-            )
-
-            self.assertTrue(hasattr(form, "date-range-from-answer"))
-            self.assertTrue(hasattr(form, "date-range-to-answer"))
-
-            period_from_field = getattr(form, "date-range-from-answer")
-            period_to_field = getattr(form, "date-range-to-answer")
-
-            self.assertIsInstance(period_from_field.year.validators[0], OptionalForm)
-            self.assertIsInstance(period_to_field.year.validators[0], OptionalForm)
 
     def test_post_form_for_radio_other_not_selected(self):
         with self.app_request_context():

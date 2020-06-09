@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2020-06-03 09:10+0100\n"
+"POT-Creation-Date: 2020-06-09 13:22+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -584,12 +584,12 @@ msgstr ""
 msgid "Save and sign out"
 msgstr ""
 
-#: templates/layouts/configs/_save-sign-out-button.html:18
-msgid "Sign out"
+#: templates/layouts/configs/_save-sign-out-button.html:7
+msgid "Save and complete later"
 msgstr ""
 
-#: templates/layouts/configs/_save-sign-out-button.html:32
-msgid "Save and complete later"
+#: templates/layouts/configs/_save-sign-out-button.html:24
+msgid "Sign out"
 msgstr ""
 
 #: templates/partials/answer-guidance.html:13
@@ -607,23 +607,23 @@ msgid ""
 " of the section</a>"
 msgstr ""
 
-#: templates/partials/question.html:39
+#: templates/partials/question.html:48
 msgid "Selecting this will clear your answer"
 msgstr ""
 
-#: templates/partials/question.html:40
+#: templates/partials/question.html:49
 msgid "cleared"
 msgstr ""
 
-#: templates/partials/question.html:43
+#: templates/partials/question.html:52
 msgid "Selecting this will deselect any selected options"
 msgstr ""
 
-#: templates/partials/question.html:44 templates/partials/question.html:52
+#: templates/partials/question.html:53 templates/partials/question.html:61
 msgid "deselected"
 msgstr ""
 
-#: templates/partials/question.html:48
+#: templates/partials/question.html:57
 msgid "Or"
 msgstr ""
 

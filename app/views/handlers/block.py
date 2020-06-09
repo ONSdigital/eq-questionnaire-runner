@@ -68,12 +68,6 @@ class BlockHandler:
             metadata=self._questionnaire_store.metadata,
         )
 
-    def save_on_sign_out(self):
-        self.questionnaire_store_updater.update_answers(self.form)
-        # The location needs to be removed as we may have previously completed this location
-        self.questionnaire_store_updater.remove_completed_location()
-        self.questionnaire_store_updater.save()
-
     def is_location_valid(self):
         return self.router.can_access_location(
             self._current_location, self._routing_path

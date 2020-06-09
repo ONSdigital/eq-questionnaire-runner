@@ -3,16 +3,7 @@ import flask_babel
 import humanize
 import simplejson as json
 from dateutil.tz import tzutc
-from flask import (
-    Blueprint,
-    g,
-    redirect,
-    request,
-    url_for,
-    current_app,
-    jsonify,
-    session as cookie_session,
-)
+from flask import Blueprint, g, redirect, request, url_for, current_app, jsonify
 from flask_login import current_user, login_required
 from jwcrypto.common import base64url_decode
 from sdc.crypto.encrypter import encrypt
@@ -145,12 +136,6 @@ def get_questionnaire(schema, questionnaire_store):
 @with_questionnaire_store
 @with_schema
 def post_questionnaire(schema, questionnaire_store):
-    if any(
-        action in request.form
-        for action in ("action[save_sign_out]", "action[sign_out]")
-    ):
-        return redirect(url_for("session.get_sign_out"))
-
     router = Router(
         schema,
         questionnaire_store.answer_store,
@@ -226,9 +211,6 @@ def block(schema, questionnaire_store, block_id, list_name=None, list_item_id=No
     if block_handler.block["type"] == "RelationshipCollector":
         return redirect(block_handler.get_first_location_url())
 
-    if "action[sign_out]" in request.form:
-        return redirect(url_for("session.get_sign_out"))
-
     if "action[clear_radios]" in request.form:
         block_handler.clear_radio_answers()
         return redirect(request.url)
@@ -246,10 +228,6 @@ def block(schema, questionnaire_store, block_id, list_name=None, list_item_id=No
             schema=schema,
             page_title=block_handler.page_title,
         )
-
-    if "action[save_sign_out]" in request.form:
-        block_handler.save_on_sign_out()
-        return redirect(url_for("session.get_sign_out"))
 
     if block_handler.block["type"] in END_BLOCKS:
         return submit_answers(
@@ -298,10 +276,6 @@ def relationship(schema, questionnaire_store, block_id, list_item_id, to_list_it
             page_title=block_handler.page_title,
         )
 
-    if "action[save_sign_out]" in request.form:
-        block_handler.save_on_sign_out()
-        return redirect(url_for("session.get_sign_out"))
-
     block_handler.handle_post()
     next_location_url = block_handler.get_next_location_url()
     return redirect(next_location_url)
@@ -327,9 +301,6 @@ def get_thank_you(schema):
             timedelta(seconds=schema.json["view_submitted_response"]["duration"])
         )
 
-    cookie_session.pop("account_service_log_out_url", None)
-    cookie_session.pop("account_service_url", None)
-
     return render_template(
         template="thank-you",
         metadata=metadata_context,
@@ -339,16 +310,8 @@ def get_thank_you(schema):
         ),
         view_submission_url=view_submission_url,
         view_submission_duration=view_submission_duration,
+        hide_signout_button=True,
     )
-
-
-@post_submission_blueprint.route("thank-you/", methods=["POST"])
-@login_required
-def post_thank_you():
-    if "action[sign_out]" in request.form:
-        return redirect(url_for("session.get_sign_out"))
-
-    return redirect(url_for("post_submission.get_thank_you"))
 
 
 @post_submission_blueprint.route("view-submission/", methods=["GET"])
@@ -411,29 +374,13 @@ def get_view_submission(schema):
     return redirect(url_for("post_submission.get_thank_you"))
 
 
-@post_submission_blueprint.route("view-submission/", methods=["POST"])
-@login_required
-def post_view_submission():
-    if "action[sign_out]" in request.form:
-        return redirect(url_for("session.get_sign_out"))
-
-    return redirect(url_for("post_submission.get_view_submission"))
-
-
 def _generate_wtf_form(block_schema, schema, current_location):
     answer_store = get_answer_store(current_user)
     metadata = get_metadata(current_user)
 
     if request.method == "POST":
-        disable_mandatory = "action[save_sign_out]" in request.form
         return post_form_for_block(
-            schema,
-            block_schema,
-            answer_store,
-            metadata,
-            request.form,
-            current_location,
-            disable_mandatory,
+            schema, block_schema, answer_store, metadata, request.form, current_location
         )
     return get_form_for_location(
         schema, block_schema, current_location, answer_store, metadata
