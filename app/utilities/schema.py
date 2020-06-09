@@ -1,3 +1,4 @@
+from functools import lru_cache
 from glob import glob
 from pathlib import Path
 
@@ -10,7 +11,6 @@ from app.questionnaire.questionnaire_schema import (
     QuestionnaireSchema,
     DEFAULT_LANGUAGE_CODE,
 )
-from app.setup import cache
 
 logger = get_logger()
 
@@ -80,7 +80,7 @@ def load_schema_from_session_data(session_data):
     return load_schema_from_metadata(vars(session_data))
 
 
-@cache.memoize()
+@lru_cache(maxsize=None)
 def load_schema_from_name(schema_name, language_code=None):
     language_code = language_code or DEFAULT_LANGUAGE_CODE
     schema_json = _load_schema_file(schema_name, language_code)
@@ -160,7 +160,7 @@ def _load_schema_file(schema_name, language_code):
         return json.load(json_file, use_decimal=True)
 
 
-@cache.memoize()
+@lru_cache(maxsize=None)
 def load_schema_from_url(survey_url, language_code):
     language_code = language_code or DEFAULT_LANGUAGE_CODE
     logger.info(

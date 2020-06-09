@@ -1,3 +1,4 @@
+from functools import lru_cache
 import re
 
 from flask import (
@@ -8,11 +9,10 @@ from flask import (
 )
 from flask_babel import get_locale, lazy_gettext
 
-from app.setup import cache
 from app.helpers.language_helper import get_languages_context
 
 
-@cache.memoize()
+@lru_cache(maxsize=None)
 def get_page_header_context(language, theme):
     default_context = {
         "logo": "ons-logo-pos-" + language,

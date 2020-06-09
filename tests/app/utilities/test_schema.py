@@ -6,6 +6,7 @@ from app.utilities.schema import (
     get_schema_path_map,
     get_schema_name_from_census_params,
     get_schema_path_map_for_language,
+    load_schema_from_name,
 )
 
 
@@ -63,3 +64,31 @@ def test_get_schema_path_map_for_language():
         os.path.basename(path).replace(".json", "") == schema_name
         for schema_name, path in schema_path_map_for_language.items()
     )
+
+
+def test_schema_cache():
+    load_schema_from_name.cache_clear()
+
+    # load first schema into cache
+    load_schema_from_name("test_language", "en")
+    cache_info = load_schema_from_name.cache_info()
+    assert cache_info.currsize == 1
+    assert cache_info.hits == 0
+
+    # same schema in same language loads from cache
+    load_schema_from_name("test_language", "en")
+    cache_info = load_schema_from_name.cache_info()
+    assert cache_info.currsize == 1
+    assert cache_info.hits == 1
+
+    # same schema in different language adds to cache
+    load_schema_from_name("test_language", "cy")
+    cache_info = load_schema_from_name.cache_info()
+    assert cache_info.currsize == 2
+    assert cache_info.hits == 1
+
+    # loading a different schema adds to cache
+    load_schema_from_name("test_textfield", "en")
+    cache_info = load_schema_from_name.cache_info()
+    assert cache_info.currsize == 3
+    assert cache_info.hits == 1
