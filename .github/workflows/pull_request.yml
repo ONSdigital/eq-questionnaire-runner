@@ -12,7 +12,7 @@ jobs:
       - uses: actions/checkout@v2
       - run: |
           echo "::set-env name=PYTHON_VERSION::$(cat .python-version)"
-      - uses: actions/setup-python@v1
+      - uses: actions/setup-python@v2
         with:
           python-version: ${{ env.PYTHON_VERSION }}
       - name: Install apt dependencies
@@ -54,7 +54,7 @@ jobs:
       - uses: actions/checkout@v2
       - run: |
           echo "::set-env name=PYTHON_VERSION::$(cat .python-version)"
-      - uses: actions/setup-python@v1
+      - uses: actions/setup-python@v2
         with:
           python-version: ${{ env.PYTHON_VERSION }}
       - name: Install apt dependencies
@@ -108,7 +108,7 @@ jobs:
             node-version: '12.14.1'
         - run: |
             echo "::set-env name=PYTHON_VERSION::$(cat .python-version)"
-        - uses: actions/setup-python@v1
+        - uses: actions/setup-python@v2
           with:
             python-version: ${{ env.PYTHON_VERSION }}
         - name: Install pipenv
