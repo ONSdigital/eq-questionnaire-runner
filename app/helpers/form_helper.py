@@ -10,9 +10,7 @@ from app.questionnaire.relationship_location import RelationshipLocation
 logger = get_logger()
 
 
-def get_form_for_location(
-    schema, block_json, location, answer_store, metadata, disable_mandatory=False
-):  # pylint: disable=too-many-locals
+def get_form_for_location(schema, block_json, location, answer_store, metadata):
     """
     Returns the form necessary for the location given a get request, plus any template arguments
 
@@ -21,11 +19,8 @@ def get_form_for_location(
     :param location: The location which this form is for
     :param answer_store: The current answer store
     :param metadata: metadata
-    :param disable_mandatory: Make mandatory answers optional
     :return: form, template_args A tuple containing the form for this location and any additional template arguments
     """
-    if disable_mandatory:
-        block_json = disable_mandatory_answers(block_json)
 
     mapped_answers = get_mapped_answers(schema, answer_store, location=location)
 
@@ -40,13 +35,7 @@ def get_form_for_location(
 
 
 def post_form_for_block(
-    schema,
-    block_json,
-    answer_store,
-    metadata,
-    request_form,
-    location,
-    disable_mandatory=False,
+    schema, block_json, answer_store, metadata, request_form, location
 ):
     """
     Returns the form necessary for the location given a post request, plus any template arguments
@@ -57,10 +46,7 @@ def post_form_for_block(
     :param metadata: metadata
     :param request_form: form, template_args A tuple containing the form for this location and any additional template arguments
     :param location: The location in the survey this post is for
-    :param disable_mandatory: Make mandatory answers optional
     """
-    if disable_mandatory:
-        block_json = disable_mandatory_answers(block_json)
 
     question = block_json.get("question")
 
@@ -69,19 +55,6 @@ def post_form_for_block(
     return generate_form(
         schema, question, answer_store, metadata, location, formdata=data
     )
-
-
-def disable_mandatory_answers(block):
-    def set_mandatory_to_false(question):
-        # Here Be Dragons: This loop modifies the input in place.
-        for answer in question.get("answers", []):
-            if answer.get("mandatory", True) is True:
-                answer["mandatory"] = False
-
-    if block.get("question"):
-        set_mandatory_to_false(block["question"])
-
-    return block
 
 
 def clear_detail_answer_field(data, question):

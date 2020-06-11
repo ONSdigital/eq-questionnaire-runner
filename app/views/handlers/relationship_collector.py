@@ -68,17 +68,6 @@ class RelationshipCollector(Question):
             self.parent_location, self._routing_path, self._return_to_summary
         )
 
-    def save_on_sign_out(self):
-        self.questionnaire_store_updater.update_relationship_answer(
-            self.form.data,
-            self._current_location.list_item_id,
-            self._current_location.to_list_item_id,
-        )
-
-        self.questionnaire_store_updater.remove_completed_location(self.parent_location)
-
-        self.questionnaire_store_updater.save()
-
     def handle_post(self):
         self.questionnaire_store_updater.update_relationship_answer(
             self.form.data,

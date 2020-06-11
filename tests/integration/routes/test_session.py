@@ -13,7 +13,7 @@ class TestSession(IntegrationTestCase):
         self.launchSurvey(account_service_log_out_url="https://localhost/logout")
         self.assertInBody("Save and sign out")
 
-        self.post(action="save_sign_out")
+        self.get("/sign-out")
 
         self.assertInUrl("/logout")
 

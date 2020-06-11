@@ -1,11 +1,16 @@
-{% if current_user.is_authenticated %}
-  {% if account_service_log_out_url %}
+{% if current_user.is_authenticated and not hide_signout_button %}
+
     {% if save_on_signout %}
+        {% if account_service_log_out_url %}
+          {% set button_text = _("Save and sign out") %}
+        {% else %}
+          {% set button_text = _("Save and complete later") %}
+        {% endif %}
         {% do pageConfig | setAttribute("signoutButton", {
-            "text": _("Save and sign out"),
-            "name": "action[save_sign_out]",
+            "text": button_text,
+            "name": "btn-save-sign-out",
             "classes": "js-btn-save",
-            "url": "/signed-out",
+            "url": "/sign-out",
             "attributes": {
                 "data-qa": "btn-save-sign-out",
                 "data-ga": "click",
@@ -13,11 +18,12 @@
                 "data-ga-action": "Save and sign out click"
             }
         }) %}
+
     {% else %}
         {% do pageConfig | setAttribute("signoutButton", {
             "text": _("Sign out"),
-            "name": "action[sign_out]",
-            "url": "/signed-out",
+            "name": "btn-sign-out",
+            "url": "/sign-out",
             "attributes": {
                 "data-qa": "btn-sign-out",
                 "data-ga": "click",
@@ -25,21 +31,7 @@
                 "data-ga-action": "Sign out click"
             }
         }) %}
+
     {% endif %}
-  {% else %}
-    {% if save_on_signout %}
-        {% do pageConfig | setAttribute("signoutButton", {
-            "text": _("Save and complete later"),
-            "name": "action[save_sign_out]",
-            "classes": "js-btn-save",
-            "url": "/signed-out",
-            "attributes": {
-                "data-qa": "btn-save-sign-out",
-                "data-ga": "click",
-                "data-ga-category": "Navigation",
-                "data-ga-action": "Save and sign out click"
-            }
-        }) %}
-    {% endif %}
-  {% endif %}
+
 {% endif %}

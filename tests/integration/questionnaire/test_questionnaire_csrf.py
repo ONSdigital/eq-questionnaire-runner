@@ -85,24 +85,6 @@ class TestQuestionnaireCsrf(IntegrationTestCase):
         answers = json.loads(self.getResponseData())
         self.assertEqual(2, len(answers["ANSWERS"]))
 
-    def test_given_valid_answers_when_save_and_sign_out_with_invalid_csrf_token_then_answers_not_saved(
-        self
-    ):
-        # Given
-        self.launchSurvey("test_interstitial_page", roles=["dumper"])
-        self.post()
-        post_data = {"favourite-breakfast": "Muesli"}
-
-        # When
-        self.last_csrf_token = "made-up-token"
-        self.post(post_data=post_data, action="save_sign_out")
-
-        # Then
-        self.assertStatusCode(401)
-        self.get("/dump/debug")
-        answers = json.loads(self.getResponseData())
-        self.assertEqual(0, len(answers["ANSWERS"]))
-
     def test_given_csrf_attack_when_refresh_then_on_question(self):
         # Given
         self.launchSurvey("test_interstitial_page", roles=["dumper"])

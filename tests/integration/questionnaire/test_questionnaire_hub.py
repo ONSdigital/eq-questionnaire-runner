@@ -30,39 +30,29 @@ class TestQuestionnaireHub(IntegrationTestCase):
         self.launchSurvey("test_hub_and_spoke")
 
         # When I complete a section
-        self.post(action="submit")
+        self.post()
         self.post({"employment-status-answer": "Working as an employee"})
 
         # Then I should be redirected to the hub
         self.assertEqualUrl(HUB_URL)
-
-    def test_save_and_sign_out_from_the_hub(self):
-        # Given the hub is enabled
-        self.launchSurvey("test_hub_and_spoke")
-
-        # When I click Save and sign out
-        self.post(action="save_sign_out")
-
-        # Then I should be redirected to the hub
-        self.assertEqualUrl("/signed-out")
 
     def test_survey_submission_from_hub(self):
         # Given the hub is enabled
         self.launchSurvey("test_hub_and_spoke")
 
         # When I submit the survey
-        self.post(action="submit")
-        self.post({"employment-status-answer": "Working as an employee"})
-        self.post(action="submit")
         self.post()
-        self.post(action="submit")
-        self.post(action="submit")
+        self.post({"employment-status-answer": "Working as an employee"})
+        self.post()
+        self.post()
+        self.post()
+        self.post()
         self.post({"does-anyone-live-here-answer": "No"})
-        self.post(action="submit")
-        self.post(action="submit")
+        self.post()
+        self.post()
         self.post({"relationships-answer": "No"})
-        self.post(action="submit")
-        self.post(action="submit")
+        self.post()
+        self.post()
 
         # Then I should see the thank you page
         self.assertEqualUrl("/submitted/thank-you/")
@@ -100,7 +90,7 @@ class TestQuestionnaireHub(IntegrationTestCase):
     def test_hub_section_url_when_hub_enabled_and_section_in_progress(self):
         # Given the hub is enabled and a section is in-progress
         self.launchSurvey("test_hub_and_spoke")
-        self.post(action="submit")
+        self.post()
         self.post({"employment-status-answer-exclusive": "None of these apply"})
         self.get(HUB_URL)
         self.assertInBody("Partially completed")
@@ -117,7 +107,7 @@ class TestQuestionnaireHub(IntegrationTestCase):
         self.launchSurvey("test_hub_and_spoke")
         self.get("/questionnaire/sections/accommodation-section/")
         self.post()
-        self.post(action="submit")
+        self.post()
         self.assertInBody("View answers")
         self.assertEqualUrl(HUB_URL)
 
@@ -139,7 +129,7 @@ class TestQuestionnaireHub(IntegrationTestCase):
         self.launchSurvey("test_hub_complete_sections")
 
         self.post({"employment-status-answer": "Working as an employee"})
-        self.post(action="submit")
+        self.post()
 
         self.get("/questionnaire/")
 
@@ -149,7 +139,7 @@ class TestQuestionnaireHub(IntegrationTestCase):
         # Given the hub is enabled and a section is complete
         self.launchSurvey("test_repeating_sections_with_hub_and_spoke")
         # Go to first section
-        self.post(action="submit")
+        self.post()
 
         # Add a primary person
         self.post({"you-live-here": "Yes"})
@@ -164,7 +154,7 @@ class TestQuestionnaireHub(IntegrationTestCase):
         self.post({"anyone-else": "No"})
 
         # Submit interstitial page
-        self.post(action="submit")
+        self.post()
 
         # Go to visitors
         self.post({"another-anyone-else": "No"})
@@ -216,7 +206,7 @@ class TestQuestionnaireHub(IntegrationTestCase):
 
         # Then I should be redirected to the hub and can submit my answers without completing the other section
         self.assertEqualUrl(HUB_URL)
-        self.post(action="submit")
+        self.post()
         self.assertEqualUrl("/submitted/thank-you/")
 
     def test_hub_section_required_but_enabled_true(self):

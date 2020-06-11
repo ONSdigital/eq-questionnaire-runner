@@ -37,7 +37,7 @@ class TestLastViewedGuidance(IntegrationTestCase):
         self._post_address_confirmation_answer()
         self._post_you_live_here_answer()
         self._post_list_collector_answers()
-        self.post(action="sign_out")
+        self.get("/sign-out")
         self.launchSurvey(
             "test_last_viewed_question_guidance", reponse_id=self.response_id
         )
@@ -52,7 +52,7 @@ class TestLastViewedGuidance(IntegrationTestCase):
         )
 
         # When I sign out without starting the section and I resume the survey
-        self.post(action="sign_out")
+        self.get("/sign-out")
         self.launchSurvey(
             "test_last_viewed_question_guidance", reponse_id=self.response_id
         )
@@ -69,7 +69,7 @@ class TestLastViewedGuidance(IntegrationTestCase):
 
         # When I sign out after I have started the section and I resume the survey
         self.post()
-        self.post(action="sign_out")
+        self.get("/sign-out")
         self.launchSurvey(
             "test_last_viewed_question_guidance", reponse_id=self.response_id
         )
@@ -90,7 +90,7 @@ class TestLastViewedGuidance(IntegrationTestCase):
         # When I sign out and resume on a primary person list collector
         self.post()
         self._post_address_confirmation_answer()
-        self.post(action="sign_out")
+        self.get("/sign-out")
         self.launchSurvey(
             "test_last_viewed_question_guidance", reponse_id=self.response_id
         )
@@ -114,7 +114,7 @@ class TestLastViewedGuidance(IntegrationTestCase):
         self.post()
         self._post_address_confirmation_answer()
         self._post_you_live_here_answer()
-        self.post(action="sign_out")
+        self.get("/sign-out")
         self.launchSurvey(
             "test_last_viewed_question_guidance", reponse_id=self.response_id
         )
@@ -137,7 +137,7 @@ class TestLastViewedGuidance(IntegrationTestCase):
         self._post_address_confirmation_answer()
         self._post_you_live_here_answer()
         self._post_primary_person_answer()
-        self.post(action="sign_out")
+        self.get("/sign-out")
         self.launchSurvey(
             "test_last_viewed_question_guidance", reponse_id=self.response_id
         )
@@ -161,7 +161,7 @@ class TestLastViewedGuidance(IntegrationTestCase):
         self._post_you_live_here_answer()
         self._post_primary_person_answer()
         self.post({"anyone-else": "Yes"})
-        self.post(action="sign_out")
+        self.get("/sign-out")
         self.launchSurvey(
             "test_last_viewed_question_guidance", reponse_id=self.response_id
         )
@@ -186,7 +186,7 @@ class TestLastViewedGuidance(IntegrationTestCase):
         self._post_list_collector_answers()
         self.post()
         self.post()
-        self.post(action="sign_out")
+        self.get("/sign-out")
         self.launchSurvey(
             "test_last_viewed_question_guidance", reponse_id=self.response_id
         )
