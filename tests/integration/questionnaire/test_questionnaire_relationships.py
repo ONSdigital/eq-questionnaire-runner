@@ -54,18 +54,6 @@ class TestQuestionnaireRelationships(IntegrationTestCase):
         self.post()
         self.assertInBody("This page has an error")
 
-    def test_save_sign_out(self):
-        self.launchSurvey(
-            "test_relationships",
-            account_service_url="https://localhost/my-account",
-            account_service_log_out_url="https://localhost/logout",
-        )
-        self.add_person("Marie", "Doe")
-        self.add_person("John", "Doe")
-        self.post({"anyone-else": "No"})
-        self.post(action="save_sign_out")
-        self.assertInUrl("/logout")
-
     def test_multiple_relationships(self):
         self.launchSurvey("test_relationships")
         self.add_person("Marie", "Doe")

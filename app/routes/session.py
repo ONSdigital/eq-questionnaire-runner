@@ -121,7 +121,7 @@ def get_session_expired():
     return render_template("errors/session-expired")
 
 
-@session_blueprint.route("/signed-out", methods=["GET"])
+@session_blueprint.route("/sign-out", methods=["GET"])
 def get_sign_out():
     """
     Signs the user first out of eq, then the account service by hitting the account services'
@@ -133,4 +133,9 @@ def get_sign_out():
     if account_service_log_out_url:
         return redirect(account_service_log_out_url)
 
+    return redirect(url_for(".get_signed_out"))
+
+
+@session_blueprint.route("/signed-out", methods=["GET"])
+def get_signed_out():
     return render_template(template="signed-out")

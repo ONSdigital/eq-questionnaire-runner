@@ -55,7 +55,7 @@ describe("SaveSignOut", () => {
   it("Given a logout url is not set, when I navigate the questionnaire, then I see the correct sign out buttons", () => {
     browser.openQuestionnaire("test_introduction.json", { includeLogoutUrl: false });
 
-    expect($(IntroductionPage.signOut()).isExisting()).to.be.false;
+    expect($(IntroductionPage.signOut()).getText()).to.contain("Sign out");
     $(IntroductionPage.getStarted()).click();
 
     expect($(IntroInterstitialPage.saveSignOut()).getText()).to.contain("Save and complete later");
