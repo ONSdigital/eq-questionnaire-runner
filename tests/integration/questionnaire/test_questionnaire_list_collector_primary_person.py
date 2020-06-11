@@ -73,7 +73,6 @@ class TestQuestionnaireListCollector(IntegrationTestCase):
     def test_changing_answer_from_no_to_yes_on_primary_person_list_collector_resumes_in_right_location(
         self,
     ):
-
         response_id = random.choices(string.digits, k=16)
 
         # Given I initially answer 'No' to the primary person list collector
