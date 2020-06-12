@@ -3,10 +3,11 @@ from copy import deepcopy
 from decimal import Decimal
 
 from mock import patch
+from werkzeug.datastructures import MultiDict
 
 from app.forms.questionnaire_form import generate_form
 from app.utilities.schema import load_schema_from_name
-from app.forms.validators import ResponseRequired
+from app.forms.validators import ResponseRequired, DateRequired
 from app.data_model.answer_store import AnswerStore, Answer
 
 from tests.app.app_context_test_case import AppContextTestCase
@@ -40,14 +41,16 @@ class TestQuestionnaireForm(
 
             question_schema = schema.get_block("date-block").get("question")
 
-            data = {
-                "date-range-from-answer-day": "01",
-                "date-range-from-answer-month": "3",
-                "date-range-from-answer-year": "2016",
-                "date-range-to-answer-day": "31",
-                "date-range-to-answer-month": "3",
-                "date-range-to-answer-year": "2016",
-            }
+            form_data = MultiDict(
+                {
+                    "date-range-from-answer-day": "01",
+                    "date-range-from-answer-month": "3",
+                    "date-range-from-answer-year": "2016",
+                    "date-range-to-answer-day": "31",
+                    "date-range-to-answer-month": "3",
+                    "date-range-to-answer-year": "2016",
+                }
+            )
 
             expected_form_data = {
                 "csrf_token": "",
@@ -55,7 +58,11 @@ class TestQuestionnaireForm(
                 "date-range-to-answer": "2016-03-31",
             }
             form = generate_form(
-                schema, question_schema, AnswerStore(), metadata=None, formdata=data
+                schema,
+                question_schema,
+                AnswerStore(),
+                metadata=None,
+                form_data=form_data,
             )
 
             self.assertEqual(form.data, expected_form_data)
@@ -66,14 +73,16 @@ class TestQuestionnaireForm(
 
             question_schema = schema.get_block("date-block").get("question")
 
-            data = {
-                "date-range-from-answer-day": "25",
-                "date-range-from-answer-month": "12",
-                "date-range-from-answer-year": "2016",
-                "date-range-to-answer-day": "25",
-                "date-range-to-answer-month": "12",
-                "date-range-to-answer-year": "2016",
-            }
+            form_data = MultiDict(
+                {
+                    "date-range-from-answer-day": "25",
+                    "date-range-from-answer-month": "12",
+                    "date-range-from-answer-year": "2016",
+                    "date-range-to-answer-day": "25",
+                    "date-range-to-answer-month": "12",
+                    "date-range-to-answer-year": "2016",
+                }
+            )
 
             expected_form_data = {
                 "csrf_token": "",
@@ -81,7 +90,11 @@ class TestQuestionnaireForm(
                 "date-range-to-answer": "2016-12-25",
             }
             form = generate_form(
-                schema, question_schema, AnswerStore(), metadata=None, formdata=data
+                schema,
+                question_schema,
+                AnswerStore(),
+                metadata=None,
+                form_data=form_data,
             )
 
             form.validate()
@@ -97,14 +110,16 @@ class TestQuestionnaireForm(
 
             question_schema = schema.get_block("date-block").get("question")
 
-            data = {
-                "date-range-from-answer-day": "25",
-                "date-range-from-answer-month": "12",
-                "date-range-from-answer-year": "2016",
-                "date-range-to-answer-day": "24",
-                "date-range-to-answer-month": "12",
-                "date-range-to-answer-year": "2016",
-            }
+            form_data = MultiDict(
+                {
+                    "date-range-from-answer-day": "25",
+                    "date-range-from-answer-month": "12",
+                    "date-range-from-answer-year": "2016",
+                    "date-range-to-answer-day": "24",
+                    "date-range-to-answer-month": "12",
+                    "date-range-to-answer-year": "2016",
+                }
+            )
 
             expected_form_data = {
                 "csrf_token": "",
@@ -113,7 +128,11 @@ class TestQuestionnaireForm(
             }
 
             form = generate_form(
-                schema, question_schema, AnswerStore(), metadata=None, formdata=data
+                schema,
+                question_schema,
+                AnswerStore(),
+                metadata=None,
+                form_data=form_data,
             )
 
             form.validate()
@@ -130,14 +149,16 @@ class TestQuestionnaireForm(
 
             question_schema = schema.get_block("date-range-block").get("question")
 
-            data = {
-                "date-range-from-day": "25",
-                "date-range-from-month": "12",
-                "date-range-from-year": "2016",
-                "date-range-to-day": "24",
-                "date-range-to-month": "12",
-                "date-range-to-year": "2017",
-            }
+            form_data = MultiDict(
+                {
+                    "date-range-from-day": "25",
+                    "date-range-from-month": "12",
+                    "date-range-from-year": "2016",
+                    "date-range-to-day": "24",
+                    "date-range-to-month": "12",
+                    "date-range-to-year": "2017",
+                }
+            )
 
             expected_form_data = {
                 "csrf_token": "",
@@ -145,7 +166,11 @@ class TestQuestionnaireForm(
                 "date-range-to": "2017-12-24",
             }
             form = generate_form(
-                schema, question_schema, AnswerStore(), metadata=None, formdata=data
+                schema,
+                question_schema,
+                AnswerStore(),
+                metadata=None,
+                form_data=form_data,
             )
 
             form.validate()
@@ -163,14 +188,16 @@ class TestQuestionnaireForm(
 
             question_schema = schema.get_block("date-range-block").get("question")
 
-            data = {
-                "date-range-from-day": "25",
-                "date-range-from-month": "12",
-                "date-range-from-year": "2016",
-                "date-range-to-day": "26",
-                "date-range-to-month": "12",
-                "date-range-to-year": "2016",
-            }
+            form_data = MultiDict(
+                {
+                    "date-range-from-day": "25",
+                    "date-range-from-month": "12",
+                    "date-range-from-year": "2016",
+                    "date-range-to-day": "26",
+                    "date-range-to-month": "12",
+                    "date-range-to-year": "2016",
+                }
+            )
 
             expected_form_data = {
                 "csrf_token": "",
@@ -178,7 +205,11 @@ class TestQuestionnaireForm(
                 "date-range-to": "2016-12-26",
             }
             form = generate_form(
-                schema, question_schema, AnswerStore(), metadata=None, formdata=data
+                schema,
+                question_schema,
+                AnswerStore(),
+                metadata=None,
+                form_data=form_data,
             )
 
             form.validate()
@@ -195,14 +226,16 @@ class TestQuestionnaireForm(
 
             question_schema = schema.get_block("date-range-block")["question"]
 
-            data = {
-                "date-range-from-day": "25",
-                "date-range-from-month": "12",
-                "date-range-from-year": "2016",
-                "date-range-to-day": "26",
-                "date-range-to-month": "01",
-                "date-range-to-year": "2017",
-            }
+            form_data = MultiDict(
+                {
+                    "date-range-from-day": "25",
+                    "date-range-from-month": "12",
+                    "date-range-from-year": "2016",
+                    "date-range-to-day": "26",
+                    "date-range-to-month": "01",
+                    "date-range-to-year": "2017",
+                }
+            )
 
             expected_form_data = {
                 "csrf_token": "",
@@ -210,7 +243,11 @@ class TestQuestionnaireForm(
                 "date-range-to": "2017-01-26",
             }
             form = generate_form(
-                schema, question_schema, AnswerStore(), metadata=None, formdata=data
+                schema,
+                question_schema,
+                AnswerStore(),
+                metadata=None,
+                form_data=form_data,
             )
 
             form.validate()
@@ -222,14 +259,16 @@ class TestQuestionnaireForm(
 
             question_schema = schema.get_block("date-range-block")["question"]
 
-            data = {
-                "date-range-from-day": "01",
-                "date-range-from-month": "1",
-                "date-range-from-year": "2017",
-                "date-range-to-day": "14",
-                "date-range-to-month": "3",
-                "date-range-to-year": "2017",
-            }
+            form_data = MultiDict(
+                {
+                    "date-range-from-day": "01",
+                    "date-range-from-month": "1",
+                    "date-range-from-year": "2017",
+                    "date-range-to-day": "14",
+                    "date-range-to-month": "3",
+                    "date-range-to-year": "2017",
+                }
+            )
 
             metadata = {
                 "ref_p_start_date": "2017-01-21",
@@ -242,7 +281,7 @@ class TestQuestionnaireForm(
                 "date-range-to": "2017-03-14",
             }
             form = generate_form(
-                schema, question_schema, AnswerStore(), metadata, formdata=data
+                schema, question_schema, AnswerStore(), metadata, form_data=form_data
             )
 
             form.validate()
@@ -265,14 +304,16 @@ class TestQuestionnaireForm(
 
             question_schema = schema.get_block("date-range-block").get("question")
 
-            data = {
-                "date-range-from-day": "01",
-                "date-range-from-month": 1,
-                "date-range-from-year": "2017",
-                "date-range-to-day": "10",
-                "date-range-to-month": 1,
-                "date-range-to-year": "2017",
-            }
+            form_data = MultiDict(
+                {
+                    "date-range-from-day": "01",
+                    "date-range-from-month": 1,
+                    "date-range-from-year": "2017",
+                    "date-range-to-day": "10",
+                    "date-range-to-month": 1,
+                    "date-range-to-year": "2017",
+                }
+            )
 
             metadata = {
                 "ref_p_start_date": "2017-01-20",
@@ -285,7 +326,7 @@ class TestQuestionnaireForm(
                 "date-range-to": "2017-01-10",
             }
             form = generate_form(
-                schema, question_schema, AnswerStore(), metadata, formdata=data
+                schema, question_schema, AnswerStore(), metadata, form_data=form_data
             )
 
             form.validate()
@@ -301,14 +342,16 @@ class TestQuestionnaireForm(
 
             question_schema = schema.get_block("date-range-block").get("question")
 
-            data = {
-                "date-range-from-day": "01",
-                "date-range-from-month": 1,
-                "date-range-from-year": "2017",
-                "date-range-to-day": "21",
-                "date-range-to-month": 2,
-                "date-range-to-year": "2017",
-            }
+            form_data = MultiDict(
+                {
+                    "date-range-from-day": "01",
+                    "date-range-from-month": 1,
+                    "date-range-from-year": "2017",
+                    "date-range-to-day": "21",
+                    "date-range-to-month": 2,
+                    "date-range-to-year": "2017",
+                }
+            )
 
             metadata = {
                 "ref_p_start_date": "2017-01-20",
@@ -321,7 +364,7 @@ class TestQuestionnaireForm(
                 "date-range-to": "2017-02-21",
             }
             form = generate_form(
-                schema, question_schema, AnswerStore(), metadata, formdata=data
+                schema, question_schema, AnswerStore(), metadata, form_data=form_data
             )
 
             form.validate()
@@ -337,12 +380,14 @@ class TestQuestionnaireForm(
 
             question_schema = schema.get_block("date-range-block").get("question")
 
-            data = {
-                "date-range-from-month": 11,
-                "date-range-from-year": "2016",
-                "date-range-to-month": 6,
-                "date-range-to-year": "2017",
-            }
+            form_data = MultiDict(
+                {
+                    "date-range-from-month": 11,
+                    "date-range-from-year": "2016",
+                    "date-range-to-month": 6,
+                    "date-range-to-year": "2017",
+                }
+            )
 
             metadata = {
                 "ref_p_start_date": "2017-01-01",
@@ -355,7 +400,7 @@ class TestQuestionnaireForm(
                 "date-range-to": "2017-06",
             }
             form = generate_form(
-                schema, question_schema, AnswerStore(), metadata, formdata=data
+                schema, question_schema, AnswerStore(), metadata, form_data=form_data
             )
 
             form.validate()
@@ -378,12 +423,14 @@ class TestQuestionnaireForm(
 
             question_schema = schema.get_block("date-range-block").get("question")
 
-            data = {
-                "date-range-from-month": 1,
-                "date-range-from-year": "2017",
-                "date-range-to-month": 2,
-                "date-range-to-year": "2017",
-            }
+            form_data = MultiDict(
+                {
+                    "date-range-from-month": 1,
+                    "date-range-from-year": "2017",
+                    "date-range-to-month": 2,
+                    "date-range-to-year": "2017",
+                }
+            )
 
             metadata = {
                 "ref_p_start_date": "2017-01-01",
@@ -396,7 +443,7 @@ class TestQuestionnaireForm(
                 "date-range-to": "2017-02",
             }
             form = generate_form(
-                schema, question_schema, AnswerStore(), metadata, formdata=data
+                schema, question_schema, AnswerStore(), metadata, form_data=form_data
             )
 
             form.validate()
@@ -412,12 +459,14 @@ class TestQuestionnaireForm(
 
             question_schema = schema.get_block("date-range-block").get("question")
 
-            data = {
-                "date-range-from-month": 1,
-                "date-range-from-year": "2017",
-                "date-range-to-month": 5,
-                "date-range-to-year": "2017",
-            }
+            form_data = MultiDict(
+                {
+                    "date-range-from-month": 1,
+                    "date-range-from-year": "2017",
+                    "date-range-to-month": 5,
+                    "date-range-to-year": "2017",
+                }
+            )
 
             metadata = {
                 "ref_p_start_date": "2017-01-01",
@@ -430,7 +479,7 @@ class TestQuestionnaireForm(
                 "date-range-to": "2017-05",
             }
             form = generate_form(
-                schema, question_schema, AnswerStore(), metadata, formdata=data
+                schema, question_schema, AnswerStore(), metadata, form_data=form_data
             )
 
             form.validate()
@@ -446,7 +495,9 @@ class TestQuestionnaireForm(
 
             question_schema = schema.get_block("date-range-block").get("question")
 
-            data = {"date-range-from-year": "2015", "date-range-to-year": "2021"}
+            form_data = MultiDict(
+                {"date-range-from-year": "2015", "date-range-to-year": "2021"}
+            )
 
             metadata = {
                 "ref_p_start_date": "2017-01-01",
@@ -459,7 +510,7 @@ class TestQuestionnaireForm(
                 "date-range-to": "2021",
             }
             form = generate_form(
-                schema, question_schema, AnswerStore(), metadata, formdata=data
+                schema, question_schema, AnswerStore(), metadata, form_data=form_data
             )
 
             form.validate()
@@ -481,7 +532,9 @@ class TestQuestionnaireForm(
 
             question_schema = schema.get_block("date-range-block").get("question")
 
-            data = {"date-range-from-year": "2016", "date-range-to-year": "2017"}
+            form_data = MultiDict(
+                {"date-range-from-year": "2016", "date-range-to-year": "2017"}
+            )
 
             metadata = {
                 "ref_p_start_date": "2017-01-01",
@@ -494,7 +547,7 @@ class TestQuestionnaireForm(
                 "date-range-to": "2017",
             }
             form = generate_form(
-                schema, question_schema, AnswerStore(), metadata, formdata=data
+                schema, question_schema, AnswerStore(), metadata, form_data=form_data
             )
 
             form.validate()
@@ -510,7 +563,9 @@ class TestQuestionnaireForm(
 
             question_schema = schema.get_block("date-range-block").get("question")
 
-            data = {"date-range-from-year": "2016", "date-range-to-year": "2020"}
+            form_data = MultiDict(
+                {"date-range-from-year": "2016", "date-range-to-year": "2020"}
+            )
 
             metadata = {
                 "ref_p_start_date": "2017-01-01",
@@ -523,7 +578,7 @@ class TestQuestionnaireForm(
                 "date-range-to": "2020",
             }
             form = generate_form(
-                schema, question_schema, AnswerStore(), metadata, formdata=data
+                schema, question_schema, AnswerStore(), metadata, form_data=form_data
             )
 
             form.validate()
@@ -558,17 +613,23 @@ class TestQuestionnaireForm(
                 ],
             }
 
-            data = {
-                "date-range-from-day": "25",
-                "date-range-from-month": "1",
-                "date-range-from-year": "2018",
-                "date-range-to-day": "26",
-                "date-range-to-month": "1",
-                "date-range-to-year": "2018",
-            }
+            form_data = MultiDict(
+                {
+                    "date-range-from-day": "25",
+                    "date-range-from-month": "1",
+                    "date-range-from-year": "2018",
+                    "date-range-to-day": "26",
+                    "date-range-to-month": "1",
+                    "date-range-to-year": "2018",
+                }
+            )
 
             form = generate_form(
-                schema, question_schema, AnswerStore(), metadata=None, formdata=data
+                schema,
+                question_schema,
+                AnswerStore(),
+                metadata=None,
+                form_data=form_data,
             )
 
             with patch(
@@ -583,8 +644,6 @@ class TestQuestionnaireForm(
     def test_invalid_minimum_period_limit_and_single_date_periods(self):
         with self.app_request_context():
             schema = load_schema_from_name("test_date_validation_range")
-
-            question_schema = schema.get_block("date-range-block")["question"]
 
             question_schema = {
                 "id": "date-range-question",
@@ -608,17 +667,23 @@ class TestQuestionnaireForm(
                 ],
             }
 
-            data = {
-                "date-range-from-day": "8",
-                "date-range-from-month": "1",
-                "date-range-from-year": "2018",
-                "date-range-to-day": "13",
-                "date-range-to-month": "1",
-                "date-range-to-year": "2018",
-            }
+            form_data = MultiDict(
+                {
+                    "date-range-from-day": "8",
+                    "date-range-from-month": "1",
+                    "date-range-from-year": "2018",
+                    "date-range-to-day": "13",
+                    "date-range-to-month": "1",
+                    "date-range-to-year": "2018",
+                }
+            )
 
             form = generate_form(
-                schema, question_schema, AnswerStore(), metadata=None, formdata=data
+                schema,
+                question_schema,
+                AnswerStore(),
+                metadata=None,
+                form_data=form_data,
             )
 
             with self.assertRaises(Exception) as ite:
@@ -658,17 +723,23 @@ class TestQuestionnaireForm(
                 ],
             }
 
-            data = {
-                "date-range-from-day": "6",
-                "date-range-from-month": "1",
-                "date-range-from-year": "2018",
-                "date-range-to-day": "15",
-                "date-range-to-month": "1",
-                "date-range-to-year": "2018",
-            }
+            form_data = MultiDict(
+                {
+                    "date-range-from-day": "6",
+                    "date-range-from-month": "1",
+                    "date-range-from-year": "2018",
+                    "date-range-to-day": "15",
+                    "date-range-to-month": "1",
+                    "date-range-to-year": "2018",
+                }
+            )
 
             form = generate_form(
-                schema, question_schema, AnswerStore(), metadata=None, formdata=data
+                schema,
+                question_schema,
+                AnswerStore(),
+                metadata=None,
+                form_data=form_data,
             )
 
             with self.assertRaises(Exception) as ite:
@@ -714,19 +785,21 @@ class TestQuestionnaireForm(
                 ],
             }
 
-            data = {
-                "date-range-from-day": "6",
-                "date-range-from-month": "1",
-                "date-range-from-year": "2018",
-                "date-range-to-day": "15",
-                "date-range-to-month": "1",
-                "date-range-to-year": "2018",
-            }
+            form_data = MultiDict(
+                {
+                    "date-range-from-day": "6",
+                    "date-range-from-month": "1",
+                    "date-range-from-year": "2018",
+                    "date-range-to-day": "15",
+                    "date-range-to-month": "1",
+                    "date-range-to-year": "2018",
+                }
+            )
 
             metadata = {"schema_name": "test_date_validation_range"}
 
             form = generate_form(
-                schema, question_schema, store, metadata=metadata, formdata=data
+                schema, question_schema, store, metadata=metadata, form_data=form_data
             )
 
             with self.assertRaises(Exception) as ite:
@@ -763,10 +836,10 @@ class TestQuestionnaireForm(
                 }
             ]
 
-            data = {"breakdown-1": "3", "breakdown-2": "5"}
+            form_data = MultiDict({"breakdown-1": "3", "breakdown-2": "5"})
 
             form = generate_form(
-                schema, question_schema, store, metadata=None, formdata=data
+                schema, question_schema, store, metadata=None, form_data=form_data
             )
 
             with self.assertRaises(Exception) as ite:
@@ -797,10 +870,10 @@ class TestQuestionnaireForm(
                 "messages": {"TOTAL_SUM_NOT_EQUALS": "Test Message"}
             }
 
-            data = {"breakdown-1": "3", "breakdown-2": "5"}
+            form_data = MultiDict({"breakdown-1": "3", "breakdown-2": "5"})
 
             form = generate_form(
-                schema, question_schema, store, metadata=None, formdata=data
+                schema, question_schema, store, metadata=None, form_data=form_data
             )
 
             with patch(
@@ -824,12 +897,14 @@ class TestQuestionnaireForm(
 
             question_schema = schema.get_block("breakdown-block").get("question")
 
-            data = {
-                "breakdown-1": "",
-                "breakdown-2": "5",
-                "breakdown-3": "4",
-                "breakdown-4": "",
-            }
+            form_data = MultiDict(
+                {
+                    "breakdown-1": "",
+                    "breakdown-2": "5",
+                    "breakdown-3": "4",
+                    "breakdown-4": "",
+                }
+            )
 
             expected_form_data = {
                 "csrf_token": "",
@@ -839,7 +914,7 @@ class TestQuestionnaireForm(
                 "breakdown-4": None,
             }
             form = generate_form(
-                schema, question_schema, store, metadata=None, formdata=data
+                schema, question_schema, store, metadata=None, form_data=form_data
             )
 
             form.validate()
@@ -862,12 +937,14 @@ class TestQuestionnaireForm(
 
             question_schema = schema.get_block("breakdown-block").get("question")
 
-            data = {
-                "breakdown-1": "",
-                "breakdown-2": "5",
-                "breakdown-3": "4",
-                "breakdown-4": "1",
-            }
+            form_data = MultiDict(
+                {
+                    "breakdown-1": "",
+                    "breakdown-2": "5",
+                    "breakdown-3": "4",
+                    "breakdown-4": "1",
+                }
+            )
 
             expected_form_data = {
                 "csrf_token": "",
@@ -877,7 +954,7 @@ class TestQuestionnaireForm(
                 "breakdown-4": Decimal("1"),
             }
             form = generate_form(
-                schema, question_schema, store, metadata=None, formdata=data
+                schema, question_schema, store, metadata=None, form_data=form_data
             )
 
             form.validate()
@@ -895,12 +972,14 @@ class TestQuestionnaireForm(
 
             question_schema = schema.get_block("breakdown-block").get("question")
 
-            data = {
-                "breakdown-1": "",
-                "breakdown-2": "",
-                "breakdown-3": "",
-                "breakdown-4": "",
-            }
+            form_data = MultiDict(
+                {
+                    "breakdown-1": "",
+                    "breakdown-2": "",
+                    "breakdown-3": "",
+                    "breakdown-4": "",
+                }
+            )
 
             expected_form_data = {
                 "csrf_token": "",
@@ -910,7 +989,7 @@ class TestQuestionnaireForm(
                 "breakdown-4": None,
             }
             form = generate_form(
-                schema, question_schema, store, metadata=None, formdata=data
+                schema, question_schema, store, metadata=None, form_data=form_data
             )
 
             form.validate()
@@ -933,36 +1012,38 @@ class TestQuestionnaireForm(
 
             question_schema = schema.get_block("breakdown-block").get("question")
 
-            data = {
-                "breakdown-1": "",
-                "breakdown-2": "",
-                "breakdown-3": "",
-                "breakdown-4": "",
-            }
+            form_data = MultiDict(
+                {
+                    "breakdown-1": "",
+                    "breakdown-2": "",
+                    "breakdown-3": "",
+                    "breakdown-4": "",
+                }
+            )
 
             # With no answers question validation should pass
             form = generate_form(
-                schema, question_schema, store, metadata=None, formdata=data
+                schema, question_schema, store, metadata=None, form_data=form_data
             )
             form.validate()
 
             self.assertEqual(len(form.question_errors), 0)
 
             # With the data equaling the total question validation should pass
-            data["breakdown-1"] = "10"
+            form_data["breakdown-1"] = "10"
 
             form = generate_form(
-                schema, question_schema, store, metadata=None, formdata=data
+                schema, question_schema, store, metadata=None, form_data=form_data
             )
             form.validate()
 
             self.assertEqual(len(form.question_errors), 0)
 
             # With the data not equaling zero or the total, question validation should fail
-            data["breakdown-1"] = "1"
+            form_data["breakdown-1"] = "1"
 
             form = generate_form(
-                schema, question_schema, store, metadata=None, formdata=data
+                schema, question_schema, store, metadata=None, form_data=form_data
             )
             form.validate()
 
@@ -986,7 +1067,7 @@ class TestQuestionnaireForm(
 
             question_schema = schema.get_block("single-title-block").get("question")
 
-            data = {"feeling-answer": "good"}
+            form_data = MultiDict({"feeling-answer": "good"})
 
             expected_form_data = {"csrf_token": "", "feeling-answer": "good"}
 
@@ -994,7 +1075,7 @@ class TestQuestionnaireForm(
                 "app.questionnaire.path_finder.evaluate_goto", return_value=False
             ):
                 form = generate_form(
-                    schema, question_schema, store, metadata={}, formdata=data
+                    schema, question_schema, store, metadata={}, form_data=form_data
                 )
 
             form.validate()
@@ -1058,7 +1139,7 @@ class TestQuestionnaireForm(
                 question_schema,
                 AnswerStore(),
                 metadata=None,
-                formdata={"mandatory-checkbox-answer": "Your choice"},
+                form_data=MultiDict({"mandatory-checkbox-answer": "Your choice"}),
             )
 
             detail_answer_field = getattr(form, "your-choice-answer-mandatory")
@@ -1070,7 +1151,7 @@ class TestQuestionnaireForm(
                 question_schema,
                 AnswerStore(),
                 metadata=None,
-                formdata={"mandatory-checkbox-answer": "Ham"},
+                data={"mandatory-checkbox-answer": "Ham"},
             )
 
             detail_answer_field = getattr(form, "your-choice-answer-mandatory")
@@ -1087,7 +1168,7 @@ class TestQuestionnaireForm(
                 question_schema,
                 AnswerStore(),
                 metadata=None,
-                formdata={"radio-mandatory-answer": "Other"},
+                form_data=MultiDict({"radio-mandatory-answer": "Other"}),
             )
 
             form.validate()
@@ -1119,7 +1200,7 @@ class TestQuestionnaireForm(
                 question_schema,
                 AnswerStore(),
                 metadata=None,
-                formdata={"set-minimum": "-1"},
+                form_data=MultiDict({"set-minimum": "-1"}),
             )
 
             form.validate()
@@ -1137,7 +1218,11 @@ class TestQuestionnaireForm(
             )
 
             form = generate_form(
-                schema, question_schema, AnswerStore(), metadata=None, formdata={}
+                schema,
+                question_schema,
+                AnswerStore(),
+                metadata=None,
+                form_data=MultiDict(),
             )
             form.validate_mutually_exclusive_question(question_schema)
 
@@ -1154,15 +1239,21 @@ class TestQuestionnaireForm(
                 "question"
             )
 
-            data = {
-                "date-answer-day": "17",
-                "date-answer-month": "9",
-                "date-answer-year": "2018",
-                "date-exclusive-answer": "I prefer not to say",
-            }
+            form_data = MultiDict(
+                {
+                    "date-answer-day": "17",
+                    "date-answer-month": "9",
+                    "date-answer-year": "2018",
+                    "date-exclusive-answer": "I prefer not to say",
+                }
+            )
 
             form = generate_form(
-                schema, question_schema, AnswerStore(), metadata=None, formdata=data
+                schema,
+                question_schema,
+                AnswerStore(),
+                metadata=None,
+                form_data=form_data,
             )
             form.validate_mutually_exclusive_question(question_schema)
 
@@ -1170,3 +1261,103 @@ class TestQuestionnaireForm(
                 form.question_errors["mutually-exclusive-date-question"],
                 "Remove an answer to continue.",
             )
+
+    def test_date_range_form(self):
+        with self.app_request_context():
+            schema = load_schema_from_name("test_date_range")
+            question_schema = schema.get_block("date-block").get("question")
+
+            form = generate_form(schema, question_schema, AnswerStore(), metadata=None)
+
+            self.assertTrue(hasattr(form, "date-range-from-answer"))
+            self.assertTrue(hasattr(form, "date-range-to-answer"))
+
+            period_from_field = getattr(form, "date-range-from-answer")
+            period_to_field = getattr(form, "date-range-to-answer")
+
+            self.assertIsInstance(period_from_field.year.validators[0], DateRequired)
+            self.assertIsInstance(period_to_field.year.validators[0], DateRequired)
+
+    def test_date_range_form_with_data(self):
+        with self.app_request_context():
+            schema = load_schema_from_name("test_date_range")
+            question_schema = schema.get_block("date-block").get("question")
+
+            form_data = MultiDict(
+                {
+                    "date-range-from-answer-day": "1",
+                    "date-range-from-answer-month": "05",
+                    "date-range-from-answer-year": "2015",
+                    "date-range-to-answer-day": "1",
+                    "date-range-to-answer-month": "09",
+                    "date-range-to-answer-year": "2017",
+                }
+            )
+
+            form = generate_form(
+                schema,
+                question_schema,
+                AnswerStore(),
+                metadata=None,
+                form_data=form_data,
+            )
+
+            self.assertTrue(hasattr(form, "date-range-from-answer"))
+            self.assertTrue(hasattr(form, "date-range-to-answer"))
+
+            period_from_field = getattr(form, "date-range-from-answer")
+            period_to_field = getattr(form, "date-range-to-answer")
+
+            self.assertIsInstance(period_from_field.year.validators[0], DateRequired)
+            self.assertIsInstance(period_to_field.year.validators[0], DateRequired)
+
+            self.assertEqual(period_from_field.data, "2015-05-01")
+            self.assertEqual(period_to_field.data, "2017-09-01")
+
+    def test_form_for_radio_other_not_selected(self):
+        with self.app_request_context():
+            schema = load_schema_from_name("test_radio_mandatory_with_mandatory_other")
+
+            question_schema = schema.get_block("radio-mandatory").get("question")
+
+            form_data = MultiDict(
+                {
+                    "radio-mandatory-answer": "Bacon",
+                    "other-answer-mandatory": "Old other text",
+                }
+            )
+
+            form = generate_form(
+                schema,
+                question_schema,
+                AnswerStore(),
+                metadata=None,
+                form_data=form_data,
+            )
+
+            self.assertTrue(hasattr(form, "radio-mandatory-answer"))
+            other_text_field = getattr(form, "other-answer-mandatory")
+            self.assertEqual(other_text_field.data, "")
+
+    def test_form_for_radio_other_selected(self):
+        with self.app_request_context():
+            schema = load_schema_from_name("test_radio_mandatory_with_mandatory_other")
+
+            question_schema = schema.get_block("radio-mandatory").get("question")
+
+            form_data = MultiDict(
+                {
+                    "radio-mandatory-answer": "Other",
+                    "other-answer-mandatory": "Other text field value",
+                }
+            )
+            form = generate_form(
+                schema,
+                question_schema,
+                AnswerStore(),
+                metadata=None,
+                form_data=form_data,
+            )
+
+            other_text_field = getattr(form, "other-answer-mandatory")
+            self.assertEqual(other_text_field.data, "Other text field value")

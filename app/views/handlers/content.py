@@ -1,10 +1,12 @@
+from functools import cached_property
+
 from app.questionnaire.schema_utils import transform_variants
 from app.views.handlers.block import BlockHandler
 from app.helpers.template_helper import safe_content
 
 
 class Content(BlockHandler):
-    @property
+    @cached_property
     def rendered_block(self):
         return self._render_block(self.block["id"])
 

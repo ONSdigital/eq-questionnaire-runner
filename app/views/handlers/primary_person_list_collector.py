@@ -29,7 +29,7 @@ class PrimaryPersonListCollector(Question):
             == self.rendered_block["add_or_edit_answer"]["value"]
         ):
             self._is_adding = True
-            self.questionnaire_store_updater.update_answers(self.form)
+            self.questionnaire_store_updater.update_answers(self.form.data)
             self._primary_person_id = self.questionnaire_store_updater.add_primary_person(
                 list_name
             )

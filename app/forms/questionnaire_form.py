@@ -5,7 +5,7 @@ from decimal import Decimal
 
 from dateutil.relativedelta import relativedelta
 from flask_wtf import FlaskForm
-from werkzeug.datastructures import MultiDict
+from werkzeug.datastructures import MultiDict, ImmutableMultiDict
 from wtforms import validators
 
 from app.forms.field_factory import get_field_handler
@@ -321,9 +321,6 @@ def _option_value_in_data(answer, option, data):
 
 def get_answer_fields(question, data, error_messages, answer_store, metadata, location):
     answer_fields = {}
-    if not question:
-        return answer_fields
-
     for answer in question.get("answers", []):
         for option in answer.get("options", []):
             if "detail_answer" in option:
@@ -377,6 +374,25 @@ def _get_error_id(answer_id):
     return f"{answer_id}-error"
 
 
+def _clear_detail_answer_field(form_data, question):
+    """
+    Checks the submitted answers and in the case of both checkboxes and radios,
+    removes the text entered into the detail answer field if the associated option is not
+    selected.
+    :param form_data: the submitted form data.
+    :param question: a question to clear.
+    :return: the form data with the other text field cleared, if appropriate.
+    """
+    for answer in question.get("answers", []):
+        for option in answer.get("options", []):
+            if "detail_answer" in option:
+                if option["value"] not in form_data.getlist(answer["id"]):
+                    if isinstance(form_data, ImmutableMultiDict):
+                        form_data = MultiDict(form_data)
+                    form_data[option["detail_answer"]["id"]] = ""
+    return form_data
+
+
 def generate_form(
     schema,
     question_schema,
@@ -384,14 +400,17 @@ def generate_form(
     metadata,
     location=None,
     data=None,
-    formdata=None,
+    form_data=None,
 ):
     class DynamicForm(QuestionnaireForm):
         pass
 
+    if form_data:
+        form_data = _clear_detail_answer_field(form_data, question_schema)
+
     answer_fields = get_answer_fields(
         question_schema,
-        formdata if formdata is not None else data,
+        form_data if form_data is not None else data,
         schema.error_messages,
         answer_store,
         metadata,
@@ -401,9 +420,6 @@ def generate_form(
     for answer_id, field in answer_fields.items():
         setattr(DynamicForm, answer_id, field)
 
-    if formdata:
-        formdata = MultiDict(formdata)
-
     return DynamicForm(
         schema,
         question_schema,
@@ -411,5 +427,5 @@ def generate_form(
         metadata,
         location,
         data=data,
-        formdata=formdata,
+        formdata=form_data,
     )
