@@ -124,6 +124,10 @@ class QuestionnaireStoreUpdater:
         if self._list_store[list_name].primary_person:
             return self._list_store[list_name].primary_person
 
+        # If a primary person was initially answered negatively, then changed to positive,
+        # the location must be removed from the progress store.
+        self.remove_completed_location(self._current_location)
+
         return self._list_store.add_list_item(list_name, primary_person=True)
 
     def add_list_item_and_answers(self, form, list_name):
