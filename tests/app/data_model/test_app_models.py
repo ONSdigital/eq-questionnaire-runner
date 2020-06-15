@@ -2,12 +2,7 @@ import datetime
 
 from dateutil.tz import tzutc
 
-from app.data_model.app_models import (
-    EQSession,
-    QuestionnaireState,
-    UsedJtiClaim,
-    SubmittedResponse,
-)
+from app.data_model.app_models import EQSession, QuestionnaireState, UsedJtiClaim
 from app.storage.storage import StorageModel
 from tests.app.app_context_test_case import AppContextTestCase
 
@@ -15,9 +10,6 @@ NOW = datetime.datetime.now(tz=tzutc()).replace(microsecond=0)
 
 
 class TestAppModels(AppContextTestCase):
-    def test_submitted_response(self):
-        self._test_model(SubmittedResponse("txid", "somedata", NOW))
-
     def test_questionnaire_state(self):
         new_model = self._test_model(QuestionnaireState("someuser", "somedata", 1))
 

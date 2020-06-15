@@ -29,13 +29,6 @@ class UsedJtiClaim:
         self.expires_at = expires_at.replace(tzinfo=tzutc())
 
 
-class SubmittedResponse:
-    def __init__(self, tx_id, data, expires_at):
-        self.tx_id = tx_id
-        self.data = data
-        self.expires_at = expires_at
-
-
 # pylint: disable=no-self-use
 class Timestamp(fields.Field):
     def _serialize(self, value, attr, obj, **kwargs):
@@ -97,13 +90,3 @@ class UsedJtiClaimSchema(Schema):
     @post_load
     def make_model(self, data):
         return UsedJtiClaim(**data)
-
-
-class SubmittedResponseSchema(Schema):
-    tx_id = fields.Str()
-    data = fields.Str()
-    expires_at = Timestamp()
-
-    @post_load
-    def make_model(self, data):
-        return SubmittedResponse(**data)

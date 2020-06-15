@@ -7,10 +7,6 @@
     "title": "Test Northern Ireland Survey",
     "theme": "northernireland",
     "description": "A questionnaire to demo the northernireland survey theme",
-    "view_submitted_response": {
-        "enabled": true,
-        "duration": 5
-    },
     "metadata": [
         {
             "name": "user_id",
