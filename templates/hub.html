@@ -10,8 +10,9 @@
     <h1 class="u-mt-m">{{ content.title }}</h1>
     {% call onsPanel({
       "type": "info",
-      "attributes": {
-      }
+        "attributes": {
+          "data-qa": "displayed-guidance"
+        }
     }) %}
         <p><strong>{{ content.guidance }}</strong></p>
     {% endcall %}
