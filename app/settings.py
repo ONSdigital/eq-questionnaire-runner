@@ -94,7 +94,7 @@ EQ_ENABLE_SECURE_SESSION_COOKIE = parse_mode(
     os.getenv("EQ_ENABLE_SECURE_SESSION_COOKIE", "True")
 )
 
-EQ_ENABLE_HTML_MINIFY = parse_mode(os.getenv("EQ_ENABLE_HTML_MINIFY", "True"))
+EQ_ENABLE_HTML_MINIFY = parse_mode(os.getenv("EQ_ENABLE_HTML_MINIFY", "False"))
 
 EQ_JWT_LEEWAY_IN_SECONDS = 120
 DEFAULT_LOCALE = "en_GB"
