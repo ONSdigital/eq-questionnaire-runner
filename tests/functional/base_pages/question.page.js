@@ -31,11 +31,11 @@ class QuestionPage extends BasePage {
   }
 
   errorHeader() {
-    return '[data-qa="error-body"] > div.panel__header > div';
+    return '[data-qa="error-header"]';
   }
 
   errorNumber(number = 1) {
-    return `[data-qa="error-body"] ul > li:nth-child(${number}) > a`;
+    return `[data-qa="error-item-${number}"]`;
   }
 
   previous() {

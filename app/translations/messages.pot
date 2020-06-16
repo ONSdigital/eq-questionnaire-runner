@@ -567,8 +567,8 @@ msgstr ""
 
 #: templates/partials/last_viewed_question_guidance.html:10
 msgid ""
-"You can also <a id='section-start-link' href='{url}'>go back to the start"
-" of the section</a>"
+"You can also <a id='section-start-link' data-qa='last-viewed-question-"
+"guidance-link' href='{url}'>go back to the start of the section</a>"
 msgstr ""
 
 #: templates/partials/question.html:48
