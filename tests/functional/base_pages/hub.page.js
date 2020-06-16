@@ -18,7 +18,7 @@ class HubPage extends BasePage {
   }
 
   errorHeader() {
-    return "#main-content > div.panel.panel--error.u-mb-s > div.panel__header > div";
+    return '[data-qa="error-body"] > div.panel__header > div';
   }
 
   errorNumber(number = 1) {

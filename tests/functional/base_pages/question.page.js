@@ -31,7 +31,7 @@ class QuestionPage extends BasePage {
   }
 
   errorHeader() {
-    return "#main-content > div.panel.panel--error.u-mb-s > div.panel__header > div";
+    return '[data-qa="error-body"] > div.panel__header > div';
   }
 
   errorNumber(number = 1) {
@@ -59,7 +59,7 @@ class QuestionPage extends BasePage {
   }
 
   lastViewedQuestionGuidanceLink() {
-    return "#last-viewed-question-guidance > div.panel__body > a";
+    return '[data-qa="last-viewed-question-guidance-link"]';
   }
 
   submit() {
