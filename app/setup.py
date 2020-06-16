@@ -111,6 +111,8 @@ def create_app(  # noqa: C901  pylint: disable=too-complex, too-many-statements
     application = Flask(__name__, template_folder="../templates")
     application.config.from_object(settings)
 
+    application.jinja_env.trim_blocks = True
+    application.jinja_env.lstrip_blocks = True
     application.eq = {}
 
     with open(application.config["EQ_SECRETS_FILE"]) as secrets_file:
