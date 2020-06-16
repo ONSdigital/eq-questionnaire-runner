@@ -1,5 +1,6 @@
+import random
 import re
-
+import string
 from tests.integration.integration_test_case import IntegrationTestCase
 
 
@@ -68,3 +69,21 @@ class TestQuestionnaireListCollector(IntegrationTestCase):
 
         self.assertInBody("James May")
         self.assertInBody("Marie Day")
+
+    def test_changing_answer_from_no_to_yes_on_primary_person_list_collector_resumes_in_right_location(
+        self,
+    ):
+        response_id = random.choices(string.digits, k=16)
+
+        # Given I initially answer 'No' to the primary person list collector
+        self.launchSurvey("test_list_collector_primary_person", reponse_id=response_id)
+        self.post({"you-live-here": "No"})
+
+        # When I change my answer to 'Yes' and sign out
+        self.get("questionnaire/primary-person-list-collector/")
+        self.post({"you-live-here": "Yes"})
+        self.get("/sign-out")
+
+        # Then on resuming, I am returned to the primary-person-list-collector
+        self.launchSurvey("test_list_collector_primary_person", reponse_id=response_id)
+        self.assertInUrl("/questionnaire/primary-person-list-collector/")
