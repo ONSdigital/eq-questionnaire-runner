@@ -35,7 +35,7 @@ class QuestionPage extends BasePage {
   }
 
   errorNumber(number = 1) {
-    return `[data-qa="error-item-${number}"]`;
+    return `[data-qa="list-item-${number}"]`;
   }
 
   previous() {
