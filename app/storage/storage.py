@@ -8,12 +8,6 @@ from app.data_model import app_models
 
 class StorageModel:
     TABLE_CONFIG = {
-        app_models.SubmittedResponse: {
-            "key_field": "tx_id",
-            "expiry_field": "expires_at",
-            "table_name_key": "EQ_SUBMITTED_RESPONSES_TABLE_NAME",
-            "schema": app_models.SubmittedResponseSchema,
-        },
         app_models.QuestionnaireState: {
             "key_field": "user_id",
             "table_name_key": "EQ_QUESTIONNAIRE_STATE_TABLE_NAME",

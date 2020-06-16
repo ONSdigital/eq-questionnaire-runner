@@ -48,6 +48,7 @@ def fake_metadata():
             "case_id": str(uuid.uuid4()),
             "form_type": "I",
             "case_type": "SPG",
+            "region_code": "GB-ENG",
             "channel": "RH",
             "display_address": "68 Abingdon Road, Goathill",
             "questionnaire_id": "0123456789000000",

@@ -1,19 +1,12 @@
-from datetime import datetime, timedelta
+from datetime import datetime
 import flask_babel
-import humanize
 import simplejson as json
-from dateutil.tz import tzutc
 from flask import Blueprint, g, redirect, request, url_for, current_app, jsonify
 from flask_login import current_user, login_required
-from jwcrypto.common import base64url_decode
 from sdc.crypto.encrypter import encrypt
 from structlog import get_logger
 
 from app.authentication.no_token_exception import NoTokenException
-from app.data_model.answer_store import AnswerStore
-from app.data_model.app_models import SubmittedResponse
-from app.data_model.list_store import ListStore
-from app.data_model.progress_store import ProgressStore
 from app.globals import (
     get_answer_store,
     get_metadata,
@@ -29,7 +22,6 @@ from app.helpers.template_helper import render_template
 from app.keys import KEY_PURPOSE_SUBMISSION
 from app.questionnaire.location import InvalidLocationException
 from app.questionnaire.router import Router
-from app.storage.storage_encryption import StorageEncryption
 from app.submitter.converter import convert_answers
 from app.submitter.submission_failed import SubmissionFailedException
 from app.utilities.schema import load_schema_from_session_data
@@ -37,7 +29,6 @@ from app.views.contexts.hub_context import HubContext
 from app.views.contexts.metadata_context import (
     build_metadata_context_for_survey_completed,
 )
-from app.views.contexts import QuestionnaireSummaryContext
 from app.views.handlers.block_factory import get_block_handler
 from app.views.handlers.section import SectionHandler
 
@@ -293,85 +284,12 @@ def get_thank_you(schema):
 
     metadata_context = build_metadata_context_for_survey_completed(session_data)
 
-    view_submission_url = None
-    view_submission_duration = 0
-    if _is_submission_viewable(schema.json, session_data.submitted_time):
-        view_submission_url = url_for(".get_view_submission")
-        view_submission_duration = humanize.naturaldelta(
-            timedelta(seconds=schema.json["view_submitted_response"]["duration"])
-        )
-
     return render_template(
         template="thank-you",
         metadata=metadata_context,
         survey_id=schema.json["survey_id"],
-        is_view_submitted_response_enabled=is_view_submitted_response_enabled(
-            schema.json
-        ),
-        view_submission_url=view_submission_url,
-        view_submission_duration=view_submission_duration,
         hide_signout_button=True,
     )
-
-
-@post_submission_blueprint.route("view-submission/", methods=["GET"])
-@login_required
-@with_schema
-def get_view_submission(schema):
-
-    session_data = get_session_store().session_data
-
-    if _is_submission_viewable(schema.json, session_data.submitted_time):
-        submitted_data = current_app.eq["storage"].get(
-            SubmittedResponse, session_data.tx_id
-        )
-
-        if submitted_data:
-
-            metadata_context = build_metadata_context_for_survey_completed(session_data)
-
-            pepper = current_app.eq["secret_store"].get_secret_by_name(
-                "EQ_SERVER_SIDE_STORAGE_ENCRYPTION_USER_PEPPER"
-            )
-
-            encrypter = StorageEncryption(
-                current_user.user_id, current_user.user_ik, pepper
-            )
-            submitted_data = encrypter.decrypt_data(submitted_data.data)
-
-            # for backwards compatibility
-            # submitted data used to be base64 encoded before encryption
-            try:
-                submitted_data = base64url_decode(submitted_data.decode()).decode()
-            except ValueError:
-                pass
-
-            submitted_data = json.loads(submitted_data)
-            answer_store = AnswerStore(submitted_data.get("answers"))
-            list_store = ListStore(submitted_data.get("lists"))
-            progress_store = ProgressStore(submitted_data.get("progress"))
-
-            metadata = submitted_data.get("metadata")
-            language_code = get_session_store().session_data.language_code
-            questionnaire_summary_context = QuestionnaireSummaryContext(
-                language_code,
-                schema,
-                answer_store,
-                list_store,
-                progress_store,
-                metadata,
-            )
-
-            context = questionnaire_summary_context(answers_are_editable=False)
-
-            return render_template(
-                template="view-submission",
-                metadata=metadata_context,
-                content=context,
-                survey_id=schema.json["survey_id"],
-            )
-
-    return redirect(url_for("post_submission.get_thank_you"))
 
 
 def _generate_wtf_form(block_schema, schema, current_location):
@@ -388,8 +306,6 @@ def _generate_wtf_form(block_schema, schema, current_location):
 
 
 def submit_answers(schema, questionnaire_store, full_routing_path):
-    answer_store = questionnaire_store.answer_store
-    list_store = questionnaire_store.list_store
     metadata = questionnaire_store.metadata
 
     message = json.dumps(
@@ -410,14 +326,7 @@ def submit_answers(schema, questionnaire_store, full_routing_path):
         raise SubmissionFailedException()
 
     submitted_time = datetime.utcnow()
-
     _store_submitted_time_in_session(submitted_time)
-
-    if is_view_submitted_response_enabled(schema.json):
-        _store_viewable_submission(
-            answer_store.serialize(), list_store.serialize(), metadata, submitted_time
-        )
-
     get_questionnaire_store(current_user.user_id, current_user.user_ik).delete()
 
     return redirect(url_for("post_submission.get_thank_you"))
@@ -428,48 +337,6 @@ def _store_submitted_time_in_session(submitted_time):
     session_data = session_store.session_data
     session_data.submitted_time = submitted_time.isoformat()
     session_store.save()
-
-
-def _store_viewable_submission(answers, lists, metadata, submitted_time):
-    pepper = current_app.eq["secret_store"].get_secret_by_name(
-        "EQ_SERVER_SIDE_STORAGE_ENCRYPTION_USER_PEPPER"
-    )
-    encrypter = StorageEncryption(current_user.user_id, current_user.user_ik, pepper)
-    encrypted_data = encrypter.encrypt_data(
-        {"answers": answers, "lists": lists, "metadata": metadata.copy()}
-    )
-
-    expires_at = submitted_time + timedelta(
-        seconds=g.schema.json["view_submitted_response"]["duration"]
-    )
-
-    item = SubmittedResponse(
-        tx_id=metadata["tx_id"],
-        data=encrypted_data,
-        expires_at=expires_at.replace(tzinfo=tzutc()),
-    )
-
-    current_app.eq["storage"].put(item)
-
-
-def is_view_submitted_response_enabled(schema):
-    view_submitted_response = schema.get("view_submitted_response")
-    if view_submitted_response:
-        return view_submitted_response["enabled"]
-
-    return False
-
-
-def _is_submission_viewable(schema, submitted_time):
-    if is_view_submitted_response_enabled(schema) and submitted_time:
-        submitted_time = datetime.strptime(submitted_time, "%Y-%m-%dT%H:%M:%S.%f")
-        submission_expires_at = submitted_time + timedelta(
-            seconds=schema["view_submitted_response"]["duration"]
-        )
-        is_submission_viewable = submission_expires_at > datetime.utcnow()
-        return is_submission_viewable
-
-    return False
 
 
 def _render_page(
