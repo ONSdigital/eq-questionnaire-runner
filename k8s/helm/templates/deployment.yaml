@@ -65,8 +65,6 @@ spec:
               value: rabbit
             - name: EQ_RABBITMQ_HOST_SECONDARY
               value: rabbit
-            - name: EQ_SUBMITTED_RESPONSES_TABLE_NAME
-              value: submitted-responses
             - name: EQ_QUESTIONNAIRE_STATE_TABLE_NAME
               value: questionnaire-state
             - name: EQ_SESSION_TABLE_NAME

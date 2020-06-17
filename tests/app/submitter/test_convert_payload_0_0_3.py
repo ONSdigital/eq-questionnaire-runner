@@ -474,26 +474,24 @@ def test_list_item_conversion_empty_list(fake_questionnaire_store):
 def test_default_answers_not_present_when_not_answered(fake_questionnaire_store):
     """Test that default values aren't submitted downstream when an answer with
     a default value is not present in the answer store."""
-    schema = load_schema("test_view_submitted_response")
+    schema = load_schema("test_default")
 
-    answer_objects = [
-        {"answer_id": "test-currency", "value": "12"},
-        {"answer_id": "square-kilometres", "value": "345"},
-        {"answer_id": "test-decimal", "value": "67.89"},
-    ]
+    answer_objects = [{"answer_id": "number-question-two", "value": "12"}]
 
     fake_questionnaire_store.answer_store = AnswerStore(answer_objects)
     fake_questionnaire_store.list_store = ListStore()
 
     routing_path = [
-        RoutingPath(["radio", "test-number-block"], section_id="default-section")
+        RoutingPath(
+            ["number-question-one", "number-question-two"], section_id="default-section"
+        )
     ]
 
     output = convert_answers(schema, fake_questionnaire_store, routing_path)
     data = json.loads(json.dumps(output["data"]["answers"], for_json=True))
 
     answer_ids = {answer["answer_id"] for answer in data}
-    assert "radio-answer" not in answer_ids
+    assert "answer-one" not in answer_ids
 
 
 def test_list_structure_in_payload_is_as_expected(fake_questionnaire_store):

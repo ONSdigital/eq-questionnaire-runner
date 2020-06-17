@@ -7,10 +7,6 @@
     "title": "Test Social Survey",
     "theme": "social",
     "description": "A questionnaire to demo the social survey theme",
-    "view_submitted_response": {
-        "enabled": true,
-        "duration": 5
-    },
     "metadata": [
         {
             "name": "user_id",
