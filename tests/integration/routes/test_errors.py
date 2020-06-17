@@ -38,19 +38,13 @@ class TestErrors(IntegrationTestCase):
             self.get("/hfjdskahfjdkashfsa")
             self.assertStatusNotFound()
 
-    def test_errors_500(self):
-        # Given
-        self.launchSurvey("test_percentage")
+    def test_errors_405(self):
+        # Given / When
+        self.get("/flush")
 
-        # When / Then
-        # Patch out a class in post to raise an exception so that the application error handler
-        # gets called
-        with patch(
-            "app.routes.questionnaire.get_block_handler",
-            side_effect=Exception("You broked it"),
-        ):
-            self.post({"answer": "5000000"})
-            self.assertStatusCode(500)
+        # Then
+        self.assertStatusCode(405)  # 405 is returned as the status code
+        self.assertInBody("Page not found")  # 404 page template is used
 
     def test_errors_500_with_payload(self):
         # Given
