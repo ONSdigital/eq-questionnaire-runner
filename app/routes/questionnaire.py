@@ -1,9 +1,6 @@
-from datetime import datetime
 import flask_babel
-import simplejson as json
-from flask import Blueprint, g, redirect, request, url_for, current_app, jsonify
+from flask import Blueprint, g, redirect, request, url_for, jsonify
 from flask_login import current_user, login_required
-from sdc.crypto.encrypter import encrypt
 from structlog import get_logger
 
 from app.authentication.no_token_exception import NoTokenException
@@ -19,11 +16,8 @@ from app.helpers.language_helper import handle_language
 from app.helpers.schema_helpers import with_schema
 from app.helpers.session_helpers import with_questionnaire_store
 from app.helpers.template_helper import render_template
-from app.keys import KEY_PURPOSE_SUBMISSION
 from app.questionnaire.location import InvalidLocationException
 from app.questionnaire.router import Router
-from app.submitter.converter import convert_answers
-from app.submitter.submission_failed import SubmissionFailedException
 from app.utilities.schema import load_schema_from_session_data
 from app.views.contexts.hub_context import HubContext
 from app.views.contexts.metadata_context import (
@@ -31,6 +25,7 @@ from app.views.contexts.metadata_context import (
 )
 from app.views.handlers.block_factory import get_block_handler
 from app.views.handlers.section import SectionHandler
+from app.views.handlers.submission import SubmissionHandler
 
 END_BLOCKS = "Summary", "Confirmation"
 
@@ -306,37 +301,12 @@ def _generate_wtf_form(block_schema, schema, current_location):
 
 
 def submit_answers(schema, questionnaire_store, full_routing_path):
-    metadata = questionnaire_store.metadata
-
-    message = json.dumps(
-        convert_answers(schema, questionnaire_store, full_routing_path), for_json=True
+    submission_handler = SubmissionHandler(
+        schema, questionnaire_store, full_routing_path
     )
-
-    encrypted_message = encrypt(
-        message, current_app.eq["key_store"], KEY_PURPOSE_SUBMISSION
-    )
-    sent = current_app.eq["submitter"].send_message(
-        encrypted_message,
-        questionnaire_id=metadata.get("questionnaire_id"),
-        case_id=metadata.get("case_id"),
-        tx_id=metadata.get("tx_id"),
-    )
-
-    if not sent:
-        raise SubmissionFailedException()
-
-    submitted_time = datetime.utcnow()
-    _store_submitted_time_in_session(submitted_time)
+    submission_handler.submit_message()
     get_questionnaire_store(current_user.user_id, current_user.user_ik).delete()
-
-    return redirect(url_for("post_submission.get_thank_you"))
-
-
-def _store_submitted_time_in_session(submitted_time):
-    session_store = get_session_store()
-    session_data = session_store.session_data
-    session_data.submitted_time = submitted_time.isoformat()
-    session_store.save()
+    return redirect(submission_handler.get_next_location_url())
 
 
 def _render_page(
