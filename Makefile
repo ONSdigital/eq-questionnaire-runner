@@ -45,7 +45,7 @@ translate:
 run-validator:
 	pipenv run ./scripts/run_validator.sh
 
-run:
+run: build
 	ln -sf .development.env .env
 	pipenv run flask run
 
