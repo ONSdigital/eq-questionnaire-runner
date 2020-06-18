@@ -28,7 +28,8 @@
         {
             "id": "property-details-section",
             "title": "Property Details Section",
-            "summary": { "show_on_completion": true },
+            "summary": { "show_on_completion": true,
+                        "title": ""},
             "groups": [
                 {
                     "id": "property-details",
