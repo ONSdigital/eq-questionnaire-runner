@@ -129,7 +129,11 @@ def post_questionnaire(schema, questionnaire_store):
     )
 
     if schema.is_hub_enabled() and router.is_survey_complete():
-        return submit_answers(schema, questionnaire_store, router.full_routing_path())
+        submission_handler = SubmissionHandler(
+            schema, questionnaire_store, router.full_routing_path()
+        )
+        submission_handler.submit_questionnaire()
+        return redirect(url_for("post_submission.get_thank_you"))
 
     return redirect(router.get_first_incomplete_location_in_survey_url())
 
@@ -213,9 +217,11 @@ def block(schema, questionnaire_store, block_id, list_name=None, list_item_id=No
         )
 
     if block_handler.block["type"] in END_BLOCKS:
-        return submit_answers(
+        submission_handler = SubmissionHandler(
             schema, questionnaire_store, block_handler.router.full_routing_path()
         )
+        submission_handler.submit_questionnaire()
+        return redirect(url_for("post_submission.get_thank_you"))
 
     block_handler.handle_post()
 
@@ -279,14 +285,6 @@ def get_thank_you(schema):
         survey_id=schema.json["survey_id"],
         hide_signout_button=True,
     )
-
-
-def submit_answers(schema, questionnaire_store, full_routing_path):
-    submission_handler = SubmissionHandler(
-        schema, questionnaire_store, full_routing_path
-    )
-    submission_handler.submit_questionnaire()
-    return redirect(url_for("post_submission.get_thank_you"))
 
 
 def _render_page(
