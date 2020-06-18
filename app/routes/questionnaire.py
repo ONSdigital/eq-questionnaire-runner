@@ -8,13 +8,11 @@ from structlog import get_logger
 
 from app.authentication.no_token_exception import NoTokenException
 from app.globals import (
-    get_answer_store,
     get_metadata,
     get_questionnaire_store,
     get_session_store,
     get_session_timeout_in_seconds,
 )
-from app.helpers.form_helper import get_form_for_location, post_form_for_block
 from app.helpers.language_helper import handle_language
 from app.helpers.schema_helpers import with_schema
 from app.helpers.session_helpers import with_questionnaire_store
@@ -195,6 +193,7 @@ def block(schema, questionnaire_store, block_id, list_name=None, list_item_id=No
             questionnaire_store=questionnaire_store,
             language=flask_babel.get_locale().language,
             request_args=request.args,
+            form_data=request.form,
         )
     except InvalidLocationException:
         return redirect(url_for(".get_questionnaire"))
@@ -206,11 +205,9 @@ def block(schema, questionnaire_store, block_id, list_name=None, list_item_id=No
         block_handler.clear_radio_answers()
         return redirect(request.url)
 
-    block_handler.form = _generate_wtf_form(
-        block_handler.rendered_block, schema, block_handler.current_location
-    )
-
-    if request.method == "GET" or not block_handler.form.validate():
+    if request.method == "GET" or (
+        hasattr(block_handler, "form") and not block_handler.form.validate()
+    ):
         return _render_page(
             template=block_handler.rendered_block["type"],
             context=block_handler.get_context(),
@@ -224,9 +221,6 @@ def block(schema, questionnaire_store, block_id, list_name=None, list_item_id=No
         return submit_answers(
             schema, questionnaire_store, block_handler.router.full_routing_path()
         )
-
-    if block_handler.form.data:
-        block_handler.set_started_at_metadata()
 
     block_handler.handle_post()
 
@@ -250,14 +244,14 @@ def relationship(schema, questionnaire_store, block_id, list_item_id, to_list_it
             questionnaire_store=questionnaire_store,
             language=flask_babel.get_locale().language,
             request_args=request.args,
+            form_data=request.form,
         )
     except InvalidLocationException:
         return redirect(url_for(".get_questionnaire"))
 
-    block_handler.form = _generate_wtf_form(
-        block_handler.rendered_block, schema, block_handler.current_location
-    )
-    if request.method == "GET" or not block_handler.form.validate():
+    if request.method == "GET" or (
+        hasattr(block_handler, "form") and not block_handler.form.validate()
+    ):
         return _render_page(
             template=block_handler.block["type"],
             context=block_handler.get_context(),
@@ -289,19 +283,6 @@ def get_thank_you(schema):
         metadata=metadata_context,
         survey_id=schema.json["survey_id"],
         hide_signout_button=True,
-    )
-
-
-def _generate_wtf_form(block_schema, schema, current_location):
-    answer_store = get_answer_store(current_user)
-    metadata = get_metadata(current_user)
-
-    if request.method == "POST":
-        return post_form_for_block(
-            schema, block_schema, answer_store, metadata, request.form, current_location
-        )
-    return get_form_for_location(
-        schema, block_schema, current_location, answer_store, metadata
     )
 
 

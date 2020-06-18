@@ -36,9 +36,6 @@ class QuestionnaireStoreUpdater:
             return True
         return False
 
-    def update_answers(self, form):
-        self._update_questionnaire_store_with_form_data(form.data)
-
     def update_relationship_answer(self, form_data, list_item_id, to_list_item_id):
         relationship_answer_id = self._schema.get_relationship_answer_id_for_block(
             self._current_location.block_id
@@ -130,11 +127,10 @@ class QuestionnaireStoreUpdater:
 
         return self._list_store.add_list_item(list_name, primary_person=True)
 
-    def add_list_item_and_answers(self, form, list_name):
+    def add_list_item(self, list_name):
         new_list_item_id = self._list_store.add_list_item(list_name)
-        self._current_location.list_item_id = new_list_item_id
-        self.update_answers(form)
         self.remove_completed_relationship_locations_for_list_name(list_name)
+        return new_list_item_id
 
     def remove_primary_person(self, list_name: str):
         """ Remove the primary person and all of their answers.
@@ -212,7 +208,8 @@ class QuestionnaireStoreUpdater:
             section_ids=section_ids,
         )
 
-    def _update_questionnaire_store_with_form_data(self, form_data):
+    def update_answers(self, form_data, list_item_id=None):
+        list_item_id = list_item_id or self._current_location.list_item_id
         answer_ids_for_question = self._schema.get_answer_ids_for_question(
             self._current_question
         )
@@ -223,12 +220,10 @@ class QuestionnaireStoreUpdater:
                 if answer_value not in self.EMPTY_ANSWER_VALUES:
                     answer = Answer(
                         answer_id=answer_id,
-                        list_item_id=self._current_location.list_item_id,
+                        list_item_id=list_item_id,
                         value=answer_value,
                     )
 
                     self._answer_store.add_or_update(answer)
                 else:
-                    self._answer_store.remove_answer(
-                        answer_id, self._current_location.list_item_id
-                    )
+                    self._answer_store.remove_answer(answer_id, list_item_id)

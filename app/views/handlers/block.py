@@ -14,17 +14,23 @@ logger = get_logger()
 
 class BlockHandler:
     def __init__(
-        self, schema, questionnaire_store, language, current_location, request_args
+        self,
+        schema,
+        questionnaire_store,
+        language,
+        current_location,
+        request_args,
+        form_data,
     ):
         self._schema = schema
         self._questionnaire_store = questionnaire_store
         self._language = language
         self._current_location = current_location
         self._request_args = request_args or {}
+        self._form_data = form_data
         self.block = self._schema.get_block(current_location.block_id)
 
         self._routing_path = self._get_routing_path()
-        self.form = None
         self.page_title = None
         self._return_to_summary = "return_to_summary" in request_args
         self.resume = "resume" in request_args
@@ -84,21 +90,10 @@ class BlockHandler:
         )
 
     def handle_post(self):
+        self._set_started_at_metadata()
         self.questionnaire_store_updater.add_completed_location()
         self._update_section_completeness()
         self.questionnaire_store_updater.save()
-
-    def set_started_at_metadata(self):
-        collection_metadata = self._questionnaire_store.collection_metadata
-        if not collection_metadata.get("started_at"):
-            started_at = datetime.utcnow().isoformat()
-
-            logger.info(
-                "Survey started. Writing started_at time to collection metadata",
-                started_at=started_at,
-            )
-
-            collection_metadata["started_at"] = started_at
 
     def _get_routing_path(self):
         return self.router.routing_path(
@@ -114,3 +109,10 @@ class BlockHandler:
             section_id=location.section_id,
             list_item_id=location.list_item_id,
         )
+
+    def _set_started_at_metadata(self):
+        collection_metadata = self._questionnaire_store.collection_metadata
+        if not collection_metadata.get("started_at"):
+            started_at = datetime.utcnow().isoformat()
+            logger.info("Survey started", started_at=started_at)
+            collection_metadata["started_at"] = started_at
