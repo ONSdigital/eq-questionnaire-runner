@@ -4,11 +4,7 @@ from flask import Blueprint, g, redirect, request, url_for, jsonify
 from flask_login import current_user, login_required
 from structlog import get_logger
 from app.authentication.no_token_exception import NoTokenException
-from app.globals import (
-    get_metadata,
-    get_session_store,
-    get_session_timeout_in_seconds,
-)
+from app.globals import get_metadata, get_session_store, get_session_timeout_in_seconds
 from app.helpers.language_helper import handle_language
 from app.helpers.schema_helpers import with_schema
 from app.helpers.session_helpers import with_questionnaire_store
