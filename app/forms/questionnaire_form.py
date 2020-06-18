@@ -374,16 +374,11 @@ def _get_error_id(answer_id):
     return f"{answer_id}-error"
 
 
-def _clear_detail_answer_field(form_data, question):
+def _clear_detail_answer_field(form_data, question_schema):
     """
-    Checks the submitted answers and in the case of both checkboxes and radios,
-    removes the text entered into the detail answer field if the associated option is not
-    selected.
-    :param form_data: the submitted form data.
-    :param question: a question to clear.
-    :return: the form data with the other text field cleared, if appropriate.
+    Clears the detail answer field if the parent option is not selected
     """
-    for answer in question["answers"]:
+    for answer in question_schema["answers"]:
         for option in answer.get("options", []):
             if "detail_answer" in option and option["value"] not in form_data.getlist(
                 answer["id"]
