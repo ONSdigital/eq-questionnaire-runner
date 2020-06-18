@@ -1,35 +1,25 @@
 from datetime import datetime
-import simplejson as json
 from flask import url_for, current_app
 from sdc.crypto.encrypter import encrypt
 from app.globals import get_session_store
 from app.keys import KEY_PURPOSE_SUBMISSION
-from app.submitter.converter import convert_answers
 from app.submitter.submission_failed import SubmissionFailedException
 
 
 class SubmissionHandler:
-    def __init__(self, schema, questionnaire_store, full_routing_path):
-        self.schema = schema
-        self.questionnaire_store = questionnaire_store
-        self.full_routing_path = full_routing_path
+    def __init__(self, metadata):
+        self.metadata = metadata
 
-    def submit_message(self):
-        message = json.dumps(
-            convert_answers(
-                self.schema, self.questionnaire_store, self.full_routing_path
-            ),
-            for_json=True,
-        )
+    def submit_message(self, message):
         encrypted_message = encrypt(
             message, current_app.eq["key_store"], KEY_PURPOSE_SUBMISSION
         )
-        metadata = self.questionnaire_store.metadata
+
         submitted = current_app.eq["submitter"].send_message(
             encrypted_message,
-            questionnaire_id=metadata.get("questionnaire_id"),
-            case_id=metadata.get("case_id"),
-            tx_id=metadata.get("tx_id"),
+            questionnaire_id=self.metadata.get("questionnaire_id"),
+            case_id=self.metadata.get("case_id"),
+            tx_id=self.metadata.get("tx_id"),
         )
 
         if not submitted:

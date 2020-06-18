@@ -1,8 +1,8 @@
 import flask_babel
+import simplejson as json
 from flask import Blueprint, g, redirect, request, url_for, jsonify
 from flask_login import current_user, login_required
 from structlog import get_logger
-
 from app.authentication.no_token_exception import NoTokenException
 from app.globals import (
     get_answer_store,
@@ -18,6 +18,7 @@ from app.helpers.session_helpers import with_questionnaire_store
 from app.helpers.template_helper import render_template
 from app.questionnaire.location import InvalidLocationException
 from app.questionnaire.router import Router
+from app.submitter.converter import convert_answers
 from app.utilities.schema import load_schema_from_session_data
 from app.views.contexts.hub_context import HubContext
 from app.views.contexts.metadata_context import (
@@ -301,11 +302,14 @@ def _generate_wtf_form(block_schema, schema, current_location):
 
 
 def submit_answers(schema, questionnaire_store, full_routing_path):
-    submission_handler = SubmissionHandler(
-        schema, questionnaire_store, full_routing_path
+    message = json.dumps(
+        convert_answers(schema, questionnaire_store, full_routing_path), for_json=True
     )
-    submission_handler.submit_message()
+    submission_handler = SubmissionHandler(questionnaire_store.metadata)
+    submission_handler.submit_message(message)
+
     get_questionnaire_store(current_user.user_id, current_user.user_ik).delete()
+
     return redirect(submission_handler.get_next_location_url())
 
 
