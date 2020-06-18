@@ -140,19 +140,12 @@ class Question(BlockHandler):
 
     def handle_post(self):
         self.questionnaire_store_updater.update_answers(self.form.data)
-        self.questionnaire_store_updater.add_completed_location()
-        self._set_started_at_metadata()
-
-        # pylint: disable=using-constant-test
-        if self.questionnaire_store_updater.is_dirty:
+        if self.questionnaire_store_updater.is_dirty():
             self._routing_path = self.router.routing_path(
                 section_id=self._current_location.section_id,
                 list_item_id=self._current_location.list_item_id,
             )
-
-        self._update_section_completeness()
-
-        self.questionnaire_store_updater.save()
+        super().handle_post()
 
     def _render_block(self, block_id):
         block_schema = self._schema.get_block(block_id)
