@@ -383,13 +383,14 @@ def _clear_detail_answer_field(form_data, question):
     :param question: a question to clear.
     :return: the form data with the other text field cleared, if appropriate.
     """
-    for answer in question.get("answers", []):
+    for answer in question["answers"]:
         for option in answer.get("options", []):
-            if "detail_answer" in option:
-                if option["value"] not in form_data.getlist(answer["id"]):
-                    if isinstance(form_data, ImmutableMultiDict):
-                        form_data = MultiDict(form_data)
-                    form_data[option["detail_answer"]["id"]] = ""
+            if "detail_answer" in option and option["value"] not in form_data.getlist(
+                answer["id"]
+            ):
+                if isinstance(form_data, ImmutableMultiDict):
+                    form_data = MultiDict(form_data)
+                form_data[option["detail_answer"]["id"]] = ""
     return form_data
 
 
