@@ -215,6 +215,20 @@ def test_get_all_questions_for_block_empty():
     assert not all_questions
 
 
+def test_get_answer_ids_for_block_no_variants(single_question_schema):
+    schema = QuestionnaireSchema(single_question_schema)
+    answer_ids = schema.get_answer_ids_for_block("block1")
+    assert len(answer_ids) == 1
+    assert answer_ids[0] == "answer1"
+
+
+def test_get_answer_ids_for_block_with_variants(question_variant_schema):
+    schema = QuestionnaireSchema(question_variant_schema)
+    answer_ids = schema.get_answer_ids_for_block("block1")
+    assert len(answer_ids) == 1
+    assert answer_ids[0] == "answer1"
+
+
 def test_get_default_answer_no_answer_in_answer_store(question_variant_schema):
     schema = QuestionnaireSchema(question_variant_schema)
     assert schema.get_default_answer("test") is None

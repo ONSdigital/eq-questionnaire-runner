@@ -47,7 +47,7 @@ class ListCollector(Question):
             == self.rendered_block["add_answer"]["value"]
         ):
             self._is_adding = True
-            self.questionnaire_store_updater.update_answers(self.form)
+            self.questionnaire_store_updater.update_answers(self.form.data)
 
             self.questionnaire_store_updater.save()
         else:
