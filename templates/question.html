@@ -19,11 +19,11 @@
           }
         })
     %}
-      <p>{{ ngettext('This <strong>must be corrected</strong> to continue', 'These <strong>must be corrected</strong> to continue', form.mapped_errors | length) }}.</p>
+    <p>{{ ngettext('This <strong>must be corrected</strong> to continue', 'These <strong>must be corrected</strong> to continue', form.mapped_errors | length) }}.</p>
       <ul class="list list--bare">
         {% for error_id, error in form.mapped_errors %}
           <li class="list__item">
-            {{ loop.index }}) <a class="js-inpagelink" href="#{{error_id}}">{{ error }}</a>
+            {{ loop.index }}) <a class="js-inpagelink" data-qa="list-item-{{ loop.index }}" href="#{{error_id}}">{{ error }}</a>
           </li>
         {% endfor %}
       </ul>
