@@ -101,7 +101,7 @@ QUESTION_DEFINITION_BUTTON_GETTER = Template(
 
 ANSWER_LABEL_GETTER = Template(
     r"""  ${answerName}Label() {
-    return `#${answerId}-label`;
+    return `[for=${answerId}]`;
   }
 
 """
