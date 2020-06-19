@@ -8,6 +8,9 @@
   {% if block.content.title %}
     <h1>{{ block.content.title }}</h1>
   {% endif %}
+  {% if block.content.instruction %}
+      <div class="question__instruction u-mb-s">{{ block.content.instruction | safe }}</div>
+  {% endif %}
   {% set contents = block.content.contents %}
   {% include 'partials/contents.html' %}
 {% endblock form_content %}
