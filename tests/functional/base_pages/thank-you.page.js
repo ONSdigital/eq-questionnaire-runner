@@ -9,14 +9,6 @@ class ThankYouPage extends QuestionPage {
     return '[data-qa="submission-successful-title"]';
   }
 
-  viewSubmitted() {
-    return '[data-qa="view-submission"]';
-  }
-
-  viewSubmissionExpired() {
-    return '[data-qa="view-submission-expired"]';
-  }
-
   signOut() {
     return '[data-qa="btn-sign-out"]';
   }

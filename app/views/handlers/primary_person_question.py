@@ -25,7 +25,7 @@ class PrimaryPersonQuestion(Question):
         )
 
     def handle_post(self):
-        self.questionnaire_store_updater.update_answers(self.form)
+        self.questionnaire_store_updater.update_answers(self.form.data)
 
         self.questionnaire_store_updater.add_completed_location(
             location=self.parent_location

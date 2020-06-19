@@ -21,10 +21,6 @@
             "type": "string"
         }
     ],
-    "view_submitted_response": {
-        "enabled": true,
-        "duration": 5
-    },
     "sections": [
         {
             "id": "default-section",
