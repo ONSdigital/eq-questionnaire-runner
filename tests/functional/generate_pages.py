@@ -195,7 +195,7 @@ COLLAPSIBLE_SUMMARY_GETTER = r"""  collapsibleSummary() { return `#summary-accor
 """
 
 CALCULATED_SUMMARY_LABEL_GETTER = Template(
-    r"""  ${answerName}Label() { return `#{answerId}-label`; }
+    r"""  ${answerName}Label() { return `[data-qa=${answerId}-label]`; }
 
 """
 )
