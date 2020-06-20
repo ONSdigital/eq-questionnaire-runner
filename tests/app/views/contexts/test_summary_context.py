@@ -136,7 +136,6 @@ class TestSectionSummaryContext(TestStandardSummaryContext):
         self.assertEqual(len(context["summary"]), 5)
         self.assertTrue("title" in context["summary"])
 
-
     def test_build_view_context_for_section_summary_title(self):
         current_location = Location(section_id="house-details-section")
         summary_context = SectionSummaryContext(

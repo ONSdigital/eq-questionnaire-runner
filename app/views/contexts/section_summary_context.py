@@ -75,9 +75,13 @@ class SectionSummaryContext(Context):
                     repeating_title, list_item_id
                 )
 
-        summary_title_for_section = self._schema.get_summary_title_for_section(section_id)
+        summary_title_for_section = self._schema.get_summary_title_for_section(
+            section_id
+        )
         if summary_title_for_section:
-            return self._placeholder_renderer.render(summary_title_for_section, list_item_id)
+            return self._placeholder_renderer.render(
+                summary_title_for_section, list_item_id
+            )
 
         return self._schema.get_title_for_section(section_id)
 
