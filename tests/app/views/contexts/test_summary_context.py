@@ -137,6 +137,33 @@ class TestSectionSummaryContext(TestStandardSummaryContext):
         self.assertTrue("title" in context["summary"])
 
 
+    def test_build_view_context_for_section_summary_title(self):
+        current_location = Location(section_id="house-details-section")
+        summary_context = SectionSummaryContext(
+            self.language,
+            self.schema,
+            self.answer_store,
+            self.progress_store,
+            self.list_store,
+            self.metadata,
+        )
+        context = summary_context(current_location)
+        self.assertEqual(context["summary"]["title"], "Household Summary")
+
+    def test_build_view_context_for_section_summary_no_title(self):
+        current_location = Location(section_id="property-details-section")
+        summary_context = SectionSummaryContext(
+            self.language,
+            self.schema,
+            self.answer_store,
+            self.progress_store,
+            self.list_store,
+            self.metadata,
+        )
+        context = summary_context(current_location)
+        self.assertEqual(context["summary"]["title"], "Property Details Section")
+
+
 class TestCalculatedSummaryContext(TestStandardSummaryContext):
     def setUp(self):
         super().setUp()

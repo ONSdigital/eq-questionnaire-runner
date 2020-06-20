@@ -132,7 +132,10 @@
         {
             "id": "house-details-section",
             "title": "House Details Section",
-            "summary": { "show_on_completion": true },
+            "summary": {
+                "show_on_completion": true,
+                "title": "Household Summary"
+            },
             "groups": [
                 {
                     "id": "house-details",
