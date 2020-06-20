@@ -41,6 +41,7 @@ def get_block_handler(
     list_name=None,
     to_list_item_id=None,
     request_args=None,
+    form_data=None,
 ):
     block = schema.get_block(block_id)
 
@@ -78,4 +79,6 @@ def get_block_handler(
             list_item_id=list_item_id,
         )
 
-    return block_class(schema, questionnaire_store, language, location, request_args)
+    return block_class(
+        schema, questionnaire_store, language, location, request_args, form_data
+    )

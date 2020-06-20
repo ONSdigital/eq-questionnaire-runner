@@ -1,5 +1,6 @@
 from functools import cached_property
 
+from app.data_model.relationship_store import RelationshipStore
 from app.questionnaire.location import Location
 from app.questionnaire.relationship_router import RelationshipRouter
 from app.views.handlers.question import Question
@@ -82,6 +83,21 @@ class RelationshipCollector(Question):
             self._update_section_completeness(location=self.parent_location)
 
         self.questionnaire_store_updater.save()
+
+    def _get_answers_from_answer_store(self, answer_ids):
+        """
+        Maps the answers in an answer store to a dictionary of key, value answers.
+        """
+        answer = self._questionnaire_store.answer_store.get_answer(answer_ids[0])
+        if answer:
+            relationship_store = RelationshipStore(answer.value)
+            relationship = relationship_store.get_relationship(
+                self._current_location.list_item_id,
+                self._current_location.to_list_item_id,
+            )
+            if relationship:
+                return {answer.answer_id: relationship.relationship}
+        return {}
 
     def _is_last_relationship(self):
         if self.relationship_router.get_next_location_url(self._current_location):

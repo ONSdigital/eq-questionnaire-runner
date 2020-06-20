@@ -55,6 +55,12 @@ def forbidden(error=None):
     return _render_error_page(403)
 
 
+@errors_blueprint.app_errorhandler(405)
+def method_not_allowed(error=None):
+    log_error(error, 405)
+    return _render_error_page(405, template="404")
+
+
 @errors_blueprint.app_errorhandler(SubmissionFailedException)
 @errors_blueprint.app_errorhandler(Exception)
 def internal_server_error(error=None):

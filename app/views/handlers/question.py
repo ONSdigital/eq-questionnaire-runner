@@ -2,6 +2,7 @@ from functools import cached_property
 
 from flask import url_for
 
+from app.forms.questionnaire_form import generate_form
 from app.helpers.template_helper import safe_content
 from app.questionnaire.location import Location
 from app.questionnaire.questionnaire_store_updater import QuestionnaireStoreUpdater
@@ -15,6 +16,30 @@ class Question(BlockHandler):
     @staticmethod
     def _has_redirect_to_list_add_action(answer_action):
         return answer_action and answer_action["type"] == "RedirectToListAddQuestion"
+
+    @cached_property
+    def form(self):
+        question_json = self.rendered_block.get("question")
+        if self._form_data:
+            return generate_form(
+                self._schema,
+                question_json,
+                self._questionnaire_store.answer_store,
+                self._questionnaire_store.metadata,
+                self._current_location,
+                form_data=self._form_data,
+            )
+
+        answer_ids = self._schema.get_answer_ids_for_question(question_json)
+        answers = self._get_answers_from_answer_store(answer_ids)
+        return generate_form(
+            self._schema,
+            question_json,
+            self._questionnaire_store.answer_store,
+            self._questionnaire_store.metadata,
+            self._current_location,
+            data=answers,
+        )
 
     @cached_property
     def rendered_block(self):
@@ -40,6 +65,12 @@ class Question(BlockHandler):
         return self.router.get_next_location_url(
             self._current_location, self._routing_path, self._return_to_summary
         )
+
+    def _get_answers_from_answer_store(self, answer_ids):
+        answers = self._questionnaire_store.answer_store.get_answers_by_answer_id(
+            answer_ids=answer_ids, list_item_id=self._current_location.list_item_id
+        )
+        return {answer.answer_id: answer.value for answer in answers if answer}
 
     def _get_list_add_question_url(self, params):
         block_id = params["block_id"]
@@ -108,20 +139,13 @@ class Question(BlockHandler):
             return {"first_location_in_section_url": first_location_in_section_url}
 
     def handle_post(self):
-        self.questionnaire_store_updater.update_answers(self.form)
-
-        self.questionnaire_store_updater.add_completed_location()
-
-        # pylint: disable=using-constant-test
-        if self.questionnaire_store_updater.is_dirty:
+        self.questionnaire_store_updater.update_answers(self.form.data)
+        if self.questionnaire_store_updater.is_dirty():
             self._routing_path = self.router.routing_path(
                 section_id=self._current_location.section_id,
                 list_item_id=self._current_location.list_item_id,
             )
-
-        self._update_section_completeness()
-
-        self.questionnaire_store_updater.save()
+        super().handle_post()
 
     def _render_block(self, block_id):
         block_schema = self._schema.get_block(block_id)
