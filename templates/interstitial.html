@@ -3,13 +3,14 @@
 {% set save_on_signout = true %}
 
 {% set continue_button_text = _("Continue") %}
+{% set interstitial_instruction = format_paragraphs(block.content.instruction) if block.content.instruction else None %}
 
 {% block form_content %}
   {% if block.content.title %}
     <h1>{{ block.content.title }}</h1>
   {% endif %}
-  {% if block.content.instruction %}
-      <div class="question__instruction u-mb-s">{{ block.content.instruction | safe }}</div>
+  {% if interstitial_instruction %}
+      <div class="question__instruction u-mb-s">{{ interstitial_instruction | safe }}</div>
   {% endif %}
   {% set contents = block.content.contents %}
   {% include 'partials/contents.html' %}
