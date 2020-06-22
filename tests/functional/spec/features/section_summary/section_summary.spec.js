@@ -97,8 +97,9 @@ describe("Section Summary", () => {
     });
     it("When there is a title set in the sections summary, it is used for the section summary title", () => {
       $(PropertyDetailsSummaryPage.submit()).click();
+      $(HouseType.semiDetached()).click();
       $(HouseType.submit()).click();
-      expect($(HouseholdDetailsSummaryPage.questionText()).getText()).to.contain("Household Summary");
+      expect($(HouseholdDetailsSummaryPage.questionText()).getText()).to.contain("Household Summary - Semi-detached");
     });
   });
 });
