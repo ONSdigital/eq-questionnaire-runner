@@ -18,7 +18,7 @@ describe('Checkbox with "other" option', () => {
   });
 
   it('Given an "other" option is available, when the user clicks the "other" option the other input should be visible.', () => {
-    expect($(MandatoryCheckboxPage.otherLabelDescription()).getText()).to.have.string("Choose any other topping");
+    expect($(MandatoryCheckboxPage.otherLabel()).getText()).to.have.string("Choose any other topping");
     $(MandatoryCheckboxPage.other()).click();
     expect($(MandatoryCheckboxPage.otherDetail()).isDisplayed()).to.be.true;
   });

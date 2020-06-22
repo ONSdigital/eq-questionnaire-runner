@@ -72,7 +72,7 @@ describe("Relationships", () => {
       it("And go to the first relationship, Then the 'Brother or Sister' option should have the text 'Including half brother or half sister'", () => {
         $(ListCollectorPage.no()).click();
         $(ListCollectorPage.submit()).click();
-        expect($(RelationshipsPage.brotherOrSisterLabelDescription()).getText()).to.contain("Including half brother or half sister");
+        expect($(RelationshipsPage.brotherOrSisterLabel()).getText()).to.contain("Including half brother or half sister");
       });
 
       it("And go to the second relationship, Then the previous link should return to the first relationship", () => {
