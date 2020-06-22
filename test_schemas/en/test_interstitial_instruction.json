@@ -37,33 +37,13 @@
                             "id": "introduction"
                         },
                         {
-                            "type": "Question",
-                            "id": "breakfast-block",
-                            "question": {
-                                "answers": [
-                                    {
-                                        "id": "favourite-breakfast",
-                                        "label": "What is your favourite breakfast food",
-                                        "mandatory": false,
-                                        "q_code": "0",
-                                        "type": "TextField"
-                                    }
-                                ],
-                                "description": "",
-                                "id": "favourite-breakfast-question",
-                                "title": "What is your favourite breakfast food",
-                                "type": "General"
-                            },
-                            "routing_rules": []
-                        },
-                        {
-                            "id": "breakfast-interstitial",
+                            "id": "interstitial",
                             "content": {
                                 "title": "Breakfast interstitial",
                                 "instruction": "Just pause for a second",
                                 "contents": [
                                     {
-                                        "description": "You have successfully completed the breakfast section. Next we want to know about your lunch."
+                                        "description": "Next we want to know about your lunch."
                                     }
                                 ]
                             },

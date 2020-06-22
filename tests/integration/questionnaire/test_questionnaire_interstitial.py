@@ -25,5 +25,4 @@ class TestQuestionnaireInterstitial(IntegrationTestCase):
     def test_interstitial_instruction(self):
         self.launchSurvey("test_interstitial_instruction")
         self.post(action="start_questionnaire")
-        self.post({"favourite-breakfast": "Cereal"})
         self.assertInBody("Just pause for a second")
