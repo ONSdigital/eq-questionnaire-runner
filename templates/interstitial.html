@@ -3,9 +3,9 @@
 {% set save_on_signout = true %}
 
 {% set continue_button_text = _("Continue") %}
-{% set interstitial_instruction = format_paragraphs(block.content.instruction) if block.content.instruction else None %}
 
 {% block form_content %}
+  {% set interstitial_instruction = format_paragraphs(block.content.instruction) if block.content.instruction else None %}
   {% if block.content.title %}
     <h1>{{ block.content.title }}</h1>
   {% endif %}
