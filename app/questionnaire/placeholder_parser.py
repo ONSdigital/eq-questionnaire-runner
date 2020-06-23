@@ -46,8 +46,8 @@ class PlaceholderParser:
         answer = self._answer_store.get_answer(answer_id, list_item_id)
         if answer:
             if isinstance(answer.value, list):
-                return [escape(value) for value in answer.value]
-            return escape(answer.value)
+                return [value for value in answer.value]
+            return answer.value
         return None
 
     def _resolve_value_source(self, value_source):
@@ -58,15 +58,28 @@ class PlaceholderParser:
         if value_source["source"] == "list":
             return len(self._list_store[value_source["identifier"]].items)
 
+    @staticmethod
+    def _escape_answer_value(answer_value):
+        if isinstance(answer_value, list):
+            return [
+                escape(list_item) if list_item is not None else ""
+                for list_item in answer_value
+            ]
+        return escape(answer_value) if answer_value is not None else ""
+
     def _resolve_answer_value(self, value_source):
         list_item_id = self._get_list_item_id_from_value_source(value_source)
 
         if isinstance(value_source["identifier"], list):
             return [
-                self._lookup_answer(each_identifier, list_item_id)
+                self._escape_answer_value(
+                    self._lookup_answer(each_identifier, list_item_id)
+                )
                 for each_identifier in value_source["identifier"]
             ]
-        return self._lookup_answer(value_source["identifier"], list_item_id)
+        return self._escape_answer_value(
+            self._lookup_answer(value_source["identifier"], list_item_id)
+        )
 
     def _resolve_metadata_value(self, identifier):
         if isinstance(identifier, list):
