@@ -21,7 +21,6 @@ class SubmissionHandler:
             ),
             for_json=True,
         )
-
         encrypted_message = encrypt(
             message, current_app.eq["key_store"], KEY_PURPOSE_SUBMISSION
         )
