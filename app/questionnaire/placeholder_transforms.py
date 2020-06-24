@@ -5,7 +5,6 @@ from babel.numbers import format_currency, format_decimal
 from dateutil.relativedelta import relativedelta
 from dateutil.tz import tzutc
 from flask_babel import ngettext
-from jinja2 import escape
 from app.settings import DEFAULT_LOCALE
 
 
@@ -32,7 +31,7 @@ class PlaceholderTransforms:
     def format_list(list_to_format):
         formatted_list = "<ul>"
         for item in list_to_format:
-            formatted_list += "<li>{}</li>".format(escape(item))
+            formatted_list += f"<li>{item}</li>"
         formatted_list += "</ul>"
 
         return formatted_list
