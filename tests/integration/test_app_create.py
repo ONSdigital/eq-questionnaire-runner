@@ -62,9 +62,7 @@ class TestCreateApp(unittest.TestCase):  # pylint: disable=too-many-public-metho
 
     def test_adds_logging_of_request_ids(self):
         with patch("app.setup.logger") as logger:
-            self._setting_overrides.update(
-                {"EQ_DEV_MODE": True, "EQ_APPLICATION_VERSION": False}
-            )
+            self._setting_overrides.update({"EQ_APPLICATION_VERSION": False})
             application = create_app(self._setting_overrides)
 
             application.test_client().get("/")
@@ -74,9 +72,7 @@ class TestCreateApp(unittest.TestCase):  # pylint: disable=too-many-public-metho
 
     def test_adds_logging_of_span_and_trace(self):
         with patch("app.setup.logger") as logger:
-            self._setting_overrides.update(
-                {"EQ_DEV_MODE": True, "EQ_APPLICATION_VERSION": False}
-            )
+            self._setting_overrides.update({"EQ_APPLICATION_VERSION": False})
             application = create_app(self._setting_overrides)
 
             x_cloud_headers = {
