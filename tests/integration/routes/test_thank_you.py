@@ -2,25 +2,6 @@ from tests.integration.integration_test_case import IntegrationTestCase
 
 
 class TestThankYou(IntegrationTestCase):
-    example_payload = {
-        "user_id": "integration-test",
-        "period_str": "April 2016",
-        "period_id": "201604",
-        "collection_exercise_sid": "789",
-        "questionnaire_id": "0123456789000000",
-        "ru_ref": "123456789012A",
-        "response_id": "1234567890123456",
-        "ru_name": "Integration Testing",
-        "ref_p_start_date": "2016-04-01",
-        "ref_p_end_date": "2016-04-30",
-        "return_by": "2016-05-06",
-        "employment_date": "1983-06-02",
-        "region_code": "GB-ENG",
-        "language_code": "en",
-        "roles": [],
-        "account_service_url": "http://upstream.url",
-    }
-
     def test_thank_you_page_no_sign_out(self):
         self.launchSurvey("test_currency")
 

@@ -65,15 +65,17 @@ class SectionSummaryContext(Context):
 
     def _title_for_location(self, location):
 
-        title = self._schema.get_section(location.section_id).get("title")
-        if location.list_item_id:
-            repeating_title = self._schema.get_repeating_title_for_section(
-                location.section_id
+        section_id = location.section_id
+        title = (
+            self._schema.get_repeating_title_for_section(section_id)
+            or self._schema.get_summary_title_for_section(section_id)
+            or self._schema.get_title_for_section(section_id)
+        )
+        if isinstance(title, dict):
+            return self._placeholder_renderer.render_placeholder(
+                title, location.list_item_id
             )
-            if repeating_title:
-                title = self._placeholder_renderer.render_placeholder(
-                    repeating_title, location.list_item_id
-                )
+
         return title
 
     def _custom_summary_elements(self, section_summary, current_location, section):
