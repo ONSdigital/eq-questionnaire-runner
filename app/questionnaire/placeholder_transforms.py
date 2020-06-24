@@ -1,8 +1,9 @@
 from datetime import datetime
-from babel.numbers import format_currency, format_decimal
+
 from babel.dates import format_datetime
-from dateutil.tz import tzutc
+from babel.numbers import format_currency, format_decimal
 from dateutil.relativedelta import relativedelta
+from dateutil.tz import tzutc
 from flask_babel import ngettext
 
 from app.settings import DEFAULT_LOCALE
@@ -31,7 +32,7 @@ class PlaceholderTransforms:
     def format_list(list_to_format):
         formatted_list = "<ul>"
         for item in list_to_format:
-            formatted_list += "<li>{}</li>".format(item)
+            formatted_list += "<li>{}</li>".format(escape(item))
         formatted_list += "</ul>"
 
         return formatted_list
@@ -127,8 +128,6 @@ class PlaceholderTransforms:
 
     @staticmethod
     def add(lhs, rhs):
-        if any([isinstance(lhs, str), isinstance(rhs, str)]):
-            return int(lhs) + int(rhs)
         return lhs + rhs
 
     @staticmethod
