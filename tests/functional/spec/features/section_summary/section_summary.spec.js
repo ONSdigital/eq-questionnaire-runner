@@ -85,4 +85,21 @@ describe("Section Summary", () => {
       expect($(QuestionnaireSummaryPage.insuranceAddressAnswer()).getText()).to.contain("Test Address");
     });
   });
+  describe("Given I start the Test Section Summary questionnaire", () => {
+    before(() => {
+      browser.openQuestionnaire("test_section_summary.json");
+    });
+    it("When there is no title set in the sections summary, the section title is used for the section summary title", () => {
+      $(InsuranceTypePage.both()).click();
+      $(InsuranceTypePage.submit()).click();
+      $(InsuranceAddressPage.submit()).click();
+      expect($(PropertyDetailsSummaryPage.questionText()).getText()).to.contain("Property Details Section");
+    });
+    it("When there is a title set in the sections summary, it is used for the section summary title", () => {
+      $(PropertyDetailsSummaryPage.submit()).click();
+      $(HouseType.semiDetached()).click();
+      $(HouseType.submit()).click();
+      expect($(HouseholdDetailsSummaryPage.questionText()).getText()).to.contain("Household Summary - Semi-detached");
+    });
+  });
 });

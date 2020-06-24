@@ -85,10 +85,6 @@ EQ_USED_JTI_CLAIM_TABLE_NAME = get_env_or_fail("EQ_USED_JTI_CLAIM_TABLE_NAME")
 EQ_REDIS_HOST = get_env_or_fail("EQ_REDIS_HOST")
 EQ_REDIS_PORT = get_env_or_fail("EQ_REDIS_PORT")
 
-EQ_DEV_MODE = parse_mode(os.getenv("EQ_DEV_MODE", "False"))
-EQ_ENABLE_FLASK_DEBUG_TOOLBAR = parse_mode(
-    os.getenv("EQ_ENABLE_FLASK_DEBUG_TOOLBAR", "False")
-)
 EQ_ENABLE_SECURE_SESSION_COOKIE = parse_mode(
     os.getenv("EQ_ENABLE_SECURE_SESSION_COOKIE", "True")
 )

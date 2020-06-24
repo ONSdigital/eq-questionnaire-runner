@@ -52,7 +52,7 @@ describe("Feature: Repeating Section Summaries", () => {
         $(HubPage.summaryRowLink(2)).click();
       });
 
-      it("shows their name in the section summary title", () => {
+      it("the title set in the repeating block is used for the section summary title", () => {
         expect($(PersonalSummaryPage.questionText()).getText()).to.contain("Mark Twain");
       });
 

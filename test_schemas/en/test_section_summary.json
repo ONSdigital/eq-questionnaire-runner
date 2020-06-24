@@ -132,7 +132,21 @@
         {
             "id": "house-details-section",
             "title": "House Details Section",
-            "summary": { "show_on_completion": true },
+            "summary": {
+                "show_on_completion": true,
+                "title": {
+                    "text": "Household Summary - {house_type_answer}",
+                    "placeholders": [
+                        {
+                            "placeholder": "house_type_answer",
+                            "value": {
+                                "source": "answers",
+                                "identifier": "house-type-answer"
+                            }
+                        }
+                    ]
+                }
+            },
             "groups": [
                 {
                     "id": "house-details",
