@@ -59,7 +59,7 @@ class QuestionPage extends BasePage {
   }
 
   lastViewedQuestionGuidanceLink() {
-    return '[data-qa="last-viewed-question-guidance-link"]';
+    return "#section-start-link";
   }
 
   submit() {
