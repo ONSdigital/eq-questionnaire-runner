@@ -87,6 +87,9 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
     def get_summary_for_section(self, section_id: str) -> Mapping:
         return self._sections_by_id.get(section_id).get("summary", {})
 
+    def get_summary_title_for_section(self, section_id: str):
+        return self.get_summary_for_section(section_id).get("title")
+
     def show_summary_on_completion_for_section(self, section_id: str) -> bool:
         return self.get_summary_for_section(section_id).get("show_on_completion", False)
 

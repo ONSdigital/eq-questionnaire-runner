@@ -188,9 +188,6 @@ def create_app(  # noqa: C901  pylint: disable=too-complex, too-many-statements
 
     compress.init_app(application)
 
-    if application.config["EQ_DEV_MODE"]:
-        start_dev_mode(application)
-
     # Switch off flask default autoescaping as schema content can contain html
     application.jinja_env.autoescape = False
 
@@ -345,18 +342,6 @@ def setup_submitter(application):
 
     else:
         raise Exception("Unknown EQ_SUBMISSION_BACKEND")
-
-
-def start_dev_mode(application):
-    if application.config["EQ_ENABLE_FLASK_DEBUG_TOOLBAR"]:
-        application.config["DEBUG_TB_PROFILER_ENABLED"] = True
-        application.config["DEBUG_TB_INTERCEPT_REDIRECTS"] = False
-        application.debug = True
-        from flask_debugtoolbar import (  # pylint: disable=import-outside-toplevel
-            DebugToolbarExtension,
-        )
-
-        DebugToolbarExtension(application)
 
 
 # pylint: disable=import-outside-toplevel
