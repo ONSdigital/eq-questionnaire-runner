@@ -116,10 +116,9 @@ ANSWER_ERROR_GETTER = Template(
 )
 
 ANSWER_LABEL_DESCRIPTION_GETTER = Template(
-    r"""  ${answerName}LabelDescription() { return `label[for=${answerId}] > .label__description`; }
-
-"""
-)
+    r"""  ${answerName}LabelDescription() {
+    return `#${answerId}-label-description-hint`;
+  }
 
 ANSWER_GETTER = Template(
     r"""  ${answerName}() {
@@ -298,6 +297,7 @@ def process_options(answer_id, options, page_spec, base_prefix):
 
         page_spec.write(ANSWER_GETTER.substitute(option_context))
         page_spec.write(ANSWER_LABEL_GETTER.substitute(option_context))
+        page_spec.write(ANSWER_LABEL_DESCRIPTION_GETTER.substitute(option_context))
 
         # Add a selector for an option which exposes another input, e.g.
         # an 'Other' option which exposes a text input for the user to fill in

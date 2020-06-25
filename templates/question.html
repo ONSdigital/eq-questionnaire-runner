@@ -13,7 +13,7 @@
         onsPanel({
           "type": "error",
           "classes": "u-mb-s",
-          "title": ngettext('This page has an error', 'This page has %(num)s errors', form.mapped_errors|length),
+          "title": ngettext('This page has an error', 'This page has %(num)s errors', form.mapped_errors | length),
           "attributes": {
             "data-qa": "error-body"
           }
