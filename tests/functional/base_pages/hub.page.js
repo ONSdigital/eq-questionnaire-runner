@@ -22,7 +22,7 @@ class HubPage extends BasePage {
   }
 
   errorNumber(number = 1) {
-    return `[data-qa="list-item-${number}"]`;
+    return `[data-qa="error-link-${number}"]`;
   }
 
   previous() {
