@@ -120,6 +120,9 @@ ANSWER_LABEL_DESCRIPTION_GETTER = Template(
     return `#${answerId}-label-description-hint`;
   }
 
+"""
+)
+
 ANSWER_GETTER = Template(
     r"""  ${answerName}() {
     return `#${answerId}`;
