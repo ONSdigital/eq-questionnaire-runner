@@ -29,9 +29,9 @@ jobs:
           git config user.email "${{ secrets.GIT_USER_EMAIL }}"
 
           # Update and commit schemas version file
-          echo $TAG > .design-system-version
+          echo $DESIGN_SYSTEM_VERSION > .design-system-version
           git add -A
-          git commit -S -m "Update design system version to $TAG"
+          git commit -S -m "Update design system version to $DESIGN_SYSTEM_VERSION"
       - name: Create Pull Request
         uses: peter-evans/create-pull-request@v2
         with:
@@ -40,5 +40,5 @@ jobs:
           title: "Update design system to version ${{ env.DESIGN_SYSTEM_VERSION }}"
           body: |
             This is an auto-generated PR.
-            Schemas release: https://github.com/ONSdigital/design-system/releases/tag/${{ env.DESIGN_SYSTEM_VERSION }}
-          branch: "templates-release-${{ env.DESIGN_SYSTEM_VERSION }}"
+            Design system release: https://github.com/ONSdigital/design-system/releases/tag/${{ env.DESIGN_SYSTEM_VERSION }}
+          branch: "design-system-release-${{ env.DESIGN_SYSTEM_VERSION }}"
