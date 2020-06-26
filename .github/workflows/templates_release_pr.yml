@@ -1,8 +1,8 @@
 name: Schemas release PR
 
 on:
-  repository_dispatch:
-    types: schemas_release
+  schedule:
+    - cron:  '0 4 * * *'
 
 jobs:
   create-pull-request:
@@ -13,9 +13,9 @@ jobs:
         with:
           ref: 'master'
       - run: |
-          TAG="${{ github.event.client_payload.tag }}"
+          TAG=$(curl https://api.github.com/repos/ONSdigital/design-system/releases/latest -s | jq .name -r)
           echo "::set-env name=DESIGN_SYSTEM_VERSION::$TAG"
-
+      - run: |
           # Import GPG key to sign the commit
           echo "${{ secrets.GPG_PRIVATE_KEY }}" | base64 --decode | gpg --import --no-tty --batch --yes
 
