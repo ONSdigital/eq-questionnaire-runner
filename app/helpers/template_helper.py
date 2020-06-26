@@ -34,6 +34,7 @@ def get_page_header_context(language, theme):
             ),
             "titleLogo": "census-logo-en",
             "titleLogoAlt": lazy_gettext("Census 2021"),
+            "customHeaderLogo": "nisra",
         },
     }
     return context.get(theme)
