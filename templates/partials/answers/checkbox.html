@@ -4,7 +4,7 @@
   "legend": question_title,
   "id": answer.id,
   "legendClasses": "u-vh",
-  "checkboxesLabel": '' if answer.label == '' else answer.label or _("Select all that apply"),
+  "checkboxesLabel": '' if not answer.label == '' else answer.label or _("Select all that apply"),
   "checkboxes": map_checkbox_config(form, answer),
   "mutuallyExclusive": mutuallyExclusive,
   "error": error
