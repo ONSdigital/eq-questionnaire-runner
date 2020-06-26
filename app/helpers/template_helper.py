@@ -24,7 +24,7 @@ def get_page_header_context(language, theme):
         "northernireland": default_context,
         "census": {
             **default_context,
-            "titleLogo": "/img/census-logo-" + language + ".svg",
+            "titleLogo": "census-logo-" + language,
             "titleLogoAlt": lazy_gettext("Census 2021"),
         },
         "census-nisra": {
@@ -32,7 +32,7 @@ def get_page_header_context(language, theme):
             "logoAlt": lazy_gettext(
                 "Northern Ireland Statistics and Research Agency logo"
             ),
-            "titleLogo": "/img/census-logo-en.svg",
+            "titleLogo": "census-logo-en",
             "titleLogoAlt": lazy_gettext("Census 2021"),
         },
     }
