@@ -1,9 +1,8 @@
 name: Templates release PR
 
 on:
-  pull_request:
-    branches:
-      - master
+  schedule:
+    - cron:  '0 4 * * *'
 
 jobs:
   create-pull-request:
@@ -28,7 +27,7 @@ jobs:
           git config user.name "${{ secrets.GIT_USER_NAME }}"
           git config user.email "${{ secrets.GIT_USER_EMAIL }}"
 
-          # Update and commit schemas version file
+          # Update and commit design system version file
           echo $DESIGN_SYSTEM_VERSION > .design-system-version
           git add -A
           git commit -S -m "Update design system version to $DESIGN_SYSTEM_VERSION"
