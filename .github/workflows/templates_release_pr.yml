@@ -1,8 +1,9 @@
-name: Schemas release PR
+name: Templates release PR
 
 on:
-  schedule:
-    - cron:  '0 4 * * *'
+  pull_request:
+    branches:
+      - master
 
 jobs:
   create-pull-request:
@@ -40,4 +41,4 @@ jobs:
           body: |
             This is an auto-generated PR.
             Schemas release: https://github.com/ONSdigital/design-system/releases/tag/${{ env.DESIGN_SYSTEM_VERSION }}
-          branch: "schemas-release-${{ env.DESIGN_SYSTEM_VERSION }}"
+          branch: "templates-release-${{ env.DESIGN_SYSTEM_VERSION }}"
