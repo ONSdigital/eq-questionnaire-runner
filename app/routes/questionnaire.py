@@ -155,13 +155,14 @@ def get_section(schema, questionnaire_store, section_id, list_item_id=None):
 
     if request.method == "GET":
         if section_handler.can_display_summary():
+            section_context = section_handler.context()
             return _render_page(
                 template="SectionSummary",
-                context=section_handler.context(),
+                context=section_context,
                 current_location=section_handler.current_location,
                 previous_location_url=section_handler.get_previous_location_url(),
                 schema=schema,
-                page_title=section_handler.get_page_title(),
+                page_title=section_context.get("summary").get("title"),
             )
 
         return redirect(section_handler.get_resume_url())
