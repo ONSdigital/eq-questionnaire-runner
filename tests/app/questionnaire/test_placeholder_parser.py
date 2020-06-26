@@ -150,6 +150,44 @@ def test_format_list_answer_transform_placeholder():
     assert placeholders["toppings"] == "<ul><li>Ham</li><li>Cheese</li></ul>"
 
 
+def test_placeholder_parser_escapes_answers():
+    placeholder_list = [
+        {
+            "placeholder": "crisps",
+            "transforms": [
+                {
+                    "transform": "format_list",
+                    "arguments": {
+                        "list_to_format": {
+                            "source": "answers",
+                            "identifier": "checkbox-answer",
+                        }
+                    },
+                }
+            ],
+        }
+    ]
+
+    parser = PlaceholderParser(
+        language="en",
+        answer_store=AnswerStore(
+            [
+                {
+                    "answer_id": "checkbox-answer",
+                    "value": ["Cheese & Onion", "Salt & Vinegar", "><'"],
+                }
+            ]
+        ),
+    )
+
+    placeholders = parser(placeholder_list)
+
+    assert (
+        placeholders["crisps"]
+        == "<ul><li>Cheese &amp; Onion</li><li>Salt &amp; Vinegar</li><li>&gt;&lt;&#39;</li></ul>"
+    )
+
+
 def test_multiple_metadata_transform_placeholder():
     placeholder_list = [
         {
