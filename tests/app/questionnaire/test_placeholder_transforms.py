@@ -120,8 +120,6 @@ class TestPlaceholderParser(unittest.TestCase):
 
     def test_add(self):
         assert self.transforms.add(1, 2) == 3
-        assert self.transforms.add("1", 2) == 3
-        assert self.transforms.add("1", "2") == 3
 
     def test_format_ordinal_with_determiner(self):
         assert self.transforms.format_ordinal(1, "a_or_an") == "a 1st"
