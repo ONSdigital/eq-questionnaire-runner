@@ -73,7 +73,7 @@ jobs:
         if: steps.cache-virtualenv.outputs.cache-hit != 'true'
         run: pipenv install --dev
       - name: Load templates
-        run: make load-templates
+        run: make load-design-system-templates
       - name: Compile translations
         run: make translate
       - name: Link env vars
