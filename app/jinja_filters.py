@@ -7,6 +7,7 @@ import flask_babel
 from babel import units, numbers
 from jinja2 import Markup, escape, evalcontextfilter
 
+from app import settings
 from app.questionnaire.rules import convert_to_datetime
 from app.settings import MAX_NUMBER
 
@@ -284,7 +285,7 @@ class RelationshipRadioConfig:
 
         self.label = LabelConfig(option.id, option.label.text, label_description)
 
-        if answer_option:
+        if answer_option and settings.EQ_ENABLE_HTML_MINIFY:
             # the 'pre-' prefix is added to the attributes here so that html minification
             # doesn't mess with the attribute contents (the 'pre-' is removed during minification).
             # see https://htmlmin.readthedocs.io/en/latest/quickstart.html
