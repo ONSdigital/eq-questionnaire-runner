@@ -8,8 +8,7 @@ jobs:
   create-pull-request:
     runs-on: ubuntu-18.04
     steps:
-      - name: Update and commit schemas version
-        uses: actions/checkout@v2
+      - uses: actions/checkout@v2
         with:
           ref: 'master'
       - run: |
@@ -17,6 +16,7 @@ jobs:
           echo "::set-env name=DESIGN_SYSTEM_VERSION::$TAG"
           echo "::set-env name=CURRENT_DESIGN_SYSTEM_VERSION::$(cat .design-system-version)"
       - if: ${{ env.CURRENT_DESIGN_SYSTEM_VERSION }} != ${{ env.DESIGN_SYSTEM_VERSION }}
+        name: Update and commit design system version
         run: |
           # Import GPG key to sign the commit
           echo "${{ secrets.GPG_PRIVATE_KEY }}" | base64 --decode | gpg --import --no-tty --batch --yes
