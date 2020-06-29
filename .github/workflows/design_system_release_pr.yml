@@ -1,4 +1,4 @@
-name: Templates release PR
+name: Design System release PR
 
 on:
   schedule:
@@ -15,7 +15,8 @@ jobs:
       - run: |
           TAG=$(curl https://api.github.com/repos/ONSdigital/design-system/releases/latest -s | jq .name -r)
           echo "::set-env name=DESIGN_SYSTEM_VERSION::$TAG"
-      - run: |
+      - if: $(cat .design-system-version) != $DESIGN_SYSTEM_VERSION
+        run: |
           # Import GPG key to sign the commit
           echo "${{ secrets.GPG_PRIVATE_KEY }}" | base64 --decode | gpg --import --no-tty --batch --yes
 
