@@ -1,10 +1,12 @@
 {% from "components/checkboxes/_macro.njk" import onsCheckboxes %}
 
+{% set length = answer.options|length %}
+
 {{ onsCheckboxes({
   "legend": question_title,
   "id": answer.id,
   "legendClasses": "u-vh",
-  "checkboxesLabel": '' if not answer.label == '' else answer.label or _("Select all that apply"),
+  "checkboxesLabel": '' if length == 1 else answer.label or _("Select all that apply"),
   "checkboxes": map_checkbox_config(form, answer),
   "mutuallyExclusive": mutuallyExclusive,
   "error": error
