@@ -29,6 +29,7 @@ def get_page_header_context(language, theme):
         },
         "census-nisra": {
             "logo": "nisra-logo-en",
+            "mobileLogo": "nisra-logo-en",
             "logoAlt": lazy_gettext(
                 "Northern Ireland Statistics and Research Agency logo"
             ),
