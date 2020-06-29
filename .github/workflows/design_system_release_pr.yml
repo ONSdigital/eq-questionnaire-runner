@@ -1,9 +1,8 @@
 name: Design System release PR
 
 on:
-  pull_request:
-    branches:
-      - master
+  schedule:
+    - cron:  '0 4 * * *'
 
 jobs:
   create-pull-request:
