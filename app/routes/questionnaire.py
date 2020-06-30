@@ -162,7 +162,7 @@ def get_section(schema, questionnaire_store, section_id, list_item_id=None):
                 current_location=section_handler.current_location,
                 previous_location_url=section_handler.get_previous_location_url(),
                 schema=schema,
-                page_title=section_context.get("summary").get("title"),
+                page_title=section_context["summary"]["page_title"],
             )
 
         return redirect(section_handler.get_resume_url())

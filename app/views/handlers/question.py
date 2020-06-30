@@ -3,7 +3,6 @@ from functools import cached_property
 from flask import url_for
 
 from app.forms.questionnaire_form import generate_form
-from app.helpers.template_helper import safe_content
 from app.questionnaire.location import Location
 from app.questionnaire.questionnaire_store_updater import QuestionnaireStoreUpdater
 from app.questionnaire.schema_utils import transform_variants
@@ -176,14 +175,7 @@ class Question(BlockHandler):
             return url_for(".get_questionnaire")
 
     def _get_page_title(self, question):
-        if isinstance(question["title"], str):
-            question_title = question["title"]
-        elif "text_plural" in question["title"]:
-            question_title = question["title"]["text_plural"]["forms"]["other"]
-        else:
-            question_title = question["title"]["text"]
-
-        return safe_content(f'{question_title} - {self._schema.json["title"]}')
+        return self._get_safe_page_title(question["title"])
 
     def evaluate_and_update_section_status_on_list_change(self, list_name):
         section_ids = self._schema.get_section_ids_dependent_on_list(list_name)

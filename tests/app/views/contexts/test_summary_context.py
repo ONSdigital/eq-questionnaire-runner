@@ -133,7 +133,7 @@ class TestSectionSummaryContext(TestStandardSummaryContext):
 
         self.check_context(context)
         self.check_summary_rendering_context(context)
-        self.assertEqual(len(context["summary"]), 5)
+        self.assertEqual(len(context["summary"]), 6)
         self.assertTrue("title" in context["summary"])
 
     def test_custom_section_summary_title(self):
@@ -150,6 +150,38 @@ class TestSectionSummaryContext(TestStandardSummaryContext):
         context = summary_context(current_location)
         self.assertEqual(
             context["summary"]["title"], "Household Summary - Semi-detached"
+        )
+
+    def test_custom_section_summary_page_title_placeholder_text_replaced(self):
+        current_location = Location(section_id="house-details-section")
+        answers = [{"answer_id": "house-type-answer", "value": "Semi-detached"}]
+        summary_context = SectionSummaryContext(
+            self.language,
+            self.schema,
+            AnswerStore(answers),
+            self.progress_store,
+            self.list_store,
+            self.metadata,
+        )
+        context = summary_context(current_location)
+        self.assertEqual(
+            context["summary"]["page_title"], "Household Summary - … - Section Summary"
+        )
+
+    def test_custom_section_summary_page_title_placeholder_text_plural_replaced(self):
+        current_location = Location(section_id="plural-section")
+        answers = [{"answer_id": "number-of-people-answer", "value": 3}]
+        summary_context = SectionSummaryContext(
+            self.language,
+            self.schema,
+            AnswerStore(answers),
+            self.progress_store,
+            self.list_store,
+            self.metadata,
+        )
+        context = summary_context(current_location)
+        self.assertEqual(
+            context["summary"]["page_title"], "… people live here - Section Summary"
         )
 
     def test_section_summary_title_is_section_title(self):
@@ -456,6 +488,7 @@ def test_context_for_section_list_summary(people_answer_store):
                     "type": "List",
                 },
             ],
+            "page_title": "People who live here and overnight visitors - Test ListCollector",
             "summary_type": "SectionSummary",
             "title": "People who live here and overnight visitors",
         }
@@ -494,6 +527,7 @@ def test_context_for_driving_question_summary_empty_list():
                     "type": "List",
                 }
             ],
+            "page_title": "List Collector Driving Question Summary - Test ListCollectorDrivingQuestion",
             "summary_type": "SectionSummary",
             "title": "List Collector Driving Question Summary",
         }
@@ -553,6 +587,7 @@ def test_context_for_driving_question_summary():
                     "type": "List",
                 }
             ],
+            "page_title": "List Collector Driving Question Summary - Test ListCollectorDrivingQuestion",
             "summary_type": "SectionSummary",
             "title": "List Collector Driving Question Summary",
         }

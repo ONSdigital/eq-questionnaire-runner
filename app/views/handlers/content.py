@@ -2,7 +2,6 @@ from functools import cached_property
 
 from app.questionnaire.schema_utils import transform_variants
 from app.views.handlers.block import BlockHandler
-from app.helpers.template_helper import safe_content
 
 
 class Content(BlockHandler):
@@ -36,11 +35,4 @@ class Content(BlockHandler):
     def _get_page_title(self, transformed_block):
         content = transformed_block.get("content")
         if content:
-            if isinstance(content["title"], str):
-                content_title = content["title"]
-            else:
-                content_title = content["title"]["text"]
-
-            page_title = f'{content_title} - {self._schema.json["title"]}'
-
-            return safe_content(page_title)
+            return self._get_safe_page_title(content["title"])
