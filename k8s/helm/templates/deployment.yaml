@@ -87,6 +87,8 @@ spec:
               value: "{{- .Values.googleTagManagerPreview }}"
             - name: COOKIE_SETTINGS_URL
               value: "{{- .Values.cookieSettingsUrl }}"
+            - name: CDN_URL
+              value: "{{- .Values.cdn.url }}"
             - name: EQ_REDIS_HOST
               valueFrom:
                 configMapKeyRef:

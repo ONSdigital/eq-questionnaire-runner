@@ -87,6 +87,7 @@ class TestCreateApp(unittest.TestCase):  # pylint: disable=too-many-public-metho
 
     def test_enforces_secure_headers(self):
         self._setting_overrides["EQ_ENABLE_LIVE_RELOAD"] = False
+        self._setting_overrides["CDN_URL"] = "https://cdn.test.domain/test-path"
 
         with create_app(self._setting_overrides).test_client() as client:
             headers = client.get(
@@ -109,29 +110,30 @@ class TestCreateApp(unittest.TestCase):  # pylint: disable=too-many-public-metho
             self.assertEqual("nosniff", headers["X-Content-Type-Options"])
 
             csp_policy_parts = headers["Content-Security-Policy"].split("; ")
-            self.assertIn("default-src 'self' https://cdn.ons.gov.uk", csp_policy_parts)
             self.assertIn(
-                f"script-src 'self' https://cdn.ons.gov.uk https://www.googletagmanager.com 'unsafe-inline' 'unsafe-eval' 'nonce-{request.csp_nonce}'",
+                "default-src 'self' https://cdn.test.domain", csp_policy_parts
+            )
+            self.assertIn(
+                f"script-src 'self' https://www.googletagmanager.com 'unsafe-inline' 'unsafe-eval' https://cdn.test.domain 'nonce-{request.csp_nonce}'",
                 csp_policy_parts,
             )
             self.assertIn(
-                "style-src 'self' https://cdn.ons.gov.uk https://tagmanager.google.com https://fonts.googleapis.com 'unsafe-inline'",
+                "style-src 'self' https://tagmanager.google.com https://fonts.googleapis.com 'unsafe-inline' https://cdn.test.domain",
                 csp_policy_parts,
             )
             self.assertIn(
-                "img-src 'self' data: https://cdn.ons.gov.uk https://www.google-analytics.com https://ssl.gstatic.com https://www.gstatic.com",
+                "img-src 'self' data: https://www.google-analytics.com https://ssl.gstatic.com https://www.gstatic.com https://cdn.test.domain",
                 csp_policy_parts,
             )
             self.assertIn(
-                "font-src 'self' data: https://cdn.ons.gov.uk https://fonts.gstatic.com",
+                "font-src 'self' data: https://fonts.gstatic.com https://cdn.test.domain",
                 csp_policy_parts,
             )
             self.assertIn(
                 "frame-src https://www.googletagmanager.com", csp_policy_parts
             )
             self.assertIn(
-                "connect-src 'self' https://cdn.ons.gov.uk https://cdn.eq.census-gcp.onsdigital.uk",
-                csp_policy_parts,
+                "connect-src 'self' https://cdn.test.domain", csp_policy_parts
             )
 
     # Indirectly covered by higher level integration

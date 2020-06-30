@@ -73,6 +73,7 @@ def render_template(template, **kwargs):
         schema_theme=cookie_session.get("theme"),
         language_code=get_locale().language,
         survey_title=cookie_session.get("survey_title"),
+        cdn_url=f'{current_app.config["CDN_URL"]}/design-system/',
         **google_tag_mananger_context,
         **kwargs,
     )

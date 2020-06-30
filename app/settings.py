@@ -38,6 +38,7 @@ def get_env_or_fail(key):
     return value
 
 
+CDN_URL = os.getenv("CDN_URL", "https://cdn.ons.gov.uk/sdc")
 EQ_MINIMIZE_ASSETS = parse_mode(os.getenv("EQ_MINIMIZE_ASSETS", "True"))
 # max request payload size in bytes
 MAX_CONTENT_LENGTH = int(os.getenv("EQ_MAX_HTTP_POST_CONTENT_LENGTH", "65536"))

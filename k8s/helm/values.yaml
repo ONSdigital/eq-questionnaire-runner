@@ -39,3 +39,6 @@ autoscaler:
 rollingUpdate:
   maxUnavailable: ""
   maxSurge: ""
+
+cdn:
+  url: "https://cdn.eq.census-gcp.onsdigital.uk"
