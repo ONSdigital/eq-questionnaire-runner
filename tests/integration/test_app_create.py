@@ -87,7 +87,7 @@ class TestCreateApp(unittest.TestCase):  # pylint: disable=too-many-public-metho
 
     def test_enforces_secure_headers(self):
         self._setting_overrides["EQ_ENABLE_LIVE_RELOAD"] = False
-        self._setting_overrides["CDN_URL"] = "https://cdn.test.domain/test-path"
+        self._setting_overrides["CDN_URL"] = "https://cdn.test.domain"
 
         with create_app(self._setting_overrides).test_client() as client:
             headers = client.get(

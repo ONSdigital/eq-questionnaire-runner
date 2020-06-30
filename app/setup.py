@@ -1,7 +1,6 @@
 import json
 from copy import deepcopy
 from typing import Dict
-from urllib.parse import urlparse
 from uuid import uuid4
 
 import boto3
@@ -228,36 +227,26 @@ def create_app(  # noqa: C901  pylint: disable=too-complex, too-many-statements
     return application
 
 
-def _get_cdn_root_url(application) -> str:
-    parsed_url = urlparse(application.config["CDN_URL"])
-    return f"{parsed_url.scheme}://{parsed_url.hostname}"
-
-
-def add_cdn_url_to_csp_policies(application) -> Dict:
+def add_cdn_url_to_csp_policies(cdn_url) -> Dict:
     csp_policy = deepcopy(CSP_POLICY)
-    cdn_root_url = _get_cdn_root_url(application)
-    updated_policy = {}
-    for k, v in csp_policy.items():
-        updated_policy[k] = v
-
-        if k != "frame-src":
-            updated_policy[k].append(cdn_root_url)
-
-    return updated_policy
+    for policy in csp_policy:
+        if policy != "frame-src":
+            csp_policy[policy].append(cdn_url)
+    return csp_policy
 
 
 def setup_secure_headers(application):
-    updated_policies = add_cdn_url_to_csp_policies(application)
+    csp_policy = add_cdn_url_to_csp_policies(application.config["CDN_URL"])
 
     if application.config["EQ_ENABLE_LIVE_RELOAD"]:
         # browsersync is configured to bind on port 5075
-        updated_policies["connect-src"] += ["ws://localhost:35729"]
+        csp_policy["connect-src"] += ["ws://localhost:35729"]
 
     application.config["SESSION_COOKIE_SAMESITE"] = "Strict"
 
     Talisman(
         application,
-        content_security_policy=updated_policies,
+        content_security_policy=csp_policy,
         content_security_policy_nonce_in=["script-src"],
         session_cookie_secure=application.config["EQ_ENABLE_SECURE_SESSION_COOKIE"],
         force_https=False,  # this is handled at the firewall
