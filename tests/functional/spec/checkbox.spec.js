@@ -7,14 +7,14 @@ describe('Checkbox with "other" option', () => {
     browser.openQuestionnaire("test_checkbox.json");
   });
 
-  it("Given a label has not been provided in the schema for a checkbox answer, When the checkbox answer is displayed, Then the label should be not visible", () => {
-    expect($("body").getText()).to.not.have.string("Select all that apply");
+  it("Given a label has not been provided in the schema for a checkbox answer, When the checkbox answer is displayed, Then the default label should be visible", () => {
+    expect($("body").getText()).to.have.string("Select all that apply");
   });
 
-  it('Given a label has been set in the schema for a checkbox answer, When the checkbox answer is displayed, Then the label "Select all that apply" should be visible', () => {
+  it('Given a label has been set in the schema for a checkbox answer, When the checkbox answer is displayed, Then the label should be visible', () => {
     $(MandatoryCheckboxPage.none()).click();
     $(MandatoryCheckboxPage.submit()).click();
-    expect($("body").getText()).to.have.string("Select all that apply");
+    expect($("body").getText()).to.have.string("Select any answers that apply");
   });
 
   it('Given an "other" option is available, when the user clicks the "other" option the other input should be visible.', () => {
