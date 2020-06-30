@@ -40,10 +40,10 @@ describe("List Collector With Variants", () => {
     });
 
     it("The questionnaire has the correct question text on the change and remove pages", () => {
-      $(ListCollectorPage.listEditLink(1)).click();
+      $(ListCollectorPage.listEditLink(0)).click();
       expect($(ListCollectorEditPage.questionText()).getText()).to.equal("What is the name of the person?");
       $(ListCollectorEditPage.previous()).click();
-      $(ListCollectorPage.listRemoveLink(1)).click();
+      $(ListCollectorPage.listRemoveLink(0)).click();
       expect($(ListCollectorRemovePage.questionText()).getText()).to.equal("Are you sure you want to remove this person?");
       $(ListCollectorRemovePage.previous()).click();
     });
@@ -86,10 +86,10 @@ describe("List Collector With Variants", () => {
     });
 
     it("The questionnaire has the correct question text on the change and remove pages", () => {
-      $(ListCollectorPage.listEditLink(1)).click();
+      $(ListCollectorPage.listEditLink(0)).click();
       expect($(ListCollectorEditPage.questionText()).getText()).to.equal("What is the name of the person who isn’t you?");
       $(ListCollectorEditPage.previous()).click();
-      $(ListCollectorPage.listRemoveLink(1)).click();
+      $(ListCollectorPage.listRemoveLink(0)).click();
       expect($(ListCollectorRemovePage.questionText()).getText()).to.equal("Are you sure you want to remove this person who isn’t you?");
       $(ListCollectorRemovePage.previous()).click();
     });

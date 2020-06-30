@@ -301,7 +301,7 @@ describe("Feature: Repeating Sections with Hub and Spoke", () => {
       $(SecondListCollectorPage.submit()).click();
 
       // Remove final householder
-      $(VisitorsListCollectorPage.listRemoveLink(3)).click();
+      $(VisitorsListCollectorPage.listRemoveLink(2)).click();
       $(VisitorsListCollectorRemovePage.yes()).click();
       $(VisitorsListCollectorPage.submit()).click();
 

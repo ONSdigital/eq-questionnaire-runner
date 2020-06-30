@@ -58,7 +58,7 @@ describe("Answer Action: Redirect To List Add Question (Radio)", () => {
     });
 
     it("When the users removes the only person (Marcus Twain), Then, they are shown an empty list collector", () => {
-      $(AnyoneLiveAtListCollector.listRemoveLink(1)).click();
+      $(AnyoneLiveAtListCollector.listRemoveLink(0)).click();
       $(AnyoneLiveAtListCollectorRemovePage.yes()).click();
       $(AnyoneLiveAtListCollectorRemovePage.submit()).click();
       expect(browser.getUrl()).to.contain(AnyoneLiveAtListCollector.pageName);

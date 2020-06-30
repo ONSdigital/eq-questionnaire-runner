@@ -357,7 +357,7 @@ def test_map_list_collector_config():
                     "actions": [
                         {
                             "ariaLabel": "edit_link_aria_label",
-                            "attributes": {"data-qa": "change-item-link"},
+                            "attributes": {"data-qa": "change-item-link-0"},
                             "text": "edit_link_text",
                             "url": "/primary/change",
                         }
@@ -373,13 +373,13 @@ def test_map_list_collector_config():
                     "actions": [
                         {
                             "ariaLabel": "edit_link_aria_label",
-                            "attributes": {"data-qa": "change-item-link"},
+                            "attributes": {"data-qa": "change-item-link-1"},
                             "text": "edit_link_text",
                             "url": "/nonprimary/change",
                         },
                         {
                             "ariaLabel": "remove_link_aria_label",
-                            "attributes": {"data-qa": "remove-item-link"},
+                            "attributes": {"data-qa": "remove-item-link-1"},
                             "text": "remove_link_text",
                             "url": "/nonprimary/remove",
                         },

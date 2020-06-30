@@ -51,7 +51,7 @@ describe("List Collector Driving Question", () => {
       $(AnyoneElseLiveAtListCollectorAddPage.submit()).click();
       $(AnyoneElseLiveAtListCollectorPage.no()).click();
       $(AnyoneElseLiveAtListCollectorPage.submit()).click();
-      $(SectionSummaryPage.peopleListRemoveLink(1)).click();
+      $(SectionSummaryPage.peopleListRemoveLink(0)).click();
       $(AnyoneElseLiveAtListCollectorRemovePage.yes()).click();
       $(AnyoneElseLiveAtListCollectorRemovePage.submit()).click();
       $(SectionSummaryPage.peopleListAddLink()).click();

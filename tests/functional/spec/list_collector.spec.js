@@ -62,7 +62,7 @@ describe("List Collector", () => {
     });
 
     it("The questionnaire allows the name of a person to be changed", () => {
-      $(ListCollectorPage.listEditLink(1)).click();
+      $(ListCollectorPage.listEditLink(0)).click();
       $(ListCollectorEditPage.firstName()).setValue("Mark");
       $(ListCollectorEditPage.lastName()).setValue("Twain");
       $(ListCollectorEditPage.submit()).click();
@@ -70,7 +70,7 @@ describe("List Collector", () => {
     });
 
     it("The questionnaire allows me to remove the first person (Mark Twain) from the summary", () => {
-      $(ListCollectorPage.listRemoveLink(1)).click();
+      $(ListCollectorPage.listRemoveLink(0)).click();
       $(ListCollectorRemovePage.yes()).click();
       $(ListCollectorRemovePage.submit()).click();
     });
@@ -109,7 +109,7 @@ describe("List Collector", () => {
       $(ListCollectorAddPage.firstName()).setValue("Someone");
       $(ListCollectorAddPage.lastName()).setValue("Else");
       $(ListCollectorAddPage.submit()).click();
-      $(ListCollectorPage.listEditLink(1)).click();
+      $(ListCollectorPage.listEditLink(0)).click();
       $(ListCollectorEditPage.cancelAndReturn()).click();
       expect(browser.getUrl()).to.contain(ListCollectorPage.pageName);
     });
@@ -145,7 +145,7 @@ describe("List Collector", () => {
     });
 
     it("The collector allows the user to remove a person again", () => {
-      $(AnotherListCollectorPage.listRemoveLink(6)).click();
+      $(AnotherListCollectorPage.listRemoveLink(5)).click();
       $(AnotherListCollectorRemovePage.yes()).click();
       $(AnotherListCollectorRemovePage.submit()).click();
     });
@@ -156,10 +156,10 @@ describe("List Collector", () => {
     });
 
     it("The user is returned to the list collector when the previous link is clicked.", () => {
-      $(AnotherListCollectorPage.listRemoveLink(1)).click();
+      $(AnotherListCollectorPage.listRemoveLink(0)).click();
       $(AnotherListCollectorRemovePage.previous()).click();
       expect(browser.getUrl()).to.contain(AnotherListCollectorPage.pageName);
-      $(AnotherListCollectorPage.listEditLink(1)).click();
+      $(AnotherListCollectorPage.listEditLink(0)).click();
       $(AnotherListCollectorEditPage.previous()).click();
       expect(browser.getUrl()).to.contain(AnotherListCollectorPage.pageName);
       $(AnotherListCollectorPage.yes()).click();
@@ -220,14 +220,14 @@ describe("List Collector", () => {
     });
 
     it("When the user removes an item from the list, They should return to the section summary and it should display the updated list", () => {
-      $(PeopleListSectionSummaryPage.peopleListRemoveLink(2)).click();
+      $(PeopleListSectionSummaryPage.peopleListRemoveLink(1)).click();
       $(SectionSummaryListCollectorRemovePage.yes()).click();
       $(SectionSummaryListCollectorRemovePage.submit()).click();
       expect($(PeopleListSectionSummaryPage.visitorsListLabel(2)).isExisting()).to.equal(false);
     });
 
     it("When the user updates the list, They should return to the section summary and it should display the updated list", () => {
-      $(PeopleListSectionSummaryPage.peopleListEditLink(1)).click();
+      $(PeopleListSectionSummaryPage.peopleListEditLink(0)).click();
       $(SectionSummaryListCollectorEditPage.firstName()).setValue("Mark");
       $(SectionSummaryListCollectorEditPage.lastName()).setValue("Twain");
       $(SectionSummaryListCollectorEditPage.submit()).click();
