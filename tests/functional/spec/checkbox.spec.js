@@ -1,5 +1,6 @@
 import MandatoryCheckboxPage from "../generated_pages/checkbox/mandatory-checkbox.page";
 import NonMandatoryCheckboxPage from "../generated_pages/checkbox/non-mandatory-checkbox.page";
+import singleCheckboxPage from "../generated_pages/checkbox/single-checkbox.page";
 import SummaryPage from "../generated_pages/checkbox/summary.page";
 
 describe('Checkbox with "other" option', () => {
@@ -15,6 +16,13 @@ describe('Checkbox with "other" option', () => {
     $(MandatoryCheckboxPage.none()).click();
     $(MandatoryCheckboxPage.submit()).click();
     expect($("body").getText()).to.have.string("Select any answers that apply");
+  });
+
+  it("Given that there is only one checkbox, When the checkbox answer is displayed, Then no label should be present", () => {
+    $(MandatoryCheckboxPage.none()).click();
+    $(MandatoryCheckboxPage.submit()).click();
+    $(NonMandatoryCheckboxPage.submit()).click();
+    expect($("body").getText()).to.not.have.string("Select all that apply");
   });
 
   it('Given an "other" option is available, when the user clicks the "other" option the other input should be visible.', () => {
@@ -48,6 +56,7 @@ describe('Checkbox with "other" option', () => {
     $(MandatoryCheckboxPage.otherDetail()).setValue("Other value");
     $(MandatoryCheckboxPage.submit()).click();
     $(NonMandatoryCheckboxPage.submit()).click();
+    $(singleCheckboxPage.submit()).click();
     // Then
     expect($(SummaryPage.nonMandatoryCheckboxAnswer()).getText()).to.contain("No answer provided");
   });
@@ -59,6 +68,7 @@ describe('Checkbox with "other" option', () => {
     $(MandatoryCheckboxPage.submit()).click();
     $(NonMandatoryCheckboxPage.other()).click();
     $(NonMandatoryCheckboxPage.submit()).click();
+    $(singleCheckboxPage.submit()).click();
     // Then
     expect($(SummaryPage.nonMandatoryCheckboxAnswer()).getText()).to.contain("Other");
   });
@@ -71,6 +81,7 @@ describe('Checkbox with "other" option', () => {
     $(NonMandatoryCheckboxPage.other()).click();
     $(NonMandatoryCheckboxPage.otherDetail()).setValue("The other value");
     $(NonMandatoryCheckboxPage.submit()).click();
+    $(singleCheckboxPage.submit()).click();
     // Then
     expect($(SummaryPage.nonMandatoryCheckboxAnswer()).getText()).to.contain("The other value");
   });
@@ -109,6 +120,7 @@ describe('Checkbox with "other" option', () => {
     $(MandatoryCheckboxPage.cheese()).click();
     $(MandatoryCheckboxPage.submit()).click();
     $(NonMandatoryCheckboxPage.submit()).click();
+    $(singleCheckboxPage.submit()).click();
 
     const listLength = $$(`${SummaryPage.mandatoryCheckboxAnswer()} li`).length;
 

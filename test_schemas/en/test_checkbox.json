@@ -158,6 +158,33 @@
                             "routing_rules": []
                         },
                         {
+                            "type": "Question",
+                            "id": "single-checkbox",
+                            "question": {
+                                "answers": [
+                                    {
+                                        "id": "single-checkbox-answer",
+                                        "mandatory": false,
+                                        "options": [
+                                            {
+                                                "label": "Estimate",
+                                                "value": "Estimate"
+                                            }
+                                        ],
+                                        "type": "Checkbox",
+                                        "validation": {
+                                            "messages": {}
+                                        }
+                                    }
+                                ],
+                                "description": "",
+                                "id": "single-checkbox-question",
+                                "title": "Is this an estimate?",
+                                "type": "General"
+                            },
+                            "routing_rules": []
+                        },
+                        {
                             "type": "Summary",
                             "id": "summary"
                         }
