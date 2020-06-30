@@ -214,7 +214,12 @@ class TestPathFinder(AppContextTestCase):
         schema = load_schema_from_name("test_checkbox")
         section_id = schema.get_section_id_for_block_id("mandatory-checkbox")
         expected_path = RoutingPath(
-            ["mandatory-checkbox", "non-mandatory-checkbox", "single-checkbox", "summary"],
+            [
+                "mandatory-checkbox",
+                "non-mandatory-checkbox",
+                "single-checkbox",
+                "summary",
+            ],
             section_id="default-section",
         )
 
