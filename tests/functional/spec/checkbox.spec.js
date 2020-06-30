@@ -11,7 +11,7 @@ describe('Checkbox with "other" option', () => {
     expect($("body").getText()).to.have.string("Select all that apply");
   });
 
-  it('Given a label has been set in the schema for a checkbox answer, When the checkbox answer is displayed, Then the label should be visible', () => {
+  it("Given a label has been set in the schema for a checkbox answer, When the checkbox answer is displayed, Then the label should be visible", () => {
     $(MandatoryCheckboxPage.none()).click();
     $(MandatoryCheckboxPage.submit()).click();
     expect($("body").getText()).to.have.string("Select any answers that apply");
