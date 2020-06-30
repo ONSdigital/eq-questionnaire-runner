@@ -1,4 +1,5 @@
 SCHEMAS_VERSION=`cat .schemas-version`
+DESIGN_SYSTEM_VERSION=`cat .design-system-version`
 
 clean:
 	rm -rf schemas
@@ -8,10 +9,10 @@ clean:
 load-schemas:
 	./scripts/load_release.sh onsdigital/eq-questionnaire-schemas $(SCHEMAS_VERSION)
 
-load-templates:
-	./scripts/load_release.sh onsdigital/design-system 18.1.0
+load-design-system-templates:
+	./scripts/load_release.sh onsdigital/design-system $(DESIGN_SYSTEM_VERSION)
 
-build: load-templates
+build: load-design-system-templates
 	make translate
 
 lint:
