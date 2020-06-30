@@ -8,7 +8,6 @@ import NumberOfPeoplePage from "../../../generated_pages/section_summary/number-
 import PropertyDetailsSummaryPage from "../../../generated_pages/section_summary/property-details-section-summary.page.js";
 import QuestionnaireSummaryPage from "../../../generated_pages/section_summary/summary.page.js";
 
-
 describe("Section Summary", () => {
   describe("Given I start a Test Section Summary survey and complete to Section Summary", () => {
     beforeEach(() => {
