@@ -13,7 +13,9 @@ class SectionSummaryContext(Context):
     def __call__(self, current_location):
         summary = self._build_summary(current_location)
         title_for_location = self._title_for_location(current_location)
-        title_has_placeholders = title_for_location and "placeholders" in title_for_location
+        title_has_placeholders = (
+            title_for_location and "placeholders" in title_for_location
+        )
         summary_title = (
             self._placeholder_renderer.render_placeholder(
                 title_for_location, current_location.list_item_id

@@ -188,8 +188,8 @@
             ]
         },
         {
-            "id": "plural-section",
-            "title": "Test Plural Section",
+            "id": "household-count-section",
+            "title": "Household member count",
             "summary": {
                 "show_on_completion": true,
                 "title": {
@@ -216,12 +216,12 @@
             },
             "groups": [
                 {
-                    "id": "plural-group",
-                    "title": "Test Plurals",
+                    "id": "number-of-people-group",
+                    "title": "Number of people",
                     "blocks": [
                         {
                             "type": "Question",
-                            "id": "number-of-people-block",
+                            "id": "number-of-people",
                             "question": {
                                 "answers": [
                                     {

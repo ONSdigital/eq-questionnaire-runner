@@ -1,10 +1,13 @@
+import AddressDurationPage from "../../../generated_pages/section_summary/address-duration.page.js";
+import HouseholdCountSectionSummaryPage from "../../../generated_pages/section_summary/household-count-section-summary.page.js";
+import HouseholdDetailsSummaryPage from "../../../generated_pages/section_summary/house-details-section-summary.page.js";
+import HouseType from "../../../generated_pages/section_summary/house-type.page.js";
 import InsuranceAddressPage from "../../../generated_pages/section_summary/insurance-address.page.js";
 import InsuranceTypePage from "../../../generated_pages/section_summary/insurance-type.page.js";
-import AddressDurationPage from "../../../generated_pages/section_summary/address-duration.page.js";
+import NumberOfPeoplePage from "../../../generated_pages/section_summary/number-of-people.page.js";
 import PropertyDetailsSummaryPage from "../../../generated_pages/section_summary/property-details-section-summary.page.js";
-import HouseType from "../../../generated_pages/section_summary/house-type.page.js";
-import HouseholdDetailsSummaryPage from "../../../generated_pages/section_summary/house-details-section-summary.page.js";
 import QuestionnaireSummaryPage from "../../../generated_pages/section_summary/summary.page.js";
+
 
 describe("Section Summary", () => {
   describe("Given I start a Test Section Summary survey and complete to Section Summary", () => {
@@ -47,6 +50,9 @@ describe("Section Summary", () => {
       $(PropertyDetailsSummaryPage.submit()).click();
       $(HouseType.submit()).click();
       $(HouseholdDetailsSummaryPage.submit()).click();
+      $(NumberOfPeoplePage.answer()).setValue(3);
+      $(NumberOfPeoplePage.submit()).click();
+      $(HouseholdCountSectionSummaryPage.submit()).click();
       expect(browser.getUrl()).to.contain("/questionnaire/summary/");
     });
 

@@ -169,7 +169,7 @@ class TestSectionSummaryContext(TestStandardSummaryContext):
         )
 
     def test_custom_section_summary_page_title_placeholder_text_plural_replaced(self):
-        current_location = Location(section_id="plural-section")
+        current_location = Location(section_id="household-count-section")
         answers = [{"answer_id": "number-of-people-answer", "value": 3}]
         summary_context = SectionSummaryContext(
             self.language,
