@@ -5,6 +5,7 @@ from datetime import datetime
 import flask
 import flask_babel
 from babel import units, numbers
+from flask import current_app
 from jinja2 import Markup, escape, evalcontextfilter
 
 from app.questionnaire.rules import convert_to_datetime
@@ -288,9 +289,13 @@ class RelationshipRadioConfig:
             # the 'pre-' prefix is added to the attributes here so that html minification
             # doesn't mess with the attribute contents (the 'pre-' is removed during minification).
             # see https://htmlmin.readthedocs.io/en/latest/quickstart.html
+            attribute_key = (
+                "pre-" if current_app.config["EQ_ENABLE_HTML_MINIFY"] else ""
+            )
+
             self.attributes = {
-                "pre-data-title": escape(answer_option["title"]),
-                "pre-data-playback": escape(answer_option["playback"]),
+                f"{attribute_key}data-title": escape(answer_option["title"]),
+                f"{attribute_key}data-playback": escape(answer_option["playback"]),
             }
 
 

@@ -61,6 +61,8 @@ spec:
               value: /keys/keys.yml
             - name: EQ_RABBITMQ_ENABLED
               value: "False"
+            - name: EQ_ENABLE_HTML_MINIFY
+              value: "False"
             - name: EQ_RABBITMQ_HOST
               value: rabbit
             - name: EQ_RABBITMQ_HOST_SECONDARY
