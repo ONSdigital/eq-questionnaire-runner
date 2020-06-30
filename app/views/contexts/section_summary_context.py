@@ -16,7 +16,7 @@ class SectionSummaryContext(Context):
         title_has_placeholders = (
             title_for_location and "placeholders" in title_for_location
         )
-        summary_title = (
+        title = (
             self._placeholder_renderer.render_placeholder(
                 title_for_location, current_location.list_item_id
             )
@@ -26,7 +26,7 @@ class SectionSummaryContext(Context):
 
         return {
             "summary": {
-                "title": summary_title,
+                "title": title,
                 "page_title": self._get_safe_page_title(
                     title_for_location, title_has_placeholders
                 ),
