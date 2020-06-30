@@ -91,6 +91,8 @@ spec:
               value: "{{- .Values.cookieSettingsUrl }}"
             - name: CDN_URL
               value: "{{- .Values.cdn.url }}"
+            - name: CDN_ASSETS_PATH
+              value: "{{- .Values.cdn.assets_path }}"
             - name: EQ_REDIS_HOST
               valueFrom:
                 configMapKeyRef:
