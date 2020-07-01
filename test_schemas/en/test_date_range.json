@@ -47,7 +47,6 @@
                                         "type": "Date"
                                     }
                                 ],
-                                "description": "",
                                 "id": "date-range-question",
                                 "title": "Date range",
                                 "warning": "The period to date must be after the period from date",
@@ -60,7 +59,7 @@
                         }
                     ],
                     "id": "dates",
-                    "title": ""
+                    "title": "Title"
                 }
             ]
         }

@@ -31,20 +31,18 @@
             "groups": [
                 {
                     "id": "retail-turnover-group",
-                    "title": "",
+                    "title": "Title",
                     "blocks": [
                         {
                             "type": "Question",
                             "id": "total-retail-turnover-block",
                             "question": {
-                                "description": "",
                                 "id": "total-retail-turnover-question",
                                 "title": "Please enter the total retail turnover",
                                 "type": "General",
                                 "answers": [
                                     {
                                         "id": "total-retail-turnover-answer",
-                                        "description": "",
                                         "label": "Total Retail Turnover",
                                         "mandatory": true,
                                         "type": "Currency",
@@ -93,7 +91,6 @@
                                 "answers": [
                                     {
                                         "id": "total-retail-turnover-internet-sales-answer",
-                                        "description": "",
                                         "label": "Value of Internet Sales",
                                         "mandatory": true,
                                         "type": "Currency",
@@ -105,7 +102,7 @@
                         }
                     ],
                     "id": "retail-confirmation-group",
-                    "title": ""
+                    "title": "Title"
                 }
             ]
         },
@@ -115,20 +112,18 @@
             "groups": [
                 {
                     "id": "total-items-group",
-                    "title": "",
+                    "title": "Title",
                     "blocks": [
                         {
                             "type": "Question",
                             "id": "total-items-block",
                             "question": {
-                                "description": "",
                                 "id": "total-items-question",
                                 "title": "Please enter the number of items",
                                 "type": "General",
                                 "answers": [
                                     {
                                         "id": "total-items-answer",
-                                        "description": "",
                                         "label": "Number of Items",
                                         "mandatory": false,
                                         "type": "Number",

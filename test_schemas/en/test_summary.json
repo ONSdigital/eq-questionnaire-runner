@@ -71,9 +71,8 @@
                                         "type": "Radio"
                                     }
                                 ],
-                                "description": "",
                                 "id": "radio-question",
-                                "title": "",
+                                "title": "Title",
                                 "type": "General"
                             },
                             "routing_rules": []
@@ -85,7 +84,6 @@
                                 "answers": [
                                     {
                                         "id": "test-currency",
-                                        "description": "",
                                         "label": "Currency Test",
                                         "mandatory": false,
                                         "type": "Currency",
@@ -93,7 +91,6 @@
                                     },
                                     {
                                         "id": "square-kilometres",
-                                        "description": "",
                                         "label": "Kilometres Square",
                                         "mandatory": false,
                                         "type": "Unit",
@@ -102,14 +99,12 @@
                                     },
                                     {
                                         "id": "test-decimal",
-                                        "description": "",
                                         "label": "Decimal test to 2 decimal places",
                                         "mandatory": false,
                                         "type": "Number",
                                         "decimal_places": 2
                                     }
                                 ],
-                                "description": "",
                                 "id": "test-number-range-question",
                                 "title": "Please enter test values (none mandatory)",
                                 "type": "General"
@@ -117,7 +112,7 @@
                         }
                     ],
                     "id": "summary-group",
-                    "title": ""
+                    "title": "Title"
                 },
                 {
                     "blocks": [
@@ -126,7 +121,7 @@
                             "id": "dessert-block",
                             "question": {
                                 "id": "test-dessert-question",
-                                "title": "",
+                                "title": "Title",
                                 "type": "General",
                                 "answers": [
                                     {

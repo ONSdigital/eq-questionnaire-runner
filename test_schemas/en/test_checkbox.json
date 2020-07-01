@@ -90,7 +90,6 @@
                                         }
                                     }
                                 ],
-                                "description": "",
                                 "id": "mandatory-checkbox-question",
                                 "title": "Which pizza toppings would you like?",
                                 "type": "General"
@@ -150,7 +149,6 @@
                                         }
                                     }
                                 ],
-                                "description": "",
                                 "id": "non-mandatory-checkbox-question",
                                 "title": "What extra toppings would you like?",
                                 "type": "General"
@@ -177,7 +175,6 @@
                                         }
                                     }
                                 ],
-                                "description": "",
                                 "id": "single-checkbox-question",
                                 "title": "Is this an estimate?",
                                 "type": "General"
@@ -190,7 +187,7 @@
                         }
                     ],
                     "id": "checkboxes",
-                    "title": ""
+                    "title": "Title"
                 }
             ]
         }

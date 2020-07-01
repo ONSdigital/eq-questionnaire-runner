@@ -53,7 +53,7 @@
                                     }
                                 ],
                                 "id": "question",
-                                "title": "",
+                                "title": "Title",
                                 "type": "General"
                             }
                         },
@@ -63,7 +63,7 @@
                         }
                     ],
                     "id": "textarea-group",
-                    "title": ""
+                    "title": "Title"
                 }
             ]
         }

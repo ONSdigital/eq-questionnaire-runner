@@ -33,7 +33,6 @@
                             "id": "do-you-want-to-skip",
                             "routing_rules": [],
                             "question": {
-                                "description": "",
                                 "id": "do-you-want-to-skip-question",
                                 "title": "Do you want to skip?",
                                 "type": "General",
@@ -65,7 +64,6 @@
                             "id": "should-skip",
                             "routing_rules": [],
                             "question": {
-                                "description": "",
                                 "id": "should-skip-question",
                                 "title": "Do you want to skip?",
                                 "type": "General",
@@ -117,7 +115,7 @@
                         }
                     ],
                     "id": "summary-group",
-                    "title": ""
+                    "title": "Title"
                 }
             ]
         }

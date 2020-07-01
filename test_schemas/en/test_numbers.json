@@ -61,7 +61,6 @@
                                         }
                                     }
                                 ],
-                                "description": "",
                                 "id": "set-min-question",
                                 "title": "Please set the minimum and maximum used for future questions",
                                 "type": "General"
@@ -74,7 +73,7 @@
                                 "answers": [
                                     {
                                         "id": "test-range",
-                                        "label": "",
+                                        "label": "Label",
                                         "description": {
                                             "text": "Range Test ({minimum} to {maximum})",
                                             "placeholders": [
@@ -126,7 +125,7 @@
                                     },
                                     {
                                         "id": "test-range-exclusive",
-                                        "label": "",
+                                        "label": "Label",
                                         "description": {
                                             "text": "Range Exclusive Test ({minimum} to {maximum} Exclusive)",
                                             "placeholders": [
@@ -180,7 +179,6 @@
                                     },
                                     {
                                         "id": "test-min",
-                                        "description": "",
                                         "label": "Min Test (123 to 9,999,999,999)",
                                         "mandatory": false,
                                         "type": "Number",
@@ -190,7 +188,6 @@
                                     },
                                     {
                                         "id": "test-max",
-                                        "description": "",
                                         "label": "Max Test (0 to 1,234)",
                                         "mandatory": false,
                                         "type": "Number",
@@ -200,7 +197,6 @@
                                     },
                                     {
                                         "id": "test-min-exclusive",
-                                        "description": "",
                                         "label": "Min Exclusive Test (124 to 9,999,999,999 - 123 Exclusive)",
                                         "mandatory": false,
                                         "type": "Number",
@@ -211,7 +207,6 @@
                                     },
                                     {
                                         "id": "test-max-exclusive",
-                                        "description": "",
                                         "label": "Max Exclusive Test (0 to 1,233 - 1,234 Exclusive)",
                                         "mandatory": false,
                                         "type": "Number",
@@ -222,7 +217,6 @@
                                     },
                                     {
                                         "id": "test-percent",
-                                        "description": "",
                                         "label": "Percent Test (0 to 100)",
                                         "mandatory": false,
                                         "type": "Percentage",
@@ -232,7 +226,7 @@
                                     },
                                     {
                                         "id": "test-decimal",
-                                        "label": "",
+                                        "label": "Label",
                                         "description": {
                                             "text": "Range Exclusive Test ({minimum} to {maximum} Exclusive)",
                                             "placeholders": [
@@ -291,7 +285,7 @@
                         }
                     ],
                     "id": "test",
-                    "title": ""
+                    "title": "Title"
                 },
                 {
                     "blocks": [
