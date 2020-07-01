@@ -217,7 +217,7 @@ LIST_SUMMARY_LIST_GETTER = r"""  listSummary() { return `.list__item`; }
 """
 
 LIST_SECTION_SUMMARY_LABEL_GETTER = Template(
-    r"""  ${list_name}ListLabel(listItemInstance) { return `div[data-qa="${list_name}-list-summary"] [data-qa='list-item-label-` + listItemInstance + `"]`; }
+    r"""  ${list_name}ListLabel(listItemInstance) { return `div[data-qa="${list_name}-list-summary"] td[data-qa='list-item-label-` + listItemInstance + `"]`; }
 
 """
 )
