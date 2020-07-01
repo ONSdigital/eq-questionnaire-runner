@@ -200,7 +200,7 @@ CALCULATED_SUMMARY_LABEL_GETTER = Template(
 """
 )
 
-LIST_SUMMARY_LABEL_GETTER = r"""  listLabel(instance) { return `tbody:nth-child(${instance}) td:first-child`; }
+LIST_SUMMARY_LABEL_GETTER = r"""  listLabel(instance) { return `[data-qa='list-item-label-${instance}']`; }
 
 """
 
@@ -217,7 +217,7 @@ LIST_SUMMARY_LIST_GETTER = r"""  listSummary() { return `.list__item`; }
 """
 
 LIST_SECTION_SUMMARY_LABEL_GETTER = Template(
-    r"""  ${list_name}ListLabel(listItemInstance) { return `div[data-qa="${list_name}-list-summary"] tbody:nth-child(` + listItemInstance + `) td:first-child`; }
+    r"""  ${list_name}ListLabel(listItemInstance) { return `div[data-qa="${list_name}-list-summary"] [data-qa='list-item-label-` + listItemInstance + `"]`; }
 
 """
 )

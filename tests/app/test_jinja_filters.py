@@ -366,6 +366,7 @@ def test_map_list_collector_config():
                 }
             ],
             "rowTitle": "Mark Bloggs (You)",
+            "rowTitleAttributes": {"data-qa": "list-item-label-0"},
         },
         {
             "rowItems": [
@@ -388,6 +389,7 @@ def test_map_list_collector_config():
                 }
             ],
             "rowTitle": "Joe Bloggs",
+            "rowTitleAttributes": {"data-qa": "list-item-label-1"},
         },
     ]
 

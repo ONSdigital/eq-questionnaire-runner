@@ -590,7 +590,10 @@ def map_list_collector_config(
             )
 
         rows.append(
-            {"rowTitle": item_name, "rowItems": [{"icon": icon, "actions": actions}]}
+            {
+                "rowTitle": item_name,
+                "rowItems": [{"icon": icon, "actions": actions, "rowTitleAttributes": {"data-qa": "list-item-label-" + str(item_index)},}],
+            }
         )
 
     return rows
