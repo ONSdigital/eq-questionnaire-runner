@@ -109,7 +109,7 @@ class TestCreateApp(unittest.TestCase):  # pylint: disable=too-many-public-metho
             self.assertEqual("nosniff", headers["X-Content-Type-Options"])
 
     def test_csp_policy_headers(self):
-        for cdn_url in ["https://cdn.test.domain", None]:
+        for cdn_url in [None, "https://cdn.test.domain"]:
             with self.subTest(cdn_url=cdn_url):
                 self._setting_overrides = {"EQ_ENABLE_LIVE_RELOAD": False}
                 if cdn_url:
