@@ -20,6 +20,7 @@ import VisitorListCollectorAddPage from "../generated_pages/list_collector_secti
 import PeopleListSectionSummaryPage from "../generated_pages/list_collector_section_summary/section-summary.page.js";
 import ConfirmationPage from "../generated_pages/list_collector/confirmation.page.js";
 
+describe("List Collector", () => {
   describe("Given a normal journey through the list collector without variants", () => {
     before("Load the survey", () => {
       browser.openQuestionnaire("test_list_collector.json");
