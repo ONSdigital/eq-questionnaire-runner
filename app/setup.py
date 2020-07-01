@@ -234,16 +234,16 @@ def setup_jinja_env(application):
     application.jinja_env.add_extension("jinja2.ext.do")
 
 
-def _add_cdn_url_to_csp_policies(cdn_url) -> Dict:
+def _add_cdn_url_to_csp_policy(cdn_url) -> Dict:
     csp_policy = deepcopy(CSP_POLICY)
-    for policy in csp_policy:
-        if policy != "frame-src":
-            csp_policy[policy].append(cdn_url)
+    for directive in csp_policy:
+        if directive != "frame-src":
+            csp_policy[directive].append(cdn_url)
     return csp_policy
 
 
 def setup_secure_headers(application):
-    csp_policy = _add_cdn_url_to_csp_policies(application.config["CDN_URL"])
+    csp_policy = _add_cdn_url_to_csp_policy(application.config["CDN_URL"])
 
     if application.config["EQ_ENABLE_LIVE_RELOAD"]:
         # browsersync is configured to bind on port 5075
