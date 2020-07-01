@@ -14,10 +14,6 @@ class QuestionPage extends BasePage {
     return "#my-account";
   }
 
-  summaryQuestionText() {
-    return ".summary__item-title";
-  }
-
   questionText() {
     return "h1";
   }
