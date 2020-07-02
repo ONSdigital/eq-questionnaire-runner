@@ -82,19 +82,19 @@ SECTION_SUMMARY_PAGE_URL = r"""  url() { return `/questionnaire/sections/${this.
 """
 
 QUESTION_DEFINITION_TITLE_GETTER = Template(
-    r"""  definitionTitle${definitionIndex}() { return `.collapsible:nth-child(${definitionIndex}) > .collapsible__heading`; }
+    r"""  definitionTitle${definitionIndex}() { return `[data-qa="${definitionIndex}-collapsible-title}"]`; }
 
 """
 )
 
 QUESTION_DEFINITION_CONTENT_GETTER = Template(
-    r"""  definitionContent${definitionIndex}() { return `.collapsible:nth-child(${definitionIndex}) > .collapsible__content`; }
+    r"""  definitionContent${definitionIndex}() { return `[data-qa="${definitionIndex}-collapsible-content}"]`; }
 
 """
 )
 
 QUESTION_DEFINITION_BUTTON_GETTER = Template(
-    r"""  definitionButton${definitionIndex}() { return `.collapsible:nth-child(${definitionIndex}) .js-collapsible-button`; }
+    r"""  definitionButton${definitionIndex}() { return `[data-qa="${definitionIndex}-collapsible-close-button}"]`; }
 
 """
 )

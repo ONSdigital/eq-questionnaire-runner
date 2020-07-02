@@ -1,13 +1,15 @@
 {% from "components/collapsible/_macro.njk" import onsCollapsible %}
 
 {% call onsCollapsible({
+  "id": answer.id,
   "classes": "u-mt-s",
   "title": _(answer_guidance.schema_item.show_guidance),
   "headingAttributes": {
     "data-ga": "click",
     "data-ga-category": "Answer guidance",
     "data-ga-action": "Open panel",
-    "data-ga-label": _(answer_guidance.schema_item.show_guidance)
+    "data-ga-label": _(answer_guidance.schema_item.show_guidance),
+    "data-qa": answer.id ~ "-collapsible-title"
   },
   "button": {
     "close": _("Hide this"),
@@ -16,7 +18,8 @@
       "data-ga": "click",
       "data-ga-category": "Answer guidance",
       "data-ga-action": "Close panel",
-      "data-ga-label": _(answer_guidance.schema_item.show_guidance)
+      "data-ga-label": _(answer_guidance.schema_item.show_guidance),
+      "data-qa": answer.id ~ "-collapsible-close-button"
     }
   }
 }) %}

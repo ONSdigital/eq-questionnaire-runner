@@ -2,13 +2,15 @@
 
 {% for definition in question.definitions %}
   {% call onsCollapsible({
+      "id": question.id ~ "-collapsible",
       "title": definition.title,
       "classes": "u-mb-s",
       "headingAttributes": {
         "data-ga": "click",
         "data-ga-category": "Question definition",
         "data-ga-action": "Open panel",
-        "data-ga-label": definition.title
+        "data-ga-label": definition.title,
+        "data-qa": question.id ~ "-collapsible-title"
       },
       "button": {
         "close": _("Hide this"),
@@ -17,7 +19,8 @@
           "data-ga": "click",
           "data-ga-category": "Question definition",
           "data-ga-action": "Close panel",
-          "data-ga-label": definition.title
+          "data-ga-label": definition.title,
+          "data-qa": question.id ~ "-collapsible-close-button"
         }
       }
   }) %}
