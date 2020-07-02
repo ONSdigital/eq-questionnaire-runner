@@ -2,6 +2,7 @@ from typing import Mapping
 
 from flask import url_for
 
+from app.helpers.template_helper import safe_content
 from app.questionnaire import QuestionnaireSchema
 from .context import Context
 from .list_context import ListContext
@@ -11,10 +12,18 @@ from .summary import Group
 class SectionSummaryContext(Context):
     def __call__(self, current_location):
         summary = self._build_summary(current_location)
-
+        title_for_location = self._title_for_location(current_location)
+        title = (
+            self._placeholder_renderer.render_placeholder(
+                title_for_location, current_location.list_item_id
+            )
+            if isinstance(title_for_location, dict)
+            else title_for_location
+        )
         return {
             "summary": {
-                "title": self._title_for_location(current_location),
+                "title": title,
+                "page_title": self._get_safe_page_title(title_for_location),
                 "summary_type": "SectionSummary",
                 "answers_are_editable": True,
                 **summary,
@@ -71,11 +80,6 @@ class SectionSummaryContext(Context):
             or self._schema.get_summary_title_for_section(section_id)
             or self._schema.get_title_for_section(section_id)
         )
-        if isinstance(title, dict):
-            return self._placeholder_renderer.render_placeholder(
-                title, location.list_item_id
-            )
-
         return title
 
     def _custom_summary_elements(self, section_summary, current_location, section):
@@ -148,3 +152,8 @@ class SectionSummaryContext(Context):
                 block_id=driving_question_block["id"],
                 return_to_summary=True,
             )
+
+    def _get_safe_page_title(self, title):
+        return safe_content(
+            f'{self._schema.get_single_string_value(title)} - {self._schema.json["title"]}'
+        )
