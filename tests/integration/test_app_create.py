@@ -126,7 +126,9 @@ class TestCreateApp(unittest.TestCase):  # pylint: disable=too-many-public-metho
                     ).headers
 
                     csp_policy_parts = headers["Content-Security-Policy"].split("; ")
-                    self.assertIn(f"default-src 'self' {expected_cdn_url}", csp_policy_parts)
+                    self.assertIn(
+                        f"default-src 'self' {expected_cdn_url}", csp_policy_parts
+                    )
                     self.assertIn(
                         f"script-src 'self' https://www.googletagmanager.com 'unsafe-inline' 'unsafe-eval' {expected_cdn_url} 'nonce-{request.csp_nonce}'",
                         csp_policy_parts,
@@ -146,7 +148,9 @@ class TestCreateApp(unittest.TestCase):  # pylint: disable=too-many-public-metho
                     self.assertIn(
                         "frame-src https://www.googletagmanager.com", csp_policy_parts
                     )
-                    self.assertIn(f"connect-src 'self' {expected_cdn_url}", csp_policy_parts)
+                    self.assertIn(
+                        f"connect-src 'self' {expected_cdn_url}", csp_policy_parts
+                    )
 
     # Indirectly covered by higher level integration
     # tests, keeping to highlight that create_app is where
