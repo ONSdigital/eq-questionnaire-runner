@@ -3,6 +3,7 @@ from functools import cached_property
 from typing import Optional
 
 from structlog import get_logger
+from app.helpers.template_helper import safe_content
 
 from app.questionnaire.location import InvalidLocationException, Location
 from app.questionnaire.placeholder_renderer import PlaceholderRenderer
@@ -116,3 +117,8 @@ class BlockHandler:
             started_at = datetime.utcnow().isoformat()
             logger.info("Survey started", started_at=started_at)
             collection_metadata["started_at"] = started_at
+
+    def _get_safe_page_title(self, title):
+        return safe_content(
+            f'{self._schema.get_single_string_value(title)} - {self._schema.json["title"]}'
+        )
