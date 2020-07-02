@@ -34,7 +34,6 @@
                                 "answers": [
                                     {
                                         "id": "comparison-date-answer",
-                                        "label": "Label",
                                         "mandatory": true,
                                         "q_code": "11",
                                         "type": "Date"

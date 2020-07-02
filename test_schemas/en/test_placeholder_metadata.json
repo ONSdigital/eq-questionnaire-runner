@@ -39,7 +39,7 @@
                                     {
                                         "description": "Enter the total gross weekly pay",
                                         "id": "answer",
-                                        "label": "Label",
+                                        "label": "Enter a number",
                                         "mandatory": false,
                                         "type": "Number"
                                     }

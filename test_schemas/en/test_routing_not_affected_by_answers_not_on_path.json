@@ -147,12 +147,7 @@
                             "type": "Interstitial",
                             "id": "valid-skipped-interstitial",
                             "content": {
-                                "title": "This page should have been skipped!",
-                                "contents": [
-                                    {
-                                        "description": "Description"
-                                    }
-                                ]
+                                "title": "This page should have been skipped!"
                             },
                             "skip_conditions": [
                                 {
@@ -169,12 +164,7 @@
                             "type": "Interstitial",
                             "id": "valid-final-interstitial",
                             "content": {
-                                "title": "You were routed correctly!",
-                                "contents": [
-                                    {
-                                        "description": "Description"
-                                    }
-                                ]
+                                "title": "You were routed correctly!"
                             },
                             "routing_rules": [
                                 {
@@ -188,12 +178,7 @@
                             "type": "Interstitial",
                             "id": "invalid-final-interstitial",
                             "content": {
-                                "title": "You were routed incorrectly!",
-                                "contents": [
-                                    {
-                                        "description": "Description"
-                                    }
-                                ]
+                                "title": "You were routed incorrectly!"
                             },
                             "routing_rules": [
                                 {

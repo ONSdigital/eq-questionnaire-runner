@@ -73,7 +73,7 @@
                                 "answers": [
                                     {
                                         "id": "test-range",
-                                        "label": "Label",
+                                        "label": "Range Test",
                                         "description": {
                                             "text": "Range Test ({minimum} to {maximum})",
                                             "placeholders": [
@@ -125,7 +125,7 @@
                                     },
                                     {
                                         "id": "test-range-exclusive",
-                                        "label": "Label",
+                                        "label": "Range Exclusive Test",
                                         "description": {
                                             "text": "Range Exclusive Test ({minimum} to {maximum} Exclusive)",
                                             "placeholders": [
@@ -226,7 +226,7 @@
                                     },
                                     {
                                         "id": "test-decimal",
-                                        "label": "Label",
+                                        "label": "Decimal Test",
                                         "description": {
                                             "text": "Range Exclusive Test ({minimum} to {maximum} Exclusive)",
                                             "placeholders": [
