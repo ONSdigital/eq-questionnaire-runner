@@ -20,13 +20,10 @@ class SectionSummaryContext(Context):
             if isinstance(title_for_location, dict)
             else title_for_location
         )
-
         return {
             "summary": {
                 "title": title,
-                "page_title": safe_content(
-                    f'{self._schema.get_single_string_value(title_for_location)} - {self._schema.json["title"]}'
-                ),
+                "page_title": self._get_safe_page_title(title_for_location),
                 "summary_type": "SectionSummary",
                 "answers_are_editable": True,
                 **summary,
@@ -155,3 +152,8 @@ class SectionSummaryContext(Context):
                 block_id=driving_question_block["id"],
                 return_to_summary=True,
             )
+
+    def _get_safe_page_title(self, title_for_location):
+        return safe_content(
+            f'{self._schema.get_single_string_value(title_for_location)} - {self._schema.json["title"]}'
+        )
