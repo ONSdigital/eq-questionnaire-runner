@@ -119,9 +119,6 @@ class BlockHandler:
             collection_metadata["started_at"] = started_at
 
     def _get_safe_page_title(self, title):
-        if title and "placeholders" in title:
-            if "text_plural" in title:
-                title = title["text_plural"]["forms"]["other"]
-            else:
-                title = title["text"]
-        return safe_content(f'{title} - {self._schema.json["title"]}')
+        return safe_content(
+            f'{self._schema.get_single_string_value(title)} - {self._schema.json["title"]}'
+        )

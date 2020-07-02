@@ -163,7 +163,9 @@ class Question(BlockHandler):
         )
 
         if variant_block["question"]:
-            self.page_title = self._get_page_title(variant_block["question"])
+            self.page_title = self._get_safe_page_title(
+                variant_block["question"]["title"]
+            )
 
         return {**variant_block, **{"question": rendered_question}}
 
@@ -173,9 +175,6 @@ class Question(BlockHandler):
             and self.router.can_access_hub()
         ):
             return url_for(".get_questionnaire")
-
-    def _get_page_title(self, question):
-        return self._get_safe_page_title(question["title"])
 
     def evaluate_and_update_section_status_on_list_change(self, list_name):
         section_ids = self._schema.get_section_ids_dependent_on_list(list_name)

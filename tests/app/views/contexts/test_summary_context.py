@@ -152,7 +152,7 @@ class TestSectionSummaryContext(TestStandardSummaryContext):
             context["summary"]["title"], "Household Summary - Semi-detached"
         )
 
-    def test_custom_section_summary_page_title_placeholder_text_replaced(self):
+    def test_section_summary_page_title_placeholder_text_replaced(self):
         current_location = Location(section_id="house-details-section")
         answers = [{"answer_id": "house-type-answer", "value": "Semi-detached"}]
         summary_context = SectionSummaryContext(
@@ -168,7 +168,7 @@ class TestSectionSummaryContext(TestStandardSummaryContext):
             context["summary"]["page_title"], "Household Summary - … - Section Summary"
         )
 
-    def test_custom_section_summary_page_title_placeholder_text_plural_replaced(self):
+    def test_section_summary_page_title_placeholder_text_plural_replaced(self):
         current_location = Location(section_id="household-count-section")
         answers = [{"answer_id": "number-of-people-answer", "value": 3}]
         summary_context = SectionSummaryContext(

@@ -226,7 +226,7 @@
                                 "answers": [
                                     {
                                         "id": "number-of-people-answer",
-                                        "label": "How many people live here?",
+                                        "label": "Number of people",
                                         "mandatory": true,
                                         "type": "Number"
                                     }

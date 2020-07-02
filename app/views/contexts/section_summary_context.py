@@ -13,22 +13,19 @@ class SectionSummaryContext(Context):
     def __call__(self, current_location):
         summary = self._build_summary(current_location)
         title_for_location = self._title_for_location(current_location)
-        title_has_placeholders = (
-            title_for_location and "placeholders" in title_for_location
-        )
         title = (
             self._placeholder_renderer.render_placeholder(
                 title_for_location, current_location.list_item_id
             )
-            if title_has_placeholders
+            if isinstance(title_for_location, dict)
             else title_for_location
         )
 
         return {
             "summary": {
                 "title": title,
-                "page_title": self._get_safe_page_title(
-                    title_for_location, title_has_placeholders
+                "page_title": safe_content(
+                    f'{self._schema.get_single_string_value(title_for_location)} - {self._schema.json["title"]}'
                 ),
                 "summary_type": "SectionSummary",
                 "answers_are_editable": True,
@@ -158,11 +155,3 @@ class SectionSummaryContext(Context):
                 block_id=driving_question_block["id"],
                 return_to_summary=True,
             )
-
-    def _get_safe_page_title(self, title, title_has_placeholders=False):
-        if title_has_placeholders:
-            if "text_plural" in title:
-                title = title["text_plural"]["forms"]["other"]
-            else:
-                title = title["text"]
-        return safe_content(f'{title} - {self._schema.json["title"]}')
