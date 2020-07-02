@@ -35,4 +35,4 @@ class Content(BlockHandler):
     def _get_page_title(self, transformed_block):
         content = transformed_block.get("content")
         if content:
-            return self._get_safe_page_title(transformed_block.get("content")["title"])
+            return self._get_safe_page_title(content["title"])
