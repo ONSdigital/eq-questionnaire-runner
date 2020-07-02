@@ -109,48 +109,42 @@ class TestCreateApp(unittest.TestCase):  # pylint: disable=too-many-public-metho
             self.assertEqual("nosniff", headers["X-Content-Type-Options"])
 
     def test_csp_policy_headers(self):
-        for cdn_url in [None, "https://cdn.test.domain"]:
-            with self.subTest(cdn_url=cdn_url):
-                self._setting_overrides = {"EQ_ENABLE_LIVE_RELOAD": False}
-                if cdn_url:
-                    self._setting_overrides["CDN_URL"] = cdn_url
+        cdn_url = "https://cdn.test.domain"
+        self._setting_overrides = {
+            "EQ_ENABLE_LIVE_RELOAD": False,
+            "CDN_URL": cdn_url,
+        }
 
-                expected_cdn_url = cdn_url or "https://cdn.ons.gov.uk"
+        with create_app(self._setting_overrides).test_client() as client:
+            headers = client.get(
+                "/",
+                headers={
+                    "X-Forwarded-Proto": "https"
+                },  # set protocal so that talisman sets HSTS headers
+            ).headers
 
-                with create_app(self._setting_overrides).test_client() as client:
-                    headers = client.get(
-                        "/",
-                        headers={
-                            "X-Forwarded-Proto": "https"
-                        },  # set protocal so that talisman sets HSTS headers
-                    ).headers
-
-                    csp_policy_parts = headers["Content-Security-Policy"].split("; ")
-                    self.assertIn(
-                        f"default-src 'self' {expected_cdn_url}", csp_policy_parts
-                    )
-                    self.assertIn(
-                        f"script-src 'self' https://www.googletagmanager.com 'unsafe-inline' 'unsafe-eval' {expected_cdn_url} 'nonce-{request.csp_nonce}'",
-                        csp_policy_parts,
-                    )
-                    self.assertIn(
-                        f"style-src 'self' https://tagmanager.google.com https://fonts.googleapis.com 'unsafe-inline' {expected_cdn_url}",
-                        csp_policy_parts,
-                    )
-                    self.assertIn(
-                        f"img-src 'self' data: https://www.google-analytics.com https://ssl.gstatic.com https://www.gstatic.com {expected_cdn_url}",
-                        csp_policy_parts,
-                    )
-                    self.assertIn(
-                        f"font-src 'self' data: https://fonts.gstatic.com {expected_cdn_url}",
-                        csp_policy_parts,
-                    )
-                    self.assertIn(
-                        "frame-src https://www.googletagmanager.com", csp_policy_parts
-                    )
-                    self.assertIn(
-                        f"connect-src 'self' {expected_cdn_url}", csp_policy_parts
-                    )
+            csp_policy_parts = headers["Content-Security-Policy"].split("; ")
+            self.assertIn(f"default-src 'self' {cdn_url}", csp_policy_parts)
+            self.assertIn(
+                f"script-src 'self' https://www.googletagmanager.com 'unsafe-inline' 'unsafe-eval' {cdn_url} 'nonce-{request.csp_nonce}'",
+                csp_policy_parts,
+            )
+            self.assertIn(
+                f"style-src 'self' https://tagmanager.google.com https://fonts.googleapis.com 'unsafe-inline' {cdn_url}",
+                csp_policy_parts,
+            )
+            self.assertIn(
+                f"img-src 'self' data: https://www.google-analytics.com https://ssl.gstatic.com https://www.gstatic.com {cdn_url}",
+                csp_policy_parts,
+            )
+            self.assertIn(
+                f"font-src 'self' data: https://fonts.gstatic.com {cdn_url}",
+                csp_policy_parts,
+            )
+            self.assertIn(
+                "frame-src https://www.googletagmanager.com", csp_policy_parts
+            )
+            self.assertIn(f"connect-src 'self' {cdn_url}", csp_policy_parts)
 
     # Indirectly covered by higher level integration
     # tests, keeping to highlight that create_app is where
