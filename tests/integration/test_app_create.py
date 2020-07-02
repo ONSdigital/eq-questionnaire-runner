@@ -110,10 +110,7 @@ class TestCreateApp(unittest.TestCase):  # pylint: disable=too-many-public-metho
 
     def test_csp_policy_headers(self):
         cdn_url = "https://cdn.test.domain"
-        self._setting_overrides = {
-            "EQ_ENABLE_LIVE_RELOAD": False,
-            "CDN_URL": cdn_url,
-        }
+        self._setting_overrides = {"EQ_ENABLE_LIVE_RELOAD": False, "CDN_URL": cdn_url}
 
         with create_app(self._setting_overrides).test_client() as client:
             headers = client.get(
