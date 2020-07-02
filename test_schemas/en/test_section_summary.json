@@ -188,6 +188,60 @@
             ]
         },
         {
+            "id": "household-count-section",
+            "title": "Household member count",
+            "summary": {
+                "show_on_completion": true,
+                "title": {
+                    "text_plural": {
+                        "forms": {
+                            "one": "{number_of_people} person lives here",
+                            "other": "{number_of_people} people live here"
+                        },
+                        "count": {
+                            "source": "answers",
+                            "identifier": "number-of-people-answer"
+                        }
+                    },
+                    "placeholders": [
+                        {
+                            "placeholder": "number_of_people",
+                            "value": {
+                                "source": "answers",
+                                "identifier": "number-of-people-answer"
+                            }
+                        }
+                    ]
+                }
+            },
+            "groups": [
+                {
+                    "id": "number-of-people-group",
+                    "title": "Number of people",
+                    "blocks": [
+                        {
+                            "type": "Question",
+                            "id": "number-of-people",
+                            "question": {
+                                "answers": [
+                                    {
+                                        "id": "number-of-people-answer",
+                                        "label": "Number of people",
+                                        "mandatory": true,
+                                        "type": "Number"
+                                    }
+                                ],
+                                "description": "",
+                                "id": "number-of-people-question",
+                                "title": "",
+                                "type": "General"
+                            }
+                        }
+                    ]
+                }
+            ]
+        },
+        {
             "id": "summary-section",
             "title": "Summary",
             "groups": [

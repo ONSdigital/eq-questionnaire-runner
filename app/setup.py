@@ -110,7 +110,6 @@ def create_app(  # noqa: C901  pylint: disable=too-complex, too-many-statements
 ):
     application = Flask(__name__, template_folder="../templates")
     application.config.from_object(settings)
-
     application.eq = {}
 
     with open(application.config["EQ_SECRETS_FILE"]) as secrets_file:
@@ -186,11 +185,7 @@ def create_app(  # noqa: C901  pylint: disable=too-complex, too-many-statements
 
     compress.init_app(application)
 
-    # Switch off flask default autoescaping as schema content can contain html
-    application.jinja_env.autoescape = False
-
-    # pylint: disable=no-member
-    application.jinja_env.add_extension("jinja2.ext.do")
+    setup_jinja_env(application)
 
     @application.after_request
     def apply_caching(response):  # pylint: disable=unused-variable
@@ -236,6 +231,18 @@ def create_app(  # noqa: C901  pylint: disable=too-complex, too-many-statements
         return response
 
     return application
+
+
+def setup_jinja_env(application):
+    # Enable whitespace removal
+    application.jinja_env.trim_blocks = True
+    application.jinja_env.lstrip_blocks = True
+
+    # Switch off flask default autoescaping as schema content can contain html
+    application.jinja_env.autoescape = False
+
+    # pylint: disable=no-member
+    application.jinja_env.add_extension("jinja2.ext.do")
 
 
 def setup_secure_headers(application):
