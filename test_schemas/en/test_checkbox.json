@@ -84,17 +84,13 @@
                                                 }
                                             }
                                         ],
-                                        "type": "Checkbox",
-                                        "validation": {
-                                            "messages": {}
-                                        }
+                                        "type": "Checkbox"
                                     }
                                 ],
                                 "id": "mandatory-checkbox-question",
                                 "title": "Which pizza toppings would you like?",
                                 "type": "General"
-                            },
-                            "routing_rules": []
+                            }
                         },
                         {
                             "type": "Question",
@@ -143,17 +139,13 @@
                                             }
                                         ],
                                         "q_code": "20",
-                                        "type": "Checkbox",
-                                        "validation": {
-                                            "messages": {}
-                                        }
+                                        "type": "Checkbox"
                                     }
                                 ],
                                 "id": "non-mandatory-checkbox-question",
                                 "title": "What extra toppings would you like?",
                                 "type": "General"
-                            },
-                            "routing_rules": []
+                            }
                         },
                         {
                             "type": "Question",
@@ -169,17 +161,13 @@
                                                 "value": "Estimate"
                                             }
                                         ],
-                                        "type": "Checkbox",
-                                        "validation": {
-                                            "messages": {}
-                                        }
+                                        "type": "Checkbox"
                                     }
                                 ],
                                 "id": "single-checkbox-question",
                                 "title": "Is this an estimate?",
                                 "type": "General"
-                            },
-                            "routing_rules": []
+                            }
                         },
                         {
                             "type": "Summary",

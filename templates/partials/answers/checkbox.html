@@ -2,7 +2,7 @@
 
 {% if answer.label %}
   {% set checkbox_label = answer.label %}
-{% elif answer.options|length == 1%}
+{% elif answer.options|length == 1 %}
   {% set checkbox_label = '' %}
 {% else %}
   {% set checkbox_label = _("Select all that apply") %}
