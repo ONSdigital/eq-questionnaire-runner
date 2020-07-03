@@ -4,7 +4,6 @@ import SummaryPage from "../../../generated_pages/custom_question_summary/summar
 import AgeBlock from "../../../generated_pages/custom_question_summary/age.page.js";
 import BaseSummaryPage from "../../../base_pages/summary.page.js";
 
-
 describe("Summary Screen", () => {
   beforeEach("Load the survey", () => {
     browser.openQuestionnaire("test_custom_question_summary.json");
@@ -14,6 +13,7 @@ describe("Summary Screen", () => {
     completeAllQuestions();
     expect($(BaseSummaryPage.summaryRowState(1)).getText()).to.contain("John Smith");
     expect($(BaseSummaryPage.summaryRowState(2)).getText()).to.contain("Cardiff Road\nNewport\nNP10 8XG");
+    expect($(BaseSummaryPage.summaryRowState(3)).getText()).to.contain("7\nThis age is an estimate");
   });
 
   it("Given no values are entered in a question with multiple answers and concatenation set, when on the summary screen then the correct response should be displayed", () => {
