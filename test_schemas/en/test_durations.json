@@ -81,7 +81,6 @@
                                         "type": "Duration"
                                     }
                                 ],
-                                "description": "",
                                 "id": "duration-question",
                                 "title": "Durations",
                                 "type": "General"
@@ -93,7 +92,7 @@
                         }
                     ],
                     "id": "durations",
-                    "title": ""
+                    "title": "Title"
                 }
             ]
         }

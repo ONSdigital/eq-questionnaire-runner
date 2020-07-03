@@ -134,7 +134,6 @@
                                 "answers": [
                                     {
                                         "id": "mutually-exclusive-answer",
-                                        "label": "",
                                         "mandatory": false,
                                         "options": [
                                             {

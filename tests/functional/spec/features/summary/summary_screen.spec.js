@@ -16,7 +16,6 @@ describe("Summary Screen", () => {
     expect($(SummaryPage.squareKilometres()).getText()).to.contain("123,456 km²");
     expect($(SummaryPage.testDecimal()).getText()).to.contain("123,456.78");
     expect($(SummaryPage.dessertGroupTitle()).getText()).to.contain("Dessert");
-    expect($$(SummaryPage.summaryGroupTitle())).to.be.empty;
   });
 
   it("Given a survey has been completed when a summary page is displayed then I should be able to submit the answers", () => {

@@ -262,6 +262,18 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
             ]
 
     @staticmethod
+    def get_single_string_value(schema_object):
+        """
+        Resolves an identifying string value for the schema_object. If text_plural the `other` form is returned.
+        :return: string value
+        """
+        if isinstance(schema_object, dict):
+            if "text_plural" in schema_object:
+                return schema_object["text_plural"]["forms"]["other"]
+            return schema_object["text"]
+        return schema_object
+
+    @staticmethod
     def get_all_questions_for_block(block):
         all_questions = []
         if block:

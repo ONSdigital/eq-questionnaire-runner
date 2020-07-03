@@ -33,21 +33,18 @@
                             "type": "Question",
                             "id": "name-block",
                             "question": {
-                                "description": "",
                                 "id": "name-question",
                                 "title": "Who is this questionnaire about?",
                                 "type": "General",
                                 "answers": [
                                     {
                                         "id": "first-name-answer",
-                                        "description": "",
                                         "label": "First Name",
                                         "mandatory": true,
                                         "type": "TextField"
                                     },
                                     {
                                         "id": "last-name-answer",
-                                        "description": "",
                                         "label": "Last Name",
                                         "mandatory": false,
                                         "type": "TextField"
