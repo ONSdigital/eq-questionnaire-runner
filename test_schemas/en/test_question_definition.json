@@ -27,7 +27,7 @@
             "groups": [
                 {
                     "id": "definition-group",
-                    "title": "",
+                    "title": "Title",
                     "blocks": [
                         {
                             "type": "Question",

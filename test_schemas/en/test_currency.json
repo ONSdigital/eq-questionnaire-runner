@@ -91,7 +91,6 @@
                                         }
                                     }
                                 ],
-                                "description": "",
                                 "id": "question",
                                 "title": "Currency Input Test",
                                 "type": "General"
@@ -104,7 +103,7 @@
                         }
                     ],
                     "id": "group",
-                    "title": ""
+                    "title": "Title"
                 }
             ]
         }

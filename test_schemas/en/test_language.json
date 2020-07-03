@@ -23,27 +23,24 @@
             "groups": [
                 {
                     "id": "language-group",
-                    "title": "",
+                    "title": "Title",
                     "blocks": [
                         {
                             "type": "Question",
                             "id": "name-block",
                             "question": {
-                                "description": "",
                                 "id": "name-question",
                                 "title": "Please enter a name",
                                 "type": "General",
                                 "answers": [
                                     {
                                         "id": "first-name",
-                                        "description": "",
                                         "label": "First Name",
                                         "mandatory": true,
                                         "type": "TextField"
                                     },
                                     {
                                         "id": "last-name",
-                                        "description": "",
                                         "label": "Last Name",
                                         "mandatory": false,
                                         "type": "TextField"
@@ -55,7 +52,6 @@
                             "type": "Question",
                             "id": "dob-block",
                             "question": {
-                                "description": "",
                                 "id": "dob-question",
                                 "title": {
                                     "text": "What is {person_name_possessive} date of birth?",
@@ -115,7 +111,6 @@
                                         }
                                     }
                                 ],
-                                "description": "",
                                 "id": "number-of-people-question",
                                 "title": "How many people live at your household?",
                                 "type": "General"

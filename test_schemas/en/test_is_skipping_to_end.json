@@ -52,7 +52,6 @@
                                         "type": "Radio"
                                     }
                                 ],
-                                "description": "",
                                 "id": "test-skipping-question",
                                 "type": "General"
                             },
@@ -136,7 +135,6 @@
                                         "type": "Radio"
                                     }
                                 ],
-                                "description": "",
                                 "id": "test-skipping-question-2",
                                 "title": "Were you forced to complete section 2?",
                                 "type": "General"

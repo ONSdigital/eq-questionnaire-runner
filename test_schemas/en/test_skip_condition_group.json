@@ -33,7 +33,6 @@
                             "id": "do-you-want-to-skip",
                             "routing_rules": [],
                             "question": {
-                                "description": "",
                                 "id": "do-you-want-to-skip-question",
                                 "title": "Do you want to skip?",
                                 "type": "General",
@@ -82,7 +81,6 @@
                             "id": "should-skip",
                             "routing_rules": [],
                             "question": {
-                                "description": "",
                                 "id": "should-skip-question",
                                 "title": "Do you want to skip?",
                                 "type": "General",
@@ -107,7 +105,6 @@
                             "id": "last-group-block",
                             "routing_rules": [],
                             "question": {
-                                "description": "",
                                 "id": "last-group-question",
                                 "title": "This group is required as a skipped group can’t be the last group",
                                 "type": "General",

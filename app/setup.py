@@ -1,5 +1,6 @@
-import copy
 import json
+from copy import deepcopy
+from typing import Dict
 from uuid import uuid4
 
 import boto3
@@ -34,37 +35,25 @@ CACHE_HEADERS = {
 }
 
 CSP_POLICY = {
-    "default-src": ["'self'", "https://cdn.ons.gov.uk"],
-    "font-src": [
-        "'self'",
-        "data:",
-        "https://cdn.ons.gov.uk",
-        "https://fonts.gstatic.com",
-    ],
+    "default-src": ["'self'"],
+    "font-src": ["'self'", "data:", "https://fonts.gstatic.com"],
     "script-src": [
         "'self'",
-        "https://cdn.ons.gov.uk",
         "https://www.googletagmanager.com",
         "'unsafe-inline'",
         "'unsafe-eval'",
     ],
     "style-src": [
         "'self'",
-        "https://cdn.ons.gov.uk",
         "https://tagmanager.google.com",
         "https://fonts.googleapis.com",
         "'unsafe-inline'",
     ],
-    "connect-src": [
-        "'self'",
-        "https://cdn.ons.gov.uk",
-        "https://cdn.eq.census-gcp.onsdigital.uk",
-    ],
+    "connect-src": ["'self'"],
     "frame-src": ["https://www.googletagmanager.com"],
     "img-src": [
         "'self'",
         "data:",
-        "https://cdn.ons.gov.uk",
         "https://www.google-analytics.com",
         "https://ssl.gstatic.com",
         "https://www.gstatic.com",
@@ -245,8 +234,16 @@ def setup_jinja_env(application):
     application.jinja_env.add_extension("jinja2.ext.do")
 
 
+def _add_cdn_url_to_csp_policy(cdn_url) -> Dict:
+    csp_policy = deepcopy(CSP_POLICY)
+    for directive in csp_policy:
+        if directive != "frame-src":
+            csp_policy[directive].append(cdn_url)
+    return csp_policy
+
+
 def setup_secure_headers(application):
-    csp_policy = copy.deepcopy(CSP_POLICY)
+    csp_policy = _add_cdn_url_to_csp_policy(application.config["CDN_URL"])
 
     if application.config["EQ_ENABLE_LIVE_RELOAD"]:
         # browsersync is configured to bind on port 5075

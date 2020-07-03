@@ -62,9 +62,8 @@
                                         "type": "TextField"
                                     }
                                 ],
-                                "description": "",
                                 "id": "favourite-lunch-question",
-                                "title": "",
+                                "title": "Title",
                                 "type": "General"
                             },
                             "routing_rules": []
