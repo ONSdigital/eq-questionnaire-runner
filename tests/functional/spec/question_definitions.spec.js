@@ -11,7 +11,7 @@ describe("Component: Definition", () => {
       expect($(DefinitionPage.definitionButton(1)).isDisplayed()).to.be.false;
 
       // When
-      $(DefinitionPage.definitionTitle(1)).click();
+      $(DefinitionPage.definitionTitle("1")).click();
 
       // Then
       $(DefinitionPage.definitionContent(1)).waitForDisplayed({ timeout: 300 });
@@ -23,8 +23,8 @@ describe("Component: Definition", () => {
       expect($(DefinitionPage.definitionButton(1)).isDisplayed()).to.be.false;
 
       // When
-      $(DefinitionPage.definitionTitle(1)).click();
-      $(DefinitionPage.definitionTitle(1)).click();
+      $(DefinitionPage.definitionTitle("1")).click();
+      $(DefinitionPage.definitionTitle("1")).click();
 
       // Then
       $(DefinitionPage.definitionContent(1)).waitForDisplayed({ timeout: 300, reverse: true });
@@ -36,7 +36,7 @@ describe("Component: Definition", () => {
       expect($(DefinitionPage.definitionButton(1)).isDisplayed()).to.be.false;
 
       // When
-      $(DefinitionPage.definitionTitle(1)).click();
+      $(DefinitionPage.definitionTitle("1")).click();
 
       // Then
       $(DefinitionPage.definitionContent(1)).waitForDisplayed({ timeout: 300 });
@@ -55,7 +55,7 @@ describe("Component: Definition", () => {
       expect($(DefinitionPage.definitionButton(2)).isDisplayed()).to.be.false;
 
       // When
-      $(DefinitionPage.definitionTitle(2)).click();
+      $(DefinitionPage.definitionTitle("2")).click();
 
       // Then
       $(DefinitionPage.definitionContent(2)).waitForDisplayed({ timeout: 300 });
