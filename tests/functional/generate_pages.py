@@ -82,19 +82,19 @@ SECTION_SUMMARY_PAGE_URL = r"""  url() { return `/questionnaire/sections/${this.
 """
 
 QUESTION_DEFINITION_TITLE_GETTER = Template(
-    r"""  definitionTitle(definitionIndex) { return `[data-qa='question-definition-title-${definitionIndex}}']`; }
+    r"""  definitionTitle(definitionIndex) { return `[data-qa='question-definition-title-${definitionIndex}']`; }
 
 """
 )
 
 QUESTION_DEFINITION_CONTENT_GETTER = Template(
-    r"""  definitionContent(definitionIndex) { return `[data-qa='question-definition-content-${definitionIndex}}']`; }
+    r"""  definitionContent(definitionIndex) { return `[data-qa='question-definition-content-${definitionIndex}']`; }
 
 """
 )
 
 QUESTION_DEFINITION_BUTTON_GETTER = Template(
-    r"""  definitionButton(definitionIndex) { return `[data-qa='question-definition-button-${definitionIndex}}']`; }
+    r"""  definitionButton(definitionIndex) { return `[data-qa='question-definition-button-${definitionIndex}']`; }
 
 """
 )
