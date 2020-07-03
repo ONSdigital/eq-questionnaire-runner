@@ -34,15 +34,13 @@
                                 "answers": [
                                     {
                                         "id": "comparison-date-answer",
-                                        "label": "",
                                         "mandatory": true,
                                         "q_code": "11",
                                         "type": "Date"
                                     }
                                 ],
-                                "description": "",
                                 "id": "comparison-date-question",
-                                "title": "",
+                                "title": "Title",
                                 "type": "General",
                                 "guidance": {
                                     "contents": [
@@ -74,7 +72,6 @@
                                         "type": "Date"
                                     }
                                 ],
-                                "description": "",
                                 "id": "date-questions",
                                 "title": {
                                     "text": "Enter {date} or offset by one day, month or year in either direction",
@@ -259,7 +256,7 @@
                         }
                     ],
                     "id": "group",
-                    "title": ""
+                    "title": "Title"
                 }
             ]
         }

@@ -49,7 +49,6 @@
                                         "type": "TextField"
                                     }
                                 ],
-                                "description": "",
                                 "id": "favourite-breakfast-question",
                                 "title": "What is your favourite breakfast food",
                                 "type": "General"
@@ -81,9 +80,8 @@
                                         "type": "TextField"
                                     }
                                 ],
-                                "description": "",
                                 "id": "favourite-lunch-question",
-                                "title": "",
+                                "title": "Title",
                                 "type": "General"
                             },
                             "routing_rules": []

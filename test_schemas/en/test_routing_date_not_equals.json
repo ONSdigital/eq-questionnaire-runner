@@ -39,7 +39,6 @@
                                         "type": "Date"
                                     }
                                 ],
-                                "description": "",
                                 "id": "date-questions",
                                 "title": "Enter a date other than 28 February 2018",
                                 "type": "General"
@@ -103,7 +102,7 @@
                         }
                     ],
                     "id": "group",
-                    "title": ""
+                    "title": "Title"
                 }
             ]
         }

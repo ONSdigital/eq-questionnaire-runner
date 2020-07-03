@@ -42,7 +42,6 @@
                                         "type": "MonthYearDate"
                                     }
                                 ],
-                                "description": "",
                                 "id": "date-questions",
                                 "title": {
                                     "text": "Enter a date greater than Return date: {date}",
@@ -163,7 +162,7 @@
                         }
                     ],
                     "id": "group",
-                    "title": ""
+                    "title": "Title"
                 }
             ]
         }

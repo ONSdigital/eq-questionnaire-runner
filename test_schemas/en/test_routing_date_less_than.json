@@ -39,7 +39,6 @@
                                         "type": "Date"
                                     }
                                 ],
-                                "description": "",
                                 "id": "date-questions",
                                 "title": "Enter a date less than Today",
                                 "type": "General"
@@ -103,7 +102,7 @@
                         }
                     ],
                     "id": "group",
-                    "title": ""
+                    "title": "Title"
                 }
             ]
         }

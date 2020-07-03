@@ -39,7 +39,6 @@
                                 "answers": [
                                     {
                                         "id": "checkbox-numeric-detail-answer",
-                                        "label": "",
                                         "mandatory": true,
                                         "options": [
                                             {
@@ -78,7 +77,6 @@
                                         }
                                     }
                                 ],
-                                "description": "",
                                 "id": "checkbox-question-numeric-detail",
                                 "title": "How many pizza toppings would you like?",
                                 "type": "General"
@@ -91,7 +89,7 @@
                         }
                     ],
                     "id": "checkboxes",
-                    "title": ""
+                    "title": "Title"
                 }
             ]
         }

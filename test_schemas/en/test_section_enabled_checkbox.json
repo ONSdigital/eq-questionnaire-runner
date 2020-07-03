@@ -35,7 +35,7 @@
                                 "answers": [
                                     {
                                         "id": "section-1-answer",
-                                        "label": "",
+                                        "label": "label 1",
                                         "mandatory": false,
                                         "options": [
                                             {
@@ -98,7 +98,7 @@
                                 "answers": [
                                     {
                                         "id": "section-2-answer",
-                                        "label": "",
+                                        "label": "label 2",
                                         "mandatory": false,
                                         "type": "Number"
                                     }
@@ -139,7 +139,7 @@
                                 "answers": [
                                     {
                                         "id": "section-3-answer",
-                                        "label": "",
+                                        "label": "label 3",
                                         "mandatory": false,
                                         "type": "Number"
                                     }
