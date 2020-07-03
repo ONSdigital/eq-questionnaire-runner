@@ -10,10 +10,10 @@
         "data-ga-category": "Question definition",
         "data-ga-action": "Open panel",
         "data-ga-label": definition.title,
-        "data-qa": "question-definition-title"
+        "data-qa": "question-definition-title-" ~ loop.index
       },
       "contentAttributes": {
-        "data-qa": "question-definition-content"
+        "data-qa": "question-definition-content-" ~ loop.index
       },
       "button": {
         "close": _("Hide this"),
@@ -23,7 +23,7 @@
           "data-ga-category": "Question definition",
           "data-ga-action": "Close panel",
           "data-ga-label": definition.title,
-          "data-qa": "question-definition-button"
+          "data-qa": "question-definition-button-" ~ loop.index
         }
       }
   }) %}
