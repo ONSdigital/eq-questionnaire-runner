@@ -10,7 +10,9 @@ from wtforms import validators
 
 from app.forms.field_factory import get_field_handler
 from app.forms.field_handlers.date_handler import DateHandler
+from app.forms.field_handlers.field_handler import FieldHandler
 from app.forms.validators import DateRangeCheck, SumCheck, MutuallyExclusiveCheck
+from app.helpers.template_helper import safe_content
 
 logger = logging.getLogger(__name__)
 
@@ -128,7 +130,11 @@ class QuestionnaireForm(FlaskForm):
         try:
             validator(answers, is_mandatory)
         except validators.ValidationError as e:
-            self.question_errors[question["id"]] = str(e)
+            error_message = str(e)
+
+            self.question_errors[question["id"]] = FieldHandler.format_question_title(
+                error_message, question.get("title")
+            )
             return False
 
         return True
@@ -336,7 +342,12 @@ def get_answer_fields(question, data, error_messages, answer_store, metadata, lo
                 ).get_field()
 
         answer_fields[answer["id"]] = get_field_handler(
-            answer, error_messages, answer_store, metadata, location
+            answer,
+            error_messages,
+            answer_store,
+            metadata,
+            location,
+            question_title=question.get("title"),
         ).get_field()
 
     return answer_fields

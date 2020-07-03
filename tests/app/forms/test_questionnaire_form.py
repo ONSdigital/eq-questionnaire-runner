@@ -1231,6 +1231,30 @@ class TestQuestionnaireForm(
                 "Enter an answer to continue.",
             )
 
+    def test_mandatory_mutually_exclusive_question_raises_error_with_question_text(
+        self
+    ):
+        with self.app_request_context():
+            schema = load_schema_from_name("test_question_title_in_error")
+
+            question_schema = schema.get_block("mutually-exclusive-checkbox").get(
+                "question"
+            )
+
+            form = generate_form(
+                schema,
+                question_schema,
+                AnswerStore(),
+                metadata=None,
+                form_data=MultiDict(),
+            )
+            form.validate_mutually_exclusive_question(question_schema)
+
+            self.assertEqual(
+                form.question_errors["mutually-exclusive-checkbox-question"],
+                "Select an answer to 'Were you a resident at any of the following addresses?' to continue",
+            )
+
     def test_mutually_exclusive_question_raises_error_when_both_answered(self):
         with self.app_request_context():
             schema = load_schema_from_name("test_mutually_exclusive")

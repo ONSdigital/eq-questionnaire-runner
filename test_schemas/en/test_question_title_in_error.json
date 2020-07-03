@@ -1,0 +1,153 @@
+{
+    "mime_type": "application/json/ons/eq",
+    "language": "en",
+    "schema_version": "0.0.1",
+    "data_version": "0.0.3",
+    "survey_id": "0",
+    "title": "Question Placeholder Test",
+    "theme": "default",
+    "description": "A questionnaire to test use of the question placeholder source",
+    "navigation": {
+        "visible": true
+    },
+    "metadata": [
+        {
+            "name": "user_id",
+            "type": "string"
+        },
+        {
+            "name": "period_id",
+            "type": "string"
+        },
+        {
+            "name": "ru_name",
+            "type": "string"
+        }
+    ],
+    "sections": [
+        {
+            "id": "mutually-exclusive-checkbox-section",
+            "title": "Checkbox",
+            "groups": [
+                {
+                    "id": "mutually-exclusive-mandatory-group",
+                    "title": "",
+                    "blocks": [
+                        {
+                            "type": "Question",
+                            "id": "mandatory-checkbox",
+                            "question": {
+                                "answers": [
+                                    {
+                                        "id": "mandatory-checkbox-answer",
+                                        "label": "",
+                                        "mandatory": true,
+                                        "options": [
+                                            {
+                                                "label": "Cheese",
+                                                "value": "Cheese",
+                                                "q_code": "1"
+                                            },
+                                            {
+                                                "label": "Ham",
+                                                "value": "Ham",
+                                                "q_code": "2"
+                                            },
+                                            {
+                                                "label": "Pineapple",
+                                                "value": "Pineapple",
+                                                "q_code": "3"
+                                            },
+                                            {
+                                                "label": "Tuna",
+                                                "value": "Tuna",
+                                                "q_code": "4"
+                                            },
+                                            {
+                                                "label": "Pepperoni",
+                                                "value": "Pepperoni",
+                                                "q_code": "5"
+                                            },
+                                            {
+                                                "label": "Other",
+                                                "q_code": "6",
+                                                "description": "Choose any other topping",
+                                                "value": "Other",
+                                                "detail_answer": {
+                                                    "mandatory": true,
+                                                    "id": "other-answer-mandatory",
+                                                    "label": "Please specify other",
+                                                    "type": "TextField"
+                                                }
+                                            }
+                                        ],
+                                        "type": "Checkbox",
+                                        "validation": {
+                                            "messages": {
+                                                "MANDATORY_CHECKBOX": "Select an answer to '%(question_title)s' to continue"
+                                            }
+                                        }
+                                    }
+                                ],
+                                "description": "",
+                                "id": "mandatory-checkbox-question",
+                                "title": "Which pizza toppings would you like?",
+                                "type": "General"
+                            },
+                            "routing_rules": []
+                        },
+                        {
+                            "type": "Question",
+                            "id": "mutually-exclusive-checkbox",
+                            "question": {
+                                "id": "mutually-exclusive-checkbox-question",
+                                "type": "MutuallyExclusive",
+                                "title": "Were you a resident at any of the following addresses?",
+                                "mandatory": true,
+                                "answers": [
+                                    {
+                                        "id": "checkbox-answer",
+                                        "label": "Select answer",
+                                        "type": "Checkbox",
+                                        "mandatory": false,
+                                        "options": [
+                                            {
+                                                "label": "7 Evelyn Street, Barry",
+                                                "value": "7 Evelyn Street, Barry"
+                                            },
+                                            {
+                                                "label": "251 Argae Lane, Barry",
+                                                "value": "251 Argae Lane, Barry"
+                                            }
+                                        ]
+                                    },
+                                    {
+                                        "id": "checkbox-exclusive-answer",
+                                        "mandatory": false,
+                                        "type": "Checkbox",
+                                        "options": [
+                                            {
+                                                "label": "I prefer not to say",
+                                                "description": "Some description",
+                                                "value": "I prefer not to say"
+                                            }
+                                        ]
+                                    }
+                                ],
+                                "validation": {
+                                    "messages": {
+                                        "MANDATORY_QUESTION": "Select an answer to '%(question_title)s' to continue"
+                                    }
+                                }
+                            }
+                        },
+                        {
+                            "type": "Summary",
+                            "id": "summary"
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}

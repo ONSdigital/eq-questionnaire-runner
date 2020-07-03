@@ -34,6 +34,7 @@ def get_field_handler(
     metadata=None,
     location=None,
     disable_validation=False,
+    question_title=None,
 ):
     return FIELD_HANDLER_MAPPINGS[answer.get("type")](
         answer,
@@ -42,4 +43,5 @@ def get_field_handler(
         metadata=metadata,
         location=location,
         disable_validation=disable_validation,
+        question_title=question_title,
     )

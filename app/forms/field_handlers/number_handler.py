@@ -23,6 +23,7 @@ class NumberHandler(FieldHandler):
         metadata: dict = None,
         location: Location = None,
         disable_validation: bool = False,
+        question_title: str = None,
     ):
         super().__init__(
             answer_schema,
@@ -31,6 +32,7 @@ class NumberHandler(FieldHandler):
             metadata,
             location,
             disable_validation,
+            question_title,
         )
         self.references = self.get_field_references()
 
