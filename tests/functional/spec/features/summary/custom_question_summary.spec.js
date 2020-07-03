@@ -1,7 +1,9 @@
 import AddressBlockPage from "../../../generated_pages/custom_question_summary/address.page.js";
 import NameBlockPage from "../../../generated_pages/custom_question_summary/name.page.js";
 import SummaryPage from "../../../generated_pages/custom_question_summary/summary.page.js";
+import AgeBlock from "../../../generated_pages/custom_question_summary/age.page.js";
 import BaseSummaryPage from "../../../base_pages/summary.page.js";
+
 
 describe("Summary Screen", () => {
   beforeEach("Load the survey", () => {
@@ -17,6 +19,7 @@ describe("Summary Screen", () => {
   it("Given no values are entered in a question with multiple answers and concatenation set, when on the summary screen then the correct response should be displayed", () => {
     $(NameBlockPage.submit()).click();
     $(AddressBlockPage.submit()).click();
+    $(AgeBlock.submit()).click();
     expect(browser.getUrl()).to.contain(SummaryPage.pageName);
     expect($(BaseSummaryPage.summaryRowState(1)).getText()).to.contain("No answer provided");
   });
@@ -29,5 +32,8 @@ describe("Summary Screen", () => {
     $(AddressBlockPage.townCity()).setValue("Newport");
     $(AddressBlockPage.postcode()).setValue("NP10 8XG");
     $(AddressBlockPage.submit()).click();
+    $(AgeBlock.number()).setValue(7);
+    $(AgeBlock.singleCheckboxThisAgeIsAnEstimate()).click();
+    $(AgeBlock.submit()).click();
   }
 });

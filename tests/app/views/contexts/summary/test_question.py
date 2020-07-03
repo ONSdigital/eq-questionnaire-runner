@@ -167,6 +167,58 @@ class TestQuestion(AppContextTestCase):  # pylint: disable=too-many-public-metho
         )
         self.assertEqual(len(question.answers), 1)
 
+    def test_concatenate_number_and_checkbox_answers(self):
+        answer_separators = {"Newline": "<br>", "Space": " "}
+
+        for concatenation_type, concatenation_character in answer_separators.items():
+            with self.subTest(
+                concatenation_type=concatenation_type,
+                concatenation_character=concatenation_character,
+            ):
+                # Given
+                self.answer_store.add_or_update(Answer(answer_id="age", value=7))
+                self.answer_store.add_or_update(
+                    Answer(answer_id="estimate", value=["This age is an estimate"])
+                )
+
+                age_answer_schema = {
+                    "id": "age",
+                    "label": "Enter your age",
+                    "mandatory": False,
+                    "type": "Number",
+                }
+                checkbox_answer_schema = {
+                    "id": "estimate",
+                    "mandatory": False,
+                    "options": [
+                        {
+                            "label": "This age is an estimate",
+                            "value": "This age is an estimate",
+                        }
+                    ],
+                    "type": "Checkbox",
+                }
+
+                question_schema = {
+                    "id": "question_id",
+                    "title": "question_title",
+                    "type": "General",
+                    "answers": [age_answer_schema, checkbox_answer_schema],
+                    "summary": {"concatenation_type": concatenation_type},
+                }
+
+                # When
+                question = Question(
+                    question_schema, self.answer_store, self.schema, None
+                )
+
+                # Then
+                self.assertEqual(
+                    question.answers[0]["value"],
+                    f"7{concatenation_character}This age is an estimate",
+                )
+                self.assertEqual(len(question.answers), 1)
+
     def test_create_question_with_multiple_answers(self):
         # Given
         self.answer_store.add_or_update(Answer(answer_id="answer_1", value="Han"))
