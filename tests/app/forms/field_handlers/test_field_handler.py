@@ -57,7 +57,7 @@ def test_get_mandatory_validator_mandatory_with_question_in_error():
         "mandatory": True,
         "validation": {
             "messages": {
-                "MANDATORY_TEXTFIELD": "Select an answer to '%(question_title)s'"
+                "MANDATORY_TEXTFIELD": "Select an answer to `%(question_title)s’"
             }
         },
     }
@@ -72,4 +72,4 @@ def test_get_mandatory_validator_mandatory_with_question_in_error():
     validate_with = text_area_handler.get_mandatory_validator()
 
     assert isinstance(validate_with, ResponseRequired)
-    assert validate_with.message == "Select an answer to 'To be or not to be?'"
+    assert validate_with.message == "Select an answer to `To be or not to be?’"
