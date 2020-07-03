@@ -27,7 +27,7 @@
             "groups": [
                 {
                     "id": "mutually-exclusive-mandatory-group",
-                    "title": "",
+                    "title": "Mutually Exclusive Group",
                     "blocks": [
                         {
                             "type": "Question",
@@ -36,7 +36,6 @@
                                 "answers": [
                                     {
                                         "id": "mandatory-checkbox-answer",
-                                        "label": "",
                                         "mandatory": true,
                                         "options": [
                                             {
@@ -80,12 +79,11 @@
                                         "type": "Checkbox",
                                         "validation": {
                                             "messages": {
-                                                "MANDATORY_CHECKBOX": "Select an answer to '%(question_title)s' to continue"
+                                                "MANDATORY_CHECKBOX": "Select an answer to `%(question_title)s’ to continue"
                                             }
                                         }
                                     }
                                 ],
-                                "description": "",
                                 "id": "mandatory-checkbox-question",
                                 "title": "Which pizza toppings would you like?",
                                 "type": "General"
@@ -132,7 +130,7 @@
                                 ],
                                 "validation": {
                                     "messages": {
-                                        "MANDATORY_QUESTION": "Select an answer to '%(question_title)s' to continue"
+                                        "MANDATORY_QUESTION": "Select an answer to `%(question_title)s’ to continue"
                                     }
                                 }
                             }
