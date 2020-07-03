@@ -39,7 +39,6 @@
                                 "answers": [
                                     {
                                         "id": "mandatory-checkbox-answer",
-                                        "label": "",
                                         "mandatory": true,
                                         "options": [
                                             {
@@ -85,18 +84,13 @@
                                                 }
                                             }
                                         ],
-                                        "type": "Checkbox",
-                                        "validation": {
-                                            "messages": {}
-                                        }
+                                        "type": "Checkbox"
                                     }
                                 ],
-                                "description": "",
                                 "id": "mandatory-checkbox-question",
                                 "title": "Which pizza toppings would you like?",
                                 "type": "General"
-                            },
-                            "routing_rules": []
+                            }
                         },
                         {
                             "type": "Question",
@@ -105,6 +99,7 @@
                                 "answers": [
                                     {
                                         "id": "non-mandatory-checkbox-answer",
+                                        "label": "Select any answers that apply",
                                         "mandatory": false,
                                         "options": [
                                             {
@@ -144,18 +139,35 @@
                                             }
                                         ],
                                         "q_code": "20",
-                                        "type": "Checkbox",
-                                        "validation": {
-                                            "messages": {}
-                                        }
+                                        "type": "Checkbox"
                                     }
                                 ],
-                                "description": "",
                                 "id": "non-mandatory-checkbox-question",
                                 "title": "What extra toppings would you like?",
                                 "type": "General"
-                            },
-                            "routing_rules": []
+                            }
+                        },
+                        {
+                            "type": "Question",
+                            "id": "single-checkbox",
+                            "question": {
+                                "answers": [
+                                    {
+                                        "id": "single-checkbox-answer",
+                                        "mandatory": false,
+                                        "options": [
+                                            {
+                                                "label": "Estimate",
+                                                "value": "Estimate"
+                                            }
+                                        ],
+                                        "type": "Checkbox"
+                                    }
+                                ],
+                                "id": "single-checkbox-question",
+                                "title": "Is this an estimate?",
+                                "type": "General"
+                            }
                         },
                         {
                             "type": "Summary",
@@ -163,7 +175,7 @@
                         }
                     ],
                     "id": "checkboxes",
-                    "title": ""
+                    "title": "Title"
                 }
             ]
         }

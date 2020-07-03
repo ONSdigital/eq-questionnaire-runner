@@ -59,8 +59,8 @@ def render_template(template, **kwargs):
         get_locale().language, cookie_session.get("theme", "census")
     )
     page_header_context.update({"title": cookie_session.get("survey_title")})
-
     google_tag_mananger_context = get_google_tag_mananger_context()
+    cdn_url = f'{current_app.config["CDN_URL"]}{current_app.config["CDN_ASSETS_PATH"]}'
 
     return flask_render_template(
         template,
@@ -73,6 +73,7 @@ def render_template(template, **kwargs):
         schema_theme=cookie_session.get("theme"),
         language_code=get_locale().language,
         survey_title=cookie_session.get("survey_title"),
+        cdn_url=cdn_url,
         **google_tag_mananger_context,
         **kwargs,
     )

@@ -54,11 +54,6 @@ class SectionHandler:
     def get_resume_url(self):
         return self._router.get_section_resume_url(self._routing_path)
 
-    def get_page_title(self):
-        return self._schema.get_summary_title_for_section(
-            self._section_id
-        ) or self._schema.get_title_for_section(self._section_id)
-
     def can_display_summary(self):
         return self._schema.get_summary_for_section(
             self._section_id

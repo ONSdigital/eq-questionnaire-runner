@@ -39,7 +39,6 @@
                                 "answers": [
                                     {
                                         "id": "mandatory-checkbox-answer",
-                                        "label": "",
                                         "mandatory": false,
                                         "options": [
                                             {
@@ -102,7 +101,6 @@
                                         }
                                     }
                                 ],
-                                "description": "",
                                 "id": "mandatory-checkbox-question",
                                 "title": "Which pizza toppings would you like?",
                                 "type": "General"
@@ -115,7 +113,7 @@
                         }
                     ],
                     "id": "checkboxes",
-                    "title": ""
+                    "title": "Title"
                 }
             ]
         }

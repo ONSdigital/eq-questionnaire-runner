@@ -39,20 +39,20 @@
                                     {
                                         "description": "Enter the total gross weekly pay",
                                         "id": "answer",
-                                        "label": "",
+                                        "label": "Enter a number",
                                         "mandatory": false,
                                         "type": "Number"
                                     }
                                 ],
                                 "id": "question",
-                                "title": "",
+                                "title": "Title",
                                 "type": "General"
                             },
                             "routing_rules": []
                         }
                     ],
                     "id": "group",
-                    "title": ""
+                    "title": "Title"
                 }
             ]
         },
