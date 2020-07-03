@@ -1252,7 +1252,7 @@ class TestQuestionnaireForm(
 
             self.assertEqual(
                 form.question_errors["mutually-exclusive-checkbox-question"],
-                "Select an answer to 'Were you a resident at any of the following addresses?' to continue",
+                "Select an answer to `Were you a resident at any of the following addresses?’ to continue",
             )
 
     def test_mutually_exclusive_question_raises_error_when_both_answered(self):
