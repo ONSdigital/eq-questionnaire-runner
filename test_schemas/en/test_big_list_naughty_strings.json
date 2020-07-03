@@ -3576,8 +3576,7 @@
                                     }
                                 ],
                                 "type": "General",
-                                "title": "",
-                                "description": "",
+                                "title": "Title",
                                 "id": "question"
                             },
                             "id": "textarea-block"
@@ -3587,7 +3586,7 @@
                             "id": "textarea-summary"
                         }
                     ],
-                    "title": "",
+                    "title": "Title",
                     "id": "textarea-group"
                 }
             ]

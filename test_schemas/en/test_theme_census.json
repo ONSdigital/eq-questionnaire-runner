@@ -36,7 +36,6 @@
                                         "type": "TextField"
                                     }
                                 ],
-                                "description": "",
                                 "id": "name-question",
                                 "title": "What is your name?",
                                 "type": "General"

@@ -51,9 +51,8 @@
                                         "type": "Radio"
                                     }
                                 ],
-                                "description": "",
                                 "id": "food-question",
-                                "title": "",
+                                "title": "Title",
                                 "type": "General"
                             },
                             "routing_rules": []
@@ -81,7 +80,6 @@
                                         "type": "Radio"
                                     }
                                 ],
-                                "description": "",
                                 "id": "drink-section",
                                 "title": "What beverage would you like to accompany your choice of breakfast?",
                                 "type": "General"
@@ -103,7 +101,7 @@
                         }
                     ],
                     "id": "breakfast",
-                    "title": ""
+                    "title": "Title"
                 }
             ]
         }

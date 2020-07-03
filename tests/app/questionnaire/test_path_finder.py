@@ -214,16 +214,23 @@ class TestPathFinder(AppContextTestCase):
         schema = load_schema_from_name("test_checkbox")
         section_id = schema.get_section_id_for_block_id("mandatory-checkbox")
         expected_path = RoutingPath(
-            ["mandatory-checkbox", "non-mandatory-checkbox", "summary"],
+            [
+                "mandatory-checkbox",
+                "non-mandatory-checkbox",
+                "single-checkbox",
+                "summary",
+            ],
             section_id="default-section",
         )
 
         answer_1 = Answer(answer_id="mandatory-checkbox-answer", value="Cheese")
         answer_2 = Answer(answer_id="non-mandatory-checkbox-answer", value="deep pan")
+        answer_3 = Answer(answer_id="single-checkbox-answer", value="Estimate")
 
         answer_store = AnswerStore()
         answer_store.add_or_update(answer_1)
         answer_store.add_or_update(answer_2)
+        answer_store.add_or_update(answer_3)
 
         progress_store = ProgressStore(
             [

@@ -40,9 +40,8 @@
                                         "type": "TextField"
                                     }
                                 ],
-                                "description": "",
                                 "id": "country-of-birth-question",
-                                "title": "",
+                                "title": "Title",
                                 "type": "General"
                             },
                             "routing_rules": []
@@ -53,7 +52,7 @@
                         }
                     ],
                     "id": "group",
-                    "title": ""
+                    "title": "Title"
                 }
             ]
         }
