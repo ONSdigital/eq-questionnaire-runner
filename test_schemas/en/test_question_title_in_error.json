@@ -4,12 +4,9 @@
     "schema_version": "0.0.1",
     "data_version": "0.0.3",
     "survey_id": "0",
-    "title": "Question Placeholder Test",
+    "title": "Question Validation Test",
     "theme": "default",
-    "description": "A questionnaire to test use of the question placeholder source",
-    "navigation": {
-        "visible": true
-    },
+    "description": "A questionnaire to test use of the question title in validation",
     "metadata": [
         {
             "name": "user_id",
@@ -27,7 +24,6 @@
     "sections": [
         {
             "id": "mutually-exclusive-checkbox-section",
-            "title": "Checkbox",
             "groups": [
                 {
                     "id": "mutually-exclusive-mandatory-group",
