@@ -5,7 +5,6 @@
     "data_version": "0.0.3",
     "survey_id": "0",
     "title": "Test Survey - Checkbox and Radio option descriptions",
-    "description": "",
     "theme": "default",
     "metadata": [
         {
@@ -108,7 +107,6 @@
                                         }
                                     }
                                 ],
-                                "description": "",
                                 "id": "radio-question",
                                 "title": "Did this business make major changes in the following areas?",
                                 "type": "General"

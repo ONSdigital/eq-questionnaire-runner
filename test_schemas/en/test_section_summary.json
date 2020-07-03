@@ -45,7 +45,6 @@
                                     {
                                         "id": "insurance-type-answer",
                                         "type": "Radio",
-                                        "label": "",
                                         "mandatory": false,
                                         "options": [
                                             {
@@ -76,7 +75,6 @@
                                     {
                                         "id": "insurance-address-answer",
                                         "type": "TextArea",
-                                        "label": "",
                                         "mandatory": false
                                     }
                                 ]
@@ -163,7 +161,6 @@
                                     {
                                         "id": "house-type-answer",
                                         "type": "Radio",
-                                        "label": "",
                                         "mandatory": false,
                                         "options": [
                                             {
@@ -231,9 +228,8 @@
                                         "type": "Number"
                                     }
                                 ],
-                                "description": "",
                                 "id": "number-of-people-question",
-                                "title": "",
+                                "title": "Title",
                                 "type": "General"
                             }
                         }

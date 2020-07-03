@@ -261,9 +261,8 @@
                                         "type": "TextField"
                                     }
                                 ],
-                                "description": "",
                                 "id": "favourite-drink-question",
-                                "title": "",
+                                "title": "Title",
                                 "type": "General"
                             }
                         },

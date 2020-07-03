@@ -48,16 +48,15 @@
                                         }
                                     }
                                 ],
-                                "description": "",
                                 "id": "question",
-                                "title": "",
+                                "title": "Title",
                                 "type": "General"
                             },
                             "routing_rules": []
                         }
                     ],
                     "id": "group",
-                    "title": ""
+                    "title": "Title"
                 }
             ]
         },

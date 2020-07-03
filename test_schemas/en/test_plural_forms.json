@@ -48,9 +48,8 @@
                                         }
                                     }
                                 ],
-                                "description": "",
                                 "id": "number-of-people-question",
-                                "title": "",
+                                "title": "Title",
                                 "type": "General"
                             }
                         },
