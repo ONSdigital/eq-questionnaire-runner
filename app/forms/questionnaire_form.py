@@ -12,7 +12,6 @@ from app.forms.field_factory import get_field_handler
 from app.forms.field_handlers.date_handler import DateHandler
 from app.forms.field_handlers.field_handler import FieldHandler
 from app.forms.validators import DateRangeCheck, SumCheck, MutuallyExclusiveCheck
-from app.helpers.template_helper import safe_content
 
 logger = logging.getLogger(__name__)
 
