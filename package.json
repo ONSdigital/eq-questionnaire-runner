@@ -41,7 +41,7 @@
     "eslint-plugin-promise": "^4.2.1",
     "eslint-plugin-standard": "^4.0.1",
     "json-web-key": "^0.4.0",
-    "jsrsasign": "^8.0.16",
+    "jsrsasign": "^8.0.19",
     "lint-staged": "^10.2.7",
     "livereload": "^0.9.1",
     "node-jose": "^1.1.4",
