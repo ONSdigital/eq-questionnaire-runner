@@ -103,6 +103,49 @@ class TestMultipleLogin(MultipleClientTestCase):
         last_response_b = self.cache[self.client_b]["last_response"]
         self.assertEqual(last_response_b.status_code, 401)
 
+    def test_multiple_users_same_survey_different_languages(self):
+        """Tests that multiple sessions can be created which work on the same
+        survey in different languages
+        """
+
+        # user A launches the test language questionnaire in Gaeilge
+        self.launchSurvey(self.client_a, "test_language", language_code="ga")
+        last_response_a = self.cache[self.client_a]["last_response"]
+        self.assertIn("Iontráil ainm", last_response_a.get_data(True))
+
+        # user A changes language to English and has the option to change back
+        self.get(self.client_a, "/questionnaire/name-block/?language_code=en")
+        last_response_a = self.cache[self.client_a]["last_response"]
+        self.assertIn("Please enter a name", last_response_a.get_data(True))
+        self.assertIn("Gaeilge", last_response_a.get_data(True))
+
+        # user B launches the same questionnaire but in Welsh
+        self.launchSurvey(self.client_b, "test_language", language_code="cy")
+        last_response_b = self.cache[self.client_b]["last_response"]
+        self.assertIn("Rhowch enw", last_response_b.get_data(True))
+
+        # user B posts an answer and the questionnaire language is still Welsh
+        self.post(self.client_b, {"first-name": "John", "last-name": "Smith"})
+        last_response_b = self.cache[self.client_b]["last_response"]
+        self.assertIn(
+            "Beth yw dyddiad geni John Smith?", last_response_b.get_data(True)
+        )
+
+        # user A refreshes his page and sees the answers from B
+        self.get(self.client_a, "/questionnaire/name-block/")
+        last_response_a = self.cache[self.client_a]["last_response"]
+        self.assertIn("John", last_response_a.get_data(True))
+        self.assertIn("Smith", last_response_a.get_data(True))
+
+        # user A language is still English, but with the option to change it to Gaeilge
+        self.assertIn("Please enter a name", last_response_a.get_data(True))
+        self.assertIn("Gaeilge", last_response_a.get_data(True))
+
+        # user A changes language to Gaeilge
+        self.get(self.client_a, "/questionnaire/name-block/?language_code=ga")
+        last_response_a = self.cache[self.client_a]["last_response"]
+        self.assertIn("Iontráil ainm", last_response_a.get_data(True))
+
 
 class TestCollectionMetadataStorage(MultipleClientTestCase):
     def setUp(self):

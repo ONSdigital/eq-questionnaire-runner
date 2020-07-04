@@ -12,6 +12,7 @@ def fake_session_data():
         tx_id="tx_id",
         schema_name="some_schema_name",
         language_code=None,
+        launch_language_code=None,
         survey_url=None,
         ru_ref="ru_ref",
         response_id="response_id",
