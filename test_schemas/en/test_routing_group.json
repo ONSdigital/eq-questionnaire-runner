@@ -32,7 +32,6 @@
                             "type": "Question",
                             "id": "which-group-block",
                             "question": {
-                                "description": "",
                                 "id": "which-group-question",
                                 "title": "Select Group",
                                 "type": "General",
@@ -89,7 +88,6 @@
                             "id": "group1-block",
                             "routing_rules": [],
                             "question": {
-                                "description": "",
                                 "id": "group1-question",
                                 "title": "Did you want Group 1?",
                                 "type": "General",
@@ -114,7 +112,6 @@
                             "id": "group2-block",
                             "routing_rules": [],
                             "question": {
-                                "description": "",
                                 "id": "group2-question",
                                 "title": "Did you want Group 2?",
                                 "type": "General",
