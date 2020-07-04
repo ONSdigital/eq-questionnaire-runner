@@ -10,7 +10,6 @@ from app.utilities.schema import get_allowed_languages
 # CLDR (http://cldr.unicode.org) for it and this is required for survey runner
 # to work (http://babel.pocoo.org/en/latest/locale.html).
 
-
 LANGUAGE_TEXT = {
     "en": "English",
     "cy": "Cymraeg",
@@ -21,7 +20,6 @@ LANGUAGE_TEXT = {
 
 def handle_language():
     session_store = get_session_store()
-
     if session_store:
         launch_language = (
             session_store.session_data.launch_language_code or DEFAULT_LANGUAGE_CODE
@@ -30,7 +28,6 @@ def handle_language():
             session_store.session_data.schema_name, launch_language
         )
         request_language = request.args.get("language_code")
-
         if request_language and request_language in g.allowed_languages:
             session_store.session_data.language_code = request_language
             session_store.save()
