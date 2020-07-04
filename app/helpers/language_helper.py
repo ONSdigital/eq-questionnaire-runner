@@ -1,8 +1,7 @@
 from flask import g, request
 from flask_babel import get_locale
-from flask_login import current_user
 
-from app.globals import get_metadata, get_session_store
+from app.globals import get_session_store
 from app.questionnaire.questionnaire_schema import DEFAULT_LANGUAGE_CODE
 from app.utilities.schema import get_allowed_languages
 
@@ -50,10 +49,3 @@ def _get_language_context(language_code):
         "text": LANGUAGE_TEXT.get(language_code),
         "current": language_code == get_locale().language,
     }
-
-
-def _get_launch_language():
-    metadata = get_metadata(current_user)
-    if metadata:
-        return metadata["language_code"]
-    return DEFAULT_LANGUAGE_CODE
