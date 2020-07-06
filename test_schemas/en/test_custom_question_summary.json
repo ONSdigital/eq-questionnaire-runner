@@ -43,21 +43,18 @@
                                         "id": "first-name",
                                         "label": "First name",
                                         "mandatory": false,
-                                        "q_code": "30",
                                         "type": "TextField"
                                     },
                                     {
                                         "id": "middle-name",
                                         "label": "Middle name",
                                         "mandatory": false,
-                                        "q_code": "30",
                                         "type": "TextField"
                                     },
                                     {
                                         "id": "last-name",
                                         "label": "Last name",
                                         "mandatory": false,
-                                        "q_code": "30",
                                         "type": "TextField"
                                     }
                                 ]
@@ -78,36 +75,62 @@
                                         "id": "address-line1",
                                         "label": "Address Line 1",
                                         "mandatory": false,
-                                        "q_code": "30",
                                         "type": "TextField"
                                     },
                                     {
                                         "id": "address-line2",
                                         "label": "Address Line 2",
                                         "mandatory": false,
-                                        "q_code": "30",
                                         "type": "TextField"
                                     },
                                     {
                                         "id": "town-city",
                                         "label": "Town/City",
                                         "mandatory": false,
-                                        "q_code": "30",
                                         "type": "TextField"
                                     },
                                     {
                                         "id": "county",
                                         "label": "County",
                                         "mandatory": false,
-                                        "q_code": "30",
                                         "type": "TextField"
                                     },
                                     {
                                         "id": "postcode",
                                         "label": "Postcode",
                                         "mandatory": false,
-                                        "q_code": "30",
                                         "type": "TextField"
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "type": "Question",
+                            "id": "age",
+                            "question": {
+                                "id": "age-question",
+                                "title": "Age",
+                                "type": "General",
+                                "summary": {
+                                    "concatenation_type": "Newline"
+                                },
+                                "answers": [
+                                    {
+                                        "id": "age-number",
+                                        "label": "Enter your age",
+                                        "mandatory": false,
+                                        "type": "Number"
+                                    },
+                                    {
+                                        "id": "single-checkbox-answer",
+                                        "mandatory": false,
+                                        "options": [
+                                            {
+                                                "label": "This age is an estimate",
+                                                "value": "This age is an estimate"
+                                            }
+                                        ],
+                                        "type": "Checkbox"
                                     }
                                 ]
                             }
