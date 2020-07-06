@@ -33,7 +33,7 @@ describe("Question Variants First Item in List", () => {
     $(ListCollectorAddPage.submit()).click();
     $(ListCollectorPage.no()).click();
     $(ListCollectorPage.submit()).click();
-    $(HubPage.summaryRowLink(3)).click();
+    $(HubPage.summaryRowLink("section-3")).click();
     expect($(ListStatusQuestion.questionText()).getText()).to.contain("You are not the first person in the list");
   });
 });

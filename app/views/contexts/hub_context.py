@@ -66,7 +66,7 @@ class HubContext(Context):
         }
 
     def get_row_context_for_section(
-        self, section_name: str, section_status: str, section_url: str
+        self, section_name: str, section_status: str, section_id: str, section_url: str
     ) -> Mapping[str, Union[str, List]]:
 
         section_content = self.SECTION_CONTENT_STATES[section_status]
@@ -74,6 +74,8 @@ class HubContext(Context):
             "rowTitle": section_name,
             "rowItems": [
                 {
+                    "rowTitleAttributes": {"data-qa": "hub-row-title-" + section_id},
+                    "attributes": {"data-qa": "hub-row-state-" + section_id},
                     "valueList": [{"text": section_content["text"]}],
                     "actions": [
                         {
@@ -82,6 +84,7 @@ class HubContext(Context):
                                 section_name=section_name
                             ),
                             "url": section_url,
+                            "attributes": {"data-qa": "hub-row-link-" + section_id},
                         }
                     ],
                 }
@@ -121,6 +124,7 @@ class HubContext(Context):
         return self.get_row_context_for_section(
             section_title,
             section_status,
+            section_id,
             self.get_section_url(section_id, list_item_id),
         )
 

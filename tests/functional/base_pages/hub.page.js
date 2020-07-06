@@ -53,16 +53,16 @@ class HubPage extends BasePage {
     return "table.summary__items";
   }
 
-  summaryRowState(number = 1) {
-    return `tbody:nth-child(${number}) tr td.summary__values`;
+  summaryRowState(sectionId = "section-1") {
+    return `[data-qa="hub-row-state-${sectionId}"]`;
   }
 
-  summaryRowLink(number = 1) {
-    return `tbody:nth-child(${number}) tr td.summary__actions a`;
+  summaryRowLink(sectionId = "section-1") {
+    return `[data-qa="hub-row-link-${sectionId}"]`;
   }
 
-  summaryRowTitle(number = 1) {
-    return `tbody:nth-child(${number}) tr td.summary__item-title`;
+  summaryRowTitle(sectionId = "section-1") {
+    return `[data-qa="hub-row-title-${sectionId}"]`;
   }
 }
 

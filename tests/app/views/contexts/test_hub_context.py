@@ -19,12 +19,15 @@ def test_get_not_started_row_for_section(
         "rowTitle": "Breakfast",
         "rowItems": [
             {
+                "rowTitleAttributes": {"data-qa": "hub-row-title-section-1"},
+                "attributes": {"data-qa": "hub-row-state-section-1"},
                 "valueList": [{"text": "Not started"}],
                 "actions": [
                     {
                         "text": "Start section",
                         "ariaLabel": "Start Breakfast section",
                         "url": "http://some/url",
+                        "attributes": {"data-qa": "hub-row-link-section-1"},
                     }
                 ],
             }
@@ -43,6 +46,7 @@ def test_get_not_started_row_for_section(
     actual = hub.get_row_context_for_section(
         section_name="Breakfast",
         section_status=CompletionStatus.NOT_STARTED,
+        section_id="section-1",
         section_url="http://some/url",
     )
 
@@ -81,6 +85,7 @@ def test_get_completed_row_for_section(
     actual = hub.get_row_context_for_section(
         section_name="Breakfast",
         section_status=CompletionStatus.COMPLETED,
+        section_id="section-1",
         section_url="http://some/url",
     )
 
