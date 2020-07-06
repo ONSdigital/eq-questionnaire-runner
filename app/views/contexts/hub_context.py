@@ -107,16 +107,18 @@ class HubContext(Context):
 
         return url_for("questionnaire.get_section", section_id=section_id)
 
-    def _get_row_for_repeating_section(self, section_id, list_item_id):
+    def _get_row_for_repeating_section(self, section_id, list_item_id, list_item_index):
         repeating_title = self._schema.get_repeating_title_for_section(section_id)
 
         title = self._placeholder_renderer.render_placeholder(
             repeating_title, list_item_id
         )
 
-        return self._get_row_for_section(title, section_id, list_item_id)
+        repeating_section_id = section_id + "-" + str(list_item_index)
 
-    def _get_row_for_section(self, section_title, section_id, list_item_id=None):
+        return self._get_row_for_section(title, repeating_section_id, section_id, list_item_id)
+
+    def _get_row_for_section(self, section_title, section_id, section_id_url, list_item_id=None):
         section_status = self._progress_store.get_section_status(
             section_id, list_item_id
         )
@@ -125,7 +127,7 @@ class HubContext(Context):
             section_title,
             section_status,
             section_id,
-            self.get_section_url(section_id, list_item_id),
+            self.get_section_url(section_id_url, list_item_id),
         )
 
     def _get_rows(self, enabled_section_ids) -> List[Mapping[str, Union[str, List]]]:
@@ -140,12 +142,15 @@ class HubContext(Context):
 
                 if repeating_list:
                     for list_item_id in self._list_store[repeating_list].items:
+
+                        list_item_index = len(rows)
+
                         rows.append(
                             self._get_row_for_repeating_section(
-                                section_id, list_item_id
+                                section_id, list_item_id, list_item_index,
                             )
                         )
                 else:
-                    rows.append(self._get_row_for_section(section_title, section_id))
+                    rows.append(self._get_row_for_section(section_title, section_id, section_id))
 
         return rows
