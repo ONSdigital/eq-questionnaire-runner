@@ -65,16 +65,16 @@ class Question:
             for answer_schema in self.answer_schemas
         ]
 
-        values_to_use = []
+        values_to_concatenate = []
         for answer_value in answer_values:
             if not answer_value:
                 continue
 
-            values_to_use.extend(
+            values_to_concatenate.extend(
                 answer_value if isinstance(answer_value, list) else [answer_value]
             )
 
-        return answer_separator.join(str(value) for value in values_to_use)
+        return answer_separator.join(str(value) for value in values_to_concatenate)
 
     def _build_answer(
         self, answer_store, question_schema, answer_schema, answer_value=None
