@@ -71,28 +71,28 @@ describe("Feature: Repeating Sections with Hub and Spoke", () => {
     it("Then a section for each household member should be displayed", () => {
       expect(browser.getUrl()).to.contain(HubPage.url());
 
-      expect($(HubPage.summaryRowState("personal-details-section-1")).getText()).to.equal("Completed");
-      expect($(HubPage.summaryRowTitle("personal-details-section-2")).getText()).to.equal("Marcus Twin");
+      expect($(HubPage.summaryRowState("section")).getText()).to.equal("Completed");
+      expect($(HubPage.summaryRowTitle("personal-details-section-1")).getText()).to.equal("Marcus Twin");
+      expect($(HubPage.summaryRowState("personal-details-section-1")).getText()).to.equal("Not started");
       expect($(HubPage.summaryRowState("personal-details-section-2")).getText()).to.equal("Not started");
+      expect($(HubPage.summaryRowTitle("personal-details-section-2")).getText()).to.equal("Jean Clemens");
       expect($(HubPage.summaryRowState("personal-details-section-3")).getText()).to.equal("Not started");
-      expect($(HubPage.summaryRowTitle("personal-details-section-3")).getText()).to.equal("Jean Clemens");
+      expect($(HubPage.summaryRowTitle("personal-details-section-3")).getText()).to.equal("Samuel Clemens");
       expect($(HubPage.summaryRowState("personal-details-section-4")).getText()).to.equal("Not started");
-      expect($(HubPage.summaryRowTitle("personal-details-section-4")).getText()).to.equal("Samuel Clemens");
-      expect($(HubPage.summaryRowState("personal-details-section-5")).getText()).to.equal("Not started");
-      expect($(HubPage.summaryRowTitle("personal-details-section-5")).getText()).to.equal("John Doe");
+      expect($(HubPage.summaryRowTitle("personal-details-section-4")).getText()).to.equal("John Doe");
 
-      expect($(HubPage.summaryRowState("section-6")).isExisting()).to.be.false;
+      expect($(HubPage.summaryRowState("section-5")).isExisting()).to.be.false;
     });
 
     it("When the user starts a repeating section and clicks the Previous link on the first question, Then they should be taken back to the Hub", () => {
-      $(HubPage.summaryRowLink("personal-details-section-3")).click();
+      $(HubPage.summaryRowLink("personal-details-section-2")).click();
       $(ProxyPage.previous()).click();
 
       expect(browser.getUrl()).to.contain(HubPage.url());
     });
 
     it("When the user partially completes a repeating section, Then that section should be marked as 'Partially completed' on the Hub", () => {
-      $(HubPage.summaryRowLink("personal-details-section-2")).click();
+      $(HubPage.summaryRowLink("personal-details-section-1")).click();
       $(ProxyPage.yes()).click();
       $(ProxyPage.submit()).click();
 
@@ -107,19 +107,19 @@ describe("Feature: Repeating Sections with Hub and Spoke", () => {
       browser.url(HubPage.url());
 
       expect(browser.getUrl()).to.contain(HubPage.url());
-      expect($(HubPage.summaryRowState("personal-details-section-2")).getText()).to.equal("Partially completed");
+      expect($(HubPage.summaryRowState("personal-details-section-1")).getText()).to.equal("Partially completed");
 
-      expect($(HubPage.summaryRowTitle("personal-details-section-2")).getAttribute("class")).to.not.contain("summary__item-title--has-icon");
+      expect($(HubPage.summaryRowTitle("personal-details-section-1")).getAttribute("class")).to.not.contain("summary__item-title--has-icon");
     });
 
     it("When the user continues with a partially completed repeating section, Then they are taken to the first incomplete block", () => {
-      $(HubPage.summaryRowLink("personal-details-section-2")).click();
+      $(HubPage.summaryRowLink("personal-details-section-1")).click();
 
       expect($(SexPage.questionText()).getText()).to.equal("What is Marcus Twin’s sex?");
     });
 
     it("When the user completes a repeating section, Then that section should be marked as 'Completed' on the Hub", () => {
-      $(HubPage.summaryRowLink("personal-details-section-3")).click();
+      $(HubPage.summaryRowLink("personal-details-section-2")).click();
       $(ProxyPage.yes()).click();
       $(ProxyPage.submit()).click();
 
@@ -137,22 +137,22 @@ describe("Feature: Repeating Sections with Hub and Spoke", () => {
       $(PersonalDetailsSummaryPage.submit()).click();
 
       expect(browser.getUrl()).to.contain(HubPage.url());
-      expect($(HubPage.summaryRowState("personal-details-section-3")).getText()).to.equal("Completed");
+      expect($(HubPage.summaryRowState("personal-details-section-2")).getText()).to.equal("Completed");
 
-      expect($(HubPage.summaryRowTitle("personal-details-section-3")).getAttribute("class")).to.contain("summary__item-title--has-icon");
+      expect($(HubPage.summaryRowTitle("personal-details-section-2")).getAttribute("class")).to.contain("summary__item-title--has-icon");
     });
 
     it("When the user clicks 'View answers' for a completed repeating section, Then they are taken to the summary", () => {
-      $(HubPage.summaryRowLink("personal-details-section-3")).click();
+      $(HubPage.summaryRowLink("personal-details-section-2")).click();
       expect(browser.getUrl()).to.contain("/sections/personal-details-section");
     });
 
     it("When the user adds 2 visitors to the household then a section for each visitor should be display on the hub", () => {
       // Ensure no other sections exist
-      expect($(HubPage.summaryRowState("personal-details-section-6")).isExisting()).to.be.false;
+      expect($(HubPage.summaryRowState("visitors-section-5")).isExisting()).to.be.false;
 
       // Start section for first visitor
-      $(HubPage.summaryRowLink("personal-details-section-1")).click();
+      $(HubPage.summaryRowLink("section")).click();
       $(PrimaryPersonPage.submit()).click();
       $(PrimaryPersonAddPage.submit()).click();
       $(FirstListCollectorPage.submit()).click();
@@ -176,12 +176,12 @@ describe("Feature: Repeating Sections with Hub and Spoke", () => {
       $(VisitorsListCollectorPage.no()).click();
       $(VisitorsListCollectorPage.submit()).click();
 
-      expect($(HubPage.summaryRowState("personal-details-section-6")).getText()).to.equal("Not started");
-      expect($(HubPage.summaryRowTitle("personal-details-section-6")).getText()).to.equal("Joe Public");
-      expect($(HubPage.summaryRowState("personal-details-section-7")).getText()).to.equal("Not started");
-      expect($(HubPage.summaryRowTitle("personal-details-section-7")).getText()).to.equal("Yvonne Yoe");
+      expect($(HubPage.summaryRowState("visitors-section-5")).getText()).to.equal("Not started");
+      expect($(HubPage.summaryRowTitle("visitors-section-5")).getText()).to.equal("Joe Public");
+      expect($(HubPage.summaryRowState("visitors-section-6")).getText()).to.equal("Not started");
+      expect($(HubPage.summaryRowTitle("visitors-section-6")).getText()).to.equal("Yvonne Yoe");
 
-      expect($(HubPage.summaryRowState("personal-details-section-8")).isExisting()).to.be.false;
+      expect($(HubPage.summaryRowState("visitors-section-7")).isExisting()).to.be.false;
     });
 
     it("When the user clicks 'Continue' from the Hub, Then they should progress to the first incomplete section", () => {
@@ -190,7 +190,7 @@ describe("Feature: Repeating Sections with Hub and Spoke", () => {
     });
 
     it("When the user answers on their behalf, Then they are shown the non proxy question variant", () => {
-      $(HubPage.summaryRowLink("personal-details-section-5")).click();
+      $(HubPage.summaryRowLink("personal-details-section-4")).click();
       $(ProxyPage.noIMAnsweringForMyself()).click();
       $(ProxyPage.submit()).click();
 
@@ -210,7 +210,7 @@ describe("Feature: Repeating Sections with Hub and Spoke", () => {
     });
 
     it("When the user answers on on behalf of someone else, Then they are shown the proxy question variant for the relevant repeating section", () => {
-      $(HubPage.summaryRowLink("personal-details-section-4")).click();
+      $(HubPage.summaryRowLink("personal-details-section-3")).click();
       $(ProxyPage.yes()).click();
       $(ProxyPage.submit()).click();
 
@@ -260,7 +260,7 @@ describe("Feature: Repeating Sections with Hub and Spoke", () => {
     });
 
     it("When the user adds a new member to the household, Then the Hub should not be in the completed state", () => {
-      $(HubPage.summaryRowLink("personal-details-section-1")).click();
+      $(HubPage.summaryRowLink("section")).click();
       $(PrimaryPersonPage.submit()).click();
       $(PrimaryPersonAddPage.submit()).click();
       $(FirstListCollectorPage.submit()).click();
@@ -279,8 +279,8 @@ describe("Feature: Repeating Sections with Hub and Spoke", () => {
       $(VisitorsListCollectorPage.submit()).click();
 
       // New householder added to hub
-      expect($(HubPage.summaryRowState("personal-details-section-8")).getText()).to.equal("Not started");
-      expect($(HubPage.summaryRowState("personal-details-section-8")).isExisting()).to.be.true;
+      expect($(HubPage.summaryRowState("visitors-section-7")).getText()).to.equal("Not started");
+      expect($(HubPage.summaryRowState("visitors-section-7")).isExisting()).to.be.true;
 
       expect($(HubPage.submit()).getText()).to.not.equal("Submit survey");
       expect($(HubPage.submit()).getText()).to.equal("Continue");
@@ -291,9 +291,9 @@ describe("Feature: Repeating Sections with Hub and Spoke", () => {
 
     it("When the user removes a member from the household, Then their section is not longer displayed on he Hub", () => {
       // Ensure final householder exists
-      expect($(HubPage.summaryRowState("personal-details-section-8")).isExisting()).to.be.true;
+      expect($(HubPage.summaryRowState("visitors-section-7")).isExisting()).to.be.true;
 
-      $(HubPage.summaryRowLink("personal-details-section-1")).click();
+      $(HubPage.summaryRowLink("section")).click();
       $(PrimaryPersonPage.submit()).click();
       $(PrimaryPersonAddPage.submit()).click();
       $(FirstListCollectorPage.submit()).click();
@@ -306,7 +306,7 @@ describe("Feature: Repeating Sections with Hub and Spoke", () => {
       $(VisitorsListCollectorPage.submit()).click();
 
       // Ensure final householder no longer exists
-      expect($(HubPage.summaryRowState("personal-details-section-8")).isExisting()).to.be.false;
+      expect($(HubPage.summaryRowState("visitors-section-7")).isExisting()).to.be.false;
     });
 
     it("When the user submits, it should show the thank you page", () => {
