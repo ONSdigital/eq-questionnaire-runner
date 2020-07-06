@@ -15,7 +15,7 @@ describe("Feature: Hub and Spoke with custom content", () => {
 
   it("When the questionnaire is complete, then custom content should be displayed correctly", () => {
     browser.openQuestionnaire(hubAndSpokeSchema);
-    $(HubPage.summaryRowLink("section-1")).click();
+    $(HubPage.summaryRowLink("household-section")).click();
     $(DoesAnyoneLiveHere.yes()).click();
     $(DoesAnyoneLiveHere.submit()).click();
     $(HowManyPeopleLiveHere.answer1()).click();

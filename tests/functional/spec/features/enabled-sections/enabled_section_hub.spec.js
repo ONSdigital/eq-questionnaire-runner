@@ -20,10 +20,10 @@ describe("Feature: Section Enabled With Hub", () => {
     $(sectionOne.section1Section3()).click();
     $(sectionOne.submit()).click();
 
-    expect($(hubPage.summaryRowState("section-2")).isDisplayed()).to.be.true;
-    expect($(hubPage.summaryRowTitle("section-2")).getText()).to.equal("Section 3");
+    expect($(hubPage.summaryRowState("section-3")).isDisplayed()).to.be.true;
+    expect($(hubPage.summaryRowTitle("section-3")).getText()).to.equal("Section 3");
 
-    expect($(hubPage.summaryRowState("section-3")).isDisplayed()).to.be.false;
+    expect($(hubPage.summaryRowState("section-2")).isDisplayed()).to.be.false;
   });
 
   it("When the user selects `Section 2` and `Section 3` and submits, Then section 2 and section 3 should be displayed", () => {
