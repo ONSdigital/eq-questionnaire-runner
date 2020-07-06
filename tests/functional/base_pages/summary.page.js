@@ -6,7 +6,7 @@ class ThankYouPage extends QuestionPage {
   }
 
   summaryRowState(sectionId = "section-1") {
-    return `[data-qa="hub-row-state-${sectionId}"]`;
+    return `[data-qa="${sectionId}"]`;
   }
 }
 
