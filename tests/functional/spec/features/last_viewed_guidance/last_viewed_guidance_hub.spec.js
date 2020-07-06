@@ -100,7 +100,7 @@ describe("Last viewed question guidance", () => {
     it("When the user clicks continue on the hub and it takes you to a section which is complete but doesnt have a summary, then last question guidance is not shown", () => {
       $(HobbiesPage.yes()).click();
       $(HobbiesPage.submit()).click();
-      $(HubPage.summaryRowLink("intrests-section")).click();
+      $(HubPage.summaryRowLink("interests-section")).click();
       expect(browser.getUrl()).to.contain(SportsPage.url());
       expect($(SportsPage.lastViewedQuestionGuidance()).isExisting()).to.be.false;
     });
