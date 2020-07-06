@@ -14,7 +14,7 @@ describe("Feature: Repeating Section Summaries", () => {
       // Ensure we are on the Hub
       expect(browser.getUrl()).to.contain(HubPage.url());
       // Start first section to add household members
-      $(HubPage.summaryRowLink("section-1")).click();
+      $(HubPage.summaryRowLink("section")).click();
 
       // Add a primary person
       $(PrimaryPersonPage.yes()).click();

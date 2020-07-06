@@ -52,7 +52,7 @@ describe("Last viewed question guidance", () => {
     });
 
     it("When the respondent selects a section which is not started, then last question guidance is not shown", () => {
-      $(HubPage.summaryRowLink("section-2")).click();
+      $(HubPage.summaryRowLink("education-section")).click();
       expect(browser.getUrl()).to.contain(GcsesPage.url());
       expect($(GcsesPage.lastViewedQuestionGuidance()).isExisting()).to.be.false;
     });
@@ -62,7 +62,7 @@ describe("Last viewed question guidance", () => {
       $(GcsesPage.yes()).click();
       $(GcsesPage.submit()).click();
       browser.url(HubPage.url());
-      $(HubPage.summaryRowLink("section-2")).click();
+      $(HubPage.summaryRowLink("education-section")).click();
       expect(browser.getUrl()).to.contain(ALevelsPage.url());
       expect($(ALevelsPage.lastViewedQuestionGuidanceLink()).getAttribute("href")).to.contain(GcsesPage.url());
       expect($(ALevelsPage.lastViewedQuestionGuidance()).isExisting()).to.be.true;
@@ -73,7 +73,7 @@ describe("Last viewed question guidance", () => {
       $(ALevelsPage.submit()).click();
       expect($(EducationSectionSummaryPage.lastViewedQuestionGuidance()).isExisting()).to.be.false;
       $(EducationSectionSummaryPage.submit()).click();
-      $(HubPage.summaryRowLink("section-2")).click();
+      $(HubPage.summaryRowLink("education-section")).click();
       expect(browser.getUrl()).to.contain(EducationSectionSummaryPage.url());
       $(EducationSectionSummaryPage.alevelsAnswerEdit()).click();
       expect($(ALevelsPage.lastViewedQuestionGuidance()).isExisting()).to.be.false;
@@ -100,7 +100,7 @@ describe("Last viewed question guidance", () => {
     it("When the user clicks continue on the hub and it takes you to a section which is complete but doesnt have a summary, then last question guidance is not shown", () => {
       $(HobbiesPage.yes()).click();
       $(HobbiesPage.submit()).click();
-      $(HubPage.summaryRowLink("section-3")).click();
+      $(HubPage.summaryRowLink("intrests-section")).click();
       expect(browser.getUrl()).to.contain(SportsPage.url());
       expect($(SportsPage.lastViewedQuestionGuidance()).isExisting()).to.be.false;
     });
