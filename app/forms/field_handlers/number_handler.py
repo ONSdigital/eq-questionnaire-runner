@@ -75,11 +75,8 @@ class NumberHandler(FieldHandler):
 
     def _get_number_field_validators(self):
         answer_errors = self.error_messages.copy()
-        schema_validation_messages = self.answer_schema.get("validation", {}).get(
-            "messages", {}
-        )
 
-        for error_key in schema_validation_messages.keys():
+        for error_key in self.validation_messages.keys():
             answer_errors[error_key] = self.get_validation_message(error_key)
 
         return [
