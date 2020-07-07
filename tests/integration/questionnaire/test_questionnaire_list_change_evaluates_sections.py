@@ -47,7 +47,7 @@ class TestQuestionnaireListChangeEvaluatesSections(IntegrationTestCase):
         self.assertEqualUrl("/questionnaire/")
 
         self.assertInSelector(
-            "Partially completed", "[data-qa='hub-row-state-section-2']"
+            "Partially completed", "[data-qa='hub-row-state-section-1']"
         )
 
         self.get("questionnaire/sections/accommodation-section/")
