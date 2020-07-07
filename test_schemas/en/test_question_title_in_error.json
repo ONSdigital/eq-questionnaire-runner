@@ -59,7 +59,7 @@
                                                 "value": "Pepperoni"
                                             },
                                             {
-                                                "label": "Other"
+                                                "label": "Other",
                                                 "description": "Choose any other topping",
                                                 "value": "Other",
                                                 "detail_answer": {
