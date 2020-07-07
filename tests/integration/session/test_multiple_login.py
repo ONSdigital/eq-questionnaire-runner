@@ -103,7 +103,7 @@ class TestMultipleLogin(MultipleClientTestCase):
         last_response_b = self.cache[self.client_b]["last_response"]
         self.assertEqual(last_response_b.status_code, 401)
 
-    def test_multiple_users_same_survey_different_languages(self):
+    def test_concurrent_users_same_survey_different_languages(self):
         """Tests that multiple sessions can be created which work on the same
         survey in different languages
         """
@@ -131,7 +131,7 @@ class TestMultipleLogin(MultipleClientTestCase):
             "Beth yw dyddiad geni John Smith?", last_response_b.get_data(True)
         )
 
-        # user A refreshes his page and sees the answers from B
+        # user A refreshes the page and sees the answers from B
         self.get(self.client_a, "/questionnaire/name-block/")
         last_response_a = self.cache[self.client_a]["last_response"]
         self.assertIn("John", last_response_a.get_data(True))
