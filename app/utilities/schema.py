@@ -17,7 +17,7 @@ logger = get_logger()
 DEFAULT_SCHEMA_DIRS = ["schemas", "test_schemas"]
 
 LANGUAGES_MAP = {
-    "test_language": [["en", "cy"]],
+    "test_language": [["en", "cy"], ["en", "ga"]],
     "ccs_household_gb_eng": [["en", "cy"]],
     "census_household_gb_wls": [["en", "cy"]],
     "census_individual_gb_wls": [["en", "cy"]],

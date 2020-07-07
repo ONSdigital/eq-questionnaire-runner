@@ -20,6 +20,7 @@ class TestAuthenticator(AppContextTestCase):  # pylint: disable=too-many-public-
             response_id="response_id",
             period_str="period_str",
             language_code=None,
+            launch_language_code=None,
             survey_url=None,
             ru_name="ru_name",
             ru_ref="ru_ref",
