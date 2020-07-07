@@ -11,10 +11,11 @@ class TestQuestionnaireRelationships(IntegrationTestCase):
         selected = self.getHtmlSoup().select(selector)
         return selected[0].get("href")
 
-    def remove_last_list_item(self):
+    def remove_list_item(self, rowIndex):
         self.get("questionnaire/list-collector")
-        selector = self.getHtmlSoup().find_all("a", {"data-qa^": "remove-item-link-"})[-1]
-        self.get(selector["href"])
+        selector = f"[data-qa='remove-item-link-{rowIndex}']"
+        selected = self.getHtmlSoup().select(selector)
+        self.get([html for html in selected][0].get("href"))
         self.post({"remove-confirmation": "Yes"})
 
     def test_valid_relationship(self):
@@ -79,7 +80,7 @@ class TestQuestionnaireRelationships(IntegrationTestCase):
         self.post({"relationship-answer": "Husband or Wife"})
 
         list_item_ids = self.dump_debug()["LISTS"][0]["items"]
-        self.remove_last_list_item()
+        self.remove_list_item("2")
 
         self.assertNotInBody("Susan Doe")
 
@@ -87,7 +88,7 @@ class TestQuestionnaireRelationships(IntegrationTestCase):
         for relationship in relationship_answer["value"]:
             self.assertNotIn(list_item_ids[-1], relationship.values())
 
-        self.remove_last_list_item()
+        self.remove_list_item("1")
         relationship_answer = self.dump_debug()["ANSWERS"][-1]
         del list_item_ids[-1]
         for relationship in relationship_answer["value"]:
@@ -104,7 +105,7 @@ class TestQuestionnaireRelationships(IntegrationTestCase):
 
         self.get("/questionnaire/list-collector")
         self.add_person("Susan", "Doe")
-        self.remove_last_list_item()
+        self.remove_list_item("2")
         self.post({"anyone-else": "No"})
 
         list_item_ids_new = self.dump_debug()["LISTS"][0]["items"]

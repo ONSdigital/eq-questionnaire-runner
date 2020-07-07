@@ -63,6 +63,7 @@ class ListContext(Context):
                     summary_definition, list_item_id, is_primary
                 ),
                 "primary_person": is_primary,
+
             }
 
             if edit_block_id:
