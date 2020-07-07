@@ -193,15 +193,7 @@ describe("Feature: Repeating Sections with Hub and Spoke", () => {
       $(ProxyPage.noIMAnsweringForMyself()).click();
       $(ProxyPage.submit()).click();
 
-      $(DateOfBirthPage.day()).setValue("07");
-      $(DateOfBirthPage.month()).setValue("07");
-      $(DateOfBirthPage.year()).setValue("1970");
-      $(DateOfBirthPage.submit()).click();
-
-      $(ConfirmDateOfBirthPage.confirmDateOfBirthYesIAmAgeOld()).click();
-      $(ConfirmDateOfBirthPage.submit()).click();
-
-      expect($(SexPage.questionText()).getText()).to.equal("What is your sex?");
+      expect($(DateOfBirthPage.questionText()).getText()).to.equal("What is your date of birth?");
     });
 
     it("When the user answers on on behalf of someone else, Then they are shown the proxy question variant for the relevant repeating section", () => {
@@ -214,10 +206,7 @@ describe("Feature: Repeating Sections with Hub and Spoke", () => {
       $(DateOfBirthPage.year()).setValue("1990");
       $(DateOfBirthPage.submit()).click();
 
-      $(ConfirmDateOfBirthPage.confirmDateOfBirthYesPersonNameIsAgeOld()).click();
-      $(ConfirmDateOfBirthPage.submit()).click();
-
-      expect($(SexPage.questionText()).getText()).to.equal("What is Samuel Clemens’ sex?");
+      expect($(DateOfBirthPage.questionText()).getText()).to.equal("What is Samuel Clemens’ date of birth?");
     });
 
     it("When the user completes all sections, Then the Hub should be in the completed state", () => {
