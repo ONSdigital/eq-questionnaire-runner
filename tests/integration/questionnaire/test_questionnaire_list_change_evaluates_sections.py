@@ -7,7 +7,7 @@ class TestQuestionnaireListChangeEvaluatesSections(IntegrationTestCase):
         self.post({"first-name": first_name, "last-name": last_name})
 
     def get_link(self, rowIndex, text):
-        selector = f"data-qa='{text}-item-link-{rowIndex}'"
+        selector = f"[data-qa='{text}-item-link-{rowIndex}']"
         selected = self.getHtmlSoup().select(selector)
 
         filtered = [html for html in selected if text in html.get_text()]
@@ -19,7 +19,7 @@ class TestQuestionnaireListChangeEvaluatesSections(IntegrationTestCase):
         selected = self.getHtmlSoup().select(selector)
         return selected[0].get("href")
 
-    def test_wihout_primary_person(self):
+    def test_without_primary_person(self):
         self.launchSurvey("test_list_change_evaluates_sections")
 
         self.get("/questionnaire/sections/who-lives-here/")
@@ -47,7 +47,7 @@ class TestQuestionnaireListChangeEvaluatesSections(IntegrationTestCase):
         self.assertEqualUrl("/questionnaire/")
 
         self.assertInSelector(
-            "Partially completed", "[data-qa='hub-row-state-section-1']"
+            "Partially completed", "[data-qa='hub-row-state-accommodation-section']"
         )
 
         self.get("questionnaire/sections/accommodation-section/")
@@ -62,7 +62,7 @@ class TestQuestionnaireListChangeEvaluatesSections(IntegrationTestCase):
         self.assertEqualUrl("/questionnaire/sections/accommodation-section/")
         self.post()
 
-        self.assertInSelector("Completed", "[data-qa='hub-row-state-section-2']")
+        self.assertInSelector("Completed", "[data-qa='hub-row-state-accommodation-section']")
 
         self.get("/questionnaire/sections/who-lives-here/")
         self.assertEqualUrl("/questionnaire/primary-person-list-collector/")
@@ -72,5 +72,5 @@ class TestQuestionnaireListChangeEvaluatesSections(IntegrationTestCase):
 
         self.assertEqualUrl("/questionnaire/")
         self.assertInSelector(
-            "Partially completed", "[data-qa='hub-row-state-section-2']"
+            "Partially completed", "[data-qa='hub-row-state-accommodation-section']"
         )
