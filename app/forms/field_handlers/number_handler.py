@@ -79,8 +79,8 @@ class NumberHandler(FieldHandler):
             "messages", {}
         )
 
-        for error_key, error_message in schema_validation_messages.items():
-            answer_errors[error_key] = error_message
+        for error_key in schema_validation_messages.keys():
+            answer_errors[error_key] = self.get_validation_message(error_key)
 
         return [
             NumberCheck(answer_errors["INVALID_NUMBER"]),

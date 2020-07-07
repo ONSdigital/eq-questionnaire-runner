@@ -30,6 +30,9 @@ class FieldHandler(ABC):
         self.location = location
         self.disable_validation = disable_validation
         self.question_title = question_title
+        self.validation_messages = self.answer_schema.get("validation", {}).get(
+            "messages", {}
+        )
 
     @cached_property
     def validators(self):
@@ -53,9 +56,9 @@ class FieldHandler(ABC):
         return error_message
 
     def get_validation_message(self, message_key):
-        message = self.answer_schema.get("validation", {}).get("messages", {}).get(
+        message = self.validation_messages.get(message_key) or self.error_messages.get(
             message_key
-        ) or self.error_messages.get(message_key)
+        )
 
         return self.format_question_title(message, self.question_title)
 
