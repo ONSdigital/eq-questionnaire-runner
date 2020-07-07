@@ -4,7 +4,6 @@ from functools import cached_property
 from wtforms import validators, Field
 
 from app.data_model.answer_store import AnswerStore
-from app.helpers.template_helper import safe_content
 from app.questionnaire.location import Location
 from app.forms.validators import ResponseRequired
 from app.questionnaire.rules import get_answer_value
@@ -30,7 +29,7 @@ class FieldHandler(ABC):
         self.metadata = metadata or {}
         self.location = location
         self.disable_validation = disable_validation
-        self.question_title = question_title or ""
+        self.question_title = question_title
 
     @cached_property
     def validators(self):
@@ -50,9 +49,7 @@ class FieldHandler(ABC):
     def format_question_title(error_message, question_title):
         error_message = error_message or ""
         if "%(question_title)s" in error_message:
-            error_message = error_message % dict(
-                question_title=safe_content(question_title)
-            )
+            error_message = error_message % dict(question_title=question_title)
         return error_message
 
     def get_validation_message(self, message_key):

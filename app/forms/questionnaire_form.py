@@ -12,6 +12,7 @@ from app.forms.field_factory import get_field_handler
 from app.forms.field_handlers.date_handler import DateHandler
 from app.forms.field_handlers.field_handler import FieldHandler
 from app.forms.validators import DateRangeCheck, SumCheck, MutuallyExclusiveCheck
+from app.helpers.template_helper import safe_content
 
 logger = logging.getLogger(__name__)
 
@@ -27,6 +28,7 @@ class QuestionnaireForm(FlaskForm):
         self.location = location
         self.question_errors = {}
         self.options_with_detail_answer = {}
+        self.question_title = safe_content(self.question.get("title")) or ""
 
         super().__init__(**kwargs)
 
@@ -132,7 +134,7 @@ class QuestionnaireForm(FlaskForm):
             error_message = str(e)
 
             self.question_errors[question["id"]] = FieldHandler.format_question_title(
-                error_message, question.get("title")
+                error_message, self.question_title
             )
             return False
 
