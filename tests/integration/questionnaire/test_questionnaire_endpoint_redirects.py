@@ -3,44 +3,62 @@ import json
 from tests.integration.integration_test_case import IntegrationTestCase
 
 
-class TestQuestionnaireEndpointRedirects(IntegrationTestCase):
-    def test_get_invalid_questionnaire_location_redirects_to_latest(self):
+class TestQuestionnaireEndpoints(IntegrationTestCase):
+    def test_invalid_block_id_raises_404(self):
+        # Given the hub is enabled
+        self.launchSurvey("test_hub_and_spoke")
+
+        # When I navigate to an invalid block id
+        self.get("questionnaire/invalid-block-id/")
+
+        # Then I am shown a 404 page
+        self.assertStatusNotFound()
+
+    def test_invalid_section_id_raises_404(self):
+        # Given the hub is enabled
+        self.launchSurvey("test_hub_and_spoke")
+
+        # When I navigate to the url for a hub's section that does not exist
+        self.get("questionnaire/sections/invalid-section/")
+
+        # Then I am shown a 404 page
+        self.assertStatusNotFound()
+
+    def test_get_invalid_questionnaire_location_raises_404(self):
         # Given
         self.launchSurvey("test_introduction")
 
-        base_url = "/questionnaire/"
+        base_url = "/questionnaire"
 
         # When
-        self.get(base_url + "test")
+        self.get(f"{base_url}/test")
 
         # Then
-        self.assertInUrl(base_url + "introduction")
+        self.assertStatusNotFound()
 
-    def test_post_invalid_questionnaire_location_redirects_to_latest(self):
+    def test_post_invalid_questionnaire_location_raises_404(self):
         # Given
         self.launchSurvey("test_introduction")
 
-        base_url = "/questionnaire/"
+        base_url = "/questionnaire"
 
         # When
-        self.post(url=base_url + "test")
+        self.post(url=f"{base_url}/test")
 
-        # Then
-        self.assertInUrl(base_url + "introduction")
+        # Then I am shown a 404 page
+        self.assertStatusNotFound()
 
-    def test_submit_answers_for_invalid_questionnaire_location_redirects_to_first_incomplete_location(
-        self
-    ):
+    def test_submit_answers_for_invalid_questionnaire_location_raises_404(self):
         # Given
         self.launchSurvey("test_textfield")
 
-        base_url = "/questionnaire/"
+        base_url = "/questionnaire"
 
         # When
-        self.post(url=base_url + "min-max-block")
+        self.post(url=f"{base_url}/min-max-block")
 
         # Then
-        self.assertInUrl(base_url + "name-block")
+        self.assertStatusNotFound()
 
     def test_given_not_complete_questionnaire_when_get_thank_you_then_data_not_deleted(
         self
@@ -57,17 +75,15 @@ class TestQuestionnaireEndpointRedirects(IntegrationTestCase):
         answers = json.loads(self.getResponseData())
         self.assertEqual(1, len(answers["ANSWERS"]))
 
-    def test_given_not_complete_questionnaire_when_get_thank_you_then_redirected_to_latest_location(
-        self
-    ):
+    def test_get_thank_you_raises_404_when_questionnaire_is_not_complete(self):
         # Given we start a survey
         self.launchSurvey("test_percentage", roles=["dumper"])
 
         # When we request the thank you page (without submitting the survey)
         self.get("submitted/thank-you")
 
-        # Then we should be redirected back to the latest location
-        self.assertInUrl("block")
+        # Then we are shown a 404 page
+        self.assertStatusNotFound()
 
     def test_given_complete_questionnaire_when_submitted_then_data_is_deleted(self):
         # Given we submit a survey

@@ -10,12 +10,22 @@ class TestQuestionnaireListCollector(IntegrationTestCase):
         selected = self.getHtmlSoup().select(selector)
         return selected[0].get("href")
 
-    def test_invalid_list_on_primary_personcollector(self):
+    def test_invalid_list_on_primary_person_collector(self):
         self.launchSurvey("test_list_collector_primary_person")
 
         self.get("/questionnaire/invalid/123423/add-or-edit-person/")
 
-        self.assertInUrl("/questionnaire/primary-person-list-collector")
+        self.assertStatusNotFound()
+
+    def test_invalid_list_item_id_for_primary_person_add_block(self):
+        self.launchSurvey("test_list_collector_primary_person")
+        self.post({"you-live-here": "Yes"})
+
+        self.assertInUrl("add-or-edit-primary-person/")
+
+        self.get("/questionnaire/people/abcdef/add-or-edit-primary-person/")
+
+        self.assertStatusNotFound()
 
     def test_adding_then_removing_primary_person(self):
         self.launchSurvey("test_list_collector_primary_person")
@@ -65,7 +75,9 @@ class TestQuestionnaireListCollector(IntegrationTestCase):
 
         self.get(f"questionnaire/people/{primary_person_list_item_id}/remove-person/")
 
-        self.assertInUrl("list-collector")
+        self.assertStatusNotFound()
+
+        self.get("questionnaire/list-collector/")
 
         self.assertInBody("James May")
         self.assertInBody("Marie Day")
