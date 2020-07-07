@@ -29,15 +29,15 @@
       ]
     }) }}
     {% if content.submission_guidance %}
-      <div class="u-mt-m">
-        <p data-qa="submission-guidance">{{ content.submission_guidance }}</p>
+      <div class="u-mt-l">
+        <p class="u-mb-no" data-qa="submission-guidance">{{ content.submission_guidance }}</p>
       </div>
     {% endif %}
     {{
         onsButton({
             "text": content.submit_button,
             "submitType": 'timer',
-            "classes": 'u-mb-m u-mt-l',
+            "classes": 'u-mb-m u-mt-' + ("s" if content.submission_guidance else "xl"),
             "attributes": {'data-qa': 'btn-submit'}
         })
     }}
