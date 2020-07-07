@@ -51,7 +51,7 @@ class FieldHandler(ABC):
     @staticmethod
     def format_question_title(error_message, question_title):
         error_message = error_message or ""
-        if "%(question_title)s" in error_message:
+        if "%(question_title)s" in error_message and error_message.count("%(") == 1:
             error_message = error_message % dict(question_title=question_title)
         return error_message
 
