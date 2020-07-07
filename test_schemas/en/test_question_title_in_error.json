@@ -124,7 +124,7 @@
                                 ],
                                 "validation": {
                                     "messages": {
-                                        "MANDATORY_QUESTION": "Select an answer to `%(question_title)s’ to continue"
+                                        "MANDATORY_QUESTION": "Select an answer to ‘%(question_title)s’ to continue"
                                     }
                                 }
                             }
