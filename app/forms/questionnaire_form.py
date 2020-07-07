@@ -133,7 +133,7 @@ class QuestionnaireForm(FlaskForm):
         except validators.ValidationError as e:
             error_message = str(e)
 
-            self.question_errors[question["id"]] = FieldHandler.format_question_title(
+            self.question_errors[question["id"]] = FieldHandler.get_message_with_title(
                 error_message, self.question_title
             )
             return False

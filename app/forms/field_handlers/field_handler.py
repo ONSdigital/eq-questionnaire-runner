@@ -49,8 +49,7 @@ class FieldHandler(ABC):
         return self.answer_schema.get("guidance", "")
 
     @staticmethod
-    def format_question_title(error_message, question_title):
-        error_message = error_message or ""
+    def get_message_with_title(error_message, question_title):
         if "%(question_title)s" in error_message and error_message.count("%(") == 1:
             error_message = error_message % dict(question_title=question_title)
         return error_message
@@ -60,7 +59,7 @@ class FieldHandler(ABC):
             message_key
         )
 
-        return self.format_question_title(message, self.question_title)
+        return self.get_message_with_title(message, self.question_title)
 
     def get_mandatory_validator(self):
         if self.answer_schema["mandatory"] is True:
