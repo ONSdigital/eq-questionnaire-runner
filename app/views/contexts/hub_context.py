@@ -50,6 +50,7 @@ class HubContext(Context):
             submit_button = hub_schema.get("submission", {}).get(
                 "button"
             ) or lazy_gettext("Submit survey")
+            submission_guidance = hub_schema.get("submission", {}).get("guidance", "")
 
         else:
             title = lazy_gettext("Choose another section to complete")
@@ -57,11 +58,13 @@ class HubContext(Context):
                 "You must complete all sections in order to submit this survey"
             )
             submit_button = lazy_gettext("Continue")
+            submission_guidance = ""
 
         return {
             "title": title,
             "guidance": guidance,
             "submit_button": submit_button,
+            "submission_guidance": submission_guidance,
             "rows": rows,
         }
 

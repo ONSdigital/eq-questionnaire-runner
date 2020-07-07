@@ -103,6 +103,7 @@ def test_get_context(progress_store, answer_store, list_store, router):
         "guidance": "You must complete all sections in order to submit this survey",
         "rows": [],
         "submit_button": "Continue",
+        "submission_guidance": "",
     }
 
     assert expected_context == hub.get_context(
@@ -128,6 +129,7 @@ def test_get_context_custom_content_incomplete(
         "guidance": "Guidance displayed on hub when incomplete",
         "rows": [],
         "submit_button": "Continue",
+        "submission_guidance": "",
     }
 
     assert expected_context == hub_context.get_context(
@@ -153,6 +155,7 @@ def test_get_context_custom_content_complete(
         "guidance": "Guidance displayed on hub when complete",
         "rows": [],
         "submit_button": "Submission text",
+        "submission_guidance": "Submission guidance",
     }
 
     assert expected_context == hub_context.get_context(

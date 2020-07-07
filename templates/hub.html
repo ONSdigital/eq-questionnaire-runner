@@ -13,7 +13,7 @@
       "attributes": {
       }
     }) %}
-        <p><strong>{{ content.guidance }}</strong></p>
+        <p data-qa="guidance"><strong>{{ content.guidance }}</strong></p>
     {% endcall %}
     {{ onsSummary({
       "hub": true,
@@ -28,6 +28,11 @@
         }
       ]
     }) }}
+    {% if content.submission_guidance %}
+      <div class="u-mt-m">
+        <p data-qa="submission-guidance">{{ content.submission_guidance }}</p>
+      </div>
+    {% endif %}
     {{
         onsButton({
             "text": content.submit_button,
