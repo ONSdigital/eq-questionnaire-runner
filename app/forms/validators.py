@@ -406,9 +406,7 @@ def format_playback_value(value, currency=None):
 
 
 def format_message_with_title(error_message, question_title):
-    if "%(question_title)s" in error_message and error_message.count("%(") == 1:
-        error_message = error_message % dict(question_title=question_title)
-    return error_message
+    return error_message % dict(question_title=question_title)
 
 
 class MutuallyExclusiveCheck:
