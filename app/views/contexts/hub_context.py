@@ -72,9 +72,9 @@ class HubContext(Context):
         section_content = self.SECTION_CONTENT_STATES[section_status]
         context: Mapping = {
             "rowTitle": section_name,
-            "rowTitleAttributes": {"data-qa": "hub-row-title-" + section_id},
             "rowItems": [
                 {
+                    "rowTitleAttributes": {"data-qa": "hub-row-title-" + section_id},
                     "attributes": {"data-qa": "hub-row-state-" + section_id},
                     "valueList": [{"text": section_content["text"]}],
                     "actions": [
@@ -131,7 +131,7 @@ class HubContext(Context):
         )
 
     def _get_rows(self, enabled_section_ids) -> List[Mapping[str, Union[str, List]]]:
-        rows = []
+        rows: List[Mapping] = []
 
         for section_id in enabled_section_ids:
             show_on_hub = self._schema.get_show_on_hub_for_section(section_id)

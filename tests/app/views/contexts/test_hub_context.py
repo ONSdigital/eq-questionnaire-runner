@@ -17,9 +17,9 @@ def test_get_not_started_row_for_section(
 ):
     expected = {
         "rowTitle": "Breakfast",
-        "rowTitleAttributes": {"data-qa": "hub-row-title-section-1"},
         "rowItems": [
             {
+                "rowTitleAttributes": {"data-qa": "hub-row-title-section-1"},
                 "attributes": {"data-qa": "hub-row-state-section-1"},
                 "valueList": [{"text": "Not started"}],
                 "actions": [
@@ -58,9 +58,9 @@ def test_get_completed_row_for_section(
 ):
     expected = {
         "rowTitle": "Breakfast",
-        "rowTitleAttributes": {"data-qa": "hub-row-title-section-1"},
         "rowItems": [
             {
+                "rowTitleAttributes": {"data-qa": "hub-row-title-section-1"},
                 "attributes": {"data-qa": "hub-row-state-section-1"},
                 "icon": "check-green",
                 "valueList": [{"text": "Completed"}],

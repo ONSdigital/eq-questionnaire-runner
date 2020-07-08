@@ -318,8 +318,8 @@ def test_map_list_collector_config_no_actions():
     output = map_list_collector_config(list_items, "icon")
 
     expected = [
-        {"rowItems": [{"actions": [], "icon": "icon"}], "rowTitle": "Mark Bloggs", "rowTitleAttributes": {"data-qa": "list-item-label-0"}},
-        {"rowItems": [{"actions": [], "icon": "icon"}], "rowTitle": "Joe Bloggs", "rowTitleAttributes": {"data-qa": "list-item-label-1"}},
+        {"rowItems": [{"actions": [], "icon": "icon", "rowTitleAttributes": {"data-qa": "list-item-label-0"}}], "rowTitle": "Mark Bloggs"},
+        {"rowItems": [{"actions": [], "icon": "icon", "rowTitleAttributes": {"data-qa": "list-item-label-1"}}], "rowTitle": "Joe Bloggs"},
     ]
 
     assert output == expected
@@ -363,10 +363,10 @@ def test_map_list_collector_config():
                         }
                     ],
                     "icon": "icon",
+                    "rowTitleAttributes": {"data-qa": "list-item-label-0"},
                 }
             ],
             "rowTitle": "Mark Bloggs (You)",
-            "rowTitleAttributes": {"data-qa": "list-item-label-0"},
         },
         {
             "rowItems": [
@@ -386,10 +386,10 @@ def test_map_list_collector_config():
                         },
                     ],
                     "icon": "icon",
+                    "rowTitleAttributes": {"data-qa": "list-item-label-1"},
                 }
             ],
             "rowTitle": "Joe Bloggs",
-            "rowTitleAttributes": {"data-qa": "list-item-label-1"},
         },
     ]
 
