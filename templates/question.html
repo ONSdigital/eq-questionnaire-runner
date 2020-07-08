@@ -7,6 +7,7 @@
   {% set form = content.form %}
 
   {% if form and (form.errors or form.question_errors) %}
+    {% set page_title = _("Error: ") + page_title %}
     {% from "components/panel/_macro.njk" import onsPanel %}
 
     {% call
