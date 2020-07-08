@@ -36,16 +36,6 @@ class TestQuestionnaireEndpoints(IntegrationTestCase):
         # Then I am shown a 404 page
         self.assertStatusNotFound()
 
-    def test_submit_answers_for_invalid_questionnaire_location_raises_404(self):
-        # Given
-        self.launchSurvey("test_textfield")
-
-        # When
-        self.post(url=f"{self.BASE_URL}/min-max-block")
-
-        # Then
-        self.assertStatusNotFound()
-
     def test_get_thank_you_data_not_deleted_when_questionnaire_is_not_complete(self):
         # Given we start a survey
         self.launchSurvey("test_percentage", roles=["dumper"])
