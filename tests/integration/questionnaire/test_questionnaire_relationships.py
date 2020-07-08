@@ -15,7 +15,7 @@ class TestQuestionnaireRelationships(IntegrationTestCase):
         self.get("questionnaire/list-collector")
         selector = f"[data-qa='remove-item-link-{rowIndex}']"
         selected = self.getHtmlSoup().select(selector)
-        self.get(selected[0].get("href"))
+        self.get([html for html in selected][0].get("href"))
         self.post({"remove-confirmation": "Yes"})
 
     def test_valid_relationship(self):
