@@ -10,10 +10,7 @@ class TestQuestionnaireListCollector(IntegrationTestCase):
     def get_link(self, rowIndex, text):
         selector = f"[data-qa='{text}-item-link-{rowIndex}']"
         selected = self.getHtmlSoup().select(selector)
-
-        filtered = [html for html in selected if text in html.get_text()]
-
-        return filtered[0].get("href")
+        return selected[0].get("href")
 
     def get_previous_link(self):
         selector = "#top-previous"
