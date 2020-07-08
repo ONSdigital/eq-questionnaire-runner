@@ -3,10 +3,10 @@
 {% from "components/panel/_macro.njk" import onsPanel %}
 
 {% set form = content.form %}
-{% set interviewer_note = _("Interviewer Note: ") %}
+{% set interviewer_note = _("Interviewer Note:") %}
 {% if question.interviewer_note %}
-  {% set question_title = interviewer_note + question.title %}
-{% else %}
+  {% set question_title = '<mark class="instruction">' + interviewer_note + '</mark>' + question.title %}
+{% elif question.title %}
   {% set question_title = question.title %}
 {% endif %}
 {% set question_description = format_paragraphs(question.description) if question.description else None %}
