@@ -115,6 +115,7 @@ def _create_session_data_from_metadata(metadata):
         schema_name=metadata.get("schema_name"),
         period_str=metadata.get("period_str"),
         language_code=metadata.get("language_code"),
+        launch_language_code=metadata.get("language_code"),
         survey_url=metadata.get("survey_url"),
         ru_name=metadata.get("ru_name"),
         ru_ref=metadata.get("ru_ref"),
