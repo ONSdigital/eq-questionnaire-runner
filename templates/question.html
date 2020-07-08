@@ -3,11 +3,14 @@
 
 {% set save_on_signout = true %}
 
+{% if content.form.errors or content.form.question_errors %}
+  {% set page_title = _("Error: ") + page_title %}
+{% endif %}
+
 {% block form_errors %}
   {% set form = content.form %}
 
   {% if form and (form.errors or form.question_errors) %}
-    {% set page_title = _("Error: ") + page_title %}
     {% from "components/panel/_macro.njk" import onsPanel %}
 
     {% call
