@@ -14,15 +14,15 @@ class PrimaryPersonQuestion(Question):
         return self.router.routing_path(section_id=self._current_location.section_id)
 
     def is_location_valid(self):
-        is_list_item_id_valid = (
-            self.current_location.list_item_id
-            in self._questionnaire_store.list_store[
-                self.current_location.list_name
-            ].items
-        )
+        primary_person_list_item_id = self._questionnaire_store.list_store[
+            self.current_location.list_name
+        ].primary_person
 
-        return is_list_item_id_valid and self.router.can_access_location(
-            self.parent_location, self._routing_path
+        return (
+            self.current_location.list_item_id == primary_person_list_item_id
+            and self.router.can_access_location(
+                self.parent_location, self._routing_path
+            )
         )
 
     def get_previous_location_url(self):
