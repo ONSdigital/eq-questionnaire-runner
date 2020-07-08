@@ -151,7 +151,7 @@ class HubContext(Context):
 
                         rows.append(
                             self._get_row_for_repeating_section(
-                                section_id, list_item_id, list_item_index,
+                                section_id, list_item_id, list_item_index
                             )
                         )
                 else:
