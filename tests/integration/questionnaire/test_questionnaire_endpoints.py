@@ -83,18 +83,6 @@ class TestQuestionnaireEndpoints(IntegrationTestCase):
         answers = json.loads(self.getResponseData())
         self.assertEqual(0, len(answers["ANSWERS"]))
 
-    def test_when_on_thank_you_get_summary_returns_unauthorised(self):
-        # Given we complete the test_percentage survey and are on the thank you page
-        self.launchSurvey("test_percentage", roles=["dumper"])
-        self.post({"answer": "99"})
-        self.post()
-
-        # When we try to get the summary
-        self.get(f"{self.BASE_URL}/summary")
-
-        # Then we get the unauthorised page
-        self.assertStatusUnauthorised()
-
     def test_when_on_thank_you_get_thank_you_returns_thank_you(self):
         # Given we complete the test_percentage survey and are on the thank you page
         self.launchSurvey("test_percentage", roles=["dumper"])
