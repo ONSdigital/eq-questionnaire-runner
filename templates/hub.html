@@ -37,7 +37,7 @@
         onsButton({
             "text": content.submit_button,
             "submitType": 'timer',
-            "classes": 'u-mb-m u-mt-' + ("s" if content.submission_guidance else "xl"),
+            "classes": 'u-mb-m u-mt-' ~ ("s" if content.submission_guidance else "xl"),
             "attributes": {'data-qa': 'btn-submit'}
         })
     }}
