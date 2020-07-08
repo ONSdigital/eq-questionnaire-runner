@@ -6,16 +6,6 @@ from tests.integration.integration_test_case import IntegrationTestCase
 class TestQuestionnaireEndpoints(IntegrationTestCase):
     BASE_URL = "/questionnaire"
 
-    def test_invalid_block_id_raises_404(self):
-        # Given
-        self.launchSurvey("test_hub_and_spoke")
-
-        # When I navigate to an invalid block id
-        self.get("questionnaire/invalid-block-id/")
-
-        # Then I am shown a 404 page
-        self.assertStatusNotFound()
-
     def test_invalid_section_id_raises_404(self):
         # Given
         self.launchSurvey("test_hub_and_spoke")
