@@ -158,7 +158,6 @@ describe("Feature: Repeating Sections with Hub and Spoke", () => {
       $(FirstListCollectorPage.submit()).click();
       $(SecondListCollectorInterstitialPage.submit()).click();
       $(SecondListCollectorPage.submit()).click();
-      expect($(SexPage.questionText()).getText()).to.equal("This is the visitors list collector. Add a visitor?");
 
       // Add first visitor
       $(VisitorsListCollectorPage.yes()).click();
@@ -194,14 +193,10 @@ describe("Feature: Repeating Sections with Hub and Spoke", () => {
       $(ProxyPage.noIMAnsweringForMyself()).click();
       $(ProxyPage.submit()).click();
 
-      expect($(DateOfBirthPage.questionText()).getText()).to.equal("What is your date of birth?");
-
       $(DateOfBirthPage.day()).setValue("07");
       $(DateOfBirthPage.month()).setValue("07");
       $(DateOfBirthPage.year()).setValue("1970");
       $(DateOfBirthPage.submit()).click();
-
-      expect($(ConfirmDateOfBirthPage.questionText()).getText()).to.equal("You are 49 years old. Is this correct?");
 
       $(ConfirmDateOfBirthPage.confirmDateOfBirthYesIAmAgeOld()).click();
       $(ConfirmDateOfBirthPage.submit()).click();
@@ -214,8 +209,6 @@ describe("Feature: Repeating Sections with Hub and Spoke", () => {
       $(ProxyPage.yes()).click();
       $(ProxyPage.submit()).click();
 
-      expect($(DateOfBirthPage.questionText()).getText()).to.equal("What is Samuel Clemens’ date of birth?");
-
       $(DateOfBirthPage.day()).setValue("11");
       $(DateOfBirthPage.month()).setValue("11");
       $(DateOfBirthPage.year()).setValue("1990");
@@ -223,7 +216,6 @@ describe("Feature: Repeating Sections with Hub and Spoke", () => {
 
       $(ConfirmDateOfBirthPage.confirmDateOfBirthYesPersonNameIsAgeOld()).click();
       $(ConfirmDateOfBirthPage.submit()).click();
-
       expect($(SexPage.questionText()).getText()).to.equal("What is Samuel Clemens’ sex?");
     });
 
