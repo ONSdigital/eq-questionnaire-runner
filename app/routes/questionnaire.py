@@ -124,7 +124,10 @@ def post_questionnaire(schema, questionnaire_store):
         questionnaire_store.metadata,
     )
 
-    if schema.is_hub_enabled() and router.is_survey_complete():
+    if not schema.is_hub_enabled():
+        raise NotFound
+
+    if router.is_survey_complete():
         submission_handler = SubmissionHandler(
             schema, questionnaire_store, router.full_routing_path()
         )
