@@ -3,8 +3,12 @@
 {% from "components/panel/_macro.njk" import onsPanel %}
 
 {% set form = content.form %}
-
-{% set question_title = question.title %}
+{% set interviewer_note = _("Interviewer Note: ") %}
+{% if question.interviewer_note %}
+  {% set question_title = interviewer_note + question.title %}
+{% else %}
+  {% set question_title = question.title %}
+{% endif %}
 {% set question_description = format_paragraphs(question.description) if question.description else None %}
 {% set question_instruction = format_paragraphs(question.instruction) if question.instruction else None %}
 {% set should_wrap_with_fieldset = should_wrap_with_fieldset(question) %}
