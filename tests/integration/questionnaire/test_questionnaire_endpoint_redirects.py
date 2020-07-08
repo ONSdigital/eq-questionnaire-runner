@@ -4,8 +4,10 @@ from tests.integration.integration_test_case import IntegrationTestCase
 
 
 class TestQuestionnaireEndpoints(IntegrationTestCase):
+    BASE_URL = "/questionnaire"
+
     def test_invalid_block_id_raises_404(self):
-        # Given the hub is enabled
+        # Given
         self.launchSurvey("test_hub_and_spoke")
 
         # When I navigate to an invalid block id
@@ -15,11 +17,11 @@ class TestQuestionnaireEndpoints(IntegrationTestCase):
         self.assertStatusNotFound()
 
     def test_invalid_section_id_raises_404(self):
-        # Given the hub is enabled
+        # Given
         self.launchSurvey("test_hub_and_spoke")
 
-        # When I navigate to the url for a hub's section that does not exist
-        self.get("questionnaire/sections/invalid-section/")
+        # When I navigate to the url for a section that does not exist
+        self.get(f"{self.BASE_URL}/sections/invalid-section/")
 
         # Then I am shown a 404 page
         self.assertStatusNotFound()
@@ -28,10 +30,8 @@ class TestQuestionnaireEndpoints(IntegrationTestCase):
         # Given
         self.launchSurvey("test_introduction")
 
-        base_url = "/questionnaire"
-
         # When
-        self.get(f"{base_url}/test")
+        self.get(f"{self.BASE_URL}/test")
 
         # Then
         self.assertStatusNotFound()
@@ -40,10 +40,8 @@ class TestQuestionnaireEndpoints(IntegrationTestCase):
         # Given
         self.launchSurvey("test_introduction")
 
-        base_url = "/questionnaire"
-
         # When
-        self.post(url=f"{base_url}/test")
+        self.post(url=f"{self.BASE_URL}/test")
 
         # Then I am shown a 404 page
         self.assertStatusNotFound()
@@ -52,10 +50,8 @@ class TestQuestionnaireEndpoints(IntegrationTestCase):
         # Given
         self.launchSurvey("test_textfield")
 
-        base_url = "/questionnaire"
-
         # When
-        self.post(url=f"{base_url}/min-max-block")
+        self.post(url=f"{self.BASE_URL}/min-max-block")
 
         # Then
         self.assertStatusNotFound()
@@ -106,7 +102,7 @@ class TestQuestionnaireEndpoints(IntegrationTestCase):
         self.post()
 
         # When we try to get the summary
-        self.get("questionnaire/summary")
+        self.get(f"{self.BASE_URL}/summary")
 
         # Then we get the unauthorised page
         self.assertStatusUnauthorised()
@@ -130,7 +126,7 @@ class TestQuestionnaireEndpoints(IntegrationTestCase):
         self.post()
 
         # When we try to submit the survey again
-        self.get(url="/questionnaire/summary")
+        self.get(url=f"{self.BASE_URL}/summary")
 
         # Then we get the unauthorised page
         self.assertStatusUnauthorised()
