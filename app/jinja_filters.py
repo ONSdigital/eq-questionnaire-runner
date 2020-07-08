@@ -393,7 +393,7 @@ class SummaryRowItemValue:
 
 
 class SummaryRowItem:
-    def __init__(  # noqa: C901, R0912  pylint: disable=too-complex,too-many-branches
+    def __init__(  # noqa: C901, R0912 pylint: disable=too-complex, too-many-branches
         self,
         block,
         question,
@@ -593,7 +593,7 @@ def map_list_collector_config(
             {
                 "rowTitle": item_name,
                 "rowTitleAttributes": {"data-qa": "list-item-label-" + str(item_index)},
-                "rowItems": [{"icon": icon, "actions": actions,}],
+                "rowItems": [{"icon": icon, "actions": actions}],
             }
         )
 
