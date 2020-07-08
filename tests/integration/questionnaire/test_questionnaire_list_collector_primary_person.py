@@ -38,7 +38,7 @@ class TestQuestionnaireListCollector(IntegrationTestCase):
     def test_non_primary_person_list_item_id_for_primary_person_add_block(self):
         self.launchSurvey("test_list_collector_primary_person")
 
-        # Add non primary person
+        # Add a non-primary person
         self.post({"you-live-here": "No"})
         self.post({"anyone-usually-live-at-answer": "Yes"})
         self.post({"first-name": "John", "last-name": "Doe"})
@@ -47,6 +47,7 @@ class TestQuestionnaireListCollector(IntegrationTestCase):
 
         self.get(first_person_change_link)
 
+        # Get the non-primary list item id
         non_primary_person_list_item_id = re.search(
             r"people\/([a-zA-Z]*)\/edit-person", self.last_url
         ).group(1)
@@ -55,7 +56,7 @@ class TestQuestionnaireListCollector(IntegrationTestCase):
         self.get("/questionnaire/primary-person-list-collector/")
         self.post({"you-live-here": "Yes"})
 
-        # Use thee non primary person list item id in the URL
+        # Use the non-primary person list item id in the URL
         self.get(
             f"/questionnaire/people/{non_primary_person_list_item_id}/add-or-edit-primary-person/"
         )
