@@ -405,13 +405,23 @@ def format_playback_value(value, currency=None):
     return format_number(value)
 
 
+def format_message_with_title(error_message, question_title):
+    if "%(question_title)s" in error_message and error_message.count("%(") == 1:
+        error_message = error_message % dict(question_title=question_title)
+    return error_message
+
+
 class MutuallyExclusiveCheck:
-    def __init__(self, messages=None):
+    def __init__(self, question_title, messages=None):
         self.messages = messages or error_messages
+        self.question_title = question_title
 
     def __call__(self, answer_values, is_mandatory):
         total_answered = sum(1 for value in answer_values if value)
         if total_answered > 1:
             raise validators.ValidationError(self.messages["MUTUALLY_EXCLUSIVE"])
         if is_mandatory and total_answered < 1:
-            raise validators.ValidationError(self.messages["MANDATORY_QUESTION"])
+            message = format_message_with_title(
+                self.messages["MANDATORY_QUESTION"], self.question_title
+            )
+            raise validators.ValidationError(message)

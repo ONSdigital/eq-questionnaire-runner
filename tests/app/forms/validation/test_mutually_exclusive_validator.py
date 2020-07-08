@@ -8,7 +8,7 @@ from app.forms.validators import MutuallyExclusiveCheck
 
 class TestMutuallyExclusive(unittest.TestCase):
     def setUp(self):
-        self.validator = MutuallyExclusiveCheck()
+        self.validator = MutuallyExclusiveCheck(question_title="")
 
     def test_mutually_exclusive_mandatory_exception(self):
         answer_permutations = [[[], []], [None, []], ["", []]]

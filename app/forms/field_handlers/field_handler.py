@@ -5,7 +5,7 @@ from wtforms import validators, Field
 
 from app.data_model.answer_store import AnswerStore
 from app.questionnaire.location import Location
-from app.forms.validators import ResponseRequired
+from app.forms.validators import ResponseRequired, format_message_with_title
 from app.questionnaire.rules import get_answer_value
 from app.utilities.schema import load_schema_from_metadata
 
@@ -48,24 +48,20 @@ class FieldHandler(ABC):
     def guidance(self):
         return self.answer_schema.get("guidance", "")
 
-    @staticmethod
-    def get_message_with_title(error_message, question_title):
-        if "%(question_title)s" in error_message and error_message.count("%(") == 1:
-            error_message = error_message % dict(question_title=question_title)
-        return error_message
-
     def get_validation_message(self, message_key):
-        message = self.validation_messages.get(message_key) or self.error_messages.get(
+        return self.validation_messages.get(message_key) or self.error_messages.get(
             message_key
         )
-
-        return self.get_message_with_title(message, self.question_title)
 
     def get_mandatory_validator(self):
         if self.answer_schema["mandatory"] is True:
             mandatory_message = self.get_validation_message(self.MANDATORY_MESSAGE_KEY)
 
-            return ResponseRequired(message=mandatory_message)
+            return ResponseRequired(
+                message=format_message_with_title(
+                    mandatory_message, self.question_title
+                )
+            )
 
         return validators.Optional()
 

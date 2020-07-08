@@ -126,16 +126,17 @@ class QuestionnaireForm(FlaskForm):
         )
         answers = (getattr(self, answer["id"]).data for answer in question["answers"])
 
-        validator = MutuallyExclusiveCheck(messages=messages)
+        validator = MutuallyExclusiveCheck(
+            messages=messages, question_title=self.question_title
+        )
 
         try:
             validator(answers, is_mandatory)
         except validators.ValidationError as e:
             error_message = str(e)
 
-            self.question_errors[question["id"]] = FieldHandler.get_message_with_title(
-                error_message, self.question_title
-            )
+            self.question_errors[question["id"]] = error_message
+
             return False
 
         return True
