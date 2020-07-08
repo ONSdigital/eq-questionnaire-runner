@@ -5,6 +5,7 @@ class SessionData:
         schema_name,
         period_str,
         language_code,
+        launch_language_code,
         survey_url,
         ru_name,
         ru_ref,
@@ -22,6 +23,7 @@ class SessionData:
         self.schema_name = schema_name
         self.period_str = period_str
         self.language_code = language_code
+        self.launch_language_code = launch_language_code
         self.survey_url = survey_url
         self.ru_name = ru_name
         self.ru_ref = ru_ref
