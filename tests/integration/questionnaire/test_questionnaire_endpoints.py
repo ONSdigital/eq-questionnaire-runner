@@ -46,9 +46,7 @@ class TestQuestionnaireEndpoints(IntegrationTestCase):
         # Then
         self.assertStatusNotFound()
 
-    def test_given_not_complete_questionnaire_when_get_thank_you_then_data_not_deleted(
-        self
-    ):
+    def test_get_thank_you_data_not_deleted_when_questionnaire_is_not_complete(self):
         # Given we start a survey
         self.launchSurvey("test_percentage", roles=["dumper"])
         self.post({"answer": "99"})
@@ -71,7 +69,7 @@ class TestQuestionnaireEndpoints(IntegrationTestCase):
         # Then we are shown a 404 page
         self.assertStatusNotFound()
 
-    def test_given_complete_questionnaire_when_submitted_then_data_is_deleted(self):
+    def test_data_is_deleted_on_submission(self):
         # Given we submit a survey
         self.launchSurvey("test_percentage", roles=["dumper"])
         self.post({"answer": "99"})
@@ -109,13 +107,13 @@ class TestQuestionnaireEndpoints(IntegrationTestCase):
         # Then we get the thank-you page
         self.assertInUrl("submitted/thank-you")
 
-    def test_when_survey_submitted_re_submitting_returns_unauthorised(self):
+    def test_questionnaire_not_accessible_once_submitted(self):
         # Given we have submitted the test_percentage survey
         self.launchSurvey("test_percentage", roles=["dumper"])
         self.post({"answer": "99"})
         self.post()
 
-        # When we try to submit the survey again
+        # When we try to access the submitted questionnaire
         self.get(url=f"{self.BASE_URL}/summary")
 
         # Then we get the unauthorised page
