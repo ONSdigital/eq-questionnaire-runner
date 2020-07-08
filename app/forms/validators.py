@@ -248,7 +248,7 @@ class SingleDatePeriodCheck:
         minimum_date=None,
         maximum_date=None,
     ):
-        self.messages = messages or error_messages
+        self.messages = {**messages, **error_messages}
         self.minimum_date = minimum_date
         self.maximum_date = maximum_date
         self.date_format = date_format
