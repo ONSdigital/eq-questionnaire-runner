@@ -129,7 +129,7 @@ def test_display_address_should_be_set_in_payload_metadata(
 
 
 def test_converter_raises_runtime_error_for_unsupported_version(
-    fake_questionnaire_store
+    fake_questionnaire_store,
 ):
     questionnaire = {"survey_id": "021", "data_version": "-0.0.1"}
 

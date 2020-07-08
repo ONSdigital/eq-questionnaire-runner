@@ -62,7 +62,9 @@ class TestQuestionnaireListChangeEvaluatesSections(IntegrationTestCase):
         self.assertEqualUrl("/questionnaire/sections/accommodation-section/")
         self.post()
 
-        self.assertInSelector("Completed", "[data-qa='hub-row-state-accommodation-section']")
+        self.assertInSelector(
+            "Completed", "[data-qa='hub-row-state-accommodation-section']"
+        )
 
         self.get("/questionnaire/sections/who-lives-here/")
         self.assertEqualUrl("/questionnaire/primary-person-list-collector/")

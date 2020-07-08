@@ -219,7 +219,7 @@ class TestRules(AppContextTestCase):  # pylint: disable=too-many-public-methods
         )
 
     def test_evaluate_goto_returns_true_when_answer_value_list_contains_match_value(
-        self
+        self,
     ):
 
         goto = {
@@ -245,7 +245,7 @@ class TestRules(AppContextTestCase):  # pylint: disable=too-many-public-methods
         )
 
     def test_evaluate_goto_returns_true_when_answer_value_list_not_contains_match_value(
-        self
+        self,
     ):
 
         goto = {
@@ -273,7 +273,7 @@ class TestRules(AppContextTestCase):  # pylint: disable=too-many-public-methods
         )
 
     def test_evaluate_goto_returns_true_when_answer_values_contains_any_match_values(
-        self
+        self,
     ):
 
         goto = {
@@ -305,7 +305,7 @@ class TestRules(AppContextTestCase):  # pylint: disable=too-many-public-methods
         )
 
     def test_evaluate_goto_returns_true_when_answer_values_contains_all_match_values(
-        self
+        self,
     ):
 
         goto = {
@@ -365,7 +365,7 @@ class TestRules(AppContextTestCase):  # pylint: disable=too-many-public-methods
         )
 
     def test_evaluate_goto_returns_true_when_answer_value_not_equals_any_match_values(
-        self
+        self,
     ):
 
         goto = {

@@ -116,9 +116,13 @@ class HubContext(Context):
 
         repeating_section_id = section_id + "-" + str(list_item_index)
 
-        return self._get_row_for_section(title, repeating_section_id, section_id, list_item_id)
+        return self._get_row_for_section(
+            title, repeating_section_id, section_id, list_item_id
+        )
 
-    def _get_row_for_section(self, section_title, section_id, section_title_id, list_item_id=None):
+    def _get_row_for_section(
+        self, section_title, section_id, section_title_id, list_item_id=None
+    ):
         section_status = self._progress_store.get_section_status(
             section_title_id, list_item_id
         )
@@ -151,6 +155,8 @@ class HubContext(Context):
                             )
                         )
                 else:
-                    rows.append(self._get_row_for_section(section_title, section_id, section_id))
+                    rows.append(
+                        self._get_row_for_section(section_title, section_id, section_id)
+                    )
 
         return rows

@@ -7,7 +7,7 @@ class TestQuestionnaireListCollector(IntegrationTestCase):
         self.post({"first-name": first_name, "last-name": last_name})
 
     def test_add_list_question_displayed_before_list_collector_and_return_to_in_url(
-        self
+        self,
     ):
         # Given
         self.launchSurvey("test_answer_action_redirect_to_list_add_question_checkbox")
@@ -45,7 +45,7 @@ class TestQuestionnaireListCollector(IntegrationTestCase):
         self.assertInUrl("/questionnaire/anyone-else-live-at/")
 
     def test_previous_link_return_to_list_collector_when_invalid_return_to_block_id(
-        self
+        self,
     ):
         # Given
         self.launchSurvey("test_answer_action_redirect_to_list_add_question_checkbox")
