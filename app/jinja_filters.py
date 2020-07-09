@@ -597,7 +597,7 @@ def map_list_collector_config(
                         "icon": icon,
                         "actions": actions,
                         "rowTitleAttributes": {
-                            "data-qa": "list-item-label-" + str(item_index)
+                            "data-qa": f"list-item-label-{item_index}"
                         },
                     }
                 ],
