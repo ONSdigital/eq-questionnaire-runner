@@ -132,12 +132,9 @@ class QuestionnaireForm(FlaskForm):
         try:
             validator(answers, is_mandatory)
         except validators.ValidationError as e:
-            error_message = str(e)
-
-            self.question_errors[question["id"]] = error_message
+            self.question_errors[question["id"]] = str(e)
 
             return False
-
         return True
 
     def _get_target_total_and_currency(self, calculation, question):
