@@ -34,7 +34,11 @@ class HubPage extends BasePage {
   }
 
   displayedGuidance() {
-    return "p > strong";
+    return '[data-qa="guidance"]';
+  }
+
+  displayedSubmissionGuidance() {
+    return '[data-qa="submission-guidance"]';
   }
 
   submit() {
