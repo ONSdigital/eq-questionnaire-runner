@@ -16,7 +16,7 @@ class TestQuestionnaireFinalConfirmation(IntegrationTestCase):
         self.assertInBody("Thank you for your answers, do you wish to submit")
         self.assertInBody("Submit answers")
 
-    def test_requesting_final_confirmation_before_finished_redirects(self):
+    def test_requesting_final_confirmation_before_finished_raises_404(self):
         # Given
         self.launchSurvey("test_final_confirmation")
 
@@ -27,10 +27,10 @@ class TestQuestionnaireFinalConfirmation(IntegrationTestCase):
         # And try posting straight to the confirmation screen
         self.post(url="/questionnaire/confirmation")
 
-        # Then we are re-directed back
-        self.assertInBody("What is your favourite breakfast food")
+        # Then we are shown a 404 page
+        self.assertStatusNotFound()
 
-    def test_invalid_block_once_survey_complete(self):
+    def test_invalid_block_once_survey_complete_raises_404(self):
         # Given
         self.launchSurvey("test_final_confirmation")
 
@@ -41,5 +41,5 @@ class TestQuestionnaireFinalConfirmation(IntegrationTestCase):
         # And try going to an invalid block
         self.get(url="/questionnaire/invalid")
 
-        # Then we are re-directed back to the confirmation screen
-        self.assertInBody("Thank you for your answers, do you wish to submit")
+        # Then we are shown a 404 page
+        self.assertStatusNotFound()

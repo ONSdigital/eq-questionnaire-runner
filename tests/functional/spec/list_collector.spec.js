@@ -143,11 +143,6 @@ describe("List Collector", () => {
       $(AnotherListCollectorRemovePage.submit()).click();
     });
 
-    it("The user is redirected to the summary when the user visits a non-existant list item id", () => {
-      browser.url("/questionnaire/people/somerandomid/another-edit-person");
-      expect(browser.getUrl()).to.contain(AnotherListCollectorPage.pageName);
-    });
-
     it("The user is returned to the list collector when the previous link is clicked.", () => {
       $(AnotherListCollectorPage.listRemoveLink(0)).click();
       $(AnotherListCollectorRemovePage.previous()).click();

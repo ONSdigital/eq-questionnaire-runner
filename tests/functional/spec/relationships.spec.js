@@ -135,14 +135,6 @@ describe("Relationships", () => {
         expect($(RelationshipsPage.error()).isDisplayed()).to.be.true;
       });
 
-      it("And go to a non existent relationship, Then I should be redirected to the first relationship", () => {
-        $(ListCollectorPage.no()).click();
-        $(ListCollectorPage.submit()).click();
-        browser.url("/questionnaire/relationships/fake-id/to/another-fake-id");
-        expect(browser.getUrl()).to.contain(RelationshipsPage.pageName);
-        expect($(RelationshipsPage.playback()).getText()).to.contain("Marcus Twin");
-      });
-
       it("And go to the first relationship and click 'Save and sign out', Then I should be signed out", () => {
         $(ListCollectorPage.no()).click();
         $(ListCollectorPage.submit()).click();
