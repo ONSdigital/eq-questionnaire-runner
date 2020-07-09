@@ -295,6 +295,7 @@ class IntegrationTestCase(unittest.TestCase):  # pylint: disable=too-many-public
 
     def assertStatusNotFound(self):
         self.assertStatusCode(404)
+        self.assertInBody("Page not found")
 
     def assertStatusCode(self, status_code):
         if self.last_response is not None:

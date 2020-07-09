@@ -14,7 +14,7 @@ class TestSchema(IntegrationTestCase):
 
     def test_get_schema_json_with_invalid_request(self):
         self.get("/schemas/doesnt-exist")
-        self.assertStatusNotFound()
+        self.assertStatusCode(404)
 
     def test_list_schemas(self):
         self.get("/schemas")

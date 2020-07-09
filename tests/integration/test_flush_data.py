@@ -42,7 +42,7 @@ class TestFlushData(IntegrationTestCase):
         payload["response_id"] = "0000000000000000"
 
         self.post(url="/flush?token=" + self.token_generator.generate_token(payload))
-        self.assertStatusNotFound()
+        self.assertStatusCode(404)
 
     def test_no_permission_to_flush(self):
         payload = self.get_payload()
@@ -72,7 +72,7 @@ class TestFlushData(IntegrationTestCase):
             url="/flush?token="
             + self.token_generator.generate_token(self.get_payload())
         )
-        self.assertStatusNotFound()
+        self.assertStatusCode(404)
 
     def test_no_token_passed_to_flush(self):
         self.post(url="/flush")
