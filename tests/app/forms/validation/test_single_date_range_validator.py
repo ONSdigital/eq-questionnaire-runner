@@ -62,23 +62,24 @@ class TestDateRangeValidator(AppContextTestCase):
 
             self.assertEqual("Test 1 April 2016", str(ite.exception))
 
-    @staticmethod
-    def test_valid_single_date_period():
-        minimum_date = convert_to_datetime("2016-03-20")
-        maximum_date = convert_to_datetime("2016-03-31")
-        validator = SingleDatePeriodCheck(
-            minimum_date=minimum_date, maximum_date=maximum_date
-        )
 
-        mock_form = Mock()
-        mock_form.data = "2016-03-26"
+def test_valid_single_date_period():
+    minimum_date = convert_to_datetime("2016-03-20")
+    maximum_date = convert_to_datetime("2016-03-31")
+    validator = SingleDatePeriodCheck(
+        minimum_date=minimum_date, maximum_date=maximum_date
+    )
 
-        mock_field = Mock()
+    mock_form = Mock()
+    mock_form.data = "2016-03-26"
 
-        validator(mock_form, mock_field)
+    mock_field = Mock()
 
-    def test_messages_are_merged(self):
-        messages = {"SINGLE_DATE_PERIOD_TOO_LATE": "Test %(max)s"}
-        validator = SingleDatePeriodCheck(messages=messages)
+    validator(mock_form, mock_field)
 
-        assert len(validator.messages) > 1
+
+def test_messages_are_merged():
+    messages = {"SINGLE_DATE_PERIOD_TOO_LATE": "Test %(max)s"}
+    validator = SingleDatePeriodCheck(messages=messages)
+
+    assert len(validator.messages) > 1
