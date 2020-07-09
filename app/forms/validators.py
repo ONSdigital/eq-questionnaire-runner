@@ -10,6 +10,7 @@ from structlog import get_logger
 from wtforms import validators
 from wtforms.compat import string_types
 
+from app.helpers.template_helper import safe_content
 from app.jinja_filters import format_number, get_formatted_currency
 from app.questionnaire.rules import convert_to_datetime
 from app.forms.error_messages import error_messages
@@ -406,7 +407,7 @@ def format_playback_value(value, currency=None):
 
 
 def format_message_with_title(error_message, question_title):
-    return error_message % dict(question_title=question_title)
+    return error_message % dict(question_title=safe_content(question_title))
 
 
 class MutuallyExclusiveCheck:

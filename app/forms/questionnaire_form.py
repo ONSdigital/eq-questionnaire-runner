@@ -11,7 +11,6 @@ from wtforms import validators
 from app.forms.field_factory import get_field_handler
 from app.forms.field_handlers.date_handler import DateHandler
 from app.forms.validators import DateRangeCheck, SumCheck, MutuallyExclusiveCheck
-from app.helpers.template_helper import safe_content
 
 logger = logging.getLogger(__name__)
 
@@ -27,7 +26,7 @@ class QuestionnaireForm(FlaskForm):
         self.location = location
         self.question_errors = {}
         self.options_with_detail_answer = {}
-        self.question_title = safe_content(self.question.get("title")) or ""
+        self.question_title = self.question.get("title") or ""
 
         super().__init__(**kwargs)
 
@@ -325,6 +324,7 @@ def _option_value_in_data(answer, option, data):
 
 def get_answer_fields(question, data, error_messages, answer_store, metadata, location):
     answer_fields = {}
+    question_title = question.get("title")
     for answer in question.get("answers", []):
         for option in answer.get("options", []):
             if "detail_answer" in option:
@@ -337,6 +337,7 @@ def get_answer_fields(question, data, error_messages, answer_store, metadata, lo
                     metadata,
                     location,
                     disable_validation=disable_validation,
+                    question_title=question_title,
                 ).get_field()
 
         answer_fields[answer["id"]] = get_field_handler(
@@ -345,7 +346,7 @@ def get_answer_fields(question, data, error_messages, answer_store, metadata, lo
             answer_store,
             metadata,
             location,
-            question_title=question.get("title"),
+            question_title=question_title,
         ).get_field()
 
     return answer_fields
