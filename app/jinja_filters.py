@@ -575,7 +575,7 @@ def map_list_collector_config(
                     "text": edit_link_text,
                     "ariaLabel": edit_link_aria_label.format(item_name=item_name),
                     "url": list_item.get("edit_link"),
-                    "attributes": {"data-qa": "change-item-link-" + str(item_index)},
+                    "attributes": {"data-qa": f"change-item-link-{item_index}"},
                 }
             )
 
