@@ -76,3 +76,9 @@ class TestDateRangeValidator(AppContextTestCase):
         mock_field = Mock()
 
         validator(mock_form, mock_field)
+
+    def test_messages_are_merged(self):
+        messages = {"SINGLE_DATE_PERIOD_TOO_LATE": "Test %(max)s"}
+        validator = SingleDatePeriodCheck(messages=messages)
+
+        assert len(validator.messages) > 1
