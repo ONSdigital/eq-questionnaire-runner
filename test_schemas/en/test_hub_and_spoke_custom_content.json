@@ -31,7 +31,8 @@
             "guidance": "Guidance displayed on hub when incomplete"
         },
         "submission": {
-            "button": "Submission text"
+            "button": "Submission text",
+            "guidance": "Submission guidance"
         }
     },
     "sections": [
