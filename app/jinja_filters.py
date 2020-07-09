@@ -585,7 +585,7 @@ def map_list_collector_config(
                     "text": remove_link_text,
                     "ariaLabel": remove_link_aria_label.format(item_name=item_name),
                     "url": list_item.get("remove_link"),
-                    "attributes": {"data-qa": "remove-item-link-" + str(item_index)},
+                    "attributes": {"data-qa": f"remove-item-link-{item_index}"},
                 }
             )
 
