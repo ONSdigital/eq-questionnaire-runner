@@ -233,7 +233,7 @@ def test_converter_checkboxes_with_q_codes_and_other_value(fake_questionnaire_st
 
 
 def test_converter_checkboxes_with_q_codes_and_empty_other_value(
-    fake_questionnaire_store,
+    fake_questionnaire_store
 ):
     routing_path = RoutingPath(["crisps"], section_id="food")
 
@@ -291,7 +291,7 @@ def test_converter_checkboxes_with_q_codes_and_empty_other_value(
 
 
 def test_converter_checkboxes_with_missing_q_codes_uses_answer_q_code(
-    fake_questionnaire_store,
+    fake_questionnaire_store
 ):
     routing_path = RoutingPath(["crisps"], section_id="food")
 

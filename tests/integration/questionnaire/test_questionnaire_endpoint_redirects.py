@@ -29,7 +29,7 @@ class TestQuestionnaireEndpointRedirects(IntegrationTestCase):
         self.assertInUrl(base_url + "introduction")
 
     def test_submit_answers_for_invalid_questionnaire_location_redirects_to_first_incomplete_location(
-        self,
+        self
     ):
         # Given
         self.launchSurvey("test_textfield")
@@ -43,7 +43,7 @@ class TestQuestionnaireEndpointRedirects(IntegrationTestCase):
         self.assertInUrl(base_url + "name-block")
 
     def test_given_not_complete_questionnaire_when_get_thank_you_then_data_not_deleted(
-        self,
+        self
     ):
         # Given we start a survey
         self.launchSurvey("test_percentage", roles=["dumper"])
@@ -58,7 +58,7 @@ class TestQuestionnaireEndpointRedirects(IntegrationTestCase):
         self.assertEqual(1, len(answers["ANSWERS"]))
 
     def test_given_not_complete_questionnaire_when_get_thank_you_then_redirected_to_latest_location(
-        self,
+        self
     ):
         # Given we start a survey
         self.launchSurvey("test_percentage", roles=["dumper"])

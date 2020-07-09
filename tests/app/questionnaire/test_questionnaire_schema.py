@@ -265,7 +265,7 @@ def test_get_relationship_collectors_by_list_name(mock_relationship_collector_sc
 
 
 def test_get_relationship_collectors_by_list_name_no_collectors(
-    mock_relationship_collector_schema,
+    mock_relationship_collector_schema
 ):
     schema = QuestionnaireSchema(mock_relationship_collector_schema)
     collectors = schema.get_relationship_collectors_by_list_name("not-a-list")
@@ -274,7 +274,7 @@ def test_get_relationship_collectors_by_list_name_no_collectors(
 
 
 def test_get_list_item_id_for_answer_id_without_list_item_id(
-    section_with_repeating_list,
+    section_with_repeating_list
 ):
     schema = QuestionnaireSchema(section_with_repeating_list)
 
@@ -288,7 +288,7 @@ def test_get_list_item_id_for_answer_id_without_list_item_id(
 
 
 def test_get_list_item_id_for_answer_id_without_repeat_or_list_collector(
-    question_schema,
+    question_schema
 ):
     schema = QuestionnaireSchema(question_schema)
 
@@ -312,7 +312,7 @@ def test_get_answer_within_repeat_with_list_item_id(section_with_repeating_list)
 
 
 def test_get_answer_within_list_collector_with_list_item_id(
-    list_collector_variant_schema,
+    list_collector_variant_schema
 ):
     schema = QuestionnaireSchema(list_collector_variant_schema)
 

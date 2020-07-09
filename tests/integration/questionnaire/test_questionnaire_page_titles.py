@@ -91,7 +91,7 @@ class TestQuestionnairePageTitles(IntegrationTestCase):
         self.assertEqualPageTitle("What is … date of birth? - Placeholder Test")
 
     def test_content_page_should_use_nested_content_text_in_page_title_if_it_exists(
-        self,
+        self
     ):
         # Given
         self.launchSurvey("test_interstitial_page_title")
