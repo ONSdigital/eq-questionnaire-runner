@@ -197,4 +197,4 @@ def test_converter_without_submission_language_code_and_launch_language_not_set_
     )
 
     assert answer_object["launch_language_code"] == "en"
-    assert answer_object["submission_language_code"] is None
+    assert "submission_language_code" not in answer_object

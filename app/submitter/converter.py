@@ -15,7 +15,6 @@ class DataVersionError(Exception):
     def __str__(self):
         return "Data version {} not supported".format(self.version)
 
-
 def convert_answers(
     schema,
     questionnaire_store,
@@ -83,9 +82,10 @@ def convert_answers(
         "metadata": _build_metadata(metadata),
         "questionnaire_id": metadata["questionnaire_id"],
         "launch_language_code": metadata.get("language_code", DEFAULT_LANGUAGE_CODE),
-        "submission_language_code": submission_language_code,
     }
 
+    if submission_language_code:
+        payload["submission_language_code"] = submission_language_code
     if metadata.get("channel"):
         payload["channel"] = metadata["channel"]
     if metadata.get("case_type"):
