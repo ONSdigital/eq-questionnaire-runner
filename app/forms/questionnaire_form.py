@@ -26,7 +26,7 @@ class QuestionnaireForm(FlaskForm):
         self.location = location
         self.question_errors = {}
         self.options_with_detail_answer = {}
-        self.question_title = self.question.get("title") or ""
+        self.question_title = self.question.get("title", "")
 
         super().__init__(**kwargs)
 
