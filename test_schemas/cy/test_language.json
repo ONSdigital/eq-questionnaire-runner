@@ -29,21 +29,18 @@
                             "type": "Question",
                             "id": "name-block",
                             "question": {
-                                "description": "",
                                 "id": "name-question",
                                 "title": "Rhowch enw",
                                 "type": "General",
                                 "answers": [
                                     {
                                         "id": "first-name",
-                                        "description": "",
                                         "label": "Enw cyntaf",
                                         "mandatory": true,
                                         "type": "TextField"
                                     },
                                     {
                                         "id": "last-name",
-                                        "description": "",
                                         "label": "Enw olaf",
                                         "mandatory": false,
                                         "type": "TextField"
@@ -55,7 +52,6 @@
                             "type": "Question",
                             "id": "dob-block",
                             "question": {
-                                "description": "",
                                 "id": "dob-question",
                                 "title": {
                                     "text": "Beth yw dyddiad geni {person_name_possessive}?",
@@ -115,7 +111,6 @@
                                         }
                                     }
                                 ],
-                                "description": "",
                                 "id": "number-of-people-question",
                                 "title": "Faint o bobl sy\u2019n byw ar eich cartref?",
                                 "type": "General"
