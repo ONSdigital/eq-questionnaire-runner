@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2020-07-10 09:53+0100\n"
+"POT-Creation-Date: 2020-07-10 10:40+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -265,6 +265,10 @@ msgstr ""
 
 #: app/views/contexts/list_context.py:84
 msgid " (You)"
+msgstr ""
+
+#: app/views/handlers/question.py:133
+msgid "Error: {page_title}"
 msgstr ""
 
 #: templates/confirmation.html:6 templates/confirmation.html:27
