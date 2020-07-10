@@ -36,10 +36,7 @@
                             "type": "Question",
                             "id": "name-block",
                             "question": {
-                                "description": [
-                                    "Answer the question",
-                                    "Go on"
-                                ],
+                                "description": ["Answer the question", "Go on"],
                                 "answers": [
                                     {
                                         "id": "name-answer",

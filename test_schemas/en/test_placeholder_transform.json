@@ -69,25 +69,27 @@
                                 "type": "General",
                                 "id": "total-retail-turnover-confirmation-question",
                                 "title": "Please enter the value of internet sales",
-                                "description": {
-                                    "text": "Of the <em>{total_turnover}</em> total retail turnover, what was the value of internet sales?",
-                                    "placeholders": [
-                                        {
-                                            "placeholder": "total_turnover",
-                                            "transforms": [
-                                                {
-                                                    "transform": "format_currency",
-                                                    "arguments": {
-                                                        "number": {
-                                                            "source": "answers",
-                                                            "identifier": "total-retail-turnover-answer"
+                                "description": [
+                                    {
+                                        "text": "Of the <em>{total_turnover}</em> total retail turnover, what was the value of internet sales?",
+                                        "placeholders": [
+                                            {
+                                                "placeholder": "total_turnover",
+                                                "transforms": [
+                                                    {
+                                                        "transform": "format_currency",
+                                                        "arguments": {
+                                                            "number": {
+                                                                "source": "answers",
+                                                                "identifier": "total-retail-turnover-answer"
+                                                            }
                                                         }
                                                     }
-                                                }
-                                            ]
-                                        }
-                                    ]
-                                },
+                                                ]
+                                            }
+                                        ]
+                                    }
+                                ],
                                 "answers": [
                                     {
                                         "id": "total-retail-turnover-internet-sales-answer",

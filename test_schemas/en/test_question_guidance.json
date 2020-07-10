@@ -39,7 +39,7 @@
                             "question": {
                                 "id": "question-test-guidance-title",
                                 "title": "Question: Test guidance title",
-                                "description": "Testing combinations of the title within guidance",
+                                "description": ["Testing combinations of the title within guidance"],
                                 "guidance": {
                                     "contents": [
                                         {
@@ -74,7 +74,7 @@
                             "question": {
                                 "id": "question-test-guidance-description",
                                 "title": "Question: Test guidance descriptions",
-                                "description": "Tests the descriptions within guidance",
+                                "description": ["Tests the descriptions within guidance"],
                                 "guidance": {
                                     "contents": [
                                         {
@@ -242,7 +242,7 @@
                             "question": {
                                 "id": "question-test-guidance-all",
                                 "title": "Question: Test guidance all",
-                                "description": "Testing all features of the guidance block enabled together",
+                                "description": ["Testing all features of the guidance block enabled together"],
                                 "guidance": {
                                     "contents": [
                                         {

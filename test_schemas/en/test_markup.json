@@ -51,7 +51,9 @@
                                         "type": "TextField"
                                     }
                                 ],
-                                "description": "Cum sociis natoque penatibus et <em>magnis dis parturient montes</em>, nascetur ridiculus mus. Curabitur blandit tempus porttitor.",
+                                "description": [
+                                    "Cum sociis natoque penatibus et <em>magnis dis parturient montes</em>, nascetur ridiculus mus. Curabitur blandit tempus porttitor."
+                                ],
                                 "id": "question",
                                 "title": "This is a title <em>with emphasis</em>",
                                 "type": "General"

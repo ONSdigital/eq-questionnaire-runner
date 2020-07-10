@@ -62,7 +62,7 @@
                                     }
                                 ],
                                 "mandatory": false,
-                                "description": "This is section 1.",
+                                "description": ["This is section 1."],
                                 "id": "section-1-question",
                                 "title": "Which sections do you want to enable?",
                                 "type": "MutuallyExclusive"
@@ -103,7 +103,7 @@
                                         "type": "Number"
                                     }
                                 ],
-                                "description": "This is section 2.",
+                                "description": ["This is section 2."],
                                 "id": "section-2-question",
                                 "title": "Which section is this?",
                                 "type": "General"
@@ -144,7 +144,7 @@
                                         "type": "Number"
                                     }
                                 ],
-                                "description": "This is section 3.",
+                                "description": ["This is section 3."],
                                 "id": "section-3-question",
                                 "title": "Which section is this?",
                                 "type": "General"
