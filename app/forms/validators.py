@@ -94,7 +94,7 @@ class NumberRange:
         self.maximum = maximum
         self.minimum_exclusive = minimum_exclusive
         self.maximum_exclusive = maximum_exclusive
-        self.messages = messages or error_messages
+        self.messages = {**error_messages, **(messages or {})}
         self.currency = currency
 
     def __call__(self, form, field):
@@ -149,7 +149,7 @@ class DecimalPlaces:
 
     def __init__(self, max_decimals=0, messages=None):
         self.max_decimals = max_decimals
-        self.messages = messages or error_messages
+        self.messages = {**error_messages, **(messages or {})}
 
     def __call__(self, form, field):
         data = (
@@ -248,7 +248,7 @@ class SingleDatePeriodCheck:
         minimum_date=None,
         maximum_date=None,
     ):
-        self.messages = messages or error_messages
+        self.messages = {**error_messages, **(messages or {})}
         self.minimum_date = minimum_date
         self.maximum_date = maximum_date
         self.date_format = date_format
@@ -285,7 +285,7 @@ class SingleDatePeriodCheck:
 
 class DateRangeCheck:
     def __init__(self, messages=None, period_min=None, period_max=None):
-        self.messages = messages or error_messages
+        self.messages = {**error_messages, **(messages or {})}
         self.period_min = period_min
         self.period_max = period_max
 
@@ -360,7 +360,7 @@ class DateRangeCheck:
 
 class SumCheck:
     def __init__(self, messages=None, currency=None):
-        self.messages = messages or error_messages
+        self.messages = {**error_messages, **(messages or {})}
         self.currency = currency
 
     def __call__(self, form, conditions, total, target_total):
@@ -407,7 +407,7 @@ def format_playback_value(value, currency=None):
 
 class MutuallyExclusiveCheck:
     def __init__(self, messages=None):
-        self.messages = messages or error_messages
+        self.messages = {**error_messages, **(messages or {})}
 
     def __call__(self, answer_values, is_mandatory):
         total_answered = sum(1 for value in answer_values if value)

@@ -1,8 +1,9 @@
 import flask_babel
-
 from flask import Blueprint, g, redirect, request, url_for, jsonify
 from flask_login import current_user, login_required
 from structlog import get_logger
+from werkzeug.exceptions import NotFound
+
 from app.authentication.no_token_exception import NoTokenException
 from app.globals import get_metadata, get_session_store, get_session_timeout_in_seconds
 from app.helpers.language_helper import handle_language
@@ -11,7 +12,6 @@ from app.helpers.session_helpers import with_questionnaire_store
 from app.helpers.template_helper import render_template
 from app.questionnaire.location import InvalidLocationException
 from app.questionnaire.router import Router
-
 from app.utilities.schema import load_schema_from_session_data
 from app.views.contexts.hub_context import HubContext
 from app.views.contexts.metadata_context import (
@@ -124,7 +124,10 @@ def post_questionnaire(schema, questionnaire_store):
         questionnaire_store.metadata,
     )
 
-    if schema.is_hub_enabled() and router.is_survey_complete():
+    if not schema.is_hub_enabled():
+        raise NotFound
+
+    if router.is_survey_complete():
         submission_handler = SubmissionHandler(
             schema, questionnaire_store, router.full_routing_path()
         )
@@ -151,7 +154,7 @@ def get_section(schema, questionnaire_store, section_id, list_item_id=None):
             language=flask_babel.get_locale().language,
         )
     except InvalidLocationException:
-        return redirect(url_for(".get_questionnaire"))
+        raise NotFound
 
     if request.method == "GET":
         if section_handler.can_display_summary():
@@ -192,7 +195,7 @@ def block(schema, questionnaire_store, block_id, list_name=None, list_item_id=No
             form_data=request.form,
         )
     except InvalidLocationException:
-        return redirect(url_for(".get_questionnaire"))
+        raise NotFound
 
     if block_handler.block["type"] == "RelationshipCollector":
         return redirect(block_handler.get_first_location_url())
@@ -245,7 +248,7 @@ def relationship(schema, questionnaire_store, block_id, list_item_id, to_list_it
             form_data=request.form,
         )
     except InvalidLocationException:
-        return redirect(url_for(".get_questionnaire"))
+        raise NotFound
 
     if request.method == "GET" or (
         hasattr(block_handler, "form") and not block_handler.form.validate()
@@ -272,7 +275,7 @@ def get_thank_you(schema):
     session_data = session_store.session_data
 
     if not session_data.submitted_time:
-        return redirect(url_for("questionnaire.get_questionnaire"))
+        raise NotFound
 
     metadata_context = build_metadata_context_for_survey_completed(session_data)
 

@@ -27,15 +27,15 @@ class TestQuestionnaireRelationships(IntegrationTestCase):
         self.post()
         self.assertInUrl("/questionnaire/sections/")
 
-    def test_go_to_relationships_not_on_path(self):
+    def test_get_relationships_when_not_on_path_raises_404(self):
         self.launchSurvey("test_relationships")
         self.get("/questionnaire/relationships")
-        self.assertInUrl("/questionnaire/list-collector")
+        self.assertStatusNotFound()
 
-    def test_go_to_relationship_when_relationships_not_on_path(self):
+    def test_invalid_relationship_raises_404(self):
         self.launchSurvey("test_relationships")
         self.get("/questionnaire/relationships/fake-id/to/another-fake-id")
-        self.assertInUrl("/questionnaire/list-collector")
+        self.assertStatusNotFound()
 
     def test_go_to_invalid_relationship(self):
         self.launchSurvey("test_relationships")
