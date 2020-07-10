@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2020-06-16 13:01+0100\n"
+"POT-Creation-Date: 2020-07-10 08:55+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,26 +17,26 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 2.8.0\n"
 
-#: app/forms/validators.py:340 app/jinja_filters.py:80
+#: app/forms/validators.py:340 app/jinja_filters.py:81
 #, python-format
 msgid "%(num)s year"
 msgid_plural "%(num)s years"
 msgstr[0] ""
 msgstr[1] ""
 
-#: app/forms/validators.py:344 app/jinja_filters.py:88
+#: app/forms/validators.py:344 app/jinja_filters.py:89
 #, python-format
 msgid "%(num)s month"
 msgid_plural "%(num)s months"
 msgstr[0] ""
 msgstr[1] ""
 
-#: app/jinja_filters.py:131
+#: app/jinja_filters.py:132
 #, python-format
 msgid "%(date)s at %(time)s"
 msgstr ""
 
-#: app/jinja_filters.py:142
+#: app/jinja_filters.py:143
 #, python-format
 msgid "%(from_date)s to %(to_date)s"
 msgstr ""
@@ -180,11 +180,11 @@ msgstr ""
 msgid "Office for National Statistics logo"
 msgstr ""
 
-#: app/helpers/template_helper.py:28 app/helpers/template_helper.py:36
+#: app/helpers/template_helper.py:28 app/helpers/template_helper.py:37
 msgid "Census 2021"
 msgstr ""
 
-#: app/helpers/template_helper.py:32
+#: app/helpers/template_helper.py:33
 msgid "Northern Ireland Statistics and Research Agency logo"
 msgstr ""
 
@@ -277,6 +277,10 @@ msgstr ""
 
 #: templates/confirmation.html:32
 msgid "Submitting"
+msgstr ""
+
+#: templates/interstitial.html:10 templates/partials/question.html:6
+msgid "Interviewer Note:"
 msgstr ""
 
 #: templates/introduction.html:15
@@ -480,7 +484,7 @@ msgid ""
 "the survey again."
 msgstr ""
 
-#: templates/layouts/_base.html:33
+#: templates/layouts/_base.html:36
 msgid "We use cookies to improve your experience of census.gov.uk"
 msgstr ""
 
@@ -571,27 +575,27 @@ msgid ""
 " of the section</a>"
 msgstr ""
 
-#: templates/partials/question.html:48
+#: templates/partials/question.html:52
 msgid "Selecting this will clear your answer"
 msgstr ""
 
-#: templates/partials/question.html:49
+#: templates/partials/question.html:53
 msgid "cleared"
 msgstr ""
 
-#: templates/partials/question.html:52
+#: templates/partials/question.html:56
 msgid "Selecting this will deselect any selected options"
 msgstr ""
 
-#: templates/partials/question.html:53 templates/partials/question.html:61
+#: templates/partials/question.html:57 templates/partials/question.html:65
 msgid "deselected"
 msgstr ""
 
-#: templates/partials/question.html:57
+#: templates/partials/question.html:61
 msgid "Or"
 msgstr ""
 
-#: templates/partials/answers/checkbox.html:7
+#: templates/partials/answers/checkbox.html:8
 msgid "Select all that apply"
 msgstr ""
 
@@ -611,38 +615,38 @@ msgstr ""
 msgid "Clear selection"
 msgstr ""
 
-#: templates/partials/answers/textarea.html:15
+#: templates/partials/answers/textarea.html:16
 msgid "You have {x} character remaining"
 msgstr ""
 
-#: templates/partials/answers/textarea.html:16
+#: templates/partials/answers/textarea.html:17
 msgid "You have {x} characters remaining"
 msgstr ""
 
-#: templates/partials/answers/textfield.html:25
+#: templates/partials/answers/textfield.html:26
 msgid "{x} character too many"
 msgstr ""
 
-#: templates/partials/answers/textfield.html:26
+#: templates/partials/answers/textfield.html:27
 msgid "{x} characters too many"
 msgstr ""
 
-#: templates/partials/answers/textfield.html:32
+#: templates/partials/answers/textfield.html:33
 msgid ""
 "Use up and down keys to navigate suggestions once you've typed more than "
 "two characters. Use the enter key to select a suggestion. Touch device "
 "users, explore by touch or with swipe gestures."
 msgstr ""
 
-#: templates/partials/answers/textfield.html:33
+#: templates/partials/answers/textfield.html:34
 msgid "Continue entering to improve suggestions"
 msgstr ""
 
-#: templates/partials/answers/textfield.html:34
+#: templates/partials/answers/textfield.html:35
 msgid "Suggestions"
 msgstr ""
 
-#: templates/partials/answers/textfield.html:35
+#: templates/partials/answers/textfield.html:36
 msgid "No results found"
 msgstr ""
 
