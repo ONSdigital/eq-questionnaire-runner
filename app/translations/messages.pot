@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2020-07-08 16:00+0100\n"
+"POT-Creation-Date: 2020-07-10 09:53+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -250,15 +250,15 @@ msgstr ""
 msgid "Please submit this survey to complete it"
 msgstr ""
 
-#: app/views/contexts/hub_context.py:55
+#: app/views/contexts/hub_context.py:56
 msgid "Choose another section to complete"
 msgstr ""
 
-#: app/views/contexts/hub_context.py:56
+#: app/views/contexts/hub_context.py:57
 msgid "You must complete all sections in order to submit this survey"
 msgstr ""
 
-#: app/views/contexts/hub_context.py:59 templates/interstitial.html:5
+#: app/views/contexts/hub_context.py:60 templates/interstitial.html:5
 #: templates/sectionsummary.html:11
 msgid "Continue"
 msgstr ""
@@ -312,18 +312,14 @@ msgstr ""
 msgid "Close this window to continue with your current survey"
 msgstr ""
 
-#: templates/question.html:7
-msgid "Error: "
-msgstr ""
-
-#: templates/question.html:20
+#: templates/question.html:16
 #, python-format
 msgid "This page has an error"
 msgid_plural "This page has %(num)s errors"
 msgstr[0] ""
 msgstr[1] ""
 
-#: templates/question.html:26
+#: templates/question.html:22
 msgid "This <strong>must be corrected</strong> to continue"
 msgid_plural "These <strong>must be corrected</strong> to continue"
 msgstr[0] ""

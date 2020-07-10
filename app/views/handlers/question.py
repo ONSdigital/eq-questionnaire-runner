@@ -128,6 +128,9 @@ class Question(BlockHandler):
                 )
             )
 
+        if self.form.errors or self.form.question_errors:
+            self.page_title = "Error: " + self.page_title
+
         return context
 
     def get_last_viewed_question_guidance_context(self):
