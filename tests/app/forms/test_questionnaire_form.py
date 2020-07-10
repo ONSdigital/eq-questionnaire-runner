@@ -6,6 +6,7 @@ from mock import patch
 from werkzeug.datastructures import MultiDict
 
 from app.forms.questionnaire_form import generate_form
+from app.questionnaire.placeholder_renderer import PlaceholderRenderer
 from app.utilities.schema import load_schema_from_name
 from app.forms.validators import ResponseRequired, DateRequired
 from app.data_model.answer_store import AnswerStore, Answer
@@ -1240,19 +1241,28 @@ class TestQuestionnaireForm(
             question_schema = schema.get_block("mutually-exclusive-checkbox").get(
                 "question"
             )
+            answer_store = AnswerStore(
+                [{"answer_id": "mandatory-checkbox-answer", "value": ["Tuna"]}]
+            )
+
+            renderer = PlaceholderRenderer(
+                language="en", schema=schema, answer_store=answer_store
+            )
+            rendered_schema = renderer.render(question_schema, None)
 
             form = generate_form(
                 schema,
-                question_schema,
-                AnswerStore(),
+                rendered_schema,
+                answer_store,
                 metadata=None,
                 form_data=MultiDict(),
             )
             form.validate_mutually_exclusive_question(question_schema)
+            error = form.question_errors["mutually-exclusive-checkbox-question"]
 
-            self.assertEqual(
-                form.question_errors["mutually-exclusive-checkbox-question"],
-                "Select an answer to ‘Were you a resident at any of the following addresses?’ to continue",
+            assert (
+                error
+                == "Select an answer to ‘Did you really answer ‘Tuna’ to the previous question?’ to continue"
             )
 
     def test_mutually_exclusive_question_raises_error_when_both_answered(self):
