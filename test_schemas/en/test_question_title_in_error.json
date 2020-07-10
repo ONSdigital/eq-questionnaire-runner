@@ -90,7 +90,26 @@
                             "question": {
                                 "id": "mutually-exclusive-checkbox-question",
                                 "type": "MutuallyExclusive",
-                                "title": "Were you a resident at any of the following addresses?",
+                                "title": {
+                                    "text": "Did you really answer ‘{topping_answers}’ to the previous question?",
+                                    "placeholders": [
+                                        {
+                                            "placeholder": "topping_answers",
+                                            "transforms": [
+                                                {
+                                                    "arguments": {
+                                                        "delimiter": ", ",
+                                                        "list_to_concatenate": {
+                                                            "identifier": "mandatory-checkbox-answer",
+                                                            "source": "answers"
+                                                        }
+                                                    },
+                                                    "transform": "concatenate_list"
+                                                }
+                                            ]
+                                        }
+                                    ]
+                                },
                                 "mandatory": true,
                                 "answers": [
                                     {
@@ -100,12 +119,12 @@
                                         "mandatory": false,
                                         "options": [
                                             {
-                                                "label": "7 Evelyn Street, Barry",
-                                                "value": "7 Evelyn Street, Barry"
+                                                "label": "Yes",
+                                                "value": "Yes"
                                             },
                                             {
-                                                "label": "251 Argae Lane, Barry",
-                                                "value": "251 Argae Lane, Barry"
+                                                "label": "No",
+                                                "value": "No"
                                             }
                                         ]
                                     },
