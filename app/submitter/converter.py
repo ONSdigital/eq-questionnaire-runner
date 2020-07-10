@@ -1,5 +1,6 @@
 from datetime import datetime
 from structlog import get_logger
+from app.questionnaire.questionnaire_schema import DEFAULT_LANGUAGE_CODE
 from app.submitter.convert_payload_0_0_1 import convert_answers_to_payload_0_0_1
 from app.submitter.convert_payload_0_0_3 import convert_answers_to_payload_0_0_3
 
@@ -15,7 +16,13 @@ class DataVersionError(Exception):
         return "Data version {} not supported".format(self.version)
 
 
-def convert_answers(schema, questionnaire_store, routing_path, flushed=False):
+def convert_answers(
+    schema,
+    questionnaire_store,
+    routing_path,
+    flushed=False,
+    submission_language_code=None,
+):
     """
     Create the JSON answer format for down stream processing in the following format:
     ```
@@ -35,6 +42,8 @@ def convert_answers(schema, questionnaire_store, routing_path, flushed=False):
         'submitted_at': '2016-03-07T15:28:05Z',
         'questionnaire_id': '1234567890000000',
         'channel': 'RH',
+        'launch_language_code': 'en'
+        'submission_language_code': 'cy'
         'metadata': {
           'user_id': '789473423',
           'ru_ref': '432423423423'
@@ -50,6 +59,7 @@ def convert_answers(schema, questionnaire_store, routing_path, flushed=False):
         questionnaire_store: EncryptedQuestionnaireStorage instance for accessing current questionnaire data
         routing_path: The full routing path followed by the user when answering the questionnaire
         flushed: True when system submits the users answers, False when submitted by user.
+        submission_language_code: The language code when the questionnaire was submitted.
     Returns:
         Data payload
     """
@@ -72,6 +82,8 @@ def convert_answers(schema, questionnaire_store, routing_path, flushed=False):
         "collection": _build_collection(metadata),
         "metadata": _build_metadata(metadata),
         "questionnaire_id": metadata["questionnaire_id"],
+        "launch_language_code": metadata.get("language_code", DEFAULT_LANGUAGE_CODE),
+        "submission_language_code": submission_language_code,
     }
 
     if metadata.get("channel"):

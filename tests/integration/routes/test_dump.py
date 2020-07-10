@@ -88,6 +88,8 @@ class TestDumpSubmission(IntegrationTestCase):
                 },
                 "data": {"answers": [], "lists": []},
                 "metadata": {"ru_ref": "123456789012A", "user_id": "integration-test"},
+                "launch_language_code": "en",
+                "submission_language_code": None,
             }
         }
 
@@ -135,6 +137,8 @@ class TestDumpSubmission(IntegrationTestCase):
                     "lists": [],
                 },
                 "metadata": {"ru_ref": "123456789012A", "user_id": "integration-test"},
+                "launch_language_code": "en",
+                "submission_language_code": None,
             }
         }
         assert actual == expected
@@ -202,6 +206,8 @@ class TestDumpSubmission(IntegrationTestCase):
                     ],
                 },
                 "metadata": {"ru_ref": "123456789012A", "user_id": "integration-test"},
+                "launch_language_code": "en",
+                "submission_language_code": None,
             }
         }
         assert actual == expected
