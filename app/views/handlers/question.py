@@ -130,7 +130,9 @@ class Question(BlockHandler):
             )
 
         if self.form.errors or self.form.question_errors:
-            self.page_title = gettext("Error: {page_title}").format(page_title=self.page_title)
+            self.page_title = gettext("Error: {page_title}").format(
+                page_title=self.page_title
+            )
 
         return context
 
