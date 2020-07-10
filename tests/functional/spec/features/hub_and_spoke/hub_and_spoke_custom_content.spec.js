@@ -10,6 +10,7 @@ describe("Feature: Hub and Spoke with custom content", () => {
     browser.openQuestionnaire(hubAndSpokeSchema);
     expect($(HubPage.displayedName()).getText()).to.contain("Choose another section to complete");
     expect($(HubPage.displayedGuidance()).getText()).to.contain("Guidance displayed on hub when incomplete");
+    expect($(HubPage.displayedSubmissionGuidance()).isExisting()).to.be.false;
     expect($(HubPage.submit()).getText()).to.contain("Continue");
   });
 
@@ -23,6 +24,7 @@ describe("Feature: Hub and Spoke with custom content", () => {
     $(HouseholdSummary.submit()).click();
     expect($(HubPage.displayedName()).getText()).to.contain("Title displayed on hub when complete");
     expect($(HubPage.displayedGuidance()).getText()).to.contain("Guidance displayed on hub when complete");
+    expect($(HubPage.displayedSubmissionGuidance()).getText()).to.contain("Submission guidance");
     expect($(HubPage.submit()).getText()).to.contain("Submission text");
   });
 });
