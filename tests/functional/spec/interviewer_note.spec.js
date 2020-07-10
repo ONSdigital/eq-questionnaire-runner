@@ -4,7 +4,7 @@ import ConfirmPage from "../generated_pages/interviewer_note/confirm-block.page.
 import FinalInterstitialPage from "../generated_pages/interviewer_note/final-interstitial-block.page.js";
 
 describe("Interviewer Note", () => {
-    beforeEach(() => {
+  beforeEach(() => {
     browser.openQuestionnaire("test_interviewer_note.json");
   });
 
