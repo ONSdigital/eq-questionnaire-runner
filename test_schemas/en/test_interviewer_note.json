@@ -67,16 +67,15 @@
                                 "answers": [
                                     {
                                         "options": [
-                                          {
-                                              "label": "Yes",
-                                              "value": "Yes"
-                                          }
+                                            {
+                                                "label": "Yes",
+                                                "value": "Yes"
+                                            }
                                         ],
                                         "id": "confirm-answer",
                                         "mandatory": false,
                                         "type": "Checkbox"
                                     }
-
                                 ],
                                 "id": "confirm-question",
                                 "title": {
@@ -84,7 +83,7 @@
                                     "placeholders": [
                                         {
                                             "placeholder": "team",
-                                            "value": {"source": "answers", "identifier": "favourite-team-answer"}
+                                            "value": { "source": "answers", "identifier": "favourite-team-answer" }
                                         }
                                     ]
                                 },
