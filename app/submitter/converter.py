@@ -15,13 +15,8 @@ class DataVersionError(Exception):
     def __str__(self):
         return "Data version {} not supported".format(self.version)
 
-def convert_answers(
-    schema,
-    questionnaire_store,
-    routing_path,
-    flushed=False,
-    submission_language_code=None,
-):
+
+def convert_answers(schema, questionnaire_store, routing_path, flushed=False):
     """
     Create the JSON answer format for down stream processing in the following format:
     ```
@@ -40,9 +35,8 @@ def convert_answers(
         'started_at': '2016-03-06T15:28:05Z',
         'submitted_at': '2016-03-07T15:28:05Z',
         'questionnaire_id': '1234567890000000',
+        'launch_language_code': 'en',
         'channel': 'RH',
-        'launch_language_code': 'en'
-        'submission_language_code': 'cy'
         'metadata': {
           'user_id': '789473423',
           'ru_ref': '432423423423'
@@ -58,7 +52,6 @@ def convert_answers(
         questionnaire_store: EncryptedQuestionnaireStorage instance for accessing current questionnaire data
         routing_path: The full routing path followed by the user when answering the questionnaire
         flushed: True when system submits the users answers, False when submitted by user.
-        submission_language_code: The language code when the questionnaire was submitted.
     Returns:
         Data payload
     """
@@ -84,8 +77,6 @@ def convert_answers(
         "launch_language_code": metadata.get("language_code", DEFAULT_LANGUAGE_CODE),
     }
 
-    if submission_language_code:
-        payload["submission_language_code"] = submission_language_code
     if metadata.get("channel"):
         payload["channel"] = metadata["channel"]
     if metadata.get("case_type"):

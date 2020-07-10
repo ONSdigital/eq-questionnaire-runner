@@ -141,7 +141,7 @@ def test_converter_raises_runtime_error_for_unsupported_version(
     assert "Data version -0.0.1 not supported" in str(err.value)
 
 
-def test_converter_with_submission_language_code_and_language_code_not_set_in_payload(
+def test_converter_language_code_not_set_in_payload(
     fake_questionnaire_schema,
     fake_questionnaire_store,
     fake_collection_metadata,
@@ -152,17 +152,13 @@ def test_converter_with_submission_language_code_and_language_code_not_set_in_pa
     fake_questionnaire_store.collection_metadata = fake_collection_metadata
 
     answer_object = convert_answers(
-        fake_questionnaire_schema,
-        fake_questionnaire_store,
-        {},
-        submission_language_code="cy",
+        fake_questionnaire_schema, fake_questionnaire_store, {}
     )
 
     assert answer_object["launch_language_code"] == "en"
-    assert answer_object["submission_language_code"] == "cy"
 
 
-def test_converter_with_submission_language_code_and_language_code_set_in_payload(
+def test_converter_language_code_set_in_payload(
     fake_questionnaire_schema,
     fake_questionnaire_store,
     fake_collection_metadata,
@@ -173,28 +169,7 @@ def test_converter_with_submission_language_code_and_language_code_set_in_payloa
     fake_questionnaire_store.collection_metadata = fake_collection_metadata
 
     answer_object = convert_answers(
-        fake_questionnaire_schema,
-        fake_questionnaire_store,
-        {},
-        submission_language_code="eo",
-    )
-
-    assert answer_object["launch_language_code"] == "ga"
-    assert answer_object["submission_language_code"] == "eo"
-
-
-def test_converter_without_submission_language_code_and_launch_language_not_set_in_payload(
-    fake_questionnaire_schema,
-    fake_questionnaire_store,
-    fake_collection_metadata,
-    fake_metadata,
-):
-    fake_questionnaire_store.set_metadata(fake_metadata)
-    fake_questionnaire_store.collection_metadata = fake_collection_metadata
-
-    answer_object = convert_answers(
         fake_questionnaire_schema, fake_questionnaire_store, {}
     )
 
-    assert answer_object["launch_language_code"] == "en"
-    assert "submission_language_code" not in answer_object
+    assert answer_object["launch_language_code"] == "ga"

@@ -21,7 +21,6 @@ class SubmissionHandler:
                 self._schema,
                 self._questionnaire_store,
                 self._full_routing_path,
-                submission_language_code=self.session_store.session_data.language_code,
             ),
             for_json=True,
         )
