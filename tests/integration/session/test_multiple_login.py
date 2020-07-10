@@ -89,7 +89,7 @@ class TestMultipleLogin(MultipleClientTestCase):
         self.assertIn("/questionnaire/summary", last_url_b)
 
         # user B manually navigates to answer and can view the value that user A entered
-        self.get(self.client_b, "/questionnaire/block")
+        self.get(self.client_b, "/questionnaire/name-block")
         last_response_b = self.cache[self.client_b]["last_response"]
         self.assertEqual(last_response_b.status_code, 200)
         self.assertIn(input_data, last_response_b.get_data(True))

@@ -15,16 +15,6 @@ class TestQuestionnaireHub(IntegrationTestCase):
         self.assertInBody("Which pizza toppings would you like?")
         self.assertInUrl("mandatory-checkbox")
 
-    def test_invalid_block_id_redirects_to_hub_when_hub_enabled(self):
-        # Given the hub is enabled
-        self.launchSurvey("test_hub_and_spoke")
-
-        # When I navigate to an invalid block id
-        self.get("questionnaire/invalid-block-id/")
-
-        # Then I should be redirected to the hub
-        self.assertEqualUrl(HUB_URL)
-
     def test_redirect_to_hub_when_section_complete(self):
         # Given the hub is enabled
         self.launchSurvey("test_hub_and_spoke")
@@ -66,16 +56,6 @@ class TestQuestionnaireHub(IntegrationTestCase):
 
         # Then I should be redirected to the correct location for that section
         self.assertEqualUrl("/questionnaire/mandatory-checkbox/")
-
-    def test_invalid_section_id_redirects_to_hub_when_hub_enabled(self):
-        # Given the hub is enabled
-        self.launchSurvey("test_hub_and_spoke")
-
-        # When I navigate to the url for a hub's section that does not exist
-        self.get("questionnaire/sections/invalid-section/")
-
-        # Then I should be redirected to the hub
-        self.assertInUrl(HUB_URL)
 
     def test_section_url_when_hub_enabled_and_section_not_started(self):
         # Given the hub is enabled
