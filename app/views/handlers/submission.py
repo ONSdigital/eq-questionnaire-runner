@@ -18,9 +18,7 @@ class SubmissionHandler:
     def submit_questionnaire(self):
         message = json.dumps(
             convert_answers(
-                self._schema,
-                self._questionnaire_store,
-                self._full_routing_path,
+                self._schema, self._questionnaire_store, self._full_routing_path
             ),
             for_json=True,
         )
