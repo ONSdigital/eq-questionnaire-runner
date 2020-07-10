@@ -10,8 +10,8 @@ class TestQuestionnaireChangeAnswer(IntegrationTestCase):
         # When I try access the final summary
         self.get("questionnaire/summary")
 
-        # Then I should be redirected to the first incomplete question in the survey
-        self.assertInBody("Were you forced to complete section 1?")
+        # Then I am shown a 404 page
+        self.assertStatusNotFound()
 
     def test_final_summary_not_available_after_invalidating_section(self):
 
@@ -41,5 +41,5 @@ class TestQuestionnaireChangeAnswer(IntegrationTestCase):
 
         self.get("questionnaire/summary")
 
-        # Then I should be redirected to the first incomplete question in the survey
-        self.assertInBody("What would incentivise you to complete this section?")
+        # Then I am shown a 404 page
+        self.assertStatusNotFound()
