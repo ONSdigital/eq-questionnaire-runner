@@ -157,7 +157,7 @@ describe("Relationships", () => {
       });
 
       it("Then I delete one of the original household members I will not be asked for the original members relationships again", () => {
-        $(SectionSummaryPage.peopleListRemoveLink(0)).click();
+        $(SectionSummaryPage.peopleListRemoveLink(1)).click();
         $(ListCollectorRemovePage.yes()).click();
         $(ListCollectorRemovePage.submit()).click();
         expect(browser.getUrl()).to.contain("/sections/section/");

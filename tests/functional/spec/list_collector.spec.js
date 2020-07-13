@@ -63,7 +63,7 @@ describe("List Collector", () => {
     });
 
     it("The questionnaire allows me to remove the first person (Mark Twain) from the summary", () => {
-      $(ListCollectorPage.listRemoveLink(0)).click();
+      $(ListCollectorPage.listRemoveLink(1)).click();
       $(ListCollectorRemovePage.yes()).click();
       $(ListCollectorRemovePage.submit()).click();
     });

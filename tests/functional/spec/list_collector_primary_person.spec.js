@@ -69,8 +69,8 @@ describe("Primary Person List Collector Survey", () => {
     });
 
     it("When the user views the summary, then it does not show the remove link for the primary person", () => {
-      expect($(ListCollectorPage.listRemoveLink(0)).isExisting()).to.be.false;
-      expect($(ListCollectorPage.listRemoveLink(1)).isExisting()).to.be.true;
+      expect($(ListCollectorPage.listRemoveLink(1)).isExisting()).to.be.false;
+      expect($(ListCollectorPage.listRemoveLink(2)).isExisting()).to.be.true;
     });
 
     it("When the user changes the primary person's name on the summary, then the name should be updated", () => {
