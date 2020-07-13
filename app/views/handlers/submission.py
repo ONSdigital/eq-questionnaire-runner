@@ -16,12 +16,12 @@ class SubmissionHandler:
         self.session_store = get_session_store()
 
     def submit_questionnaire(self):
-        message = json.dumps(
-            convert_answers(
-                self._schema, self._questionnaire_store, self._full_routing_path
-            ),
-            for_json=True,
+
+        payload = convert_answers(
+            self._schema, self._questionnaire_store, self._full_routing_path
         )
+        payload["submission_language"] = self.session_store.session_data.language_code
+        message = json.dumps(payload, for_json=True)
 
         encrypted_message = encrypt(
             message, current_app.eq["key_store"], KEY_PURPOSE_SUBMISSION
