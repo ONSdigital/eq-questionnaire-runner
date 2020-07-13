@@ -4,9 +4,9 @@
     "schema_version": "0.0.1",
     "data_version": "0.0.3",
     "survey_id": "0",
-    "title": "Other input fields",
+    "title": "Question Validation Test",
     "theme": "default",
-    "description": "A questionnaire to demo checkbox field Other input.",
+    "description": "A questionnaire to test use of the question title in validation",
     "metadata": [
         {
             "name": "user_id",
@@ -23,9 +23,11 @@
     ],
     "sections": [
         {
-            "id": "default-section",
+            "id": "mutually-exclusive-checkbox-section",
             "groups": [
                 {
+                    "id": "mutually-exclusive-mandatory-group",
+                    "title": "Mutually Exclusive Group",
                     "blocks": [
                         {
                             "type": "Question",
@@ -37,38 +39,27 @@
                                         "mandatory": true,
                                         "options": [
                                             {
-                                                "label": "None",
-                                                "value": "None",
-                                                "q_code": "0"
-                                            },
-                                            {
                                                 "label": "Cheese",
-                                                "value": "Cheese",
-                                                "q_code": "1"
+                                                "value": "Cheese"
                                             },
                                             {
                                                 "label": "Ham",
-                                                "value": "Ham",
-                                                "q_code": "2"
+                                                "value": "Ham"
                                             },
                                             {
                                                 "label": "Pineapple",
-                                                "value": "Pineapple",
-                                                "q_code": "3"
+                                                "value": "Pineapple"
                                             },
                                             {
                                                 "label": "Tuna",
-                                                "value": "Tuna",
-                                                "q_code": "4"
+                                                "value": "Tuna"
                                             },
                                             {
                                                 "label": "Pepperoni",
-                                                "value": "Pepperoni",
-                                                "q_code": "5"
+                                                "value": "Pepperoni"
                                             },
                                             {
                                                 "label": "Other",
-                                                "q_code": "6",
                                                 "description": "Choose any other topping",
                                                 "value": "Other",
                                                 "detail_answer": {
@@ -81,7 +72,9 @@
                                         ],
                                         "type": "Checkbox",
                                         "validation": {
-                                            "messages": {}
+                                            "messages": {
+                                                "MANDATORY_CHECKBOX": "Select an answer to ‘%(question_title)s’ to continue"
+                                            }
                                         }
                                     }
                                 ],
@@ -92,75 +85,74 @@
                             "routing_rules": []
                         },
                         {
-                            "type": "ConfirmationQuestion",
-                            "id": "confirm-answers-block",
+                            "type": "Question",
+                            "id": "mutually-exclusive-checkbox",
                             "question": {
-                                "type": "General",
-                                "answers": [
-                                    {
-                                        "type": "Radio",
-                                        "id": "confirm-answers",
-                                        "options": [
-                                            {
-                                                "label": "Yes this is correct",
-                                                "value": "Yes this is correct"
-                                            },
-                                            {
-                                                "label": "No I need to change this",
-                                                "value": "No I need to change this"
-                                            }
-                                        ],
-                                        "mandatory": true
-                                    }
-                                ],
-                                "id": "confirm-answers-question",
-                                "title": "You selected the following toppings. Is this correct?",
-                                "description": {
-                                    "text": "{toppings}",
+                                "id": "mutually-exclusive-checkbox-question",
+                                "type": "MutuallyExclusive",
+                                "title": {
+                                    "text": "Did you really answer ‘{topping_answers}’ to the previous question?",
                                     "placeholders": [
                                         {
-                                            "placeholder": "toppings",
+                                            "placeholder": "topping_answers",
                                             "transforms": [
                                                 {
-                                                    "transform": "format_list",
                                                     "arguments": {
-                                                        "list_to_format": {
-                                                            "source": "answers",
-                                                            "identifier": "mandatory-checkbox-answer"
+                                                        "delimiter": ", ",
+                                                        "list_to_concatenate": {
+                                                            "identifier": "mandatory-checkbox-answer",
+                                                            "source": "answers"
                                                         }
-                                                    }
+                                                    },
+                                                    "transform": "concatenate_list"
                                                 }
                                             ]
                                         }
                                     ]
-                                }
-                            },
-                            "routing_rules": [
-                                {
-                                    "goto": {
-                                        "when": [
-                                            {
-                                                "value": "No I need to change this",
-                                                "id": "confirm-answers",
-                                                "condition": "equals"
-                                            }
-                                        ],
-                                        "block": "mandatory-checkbox"
-                                    }
                                 },
-                                {
-                                    "goto": {
-                                        "block": "summary"
+                                "mandatory": true,
+                                "answers": [
+                                    {
+                                        "id": "checkbox-answer",
+                                        "label": "Select answer",
+                                        "type": "Checkbox",
+                                        "mandatory": false,
+                                        "options": [
+                                            {
+                                                "label": "Yes",
+                                                "value": "Yes"
+                                            },
+                                            {
+                                                "label": "No",
+                                                "value": "No"
+                                            }
+                                        ]
+                                    },
+                                    {
+                                        "id": "checkbox-exclusive-answer",
+                                        "mandatory": false,
+                                        "type": "Checkbox",
+                                        "options": [
+                                            {
+                                                "label": "I prefer not to say",
+                                                "description": "Some description",
+                                                "value": "I prefer not to say"
+                                            }
+                                        ]
+                                    }
+                                ],
+                                "validation": {
+                                    "messages": {
+                                        "MANDATORY_QUESTION": "Select an answer to ‘%(question_title)s’ to continue"
                                     }
                                 }
-                            ]
+                            }
                         },
                         {
                             "type": "Summary",
                             "id": "summary"
                         }
-                    ],
-                    "id": "checkboxes"
+                    ]
                 }
             ]
         }

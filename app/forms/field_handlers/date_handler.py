@@ -11,6 +11,7 @@ from app.forms.validators import (
     OptionalForm,
     DateCheck,
     DateRequired,
+    format_message_with_title,
 )
 
 
@@ -26,7 +27,11 @@ class DateHandler(FieldHandler):
         if self.answer_schema["mandatory"] is True:
             validate_with = [
                 DateRequired(
-                    message=self.get_validation_message(self.MANDATORY_MESSAGE_KEY)
+                    message=self.get_validation_message(
+                        format_message_with_title(
+                            self.MANDATORY_MESSAGE_KEY, self.question_title
+                        )
+                    )
                 )
             ]
 
