@@ -34,7 +34,7 @@ class HubPage extends BasePage {
   }
 
   displayedGuidance() {
-    return '[data-qa="displayed-guidance"]';
+    return '[data-qa="hub-guidance-panel"]';
   }
 
   displayedSubmissionGuidance() {
