@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2020-07-10 08:55+0100\n"
+"POT-Creation-Date: 2020-07-13 15:09+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,14 +17,14 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 2.8.0\n"
 
-#: app/forms/validators.py:340 app/jinja_filters.py:81
+#: app/forms/validators.py:341 app/jinja_filters.py:81
 #, python-format
 msgid "%(num)s year"
 msgid_plural "%(num)s years"
 msgstr[0] ""
 msgstr[1] ""
 
-#: app/forms/validators.py:344 app/jinja_filters.py:89
+#: app/forms/validators.py:345 app/jinja_filters.py:89
 #, python-format
 msgid "%(num)s month"
 msgid_plural "%(num)s months"
@@ -161,7 +161,7 @@ msgstr ""
 msgid "Remove an answer to continue."
 msgstr ""
 
-#: app/forms/validators.py:351
+#: app/forms/validators.py:352
 #, python-format
 msgid "%(num)s day"
 msgid_plural "%(num)s days"
@@ -250,15 +250,15 @@ msgstr ""
 msgid "Please submit this survey to complete it"
 msgstr ""
 
-#: app/views/contexts/hub_context.py:55
+#: app/views/contexts/hub_context.py:56
 msgid "Choose another section to complete"
 msgstr ""
 
-#: app/views/contexts/hub_context.py:56
+#: app/views/contexts/hub_context.py:57
 msgid "You must complete all sections in order to submit this survey"
 msgstr ""
 
-#: app/views/contexts/hub_context.py:59 templates/interstitial.html:5
+#: app/views/contexts/hub_context.py:60 templates/interstitial.html:7
 #: templates/sectionsummary.html:11
 msgid "Continue"
 msgstr ""
@@ -277,10 +277,6 @@ msgstr ""
 
 #: templates/confirmation.html:32
 msgid "Submitting"
-msgstr ""
-
-#: templates/interstitial.html:10 templates/partials/question.html:6
-msgid "Interviewer Note:"
 msgstr ""
 
 #: templates/introduction.html:15
@@ -560,6 +556,10 @@ msgstr ""
 msgid "Sign out"
 msgstr ""
 
+#: templates/macros/helpers.html:33 templates/macros/helpers.html:37
+msgid "Interviewer Note:"
+msgstr ""
+
 #: templates/partials/answer-guidance.html:13
 #: templates/partials/question-definition.html:14
 msgid "Hide this"
@@ -575,23 +575,23 @@ msgid ""
 " of the section</a>"
 msgstr ""
 
-#: templates/partials/question.html:52
+#: templates/partials/question.html:50
 msgid "Selecting this will clear your answer"
 msgstr ""
 
-#: templates/partials/question.html:53
+#: templates/partials/question.html:51
 msgid "cleared"
 msgstr ""
 
-#: templates/partials/question.html:56
+#: templates/partials/question.html:54
 msgid "Selecting this will deselect any selected options"
 msgstr ""
 
-#: templates/partials/question.html:57 templates/partials/question.html:65
+#: templates/partials/question.html:55 templates/partials/question.html:63
 msgid "deselected"
 msgstr ""
 
-#: templates/partials/question.html:61
+#: templates/partials/question.html:59
 msgid "Or"
 msgstr ""
 
