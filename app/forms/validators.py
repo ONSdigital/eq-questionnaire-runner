@@ -10,6 +10,7 @@ from structlog import get_logger
 from wtforms import validators
 from wtforms.compat import string_types
 
+from app.helpers.template_helper import safe_content
 from app.jinja_filters import format_number, get_formatted_currency
 from app.questionnaire.rules import convert_to_datetime
 from app.forms.error_messages import error_messages
@@ -405,13 +406,21 @@ def format_playback_value(value, currency=None):
     return format_number(value)
 
 
+def format_message_with_title(error_message, question_title):
+    return error_message % dict(question_title=safe_content(question_title))
+
+
 class MutuallyExclusiveCheck:
-    def __init__(self, messages=None):
+    def __init__(self, question_title, messages=None):
         self.messages = {**error_messages, **(messages or {})}
+        self.question_title = question_title
 
     def __call__(self, answer_values, is_mandatory):
         total_answered = sum(1 for value in answer_values if value)
         if total_answered > 1:
             raise validators.ValidationError(self.messages["MUTUALLY_EXCLUSIVE"])
         if is_mandatory and total_answered < 1:
-            raise validators.ValidationError(self.messages["MANDATORY_QUESTION"])
+            message = format_message_with_title(
+                self.messages["MANDATORY_QUESTION"], self.question_title
+            )
+            raise validators.ValidationError(message)

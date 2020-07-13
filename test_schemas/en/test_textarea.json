@@ -62,8 +62,7 @@
                             "id": "textarea-summary"
                         }
                     ],
-                    "id": "textarea-group",
-                    "title": "Title"
+                    "id": "textarea-group"
                 }
             ]
         }

@@ -165,12 +165,10 @@
                             ]
                         }
                     ],
-                    "id": "skip-group",
-                    "title": "Title"
+                    "id": "skip-group"
                 },
                 {
                     "id": "summary-group",
-                    "title": "Title",
                     "blocks": [
                         {
                             "type": "Summary",
