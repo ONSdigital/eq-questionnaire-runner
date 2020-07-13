@@ -1,16 +1,14 @@
 {% extends 'layouts/_questionnaire.html' %}
 
+{% import 'macros/helpers.html' as helpers %}
+
 {% set save_on_signout = true %}
 
 {% set continue_button_text = _("Continue") %}
 
 {% block form_content %}
   {% set interstitial_instruction = format_paragraphs(block.content.instruction) if block.content.instruction else None %}
-  {% if block.content.interviewer_only %}
-      <h1 class="question__title"><mark class="instruction">{{_("Interviewer Note:")}}</mark> {{ block.content.title }}</h1>
-  {% elif block.content.title %}
-      <h1>{{ block.content.title }}</h1>
-  {% endif %}
+  {{ helpers.interviewer_note(block.content.interviewer_only, block.content.title, block.type) }}
   {% if interstitial_instruction %}
       <div class="question__instruction u-mb-s">{{ interstitial_instruction | safe }}</div>
   {% endif %}
