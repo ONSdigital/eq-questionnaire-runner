@@ -6,7 +6,7 @@
     "survey_id": "0",
     "title": "Interviewer Note Pages",
     "theme": "default",
-    "description": "A questionnaire to demo interviewer note pages.",
+    "description": "A questionnaire to demo interviewer note highlighting.",
     "metadata": [
         {
             "name": "user_id",
