@@ -563,9 +563,8 @@ def map_list_collector_config(
 ):
     rows = []
 
-    for list_item in list_items:
+    for index, list_item in enumerate(list_items, start=1):
         item_name = list_item.get("item_title")
-        item_index = list_items.index(list_item) + 1
 
         actions = []
 
@@ -575,7 +574,7 @@ def map_list_collector_config(
                     "text": edit_link_text,
                     "ariaLabel": edit_link_aria_label.format(item_name=item_name),
                     "url": list_item.get("edit_link"),
-                    "attributes": {"data-qa": f"list-item-change-link-{item_index}"},
+                    "attributes": {"data-qa": f"list-item-change-link-{index}"},
                 }
             )
 
@@ -585,7 +584,7 @@ def map_list_collector_config(
                     "text": remove_link_text,
                     "ariaLabel": remove_link_aria_label.format(item_name=item_name),
                     "url": list_item.get("remove_link"),
-                    "attributes": {"data-qa": f"list-item-remove-link-{item_index}"},
+                    "attributes": {"data-qa": f"list-item-remove-link-{index}"},
                 }
             )
 
@@ -597,7 +596,7 @@ def map_list_collector_config(
                         "icon": icon,
                         "actions": actions,
                         "rowTitleAttributes": {
-                            "data-qa": f"list-item-label-{item_index}"
+                            "data-qa": f"list-item-label-{index}"
                         },
                     }
                 ],
