@@ -31,7 +31,6 @@
             "groups": [
                 {
                     "id": "retail-turnover-group",
-                    "title": "Title",
                     "blocks": [
                         {
                             "type": "Question",
@@ -103,8 +102,7 @@
                             }
                         }
                     ],
-                    "id": "retail-confirmation-group",
-                    "title": "Title"
+                    "id": "retail-confirmation-group"
                 }
             ]
         },
@@ -114,7 +112,6 @@
             "groups": [
                 {
                     "id": "total-items-group",
-                    "title": "Title",
                     "blocks": [
                         {
                             "type": "Question",

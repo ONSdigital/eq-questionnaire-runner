@@ -27,7 +27,6 @@
             "groups": [
                 {
                     "id": "group",
-                    "title": "Title",
                     "blocks": [
                         {
                             "type": "Introduction",

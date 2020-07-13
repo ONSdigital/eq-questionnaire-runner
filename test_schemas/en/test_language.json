@@ -23,7 +23,6 @@
             "groups": [
                 {
                     "id": "language-group",
-                    "title": "Title",
                     "blocks": [
                         {
                             "type": "Question",

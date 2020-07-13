@@ -28,7 +28,6 @@
             "groups": [
                 {
                     "id": "dates",
-                    "title": "Title",
                     "blocks": [
                         {
                             "type": "Question",
