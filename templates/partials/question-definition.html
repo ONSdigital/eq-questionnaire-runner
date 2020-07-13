@@ -2,7 +2,7 @@
 
 {% for definition in question.definitions %}
   {% call onsCollapsible({
-      "id": question.id ~ "-collapsible",
+      "id": "question-definition-" ~ loop.index,
       "title": definition.title,
       "classes": "u-mb-s",
       "headingAttributes": {
