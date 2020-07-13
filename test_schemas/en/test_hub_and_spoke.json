@@ -186,8 +186,7 @@
                             "type": "Question"
                         }
                     ],
-                    "id": "checkboxes",
-                    "title": "Title"
+                    "id": "checkboxes"
                 }
             ]
         },
@@ -306,8 +305,7 @@
                             "type": "Question"
                         }
                     ],
-                    "id": "relationship-group",
-                    "title": "Title"
+                    "id": "relationship-group"
                 }
             ]
         }
