@@ -325,8 +325,7 @@
                             "type": "Question"
                         }
                     ],
-                    "id": "accommodation-group",
-                    "title": "Title"
+                    "id": "accommodation-group"
                 }
             ],
             "id": "accommodation-section",

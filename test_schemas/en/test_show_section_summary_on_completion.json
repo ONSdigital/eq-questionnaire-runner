@@ -192,8 +192,7 @@
                             "type": "Question"
                         }
                     ],
-                    "id": "checkboxes",
-                    "title": "Title"
+                    "id": "checkboxes"
                 }
             ]
         }

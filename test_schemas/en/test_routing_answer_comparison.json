@@ -28,7 +28,6 @@
             "groups": [
                 {
                     "id": "route-group",
-                    "title": "Title",
                     "blocks": [
                         {
                             "type": "Question",
@@ -114,7 +113,6 @@
                 },
                 {
                     "id": "summary-group",
-                    "title": "Title",
                     "blocks": [
                         {
                             "type": "Summary",

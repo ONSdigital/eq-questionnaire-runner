@@ -35,7 +35,6 @@
             "groups": [
                 {
                     "id": "name-group",
-                    "title": "Title",
                     "blocks": [
                         {
                             "type": "Question",
@@ -70,7 +69,6 @@
             "groups": [
                 {
                     "id": "dob-input-group",
-                    "title": "Title",
                     "blocks": [
                         {
                             "type": "Question",
@@ -245,8 +243,7 @@
                             ]
                         }
                     ],
-                    "id": "group",
-                    "title": "Title"
+                    "id": "group"
                 }
             ]
         },
@@ -256,7 +253,6 @@
             "groups": [
                 {
                     "id": "mutually-exclusive-mandatory-group",
-                    "title": "Title",
                     "blocks": [
                         {
                             "type": "Question",
