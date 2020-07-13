@@ -63,7 +63,7 @@ class TestQuestionnaireListCollector(IntegrationTestCase):
 
         # Make another mistake
 
-        mistake_change_link = self.get_link("2", "change")
+        mistake_change_link = self.get_link("3", "change")
 
         self.get(mistake_change_link)
 
@@ -73,7 +73,7 @@ class TestQuestionnaireListCollector(IntegrationTestCase):
 
         # Get rid of the mistake
 
-        mistake_remove_link = self.get_link("2", "remove")
+        mistake_remove_link = self.get_link("3", "remove")
 
         self.get(mistake_remove_link)
 
@@ -95,8 +95,8 @@ class TestQuestionnaireListCollector(IntegrationTestCase):
         self.assertInSelector("Johnny Doe", "[data-qa='list-item-label-3']")
 
         # Test the previous links
-        john_change_link = self.get_link("1", "change")
-        john_remove_link = self.get_link("1", "remove")
+        john_change_link = self.get_link("2", "change")
+        john_remove_link = self.get_link("2", "remove")
 
         self.get(john_change_link)
 
@@ -139,9 +139,9 @@ class TestQuestionnaireListCollector(IntegrationTestCase):
 
         self.assertInBody("Household members")
 
-        john_remove_link = self.get_link("1", "remove")
+        john_remove_link = self.get_link("2", "remove")
 
-        mary_remove_link = self.get_link("0", "remove")
+        mary_remove_link = self.get_link("1", "remove")
 
         self.get(john_remove_link)
 
@@ -244,7 +244,7 @@ class TestQuestionnaireListCollector(IntegrationTestCase):
 
         self.add_person("Someone", "Else")
 
-        change_link = self.get_link("0", "change")
+        change_link = self.get_link("1", "change")
 
         self.get(change_link)
 
@@ -259,7 +259,7 @@ class TestQuestionnaireListCollector(IntegrationTestCase):
 
         self.add_person("Someone", "Else")
 
-        remove_link = self.get_link("0", "remove")
+        remove_link = self.get_link("1", "remove")
 
         self.get(remove_link)
 

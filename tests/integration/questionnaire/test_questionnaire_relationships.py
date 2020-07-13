@@ -80,7 +80,7 @@ class TestQuestionnaireRelationships(IntegrationTestCase):
         self.post({"relationship-answer": "Husband or Wife"})
 
         list_item_ids = self.dump_debug()["LISTS"][0]["items"]
-        self.remove_list_item("2")
+        self.remove_list_item("3")
 
         self.assertNotInBody("Susan Doe")
 
@@ -105,7 +105,7 @@ class TestQuestionnaireRelationships(IntegrationTestCase):
 
         self.get("/questionnaire/list-collector")
         self.add_person("Susan", "Doe")
-        self.remove_list_item("2")
+        self.remove_list_item("3")
         self.post({"anyone-else": "No"})
 
         list_item_ids_new = self.dump_debug()["LISTS"][0]["items"]

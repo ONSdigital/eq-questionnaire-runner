@@ -565,7 +565,7 @@ def map_list_collector_config(
 
     for list_item in list_items:
         item_name = list_item.get("item_title")
-        item_index = list_items.index(list_item)
+        item_index = list_items.index(list_item) + 1
 
         actions = []
 
