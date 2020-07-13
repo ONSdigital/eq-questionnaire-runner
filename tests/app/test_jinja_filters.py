@@ -323,7 +323,7 @@ def test_map_list_collector_config_no_actions():
                 {
                     "actions": [],
                     "icon": "icon",
-                    "rowTitleAttributes": {"data-qa": "list-item-label-0"},
+                    "rowTitleAttributes": {"data-qa": "list-item-label-1"},
                 }
             ],
             "rowTitle": "Mark Bloggs",
@@ -333,7 +333,7 @@ def test_map_list_collector_config_no_actions():
                 {
                     "actions": [],
                     "icon": "icon",
-                    "rowTitleAttributes": {"data-qa": "list-item-label-1"},
+                    "rowTitleAttributes": {"data-qa": "list-item-label-2"},
                 }
             ],
             "rowTitle": "Joe Bloggs",
@@ -381,7 +381,7 @@ def test_map_list_collector_config():
                         }
                     ],
                     "icon": "icon",
-                    "rowTitleAttributes": {"data-qa": "list-item-label-0"},
+                    "rowTitleAttributes": {"data-qa": "list-item-label-1"},
                 }
             ],
             "rowTitle": "Mark Bloggs (You)",
@@ -404,7 +404,7 @@ def test_map_list_collector_config():
                         },
                     ],
                     "icon": "icon",
-                    "rowTitleAttributes": {"data-qa": "list-item-label-1"},
+                    "rowTitleAttributes": {"data-qa": "list-item-label-2"},
                 }
             ],
             "rowTitle": "Joe Bloggs",

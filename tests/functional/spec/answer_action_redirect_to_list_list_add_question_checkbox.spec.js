@@ -51,11 +51,11 @@ describe("Answer Action: Redirect To List Add Question (Checkbox)", () => {
     });
 
     it("When the users removes the only person (Marcus Twain), Then, they are shown an empty list collector", () => {
-      $(AnyoneLiveAtListCollector.listRemoveLink(0)).click();
+      $(AnyoneLiveAtListCollector.listRemoveLink(1)).click();
       $(AnyoneLiveAtListCollectorRemovePage.yes()).click();
       $(AnyoneLiveAtListCollectorRemovePage.submit()).click();
       expect(browser.getUrl()).to.contain(AnyoneLiveAtListCollector.pageName);
-      expect($(AnyoneLiveAtListCollector.listLabel(0)).isExisting()).to.be.false;
+      expect($(AnyoneLiveAtListCollector.listLabel(1)).isExisting()).to.be.false;
     });
 
     it("When the user resubmits the first block and then list is empty, Then they are taken to the add question", () => {

@@ -36,7 +36,7 @@ describe("Primary Person List Collector Survey", () => {
       $(PrimaryPersonListCollectorAddPage.firstName()).setValue("Mark");
       $(PrimaryPersonListCollectorAddPage.lastName()).setValue("Twin");
       $(PrimaryPersonListCollectorAddPage.submit()).click();
-      expect($(ListCollectorPage.listLabel(0)).getText()).to.equal("Mark Twin (You)");
+      expect($(ListCollectorPage.listLabel(1)).getText()).to.equal("Mark Twin (You)");
     });
 
     it("When the user adds another person, they are shown in the summary", () => {
@@ -45,7 +45,7 @@ describe("Primary Person List Collector Survey", () => {
       $(ListCollectorAddPage.firstName()).setValue("Samuel");
       $(ListCollectorAddPage.lastName()).setValue("Clemens");
       $(ListCollectorAddPage.submit()).click();
-      expect($(ListCollectorPage.listLabel(1)).getText()).to.equal("Samuel Clemens");
+      expect($(ListCollectorPage.listLabel(2)).getText()).to.equal("Samuel Clemens");
     });
 
     it("When the user goes back and answers No, the primary person is not shown", () => {
@@ -54,7 +54,7 @@ describe("Primary Person List Collector Survey", () => {
       $(PrimaryPersonListCollectorPage.submit()).click();
       $(AnyoneUsuallyLiveAtPage.no()).click();
       $(AnyoneUsuallyLiveAtPage.submit()).click();
-      expect($(ListCollectorPage.listLabel(0)).getText()).to.equal("Samuel Clemens");
+      expect($(ListCollectorPage.listLabel(1)).getText()).to.equal("Samuel Clemens");
     });
 
     it("When the user adds the primary person again, then the primary person is first in the list", () => {
@@ -65,7 +65,7 @@ describe("Primary Person List Collector Survey", () => {
       $(PrimaryPersonListCollectorAddPage.firstName()).setValue("Mark");
       $(PrimaryPersonListCollectorAddPage.lastName()).setValue("Twin");
       $(PrimaryPersonListCollectorAddPage.submit()).click();
-      expect($(ListCollectorPage.listLabel(0)).getText()).to.equal("Mark Twin (You)");
+      expect($(ListCollectorPage.listLabel(1)).getText()).to.equal("Mark Twin (You)");
     });
 
     it("When the user views the summary, then it does not show the remove link for the primary person", () => {
@@ -74,12 +74,12 @@ describe("Primary Person List Collector Survey", () => {
     });
 
     it("When the user changes the primary person's name on the summary, then the name should be updated", () => {
-      $(ListCollectorPage.listEditLink(0)).click();
+      $(ListCollectorPage.listEditLink(1)).click();
       $(ListCollectorEditPage.firstName()).setValue("Mark");
       $(ListCollectorEditPage.lastName()).setValue("Twain");
       $(ListCollectorEditPage.submit()).click();
-      expect($(ListCollectorPage.listLabel(0)).getText()).to.equal("Mark Twain (You)");
-      expect($(ListCollectorPage.listLabel(1)).getText()).to.equal("Samuel Clemens");
+      expect($(ListCollectorPage.listLabel(1)).getText()).to.equal("Mark Twain (You)");
+      expect($(ListCollectorPage.listLabel(2)).getText()).to.equal("Samuel Clemens");
     });
 
     it("When the user views the summary, then it does not show the does anyone usually live here question", () => {
@@ -108,7 +108,7 @@ describe("Primary Person List Collector Survey", () => {
       $(PrimaryPersonListCollectorPage.no()).click();
       $(PrimaryPersonListCollectorPage.submit()).click();
       $(AnyoneUsuallyLiveAtPage.no()).click();
-      expect($(ListCollectorPage.listLabel(0)).isExisting()).to.be.false;
+      expect($(ListCollectorPage.listLabel(1)).isExisting()).to.be.false;
     });
 
     it("When the user clicks on the add person button multiple times, then only one person is added", () => {
@@ -119,8 +119,8 @@ describe("Primary Person List Collector Survey", () => {
       $(PrimaryPersonListCollectorAddPage.lastName()).setValue("Twain");
       $(PrimaryPersonListCollectorPage.submit()).click();
       $(PrimaryPersonListCollectorPage.submit()).click();
-      expect($(ListCollectorPage.listLabel(0)).getText()).to.equal("Mark Twain (You)");
-      expect($(ListCollectorPage.listLabel(1)).isExisting()).to.be.false;
+      expect($(ListCollectorPage.listLabel(1)).getText()).to.equal("Mark Twain (You)");
+      expect($(ListCollectorPage.listLabel(2)).isExisting()).to.be.false;
     });
   });
 });

@@ -111,7 +111,7 @@ describe('Checkbox with "other" option', () => {
     const listLength = $$(`${SummaryPage.mandatoryCheckboxAnswer()} li`).length;
 
     // Then
-    expect(listLength).to.equal(0);
+    expect(listLength).to.equal(1);
   });
 
   it("Given a mandatory checkbox answer, when the user selects more than one option, then the answer should be displayed as a list on the summary screen", () => {

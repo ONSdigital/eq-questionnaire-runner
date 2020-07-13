@@ -47,19 +47,19 @@ class TestQuestionnaireListCollector(IntegrationTestCase):
 
         self.add_person("Marie Claire", "Doe")
 
-        self.assertInSelector("Marie Claire Doe", "[data-qa='list-item-label-0']")
+        self.assertInSelector("Marie Claire Doe", "[data-qa='list-item-label-1']")
 
         self.add_person("John", "Doe")
 
-        self.assertInSelector("John Doe", "[data-qa='list-item-label-1']")
+        self.assertInSelector("John Doe", "[data-qa='list-item-label-2']")
 
         self.add_person("A", "Mistake")
 
-        self.assertInSelector("A Mistake", "[data-qa='list-item-label-2']")
+        self.assertInSelector("A Mistake", "[data-qa='list-item-label-3']")
 
         self.add_person("Johnny", "Doe")
 
-        self.assertInSelector("Johnny Doe", "[data-qa='list-item-label-3']")
+        self.assertInSelector("Johnny Doe", "[data-qa='list-item-label-4']")
 
         # Make another mistake
 
@@ -69,7 +69,7 @@ class TestQuestionnaireListCollector(IntegrationTestCase):
 
         self.post({"first-name": "Another", "last-name": "Mistake"})
 
-        self.assertInSelector("Another Mistake", "[data-qa='list-item-label-2']")
+        self.assertInSelector("Another Mistake", "[data-qa='list-item-label-3']")
 
         # Get rid of the mistake
 
@@ -92,7 +92,7 @@ class TestQuestionnaireListCollector(IntegrationTestCase):
         self.post({"remove-confirmation": "Yes"})
 
         # Make sure Johnny has moved up the list
-        self.assertInSelector("Johnny Doe", "[data-qa='list-item-label-2']")
+        self.assertInSelector("Johnny Doe", "[data-qa='list-item-label-3']")
 
         # Test the previous links
         john_change_link = self.get_link("1", "change")
@@ -123,11 +123,11 @@ class TestQuestionnaireListCollector(IntegrationTestCase):
 
         self.add_person("Marie Claire", "Doe")
 
-        self.assertInSelector("Marie Claire Doe", "[data-qa='list-item-label-0']")
+        self.assertInSelector("Marie Claire Doe", "[data-qa='list-item-label-1']")
 
         self.add_person("John", "Doe")
 
-        self.assertInSelector("John Doe", "[data-qa='list-item-label-1']")
+        self.assertInSelector("John Doe", "[data-qa='list-item-label-2']")
 
         self.post({"anyone-else": "No"})
 
