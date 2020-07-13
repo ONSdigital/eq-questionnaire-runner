@@ -6,7 +6,7 @@
 
 {% block form_content %}
   {% set interstitial_instruction = format_paragraphs(block.content.instruction) if block.content.instruction else None %}
-  {% if block.content.interviewer_note %}
+  {% if block.content.interviewer_only %}
       <h1 class="question__title"><mark class="instruction">{{_("Interviewer Note:")}}</mark> {{ block.content.title }}</h1>
   {% elif block.content.title %}
       <h1>{{ block.content.title }}</h1>

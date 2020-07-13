@@ -31,7 +31,7 @@
                             "id": "initial-interstitial-block",
                             "content": {
                                 "title": "Favourite team interstitial",
-                                "interviewer_note": true,
+                                "interviewer_only": true,
                                 "contents": [
                                     {
                                         "description": "In this section we will ask you about your favourite team."
@@ -55,7 +55,7 @@
                                 ],
                                 "id": "favourite-team-question",
                                 "title": "Who is your favourite team?",
-                                "interviewer_note": true,
+                                "interviewer_only": true,
                                 "type": "General"
                             },
                             "routing_rules": []
@@ -87,7 +87,7 @@
                                         }
                                     ]
                                 },
-                                "interviewer_note": false,
+                                "interviewer_only": false,
                                 "type": "General"
                             },
                             "routing_rules": []
