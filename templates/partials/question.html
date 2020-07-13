@@ -5,7 +5,7 @@
 {% set form = content.form %}
 {% set interviewer_note = _("Interviewer Note:") %}
 {% if question.interviewer_only %}
-  {% set question_title = '<mark class="instruction">' + interviewer_only + '</mark>' + question.title %}
+  {% set question_title = '<mark class="instruction">' + interviewer_note + '</mark>' + question.title %}
 {% elif question.title %}
   {% set question_title = question.title %}
 {% endif %}
