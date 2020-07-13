@@ -28,14 +28,10 @@
 <a href="mailto:{{email}}{% if subject %}?subject={{ subject|urlencode }}{% endif %}" {{attr|xmlattr}}>{{email}}</a>
 {%- endmacro -%}
 
-{%- macro interviewer_note(interviewer_only='False', title='', type='') -%}
-  {% if (interviewer_only and (type == 'Interstitial')) %}
+{%- macro interviewer_note(title='', type='') -%}
+  {% if type == 'Interstitial' %}
     <h1 class="question__title"><mark class="instruction">{{_("Interviewer Note:")}}</mark> {{ title }}</h1>
-  {% elif (title and (type == 'Interstitial')) %}
-    <h1 class="question__title">{{ title }}</h1>
-  {% elif interviewer_only %}
+  {% else %}
     <mark class="instruction">{{_("Interviewer Note:")}}</mark>{{ title }}
-  {% elif title %}
-    {{ title }}
   {% endif %}
 {%- endmacro -%}

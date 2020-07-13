@@ -3,7 +3,7 @@ import FavouriteTeamPage from "../generated_pages/interviewer_note/favourite-tea
 import FinalInterstitialPage from "../generated_pages/interviewer_note/final-interstitial-block.page.js";
 import InitialInterstitialPage from "../generated_pages/interviewer_note/initial-interstitial-block.page.js";
 
-describe("Interviewer Note", () => {
+describe("Given I start a survey", () => {
   before(() => {
     browser.openQuestionnaire("test_interviewer_note.json");
   });
@@ -16,15 +16,11 @@ describe("Interviewer Note", () => {
     expect($(FavouriteTeamPage.questionText()).getText()).to.contain("Interviewer Note");
   });
   it("When I view question page and the interviewer_note is set to false then I should not be able to see interviewer note", () => {
-    $(InitialInterstitialPage.submit()).click();
     $(FavouriteTeamPage.favouriteTeam()).setValue("TNS");
     $(FavouriteTeamPage.submit()).click();
     expect($(ConfirmPage.questionText()).getText()).to.not.contain("Interviewer Note");
   });
   it("When I view interstitial page and the interviewer_note is not set then I should not be able to see interviewer note", () => {
-    $(InitialInterstitialPage.submit()).click();
-    $(FavouriteTeamPage.favouriteTeam()).setValue("TNS");
-    $(FavouriteTeamPage.submit()).click();
     $(ConfirmPage.yes()).click();
     $(ConfirmPage.submit()).click();
     expect($(FinalInterstitialPage.questionText()).getText()).to.not.contain("Interviewer Note");

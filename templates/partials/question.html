@@ -5,7 +5,12 @@
 {% import 'macros/helpers.html' as helpers %}
 
 {% set form = content.form %}
-{% set question_title= helpers.interviewer_note(question.interviewer_only, question.title) %}
+
+{% if question.interviewer_only %}
+  {% set question_title= helpers.interviewer_note(question.title) %}
+{% else %}
+  {% set question_title = question.title %}
+{% endif %}
 
 {% set question_description = format_paragraphs(question.description) if question.description else None %}
 {% set question_instruction = format_paragraphs(question.instruction) if question.instruction else None %}
