@@ -20,7 +20,9 @@ class SubmissionHandler:
         payload = convert_answers(
             self._schema, self._questionnaire_store, self._full_routing_path
         )
-        payload["submission_language_code"] = self.session_store.session_data.language_code
+        payload[
+            "submission_language_code"
+        ] = self.session_store.session_data.language_code
         message = json.dumps(payload, for_json=True)
 
         encrypted_message = encrypt(
