@@ -1,7 +1,7 @@
 {% from "components/collapsible/_macro.njk" import onsCollapsible %}
 
 {% call onsCollapsible({
-  "id": answer.id,
+  "id": "answer-guidance-" ~ loop.index,
   "classes": "u-mt-s",
   "title": _(answer_guidance.schema_item.show_guidance),
   "headingAttributes": {
