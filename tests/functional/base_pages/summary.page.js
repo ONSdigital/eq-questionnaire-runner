@@ -5,7 +5,7 @@ class ThankYouPage extends QuestionPage {
     super("summary");
   }
 
-  summaryRowState(sectionId = "section-1") {
+  summaryRowState(sectionId) {
     return `[data-qa="${sectionId}"]`;
   }
 }

@@ -57,15 +57,15 @@ class HubPage extends BasePage {
     return "table.summary__items";
   }
 
-  summaryRowState(sectionId = "section-1") {
+  summaryRowState(sectionId) {
     return `[data-qa="hub-row-state-${sectionId}"]`;
   }
 
-  summaryRowLink(sectionId = "section-1") {
+  summaryRowLink(sectionId) {
     return `[data-qa="hub-row-link-${sectionId}"]`;
   }
 
-  summaryRowTitle(sectionId = "section-1") {
+  summaryRowTitle(sectionId) {
     return `[data-qa="hub-row-title-${sectionId}"]`;
   }
 }
