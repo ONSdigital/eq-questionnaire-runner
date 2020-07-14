@@ -74,9 +74,9 @@ class HubContext(Context):
 
         section_content = self.SECTION_CONTENT_STATES[section_status]
         context: Mapping = {
-            "rowTitle": section_name,
             "rowItems": [
                 {
+                    "rowTitle": section_name,
                     "rowTitleAttributes": {"data-qa": f"hub-row-title-{section_id}"},
                     "attributes": {"data-qa": f"hub-row-state-{section_id}"},
                     "valueList": [{"text": section_content["text"]}],

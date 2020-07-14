@@ -323,20 +323,20 @@ def test_map_list_collector_config_no_actions():
                 {
                     "actions": [],
                     "icon": "icon",
+                    "rowTitle": "Mark Bloggs",
                     "rowTitleAttributes": {"data-qa": "list-item-label-1"},
                 }
             ],
-            "rowTitle": "Mark Bloggs",
         },
         {
             "rowItems": [
                 {
                     "actions": [],
                     "icon": "icon",
+                    "rowTitle": "Joe Bloggs",
                     "rowTitleAttributes": {"data-qa": "list-item-label-2"},
                 }
             ],
-            "rowTitle": "Joe Bloggs",
         },
     ]
 
@@ -381,10 +381,10 @@ def test_map_list_collector_config():
                         }
                     ],
                     "icon": "icon",
+                    "rowTitle": "Mark Bloggs (You)",
                     "rowTitleAttributes": {"data-qa": "list-item-label-1"},
                 }
             ],
-            "rowTitle": "Mark Bloggs (You)",
         },
         {
             "rowItems": [
@@ -404,10 +404,10 @@ def test_map_list_collector_config():
                         },
                     ],
                     "icon": "icon",
+                    "rowTitle": "Joe Bloggs",
                     "rowTitleAttributes": {"data-qa": "list-item-label-2"},
                 }
             ],
-            "rowTitle": "Joe Bloggs",
         },
     ]
 

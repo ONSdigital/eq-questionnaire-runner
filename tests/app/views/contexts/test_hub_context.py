@@ -16,9 +16,9 @@ def test_get_not_started_row_for_section(
     schema, progress_store, answer_store, list_store
 ):
     expected = {
-        "rowTitle": "Breakfast",
         "rowItems": [
             {
+                "rowTitle": "Breakfast",
                 "rowTitleAttributes": {"data-qa": "hub-row-title-section-1"},
                 "attributes": {"data-qa": "hub-row-state-section-1"},
                 "valueList": [{"text": "Not started"}],
@@ -57,9 +57,9 @@ def test_get_completed_row_for_section(
     schema, progress_store, answer_store, list_store
 ):
     expected = {
-        "rowTitle": "Breakfast",
         "rowItems": [
             {
+                "rowTitle": "Breakfast",
                 "rowTitleAttributes": {"data-qa": "hub-row-title-section-1"},
                 "attributes": {"data-qa": "hub-row-state-section-1"},
                 "icon": "check-green",
