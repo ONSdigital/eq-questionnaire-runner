@@ -193,8 +193,6 @@ class TestQuestionnaireLanguage(IntegrationTestCase):
         self.launchSurvey("test_language", language_code="cy")
         # Submit and check the error message is in Welsh
         self.post()
-        xfail(
-            "Error strings have been updated, waiting for translations to be done"
-        )
+        xfail("Error strings have been updated, waiting for translations to be done")
         self.assertInBody("Mae 1 gwall ar y dudalen hon")
         self.assertInBody("Nodwch ateb i barhau")

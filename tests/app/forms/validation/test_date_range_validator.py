@@ -131,8 +131,7 @@ class TestDateRangeValidator(unittest.TestCase):
             validator(mock_form, period_from, period_to)
 
         self.assertEqual(
-            "Enter a reporting period less than or equal to 1 month",
-            str(ite.exception),
+            "Enter a reporting period less than or equal to 1 month", str(ite.exception)
         )
 
     def test_bespoke_message_playback(self):
