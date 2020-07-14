@@ -29,9 +29,9 @@
                     "blocks": [
                         {
                             "id": "initial-interstitial-block",
+                            "interviewer_only": true,
                             "content": {
                                 "title": "Favourite team interstitial",
-                                "interviewer_only": true,
                                 "contents": [
                                     {
                                         "description": "In this section we will ask you about your favourite team."
@@ -43,6 +43,7 @@
                         {
                             "type": "Question",
                             "id": "favourite-team-block",
+                            "interviewer_only": true,
                             "question": {
                                 "answers": [
                                     {
@@ -55,7 +56,6 @@
                                 ],
                                 "id": "favourite-team-question",
                                 "title": "Who is your favourite team?",
-                                "interviewer_only": true,
                                 "type": "General"
                             },
                             "routing_rules": []
@@ -63,6 +63,7 @@
                         {
                             "type": "Question",
                             "id": "confirm-block",
+                            "interviewer_only": false,
                             "question": {
                                 "answers": [
                                     {
@@ -87,7 +88,6 @@
                                         }
                                     ]
                                 },
-                                "interviewer_only": false,
                                 "type": "General"
                             },
                             "routing_rules": []

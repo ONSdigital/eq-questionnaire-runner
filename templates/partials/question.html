@@ -6,7 +6,7 @@
 
 {% set form = content.form %}
 
-{% if question.interviewer_only %}
+{% if block.interviewer_only %}
   {% set question_title= helpers.interviewer_note(question.title) %}
 {% else %}
   {% set question_title = question.title %}
