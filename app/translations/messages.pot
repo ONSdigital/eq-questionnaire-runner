@@ -267,6 +267,10 @@ msgstr ""
 msgid " (You)"
 msgstr ""
 
+#: app/views/handlers/question.py:133
+msgid "Error: {page_title}"
+msgstr ""
+
 #: templates/confirmation.html:6 templates/confirmation.html:27
 msgid "Submit answers"
 msgstr ""
