@@ -1,5 +1,6 @@
 from functools import cached_property
 
+from flask_babel import gettext
 from flask import url_for
 
 from app.forms.questionnaire_form import generate_form
@@ -126,6 +127,11 @@ class Question(BlockHandler):
                     self.rendered_block["list_summary"]["summary"],
                     self.rendered_block["list_summary"]["for_list"],
                 )
+            )
+
+        if self.form.errors or self.form.question_errors:
+            self.page_title = gettext("Error: {page_title}").format(
+                page_title=self.page_title
             )
 
         return context

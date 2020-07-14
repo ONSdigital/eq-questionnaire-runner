@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2020-06-25 11:27+0100\n"
+"POT-Creation-Date: 2020-07-10 10:40+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,26 +17,26 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 2.8.0\n"
 
-#: app/forms/validators.py:340 app/jinja_filters.py:80
+#: app/forms/validators.py:340 app/jinja_filters.py:81
 #, python-format
 msgid "%(num)s year"
 msgid_plural "%(num)s years"
 msgstr[0] ""
 msgstr[1] ""
 
-#: app/forms/validators.py:344 app/jinja_filters.py:88
+#: app/forms/validators.py:344 app/jinja_filters.py:89
 #, python-format
 msgid "%(num)s month"
 msgid_plural "%(num)s months"
 msgstr[0] ""
 msgstr[1] ""
 
-#: app/jinja_filters.py:131
+#: app/jinja_filters.py:132
 #, python-format
 msgid "%(date)s at %(time)s"
 msgstr ""
 
-#: app/jinja_filters.py:142
+#: app/jinja_filters.py:143
 #, python-format
 msgid "%(from_date)s to %(to_date)s"
 msgstr ""
@@ -180,11 +180,11 @@ msgstr ""
 msgid "Office for National Statistics logo"
 msgstr ""
 
-#: app/helpers/template_helper.py:28 app/helpers/template_helper.py:36
+#: app/helpers/template_helper.py:28 app/helpers/template_helper.py:37
 msgid "Census 2021"
 msgstr ""
 
-#: app/helpers/template_helper.py:32
+#: app/helpers/template_helper.py:33
 msgid "Northern Ireland Statistics and Research Agency logo"
 msgstr ""
 
@@ -250,21 +250,25 @@ msgstr ""
 msgid "Please submit this survey to complete it"
 msgstr ""
 
-#: app/views/contexts/hub_context.py:55
+#: app/views/contexts/hub_context.py:56
 msgid "Choose another section to complete"
 msgstr ""
 
-#: app/views/contexts/hub_context.py:56
+#: app/views/contexts/hub_context.py:57
 msgid "You must complete all sections in order to submit this survey"
 msgstr ""
 
-#: app/views/contexts/hub_context.py:59 templates/interstitial.html:5
+#: app/views/contexts/hub_context.py:60 templates/interstitial.html:5
 #: templates/sectionsummary.html:11
 msgid "Continue"
 msgstr ""
 
 #: app/views/contexts/list_context.py:84
 msgid " (You)"
+msgstr ""
+
+#: app/views/handlers/question.py:133
+msgid "Error: {page_title}"
 msgstr ""
 
 #: templates/confirmation.html:6 templates/confirmation.html:27
@@ -480,7 +484,7 @@ msgid ""
 "the survey again."
 msgstr ""
 
-#: templates/layouts/_base.html:33
+#: templates/layouts/_base.html:36
 msgid "We use cookies to improve your experience of census.gov.uk"
 msgstr ""
 
@@ -591,7 +595,7 @@ msgstr ""
 msgid "Or"
 msgstr ""
 
-#: templates/partials/answers/checkbox.html:7
+#: templates/partials/answers/checkbox.html:8
 msgid "Select all that apply"
 msgstr ""
 
