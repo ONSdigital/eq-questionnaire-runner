@@ -12,8 +12,8 @@
   {{attr|xmlattr}}
 {%- endmacro -%}
 
-{%- macro format_paragraphs(description) -%}
-  {%- for paragraph in description -%}
+{%- macro format_paragraphs(paragraphs) -%}
+  {%- for paragraph in paragraphs -%}
     <p>{{paragraph}}</p>
   {%- endfor -%}
 {%- endmacro -%}
