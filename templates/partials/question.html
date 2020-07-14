@@ -7,7 +7,8 @@
 {% set form = content.form %}
 
 
-{% set question_title= interviewer_note(question.title) if block.interviewer_only else question.title %}
+{% set title= interviewer_note(question.title) if block.interviewer_only else question.title %}
+{% set question_title= question.title %}
 {% set question_description = format_paragraphs(question.description) if question.description else None %}
 {% set question_instruction = format_paragraphs(question.instruction) if question.instruction else None %}
 {% set should_wrap_with_fieldset = should_wrap_with_fieldset(question) %}
@@ -74,7 +75,7 @@
 
     {%- if should_wrap_with_fieldset -%}
       {%- call onsFieldset({
-        "legend": question.title,
+        "legend": question_title,
         "legendClasses": "u-vh"
       }) -%}
         {{ answers }}
@@ -86,7 +87,7 @@
 {% endset %}
 {% call onsQuestion({
   "id": question.id,
-  "title": question_title,
+  "title": title,
   "description": question_description,
   "instruction": question_instruction
 }) %}
