@@ -28,7 +28,7 @@
 <a href="mailto:{{email}}{% if subject %}?subject={{ subject|urlencode }}{% endif %}" {{attr|xmlattr}}>{{email}}</a>
 {%- endmacro -%}
 
-{%- macro interviewer_note(title='', type='') -%}
+{%- macro interviewer_note(title=None, type=None) -%}
   {% if type == 'Interstitial' %}
     <h1 class="question__title"><mark class="instruction">{{_("Interviewer Note:")}}</mark> {{ title }}</h1>
   {% else %}
