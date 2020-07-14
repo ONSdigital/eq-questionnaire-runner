@@ -597,7 +597,7 @@ def map_list_collector_config(
                         "rowTitle": item_name,
                         "rowTitleAttributes": {"data-qa": f"list-item-label-{index}"},
                     }
-                ],
+                ]
             }
         )
 

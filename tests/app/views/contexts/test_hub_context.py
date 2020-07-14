@@ -31,7 +31,7 @@ def test_get_not_started_row_for_section(
                     }
                 ],
             }
-        ],
+        ]
     }
 
     hub = HubContext(
@@ -73,7 +73,7 @@ def test_get_completed_row_for_section(
                     }
                 ],
             }
-        ],
+        ]
     }
 
     hub = HubContext(

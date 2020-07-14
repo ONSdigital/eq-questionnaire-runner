@@ -91,7 +91,7 @@ class HubContext(Context):
                         }
                     ],
                 }
-            ],
+            ]
         }
 
         if section_status == CompletionStatus.COMPLETED:
