@@ -100,3 +100,13 @@ class TestQuestionnairePageTitles(IntegrationTestCase):
         self.assertEqualPageTitle(
             "This is the content title … - Interstitial Page Titles"
         )
+
+    def test_should_have_error_in_page_title_when_fail_validation(self):
+        # Given
+        self.launchSurvey("test_checkbox")
+        # When
+        self.post()
+        # Then
+        self.assertEqualPageTitle(
+            "Error: Which pizza toppings would you like? - Other input fields"
+        )
