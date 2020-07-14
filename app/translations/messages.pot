@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2020-07-10 10:40+0100\n"
+"POT-Creation-Date: 2020-07-14 16:08+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,14 +17,14 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 2.8.0\n"
 
-#: app/forms/validators.py:340 app/jinja_filters.py:81
+#: app/forms/validators.py:341 app/jinja_filters.py:81
 #, python-format
 msgid "%(num)s year"
 msgid_plural "%(num)s years"
 msgstr[0] ""
 msgstr[1] ""
 
-#: app/forms/validators.py:344 app/jinja_filters.py:89
+#: app/forms/validators.py:345 app/jinja_filters.py:89
 #, python-format
 msgid "%(num)s month"
 msgid_plural "%(num)s months"
@@ -43,43 +43,43 @@ msgstr ""
 
 #: app/forms/error_messages.py:7 app/forms/error_messages.py:8
 #: app/forms/error_messages.py:9 app/forms/error_messages.py:10
-msgid "Enter an answer to continue."
+msgid "Enter an answer to continue"
 msgstr ""
 
 #: app/forms/error_messages.py:11 app/forms/error_messages.py:12
-msgid "Select an answer to continue."
+msgid "Select an answer to continue"
 msgstr ""
 
 #: app/forms/error_messages.py:13
-msgid "Select all that apply to continue."
+msgid "Select all that apply to continue"
 msgstr ""
 
 #: app/forms/error_messages.py:14
-msgid "Enter a date to continue."
+msgid "Enter a date to continue"
 msgstr ""
 
 #: app/forms/error_messages.py:15
-msgid "Enter a duration to continue."
+msgid "Enter a duration to continue"
 msgstr ""
 
 #: app/forms/error_messages.py:16
 #, python-format
-msgid "Enter an answer more than or equal to %(min)s."
+msgid "Enter an answer more than or equal to %(min)s"
 msgstr ""
 
 #: app/forms/error_messages.py:17
 #, python-format
-msgid "Enter an answer less than or equal to %(max)s."
+msgid "Enter an answer less than or equal to %(max)s"
 msgstr ""
 
 #: app/forms/error_messages.py:18
 #, python-format
-msgid "Enter an answer more than %(min)s."
+msgid "Enter an answer more than %(min)s"
 msgstr ""
 
 #: app/forms/error_messages.py:19
 #, python-format
-msgid "Enter an answer less than %(max)s."
+msgid "Enter an answer less than %(max)s"
 msgstr ""
 
 #: app/forms/error_messages.py:20
@@ -108,60 +108,60 @@ msgid "Enter answers that add up to or are greater than %(total)s"
 msgstr ""
 
 #: app/forms/error_messages.py:33
-msgid "Enter a number."
+msgid "Enter a number"
 msgstr ""
 
 #: app/forms/error_messages.py:34
-msgid "Enter a whole number."
+msgid "Enter a whole number"
 msgstr ""
 
 #: app/forms/error_messages.py:35
 #, python-format
-msgid "Enter a number rounded to %(max)d decimal places."
+msgid "Enter a number rounded to %(max)d decimal places"
 msgstr ""
 
-#: app/forms/error_messages.py:38
+#: app/forms/error_messages.py:36
 #, python-format
-msgid "You have entered too many characters. Enter up to %(max)d characters."
+msgid "You have entered too many characters. Enter up to %(max)d characters"
 msgstr ""
 
-#: app/forms/error_messages.py:41
-msgid "Enter a valid date."
+#: app/forms/error_messages.py:39
+msgid "Enter a valid date"
 msgstr ""
 
-#: app/forms/error_messages.py:42
-msgid "Enter a 'period to' date later than the 'period from' date."
+#: app/forms/error_messages.py:40
+msgid "Enter a 'period to' date later than the 'period from' date"
 msgstr ""
 
-#: app/forms/error_messages.py:45
-msgid "Enter a valid duration."
+#: app/forms/error_messages.py:43
+msgid "Enter a valid duration"
 msgstr ""
 
-#: app/forms/error_messages.py:46
+#: app/forms/error_messages.py:44
 #, python-format
-msgid "Enter a reporting period greater than or equal to %(min)s."
+msgid "Enter a reporting period greater than or equal to %(min)s"
 msgstr ""
 
-#: app/forms/error_messages.py:49
+#: app/forms/error_messages.py:47
 #, python-format
-msgid "Enter a reporting period less than or equal to %(max)s."
+msgid "Enter a reporting period less than or equal to %(max)s"
+msgstr ""
+
+#: app/forms/error_messages.py:50
+#, python-format
+msgid "Enter a date after %(min)s"
+msgstr ""
+
+#: app/forms/error_messages.py:51
+#, python-format
+msgid "Enter a date before %(max)s"
 msgstr ""
 
 #: app/forms/error_messages.py:52
-#, python-format
-msgid "Enter a date after %(min)s."
+msgid "Remove an answer to continue"
 msgstr ""
 
-#: app/forms/error_messages.py:53
-#, python-format
-msgid "Enter a date before %(max)s."
-msgstr ""
-
-#: app/forms/error_messages.py:54
-msgid "Remove an answer to continue."
-msgstr ""
-
-#: app/forms/validators.py:351
+#: app/forms/validators.py:352
 #, python-format
 msgid "%(num)s day"
 msgid_plural "%(num)s days"
@@ -318,14 +318,8 @@ msgstr ""
 
 #: templates/question.html:16
 #, python-format
-msgid "This page has an error"
-msgid_plural "This page has %(num)s errors"
-msgstr[0] ""
-msgstr[1] ""
-
-#: templates/question.html:22
-msgid "This <strong>must be corrected</strong> to continue"
-msgid_plural "These <strong>must be corrected</strong> to continue"
+msgid "There is a problem with your answer"
+msgid_plural "There are %(num)s problems with your answer"
 msgstr[0] ""
 msgstr[1] ""
 

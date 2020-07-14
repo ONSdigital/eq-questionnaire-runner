@@ -53,8 +53,8 @@ describe("Durations", () => {
     $(DurationPage.mandatoryMonthMonths()).setValue(1);
     $(DurationPage.submit()).click();
 
-    expect($(DurationPage.errorNumber(1)).getText()).to.contain("Enter a valid duration.");
-    expect($(DurationPage.errorNumber(2)).getText()).to.contain("Enter a valid duration.");
+    expect($(DurationPage.errorNumber(1)).getText()).to.contain("Enter a valid duration");
+    expect($(DurationPage.errorNumber(2)).getText()).to.contain("Enter a valid duration");
   });
 
   it("Given the test_durations survey is selected when one of the units not a number an error is shown", () => {
@@ -66,8 +66,8 @@ describe("Durations", () => {
     $(DurationPage.mandatoryMonthMonths()).setValue(1);
     $(DurationPage.submit()).click();
 
-    expect($(DurationPage.errorNumber(1)).getText()).to.contain("Enter a valid duration.");
-    expect($(DurationPage.errorNumber(2)).getText()).to.contain("Enter a valid duration.");
+    expect($(DurationPage.errorNumber(1)).getText()).to.contain("Enter a valid duration");
+    expect($(DurationPage.errorNumber(2)).getText()).to.contain("Enter a valid duration");
   });
 
   it("Given the test_durations survey is selected when the number of months is more than 11 an error is shown", () => {
@@ -79,8 +79,8 @@ describe("Durations", () => {
     $(DurationPage.mandatoryMonthMonths()).setValue(1);
     $(DurationPage.submit()).click();
 
-    expect($(DurationPage.errorNumber(1)).getText()).to.contain("Enter a valid duration.");
-    expect($(DurationPage.errorNumber(2)).getText()).to.contain("Enter a valid duration.");
+    expect($(DurationPage.errorNumber(1)).getText()).to.contain("Enter a valid duration");
+    expect($(DurationPage.errorNumber(2)).getText()).to.contain("Enter a valid duration");
   });
 
   it("Given the test_durations survey is selected when the mandatory duration is missing an error is shown", () => {
@@ -88,6 +88,6 @@ describe("Durations", () => {
     $(DurationPage.mandatoryMonthMonths()).setValue(1);
     $(DurationPage.submit()).click();
 
-    expect($(DurationPage.errorNumber(1)).getText()).to.contain("Enter a duration to continue.");
+    expect($(DurationPage.errorNumber(1)).getText()).to.contain("Enter a duration to continue");
   });
 });

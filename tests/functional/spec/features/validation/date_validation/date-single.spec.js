@@ -19,7 +19,7 @@ describe("Feature: Validation for single date periods", () => {
       $(DatePeriodPage.dateRangeTomonth()).setValue(3);
       $(DatePeriodPage.dateRangeToyear()).setValue(2018);
       $(DatePeriodPage.submit()).click();
-      expect($(DatePeriodPage.errorNumber(1)).getText()).to.contain("Enter a date after 12 December 2016.");
+      expect($(DatePeriodPage.errorNumber(1)).getText()).to.contain("Enter a date after 12 December 2016");
     });
   });
 
@@ -34,7 +34,7 @@ describe("Feature: Validation for single date periods", () => {
       $(DatePeriodPage.dateRangeTomonth()).setValue(3);
       $(DatePeriodPage.dateRangeToyear()).setValue(2018);
       $(DatePeriodPage.submit()).click();
-      expect($(DatePeriodPage.errorNumber(1)).getText()).to.contain("Enter a date before 2 July 2017.");
+      expect($(DatePeriodPage.errorNumber(1)).getText()).to.contain("Enter a date before 2 July 2017");
     });
   });
 
@@ -49,7 +49,7 @@ describe("Feature: Validation for single date periods", () => {
       $(DatePeriodPage.dateRangeTomonth()).setValue(1);
       $(DatePeriodPage.dateRangeToyear()).setValue(2018);
       $(DatePeriodPage.submit()).click();
-      expect($(DatePeriodPage.errorNumber(2)).getText()).to.contain("Enter a date after 10 February 2018.");
+      expect($(DatePeriodPage.errorNumber(2)).getText()).to.contain("Enter a date after 10 February 2018");
     });
   });
 

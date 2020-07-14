@@ -17,8 +17,8 @@ describe("Feature: Combined question level and single validation for dates", () 
         $(DateRangePage.dateRangeTomonth()).setValue(2);
         $(DateRangePage.dateRangeToyear()).setValue(2017);
         $(DateRangePage.submit()).click();
-        expect($(DateRangePage.errorNumber(1)).getText()).to.contain("Enter a date after 12 December 2016.");
-        expect($(DateRangePage.errorNumber(2)).getText()).to.contain("Enter a date before 22 February 2017.");
+        expect($(DateRangePage.errorNumber(1)).getText()).to.contain("Enter a date after 12 December 2016");
+        expect($(DateRangePage.errorNumber(2)).getText()).to.contain("Enter a date before 22 February 2017");
       });
 
       it("When I enter a range too large, Then I should see a range validation error", () => {
@@ -30,7 +30,7 @@ describe("Feature: Combined question level and single validation for dates", () 
         $(DateRangePage.dateRangeTomonth()).setValue(2);
         $(DateRangePage.dateRangeToyear()).setValue(2017);
         $(DateRangePage.submit()).click();
-        expect($(DateRangePage.errorNumber(1)).getText()).to.contain("Enter a reporting period less than or equal to 50 days.");
+        expect($(DateRangePage.errorNumber(1)).getText()).to.contain("Enter a reporting period less than or equal to 50 days");
       });
 
       it("When I enter a range too small, Then I should see a range validation error", () => {
@@ -42,7 +42,7 @@ describe("Feature: Combined question level and single validation for dates", () 
         $(DateRangePage.dateRangeTomonth()).setValue(1);
         $(DateRangePage.dateRangeToyear()).setValue(2017);
         $(DateRangePage.submit()).click();
-        expect($(DateRangePage.errorNumber(1)).getText()).to.contain("Enter a reporting period greater than or equal to 10 days.");
+        expect($(DateRangePage.errorNumber(1)).getText()).to.contain("Enter a reporting period greater than or equal to 10 days");
       });
 
       it("When I enter valid dates, Then I should see the summary page", () => {

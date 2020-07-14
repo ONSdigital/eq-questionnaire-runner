@@ -110,7 +110,7 @@ class TestDateRangeValidator(unittest.TestCase):
             validator(mock_form, period_from, period_to)
 
         self.assertEqual(
-            "Enter a reporting period greater than or equal to 20 days.",
+            "Enter a reporting period greater than or equal to 20 days",
             str(ite.exception),
         )
 
@@ -131,7 +131,7 @@ class TestDateRangeValidator(unittest.TestCase):
             validator(mock_form, period_from, period_to)
 
         self.assertEqual(
-            "Enter a reporting period less than or equal to 1 month.",
+            "Enter a reporting period less than or equal to 1 month",
             str(ite.exception),
         )
 
@@ -170,7 +170,7 @@ class TestDateRangeValidator(unittest.TestCase):
             validator(mock_form, period_from, period_to)
 
         self.assertEqual(
-            "Enter a reporting period less than or equal to 2 years, 1 month, 3 days.",
+            "Enter a reporting period less than or equal to 2 years, 1 month, 3 days",
             str(ite.exception),
         )
 
@@ -182,7 +182,7 @@ class TestDateRangeValidator(unittest.TestCase):
             validator(mock_form, period_from, period_to)
 
         self.assertEqual(
-            "Enter a reporting period less than or equal to 2 months, 1 day.",
+            "Enter a reporting period less than or equal to 2 months, 1 day",
             str(ite.exception),
         )
 
@@ -194,6 +194,6 @@ class TestDateRangeValidator(unittest.TestCase):
             validator(mock_form, period_from, period_to)
 
         self.assertEqual(
-            "Enter a reporting period greater than or equal to 3 years, 2 days.",
+            "Enter a reporting period greater than or equal to 3 years, 2 days",
             str(ite.exception),
         )
