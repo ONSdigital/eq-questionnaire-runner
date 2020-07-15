@@ -17,6 +17,7 @@ class Location:
     """
         Store a location in the questionnaire.
 
+        section_id: The id of the current section.
         block_id: The id of the current block. This could be a block inside a list collector
         list_item_id: The list_item_id if this location is associated with a list
         list_name: The list name
