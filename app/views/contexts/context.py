@@ -1,12 +1,23 @@
 from abc import ABC
+from typing import Mapping
 
+from app.data_model.answer_store import AnswerStore
+from app.data_model.list_store import ListStore
+from app.data_model.progress_store import ProgressStore
 from app.questionnaire.placeholder_renderer import PlaceholderRenderer
 from app.questionnaire.router import Router
+from app.questionnaire.questionnaire_schema import QuestionnaireSchema
 
 
 class Context(ABC):
     def __init__(
-        self, language, schema, answer_store, list_store, progress_store, metadata
+        self,
+        language: str,
+        schema: QuestionnaireSchema,
+        answer_store: AnswerStore,
+        list_store: ListStore,
+        progress_store: ProgressStore,
+        metadata: Mapping,
     ):
         self._language = language
         self._schema = schema
