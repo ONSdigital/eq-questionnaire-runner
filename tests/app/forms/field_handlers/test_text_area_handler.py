@@ -83,7 +83,7 @@ def test_get_text_area_rows_with_default():
         "type": "TextArea",
     }
 
-    text_area_handler = TextAreaHandler(answer)
+    text_area_handler = TextAreaHandler(answer, disable_validation=True)
 
     class TestForm(Form):
         test_field = text_area_handler.get_field()
@@ -102,7 +102,7 @@ def test_get_text_area_rows():
         "type": "TextArea",
     }
 
-    text_area_handler = TextAreaHandler(answer)
+    text_area_handler = TextAreaHandler(answer, disable_validation=True)
 
     class TestForm(Form):
         test_field = text_area_handler.get_field()
