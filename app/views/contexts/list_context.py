@@ -44,7 +44,7 @@ class ListContext(Context):
         edit_block_id,
         remove_block_id,
     ):
-        list_item_ids = self._list_store[for_list].items
+        list_item_ids = self._list_store[for_list]
         primary_person = self._list_store[for_list].primary_person
 
         for list_item_id in list_item_ids:
