@@ -10,6 +10,7 @@ class CompletionStatus:
     COMPLETED: str = "COMPLETED"
     IN_PROGRESS: str = "IN_PROGRESS"
     NOT_STARTED: str = "NOT_STARTED"
+    INDIVIDUAL_RESPONSE_REQUESTED: str = "INDIVIDUAL_RESPONSE_REQUESTED"
 
     def __iter__(self):
         return iter(astuple(self))
@@ -70,7 +71,10 @@ class ProgressStore:
         self, section_id: str, list_item_id: Optional[str] = None
     ) -> bool:
         return (section_id, list_item_id) in self.section_keys(
-            statuses={CompletionStatus.COMPLETED}
+            statuses={
+                CompletionStatus.COMPLETED,
+                CompletionStatus.INDIVIDUAL_RESPONSE_REQUESTED,
+            }
         )
 
     def section_keys(
@@ -97,10 +101,21 @@ class ProgressStore:
     def update_section_status(
         self, section_status: str, section_id: str, list_item_id: Optional[str] = None
     ) -> None:
-
         section_key = (section_id, list_item_id)
         if section_key in self._progress:
             self._progress[section_key].status = section_status
+            self._is_dirty = True
+
+        elif (
+            section_status == CompletionStatus.INDIVIDUAL_RESPONSE_REQUESTED
+            and section_key not in self._progress
+        ):
+            self._progress[section_key] = Progress(
+                section_id=section_id,
+                list_item_id=list_item_id,
+                block_ids=[],
+                status=section_status,
+            )
             self._is_dirty = True
 
     def get_section_status(
@@ -122,7 +137,6 @@ class ProgressStore:
         return []
 
     def add_completed_location(self, location: Location) -> None:
-
         section_id = location.section_id
         list_item_id = location.list_item_id
 
@@ -145,7 +159,6 @@ class ProgressStore:
             self._is_dirty = True
 
     def remove_completed_location(self, location: Location) -> None:
-
         section_key = (location.section_id, location.list_item_id)
         if (
             section_key in self._progress

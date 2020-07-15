@@ -61,11 +61,15 @@ def render_template(template, **kwargs):
     page_header_context.update({"title": cookie_session.get("survey_title")})
     google_tag_mananger_context = get_google_tag_mananger_context()
     cdn_url = f'{current_app.config["CDN_URL"]}{current_app.config["CDN_ASSETS_PATH"]}'
+    contact_us_url = get_contact_us_url(
+        cookie_session.get("theme"), get_locale().language
+    )
 
     return flask_render_template(
         template,
         account_service_url=cookie_session.get("account_service_url"),
         account_service_log_out_url=cookie_session.get("account_service_log_out_url"),
+        contact_us_url=contact_us_url,
         cookie_settings_url=current_app.config["COOKIE_SETTINGS_URL"],
         page_header=page_header_context,
         theme=_map_theme(cookie_session.get("theme")),
@@ -90,6 +94,16 @@ def get_google_tag_mananger_context():
             ],
         }
     return {}
+
+
+def get_contact_us_url(schema_theme, language_code):
+    if schema_theme == "census-nisra":
+        return "https://census.gov.uk/ni/contact-us/"
+
+    if language_code == "cy":
+        return "https://cyfrifiad.gov.uk/cysylltu-a-ni/"
+
+    return "https://census.gov.uk/contact-us/"
 
 
 def safe_content(content):

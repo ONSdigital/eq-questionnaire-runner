@@ -89,9 +89,7 @@ class SectionSummaryContext(Context):
                     summary_element, current_location, section
                 )
 
-    def _list_summary_element(
-        self, summary: Mapping, current_location, section: Mapping
-    ) -> Mapping:
+    def _list_summary_element(self, summary, current_location, section) -> Mapping:
         list_collector_block = self._schema.get_list_collectors_for_list(
             section, for_list=summary["for_list"]
         )[0]
