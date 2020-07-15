@@ -4,8 +4,8 @@ from flask import url_for
 from flask_babel import lazy_gettext
 
 from app.data_model.progress_store import CompletionStatus
-
-from app.views.contexts.context import Context
+from app.questionnaire import QuestionnaireSchema
+from app.views.contexts import Context
 
 
 class HubContext(Context):
@@ -32,6 +32,13 @@ class HubContext(Context):
                 "aria_label": lazy_gettext("Start {section_name} section"),
             },
         },
+        CompletionStatus.INDIVIDUAL_RESPONSE_REQUESTED: {
+            "text": lazy_gettext("Separate census requested"),
+            "link": {
+                "text": lazy_gettext("Change or resend"),
+                "aria_label": lazy_gettext("Change or resend"),
+            },
+        },
     }
 
     def get_context(self, survey_complete, enabled_section_ids) -> Mapping:
@@ -43,6 +50,7 @@ class HubContext(Context):
 
         if survey_complete:
             title = custom_text.get("title") or lazy_gettext("Submit survey")
+
             guidance = custom_text.get("guidance") or lazy_gettext(
                 "Please submit this survey to complete it"
             )
@@ -52,17 +60,26 @@ class HubContext(Context):
             ) or lazy_gettext("Submit survey")
             submission_guidance = hub_schema.get("submission", {}).get("guidance")
 
+            individual_response_enabled = False
+
         else:
             title = lazy_gettext("Choose another section to complete")
+
             guidance = custom_text.get("guidance") or lazy_gettext(
                 "You must complete all sections in order to submit this survey"
             )
+
             submit_button = lazy_gettext("Continue")
             submission_guidance = None
+
+            individual_response_enabled = self._individual_response_enabled(
+                self._schema
+            )
 
         return {
             "title": title,
             "guidance": guidance,
+            "individual_response_enabled": individual_response_enabled,
             "submit_button": submit_button,
             "submission_guidance": submission_guidance,
             "rows": rows,
@@ -71,7 +88,6 @@ class HubContext(Context):
     def get_row_context_for_section(
         self, section_name: str, section_status: str, section_url: str
     ) -> Mapping[str, Union[str, List]]:
-
         section_content = self.SECTION_CONTENT_STATES[section_status]
         context: Mapping = {
             "rowTitle": section_name,
@@ -85,13 +101,17 @@ class HubContext(Context):
                                 section_name=section_name
                             ),
                             "url": section_url,
+                            "attributes": {"data-qa": "summary-actions-section-link"},
                         }
                     ],
                 }
             ],
         }
 
-        if section_status == CompletionStatus.COMPLETED:
+        if section_status in (
+            CompletionStatus.COMPLETED,
+            CompletionStatus.INDIVIDUAL_RESPONSE_REQUESTED,
+        ):
             context["rowItems"][0]["icon"] = "check-green"
 
         return context
@@ -138,7 +158,7 @@ class HubContext(Context):
                 repeating_list = self._schema.get_repeating_list_for_section(section_id)
 
                 if repeating_list:
-                    for list_item_id in self._list_store[repeating_list].items:
+                    for list_item_id in self._list_store[repeating_list]:
                         rows.append(
                             self._get_row_for_repeating_section(
                                 section_id, list_item_id
@@ -148,3 +168,19 @@ class HubContext(Context):
                     rows.append(self._get_row_for_section(section_title, section_id))
 
         return rows
+
+    def _individual_response_enabled(self, schema: QuestionnaireSchema) -> bool:
+        if not schema.json.get("individual_response"):
+            return False
+
+        for_list = schema.json["individual_response"]["for_list"]
+
+        count_household_members = len(self._list_store[for_list])
+
+        if count_household_members == 0:
+            return False
+
+        if count_household_members == 1 and self._list_store[for_list].primary_person:
+            return False
+
+        return True

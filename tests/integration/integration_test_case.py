@@ -189,6 +189,10 @@ class IntegrationTestCase(unittest.TestCase):  # pylint: disable=too-many-public
 
         self._cache_response(environ, response)
 
+    def sign_out(self):
+        selected = self.getHtmlSoup().find("a", {"name": "btn-save-sign-out"})
+        return self.get(selected["href"])
+
     def previous(self):
         selector = "#top-previous"
         selected = self.getHtmlSoup().select(selector)
