@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2020-07-13 15:09+0100\n"
+"POT-Creation-Date: 2020-07-15 13:02+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -259,7 +259,7 @@ msgid "You must complete all sections in order to submit this survey"
 msgstr ""
 
 #: app/views/contexts/hub_context.py:60 templates/interstitial.html:7
-#: templates/sectionsummary.html:11
+#: templates/sectionsummary.html:11 templates/sectionsummary.html:53
 msgid "Continue"
 msgstr ""
 
@@ -328,10 +328,6 @@ msgid "This <strong>must be corrected</strong> to continue"
 msgid_plural "These <strong>must be corrected</strong> to continue"
 msgstr[0] ""
 msgstr[1] ""
-
-#: templates/sectionsummary.html:25
-msgid "Check your answers before continuing to the next section"
-msgstr ""
 
 #: templates/signed-out.html:3
 msgid "Signed out"
@@ -497,10 +493,6 @@ msgid "Save and continue"
 msgstr ""
 
 #: templates/layouts/_questionnaire.html:43
-msgid "Can't complete this question?"
-msgstr ""
-
-#: templates/layouts/_questionnaire.html:44
 msgid "Choose another section and return to this later"
 msgstr ""
 
@@ -560,7 +552,7 @@ msgstr ""
 msgid "Sign out"
 msgstr ""
 
-#: templates/macros/helpers.html:33 templates/macros/helpers.html:37
+#: templates/macros/helpers.html:32
 msgid "Interviewer Note:"
 msgstr ""
 
@@ -579,23 +571,23 @@ msgid ""
 " of the section</a>"
 msgstr ""
 
-#: templates/partials/question.html:50
+#: templates/partials/question.html:52
 msgid "Selecting this will clear your answer"
 msgstr ""
 
-#: templates/partials/question.html:51
+#: templates/partials/question.html:53
 msgid "cleared"
 msgstr ""
 
-#: templates/partials/question.html:54
+#: templates/partials/question.html:56
 msgid "Selecting this will deselect any selected options"
 msgstr ""
 
-#: templates/partials/question.html:55 templates/partials/question.html:63
+#: templates/partials/question.html:57 templates/partials/question.html:65
 msgid "deselected"
 msgstr ""
 
-#: templates/partials/question.html:59
+#: templates/partials/question.html:61
 msgid "Or"
 msgstr ""
 
