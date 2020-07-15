@@ -179,9 +179,7 @@ class HubContext(Context):
                             )
                         )
                 else:
-                    rows.append(
-                        self._get_row_for_section(section_title, section_id)
-                    )
+                    rows.append(self._get_row_for_section(section_title, section_id))
 
         return rows
 
