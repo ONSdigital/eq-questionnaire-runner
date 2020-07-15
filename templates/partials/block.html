@@ -1,6 +1,6 @@
 {% set block = content.block %}
 
-<div class="block" id="{{current_location.block_id}}">
+<div class="block" id="{{content.block.id}}">
 
   {% if 'question' in block %}
       {% set question = block['question'] %}

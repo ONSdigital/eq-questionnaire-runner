@@ -424,12 +424,19 @@ def test_is_section_complete():
             "status": CompletionStatus.COMPLETED,
             "block_ids": ["not-three"],
         },
+        {
+            "section_id": "s5",
+            "list_item_id": "456def",
+            "status": CompletionStatus.INDIVIDUAL_RESPONSE_REQUESTED,
+            "block_ids": ["not-three"],
+        },
     ]
 
     store = ProgressStore(completed)
 
     assert store.is_section_complete(section_id="s1", list_item_id=None) is True
     assert store.is_section_complete(section_id="s4", list_item_id="123abc") is True
+    assert store.is_section_complete(section_id="s5", list_item_id="456def") is True
 
 
 def test_remove_progress_for_list_item_id():

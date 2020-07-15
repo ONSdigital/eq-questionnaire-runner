@@ -29,6 +29,19 @@ class ListModel:
             return NotImplemented
         return self.items == other.items and self.primary_person == other.primary_person
 
+    def __iter__(self):
+        for list_item in self.items:
+            yield list_item
+
+    def __getitem__(self, list_item_index):
+        return self.items[list_item_index]
+
+    def __len__(self):
+        return len(self.items)
+
+    def index(self, list_item):
+        return self.items.index(list_item)
+
     def serialize(self):
         serialized = {"items": self.items, "name": self.name}
 
@@ -92,6 +105,10 @@ class ListStore:
         self._lists = self._build_map(existing_items)
 
         self._is_dirty = False
+
+    def __iter__(self):
+        for list_item in self._lists.values():
+            yield list_item
 
     def __getitem__(self, list_name):
         try:
@@ -175,7 +192,7 @@ class ListStore:
         return list_item_id
 
     def serialize(self):
-        return [list_model.serialize() for list_model in self._lists.values()]
+        return [list_model.serialize() for list_model in self]
 
     @classmethod
     def deserialize(cls, serialized: list):

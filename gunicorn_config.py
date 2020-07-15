@@ -1,5 +1,6 @@
-import gunicorn
 import os
+
+import gunicorn
 
 
 workers = os.getenv("GUNICORN_WORKERS")

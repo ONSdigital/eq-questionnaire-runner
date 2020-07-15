@@ -1,5 +1,5 @@
-import flask_babel
 from flask import Blueprint, g, redirect, request, url_for, jsonify
+import flask_babel
 from flask_login import current_user, login_required
 from structlog import get_logger
 from werkzeug.exceptions import NotFound
@@ -162,7 +162,6 @@ def get_section(schema, questionnaire_store, section_id, list_item_id=None):
             return _render_page(
                 template="SectionSummary",
                 context=section_context,
-                current_location=section_handler.current_location,
                 previous_location_url=section_handler.get_previous_location_url(),
                 schema=schema,
                 page_title=section_context["summary"]["page_title"],
@@ -210,7 +209,6 @@ def block(schema, questionnaire_store, block_id, list_name=None, list_item_id=No
         return _render_page(
             template=block_handler.rendered_block["type"],
             context=block_handler.get_context(),
-            current_location=block_handler.current_location,
             previous_location_url=block_handler.get_previous_location_url(),
             schema=schema,
             page_title=block_handler.page_title,
@@ -256,7 +254,6 @@ def relationship(schema, questionnaire_store, block_id, list_item_id, to_list_it
         return _render_page(
             template=block_handler.block["type"],
             context=block_handler.get_context(),
-            current_location=block_handler.current_location,
             previous_location_url=block_handler.get_previous_location_url(),
             schema=schema,
             page_title=block_handler.page_title,
@@ -287,9 +284,7 @@ def get_thank_you(schema):
     )
 
 
-def _render_page(
-    template, context, current_location, previous_location_url, schema, page_title
-):
+def _render_page(template, context, previous_location_url, schema, page_title):
     if request_wants_json():
         return jsonify(context)
 
@@ -298,7 +293,6 @@ def _render_page(
     return render_template(
         template=template,
         content=context,
-        current_location=current_location,
         previous_location_url=previous_location_url,
         session_timeout=session_timeout,
         legal_basis=schema.json.get("legal_basis"),

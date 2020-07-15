@@ -80,7 +80,7 @@ class QuestionnaireStoreUpdater:
         if not relationship_collectors:
             return None
 
-        list_items = self._list_store.get(list_name).items
+        list_items = self._list_store[list_name]
 
         for collector in relationship_collectors:
 
