@@ -117,24 +117,24 @@ class HubContext(Context):
             repeating_title, list_item_id
         )
 
-        repeating_section_id = section_id + "-" + str(list_item_index)
-
         return self._get_row_for_section(
-            title, repeating_section_id, section_id, list_item_id
+            title, section_id, list_item_index, list_item_id
         )
 
     def _get_row_for_section(
-        self, section_title, section_id, section_title_id, list_item_id=None
+        self, section_title, section_id, list_item_index=1, list_item_id=None
     ):
+        repeating_section_id = section_id + "-" + str(list_item_index)
+
         section_status = self._progress_store.get_section_status(
-            section_title_id, list_item_id
+            section_id, list_item_id
         )
 
         return self.get_row_context_for_section(
             section_title,
             section_status,
-            section_id,
-            self.get_section_url(section_title_id, list_item_id),
+            repeating_section_id,
+            self.get_section_url(section_id, list_item_id),
         )
 
     def _get_rows(self, enabled_section_ids) -> List[Mapping[str, Union[str, List]]]:
@@ -161,7 +161,7 @@ class HubContext(Context):
                         )
                 else:
                     rows.append(
-                        self._get_row_for_section(section_title, section_id, section_id)
+                        self._get_row_for_section(section_title, section_id)
                     )
 
         return rows
