@@ -122,7 +122,7 @@ class HubContext(Context):
         )
 
     def _get_row_for_section(
-        self, section_title, section_id, list_item_index=1, list_item_id=None
+        self, section_title, section_id, list_item_index=None, list_item_id=None
     ):
         repeating_section_id = section_id + "-" + str(list_item_index)
 
