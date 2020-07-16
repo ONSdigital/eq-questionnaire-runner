@@ -18,6 +18,10 @@ describe("Section Summary", () => {
       expect($(PropertyDetailsSummaryPage.insuranceTypeAnswer()).getText()).to.contain("Both");
     });
 
+    it("When I get to the section summary page, Then the submit button should read 'Continue'", () => {
+      expect($(PropertyDetailsSummaryPage.submit()).getText()).to.contain("Continue");
+    });
+
     it("When I have selected an answer to edit and edit it, Then I should return to the section summary with new value displayed", () => {
       $(PropertyDetailsSummaryPage.insuranceAddressAnswerEdit()).click();
       $(InsuranceAddressPage.answer()).setValue("Test Address");
