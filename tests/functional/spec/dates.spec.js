@@ -62,7 +62,7 @@ describe("Date checks", () => {
     $(DateRangePage.submit()).click();
 
     // Then an error message is shown
-    expect($(DateRangePage.errorNumber(1)).getText()).to.contain("Enter a 'period to' date later than the 'period from' date.");
+    expect($(DateRangePage.errorNumber(1)).getText()).to.contain("Enter a 'period to' date later than the 'period from' date");
 
     // Then clicking error should focus on first input field
     $(DateRangePage.errorNumber(1)).click();
@@ -82,7 +82,7 @@ describe("Date checks", () => {
     $(DateRangePage.submit()).click();
 
     // Then an error message is shown
-    expect($(DateRangePage.errorNumber(1)).getText()).to.contain("Enter a 'period to' date later than the 'period from' date.");
+    expect($(DateRangePage.errorNumber(1)).getText()).to.contain("Enter a 'period to' date later than the 'period from' date");
   });
 
   it("Given the test_dates survey is selected when an invalid date is entered in a date range then an error message is shown", () => {
@@ -98,7 +98,7 @@ describe("Date checks", () => {
     $(DateRangePage.submit()).click();
 
     // Then an error message is shown
-    expect($(DateRangePage.errorNumber(1)).getText()).to.contain("Enter a valid date.");
+    expect($(DateRangePage.errorNumber(1)).getText()).to.contain("Enter a valid date");
   });
 
   it("Given the test_dates survey is selected when the year (month year type) is left empty then an error message is shown", () => {
@@ -117,7 +117,7 @@ describe("Date checks", () => {
     $(DateMonthYearPage.submit()).click();
 
     // Then an error message is shown
-    expect($(DateMonthYearPage.errorNumber(1)).getText()).to.contain("Enter a valid date.");
+    expect($(DateMonthYearPage.errorNumber(1)).getText()).to.contain("Enter a valid date");
   });
 
   it("Given the test_dates survey is selected, " + "When an error message is shown and it is corrected, " + "Then the next question is displayed", () => {
@@ -134,7 +134,7 @@ describe("Date checks", () => {
     $(DateMonthYearPage.Year()).setValue("");
     $(DateMonthYearPage.submit()).click();
 
-    expect($(DateMonthYearPage.error()).getText()).to.contain("Enter a valid date.");
+    expect($(DateMonthYearPage.error()).getText()).to.contain("Enter a valid date");
 
     // Then when it is corrected, it goes to the next question
     $(DateMonthYearPage.Year()).setValue(2018);

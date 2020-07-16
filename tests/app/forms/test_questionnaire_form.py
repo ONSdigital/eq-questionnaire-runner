@@ -1229,7 +1229,7 @@ class TestQuestionnaireForm(
 
             self.assertEqual(
                 form.question_errors["mutually-exclusive-checkbox-question"],
-                "Enter an answer to continue.",
+                "Enter an answer to continue",
             )
 
     def test_mandatory_mutually_exclusive_question_raises_error_with_question_text(
@@ -1293,7 +1293,7 @@ class TestQuestionnaireForm(
 
             self.assertEqual(
                 form.question_errors["mutually-exclusive-date-question"],
-                "Remove an answer to continue.",
+                "Remove an answer to continue",
             )
 
     def test_date_range_form(self):

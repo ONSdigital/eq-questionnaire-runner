@@ -47,8 +47,8 @@ describe("Feature: Combined question level and single validation for MM-YYYY dat
         $(DateRangePage.dateRangeToMonth()).setValue(6);
         $(DateRangePage.dateRangeToYear()).setValue(2017);
         $(DateRangePage.submit()).click();
-        expect($(DateRangePage.errorNumber(1)).getText()).to.contain("Enter a date after November 2016.");
-        expect($(DateRangePage.errorNumber(2)).getText()).to.contain("Enter a date before June 2017.");
+        expect($(DateRangePage.errorNumber(1)).getText()).to.contain("Enter a date after November 2016");
+        expect($(DateRangePage.errorNumber(2)).getText()).to.contain("Enter a date before June 2017");
       });
 
       it("When I enter a range too large, Then I should see a range validation error", () => {
@@ -58,7 +58,7 @@ describe("Feature: Combined question level and single validation for MM-YYYY dat
         $(DateRangePage.dateRangeToMonth()).setValue(5);
         $(DateRangePage.dateRangeToYear()).setValue(2017);
         $(DateRangePage.submit()).click();
-        expect($(DateRangePage.errorNumber(1)).getText()).to.contain("Enter a reporting period less than or equal to 3 months.");
+        expect($(DateRangePage.errorNumber(1)).getText()).to.contain("Enter a reporting period less than or equal to 3 months");
       });
 
       it("When I enter a range too small, Then I should see a range validation error", () => {
@@ -68,7 +68,7 @@ describe("Feature: Combined question level and single validation for MM-YYYY dat
         $(DateRangePage.dateRangeToMonth()).setValue(1);
         $(DateRangePage.dateRangeToYear()).setValue(2017);
         $(DateRangePage.submit()).click();
-        expect($(DateRangePage.errorNumber(1)).getText()).to.contain("Enter a reporting period greater than or equal to 2 months.");
+        expect($(DateRangePage.errorNumber(1)).getText()).to.contain("Enter a reporting period greater than or equal to 2 months");
       });
 
       it("When I enter valid dates, Then I should see the summary page", () => {

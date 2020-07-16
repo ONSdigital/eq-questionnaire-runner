@@ -13,13 +13,12 @@
         onsPanel({
           "type": "error",
           "classes": "u-mb-s",
-          "title": ngettext('This page has an error', 'This page has %(num)s errors', form.mapped_errors | length),
+          "title": ngettext('There is a problem with your answer', 'There are %(num)s problems with your answer', form.mapped_errors | length),
           "attributes": {
             "data-qa": "error-body"
           }
         })
     %}
-      <p>{{ ngettext('This <strong>must be corrected</strong> to continue', 'These <strong>must be corrected</strong> to continue', form.mapped_errors | length) }}.</p>
       <ul class="list list--bare">
         {% for error_id, error in form.mapped_errors %}
           <li class="list__item">

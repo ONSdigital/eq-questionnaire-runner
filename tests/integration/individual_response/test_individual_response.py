@@ -387,7 +387,7 @@ class TestIndividualResponseConfirmationPage(IndividualResponseTestCase):
 
         # Then I should see errors rendered correctly
         self.assertInUrl("/confirm-address")
-        self.assertInBody("This page has an error")
+        self.assertInBody("There is a problem with your answer")
 
     def test_default_post_routing(self):
         # Given I navigate to the individual response how page
