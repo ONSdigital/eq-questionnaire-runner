@@ -18,7 +18,7 @@ describe("Section Summary", () => {
       expect($(PropertyDetailsSummaryPage.insuranceTypeAnswer()).getText()).to.contain("Both");
     });
 
-    it("When I get to the section summary page, Then the submit button should read continue", () => {
+    it("When I get to the section summary page, Then the submit button should read 'Continue'", () => {
       expect($(PropertyDetailsSummaryPage.submit()).getText()).to.contain("Continue");
     });
 
