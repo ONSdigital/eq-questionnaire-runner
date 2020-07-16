@@ -5,13 +5,11 @@ import HubPage from "../../../base_pages/hub.page.js";
 describe("Choose another section link", () => {
   it("When a user first views the Hub, then the link should not be displayed", () => {
     browser.openQuestionnaire("test_hub_and_spoke.json");
-    expect($("body").getText()).to.not.contain("Can't complete this question?");
     expect($("body").getText()).to.not.have.string("Choose another section and return to this later");
   });
 
   it("When a user views the first question and the hub is not available, then the link should not be displayed", () => {
     browser.openQuestionnaire("test_hub_complete_sections.json");
-    expect($("body").getText()).to.not.contain("Can't complete this question?");
     expect($("body").getText()).to.not.have.string("Choose another section and return to this later");
   });
 
@@ -30,7 +28,6 @@ describe("Choose another section link", () => {
     $(HubPage.summaryRowLink("accommodation-section")).click();
     $(ProxyPage.noIMAnsweringForMyself()).click();
     $(ProxyPage.submit()).click();
-    expect($("body").getText()).to.not.contain("Can't complete this question?");
     expect($("body").getText()).to.not.have.string("Choose another section and return to this later");
   });
 });
