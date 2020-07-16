@@ -26,6 +26,7 @@ class QuestionnaireForm(FlaskForm):
         self.location = location
         self.question_errors = {}
         self.options_with_detail_answer = {}
+        self.question_title = self.question.get("title", "")
 
         super().__init__(**kwargs)
 
@@ -123,14 +124,16 @@ class QuestionnaireForm(FlaskForm):
         )
         answers = (getattr(self, answer["id"]).data for answer in question["answers"])
 
-        validator = MutuallyExclusiveCheck(messages=messages)
+        validator = MutuallyExclusiveCheck(
+            messages=messages, question_title=self.question_title
+        )
 
         try:
             validator(answers, is_mandatory)
         except validators.ValidationError as e:
             self.question_errors[question["id"]] = str(e)
-            return False
 
+            return False
         return True
 
     def _get_target_total_and_currency(self, calculation, question):
@@ -321,6 +324,7 @@ def _option_value_in_data(answer, option, data):
 
 def get_answer_fields(question, data, error_messages, answer_store, metadata, location):
     answer_fields = {}
+    question_title = question.get("title")
     for answer in question.get("answers", []):
         for option in answer.get("options", []):
             if "detail_answer" in option:
@@ -333,10 +337,16 @@ def get_answer_fields(question, data, error_messages, answer_store, metadata, lo
                     metadata,
                     location,
                     disable_validation=disable_validation,
+                    question_title=question_title,
                 ).get_field()
 
         answer_fields[answer["id"]] = get_field_handler(
-            answer, error_messages, answer_store, metadata, location
+            answer,
+            error_messages,
+            answer_store,
+            metadata,
+            location,
+            question_title=question_title,
         ).get_field()
 
     return answer_fields

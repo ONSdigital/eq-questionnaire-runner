@@ -2,9 +2,13 @@
 {% from "components/fieldset/_macro.njk" import onsFieldset %}
 {% from "components/panel/_macro.njk" import onsPanel %}
 
+{% from 'macros/helpers.html' import interviewer_note %}
+
 {% set form = content.form %}
 
-{% set question_title = question.title %}
+
+{% set title= interviewer_note(question.title) if block.interviewer_only else question.title %}
+{% set question_title= question.title %}
 {% set question_description = format_paragraphs(question.description) if question.description else None %}
 {% set question_instruction = format_paragraphs(question.instruction) if question.instruction else None %}
 {% set should_wrap_with_fieldset = should_wrap_with_fieldset(question) %}
@@ -83,7 +87,7 @@
 {% endset %}
 {% call onsQuestion({
   "id": question.id,
-  "title": question_title,
+  "title": title,
   "description": question_description,
   "instruction": question_instruction
 }) %}

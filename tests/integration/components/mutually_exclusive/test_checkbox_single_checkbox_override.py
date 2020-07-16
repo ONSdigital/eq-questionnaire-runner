@@ -33,7 +33,7 @@ class TestCheckboxSingleCheckboxOverride(IntegrationTestCase):
         self.post()
 
         # Then
-        self.assertInBody("Enter an answer to continue.")
+        self.assertInBody("Enter an answer to continue")
 
     def test_invalid_exclusive_answers(self):
         # When
@@ -46,4 +46,4 @@ class TestCheckboxSingleCheckboxOverride(IntegrationTestCase):
         )
 
         # Then
-        self.assertInBody("Remove an answer to continue.")
+        self.assertInBody("Remove an answer to continue")

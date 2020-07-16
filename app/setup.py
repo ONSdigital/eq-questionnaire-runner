@@ -95,7 +95,7 @@ class AWSReverseProxied:
 
 
 def create_app(  # noqa: C901  pylint: disable=too-complex, too-many-statements
-    setting_overrides=None
+    setting_overrides=None,
 ):
     application = Flask(__name__, template_folder="../templates")
     application.config.from_object(settings)
@@ -396,6 +396,11 @@ def add_blueprints(application):
 
     application.register_blueprint(schema_blueprint)
     schema_blueprint.config = application.config.copy()
+
+    from app.routes.individual_response import individual_response_blueprint
+
+    application.register_blueprint(individual_response_blueprint)
+    individual_response_blueprint = application.config.copy()
 
 
 def setup_secure_cookies(application):

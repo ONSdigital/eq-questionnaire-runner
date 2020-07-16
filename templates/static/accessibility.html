@@ -4,18 +4,6 @@
 {% block main %}
   {% do pageConfig | setAttribute("feedback", "") %}
 
-  {% set contact_us_url = "https://census.gov.uk/contact-us/" %}
-
-  {% if schema_theme == "census-nisra" %}
-
-    {% set contact_us_url = "https://census.gov.uk/ni/contact-us/" %}
-
-  {% elif language_code == "cy" %}
-
-    {% set contact_us_url = "https://cyfrifiad.gov.uk/cysylltu-a-ni/" %}
-
-  {% endif %}
-
   <h1>{{ _("Accessibility statement") }}</h1>
 
   <p>{{ _("This census is run by the Office for National Statistics. We want as many people as possible to be able to do the census online. For example, that means you should be able to:") }}</p>

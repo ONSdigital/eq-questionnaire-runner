@@ -12,22 +12,22 @@ describe("Feature: Combined question level and single validation for MM-YYYY dat
         $(DateRangePage.dateRangeFromYear()).setValue(2015);
         $(DateRangePage.dateRangeToYear()).setValue(2021);
         $(DateRangePage.submit()).click();
-        expect($(DateRangePage.errorNumber(1)).getText()).to.contain("Enter a date after 2015.");
-        expect($(DateRangePage.errorNumber(2)).getText()).to.contain("Enter a date before 2021.");
+        expect($(DateRangePage.errorNumber(1)).getText()).to.contain("Enter a date after 2015");
+        expect($(DateRangePage.errorNumber(2)).getText()).to.contain("Enter a date before 2021");
       });
 
       it("When I enter a range too large, Then I should see a range validation error", () => {
         $(DateRangePage.dateRangeFromYear()).setValue(2016);
         $(DateRangePage.dateRangeToYear()).setValue(2020);
         $(DateRangePage.submit()).click();
-        expect($(DateRangePage.errorNumber(1)).getText()).to.contain("Enter a reporting period less than or equal to 3 years.");
+        expect($(DateRangePage.errorNumber(1)).getText()).to.contain("Enter a reporting period less than or equal to 3 years");
       });
 
       it("When I enter a range too small, Then I should see a range validation error", () => {
         $(DateRangePage.dateRangeFromYear()).setValue(2016);
         $(DateRangePage.dateRangeToYear()).setValue(2017);
         $(DateRangePage.submit()).click();
-        expect($(DateRangePage.errorNumber(1)).getText()).to.contain("Enter a reporting period greater than or equal to 2 years.");
+        expect($(DateRangePage.errorNumber(1)).getText()).to.contain("Enter a reporting period greater than or equal to 2 years");
       });
 
       it("When I enter valid dates, Then I should see the summary page", () => {
