@@ -93,8 +93,8 @@ class HubContext(Context):
             "rowItems": [
                 {
                     "rowTitle": section_name,
-                    "rowTitleAttributes": {"data-qa": f"hub-row-title-{row_id}"},
-                    "attributes": {"data-qa": f"hub-row-state-{row_id}"},
+                    "rowTitleAttributes": {"data-qa": f"hub-row-{row_id}-title"},
+                    "attributes": {"data-qa": f"hub-row-{row_id}-state"},
                     "valueList": [{"text": section_content["text"]}],
                     "actions": [
                         {
@@ -103,7 +103,7 @@ class HubContext(Context):
                                 section_name=section_name
                             ),
                             "url": section_url,
-                            "attributes": {"data-qa": f"hub-row-link-{row_id}"},
+                            "attributes": {"data-qa": f"hub-row-{row_id}-link"},
                         }
                     ],
                 }

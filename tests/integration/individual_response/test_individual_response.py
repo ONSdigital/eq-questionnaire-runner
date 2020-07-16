@@ -9,7 +9,7 @@ class IndividualResponseTestCase(IntegrationTestCase):
     @property
     def individual_section_link(self):
         return self.getHtmlSoup().find(
-            "a", {"data-qa": "hub-row-link-individual-section-1"}
+            "a", {"data-qa": "hub-row-individual-section-1-link"}
         )["href"]
 
     @property

@@ -19,15 +19,15 @@ def test_get_not_started_row_for_section(
         "rowItems": [
             {
                 "rowTitle": "Breakfast",
-                "rowTitleAttributes": {"data-qa": "hub-row-title-section-1"},
-                "attributes": {"data-qa": "hub-row-state-section-1"},
+                "rowTitleAttributes": {"data-qa": "hub-row-section-1-title"},
+                "attributes": {"data-qa": "hub-row-section-1-state"},
                 "valueList": [{"text": "Not started"}],
                 "actions": [
                     {
                         "text": "Start section",
                         "ariaLabel": "Start Breakfast section",
                         "url": "http://some/url",
-                        "attributes": {"data-qa": "hub-row-link-section-1"},
+                        "attributes": {"data-qa": "hub-row-section-1-link"},
                     }
                 ],
             }
@@ -60,8 +60,8 @@ def test_get_completed_row_for_section(
         "rowItems": [
             {
                 "rowTitle": "Breakfast",
-                "rowTitleAttributes": {"data-qa": "hub-row-title-section-1"},
-                "attributes": {"data-qa": "hub-row-state-section-1"},
+                "rowTitleAttributes": {"data-qa": "hub-row-section-1-title"},
+                "attributes": {"data-qa": "hub-row-section-1-state"},
                 "icon": "check-green",
                 "valueList": [{"text": "Completed"}],
                 "actions": [
@@ -69,7 +69,7 @@ def test_get_completed_row_for_section(
                         "text": "View answers",
                         "ariaLabel": "View answers for Breakfast",
                         "url": "http://some/url",
-                        "attributes": {"data-qa": "hub-row-link-section-1"},
+                        "attributes": {"data-qa": "hub-row-section-1-link"},
                     }
                 ],
             }
