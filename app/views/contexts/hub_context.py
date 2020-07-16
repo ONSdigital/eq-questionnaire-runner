@@ -143,7 +143,7 @@ class HubContext(Context):
     def _get_row_for_section(
         self, section_title, section_id, list_item_id=None, list_item_index=None
     ):
-        full_row_id = f"{section_id}-{list_item_index}" if list_item_index else section_id
+        row_id = f"{section_id}-{list_item_index}" if list_item_index else section_id
 
         section_status = self._progress_store.get_section_status(
             section_id, list_item_id
@@ -152,7 +152,7 @@ class HubContext(Context):
         return self.get_row_context_for_section(
             section_title,
             section_status,
-            full_row_id,
+            row_id,
             self.get_section_url(section_id, list_item_id),
         )
 
