@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2020-07-16 15:48+0100\n"
+"POT-Creation-Date: 2020-07-16 16:01+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -270,7 +270,6 @@ msgstr ""
 #: templates/individual_response/confirmation.html:19
 #: templates/individual_response/question.html:5 templates/interstitial.html:7
 #: templates/sectionsummary.html:11 templates/sectionsummary.html:53
-
 msgid "Continue"
 msgstr ""
 
@@ -324,6 +323,47 @@ msgstr ""
 
 #: app/views/handlers/question.py:133
 msgid "Error: {page_title}"
+msgstr ""
+
+#: templates/census-thank-you.html:8
+msgid "Thank you for completing your census"
+msgstr ""
+
+#: templates/census-thank-you.html:11
+msgid ""
+"Your individual census has been submitted for "
+"<strong>{display_address}</strong>"
+msgstr ""
+
+#: templates/census-thank-you.html:13
+msgid ""
+"Your census has been submitted for the household at "
+"<strong>{display_address}</strong>"
+msgstr ""
+
+#: templates/census-thank-you.html:15
+msgid ""
+"Your census has been submitted for the accommodation at "
+"<strong>{display_address}</strong>"
+msgstr ""
+
+#: templates/census-thank-you.html:16
+msgid ""
+"Anyone staying at this accommodation for at least 6 months needs to fill "
+"in their own individual census, including staff. Your Census Officer will"
+" provide you with census forms for your residents."
+msgstr ""
+
+#: templates/census-thank-you.html:22
+msgid ""
+"Your personal information is protected by law and will be kept "
+"confidential."
+msgstr ""
+
+#: templates/census-thank-you.html:28
+msgid ""
+"Make sure you leave this page or close your browser if using a shared "
+"device."
 msgstr ""
 
 #: templates/confirmation.html:6 templates/confirmation.html:27

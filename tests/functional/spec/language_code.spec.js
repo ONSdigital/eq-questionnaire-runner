@@ -17,6 +17,7 @@ const PLURAL_TEST_DATA_SETS = [
       cy: "Ydy, mae 0 person yn byw yma (zero)",
     },
   },
+  {
     count: 1,
     question_title: {
       en: "1 person lives here, is this correct?",
