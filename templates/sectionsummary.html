@@ -19,11 +19,6 @@
   {% if content.summary.groups %}
     {% set group = content.summary.groups %}
     <h1>{{content.summary.title}}</h1>
-      {% call onsPanel({
-        "classes": "print__hidden u-mb-l"
-      }) %}
-        <p>{{ _("Check your answers before continuing to the next section") }}</p>
-      {% endcall %}
     <div>
       {% include 'partials/summary/summary.html' %}
     </div>
@@ -50,4 +45,16 @@
         {% endif %}
       {% endfor %}
   {% endif %}
+{% endblock %}
+
+{% block submit_button %}
+    {{
+        onsButton({
+            "text": continue_button_text | default(_("Continue")),
+            "classes": "u-mt-xl",
+            "attributes": {
+                "data-qa": "btn-submit"
+            }
+        })
+    }}
 {% endblock %}
