@@ -324,7 +324,7 @@ def test_map_list_collector_config_no_actions():
                     "actions": [],
                     "icon": "icon",
                     "rowTitle": "Mark Bloggs",
-                    "rowTitleAttributes": {"data-qa": "list-item-label-1"},
+                    "rowTitleAttributes": {"data-qa": "list-item-1-label"},
                 }
             ]
         },
@@ -334,7 +334,7 @@ def test_map_list_collector_config_no_actions():
                     "actions": [],
                     "icon": "icon",
                     "rowTitle": "Joe Bloggs",
-                    "rowTitleAttributes": {"data-qa": "list-item-label-2"},
+                    "rowTitleAttributes": {"data-qa": "list-item-2-label"},
                 }
             ]
         },
@@ -375,14 +375,14 @@ def test_map_list_collector_config():
                     "actions": [
                         {
                             "ariaLabel": "edit_link_aria_label",
-                            "attributes": {"data-qa": "list-item-change-link-1"},
+                            "attributes": {"data-qa": "list-item-change-1-link"},
                             "text": "edit_link_text",
                             "url": "/primary/change",
                         }
                     ],
                     "icon": "icon",
                     "rowTitle": "Mark Bloggs (You)",
-                    "rowTitleAttributes": {"data-qa": "list-item-label-1"},
+                    "rowTitleAttributes": {"data-qa": "list-item-1-label"},
                 }
             ]
         },
@@ -392,20 +392,20 @@ def test_map_list_collector_config():
                     "actions": [
                         {
                             "ariaLabel": "edit_link_aria_label",
-                            "attributes": {"data-qa": "list-item-change-link-2"},
+                            "attributes": {"data-qa": "list-item-change-2-link"},
                             "text": "edit_link_text",
                             "url": "/nonprimary/change",
                         },
                         {
                             "ariaLabel": "remove_link_aria_label",
-                            "attributes": {"data-qa": "list-item-remove-link-2"},
+                            "attributes": {"data-qa": "list-item-remove-2-link"},
                             "text": "remove_link_text",
                             "url": "/nonprimary/remove",
                         },
                     ],
                     "icon": "icon",
                     "rowTitle": "Joe Bloggs",
-                    "rowTitleAttributes": {"data-qa": "list-item-label-2"},
+                    "rowTitleAttributes": {"data-qa": "list-item-2-label"},
                 }
             ]
         },

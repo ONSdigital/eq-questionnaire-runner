@@ -8,7 +8,7 @@ class TestQuestionnaireListCollector(IntegrationTestCase):
         self.post({"first-name": first_name, "last-name": last_name})
 
     def get_link(self, rowIndex, text):
-        selector = f"[data-qa='list-item-{text}-link-{rowIndex}']"
+        selector = f"[data-qa='list-item-{text}-{rowIndex}-link']"
         selected = self.getHtmlSoup().select(selector)
         return selected[0].get("href")
 
@@ -47,19 +47,19 @@ class TestQuestionnaireListCollector(IntegrationTestCase):
 
         self.add_person("Marie Claire", "Doe")
 
-        self.assertInSelector("Marie Claire Doe", "[data-qa='list-item-label-1']")
+        self.assertInSelector("Marie Claire Doe", "[data-qa='list-item-1-label']")
 
         self.add_person("John", "Doe")
 
-        self.assertInSelector("John Doe", "[data-qa='list-item-label-2']")
+        self.assertInSelector("John Doe", "[data-qa='list-item-2-label']")
 
         self.add_person("A", "Mistake")
 
-        self.assertInSelector("A Mistake", "[data-qa='list-item-label-3']")
+        self.assertInSelector("A Mistake", "[data-qa='list-item-3-label']")
 
         self.add_person("Johnny", "Doe")
 
-        self.assertInSelector("Johnny Doe", "[data-qa='list-item-label-4']")
+        self.assertInSelector("Johnny Doe", "[data-qa='list-item-4-label']")
 
         # Make another mistake
 
@@ -69,7 +69,7 @@ class TestQuestionnaireListCollector(IntegrationTestCase):
 
         self.post({"first-name": "Another", "last-name": "Mistake"})
 
-        self.assertInSelector("Another Mistake", "[data-qa='list-item-label-3']")
+        self.assertInSelector("Another Mistake", "[data-qa='list-item-3-label']")
 
         # Get rid of the mistake
 
@@ -92,7 +92,7 @@ class TestQuestionnaireListCollector(IntegrationTestCase):
         self.post({"remove-confirmation": "Yes"})
 
         # Make sure Johnny has moved up the list
-        self.assertInSelector("Johnny Doe", "[data-qa='list-item-label-3']")
+        self.assertInSelector("Johnny Doe", "[data-qa='list-item-3-label']")
 
         # Test the previous links
         john_change_link = self.get_link("2", "change")
@@ -123,11 +123,11 @@ class TestQuestionnaireListCollector(IntegrationTestCase):
 
         self.add_person("Marie Claire", "Doe")
 
-        self.assertInSelector("Marie Claire Doe", "[data-qa='list-item-label-1']")
+        self.assertInSelector("Marie Claire Doe", "[data-qa='list-item-1-label']")
 
         self.add_person("John", "Doe")
 
-        self.assertInSelector("John Doe", "[data-qa='list-item-label-2']")
+        self.assertInSelector("John Doe", "[data-qa='list-item-2-label']")
 
         self.post({"anyone-else": "No"})
 

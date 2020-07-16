@@ -7,7 +7,7 @@ class TestQuestionnaireListChangeEvaluatesSections(IntegrationTestCase):
         self.post({"first-name": first_name, "last-name": last_name})
 
     def get_link(self, rowIndex, text):
-        selector = f"[data-qa='list-item-{text}-link-{rowIndex}']"
+        selector = f"[data-qa='list-item-{text}-{rowIndex}-link']"
         selected = self.getHtmlSoup().select(selector)
 
         filtered = [html for html in selected if text in html.get_text()]

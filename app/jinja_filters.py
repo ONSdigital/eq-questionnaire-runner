@@ -574,7 +574,7 @@ def map_list_collector_config(
                     "text": edit_link_text,
                     "ariaLabel": edit_link_aria_label.format(item_name=item_name),
                     "url": list_item.get("edit_link"),
-                    "attributes": {"data-qa": f"list-item-change-link-{index}"},
+                    "attributes": {"data-qa": f"list-item-change-{index}-link"},
                 }
             )
 
@@ -584,7 +584,7 @@ def map_list_collector_config(
                     "text": remove_link_text,
                     "ariaLabel": remove_link_aria_label.format(item_name=item_name),
                     "url": list_item.get("remove_link"),
-                    "attributes": {"data-qa": f"list-item-remove-link-{index}"},
+                    "attributes": {"data-qa": f"list-item-remove-{index}-link"},
                 }
             )
 
@@ -595,7 +595,7 @@ def map_list_collector_config(
                         "icon": icon,
                         "actions": actions,
                         "rowTitle": item_name,
-                        "rowTitleAttributes": {"data-qa": f"list-item-label-{index}"},
+                        "rowTitleAttributes": {"data-qa": f"list-item-{index}-label"},
                     }
                 ]
             }
