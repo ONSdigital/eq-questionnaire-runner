@@ -46,8 +46,8 @@ def test_get_not_started_row_for_section(
     actual = hub.get_row_context_for_section(
         section_name="Breakfast",
         section_status=CompletionStatus.NOT_STARTED,
-        section_id="section-1",
         section_url="http://some/url",
+        row_id="section-1",
     )
 
     assert expected == actual
@@ -88,8 +88,8 @@ def test_get_completed_row_for_section(
     actual = hub.get_row_context_for_section(
         section_name="Breakfast",
         section_status=CompletionStatus.COMPLETED,
-        section_id="section-1",
         section_url="http://some/url",
+        row_id="section-1",
     )
 
     assert expected == actual
