@@ -170,11 +170,9 @@ class HubContext(Context):
                 repeating_list = self._schema.get_repeating_list_for_section(section_id)
 
                 if repeating_list:
-                    for index, list_item_id in enumerate(
+                    for list_item_index, list_item_id in enumerate(
                         self._list_store[repeating_list].items, start=1
                     ):
-
-                        list_item_index = index
 
                         rows.append(
                             self._get_row_for_repeating_section(
