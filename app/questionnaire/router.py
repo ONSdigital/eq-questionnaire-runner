@@ -40,7 +40,7 @@ class Router:
 
         if (
             location.list_item_id
-            and location.list_item_id not in self._list_store[location.list_name].items
+            and location.list_item_id not in self._list_store[location.list_name]
         ):
             return False
 
@@ -106,7 +106,7 @@ class Router:
             previous_block_id = routing_path[block_id_index - 1]
             previous_block = self._schema.get_block(previous_block_id)
             if previous_block["type"] == "RelationshipCollector":
-                list_items = self._list_store.get(previous_block["for_list"]).items
+                list_items = self._list_store.get(previous_block["for_list"])
                 relationship_router = RelationshipRouter(
                     section_id=routing_path.section_id,
                     block_id=previous_block["id"],
@@ -185,7 +185,7 @@ class Router:
             repeating_list = self._schema.get_repeating_list_for_section(section_id)
 
             if repeating_list:
-                for list_item_id in self._list_store[repeating_list].items:
+                for list_item_id in self._list_store[repeating_list]:
                     full_routing_path.append(
                         self._path_finder.routing_path(
                             section_id=section_id, list_item_id=list_item_id
@@ -243,7 +243,7 @@ class Router:
             repeating_list = self._schema.get_repeating_list_for_section(section_id)
 
             if repeating_list:
-                for list_item_id in self._list_store[repeating_list].items:
+                for list_item_id in self._list_store[repeating_list]:
                     section_key = (section_id, list_item_id)
                     enabled_section_keys.append(section_key)
             else:

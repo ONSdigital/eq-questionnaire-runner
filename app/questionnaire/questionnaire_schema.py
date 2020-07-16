@@ -131,6 +131,12 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
         if group:
             return group["blocks"][0]["id"]
 
+    def get_first_block_id_for_section(self, section_id):
+        section = self.get_section(section_id)
+        if section:
+            group_id = section["groups"][0]["id"]
+            return self.get_first_block_id_for_group(group_id)
+
     def get_blocks(self):
         return self._blocks_by_id.values()
 

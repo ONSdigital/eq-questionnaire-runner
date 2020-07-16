@@ -196,3 +196,10 @@ class TestQuestionnaireLanguage(IntegrationTestCase):
         xfail("Error strings have been updated, waiting for translations to be done")
         self.assertInBody("Mae 1 gwall ar y dudalen hon")
         self.assertInBody("Nodwch ateb i barhau")
+
+    def test_contact_us_link(self):
+        # load a welsh survey
+        self.launchSurvey("test_language", language_code="cy")
+        # Get redirected to a 404
+        self.get("/not-a-page")
+        self.assertInBody("https://cyfrifiad.gov.uk/cysylltu-a-ni/")
