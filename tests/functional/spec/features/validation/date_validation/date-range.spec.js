@@ -17,7 +17,7 @@ describe("Feature: Question level validation for date ranges", () => {
         $(DateRangePage.dateRangeTomonth()).setValue(3);
         $(DateRangePage.dateRangeToyear()).setValue(2018);
         $(DateRangePage.submit()).click();
-        expect($(DateRangePage.errorNumber(1)).getText()).to.contain("Enter a reporting period less than or equal to 1 month, 20 days.");
+        expect($(DateRangePage.errorNumber(1)).getText()).to.contain("Enter a reporting period less than or equal to 1 month, 20 days");
       });
     });
 
@@ -31,7 +31,7 @@ describe("Feature: Question level validation for date ranges", () => {
         $(DateRangePage.dateRangeTomonth()).setValue(1);
         $(DateRangePage.dateRangeToyear()).setValue(2018);
         $(DateRangePage.submit()).click();
-        expect($(DateRangePage.errorNumber(1)).getText()).to.contain("Enter a reporting period greater than or equal to 23 days.");
+        expect($(DateRangePage.errorNumber(1)).getText()).to.contain("Enter a reporting period greater than or equal to 23 days");
       });
     });
 
@@ -61,7 +61,7 @@ describe("Feature: Question level validation for date ranges", () => {
         $(DateRangePage.dateRangeTomonth()).setValue(1);
         $(DateRangePage.dateRangeToyear()).setValue(2018);
         $(DateRangePage.submit()).click();
-        expect($(DateRangePage.errorNumber(1)).getText()).to.contain("Enter a 'period to' date later than the 'period from' date.");
+        expect($(DateRangePage.errorNumber(1)).getText()).to.contain("Enter a 'period to' date later than the 'period from' date");
       });
     });
 
@@ -75,7 +75,7 @@ describe("Feature: Question level validation for date ranges", () => {
         $(DateRangePage.dateRangeTomonth()).setValue(1);
         $(DateRangePage.dateRangeToyear()).setValue(2018);
         $(DateRangePage.submit()).click();
-        expect($(DateRangePage.errorNumber(1)).getText()).to.contain("Enter a 'period to' date later than the 'period from' date.");
+        expect($(DateRangePage.errorNumber(1)).getText()).to.contain("Enter a 'period to' date later than the 'period from' date");
       });
     });
 
