@@ -1,9 +1,9 @@
 from app.libs.utils import convert_tx_id
 
 
-def build_metadata_context_for_survey_completed(session_data):
+def build_default_thank_you_context(session_data):
 
-    metadata_context = {
+    context = {
         "submitted_time": session_data.submitted_time,
         "tx_id": convert_tx_id(session_data.tx_id),
         "ru_ref": session_data.ru_ref,
@@ -12,8 +12,12 @@ def build_metadata_context_for_survey_completed(session_data):
     }
 
     if session_data.period_str:
-        metadata_context["period_str"] = session_data.period_str
+        context["period_str"] = session_data.period_str
     if session_data.ru_name:
-        metadata_context["ru_name"] = session_data.ru_name
+        context["ru_name"] = session_data.ru_name
 
-    return metadata_context
+    return context
+
+
+def build_census_thank_you_context(display_address, census_type):
+    return {"display_address": display_address, "version": census_type}

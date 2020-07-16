@@ -14,12 +14,10 @@ from app.questionnaire.location import InvalidLocationException
 from app.questionnaire.router import Router
 from app.utilities.schema import load_schema_from_session_data
 from app.views.contexts.hub_context import HubContext
-from app.views.contexts.metadata_context import (
-    build_metadata_context_for_survey_completed,
-)
 from app.views.handlers.block_factory import get_block_handler
 from app.views.handlers.section import SectionHandler
 from app.views.handlers.submission import SubmissionHandler
+from app.views.handlers.thank_you import ThankYou
 
 END_BLOCKS = "Summary", "Confirmation"
 
@@ -271,17 +269,11 @@ def relationship(schema, questionnaire_store, block_id, list_item_id, to_list_it
 @login_required
 @with_schema
 def get_thank_you(schema):
-    session_store = get_session_store()
-    session_data = session_store.session_data
 
-    if not session_data.submitted_time:
-        raise NotFound
-
-    metadata_context = build_metadata_context_for_survey_completed(session_data)
-
+    thank_you = ThankYou()
     return render_template(
-        template="thank-you",
-        metadata=metadata_context,
+        template=thank_you.get_template(),
+        content=thank_you.get_context(),
         survey_id=schema.json["survey_id"],
         hide_signout_button=True,
     )

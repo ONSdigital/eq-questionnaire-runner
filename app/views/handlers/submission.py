@@ -1,6 +1,6 @@
 from datetime import datetime
 import simplejson as json
-from flask import current_app
+from flask import current_app, session as cookie_session
 from sdc.crypto.encrypter import encrypt
 from app.submitter.converter import convert_answers
 from app.keys import KEY_PURPOSE_SUBMISSION
@@ -35,6 +35,7 @@ class SubmissionHandler:
         if not submitted:
             raise SubmissionFailedException()
 
+        cookie_session["display_address"] = metadata.get("display_address")
         self._store_submitted_time_in_session()
         self._questionnaire_store.delete()
 
