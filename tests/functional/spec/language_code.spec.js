@@ -3,7 +3,6 @@ import DobPage from "../generated_pages/language/dob-block.page";
 import NumberOfPeoplePage from "../generated_pages/language/number-of-people-block.page";
 import ConfirmNumberOfPeoplePage from "../generated_pages/language/confirm-number-of-people.page";
 import SummaryPage from "../generated_pages/language/summary.page";
-import ThankYouPage from "../base_pages/thank-you.page.js";
 
 const PLURAL_TEST_DATA_SETS = [
   {

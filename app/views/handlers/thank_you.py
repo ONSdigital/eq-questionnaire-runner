@@ -24,7 +24,10 @@ class ThankYou:
             raise NotFound
 
         self._cookie_session = cookie_session
-        self._is_census_theme = cookie_session.get("theme") in ["census", "census-nisra"]
+        self._is_census_theme = cookie_session.get("theme") in [
+            "census",
+            "census-nisra",
+        ]
 
     def get_context(self):
         if not self._is_census_theme:
