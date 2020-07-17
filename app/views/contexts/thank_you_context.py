@@ -20,4 +20,4 @@ def build_default_thank_you_context(session_data):
 
 
 def build_census_thank_you_context(display_address, census_type):
-    return {"display_address": display_address, "version": census_type}
+    return {"display_address": display_address, "census_type": census_type}
