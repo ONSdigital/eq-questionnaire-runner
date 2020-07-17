@@ -52,7 +52,7 @@ class TestQuestionnaireRelationships(IntegrationTestCase):
         self.add_person("John", "Doe")
         self.post({"anyone-else": "No"})
         self.post()
-        self.assertInBody("This page has an error")
+        self.assertInBody("There is a problem with your answer")
 
     def test_multiple_relationships(self):
         self.launchSurvey("test_relationships")
