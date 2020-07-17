@@ -28,7 +28,6 @@ class TestSubmissionPayload(AppContextTestCase):
         self.session_store = SessionStore("user_ik", "pepper", "eq_session_id")
         self.expires_at = datetime.now(tzutc()) + timedelta(seconds=5)
 
-    # pylint: disable=W0212
     def test_submission_language_code_in_payload(self):
         session_store = self.session_store.create(
             "eq_session_id", "user_id", self.session_data, self.expires_at
@@ -47,6 +46,5 @@ class TestSubmissionPayload(AppContextTestCase):
                     QuestionnaireSchema({}), QuestionnaireStore(storage), {}
                 )
                 assert (
-                    submission_handler._get_payload()["submission_language_code"]
-                    == "cy"
+                    submission_handler.get_payload()["submission_language_code"] == "cy"
                 )

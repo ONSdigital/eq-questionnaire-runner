@@ -17,7 +17,7 @@ class SubmissionHandler:
 
     def submit_questionnaire(self):
 
-        payload = self._get_payload()
+        payload = self.get_payload()
         message = json.dumps(payload, for_json=True)
 
         encrypted_message = encrypt(
@@ -37,7 +37,7 @@ class SubmissionHandler:
         self._store_submitted_time_in_session()
         self._questionnaire_store.delete()
 
-    def _get_payload(self):
+    def get_payload(self):
         payload = convert_answers(
             self._schema, self._questionnaire_store, self._full_routing_path
         )
