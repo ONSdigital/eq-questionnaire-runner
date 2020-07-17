@@ -13,6 +13,7 @@ from app.views.handlers.individual_response import (
     IndividualResponseHandler,
     IndividualResponseHowHandler,
     IndividualResponsePostAddressConfirmHandler,
+    IndividualResponseChangeHandler,
 )
 
 logger = get_logger()
@@ -57,6 +58,7 @@ def request_individual_response(schema, questionnaire_store):
         schema=schema,
         questionnaire_store=questionnaire_store,
         language=language_code,
+        request_args=request.args,
         form_data=request.form,
         list_item_id=list_item_id,
     )
@@ -77,6 +79,7 @@ def get_individual_response_how(schema, questionnaire_store, list_item_id):
         schema=schema,
         questionnaire_store=questionnaire_store,
         language=language_code,
+        request_args=request.args,
         form_data=request.form,
         list_item_id=list_item_id,
     )
@@ -86,9 +89,32 @@ def get_individual_response_how(schema, questionnaire_store, list_item_id):
 
     return redirect(
         url_for(
-            ".get_individual_response_post_address_confirm", list_item_id=list_item_id
+            ".get_individual_response_post_address_confirm",
+            list_item_id=list_item_id,
+            journey="change",
         )
     )
+
+
+@individual_response_blueprint.route("/<list_item_id>/change", methods=["GET", "POST"])
+@login_required
+@with_questionnaire_store
+@with_schema
+def get_individual_response_change(schema, questionnaire_store, list_item_id):
+    language_code = get_session_store().session_data.language_code
+    individual_response_handler = IndividualResponseChangeHandler(
+        schema=schema,
+        questionnaire_store=questionnaire_store,
+        language=language_code,
+        request_args=request.args,
+        form_data=request.form,
+        list_item_id=list_item_id,
+    )
+
+    if request.method == "GET" or not individual_response_handler.form.validate():
+        return individual_response_handler.handle_get()
+
+    return individual_response_handler.handle_post()
 
 
 @individual_response_blueprint.route(
@@ -105,6 +131,7 @@ def get_individual_response_post_address_confirm(
         schema=schema,
         questionnaire_store=questionnaire_store,
         language=language_code,
+        request_args=request.args,
         form_data=request.form,
         list_item_id=list_item_id,
     )
@@ -126,6 +153,7 @@ def get_individual_response_post_address_confirmation(schema, questionnaire_stor
         schema=schema,
         questionnaire_store=questionnaire_store,
         language=language_code,
+        request_args=request.args,
         form_data=request.form,
         list_item_id=None,
     )

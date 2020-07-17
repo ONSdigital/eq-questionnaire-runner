@@ -119,7 +119,13 @@ class HubContext(Context):
         return context
 
     @staticmethod
-    def get_section_url(section_id, list_item_id) -> str:
+    def get_section_url(section_id, list_item_id, section_status) -> str:
+        if section_status == CompletionStatus.INDIVIDUAL_RESPONSE_REQUESTED:
+            return url_for(
+                "individual_response.get_individual_response_change",
+                list_item_id=list_item_id,
+            )
+
         if list_item_id:
             return url_for(
                 "questionnaire.get_section",
@@ -152,7 +158,7 @@ class HubContext(Context):
         return self.get_row_context_for_section(
             section_title,
             section_status,
-            self.get_section_url(section_id, list_item_id),
+            self.get_section_url(section_id, list_item_id, section_status),
             row_id,
         )
 

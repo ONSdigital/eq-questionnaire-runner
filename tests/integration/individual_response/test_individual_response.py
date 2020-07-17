@@ -67,7 +67,7 @@ class IndividualResponseTestCase(IntegrationTestCase):
 class TestIndividualResponseErrorStatus(IndividualResponseTestCase):
     def test_ir_raises_401_without_session(self):
         # Given the hub is enabled
-        # And I add a housheold member
+        # And I add a household member
         self._add_household_no_primary()
         self.post()
 
@@ -239,7 +239,7 @@ class TestIndividualResponseIndividualSection(IndividualResponseTestCase):
 
 
 class TestIndividualResponseHubViews(IndividualResponseTestCase):
-    def test_individual_response_requested_status(self):
+    def test_individual_response_requested(self):
         # Given I request an individual response by post
         self._request_individual_response()
 
@@ -249,6 +249,8 @@ class TestIndividualResponseHubViews(IndividualResponseTestCase):
         # Then I should see "Separate census requested" as
         # the individual section status
         self.assertInBody("Separate census requested")
+        self.assertInBody("Change or resend")
+        self.assertIn("/change", self.individual_section_link)
 
     def test_individual_response_not_requested_status_unchanged(self):
         # Given I naviagate to the confirm page of individual response
@@ -267,9 +269,9 @@ class TestIndividualResponseHubViews(IndividualResponseTestCase):
 
 
 class TestIndividualResponseNavigation(IndividualResponseTestCase):
-    def test_navigate_back_to_individual_interstitial_after_viewing_ir_page(self):
-        # Given I navigate to the individual response page from an
-        # individual interstitial page
+    def test_introduction_page_previous_goes_to_individual_section(self):
+        # Given I navigate to the individual response introduction page from an
+        # individual section
         self._add_household_no_primary()
         self.get(self.individual_section_link)
         self.get(self.individual_response_link)
@@ -277,12 +279,12 @@ class TestIndividualResponseNavigation(IndividualResponseTestCase):
         # When I click the previous link
         self.previous()
 
-        # Then I should be taken to the individual interstitial
+        # Then I should be taken back to the individual section
         self.assertInUrl("individual-interstitial")
 
-    def test_navigate_back_to_ir_page_after_viewing_how_page(self):
-        # Given I navigate to the individual response page from an
-        # individual list item page
+    def test_how_page_previous_goes_to_introduction_page(self):
+        # Given I navigate to the individual response how page from an
+        # individual response introduction page
         self._add_household_no_primary()
         self.get(self.individual_section_link)
         self.get(self.individual_response_link)
@@ -294,23 +296,9 @@ class TestIndividualResponseNavigation(IndividualResponseTestCase):
         # Then I should be taken back to the individual response introduction page
         self.assertInBody("If you can't answer questions for others in your household")
 
-    def test_redirect_back_to_questionnaire_if_no_list_item_id_in_url(self):
-        # Given I navigate to the individual response page from an
-        # without a list_item_id in the url
-        self._add_household_no_primary()
-        self.get(self.individual_section_link)
-        self.get(self.individual_response_link)
-        self.post()
-
-        # When I click the previous link
-        self.previous()
-
-        # Then I should be taken back to the individual response introduction page
-        self.assertInBody("If you can't answer questions for others in your household")
-
-    def test_interstitial_previous_goes_to_hub(self):
+    def test_introduction_previous_goes_to_hub(self):
         # Given I add a household member
-        # and navigate to the individual response interstitial page
+        # and navigate to the individual response introduction page
         # without a list item id url param
         self._add_household_no_primary()
         self.get("/individual-response/")
@@ -402,3 +390,135 @@ class TestIndividualResponseConfirmationPage(IndividualResponseTestCase):
 
         # Then I should see the post confirm address page
         self.assertInUrl("post/confirm-address")
+
+
+class TestIndividualResponseChange(IndividualResponseTestCase):
+    def test_hub_change_link_goes_to_change_page(self):
+        # Given I request an individual response by post
+        self._request_individual_response()
+
+        # When I navigate to the hub and click on the change individual response link
+        self.get("/questionnaire")
+        self.get(self.individual_section_link)
+
+        # Then I should see change individual response page
+        self.assertInBody("How would you like to answer")
+
+    def test_change_page_previous_goes_to_hub(self):
+        # Given I navigate to the individual response change page
+        self._request_individual_response()
+        self.get("/questionnaire")
+        self.get(self.individual_section_link)
+
+        # When I click the previous link
+        self.previous()
+
+        # Then I should be taken to the hub
+        self.assertInUrl("questionnaire/")
+
+    def test_request_separate_census_option_is_preselected(self):
+        # Given I request an individual response
+        self._request_individual_response()
+
+        # When I navigate to the individual response change page
+        self.get("/questionnaire")
+        self.get(self.individual_section_link)
+
+        # Then the "I would like to request a separate census" option is preselected
+        checked_radio_input = self.getHtmlSoup().select(
+            "#individual-response-change-answer-0[checked]"
+        )
+        self.assertIsNotNone(checked_radio_input)
+
+    def test_request_separate_census_option_goes_to_how_page(self):
+        # Given I navigate to the individual response change page
+        self._request_individual_response()
+        self.get("/questionnaire")
+        self.get(self.individual_section_link)
+
+        # When I choose the "I would like to request a separate census" option
+        self.post(
+            {
+                "individual-response-change-answer": "I would like to request a separate census for them to complete"
+            }
+        )
+
+        # Then I should be taken to the how page
+        self.assertInUrl("/how")
+
+        # And the section status should not be updated
+        self.get("/questionnaire")
+        self.assertInBody("Change or resend")
+
+    def test_answer_own_questions_option_goes_to_hub(self):
+        # Given I navigate to the individual response change page
+        self._request_individual_response()
+        self.get("/questionnaire")
+        self.get(self.individual_section_link)
+
+        # When I choose the "I will ask them to answer" option
+        self.post(
+            {
+                "individual-response-change-answer": "I will ask them to answer their own questions"
+            }
+        )
+
+        # Then I should be taken to the hub
+        self.assertInUrl("/questionnaire")
+
+        # And the section status should be updated
+        self.assertNotInBody("Change or resend")
+
+    def test_i_will_answer_option_goes_to_individual_section(self):
+        # Given I navigate to the individual response change page
+        self._request_individual_response()
+        self.get("/questionnaire")
+        self.get(self.individual_section_link)
+
+        # When I choose the "I will answer" option
+        self.post(
+            {"individual-response-change-answer": "I will answer for {person_name}"}
+        )
+
+        # Then I should be taken to the individual section introduction page
+        self.assertInBody("You will need to know personal details such as")
+
+        # And the section status should be updated
+        self.assertInUrl("/questionnaire")
+        self.assertNotInBody("Change or resend")
+
+    def test_how_page_previous_goes_to_change_page(self):
+        # Given I navigate to the individual response how page
+        self._request_individual_response()
+        self.get("/questionnaire")
+        self.get(self.individual_section_link)
+        self.post(
+            {
+                "individual-response-change-answer": "I would like to request a separate census for them to complete"
+            }
+        )
+
+        # When I click the previous link
+        self.previous()
+
+        # Then I should be taken to the change page
+        self.assertInUrl("/change")
+
+    def test_post_confirm_previous_previous_goes_to_change_page(self):
+        # Given I navigate to the individual response post confirm page
+        self._request_individual_response()
+        self.get("/questionnaire")
+        self.get(self.individual_section_link)
+        self.post(
+            {
+                "individual-response-change-answer": "I would like to request a separate census for them to complete"
+            }
+        )
+        self.post({"individual-response-how-answer": "Post"})
+
+        # When I click the previous link twice
+        self.previous()
+        self.previous()
+
+        # Then I should be taken to the change page
+        self.assertInUrl("/change")

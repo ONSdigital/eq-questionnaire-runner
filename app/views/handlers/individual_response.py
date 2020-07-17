@@ -15,20 +15,29 @@ from app.views.contexts.question import build_question_context
 
 
 class IndividualResponseHandler:
+    _person_name_transform: Mapping = {
+        "arguments": {
+            "delimiter": " ",
+            "list_to_concatenate": {
+                "identifier": ["first-name", "last-name"],
+                "source": "answers",
+            },
+        },
+        "transform": "concatenate_list",
+    }
     _person_name_placeholder: List[Mapping] = [
+        {"placeholder": "person_name", "transforms": [_person_name_transform]}
+    ]
+
+    _person_name_placeholder_possessive: List[Mapping] = [
         {
-            "placeholder": "person_name",
+            "placeholder": "person_name_possessive",
             "transforms": [
+                _person_name_transform,
                 {
-                    "arguments": {
-                        "delimiter": " ",
-                        "list_to_concatenate": {
-                            "identifier": ["first-name", "last-name"],
-                            "source": "answers",
-                        },
-                    },
-                    "transform": "concatenate_list",
-                }
+                    "arguments": {"string_to_format": {"source": "previous_transform"}},
+                    "transform": "format_possessive",
+                },
             ],
         }
     ]
@@ -39,6 +48,7 @@ class IndividualResponseHandler:
         schema,
         questionnaire_store,
         language,
+        request_args,
         form_data,
         list_item_id,
     ):
@@ -46,7 +56,9 @@ class IndividualResponseHandler:
         self._schema = schema
         self._questionnaire_store = questionnaire_store
         self._language = language
+        self._request_args = request_args or {}
         self._form_data = form_data
+        self._answers = None
         self._list_item_id = list_item_id
 
         self.page_title = None
@@ -113,6 +125,7 @@ class IndividualResponseHandler:
             question_schema=self.rendered_block["question"],
             answer_store=None,
             metadata=self._questionnaire_store.metadata,
+            data=self._answers,
             form_data=self._form_data,
         )
 
@@ -145,6 +158,13 @@ class IndividualResponseHandler:
             self._block_definition, self._list_item_id
         )
 
+    def _update_section_status(self, status):
+        self._questionnaire_store.progress_store.update_section_status(
+            status, self.individual_section_id, self._list_item_id
+        )
+        if self._questionnaire_store.progress_store.is_dirty:
+            self._questionnaire_store.save()
+
 
 class IndividualResponseHowHandler(IndividualResponseHandler):
     block_definition: Mapping = {
@@ -159,9 +179,12 @@ class IndividualResponseHowHandler(IndividualResponseHandler):
                 ),
                 "placeholders": IndividualResponseHandler._person_name_placeholder,
             },
-            "description": lazy_gettext(
-                "<p>For someone to complete a separate census, we need to send them an individual access code.</p><p>Select how to send access code</p>"
-            ),
+            "description": [
+                lazy_gettext(
+                    "For someone to complete a separate census, we need to send them an individual access code."
+                ),
+                lazy_gettext("Select how to send access code"),
+            ],
             "answers": [
                 {
                     "type": "Radio",
@@ -182,28 +205,180 @@ class IndividualResponseHowHandler(IndividualResponseHandler):
         },
     }
 
-    def __init__(self, schema, questionnaire_store, language, form_data, list_item_id):
+    def __init__(
+        self,
+        schema,
+        questionnaire_store,
+        language,
+        request_args,
+        form_data,
+        list_item_id,
+    ):
         super().__init__(
             self.block_definition,
             schema,
             questionnaire_store,
             language,
+            request_args,
             form_data,
             list_item_id,
         )
 
     def handle_get(self):
-        previous_location_url = url_for(
-            "individual_response.request_individual_response",
-            list_item_id=self._list_item_id,
-        )
+        if self._request_args.get("journey") == "change":
+            previous_location_url = url_for(
+                "individual_response.get_individual_response_change",
+                list_item_id=self._list_item_id,
+            )
+        else:
+            previous_location_url = url_for(
+                "individual_response.request_individual_response",
+                list_item_id=self._list_item_id,
+            )
 
         return render_template(
-            "individual_response/how",
+            "individual_response/question",
             language=self._language,
             content=self.get_context(),
             previous_location_url=previous_location_url,
+            show_contact_us_guidance=True,
         )
+
+
+class IndividualResponseChangeHandler(IndividualResponseHandler):
+    block_definition: Mapping = {
+        "type": "IndividualResponse",
+        "id": "individual-response-change",
+        "question": {
+            "type": "Question",
+            "id": "individual-response-change-question",
+            "title": {
+                "text": lazy_gettext(
+                    "How would you like to answer <em>{person_name_possessive}</em> questions?"
+                ),
+                "placeholders": IndividualResponseHandler._person_name_placeholder_possessive,
+            },
+            "answers": [
+                {
+                    "type": "Radio",
+                    "id": "individual-response-change-answer",
+                    "mandatory": False,
+                    "default": "I would like to request a separate census for them to complete",
+                    "options": [
+                        {
+                            "label": lazy_gettext(
+                                "I would like to request a separate census for them to complete"
+                            ),
+                            "value": "I would like to request a separate census for them to complete",
+                        },
+                        {
+                            "label": lazy_gettext(
+                                "I will ask them to answer their own questions"
+                            ),
+                            "value": "I will ask them to answer their own questions",
+                            "description": lazy_gettext(
+                                "They will need the household access code from the letter we sent you"
+                            ),
+                        },
+                        {
+                            "label": {
+                                "text": lazy_gettext("I will answer for {person_name}"),
+                                "placeholders": IndividualResponseHandler._person_name_placeholder,
+                            },
+                            "value": "I will answer for {person_name}",
+                        },
+                    ],
+                }
+            ],
+        },
+    }
+
+    def __init__(
+        self,
+        schema,
+        questionnaire_store,
+        language,
+        request_args,
+        form_data,
+        list_item_id,
+    ):
+        super().__init__(
+            self.block_definition,
+            schema,
+            questionnaire_store,
+            language,
+            request_args,
+            form_data,
+            list_item_id,
+        )
+
+    @cached_property
+    def request_separate_census_option(self):
+        return self.rendered_block["question"]["answers"][0]["options"][0]["value"]
+
+    @cached_property
+    def cancel_go_to_hub_option(self):
+        return self.rendered_block["question"]["answers"][0]["options"][1]["value"]
+
+    @cached_property
+    def cancel_go_to_section_option(self):
+        return self.rendered_block["question"]["answers"][0]["options"][2]["value"]
+
+    @cached_property
+    def selected_option(self):
+        answer_id = self.rendered_block["question"]["answers"][0]["id"]
+        return self.form.get_data(answer_id)
+
+    def handle_get(self):
+        self._answers = {
+            "individual-response-change-answer": self.request_separate_census_option
+        }
+        return render_template(
+            "individual_response/question",
+            language=self._language,
+            content=self.get_context(),
+            previous_location_url=url_for("questionnaire.get_questionnaire"),
+            show_contact_us_guidance=True,
+        )
+
+    def handle_post(self):
+        if self.selected_option == self.request_separate_census_option:
+            return redirect(
+                url_for(
+                    "individual_response.get_individual_response_how",
+                    list_item_id=self._list_item_id,
+                    journey="change",
+                )
+            )
+
+        if self.selected_option == self.cancel_go_to_hub_option:
+            self._update_section_completeness()
+            return redirect(url_for("questionnaire.get_questionnaire"))
+
+        if self.selected_option == self.cancel_go_to_section_option:
+            self._update_section_completeness()
+            individual_section_first_block_id = self._schema.get_first_block_id_for_section(
+                self.individual_section_id
+            )
+            return redirect(
+                url_for(
+                    "questionnaire.block",
+                    list_name=self._list_name,
+                    list_item_id=self._list_item_id,
+                    block_id=individual_section_first_block_id,
+                )
+            )
+
+    def _update_section_completeness(self):
+        routing_path = self.router.routing_path(
+            self.individual_section_id, self._list_item_id
+        )
+        status = (
+            CompletionStatus.COMPLETED
+            if self.router.is_path_complete(routing_path)
+            else CompletionStatus.IN_PROGRESS
+        )
+        self._update_section_status(status)
 
 
 class IndividualResponsePostAddressConfirmHandler(IndividualResponseHandler):
@@ -218,9 +393,11 @@ class IndividualResponsePostAddressConfirmHandler(IndividualResponseHandler):
                 ),
                 "placeholders": IndividualResponseHandler._person_name_placeholder,
             },
-            "description": lazy_gettext(
-                "A letter with an individual access code will be sent to your registered household address"
-            ),
+            "description": [
+                lazy_gettext(
+                    "A letter with an individual access code will be sent to your registered household address"
+                )
+            ],
             "guidance": {
                 "contents": [
                     {
@@ -250,12 +427,21 @@ class IndividualResponsePostAddressConfirmHandler(IndividualResponseHandler):
         },
     }
 
-    def __init__(self, schema, questionnaire_store, language, form_data, list_item_id):
+    def __init__(
+        self,
+        schema,
+        questionnaire_store,
+        language,
+        request_args,
+        form_data,
+        list_item_id,
+    ):
         super().__init__(
             self.block_definition,
             schema,
             questionnaire_store,
             language,
+            request_args,
             form_data,
             list_item_id,
         )
@@ -273,10 +459,17 @@ class IndividualResponsePostAddressConfirmHandler(IndividualResponseHandler):
         return self.form.get_data(self.answer_id)
 
     def handle_get(self):
-        previous_location_url = url_for(
-            "individual_response.get_individual_response_how",
-            list_item_id=self._list_item_id,
-        )
+        if self._request_args.get("journey") == "change":
+            previous_location_url = url_for(
+                "individual_response.get_individual_response_how",
+                list_item_id=self._list_item_id,
+                journey="change",
+            )
+        else:
+            previous_location_url = url_for(
+                "individual_response.get_individual_response_how",
+                list_item_id=self._list_item_id,
+            )
 
         return render_template(
             "individual_response/question",
@@ -287,14 +480,7 @@ class IndividualResponsePostAddressConfirmHandler(IndividualResponseHandler):
 
     def handle_post(self):
         if self.selected_option == self.confirm_option:
-            self._questionnaire_store.progress_store.update_section_status(
-                CompletionStatus.INDIVIDUAL_RESPONSE_REQUESTED,
-                self._schema.json["individual_response"]["individual_section_id"],
-                self._list_item_id,
-            )
-            if self._questionnaire_store.progress_store.is_dirty:
-                self._questionnaire_store.save()
-
+            self._update_section_status(CompletionStatus.INDIVIDUAL_RESPONSE_REQUESTED)
             return redirect(
                 url_for(
                     "individual_response.get_individual_response_post_address_confirmation"
