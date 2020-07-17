@@ -13,16 +13,11 @@ class SubmissionHandler:
         self._schema = schema
         self._questionnaire_store = questionnaire_store
         self._full_routing_path = full_routing_path
-        self.session_store = get_session_store()
+        self._session_store = get_session_store()
 
     def submit_questionnaire(self):
 
-        payload = convert_answers(
-            self._schema, self._questionnaire_store, self._full_routing_path
-        )
-        payload[
-            "submission_language_code"
-        ] = self.session_store.session_data.language_code
+        payload = self._get_payload()
         message = json.dumps(payload, for_json=True)
 
         encrypted_message = encrypt(
@@ -42,7 +37,16 @@ class SubmissionHandler:
         self._store_submitted_time_in_session()
         self._questionnaire_store.delete()
 
+    def _get_payload(self):
+        payload = convert_answers(
+            self._schema, self._questionnaire_store, self._full_routing_path
+        )
+        payload[
+            "submission_language_code"
+        ] = self._session_store.session_data.language_code
+        return payload
+
     def _store_submitted_time_in_session(self):
-        session_data = self.session_store.session_data
+        session_data = self._session_store.session_data
         session_data.submitted_time = datetime.utcnow().isoformat()
-        self.session_store.save()
+        self._session_store.save()
