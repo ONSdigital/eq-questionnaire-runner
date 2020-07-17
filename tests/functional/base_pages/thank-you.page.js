@@ -6,7 +6,7 @@ class ThankYouPage extends QuestionPage {
   }
 
   guidance() {
-   return '[data-qa="guidance"]';
+    return '[data-qa="guidance"]';
   }
 
   title() {

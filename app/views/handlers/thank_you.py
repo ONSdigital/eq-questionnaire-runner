@@ -6,11 +6,10 @@ from app.views.contexts.thank_you_context import (
 )
 from app.globals import get_session_store
 
-
 DEFAULT_THANK_YOU_TEMPLATE = "thank-you"
 CENSUS_THANK_YOU_TEMPLATE = "census-thank-you"
 
-CENSUS_TYPE_MAPPINGS = {
+CENSUS_CODE_TYPE_MAPPINGS = {
     "household": "HH",
     "communal_establishment": "CE",
     "individual": "IR",
@@ -31,14 +30,14 @@ class ThankYou:
         if self._is_default_theme:
             return build_default_thank_you_context(self.session_data)
 
-        census_type = None
-        for census_type_mapping in CENSUS_TYPE_MAPPINGS:
-            if census_type_mapping in self.session_data.schema_name:
-                census_type = CENSUS_TYPE_MAPPINGS[census_type_mapping]
+        census_code = None
+        for census_code_type in CENSUS_CODE_TYPE_MAPPINGS:
+            if census_code_type in self.session_data.schema_name:
+                census_code = CENSUS_CODE_TYPE_MAPPINGS[census_code_type]
                 break
 
         return build_census_thank_you_context(
-            self._cookie_session.get("display_address"), census_type
+            self._cookie_session.get("display_address"), census_code
         )
 
     def get_template(self):
