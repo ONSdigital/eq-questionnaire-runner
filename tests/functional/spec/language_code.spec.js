@@ -124,7 +124,6 @@ describe("Language Code", () => {
     $(SummaryPage.submit()).click();
 
     expect(browser.getUrl()).to.contain("thank-you");
-    expect($(ThankYouPage.title()).getText()).to.contain("Diolch am gyflwyno eich cyfrifiad");
   });
 
   it("Given a launch language of English, I should see English text", () => {
@@ -153,7 +152,6 @@ describe("Language Code", () => {
     $(SummaryPage.submit()).click();
 
     expect(browser.getUrl()).to.contain("thank-you");
-    expect($(ThankYouPage.title()).getText()).to.contain("Thank you for submitting your census");
   });
 
   it("Given a launch language of English, When I select Cymraeg, Then the language should be switched to Welsh", () => {
@@ -187,9 +185,6 @@ describe("Language Code", () => {
     $(SummaryPage.submit()).click();
 
     expect(browser.getUrl()).to.contain("thank-you");
-    expect($(ThankYouPage.title()).getText()).to.contain("Diolch am gyflwyno eich cyfrifiad");
-    $(ThankYouPage.switchLanguage("en")).click();
-    expect($(ThankYouPage.title()).getText()).to.contain("Thank you for submitting your census");
   });
 
   it("Given a launch language of Welsh, When I select English, Then the language should be switched to English", () => {
