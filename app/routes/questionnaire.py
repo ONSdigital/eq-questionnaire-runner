@@ -266,8 +266,8 @@ def relationship(schema, questionnaire_store, block_id, list_item_id, to_list_it
 @login_required
 @with_schema
 def get_thank_you(schema):
-
     thank_you = ThankYou()
+
     return render_template(
         template=thank_you.get_template(),
         content=thank_you.get_context(),
