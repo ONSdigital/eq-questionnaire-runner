@@ -15,6 +15,7 @@
 {%- macro format_paragraphs(paragraphs) -%}
   {%- for paragraph in paragraphs -%}
     <p>{{paragraph}}</p>
+  {%- else -%}
   {%- endfor -%}
 {%- endmacro -%}
 
