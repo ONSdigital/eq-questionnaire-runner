@@ -59,6 +59,7 @@ redis = "==3.2.1"
 flask-compress = "*"
 htmlmin = "*"
 coloredlogs = "*"
+immutables = "*"
 
 [requires]
 python_version = "3.8"

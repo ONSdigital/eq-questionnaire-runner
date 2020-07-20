@@ -1,6 +1,7 @@
 from abc import abstractmethod, ABC
 from functools import cached_property
 
+import immutables
 from wtforms import validators, Field
 
 from app.data_model.answer_store import AnswerStore
@@ -66,7 +67,7 @@ class FieldHandler(ABC):
         return validators.Optional()
 
     def get_schema_value(self, schema_element):
-        if isinstance(schema_element["value"], dict):
+        if isinstance(schema_element["value"], (dict, immutables.Map)):
             if schema_element["value"]["source"] == "metadata":
                 identifier = schema_element["value"].get("identifier")
                 return self.metadata.get(identifier)

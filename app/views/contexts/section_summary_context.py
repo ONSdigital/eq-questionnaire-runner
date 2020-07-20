@@ -1,5 +1,6 @@
 from typing import Mapping
 
+import immutables
 from flask import url_for
 
 from app.helpers.template_helper import safe_content
@@ -17,7 +18,7 @@ class SectionSummaryContext(Context):
             self._placeholder_renderer.render_placeholder(
                 title_for_location, current_location.list_item_id
             )
-            if isinstance(title_for_location, dict)
+            if isinstance(title_for_location, (dict, immutables.Map))
             else title_for_location
         )
         return {

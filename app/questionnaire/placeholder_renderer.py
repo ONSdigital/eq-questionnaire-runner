@@ -1,10 +1,8 @@
-from copy import deepcopy
-
 from jsonpointer import set_pointer, resolve_pointer
 
 from app.data_model.answer_store import AnswerStore
+from app.questionnaire import QuestionnaireSchema
 from app.questionnaire.placeholder_parser import PlaceholderParser
-
 from app.questionnaire.plural_forms import get_plural_form_key
 from app.questionnaire.schema_utils import find_pointers_containing
 
@@ -57,25 +55,27 @@ class PlaceholderRenderer:
             list_store=self._list_store,
         )
 
-        if "text_plural" in placeholder_data:
-            plural_schema = placeholder_data["text_plural"]
+        placeholder_copy = QuestionnaireSchema.get_mutable_deepcopy(placeholder_data)
+
+        if "text_plural" in placeholder_copy:
+            plural_schema = placeholder_copy["text_plural"]
             count = self.get_plural_count(plural_schema["count"])
 
             plural_form_key = get_plural_form_key(count, self._language)
-            placeholder_data["text"] = plural_schema["forms"][plural_form_key]
+            placeholder_copy["text"] = plural_schema["forms"][plural_form_key]
 
-        if "text" not in placeholder_data and "placeholders" not in placeholder_data:
+        if "text" not in placeholder_copy and "placeholders" not in placeholder_copy:
             raise ValueError("No placeholder found to render")
 
         transformed_values = placeholder_parser(placeholder_data["placeholders"])
 
-        return placeholder_data["text"].format(**transformed_values)
+        return placeholder_copy["text"].format(**transformed_values)
 
     def render(self, dict_to_render, list_item_id):
         """
         Transform the current schema json to a fully rendered dictionary
         """
-        rendered_data = deepcopy(dict_to_render)
+        rendered_data = QuestionnaireSchema.get_mutable_deepcopy(dict_to_render)
         pointers = find_pointers_containing(rendered_data, "placeholders")
 
         for pointer in pointers:

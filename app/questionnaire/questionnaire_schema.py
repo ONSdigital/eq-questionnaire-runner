@@ -1,6 +1,9 @@
 from collections import OrderedDict, defaultdict
+from copy import deepcopy
+from functools import cached_property
 from typing import List, Union, Mapping
 
+import immutables
 from flask_babel import force_locale
 
 from app.data_model.answer import Answer
@@ -18,13 +21,46 @@ LIST_COLLECTOR_CHILDREN = [
 
 class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
     def __init__(self, questionnaire_json, language_code=DEFAULT_LANGUAGE_CODE):
-        self.json = questionnaire_json
+        self._json = self._serialize(questionnaire_json)
         self.language_code = language_code
         self._parse_schema()
         self._list_name_to_section_map = {}
 
+    @cached_property
+    def json(self):
+        return self._json
+
+    def _serialize(self, data):
+        if hasattr(data, "__hash__") and callable(data.__hash__):
+            return data
+        if isinstance(data, list):
+            return tuple((self._serialize(item) for item in data))
+        if isinstance(data, dict):
+            key_value_tuples = {k: self._serialize(v) for k, v in data.items()}
+            return immutables.Map(key_value_tuples)
+
+    @classmethod
+    def get_mutable_deepcopy(cls, data):
+        data_deepcopy = deepcopy(data)
+        if isinstance(data_deepcopy, tuple):
+            return list((cls.get_mutable_deepcopy(item) for item in data_deepcopy))
+        if isinstance(data_deepcopy, immutables.Map):
+            key_value_tuples = {
+                k: cls.get_mutable_deepcopy(v) for k, v in data_deepcopy.items()
+            }
+            return dict(key_value_tuples)
+        return data_deepcopy
+
+    def _parse_schema(self):
+        self._sections_by_id = self._get_sections_by_id()
+        self._groups_by_id = get_nested_schema_objects(self._sections_by_id, "groups")
+        self._blocks_by_id = self._get_blocks_by_id()
+        self._questions_by_id = self._get_questions_by_id()
+        self._answers_by_id = self._get_answers_by_id()
+        self.error_messages = self._get_error_messages()
+
     def get_hub(self):
-        return self.json.get("hub", {})
+        return self._json.get("hub", {})
 
     def is_hub_enabled(self):
         return self.get_hub().get("enabled")
@@ -273,6 +309,7 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
         Resolves an identifying string value for the schema_object. If text_plural the `other` form is returned.
         :return: string value
         """
+        schema_object = QuestionnaireSchema.get_mutable_deepcopy(schema_object)
         if isinstance(schema_object, dict):
             if "text_plural" in schema_object:
                 return schema_object["text_plural"]["forms"]["other"]
@@ -314,14 +351,6 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
             "ConfirmationQuestion",
         ]
 
-    def _parse_schema(self):
-        self._sections_by_id = self._get_sections_by_id()
-        self._groups_by_id = get_nested_schema_objects(self._sections_by_id, "groups")
-        self._blocks_by_id = self._get_blocks_by_id()
-        self._questions_by_id = self._get_questions_by_id()
-        self._answers_by_id = self._get_answers_by_id()
-        self.error_messages = self._get_error_messages()
-
     def _get_section_id_for_list_block(self, block):
         return self.get_group(self.get_block(block["parent_id"])["parent_id"])[
             "parent_id"
@@ -332,8 +361,8 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
 
         for group in self._groups_by_id.values():
             for block in group["blocks"]:
-                block["parent_id"] = group["id"]
-                blocks[block["id"]] = block
+                new_block = block.set("parent_id", group["id"])
+                blocks[new_block["id"]] = new_block
 
                 if block["type"] in ("ListCollector", "PrimaryPersonListCollector"):
                     for nested_block_name in [
@@ -344,8 +373,10 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
                     ]:
                         if block.get(nested_block_name):
                             nested_block = block[nested_block_name]
-                            nested_block["parent_id"] = block["id"]
-                            blocks[nested_block["id"]] = nested_block
+                            new_nested_block = nested_block.set(
+                                "parent_id", block["id"]
+                            )
+                            blocks[new_nested_block["id"]] = new_nested_block
 
         return blocks
 
@@ -368,8 +399,8 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
         for block in self._blocks_by_id.values():
             questions = self.get_all_questions_for_block(block)
             for question in questions:
-                question["parent_id"] = block["id"]
-                questions_by_id[question["id"]].append(question)
+                new_question = question.set("parent_id", block["id"])
+                questions_by_id[new_question["id"]].append(new_question)
 
         return questions_by_id
 
@@ -379,20 +410,23 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
         for question_set in self._questions_by_id.values():
             for question in question_set:
                 for answer in question["answers"]:
-                    answer["parent_id"] = question["id"]
-                    answers_by_id[answer["id"]].append(answer)
+                    new_answer = answer.set("parent_id", question["id"])
+                    answers_by_id[new_answer["id"]].append(new_answer)
+
                     for option in answer.get("options", []):
                         if "detail_answer" in option:
-                            option["detail_answer"]["parent_id"] = question["id"]
-                            answers_by_id[option["detail_answer"]["id"]].append(
-                                option["detail_answer"]
+                            detail_answer_id = option["detail_answer"]["id"]
+
+                            new_option = option["detail_answer"].set(
+                                "parent_id", question["id"]
                             )
+                            answers_by_id[detail_answer_id].append(new_option)
 
         return answers_by_id
 
     def _get_sections_by_id(self):
         return OrderedDict(
-            (section["id"], section) for section in self.json.get("sections", [])
+            (section["id"], section) for section in self._json.get("sections", [])
         )
 
     def _get_error_messages(self):
@@ -400,8 +434,8 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
         with force_locale(self.language_code):
             messages = {k: str(v) for k, v in error_messages.items()}
 
-        if "messages" in self.json:
-            messages.update(self.json["messages"])
+        if "messages" in self._json:
+            messages.update(self._json["messages"])
 
         return messages
 
@@ -421,7 +455,7 @@ def get_nested_schema_objects(parent_object, list_key):
     for parent_id, child_object in parent_object.items():
         for child_list_object in child_object.get(list_key, []):
             # patch the ID of the parent onto the object
-            child_list_object["parent_id"] = parent_id
+            child_list_object = child_list_object.set("parent_id", parent_id)
             nested_objects[child_list_object["id"]] = child_list_object
 
     return nested_objects
@@ -435,9 +469,9 @@ def _get_values_for_key(block, key, ignore_keys=None):
                 continue
             if k == key:
                 yield v
-            if isinstance(v, dict):
+            if isinstance(v, (dict, immutables.Map)):
                 yield from _get_values_for_key(v, key)
-            elif isinstance(v, list):
+            elif isinstance(v, (list, tuple)):
                 for d in v:
                     yield from _get_values_for_key(d, key)
         except AttributeError:

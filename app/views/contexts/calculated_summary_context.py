@@ -106,6 +106,7 @@ class CalculatedSummaryContext(Context):
             current_location=current_location,
         )
         transformed_block = deepcopy(transformed_block)
+        transformed_block = QuestionnaireSchema.get_mutable_deepcopy(transformed_block)
         block_question = transformed_block["question"]
 
         matching_answers = []
