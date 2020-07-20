@@ -661,7 +661,7 @@ msgid "Sign out"
 msgstr ""
 
 #: templates/macros/helpers.html:32
-msgid "Interviewer Note:"
+msgid "Interviewer note:"
 msgstr ""
 
 #: templates/partials/answer-guidance.html:13

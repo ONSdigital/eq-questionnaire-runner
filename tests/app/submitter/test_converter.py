@@ -129,7 +129,7 @@ def test_display_address_should_be_set_in_payload_metadata(
 
 
 def test_converter_raises_runtime_error_for_unsupported_version(
-    fake_questionnaire_store
+    fake_questionnaire_store,
 ):
     questionnaire = {"survey_id": "021", "data_version": "-0.0.1"}
 
@@ -139,3 +139,37 @@ def test_converter_raises_runtime_error_for_unsupported_version(
         )
 
     assert "Data version -0.0.1 not supported" in str(err.value)
+
+
+def test_converter_language_code_not_set_in_payload(
+    fake_questionnaire_schema,
+    fake_questionnaire_store,
+    fake_collection_metadata,
+    fake_metadata,
+):
+
+    fake_questionnaire_store.set_metadata(fake_metadata)
+    fake_questionnaire_store.collection_metadata = fake_collection_metadata
+
+    answer_object = convert_answers(
+        fake_questionnaire_schema, fake_questionnaire_store, {}
+    )
+
+    assert answer_object["launch_language_code"] == "en"
+
+
+def test_converter_language_code_set_in_payload(
+    fake_questionnaire_schema,
+    fake_questionnaire_store,
+    fake_collection_metadata,
+    fake_metadata,
+):
+    fake_metadata["language_code"] = "ga"
+    fake_questionnaire_store.set_metadata(fake_metadata)
+    fake_questionnaire_store.collection_metadata = fake_collection_metadata
+
+    answer_object = convert_answers(
+        fake_questionnaire_schema, fake_questionnaire_store, {}
+    )
+
+    assert answer_object["launch_language_code"] == "ga"
