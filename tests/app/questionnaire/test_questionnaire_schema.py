@@ -1,5 +1,44 @@
-from app.questionnaire.questionnaire_schema import QuestionnaireSchema
-from app.questionnaire.questionnaire_schema import _get_values_for_key
+import pytest
+from werkzeug.datastructures import ImmutableDict
+
+from app.questionnaire.questionnaire_schema import QuestionnaireSchema, is_hashable
+from app.questionnaire.questionnaire_schema import get_values_for_key
+
+
+def assert_all_dict_values_are_hashable(data):
+    for value in data.values():
+        if isinstance(value, ImmutableDict):
+            return assert_all_dict_values_are_hashable(value)
+        if isinstance(value, tuple):
+            return tuple(assert_all_dict_values_are_hashable(v) for v in value)
+
+        assert is_hashable(value)
+
+
+def test_schema_json_is_immutable_and_hashable(question_schema):
+    schema = QuestionnaireSchema(question_schema)
+    json = schema.json
+    with pytest.raises(TypeError) as e:
+        json["sections"] = []
+
+    assert str(e.value) == "'ImmutableDict' objects are immutable"
+    assert_all_dict_values_are_hashable(json)
+
+
+def test_schema_attributes_returns_hashable_values(question_schema):
+    schema = QuestionnaireSchema(question_schema)
+    for section in schema.get_sections():
+        assert_all_dict_values_are_hashable(section)
+
+
+def test_error_messages_are_immutable():
+    schema = QuestionnaireSchema({})
+    assert isinstance(schema.error_messages, ImmutableDict)
+
+
+def test_parent_id_map_is_immutable():
+    schema = QuestionnaireSchema({})
+    assert isinstance(schema.parent_id_map, ImmutableDict)
 
 
 def test_get_sections(single_question_schema):
@@ -27,7 +66,7 @@ def test_get_summary_for_section(section_with_custom_summary):
     }
 
     assert len(section_summary["items"]) == 1
-    assert section_summary["items"][0].keys() == expected_keys
+    assert set(section_summary["items"][0].keys()) == expected_keys
 
 
 def test_get_summary_for_section_does_not_exist(section_with_custom_summary):
@@ -79,12 +118,6 @@ def test_get_questions_with_variants(question_variant_schema):
     assert len(questions) == 2
     assert questions[0]["title"] == "Question 1, Yes"
     assert questions[1]["title"] == "Question 1, No"
-
-
-def test_get_answer_ids(single_question_schema):
-    schema = QuestionnaireSchema(single_question_schema)
-    answers = schema.get_answer_ids()
-    assert len(answers) == 1
 
 
 def test_get_answers_by_answer_id_with_variants(question_variant_schema):
@@ -327,7 +360,7 @@ def test_get_answer_within_list_collector_with_list_item_id(
 
 def test_get_values_for_key_ignores_variants():
     block = {"question_variants": [{"when": "test"}]}
-    result = list(_get_values_for_key(block, "when", {"question_variants"}))
+    result = list(get_values_for_key(block, "when", {"question_variants"}))
     assert result == []
 
 
@@ -337,7 +370,7 @@ def test_get_values_for_key_ignores_multiple_keys():
         "content_variants": [{"when": "test"}],
     }
     result = list(
-        _get_values_for_key(block, "when", {"question_variants", "content_variants"})
+        get_values_for_key(block, "when", {"question_variants", "content_variants"})
     )
     assert result == []
 

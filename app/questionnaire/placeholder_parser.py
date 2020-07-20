@@ -3,6 +3,7 @@ from typing import Mapping, Sequence, Union, Dict, List
 from jinja2 import escape
 
 from app.data_model.answer_store import AnswerStore
+from app.questionnaire import QuestionnaireSchema
 from app.questionnaire.placeholder_transforms import PlaceholderTransforms
 
 
@@ -33,6 +34,7 @@ class PlaceholderParser:
         self._placeholder_map = {}
 
     def __call__(self, placeholder_list: Sequence[Mapping]) -> Mapping:
+        placeholder_list = QuestionnaireSchema.get_mutable_deepcopy(placeholder_list)
         for placeholder in placeholder_list:
             if placeholder["placeholder"] not in self._placeholder_map:
                 self._placeholder_map[

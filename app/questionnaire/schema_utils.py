@@ -1,3 +1,5 @@
+from werkzeug.datastructures import ImmutableDict
+
 from app.questionnaire.rules import evaluate_when_rules
 
 
@@ -14,13 +16,13 @@ def find_pointers_containing(input_data, search_key, pointer=None):
         if search_key in input_data:
             yield pointer or ""
         for k, v in input_data.items():
-            if isinstance(v, dict) and search_key in v:
+            if (isinstance(v, dict)) and search_key in v:
                 yield pointer + "/" + k if pointer else "/" + k
             else:
                 yield from find_pointers_containing(
                     v, search_key, pointer + "/" + k if pointer else "/" + k
                 )
-    elif isinstance(input_data, list):
+    elif isinstance(input_data, (list, tuple)):
         for index, item in enumerate(input_data):
             yield from find_pointers_containing(
                 item, search_key, "{}/{}".format(pointer, index)
@@ -86,7 +88,7 @@ def choose_content_to_display(
 def transform_variants(
     block, schema, metadata, answer_store, list_store, current_location
 ):
-    output_block = block.copy()
+    output_block = dict(block)
 
     if "question_variants" in block:
         question = choose_question_to_display(
@@ -119,7 +121,7 @@ def transform_variants(
                     current_location,
                 )
 
-    return output_block
+    return ImmutableDict(output_block)
 
 
 def get_answer_ids_in_block(block):
