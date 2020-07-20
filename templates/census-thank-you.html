@@ -8,14 +8,20 @@
     "classes": "u-mb-s"
     })
   %}
-    <h1 data-qa="title"><span class="icon--check-green"></span>{{ _("Thank you for completing your census") }}</h1>
+    <h1 data-qa="title"><span class="icon--check-green"></span>
+      {% if content.census_type == "IR" %}
+        {{ _("Thank you for completing your census") }}
+      {% else %}
+        {{ _("Thank you for completing the census") }}
+      {% endif %}
+    </h1>
 
       {% if content.census_type %}
-        {% if content.census_type =="IR" %}
+        {% if content.census_type == "IR" %}
           <p data-qa="guidance">{{ _("Your individual census has been submitted for <strong>{display_address}</strong>").format(display_address = content.display_address) }}</p>
-        {% elif content.census_type =="HH" %}
+        {% elif content.census_type == "HH" %}
           <p data-qa="guidance">{{ _("Your census has been submitted for the household at <strong>{display_address}</strong>").format(display_address = content.display_address) }}</p>
-        {% elif content.census_type =="CE" %}
+        {% elif content.census_type == "CE" %}
           <p data-qa="guidance">{{ _("Your census has been submitted for the accommodation at <strong>{display_address}</strong>").format(display_address = content.display_address) }}</p>
           <p>{{ _("Anyone staying at this accommodation for at least 6 months needs to fill in their own individual census, including staff. Your Census Officer will provide you with census forms for your residents.") }}</p>
         {% endif %}
@@ -29,7 +35,7 @@
     <div class="panel panel--warn panel--simple" >
       <span class="panel__icon" aria-hidden="true">!</span>
       <div class="panel__body">
-        <p>{{ _("Make sure you leave this page or close your browser if using a shared device.") }}</p>
+        <p>{{ _("Make sure you <a href='{url}'>leave this page</a> or close your browser if using a shared device.").format(url = "/sign-out")  }}</p>
       </div>
     </div>
 

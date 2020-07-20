@@ -6,17 +6,17 @@ from app.views.contexts.thank_you_context import (
 )
 from app.globals import get_session_store
 
-DEFAULT_THANK_YOU_TEMPLATE = "thank-you"
-CENSUS_THANK_YOU_TEMPLATE = "census-thank-you"
-
-CENSUS_TYPE_MAPPINGS = {
-    "household": "HH",
-    "communal_establishment": "CE",
-    "individual": "IR",
-}
-
 
 class ThankYou:
+    DEFAULT_THANK_YOU_TEMPLATE = "thank-you"
+    CENSUS_THANK_YOU_TEMPLATE = "census-thank-you"
+
+    CENSUS_TYPE_MAPPINGS = {
+        "household": "HH",
+        "communal_establishment": "CE",
+        "individual": "IR",
+    }
+
     def __init__(self):
         self.session_data = get_session_store().session_data
 
@@ -28,24 +28,22 @@ class ThankYou:
             "census",
             "census-nisra",
         ]
+        self.template = (
+            self.CENSUS_THANK_YOU_TEMPLATE
+            if self._is_census_theme
+            else self.DEFAULT_THANK_YOU_TEMPLATE
+        )
 
     def get_context(self):
         if not self._is_census_theme:
             return build_default_thank_you_context(self.session_data)
 
         census_type_code = None
-        for census_type in CENSUS_TYPE_MAPPINGS:
+        for census_type in self.CENSUS_TYPE_MAPPINGS:
             if census_type in self.session_data.schema_name:
-                census_type_code = CENSUS_TYPE_MAPPINGS[census_type]
+                census_type_code = self.CENSUS_TYPE_MAPPINGS[census_type]
                 break
 
         return build_census_thank_you_context(
             self._cookie_session.get("display_address"), census_type_code
-        )
-
-    def get_template(self):
-        return (
-            CENSUS_THANK_YOU_TEMPLATE
-            if self._is_census_theme
-            else DEFAULT_THANK_YOU_TEMPLATE
         )

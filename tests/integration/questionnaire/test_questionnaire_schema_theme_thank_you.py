@@ -9,6 +9,7 @@ class TestSchemaThemeThankYou(IntegrationTestCase):
         )
         self.post({"individual-confirmation": "Yes"})
         self.post()
+        self.assertInBody("Thank you for completing your census")
         self.assertInBody(
             "Your individual census has been submitted for <strong>68 Abingdon Road, Goathill</strong>"
         )
@@ -20,6 +21,7 @@ class TestSchemaThemeThankYou(IntegrationTestCase):
         )
         self.post({"household-confirmation": "Yes"})
         self.post()
+        self.assertInBody("Thank you for completing the census")
         self.assertInBody(
             "Your census has been submitted for the household at <strong>68 Abingdon Road, Goathill</strong>"
         )
@@ -31,6 +33,7 @@ class TestSchemaThemeThankYou(IntegrationTestCase):
         )
         self.post({"communal-establishment-confirmation": "Yes"})
         self.post()
+        self.assertInBody("Thank you for completing the census")
         self.assertInBody(
             "Your census has been submitted for the accommodation at <strong>68 Abingdon Road, Goathill</strong>"
         )

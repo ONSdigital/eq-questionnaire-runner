@@ -269,7 +269,7 @@ def get_thank_you(schema):
     thank_you = ThankYou()
 
     return render_template(
-        template=thank_you.get_template(),
+        template=thank_you.template,
         content=thank_you.get_context(),
         survey_id=schema.json["survey_id"],
         hide_signout_button=True,
