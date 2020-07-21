@@ -21,8 +21,3 @@ class TestQuestionnaireInterstitial(IntegrationTestCase):
         self.assertInUrl("confirmation")
         self.post()
         self.assertInBody("Submission successful")
-
-    def test_interstitial_instruction(self):
-        self.launchSurvey("test_interstitial_instruction")
-        self.post(action="start_questionnaire")
-        self.assertInBody("Just pause for a second")

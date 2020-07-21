@@ -55,6 +55,7 @@
                             "type": "Question",
                             "id": "lunch-block",
                             "question": {
+                                "instruction": ["Tell us about what you eat"],
                                 "answers": [
                                     {
                                         "id": "favourite-lunch",
