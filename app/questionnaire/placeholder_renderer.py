@@ -43,7 +43,7 @@ class PlaceholderRenderer:
         if source == "answers":
             return self._answer_store.get_answer(source_id).value
         if source == "list":
-            return len(self._list_store[source_id].items)
+            return len(self._list_store[source_id])
         return self._metadata[source_id]
 
     def render_placeholder(self, placeholder_data, list_item_id):

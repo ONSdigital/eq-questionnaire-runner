@@ -10,8 +10,8 @@ from app.authentication.roles import role_required
 from app.globals import get_questionnaire_store, get_session_store
 from app.helpers.session_helpers import with_questionnaire_store
 from app.questionnaire.router import Router
-from app.submitter.converter import convert_answers
 from app.utilities.schema import load_schema_from_session_data
+from app.views.handlers.submission import SubmissionHandler
 
 dump_blueprint = Blueprint("dump", __name__)
 
@@ -81,7 +81,8 @@ def dump_submission(schema, questionnaire_store):
     questionnaire_store = get_questionnaire_store(
         current_user.user_id, current_user.user_ik
     )
-    response = {
-        "submission": convert_answers(schema, questionnaire_store, routing_path)
-    }
+
+    submission_handler = SubmissionHandler(schema, questionnaire_store, routing_path)
+
+    response = {"submission": submission_handler.get_payload()}
     return json.dumps(response, for_json=True), 200

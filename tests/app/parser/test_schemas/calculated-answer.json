@@ -30,7 +30,7 @@
                                             "type": "Percentage", "maximum": {"value": 100},
                                             "validation": {
                                                 "messages" : {
-                                                    "NUMBER_TOO_LARGE": "The maximum value allowed is 100. Please correct your answer."
+                                                    "NUMBER_TOO_LARGE": "The maximum value allowed is 100. Please correct your answer"
                                                 }
                                             }
                                         },
@@ -42,7 +42,7 @@
                                             "type": "Percentage", "maximum": {"value": 100},
                                             "validation": {
                                                 "messages" : {
-                                                    "NUMBER_TOO_LARGE": "The maximum value allowed is 100. Please correct your answer."
+                                                    "NUMBER_TOO_LARGE": "The maximum value allowed is 100. Please correct your answer"
                                                 }
                                             }
                                         },
@@ -54,7 +54,7 @@
                                             "type": "Percentage", "maximum": {"value": 100},
                                             "validation": {
                                                 "messages" : {
-                                                    "NUMBER_TOO_LARGE": "The maximum value allowed is 100. Please correct your answer."
+                                                    "NUMBER_TOO_LARGE": "The maximum value allowed is 100. Please correct your answer"
                                                 }
                                             }
                                         },
@@ -66,7 +66,7 @@
                                             "type": "Percentage", "maximum": {"value": 100},
                                             "validation": {
                                                 "messages" : {
-                                                    "NUMBER_TOO_LARGE": "The maximum value allowed is 100. Please correct your answer."
+                                                    "NUMBER_TOO_LARGE": "The maximum value allowed is 100. Please correct your answer"
                                                 }
                                             }
                                         },

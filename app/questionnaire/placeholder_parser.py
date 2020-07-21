@@ -61,7 +61,7 @@ class PlaceholderParser:
         if value_source["source"] == "metadata":
             return self._resolve_metadata_value(value_source["identifier"])
         if value_source["source"] == "list":
-            return len(self._list_store[value_source["identifier"]].items)
+            return len(self._list_store[value_source["identifier"]])
 
     def _resolve_answer_value(self, value_source):
         list_item_id = self._get_list_item_id_from_value_source(value_source)
