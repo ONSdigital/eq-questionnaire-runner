@@ -50,7 +50,7 @@
                                         "type": "Radio"
                                     }
                                 ],
-                                "description": "This is section 1.",
+                                "description": ["This is section 1."],
                                 "id": "section-1-question",
                                 "title": "Do you want to enable section 2?",
                                 "type": "General"
@@ -91,7 +91,7 @@
                                         "type": "Number"
                                     }
                                 ],
-                                "description": "This is section 2.",
+                                "description": ["This is section 2."],
                                 "id": "section-2-question",
                                 "title": "Which section is this?",
                                 "type": "General"

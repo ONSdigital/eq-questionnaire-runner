@@ -1,3 +1,4 @@
+import checkPeopleInList from "../helpers";
 import AnotherListCollectorPage from "../generated_pages/list_collector/another-list-collector-block.page.js";
 import AnotherListCollectorAddPage from "../generated_pages/list_collector/another-list-collector-block-add.page.js";
 import AnotherListCollectorEditPage from "../generated_pages/list_collector/another-list-collector-block-edit.page.js";
@@ -20,14 +21,6 @@ import PeopleListSectionSummaryPage from "../generated_pages/list_collector_sect
 import ConfirmationPage from "../generated_pages/list_collector/confirmation.page.js";
 
 describe("List Collector", () => {
-  function checkPeopleInList(peopleExpected) {
-    $(ListCollectorPage.listLabel(1)).waitForDisplayed();
-
-    for (let i = 1; i <= peopleExpected.length; i++) {
-      expect($(ListCollectorPage.listLabel(i)).getText()).to.equal(peopleExpected[i - 1]);
-    }
-  }
-
   describe("Given a normal journey through the list collector without variants", () => {
     before("Load the survey", () => {
       browser.openQuestionnaire("test_list_collector.json");
@@ -58,7 +51,7 @@ describe("List Collector", () => {
 
     it("The collector shows all of the household members in the summary", () => {
       const peopleExpected = ["Marcus Twin", "Samuel Clemens", "Olivia Clemens", "Suzy Clemens"];
-      checkPeopleInList(peopleExpected);
+      checkPeopleInList(peopleExpected, ListCollectorPage.listLabel);
     });
 
     it("The questionnaire allows the name of a person to be changed", () => {
@@ -116,7 +109,7 @@ describe("List Collector", () => {
 
     it("The collector shows everyone on the summary", () => {
       const peopleExpected = ["Samuel Clemens", "Olivia Clemens", "Suzy Clemens", "Clara Clemens", "Jean Clemens"];
-      checkPeopleInList(peopleExpected);
+      checkPeopleInList(peopleExpected, ListCollectorPage.listLabel);
     });
 
     it("When No is answered on the list collector the user sees an interstitial", () => {
@@ -132,7 +125,7 @@ describe("List Collector", () => {
 
     it("The collector still shows the same list of people on the summary", () => {
       const peopleExpected = ["Samuel Clemens", "Olivia Clemens", "Suzy Clemens", "Clara Clemens", "Jean Clemens"];
-      checkPeopleInList(peopleExpected);
+      checkPeopleInList(peopleExpected, ListCollectorPage.listLabel);
     });
 
     it("The collector allows the user to add another person to the same list", () => {
@@ -145,7 +138,7 @@ describe("List Collector", () => {
     });
 
     it("The collector allows the user to remove a person again", () => {
-      $(AnotherListCollectorPage.listRemoveLink(6)).click();
+      $(AnotherListCollectorPage.listRemoveLink(5)).click();
       $(AnotherListCollectorRemovePage.yes()).click();
       $(AnotherListCollectorRemovePage.submit()).click();
     });

@@ -318,8 +318,26 @@ def test_map_list_collector_config_no_actions():
     output = map_list_collector_config(list_items, "icon")
 
     expected = [
-        {"rowItems": [{"actions": [], "icon": "icon"}], "rowTitle": "Mark Bloggs"},
-        {"rowItems": [{"actions": [], "icon": "icon"}], "rowTitle": "Joe Bloggs"},
+        {
+            "rowItems": [
+                {
+                    "actions": [],
+                    "icon": "icon",
+                    "rowTitle": "Mark Bloggs",
+                    "rowTitleAttributes": {"data-qa": "list-item-1-label"},
+                }
+            ]
+        },
+        {
+            "rowItems": [
+                {
+                    "actions": [],
+                    "icon": "icon",
+                    "rowTitle": "Joe Bloggs",
+                    "rowTitleAttributes": {"data-qa": "list-item-2-label"},
+                }
+            ]
+        },
     ]
 
     assert output == expected
@@ -357,15 +375,16 @@ def test_map_list_collector_config():
                     "actions": [
                         {
                             "ariaLabel": "edit_link_aria_label",
-                            "attributes": {"data-qa": "change-item-link"},
+                            "attributes": {"data-qa": "list-item-change-1-link"},
                             "text": "edit_link_text",
                             "url": "/primary/change",
                         }
                     ],
                     "icon": "icon",
+                    "rowTitle": "Mark Bloggs (You)",
+                    "rowTitleAttributes": {"data-qa": "list-item-1-label"},
                 }
-            ],
-            "rowTitle": "Mark Bloggs (You)",
+            ]
         },
         {
             "rowItems": [
@@ -373,21 +392,22 @@ def test_map_list_collector_config():
                     "actions": [
                         {
                             "ariaLabel": "edit_link_aria_label",
-                            "attributes": {"data-qa": "change-item-link"},
+                            "attributes": {"data-qa": "list-item-change-2-link"},
                             "text": "edit_link_text",
                             "url": "/nonprimary/change",
                         },
                         {
                             "ariaLabel": "remove_link_aria_label",
-                            "attributes": {"data-qa": "remove-item-link"},
+                            "attributes": {"data-qa": "list-item-remove-2-link"},
                             "text": "remove_link_text",
                             "url": "/nonprimary/remove",
                         },
                     ],
                     "icon": "icon",
+                    "rowTitle": "Joe Bloggs",
+                    "rowTitleAttributes": {"data-qa": "list-item-2-label"},
                 }
-            ],
-            "rowTitle": "Joe Bloggs",
+            ]
         },
     ]
 

@@ -12,6 +12,13 @@
   {{attr|xmlattr}}
 {%- endmacro -%}
 
+{%- macro format_paragraphs(paragraphs) -%}
+  {%- for paragraph in paragraphs -%}
+    <p>{{paragraph}}</p>
+  {%- else -%}
+  {%- endfor -%}
+{%- endmacro -%}
+
 {%- macro telephone_number(tel="0300 1234 931", aria_describedby=None, class=None) -%}
   {% set attr = {
     "aria-describedby": aria_describedby,
