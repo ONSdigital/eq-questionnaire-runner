@@ -393,7 +393,7 @@ class SummaryRowItemValue:
 
 
 class SummaryRowItem:
-    def __init__(  # noqa: C901, R0912  pylint: disable=too-complex,too-many-branches
+    def __init__(  # noqa: C901, R0912 pylint: disable=too-complex, too-many-branches
         self,
         block,
         question,
@@ -563,7 +563,7 @@ def map_list_collector_config(
 ):
     rows = []
 
-    for list_item in list_items:
+    for index, list_item in enumerate(list_items, start=1):
         item_name = list_item.get("item_title")
 
         actions = []
@@ -574,7 +574,7 @@ def map_list_collector_config(
                     "text": edit_link_text,
                     "ariaLabel": edit_link_aria_label.format(item_name=item_name),
                     "url": list_item.get("edit_link"),
-                    "attributes": {"data-qa": "change-item-link"},
+                    "attributes": {"data-qa": f"list-item-change-{index}-link"},
                 }
             )
 
@@ -584,12 +584,21 @@ def map_list_collector_config(
                     "text": remove_link_text,
                     "ariaLabel": remove_link_aria_label.format(item_name=item_name),
                     "url": list_item.get("remove_link"),
-                    "attributes": {"data-qa": "remove-item-link"},
+                    "attributes": {"data-qa": f"list-item-remove-{index}-link"},
                 }
             )
 
         rows.append(
-            {"rowTitle": item_name, "rowItems": [{"icon": icon, "actions": actions}]}
+            {
+                "rowItems": [
+                    {
+                        "icon": icon,
+                        "actions": actions,
+                        "rowTitle": item_name,
+                        "rowTitleAttributes": {"data-qa": f"list-item-{index}-label"},
+                    }
+                ]
+            }
         )
 
     return rows

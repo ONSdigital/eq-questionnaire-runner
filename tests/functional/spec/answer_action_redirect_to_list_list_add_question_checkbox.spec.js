@@ -1,15 +1,8 @@
+import checkPeopleInList from "../helpers";
 import AnyoneLiveAtListCollector from "../generated_pages/answer_action_redirect_to_list_add_question_checkbox/anyone-else-live-at.page";
 import AnyoneLiveAtListCollectorAddPage from "../generated_pages/answer_action_redirect_to_list_add_question_checkbox/anyone-else-live-at-add.page";
 import AnyoneLiveAtListCollectorRemovePage from "../generated_pages/answer_action_redirect_to_list_add_question_checkbox/anyone-else-live-at-remove.page";
 import AnyoneUsuallyLiveAt from "../generated_pages/answer_action_redirect_to_list_add_question_checkbox/anyone-usually-live-at.page";
-
-function checkPeopleInList(peopleExpected) {
-  $(AnyoneLiveAtListCollector.listLabel(1)).waitForDisplayed();
-
-  for (let i = 1; i <= peopleExpected.length; i++) {
-    expect($(AnyoneLiveAtListCollector.listLabel(i)).getText()).to.equal(peopleExpected[i - 1]);
-  }
-}
 
 describe("Answer Action: Redirect To List Add Question (Checkbox)", () => {
   describe('Given the user is on a question with a "RedirectToListAddQuestion" action enabled', () => {
@@ -42,9 +35,9 @@ describe("Answer Action: Redirect To List Add Question (Checkbox)", () => {
       $(AnyoneLiveAtListCollectorAddPage.lastName()).setValue("Twin");
       $(AnyoneLiveAtListCollectorAddPage.submit()).click();
       expect(browser.getUrl()).to.contain(AnyoneLiveAtListCollector.pageName);
-      const peopleExpected = ["Marcus Twin"];
 
-      checkPeopleInList(peopleExpected);
+      const peopleExpected = ["Marcus Twin"];
+      checkPeopleInList(peopleExpected, AnyoneLiveAtListCollector.listLabel);
     });
 
     it('When the user click the "Previous" link from the list collector, Then, they are taken to the last complete block', () => {

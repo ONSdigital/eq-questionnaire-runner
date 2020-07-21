@@ -14,10 +14,6 @@ class QuestionPage extends BasePage {
     return "#my-account";
   }
 
-  summaryQuestionText() {
-    return ".summary__item-title";
-  }
-
   questionText() {
     return "h1";
   }
@@ -31,11 +27,11 @@ class QuestionPage extends BasePage {
   }
 
   errorHeader() {
-    return "#main-content > div.panel.panel--error.u-mb-s > div.panel__header > div";
+    return '[data-qa="error-header"]';
   }
 
   errorNumber(number = 1) {
-    return `[data-qa="error-body"] ul > li:nth-child(${number}) > a`;
+    return `[data-qa="error-link-${number}"]`;
   }
 
   previous() {
@@ -59,7 +55,7 @@ class QuestionPage extends BasePage {
   }
 
   lastViewedQuestionGuidanceLink() {
-    return "#last-viewed-question-guidance > div.panel__body > a";
+    return "#section-start-link";
   }
 
   submit() {

@@ -17,7 +17,7 @@ describe("Choose another section link", () => {
     browser.openQuestionnaire("test_hub_complete_sections.json");
     $(EmploymentStatusBlockPage.workingAsAnEmployee()).click();
     $(EmploymentStatusBlockPage.submit()).click();
-    $(HubPage.summaryRowLink(2)).click();
+    $(HubPage.summaryRowLink("accommodation-section")).click();
     expect($("body").getText()).to.contain("Choose another section and return to this later");
   });
 
@@ -25,7 +25,7 @@ describe("Choose another section link", () => {
     browser.openQuestionnaire("test_hub_complete_sections.json");
     $(EmploymentStatusBlockPage.workingAsAnEmployee()).click();
     $(EmploymentStatusBlockPage.submit()).click();
-    $(HubPage.summaryRowLink(2)).click();
+    $(HubPage.summaryRowLink("accommodation-section")).click();
     $(ProxyPage.noIMAnsweringForMyself()).click();
     $(ProxyPage.submit()).click();
     expect($("body").getText()).to.not.have.string("Choose another section and return to this later");

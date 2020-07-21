@@ -28,7 +28,7 @@ describe("Choose another section link", () => {
   it("When a user gets to subsequent questions past the hub, then the previous location link should be displayed", () => {
     $(EmploymentStatusBlockPage.workingAsAnEmployee()).click();
     $(EmploymentStatusBlockPage.submit()).click();
-    $(HubPage.summaryRowLink(2)).click();
+    $(HubPage.summaryRowLink("accommodation-section")).click();
     expect($(ProxyPage.previous()).isExisting()).to.be.true;
   });
 });

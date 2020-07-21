@@ -14,7 +14,7 @@ describe("Feature: Repeating Section Summaries", () => {
       // Ensure we are on the Hub
       expect(browser.getUrl()).to.contain(HubPage.url());
       // Start first section to add household members
-      $(HubPage.summaryRowLink(1)).click();
+      $(HubPage.summaryRowLink("section")).click();
 
       // Add a primary person
       $(PrimaryPersonPage.yes()).click();
@@ -37,7 +37,7 @@ describe("Feature: Repeating Section Summaries", () => {
 
     describe("When the user finishes a repeating section", () => {
       before("Enter information for a repeating section", () => {
-        $(HubPage.summaryRowLink(2)).click();
+        $(HubPage.summaryRowLink("personal-details-section-1")).click();
         $(ProxyPage.yes()).click();
         $(ProxyPage.submit()).click();
 
@@ -49,7 +49,7 @@ describe("Feature: Repeating Section Summaries", () => {
 
       beforeEach("Navigate to the Section Summary", () => {
         browser.url(HubPage.url());
-        $(HubPage.summaryRowLink(2)).click();
+        $(HubPage.summaryRowLink("personal-details-section-1")).click();
       });
 
       it("the title set in the repeating block is used for the section summary title", () => {

@@ -5,8 +5,8 @@ class ThankYouPage extends QuestionPage {
     super("summary");
   }
 
-  summaryRowState(number = 1) {
-    return `tbody:nth-child(${number}) tr td.summary__values`;
+  summaryRowState(sectionId) {
+    return `[data-qa="${sectionId}"]`;
   }
 }
 
