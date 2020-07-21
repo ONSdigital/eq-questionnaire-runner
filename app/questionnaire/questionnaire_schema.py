@@ -378,7 +378,7 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
                             )
                             blocks[new_nested_block["id"]] = new_nested_block
 
-        return blocks
+        return immutables.Map(blocks)
 
     def _block_for_answer(self, answer_id):
         answers = self.get_answers_by_answer_id(answer_id)
@@ -402,7 +402,7 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
                 new_question = question.set("parent_id", block["id"])
                 questions_by_id[new_question["id"]].append(new_question)
 
-        return questions_by_id
+        return self._serialize(questions_by_id)
 
     def _get_answers_by_id(self):
         answers_by_id = defaultdict(list)
@@ -422,10 +422,10 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
                             )
                             answers_by_id[detail_answer_id].append(new_option)
 
-        return answers_by_id
+        return self._serialize(answers_by_id)
 
     def _get_sections_by_id(self):
-        return OrderedDict(
+        return immutables.Map(
             (section["id"], section) for section in self._json.get("sections", [])
         )
 
@@ -450,7 +450,7 @@ def get_nested_schema_objects(parent_object, list_key):
     :param parent_object: dict containing a list
     :param list_key: key of the nested list to extract
     """
-    nested_objects = OrderedDict()
+    nested_objects = dict()
 
     for parent_id, child_object in parent_object.items():
         for child_list_object in child_object.get(list_key, []):
@@ -458,7 +458,7 @@ def get_nested_schema_objects(parent_object, list_key):
             child_list_object = child_list_object.set("parent_id", parent_id)
             nested_objects[child_list_object["id"]] = child_list_object
 
-    return nested_objects
+    return immutables.Map(nested_objects)
 
 
 def _get_values_for_key(block, key, ignore_keys=None):
