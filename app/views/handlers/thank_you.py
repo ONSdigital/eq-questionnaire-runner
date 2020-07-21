@@ -23,7 +23,6 @@ class ThankYou:
         if not self.session_data.submitted_time:
             raise NotFound
 
-        self._cookie_session = cookie_session
         self._is_census_theme = cookie_session.get("theme") in [
             "census",
             "census-nisra",
@@ -45,5 +44,5 @@ class ThankYou:
                 break
 
         return build_census_thank_you_context(
-            self._cookie_session.get("display_address"), census_type_code
+            self.session_data.display_address, census_type_code
         )

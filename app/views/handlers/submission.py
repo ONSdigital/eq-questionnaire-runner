@@ -1,6 +1,6 @@
 from datetime import datetime
 import simplejson as json
-from flask import current_app, session as cookie_session
+from flask import current_app
 from sdc.crypto.encrypter import encrypt
 from app.submitter.converter import convert_answers
 from app.keys import KEY_PURPOSE_SUBMISSION
@@ -14,6 +14,7 @@ class SubmissionHandler:
         self._questionnaire_store = questionnaire_store
         self._full_routing_path = full_routing_path
         self._session_store = get_session_store()
+        self._metadata = questionnaire_store.metadata
 
     def submit_questionnaire(self):
 
@@ -23,19 +24,17 @@ class SubmissionHandler:
         encrypted_message = encrypt(
             message, current_app.eq["key_store"], KEY_PURPOSE_SUBMISSION
         )
-        metadata = self._questionnaire_store.metadata
         submitted = current_app.eq["submitter"].send_message(
             encrypted_message,
-            questionnaire_id=metadata.get("questionnaire_id"),
-            case_id=metadata.get("case_id"),
-            tx_id=metadata.get("tx_id"),
+            questionnaire_id=self._metadata.get("questionnaire_id"),
+            case_id=self._metadata.get("case_id"),
+            tx_id=self._metadata.get("tx_id"),
         )
 
         if not submitted:
             raise SubmissionFailedException()
 
-        cookie_session["display_address"] = metadata.get("display_address")
-        self._store_submitted_time_in_session()
+        self._store_submitted_time_and_display_address_in_session()
         self._questionnaire_store.delete()
 
     def get_payload(self):
@@ -47,7 +46,8 @@ class SubmissionHandler:
         ] = self._session_store.session_data.language_code
         return payload
 
-    def _store_submitted_time_in_session(self):
+    def _store_submitted_time_and_display_address_in_session(self):
         session_data = self._session_store.session_data
+        session_data.display_address = self._metadata.get("display_address")
         session_data.submitted_time = datetime.utcnow().isoformat()
         self._session_store.save()
