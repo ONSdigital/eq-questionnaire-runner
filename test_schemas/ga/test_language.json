@@ -29,21 +29,18 @@
                             "type": "Question",
                             "id": "name-block",
                             "question": {
-                                "description": "",
                                 "id": "name-question",
                                 "title": "Iontráil ainm",
                                 "type": "General",
                                 "answers": [
                                     {
                                         "id": "first-name",
-                                        "description": "",
                                         "label": "Ainm",
                                         "mandatory": true,
                                         "type": "TextField"
                                     },
                                     {
                                         "id": "last-name",
-                                        "description": "",
                                         "label": "Ainm deireanach",
                                         "mandatory": false,
                                         "type": "TextField"
@@ -55,7 +52,6 @@
                             "type": "Question",
                             "id": "dob-block",
                             "question": {
-                                "description": "",
                                 "id": "dob-question",
                                 "title": {
                                     "text": "Cad is dáta breithe ann {person_name_possessive}?",
@@ -115,7 +111,6 @@
                                         }
                                     }
                                 ],
-                                "description": "",
                                 "id": "number-of-people-question",
                                 "title": "Cé mhéad duine atá ina gcónaí ar do theach?",
                                 "type": "General"
