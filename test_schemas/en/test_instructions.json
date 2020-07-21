@@ -40,9 +40,7 @@
                             "id": "interstitial",
                             "content": {
                                 "title": "Breakfast interstitial",
-                                "instruction": [
-                                    "Just pause for a second"
-                                ],
+                                "instruction": ["Just pause for a second"],
                                 "contents": [
                                     {
                                         "description": "Next we want to know about your lunch."
