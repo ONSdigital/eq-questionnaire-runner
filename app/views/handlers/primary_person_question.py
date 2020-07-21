@@ -30,7 +30,10 @@ class PrimaryPersonQuestion(Question):
 
     def get_next_location_url(self):
         return self.router.get_next_location_url(
-            self.parent_location, self._routing_path, self._return_to_summary
+            self.parent_location,
+            self._routing_path,
+            self._return_to_summary,
+            self._return_to_final_summary,
         )
 
     def handle_post(self):

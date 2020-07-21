@@ -153,6 +153,37 @@ class TestRouter(AppContextTestCase):  # pylint: disable=too-many-public-methods
 
         self.assertEqual(next_location, expected_location)
 
+    def test_next_location_url_return_to_summary(self):
+        schema = load_schema_from_name("test_section_summary")
+
+        progress_store = ProgressStore(
+            [
+                {
+                    "section_id": "default-section",
+                    "list_item_id": None,
+                    "status": CompletionStatus.COMPLETED,
+                    "block_ids": ["name-block"],
+                }
+            ]
+        )
+
+        router = Router(
+            schema, self.answer_store, self.list_store, progress_store, self.metadata
+        )
+
+        current_location = Location(section_id="default-section", block_id="name-block")
+        routing_path = RoutingPath(
+            ["name-block", "summary"], section_id="default-section"
+        )
+        next_location = router.get_next_location_url(
+            current_location, routing_path, return_to_summary=True
+        )
+        expected_location = Location(
+            section_id="default-section", block_id="summary"
+        ).url()
+
+        self.assertEqual(next_location, expected_location)
+
     def test_previous_location_url(self):
         schema = load_schema_from_name("test_textfield")
 

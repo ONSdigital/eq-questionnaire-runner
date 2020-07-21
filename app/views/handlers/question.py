@@ -63,7 +63,10 @@ class Question(BlockHandler):
                 return location_url
 
         return self.router.get_next_location_url(
-            self._current_location, self._routing_path, self._return_to_summary
+            self._current_location,
+            self._routing_path,
+            self._return_to_summary,
+            self._return_to_final_summary,
         )
 
     def _get_answers_from_answer_store(self, answer_ids):

@@ -10,8 +10,8 @@ from .summary import Group
 
 
 class SectionSummaryContext(Context):
-    def __call__(self, current_location):
-        summary = self._build_summary(current_location)
+    def __call__(self, current_location, return_to="summary"):
+        summary = self._build_summary(current_location, return_to)
         title_for_location = self._title_for_location(current_location)
         title = (
             self._placeholder_renderer.render_placeholder(
@@ -30,7 +30,7 @@ class SectionSummaryContext(Context):
             }
         }
 
-    def _build_summary(self, location):
+    def _build_summary(self, location, return_to):
         """
         Build a summary context for a particular location.
 
@@ -67,6 +67,7 @@ class SectionSummaryContext(Context):
                     self._schema,
                     location,
                     self._language,
+                    return_to,
                 ).serialize()
                 for group in section["groups"]
             ],
