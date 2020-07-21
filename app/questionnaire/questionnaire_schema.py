@@ -1,10 +1,10 @@
-from collections import OrderedDict, defaultdict
+from collections import defaultdict
 from copy import deepcopy
 from functools import cached_property
 from typing import List, Union, Mapping
 
-import immutables
 from flask_babel import force_locale
+from werkzeug.datastructures import ImmutableDict
 
 from app.data_model.answer import Answer
 from app.forms.error_messages import error_messages
@@ -21,7 +21,7 @@ LIST_COLLECTOR_CHILDREN = [
 
 class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
     def __init__(self, questionnaire_json, language_code=DEFAULT_LANGUAGE_CODE):
-        self._json = self._serialize(questionnaire_json)
+        self._json = self.serialize(questionnaire_json)
         self.language_code = language_code
         self._parse_schema()
         self._list_name_to_section_map = {}
@@ -30,26 +30,24 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
     def json(self):
         return self._json
 
-    def _serialize(self, data):
+    @classmethod
+    def serialize(cls, data):
         if hasattr(data, "__hash__") and callable(data.__hash__):
             return data
         if isinstance(data, list):
-            return tuple((self._serialize(item) for item in data))
+            return tuple((cls.serialize(item) for item in data))
         if isinstance(data, dict):
-            key_value_tuples = {k: self._serialize(v) for k, v in data.items()}
-            return immutables.Map(key_value_tuples)
+            key_value_tuples = {k: cls.serialize(v) for k, v in data.items()}
+            return ImmutableDict(key_value_tuples)
 
     @classmethod
     def get_mutable_deepcopy(cls, data):
-        data_deepcopy = deepcopy(data)
-        if isinstance(data_deepcopy, tuple):
-            return list((cls.get_mutable_deepcopy(item) for item in data_deepcopy))
-        if isinstance(data_deepcopy, immutables.Map):
-            key_value_tuples = {
-                k: cls.get_mutable_deepcopy(v) for k, v in data_deepcopy.items()
-            }
+        if isinstance(data, tuple):
+            return list((cls.get_mutable_deepcopy(item) for item in data))
+        if isinstance(data, ImmutableDict):
+            key_value_tuples = {k: cls.get_mutable_deepcopy(v) for k, v in data.items()}
             return dict(key_value_tuples)
-        return data_deepcopy
+        return deepcopy(data)
 
     def _parse_schema(self):
         self._sections_by_id = self._get_sections_by_id()
@@ -361,24 +359,26 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
 
         for group in self._groups_by_id.values():
             for block in group["blocks"]:
-                new_block = block.set("parent_id", group["id"])
-                blocks[new_block["id"]] = new_block
+                mutable_block = QuestionnaireSchema.get_mutable_deepcopy(block)
+                mutable_block["parent_id"] = group["id"]
+                blocks[mutable_block["id"]] = mutable_block
 
-                if block["type"] in ("ListCollector", "PrimaryPersonListCollector"):
+                if mutable_block["type"] in (
+                    "ListCollector",
+                    "PrimaryPersonListCollector",
+                ):
                     for nested_block_name in [
                         "add_block",
                         "edit_block",
                         "remove_block",
                         "add_or_edit_block",
                     ]:
-                        if block.get(nested_block_name):
-                            nested_block = block[nested_block_name]
-                            new_nested_block = nested_block.set(
-                                "parent_id", block["id"]
-                            )
-                            blocks[new_nested_block["id"]] = new_nested_block
+                        if mutable_block.get(nested_block_name):
+                            nested_block = mutable_block[nested_block_name]
+                            nested_block["parent_id"] = block["id"]
+                            blocks[nested_block["id"]] = nested_block
 
-        return immutables.Map(blocks)
+        return QuestionnaireSchema.serialize(blocks)
 
     def _block_for_answer(self, answer_id):
         answers = self.get_answers_by_answer_id(answer_id)
@@ -399,10 +399,11 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
         for block in self._blocks_by_id.values():
             questions = self.get_all_questions_for_block(block)
             for question in questions:
-                new_question = question.set("parent_id", block["id"])
-                questions_by_id[new_question["id"]].append(new_question)
+                mutable_question = QuestionnaireSchema.get_mutable_deepcopy(question)
+                mutable_question["parent_id"] = block["id"]
+                questions_by_id[mutable_question["id"]].append(mutable_question)
 
-        return self._serialize(questions_by_id)
+        return QuestionnaireSchema.serialize(questions_by_id)
 
     def _get_answers_by_id(self):
         answers_by_id = defaultdict(list)
@@ -410,22 +411,20 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
         for question_set in self._questions_by_id.values():
             for question in question_set:
                 for answer in question["answers"]:
-                    new_answer = answer.set("parent_id", question["id"])
-                    answers_by_id[new_answer["id"]].append(new_answer)
-
-                    for option in answer.get("options", []):
+                    mutable_answer = QuestionnaireSchema.get_mutable_deepcopy(answer)
+                    mutable_answer["parent_id"] = question["id"]
+                    answers_by_id[mutable_answer["id"]].append(mutable_answer)
+                    for option in mutable_answer.get("options", []):
                         if "detail_answer" in option:
-                            detail_answer_id = option["detail_answer"]["id"]
-
-                            new_option = option["detail_answer"].set(
-                                "parent_id", question["id"]
+                            option["detail_answer"]["parent_id"] = question["id"]
+                            answers_by_id[option["detail_answer"]["id"]].append(
+                                option["detail_answer"]
                             )
-                            answers_by_id[detail_answer_id].append(new_option)
 
-        return self._serialize(answers_by_id)
+        return QuestionnaireSchema.serialize(answers_by_id)
 
     def _get_sections_by_id(self):
-        return immutables.Map(
+        return ImmutableDict(
             (section["id"], section) for section in self._json.get("sections", [])
         )
 
@@ -455,10 +454,13 @@ def get_nested_schema_objects(parent_object, list_key):
     for parent_id, child_object in parent_object.items():
         for child_list_object in child_object.get(list_key, []):
             # patch the ID of the parent onto the object
-            child_list_object = child_list_object.set("parent_id", parent_id)
-            nested_objects[child_list_object["id"]] = child_list_object
+            mutable_child_list_object = QuestionnaireSchema.get_mutable_deepcopy(
+                child_list_object
+            )
+            mutable_child_list_object["parent_id"] = parent_id
+            nested_objects[mutable_child_list_object["id"]] = mutable_child_list_object
 
-    return immutables.Map(nested_objects)
+    return QuestionnaireSchema.serialize(nested_objects)
 
 
 def _get_values_for_key(block, key, ignore_keys=None):
@@ -469,7 +471,7 @@ def _get_values_for_key(block, key, ignore_keys=None):
                 continue
             if k == key:
                 yield v
-            if isinstance(v, (dict, immutables.Map)):
+            if isinstance(v, dict):
                 yield from _get_values_for_key(v, key)
             elif isinstance(v, (list, tuple)):
                 for d in v:

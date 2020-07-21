@@ -235,6 +235,9 @@ class TestCreateApp(unittest.TestCase):  # pylint: disable=too-many-public-metho
         with self.assertRaises(RuntimeError):
             creds.refresh(None)
 
+        with self.assertRaises(NotImplementedError):
+            creds.with_quota_project(123)
+
     def test_setup_datastore(self):
         self._setting_overrides["EQ_STORAGE_BACKEND"] = "datastore"
 

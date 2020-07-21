@@ -1,4 +1,4 @@
-import immutables
+from werkzeug.datastructures import ImmutableDict
 
 from app.questionnaire.rules import evaluate_when_rules
 
@@ -12,11 +12,11 @@ def find_pointers_containing(input_data, search_key, pointer=None):
     :param pointer: the key to search for
     :return: generator of the json pointer paths
     """
-    if isinstance(input_data, (dict, immutables.Map)):
+    if isinstance(input_data, dict):
         if search_key in input_data:
             yield pointer or ""
         for k, v in input_data.items():
-            if (isinstance(v, (dict, immutables.Map))) and search_key in v:
+            if (isinstance(v, dict)) and search_key in v:
                 yield pointer + "/" + k if pointer else "/" + k
             else:
                 yield from find_pointers_containing(
@@ -121,7 +121,7 @@ def transform_variants(
                     current_location,
                 )
 
-    return immutables.Map(output_block)
+    return ImmutableDict(output_block)
 
 
 def get_answer_ids_in_block(block):
