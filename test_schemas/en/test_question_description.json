@@ -4,9 +4,9 @@
     "schema_version": "0.0.1",
     "data_version": "0.0.3",
     "survey_id": "0",
-    "title": "Interstitial Pages",
+    "title": "Other input fields",
     "theme": "default",
-    "description": "A questionnaire to demo interstitial pages.",
+    "description": "A questionnaire to demo checkbox field Other input.",
     "messages": {
         "NUMBER_TOO_LARGE": "Number is too large",
         "NUMBER_TOO_SMALL": "Number cannot be less than zero",
@@ -33,51 +33,33 @@
                 {
                     "blocks": [
                         {
-                            "type": "Introduction",
-                            "id": "introduction"
-                        },
-                        {
-                            "id": "interstitial",
-                            "content": {
-                                "title": "Breakfast interstitial",
-                                "instruction": "Just pause for a second",
-                                "contents": [
-                                    {
-                                        "description": "Next we want to know about your lunch."
-                                    }
-                                ]
-                            },
-                            "type": "Interstitial"
-                        },
-                        {
                             "type": "Question",
-                            "id": "lunch-block",
+                            "id": "name-block",
                             "question": {
+                                "description": ["Answer the question", "Go on"],
                                 "answers": [
                                     {
-                                        "id": "favourite-lunch",
-                                        "label": "What is your favourite lunchtime food",
+                                        "id": "name-answer",
+                                        "label": "What is your name?",
+                                        "max_length": 20,
                                         "mandatory": false,
                                         "q_code": "0",
                                         "type": "TextField"
                                     }
                                 ],
-                                "id": "favourite-lunch-question",
+                                "id": "name-question",
                                 "title": "Title",
                                 "type": "General"
                             },
                             "routing_rules": []
                         },
                         {
-                            "type": "Confirmation",
-                            "id": "confirmation",
-                            "content": {
-                                "title": "Thank you for your answers, do you wish to submit"
-                            }
+                            "type": "Summary",
+                            "id": "summary"
                         }
                     ],
-                    "id": "favourite-foods",
-                    "title": "Favourite food"
+                    "id": "checkboxes",
+                    "title": "Title"
                 }
             ]
         }

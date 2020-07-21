@@ -115,25 +115,27 @@
                                 ],
                                 "id": "confirm-answers-question",
                                 "title": "You selected the following toppings. Is this correct?",
-                                "description": {
-                                    "text": "{toppings}",
-                                    "placeholders": [
-                                        {
-                                            "placeholder": "toppings",
-                                            "transforms": [
-                                                {
-                                                    "transform": "format_list",
-                                                    "arguments": {
-                                                        "list_to_format": {
-                                                            "source": "answers",
-                                                            "identifier": "mandatory-checkbox-answer"
+                                "description": [
+                                    {
+                                        "text": "{toppings}",
+                                        "placeholders": [
+                                            {
+                                                "placeholder": "toppings",
+                                                "transforms": [
+                                                    {
+                                                        "transform": "format_list",
+                                                        "arguments": {
+                                                            "list_to_format": {
+                                                                "source": "answers",
+                                                                "identifier": "mandatory-checkbox-answer"
+                                                            }
                                                         }
                                                     }
-                                                }
-                                            ]
-                                        }
-                                    ]
-                                }
+                                                ]
+                                            }
+                                        ]
+                                    }
+                                ]
                             },
                             "routing_rules": [
                                 {
