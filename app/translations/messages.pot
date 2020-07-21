@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2020-07-20 15:45+0100\n"
+"POT-Creation-Date: 2020-07-21 17:02+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -268,7 +268,7 @@ msgstr ""
 
 #: app/views/contexts/hub_context.py:72
 #: templates/individual_response/confirmation.html:19
-#: templates/individual_response/question.html:5 templates/interstitial.html:7
+#: templates/individual_response/question.html:5 templates/interstitial.html:8
 #: templates/sectionsummary.html:11 templates/sectionsummary.html:53
 msgid "Continue"
 msgstr ""
@@ -361,13 +361,13 @@ msgstr ""
 #: templates/census-thank-you.html:32
 msgid ""
 "Your personal information is protected by law and will be kept "
-"confidential."
+"confidential"
 msgstr ""
 
 #: templates/census-thank-you.html:38
 msgid ""
 "Make sure you <a href='{url}'>leave this page</a> or close your browser "
-"if using a shared device."
+"if using a shared device"
 msgstr ""
 
 #: templates/confirmation.html:6 templates/confirmation.html:27
@@ -664,13 +664,13 @@ msgstr ""
 msgid "Sign out"
 msgstr ""
 
-#: templates/macros/helpers.html:32
+#: templates/macros/helpers.html:39
 msgid "Interviewer note:"
 msgstr ""
 
-#: templates/partials/answer-guidance.html:13
+#: templates/partials/answer-guidance.html:18
 #: templates/partials/individual-response-guidance.html:15
-#: templates/partials/question-definition.html:14
+#: templates/partials/question-definition.html:19
 msgid "Hide this"
 msgstr ""
 
@@ -694,23 +694,23 @@ msgid ""
 " of the section</a>"
 msgstr ""
 
-#: templates/partials/question.html:52
+#: templates/partials/question.html:53
 msgid "Selecting this will clear your answer"
 msgstr ""
 
-#: templates/partials/question.html:53
+#: templates/partials/question.html:54
 msgid "cleared"
 msgstr ""
 
-#: templates/partials/question.html:56
+#: templates/partials/question.html:57
 msgid "Selecting this will deselect any selected options"
 msgstr ""
 
-#: templates/partials/question.html:57 templates/partials/question.html:65
+#: templates/partials/question.html:58 templates/partials/question.html:66
 msgid "deselected"
 msgstr ""
 
-#: templates/partials/question.html:61
+#: templates/partials/question.html:62
 msgid "Or"
 msgstr ""
 
