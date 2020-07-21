@@ -82,19 +82,19 @@ SECTION_SUMMARY_PAGE_URL = r"""  url() { return `/questionnaire/sections/${this.
 """
 
 QUESTION_DEFINITION_TITLE_GETTER = Template(
-    r"""  definitionTitle${definitionIndex}() { return `.collapsible:nth-child(${definitionIndex}) > .collapsible__heading`; }
+    r"""  definitionTitle(definitionIndex) { return `[data-qa='question-definition-${definitionIndex}-title']`; }
 
 """
 )
 
 QUESTION_DEFINITION_CONTENT_GETTER = Template(
-    r"""  definitionContent${definitionIndex}() { return `.collapsible:nth-child(${definitionIndex}) > .collapsible__content`; }
+    r"""  definitionContent(definitionIndex) { return `[data-qa='question-definition-${definitionIndex}-content']`; }
 
 """
 )
 
 QUESTION_DEFINITION_BUTTON_GETTER = Template(
-    r"""  definitionButton${definitionIndex}() { return `.collapsible:nth-child(${definitionIndex}) .js-collapsible-button`; }
+    r"""  definitionButton(definitionIndex) { return `[data-qa='question-definition-${definitionIndex}-button']`; }
 
 """
 )
@@ -200,15 +200,15 @@ CALCULATED_SUMMARY_LABEL_GETTER = Template(
 """
 )
 
-LIST_SUMMARY_LABEL_GETTER = r"""  listLabel(instance) { return `tbody:nth-child(${instance}) td:first-child`; }
+LIST_SUMMARY_LABEL_GETTER = r"""  listLabel(instance) { return `[data-qa='list-item-${instance}-label']`; }
 
 """
 
-LIST_SUMMARY_EDIT_LINK_GETTER = r"""  listEditLink(instance) { return `tbody:nth-child(${instance}) td:last-child a[data-qa='change-item-link']`; }
+LIST_SUMMARY_EDIT_LINK_GETTER = r"""  listEditLink(instance) { return `[data-qa='list-item-change-${instance}-link']`; }
 
 """
 
-LIST_SUMMARY_REMOVE_LINK_GETTER = r"""  listRemoveLink(instance) { return `tbody:nth-child(${instance}) td:last-child a[data-qa='remove-item-link']`; }
+LIST_SUMMARY_REMOVE_LINK_GETTER = r"""  listRemoveLink(instance) { return `[data-qa='list-item-remove-${instance}-link']`; }
 
 """
 
@@ -217,7 +217,7 @@ LIST_SUMMARY_LIST_GETTER = r"""  listSummary() { return `.list__item`; }
 """
 
 LIST_SECTION_SUMMARY_LABEL_GETTER = Template(
-    r"""  ${list_name}ListLabel(listItemInstance) { return `div[data-qa="${list_name}-list-summary"] tbody:nth-child(` + listItemInstance + `) td:first-child`; }
+    r"""  ${list_name}ListLabel(listItemInstance) { return `div[data-qa="${list_name}-list-summary"] td[data-qa="list-item-` + listItemInstance + `-label"]`; }
 
 """
 )
@@ -229,13 +229,13 @@ LIST_SECTION_SUMMARY_ADD_LINK_GETTER = Template(
 )
 
 LIST_SECTION_SUMMARY_EDIT_LINK_GETTER = Template(
-    r"""  ${list_name}ListEditLink(listItemInstance) { return `div[data-qa="${list_name}-list-summary"] tbody:nth-child(` + listItemInstance + `) td:last-child a[data-qa="change-item-link"]`; }
+    r"""  ${list_name}ListEditLink(listItemInstance) { return `div[data-qa="${list_name}-list-summary"] a[data-qa="list-item-change-` + listItemInstance + `-link"]`; }
 
 """
 )
 
 LIST_SECTION_SUMMARY_REMOVE_LINK_GETTER = Template(
-    r"""  ${list_name}ListRemoveLink(listItemInstance) { return `div[data-qa="${list_name}-list-summary"] tbody:nth-child(` + listItemInstance + `) td:last-child a[data-qa="remove-item-link"]`; }
+    r"""  ${list_name}ListRemoveLink(listItemInstance) { return `div[data-qa="${list_name}-list-summary"] a[data-qa="list-item-remove-` + listItemInstance + `-link"]`; }
 
 """
 )
@@ -373,7 +373,7 @@ def process_question(question, page_spec, num_questions, page_name):
     long_names = long_names_required(question, num_questions)
 
     if "definitions" in question:
-        for index, _ in enumerate(question["definitions"], 2):
+        for index, _ in enumerate(question["definitions"]):
             definition_context = {"definitionIndex": index}
             page_spec.write(
                 QUESTION_DEFINITION_TITLE_GETTER.substitute(definition_context)

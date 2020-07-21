@@ -1,3 +1,4 @@
+import checkPeopleInList from "../helpers";
 import YouLiveHerePage from "../generated_pages/list_collector_variants/you-live-here-block.page.js";
 import ListCollectorPage from "../generated_pages/list_collector_variants/list-collector.page.js";
 import ListCollectorAddPage from "../generated_pages/list_collector_variants/list-collector-add.page.js";
@@ -6,14 +7,6 @@ import ListCollectorRemovePage from "../generated_pages/list_collector_variants/
 import ConfirmationPage from "../generated_pages/list_collector_variants/confirmation.page.js";
 
 describe("List Collector With Variants", () => {
-  function checkPeopleInList(peopleExpected) {
-    $(ListCollectorPage.listLabel(1)).waitForDisplayed();
-
-    for (let i = 1; i <= peopleExpected.length; i++) {
-      expect($(ListCollectorPage.listLabel(i)).getText()).to.equal(peopleExpected[i - 1]);
-    }
-  }
-
   describe("Given that a person lives in house", () => {
     before("Load the survey", () => {
       browser.openQuestionnaire("test_list_collector_variants.json");
@@ -36,7 +29,7 @@ describe("List Collector With Variants", () => {
 
     it("The user can see all household members in the summary", () => {
       const peopleExpected = ["Samuel Clemens"];
-      checkPeopleInList(peopleExpected);
+      checkPeopleInList(peopleExpected, ListCollectorPage.listLabel);
     });
 
     it("The questionnaire has the correct question text on the change and remove pages", () => {
@@ -82,7 +75,7 @@ describe("List Collector With Variants", () => {
 
     it("The user can see all household members in the summary", () => {
       const peopleExpected = ["Samuel Clemens"];
-      checkPeopleInList(peopleExpected);
+      checkPeopleInList(peopleExpected, ListCollectorPage.listLabel);
     });
 
     it("The questionnaire has the correct question text on the change and remove pages", () => {

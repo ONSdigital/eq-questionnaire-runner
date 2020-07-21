@@ -12,9 +12,9 @@ describe("Summary Screen", () => {
 
   it("Given a survey has question summary concatenations and has been completed when on the summary page then the correct response should be displayed formatted correctly", () => {
     completeAllQuestions();
-    expect($(BaseSummaryPage.summaryRowState(1)).getText()).to.contain("John Smith");
-    expect($(BaseSummaryPage.summaryRowState(2)).getText()).to.contain("Cardiff Road\nNewport\nNP10 8XG");
-    expect($(BaseSummaryPage.summaryRowState(3)).getText()).to.contain("7\nThis age is an estimate");
+    expect($(BaseSummaryPage.summaryRowState("name-question-concatenated-answer")).getText()).to.contain("John Smith");
+    expect($(BaseSummaryPage.summaryRowState("address-question-concatenated-answer")).getText()).to.contain("Cardiff Road\nNewport\nNP10 8XG");
+    expect($(BaseSummaryPage.summaryRowState("age-question-concatenated-answer")).getText()).to.contain("7\nThis age is an estimate");
   });
 
   it("Given no values are entered in a question with multiple answers and concatenation set, when on the summary screen then the correct response should be displayed", () => {
@@ -22,7 +22,7 @@ describe("Summary Screen", () => {
     $(AddressBlockPage.submit()).click();
     $(AgeBlock.submit()).click();
     expect(browser.getUrl()).to.contain(SummaryPage.pageName);
-    expect($(BaseSummaryPage.summaryRowState(1)).getText()).to.contain("No answer provided");
+    expect($(BaseSummaryPage.summaryRowState("name-question-concatenated-answer")).getText()).to.contain("No answer provided");
   });
 
   function completeAllQuestions() {

@@ -16,20 +16,22 @@ def test_get_not_started_row_for_section(
     schema, progress_store, answer_store, list_store
 ):
     expected = {
-        "rowTitle": "Breakfast",
         "rowItems": [
             {
+                "rowTitle": "Breakfast",
+                "rowTitleAttributes": {"data-qa": "hub-row-section-1-title"},
+                "attributes": {"data-qa": "hub-row-section-1-state"},
                 "valueList": [{"text": "Not started"}],
                 "actions": [
                     {
                         "text": "Start section",
                         "ariaLabel": "Start Breakfast section",
                         "url": "http://some/url",
-                        "attributes": {"data-qa": "summary-actions-section-link"},
+                        "attributes": {"data-qa": "hub-row-section-1-link"},
                     }
                 ],
             }
-        ],
+        ]
     }
 
     hub = HubContext(
@@ -45,6 +47,7 @@ def test_get_not_started_row_for_section(
         section_name="Breakfast",
         section_status=CompletionStatus.NOT_STARTED,
         section_url="http://some/url",
+        row_id="section-1",
     )
 
     assert expected == actual
@@ -54,9 +57,11 @@ def test_get_completed_row_for_section(
     schema, progress_store, answer_store, list_store
 ):
     expected = {
-        "rowTitle": "Breakfast",
         "rowItems": [
             {
+                "rowTitle": "Breakfast",
+                "rowTitleAttributes": {"data-qa": "hub-row-section-1-title"},
+                "attributes": {"data-qa": "hub-row-section-1-state"},
                 "icon": "check-green",
                 "valueList": [{"text": "Completed"}],
                 "actions": [
@@ -64,11 +69,11 @@ def test_get_completed_row_for_section(
                         "text": "View answers",
                         "ariaLabel": "View answers for Breakfast",
                         "url": "http://some/url",
-                        "attributes": {"data-qa": "summary-actions-section-link"},
+                        "attributes": {"data-qa": "hub-row-section-1-link"},
                     }
                 ],
             }
-        ],
+        ]
     }
 
     hub = HubContext(
@@ -84,6 +89,7 @@ def test_get_completed_row_for_section(
         section_name="Breakfast",
         section_status=CompletionStatus.COMPLETED,
         section_url="http://some/url",
+        row_id="section-1",
     )
 
     assert expected == actual

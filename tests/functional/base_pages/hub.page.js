@@ -18,11 +18,11 @@ class HubPage extends BasePage {
   }
 
   errorHeader() {
-    return "#main-content > div.panel.panel--error.u-mb-s > div.panel__header > div";
+    return '[data-qa="error-header"]';
   }
 
   errorNumber(number = 1) {
-    return `[data-qa="error-body"] ul > li:nth-child(${number}) > a`;
+    return `[data-qa="error-link-${number}"]`;
   }
 
   previous() {
@@ -34,7 +34,7 @@ class HubPage extends BasePage {
   }
 
   displayedGuidance() {
-    return '[data-qa="guidance"]';
+    return '[data-qa="hub-guidance-panel"]';
   }
 
   displayedSubmissionGuidance() {
@@ -57,16 +57,16 @@ class HubPage extends BasePage {
     return "table.summary__items";
   }
 
-  summaryRowState(number = 1) {
-    return `tbody:nth-child(${number}) tr td.summary__values`;
+  summaryRowState(sectionId) {
+    return `[data-qa="hub-row-${sectionId}-state"]`;
   }
 
-  summaryRowLink(number = 1) {
-    return `tbody:nth-child(${number}) tr td.summary__actions a`;
+  summaryRowLink(sectionId) {
+    return `[data-qa="hub-row-${sectionId}-link"]`;
   }
 
-  summaryRowTitle(number = 1) {
-    return `tbody:nth-child(${number}) tr td.summary__item-title`;
+  summaryRowTitle(sectionId) {
+    return `[data-qa="hub-row-${sectionId}-title"]`;
   }
 }
 
