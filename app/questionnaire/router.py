@@ -99,7 +99,7 @@ class Router:
             return self.get_section_url(location)
 
         if self._schema.is_hub_enabled():
-            return url_for(".get_questionnaire")
+            return url_for("questionnaire.get_questionnaire")
 
         return self.get_first_incomplete_location_in_survey_url()
 
