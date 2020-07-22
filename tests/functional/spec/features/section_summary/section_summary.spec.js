@@ -91,6 +91,7 @@ describe("Section Summary", () => {
       expect(browser.getUrl()).to.contain(InsuranceAddressPage.pageName);
       $(InsuranceAddressPage.answer()).setValue("Test Address");
       $(InsuranceAddressPage.submit()).click();
+      $(QuestionnaireSummaryPage.summaryShowAllButton()).click();
       expect($(QuestionnaireSummaryPage.insuranceAddressAnswer()).getText()).to.contain("Test Address");
     });
   });
