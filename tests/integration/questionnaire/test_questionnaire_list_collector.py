@@ -8,12 +8,9 @@ class TestQuestionnaireListCollector(IntegrationTestCase):
         self.post({"first-name": first_name, "last-name": last_name})
 
     def get_link(self, rowIndex, text):
-        selector = f"tbody:nth-child({rowIndex}) td:last-child a"
+        selector = f"[data-qa='list-item-{text}-{rowIndex}-link']"
         selected = self.getHtmlSoup().select(selector)
-
-        filtered = [html for html in selected if text in html.get_text()]
-
-        return filtered[0].get("href")
+        return selected[0].get("href")
 
     def get_previous_link(self):
         selector = "#top-previous"
@@ -50,33 +47,33 @@ class TestQuestionnaireListCollector(IntegrationTestCase):
 
         self.add_person("Marie Claire", "Doe")
 
-        self.assertInSelector("Marie Claire Doe", "tbody:nth-child(1) td:first-child")
+        self.assertInSelector("Marie Claire Doe", "[data-qa='list-item-1-label']")
 
         self.add_person("John", "Doe")
 
-        self.assertInSelector("John Doe", "tbody:nth-child(2) td:first-child")
+        self.assertInSelector("John Doe", "[data-qa='list-item-2-label']")
 
         self.add_person("A", "Mistake")
 
-        self.assertInSelector("A Mistake", "tbody:nth-child(3) td:first-child")
+        self.assertInSelector("A Mistake", "[data-qa='list-item-3-label']")
 
         self.add_person("Johnny", "Doe")
 
-        self.assertInSelector("Johnny Doe", "tbody:nth-child(4) td:first-child")
+        self.assertInSelector("Johnny Doe", "[data-qa='list-item-4-label']")
 
         # Make another mistake
 
-        mistake_change_link = self.get_link("3", "Change")
+        mistake_change_link = self.get_link("3", "change")
 
         self.get(mistake_change_link)
 
         self.post({"first-name": "Another", "last-name": "Mistake"})
 
-        self.assertInSelector("Another Mistake", "tbody:nth-child(3) td:first-child")
+        self.assertInSelector("Another Mistake", "[data-qa='list-item-3-label']")
 
         # Get rid of the mistake
 
-        mistake_remove_link = self.get_link("3", "Remove")
+        mistake_remove_link = self.get_link("3", "remove")
 
         self.get(mistake_remove_link)
 
@@ -95,11 +92,11 @@ class TestQuestionnaireListCollector(IntegrationTestCase):
         self.post({"remove-confirmation": "Yes"})
 
         # Make sure Johnny has moved up the list
-        self.assertInSelector("Johnny Doe", "tbody:nth-child(3) td:first-child")
+        self.assertInSelector("Johnny Doe", "[data-qa='list-item-3-label']")
 
         # Test the previous links
-        john_change_link = self.get_link("2", "Change")
-        john_remove_link = self.get_link("2", "Remove")
+        john_change_link = self.get_link("2", "change")
+        john_remove_link = self.get_link("2", "remove")
 
         self.get(john_change_link)
 
@@ -126,11 +123,11 @@ class TestQuestionnaireListCollector(IntegrationTestCase):
 
         self.add_person("Marie Claire", "Doe")
 
-        self.assertInSelector("Marie Claire Doe", "tbody:nth-child(1) td:first-child")
+        self.assertInSelector("Marie Claire Doe", "[data-qa='list-item-1-label']")
 
         self.add_person("John", "Doe")
 
-        self.assertInSelector("John Doe", "tbody:nth-child(2) td:first-child")
+        self.assertInSelector("John Doe", "[data-qa='list-item-2-label']")
 
         self.post({"anyone-else": "No"})
 
@@ -142,9 +139,9 @@ class TestQuestionnaireListCollector(IntegrationTestCase):
 
         self.assertInBody("Household members")
 
-        john_remove_link = self.get_link("2", "Remove")
+        john_remove_link = self.get_link("2", "remove")
 
-        mary_remove_link = self.get_link("1", "Remove")
+        mary_remove_link = self.get_link("1", "remove")
 
         self.get(john_remove_link)
 
@@ -247,7 +244,7 @@ class TestQuestionnaireListCollector(IntegrationTestCase):
 
         self.add_person("Someone", "Else")
 
-        change_link = self.get_link("1", "Change")
+        change_link = self.get_link("1", "change")
 
         self.get(change_link)
 
@@ -255,12 +252,19 @@ class TestQuestionnaireListCollector(IntegrationTestCase):
 
     def test_warning_text_displayed_on_remove_block_if_exists(self):
         self.launchSurvey("test_list_collector")
+
         self.post(action="start_questionnaire")
+
         self.post({"anyone-else": "Yes"})
+
         self.add_person("Someone", "Else")
-        remove_link = self.get_link("1", "Remove")
+
+        remove_link = self.get_link("1", "remove")
+
         self.get(remove_link)
+
         self.assertIsNotNone(
             self.getHtmlSoup().select("#question-warning-remove-question")
         )
+
         self.assertInBody("All of the information about this person will be deleted")

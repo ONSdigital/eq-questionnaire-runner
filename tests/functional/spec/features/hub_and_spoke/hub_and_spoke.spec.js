@@ -16,8 +16,9 @@ describe("Feature: Hub and Spoke", () => {
     browser.openQuestionnaire(hubAndSpokeSchema);
     expect($(HubPage.submit()).getText()).to.contain("Continue");
     expect($(HubPage.displayedName()).getText()).to.contain("Choose another section to complete");
-    expect($(HubPage.summaryRowState(1)).getText()).to.contain("Not started");
-    expect($(HubPage.summaryRowState(2)).getText()).to.contain("Not started");
+    expect($(HubPage.summaryRowState("employment-section")).getText()).to.contain("Not started");
+    expect($(HubPage.summaryRowState("accommodation-section")).getText()).to.contain("Not started");
+    expect($(HubPage.summaryRowState("household-section")).getText()).to.contain("Not started");
   });
 
   it("When a user views the Hub, any section with show_on_hub set to true should appear", () => {
@@ -47,8 +48,9 @@ describe("Feature: Hub and Spoke", () => {
   describe("Given a user has not started a section", () => {
     beforeEach("Open survey", () => {
       browser.openQuestionnaire(hubAndSpokeSchema);
-      expect($(HubPage.summaryRowState(1)).getText()).to.contain("Not started");
-      expect($(HubPage.summaryRowState(2)).getText()).to.contain("Not started");
+      expect($(HubPage.summaryRowState("employment-section")).getText()).to.contain("Not started");
+      expect($(HubPage.summaryRowState("accommodation-section")).getText()).to.contain("Not started");
+      expect($(HubPage.summaryRowState("household-section")).getText()).to.contain("Not started");
     });
 
     it("When the user starts a section, Then the first question in the section should be displayed", () => {
@@ -68,7 +70,7 @@ describe("Feature: Hub and Spoke", () => {
   describe("Given a user has started a section", () => {
     before("Start section", () => {
       browser.openQuestionnaire(hubAndSpokeSchema);
-      $(HubPage.summaryRowLink(1)).click();
+      $(HubPage.summaryRowLink("employment-section")).click();
       $(EmploymentStatusBlockPage.exclusiveNoneOfTheseApply()).click();
       $(EmploymentStatusBlockPage.submit()).click();
     });
@@ -81,12 +83,12 @@ describe("Feature: Hub and Spoke", () => {
 
     it("When the user returns to the Hub, Then the section should be marked as 'Partially completed'", () => {
       browser.url(HubPage.url());
-      expect($(HubPage.summaryRowState(1)).getText()).to.contain("Partially completed");
+      expect($(HubPage.summaryRowState("employment-section")).getText()).to.contain("Partially completed");
     });
 
     it("When the user returns to the Hub and restarts the same section, Then they should be redirected to the first incomplete block", () => {
       browser.url(HubPage.url());
-      $(HubPage.summaryRowLink(1)).click();
+      $(HubPage.summaryRowLink("employment-section")).click();
       const expectedUrl = browser.getUrl();
       expect(expectedUrl).to.contain(EmploymentTypeBlockPage.url());
     });
@@ -95,7 +97,7 @@ describe("Feature: Hub and Spoke", () => {
   describe("Given a user has completed a section", () => {
     beforeEach("Complete section", () => {
       browser.openQuestionnaire(hubAndSpokeSchema);
-      $(HubPage.summaryRowLink(1)).click();
+      $(HubPage.summaryRowLink("employment-section")).click();
       $(EmploymentStatusBlockPage.exclusiveNoneOfTheseApply()).click();
       $(EmploymentStatusBlockPage.submit()).click();
       $(EmploymentTypeBlockPage.studying()).click();
@@ -115,14 +117,14 @@ describe("Feature: Hub and Spoke", () => {
 
     it("When the user returns to the Hub, Then the section should be marked as 'Completed'", () => {
       $(EmploymentTypeBlockPage.submit()).click();
-      expect($(HubPage.summaryRowState(1)).getText()).to.contain("Completed");
+      expect($(HubPage.summaryRowState("employment-section")).getText()).to.contain("Completed");
 
-      expect($(HubPage.summaryRowTitle(1)).getAttribute("class")).to.contain("summary__item-title--has-icon");
+      expect($(HubPage.summaryRowTitle("employment-section")).getAttribute("class")).to.contain("summary__item-title--has-icon");
     });
 
     it("When the user returns to the Hub and clicks the 'View answers' link on the Hub, if this no summary they are returned to the first block", () => {
       $(EmploymentTypeBlockPage.submit()).click();
-      $(HubPage.summaryRowLink(1)).click();
+      $(HubPage.summaryRowLink("employment-section")).click();
       const expectedUrl = browser.getUrl();
       expect(expectedUrl).to.contain(EmploymentStatusBlockPage.url());
     });
@@ -139,16 +141,16 @@ describe("Feature: Hub and Spoke", () => {
   describe("Given a user has completed a section and is on the Hub page", () => {
     beforeEach("Complete section", () => {
       browser.openQuestionnaire(hubAndSpokeSchema);
-      $(HubPage.summaryRowLink(1)).click();
+      $(HubPage.summaryRowLink("employment-section")).click();
       $(EmploymentStatusBlockPage.workingAsAnEmployee()).click();
       $(EmploymentStatusBlockPage.submit()).click();
 
-      expect($(HubPage.summaryRowState(1)).getText()).to.contain("Completed");
-      expect($(HubPage.summaryRowTitle(1)).getAttribute("class")).to.contain("summary__item-title--has-icon");
+      expect($(HubPage.summaryRowState("employment-section")).getText()).to.contain("Completed");
+      expect($(HubPage.summaryRowTitle("employment-section")).getAttribute("class")).to.contain("summary__item-title--has-icon");
     });
 
     it("When the user clicks the 'View answers' link and incompletes the section, Then they the should be taken to the next incomplete question on 'Continue", () => {
-      $(HubPage.summaryRowLink(1)).click();
+      $(HubPage.summaryRowLink("employment-section")).click();
       expect(browser.getUrl()).to.contain(EmploymentStatusBlockPage.url());
       $(EmploymentStatusBlockPage.exclusiveNoneOfTheseApply()).click();
       $(EmploymentStatusBlockPage.submit()).click();
@@ -157,22 +159,22 @@ describe("Feature: Hub and Spoke", () => {
     });
 
     it("When the user clicks the 'View answers' link and incompletes the section and returns to the hub, Then the section should be marked as 'Partially completed'", () => {
-      $(HubPage.summaryRowLink(1)).click();
+      $(HubPage.summaryRowLink("employment-section")).click();
       expect(browser.getUrl()).to.contain(EmploymentStatusBlockPage.url());
       $(EmploymentStatusBlockPage.exclusiveNoneOfTheseApply()).click();
       $(EmploymentStatusBlockPage.submit()).click();
       browser.url(HubPage.url());
       const expectedUrl = browser.getUrl();
       expect(expectedUrl).to.contain(HubPage.url());
-      expect($(HubPage.summaryRowState(1)).getText()).to.contain("Partially completed");
-      expect($(HubPage.summaryRowTitle(1)).getAttribute("class")).not.to.contain("summary__item-title--has-icon");
+      expect($(HubPage.summaryRowState("employment-section")).getText()).to.contain("Partially completed");
+      expect($(HubPage.summaryRowTitle("employment-section")).getAttribute("class")).not.to.contain("summary__item-title--has-icon");
     });
   });
 
   describe("Given a user has completed all sections", () => {
     beforeEach("Complete all sections", () => {
       browser.openQuestionnaire(hubAndSpokeSchema);
-      $(HubPage.summaryRowLink(1)).click();
+      $(HubPage.summaryRowLink("employment-section")).click();
       $(EmploymentStatusBlockPage.exclusiveNoneOfTheseApply()).click();
       $(EmploymentStatusBlockPage.submit()).click();
       $(EmploymentTypeBlockPage.studying()).click();
@@ -229,21 +231,21 @@ describe("Feature: Hub and Spoke", () => {
   describe("Given a section is complete and the user has been returned to a section summary by clicking the 'View answers' link ", () => {
     beforeEach("Complete section", () => {
       browser.openQuestionnaire(hubAndSpokeSchema);
-      $(HubPage.summaryRowLink(3)).click();
+      $(HubPage.summaryRowLink("household-section")).click();
       $(DoesAnyoneLiveHere.no()).click();
       $(DoesAnyoneLiveHere.submit()).click();
       $(HouseholdSummary.submit()).click();
     });
 
     it("When there are no changes, continue returns directly to the hub", () => {
-      $(HubPage.summaryRowLink(3)).click();
+      $(HubPage.summaryRowLink("household-section")).click();
       $(HouseholdSummary.submit()).click();
       const expectedUrl = browser.getUrl();
       expect(expectedUrl).to.contain(HubPage.url());
     });
 
     it("When there are changes, which would set the section to in_progress it routes accordingly", () => {
-      $(HubPage.summaryRowLink(3)).click();
+      $(HubPage.summaryRowLink("household-section")).click();
       $(HouseholdSummary.doesAnyoneLiveHereAnswerEdit()).click();
       $(DoesAnyoneLiveHere.yes()).click();
       $(DoesAnyoneLiveHere.submit()).click();

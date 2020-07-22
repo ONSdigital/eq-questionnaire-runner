@@ -86,13 +86,15 @@ class HubContext(Context):
         }
 
     def get_row_context_for_section(
-        self, section_name: str, section_status: str, section_url: str
+        self, section_name: str, section_status: str, section_url: str, row_id: str
     ) -> Mapping[str, Union[str, List]]:
         section_content = self.SECTION_CONTENT_STATES[section_status]
         context: Mapping = {
-            "rowTitle": section_name,
             "rowItems": [
                 {
+                    "rowTitle": section_name,
+                    "rowTitleAttributes": {"data-qa": f"hub-row-{row_id}-title"},
+                    "attributes": {"data-qa": f"hub-row-{row_id}-state"},
                     "valueList": [{"text": section_content["text"]}],
                     "actions": [
                         {
@@ -101,11 +103,11 @@ class HubContext(Context):
                                 section_name=section_name
                             ),
                             "url": section_url,
-                            "attributes": {"data-qa": "summary-actions-section-link"},
+                            "attributes": {"data-qa": f"hub-row-{row_id}-link"},
                         }
                     ],
                 }
-            ],
+            ]
         }
 
         if section_status in (
@@ -127,16 +129,22 @@ class HubContext(Context):
 
         return url_for("questionnaire.get_section", section_id=section_id)
 
-    def _get_row_for_repeating_section(self, section_id, list_item_id):
+    def _get_row_for_repeating_section(self, section_id, list_item_id, list_item_index):
         repeating_title = self._schema.get_repeating_title_for_section(section_id)
 
         title = self._placeholder_renderer.render_placeholder(
             repeating_title, list_item_id
         )
 
-        return self._get_row_for_section(title, section_id, list_item_id)
+        return self._get_row_for_section(
+            title, section_id, list_item_id, list_item_index
+        )
 
-    def _get_row_for_section(self, section_title, section_id, list_item_id=None):
+    def _get_row_for_section(
+        self, section_title, section_id, list_item_id=None, list_item_index=None
+    ):
+        row_id = f"{section_id}-{list_item_index}" if list_item_index else section_id
+
         section_status = self._progress_store.get_section_status(
             section_id, list_item_id
         )
@@ -145,10 +153,11 @@ class HubContext(Context):
             section_title,
             section_status,
             self.get_section_url(section_id, list_item_id),
+            row_id,
         )
 
     def _get_rows(self, enabled_section_ids) -> List[Mapping[str, Union[str, List]]]:
-        rows = []
+        rows: List[Mapping] = []
 
         for section_id in enabled_section_ids:
             show_on_hub = self._schema.get_show_on_hub_for_section(section_id)
@@ -158,10 +167,13 @@ class HubContext(Context):
                 repeating_list = self._schema.get_repeating_list_for_section(section_id)
 
                 if repeating_list:
-                    for list_item_id in self._list_store[repeating_list]:
+                    for list_item_index, list_item_id in enumerate(
+                        self._list_store[repeating_list].items, start=1
+                    ):
+
                         rows.append(
                             self._get_row_for_repeating_section(
-                                section_id, list_item_id
+                                section_id, list_item_id, list_item_index
                             )
                         )
                 else:

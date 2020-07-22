@@ -1,8 +1,6 @@
 # pylint: disable=redefined-outer-name
 import pytest
-from app.views.contexts.metadata_context import (
-    build_metadata_context_for_survey_completed,
-)
+from app.views.contexts.thank_you_context import build_default_thank_you_context
 from app.data_model.session_data import SessionData
 
 
@@ -26,7 +24,7 @@ def fake_session_data():
 def test_context_includes_period_str_if_available(fake_session_data):
     fake_session_data.period_str = "some name"
 
-    context = build_metadata_context_for_survey_completed(fake_session_data)
+    context = build_default_thank_you_context(fake_session_data)
 
     assert context["period_str"] == "some name"
 
@@ -34,12 +32,12 @@ def test_context_includes_period_str_if_available(fake_session_data):
 def test_context_includes_ru_name_if_available(fake_session_data):
     fake_session_data.ru_name = "some name"
 
-    context = build_metadata_context_for_survey_completed(fake_session_data)
+    context = build_default_thank_you_context(fake_session_data)
 
     assert context["ru_name"] == "some name"
 
 
 def test_context_does_not_include_period_str_and_ru_name_by_default(fake_session_data):
-    context = build_metadata_context_for_survey_completed(fake_session_data)
+    context = build_default_thank_you_context(fake_session_data)
     assert "ru_name" not in context
     assert "period_str" not in context
