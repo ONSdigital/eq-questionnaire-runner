@@ -87,13 +87,7 @@ def get_individual_response_how(schema, questionnaire_store, list_item_id):
     if request.method == "GET" or not individual_response_handler.form.validate():
         return individual_response_handler.handle_get()
 
-    return redirect(
-        url_for(
-            ".get_individual_response_post_address_confirm",
-            list_item_id=list_item_id,
-            journey="change",
-        )
-    )
+    return individual_response_handler.handle_post()
 
 
 @individual_response_blueprint.route("/<list_item_id>/change", methods=["GET", "POST"])
