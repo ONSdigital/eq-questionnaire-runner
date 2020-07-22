@@ -17,7 +17,6 @@ class Block:
     ):
         self.id = block_schema["id"]
         self.location = location
-        self.scehma = block_schema
         self.title = block_schema.get("title")
         self.number = block_schema.get("number")
         self.link = self._build_link(block_schema["id"], return_to)
@@ -26,7 +25,6 @@ class Block:
         )
 
     def _build_link(self, block_id, return_to):
-
         if return_to == "summary":
             return url_for(
                 "questionnaire.block",

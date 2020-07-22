@@ -41,7 +41,6 @@ class SectionHandler:
             self._questionnaire_store.progress_store,
             self._questionnaire_store.metadata,
         )
-
         return section_summary_context(self.current_location)
 
     def get_next_location_url(self):

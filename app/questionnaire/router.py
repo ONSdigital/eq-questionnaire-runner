@@ -83,7 +83,7 @@ class Router:
         )
 
         if return_to_summary and is_section_complete:
-            return self.get_section_url(location)
+            return self._get_section_url(location)
 
         if return_to_final_summary and is_section_complete:
             return self.get_last_location_in_survey().url()
@@ -96,7 +96,7 @@ class Router:
 
     def _get_next_location_url_for_last_block_in_section(self, location):
         if self._schema.show_summary_on_completion_for_section(location.section_id):
-            return self.get_section_url(location)
+            return self._get_section_url(location)
 
         if self._schema.is_hub_enabled():
             return url_for("questionnaire.get_questionnaire")
@@ -312,7 +312,7 @@ class Router:
         return Location(section_id=last_section_id, block_id=last_block_id)
 
     @staticmethod
-    def get_section_url(location):
+    def _get_section_url(location):
         return url_for(
             "questionnaire.get_section",
             section_id=location.section_id,
