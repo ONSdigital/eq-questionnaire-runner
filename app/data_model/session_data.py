@@ -17,6 +17,7 @@ class SessionData:
         account_service_log_out_url=None,
         submitted_time=None,
         trad_as=None,
+        display_address=None,
         **_,
     ):  # pylint: disable=too-many-locals
         self.tx_id = tx_id
@@ -35,3 +36,4 @@ class SessionData:
         self.trad_as = trad_as
         self.account_service_url = account_service_url
         self.account_service_log_out_url = account_service_log_out_url
+        self.display_address = display_address
