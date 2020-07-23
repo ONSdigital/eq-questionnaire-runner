@@ -247,6 +247,3 @@ def test_validate_mandatory_date(app):
     validator = handler.get_mandatory_validator()
 
     assert validator.message == "Test Mandatory Date Message"
-
-
-# test_get_referenced_value(app=MagicMock)
