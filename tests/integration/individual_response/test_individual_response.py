@@ -466,8 +466,55 @@ class TestIndividualResponseChange(IndividualResponseTestCase):
         # Then I should be taken to the hub
         self.assertInUrl("/questionnaire")
 
-        # And the section status should be updated
+    def test_answer_own_questions_option_updates_section_status(self):
+        # Given I navigate to the individual response change page
+        self._request_individual_response()
+        self.get("/questionnaire")
+        self.get(self.individual_section_link)
+
+        # When I choose the "I will ask them to answer" option
+        self.post(
+            {
+                "individual-response-change-answer": "I will ask them to answer their own questions"
+            }
+        )
+
+        # Then the section status should be updated
         self.assertNotInBody("Change or resend")
+        self.assertInBody("Not started")
+        self.assertInBody("Start section")
+
+    def test_answer_own_questions_option_after_starting_section_updates_section_status(
+        self
+    ):
+        # Given start a section and then request an individual response
+        self._add_household_no_primary()
+        self.post()
+        self.post()
+        self.previous()
+        self.get(self.individual_response_link)
+        self.post()
+        self.post({"individual-response-how-answer": "Post"})
+        self.post(
+            {
+                "individual-response-post-confirm-answer": "Yes, send the access code by post"
+            }
+        )
+        self.post()
+
+        # When I navigate to the individual response change page and choose the "I will ask them to answer" option
+        self.get("/questionnaire")
+        self.get(self.individual_section_link)
+        self.post(
+            {
+                "individual-response-change-answer": "I will ask them to answer their own questions"
+            }
+        )
+
+        # Then the section status should be updated
+        self.assertNotInBody("Change or resend")
+        self.assertInBody("Partially completed")
+        self.assertInBody("Continue with section")
 
     def test_i_will_answer_option_goes_to_individual_section(self):
         # Given I navigate to the individual response change page
