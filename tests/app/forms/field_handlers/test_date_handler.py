@@ -1,6 +1,5 @@
 # pylint: disable=unused-argument
 from datetime import datetime
-from freezegun import freeze_time
 
 from mock import patch
 
