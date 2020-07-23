@@ -245,19 +245,11 @@ class IndividualResponseHowHandler(IndividualResponseHandler):
         )
 
     def handle_post(self):
-        if self._request_args.get("journey"):
-            return redirect(
-                url_for(
-                    ".get_individual_response_post_address_confirm",
-                    list_item_id=self._list_item_id,
-                    journey=self._request_args["journey"],
-                )
-            )
-
         return redirect(
             url_for(
                 ".get_individual_response_post_address_confirm",
                 list_item_id=self._list_item_id,
+                journey=self._request_args.get("journey"),
             )
         )
 
@@ -476,17 +468,11 @@ class IndividualResponsePostAddressConfirmHandler(IndividualResponseHandler):
         return self.form.get_data(self.answer_id)
 
     def handle_get(self):
-        if self._request_args.get("journey"):
-            previous_location_url = url_for(
-                "individual_response.get_individual_response_how",
-                list_item_id=self._list_item_id,
-                journey=self._request_args["journey"],
-            )
-        else:
-            previous_location_url = url_for(
-                "individual_response.get_individual_response_how",
-                list_item_id=self._list_item_id,
-            )
+        previous_location_url = url_for(
+            "individual_response.get_individual_response_how",
+            list_item_id=self._list_item_id,
+            journey=self._request_args.get("journey"),
+        )
 
         return render_template(
             "individual_response/question",
