@@ -71,7 +71,7 @@ class DateHandler(FieldHandler):
         value = self.get_schema_value(self.answer_schema[key])
 
         if value == "now":
-            value = datetime.utcnow().strftime("%Y-%m-%d")
+            value = datetime.now().strftime("%Y-%m-%d")
 
         return convert_to_datetime(value)
 

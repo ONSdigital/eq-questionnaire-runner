@@ -1,5 +1,6 @@
 # pylint: disable=unused-argument
 from datetime import datetime
+from freezegun import freeze_time
 
 from mock import patch
 
@@ -86,6 +87,14 @@ def test_get_referenced_offset_value_for_value(app):
     minimum_date = handler.transform_date_by_offset(minimum_date, {"days": 10})
 
     assert minimum_date == convert_to_datetime("2017-06-21")
+
+
+def test_get_referenced_timezone(app):
+    with freeze_time("2020-03-20 23:00:01", tz_offset=+1):
+        answer = {"census_date": {"value": "now"}}
+        handler = DateHandler(answer)
+        census_date = handler.get_referenced_date("census_date")
+        assert census_date == convert_to_datetime("2020-03-21")
 
 
 def test_get_referenced_offset_value_for_now_value(app):
@@ -238,3 +247,6 @@ def test_validate_mandatory_date(app):
     validator = handler.get_mandatory_validator()
 
     assert validator.message == "Test Mandatory Date Message"
+
+
+# test_get_referenced_value(app=MagicMock)
