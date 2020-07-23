@@ -401,7 +401,7 @@ class TestIndividualResponseChange(IndividualResponseTestCase):
         self.get("/questionnaire")
         self.get(self.individual_section_link)
 
-        # Then I should see change individual response page
+        # Then I should see the change individual response page
         self.assertInBody("How would you like to answer")
 
     def test_change_page_previous_goes_to_hub(self):
