@@ -33,7 +33,7 @@ class CalculatedSummaryContext(Context):
                 self._schema,
                 location,
                 self._language,
-                return_to="final_summary",
+                return_to="final-summary",
             ).serialize()
             for group in section["groups"]
         ]

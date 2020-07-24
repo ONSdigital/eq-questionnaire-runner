@@ -72,14 +72,15 @@ class Router:
         whether it be a summary, the hub or the next incomplete location.
         """
 
-        is_section_complete = self._progress_store.is_section_complete(
-            location.section_id, location.list_item_id
-        )
-        if return_to == "summary" and is_section_complete:
-            return self._get_section_url(location)
+        if return_to:
+            is_section_complete = self._progress_store.is_section_complete(
+                location.section_id, location.list_item_id
+            )
+            if is_section_complete and return_to == "section-summary":
+                return self._get_section_url(location)
 
-        if return_to == "final_summary" and is_section_complete:
-            return self.get_last_location_in_survey().url()
+            if is_section_complete and return_to == "final-summary":
+                return self.get_last_location_in_survey().url()
 
         is_last_block_in_section = routing_path[-1] == location.block_id
         if is_last_block_in_section:

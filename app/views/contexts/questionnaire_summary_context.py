@@ -34,7 +34,7 @@ class QuestionnaireSummaryContext(Context):
                 break
 
             location = Location(section_id=section_id)
-            for group in section_summary_context(location, "final_summary")["summary"][
-                "groups"
-            ]:
+            for group in section_summary_context(location, return_to="final-summary")[
+                "summary"
+            ]["groups"]:
                 yield group
