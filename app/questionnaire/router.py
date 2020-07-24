@@ -66,13 +66,7 @@ class Router:
     def routing_path(self, section_id, list_item_id=None):
         return self._path_finder.routing_path(section_id, list_item_id)
 
-    def get_next_location_url(
-        self,
-        location,
-        routing_path,
-        return_to_summary=False,
-        return_to_final_summary=False,
-    ):
+    def get_next_location_url(self, location, routing_path, return_to=None):
         """
         Get the next location in the section. If the section is complete, determine where to go next,
         whether it be a summary, the hub or the next incomplete location.
@@ -81,11 +75,10 @@ class Router:
         is_section_complete = self._progress_store.is_section_complete(
             location.section_id, location.list_item_id
         )
-
-        if return_to_summary and is_section_complete:
+        if return_to == "summary" and is_section_complete:
             return self._get_section_url(location)
 
-        if return_to_final_summary and is_section_complete:
+        if return_to == "final_summary" and is_section_complete:
             return self.get_last_location_in_survey().url()
 
         is_last_block_in_section = routing_path[-1] == location.block_id

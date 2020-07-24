@@ -180,7 +180,7 @@ class TestRouter(AppContextTestCase):  # pylint: disable=too-many-public-methods
             ["insurance-type", "insurance-address"], section_id="default-section"
         )
         next_location = router.get_next_location_url(
-            current_location, routing_path, return_to_summary=True
+            current_location, routing_path, return_to="summary"
         )
 
         self.assertIn(
@@ -208,7 +208,7 @@ class TestRouter(AppContextTestCase):  # pylint: disable=too-many-public-methods
             ["name-block", "summary"], section_id="default-section"
         )
         next_location = router.get_next_location_url(
-            current_location, routing_path, return_to_final_summary=True
+            current_location, routing_path, return_to="final_summary"
         )
         expected_location = Location(
             section_id="default-section", block_id="summary"

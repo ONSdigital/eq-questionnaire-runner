@@ -25,20 +25,12 @@ class Block:
         )
 
     def _build_link(self, block_id, return_to):
-        if return_to == "summary":
-            return url_for(
-                "questionnaire.block",
-                list_name=self.location.list_name,
-                block_id=block_id,
-                list_item_id=self.location.list_item_id,
-                return_to_summary=True,
-            )
         return url_for(
             "questionnaire.block",
             list_name=self.location.list_name,
             block_id=block_id,
             list_item_id=self.location.list_item_id,
-            return_to_final_summary=True,
+            return_to=return_to,
         )
 
     @staticmethod
