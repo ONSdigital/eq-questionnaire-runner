@@ -22,7 +22,7 @@ describe("Feature: Show section summary on completion", () => {
 
   describe("Given I have completed a section with the summary turned off for the forward journey", () => {
     it("When I return to a completed section from the hub, Then I am returned to that section summary", () => {
-      $(hubPage.summaryRowLink(1)).click();
+      $(hubPage.summaryRowLink("employment-section")).click();
 
       expect(browser.getUrl()).to.contain(employmentSectionSummary.url());
     });
@@ -34,7 +34,7 @@ describe("Feature: Show section summary on completion", () => {
     });
 
     it("When I reach the end of that section, Then I will be taken to the section summary to enable me to amend an answer", () => {
-      $(hubPage.summaryRowLink(2)).click();
+      $(hubPage.summaryRowLink("accommodation-section")).click();
       $(proxyQuestionPage.noIMAnsweringForMyself()).click();
       $(proxyQuestionPage.submit()).click();
 
@@ -48,7 +48,7 @@ describe("Feature: Show section summary on completion", () => {
     });
 
     it("When I return to a completed section from the hub, Then I am returned to the correct section summary", () => {
-      $(hubPage.summaryRowLink(2)).click();
+      $(hubPage.summaryRowLink("accommodation-section")).click();
 
       expect(browser.getUrl()).to.contain(accommodationSectionSummary.url());
     });

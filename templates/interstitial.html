@@ -1,4 +1,5 @@
 {% extends 'layouts/_questionnaire.html' %}
+{% from 'macros/helpers.html' import format_paragraphs %}
 
 {% from 'macros/helpers.html' import interviewer_note %}
 
@@ -7,7 +8,7 @@
 {% set continue_button_text = _("Continue") %}
 
 {% block form_content %}
-  {% set interstitial_instruction = format_paragraphs(block.content.instruction) if block.content.instruction else None %}
+  {% set interstitial_instruction = format_paragraphs(block.content.instruction) %}
   {% if block.interviewer_only %}
       <h1 class="question__title">{{ interviewer_note(block.content.title) }}</h1>
   {% else %}

@@ -1,7 +1,9 @@
 from datetime import datetime
 from structlog import get_logger
+from app.questionnaire.questionnaire_schema import DEFAULT_LANGUAGE_CODE
 from app.submitter.convert_payload_0_0_1 import convert_answers_to_payload_0_0_1
 from app.submitter.convert_payload_0_0_3 import convert_answers_to_payload_0_0_3
+
 
 logger = get_logger()
 
@@ -34,6 +36,7 @@ def convert_answers(schema, questionnaire_store, routing_path, flushed=False):
         'started_at': '2016-03-06T15:28:05Z',
         'submitted_at': '2016-03-07T15:28:05Z',
         'questionnaire_id': '1234567890000000',
+        'launch_language_code': 'en',
         'channel': 'RH',
         'metadata': {
           'user_id': '789473423',
@@ -72,6 +75,7 @@ def convert_answers(schema, questionnaire_store, routing_path, flushed=False):
         "collection": _build_collection(metadata),
         "metadata": _build_metadata(metadata),
         "questionnaire_id": metadata["questionnaire_id"],
+        "launch_language_code": metadata.get("language_code", DEFAULT_LANGUAGE_CODE),
     }
 
     if metadata.get("channel"):

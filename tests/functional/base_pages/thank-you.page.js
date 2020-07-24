@@ -5,8 +5,12 @@ class ThankYouPage extends QuestionPage {
     super("thank-you");
   }
 
-  submissionSuccessfulTitle() {
-    return '[data-qa="submission-successful-title"]';
+  guidance() {
+    return '[data-qa="guidance"]';
+  }
+
+  title() {
+    return '[data-qa="title"]';
   }
 
   signOut() {
