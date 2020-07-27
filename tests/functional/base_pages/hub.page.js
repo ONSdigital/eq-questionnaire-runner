@@ -33,12 +33,12 @@ class HubPage extends BasePage {
     return "h1";
   }
 
-  displayedGuidance() {
-    return '[data-qa="hub-guidance-panel"]';
+  displayedWarning() {
+    return '[data-qa="warning"]';
   }
 
-  displayedSubmissionGuidance() {
-    return '[data-qa="submission-guidance"]';
+  displayedGuidance() {
+    return '[data-qa="guidance"]';
   }
 
   submit() {

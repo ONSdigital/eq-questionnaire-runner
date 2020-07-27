@@ -107,12 +107,12 @@ def test_get_context(progress_store, answer_store, list_store, router):
     )
 
     expected_context = {
-        "title": "Choose another section to complete",
-        "guidance": "You must complete all sections in order to submit this survey",
+        "individual_response_enabled": False,
+        "guidance": None,
         "rows": [],
         "submit_button": "Continue",
-        "individual_response_enabled": False,
-        "submission_guidance": None,
+        "title": "Choose another section to complete",
+        "warning": None,
     }
 
     assert expected_context == hub.get_context(
@@ -134,12 +134,12 @@ def test_get_context_custom_content_incomplete(
     )
 
     expected_context = {
-        "title": "Choose another section to complete",
-        "guidance": "Guidance displayed on hub when incomplete",
-        "rows": [],
-        "submit_button": "Continue",
         "individual_response_enabled": False,
-        "submission_guidance": None,
+        "rows": [],
+        "guidance": None,
+        "submit_button": "Continue",
+        "title": "Choose another section to complete",
+        "warning": None,
     }
 
     assert expected_context == hub_context.get_context(
@@ -161,12 +161,12 @@ def test_get_context_custom_content_complete(
     )
 
     expected_context = {
-        "title": "Title displayed on hub when complete",
-        "guidance": "Guidance displayed on hub when complete",
+        "individual_response_enabled": False,
+        "guidance": "Submission guidance",
         "rows": [],
         "submit_button": "Submission text",
-        "individual_response_enabled": False,
-        "submission_guidance": "Submission guidance",
+        "title": "Submission title",
+        "warning": "Submission warning",
     }
 
     assert expected_context == hub_context.get_context(

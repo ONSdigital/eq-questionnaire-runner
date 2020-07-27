@@ -9,9 +9,9 @@ describe("Feature: Hub and Spoke with custom content", () => {
   it("When the questionnaire is incomplete, then custom content should be displayed correctly", () => {
     browser.openQuestionnaire(hubAndSpokeSchema);
     expect($(HubPage.displayedName()).getText()).to.contain("Choose another section to complete");
-    expect($(HubPage.displayedGuidance()).getText()).to.contain("Guidance displayed on hub when incomplete");
-    expect($(HubPage.displayedSubmissionGuidance()).isExisting()).to.be.false;
+    expect($(HubPage.displayedGuidance()).isExisting()).to.be.false;
     expect($(HubPage.submit()).getText()).to.contain("Continue");
+    expect($(HubPage.displayedWarning()).isExisting()).to.be.false;
   });
 
   it("When the questionnaire is complete, then custom content should be displayed correctly", () => {
@@ -22,9 +22,9 @@ describe("Feature: Hub and Spoke with custom content", () => {
     $(HowManyPeopleLiveHere.answer1()).click();
     $(HowManyPeopleLiveHere.submit()).click();
     $(HouseholdSummary.submit()).click();
-    expect($(HubPage.displayedName()).getText()).to.contain("Title displayed on hub when complete");
-    expect($(HubPage.displayedGuidance()).getText()).to.contain("Guidance displayed on hub when complete");
-    expect($(HubPage.displayedSubmissionGuidance()).getText()).to.contain("Submission guidance");
+    expect($(HubPage.displayedName()).getText()).to.contain("Submission title");
+    expect($(HubPage.displayedGuidance()).getText()).to.contain("Submission guidance");
     expect($(HubPage.submit()).getText()).to.contain("Submission text");
+    expect($(HubPage.displayedWarning()).getText()).to.contain("Submission warning");
   });
 });

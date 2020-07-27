@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2020-07-21 17:02+0100\n"
+"POT-Creation-Date: 2020-07-27 15:58+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -250,23 +250,19 @@ msgstr ""
 msgid "Change or resend"
 msgstr ""
 
-#: app/views/contexts/hub_context.py:52 app/views/contexts/hub_context.py:60
+#: app/views/contexts/hub_context.py:49 app/views/contexts/hub_context.py:50
 msgid "Submit survey"
 msgstr ""
 
-#: app/views/contexts/hub_context.py:54 templates/summary.html:16
-msgid "Please submit this survey to complete it"
+#: app/views/contexts/hub_context.py:54
+msgid "You must submit this survey to complete it"
 msgstr ""
 
-#: app/views/contexts/hub_context.py:66
+#: app/views/contexts/hub_context.py:59
 msgid "Choose another section to complete"
 msgstr ""
 
-#: app/views/contexts/hub_context.py:68
-msgid "You must complete all sections in order to submit this survey"
-msgstr ""
-
-#: app/views/contexts/hub_context.py:72
+#: app/views/contexts/hub_context.py:60
 #: templates/individual_response/confirmation.html:19
 #: templates/individual_response/question.html:5 templates/interstitial.html:8
 #: templates/sectionsummary.html:11 templates/sectionsummary.html:53
@@ -440,6 +436,10 @@ msgstr ""
 
 #: templates/summary.html:11
 msgid "Check your answers and submit"
+msgstr ""
+
+#: templates/summary.html:16
+msgid "Please submit this survey to complete it"
 msgstr ""
 
 #: templates/summary.html:17
