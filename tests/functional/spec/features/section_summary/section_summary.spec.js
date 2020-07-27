@@ -59,19 +59,19 @@ describe("Section Summary", () => {
       expect(browser.getUrl()).to.contain("/questionnaire/summary/");
     });
 
-    it("When I select edit from Final Summary and don't change an answer, Then I should be taken to the Section Summary", () => {
+    it("When I select edit from Final Summary and don't change an answer, Then I should be taken to the Final Summary", () => {
       $(QuestionnaireSummaryPage.summaryShowAllButton()).click();
       $(QuestionnaireSummaryPage.insuranceAddressAnswerEdit()).click();
       $(InsuranceAddressPage.submit()).click();
-      expect(browser.getUrl()).to.contain("/sections/property-details-section/");
+      expect(browser.getUrl()).to.contain("/questionnaire/summary/");
     });
 
-    it("When I select edit from Final Summary and change an answer that doesn't affect completeness, Then I should be taken to the Section Summary", () => {
+    it("When I select edit from Final Summary and change an answer that doesn't affect completeness, Then I should be taken to the Final Summary", () => {
       $(QuestionnaireSummaryPage.summaryShowAllButton()).click();
       $(QuestionnaireSummaryPage.insuranceAddressAnswerEdit()).click();
       $(InsuranceAddressPage.answer()).setValue("Test Address");
       $(InsuranceAddressPage.submit()).click();
-      expect(browser.getUrl()).to.contain("/sections/property-details-section/");
+      expect(browser.getUrl()).to.contain("/questionnaire/summary/");
     });
 
     it("When I select edit from Final Summary and change an answer that affects completeness, Then I should be stepped through the section", () => {
@@ -91,6 +91,7 @@ describe("Section Summary", () => {
       expect(browser.getUrl()).to.contain(InsuranceAddressPage.pageName);
       $(InsuranceAddressPage.answer()).setValue("Test Address");
       $(InsuranceAddressPage.submit()).click();
+      $(QuestionnaireSummaryPage.summaryShowAllButton()).click();
       expect($(QuestionnaireSummaryPage.insuranceAddressAnswer()).getText()).to.contain("Test Address");
     });
   });
