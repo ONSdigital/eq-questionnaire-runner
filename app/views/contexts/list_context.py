@@ -11,7 +11,7 @@ class ListContext(Context):
         self,
         summary_definition,
         for_list,
-        return_to_summary=None,
+        return_to=None,
         edit_block_id=None,
         remove_block_id=None,
     ):
@@ -19,7 +19,7 @@ class ListContext(Context):
             list(
                 self._build_list_items_context(
                     for_list,
-                    return_to_summary,
+                    return_to,
                     summary_definition,
                     edit_block_id,
                     remove_block_id,
@@ -37,12 +37,7 @@ class ListContext(Context):
         }
 
     def _build_list_items_context(
-        self,
-        for_list,
-        return_to_summary,
-        summary_definition,
-        edit_block_id,
-        remove_block_id,
+        self, for_list, return_to, summary_definition, edit_block_id, remove_block_id
     ):
         list_item_ids = self._list_store[for_list]
         primary_person = self._list_store[for_list].primary_person
@@ -53,7 +48,7 @@ class ListContext(Context):
                 "questionnaire.block",
                 list_name=for_list,
                 list_item_id=list_item_id,
-                return_to_summary=return_to_summary,
+                return_to=return_to,
             )
 
             is_primary = list_item_id == primary_person
