@@ -96,7 +96,7 @@ def test_get_referenced_offset_value_for_now_value(app):
     minimum_date = handler.transform_date_by_offset(minimum_date, {"days": 10})
 
     assert datetime.date(minimum_date) == (
-        datetime.now().date() + relativedelta(days=10)
+        datetime.utcnow().date() + relativedelta(days=10)
     )
 
 
