@@ -47,6 +47,7 @@ class TestSection(TestCase):
                 self.metadata,
                 self.schema,
                 location,
+                return_to="final-summary",
             )
 
         # Then
