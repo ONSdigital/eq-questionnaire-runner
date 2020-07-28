@@ -100,7 +100,7 @@ class SectionSummaryContext(Context):
         )
         primary_person_edit_block_id = (
             primary_person_blocks[0]["add_or_edit_block"]["id"]
-            if len(primary_person_blocks)
+            if len(primary_person_blocks) > 0
             else None
         )
 
