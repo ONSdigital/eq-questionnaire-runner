@@ -95,6 +95,15 @@ class SectionSummaryContext(Context):
             section, for_list=summary["for_list"]
         )[0]
 
+        primary_person_blocks = self._schema.get_list_collectors_for_list(
+            section, for_list=summary["for_list"], primary=True
+        )
+        primary_person_edit_block_id = (
+            primary_person_blocks[0]["add_or_edit_block"]["id"]
+            if len(primary_person_blocks)
+            else None
+        )
+
         add_link = self._add_link(
             summary, current_location, section, list_collector_block
         )
@@ -125,6 +134,7 @@ class SectionSummaryContext(Context):
                 return_to="section-summary",
                 edit_block_id=list_collector_block["edit_block"]["id"],
                 remove_block_id=list_collector_block["remove_block"]["id"],
+                primary_person_edit_block_id=primary_person_edit_block_id,
             ),
         }
 

@@ -630,3 +630,32 @@ def test_titles_for_repeating_section_summary(people_answer_store):
 
     context = section_summary_context(new_location)
     assert context["summary"]["title"] == "Barry Pheloung"
+
+
+@pytest.mark.usefixtures("app")
+def test_primary_links_for_section_summary(people_answer_store):
+    schema = load_schema_from_name("test_list_collector_section_summary")
+    current_location = Location(section_id="section")
+
+    summary_context = SectionSummaryContext(
+        language=DEFAULT_LANGUAGE_CODE,
+        schema=schema,
+        answer_store=people_answer_store,
+        list_store=ListStore(
+            [
+                {
+                    "items": ["PlwgoG", "UHPLbX"],
+                    "name": "people",
+                    "primary_person": "PlwgoG",
+                }
+            ]
+        ),
+        progress_store=ProgressStore(),
+        metadata={"display_address": "70 Abingdon Road, Goathill"},
+    )
+    context = summary_context(current_location)
+
+    list_items = context["summary"]["custom_summary"][0]["list"]["list_items"]
+
+    assert "/add-or-edit-primary-person/" in list_items[0]["edit_link"]
+    assert "/edit-person/" in list_items[1]["edit_link"]
