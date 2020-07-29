@@ -91,18 +91,21 @@ class SectionSummaryContext(Context):
                 )
 
     def _list_summary_element(self, summary, current_location, section) -> Mapping:
-        list_collector_block = self._schema.get_list_collectors_for_list(
+        current_list = self._list_store[summary["for_list"]]
+        list_collector_block = self._schema.get_list_collector_for_list(
             section, for_list=summary["for_list"]
-        )[0]
+        )
 
-        primary_person_blocks = self._schema.get_list_collectors_for_list(
-            section, for_list=summary["for_list"], primary=True
-        )
-        primary_person_edit_block_id = (
-            primary_person_blocks[0]["add_or_edit_block"]["id"]
-            if len(primary_person_blocks) > 0
-            else None
-        )
+        primary_person_edit_block_id = None
+
+        if current_list.primary_person:
+            primary_person_block = self._schema.get_list_collector_for_list(
+                section, for_list=summary["for_list"], primary=True
+            )
+
+            primary_person_edit_block_id = primary_person_block["add_or_edit_block"][
+                "id"
+            ]
 
         add_link = self._add_link(
             summary, current_location, section, list_collector_block
