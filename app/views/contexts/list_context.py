@@ -14,6 +14,7 @@ class ListContext(Context):
         return_to=None,
         edit_block_id=None,
         remove_block_id=None,
+        primary_person_edit_block_id=None,
     ):
         list_items = (
             list(
@@ -23,6 +24,7 @@ class ListContext(Context):
                     summary_definition,
                     edit_block_id,
                     remove_block_id,
+                    primary_person_edit_block_id,
                 )
             )
             if summary_definition
@@ -37,7 +39,13 @@ class ListContext(Context):
         }
 
     def _build_list_items_context(
-        self, for_list, return_to, summary_definition, edit_block_id, remove_block_id
+        self,
+        for_list,
+        return_to,
+        summary_definition,
+        edit_block_id,
+        remove_block_id,
+        primary_person_edit_block_id,
     ):
         list_item_ids = self._list_store[for_list]
         primary_person = self._list_store[for_list].primary_person
@@ -61,7 +69,14 @@ class ListContext(Context):
             }
 
             if edit_block_id:
-                list_item_context["edit_link"] = partial_url_for(block_id=edit_block_id)
+                if is_primary and primary_person_edit_block_id:
+                    list_item_context["edit_link"] = partial_url_for(
+                        block_id=primary_person_edit_block_id
+                    )
+                else:
+                    list_item_context["edit_link"] = partial_url_for(
+                        block_id=edit_block_id
+                    )
 
             if remove_block_id:
                 list_item_context["remove_link"] = partial_url_for(
