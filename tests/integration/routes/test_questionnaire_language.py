@@ -9,18 +9,21 @@ class TestQuestionnaireLanguage(IntegrationTestCase):
     def test_load_cy_survey(self):
         # When: load a cy survey
         self.launchSurvey("test_language", language_code="cy")
+        self.post()
         # Then: welsh
         self.assertInBody("Rhowch enw")
 
     def test_load_non_existent_lang_fallback(self):
         # When: load a hindi survey
         self.launchSurvey("test_language", language_code="hi")
+        self.post()
         # Then: Falls back to english
         self.assertInBody("First Name")
 
     def test_language_switch_in_flight(self):
         # load a english survey
         self.launchSurvey("test_language", language_code="en")
+        self.post()
         # The language is english
         self.assertInBody("First Name")
         # Switch the language to welsh
@@ -30,6 +33,7 @@ class TestQuestionnaireLanguage(IntegrationTestCase):
     def test_switch_to_invalid_language(self):
         # load a english survey
         self.launchSurvey("test_language", language_code="en")
+        self.post()
         # The language is english
         self.assertInBody("First Name")
         # Try and switch to an invalid language
@@ -38,7 +42,7 @@ class TestQuestionnaireLanguage(IntegrationTestCase):
 
     def test_title_placeholders_rendered_in_summary_using_correct_language(self):
         self.launchSurvey("test_language")
-
+        self.post()
         self.post({"first-name": "Kevin", "last-name": "Bacon"})
         self.assertInBody("What is Kevin Bacon’s date of birth?")
 
@@ -159,7 +163,7 @@ class TestQuestionnaireLanguage(IntegrationTestCase):
             with self.subTest(data=data):
                 self.setUp()
                 self.launchSurvey("test_language")
-
+                self.post()
                 self.post({"first-name": "Kevin", "last-name": "Bacon"})
 
                 self.post(
@@ -192,6 +196,7 @@ class TestQuestionnaireLanguage(IntegrationTestCase):
         # load a welsh survey
         self.launchSurvey("test_language", language_code="cy")
         # Submit and check the error message is in Welsh
+        self.post()
         self.post()
         xfail("Error strings have been updated, waiting for translations to be done")
         self.assertInBody("Mae 1 gwall ar y dudalen hon")

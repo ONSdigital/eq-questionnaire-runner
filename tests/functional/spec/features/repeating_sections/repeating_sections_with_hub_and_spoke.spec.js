@@ -279,7 +279,7 @@ describe("Feature: Repeating Sections with Hub and Spoke", () => {
       expect($(HubPage.submit()).getText()).to.equal("Continue");
 
       expect($(HubPage.Heading()).getText()).to.not.equal("Submit survey");
-      expect($(HubPage.Headinng()).getText()).to.equal("Choose another section to complete");
+      expect($(HubPage.Heading()).getText()).to.equal("Choose another section to complete");
     });
 
     it("When the user removes a member from the household, Then their section is not longer displayed on he Hub", () => {

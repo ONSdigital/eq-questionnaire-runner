@@ -6,7 +6,7 @@
     "survey_id": "0",
     "title": "Arolwg Iaith Prawf",
     "theme": "social",
-    "description": "Holiadur i ddangos newid iaith",
+    "description": "A questionnaire to demonstrate language switching",
     "metadata": [
         {
             "name": "user_id",
@@ -17,9 +17,19 @@
             "type": "string"
         }
     ],
+    "hub": {
+        "enabled": true,
+        "submission": {
+            "button": "Testun cyflwyno",
+            "guidance": "Canllawiau cyflwyno",
+            "title": "Teitl cyflwyno",
+            "warning": "Rhybudd cyflwyno"
+        }
+    },
     "sections": [
         {
             "id": "default-section",
+            "title": "Manylion y cartref",
             "groups": [
                 {
                     "id": "language-group",
@@ -29,18 +39,22 @@
                             "type": "Question",
                             "id": "name-block",
                             "question": {
+                                "instruction": ["Rhowch enw person"],
+                                "description": ["Enw llawn y person"],
                                 "id": "name-question",
                                 "title": "Rhowch enw",
                                 "type": "General",
                                 "answers": [
                                     {
                                         "id": "first-name",
+                                        "description": "",
                                         "label": "Enw cyntaf",
                                         "mandatory": true,
                                         "type": "TextField"
                                     },
                                     {
                                         "id": "last-name",
+                                        "description": "",
                                         "label": "Enw olaf",
                                         "mandatory": false,
                                         "type": "TextField"
@@ -52,6 +66,36 @@
                             "type": "Question",
                             "id": "dob-block",
                             "question": {
+                                "description": [
+                                    {
+                                        "text": "dyddiad geni {person_name_possessive}",
+                                        "placeholders": [
+                                            {
+                                                "placeholder": "person_name_possessive",
+                                                "transforms": [
+                                                    {
+                                                        "arguments": {
+                                                            "delimiter": " ",
+                                                            "list_to_concatenate": {
+                                                                "identifier": ["first-name", "last-name"],
+                                                                "source": "answers"
+                                                            }
+                                                        },
+                                                        "transform": "concatenate_list"
+                                                    },
+                                                    {
+                                                        "arguments": {
+                                                            "string_to_format": {
+                                                                "source": "previous_transform"
+                                                            }
+                                                        },
+                                                        "transform": "format_possessive"
+                                                    }
+                                                ]
+                                            }
+                                        ]
+                                    }
+                                ],
                                 "id": "dob-question",
                                 "title": {
                                     "text": "Beth yw dyddiad geni {person_name_possessive}?",
@@ -111,6 +155,8 @@
                                         }
                                     }
                                 ],
+                                "description": ["Cyfanswm y bobl ar yr aelwyd"],
+                                "warning": "Mae hwn yn gwestiwn pwysig iawn",
                                 "id": "number-of-people-question",
                                 "title": "Faint o bobl sy\u2019n byw ar eich cartref?",
                                 "type": "General"

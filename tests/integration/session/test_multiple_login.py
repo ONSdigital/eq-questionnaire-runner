@@ -110,6 +110,7 @@ class TestMultipleLogin(MultipleClientTestCase):
 
         # user A launches the test language questionnaire in Gaeilge
         self.launchSurvey(self.client_a, "test_language", language_code="ga")
+        self.post(self.client_a)
         last_response_a = self.cache[self.client_a]["last_response"]
         self.assertIn("Iontráil ainm", last_response_a.get_data(True))
 
@@ -121,6 +122,7 @@ class TestMultipleLogin(MultipleClientTestCase):
 
         # user B launches the same questionnaire but in Welsh
         self.launchSurvey(self.client_b, "test_language", language_code="cy")
+        self.post(self.client_b)
         last_response_b = self.cache[self.client_b]["last_response"]
         self.assertIn("Rhowch enw", last_response_b.get_data(True))
 
