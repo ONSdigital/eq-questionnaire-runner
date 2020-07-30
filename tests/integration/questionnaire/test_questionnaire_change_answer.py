@@ -38,7 +38,7 @@ class TestQuestionnaireChangeAnswer(IntegrationTestCase):
         self.assertNotInBody("No answer provided")
 
         # When we change the non-mandatory date from answered to not answered
-        self.get("questionnaire/date-non-mandatory-block/?return_to_summary=True")
+        self.get("questionnaire/date-non-mandatory-block/?return_to=final-summary")
 
         unanswered_post_data = {
             "non-mandatory-date-answer-day": "",
