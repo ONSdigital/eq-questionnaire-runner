@@ -98,7 +98,7 @@ class SectionSummaryContext(Context):
 
         primary_person_edit_block_id = None
 
-        if current_list.primary_person:
+        if len(current_list) == 1 and current_list.primary_person:
             primary_person_block = self._schema.get_list_collector_for_list(
                 section, for_list=summary["for_list"], primary=True
             )
