@@ -15,7 +15,7 @@ describe("Feature: Hub and Spoke", () => {
   it("When a user first views the Hub, The Hub should be in a continue state", () => {
     browser.openQuestionnaire(hubAndSpokeSchema);
     expect($(HubPage.submit()).getText()).to.contain("Continue");
-    expect($(HubPage.displayedName()).getText()).to.contain("Choose another section to complete");
+    expect($(HubPage.Heading()).getText()).to.contain("Choose another section to complete");
     expect($(HubPage.summaryRowState("employment-section")).getText()).to.contain("Not started");
     expect($(HubPage.summaryRowState("accommodation-section")).getText()).to.contain("Not started");
     expect($(HubPage.summaryRowState("household-section")).getText()).to.contain("Not started");
@@ -78,7 +78,7 @@ describe("Feature: Hub and Spoke", () => {
     it("When the user returns to the Hub, Then the Hub should be in a continue state", () => {
       browser.url(HubPage.url());
       expect($(HubPage.submit()).getText()).to.contain("Continue");
-      expect($(HubPage.displayedName()).getText()).to.contain("Choose another section to complete");
+      expect($(HubPage.Heading()).getText()).to.contain("Choose another section to complete");
     });
 
     it("When the user returns to the Hub, Then the section should be marked as 'Partially completed'", () => {
@@ -112,7 +112,7 @@ describe("Feature: Hub and Spoke", () => {
     it("When the user returns to the Hub, Then the Hub should be in a continue state", () => {
       $(EmploymentTypeBlockPage.submit()).click();
       expect($(HubPage.submit()).getText()).to.contain("Continue");
-      expect($(HubPage.displayedName()).getText()).to.contain("Choose another section to complete");
+      expect($(HubPage.Heading()).getText()).to.contain("Choose another section to complete");
     });
 
     it("When the user returns to the Hub, Then the section should be marked as 'Completed'", () => {
@@ -200,7 +200,7 @@ describe("Feature: Hub and Spoke", () => {
 
     it("When the user returns to the Hub, Then the Hub should be in a completed state", () => {
       expect($(HubPage.submit()).getText()).to.contain("Submit survey");
-      expect($(HubPage.displayedName()).getText()).to.contain("Submit survey");
+      expect($(HubPage.Heading()).getText()).to.contain("Submit survey");
     });
 
     it("When the user submits, it should show the thankyou page", () => {

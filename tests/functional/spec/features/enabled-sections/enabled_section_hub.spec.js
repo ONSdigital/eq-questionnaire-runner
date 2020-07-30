@@ -46,6 +46,6 @@ describe("Feature: Section Enabled With Hub", () => {
     expect($(hubPage.summaryRowState("section-3")).isDisplayed()).to.be.false;
 
     expect($(hubPage.submit()).getText()).to.equal("Submit survey");
-    expect($(hubPage.displayedName()).getText()).to.equal("Submit survey");
+    expect($(hubPage.Heading()).getText()).to.equal("Submit survey");
   });
 });
