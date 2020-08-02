@@ -38,12 +38,8 @@
                             "type": "Question",
                             "id": "name-block",
                             "question": {
-                                "instruction": [
-                                    "Enter the name of a person"
-                                ],
-                                "description": [
-                                    "The full name of the person"
-                                ],
+                                "instruction": ["Enter the name of a person"],
+                                "description": ["The full name of the person"],
                                 "id": "name-question",
                                 "title": "Please enter a name",
                                 "type": "General",

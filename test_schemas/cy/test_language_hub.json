@@ -38,12 +38,8 @@
                             "type": "Question",
                             "id": "name-block",
                             "question": {
-                                "instruction": [
-                                    "Rhowch enw person"
-                                ],
-                                "description": [
-                                    "nw llawn y person"
-                                ],
+                                "instruction": ["Rhowch enw person"],
+                                "description": ["nw llawn y person"],
                                 "id": "name-question",
                                 "title": "Rhowch enw",
                                 "type": "General",

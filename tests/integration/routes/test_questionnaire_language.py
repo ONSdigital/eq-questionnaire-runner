@@ -38,6 +38,7 @@ class TestQuestionnaireLanguage(IntegrationTestCase):
 
     def test_title_placeholders_rendered_in_summary_using_correct_language(self):
         self.launchSurvey("test_language")
+
         self.post({"first-name": "Kevin", "last-name": "Bacon"})
         self.assertInBody("What is Kevin Bacon’s date of birth?")
 
@@ -158,6 +159,7 @@ class TestQuestionnaireLanguage(IntegrationTestCase):
             with self.subTest(data=data):
                 self.setUp()
                 self.launchSurvey("test_language")
+
                 self.post({"first-name": "Kevin", "last-name": "Bacon"})
 
                 self.post(
