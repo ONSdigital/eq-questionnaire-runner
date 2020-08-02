@@ -1,0 +1,71 @@
+{
+    "mime_type": "application/json/ons/eq",
+    "language": "cy",
+    "schema_version": "0.0.1",
+    "data_version": "0.0.3",
+    "survey_id": "0",
+    "title": "Arolwg Hwb Iaith Prawf",
+    "theme": "social",
+    "description": "Holiadur i ddangos newid iaith ar y canolbwynt",
+    "metadata": [
+        {
+            "name": "user_id",
+            "type": "string"
+        },
+        {
+            "name": "period_id",
+            "type": "string"
+        }
+    ],
+    "hub": {
+        "enabled": true
+    },
+    "submission": {
+        "button": "Cnaipe aighneachta",
+        "guidance": "Canllawiau cyflwyno",
+        "title": "Teitl cyflwyno",
+        "warning": "Rhybudd cyflwyno"
+    },
+    "sections": [
+        {
+            "id": "personal-details-section",
+            "title": "Manylion personol",
+            "groups": [
+                {
+                    "id": "personal-details-group",
+                    "blocks": [
+                        {
+                            "type": "Question",
+                            "id": "name-block",
+                            "question": {
+                                "instruction": [
+                                    "Rhowch enw person"
+                                ],
+                                "description": [
+                                    "nw llawn y person"
+                                ],
+                                "id": "name-question",
+                                "title": "Rhowch enw",
+                                "type": "General",
+                                "answers": [
+                                    {
+                                        "id": "first-name",
+                                        "label": "Enw cyntaf",
+                                        "mandatory": true,
+                                        "type": "TextField"
+                                    },
+                                    {
+                                        "id": "last-name",
+                                        "label": "Enw olaf",
+                                        "mandatory": false,
+                                        "type": "TextField"
+                                    }
+                                ]
+                            }
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}

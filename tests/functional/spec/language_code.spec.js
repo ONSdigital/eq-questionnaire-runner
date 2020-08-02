@@ -4,8 +4,6 @@ import NumberOfPeoplePage from "../generated_pages/language/number-of-people-blo
 import ConfirmNumberOfPeoplePage from "../generated_pages/language/confirm-number-of-people.page";
 import SummaryPage from "../generated_pages/language/summary.page";
 
-import HubPage from "../base_pages/hub.page.js";
-
 const PLURAL_TEST_DATA_SETS = [
   {
     count: 0,
@@ -103,7 +101,6 @@ describe("Language Code", () => {
       language: "cy",
     });
 
-    $(HubPage.submit()).click();
     expect($(NamePage.questionText()).getText()).to.contain("Rhowch enw");
 
     $(NamePage.firstName()).setValue("Catherine");
@@ -133,7 +130,6 @@ describe("Language Code", () => {
       language: "en",
     });
 
-    $(HubPage.submit()).click();
     expect($(NamePage.questionText()).getText()).to.contain("Please enter a name");
     $(NamePage.firstName()).setValue("Catherine");
     $(NamePage.lastName()).setValue("Zeta-Jones");
@@ -162,7 +158,6 @@ describe("Language Code", () => {
       language: "en",
     });
 
-    $(HubPage.submit()).click();
     expect($(NamePage.questionText()).getText()).to.contain("Please enter a name");
     $(NamePage.switchLanguage("cy")).click();
     expect($(NamePage.questionText()).getText()).to.contain("Rhowch enw");
@@ -196,7 +191,6 @@ describe("Language Code", () => {
       language: "cy",
     });
 
-    $(HubPage.submit()).click();
     expect($(NamePage.questionText()).getText()).to.contain("Rhowch enw");
     $(NamePage.switchLanguage("en")).click();
     expect($(NamePage.questionText()).getText()).to.contain("Please enter a name");
@@ -211,7 +205,6 @@ describe("Language Code", () => {
           language: "en",
         });
 
-        $(HubPage.submit()).click();
         expect($(NamePage.questionText()).getText()).to.contain("Please enter a name");
         $(NamePage.firstName()).setValue("Catherine");
         $(NamePage.lastName()).setValue("Zeta-Jones");

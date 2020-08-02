@@ -6,7 +6,7 @@
     "survey_id": "0",
     "title": "Arolwg Iaith Prawf",
     "theme": "social",
-    "description": "A questionnaire to demonstrate language switching",
+    "description": "Holiadur i ddangos newid iaith",
     "metadata": [
         {
             "name": "user_id",
@@ -17,14 +17,11 @@
             "type": "string"
         }
     ],
-    "hub": {
-        "enabled": true,
-        "submission": {
-            "button": "Testun cyflwyno",
-            "guidance": "Canllawiau cyflwyno",
-            "title": "Teitl cyflwyno",
-            "warning": "Rhybudd cyflwyno"
-        }
+    "submission": {
+        "button": "Testun cyflwyno",
+        "guidance": "Canllawiau cyflwyno",
+        "title": "Teitl cyflwyno",
+        "warning": "Rhybudd cyflwyno"
     },
     "sections": [
         {
@@ -33,28 +30,29 @@
             "groups": [
                 {
                     "id": "language-group",
-                    "title": "",
                     "blocks": [
                         {
                             "type": "Question",
                             "id": "name-block",
                             "question": {
-                                "instruction": ["Rhowch enw person"],
-                                "description": ["Enw llawn y person"],
+                                "instruction": [
+                                    "Rhowch enw person"
+                                ],
+                                "description": [
+                                    "Enw llawn y person"
+                                ],
                                 "id": "name-question",
                                 "title": "Rhowch enw",
                                 "type": "General",
                                 "answers": [
                                     {
                                         "id": "first-name",
-                                        "description": "",
                                         "label": "Enw cyntaf",
                                         "mandatory": true,
                                         "type": "TextField"
                                     },
                                     {
                                         "id": "last-name",
-                                        "description": "",
                                         "label": "Enw olaf",
                                         "mandatory": false,
                                         "type": "TextField"
@@ -77,7 +75,10 @@
                                                         "arguments": {
                                                             "delimiter": " ",
                                                             "list_to_concatenate": {
-                                                                "identifier": ["first-name", "last-name"],
+                                                                "identifier": [
+                                                                    "first-name",
+                                                                    "last-name"
+                                                                ],
                                                                 "source": "answers"
                                                             }
                                                         },
@@ -107,7 +108,10 @@
                                                     "arguments": {
                                                         "delimiter": " ",
                                                         "list_to_concatenate": {
-                                                            "identifier": ["first-name", "last-name"],
+                                                            "identifier": [
+                                                                "first-name",
+                                                                "last-name"
+                                                            ],
                                                             "source": "answers"
                                                         }
                                                     },
@@ -155,7 +159,9 @@
                                         }
                                     }
                                 ],
-                                "description": ["Cyfanswm y bobl ar yr aelwyd"],
+                                "description": [
+                                    "Cyfanswm y bobl ar yr aelwyd"
+                                ],
                                 "warning": "Mae hwn yn gwestiwn pwysig iawn",
                                 "id": "number-of-people-question",
                                 "title": "Faint o bobl sy\u2019n byw ar eich cartref?",

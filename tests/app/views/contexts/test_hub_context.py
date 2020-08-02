@@ -164,7 +164,7 @@ def test_get_context_custom_content_complete(
         "individual_response_enabled": False,
         "guidance": "Submission guidance",
         "rows": [],
-        "submit_button": "Submission text",
+        "submit_button": "Submission button",
         "title": "Submission title",
         "warning": "Submission warning",
     }

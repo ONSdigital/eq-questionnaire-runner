@@ -45,13 +45,13 @@ class HubContext(Context):
         rows = self._get_rows(enabled_section_ids)
 
         if survey_complete:
-            hub_submission_schema = self._schema.get_hub().get("submission", {})
-            title = hub_submission_schema.get("title") or lazy_gettext("Submit survey")
-            submit_button = hub_submission_schema.get("button") or lazy_gettext(
+            submission_schema = self._schema.get_submission()
+            title = submission_schema.get("title") or lazy_gettext("Submit survey")
+            submit_button = submission_schema.get("button") or lazy_gettext(
                 "Submit survey"
             )
-            guidance = hub_submission_schema.get("guidance")
-            warning = hub_submission_schema.get("warning") or lazy_gettext(
+            guidance = submission_schema.get("guidance")
+            warning = submission_schema.get("warning") or lazy_gettext(
                 "You must submit this survey to complete it"
             )
             individual_response_enabled = False
