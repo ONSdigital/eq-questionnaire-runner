@@ -24,7 +24,7 @@ describe("Feature: Hub and Spoke with custom content", () => {
     $(HouseholdSummary.submit()).click();
     expect($(HubPage.Heading()).getText()).to.contain("Submission title");
     expect($(HubPage.Guidance()).getText()).to.contain("Submission guidance");
-    expect($(HubPage.submit()).getText()).to.contain("Submission text");
+    expect($(HubPage.submit()).getText()).to.contain("Submission button");
     expect($(HubPage.Warning()).getText()).to.contain("Submission warning");
   });
 });
