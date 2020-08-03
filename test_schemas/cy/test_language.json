@@ -17,8 +17,11 @@
             "type": "string"
         }
     ],
+    "hub": {
+        "enabled": true
+    },
     "submission": {
-        "button": "Testun cyflwyno",
+        "button": "Cnaipe aighneachta",
         "guidance": "Canllawiau cyflwyno",
         "title": "Teitl cyflwyno",
         "warning": "Rhybudd cyflwyno"
@@ -229,10 +232,6 @@
                                     }
                                 ]
                             }
-                        },
-                        {
-                            "type": "Summary",
-                            "id": "summary"
                         }
                     ]
                 }

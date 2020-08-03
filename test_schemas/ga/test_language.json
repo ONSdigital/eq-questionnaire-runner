@@ -17,6 +17,9 @@
             "type": "string"
         }
     ],
+    "hub": {
+        "enabled": true
+    },
     "submission": {
         "button": "T\u00e9acs aighneachta",
         "guidance": "Treoir maidir le haighneachta\u00ed",
@@ -227,10 +230,6 @@
                                     }
                                 ]
                             }
-                        },
-                        {
-                            "type": "Summary",
-                            "id": "summary"
                         }
                     ]
                 }

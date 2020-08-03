@@ -17,6 +17,15 @@
             "type": "string"
         }
     ],
+    "hub": {
+        "enabled": true
+    },
+    "submission": {
+        "button": "Submission button",
+        "guidance": "Submission guidance",
+        "title": "Submission title",
+        "warning": "Submission warning"
+    },
     "sections": [
         {
             "id": "default-section",
@@ -215,10 +224,6 @@
                                     }
                                 ]
                             }
-                        },
-                        {
-                            "type": "Summary",
-                            "id": "summary"
                         }
                     ]
                 }
