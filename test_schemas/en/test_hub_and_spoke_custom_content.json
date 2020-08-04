@@ -22,18 +22,13 @@
         }
     ],
     "hub": {
-        "enabled": true,
-        "complete": {
-            "title": "Title displayed on hub when complete",
-            "guidance": "Guidance displayed on hub when complete"
-        },
-        "incomplete": {
-            "guidance": "Guidance displayed on hub when incomplete"
-        },
-        "submission": {
-            "button": "Submission text",
-            "guidance": "Submission guidance"
-        }
+        "enabled": true
+    },
+    "submission": {
+        "button": "Submission button",
+        "guidance": "Submission guidance",
+        "title": "Submission title",
+        "warning": "Submission warning"
     },
     "sections": [
         {
