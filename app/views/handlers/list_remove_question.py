@@ -21,7 +21,7 @@ class ListRemoveQuestion(ListAction):
 
     def handle_post(self):
         answer_action = self._get_answer_action()
-        action_type = answer_action['type'] if answer_action else None
+        action_type = answer_action["type"] if answer_action else None
 
         if action_type == "RemoveAnswersForListItem":
             list_name = self.parent_block["for_list"]
