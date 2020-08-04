@@ -42,21 +42,11 @@ class ListCollector(Question):
             ),
         }
 
-    def get_add_answer_option(self):
-        for answer_option in self.rendered_block["question"]["answers"][0]["options"]:
-            if (
-                answer_option.get("action", {}).get("type")
-                == "RedirectToListAddQuestion"
-            ):
-                return answer_option
-        return None
-
     def handle_post(self):
-        add_answer_option = self.get_add_answer_option()
+        answer_action = self._get_answer_action()
+        action_type = answer_action['type'] if answer_action else None
 
-        answer_id = self.rendered_block["question"]["answers"][0]["id"]
-
-        if self.form.data[answer_id] == add_answer_option["value"]:
+        if action_type == "RedirectToListAddQuestion":
             self._is_adding = True
             self.questionnaire_store_updater.update_answers(self.form.data)
             self.questionnaire_store_updater.save()
