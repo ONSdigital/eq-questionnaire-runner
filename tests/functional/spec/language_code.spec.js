@@ -120,7 +120,7 @@ describe("Language Code", () => {
     expect($(HubPage.heading()).getText()).to.contain("Teitl cyflwyno");
     expect($(HubPage.warning()).getText()).to.contain("Rhybudd cyflwyno");
     expect($(HubPage.guidance()).getText()).to.contain("Canllawiau cyflwyno");
-    expect($(HubPage.submit()).getText()).to.contain("Cnaipe aighneachta");
+    expect($(HubPage.submit()).getText()).to.contain("Botwm cyflwyno");
     $(HubPage.submit()).click();
 
     expect(browser.getUrl()).to.contain("thank-you");
@@ -189,7 +189,7 @@ describe("Language Code", () => {
     expect($(HubPage.heading()).getText()).to.contain("Teitl cyflwyno");
     expect($(HubPage.warning()).getText()).to.contain("Rhybudd cyflwyno");
     expect($(HubPage.guidance()).getText()).to.contain("Canllawiau cyflwyno");
-    expect($(HubPage.submit()).getText()).to.contain("Cnaipe aighneachta");
+    expect($(HubPage.submit()).getText()).to.contain("Botwm cyflwyno");
     $(HubPage.submit()).click();
 
     expect(browser.getUrl()).to.contain("thank-you");

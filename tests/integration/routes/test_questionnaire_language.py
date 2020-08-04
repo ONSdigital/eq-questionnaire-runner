@@ -201,4 +201,4 @@ class TestQuestionnaireLanguage(IntegrationTestCase):
         self.assertInBody("Teitl cyflwyno")
         self.assertInBody("Rhybudd cyflwyno")
         self.assertInBody("Canllawiau cyflwyno")
-        self.assertInBody("Cnaipe aighneachta")
+        self.assertInBody("Botwm cyflwyno")
