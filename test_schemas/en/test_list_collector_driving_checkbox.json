@@ -257,14 +257,6 @@
                             "id": "list-collector",
                             "type": "ListCollector",
                             "for_list": "people",
-                            "add_answer": {
-                                "id": "anyone-else",
-                                "value": "Yes, I need to add a person"
-                            },
-                            "remove_answer": {
-                                "id": "remove-confirmation",
-                                "value": "Yes"
-                            },
                             "question": {
                                 "id": "confirmation-question",
                                 "type": "General",
@@ -277,7 +269,10 @@
                                         "options": [
                                             {
                                                 "label": "Yes, I need to add a person",
-                                                "value": "Yes, I need to add a person"
+                                                "value": "Yes, I need to add a person",
+                                                "action": {
+                                                    "type": "RedirectToListAddQuestion"
+                                                }
                                             },
                                             {
                                                 "label": "No, I do not need to add a person",
@@ -405,7 +400,10 @@
                                             "options": [
                                                 {
                                                     "label": "Yes",
-                                                    "value": "Yes"
+                                                    "value": "Yes",
+                                                    "action": {
+                                                        "type": "RemoveAnswersForListItem"
+                                                    }
                                                 },
                                                 {
                                                     "label": "No",
@@ -444,14 +442,6 @@
                             "id": "list-collector-temporary-away-stay",
                             "type": "ListCollector",
                             "for_list": "people",
-                            "add_answer": {
-                                "id": "anyone-else-temporary-away-stay",
-                                "value": "Yes, I need to add someone"
-                            },
-                            "remove_answer": {
-                                "id": "remove-confirmation-temporary-away-stay",
-                                "value": "Yes"
-                            },
                             "question": {
                                 "id": "confirmation-question-temporary-away-stay",
                                 "type": "General",
@@ -484,7 +474,10 @@
                                         "options": [
                                             {
                                                 "label": "Yes, I need to add someone",
-                                                "value": "Yes, I need to add someone"
+                                                "value": "Yes, I need to add someone",
+                                                "action": {
+                                                    "type": "RedirectToListAddQuestion"
+                                                }
                                             },
                                             {
                                                 "label": {
@@ -632,7 +625,10 @@
                                             "options": [
                                                 {
                                                     "label": "Yes",
-                                                    "value": "Yes"
+                                                    "value": "Yes",
+                                                    "action": {
+                                                        "type": "RemoveAnswersForListItem"
+                                                    }
                                                 },
                                                 {
                                                     "label": "No",

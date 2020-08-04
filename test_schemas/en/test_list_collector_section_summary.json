@@ -172,14 +172,6 @@
                             "id": "list-collector",
                             "type": "ListCollector",
                             "for_list": "people",
-                            "add_answer": {
-                                "id": "anyone-else",
-                                "value": "Yes"
-                            },
-                            "remove_answer": {
-                                "id": "remove-confirmation",
-                                "value": "Yes"
-                            },
                             "question": {
                                 "id": "confirmation-question",
                                 "type": "General",
@@ -203,7 +195,10 @@
                                         "options": [
                                             {
                                                 "label": "Yes",
-                                                "value": "Yes"
+                                                "value": "Yes",
+                                                "action": {
+                                                    "type": "RedirectToListAddQuestion"
+                                                }
                                             },
                                             {
                                                 "label": "No",
@@ -274,7 +269,10 @@
                                             "options": [
                                                 {
                                                     "label": "Yes",
-                                                    "value": "Yes"
+                                                    "value": "Yes",
+                                                    "action": {
+                                                        "type": "RemoveAnswersForListItem"
+                                                    }
                                                 },
                                                 {
                                                     "label": "No",
@@ -338,14 +336,6 @@
                             "id": "visitor-list-collector",
                             "type": "ListCollector",
                             "for_list": "visitors",
-                            "add_answer": {
-                                "id": "any-more-visitors",
-                                "value": "Yes"
-                            },
-                            "remove_answer": {
-                                "id": "remove-visitor-confirmation",
-                                "value": "Yes"
-                            },
                             "question": {
                                 "id": "confirmation-visitor-question",
                                 "type": "General",
@@ -369,7 +359,10 @@
                                         "options": [
                                             {
                                                 "label": "Yes",
-                                                "value": "Yes"
+                                                "value": "Yes",
+                                                "action": {
+                                                    "type": "RedirectToListAddQuestion"
+                                                }
                                             },
                                             {
                                                 "label": "No",
@@ -440,7 +433,10 @@
                                             "options": [
                                                 {
                                                     "label": "Yes",
-                                                    "value": "Yes"
+                                                    "value": "Yes",
+                                                    "action": {
+                                                        "type": "RemoveAnswersForListItem"
+                                                    }
                                                 },
                                                 {
                                                     "label": "No",
