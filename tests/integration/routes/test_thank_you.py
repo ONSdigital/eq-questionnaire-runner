@@ -24,7 +24,7 @@ class TestThankYou(IntegrationTestCase):
 
     def test_can_switch_language_on_thank_you_page(self):
         self.launchSurvey("test_language")
-
+        self.post()
         # We fill in our answers
         self.post({"first-name": "Kevin", "last-name": "Bacon"})
         self.post(

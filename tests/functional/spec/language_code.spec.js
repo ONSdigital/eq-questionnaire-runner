@@ -2,7 +2,7 @@ import NamePage from "../generated_pages/language/name-block.page";
 import DobPage from "../generated_pages/language/dob-block.page";
 import NumberOfPeoplePage from "../generated_pages/language/number-of-people-block.page";
 import ConfirmNumberOfPeoplePage from "../generated_pages/language/confirm-number-of-people.page";
-import SummaryPage from "../generated_pages/language/summary.page";
+import HubPage from "../base_pages/hub.page.js";
 
 const PLURAL_TEST_DATA_SETS = [
   {
@@ -100,7 +100,7 @@ describe("Language Code", () => {
     browser.openQuestionnaire("test_language.json", {
       language: "cy",
     });
-
+    $(HubPage.submit()).click();
     expect($(NamePage.questionText()).getText()).to.contain("Rhowch enw");
 
     $(NamePage.firstName()).setValue("Catherine");
@@ -117,10 +117,11 @@ describe("Language Code", () => {
     $(ConfirmNumberOfPeoplePage.yes()).click();
     $(ConfirmNumberOfPeoplePage.submit()).click();
 
-    expect(browser.getUrl()).to.contain(SummaryPage.pageName);
-    expect($(SummaryPage.dobQuestion()).getText()).to.contain("Beth yw dyddiad geni Catherine Zeta-Jones?");
-    expect($(SummaryPage.dateOfBirthAnswer()).getText()).to.contain("25 Medi 1969");
-    $(SummaryPage.submit()).click();
+    expect($(HubPage.heading()).getText()).to.contain("Teitl cyflwyno");
+    expect($(HubPage.warning()).getText()).to.contain("Rhybudd cyflwyno");
+    expect($(HubPage.guidance()).getText()).to.contain("Canllawiau cyflwyno");
+    expect($(HubPage.submit()).getText()).to.contain("Botwm cyflwyno");
+    $(HubPage.submit()).click();
 
     expect(browser.getUrl()).to.contain("thank-you");
   });
@@ -130,6 +131,7 @@ describe("Language Code", () => {
       language: "en",
     });
 
+    $(HubPage.submit()).click();
     expect($(NamePage.questionText()).getText()).to.contain("Please enter a name");
     $(NamePage.firstName()).setValue("Catherine");
     $(NamePage.lastName()).setValue("Zeta-Jones");
@@ -145,10 +147,11 @@ describe("Language Code", () => {
     $(ConfirmNumberOfPeoplePage.yes()).click();
     $(ConfirmNumberOfPeoplePage.submit()).click();
 
-    expect(browser.getUrl()).to.contain(SummaryPage.pageName);
-    expect($(SummaryPage.dobQuestion()).getText()).to.contain("What is Catherine Zeta-Jones’ date of birth?");
-    expect($(SummaryPage.dateOfBirthAnswer()).getText()).to.contain("25 September 1969");
-    $(SummaryPage.submit()).click();
+    expect($(HubPage.heading()).getText()).to.contain("Submission title");
+    expect($(HubPage.warning()).getText()).to.contain("Submission warning");
+    expect($(HubPage.guidance()).getText()).to.contain("Submission guidance");
+    expect($(HubPage.submit()).getText()).to.contain("Submission button");
+    $(HubPage.submit()).click();
 
     expect(browser.getUrl()).to.contain("thank-you");
   });
@@ -158,6 +161,7 @@ describe("Language Code", () => {
       language: "en",
     });
 
+    $(HubPage.submit()).click();
     expect($(NamePage.questionText()).getText()).to.contain("Please enter a name");
     $(NamePage.switchLanguage("cy")).click();
     expect($(NamePage.questionText()).getText()).to.contain("Rhowch enw");
@@ -177,11 +181,16 @@ describe("Language Code", () => {
     $(ConfirmNumberOfPeoplePage.yes()).click();
     $(ConfirmNumberOfPeoplePage.submit()).click();
 
-    expect(browser.getUrl()).to.contain(SummaryPage.pageName);
-    expect($(SummaryPage.dateOfBirthAnswer()).getText()).to.contain("25 September 1969");
-    $(SummaryPage.switchLanguage("cy")).click();
-    expect($(SummaryPage.dateOfBirthAnswer()).getText()).to.contain("25 Medi 1969");
-    $(SummaryPage.submit()).click();
+    expect($(HubPage.heading()).getText()).to.contain("Submission title");
+    expect($(HubPage.warning()).getText()).to.contain("Submission warning");
+    expect($(HubPage.guidance()).getText()).to.contain("Submission guidance");
+    expect($(HubPage.submit()).getText()).to.contain("Submission button");
+    $(HubPage.switchLanguage("cy")).click();
+    expect($(HubPage.heading()).getText()).to.contain("Teitl cyflwyno");
+    expect($(HubPage.warning()).getText()).to.contain("Rhybudd cyflwyno");
+    expect($(HubPage.guidance()).getText()).to.contain("Canllawiau cyflwyno");
+    expect($(HubPage.submit()).getText()).to.contain("Botwm cyflwyno");
+    $(HubPage.submit()).click();
 
     expect(browser.getUrl()).to.contain("thank-you");
   });
@@ -191,6 +200,7 @@ describe("Language Code", () => {
       language: "cy",
     });
 
+    $(HubPage.submit()).click();
     expect($(NamePage.questionText()).getText()).to.contain("Rhowch enw");
     $(NamePage.switchLanguage("en")).click();
     expect($(NamePage.questionText()).getText()).to.contain("Please enter a name");
@@ -205,6 +215,7 @@ describe("Language Code", () => {
           language: "en",
         });
 
+        $(HubPage.submit()).click();
         expect($(NamePage.questionText()).getText()).to.contain("Please enter a name");
         $(NamePage.firstName()).setValue("Catherine");
         $(NamePage.lastName()).setValue("Zeta-Jones");
@@ -228,15 +239,6 @@ describe("Language Code", () => {
 
         $(ConfirmNumberOfPeoplePage.yes()).click();
         $(ConfirmNumberOfPeoplePage.submit()).click();
-
-        expect(browser.getUrl()).to.contain(SummaryPage.pageName);
-        expect($(SummaryPage.totalPeopleQuestion()).getText()).to.contain(dataSet.question_title.cy);
-        expect($(SummaryPage.confirmCount()).getText()).to.contain(dataSet.answer.cy);
-
-        $(ConfirmNumberOfPeoplePage.switchLanguage("en")).click();
-
-        expect($(SummaryPage.totalPeopleQuestion()).getText()).to.contain(dataSet.question_title.en);
-        expect($(SummaryPage.confirmCount()).getText()).to.contain(dataSet.answer.en);
       });
     }
   });

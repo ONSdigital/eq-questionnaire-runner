@@ -42,47 +42,35 @@ class HubContext(Context):
     }
 
     def get_context(self, survey_complete, enabled_section_ids) -> Mapping:
-        hub_schema = self._schema.get_hub()
         rows = self._get_rows(enabled_section_ids)
-        custom_text = hub_schema.get(
-            "complete" if survey_complete else "incomplete", {}
-        )
 
         if survey_complete:
-            title = custom_text.get("title") or lazy_gettext("Submit survey")
-
-            guidance = custom_text.get("guidance") or lazy_gettext(
-                "Please submit this survey to complete it"
+            submission_schema = self._schema.get_submission()
+            title = submission_schema.get("title") or lazy_gettext("Submit survey")
+            submit_button = submission_schema.get("button") or lazy_gettext(
+                "Submit survey"
             )
-
-            submit_button = hub_schema.get("submission", {}).get(
-                "button"
-            ) or lazy_gettext("Submit survey")
-            submission_guidance = hub_schema.get("submission", {}).get("guidance")
-
+            guidance = submission_schema.get("guidance")
+            warning = submission_schema.get("warning") or lazy_gettext(
+                "You must submit this survey to complete it"
+            )
             individual_response_enabled = False
-
         else:
             title = lazy_gettext("Choose another section to complete")
-
-            guidance = custom_text.get("guidance") or lazy_gettext(
-                "You must complete all sections in order to submit this survey"
-            )
-
             submit_button = lazy_gettext("Continue")
-            submission_guidance = None
-
+            guidance = None
+            warning = None
             individual_response_enabled = self._individual_response_enabled(
                 self._schema
             )
 
         return {
-            "title": title,
-            "guidance": guidance,
             "individual_response_enabled": individual_response_enabled,
-            "submit_button": submit_button,
-            "submission_guidance": submission_guidance,
+            "guidance": guidance,
             "rows": rows,
+            "submit_button": submit_button,
+            "title": title,
+            "warning": warning,
         }
 
     def get_row_context_for_section(

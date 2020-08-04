@@ -8,14 +8,14 @@
 
 {% block main %}
     <h1 class="u-mt-m">{{ content.title }}</h1>
-    {% call onsPanel({
-      "type": "info",
-        "attributes": {
-          "data-qa": "hub-guidance-panel"
-        }
-    }) %}
-        <p data-qa="guidance"><strong>{{ content.guidance }}</strong></p>
-    {% endcall %}
+    {% if content.warning %}
+        {% call onsPanel({
+            "type": "warn"
+          }) %}
+          <p data-qa="warning">{{ content.warning }}</p>
+        {% endcall %}
+    {% endif %}
+
     {{ onsSummary({
       "hub": true,
       "classes": "u-mt-m",
@@ -29,9 +29,9 @@
         }
       ]
     }) }}
-    {% if content.submission_guidance %}
+    {% if content.guidance %}
       <div class="u-mt-l">
-        <p class="u-mb-no" data-qa="submission-guidance">{{ content.submission_guidance }}</p>
+        <p class="u-mb-no" data-qa="guidance">{{ content.guidance }}</p>
       </div>
     {% endif %}
     {{
