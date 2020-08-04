@@ -7,6 +7,7 @@ from app.views.contexts import ListContext
 class ListCollector(Question):
     def __init__(self, *args):
         self._is_adding = False
+
         super().__init__(*args)
 
     def get_next_location_url(self):
@@ -41,14 +42,23 @@ class ListCollector(Question):
             ),
         }
 
+    def get_add_answer_option(self):
+        for answer_option in self.rendered_block["question"]["answers"][0]["options"]:
+            if (
+                answer_option.get("action", {}).get("type")
+                == "RedirectToListAddQuestion"
+            ):
+                return answer_option
+        return None
+
     def handle_post(self):
-        if (
-            self.form.data[self.rendered_block["add_answer"]["id"]]
-            == self.rendered_block["add_answer"]["value"]
-        ):
+        add_answer_option = self.get_add_answer_option()
+
+        answer_id = self.rendered_block["question"]["answers"][0]["id"]
+
+        if self.form.data[answer_id] == add_answer_option["value"]:
             self._is_adding = True
             self.questionnaire_store_updater.update_answers(self.form.data)
-
             self.questionnaire_store_updater.save()
         else:
             return super().handle_post()

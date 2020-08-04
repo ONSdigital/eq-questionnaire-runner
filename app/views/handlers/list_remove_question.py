@@ -19,11 +19,22 @@ class ListRemoveQuestion(ListAction):
             return False
         return True
 
+    def get_remove_answer_option(self):
+        for answer_option in self.rendered_block["question"]["answers"][0]["options"]:
+            if (
+                answer_option.get("action", {}).get("type")
+                == "RemoveAnswersForListItem"
+            ):
+                return answer_option
+        return None
+
     def handle_post(self):
-        if (
-            self.form.data[self.parent_block["remove_answer"]["id"]]
-            == self.parent_block["remove_answer"]["value"]
-        ):
+        remove_answer_option = self.get_remove_answer_option()
+        remove_answer_id = self.parent_block["remove_block"]["question"]["answers"][0][
+            "id"
+        ]
+
+        if self.form.data[remove_answer_id] == remove_answer_option["value"]:
             list_name = self.parent_block["for_list"]
             self.questionnaire_store_updater.remove_list_item_and_answers(
                 list_name, self._current_location.list_item_id
