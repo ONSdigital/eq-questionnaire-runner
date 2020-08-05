@@ -67,7 +67,7 @@
                             "question": {
                                 "answers": [
                                     {
-                                        "id": "how-many-people-live-here",
+                                        "id": "how-many-people-live-here-answer",
                                         "mandatory": true,
                                         "options": [
                                             {
