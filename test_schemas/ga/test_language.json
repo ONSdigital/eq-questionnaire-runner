@@ -4,9 +4,9 @@
     "schema_version": "0.0.1",
     "data_version": "0.0.3",
     "survey_id": "0",
-    "title": "Suirbhé Teanga Tástála",
+    "title": "Suirbh\u00e9 Teanga T\u00e1st\u00e1la",
     "theme": "social",
-    "description": "Ceistneoir chun athrú teanga a thaispeáint",
+    "description": "A questionnaire to demonstrate language switching",
     "metadata": [
         {
             "name": "user_id",
@@ -17,20 +17,31 @@
             "type": "string"
         }
     ],
+    "hub": {
+        "enabled": true
+    },
+    "submission": {
+        "button": "T\u00e9acs aighneachta",
+        "guidance": "Treoir maidir le haighneachta\u00ed",
+        "title": "Teideal Aighneachta",
+        "warning": "Rabhadh aighneachta"
+    },
     "sections": [
         {
             "id": "default-section",
+            "title": "Sonra\u00ed t\u00ed",
             "groups": [
                 {
                     "id": "language-group",
-                    "title": "",
                     "blocks": [
                         {
                             "type": "Question",
                             "id": "name-block",
                             "question": {
+                                "instruction": ["Iontr\u00e1il ainm duine"],
+                                "description": ["Ainm ioml\u00e1n an duine"],
                                 "id": "name-question",
-                                "title": "Iontráil ainm",
+                                "title": "Iontr\u00e1il ainm",
                                 "type": "General",
                                 "answers": [
                                     {
@@ -41,7 +52,7 @@
                                     },
                                     {
                                         "id": "last-name",
-                                        "label": "Ainm deireanach",
+                                        "label": "Ainm Deireanach",
                                         "mandatory": false,
                                         "type": "TextField"
                                     }
@@ -52,9 +63,39 @@
                             "type": "Question",
                             "id": "dob-block",
                             "question": {
+                                "description": [
+                                    {
+                                        "text": "d\u00e1ta breithe {person_name_possessive} \u201c",
+                                        "placeholders": [
+                                            {
+                                                "placeholder": "person_name_possessive",
+                                                "transforms": [
+                                                    {
+                                                        "arguments": {
+                                                            "delimiter": " ",
+                                                            "list_to_concatenate": {
+                                                                "identifier": ["first-name", "last-name"],
+                                                                "source": "answers"
+                                                            }
+                                                        },
+                                                        "transform": "concatenate_list"
+                                                    },
+                                                    {
+                                                        "arguments": {
+                                                            "string_to_format": {
+                                                                "source": "previous_transform"
+                                                            }
+                                                        },
+                                                        "transform": "format_possessive"
+                                                    }
+                                                ]
+                                            }
+                                        ]
+                                    }
+                                ],
                                 "id": "dob-question",
                                 "title": {
-                                    "text": "Cad is dáta breithe ann {person_name_possessive}?",
+                                    "text": "Cad \u00e9 d\u00e1ta breithe {person_name_possessive}?",
                                     "placeholders": [
                                         {
                                             "placeholder": "person_name_possessive",
@@ -85,8 +126,8 @@
                                 "answers": [
                                     {
                                         "id": "date-of-birth-answer",
-                                        "description": "Cuir isteach do dháta breithe",
-                                        "label": "dáta breithe",
+                                        "description": "Cuir isteach do dh\u00e1ta breithe",
+                                        "label": "D\u00e1ta breithe",
                                         "mandatory": true,
                                         "type": "Date"
                                     }
@@ -100,7 +141,7 @@
                                 "answers": [
                                     {
                                         "id": "number-of-people-answer",
-                                        "label": "Líon na gcónaitheoirí sa bhaile",
+                                        "label": "L\u00edon c\u00f3naitheoir\u00ed t\u00ed",
                                         "mandatory": true,
                                         "type": "Number",
                                         "minimum": {
@@ -111,8 +152,10 @@
                                         }
                                     }
                                 ],
+                                "description": ["L\u00edon ioml\u00e1n na ndaoine sa teaghlach"],
+                                "warning": "Is ceist an-t\u00e1bhachtach \u00ed seo",
                                 "id": "number-of-people-question",
-                                "title": "Cé mhéad duine atá ina gcónaí ar do theach?",
+                                "title": "C\u00e9 mh\u00e9ad duine at\u00e1 ina gc\u00f3na\u00ed i do theaghlach?",
                                 "type": "General"
                             }
                         },
@@ -125,12 +168,11 @@
                                 "title": {
                                     "text_plural": {
                                         "forms": {
-                                            "one": "{number_of_people} (one)",
-                                            "other": "{number_of_people} (other)",
-                                            "zero": "{number_of_people} (zero)",
-                                            "two": "{number_of_people} (two)",
-                                            "few": "{number_of_people} (few)",
-                                            "many": "{number_of_people} (many)"
+                                            "one": "Gaelic (zero)",
+                                            "other": "Gaelic (many)",
+                                            "two": "Gaelic (one)",
+                                            "few": "Gaelic (two)",
+                                            "many": "Gaelic (few)"
                                         },
                                         "count": {
                                             "source": "answers",
@@ -157,12 +199,11 @@
                                                 "label": {
                                                     "text_plural": {
                                                         "forms": {
-                                                            "one": "{number_of_people} (one)",
-                                                            "other": "{number_of_people} (other)",
-                                                            "zero": "{number_of_people} (zero)",
-                                                            "two": "{number_of_people} (two)",
-                                                            "few": "{number_of_people} (few)",
-                                                            "many": "{number_of_people} (many)"
+                                                            "one": "Gaelic (zero)",
+                                                            "other": "Gaelic (many)",
+                                                            "two": "Gaelic (one)",
+                                                            "few": "Gaelic (two)",
+                                                            "many": "Gaelic (few)"
                                                         },
                                                         "count": {
                                                             "source": "answers",
@@ -182,17 +223,13 @@
                                                 "value": "Yes"
                                             },
                                             {
-                                                "label": "Na",
+                                                "label": "N\u00edl",
                                                 "value": "No"
                                             }
                                         ]
                                     }
                                 ]
                             }
-                        },
-                        {
-                            "type": "Summary",
-                            "id": "summary"
                         }
                     ]
                 }

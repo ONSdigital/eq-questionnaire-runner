@@ -29,16 +29,16 @@ class HubPage extends BasePage {
     return 'a[id="top-previous"]';
   }
 
-  displayedName() {
+  heading() {
     return "h1";
   }
 
-  displayedGuidance() {
-    return '[data-qa="hub-guidance-panel"]';
+  warning() {
+    return '[data-qa="warning"]';
   }
 
-  displayedSubmissionGuidance() {
-    return '[data-qa="submission-guidance"]';
+  guidance() {
+    return '[data-qa="guidance"]';
   }
 
   submit() {
