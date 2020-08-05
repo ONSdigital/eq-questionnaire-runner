@@ -249,7 +249,7 @@ describe("Feature: Repeating Sections with Hub and Spoke", () => {
       $(VisitorsDateOfBirthPage.submit()).click();
 
       expect($(HubPage.submit()).getText()).to.equal("Submit survey");
-      expect($(HubPage.displayedName()).getText()).to.equal("Submit survey");
+      expect($(HubPage.heading()).getText()).to.equal("Submit survey");
     });
 
     it("When the user adds a new member to the household, Then the Hub should not be in the completed state", () => {
@@ -278,8 +278,8 @@ describe("Feature: Repeating Sections with Hub and Spoke", () => {
       expect($(HubPage.submit()).getText()).to.not.equal("Submit survey");
       expect($(HubPage.submit()).getText()).to.equal("Continue");
 
-      expect($(HubPage.displayedName()).getText()).to.not.equal("Submit survey");
-      expect($(HubPage.displayedName()).getText()).to.equal("Choose another section to complete");
+      expect($(HubPage.heading()).getText()).to.not.equal("Submit survey");
+      expect($(HubPage.heading()).getText()).to.equal("Choose another section to complete");
     });
 
     it("When the user removes a member from the household, Then their section is not longer displayed on he Hub", () => {

@@ -49,6 +49,9 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
             self._list_name_to_section_map[list_name] = section_ids
             return section_ids
 
+    def get_submission(self):
+        return self.json.get("submission", {})
+
     def _section_ids_associated_to_list_name(self, list_name: str) -> List:
         section_ids: List = []
 
