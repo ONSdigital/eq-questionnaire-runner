@@ -111,3 +111,6 @@ tags
 
 # Ignore wdio/chromedriver logs
 tests/functional/logs/
+
+# `typing` folder
+typing/
