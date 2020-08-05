@@ -76,12 +76,7 @@ def evaluate_condition(condition, answer_value, match_value):
     """
     answer_and_match = answer_value is not None and match_value is not None
 
-    if condition in {
-        "equals",
-        "not equals",
-        "equals any",
-        "not equals any",
-    }:
+    if condition in {"equals", "not equals", "equals any", "not equals any"}:
         answer_value = casefold(answer_value)
         match_value = casefold(match_value)
 
