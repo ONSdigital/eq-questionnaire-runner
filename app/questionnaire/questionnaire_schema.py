@@ -50,7 +50,7 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
 
     @classmethod
     def serialize(cls, data):
-        if is_hashable(data):
+        if isinstance(data, abc.Hashable):
             return data
         if isinstance(data, list):
             return tuple((cls.serialize(item) for item in data))
@@ -477,7 +477,3 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
             messages.update(self.json["messages"])
 
         return messages
-
-
-def is_hashable(obj):
-    return isinstance(obj, abc.Hashable)

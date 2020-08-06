@@ -1,7 +1,9 @@
+from collections import abc
+
 import pytest
 from werkzeug.datastructures import ImmutableDict
 
-from app.questionnaire.questionnaire_schema import QuestionnaireSchema, is_hashable
+from app.questionnaire.questionnaire_schema import QuestionnaireSchema
 
 
 def assert_all_dict_values_are_hashable(data):
@@ -11,7 +13,7 @@ def assert_all_dict_values_are_hashable(data):
         if isinstance(value, tuple):
             return tuple(assert_all_dict_values_are_hashable(v) for v in value)
 
-        assert is_hashable(value)
+        assert isinstance(value, abc.Hashable)
 
 
 def test_schema_json_is_immutable_and_hashable(question_schema):
