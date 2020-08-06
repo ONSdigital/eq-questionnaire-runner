@@ -112,5 +112,5 @@ tags
 # Ignore wdio/chromedriver logs
 tests/functional/logs/
 
-# `typing` folder
+# Ignore Pylance custom type stub folder
 typing/
