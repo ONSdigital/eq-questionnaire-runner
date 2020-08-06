@@ -97,28 +97,28 @@ class TestRules(AppContextTestCase):  # pylint: disable=too-many-public-methods
         self.assertFalse(evaluate_rule(when, 2))
         self.assertTrue(evaluate_rule(when, 0))
 
-    def test_evaluate_rule_equals_with_string(self):
+    def test_evaluate_rule_equals_with_string_case_insensitive(self):
         when = {"value": "answervalue", "condition": "equals"}
 
         self.assertTrue(evaluate_rule(when, "answerValue"))
         self.assertTrue(evaluate_rule(when, "answervalue"))
         self.assertFalse(evaluate_rule(when, "answer-value"))
 
-    def test_evaluate_rule_not_equals_with_string(self):
+    def test_evaluate_rule_not_equals_with_string_case_insensitive(self):
         when = {"value": "answervalue", "condition": "not equals"}
 
         self.assertFalse(evaluate_rule(when, "answerValue"))
         self.assertFalse(evaluate_rule(when, "answervalue"))
         self.assertTrue(evaluate_rule(when, "answer-value"))
 
-    def test_evaluate_rule_equals_any_with_string(self):
+    def test_evaluate_rule_equals_any_with_string_case_insensitive(self):
         when = {"value": ["answerValue", "notAnswerValue"], "condition": "equals any"}
 
         self.assertTrue(evaluate_rule(when, "answervalue"))
         self.assertTrue(evaluate_rule(when, "answerValue"))
         self.assertFalse(evaluate_rule(when, "answer-value"))
 
-    def test_evaluate_rule_not_equals_any_with_string(self):
+    def test_evaluate_rule_not_equals_any_with_string_case_insensitive(self):
         when = {
             "value": ["answerValue", "notAnswerValue"],
             "condition": "not equals any",
