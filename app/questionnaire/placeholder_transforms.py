@@ -131,7 +131,7 @@ class PlaceholderTransforms:
 
     def format_ordinal(self, number_to_format, determiner=None):
 
-        suffix = self.get_ordinal(self.language, number_to_format)
+        indicator = self.get_ordinal_indicator(number_to_format)
 
         if determiner == "a_or_an" and self.language in ["en", "eo"]:
             a_or_an = (
@@ -139,21 +139,20 @@ class PlaceholderTransforms:
                 if str(number_to_format).startswith("8") or number_to_format in [11, 18]
                 else "a"
             )
-            return f"{a_or_an} {number_to_format}{suffix}"
+            return f"{a_or_an} {number_to_format}{indicator}"
 
-        return f"{number_to_format}{suffix}"
+        return f"{number_to_format}{indicator}"
 
-    @staticmethod
-    def get_ordinal(language_code, number_to_format):
-        if language_code in ["en", "eo"]:
+    def get_ordinal_indicator(self, number_to_format):
+        if self.language_code in ["en", "eo"]:
             if 11 <= number_to_format % 100 <= 13:
                 return "th"
             return {1: "st", 2: "nd", 3: "rd"}.get(number_to_format % 10, "th")
 
-        if language_code == "ga":
+        if self.language_code == "ga":
             return "ú"
 
-        if language_code == "cy":
+        if self.language_code == "cy":
             if number_to_format in range(21, 39):
                 return "ain"
             return {
