@@ -148,8 +148,7 @@ class PlaceholderTransforms:
         if language_code in ["en", "eo"]:
             if 11 <= number_to_format % 100 <= 13:
                 return "th"
-            else:
-                return {1: "st", 2: "nd", 3: "rd"}.get(number_to_format % 10, "th")
+            return {1: "st", 2: "nd", 3: "rd"}.get(number_to_format % 10, "th")
 
         if language_code == "ga":
             return "ú"
@@ -157,29 +156,28 @@ class PlaceholderTransforms:
         if language_code == "cy":
             if number_to_format in range(21, 39):
                 return "ain"
-            else:
-                return {
-                    1: "af",
-                    2: "ail",
-                    3: "ydd",
-                    4: "ydd",
-                    5: "ed",
-                    6: "ed",
-                    7: "fed",
-                    8: "fed",
-                    9: "fed",
-                    10: "fed",
-                    11: "fed",
-                    12: "fed",
-                    13: "eg",
-                    14: "eg",
-                    15: "fed",
-                    16: "eg",
-                    17: "eg",
-                    18: "fed",
-                    19: "eg",
-                    20: "fed",
-                }.get(number_to_format, "fed")
+            return {
+                1: "af",
+                2: "ail",
+                3: "ydd",
+                4: "ydd",
+                5: "ed",
+                6: "ed",
+                7: "fed",
+                8: "fed",
+                9: "fed",
+                10: "fed",
+                11: "fed",
+                12: "fed",
+                13: "eg",
+                14: "eg",
+                15: "fed",
+                16: "eg",
+                17: "eg",
+                18: "fed",
+                19: "eg",
+                20: "fed",
+            }.get(number_to_format, "fed")
 
     def first_non_empty_item(self, items):
         """
