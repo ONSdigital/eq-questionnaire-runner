@@ -145,6 +145,42 @@ class TestPlaceholderParser(unittest.TestCase):
         assert self.transforms.format_ordinal(4) == "4th"
         assert self.transforms.format_ordinal(21) == "21st"
 
+    def test_format_ordinal_with_determiner_ulster_scots(self):
+        ulster_scots_transforms = PlaceholderTransforms(language="eo")
+        assert ulster_scots_transforms.format_ordinal(1, "a_or_an") == "a 1st"
+        assert self.transforms.format_ordinal(2, "a_or_an") == "a 2nd"
+        assert self.transforms.format_ordinal(3, "a_or_an") == "a 3rd"
+        assert self.transforms.format_ordinal(4, "a_or_an") == "a 4th"
+        assert self.transforms.format_ordinal(8, "a_or_an") == "an 8th"
+        assert self.transforms.format_ordinal(11, "a_or_an") == "an 11th"
+
+    def test_format_ordinal_without_determiner_ulster_scots(self):
+        ulster_scots_transforms = PlaceholderTransforms(language="eo")
+        assert ulster_scots_transforms.format_ordinal(1) == "1st"
+        assert self.transforms.format_ordinal(2) == "2nd"
+        assert self.transforms.format_ordinal(3) == "3rd"
+        assert self.transforms.format_ordinal(4) == "4th"
+        assert self.transforms.format_ordinal(21) == "21st"
+
+    def test_format_ordinal_gaelic(self):
+        gaelic_transforms = PlaceholderTransforms(language="ga")
+        assert gaelic_transforms.format_ordinal(1) == "1ú"
+        assert gaelic_transforms.format_ordinal(2) == "2ú"
+        assert gaelic_transforms.format_ordinal(5) == "5ú"
+        assert gaelic_transforms.format_ordinal(7) == "7ú"
+        assert gaelic_transforms.format_ordinal(21) == "21ú"
+
+    def test_format_ordinal_welsh(self):
+        welsh_transforms = PlaceholderTransforms(language="cy")
+        assert welsh_transforms.format_ordinal(1) == "1af"
+        assert welsh_transforms.format_ordinal(2) == "2ail"
+        assert welsh_transforms.format_ordinal(3) == "3ydd"
+        assert welsh_transforms.format_ordinal(7) == "7fed"
+        assert welsh_transforms.format_ordinal(13) == "13eg"
+        assert welsh_transforms.format_ordinal(18) == "18fed"
+        assert welsh_transforms.format_ordinal(21) == "21ain"
+        assert welsh_transforms.format_ordinal(40) == "40fed"
+
     def test_remove_empty_from_list(self):
         list_to_filter = [None, 0, False, "", "String"]
 
