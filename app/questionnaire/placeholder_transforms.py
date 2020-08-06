@@ -144,15 +144,15 @@ class PlaceholderTransforms:
         return f"{number_to_format}{indicator}"
 
     def get_ordinal_indicator(self, number_to_format):
-        if self.language_code in ["en", "eo"]:
+        if self.language in ["en", "eo"]:
             if 11 <= number_to_format % 100 <= 13:
                 return "th"
             return {1: "st", 2: "nd", 3: "rd"}.get(number_to_format % 10, "th")
 
-        if self.language_code == "ga":
+        if self.language == "ga":
             return "ú"
 
-        if self.language_code == "cy":
+        if self.language == "cy":
             if number_to_format in range(21, 39):
                 return "ain"
             return {
