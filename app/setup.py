@@ -74,6 +74,7 @@ class EmulatorCredentials(credentials.Credentials):
     def __init__(self):  # pylint: disable=super-init-not-called
         self.token = b"seekrit"
         self.expiry = None
+        self._quota_project_id = None
 
     @property
     def valid(self):
@@ -81,6 +82,9 @@ class EmulatorCredentials(credentials.Credentials):
 
     def refresh(self, request):  # pylint: disable=unused-argument
         raise RuntimeError("Should never be refreshed.")
+
+    def with_quota_project(self, quota_project_id):
+        raise NotImplementedError("This class does not support quota project.")
 
 
 class AWSReverseProxied:
