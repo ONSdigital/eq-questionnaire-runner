@@ -11,10 +11,12 @@
     "description": answer.description
   },
   "value": input._value() | e,
-  "maxlength": answer.max_length | default(input.maxlength, true),
+  "charCheckLimit": {
+    "limit": answer.max_length | default(input.maxlength, true),
+    "charCountSingular": _("You have {x} character remaining"),
+    "charCountPlural": _("You have {x} characters remaining"),
+  },
   "rows": answer.rows,
-  "charCountSingular": _("You have {x} character remaining"),
-  "charCountPlural": _("You have {x} characters remaining"),
   "legend": question_title,
   "legendClasses": "u-vh",
   "mutuallyExclusive": mutuallyExclusive,
