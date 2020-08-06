@@ -2,7 +2,6 @@ import pytest
 from werkzeug.datastructures import ImmutableDict
 
 from app.questionnaire.questionnaire_schema import QuestionnaireSchema, is_hashable
-from app.questionnaire.questionnaire_schema import get_values_for_key
 
 
 def assert_all_dict_values_are_hashable(data):
@@ -356,23 +355,6 @@ def test_get_answer_within_list_collector_with_list_item_id(
     )
 
     assert list_item_id == expected_list_item_id
-
-
-def test_get_values_for_key_ignores_variants():
-    block = {"question_variants": [{"when": "test"}]}
-    result = list(get_values_for_key(block, "when", {"question_variants"}))
-    assert result == []
-
-
-def test_get_values_for_key_ignores_multiple_keys():
-    block = {
-        "question_variants": [{"when": "test"}],
-        "content_variants": [{"when": "test"}],
-    }
-    result = list(
-        get_values_for_key(block, "when", {"question_variants", "content_variants"})
-    )
-    assert result == []
 
 
 def test_get_list_collector_for_list(list_collector_variant_schema):

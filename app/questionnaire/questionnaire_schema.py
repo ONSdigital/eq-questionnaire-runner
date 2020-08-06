@@ -1,4 +1,4 @@
-from collections import defaultdict
+from collections import defaultdict, abc
 from copy import deepcopy
 from functools import cached_property
 from typing import List, Union, Mapping
@@ -8,6 +8,7 @@ from werkzeug.datastructures import ImmutableDict
 
 from app.data_model.answer import Answer
 from app.forms.error_messages import error_messages
+from app.questionnaire.schema_utils import get_values_for_key
 
 DEFAULT_LANGUAGE_CODE = "en"
 
@@ -478,22 +479,5 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
         return messages
 
 
-def is_hashable(value):
-    return hasattr(value, "__hash__") and callable(value.__hash__)
-
-
-def get_values_for_key(block, key, ignore_keys=None):
-    ignore_keys = ignore_keys or []
-    for k, v in block.items():
-        try:
-            if k in ignore_keys:
-                continue
-            if k == key:
-                yield v
-            if isinstance(v, dict):
-                yield from get_values_for_key(v, key)
-            elif isinstance(v, (list, tuple)):
-                for d in v:
-                    yield from get_values_for_key(d, key)
-        except AttributeError:
-            continue
+def is_hashable(obj):
+    return isinstance(obj, abc.Hashable)

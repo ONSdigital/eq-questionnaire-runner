@@ -131,3 +131,20 @@ def get_answer_ids_in_block(block):
         answer_ids.append(answer["id"])
 
     return answer_ids
+
+
+def get_values_for_key(block, key, ignore_keys=None):
+    ignore_keys = ignore_keys or []
+    for k, v in block.items():
+        try:
+            if k in ignore_keys:
+                continue
+            if k == key:
+                yield v
+            if isinstance(v, dict):
+                yield from get_values_for_key(v, key)
+            elif isinstance(v, (list, tuple)):
+                for d in v:
+                    yield from get_values_for_key(d, key)
+        except AttributeError:
+            continue

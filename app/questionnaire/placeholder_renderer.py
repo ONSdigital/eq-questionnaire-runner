@@ -55,26 +55,21 @@ class PlaceholderRenderer:
             list_store=self._list_store,
         )
 
-        mutable_placeholder_data = QuestionnaireSchema.get_mutable_deepcopy(
-            placeholder_data
-        )
+        placeholder_data = QuestionnaireSchema.get_mutable_deepcopy(placeholder_data)
 
-        if "text_plural" in mutable_placeholder_data:
-            plural_schema = mutable_placeholder_data["text_plural"]
+        if "text_plural" in placeholder_data:
+            plural_schema = placeholder_data["text_plural"]
             count = self.get_plural_count(plural_schema["count"])
 
             plural_form_key = get_plural_form_key(count, self._language)
-            mutable_placeholder_data["text"] = plural_schema["forms"][plural_form_key]
+            placeholder_data["text"] = plural_schema["forms"][plural_form_key]
 
-        if (
-            "text" not in mutable_placeholder_data
-            and "placeholders" not in mutable_placeholder_data
-        ):
+        if "text" not in placeholder_data and "placeholders" not in placeholder_data:
             raise ValueError("No placeholder found to render")
 
         transformed_values = placeholder_parser(placeholder_data["placeholders"])
 
-        return mutable_placeholder_data["text"].format(**transformed_values)
+        return placeholder_data["text"].format(**transformed_values)
 
     def render(self, dict_to_render, list_item_id):
         """
