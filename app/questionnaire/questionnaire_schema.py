@@ -49,6 +49,9 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
             self._list_name_to_section_map[list_name] = section_ids
             return section_ids
 
+    def get_submission(self):
+        return self.json.get("submission", {})
+
     def _section_ids_associated_to_list_name(self, list_name: str) -> List:
         section_ids: List = []
 
@@ -215,13 +218,25 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
         return self._questions_by_id.get(question_id)
 
     @staticmethod
-    def get_list_collectors_for_list(section, for_list):
-        return [
+    def get_list_collectors_for_list(section, for_list, primary=False):
+        collector_type = "PrimaryPersonListCollector" if primary else "ListCollector"
+
+        return (
             block
-            for group in section["groups"]
-            for block in group["blocks"]
-            if block["type"] == "ListCollector" and block["for_list"] == for_list
-        ]
+            for block in QuestionnaireSchema.get_blocks_for_section(section)
+            if block["type"] == collector_type and block["for_list"] == for_list
+        )
+
+    @staticmethod
+    def get_list_collector_for_list(section, for_list, primary=False):
+        try:
+            return next(
+                QuestionnaireSchema.get_list_collectors_for_list(
+                    section, for_list, primary
+                )
+            )
+        except StopIteration:
+            return None
 
     @classmethod
     def get_answer_ids_for_question(cls, question):
