@@ -136,8 +136,7 @@ class PlaceholderTransforms:
         if determiner == "a_or_an" and self.language in ["en", "eo"]:
             a_or_an = (
                 "an"
-                if str(number_to_format).startswith("8")
-                or number_to_format in [11, 18]
+                if str(number_to_format).startswith("8") or number_to_format in [11, 18]
                 else "a"
             )
             return f"{a_or_an} {number_to_format}{suffix}"
@@ -181,7 +180,6 @@ class PlaceholderTransforms:
                     19: "eg",
                     20: "fed",
                 }.get(number_to_format, "fed")
-
 
     def first_non_empty_item(self, items):
         """
