@@ -130,29 +130,36 @@ class PlaceholderTransforms:
         return lhs + rhs
 
     def format_ordinal(self, number_to_format, determiner=None):
-        if self.language in ["en", "eo"]:
+
+        suffix = self.get_ordinal(self.language, number_to_format)
+
+        if determiner == "a_or_an" and self.language in ["en", "eo"]:
+            a_or_an = (
+                "an"
+                if str(number_to_format).startswith("8")
+                or number_to_format in [11, 18]
+                else "a"
+            )
+            return f"{a_or_an} {number_to_format}{suffix}"
+
+        return f"{number_to_format}{suffix}"
+
+    @staticmethod
+    def get_ordinal(language_code, number_to_format):
+        if language_code in ["en", "eo"]:
             if 11 <= number_to_format % 100 <= 13:
-                suffix = "th"
+                return "th"
             else:
-                suffix = {1: "st", 2: "nd", 3: "rd"}.get(number_to_format % 10, "th")
+                return {1: "st", 2: "nd", 3: "rd"}.get(number_to_format % 10, "th")
 
-            if determiner == "a_or_an":
-                a_or_an = (
-                    "an"
-                    if str(number_to_format).startswith("8")
-                    or number_to_format in [11, 18]
-                    else "a"
-                )
-                return f"{a_or_an} {number_to_format}{suffix}"
+        if language_code == "ga":
+            return "ú"
 
-        elif self.language == "ga":
-            suffix = "ú"
-
-        elif self.language == "cy":
+        if language_code == "cy":
             if number_to_format in range(21, 39):
-                suffix = "ain"
+                return "ain"
             else:
-                suffix = {
+                return {
                     1: "af",
                     2: "ail",
                     3: "ydd",
@@ -175,7 +182,6 @@ class PlaceholderTransforms:
                     20: "fed",
                 }.get(number_to_format, "fed")
 
-        return f"{number_to_format}{suffix}"
 
     def first_non_empty_item(self, items):
         """
