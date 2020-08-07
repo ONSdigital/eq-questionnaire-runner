@@ -129,23 +129,46 @@ class PlaceholderTransforms:
     def add(lhs, rhs):
         return lhs + rhs
 
-    @staticmethod
-    def format_ordinal(number_to_format, determiner=None):
+    def format_ordinal(self, number_to_format, determiner=None):
 
-        if 11 <= number_to_format % 100 <= 13:
-            suffix = "th"
-        else:
-            suffix = {1: "st", 2: "nd", 3: "rd"}.get(number_to_format % 10, "th")
+        indicator = self.get_ordinal_indicator(number_to_format)
 
-        if determiner == "a_or_an":
+        if determiner == "a_or_an" and self.language in ["en", "eo"]:
             a_or_an = (
                 "an"
                 if str(number_to_format).startswith("8") or number_to_format in [11, 18]
                 else "a"
             )
-            return f"{a_or_an} {number_to_format}{suffix}"
+            return f"{a_or_an} {number_to_format}{indicator}"
 
-        return f"{number_to_format}{suffix}"
+        return f"{number_to_format}{indicator}"
+
+    def get_ordinal_indicator(self, number_to_format):
+        if self.language in ["en", "eo"]:
+            if 11 <= number_to_format % 100 <= 13:
+                return "th"
+            return {1: "st", 2: "nd", 3: "rd"}.get(number_to_format % 10, "th")
+
+        if self.language == "ga":
+            return "ú"
+
+        if self.language == "cy":
+            if number_to_format in range(21, 39):
+                return "ain"
+            return {
+                1: "af",
+                2: "il",
+                3: "ydd",
+                4: "ydd",
+                5: "ed",
+                6: "ed",
+                11: "eg",
+                13: "eg",
+                14: "eg",
+                16: "eg",
+                17: "eg",
+                19: "eg",
+            }.get(number_to_format, "fed")
 
     def first_non_empty_item(self, items):
         """
