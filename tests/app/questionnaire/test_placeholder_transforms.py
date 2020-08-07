@@ -177,7 +177,7 @@ class TestPlaceholderParser(unittest.TestCase):
     def test_format_ordinal_welsh():
         welsh_transforms = PlaceholderTransforms(language="cy")
         assert welsh_transforms.format_ordinal(1) == "1af"
-        assert welsh_transforms.format_ordinal(2) == "2ail"
+        assert welsh_transforms.format_ordinal(2) == "2il"
         assert welsh_transforms.format_ordinal(3) == "3ydd"
         assert welsh_transforms.format_ordinal(7) == "7fed"
         assert welsh_transforms.format_ordinal(13) == "13eg"

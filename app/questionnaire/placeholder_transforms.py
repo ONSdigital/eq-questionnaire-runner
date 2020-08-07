@@ -157,7 +157,7 @@ class PlaceholderTransforms:
                 return "ain"
             return {
                 1: "af",
-                2: "ail",
+                2: "il",
                 3: "ydd",
                 4: "ydd",
                 5: "ed",
