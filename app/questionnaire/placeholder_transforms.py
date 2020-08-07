@@ -175,7 +175,6 @@ class PlaceholderTransforms:
                 17: "eg",
                 18: "fed",
                 19: "eg",
-                20: "fed",
             }.get(number_to_format, "fed")
 
     def first_non_empty_item(self, items):
