@@ -14,7 +14,7 @@ schema_blueprint = Blueprint("schema", __name__)
 def get_schema_json_from_name(schema_name):
     try:
         schema = load_schema_from_name(schema_name)
-        return jsonify(QuestionnaireSchema.get_mutable_deepcopy(schema.json))
+        return jsonify(schema.json)
     except FileNotFoundError:
         return "Schema Not Found", 404
 
