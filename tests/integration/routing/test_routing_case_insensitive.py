@@ -16,7 +16,7 @@ class TestCaseInsensitiveRouting(IntegrationTestCase):
         self.post({"country-text-field-answer": "india"})
 
         # Then I should see the correct text
-        self.assertInBody("You wrote India or Azerbaijan.")
+        self.assertInBody("You submitted India or Azerbaijan.")
 
     def test_routing_equals_case_insensitive(self):
         self.launchSurvey("test_routing_case_insensitive_text_field")
@@ -28,4 +28,4 @@ class TestCaseInsensitiveRouting(IntegrationTestCase):
         self.post({"country-text-field-answer": "georgia"})
 
         # Then I should see the correct text
-        self.assertInBody("You wrote Georgia.")
+        self.assertInBody("You submitted Georgia.")

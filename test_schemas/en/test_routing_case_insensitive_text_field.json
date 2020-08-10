@@ -37,11 +37,22 @@
                                 "answers": [
                                     {
                                         "id": "country-text-field-answer",
-                                        "label": "country-text-field-answer",
+                                        "label": "Country",
                                         "mandatory": true,
                                         "type": "TextField"
                                     }
-                                ]
+                                ],
+                                "guidance": {
+                                    "contents": [
+                                        {
+                                            "title": "The following routing should take place",
+                                            "list": [
+                                                "Submit 'India' or 'Azerbaijan' using any mixture of lower or upper case: route to 'country-interstitial-equal-any'",
+                                                "Submit 'Georgia' using any mixture of lower or upper case: route to 'country-interstitial-equals'"
+                                            ]
+                                        }
+                                    ]
+                                }
                             },
                             "routing_rules": [
                                 {
@@ -82,7 +93,7 @@
                                 "title": "Condition: Equals Any",
                                 "contents": [
                                     {
-                                        "description": "You wrote India or Azerbaijan."
+                                        "description": "You submitted India or Azerbaijan."
                                     }
                                 ]
                             }
@@ -94,7 +105,7 @@
                                 "title": "Condition: Equals",
                                 "contents": [
                                     {
-                                        "description": "You wrote Georgia."
+                                        "description": "You submitted Georgia."
                                     }
                                 ]
                             }
