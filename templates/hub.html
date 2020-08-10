@@ -3,6 +3,7 @@
 {% from "components/panel/_macro.njk" import onsPanel %}
 {% from "components/summary/_macro.njk" import onsSummary %}
 {% from "components/button/_macro.njk" import onsButton %}
+{% from "components/collapsible/_macro.njk" import onsCollapsible %}
 
 {% set save_on_signout = true %}
 
@@ -33,6 +34,10 @@
       <div class="u-mt-l">
         <p class="u-mb-no" data-qa="guidance">{{ content.guidance }}</p>
       </div>
+    {% endif %}
+    {% if content.individual_response_url %}
+    {% set title = _("If you can’t answer someone else’s questions") %}
+    {% include 'partials/individual-response-guidance.html' %}
     {% endif %}
     {{
         onsButton({

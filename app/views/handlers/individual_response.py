@@ -50,7 +50,7 @@ class IndividualResponseHandler:
         language,
         request_args,
         form_data,
-        list_item_id,
+        list_item_id=None,
     ):
         self._block_definition = block_definition
         self._schema = schema
@@ -60,6 +60,10 @@ class IndividualResponseHandler:
         self._form_data = form_data
         self._answers = None
         self._list_item_id = list_item_id
+        self._list_name = self._schema.json.get("individual_response", {}).get(
+            "for_list"
+        )
+        self._return_to = self._request_args.get("return_to")
 
         self.page_title = None
 
@@ -70,9 +74,6 @@ class IndividualResponseHandler:
         if not self.router.can_access_hub():
             return False
 
-        self._list_name = self._schema.json.get("individual_response", {}).get(
-            "for_list"
-        )
         list_model = self._questionnaire_store.list_store[self._list_name]
 
         if not list_model:
@@ -86,6 +87,10 @@ class IndividualResponseHandler:
                 return False
 
         return True
+
+    @cached_property
+    def _return_to_hub(self):
+        return self._return_to == "hub"
 
     @cached_property
     def rendered_block(self) -> Mapping:
@@ -137,21 +142,28 @@ class IndividualResponseHandler:
             self.individual_section_id
         )
 
-        if self._list_item_id:
+        if self._return_to_hub:
+            previous_location_url = url_for("questionnaire.get_questionnaire")
+        else:
             previous_location_url = url_for(
                 "questionnaire.block",
                 list_name=self._list_name,
                 list_item_id=self._list_item_id,
                 block_id=individual_section_first_block_id,
             )
-        else:
-            previous_location_url = url_for("questionnaire.get_questionnaire")
 
         return render_template(
             template="individual_response/interstitial",
             language=self._language,
             previous_location_url=previous_location_url,
         )
+
+    def handle_post(self):
+        if self._list_item_id:
+            return redirect(
+                url_for(".get_individual_response_how", list_item_id=self._list_item_id)
+            )
+        return redirect(url_for(".get_individual_response_who", return_to="hub"))
 
     def _render_block(self):
         return self.placeholder_renderer.render(
@@ -225,14 +237,17 @@ class IndividualResponseHowHandler(IndividualResponseHandler):
         )
 
     def handle_get(self):
+        previous_location_url = url_for(
+            "individual_response.request_individual_response",
+            list_item_id=self._list_item_id,
+        )
+
+        if self._return_to_hub:
+            previous_location_url = url_for("questionnaire.get_questionnaire")
+
         if self._request_args.get("journey") == "change":
             previous_location_url = url_for(
                 "individual_response.get_individual_response_change",
-                list_item_id=self._list_item_id,
-            )
-        else:
-            previous_location_url = url_for(
-                "individual_response.request_individual_response",
                 list_item_id=self._list_item_id,
             )
 
@@ -250,6 +265,7 @@ class IndividualResponseHowHandler(IndividualResponseHandler):
                 ".get_individual_response_post_address_confirm",
                 list_item_id=self._list_item_id,
                 journey=self._request_args.get("journey"),
+                return_to=self._return_to,
             )
         )
 
@@ -357,6 +373,7 @@ class IndividualResponseChangeHandler(IndividualResponseHandler):
                     "individual_response.get_individual_response_how",
                     list_item_id=self._list_item_id,
                     journey="change",
+                    return_to=self._return_to,
                 )
             )
 
@@ -375,6 +392,7 @@ class IndividualResponseChangeHandler(IndividualResponseHandler):
                     list_name=self._list_name,
                     list_item_id=self._list_item_id,
                     block_id=individual_section_first_block_id,
+                    return_to=self._return_to,
                 )
             )
 
@@ -479,6 +497,9 @@ class IndividualResponsePostAddressConfirmHandler(IndividualResponseHandler):
             journey=self._request_args.get("journey"),
         )
 
+        if self._return_to_hub:
+            previous_location_url = url_for("questionnaire.get_questionnaire")
+
         return render_template(
             "individual_response/question",
             language=self._language,
@@ -491,7 +512,8 @@ class IndividualResponsePostAddressConfirmHandler(IndividualResponseHandler):
             self._update_section_status(CompletionStatus.INDIVIDUAL_RESPONSE_REQUESTED)
             return redirect(
                 url_for(
-                    "individual_response.get_individual_response_post_address_confirmation"
+                    "individual_response.get_individual_response_post_address_confirmation",
+                    return_to=self._return_to,
                 )
             )
 
@@ -499,5 +521,100 @@ class IndividualResponsePostAddressConfirmHandler(IndividualResponseHandler):
             url_for(
                 "individual_response.get_individual_response_how",
                 list_item_id=self._list_item_id,
+                return_to=self._return_to,
+            )
+        )
+
+
+class IndividualResponseWhoHandler(IndividualResponseHandler):
+    def __init__(self, schema, questionnaire_store, language, request_args, form_data):
+        self._list_name = schema.json.get("individual_response", {}).get("for_list")
+        list_model = questionnaire_store.list_store[self._list_name]
+        name_answers = []
+
+        for list_item in list_model.items:
+            if list_item != list_model.primary_person:
+                name_answers.append(
+                    (
+                        list_item,
+                        questionnaire_store.answer_store.get_answers_by_answer_id(
+                            ["first-name", "last-name"], list_item_id=list_item
+                        ),
+                    )
+                )
+
+        self.people_names = {
+            f"{name_answer[0].value} {name_answer[1].value}": list_item_id
+            for list_item_id, name_answer in name_answers
+        }
+        super().__init__(
+            self.block_definition,
+            schema,
+            questionnaire_store,
+            language,
+            request_args,
+            form_data,
+            request_args.get("list_item_id"),
+        )
+
+    @cached_property
+    def selected_option(self):
+        answer_id = self.rendered_block["question"]["answers"][0]["id"]
+        return self.form.get_data(answer_id)
+
+    @cached_property
+    def selected_list_item(self):
+        answer_value = self.selected_option
+
+        return self.people_names[answer_value]
+
+    @cached_property
+    def block_definition(self) -> Mapping:
+        return {
+            "type": "IndividualResponse",
+            "question": {
+                "type": "Question",
+                "id": "individual-response-who",
+                "title": "Who do you need to request a separate census for?",
+                "answers": [
+                    {
+                        "type": "Radio",
+                        "id": "individual-response-who-answer",
+                        "mandatory": True,
+                        "options": [
+                            {"label": name, "value": name}
+                            for name in self.people_names.keys()
+                        ],
+                    }
+                ],
+            },
+        }
+
+    def handle_get(self):
+        if len(self.people_names) > 1:
+            previous_location_url = url_for("questionnaire.get_questionnaire")
+
+            return render_template(
+                "individual_response/question",
+                language=self._language,
+                content=self.get_context(),
+                previous_location_url=previous_location_url,
+            )
+
+        if len(self.people_names) == 1:
+            list_item_id = list(self.people_names.values())[0]
+
+            return redirect(
+                url_for(".get_individual_response_how", list_item_id=list_item_id)
+            )
+
+        raise NotFound
+
+    def handle_post(self):
+        return redirect(
+            url_for(
+                ".get_individual_response_how",
+                return_to="hub",
+                list_item_id=self.selected_list_item,
             )
         )

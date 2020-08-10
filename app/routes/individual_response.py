@@ -14,6 +14,7 @@ from app.views.handlers.individual_response import (
     IndividualResponseHowHandler,
     IndividualResponsePostAddressConfirmHandler,
     IndividualResponseChangeHandler,
+    IndividualResponseWhoHandler,
 )
 
 logger = get_logger()
@@ -53,6 +54,7 @@ def before_individual_response_request():
 def request_individual_response(schema, questionnaire_store):
     language_code = get_session_store().session_data.language_code
     list_item_id = request.args.get("list_item_id")
+
     individual_response_handler = IndividualResponseHandler(
         block_definition=None,
         schema=schema,
@@ -63,10 +65,10 @@ def request_individual_response(schema, questionnaire_store):
         list_item_id=list_item_id,
     )
 
-    if request.method == "GET":
-        return individual_response_handler.handle_get()
+    if request.method == "POST":
+        return individual_response_handler.handle_post()
 
-    return redirect(url_for(".get_individual_response_how", list_item_id=list_item_id))
+    return individual_response_handler.handle_get()
 
 
 @individual_response_blueprint.route("/<list_item_id>/how", methods=["GET", "POST"])
@@ -75,6 +77,7 @@ def request_individual_response(schema, questionnaire_store):
 @with_schema
 def get_individual_response_how(schema, questionnaire_store, list_item_id):
     language_code = get_session_store().session_data.language_code
+
     individual_response_handler = IndividualResponseHowHandler(
         schema=schema,
         questionnaire_store=questionnaire_store,
@@ -84,10 +87,10 @@ def get_individual_response_how(schema, questionnaire_store, list_item_id):
         list_item_id=list_item_id,
     )
 
-    if request.method == "GET" or not individual_response_handler.form.validate():
-        return individual_response_handler.handle_get()
+    if request.method == "POST" and individual_response_handler.form.validate():
+        return individual_response_handler.handle_post()
 
-    return individual_response_handler.handle_post()
+    return individual_response_handler.handle_get()
 
 
 @individual_response_blueprint.route("/<list_item_id>/change", methods=["GET", "POST"])
@@ -105,10 +108,10 @@ def get_individual_response_change(schema, questionnaire_store, list_item_id):
         list_item_id=list_item_id,
     )
 
-    if request.method == "GET" or not individual_response_handler.form.validate():
-        return individual_response_handler.handle_get()
+    if request.method == "POST" and individual_response_handler.form.validate():
+        return individual_response_handler.handle_post()
 
-    return individual_response_handler.handle_post()
+    return individual_response_handler.handle_get()
 
 
 @individual_response_blueprint.route(
@@ -130,10 +133,10 @@ def get_individual_response_post_address_confirm(
         list_item_id=list_item_id,
     )
 
-    if request.method == "GET" or not individual_response_handler.form.validate():
-        return individual_response_handler.handle_get()
+    if request.method == "POST" and individual_response_handler.form.validate():
+        return individual_response_handler.handle_post()
 
-    return individual_response_handler.handle_post()
+    return individual_response_handler.handle_get()
 
 
 @individual_response_blueprint.route("/post/confirmation", methods=["GET", "POST"])
@@ -152,10 +155,31 @@ def get_individual_response_post_address_confirmation(schema, questionnaire_stor
         list_item_id=None,
     )
 
-    if request.method == "GET":
-        return render_template(
-            template="individual_response/confirmation",
-            display_address=questionnaire_store.metadata.get("display_address"),
-        )
+    if request.method == "POST":
+        return redirect(url_for("questionnaire.get_questionnaire"))
 
-    return redirect(url_for("questionnaire.get_questionnaire"))
+    return render_template(
+        template="individual_response/confirmation",
+        display_address=questionnaire_store.metadata.get("display_address"),
+    )
+
+
+@individual_response_blueprint.route("/who", methods=["GET", "POST"])
+@login_required
+@with_questionnaire_store
+@with_schema
+def get_individual_response_who(schema, questionnaire_store):
+    language_code = get_session_store().session_data.language_code
+
+    member_selector_handler = IndividualResponseWhoHandler(
+        schema=schema,
+        questionnaire_store=questionnaire_store,
+        language=language_code,
+        request_args=request.args,
+        form_data=request.form,
+    )
+
+    if request.method == "POST" and member_selector_handler.form.validate():
+        return member_selector_handler.handle_post()
+
+    return member_selector_handler.handle_get()

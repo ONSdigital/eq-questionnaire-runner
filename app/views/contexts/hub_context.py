@@ -1,9 +1,12 @@
+from functools import cached_property
 from typing import List, Mapping, Union
 
 from flask import url_for
 from flask_babel import lazy_gettext
 
-from app.data_model.progress_store import CompletionStatus
+from app.data_model.answer_store import AnswerStore
+from app.data_model.list_store import ListStore
+from app.data_model.progress_store import CompletionStatus, ProgressStore
 from app.questionnaire import QuestionnaireSchema
 from app.views.contexts import Context
 
@@ -41,6 +44,26 @@ class HubContext(Context):
         },
     }
 
+    def __init__(
+        self,
+        language: str,
+        schema: QuestionnaireSchema,
+        answer_store: AnswerStore,
+        list_store: ListStore,
+        progress_store: ProgressStore,
+        metadata: Mapping,
+    ):
+
+        super().__init__(
+            language, schema, answer_store, list_store, progress_store, metadata
+        )
+
+        self._for_list = (
+            self._schema.json["individual_response"]["for_list"]
+            if self._schema.json.get("individual_response")
+            else None
+        )
+
     def get_context(self, survey_complete, enabled_section_ids) -> Mapping:
         rows = self._get_rows(enabled_section_ids)
 
@@ -60,12 +83,11 @@ class HubContext(Context):
             submit_button = lazy_gettext("Continue")
             guidance = None
             warning = None
-            individual_response_enabled = self._individual_response_enabled(
-                self._schema
-            )
+            individual_response_enabled = self._individual_response_enabled
 
         return {
             "individual_response_enabled": individual_response_enabled,
+            "individual_response_url": self._individual_response_url,
             "guidance": guidance,
             "rows": rows,
             "submit_button": submit_button,
@@ -175,18 +197,25 @@ class HubContext(Context):
 
         return rows
 
-    def _individual_response_enabled(self, schema: QuestionnaireSchema) -> bool:
-        if not schema.json.get("individual_response"):
-            return False
-
-        for_list = schema.json["individual_response"]["for_list"]
-
-        count_household_members = len(self._list_store[for_list])
+    @cached_property
+    def _individual_response_enabled(self) -> bool:
+        count_household_members = len(self._list_store[self._for_list])
 
         if count_household_members == 0:
             return False
 
-        if count_household_members == 1 and self._list_store[for_list].primary_person:
+        if (
+            count_household_members == 1
+            and self._list_store[self._for_list].primary_person
+        ):
             return False
 
         return True
+
+    @cached_property
+    def _individual_response_url(self) -> Union[str, None]:
+        if self._individual_response_enabled:
+            return url_for(
+                "individual_response.request_individual_response", return_to="hub"
+            )
+        return None
