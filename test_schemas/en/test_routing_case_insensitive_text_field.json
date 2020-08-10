@@ -47,8 +47,8 @@
                                         {
                                             "title": "The following routing should take place",
                                             "list": [
-                                                "Submit 'India' or 'Azerbaijan' using any mixture of lower or upper case: route to 'country-interstitial-equal-any'",
-                                                "Submit 'Georgia' using any mixture of lower or upper case: route to 'country-interstitial-equals'"
+                                                "Submit ‘India’ or ‘Azerbaijan’ using any mixture of lower or upper case: route to ‘country-interstitial-equal-any’",
+                                                "Submit ‘Georgia’ using any mixture of lower or upper case: route to ‘country-interstitial-equals’"
                                             ]
                                         }
                                     ]
