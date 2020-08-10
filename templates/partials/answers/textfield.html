@@ -21,7 +21,7 @@
 } %}
 
 {% if answer.max_length %}
-  {% set config = config | setAttribute("charCheck", {
+  {% set config = config | setAttribute("charCheckLimit", {
     "limit": answer.max_length,
     "charCountOverLimitSingular": _("{x} character too many"),
     "charCountOverLimitPlural": _("{x} characters too many")
