@@ -1,10 +1,14 @@
-from collections import OrderedDict, defaultdict
+from collections import defaultdict, abc
+from copy import deepcopy
+from functools import cached_property
 from typing import List, Union, Mapping
 
 from flask_babel import force_locale
+from werkzeug.datastructures import ImmutableDict
 
 from app.data_model.answer import Answer
 from app.forms.error_messages import error_messages
+from app.questionnaire.schema_utils import get_values_for_key
 
 DEFAULT_LANGUAGE_CODE = "en"
 
@@ -18,10 +22,120 @@ LIST_COLLECTOR_CHILDREN = [
 
 class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
     def __init__(self, questionnaire_json, language_code=DEFAULT_LANGUAGE_CODE):
-        self.json = questionnaire_json
-        self.language_code = language_code
-        self._parse_schema()
+        self._parent_id_map = {}
         self._list_name_to_section_map = {}
+        self._language_code = language_code
+        self._questionnaire_json = questionnaire_json
+        self._sections_by_id = self._get_sections_by_id()
+        self._groups_by_id = self._get_groups_by_id()
+        self._blocks_by_id = self._get_blocks_by_id()
+        self._questions_by_id = self._get_questions_by_id()
+        self._answers_by_id = self._get_answers_by_id()
+
+    @cached_property
+    def language_code(self):
+        return self._language_code
+
+    @cached_property
+    def error_messages(self):
+        return self.serialize(self._get_error_messages())
+
+    @cached_property
+    def json(self):
+        return self.serialize(self._questionnaire_json)
+
+    @cached_property
+    def parent_id_map(self):
+        return self.serialize(self._parent_id_map)
+
+    @classmethod
+    def serialize(cls, data):
+        if isinstance(data, abc.Hashable):
+            return data
+        if isinstance(data, list):
+            return tuple((cls.serialize(item) for item in data))
+        if isinstance(data, dict):
+            key_value_tuples = {k: cls.serialize(v) for k, v in data.items()}
+            return ImmutableDict(key_value_tuples)
+
+    @classmethod
+    def get_mutable_deepcopy(cls, data):
+        if isinstance(data, tuple):
+            return list((cls.get_mutable_deepcopy(item) for item in data))
+        if isinstance(data, ImmutableDict):
+            key_value_tuples = {k: cls.get_mutable_deepcopy(v) for k, v in data.items()}
+            return dict(key_value_tuples)
+        return deepcopy(data)
+
+    def _get_sections_by_id(self):
+        return {section["id"]: section for section in self.json.get("sections", [])}
+
+    def _get_groups_by_id(self):
+        groups_by_id = {}
+
+        for section in self._sections_by_id.values():
+            for group in section["groups"]:
+                group_id = group["id"]
+                groups_by_id[group_id] = group
+                self._parent_id_map[group_id] = section["id"]
+
+        return groups_by_id
+
+    def _get_blocks_by_id(self):
+        blocks = {}
+
+        for group in self._groups_by_id.values():
+            for block in group["blocks"]:
+                block_id = block["id"]
+                self._parent_id_map[block_id] = group["id"]
+
+                blocks[block_id] = block
+                if block["type"] in ("ListCollector", "PrimaryPersonListCollector"):
+                    for nested_block_name in [
+                        "add_block",
+                        "edit_block",
+                        "remove_block",
+                        "add_or_edit_block",
+                    ]:
+                        if block.get(nested_block_name):
+                            nested_block = block[nested_block_name]
+                            nested_block_id = nested_block["id"]
+                            blocks[nested_block_id] = nested_block
+                            self._parent_id_map[nested_block_id] = block_id
+
+        return blocks
+
+    def _get_questions_by_id(self):
+        questions_by_id = defaultdict(list)
+
+        for block in self._blocks_by_id.values():
+            questions = self.get_all_questions_for_block(block)
+            for question in questions:
+                question_id = question["id"]
+                questions_by_id[question_id].append(question)
+                self._parent_id_map[question_id] = block["id"]
+
+        return questions_by_id
+
+    def _get_answers_by_id(self):
+        answers_by_id = defaultdict(list)
+
+        for question_set in self._questions_by_id.values():
+            for question in question_set:
+                question_id = question["id"]
+                for answer in question["answers"]:
+                    answer_id = answer["id"]
+                    self._parent_id_map[answer_id] = question_id
+
+                    answers_by_id[answer["id"]].append(answer)
+                    for option in answer.get("options", []):
+                        detail_answer = option.get("detail_answer")
+                        if detail_answer:
+                            detail_answer_id = detail_answer["id"]
+                            answers_by_id[detail_answer_id].append(detail_answer)
+                            self._parent_id_map[detail_answer_id] = question_id
+
+        return answers_by_id
 
     def get_hub(self):
         return self.json.get("hub", {})
@@ -57,7 +171,7 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
 
         for section in self.get_sections():
             ignore_keys = {"question_variants", "content_variants"}
-            when_rules = _get_values_for_key(section, "when", ignore_keys)
+            when_rules = get_values_for_key(section, "when", ignore_keys)
 
             if any(
                 rule.get("list") == list_name
@@ -106,14 +220,16 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
         block = self.get_block(block_id)
 
         if block.get("type") in LIST_COLLECTOR_CHILDREN:
-            section_id = self._get_section_id_for_list_block(block)
+            section_id = self._get_section_id_for_list_block(block_id)
         else:
-            section_id = self.get_group(block["parent_id"])["parent_id"]
+            group_id = self._parent_id_map[block_id]
+            section_id = self._parent_id_map[group_id]
 
         return self.get_section(section_id)
 
     def get_section_id_for_block_id(self, block_id):
-        return self.get_section_for_block_id(block_id)["id"]
+        section = self.get_section_for_block_id(block_id)
+        return section["id"]
 
     def get_groups(self):
         return self._groups_by_id.values()
@@ -176,9 +292,6 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
             return None
 
         return list_item_id
-
-    def get_answer_ids(self):
-        return self._answers_by_id.values()
 
     def get_answers_by_answer_id(self, answer_id):
         """ Return answers matching answer id, including all matching answers inside
@@ -329,86 +442,31 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
             "ConfirmationQuestion",
         ]
 
-    def _parse_schema(self):
-        self._sections_by_id = self._get_sections_by_id()
-        self._groups_by_id = get_nested_schema_objects(self._sections_by_id, "groups")
-        self._blocks_by_id = self._get_blocks_by_id()
-        self._questions_by_id = self._get_questions_by_id()
-        self._answers_by_id = self._get_answers_by_id()
-        self.error_messages = self._get_error_messages()
-
-    def _get_section_id_for_list_block(self, block):
-        return self.get_group(self.get_block(block["parent_id"])["parent_id"])[
-            "parent_id"
-        ]
-
-    def _get_blocks_by_id(self):
-        blocks = defaultdict(list)
-
-        for group in self._groups_by_id.values():
-            for block in group["blocks"]:
-                block["parent_id"] = group["id"]
-                blocks[block["id"]] = block
-
-                if block["type"] in ("ListCollector", "PrimaryPersonListCollector"):
-                    for nested_block_name in [
-                        "add_block",
-                        "edit_block",
-                        "remove_block",
-                        "add_or_edit_block",
-                    ]:
-                        if block.get(nested_block_name):
-                            nested_block = block[nested_block_name]
-                            nested_block["parent_id"] = block["id"]
-                            blocks[nested_block["id"]] = nested_block
-
-        return blocks
+    def _get_section_id_for_list_block(self, block_id):
+        parent_block_id = self._parent_id_map[block_id]
+        group_id = self._parent_id_map[parent_block_id]
+        section_id = self._parent_id_map[group_id]
+        return section_id
 
     def _block_for_answer(self, answer_id):
-        answers = self.get_answers_by_answer_id(answer_id)
-        # All matching questions / answers must be within the same block
-        questions = self.get_questions(answers[0]["parent_id"])
-        return self.get_block(questions[0]["parent_id"])
+        question_id = self._parent_id_map[answer_id]
+        block_id = self._parent_id_map[question_id]
+        parent_block_id = self._parent_id_map[block_id]
+        parent_block = self.get_block(parent_block_id)
+
+        if parent_block and parent_block["type"] == "ListCollector":
+            return parent_block
+
+        return self.get_block(block_id)
 
     def _group_for_block(self, block_id):
         block = self.get_block(block_id)
+        parent_id = self._parent_id_map[block_id]
         if block["type"] in LIST_COLLECTOR_CHILDREN:
-            parent = self.get_block(block["parent_id"])
-            return self.get_group(parent["parent_id"])
-        return self.get_group(block["parent_id"])
+            group_id = self._parent_id_map[parent_id]
+            return self.get_group(group_id)
 
-    def _get_questions_by_id(self):
-        questions_by_id = defaultdict(list)
-
-        for block in self._blocks_by_id.values():
-            questions = self.get_all_questions_for_block(block)
-            for question in questions:
-                question["parent_id"] = block["id"]
-                questions_by_id[question["id"]].append(question)
-
-        return questions_by_id
-
-    def _get_answers_by_id(self):
-        answers_by_id = defaultdict(list)
-
-        for question_set in self._questions_by_id.values():
-            for question in question_set:
-                for answer in question["answers"]:
-                    answer["parent_id"] = question["id"]
-                    answers_by_id[answer["id"]].append(answer)
-                    for option in answer.get("options", []):
-                        if "detail_answer" in option:
-                            option["detail_answer"]["parent_id"] = question["id"]
-                            answers_by_id[option["detail_answer"]["id"]].append(
-                                option["detail_answer"]
-                            )
-
-        return answers_by_id
-
-    def _get_sections_by_id(self):
-        return OrderedDict(
-            (section["id"], section) for section in self.json.get("sections", [])
-        )
+        return self.get_group(parent_id)
 
     def _get_error_messages(self):
         # Force translation of global error messages (stored as LazyString's) into the language of the schema.
@@ -419,41 +477,3 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
             messages.update(self.json["messages"])
 
         return messages
-
-
-def get_nested_schema_objects(parent_object, list_key):
-    """
-    Generic method to extract a flattened list of child objects from a parent
-    object and return an ID-keyed dictionary of those child objects.
-
-    This method also patches on a `parent_id` attribute to each child object.
-
-    :param parent_object: dict containing a list
-    :param list_key: key of the nested list to extract
-    """
-    nested_objects = OrderedDict()
-
-    for parent_id, child_object in parent_object.items():
-        for child_list_object in child_object.get(list_key, []):
-            # patch the ID of the parent onto the object
-            child_list_object["parent_id"] = parent_id
-            nested_objects[child_list_object["id"]] = child_list_object
-
-    return nested_objects
-
-
-def _get_values_for_key(block, key, ignore_keys=None):
-    ignore_keys = ignore_keys or []
-    for k, v in block.items():
-        try:
-            if k in ignore_keys:
-                continue
-            if k == key:
-                yield v
-            if isinstance(v, dict):
-                yield from _get_values_for_key(v, key)
-            elif isinstance(v, list):
-                for d in v:
-                    yield from _get_values_for_key(d, key)
-        except AttributeError:
-            continue

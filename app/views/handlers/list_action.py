@@ -7,13 +7,14 @@ from app.questionnaire.location import Location
 class ListAction(Question):
     @property
     def parent_block(self):
-        return self._schema.get_block(self.block["parent_id"])
+        parent_block_id = self._schema.parent_id_map[self.rendered_block["id"]]
+        return self._schema.get_block(parent_block_id)
 
     @property
     def parent_location(self):
+        parent_block_id = self._schema.parent_id_map[self.rendered_block["id"]]
         return Location(
-            section_id=self._current_location.section_id,
-            block_id=self.rendered_block["parent_id"],
+            section_id=self._current_location.section_id, block_id=parent_block_id
         )
 
     def _get_routing_path(self):

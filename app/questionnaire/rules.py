@@ -4,7 +4,6 @@ from datetime import datetime
 
 from dateutil.relativedelta import relativedelta
 
-
 MAX_REPEATS = 25
 
 logger = logging.getLogger(__name__)
@@ -62,6 +61,15 @@ def evaluate_condition(condition, answer_value, match_value):
     """
     answer_and_match = answer_value is not None and match_value is not None
 
+    if condition in {"equals", "not equals", "equals any", "not equals any"}:
+
+        answer_value = casefold(answer_value)
+
+        if isinstance(match_value, (list, tuple)):
+            match_value = list(map(casefold, match_value))
+        else:
+            match_value = casefold(match_value)
+
     comparison_operators = {
         "equals": lambda answer_value, match_value: answer_value == match_value,
         "not equals": lambda answer_value, match_value: answer_value != match_value,
@@ -91,6 +99,13 @@ def evaluate_condition(condition, answer_value, match_value):
     match_function = comparison_operators[condition]
 
     return match_function(answer_value, match_value)
+
+
+def casefold(value):
+    try:
+        return value.casefold()
+    except AttributeError:
+        return value
 
 
 def get_date_match_value(date_comparison, answer_store, schema, metadata):
