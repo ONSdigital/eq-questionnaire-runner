@@ -97,6 +97,37 @@ class TestRules(AppContextTestCase):  # pylint: disable=too-many-public-methods
         self.assertFalse(evaluate_rule(when, 2))
         self.assertTrue(evaluate_rule(when, 0))
 
+    def test_evaluate_rule_equals_with_string_case_insensitive(self):
+        when = {"value": "answervalue", "condition": "equals"}
+
+        self.assertTrue(evaluate_rule(when, "answerValue"))
+        self.assertTrue(evaluate_rule(when, "answervalue"))
+        self.assertFalse(evaluate_rule(when, "answer-value"))
+
+    def test_evaluate_rule_not_equals_with_string_case_insensitive(self):
+        when = {"value": "answervalue", "condition": "not equals"}
+
+        self.assertFalse(evaluate_rule(when, "answerValue"))
+        self.assertFalse(evaluate_rule(when, "answervalue"))
+        self.assertTrue(evaluate_rule(when, "answer-value"))
+
+    def test_evaluate_rule_equals_any_with_string_case_insensitive(self):
+        when = {"value": ["answerValue", "notAnswerValue"], "condition": "equals any"}
+
+        self.assertTrue(evaluate_rule(when, "answervalue"))
+        self.assertTrue(evaluate_rule(when, "answerValue"))
+        self.assertFalse(evaluate_rule(when, "answer-value"))
+
+    def test_evaluate_rule_not_equals_any_with_string_case_insensitive(self):
+        when = {
+            "value": ["answerValue", "notAnswerValue"],
+            "condition": "not equals any",
+        }
+
+        self.assertFalse(evaluate_rule(when, "answervalue"))
+        self.assertFalse(evaluate_rule(when, "answerValue"))
+        self.assertTrue(evaluate_rule(when, "answer-value"))
+
     def test_evaluate_rule_not_equals_with_number(self):
         when = {"value": 0, "condition": "not equals"}
 
@@ -219,7 +250,7 @@ class TestRules(AppContextTestCase):  # pylint: disable=too-many-public-methods
         )
 
     def test_evaluate_goto_returns_true_when_answer_value_list_contains_match_value(
-        self
+        self,
     ):
 
         goto = {
@@ -245,7 +276,7 @@ class TestRules(AppContextTestCase):  # pylint: disable=too-many-public-methods
         )
 
     def test_evaluate_goto_returns_true_when_answer_value_list_not_contains_match_value(
-        self
+        self,
     ):
 
         goto = {
@@ -273,7 +304,7 @@ class TestRules(AppContextTestCase):  # pylint: disable=too-many-public-methods
         )
 
     def test_evaluate_goto_returns_true_when_answer_values_contains_any_match_values(
-        self
+        self,
     ):
 
         goto = {
@@ -305,7 +336,7 @@ class TestRules(AppContextTestCase):  # pylint: disable=too-many-public-methods
         )
 
     def test_evaluate_goto_returns_true_when_answer_values_contains_all_match_values(
-        self
+        self,
     ):
 
         goto = {
@@ -365,7 +396,7 @@ class TestRules(AppContextTestCase):  # pylint: disable=too-many-public-methods
         )
 
     def test_evaluate_goto_returns_true_when_answer_value_not_equals_any_match_values(
-        self
+        self,
     ):
 
         goto = {
