@@ -6,6 +6,7 @@ from app.questionnaire.schema_utils import (
     choose_question_to_display,
     choose_content_to_display,
     transform_variants,
+    get_values_for_key,
 )
 
 
@@ -208,3 +209,20 @@ def test_choose_question_to_display(question_variant_schema):
     )
 
     assert question_to_display["title"] == "Question 1, No"
+
+
+def test_get_values_for_key_ignores_variants():
+    block = {"question_variants": [{"when": "test"}]}
+    result = list(get_values_for_key(block, "when", {"question_variants"}))
+    assert result == []
+
+
+def test_get_values_for_key_ignores_multiple_keys():
+    block = {
+        "question_variants": [{"when": "test"}],
+        "content_variants": [{"when": "test"}],
+    }
+    result = list(
+        get_values_for_key(block, "when", {"question_variants", "content_variants"})
+    )
+    assert result == []

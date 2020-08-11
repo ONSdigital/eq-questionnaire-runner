@@ -1,4 +1,5 @@
 from flask import Blueprint, jsonify
+
 from app.utilities.schema import (
     load_schema_from_name,
     get_schema_path_map_for_language,
