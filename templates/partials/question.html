@@ -20,6 +20,12 @@
   {%- endif -%}
 {%- endset -%}
 
+{% set individual_response_guidance %}
+   {%- if show_individual_response_guidance == True -%}
+      {% include 'partials/individual-response-guidance.html' %}
+   {%- endif -%}
+{% endset %}
+
 {% set question_warning %}
   {%- if question.warning -%}
     {% call onsPanel({
@@ -97,6 +103,7 @@
     {% include 'partials/summary/list-summary.html' %}
   {% endif %}
   {{ question_warning }}
+  {{ individual_response_guidance }}
   {{ question_definition }}
   {{ question_guidance }}
 

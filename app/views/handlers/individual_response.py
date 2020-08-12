@@ -67,9 +67,6 @@ class IndividualResponseHandler:
             raise NotFound
 
     def _is_location_valid(self):
-        if not self.router.can_access_hub():
-            return False
-
         self._list_name = self._schema.json.get("individual_response", {}).get(
             "for_list"
         )
