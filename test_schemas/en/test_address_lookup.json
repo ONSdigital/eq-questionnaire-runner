@@ -1,0 +1,96 @@
+{
+    "mime_type": "application/json/ons/eq",
+    "language": "en",
+    "schema_version": "0.0.1",
+    "data_version": "0.0.3",
+    "survey_id": "0",
+    "title": "Test Address Lookup",
+    "theme": "default",
+    "description": "A questionnaire to test Address Lookup",
+    "metadata": [
+        {
+            "name": "user_id",
+            "type": "string"
+        },
+        {
+            "name": "period_id",
+            "type": "string"
+        },
+        {
+            "name": "ru_name",
+            "type": "string"
+        }
+    ],
+    "sections": [
+        {
+            "id": "section",
+            "groups": [
+                {
+                    "id": "group",
+                    "title": "List",
+                    "blocks": [
+                        {
+                            "type": "Question",
+                            "id": "address-block",
+                            "question": {
+                                "type": "AddressLookup",
+                                "id": "address",
+                                "title": "What is your current address?",
+                                "summary": {
+                                    "concatenation_type": "Newline"
+                                },
+                                "answers": [
+                                    {
+                                        "id": "address-line1",
+                                        "label": "Address Line 1",
+                                        "mandatory": true,
+                                        "type": "TextField",
+                                        "validation": {
+                                            "messages": {
+                                                "MANDATORY_TEXTFIELD": "Enter an address"
+                                            }
+                                        }
+                                    },
+                                    {
+                                        "id": "address-line2",
+                                        "label": "Address Line 2",
+                                        "mandatory": false,
+                                        "type": "TextField"
+                                    },
+                                    {
+                                        "id": "address-town",
+                                        "label": "Town/City",
+                                        "mandatory": false,
+                                        "type": "TextField"
+                                    },
+                                    {
+                                        "id": "address-postcode",
+                                        "label": "Postcode",
+                                        "mandatory": false,
+                                        "type": "TextField"
+                                    }
+                                ]
+                            }
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "summary-section",
+            "title": "Summary",
+            "groups": [
+                {
+                    "blocks": [
+                        {
+                            "type": "Summary",
+                            "id": "summary"
+                        }
+                    ],
+                    "id": "summary-group",
+                    "title": "Summary"
+                }
+            ]
+        }
+    ]
+}

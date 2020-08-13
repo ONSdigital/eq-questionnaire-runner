@@ -312,6 +312,52 @@ class OtherConfig:
             self.classes = get_width_class_for_number(detail_answer_schema)
 
 
+def _get_error_config_for_answer(question_id, answer_id, answer_errors):
+    error = (
+        {
+            "text": answer_errors[0],
+            "id": f"{answer_id}-error",
+            "attributes": {
+                "data-ga": "error",
+                "data-ga-category": "Error",
+                "data-ga-action": answer_errors[0],
+                "data-ga-label": question_id,
+            },
+        }
+        if answer_errors
+        else {}
+    )
+
+    return error
+
+
+@blueprint.app_template_filter()
+def get_address_lookup_fields(question_id, form, answers):
+    fields = {}
+    answers_by_id = {answer["id"]: answer for answer in answers}
+    for address_field_id in ["line1", "line2", "town", "postcode"]:
+        field_answer_id = f"{question_id}-{address_field_id}"
+        form_field = form["fields"][field_answer_id]
+        answer = answers_by_id[field_answer_id]
+        answer_errors = form["answer_errors"].get(field_answer_id, {})
+
+        fields[address_field_id] = {
+            "label": answer["label"],
+            "value": escape(form_field.data or ""),
+            "description": answer.get("description"),
+            "error": _get_error_config_for_answer(
+                question_id, field_answer_id, answer_errors
+            ),
+        }
+
+    return fields
+
+
+@blueprint.app_context_processor
+def get_address_lookup_fields_processor():
+    return dict(get_address_lookup_fields=get_address_lookup_fields)
+
+
 @blueprint.app_template_filter()
 def map_checkbox_config(form, answer):
     options = form["fields"][answer["id"]]

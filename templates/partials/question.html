@@ -44,10 +44,11 @@
   {% endif %}
 {% endset %}
 
-{%- set mutually_exclusive_question = question.type == 'MutuallyExclusive' -%}
+{%- set is_mutually_exclusive_question = question.type == 'MutuallyExclusive' -%}
+{%- set is_address_lookup_question = question.type == 'AddressLookup' -%}
 
 {% set question_answers %}
-  {% if mutually_exclusive_question %}
+  {% if is_mutually_exclusive_question %}
     {%- set answer = question.answers[0] -%}
 
     {%- set deselectionMessage = _("Selecting this will clear your answer") -%}
@@ -67,6 +68,8 @@
     } -%}
 
     {% include 'partials/answer.html' %}
+  {% elif is_address_lookup_question %}
+    {% include 'partials/answers/addresslookup.html' %}
   {%- else -%}
     {%- set answers -%}
       {%- for answer in question.answers -%}
