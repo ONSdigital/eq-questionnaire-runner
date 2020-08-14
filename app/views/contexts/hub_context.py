@@ -199,6 +199,9 @@ class HubContext(Context):
 
     @cached_property
     def _individual_response_enabled(self) -> bool:
+        if not self._schema.json.get("individual_response"):
+            return False
+
         count_household_members = len(self._list_store[self._for_list])
 
         if count_household_members == 0:
