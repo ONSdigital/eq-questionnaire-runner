@@ -57,7 +57,7 @@ def test_get_mandatory_validator_mandatory_with_question_in_error():
         "mandatory": True,
         "validation": {
             "messages": {
-                "MANDATORY_TEXTFIELD": "Select an answer to ‘%(question_title)s’"
+                "MANDATORY_TEXTFIELD": "Select an answer to ‘{question_title}’"
             }
         },
     }

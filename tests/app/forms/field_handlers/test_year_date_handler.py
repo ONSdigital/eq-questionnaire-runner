@@ -1,7 +1,7 @@
 from wtforms import Form
 
-from app.forms.field_handlers.year_date_handler import YearDateHandler
-from app.forms.fields.year_date_field import YearDateField
+from app.forms.field_handlers import YearDateHandler
+from app.forms.fields import YearDateField
 
 
 def test_get_field():

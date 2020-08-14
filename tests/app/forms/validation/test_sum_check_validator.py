@@ -3,7 +3,7 @@ from unittest.mock import Mock, patch
 
 from wtforms.validators import ValidationError
 
-from app.forms.error_messages import error_messages
+from app.forms import error_messages
 from app.forms.validators import SumCheck, format_playback_value
 
 
@@ -26,8 +26,9 @@ class TestSumCheckValidator(unittest.TestCase):
             validator(mock_form, conditions, calculation_total, target_total)
 
         self.assertEqual(
-            error_messages["TOTAL_SUM_NOT_EQUALS"]
-            % dict(total=format_playback_value(target_total)),
+            error_messages["TOTAL_SUM_NOT_EQUALS"].format(
+                total=format_playback_value(target_total)
+            ),
             str(ite.exception),
         )
 
@@ -44,8 +45,9 @@ class TestSumCheckValidator(unittest.TestCase):
             validator(mock_form, conditions, calculation_total, target_total)
 
         self.assertEqual(
-            error_messages["TOTAL_SUM_NOT_LESS_THAN_OR_EQUALS"]
-            % dict(total=format_playback_value(target_total)),
+            error_messages["TOTAL_SUM_NOT_LESS_THAN_OR_EQUALS"].format(
+                total=format_playback_value(target_total)
+            ),
             str(ite.exception),
         )
 
@@ -62,8 +64,9 @@ class TestSumCheckValidator(unittest.TestCase):
             validator(mock_form, conditions, calculation_total, target_total)
 
         self.assertEqual(
-            error_messages["TOTAL_SUM_NOT_LESS_THAN"]
-            % dict(total=format_playback_value(target_total)),
+            error_messages["TOTAL_SUM_NOT_LESS_THAN"].format(
+                total=format_playback_value(target_total)
+            ),
             str(ite.exception),
         )
 
@@ -80,8 +83,9 @@ class TestSumCheckValidator(unittest.TestCase):
             validator(mock_form, conditions, calculation_total, target_total)
 
         self.assertEqual(
-            error_messages["TOTAL_SUM_NOT_GREATER_THAN"]
-            % dict(total=format_playback_value(target_total)),
+            error_messages["TOTAL_SUM_NOT_GREATER_THAN"].format(
+                total=format_playback_value(target_total)
+            ),
             str(ite.exception),
         )
 
@@ -98,8 +102,9 @@ class TestSumCheckValidator(unittest.TestCase):
             validator(mock_form, conditions, calculation_total, target_total)
 
         self.assertEqual(
-            error_messages["TOTAL_SUM_NOT_GREATER_THAN_OR_EQUALS"]
-            % dict(total=format_playback_value(target_total)),
+            error_messages["TOTAL_SUM_NOT_GREATER_THAN_OR_EQUALS"].format(
+                total=format_playback_value(target_total)
+            ),
             str(ite.exception),
         )
 
@@ -116,13 +121,14 @@ class TestSumCheckValidator(unittest.TestCase):
             validator(mock_form, conditions, calculation_total, target_total)
 
         self.assertEqual(
-            error_messages["TOTAL_SUM_NOT_EQUALS"]
-            % dict(total=format_playback_value(target_total, currency="EUR")),
+            error_messages["TOTAL_SUM_NOT_EQUALS"].format(
+                total=format_playback_value(target_total, currency="EUR")
+            ),
             str(ite.exception),
         )
 
     def test_bespoke_message_playback(self):
-        message = {"TOTAL_SUM_NOT_EQUALS": "Test %(total)s"}
+        message = {"TOTAL_SUM_NOT_EQUALS": "Test {total}"}
         validator = SumCheck(messages=message)
 
         mock_form = Mock()
@@ -149,8 +155,9 @@ class TestSumCheckValidator(unittest.TestCase):
             validator(mock_form, conditions, calculation_total, target_total)
 
         self.assertEqual(
-            error_messages["TOTAL_SUM_NOT_LESS_THAN_OR_EQUALS"]
-            % dict(total=format_playback_value(target_total)),
+            error_messages["TOTAL_SUM_NOT_LESS_THAN_OR_EQUALS"].format(
+                total=format_playback_value(target_total)
+            ),
             str(ite.exception),
         )
 

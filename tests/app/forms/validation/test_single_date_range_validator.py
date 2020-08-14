@@ -2,7 +2,7 @@ from unittest.mock import Mock
 from wtforms.validators import ValidationError
 
 from app.questionnaire.rules import convert_to_datetime
-from app.forms.error_messages import error_messages
+from app.forms import error_messages
 from app.forms.validators import SingleDatePeriodCheck
 from tests.app.app_context_test_case import AppContextTestCase
 
@@ -22,8 +22,9 @@ class TestDateRangeValidator(AppContextTestCase):
                 validator(mock_form, mock_field)
 
             self.assertEqual(
-                error_messages["SINGLE_DATE_PERIOD_TOO_EARLY"]
-                % dict(min="30 March 2016"),
+                error_messages["SINGLE_DATE_PERIOD_TOO_EARLY"].format(
+                    min="30 March 2016"
+                ),
                 str(ite.exception),
             )
 
@@ -41,14 +42,15 @@ class TestDateRangeValidator(AppContextTestCase):
                 validator(mock_form, mock_field)
 
             self.assertEqual(
-                error_messages["SINGLE_DATE_PERIOD_TOO_LATE"]
-                % dict(max="1 April 2016"),
+                error_messages["SINGLE_DATE_PERIOD_TOO_LATE"].format(
+                    max="1 April 2016"
+                ),
                 str(ite.exception),
             )
 
     def test_invalid_single_date_period_with_bespoke_message(self):
         maximum_date = convert_to_datetime("2016-03-31")
-        message = {"SINGLE_DATE_PERIOD_TOO_LATE": "Test %(max)s"}
+        message = {"SINGLE_DATE_PERIOD_TOO_LATE": "Test {max}"}
         validator = SingleDatePeriodCheck(messages=message, maximum_date=maximum_date)
 
         mock_form = Mock()
@@ -79,7 +81,7 @@ def test_valid_single_date_period():
 
 
 def test_messages_are_merged():
-    messages = {"SINGLE_DATE_PERIOD_TOO_LATE": "Test %(max)s"}
+    messages = {"SINGLE_DATE_PERIOD_TOO_LATE": "Test {max}"}
     validator = SingleDatePeriodCheck(messages=messages)
 
     assert len(validator.messages) > 1

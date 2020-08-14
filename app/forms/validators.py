@@ -13,7 +13,7 @@ from wtforms.compat import string_types
 from app.helpers.template_helper import safe_content
 from app.jinja_filters import format_number, get_formatted_currency
 from app.questionnaire.rules import convert_to_datetime
-from app.forms.error_messages import error_messages
+from app.forms import error_messages
 
 logger = get_logger()
 
@@ -113,12 +113,12 @@ class NumberRange:
     def validate_minimum(self, value):
         if self.minimum_exclusive:
             if value <= self.minimum:
-                return self.messages["NUMBER_TOO_SMALL_EXCLUSIVE"] % dict(
+                return self.messages["NUMBER_TOO_SMALL_EXCLUSIVE"].format(
                     min=format_playback_value(self.minimum, self.currency)
                 )
         else:
             if value < self.minimum:
-                return self.messages["NUMBER_TOO_SMALL"] % dict(
+                return self.messages["NUMBER_TOO_SMALL"].format(
                     min=format_playback_value(self.minimum, self.currency)
                 )
 
@@ -127,12 +127,12 @@ class NumberRange:
     def validate_maximum(self, value):
         if self.maximum_exclusive:
             if value >= self.maximum:
-                return self.messages["NUMBER_TOO_LARGE_EXCLUSIVE"] % dict(
+                return self.messages["NUMBER_TOO_LARGE_EXCLUSIVE"].format(
                     max=format_playback_value(self.maximum, self.currency)
                 )
         else:
             if value > self.maximum:
-                return self.messages["NUMBER_TOO_LARGE"] % dict(
+                return self.messages["NUMBER_TOO_LARGE"].format(
                     max=format_playback_value(self.maximum, self.currency)
                 )
 
@@ -164,7 +164,7 @@ class DecimalPlaces:
                 raise validators.ValidationError(self.messages["INVALID_INTEGER"])
             if len(data.split(decimal_symbol)[1]) > self.max_decimals:
                 raise validators.ValidationError(
-                    self.messages["INVALID_DECIMAL"] % dict(max=self.max_decimals)
+                    self.messages["INVALID_DECIMAL"].format(max=self.max_decimals)
                 )
 
 
@@ -260,8 +260,7 @@ class SingleDatePeriodCheck:
         if self.minimum_date:
             if date < self.minimum_date:
                 raise validators.ValidationError(
-                    self.messages["SINGLE_DATE_PERIOD_TOO_EARLY"]
-                    % dict(
+                    self.messages["SINGLE_DATE_PERIOD_TOO_EARLY"].format(
                         min=self._format_playback_date(
                             self.minimum_date + relativedelta(days=-1), self.date_format
                         )
@@ -271,8 +270,7 @@ class SingleDatePeriodCheck:
         if self.maximum_date:
             if date > self.maximum_date:
                 raise validators.ValidationError(
-                    self.messages["SINGLE_DATE_PERIOD_TOO_LATE"]
-                    % dict(
+                    self.messages["SINGLE_DATE_PERIOD_TOO_LATE"].format(
                         max=self._format_playback_date(
                             self.maximum_date + relativedelta(days=+1), self.date_format
                         )
@@ -305,8 +303,9 @@ class DateRangeCheck:
                 min_range, answered_range_relative
             ):
                 raise validators.ValidationError(
-                    self.messages["DATE_PERIOD_TOO_SMALL"]
-                    % dict(min=self._build_range_length_error(self.period_min))
+                    self.messages["DATE_PERIOD_TOO_SMALL"].format(
+                        min=self._build_range_length_error(self.period_min)
+                    )
                 )
 
         if self.period_max:
@@ -315,8 +314,9 @@ class DateRangeCheck:
                 answered_range_relative, max_range
             ):
                 raise validators.ValidationError(
-                    self.messages["DATE_PERIOD_TOO_LARGE"]
-                    % dict(max=self._build_range_length_error(self.period_max))
+                    self.messages["DATE_PERIOD_TOO_LARGE"].format(
+                        max=self._build_range_length_error(self.period_max)
+                    )
                 )
 
     @staticmethod
@@ -382,8 +382,9 @@ class SumCheck:
 
         if not is_valid:
             raise validators.ValidationError(
-                self.messages[message]
-                % dict(total=format_playback_value(target_total, self.currency))
+                self.messages[message].format(
+                    total=format_playback_value(target_total, self.currency)
+                )
             )
 
     @staticmethod
@@ -407,7 +408,7 @@ def format_playback_value(value, currency=None):
 
 
 def format_message_with_title(error_message, question_title):
-    return error_message % dict(question_title=safe_content(question_title))
+    return error_message.format(question_title=safe_content(question_title))
 
 
 class MutuallyExclusiveCheck:

@@ -73,7 +73,7 @@
                                         "type": "Checkbox",
                                         "validation": {
                                             "messages": {
-                                                "MANDATORY_CHECKBOX": "Select an answer to ‘%(question_title)s’ to continue"
+                                                "MANDATORY_CHECKBOX": "Select an answer to ‘{question_title}’ to continue"
                                             }
                                         }
                                     }
@@ -143,7 +143,7 @@
                                 ],
                                 "validation": {
                                     "messages": {
-                                        "MANDATORY_QUESTION": "Select an answer to ‘%(question_title)s’ to continue"
+                                        "MANDATORY_QUESTION": "Select an answer to ‘{question_title}’ to continue"
                                     }
                                 }
                             }

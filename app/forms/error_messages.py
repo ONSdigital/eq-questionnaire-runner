@@ -13,22 +13,22 @@ error_messages = {
     "MANDATORY_CHECKBOX": lazy_gettext("Select all that apply to continue"),
     "MANDATORY_DATE": lazy_gettext("Enter a date to continue"),
     "MANDATORY_DURATION": lazy_gettext("Enter a duration to continue"),
-    "NUMBER_TOO_SMALL": lazy_gettext("Enter an answer more than or equal to %(min)s"),
-    "NUMBER_TOO_LARGE": lazy_gettext("Enter an answer less than or equal to %(max)s"),
-    "NUMBER_TOO_SMALL_EXCLUSIVE": lazy_gettext("Enter an answer more than %(min)s"),
-    "NUMBER_TOO_LARGE_EXCLUSIVE": lazy_gettext("Enter an answer less than %(max)s"),
-    "TOTAL_SUM_NOT_EQUALS": lazy_gettext("Enter answers that add up to %(total)s"),
+    "NUMBER_TOO_SMALL": lazy_gettext("Enter an answer more than or equal to {min}"),
+    "NUMBER_TOO_LARGE": lazy_gettext("Enter an answer less than or equal to {max}"),
+    "NUMBER_TOO_SMALL_EXCLUSIVE": lazy_gettext("Enter an answer more than {min}"),
+    "NUMBER_TOO_LARGE_EXCLUSIVE": lazy_gettext("Enter an answer less than {max}"),
+    "TOTAL_SUM_NOT_EQUALS": lazy_gettext("Enter answers that add up to {total}"),
     "TOTAL_SUM_NOT_LESS_THAN_OR_EQUALS": lazy_gettext(
-        "Enter answers that add up to or are less than %(total)s"
+        "Enter answers that add up to or are less than {total}"
     ),
     "TOTAL_SUM_NOT_LESS_THAN": lazy_gettext(
-        "Enter answers that add up to less than %(total)s"
+        "Enter answers that add up to less than {total}"
     ),
     "TOTAL_SUM_NOT_GREATER_THAN": lazy_gettext(
-        "Enter answers that add up to greater than %(total)s"
+        "Enter answers that add up to greater than {total}"
     ),
     "TOTAL_SUM_NOT_GREATER_THAN_OR_EQUALS": lazy_gettext(
-        "Enter answers that add up to or are greater than %(total)s"
+        "Enter answers that add up to or are greater than {total}"
     ),
     "INVALID_NUMBER": lazy_gettext("Enter a number"),
     "INVALID_INTEGER": lazy_gettext("Enter a whole number"),
@@ -42,12 +42,12 @@ error_messages = {
     ),
     "INVALID_DURATION": lazy_gettext("Enter a valid duration"),
     "DATE_PERIOD_TOO_SMALL": lazy_gettext(
-        "Enter a reporting period greater than or equal to %(min)s"
+        "Enter a reporting period greater than or equal to {min}"
     ),
     "DATE_PERIOD_TOO_LARGE": lazy_gettext(
-        "Enter a reporting period less than or equal to %(max)s"
+        "Enter a reporting period less than or equal to {max}"
     ),
-    "SINGLE_DATE_PERIOD_TOO_EARLY": lazy_gettext("Enter a date after %(min)s"),
-    "SINGLE_DATE_PERIOD_TOO_LATE": lazy_gettext("Enter a date before %(max)s"),
+    "SINGLE_DATE_PERIOD_TOO_EARLY": lazy_gettext("Enter a date after {min}"),
+    "SINGLE_DATE_PERIOD_TOO_LATE": lazy_gettext("Enter a date before {max}"),
     "MUTUALLY_EXCLUSIVE": lazy_gettext("Remove an answer to continue"),
 }
