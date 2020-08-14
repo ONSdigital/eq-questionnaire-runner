@@ -5,9 +5,9 @@ from app.views.handlers.question import Question
 class PrimaryPersonQuestion(Question):
     @property
     def parent_location(self):
+        parent_id = self._schema.parent_id_map[self.rendered_block["id"]]
         return Location(
-            section_id=self._current_location.section_id,
-            block_id=self.rendered_block["parent_id"],
+            section_id=self._current_location.section_id, block_id=parent_id
         )
 
     def _get_routing_path(self):

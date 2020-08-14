@@ -1,9 +1,8 @@
-from datetime import datetime
 import logging
 import re
+from datetime import datetime
 
 from dateutil.relativedelta import relativedelta
-
 
 MAX_REPEATS = 25
 
@@ -66,7 +65,7 @@ def evaluate_condition(condition, answer_value, match_value):
 
         answer_value = casefold(answer_value)
 
-        if isinstance(match_value, list):
+        if isinstance(match_value, (list, tuple)):
             match_value = list(map(casefold, match_value))
         else:
             match_value = casefold(match_value)

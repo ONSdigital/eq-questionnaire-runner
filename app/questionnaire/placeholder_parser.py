@@ -3,6 +3,7 @@ from typing import Mapping, Sequence, Union, Dict, List
 from jinja2 import escape
 
 from app.data_model.answer_store import AnswerStore
+from app.questionnaire import QuestionnaireSchema
 from app.questionnaire.placeholder_transforms import PlaceholderTransforms
 
 
@@ -33,6 +34,7 @@ class PlaceholderParser:
         self._placeholder_map = {}
 
     def __call__(self, placeholder_list: Sequence[Mapping]) -> Mapping:
+        placeholder_list = QuestionnaireSchema.get_mutable_deepcopy(placeholder_list)
         for placeholder in placeholder_list:
             if placeholder["placeholder"] not in self._placeholder_map:
                 self._placeholder_map[
@@ -66,7 +68,7 @@ class PlaceholderParser:
     def _resolve_answer_value(self, value_source):
         list_item_id = self._get_list_item_id_from_value_source(value_source)
 
-        if isinstance(value_source["identifier"], list):
+        if isinstance(value_source["identifier"], (list, tuple)):
             return [
                 self._lookup_answer(each_identifier, list_item_id)
                 for each_identifier in value_source["identifier"]
@@ -74,7 +76,7 @@ class PlaceholderParser:
         return self._lookup_answer(value_source["identifier"], list_item_id)
 
     def _resolve_metadata_value(self, identifier):
-        if isinstance(identifier, list):
+        if isinstance(identifier, (list, tuple)):
             return [
                 self._metadata.get(each_identifier) for each_identifier in identifier
             ]
