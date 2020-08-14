@@ -114,14 +114,6 @@
                             "id": "anyone-else-live-at",
                             "type": "ListCollector",
                             "for_list": "people",
-                            "add_answer": {
-                                "id": "anyone-else-live-at-answer",
-                                "value": "Yes"
-                            },
-                            "remove_answer": {
-                                "id": "remove-confirmation",
-                                "value": "Yes"
-                            },
                             "question": {
                                 "id": "confirmation-question",
                                 "type": "General",
@@ -134,7 +126,10 @@
                                         "options": [
                                             {
                                                 "label": "Yes",
-                                                "value": "Yes"
+                                                "value": "Yes",
+                                                "action": {
+                                                    "type": "AddAnswerForListItem"
+                                                }
                                             },
                                             {
                                                 "label": "No",
@@ -205,7 +200,10 @@
                                             "options": [
                                                 {
                                                     "label": "Yes",
-                                                    "value": "Yes"
+                                                    "value": "Yes",
+                                                    "action": {
+                                                        "type": "RemoveAnswerForListItem"
+                                                    }
                                                 },
                                                 {
                                                     "label": "No",

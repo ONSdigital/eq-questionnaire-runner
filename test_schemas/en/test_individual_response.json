@@ -76,10 +76,6 @@
                             "id": "primary-person-list-collector",
                             "type": "PrimaryPersonListCollector",
                             "for_list": "household",
-                            "add_or_edit_answer": {
-                                "id": "you-live-here",
-                                "value": "Yes"
-                            },
                             "add_or_edit_block": {
                                 "id": "add-or-edit-primary-person",
                                 "type": "PrimaryPersonListAddOrEditQuestion",
@@ -115,7 +111,10 @@
                                         "options": [
                                             {
                                                 "label": "Yes",
-                                                "value": "Yes"
+                                                "value": "Yes",
+                                                "action": {
+                                                    "type": "AddOrEditAnswerForListItem"
+                                                }
                                             },
                                             {
                                                 "label": "No",
@@ -130,14 +129,6 @@
                             "id": "list-collector",
                             "type": "ListCollector",
                             "for_list": "household",
-                            "add_answer": {
-                                "id": "anyone-else",
-                                "value": "Yes"
-                            },
-                            "remove_answer": {
-                                "id": "remove-confirmation",
-                                "value": "Yes"
-                            },
                             "question": {
                                 "id": "confirmation-question",
                                 "type": "General",
@@ -150,7 +141,10 @@
                                         "options": [
                                             {
                                                 "label": "Yes",
-                                                "value": "Yes"
+                                                "value": "Yes",
+                                                "action": {
+                                                    "type": "AddAnswerForListItem"
+                                                }
                                             },
                                             {
                                                 "label": "No",
@@ -221,7 +215,10 @@
                                             "options": [
                                                 {
                                                     "label": "Yes",
-                                                    "value": "Yes"
+                                                    "value": "Yes",
+                                                    "action": {
+                                                        "type": "RemoveAnswerForListItem"
+                                                    }
                                                 },
                                                 {
                                                     "label": "No",

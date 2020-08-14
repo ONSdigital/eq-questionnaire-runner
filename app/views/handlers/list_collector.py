@@ -42,10 +42,10 @@ class ListCollector(Question):
         }
 
     def handle_post(self):
-        if (
-            self.form.data[self.rendered_block["add_answer"]["id"]]
-            == self.rendered_block["add_answer"]["value"]
-        ):
+        answer_action = self._get_answer_action()
+        action_type = answer_action["type"] if answer_action else None
+
+        if action_type == "AddAnswerForListItem":
             self._is_adding = True
             self.questionnaire_store_updater.update_answers(self.form.data)
 
