@@ -107,7 +107,10 @@
                                                 "options": [
                                                     {
                                                         "label": "Yes",
-                                                        "value": "Yes"
+                                                        "value": "Yes",
+                                                        "action": {
+                                                            "type": "AddAnswerForListItem"
+                                                        }
                                                     },
                                                     {
                                                         "label": "No",

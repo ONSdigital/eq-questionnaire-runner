@@ -21,9 +21,8 @@ class ListRemoveQuestion(ListAction):
 
     def handle_post(self):
         answer_action = self._get_answer_action()
-        action_type = answer_action["type"] if answer_action else None
 
-        if action_type == "RemoveAnswerForListItem":
+        if answer_action and answer_action["type"] == "RemoveAnswerForListItem":
             list_name = self.parent_block["for_list"]
             self.questionnaire_store_updater.remove_list_item_and_answers(
                 list_name, self._current_location.list_item_id
