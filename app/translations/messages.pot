@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2020-08-17 11:53+0100\n"
+"POT-Creation-Date: 2020-08-17 14:08+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -107,11 +107,11 @@ msgid "Enter a whole number"
 msgstr ""
 
 #: app/forms/error_messages.py:35
-msgid "Enter a number rounded to {max:d} decimal places"
+msgid "Enter a number rounded to {max} decimal places"
 msgstr ""
 
 #: app/forms/error_messages.py:36
-msgid "You have entered too many characters. Enter up to {max:d} characters"
+msgid "You have entered too many characters. Enter up to {max} characters"
 msgstr ""
 
 #: app/forms/error_messages.py:39
