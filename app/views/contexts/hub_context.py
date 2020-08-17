@@ -179,11 +179,7 @@ class HubContext(Context):
         if not self._schema.json.get("individual_response"):
             return False
 
-        for_list = (
-            self._schema.json["individual_response"]["for_list"]
-            if self._schema.json.get("individual_response")
-            else None
-        )
+        for_list = self._schema.json["individual_response"]["for_list"]
 
         count_household_members = len(self._list_store[for_list])
 
