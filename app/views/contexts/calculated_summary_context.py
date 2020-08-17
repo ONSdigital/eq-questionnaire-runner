@@ -107,13 +107,16 @@ class CalculatedSummaryContext(Context):
             current_location=current_location,
         )
         transformed_block = deepcopy(transformed_block)
+        transformed_block = QuestionnaireSchema.get_mutable_deepcopy(transformed_block)
         block_question = transformed_block["question"]
 
         matching_answers = []
         for answer_id in answer_ids_to_keep:
             matching_answers.extend(self._schema.get_answers_by_answer_id(answer_id))
 
-        questions_to_keep = [answer["parent_id"] for answer in matching_answers]
+        questions_to_keep = [
+            self._schema.parent_id_map[answer["id"]] for answer in matching_answers
+        ]
 
         if block_question["id"] in questions_to_keep:
             answers_to_keep = [

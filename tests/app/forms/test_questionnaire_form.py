@@ -1,11 +1,11 @@
 # pylint: disable=too-many-lines
-from copy import deepcopy
 from decimal import Decimal
 
 from mock import patch
 from werkzeug.datastructures import MultiDict
 
 from app.forms.questionnaire_form import generate_form
+from app.questionnaire import QuestionnaireSchema
 from app.questionnaire.placeholder_renderer import PlaceholderRenderer
 from app.utilities.schema import load_schema_from_name
 from app.forms.validators import ResponseRequired, DateRequired
@@ -824,7 +824,7 @@ class TestQuestionnaireForm(
         with self.app_request_context():
             schema = load_schema_from_name("test_sum_equal_validation_against_total")
 
-            question_schema = deepcopy(
+            question_schema = QuestionnaireSchema.get_mutable_deepcopy(
                 schema.get_block("breakdown-block").get("question")
             )
 
@@ -863,7 +863,7 @@ class TestQuestionnaireForm(
         with self.app_request_context():
             schema = load_schema_from_name("test_sum_equal_validation_against_total")
 
-            question_schema = deepcopy(
+            question_schema = QuestionnaireSchema.get_mutable_deepcopy(
                 schema.get_block("breakdown-block").get("question")
             )
 
