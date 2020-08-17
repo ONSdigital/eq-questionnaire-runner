@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2020-08-13 15:27+0100\n"
+"POT-Creation-Date: 2020-08-17 11:51+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -605,6 +605,10 @@ msgstr ""
 
 #: templates/partials/answers/textfield.html:36
 msgid "No results found"
+msgstr ""
+
+#: templates/partials/answers/textfield.html:37
+msgid "Continue entering to get suggestions"
 msgstr ""
 
 #: templates/partials/introduction/preview.html:29
