@@ -12,6 +12,7 @@ error_messages = {
     "MANDATORY_DROPDOWN": lazy_gettext("Select an answer to continue"),
     "MANDATORY_CHECKBOX": lazy_gettext("Select all that apply to continue"),
     "MANDATORY_DATE": lazy_gettext("Enter a date to continue"),
+    "MANDATORY_ADDRESS": lazy_gettext("Enter an address to continue"),
     "MANDATORY_DURATION": lazy_gettext("Enter a duration to continue"),
     "NUMBER_TOO_SMALL": lazy_gettext("Enter an answer more than or equal to %(min)s"),
     "NUMBER_TOO_LARGE": lazy_gettext("Enter an answer less than or equal to %(max)s"),

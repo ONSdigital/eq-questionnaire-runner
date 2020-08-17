@@ -1,0 +1,57 @@
+{% from "components/address/_macro.njk" import onsAddressInput %}
+
+{% set input = form.fields[answer.id] if input is undefined else input %}
+
+{% set config = {
+    "id": "address",
+    "legend": question.title,
+    "legendClasses": "u-vh",
+    "autosuggest":{
+        "label": {
+            "text": _("Enter address or postcode and select from results")
+        },
+        "APIDomain": address_lookup_url,
+        "instructions": _("Use up and down keys to navigate suggestions once you‘ve typed more than two characters. Use the enter key to select a suggestion. Touch device users, explore by touch or with swipe gestures."),
+        "ariaYouHaveSelected": _("You have selected"),
+        "ariaMinChars": _("Enter 3 or more characters for suggestions."),
+        "ariaOneResult": _("There is one suggestion available."),
+        "ariaNResults": _("There are {n} suggestions available."),
+        "ariaLimitedResults": _("Results have been limited to 10 suggestions. Type more characters to improve your search"),
+        "moreResults": _("Continue entering to improve suggestions"),
+        "resultsTitle": _("Select an address"),
+        "noResults": _("No results found. Try entering a different part of the address"),
+        "tooManyResults": _("{n} results found. Enter more of the address to improve results"),
+        "typeMore": _("Enter more of the address to get results"),
+        "autocomplete": "new-password",
+        "errorTitle": _("There is a problem with your answer"),
+        "errorMessageEnter": _("Enter an address"),
+        "errorMessageSelect": _("Select an address"),
+        "errorMessageAPI": _("Sorry, there was a problem loading addresses"),
+        "errorMessageAPILinkText": _("Enter address manually"),
+        "dataQueries": {
+            "epoch": true,
+            "niboost": true
+        }
+    },
+    "line1": {
+        "label": _("Address line 1"),
+        "value": input.line1._value() | e,
+        "error": error
+    },
+    "line2": {
+        "label": _("Address line 2"),
+        "value": input.line2._value() | e
+    },
+    "town": {
+        "label": _("Town or city"),
+        "value": input.town._value() | e
+    },
+    "postcode": {
+        "label": _("Postcode"),
+        "value": input.postcode._value() | e
+    },
+    "searchButton": _("Search for an address"),
+    "manualButton": _("Manually enter address")
+   } %}
+
+{{ onsAddressInput(config) }}

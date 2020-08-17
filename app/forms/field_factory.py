@@ -1,3 +1,4 @@
+from app.forms.field_handlers.address_handler import AddressHandler
 from app.forms.field_handlers.date_handler import DateHandler
 from app.forms.field_handlers.dropdown_handler import DropdownHandler
 from app.forms.field_handlers.duration_handler import DurationHandler
@@ -24,6 +25,7 @@ FIELD_HANDLER_MAPPINGS = {
     "MonthYearDate": MonthYearDateHandler,
     "YearDate": YearDateHandler,
     "Duration": DurationHandler,
+    "AddressLookup": AddressHandler,
 }
 
 

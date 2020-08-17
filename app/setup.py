@@ -238,6 +238,12 @@ def setup_jinja_env(application):
     application.jinja_env.add_extension("jinja2.ext.do")
 
 
+def _add_address_lookup_url_to_csp_policy(csp_policy, address_lookup_url) -> Dict:
+    if address_lookup_url:
+        csp_policy["connect-src"] += [address_lookup_url]
+    return csp_policy
+
+
 def _add_cdn_url_to_csp_policy(cdn_url) -> Dict:
     csp_policy = deepcopy(CSP_POLICY)
     for directive in csp_policy:
@@ -248,6 +254,9 @@ def _add_cdn_url_to_csp_policy(cdn_url) -> Dict:
 
 def setup_secure_headers(application):
     csp_policy = _add_cdn_url_to_csp_policy(application.config["CDN_URL"])
+    _add_address_lookup_url_to_csp_policy(
+        csp_policy, application.config["ADDRESS_LOOKUP_URL"]
+    )
 
     if application.config["EQ_ENABLE_LIVE_RELOAD"]:
         # browsersync is configured to bind on port 5075

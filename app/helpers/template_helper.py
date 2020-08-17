@@ -78,6 +78,7 @@ def render_template(template, **kwargs):
         language_code=get_locale().language,
         survey_title=cookie_session.get("survey_title"),
         cdn_url=cdn_url,
+        address_lookup_url=current_app.config["ADDRESS_LOOKUP_URL"],
         **google_tag_mananger_context,
         **kwargs,
     )

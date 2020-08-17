@@ -6,7 +6,7 @@ from dataclasses import dataclass, field, asdict
 @dataclass
 class Answer:
     answer_id: str
-    value: Union[str, int, float, List]
+    value: Union[str, int, float, List, Dict]
     list_item_id: Optional[str] = field(default=None)
 
     @classmethod

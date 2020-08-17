@@ -199,6 +199,24 @@ class OptionalForm:
             raise validators.StopValidation()
 
 
+class AddressLine1Required:
+    field_flags = ("required",)
+
+    def __init__(self, message=None):
+        self.message = message or error_messages["MANDATORY_ADDRESS"]
+
+    def __call__(self, form, field):
+        """
+        Raise exception if ALL fields have not been filled out.
+        Not having that field is the same as not filling it out
+        as the remaining fields would also have to be empty for
+        exception to be raised.
+        """
+        address_line_1 = form.line1.data if hasattr(form, "line1") else False
+        if not address_line_1:
+            raise validators.StopValidation(self.message)
+
+
 class DateRequired:
     field_flags = ("required",)
 
