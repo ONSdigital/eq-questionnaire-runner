@@ -5,6 +5,6 @@ describe("Suggestions", () => {
     browser.openQuestionnaire("test_textfield_suggestions.json");
     $(SuggestionsPage.country()).setValue("Uni");
     $("#country-answer-listbox li").waitForDisplayed();
-    expect($$(".js-typeahead-listbox li").length).to.not.equal(0);
+    expect($$(".js-autosuggest-listbox li").length).to.not.equal(0);
   });
 });
