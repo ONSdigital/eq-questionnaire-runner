@@ -32,9 +32,9 @@ error_messages = {
     ),
     "INVALID_NUMBER": lazy_gettext("Enter a number"),
     "INVALID_INTEGER": lazy_gettext("Enter a whole number"),
-    "INVALID_DECIMAL": lazy_gettext("Enter a number rounded to {max:d} decimal places"),
+    "INVALID_DECIMAL": lazy_gettext("Enter a number rounded to {max} decimal places"),
     "MAX_LENGTH_EXCEEDED": lazy_gettext(
-        "You have entered too many characters. Enter up to {max:d} characters"
+        "You have entered too many characters. Enter up to {max} characters"
     ),
     "INVALID_DATE": lazy_gettext("Enter a valid date"),
     "INVALID_DATE_RANGE": lazy_gettext(
