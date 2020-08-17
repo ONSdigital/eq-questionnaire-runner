@@ -42,4 +42,3 @@ def get_field_handler(
         disable_validation=disable_validation,
         question_title=question_title,
     )
-
