@@ -4,10 +4,7 @@ from typing import List, Mapping, Union
 from flask import url_for
 from flask_babel import lazy_gettext
 
-from app.data_model.answer_store import AnswerStore
-from app.data_model.list_store import ListStore
-from app.data_model.progress_store import CompletionStatus, ProgressStore
-from app.questionnaire import QuestionnaireSchema
+from app.data_model.progress_store import CompletionStatus
 from app.views.contexts import Context
 
 
@@ -43,26 +40,6 @@ class HubContext(Context):
             },
         },
     }
-
-    def __init__(
-        self,
-        language: str,
-        schema: QuestionnaireSchema,
-        answer_store: AnswerStore,
-        list_store: ListStore,
-        progress_store: ProgressStore,
-        metadata: Mapping,
-    ):
-
-        super().__init__(
-            language, schema, answer_store, list_store, progress_store, metadata
-        )
-
-        self._for_list = (
-            self._schema.json["individual_response"]["for_list"]
-            if self._schema.json.get("individual_response")
-            else None
-        )
 
     def get_context(self, survey_complete, enabled_section_ids) -> Mapping:
         rows = self._get_rows(enabled_section_ids)
@@ -202,14 +179,16 @@ class HubContext(Context):
         if not self._schema.json.get("individual_response"):
             return False
 
-        count_household_members = len(self._list_store[self._for_list])
+        for_list = (
+            self._schema.json["individual_response"]["for_list"]
+            if self._schema.json.get("individual_response")
+            else None
+        )
 
-        if count_household_members == 0:
-            return False
+        count_household_members = len(self._list_store[for_list])
 
-        if (
-            count_household_members == 1
-            and self._list_store[self._for_list].primary_person
+        if count_household_members == 0 or (
+            count_household_members == 1 and self._list_store[for_list].primary_person
         ):
             return False
 

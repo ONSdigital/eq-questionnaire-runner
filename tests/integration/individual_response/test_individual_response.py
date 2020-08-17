@@ -342,7 +342,7 @@ class TestIndividualResponseWho(IndividualResponseTestCase):
         self.assertInUrl("/how")
 
     def test_goes_to_who_selector(self):
-        # Given I add a household member
+        # Given I add a number of non primary household members
         # and navigate to the individual response from hub
         self._add_household_multiple_members_no_primary()
 
@@ -353,7 +353,7 @@ class TestIndividualResponseWho(IndividualResponseTestCase):
         self.assertInUrl("/who")
 
     def test_previous_returns_to_hub(self):
-        # Given I add a household member
+        # Given I add a number of non primary household members
         # and navigate to the individual response from hub
         self._add_household_multiple_members_no_primary()
 
@@ -366,7 +366,7 @@ class TestIndividualResponseWho(IndividualResponseTestCase):
         self.assertInUrl("/questionnaire/")
 
     def test_previous_from_who_returns_to_hub(self):
-        # Given I add some household members
+        # Given I add a number of non primary household members
         # and navigate beyond the individual response member selector from hub
         self._add_household_multiple_members_no_primary()
 
@@ -380,7 +380,7 @@ class TestIndividualResponseWho(IndividualResponseTestCase):
         self.assertInUrl("/questionnaire/")
 
     def test_previous_from_how_returns_to_hub(self):
-        # Given I add some household members
+        # Given I add a number of non primary household members
         # and navigate beyond the individual response member selector from hub
         self._add_household_multiple_members_no_primary()
 
@@ -395,7 +395,7 @@ class TestIndividualResponseWho(IndividualResponseTestCase):
         self.assertInUrl("/questionnaire/")
 
     def test_previous_from_confirm_returns_to_hub(self):
-        # Given I add some household members
+        # Given I add a number of non primary household members
         # and navigate beyond the individual response member selector from hub
         self._add_household_multiple_members_no_primary()
 

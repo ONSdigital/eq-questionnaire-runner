@@ -171,7 +171,7 @@ def get_individual_response_post_address_confirmation(schema, questionnaire_stor
 def get_individual_response_who(schema, questionnaire_store):
     language_code = get_session_store().session_data.language_code
 
-    member_selector_handler = IndividualResponseWhoHandler(
+    individual_response_handler = IndividualResponseWhoHandler(
         schema=schema,
         questionnaire_store=questionnaire_store,
         language=language_code,
@@ -179,7 +179,7 @@ def get_individual_response_who(schema, questionnaire_store):
         form_data=request.form,
     )
 
-    if request.method == "POST" and member_selector_handler.form.validate():
-        return member_selector_handler.handle_post()
+    if request.method == "POST" and individual_response_handler.form.validate():
+        return individual_response_handler.handle_post()
 
-    return member_selector_handler.handle_get()
+    return individual_response_handler.handle_get()

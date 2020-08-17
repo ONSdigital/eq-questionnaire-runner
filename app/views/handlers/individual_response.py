@@ -60,9 +60,7 @@ class IndividualResponseHandler:
         self._form_data = form_data
         self._answers = None
         self._list_item_id = list_item_id
-        self._list_name = self._schema.json.get("individual_response", {}).get(
-            "for_list"
-        )
+        self._list_name = self._schema.get_individual_response_list()
         self._return_to = self._request_args.get("return_to")
 
         self.page_title = None
@@ -237,10 +235,7 @@ class IndividualResponseHowHandler(IndividualResponseHandler):
         )
 
     def handle_get(self):
-        previous_location_url = url_for(
-            "individual_response.request_individual_response",
-            list_item_id=self._list_item_id,
-        )
+        previous_location_url = None
 
         if self._return_to_hub:
             previous_location_url = url_for("questionnaire.get_questionnaire")
@@ -248,6 +243,12 @@ class IndividualResponseHowHandler(IndividualResponseHandler):
         if self._request_args.get("journey") == "change":
             previous_location_url = url_for(
                 "individual_response.get_individual_response_change",
+                list_item_id=self._list_item_id,
+            )
+
+        if not previous_location_url:
+            previous_location_url = url_for(
+                "individual_response.request_individual_response",
                 list_item_id=self._list_item_id,
             )
 
@@ -528,7 +529,7 @@ class IndividualResponsePostAddressConfirmHandler(IndividualResponseHandler):
 
 class IndividualResponseWhoHandler(IndividualResponseHandler):
     def __init__(self, schema, questionnaire_store, language, request_args, form_data):
-        self._list_name = schema.json.get("individual_response", {}).get("for_list")
+        self._list_name = schema.get_individual_response_list()
         list_model = questionnaire_store.list_store[self._list_name]
         name_answers = []
 
@@ -543,7 +544,7 @@ class IndividualResponseWhoHandler(IndividualResponseHandler):
                     )
                 )
 
-        self.people_names = {
+        self.non_primary_people_names = {
             f"{name_answer[0].value} {name_answer[1].value}": list_item_id
             for list_item_id, name_answer in name_answers
         }
@@ -566,7 +567,7 @@ class IndividualResponseWhoHandler(IndividualResponseHandler):
     def selected_list_item(self):
         answer_value = self.selected_option
 
-        return self.people_names[answer_value]
+        return self.non_primary_people_names[answer_value]
 
     @cached_property
     def block_definition(self) -> Mapping:
@@ -583,7 +584,7 @@ class IndividualResponseWhoHandler(IndividualResponseHandler):
                         "mandatory": True,
                         "options": [
                             {"label": name, "value": name}
-                            for name in self.people_names.keys()
+                            for name in self.non_primary_people_names.keys()
                         ],
                     }
                 ],
@@ -591,7 +592,7 @@ class IndividualResponseWhoHandler(IndividualResponseHandler):
         }
 
     def handle_get(self):
-        if len(self.people_names) > 1:
+        if len(self.non_primary_people_names) > 1:
             previous_location_url = url_for("questionnaire.get_questionnaire")
 
             return render_template(
@@ -601,8 +602,8 @@ class IndividualResponseWhoHandler(IndividualResponseHandler):
                 previous_location_url=previous_location_url,
             )
 
-        if len(self.people_names) == 1:
-            list_item_id = list(self.people_names.values())[0]
+        if len(self.non_primary_people_names) == 1:
+            list_item_id = list(self.non_primary_people_names.values())[0]
 
             return redirect(
                 url_for(".get_individual_response_how", list_item_id=list_item_id)
