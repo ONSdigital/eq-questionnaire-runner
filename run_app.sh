@@ -1,6 +1,6 @@
 #!/bin/bash
 
-set -eu
+set -e
 
 web_server=${WEB_SERVER:-gunicorn}
 
