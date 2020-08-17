@@ -4,8 +4,8 @@ from functools import cached_property
 from wtforms import validators, Field
 
 from app.data_model.answer_store import AnswerStore
-from app.questionnaire.location import Location
 from app.forms.validators import ResponseRequired, format_message_with_title
+from app.questionnaire import Location
 from app.questionnaire.rules import get_answer_value
 from app.utilities.schema import load_schema_from_metadata
 

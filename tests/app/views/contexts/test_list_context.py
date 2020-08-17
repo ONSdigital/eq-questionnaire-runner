@@ -1,4 +1,6 @@
 import pytest
+
+from app.data_model.progress_store import ProgressStore
 from app.utilities.schema import load_schema_from_name
 from app.questionnaire.questionnaire_schema import DEFAULT_LANGUAGE_CODE
 from app.views.contexts import ListContext
@@ -76,7 +78,7 @@ def test_assert_primary_person_string_appended(
 
     list_context = ListContext(
         language=DEFAULT_LANGUAGE_CODE,
-        progress_store={},
+        progress_store=ProgressStore(),
         list_store=people_list_store,
         schema=schema,
         answer_store=people_answer_store,

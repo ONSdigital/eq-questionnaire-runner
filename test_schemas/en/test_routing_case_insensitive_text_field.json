@@ -1,0 +1,123 @@
+{
+    "mime_type": "application/json/ons/eq",
+    "language": "en",
+    "schema_version": "0.0.2",
+    "data_version": "0.0.3",
+    "survey_id": "0",
+    "title": "Routing is case insensitive for text fields",
+    "theme": "default",
+    "description": "A questionnaire to test case insensitive routing on text fields",
+    "metadata": [
+        {
+            "name": "user_id",
+            "type": "string"
+        },
+        {
+            "name": "period_id",
+            "type": "string"
+        },
+        {
+            "name": "ru_name",
+            "type": "string"
+        }
+    ],
+    "sections": [
+        {
+            "id": "default-section",
+            "groups": [
+                {
+                    "blocks": [
+                        {
+                            "type": "Question",
+                            "id": "country-text-field",
+                            "question": {
+                                "id": "country-text-field-question",
+                                "title": "Name a country you have visited",
+                                "type": "General",
+                                "answers": [
+                                    {
+                                        "id": "country-text-field-answer",
+                                        "label": "Country",
+                                        "mandatory": true,
+                                        "type": "TextField"
+                                    }
+                                ],
+                                "guidance": {
+                                    "contents": [
+                                        {
+                                            "title": "The following routing should take place",
+                                            "list": [
+                                                "Submit ‘India’ or ‘Azerbaijan’ using any mixture of lower or upper case: route to ‘country-interstitial-equal-any’",
+                                                "Submit ‘Georgia’ using any mixture of lower or upper case: route to ‘country-interstitial-equals’"
+                                            ]
+                                        }
+                                    ]
+                                }
+                            },
+                            "routing_rules": [
+                                {
+                                    "goto": {
+                                        "block": "country-interstitial-equal-any",
+                                        "when": [
+                                            {
+                                                "id": "country-text-field-answer",
+                                                "condition": "equals any",
+                                                "values": ["India", "Azerbaijan"]
+                                            }
+                                        ]
+                                    }
+                                },
+                                {
+                                    "goto": {
+                                        "block": "country-interstitial-equals",
+                                        "when": [
+                                            {
+                                                "id": "country-text-field-answer",
+                                                "condition": "equals",
+                                                "value": "Georgia"
+                                            }
+                                        ]
+                                    }
+                                },
+                                {
+                                    "goto": {
+                                        "block": "summary"
+                                    }
+                                }
+                            ]
+                        },
+                        {
+                            "id": "country-interstitial-equal-any",
+                            "type": "Interstitial",
+                            "content": {
+                                "title": "Condition: Equals Any",
+                                "contents": [
+                                    {
+                                        "description": "You submitted India or Azerbaijan."
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "id": "country-interstitial-equals",
+                            "type": "Interstitial",
+                            "content": {
+                                "title": "Condition: Equals",
+                                "contents": [
+                                    {
+                                        "description": "You submitted Georgia."
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "type": "Summary",
+                            "id": "summary"
+                        }
+                    ],
+                    "id": "countries-visited"
+                }
+            ]
+        }
+    ]
+}

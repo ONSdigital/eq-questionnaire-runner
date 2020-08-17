@@ -143,13 +143,13 @@ class TestSectionSummaryContext(TestStandardSummaryContext):
             self.language,
             self.schema,
             AnswerStore(answers),
-            self.progress_store,
             self.list_store,
+            self.progress_store,
             self.metadata,
         )
         context = summary_context(current_location)
         self.assertEqual(
-            context["summary"]["title"], "Household Summary - Semi-detached"
+            "Household Summary - Semi-detached", context["summary"]["title"]
         )
 
     def test_section_summary_page_title_placeholder_text_replaced(self):
@@ -175,8 +175,8 @@ class TestSectionSummaryContext(TestStandardSummaryContext):
             self.language,
             self.schema,
             AnswerStore(answers),
-            self.progress_store,
             self.list_store,
+            self.progress_store,
             self.metadata,
         )
         context = summary_context(current_location)
