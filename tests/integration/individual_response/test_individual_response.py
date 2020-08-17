@@ -405,15 +405,13 @@ class TestIndividualResponseWho(IndividualResponseTestCase):
         self.get(self.individual_response_link)
         self.post()
 
-        expected_url = self.last_url
-
         self.post({"individual-response-who-answer": "Marie Day"})
 
         # When I choose previous
         self.previous()
 
         # Then I should be taken to the previous page
-        self.assertEqualUrl(expected_url)
+        self.assertInUrl("/individual-response/who?return_to=hub")
 
     def test_previous_from_confirm_returns_via_hub_route(self):
         # Given I add a number of non primary household members
@@ -424,7 +422,7 @@ class TestIndividualResponseWho(IndividualResponseTestCase):
         self.post()
         self.post({"individual-response-who-answer": "Marie Day"})
 
-        expected_url = self.last_url
+        list_item_id = self.last_url.split("/")[2]
 
         self.post({"individual-response-how-answer": "Post"})
 
@@ -432,7 +430,7 @@ class TestIndividualResponseWho(IndividualResponseTestCase):
         self.previous()
 
         # Then I should be taken to the previous page
-        self.assertEqualUrl(expected_url)
+        self.assertInUrl(f"/individual-response/{list_item_id}/how?return_to=hub")
 
 
 class TestIndividualResponseConfirmationPage(IndividualResponseTestCase):
