@@ -1,6 +1,6 @@
 #!/bin/bash
 
-set -euo pipefail
+set -eu
 
 web_server=${WEB_SERVER:-gunicorn}
 
