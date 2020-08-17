@@ -319,6 +319,24 @@ class TestIndividualResponseNavigation(IndividualResponseTestCase):
         # Then I should be taken to the hub
         self.assertInUrl("questionnaire/")
 
+    def test_previous_from_how_multiple_people(self):
+        # Given I add a number of non primary household members
+        # and select a response from the individual section
+        # and navigate to the method
+        self._add_household_multiple_members_no_primary()
+
+        self.post()
+        self.get(self.individual_response_link)
+        self.post()
+
+        person_id = self.last_url.split("/")[2]
+
+        # When I choose previous
+        self.previous()
+
+        # Then I should be taken to the previous page
+        self.assertInUrl(f"/individual-response/?list_item_id={person_id}")
+
 
 class TestIndividualResponseWho(IndividualResponseTestCase):
     def test_who_not_shown_for_primary_only(self):
@@ -365,7 +383,7 @@ class TestIndividualResponseWho(IndividualResponseTestCase):
         # Then I should be taken to the hub
         self.assertInUrl("/questionnaire/")
 
-    def test_previous_from_who_returns_to_hub(self):
+    def test_previous_from_who_returns_to_intro(self):
         # Given I add a number of non primary household members
         # and navigate beyond the individual response member selector from hub
         self._add_household_multiple_members_no_primary()
@@ -376,25 +394,28 @@ class TestIndividualResponseWho(IndividualResponseTestCase):
         # When I choose previous
         self.previous()
 
-        # Then I should be taken to the hub
-        self.assertInUrl("/questionnaire/")
+        # Then I should be taken to the response introduction
+        self.assertInUrl("/individual-response/?return_to=hub")
 
-    def test_previous_from_how_returns_to_hub(self):
+    def test_previous_from_how_returns_via_hub_route(self):
         # Given I add a number of non primary household members
         # and navigate beyond the individual response member selector from hub
         self._add_household_multiple_members_no_primary()
 
         self.get(self.individual_response_link)
         self.post()
+
+        expected_url = self.last_url
+
         self.post({"individual-response-who-answer": "Marie Day"})
 
         # When I choose previous
         self.previous()
 
-        # Then I should be taken to the hub
-        self.assertInUrl("/questionnaire/")
+        # Then I should be taken to the previous page
+        self.assertEqualUrl(expected_url)
 
-    def test_previous_from_confirm_returns_to_hub(self):
+    def test_previous_from_confirm_returns_via_hub_route(self):
         # Given I add a number of non primary household members
         # and navigate beyond the individual response member selector from hub
         self._add_household_multiple_members_no_primary()
@@ -402,13 +423,16 @@ class TestIndividualResponseWho(IndividualResponseTestCase):
         self.get(self.individual_response_link)
         self.post()
         self.post({"individual-response-who-answer": "Marie Day"})
+
+        expected_url = self.last_url
+
         self.post({"individual-response-how-answer": "Post"})
 
         # When I choose previous
         self.previous()
 
-        # Then I should be taken to the hub
-        self.assertInUrl("/questionnaire/")
+        # Then I should be taken to the previous page
+        self.assertEqualUrl(expected_url)
 
 
 class TestIndividualResponseConfirmationPage(IndividualResponseTestCase):

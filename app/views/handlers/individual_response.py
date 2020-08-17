@@ -235,22 +235,38 @@ class IndividualResponseHowHandler(IndividualResponseHandler):
         )
 
     def handle_get(self):
-        previous_location_url = None
-
         if self._return_to_hub:
-            previous_location_url = url_for("questionnaire.get_questionnaire")
-
-        if self._request_args.get("journey") == "change":
+            previous_location_url = url_for(
+                "individual_response.get_individual_response_who",
+                return_to=self._return_to,
+            )
+        elif self._request_args.get("journey") == "change":
             previous_location_url = url_for(
                 "individual_response.get_individual_response_change",
                 list_item_id=self._list_item_id,
             )
+        else:
+            self._list_name = self._schema.get_individual_response_list()
+            list_model = self._questionnaire_store.list_store[self._list_name]
+            non_primary_members = 0
 
-        if not previous_location_url:
-            previous_location_url = url_for(
-                "individual_response.request_individual_response",
-                list_item_id=self._list_item_id,
-            )
+            for list_item in list_model.items:
+                if list_item != list_model.primary_person:
+                    non_primary_members += 1
+
+            if non_primary_members > 1:
+                # We know the user only could have come from individual
+                # as the return_to arg is not supplied in earlier condition
+                previous_location_url = url_for(
+                    "individual_response.request_individual_response",
+                    list_item_id=self._list_item_id,
+                )
+            else:
+                # The user came from the hub, but who selector has been skipped
+                # meaning the return_to arg has been stripped from the url
+                previous_location_url = url_for(
+                    "individual_response.request_individual_response", return_to="hub"
+                )
 
         return render_template(
             "individual_response/question",
@@ -492,14 +508,18 @@ class IndividualResponsePostAddressConfirmHandler(IndividualResponseHandler):
         return self.form.get_data(self.answer_id)
 
     def handle_get(self):
-        previous_location_url = url_for(
-            "individual_response.get_individual_response_how",
-            list_item_id=self._list_item_id,
-            journey=self._request_args.get("journey"),
-        )
-
         if self._return_to_hub:
-            previous_location_url = url_for("questionnaire.get_questionnaire")
+            previous_location_url = url_for(
+                "individual_response.get_individual_response_how",
+                list_item_id=self._list_item_id,
+                return_to=self._return_to,
+            )
+        else:
+            previous_location_url = url_for(
+                "individual_response.get_individual_response_how",
+                list_item_id=self._list_item_id,
+                journey=self._request_args.get("journey"),
+            )
 
         return render_template(
             "individual_response/question",
@@ -593,7 +613,10 @@ class IndividualResponseWhoHandler(IndividualResponseHandler):
 
     def handle_get(self):
         if len(self.non_primary_people_names) > 1:
-            previous_location_url = url_for("questionnaire.get_questionnaire")
+            previous_location_url = url_for(
+                "individual_response.request_individual_response",
+                return_to=self._return_to,
+            )
 
             return render_template(
                 "individual_response/question",
