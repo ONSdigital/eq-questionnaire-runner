@@ -25,7 +25,7 @@ class PrimaryPersonListCollector(Question):
         list_name = self.rendered_block["for_list"]
         answer_action = self._get_answer_action()
 
-        if answer_action and answer_action["type"] == "AddOrEditAnswerForListItem":
+        if answer_action and answer_action["type"] == "RedirectToAddOrEditBlock":
             self._is_adding = True
             self.questionnaire_store_updater.update_answers(self.form.data)
             self._primary_person_id = self.questionnaire_store_updater.add_primary_person(

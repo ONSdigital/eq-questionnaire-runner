@@ -76,7 +76,7 @@ def list_collector_block():
                             {
                                 "label": "Yes",
                                 "value": "Yes",
-                                "action": {"type": "RemoveAnswerForListItem"},
+                                "action": {"type": "RedirectToRemoveBlock"},
                             },
                             {"label": "No", "value": "No"},
                         ],
@@ -119,7 +119,7 @@ def list_collector_block():
                         {
                             "label": "Yes",
                             "value": "Yes",
-                            "action": {"type": "AddAnswerForListItem"},
+                            "action": {"type": "RedirectToAddBlock"},
                         },
                         {"label": "No", "value": "No"},
                     ],

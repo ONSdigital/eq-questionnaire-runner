@@ -86,7 +86,7 @@
                                                 "label": "Yes, I usually live here",
                                                 "value": "Yes, I usually live here",
                                                 "action": {
-                                                    "type": "AddOrEditAnswerForListItem"
+                                                    "type": "RedirectToAddOrEditBlock"
                                                 }
                                             },
                                             {
@@ -270,7 +270,7 @@
                                                 "label": "Yes, I need to add a person",
                                                 "value": "Yes, I need to add a person",
                                                 "action": {
-                                                    "type": "AddAnswerForListItem"
+                                                    "type": "RedirectToAddBlock"
                                                 }
                                             },
                                             {
@@ -401,7 +401,7 @@
                                                     "label": "Yes",
                                                     "value": "Yes",
                                                     "action": {
-                                                        "type": "RemoveAnswerForListItem"
+                                                        "type": "RedirectToRemoveBlock"
                                                     }
                                                 },
                                                 {
@@ -475,7 +475,7 @@
                                                 "label": "Yes, I need to add someone",
                                                 "value": "Yes, I need to add someone",
                                                 "action": {
-                                                    "type": "AddAnswerForListItem"
+                                                    "type": "RedirectToAddBlock"
                                                 }
                                             },
                                             {
@@ -626,7 +626,7 @@
                                                     "label": "Yes",
                                                     "value": "Yes",
                                                     "action": {
-                                                        "type": "RemoveAnswerForListItem"
+                                                        "type": "RedirectToRemoveBlock"
                                                     }
                                                 },
                                                 {

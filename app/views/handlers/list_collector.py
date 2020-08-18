@@ -44,7 +44,7 @@ class ListCollector(Question):
     def handle_post(self):
         answer_action = self._get_answer_action()
 
-        if answer_action and answer_action["type"] == "AddAnswerForListItem":
+        if answer_action and answer_action["type"] == "RedirectToAddBlock":
             self._is_adding = True
             self.questionnaire_store_updater.update_answers(self.form.data)
 
