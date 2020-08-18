@@ -75,8 +75,14 @@ spec:
               value: used-jti-claim
             - name: EQ_SUBMISSION_BACKEND
               value: gcs
-            - name: GUNICORN_WORKERS
+            - name: WEB_SERVER
+              value: "gunicorn"
+            - name: WEB_SERVER_WORKERS
               value: "7"
+            - name: WEB_SERVER_THREADS
+              value: "50"
+            - name: WEB_SERVER_ASYNC_CORES
+              value: "20"
             - name: GUNICORN_KEEP_ALIVE
               value: "650"
             - name: EQ_GCS_SUBMISSION_BUCKET_ID
