@@ -1,5 +1,5 @@
-from flask import url_for
 from typing import Union
+from flask import url_for
 
 from app.views.handlers.list_action import ListAction
 
