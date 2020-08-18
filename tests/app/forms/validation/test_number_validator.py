@@ -71,7 +71,7 @@ class TestNumberValidator(unittest.TestCase):
         with self.assertRaises(ValidationError) as ite:
             validator(mock_form, mock_field)
 
-        error_message = error_messages["INVALID_DECIMAL"].format(max=2)
+        error_message = error_messages["INVALID_DECIMAL"] % {"max": 2}
         self.assertEqual(error_message, str(ite.exception))
 
     def test_space_invalid(self):

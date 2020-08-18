@@ -178,9 +178,8 @@ class TestQuestionnaireForm(
             self.assertEqual(form.data, expected_form_data)
             self.assertEqual(
                 form.question_errors["date-range-question"],
-                schema.error_messages["DATE_PERIOD_TOO_LARGE"].format(
-                    max="1 month, 20 days"
-                ),
+                schema.error_messages["DATE_PERIOD_TOO_LARGE"]
+                % {"max": "1 month, 20 days"},
                 AnswerStore(),
             )
 
@@ -218,7 +217,7 @@ class TestQuestionnaireForm(
             self.assertEqual(form.data, expected_form_data)
             self.assertEqual(
                 form.question_errors["date-range-question"],
-                schema.error_messages["DATE_PERIOD_TOO_SMALL"].format(min="23 days"),
+                schema.error_messages["DATE_PERIOD_TOO_SMALL"] % {"min": "23 days"},
                 AnswerStore(),
             )
 
@@ -290,16 +289,14 @@ class TestQuestionnaireForm(
             self.assertEqual(form.data, expected_form_data)
             self.assertEqual(
                 form.errors["date-range-from"]["year"][0],
-                schema.error_messages["SINGLE_DATE_PERIOD_TOO_EARLY"].format(
-                    min="1 January 2017"
-                ),
+                schema.error_messages["SINGLE_DATE_PERIOD_TOO_EARLY"]
+                % {"min": "1 January 2017"},
             )
 
             self.assertEqual(
                 form.errors["date-range-to"]["year"][0],
-                schema.error_messages["SINGLE_DATE_PERIOD_TOO_LATE"].format(
-                    max="14 March 2017"
-                ),
+                schema.error_messages["SINGLE_DATE_PERIOD_TOO_LATE"]
+                % {"max": "14 March 2017"},
             )
 
     def test_date_combined_range_too_small_validation(self):
@@ -337,7 +334,7 @@ class TestQuestionnaireForm(
             self.assertEqual(form.data, expected_form_data)
             self.assertEqual(
                 form.question_errors["date-range-question"],
-                schema.error_messages["DATE_PERIOD_TOO_SMALL"].format(min="10 days"),
+                schema.error_messages["DATE_PERIOD_TOO_SMALL"] % {"min": "10 days"},
             )
 
     def test_date_combined_range_too_large_validation(self):
@@ -375,7 +372,7 @@ class TestQuestionnaireForm(
             self.assertEqual(form.data, expected_form_data)
             self.assertEqual(
                 form.question_errors["date-range-question"],
-                schema.error_messages["DATE_PERIOD_TOO_LARGE"].format(max="50 days"),
+                schema.error_messages["DATE_PERIOD_TOO_LARGE"] % {"max": "50 days"},
             )
 
     def test_date_mm_yyyy_combined_single_validation(self):
@@ -411,16 +408,14 @@ class TestQuestionnaireForm(
             self.assertEqual(form.data, expected_form_data)
             self.assertEqual(
                 form.errors["date-range-from"]["year"][0],
-                schema.error_messages["SINGLE_DATE_PERIOD_TOO_EARLY"].format(
-                    min="November 2016"
-                ),
+                schema.error_messages["SINGLE_DATE_PERIOD_TOO_EARLY"]
+                % {"min": "November 2016"},
             )
 
             self.assertEqual(
                 form.errors["date-range-to"]["year"][0],
-                schema.error_messages["SINGLE_DATE_PERIOD_TOO_LATE"].format(
-                    max="June 2017"
-                ),
+                schema.error_messages["SINGLE_DATE_PERIOD_TOO_LATE"]
+                % {"max": "June 2017"},
             )
 
     def test_date_mm_yyyy_combined_range_too_small_validation(self):
@@ -456,7 +451,7 @@ class TestQuestionnaireForm(
             self.assertEqual(form.data, expected_form_data)
             self.assertEqual(
                 form.question_errors["date-range-question"],
-                schema.error_messages["DATE_PERIOD_TOO_SMALL"].format(min="2 months"),
+                schema.error_messages["DATE_PERIOD_TOO_SMALL"] % {"min": "2 months"},
             )
 
     def test_date_mm_yyyy_combined_range_too_large_validation(self):
@@ -492,7 +487,7 @@ class TestQuestionnaireForm(
             self.assertEqual(form.data, expected_form_data)
             self.assertEqual(
                 form.question_errors["date-range-question"],
-                schema.error_messages["DATE_PERIOD_TOO_LARGE"].format(max="3 months"),
+                schema.error_messages["DATE_PERIOD_TOO_LARGE"] % {"max": "3 months"},
             )
 
     def test_date_yyyy_combined_single_validation(self):
@@ -523,14 +518,12 @@ class TestQuestionnaireForm(
             self.assertEqual(form.data, expected_form_data)
             self.assertEqual(
                 form.errors["date-range-from"]["year"][0],
-                schema.error_messages["SINGLE_DATE_PERIOD_TOO_EARLY"].format(
-                    min="2015"
-                ),
+                schema.error_messages["SINGLE_DATE_PERIOD_TOO_EARLY"] % {"min": "2015"},
             )
 
             self.assertEqual(
                 form.errors["date-range-to"]["year"][0],
-                schema.error_messages["SINGLE_DATE_PERIOD_TOO_LATE"].format(max="2021"),
+                schema.error_messages["SINGLE_DATE_PERIOD_TOO_LATE"] % {"max": "2021"},
             )
 
     def test_date_yyyy_combined_range_too_small_validation(self):
@@ -561,7 +554,7 @@ class TestQuestionnaireForm(
             self.assertEqual(form.data, expected_form_data)
             self.assertEqual(
                 form.question_errors["date-range-question"],
-                schema.error_messages["DATE_PERIOD_TOO_SMALL"].format(min="2 years"),
+                schema.error_messages["DATE_PERIOD_TOO_SMALL"] % {"min": "2 years"},
             )
 
     def test_date_yyyy_combined_range_too_large_validation(self):
@@ -592,7 +585,7 @@ class TestQuestionnaireForm(
             self.assertEqual(form.data, expected_form_data)
             self.assertEqual(
                 form.question_errors["date-range-question"],
-                schema.error_messages["DATE_PERIOD_TOO_LARGE"].format(max="3 years"),
+                schema.error_messages["DATE_PERIOD_TOO_LARGE"] % {"max": "3 years"},
             )
 
     def test_bespoke_message_for_date_validation_range(self):
@@ -928,7 +921,7 @@ class TestQuestionnaireForm(
             self.assertEqual(form.data, expected_form_data)
             self.assertEqual(
                 form.question_errors["breakdown-question"],
-                schema.error_messages["TOTAL_SUM_NOT_EQUALS"].format(total="10"),
+                schema.error_messages["TOTAL_SUM_NOT_EQUALS"] % {"total": "10"},
                 AnswerStore(),
             )
 
@@ -1003,7 +996,7 @@ class TestQuestionnaireForm(
             self.assertEqual(form.data, expected_form_data)
             self.assertEqual(
                 form.question_errors["breakdown-question"],
-                schema.error_messages["TOTAL_SUM_NOT_EQUALS"].format(total="10"),
+                schema.error_messages["TOTAL_SUM_NOT_EQUALS"] % {"total": "10"},
                 AnswerStore(),
             )
 
@@ -1056,7 +1049,7 @@ class TestQuestionnaireForm(
 
             self.assertEqual(
                 form.question_errors["breakdown-question"],
-                schema.error_messages["TOTAL_SUM_NOT_EQUALS"].format(total="10"),
+                schema.error_messages["TOTAL_SUM_NOT_EQUALS"] % {"total": "10"},
             )
 
     def test_generate_form_with_title_and_no_answer_label(self):
@@ -1213,7 +1206,7 @@ class TestQuestionnaireForm(
             form.validate()
             answer_errors = form.answer_errors("set-minimum")
             self.assertIn(
-                schema.error_messages["NUMBER_TOO_SMALL"].format(min="0"), answer_errors
+                schema.error_messages["NUMBER_TOO_SMALL"] % {"min": "0"}, answer_errors
             )
 
     def test_mandatory_mutually_exclusive_question_raises_error_when_not_answered(self):

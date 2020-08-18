@@ -129,7 +129,7 @@ class TestDateRangeValidator(unittest.TestCase):
         )
 
     def test_bespoke_message_playback(self):
-        message = {"DATE_PERIOD_TOO_LARGE": "Test {max}"}
+        message = {"DATE_PERIOD_TOO_LARGE": "Test %(max)s"}
         period_max = {"years": 2, "months": 1, "days": 3}
         validator = DateRangeCheck(messages=message, period_max=period_max)
 

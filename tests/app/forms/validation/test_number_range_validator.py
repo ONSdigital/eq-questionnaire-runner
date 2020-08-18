@@ -40,7 +40,7 @@ class TestNumberRangeValidator(unittest.TestCase):
             validator(mock_form, mock_field)
 
         self.assertEqual(
-            error_messages["NUMBER_TOO_SMALL"].format(min=0), str(ite.exception)
+            error_messages["NUMBER_TOO_SMALL"] % {"min": 0}, str(ite.exception)
         )
 
     def test_too_big_when_max_set_is_invalid(self):
@@ -54,7 +54,7 @@ class TestNumberRangeValidator(unittest.TestCase):
             validator(mock_form, mock_field)
 
         self.assertEqual(
-            error_messages["NUMBER_TOO_LARGE"].format(max=format_number(9999999999)),
+            error_messages["NUMBER_TOO_LARGE"] % {"max": format_number(9999999999)},
             str(ite.exception),
         )
 
