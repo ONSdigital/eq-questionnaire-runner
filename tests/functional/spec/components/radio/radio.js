@@ -37,7 +37,7 @@ describe("Component: Radio", () => {
 
     it("When I have submitted the page without any option, Then the question text is displayed in the error message", () => {
       $(RadioMandatoryOverriddenPage.submit()).click();
-      expect($(RadioMandatoryOverriddenPage.errorNumber(1)).getText()).to.contain("Select an answer\nto ‘What do you prefer for breakfast?’\nto continue");
+      expect($(RadioMandatoryOverriddenPage.errorNumber(1)).getText()).to.contain("Select an answer");
     });
   });
 
