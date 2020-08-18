@@ -63,6 +63,11 @@ class Router:
             if section_id in self.enabled_section_ids
         )
 
+    def can_display_summary_for_section(self, section_id, list_item_id=None):
+        return self._schema.get_summary_for_section(
+            section_id
+        ) and self._progress_store.is_section_complete(section_id, list_item_id)
+
     def routing_path(self, section_id, list_item_id=None):
         return self._path_finder.routing_path(section_id, list_item_id)
 
@@ -83,7 +88,9 @@ class Router:
                 return self.get_last_location_in_survey().url()
 
         is_last_block_in_section = routing_path[-1] == location.block_id
-        if is_last_block_in_section:
+        if is_last_block_in_section and self.can_display_summary_for_section(
+            location.section_id, location.list_item_id
+        ):
             return self._get_next_location_url_for_last_block_in_section(location)
 
         return self.get_next_block_url(location, routing_path)
@@ -139,13 +146,13 @@ class Router:
 
         return self.get_last_location_in_survey().url()
 
-    def get_section_resume_url(self, routing_path):
+    def get_section_resume_url(self, routing_path, resume=True):
         section_key = (routing_path.section_id, routing_path.list_item_id)
 
         if section_key in self._progress_store:
             location = self._get_first_incomplete_location_in_section(routing_path)
             if location:
-                return location.url(resume=True)
+                return location.url(resume=resume) if resume else location.url()
 
         return self.get_first_location_in_section(routing_path).url()
 

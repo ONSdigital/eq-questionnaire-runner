@@ -47,7 +47,13 @@ class ListAction(Question):
 
     def get_next_location_url(self):
         if self._return_to == "section-summary":
-            return self.get_section_summary_url()
+            if self.router.can_display_summary_for_section(
+                self.parent_location.section_id, self.parent_location.list_item_id
+            ):
+                return self.get_section_summary_url()
+
+            return self.router.get_section_resume_url(self._routing_path, resume=False)
+
         return self.parent_location.url()
 
     def handle_post(self):
