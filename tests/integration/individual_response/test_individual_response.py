@@ -20,6 +20,11 @@ class IndividualResponseTestCase(IntegrationTestCase):
             .find_next()["href"]
         )
 
+    def get_link(self, rowIndex, text):
+        selector = f"[data-qa='list-item-{text}-{rowIndex}-link']"
+        selected = self.getHtmlSoup().select(selector)
+        return selected[0].get("href")
+
     def _add_no_household_members(self):
         self.get("questionnaire/primary-person-list-collector/")
         self.post({"you-live-here": "No"})
@@ -235,6 +240,21 @@ class TestIndividualResponseIndividualSection(IndividualResponseTestCase):
 
         # Then I should see the individual response guidance
         self.assertInBody("You will need to know personal details such as")
+        self.assertInBody("If you can’t answer questions for this person")
+
+    def test_ir_guidance_displayed_on_remove_person_page(self):
+        # Given I add a primary person and a household member
+        self.get("questionnaire/primary-person-list-collector/")
+        self.post({"you-live-here": "Yes"})
+        self.post({"first-name": "Marie", "last-name": "Day"})
+        self.post({"anyone-else": "Yes"})
+        self.post({"first-name": "John", "last-name": "Doe"})
+
+        # When I try to remove the household member
+        householder_remove_link = self.get_link("2", "remove")
+        self.get(householder_remove_link)
+
+        # Then I should see the individual response guidance
         self.assertInBody("If you can’t answer questions for this person")
 
 
