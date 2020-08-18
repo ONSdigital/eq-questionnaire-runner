@@ -39,6 +39,13 @@ describe('Checkbox with "other" option', () => {
     expect($(MandatoryCheckboxPage.error()).isDisplayed()).to.be.true;
   });
 
+  it("Given a mandatory checkbox answer, When I leave the input field empty and submit, Then an error containing the question text should be displayed.", () => {
+    // When
+    $(MandatoryCheckboxPage.submit()).click();
+    // Then
+    expect($(MandatoryCheckboxPage.error()).getText()).to.contain("Select at least one answer to ‘Which pizza toppings would you like?’");
+  });
+
   it("Given a mandatory checkbox answer, when there is an error on the page for other field and I enter valid value and submit page, then the error is cleared and I navigate to next page.s", () => {
     $(MandatoryCheckboxPage.other()).click();
     $(MandatoryCheckboxPage.submit()).click();
