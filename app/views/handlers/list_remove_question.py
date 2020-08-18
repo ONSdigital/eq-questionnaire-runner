@@ -1,10 +1,3 @@
-<<<<<<< HEAD
-=======
-from typing import Union
-
-from flask import url_for
-
->>>>>>> 46f0e4d75e5b09e34846da4d19e07189466f4757
 from app.views.handlers.list_action import ListAction
 from app.views.handlers import individual_response_url
 
