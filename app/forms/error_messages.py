@@ -17,7 +17,7 @@ error_messages = {
     ),
     "MANDATORY_DROPDOWN": lazy_gettext("Select an answer to continue"),
     "MANDATORY_CHECKBOX": lazy_gettext(
-        'Select at least one answer <span class="u-vh">to ‘%(question_title)s’</span>c'
+        'Select at least one answer <span class="u-vh">to ‘%(question_title)s’</span>'
     ),
     "MANDATORY_DATE": lazy_gettext("Enter a date to continue"),
     "MANDATORY_DURATION": lazy_gettext("Enter a duration to continue"),
