@@ -17,7 +17,7 @@ class Content(BlockHandler):
             "individual_response_url": individual_response_url(
                 self._schema,
                 self._current_location.list_item_id,
-                self._questionnaire_store
+                self._questionnaire_store,
             ),
         }
 

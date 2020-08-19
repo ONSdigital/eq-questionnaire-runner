@@ -35,8 +35,6 @@ class ListRemoveQuestion(ListAction):
     def get_context(self):
         context = super().get_context()
         context["individual_response_url"] = individual_response_url(
-            self._schema,
-            self._current_location.list_item_id,
-            self._questionnaire_store
+            self._schema, self._current_location.list_item_id, self._questionnaire_store
         )
         return context
