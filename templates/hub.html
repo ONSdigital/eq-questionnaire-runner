@@ -36,8 +36,8 @@
       </div>
     {% endif %}
     {% if content.individual_response_url %}
-    {% set title = _("If you can’t answer someone else’s questions") %}
-    {% include 'partials/individual-response-guidance.html' %}
+      {% set title = _("If you can’t answer someone else’s questions") %}
+      {% include 'partials/individual-response-guidance.html' %}
     {% endif %}
     {{
         onsButton({
