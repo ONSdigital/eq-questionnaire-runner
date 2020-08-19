@@ -55,11 +55,7 @@ class SectionHandler:
         return self._router.get_section_resume_url(self._routing_path)
 
     def can_display_summary(self):
-        return self._schema.get_summary_for_section(
-            self._section_id
-        ) and self._questionnaire_store.progress_store.is_section_complete(
-            self._section_id, self._list_item_id
-        )
+        return self._router.can_display_summary_for_section(self._section_id, self._list_item_id)
 
     def _is_valid_location(self):
         return self._section_id in self._router.enabled_section_ids
