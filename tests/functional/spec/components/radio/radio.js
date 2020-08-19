@@ -35,7 +35,7 @@ describe("Component: Radio", () => {
       browser.openQuestionnaire("test_radio_mandatory.json");
     });
 
-    it("When I have submitted the page without any option, Then the question text is displayed in the error message", () => {
+    it("When I have submitted the page without any option, Then the question text is hidden in the error message using a span element", () => {
       $(RadioMandatoryOverriddenPage.submit()).click();
       expect($(RadioMandatoryOverriddenPage.errorNumber(1)).getText()).to.contain("Select an answer\nto ‘What do you prefer for breakfast?’\nto continue");
     });

@@ -39,7 +39,7 @@ describe('Checkbox with "other" option', () => {
     expect($(MandatoryCheckboxPage.error()).isDisplayed()).to.be.true;
   });
 
-  it("Given a mandatory checkbox answer, When I leave the input field empty and submit, Then an error containing the question text should be displayed.", () => {
+  it("Given a mandatory checkbox answer, When I leave the input field empty and submit, Then an the question text should be hidden in the error message using a span element.", () => {
     // When
     $(MandatoryCheckboxPage.submit()).click();
     // Then
