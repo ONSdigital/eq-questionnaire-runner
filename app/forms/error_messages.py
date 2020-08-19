@@ -13,11 +13,11 @@ error_messages = {
     "MANDATORY_NUMBER": lazy_gettext("Enter an answer to continue"),
     "MANDATORY_TEXTAREA": lazy_gettext("Enter an answer to continue"),
     "MANDATORY_RADIO": lazy_gettext(
-        'Select an answer <span class="u-vh">to ‘%(question_title)s’</span> to continue'
+        'Select an answer <span class="u-vh">to ‘%(question_title)s’</span>'
     ),
     "MANDATORY_DROPDOWN": lazy_gettext("Select an answer to continue"),
     "MANDATORY_CHECKBOX": lazy_gettext(
-        'Select at least one answer <span class="u-vh">to ‘%(question_title)s’</span> to continue'
+        'Select at least one answer <span class="u-vh">to ‘%(question_title)s’</span>c'
     ),
     "MANDATORY_DATE": lazy_gettext("Enter a date to continue"),
     "MANDATORY_DURATION": lazy_gettext("Enter a duration to continue"),
