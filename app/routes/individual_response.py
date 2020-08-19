@@ -15,6 +15,8 @@ from app.views.handlers.individual_response import (
     IndividualResponsePostAddressConfirmHandler,
     IndividualResponseChangeHandler,
     IndividualResponseWhoHandler,
+    IndividualResponseTextConfirmHandler,
+    IndividualResponseTextHandler,
 )
 
 logger = get_logger()
@@ -183,3 +185,76 @@ def get_individual_response_who(schema, questionnaire_store):
         return individual_response_handler.handle_post()
 
     return individual_response_handler.handle_get()
+
+
+@individual_response_blueprint.route(
+    "/<list_item_id>/text/enter-number", methods=["GET", "POST"]
+)
+@login_required
+@with_questionnaire_store
+@with_schema
+def get_individual_response_text_message(schema, questionnaire_store, list_item_id):
+    language_code = get_session_store().session_data.language_code
+    individual_response_handler = IndividualResponseTextHandler(
+        schema=schema,
+        questionnaire_store=questionnaire_store,
+        language=language_code,
+        request_args=request.args,
+        form_data=request.form,
+        list_item_id=list_item_id,
+    )
+
+    if request.method == "GET" or not individual_response_handler.form.validate():
+        return individual_response_handler.handle_get()
+
+    return individual_response_handler.handle_post()
+
+
+@individual_response_blueprint.route(
+    "/<list_item_id>/text/confirm-number", methods=["GET", "POST"]
+)
+@login_required
+@with_questionnaire_store
+@with_schema
+def get_individual_response_text_message_confirm(
+    schema, questionnaire_store, list_item_id
+):
+    language_code = get_session_store().session_data.language_code
+    individual_response_handler = IndividualResponseTextConfirmHandler(
+        schema=schema,
+        questionnaire_store=questionnaire_store,
+        language=language_code,
+        request_args=request.args,
+        form_data=request.form,
+        list_item_id=list_item_id,
+    )
+
+    if request.method == "GET" or not individual_response_handler.form.validate():
+        return individual_response_handler.handle_get()
+
+    return individual_response_handler.handle_post()
+
+
+@individual_response_blueprint.route("/text/confirmation", methods=["GET", "POST"])
+@login_required
+@with_questionnaire_store
+@with_schema
+def get_individual_response_text_message_confirmation(schema, questionnaire_store):
+    language_code = get_session_store().session_data.language_code
+    IndividualResponseHandler(
+        block_definition=None,
+        schema=schema,
+        questionnaire_store=questionnaire_store,
+        language=language_code,
+        request_args=request.args,
+        form_data=request.form,
+        list_item_id=None,
+    )
+
+    if request.method == "GET":
+        return render_template(
+            template="individual_response/mobile_confirmation",
+            phone_number=request.args.get("phone_number"),
+        )
+
+    return redirect(url_for("questionnaire.get_questionnaire"))

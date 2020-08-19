@@ -214,12 +214,19 @@ class IndividualResponseHowHandler(IndividualResponseHandler):
                     "default": "Post",
                     "options": [
                         {
+                            "label": lazy_gettext("Text message"),
+                            "value": "Text message",
+                            "description": lazy_gettext(
+                                "We will need their mobile number for this"
+                            ),
+                        },
+                        {
                             "label": lazy_gettext("Post"),
                             "value": "Post",
                             "description": lazy_gettext(
                                 "We can only send this to an unnamed resident at the registered household address"
                             ),
-                        }
+                        },
                     ],
                 }
             ],
@@ -244,6 +251,11 @@ class IndividualResponseHowHandler(IndividualResponseHandler):
             form_data,
             list_item_id,
         )
+
+    @cached_property
+    def selected_option(self):
+        answer_id = self.rendered_block["question"]["answers"][0]["id"]
+        return self.form.get_data(answer_id)
 
     def handle_get(self):
         self._list_name = self._schema.get_individual_response_list()
@@ -280,11 +292,17 @@ class IndividualResponseHowHandler(IndividualResponseHandler):
         )
 
     def handle_post(self):
+        if self.selected_option == "Post":
+            return redirect(
+                url_for(
+                    ".get_individual_response_post_address_confirm",
+                    list_item_id=self._list_item_id,
+                    journey=self._request_args.get("journey"),
+                )
+            )
         return redirect(
             url_for(
-                ".get_individual_response_post_address_confirm",
-                list_item_id=self._list_item_id,
-                journey=self._request_args.get("journey"),
+                ".get_individual_response_text_message", list_item_id=self._list_item_id
             )
         )
 
@@ -620,5 +638,164 @@ class IndividualResponseWhoHandler(IndividualResponseHandler):
                 ".get_individual_response_how",
                 journey=self._request_args.get("journey"),
                 list_item_id=self.selected_list_item,
+            )
+        )
+
+
+class IndividualResponseTextHandler(IndividualResponseHandler):
+    block_definition: Mapping = {
+        "type": "IndividualResponse",
+        "question": {
+            "type": "Question",
+            "id": "individual-response-enter-number",
+            "title": {
+                "text": lazy_gettext("What is {person_name_possessive} mobile number?"),
+                "placeholders": IndividualResponseHandler._person_name_placeholder_possessive,
+            },
+            "answers": [
+                {
+                    "type": "TextField",
+                    "id": "individual-response-enter-number-answer",
+                    "mandatory": True,
+                }
+            ],
+        },
+    }
+
+    def __init__(
+        self,
+        schema,
+        questionnaire_store,
+        language,
+        request_args,
+        form_data,
+        list_item_id,
+    ):
+        super().__init__(
+            self.block_definition,
+            schema,
+            questionnaire_store,
+            language,
+            request_args,
+            form_data,
+            list_item_id,
+        )
+
+    @cached_property
+    def answer_id(self):
+        return self.rendered_block["question"]["answers"][0]["id"]
+
+    @cached_property
+    def selected_option(self):
+        return self.form.get_data(self.answer_id)
+
+    def handle_get(self):
+        previous_location_url = url_for(
+            "individual_response.get_individual_response_how",
+            list_item_id=self._list_item_id,
+            journey=self._request_args.get("journey"),
+        )
+
+        return render_template(
+            "individual_response/question",
+            language=self._language,
+            content=self.get_context(),
+            previous_location_url=previous_location_url,
+        )
+
+    def handle_post(self):
+        return redirect(
+            url_for(
+                "individual_response.get_individual_response_text_message_confirm",
+                list_item_id=self._list_item_id,
+            )
+        )
+
+
+class IndividualResponseTextConfirmHandler(IndividualResponseHandler):
+    block_definition: Mapping = {
+        "type": "IndividualResponse",
+        "question": {
+            "type": "Question",
+            "id": "individual-response-text-confirm",
+            "title": "Is this mobile number correct?",
+            "description": [],
+            "answers": [
+                {
+                    "type": "Radio",
+                    "id": "individual-response-text-confirm-answer",
+                    "mandatory": True,
+                    "options": [
+                        {
+                            "label": lazy_gettext("Yes, send the text"),
+                            "value": "Yes, send the text",
+                        },
+                        {
+                            "label": lazy_gettext("No, I need to change it"),
+                            "value": "No, I need to change it",
+                        },
+                    ],
+                }
+            ],
+        },
+    }
+
+    def __init__(
+        self,
+        schema,
+        questionnaire_store,
+        language,
+        request_args,
+        form_data,
+        list_item_id,
+    ):
+        super().__init__(
+            self.block_definition,
+            schema,
+            questionnaire_store,
+            language,
+            request_args,
+            form_data,
+            list_item_id,
+        )
+
+    @cached_property
+    def answer_id(self):
+        return self.rendered_block["question"]["answers"][0]["id"]
+
+    @cached_property
+    def confirm_option(self):
+        return self.rendered_block["question"]["answers"][0]["options"][0]["value"]
+
+    @cached_property
+    def selected_option(self):
+        return self.form.get_data(self.answer_id)
+
+    def handle_get(self):
+        previous_location_url = url_for(
+            "individual_response.get_individual_response_text_message",
+            list_item_id=self._list_item_id,
+        )
+
+        return render_template(
+            "individual_response/question",
+            language=self._language,
+            content=self.get_context(),
+            previous_location_url=previous_location_url,
+        )
+
+    def handle_post(self):
+        if self.selected_option == self.confirm_option:
+            self._update_section_status(CompletionStatus.INDIVIDUAL_RESPONSE_REQUESTED)
+            return redirect(
+                url_for(
+                    "individual_response.get_individual_response_text_message_confirmation"
+                )
+            )
+
+        return redirect(
+            url_for(
+                "individual_response.get_individual_response_text_message",
+                list_item_id=self._list_item_id,
             )
         )
