@@ -161,6 +161,21 @@ class IndividualResponseHandler:
             return redirect(
                 url_for(".get_individual_response_how", list_item_id=self._list_item_id)
             )
+
+        self._list_name = self._schema.get_individual_response_list()
+        list_model = self._questionnaire_store.list_store[self._list_name]
+        non_primary_members = []
+
+        for list_item in list_model.items:
+            if list_item != list_model.primary_person:
+                non_primary_members.append(list_item)
+
+        if len(non_primary_members) == 1:
+            return redirect(
+                url_for(
+                    ".get_individual_response_how", list_item_id=non_primary_members[0]
+                )
+            )
         return redirect(url_for(".get_individual_response_who", return_to="hub"))
 
     def _render_block(self):
@@ -246,27 +261,10 @@ class IndividualResponseHowHandler(IndividualResponseHandler):
                 list_item_id=self._list_item_id,
             )
         else:
-            self._list_name = self._schema.get_individual_response_list()
-            list_model = self._questionnaire_store.list_store[self._list_name]
-            non_primary_members = 0
-
-            for list_item in list_model.items:
-                if list_item != list_model.primary_person:
-                    non_primary_members += 1
-
-            if non_primary_members > 1:
-                # We know the user only could have come from individual
-                # as the return_to arg is not supplied in earlier condition
-                previous_location_url = url_for(
-                    "individual_response.request_individual_response",
-                    list_item_id=self._list_item_id,
-                )
-            else:
-                # The user came from the hub, but who selector has been skipped
-                # meaning the return_to arg has been stripped from the url
-                previous_location_url = url_for(
-                    "individual_response.request_individual_response", return_to="hub"
-                )
+            previous_location_url = url_for(
+                "individual_response.request_individual_response",
+                list_item_id=self._list_item_id,
+            )
 
         return render_template(
             "individual_response/question",
@@ -623,13 +621,6 @@ class IndividualResponseWhoHandler(IndividualResponseHandler):
                 language=self._language,
                 content=self.get_context(),
                 previous_location_url=previous_location_url,
-            )
-
-        if len(self.non_primary_people_names) == 1:
-            list_item_id = list(self.non_primary_people_names.values())[0]
-
-            return redirect(
-                url_for(".get_individual_response_how", list_item_id=list_item_id)
             )
 
         raise NotFound
