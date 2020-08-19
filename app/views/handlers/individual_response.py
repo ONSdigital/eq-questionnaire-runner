@@ -61,7 +61,6 @@ class IndividualResponseHandler:
         self._answers = None
         self._list_item_id = list_item_id
         self._list_name = self._schema.get_individual_response_list()
-        self._return_to = self._request_args.get("return_to")
 
         self.page_title = None
 
@@ -87,8 +86,8 @@ class IndividualResponseHandler:
         return True
 
     @cached_property
-    def _return_to_hub(self):
-        return self._return_to == "hub"
+    def _is_hub_journey(self):
+        return self._request_args.get("journey") == "hub"
 
     @cached_property
     def rendered_block(self) -> Mapping:
@@ -140,7 +139,7 @@ class IndividualResponseHandler:
             self.individual_section_id
         )
 
-        if self._return_to_hub:
+        if self._is_hub_journey:
             previous_location_url = url_for("questionnaire.get_questionnaire")
         else:
             previous_location_url = url_for(
@@ -176,7 +175,7 @@ class IndividualResponseHandler:
                     ".get_individual_response_how", list_item_id=non_primary_members[0]
                 )
             )
-        return redirect(url_for(".get_individual_response_who", return_to="hub"))
+        return redirect(url_for(".get_individual_response_who", journey="hub"))
 
     def _render_block(self):
         return self.placeholder_renderer.render(
@@ -250,10 +249,10 @@ class IndividualResponseHowHandler(IndividualResponseHandler):
         )
 
     def handle_get(self):
-        if self._return_to_hub:
+        if self._is_hub_journey:
             previous_location_url = url_for(
                 "individual_response.get_individual_response_who",
-                return_to=self._return_to,
+                journey=self._request_args.get("journey"),
             )
         elif self._request_args.get("journey") == "change":
             previous_location_url = url_for(
@@ -280,7 +279,6 @@ class IndividualResponseHowHandler(IndividualResponseHandler):
                 ".get_individual_response_post_address_confirm",
                 list_item_id=self._list_item_id,
                 journey=self._request_args.get("journey"),
-                return_to=self._return_to,
             )
         )
 
@@ -388,7 +386,6 @@ class IndividualResponseChangeHandler(IndividualResponseHandler):
                     "individual_response.get_individual_response_how",
                     list_item_id=self._list_item_id,
                     journey="change",
-                    return_to=self._return_to,
                 )
             )
 
@@ -407,7 +404,7 @@ class IndividualResponseChangeHandler(IndividualResponseHandler):
                     list_name=self._list_name,
                     list_item_id=self._list_item_id,
                     block_id=individual_section_first_block_id,
-                    return_to=self._return_to,
+                    journey=self._request_args.get("journey"),
                 )
             )
 
@@ -506,18 +503,11 @@ class IndividualResponsePostAddressConfirmHandler(IndividualResponseHandler):
         return self.form.get_data(self.answer_id)
 
     def handle_get(self):
-        if self._return_to_hub:
-            previous_location_url = url_for(
-                "individual_response.get_individual_response_how",
-                list_item_id=self._list_item_id,
-                return_to=self._return_to,
-            )
-        else:
-            previous_location_url = url_for(
-                "individual_response.get_individual_response_how",
-                list_item_id=self._list_item_id,
-                journey=self._request_args.get("journey"),
-            )
+        previous_location_url = url_for(
+            "individual_response.get_individual_response_how",
+            list_item_id=self._list_item_id,
+            journey=self._request_args.get("journey"),
+        )
 
         return render_template(
             "individual_response/question",
@@ -532,7 +522,7 @@ class IndividualResponsePostAddressConfirmHandler(IndividualResponseHandler):
             return redirect(
                 url_for(
                     "individual_response.get_individual_response_post_address_confirmation",
-                    return_to=self._return_to,
+                    journey=self._request_args.get("journey"),
                 )
             )
 
@@ -540,7 +530,7 @@ class IndividualResponsePostAddressConfirmHandler(IndividualResponseHandler):
             url_for(
                 "individual_response.get_individual_response_how",
                 list_item_id=self._list_item_id,
-                return_to=self._return_to,
+                journey=self._request_args.get("journey"),
             )
         )
 
@@ -613,7 +603,7 @@ class IndividualResponseWhoHandler(IndividualResponseHandler):
         if len(self.non_primary_people_names) > 1:
             previous_location_url = url_for(
                 "individual_response.request_individual_response",
-                return_to=self._return_to,
+                journey=self._request_args.get("journey"),
             )
 
             return render_template(
@@ -629,7 +619,7 @@ class IndividualResponseWhoHandler(IndividualResponseHandler):
         return redirect(
             url_for(
                 ".get_individual_response_how",
-                return_to="hub",
+                journey=self._request_args.get("journey"),
                 list_item_id=self.selected_list_item,
             )
         )

@@ -395,7 +395,7 @@ class TestIndividualResponseWho(IndividualResponseTestCase):
         self.previous()
 
         # Then I should be taken to the response introduction
-        self.assertInUrl("/individual-response/?return_to=hub")
+        self.assertInUrl("/individual-response/?journey=hub")
 
     def test_previous_from_how_returns_via_hub_route(self):
         # Given I add a number of non primary household members
@@ -411,7 +411,7 @@ class TestIndividualResponseWho(IndividualResponseTestCase):
         self.previous()
 
         # Then I should be taken to the previous page
-        self.assertInUrl("/individual-response/who?return_to=hub")
+        self.assertInUrl("/individual-response/who?journey=hub")
 
     def test_previous_from_confirm_returns_via_hub_route(self):
         # Given I add a number of non primary household members
@@ -430,7 +430,7 @@ class TestIndividualResponseWho(IndividualResponseTestCase):
         self.previous()
 
         # Then I should be taken to the previous page
-        self.assertInUrl(f"/individual-response/{list_item_id}/how?return_to=hub")
+        self.assertInUrl(f"/individual-response/{list_item_id}/how?journey=hub")
 
 
 class TestIndividualResponseConfirmationPage(IndividualResponseTestCase):
