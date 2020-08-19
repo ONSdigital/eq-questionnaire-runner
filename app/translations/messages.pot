@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2020-08-19 11:28+0100\n"
+"POT-Creation-Date: 2020-08-19 11:43+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -59,7 +59,7 @@ msgstr ""
 #, python-format
 msgid ""
 "Select at least one answer <span class=\"u-vh\">to "
-"‘%(question_title)s’</span>c"
+"‘%(question_title)s’</span>"
 msgstr ""
 
 #: app/forms/error_messages.py:22
