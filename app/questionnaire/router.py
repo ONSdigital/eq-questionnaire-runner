@@ -88,7 +88,7 @@ class Router:
                 return self.get_last_location_in_survey().url()
 
         is_last_block_in_section = routing_path[-1] == location.block_id
-        if is_last_block_in_section and self.can_display_summary_for_section(
+        if is_last_block_in_section and self._progress_store.is_section_complete(
             location.section_id, location.list_item_id
         ):
             return self._get_next_location_url_for_last_block_in_section(location)
