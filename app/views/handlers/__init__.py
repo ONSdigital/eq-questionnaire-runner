@@ -22,6 +22,7 @@ def individual_response_url(
     schema: QuestionnaireSchema,
     list_item_id: str,
     questionnaire_store: QuestionnaireStore,
+    journey: str,
 ) -> Union[str, None]:
     if "individual_response" in schema.json:
         for_list = schema.json["individual_response"]["for_list"]
@@ -30,6 +31,6 @@ def individual_response_url(
             return url_for(
                 "individual_response.request_individual_response",
                 list_item_id=list_item_id,
-                journey="remove-person",
+                journey=journey,
             )
     return None
