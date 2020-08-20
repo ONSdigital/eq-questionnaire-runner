@@ -1,0 +1,28 @@
+{% from "components/error/_macro.njk" import onsError %}
+{% if errors | length > 0 %}
+  {% set error = {
+    "text": content.email_confirmation.errors['email'][0],
+    "id": 'error',
+    "attributes": {
+      "data-ga": "error",
+      "data-ga-category": "Error",
+      "data-ga-action": errors[0],
+      "data-ga-label": "d"
+    }
+  } %}
+{% endif %}
+<strong>Email address</strong>
+  <p>This will not be stored and only used once to send your confirmation</p>
+
+<form method="POST" >
+  {% if content.email_confirmation.form.errors | length >  0 %}
+    {% call onsError(error) %}
+      {{ content.email_confirmation.form.email(class_="input input--text input-type__input") }}
+    {% endcall %}
+    {% else %}
+      {{ content.email_confirmation.form.email(class_="input input--text input-type__input") }}
+    {% endif %}
+  {{ content.email_confirmation.form.csrf_token }}
+
+  <p><button type="submit" class="btn u-mt-xl" data-qa="btn-submit"><span class="btn__inner">Send confirmation</span></button></p>
+</form>

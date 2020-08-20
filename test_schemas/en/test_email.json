@@ -1,0 +1,72 @@
+{
+    "mime_type": "application/json/ons/eq",
+    "language": "en",
+    "schema_version": "0.0.1",
+    "data_version": "0.0.3",
+    "survey_id": "0",
+    "title": "Census household test schema",
+    "theme": "census",
+    "description": "A questionnaire to test the thank you page for census household",
+    "metadata": [
+        {
+            "name": "user_id",
+            "type": "string"
+        },
+        {
+            "name": "period_id",
+            "type": "string"
+        },
+        {
+            "name": "display_address",
+            "type": "string"
+        }
+    ],
+    "submission": {
+        "button": "Submission button",
+        "guidance": "Submission guidance",
+        "title": "Submission title",
+        "email_confirmation": true
+    },
+    "sections": [
+        {
+            "id": "household-section",
+            "groups": [
+                {
+                    "blocks": [
+                        {
+                            "type": "Question",
+                            "id": "household-confirmation",
+                            "question": {
+                                "answers": [
+                                    {
+                                        "type": "Radio",
+                                        "id": "household-confirmation-answer",
+                                        "mandatory": false,
+                                        "options": [
+                                            {
+                                                "label": "Yes",
+                                                "value": "Yes"
+                                            },
+                                            {
+                                                "label": "No",
+                                                "value": "No"
+                                            }
+                                        ]
+                                    }
+                                ],
+                                "id": "household-confirmation-question",
+                                "title": "Are you aware this is an census household test schema?",
+                                "type": "General"
+                            }
+                        },
+                        {
+                            "type": "Summary",
+                            "id": "summary"
+                        }
+                    ],
+                    "id": "household-group"
+                }
+            ]
+        }
+    ]
+}

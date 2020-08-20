@@ -1,0 +1,16 @@
+{% extends 'layouts/_base.html' %}
+{% from 'components/panel/_macro.njk' import onsPanel %}
+{% set errors = content.email_confirmation.errors %}
+
+{% block main %}
+
+{% set form_mapped_errors = content.email_confirmation.mapped_errors %}
+
+{% if form_mapped_errors %}
+  {% include 'partials/error-panel.html' %}
+{% endif %}
+
+  <h1 data-qa="title">Send another confirmation email</h1>
+
+{% include 'partials/email-form.html' %}
+{% endblock %}
