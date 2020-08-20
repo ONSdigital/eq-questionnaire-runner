@@ -181,13 +181,8 @@ class HubContext(Context):
 
         for_list = self._schema.json["individual_response"]["for_list"]
 
-        count_household_members = len(self._list_store[for_list])
-
-        if count_household_members == 0 or (
-            count_household_members == 1 and self._list_store[for_list].primary_person
-        ):
+        if not self._list_store[for_list].non_primary_people:
             return False
-
         return True
 
     @cached_property

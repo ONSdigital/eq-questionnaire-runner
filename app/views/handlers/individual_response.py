@@ -163,17 +163,12 @@ class IndividualResponseHandler:
 
         self._list_name = self._schema.get_individual_response_list()
         list_model = self._questionnaire_store.list_store[self._list_name]
-        non_primary_members = []
 
-        for list_item in list_model.items:
-            if list_item != list_model.primary_person:
-                non_primary_members.append(list_item)
-
-        if len(non_primary_members) == 1:
+        if len(list_model.non_primary_people) == 1:
             return redirect(
                 url_for(
                     ".get_individual_response_how",
-                    list_item_id=non_primary_members[0],
+                    list_item_id=list_model.non_primary_people[0],
                     journey="hub",
                 )
             )
