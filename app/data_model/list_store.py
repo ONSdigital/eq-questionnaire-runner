@@ -42,11 +42,7 @@ class ListModel:
 
     @cached_property
     def non_primary_people(self):
-        non_primary = []
-        for item in self.items:
-            if item != self.primary_person:
-                non_primary.append(item)
-        return non_primary
+        return [item for item in self.items if item != self.primary_person]
 
     def index(self, list_item):
         return self.items.index(list_item)
