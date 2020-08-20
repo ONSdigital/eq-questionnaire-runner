@@ -108,6 +108,7 @@ def test_get_context(progress_store, answer_store, list_store, router):
 
     expected_context = {
         "individual_response_enabled": False,
+        "individual_response_url": None,
         "guidance": None,
         "rows": [],
         "submit_button": "Continue",
@@ -135,6 +136,7 @@ def test_get_context_custom_content_incomplete(
 
     expected_context = {
         "individual_response_enabled": False,
+        "individual_response_url": None,
         "rows": [],
         "guidance": None,
         "submit_button": "Continue",
@@ -162,6 +164,7 @@ def test_get_context_custom_content_complete(
 
     expected_context = {
         "individual_response_enabled": False,
+        "individual_response_url": None,
         "guidance": "Submission guidance",
         "rows": [],
         "submit_button": "Submission button",
