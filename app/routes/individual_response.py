@@ -204,10 +204,10 @@ def get_individual_response_text_message(schema, questionnaire_store, list_item_
         list_item_id=list_item_id,
     )
 
-    if request.method == "GET" or not individual_response_handler.form.validate():
-        return individual_response_handler.handle_get()
+    if request.method == "POST" and individual_response_handler.form.validate():
+        return individual_response_handler.handle_post()
 
-    return individual_response_handler.handle_post()
+    return individual_response_handler.handle_get()
 
 
 @individual_response_blueprint.route(
@@ -229,10 +229,10 @@ def get_individual_response_text_message_confirm(
         list_item_id=list_item_id,
     )
 
-    if request.method == "GET" or not individual_response_handler.form.validate():
-        return individual_response_handler.handle_get()
+    if request.method == "POST" and individual_response_handler.form.validate():
+        return individual_response_handler.handle_post()
 
-    return individual_response_handler.handle_post()
+    return individual_response_handler.handle_get()
 
 
 @individual_response_blueprint.route("/text/confirmation", methods=["GET", "POST"])
@@ -251,10 +251,10 @@ def get_individual_response_text_message_confirmation(schema, questionnaire_stor
         list_item_id=None,
     )
 
-    if request.method == "GET":
-        return render_template(
-            template="individual_response/mobile_confirmation",
-            phone_number=request.args.get("phone_number"),
-        )
+    if request.method == "POST":
+        return redirect(url_for("questionnaire.get_questionnaire"))
 
-    return redirect(url_for("questionnaire.get_questionnaire"))
+    return render_template(
+        template="individual_response/mobile_confirmation",
+        mobile_number=request.args.get("mobile_number"),
+    )

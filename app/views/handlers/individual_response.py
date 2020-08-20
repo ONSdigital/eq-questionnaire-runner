@@ -514,6 +514,35 @@ class IndividualResponsePostAddressConfirmHandler(IndividualResponseHandler):
             list_item_id,
         )
 
+    @staticmethod
+    def block_definition(mobile_number) -> Mapping:
+        return {
+            "type": "IndividualResponse",
+            "question": {
+                "type": "Question",
+                "id": "individual-response-text-confirm",
+                "title": "Is this mobile number correct?",
+                "description": [mobile_number],
+                "answers": [
+                    {
+                        "type": "Radio",
+                        "id": "individual-response-text-confirm-answer",
+                        "mandatory": True,
+                        "options": [
+                            {
+                                "label": lazy_gettext("Yes, send the text"),
+                                "value": "Yes, send the text",
+                            },
+                            {
+                                "label": lazy_gettext("No, I need to change it"),
+                                "value": "No, I need to change it",
+                            },
+                        ],
+                    }
+                ],
+            },
+        }
+
     @cached_property
     def answer_id(self):
         return self.rendered_block["question"]["answers"][0]["id"]
@@ -672,7 +701,7 @@ class IndividualResponseTextHandler(IndividualResponseHandler):
         list_item_id,
     ):
         super().__init__(
-            self.block_definition,
+            self.block_definition(request_args.get("mobile_number")),
             schema,
             questionnaire_store,
             language,
@@ -686,7 +715,7 @@ class IndividualResponseTextHandler(IndividualResponseHandler):
         return self.rendered_block["question"]["answers"][0]["id"]
 
     @cached_property
-    def selected_option(self):
+    def mobile_number(self):
         return self.form.get_data(self.answer_id)
 
     def handle_get(self):
@@ -708,38 +737,12 @@ class IndividualResponseTextHandler(IndividualResponseHandler):
             url_for(
                 "individual_response.get_individual_response_text_message_confirm",
                 list_item_id=self._list_item_id,
+                mobile_number=self.mobile_number,
             )
         )
 
 
 class IndividualResponseTextConfirmHandler(IndividualResponseHandler):
-    block_definition: Mapping = {
-        "type": "IndividualResponse",
-        "question": {
-            "type": "Question",
-            "id": "individual-response-text-confirm",
-            "title": "Is this mobile number correct?",
-            "description": [],
-            "answers": [
-                {
-                    "type": "Radio",
-                    "id": "individual-response-text-confirm-answer",
-                    "mandatory": True,
-                    "options": [
-                        {
-                            "label": lazy_gettext("Yes, send the text"),
-                            "value": "Yes, send the text",
-                        },
-                        {
-                            "label": lazy_gettext("No, I need to change it"),
-                            "value": "No, I need to change it",
-                        },
-                    ],
-                }
-            ],
-        },
-    }
-
     def __init__(
         self,
         schema,
@@ -775,6 +778,7 @@ class IndividualResponseTextConfirmHandler(IndividualResponseHandler):
         previous_location_url = url_for(
             "individual_response.get_individual_response_text_message",
             list_item_id=self._list_item_id,
+            mobile_number=self._request_args.get("mobile_number"),
         )
 
         return render_template(
@@ -789,7 +793,8 @@ class IndividualResponseTextConfirmHandler(IndividualResponseHandler):
             self._update_section_status(CompletionStatus.INDIVIDUAL_RESPONSE_REQUESTED)
             return redirect(
                 url_for(
-                    "individual_response.get_individual_response_text_message_confirmation"
+                    "individual_response.get_individual_response_text_message_confirmation",
+                    mobile_number=self._request_args.get("mobile_number"),
                 )
             )
 
