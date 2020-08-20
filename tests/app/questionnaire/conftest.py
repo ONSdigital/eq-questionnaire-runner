@@ -309,7 +309,7 @@ def list_collector_variant_schema():
                                                         "id": "answer1",
                                                         "label": "Answer 1 Variant Yes",
                                                         "action": {
-                                                            "type": "RemoveAnswersForListItem"
+                                                            "type": "RemoveListItemAndAnswers"
                                                         },
                                                     }
                                                 ],

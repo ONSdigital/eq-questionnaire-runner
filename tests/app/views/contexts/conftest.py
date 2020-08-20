@@ -76,7 +76,7 @@ def list_collector_block():
                             {
                                 "label": "Yes",
                                 "value": "Yes",
-                                "action": {"type": "RemoveAnswersForListItem"},
+                                "action": {"type": "RemoveListItemAndAnswers"},
                             },
                             {"label": "No", "value": "No"},
                         ],
