@@ -194,6 +194,6 @@ class HubContext(Context):
     def _individual_response_url(self) -> Union[str, None]:
         if self._individual_response_enabled:
             return url_for(
-                "individual_response.request_individual_response", return_to="hub"
+                "individual_response.request_individual_response", journey="hub"
             )
         return None

@@ -373,7 +373,7 @@ class TestIndividualResponseWho(IndividualResponseTestCase):
     def test_previous_returns_to_hub(self):
         # Given I add a number of non primary household members
         # and navigate to the individual response from hub
-        self._add_household_multiple_members_no_primary()
+        self._add_household_no_primary()
 
         self.get(self.individual_response_link)
 

@@ -1,4 +1,5 @@
 import random
+from functools import cached_property
 from string import ascii_letters
 from typing import List, Mapping, Optional
 
@@ -38,6 +39,14 @@ class ListModel:
 
     def __len__(self):
         return len(self.items)
+
+    @cached_property
+    def non_primary_people(self):
+        non_primary = []
+        for item in self.items:
+            if item != self.primary_person:
+                non_primary.append(item)
+        return non_primary
 
     def index(self, list_item):
         return self.items.index(list_item)

@@ -172,7 +172,9 @@ class IndividualResponseHandler:
         if len(non_primary_members) == 1:
             return redirect(
                 url_for(
-                    ".get_individual_response_how", list_item_id=non_primary_members[0]
+                    ".get_individual_response_how",
+                    list_item_id=non_primary_members[0],
+                    journey="hub",
                 )
             )
         return redirect(url_for(".get_individual_response_who", journey="hub"))
@@ -249,11 +251,20 @@ class IndividualResponseHowHandler(IndividualResponseHandler):
         )
 
     def handle_get(self):
+        self._list_name = self._schema.get_individual_response_list()
+        list_model = self._questionnaire_store.list_store[self._list_name]
+
         if self._is_hub_journey:
-            previous_location_url = url_for(
-                "individual_response.get_individual_response_who",
-                journey=self._request_args.get("journey"),
-            )
+            if len(list_model.non_primary_people) == 1:
+                previous_location_url = url_for(
+                    "individual_response.request_individual_response",
+                    journey=self._request_args.get("journey"),
+                )
+            else:
+                previous_location_url = url_for(
+                    "individual_response.get_individual_response_who",
+                    journey=self._request_args.get("journey"),
+                )
         elif self._request_args.get("journey") == "change":
             previous_location_url = url_for(
                 "individual_response.get_individual_response_change",
@@ -539,23 +550,16 @@ class IndividualResponseWhoHandler(IndividualResponseHandler):
     def __init__(self, schema, questionnaire_store, language, request_args, form_data):
         self._list_name = schema.get_individual_response_list()
         list_model = questionnaire_store.list_store[self._list_name]
-        name_answers = []
+        self.non_primary_people_names = {}
 
-        for list_item in list_model.items:
-            if list_item != list_model.primary_person:
-                name_answers.append(
-                    (
-                        list_item,
-                        questionnaire_store.answer_store.get_answers_by_answer_id(
-                            ["first-name", "last-name"], list_item_id=list_item
-                        ),
-                    )
-                )
+        for list_item_id in list_model.non_primary_people:
+            name_answer = questionnaire_store.answer_store.get_answers_by_answer_id(
+                ["first-name", "last-name"], list_item_id=list_item_id
+            )
+            self.non_primary_people_names[
+                f"{name_answer[0].value} {name_answer[1].value}"
+            ] = list_item_id
 
-        self.non_primary_people_names = {
-            f"{name_answer[0].value} {name_answer[1].value}": list_item_id
-            for list_item_id, name_answer in name_answers
-        }
         super().__init__(
             self.block_definition,
             schema,
