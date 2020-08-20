@@ -18,7 +18,6 @@ class Content(BlockHandler):
                 self._schema,
                 self._current_location.list_item_id,
                 self._questionnaire_store,
-                None,
             ),
         }
 
