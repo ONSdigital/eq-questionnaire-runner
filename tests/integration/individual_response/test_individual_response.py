@@ -302,6 +302,24 @@ class TestIndividualResponseNavigation(IndividualResponseTestCase):
         # Then I should be taken back to the individual section
         self.assertInUrl("individual-interstitial")
 
+    def test_ir_introduction_page_previous_goes_to_remove_page(self):
+        # Given I navigate to the individual response introduction page from a
+        # remove person page
+        self.get("questionnaire/primary-person-list-collector/")
+        self.post({"you-live-here": "Yes"})
+        self.post({"first-name": "Marie", "last-name": "Day"})
+        self.post({"anyone-else": "Yes"})
+        self.post({"first-name": "John", "last-name": "Doe"})
+        householder_remove_link = self.get_link("2", "remove")
+        self.get(householder_remove_link)
+
+        # When I navigate to the IR introduction page and click the previous link
+        self.get(self.individual_response_link)
+        self.previous()
+
+        # Then I should be taken back to the remove page
+        self.assertInUrl("remove-person")
+
     def test_how_page_previous_goes_to_introduction_page(self):
         # Given I navigate to the individual response how page from an
         # individual response introduction page
