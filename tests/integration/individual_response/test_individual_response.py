@@ -459,10 +459,40 @@ class TestIndividualResponseTextHandler(IndividualResponseTestCase):
         self.post({"individual-response-how-answer": "Text message"})
 
         # When I post the number
-        self.post({"individual-response-enter-number-answer": "0763921456"})
+        self.post({"individual-response-enter-number-answer": "0752351238"})
 
         # Then I should not see the phone number in the url
-        self.assertNotInUrl("0763921456")
+        self.assertNotInUrl("0752351238")
+
+    def test_confirmation_page_redirects_to_hub(self):
+        # Given I navigate to the confirmation page
+        self._add_household_no_primary()
+        self.get(self.individual_section_link)
+        self.get(self.individual_response_link)
+        self.post()
+        self.post({"individual-response-how-answer": "Text message"})
+        self.post({"individual-response-enter-number-answer": "0763921456"})
+
+        # When I post "Yes, send the text"
+        self.post({"individual-response-text-confirm-answer": "Yes, send the text"})
+
+        self.post()
+        self.assertInUrl("/questionnaire")
+
+    def test_post_routing(self):
+        # Given I navigate to the confirmation page
+        self._add_household_no_primary()
+        self.get(self.individual_section_link)
+        self.get(self.individual_response_link)
+        self.post()
+        self.post({"individual-response-how-answer": "Text message"})
+        self.post({"individual-response-enter-number-answer": "0763921456"})
+
+        # When I post "Yes, send the text"
+        self.post({"individual-response-text-confirm-answer": "No, I need to change it"})
+
+        # Then I should see the post confirm address page
+        self.assertInUrl("text/enter-number")
 
 
 class TestIndividualResponseConfirmationPage(IndividualResponseTestCase):
