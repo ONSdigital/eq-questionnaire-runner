@@ -596,7 +596,7 @@ class IndividualResponseWhoHandler(IndividualResponseHandler):
                         "mandatory": True,
                         "options": [
                             {"label": name, "value": name}
-                            for name in self.non_primary_people_names.keys()
+                            for name in self.non_primary_people_names
                         ],
                     }
                 ],
