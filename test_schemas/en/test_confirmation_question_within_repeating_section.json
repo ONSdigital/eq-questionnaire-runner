@@ -129,7 +129,7 @@
                                                     "label": "Yes",
                                                     "value": "Yes",
                                                     "action": {
-                                                        "type": "RedirectToRemoveBlock"
+                                                        "type": "RemoveAnswersForListItem"
                                                     }
                                                 },
                                                 {

@@ -76,7 +76,7 @@ def list_collector_block():
                             {
                                 "label": "Yes",
                                 "value": "Yes",
-                                "action": {"type": "RedirectToRemoveBlock"},
+                                "action": {"type": "RemoveAnswersForListItem"},
                             },
                             {"label": "No", "value": "No"},
                         ],

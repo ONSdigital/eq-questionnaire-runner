@@ -401,7 +401,7 @@
                                                     "label": "Yes",
                                                     "value": "Yes",
                                                     "action": {
-                                                        "type": "RedirectToRemoveBlock"
+                                                        "type": "RemoveAnswersForListItem"
                                                     }
                                                 },
                                                 {
@@ -626,7 +626,7 @@
                                                     "label": "Yes",
                                                     "value": "Yes",
                                                     "action": {
-                                                        "type": "RedirectToRemoveBlock"
+                                                        "type": "RemoveAnswersForListItem"
                                                     }
                                                 },
                                                 {
