@@ -134,7 +134,15 @@ class IndividualResponseHandler:
             self.individual_section_id
         )
 
-        if self._list_item_id:
+        if self._request_args.get("journey") == "remove-person":
+            previous_location_url = url_for(
+                "questionnaire.block",
+                list_name=self._list_name,
+                list_item_id=self._list_item_id,
+                block_id="remove-person",
+            )
+
+        elif self._list_item_id:
             previous_location_url = url_for(
                 "questionnaire.block",
                 list_name=self._list_name,

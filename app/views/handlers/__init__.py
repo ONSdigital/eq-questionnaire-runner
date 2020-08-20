@@ -30,5 +30,6 @@ def individual_response_url(
             return url_for(
                 "individual_response.request_individual_response",
                 list_item_id=list_item_id,
+                journey="remove-person",
             )
     return None
