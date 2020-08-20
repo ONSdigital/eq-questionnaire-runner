@@ -1,9 +1,10 @@
+from unittest.mock import Mock
+
 from flask import url_for
 
 from app.data_model.answer_store import AnswerStore
 from app.data_model.list_store import ListStore
 from app.data_model.progress_store import ProgressStore, CompletionStatus
-from app.questionnaire import QuestionnaireSchema
 from app.questionnaire.location import Location
 from app.questionnaire.router import Router
 from app.questionnaire.routing_path import RoutingPath
@@ -217,8 +218,11 @@ class TestRouter(AppContextTestCase):  # pylint: disable=too-many-public-methods
 
         self.assertEqual(next_location, expected_location)
 
-    def test_last_block_on_path_routes_to_first_incomplete_location_when_section_not_complete(self):
-        schema = QuestionnaireSchema({})
+    def test_last_block_on_path_routes_to_first_incomplete_location_in_section_when_section_not_complete(
+        self
+    ):
+        schema = Mock()
+        schema.get_block.return_value = {"type": "Question"}
         progress_store = ProgressStore(
             [
                 {
@@ -232,10 +236,10 @@ class TestRouter(AppContextTestCase):  # pylint: disable=too-many-public-methods
         router = Router(
             schema, self.answer_store, self.list_store, progress_store, self.metadata
         )
-        current_location = Location(
-            section_id="section-1", block_id="block-1"
+        current_location = Location(section_id="section-1", block_id="block-1")
+        routing_path = RoutingPath(
+            ["block-1", "block-2", "block-1"], section_id="section-1"
         )
-        routing_path = RoutingPath(["block-1", "block-2", "block-1"], section_id="section-1")
         next_location = router.get_next_location_url(current_location, routing_path)
         self.assertIn("questionnaire/block-2/", next_location)
 
