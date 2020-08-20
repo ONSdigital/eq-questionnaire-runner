@@ -1,7 +1,9 @@
 from flask import Blueprint, g, redirect, request, url_for
 from flask_login import current_user, login_required
+from itsdangerous import URLSafeTimedSerializer
 from structlog import get_logger
 
+from app import settings
 from app.authentication.no_token_exception import NoTokenException
 from app.globals import get_metadata, get_session_store
 from app.helpers.language_helper import handle_language
@@ -254,7 +256,9 @@ def get_individual_response_text_message_confirmation(schema, questionnaire_stor
     if request.method == "POST":
         return redirect(url_for("questionnaire.get_questionnaire"))
 
+    timed_serialiser = URLSafeTimedSerializer(settings.EQ_URL_PARAM_SALT)
+    mobile_number = timed_serialiser.loads(request.args.get("mobile_number"))
+
     return render_template(
-        template="individual_response/mobile_confirmation",
-        mobile_number=request.args.get("mobile_number"),
+        template="individual_response/mobile_confirmation", mobile_number=mobile_number
     )

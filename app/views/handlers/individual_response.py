@@ -4,8 +4,10 @@ from typing import List, Mapping
 from flask import redirect
 from flask.helpers import url_for
 from flask_babel import lazy_gettext
+from itsdangerous import URLSafeTimedSerializer
 from werkzeug.exceptions import NotFound
 
+from app import settings
 from app.data_model.progress_store import CompletionStatus
 from app.forms.questionnaire_form import generate_form
 from app.helpers.template_helper import render_template
@@ -292,17 +294,18 @@ class IndividualResponseHowHandler(IndividualResponseHandler):
         )
 
     def handle_post(self):
-        if self.selected_option == "Post":
+        if self.selected_option == "Text message":
             return redirect(
                 url_for(
-                    ".get_individual_response_post_address_confirm",
+                    ".get_individual_response_text_message",
                     list_item_id=self._list_item_id,
-                    journey=self._request_args.get("journey"),
                 )
             )
         return redirect(
             url_for(
-                ".get_individual_response_text_message", list_item_id=self._list_item_id
+                ".get_individual_response_post_address_confirm",
+                list_item_id=self._list_item_id,
+                journey=self._request_args.get("journey"),
             )
         )
 
@@ -514,35 +517,6 @@ class IndividualResponsePostAddressConfirmHandler(IndividualResponseHandler):
             list_item_id,
         )
 
-    @staticmethod
-    def block_definition(mobile_number) -> Mapping:
-        return {
-            "type": "IndividualResponse",
-            "question": {
-                "type": "Question",
-                "id": "individual-response-text-confirm",
-                "title": "Is this mobile number correct?",
-                "description": [mobile_number],
-                "answers": [
-                    {
-                        "type": "Radio",
-                        "id": "individual-response-text-confirm-answer",
-                        "mandatory": True,
-                        "options": [
-                            {
-                                "label": lazy_gettext("Yes, send the text"),
-                                "value": "Yes, send the text",
-                            },
-                            {
-                                "label": lazy_gettext("No, I need to change it"),
-                                "value": "No, I need to change it",
-                            },
-                        ],
-                    }
-                ],
-            },
-        }
-
     @cached_property
     def answer_id(self):
         return self.rendered_block["question"]["answers"][0]["id"]
@@ -701,7 +675,7 @@ class IndividualResponseTextHandler(IndividualResponseHandler):
         list_item_id,
     ):
         super().__init__(
-            self.block_definition(request_args.get("mobile_number")),
+            self.block_definition,
             schema,
             questionnaire_store,
             language,
@@ -733,11 +707,13 @@ class IndividualResponseTextHandler(IndividualResponseHandler):
         )
 
     def handle_post(self):
+        timed_serialiser = URLSafeTimedSerializer(settings.EQ_URL_PARAM_SALT)
+
         return redirect(
             url_for(
                 "individual_response.get_individual_response_text_message_confirm",
                 list_item_id=self._list_item_id,
-                mobile_number=self.mobile_number,
+                mobile_number=timed_serialiser.dumps(self.mobile_number),
             )
         )
 
@@ -752,8 +728,12 @@ class IndividualResponseTextConfirmHandler(IndividualResponseHandler):
         form_data,
         list_item_id,
     ):
+
+        timed_serialiser = URLSafeTimedSerializer(settings.EQ_URL_PARAM_SALT)
+        mobile_number = timed_serialiser.loads(request_args.get("mobile_number"))
+
         super().__init__(
-            self.block_definition,
+            self.block_definition(mobile_number),
             schema,
             questionnaire_store,
             language,
@@ -761,6 +741,35 @@ class IndividualResponseTextConfirmHandler(IndividualResponseHandler):
             form_data,
             list_item_id,
         )
+
+    @staticmethod
+    def block_definition(mobile_number) -> Mapping:
+        return {
+            "type": "IndividualResponse",
+            "question": {
+                "type": "Question",
+                "id": "individual-response-text-confirm",
+                "title": "Is this mobile number correct?",
+                "description": [mobile_number],
+                "answers": [
+                    {
+                        "type": "Radio",
+                        "id": "individual-response-text-confirm-answer",
+                        "mandatory": True,
+                        "options": [
+                            {
+                                "label": lazy_gettext("Yes, send the text"),
+                                "value": "Yes, send the text",
+                            },
+                            {
+                                "label": lazy_gettext("No, I need to change it"),
+                                "value": "No, I need to change it",
+                            },
+                        ],
+                    }
+                ],
+            },
+        }
 
     @cached_property
     def answer_id(self):

@@ -433,6 +433,38 @@ class TestIndividualResponseWho(IndividualResponseTestCase):
         self.assertInUrl(f"/individual-response/{list_item_id}/how?journey=hub")
 
 
+class TestIndividualResponseTextHandler(IndividualResponseTestCase):
+    def test_display_mobile_on_confirmation_page(self):
+        # Given I navigate to the confirmation page
+        self._add_household_no_primary()
+        self.get(self.individual_section_link)
+        self.get(self.individual_response_link)
+        self.post()
+        self.post({"individual-response-how-answer": "Text message"})
+        self.post({"individual-response-enter-number-answer": "0763921456"})
+
+        # When I post "Yes, send the text"
+        self.post({"individual-response-text-confirm-answer": "Yes, send the text"})
+
+        # Then I should see the phone number
+        self.assertInUrl("/text/confirmation")
+        self.assertInBody("0763921456")
+
+    def test_mobile_is_not_shown_in_url(self):
+        # Given I navigate to the confirmation page
+        self._add_household_no_primary()
+        self.get(self.individual_section_link)
+        self.get(self.individual_response_link)
+        self.post()
+        self.post({"individual-response-how-answer": "Text message"})
+
+        # When I post the number
+        self.post({"individual-response-enter-number-answer": "0763921456"})
+
+        # Then I should not see the phone number in the url
+        self.assertNotInUrl("0763921456")
+
+
 class TestIndividualResponseConfirmationPage(IndividualResponseTestCase):
     def test_display_address_on_confirmation_page(self):
         # Given I navigate to the confirmation page
