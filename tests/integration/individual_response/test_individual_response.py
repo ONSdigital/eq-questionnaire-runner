@@ -489,7 +489,9 @@ class TestIndividualResponseTextHandler(IndividualResponseTestCase):
         self.post({"individual-response-enter-number-answer": "0763921456"})
 
         # When I post "Yes, send the text"
-        self.post({"individual-response-text-confirm-answer": "No, I need to change it"})
+        self.post(
+            {"individual-response-text-confirm-answer": "No, I need to change it"}
+        )
 
         # Then I should see the post confirm address page
         self.assertInUrl("text/enter-number")
