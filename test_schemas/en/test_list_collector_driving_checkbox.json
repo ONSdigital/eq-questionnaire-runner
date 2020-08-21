@@ -86,7 +86,7 @@
                                                 "label": "Yes, I usually live here",
                                                 "value": "Yes, I usually live here",
                                                 "action": {
-                                                    "type": "RedirectToAddOrEditBlock"
+                                                    "type": "RedirectToListAddBlock"
                                                 }
                                             },
                                             {
@@ -124,7 +124,7 @@
                                                                 "block_id": "add-person",
                                                                 "list_name": "people"
                                                             },
-                                                            "type": "RedirectToListAddQuestion"
+                                                            "type": "RedirectToListAddBlock"
                                                         }
                                                     },
                                                     {
@@ -135,7 +135,7 @@
                                                                 "block_id": "add-person",
                                                                 "list_name": "people"
                                                             },
-                                                            "type": "RedirectToListAddQuestion"
+                                                            "type": "RedirectToListAddBlock"
                                                         }
                                                     }
                                                 ]
@@ -182,7 +182,7 @@
                                                                 "block_id": "add-person",
                                                                 "list_name": "people"
                                                             },
-                                                            "type": "RedirectToListAddQuestion"
+                                                            "type": "RedirectToListAddBlock"
                                                         }
                                                     },
                                                     {
@@ -193,7 +193,7 @@
                                                                 "block_id": "add-person",
                                                                 "list_name": "people"
                                                             },
-                                                            "type": "RedirectToListAddQuestion"
+                                                            "type": "RedirectToListAddBlock"
                                                         }
                                                     }
                                                 ]
@@ -270,7 +270,7 @@
                                                 "label": "Yes, I need to add a person",
                                                 "value": "Yes, I need to add a person",
                                                 "action": {
-                                                    "type": "RedirectToAddBlock"
+                                                    "type": "RedirectToListAddBlock"
                                                 }
                                             },
                                             {
@@ -475,7 +475,7 @@
                                                 "label": "Yes, I need to add someone",
                                                 "value": "Yes, I need to add someone",
                                                 "action": {
-                                                    "type": "RedirectToAddBlock"
+                                                    "type": "RedirectToListAddBlock"
                                                 }
                                             },
                                             {

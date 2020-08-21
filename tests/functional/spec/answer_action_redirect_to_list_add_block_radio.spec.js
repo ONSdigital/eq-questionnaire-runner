@@ -1,24 +1,24 @@
 import checkPeopleInList from "../helpers";
-import AnyoneLiveAtListCollector from "../generated_pages/answer_action_redirect_to_list_add_question_checkbox/anyone-else-live-at.page";
-import AnyoneLiveAtListCollectorAddPage from "../generated_pages/answer_action_redirect_to_list_add_question_checkbox/anyone-else-live-at-add.page";
-import AnyoneLiveAtListCollectorRemovePage from "../generated_pages/answer_action_redirect_to_list_add_question_checkbox/anyone-else-live-at-remove.page";
-import AnyoneUsuallyLiveAt from "../generated_pages/answer_action_redirect_to_list_add_question_checkbox/anyone-usually-live-at.page";
+import AnyoneLiveAtListCollector from "../generated_pages/answer_action_redirect_to_list_add_question_radio/anyone-else-live-at.page";
+import AnyoneLiveAtListCollectorAddPage from "../generated_pages/answer_action_redirect_to_list_add_question_radio/anyone-else-live-at-add.page";
+import AnyoneLiveAtListCollectorRemovePage from "../generated_pages/answer_action_redirect_to_list_add_question_radio/anyone-else-live-at-remove.page";
+import AnyoneUsuallyLiveAt from "../generated_pages/answer_action_redirect_to_list_add_question_radio/anyone-usually-live-at.page";
 
-describe("Answer Action: Redirect To List Add Question (Checkbox)", () => {
-  describe('Given the user is on a question with a "RedirectToListAddQuestion" action enabled', () => {
+describe("Answer Action: Redirect To List Add Question (Radio)", () => {
+  describe('Given the user is on a question with a "RedirectToListAddBlock" action enabled', () => {
     before("Launch survey", () => {
-      browser.openQuestionnaire("test_answer_action_redirect_to_list_add_question_checkbox.json");
+      browser.openQuestionnaire("test_answer_action_redirect_to_list_add_question_radio.json");
     });
 
-    it('When the user selects "No", Then, they should be taken to the list collector.', () => {
+    it('When the user answers "No", Then, they should be taken to straight the list collector.', () => {
       $(AnyoneUsuallyLiveAt.no()).click();
       $(AnyoneUsuallyLiveAt.submit()).click();
       expect(browser.getUrl()).to.contain(AnyoneLiveAtListCollector.pageName);
     });
 
-    it('When the user selects "Yes" then they should be taken to the list collector add question.', () => {
+    it('When the user answers "Yes" then they should be taken to the list collector add question.', () => {
       browser.url(AnyoneUsuallyLiveAt.url());
-      $(AnyoneUsuallyLiveAt.iThinkSo()).click();
+      $(AnyoneUsuallyLiveAt.yes()).click();
       $(AnyoneUsuallyLiveAt.submit()).click();
       expect(browser.getUrl()).to.contain(AnyoneLiveAtListCollectorAddPage.pageName);
       expect(browser.getUrl()).to.contain("?previous=anyone-usually-live-at");

@@ -121,7 +121,7 @@
                                                 "label": "Yes",
                                                 "value": "Yes",
                                                 "action": {
-                                                    "type": "RedirectToAddOrEditBlock"
+                                                    "type": "RedirectToListAddBlock"
                                                 }
                                             },
                                             {
@@ -147,7 +147,7 @@
                                                         "block_id": "add-person",
                                                         "list_name": "people"
                                                     },
-                                                    "type": "RedirectToListAddQuestion"
+                                                    "type": "RedirectToListAddBlock"
                                                 },
                                                 "label": "Yes",
                                                 "value": "Yes"
@@ -220,7 +220,7 @@
                                                 "label": "Yes",
                                                 "value": "Yes",
                                                 "action": {
-                                                    "type": "RedirectToAddBlock"
+                                                    "type": "RedirectToListAddBlock"
                                                 }
                                             },
                                             {

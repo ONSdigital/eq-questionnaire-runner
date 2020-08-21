@@ -4,9 +4,9 @@
     "schema_version": "0.0.1",
     "data_version": "0.0.3",
     "survey_id": "0",
-    "title": "Test RedirectToListAddQuestion action",
+    "title": "Test RedirectToListAddBlock action",
     "theme": "default",
-    "description": "A questionnaire to test RedirectToListAddQuestion answer action",
+    "description": "A questionnaire to test RedirectToListAddBlock answer action",
     "metadata": [
         {
             "name": "user_id",
@@ -58,7 +58,7 @@
                                                 "label": "Yes",
                                                 "value": "Yes",
                                                 "action": {
-                                                    "type": "RedirectToListAddQuestion",
+                                                    "type": "RedirectToListAddBlock",
                                                     "params": {
                                                         "block_id": "add-person",
                                                         "list_name": "people"
@@ -92,7 +92,7 @@
                                                 "label": "Yes",
                                                 "value": "Yes",
                                                 "action": {
-                                                    "type": "RedirectToAddBlock"
+                                                    "type": "RedirectToListAddBlock"
                                                 }
                                             },
                                             {

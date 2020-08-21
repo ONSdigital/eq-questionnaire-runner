@@ -119,7 +119,7 @@ def list_collector_block():
                         {
                             "label": "Yes",
                             "value": "Yes",
-                            "action": {"type": "RedirectToAddBlock"},
+                            "action": {"type": "RedirectToListAddBlock"},
                         },
                         {"label": "No", "value": "No"},
                     ],

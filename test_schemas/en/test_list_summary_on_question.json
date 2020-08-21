@@ -60,7 +60,7 @@
                                                 "label": "Yes",
                                                 "value": "Yes",
                                                 "action": {
-                                                    "type": "RedirectToAddBlock"
+                                                    "type": "RedirectToListAddBlock"
                                                 }
                                             },
                                             {
@@ -206,7 +206,7 @@
                                                 "label": "Yes",
                                                 "value": "Yes",
                                                 "action": {
-                                                    "type": "RedirectToAddBlock"
+                                                    "type": "RedirectToListAddBlock"
                                                 }
                                             },
                                             {
