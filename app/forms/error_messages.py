@@ -3,14 +3,22 @@ from flask_babel import lazy_gettext
 # Set up default error and warning messages
 # lazy_gettext is used as the string needs to be resolved at runtime
 # for translations to work.
+
+# NOTE: `%` style string formatting is used for compatibility with WTForms default field
+# validators - using `.format` for non-WTForm field validation would introduce
+# inconsistency.
 error_messages = {
     "MANDATORY_QUESTION": lazy_gettext("Enter an answer to continue"),
     "MANDATORY_TEXTFIELD": lazy_gettext("Enter an answer to continue"),
     "MANDATORY_NUMBER": lazy_gettext("Enter an answer to continue"),
     "MANDATORY_TEXTAREA": lazy_gettext("Enter an answer to continue"),
-    "MANDATORY_RADIO": lazy_gettext("Select an answer to continue"),
+    "MANDATORY_RADIO": lazy_gettext(
+        'Select an answer <span class="u-vh">to ‘%(question_title)s’</span>'
+    ),
     "MANDATORY_DROPDOWN": lazy_gettext("Select an answer to continue"),
-    "MANDATORY_CHECKBOX": lazy_gettext("Select all that apply to continue"),
+    "MANDATORY_CHECKBOX": lazy_gettext(
+        'Select at least one answer <span class="u-vh">to ‘%(question_title)s’</span>'
+    ),
     "MANDATORY_DATE": lazy_gettext("Enter a date to continue"),
     "MANDATORY_DURATION": lazy_gettext("Enter a duration to continue"),
     "NUMBER_TOO_SMALL": lazy_gettext("Enter an answer more than or equal to %(min)s"),
