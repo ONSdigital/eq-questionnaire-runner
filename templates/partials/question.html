@@ -99,10 +99,5 @@
   {{ question_warning }}
   {{ question_definition }}
   {{ question_guidance }}
-
-  {% if invalid %}
-    {% include 'partials/questions/errors.html' %}
-  {% else %}
-    {{ question_answers }}
-  {% endif %}
+  {{ question_answers }}
 {% endcall %}
