@@ -1,10 +1,10 @@
+from functools import cached_property
 from typing import List, Mapping, Union
 
 from flask import url_for
 from flask_babel import lazy_gettext
 
 from app.data_model.progress_store import CompletionStatus
-from app.questionnaire import QuestionnaireSchema
 from app.views.contexts import Context
 
 
@@ -60,12 +60,11 @@ class HubContext(Context):
             submit_button = lazy_gettext("Continue")
             guidance = None
             warning = None
-            individual_response_enabled = self._individual_response_enabled(
-                self._schema
-            )
+            individual_response_enabled = self._individual_response_enabled
 
         return {
             "individual_response_enabled": individual_response_enabled,
+            "individual_response_url": self._individual_response_url,
             "guidance": guidance,
             "rows": rows,
             "submit_button": submit_button,
@@ -175,18 +174,21 @@ class HubContext(Context):
 
         return rows
 
-    def _individual_response_enabled(self, schema: QuestionnaireSchema) -> bool:
-        if not schema.json.get("individual_response"):
+    @cached_property
+    def _individual_response_enabled(self) -> bool:
+        if not self._schema.json.get("individual_response"):
             return False
 
-        for_list = schema.json["individual_response"]["for_list"]
+        for_list = self._schema.json["individual_response"]["for_list"]
 
-        count_household_members = len(self._list_store[for_list])
-
-        if count_household_members == 0:
+        if not self._list_store[for_list].non_primary_people:
             return False
-
-        if count_household_members == 1 and self._list_store[for_list].primary_person:
-            return False
-
         return True
+
+    @cached_property
+    def _individual_response_url(self) -> Union[str, None]:
+        if self._individual_response_enabled:
+            return url_for(
+                "individual_response.request_individual_response", journey="hub"
+            )
+        return None
