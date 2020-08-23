@@ -1,13 +1,13 @@
 import checkPeopleInList from "../helpers";
-import AnyoneLiveAtListCollector from "../generated_pages/answer_action_redirect_to_list_add_question_checkbox/anyone-else-live-at.page";
-import AnyoneLiveAtListCollectorAddPage from "../generated_pages/answer_action_redirect_to_list_add_question_checkbox/anyone-else-live-at-add.page";
-import AnyoneLiveAtListCollectorRemovePage from "../generated_pages/answer_action_redirect_to_list_add_question_checkbox/anyone-else-live-at-remove.page";
-import AnyoneUsuallyLiveAt from "../generated_pages/answer_action_redirect_to_list_add_question_checkbox/anyone-usually-live-at.page";
+import AnyoneLiveAtListCollector from "../generated_pages/answer_action_redirect_to_list_add_block_checkbox/anyone-else-live-at.page";
+import AnyoneLiveAtListCollectorAddPage from "../generated_pages/answer_action_redirect_to_list_add_block_checkbox/anyone-else-live-at-add.page";
+import AnyoneLiveAtListCollectorRemovePage from "../generated_pages/answer_action_redirect_to_list_add_block_checkbox/anyone-else-live-at-remove.page";
+import AnyoneUsuallyLiveAt from "../generated_pages/answer_action_redirect_to_list_add_block_checkbox/anyone-usually-live-at.page";
 
 describe("Answer Action: Redirect To List Add Question (Checkbox)", () => {
   describe('Given the user is on a question with a "RedirectToListAddBlock" action enabled', () => {
     before("Launch survey", () => {
-      browser.openQuestionnaire("test_answer_action_redirect_to_list_add_question_checkbox.json");
+      browser.openQuestionnaire("test_answer_action_redirect_to_list_add_block_checkbox.json");
     });
 
     it('When the user selects "No", Then, they should be taken to the list collector.', () => {
