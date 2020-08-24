@@ -1,7 +1,7 @@
 from wtforms import Form
 
-from app.forms.field_handlers.month_year_date_handler import MonthYearDateHandler
-from app.forms.fields.month_year_date_field import MonthYearDateField
+from app.forms.field_handlers import MonthYearDateHandler
+from app.forms.fields import MonthYearDateField
 
 
 def test_month_year_date_field_created_with_guidance():
