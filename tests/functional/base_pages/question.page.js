@@ -51,7 +51,7 @@ class QuestionPage extends BasePage {
   }
 
   individualResponseGuidance() {
-    return '[data-qa="individual-response-url"]'}
+    return '[data-qa="individual-response-url"]';
   }
 
   lastViewedQuestionGuidance() {
