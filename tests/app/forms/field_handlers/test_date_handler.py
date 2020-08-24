@@ -9,7 +9,7 @@ from wtforms import Form
 
 from app.data_model.answer import Answer
 from app.data_model.answer_store import AnswerStore
-from app.forms.field_handlers.date_handler import DateHandler
+from app.forms.field_handlers import DateHandler
 from app.forms.fields import date_field
 from app.questionnaire.location import Location
 from app.questionnaire.questionnaire_schema import QuestionnaireSchema
