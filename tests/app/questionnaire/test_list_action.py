@@ -46,7 +46,7 @@ class TestListAction(AppContextTestCase):
             self.progress_store,
             self.metadata,
         )
-        self.router.can_display_summary_for_section = Mock(return_value=False)
+        self.router.can_display_section_summary = Mock(return_value=False)
 
     def test_list_action(self):
         with patch(

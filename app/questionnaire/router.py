@@ -63,7 +63,7 @@ class Router:
             if section_id in self.enabled_section_ids
         )
 
-    def can_display_summary_for_section(self, section_id, list_item_id=None):
+    def can_display_section_summary(self, section_id, list_item_id=None):
         return self._schema.get_summary_for_section(
             section_id
         ) and self._progress_store.is_section_complete(section_id, list_item_id)

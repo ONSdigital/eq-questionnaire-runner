@@ -55,7 +55,7 @@ class SectionHandler:
         return self._router.get_section_resume_url(self._routing_path)
 
     def can_display_summary(self):
-        return self._router.can_display_summary_for_section(
+        return self._router.can_display_section_summary(
             self._section_id, self._list_item_id
         )
 
