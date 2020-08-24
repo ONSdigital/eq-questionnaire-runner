@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2020-08-24 10:48+0100\n"
+"POT-Creation-Date: 2020-08-25 09:58+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -184,7 +184,7 @@ msgstr ""
 msgid "Not a valid choice"
 msgstr ""
 
-#: app/helpers/template_helper.py:19
+#: app/helpers/template_helpers.py:20
 msgid "Office for National Statistics logo"
 msgstr ""
 
@@ -193,7 +193,7 @@ msgstr ""
 msgid "Census 2021"
 msgstr ""
 
-#: app/helpers/template_helper.py:33
+#: app/helpers/template_helpers.py:34
 msgid "Northern Ireland Statistics and Research Agency logo"
 msgstr ""
 
@@ -354,49 +354,49 @@ msgstr ""
 msgid "Error: {page_title}"
 msgstr ""
 
-#: templates/census-thank-you.html:13
+#: templates/census-thank-you.html:17
 msgid "Thank you for completing your census"
 msgstr ""
 
-#: templates/census-thank-you.html:15
+#: templates/census-thank-you.html:19
 msgid "Thank you for completing the census"
 msgstr ""
 
-#: templates/census-thank-you.html:21
+#: templates/census-thank-you.html:25
 msgid ""
 "Your individual census has been submitted for "
 "<strong>{display_address}</strong>"
 msgstr ""
 
-#: templates/census-thank-you.html:23
+#: templates/census-thank-you.html:27
 msgid ""
 "Your census has been submitted for the household at "
 "<strong>{display_address}</strong>"
 msgstr ""
 
-#: templates/census-thank-you.html:25
+#: templates/census-thank-you.html:29
 msgid ""
 "Your census has been submitted for the accommodation at "
 "<strong>{display_address}</strong>"
 msgstr ""
 
-#: templates/census-thank-you.html:26
+#: templates/census-thank-you.html:30
 msgid ""
 "Anyone staying at this accommodation for at least 6 months needs to fill "
 "in their own individual census, including staff. Your Census Officer will"
 " provide you with census forms for your residents."
 msgstr ""
 
-#: templates/census-thank-you.html:32
+#: templates/census-thank-you.html:36
 msgid ""
 "Your personal information is protected by law and will be kept "
 "confidential"
 msgstr ""
 
-#: templates/census-thank-you.html:38
+#: templates/census-thank-you.html:42
 msgid ""
-"Make sure you <a href='{url}'>leave this page</a> or close your browser "
-"if using a shared device"
+"Make sure you <a href='{log_out_url}'>leave this page</a> or close your "
+"browser if using a shared device"
 msgstr ""
 
 #: templates/confirmation.html:6 templates/confirmation.html:27
@@ -495,35 +495,35 @@ msgstr ""
 msgid "We’ve received your answers"
 msgstr ""
 
-#: templates/thank-you.html:8
+#: templates/thank-you.html:9
 msgid "Submission successful"
 msgstr ""
 
-#: templates/thank-you.html:18
+#: templates/thank-you.html:19
 msgid ""
 "Your answers were submitted for <span>{ru_name}</span> "
 "({trading_as_name}) on {submitted_date_time}"
 msgstr ""
 
-#: templates/thank-you.html:23
+#: templates/thank-you.html:24
 msgid ""
 "Your answers were submitted for <span>{ru_name}</span> on "
 "{submitted_date_time}"
 msgstr ""
 
-#: templates/thank-you.html:29
+#: templates/thank-you.html:30
 msgid "Transaction ID: <b>{transaction_id}</b>"
 msgstr ""
 
-#: templates/thank-you.html:32
+#: templates/thank-you.html:33
 msgid "Your answers will be processed in the next few weeks."
 msgstr ""
 
-#: templates/thank-you.html:33
+#: templates/thank-you.html:34
 msgid "We may contact you to query your answers via phone or secure message."
 msgstr ""
 
-#: templates/thank-you.html:34
+#: templates/thank-you.html:35
 msgid "For more information on how we use this data."
 msgstr ""
 
@@ -703,6 +703,10 @@ msgid "Save and complete later"
 msgstr ""
 
 #: templates/layouts/configs/_save-sign-out-button.html:24
+msgid "Exit"
+msgstr ""
+
+#: templates/layouts/configs/_save-sign-out-button.html:39
 msgid "Sign out"
 msgstr ""
 

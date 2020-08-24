@@ -12,7 +12,7 @@ from werkzeug.exceptions import Unauthorized
 from app.authentication.authenticator import store_session, decrypt_token
 from app.authentication.jti_claim_storage import JtiTokenUsed, use_jti_claim
 from app.globals import get_session_timeout_in_seconds
-from app.helpers.template_helper import render_template
+from app.helpers.template_helpers import render_template
 from app.storage.metadata_parser import (
     validate_questionnaire_claims,
     validate_runner_claims,
@@ -127,11 +127,14 @@ def get_sign_out():
     Signs the user first out of eq, then the account service by hitting the account services'
     logout url.
     """
+    log_out_url = request.args.get("log_out_url") or cookie_session.get(
+        "account_service_log_out_url"
+    )
+
     logout_user()
 
-    account_service_log_out_url = cookie_session.get("account_service_log_out_url")
-    if account_service_log_out_url:
-        return redirect(account_service_log_out_url)
+    if log_out_url:
+        return redirect(log_out_url)
 
     return redirect(url_for(".get_signed_out"))
 

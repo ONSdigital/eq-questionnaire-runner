@@ -43,6 +43,4 @@ class ThankYou:
                 census_type_code = self.CENSUS_TYPE_MAPPINGS[census_type]
                 break
 
-        return build_census_thank_you_context(
-            self.session_data.display_address, census_type_code
-        )
+        return build_census_thank_you_context(self.session_data, census_type_code)

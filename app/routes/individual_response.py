@@ -7,7 +7,7 @@ from app.globals import get_metadata, get_session_store
 from app.helpers.language_helper import handle_language
 from app.helpers.schema_helpers import with_schema
 from app.helpers.session_helpers import with_questionnaire_store
-from app.helpers.template_helper import render_template
+from app.helpers.template_helpers import render_template
 from app.utilities.schema import load_schema_from_session_data
 from app.views.handlers.individual_response import (
     IndividualResponseHandler,

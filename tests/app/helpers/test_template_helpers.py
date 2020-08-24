@@ -1,4 +1,8 @@
-from app.helpers.template_helper import get_contact_us_url, get_data_layer
+from app.helpers.template_helpers import (
+    get_census_base_url,
+    get_contact_us_url,
+    get_data_layer,
+)
 
 
 def test_get_contact_us_url_nisra_theme():
@@ -25,5 +29,26 @@ def test_get_contact_us_url_census_cy():
 def test_get_data_layer_nisra_theme():
     expected = [{"nisra": True}]
     result = get_data_layer("census-nisra")
+
+    assert expected == result
+
+
+def test_get_census_base_url():
+    expected = "https://census.gov.uk/"
+    result = get_census_base_url()
+
+    assert expected == result
+
+
+def test_get_census_base_url_nisra_theme():
+    expected = "https://census.gov.uk/ni/"
+    result = get_census_base_url(schema_theme="census-nisra")
+
+    assert expected == result
+
+
+def test_get_census_base_url_welsh():
+    expected = "https://cyfrifiad.gov.uk/"
+    result = get_census_base_url(language_code="cy")
 
     assert expected == result

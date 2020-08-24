@@ -9,7 +9,7 @@ from app.globals import get_metadata, get_session_store, get_session_timeout_in_
 from app.helpers.language_helper import handle_language
 from app.helpers.schema_helpers import with_schema
 from app.helpers.session_helpers import with_questionnaire_store
-from app.helpers.template_helper import render_template
+from app.helpers.template_helpers import render_template
 from app.questionnaire.location import InvalidLocationException
 from app.questionnaire.router import Router
 from app.utilities.schema import load_schema_from_session_data
@@ -272,7 +272,6 @@ def get_thank_you(schema):
         template=thank_you.template,
         content=thank_you.get_context(),
         survey_id=schema.json["survey_id"],
-        hide_signout_button=True,
     )
 
 

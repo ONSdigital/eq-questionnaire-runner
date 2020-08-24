@@ -1,5 +1,6 @@
 from functools import lru_cache
 import re
+from typing import Union
 
 from flask import (
     current_app,
@@ -94,14 +95,27 @@ def get_google_tag_mananger_context():
     return {}
 
 
-def get_contact_us_url(schema_theme, language_code):
+def get_census_base_url(
+    schema_theme: Union[str, None] = None, language_code: Union[str, None] = None
+) -> str:
+    if language_code == "cy":
+        return "https://cyfrifiad.gov.uk/"
+
+    base_url = "https://census.gov.uk/"
+
     if schema_theme == "census-nisra":
-        return "https://census.gov.uk/ni/contact-us/"
+        return base_url + "ni/"
+
+    return base_url
+
+
+def get_contact_us_url(schema_theme: str, language_code: str):
+    base_url = get_census_base_url(schema_theme, language_code)
 
     if language_code == "cy":
-        return "https://cyfrifiad.gov.uk/cysylltu-a-ni/"
+        return base_url + "cysylltu-a-ni/"
 
-    return "https://census.gov.uk/contact-us/"
+    return base_url + "contact-us/"
 
 
 def safe_content(content):

@@ -1,6 +1,8 @@
 {% extends 'layouts/_base.html' %}
 {% import 'macros/helpers.html' as helpers %}
 
+{% set hide_signout_button = True %}
+
 {% block main %}
   {% do pageConfig | setAttribute("feedback", "") %}
 
