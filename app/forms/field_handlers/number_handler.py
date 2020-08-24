@@ -4,11 +4,10 @@ from typing import Union
 from wtforms import IntegerField, DecimalField
 
 from app.data_model.answer_store import AnswerStore
-from app.forms.fields.decimal_field_with_separator import DecimalFieldWithSeparator
-from app.forms.fields.integer_field_with_separator import IntegerFieldWithSeparator
+from app.forms.fields import DecimalFieldWithSeparator, IntegerFieldWithSeparator
 from app.forms.field_handlers.field_handler import FieldHandler
 from app.forms.validators import NumberCheck, NumberRange, DecimalPlaces
-from app.questionnaire.location import Location
+from app.questionnaire import Location
 from app.settings import MAX_NUMBER
 
 

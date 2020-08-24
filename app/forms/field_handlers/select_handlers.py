@@ -1,4 +1,7 @@
-from app.forms.fields.select_field_with_detail_answer import SelectFieldWithDetailAnswer
+from app.forms.fields import (
+    MultipleSelectFieldWithDetailAnswer,
+    SelectFieldWithDetailAnswer,
+)
 from app.forms.field_handlers.field_handler import FieldHandler
 
 
@@ -39,4 +42,18 @@ class SelectHandler(FieldHandler):
             ),
             validators=self.validators,
             coerce=self.coerce_str_unless_none,
+        )
+
+
+class SelectMultipleHandler(SelectHandler):
+    MANDATORY_MESSAGE_KEY = "MANDATORY_CHECKBOX"
+
+    def get_field(self) -> MultipleSelectFieldWithDetailAnswer:
+        return MultipleSelectFieldWithDetailAnswer(
+            label=self.label,
+            description=self.guidance,
+            choices=self.build_choices_with_detail_answer_ids(
+                self.answer_schema["options"]
+            ),
+            validators=self.validators,
         )
