@@ -1,7 +1,7 @@
 from wtforms import Form
 
-from app.forms.field_handlers.select_handler import SelectHandler
-from app.forms.fields.select_field_with_detail_answer import SelectFieldWithDetailAnswer
+from app.forms.field_handlers import SelectHandler
+from app.forms.fields import SelectFieldWithDetailAnswer
 
 
 def test_coerce_str_unless_none():

@@ -7,7 +7,7 @@ from flask_babel import force_locale
 from werkzeug.datastructures import ImmutableDict
 
 from app.data_model.answer import Answer
-from app.forms.error_messages import error_messages
+from app.forms import error_messages
 from app.questionnaire.schema_utils import get_values_for_key
 
 DEFAULT_LANGUAGE_CODE = "en"

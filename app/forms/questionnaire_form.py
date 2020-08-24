@@ -8,8 +8,7 @@ from flask_wtf import FlaskForm
 from werkzeug.datastructures import MultiDict, ImmutableMultiDict
 from wtforms import validators
 
-from app.forms.field_factory import get_field_handler
-from app.forms.field_handlers.date_handler import DateHandler
+from app.forms.field_handlers import get_field_handler, DateHandler
 from app.forms.validators import DateRangeCheck, SumCheck, MutuallyExclusiveCheck
 
 logger = logging.getLogger(__name__)
