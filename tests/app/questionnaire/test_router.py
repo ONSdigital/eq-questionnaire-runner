@@ -218,7 +218,7 @@ class TestRouter(AppContextTestCase):  # pylint: disable=too-many-public-methods
 
         self.assertEqual(next_location, expected_location)
 
-    def test_last_block_on_path_routes_to_first_incomplete_location_in_section_when_section_not_complete(
+    def test_return_to_first_incomplete_location_when_last_block_in_section_in_progress(
         self
     ):
         schema = Mock()
