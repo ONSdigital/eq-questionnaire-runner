@@ -4,7 +4,7 @@ from functools import cached_property
 from dateutil.relativedelta import relativedelta
 
 from app.forms.field_handlers.field_handler import FieldHandler
-from app.forms.fields.date_field import DateField
+from app.forms.fields import DateField, MonthYearDateField, YearDateField
 from app.questionnaire.rules import convert_to_datetime
 from app.forms.validators import (
     SingleDatePeriodCheck,
@@ -110,3 +110,57 @@ class DateHandler(FieldHandler):
                 date_value = self.transform_date_by_offset(date_value, offset)
 
         return date_value
+
+
+class MonthYearDateHandler(DateHandler):
+    DATE_FORMAT = "yyyy-mm"
+    DISPLAY_FORMAT = "MMMM yyyy"
+
+    def get_field(self) -> MonthYearDateField:
+        return MonthYearDateField(
+            self.validators, label=self.label, description=self.guidance
+        )
+
+    def get_min_max_validator(self, minimum_date, maximum_date):
+        messages = self.answer_schema.get("validation", {}).get("messages")
+
+        minimum_date = (
+            minimum_date.replace(day=1) if minimum_date else None
+        )  # First day of Month
+        maximum_date = (
+            maximum_date + relativedelta(day=31) if maximum_date else None
+        )  # Last day of month
+
+        return SingleDatePeriodCheck(
+            messages=messages,
+            date_format=self.DISPLAY_FORMAT,
+            minimum_date=minimum_date,
+            maximum_date=maximum_date,
+        )
+
+
+class YearDateHandler(DateHandler):
+    DATE_FORMAT = "yyyy"
+    DISPLAY_FORMAT = "yyyy"
+
+    def get_field(self) -> YearDateField:
+        return YearDateField(
+            self.validators, label=self.label, description=self.guidance
+        )
+
+    def get_min_max_validator(self, minimum_date, maximum_date):
+        messages = self.answer_schema.get("validation", {}).get("messages")
+
+        minimum_date = (
+            minimum_date.replace(month=1, day=1) if minimum_date else None
+        )  # January 1st
+        maximum_date = (
+            maximum_date.replace(month=12, day=31) if maximum_date else None
+        )  # Last day of december
+
+        return SingleDatePeriodCheck(
+            messages=messages,
+            date_format=self.DISPLAY_FORMAT,
+            minimum_date=minimum_date,
+            maximum_date=maximum_date,
+        )
