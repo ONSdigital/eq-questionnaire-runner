@@ -25,9 +25,13 @@ def individual_response_url(
     journey: str = None,
 ) -> Union[str, None]:
     if "individual_response" in schema.json:
-        for_list = schema.json["individual_response"]["for_list"]
 
-        if list_item_id != questionnaire_store.list_store[for_list].primary_person:
+        if (
+            list_item_id
+            != questionnaire_store.list_store[
+                schema.get_individual_response_list()
+            ].primary_person
+        ):
             return url_for(
                 "individual_response.request_individual_response",
                 list_item_id=list_item_id,
