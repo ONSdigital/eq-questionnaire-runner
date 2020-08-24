@@ -81,5 +81,6 @@ class QuestionPage extends BasePage {
   returnToHubLink() {
     return 'a[href="/questionnaire/"]';
   }
+}
 
 export default QuestionPage;
