@@ -30,6 +30,19 @@ describe("Component: Radio", () => {
     });
   });
 
+  describe("Given I start a Mandatory Radio survey  ", () => {
+    before(() => {
+      browser.openQuestionnaire("test_radio_mandatory.json");
+    });
+
+    it("When I have submitted the page without any option, Then the question text is hidden in the error message using a span element", () => {
+      $(RadioMandatoryOverriddenPage.submit()).click();
+      expect($(RadioMandatoryOverriddenPage.errorNumber(1)).getHTML()).to.contain(
+        'Select an answer <span class="u-vh">to ‘What do you prefer for breakfast?’</span></a>'
+      );
+    });
+  });
+
   describe("Given I start a Mandatory Radio Other survey", () => {
     before(() => {
       browser.openQuestionnaire("test_radio_mandatory_with_mandatory_other.json");

@@ -55,6 +55,16 @@ class IndividualResponseTestCase(IntegrationTestCase):
         self.post({"anyone-else": "No"})
         self.get("questionnaire/")
 
+    def _add_household_multiple_members_no_primary(self):
+        self.get("questionnaire/primary-person-list-collector/")
+        self.post({"you-live-here": "No"})
+        self.post({"anyone-else": "Yes"})
+        self.post({"first-name": "Marie", "last-name": "Day"})
+        self.post({"anyone-else": "Yes"})
+        self.post({"first-name": "Joe", "last-name": "Day"})
+        self.post({"anyone-else": "No"})
+        self.get("questionnaire/")
+
     def _request_individual_response(self):
         self._add_household_no_primary()
         self.post()
@@ -74,10 +84,10 @@ class TestIndividualResponseErrorStatus(IndividualResponseTestCase):
         # Given the hub is enabled
         # And I add a household member
         self._add_household_no_primary()
-        self.post()
 
         # When I sign out and navigate to the individual response page
         individual_response_link = self.individual_response_link
+        self.post()
         self.get(individual_response_link)
         self.post()
         self.sign_out()
@@ -122,7 +132,7 @@ class TestIndividualResponseErrorStatus(IndividualResponseTestCase):
         # Then I should see the 404 page
         self.assertStatusCode(404)
 
-    def test_404_confirm__when_hub_not_accessible(self):
+    def test_404_confirm_when_hub_not_accessible(self):
         # Given I try to navigate to the individual response how page
         self.get("/individual-response/fake-id/post/confirm-address")
 
@@ -273,7 +283,7 @@ class TestIndividualResponseHubViews(IndividualResponseTestCase):
         self.assertIn("/change", self.individual_section_link)
 
     def test_individual_response_not_requested_status_unchanged(self):
-        # Given I naviagate to the confirm page of individual response
+        # Given I navigate to the confirm page of individual response
         # but don't request one
         self._add_household_no_primary()
         self.post()
@@ -346,6 +356,119 @@ class TestIndividualResponseNavigation(IndividualResponseTestCase):
 
         # Then I should be taken to the hub
         self.assertInUrl("questionnaire/")
+
+    def test_previous_from_how_multiple_people(self):
+        # Given I add a number of non primary household members
+        # and select a response from the individual section
+        # and navigate to the method
+        self._add_household_multiple_members_no_primary()
+
+        self.post()
+        self.get(self.individual_response_link)
+        self.post()
+
+        person_id = self.last_url.split("/")[2]
+
+        # When I choose previous
+        self.previous()
+
+        # Then I should be taken to the previous page
+        self.assertInUrl(f"/individual-response/?list_item_id={person_id}")
+
+
+class TestIndividualResponseWho(IndividualResponseTestCase):
+    def test_who_not_shown_for_primary_only(self):
+        # Given I add a primary person
+        self._add_primary()
+
+        self.get("/individual-response/who")
+
+        # Then I should not be able to reach the member selector
+        self.assertStatusCode(404)
+
+    def test_who_cannot_be_reached_when_single_household(self):
+        # Given I add a single household member
+        # and navigate to the individual response from hub
+        self._add_household_no_primary()
+
+        self.get(self.individual_response_link)
+        self.post()
+
+        # Then I should skip the member selector
+        self.assertInUrl("/how")
+
+    def test_goes_to_who_selector(self):
+        # Given I add a number of non primary household members
+        # and navigate to the individual response from hub
+        self._add_household_multiple_members_no_primary()
+
+        self.get(self.individual_response_link)
+        self.post()
+
+        # Then I should be taken to the member selector
+        self.assertInUrl("/who")
+
+    def test_previous_returns_to_hub(self):
+        # Given I add a number of non primary household members
+        # and navigate to the individual response from hub
+        self._add_household_no_primary()
+
+        self.get(self.individual_response_link)
+
+        # When I choose previous
+        self.previous()
+
+        # Then I should be taken to the hub
+        self.assertInUrl("/questionnaire/")
+
+    def test_previous_from_who_returns_to_intro(self):
+        # Given I add a number of non primary household members
+        # and navigate beyond the individual response member selector from hub
+        self._add_household_multiple_members_no_primary()
+
+        self.get(self.individual_response_link)
+        self.post()
+
+        # When I choose previous
+        self.previous()
+
+        # Then I should be taken to the response introduction
+        self.assertInUrl("/individual-response/?journey=hub")
+
+    def test_previous_from_how_returns_via_hub_route(self):
+        # Given I add a number of non primary household members
+        # and navigate beyond the individual response member selector from hub
+        self._add_household_multiple_members_no_primary()
+
+        self.get(self.individual_response_link)
+        self.post()
+
+        self.post({"individual-response-who-answer": "Marie Day"})
+
+        # When I choose previous
+        self.previous()
+
+        # Then I should be taken to the previous page
+        self.assertInUrl("/individual-response/who?journey=hub")
+
+    def test_previous_from_confirm_returns_via_hub_route(self):
+        # Given I add a number of non primary household members
+        # and navigate beyond the individual response member selector from hub
+        self._add_household_multiple_members_no_primary()
+
+        self.get(self.individual_response_link)
+        self.post()
+        self.post({"individual-response-who-answer": "Marie Day"})
+
+        list_item_id = self.last_url.split("/")[2]
+
+        self.post({"individual-response-how-answer": "Post"})
+
+        # When I choose previous
+        self.previous()
+
+        # Then I should be taken to the previous page
+        self.assertInUrl(f"/individual-response/{list_item_id}/how?journey=hub")
 
 
 class TestIndividualResponseConfirmationPage(IndividualResponseTestCase):
