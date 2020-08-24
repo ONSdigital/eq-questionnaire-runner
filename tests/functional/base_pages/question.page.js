@@ -50,6 +50,10 @@ class QuestionPage extends BasePage {
     return '[data-qa="block-description"]';
   }
 
+  individualResponseGuidance() {
+    return '[data-qa="individual-response-url"]'}
+  }
+
   lastViewedQuestionGuidance() {
     return "#last-viewed-question-guidance";
   }
@@ -76,10 +80,6 @@ class QuestionPage extends BasePage {
 
   returnToHubLink() {
     return 'a[href="/questionnaire/"]';
-  }
-
-  individualResponseGuidance() {
-    return '[data-qa="individual-response-url"]'}
   }
 
 export default QuestionPage;
