@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2020-08-21 17:09+0100\n"
+"POT-Creation-Date: 2020-08-24 09:11+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -41,6 +41,134 @@ msgstr ""
 msgid "%(from_date)s to %(to_date)s"
 msgstr ""
 
+#: app/forms/error_messages.py:11 app/forms/error_messages.py:12
+#: app/forms/error_messages.py:13 app/forms/error_messages.py:14
+msgid "Enter an answer to continue"
+msgstr ""
+
+#: app/forms/error_messages.py:15
+#, python-format
+msgid "Select an answer <span class=\"u-vh\">to ‘%(question_title)s’</span>"
+msgstr ""
+
+#: app/forms/error_messages.py:18
+msgid "Select an answer to continue"
+msgstr ""
+
+#: app/forms/error_messages.py:19
+#, python-format
+msgid ""
+"Select at least one answer <span class=\"u-vh\">to "
+"‘%(question_title)s’</span>"
+msgstr ""
+
+#: app/forms/error_messages.py:22
+msgid "Enter a date to continue"
+msgstr ""
+
+#: app/forms/error_messages.py:23
+msgid "Enter a duration to continue"
+msgstr ""
+
+#: app/forms/error_messages.py:24
+#, python-format
+msgid "Enter an answer more than or equal to %(min)s"
+msgstr ""
+
+#: app/forms/error_messages.py:25
+#, python-format
+msgid "Enter an answer less than or equal to %(max)s"
+msgstr ""
+
+#: app/forms/error_messages.py:26
+#, python-format
+msgid "Enter an answer more than %(min)s"
+msgstr ""
+
+#: app/forms/error_messages.py:27
+#, python-format
+msgid "Enter an answer less than %(max)s"
+msgstr ""
+
+#: app/forms/error_messages.py:28
+#, python-format
+msgid "Enter answers that add up to %(total)s"
+msgstr ""
+
+#: app/forms/error_messages.py:29
+#, python-format
+msgid "Enter answers that add up to or are less than %(total)s"
+msgstr ""
+
+#: app/forms/error_messages.py:32
+#, python-format
+msgid "Enter answers that add up to less than %(total)s"
+msgstr ""
+
+#: app/forms/error_messages.py:35
+#, python-format
+msgid "Enter answers that add up to greater than %(total)s"
+msgstr ""
+
+#: app/forms/error_messages.py:38
+#, python-format
+msgid "Enter answers that add up to or are greater than %(total)s"
+msgstr ""
+
+#: app/forms/error_messages.py:41
+msgid "Enter a number"
+msgstr ""
+
+#: app/forms/error_messages.py:42
+msgid "Enter a whole number"
+msgstr ""
+
+#: app/forms/error_messages.py:43
+#, python-format
+msgid "Enter a number rounded to %(max)d decimal places"
+msgstr ""
+
+#: app/forms/error_messages.py:44
+#, python-format
+msgid "You have entered too many characters. Enter up to %(max)d characters"
+msgstr ""
+
+#: app/forms/error_messages.py:47
+msgid "Enter a valid date"
+msgstr ""
+
+#: app/forms/error_messages.py:48
+msgid "Enter a 'period to' date later than the 'period from' date"
+msgstr ""
+
+#: app/forms/error_messages.py:51
+msgid "Enter a valid duration"
+msgstr ""
+
+#: app/forms/error_messages.py:52
+#, python-format
+msgid "Enter a reporting period greater than or equal to %(min)s"
+msgstr ""
+
+#: app/forms/error_messages.py:55
+#, python-format
+msgid "Enter a reporting period less than or equal to %(max)s"
+msgstr ""
+
+#: app/forms/error_messages.py:58
+#, python-format
+msgid "Enter a date after %(min)s"
+msgstr ""
+
+#: app/forms/error_messages.py:59
+#, python-format
+msgid "Enter a date before %(max)s"
+msgstr ""
+
+#: app/forms/error_messages.py:60
+msgid "Remove an answer to continue"
+msgstr ""
+
 #: app/forms/validators.py:352
 #, python-format
 msgid "%(num)s day"
@@ -54,6 +182,19 @@ msgstr ""
 
 #: app/forms/fields/select_field_with_detail_answer.py:35
 msgid "Not a valid choice"
+msgstr ""
+
+#: app/helpers/template_helper.py:19
+msgid "Office for National Statistics logo"
+msgstr ""
+
+#: app/helpers/template_helper.py:28 app/helpers/template_helper.py:37
+#: templates/errors/403.html:3 templates/errors/404.html:3
+msgid "Census 2021"
+msgstr ""
+
+#: app/helpers/template_helper.py:33
+msgid "Northern Ireland Statistics and Research Agency logo"
 msgstr ""
 
 #: app/questionnaire/placeholder_transforms.py:91
@@ -73,6 +214,141 @@ msgid "{number_of_days} day"
 msgid_plural "{number_of_days} days"
 msgstr[0] ""
 msgstr[1] ""
+
+#: app/views/contexts/hub_context.py:15
+msgid "Completed"
+msgstr ""
+
+#: app/views/contexts/hub_context.py:17
+msgid "View answers"
+msgstr ""
+
+#: app/views/contexts/hub_context.py:18
+msgid "View answers for {section_name}"
+msgstr ""
+
+#: app/views/contexts/hub_context.py:22
+msgid "Partially completed"
+msgstr ""
+
+#: app/views/contexts/hub_context.py:24
+msgid "Continue with section"
+msgstr ""
+
+#: app/views/contexts/hub_context.py:25
+msgid "Continue with {section_name} section"
+msgstr ""
+
+#: app/views/contexts/hub_context.py:29
+msgid "Not started"
+msgstr ""
+
+#: app/views/contexts/hub_context.py:31
+msgid "Start section"
+msgstr ""
+
+#: app/views/contexts/hub_context.py:32
+msgid "Start {section_name} section"
+msgstr ""
+
+#: app/views/contexts/hub_context.py:36
+msgid "Separate census requested"
+msgstr ""
+
+#: app/views/contexts/hub_context.py:38 app/views/contexts/hub_context.py:39
+msgid "Change or resend"
+msgstr ""
+
+#: app/views/contexts/hub_context.py:49 app/views/contexts/hub_context.py:50
+msgid "Submit survey"
+msgstr ""
+
+#: app/views/contexts/hub_context.py:54
+msgid "You must submit this survey to complete it"
+msgstr ""
+
+#: app/views/contexts/hub_context.py:59
+msgid "Choose another section to complete"
+msgstr ""
+
+#: app/views/contexts/hub_context.py:60
+#: templates/individual_response/confirmation.html:19
+#: templates/individual_response/question.html:5 templates/interstitial.html:8
+#: templates/sectionsummary.html:11 templates/sectionsummary.html:53
+msgid "Continue"
+msgstr ""
+
+#: app/views/contexts/list_context.py:94
+msgid " (You)"
+msgstr ""
+
+#: app/views/handlers/individual_response.py:198
+msgid "How would you like <em>{person_name}</em> to receive a separate census?"
+msgstr ""
+
+#: app/views/handlers/individual_response.py:204
+msgid ""
+"For someone to complete a separate census, we need to send them an "
+"individual access code."
+msgstr ""
+
+#: app/views/handlers/individual_response.py:207
+msgid "Select how to send access code"
+msgstr ""
+
+#: app/views/handlers/individual_response.py:217
+msgid "Post"
+msgstr ""
+
+#: app/views/handlers/individual_response.py:219
+msgid ""
+"We can only send this to an unnamed resident at the registered household "
+"address"
+msgstr ""
+
+#: app/views/handlers/individual_response.py:300
+msgid "How would you like to answer <em>{person_name_possessive}</em> questions?"
+msgstr ""
+
+#: app/views/handlers/individual_response.py:313
+msgid "I would like to request a separate census for them to complete"
+msgstr ""
+
+#: app/views/handlers/individual_response.py:319
+msgid "I will ask them to answer their own questions"
+msgstr ""
+
+#: app/views/handlers/individual_response.py:323
+msgid "They will need the household access code from the letter we sent you"
+msgstr ""
+
+#: app/views/handlers/individual_response.py:329
+msgid "I will answer for {person_name}"
+msgstr ""
+
+#: app/views/handlers/individual_response.py:441
+msgid "Do you want to send an individual access code for {person_name} by post?"
+msgstr ""
+
+#: app/views/handlers/individual_response.py:447
+msgid ""
+"A letter with an individual access code will be sent to your registered "
+"household address"
+msgstr ""
+
+#: app/views/handlers/individual_response.py:454
+msgid ""
+"The letter will be addressed to <strong>Individual Resident</strong> "
+"instead of the name provided"
+msgstr ""
+
+#: app/views/handlers/individual_response.py:467
+msgid "Yes, send the access code by post"
+msgstr ""
+
+#: app/views/handlers/individual_response.py:471
+msgid "No, send it another way"
+msgstr ""
 
 #: app/views/handlers/question.py:133
 msgid "Error: {page_title}"
@@ -137,12 +413,6 @@ msgstr ""
 
 #: templates/hub.html:39
 msgid "If you can’t answer someone else’s questions"
-msgstr ""
-
-#: templates/individual_response/confirmation.html:19
-#: templates/individual_response/question.html:5 templates/interstitial.html:8
-#: templates/sectionsummary.html:11 templates/sectionsummary.html:53
-msgid "Continue"
 msgstr ""
 
 #: templates/interstitial.html:23
@@ -259,10 +529,6 @@ msgstr ""
 
 #: templates/errors/403.html:3 templates/errors/403.html:6
 msgid "Sorry, there is a problem"
-msgstr ""
-
-#: templates/errors/403.html:3 templates/errors/404.html:3
-msgid "Census 2021"
 msgstr ""
 
 #: templates/errors/403.html:7 templates/errors/403.html:9
