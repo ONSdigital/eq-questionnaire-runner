@@ -19,17 +19,17 @@ __all__ = [
 
 
 def individual_response_url(
-    schema: QuestionnaireSchema,
+    individual_response_for_list: str,
     list_item_id: str,
     questionnaire_store: QuestionnaireStore,
     journey: str = None,
 ) -> Union[str, None]:
-    if "individual_response" in schema.json:
+    if individual_response_for_list:
 
         if (
             list_item_id
             != questionnaire_store.list_store[
-                schema.get_individual_response_list()
+                individual_response_for_list
             ].primary_person
         ):
             return url_for(
