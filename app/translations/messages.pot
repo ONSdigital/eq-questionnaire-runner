@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2020-08-24 09:11+0100\n"
+"POT-Creation-Date: 2020-08-24 10:48+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -531,7 +531,7 @@ msgstr ""
 msgid "Sorry, there is a problem"
 msgstr ""
 
-#: templates/errors/403.html:7 templates/errors/403.html:9
+#: templates/errors/403.html:7
 msgid "You may need to update your browser to a newer version."
 msgstr ""
 
@@ -539,7 +539,7 @@ msgstr ""
 msgid "If the problem still occurs, try using a different browser or device."
 msgstr ""
 
-#: templates/errors/403.html:10
+#: templates/errors/403.html:9
 msgid "For further help, please <a href='{url}'>contact us</a>."
 msgstr ""
 
