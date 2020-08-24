@@ -77,6 +77,9 @@ class QuestionPage extends BasePage {
   returnToHubLink() {
     return 'a[href="/questionnaire/"]';
   }
-}
+
+  individualResponseGuidance() {
+    return '[data-qa="individual-response-url"]'}
+  }
 
 export default QuestionPage;
