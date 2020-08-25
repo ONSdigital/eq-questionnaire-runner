@@ -19,7 +19,7 @@
           }
         })
     %}
-      <ul class="list list--bare">
+      <ul class="list list--bare" data-qa="error-list">
         {% for error_id, error in form.mapped_errors %}
           <li class="list__item">
             {{ loop.index }}. <a class="js-inpagelink" data-qa="error-link-{{ loop.index }}" href="#{{error_id}}">{{ error }}</a>
