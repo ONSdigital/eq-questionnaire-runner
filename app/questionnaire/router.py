@@ -79,19 +79,19 @@ class Router:
         is_section_complete = self._progress_store.is_section_complete(
             location.section_id, location.list_item_id
         )
-        if return_to and is_section_complete:
+        # This is for backwards routing
+        # For example, when the path is ["block-a", "block-b", block-a"] which is possible when "block-b" routes back to "block-a".
+        is_last_block_in_section = routing_path[-1] == location.block_id
+        if is_section_complete:
             if return_to == "section-summary":
                 return self._get_section_url(location)
 
             if return_to == "final-summary":
                 return self.get_last_location_in_survey().url()
 
-        # This is for backwards routing
-        # For example, when the path is ["block-a", "block-b", block-a"] which is possible when "block-b" routes back to "block-a".
-        is_last_block_in_section = routing_path[-1] == location.block_id
-        if is_last_block_in_section:
-            if is_section_complete:
+            if is_last_block_in_section:
                 return self._get_next_location_url_for_last_block_in_section(location)
+        if is_last_block_in_section:
             return self._get_first_incomplete_location_in_section(routing_path).url()
 
         return self.get_next_block_url(location, routing_path)
