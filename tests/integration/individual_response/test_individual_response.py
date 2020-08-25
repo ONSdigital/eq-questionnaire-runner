@@ -323,7 +323,7 @@ class TestIndividualResponseNavigation(IndividualResponseTestCase):
         householder_remove_link = self.get_link("2", "remove")
         self.get(householder_remove_link)
 
-        # When I start an IR then click the previous link
+        # When I start an IR journey then click the previous link
         self.get(self.individual_response_link)
         self.post()
         self.previous()
