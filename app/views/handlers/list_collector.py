@@ -42,10 +42,9 @@ class ListCollector(Question):
         }
 
     def handle_post(self):
-        if (
-            self.form.data[self.rendered_block["add_answer"]["id"]]
-            == self.rendered_block["add_answer"]["value"]
-        ):
+        answer_action = self._get_answer_action()
+
+        if answer_action and answer_action["type"] == "RedirectToListAddBlock":
             self._is_adding = True
             self.questionnaire_store_updater.update_answers(self.form.data)
 
