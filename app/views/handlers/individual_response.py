@@ -165,7 +165,11 @@ class IndividualResponseHandler:
     def handle_post(self):
         if self._list_item_id:
             return redirect(
-                url_for(".get_individual_response_how", list_item_id=self._list_item_id)
+                url_for(
+                    ".get_individual_response_how",
+                    list_item_id=self._list_item_id,
+                    journey=self._request_args.get("journey"),
+                )
             )
 
         self._list_name = self._schema.get_individual_response_list()
@@ -271,6 +275,12 @@ class IndividualResponseHowHandler(IndividualResponseHandler):
             previous_location_url = url_for(
                 "individual_response.get_individual_response_change",
                 list_item_id=self._list_item_id,
+            )
+        elif self._request_args.get("journey") == "remove-person":
+            previous_location_url = url_for(
+                "individual_response.request_individual_response",
+                list_item_id=self._list_item_id,
+                journey="remove-person",
             )
         else:
             previous_location_url = url_for(
