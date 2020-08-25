@@ -1,9 +1,7 @@
 from wtforms import Form
 
-from app.forms.field_handlers.select_multiple_handler import SelectMultipleHandler
-from app.forms.fields.multiple_select_field_with_detail_answer import (
-    MultipleSelectFieldWithDetailAnswer,
-)
+from app.forms.field_handlers import SelectMultipleHandler
+from app.forms.fields import MultipleSelectFieldWithDetailAnswer
 
 
 def test_get_field():

@@ -2,7 +2,7 @@ import unittest
 
 from wtforms.validators import ValidationError
 
-from app.forms.error_messages import error_messages
+from app.forms import error_messages
 from app.forms.validators import MutuallyExclusiveCheck
 
 
