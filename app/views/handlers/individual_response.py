@@ -89,10 +89,6 @@ class IndividualResponseHandler:
         return True
 
     @cached_property
-    def _is_hub_journey(self):
-        return self._request_args.get("journey") == "hub"
-
-    @cached_property
     def rendered_block(self) -> Mapping:
         return self._render_block()
 
@@ -264,7 +260,7 @@ class IndividualResponseHowHandler(IndividualResponseHandler):
         self._list_name = self._schema.get_individual_response_list()
         list_model = self._questionnaire_store.list_store[self._list_name]
 
-        if self._is_hub_journey:
+        if self._request_args.get("journey") == "hub":
             if len(list_model.non_primary_people) == 1:
                 previous_location_url = url_for(
                     "individual_response.request_individual_response",
@@ -300,6 +296,7 @@ class IndividualResponseHowHandler(IndividualResponseHandler):
                 url_for(
                     ".get_individual_response_text_message",
                     list_item_id=self._list_item_id,
+                    journey=self._request_args.get("journey"),
                 )
             )
         return redirect(
@@ -724,6 +721,7 @@ class IndividualResponseTextHandler(IndividualResponseHandler):
             url_for(
                 "individual_response.get_individual_response_text_message_confirm",
                 list_item_id=self._list_item_id,
+                journey=self._request_args.get("journey"),
                 mobile_number=timed_serializer.dumps(self.mobile_number),
             )
         )
@@ -800,6 +798,7 @@ class IndividualResponseTextConfirmHandler(IndividualResponseHandler):
         previous_location_url = url_for(
             "individual_response.get_individual_response_text_message",
             list_item_id=self._list_item_id,
+            journey=self._request_args.get("journey"),
             mobile_number=self._request_args.get("mobile_number"),
         )
 
@@ -816,6 +815,7 @@ class IndividualResponseTextConfirmHandler(IndividualResponseHandler):
             return redirect(
                 url_for(
                     "individual_response.get_individual_response_text_message_confirmation",
+                    journey=self._request_args.get("journey"),
                     mobile_number=self._request_args.get("mobile_number"),
                 )
             )
@@ -824,6 +824,7 @@ class IndividualResponseTextConfirmHandler(IndividualResponseHandler):
             url_for(
                 "individual_response.get_individual_response_text_message",
                 list_item_id=self._list_item_id,
+                journey=self._request_args.get("journey"),
                 mobile_number=self._request_args.get("mobile_number"),
             )
         )

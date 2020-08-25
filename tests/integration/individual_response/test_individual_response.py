@@ -506,12 +506,39 @@ class TestIndividualResponseTextHandler(IndividualResponseTestCase):
         self.post({"individual-response-how-answer": "Text message"})
         self.post({"individual-response-enter-number-answer": "0763921456"})
 
-        # When click the previous link
+        # When I click the previous link
         self.previous()
 
         # Then I should see the enter number page, populated with the phone number
         self.assertInUrl("text/enter-number")
         self.assertInBody("0763921456")
+
+    def test_enter_number_previous_persists_journey(self):
+        # Given I navigate to the enter number page
+        self._add_household_no_primary()
+        self.get(self.individual_response_link)
+        self.post()
+        self.post({"individual-response-how-answer": "Text message"})
+
+        # When I click the previous link
+        self.previous()
+
+        # Then the journey param should be in the url
+        self.assertInUrl("journey=hub")
+
+    def test_confirm_number_previous_persists_journey(self):
+        # Given I navigate to the confirm number page
+        self._add_household_no_primary()
+        self.get(self.individual_response_link)
+        self.post()
+        self.post({"individual-response-how-answer": "Text message"})
+        self.post({"individual-response-enter-number-answer": "0763921456"})
+
+        # When I click the previous link
+        self.previous()
+
+        # Then the journey param should be in the url
+        self.assertInUrl("journey=hub")
 
 
 class TestIndividualResponseConfirmationPage(IndividualResponseTestCase):
