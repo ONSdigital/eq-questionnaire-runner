@@ -653,7 +653,9 @@ class IndividualResponseTextHandler(IndividualResponseHandler):
             "type": "Question",
             "id": "individual-response-enter-number",
             "title": {
-                "text": lazy_gettext("What is {person_name_possessive} mobile number?"),
+                "text": lazy_gettext(
+                    "What is <em>{person_name_possessive}</em> mobile number?"
+                ),
                 "placeholders": IndividualResponseHandler._person_name_placeholder_possessive,
             },
             "answers": [
@@ -661,6 +663,8 @@ class IndividualResponseTextHandler(IndividualResponseHandler):
                     "type": "TextField",
                     "id": "individual-response-enter-number-answer",
                     "mandatory": True,
+                    "label": "UK mobile number",
+                    "description": "This will not be stored and only used once to send the access code",
                 }
             ],
         },
