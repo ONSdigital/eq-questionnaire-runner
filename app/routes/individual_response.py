@@ -1,9 +1,8 @@
-from flask import Blueprint, g, redirect, request, url_for
+from flask import Blueprint, g, redirect, request, url_for, current_app
 from flask_login import current_user, login_required
 from itsdangerous import URLSafeTimedSerializer
 from structlog import get_logger
 
-from app import settings
 from app.authentication.no_token_exception import NoTokenException
 from app.globals import get_metadata, get_session_store
 from app.helpers.language_helper import handle_language
@@ -197,6 +196,9 @@ def get_individual_response_who(schema, questionnaire_store):
 @with_schema
 def get_individual_response_text_message(schema, questionnaire_store, list_item_id):
     language_code = get_session_store().session_data.language_code
+    url_param_salt = current_app.eq["secret_store"].get_secret_by_name(
+        "EQ_URL_PARAM_SALT"
+    )
     individual_response_handler = IndividualResponseTextHandler(
         schema=schema,
         questionnaire_store=questionnaire_store,
@@ -204,6 +206,7 @@ def get_individual_response_text_message(schema, questionnaire_store, list_item_
         request_args=request.args,
         form_data=request.form,
         list_item_id=list_item_id,
+        url_param_salt=url_param_salt,
     )
 
     if request.method == "POST" and individual_response_handler.form.validate():
@@ -222,6 +225,9 @@ def get_individual_response_text_message_confirm(
     schema, questionnaire_store, list_item_id
 ):
     language_code = get_session_store().session_data.language_code
+    url_param_salt = current_app.eq["secret_store"].get_secret_by_name(
+        "EQ_URL_PARAM_SALT"
+    )
     individual_response_handler = IndividualResponseTextConfirmHandler(
         schema=schema,
         questionnaire_store=questionnaire_store,
@@ -229,6 +235,7 @@ def get_individual_response_text_message_confirm(
         request_args=request.args,
         form_data=request.form,
         list_item_id=list_item_id,
+        url_param_salt=url_param_salt,
     )
 
     if request.method == "POST" and individual_response_handler.form.validate():
@@ -256,8 +263,11 @@ def get_individual_response_text_message_confirmation(schema, questionnaire_stor
     if request.method == "POST":
         return redirect(url_for("questionnaire.get_questionnaire"))
 
-    timed_serialiser = URLSafeTimedSerializer(settings.EQ_URL_PARAM_SALT)
-    mobile_number = timed_serialiser.loads(request.args.get("mobile_number"))
+    url_param_salt = current_app.eq["secret_store"].get_secret_by_name(
+        "EQ_URL_PARAM_SALT"
+    )
+    timed_serializer = URLSafeTimedSerializer(url_param_salt)
+    mobile_number = timed_serializer.loads(request.args.get("mobile_number"))
 
     return render_template(
         template="individual_response/mobile_confirmation", mobile_number=mobile_number

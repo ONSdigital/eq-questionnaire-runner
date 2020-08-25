@@ -7,7 +7,6 @@ from flask_babel import lazy_gettext
 from itsdangerous import URLSafeTimedSerializer
 from werkzeug.exceptions import NotFound
 
-from app import settings
 from app.data_model.progress_store import CompletionStatus
 from app.forms.questionnaire_form import generate_form
 from app.helpers.template_helper import render_template
@@ -53,6 +52,7 @@ class IndividualResponseHandler:
         request_args,
         form_data,
         list_item_id=None,
+        url_param_salt=None,
     ):
         self._block_definition = block_definition
         self._schema = schema
@@ -63,6 +63,7 @@ class IndividualResponseHandler:
         self._answers = None
         self._list_item_id = list_item_id
         self._list_name = self._schema.get_individual_response_list()
+        self._url_param_salt = url_param_salt
 
         self.page_title = None
 
@@ -673,6 +674,7 @@ class IndividualResponseTextHandler(IndividualResponseHandler):
         request_args,
         form_data,
         list_item_id,
+        url_param_salt,
     ):
         super().__init__(
             self.block_definition,
@@ -682,6 +684,7 @@ class IndividualResponseTextHandler(IndividualResponseHandler):
             request_args,
             form_data,
             list_item_id,
+            url_param_salt,
         )
 
     @cached_property
@@ -707,13 +710,13 @@ class IndividualResponseTextHandler(IndividualResponseHandler):
         )
 
     def handle_post(self):
-        timed_serialiser = URLSafeTimedSerializer(settings.EQ_URL_PARAM_SALT)
+        timed_serializer = URLSafeTimedSerializer(self._url_param_salt)
 
         return redirect(
             url_for(
                 "individual_response.get_individual_response_text_message_confirm",
                 list_item_id=self._list_item_id,
-                mobile_number=timed_serialiser.dumps(self.mobile_number),
+                mobile_number=timed_serializer.dumps(self.mobile_number),
             )
         )
 
@@ -727,10 +730,11 @@ class IndividualResponseTextConfirmHandler(IndividualResponseHandler):
         request_args,
         form_data,
         list_item_id,
+        url_param_salt,
     ):
 
-        timed_serialiser = URLSafeTimedSerializer(settings.EQ_URL_PARAM_SALT)
-        mobile_number = timed_serialiser.loads(request_args.get("mobile_number"))
+        timed_serializer = URLSafeTimedSerializer(url_param_salt)
+        mobile_number = timed_serializer.loads(request_args.get("mobile_number"))
 
         super().__init__(
             self.block_definition(mobile_number),
@@ -740,6 +744,7 @@ class IndividualResponseTextConfirmHandler(IndividualResponseHandler):
             request_args,
             form_data,
             list_item_id,
+            url_param_salt,
         )
 
     @staticmethod
