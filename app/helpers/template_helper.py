@@ -78,6 +78,7 @@ def render_template(template, **kwargs):
         language_code=get_locale().language,
         survey_title=cookie_session.get("survey_title"),
         cdn_url=cdn_url,
+        data_layer=get_data_layer(cookie_session.get("theme")),
         **google_tag_mananger_context,
         **kwargs,
     )
@@ -120,3 +121,13 @@ def safe_content(content):
         # Strip HTML Tags
         content = re.sub(r"</?[^>]+>", "", content)
     return content
+
+
+def get_data_layer(schema_theme):
+    if schema_theme == "census-nisra":
+        return "dataLayer = [{nisra : true}];"
+
+    elif schema_theme == "census":
+        return "dataLayer = [{nisra : false}];"
+
+    return "dataLayer = [];"

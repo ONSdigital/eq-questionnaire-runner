@@ -48,13 +48,7 @@
     and triggers can be set up in Google Tag Manager
     -->
     <script nonce="{{ csp_nonce() }}">
-      {% if schema_theme == "census-nisra" %}
-        dataLayer = [{nisra : true}];
-      {% elif schema_theme == "census" %}
-        dataLayer = [{nisra : false}];
-      {% else %}
-        dataLayer = [];
-      {% endif %}
+      {{ data_layer }}
     </script>
 
     <!-- Google Tag Manager -->

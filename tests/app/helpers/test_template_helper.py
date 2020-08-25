@@ -1,4 +1,4 @@
-from app.helpers.template_helper import get_contact_us_url
+from app.helpers.template_helper import get_contact_us_url, get_data_layer
 
 
 def test_get_contact_us_url_nisra_theme():
@@ -18,5 +18,12 @@ def test_get_contact_us_url_census_en():
 def test_get_contact_us_url_census_cy():
     expected = "https://cyfrifiad.gov.uk/cysylltu-a-ni/"
     result = get_contact_us_url("census", "cy")
+
+    assert expected == result
+
+
+def test_get_data_layer_nisra_theme():
+    expected = "dataLayer = [{nisra : true}];"
+    result = get_data_layer("census-nisra")
 
     assert expected == result
