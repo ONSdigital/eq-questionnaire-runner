@@ -32,9 +32,15 @@ class ListRemoveQuestion(ListAction):
 
         return super().handle_post()
 
+    def individual_response_enabled(self) -> bool:
+        if self._schema.json.get("individual_response"):
+            return True
+        return False
+
     def get_context(self):
         journey = "remove-person"
         context = super().get_context()
+        context["individual_response_enabled"] = self.individual_response_enabled()
         context["individual_response_url"] = individual_response_url(
             self._schema.get_individual_response_list(),
             self._current_location.list_item_id,

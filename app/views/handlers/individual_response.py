@@ -68,9 +68,7 @@ class IndividualResponseHandler:
             raise NotFound
 
     def _is_location_valid(self):
-        self._list_name = self._schema.json.get("individual_response", {}).get(
-            "for_list"
-        )
+        self._list_name = self._schema.get_individual_response_list()
 
         list_model = self._questionnaire_store.list_store[self._list_name]
 
