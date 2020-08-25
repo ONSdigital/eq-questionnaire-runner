@@ -700,6 +700,10 @@ class IndividualResponseTextHandler(IndividualResponseHandler):
         return self.form.get_data(self.answer_id)
 
     def handle_get(self):
+        if "mobile_number" in self._request_args:
+            timed_serializer = URLSafeTimedSerializer(self._url_param_salt)
+            mobile_number = timed_serializer.loads(self._request_args["mobile_number"])
+            self._answers = {"individual-response-enter-number-answer": mobile_number}
         previous_location_url = url_for(
             "individual_response.get_individual_response_how",
             list_item_id=self._list_item_id,
@@ -820,5 +824,6 @@ class IndividualResponseTextConfirmHandler(IndividualResponseHandler):
             url_for(
                 "individual_response.get_individual_response_text_message",
                 list_item_id=self._list_item_id,
+                mobile_number=self._request_args.get("mobile_number"),
             )
         )

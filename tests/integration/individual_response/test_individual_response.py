@@ -479,8 +479,8 @@ class TestIndividualResponseTextHandler(IndividualResponseTestCase):
         self.post()
         self.assertInUrl("/questionnaire")
 
-    def test_post_routing(self):
-        # Given I navigate to the confirmation page
+    def test_confirm_number_no_routes_back(self):
+        # Given I navigate to the confirm number page
         self._add_household_no_primary()
         self.get(self.individual_section_link)
         self.get(self.individual_response_link)
@@ -488,13 +488,30 @@ class TestIndividualResponseTextHandler(IndividualResponseTestCase):
         self.post({"individual-response-how-answer": "Text message"})
         self.post({"individual-response-enter-number-answer": "0763921456"})
 
-        # When I post "Yes, send the text"
+        # When I post "No"
         self.post(
             {"individual-response-text-confirm-answer": "No, I need to change it"}
         )
 
-        # Then I should see the post confirm address page
+        # Then I should see the enter number page, populated with the phone number
         self.assertInUrl("text/enter-number")
+        self.assertInBody("0763921456")
+
+    def test_confirm_number_previous_link(self):
+        # Given I navigate to the confirm number page
+        self._add_household_no_primary()
+        self.get(self.individual_section_link)
+        self.get(self.individual_response_link)
+        self.post()
+        self.post({"individual-response-how-answer": "Text message"})
+        self.post({"individual-response-enter-number-answer": "0763921456"})
+
+        # When click the previous link
+        self.previous()
+
+        # Then I should see the enter number page, populated with the phone number
+        self.assertInUrl("text/enter-number")
+        self.assertInBody("0763921456")
 
 
 class TestIndividualResponseConfirmationPage(IndividualResponseTestCase):
