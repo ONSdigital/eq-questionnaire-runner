@@ -14,8 +14,6 @@ def list_collector_block():
         "id": "list-collector",
         "type": "ListCollector",
         "for_list": "people",
-        "add_answer": {"id": "anyone-else", "value": "Yes"},
-        "remove_answer": {"id": "remove-confirmation", "value": "Yes"},
         "add_block": {
             "id": "add-person",
             "type": "ListAddQuestion",
@@ -75,7 +73,11 @@ def list_collector_block():
                         "mandatory": True,
                         "type": "Radio",
                         "options": [
-                            {"label": "Yes", "value": "Yes"},
+                            {
+                                "label": "Yes",
+                                "value": "Yes",
+                                "action": {"type": "RemoveListItemAndAnswers"},
+                            },
                             {"label": "No", "value": "No"},
                         ],
                     }
@@ -114,7 +116,11 @@ def list_collector_block():
                     "mandatory": True,
                     "type": "Radio",
                     "options": [
-                        {"label": "Yes", "value": "Yes"},
+                        {
+                            "label": "Yes",
+                            "value": "Yes",
+                            "action": {"type": "RedirectToListAddBlock"},
+                        },
                         {"label": "No", "value": "No"},
                     ],
                 }
