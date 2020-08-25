@@ -1,26 +1,13 @@
 {% extends 'layouts/_base.html' %}
 {% from 'components/panel/_macro.njk' import onsPanel %}
+
 {% block main %}
+  {% set form = content.form %}
 
-   {% call onsPanel({
-     "spacious": true,
-     "type": "success",
-     "classes": "u-mb-s"
-     })
-   %}
-  <h1 data-qa="title">A confirmation email has been sent to example@example.com</h1>
- {% endcall %}
+  {% if form.mapped_errors %}
+    {% include 'partials/error-panel.html' %}
+  {% endif %}
 
-<p><strong>Didn't receive an email?</strong></p>
-<p>It can take a few minutes for the email to arrive. If it doesn't arrive, check your junk mail, or you can <a href="/submitted/email/">send another confirmation email</a></p>
-
-<div class="panel panel--warn panel--simple" >
-      <span class="panel__icon" aria-hidden="true">!</span>
-      <div class="panel__body">
-        <p><strong>{{ _("Make sure you <a href='{url}'>leave this page</a> or close your browser if using a shared device").format(url = "/sign-out")  }}</strong></p>
-      </div>
-    </div>
-
-
-
+  <h1 data-qa="title">Send another confirmation email</h1>
+  {% include 'partials/email-confirmation-form.html' %}
 {% endblock %}

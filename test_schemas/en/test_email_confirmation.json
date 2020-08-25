@@ -4,9 +4,9 @@
     "schema_version": "0.0.1",
     "data_version": "0.0.3",
     "survey_id": "0",
-    "title": "Census household test schema",
+    "title": "Email confirmation test schema",
     "theme": "census",
-    "description": "A questionnaire to test the thank you page for census household",
+    "description": "A questionnaire to test email confirmation",
     "metadata": [
         {
             "name": "user_id",
@@ -22,25 +22,22 @@
         }
     ],
     "submission": {
-        "button": "Submission button",
-        "guidance": "Submission guidance",
-        "title": "Submission title",
-        "email_confirmation": true
+        "email_confirmation_form": true
     },
     "sections": [
         {
-            "id": "household-section",
+            "id": "email-confirmation-section",
             "groups": [
                 {
                     "blocks": [
                         {
                             "type": "Question",
-                            "id": "household-confirmation",
+                            "id": "email-confirmation",
                             "question": {
                                 "answers": [
                                     {
                                         "type": "Radio",
-                                        "id": "household-confirmation-answer",
+                                        "id": "email-confirmation-answer",
                                         "mandatory": false,
                                         "options": [
                                             {
@@ -55,7 +52,7 @@
                                     }
                                 ],
                                 "id": "household-confirmation-question",
-                                "title": "Are you aware this is an census household test schema?",
+                                "title": "Are you aware you can send a confirmation email for this schema?",
                                 "type": "General"
                             }
                         },
@@ -64,7 +61,7 @@
                             "id": "summary"
                         }
                     ],
-                    "id": "household-group"
+                    "id": "email-confirmation-group"
                 }
             ]
         }

@@ -16,5 +16,10 @@ class ThankYouPage extends QuestionPage {
   signOut() {
     return '[data-qa="btn-sign-out"]';
   }
+
+  email() {
+    return "#email";
+  }
+
 }
 export default new ThankYouPage();

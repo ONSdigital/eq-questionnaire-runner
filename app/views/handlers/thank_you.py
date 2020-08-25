@@ -1,12 +1,11 @@
 from flask import session as cookie_session
-from werkzeug.exceptions import NotFound
+from werkzeug.exceptions import NotFound, MethodNotAllowed
 from app.views.contexts.thank_you_context import (
     build_default_thank_you_context,
     build_census_thank_you_context,
 )
 from app.globals import get_session_store
 from app.forms.email_conformation_form import EmailConformationForm
-from app.questionnaire.location import InvalidLocationException
 
 class ThankYou:
     DEFAULT_THANK_YOU_TEMPLATE = "thank-you"
@@ -19,7 +18,8 @@ class ThankYou:
     }
 
     def __init__(self, schema):
-        self.session_data = get_session_store().session_data
+        self.session_store = get_session_store()
+        self.session_data = self.session_store.session_data
         self._schema = schema
         if not self.session_data.submitted_time:
             raise NotFound
@@ -33,14 +33,13 @@ class ThankYou:
             if self._is_census_theme
             else self.DEFAULT_THANK_YOU_TEMPLATE
         )
-        self.email_confirmation = (
+        self.email_confirmation_form = (
             EmailConformationForm()
-            if self._schema.get_submission().get("email_confirmation")
+            if self._schema.get_submission().get("email_confirmation_form")
             else None
         )
 
     def get_context(self):
-
         if not self._is_census_theme:
             return build_default_thank_you_context(self.session_data)
 
@@ -51,9 +50,16 @@ class ThankYou:
                 break
 
         return build_census_thank_you_context(
-            self.session_data.display_address, census_type_code, self.email_confirmation
+            self.session_data.display_address, census_type_code, self.email_confirmation_form
         )
 
-    def is_valid_post(self):
-        if not self.email_confirmation:
-            raise InvalidLocationException
+    def validate(self):
+        if not self.email_confirmation_form:
+            raise MethodNotAllowed
+
+        if self.email_confirmation_form.validate_on_submit():
+            self.session_data.confirmation_email_sent = True
+            self.session_store.save()
+            return True
+        return False
+

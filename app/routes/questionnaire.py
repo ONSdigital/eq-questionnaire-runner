@@ -15,15 +15,14 @@ from app.questionnaire.router import Router
 from app.utilities.schema import load_schema_from_session_data
 from app.views.contexts.hub_context import HubContext
 from app.views.handlers.block_factory import get_block_handler
-from app.views.handlers.email import Email
+from app.views.handlers.email_confirmation import EmailConfirmation
 from app.views.handlers.section import SectionHandler
 from app.views.handlers.submission import SubmissionHandler
 from app.views.handlers.thank_you import ThankYou
 
-from app.forms.email_conformation_form import EmailConformationForm
 
 END_BLOCKS = "Summary", "Confirmation"
-
+from structlog import get_logger
 logger = get_logger()
 
 questionnaire_blueprint = Blueprint(
@@ -271,12 +270,8 @@ def relationship(schema, questionnaire_store, block_id, list_item_id, to_list_it
 def get_thank_you(schema):
     thank_you = ThankYou(schema)
 
-    if request.method == "POST":
-        if not thank_you.email_confirmation:
-            raise NotFound
-
-        if thank_you.email_confirmation.validate_on_submit():
-            return redirect(url_for("post_submission.get_email_confirmation"))
+    if request.method == "POST" and thank_you.validate():
+        return redirect(url_for("post_submission.get_email_confirmation_sent"))
 
     return render_template(
         template=thank_you.template,
@@ -285,47 +280,35 @@ def get_thank_you(schema):
         hide_signout_button=True,
     )
 
-
-@post_submission_blueprint.route("email-confirmation/", methods=["GET"])
+@post_submission_blueprint.route("email-confirmation/", methods=["GET", "POST"])
 @login_required
 @with_schema
 def get_email_confirmation(schema):
+    email_confirmation = EmailConfirmation()
 
-    try:
-        email = Email(schema)
-    except InvalidLocationException:
-        raise MethodNotAllowed
+    if request.method == "POST" and email_confirmation.validate():
+        return redirect(url_for("post_submission.get_email_confirmation_sent"))
 
     return render_template(
         template="email-confirmation",
-        content="efefefeef",
+        content=email_confirmation.get_context(),
         survey_id=schema.json["survey_id"],
         hide_signout_button=True,
     )
 
-
-@post_submission_blueprint.route("email/", methods=["GET", "POST"])
+@post_submission_blueprint.route("email-confirmation-sent/", methods=["GET"])
 @login_required
 @with_schema
-def get_email(schema):
-
-    try:
-        email = Email(schema)
-    except InvalidLocationException:
-        raise MethodNotAllowed
-
-    valid = email.email_confirmation.validate_on_submit()
-
-    if request.method == "POST" and valid:
-        return redirect(url_for("post_submission.get_email_confirmation"))
+def get_email_confirmation_sent(schema):
+    if not get_session_store().session_data.confirmation_email_sent:
+        raise NotFound
 
     return render_template(
-        template="email",
-        content=email.get_context(),
+        template="email-confirmation-sent",
+        content=None,
         survey_id=schema.json["survey_id"],
         hide_signout_button=True,
     )
-
 
 def _render_page(template, context, previous_location_url, schema, page_title):
     if request_wants_json():

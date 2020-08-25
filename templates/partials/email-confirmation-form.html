@@ -1,0 +1,29 @@
+{% from "components/error/_macro.njk" import onsError %}
+{% set email_form_errors = form.errors['email'] %}
+
+<strong>Email address</strong>
+<p>This will not be stored and only used once to send your confirmation</p>
+
+<form method="POST">
+  {% if email_form_errors %}
+
+  {% set email_error = {
+    "text": email_form_errors[0],
+    "id": 'email-error',
+    "attributes": {
+      "data-ga": "error",
+      "data-ga-category": "Error",
+      "data-ga-label": "d"
+    }
+  }
+  %}
+  {% call onsError(email_error) %}
+      {{ content.form.fields.email(class_="input input--text input-type__input") }}
+    {% endcall %}
+    {% else %}
+      {{ content.form.fields.email(class_="input input--text input-type__input") }}
+    {% endif %}
+  {{ form.fields.csrf_token }}
+
+  <p><button type="submit" class="btn u-mt-xl" data-qa="btn-submit"><span class="btn__inner">Send confirmation</span></button></p>
+</form>

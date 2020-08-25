@@ -3,14 +3,14 @@
   onsPanel({
     "type": "error",
     "classes": "u-mb-s",
-    "title": ngettext('There is a problem with your answer', 'There are %(num)s problems with your answer', form_mapped_errors | length),
+    "title": ngettext('There is a problem with your answer', 'There are %(num)s problems with your answer', form.mapped_errors | length),
     "attributes": {
     "data-qa": "error-body"
     }
   })
 %}
   <ul class="list list--bare">
-    {% for error_id, error in form_mapped_errors %}
+    {% for error_id, error in form.mapped_errors %}
       <li class="list__item">
         {{ loop.index }}) <a class="js-inpagelink" data-qa="error-link-{{ loop.index }}" href="#{{error_id}}">{{ error }}</a>
       </li>

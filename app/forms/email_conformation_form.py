@@ -8,10 +8,12 @@ class EmailConformationForm(FlaskForm):
         "username",
         validators=[
             InputRequired("Enter an email address to continue"),
-            Email("format"),
+            Email("Enter an email in a valid format, for example name@example.com"),
         ],
     )
 
     def map_errors(self):
-        ordered_errors = [("email", self.errors["email"][0])] if self.errors else []
+        ordered_errors = []
+        for error in self.errors:
+            ordered_errors += [(error, self.errors[error][0])]
         return ordered_errors

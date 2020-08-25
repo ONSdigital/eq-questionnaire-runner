@@ -1,12 +1,13 @@
 {% extends 'layouts/_base.html' %}
 {% from 'components/panel/_macro.njk' import onsPanel %}
-{% set form_mapped_errors = content.email_confirmation.mapped_errors %}
-{% set errors = content.email_confirmation.errors %}
+
 {% block main %}
 
-{% if form_mapped_errors %}
-  {% include 'partials/error-panel.html' %}
-{% endif %}
+  {% set form = content.form %}
+
+  {% if form and form.mapped_errors %}
+    {% include 'partials/error-panel.html' %}
+  {% endif %}
 
   {% call onsPanel({
     "type": "success",
@@ -43,16 +44,11 @@
         <p><strong>{{ _("Make sure you <a href='{url}'>leave this page</a> or close your browser if using a shared device").format(url = "/sign-out")  }}</strong></p>
       </div>
     </div>
-  {% if content.email_confirmation %}
-<h1>Get confirmation email</h1>
-<p>If you would like to be sent confirmation that you have completed your census enter your email address</p>
 
-
-
-
-{% include 'partials/email-form.html' %}
-
+  {% if form %}
+    <h1>Get confirmation email</h1>
+    <p>If you would like to be sent confirmation that you have completed your census enter your email address</p>
+    {% include 'partials/email-confirmation-form.html' %}
   {% endif %}
-
 
 {% endblock %}
