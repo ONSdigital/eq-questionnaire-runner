@@ -127,7 +127,7 @@ def get_data_layer(schema_theme):
     if schema_theme == "census-nisra":
         return "dataLayer = [{nisra : true}];"
 
-    elif schema_theme == "census":
+    if schema_theme == "census":
         return "dataLayer = [{nisra : false}];"
 
     return "dataLayer = [];"
