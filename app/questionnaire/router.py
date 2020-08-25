@@ -86,7 +86,7 @@ class Router:
             if return_to == "final-summary":
                 return self.get_last_location_in_survey().url()
 
-        # If the routing path contains backwards routing, it is possible for is_last_block_in_section to be True while section is not complete.
+        # This is for backwards routing
         # For example, when the path is ["block-a", "block-b", block-a"] which is possible when "block-b" routes back to "block-a".
         is_last_block_in_section = routing_path[-1] == location.block_id
         if is_last_block_in_section:
