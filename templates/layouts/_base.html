@@ -52,6 +52,8 @@
         dataLayer = [{nisra : true}];
       {% elif schema_theme == "census" %}
         dataLayer = [{nisra : false}];
+      {% else %}
+        dataLayer = [];
       {% endif %}
     </script>
 
