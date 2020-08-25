@@ -125,9 +125,9 @@ def safe_content(content):
 
 def get_data_layer(schema_theme):
     if schema_theme == "census-nisra":
-        return "dataLayer = [{nisra : true}];"
+        return [{"nisra": True}]
 
     if schema_theme == "census":
-        return "dataLayer = [{nisra : false}];"
+        return [{"nisra": False}]
 
-    return "dataLayer = [];"
+    return []

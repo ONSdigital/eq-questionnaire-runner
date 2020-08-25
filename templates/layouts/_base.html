@@ -48,7 +48,7 @@
     and triggers can be set up in Google Tag Manager
     -->
     <script nonce="{{ csp_nonce() }}">
-      {{ data_layer }}
+      dataLayer = {{ data_layer | tojson }}
     </script>
 
     <!-- Google Tag Manager -->

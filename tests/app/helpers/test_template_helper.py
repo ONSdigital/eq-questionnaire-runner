@@ -23,7 +23,7 @@ def test_get_contact_us_url_census_cy():
 
 
 def test_get_data_layer_nisra_theme():
-    expected = "dataLayer = [{nisra : true}];"
+    expected = [{"nisra": True}]
     result = get_data_layer("census-nisra")
 
     assert expected == result
