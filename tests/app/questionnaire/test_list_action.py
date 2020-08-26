@@ -17,6 +17,19 @@ class TestListAction(AppContextTestCase):
         super().setUp()
         self.answer_store = AnswerStore()
         self.list_store = ListStore()
+        self.metadata = {}
+        self.questionnaire_store = Mock()
+        self.schema = MagicMock()
+        self.request_args = MagicMock()
+        self.form_data = {}
+        self.parent_location = Mock()
+
+    def test_last_block_no_section_summary_next_location_url(self):
+        self._routing_path = RoutingPath(
+            ["block-1", "block-2", "block-1"], section_id="section-1"
+        )
+        self._return_to = "section-summary"
+        self.current_location = Location(section_id="section-1", block_id="block-1")
         self.progress_store = ProgressStore(
             [
                 {
@@ -27,18 +40,6 @@ class TestListAction(AppContextTestCase):
                 }
             ]
         )
-        self.metadata = {}
-        self.questionnaire_store = Mock()
-        self.schema = MagicMock()
-        self.request_args = MagicMock()
-        self.form_data = {}
-        self.current_location = Location(section_id="section-1", block_id="block-1")
-        self._return_to = "section-summary"
-        self.router = MagicMock()
-        self.parent_location = Mock()
-        self._routing_path = RoutingPath(
-            ["block-1", "block-2", "block-1"], section_id="section-1"
-        )
         self.router = Router(
             self.schema,
             self.answer_store,
@@ -48,7 +49,6 @@ class TestListAction(AppContextTestCase):
         )
         self.router.can_display_section_summary = Mock(return_value=False)
 
-    def test_list_action(self):
         with patch(
             "app.views.handlers.list_action.ListAction.parent_location"
         ), pytest.raises(InvalidLocationException):
