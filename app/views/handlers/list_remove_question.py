@@ -37,13 +37,12 @@ class ListRemoveQuestion(ListAction):
         return False
 
     def get_context(self):
-        journey = "remove-person"
         context = super().get_context()
         context["individual_response_enabled"] = self.individual_response_enabled()
         context["individual_response_url"] = individual_response_url(
             self._schema.get_individual_response_list(),
             self._current_location.list_item_id,
             self._questionnaire_store,
-            journey,
+            journey="remove-person",
         )
         return context
