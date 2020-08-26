@@ -11,6 +11,7 @@ describe("Error Messages", () => {
     $(TestErrorsPage.testCurrency()).setValue("123.456");
     $(TestErrorsPage.submit()).click();
     expect($(TestErrorsPage.errorHeader()).getText()).to.contain("There are 3 problems with your answer");
+    expect($(TestErrorsPage.errorList()).getText()).to.contain("1.");
     expect($(TestErrorsPage.errorNumber(1)).getText()).to.contain("Enter a number");
     expect($(TestErrorsPage.errorNumber(2)).getText()).to.contain("Enter an answer less than or equal to 100");
     expect($(TestErrorsPage.errorNumber(3)).getText()).to.contain("Enter a number rounded to 2 decimal places");
