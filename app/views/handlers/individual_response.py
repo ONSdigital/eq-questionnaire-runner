@@ -143,7 +143,7 @@ class IndividualResponseHandler:
                 "questionnaire.block",
                 list_name=self._list_name,
                 list_item_id=self._list_item_id,
-                block_id=self._request_args.get("journey"),
+                block_id="remove-person",
             )
 
         elif self._list_item_id:
