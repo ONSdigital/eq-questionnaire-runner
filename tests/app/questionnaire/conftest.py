@@ -158,11 +158,6 @@ def list_collector_variant_schema():
                                 "id": "block1",
                                 "type": "ListCollector",
                                 "for_list": "people",
-                                "add_answer": {"id": "answer1", "value": "Yes"},
-                                "remove_answer": {
-                                    "id": "remove-confirmation",
-                                    "value": "Yes",
-                                },
                                 "question_variants": [
                                     {
                                         "question": {
@@ -173,6 +168,9 @@ def list_collector_variant_schema():
                                                 {
                                                     "id": "answer1",
                                                     "label": "Collector Answer 1 Variant Yes",
+                                                    "action": {
+                                                        "type": "RedirectToListAddBlock"
+                                                    },
                                                 }
                                             ],
                                         },
@@ -310,6 +308,9 @@ def list_collector_variant_schema():
                                                     {
                                                         "id": "answer1",
                                                         "label": "Answer 1 Variant Yes",
+                                                        "action": {
+                                                            "type": "RemoveListItemAndAnswers"
+                                                        },
                                                     }
                                                 ],
                                             },
