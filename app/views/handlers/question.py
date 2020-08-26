@@ -15,7 +15,7 @@ from app.views.handlers.block import BlockHandler
 class Question(BlockHandler):
     @staticmethod
     def _has_redirect_to_list_add_action(answer_action):
-        return answer_action and answer_action["type"] == "RedirectToListAddQuestion"
+        return answer_action and answer_action["type"] == "RedirectToListAddBlock"
 
     @cached_property
     def form(self):

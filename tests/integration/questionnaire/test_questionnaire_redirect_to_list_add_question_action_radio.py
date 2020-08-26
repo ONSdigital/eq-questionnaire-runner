@@ -15,7 +15,7 @@ class TestQuestionnaireListCollector(IntegrationTestCase):
         self
     ):
         # Given
-        self.launchSurvey("test_answer_action_redirect_to_list_add_question_radio")
+        self.launchSurvey("test_answer_action_redirect_to_list_add_block_radio")
 
         # When
         self.post({"anyone-usually-live-at-answer": "Yes"})
@@ -27,7 +27,7 @@ class TestQuestionnaireListCollector(IntegrationTestCase):
 
     def test_previous_link_when_list_empty_with_return_to_query_string(self):
         # Given
-        self.launchSurvey("test_answer_action_redirect_to_list_add_question_radio")
+        self.launchSurvey("test_answer_action_redirect_to_list_add_block_radio")
         self.post({"anyone-usually-live-at-answer": "Yes"})
 
         # When
@@ -38,7 +38,7 @@ class TestQuestionnaireListCollector(IntegrationTestCase):
 
     def test_previous_link_when_list_not_empty(self):
         # Given
-        self.launchSurvey("test_answer_action_redirect_to_list_add_question_radio")
+        self.launchSurvey("test_answer_action_redirect_to_list_add_block_radio")
         self.post({"anyone-usually-live-at-answer": "Yes"})
         self.add_person("John", "Doe")
         self.post({"anyone-else-live-at-answer": "Yes"})
@@ -53,7 +53,7 @@ class TestQuestionnaireListCollector(IntegrationTestCase):
         self
     ):
         # Given
-        self.launchSurvey("test_answer_action_redirect_to_list_add_question_radio")
+        self.launchSurvey("test_answer_action_redirect_to_list_add_block_radio")
         self.post({"anyone-usually-live-at-answer": "Yes"})
 
         url_with_invalid_return_to = self.last_url + "-invalid"
