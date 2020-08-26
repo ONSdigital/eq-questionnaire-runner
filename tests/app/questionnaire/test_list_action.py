@@ -23,8 +23,6 @@ class TestListAction(AppContextTestCase):
         self.request_args = MagicMock()
         self.form_data = {}
         self.parent_location = Mock()
-
-    def test_last_block_no_section_summary_next_location_url(self):
         self._routing_path = RoutingPath(
             ["block-1", "block-2", "block-1"], section_id="section-1"
         )
@@ -48,6 +46,8 @@ class TestListAction(AppContextTestCase):
             self.metadata,
         )
         self.router.can_display_section_summary = Mock(return_value=False)
+
+    def test_last_block_no_section_summary_next_location_url(self):
 
         with patch(
             "app.views.handlers.list_action.ListAction.parent_location"
