@@ -30,6 +30,10 @@ class QuestionPage extends BasePage {
     return '[data-qa="error-header"]';
   }
 
+  errorList() {
+    return '[data-qa="error-list"]';
+  }
+
   errorNumber(number = 1) {
     return `[data-qa="error-link-${number}"]`;
   }
