@@ -143,9 +143,7 @@ class IndividualResponseHandler:
                 "questionnaire.block",
                 list_name=self._list_name,
                 list_item_id=self._list_item_id,
-                block_id=self._schema.get_remove_block_id_for_list(
-                    self._schema.get_individual_response_list()
-                ),
+                block_id=self._schema.get_remove_block_id_for_list(self._list_name),
             )
 
         elif self._list_item_id:
