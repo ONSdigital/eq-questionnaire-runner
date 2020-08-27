@@ -6,7 +6,7 @@ from app.views.contexts.email_context import build_email_context
 
 class EmailConfirmation:
     def __init__(self):
-        if not get_session_store().session_data.confirmation_email_sent:
+        if not get_session_store().session_data.email_confirmation_sent:
             raise NotFound
 
         self.email_confirmation_form = EmailConformationForm()

@@ -61,7 +61,7 @@ class ThankYou:
             raise NotFound
 
         if self.email_confirmation_form.validate_on_submit():
-            self.session_data.confirmation_email_sent = True
+            self.session_data.email_confirmation_sent = True
             self.session_store.save()
             return True
         return False

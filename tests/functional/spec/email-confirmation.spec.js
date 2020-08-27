@@ -22,15 +22,15 @@ describe("Email confirmation", () => {
       $(ThankYouPage.submit()).click();
       expect(browser.getUrl()).to.contain(ThankYouPage.pageName);
       expect($(ThankYouPage.errorPanel()).isExisting()).to.be.true;
-      expect($(ThankYouPage.errorPanel()).getText()).to.equal("1) Enter an email address to continue");
+      expect($(ThankYouPage.errorPanel()).getText()).to.equal("1. Enter an email address to continue");
     });
 
-    it("When I submit the email form without providing a correctly formatted email, Then I get an error message", () => {
+    it("When I submit the form without providing a correctly formatted email, Then I get an error message", () => {
       $(ThankYouPage.email()).setValue("incorrect-format");
       $(ThankYouPage.submit()).click();
       expect(browser.getUrl()).to.contain(ThankYouPage.pageName);
       expect($(ThankYouPage.errorPanel()).isExisting()).to.be.true;
-      expect($(ThankYouPage.errorPanel()).getText()).to.equal("1) Enter an email in a valid format, for example name@example.com");
+      expect($(ThankYouPage.errorPanel()).getText()).to.equal("1. Enter an email in a valid format, for example name@example.com");
     });
 
     it("When I submit the form with a valid email, Then I go to the email confirmation sent page", () => {
@@ -44,15 +44,15 @@ describe("Email confirmation", () => {
       $(EmailConfirmationPage.submit()).click();
       expect(browser.getUrl()).to.contain(EmailConfirmationPage.pageName);
       expect($(EmailConfirmationPage.errorPanel()).isExisting()).to.be.true;
-      expect($(EmailConfirmationPage.errorPanel()).getText()).to.equal("1) Enter an email address to continue");
+      expect($(EmailConfirmationPage.errorPanel()).getText()).to.equal("1. Enter an email address to continue");
     });
 
-    it("when I submit from the email confirmation page without providing an valid email, Then I get an error message", () => {
+    it("when I submit the form without providing a correctly formatted email, Then I get an error message", () => {
       $(EmailConfirmationPage.email()).setValue("incorrect-format");
       $(EmailConfirmationPage.submit()).click();
       expect(browser.getUrl()).to.contain(EmailConfirmationPage.pageName);
       expect($(EmailConfirmationPage.errorPanel()).isExisting()).to.be.true;
-      expect($(EmailConfirmationPage.errorPanel()).getText()).to.equal("1) Enter an email in a valid format, for example name@example.com");
+      expect($(EmailConfirmationPage.errorPanel()).getText()).to.equal("1. Enter an email in a valid format, for example name@example.com");
     });
 
     it("When I submit the form with a valid email from the email confirmation page , Then I go to the email confirmation sent page", () => {

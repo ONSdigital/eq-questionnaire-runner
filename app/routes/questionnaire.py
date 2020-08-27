@@ -302,7 +302,7 @@ def get_email_confirmation(schema):
 @login_required
 @with_schema
 def get_email_confirmation_sent(schema):
-    if not get_session_store().session_data.confirmation_email_sent:
+    if not get_session_store().session_data.email_confirmation_sent:
         raise NotFound
 
     return render_template(
