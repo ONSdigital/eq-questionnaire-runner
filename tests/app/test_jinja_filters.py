@@ -17,6 +17,7 @@ from app.jinja_filters import (
     map_list_collector_config,
     RadioConfig,
     CheckboxConfig,
+    get_formatted_address,
 )
 from tests.app.app_context_test_case import AppContextTestCase
 
@@ -412,3 +413,15 @@ def test_map_list_collector_config():
     ]
 
     assert output == expected
+
+
+def test_format_address_fields():
+    address_fields = {
+        "line": "7 Evelyn Street",
+        "town": "Barry",
+        "postcode": "CF63 4JG",
+    }
+
+    assert (
+        get_formatted_address(address_fields) == "7 Evelyn Street<br>Barry<br>CF63 4JG"
+    )
