@@ -2,7 +2,7 @@ from flask import Blueprint, g, redirect, request, url_for, jsonify
 import flask_babel
 from flask_login import current_user, login_required
 from structlog import get_logger
-from werkzeug.exceptions import NotFound, MethodNotAllowed
+from werkzeug.exceptions import NotFound
 
 from app.authentication.no_token_exception import NoTokenException
 from app.globals import get_metadata, get_session_store, get_session_timeout_in_seconds
@@ -22,7 +22,7 @@ from app.views.handlers.thank_you import ThankYou
 
 
 END_BLOCKS = "Summary", "Confirmation"
-from structlog import get_logger
+
 logger = get_logger()
 
 questionnaire_blueprint = Blueprint(
@@ -280,6 +280,7 @@ def get_thank_you(schema):
         hide_signout_button=True,
     )
 
+
 @post_submission_blueprint.route("email-confirmation/", methods=["GET", "POST"])
 @login_required
 @with_schema
@@ -296,6 +297,7 @@ def get_email_confirmation(schema):
         hide_signout_button=True,
     )
 
+
 @post_submission_blueprint.route("email-confirmation-sent/", methods=["GET"])
 @login_required
 @with_schema
@@ -309,6 +311,7 @@ def get_email_confirmation_sent(schema):
         survey_id=schema.json["survey_id"],
         hide_signout_button=True,
     )
+
 
 def _render_page(template, context, previous_location_url, schema, page_title):
     if request_wants_json():

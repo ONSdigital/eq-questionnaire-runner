@@ -21,5 +21,12 @@ class ThankYouPage extends QuestionPage {
     return "#email";
   }
 
+  submit() {
+    return '[data-qa="btn-submit"]';
+  }
+
+  errorPanel() {
+    return `[data-qa=error-body] div.panel__body > ul`;
+  }
 }
 export default new ThankYouPage();

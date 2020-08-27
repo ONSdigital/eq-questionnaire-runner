@@ -1,6 +1,7 @@
 from app.libs.utils import convert_tx_id
 from app.views.contexts.email_context import build_email_context
 
+
 def build_default_thank_you_context(session_data):
     context = {
         "submitted_time": session_data.submitted_time,
@@ -18,7 +19,9 @@ def build_default_thank_you_context(session_data):
     return context
 
 
-def build_census_thank_you_context(display_address, census_type, email_confirmation_form):
+def build_census_thank_you_context(
+    display_address, census_type, email_confirmation_form
+):
     context = {"display_address": display_address, "census_type": census_type}
 
     if email_confirmation_form:

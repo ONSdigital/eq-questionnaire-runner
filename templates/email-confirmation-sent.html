@@ -8,16 +8,20 @@
      "classes": "u-mb-s"
      })
    %}
-  <h1 data-qa="title">A confirmation email has been sent to example@example.com</h1>
+  <h1 data-qa="title">{{ _("A confirmation email has been sent")  }}</h1>
  {% endcall %}
 
-  <p><strong>Didn't receive an email?</strong></p>
-  <p>It can take a few minutes for the email to arrive. If it doesn't arrive, check your junk mail, or you can <a href="/submitted/email-confirmation/">send another confirmation email</a></p>
+  <p><strong>{{ _("Didn't receive an email?")  }}</strong></p>
+  <p>{{ _("It can take a few minutes for the email to arrive. If it doesn't arrive, check your junk mail, or you can
+    <a href='{url}' id='send-another-email'>send another confirmation email</a></p>").format(url = "/submitted/email-confirmation/")  }}
 
-  <div class="panel panel--warn panel--simple" >
-      <span class="panel__icon" aria-hidden="true">!</span>
-      <div class="panel__body">
-        <p><strong>{{ _("Make sure you <a href='{url}'>leave this page</a> or close your browser if using a shared device").format(url = "/sign-out")  }}</strong></p>
-      </div>
-    </div>
+
+{% call onsPanel({
+    "id": "submission-warning",
+    "type": "warn"
+    })
+  %}
+    {{ _("Make sure you <a href='{url}'>leave this page</a> or close your browser if using a shared device").format(url = "/sign-out")  }}
+  {% endcall %}
+
 {% endblock %}
