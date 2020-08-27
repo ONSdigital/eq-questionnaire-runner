@@ -602,7 +602,9 @@ class IndividualResponseWhoHandler(IndividualResponseHandler):
             "question": {
                 "type": "Question",
                 "id": "individual-response-who",
-                "title": "Who do you need to request a separate census for?",
+                "title": lazy_gettext(
+                    "Who do you need to request a separate census for?"
+                ),
                 "answers": [
                     {
                         "type": "Radio",
@@ -660,8 +662,10 @@ class IndividualResponseTextHandler(IndividualResponseHandler):
                     "type": "TextField",
                     "id": "individual-response-enter-number-answer",
                     "mandatory": True,
-                    "label": "UK mobile number",
-                    "description": "This will not be stored and only used once to send the access code",
+                    "label": lazy_gettext("UK mobile number"),
+                    "description": lazy_gettext(
+                        "This will not be stored and only used once to send the access code"
+                    ),
                 }
             ],
         },
@@ -760,7 +764,7 @@ class IndividualResponseTextConfirmHandler(IndividualResponseHandler):
             "question": {
                 "type": "Question",
                 "id": "individual-response-text-confirm",
-                "title": "Is this mobile number correct?",
+                "title": lazy_gettext("Is this mobile number correct?"),
                 "description": [mobile_number],
                 "answers": [
                     {

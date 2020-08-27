@@ -29,7 +29,7 @@ class FieldHandler(ABC):
         self.metadata = metadata or {}
         self.location = location
         self.disable_validation = disable_validation
-        self.question_title = question_title
+        self.question_title = str(question_title)
         self.validation_messages = self.answer_schema.get("validation", {}).get(
             "messages", {}
         )

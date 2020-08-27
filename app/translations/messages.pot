@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2020-08-25 13:08+0100\n"
+"POT-Creation-Date: 2020-08-27 12:22+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -271,8 +271,8 @@ msgid "Choose another section to complete"
 msgstr ""
 
 #: app/views/contexts/hub_context.py:60
-#: templates/individual_response/confirmation.html:19
-#: templates/individual_response/mobile_confirmation.html:19
+#: templates/individual_response/confirmation-post.html:19
+#: templates/individual_response/confirmation-text-message.html:19
 #: templates/individual_response/question.html:5 templates/interstitial.html:8
 #: templates/sectionsummary.html:11 templates/sectionsummary.html:53
 msgid "Continue"
@@ -358,15 +358,31 @@ msgstr ""
 msgid "No, send it another way"
 msgstr ""
 
-#: app/views/handlers/individual_response.py:653
+#: app/views/handlers/individual_response.py:605
+msgid "Who do you need to request a separate census for?"
+msgstr ""
+
+#: app/views/handlers/individual_response.py:655
 msgid "What is <em>{person_name_possessive}</em> mobile number?"
 msgstr ""
 
-#: app/views/handlers/individual_response.py:772
-msgid "Yes, send the text"
+#: app/views/handlers/individual_response.py:665
+msgid "UK mobile number"
+msgstr ""
+
+#: app/views/handlers/individual_response.py:666
+msgid "This will not be stored and only used once to send the access code"
+msgstr ""
+
+#: app/views/handlers/individual_response.py:767
+msgid "Is this mobile number correct?"
 msgstr ""
 
 #: app/views/handlers/individual_response.py:776
+msgid "Yes, send the text"
+msgstr ""
+
+#: app/views/handlers/individual_response.py:780
 msgid "No, I need to change it"
 msgstr ""
 
@@ -626,10 +642,16 @@ msgid ""
 "the survey again."
 msgstr ""
 
-#: templates/individual_response/confirmation.html:15
+#: templates/individual_response/confirmation-post.html:15
 msgid ""
 "The letter with an individual access code should arrive soon for them to "
 "complete their own census"
+msgstr ""
+
+#: templates/individual_response/confirmation-text-message.html:15
+msgid ""
+"The text message with an individual access code should arrive soon for "
+"them to complete their own census"
 msgstr ""
 
 #: templates/individual_response/interstitial.html:11
@@ -655,12 +677,6 @@ msgstr ""
 
 #: templates/individual_response/interstitial.html:18
 msgid "Request separate census"
-msgstr ""
-
-#: templates/individual_response/mobile_confirmation.html:15
-msgid ""
-"The text message with an individual access code should arrive soon for "
-"them to complete their own census"
 msgstr ""
 
 #: templates/layouts/_base.html:36
