@@ -10,7 +10,7 @@ describe("Post submission exit", () => {
   it("Given the survey is submitted, when I view the thank you page, the exit button should contain a log_out_url query param containing the census homepage url", () => {
     $(HouseholdConfirmationPage.submit()).click();
     $(SummaryPage.submit()).click();
-    expect($(CensusThankYouPage.exit()).getHTML()).to.contain("log_out_url=https%3A%2F%2Fcensus.gov.uk%2F");
+    expect($(CensusThankYouPage.exit()).getHTML()).to.contain("sign_out_url=https%3A%2F%2Fcensus.gov.uk%2F");
   });
 
   it("Given I click the exit button, when I am redirected I should see the census homepage", () => {
