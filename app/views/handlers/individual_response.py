@@ -50,7 +50,7 @@ class IndividualResponseHandler:
         language,
         request_args,
         form_data,
-        list_item_id,
+        list_item_id=None,
     ):
         self._block_definition = block_definition
         self._schema = schema
@@ -60,6 +60,7 @@ class IndividualResponseHandler:
         self._form_data = form_data
         self._answers = None
         self._list_item_id = list_item_id
+        self._list_name = self._schema.get_individual_response_list()
 
         self.page_title = None
 
@@ -67,12 +68,8 @@ class IndividualResponseHandler:
             raise NotFound
 
     def _is_location_valid(self):
-        if not self.router.can_access_hub():
-            return False
+        self._list_name = self._schema.get_individual_response_list()
 
-        self._list_name = self._schema.json.get("individual_response", {}).get(
-            "for_list"
-        )
         list_model = self._questionnaire_store.list_store[self._list_name]
 
         if not list_model:
@@ -86,6 +83,10 @@ class IndividualResponseHandler:
                 return False
 
         return True
+
+    @cached_property
+    def _is_hub_journey(self):
+        return self._request_args.get("journey") == "hub"
 
     @cached_property
     def rendered_block(self) -> Mapping:
@@ -137,7 +138,15 @@ class IndividualResponseHandler:
             self.individual_section_id
         )
 
-        if self._list_item_id:
+        if self._request_args.get("journey") == "remove-person":
+            previous_location_url = url_for(
+                "questionnaire.block",
+                list_name=self._list_name,
+                list_item_id=self._list_item_id,
+                block_id=self._schema.get_remove_block_id_for_list(self._list_name),
+            )
+
+        elif self._list_item_id:
             previous_location_url = url_for(
                 "questionnaire.block",
                 list_name=self._list_name,
@@ -152,6 +161,29 @@ class IndividualResponseHandler:
             language=self._language,
             previous_location_url=previous_location_url,
         )
+
+    def handle_post(self):
+        if self._list_item_id:
+            return redirect(
+                url_for(
+                    ".get_individual_response_how",
+                    list_item_id=self._list_item_id,
+                    journey=self._request_args.get("journey"),
+                )
+            )
+
+        self._list_name = self._schema.get_individual_response_list()
+        list_model = self._questionnaire_store.list_store[self._list_name]
+
+        if len(list_model.non_primary_people) == 1:
+            return redirect(
+                url_for(
+                    ".get_individual_response_how",
+                    list_item_id=list_model.non_primary_people[0],
+                    journey="hub",
+                )
+            )
+        return redirect(url_for(".get_individual_response_who", journey="hub"))
 
     def _render_block(self):
         return self.placeholder_renderer.render(
@@ -225,10 +257,30 @@ class IndividualResponseHowHandler(IndividualResponseHandler):
         )
 
     def handle_get(self):
-        if self._request_args.get("journey") == "change":
+        self._list_name = self._schema.get_individual_response_list()
+        list_model = self._questionnaire_store.list_store[self._list_name]
+
+        if self._is_hub_journey:
+            if len(list_model.non_primary_people) == 1:
+                previous_location_url = url_for(
+                    "individual_response.request_individual_response",
+                    journey=self._request_args.get("journey"),
+                )
+            else:
+                previous_location_url = url_for(
+                    "individual_response.get_individual_response_who",
+                    journey=self._request_args.get("journey"),
+                )
+        elif self._request_args.get("journey") == "change":
             previous_location_url = url_for(
                 "individual_response.get_individual_response_change",
                 list_item_id=self._list_item_id,
+            )
+        elif self._request_args.get("journey") == "remove-person":
+            previous_location_url = url_for(
+                "individual_response.request_individual_response",
+                list_item_id=self._list_item_id,
+                journey="remove-person",
             )
         else:
             previous_location_url = url_for(
@@ -375,6 +427,7 @@ class IndividualResponseChangeHandler(IndividualResponseHandler):
                     list_name=self._list_name,
                     list_item_id=self._list_item_id,
                     block_id=individual_section_first_block_id,
+                    journey=self._request_args.get("journey"),
                 )
             )
 
@@ -491,7 +544,8 @@ class IndividualResponsePostAddressConfirmHandler(IndividualResponseHandler):
             self._update_section_status(CompletionStatus.INDIVIDUAL_RESPONSE_REQUESTED)
             return redirect(
                 url_for(
-                    "individual_response.get_individual_response_post_address_confirmation"
+                    "individual_response.get_individual_response_post_address_confirmation",
+                    journey=self._request_args.get("journey"),
                 )
             )
 
@@ -499,5 +553,89 @@ class IndividualResponsePostAddressConfirmHandler(IndividualResponseHandler):
             url_for(
                 "individual_response.get_individual_response_how",
                 list_item_id=self._list_item_id,
+                journey=self._request_args.get("journey"),
+            )
+        )
+
+
+class IndividualResponseWhoHandler(IndividualResponseHandler):
+    def __init__(self, schema, questionnaire_store, language, request_args, form_data):
+        self._list_name = schema.get_individual_response_list()
+        list_model = questionnaire_store.list_store[self._list_name]
+        self.non_primary_people_names = {}
+
+        for list_item_id in list_model.non_primary_people:
+            name_answer = questionnaire_store.answer_store.get_answers_by_answer_id(
+                ["first-name", "last-name"], list_item_id=list_item_id
+            )
+            self.non_primary_people_names[
+                f"{name_answer[0].value} {name_answer[1].value}"
+            ] = list_item_id
+
+        super().__init__(
+            self.block_definition,
+            schema,
+            questionnaire_store,
+            language,
+            request_args,
+            form_data,
+            request_args.get("list_item_id"),
+        )
+
+    @cached_property
+    def selected_option(self):
+        answer_id = self.rendered_block["question"]["answers"][0]["id"]
+        return self.form.get_data(answer_id)
+
+    @cached_property
+    def selected_list_item(self):
+        answer_value = self.selected_option
+
+        return self.non_primary_people_names[answer_value]
+
+    @cached_property
+    def block_definition(self) -> Mapping:
+        return {
+            "type": "IndividualResponse",
+            "question": {
+                "type": "Question",
+                "id": "individual-response-who",
+                "title": "Who do you need to request a separate census for?",
+                "answers": [
+                    {
+                        "type": "Radio",
+                        "id": "individual-response-who-answer",
+                        "mandatory": True,
+                        "options": [
+                            {"label": name, "value": name}
+                            for name in self.non_primary_people_names
+                        ],
+                    }
+                ],
+            },
+        }
+
+    def handle_get(self):
+        if len(self.non_primary_people_names) > 1:
+            previous_location_url = url_for(
+                "individual_response.request_individual_response",
+                journey=self._request_args.get("journey"),
+            )
+
+            return render_template(
+                "individual_response/question",
+                language=self._language,
+                content=self.get_context(),
+                previous_location_url=previous_location_url,
+            )
+
+        raise NotFound
+
+    def handle_post(self):
+        return redirect(
+            url_for(
+                ".get_individual_response_how",
+                journey=self._request_args.get("journey"),
+                list_item_id=self.selected_list_item,
             )
         )

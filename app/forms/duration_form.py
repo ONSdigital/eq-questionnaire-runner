@@ -1,6 +1,6 @@
 from wtforms import Form
 
-from app.forms.fields.integer_field_with_separator import IntegerFieldWithSeparator
+from app.forms.fields import IntegerFieldWithSeparator
 
 
 class DurationForm(Form):

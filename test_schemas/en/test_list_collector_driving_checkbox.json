@@ -49,10 +49,6 @@
                             "id": "primary-person-list-collector",
                             "type": "PrimaryPersonListCollector",
                             "for_list": "people",
-                            "add_or_edit_answer": {
-                                "id": "you-live-here",
-                                "value": "Yes, I usually live here"
-                            },
                             "add_or_edit_block": {
                                 "id": "add-or-edit-primary-person",
                                 "type": "PrimaryPersonListAddOrEditQuestion",
@@ -88,7 +84,10 @@
                                         "options": [
                                             {
                                                 "label": "Yes, I usually live here",
-                                                "value": "Yes, I usually live here"
+                                                "value": "Yes, I usually live here",
+                                                "action": {
+                                                    "type": "RedirectToListAddBlock"
+                                                }
                                             },
                                             {
                                                 "label": "No, I don’t usually live here",
@@ -125,7 +124,7 @@
                                                                 "block_id": "add-person",
                                                                 "list_name": "people"
                                                             },
-                                                            "type": "RedirectToListAddQuestion"
+                                                            "type": "RedirectToListAddBlock"
                                                         }
                                                     },
                                                     {
@@ -136,7 +135,7 @@
                                                                 "block_id": "add-person",
                                                                 "list_name": "people"
                                                             },
-                                                            "type": "RedirectToListAddQuestion"
+                                                            "type": "RedirectToListAddBlock"
                                                         }
                                                     }
                                                 ]
@@ -183,7 +182,7 @@
                                                                 "block_id": "add-person",
                                                                 "list_name": "people"
                                                             },
-                                                            "type": "RedirectToListAddQuestion"
+                                                            "type": "RedirectToListAddBlock"
                                                         }
                                                     },
                                                     {
@@ -194,7 +193,7 @@
                                                                 "block_id": "add-person",
                                                                 "list_name": "people"
                                                             },
-                                                            "type": "RedirectToListAddQuestion"
+                                                            "type": "RedirectToListAddBlock"
                                                         }
                                                     }
                                                 ]
@@ -257,14 +256,6 @@
                             "id": "list-collector",
                             "type": "ListCollector",
                             "for_list": "people",
-                            "add_answer": {
-                                "id": "anyone-else",
-                                "value": "Yes, I need to add a person"
-                            },
-                            "remove_answer": {
-                                "id": "remove-confirmation",
-                                "value": "Yes"
-                            },
                             "question": {
                                 "id": "confirmation-question",
                                 "type": "General",
@@ -277,7 +268,10 @@
                                         "options": [
                                             {
                                                 "label": "Yes, I need to add a person",
-                                                "value": "Yes, I need to add a person"
+                                                "value": "Yes, I need to add a person",
+                                                "action": {
+                                                    "type": "RedirectToListAddBlock"
+                                                }
                                             },
                                             {
                                                 "label": "No, I do not need to add a person",
@@ -405,7 +399,10 @@
                                             "options": [
                                                 {
                                                     "label": "Yes",
-                                                    "value": "Yes"
+                                                    "value": "Yes",
+                                                    "action": {
+                                                        "type": "RemoveListItemAndAnswers"
+                                                    }
                                                 },
                                                 {
                                                     "label": "No",
@@ -444,14 +441,6 @@
                             "id": "list-collector-temporary-away-stay",
                             "type": "ListCollector",
                             "for_list": "people",
-                            "add_answer": {
-                                "id": "anyone-else-temporary-away-stay",
-                                "value": "Yes, I need to add someone"
-                            },
-                            "remove_answer": {
-                                "id": "remove-confirmation-temporary-away-stay",
-                                "value": "Yes"
-                            },
                             "question": {
                                 "id": "confirmation-question-temporary-away-stay",
                                 "type": "General",
@@ -484,7 +473,10 @@
                                         "options": [
                                             {
                                                 "label": "Yes, I need to add someone",
-                                                "value": "Yes, I need to add someone"
+                                                "value": "Yes, I need to add someone",
+                                                "action": {
+                                                    "type": "RedirectToListAddBlock"
+                                                }
                                             },
                                             {
                                                 "label": {
@@ -632,7 +624,10 @@
                                             "options": [
                                                 {
                                                     "label": "Yes",
-                                                    "value": "Yes"
+                                                    "value": "Yes",
+                                                    "action": {
+                                                        "type": "RemoveListItemAndAnswers"
+                                                    }
                                                 },
                                                 {
                                                     "label": "No",

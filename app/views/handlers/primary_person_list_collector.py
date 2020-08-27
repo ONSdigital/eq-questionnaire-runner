@@ -23,11 +23,9 @@ class PrimaryPersonListCollector(Question):
 
     def handle_post(self):
         list_name = self.rendered_block["for_list"]
+        answer_action = self._get_answer_action()
 
-        if (
-            self.form.data[self.rendered_block["add_or_edit_answer"]["id"]]
-            == self.rendered_block["add_or_edit_answer"]["value"]
-        ):
+        if answer_action and answer_action["type"] == "RedirectToListAddBlock":
             self._is_adding = True
             self.questionnaire_store_updater.update_answers(self.form.data)
             self._primary_person_id = self.questionnaire_store_updater.add_primary_person(

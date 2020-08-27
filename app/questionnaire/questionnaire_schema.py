@@ -7,7 +7,7 @@ from flask_babel import force_locale
 from werkzeug.datastructures import ImmutableDict
 
 from app.data_model.answer import Answer
-from app.forms.error_messages import error_messages
+from app.forms import error_messages
 from app.questionnaire.schema_utils import get_values_for_key
 
 DEFAULT_LANGUAGE_CODE = "en"
@@ -194,6 +194,14 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
                 and list_name == block["for_list"]
             ):
                 return block
+
+    def get_remove_block_id_for_list(self, list_name):
+        for block in self.get_blocks():
+            if block["type"] == "ListCollector" and block["for_list"] == list_name:
+                return block["remove_block"]["id"]
+
+    def get_individual_response_list(self):
+        return self.json.get("individual_response", {}).get("for_list")
 
     def get_title_for_section(self, section_id):
         return self._sections_by_id.get(section_id).get("title")
