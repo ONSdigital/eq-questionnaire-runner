@@ -434,6 +434,10 @@ class TestIndividualResponseWho(IndividualResponseTestCase):
 
 
 class TestIndividualResponseTextHandler(IndividualResponseTestCase):
+    # Dummy mobile number from the range published by Ofcom
+    # https://www.ofcom.org.uk/phones-telecoms-and-internet/information-for-industry/numbering/numbers-for-drama
+    DUMMY_MOBILE_NUMBER = "07700900258"
+
     def test_display_mobile_number_on_confirmation_page(self):
         # Given I navigate to the confirmation page
         self._add_household_no_primary()
@@ -441,14 +445,14 @@ class TestIndividualResponseTextHandler(IndividualResponseTestCase):
         self.get(self.individual_response_link)
         self.post()
         self.post({"individual-response-how-answer": "Text message"})
-        self.post({"individual-response-enter-number-answer": "0763921456"})
+        self.post({"individual-response-enter-number-answer": self.DUMMY_MOBILE_NUMBER})
 
         # When I post "Yes, send the text"
         self.post({"individual-response-text-confirm-answer": "Yes, send the text"})
 
         # Then I should see the phone number
         self.assertInUrl("/text/confirmation")
-        self.assertInBody("0763921456")
+        self.assertInBody(self.DUMMY_MOBILE_NUMBER)
 
     def test_mobile_is_not_shown_in_url(self):
         # Given I navigate to the confirmation page
@@ -459,10 +463,10 @@ class TestIndividualResponseTextHandler(IndividualResponseTestCase):
         self.post({"individual-response-how-answer": "Text message"})
 
         # When I post the number
-        self.post({"individual-response-enter-number-answer": "0752351238"})
+        self.post({"individual-response-enter-number-answer": self.DUMMY_MOBILE_NUMBER})
 
         # Then I should not see the phone number in the url
-        self.assertNotInUrl("0752351238")
+        self.assertNotInUrl(self.DUMMY_MOBILE_NUMBER)
 
     def test_confirmation_page_redirects_to_hub(self):
         # Given I navigate to the confirmation page
@@ -471,7 +475,7 @@ class TestIndividualResponseTextHandler(IndividualResponseTestCase):
         self.get(self.individual_response_link)
         self.post()
         self.post({"individual-response-how-answer": "Text message"})
-        self.post({"individual-response-enter-number-answer": "0763921456"})
+        self.post({"individual-response-enter-number-answer": self.DUMMY_MOBILE_NUMBER})
 
         # When I post "Yes, send the text"
         self.post({"individual-response-text-confirm-answer": "Yes, send the text"})
@@ -486,7 +490,7 @@ class TestIndividualResponseTextHandler(IndividualResponseTestCase):
         self.get(self.individual_response_link)
         self.post()
         self.post({"individual-response-how-answer": "Text message"})
-        self.post({"individual-response-enter-number-answer": "0763921456"})
+        self.post({"individual-response-enter-number-answer": self.DUMMY_MOBILE_NUMBER})
 
         # When I post "No"
         self.post(
@@ -495,7 +499,7 @@ class TestIndividualResponseTextHandler(IndividualResponseTestCase):
 
         # Then I should see the enter number page, populated with the phone number
         self.assertInUrl("text/enter-number")
-        self.assertInBody("0763921456")
+        self.assertInBody(self.DUMMY_MOBILE_NUMBER)
 
     def test_confirm_number_previous_link(self):
         # Given I navigate to the confirm number page
@@ -504,14 +508,14 @@ class TestIndividualResponseTextHandler(IndividualResponseTestCase):
         self.get(self.individual_response_link)
         self.post()
         self.post({"individual-response-how-answer": "Text message"})
-        self.post({"individual-response-enter-number-answer": "0763921456"})
+        self.post({"individual-response-enter-number-answer": self.DUMMY_MOBILE_NUMBER})
 
         # When I click the previous link
         self.previous()
 
         # Then I should see the enter number page, populated with the phone number
         self.assertInUrl("text/enter-number")
-        self.assertInBody("0763921456")
+        self.assertInBody(self.DUMMY_MOBILE_NUMBER)
 
     def test_enter_number_previous_persists_journey(self):
         # Given I navigate to the enter number page
@@ -532,7 +536,7 @@ class TestIndividualResponseTextHandler(IndividualResponseTestCase):
         self.get(self.individual_response_link)
         self.post()
         self.post({"individual-response-how-answer": "Text message"})
-        self.post({"individual-response-enter-number-answer": "0763921456"})
+        self.post({"individual-response-enter-number-answer": self.DUMMY_MOBILE_NUMBER})
 
         # When I click the previous link
         self.previous()
