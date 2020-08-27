@@ -1,5 +1,7 @@
 from flask import session as cookie_session
 from werkzeug.exceptions import NotFound
+
+from app.data_model.session_data import SessionData
 from app.views.contexts.thank_you_context import (
     build_default_thank_you_context,
     build_census_thank_you_context,
@@ -18,7 +20,7 @@ class ThankYou:
     }
 
     def __init__(self):
-        self.session_data = get_session_store().session_data
+        self.session_data: SessionData = get_session_store().session_data
 
         if not self.session_data.submitted_time:
             raise NotFound
@@ -43,4 +45,6 @@ class ThankYou:
                 census_type_code = self.CENSUS_TYPE_MAPPINGS[census_type]
                 break
 
-        return build_census_thank_you_context(self.session_data, census_type_code)
+        return build_census_thank_you_context(
+            self.session_data, census_type_code, cookie_session.get("theme")
+        )

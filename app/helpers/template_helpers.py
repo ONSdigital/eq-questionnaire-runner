@@ -113,9 +113,9 @@ def get_contact_us_url(schema_theme: str, language_code: str):
     base_url = get_census_base_url(schema_theme, language_code)
 
     if language_code == "cy":
-        return base_url + "cysylltu-a-ni/"
+        return f"{base_url}cysylltu-a-ni/"
 
-    return base_url + "contact-us/"
+    return f"{base_url}contact-us/"
 
 
 def safe_content(content):

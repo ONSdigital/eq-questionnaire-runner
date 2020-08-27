@@ -127,14 +127,14 @@ def get_sign_out():
     Signs the user first out of eq, then the account service by hitting the account services'
     logout url.
     """
-    log_out_url = request.args.get("log_out_url") or cookie_session.get(
+    redirect_url = request.args.get("redirect_url") or cookie_session.get(
         "account_service_log_out_url"
     )
 
     logout_user()
 
-    if log_out_url:
-        return redirect(log_out_url)
+    if redirect_url:
+        return redirect(redirect_url)
 
     return redirect(url_for(".get_signed_out"))
 

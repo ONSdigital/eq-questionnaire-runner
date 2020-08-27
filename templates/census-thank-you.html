@@ -2,7 +2,7 @@
 {% from 'components/panel/_macro.njk' import onsPanel %}
 
 {% set hide_signout_button = content.hide_signout_button %}
-{% set log_out_url = content.log_out_url %}
+{% set sign_out_url = content.sign_out_url %}
 
 {% block main %}
 
@@ -38,7 +38,7 @@
     <div class="panel panel--warn panel--simple" >
       <span class="panel__icon" aria-hidden="true">!</span>
       <div class="panel__body">
-        <p data-qa="exit-text"><strong>{{ _("Make sure you <a href='{log_out_url}'>leave this page</a> or close your browser if using a shared device").format(log_out_url=log_out_url)  }}</strong></p>
+        <p data-qa="exit-text"><strong>{{ _("Make sure you <a href='{sign_out_url}'>leave this page</a> or close your browser if using a shared device").format(sign_out_url=sign_out_url)  }}</strong></p>
       </div>
     </div>
 
