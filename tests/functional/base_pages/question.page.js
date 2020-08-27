@@ -54,6 +54,10 @@ class QuestionPage extends BasePage {
     return '[data-qa="block-description"]';
   }
 
+  individualResponseGuidance() {
+    return '[data-qa="individual-response-url"]';
+  }
+
   lastViewedQuestionGuidance() {
     return "#last-viewed-question-guidance";
   }
