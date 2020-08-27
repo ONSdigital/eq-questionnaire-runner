@@ -104,7 +104,7 @@ def get_census_base_url(
     base_url = "https://census.gov.uk/"
 
     if schema_theme == "census-nisra":
-        return base_url + "ni/"
+        return f"{base_url}ni/"
 
     return base_url
 
