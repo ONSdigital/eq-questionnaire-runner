@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2020-08-27 12:22+0100\n"
+"POT-Creation-Date: 2020-08-27 12:31+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -189,6 +189,7 @@ msgid "Office for National Statistics logo"
 msgstr ""
 
 #: app/helpers/template_helper.py:28 app/helpers/template_helper.py:37
+#: templates/errors/403.html:3 templates/errors/404.html:3
 msgid "Census 2021"
 msgstr ""
 
@@ -282,107 +283,107 @@ msgstr ""
 msgid " (You)"
 msgstr ""
 
-#: app/views/handlers/individual_response.py:197
+#: app/views/handlers/individual_response.py:208
 msgid "How would you like <em>{person_name}</em> to receive a separate census?"
 msgstr ""
 
-#: app/views/handlers/individual_response.py:203
+#: app/views/handlers/individual_response.py:214
 msgid ""
 "For someone to complete a separate census, we need to send them an "
 "individual access code."
 msgstr ""
 
-#: app/views/handlers/individual_response.py:206
+#: app/views/handlers/individual_response.py:217
 msgid "Select how to send access code"
 msgstr ""
 
-#: app/views/handlers/individual_response.py:216
+#: app/views/handlers/individual_response.py:227
 msgid "Text message"
 msgstr ""
 
-#: app/views/handlers/individual_response.py:218
+#: app/views/handlers/individual_response.py:229
 msgid "We will need their mobile number for this"
 msgstr ""
 
-#: app/views/handlers/individual_response.py:223
+#: app/views/handlers/individual_response.py:234
 msgid "Post"
 msgstr ""
 
-#: app/views/handlers/individual_response.py:225
+#: app/views/handlers/individual_response.py:236
 msgid ""
 "We can only send this to an unnamed resident at the registered household "
 "address"
 msgstr ""
 
-#: app/views/handlers/individual_response.py:319
+#: app/views/handlers/individual_response.py:336
 msgid "How would you like to answer <em>{person_name_possessive}</em> questions?"
 msgstr ""
 
-#: app/views/handlers/individual_response.py:332
+#: app/views/handlers/individual_response.py:349
 msgid "I would like to request a separate census for them to complete"
 msgstr ""
 
-#: app/views/handlers/individual_response.py:338
+#: app/views/handlers/individual_response.py:355
 msgid "I will ask them to answer their own questions"
 msgstr ""
 
-#: app/views/handlers/individual_response.py:342
+#: app/views/handlers/individual_response.py:359
 msgid "They will need the household access code from the letter we sent you"
 msgstr ""
 
-#: app/views/handlers/individual_response.py:348
+#: app/views/handlers/individual_response.py:365
 msgid "I will answer for {person_name}"
 msgstr ""
 
-#: app/views/handlers/individual_response.py:460
+#: app/views/handlers/individual_response.py:477
 msgid "Do you want to send an individual access code for {person_name} by post?"
 msgstr ""
 
-#: app/views/handlers/individual_response.py:466
+#: app/views/handlers/individual_response.py:483
 msgid ""
 "A letter with an individual access code will be sent to your registered "
 "household address"
 msgstr ""
 
-#: app/views/handlers/individual_response.py:473
+#: app/views/handlers/individual_response.py:490
 msgid ""
 "The letter will be addressed to <strong>Individual Resident</strong> "
 "instead of the name provided"
 msgstr ""
 
-#: app/views/handlers/individual_response.py:486
+#: app/views/handlers/individual_response.py:503
 msgid "Yes, send the access code by post"
 msgstr ""
 
-#: app/views/handlers/individual_response.py:490
+#: app/views/handlers/individual_response.py:507
 msgid "No, send it another way"
 msgstr ""
 
-#: app/views/handlers/individual_response.py:605
+#: app/views/handlers/individual_response.py:622
 msgid "Who do you need to request a separate census for?"
 msgstr ""
 
-#: app/views/handlers/individual_response.py:655
+#: app/views/handlers/individual_response.py:672
 msgid "What is <em>{person_name_possessive}</em> mobile number?"
 msgstr ""
 
-#: app/views/handlers/individual_response.py:665
+#: app/views/handlers/individual_response.py:682
 msgid "UK mobile number"
 msgstr ""
 
-#: app/views/handlers/individual_response.py:666
+#: app/views/handlers/individual_response.py:683
 msgid "This will not be stored and only used once to send the access code"
 msgstr ""
 
-#: app/views/handlers/individual_response.py:767
+#: app/views/handlers/individual_response.py:784
 msgid "Is this mobile number correct?"
 msgstr ""
 
-#: app/views/handlers/individual_response.py:776
+#: app/views/handlers/individual_response.py:793
 msgid "Yes, send the text"
 msgstr ""
 
-#: app/views/handlers/individual_response.py:780
+#: app/views/handlers/individual_response.py:797
 msgid "No, I need to change it"
 msgstr ""
 
@@ -451,7 +452,7 @@ msgstr ""
 msgid "If you can’t answer someone else’s questions"
 msgstr ""
 
-#: templates/interstitial.html:23
+#: templates/interstitial.html:23 templates/partials/question.html:25
 msgid "If you can’t answer questions for this person"
 msgstr ""
 
@@ -563,23 +564,20 @@ msgstr ""
 msgid "For more information on how we use this data."
 msgstr ""
 
-#: templates/errors/403.html:3
-msgid "Authorisation refused"
-msgstr ""
-
-#: templates/errors/403.html:3 templates/errors/404.html:3
-#: templates/errors/500.html:3
-msgid "Office for National Statistics"
-msgstr ""
-
-#: templates/errors/403.html:6
+#: templates/errors/403.html:3 templates/errors/403.html:6
 msgid "Sorry, there is a problem"
 msgstr ""
 
 #: templates/errors/403.html:7
-msgid ""
-"To access this page you need to <a href='#'>enter your unique access "
-"code.</a>"
+msgid "You may need to update your browser to a newer version."
+msgstr ""
+
+#: templates/errors/403.html:8
+msgid "If the problem still occurs, try using a different browser or device."
+msgstr ""
+
+#: templates/errors/403.html:9
+msgid "For further help, please <a href='{url}'>contact us</a>."
 msgstr ""
 
 #: templates/errors/404.html:3 templates/errors/404.html:6
@@ -602,6 +600,10 @@ msgstr ""
 
 #: templates/errors/500.html:3
 msgid "An error has occurred"
+msgstr ""
+
+#: templates/errors/500.html:3
+msgid "Office for National Statistics"
 msgstr ""
 
 #: templates/errors/500.html:6
@@ -773,23 +775,23 @@ msgid ""
 " of the section</a>"
 msgstr ""
 
-#: templates/partials/question.html:53
+#: templates/partials/question.html:60
 msgid "Selecting this will clear your answer"
 msgstr ""
 
-#: templates/partials/question.html:54
+#: templates/partials/question.html:61
 msgid "cleared"
 msgstr ""
 
-#: templates/partials/question.html:57
+#: templates/partials/question.html:64
 msgid "Selecting this will deselect any selected options"
 msgstr ""
 
-#: templates/partials/question.html:58 templates/partials/question.html:66
+#: templates/partials/question.html:65 templates/partials/question.html:73
 msgid "deselected"
 msgstr ""
 
-#: templates/partials/question.html:62
+#: templates/partials/question.html:69
 msgid "Or"
 msgstr ""
 

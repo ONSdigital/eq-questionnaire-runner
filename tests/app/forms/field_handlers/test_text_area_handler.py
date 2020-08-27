@@ -1,8 +1,8 @@
 from wtforms import Form
 
 from app.data_model.answer_store import AnswerStore
-from app.forms.field_handlers.text_area_handler import TextAreaHandler
-from app.forms.fields.max_text_area_field import MaxTextAreaField
+from app.forms.field_handlers import TextAreaHandler
+from app.forms.fields import MaxTextAreaField
 
 
 def test_get_field():

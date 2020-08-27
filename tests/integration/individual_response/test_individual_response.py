@@ -20,6 +20,11 @@ class IndividualResponseTestCase(IntegrationTestCase):
             .find_next()["href"]
         )
 
+    def get_link(self, rowIndex, text):
+        selector = f"[data-qa='list-item-{text}-{rowIndex}-link']"
+        selected = self.getHtmlSoup().select(selector)
+        return selected[0].get("href")
+
     def _add_no_household_members(self):
         self.get("questionnaire/primary-person-list-collector/")
         self.post({"you-live-here": "No"})
@@ -247,6 +252,21 @@ class TestIndividualResponseIndividualSection(IndividualResponseTestCase):
         self.assertInBody("You will need to know personal details such as")
         self.assertInBody("If you can’t answer questions for this person")
 
+    def test_ir_guidance_displayed_on_remove_person_page(self):
+        # Given I add a primary person and a household member
+        self.get("questionnaire/primary-person-list-collector/")
+        self.post({"you-live-here": "Yes"})
+        self.post({"first-name": "Marie", "last-name": "Day"})
+        self.post({"anyone-else": "Yes"})
+        self.post({"first-name": "John", "last-name": "Doe"})
+
+        # When I try to remove the household member
+        householder_remove_link = self.get_link("2", "remove")
+        self.get(householder_remove_link)
+
+        # Then I should see the individual response guidance
+        self.assertInBody("If you can’t answer questions for this person")
+
 
 class TestIndividualResponseHubViews(IndividualResponseTestCase):
     def test_individual_response_requested(self):
@@ -291,6 +311,26 @@ class TestIndividualResponseNavigation(IndividualResponseTestCase):
 
         # Then I should be taken back to the individual section
         self.assertInUrl("individual-interstitial")
+
+    def test_ir_introduction_page_previous_goes_to_remove_page(self):
+        # Given I navigate to the individual response introduction page from a
+        # remove person page
+        self.get("questionnaire/primary-person-list-collector/")
+        self.post({"you-live-here": "Yes"})
+        self.post({"first-name": "Marie", "last-name": "Day"})
+        self.post({"anyone-else": "Yes"})
+        self.post({"first-name": "John", "last-name": "Doe"})
+        householder_remove_link = self.get_link("2", "remove")
+        self.get(householder_remove_link)
+
+        # When I start an IR journey then click the previous link
+        self.get(self.individual_response_link)
+        self.post()
+        self.previous()
+        self.previous()
+
+        # Then I should be taken back to the remove page
+        self.assertInUrl("remove-person")
 
     def test_how_page_previous_goes_to_introduction_page(self):
         # Given I navigate to the individual response how page from an

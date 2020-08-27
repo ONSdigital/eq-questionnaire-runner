@@ -25,8 +25,18 @@ class TestApplicationVariables(IntegrationTestCase):
         self.get("/questionnaire/name-block/")
         self.assertStatusOK()
         self.assertInHead("gtm.start")
-        self.assertInHead("dataLayer = [];")
+        self.assertInHead("dataLayer = []")
         self.assertInBody("https://www.googletagmanager.com")
+
+    def test_google_analytics_data_layer_is_set_to_nisra_false(self):
+        self.launchSurvey("test_thank_you_census_individual")
+        self._client.set_cookie(
+            "localhost", key="ons_cookie_policy", value="'usage':true"
+        )
+        self.get("/questionnaire/individual-confirmation/")
+        self.assertStatusOK()
+        self.assertInHead("gtm.start")
+        self.assertInHead('dataLayer = [{"nisra": false}]')
 
     def test_livereload_script_rendered(self):
         self.launchSurvey("test_textfield")

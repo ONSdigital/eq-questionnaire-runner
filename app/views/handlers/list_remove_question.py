@@ -1,4 +1,5 @@
 from app.views.handlers.list_action import ListAction
+from app.views.handlers import individual_response_url
 
 
 class ListRemoveQuestion(ListAction):
@@ -20,13 +21,28 @@ class ListRemoveQuestion(ListAction):
         return True
 
     def handle_post(self):
-        if (
-            self.form.data[self.parent_block["remove_answer"]["id"]]
-            == self.parent_block["remove_answer"]["value"]
-        ):
+        answer_action = self._get_answer_action()
+
+        if answer_action and answer_action["type"] == "RemoveListItemAndAnswers":
             list_name = self.parent_block["for_list"]
             self.questionnaire_store_updater.remove_list_item_and_answers(
                 list_name, self._current_location.list_item_id
             )
 
         return super().handle_post()
+
+    def individual_response_enabled(self) -> bool:
+        if self._schema.json.get("individual_response"):
+            return True
+        return False
+
+    def get_context(self):
+        context = super().get_context()
+        context["individual_response_enabled"] = self.individual_response_enabled()
+        context["individual_response_url"] = individual_response_url(
+            self._schema.get_individual_response_list(),
+            self._current_location.list_item_id,
+            self._questionnaire_store,
+            journey="remove-person",
+        )
+        return context
