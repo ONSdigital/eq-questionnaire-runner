@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2020-08-24 10:48+0100\n"
+"POT-Creation-Date: 2020-08-27 08:50+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -190,6 +190,8 @@ msgstr ""
 
 #: app/helpers/template_helper.py:28 app/helpers/template_helper.py:37
 #: templates/errors/403.html:3 templates/errors/404.html:3
+#: templates/errors/500.html:3 templates/errors/session-expired.html:6
+#: templates/multiple_survey.html:4 templates/signed-out.html:3
 msgid "Census 2021"
 msgstr ""
 
@@ -563,10 +565,6 @@ msgstr ""
 
 #: templates/errors/500.html:3
 msgid "An error has occurred"
-msgstr ""
-
-#: templates/errors/500.html:3
-msgid "Office for National Statistics"
 msgstr ""
 
 #: templates/errors/500.html:6
