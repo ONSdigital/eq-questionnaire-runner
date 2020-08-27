@@ -1,6 +1,8 @@
 {% extends 'layouts/_base.html' %}
 {% import 'macros/helpers.html' as helpers %}
 
+{% set page_title = _("Accessibility statement") ~ " - " ~ _("Census 2021") %}
+
 {% block main %}
   {% do pageConfig | setAttribute("feedback", "") %}
 
