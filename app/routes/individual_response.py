@@ -162,7 +162,7 @@ def get_individual_response_post_address_confirmation(schema, questionnaire_stor
         return redirect(url_for("questionnaire.get_questionnaire"))
 
     return render_template(
-        template="individual_response/confirmation",
+        template="individual_response/confirmation-post",
         display_address=questionnaire_store.metadata.get("display_address"),
     )
 
@@ -270,5 +270,6 @@ def get_individual_response_text_message_confirmation(schema, questionnaire_stor
     mobile_number = timed_serializer.loads(request.args.get("mobile_number"))
 
     return render_template(
-        template="individual_response/mobile_confirmation", mobile_number=mobile_number
+        template="individual_response/confirmation-text-message",
+        mobile_number=mobile_number,
     )
