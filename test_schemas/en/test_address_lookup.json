@@ -1,0 +1,69 @@
+{
+  "mime_type": "application/json/ons/eq",
+  "language": "en",
+  "schema_version": "0.0.1",
+  "data_version": "0.0.3",
+  "survey_id": "0",
+  "title": "Test Address Lookup",
+  "theme": "default",
+  "description": "A questionnaire to test Address Lookup",
+  "metadata": [
+    {
+      "name": "user_id",
+      "type": "string"
+    },
+    {
+      "name": "period_id",
+      "type": "string"
+    },
+    {
+      "name": "ru_name",
+      "type": "string"
+    }
+  ],
+  "sections": [
+    {
+      "id": "section",
+      "groups": [
+        {
+          "id": "group",
+          "title": "List",
+          "blocks": [
+            {
+              "type": "Question",
+              "id": "address-block",
+              "question": {
+                "type": "General",
+                "id": "address-question",
+                "title": "What is your current address?",
+                "answers": [
+                  {
+                    "id": "address",
+                    "mandatory": true,
+                    "type": "Address"
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "summary-section",
+      "title": "Summary",
+      "groups": [
+        {
+          "blocks": [
+            {
+              "type": "Summary",
+              "id": "summary"
+            }
+          ],
+          "id": "summary-group",
+          "title": "Summary"
+        }
+      ]
+    }
+  ]
+}

@@ -1,11 +1,14 @@
-from .address_handler import AddressHandler
-from .date_handlers import DateHandler, MonthYearDateHandler, YearDateHandler
-from .dropdown_handler import DropdownHandler
-from .duration_handler import DurationHandler
-from .number_handler import NumberHandler
-from .select_handlers import SelectHandler, SelectMultipleHandler
-from .string_handler import StringHandler
-from .text_area_handler import TextAreaHandler
+from app.forms.field_handlers.address_handler import AddressHandler
+from app.forms.field_handlers.date_handler import DateHandler
+from app.forms.field_handlers.dropdown_handler import DropdownHandler
+from app.forms.field_handlers.duration_handler import DurationHandler
+from app.forms.field_handlers.month_year_date_handler import MonthYearDateHandler
+from app.forms.field_handlers.number_handler import NumberHandler
+from app.forms.field_handlers.select_handler import SelectHandler
+from app.forms.field_handlers.select_multiple_handler import SelectMultipleHandler
+from app.forms.field_handlers.string_handler import StringHandler
+from app.forms.field_handlers.text_area_handler import TextAreaHandler
+from app.forms.field_handlers.year_date_handler import YearDateHandler
 
 FIELD_HANDLER_MAPPINGS = {
     "Checkbox": SelectMultipleHandler,

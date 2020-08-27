@@ -22,6 +22,10 @@ def format_number(value):
     return ""
 
 
+def get_formatted_address(values):
+    return "<br>".join(value for value in values.values())
+
+
 def get_formatted_currency(value, currency="GBP"):
     if value or value == 0:
         return numbers.format_currency(
@@ -432,6 +436,8 @@ class SummaryRowItem:
 
         if value is None or value == "":
             self.valueList = [SummaryRowItemValue(no_answer_provided)]
+        elif answer_type == "address":
+            self.valueList = [SummaryRowItemValue(get_formatted_address(value))]
         elif answer_type == "checkbox":
             self.valueList = [
                 SummaryRowItemValue(option["label"], option["detail_answer_value"])

@@ -54,14 +54,17 @@ def _map_theme(theme):
 
 def render_template(template, **kwargs):
     template = f"{template.lower()}.html"
-    theme = cookie_session.get("theme")
+
     page_header_context = get_page_header_context(
-        get_locale().language, theme or "census"
+        get_locale().language, cookie_session.get("theme", "census")
     )
     page_header_context.update({"title": cookie_session.get("survey_title")})
     google_tag_mananger_context = get_google_tag_mananger_context()
     cdn_url = f'{current_app.config["CDN_URL"]}{current_app.config["CDN_ASSETS_PATH"]}'
-    contact_us_url = get_contact_us_url(theme, get_locale().language)
+    contact_us_url = get_contact_us_url(
+        cookie_session.get("theme"), get_locale().language
+    )
+
     return flask_render_template(
         template,
         account_service_url=cookie_session.get("account_service_url"),
@@ -69,13 +72,12 @@ def render_template(template, **kwargs):
         contact_us_url=contact_us_url,
         cookie_settings_url=current_app.config["COOKIE_SETTINGS_URL"],
         page_header=page_header_context,
-        theme=_map_theme(theme),
+        theme=_map_theme(cookie_session.get("theme")),
         languages=get_languages_context(),
-        schema_theme=theme,
+        schema_theme=cookie_session.get("theme"),
         language_code=get_locale().language,
         survey_title=cookie_session.get("survey_title"),
         cdn_url=cdn_url,
-        data_layer=get_data_layer(theme),
         **google_tag_mananger_context,
         **kwargs,
     )
@@ -118,13 +120,3 @@ def safe_content(content):
         # Strip HTML Tags
         content = re.sub(r"</?[^>]+>", "", content)
     return content
-
-
-def get_data_layer(schema_theme):
-    if schema_theme == "census-nisra":
-        return [{"nisra": True}]
-
-    if schema_theme == "census":
-        return [{"nisra": False}]
-
-    return []

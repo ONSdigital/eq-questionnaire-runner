@@ -1,0 +1,35 @@
+{% from "components/address/_macro.njk" import onsAddressInput %}
+
+{% set input = form.fields[answer.id] if input is undefined else input %}
+
+{% set config = {
+    "id": "address",
+    "legend": question.title,
+    "legendClasses": "u-vh",
+    "autosuggest":{
+        "label": {
+            "text": _("Enter address or postcode and select from results")
+        },
+    },
+    "line1": {
+        "label": _("Address line 1"),
+        "value": input.line1._value() | e,
+        "error": error
+    },
+    "line2": {
+        "label": _("Address line 2"),
+        "value": input.line2._value() | e
+    },
+    "town": {
+        "label": _("Town or city"),
+        "value": input.town._value() | e
+    },
+    "postcode": {
+        "label": _("Postcode"),
+        "value": input.postcode._value() | e
+    },
+    "searchButton": _("Search for an address"),
+    "manualButton": _("Manually enter address")
+   } %}
+
+{{ onsAddressInput(config) }}
