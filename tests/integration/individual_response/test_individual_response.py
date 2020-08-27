@@ -434,7 +434,7 @@ class TestIndividualResponseWho(IndividualResponseTestCase):
 
 
 class TestIndividualResponseTextHandler(IndividualResponseTestCase):
-    def test_display_mobile_on_confirmation_page(self):
+    def test_display_mobile_number_on_confirmation_page(self):
         # Given I navigate to the confirmation page
         self._add_household_no_primary()
         self.get(self.individual_section_link)
