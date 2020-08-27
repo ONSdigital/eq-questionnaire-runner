@@ -266,8 +266,8 @@ def get_individual_response_text_message_confirmation(schema, questionnaire_stor
     url_param_salt = current_app.eq["secret_store"].get_secret_by_name(
         "EQ_URL_PARAM_SALT"
     )
-    timed_serializer = URLSafeSerializer(url_param_salt)
-    mobile_number = timed_serializer.loads(request.args.get("mobile_number"))
+    url_serializer = URLSafeSerializer(url_param_salt)
+    mobile_number = url_serializer.loads(request.args.get("mobile_number"))
 
     return render_template(
         template="individual_response/confirmation-text-message",

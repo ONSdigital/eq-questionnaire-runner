@@ -698,8 +698,8 @@ class IndividualResponseTextHandler(IndividualResponseHandler):
 
     def handle_get(self):
         if "mobile_number" in self._request_args:
-            timed_serializer = URLSafeSerializer(self._url_param_salt)
-            mobile_number = timed_serializer.loads(self._request_args["mobile_number"])
+            url_serializer = URLSafeSerializer(self._url_param_salt)
+            mobile_number = url_serializer.loads(self._request_args["mobile_number"])
             self._answers = {"individual-response-enter-number-answer": mobile_number}
         previous_location_url = url_for(
             "individual_response.get_individual_response_how",
@@ -715,14 +715,14 @@ class IndividualResponseTextHandler(IndividualResponseHandler):
         )
 
     def handle_post(self):
-        timed_serializer = URLSafeSerializer(self._url_param_salt)
+        url_serializer = URLSafeSerializer(self._url_param_salt)
 
         return redirect(
             url_for(
                 "individual_response.get_individual_response_text_message_confirm",
                 list_item_id=self._list_item_id,
                 journey=self._request_args.get("journey"),
-                mobile_number=timed_serializer.dumps(self.mobile_number),
+                mobile_number=url_serializer.dumps(self.mobile_number),
             )
         )
 
@@ -739,8 +739,8 @@ class IndividualResponseTextConfirmHandler(IndividualResponseHandler):
         url_param_salt,
     ):
 
-        timed_serializer = URLSafeSerializer(url_param_salt)
-        mobile_number = timed_serializer.loads(request_args.get("mobile_number"))
+        url_serializer = URLSafeSerializer(url_param_salt)
+        mobile_number = url_serializer.loads(request_args.get("mobile_number"))
 
         super().__init__(
             self.block_definition(mobile_number),
