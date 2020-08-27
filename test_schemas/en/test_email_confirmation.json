@@ -22,7 +22,7 @@
         }
     ],
     "submission": {
-        "email_confirmation_form": true
+        "email_confirmation": true
     },
     "sections": [
         {

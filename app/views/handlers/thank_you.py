@@ -36,7 +36,7 @@ class ThankYou:
         )
         self.email_confirmation_form = (
             EmailConformationForm()
-            if self._schema.get_submission().get("email_confirmation_form")
+            if self._schema.get_submission().get("email_confirmation")
             else None
         )
 
