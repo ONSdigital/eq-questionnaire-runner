@@ -22,8 +22,8 @@ def format_number(value):
     return ""
 
 
-def get_formatted_address(values):
-    return "<br>".join(value for value in values.values())
+def get_formatted_address(address_fields):
+    return "<br>".join(address_field for address_field in address_fields.values())
 
 
 def get_formatted_currency(value, currency="GBP"):

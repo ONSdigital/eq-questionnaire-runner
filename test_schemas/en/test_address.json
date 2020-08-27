@@ -4,9 +4,9 @@
   "schema_version": "0.0.1",
   "data_version": "0.0.3",
   "survey_id": "0",
-  "title": "Test Address Lookup",
+  "title": "Test Address Answer Type",
   "theme": "default",
-  "description": "A questionnaire to test Address Lookup",
+  "description": "A questionnaire to test Address answer type",
   "metadata": [
     {
       "name": "user_id",
