@@ -20,6 +20,13 @@
   {%- endif -%}
 {%- endset -%}
 
+{% set individual_response_guidance %}
+   {%- if show_individual_response_guidance == True -%}
+      {% set title = _("If you can’t answer questions for this person") %}
+      {% include 'partials/individual-response-guidance.html' %}
+   {%- endif -%}
+{% endset %}
+
 {% set question_warning %}
   {%- if question.warning -%}
     {% call onsPanel({
@@ -97,6 +104,7 @@
     {% include 'partials/summary/list-summary.html' %}
   {% endif %}
   {{ question_warning }}
+  {{ individual_response_guidance }}
   {{ question_definition }}
   {{ question_guidance }}
   {{ question_answers }}
