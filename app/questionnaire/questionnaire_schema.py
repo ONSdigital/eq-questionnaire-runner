@@ -195,6 +195,15 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
             ):
                 return block
 
+    def get_remove_question_id_for_individual_response_list(self):
+        for blocks in self.get_groups():
+            for block in blocks["blocks"]:
+                if (
+                    block["type"] == "ListCollector"
+                    and block["for_list"] == self.get_individual_response_list()
+                ):
+                    return block["remove_block"]["id"]
+
     def get_individual_response_list(self):
         return self.json.get("individual_response", {}).get("for_list")
 
