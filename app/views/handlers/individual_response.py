@@ -4,7 +4,7 @@ from typing import List, Mapping
 from flask import redirect
 from flask.helpers import url_for
 from flask_babel import lazy_gettext
-from itsdangerous import URLSafeTimedSerializer
+from itsdangerous import URLSafeSerializer
 from werkzeug.exceptions import NotFound
 
 from app.data_model.progress_store import CompletionStatus
@@ -698,7 +698,7 @@ class IndividualResponseTextHandler(IndividualResponseHandler):
 
     def handle_get(self):
         if "mobile_number" in self._request_args:
-            timed_serializer = URLSafeTimedSerializer(self._url_param_salt)
+            timed_serializer = URLSafeSerializer(self._url_param_salt)
             mobile_number = timed_serializer.loads(self._request_args["mobile_number"])
             self._answers = {"individual-response-enter-number-answer": mobile_number}
         previous_location_url = url_for(
@@ -715,7 +715,7 @@ class IndividualResponseTextHandler(IndividualResponseHandler):
         )
 
     def handle_post(self):
-        timed_serializer = URLSafeTimedSerializer(self._url_param_salt)
+        timed_serializer = URLSafeSerializer(self._url_param_salt)
 
         return redirect(
             url_for(
@@ -739,7 +739,7 @@ class IndividualResponseTextConfirmHandler(IndividualResponseHandler):
         url_param_salt,
     ):
 
-        timed_serializer = URLSafeTimedSerializer(url_param_salt)
+        timed_serializer = URLSafeSerializer(url_param_salt)
         mobile_number = timed_serializer.loads(request_args.get("mobile_number"))
 
         super().__init__(

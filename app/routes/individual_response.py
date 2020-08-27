@@ -1,6 +1,6 @@
 from flask import Blueprint, g, redirect, request, url_for, current_app
 from flask_login import current_user, login_required
-from itsdangerous import URLSafeTimedSerializer
+from itsdangerous import URLSafeSerializer
 from structlog import get_logger
 
 from app.authentication.no_token_exception import NoTokenException
@@ -266,7 +266,7 @@ def get_individual_response_text_message_confirmation(schema, questionnaire_stor
     url_param_salt = current_app.eq["secret_store"].get_secret_by_name(
         "EQ_URL_PARAM_SALT"
     )
-    timed_serializer = URLSafeTimedSerializer(url_param_salt)
+    timed_serializer = URLSafeSerializer(url_param_salt)
     mobile_number = timed_serializer.loads(request.args.get("mobile_number"))
 
     return render_template(
