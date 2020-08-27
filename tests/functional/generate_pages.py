@@ -334,13 +334,13 @@ def process_answer(answer, page_spec, long_names, page_name):
         process_options(answer["id"], answer["options"], page_spec, prefix)
         page_spec.write(RELATIONSHIP_PLAYBACK_GETTER)
 
-    elif answer["type"] in {"YearDate", "Date"}:
+    elif answer["type"] in "Date":
         page_spec.write(_write_date_answer(answer["id"], prefix))
 
-    elif answer["type"] == "MonthYearDate":
+    elif answer["type"] in "MonthYearDate":
         page_spec.write(_write_month_year_date_answer(answer["id"], prefix))
 
-    elif answer["type"] == "Duration":
+    elif answer["type"] in "Duration":
         page_spec.write(_write_duration_answer(answer["id"], answer["units"], prefix))
     elif answer["type"] == "Address":
         page_spec.write(_write_address_answer(answer["id"], prefix))
