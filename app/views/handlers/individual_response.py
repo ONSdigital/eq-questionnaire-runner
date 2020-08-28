@@ -4,6 +4,7 @@ from typing import List, Mapping
 from flask import redirect
 from flask.helpers import url_for
 from flask_babel import lazy_gettext
+from itsdangerous import URLSafeSerializer
 from werkzeug.exceptions import NotFound
 
 from app.data_model.progress_store import CompletionStatus
@@ -51,6 +52,7 @@ class IndividualResponseHandler:
         request_args,
         form_data,
         list_item_id=None,
+        url_param_salt=None,
     ):
         self._block_definition = block_definition
         self._schema = schema
@@ -61,6 +63,7 @@ class IndividualResponseHandler:
         self._answers = None
         self._list_item_id = list_item_id
         self._list_name = self._schema.get_individual_response_list()
+        self._url_param_salt = url_param_salt
 
         self.page_title = None
 
@@ -83,10 +86,6 @@ class IndividualResponseHandler:
                 return False
 
         return True
-
-    @cached_property
-    def _is_hub_journey(self):
-        return self._request_args.get("journey") == "hub"
 
     @cached_property
     def rendered_block(self) -> Mapping:
@@ -225,12 +224,19 @@ class IndividualResponseHowHandler(IndividualResponseHandler):
                     "default": "Post",
                     "options": [
                         {
+                            "label": lazy_gettext("Text message"),
+                            "value": "Text message",
+                            "description": lazy_gettext(
+                                "We will need their mobile number for this"
+                            ),
+                        },
+                        {
                             "label": lazy_gettext("Post"),
                             "value": "Post",
                             "description": lazy_gettext(
                                 "We can only send this to an unnamed resident at the registered household address"
                             ),
-                        }
+                        },
                     ],
                 }
             ],
@@ -256,11 +262,16 @@ class IndividualResponseHowHandler(IndividualResponseHandler):
             list_item_id,
         )
 
+    @cached_property
+    def selected_option(self):
+        answer_id = self.rendered_block["question"]["answers"][0]["id"]
+        return self.form.get_data(answer_id)
+
     def handle_get(self):
         self._list_name = self._schema.get_individual_response_list()
         list_model = self._questionnaire_store.list_store[self._list_name]
 
-        if self._is_hub_journey:
+        if self._request_args.get("journey") == "hub":
             if len(list_model.non_primary_people) == 1:
                 previous_location_url = url_for(
                     "individual_response.request_individual_response",
@@ -297,6 +308,14 @@ class IndividualResponseHowHandler(IndividualResponseHandler):
         )
 
     def handle_post(self):
+        if self.selected_option == "Text message":
+            return redirect(
+                url_for(
+                    ".get_individual_response_text_message",
+                    list_item_id=self._list_item_id,
+                    journey=self._request_args.get("journey"),
+                )
+            )
         return redirect(
             url_for(
                 ".get_individual_response_post_address_confirm",
@@ -600,7 +619,9 @@ class IndividualResponseWhoHandler(IndividualResponseHandler):
             "question": {
                 "type": "Question",
                 "id": "individual-response-who",
-                "title": "Who do you need to request a separate census for?",
+                "title": lazy_gettext(
+                    "Who do you need to request a separate census for?"
+                ),
                 "answers": [
                     {
                         "type": "Radio",
@@ -637,5 +658,194 @@ class IndividualResponseWhoHandler(IndividualResponseHandler):
                 ".get_individual_response_how",
                 journey=self._request_args.get("journey"),
                 list_item_id=self.selected_list_item,
+            )
+        )
+
+
+class IndividualResponseTextHandler(IndividualResponseHandler):
+    block_definition: Mapping = {
+        "type": "IndividualResponse",
+        "question": {
+            "type": "Question",
+            "id": "individual-response-enter-number",
+            "title": {
+                "text": lazy_gettext(
+                    "What is <em>{person_name_possessive}</em> mobile number?"
+                ),
+                "placeholders": IndividualResponseHandler._person_name_placeholder_possessive,
+            },
+            "answers": [
+                {
+                    "type": "TextField",
+                    "id": "individual-response-enter-number-answer",
+                    "mandatory": True,
+                    "label": lazy_gettext("UK mobile number"),
+                    "description": lazy_gettext(
+                        "This will not be stored and only used once to send the access code"
+                    ),
+                }
+            ],
+        },
+    }
+
+    def __init__(
+        self,
+        schema,
+        questionnaire_store,
+        language,
+        request_args,
+        form_data,
+        list_item_id,
+        url_param_salt,
+    ):
+        super().__init__(
+            self.block_definition,
+            schema,
+            questionnaire_store,
+            language,
+            request_args,
+            form_data,
+            list_item_id,
+            url_param_salt,
+        )
+
+    @cached_property
+    def answer_id(self):
+        return self.rendered_block["question"]["answers"][0]["id"]
+
+    @cached_property
+    def mobile_number(self):
+        return self.form.get_data(self.answer_id)
+
+    def handle_get(self):
+        if "mobile_number" in self._request_args:
+            url_serializer = URLSafeSerializer(self._url_param_salt)
+            mobile_number = url_serializer.loads(self._request_args["mobile_number"])
+            self._answers = {"individual-response-enter-number-answer": mobile_number}
+        previous_location_url = url_for(
+            "individual_response.get_individual_response_how",
+            list_item_id=self._list_item_id,
+            journey=self._request_args.get("journey"),
+        )
+
+        return render_template(
+            "individual_response/question",
+            language=self._language,
+            content=self.get_context(),
+            previous_location_url=previous_location_url,
+        )
+
+    def handle_post(self):
+        url_serializer = URLSafeSerializer(self._url_param_salt)
+
+        return redirect(
+            url_for(
+                "individual_response.get_individual_response_text_message_confirm",
+                list_item_id=self._list_item_id,
+                journey=self._request_args.get("journey"),
+                mobile_number=url_serializer.dumps(self.mobile_number),
+            )
+        )
+
+
+class IndividualResponseTextConfirmHandler(IndividualResponseHandler):
+    def __init__(
+        self,
+        schema,
+        questionnaire_store,
+        language,
+        request_args,
+        form_data,
+        list_item_id,
+        url_param_salt,
+    ):
+
+        url_serializer = URLSafeSerializer(url_param_salt)
+        mobile_number = url_serializer.loads(request_args.get("mobile_number"))
+
+        super().__init__(
+            self.block_definition(mobile_number),
+            schema,
+            questionnaire_store,
+            language,
+            request_args,
+            form_data,
+            list_item_id,
+            url_param_salt,
+        )
+
+    @staticmethod
+    def block_definition(mobile_number) -> Mapping:
+        return {
+            "type": "IndividualResponse",
+            "question": {
+                "type": "Question",
+                "id": "individual-response-text-confirm",
+                "title": lazy_gettext("Is this mobile number correct?"),
+                "description": [mobile_number],
+                "answers": [
+                    {
+                        "type": "Radio",
+                        "id": "individual-response-text-confirm-answer",
+                        "mandatory": True,
+                        "options": [
+                            {
+                                "label": lazy_gettext("Yes, send the text"),
+                                "value": "Yes, send the text",
+                            },
+                            {
+                                "label": lazy_gettext("No, I need to change it"),
+                                "value": "No, I need to change it",
+                            },
+                        ],
+                    }
+                ],
+            },
+        }
+
+    @cached_property
+    def answer_id(self):
+        return self.rendered_block["question"]["answers"][0]["id"]
+
+    @cached_property
+    def confirm_option(self):
+        return self.rendered_block["question"]["answers"][0]["options"][0]["value"]
+
+    @cached_property
+    def selected_option(self):
+        return self.form.get_data(self.answer_id)
+
+    def handle_get(self):
+        previous_location_url = url_for(
+            "individual_response.get_individual_response_text_message",
+            list_item_id=self._list_item_id,
+            journey=self._request_args.get("journey"),
+            mobile_number=self._request_args.get("mobile_number"),
+        )
+
+        return render_template(
+            "individual_response/question",
+            language=self._language,
+            content=self.get_context(),
+            previous_location_url=previous_location_url,
+        )
+
+    def handle_post(self):
+        if self.selected_option == self.confirm_option:
+            self._update_section_status(CompletionStatus.INDIVIDUAL_RESPONSE_REQUESTED)
+            return redirect(
+                url_for(
+                    "individual_response.get_individual_response_text_message_confirmation",
+                    journey=self._request_args.get("journey"),
+                    mobile_number=self._request_args.get("mobile_number"),
+                )
+            )
+
+        return redirect(
+            url_for(
+                "individual_response.get_individual_response_text_message",
+                list_item_id=self._list_item_id,
+                journey=self._request_args.get("journey"),
+                mobile_number=self._request_args.get("mobile_number"),
             )
         )
