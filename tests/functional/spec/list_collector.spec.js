@@ -221,5 +221,10 @@ describe("List Collector", () => {
       $(SectionSummaryListCollectorEditPage.submit()).click();
       expect($(PeopleListSectionSummaryPage.peopleListLabel(1)).getText()).to.contain("Mark Twain (You)");
     });
+
+    it("When the user removes an item from the list, They should see the individual response guidance", () => {
+      $(PeopleListSectionSummaryPage.peopleListRemoveLink(2)).click();
+      expect($(SectionSummaryListCollectorRemovePage.individualResponseGuidance()).isExisting()).to.equal(true);
+    });
   });
 });
