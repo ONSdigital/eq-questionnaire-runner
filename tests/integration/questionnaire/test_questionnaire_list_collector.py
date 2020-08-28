@@ -284,11 +284,11 @@ class TestQuestionnaireListCollector(IntegrationTestCase):
 
         self.assertInUrl("/sections/section/")
 
-        # When I update the list collector, which changes the section status to in-progress
         add_someone_link = self.get_add_someone_link()
 
         self.get(add_someone_link)
 
+        # When I update the list collector, which changes the section status to in-progress
         self.add_person("John", "Doe")
 
         # Then my next location is the next incomplete block in that section without last updated guidance being shown
