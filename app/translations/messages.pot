@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2020-08-27 14:02+0100\n"
+"POT-Creation-Date: 2020-08-28 12:53+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -286,7 +286,6 @@ msgstr ""
 msgid " (You)"
 msgstr ""
 
-
 #: app/views/handlers/individual_response.py:208
 msgid "How would you like <em>{person_name}</em> to receive a separate census?"
 msgstr ""
@@ -296,7 +295,6 @@ msgid ""
 "For someone to complete a separate census, we need to send them an "
 "individual access code."
 msgstr ""
-
 
 #: app/views/handlers/individual_response.py:217
 msgid "Select how to send access code"
@@ -315,8 +313,10 @@ msgid "Post"
 msgstr ""
 
 #: app/views/handlers/individual_response.py:236
-
-
+msgid ""
+"We can only send this to an unnamed resident at the registered household "
+"address"
+msgstr ""
 
 #: app/views/handlers/individual_response.py:336
 msgid "How would you like to answer <em>{person_name_possessive}</em> questions?"
@@ -353,7 +353,6 @@ msgid ""
 "The letter will be addressed to <strong>Individual Resident</strong> "
 "instead of the name provided"
 msgstr ""
-
 
 #: app/views/handlers/individual_response.py:503
 msgid "Yes, send the access code by post"
