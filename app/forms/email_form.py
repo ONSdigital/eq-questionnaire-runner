@@ -3,8 +3,8 @@ from wtforms import StringField
 from wtforms.validators import InputRequired, Email
 
 
-class EmailConformationForm(FlaskForm):
-    email = StringField(
+class EmailForm(FlaskForm):
+    email_address = StringField(
         "username",
         validators=[
             InputRequired("Enter an email address to continue"),

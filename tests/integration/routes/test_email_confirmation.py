@@ -22,32 +22,32 @@ class TestEmailConfirmation(IntegrationTestCase):
         # Then I get shown a 404 error
         self.assertStatusNotFound()
 
-    def test_email_confirmation_sent_page_get_not_allowed(self):
-        # Given I launch and complete the test_email_confirmation questionnaire
-        self._launch_and_complete_questionnaire()
-
-        # When I try to view the email confirmation sent page without sending an email
-        self.get("/submitted/email-confirmation-sent/")
-
-        # Then I get shown a 404 error
-        self.assertStatusNotFound()
-
     def test_email_confirmation_page_get_not_allowed(self):
         # Given I launch and complete the test_email_confirmation questionnaire
         self._launch_and_complete_questionnaire()
 
-        # When I try to view the email confirmation page without sending an email from the thank you page first
-        self.get("/submitted/email-confirmation/")
+        # When I try to view the email confirmation page without sending an email
+        self.get("/submitted/email/confirmation/")
 
         # Then I get shown a 404 error
         self.assertStatusNotFound()
 
-    def test_email_confirmation_page_post_not_allowed(self):
+    def test_another_email_page_get_not_allowed(self):
         # Given I launch and complete the test_email_confirmation questionnaire
         self._launch_and_complete_questionnaire()
 
-        # When I try to POST to the email confirmation page without sending an email from the thank you page first
-        self.post(url="/submitted/email-confirmation/")
+        # When I try to view the another email page without sending an email from the thank you page first
+        self.get("/submitted/email/another")
+
+        # Then I get shown a 404 error
+        self.assertStatusNotFound()
+
+    def test_another_email_page_post_not_allowed(self):
+        # Given I launch and complete the test_email_confirmation questionnaire
+        self._launch_and_complete_questionnaire()
+
+        # When I try to POST to the another email page without sending an email from the thank you page first
+        self.post(url="/submitted/email/another/")
 
         # Then I get shown a 404 error
         self.assertStatusNotFound()
@@ -91,10 +91,10 @@ class TestEmailConfirmation(IntegrationTestCase):
         self._launch_and_complete_questionnaire()
 
         # When I enter a valid email and submit
-        self.post({"email": "email@example.com"})
+        self.post({"email_address": "email@example.com"})
 
         # Then I get confirmation that the email has been sent
-        self.assertInUrl("email-confirmation-sent")
+        self.assertInUrl("email/confirmation/")
         self.assertInBody("A confirmation email has been sent")
 
     def test_thank_you_missing_email(self):
@@ -114,7 +114,7 @@ class TestEmailConfirmation(IntegrationTestCase):
         self._launch_and_complete_questionnaire()
 
         # When I fail to enter an email in the correct format and submit
-        self.post({"email": "incorrect-format"})
+        self.post({"email_address": "incorrect-format"})
 
         # Then I get an error message on the thank you page
         self.assertInUrl("thank-you")
@@ -123,59 +123,59 @@ class TestEmailConfirmation(IntegrationTestCase):
             "Enter an email in a valid format, for example name@example.com"
         )
 
-    def test_email_confirmation_page_accessible_after_email_sent_from_thank_you(self):
+    def test_another_email_page_accessible_after_email_sent_from_thank_you(self):
         # Given I launch and complete the test_email_confirmation questionnaire
         self._launch_and_complete_questionnaire()
 
         # When I enter a valid email and submit
-        self.post({"email": "email@example.com"})
+        self.post({"email_address": "email@example.com"})
 
         # Then I can access the email confirmation page
-        self.get("/submitted/email-confirmation/")
+        self.get("/submitted/email/another/")
         self.assertInBody("Send another confirmation email")
 
-    def test_email_confirmation_page_missing_email(self):
+    def test_another_email_page_missing_email(self):
         # Given I launch and complete the test_email_confirmation questionnaire and submit with a valid email from the thank you page
         self._launch_and_complete_questionnaire()
-        self.post({"email": "email@example.com"})
+        self.post({"email_address": "email@example.com"})
 
-        # When I go to the email confirmation page and submit, but fail to enter an email
-        self.get("/submitted/email-confirmation/")
+        # When I go to the another email_page and submit, but fail to enter an email
+        self.get("/submitted/email/another/")
         self.post()
 
-        # Then I get an error message on the email confirmation page
-        self.assertInUrl("/submitted/email-confirmation/")
+        # Then I get an error message on the email another page
+        self.assertInUrl("/submitted/email/another/")
         self.assertInBody("There is a problem with your answer")
         self.assertInBody("Enter an email address to continue")
 
-    def test_email_confirmation_page_incorrect_email_format(self):
+    def test_another_email_page_incorrect_email_format(self):
         # Given I launch and complete the test_email_confirmation questionnaire and submit with a valid email from the thank you page
         self._launch_and_complete_questionnaire()
-        self.post({"email": "email@example.com"})
+        self.post({"email_address": "email@example.com"})
 
-        # When I go to the email confirmation page and submit, but fail to enter an email in the correct format
-        self.get("/submitted/email-confirmation/")
-        self.post({"email": "invalid-format"})
+        # When I go to the another email page and submit, but fail to enter an email in the correct format
+        self.get("/submitted/email/another/")
+        self.post({"email_address": "invalid-format"})
 
-        # Then I get an error message on the email confirmation page
-        self.assertInUrl("/submitted/email-confirmation/")
+        # Then I get an error message on the email another page
+        self.assertInUrl("/submitted/email/another/")
         self.assertInBody("There is a problem with your answer")
         self.assertInBody(
             "Enter an email in a valid format, for example name@example.com"
         )
 
-    def test_email_confirmation_page(self):
+    def test_another_email_page(self):
         # Given I launch and complete the test_email_confirmation questionnaire and submit with a valid email from the thank you page
         self._launch_and_complete_questionnaire()
-        self.post({"email": "email@example.com"})
+        self.post({"email_address": "email@example.com"})
 
-        # When I go to the email confirmation page and submit with a valid email
-        self.get("/submitted/email-confirmation/")
-        self.post({"email": "email@example.com"})
+        # When I go to the another email page and submit with a valid email
+        self.get("/submitted/email/another/")
+        self.post({"email_address": "email@example.com"})
 
         # Then I get confirmation that the email has been sent
-        self.assertInUrl("email-confirmation-sent")
-        self.assertInBody("A confirmation email has been sent")
+        self.assertInUrl("email/confirmation/")
+        self.assertInBody("A confirmation email has been sent to email@example.com")
 
     def _launch_and_complete_questionnaire(self):
         self.launchSurvey("test_email_confirmation")

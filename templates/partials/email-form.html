@@ -1,6 +1,6 @@
 {% from "components/error/_macro.njk" import onsError %}
 {% from "components/button/_macro.njk" import onsButton %}
-{% set email_form_errors = form.errors['email'] %}
+{% set email_form_errors = form.errors['email_address'] %}
 
 <form method="POST">
   {% if email_form_errors %}
@@ -17,12 +17,12 @@
   {% call onsError(email_error) %}
       <strong>{{ _("Email address ") }}</strong>
       <p>{{ _("This will not be stored and only used once to send your confirmation") }}</p>
-      {{ form.fields.email(class_="input input--text input-type__input") }}
+      {{ form.fields.email_address(class_="input input--text input-type__input") }}
     {% endcall %}
     {% else %}
       <strong>{{ _("Email address") }}</strong>
       <p>{{ _("This will not be stored and only used once to send your confirmation") }}</p>
-      {{ form.fields.email(class_="input input--text input-type__input") }}
+      {{ form.fields.email_address(class_="input input--text input-type__input") }}
     {% endif %}
   {{ form.fields.csrf_token }}
 

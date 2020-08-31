@@ -1,5 +1,6 @@
 {% extends 'layouts/_base.html' %}
 {% from 'components/panel/_macro.njk' import onsPanel %}
+{% set page_title = _("Thank you") ~ " - " ~ _("Census 2021") %}
 
 {% block main %}
   {% set form = content.form %}
@@ -39,7 +40,7 @@
   {% if form %}
     <h1>{{ _("Get confirmation email") }}</h1>
     <p>{{ _("If you would like to be sent confirmation that you have completed your census enter your email address") }}</p>
-    {% include 'partials/email-confirmation-form.html' %}
+    {% include 'partials/email-form.html' %}
   {% endif %}
   <br><br>
 

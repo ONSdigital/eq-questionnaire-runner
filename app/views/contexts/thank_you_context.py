@@ -19,11 +19,9 @@ def build_default_thank_you_context(session_data):
     return context
 
 
-def build_census_thank_you_context(
-    display_address, census_type, email_confirmation_form
-):
+def build_census_thank_you_context(display_address, census_type, email_form):
     context = {"display_address": display_address, "census_type": census_type}
 
-    if email_confirmation_form:
-        context.update(build_email_context(email_confirmation_form))
+    if email_form:
+        context.update(build_email_context(email_form))
     return context

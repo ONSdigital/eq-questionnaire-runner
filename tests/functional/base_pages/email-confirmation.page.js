@@ -5,20 +5,12 @@ class EmailConfirmationPage extends QuestionPage {
     super("email-confirmation");
   }
 
-  title() {
-    return '[data-qa="title"]';
+  confirmationText() {
+    return '[data-qa="confirmation-text"]';
   }
 
-  email() {
-    return "#email";
-  }
-
-  submit() {
-    return '[data-qa="btn-submit"]';
-  }
-
-  errorPanel() {
-    return `[data-qa=error-body] div.panel__body > ul`;
+  sendAnotherEmail() {
+    return 'a[id="send-another-email"]';
   }
 }
 export default new EmailConfirmationPage();

@@ -1,18 +1,15 @@
 from werkzeug.exceptions import NotFound
-from app.forms.email_conformation_form import EmailConformationForm
 from app.globals import get_session_store
-from app.views.contexts.email_context import build_email_context
+from app.views.handlers.url_safe_serializer import URLSafeSerializerHandler
 
 
 class EmailConfirmation:
-    def __init__(self):
-        if not get_session_store().session_data.email_confirmation_sent:
+    def __init__(self, email_address):
+        if not get_session_store().session_data.email_confirmation:
             raise NotFound
 
-        self.email_confirmation_form = EmailConformationForm()
+        url_safe_serializer_handler = URLSafeSerializerHandler()
+        self.email_address = url_safe_serializer_handler.loads(email_address)
 
     def get_context(self):
-        return build_email_context(self.email_confirmation_form)
-
-    def validate(self):
-        return self.email_confirmation_form.validate_on_submit()
+        return {"email_address": self.email_address}

@@ -15,6 +15,7 @@ from app.questionnaire.router import Router
 from app.utilities.schema import load_schema_from_session_data
 from app.views.contexts.hub_context import HubContext
 from app.views.handlers.block_factory import get_block_handler
+from app.views.handlers.another_email import AnotherEmail
 from app.views.handlers.email_confirmation import EmailConfirmation
 from app.views.handlers.section import SectionHandler
 from app.views.handlers.submission import SubmissionHandler
@@ -271,7 +272,12 @@ def get_thank_you(schema):
     thank_you = ThankYou(schema)
 
     if request.method == "POST" and thank_you.validate():
-        return redirect(url_for("post_submission.get_email_confirmation_sent"))
+        return redirect(
+            url_for(
+                "post_submission.get_email_confirmation",
+                email_address=thank_you.get_url_safe_serialized_email_address(),
+            )
+        )
 
     return render_template(
         template=thank_you.template,
@@ -281,34 +287,35 @@ def get_thank_you(schema):
     )
 
 
-@post_submission_blueprint.route("email-confirmation/", methods=["GET", "POST"])
+@post_submission_blueprint.route("email/another/", methods=["GET", "POST"])
 @login_required
-@with_schema
-def get_email_confirmation(schema):
-    email_confirmation = EmailConfirmation()
+def get_another_email():
+    another_email = AnotherEmail()
 
-    if request.method == "POST" and email_confirmation.validate():
-        return redirect(url_for("post_submission.get_email_confirmation_sent"))
+    if request.method == "POST" and another_email.validate():
+        return redirect(
+            url_for(
+                "post_submission.get_email_confirmation",
+                email_address=another_email.get_url_safe_serialized_email_address(),
+            )
+        )
 
     return render_template(
-        template="email-confirmation",
-        content=email_confirmation.get_context(),
-        survey_id=schema.json["survey_id"],
+        template="another-email",
+        content=another_email.get_context(),
         hide_signout_button=True,
     )
 
 
-@post_submission_blueprint.route("email-confirmation-sent/", methods=["GET"])
+@post_submission_blueprint.route("email/confirmation/", methods=["GET"])
 @login_required
-@with_schema
-def get_email_confirmation_sent(schema):
-    if not get_session_store().session_data.email_confirmation_sent:
-        raise NotFound
+def get_email_confirmation():
+    email_address = request.args.get("email_address")
+    email_confirmation = EmailConfirmation(email_address)
 
     return render_template(
-        template="email-confirmation-sent",
-        content=None,
-        survey_id=schema.json["survey_id"],
+        template="email-confirmation",
+        content=email_confirmation.get_context(),
         hide_signout_button=True,
     )
 
