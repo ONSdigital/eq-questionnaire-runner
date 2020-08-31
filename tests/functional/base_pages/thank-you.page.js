@@ -17,8 +17,8 @@ class ThankYouPage extends QuestionPage {
     return '[data-qa="btn-sign-out"]';
   }
 
-  email() {
-    return "#email";
+  emailAddress() {
+    return "#email-address";
   }
 
   submit() {
