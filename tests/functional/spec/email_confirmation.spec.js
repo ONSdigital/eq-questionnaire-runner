@@ -36,14 +36,14 @@ describe("Email confirmation", () => {
     it("When I submit the form with a valid email address, Then I go to the email confirmation page", () => {
       $(ThankYouPage.emailAddress()).setValue("name@example.com");
       $(ThankYouPage.submit()).click();
-      expect(browser.getUrl()).to.contain(EmailConfirmationPage.pageName);
-      expect(EmailConfirmationPage.confirmationText()).to.equal("A confirmation email has been sent to name@example.com");
+      expect(browser.getUrl()).to.contain("email/confirmation");
+      expect($(EmailConfirmationPage.confirmationText()).getText()).to.equal("A confirmation email has been sent to name@example.com");
     });
 
     it("when I go to the another email page and submit without providing an email address, Then I get an error message", () => {
       $(EmailConfirmationPage.sendAnotherEmail()).click();
       $(AnotherEmailPage.submit()).click();
-      expect(browser.getUrl()).to.contain(AnotherEmailPage.pageName);
+      expect(browser.getUrl()).to.contain("email/another");
       expect($(AnotherEmailPage.errorPanel()).isExisting()).to.be.true;
       expect($(AnotherEmailPage.errorPanel()).getText()).to.equal("1. Enter an email address to continue");
     });
@@ -51,7 +51,7 @@ describe("Email confirmation", () => {
     it("when I submit the form without providing a correctly formatted email address, Then I get an error message", () => {
       $(AnotherEmailPage.emailAddress()).setValue("incorrect-format");
       $(AnotherEmailPage.submit()).click();
-      expect(browser.getUrl()).to.contain(EmailConfirmationPage.pageName);
+      expect(browser.getUrl()).to.contain("email/another");
       expect($(AnotherEmailPage.errorPanel()).isExisting()).to.be.true;
       expect($(AnotherEmailPage.errorPanel()).getText()).to.equal("1. Enter an email in a valid format, for example name@example.com");
     });
@@ -59,8 +59,8 @@ describe("Email confirmation", () => {
     it("When I submit the form with a valid email, Then I go to the email confirmation page", () => {
       $(AnotherEmailPage.emailAddress()).setValue("name@example.com");
       $(AnotherEmailPage.submit()).click();
-      expect(browser.getUrl()).to.contain(EmailConfirmationPage.pageName);
-      expect(EmailConfirmationPage.confirmationText()).to.equal("A confirmation email has been sent to name@example.com");
+      expect(browser.getUrl()).to.contain("email/confirmation");
+      expect($(EmailConfirmationPage.confirmationText()).getText()).to.equal("A confirmation email has been sent to name@example.com");
     });
   });
 });

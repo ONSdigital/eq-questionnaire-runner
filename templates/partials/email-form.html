@@ -17,12 +17,12 @@
   {% call onsError(email_error) %}
       <strong>{{ _("Email address ") }}</strong>
       <p>{{ _("This will not be stored and only used once to send your confirmation") }}</p>
-      {{ form.fields.email_address(class_="input input--text input-type__input") }}
+      {{ form.fields.email_address(class_="input input--text input-type__input", id="email-address") }}
     {% endcall %}
     {% else %}
       <strong>{{ _("Email address") }}</strong>
       <p>{{ _("This will not be stored and only used once to send your confirmation") }}</p>
-      {{ form.fields.email_address(class_="input input--text input-type__input") }}
+      {{ form.fields.email_address(class_="input input--text input-type__input", id="email-address") }}
     {% endif %}
   {{ form.fields.csrf_token }}
 
