@@ -7,7 +7,7 @@ describe("Address Answer Type", () => {
   });
 
   describe("Given the user is on an address input question", () => {
-    it("When the user enters all address fields, Then, the summary displays the address fields", () => {
+    it("When the user enters all address fields, Then the summary displays the address fields", () => {
       $(Address.Line1()).setValue("Evelyn Street");
       $(Address.Line2()).setValue("Apt 7");
       $(Address.Town()).setValue("Barry");
@@ -15,30 +15,30 @@ describe("Address Answer Type", () => {
 
       $(Address.submit()).click();
       expect(browser.getUrl()).to.contain(Summary.pageName);
-      expect($(Summary.address()).getText()).to.contain("Evelyn Street\nApt 7\nBarry\nCF63 4JG");
+      expect($(Summary.address()).getText()).to.equal("Evelyn Street\nApt 7\nBarry\nCF63 4JG");
       expect($(Summary.address()).getHTML()).to.contain("Evelyn Street<br>Apt 7<br>Barry<br>CF63 4JG");
     });
   });
 
   describe("Given the user is on an address input question", () => {
-    it("When the user enters only address line 1, Then, the summary only displays address line 1", () => {
+    it("When the user enters only address line 1, Then the summary only displays address line 1", () => {
       $(Address.Line1()).setValue("Evelyn Street");
 
       $(Address.submit()).click();
       expect(browser.getUrl()).to.contain(Summary.pageName);
-      expect($(Summary.address()).getText()).to.contain("Evelyn Street");
+      expect($(Summary.address()).getText()).to.equal("Evelyn Street");
     });
   });
 
   describe("Given the user is on an address input question", () => {
-    it("When the user submits the page without entering any fields, Then, an error is displayed", () => {
+    it("When the user submits the page without entering address line 1, Then an error is displayed", () => {
       $(Address.submit()).click();
-      expect($(Address.error()).getText()).to.contain("Enter an address to continue");
+      expect($(Address.error()).getText()).to.equal("Enter an address to continue");
     });
   });
 
-  describe("Given the user submitted an adddress answer type question", () => {
-    it("When the user revisits the address question page, Then, all entered fields are filled in", () => {
+  describe("Given the user has submitted an address answer type question", () => {
+    it("When the user revisits the address question page, Then all entered fields are filled in", () => {
       $(Address.Line1()).setValue("Evelyn Street");
       $(Address.Line2()).setValue("Apt 7");
       $(Address.Town()).setValue("Barry");

@@ -8,8 +8,6 @@ logger = logging.getLogger(__name__)
 
 def get_form_class(validators):
     class AddressForm(Form):
-        # Validation is only ever added to the 1 field that shows in all 4 variants
-        # This is to prevent an error message for each input box
         line1 = StringField(validators=validators)
         line2 = StringField()
         town = StringField()

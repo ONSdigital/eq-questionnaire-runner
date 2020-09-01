@@ -3,11 +3,7 @@ from typing import List
 
 from app.forms.field_handlers.field_handler import FieldHandler
 from app.forms.fields import AddressField
-from app.forms.validators import (
-    AddressLine1Required,
-    format_message_with_title,
-    OptionalForm,
-)
+from app.forms.validators import AddressLine1Required, format_message_with_title
 
 
 class AddressHandler(FieldHandler):
@@ -15,7 +11,7 @@ class AddressHandler(FieldHandler):
 
     @cached_property
     def validators(self) -> List:
-        validate_with: List = [OptionalForm()]
+        validate_with: List = []
 
         if self.answer_schema["mandatory"]:
             validate_with = [
