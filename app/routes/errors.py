@@ -1,10 +1,11 @@
-from flask import Blueprint, request
+from flask import Blueprint, request, session as cookie_session
 from flask_login import current_user
 from flask_wtf.csrf import CSRFError
 from sdc.crypto.exceptions import InvalidTokenException
 from structlog import get_logger
 
 from app.authentication.no_token_exception import NoTokenException
+from app.authentication.expired_token_exception import ExpiredTokenException
 from app.globals import get_metadata
 from app.helpers.language_helper import handle_language
 from app.helpers.template_helper import render_template
@@ -42,8 +43,15 @@ def _render_error_page(status_code, template=None):
 
 
 @errors_blueprint.app_errorhandler(401)
-@errors_blueprint.app_errorhandler(CSRFError)
 @errors_blueprint.app_errorhandler(NoTokenException)
+def no_cookie(error=None):
+    log_error(error, 401)
+    return _render_error_page(401, "no-cookie")
+
+
+@errors_blueprint.app_errorhandler(401)
+@errors_blueprint.app_errorhandler(CSRFError)
+@errors_blueprint.app_errorhandler(ExpiredTokenException)
 def unauthorized(error=None):
     log_error(error, 401)
     return _render_error_page(401, "session-expired")

@@ -1,0 +1,11 @@
+{% extends 'layouts/_base.html' %}
+{% from "components/panel/_macro.njk" import onsPanel %}
+
+{% import 'macros/helpers.html' as helpers %}
+
+{% set survey_title = _("Session expired") %}
+
+{% block main %}
+  <h1>{{ _("Sorry there is a problem") }}</h1>
+  <p>{{ _('To access this page you need to <a href="%(account_service_link)s">enter your 16-character access code</a> again to continue your census.', account_service_link=account_service_url) }}</p>
+{% endblock %}

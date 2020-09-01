@@ -1,9 +1,10 @@
-from flask import Blueprint, g, redirect, request, url_for, jsonify
+from flask import Blueprint, g, redirect, request, url_for, jsonify, session as cookie_session
 import flask_babel
 from flask_login import current_user, login_required
 from structlog import get_logger
 from werkzeug.exceptions import NotFound
 
+from app.authentication.expired_token_exception import ExpiredTokenException
 from app.authentication.no_token_exception import NoTokenException
 from app.globals import get_metadata, get_session_store, get_session_timeout_in_seconds
 from app.helpers.language_helper import handle_language
@@ -34,9 +35,12 @@ post_submission_blueprint = Blueprint(
 
 @questionnaire_blueprint.before_request
 def before_questionnaire_request():
+    if not cookie_session:
+        raise NoTokenException(401)
+
     metadata = get_metadata(current_user)
     if not metadata:
-        raise NoTokenException(401)
+        raise ExpiredTokenException(401)
 
     logger.bind(
         tx_id=metadata["tx_id"],
@@ -57,9 +61,12 @@ def before_questionnaire_request():
 
 @post_submission_blueprint.before_request
 def before_post_submission_request():
+    if not cookie_session:
+        raise NoTokenException(401)
+
     session_store = get_session_store()
     if not session_store or not session_store.session_data:
-        raise NoTokenException(401)
+        raise ExpiredTokenException(401)
 
     session_data = session_store.session_data
 

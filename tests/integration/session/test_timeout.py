@@ -23,6 +23,7 @@ class TestTimeout(IntegrationTestCase):
         time.sleep(5)
         self.get(self.last_url)
         self.assertStatusUnauthorised()
+        self.assertInBody("Your session has expired due to inactivity")
 
     def test_schema_defined_timeout_cant_be_higher_than_server(self):
         self.launchSurvey("test_timeout")
