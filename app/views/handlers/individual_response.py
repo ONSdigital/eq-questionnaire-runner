@@ -436,8 +436,8 @@ class IndividualResponseChangeHandler(IndividualResponseHandler):
 
         if self.selected_option == self.cancel_go_to_section_option:
             self._update_section_completeness()
-            individual_section_first_block_id = self._schema.get_first_block_id_for_section(
-                self.individual_section_id
+            individual_section_first_block_id = (
+                self._schema.get_first_block_id_for_section(self.individual_section_id)
             )
             return redirect(
                 url_for(
