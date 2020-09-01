@@ -76,11 +76,10 @@ class Router:
         Get the next location in the section. If the section is complete, determine where to go next,
         whether it be a summary, the hub or the next incomplete location.
         """
-        is_section_complete = self._progress_store.is_section_complete(
-            location.section_id, location.list_item_id
-        )
         is_last_block_in_section = routing_path[-1] == location.block_id
-        if is_section_complete:
+        if self._progress_store.is_section_complete(
+            location.section_id, location.list_item_id
+        ):
             if return_to == "section-summary":
                 return self._get_section_url(location)
 
