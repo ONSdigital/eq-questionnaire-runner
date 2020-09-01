@@ -227,9 +227,8 @@ def block(schema, questionnaire_store, block_id, list_name=None, list_item_id=No
         submission_handler.submit_questionnaire()
 
         language_code = get_session_store().session_data.language_code
-        if "census" in (
-            log_out_url := get_census_base_url(cookie_session["theme"], language_code)
-        ):
+        if "census" in cookie_session["theme"]:
+            log_out_url = get_census_base_url(cookie_session["theme"], language_code)
             cookie_session["account_service_log_out_url"] = log_out_url
 
         return redirect(url_for("post_submission.get_thank_you"))
