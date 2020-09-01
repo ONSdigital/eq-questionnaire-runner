@@ -129,12 +129,8 @@ def get_sign_out():
     """
     logout_user()
 
-    redirect_url = request.args.get("redirect_url") or cookie_session.get(
-        "account_service_log_out_url"
-    )
-
-    if redirect_url:
-        return redirect(redirect_url)
+    if log_out_url := cookie_session.get("account_service_log_out_url"):
+        return redirect(log_out_url)
 
     return redirect(url_for(".get_signed_out"))
 

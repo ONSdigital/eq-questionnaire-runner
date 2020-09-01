@@ -1,6 +1,6 @@
 from typing import Mapping
 
-from flask import url_for
+from flask import url_for, session as cookie_session
 
 from app.libs.utils import convert_tx_id
 from app.helpers import get_census_base_url
@@ -29,11 +29,12 @@ def build_default_thank_you_context(session_data: SessionData) -> Mapping:
 def build_census_thank_you_context(
     session_data: SessionData, census_type_code: str, schema_theme: str
 ) -> Mapping:
-    redirect_url = get_census_base_url(schema_theme, session_data.language_code)
+    log_out_url = get_census_base_url(schema_theme, session_data.language_code)
+    cookie_session["account_service_log_out_url"] = log_out_url
 
     return {
         "display_address": session_data.display_address,
         "census_type": census_type_code,
         "hide_signout_button": False,
-        "sign_out_url": url_for("session.get_sign_out", redirect_url=redirect_url),
+        "sign_out_url": url_for("session.get_sign_out"),
     }
