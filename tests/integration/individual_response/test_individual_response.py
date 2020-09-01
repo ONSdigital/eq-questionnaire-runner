@@ -473,6 +473,118 @@ class TestIndividualResponseWho(IndividualResponseTestCase):
         self.assertInUrl(f"/individual-response/{list_item_id}/how?journey=hub")
 
 
+class TestIndividualResponseTextHandler(IndividualResponseTestCase):
+    # Dummy mobile number from the range published by Ofcom
+    # https://www.ofcom.org.uk/phones-telecoms-and-internet/information-for-industry/numbering/numbers-for-drama
+    DUMMY_MOBILE_NUMBER = "07700900258"
+
+    def test_display_mobile_number_on_confirmation_page(self):
+        # Given I navigate to the confirmation page
+        self._add_household_no_primary()
+        self.get(self.individual_section_link)
+        self.get(self.individual_response_link)
+        self.post()
+        self.post({"individual-response-how-answer": "Text message"})
+        self.post({"individual-response-enter-number-answer": self.DUMMY_MOBILE_NUMBER})
+
+        # When I post "Yes, send the text"
+        self.post({"individual-response-text-confirm-answer": "Yes, send the text"})
+
+        # Then I should see the phone number
+        self.assertInUrl("/text/confirmation")
+        self.assertInBody(self.DUMMY_MOBILE_NUMBER)
+
+    def test_mobile_is_not_shown_in_url(self):
+        # Given I navigate to the confirmation page
+        self._add_household_no_primary()
+        self.get(self.individual_section_link)
+        self.get(self.individual_response_link)
+        self.post()
+        self.post({"individual-response-how-answer": "Text message"})
+
+        # When I post the number
+        self.post({"individual-response-enter-number-answer": self.DUMMY_MOBILE_NUMBER})
+
+        # Then I should not see the phone number in the url
+        self.assertNotInUrl(self.DUMMY_MOBILE_NUMBER)
+
+    def test_confirmation_page_redirects_to_hub(self):
+        # Given I navigate to the confirmation page
+        self._add_household_no_primary()
+        self.get(self.individual_section_link)
+        self.get(self.individual_response_link)
+        self.post()
+        self.post({"individual-response-how-answer": "Text message"})
+        self.post({"individual-response-enter-number-answer": self.DUMMY_MOBILE_NUMBER})
+
+        # When I post "Yes, send the text"
+        self.post({"individual-response-text-confirm-answer": "Yes, send the text"})
+
+        self.post()
+        self.assertInUrl("/questionnaire")
+
+    def test_confirm_number_no_routes_back(self):
+        # Given I navigate to the confirm number page
+        self._add_household_no_primary()
+        self.get(self.individual_section_link)
+        self.get(self.individual_response_link)
+        self.post()
+        self.post({"individual-response-how-answer": "Text message"})
+        self.post({"individual-response-enter-number-answer": self.DUMMY_MOBILE_NUMBER})
+
+        # When I post "No"
+        self.post(
+            {"individual-response-text-confirm-answer": "No, I need to change it"}
+        )
+
+        # Then I should see the enter number page, populated with the phone number
+        self.assertInUrl("text/enter-number")
+        self.assertInBody(self.DUMMY_MOBILE_NUMBER)
+
+    def test_confirm_number_previous_link(self):
+        # Given I navigate to the confirm number page
+        self._add_household_no_primary()
+        self.get(self.individual_section_link)
+        self.get(self.individual_response_link)
+        self.post()
+        self.post({"individual-response-how-answer": "Text message"})
+        self.post({"individual-response-enter-number-answer": self.DUMMY_MOBILE_NUMBER})
+
+        # When I click the previous link
+        self.previous()
+
+        # Then I should see the enter number page, populated with the phone number
+        self.assertInUrl("text/enter-number")
+        self.assertInBody(self.DUMMY_MOBILE_NUMBER)
+
+    def test_enter_number_previous_persists_journey(self):
+        # Given I navigate to the enter number page
+        self._add_household_no_primary()
+        self.get(self.individual_response_link)
+        self.post()
+        self.post({"individual-response-how-answer": "Text message"})
+
+        # When I click the previous link
+        self.previous()
+
+        # Then the journey param should be in the url
+        self.assertInUrl("journey=hub")
+
+    def test_confirm_number_previous_persists_journey(self):
+        # Given I navigate to the confirm number page
+        self._add_household_no_primary()
+        self.get(self.individual_response_link)
+        self.post()
+        self.post({"individual-response-how-answer": "Text message"})
+        self.post({"individual-response-enter-number-answer": self.DUMMY_MOBILE_NUMBER})
+
+        # When I click the previous link
+        self.previous()
+
+        # Then the journey param should be in the url
+        self.assertInUrl("journey=hub")
+
+
 class TestIndividualResponseConfirmationPage(IndividualResponseTestCase):
     def test_display_address_on_confirmation_page(self):
         # Given I navigate to the confirmation page

@@ -37,7 +37,7 @@ flask-login = "*"
 "flask-themes2" = "*"
 flask-wtf = "*"
 gevent = {version = "*",platform_python_implementation = "=='CPython'"}
-google-cloud-datastore = "*"
+google-cloud-datastore = "==1.14"
 grpcio = "*"
 gunicorn = "*"
 newrelic = "*"
@@ -60,6 +60,7 @@ flask-compress = "*"
 htmlmin = "*"
 coloredlogs = "*"
 uwsgi = "*"
+itsdangerous = "*"
 
 [requires]
 python_version = "3.8"
