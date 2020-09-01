@@ -1,6 +1,5 @@
 from functools import lru_cache
 import re
-from typing import Union
 
 from flask import (
     current_app,

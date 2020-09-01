@@ -1,4 +1,3 @@
-from tests.app.views.contexts.conftest import schema
 from app.helpers.template_helpers import (
     get_census_base_url,
     get_contact_us_url,
