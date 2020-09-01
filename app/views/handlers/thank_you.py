@@ -45,6 +45,4 @@ class ThankYou:
                 census_type_code = self.CENSUS_TYPE_MAPPINGS[census_type]
                 break
 
-        return build_census_thank_you_context(
-            self.session_data, census_type_code, cookie_session.get("theme")
-        )
+        return build_census_thank_you_context(self.session_data, census_type_code)
