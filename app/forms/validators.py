@@ -207,7 +207,7 @@ class AddressLine1Required:
 
     def __call__(self, form, field):
         """
-        Raise exception if address line 1 field have not been filled out.
+        Raise exception if address line 1 field has not been filled out.
         Not having that field is the same as not filling it out
         as the remaining fields would also have to be empty for
         exception to be raised.
