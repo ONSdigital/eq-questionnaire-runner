@@ -221,7 +221,7 @@ class IntegrationTestCase(unittest.TestCase):  # pylint: disable=too-many-public
 
     def getCookie(self):
         """
-            Returns the last received response cookie session
+        Returns the last received response cookie session
         """
         cookie = self.last_response.headers["Set-Cookie"]
         cookie_session = cookie.split("session=.")[1].split(";")[0]

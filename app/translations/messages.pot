@@ -190,6 +190,9 @@ msgstr ""
 
 #: app/helpers/template_helpers.py:29 app/helpers/template_helpers.py:38
 #: templates/errors/403.html:3 templates/errors/404.html:3
+#: templates/errors/500.html:3 templates/errors/session-expired.html:6
+#: templates/multiple_survey.html:4 templates/signed-out.html:3
+#: templates/static/accessibility.html:4 templates/static/privacy.html:4
 msgid "Census 2021"
 msgstr ""
 
@@ -600,10 +603,6 @@ msgstr ""
 
 #: templates/errors/500.html:3
 msgid "An error has occurred"
-msgstr ""
-
-#: templates/errors/500.html:3
-msgid "Office for National Statistics"
 msgstr ""
 
 #: templates/errors/500.html:6
