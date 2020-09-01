@@ -1,5 +1,4 @@
 import time
-from flask import session as cookie_session
 
 from tests.integration.integration_test_case import IntegrationTestCase
 
