@@ -7,14 +7,14 @@ describe("Post submission exit", () => {
     browser.openQuestionnaire("test_thank_you_census_household.json");
   });
 
-  it("Given I click the exit button, when I am redirected I should see the census homepage", () => {
+  it("Given I click the exit button When I am redirected Then I should see the census homepage", () => {
     $(HouseholdConfirmationPage.submit()).click();
     $(SummaryPage.submit()).click();
     $(CensusThankYouPage.exit()).click();
     expect(browser.getUrl()).to.equal("https://census.gov.uk/");
   });
 
-  it("Given I have clicked the exit button, when I navigate back I am taken to the session expired page", () => {
+  it("Given I have clicked the exit button When I navigate back Then I am taken to the session expired page", () => {
     $(HouseholdConfirmationPage.submit()).click();
     $(SummaryPage.submit()).click();
     $(CensusThankYouPage.exit()).click();

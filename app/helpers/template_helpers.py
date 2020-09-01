@@ -43,7 +43,7 @@ def get_page_header_context(language, theme):
 
 
 def _map_theme(theme):
-    """ Maps a survey schema theme to a design system theme
+    """Maps a survey schema theme to a design system theme
 
     :param theme: A schema defined theme
     :returns: A design system theme
@@ -95,9 +95,7 @@ def get_google_tag_mananger_context():
     return {}
 
 
-def get_census_base_url(
-    schema_theme: Union[str, None] = None, language_code: Union[str, None] = None
-) -> str:
+def get_census_base_url(schema_theme: str, language_code: str) -> str:
     if language_code == "cy":
         return "https://cyfrifiad.gov.uk/"
 
