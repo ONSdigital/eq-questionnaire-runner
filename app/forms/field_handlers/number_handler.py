@@ -1,12 +1,12 @@
 from functools import cached_property
 from typing import Union
 
-from wtforms import IntegerField, DecimalField
+from wtforms import DecimalField, IntegerField
 
 from app.data_model.answer_store import AnswerStore
-from app.forms.fields import DecimalFieldWithSeparator, IntegerFieldWithSeparator
 from app.forms.field_handlers.field_handler import FieldHandler
-from app.forms.validators import NumberCheck, NumberRange, DecimalPlaces
+from app.forms.fields import DecimalFieldWithSeparator, IntegerFieldWithSeparator
+from app.forms.validators import DecimalPlaces, NumberCheck, NumberRange
 from app.questionnaire import Location
 from app.settings import MAX_NUMBER
 

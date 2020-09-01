@@ -1,6 +1,6 @@
 from unittest.mock import MagicMock
 
-from wtforms import StringField, Form, validators
+from wtforms import Form, StringField, validators
 
 from app.forms.field_handlers.string_handler import StringHandler
 

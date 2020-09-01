@@ -1,7 +1,6 @@
 # pylint: disable=redefined-outer-name
-import simplejson as json
-
 import pytest
+import simplejson as json
 
 from app.data_model.answer_store import Answer, AnswerStore
 

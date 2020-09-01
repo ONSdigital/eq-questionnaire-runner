@@ -1,15 +1,15 @@
 import unittest
-from uuid import UUID
 from contextlib import contextmanager
-from mock import patch
+from uuid import UUID
 
 from flask import Flask, request
 from flask_babel import Babel
+from mock import patch
 
-from app.setup import create_app, EmulatorCredentials
+from app.setup import create_app
 from app.storage.datastore import Datastore
 from app.storage.dynamodb import Dynamodb
-from app.submitter.submitter import LogSubmitter, RabbitMQSubmitter, GCSSubmitter
+from app.submitter.submitter import GCSSubmitter, LogSubmitter, RabbitMQSubmitter
 
 
 class TestCreateApp(unittest.TestCase):  # pylint: disable=too-many-public-methods
@@ -226,17 +226,6 @@ class TestCreateApp(unittest.TestCase):  # pylint: disable=too-many-public-metho
 
         # Then
         assert isinstance(application.eq["submitter"], LogSubmitter)
-
-    def test_emulator_credentials(self):
-        creds = EmulatorCredentials()
-
-        self.assertTrue(creds.valid)
-
-        with self.assertRaises(RuntimeError):
-            creds.refresh(None)
-
-        with self.assertRaises(NotImplementedError):
-            creds.with_quota_project("123")
 
     def test_setup_datastore(self):
         self._setting_overrides["EQ_STORAGE_BACKEND"] = "datastore"

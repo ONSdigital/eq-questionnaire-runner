@@ -1,7 +1,6 @@
 from app.data_model.answer_store import AnswerStore
-
-from app.forms.field_handlers import get_field_handler
 from app.forms import error_messages
+from app.forms.field_handlers import get_field_handler
 from tests.app.app_context_test_case import AppContextTestCase
 
 

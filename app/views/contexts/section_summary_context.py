@@ -4,6 +4,7 @@ from flask import url_for
 
 from app.helpers.template_helper import safe_content
 from app.questionnaire import QuestionnaireSchema
+
 from .context import Context
 from .list_context import ListContext
 from .summary import Group

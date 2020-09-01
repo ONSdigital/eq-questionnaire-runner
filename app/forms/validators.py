@@ -1,19 +1,19 @@
+import re
 from datetime import datetime
 from decimal import Decimal, InvalidOperation
 
-import re
 import flask_babel
-from flask_babel import ngettext
 from babel import numbers
 from dateutil.relativedelta import relativedelta
+from flask_babel import ngettext
 from structlog import get_logger
 from wtforms import validators
 from wtforms.compat import string_types
 
+from app.forms import error_messages
 from app.helpers.template_helper import safe_content
 from app.jinja_filters import format_number, get_formatted_currency
 from app.questionnaire.rules import convert_to_datetime
-from app.forms import error_messages
 
 logger = get_logger()
 

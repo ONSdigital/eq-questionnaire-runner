@@ -1,5 +1,4 @@
 from app.questionnaire.relationship_location import RelationshipLocation
-
 from tests.app.app_context_test_case import AppContextTestCase
 
 

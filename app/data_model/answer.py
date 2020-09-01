@@ -1,6 +1,7 @@
 from __future__ import annotations
-from typing import Union, Optional, Dict, List
-from dataclasses import dataclass, field, asdict
+
+from dataclasses import asdict, dataclass, field
+from typing import Dict, List, Optional, Union
 
 
 @dataclass

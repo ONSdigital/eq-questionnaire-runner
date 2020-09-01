@@ -1,6 +1,8 @@
 import unittest
 from unittest.mock import Mock
+
 from wtforms.fields import Field
+
 from app.forms.fields import (
     DecimalFieldWithSeparator,
     IntegerFieldWithSeparator,

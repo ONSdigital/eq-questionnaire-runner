@@ -1,12 +1,12 @@
 import simplejson as json
 
-from app.data_model.answer_store import AnswerStore
 from app.data_model.answer import Answer
+from app.data_model.answer_store import AnswerStore
 from app.data_model.list_store import ListStore
 from app.questionnaire.questionnaire_schema import QuestionnaireSchema
 from app.questionnaire.routing_path import RoutingPath
 from app.submitter.converter import convert_answers
-from tests.app.submitter.schema import make_schema, load_schema
+from tests.app.submitter.schema import load_schema, make_schema
 
 
 def test_convert_answers_to_payload_0_0_3(fake_questionnaire_store):

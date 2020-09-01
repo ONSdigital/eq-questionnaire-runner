@@ -1,5 +1,5 @@
-from app.views.handlers.list_action import ListAction
 from app.views.handlers import individual_response_url
+from app.views.handlers.list_action import ListAction
 
 
 class ListRemoveQuestion(ListAction):

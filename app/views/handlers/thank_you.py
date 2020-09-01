@@ -1,10 +1,11 @@
 from flask import session as cookie_session
 from werkzeug.exceptions import NotFound
-from app.views.contexts.thank_you_context import (
-    build_default_thank_you_context,
-    build_census_thank_you_context,
-)
+
 from app.globals import get_session_store
+from app.views.contexts.thank_you_context import (
+    build_census_thank_you_context,
+    build_default_thank_you_context,
+)
 
 
 class ThankYou:

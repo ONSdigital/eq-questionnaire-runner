@@ -1,5 +1,5 @@
-from flask import Blueprint, g, redirect, request, url_for, jsonify
 import flask_babel
+from flask import Blueprint, g, jsonify, redirect, request, url_for
 from flask_login import current_user, login_required
 from structlog import get_logger
 from werkzeug.exceptions import NotFound

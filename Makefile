@@ -20,6 +20,7 @@ lint:
 
 format:
 	yarn format
+	pipenv run isort **/*.py application.py
 	pipenv run black .
 
 test:

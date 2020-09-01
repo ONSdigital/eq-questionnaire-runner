@@ -2,7 +2,7 @@ from flask import url_for
 
 from app.data_model.answer_store import AnswerStore
 from app.data_model.list_store import ListStore
-from app.data_model.progress_store import ProgressStore, CompletionStatus
+from app.data_model.progress_store import CompletionStatus, ProgressStore
 from app.questionnaire.location import Location
 from app.questionnaire.router import Router
 from app.questionnaire.routing_path import RoutingPath
