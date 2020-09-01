@@ -15,7 +15,7 @@ class AddressHandler(FieldHandler):
 
     @cached_property
     def validators(self) -> List:
-        validate_with = [OptionalForm()]
+        validate_with: List = [OptionalForm()]
 
         if self.answer_schema["mandatory"]:
             validate_with = [
