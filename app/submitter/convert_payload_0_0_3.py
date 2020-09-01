@@ -53,7 +53,7 @@ def convert_answers_to_payload_0_0_3(
 def add_list_collector_answers(
     answer_store, list_store, schema, block_id, answers_payload
 ):
-    """ Add answers from list_collector for a specific block_id.
+    """Add answers from list_collector for a specific block_id.
     Output is added to the `answers_payload` argument."""
 
     list_collector_block = schema.get_block(block_id)

@@ -9,8 +9,7 @@ from app.questionnaire.location import Location
 
 
 class QuestionnaireStoreUpdater:
-    """ Component responsible for any actions that need to happen as a result of updating the questionnaire_store
-    """
+    """Component responsible for any actions that need to happen as a result of updating the questionnaire_store"""
 
     EMPTY_ANSWER_VALUES: Tuple = (None, [], "", {})
 
@@ -133,7 +132,7 @@ class QuestionnaireStoreUpdater:
         return new_list_item_id
 
     def remove_primary_person(self, list_name: str):
-        """ Remove the primary person and all of their answers.
+        """Remove the primary person and all of their answers.
         Any context for the primary person will be removed
         """
         list_item_id = self._list_store[list_name].primary_person
@@ -141,7 +140,7 @@ class QuestionnaireStoreUpdater:
             self.remove_list_item_and_answers(list_name, list_item_id)
 
     def remove_list_item_and_answers(self, list_name: str, list_item_id: str):
-        """ Remove answers from the answer store and update the list store to remove it.
+        """Remove answers from the answer store and update the list store to remove it.
         Any related relationship answers are re-evaluated for completeness.
         """
         self._list_store.delete_list_item(list_name, list_item_id)
@@ -160,8 +159,8 @@ class QuestionnaireStoreUpdater:
     def get_relationship_answers_for_list_name(
         self, list_name: str
     ) -> Union[List[Answer], None]:
-        assosciated_relationship_collectors = self._get_relationship_collectors_by_list_name(
-            list_name
+        assosciated_relationship_collectors = (
+            self._get_relationship_collectors_by_list_name(list_name)
         )
         if not assosciated_relationship_collectors:
             return None

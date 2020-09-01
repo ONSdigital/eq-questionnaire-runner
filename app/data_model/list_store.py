@@ -69,7 +69,7 @@ class ListModel:
 
 
 class ListStore:
-    """ Storage for lists.
+    """Storage for lists.
 
     Stores in the form:
 
@@ -170,7 +170,7 @@ class ListStore:
         self._is_dirty = True
 
     def add_list_item(self, list_name, primary_person=False):
-        """ Add a new list item to a named list.
+        """Add a new list item to a named list.
 
         If the list does not exist, it will be created
 
