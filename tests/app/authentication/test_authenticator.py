@@ -121,7 +121,7 @@ class TestAuthenticator(AppContextTestCase):  # pylint: disable=too-many-public-
                 self.assertIsNone(cookie_session.get(USER_IK))
 
     def test_valid_user_does_not_extend_session_expiry_when_expiry_less_than_60_seconds_different(
-        self
+        self,
     ):
         with self.app_request_context("/status"):
             with patch(
@@ -145,7 +145,7 @@ class TestAuthenticator(AppContextTestCase):  # pylint: disable=too-many-public-
                 self.assertEqual(self.session_store.expiration_time, self.expires_at)
 
     def test_valid_user_extends_session_expiry_when_expiry_greater_than_60_seconds_different(
-        self
+        self,
     ):
         with self.app_request_context("/status"):
             with patch(

@@ -186,7 +186,7 @@ def _get_comparison_id_value(
     when_rule, answer_store, schema, current_location=None, routing_path_block_ids=None
 ):
     """
-        Gets the value of a comparison id specified as an operand in a comparator
+    Gets the value of a comparison id specified as an operand in a comparator
     """
     if current_location and when_rule["comparison"]["source"] == "location":
         try:

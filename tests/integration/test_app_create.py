@@ -18,7 +18,7 @@ class TestCreateApp(unittest.TestCase):  # pylint: disable=too-many-public-metho
 
     @contextmanager
     def override_settings(self):
-        """ Required because although the settings are overriden on the application
+        """Required because although the settings are overriden on the application
         by passing _setting_overrides in, there are many funtions which use the
         imported settings object - this does not get the overrides merged in. This
         helper does that.

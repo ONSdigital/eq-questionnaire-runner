@@ -3,7 +3,7 @@ from tests.integration.integration_test_case import IntegrationTestCase
 
 class TestQuestionnairePiping(IntegrationTestCase):
     def test_given_quotes_in_answer_when_piped_into_page_then_html_escaped_quotes_on_page(
-        self
+        self,
     ):
         # Given
         self.launchSurvey("test_multiple_piping")
@@ -47,7 +47,7 @@ class TestQuestionnairePiping(IntegrationTestCase):
         )
 
     def test_given_backslash_in_answer_when_piped_into_page_then_backslash_on_page(
-        self
+        self,
     ):
         # Given
         self.launchSurvey("test_multiple_piping")
