@@ -302,7 +302,7 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
         return list_item_id
 
     def get_answers_by_answer_id(self, answer_id):
-        """ Return answers matching answer id, including all matching answers inside
+        """Return answers matching answer id, including all matching answers inside
         variants
         """
         return self._answers_by_id.get(answer_id)
@@ -333,7 +333,7 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
         return self.get_answer_ids_for_block(add_block["id"])
 
     def get_questions(self, question_id):
-        """ Return a list of questions matching some question id
+        """Return a list of questions matching some question id
         This includes all questions inside variants
         """
         return self._questions_by_id.get(question_id)

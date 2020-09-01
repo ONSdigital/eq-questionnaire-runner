@@ -6,8 +6,7 @@ import pytest
 
 @pytest.fixture
 def fake_metadata_runner():
-    """ Generate the set of claims required for runner to function
-    """
+    """Generate the set of claims required for runner to function"""
     return {
         "tx_id": str(uuid.uuid4()),
         "jti": str(uuid.uuid4()),
@@ -22,8 +21,7 @@ def fake_metadata_runner():
 
 @pytest.fixture
 def fake_census_metadata_runner(fake_metadata_runner):
-    """ Generate a set of claims required for runner using census parameters instead of schema_name
-    """
+    """Generate a set of claims required for runner using census parameters instead of schema_name"""
     del fake_metadata_runner["schema_name"]
 
     fake_metadata_runner["survey"] = "CENSUS"
@@ -35,7 +33,7 @@ def fake_census_metadata_runner(fake_metadata_runner):
 
 @pytest.fixture
 def fake_metadata_full(fake_metadata_runner):
-    """ Generate a fake set of claims
+    """Generate a fake set of claims
     These claims should represent all claims known to runner, including common questionnaire
     level claims.
     """

@@ -42,7 +42,7 @@ def get_page_header_context(language, theme):
 
 
 def _map_theme(theme):
-    """ Maps a survey schema theme to a design system theme
+    """Maps a survey schema theme to a design system theme
 
     :param theme: A schema defined theme
     :returns: A design system theme

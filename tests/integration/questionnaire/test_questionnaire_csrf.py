@@ -5,7 +5,7 @@ from tests.integration.integration_test_case import IntegrationTestCase
 
 class TestQuestionnaireCsrf(IntegrationTestCase):
     def test_given_on_interstitial_page_when_submit_with_no_csrf_token_then_forbidden(
-        self
+        self,
     ):
         # Given
         self.launchSurvey("test_interstitial_page")
@@ -19,7 +19,7 @@ class TestQuestionnaireCsrf(IntegrationTestCase):
         self.assertEqualUrl(self.last_url)
 
     def test_given_on_interstitial_page_when_submit_with_invalid_csrf_token_then_forbidden(
-        self
+        self,
     ):
         # Given
         self.launchSurvey("test_interstitial_page")
@@ -33,7 +33,7 @@ class TestQuestionnaireCsrf(IntegrationTestCase):
         self.assertEqualUrl(self.last_url)
 
     def test_given_on_introduction_page_when_submit_valid_token_then_redirect_to_next_page(
-        self
+        self,
     ):
         # Given
         self.launchSurvey("test_interstitial_page")
@@ -46,7 +46,7 @@ class TestQuestionnaireCsrf(IntegrationTestCase):
         self.assertInBody("What is your favourite breakfast food")
 
     def test_given_answered_question_when_change_answer_with_invalid_csrf_token_then_answers_not_saved(
-        self
+        self,
     ):
         # Given
         self.launchSurvey("test_interstitial_page", roles=["dumper"])
@@ -64,7 +64,7 @@ class TestQuestionnaireCsrf(IntegrationTestCase):
         self.assertEqual("Muesli", answers["ANSWERS"][0]["value"])
 
     def test_given_valid_answer_when_answer_with_invalid_csrf_token_then_answer_not_saved(
-        self
+        self,
     ):
         # Given
         self.launchSurvey("test_checkbox", roles=["dumper"])
