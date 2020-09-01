@@ -760,7 +760,7 @@ class TestIndividualResponseChange(IndividualResponseTestCase):
         self.assertInBody("Start section")
 
     def test_answer_own_questions_option_after_starting_section_updates_section_status(
-        self
+        self,
     ):
         # Given start a section and then request an individual response
         self._add_household_no_primary()

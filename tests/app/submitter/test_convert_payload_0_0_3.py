@@ -437,7 +437,7 @@ def test_list_item_conversion(fake_questionnaire_store):
 
 
 def test_list_item_conversion_empty_list(fake_questionnaire_store):
-    """ Test that the list store is populated with an empty list for lists which
+    """Test that the list store is populated with an empty list for lists which
     do not have answers yet."""
     routing_path = [
         RoutingPath(

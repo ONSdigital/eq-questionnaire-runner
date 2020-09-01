@@ -50,8 +50,8 @@ class QuestionnaireForm(FlaskForm):
                 and valid_mutually_exclusive_form
                 and valid_fields
             ):
-                valid_mutually_exclusive_form = self.validate_mutually_exclusive_question(
-                    self.question
+                valid_mutually_exclusive_form = (
+                    self.validate_mutually_exclusive_question(self.question)
                 )
 
         return (
