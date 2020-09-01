@@ -3,22 +3,21 @@ from wtforms import Form
 
 from app.forms import error_messages
 from app.forms.field_handlers import AddressHandler
-from app.forms.fields.address_field import AddressField
+from app.forms.fields import AddressField
 from app.forms.validators import AddressLine1Required
 
 
 def get_test_form_class(answer_schema, messages=None):
-    handler = AddressHandler(answer_schema, error_messages=messages)
+    address_handler = AddressHandler(answer_schema, error_messages=messages)
 
     class TestForm(Form):
-        test_field = handler.get_field()
+        test_field = address_handler.get_field()
 
     return TestForm
 
 
 def test_address_fields():
     answer_json = {"id": "address", "mandatory": True, "type": "Address"}
-
     address_handler = AddressHandler(answer_json)
 
     class TestForm(Form):
@@ -28,7 +27,7 @@ def test_address_fields():
 
     assert isinstance(form.test_field, AddressField)
 
-    address_fields = ["line1", "line1", "town", "postcode"]
+    address_fields = ["line1", "line2", "town", "postcode"]
     assert all(field in form.test_field.data for field in address_fields)
 
 
@@ -73,8 +72,8 @@ def test_address_validator_with_message_override():
             }
         },
     }
-    text_area_handler = AddressHandler(answer_json, error_messages=error_messages)
+    address_handler = AddressHandler(answer_json, error_messages=error_messages)
 
-    validator = text_area_handler.validators
+    validator = address_handler.validators
 
     assert validator[0].message == "Please enter an address line 1 to continue"

@@ -5,19 +5,19 @@ from jinja2 import Undefined
 from mock import Mock
 
 from app.jinja_filters import (
-    get_currency_symbol,
-    format_percentage,
+    CheckboxConfig,
     format_datetime,
-    format_unit,
-    format_number,
-    format_unit_input_label,
     format_duration,
+    format_number,
+    format_percentage,
+    format_unit,
+    format_unit_input_label,
+    get_currency_symbol,
     get_formatted_currency,
     get_width_class_for_number,
+    get_formatted_address,
     map_list_collector_config,
     RadioConfig,
-    CheckboxConfig,
-    get_formatted_address,
 )
 from tests.app.app_context_test_case import AppContextTestCase
 
