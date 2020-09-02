@@ -28,7 +28,7 @@ pylint --reports=n --output-format=colorized --rcfile=.pylintrc -j 0 **/*.py *.p
 # http://stackoverflow.com/questions/6626351/how-to-extract-bits-from-return-code-number-in-bash
 display_result $? 1 "Pylint linting check"
 
-isort --check **/*.py *.py
+isort --check --recursive .
 display_result $? 1 "isort linting check"
 
 ./scripts/run_mypy.sh

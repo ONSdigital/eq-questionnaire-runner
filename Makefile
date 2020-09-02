@@ -20,7 +20,7 @@ lint:
 
 format:
 	yarn format
-	pipenv run isort  **/*.py *.py
+	pipenv run isort --recursive .
 	pipenv run black .
 
 test:
