@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2020-09-02 08:12+0100\n"
+"POT-Creation-Date: 2020-09-02 12:17+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -190,9 +190,10 @@ msgstr ""
 
 #: app/helpers/template_helper.py:28 app/helpers/template_helper.py:37
 #: templates/errors/403.html:3 templates/errors/404.html:3
-#: templates/errors/500.html:3 templates/errors/session-expired.html:6
-#: templates/multiple_survey.html:4 templates/signed-out.html:3
-#: templates/static/accessibility.html:4 templates/static/privacy.html:4
+#: templates/errors/500.html:3 templates/errors/no-cookie.html:6
+#: templates/errors/session-expired.html:6 templates/multiple_survey.html:4
+#: templates/signed-out.html:3 templates/static/accessibility.html:4
+#: templates/static/privacy.html:4
 msgid "Census 2021"
 msgstr ""
 
@@ -632,11 +633,9 @@ msgid "Sorry there is a problem"
 msgstr ""
 
 #: templates/errors/no-cookie.html:10
-#, python-format
 msgid ""
-"To access this page you need to <a "
-"href=\"%(account_service_link)s\">enter your 16-character access code</a>"
-" again to continue your census."
+"To access this page you need to <a href='{url}'>enter your 16-character "
+"access code</a> again to continue your census."
 msgstr ""
 
 #: templates/errors/session-expired.html:9
@@ -648,10 +647,9 @@ msgid "To help protect your information we have timed you out"
 msgstr ""
 
 #: templates/errors/session-expired.html:11
-#, python-format
 msgid ""
-"You will need to enter <a href=\"%(account_service_link)s\">enter your "
-"16-character access code</a> again to continue your census."
+"You will need to <a href='{url}'>enter your 16-character access code</a> "
+"again to continue your census."
 msgstr ""
 
 #: templates/individual_response/confirmation-post.html:15
