@@ -2,7 +2,7 @@ from flask import Blueprint
 from structlog import get_logger
 
 from app.helpers.language_helper import handle_language
-from app.helpers.template_helper import render_template
+from app.helpers.template_helpers import render_template
 
 logger = get_logger()
 

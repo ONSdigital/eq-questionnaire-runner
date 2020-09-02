@@ -1,6 +1,6 @@
 import QuestionPage from "./question.page";
 
-class ThankYouPage extends QuestionPage {
+class CensusThankYouPage extends QuestionPage {
   constructor() {
     super("thank-you");
   }
@@ -13,8 +13,9 @@ class ThankYouPage extends QuestionPage {
     return '[data-qa="title"]';
   }
 
-  exitButton() {
+  exit() {
     return '[data-qa="btn-exit"]';
   }
 }
-export default new ThankYouPage();
+
+export default new CensusThankYouPage();

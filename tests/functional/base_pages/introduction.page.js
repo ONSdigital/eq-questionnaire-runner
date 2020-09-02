@@ -5,8 +5,8 @@ class IntroductionPage extends BasePage {
     return "#my-account";
   }
 
-  signOut() {
-    return '[data-qa="btn-sign-out"]';
+  exitButton() {
+    return '[data-qa="btn-exit"]';
   }
 
   getStarted() {
