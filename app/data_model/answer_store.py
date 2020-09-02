@@ -19,7 +19,7 @@ class AnswerStore:
     """
 
     def __init__(self, existing_answers: List[Dict] = None):
-        """ Instantiate an answer_store.
+        """Instantiate an answer_store.
 
         Args:
             existing_answers: If a list of answer dictionaries is provided, this will be used to initialise the store.
@@ -69,7 +69,7 @@ class AnswerStore:
             self.answer_map[key] = answer
 
     def get_answer(self, answer_id: str, list_item_id: str = None) -> Optional[Answer]:
-        """ Get a single answer from the store
+        """Get a single answer from the store
 
         Args:
             answer_id: The answer id to find
@@ -83,7 +83,7 @@ class AnswerStore:
     def get_answers_by_answer_id(
         self, answer_ids: List[str], list_item_id: str = None
     ) -> List[Answer]:
-        """ Get multiple answers from the store using the answer_id
+        """Get multiple answers from the store using the answer_id
 
         Args:
             answer_ids: list of answer ids to find
