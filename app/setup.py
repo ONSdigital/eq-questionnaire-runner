@@ -12,7 +12,6 @@ from flask_babel import Babel
 from flask_compress import Compress
 from flask_talisman import Talisman
 from flask_wtf.csrf import CSRFProtect
-from google.auth import credentials
 from google.cloud import datastore
 from htmlmin.main import minify
 from sdc.crypto.key_store import KeyStore, validate_required_keys
@@ -63,28 +62,6 @@ CSP_POLICY = {
 compress = Compress()
 
 logger = get_logger()
-
-
-class EmulatorCredentials(credentials.Credentials):
-    """A mock GCP credential object.
-    Used in conjunction with local emulators that don't require proper
-    credentials e.g. Datastore
-    """
-
-    def __init__(self):  # pylint: disable=super-init-not-called
-        self.token = b"seekrit"
-        self.expiry = None
-        self._quota_project_id = None
-
-    @property
-    def valid(self):
-        return True
-
-    def refresh(self, request):  # pylint: disable=unused-argument
-        raise RuntimeError("Should never be refreshed.")
-
-    def with_quota_project(self, quota_project_id):
-        raise NotImplementedError("This class does not support quota project.")
 
 
 class AWSReverseProxied:
@@ -294,12 +271,7 @@ def setup_dynamodb(application):
 
 
 def setup_datastore(application):
-    creds = (
-        EmulatorCredentials()
-        if application.config["EQ_DATASTORE_EMULATOR_CREDENTIALS"]
-        else None
-    )
-    client = datastore.Client(_use_grpc=False, credentials=creds)
+    client = datastore.Client(_use_grpc=False)
     application.eq["storage"] = Datastore(client)
 
 

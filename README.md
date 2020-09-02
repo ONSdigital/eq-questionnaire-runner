@@ -319,7 +319,6 @@ The following env variables can be used
 | EQ_RABBITMQ_QUEUE_NAME                    | submit_q              | The name of the submission queue                                                              |
 | EQ_SERVER_SIDE_STORAGE_USER_ID_ITERATIONS | 10000                 |                                                                                               |
 | EQ_STORAGE_BACKEND                        | datastore             |                                                                                               |
-| EQ_DATASTORE_EMULATOR_CREDENTIALS         | False                 |                                                                                               |
 | EQ_DYNAMODB_ENDPOINT                      |                       |                                                                                               |
 | EQ_REDIS_HOST                             |                       | Hostname of Redis instance used for ephemeral storage                                         |
 | EQ_REDIS_PORT                             |                       | Port number of Redis instance used for ephemeral storage                                      |
