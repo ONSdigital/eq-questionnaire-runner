@@ -2,10 +2,11 @@ from functools import cached_property
 from typing import List
 
 from wtforms import FormField
+from wtforms.validators import InputRequired
 
 from app.forms.field_handlers.field_handler import FieldHandler
 from app.forms.address_form import get_address_form
-from app.forms.validators import AddressLine1Required, format_message_with_title
+from app.forms.validators import format_message_with_title
 
 
 class AddressHandler(FieldHandler):
@@ -17,7 +18,7 @@ class AddressHandler(FieldHandler):
 
         if self.answer_schema["mandatory"]:
             validate_with = [
-                AddressLine1Required(
+                InputRequired(
                     message=self.get_validation_message(
                         format_message_with_title(
                             self.MANDATORY_MESSAGE_KEY, self.question_title

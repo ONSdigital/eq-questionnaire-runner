@@ -1,9 +1,9 @@
 from werkzeug.datastructures import MultiDict
 from wtforms import Form, FormField
+from wtforms.validators import InputRequired
 
 from app.forms import error_messages
 from app.forms.field_handlers import AddressHandler
-from app.forms.validators import AddressLine1Required
 
 
 def get_test_form_class(answer_schema, messages=None):
@@ -36,7 +36,7 @@ def test_address_mandatory_line1_validator():
 
     validator = address_handler.validators
 
-    assert isinstance(validator[0], AddressLine1Required)
+    assert isinstance(validator[0], InputRequired)
     assert validator[0].message == "Enter an address to continue"
 
 
