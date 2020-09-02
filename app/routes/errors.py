@@ -4,7 +4,7 @@ from flask_wtf.csrf import CSRFError
 from sdc.crypto.exceptions import InvalidTokenException
 from structlog import get_logger
 
-from app.authentication.no_token_exception import NoTokenException
+from app.authentication.exceptions import NoTokenException, PostSubmissionException
 from app.globals import get_metadata
 from app.helpers.language_helper import handle_language
 from app.helpers.template_helpers import render_template
@@ -44,8 +44,11 @@ def _render_error_page(status_code, template=None):
 @errors_blueprint.app_errorhandler(401)
 @errors_blueprint.app_errorhandler(CSRFError)
 @errors_blueprint.app_errorhandler(NoTokenException)
+@errors_blueprint.app_errorhandler(PostSubmissionException)
 def unauthorized(error=None):
     log_error(error, 401)
+    if isinstance(error, PostSubmissionException):
+        return _render_error_page(401, "submission-complete")
     return _render_error_page(401, "session-expired")
 
 

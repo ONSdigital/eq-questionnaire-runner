@@ -12,7 +12,7 @@ from flask_login import current_user, login_required
 from structlog import get_logger
 from werkzeug.exceptions import NotFound
 
-from app.authentication.no_token_exception import NoTokenException
+from app.authentication.exceptions import NoTokenException, PostSubmissionException
 from app.globals import get_metadata, get_session_store, get_session_timeout_in_seconds
 from app.helpers.language_helper import handle_language
 from app.helpers.schema_helpers import with_schema
@@ -43,6 +43,10 @@ post_submission_blueprint = Blueprint(
 @questionnaire_blueprint.before_request
 def before_questionnaire_request():
     metadata = get_metadata(current_user)
+
+    if cookie_session.get("submitted", False):
+        raise PostSubmissionException(401)
+
     if not metadata:
         raise NoTokenException(401)
 
@@ -66,7 +70,10 @@ def before_questionnaire_request():
 @post_submission_blueprint.before_request
 def before_post_submission_request():
     session_store = get_session_store()
+
     if not session_store or not session_store.session_data:
+        if cookie_session.get("submitted", False):
+            raise PostSubmissionException(401)
         raise NoTokenException(401)
 
     session_data = session_store.session_data

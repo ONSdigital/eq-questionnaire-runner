@@ -8,7 +8,7 @@ from flask_login import LoginManager, user_logged_out
 from sdc.crypto.decrypter import decrypt
 from structlog import get_logger
 
-from app.authentication.no_token_exception import NoTokenException
+from app.authentication.exceptions import NoTokenException
 from app.authentication.user import User
 from app.data_model.session_data import SessionData
 from app.globals import get_questionnaire_store, get_session_store, create_session_store
@@ -86,6 +86,7 @@ def load_user():
     session_store = get_session_store()
 
     if session_store and session_store.user_id and _is_session_valid(session_store):
+
         logger.debug("session exists")
 
         user_id = session_store.user_id

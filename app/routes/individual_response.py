@@ -3,7 +3,7 @@ from flask_login import current_user, login_required
 from itsdangerous import URLSafeSerializer
 from structlog import get_logger
 
-from app.authentication.no_token_exception import NoTokenException
+from app.authentication.exceptions import NoTokenException
 from app.globals import get_metadata, get_session_store
 from app.helpers.language_helper import handle_language
 from app.helpers.schema_helpers import with_schema

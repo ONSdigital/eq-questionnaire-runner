@@ -1,6 +1,6 @@
 import unittest
 
-from app.authentication.no_token_exception import NoTokenException
+from app.authentication.exceptions import NoTokenException
 
 
 class NoTokenExceptionTest(unittest.TestCase):
