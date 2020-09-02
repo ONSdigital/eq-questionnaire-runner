@@ -21,15 +21,17 @@
 
     {% else %}
         {% do pageConfig | setAttribute("signoutButton", {
-            "text": _("Sign out"),
-            "name": "btn-sign-out",
-            "url": "/sign-out",
+            "text": _("Exit"),
+            "name": "btn-exit",
+            "classes": "btn--ghost",
+            "url": sign_out_url,
             "attributes": {
-                "data-qa": "btn-sign-out",
+                "data-qa": "btn-exit",
                 "data-ga": "click",
                 "data-ga-category": "Navigation",
-                "data-ga-action": "Sign out click"
-            }
+                "data-ga-action": "Exit click"
+            },
+            "buttonStyle": "exit"
         }) %}
 
     {% endif %}

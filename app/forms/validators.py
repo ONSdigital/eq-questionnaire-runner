@@ -11,7 +11,7 @@ from wtforms import validators
 from wtforms.compat import string_types
 
 from app.forms import error_messages
-from app.helpers.template_helper import safe_content
+from app.helpers.template_helpers import safe_content
 from app.jinja_filters import format_number, get_formatted_currency
 from app.questionnaire.rules import convert_to_datetime
 

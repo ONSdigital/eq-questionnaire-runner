@@ -2,7 +2,7 @@ from typing import Mapping
 
 from flask import url_for
 
-from app.helpers.template_helper import safe_content
+from app.helpers.template_helpers import safe_content
 from app.questionnaire import QuestionnaireSchema
 
 from .context import Context
