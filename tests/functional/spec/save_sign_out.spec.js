@@ -40,7 +40,7 @@ describe("SaveSignOut", () => {
   it("Given a logout url is set, when I navigate the questionnaire, then I see the correct sign out buttons", () => {
     browser.openQuestionnaire("test_introduction.json", { includeLogoutUrl: true });
 
-    expect($(IntroductionPage.signOut()).getText()).to.contain("Sign out");
+    expect($(IntroductionPage.exitButton()).getText()).to.contain("Exit");
     $(IntroductionPage.getStarted()).click();
 
     expect($(IntroInterstitialPage.saveSignOut()).getText()).to.contain("Save and sign out");
@@ -49,13 +49,13 @@ describe("SaveSignOut", () => {
     expect($(IntroConfirmationPage.saveSignOut()).getText()).to.contain("Save and sign out");
     $(IntroConfirmationPage.submit()).click();
 
-    expect($(IntroThankYouPagePage.signOut()).isExisting()).to.be.false;
+    expect($(IntroThankYouPagePage.exitButton()).isExisting()).to.be.false;
   });
 
   it("Given a logout url is not set, when I navigate the questionnaire, then I see the correct sign out buttons", () => {
     browser.openQuestionnaire("test_introduction.json", { includeLogoutUrl: false });
 
-    expect($(IntroductionPage.signOut()).getText()).to.contain("Sign out");
+    expect($(IntroductionPage.exitButton()).getText()).to.contain("Exit");
     $(IntroductionPage.getStarted()).click();
 
     expect($(IntroInterstitialPage.saveSignOut()).getText()).to.contain("Save and complete later");
@@ -64,6 +64,6 @@ describe("SaveSignOut", () => {
     expect($(IntroConfirmationPage.saveSignOut()).getText()).to.contain("Save and complete later");
     $(IntroConfirmationPage.submit()).click();
 
-    expect($(IntroductionPage.signOut()).isExisting()).to.be.false;
+    expect($(IntroductionPage.exitButton()).isExisting()).to.be.false;
   });
 });
