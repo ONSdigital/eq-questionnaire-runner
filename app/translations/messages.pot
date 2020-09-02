@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2020-09-02 13:43+0100\n"
+"POT-Creation-Date: 2020-09-02 16:23+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -653,7 +653,7 @@ msgid "This page is no longer available"
 msgstr ""
 
 #: templates/errors/submission-complete.html:7
-msgid "Your census has been submitted."
+msgid "Your census has been submitted"
 msgstr ""
 
 #: templates/individual_response/confirmation-post.html:15
