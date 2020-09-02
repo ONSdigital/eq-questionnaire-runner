@@ -25,6 +25,11 @@ class TestTimeout(IntegrationTestCase):
         self.assertStatusUnauthorised()
         self.assertInBody("Your session has expired due to inactivity")
 
+    def test_alternate_401_page_is_displayed_when_no_cookie(self):
+        self.get("/session")
+        self.assertStatusUnauthorised()
+        self.assertInBody("Sorry there is a problem")
+
     def test_schema_defined_timeout_cant_be_higher_than_server(self):
         self.launchSurvey("test_timeout")
         time.sleep(4)

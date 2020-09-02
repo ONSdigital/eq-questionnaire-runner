@@ -48,7 +48,7 @@ def _render_error_page(status_code, template=None):
 @errors_blueprint.app_errorhandler(CSRFError)
 @errors_blueprint.app_errorhandler(NoQuestionnaireStateException)
 @errors_blueprint.app_errorhandler(401)
-def no_cookie(error=None):
+def unauthorized(error=None):
     log_error(error, 401)
     if not cookie_session:
         return _render_error_page(401, "no-cookie")
