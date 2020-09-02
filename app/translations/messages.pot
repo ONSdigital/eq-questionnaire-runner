@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2020-09-01 10:21+0100\n"
+"POT-Creation-Date: 2020-09-02 13:43+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -191,8 +191,9 @@ msgstr ""
 #: app/helpers/template_helpers.py:28 app/helpers/template_helpers.py:37
 #: templates/errors/403.html:3 templates/errors/404.html:3
 #: templates/errors/500.html:3 templates/errors/session-expired.html:6
-#: templates/multiple_survey.html:4 templates/signed-out.html:3
-#: templates/static/accessibility.html:4 templates/static/privacy.html:4
+#: templates/errors/submission-complete.html:3 templates/multiple_survey.html:4
+#: templates/signed-out.html:3 templates/static/accessibility.html:4
+#: templates/static/privacy.html:4
 msgid "Census 2021"
 msgstr ""
 
@@ -641,6 +642,18 @@ msgid ""
 "We have saved your progress and you will need to <a "
 "href=\"%(account_service_link)s\">enter your unique code</a> to access "
 "the survey again."
+msgstr ""
+
+#: templates/errors/submission-complete.html:3
+msgid "No token"
+msgstr ""
+
+#: templates/errors/submission-complete.html:6
+msgid "This page is no longer available"
+msgstr ""
+
+#: templates/errors/submission-complete.html:7
+msgid "Your census has been submitted."
 msgstr ""
 
 #: templates/individual_response/confirmation-post.html:15
