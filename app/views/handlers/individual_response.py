@@ -8,7 +8,7 @@ from werkzeug.exceptions import NotFound
 
 from app.data_model.progress_store import CompletionStatus
 from app.forms.questionnaire_form import generate_form
-from app.helpers.template_helper import render_template
+from app.helpers.template_helpers import render_template
 from app.questionnaire.placeholder_renderer import PlaceholderRenderer
 from app.questionnaire.router import Router
 from app.views.contexts.question import build_question_context

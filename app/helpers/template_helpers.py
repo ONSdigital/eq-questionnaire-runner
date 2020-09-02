@@ -94,14 +94,25 @@ def get_google_tag_mananger_context():
     return {}
 
 
-def get_contact_us_url(schema_theme, language_code):
+def get_census_base_url(schema_theme: str, language_code: str) -> str:
+    if language_code == "cy":
+        return "https://cyfrifiad.gov.uk/"
+
+    base_url = "https://census.gov.uk/"
+
     if schema_theme == "census-nisra":
-        return "https://census.gov.uk/ni/contact-us/"
+        return f"{base_url}ni/"
+
+    return base_url
+
+
+def get_contact_us_url(schema_theme: str, language_code: str):
+    base_url = get_census_base_url(schema_theme, language_code)
 
     if language_code == "cy":
-        return "https://cyfrifiad.gov.uk/cysylltu-a-ni/"
+        return f"{base_url}cysylltu-a-ni/"
 
-    return "https://census.gov.uk/contact-us/"
+    return f"{base_url}contact-us/"
 
 
 def safe_content(content):

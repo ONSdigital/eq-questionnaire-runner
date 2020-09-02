@@ -1,6 +1,8 @@
 from flask import session as cookie_session
 from werkzeug.exceptions import NotFound
 from app.helpers.url_safe_helper import URLSafeSerializerHelper
+from app.data_model.session_data import SessionData
+
 from app.views.contexts.thank_you_context import (
     build_default_thank_you_context,
     build_census_thank_you_context,
@@ -23,6 +25,7 @@ class ThankYou:
         self.session_store = get_session_store()
         self.session_data = self.session_store.session_data
         self._schema = schema
+
         if not self.session_data.submitted_time:
             raise NotFound
 

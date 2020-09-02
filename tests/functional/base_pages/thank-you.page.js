@@ -13,8 +13,8 @@ class ThankYouPage extends QuestionPage {
     return '[data-qa="title"]';
   }
 
-  signOut() {
-    return '[data-qa="btn-sign-out"]';
+  exitButton() {
+    return '[data-qa="btn-exit"]';
   }
 
   emailAddress() {

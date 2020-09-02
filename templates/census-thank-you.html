@@ -2,6 +2,9 @@
 {% from 'components/panel/_macro.njk' import onsPanel %}
 {% set page_title = _("Thank you") ~ " - " ~ _("Census 2021") %}
 
+{% set hide_signout_button = content.hide_signout_button %}
+{% set sign_out_url = content.sign_out_url %}
+
 {% block main %}
   {% set form = content.form %}
   {% if form and form.mapped_errors %}

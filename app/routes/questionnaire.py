@@ -1,4 +1,12 @@
-from flask import Blueprint, g, redirect, request, url_for, jsonify
+from flask import (
+    Blueprint,
+    g,
+    redirect,
+    request,
+    url_for,
+    jsonify,
+    session as cookie_session,
+)
 import flask_babel
 from flask_login import current_user, login_required
 from structlog import get_logger
@@ -10,7 +18,8 @@ from app.helpers.language_helper import handle_language
 from app.helpers.schema_helpers import with_schema
 from app.helpers.session_helpers import with_questionnaire_store
 from app.helpers.url_safe_helper import URLSafeSerializerHelper
-from app.helpers.template_helper import render_template
+from app.helpers.template_helpers import get_census_base_url, render_template
+
 from app.questionnaire.location import InvalidLocationException
 from app.questionnaire.router import Router
 from app.utilities.schema import load_schema_from_session_data
@@ -221,6 +230,12 @@ def block(schema, questionnaire_store, block_id, list_name=None, list_item_id=No
             schema, questionnaire_store, block_handler.router.full_routing_path()
         )
         submission_handler.submit_questionnaire()
+
+        language_code = get_session_store().session_data.language_code
+        if "census" in cookie_session["theme"]:
+            log_out_url = get_census_base_url(cookie_session["theme"], language_code)
+            cookie_session["account_service_log_out_url"] = log_out_url
+
         return redirect(url_for("post_submission.get_thank_you"))
 
     block_handler.handle_post()
@@ -287,7 +302,6 @@ def get_thank_you(schema):
         template=thank_you.template,
         content=thank_you.get_context(),
         survey_id=schema.json["survey_id"],
-        hide_signout_button=True,
     )
 
 
