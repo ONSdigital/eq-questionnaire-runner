@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2020-08-24 10:48+0100\n"
+"POT-Creation-Date: 2020-09-02 08:08+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -282,71 +282,71 @@ msgstr ""
 msgid " (You)"
 msgstr ""
 
-#: app/views/handlers/individual_response.py:198
+#: app/views/handlers/individual_response.py:209
 msgid "How would you like <em>{person_name}</em> to receive a separate census?"
 msgstr ""
 
-#: app/views/handlers/individual_response.py:204
+#: app/views/handlers/individual_response.py:215
 msgid ""
 "For someone to complete a separate census, we need to send them an "
 "individual access code."
 msgstr ""
 
-#: app/views/handlers/individual_response.py:207
+#: app/views/handlers/individual_response.py:218
 msgid "Select how to send access code"
 msgstr ""
 
-#: app/views/handlers/individual_response.py:217
+#: app/views/handlers/individual_response.py:228
 msgid "Post"
 msgstr ""
 
-#: app/views/handlers/individual_response.py:219
+#: app/views/handlers/individual_response.py:230
 msgid ""
 "We can only send this to an unnamed resident at the registered household "
 "address"
 msgstr ""
 
-#: app/views/handlers/individual_response.py:300
+#: app/views/handlers/individual_response.py:317
 msgid "How would you like to answer <em>{person_name_possessive}</em> questions?"
 msgstr ""
 
-#: app/views/handlers/individual_response.py:313
+#: app/views/handlers/individual_response.py:330
 msgid "I would like to request a separate census for them to complete"
 msgstr ""
 
-#: app/views/handlers/individual_response.py:319
+#: app/views/handlers/individual_response.py:336
 msgid "I will ask them to answer their own questions"
 msgstr ""
 
-#: app/views/handlers/individual_response.py:323
+#: app/views/handlers/individual_response.py:340
 msgid "They will need the household access code from the letter we sent you"
 msgstr ""
 
-#: app/views/handlers/individual_response.py:329
+#: app/views/handlers/individual_response.py:346
 msgid "I will answer for {person_name}"
 msgstr ""
 
-#: app/views/handlers/individual_response.py:441
+#: app/views/handlers/individual_response.py:458
 msgid "Do you want to send an individual access code for {person_name} by post?"
 msgstr ""
 
-#: app/views/handlers/individual_response.py:447
+#: app/views/handlers/individual_response.py:464
 msgid ""
 "A letter with an individual access code will be sent to your registered "
 "household address"
 msgstr ""
 
-#: app/views/handlers/individual_response.py:454
+#: app/views/handlers/individual_response.py:471
 msgid ""
 "The letter will be addressed to <strong>Individual Resident</strong> "
 "instead of the name provided"
 msgstr ""
 
-#: app/views/handlers/individual_response.py:467
+#: app/views/handlers/individual_response.py:484
 msgid "Yes, send the access code by post"
 msgstr ""
 
-#: app/views/handlers/individual_response.py:471
+#: app/views/handlers/individual_response.py:488
 msgid "No, send it another way"
 msgstr ""
 
@@ -415,7 +415,7 @@ msgstr ""
 msgid "If you can’t answer someone else’s questions"
 msgstr ""
 
-#: templates/interstitial.html:23
+#: templates/interstitial.html:23 templates/partials/question.html:25
 msgid "If you can’t answer questions for this person"
 msgstr ""
 
@@ -587,24 +587,35 @@ msgid ""
 " survey."
 msgstr ""
 
-#: templates/errors/session-expired.html:6
+#: templates/errors/no-cookie.html:6 templates/errors/session-expired.html:6
 msgid "Session expired"
 msgstr ""
 
-#: templates/errors/session-expired.html:10
-msgid "Your session has expired"
+#: templates/errors/no-cookie.html:9
+msgid "Sorry there is a problem"
 msgstr ""
 
-#: templates/errors/session-expired.html:18
-msgid "To help protect your information we have signed you out"
-msgstr ""
-
-#: templates/errors/session-expired.html:20
+#: templates/errors/no-cookie.html:10
 #, python-format
 msgid ""
-"We have saved your progress and you will need to <a "
-"href=\"%(account_service_link)s\">enter your unique code</a> to access "
-"the survey again."
+"To access this page you need to <a "
+"href=\"%(account_service_link)s\">enter your 16-character access code</a>"
+" again to continue your census."
+msgstr ""
+
+#: templates/errors/session-expired.html:9
+msgid "Your session has expired due to inactivity"
+msgstr ""
+
+#: templates/errors/session-expired.html:10
+msgid "To help protect your information we have timed you out"
+msgstr ""
+
+#: templates/errors/session-expired.html:11
+#, python-format
+msgid ""
+"You will need to enter <a href=\"%(account_service_link)s\">enter your "
+"16-character access code</a> again to continue your census."
 msgstr ""
 
 #: templates/individual_response/confirmation.html:15
@@ -732,23 +743,23 @@ msgid ""
 " of the section</a>"
 msgstr ""
 
-#: templates/partials/question.html:53
+#: templates/partials/question.html:60
 msgid "Selecting this will clear your answer"
 msgstr ""
 
-#: templates/partials/question.html:54
+#: templates/partials/question.html:61
 msgid "cleared"
 msgstr ""
 
-#: templates/partials/question.html:57
+#: templates/partials/question.html:64
 msgid "Selecting this will deselect any selected options"
 msgstr ""
 
-#: templates/partials/question.html:58 templates/partials/question.html:66
+#: templates/partials/question.html:65 templates/partials/question.html:73
 msgid "deselected"
 msgstr ""
 
-#: templates/partials/question.html:62
+#: templates/partials/question.html:69
 msgid "Or"
 msgstr ""
 
