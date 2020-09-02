@@ -8,5 +8,5 @@
 {% block main %}
   <h1>{{ _("Your session has expired due to inactivity") }}</h1>
   <p>{{ _("To help protect your information we have timed you out") }}.</p>
-  <p>{{ _('You will need to enter <a href="%(account_service_link)s">enter your 16-character access code</a> again to continue your census.', account_service_link=account_service_url) }}</p>
+  <p>{{ _("You will need to <a href='{url}'>enter your 16-character access code</a> again to continue your census.").format(url = account_service_url) }}</p>
 {% endblock %}
