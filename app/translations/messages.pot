@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2020-09-02 12:17+0100\n"
+"POT-Creation-Date: 2020-09-02 13:12+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -635,7 +635,7 @@ msgstr ""
 #: templates/errors/no-cookie.html:10
 msgid ""
 "To access this page you need to <a href='{url}'>enter your 16-character "
-"access code</a> again to continue your census."
+"access code</a>."
 msgstr ""
 
 #: templates/errors/session-expired.html:9
