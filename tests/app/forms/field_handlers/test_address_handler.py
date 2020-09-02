@@ -1,9 +1,8 @@
 from werkzeug.datastructures import MultiDict
-from wtforms import Form
+from wtforms import Form, FormField
 
 from app.forms import error_messages
 from app.forms.field_handlers import AddressHandler
-from app.forms.fields import AddressField
 from app.forms.validators import AddressLine1Required
 
 
@@ -25,7 +24,7 @@ def test_address_fields():
 
     form = TestForm()
 
-    assert isinstance(form.test_field, AddressField)
+    assert isinstance(form.test_field, FormField)
 
     address_fields = ["line1", "line2", "town", "postcode"]
     assert all(field in form.test_field.data for field in address_fields)

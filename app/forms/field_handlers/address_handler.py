@@ -1,8 +1,10 @@
 from functools import cached_property
 from typing import List
 
+from wtforms import FormField
+
 from app.forms.field_handlers.field_handler import FieldHandler
-from app.forms.fields import AddressField
+from app.forms.address_form import get_address_form
 from app.forms.validators import AddressLine1Required, format_message_with_title
 
 
@@ -26,7 +28,9 @@ class AddressHandler(FieldHandler):
 
         return validate_with
 
-    def get_field(self) -> AddressField:
-        return AddressField(
-            self.validators, label=self.label, description=self.guidance
+    def get_field(self) -> FormField:
+        return FormField(
+            get_address_form(self.validators),
+            label=self.label,
+            description=self.guidance,
         )

@@ -6,7 +6,7 @@ from wtforms import Form, FormField, StringField
 logger = logging.getLogger(__name__)
 
 
-def get_form_class(validators):
+def get_address_form(validators):
     class AddressForm(Form):
         line1 = StringField(validators=validators)
         line2 = StringField()
@@ -18,9 +18,3 @@ def get_form_class(validators):
             return super().data
 
     return AddressForm
-
-
-class AddressField(FormField):
-    def __init__(self, validators, **kwargs):
-        form_class = get_form_class(validators)
-        super().__init__(form_class, **kwargs)
