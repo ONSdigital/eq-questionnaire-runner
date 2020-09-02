@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2020-08-31 19:21+0100\n"
+"POT-Creation-Date: 2020-09-02 20:01+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -71,101 +71,109 @@ msgid "Enter a duration to continue"
 msgstr ""
 
 #: app/forms/error_messages.py:24
-#, python-format
-msgid "Enter an answer more than or equal to %(min)s"
+msgid "Enter an email address to continue"
 msgstr ""
 
 #: app/forms/error_messages.py:25
-#, python-format
-msgid "Enter an answer less than or equal to %(max)s"
-msgstr ""
-
-#: app/forms/error_messages.py:26
-#, python-format
-msgid "Enter an answer more than %(min)s"
-msgstr ""
-
-#: app/forms/error_messages.py:27
-#, python-format
-msgid "Enter an answer less than %(max)s"
+msgid "Enter an email in a valid format, for example name@example.com"
 msgstr ""
 
 #: app/forms/error_messages.py:28
 #, python-format
-msgid "Enter answers that add up to %(total)s"
+msgid "Enter an answer more than or equal to %(min)s"
 msgstr ""
 
 #: app/forms/error_messages.py:29
 #, python-format
-msgid "Enter answers that add up to or are less than %(total)s"
+msgid "Enter an answer less than or equal to %(max)s"
+msgstr ""
+
+#: app/forms/error_messages.py:30
+#, python-format
+msgid "Enter an answer more than %(min)s"
+msgstr ""
+
+#: app/forms/error_messages.py:31
+#, python-format
+msgid "Enter an answer less than %(max)s"
 msgstr ""
 
 #: app/forms/error_messages.py:32
 #, python-format
+msgid "Enter answers that add up to %(total)s"
+msgstr ""
+
+#: app/forms/error_messages.py:33
+#, python-format
+msgid "Enter answers that add up to or are less than %(total)s"
+msgstr ""
+
+#: app/forms/error_messages.py:36
+#, python-format
 msgid "Enter answers that add up to less than %(total)s"
 msgstr ""
 
-#: app/forms/error_messages.py:35
+#: app/forms/error_messages.py:39
 #, python-format
 msgid "Enter answers that add up to greater than %(total)s"
 msgstr ""
 
-#: app/forms/error_messages.py:38
+#: app/forms/error_messages.py:42
 #, python-format
 msgid "Enter answers that add up to or are greater than %(total)s"
 msgstr ""
 
-#: app/forms/error_messages.py:41
+#: app/forms/error_messages.py:45
 msgid "Enter a number"
 msgstr ""
 
-#: app/forms/error_messages.py:42
+#: app/forms/error_messages.py:46
 msgid "Enter a whole number"
 msgstr ""
 
-#: app/forms/error_messages.py:43
+#: app/forms/error_messages.py:47
 #, python-format
 msgid "Enter a number rounded to %(max)d decimal places"
 msgstr ""
 
-#: app/forms/error_messages.py:44
+#: app/forms/error_messages.py:48
 #, python-format
 msgid "You have entered too many characters. Enter up to %(max)d characters"
 msgstr ""
 
-#: app/forms/error_messages.py:47
+#: app/forms/error_messages.py:51
 msgid "Enter a valid date"
 msgstr ""
 
-#: app/forms/error_messages.py:48
+#: app/forms/error_messages.py:52
 msgid "Enter a 'period to' date later than the 'period from' date"
 msgstr ""
 
-#: app/forms/error_messages.py:51
+#: app/forms/error_messages.py:55
 msgid "Enter a valid duration"
 msgstr ""
 
-#: app/forms/error_messages.py:52
+#: app/forms/error_messages.py:56
 #, python-format
 msgid "Enter a reporting period greater than or equal to %(min)s"
 msgstr ""
 
-#: app/forms/error_messages.py:55
+#: app/forms/error_messages.py:59
 #, python-format
 msgid "Enter a reporting period less than or equal to %(max)s"
 msgstr ""
 
-#: app/forms/error_messages.py:58
+#: app/forms/error_messages.py:62
 #, python-format
 msgid "Enter a date after %(min)s"
 msgstr ""
 
-#: app/forms/error_messages.py:59
+#: app/forms/error_messages.py:63
 #, python-format
 msgid "Enter a date before %(max)s"
 msgstr ""
 
-#: app/forms/error_messages.py:60
+#: app/forms/error_messages.py:64
 msgid "Remove an answer to continue"
 msgstr ""
 
@@ -188,9 +196,9 @@ msgstr ""
 msgid "Office for National Statistics logo"
 msgstr ""
 
-#: app/helpers/template_helper.py:28 app/helpers/template_helper.py:37
-#: templates/another-email.html:3 templates/census-thank-you.html:3
-#: templates/email-confirmation.html:3 templates/errors/403.html:3
+#: app/helpers/template_helpers.py:28 app/helpers/template_helpers.py:37
+#: templates/census-thank-you.html:3 templates/confirmation-email-sent.html:5
+#: templates/confirmation-email.html:6 templates/errors/403.html:3
 #: templates/errors/404.html:3 templates/errors/500.html:3
 #: templates/errors/session-expired.html:6 templates/multiple_survey.html:4
 #: templates/signed-out.html:3 templates/static/accessibility.html:4
@@ -396,62 +404,95 @@ msgstr ""
 msgid "Error: {page_title}"
 msgstr ""
 
-#: templates/another-email.html:3
-msgid "Another confirmation email"
-msgstr ""
-
-#: templates/another-email.html:11
-msgid "Send another confirmation email"
-msgstr ""
-
 #: templates/census-thank-you.html:3
 msgid "Thank you"
 msgstr ""
 
-#: templates/census-thank-you.html:18
+#: templates/census-thank-you.html:11 templates/confirmation-email.html:11
+msgid "There is a problem with this page"
+msgstr ""
+
+#: templates/census-thank-you.html:22
 msgid "Thank you for completing your census"
 msgstr ""
 
-#: templates/census-thank-you.html:20
+#: templates/census-thank-you.html:24
 msgid "Thank you for completing the census"
 msgstr ""
 
-#: templates/census-thank-you.html:26
-
+#: templates/census-thank-you.html:30
 msgid ""
 "Your individual census has been submitted for "
 "<strong>{display_address}</strong>"
 msgstr ""
 
-#: templates/census-thank-you.html:28
+#: templates/census-thank-you.html:32
 msgid ""
 "Your census has been submitted for the household at "
 "<strong>{display_address}</strong>"
 msgstr ""
-#: templates/census-thank-you.html:30
+
+#: templates/census-thank-you.html:34
 msgid ""
 "Your census has been submitted for the accommodation at "
 "<strong>{display_address}</strong>"
 msgstr ""
 
-#: templates/census-thank-you.html:31
+#: templates/census-thank-you.html:35
 msgid ""
 "Anyone staying at this accommodation for at least 6 months needs to fill "
 "in their own individual census, including staff. Your Census Officer will"
 " provide you with census forms for your residents."
 msgstr ""
 
-#: templates/census-thank-you.html:35
+#: templates/census-thank-you.html:41
 msgid ""
 "Your personal information is protected by law and will be kept "
 "confidential"
 msgstr ""
 
-#: templates/census-thank-you.html:41
+#: templates/census-thank-you.html:45
+msgid "Get confirmation email"
+msgstr ""
 
+#: templates/census-thank-you.html:46
 msgid ""
-"Make sure you <a href='{sign_out_url}'>leave this page</a> or close your "
-"browser if using a shared device"
+"If you would like to be sent confirmation that you have completed your "
+"census enter your email address"
+msgstr ""
+
+#: templates/census-thank-you.html:56 templates/confirmation-email-sent.html:27
+msgid ""
+"Make sure you <a href='{url}'>leave this page</a> or close your browser "
+"if using a shared device"
+msgstr ""
+
+#: templates/confirmation-email-sent.html:5
+msgid "Confirmation email sent"
+msgstr ""
+
+#: templates/confirmation-email-sent.html:14
+msgid "A confirmation email has been sent to {email}"
+msgstr ""
+
+#: templates/confirmation-email-sent.html:17
+msgid "Didn't receive an email?"
+msgstr ""
+
+#: templates/confirmation-email-sent.html:18
+msgid ""
+"It can take a few minutes for the email to arrive. If it doesn't arrive, "
+"check your junk mail, or you can\n"
+"    <a href='{url}' id='send-another-email'>send another confirmation "
+"email</a>.</p>"
+msgstr ""
+
+#: templates/confirmation-email.html:6
+msgid "Another confirmation email"
+msgstr ""
+
+#: templates/confirmation-email.html:15
+msgid "Send another confirmation email"
 msgstr ""
 
 #: templates/confirmation.html:6 templates/confirmation.html:27
@@ -464,26 +505,6 @@ msgstr ""
 
 #: templates/confirmation.html:32
 msgid "Submitting"
-msgstr ""
-
-#: templates/email-confirmation.html:3
-msgid "Confirmation email sent"
-msgstr ""
-
-#: templates/email-confirmation.html:12
-msgid "A confirmation email has been sent to {email_address}"
-msgstr ""
-
-#: templates/email-confirmation.html:15
-msgid "Didn't receive an email?"
-msgstr ""
-
-#: templates/email-confirmation.html:16
-msgid ""
-"It can take a few minutes for the email to arrive. If it doesn't arrive, "
-"check your junk mail, or you can\n"
-"    <a href='{url}' id='send-another-email'>send another confirmation "
-"email</a></p>"
 msgstr ""
 
 #: templates/hub.html:39
@@ -526,6 +547,13 @@ msgstr ""
 #: templates/multiple_survey.html:17
 msgid "Close this window to continue with your current survey"
 msgstr ""
+
+#: templates/question.html:8
+#, python-format
+msgid "There is a problem with your answer"
+msgid_plural "There are %(num)s problems with your answer"
+msgstr[0] ""
+msgstr[1] ""
 
 #: templates/signed-out.html:3
 msgid "Signed out"
@@ -787,24 +815,13 @@ msgstr ""
 msgid "Hide this"
 msgstr ""
 
-#: templates/partials/email-form.html:18
+#: templates/partials/email-form.html:21 templates/partials/email-form.html:31
 msgid "Email address "
 msgstr ""
 
-#: templates/partials/email-form.html:19 templates/partials/email-form.html:24
+#: templates/partials/email-form.html:22 templates/partials/email-form.html:32
 msgid "This will not be stored and only used once to send your confirmation"
 msgstr ""
-
-#: templates/partials/email-form.html:23
-msgid "Email address"
-msgstr ""
-
-#: templates/partials/error-panel.html:6
-#, python-format
-msgid "There is a problem with your answer"
-msgid_plural "There are %(num)s problems with your answer"
-msgstr[0] ""
-msgstr[1] ""
 
 #: templates/partials/individual-response-guidance.html:24
 msgid ""

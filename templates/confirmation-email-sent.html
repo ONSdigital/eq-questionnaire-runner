@@ -1,6 +1,7 @@
 {% extends 'layouts/_base.html' %}
 {% from 'components/panel/_macro.njk' import onsPanel %}
-
+{% set hide_signout_button = content.hide_signout_button %}
+{% set sign_out_url = content.sign_out_url %}
 {% set page_title = _("Confirmation email sent") ~ " - " ~ _("Census 2021") %}
 
 {% block main %}

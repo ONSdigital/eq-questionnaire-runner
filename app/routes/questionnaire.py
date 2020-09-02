@@ -31,7 +31,6 @@ from app.views.handlers.submission import SubmissionHandler
 from app.views.handlers.thank_you import ThankYou
 
 
-
 END_BLOCKS = "Summary", "Confirmation"
 
 logger = get_logger()
@@ -329,7 +328,7 @@ def get_confirmation_email():
 @login_required
 def get_confirmation_email_sent():
 
-    if not get_session_store().session_data.confirmation_email:
+    if not get_session_store().session_data.confirmation_email_sent:
         raise NotFound
 
     url_safe_serializer_handler = URLSafeSerializerHelper()
@@ -337,9 +336,11 @@ def get_confirmation_email_sent():
 
     return render_template(
         template="confirmation-email-sent",
-        content= {
+        content={
             "email": email,
-            "url": url_for("post_submission.get_confirmation_email")
+            "url": url_for("post_submission.get_confirmation_email"),
+            "hide_signout_button": False,
+            "sign_out_url": url_for("session.get_sign_out"),
         },
         hide_signout_button=True,
     )

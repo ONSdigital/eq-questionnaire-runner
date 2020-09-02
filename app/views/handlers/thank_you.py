@@ -1,7 +1,6 @@
 from flask import session as cookie_session
 from werkzeug.exceptions import NotFound
 from app.helpers.url_safe_helper import URLSafeSerializerHelper
-from app.data_model.session_data import SessionData
 
 from app.views.contexts.thank_you_context import (
     build_default_thank_you_context,
@@ -56,7 +55,7 @@ class ThankYou:
                 break
 
         return build_census_thank_you_context(
-            self.session_data.display_address, census_type_code, self.email_form
+            self.session_data, census_type_code, self.email_form
         )
 
     def validate(self):
@@ -73,8 +72,8 @@ class ThankYou:
         self.validate()
 
         if self.is_valid_email_form:
-            self._update_session_data_confirmation_email_to_true()
+            self._update_session_data_confirmation_email_sent_to_true()
 
-    def _update_session_data_confirmation_email_to_true(self):
-        self.session_data.confirmation_email = True
+    def _update_session_data_confirmation_email_sent_to_true(self):
+        self.session_data.confirmation_email_sent = True
         self.session_store.save()

@@ -3,6 +3,7 @@ from wtforms import StringField
 from wtforms.validators import InputRequired, Email
 from app.forms import error_messages
 
+
 class EmailForm(FlaskForm):
     email = StringField(
         validators=[

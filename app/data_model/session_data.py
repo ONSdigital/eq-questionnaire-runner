@@ -18,7 +18,7 @@ class SessionData:
         submitted_time=None,
         trad_as=None,
         display_address=None,
-        confirmation_email=False,
+        confirmation_email_sent=False,
         **_,
     ):  # pylint: disable=too-many-locals
         self.tx_id = tx_id
@@ -38,4 +38,4 @@ class SessionData:
         self.account_service_url = account_service_url
         self.account_service_log_out_url = account_service_log_out_url
         self.display_address = display_address
-        self.confirmation_email = confirmation_email
+        self.confirmation_email_sent = confirmation_email_sent

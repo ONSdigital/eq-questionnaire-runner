@@ -3,7 +3,7 @@ from typing import Mapping
 from flask import url_for
 
 from app.libs.utils import convert_tx_id
-from app.views.contexts.email_context import build_email_context
+from app.views.contexts.email_context import build_email_form_context
 from app.data_model.session_data import SessionData
 
 
@@ -25,16 +25,17 @@ def build_default_thank_you_context(session_data: SessionData) -> Mapping:
 
     return context
 
+
 def build_census_thank_you_context(
     session_data: SessionData, census_type_code: str, email_form
 ) -> Mapping:
 
-    return {
+    context = {
         "display_address": session_data.display_address,
         "census_type": census_type_code,
         "hide_signout_button": False,
         "sign_out_url": url_for("session.get_sign_out"),
     }
-  if email_form:
-        context.update(build_email_context(email_form))
+    if email_form:
+        context.update(build_email_form_context(email_form))
     return context
