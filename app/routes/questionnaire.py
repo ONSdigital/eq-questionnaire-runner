@@ -19,7 +19,6 @@ from app.helpers.schema_helpers import with_schema
 from app.helpers.session_helpers import with_questionnaire_store
 from app.helpers.url_safe_helper import URLSafeSerializerHelper
 from app.helpers.template_helpers import get_census_base_url, render_template
-
 from app.questionnaire.location import InvalidLocationException
 from app.questionnaire.router import Router
 from app.utilities.schema import load_schema_from_session_data
@@ -29,7 +28,6 @@ from app.views.handlers.confirmation_email import ConfirmationEmail
 from app.views.handlers.section import SectionHandler
 from app.views.handlers.submission import SubmissionHandler
 from app.views.handlers.thank_you import ThankYou
-
 
 END_BLOCKS = "Summary", "Confirmation"
 
@@ -327,7 +325,6 @@ def get_confirmation_email():
 @post_submission_blueprint.route("confirmation-email/sent", methods=["GET"])
 @login_required
 def get_confirmation_email_sent():
-
     if not get_session_store().session_data.confirmation_email_sent:
         raise NotFound
 

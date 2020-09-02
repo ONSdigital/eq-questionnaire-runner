@@ -9,11 +9,10 @@ from werkzeug.exceptions import NotFound
 from app.data_model.progress_store import CompletionStatus
 from app.forms.questionnaire_form import generate_form
 from app.helpers.template_helpers import render_template
+from app.helpers.url_safe_helper import URLSafeSerializerHelper
 from app.questionnaire.placeholder_renderer import PlaceholderRenderer
 from app.questionnaire.router import Router
 from app.views.contexts.question import build_question_context
-
-from app.helpers.url_safe_helper import URLSafeSerializerHelper
 
 
 class IndividualResponseHandler:

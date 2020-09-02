@@ -9,7 +9,7 @@ class ConfirmationEmailSentPage extends QuestionPage {
     return '[data-qa="title"]';
   }
 
-  emailAddress() {
+  email() {
     return "#email";
   }
 

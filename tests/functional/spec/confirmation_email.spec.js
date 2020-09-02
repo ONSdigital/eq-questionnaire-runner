@@ -15,7 +15,7 @@ describe("Email confirmation", () => {
       $(SchemaConfirmationPage.submit()).click();
       $(SummaryPage.submit()).click();
       expect(browser.getUrl()).to.contain(ThankYouPage.pageName);
-      expect($(ThankYouPage.emailAddress()).isExisting()).to.be.true;
+      expect($(ThankYouPage.email()).isExisting()).to.be.true;
     });
 
     it("When I submit the form without providing an email address, Then I get an error message", () => {
@@ -26,7 +26,7 @@ describe("Email confirmation", () => {
     });
 
     it("When I submit the form without providing a correctly formatted email address, Then I get an error message", () => {
-      $(ThankYouPage.emailAddress()).setValue("incorrect-format");
+      $(ThankYouPage.email()).setValue("incorrect-format");
       $(ThankYouPage.submit()).click();
       expect(browser.getUrl()).to.contain(ThankYouPage.pageName);
       expect($(ThankYouPage.errorPanel()).isExisting()).to.be.true;
@@ -34,7 +34,7 @@ describe("Email confirmation", () => {
     });
 
     it("When I submit the form with a valid email address, Then I go to the email confirmation sent page", () => {
-      $(ThankYouPage.emailAddress()).setValue("name@example.com");
+      $(ThankYouPage.email()).setValue("name@example.com");
       $(ThankYouPage.submit()).click();
       expect(browser.getUrl()).to.contain("confirmation-email/sent");
       expect($(ConfirmationEmailSentPage.confirmationText()).getText()).to.equal("A confirmation email has been sent to name@example.com");
@@ -49,7 +49,7 @@ describe("Email confirmation", () => {
     });
 
     it("when I submit the form without providing a correctly formatted email address, Then I get an error message", () => {
-      $(ConfirmationEmailPage.emailAddress()).setValue("incorrect-format");
+      $(ConfirmationEmailPage.email()).setValue("incorrect-format");
       $(ConfirmationEmailPage.submit()).click();
       expect(browser.getUrl()).to.contain("confirmation-email/send");
       expect($(ConfirmationEmailPage.errorPanel()).isExisting()).to.be.true;
@@ -57,7 +57,7 @@ describe("Email confirmation", () => {
     });
 
     it("When I submit the form with a valid email, Then I go to the email confirmation page", () => {
-      $(ConfirmationEmailPage.emailAddress()).setValue("name@example.com");
+      $(ConfirmationEmailPage.email()).setValue("name@example.com");
       $(ConfirmationEmailPage.submit()).click();
       expect(browser.getUrl()).to.contain("confirmation-email/sent");
       expect($(ConfirmationEmailSentPage.confirmationText()).getText()).to.equal("A confirmation email has been sent to name@example.com");

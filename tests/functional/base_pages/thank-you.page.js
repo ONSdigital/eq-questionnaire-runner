@@ -17,7 +17,7 @@ class ThankYouPage extends QuestionPage {
     return '[data-qa="btn-exit"]';
   }
 
-  emailAddress() {
+  email() {
     return "#email";
   }
 
