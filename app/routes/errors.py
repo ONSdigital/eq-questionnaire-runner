@@ -10,7 +10,7 @@ from app.authentication.no_questionnaire_state_exception import (
 )
 from app.globals import get_metadata
 from app.helpers.language_helper import handle_language
-from app.helpers.template_helper import render_template
+from app.helpers.template_helpers import render_template
 from app.submitter.submission_failed import SubmissionFailedException
 
 logger = get_logger()
