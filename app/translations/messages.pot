@@ -184,11 +184,11 @@ msgstr ""
 msgid "Not a valid choice"
 msgstr ""
 
-#: app/helpers/template_helper.py:19
+#: app/helpers/template_helpers.py:19
 msgid "Office for National Statistics logo"
 msgstr ""
 
-#: app/helpers/template_helper.py:28 app/helpers/template_helper.py:37
+#: app/helpers/template_helpers.py:28 app/helpers/template_helpers.py:37
 #: templates/errors/403.html:3 templates/errors/404.html:3
 #: templates/errors/500.html:3 templates/errors/session-expired.html:6
 #: templates/multiple_survey.html:4 templates/signed-out.html:3
@@ -196,7 +196,7 @@ msgstr ""
 msgid "Census 2021"
 msgstr ""
 
-#: app/helpers/template_helper.py:33
+#: app/helpers/template_helpers.py:33
 msgid "Northern Ireland Statistics and Research Agency logo"
 msgstr ""
 
@@ -394,49 +394,49 @@ msgstr ""
 msgid "Error: {page_title}"
 msgstr ""
 
-#: templates/census-thank-you.html:13
+#: templates/census-thank-you.html:16
 msgid "Thank you for completing your census"
 msgstr ""
 
-#: templates/census-thank-you.html:15
+#: templates/census-thank-you.html:18
 msgid "Thank you for completing the census"
 msgstr ""
 
-#: templates/census-thank-you.html:21
+#: templates/census-thank-you.html:24
 msgid ""
 "Your individual census has been submitted for "
 "<strong>{display_address}</strong>"
 msgstr ""
 
-#: templates/census-thank-you.html:23
+#: templates/census-thank-you.html:26
 msgid ""
 "Your census has been submitted for the household at "
 "<strong>{display_address}</strong>"
 msgstr ""
 
-#: templates/census-thank-you.html:25
+#: templates/census-thank-you.html:28
 msgid ""
 "Your census has been submitted for the accommodation at "
 "<strong>{display_address}</strong>"
 msgstr ""
 
-#: templates/census-thank-you.html:26
+#: templates/census-thank-you.html:29
 msgid ""
 "Anyone staying at this accommodation for at least 6 months needs to fill "
 "in their own individual census, including staff. Your Census Officer will"
 " provide you with census forms for your residents."
 msgstr ""
 
-#: templates/census-thank-you.html:32
+#: templates/census-thank-you.html:35
 msgid ""
 "Your personal information is protected by law and will be kept "
 "confidential"
 msgstr ""
 
-#: templates/census-thank-you.html:38
+#: templates/census-thank-you.html:41
 msgid ""
-"Make sure you <a href='{url}'>leave this page</a> or close your browser "
-"if using a shared device"
+"Make sure you <a href='{sign_out_url}'>leave this page</a> or close your "
+"browser if using a shared device"
 msgstr ""
 
 #: templates/confirmation.html:6 templates/confirmation.html:27
@@ -535,35 +535,35 @@ msgstr ""
 msgid "We’ve received your answers"
 msgstr ""
 
-#: templates/thank-you.html:8
+#: templates/thank-you.html:9
 msgid "Submission successful"
 msgstr ""
 
-#: templates/thank-you.html:18
+#: templates/thank-you.html:19
 msgid ""
 "Your answers were submitted for <span>{ru_name}</span> "
 "({trading_as_name}) on {submitted_date_time}"
 msgstr ""
 
-#: templates/thank-you.html:23
+#: templates/thank-you.html:24
 msgid ""
 "Your answers were submitted for <span>{ru_name}</span> on "
 "{submitted_date_time}"
 msgstr ""
 
-#: templates/thank-you.html:29
+#: templates/thank-you.html:30
 msgid "Transaction ID: <b>{transaction_id}</b>"
 msgstr ""
 
-#: templates/thank-you.html:32
+#: templates/thank-you.html:33
 msgid "Your answers will be processed in the next few weeks."
 msgstr ""
 
-#: templates/thank-you.html:33
+#: templates/thank-you.html:34
 msgid "We may contact you to query your answers via phone or secure message."
 msgstr ""
 
-#: templates/thank-you.html:34
+#: templates/thank-you.html:35
 msgid "For more information on how we use this data."
 msgstr ""
 
@@ -740,7 +740,7 @@ msgid "Cookies"
 msgstr ""
 
 #: templates/layouts/configs/_footer.html:49 templates/static/privacy.html:4
-#: templates/static/privacy.html:9
+#: templates/static/privacy.html:10
 msgid "Privacy and data protection"
 msgstr ""
 
@@ -757,7 +757,7 @@ msgid "Save and complete later"
 msgstr ""
 
 #: templates/layouts/configs/_save-sign-out-button.html:24
-msgid "Sign out"
+msgid "Exit"
 msgstr ""
 
 #: templates/macros/helpers.html:39
@@ -917,113 +917,113 @@ msgstr ""
 msgid "Remove {item_name}"
 msgstr ""
 
-#: templates/static/accessibility.html:4 templates/static/accessibility.html:9
+#: templates/static/accessibility.html:4 templates/static/accessibility.html:10
 msgid "Accessibility statement"
 msgstr ""
 
-#: templates/static/accessibility.html:11
+#: templates/static/accessibility.html:12
 msgid ""
 "This census is run by the Office for National Statistics. We want as many"
 " people as possible to be able to do the census online. For example, that"
 " means you should be able to:"
 msgstr ""
 
-#: templates/static/accessibility.html:14
+#: templates/static/accessibility.html:15
 msgid "change colours, contrast levels and fonts"
 msgstr ""
 
-#: templates/static/accessibility.html:15
+#: templates/static/accessibility.html:16
 #, python-format
 msgid "zoom in up to 300%% without the text spilling off the screen"
 msgstr ""
 
-#: templates/static/accessibility.html:16
+#: templates/static/accessibility.html:17
 msgid "navigate most of the questionnaire using just a keyboard"
 msgstr ""
 
-#: templates/static/accessibility.html:17
+#: templates/static/accessibility.html:18
 msgid "navigate most of the questionnaire using speech recognition software"
 msgstr ""
 
-#: templates/static/accessibility.html:18
+#: templates/static/accessibility.html:19
 msgid ""
 "listen to most of the questionnaire using a screen reader (including the "
 "most recent versions of JAWS, NVDA and VoiceOver)"
 msgstr ""
 
-#: templates/static/accessibility.html:21
+#: templates/static/accessibility.html:22
 msgid "We’ve used simple language as much as possible."
 msgstr ""
 
-#: templates/static/accessibility.html:23
+#: templates/static/accessibility.html:24
 msgid ""
 "<a href='{url}'>AbilityNet</a> has advice on making your device easier to"
 " use if you have a disability."
 msgstr ""
 
-#: templates/static/accessibility.html:25
+#: templates/static/accessibility.html:26
 msgid "How accessible is this questionnaire?"
 msgstr ""
 
-#: templates/static/accessibility.html:27
+#: templates/static/accessibility.html:28
 msgid ""
 "We know that the following parts of this questionnaire are not fully "
 "accessible:"
 msgstr ""
 
-#: templates/static/accessibility.html:30
+#: templates/static/accessibility.html:31
 msgid "you cannot modify the line height or spacing of text"
 msgstr ""
 
-#: templates/static/accessibility.html:31
+#: templates/static/accessibility.html:32
 msgid ""
 "the online system for getting a new census code has not been fully tested"
 " so parts of it may not be accessible to all users"
 msgstr ""
 
-#: templates/static/accessibility.html:32
+#: templates/static/accessibility.html:33
 msgid "the Web chat tool may not be fully accessible"
 msgstr ""
 
-#: templates/static/accessibility.html:33
+#: templates/static/accessibility.html:34
 msgid ""
 "some page titles may not accurately reflect the content on the page for "
 "audio users"
 msgstr ""
 
-#: templates/static/accessibility.html:36
+#: templates/static/accessibility.html:37
 msgid "What to do if you need guidance"
 msgstr ""
 
-#: templates/static/accessibility.html:38
+#: templates/static/accessibility.html:39
 msgid "Our <a href='{url}'>guidance leaflets about the census</a> are available:"
 msgstr ""
 
-#: templates/static/accessibility.html:41
+#: templates/static/accessibility.html:42
 msgid "in Braille"
 msgstr ""
 
-#: templates/static/accessibility.html:42
+#: templates/static/accessibility.html:43
 msgid "in British Sign Language (BSL)"
 msgstr ""
 
-#: templates/static/accessibility.html:43
+#: templates/static/accessibility.html:44
 msgid "as an easy read version (which uses pictures to explain the census)"
 msgstr ""
 
-#: templates/static/accessibility.html:44
+#: templates/static/accessibility.html:45
 msgid "as a Welsh audio"
 msgstr ""
 
-#: templates/static/accessibility.html:45
+#: templates/static/accessibility.html:46
 msgid "as large print in English or large print in Welsh"
 msgstr ""
 
-#: templates/static/accessibility.html:48
+#: templates/static/accessibility.html:49
 msgid "Reporting accessibility problems"
 msgstr ""
 
-#: templates/static/accessibility.html:50
+#: templates/static/accessibility.html:51
 msgid ""
 "We’re always looking to improve the accessibility of this service. If you"
 " find any problems that are not listed on this page or think we’re not "
@@ -1031,11 +1031,11 @@ msgid ""
 "us</a>."
 msgstr ""
 
-#: templates/static/accessibility.html:52
+#: templates/static/accessibility.html:53
 msgid "Enforcement procedure"
 msgstr ""
 
-#: templates/static/accessibility.html:54
+#: templates/static/accessibility.html:55
 msgid ""
 "The Equality and Human Rights Commission (EHRC) is responsible for "
 "enforcing the Public Sector Bodies (Website and Mobile Applications) (No."
@@ -1043,58 +1043,58 @@ msgid ""
 "you’re not happy with how we respond to your complaint, contact the:"
 msgstr ""
 
-#: templates/static/accessibility.html:57
+#: templates/static/accessibility.html:58
 msgid ""
 "<a href='{url}'>Equality Advisory and Support Service (EASS)</a> if you "
 "live in England or Wales"
 msgstr ""
 
-#: templates/static/accessibility.html:58
+#: templates/static/accessibility.html:59
 msgid ""
 "<a href='{url}'>Equalities Commission for Northern Ireland (ECNI)</a> if "
 "you live in Northern Ireland"
 msgstr ""
 
-#: templates/static/accessibility.html:61
+#: templates/static/accessibility.html:62
 msgid "Technical information about this questionnaire’s accessibility"
 msgstr ""
 
-#: templates/static/accessibility.html:63
+#: templates/static/accessibility.html:64
 msgid ""
 "The Office for National Statistics is committed to making its website "
 "accessible, in accordance with the Public Sector Bodies (Website and "
 "Mobile Applications) (No. 2) Accessibility Regulations 2018."
 msgstr ""
 
-#: templates/static/accessibility.html:65
+#: templates/static/accessibility.html:66
 msgid ""
 "This service is partially compliant with the <a href='{url}'>Web Content "
 "Accessibility Guidelines version 2.1</a> AA standard, due to the non-"
 "compliances listed."
 msgstr ""
 
-#: templates/static/accessibility.html:67
+#: templates/static/accessibility.html:68
 msgid "Non-accessible content"
 msgstr ""
 
-#: templates/static/accessibility.html:69
+#: templates/static/accessibility.html:70
 msgid ""
 "The content listed is non-accessible for the following reasons. We are "
 "planning to fix the following issues for Census 2021."
 msgstr ""
 
-#: templates/static/accessibility.html:71
+#: templates/static/accessibility.html:72
 msgid "Non-compliance with the accessibility regulations"
 msgstr ""
 
-#: templates/static/accessibility.html:73
+#: templates/static/accessibility.html:74
 msgid ""
 "Non-descriptive form elements. On the ‘Check your answers’ summary page "
 "there is an option to “change” items, but the link does not describe "
 "where it goes to. Fails on WCAG 2.1 A number 1.3.1."
 msgstr ""
 
-#: templates/static/accessibility.html:75
+#: templates/static/accessibility.html:76
 msgid ""
 "Error messages are too generic. If the text in a field is incorrect or in"
 " the wrong format, the answer validation page says the answer is "
@@ -1102,28 +1102,28 @@ msgid ""
 "number 3.3.1."
 msgstr ""
 
-#: templates/static/accessibility.html:77
+#: templates/static/accessibility.html:78
 msgid ""
 "Form label issue. On the ‘What is your name?’ page, middle name is "
 "optional but this is not clear to the user. Fails on WCAG 2.1 A number "
 "3.3.2."
 msgstr ""
 
-#: templates/static/accessibility.html:79
+#: templates/static/accessibility.html:80
 msgid ""
 "Form label issue. When selecting the appropriate relationship, it is "
 "possible to ‘Save and continue’ without selecting an option. Fails on "
 "WCAG 2.1 A number 2.4.6."
 msgstr ""
 
-#: templates/static/accessibility.html:81
+#: templates/static/accessibility.html:82
 msgid ""
 "On the ‘Is this address correct?’ page, the title may not accurately "
 "reflect the content on the page for audio users. The ‘Submit survey’ page"
 " does not have a page title. Fails on WCAG 2.1 A number 2.4.2."
 msgstr ""
 
-#: templates/static/accessibility.html:83
+#: templates/static/accessibility.html:84
 msgid ""
 "Timeout issue. Users are not informed of a time limit and service times "
 "out without warning. During the validation process there is no return "
@@ -1131,176 +1131,176 @@ msgid ""
 "AAA number 2.2.6."
 msgstr ""
 
-#: templates/static/accessibility.html:85
+#: templates/static/accessibility.html:86
 msgid ""
 "The ‘Hide this’ button text on accordions such as ‘What does “usually "
 "live” mean?’ is non-descriptive for JAWS users as the text above it is "
 "read back to users. Fails on WCAG 2.1 AA number 2.4.6."
 msgstr ""
 
-#: templates/static/accessibility.html:87
+#: templates/static/accessibility.html:88
 msgid ""
 "Screen readers may not let users know when an accordion is expanded or "
 "collapsed. Fails on WCAG 2.1 A number 2.4.4."
 msgstr ""
 
-#: templates/static/accessibility.html:89
+#: templates/static/accessibility.html:90
 msgid ""
 "Non-descriptive headings. On the relationships page, the heading does not"
 " accurately describe the content for screen readers. Fails on WCAG 2.1 A "
 "number 2.4.6."
 msgstr ""
 
-#: templates/static/accessibility.html:91
+#: templates/static/accessibility.html:92
 msgid ""
 "Some links are not descriptive enough for screen reader users. Fails on "
 "WCAG 2.1 AAA number 2.4.9."
 msgstr ""
 
-#: templates/static/accessibility.html:93
+#: templates/static/accessibility.html:94
 msgid ""
 "Some headings do not follow a logical hierarchical structure. Fails on "
 "WCAG AAA 2.1 number 2.4.10."
 msgstr ""
 
-#: templates/static/accessibility.html:95
+#: templates/static/accessibility.html:96
 msgid ""
 "Some text is highlighted, such as addresses and names that a user has "
 "confirmed. Highlighting is not accessible for some users. This does not "
 "conform to Government Digital Service (GDS) guidelines."
 msgstr ""
 
-#: templates/static/accessibility.html:97
+#: templates/static/accessibility.html:98
 msgid ""
 "Some radio inputs on the relationships page do not conform to GDS "
 "guidelines. When selected, three different elements on the page are "
 "updated."
 msgstr ""
 
-#: templates/static/accessibility.html:99
+#: templates/static/accessibility.html:100
 msgid ""
 "On ‘Who lives here?’ there is a ‘Previous’ link on the page that does not"
 " conform with GDS guidelines. The text used should read as ‘Back’."
 msgstr ""
 
-#: templates/static/accessibility.html:101
+#: templates/static/accessibility.html:102
 msgid ""
 "Error messages do not result in a change to the page title to reflect "
 "that an error has been made. This does not conform to GDS guidelines."
 msgstr ""
 
-#: templates/static/accessibility.html:103
+#: templates/static/accessibility.html:104
 msgid "How we tested this questionnaire"
 msgstr ""
 
-#: templates/static/accessibility.html:105
+#: templates/static/accessibility.html:106
 msgid "Over the last few years we have tested the full questionnaire, including:"
 msgstr ""
 
-#: templates/static/accessibility.html:108
+#: templates/static/accessibility.html:109
 msgid ""
 "<a href='{url}'>Digital Accessibility Centre (DAC)</a> carrying out a "
 "professional, technical audit"
 msgstr ""
 
-#: templates/static/accessibility.html:109
+#: templates/static/accessibility.html:110
 msgid ""
 "user testing with the public on different devices, different locations, "
 "in their homes with various assistive technologies including free and "
 "paid versions"
 msgstr ""
 
-#: templates/static/accessibility.html:110
+#: templates/static/accessibility.html:111
 msgid "testing with charities, such as Scope and RNIB in their labs"
 msgstr ""
 
-#: templates/static/accessibility.html:111
+#: templates/static/accessibility.html:112
 msgid "using job centres and libraries for pop-up testing"
 msgstr ""
 
-#: templates/static/accessibility.html:112
+#: templates/static/accessibility.html:113
 msgid "covering a wide range of ages, additional needs and disabilities"
 msgstr ""
 
-#: templates/static/accessibility.html:113
+#: templates/static/accessibility.html:114
 msgid ""
 "making sure the offline journey and non-digital products were considered "
 "in the end-to-end journey"
 msgstr ""
 
-#: templates/static/accessibility.html:114
+#: templates/static/accessibility.html:115
 msgid ""
 "changing designs based on feedback from user testing, such as letter "
 "structure and the summary of sections and progress through questionnaire"
 msgstr ""
 
-#: templates/static/accessibility.html:117
+#: templates/static/accessibility.html:118
 msgid "Digital Accessibility Centre testing"
 msgstr ""
 
-#: templates/static/accessibility.html:119
+#: templates/static/accessibility.html:120
 msgid ""
 "Parts of this questionnaire were last tested on 3 September 2019 by the "
 "Digital Accessibility Centre (DAC)."
 msgstr ""
 
-#: templates/static/accessibility.html:122
+#: templates/static/accessibility.html:123
 msgid "<a href='{url}' download>DAC Report - September 2019</a>"
 msgstr ""
 
-#: templates/static/accessibility.html:124
+#: templates/static/accessibility.html:125
 msgid "You can read the last full accessibility test report from 28 June 2019."
 msgstr ""
 
-#: templates/static/accessibility.html:126
+#: templates/static/accessibility.html:127
 msgid "<a href='{url}' download>DAC Report - June 2019</a>"
 msgstr ""
 
-#: templates/static/accessibility.html:128
+#: templates/static/accessibility.html:129
 msgid "What we’re doing to improve accessibility"
 msgstr ""
 
-#: templates/static/accessibility.html:130
+#: templates/static/accessibility.html:131
 msgid ""
 "We are continuing to work with various charities and local deaf "
 "communities to understand their needs for the census."
 msgstr ""
 
-#: templates/static/accessibility.html:132
+#: templates/static/accessibility.html:133
 msgid ""
 "We are looking at designs to see if it is possible to have British Sign "
 "Language on every page. This is challenging as we have been unable to "
 "find another service that does this, but we continue to investigate."
 msgstr ""
 
-#: templates/static/accessibility.html:134
+#: templates/static/accessibility.html:135
 msgid "We will act on feedback from the 2019 Rehearsal in October."
 msgstr ""
 
-#: templates/static/accessibility.html:136
+#: templates/static/accessibility.html:137
 msgid ""
 "This statement was prepared on 17 September. It was last updated on 17 "
 "September."
 msgstr ""
 
-#: templates/static/privacy.html:10
+#: templates/static/privacy.html:11
 msgid ""
 "The information you provide when you fill in your census rehearsal "
 "questionnaire is protected by law."
 msgstr ""
 
-#: templates/static/privacy.html:11
+#: templates/static/privacy.html:12
 msgid ""
 "Here we detail why we need your information. We also describe all the "
 "steps that we take to make sure your information and your privacy are "
 "safe."
 msgstr ""
 
-#: templates/static/privacy.html:14
+#: templates/static/privacy.html:15
 msgid "How and why we use your information"
 msgstr ""
 
-#: templates/static/privacy.html:16
+#: templates/static/privacy.html:17
 msgid ""
 "We collect information from your questionnaire under our statutory "
 "objective to promote and safeguard the production of official statistics "
@@ -1310,14 +1310,14 @@ msgid ""
 "research."
 msgstr ""
 
-#: templates/static/privacy.html:18
+#: templates/static/privacy.html:19
 msgid ""
 "Every 10 years, the census gathers vital information that helps the "
 "government and local authorities plan services like health services, "
 "roads and libraries."
 msgstr ""
 
-#: templates/static/privacy.html:20
+#: templates/static/privacy.html:21
 msgid ""
 "By running a rehearsal for Census 2021, we can test our processes, "
 "systems and services and make sure everything goes smoothly for the real "
@@ -1327,7 +1327,7 @@ msgid ""
 "researchers from other organisations."
 msgstr ""
 
-#: templates/static/privacy.html:22
+#: templates/static/privacy.html:23
 msgid ""
 "We may occasionally record information about a property or an individual,"
 " in the interests of safeguarding the wellbeing of both those being "
@@ -1336,14 +1336,14 @@ msgid ""
 "personal data needed to meet these purposes."
 msgstr ""
 
-#: templates/static/privacy.html:24
+#: templates/static/privacy.html:25
 msgid ""
 "For online completion, we’ll collect information about how people fill in"
 " their questionnaires online to provide us with knowledge of how to "
 "improve our online services."
 msgstr ""
 
-#: templates/static/privacy.html:26
+#: templates/static/privacy.html:27
 msgid ""
 "If you provide feedback by email we will ensure your email address is "
 "deleted promptly after the feedback has been received. We will never "
@@ -1351,17 +1351,17 @@ msgid ""
 "used for research purposes only."
 msgstr ""
 
-#: templates/static/privacy.html:29
+#: templates/static/privacy.html:30
 msgid "Who can access the information?"
 msgstr ""
 
-#: templates/static/privacy.html:31
+#: templates/static/privacy.html:32
 msgid ""
 "During the rehearsal we’ll employ third-party providers to assist us with"
 " parts of the operation. These third parties work under our instruction."
 msgstr ""
 
-#: templates/static/privacy.html:32
+#: templates/static/privacy.html:33
 msgid ""
 "We treat the information we hold with respect, keeping it secure and "
 "confidential. Data may be made available to approved researchers where "
@@ -1372,18 +1372,18 @@ msgid ""
 "access to."
 msgstr ""
 
-#: templates/static/privacy.html:35
+#: templates/static/privacy.html:36
 msgid "How long are personal data kept?"
 msgstr ""
 
-#: templates/static/privacy.html:37
+#: templates/static/privacy.html:38
 msgid ""
 "Data protection law requires that personal data are kept for no longer "
 "than is needed to fulfil the purposes for which they were originally "
 "collected."
 msgstr ""
 
-#: templates/static/privacy.html:39
+#: templates/static/privacy.html:40
 msgid ""
 "The law allows that information held for statistical purposes only, such "
 "as information from your questionnaire, may be kept for longer periods. "
@@ -1395,7 +1395,7 @@ msgid ""
 "and will be deleted when they are no longer required."
 msgstr ""
 
-#: templates/static/privacy.html:41
+#: templates/static/privacy.html:42
 msgid ""
 "Safeguarding data, such as information about a property or an individual,"
 " will be held for the duration of the rehearsal. Most of the information "
@@ -1404,7 +1404,7 @@ msgid ""
 "safeguarding purposes."
 msgstr ""
 
-#: templates/static/privacy.html:43
+#: templates/static/privacy.html:44
 msgid ""
 "Metrics containing information about how people fill in their "
 "questionnaires will be held in an identifiable form only until the "
@@ -1413,11 +1413,11 @@ msgid ""
 "services."
 msgstr ""
 
-#: templates/static/privacy.html:46
+#: templates/static/privacy.html:47
 msgid "How the law protects your information"
 msgstr ""
 
-#: templates/static/privacy.html:48
+#: templates/static/privacy.html:49
 msgid ""
 "The <a href='{data_protection_url}'>General Data Protection "
 "Regulation</a> and the <a href='{data_protection_act_url}'>Data "
@@ -1429,7 +1429,7 @@ msgid ""
 "personal data, to provide you with certain information."
 msgstr ""
 
-#: templates/static/privacy.html:50
+#: templates/static/privacy.html:51
 msgid ""
 "The ONS is a statutory body, meaning it was created by legislation, "
 "specifically the <a href='{url}'>Statistics and Registration Service Act "
@@ -1439,7 +1439,7 @@ msgid ""
 "Act or other UK legislation."
 msgstr ""
 
-#: templates/static/privacy.html:52
+#: templates/static/privacy.html:53
 msgid ""
 "The census rehearsal questionnaire has been assessed as compatible with "
 "the <a href='{url}'>Human Rights Act 1998</a>, specifically Article 8 "
@@ -1447,17 +1447,17 @@ msgid ""
 "of thought, conscience and religion) of the convention rights."
 msgstr ""
 
-#: templates/static/privacy.html:55
+#: templates/static/privacy.html:56
 msgid "Legal basis for processing your data"
 msgstr ""
 
-#: templates/static/privacy.html:57
+#: templates/static/privacy.html:58
 msgid ""
 "Data protection legislation requires that all processing of personal data"
 " is undertaken under one or more conditions."
 msgstr ""
 
-#: templates/static/privacy.html:59
+#: templates/static/privacy.html:60
 msgid ""
 "For the census rehearsal, we’ll process information from your "
 "questionnaire, information about a property or an individual and "
@@ -1465,14 +1465,14 @@ msgid ""
 "following condition:"
 msgstr ""
 
-#: templates/static/privacy.html:62
+#: templates/static/privacy.html:63
 msgid ""
 "processing is necessary for the performance of a task carried out in the "
 "public interest or in the exercise of official authority vested in the "
 "controller."
 msgstr ""
 
-#: templates/static/privacy.html:65
+#: templates/static/privacy.html:66
 msgid ""
 "Under data protection legislation, an additional condition is required "
 "for the processing of special category personal data. These data include "
@@ -1481,7 +1481,7 @@ msgid ""
 "sexual orientation. They also include genetic and biometric data."
 msgstr ""
 
-#: templates/static/privacy.html:67
+#: templates/static/privacy.html:68
 msgid ""
 "For the rehearsal, we’ll process special category personal data on race, "
 "ethnicity, religion, philosophical beliefs and sexual orientation. "
@@ -1489,29 +1489,29 @@ msgid ""
 "conditions:"
 msgstr ""
 
-#: templates/static/privacy.html:70
+#: templates/static/privacy.html:71
 msgid ""
 "processing is necessary for archiving in the public interest, scientific "
 "or historical research purposes or statistical purposes based on UK law."
 msgstr ""
 
-#: templates/static/privacy.html:71 templates/static/privacy.html:77
+#: templates/static/privacy.html:72 templates/static/privacy.html:78
 msgid "processing is necessary for reasons of substantial public interest."
 msgstr ""
 
-#: templates/static/privacy.html:74
+#: templates/static/privacy.html:75
 msgid ""
 "We’ll process special category data on information about a property or an"
 " individual under the following condition:"
 msgstr ""
 
-#: templates/static/privacy.html:80
+#: templates/static/privacy.html:81
 msgid ""
 "We’ll ensure the principle of data minimisation and have measures in "
 "place to delete or de-identify personal data where appropriate."
 msgstr ""
 
-#: templates/static/privacy.html:82
+#: templates/static/privacy.html:83
 msgid ""
 "The census rehearsal gives us invaluable information about the systems "
 "and processes required for Census 2021. It’ll help us complete one of our"
@@ -1519,18 +1519,18 @@ msgid ""
 "provide numerous benefits for the wider society."
 msgstr ""
 
-#: templates/static/privacy.html:84
+#: templates/static/privacy.html:85
 msgid ""
 "There’s substantial public interest in the collection of safeguarding "
 "data to ensure the safety of both interviewers and respondents. We’re "
 "required to ensure the safety of our staff and the public."
 msgstr ""
 
-#: templates/static/privacy.html:87
+#: templates/static/privacy.html:88
 msgid "Your rights"
 msgstr ""
 
-#: templates/static/privacy.html:89
+#: templates/static/privacy.html:90
 msgid ""
 "As a data subject (someone whose personal data we hold), you have rights "
 "available to you under data protection law. If you wish to exercise any "
@@ -1540,7 +1540,7 @@ msgid ""
 " out in the Data Protection Act 2018."
 msgstr ""
 
-#: templates/static/privacy.html:91
+#: templates/static/privacy.html:92
 msgid ""
 "You have the right to request from any controller that holds your "
 "personal data access to the information they hold about you. You can ask "
@@ -1548,64 +1548,64 @@ msgid ""
 "You have the right to object to your personal data being processed."
 msgstr ""
 
-#: templates/static/privacy.html:93
+#: templates/static/privacy.html:94
 msgid "You have the right, in some circumstances, to ask for any controller to:"
 msgstr ""
 
-#: templates/static/privacy.html:96
+#: templates/static/privacy.html:97
 msgid "erase any personal data they may hold about you"
 msgstr ""
 
-#: templates/static/privacy.html:97
+#: templates/static/privacy.html:98
 msgid "stop processing your personal data"
 msgstr ""
 
-#: templates/static/privacy.html:98
+#: templates/static/privacy.html:99
 msgid "pass any information they hold about you to another controller"
 msgstr ""
 
-#: templates/static/privacy.html:101
+#: templates/static/privacy.html:102
 msgid ""
 "You can get further information on the rights available to you and the "
 "circumstances under which you can exercise them from the <a "
 "href='{url}'>Information Commissioner’s Office</a>."
 msgstr ""
 
-#: templates/static/privacy.html:104
+#: templates/static/privacy.html:105
 msgid "The data controller"
 msgstr ""
 
-#: templates/static/privacy.html:106
+#: templates/static/privacy.html:107
 msgid ""
 "The controller is the person or organisation that decides which personal "
 "data will be processed and for what purpose. For the census rehearsal, "
 "the ONS is the controller and makes those decisions."
 msgstr ""
 
-#: templates/static/privacy.html:108
+#: templates/static/privacy.html:109
 msgid "You can contact us by:"
 msgstr ""
 
-#: templates/static/privacy.html:110
+#: templates/static/privacy.html:111
 #, python-format
 msgid "Telephone: %(telephone_number)s"
 msgstr ""
 
-#: templates/static/privacy.html:112
+#: templates/static/privacy.html:113
 #, python-format
 msgid "Email: %(email_address)s"
 msgstr ""
 
-#: templates/static/privacy.html:114 templates/static/privacy.html:134
-#: templates/static/privacy.html:155
+#: templates/static/privacy.html:115 templates/static/privacy.html:135
+#: templates/static/privacy.html:156
 msgid "Post:"
 msgstr ""
 
-#: templates/static/privacy.html:124
+#: templates/static/privacy.html:125
 msgid "How to contact the data protection officer"
 msgstr ""
 
-#: templates/static/privacy.html:126
+#: templates/static/privacy.html:127
 msgid ""
 "Our data protection officer is the person charged with providing us with "
 "advice and guidance on the ways we can best protect the information we "
@@ -1614,23 +1614,23 @@ msgid ""
 "our use of your data, or wish to exercise any of your rights."
 msgstr ""
 
-#: templates/static/privacy.html:128
+#: templates/static/privacy.html:129
 msgid "You can contact the data protection officer by:"
 msgstr ""
 
-#: templates/static/privacy.html:130 templates/static/privacy.html:151
+#: templates/static/privacy.html:131 templates/static/privacy.html:152
 msgid "Telephone: {telephone_number}"
 msgstr ""
 
-#: templates/static/privacy.html:132 templates/static/privacy.html:153
+#: templates/static/privacy.html:133 templates/static/privacy.html:154
 msgid "Email: {email_address}"
 msgstr ""
 
-#: templates/static/privacy.html:145
+#: templates/static/privacy.html:146
 msgid "The Information Commissioner’s Office"
 msgstr ""
 
-#: templates/static/privacy.html:147
+#: templates/static/privacy.html:148
 msgid ""
 "The Information Commissioner’s Office (ICO) is the independent "
 "organisation tasked with regulating data protection in the UK. The ICO "
@@ -1639,7 +1639,7 @@ msgid ""
 "use of your information."
 msgstr ""
 
-#: templates/static/privacy.html:149
+#: templates/static/privacy.html:150
 msgid "You can contact the ICO by:"
 msgstr ""
 
