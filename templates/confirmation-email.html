@@ -1,10 +1,12 @@
 {% extends 'layouts/_base.html' %}
 {% from 'components/panel/_macro.njk' import onsPanel %}
+
 {% set page_title = _("Another confirmation email") ~ " - " ~ _("Census 2021") %}
 
 {% block main %}
   {% set form = content.form %}
   {% if form.mapped_errors %}
+    {% set error_title = _("There is a problem with this page") %}
     {% include 'partials/error-panel.html' %}
   {% endif %}
 

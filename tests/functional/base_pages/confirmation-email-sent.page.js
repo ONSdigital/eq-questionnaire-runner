@@ -1,6 +1,6 @@
 import QuestionPage from "./question.page";
 
-class EmailConfirmationPage extends QuestionPage {
+class ConfirmationEmailSentPage extends QuestionPage {
   constructor() {
     super("email-confirmation");
   }
@@ -13,4 +13,4 @@ class EmailConfirmationPage extends QuestionPage {
     return 'a[id="send-another-email"]';
   }
 }
-export default new EmailConfirmationPage();
+export default new ConfirmationEmailSentPage();

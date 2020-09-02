@@ -18,7 +18,7 @@ from app.views.handlers.individual_response import (
     IndividualResponseTextConfirmHandler,
     IndividualResponseTextHandler,
 )
-from app.views.handlers.url_safe_serializer import URLSafeSerializerHandler
+from app.helpers.url_safe_helper import URLSafeSerializerHelper
 
 logger = get_logger()
 
@@ -255,7 +255,7 @@ def get_individual_response_text_message_confirmation(schema, questionnaire_stor
     if request.method == "POST":
         return redirect(url_for("questionnaire.get_questionnaire"))
 
-    url_safe_serializer_handler = URLSafeSerializerHandler()
+    url_safe_serializer_handler = URLSafeSerializerHelper()
     mobile_number = url_safe_serializer_handler.loads(request.args.get("mobile_number"))
 
     return render_template(

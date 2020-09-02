@@ -1,13 +1,13 @@
 from werkzeug.exceptions import NotFound
-from app.views.handlers.url_safe_serializer import URLSafeSerializerHandler
+from app.helpers.url_safe_helper import URLSafeSerializerHelper
 from app.forms.email_form import EmailForm
 from app.globals import get_session_store
 from app.views.contexts.email_context import build_email_context
 
 
-class AnotherEmail:
+class ConfirmationEmail:
     def __init__(self):
-        if not get_session_store().session_data.email_confirmation:
+        if not get_session_store().session_data.confirmation_email:
             raise NotFound
 
         self.email_form = EmailForm()
@@ -18,6 +18,6 @@ class AnotherEmail:
     def validate(self):
         return self.email_form.validate_on_submit()
 
-    def get_url_safe_serialized_email_address(self):
-        url_safe_serializer_handler = URLSafeSerializerHandler()
-        return url_safe_serializer_handler.dumps(self.email_form.email_address.data)
+    def get_url_safe_serialized_email(self):
+        url_safe_serializer_handler = URLSafeSerializerHelper()
+        return url_safe_serializer_handler.dumps(self.email_form.email.data)

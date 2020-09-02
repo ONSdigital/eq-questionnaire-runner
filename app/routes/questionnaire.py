@@ -9,17 +9,18 @@ from app.globals import get_metadata, get_session_store, get_session_timeout_in_
 from app.helpers.language_helper import handle_language
 from app.helpers.schema_helpers import with_schema
 from app.helpers.session_helpers import with_questionnaire_store
+from app.helpers.url_safe_helper import URLSafeSerializerHelper
 from app.helpers.template_helper import render_template
 from app.questionnaire.location import InvalidLocationException
 from app.questionnaire.router import Router
 from app.utilities.schema import load_schema_from_session_data
 from app.views.contexts.hub_context import HubContext
 from app.views.handlers.block_factory import get_block_handler
-from app.views.handlers.another_email import AnotherEmail
-from app.views.handlers.email_confirmation import EmailConfirmation
+from app.views.handlers.confirmation_email import ConfirmationEmail
 from app.views.handlers.section import SectionHandler
 from app.views.handlers.submission import SubmissionHandler
 from app.views.handlers.thank_you import ThankYou
+
 
 
 END_BLOCKS = "Summary", "Confirmation"
@@ -271,13 +272,16 @@ def relationship(schema, questionnaire_store, block_id, list_item_id, to_list_it
 def get_thank_you(schema):
     thank_you = ThankYou(schema)
 
-    if request.method == "POST" and thank_you.validate():
-        return redirect(
-            url_for(
-                "post_submission.get_email_confirmation",
-                email_address=thank_you.get_url_safe_serialized_email_address(),
+    if request.method == "POST":
+        thank_you.handle_post()
+
+        if thank_you.is_valid_email_form:
+            return redirect(
+                url_for(
+                    "post_submission.get_confirmation_email_sent",
+                    email=thank_you.get_url_safe_serialized_email(),
+                )
             )
-        )
 
     return render_template(
         template=thank_you.template,
@@ -287,35 +291,42 @@ def get_thank_you(schema):
     )
 
 
-@post_submission_blueprint.route("email/another/", methods=["GET", "POST"])
+@post_submission_blueprint.route("confirmation-email/send", methods=["GET", "POST"])
 @login_required
-def get_another_email():
-    another_email = AnotherEmail()
+def get_confirmation_email():
+    confirmation_email = ConfirmationEmail()
 
-    if request.method == "POST" and another_email.validate():
+    if request.method == "POST" and confirmation_email.validate():
         return redirect(
             url_for(
-                "post_submission.get_email_confirmation",
-                email_address=another_email.get_url_safe_serialized_email_address(),
+                "post_submission.get_confirmation_email_sent",
+                email=confirmation_email.get_url_safe_serialized_email(),
             )
         )
 
     return render_template(
-        template="another-email",
-        content=another_email.get_context(),
+        template="confirmation-email",
+        content=confirmation_email.get_context(),
         hide_signout_button=True,
     )
 
 
-@post_submission_blueprint.route("email/confirmation/", methods=["GET"])
+@post_submission_blueprint.route("confirmation-email/sent", methods=["GET"])
 @login_required
-def get_email_confirmation():
-    email_address = request.args.get("email_address")
-    email_confirmation = EmailConfirmation(email_address)
+def get_confirmation_email_sent():
+
+    if not get_session_store().session_data.confirmation_email:
+        raise NotFound
+
+    url_safe_serializer_handler = URLSafeSerializerHelper()
+    email = url_safe_serializer_handler.loads(request.args.get("email"))
 
     return render_template(
-        template="email-confirmation",
-        content=email_confirmation.get_context(),
+        template="confirmation-email-sent",
+        content= {
+            "email": email,
+            "url": url_for("post_submission.get_confirmation_email")
+        },
         hide_signout_button=True,
     )
 

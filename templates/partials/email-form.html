@@ -1,38 +1,48 @@
 {% from "components/error/_macro.njk" import onsError %}
 {% from "components/button/_macro.njk" import onsButton %}
-{% set email_form_errors = form.errors['email_address'] %}
+{% from "components/label/_macro.njk" import onsLabel %}
 
-<form method="POST">
+{% set email_form_errors = form.errors['email'] %}
+
   {% if email_form_errors %}
-  {% set email_error = {
-    "text": email_form_errors[0],
-    "id": 'email-error',
-    "attributes": {
-      "data-ga": "error",
-      "data-ga-category": "Error"
+    {% set email_error = {
+      "text": email_form_errors[0],
+      "id": 'email-error',
+      "attributes": {
+        "data-ga": "error",
+        "data-ga-category": "Error"
+      }
     }
-  }
-  %}
-
-  {% call onsError(email_error) %}
-      <strong>{{ _("Email address ") }}</strong>
-      <p>{{ _("This will not be stored and only used once to send your confirmation") }}</p>
-      {{ form.fields.email_address(class_="input input--text input-type__input", id="email-address") }}
+    %}
+    {% call onsError(email_error) %}
+    {{
+      onsLabel({
+        "for": email,
+        "text": _("Email address "),
+        "description": _("This will not be stored and only used once to send your confirmation")
+      })
+    }}
+      {{ form.fields.email(class_="input input--text input-type__input") }}
     {% endcall %}
-    {% else %}
-      <strong>{{ _("Email address") }}</strong>
-      <p>{{ _("This will not be stored and only used once to send your confirmation") }}</p>
-      {{ form.fields.email_address(class_="input input--text input-type__input", id="email-address") }}
-    {% endif %}
+  {% else %}
+    {{
+      onsLabel({
+        "for": email,
+        "text": _("Email address "),
+        "description": _("This will not be stored and only used once to send your confirmation")
+      })
+    }}
+    {{ form.fields.email(class_="input input--text input-type__input") }}
+  {% endif %}
+
   {{ form.fields.csrf_token }}
 
   {{
     onsButton({
       "text": "Send confirmation",
-      "classes": "u-mt-xl",
+      "classes": "u-mt-s",
       "attributes": {
         "data-qa": "btn-submit"
       }
     })
   }}
-</form>

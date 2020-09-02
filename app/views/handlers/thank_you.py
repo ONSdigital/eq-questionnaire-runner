@@ -1,6 +1,6 @@
 from flask import session as cookie_session
 from werkzeug.exceptions import NotFound
-from app.views.handlers.url_safe_serializer import URLSafeSerializerHandler
+from app.helpers.url_safe_helper import URLSafeSerializerHelper
 from app.views.contexts.thank_you_context import (
     build_default_thank_you_context,
     build_census_thank_you_context,
@@ -37,9 +37,10 @@ class ThankYou:
         )
         self.email_form = (
             EmailForm()
-            if self._schema.get_submission().get("email_confirmation")
+            if self._schema.get_submission().get("confirmation_email")
             else None
         )
+        self.is_valid_email_form = False
 
     def get_context(self):
         if not self._is_census_theme:
@@ -56,15 +57,21 @@ class ThankYou:
         )
 
     def validate(self):
+        self.is_valid_email_form = self.email_form.validate_on_submit()
+
+    def get_url_safe_serialized_email(self):
+        url_safe_serializer_handler = URLSafeSerializerHelper()
+        return url_safe_serializer_handler.dumps(self.email_form.email.data)
+
+    def handle_post(self):
         if not self.email_form:
             raise NotFound
 
-        if self.email_form.validate_on_submit():
-            self.session_data.email_confirmation = True
-            self.session_store.save()
-            return True
-        return False
+        self.validate()
 
-    def get_url_safe_serialized_email_address(self):
-        url_safe_serializer_handler = URLSafeSerializerHandler()
-        return url_safe_serializer_handler.dumps(self.email_form.email_address.data)
+        if self.is_valid_email_form:
+            self._update_session_data_confirmation_email_to_true()
+
+    def _update_session_data_confirmation_email_to_true(self):
+        self.session_data.confirmation_email = True
+        self.session_store.save()

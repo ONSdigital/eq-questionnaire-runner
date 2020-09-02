@@ -13,7 +13,7 @@ from app.questionnaire.placeholder_renderer import PlaceholderRenderer
 from app.questionnaire.router import Router
 from app.views.contexts.question import build_question_context
 
-from app.views.handlers.url_safe_serializer import URLSafeSerializerHandler
+from app.helpers.url_safe_helper import URLSafeSerializerHelper
 
 
 class IndividualResponseHandler:
@@ -696,7 +696,7 @@ class IndividualResponseTextHandler(IndividualResponseHandler):
         form_data,
         list_item_id,
     ):
-        self.url_save_serializer_handler = URLSafeSerializerHandler()
+        self.url_save_serializer_handler = URLSafeSerializerHelper()
         super().__init__(
             self.block_definition,
             schema,
@@ -757,7 +757,7 @@ class IndividualResponseTextConfirmHandler(IndividualResponseHandler):
         form_data,
         list_item_id,
     ):
-        url_save_serializer_handler = URLSafeSerializerHandler()
+        url_save_serializer_handler = URLSafeSerializerHelper()
         mobile_number = url_save_serializer_handler.loads(
             request_args.get("mobile_number")
         )

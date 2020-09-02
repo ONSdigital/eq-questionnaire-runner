@@ -1,6 +1,6 @@
 import QuestionPage from "./question.page";
 
-class EmailConfirmationPage extends QuestionPage {
+class ConfirmationEmailSentPage extends QuestionPage {
   constructor() {
     super("email-confirmation");
   }
@@ -10,7 +10,7 @@ class EmailConfirmationPage extends QuestionPage {
   }
 
   emailAddress() {
-    return "#email-address";
+    return "#email";
   }
 
   submit() {
@@ -21,4 +21,4 @@ class EmailConfirmationPage extends QuestionPage {
     return `[data-qa=error-body] div.panel__body > ul`;
   }
 }
-export default new EmailConfirmationPage();
+export default new ConfirmationEmailSentPage();

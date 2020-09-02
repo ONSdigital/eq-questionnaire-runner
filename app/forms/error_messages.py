@@ -21,6 +21,8 @@ error_messages = {
     ),
     "MANDATORY_DATE": lazy_gettext("Enter a date to continue"),
     "MANDATORY_DURATION": lazy_gettext("Enter a duration to continue"),
+    "MANDATORY_EMAIL": lazy_gettext("Enter an email address to continue"),
+    "MANDATORY_EMAIL_FORMAT": lazy_gettext("Enter an email in a valid format, for example name@example.com"),
     "NUMBER_TOO_SMALL": lazy_gettext("Enter an answer more than or equal to %(min)s"),
     "NUMBER_TOO_LARGE": lazy_gettext("Enter an answer less than or equal to %(max)s"),
     "NUMBER_TOO_SMALL_EXCLUSIVE": lazy_gettext("Enter an answer more than %(min)s"),

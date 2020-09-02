@@ -5,6 +5,7 @@
 {% block main %}
   {% set form = content.form %}
   {% if form and form.mapped_errors %}
+    {% set error_title = _("There is a problem with this page") %}
     {% include 'partials/error-panel.html' %}
   {% endif %}
 
