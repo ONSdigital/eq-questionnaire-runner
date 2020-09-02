@@ -19,7 +19,7 @@ logger = get_logger()
 
 
 class RegionCode(validate.Regexp):
-    """ A region code defined as per ISO 3166-2:GB
+    """A region code defined as per ISO 3166-2:GB
     Currently, this does not validate the subdivision, but only checks length
     """
 
@@ -28,7 +28,7 @@ class RegionCode(validate.Regexp):
 
 
 class UUIDString(fields.UUID):
-    """ Currently, runner cannot handle UUID objects in metadata
+    """Currently, runner cannot handle UUID objects in metadata
     Since all metadata is serialized and deserialized to JSON.
     This custom field deserializes UUIDs to strings.
     """
@@ -38,7 +38,7 @@ class UUIDString(fields.UUID):
 
 
 class DateString(fields.DateTime):
-    """ Currently, runner cannot handle Date objects in metadata
+    """Currently, runner cannot handle Date objects in metadata
     Since all metadata is serialized and deserialized to JSON.
     This custom field deserializes Dates to strings.
     """
@@ -66,8 +66,7 @@ class StripWhitespaceMixin:
 
 
 class RunnerMetadataSchema(Schema, StripWhitespaceMixin):
-    """ Metadata which is required for the operation of runner itself
-    """
+    """Metadata which is required for the operation of runner itself"""
 
     jti = VALIDATORS["uuid"]()
     ru_ref = VALIDATORS["string"](validate=validate.Length(min=1))
@@ -100,7 +99,7 @@ class RunnerMetadataSchema(Schema, StripWhitespaceMixin):
     @validates_schema
     def validate_schema_name(self, data, **kwargs):
         # pylint: disable=no-self-use, unused-argument
-        """ Temporary function for census to validate the census schema parameters
+        """Temporary function for census to validate the census schema parameters
         This can be removed after census.
         """
         individual_schema_claims = (
@@ -117,7 +116,7 @@ class RunnerMetadataSchema(Schema, StripWhitespaceMixin):
     @post_load
     def convert_schema_name(self, data, **kwargs):
         # pylint: disable=no-self-use, unused-argument
-        """ Temporary function for census to transform parameters into a census schema
+        """Temporary function for census to transform parameters into a census schema
         This can be removed after census.
         """
         if data.get("schema_name"):

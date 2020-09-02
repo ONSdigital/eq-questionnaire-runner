@@ -1,6 +1,5 @@
 class RoutingPath:
-    """Holds a list of block_ids and has section_id, list_item_id and list_name attributes
-    """
+    """Holds a list of block_ids and has section_id, list_item_id and list_name attributes"""
 
     def __init__(self, block_ids, section_id, list_item_id=None, list_name=None):
         self.block_ids = tuple(block_ids)
