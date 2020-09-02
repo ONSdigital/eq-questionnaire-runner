@@ -291,6 +291,6 @@ class TestQuestionnaireListCollector(IntegrationTestCase):
         # When I update the list collector, which changes the section status to in-progress
         self.add_person("John", "Doe")
 
-        # Then my next location is the next incomplete block in that section without last updated guidance being shown
-        self.assertInBody("Husband or Wife")
+        # Then my next location is the parent list collector without last updated guidance being shown
+        self.assertInBody("Does anyone else live at 1 Pleasant Lane?")
         self.assertNotInBody("This is the last viewed question in this section")

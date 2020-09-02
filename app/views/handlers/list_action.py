@@ -52,8 +52,6 @@ class ListAction(Question):
             ):
                 return self.get_section_summary_url()
 
-            return self.router.get_section_resume_url(self._routing_path, resume=False)
-
         return self.parent_location.url()
 
     def handle_post(self):
