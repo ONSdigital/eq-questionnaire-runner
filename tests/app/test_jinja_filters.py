@@ -14,6 +14,7 @@ from app.jinja_filters import (
     format_unit,
     format_unit_input_label,
     get_currency_symbol,
+    get_formatted_address,
     get_formatted_currency,
     get_width_class_for_number,
     map_list_collector_config,
@@ -412,3 +413,15 @@ def test_map_list_collector_config():
     ]
 
     assert output == expected
+
+
+def test_format_address_fields():
+    address_fields = {
+        "line": "7 Evelyn Street",
+        "town": "Barry",
+        "postcode": "CF63 4JG",
+    }
+
+    assert (
+        get_formatted_address(address_fields) == "7 Evelyn Street<br>Barry<br>CF63 4JG"
+    )
