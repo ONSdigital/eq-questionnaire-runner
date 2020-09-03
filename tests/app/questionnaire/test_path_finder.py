@@ -4,7 +4,7 @@ import pytest
 
 from app.data_model.answer_store import Answer, AnswerStore
 from app.data_model.list_store import ListStore
-from app.data_model.progress_store import ProgressStore, CompletionStatus
+from app.data_model.progress_store import CompletionStatus, ProgressStore
 from app.questionnaire.path_finder import PathFinder
 from app.questionnaire.routing_path import RoutingPath
 from app.utilities.schema import load_schema_from_name

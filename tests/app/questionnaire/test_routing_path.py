@@ -1,4 +1,5 @@
 from unittest import TestCase
+
 from app.questionnaire.routing_path import RoutingPath
 
 

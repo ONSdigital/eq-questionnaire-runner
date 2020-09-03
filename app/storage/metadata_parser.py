@@ -1,17 +1,17 @@
 import functools
-
 from typing import Dict
-from structlog import get_logger
+
 from marshmallow import (
-    Schema,
-    fields,
-    validate,
     EXCLUDE,
-    pre_load,
-    post_load,
-    validates_schema,
+    Schema,
     ValidationError,
+    fields,
+    post_load,
+    pre_load,
+    validate,
+    validates_schema,
 )
+from structlog import get_logger
 
 from app.utilities.schema import get_schema_name_from_census_params
 

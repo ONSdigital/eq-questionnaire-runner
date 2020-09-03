@@ -1,12 +1,10 @@
-from functools import lru_cache
 import re
+from functools import lru_cache
 
-from flask import (
-    current_app,
-    session as cookie_session,
-    render_template as flask_render_template,
-    request,
-)
+from flask import current_app
+from flask import render_template as flask_render_template
+from flask import request
+from flask import session as cookie_session
 from flask_babel import get_locale, lazy_gettext
 
 from app.helpers.language_helper import get_languages_context

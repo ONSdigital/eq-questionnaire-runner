@@ -1,4 +1,5 @@
 from typing import Union
+
 from flask import url_for
 
 from app.data_model.questionnaire_store import QuestionnaireStore

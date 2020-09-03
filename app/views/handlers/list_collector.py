@@ -1,7 +1,7 @@
 from flask import url_for
 
-from app.views.handlers.question import Question
 from app.views.contexts import ListContext
+from app.views.handlers.question import Question
 
 
 class ListCollector(Question):

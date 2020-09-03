@@ -2,7 +2,6 @@ import os
 
 import gunicorn
 
-
 workers = os.getenv("WEB_SERVER_WORKERS")
 worker_class = "gevent"
 keepalive = os.getenv("GUNICORN_KEEP_ALIVE")

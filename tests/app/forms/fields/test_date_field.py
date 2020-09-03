@@ -1,4 +1,4 @@
-from wtforms import validators, Form
+from wtforms import Form, validators
 
 from app.forms.fields import date_field
 

@@ -1,9 +1,10 @@
 import unittest
 from unittest.mock import Mock, patch
+
 from wtforms.validators import StopValidation, ValidationError
 
 from app.forms import error_messages
-from app.forms.validators import NumberCheck, DecimalPlaces
+from app.forms.validators import DecimalPlaces, NumberCheck
 
 
 # pylint: disable=no-member

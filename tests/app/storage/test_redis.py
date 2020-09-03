@@ -6,7 +6,7 @@ from unittest import mock
 import fakeredis
 from dateutil.tz import tzutc
 
-from app.data_model.app_models import UsedJtiClaim, EQSession
+from app.data_model.app_models import EQSession, UsedJtiClaim
 from app.storage.errors import ItemAlreadyExistsError
 from app.storage.redis import Redis
 from app.storage.storage import StorageModel

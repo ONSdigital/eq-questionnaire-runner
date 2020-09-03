@@ -1,15 +1,15 @@
 # pylint: disable=too-many-lines
-from unittest.mock import patch, Mock
+from unittest.mock import Mock, patch
 
-from app.data_model.answer_store import AnswerStore, Answer
+from app.data_model.answer_store import Answer, AnswerStore
 from app.data_model.list_store import ListStore
 from app.questionnaire.location import Location
 from app.questionnaire.questionnaire_schema import QuestionnaireSchema
 from app.questionnaire.relationship_location import RelationshipLocation
 from app.questionnaire.routing_path import RoutingPath
 from app.questionnaire.rules import (
-    evaluate_rule,
     evaluate_goto,
+    evaluate_rule,
     evaluate_skip_conditions,
     evaluate_when_rules,
 )

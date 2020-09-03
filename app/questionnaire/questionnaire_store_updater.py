@@ -1,10 +1,9 @@
 from itertools import combinations
-
 from typing import Iterable, List, Optional, Tuple, Union
 
 from app.data_model.answer_store import Answer
-from app.data_model.relationship_store import Relationship, RelationshipStore
 from app.data_model.progress_store import CompletionStatus
+from app.data_model.relationship_store import Relationship, RelationshipStore
 from app.questionnaire.location import Location
 
 

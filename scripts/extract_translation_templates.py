@@ -1,11 +1,10 @@
 #!/usr/bin/env python3
-
-import sys
-import subprocess
-import tempfile
-import logging
 import argparse
 import difflib
+import logging
+import subprocess
+import sys
+import tempfile
 
 import coloredlogs
 

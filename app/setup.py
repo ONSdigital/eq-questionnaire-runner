@@ -7,7 +7,9 @@ import boto3
 import redis
 import yaml
 from botocore.config import Config
-from flask import Flask, request as flask_request, session as cookie_session
+from flask import Flask
+from flask import request as flask_request
+from flask import session as cookie_session
 from flask_babel import Babel
 from flask_compress import Compress
 from flask_talisman import Talisman
@@ -26,7 +28,7 @@ from app.helpers import get_span_and_trace
 from app.keys import KEY_PURPOSE_SUBMISSION
 from app.secrets import SecretStore, validate_required_secrets
 from app.storage import Datastore, Dynamodb, Redis
-from app.submitter import LogSubmitter, RabbitMQSubmitter, GCSSubmitter
+from app.submitter import GCSSubmitter, LogSubmitter, RabbitMQSubmitter
 
 CACHE_HEADERS = {
     "Cache-Control": "no-cache, no-store, must-revalidate",
