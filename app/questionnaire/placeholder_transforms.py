@@ -185,5 +185,5 @@ class PlaceholderTransforms:
 
         return ""
 
-    def format_suggestions_url(self, url, list_json):
+    def format_nisra_suggestions_url(self, url, list_json):
         return "{}{}".format(url, list_json) if self.language == "en" else ""
