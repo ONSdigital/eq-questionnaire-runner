@@ -12,10 +12,5 @@ class ListAddQuestion(ListAction):
             self.parent_block["for_list"]
         )
         self.questionnaire_store_updater.update_answers(self.form.data, list_item_id)
-        if self.questionnaire_store_updater.is_dirty():
-            self._routing_path = self.router.routing_path(
-                section_id=self._current_location.section_id,
-                list_item_id=self._current_location.list_item_id,
-            )
 
         return super().handle_post()
