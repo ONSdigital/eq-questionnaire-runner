@@ -146,13 +146,13 @@ class Router:
 
         return self.get_last_location_in_survey().url()
 
-    def get_section_resume_url(self, routing_path, resume=True):
+    def get_section_resume_url(self, routing_path):
         section_key = (routing_path.section_id, routing_path.list_item_id)
 
         if section_key in self._progress_store:
             location = self._get_first_incomplete_location_in_section(routing_path)
             if location:
-                return location.url(resume=resume) if resume else location.url()
+                return location.url(resume=True)
 
         return self.get_first_location_in_section(routing_path).url()
 
