@@ -185,6 +185,4 @@ class PlaceholderTransforms:
         return ""
 
     def format_suggestions_url(self, url, list_json):
-        if self.language == "en":
-            return url + list_json
-        return ""
+        return "{}{}".format(url, list_json) if self.language is "en" else ""
