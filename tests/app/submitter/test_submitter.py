@@ -1,10 +1,10 @@
 import uuid
 from unittest import TestCase
 
-from mock import patch, Mock, call
+from mock import Mock, call, patch
 from pika.exceptions import AMQPError
 
-from app.submitter.submitter import RabbitMQSubmitter, GCSSubmitter
+from app.submitter.submitter import GCSSubmitter, RabbitMQSubmitter
 
 
 class TestRabbitMQSubmitter(TestCase):

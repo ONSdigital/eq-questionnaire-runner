@@ -1,4 +1,4 @@
-from jsonpointer import set_pointer, resolve_pointer
+from jsonpointer import resolve_pointer, set_pointer
 
 from app.data_model.answer_store import AnswerStore
 from app.questionnaire import QuestionnaireSchema

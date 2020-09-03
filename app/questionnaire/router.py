@@ -63,6 +63,11 @@ class Router:
             if section_id in self.enabled_section_ids
         )
 
+    def can_display_section_summary(self, section_id, list_item_id=None):
+        return self._schema.get_summary_for_section(
+            section_id
+        ) and self._progress_store.is_section_complete(section_id, list_item_id)
+
     def routing_path(self, section_id, list_item_id=None):
         return self._path_finder.routing_path(section_id, list_item_id)
 
@@ -71,20 +76,22 @@ class Router:
         Get the next location in the section. If the section is complete, determine where to go next,
         whether it be a summary, the hub or the next incomplete location.
         """
-
-        if return_to:
-            is_section_complete = self._progress_store.is_section_complete(
-                location.section_id, location.list_item_id
-            )
-            if is_section_complete and return_to == "section-summary":
+        is_last_block_in_section = routing_path[-1] == location.block_id
+        if self._progress_store.is_section_complete(
+            location.section_id, location.list_item_id
+        ):
+            if return_to == "section-summary":
                 return self._get_section_url(location)
 
-            if is_section_complete and return_to == "final-summary":
+            if return_to == "final-summary":
                 return self.get_last_location_in_survey().url()
 
-        is_last_block_in_section = routing_path[-1] == location.block_id
+            if is_last_block_in_section:
+                return self._get_next_location_url_for_last_block_in_section(location)
+
+        # Due to backwards routing, you can be on the last block without the section being complete
         if is_last_block_in_section:
-            return self._get_next_location_url_for_last_block_in_section(location)
+            return self._get_first_incomplete_location_in_section(routing_path).url()
 
         return self.get_next_block_url(location, routing_path)
 

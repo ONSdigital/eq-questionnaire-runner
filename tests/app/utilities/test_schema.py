@@ -1,10 +1,11 @@
 import os
 
 import pytest
+
 from app.utilities.schema import (
     get_allowed_languages,
-    get_schema_path_map,
     get_schema_name_from_census_params,
+    get_schema_path_map,
     get_schema_path_map_for_language,
     load_schema_from_name,
 )

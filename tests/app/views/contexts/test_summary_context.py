@@ -2,14 +2,14 @@ from unittest.mock import Mock, patch
 
 import pytest
 
-from app.data_model.answer_store import AnswerStore, Answer
+from app.data_model.answer_store import Answer, AnswerStore
 from app.data_model.list_store import ListStore
 from app.data_model.progress_store import ProgressStore
 from app.questionnaire.location import Location
 from app.questionnaire.questionnaire_schema import DEFAULT_LANGUAGE_CODE
 from app.utilities.schema import load_schema_from_name
-from app.views.contexts.calculated_summary_context import CalculatedSummaryContext
 from app.views.contexts import QuestionnaireSummaryContext, SectionSummaryContext
+from app.views.contexts.calculated_summary_context import CalculatedSummaryContext
 from tests.app.app_context_test_case import AppContextTestCase
 
 

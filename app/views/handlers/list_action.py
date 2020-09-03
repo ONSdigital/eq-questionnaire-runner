@@ -1,7 +1,7 @@
 from flask import url_for
 
-from app.views.handlers.question import Question
 from app.questionnaire.location import Location
+from app.views.handlers.question import Question
 
 
 class ListAction(Question):
@@ -47,7 +47,11 @@ class ListAction(Question):
 
     def get_next_location_url(self):
         if self._return_to == "section-summary":
-            return self.get_section_summary_url()
+            if self.router.can_display_section_summary(
+                self.parent_location.section_id, self.parent_location.list_item_id
+            ):
+                return self.get_section_summary_url()
+
         return self.parent_location.url()
 
     def handle_post(self):

@@ -4,7 +4,6 @@ from datetime import timedelta
 from flask import Flask
 from flask_login import LoginManager
 
-
 login_manager = LoginManager()
 
 

@@ -1,11 +1,13 @@
 from datetime import datetime
+
 import simplejson as json
 from flask import current_app
 from sdc.crypto.encrypter import encrypt
-from app.submitter.converter import convert_answers
-from app.keys import KEY_PURPOSE_SUBMISSION
-from app.submitter.submission_failed import SubmissionFailedException
+
 from app.globals import get_session_store
+from app.keys import KEY_PURPOSE_SUBMISSION
+from app.submitter.converter import convert_answers
+from app.submitter.submission_failed import SubmissionFailedException
 
 
 class SubmissionHandler:

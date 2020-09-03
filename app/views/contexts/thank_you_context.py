@@ -2,8 +2,8 @@ from typing import Mapping
 
 from flask import url_for
 
-from app.libs.utils import convert_tx_id
 from app.data_model.session_data import SessionData
+from app.libs.utils import convert_tx_id
 
 
 def build_default_thank_you_context(session_data: SessionData) -> Mapping:

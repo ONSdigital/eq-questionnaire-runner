@@ -1,7 +1,5 @@
 from google.cloud import storage
-from pika import BasicProperties
-from pika import BlockingConnection
-from pika import URLParameters
+from pika import BasicProperties, BlockingConnection, URLParameters
 from pika.exceptions import AMQPError
 from structlog import get_logger
 

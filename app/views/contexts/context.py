@@ -5,8 +5,8 @@ from app.data_model.answer_store import AnswerStore
 from app.data_model.list_store import ListStore
 from app.data_model.progress_store import ProgressStore
 from app.questionnaire.placeholder_renderer import PlaceholderRenderer
-from app.questionnaire.router import Router
 from app.questionnaire.questionnaire_schema import QuestionnaireSchema
+from app.questionnaire.router import Router
 
 
 class Context(ABC):
