@@ -4,7 +4,7 @@ from unittest.mock import Mock
 from dateutil.tz import tzutc
 from mock import patch
 
-from app.data_model.questionnaire_store import QuestionnaireStore
+from app.data_model import QuestionnaireStore
 from app.data_model.session_data import SessionData
 from app.data_model.session_store import SessionStore
 from app.questionnaire.questionnaire_schema import QuestionnaireSchema

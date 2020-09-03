@@ -1,12 +1,14 @@
 from datetime import datetime
 from functools import cached_property
-from typing import Optional
+from typing import Mapping, Optional
 
 from structlog import get_logger
 
+from app.data_model import QuestionnaireStore
 from app.helpers.template_helpers import safe_content
 from app.questionnaire.location import InvalidLocationException, Location
 from app.questionnaire.placeholder_renderer import PlaceholderRenderer
+from app.questionnaire.questionnaire_schema import QuestionnaireSchema
 from app.questionnaire.questionnaire_store_updater import QuestionnaireStoreUpdater
 from app.questionnaire.router import Router
 
@@ -16,12 +18,12 @@ logger = get_logger()
 class BlockHandler:
     def __init__(
         self,
-        schema,
-        questionnaire_store,
-        language,
-        current_location,
-        request_args,
-        form_data,
+        schema: QuestionnaireSchema,
+        questionnaire_store: QuestionnaireStore,
+        language: str,
+        current_location: Location,
+        request_args: Mapping,
+        form_data: Mapping,
     ):
         self._schema = schema
         self._questionnaire_store = questionnaire_store
@@ -118,7 +120,7 @@ class BlockHandler:
             logger.info("Survey started", started_at=started_at)
             collection_metadata["started_at"] = started_at
 
-    def _get_safe_page_title(self, title):
+    def _get_safe_page_title(self, page_title):
         return safe_content(
-            f'{self._schema.get_single_string_value(title)} - {self._schema.json["title"]}'
+            f'{self._schema.get_single_string_value(page_title)} - {self._schema.json["title"]}'
         )

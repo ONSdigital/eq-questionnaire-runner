@@ -5,7 +5,7 @@ from flask import current_app, g
 from flask import session as cookie_session
 from structlog import get_logger
 
-from app.data_model.questionnaire_store import QuestionnaireStore
+from app.data_model import QuestionnaireStore
 from app.settings import EQ_SESSION_ID, USER_IK
 
 logger = get_logger()

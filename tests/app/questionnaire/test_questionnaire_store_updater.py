@@ -3,10 +3,10 @@ import unittest
 from mock import MagicMock, patch
 from werkzeug.datastructures import MultiDict
 
+from app.data_model import QuestionnaireStore
 from app.data_model.answer_store import AnswerStore
 from app.data_model.list_store import ListStore
 from app.data_model.progress_store import ProgressStore
-from app.data_model.questionnaire_store import QuestionnaireStore
 from app.questionnaire.location import Location
 from app.questionnaire.questionnaire_schema import QuestionnaireSchema
 from app.questionnaire.questionnaire_store_updater import QuestionnaireStoreUpdater

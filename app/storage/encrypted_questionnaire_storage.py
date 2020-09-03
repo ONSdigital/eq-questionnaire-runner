@@ -2,8 +2,8 @@ import snappy
 from flask import current_app
 from structlog import get_logger
 
+from app.data_model import QuestionnaireStore
 from app.data_model.app_models import QuestionnaireState
-from app.data_model.questionnaire_store import QuestionnaireStore
 from app.storage.storage_encryption import StorageEncryption
 
 logger = get_logger()

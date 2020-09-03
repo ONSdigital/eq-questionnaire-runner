@@ -1,7 +1,7 @@
 import simplejson as json
 from mock import Mock
 
-from app.data_model.questionnaire_store import QuestionnaireStore
+from app.data_model import QuestionnaireStore
 from tests.integration.integration_test_case import IntegrationTestCase
 
 
