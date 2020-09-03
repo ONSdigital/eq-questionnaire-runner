@@ -3,7 +3,7 @@
 {% set address_form = form.fields[answer.id] %}
 
 {% set config = {
-    "id": "address",
+    "id": answer.id,
     "legend": question.title,
     "legendClasses": "u-vh",
     "autosuggest":{

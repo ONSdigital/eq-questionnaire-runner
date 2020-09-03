@@ -1,4 +1,5 @@
-import Address from "../../../generated_pages/address/address-block.page";
+import AddressMandatory from "../../../generated_pages/address/address-block-mandatory.page";
+import AddressOptional from "../../../generated_pages/address/address-block-optional.page";
 import Summary from "../../../generated_pages/address/summary.page";
 
 describe("Address Answer Type", () => {
@@ -8,51 +9,64 @@ describe("Address Answer Type", () => {
 
   describe("Given the user is on an address input question", () => {
     it("When the user enters all address fields, Then the summary displays the address fields", () => {
-      $(Address.Line1()).setValue("Evelyn Street");
-      $(Address.Line2()).setValue("Apt 7");
-      $(Address.Town()).setValue("Barry");
-      $(Address.Postcode()).setValue("CF63 4JG");
+      $(AddressMandatory.Line1()).setValue("Evelyn Street");
+      $(AddressMandatory.Line2()).setValue("Apt 7");
+      $(AddressMandatory.Town()).setValue("Barry");
+      $(AddressMandatory.Postcode()).setValue("CF63 4JG");
 
-      $(Address.submit()).click();
+      $(AddressMandatory.submit()).click();
+      $(AddressOptional.submit()).click();
       expect(browser.getUrl()).to.contain(Summary.pageName);
-      expect($(Summary.address()).getText()).to.equal("Evelyn Street\nApt 7\nBarry\nCF63 4JG");
-      expect($(Summary.address()).getHTML()).to.contain("Evelyn Street<br>Apt 7<br>Barry<br>CF63 4JG");
+      expect($(Summary.addressMandatory()).getText()).to.equal("Evelyn Street\nApt 7\nBarry\nCF63 4JG");
+      expect($(Summary.addressMandatory()).getHTML()).to.contain("Evelyn Street<br>Apt 7<br>Barry<br>CF63 4JG");
     });
   });
 
   describe("Given the user is on an address input question", () => {
     it("When the user enters only address line 1, Then the summary only displays address line 1", () => {
-      $(Address.Line1()).setValue("Evelyn Street");
+      $(AddressMandatory.Line1()).setValue("Evelyn Street");
 
-      $(Address.submit()).click();
+      $(AddressMandatory.submit()).click();
+      $(AddressOptional.submit()).click();
       expect(browser.getUrl()).to.contain(Summary.pageName);
-      expect($(Summary.address()).getText()).to.equal("Evelyn Street");
+      expect($(Summary.addressMandatory()).getText()).to.equal("Evelyn Street");
     });
   });
 
-  describe("Given the user is on an address input question", () => {
+  describe("Given the user is on an mandatory address input question", () => {
     it("When the user submits the page without entering address line 1, Then an error is displayed", () => {
-      $(Address.submit()).click();
-      expect($(Address.error()).getText()).to.equal("Enter an address to continue");
+      $(AddressMandatory.submit()).click();
+      expect($(AddressMandatory.error()).getText()).to.equal("Enter an address to continue");
+    });
+  });
+
+  describe("Given the user is on an optional address input question", () => {
+    it("When the user submits the page without entering any fields, Then the summary should display `No answer provided`.", () => {
+      // Get to optional address question
+      $(AddressMandatory.Line1()).setValue("Evelyn Street");
+      $(AddressMandatory.submit()).click();
+
+      $(AddressOptional.submit()).click();
+      expect($(Summary.addressOptional()).getText()).to.equal("No answer provided");
     });
   });
 
   describe("Given the user has submitted an address answer type question", () => {
     it("When the user revisits the address question page, Then all entered fields are filled in", () => {
-      $(Address.Line1()).setValue("Evelyn Street");
-      $(Address.Line2()).setValue("Apt 7");
-      $(Address.Town()).setValue("Barry");
-      $(Address.Postcode()).setValue("CF63 4JG");
+      $(AddressMandatory.Line1()).setValue("Evelyn Street");
+      $(AddressMandatory.Line2()).setValue("Apt 7");
+      $(AddressMandatory.Town()).setValue("Barry");
+      $(AddressMandatory.Postcode()).setValue("CF63 4JG");
 
-      $(Address.submit()).click();
-      expect(browser.getUrl()).to.contain(Summary.pageName);
+      $(AddressMandatory.submit()).click();
+      expect(browser.getUrl()).to.contain(AddressOptional.pageName);
 
-      browser.url(Address.url());
+      browser.url(AddressMandatory.url());
 
-      expect($(Address.Line1()).getValue()).to.contain("Evelyn Street");
-      expect($(Address.Line2()).getValue()).to.contain("Apt 7");
-      expect($(Address.Town()).getValue()).to.contain("Barry");
-      expect($(Address.Postcode()).getValue()).to.contain("CF63 4JG");
+      expect($(AddressMandatory.Line1()).getValue()).to.contain("Evelyn Street");
+      expect($(AddressMandatory.Line2()).getValue()).to.contain("Apt 7");
+      expect($(AddressMandatory.Town()).getValue()).to.contain("Barry");
+      expect($(AddressMandatory.Postcode()).getValue()).to.contain("CF63 4JG");
     });
   });
 });

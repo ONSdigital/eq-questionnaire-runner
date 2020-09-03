@@ -31,15 +31,31 @@
                     "blocks": [
                         {
                             "type": "Question",
-                            "id": "address-block",
+                            "id": "address-block-mandatory",
                             "question": {
                                 "type": "General",
-                                "id": "address-question",
+                                "id": "address-question-mandatory",
                                 "title": "What is your current address?",
                                 "answers": [
                                     {
-                                        "id": "address",
+                                        "id": "address-mandatory",
                                         "mandatory": true,
+                                        "type": "Address"
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "type": "Question",
+                            "id": "address-block-optional",
+                            "question": {
+                                "type": "General",
+                                "id": "address-question-optional",
+                                "title": "What was your address one year ago?",
+                                "answers": [
+                                    {
+                                        "id": "address-optional",
+                                        "mandatory": false,
                                         "type": "Address"
                                     }
                                 ]
