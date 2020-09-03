@@ -1,11 +1,12 @@
 # coding: utf-8
-from unittest.mock import patch, MagicMock
+from unittest.mock import MagicMock, patch
 
 from jinja2 import Undefined
 from mock import Mock
 
 from app.jinja_filters import (
     CheckboxConfig,
+    RadioConfig,
     format_datetime,
     format_duration,
     format_number,
@@ -13,11 +14,10 @@ from app.jinja_filters import (
     format_unit,
     format_unit_input_label,
     get_currency_symbol,
+    get_formatted_address,
     get_formatted_currency,
     get_width_class_for_number,
-    get_formatted_address,
     map_list_collector_config,
-    RadioConfig,
 )
 from tests.app.app_context_test_case import AppContextTestCase
 

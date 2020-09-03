@@ -1,7 +1,7 @@
 from functools import cached_property
 
-from flask_babel import gettext
 from flask import url_for
+from flask_babel import gettext
 
 from app.forms.questionnaire_form import generate_form
 from app.questionnaire.location import Location

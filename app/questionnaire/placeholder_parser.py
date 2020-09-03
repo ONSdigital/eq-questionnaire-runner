@@ -1,4 +1,4 @@
-from typing import Mapping, Sequence, Union, Dict, List
+from typing import Dict, List, Mapping, Sequence, Union
 
 from jinja2 import escape
 

@@ -4,7 +4,7 @@ from datetime import datetime
 
 import flask
 import flask_babel
-from babel import units, numbers
+from babel import numbers, units
 from flask import current_app
 from jinja2 import Markup, escape, evalcontextfilter
 

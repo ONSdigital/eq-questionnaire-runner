@@ -1,7 +1,7 @@
 from flask import url_for
 
-from app.views.handlers.question import Question
 from app.questionnaire.location import Location
+from app.views.handlers.question import Question
 
 
 class ListAction(Question):

@@ -4,8 +4,8 @@ from typing import List
 from wtforms import FormField
 from wtforms.validators import InputRequired
 
-from app.forms.field_handlers.field_handler import FieldHandler
 from app.forms.address_form import get_address_form
+from app.forms.field_handlers.field_handler import FieldHandler
 from app.forms.validators import format_message_with_title
 
 

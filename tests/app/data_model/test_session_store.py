@@ -4,12 +4,12 @@ from datetime import datetime, timedelta
 from flask import current_app
 from jwcrypto import jwe
 from jwcrypto.common import base64url_encode
-from tests.app.app_context_test_case import AppContextTestCase
 
 from app.data_model.app_models import EQSession
 from app.data_model.session_data import SessionData
 from app.data_model.session_store import SessionStore
 from app.storage import storage_encryption
+from tests.app.app_context_test_case import AppContextTestCase
 
 
 class SessionStoreTest(AppContextTestCase):

@@ -1,7 +1,8 @@
 from mock import MagicMock
-from tests.app.app_context_test_case import AppContextTestCase
+
+from app.data_model.answer_store import Answer, AnswerStore
 from app.views.contexts.summary.question import Question
-from app.data_model.answer_store import AnswerStore, Answer
+from tests.app.app_context_test_case import AppContextTestCase
 
 
 class TestQuestion(AppContextTestCase):  # pylint: disable=too-many-public-methods

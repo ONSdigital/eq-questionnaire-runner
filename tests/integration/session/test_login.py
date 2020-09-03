@@ -1,6 +1,6 @@
 import time
 
-from httmock import urlmatch, HTTMock, response
+from httmock import HTTMock, response, urlmatch
 
 from app.utilities.schema import SCHEMA_PATH_MAP
 from tests.integration.create_token import PAYLOAD

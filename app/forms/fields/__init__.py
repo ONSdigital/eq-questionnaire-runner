@@ -12,6 +12,7 @@ from app.forms.fields.month_year_date_field import MonthYearDateField
 from app.forms.fields.multiple_select_field_with_detail_answer import (
     MultipleSelectFieldWithDetailAnswer,
 )
+
 from .select_field_with_detail_answer import SelectField, SelectFieldWithDetailAnswer
 from .year_date_field import YearDateField
 

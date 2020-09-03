@@ -1,7 +1,9 @@
 from unittest import TestCase
+
 from mock import MagicMock, patch
-from app.views.contexts.summary.block import Block
+
 from app.questionnaire.location import Location
+from app.views.contexts.summary.block import Block
 
 
 def build_block_schema(question_schema):
