@@ -1,8 +1,8 @@
 from functools import cached_property
 
 from app.questionnaire.schema_utils import transform_variants
-from app.views.handlers.block import BlockHandler
 from app.views.handlers import individual_response_url
+from app.views.handlers.block import BlockHandler
 
 
 class Content(BlockHandler):

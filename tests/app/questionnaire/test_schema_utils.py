@@ -1,12 +1,12 @@
-from app.data_model.answer_store import AnswerStore, Answer
+from app.data_model.answer_store import Answer, AnswerStore
 from app.data_model.list_store import ListStore
 from app.questionnaire.location import Location
 from app.questionnaire.questionnaire_schema import QuestionnaireSchema
 from app.questionnaire.schema_utils import (
-    choose_question_to_display,
     choose_content_to_display,
-    transform_variants,
+    choose_question_to_display,
     get_values_for_key,
+    transform_variants,
 )
 
 

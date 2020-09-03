@@ -4,10 +4,10 @@ import pytest
 from marshmallow import ValidationError
 
 from app.storage.metadata_parser import (
-    validate_runner_claims,
     validate_questionnaire_claims,
+    validate_runner_claims,
 )
-from app.utilities.schema import transform_region_code, transform_form_type
+from app.utilities.schema import transform_form_type, transform_region_code
 
 
 def test_spaces_are_stripped_from_string_fields(fake_metadata_runner):

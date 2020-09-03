@@ -1,5 +1,5 @@
-from app.data_model.answer_store import AnswerStore
 from app.data_model.answer import Answer
+from app.data_model.answer_store import AnswerStore
 from app.questionnaire.questionnaire_schema import QuestionnaireSchema
 from app.questionnaire.routing_path import RoutingPath
 from app.submitter.convert_payload_0_0_1 import convert_answers_to_payload_0_0_1

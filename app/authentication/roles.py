@@ -1,6 +1,8 @@
 from functools import wraps
+
 from flask_login import current_user
 from werkzeug.exceptions import Forbidden
+
 from app.globals import get_metadata
 
 

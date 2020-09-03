@@ -5,8 +5,7 @@ from cryptography.hazmat.primitives import hashes
 from cryptography.hazmat.primitives.kdf.pbkdf2 import PBKDF2HMAC
 from structlog import get_logger
 
-from app.utilities.strings import to_bytes
-from app.utilities.strings import to_str
+from app.utilities.strings import to_bytes, to_str
 
 logger = get_logger()
 
