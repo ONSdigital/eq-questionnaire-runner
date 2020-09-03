@@ -62,6 +62,8 @@ def render_template(template, **kwargs):
     google_tag_mananger_context = get_google_tag_mananger_context()
     cdn_url = f'{current_app.config["CDN_URL"]}{current_app.config["CDN_ASSETS_PATH"]}'
     contact_us_url = get_contact_us_url(theme, get_locale().language)
+    include_csrf_token = True if "POST" in request.url_rule.methods else False
+
     return flask_render_template(
         template,
         account_service_url=cookie_session.get("account_service_url"),
@@ -76,6 +78,7 @@ def render_template(template, **kwargs):
         survey_title=cookie_session.get("survey_title"),
         cdn_url=cdn_url,
         data_layer=get_data_layer(theme),
+        include_csrf_token=include_csrf_token,
         **google_tag_mananger_context,
         **kwargs,
     )
