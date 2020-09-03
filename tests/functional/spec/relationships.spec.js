@@ -163,25 +163,12 @@ describe("Relationships", () => {
         expect(browser.getUrl()).to.contain("/sections/section/");
       });
 
-      it("Then I add another household member I will be asked for about all relationships", () => {
+      it("Then I add another household member I will be redirected to parent list collector", () => {
         $(SectionSummaryPage.peopleListAddLink()).click();
         $(ListCollectorAddPage.firstName()).setValue("Tom");
         $(ListCollectorAddPage.lastName()).setValue("Bowden");
         $(ListCollectorAddPage.submit()).click();
-        expect($(RelationshipsPage.husbandOrWife()).isSelected()).to.be.true;
-        $(RelationshipsPage.submit()).click();
-        expect($(RelationshipsPage.legallyRegisteredCivilPartner()).isSelected()).to.be.true;
-        $(RelationshipsPage.submit()).click();
-        expect($(RelationshipsPage.playback()).getText()).to.contain("Tom Bowden is Marcus Twin’s …");
-        $(RelationshipsPage.sonOrDaughter()).click();
-        $(RelationshipsPage.submit()).click();
-        expect($(RelationshipsPage.husbandOrWife()).isSelected()).to.be.true;
-        $(RelationshipsPage.submit()).click();
-        expect($(RelationshipsPage.playback()).getText()).to.contain("Tom Bowden is Samuel Clemens’ …");
-        $(RelationshipsPage.sonOrDaughter()).click();
-        $(RelationshipsPage.submit()).click();
-        browser.pause(20000);
-        expect($(RelationshipsPage.playback()).getText()).to.contain("Tom Bowden is Olivia Clemens’ …");
+        expect(browser.getUrl()).to.contain("/questionnaire/list-collector/");
       });
     });
 
