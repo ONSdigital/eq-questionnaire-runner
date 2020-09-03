@@ -203,3 +203,23 @@ class TestPlaceholderParser(unittest.TestCase):
         list_to_filter = [None, None]
 
         assert self.transforms.first_non_empty_item(list_to_filter) == ""
+
+    def test_nisra_english_suggestions_url(self):
+        assert (
+            self.transforms.format_suggestions_url(
+                "https://cdn.eq.census-gcp.onsdigital.uk/data/v3.0.0/ni/en/",
+                "countries-of-birth.json",
+            )
+            == "https://cdn.eq.census-gcp.onsdigital.uk/data/v3.0.0/ni/en/countries-of-birth.json"
+        )
+
+    @staticmethod
+    def test_nisra_non_english_suggestions_url():
+        gaelic_transforms = PlaceholderTransforms(language="ga")
+        assert (
+            gaelic_transforms.format_suggestions_url(
+                "https://cdn.eq.census-gcp.onsdigital.uk/data/v3.0.0/ni/en/",
+                "countries-of-birth.json",
+            )
+            == ""
+        )
