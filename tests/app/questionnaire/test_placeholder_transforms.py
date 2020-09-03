@@ -206,7 +206,7 @@ class TestPlaceholderParser(unittest.TestCase):
 
     def test_nisra_english_suggestions_url(self):
         assert (
-            self.transforms.format_suggestions_url(
+            self.transforms.format_nira_suggestions_url(
                 "https://cdn.eq.census-gcp.onsdigital.uk/data/v3.0.0/ni/en/",
                 "countries-of-birth.json",
             )
@@ -217,7 +217,7 @@ class TestPlaceholderParser(unittest.TestCase):
     def test_nisra_non_english_suggestions_url():
         gaelic_transforms = PlaceholderTransforms(language="ga")
         assert (
-            gaelic_transforms.format_suggestions_url(
+            gaelic_transforms.format_nisra_suggestions_url(
                 "https://cdn.eq.census-gcp.onsdigital.uk/data/v3.0.0/ni/en/",
                 "countries-of-birth.json",
             )
