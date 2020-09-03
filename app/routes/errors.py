@@ -1,13 +1,14 @@
-from flask import Blueprint, request, session as cookie_session
+from flask import Blueprint, request
+from flask import session as cookie_session
 from flask_login import current_user
 from flask_wtf.csrf import CSRFError
 from sdc.crypto.exceptions import InvalidTokenException
 from structlog import get_logger
 
-from app.authentication.no_token_exception import NoTokenException
 from app.authentication.no_questionnaire_state_exception import (
     NoQuestionnaireStateException,
 )
+from app.authentication.no_token_exception import NoTokenException
 from app.globals import get_metadata
 from app.helpers.language_helper import handle_language
 from app.helpers.template_helpers import render_template
