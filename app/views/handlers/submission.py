@@ -1,7 +1,8 @@
 from datetime import datetime
 
 import simplejson as json
-from flask import current_app, session as cookie_session
+from flask import current_app
+from flask import session as cookie_session
 from sdc.crypto.encrypter import encrypt
 
 from app.globals import get_session_store
