@@ -17,6 +17,11 @@ class TestQuestionnaireListCollector(IntegrationTestCase):
         selected = self.getHtmlSoup().select(selector)
         return selected[0].get("href")
 
+    def get_add_someone_link(self):
+        selector = f"[data-qa='add-item-link']"
+        selected = self.getHtmlSoup().select(selector)
+        return selected[0].get("href")
+
     def test_invalid_add_block_url(self):
         self.launchSurvey("test_list_collector")
 
@@ -268,3 +273,24 @@ class TestQuestionnaireListCollector(IntegrationTestCase):
         )
 
         self.assertInBody("All of the information about this person will be deleted")
+
+    def test_list_collector_return_to_when_section_summary_cant_be_displayed(self):
+        # Given I have completed a section and returned to a list_collector from the section summary
+        self.launchSurvey("test_relationships", roles=["dumper"])
+
+        self.add_person("Marie", "Doe")
+
+        self.post({"anyone-else": "No"})
+
+        self.assertInUrl("/sections/section/")
+
+        add_someone_link = self.get_add_someone_link()
+
+        self.get(add_someone_link)
+
+        # When I update the list collector, which changes the section status to in-progress
+        self.add_person("John", "Doe")
+
+        # Then my next location is the parent list collector without last updated guidance being shown
+        self.assertInBody("Does anyone else live at 1 Pleasant Lane?")
+        self.assertNotInBody("This is the last viewed question in this section")
