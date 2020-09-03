@@ -1,7 +1,7 @@
-from abc import abstractmethod, ABC
+from abc import ABC, abstractmethod
 from functools import cached_property
 
-from wtforms import validators, Field
+from wtforms import Field, validators
 
 from app.data_model.answer_store import AnswerStore
 from app.forms.validators import ResponseRequired, format_message_with_title

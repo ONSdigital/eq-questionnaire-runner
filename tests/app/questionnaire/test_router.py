@@ -1,8 +1,10 @@
+from unittest.mock import Mock
+
 from flask import url_for
 
 from app.data_model.answer_store import AnswerStore
 from app.data_model.list_store import ListStore
-from app.data_model.progress_store import ProgressStore, CompletionStatus
+from app.data_model.progress_store import CompletionStatus, ProgressStore
 from app.questionnaire.location import Location
 from app.questionnaire.router import Router
 from app.questionnaire.routing_path import RoutingPath
@@ -216,6 +218,31 @@ class TestRouter(AppContextTestCase):  # pylint: disable=too-many-public-methods
 
         self.assertEqual(next_location, expected_location)
 
+    def test_return_to_first_incomplete_location_when_last_block_in_section_in_progress(
+        self,
+    ):
+        schema = Mock()
+        schema.get_block.return_value = {"type": "Question"}
+        progress_store = ProgressStore(
+            [
+                {
+                    "section_id": "section-1",
+                    "list_item_id": None,
+                    "status": CompletionStatus.IN_PROGRESS,
+                    "block_ids": ["block-1"],
+                }
+            ]
+        )
+        router = Router(
+            schema, self.answer_store, self.list_store, progress_store, self.metadata
+        )
+        current_location = Location(section_id="section-1", block_id="block-1")
+        routing_path = RoutingPath(
+            ["block-1", "block-2", "block-1"], section_id="section-1"
+        )
+        next_location = router.get_next_location_url(current_location, routing_path)
+        self.assertIn("questionnaire/block-2/", next_location)
+
     def test_last_block_section_summary_on_completion_true_next_location_url(self):
         schema = load_schema_from_name("test_show_section_summary_on_completion")
         progress_store = ProgressStore(
@@ -223,8 +250,8 @@ class TestRouter(AppContextTestCase):  # pylint: disable=too-many-public-methods
                 {
                     "section_id": "accommodation-section",
                     "list_item_id": None,
-                    "status": CompletionStatus.IN_PROGRESS,
-                    "block_ids": [],
+                    "status": CompletionStatus.COMPLETED,
+                    "block_ids": ["proxy"],
                 }
             ]
         )
@@ -246,7 +273,7 @@ class TestRouter(AppContextTestCase):  # pylint: disable=too-many-public-methods
                 {
                     "section_id": "employment-section",
                     "list_item_id": None,
-                    "status": CompletionStatus.IN_PROGRESS,
+                    "status": CompletionStatus.COMPLETED,
                     "block_ids": ["employment-status"],
                 }
             ]

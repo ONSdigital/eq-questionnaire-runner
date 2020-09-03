@@ -20,6 +20,7 @@ lint:
 
 format:
 	yarn format
+	pipenv run isort --recursive .
 	pipenv run black .
 
 test:

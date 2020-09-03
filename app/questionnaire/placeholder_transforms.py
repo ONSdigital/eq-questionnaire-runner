@@ -5,6 +5,7 @@ from babel.numbers import format_currency, format_decimal
 from dateutil.relativedelta import relativedelta
 from dateutil.tz import tzutc
 from flask_babel import ngettext
+
 from app.settings import DEFAULT_LOCALE
 
 

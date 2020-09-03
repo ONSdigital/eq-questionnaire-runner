@@ -4,14 +4,14 @@ from unittest.mock import MagicMock
 
 import pytest
 
-from app.data_model.answer_store import AnswerStore
 from app.data_model.answer import Answer
+from app.data_model.answer_store import AnswerStore
 from app.data_model.questionnaire_store import QuestionnaireStore
+from app.questionnaire.questionnaire_schema import QuestionnaireSchema
 from app.storage.metadata_parser import (
     validate_questionnaire_claims,
     validate_runner_claims,
 )
-from app.questionnaire.questionnaire_schema import QuestionnaireSchema
 
 
 @pytest.fixture

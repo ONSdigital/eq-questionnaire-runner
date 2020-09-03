@@ -1,13 +1,7 @@
-from flask import (
-    Blueprint,
-    g,
-    redirect,
-    request,
-    url_for,
-    jsonify,
-    session as cookie_session,
-)
 import flask_babel
+from flask import Blueprint, g, jsonify, redirect, request
+from flask import session as cookie_session
+from flask import url_for
 from flask_login import current_user, login_required
 from structlog import get_logger
 from werkzeug.exceptions import NotFound

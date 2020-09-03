@@ -2,8 +2,8 @@ from functools import cached_property
 
 from wtforms import validators
 
-from app.forms.fields import MaxTextAreaField
 from app.forms.field_handlers.field_handler import FieldHandler
+from app.forms.fields import MaxTextAreaField
 
 
 class TextAreaHandler(FieldHandler):

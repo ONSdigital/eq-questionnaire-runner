@@ -1,4 +1,4 @@
-from wtforms import SelectField, Form
+from wtforms import Form, SelectField
 
 from app.forms.field_handlers.dropdown_handler import DropdownHandler
 

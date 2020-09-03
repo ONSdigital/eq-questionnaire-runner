@@ -8,8 +8,8 @@ from structlog import get_logger
 from werkzeug.exceptions import NotFound
 
 from app.questionnaire.questionnaire_schema import (
-    QuestionnaireSchema,
     DEFAULT_LANGUAGE_CODE,
+    QuestionnaireSchema,
 )
 
 logger = get_logger()

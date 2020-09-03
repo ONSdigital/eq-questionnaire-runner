@@ -5,11 +5,11 @@ from decimal import Decimal
 
 from dateutil.relativedelta import relativedelta
 from flask_wtf import FlaskForm
-from werkzeug.datastructures import MultiDict, ImmutableMultiDict
+from werkzeug.datastructures import ImmutableMultiDict, MultiDict
 from wtforms import validators
 
-from app.forms.field_handlers import get_field_handler, DateHandler
-from app.forms.validators import DateRangeCheck, SumCheck, MutuallyExclusiveCheck
+from app.forms.field_handlers import DateHandler, get_field_handler
+from app.forms.validators import DateRangeCheck, MutuallyExclusiveCheck, SumCheck
 
 logger = logging.getLogger(__name__)
 

@@ -1,4 +1,5 @@
 import json
+
 from tests.integration.integration_test_case import IntegrationTestCase
 
 with open("tests/fixtures/blns.json") as blns:

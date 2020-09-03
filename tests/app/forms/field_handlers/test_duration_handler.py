@@ -1,4 +1,4 @@
-from wtforms import FormField, Form
+from wtforms import Form, FormField
 
 from app.forms.field_handlers.duration_handler import DurationHandler
 

@@ -1,6 +1,6 @@
 from unittest import TestCase
 
-from app.secrets import validate_required_secrets, EXPECTED_SECRETS
+from app.secrets import EXPECTED_SECRETS, validate_required_secrets
 
 
 class TestSecrets(TestCase):

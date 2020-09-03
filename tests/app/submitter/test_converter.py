@@ -4,7 +4,7 @@ import dateutil.parser
 import pytest
 
 from app.questionnaire.questionnaire_schema import QuestionnaireSchema
-from app.submitter.converter import convert_answers, DataVersionError
+from app.submitter.converter import DataVersionError, convert_answers
 
 
 def test_convert_answers_flushed_flag_default_is_false(

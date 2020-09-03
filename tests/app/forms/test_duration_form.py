@@ -1,5 +1,5 @@
-from app.forms.duration_form import get_duration_form
 from app.forms import error_messages
+from app.forms.duration_form import get_duration_form
 from tests.app.app_context_test_case import AppContextTestCase
 
 

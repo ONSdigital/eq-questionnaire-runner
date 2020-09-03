@@ -1,8 +1,8 @@
+from app.forms.field_handlers.field_handler import FieldHandler
 from app.forms.fields import (
     MultipleSelectFieldWithDetailAnswer,
     SelectFieldWithDetailAnswer,
 )
-from app.forms.field_handlers.field_handler import FieldHandler
 
 
 class SelectHandler(FieldHandler):

@@ -3,7 +3,8 @@ from uuid import uuid4
 
 from blinker import ANY
 from dateutil.tz import tzutc
-from flask import session as cookie_session, current_app
+from flask import current_app
+from flask import session as cookie_session
 from flask_login import LoginManager, user_logged_out
 from sdc.crypto.decrypter import decrypt
 from structlog import get_logger
@@ -11,7 +12,7 @@ from structlog import get_logger
 from app.authentication.exceptions import NoTokenException
 from app.authentication.user import User
 from app.data_model.session_data import SessionData
-from app.globals import get_questionnaire_store, get_session_store, create_session_store
+from app.globals import create_session_store, get_questionnaire_store, get_session_store
 from app.keys import KEY_PURPOSE_AUTHENTICATION
 from app.settings import EQ_SESSION_ID, USER_IK
 
