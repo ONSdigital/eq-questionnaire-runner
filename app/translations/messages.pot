@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2020-09-02 20:25+0100\n"
+"POT-Creation-Date: 2020-09-04 15:39+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -71,56 +71,56 @@ msgid "Enter a duration to continue"
 msgstr ""
 
 #: app/forms/error_messages.py:24
-msgid "Enter an email address to continue"
+msgid "Enter an email address"
 msgstr ""
 
 #: app/forms/error_messages.py:25
-msgid "Enter an email in a valid format, for example name@example.com"
-msgstr ""
-
-#: app/forms/error_messages.py:28
 #, python-format
 msgid "Enter an answer more than or equal to %(min)s"
 msgstr ""
 
-#: app/forms/error_messages.py:29
+#: app/forms/error_messages.py:26
 #, python-format
 msgid "Enter an answer less than or equal to %(max)s"
 msgstr ""
 
-#: app/forms/error_messages.py:30
+#: app/forms/error_messages.py:27
 #, python-format
 msgid "Enter an answer more than %(min)s"
 msgstr ""
 
-#: app/forms/error_messages.py:31
+#: app/forms/error_messages.py:28
 #, python-format
 msgid "Enter an answer less than %(max)s"
 msgstr ""
 
-#: app/forms/error_messages.py:32
+#: app/forms/error_messages.py:29
 #, python-format
 msgid "Enter answers that add up to %(total)s"
 msgstr ""
 
-#: app/forms/error_messages.py:33
+#: app/forms/error_messages.py:30
 #, python-format
 msgid "Enter answers that add up to or are less than %(total)s"
 msgstr ""
 
-#: app/forms/error_messages.py:36
+#: app/forms/error_messages.py:33
 #, python-format
 msgid "Enter answers that add up to less than %(total)s"
 msgstr ""
 
-#: app/forms/error_messages.py:39
+#: app/forms/error_messages.py:36
 #, python-format
 msgid "Enter answers that add up to greater than %(total)s"
 msgstr ""
 
-#: app/forms/error_messages.py:42
+#: app/forms/error_messages.py:39
 #, python-format
 msgid "Enter answers that add up to or are greater than %(total)s"
+msgstr ""
+
+#: app/forms/error_messages.py:42
+msgid "Enter an email in a valid format, for example name@example.com"
 msgstr ""
 
 #: app/forms/error_messages.py:45
@@ -388,15 +388,15 @@ msgstr ""
 msgid "This will not be stored and only used once to send the access code"
 msgstr ""
 
-#: app/views/handlers/individual_response.py:781
+#: app/views/handlers/individual_response.py:777
 msgid "Is this mobile number correct?"
 msgstr ""
 
-#: app/views/handlers/individual_response.py:790
+#: app/views/handlers/individual_response.py:786
 msgid "Yes, send the text"
 msgstr ""
 
-#: app/views/handlers/individual_response.py:794
+#: app/views/handlers/individual_response.py:790
 msgid "No, I need to change it"
 msgstr ""
 
@@ -815,12 +815,16 @@ msgstr ""
 msgid "Hide this"
 msgstr ""
 
-#: templates/partials/email-form.html:21 templates/partials/email-form.html:31
-msgid "Email address "
+#: templates/partials/email-form.html:24 templates/partials/email-form.html:40
+msgid "Email address"
 msgstr ""
 
-#: templates/partials/email-form.html:22 templates/partials/email-form.html:32
+#: templates/partials/email-form.html:25 templates/partials/email-form.html:41
 msgid "This will not be stored and only used once to send your confirmation"
+msgstr ""
+
+#: templates/partials/email-form.html:53
+msgid "Send confirmation"
 msgstr ""
 
 #: templates/partials/individual-response-guidance.html:24

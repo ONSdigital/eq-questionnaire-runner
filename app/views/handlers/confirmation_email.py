@@ -1,4 +1,3 @@
-from functools import cached_property
 from app.helpers.url_param_serializer import URLParamSerializer
 from app.forms.email_form import EmailForm
 from app.globals import get_session_store
@@ -6,13 +5,9 @@ from app.views.contexts.email_context import build_confirmation_email_context
 
 
 class ConfirmationEmail:
-
     def __init__(self):
         self.form_valid = False
-
-    @cached_property
-    def form(self):
-        return EmailForm()
+        self.form = EmailForm()
 
     def get_context(self):
         return build_confirmation_email_context(self.form)

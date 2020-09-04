@@ -127,10 +127,6 @@ class IndividualResponseHandler:
             form_data=self._form_data,
         )
 
-    @cached_property
-    def url_param_serializer(self):
-        return URLParamSerializer()
-
     def get_context(self):
         return build_question_context(self.rendered_block, self.form)
 
@@ -719,7 +715,7 @@ class IndividualResponseTextHandler(IndividualResponseHandler):
 
     def handle_get(self):
         if "mobile_number" in self._request_args:
-            mobile_number = self.url_param_serializer.loads(
+            mobile_number = URLParamSerializer().loads(
                 self._request_args["mobile_number"]
             )
             self._answers = {"individual-response-enter-number-answer": mobile_number}
@@ -737,7 +733,7 @@ class IndividualResponseTextHandler(IndividualResponseHandler):
         )
 
     def handle_post(self):
-        mobile_number = self.url_param_serializer.dumps(self.mobile_number)
+        mobile_number = URLParamSerializer().dumps(self.mobile_number)
 
         return redirect(
             url_for(
@@ -759,9 +755,7 @@ class IndividualResponseTextConfirmHandler(IndividualResponseHandler):
         form_data,
         list_item_id,
     ):
-        mobile_number = self.url_param_serializer.loads(
-            request_args.get("mobile_number")
-        )
+        mobile_number = URLParamSerializer().loads(request_args.get("mobile_number"))
 
         super().__init__(
             self.block_definition(mobile_number),
