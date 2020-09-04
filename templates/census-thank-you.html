@@ -41,7 +41,7 @@
     </div>
 
   {% if form %}
-    <h1>{{ _("Get confirmation email") }}</h1>
+    <h2>{{ _("Get confirmation email") }}</h2>
     <p>{{ _("If you would like to be sent confirmation that you have completed your census enter your email address") }}</p>
     {% include 'partials/email-form.html' %}
   {% endif %}
@@ -52,7 +52,7 @@
     "type": "warn"
     })
   %}
-  {{ _("Make sure you <a href='{url}'>leave this page</a> or close your browser if using a shared device").format(url = "/sign-out") }}
+  {{ _("Make sure you <a href='{url}'>leave this page</a> or close your browser if using a shared device").format(url = sign_out_url) }}
   {% endcall %}
 
 {% endblock %}

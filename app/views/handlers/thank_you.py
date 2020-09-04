@@ -1,12 +1,11 @@
 from flask import session as cookie_session
 from werkzeug.exceptions import NotFound
-from app.helpers.url_safe_helper import URLSafeSerializerHelper
-from app.forms.email_form import EmailForm
 from app.globals import get_session_store
 from app.views.contexts.thank_you_context import (
     build_default_thank_you_context,
     build_census_thank_you_context,
 )
+from app.views.handlers.confirmation_email import ConfirmationEmail
 
 
 class ThankYou:
@@ -36,12 +35,11 @@ class ThankYou:
             if self._is_census_theme
             else self.DEFAULT_THANK_YOU_TEMPLATE
         )
-        self.email_form = (
-            EmailForm()
+        self.confirmation_email = (
+            ConfirmationEmail()
             if self._schema.get_submission().get("confirmation_email")
             else None
         )
-        self.is_valid_email_form = False
 
     def get_context(self):
         if not self._is_census_theme:
@@ -53,26 +51,10 @@ class ThankYou:
                 census_type_code = self.CENSUS_TYPE_MAPPINGS[census_type]
                 break
 
-        return build_census_thank_you_context(
-            self.session_data, census_type_code, self.email_form
+        confirmation_email_form = (
+            self.confirmation_email.form if self.confirmation_email else None
         )
 
-    def validate(self):
-        self.is_valid_email_form = self.email_form.validate_on_submit()
-
-    def get_url_safe_serialized_email(self):
-        url_safe_serializer_handler = URLSafeSerializerHelper()
-        return url_safe_serializer_handler.dumps(self.email_form.email.data)
-
-    def handle_post(self):
-        if not self.email_form:
-            raise NotFound
-
-        self.validate()
-
-        if self.is_valid_email_form:
-            self._update_session_data_confirmation_email_sent_to_true()
-
-    def _update_session_data_confirmation_email_sent_to_true(self):
-        self.session_data.confirmation_email_sent = True
-        self.session_store.save()
+        return build_census_thank_you_context(
+            self.session_data, census_type_code, confirmation_email_form
+        )

@@ -107,7 +107,7 @@ class TestEmailConfirmation(IntegrationTestCase):
         # Then I get an error message on the thank you page
         self.assertInUrl("/submitted/thank-you/")
         self.assertInBody("There is a problem with this page")
-        self.assertInBody("Enter an email address to continue")
+        self.assertInBody("Enter an email address")
 
     def test_thank_you_incorrect_email_format(self):
         # Given I launch and complete the test_confirmation_email questionnaire
@@ -146,7 +146,7 @@ class TestEmailConfirmation(IntegrationTestCase):
         # Then I get an error message on the confirmation email page
         self.assertInUrl("/submitted/confirmation-email/send/")
         self.assertInBody("There is a problem with this page")
-        self.assertInBody("Enter an email address to continue")
+        self.assertInBody("Enter an email address")
 
     def test_confirmation_email_page_incorrect_email_format(self):
         # Given I launch and complete the test_confirmation_email questionnaire and submit with a valid email from the thank you page

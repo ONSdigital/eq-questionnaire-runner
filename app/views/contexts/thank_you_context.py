@@ -27,7 +27,7 @@ def build_default_thank_you_context(session_data: SessionData) -> Mapping:
 
 
 def build_census_thank_you_context(
-    session_data: SessionData, census_type_code: str, email_form
+    session_data: SessionData, census_type_code: str, confirmation_email_form
 ) -> Mapping:
 
     context = {
@@ -36,6 +36,6 @@ def build_census_thank_you_context(
         "hide_signout_button": False,
         "sign_out_url": url_for("session.get_sign_out"),
     }
-    if email_form:
-        context.update(build_email_form_context(email_form))
+    if confirmation_email_form:
+        context.update(build_email_form_context(confirmation_email_form))
     return context

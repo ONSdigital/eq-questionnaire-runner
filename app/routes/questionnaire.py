@@ -17,7 +17,7 @@ from app.globals import get_metadata, get_session_store, get_session_timeout_in_
 from app.helpers.language_helper import handle_language
 from app.helpers.schema_helpers import with_schema
 from app.helpers.session_helpers import with_questionnaire_store
-from app.helpers.url_safe_helper import URLSafeSerializerHelper
+from app.helpers.url_param_serializer import URLParamSerializer
 from app.helpers.template_helpers import get_census_base_url, render_template
 from app.questionnaire.location import InvalidLocationException
 from app.questionnaire.router import Router
@@ -285,13 +285,17 @@ def get_thank_you(schema):
     thank_you = ThankYou(schema)
 
     if request.method == "POST":
-        thank_you.handle_post()
+        if not thank_you.confirmation_email:
+            raise NotFound
 
-        if thank_you.is_valid_email_form:
+        confirmation_email = thank_you.confirmation_email
+        confirmation_email.handle_post()
+
+        if confirmation_email.form_valid:
             return redirect(
                 url_for(
                     "post_submission.get_confirmation_email_sent",
-                    email=thank_you.get_url_safe_serialized_email(),
+                    email=confirmation_email.get_url_safe_serialized_email(),
                 )
             )
 
@@ -305,15 +309,21 @@ def get_thank_you(schema):
 @post_submission_blueprint.route("confirmation-email/send", methods=["GET", "POST"])
 @login_required
 def get_confirmation_email():
+    if not get_session_store().session_data.confirmation_email_sent:
+        raise NotFound
+
     confirmation_email = ConfirmationEmail()
 
-    if request.method == "POST" and confirmation_email.validate():
-        return redirect(
-            url_for(
-                "post_submission.get_confirmation_email_sent",
-                email=confirmation_email.get_url_safe_serialized_email(),
+    if request.method == "POST":
+        confirmation_email.handle_post()
+
+        if confirmation_email.form_valid:
+            return redirect(
+                url_for(
+                    "post_submission.get_confirmation_email_sent",
+                    email=confirmation_email.get_url_safe_serialized_email(),
+                )
             )
-        )
 
     return render_template(
         template="confirmation-email",
@@ -328,8 +338,7 @@ def get_confirmation_email_sent():
     if not get_session_store().session_data.confirmation_email_sent:
         raise NotFound
 
-    url_safe_serializer_handler = URLSafeSerializerHelper()
-    email = url_safe_serializer_handler.loads(request.args.get("email"))
+    email = URLParamSerializer().loads(request.args.get("email"))
 
     return render_template(
         template="confirmation-email-sent",

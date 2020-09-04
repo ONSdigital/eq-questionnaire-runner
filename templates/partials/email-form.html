@@ -1,7 +1,7 @@
 {% from "components/error/_macro.njk" import onsError %}
 {% from "components/button/_macro.njk" import onsButton %}
 {% from "components/label/_macro.njk" import onsLabel %}
-
+{% from "components/input/_macro.njk" import onsInput %}
 {% set email_form_errors = form.errors['email'] %}
 
   {% if email_form_errors %}
@@ -16,30 +16,41 @@
     %}
     {% call onsError(email_error) %}
     {{
-      onsLabel({
-        "for": email,
-        "text": _("Email address "),
-        "description": _("This will not be stored and only used once to send your confirmation")
+      onsInput({
+        "id": "email",
+        "name": "email",
+        "label": {
+          "id": "j",
+          "text": _("Email address"),
+          "description": _("This will not be stored and only used once to send your confirmation")
+        },
+        "type": "text",
+        "classes": "input input--text input-type__input",
+        "value": form.fields.email.data
       })
     }}
-      {{ form.fields.email(class_="input input--text input-type__input") }}
     {% endcall %}
   {% else %}
     {{
-      onsLabel({
-        "for": email,
-        "text": _("Email address "),
-        "description": _("This will not be stored and only used once to send your confirmation")
+      onsInput({
+        "id": "email",
+        "name": "email",
+        "label": {
+          "id": "j",
+          "text": _("Email address"),
+          "description": _("This will not be stored and only used once to send your confirmation")
+        },
+        "type": "text",
+        "classes": "input input--text input-type__input"
       })
     }}
-    {{ form.fields.email(class_="input input--text input-type__input") }}
   {% endif %}
 
   {{ form.fields.csrf_token }}
 
   {{
     onsButton({
-      "text": "Send confirmation",
+      "text": _("Send confirmation"),
       "classes": "u-mt-s",
       "attributes": {
         "data-qa": "btn-submit"
