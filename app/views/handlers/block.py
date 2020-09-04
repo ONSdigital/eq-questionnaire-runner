@@ -3,8 +3,8 @@ from functools import cached_property
 from typing import Optional
 
 from structlog import get_logger
-from app.helpers.template_helpers import safe_content
 
+from app.helpers.template_helpers import safe_content
 from app.questionnaire.location import InvalidLocationException, Location
 from app.questionnaire.placeholder_renderer import PlaceholderRenderer
 from app.questionnaire.questionnaire_store_updater import QuestionnaireStoreUpdater

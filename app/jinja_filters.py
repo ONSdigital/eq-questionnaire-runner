@@ -4,7 +4,7 @@ from datetime import datetime
 
 import flask
 import flask_babel
-from babel import units, numbers
+from babel import numbers, units
 from flask import current_app
 from jinja2 import Markup, escape, evalcontextfilter
 
@@ -20,6 +20,10 @@ def format_number(value):
         return numbers.format_decimal(value, locale=flask_babel.get_locale())
 
     return ""
+
+
+def get_formatted_address(address_fields):
+    return "<br>".join(address_field for address_field in address_fields.values())
 
 
 def get_formatted_currency(value, currency="GBP"):
@@ -432,6 +436,8 @@ class SummaryRowItem:
 
         if value is None or value == "":
             self.valueList = [SummaryRowItemValue(no_answer_provided)]
+        elif answer_type == "address":
+            self.valueList = [SummaryRowItemValue(get_formatted_address(value))]
         elif answer_type == "checkbox":
             self.valueList = [
                 SummaryRowItemValue(option["label"], option["detail_answer_value"])

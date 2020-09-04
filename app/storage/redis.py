@@ -4,7 +4,8 @@ from datetime import datetime
 from dateutil.tz import tzutc
 
 from app.storage.errors import ItemAlreadyExistsError
-from .storage import StorageModel, StorageHandler
+
+from .storage import StorageHandler, StorageModel
 
 
 class Redis(StorageHandler):

@@ -1,17 +1,16 @@
 from itertools import combinations
-
 from typing import Iterable, List, Optional, Tuple, Union
 
 from app.data_model.answer_store import Answer
-from app.data_model.relationship_store import Relationship, RelationshipStore
 from app.data_model.progress_store import CompletionStatus
+from app.data_model.relationship_store import Relationship, RelationshipStore
 from app.questionnaire.location import Location
 
 
 class QuestionnaireStoreUpdater:
     """Component responsible for any actions that need to happen as a result of updating the questionnaire_store"""
 
-    EMPTY_ANSWER_VALUES: Tuple = (None, [], "")
+    EMPTY_ANSWER_VALUES: Tuple = (None, [], "", {})
 
     def __init__(self, current_location, schema, questionnaire_store, current_question):
         self._current_location = current_location
@@ -216,13 +215,23 @@ class QuestionnaireStoreUpdater:
         for answer_id, answer_value in form_data.items():
 
             if answer_id in answer_ids_for_question:
-                if answer_value not in self.EMPTY_ANSWER_VALUES:
+                answer_value_to_store = (
+                    {
+                        key: value
+                        for key, value in answer_value.items()
+                        if value not in self.EMPTY_ANSWER_VALUES
+                    }
+                    if isinstance(answer_value, dict)
+                    else answer_value
+                )
+
+                if answer_value_to_store in self.EMPTY_ANSWER_VALUES:
+                    self._answer_store.remove_answer(answer_id, list_item_id)
+                else:
                     answer = Answer(
                         answer_id=answer_id,
                         list_item_id=list_item_id,
-                        value=answer_value,
+                        value=answer_value_to_store,
                     )
 
                     self._answer_store.add_or_update(answer)
-                else:
-                    self._answer_store.remove_answer(answer_id, list_item_id)

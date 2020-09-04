@@ -1,11 +1,11 @@
 import simplejson as json
-from flask import Blueprint, Response, request, session, current_app
+from flask import Blueprint, Response, current_app, request, session
 from sdc.crypto.decrypter import decrypt
 from sdc.crypto.encrypter import encrypt
 from structlog import get_logger
 
 from app.authentication.user import User
-from app.globals import get_answer_store, get_questionnaire_store, get_metadata
+from app.globals import get_answer_store, get_metadata, get_questionnaire_store
 from app.keys import KEY_PURPOSE_AUTHENTICATION, KEY_PURPOSE_SUBMISSION
 from app.questionnaire.router import Router
 from app.submitter.converter import convert_answers

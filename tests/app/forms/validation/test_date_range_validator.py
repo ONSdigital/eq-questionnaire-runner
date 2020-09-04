@@ -1,5 +1,6 @@
 import unittest
 from unittest.mock import Mock
+
 from wtforms.validators import ValidationError
 
 from app.forms import error_messages

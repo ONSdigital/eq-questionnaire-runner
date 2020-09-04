@@ -1,15 +1,15 @@
 import unittest
-from uuid import UUID
 from contextlib import contextmanager
-from mock import patch
+from uuid import UUID
 
 from flask import Flask, request
 from flask_babel import Babel
+from mock import patch
 
 from app.setup import create_app
 from app.storage.datastore import Datastore
 from app.storage.dynamodb import Dynamodb
-from app.submitter.submitter import LogSubmitter, RabbitMQSubmitter, GCSSubmitter
+from app.submitter.submitter import GCSSubmitter, LogSubmitter, RabbitMQSubmitter
 
 
 class TestCreateApp(unittest.TestCase):  # pylint: disable=too-many-public-methods

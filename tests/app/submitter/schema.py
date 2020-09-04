@@ -1,6 +1,6 @@
 from app.questionnaire.questionnaire_schema import (
-    QuestionnaireSchema,
     DEFAULT_LANGUAGE_CODE,
+    QuestionnaireSchema,
 )
 from app.utilities.schema import _load_schema_file
 

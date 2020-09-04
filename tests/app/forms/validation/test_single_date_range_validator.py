@@ -1,9 +1,10 @@
 from unittest.mock import Mock
+
 from wtforms.validators import ValidationError
 
-from app.questionnaire.rules import convert_to_datetime
 from app.forms import error_messages
 from app.forms.validators import SingleDatePeriodCheck
+from app.questionnaire.rules import convert_to_datetime
 from tests.app.app_context_test_case import AppContextTestCase
 
 

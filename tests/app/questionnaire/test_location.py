@@ -1,5 +1,4 @@
 from app.questionnaire.location import Location
-
 from tests.app.app_context_test_case import AppContextTestCase
 
 
