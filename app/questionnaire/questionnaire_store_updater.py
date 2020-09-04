@@ -158,15 +158,15 @@ class QuestionnaireStoreUpdater:
     def get_relationship_answers_for_list_name(
         self, list_name: str
     ) -> Union[List[Answer], None]:
-        assosciated_relationship_collectors = (
+        associated_relationship_collectors = (
             self._get_relationship_collectors_by_list_name(list_name)
         )
-        if not assosciated_relationship_collectors:
+        if not associated_relationship_collectors:
             return None
 
         relationship_answer_ids = [
             self._schema.get_relationship_answer_id_for_block(block["id"])
-            for block in assosciated_relationship_collectors
+            for block in associated_relationship_collectors
         ]
 
         return self._answer_store.get_answers_by_answer_id(relationship_answer_ids)

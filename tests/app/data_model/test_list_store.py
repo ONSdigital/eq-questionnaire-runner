@@ -20,6 +20,24 @@ def test_list_serialisation():
     ]
 
 
+def test_same_name_serialisation():
+    new_list = ListStore()
+
+    first_id = new_list.add_list_item("people")
+    second_id = new_list.add_list_item("people")
+    matching_name_id = new_list.add_list_item("people", same_name_list_item_id=first_id)
+
+    serialized = new_list.serialize()
+
+    assert serialized == [
+        {
+            "name": "people",
+            "items": [first_id, second_id, matching_name_id],
+            "same_name_items": [first_id, matching_name_id],
+        }
+    ]
+
+
 def test_deserialisation():
     new_list = ListStore()
     # pylint: disable=protected-access
@@ -68,6 +86,24 @@ def test_delete_list_item_id():
     assert not store._lists  # pylint: disable=protected-access
 
 
+def test_delete_same_name_list_item_id():
+    store = ListStore()
+    first_person_id = store.add_list_item("people")
+    second_person_id = store.add_list_item("people")
+    matching_person_id = store.add_list_item("people", same_name_list_item_id=first_person_id)
+    another_matching_person_id = store.add_list_item("people", same_name_list_item_id=matching_person_id)
+
+    store.delete_list_item("people", first_person_id)
+
+    assert store.serialize() == [
+        {
+            "name": "people",
+            "items": [second_person_id, matching_person_id, another_matching_person_id],
+            "same_name_items": [matching_person_id, another_matching_person_id]
+        }
+    ]
+
+
 def test_delete_list_item_id_does_not_raise():
     store = ListStore()
     store.add_list_item("people")
@@ -75,7 +111,7 @@ def test_delete_list_item_id_does_not_raise():
         store.delete_list_item("people", "123456")
     except ValueError:
         # Not necessary, but keeps it explicit.
-        pytest.fail("Deleting a non-existant list item raised an error")
+        pytest.fail("Deleting a non-existent list item raised an error")
 
 
 def test_list_representation_equal():

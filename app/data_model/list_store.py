@@ -20,10 +20,12 @@ class ListModel:
         name: str,
         items: Optional[List] = None,
         primary_person: Optional[str] = None,
+        same_name_items: Optional[List] = None,
     ):
         self.name = name
         self.items = items or []
         self.primary_person = primary_person
+        self.same_name_items = same_name_items or []
 
     def __eq__(self, other):
         if not isinstance(other, ListModel):
@@ -52,6 +54,9 @@ class ListModel:
 
         if self.primary_person:
             serialized["primary_person"] = self.primary_person
+
+        if self.same_name_items:
+            serialized["same_name_items"] = self.same_name_items
 
         return serialized
 
@@ -164,12 +169,20 @@ class ListStore:
         if self[list_name].primary_person == item_id:
             self[list_name].primary_person = None
 
+        if item_id in self[list_name].same_name_items:
+            self[list_name].same_name_items.remove(item_id)
+
+            if len(self[list_name].same_name_items) == 1:
+                del self[list_name].same_name_items[0]
+
         if not self[list_name].items:
             del self[list_name]
 
         self._is_dirty = True
 
-    def add_list_item(self, list_name, primary_person=False):
+    def add_list_item(
+        self, list_name, primary_person=False, same_name_list_item_id=None
+    ):
         """Add a new list item to a named list.
 
         If the list does not exist, it will be created
@@ -177,6 +190,7 @@ class ListStore:
         Args:
             list_name: The list to add to or create
             primary_person: Whether the list item represents a primary person
+            same_name_list_item_id: The id of another item with a matching name
 
         Returns:
             list item identifier for the new item
@@ -190,6 +204,12 @@ class ListStore:
             named_list.items.insert(0, list_item_id)
         else:
             named_list.items.append(list_item_id)
+
+        if same_name_list_item_id:
+            if same_name_list_item_id not in named_list.same_name_items:
+                named_list.same_name_items.append(same_name_list_item_id)
+            if list_item_id not in named_list.same_name_items:
+                named_list.same_name_items.append(list_item_id)
 
         self._lists[list_name] = named_list
         self._is_dirty = True
