@@ -1,5 +1,5 @@
 from flask import Blueprint, g, redirect, request, url_for
-import current_user, login_required
+from flask_login import current_user, login_required
 from structlog import get_logger
 
 from app.authentication.no_token_exception import NoTokenException
@@ -8,6 +8,7 @@ from app.helpers.language_helper import handle_language
 from app.helpers.schema_helpers import with_schema
 from app.helpers.session_helpers import with_questionnaire_store
 from app.helpers.template_helpers import render_template
+from app.helpers.url_param_serializer import URLParamSerializer
 from app.utilities.schema import load_schema_from_session_data
 from app.views.handlers.individual_response import (
     IndividualResponseChangeHandler,
@@ -18,7 +19,6 @@ from app.views.handlers.individual_response import (
     IndividualResponseTextHandler,
     IndividualResponseWhoHandler,
 )
-from app.helpers.url_param_serializer import URLParamSerializer
 
 logger = get_logger()
 

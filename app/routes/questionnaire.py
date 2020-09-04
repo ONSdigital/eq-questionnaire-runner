@@ -11,8 +11,8 @@ from app.globals import get_metadata, get_session_store, get_session_timeout_in_
 from app.helpers.language_helper import handle_language
 from app.helpers.schema_helpers import with_schema
 from app.helpers.session_helpers import with_questionnaire_store
-from app.helpers.url_param_serializer import URLParamSerializer
 from app.helpers.template_helpers import get_census_base_url, render_template
+from app.helpers.url_param_serializer import URLParamSerializer
 from app.questionnaire.location import InvalidLocationException
 from app.questionnaire.router import Router
 from app.utilities.schema import load_schema_from_session_data

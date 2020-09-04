@@ -1,6 +1,6 @@
-from app.helpers.url_param_serializer import URLParamSerializer
 from app.forms.email_form import EmailForm
 from app.globals import get_session_store
+from app.helpers.url_param_serializer import URLParamSerializer
 from app.views.contexts.email_context import build_confirmation_email_context
 
 

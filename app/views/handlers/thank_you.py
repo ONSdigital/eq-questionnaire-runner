@@ -9,7 +9,6 @@ from app.views.contexts.thank_you_context import (
 from app.views.handlers.confirmation_email import ConfirmationEmail
 
 
-
 class ThankYou:
     DEFAULT_THANK_YOU_TEMPLATE = "thank-you"
     CENSUS_THANK_YOU_TEMPLATE = "census-thank-you"
