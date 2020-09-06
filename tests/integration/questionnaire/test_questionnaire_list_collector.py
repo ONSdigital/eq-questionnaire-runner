@@ -1,19 +1,11 @@
 from tests.integration.integration_test_case import IntegrationTestCase
 
+from . import add_person
+
 
 class TestQuestionnaireListCollector(IntegrationTestCase):
-    def add_person(self, first_name, last_name):
-        self.post({"anyone-else": "Yes"})
-
-        self.post({"first-name": first_name, "last-name": last_name})
-
     def get_link(self, rowIndex, text):
         selector = f"[data-qa='list-item-{text}-{rowIndex}-link']"
-        selected = self.getHtmlSoup().select(selector)
-        return selected[0].get("href")
-
-    def get_previous_link(self):
-        selector = "#top-previous"
         selected = self.getHtmlSoup().select(selector)
         return selected[0].get("href")
 
@@ -50,19 +42,19 @@ class TestQuestionnaireListCollector(IntegrationTestCase):
 
         self.post({"anyone-else": "Yes"})
 
-        self.add_person("Marie Claire", "Doe")
+        add_person(self, "Marie Claire", "Doe")
 
         self.assertInSelector("Marie Claire Doe", "[data-qa='list-item-1-label']")
 
-        self.add_person("John", "Doe")
+        add_person(self, "John", "Doe")
 
         self.assertInSelector("John Doe", "[data-qa='list-item-2-label']")
 
-        self.add_person("A", "Mistake")
+        add_person(self, "A", "Mistake")
 
         self.assertInSelector("A Mistake", "[data-qa='list-item-3-label']")
 
-        self.add_person("Johnny", "Doe")
+        add_person(self, "Johnny", "Doe")
 
         self.assertInSelector("Johnny Doe", "[data-qa='list-item-4-label']")
 
@@ -105,7 +97,7 @@ class TestQuestionnaireListCollector(IntegrationTestCase):
 
         self.get(john_change_link)
 
-        self.get(self.get_previous_link())
+        self.previous()
 
         self.assertEqualUrl("/questionnaire/list-collector/")
 
@@ -113,7 +105,7 @@ class TestQuestionnaireListCollector(IntegrationTestCase):
 
         self.assertInUrl("remove")
 
-        self.get(self.get_previous_link())
+        self.previous()
 
         self.assertEqualUrl("/questionnaire/list-collector/")
 
@@ -126,11 +118,11 @@ class TestQuestionnaireListCollector(IntegrationTestCase):
 
         self.post({"anyone-else": "Yes"})
 
-        self.add_person("Marie Claire", "Doe")
+        add_person(self, "Marie Claire", "Doe")
 
         self.assertInSelector("Marie Claire Doe", "[data-qa='list-item-1-label']")
 
-        self.add_person("John", "Doe")
+        add_person(self, "John", "Doe")
 
         self.assertInSelector("John Doe", "[data-qa='list-item-2-label']")
 
@@ -190,7 +182,7 @@ class TestQuestionnaireListCollector(IntegrationTestCase):
 
         self.post({"anyone-else": "Yes"})
 
-        self.add_person("Marie Claire", "Doe")
+        add_person(self, "Marie Claire", "Doe")
 
         self.post({"anyone-else": "No"})
 
@@ -215,7 +207,7 @@ class TestQuestionnaireListCollector(IntegrationTestCase):
 
         self.post({"anyone-else": "Yes"})
 
-        self.add_person("Marie Claire", "Doe")
+        add_person(self, "Marie Claire", "Doe")
 
         self.post({"anyone-else": "No"})
 
@@ -247,7 +239,7 @@ class TestQuestionnaireListCollector(IntegrationTestCase):
 
         self.post({"anyone-else": "Yes"})
 
-        self.add_person("Someone", "Else")
+        add_person(self, "Someone", "Else")
 
         change_link = self.get_link("1", "change")
 
@@ -262,7 +254,7 @@ class TestQuestionnaireListCollector(IntegrationTestCase):
 
         self.post({"anyone-else": "Yes"})
 
-        self.add_person("Someone", "Else")
+        add_person(self, "Someone", "Else")
 
         remove_link = self.get_link("1", "remove")
 
@@ -278,7 +270,7 @@ class TestQuestionnaireListCollector(IntegrationTestCase):
         # Given I have completed a section and returned to a list_collector from the section summary
         self.launchSurvey("test_relationships", roles=["dumper"])
 
-        self.add_person("Marie", "Doe")
+        add_person(self, "Marie", "Doe")
 
         self.post({"anyone-else": "No"})
 
@@ -289,7 +281,7 @@ class TestQuestionnaireListCollector(IntegrationTestCase):
         self.get(add_someone_link)
 
         # When I update the list collector, which changes the section status to in-progress
-        self.add_person("John", "Doe")
+        add_person(self, "John", "Doe")
 
         # Then my next location is the parent list collector without last updated guidance being shown
         self.assertInBody("Does anyone else live at 1 Pleasant Lane?")

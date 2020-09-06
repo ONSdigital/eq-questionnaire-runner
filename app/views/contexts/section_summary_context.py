@@ -4,6 +4,7 @@ from flask import url_for
 
 from app.helpers.template_helpers import safe_content
 from app.questionnaire import QuestionnaireSchema
+from app.questionnaire.location import Location
 
 from .context import Context
 from .list_context import ListContext
@@ -11,7 +12,9 @@ from .summary import Group
 
 
 class SectionSummaryContext(Context):
-    def __call__(self, current_location, return_to="section-summary"):
+    def __call__(
+        self, current_location: Location, return_to: str = "section-summary"
+    ) -> Mapping:
         summary = self._build_summary(current_location, return_to)
         title_for_location = self._title_for_location(current_location)
         title = (
@@ -21,10 +24,16 @@ class SectionSummaryContext(Context):
             if isinstance(title_for_location, dict)
             else title_for_location
         )
+
+        page_title = self._schema.get_custom_page_title_for_section(
+            current_location.section_id
+        )
+
         return {
             "summary": {
                 "title": title,
-                "page_title": self._get_safe_page_title(title_for_location),
+                "page_title": page_title
+                or self._get_safe_page_title(title_for_location),
                 "summary_type": "SectionSummary",
                 "answers_are_editable": True,
                 **summary,
@@ -75,7 +84,6 @@ class SectionSummaryContext(Context):
         }
 
     def _title_for_location(self, location):
-
         section_id = location.section_id
         title = (
             self._schema.get_repeating_title_for_section(section_id)

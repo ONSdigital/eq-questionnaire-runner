@@ -103,3 +103,13 @@ class RelationshipCollector(Question):
         if self.relationship_router.get_next_location_url(self._current_location):
             return False
         return True
+
+    def _get_custom_page_title(self, page_title: str) -> str:
+        list_item_index = self._get_list_item_index(self.current_location.list_item_id)
+        to_list_item_index = self._get_list_item_index(
+            self.current_location.to_list_item_id
+        )
+
+        return page_title.format(
+            list_item_index=list_item_index, to_list_item_index=to_list_item_index
+        )

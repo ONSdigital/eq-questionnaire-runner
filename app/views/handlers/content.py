@@ -23,6 +23,7 @@ class Content(BlockHandler):
 
     def _render_block(self, block_id):
         block_schema = self._schema.get_block(block_id)
+
         transformed_block = transform_variants(
             block_schema,
             self._schema,
@@ -32,7 +33,12 @@ class Content(BlockHandler):
             self._current_location,
         )
 
-        self.page_title = self._get_page_title(transformed_block)
+        if custom_page_title := transformed_block.get("page_title"):
+            self.page_title = self._get_custom_page_title(
+                custom_page_title,
+            )
+        else:
+            self.page_title = self._get_page_title(transformed_block)
 
         return self.placeholder_renderer.render(
             transformed_block, self._current_location.list_item_id

@@ -1,11 +1,9 @@
 from tests.integration.integration_test_case import IntegrationTestCase
 
+from . import add_person
+
 
 class TestQuestionnaireListChangeEvaluatesSections(IntegrationTestCase):
-    def add_person(self, first_name, last_name):
-        self.post({"anyone-else": "Yes"})
-        self.post({"first-name": first_name, "last-name": last_name})
-
     def get_link(self, rowIndex, text):
         selector = f"[data-qa='list-item-{text}-{rowIndex}-link']"
         selected = self.getHtmlSoup().select(selector)
@@ -13,11 +11,6 @@ class TestQuestionnaireListChangeEvaluatesSections(IntegrationTestCase):
         filtered = [html for html in selected if text in html.get_text()]
 
         return filtered[0].get("href")
-
-    def get_previous_link(self):
-        selector = "#top-previous"
-        selected = self.getHtmlSoup().select(selector)
-        return selected[0].get("href")
 
     def test_without_primary_person(self):
         self.launchSurvey("test_list_change_evaluates_sections")
@@ -42,7 +35,7 @@ class TestQuestionnaireListChangeEvaluatesSections(IntegrationTestCase):
         self.assertEqualUrl("/questionnaire/primary-person-list-collector/")
         self.post({"you-live-here": "No"})
 
-        self.add_person("John", "Doe")
+        add_person(self, "John", "Doe")
         self.post({"anyone-else": "No"})
         self.assertEqualUrl("/questionnaire/")
 
@@ -69,7 +62,7 @@ class TestQuestionnaireListChangeEvaluatesSections(IntegrationTestCase):
         self.get("/questionnaire/sections/who-lives-here/")
         self.assertEqualUrl("/questionnaire/primary-person-list-collector/")
         self.post({"you-live-here": "Yes"})
-        self.add_person("John", "Doe")
+        add_person(self, "John", "Doe")
         self.post({"anyone-else": "No"})
 
         self.assertEqualUrl("/questionnaire/")

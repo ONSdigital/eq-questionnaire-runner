@@ -1,11 +1,9 @@
 from tests.integration.integration_test_case import IntegrationTestCase
 
+from . import add_person
+
 
 class TestQuestionnaireListCollector(IntegrationTestCase):
-    def add_person(self, first_name, last_name):
-        self.post({"anyone-else": "Yes"})
-        self.post({"first-name": first_name, "last-name": last_name})
-
     def test_add_list_question_displayed_before_list_collector_and_return_to_in_url(
         self,
     ):
@@ -35,7 +33,7 @@ class TestQuestionnaireListCollector(IntegrationTestCase):
         # Given
         self.launchSurvey("test_answer_action_redirect_to_list_add_block_checkbox")
         self.post({"anyone-usually-live-at-answer": ["I think so", "No"]})
-        self.add_person("John", "Doe")
+        add_person(self, "John", "Doe")
         self.post({"anyone-else-live-at-answer": "Yes"})
 
         # When

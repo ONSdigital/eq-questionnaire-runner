@@ -124,3 +124,16 @@ class BlockHandler:
         return safe_content(
             f'{self._schema.get_single_string_value(page_title)} - {self._schema.json["title"]}'
         )
+
+    def _get_custom_page_title(self, page_title: str) -> str:
+        if list_item_id := self.current_location.list_item_id:
+            list_item_index = self._get_list_item_index(list_item_id)
+            return page_title.format(list_item_index=list_item_index)
+
+        return page_title
+
+    def _get_list_item_index(self, list_item_id: str) -> int:
+        list_for_current_block = self._questionnaire_store.list_store[
+            self.block.get("for_list") or self.current_location.list_name
+        ]
+        return list_for_current_block.index(list_item_id) + 1

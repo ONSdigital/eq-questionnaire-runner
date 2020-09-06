@@ -1,16 +1,9 @@
 from tests.integration.integration_test_case import IntegrationTestCase
 
+from . import add_person
+
 
 class TestQuestionnaireRelationships(IntegrationTestCase):
-    def add_person(self, first_name, last_name):
-        self.post({"anyone-else": "Yes"})
-        self.post({"first-name": first_name, "last-name": last_name})
-
-    def get_previous_link(self):
-        selector = "#top-previous"
-        selected = self.getHtmlSoup().select(selector)
-        return selected[0].get("href")
-
     def remove_list_item(self, rowIndex):
         self.get("questionnaire/list-collector")
         selector = f"[data-qa='list-item-remove-{rowIndex}-link']"
@@ -20,8 +13,8 @@ class TestQuestionnaireRelationships(IntegrationTestCase):
 
     def test_valid_relationship(self):
         self.launchSurvey("test_relationships")
-        self.add_person("Marie", "Doe")
-        self.add_person("John", "Doe")
+        add_person(self, "Marie", "Doe")
+        add_person(self, "John", "Doe")
         self.post({"anyone-else": "No"})
 
         self.post({"relationship-answer": "Husband or Wife"})
@@ -40,8 +33,8 @@ class TestQuestionnaireRelationships(IntegrationTestCase):
 
     def test_go_to_invalid_relationship(self):
         self.launchSurvey("test_relationships")
-        self.add_person("Marie", "Doe")
-        self.add_person("John", "Doe")
+        add_person(self, "Marie", "Doe")
+        add_person(self, "John", "Doe")
         self.post({"anyone-else": "No"})
 
         self.get("/questionnaire/relationships/fake-id/to/another-fake-id")
@@ -49,17 +42,17 @@ class TestQuestionnaireRelationships(IntegrationTestCase):
 
     def test_failed_validation(self):
         self.launchSurvey("test_relationships")
-        self.add_person("Marie", "Doe")
-        self.add_person("John", "Doe")
+        add_person(self, "Marie", "Doe")
+        add_person(self, "John", "Doe")
         self.post({"anyone-else": "No"})
         self.post()
         self.assertInBody("There is a problem with your answer")
 
     def test_multiple_relationships(self):
         self.launchSurvey("test_relationships")
-        self.add_person("Marie", "Doe")
-        self.add_person("John", "Doe")
-        self.add_person("Susan", "Doe")
+        add_person(self, "Marie", "Doe")
+        add_person(self, "John", "Doe")
+        add_person(self, "Susan", "Doe")
         self.post({"anyone-else": "No"})
 
         self.post({"relationship-answer": "Husband or Wife"})
@@ -70,9 +63,9 @@ class TestQuestionnaireRelationships(IntegrationTestCase):
 
     def test_relationships_removed_when_list_item_removed(self):
         self.launchSurvey("test_relationships", roles=["dumper"])
-        self.add_person("Marie", "Doe")
-        self.add_person("John", "Doe")
-        self.add_person("Susan", "Doe")
+        add_person(self, "Marie", "Doe")
+        add_person(self, "John", "Doe")
+        add_person(self, "Susan", "Doe")
         self.post({"anyone-else": "No"})
 
         self.post({"relationship-answer": "Husband or Wife"})
@@ -96,15 +89,15 @@ class TestQuestionnaireRelationships(IntegrationTestCase):
 
     def test_relationship_not_altered_when_new_list_item_not_submitted(self):
         self.launchSurvey("test_relationships", roles=["dumper"])
-        self.add_person("Marie", "Doe")
-        self.add_person("John", "Doe")
+        add_person(self, "Marie", "Doe")
+        add_person(self, "John", "Doe")
         self.post({"anyone-else": "No"})
         self.post({"relationship-answer": "Husband or Wife"})
 
         list_item_ids_original = self.dump_debug()["LISTS"][0]["items"]
 
         self.get("/questionnaire/list-collector")
-        self.add_person("Susan", "Doe")
+        add_person(self, "Susan", "Doe")
         self.remove_list_item("3")
         self.post({"anyone-else": "No"})
 
