@@ -57,10 +57,10 @@ def render_template(template, **kwargs):
         get_locale().language, theme or "census"
     )
     page_header_context.update({"title": cookie_session.get("survey_title")})
-    google_tag_mananger_context = get_google_tag_mananger_context()
+    google_tag_manager_context = get_google_tag_mananger_context()
     cdn_url = f'{current_app.config["CDN_URL"]}{current_app.config["CDN_ASSETS_PATH"]}'
     contact_us_url = get_contact_us_url(theme, get_locale().language)
-    include_csrf_token = "POST" in request.url_rule.methods
+    include_csrf_token = "POST" in request.url_rule.methods if request.url_rule else False
 
     return flask_render_template(
         template,
@@ -77,7 +77,7 @@ def render_template(template, **kwargs):
         cdn_url=cdn_url,
         data_layer=get_data_layer(theme),
         include_csrf_token=include_csrf_token,
-        **google_tag_mananger_context,
+        **google_tag_manager_context,
         **kwargs,
     )
 
