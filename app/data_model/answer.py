@@ -1,12 +1,13 @@
 from __future__ import annotations
-from typing import Union, Optional, Dict, List
-from dataclasses import dataclass, field, asdict
+
+from dataclasses import asdict, dataclass, field
+from typing import Dict, List, Mapping, Optional, Union
 
 
 @dataclass
 class Answer:
     answer_id: str
-    value: Union[str, int, float, List]
+    value: Union[str, int, float, List, Mapping]
     list_item_id: Optional[str] = field(default=None)
 
     @classmethod

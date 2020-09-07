@@ -1,10 +1,10 @@
 from copy import deepcopy
 
 from app.jinja_filters import (
-    get_formatted_currency,
     format_number,
-    format_unit,
     format_percentage,
+    format_unit,
+    get_formatted_currency,
 )
 from app.questionnaire.location import Location
 from app.questionnaire.questionnaire_schema import QuestionnaireSchema

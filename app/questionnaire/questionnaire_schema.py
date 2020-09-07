@@ -1,7 +1,7 @@
-from collections import defaultdict, abc
+from collections import abc, defaultdict
 from copy import deepcopy
 from functools import cached_property
-from typing import List, Union, Mapping
+from typing import List, Mapping, Union
 
 from flask_babel import force_locale
 from werkzeug.datastructures import ImmutableDict

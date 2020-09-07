@@ -12,7 +12,6 @@ from app.views.handlers.question import Question
 from app.views.handlers.relationship_collector import RelationshipCollector
 from app.views.handlers.summary import Summary
 
-
 BLOCK_MAPPINGS = {
     "Question": Question,
     "ConfirmationQuestion": Question,

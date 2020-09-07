@@ -1,7 +1,8 @@
 from datetime import datetime, timedelta
 
 from dateutil.tz import tzutc
-from flask import g, current_app, session as cookie_session
+from flask import current_app, g
+from flask import session as cookie_session
 from structlog import get_logger
 
 from app.data_model.questionnaire_store import QuestionnaireStore

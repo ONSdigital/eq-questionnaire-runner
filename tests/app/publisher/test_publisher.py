@@ -1,7 +1,7 @@
 from unittest import TestCase, mock
 
 from google.cloud.pubsub_v1.proto.pubsub_pb2 import PubsubMessage
-from mock import sentinel, Mock
+from mock import Mock, sentinel
 
 from app.publisher.publication_failed import PublicationFailed
 from app.publisher.publisher import PubSub

@@ -1,5 +1,6 @@
 from __future__ import annotations
-from typing import List, Optional, Dict
+
+from typing import Dict, List, Optional
 
 from app.data_model.answer import Answer
 

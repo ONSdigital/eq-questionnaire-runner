@@ -2,7 +2,7 @@
 
 import json
 from datetime import datetime
-from unittest.mock import Mock, MagicMock
+from unittest.mock import MagicMock, Mock
 from uuid import uuid4
 
 import pytest
@@ -17,8 +17,8 @@ from app.helpers.uuid_helper import is_valid_uuid
 from app.views.handlers import IndividualResponseHandler
 from app.views.handlers.individual_response import (
     GB_ENG_REGION_CODE,
-    GB_WLS_REGION_CODE,
     GB_NIR_REGION_CODE,
+    GB_WLS_REGION_CODE,
 )
 
 DUMMY_MOBILE_NUMBER = "07700900258"

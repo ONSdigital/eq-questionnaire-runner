@@ -4,13 +4,12 @@ from decimal import Decimal
 from mock import patch
 from werkzeug.datastructures import MultiDict
 
+from app.data_model.answer_store import Answer, AnswerStore
 from app.forms.questionnaire_form import generate_form
+from app.forms.validators import DateRequired, ResponseRequired
 from app.questionnaire import QuestionnaireSchema
 from app.questionnaire.placeholder_renderer import PlaceholderRenderer
 from app.utilities.schema import load_schema_from_name
-from app.forms.validators import ResponseRequired, DateRequired
-from app.data_model.answer_store import AnswerStore, Answer
-
 from tests.app.app_context_test_case import AppContextTestCase
 
 

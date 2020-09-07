@@ -1,10 +1,8 @@
 from functools import wraps
 
 import simplejson as json
-from flask import Blueprint
-from flask import g
-from flask_login import current_user
-from flask_login import login_required
+from flask import Blueprint, g
+from flask_login import current_user, login_required
 
 from app.authentication.roles import role_required
 from app.globals import get_questionnaire_store, get_session_store

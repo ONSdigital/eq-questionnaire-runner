@@ -5,7 +5,7 @@ from typing import List, Mapping
 from uuid import uuid4
 
 from dateutil.tz import tzutc
-from flask import redirect, current_app
+from flask import current_app, redirect
 from flask.helpers import url_for
 from flask_babel import lazy_gettext
 from itsdangerous import URLSafeSerializer

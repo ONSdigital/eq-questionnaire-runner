@@ -22,6 +22,7 @@ format: format-python
 	yarn format
 
 format-python:
+	pipenv run isort --recursive .
 	pipenv run black .
 
 test:

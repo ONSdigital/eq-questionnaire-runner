@@ -1,22 +1,23 @@
 # coding: utf-8
-from unittest.mock import patch, MagicMock
+from unittest.mock import MagicMock, patch
 
 from jinja2 import Undefined
 from mock import Mock
 
 from app.jinja_filters import (
-    get_currency_symbol,
-    format_percentage,
+    CheckboxConfig,
+    RadioConfig,
     format_datetime,
-    format_unit,
-    format_number,
-    format_unit_input_label,
     format_duration,
+    format_number,
+    format_percentage,
+    format_unit,
+    format_unit_input_label,
+    get_currency_symbol,
+    get_formatted_address,
     get_formatted_currency,
     get_width_class_for_number,
     map_list_collector_config,
-    RadioConfig,
-    CheckboxConfig,
 )
 from tests.app.app_context_test_case import AppContextTestCase
 
@@ -412,3 +413,15 @@ def test_map_list_collector_config():
     ]
 
     assert output == expected
+
+
+def test_format_address_fields():
+    address_fields = {
+        "line": "7 Evelyn Street",
+        "town": "Barry",
+        "postcode": "CF63 4JG",
+    }
+
+    assert (
+        get_formatted_address(address_fields) == "7 Evelyn Street<br>Barry<br>CF63 4JG"
+    )

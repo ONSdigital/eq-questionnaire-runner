@@ -2,7 +2,7 @@ from google.api_core.retry import Retry
 from google.cloud.datastore import Entity
 from structlog import get_logger
 
-from .storage import StorageModel, StorageHandler
+from .storage import StorageHandler, StorageModel
 
 logger = get_logger()
 
