@@ -57,7 +57,7 @@ def render_template(template, **kwargs):
         get_locale().language, theme or "census"
     )
     page_header_context.update({"title": cookie_session.get("survey_title")})
-    google_tag_manager_context = get_google_tag_mananger_context()
+    google_tag_manager_context = get_google_tag_manager_context()
     cdn_url = f'{current_app.config["CDN_URL"]}{current_app.config["CDN_ASSETS_PATH"]}'
     contact_us_url = get_contact_us_url(theme, get_locale().language)
     include_csrf_token = (
@@ -84,7 +84,7 @@ def render_template(template, **kwargs):
     )
 
 
-def get_google_tag_mananger_context():
+def get_google_tag_manager_context():
     cookie = request.cookies.get("ons_cookie_policy")
     if cookie and "'usage':true" in cookie:
         return {
