@@ -171,6 +171,35 @@ class QuestionnaireStoreUpdater:
 
         return self._answer_store.get_answers_by_answer_id(relationship_answer_ids)
 
+    def update_same_name_items(self, list_name: str, same_name_answer_ids: List[str]):
+        same_name_items = set()
+        people_names = {}
+
+        list_model = self._questionnaire_store.list_store[list_name]
+
+        for current_list_item_id in list_model:
+            answers = self._questionnaire_store.answer_store.get_answers_by_answer_id(
+                answer_ids=same_name_answer_ids, list_item_id=current_list_item_id
+            )
+            current_names = [str(answer.value).lower() for answer in answers if answer]
+            current_list_item_name = " ".join(current_names)
+
+            if current_list_item_name in people_names:
+                people_names[current_list_item_name] += [current_list_item_id]
+            else:
+                people_names[current_list_item_name] = [current_list_item_id]
+
+        duplicates = {
+            person_name: list_item_ids
+            for person_name, list_item_ids in people_names.items()
+            if len(list_item_ids) > 1
+        }
+
+        for duplicate in duplicates:
+            same_name_items |= set(people_names[duplicate])
+
+        list_model.same_name_items = list(same_name_items)
+
     def remove_relationship_answers_for_list_item_id(
         self, list_item_id: str, answers: List
     ) -> None:

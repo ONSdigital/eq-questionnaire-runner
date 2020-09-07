@@ -169,20 +169,12 @@ class ListStore:
         if self[list_name].primary_person == item_id:
             self[list_name].primary_person = None
 
-        if item_id in self[list_name].same_name_items:
-            self[list_name].same_name_items.remove(item_id)
-
-            if len(self[list_name].same_name_items) == 1:
-                del self[list_name].same_name_items[0]
-
         if not self[list_name].items:
             del self[list_name]
 
         self._is_dirty = True
 
-    def add_list_item(
-        self, list_name, primary_person=False, same_name_list_item_id=None
-    ):
+    def add_list_item(self, list_name, primary_person=False):
         """Add a new list item to a named list.
 
         If the list does not exist, it will be created
@@ -204,12 +196,6 @@ class ListStore:
             named_list.items.insert(0, list_item_id)
         else:
             named_list.items.append(list_item_id)
-
-        if same_name_list_item_id:
-            if same_name_list_item_id not in named_list.same_name_items:
-                named_list.same_name_items.append(same_name_list_item_id)
-            if list_item_id not in named_list.same_name_items:
-                named_list.same_name_items.append(list_item_id)
 
         self._lists[list_name] = named_list
         self._is_dirty = True
