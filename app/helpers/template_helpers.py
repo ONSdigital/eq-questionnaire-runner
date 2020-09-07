@@ -60,7 +60,9 @@ def render_template(template, **kwargs):
     google_tag_manager_context = get_google_tag_mananger_context()
     cdn_url = f'{current_app.config["CDN_URL"]}{current_app.config["CDN_ASSETS_PATH"]}'
     contact_us_url = get_contact_us_url(theme, get_locale().language)
-    include_csrf_token = "POST" in request.url_rule.methods if request.url_rule else False
+    include_csrf_token = (
+        "POST" in request.url_rule.methods if request.url_rule else False
+    )
 
     return flask_render_template(
         template,
