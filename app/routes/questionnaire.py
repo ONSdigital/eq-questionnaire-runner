@@ -93,11 +93,10 @@ def get_questionnaire(schema, questionnaire_store):
         questionnaire_store.metadata,
     )
 
-    if not router.can_access_hub():
-        redirect_location_url = router.get_first_incomplete_location_in_survey_url()
-        return redirect(redirect_location_url)
-        
     if request.method == "POST":
+        if not schema.is_hub_enabled():
+            raise NotFound
+
         if router.is_survey_complete():
             submission_handler = SubmissionHandler(
                 schema, questionnaire_store, router.full_routing_path()
@@ -106,6 +105,10 @@ def get_questionnaire(schema, questionnaire_store):
             return redirect(url_for("post_submission.get_thank_you"))
 
         return redirect(router.get_first_incomplete_location_in_survey_url())
+
+    if not router.can_access_hub():
+        redirect_location_url = router.get_first_incomplete_location_in_survey_url()
+        return redirect(redirect_location_url)
 
     language_code = get_session_store().session_data.language_code
 
