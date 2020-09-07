@@ -93,22 +93,18 @@ def get_questionnaire(schema, questionnaire_store):
         questionnaire_store.metadata,
     )
 
-    if request.method == "POST":
-        if not schema.is_hub_enabled():
-            raise NotFound
+    if not router.can_access_hub():
+        redirect_location_url = router.get_first_incomplete_location_in_survey_url()
+        return redirect(redirect_location_url)
 
+    if request.method == "POST":
         if router.is_survey_complete():
             submission_handler = SubmissionHandler(
                 schema, questionnaire_store, router.full_routing_path()
             )
             submission_handler.submit_questionnaire()
             return redirect(url_for("post_submission.get_thank_you"))
-
         return redirect(router.get_first_incomplete_location_in_survey_url())
-
-    if not router.can_access_hub():
-        redirect_location_url = router.get_first_incomplete_location_in_survey_url()
-        return redirect(redirect_location_url)
 
     language_code = get_session_store().session_data.language_code
 
@@ -132,7 +128,6 @@ def get_questionnaire(schema, questionnaire_store):
 @questionnaire_blueprint.route(
     "sections/<section_id>/<list_item_id>/", methods=["GET", "POST"]
 )
-@login_required
 @with_questionnaire_store
 @with_schema
 def get_section(schema, questionnaire_store, section_id, list_item_id=None):
@@ -169,7 +164,6 @@ def get_section(schema, questionnaire_store, section_id, list_item_id=None):
 @questionnaire_blueprint.route(
     "<list_name>/<list_item_id>/<block_id>/", methods=["GET", "POST"]
 )
-@login_required
 @with_questionnaire_store
 @with_schema
 def block(schema, questionnaire_store, block_id, list_name=None, list_item_id=None):
@@ -227,7 +221,6 @@ def block(schema, questionnaire_store, block_id, list_name=None, list_item_id=No
 @questionnaire_blueprint.route(
     "<block_id>/<list_item_id>/to/<to_list_item_id>/", methods=["GET", "POST"]
 )
-@login_required
 @with_questionnaire_store
 @with_schema
 def relationship(schema, questionnaire_store, block_id, list_item_id, to_list_item_id):
@@ -262,7 +255,6 @@ def relationship(schema, questionnaire_store, block_id, list_item_id, to_list_it
 
 
 @post_submission_blueprint.route("thank-you/", methods=["GET"])
-@login_required
 @with_schema
 def get_thank_you(schema):
     thank_you = ThankYou()
