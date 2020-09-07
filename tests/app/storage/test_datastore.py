@@ -4,7 +4,7 @@ import mock
 from google.api_core import exceptions
 from google.cloud import datastore as google_datastore
 
-from app.data_model.app_models import QuestionnaireState, QuestionnaireStateSchema
+from app.data_models.app_models import QuestionnaireState, QuestionnaireStateSchema
 from app.storage.datastore import Datastore
 from tests.app.app_context_test_case import AppContextTestCase
 

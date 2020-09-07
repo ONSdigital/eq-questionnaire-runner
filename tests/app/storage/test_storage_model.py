@@ -1,6 +1,6 @@
 import pytest
 
-from app.data_model.app_models import EQSessionSchema
+from app.data_models.app_models import EQSessionSchema
 from app.storage.storage import StorageModel
 
 
