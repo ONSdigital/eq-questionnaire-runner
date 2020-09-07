@@ -14,26 +14,21 @@ class TestPubSub(TestCase):
     def test_pub_sub_topic_path(self):
         assert self.publisher.topic_path == "projects/None/topics/test-topic-id"
 
+    # pylint: disable=protected-access
     def test_publish(self):
         future = sentinel.future
         future.add_done_callback = Mock(spec=["__call__"])
 
         # Use a mock in lieu of the actual batch class.
-        batch = Mock(
-            spec=self.publisher._batch_class  # pylint: disable=protected-access
-        )
+        batch = Mock(spec=self.publisher._batch_class)
 
         # Set the mock up to accepts the message.
         batch.publish.side_effect = (future,)
 
-        self.publisher._set_batch(  # pylint: disable=protected-access
-            self.publisher.topic_path, batch
-        )
+        self.publisher._set_batch(self.publisher.topic_path, batch)
 
         # Publish message.
-        future = self.publisher._publish(  # pylint: disable=protected-access
-            b"test-message"
-        )
+        future = self.publisher._publish(b"test-message")
         assert future is sentinel.future
 
         # Check mock.
