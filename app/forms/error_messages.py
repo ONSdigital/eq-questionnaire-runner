@@ -20,6 +20,7 @@ error_messages = {
         'Select at least one answer <span class="u-vh">to ‘%(question_title)s’</span>'
     ),
     "MANDATORY_DATE": lazy_gettext("Enter a date to continue"),
+    "MANDATORY_ADDRESS": lazy_gettext("Enter an address to continue"),
     "MANDATORY_DURATION": lazy_gettext("Enter a duration to continue"),
     "NUMBER_TOO_SMALL": lazy_gettext("Enter an answer more than or equal to %(min)s"),
     "NUMBER_TOO_LARGE": lazy_gettext("Enter an answer less than or equal to %(max)s"),

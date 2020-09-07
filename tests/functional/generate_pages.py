@@ -342,8 +342,9 @@ def process_answer(answer, page_spec, long_names, page_name):
 
     elif answer["type"] in "Duration":
         page_spec.write(_write_duration_answer(answer["id"], answer["units"], prefix))
-
-    elif answer["type"] in (
+    elif answer["type"] == "Address":
+        page_spec.write(_write_address_answer(answer["id"], prefix))
+    elif answer["type"] in {
         "TextField",
         "Number",
         "TextArea",
@@ -351,7 +352,7 @@ def process_answer(answer, page_spec, long_names, page_name):
         "Percentage",
         "Unit",
         "Dropdown",
-    ):
+    }:
         answer_context = {
             "answerName": camel_case(answer_name),
             "answerId": answer["id"],
@@ -526,6 +527,21 @@ def _write_duration_answer(answer_id, units, prefix):
                 {
                     "answerName": prefix + unit.title(),
                     "answerId": answer_id + "-" + unit,
+                }
+            )
+        )
+
+    return "".join(resp)
+
+
+def _write_address_answer(answer_id, prefix):
+    resp = []
+    for address_field in {"line1", "line2", "town", "postcode"}:
+        resp.append(
+            ANSWER_GETTER.substitute(
+                {
+                    "answerName": f"{prefix}{address_field.title()}",
+                    "answerId": f"{answer_id}-{address_field}",
                 }
             )
         )
