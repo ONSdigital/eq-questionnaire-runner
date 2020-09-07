@@ -1,7 +1,11 @@
+import json
+from datetime import datetime
 from functools import cached_property
 from typing import List, Mapping
+from uuid import uuid4
 
-from flask import redirect
+from dateutil.tz import tzutc
+from flask import redirect, current_app
 from flask.helpers import url_for
 from flask_babel import lazy_gettext
 from itsdangerous import URLSafeSerializer
@@ -13,6 +17,10 @@ from app.helpers.template_helpers import render_template
 from app.questionnaire.placeholder_renderer import PlaceholderRenderer
 from app.questionnaire.router import Router
 from app.views.contexts.question import build_question_context
+
+GB_ENG_REGION_CODE = "GB-ENG"
+GB_WLS_REGION_CODE = "GB-WLS"
+GB_NIR_REGION_CODE = "GB=NIR"
 
 
 class IndividualResponseHandler:
@@ -65,6 +73,7 @@ class IndividualResponseHandler:
         self._list_name = self._schema.get_individual_response_list()
         self._url_param_salt = url_param_salt
 
+        self._metadata = self._questionnaire_store.metadata
         self.page_title = None
 
         if not self._is_location_valid():
@@ -131,6 +140,59 @@ class IndividualResponseHandler:
 
     def get_context(self):
         return build_question_context(self.rendered_block, self.form)
+
+    def _get_fulfilment_code(self, mobile_number=None):
+        fulfilment_codes_map_for_sms = {
+            GB_ENG_REGION_CODE: "UACITA1",
+            GB_WLS_REGION_CODE: "UACITA2B",
+            GB_NIR_REGION_CODE: "UACITA4",
+        }
+        fulfilment_codes_map_for_postal = {
+            GB_ENG_REGION_CODE: "P_UAC_UACIP1",
+            GB_WLS_REGION_CODE: "P_UAC_UACIP2B",
+            GB_NIR_REGION_CODE: "P_UAC_UACIP4",
+        }
+
+        region_code = self._metadata["region_code"]
+        return (
+            fulfilment_codes_map_for_sms[region_code]
+            if mobile_number
+            else fulfilment_codes_map_for_postal[region_code]
+        )
+
+    def _get_fulfilment_request_payload(self, mobile_number=None):
+        individual_case_id_mapping = (
+            {}
+            if self._metadata.get("case_type") == "SPG"
+            else {"individualCaseId": str(uuid4())}
+        )
+
+        mobile_number_mapping = {"telNo": mobile_number} if mobile_number else {}
+
+        message = {
+            "event": {
+                "type": "FULFILMENT_REQUESTED",
+                "source": "QUESTIONNAIRE_RUNNER",
+                "channel": "EQ",
+                "dateTime": datetime.now(tz=tzutc()).isoformat(),
+                "transactionId": str(uuid4()),
+            },
+            "payload": {
+                "fulfilmentRequest": {
+                    **individual_case_id_mapping,
+                    "fulfilmentCode": self._get_fulfilment_code(mobile_number),
+                    "caseId": self._metadata["case_id"],
+                    "contact": mobile_number_mapping,
+                }
+            },
+        }
+
+        return json.dumps(message).encode("utf-8")
+
+    def _publish_fulfilment_request(self):
+        message = self._get_fulfilment_request_payload()
+
+        return current_app.eq["publisher"].publish_and_resolve_message(message)
 
     def handle_get(self):
         individual_section_first_block_id = self._schema.get_first_block_id_for_section(
@@ -561,6 +623,7 @@ class IndividualResponsePostAddressConfirmHandler(IndividualResponseHandler):
     def handle_post(self):
         if self.selected_option == self.confirm_option:
             self._update_section_status(CompletionStatus.INDIVIDUAL_RESPONSE_REQUESTED)
+            self._publish_fulfilment_request()
             return redirect(
                 url_for(
                     "individual_response.get_individual_response_post_address_confirmation",
@@ -833,6 +896,7 @@ class IndividualResponseTextConfirmHandler(IndividualResponseHandler):
     def handle_post(self):
         if self.selected_option == self.confirm_option:
             self._update_section_status(CompletionStatus.INDIVIDUAL_RESPONSE_REQUESTED)
+            self._publish_fulfilment_request()
             return redirect(
                 url_for(
                     "individual_response.get_individual_response_text_message_confirmation",

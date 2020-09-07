@@ -1,11 +1,12 @@
 import unittest
-from uuid import UUID
 from contextlib import contextmanager
-from mock import patch
+from uuid import UUID
 
 from flask import Flask, request
 from flask_babel import Babel
+from mock import patch
 
+from app.publisher.publisher import PubSub, LogPublisher
 from app.setup import create_app
 from app.storage.datastore import Datastore
 from app.storage.dynamodb import Dynamodb
@@ -226,6 +227,46 @@ class TestCreateApp(unittest.TestCase):  # pylint: disable=too-many-public-metho
 
         # Then
         assert isinstance(application.eq["submitter"], LogSubmitter)
+
+    def test_eq_publisher_backend_not_set(self):
+        # Given
+        self._setting_overrides["EQ_PUBLISHER_BACKEND"] = ""
+
+        # When
+        with self.assertRaises(Exception) as ex:
+            create_app(self._setting_overrides)
+
+        # Then
+        assert "Unknown EQ_PUBLISHER_BACKEND" in str(ex.exception)
+
+    def test_adds_pub_sub_to_the_application(self):
+        # Given
+        self._setting_overrides["EQ_PUBLISHER_BACKEND"] = "pubsub"
+        self._setting_overrides["EQ_PUB_SUB_TOPIC_ID"] = "123"
+
+        # When
+        application = create_app(self._setting_overrides)
+
+        # Then
+        assert isinstance(application.eq["publisher"], PubSub)
+
+    def test_pub_sub_topic_id_not_set_raises_exception(self):
+        # Given
+        self._setting_overrides["EQ_PUBLISHER_BACKEND"] = "pubsub"
+
+        # WHEN
+        with self.assertRaises(Exception) as ex:
+            create_app(self._setting_overrides)
+
+        # Then
+        assert "Setting EQ_PUB_SUB_TOPIC_ID Missing" in str(ex.exception)
+
+    def test_defaults_to_adding_the_log_publisher_to_the_application(self):
+        # When
+        application = create_app(self._setting_overrides)
+
+        # Then
+        assert isinstance(application.eq["publisher"], LogPublisher)
 
     def test_setup_datastore(self):
         self._setting_overrides["EQ_STORAGE_BACKEND"] = "datastore"
