@@ -13,6 +13,13 @@ googleTagManagerId: ""
 googleTagManagerAuth: ""
 googleTagManagerPreview: ""
 
+webServer:
+  type: "gunicorn"
+  workerClass: "gevent"
+  workers: "7"
+  threads: "10"
+  asyncCores: "10"
+
 newRelic:
   enabled: "False"
   licenseKey: ""

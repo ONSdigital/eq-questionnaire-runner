@@ -79,15 +79,17 @@ spec:
               value: pubsub
             - name: EQ_FULFILMENT_TOPIC_ID
               value: eq-fulfilment-topic
-            - name: WEB_SERVER
-              value: "gunicorn"
+            - name: WEB_SERVER_TYPE
+              value: "{{- .Values.webServer.type }}"
+            - name: WEB_SERVER_WORKER_CLASS
+              value: "{{- .Values.webServer.workerClass }}"
             - name: WEB_SERVER_WORKERS
-              value: "7"
+              value: "{{- .Values.webServer.workers }}"
             - name: WEB_SERVER_THREADS
-              value: "50"
+              value: "{{- .Values.webServer.threads }}"
             - name: WEB_SERVER_ASYNC_CORES
-              value: "20"
-            - name: GUNICORN_KEEP_ALIVE
+              value: "{{- .Values.webServer.asyncCores }}"
+            - name: HTTP_KEEP_ALIVE
               value: "650"
             - name: EQ_GCS_SUBMISSION_BUCKET_ID
               value: "{{- .Values.submissionBucket }}"

@@ -55,17 +55,20 @@ link-development-env:
 run: build link-development-env
 	pipenv run flask run
 
-run-gunicorn: link-development-env
-	WEB_SERVER=gunicorn pipenv run ./run_app.sh
+run-gunicorn-gevent: link-development-env
+	WEB_SERVER_TYPE=gunicorn WEB_SERVER_WORKER_CLASS=gevent pipenv run ./run_app.sh
+
+run-gunicorn-gthread: link-development-env
+	WEB_SERVER_TYPE=gunicorn WEB_SERVER_WORKER_CLASS=gthread pipenv run ./run_app.sh
 
 run-uwsgi: link-development-env
-	WEB_SERVER=uwsgi pipenv run ./run_app.sh
+	WEB_SERVER_TYPE=uwsgi pipenv run ./run_app.sh
 
 run-uwsgi-threads: link-development-env
-	WEB_SERVER=uwsgi-threads pipenv run ./run_app.sh
+	WEB_SERVER_TYPE=uwsgi-threads pipenv run ./run_app.sh
 
 run-uwsgi-async: link-development-env
-	WEB_SERVER=uwsgi-async pipenv run ./run_app.sh
+	WEB_SERVER_TYPE=uwsgi-async pipenv run ./run_app.sh
 
 dev-compose-up:
 	docker-compose pull eq-questionnaire-launcher
