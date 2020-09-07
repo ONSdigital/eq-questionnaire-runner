@@ -80,7 +80,7 @@ def before_post_submission_request():
     )
 
 
-@questionnaire_blueprint.route("/", methods=["GET"])
+@questionnaire_blueprint.route("/", methods=["GET", "POST"])
 @login_required
 @with_questionnaire_store
 @with_schema
@@ -92,6 +92,19 @@ def get_questionnaire(schema, questionnaire_store):
         questionnaire_store.progress_store,
         questionnaire_store.metadata,
     )
+
+    if request.method == "POST":
+        if not schema.is_hub_enabled():
+            raise NotFound
+
+        if router.is_survey_complete():
+            submission_handler = SubmissionHandler(
+                schema, questionnaire_store, router.full_routing_path()
+            )
+            submission_handler.submit_questionnaire()
+            return redirect(url_for("post_submission.get_thank_you"))
+
+        return redirect(router.get_first_incomplete_location_in_survey_url())
 
     if not router.can_access_hub():
         redirect_location_url = router.get_first_incomplete_location_in_survey_url()
@@ -113,32 +126,6 @@ def get_questionnaire(schema, questionnaire_store):
     )
 
     return render_template("hub", content=hub_context)
-
-
-@questionnaire_blueprint.route("/", methods=["POST"])
-@login_required
-@with_questionnaire_store
-@with_schema
-def post_questionnaire(schema, questionnaire_store):
-    router = Router(
-        schema,
-        questionnaire_store.answer_store,
-        questionnaire_store.list_store,
-        questionnaire_store.progress_store,
-        questionnaire_store.metadata,
-    )
-
-    if not schema.is_hub_enabled():
-        raise NotFound
-
-    if router.is_survey_complete():
-        submission_handler = SubmissionHandler(
-            schema, questionnaire_store, router.full_routing_path()
-        )
-        submission_handler.submit_questionnaire()
-        return redirect(url_for("post_submission.get_thank_you"))
-
-    return redirect(router.get_first_incomplete_location_in_survey_url())
 
 
 @questionnaire_blueprint.route("sections/<section_id>/", methods=["GET", "POST"])
