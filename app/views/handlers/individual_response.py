@@ -191,7 +191,6 @@ class IndividualResponseHandler:
 
     def _publish_fulfilment_request(self):
         message = self._get_fulfilment_request_payload()
-
         return current_app.eq["publisher"].publish_and_resolve_message(message)
 
     def handle_get(self):
