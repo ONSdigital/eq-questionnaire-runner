@@ -35,3 +35,13 @@ class TestTimeout(IntegrationTestCase):
         time.sleep(4)
         self.get(self.last_url)
         self.assertStatusUnauthorised()
+        self.assertInBody("To help protect your information we have timed you out")
+
+    def test_submission_complete_timeout(self):
+        self.launchSurvey("test_timeout")
+        self.post()
+        self.post()
+        time.sleep(4)
+        self.get(self.last_url)
+        self.assertStatusUnauthorised()
+        self.assertInBody("Your census has been submitted")

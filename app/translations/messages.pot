@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2020-09-02 13:12+0100\n"
+"POT-Creation-Date: 2020-09-08 11:05+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -188,36 +188,37 @@ msgstr ""
 msgid "Not a valid choice"
 msgstr ""
 
-#: app/helpers/template_helpers.py:19
+#: app/helpers/template_helpers.py:17
 msgid "Office for National Statistics logo"
 msgstr ""
 
-#: app/helpers/template_helpers.py:28 app/helpers/template_helpers.py:37
+#: app/helpers/template_helpers.py:26 app/helpers/template_helpers.py:35
 #: templates/errors/403.html:3 templates/errors/404.html:3
-#: templates/errors/500.html:3 templates/errors/no-cookie.html:6
-#: templates/errors/session-expired.html:6 templates/multiple_survey.html:4
+#: templates/errors/500.html:3 templates/errors/no-cookie.html:3
+#: templates/errors/session-expired.html:3
+#: templates/errors/submission-complete.html:3 templates/multiple_survey.html:4
 #: templates/signed-out.html:3 templates/static/accessibility.html:4
 #: templates/static/privacy.html:4
 msgid "Census 2021"
 msgstr ""
 
-#: app/helpers/template_helpers.py:33
+#: app/helpers/template_helpers.py:31
 msgid "Northern Ireland Statistics and Research Agency logo"
 msgstr ""
 
-#: app/questionnaire/placeholder_transforms.py:91
+#: app/questionnaire/placeholder_transforms.py:92
 msgid "{number_of_years} year"
 msgid_plural "{number_of_years} years"
 msgstr[0] ""
 msgstr[1] ""
 
-#: app/questionnaire/placeholder_transforms.py:97
+#: app/questionnaire/placeholder_transforms.py:98
 msgid "{number_of_months} month"
 msgid_plural "{number_of_months} months"
 msgstr[0] ""
 msgstr[1] ""
 
-#: app/questionnaire/placeholder_transforms.py:102
+#: app/questionnaire/placeholder_transforms.py:103
 msgid "{number_of_days} day"
 msgid_plural "{number_of_days} days"
 msgstr[0] ""
@@ -628,32 +629,44 @@ msgid ""
 " survey."
 msgstr ""
 
-#: templates/errors/no-cookie.html:6 templates/errors/session-expired.html:6
+#: templates/errors/no-cookie.html:3 templates/errors/session-expired.html:3
 msgid "Session expired"
 msgstr ""
 
-#: templates/errors/no-cookie.html:9
+#: templates/errors/no-cookie.html:6
 msgid "Sorry there is a problem"
 msgstr ""
 
-#: templates/errors/no-cookie.html:10
+#: templates/errors/no-cookie.html:7
 msgid ""
 "To access this page you need to <a href='{url}'>enter your 16-character "
 "access code</a>."
 msgstr ""
 
-#: templates/errors/session-expired.html:9
+#: templates/errors/session-expired.html:6
 msgid "Your session has expired due to inactivity"
 msgstr ""
 
-#: templates/errors/session-expired.html:10
+#: templates/errors/session-expired.html:7
 msgid "To help protect your information we have timed you out"
 msgstr ""
 
-#: templates/errors/session-expired.html:11
+#: templates/errors/session-expired.html:8
 msgid ""
 "You will need to <a href='{url}'>enter your 16-character access code</a> "
 "again to continue your census."
+msgstr ""
+
+#: templates/errors/submission-complete.html:3
+msgid "Submission Complete"
+msgstr ""
+
+#: templates/errors/submission-complete.html:6
+msgid "This page is no longer available"
+msgstr ""
+
+#: templates/errors/submission-complete.html:7
+msgid "Your census has been submitted"
 msgstr ""
 
 #: templates/individual_response/confirmation-post.html:15
@@ -693,7 +706,7 @@ msgstr ""
 msgid "Request separate census"
 msgstr ""
 
-#: templates/layouts/_base.html:36
+#: templates/layouts/_base.html:38
 msgid "We use cookies to improve your experience of census.gov.uk"
 msgstr ""
 

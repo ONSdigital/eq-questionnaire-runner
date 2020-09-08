@@ -53,6 +53,8 @@ def unauthorized(error=None):
     log_error(error, 401)
     if not cookie_session:
         return _render_error_page(401, "no-cookie")
+    if cookie_session.get("submitted", False):
+        return _render_error_page(401, "submission-complete")
     return _render_error_page(401, "session-expired")
 
 
