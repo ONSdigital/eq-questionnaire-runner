@@ -108,8 +108,6 @@ describe("Feature: Repeating Sections with Hub and Spoke", () => {
 
       expect(browser.getUrl()).to.contain(HubPage.url());
       expect($(HubPage.summaryRowState("personal-details-section-1")).getText()).to.equal("Partially completed");
-
-      expect($(HubPage.summaryRowTitle("personal-details-section-1")).getAttribute("class")).to.not.contain("summary__item-title--has-icon");
     });
 
     it("When the user continues with a partially completed repeating section, Then they are taken to the first incomplete block", () => {
@@ -138,8 +136,6 @@ describe("Feature: Repeating Sections with Hub and Spoke", () => {
 
       expect(browser.getUrl()).to.contain(HubPage.url());
       expect($(HubPage.summaryRowState("personal-details-section-2")).getText()).to.equal("Completed");
-
-      expect($(HubPage.summaryRowTitle("personal-details-section-2")).getAttribute("class")).to.contain("summary__item-title--has-icon");
     });
 
     it("When the user clicks 'View answers' for a completed repeating section, Then they are taken to the summary", () => {

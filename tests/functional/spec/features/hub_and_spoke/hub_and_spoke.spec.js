@@ -118,8 +118,6 @@ describe("Feature: Hub and Spoke", () => {
     it("When the user returns to the Hub, Then the section should be marked as 'Completed'", () => {
       $(EmploymentTypeBlockPage.submit()).click();
       expect($(HubPage.summaryRowState("employment-section")).getText()).to.contain("Completed");
-
-      expect($(HubPage.summaryRowTitle("employment-section")).getAttribute("class")).to.contain("summary__item-title--has-icon");
     });
 
     it("When the user returns to the Hub and clicks the 'View answers' link on the Hub, if this no summary they are returned to the first block", () => {
@@ -146,7 +144,6 @@ describe("Feature: Hub and Spoke", () => {
       $(EmploymentStatusBlockPage.submit()).click();
 
       expect($(HubPage.summaryRowState("employment-section")).getText()).to.contain("Completed");
-      expect($(HubPage.summaryRowTitle("employment-section")).getAttribute("class")).to.contain("summary__item-title--has-icon");
     });
 
     it("When the user clicks the 'View answers' link and incompletes the section, Then they the should be taken to the next incomplete question on 'Continue", () => {
@@ -167,7 +164,6 @@ describe("Feature: Hub and Spoke", () => {
       const expectedUrl = browser.getUrl();
       expect(expectedUrl).to.contain(HubPage.url());
       expect($(HubPage.summaryRowState("employment-section")).getText()).to.contain("Partially completed");
-      expect($(HubPage.summaryRowTitle("employment-section")).getAttribute("class")).not.to.contain("summary__item-title--has-icon");
     });
   });
 
