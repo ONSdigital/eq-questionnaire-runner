@@ -183,7 +183,7 @@ class TestPlaceholderParser(unittest.TestCase):
         assert welsh_transforms.format_ordinal(13) == "13eg"
         assert welsh_transforms.format_ordinal(18) == "18fed"
         assert welsh_transforms.format_ordinal(21) == "21ain"
-        assert welsh_transforms.format_ordinal(40) == "40fed"
+        assert welsh_transforms.format_ordinal(40) == "40ain"
 
     def test_remove_empty_from_list(self):
         list_to_filter = [None, 0, False, "", "String"]
