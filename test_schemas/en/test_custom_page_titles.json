@@ -29,9 +29,9 @@
         {
             "id": "section",
             "title": "Household",
-            "page_title": "Custom section summary page title",
             "summary": {
                 "show_on_completion": true,
+                "page_title": "Custom section summary page title",
                 "items": [
                     {
                         "add_link_text": "Add someone to this household",
