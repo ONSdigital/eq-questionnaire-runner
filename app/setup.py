@@ -26,7 +26,7 @@ from app.authentication.user_id_generator import UserIDGenerator
 from app.globals import get_session_store
 from app.helpers import get_span_and_trace
 from app.keys import KEY_PURPOSE_SUBMISSION
-from app.publisher.publisher import LogPublisher, PubSub
+from app.publisher import LogPublisher, PubSub
 from app.secrets import SecretStore, validate_required_secrets
 from app.storage import Datastore, Dynamodb, Redis
 from app.submitter import GCSSubmitter, LogSubmitter, RabbitMQSubmitter

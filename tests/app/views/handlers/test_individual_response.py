@@ -9,10 +9,10 @@ import pytest
 from dateutil.tz import tzutc
 from freezegun import freeze_time
 
-from app.data_model.answer_store import AnswerStore
-from app.data_model.list_store import ListStore
-from app.data_model.progress_store import ProgressStore
-from app.data_model.questionnaire_store import QuestionnaireStore
+from app.data_models.answer_store import AnswerStore
+from app.data_models.list_store import ListStore
+from app.data_models.progress_store import ProgressStore
+from app.data_models.questionnaire_store import QuestionnaireStore
 from app.helpers.uuid_helper import is_valid_uuid
 from app.views.handlers import IndividualResponseHandler
 from app.views.handlers.individual_response import (

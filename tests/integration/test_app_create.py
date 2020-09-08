@@ -1,12 +1,13 @@
 import unittest
 from contextlib import contextmanager
+from unittest.mock import Mock
 from uuid import UUID
 
 from flask import Flask, request
 from flask_babel import Babel
 from mock import patch
 
-from app.publisher.publisher import LogPublisher, PubSub
+from app.publisher import LogPublisher, PubSub
 from app.setup import create_app
 from app.storage.datastore import Datastore
 from app.storage.dynamodb import Dynamodb
@@ -245,7 +246,11 @@ class TestCreateApp(unittest.TestCase):  # pylint: disable=too-many-public-metho
         self._setting_overrides["EQ_PUB_SUB_TOPIC_ID"] = "123"
 
         # When
-        application = create_app(self._setting_overrides)
+        with patch(
+            "app.publisher.publisher.google.auth._default._get_explicit_environ_credentials",
+            return_value=(Mock(), "test-project-id"),
+        ):
+            application = create_app(self._setting_overrides)
 
         # Then
         assert isinstance(application.eq["publisher"], PubSub)
