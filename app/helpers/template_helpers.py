@@ -107,12 +107,10 @@ def get_census_base_url(schema_theme: str, language_code: str) -> str:
     if language_code == "cy":
         return "https://cyfrifiad.gov.uk/"
 
-    base_url = CENSUS_BASE_URL
-
     if schema_theme == "census-nisra":
-        return f"{base_url}ni/"
+        return f"{CENSUS_BASE_URL}ni/"
 
-    return base_url
+    return CENSUS_BASE_URL
 
 
 def get_contact_us_url(schema_theme: str, language_code: str):
