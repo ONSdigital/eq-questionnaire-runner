@@ -137,6 +137,9 @@ class ListStore:
     def get(self, item: str):
         return self.__getitem__(item)
 
+    def list_item_index(self, for_list: str, list_item_id: str) -> int:
+        return self[for_list].index(list_item_id)
+
     def _generate_identifier(self):
         """ Generate an unused random 6 character string"""
         while True:

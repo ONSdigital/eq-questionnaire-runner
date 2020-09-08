@@ -105,9 +105,20 @@ class RelationshipCollector(Question):
         return True
 
     def _get_custom_page_title(self, page_title: str) -> str:
-        list_item_index = self._get_list_item_index(self.current_location.list_item_id)
-        to_list_item_index = self._get_list_item_index(
-            self.current_location.to_list_item_id
+        for_list = self.block.get("for_list")
+
+        list_item_index = (
+            self._questionnaire_store.list_store.list_item_index(
+                for_list, self.current_location.list_item_id
+            )
+            + 1
+        )
+
+        to_list_item_index = (
+            self._questionnaire_store.list_store.list_item_index(
+                for_list, self.current_location.to_list_item_id
+            )
+            + 1
         )
 
         return page_title.format(
