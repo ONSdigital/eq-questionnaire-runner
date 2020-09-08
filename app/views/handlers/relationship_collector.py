@@ -104,7 +104,7 @@ class RelationshipCollector(Question):
             return False
         return True
 
-    def _get_custom_page_title(self, page_title: str) -> str:
+    def _resolve_custom_page_title(self, page_title: str) -> str:
         for_list = self.block.get("for_list")
 
         list_item_index = (

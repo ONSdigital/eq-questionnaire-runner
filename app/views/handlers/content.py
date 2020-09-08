@@ -34,7 +34,7 @@ class Content(BlockHandler):
         )
 
         if custom_page_title := transformed_block.get("page_title"):
-            self.page_title = self._get_custom_page_title(
+            self.page_title = self._resolve_custom_page_title(
                 custom_page_title,
             )
         else:

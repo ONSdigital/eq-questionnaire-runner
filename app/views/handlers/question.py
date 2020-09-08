@@ -169,7 +169,7 @@ class Question(BlockHandler):
         )
 
         if custom_page_title := variant_block.get("page_title"):
-            self.page_title = self._get_custom_page_title(
+            self.page_title = self._resolve_custom_page_title(
                 custom_page_title,
             )
 
