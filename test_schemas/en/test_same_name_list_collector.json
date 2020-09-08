@@ -31,7 +31,6 @@
                     {
                         "type": "List",
                         "for_list": "people",
-                        "same_name_answer_ids": ["first-name", "last-name"],
                         "title": "Household members",
                         "add_link_text": "Add someone to this household",
                         "empty_list_text": "There are no householders"
