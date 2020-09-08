@@ -154,7 +154,7 @@ class PlaceholderTransforms:
             return "ú"
 
         if self.language == "cy":
-            if number_to_format in range(21, 39):
+            if number_to_format > 20:
                 return "ain"
             return {
                 1: "af",
