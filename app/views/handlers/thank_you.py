@@ -12,6 +12,7 @@ from app.views.handlers.confirmation_email import ConfirmationEmail
 class ThankYou:
     DEFAULT_THANK_YOU_TEMPLATE = "thank-you"
     CENSUS_THANK_YOU_TEMPLATE = "census-thank-you"
+    PAGE_TITLE = "Thank you"
 
     CENSUS_TYPE_MAPPINGS = {
         "household": "HH",
@@ -37,7 +38,7 @@ class ThankYou:
             else self.DEFAULT_THANK_YOU_TEMPLATE
         )
         self.confirmation_email = (
-            ConfirmationEmail()
+            ConfirmationEmail(self.PAGE_TITLE)
             if self._schema.get_submission().get("confirmation_email")
             else None
         )
@@ -59,3 +60,8 @@ class ThankYou:
         return build_census_thank_you_context(
             self.session_data, census_type_code, confirmation_email_form
         )
+
+    def get_page_title(self):
+        if self.confirmation_email:
+            return self.confirmation_email.get_page_title()
+        return self.PAGE_TITLE

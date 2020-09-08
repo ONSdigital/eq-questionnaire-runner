@@ -297,6 +297,7 @@ def get_thank_you(schema):
         template=thank_you.template,
         content=thank_you.get_context(),
         survey_id=schema.json["survey_id"],
+        page_title=thank_you.get_page_title(),
     )
 
 
@@ -308,20 +309,20 @@ def send_confirmation_email():
 
     confirmation_email = ConfirmationEmail()
 
-    if request.method == "POST":
-        if confirmation_email.form.validate():
-            confirmation_email.handle_post()
-            return redirect(
-                url_for(
-                    "post_submission.get_confirmation_email_sent",
-                    email=confirmation_email.get_url_safe_serialized_email(),
-                )
+    if request.method == "POST" and confirmation_email.form.validate():
+        confirmation_email.handle_post()
+        return redirect(
+            url_for(
+                "post_submission.get_confirmation_email_sent",
+                email=confirmation_email.get_url_safe_serialized_email(),
             )
+        )
 
     return render_template(
         template="confirmation-email",
         content=confirmation_email.get_context(),
         hide_signout_button=True,
+        page_title=confirmation_email.get_page_title(),
     )
 
 

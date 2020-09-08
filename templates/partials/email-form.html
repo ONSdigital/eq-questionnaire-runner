@@ -19,7 +19,7 @@
 {% set config = {
   "id": email_field.id,
   "name": email_field.name,
-  "value": email_field.data or "",
+  "value": email_field.data | e if not 'None' else '',
   "label": {
     "id": email_field.id ~ "-label",
     "text": _("Email address"),
