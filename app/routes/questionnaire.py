@@ -108,7 +108,7 @@ def get_questionnaire(schema, questionnaire_store):
         router.is_survey_complete(), router.enabled_section_ids
     )
 
-    return render_template("hub", content=hub_context)
+    return render_template("hub", content=hub_context, page_title=hub_context["title"])
 
 
 @questionnaire_blueprint.route("/", methods=["POST"])
