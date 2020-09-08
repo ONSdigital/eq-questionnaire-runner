@@ -3,6 +3,7 @@ from wtforms import StringField
 from wtforms.validators import Email, InputRequired
 
 from app.forms import error_messages
+from app.forms.questionnaire_form import map_subfield_errors
 
 
 class EmailForm(FlaskForm):
@@ -14,12 +15,8 @@ class EmailForm(FlaskForm):
     )
 
     def map_errors(self):
-        ordered_errors = []
-        for error in self.errors:
-            ordered_errors += [(error, self.errors[error][0])]
-        return ordered_errors
-
-    def validate(self, extra_validators=None):
-        super(EmailForm, self).validate(extra_validators)
-        valid_fields = FlaskForm.validate(self)
-        return valid_fields
+        return (
+            map_subfield_errors(self.errors, self.email.id)
+            if self.email.id in self.errors
+            else []
+        )

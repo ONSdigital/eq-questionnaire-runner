@@ -5,9 +5,9 @@
 
 {% block form_errors %}
   {% set form = content.form %}
-  {% set error_title = ngettext('There is a problem with your answer', 'There are %(num)s problems with your answer', form.mapped_errors | length) %}
 
   {% if form and (form.errors or form.question_errors) %}
+    {% set error_title = ngettext('There is a problem with your answer', 'There are %(num)s problems with your answer', form.mapped_errors | length) %}
     {% include 'partials/error-panel.html' %}
   {% endif %}
 

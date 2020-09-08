@@ -283,9 +283,9 @@ def get_thank_you(schema):
             raise NotFound
 
         confirmation_email = thank_you.confirmation_email
-        confirmation_email.handle_post()
 
-        if confirmation_email.form_valid:
+        if confirmation_email.form.validate():
+            confirmation_email.handle_post()
             return redirect(
                 url_for(
                     "post_submission.get_confirmation_email_sent",
@@ -302,16 +302,15 @@ def get_thank_you(schema):
 
 @post_submission_blueprint.route("confirmation-email/send", methods=["GET", "POST"])
 @login_required
-def get_confirmation_email():
+def send_confirmation_email():
     if not get_session_store().session_data.confirmation_email_sent:
         raise NotFound
 
     confirmation_email = ConfirmationEmail()
 
     if request.method == "POST":
-        confirmation_email.handle_post()
-
-        if confirmation_email.form_valid:
+        if confirmation_email.form.validate():
+            confirmation_email.handle_post()
             return redirect(
                 url_for(
                     "post_submission.get_confirmation_email_sent",
@@ -338,11 +337,12 @@ def get_confirmation_email_sent():
         template="confirmation-email-sent",
         content={
             "email": email,
-            "url": url_for("post_submission.get_confirmation_email"),
+            "send_confirmation_email_url": url_for(
+                "post_submission.send_confirmation_email"
+            ),
             "hide_signout_button": False,
             "sign_out_url": url_for("session.get_sign_out"),
         },
-        hide_signout_button=True,
     )
 
 

@@ -1,7 +1,6 @@
 {% extends 'layouts/_base.html' %}
 {% from 'components/panel/_macro.njk' import onsPanel %}
 {% set hide_signout_button = content.hide_signout_button %}
-{% set sign_out_url = content.sign_out_url %}
 {% set page_title = _("Confirmation email sent") ~ " - " ~ _("Census 2021") %}
 
 {% block main %}
@@ -16,7 +15,7 @@
 
   <p><strong>{{ _("Didn't receive an email?")  }}</strong></p>
   <p>{{ _("It can take a few minutes for the email to arrive. If it doesn't arrive, check your junk mail, or you can
-    <a href='{url}' id='send-another-email'>send another confirmation email</a>.</p>").format(url = content.url)  }}
+    <a href='{send_confirmation_email_url}' id='send-another-email'>send another confirmation email</a>.</p>").format(send_confirmation_email_url = content.send_confirmation_email_url)  }}
 
 
 {% call onsPanel({
@@ -24,7 +23,7 @@
     "type": "warn"
     })
   %}
-    {{ _("Make sure you <a href='{url}'>leave this page</a> or close your browser if using a shared device").format(url = sign_out_url)  }}
+    {{ _("Make sure you <a href='{sign_out_url}'>leave this page</a> or close your browser if using a shared device").format(sign_out_url = content.sign_out_url)  }}
   {% endcall %}
 
 {% endblock %}

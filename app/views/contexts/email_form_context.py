@@ -1,7 +1,7 @@
 from flask import url_for
 
 
-def build_confirmation_email_context(email_confirmation_form):
+def build_confirmation_email_form_context(email_confirmation_form):
     context = {
         "hide_signout_button": False,
         "sign_out_url": url_for("session.get_sign_out"),
@@ -14,7 +14,7 @@ def build_email_form_context(email_confirmation_form):
     return {
         "form": {
             "mapped_errors": email_confirmation_form.map_errors(),
-            "fields": email_confirmation_form,
+            "email_field": email_confirmation_form.email,
             "errors": email_confirmation_form.errors,
         }
     }

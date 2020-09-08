@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2020-09-04 16:12+0100\n"
+"POT-Creation-Date: 2020-09-08 07:15+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -201,12 +201,11 @@ msgid "Office for National Statistics logo"
 msgstr ""
 
 #: app/helpers/template_helpers.py:26 app/helpers/template_helpers.py:35
-#: templates/census-thank-you.html:3 templates/confirmation-email-sent.html:5
-#: templates/confirmation-email.html:3 templates/errors/403.html:3
-#: templates/errors/404.html:3 templates/errors/500.html:3
-#: templates/errors/session-expired.html:6 templates/multiple_survey.html:4
-#: templates/signed-out.html:3 templates/static/accessibility.html:4
-#: templates/static/privacy.html:4
+#: templates/census-thank-you.html:3 templates/confirmation-email-sent.html:4
+#: templates/errors/403.html:3 templates/errors/404.html:3
+#: templates/errors/500.html:3 templates/errors/session-expired.html:6
+#: templates/multiple_survey.html:4 templates/signed-out.html:3
+#: templates/static/accessibility.html:4 templates/static/privacy.html:4
 msgid "Census 2021"
 msgstr ""
 
@@ -412,7 +411,7 @@ msgstr ""
 msgid "Thank you"
 msgstr ""
 
-#: templates/census-thank-you.html:10 templates/confirmation-email.html:10
+#: templates/census-thank-you.html:10 templates/confirmation-email.html:8
 msgid "There is a problem with this page"
 msgstr ""
 
@@ -465,37 +464,39 @@ msgid ""
 "census enter your email address"
 msgstr ""
 
-#: templates/census-thank-you.html:55 templates/confirmation-email-sent.html:27
+#: templates/census-thank-you.html:55
 msgid ""
 "Make sure you <a href='{url}'>leave this page</a> or close your browser "
 "if using a shared device"
 msgstr ""
 
-#: templates/confirmation-email-sent.html:5
+#: templates/confirmation-email-sent.html:4
 msgid "Confirmation email sent"
 msgstr ""
 
-#: templates/confirmation-email-sent.html:14
+#: templates/confirmation-email-sent.html:13
 msgid "A confirmation email has been sent to {email}"
 msgstr ""
 
-#: templates/confirmation-email-sent.html:17
+#: templates/confirmation-email-sent.html:16
 msgid "Didn't receive an email?"
 msgstr ""
 
-#: templates/confirmation-email-sent.html:18
+#: templates/confirmation-email-sent.html:17
 msgid ""
 "It can take a few minutes for the email to arrive. If it doesn't arrive, "
 "check your junk mail, or you can\n"
-"    <a href='{url}' id='send-another-email'>send another confirmation "
-"email</a>.</p>"
+"    <a href='{send_confirmation_email_url}' id='send-another-email'>send "
+"another confirmation email</a>.</p>"
 msgstr ""
 
-#: templates/confirmation-email.html:3
-msgid "Another confirmation email"
+#: templates/confirmation-email-sent.html:26
+msgid ""
+"Make sure you <a href='{sign_out_url}'>leave this page</a> or close your "
+"browser if using a shared device"
 msgstr ""
 
-#: templates/confirmation-email.html:14
+#: templates/confirmation-email.html:12
 msgid "Send another confirmation email"
 msgstr ""
 
@@ -552,7 +553,7 @@ msgstr ""
 msgid "Close this window to continue with your current survey"
 msgstr ""
 
-#: templates/question.html:8
+#: templates/question.html:10
 #, python-format
 msgid "There is a problem with your answer"
 msgid_plural "There are %(num)s problems with your answer"
@@ -819,15 +820,15 @@ msgstr ""
 msgid "Hide this"
 msgstr ""
 
-#: templates/partials/email-form.html:24 templates/partials/email-form.html:40
+#: templates/partials/email-form.html:25
 msgid "Email address"
 msgstr ""
 
-#: templates/partials/email-form.html:25 templates/partials/email-form.html:41
+#: templates/partials/email-form.html:26
 msgid "This will not be stored and only used once to send your confirmation"
 msgstr ""
 
-#: templates/partials/email-form.html:53
+#: templates/partials/email-form.html:39
 msgid "Send confirmation"
 msgstr ""
 

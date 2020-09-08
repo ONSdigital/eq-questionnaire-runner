@@ -1,59 +1,45 @@
-{% from "components/error/_macro.njk" import onsError %}
 {% from "components/button/_macro.njk" import onsButton %}
-{% from "components/label/_macro.njk" import onsLabel %}
 {% from "components/input/_macro.njk" import onsInput %}
-{% set email_form_errors = form.errors['email'] %}
+{% set errors = form.errors['email'] %}
+{% set email_field = form.email_field %}
 
-  {% if email_form_errors %}
-    {% set email_error = {
-      "text": email_form_errors[0],
-      "id": 'email-error',
-      "attributes": {
-        "data-ga": "error",
-        "data-ga-category": "Error"
-      }
+{% if errors %}
+  {% set error = {
+    "text": errors[0],
+    "id": email_field.id ~ '-error',
+    "attributes": {
+      "data-ga": "error",
+      "data-ga-category": "Error",
+      "data-ga-action": errors[0] | striptags,
+      "data-ga-label": email_field.id
     }
-    %}
-    {% call onsError(email_error) %}
-    {{
-      onsInput({
-        "id": "email",
-        "name": "email",
-        "label": {
-          "id": "j",
-          "text": _("Email address"),
-          "description": _("This will not be stored and only used once to send your confirmation")
-        },
-        "type": "text",
-        "classes": "input input--text input-type__input",
-        "value": form.fields.email.data
-      })
-    }}
-    {% endcall %}
-  {% else %}
-    {{
-      onsInput({
-        "id": "email",
-        "name": "email",
-        "label": {
-          "id": "j",
-          "text": _("Email address"),
-          "description": _("This will not be stored and only used once to send your confirmation")
-        },
-        "type": "text",
-        "classes": "input input--text input-type__input"
-      })
-    }}
-  {% endif %}
+  }%}
+{% endif %}
 
-  {{ form.fields.csrf_token }}
+{% set config = {
+  "id": email_field.id,
+  "name": email_field.name,
+  "value": email_field.data or "",
+  "label": {
+    "id": email_field.id ~ "-label",
+    "text": _("Email address"),
+    "description": _("This will not be stored and only used once to send your confirmation")
+  },
+  "attributes": {
+  "data-qa": "input-text",
+  },
+  "error": error
+  }
+%}
 
-  {{
-    onsButton({
-      "text": _("Send confirmation"),
-      "classes": "u-mt-s",
-      "attributes": {
-        "data-qa": "btn-submit"
-      }
-    })
-  }}
+{{ onsInput(config) }}
+
+{{
+  onsButton({
+    "text": _("Send confirmation"),
+    "classes": "u-mt-s",
+    "attributes": {
+      "data-qa": "btn-submit"
+    }
+  })
+}}

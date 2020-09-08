@@ -4,7 +4,7 @@ from flask import url_for
 
 from app.data_model.session_data import SessionData
 from app.libs.utils import convert_tx_id
-from app.views.contexts.email_context import build_email_form_context
+from app.views.contexts.email_form_context import build_email_form_context
 
 
 def build_default_thank_you_context(session_data: SessionData) -> Mapping:
