@@ -6,8 +6,8 @@ from dateutil.relativedelta import relativedelta
 from mock import patch
 from wtforms import Form
 
-from app.data_model.answer import Answer
-from app.data_model.answer_store import AnswerStore
+from app.data_models.answer import Answer
+from app.data_models.answer_store import AnswerStore
 from app.forms.field_handlers import DateHandler
 from app.forms.fields import date_field
 from app.questionnaire.location import Location

@@ -1,6 +1,6 @@
 from mock import MagicMock
 
-from app.data_model.answer_store import Answer, AnswerStore
+from app.data_models.answer_store import Answer, AnswerStore
 from app.views.contexts.summary.question import Question
 from tests.app.app_context_test_case import AppContextTestCase
 

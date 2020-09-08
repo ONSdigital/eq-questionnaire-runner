@@ -3,7 +3,7 @@ from typing import Union
 
 from wtforms import DecimalField, IntegerField
 
-from app.data_model.answer_store import AnswerStore
+from app.data_models.answer_store import AnswerStore
 from app.forms.field_handlers.field_handler import FieldHandler
 from app.forms.fields import DecimalFieldWithSeparator, IntegerFieldWithSeparator
 from app.forms.validators import DecimalPlaces, NumberCheck, NumberRange

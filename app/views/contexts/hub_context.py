@@ -4,7 +4,7 @@ from typing import List, Mapping, Union
 from flask import url_for
 from flask_babel import lazy_gettext
 
-from app.data_model.progress_store import CompletionStatus
+from app.data_models.progress_store import CompletionStatus
 from app.views.contexts import Context
 
 
@@ -101,7 +101,7 @@ class HubContext(Context):
             CompletionStatus.COMPLETED,
             CompletionStatus.INDIVIDUAL_RESPONSE_REQUESTED,
         ):
-            context["rowItems"][0]["icon"] = "check-green"
+            context["rowItems"][0]["icon"] = "check"
 
         return context
 

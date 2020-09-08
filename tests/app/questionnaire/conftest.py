@@ -1,7 +1,7 @@
 # pylint: disable=redefined-outer-name
 import pytest
 
-from app.data_model.answer_store import AnswerStore
+from app.data_models.answer_store import AnswerStore
 from app.questionnaire.location import Location
 from app.questionnaire.placeholder_parser import PlaceholderParser
 

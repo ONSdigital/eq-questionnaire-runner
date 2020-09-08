@@ -1,7 +1,7 @@
 # pylint: disable=redefined-outer-name
 import pytest
 
-from app.data_model.progress_store import CompletionStatus
+from app.data_models.progress_store import CompletionStatus
 from app.questionnaire.router import Router
 from app.utilities.schema import load_schema_from_name
 from app.views.contexts import HubContext
@@ -62,7 +62,7 @@ def test_get_completed_row_for_section(
                 "rowTitle": "Breakfast",
                 "rowTitleAttributes": {"data-qa": "hub-row-section-1-title"},
                 "attributes": {"data-qa": "hub-row-section-1-state"},
-                "icon": "check-green",
+                "icon": "check",
                 "valueList": [{"text": "Completed"}],
                 "actions": [
                     {

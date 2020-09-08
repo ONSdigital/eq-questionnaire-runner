@@ -1,6 +1,6 @@
 from functools import cached_property
 
-from app.data_model.relationship_store import RelationshipStore
+from app.data_models.relationship_store import RelationshipStore
 from app.questionnaire.location import Location
 from app.questionnaire.relationship_router import RelationshipRouter
 from app.views.handlers.question import Question

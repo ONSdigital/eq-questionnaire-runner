@@ -1,5 +1,5 @@
-from app.data_model.answer_store import AnswerStore
-from app.data_model.list_store import ListStore
+from app.data_models.answer_store import AnswerStore
+from app.data_models.list_store import ListStore
 from app.questionnaire.placeholder_parser import PlaceholderParser
 from app.questionnaire.questionnaire_schema import QuestionnaireSchema
 

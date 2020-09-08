@@ -3,7 +3,7 @@ from datetime import timedelta
 from flask import current_app
 from structlog import get_logger
 
-from app.data_model.app_models import UsedJtiClaim
+from app.data_models.app_models import UsedJtiClaim
 from app.helpers.uuid_helper import is_valid_uuid
 from app.storage.errors import ItemAlreadyExistsError
 
