@@ -28,12 +28,12 @@ class SectionSummaryContext(Context):
         page_title = self._schema.get_custom_page_title_for_section(
             current_location.section_id
         )
+        page_title = page_title or self._get_safe_page_title(title_for_location)
 
         return {
             "summary": {
                 "title": title,
-                "page_title": page_title
-                or self._get_safe_page_title(title_for_location),
+                "page_title": page_title,
                 "summary_type": "SectionSummary",
                 "answers_are_editable": True,
                 **summary,
