@@ -11,8 +11,8 @@ class TestQuestionnaireListCollector(IntegrationTestCase):
         selected = self.getHtmlSoup().select(selector)
         return selected[0].get("href")
 
-    def get_link(self, rowIndex, text):
-        selector = f"tbody:nth-child({rowIndex}) td:last-child a"
+    def get_link(self, row_index, text):
+        selector = f"tbody:nth-child({row_index}) td:last-child a"
         selected = self.getHtmlSoup().select(selector)
 
         filtered = [html for html in selected if text in html.get_text()]
