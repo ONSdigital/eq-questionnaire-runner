@@ -12,6 +12,7 @@ from app.settings import USER_IK
 
 CENSUS_BASE_URL = "https://census.gov.uk/"
 
+
 @lru_cache(maxsize=None)
 def get_page_header_context(language, theme):
     default_context = {
@@ -66,7 +67,7 @@ def render_template(template, **kwargs):
     account_service_url = (
         cookie_session.get("account_service_url")
         if cookie_session
-        else f'{CENSUS_BASE_URL}en/start'
+        else f"{CENSUS_BASE_URL}en/start"
     )
 
     return flask_render_template(
