@@ -10,6 +10,7 @@ from flask_babel import get_locale, lazy_gettext
 from app.helpers.language_helper import get_languages_context
 from app.settings import USER_IK
 
+CENSUS_BASE_URL = "https://census.gov.uk/"
 
 @lru_cache(maxsize=None)
 def get_page_header_context(language, theme):
@@ -61,11 +62,11 @@ def render_template(template, **kwargs):
     google_tag_manager_context = get_google_tag_manager_context()
     cdn_url = f'{current_app.config["CDN_URL"]}{current_app.config["CDN_ASSETS_PATH"]}'
     contact_us_url = get_contact_us_url(theme, get_locale().language)
-    include_csrf_token = True if cookie_session.get(USER_IK) is not None else False
+    include_csrf_token = cookie_session.get(USER_IK) is not None
     account_service_url = (
         cookie_session.get("account_service_url")
         if cookie_session
-        else "https://census.gov.uk/en/start"
+        else f'{CENSUS_BASE_URL}en/start'
     )
 
     return flask_render_template(
@@ -105,7 +106,7 @@ def get_census_base_url(schema_theme: str, language_code: str) -> str:
     if language_code == "cy":
         return "https://cyfrifiad.gov.uk/"
 
-    base_url = "https://census.gov.uk/"
+    base_url = CENSUS_BASE_URL
 
     if schema_theme == "census-nisra":
         return f"{base_url}ni/"
