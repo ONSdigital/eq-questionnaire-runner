@@ -1,5 +1,5 @@
 from itertools import combinations
-from typing import Iterable, List, Optional, Tuple, Union
+from typing import Dict, Iterable, List, Optional, Tuple, Union
 
 from app.data_model.answer_store import Answer
 from app.data_model.progress_store import CompletionStatus
@@ -173,7 +173,7 @@ class QuestionnaireStoreUpdater:
 
     def update_same_name_items(self, list_name: str, same_name_answer_ids: List[str]):
         same_name_items = set()
-        people_names = {}
+        people_names: Dict[str, list] = {}
 
         list_model = self._questionnaire_store.list_store[list_name]
 
