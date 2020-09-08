@@ -63,10 +63,15 @@ def render_template(template, **kwargs):
     include_csrf_token = (
         "POST" in request.url_rule.methods if request.url_rule else False
     )
+    account_service_url = (
+        cookie_session.get("account_service_url")
+        if cookie_session
+        else "https://census.gov.uk/en/start"
+    )
 
     return flask_render_template(
         template,
-        account_service_url=cookie_session.get("account_service_url"),
+        account_service_url=account_service_url,
         account_service_log_out_url=cookie_session.get("account_service_log_out_url"),
         contact_us_url=contact_us_url,
         cookie_settings_url=current_app.config["COOKIE_SETTINGS_URL"],
