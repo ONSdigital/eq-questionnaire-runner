@@ -13,7 +13,7 @@ services:
       - eq-env
 
   eq-questionnaire-runner:
-    image: onsdigital/eq-questionnaire-runner:latest
+    image: onsdigital/eq-questionnaire-runner:add-census-claims-to-ir-schema
     build: ./
     env_file:
       - .development.env
