@@ -24,15 +24,14 @@ class ListRemoveQuestion(ListAction):
         answer_action = self._get_answer_action()
 
         if answer_action and answer_action["type"] == "RemoveListItemAndAnswers":
-            same_name_answer_ids = self.parent_block.get("same_name_answer_ids", False)
+            same_name_answer_ids = self.parent_block.get("same_name_answer_ids", [])
             list_name = self.parent_block["for_list"]
             self.questionnaire_store_updater.remove_list_item_and_answers(
                 list_name, self._current_location.list_item_id
             )
-            if same_name_answer_ids:
-                self.questionnaire_store_updater.update_same_name_items(
-                    self.parent_block["for_list"], same_name_answer_ids
-                )
+            self.questionnaire_store_updater.update_same_name_items(
+                self.parent_block["for_list"], same_name_answer_ids
+            )
 
         return super().handle_post()
 

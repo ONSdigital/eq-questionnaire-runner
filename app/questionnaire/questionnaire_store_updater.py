@@ -175,6 +175,9 @@ class QuestionnaireStoreUpdater:
         same_name_items = set()
         people_names: Dict[str, list] = {}
 
+        if not same_name_answer_ids:
+            return
+
         list_model = self._questionnaire_store.list_store[list_name]
 
         for current_list_item_id in list_model:

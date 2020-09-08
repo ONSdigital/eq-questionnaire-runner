@@ -23,7 +23,7 @@ class PrimaryPersonListCollector(Question):
 
     def handle_post(self):
         list_name = self.rendered_block["for_list"]
-        same_name_answer_ids = self.rendered_block.get("same_name_answer_ids", False)
+        same_name_answer_ids = self.rendered_block.get("same_name_answer_ids", [])
         answer_action = self._get_answer_action()
 
         if answer_action and answer_action["type"] == "RedirectToListAddBlock":
@@ -33,10 +33,9 @@ class PrimaryPersonListCollector(Question):
                 self.questionnaire_store_updater.add_primary_person(list_name)
             )
 
-            if same_name_answer_ids:
-                self.questionnaire_store_updater.update_same_name_items(
-                    list_name, same_name_answer_ids
-                )
+            self.questionnaire_store_updater.update_same_name_items(
+                list_name, same_name_answer_ids
+            )
 
             self.evaluate_and_update_section_status_on_list_change(list_name)
             self.questionnaire_store_updater.save()

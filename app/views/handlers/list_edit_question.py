@@ -14,13 +14,11 @@ class ListEditQuestion(ListAction):
         return True
 
     def handle_post(self):
-        same_name_answer_ids = self.parent_block.get("same_name_answer_ids", False)
+        same_name_answer_ids = self.parent_block.get("same_name_answer_ids", [])
 
         self.questionnaire_store_updater.update_answers(self.form.data)
-
-        if same_name_answer_ids:
-            self.questionnaire_store_updater.update_same_name_items(
-                self.parent_block["for_list"], same_name_answer_ids
-            )
+        self.questionnaire_store_updater.update_same_name_items(
+            self.parent_block["for_list"], same_name_answer_ids
+        )
 
         return super().handle_post()
