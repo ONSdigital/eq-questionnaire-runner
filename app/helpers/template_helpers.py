@@ -8,6 +8,7 @@ from flask import session as cookie_session
 from flask_babel import get_locale, lazy_gettext
 
 from app.helpers.language_helper import get_languages_context
+from app.settings import USER_IK
 
 
 @lru_cache(maxsize=None)
@@ -61,7 +62,7 @@ def render_template(template, **kwargs):
     cdn_url = f'{current_app.config["CDN_URL"]}{current_app.config["CDN_ASSETS_PATH"]}'
     contact_us_url = get_contact_us_url(theme, get_locale().language)
     include_csrf_token = (
-        "POST" in request.url_rule.methods if request.url_rule else False
+        True if cookie_session.get(USER_IK) is not None else False
     )
     account_service_url = (
         cookie_session.get("account_service_url")
