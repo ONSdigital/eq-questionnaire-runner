@@ -2,7 +2,7 @@ import boto3
 from flask import current_app
 from moto import mock_dynamodb2
 
-from app.data_model.app_models import QuestionnaireState
+from app.data_models.app_models import QuestionnaireState
 from app.storage.dynamodb import Dynamodb
 from app.storage.errors import ItemAlreadyExistsError
 from app.storage.storage import StorageModel

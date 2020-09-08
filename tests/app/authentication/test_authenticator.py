@@ -5,8 +5,8 @@ from flask import session as cookie_session
 from mock import patch
 
 from app.authentication.authenticator import load_user, request_load_user, user_loader
-from app.data_model.session_data import SessionData
-from app.data_model.session_store import SessionStore
+from app.data_models.session_data import SessionData
+from app.data_models.session_store import SessionStore
 from app.settings import USER_IK
 from tests.app.app_context_test_case import AppContextTestCase
 

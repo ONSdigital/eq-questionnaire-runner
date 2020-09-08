@@ -2,9 +2,9 @@ from unittest.mock import patch
 
 import pytest
 
-from app.data_model.answer_store import Answer, AnswerStore
-from app.data_model.list_store import ListStore
-from app.data_model.progress_store import CompletionStatus, ProgressStore
+from app.data_models.answer_store import Answer, AnswerStore
+from app.data_models.list_store import ListStore
+from app.data_models.progress_store import CompletionStatus, ProgressStore
 from app.questionnaire.path_finder import PathFinder
 from app.questionnaire.routing_path import RoutingPath
 from app.utilities.schema import load_schema_from_name

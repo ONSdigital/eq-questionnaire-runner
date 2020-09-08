@@ -6,7 +6,7 @@ from flask.helpers import url_for
 from flask_babel import lazy_gettext
 from werkzeug.exceptions import NotFound
 
-from app.data_model.progress_store import CompletionStatus
+from app.data_models.progress_store import CompletionStatus
 from app.forms.questionnaire_form import generate_form
 from app.helpers.template_helpers import render_template
 from app.helpers.url_param_serializer import URLParamSerializer

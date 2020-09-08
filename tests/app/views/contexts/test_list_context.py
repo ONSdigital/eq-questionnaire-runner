@@ -1,6 +1,6 @@
 import pytest
 
-from app.data_model.progress_store import ProgressStore
+from app.data_models.progress_store import ProgressStore
 from app.questionnaire.questionnaire_schema import DEFAULT_LANGUAGE_CODE
 from app.utilities.schema import load_schema_from_name
 from app.views.contexts import ListContext

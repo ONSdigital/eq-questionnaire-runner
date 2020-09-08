@@ -3,7 +3,7 @@ from datetime import datetime, timedelta
 from dateutil.tz import tzutc
 from pytest import fixture
 
-from app.data_model.app_models import EQSession
+from app.data_models.app_models import EQSession
 from app.setup import create_app
 
 NOW = datetime.now(tz=tzutc()).replace(microsecond=0)

@@ -4,7 +4,7 @@ from uuid import UUID
 from flask import current_app
 from structlog import get_logger
 
-from app.data_model.app_models import UsedJtiClaim
+from app.data_models.app_models import UsedJtiClaim
 from app.storage.errors import ItemAlreadyExistsError
 
 logger = get_logger()
