@@ -2,7 +2,7 @@ from typing import Dict, List, Mapping, Sequence, Union
 
 from jinja2 import escape
 
-from app.data_model.answer_store import AnswerStore
+from app.data_models.answer_store import AnswerStore
 from app.questionnaire import QuestionnaireSchema
 from app.questionnaire.placeholder_transforms import PlaceholderTransforms
 

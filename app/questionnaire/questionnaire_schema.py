@@ -6,7 +6,7 @@ from typing import List, Mapping, Union
 from flask_babel import force_locale
 from werkzeug.datastructures import ImmutableDict
 
-from app.data_model.answer import Answer
+from app.data_models.answer import Answer
 from app.forms import error_messages
 from app.questionnaire.schema_utils import get_values_for_key
 

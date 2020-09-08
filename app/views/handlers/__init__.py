@@ -2,7 +2,7 @@ from typing import Union
 
 from flask import url_for
 
-from app.data_model import QuestionnaireStore
+from app.data_models import QuestionnaireStore
 
 from .individual_response import (
     IndividualResponseHandler,

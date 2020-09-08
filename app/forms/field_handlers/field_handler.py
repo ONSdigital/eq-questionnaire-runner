@@ -3,7 +3,7 @@ from functools import cached_property
 
 from wtforms import Field, validators
 
-from app.data_model.answer_store import AnswerStore
+from app.data_models.answer_store import AnswerStore
 from app.forms.validators import ResponseRequired, format_message_with_title
 from app.questionnaire import Location
 from app.questionnaire.rules import get_answer_value
