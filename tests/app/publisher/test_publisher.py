@@ -1,7 +1,7 @@
 from unittest import TestCase, mock
+from unittest.mock import Mock, patch, sentinel
 
 from google.cloud.pubsub_v1.proto.pubsub_pb2 import PubsubMessage
-from mock import Mock, sentinel
 
 from app.publisher.publication_failed import PublicationFailed
 from app.publisher.publisher import PubSub
@@ -9,10 +9,16 @@ from app.publisher.publisher import PubSub
 
 class TestPubSub(TestCase):
     def setUp(self) -> None:
-        self.publisher = PubSub(topic_id="test-topic-id")
+        with patch(
+            "app.publisher.publisher.google.auth._default._get_explicit_environ_credentials",
+            return_value=(Mock(), "test-project-id"),
+        ):
+            self.publisher = PubSub(topic_id="test-topic-id")
 
     def test_pub_sub_topic_path(self):
-        assert self.publisher.topic_path == "projects/None/topics/test-topic-id"
+        assert (
+            self.publisher.topic_path == "projects/test-project-id/topics/test-topic-id"
+        )
 
     # pylint: disable=protected-access
     def test_publish(self):
@@ -36,10 +42,7 @@ class TestPubSub(TestCase):
 
     def test_resolving_message_raises_exception_on_error(self):
         with self.assertRaises(PublicationFailed) as ex:
-            # Try resolve the future with an invalid project id.
+            # Try resolve the future with an invalid credentials
             self.publisher.publish_and_resolve_message(b"test-message")
 
-        assert (
-            "404 Requested project not found or user does not have access to it"
-            in str(ex.exception)
-        )
+        assert "403 The request is missing a valid API key." in str(ex.exception)
