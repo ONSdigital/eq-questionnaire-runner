@@ -65,9 +65,9 @@ def render_template(template, **kwargs):
     contact_us_url = get_contact_us_url(theme, get_locale().language)
     include_csrf_token = cookie_session.get(USER_IK) is not None
     account_service_url = (
-        cookie_session.get("account_service_url")
-        if cookie_session
-        else f"{CENSUS_BASE_URL}en/start"
+        f"{CENSUS_BASE_URL}en/start"
+        if not cookie_session or cookie_session.get("account_service_url")
+        else cookie_session.get("account_service_url")
     )
 
     return flask_render_template(
