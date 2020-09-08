@@ -1,6 +1,6 @@
 from jsonpointer import resolve_pointer, set_pointer
 
-from app.data_model.answer_store import AnswerStore
+from app.data_models.answer_store import AnswerStore
 from app.questionnaire import QuestionnaireSchema
 from app.questionnaire.placeholder_parser import PlaceholderParser
 from app.questionnaire.plural_forms import get_plural_form_key

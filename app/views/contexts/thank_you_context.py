@@ -2,7 +2,7 @@ from typing import Mapping
 
 from flask import url_for
 
-from app.data_model.session_data import SessionData
+from app.data_models.session_data import SessionData
 from app.libs.utils import convert_tx_id
 
 
