@@ -8,7 +8,6 @@ from flask import session as cookie_session
 from flask_babel import get_locale, lazy_gettext
 
 from app.helpers.language_helper import get_languages_context
-from app.settings import USER_IK
 
 CENSUS_BASE_URL = "https://census.gov.uk/"
 
@@ -63,7 +62,9 @@ def render_template(template, **kwargs):
     google_tag_manager_context = get_google_tag_manager_context()
     cdn_url = f'{current_app.config["CDN_URL"]}{current_app.config["CDN_ASSETS_PATH"]}'
     contact_us_url = get_contact_us_url(theme, get_locale().language)
-    include_csrf_token = cookie_session.get(USER_IK) is not None
+    include_csrf_token = (
+        "POST" in request.url_rule.methods if request.url_rule else False
+    )
     account_service_url = (
         f"{CENSUS_BASE_URL}en/start"
         if not cookie_session or cookie_session.get("account_service_url")

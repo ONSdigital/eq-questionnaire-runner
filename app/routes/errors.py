@@ -12,6 +12,7 @@ from app.authentication.no_token_exception import NoTokenException
 from app.globals import get_metadata
 from app.helpers.language_helper import handle_language
 from app.helpers.template_helpers import render_template
+from app.settings import EQ_SESSION_ID
 from app.submitter.submission_failed import SubmissionFailedException
 
 logger = get_logger()
@@ -51,7 +52,7 @@ def _render_error_page(status_code, template=None):
 @errors_blueprint.app_errorhandler(401)
 def unauthorized(error=None):
     log_error(error, 401)
-    if not cookie_session:
+    if not cookie_session.get(EQ_SESSION_ID):
         return _render_error_page(401, "no-cookie")
     if cookie_session.get("submitted", False):
         return _render_error_page(401, "submission-complete")
