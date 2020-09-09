@@ -36,7 +36,7 @@ class TestQuestionnaireEndpoints(IntegrationTestCase):
         # Then I am shown a 404 page
         self.assertStatusNotFound()
 
-    def test_post_on_questionnaire_route_without_hub_goes_to_first_incomplete_section(
+    def test_post_on_questionnaire_route_without_hub_redirects_to_first_incomplete_location(
         self,
     ):
         # Given

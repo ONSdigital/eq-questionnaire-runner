@@ -50,7 +50,6 @@ def _render_error_page(status_code, template=None):
 @errors_blueprint.app_errorhandler(CSRFError)
 @errors_blueprint.app_errorhandler(NoTokenException)
 @errors_blueprint.app_errorhandler(NoQuestionnaireStateException)
-
 def unauthorized(error=None):
     log_error(error, 401)
     if not cookie_session.get(EQ_SESSION_ID):
