@@ -4,7 +4,7 @@ from typing import Mapping, Optional
 
 from structlog import get_logger
 
-from app.data_model import QuestionnaireStore
+from app.data_models import QuestionnaireStore
 from app.helpers.template_helpers import safe_content
 from app.questionnaire.location import InvalidLocationException, Location
 from app.questionnaire.placeholder_renderer import PlaceholderRenderer
