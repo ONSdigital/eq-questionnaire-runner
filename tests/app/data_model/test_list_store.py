@@ -67,11 +67,11 @@ def test_get_item_index():
     first_id = store.add_list_item("people")
     second_id = store.add_list_item("people")
 
-    assert store.list_item_index("people", first_id) == 0
-    assert store.list_item_index("people", second_id) == 1
+    assert store.list_item_position("people", first_id) == 1
+    assert store.list_item_position("people", second_id) == 2
 
     with pytest.raises(ValueError):
-        assert store.list_item_index("people", "not-an-id")
+        assert store.list_item_position("people", "not-an-id")
 
 
 def test_delete_list_item_id():

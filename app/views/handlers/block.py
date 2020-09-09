@@ -125,15 +125,25 @@ class BlockHandler:
             f'{self._schema.get_single_string_value(page_title)} - {self._schema.json["title"]}'
         )
 
-    def _resolve_custom_page_title(self, page_title: str) -> str:
+    def _resolve_custom_page_title_vars(self, for_list: str) -> Mapping:
+        page_title_vars = {"list_item_id": None, "to_list_item_id": None}
+
         if list_item_id := self.current_location.list_item_id:
-            for_list = self.block.get("for_list") or self.current_location.list_name
-            list_item_index = (
-                self._questionnaire_store.list_store.list_item_index(
+            list_item_position = (
+                self._questionnaire_store.list_store.list_item_position(
                     for_list, list_item_id
                 )
-                + 1
             )
-            return page_title.format(list_item_index=list_item_index)
+            page_title_vars["list_item_index"] = list_item_position
 
-        return page_title
+            try:
+                if to_list_item_index := self.current_location.to_list_item_id:
+                    page_title_vars[
+                        "to_list_item_index"
+                    ] = self._questionnaire_store.list_store.list_item_position(
+                        for_list, to_list_item_index
+                    )
+            except AttributeError:
+                pass
+
+        return page_title_vars

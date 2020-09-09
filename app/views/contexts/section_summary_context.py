@@ -38,7 +38,6 @@ class SectionSummaryContext(Context):
         }
 
     def get_page_title(self, current_location: Location) -> str:
-
         if custom_page_title := self._schema.get_custom_page_title_for_section(
             current_location.section_id
         ):
@@ -108,12 +107,13 @@ class SectionSummaryContext(Context):
     def _resolve_custom_page_title(
         self, page_title: str, current_location: Location
     ) -> str:
-        if list_item_id := current_location.list_item_id:
-            if for_list := current_location.list_name:
-                list_item_index = (
-                    self._list_store.list_item_index(for_list, list_item_id) + 1
-                )
-                return page_title.format(list_item_index=list_item_index)
+        if (list_item_id := current_location.list_item_id) and (
+            for_list := current_location.list_name
+        ):
+            list_item_position = self._list_store.list_item_position(
+                for_list, list_item_id
+            )
+            return page_title.format(list_item_index=list_item_position)
 
         return page_title
 
