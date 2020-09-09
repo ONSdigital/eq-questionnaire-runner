@@ -75,6 +75,10 @@ spec:
               value: used-jti-claim
             - name: EQ_SUBMISSION_BACKEND
               value: gcs
+            - name: EQ_PUBLISHER_BACKEND
+              value: pubsub
+            - name: EQ_PUB_SUB_TOPIC_ID
+              value: eq-fulfilment-topic
             - name: WEB_SERVER
               value: "gunicorn"
             - name: WEB_SERVER_WORKERS
