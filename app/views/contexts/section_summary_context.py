@@ -28,7 +28,11 @@ class SectionSummaryContext(Context):
         page_title = self._schema.get_custom_page_title_for_section(
             current_location.section_id
         )
-        page_title = page_title or self._get_safe_page_title(title_for_location)
+
+        if page_title:
+            page_title = self._resolve_custom_page_title(page_title, current_location)
+        else:
+            page_title = self._get_safe_page_title(title_for_location)
 
         return {
             "summary": {
@@ -98,6 +102,18 @@ class SectionSummaryContext(Context):
                 yield self._list_summary_element(
                     summary_element, current_location, section
                 )
+
+    def _resolve_custom_page_title(
+        self, page_title: str, current_location: Location
+    ) -> str:
+        if list_item_id := current_location.list_item_id:
+            for_list = current_location.list_name
+            list_item_index = (
+                self._list_store.list_item_index(for_list, list_item_id) + 1
+            )
+            return page_title.format(list_item_index=list_item_index)
+
+        return page_title
 
     def _list_summary_element(self, summary, current_location, section) -> Mapping:
         current_list = self._list_store[summary["for_list"]]
