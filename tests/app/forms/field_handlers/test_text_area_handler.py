@@ -1,6 +1,6 @@
 from wtforms import Form
 
-from app.data_model.answer_store import AnswerStore
+from app.data_models.answer_store import AnswerStore
 from app.forms.field_handlers import TextAreaHandler
 from app.forms.fields import MaxTextAreaField
 

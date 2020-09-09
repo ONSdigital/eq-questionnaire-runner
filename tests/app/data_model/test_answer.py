@@ -1,4 +1,4 @@
-from app.data_model.answer_store import Answer
+from app.data_models.answer_store import Answer
 
 
 def test_from_dict():

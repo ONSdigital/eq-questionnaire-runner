@@ -1,6 +1,6 @@
 from typing import Dict, List
 
-from app.data_model.answer_store import AnswerStore
+from app.data_models.answer_store import AnswerStore
 
 
 def convert_answers_to_payload_0_0_3(

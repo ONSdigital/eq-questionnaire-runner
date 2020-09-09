@@ -1,7 +1,7 @@
 from flask import session as cookie_session
 from werkzeug.exceptions import NotFound
 
-from app.data_model.session_data import SessionData
+from app.data_models.session_data import SessionData
 from app.globals import get_session_store
 from app.views.contexts.thank_you_context import (
     build_census_thank_you_context,

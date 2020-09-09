@@ -1,7 +1,7 @@
 from dataclasses import astuple, dataclass
 from typing import Iterable, List, Mapping, MutableMapping, Optional
 
-from app.data_model.progress import Progress
+from app.data_models.progress import Progress
 from app.questionnaire.location import Location
 
 

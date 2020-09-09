@@ -2,7 +2,7 @@ import datetime
 
 from dateutil.tz import tzutc
 
-from app.data_model.app_models import EQSession, QuestionnaireState, UsedJtiClaim
+from app.data_models.app_models import EQSession, QuestionnaireState, UsedJtiClaim
 from app.storage.storage import StorageModel
 from tests.app.app_context_test_case import AppContextTestCase
 

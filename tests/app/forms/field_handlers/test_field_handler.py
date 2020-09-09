@@ -1,6 +1,6 @@
 from wtforms import validators
 
-from app.data_model.answer_store import AnswerStore
+from app.data_models.answer_store import AnswerStore
 from app.forms.field_handlers.string_handler import StringHandler
 from app.forms.validators import ResponseRequired
 

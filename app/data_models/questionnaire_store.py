@@ -2,9 +2,9 @@ from types import MappingProxyType
 
 import simplejson as json
 
-from app.data_model.answer_store import AnswerStore
-from app.data_model.list_store import ListStore
-from app.data_model.progress_store import ProgressStore
+from app.data_models.answer_store import AnswerStore
+from app.data_models.list_store import ListStore
+from app.data_models.progress_store import ProgressStore
 
 
 class QuestionnaireStore:
