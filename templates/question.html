@@ -7,25 +7,8 @@
   {% set form = content.form %}
 
   {% if form and (form.errors or form.question_errors) %}
-    {% from "components/panel/_macro.njk" import onsPanel %}
-
-    {% call
-        onsPanel({
-          "type": "error",
-          "classes": "u-mb-s",
-          "title": ngettext('There is a problem with your answer', 'There are %(num)s problems with your answer', form.mapped_errors | length),
-          "attributes": {
-            "data-qa": "error-body"
-          }
-        })
-    %}
-      <ul class="list list--bare" data-qa="error-list">
-        {% for error_id, error in form.mapped_errors %}
-          <li class="list__item">
-            {{ loop.index }}. <a class="js-inpagelink" data-qa="error-link-{{ loop.index }}" href="#{{error_id}}">{{ error }}</a>
-          </li>
-        {% endfor %}
-      </ul>
-    {% endcall %}
+    {% set error_title = ngettext('There is a problem with your answer', 'There are %(num)s problems with your answer', form.mapped_errors | length) %}
+    {% include 'partials/error-panel.html' %}
   {% endif %}
+
 {% endblock form_errors %}
