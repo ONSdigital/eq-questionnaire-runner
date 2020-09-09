@@ -63,10 +63,8 @@ def render_template(template, **kwargs):
     cdn_url = f'{current_app.config["CDN_URL"]}{current_app.config["CDN_ASSETS_PATH"]}'
     contact_us_url = get_contact_us_url(theme, get_locale().language)
     include_csrf_token = request.url_rule and "POST" in request.url_rule.methods
-    account_service_url = (
-        f"{CENSUS_BASE_URL}en/start"
-        if not cookie_session or cookie_session.get("account_service_url")
-        else cookie_session.get("account_service_url")
+    account_service_url = cookie_session.get(
+        "account_service_url", f"{CENSUS_BASE_URL}en/start"
     )
 
     return flask_render_template(

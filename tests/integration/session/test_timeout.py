@@ -44,4 +44,4 @@ class TestTimeout(IntegrationTestCase):
         time.sleep(4)
         self.get(self.last_url)
         self.assertStatusUnauthorised()
-        self.assertInBody("Your census has been submitted")
+        self.assertInBody("This page is no longer available")

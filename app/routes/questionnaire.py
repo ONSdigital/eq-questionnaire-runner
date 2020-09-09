@@ -285,7 +285,6 @@ def get_thank_you(schema):
 
 
 @post_submission_blueprint.route("confirmation-email/send", methods=["GET", "POST"])
-@login_required
 def send_confirmation_email():
     if not get_session_store().session_data.confirmation_email_sent:
         raise NotFound
@@ -310,7 +309,6 @@ def send_confirmation_email():
 
 
 @post_submission_blueprint.route("confirmation-email/sent", methods=["GET"])
-@login_required
 def get_confirmation_email_sent():
     if not get_session_store().session_data.confirmation_email_sent:
         raise NotFound
