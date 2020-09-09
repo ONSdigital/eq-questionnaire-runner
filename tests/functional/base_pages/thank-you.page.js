@@ -16,5 +16,17 @@ class ThankYouPage extends QuestionPage {
   exitButton() {
     return '[data-qa="btn-exit"]';
   }
+
+  email() {
+    return "#email";
+  }
+
+  submit() {
+    return '[data-qa="btn-submit"]';
+  }
+
+  errorPanel() {
+    return '[data-qa="error-body"]';
+  }
 }
 export default new ThankYouPage();
