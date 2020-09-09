@@ -25,14 +25,7 @@ class SectionSummaryContext(Context):
             else title_for_location
         )
 
-        page_title = self._schema.get_custom_page_title_for_section(
-            current_location.section_id
-        )
-
-        if page_title:
-            page_title = self._resolve_custom_page_title(page_title, current_location)
-        else:
-            page_title = self._get_safe_page_title(title_for_location)
+        page_title = self.get_page_title(current_location)
 
         return {
             "summary": {
@@ -43,6 +36,16 @@ class SectionSummaryContext(Context):
                 **summary,
             }
         }
+
+    def get_page_title(self, current_location: Location) -> str:
+        page_title = self._schema.get_custom_page_title_for_section(
+            current_location.section_id
+        )
+
+        if page_title:
+            return self._resolve_custom_page_title(page_title, current_location)
+        else:
+            return self._get_safe_page_title(self._title_for_location(current_location))
 
     def _build_summary(self, location, return_to):
         """

@@ -137,19 +137,18 @@ class TestSectionSummaryContext(TestStandardSummaryContext):
         self.assertTrue("title" in context["summary"])
 
     def test_custom_section_summary_title(self):
-        current_location = Location(section_id="house-details-section")
-        answers = [{"answer_id": "house-type-answer", "value": "Semi-detached"}]
+        current_location = Location(section_id="property-details-section")
         summary_context = SectionSummaryContext(
             self.language,
             self.schema,
-            AnswerStore(answers),
+            AnswerStore([]),
             self.list_store,
             self.progress_store,
             self.metadata,
         )
         context = summary_context(current_location)
         self.assertEqual(
-            "Household Summary - Semi-detached", context["summary"]["title"]
+            "Custom section summary title", context["summary"]["page_title"]
         )
 
     def test_section_summary_page_title_placeholder_text_replaced(self):
