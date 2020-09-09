@@ -256,7 +256,6 @@ def relationship(schema, questionnaire_store, block_id, list_item_id, to_list_it
     return redirect(next_location_url)
 
 
-
 @post_submission_blueprint.route("thank-you/", methods=["GET", "POST"])
 @with_schema
 def get_thank_you(schema):

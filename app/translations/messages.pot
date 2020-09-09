@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2020-09-09 09:30+0100\n"
+"POT-Creation-Date: 2020-09-09 10:52+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -196,21 +196,22 @@ msgstr ""
 msgid "Not a valid choice"
 msgstr ""
 
-#: app/helpers/template_helpers.py:17
+#: app/helpers/template_helpers.py:20
 msgid "Office for National Statistics logo"
 msgstr ""
 
-#: app/helpers/template_helpers.py:26 app/helpers/template_helpers.py:35
-#: templates/errors/403.html:3 templates/errors/404.html:3
-#: templates/errors/500.html:3 templates/errors/no-cookie.html:3
-#: templates/errors/session-expired.html:3
+#: app/helpers/template_helpers.py:29 app/helpers/template_helpers.py:38
+#: templates/census-thank-you.html:3 templates/confirmation-email-sent.html:3
+#: templates/confirmation-email.html:2 templates/errors/403.html:3
+#: templates/errors/404.html:3 templates/errors/500.html:3
+#: templates/errors/no-cookie.html:3 templates/errors/session-expired.html:3
 #: templates/errors/submission-complete.html:3 templates/multiple_survey.html:4
 #: templates/signed-out.html:3 templates/static/accessibility.html:4
 #: templates/static/privacy.html:4
 msgid "Census 2021"
 msgstr ""
 
-#: app/helpers/template_helpers.py:31
+#: app/helpers/template_helpers.py:34
 msgid "Northern Ireland Statistics and Research Agency logo"
 msgstr ""
 
