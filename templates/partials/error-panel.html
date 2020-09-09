@@ -1,0 +1,19 @@
+{% from "components/panel/_macro.njk" import onsPanel %}
+{% call
+  onsPanel({
+    "type": "error",
+    "classes": "u-mb-s",
+    "title": error_title ,
+    "attributes": {
+    "data-qa": "error-body"
+    }
+  })
+%}
+  <ul class="list list--bare" data-qa="error-list">
+    {% for error_id, error in form.mapped_errors %}
+      <li class="list__item">
+        {{ loop.index }}. <a class="js-inpagelink" data-qa="error-link-{{ loop.index }}" href="#{{error_id}}">{{ error }}</a>
+      </li>
+    {% endfor %}
+  </ul>
+{% endcall %}
