@@ -107,11 +107,11 @@ class SectionSummaryContext(Context):
         self, page_title: str, current_location: Location
     ) -> str:
         if list_item_id := current_location.list_item_id:
-            for_list = current_location.list_name
-            list_item_index = (
-                self._list_store.list_item_index(for_list, list_item_id) + 1
-            )
-            return page_title.format(list_item_index=list_item_index)
+            if for_list := current_location.list_name:
+                list_item_index = (
+                    self._list_store.list_item_index(for_list, list_item_id) + 1
+                )
+                return page_title.format(list_item_index=list_item_index)
 
         return page_title
 
