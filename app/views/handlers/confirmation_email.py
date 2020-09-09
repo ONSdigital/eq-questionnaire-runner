@@ -7,11 +7,11 @@ from app.views.contexts.email_form_context import build_confirmation_email_form_
 
 
 class ConfirmationEmail:
-    DEFAULT_PAGE_TITLE = "Confirmation email"
+    PAGE_TITLE = gettext("Confirmation email")
 
     def __init__(self, page_title=None):
         self.form = EmailForm()
-        self.page_title = page_title or self.DEFAULT_PAGE_TITLE
+        self.page_title = page_title or self.PAGE_TITLE
 
     def get_context(self):
         return build_confirmation_email_form_context(self.form)

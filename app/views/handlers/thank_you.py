@@ -1,4 +1,5 @@
 from flask import session as cookie_session
+from flask_babel import gettext
 from werkzeug.exceptions import NotFound
 
 from app.globals import get_session_store
@@ -12,7 +13,7 @@ from app.views.handlers.confirmation_email import ConfirmationEmail
 class ThankYou:
     DEFAULT_THANK_YOU_TEMPLATE = "thank-you"
     CENSUS_THANK_YOU_TEMPLATE = "census-thank-you"
-    PAGE_TITLE = "Thank you"
+    PAGE_TITLE = gettext("Thank you")
 
     CENSUS_TYPE_MAPPINGS = {
         "household": "HH",
