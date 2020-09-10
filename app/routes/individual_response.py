@@ -2,7 +2,9 @@ from flask import Blueprint, g, redirect, request, url_for
 from flask_login import current_user, login_required
 from structlog import get_logger
 
-from app.authentication.no_token_exception import NoTokenException
+from app.authentication.no_questionnaire_state_exception import (
+    NoQuestionnaireStateException,
+)
 from app.globals import get_metadata, get_session_store
 from app.helpers.language_helper import handle_language
 from app.helpers.schema_helpers import with_schema
@@ -27,11 +29,12 @@ individual_response_blueprint = Blueprint(
 )
 
 
+@login_required
 @individual_response_blueprint.before_request
 def before_individual_response_request():
     metadata = get_metadata(current_user)
     if not metadata:
-        raise NoTokenException(401)
+        raise NoQuestionnaireStateException(401)
 
     logger.bind(
         tx_id=metadata["tx_id"],
@@ -51,7 +54,6 @@ def before_individual_response_request():
 
 
 @individual_response_blueprint.route("/", methods=["GET", "POST"])
-@login_required
 @with_questionnaire_store
 @with_schema
 def request_individual_response(schema, questionnaire_store):
@@ -75,7 +77,6 @@ def request_individual_response(schema, questionnaire_store):
 
 
 @individual_response_blueprint.route("/<list_item_id>/how", methods=["GET", "POST"])
-@login_required
 @with_questionnaire_store
 @with_schema
 def get_individual_response_how(schema, questionnaire_store, list_item_id):
@@ -97,7 +98,6 @@ def get_individual_response_how(schema, questionnaire_store, list_item_id):
 
 
 @individual_response_blueprint.route("/<list_item_id>/change", methods=["GET", "POST"])
-@login_required
 @with_questionnaire_store
 @with_schema
 def get_individual_response_change(schema, questionnaire_store, list_item_id):
@@ -120,7 +120,6 @@ def get_individual_response_change(schema, questionnaire_store, list_item_id):
 @individual_response_blueprint.route(
     "/<list_item_id>/post/confirm-address", methods=["GET", "POST"]
 )
-@login_required
 @with_questionnaire_store
 @with_schema
 def get_individual_response_post_address_confirm(
@@ -143,7 +142,6 @@ def get_individual_response_post_address_confirm(
 
 
 @individual_response_blueprint.route("/post/confirmation", methods=["GET", "POST"])
-@login_required
 @with_questionnaire_store
 @with_schema
 def get_individual_response_post_address_confirmation(schema, questionnaire_store):
@@ -168,7 +166,6 @@ def get_individual_response_post_address_confirmation(schema, questionnaire_stor
 
 
 @individual_response_blueprint.route("/who", methods=["GET", "POST"])
-@login_required
 @with_questionnaire_store
 @with_schema
 def get_individual_response_who(schema, questionnaire_store):
@@ -191,7 +188,6 @@ def get_individual_response_who(schema, questionnaire_store):
 @individual_response_blueprint.route(
     "/<list_item_id>/text/enter-number", methods=["GET", "POST"]
 )
-@login_required
 @with_questionnaire_store
 @with_schema
 def get_individual_response_text_message(schema, questionnaire_store, list_item_id):
@@ -214,7 +210,6 @@ def get_individual_response_text_message(schema, questionnaire_store, list_item_
 @individual_response_blueprint.route(
     "/<list_item_id>/text/confirm-number", methods=["GET", "POST"]
 )
-@login_required
 @with_questionnaire_store
 @with_schema
 def get_individual_response_text_message_confirm(
@@ -237,7 +232,6 @@ def get_individual_response_text_message_confirm(
 
 
 @individual_response_blueprint.route("/text/confirmation", methods=["GET", "POST"])
-@login_required
 @with_questionnaire_store
 @with_schema
 def get_individual_response_text_message_confirmation(schema, questionnaire_store):

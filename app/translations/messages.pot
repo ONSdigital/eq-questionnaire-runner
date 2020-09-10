@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2020-09-09 09:30+0100\n"
+"POT-Creation-Date: 2020-09-10 12:01+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -196,21 +196,22 @@ msgstr ""
 msgid "Not a valid choice"
 msgstr ""
 
-#: app/helpers/template_helpers.py:17
+#: app/helpers/template_helpers.py:20
 msgid "Office for National Statistics logo"
 msgstr ""
 
-#: app/helpers/template_helpers.py:26 app/helpers/template_helpers.py:35
+#: app/helpers/template_helpers.py:29 app/helpers/template_helpers.py:38
 #: templates/census-thank-you.html:3 templates/confirmation-email-sent.html:3
 #: templates/confirmation-email.html:2 templates/errors/403.html:3
 #: templates/errors/404.html:3 templates/errors/500.html:3
-#: templates/errors/session-expired.html:6 templates/multiple_survey.html:4
+#: templates/errors/no-cookie.html:3 templates/errors/session-expired.html:3
+#: templates/errors/submission-complete.html:3 templates/multiple_survey.html:4
 #: templates/signed-out.html:3 templates/static/accessibility.html:4
 #: templates/static/privacy.html:4
 msgid "Census 2021"
 msgstr ""
 
-#: app/helpers/template_helpers.py:31
+#: app/helpers/template_helpers.py:34
 msgid "Northern Ireland Statistics and Research Agency logo"
 msgstr ""
 
@@ -690,24 +691,48 @@ msgid ""
 " survey."
 msgstr ""
 
-#: templates/errors/session-expired.html:6
+#: templates/errors/no-cookie.html:3
+msgid "Page is not available"
+msgstr ""
+
+#: templates/errors/no-cookie.html:6
+msgid "Sorry there is a problem"
+msgstr ""
+
+#: templates/errors/no-cookie.html:7
+msgid ""
+"To access this page you need to <a href='{url}'>enter your 16-character "
+"access code</a>."
+msgstr ""
+
+#: templates/errors/session-expired.html:3
 msgid "Session expired"
 msgstr ""
 
-#: templates/errors/session-expired.html:10
-msgid "Your session has expired"
+#: templates/errors/session-expired.html:6
+msgid "Your session has expired due to inactivity"
 msgstr ""
 
-#: templates/errors/session-expired.html:18
-msgid "To help protect your information we have signed you out"
+#: templates/errors/session-expired.html:7
+msgid "To help protect your information we have timed you out"
 msgstr ""
 
-#: templates/errors/session-expired.html:20
-#, python-format
+#: templates/errors/session-expired.html:8
 msgid ""
-"We have saved your progress and you will need to <a "
-"href=\"%(account_service_link)s\">enter your unique code</a> to access "
-"the survey again."
+"You will need to <a href='{url}'>enter your 16-character access code</a> "
+"again to continue your census."
+msgstr ""
+
+#: templates/errors/submission-complete.html:3
+msgid "Submission Complete"
+msgstr ""
+
+#: templates/errors/submission-complete.html:6
+msgid "This page is no longer available"
+msgstr ""
+
+#: templates/errors/submission-complete.html:7
+msgid "Your census has been submitted"
 msgstr ""
 
 #: templates/individual_response/confirmation-post.html:15
@@ -747,7 +772,7 @@ msgstr ""
 msgid "Request separate census"
 msgstr ""
 
-#: templates/layouts/_base.html:36
+#: templates/layouts/_base.html:38
 msgid "We use cookies to improve your experience of census.gov.uk"
 msgstr ""
 
