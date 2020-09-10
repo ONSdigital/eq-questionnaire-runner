@@ -1,9 +1,7 @@
-from tests.integration.integration_test_case import IntegrationTestCase
-
-from . import add_person
+from . import QuestionnaireTestCase
 
 
-class TestQuestionnaireListCollector(IntegrationTestCase):
+class TestQuestionnaireListCollector(QuestionnaireTestCase):
     def test_add_list_question_displayed_before_list_collector_and_return_to_in_url(
         self,
     ):
@@ -33,7 +31,7 @@ class TestQuestionnaireListCollector(IntegrationTestCase):
         # Given
         self.launchSurvey("test_answer_action_redirect_to_list_add_block_radio")
         self.post({"anyone-usually-live-at-answer": "Yes"})
-        add_person(self, "John", "Doe")
+        self.add_person("John", "Doe")
         self.post({"anyone-else-live-at-answer": "Yes"})
 
         # When

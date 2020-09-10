@@ -1,9 +1,7 @@
-from tests.integration.integration_test_case import IntegrationTestCase
-
-from . import add_person
+from . import QuestionnaireTestCase
 
 
-class TestQuestionnaireListChangeEvaluatesSections(IntegrationTestCase):
+class TestQuestionnaireListChangeEvaluatesSections(QuestionnaireTestCase):
     def get_link(self, rowIndex, text):
         selector = f"[data-qa='list-item-{text}-{rowIndex}-link']"
         selected = self.getHtmlSoup().select(selector)
@@ -35,7 +33,7 @@ class TestQuestionnaireListChangeEvaluatesSections(IntegrationTestCase):
         self.assertEqualUrl("/questionnaire/primary-person-list-collector/")
         self.post({"you-live-here": "No"})
 
-        add_person(self, "John", "Doe")
+        self.add_person("John", "Doe")
         self.post({"anyone-else": "No"})
         self.assertEqualUrl("/questionnaire/")
 
@@ -62,7 +60,7 @@ class TestQuestionnaireListChangeEvaluatesSections(IntegrationTestCase):
         self.get("/questionnaire/sections/who-lives-here/")
         self.assertEqualUrl("/questionnaire/primary-person-list-collector/")
         self.post({"you-live-here": "Yes"})
-        add_person(self, "John", "Doe")
+        self.add_person("John", "Doe")
         self.post({"anyone-else": "No"})
 
         self.assertEqualUrl("/questionnaire/")

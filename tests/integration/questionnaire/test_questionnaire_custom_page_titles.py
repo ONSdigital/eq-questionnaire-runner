@@ -1,9 +1,7 @@
-from tests.integration.integration_test_case import IntegrationTestCase
-
-from . import add_person
+from . import QuestionnaireTestCase
 
 
-class TestQuestionnaireCustomPageTitles(IntegrationTestCase):
+class TestQuestionnaireCustomPageTitles(QuestionnaireTestCase):
     def test_custom_page_titles(self):
         self.launchSurvey("test_custom_page_titles")
         self.post()
@@ -13,8 +11,8 @@ class TestQuestionnaireCustomPageTitles(IntegrationTestCase):
         self.assertEqualPageTitle("Custom page title")
 
         self.post({"first-name": "Marie", "last-name": "Doe"})
-        add_person(self, "John", "Doe")
-        add_person(self, "Susan", "Doe")
+        self.add_person("John", "Doe")
+        self.add_person("Susan", "Doe")
         self.post({"anyone-else": "No"})
 
         self.assertEqualPageTitle("How Person 1 is related to Person 2")
