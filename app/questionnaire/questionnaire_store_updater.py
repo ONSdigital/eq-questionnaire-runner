@@ -172,11 +172,11 @@ class QuestionnaireStoreUpdater:
         return self._answer_store.get_answers_by_answer_id(relationship_answer_ids)
 
     def update_same_name_items(self, list_name: str, same_name_answer_ids: List[str]):
-        same_name_items = set()
-        people_names: Dict[str, list] = {}
-
         if not same_name_answer_ids:
             return
+
+        same_name_items = set()
+        people_names: Dict[str, list] = {}
 
         list_model = self._questionnaire_store.list_store[list_name]
 
@@ -184,7 +184,7 @@ class QuestionnaireStoreUpdater:
             answers = self._questionnaire_store.answer_store.get_answers_by_answer_id(
                 answer_ids=same_name_answer_ids, list_item_id=current_list_item_id
             )
-            current_names = [str(answer.value).lower() for answer in answers if answer]
+            current_names = [answer.value.casefold() for answer in answers if answer]
             current_list_item_name = " ".join(current_names)
 
             if current_list_item_name in people_names:

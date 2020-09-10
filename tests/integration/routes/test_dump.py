@@ -45,7 +45,7 @@ class TestDumpSameNameItems(IntegrationTestCase):
         return filtered[0].get("href")
 
     def test_dump_same_name_items(self):
-        self.launchSurvey("test_same_name_list_collector", roles=["dumper"])
+        self.launchSurvey("test_list_collector_same_name_items", roles=["dumper"])
 
         self.post({"you-live-here": "Yes"})
         self.post({"first-name": "James", "middle-names": "Brian", "last-name": "May"})
@@ -63,7 +63,7 @@ class TestDumpSameNameItems(IntegrationTestCase):
         assert item_id_b in actual["LISTS"][0]["same_name_items"]
 
     def test_dump_same_name_items_edit_primary(self):
-        self.launchSurvey("test_same_name_list_collector", roles=["dumper"])
+        self.launchSurvey("test_list_collector_same_name_items", roles=["dumper"])
 
         self.post({"you-live-here": "Yes"})
         self.post({"first-name": "James", "last-name": "May"})
@@ -83,7 +83,7 @@ class TestDumpSameNameItems(IntegrationTestCase):
         assert "same_name_items" not in actual["LISTS"][0]
 
     def test_dump_same_name_remove_primary(self):
-        self.launchSurvey("test_same_name_list_collector", roles=["dumper"])
+        self.launchSurvey("test_list_collector_same_name_items", roles=["dumper"])
 
         self.post({"you-live-here": "Yes"})
         self.post({"first-name": "James", "last-name": "May"})
@@ -101,7 +101,7 @@ class TestDumpSameNameItems(IntegrationTestCase):
         assert "same_name_items" not in actual["LISTS"][0]
 
     def test_dump_same_name_items_remove_non_primary(self):
-        self.launchSurvey("test_same_name_list_collector", roles=["dumper"])
+        self.launchSurvey("test_list_collector_same_name_items", roles=["dumper"])
 
         self.post({"you-live-here": "Yes"})
         self.post({"first-name": "James", "last-name": "May"})
@@ -121,7 +121,7 @@ class TestDumpSameNameItems(IntegrationTestCase):
         assert "same_name_items" not in actual["LISTS"][0]
 
     def test_dump_same_name_items_edit_non_primary(self):
-        self.launchSurvey("test_same_name_list_collector", roles=["dumper"])
+        self.launchSurvey("test_list_collector_same_name_items", roles=["dumper"])
 
         self.post({"you-live-here": "Yes"})
         self.post({"first-name": "Joe", "last-name": "Smith"})
