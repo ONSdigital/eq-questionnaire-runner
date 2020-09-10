@@ -48,12 +48,9 @@ class TestDumpSameNameItems(IntegrationTestCase):
         self.launchSurvey("test_same_name_list_collector", roles=["dumper"])
 
         self.post({"you-live-here": "Yes"})
-
-        self.post({"first-name": "James", "last-name": "May"})
-
+        self.post({"first-name": "James", "middle-names": "Brian", "last-name": "May"})
         self.post({"anyone-else": "Yes"})
-
-        self.post({"first-name": "James", "last-name": "May"})
+        self.post({"first-name": "James", "middle-names": "Roger", "last-name": "May"})
 
         self.get("/dump/debug")
 
@@ -127,11 +124,8 @@ class TestDumpSameNameItems(IntegrationTestCase):
         self.launchSurvey("test_same_name_list_collector", roles=["dumper"])
 
         self.post({"you-live-here": "Yes"})
-
         self.post({"first-name": "Joe", "last-name": "Smith"})
-
         self.post({"anyone-else": "Yes"})
-
         self.post({"first-name": "Barry", "last-name": "Bloggs"})
 
         first_person_change_link = self.get_link(2, "Change")

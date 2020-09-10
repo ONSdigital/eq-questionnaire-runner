@@ -62,6 +62,12 @@
                                             "type": "TextField"
                                         },
                                         {
+                                            "id": "middle-names",
+                                            "label": "Middle names",
+                                            "mandatory": false,
+                                            "type": "TextField"
+                                        },
+                                        {
                                             "id": "last-name",
                                             "label": "Last name",
                                             "mandatory": true,
@@ -210,6 +216,12 @@
                                             "type": "TextField"
                                         },
                                         {
+                                            "id": "middle-names",
+                                            "label": "Middle names",
+                                            "mandatory": false,
+                                            "type": "TextField"
+                                        },
+                                        {
                                             "id": "last-name",
                                             "label": "Last name",
                                             "mandatory": true,
@@ -248,6 +260,12 @@
                                             "id": "first-name",
                                             "label": "First name",
                                             "mandatory": true,
+                                            "type": "TextField"
+                                        },
+                                        {
+                                            "id": "middle-names",
+                                            "label": "Middle names",
+                                            "mandatory": false,
                                             "type": "TextField"
                                         },
                                         {
