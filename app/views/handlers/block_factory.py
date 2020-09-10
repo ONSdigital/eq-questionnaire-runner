@@ -1,7 +1,8 @@
 from typing import Mapping
+
 from app.data_models.questionnaire_store import QuestionnaireStore
-from app.questionnaire.questionnaire_schema import QuestionnaireSchema
 from app.questionnaire.location import InvalidLocationException, Location
+from app.questionnaire.questionnaire_schema import QuestionnaireSchema
 from app.questionnaire.relationship_location import RelationshipLocation
 from app.views.handlers.calculated_summary import CalculatedSummary
 from app.views.handlers.content import Content
