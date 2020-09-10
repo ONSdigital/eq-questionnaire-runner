@@ -52,7 +52,7 @@ def _render_error_page(status_code, template=None):
 @errors_blueprint.app_errorhandler(NoQuestionnaireStateException)
 def unauthorized(error=None):
     log_error(error, 401)
-    if not cookie_session.get(EQ_SESSION_ID):
+    if EQ_SESSION_ID not in cookie_session:
         return _render_error_page(401, "no-cookie")
     if cookie_session.get("submitted", False):
         return _render_error_page(401, "submission-complete")
