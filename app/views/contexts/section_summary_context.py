@@ -113,7 +113,7 @@ class SectionSummaryContext(Context):
             list_item_position = self._list_store.list_item_position(
                 for_list, list_item_id
             )
-            return page_title.format(list_item_index=list_item_position)
+            return page_title.format(list_item_position=list_item_position)
 
         return page_title
 
