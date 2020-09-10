@@ -61,7 +61,7 @@ def test_get_item():
     assert store["not_a_list"] == ListModel("not_a_list")
 
 
-def test_get_item_index():
+def test_list_item_position():
     store = ListStore()
 
     first_id = store.add_list_item("people")
