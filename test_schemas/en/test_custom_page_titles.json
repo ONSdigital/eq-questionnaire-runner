@@ -183,7 +183,7 @@
                             "type": "RelationshipCollector",
                             "id": "relationships",
                             "title": "This will iterate over the household list, capturing the one way relationships.",
-                            "page_title": "How Person {list_item_index} is related to Person {to_list_item_index}",
+                            "page_title": "How Person {list_item_position} is related to Person {to_list_item_position}",
                             "for_list": "household",
                             "question": {
                                 "id": "relationship-question",
@@ -756,13 +756,13 @@
                                     "text": "{person_name}"
                                 }
                             },
-                            "page_title": "Person {list_item_index} individual interstitial",
+                            "page_title": "Person {list_item_position} individual interstitial",
                             "id": "individual-interstitial",
                             "type": "Interstitial"
                         },
                         {
                             "id": "proxy",
-                            "page_title": "Person {list_item_index} proxy question",
+                            "page_title": "Person {list_item_position} proxy question",
                             "question": {
                                 "answers": [
                                     {

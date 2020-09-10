@@ -502,7 +502,7 @@
             "id": "personal-details-section",
             "title": "Personal Details",
             "summary": {
-                "page_title": "Summary for person {list_item_index}",
+                "page_title": "Summary for person {list_item_position}",
                 "show_on_completion": true
             },
             "repeat": {

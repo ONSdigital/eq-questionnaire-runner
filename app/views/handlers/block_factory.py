@@ -1,3 +1,6 @@
+from typing import Mapping
+from app.data_models.questionnaire_store import QuestionnaireStore
+from app.questionnaire.questionnaire_schema import QuestionnaireSchema
 from app.questionnaire.location import InvalidLocationException, Location
 from app.questionnaire.relationship_location import RelationshipLocation
 from app.views.handlers.calculated_summary import CalculatedSummary
@@ -32,15 +35,15 @@ BLOCK_MAPPINGS = {
 
 
 def get_block_handler(
-    schema,
-    block_id,
-    list_item_id,
-    questionnaire_store,
-    language,
-    list_name=None,
-    to_list_item_id=None,
-    request_args=None,
-    form_data=None,
+    schema: QuestionnaireSchema,
+    block_id: str,
+    list_item_id: str,
+    questionnaire_store: QuestionnaireStore,
+    language: str,
+    list_name: str = None,
+    to_list_item_id: str = None,
+    request_args: Mapping = None,
+    form_data: Mapping = None,
 ):
     block = schema.get_block(block_id)
 
@@ -69,6 +72,7 @@ def get_block_handler(
             block_id=block_id,
             list_item_id=list_item_id,
             to_list_item_id=to_list_item_id,
+            list_name=list_name,
         )
     else:
         location = Location(

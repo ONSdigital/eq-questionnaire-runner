@@ -169,9 +169,7 @@ class Question(BlockHandler):
         )
 
         if custom_page_title := variant_block.get("page_title"):
-            page_title_vars = self._resolve_custom_page_title_vars(
-                self.block.get("for_list") or self.current_location.list_name,
-            )
+            page_title_vars = self._resolve_custom_page_title_vars()
             self.page_title = custom_page_title.format(**page_title_vars)
 
         elif question := variant_block["question"]:

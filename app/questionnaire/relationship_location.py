@@ -12,6 +12,7 @@ class RelationshipLocation:
     block_id: str
     list_item_id: str
     to_list_item_id: str
+    list_name: str
 
     def for_json(self) -> Mapping:
         attributes = vars(self)

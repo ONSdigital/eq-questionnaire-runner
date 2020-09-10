@@ -34,9 +34,7 @@ class Content(BlockHandler):
         )
 
         if custom_page_title := transformed_block.get("page_title"):
-            page_title_vars = self._resolve_custom_page_title_vars(
-                for_list=self.block.get("for_list") or self.current_location.list_name,
-            )
+            page_title_vars = self._resolve_custom_page_title_vars()
             self.page_title = custom_page_title.format(**page_title_vars)
         else:
             self.page_title = self._get_page_title(transformed_block)

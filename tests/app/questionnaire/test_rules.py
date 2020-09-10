@@ -1042,6 +1042,7 @@ class TestRules(AppContextTestCase):  # pylint: disable=too-many-public-methods
             block_id="some-block",
             list_item_id="abcdef",
             to_list_item_id="12345",
+            list_name="household",
         )
 
         when_rules = [

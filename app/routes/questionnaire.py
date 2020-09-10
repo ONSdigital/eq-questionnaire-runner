@@ -250,6 +250,7 @@ def relationship(schema, questionnaire_store, block_id, list_item_id, to_list_it
             to_list_item_id=to_list_item_id,
             questionnaire_store=questionnaire_store,
             language=flask_babel.get_locale().language,
+            list_name=schema.get_block(block_id)["for_list"],
             request_args=request.args,
             form_data=request.form,
         )
