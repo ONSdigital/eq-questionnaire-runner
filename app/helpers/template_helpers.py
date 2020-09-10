@@ -5,6 +5,7 @@ from flask import current_app
 from flask import render_template as flask_render_template
 from flask import request
 from flask import session as cookie_session
+from flask import url_for
 from flask_babel import get_locale, lazy_gettext
 
 from app.helpers.language_helper import get_languages_context
@@ -82,6 +83,7 @@ def render_template(template, **kwargs):
         cdn_url=cdn_url,
         data_layer=get_data_layer(theme),
         include_csrf_token=include_csrf_token,
+        sign_out_url=url_for("session.get_sign_out"),
         **google_tag_manager_context,
         **kwargs,
     )
