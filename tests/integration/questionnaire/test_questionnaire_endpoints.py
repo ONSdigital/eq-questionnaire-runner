@@ -36,7 +36,9 @@ class TestQuestionnaireEndpoints(IntegrationTestCase):
         # Then I am shown a 404 page
         self.assertStatusNotFound()
 
-    def test_post_on_questionnaire_route_without_hub_raises_404(self):
+    def test_post_on_questionnaire_route_without_hub_redirects_to_first_incomplete_location(
+        self,
+    ):
         # Given
         self.launchSurvey("test_textfield")
 
@@ -44,7 +46,7 @@ class TestQuestionnaireEndpoints(IntegrationTestCase):
         self.post(url=f"/questionnaire/")
 
         # Then
-        self.assertStatusNotFound()
+        self.assertInUrl("name-block")
 
     def test_get_thank_you_data_not_deleted_when_questionnaire_is_not_complete(self):
         # Given we start a survey
