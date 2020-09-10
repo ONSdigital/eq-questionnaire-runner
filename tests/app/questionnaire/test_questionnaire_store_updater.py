@@ -306,10 +306,18 @@ class TestQuestionnaireStoreUpdater(unittest.TestCase):
         answer_store = AnswerStore(
             existing_answers=[
                 {"answer_id": "first-name", "value": "Joe", "list_item_id": "abcdef"},
-                {"answer_id": "middle-name", "value": "Brian", "list_item_id": "abcdef"},
+                {
+                    "answer_id": "middle-name",
+                    "value": "Brian",
+                    "list_item_id": "abcdef",
+                },
                 {"answer_id": "last-name", "value": "Bloggs", "list_item_id": "abcdef"},
                 {"answer_id": "first-name", "value": "Joe", "list_item_id": "ghijkl"},
-                {"answer_id": "middle-name", "value": "Roger", "list_item_id": "ghijkl"},
+                {
+                    "answer_id": "middle-name",
+                    "value": "Roger",
+                    "list_item_id": "ghijkl",
+                },
                 {"answer_id": "last-name", "value": "Bloggs", "list_item_id": "ghijkl"},
                 {
                     "answer_id": "first-name",
