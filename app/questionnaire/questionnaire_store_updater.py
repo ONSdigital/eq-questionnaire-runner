@@ -188,18 +188,10 @@ class QuestionnaireStoreUpdater:
             current_list_item_name = " ".join(current_names)
 
             if current_list_item_name in people_names:
-                people_names[current_list_item_name] += [current_list_item_id]
+                matching_list_item_id = people_names[current_list_item_name]
+                same_name_items |= {current_list_item_id, matching_list_item_id}
             else:
-                people_names[current_list_item_name] = [current_list_item_id]
-
-        duplicates = {
-            person_name: list_item_ids
-            for person_name, list_item_ids in people_names.items()
-            if len(list_item_ids) > 1
-        }
-
-        for duplicate in duplicates:
-            same_name_items |= set(people_names[duplicate])
+                people_names[current_list_item_name] = current_list_item_id
 
         list_model.same_name_items = list(same_name_items)
 
