@@ -1,5 +1,5 @@
 from functools import cached_property
-from typing import Mapping
+from typing import MutableMapping
 
 from app.data_models.relationship_store import RelationshipStore
 from app.questionnaire.location import Location
@@ -108,7 +108,7 @@ class RelationshipCollector(Question):
             return False
         return True
 
-    def _resolve_custom_page_title_vars(self) -> Mapping:
+    def _resolve_custom_page_title_vars(self) -> MutableMapping:
         page_title_vars = super()._resolve_custom_page_title_vars()
 
         if to_list_item_position := self.current_location.to_list_item_id:

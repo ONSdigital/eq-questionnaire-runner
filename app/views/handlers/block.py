@@ -1,6 +1,6 @@
 from datetime import datetime
 from functools import cached_property
-from typing import Mapping, Optional
+from typing import MutableMapping, Optional, Union
 
 from structlog import get_logger
 
@@ -10,6 +10,7 @@ from app.questionnaire.location import InvalidLocationException, Location
 from app.questionnaire.placeholder_renderer import PlaceholderRenderer
 from app.questionnaire.questionnaire_schema import QuestionnaireSchema
 from app.questionnaire.questionnaire_store_updater import QuestionnaireStoreUpdater
+from app.questionnaire.relationship_location import RelationshipLocation
 from app.questionnaire.router import Router
 
 logger = get_logger()
@@ -21,9 +22,9 @@ class BlockHandler:
         schema: QuestionnaireSchema,
         questionnaire_store: QuestionnaireStore,
         language: str,
-        current_location: Location,
-        request_args: Mapping,
-        form_data: Mapping,
+        current_location: Union[Location, RelationshipLocation],
+        request_args: MutableMapping,
+        form_data: MutableMapping,
     ):
         self._schema = schema
         self._questionnaire_store = questionnaire_store
@@ -104,7 +105,9 @@ class BlockHandler:
             list_item_id=self._current_location.list_item_id,
         )
 
-    def _update_section_completeness(self, location: Optional[Location] = None):
+    def _update_section_completeness(
+        self, location: Optional[Union[Location, RelationshipLocation]] = None
+    ):
         location = location or self._current_location
 
         self.questionnaire_store_updater.update_section_status(
@@ -126,7 +129,7 @@ class BlockHandler:
 
         return safe_content(f"{page_title} - {title}")
 
-    def _resolve_custom_page_title_vars(self) -> Mapping:
+    def _resolve_custom_page_title_vars(self) -> MutableMapping:
         if list_item_id := self.current_location.list_item_id:
             list_item_position = (
                 self._questionnaire_store.list_store.list_item_position(
