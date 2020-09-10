@@ -2,8 +2,9 @@ from typing import Mapping
 
 from flask import url_for
 
-from app.data_model.session_data import SessionData
+from app.data_models.session_data import SessionData
 from app.libs.utils import convert_tx_id
+from app.views.contexts.email_form_context import build_email_form_context
 
 
 def build_default_thank_you_context(session_data: SessionData) -> Mapping:
@@ -26,12 +27,15 @@ def build_default_thank_you_context(session_data: SessionData) -> Mapping:
 
 
 def build_census_thank_you_context(
-    session_data: SessionData, census_type_code: str
+    session_data: SessionData, census_type_code: str, confirmation_email_form
 ) -> Mapping:
 
-    return {
+    context = {
         "display_address": session_data.display_address,
         "census_type": census_type_code,
         "hide_signout_button": False,
         "sign_out_url": url_for("session.get_sign_out"),
     }
+    if confirmation_email_form:
+        context.update(build_email_form_context(confirmation_email_form))
+    return context

@@ -3,7 +3,7 @@ from unittest.mock import Mock, patch
 
 from wtforms.validators import ValidationError
 
-from app.data_model.answer_store import Answer, AnswerStore
+from app.data_models.answer_store import Answer, AnswerStore
 from app.forms import error_messages
 from app.forms.validators import NumberRange
 from app.jinja_filters import format_number

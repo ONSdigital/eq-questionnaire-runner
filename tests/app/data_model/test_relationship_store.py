@@ -1,4 +1,4 @@
-from app.data_model.relationship_store import Relationship, RelationshipStore
+from app.data_models.relationship_store import Relationship, RelationshipStore
 
 relationships = [
     {

@@ -1,7 +1,7 @@
 # pylint: disable=redefined-outer-name
 import pytest
 
-from app.data_model.session_data import SessionData
+from app.data_models.session_data import SessionData
 from app.views.contexts.thank_you_context import build_default_thank_you_context
 
 

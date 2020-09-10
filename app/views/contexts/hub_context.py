@@ -4,7 +4,7 @@ from typing import List, Mapping, Union
 from flask import url_for
 from flask_babel import lazy_gettext
 
-from app.data_model.progress_store import CompletionStatus
+from app.data_models.progress_store import CompletionStatus
 from app.views.contexts import Context
 
 

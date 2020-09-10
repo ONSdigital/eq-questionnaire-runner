@@ -2,7 +2,7 @@ from unittest.mock import patch
 
 import pytest
 
-from app.data_model.list_store import ListModel, ListStore
+from app.data_models.list_store import ListModel, ListStore
 
 
 def test_list_serialisation():
@@ -43,9 +43,9 @@ def test_unique_id_generation():
     """
     Ensure that every id generated is unique per questionnaire.
     """
-    # Mock the app.data_model.list_store.random_string method to return duplicates.
+    # Mock the app.data_models.list_store.random_string method to return duplicates.
     with patch(
-        "app.data_model.list_store.random_string",
+        "app.data_models.list_store.random_string",
         side_effect=["first", "first", "second"],
     ):
         list_store = ListStore()

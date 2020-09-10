@@ -2,8 +2,8 @@
 from werkzeug.datastructures import MultiDict
 from wtforms import Form
 
-from app.data_model.answer import Answer
-from app.data_model.answer_store import AnswerStore
+from app.data_models.answer import Answer
+from app.data_models.answer_store import AnswerStore
 from app.forms import error_messages
 from app.forms.field_handlers.number_handler import NumberHandler
 from app.forms.fields import DecimalFieldWithSeparator, IntegerFieldWithSeparator

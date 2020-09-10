@@ -2,7 +2,7 @@
 import pytest
 import simplejson as json
 
-from app.data_model.answer_store import Answer, AnswerStore
+from app.data_models.answer_store import Answer, AnswerStore
 
 
 @pytest.fixture()

@@ -3,8 +3,8 @@ from flask import current_app
 from jwcrypto.common import base64url_decode
 from structlog import get_logger
 
-from app.data_model.app_models import EQSession
-from app.data_model.session_data import SessionData
+from app.data_models.app_models import EQSession
+from app.data_models.session_data import SessionData
 from app.storage.storage_encryption import StorageEncryption
 
 logger = get_logger()

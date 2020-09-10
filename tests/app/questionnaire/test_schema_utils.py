@@ -1,5 +1,5 @@
-from app.data_model.answer_store import Answer, AnswerStore
-from app.data_model.list_store import ListStore
+from app.data_models.answer_store import Answer, AnswerStore
+from app.data_models.list_store import ListStore
 from app.questionnaire.location import Location
 from app.questionnaire.questionnaire_schema import QuestionnaireSchema
 from app.questionnaire.schema_utils import (

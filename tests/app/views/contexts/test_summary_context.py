@@ -2,9 +2,9 @@ from unittest.mock import Mock, patch
 
 import pytest
 
-from app.data_model.answer_store import Answer, AnswerStore
-from app.data_model.list_store import ListStore
-from app.data_model.progress_store import ProgressStore
+from app.data_models.answer_store import Answer, AnswerStore
+from app.data_models.list_store import ListStore
+from app.data_models.progress_store import ProgressStore
 from app.questionnaire.location import Location
 from app.questionnaire.questionnaire_schema import DEFAULT_LANGUAGE_CODE
 from app.utilities.schema import load_schema_from_name

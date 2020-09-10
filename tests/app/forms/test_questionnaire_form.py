@@ -4,7 +4,7 @@ from decimal import Decimal
 from mock import patch
 from werkzeug.datastructures import MultiDict
 
-from app.data_model.answer_store import Answer, AnswerStore
+from app.data_models.answer_store import Answer, AnswerStore
 from app.forms.questionnaire_form import generate_form
 from app.forms.validators import DateRequired, ResponseRequired
 from app.questionnaire import QuestionnaireSchema

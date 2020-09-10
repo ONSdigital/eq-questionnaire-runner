@@ -5,7 +5,7 @@ from flask import current_app, g
 from flask import session as cookie_session
 from structlog import get_logger
 
-from app.data_model.questionnaire_store import QuestionnaireStore
+from app.data_models.questionnaire_store import QuestionnaireStore
 from app.settings import EQ_SESSION_ID, USER_IK
 
 logger = get_logger()
@@ -31,7 +31,7 @@ def get_questionnaire_store(user_id, user_ik):
 
 # pylint: disable=import-outside-toplevel
 def get_session_store():
-    from app.data_model.session_store import SessionStore
+    from app.data_models.session_store import SessionStore
 
     if USER_IK not in cookie_session or EQ_SESSION_ID not in cookie_session:
         return None
@@ -68,7 +68,7 @@ def get_session_timeout_in_seconds(schema):
 
 # pylint: disable=import-outside-toplevel
 def create_session_store(eq_session_id, user_id, user_ik, session_data):
-    from app.data_model.session_store import SessionStore
+    from app.data_models.session_store import SessionStore
 
     pepper = current_app.eq["secret_store"].get_secret_by_name(
         "EQ_SERVER_SIDE_STORAGE_ENCRYPTION_USER_PEPPER"

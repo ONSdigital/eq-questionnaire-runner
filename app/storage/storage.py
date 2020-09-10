@@ -3,7 +3,7 @@ from functools import cached_property
 
 from flask import current_app
 
-from app.data_model import app_models
+from app.data_models import app_models
 
 
 class StorageModel:
