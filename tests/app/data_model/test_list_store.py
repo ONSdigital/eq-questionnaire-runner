@@ -74,6 +74,18 @@ def test_list_item_position():
         assert store.list_item_position("people", "not-an-id")
 
 
+def test_list_item_positions_update_after_deletion():
+    store = ListStore()
+
+    first_id = store.add_list_item("people")
+    second_id = store.add_list_item("people")
+
+    assert store.list_item_position("people", first_id) == 1
+
+    store.delete_list_item("people", first_id)
+    assert store.list_item_position("people", second_id) == 1
+
+
 def test_delete_list_item_id():
     store = ListStore()
     person = store.add_list_item("people")

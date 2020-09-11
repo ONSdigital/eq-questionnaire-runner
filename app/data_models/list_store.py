@@ -137,7 +137,7 @@ class ListStore:
     def get(self, item: str):
         return self.__getitem__(item)
 
-    def list_item_position(self, for_list: str, list_item_id: str) -> int:
+    def list_item_position(self, for_list, list_item_id) -> int:
         return self[for_list].index(list_item_id) + 1
 
     def _generate_identifier(self):

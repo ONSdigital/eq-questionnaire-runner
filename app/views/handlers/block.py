@@ -138,4 +138,4 @@ class BlockHandler:
             )
             return {"list_item_position": list_item_position}
 
-        return {"list_item_position": None}
+        return {}

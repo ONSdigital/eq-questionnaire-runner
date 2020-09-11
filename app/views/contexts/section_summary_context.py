@@ -109,11 +109,9 @@ class SectionSummaryContext(Context):
     def _resolve_custom_page_title(
         self, page_title: str, current_location: Location
     ) -> str:
-        if (list_item_id := current_location.list_item_id) and (
-            for_list := current_location.list_name
-        ):
+        if list_item_id := current_location.list_item_id:
             list_item_position = self._list_store.list_item_position(
-                for_list, list_item_id
+                current_location.list_name, list_item_id
             )
             return page_title.format(list_item_position=list_item_position)
 

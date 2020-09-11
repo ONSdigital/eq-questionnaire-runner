@@ -35,6 +35,7 @@ class TestQuestionnaireCustomPageTitles(QuestionnaireTestCase):
 
         self.post({"proxy-answer": "Yes, I am"})
         self.post()
+        self.post()
         self.assertEqualPageTitle("Person 2 individual interstitial")
 
         self.post()

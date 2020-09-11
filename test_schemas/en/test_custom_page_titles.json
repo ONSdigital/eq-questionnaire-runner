@@ -702,6 +702,11 @@
             ]
         },
         {
+            "title": "Individual Section",
+            "summary": {
+                "show_on_completion": true,
+                "page_title": "Summary for person {list_item_position}"
+            },
             "groups": [
                 {
                     "blocks": [
