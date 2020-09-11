@@ -182,7 +182,6 @@ class ListStore:
         Args:
             list_name: The list to add to or create
             primary_person: Whether the list item represents a primary person
-            same_name_list_item_id: The id of another item with a matching name
 
         Returns:
             list item identifier for the new item
