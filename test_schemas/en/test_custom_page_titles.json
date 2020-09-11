@@ -841,6 +841,41 @@
                     "text": "{person_name}"
                 }
             }
+        },
+        {
+            "id": "question-section",
+            "groups": [
+                {
+                    "blocks": [
+                        {
+                            "type": "Question",
+                            "id": "name-block",
+                            "page_title": "Custom question page title",
+                            "question": {
+                                "answers": [
+                                    {
+                                        "id": "name-answer",
+                                        "label": "What is your name?",
+                                        "max_length": 20,
+                                        "mandatory": false,
+                                        "q_code": "0",
+                                        "type": "TextField"
+                                    }
+                                ],
+                                "id": "name-question",
+                                "title": "Title",
+                                "type": "General"
+                            }
+                        },
+                        {
+                            "type": "Summary",
+                            "id": "summary"
+                        }
+                    ],
+                    "id": "checkboxes",
+                    "title": "Title"
+                }
+            ]
         }
     ]
 }
