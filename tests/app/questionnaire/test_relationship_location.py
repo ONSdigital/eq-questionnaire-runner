@@ -9,6 +9,7 @@ class TestRelationshipLocation(AppContextTestCase):
             block_id="relationships",
             list_item_id="id1",
             to_list_item_id="id2",
+            list_name="household",
         )
         location_url = location.url()
 
@@ -23,6 +24,7 @@ class TestRelationshipLocation(AppContextTestCase):
             "block_id": "relationships",
             "list_item_id": "id1",
             "to_list_item_id": "id2",
+            "list_name": "household",
         }
 
         location = RelationshipLocation(**location_dict)
@@ -38,6 +40,7 @@ class TestRelationshipLocation(AppContextTestCase):
             block_id="relationships",
             list_item_id="id1",
             to_list_item_id="id2",
+            list_name="household",
         )
         json = location.for_json()
 
@@ -48,5 +51,6 @@ class TestRelationshipLocation(AppContextTestCase):
                 "block_id": "relationships",
                 "list_item_id": "id1",
                 "to_list_item_id": "id2",
+                "list_name": "household",
             },
         )

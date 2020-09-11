@@ -1,11 +1,7 @@
-from tests.integration.integration_test_case import IntegrationTestCase
+from . import QuestionnaireTestCase
 
 
-class TestQuestionnaireListCollector(IntegrationTestCase):
-    def add_person(self, first_name, last_name):
-        self.post({"anyone-else": "Yes"})
-        self.post({"first-name": first_name, "last-name": last_name})
-
+class TestQuestionnaireListCollector(QuestionnaireTestCase):
     def test_add_list_question_displayed_before_list_collector_and_return_to_in_url(
         self,
     ):
