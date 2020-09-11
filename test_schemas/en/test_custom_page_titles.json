@@ -815,36 +815,7 @@
                     ],
                     "id": "personal-details-group",
                     "title": "Personal Details"
-                }
-            ],
-            "id": "individual-section",
-            "repeat": {
-                "for_list": "household",
-                "title": {
-                    "placeholders": [
-                        {
-                            "placeholder": "person_name",
-                            "transforms": [
-                                {
-                                    "arguments": {
-                                        "delimiter": " ",
-                                        "list_to_concatenate": {
-                                            "identifier": ["first-name", "last-name"],
-                                            "source": "answers"
-                                        }
-                                    },
-                                    "transform": "concatenate_list"
-                                }
-                            ]
-                        }
-                    ],
-                    "text": "{person_name}"
-                }
-            }
-        },
-        {
-            "id": "question-section",
-            "groups": [
+                },
                 {
                     "blocks": [
                         {
@@ -871,7 +842,31 @@
                     "id": "checkboxes",
                     "title": "Title"
                 }
-            ]
+            ],
+            "id": "individual-section",
+            "repeat": {
+                "for_list": "household",
+                "title": {
+                    "placeholders": [
+                        {
+                            "placeholder": "person_name",
+                            "transforms": [
+                                {
+                                    "arguments": {
+                                        "delimiter": " ",
+                                        "list_to_concatenate": {
+                                            "identifier": ["first-name", "last-name"],
+                                            "source": "answers"
+                                        }
+                                    },
+                                    "transform": "concatenate_list"
+                                }
+                            ]
+                        }
+                    ],
+                    "text": "{person_name}"
+                }
+            }
         }
     ]
 }
