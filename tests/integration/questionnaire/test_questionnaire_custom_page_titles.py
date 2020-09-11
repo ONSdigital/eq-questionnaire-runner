@@ -8,7 +8,7 @@ class TestQuestionnaireCustomPageTitles(QuestionnaireTestCase):
         self.assertEqualPageTitle("Custom page title")
 
         self.post({"anyone-else": "Yes"})
-        self.assertEqualPageTitle("Custom page title")
+        self.assertEqualPageTitle("Custom add page title")
 
         self.post({"first-name": "Marie", "last-name": "Doe"})
         self.add_person("John", "Doe")

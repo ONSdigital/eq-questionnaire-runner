@@ -80,7 +80,7 @@
                             "add_block": {
                                 "id": "add-person",
                                 "type": "ListAddQuestion",
-                                "page_title": "Custom page title",
+                                "page_title": "Custom add page title",
                                 "question": {
                                     "id": "add-question",
                                     "type": "General",
@@ -814,21 +814,20 @@
                         },
                         {
                             "type": "Question",
-                            "id": "name-block",
+                            "id": "date-of-birth-block",
                             "page_title": "Custom question page title",
                             "question": {
+                                "id": "date-pipe-question",
+                                "title": "What is your date of birth?",
+                                "type": "General",
                                 "answers": [
                                     {
-                                        "id": "name-answer",
-                                        "label": "Name",
-                                        "max_length": 20,
+                                        "id": "date-dob",
+                                        "label": "For example 20 March 1990",
                                         "mandatory": false,
-                                        "type": "TextField"
+                                        "type": "Date"
                                     }
-                                ],
-                                "id": "name-question",
-                                "title": "What is your name?",
-                                "type": "General"
+                                ]
                             }
                         }
                     ],
