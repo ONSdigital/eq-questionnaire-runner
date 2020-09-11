@@ -25,7 +25,7 @@ describe("Feature: Custom Page Titles", () => {
       $(ListCollectorPage.yes()).click();
       $(ListCollectorPage.submit()).click();
       const expectedPageTitle = browser.getTitle();
-      expect(expectedPageTitle).to.equal("Custom page title");
+      expect(expectedPageTitle).to.equal("Custom add page title");
     });
 
     it("When I navigate to relationship collector pages, Then I should see the custom page titles", () => {
