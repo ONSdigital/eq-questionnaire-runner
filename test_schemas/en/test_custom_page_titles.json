@@ -855,15 +855,14 @@
                                 "answers": [
                                     {
                                         "id": "name-answer",
-                                        "label": "What is your name?",
+                                        "label": "Name",
                                         "max_length": 20,
                                         "mandatory": false,
-                                        "q_code": "0",
                                         "type": "TextField"
                                     }
                                 ],
                                 "id": "name-question",
-                                "title": "Title",
+                                "title": "What is your name?",
                                 "type": "General"
                             }
                         }
