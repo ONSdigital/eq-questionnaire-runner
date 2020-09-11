@@ -6,7 +6,7 @@
     "survey_id": "0",
     "title": "Census thank you without a census type map",
     "theme": "census",
-    "description": "A questionnaire to test the thank you page when the schema name doesn't map to a type",
+    "description": "A questionnaire to test the thank you page when the schema name does not map to a type",
     "metadata": [
         {
             "name": "user_id",
