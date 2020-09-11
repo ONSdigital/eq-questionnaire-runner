@@ -48,11 +48,14 @@ class ThankYou:
         if not self._is_census_theme:
             return build_default_thank_you_context(self.session_data)
 
+        schema_name = self.session_data.schema_name
         census_type_code = None
-        for census_type in self.CENSUS_TYPE_MAPPINGS:
-            if census_type in self.session_data.schema_name:
-                census_type_code = self.CENSUS_TYPE_MAPPINGS[census_type]
-                break
+
+        if "ccs" not in schema_name:
+            for census_type in self.CENSUS_TYPE_MAPPINGS:
+                if census_type in schema_name:
+                    census_type_code = self.CENSUS_TYPE_MAPPINGS[census_type]
+                    break
 
         confirmation_email_form = (
             self.confirmation_email.form if self.confirmation_email else None

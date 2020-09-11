@@ -1,0 +1,66 @@
+{
+    "mime_type": "application/json/ons/eq",
+    "language": "en",
+    "schema_version": "0.0.1",
+    "data_version": "0.0.3",
+    "survey_id": "0",
+    "title": "Census household test schema",
+    "theme": "census",
+    "description": "A questionnaire to test the thank you page for census household",
+    "metadata": [
+        {
+            "name": "user_id",
+            "type": "string"
+        },
+        {
+            "name": "period_id",
+            "type": "string"
+        },
+        {
+            "name": "display_address",
+            "type": "string"
+        }
+    ],
+    "sections": [
+        {
+            "id": "ccs-section",
+            "groups": [
+                {
+                    "blocks": [
+                        {
+                            "type": "Question",
+                            "id": "ccs-confirmation",
+                            "question": {
+                                "answers": [
+                                    {
+                                        "type": "Radio",
+                                        "id": "ccs-confirmation-answer",
+                                        "mandatory": false,
+                                        "options": [
+                                            {
+                                                "label": "Yes",
+                                                "value": "Yes"
+                                            },
+                                            {
+                                                "label": "No",
+                                                "value": "No"
+                                            }
+                                        ]
+                                    }
+                                ],
+                                "id": "ccs-confirmation-question",
+                                "title": "Are you aware this is an ccs test schema?",
+                                "type": "General"
+                            }
+                        },
+                        {
+                            "type": "Summary",
+                            "id": "summary"
+                        }
+                    ],
+                    "id": "household-group"
+                }
+            ]
+        }
+    ]
+}
