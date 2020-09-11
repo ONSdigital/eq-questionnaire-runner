@@ -4,7 +4,7 @@
     "schema_version": "0.0.1",
     "data_version": "0.0.3",
     "survey_id": "0",
-    "title": "Census thank you without a census type name map",
+    "title": "Census thank you without a census type map",
     "theme": "census",
     "description": "A questionnaire to test the thank you page when the schema name doesn't map to a type",
     "metadata": [
