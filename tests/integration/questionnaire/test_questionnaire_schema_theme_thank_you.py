@@ -38,8 +38,8 @@ class TestSchemaThemeThankYou(IntegrationTestCase):
             "Your census has been submitted for the accommodation at <strong>68 Abingdon Road, Goathill</strong>"
         )
 
-    def test_ccs(self):
-        self.launchSurvey("test_thank_you_ccs")
+    def test_no_census_type_map(self):
+        self.launchSurvey("test_thank_you_no_census_type_map")
         self.post({"ccs-confirmation": "Yes"})
         self.post()
         self.assertInBody("Thank you for completing the survey")

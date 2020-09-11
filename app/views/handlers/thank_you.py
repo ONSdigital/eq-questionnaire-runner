@@ -15,12 +15,6 @@ class ThankYou:
     CENSUS_THANK_YOU_TEMPLATE = "census-thank-you"
     PAGE_TITLE = gettext("Thank you")
 
-    CENSUS_TYPE_MAPPINGS = {
-        "household": "HH",
-        "communal_establishment": "CE",
-        "individual": "IR",
-    }
-
     def __init__(self, schema):
         self.session_store = get_session_store()
         self.session_data = self.session_store.session_data
@@ -48,21 +42,12 @@ class ThankYou:
         if not self._is_census_theme:
             return build_default_thank_you_context(self.session_data)
 
-        schema_name = self.session_data.schema_name
-        census_type_code = None
-
-        if "ccs" not in schema_name:
-            for census_type in self.CENSUS_TYPE_MAPPINGS:
-                if census_type in schema_name:
-                    census_type_code = self.CENSUS_TYPE_MAPPINGS[census_type]
-                    break
-
         confirmation_email_form = (
             self.confirmation_email.form if self.confirmation_email else None
         )
 
         return build_census_thank_you_context(
-            self.session_data, census_type_code, confirmation_email_form
+            self.session_data, confirmation_email_form
         )
 
     def get_page_title(self):
