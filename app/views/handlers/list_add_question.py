@@ -12,9 +12,4 @@ class ListAddQuestion(ListAction):
             self.parent_block["for_list"]
         )
         self.questionnaire_store_updater.update_answers(self.form.data, list_item_id)
-
-        self.questionnaire_store_updater.update_same_name_items(
-            self.parent_block["for_list"], self._get_same_name_answer_ids()
-        )
-
         return super().handle_post()
