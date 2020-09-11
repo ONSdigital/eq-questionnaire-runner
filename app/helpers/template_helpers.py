@@ -5,9 +5,12 @@ from flask import current_app
 from flask import render_template as flask_render_template
 from flask import request
 from flask import session as cookie_session
+from flask import url_for
 from flask_babel import get_locale, lazy_gettext
 
 from app.helpers.language_helper import get_languages_context
+
+CENSUS_BASE_URL = "https://census.gov.uk/"
 
 
 @lru_cache(maxsize=None)
@@ -57,12 +60,17 @@ def render_template(template, **kwargs):
         get_locale().language, theme or "census"
     )
     page_header_context.update({"title": cookie_session.get("survey_title")})
-    google_tag_mananger_context = get_google_tag_mananger_context()
+    google_tag_manager_context = get_google_tag_manager_context()
     cdn_url = f'{current_app.config["CDN_URL"]}{current_app.config["CDN_ASSETS_PATH"]}'
     contact_us_url = get_contact_us_url(theme, get_locale().language)
+    include_csrf_token = request.url_rule and "POST" in request.url_rule.methods
+    account_service_url = cookie_session.get(
+        "account_service_url", f"{CENSUS_BASE_URL}en/start"
+    )
+
     return flask_render_template(
         template,
-        account_service_url=cookie_session.get("account_service_url"),
+        account_service_url=account_service_url,
         account_service_log_out_url=cookie_session.get("account_service_log_out_url"),
         contact_us_url=contact_us_url,
         cookie_settings_url=current_app.config["COOKIE_SETTINGS_URL"],
@@ -74,12 +82,14 @@ def render_template(template, **kwargs):
         survey_title=cookie_session.get("survey_title"),
         cdn_url=cdn_url,
         data_layer=get_data_layer(theme),
-        **google_tag_mananger_context,
+        include_csrf_token=include_csrf_token,
+        sign_out_url=url_for("session.get_sign_out"),
+        **google_tag_manager_context,
         **kwargs,
     )
 
 
-def get_google_tag_mananger_context():
+def get_google_tag_manager_context():
     cookie = request.cookies.get("ons_cookie_policy")
     if cookie and "'usage':true" in cookie:
         return {
@@ -96,12 +106,10 @@ def get_census_base_url(schema_theme: str, language_code: str) -> str:
     if language_code == "cy":
         return "https://cyfrifiad.gov.uk/"
 
-    base_url = "https://census.gov.uk/"
-
     if schema_theme == "census-nisra":
-        return f"{base_url}ni/"
+        return f"{CENSUS_BASE_URL}ni/"
 
-    return base_url
+    return CENSUS_BASE_URL
 
 
 def get_contact_us_url(schema_theme: str, language_code: str):

@@ -6,7 +6,9 @@ from flask_login import current_user, login_required
 from structlog import get_logger
 from werkzeug.exceptions import NotFound
 
-from app.authentication.no_token_exception import NoTokenException
+from app.authentication.no_questionnaire_state_exception import (
+    NoQuestionnaireStateException,
+)
 from app.globals import get_metadata, get_session_store, get_session_timeout_in_seconds
 from app.helpers.language_helper import handle_language
 from app.helpers.schema_helpers import with_schema
@@ -36,11 +38,12 @@ post_submission_blueprint = Blueprint(
 )
 
 
+@login_required
 @questionnaire_blueprint.before_request
 def before_questionnaire_request():
     metadata = get_metadata(current_user)
     if not metadata:
-        raise NoTokenException(401)
+        raise NoQuestionnaireStateException(401)
 
     logger.bind(
         tx_id=metadata["tx_id"],
@@ -59,11 +62,12 @@ def before_questionnaire_request():
     g.schema = load_schema_from_session_data(session_store.session_data)
 
 
+@login_required
 @post_submission_blueprint.before_request
 def before_post_submission_request():
     session_store = get_session_store()
     if not session_store or not session_store.session_data:
-        raise NoTokenException(401)
+        raise NoQuestionnaireStateException(401)
 
     session_data = session_store.session_data
 
@@ -78,7 +82,7 @@ def before_post_submission_request():
     )
 
 
-@questionnaire_blueprint.route("/", methods=["GET"])
+@questionnaire_blueprint.route("/", methods=["GET", "POST"])
 @login_required
 @with_questionnaire_store
 @with_schema
@@ -94,6 +98,15 @@ def get_questionnaire(schema, questionnaire_store):
     if not router.can_access_hub():
         redirect_location_url = router.get_first_incomplete_location_in_survey_url()
         return redirect(redirect_location_url)
+
+    if request.method == "POST":
+        if router.is_survey_complete():
+            submission_handler = SubmissionHandler(
+                schema, questionnaire_store, router.full_routing_path()
+            )
+            submission_handler.submit_questionnaire()
+            return redirect(url_for("post_submission.get_thank_you"))
+        return redirect(router.get_first_incomplete_location_in_survey_url())
 
     language_code = get_session_store().session_data.language_code
 
@@ -113,37 +126,10 @@ def get_questionnaire(schema, questionnaire_store):
     return render_template("hub", content=hub_context)
 
 
-@questionnaire_blueprint.route("/", methods=["POST"])
-@login_required
-@with_questionnaire_store
-@with_schema
-def post_questionnaire(schema, questionnaire_store):
-    router = Router(
-        schema,
-        questionnaire_store.answer_store,
-        questionnaire_store.list_store,
-        questionnaire_store.progress_store,
-        questionnaire_store.metadata,
-    )
-
-    if not schema.is_hub_enabled():
-        raise NotFound
-
-    if router.is_survey_complete():
-        submission_handler = SubmissionHandler(
-            schema, questionnaire_store, router.full_routing_path()
-        )
-        submission_handler.submit_questionnaire()
-        return redirect(url_for("post_submission.get_thank_you"))
-
-    return redirect(router.get_first_incomplete_location_in_survey_url())
-
-
 @questionnaire_blueprint.route("sections/<section_id>/", methods=["GET", "POST"])
 @questionnaire_blueprint.route(
     "sections/<section_id>/<list_item_id>/", methods=["GET", "POST"]
 )
-@login_required
 @with_questionnaire_store
 @with_schema
 def get_section(schema, questionnaire_store, section_id, list_item_id=None):
@@ -180,7 +166,6 @@ def get_section(schema, questionnaire_store, section_id, list_item_id=None):
 @questionnaire_blueprint.route(
     "<list_name>/<list_item_id>/<block_id>/", methods=["GET", "POST"]
 )
-@login_required
 @with_questionnaire_store
 @with_schema
 def block(schema, questionnaire_store, block_id, list_name=None, list_item_id=None):
@@ -238,7 +223,6 @@ def block(schema, questionnaire_store, block_id, list_name=None, list_item_id=No
 @questionnaire_blueprint.route(
     "<block_id>/<list_item_id>/to/<to_list_item_id>/", methods=["GET", "POST"]
 )
-@login_required
 @with_questionnaire_store
 @with_schema
 def relationship(schema, questionnaire_store, block_id, list_item_id, to_list_item_id):
@@ -273,7 +257,6 @@ def relationship(schema, questionnaire_store, block_id, list_item_id, to_list_it
 
 
 @post_submission_blueprint.route("thank-you/", methods=["GET", "POST"])
-@login_required
 @with_schema
 def get_thank_you(schema):
     thank_you = ThankYou(schema)
@@ -302,7 +285,6 @@ def get_thank_you(schema):
 
 
 @post_submission_blueprint.route("confirmation-email/send", methods=["GET", "POST"])
-@login_required
 def send_confirmation_email():
     if not get_session_store().session_data.confirmation_email_sent:
         raise NotFound
@@ -327,7 +309,6 @@ def send_confirmation_email():
 
 
 @post_submission_blueprint.route("confirmation-email/sent", methods=["GET"])
-@login_required
 def get_confirmation_email_sent():
     if not get_session_store().session_data.confirmation_email_sent:
         raise NotFound
