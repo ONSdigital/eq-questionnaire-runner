@@ -143,7 +143,7 @@ describe("Feature: Repeating Sections with Hub and Spoke", () => {
       expect(browser.getUrl()).to.contain("/sections/personal-details-section");
     });
 
-    it("When the user views the summary for a repeating section, Then the custom page title is shown", () => {
+    it("When the user views the summary for a repeating section, Then the page title is shown", () => {
       $(HubPage.summaryRowLink("personal-details-section-2")).click();
       expect(browser.getTitle()).to.equal("… - Hub & Spoke");
     });
