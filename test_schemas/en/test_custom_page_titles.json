@@ -811,13 +811,7 @@
                                 "type": "General"
                             },
                             "type": "Question"
-                        }
-                    ],
-                    "id": "personal-details-group",
-                    "title": "Personal Details"
-                },
-                {
-                    "blocks": [
+                        },
                         {
                             "type": "Question",
                             "id": "name-block",
@@ -838,8 +832,8 @@
                             }
                         }
                     ],
-                    "id": "checkboxes",
-                    "title": "Title"
+                    "id": "personal-details-group",
+                    "title": "Personal Details"
                 }
             ],
             "id": "individual-section",
