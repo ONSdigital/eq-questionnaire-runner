@@ -191,7 +191,7 @@ class IndividualResponseHandler:
 
     def _publish_fulfilment_request(self):
         message = self._get_fulfilment_request_payload()
-        topic_id = current_app.config["EQ_PUB_SUB_TOPIC_ID"]
+        topic_id = current_app.config["EQ_FULFILMENT_TOPIC_ID"]
         return current_app.eq["publisher"].publish(topic_id, message)
 
     def handle_get(self):

@@ -22,7 +22,7 @@ class PubSub(Publisher):
         _, self._project_id = google.auth.default()
 
     def _publish(self, topic_id, message):
-        logger.info(f"publishing message", topic_id=topic_id)
+        logger.info("publishing message", topic_id=topic_id)
         topic_path = self._client.topic_path(self._project_id, topic_id)
         publish_future: Future = self._client.publish(topic_path, message)
         return publish_future
@@ -33,7 +33,7 @@ class PubSub(Publisher):
             # Resolve the future
             message_id = publish_future.result()
             logger.info(  # pragma: no cover
-                f"message published successfully",
+                "message published successfully",
                 topic_id=topic_id,
                 message_id=message_id,
             )

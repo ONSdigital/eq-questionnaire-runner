@@ -329,10 +329,10 @@ def setup_submitter(application):
 
 def setup_publisher(application):
     if application.config["EQ_PUBLISHER_BACKEND"] == "pubsub":
-        topic_id = application.config.get("EQ_PUB_SUB_TOPIC_ID")
+        fulfilment_topic = application.config["EQ_FULFILMENT_TOPIC_ID"]
 
-        if not topic_id:
-            raise Exception("Setting EQ_PUB_SUB_TOPIC_ID Missing")
+        if not fulfilment_topic:
+            raise Exception("Setting EQ_FULFILMENT_TOPIC_ID Missing")
 
         application.eq["publisher"] = PubSub()
 

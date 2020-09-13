@@ -243,7 +243,7 @@ class TestCreateApp(unittest.TestCase):  # pylint: disable=too-many-public-metho
     def test_adds_pub_sub_to_the_application(self):
         # Given
         self._setting_overrides["EQ_PUBLISHER_BACKEND"] = "pubsub"
-        self._setting_overrides["EQ_PUB_SUB_TOPIC_ID"] = "123"
+        self._setting_overrides["EQ_FULFILMENT_TOPIC_ID"] = "123"
 
         # When
         with patch(
@@ -264,7 +264,7 @@ class TestCreateApp(unittest.TestCase):  # pylint: disable=too-many-public-metho
             create_app(self._setting_overrides)
 
         # Then
-        assert "Setting EQ_PUB_SUB_TOPIC_ID Missing" in str(ex.exception)
+        assert "Setting EQ_FULFILMENT_TOPIC_ID Missing" in str(ex.exception)
 
     def test_defaults_to_adding_the_log_publisher_to_the_application(self):
         # When
