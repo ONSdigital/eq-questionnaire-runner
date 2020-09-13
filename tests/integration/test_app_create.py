@@ -178,7 +178,7 @@ class TestCreateApp(unittest.TestCase):  # pylint: disable=too-many-public-metho
         # Given
         self._setting_overrides["EQ_SUBMISSION_BACKEND"] = "gcs"
 
-        # WHEN
+        # When
         with self.assertRaises(Exception) as ex:
             create_app(self._setting_overrides)
 
@@ -259,7 +259,7 @@ class TestCreateApp(unittest.TestCase):  # pylint: disable=too-many-public-metho
         # Given
         self._setting_overrides["EQ_PUBLISHER_BACKEND"] = "pubsub"
 
-        # WHEN
+        # When
         with self.assertRaises(Exception) as ex:
             create_app(self._setting_overrides)
 
