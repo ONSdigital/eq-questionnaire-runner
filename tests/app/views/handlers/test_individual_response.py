@@ -147,12 +147,12 @@ def test_individual_case_id_not_present_when_case_type_spg():
         (GB_NIR_REGION_CODE, "UACITA4"),
     ],
 )
-def test_fulfilment_code(region_code, expected_fulfilment_code):
+def test_fulfilment_code_for_sms(region_code, expected_fulfilment_code):
     individual_response_handler = get_individual_response_handler(
         metadata={"region_code": region_code}
     )
     fulfilment_code = individual_response_handler._get_fulfilment_code(
-        mobile_number=DUMMY_MOBILE_NUMBER
+        fulfilment_type="sms"
     )
 
     assert fulfilment_code == expected_fulfilment_code
@@ -170,6 +170,8 @@ def test_fulfilment_code_for_postal(region_code, expected_fulfilment_code):
     individual_response_handler = get_individual_response_handler(
         metadata={"region_code": region_code}
     )
-    fulfilment_code = individual_response_handler._get_fulfilment_code()
+    fulfilment_code = individual_response_handler._get_fulfilment_code(
+        fulfilment_type="postal"
+    )
 
     assert fulfilment_code == expected_fulfilment_code

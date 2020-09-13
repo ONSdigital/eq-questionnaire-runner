@@ -20,7 +20,7 @@ from app.views.contexts.question import build_question_context
 
 GB_ENG_REGION_CODE = "GB-ENG"
 GB_WLS_REGION_CODE = "GB-WLS"
-GB_NIR_REGION_CODE = "GB=NIR"
+GB_NIR_REGION_CODE = "GB-NIR"
 
 
 class IndividualResponseHandler:
@@ -141,26 +141,25 @@ class IndividualResponseHandler:
     def get_context(self):
         return build_question_context(self.rendered_block, self.form)
 
-    def _get_fulfilment_code(self, mobile_number=None):
-        fulfilment_codes_map_for_sms = {
-            GB_ENG_REGION_CODE: "UACITA1",
-            GB_WLS_REGION_CODE: "UACITA2B",
-            GB_NIR_REGION_CODE: "UACITA4",
-        }
-        fulfilment_codes_map_for_postal = {
-            GB_ENG_REGION_CODE: "P_UAC_UACIP1",
-            GB_WLS_REGION_CODE: "P_UAC_UACIP2B",
-            GB_NIR_REGION_CODE: "P_UAC_UACIP4",
+    def _get_fulfilment_code(self, fulfilment_type):
+        fulfilment_codes = {
+            "sms": {
+                GB_ENG_REGION_CODE: "UACITA1",
+                GB_WLS_REGION_CODE: "UACITA2B",
+                GB_NIR_REGION_CODE: "UACITA4",
+            },
+            "postal": {
+                GB_ENG_REGION_CODE: "P_UAC_UACIP1",
+                GB_WLS_REGION_CODE: "P_UAC_UACIP2B",
+                GB_NIR_REGION_CODE: "P_UAC_UACIP4",
+            },
         }
 
         region_code = self._metadata["region_code"]
-        return (
-            fulfilment_codes_map_for_sms[region_code]
-            if mobile_number
-            else fulfilment_codes_map_for_postal[region_code]
-        )
+        return fulfilment_codes[fulfilment_type][region_code]
 
     def _get_fulfilment_request_payload(self, mobile_number=None):
+        fulfilment_type = "sms" if mobile_number else "postal"
         individual_case_id_mapping = (
             {}
             if self._metadata.get("case_type") == "SPG"
@@ -180,7 +179,7 @@ class IndividualResponseHandler:
             "payload": {
                 "fulfilmentRequest": {
                     **individual_case_id_mapping,
-                    "fulfilmentCode": self._get_fulfilment_code(mobile_number),
+                    "fulfilmentCode": self._get_fulfilment_code(fulfilment_type),
                     "caseId": self._metadata["case_id"],
                     "contact": mobile_number_mapping,
                 }
