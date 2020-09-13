@@ -4,6 +4,7 @@ from flask import url_for
 
 from app.helpers.template_helpers import safe_content
 from app.questionnaire import QuestionnaireSchema
+from app.questionnaire.location import Location
 
 from .context import Context
 from .list_context import ListContext
@@ -11,7 +12,9 @@ from .summary import Group
 
 
 class SectionSummaryContext(Context):
-    def __call__(self, current_location, return_to="section-summary"):
+    def __call__(
+        self, current_location: Location, return_to: str = "section-summary"
+    ) -> Mapping:
         summary = self._build_summary(current_location, return_to)
         title_for_location = self._title_for_location(current_location)
         title = (
@@ -21,15 +24,28 @@ class SectionSummaryContext(Context):
             if isinstance(title_for_location, dict)
             else title_for_location
         )
+
+        page_title = self.get_page_title(current_location, title_for_location)
+
         return {
             "summary": {
                 "title": title,
-                "page_title": self._get_safe_page_title(title_for_location),
+                "page_title": page_title,
                 "summary_type": "SectionSummary",
                 "answers_are_editable": True,
                 **summary,
             }
         }
+
+    def get_page_title(
+        self, current_location: Location, title_for_location: str
+    ) -> str:
+        if custom_page_title := self._schema.get_custom_page_title_for_section(
+            current_location.section_id
+        ):
+            return self._resolve_custom_page_title(custom_page_title, current_location)
+
+        return self._get_safe_page_title(title_for_location)
 
     def _build_summary(self, location, return_to):
         """
@@ -75,7 +91,6 @@ class SectionSummaryContext(Context):
         }
 
     def _title_for_location(self, location):
-
         section_id = location.section_id
         title = (
             self._schema.get_repeating_title_for_section(section_id)
@@ -90,6 +105,17 @@ class SectionSummaryContext(Context):
                 yield self._list_summary_element(
                     summary_element, current_location, section
                 )
+
+    def _resolve_custom_page_title(
+        self, page_title: str, current_location: Location
+    ) -> str:
+        if list_item_id := current_location.list_item_id:
+            list_item_position = self._list_store.list_item_position(
+                current_location.list_name, list_item_id
+            )
+            return page_title.format(list_item_position=list_item_position)
+
+        return page_title
 
     def _list_summary_element(self, summary, current_location, section) -> Mapping:
         current_list = self._list_store[summary["for_list"]]

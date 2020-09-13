@@ -1,4 +1,5 @@
 from functools import cached_property
+from typing import MutableMapping
 
 from app.data_models.relationship_store import RelationshipStore
 from app.questionnaire.location import Location
@@ -11,11 +12,14 @@ class RelationshipCollector(Question):
     def relationship_router(self):
         block_id = self._current_location.block_id
         section_id = self._current_location.section_id
-        list_items = self._questionnaire_store.list_store[
-            self._schema.get_block(block_id)["for_list"]
-        ].items
+        list_name = self._schema.get_block(block_id)["for_list"]
+        list_items = self._questionnaire_store.list_store[list_name].items
+
         return RelationshipRouter(
-            section_id=section_id, block_id=block_id, list_item_ids=list_items
+            section_id=section_id,
+            block_id=block_id,
+            list_item_ids=list_items,
+            list_name=list_name,
         )
 
     @property
@@ -103,3 +107,15 @@ class RelationshipCollector(Question):
         if self.relationship_router.get_next_location_url(self._current_location):
             return False
         return True
+
+    def _resolve_custom_page_title_vars(self) -> MutableMapping:
+        page_title_vars = super()._resolve_custom_page_title_vars()
+
+        if to_list_item_position := self.current_location.to_list_item_id:
+            page_title_vars[
+                "to_list_item_position"
+            ] = self._questionnaire_store.list_store.list_item_position(
+                self.current_location.list_name, to_list_item_position
+            )
+
+        return page_title_vars

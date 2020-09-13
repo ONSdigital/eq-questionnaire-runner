@@ -15,6 +15,7 @@ class TestBlockFactory(TestCase):
                 schema=schema,
                 block_id="invalid-block-id",
                 list_item_id=None,
+                list_name="",
                 questionnaire_store=None,
                 language=None,
             )
@@ -29,6 +30,7 @@ class TestBlockFactory(TestCase):
                 schema=schema,
                 block_id="some-block",
                 list_item_id=None,
+                list_name="",
                 questionnaire_store=None,
                 language=None,
             )
@@ -43,6 +45,7 @@ class TestBlockFactory(TestCase):
                 schema=schema,
                 block_id="some-block",
                 list_item_id=None,
+                list_name="",
                 questionnaire_store=None,
                 language=None,
             )

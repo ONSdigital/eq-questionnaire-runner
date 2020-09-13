@@ -224,6 +224,9 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
     def get_repeating_title_for_section(self, section_id):
         return self._sections_by_id.get(section_id).get("repeat", {}).get("title")
 
+    def get_custom_page_title_for_section(self, section_id):
+        return self.get_summary_for_section(section_id).get("page_title")
+
     def get_section_for_block_id(self, block_id):
         block = self.get_block(block_id)
 

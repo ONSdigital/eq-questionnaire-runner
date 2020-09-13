@@ -1,10 +1,15 @@
 {% extends 'layouts/_base.html' %}
 {% from 'components/panel/_macro.njk' import onsPanel %}
-
+{% set page_title = page_title ~ " - " ~ _("Census 2021") %}
 {% set hide_signout_button = content.hide_signout_button %}
 {% set sign_out_url = content.sign_out_url %}
 
 {% block main %}
+  {% set form = content.form %}
+  {% if form and form.mapped_errors %}
+    {% set error_title = _("There is a problem with this page") %}
+    {% include 'partials/error-panel.html' %}
+  {% endif %}
 
   {% call onsPanel({
     "type": "success",
@@ -35,11 +40,19 @@
       <p class="icon--lock">{{ _("Your personal information is protected by law and will be kept confidential") }}</p>
     </div>
 
-    <div class="panel panel--warn panel--simple" >
-      <span class="panel__icon" aria-hidden="true">!</span>
-      <div class="panel__body">
-        <p data-qa="exit-text"><strong>{{ _("Make sure you <a href='{sign_out_url}'>leave this page</a> or close your browser if using a shared device").format(sign_out_url=sign_out_url)  }}</strong></p>
-      </div>
-    </div>
+  {% if form %}
+    <h2>{{ _("Get confirmation email") }}</h2>
+    <p>{{ _("If you would like to be sent confirmation that you have completed your census enter your email address") }}</p>
+    {% include 'partials/email-form.html' %}
+  {% endif %}
+  <br><br>
+
+  {% call onsPanel({
+    "id": "submission-warning",
+    "type": "warn"
+    })
+  %}
+  {{ _("Make sure you <a href='{url}'>leave this page</a> or close your browser if using a shared device").format(url = sign_out_url) }}
+  {% endcall %}
 
 {% endblock %}

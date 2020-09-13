@@ -1,16 +1,7 @@
-from tests.integration.integration_test_case import IntegrationTestCase
+from . import QuestionnaireTestCase
 
 
-class TestQuestionnaireListCollector(IntegrationTestCase):
-    def add_person(self, first_name, last_name):
-        self.post({"anyone-else": "Yes"})
-        self.post({"first-name": first_name, "last-name": last_name})
-
-    def get_previous_link(self):
-        selector = "#top-previous"
-        selected = self.getHtmlSoup().select(selector)
-        return selected[0].get("href")
-
+class TestQuestionnaireListCollector(QuestionnaireTestCase):
     def test_add_list_question_displayed_before_list_collector_and_return_to_in_url(
         self,
     ):
@@ -31,7 +22,7 @@ class TestQuestionnaireListCollector(IntegrationTestCase):
         self.post({"anyone-usually-live-at-answer": "Yes"})
 
         # When
-        self.get(self.get_previous_link())
+        self.previous()
 
         # Then
         self.assertInUrl("/questionnaire/anyone-usually-live-at/")
@@ -44,7 +35,7 @@ class TestQuestionnaireListCollector(IntegrationTestCase):
         self.post({"anyone-else-live-at-answer": "Yes"})
 
         # When
-        self.get(self.get_previous_link())
+        self.previous()
 
         # Then
         self.assertInUrl("/questionnaire/anyone-else-live-at/")
@@ -63,7 +54,7 @@ class TestQuestionnaireListCollector(IntegrationTestCase):
         self.assertInUrl("?previous=anyone-usually-live-at-invalid")
 
         # When
-        self.get(self.get_previous_link())
+        self.previous()
 
         # Then
         self.assertInUrl("/questionnaire/anyone-else-live-at/")

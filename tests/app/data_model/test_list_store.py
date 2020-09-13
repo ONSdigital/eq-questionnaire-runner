@@ -6,13 +6,13 @@ from app.data_models.list_store import ListModel, ListStore
 
 
 def test_list_serialisation():
-    new_list = ListStore()
+    store = ListStore()
 
-    first_id = new_list.add_list_item("people")
-    second_id = new_list.add_list_item("people", primary_person=True)
-    additional_list_id = new_list.add_list_item("pets")
+    first_id = store.add_list_item("people")
+    second_id = store.add_list_item("people", primary_person=True)
+    additional_list_id = store.add_list_item("pets")
 
-    serialized = new_list.serialize()
+    serialized = store.serialize()
 
     assert serialized == [
         {"name": "people", "primary_person": second_id, "items": [second_id, first_id]},
@@ -21,11 +21,11 @@ def test_list_serialisation():
 
 
 def test_deserialisation():
-    new_list = ListStore()
+    store = ListStore()
     # pylint: disable=protected-access
-    first_id = new_list._generate_identifier()
-    second_id = new_list._generate_identifier()
-    additional_id = new_list._generate_identifier()
+    first_id = store._generate_identifier()
+    second_id = store._generate_identifier()
+    additional_id = store._generate_identifier()
 
     serialized = [
         {"name": "people", "primary_person": second_id, "items": [first_id, second_id]},
@@ -48,10 +48,10 @@ def test_unique_id_generation():
         "app.data_models.list_store.random_string",
         side_effect=["first", "first", "second"],
     ):
-        list_store = ListStore()
+        store = ListStore()
         # pylint: disable=protected-access
-        list_store._lists["test"] = ListModel(name="test", items=["first"])
-        result = list_store._generate_identifier()
+        store._lists["test"] = ListModel(name="test", items=["first"])
+        result = store._generate_identifier()
 
     assert result == "second"
 
@@ -59,6 +59,31 @@ def test_unique_id_generation():
 def test_get_item():
     store = ListStore()
     assert store["not_a_list"] == ListModel("not_a_list")
+
+
+def test_list_item_position():
+    store = ListStore()
+
+    first_id = store.add_list_item("people")
+    second_id = store.add_list_item("people")
+
+    assert store.list_item_position("people", first_id) == 1
+    assert store.list_item_position("people", second_id) == 2
+
+    with pytest.raises(ValueError):
+        assert store.list_item_position("people", "not-an-id")
+
+
+def test_list_item_positions_update_after_deletion():
+    store = ListStore()
+
+    first_id = store.add_list_item("people")
+    second_id = store.add_list_item("people")
+
+    assert store.list_item_position("people", first_id) == 1
+
+    store.delete_list_item("people", first_id)
+    assert store.list_item_position("people", second_id) == 1
 
 
 def test_delete_list_item_id():

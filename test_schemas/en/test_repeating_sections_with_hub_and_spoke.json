@@ -501,7 +501,9 @@
         {
             "id": "personal-details-section",
             "title": "Personal Details",
-            "summary": { "show_on_completion": true },
+            "summary": {
+                "show_on_completion": true
+            },
             "repeat": {
                 "for_list": "people",
                 "title": {

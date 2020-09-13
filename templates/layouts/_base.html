@@ -28,7 +28,9 @@
 {% endif %}
 
 {% block preHeader %}
-  <input id="csrf_token" name="csrf_token" type="hidden" value="{{ csrf_token() }}"/>
+  {% if include_csrf_token %}
+    <input id="csrf_token" name="csrf_token" type="hidden" value="{{ csrf_token() }}"/>
+  {% endif %}
 
   {% if cookie_settings_url %}
     {{

@@ -1,13 +1,16 @@
 from datetime import datetime
 from functools import cached_property
-from typing import Optional
+from typing import MutableMapping, Optional, Union
 
 from structlog import get_logger
 
+from app.data_models import QuestionnaireStore
 from app.helpers.template_helpers import safe_content
 from app.questionnaire.location import InvalidLocationException, Location
 from app.questionnaire.placeholder_renderer import PlaceholderRenderer
+from app.questionnaire.questionnaire_schema import QuestionnaireSchema
 from app.questionnaire.questionnaire_store_updater import QuestionnaireStoreUpdater
+from app.questionnaire.relationship_location import RelationshipLocation
 from app.questionnaire.router import Router
 
 logger = get_logger()
@@ -16,12 +19,12 @@ logger = get_logger()
 class BlockHandler:
     def __init__(
         self,
-        schema,
-        questionnaire_store,
-        language,
-        current_location,
-        request_args,
-        form_data,
+        schema: QuestionnaireSchema,
+        questionnaire_store: QuestionnaireStore,
+        language: str,
+        current_location: Union[Location, RelationshipLocation],
+        request_args: MutableMapping,
+        form_data: MutableMapping,
     ):
         self._schema = schema
         self._questionnaire_store = questionnaire_store
@@ -102,7 +105,9 @@ class BlockHandler:
             list_item_id=self._current_location.list_item_id,
         )
 
-    def _update_section_completeness(self, location: Optional[Location] = None):
+    def _update_section_completeness(
+        self, location: Optional[Union[Location, RelationshipLocation]] = None
+    ):
         location = location or self._current_location
 
         self.questionnaire_store_updater.update_section_status(
@@ -118,7 +123,19 @@ class BlockHandler:
             logger.info("Survey started", started_at=started_at)
             collection_metadata["started_at"] = started_at
 
-    def _get_safe_page_title(self, title):
-        return safe_content(
-            f'{self._schema.get_single_string_value(title)} - {self._schema.json["title"]}'
-        )
+    def _get_safe_page_title(self, page_title):
+        page_title = self._schema.get_single_string_value(page_title)
+        title = self._schema.json["title"]
+
+        return safe_content(f"{page_title} - {title}")
+
+    def _resolve_custom_page_title_vars(self) -> MutableMapping:
+        if list_item_id := self.current_location.list_item_id:
+            list_item_position = (
+                self._questionnaire_store.list_store.list_item_position(
+                    self.current_location.list_name, list_item_id
+                )
+            )
+            return {"list_item_position": list_item_position}
+
+        return {}

@@ -60,6 +60,7 @@ flask-compress = "*"
 htmlmin = "*"
 coloredlogs = "*"
 uwsgi = "*"
+email-validator = "*"
 itsdangerous = "*"
 google-cloud-pubsub = "*"
 

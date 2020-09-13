@@ -6,17 +6,21 @@ from flask_login import current_user, login_required
 from structlog import get_logger
 from werkzeug.exceptions import NotFound
 
-from app.authentication.no_token_exception import NoTokenException
+from app.authentication.no_questionnaire_state_exception import (
+    NoQuestionnaireStateException,
+)
 from app.globals import get_metadata, get_session_store, get_session_timeout_in_seconds
 from app.helpers.language_helper import handle_language
 from app.helpers.schema_helpers import with_schema
 from app.helpers.session_helpers import with_questionnaire_store
 from app.helpers.template_helpers import get_census_base_url, render_template
+from app.helpers.url_param_serializer import URLParamSerializer
 from app.questionnaire.location import InvalidLocationException
 from app.questionnaire.router import Router
 from app.utilities.schema import load_schema_from_session_data
 from app.views.contexts.hub_context import HubContext
 from app.views.handlers.block_factory import get_block_handler
+from app.views.handlers.confirmation_email import ConfirmationEmail
 from app.views.handlers.section import SectionHandler
 from app.views.handlers.submission import SubmissionHandler
 from app.views.handlers.thank_you import ThankYou
@@ -34,11 +38,12 @@ post_submission_blueprint = Blueprint(
 )
 
 
+@login_required
 @questionnaire_blueprint.before_request
 def before_questionnaire_request():
     metadata = get_metadata(current_user)
     if not metadata:
-        raise NoTokenException(401)
+        raise NoQuestionnaireStateException(401)
 
     logger.bind(
         tx_id=metadata["tx_id"],
@@ -57,11 +62,12 @@ def before_questionnaire_request():
     g.schema = load_schema_from_session_data(session_store.session_data)
 
 
+@login_required
 @post_submission_blueprint.before_request
 def before_post_submission_request():
     session_store = get_session_store()
     if not session_store or not session_store.session_data:
-        raise NoTokenException(401)
+        raise NoQuestionnaireStateException(401)
 
     session_data = session_store.session_data
 
@@ -76,7 +82,7 @@ def before_post_submission_request():
     )
 
 
-@questionnaire_blueprint.route("/", methods=["GET"])
+@questionnaire_blueprint.route("/", methods=["GET", "POST"])
 @login_required
 @with_questionnaire_store
 @with_schema
@@ -93,6 +99,15 @@ def get_questionnaire(schema, questionnaire_store):
         redirect_location_url = router.get_first_incomplete_location_in_survey_url()
         return redirect(redirect_location_url)
 
+    if request.method == "POST":
+        if router.is_survey_complete():
+            submission_handler = SubmissionHandler(
+                schema, questionnaire_store, router.full_routing_path()
+            )
+            submission_handler.submit_questionnaire()
+            return redirect(url_for("post_submission.get_thank_you"))
+        return redirect(router.get_first_incomplete_location_in_survey_url())
+
     language_code = get_session_store().session_data.language_code
 
     hub = HubContext(
@@ -108,40 +123,13 @@ def get_questionnaire(schema, questionnaire_store):
         router.is_survey_complete(), router.enabled_section_ids
     )
 
-    return render_template("hub", content=hub_context)
-
-
-@questionnaire_blueprint.route("/", methods=["POST"])
-@login_required
-@with_questionnaire_store
-@with_schema
-def post_questionnaire(schema, questionnaire_store):
-    router = Router(
-        schema,
-        questionnaire_store.answer_store,
-        questionnaire_store.list_store,
-        questionnaire_store.progress_store,
-        questionnaire_store.metadata,
-    )
-
-    if not schema.is_hub_enabled():
-        raise NotFound
-
-    if router.is_survey_complete():
-        submission_handler = SubmissionHandler(
-            schema, questionnaire_store, router.full_routing_path()
-        )
-        submission_handler.submit_questionnaire()
-        return redirect(url_for("post_submission.get_thank_you"))
-
-    return redirect(router.get_first_incomplete_location_in_survey_url())
+    return render_template("hub", content=hub_context, page_title=hub_context["title"])
 
 
 @questionnaire_blueprint.route("sections/<section_id>/", methods=["GET", "POST"])
 @questionnaire_blueprint.route(
     "sections/<section_id>/<list_item_id>/", methods=["GET", "POST"]
 )
-@login_required
 @with_questionnaire_store
 @with_schema
 def get_section(schema, questionnaire_store, section_id, list_item_id=None):
@@ -178,7 +166,6 @@ def get_section(schema, questionnaire_store, section_id, list_item_id=None):
 @questionnaire_blueprint.route(
     "<list_name>/<list_item_id>/<block_id>/", methods=["GET", "POST"]
 )
-@login_required
 @with_questionnaire_store
 @with_schema
 def block(schema, questionnaire_store, block_id, list_name=None, list_item_id=None):
@@ -236,7 +223,6 @@ def block(schema, questionnaire_store, block_id, list_name=None, list_item_id=No
 @questionnaire_blueprint.route(
     "<block_id>/<list_item_id>/to/<to_list_item_id>/", methods=["GET", "POST"]
 )
-@login_required
 @with_questionnaire_store
 @with_schema
 def relationship(schema, questionnaire_store, block_id, list_item_id, to_list_item_id):
@@ -248,6 +234,7 @@ def relationship(schema, questionnaire_store, block_id, list_item_id, to_list_it
             to_list_item_id=to_list_item_id,
             questionnaire_store=questionnaire_store,
             language=flask_babel.get_locale().language,
+            list_name=schema.get_block(block_id)["for_list"],
             request_args=request.args,
             form_data=request.form,
         )
@@ -270,16 +257,75 @@ def relationship(schema, questionnaire_store, block_id, list_item_id, to_list_it
     return redirect(next_location_url)
 
 
-@post_submission_blueprint.route("thank-you/", methods=["GET"])
-@login_required
+@post_submission_blueprint.route("thank-you/", methods=["GET", "POST"])
 @with_schema
 def get_thank_you(schema):
-    thank_you = ThankYou()
+    thank_you = ThankYou(schema)
+
+    if request.method == "POST":
+        if not thank_you.confirmation_email:
+            raise NotFound
+
+        confirmation_email = thank_you.confirmation_email
+
+        if confirmation_email.form.validate():
+            confirmation_email.handle_post()
+            return redirect(
+                url_for(
+                    "post_submission.get_confirmation_email_sent",
+                    email=confirmation_email.get_url_safe_serialized_email(),
+                )
+            )
 
     return render_template(
         template=thank_you.template,
         content=thank_you.get_context(),
         survey_id=schema.json["survey_id"],
+        page_title=thank_you.get_page_title(),
+    )
+
+
+@post_submission_blueprint.route("confirmation-email/send", methods=["GET", "POST"])
+def send_confirmation_email():
+    if not get_session_store().session_data.confirmation_email_sent:
+        raise NotFound
+
+    confirmation_email = ConfirmationEmail()
+
+    if request.method == "POST" and confirmation_email.form.validate():
+        confirmation_email.handle_post()
+        return redirect(
+            url_for(
+                "post_submission.get_confirmation_email_sent",
+                email=confirmation_email.get_url_safe_serialized_email(),
+            )
+        )
+
+    return render_template(
+        template="confirmation-email",
+        content=confirmation_email.get_context(),
+        hide_signout_button=True,
+        page_title=confirmation_email.get_page_title(),
+    )
+
+
+@post_submission_blueprint.route("confirmation-email/sent", methods=["GET"])
+def get_confirmation_email_sent():
+    if not get_session_store().session_data.confirmation_email_sent:
+        raise NotFound
+
+    email = URLParamSerializer().loads(request.args.get("email"))
+
+    return render_template(
+        template="confirmation-email-sent",
+        content={
+            "email": email,
+            "send_confirmation_email_url": url_for(
+                "post_submission.send_confirmation_email"
+            ),
+            "hide_signout_button": False,
+            "sign_out_url": url_for("session.get_sign_out"),
+        },
     )
 
 
