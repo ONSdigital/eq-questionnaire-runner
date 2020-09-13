@@ -191,7 +191,8 @@ class IndividualResponseHandler:
 
     def _publish_fulfilment_request(self):
         message = self._get_fulfilment_request_payload()
-        return current_app.eq["publisher"].publish_and_resolve_message(message)
+        topic_id = current_app.config["EQ_PUB_SUB_TOPIC_ID"]
+        return current_app.eq["publisher"].publish(topic_id, message)
 
     def handle_get(self):
         individual_section_first_block_id = self._schema.get_first_block_id_for_section(

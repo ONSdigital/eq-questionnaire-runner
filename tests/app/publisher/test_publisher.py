@@ -8,17 +8,15 @@ from app.publisher.publication_failed import PublicationFailed
 
 
 class TestPubSub(TestCase):
+    topic_id = "test-topic-id"
+    topic_path = f"projects/test-project-id/topics/{topic_id}"
+
     def setUp(self) -> None:
         with patch(
             "app.publisher.publisher.google.auth._default._get_explicit_environ_credentials",
             return_value=(Mock(), "test-project-id"),
         ):
-            self.publisher = PubSub(topic_id="test-topic-id")
-
-    def test_pub_sub_topic_path(self):
-        assert (
-            self.publisher.topic_path == "projects/test-project-id/topics/test-topic-id"
-        )
+            self.publisher = PubSub()
 
     # pylint: disable=protected-access
     def test_publish(self):
@@ -26,15 +24,15 @@ class TestPubSub(TestCase):
         future.add_done_callback = Mock(spec=["__call__"])
 
         # Use a mock in lieu of the actual batch class.
-        batch = Mock(spec=self.publisher._batch_class)
+        batch = Mock(spec=self.publisher._client._batch_class)
 
         # Set the mock up to accepts the message.
         batch.publish.side_effect = (future,)
 
-        self.publisher._set_batch(self.publisher.topic_path, batch)
+        self.publisher._client._set_batch(self.topic_path, batch)
 
         # Publish message.
-        future = self.publisher._publish(b"test-message")
+        future = self.publisher._publish(self.topic_id, b"test-message")
         assert future is sentinel.future
 
         # Check mock.
@@ -43,6 +41,6 @@ class TestPubSub(TestCase):
     def test_resolving_message_raises_exception_on_error(self):
         with self.assertRaises(PublicationFailed) as ex:
             # Try resolve the future with an invalid credentials
-            self.publisher.publish_and_resolve_message(b"test-message")
+            self.publisher.publish(self.topic_id, b"test-message")
 
         assert "403 The request is missing a valid API key." in str(ex.exception)

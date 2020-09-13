@@ -334,7 +334,7 @@ def setup_publisher(application):
         if not topic_id:
             raise Exception("Setting EQ_PUB_SUB_TOPIC_ID Missing")
 
-        application.eq["publisher"] = PubSub(topic_id)
+        application.eq["publisher"] = PubSub()
 
     elif application.config["EQ_PUBLISHER_BACKEND"] == "log":
         application.eq["publisher"] = LogPublisher()

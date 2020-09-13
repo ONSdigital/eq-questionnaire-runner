@@ -1,3 +1,5 @@
+from abc import ABC, abstractmethod
+
 import google
 from google.cloud.pubsub_v1 import PublisherClient
 from google.cloud.pubsub_v1.futures import Future
@@ -8,30 +10,37 @@ from app.publisher.publication_failed import PublicationFailed
 logger = get_logger(__name__)
 
 
-class PubSub(PublisherClient):
-    def __init__(self, topic_id):
-        super().__init__()
+class Publisher(ABC):
+    @abstractmethod
+    def publish(self, topic_id, message):
+        pass  # pragma: no cover
 
-        _, project_id = google.auth.default()
-        self.topic_path = super().topic_path(project_id, topic_id)
 
-    def _publish(self, message):
-        logger.info("publishing message")
-        publish_future: Future = super().publish(self.topic_path, message)
+class PubSub(Publisher):
+    def __init__(self):
+        self._client = PublisherClient()
+        _, self._project_id = google.auth.default()
 
+    def _publish(self, topic_id, message):
+        logger.info(f"publishing message", topic_id=topic_id)
+        topic_path = self._client.topic_path(self._project_id, topic_id)
+        publish_future: Future = self._client.publish(topic_path, message)
         return publish_future
 
-    def publish_and_resolve_message(self, message: bytes):
-        publish_future = self._publish(message)
+    def publish(self, topic_id, message: bytes):
+        publish_future = self._publish(topic_id, message)
         try:
             # Resolve the future
-            publish_future.result()
+            message_id = publish_future.result()
+            logger.info(  # pragma: no cover
+                f"message published successfully",
+                topic_id=topic_id,
+                message_id=message_id,
+            )
         except Exception as ex:  # pylint:disable=broad-except
             raise PublicationFailed(ex)
 
 
-class LogPublisher:
-    @staticmethod
-    def publish_and_resolve_message(message):
-        logger.info("publishing message")
-        logger.info("message", message=message)
+class LogPublisher(Publisher):
+    def publish(self, topic_id, message: bytes):
+        logger.info("publishing message", topic_id=topic_id, message=message)
