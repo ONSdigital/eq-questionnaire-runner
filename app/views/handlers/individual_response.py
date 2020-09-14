@@ -186,9 +186,10 @@ class IndividualResponseHandler:
 
         return json.dumps(message).encode("utf-8")
 
-    def _publish_fulfilment_request(self):
-        message = self._get_fulfilment_request_payload()
+    def _publish_fulfilment_request(self, serialized_mobile_number=None):
         topic_id = current_app.config["EQ_FULFILMENT_TOPIC_ID"]
+        mobile_number = URLParamSerializer().loads(serialized_mobile_number) if serialized_mobile_number else None
+        message = self._get_fulfilment_request_payload(mobile_number=mobile_number)
         return current_app.eq["publisher"].publish(topic_id, message)
 
     def handle_get(self):
@@ -888,12 +889,14 @@ class IndividualResponseTextConfirmHandler(IndividualResponseHandler):
     def handle_post(self):
         if self.selected_option == self.confirm_option:
             self._update_section_status(CompletionStatus.INDIVIDUAL_RESPONSE_REQUESTED)
-            self._publish_fulfilment_request()
+
+            serialized_mobile_number = self._request_args.get("mobile_number")
+            self._publish_fulfilment_request(serialized_mobile_number)
             return redirect(
                 url_for(
                     "individual_response.get_individual_response_text_message_confirmation",
                     journey=self._request_args.get("journey"),
-                    mobile_number=self._request_args.get("mobile_number"),
+                    mobile_number=serialized_mobile_number,
                 )
             )
 
