@@ -6,11 +6,6 @@ from tests.integration.integration_test_case import IntegrationTestCase
 
 
 class TestQuestionnaireListCollector(IntegrationTestCase):
-    def get_previous_link(self):
-        selector = "#top-previous"
-        selected = self.getHtmlSoup().select(selector)
-        return selected[0].get("href")
-
     def get_link(self, row_index, text):
         selector = f"tbody:nth-child({row_index}) td:last-child a"
         selected = self.getHtmlSoup().select(selector)
