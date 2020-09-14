@@ -2,9 +2,12 @@ from app.questionnaire.relationship_location import RelationshipLocation
 
 
 class RelationshipRouter:
-    def __init__(self, section_id, block_id, list_item_ids):
+    def __init__(self, section_id, block_id, list_item_ids, list_name):
         self.path = self._generate_relationships_routing_path(
-            section_id=section_id, block_id=block_id, list_item_ids=list_item_ids
+            section_id=section_id,
+            block_id=block_id,
+            list_item_ids=list_item_ids,
+            list_name=list_name,
         )
 
     def can_access_location(self, location):
@@ -32,7 +35,9 @@ class RelationshipRouter:
         return self.path[location_index - 1].url()
 
     @staticmethod
-    def _generate_relationships_routing_path(section_id, block_id, list_item_ids):
+    def _generate_relationships_routing_path(
+        section_id, block_id, list_item_ids, list_name
+    ):
         path = []
         for from_item in list_item_ids:
             from_index = list_item_ids.index(from_item)
@@ -43,6 +48,7 @@ class RelationshipRouter:
                         block_id=block_id,
                         list_item_id=from_item,
                         to_list_item_id=to_item,
+                        list_name=list_name,
                     )
                 )
 

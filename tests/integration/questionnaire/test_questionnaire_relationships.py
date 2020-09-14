@@ -1,16 +1,7 @@
-from tests.integration.integration_test_case import IntegrationTestCase
+from . import QuestionnaireTestCase
 
 
-class TestQuestionnaireRelationships(IntegrationTestCase):
-    def add_person(self, first_name, last_name):
-        self.post({"anyone-else": "Yes"})
-        self.post({"first-name": first_name, "last-name": last_name})
-
-    def get_previous_link(self):
-        selector = "#top-previous"
-        selected = self.getHtmlSoup().select(selector)
-        return selected[0].get("href")
-
+class TestQuestionnaireRelationships(QuestionnaireTestCase):
     def remove_list_item(self, rowIndex):
         self.get("questionnaire/list-collector")
         selector = f"[data-qa='list-item-remove-{rowIndex}-link']"

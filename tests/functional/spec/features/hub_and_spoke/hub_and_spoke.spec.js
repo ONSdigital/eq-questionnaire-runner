@@ -12,36 +12,40 @@ import HubPage from "../../../base_pages/hub.page.js";
 describe("Feature: Hub and Spoke", () => {
   const hubAndSpokeSchema = "test_hub_and_spoke.json";
 
-  it("When a user first views the Hub, The Hub should be in a continue state", () => {
-    browser.openQuestionnaire(hubAndSpokeSchema);
-    expect($(HubPage.submit()).getText()).to.contain("Continue");
-    expect($(HubPage.heading()).getText()).to.contain("Choose another section to complete");
-    expect($(HubPage.summaryRowState("employment-section")).getText()).to.contain("Not started");
-    expect($(HubPage.summaryRowState("accommodation-section")).getText()).to.contain("Not started");
-    expect($(HubPage.summaryRowState("household-section")).getText()).to.contain("Not started");
-  });
-
-  it("When a user views the Hub, any section with show_on_hub set to true should appear", () => {
-    browser.openQuestionnaire(hubAndSpokeSchema);
-    expect($(HubPage.summaryItems()).getText()).to.contain("Employment");
-    expect($(HubPage.summaryItems()).getText()).to.contain("Accommodation");
-    expect($(HubPage.summaryItems()).getText()).to.contain("Household residents");
-  });
-
-  it("When a user views the Hub, any section with show_on_hub set to false should not appear", () => {
-    browser.openQuestionnaire(hubAndSpokeSchema);
-    expect($(HubPage.summaryItems()).getText()).not.to.contain("Relationships");
-  });
-
-  describe("Given a user is on the Hub page", () => {
-    it("When the user click the 'Save and sign out' button then they should be on the signed out page", () => {
+  describe("Given I am completing the test_hub_context schema,", () => {
+    beforeEach("load the survey", () => {
       browser.openQuestionnaire(hubAndSpokeSchema);
+    });
 
+    it("When a user first views the Hub, The Hub should be in a continue state", () => {
+      expect($(HubPage.submit()).getText()).to.contain("Continue");
+      expect($(HubPage.heading()).getText()).to.contain("Choose another section to complete");
+      expect($(HubPage.summaryRowState("employment-section")).getText()).to.contain("Not started");
+      expect($(HubPage.summaryRowState("accommodation-section")).getText()).to.contain("Not started");
+      expect($(HubPage.summaryRowState("household-section")).getText()).to.contain("Not started");
+    });
+
+    it("When a user views the Hub, any section with show_on_hub set to true should appear", () => {
+      expect($(HubPage.summaryItems()).getText()).to.contain("Employment");
+      expect($(HubPage.summaryItems()).getText()).to.contain("Accommodation");
+      expect($(HubPage.summaryItems()).getText()).to.contain("Household residents");
+    });
+
+    it("When a user views the Hub, any section with show_on_hub set to false should not appear", () => {
+      expect($(HubPage.summaryItems()).getText()).not.to.contain("Relationships");
+    });
+
+    it("When the user click the 'Save and sign out' button then they should be on the signed out page", () => {
       $(HubPage.saveSignOut()).click();
 
       const expectedUrl = browser.getUrl();
 
       expect(expectedUrl).to.contain("/signed-out");
+    });
+
+    it("When a user views the Hub, Then the page title should be Choose another section to complete", () => {
+      const pageTitle = browser.getTitle();
+      expect(pageTitle).to.equal("Choose another section to complete");
     });
   });
 
