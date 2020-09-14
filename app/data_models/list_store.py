@@ -20,10 +20,12 @@ class ListModel:
         name: str,
         items: Optional[List] = None,
         primary_person: Optional[str] = None,
+        same_name_items: Optional[List] = None,
     ):
         self.name = name
         self.items = items or []
         self.primary_person = primary_person
+        self.same_name_items = same_name_items or []
 
     def __eq__(self, other):
         if not isinstance(other, ListModel):
@@ -52,6 +54,9 @@ class ListModel:
 
         if self.primary_person:
             serialized["primary_person"] = self.primary_person
+
+        if self.same_name_items:
+            serialized["same_name_items"] = self.same_name_items
 
         return serialized
 

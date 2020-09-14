@@ -4,6 +4,11 @@ from app.views.handlers.question import Question
 
 class PrimaryPersonQuestion(Question):
     @property
+    def parent_block(self):
+        parent_block_id = self._schema.parent_id_map[self.rendered_block["id"]]
+        return self._schema.get_block(parent_block_id)
+
+    @property
     def parent_location(self):
         parent_id = self._schema.parent_id_map[self.rendered_block["id"]]
         return Location(
@@ -34,7 +39,11 @@ class PrimaryPersonQuestion(Question):
         )
 
     def handle_post(self):
+        same_name_answer_ids = self.parent_block.get("same_name_answer_ids")
         self.questionnaire_store_updater.update_answers(self.form.data)
+        self.questionnaire_store_updater.update_same_name_items(
+            self.parent_block["for_list"], same_name_answer_ids
+        )
 
         self.questionnaire_store_updater.add_completed_location(
             location=self.parent_location

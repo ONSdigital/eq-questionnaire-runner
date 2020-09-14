@@ -1,5 +1,5 @@
 from itertools import combinations
-from typing import Iterable, List, Optional, Tuple, Union
+from typing import Dict, Iterable, List, Optional, Tuple, Union
 
 from app.data_models.answer_store import Answer
 from app.data_models.progress_store import CompletionStatus
@@ -158,18 +158,43 @@ class QuestionnaireStoreUpdater:
     def get_relationship_answers_for_list_name(
         self, list_name: str
     ) -> Union[List[Answer], None]:
-        assosciated_relationship_collectors = (
+        associated_relationship_collectors = (
             self._get_relationship_collectors_by_list_name(list_name)
         )
-        if not assosciated_relationship_collectors:
+        if not associated_relationship_collectors:
             return None
 
         relationship_answer_ids = [
             self._schema.get_relationship_answer_id_for_block(block["id"])
-            for block in assosciated_relationship_collectors
+            for block in associated_relationship_collectors
         ]
 
         return self._answer_store.get_answers_by_answer_id(relationship_answer_ids)
+
+    def update_same_name_items(
+        self, list_name: str, same_name_answer_ids: Optional[List[str]]
+    ):
+        if not same_name_answer_ids:
+            return
+
+        same_name_items = set()
+        people_names: Dict[str, list] = {}
+
+        list_model = self._questionnaire_store.list_store[list_name]
+
+        for current_list_item_id in list_model:
+            answers = self._questionnaire_store.answer_store.get_answers_by_answer_id(
+                answer_ids=same_name_answer_ids, list_item_id=current_list_item_id
+            )
+            current_names = [answer.value.casefold() for answer in answers if answer]
+            current_list_item_name = " ".join(current_names)
+
+            if matching_list_item_id := people_names.get(current_list_item_name):
+                same_name_items |= {current_list_item_id, matching_list_item_id}
+            else:
+                people_names[current_list_item_name] = current_list_item_id
+
+        list_model.same_name_items = list(same_name_items)
 
     def remove_relationship_answers_for_list_item_id(
         self, list_item_id: str, answers: List
