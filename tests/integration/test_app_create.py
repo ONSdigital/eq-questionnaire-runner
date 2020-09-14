@@ -7,7 +7,7 @@ from flask import Flask, request
 from flask_babel import Babel
 from mock import patch
 
-from app.publisher import LogPublisher, PubSub
+from app.publisher import LogPublisher, PubSubPublisher
 from app.setup import create_app
 from app.storage.datastore import Datastore
 from app.storage.dynamodb import Dynamodb
@@ -253,7 +253,7 @@ class TestCreateApp(unittest.TestCase):  # pylint: disable=too-many-public-metho
             application = create_app(self._setting_overrides)
 
         # Then
-        assert isinstance(application.eq["publisher"], PubSub)
+        assert isinstance(application.eq["publisher"], PubSubPublisher)
 
     def test_defaults_to_adding_the_log_publisher_to_the_application(self):
         # When

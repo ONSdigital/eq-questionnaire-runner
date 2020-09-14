@@ -16,7 +16,7 @@ class Publisher(ABC):
         pass  # pragma: no cover
 
 
-class PubSub(Publisher):
+class PubSubPublisher(Publisher):
     def __init__(self):
         self._client = PublisherClient()
         _, self._project_id = google.auth.default()

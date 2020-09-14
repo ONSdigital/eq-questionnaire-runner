@@ -1,3 +1,3 @@
-from .publisher import LogPublisher, PubSub
+from .publisher import LogPublisher, PubSubPublisher
 
-__all__ = ["PubSub", "LogPublisher"]
+__all__ = ["PubSubPublisher", "LogPublisher"]

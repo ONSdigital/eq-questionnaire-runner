@@ -3,7 +3,7 @@ from unittest.mock import Mock, patch, sentinel
 
 from google.cloud.pubsub_v1.proto.pubsub_pb2 import PubsubMessage
 
-from app.publisher import PubSub
+from app.publisher import PubSubPublisher
 from app.publisher.publication_failed import PublicationFailed
 
 
@@ -16,7 +16,7 @@ class TestPubSub(TestCase):
             "app.publisher.publisher.google.auth._default._get_explicit_environ_credentials",
             return_value=(Mock(), "test-project-id"),
         ):
-            self.publisher = PubSub()
+            self.publisher = PubSubPublisher()
 
     # pylint: disable=protected-access
     def test_publish(self):

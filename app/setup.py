@@ -26,7 +26,7 @@ from app.authentication.user_id_generator import UserIDGenerator
 from app.globals import get_session_store
 from app.helpers import get_span_and_trace
 from app.keys import KEY_PURPOSE_SUBMISSION
-from app.publisher import LogPublisher, PubSub
+from app.publisher import LogPublisher, PubSubPublisher
 from app.secrets import SecretStore, validate_required_secrets
 from app.storage import Datastore, Dynamodb, Redis
 from app.submitter import GCSSubmitter, LogSubmitter, RabbitMQSubmitter
@@ -329,7 +329,7 @@ def setup_submitter(application):
 
 def setup_publisher(application):
     if application.config["EQ_PUBLISHER_BACKEND"] == "pubsub":
-        application.eq["publisher"] = PubSub()
+        application.eq["publisher"] = PubSubPublisher()
 
     elif application.config["EQ_PUBLISHER_BACKEND"] == "log":
         application.eq["publisher"] = LogPublisher()
