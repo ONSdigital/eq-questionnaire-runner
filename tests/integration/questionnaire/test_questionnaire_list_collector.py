@@ -1,19 +1,9 @@
-from tests.integration.integration_test_case import IntegrationTestCase
+from . import QuestionnaireTestCase
 
 
-class TestQuestionnaireListCollector(IntegrationTestCase):
-    def add_person(self, first_name, last_name):
-        self.post({"anyone-else": "Yes"})
-
-        self.post({"first-name": first_name, "last-name": last_name})
-
+class TestQuestionnaireListCollector(QuestionnaireTestCase):
     def get_link(self, rowIndex, text):
         selector = f"[data-qa='list-item-{text}-{rowIndex}-link']"
-        selected = self.getHtmlSoup().select(selector)
-        return selected[0].get("href")
-
-    def get_previous_link(self):
-        selector = "#top-previous"
         selected = self.getHtmlSoup().select(selector)
         return selected[0].get("href")
 
@@ -105,7 +95,7 @@ class TestQuestionnaireListCollector(IntegrationTestCase):
 
         self.get(john_change_link)
 
-        self.get(self.get_previous_link())
+        self.previous()
 
         self.assertEqualUrl("/questionnaire/list-collector/")
 
@@ -113,7 +103,7 @@ class TestQuestionnaireListCollector(IntegrationTestCase):
 
         self.assertInUrl("remove")
 
-        self.get(self.get_previous_link())
+        self.previous()
 
         self.assertEqualUrl("/questionnaire/list-collector/")
 

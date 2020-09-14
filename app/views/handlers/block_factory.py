@@ -69,6 +69,7 @@ def get_block_handler(
             block_id=block_id,
             list_item_id=list_item_id,
             to_list_item_id=to_list_item_id,
+            list_name=list_name,
         )
     else:
         location = Location(

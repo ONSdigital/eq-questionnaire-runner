@@ -168,12 +168,17 @@ class Question(BlockHandler):
             variant_block["question"], self._current_location.list_item_id
         )
 
-        if variant_block["question"]:
-            self.page_title = self._get_safe_page_title(
-                variant_block["question"]["title"]
-            )
+        if custom_page_title := variant_block.get("page_title"):
+            page_title_vars = self._resolve_custom_page_title_vars()
+            self.page_title = custom_page_title.format(**page_title_vars)
 
-        return {**variant_block, **{"question": rendered_question}}
+        elif question := variant_block["question"]:
+            self.page_title = self._get_safe_page_title(question["title"])
+
+        return {
+            **variant_block,
+            **{"question": rendered_question},
+        }
 
     def get_return_to_hub_url(self):
         if (

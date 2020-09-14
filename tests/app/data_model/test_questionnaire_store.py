@@ -3,9 +3,9 @@ from unittest.mock import MagicMock
 
 import simplejson as json
 
+from app.data_models import QuestionnaireStore
 from app.data_models.answer_store import AnswerStore
 from app.data_models.progress_store import CompletionStatus, ProgressStore
-from app.data_models.questionnaire_store import QuestionnaireStore
 
 
 def get_basic_input():

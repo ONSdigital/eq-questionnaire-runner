@@ -123,7 +123,7 @@ def get_questionnaire(schema, questionnaire_store):
         router.is_survey_complete(), router.enabled_section_ids
     )
 
-    return render_template("hub", content=hub_context)
+    return render_template("hub", content=hub_context, page_title=hub_context["title"])
 
 
 @questionnaire_blueprint.route("sections/<section_id>/", methods=["GET", "POST"])
@@ -234,6 +234,7 @@ def relationship(schema, questionnaire_store, block_id, list_item_id, to_list_it
             to_list_item_id=to_list_item_id,
             questionnaire_store=questionnaire_store,
             language=flask_babel.get_locale().language,
+            list_name=schema.get_block(block_id)["for_list"],
             request_args=request.args,
             form_data=request.form,
         )
