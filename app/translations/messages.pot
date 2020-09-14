@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2020-09-10 12:01+0100\n"
+"POT-Creation-Date: 2020-09-11 13:59+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -430,48 +430,52 @@ msgstr ""
 msgid "Thank you for completing the census"
 msgstr ""
 
-#: templates/census-thank-you.html:29
+#: templates/census-thank-you.html:25
+msgid "Thank you for completing the survey"
+msgstr ""
+
+#: templates/census-thank-you.html:31
 msgid ""
 "Your individual census has been submitted for "
 "<strong>{display_address}</strong>"
 msgstr ""
 
-#: templates/census-thank-you.html:31
+#: templates/census-thank-you.html:33
 msgid ""
 "Your census has been submitted for the household at "
 "<strong>{display_address}</strong>"
 msgstr ""
 
-#: templates/census-thank-you.html:33
+#: templates/census-thank-you.html:35
 msgid ""
 "Your census has been submitted for the accommodation at "
 "<strong>{display_address}</strong>"
 msgstr ""
 
-#: templates/census-thank-you.html:34
+#: templates/census-thank-you.html:36
 msgid ""
 "Anyone staying at this accommodation for at least 6 months needs to fill "
 "in their own individual census, including staff. Your Census Officer will"
 " provide you with census forms for your residents."
 msgstr ""
 
-#: templates/census-thank-you.html:40
+#: templates/census-thank-you.html:42
 msgid ""
 "Your personal information is protected by law and will be kept "
 "confidential"
 msgstr ""
 
-#: templates/census-thank-you.html:44
+#: templates/census-thank-you.html:46
 msgid "Get confirmation email"
 msgstr ""
 
-#: templates/census-thank-you.html:45
+#: templates/census-thank-you.html:47
 msgid ""
 "If you would like to be sent confirmation that you have completed your "
 "census enter your email address"
 msgstr ""
 
-#: templates/census-thank-you.html:55
+#: templates/census-thank-you.html:57
 msgid ""
 "Make sure you <a href='{url}'>leave this page</a> or close your browser "
 "if using a shared device"
