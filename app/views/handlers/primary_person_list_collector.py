@@ -38,7 +38,7 @@ class PrimaryPersonListCollector(Question):
             self.questionnaire_store_updater.remove_primary_person(list_name)
 
             self.questionnaire_store_updater.update_same_name_items(
-                list_name, self.rendered_block.get("same_name_answer_ids", [])
+                list_name, self.rendered_block.get("same_name_answer_ids")
             )
             # This method could determine the current section's status incorrectly, as
             # the call to update the answer store takes place in

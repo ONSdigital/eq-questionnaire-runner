@@ -57,7 +57,7 @@ class ListAction(Question):
     def handle_post(self):
         self.questionnaire_store_updater.update_same_name_items(
             self.parent_block["for_list"],
-            self.parent_block.get("same_name_answer_ids", []),
+            self.parent_block.get("same_name_answer_ids"),
         )
         # Clear the answer from the confirmation question on the list collector question
         answer_ids_to_remove = self._schema.get_answer_ids_for_block(

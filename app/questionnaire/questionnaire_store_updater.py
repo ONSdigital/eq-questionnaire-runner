@@ -171,7 +171,9 @@ class QuestionnaireStoreUpdater:
 
         return self._answer_store.get_answers_by_answer_id(relationship_answer_ids)
 
-    def update_same_name_items(self, list_name: str, same_name_answer_ids: List[str]):
+    def update_same_name_items(
+        self, list_name: str, same_name_answer_ids: Optional[List[str]]
+    ):
         if not same_name_answer_ids:
             return
 
@@ -187,8 +189,7 @@ class QuestionnaireStoreUpdater:
             current_names = [answer.value.casefold() for answer in answers if answer]
             current_list_item_name = " ".join(current_names)
 
-            if current_list_item_name in people_names:
-                matching_list_item_id = people_names[current_list_item_name]
+            if matching_list_item_id := people_names.get(current_list_item_name):
                 same_name_items |= {current_list_item_id, matching_list_item_id}
             else:
                 people_names[current_list_item_name] = current_list_item_id
