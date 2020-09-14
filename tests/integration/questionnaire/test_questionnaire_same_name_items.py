@@ -12,7 +12,7 @@ class TestQuestionnaireSameNameItems(IntegrationTestCase):
 
         return filtered[0].get("href")
 
-    def test_dump_same_name_items(self):
+    def test_same_name_items(self):
         self.launchSurvey("test_list_collector_same_name_items", roles=["dumper"])
 
         self.post({"you-live-here": "Yes"})
@@ -30,7 +30,7 @@ class TestQuestionnaireSameNameItems(IntegrationTestCase):
         assert item_id_a in actual["LISTS"][0]["same_name_items"]
         assert item_id_b in actual["LISTS"][0]["same_name_items"]
 
-    def test_dump_same_name_items_edit_primary(self):
+    def test_same_name_items_edit_primary(self):
         self.launchSurvey("test_list_collector_same_name_items", roles=["dumper"])
 
         self.post({"you-live-here": "Yes"})
@@ -50,7 +50,7 @@ class TestQuestionnaireSameNameItems(IntegrationTestCase):
 
         assert "same_name_items" not in actual["LISTS"][0]
 
-    def test_dump_same_name_remove_primary(self):
+    def test_same_name_remove_primary(self):
         self.launchSurvey("test_list_collector_same_name_items", roles=["dumper"])
 
         self.post({"you-live-here": "Yes"})
@@ -68,7 +68,7 @@ class TestQuestionnaireSameNameItems(IntegrationTestCase):
 
         assert "same_name_items" not in actual["LISTS"][0]
 
-    def test_dump_same_name_items_remove_non_primary(self):
+    def test_same_name_items_remove_non_primary(self):
         self.launchSurvey("test_list_collector_same_name_items", roles=["dumper"])
 
         self.post({"you-live-here": "Yes"})
@@ -88,7 +88,7 @@ class TestQuestionnaireSameNameItems(IntegrationTestCase):
 
         assert "same_name_items" not in actual["LISTS"][0]
 
-    def test_dump_same_name_items_edit_non_primary(self):
+    def test_same_name_items_edit_non_primary(self):
         self.launchSurvey("test_list_collector_same_name_items", roles=["dumper"])
 
         self.post({"you-live-here": "Yes"})
