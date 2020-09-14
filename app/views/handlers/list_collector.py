@@ -47,7 +47,6 @@ class ListCollector(Question):
         if answer_action and answer_action["type"] == "RedirectToListAddBlock":
             self._is_adding = True
             self.questionnaire_store_updater.update_answers(self.form.data)
-
             self.questionnaire_store_updater.save()
         else:
             return super().handle_post()

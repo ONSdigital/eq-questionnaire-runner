@@ -100,7 +100,7 @@ def test_delete_list_item_id_does_not_raise():
         store.delete_list_item("people", "123456")
     except ValueError:
         # Not necessary, but keeps it explicit.
-        pytest.fail("Deleting a non-existant list item raised an error")
+        pytest.fail("Deleting a non-existent list item raised an error")
 
 
 def test_list_representation_equal():

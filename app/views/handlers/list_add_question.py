@@ -12,5 +12,4 @@ class ListAddQuestion(ListAction):
             self.parent_block["for_list"]
         )
         self.questionnaire_store_updater.update_answers(self.form.data, list_item_id)
-
         return super().handle_post()

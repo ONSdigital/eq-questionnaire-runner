@@ -14,7 +14,11 @@ from app.questionnaire.questionnaire_store_updater import QuestionnaireStoreUpda
 
 def fake_list_store():
     serialized = [
-        {"name": "people", "primary_person": "abcdef", "items": ["abcdef", "xyzabc"]},
+        {
+            "name": "people",
+            "primary_person": "abcdef",
+            "items": ["abcdef", "ghijkl", "xyzabc"],
+        },
         {"name": "pets", "items": ["tuvwxy"]},
     ]
 
@@ -297,3 +301,49 @@ class TestQuestionnaireStoreUpdater(unittest.TestCase):
                     "test-relationship-collector"
                 )
             )
+
+    def test_update_same_name_items(self):
+        answer_store = AnswerStore(
+            existing_answers=[
+                {"answer_id": "first-name", "value": "Joe", "list_item_id": "abcdef"},
+                {
+                    "answer_id": "middle-name",
+                    "value": "Brian",
+                    "list_item_id": "abcdef",
+                },
+                {"answer_id": "last-name", "value": "Bloggs", "list_item_id": "abcdef"},
+                {"answer_id": "first-name", "value": "Joe", "list_item_id": "ghijkl"},
+                {
+                    "answer_id": "middle-name",
+                    "value": "Roger",
+                    "list_item_id": "ghijkl",
+                },
+                {"answer_id": "last-name", "value": "Bloggs", "list_item_id": "ghijkl"},
+                {
+                    "answer_id": "first-name",
+                    "value": "Martha",
+                    "list_item_id": "xyzabc",
+                },
+                {"answer_id": "last-name", "value": "Bloggs", "list_item_id": "xyzabc"},
+            ]
+        )
+        list_store = fake_list_store()
+
+        questionnaire_store = MagicMock(
+            spec=QuestionnaireStore,
+            completed_blocks=[],
+            answer_store=answer_store,
+            list_store=list_store,
+            progress_store=ProgressStore(),
+        )
+
+        questionnaire_store_updater = QuestionnaireStoreUpdater(
+            self.location, self.schema, questionnaire_store, self.current_question
+        )
+
+        questionnaire_store_updater.update_same_name_items(
+            "people", ["first-name", "last-name"]
+        )
+
+        assert "abcdef" in list_store["people"].same_name_items
+        assert "ghijkl" in list_store["people"].same_name_items
