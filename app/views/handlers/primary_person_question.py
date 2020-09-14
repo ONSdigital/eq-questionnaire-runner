@@ -39,7 +39,7 @@ class PrimaryPersonQuestion(Question):
         )
 
     def handle_post(self):
-        same_name_answer_ids = self.parent_block.get("same_name_answer_ids", [])
+        same_name_answer_ids = self.parent_block.get("same_name_answer_ids")
         self.questionnaire_store_updater.update_answers(self.form.data)
         self.questionnaire_store_updater.update_same_name_items(
             self.parent_block["for_list"], same_name_answer_ids
