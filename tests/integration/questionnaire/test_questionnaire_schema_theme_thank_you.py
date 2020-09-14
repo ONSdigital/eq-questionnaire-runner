@@ -38,6 +38,12 @@ class TestSchemaThemeThankYou(IntegrationTestCase):
             "Your census has been submitted for the accommodation at <strong>68 Abingdon Road, Goathill</strong>"
         )
 
+    def test_census_theme_schema_name_not_mapped_to_census_type(self):
+        self.launchSurvey("test_confirmation_email")
+        self.post({"schema-confirmation-answer": "Yes"})
+        self.post()
+        self.assertInBody("Thank you for completing the survey")
+
     def test_default(self):
         self.launchSurvey("test_textfield")
         self.post({"name-answer": "John Smith"})
