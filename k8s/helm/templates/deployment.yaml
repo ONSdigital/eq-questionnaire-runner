@@ -77,7 +77,7 @@ spec:
               value: gcs
             - name: EQ_PUBLISHER_BACKEND
               value: pubsub
-            - name: EQ_PUB_SUB_TOPIC_ID
+            - name: EQ_FULFILMENT_TOPIC_ID
               value: eq-fulfilment-topic
             - name: WEB_SERVER
               value: "gunicorn"
