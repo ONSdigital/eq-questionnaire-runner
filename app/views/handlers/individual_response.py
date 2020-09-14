@@ -1,7 +1,7 @@
 import json
 from datetime import datetime
 from functools import cached_property
-from typing import List, Mapping
+from typing import List, Mapping, Optional
 from uuid import uuid4
 
 from dateutil.tz import tzutc
@@ -139,58 +139,17 @@ class IndividualResponseHandler:
     def get_context(self):
         return build_question_context(self.rendered_block, self.form)
 
-    def _get_fulfilment_code(self, fulfilment_type):
-        fulfilment_codes = {
-            "sms": {
-                GB_ENG_REGION_CODE: "UACITA1",
-                GB_WLS_REGION_CODE: "UACITA2B",
-                GB_NIR_REGION_CODE: "UACITA4",
-            },
-            "postal": {
-                GB_ENG_REGION_CODE: "P_UAC_UACIP1",
-                GB_WLS_REGION_CODE: "P_UAC_UACIP2B",
-                GB_NIR_REGION_CODE: "P_UAC_UACIP4",
-            },
-        }
-
-        region_code = self._metadata["region_code"]
-        return fulfilment_codes[fulfilment_type][region_code]
-
-    def _get_fulfilment_request_payload(self, mobile_number=None):
-        fulfilment_type = "sms" if mobile_number else "postal"
-        individual_case_id_mapping = (
-            {}
-            if self._metadata.get("case_type") == "SPG"
-            else {"individualCaseId": str(uuid4())}
-        )
-
-        mobile_number_mapping = {"telNo": mobile_number} if mobile_number else {}
-
-        message = {
-            "event": {
-                "type": "FULFILMENT_REQUESTED",
-                "source": "QUESTIONNAIRE_RUNNER",
-                "channel": "EQ",
-                "dateTime": datetime.now(tz=tzutc()).isoformat(),
-                "transactionId": str(uuid4()),
-            },
-            "payload": {
-                "fulfilmentRequest": {
-                    **individual_case_id_mapping,
-                    "fulfilmentCode": self._get_fulfilment_code(fulfilment_type),
-                    "caseId": self._metadata["case_id"],
-                    "contact": mobile_number_mapping,
-                }
-            },
-        }
-
-        return json.dumps(message).encode("utf-8")
-
     def _publish_fulfilment_request(self, serialized_mobile_number=None):
         topic_id = current_app.config["EQ_FULFILMENT_TOPIC_ID"]
-        mobile_number = URLParamSerializer().loads(serialized_mobile_number) if serialized_mobile_number else None
-        message = self._get_fulfilment_request_payload(mobile_number=mobile_number)
-        return current_app.eq["publisher"].publish(topic_id, message)
+        mobile_number = (
+            URLParamSerializer().loads(serialized_mobile_number)
+            if serialized_mobile_number
+            else None
+        )
+        fulfilment_request = FulfilmentRequest(self._metadata, mobile_number)
+        return current_app.eq["publisher"].publish(
+            topic_id, message=fulfilment_request.payload
+        )
 
     def handle_get(self):
         individual_section_first_block_id = self._schema.get_first_block_id_for_section(
@@ -908,3 +867,59 @@ class IndividualResponseTextConfirmHandler(IndividualResponseHandler):
                 mobile_number=self._request_args.get("mobile_number"),
             )
         )
+
+
+class FulfilmentRequest:
+    def __init__(self, metadata: Mapping, mobile_number: Optional[str] = None):
+        self._metadata = metadata
+        self._mobile_number = mobile_number
+        self._fulfilment_type = "sms" if self._mobile_number else "postal"
+
+    def _get_individual_case_id_mapping(self) -> Mapping:
+        return (
+            {}
+            if self._metadata.get("case_type") == "SPG"
+            else {"individualCaseId": str(uuid4())}
+        )
+
+    def _get_mobile_number_mapping(self) -> Mapping:
+        return {"telNo": self._mobile_number} if self._mobile_number else {}
+
+    def _get_fulfilment_code(self) -> str:
+        fulfilment_codes = {
+            "sms": {
+                GB_ENG_REGION_CODE: "UACITA1",
+                GB_WLS_REGION_CODE: "UACITA2B",
+                GB_NIR_REGION_CODE: "UACITA4",
+            },
+            "postal": {
+                GB_ENG_REGION_CODE: "P_UAC_UACIP1",
+                GB_WLS_REGION_CODE: "P_UAC_UACIP2B",
+                GB_NIR_REGION_CODE: "P_UAC_UACIP4",
+            },
+        }
+
+        region_code = self._metadata["region_code"]
+        return fulfilment_codes[self._fulfilment_type][region_code]
+
+    @cached_property
+    def payload(self) -> bytes:
+        message = {
+            "event": {
+                "type": "FULFILMENT_REQUESTED",
+                "source": "QUESTIONNAIRE_RUNNER",
+                "channel": "EQ",
+                "dateTime": datetime.now(tz=tzutc()).isoformat(),
+                "transactionId": str(uuid4()),
+            },
+            "payload": {
+                "fulfilmentRequest": {
+                    **self._get_individual_case_id_mapping(),
+                    "fulfilmentCode": self._get_fulfilment_code(),
+                    "caseId": self._metadata["case_id"],
+                    "contact": self._get_mobile_number_mapping(),
+                }
+            },
+        }
+
+        return json.dumps(message).encode("utf-8")
