@@ -5,7 +5,7 @@ from google.cloud.pubsub_v1 import PublisherClient
 from google.cloud.pubsub_v1.futures import Future
 from structlog import get_logger
 
-from app.publisher.publication_failed import PublicationFailed
+from app.publisher.exceptions import PublicationFailed
 
 logger = get_logger(__name__)
 

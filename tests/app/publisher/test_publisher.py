@@ -4,7 +4,7 @@ from unittest.mock import Mock, patch, sentinel
 from google.cloud.pubsub_v1.proto.pubsub_pb2 import PubsubMessage
 
 from app.publisher import PubSubPublisher
-from app.publisher.publication_failed import PublicationFailed
+from app.publisher.exceptions import PublicationFailed
 
 
 class TestPubSub(TestCase):
