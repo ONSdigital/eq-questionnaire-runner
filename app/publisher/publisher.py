@@ -24,14 +24,14 @@ class PubSubPublisher(Publisher):
     def _publish(self, topic_id, message):
         logger.info("publishing message", topic_id=topic_id)
         topic_path = self._client.topic_path(self._project_id, topic_id)
-        publish_future: Future = self._client.publish(topic_path, message)
-        return publish_future
+        response: Future = self._client.publish(topic_path, message)
+        return response
 
     def publish(self, topic_id, message: bytes):
-        publish_future = self._publish(topic_id, message)
+        response = self._publish(topic_id, message)
         try:
             # Resolve the future
-            message_id = publish_future.result()
+            message_id = response.result()
             logger.info(  # pragma: no cover
                 "message published successfully",
                 topic_id=topic_id,
