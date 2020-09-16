@@ -315,14 +315,36 @@
                                             "placeholder": "person_name",
                                             "transforms": [
                                                 {
+                                                    "transform": "name_is_duplicate",
                                                     "arguments": {
-                                                        "delimiter": " ",
-                                                        "list_to_concatenate": {
-                                                            "identifier": ["first-name", "last-name"],
-                                                            "source": "answers"
+                                                        "same_name_item_ids": {
+                                                            "source": "list",
+                                                            "id_selector": "same_name_items",
+                                                            "identifier": "people"
+                                                        },
+                                                        "list_item_id": {
+                                                            "source": "location",
+                                                            "identifier": "list_item_id"
                                                         }
-                                                    },
-                                                    "transform": "concatenate_list"
+                                                    }
+                                                },
+                                                {
+                                                    "transform": "format_name",
+                                                    "arguments": {
+                                                        "include_middle_name": { "source": "previous_transform" },
+                                                        "first_name": {
+                                                            "source": "answers",
+                                                            "identifier": "first-name"
+                                                        },
+                                                        "middle_names": {
+                                                            "source": "answers",
+                                                            "identifier": "middle-names"
+                                                        },
+                                                        "last_name": {
+                                                            "source": "answers",
+                                                            "identifier": "last-name"
+                                                        }
+                                                    }
                                                 }
                                             ]
                                         }
