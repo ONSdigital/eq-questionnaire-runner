@@ -13,10 +13,11 @@
 
   {% call onsPanel({
     "type": "success",
-    "classes": "u-mb-s"
+    "classes": "u-mb-s",
+    "icon": "check"
     })
   %}
-    <h1 data-qa="title"><span class="icon--check"></span>
+    <h1 data-qa="title">
       {% if content.census_type == "IR" %}
         {{ _("Thank you for completing your census") }}
       {% elif content.census_type %}
@@ -38,9 +39,15 @@
       {% endif %}
     {% endcall %}
 
-    <div class="panel__body">
-      <p class="icon--lock">{{ _("Your personal information is protected by law and will be kept confidential") }}</p>
-    </div>
+
+  {% call onsPanel({
+    "type": "bare",
+    "classes": "u-mb-s",
+    "icon": "lock"
+    })
+  %}
+    <p>{{ _("Your personal information is protected by law and will be kept confidential") }}</p>
+  {% endcall %}
 
   {% if form %}
     <h2>{{ _("Get confirmation email") }}</h2>
