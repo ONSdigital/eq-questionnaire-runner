@@ -79,7 +79,7 @@ def request_individual_response(schema, questionnaire_store):
 @individual_response_blueprint.route("/<list_item_id>/how", methods=["GET", "POST"])
 @with_questionnaire_store
 @with_schema
-def get_individual_response_how(schema, questionnaire_store, list_item_id):
+def individual_response_how(schema, questionnaire_store, list_item_id):
     language_code = get_session_store().session_data.language_code
 
     individual_response_handler = IndividualResponseHowHandler(
@@ -100,7 +100,7 @@ def get_individual_response_how(schema, questionnaire_store, list_item_id):
 @individual_response_blueprint.route("/<list_item_id>/change", methods=["GET", "POST"])
 @with_questionnaire_store
 @with_schema
-def get_individual_response_change(schema, questionnaire_store, list_item_id):
+def individual_response_change(schema, questionnaire_store, list_item_id):
     language_code = get_session_store().session_data.language_code
     individual_response_handler = IndividualResponseChangeHandler(
         schema=schema,
@@ -122,9 +122,7 @@ def get_individual_response_change(schema, questionnaire_store, list_item_id):
 )
 @with_questionnaire_store
 @with_schema
-def get_individual_response_post_address_confirm(
-    schema, questionnaire_store, list_item_id
-):
+def individual_response_post_address_confirm(schema, questionnaire_store, list_item_id):
     language_code = get_session_store().session_data.language_code
     individual_response_handler = IndividualResponsePostAddressConfirmHandler(
         schema=schema,
@@ -144,7 +142,7 @@ def get_individual_response_post_address_confirm(
 @individual_response_blueprint.route("/post/confirmation", methods=["GET", "POST"])
 @with_questionnaire_store
 @with_schema
-def get_individual_response_post_address_confirmation(schema, questionnaire_store):
+def individual_response_post_address_confirmation(schema, questionnaire_store):
     language_code = get_session_store().session_data.language_code
     IndividualResponseHandler(
         block_definition=None,
@@ -168,7 +166,7 @@ def get_individual_response_post_address_confirmation(schema, questionnaire_stor
 @individual_response_blueprint.route("/who", methods=["GET", "POST"])
 @with_questionnaire_store
 @with_schema
-def get_individual_response_who(schema, questionnaire_store):
+def individual_response_who(schema, questionnaire_store):
     language_code = get_session_store().session_data.language_code
 
     individual_response_handler = IndividualResponseWhoHandler(
@@ -190,7 +188,7 @@ def get_individual_response_who(schema, questionnaire_store):
 )
 @with_questionnaire_store
 @with_schema
-def get_individual_response_text_message(schema, questionnaire_store, list_item_id):
+def individual_response_text_message(schema, questionnaire_store, list_item_id):
     language_code = get_session_store().session_data.language_code
     individual_response_handler = IndividualResponseTextHandler(
         schema=schema,
@@ -212,9 +210,7 @@ def get_individual_response_text_message(schema, questionnaire_store, list_item_
 )
 @with_questionnaire_store
 @with_schema
-def get_individual_response_text_message_confirm(
-    schema, questionnaire_store, list_item_id
-):
+def individual_response_text_message_confirm(schema, questionnaire_store, list_item_id):
     language_code = get_session_store().session_data.language_code
     individual_response_handler = IndividualResponseTextConfirmHandler(
         schema=schema,
@@ -234,7 +230,7 @@ def get_individual_response_text_message_confirm(
 @individual_response_blueprint.route("/text/confirmation", methods=["GET", "POST"])
 @with_questionnaire_store
 @with_schema
-def get_individual_response_text_message_confirmation(schema, questionnaire_store):
+def individual_response_text_message_confirmation(schema, questionnaire_store):
     language_code = get_session_store().session_data.language_code
     IndividualResponseHandler(
         block_definition=None,

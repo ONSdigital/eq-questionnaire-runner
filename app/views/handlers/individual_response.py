@@ -184,7 +184,7 @@ class IndividualResponseHandler:
         if self._list_item_id:
             return redirect(
                 url_for(
-                    ".get_individual_response_how",
+                    ".individual_response_how",
                     list_item_id=self._list_item_id,
                     journey=self._request_args.get("journey"),
                 )
@@ -196,12 +196,12 @@ class IndividualResponseHandler:
         if len(list_model.non_primary_people) == 1:
             return redirect(
                 url_for(
-                    ".get_individual_response_how",
+                    ".individual_response_how",
                     list_item_id=list_model.non_primary_people[0],
                     journey="hub",
                 )
             )
-        return redirect(url_for(".get_individual_response_who", journey="hub"))
+        return redirect(url_for(".individual_response_who", journey="hub"))
 
     def _render_block(self):
         return self.placeholder_renderer.render(
@@ -298,12 +298,12 @@ class IndividualResponseHowHandler(IndividualResponseHandler):
                 )
             else:
                 previous_location_url = url_for(
-                    "individual_response.get_individual_response_who",
+                    "individual_response.individual_response_who",
                     journey=self._request_args.get("journey"),
                 )
         elif self._request_args.get("journey") == "change":
             previous_location_url = url_for(
-                "individual_response.get_individual_response_change",
+                "individual_response.individual_response_change",
                 list_item_id=self._list_item_id,
             )
         elif self._request_args.get("journey") == "remove-person":
@@ -330,14 +330,14 @@ class IndividualResponseHowHandler(IndividualResponseHandler):
         if self.selected_option == "Text message":
             return redirect(
                 url_for(
-                    ".get_individual_response_text_message",
+                    ".individual_response_text_message",
                     list_item_id=self._list_item_id,
                     journey=self._request_args.get("journey"),
                 )
             )
         return redirect(
             url_for(
-                ".get_individual_response_post_address_confirm",
+                ".individual_response_post_address_confirm",
                 list_item_id=self._list_item_id,
                 journey=self._request_args.get("journey"),
             )
@@ -444,7 +444,7 @@ class IndividualResponseChangeHandler(IndividualResponseHandler):
         if self.selected_option == self.request_separate_census_option:
             return redirect(
                 url_for(
-                    "individual_response.get_individual_response_how",
+                    "individual_response.individual_response_how",
                     list_item_id=self._list_item_id,
                     journey="change",
                 )
@@ -565,7 +565,7 @@ class IndividualResponsePostAddressConfirmHandler(IndividualResponseHandler):
 
     def handle_get(self):
         previous_location_url = url_for(
-            "individual_response.get_individual_response_how",
+            "individual_response.individual_response_how",
             list_item_id=self._list_item_id,
             journey=self._request_args.get("journey"),
         )
@@ -583,14 +583,14 @@ class IndividualResponsePostAddressConfirmHandler(IndividualResponseHandler):
             self._publish_fulfilment_request()
             return redirect(
                 url_for(
-                    "individual_response.get_individual_response_post_address_confirmation",
+                    "individual_response.individual_response_post_address_confirmation",
                     journey=self._request_args.get("journey"),
                 )
             )
 
         return redirect(
             url_for(
-                "individual_response.get_individual_response_how",
+                "individual_response.individual_response_how",
                 list_item_id=self._list_item_id,
                 journey=self._request_args.get("journey"),
             )
@@ -675,7 +675,7 @@ class IndividualResponseWhoHandler(IndividualResponseHandler):
     def handle_post(self):
         return redirect(
             url_for(
-                ".get_individual_response_how",
+                ".individual_response_how",
                 journey=self._request_args.get("journey"),
                 list_item_id=self.selected_list_item,
             )
@@ -742,7 +742,7 @@ class IndividualResponseTextHandler(IndividualResponseHandler):
             )
             self._answers = {"individual-response-enter-number-answer": mobile_number}
         previous_location_url = url_for(
-            "individual_response.get_individual_response_how",
+            "individual_response.individual_response_how",
             list_item_id=self._list_item_id,
             journey=self._request_args.get("journey"),
         )
@@ -759,7 +759,7 @@ class IndividualResponseTextHandler(IndividualResponseHandler):
 
         return redirect(
             url_for(
-                "individual_response.get_individual_response_text_message_confirm",
+                "individual_response.individual_response_text_message_confirm",
                 list_item_id=self._list_item_id,
                 journey=self._request_args.get("journey"),
                 mobile_number=mobile_number,
@@ -832,7 +832,7 @@ class IndividualResponseTextConfirmHandler(IndividualResponseHandler):
 
     def handle_get(self):
         previous_location_url = url_for(
-            "individual_response.get_individual_response_text_message",
+            "individual_response.individual_response_text_message",
             list_item_id=self._list_item_id,
             journey=self._request_args.get("journey"),
             mobile_number=self._request_args.get("mobile_number"),
@@ -853,7 +853,7 @@ class IndividualResponseTextConfirmHandler(IndividualResponseHandler):
             self._publish_fulfilment_request(serialized_mobile_number)
             return redirect(
                 url_for(
-                    "individual_response.get_individual_response_text_message_confirmation",
+                    "individual_response.individual_response_text_message_confirmation",
                     journey=self._request_args.get("journey"),
                     mobile_number=serialized_mobile_number,
                 )
@@ -861,7 +861,7 @@ class IndividualResponseTextConfirmHandler(IndividualResponseHandler):
 
         return redirect(
             url_for(
-                "individual_response.get_individual_response_text_message",
+                "individual_response.individual_response_text_message",
                 list_item_id=self._list_item_id,
                 journey=self._request_args.get("journey"),
                 mobile_number=self._request_args.get("mobile_number"),
