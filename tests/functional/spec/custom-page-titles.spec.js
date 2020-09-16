@@ -20,12 +20,20 @@ describe("Feature: Custom Page Titles", () => {
       expect(expectedPageTitle).to.equal("Custom page title");
     });
 
-    it("When I navigate to the add person page, Then I should see the custom page title", () => {
+    it("When I navigate to the add person pages, Then I should see the custom page titles", () => {
       $(HubPage.submit()).click();
       $(ListCollectorPage.yes()).click();
       $(ListCollectorPage.submit()).click();
-      const expectedPageTitle = browser.getTitle();
-      expect(expectedPageTitle).to.equal("Custom add page title");
+      let expectedPageTitle = browser.getTitle();
+      expect(expectedPageTitle).to.equal("Person 1");
+
+      $(ListCollectorAddPage.firstName()).setValue("Marcus");
+      $(ListCollectorAddPage.lastName()).setValue("Twin");
+      $(ListCollectorAddPage.submit()).click();
+      $(ListCollectorPage.yes()).click();
+      $(ListCollectorPage.submit()).click();
+      expectedPageTitle = browser.getTitle();
+      expect(expectedPageTitle).to.equal("Person 2");
     });
 
     it("When I navigate to relationship collector pages, Then I should see the custom page titles", () => {

@@ -80,7 +80,7 @@
                             "add_block": {
                                 "id": "add-person",
                                 "type": "ListAddQuestion",
-                                "page_title": "Custom add page title",
+                                "page_title": "Person {list_item_position}",
                                 "question": {
                                     "id": "add-question",
                                     "type": "General",
