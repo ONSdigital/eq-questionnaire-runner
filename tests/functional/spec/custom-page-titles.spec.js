@@ -73,7 +73,7 @@ describe("Feature: Custom Page Titles", () => {
       expect(expectedPageTitle).to.equal("Custom remove page title");
     });
 
-    it("When I navigate to a repeating section which has custom page title, Then all pages titles in the section should have the correct prefix", () => {
+    it("When I navigate to a repeating section which has custom page title, Then all page titles in the section should have the correct prefix", () => {
       browser.url(HubPage.url());
       $(HubPage.submit()).click();
       expect(browser.getTitle()).to.equal("Person 1: individual interstitial");
