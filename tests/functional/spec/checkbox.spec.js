@@ -9,7 +9,7 @@ describe('Checkbox with "other" option', () => {
   });
 
   it("Given a label has not been provided in the schema for a checkbox answer, When the checkbox answer is displayed, Then the default label should be visible", () => {
-    expect($("body").getText()).to.have.string("Select all that apply");
+    expect($("body").getText()).to.have.string("Select at least one answer");
   });
 
   it("Given a label has been set in the schema for a checkbox answer, When the checkbox answer is displayed, Then the label should be visible", () => {
