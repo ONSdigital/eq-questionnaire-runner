@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2020-09-16 15:28+0100\n"
+"POT-Creation-Date: 2020-09-17 10:04+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -903,31 +903,27 @@ msgstr ""
 msgid "Or"
 msgstr ""
 
-#: templates/partials/answers/address.html:11
-msgid "Enter address or postcode and select from results"
-msgstr ""
-
-#: templates/partials/answers/address.html:16
+#: templates/partials/answers/address.html:10
 msgid "Address line 1"
 msgstr ""
 
-#: templates/partials/answers/address.html:21
+#: templates/partials/answers/address.html:15
 msgid "Address line 2"
 msgstr ""
 
-#: templates/partials/answers/address.html:25
+#: templates/partials/answers/address.html:19
 msgid "Town or city"
 msgstr ""
 
-#: templates/partials/answers/address.html:29
+#: templates/partials/answers/address.html:23
 msgid "Postcode"
 msgstr ""
 
-#: templates/partials/answers/address.html:33
+#: templates/partials/answers/address.html:27
 msgid "Search for an address"
 msgstr ""
 
-#: templates/partials/answers/address.html:34
+#: templates/partials/answers/address.html:28
 msgid "Manually enter address"
 msgstr ""
 
