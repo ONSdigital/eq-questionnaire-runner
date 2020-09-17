@@ -139,13 +139,8 @@ class IndividualResponseHandler:
     def get_context(self):
         return build_question_context(self.rendered_block, self.form)
 
-    def _publish_fulfilment_request(self, serialized_mobile_number=None):
+    def _publish_fulfilment_request(self, mobile_number=None):
         topic_id = current_app.config["EQ_FULFILMENT_TOPIC_ID"]
-        mobile_number = (
-            URLParamSerializer().loads(serialized_mobile_number)
-            if serialized_mobile_number
-            else None
-        )
         fulfilment_request = FulfilmentRequest(self._metadata, mobile_number)
         return current_app.eq["publisher"].publish(
             topic_id, message=fulfilment_request.payload
@@ -777,10 +772,12 @@ class IndividualResponseTextConfirmHandler(IndividualResponseHandler):
         form_data,
         list_item_id,
     ):
-        mobile_number = URLParamSerializer().loads(request_args.get("mobile_number"))
+        self.mobile_number = URLParamSerializer().loads(
+            request_args.get("mobile_number")
+        )
 
         super().__init__(
-            self.block_definition(mobile_number),
+            self.block_definition(),
             schema,
             questionnaire_store,
             language,
@@ -789,15 +786,14 @@ class IndividualResponseTextConfirmHandler(IndividualResponseHandler):
             list_item_id,
         )
 
-    @staticmethod
-    def block_definition(mobile_number) -> Mapping:
+    def block_definition(self) -> Mapping:
         return {
             "type": "IndividualResponse",
             "question": {
                 "type": "Question",
                 "id": "individual-response-text-confirm",
                 "title": lazy_gettext("Is this mobile number correct?"),
-                "description": [mobile_number],
+                "description": [self.mobile_number],
                 "answers": [
                     {
                         "type": "Radio",
@@ -848,14 +844,12 @@ class IndividualResponseTextConfirmHandler(IndividualResponseHandler):
     def handle_post(self):
         if self.selected_option == self.confirm_option:
             self._update_section_status(CompletionStatus.INDIVIDUAL_RESPONSE_REQUESTED)
-
-            serialized_mobile_number = self._request_args.get("mobile_number")
-            self._publish_fulfilment_request(serialized_mobile_number)
+            self._publish_fulfilment_request(self.mobile_number)
             return redirect(
                 url_for(
                     "individual_response.individual_response_text_message_confirmation",
                     journey=self._request_args.get("journey"),
-                    mobile_number=serialized_mobile_number,
+                    mobile_number=self._request_args.get("mobile_number"),
                 )
             )
 
