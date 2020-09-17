@@ -928,7 +928,7 @@ msgid "Manually enter address"
 msgstr ""
 
 #: templates/partials/answers/checkbox.html:8
-msgid "Select all that apply"
+msgid "Select at least one answer"
 msgstr ""
 
 #: templates/partials/answers/date.html:23
