@@ -8,7 +8,7 @@
   }
 } %}
 
-{% set formatted_page_title = page_title + survey_title %}
+{% set formatted_page_title = page_title ~ survey_title %}
 
 {% set pageConfig = {
   "title": formatted_page_title if page_title else survey_title,
