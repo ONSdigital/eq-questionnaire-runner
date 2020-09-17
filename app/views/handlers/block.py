@@ -125,9 +125,8 @@ class BlockHandler:
 
     def _get_safe_page_title(self, page_title):
         page_title = self._schema.get_single_string_value(page_title)
-        title = self._schema.json["title"]
 
-        return safe_content(f"{page_title} - {title}")
+        return safe_content(page_title)
 
     def _resolve_custom_page_title_vars(self) -> MutableMapping:
         if list_item_id := self.current_location.list_item_id:
