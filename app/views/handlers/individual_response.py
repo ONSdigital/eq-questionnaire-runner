@@ -876,7 +876,7 @@ class FulfilmentRequest:
             else {"individualCaseId": str(uuid4())}
         )
 
-    def _get_mobile_number_mapping(self) -> Mapping:
+    def _get_contact_mapping(self) -> Mapping:
         return {"telNo": self._mobile_number} if self._mobile_number else {}
 
     def _get_fulfilment_code(self) -> str:
@@ -911,7 +911,7 @@ class FulfilmentRequest:
                     **self._get_individual_case_id_mapping(),
                     "fulfilmentCode": self._get_fulfilment_code(),
                     "caseId": self._metadata["case_id"],
-                    "contact": self._get_mobile_number_mapping(),
+                    "contact": self._get_contact_mapping(),
                 }
             },
         }
