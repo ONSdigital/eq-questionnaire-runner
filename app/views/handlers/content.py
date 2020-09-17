@@ -41,7 +41,7 @@ class Content(BlockHandler):
 
         if custom_page_title := transformed_block.get("page_title"):
             custom_page_title = (
-                f"{section_repeating_page_title}: {custom_page_title}"
+                f"{custom_page_title}: {section_repeating_page_title}"
                 if section_repeating_page_title
                 else custom_page_title
             )
@@ -50,7 +50,7 @@ class Content(BlockHandler):
         else:
             safe_content_title = self._get_content_title(transformed_block)
             self.page_title = (
-                f"{section_repeating_page_title}: {safe_content_title}"
+                f"{safe_content_title}: {section_repeating_page_title}"
                 if section_repeating_page_title
                 else safe_content_title
             )

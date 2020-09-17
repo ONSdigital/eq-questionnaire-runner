@@ -51,14 +51,14 @@ class SectionSummaryContext(Context):
             current_location.section_id
         ):
             custom_page_title = (
-                f"{section_repeating_page_title}: {custom_page_title}"
+                f"{custom_page_title}: {section_repeating_page_title}"
                 if section_repeating_page_title
                 else custom_page_title
             )
             return self._resolve_custom_page_title(custom_page_title, current_location)
 
         title_for_location = (
-            f"{section_repeating_page_title}: {title_for_location}"
+            f"{title_for_location}: {section_repeating_page_title}"
             if section_repeating_page_title
             else title_for_location
         )

@@ -39,20 +39,20 @@ class TestQuestionnaireCustomPageTitles(QuestionnaireTestCase):
         self.post({"relationship-answer": "Husband or Wife"})
         self.post()
         self.post()
-        self.assertEqualPageTitle("Person 1: individual interstitial")
+        self.assertEqualPageTitle("Individual interstitial: Person 1")
 
         self.post()
-        self.assertEqualPageTitle("Person 1: proxy question")
+        self.assertEqualPageTitle("Proxy question: Person 1")
 
         self.post()
-        self.assertEqualPageTitle("Person 1: summary")
+        self.assertEqualPageTitle("Summary: Person 1")
 
         self.post()
         self.post()
-        self.assertEqualPageTitle("Person 2: individual interstitial")
+        self.assertEqualPageTitle("Individual interstitial: Person 2")
 
         self.post()
-        self.assertEqualPageTitle("Person 2: proxy question")
+        self.assertEqualPageTitle("Proxy question: Person 2")
 
         self.post()
-        self.assertEqualPageTitle("Person 2: summary")
+        self.assertEqualPageTitle("Summary: Person 2")

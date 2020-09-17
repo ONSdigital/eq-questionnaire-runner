@@ -705,7 +705,7 @@
             "title": "Individual Section",
             "summary": {
                 "show_on_completion": true,
-                "page_title": "summary"
+                "page_title": "Summary"
             },
             "groups": [
                 {
@@ -761,13 +761,13 @@
                                     "text": "{person_name}"
                                 }
                             },
-                            "page_title": "individual interstitial",
+                            "page_title": "Individual interstitial",
                             "id": "individual-interstitial",
                             "type": "Interstitial"
                         },
                         {
                             "id": "proxy",
-                            "page_title": "proxy question",
+                            "page_title": "Proxy question",
                             "question": {
                                 "answers": [
                                     {

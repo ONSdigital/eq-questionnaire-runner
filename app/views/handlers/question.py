@@ -176,7 +176,7 @@ class Question(BlockHandler):
 
         if custom_page_title := variant_block.get("page_title"):
             custom_page_title = (
-                f"{section_repeating_page_title}: {custom_page_title}"
+                f"{custom_page_title}: {section_repeating_page_title}"
                 if section_repeating_page_title
                 else custom_page_title
             )
@@ -187,7 +187,7 @@ class Question(BlockHandler):
         elif question_title := variant_block["question"]:
             safe_page_title = self._get_safe_page_title(question_title["title"])
             self.page_title = (
-                f"{section_repeating_page_title}: {safe_page_title}"
+                f"{safe_page_title}: {section_repeating_page_title}"
                 if section_repeating_page_title
                 else safe_page_title
             )

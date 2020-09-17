@@ -79,11 +79,11 @@ describe("Feature: Custom Page Titles", () => {
     it("When I navigate to a repeating section which has custom page title, Then all page titles in the section should have the correct prefix", () => {
       browser.url(HubPage.url());
       $(HubPage.submit()).click();
-      expect(browser.getTitle()).to.equal("Person 1: individual interstitial");
+      expect(browser.getTitle()).to.equal("Individual interstitial: Person 1");
       $(IndividualInterstitialPage.submit()).click();
-      expect(browser.getTitle()).to.equal("Person 1: proxy question");
+      expect(browser.getTitle()).to.equal("Proxy question: Person 1");
       $(ProxyPage.submit()).click();
-      expect(browser.getTitle()).to.equal("Person 1: summary");
+      expect(browser.getTitle()).to.equal("Summary: Person 1");
     });
   });
 });
