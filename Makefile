@@ -18,8 +18,10 @@ build: load-design-system-templates
 lint:
 	pipenv run ./scripts/run_lint_python.sh
 
-format:
+format: format-python
 	yarn format
+
+format-python:
 	pipenv run isort --recursive .
 	pipenv run black .
 
