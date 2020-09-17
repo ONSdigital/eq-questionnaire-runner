@@ -36,11 +36,6 @@ describe("Feature: Custom Page Titles", () => {
     });
 
     it("When I navigate to relationship collector pages, Then I should see the custom page titles", () => {
-      $(ListCollectorAddPage.firstName()).setValue("Marcus");
-      $(ListCollectorAddPage.lastName()).setValue("Twin");
-      $(ListCollectorAddPage.submit()).click();
-      $(ListCollectorPage.yes()).click();
-      $(ListCollectorPage.submit()).click();
       $(ListCollectorAddPage.firstName()).setValue("Samuel");
       $(ListCollectorAddPage.lastName()).setValue("Clemens");
       $(ListCollectorAddPage.submit()).click();
