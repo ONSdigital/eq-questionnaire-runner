@@ -25,7 +25,7 @@ describe("Feature: Custom Page Titles", () => {
       $(ListCollectorPage.yes()).click();
       $(ListCollectorPage.submit()).click();
       let expectedPageTitle = browser.getTitle();
-      expect(expectedPageTitle).to.equal("Person 1");
+      expect(expectedPageTitle).to.equal("Add person 1");
 
       $(ListCollectorAddPage.firstName()).setValue("Marcus");
       $(ListCollectorAddPage.lastName()).setValue("Twin");
@@ -33,7 +33,7 @@ describe("Feature: Custom Page Titles", () => {
       $(ListCollectorPage.yes()).click();
       $(ListCollectorPage.submit()).click();
       expectedPageTitle = browser.getTitle();
-      expect(expectedPageTitle).to.equal("Person 2");
+      expect(expectedPageTitle).to.equal("Add person 2");
     });
 
     it("When I navigate to relationship collector pages, Then I should see the custom page titles", () => {
@@ -120,12 +120,12 @@ describe("Feature: Custom Page Titles", () => {
       $(ListCollectorAddPage.submit()).click();
       $(ListCollectorPage.listEditLink(1)).click();
       let expectedPageTitle = browser.getTitle();
-      expect(expectedPageTitle).to.equal("Custom edit page title");
+      expect(expectedPageTitle).to.equal("Edit person 1");
 
       $(ListCollectorEditPage.previous()).click();
       $(ListCollectorPage.listRemoveLink(1)).click();
       expectedPageTitle = browser.getTitle();
-      expect(expectedPageTitle).to.equal("Custom remove page title");
+      expect(expectedPageTitle).to.equal("Remove person 1");
     });
   });
 });
