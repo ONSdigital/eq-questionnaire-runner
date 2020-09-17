@@ -38,10 +38,9 @@ class PubSubPublisher(Publisher):
                 message_id=message_id,
             )
         except Exception as ex:  # pylint:disable=broad-except
-            logger.error(
+            logger.exception(
                 "message publication failed",
                 topic_id=topic_id,
-                exc_info=ex,
             )
             raise PublicationFailed(ex)
 
