@@ -896,7 +896,7 @@ class FulfilmentRequest:
         region_code = self._metadata["region_code"]
         return fulfilment_codes[self._fulfilment_type][region_code]
 
-    @cached_property
+    @property
     def payload(self) -> bytes:
         message = {
             "event": {
