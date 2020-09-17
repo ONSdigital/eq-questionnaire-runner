@@ -26,6 +26,7 @@ from app.authentication.user_id_generator import UserIDGenerator
 from app.globals import get_session_store
 from app.helpers import get_span_and_trace
 from app.keys import KEY_PURPOSE_SUBMISSION
+from app.publisher import LogPublisher, PubSubPublisher
 from app.secrets import SecretStore, validate_required_secrets
 from app.storage import Datastore, Dynamodb, Redis
 from app.submitter import GCSSubmitter, LogSubmitter, RabbitMQSubmitter
@@ -128,6 +129,8 @@ def create_app(  # noqa: C901  pylint: disable=too-complex, too-many-statements
     setup_storage(application)
 
     setup_submitter(application)
+
+    setup_publisher(application)
 
     application.eq["id_generator"] = UserIDGenerator(
         application.config["EQ_SERVER_SIDE_STORAGE_USER_ID_ITERATIONS"],
@@ -322,6 +325,17 @@ def setup_submitter(application):
 
     else:
         raise Exception("Unknown EQ_SUBMISSION_BACKEND")
+
+
+def setup_publisher(application):
+    if application.config["EQ_PUBLISHER_BACKEND"] == "pubsub":
+        application.eq["publisher"] = PubSubPublisher()
+
+    elif application.config["EQ_PUBLISHER_BACKEND"] == "log":
+        application.eq["publisher"] = LogPublisher()
+
+    else:
+        raise Exception("Unknown EQ_PUBLISHER_BACKEND")
 
 
 # pylint: disable=import-outside-toplevel

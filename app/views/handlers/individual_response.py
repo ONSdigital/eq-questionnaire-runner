@@ -1,7 +1,11 @@
+import json
+from datetime import datetime
 from functools import cached_property
-from typing import List, Mapping
+from typing import List, Mapping, Optional
+from uuid import uuid4
 
-from flask import redirect
+from dateutil.tz import tzutc
+from flask import current_app, redirect
 from flask.helpers import url_for
 from flask_babel import lazy_gettext
 from werkzeug.exceptions import NotFound
@@ -13,6 +17,10 @@ from app.helpers.url_param_serializer import URLParamSerializer
 from app.questionnaire.placeholder_renderer import PlaceholderRenderer
 from app.questionnaire.router import Router
 from app.views.contexts.question import build_question_context
+
+GB_ENG_REGION_CODE = "GB-ENG"
+GB_WLS_REGION_CODE = "GB-WLS"
+GB_NIR_REGION_CODE = "GB-NIR"
 
 
 class IndividualResponseHandler:
@@ -63,6 +71,7 @@ class IndividualResponseHandler:
         self._list_item_id = list_item_id
         self._list_name = self._schema.get_individual_response_list()
 
+        self._metadata = self._questionnaire_store.metadata
         self.page_title = None
 
         if not self._is_location_valid():
@@ -130,6 +139,13 @@ class IndividualResponseHandler:
     def get_context(self):
         return build_question_context(self.rendered_block, self.form)
 
+    def _publish_fulfilment_request(self, mobile_number=None):
+        topic_id = current_app.config["EQ_FULFILMENT_TOPIC_ID"]
+        fulfilment_request = FulfilmentRequest(self._metadata, mobile_number)
+        return current_app.eq["publisher"].publish(
+            topic_id, message=fulfilment_request.payload
+        )
+
     def handle_get(self):
         individual_section_first_block_id = self._schema.get_first_block_id_for_section(
             self.individual_section_id
@@ -163,7 +179,7 @@ class IndividualResponseHandler:
         if self._list_item_id:
             return redirect(
                 url_for(
-                    ".get_individual_response_how",
+                    ".individual_response_how",
                     list_item_id=self._list_item_id,
                     journey=self._request_args.get("journey"),
                 )
@@ -175,12 +191,12 @@ class IndividualResponseHandler:
         if len(list_model.non_primary_people) == 1:
             return redirect(
                 url_for(
-                    ".get_individual_response_how",
+                    ".individual_response_how",
                     list_item_id=list_model.non_primary_people[0],
                     journey="hub",
                 )
             )
-        return redirect(url_for(".get_individual_response_who", journey="hub"))
+        return redirect(url_for(".individual_response_who", journey="hub"))
 
     def _render_block(self):
         return self.placeholder_renderer.render(
@@ -277,12 +293,12 @@ class IndividualResponseHowHandler(IndividualResponseHandler):
                 )
             else:
                 previous_location_url = url_for(
-                    "individual_response.get_individual_response_who",
+                    "individual_response.individual_response_who",
                     journey=self._request_args.get("journey"),
                 )
         elif self._request_args.get("journey") == "change":
             previous_location_url = url_for(
-                "individual_response.get_individual_response_change",
+                "individual_response.individual_response_change",
                 list_item_id=self._list_item_id,
             )
         elif self._request_args.get("journey") == "remove-person":
@@ -309,14 +325,14 @@ class IndividualResponseHowHandler(IndividualResponseHandler):
         if self.selected_option == "Text message":
             return redirect(
                 url_for(
-                    ".get_individual_response_text_message",
+                    ".individual_response_text_message",
                     list_item_id=self._list_item_id,
                     journey=self._request_args.get("journey"),
                 )
             )
         return redirect(
             url_for(
-                ".get_individual_response_post_address_confirm",
+                ".individual_response_post_address_confirm",
                 list_item_id=self._list_item_id,
                 journey=self._request_args.get("journey"),
             )
@@ -423,7 +439,7 @@ class IndividualResponseChangeHandler(IndividualResponseHandler):
         if self.selected_option == self.request_separate_census_option:
             return redirect(
                 url_for(
-                    "individual_response.get_individual_response_how",
+                    "individual_response.individual_response_how",
                     list_item_id=self._list_item_id,
                     journey="change",
                 )
@@ -544,7 +560,7 @@ class IndividualResponsePostAddressConfirmHandler(IndividualResponseHandler):
 
     def handle_get(self):
         previous_location_url = url_for(
-            "individual_response.get_individual_response_how",
+            "individual_response.individual_response_how",
             list_item_id=self._list_item_id,
             journey=self._request_args.get("journey"),
         )
@@ -559,16 +575,17 @@ class IndividualResponsePostAddressConfirmHandler(IndividualResponseHandler):
     def handle_post(self):
         if self.selected_option == self.confirm_option:
             self._update_section_status(CompletionStatus.INDIVIDUAL_RESPONSE_REQUESTED)
+            self._publish_fulfilment_request()
             return redirect(
                 url_for(
-                    "individual_response.get_individual_response_post_address_confirmation",
+                    "individual_response.individual_response_post_address_confirmation",
                     journey=self._request_args.get("journey"),
                 )
             )
 
         return redirect(
             url_for(
-                "individual_response.get_individual_response_how",
+                "individual_response.individual_response_how",
                 list_item_id=self._list_item_id,
                 journey=self._request_args.get("journey"),
             )
@@ -653,7 +670,7 @@ class IndividualResponseWhoHandler(IndividualResponseHandler):
     def handle_post(self):
         return redirect(
             url_for(
-                ".get_individual_response_how",
+                ".individual_response_how",
                 journey=self._request_args.get("journey"),
                 list_item_id=self.selected_list_item,
             )
@@ -720,7 +737,7 @@ class IndividualResponseTextHandler(IndividualResponseHandler):
             )
             self._answers = {"individual-response-enter-number-answer": mobile_number}
         previous_location_url = url_for(
-            "individual_response.get_individual_response_how",
+            "individual_response.individual_response_how",
             list_item_id=self._list_item_id,
             journey=self._request_args.get("journey"),
         )
@@ -737,7 +754,7 @@ class IndividualResponseTextHandler(IndividualResponseHandler):
 
         return redirect(
             url_for(
-                "individual_response.get_individual_response_text_message_confirm",
+                "individual_response.individual_response_text_message_confirm",
                 list_item_id=self._list_item_id,
                 journey=self._request_args.get("journey"),
                 mobile_number=mobile_number,
@@ -755,10 +772,12 @@ class IndividualResponseTextConfirmHandler(IndividualResponseHandler):
         form_data,
         list_item_id,
     ):
-        mobile_number = URLParamSerializer().loads(request_args.get("mobile_number"))
+        self.mobile_number = URLParamSerializer().loads(
+            request_args.get("mobile_number")
+        )
 
         super().__init__(
-            self.block_definition(mobile_number),
+            self.block_definition(),
             schema,
             questionnaire_store,
             language,
@@ -767,15 +786,14 @@ class IndividualResponseTextConfirmHandler(IndividualResponseHandler):
             list_item_id,
         )
 
-    @staticmethod
-    def block_definition(mobile_number) -> Mapping:
+    def block_definition(self) -> Mapping:
         return {
             "type": "IndividualResponse",
             "question": {
                 "type": "Question",
                 "id": "individual-response-text-confirm",
                 "title": lazy_gettext("Is this mobile number correct?"),
-                "description": [mobile_number],
+                "description": [self.mobile_number],
                 "answers": [
                     {
                         "type": "Radio",
@@ -810,7 +828,7 @@ class IndividualResponseTextConfirmHandler(IndividualResponseHandler):
 
     def handle_get(self):
         previous_location_url = url_for(
-            "individual_response.get_individual_response_text_message",
+            "individual_response.individual_response_text_message",
             list_item_id=self._list_item_id,
             journey=self._request_args.get("journey"),
             mobile_number=self._request_args.get("mobile_number"),
@@ -826,9 +844,10 @@ class IndividualResponseTextConfirmHandler(IndividualResponseHandler):
     def handle_post(self):
         if self.selected_option == self.confirm_option:
             self._update_section_status(CompletionStatus.INDIVIDUAL_RESPONSE_REQUESTED)
+            self._publish_fulfilment_request(self.mobile_number)
             return redirect(
                 url_for(
-                    "individual_response.get_individual_response_text_message_confirmation",
+                    "individual_response.individual_response_text_message_confirmation",
                     journey=self._request_args.get("journey"),
                     mobile_number=self._request_args.get("mobile_number"),
                 )
@@ -836,9 +855,65 @@ class IndividualResponseTextConfirmHandler(IndividualResponseHandler):
 
         return redirect(
             url_for(
-                "individual_response.get_individual_response_text_message",
+                "individual_response.individual_response_text_message",
                 list_item_id=self._list_item_id,
                 journey=self._request_args.get("journey"),
                 mobile_number=self._request_args.get("mobile_number"),
             )
         )
+
+
+class FulfilmentRequest:
+    def __init__(self, metadata: Mapping, mobile_number: Optional[str] = None):
+        self._metadata = metadata
+        self._mobile_number = mobile_number
+        self._fulfilment_type = "sms" if self._mobile_number else "postal"
+
+    def _get_individual_case_id_mapping(self) -> Mapping:
+        return (
+            {}
+            if self._metadata.get("case_type") == "SPG"
+            else {"individualCaseId": str(uuid4())}
+        )
+
+    def _get_contact_mapping(self) -> Mapping:
+        return {"telNo": self._mobile_number} if self._mobile_number else {}
+
+    def _get_fulfilment_code(self) -> str:
+        fulfilment_codes = {
+            "sms": {
+                GB_ENG_REGION_CODE: "UACITA1",
+                GB_WLS_REGION_CODE: "UACITA2B",
+                GB_NIR_REGION_CODE: "UACITA4",
+            },
+            "postal": {
+                GB_ENG_REGION_CODE: "P_UAC_UACIP1",
+                GB_WLS_REGION_CODE: "P_UAC_UACIP2B",
+                GB_NIR_REGION_CODE: "P_UAC_UACIP4",
+            },
+        }
+
+        region_code = self._metadata["region_code"]
+        return fulfilment_codes[self._fulfilment_type][region_code]
+
+    @property
+    def payload(self) -> bytes:
+        message = {
+            "event": {
+                "type": "FULFILMENT_REQUESTED",
+                "source": "QUESTIONNAIRE_RUNNER",
+                "channel": "EQ",
+                "dateTime": datetime.now(tz=tzutc()).isoformat(),
+                "transactionId": str(uuid4()),
+            },
+            "payload": {
+                "fulfilmentRequest": {
+                    **self._get_individual_case_id_mapping(),
+                    "fulfilmentCode": self._get_fulfilment_code(),
+                    "caseId": self._metadata["case_id"],
+                    "contact": self._get_contact_mapping(),
+                }
+            },
+        }
+
+        return json.dumps(message).encode("utf-8")

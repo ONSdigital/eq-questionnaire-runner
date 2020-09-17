@@ -109,7 +109,7 @@ class HubContext(Context):
     def get_section_url(section_id, list_item_id, section_status) -> str:
         if section_status == CompletionStatus.INDIVIDUAL_RESPONSE_REQUESTED:
             return url_for(
-                "individual_response.get_individual_response_change",
+                "individual_response.individual_response_change",
                 list_item_id=list_item_id,
             )
 

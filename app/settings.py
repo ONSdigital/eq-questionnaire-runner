@@ -49,6 +49,9 @@ EQ_ENABLE_LIVE_RELOAD = parse_mode(os.getenv("EQ_ENABLE_LIVE_RELOAD", "False"))
 EQ_SECRETS_FILE = os.getenv("EQ_SECRETS_FILE", "secrets.yml")
 EQ_KEYS_FILE = os.getenv("EQ_KEYS_FILE", "keys.yml")
 
+EQ_PUBLISHER_BACKEND = os.getenv("EQ_PUBLISHER_BACKEND")
+EQ_FULFILMENT_TOPIC_ID = os.getenv("EQ_FULFILMENT_TOPIC_ID", "eq-fulfilment-topic")
+
 EQ_SUBMISSION_BACKEND = os.getenv("EQ_SUBMISSION_BACKEND")
 EQ_GCS_SUBMISSION_BUCKET_ID = os.getenv("EQ_GCS_SUBMISSION_BUCKET_ID")
 
