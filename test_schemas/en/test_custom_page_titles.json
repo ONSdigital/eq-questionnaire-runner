@@ -80,7 +80,7 @@
                             "add_block": {
                                 "id": "add-person",
                                 "type": "ListAddQuestion",
-                                "page_title": "Custom add page title",
+                                "page_title": "Add person {list_item_position}",
                                 "question": {
                                     "id": "add-question",
                                     "type": "General",
@@ -104,7 +104,7 @@
                             "edit_block": {
                                 "id": "edit-person",
                                 "type": "ListEditQuestion",
-                                "page_title": "Custom edit page title",
+                                "page_title": "Edit person {list_item_position}",
                                 "question": {
                                     "id": "edit-question",
                                     "type": "General",
@@ -128,7 +128,7 @@
                             "remove_block": {
                                 "id": "remove-person",
                                 "type": "ListRemoveQuestion",
-                                "page_title": "Custom remove page title",
+                                "page_title": "Remove person {list_item_position}",
                                 "question": {
                                     "id": "remove-question",
                                     "type": "General",
