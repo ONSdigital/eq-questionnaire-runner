@@ -5,7 +5,7 @@
 {% elif answer.options|length == 1 %}
   {% set checkbox_label = '' %}
 {% else %}
-  {% set checkbox_label = _("Select all that apply") %}
+  {% set checkbox_label = _("Select at least one answer") %}
 {% endif %}
 
 {{ onsCheckboxes({
