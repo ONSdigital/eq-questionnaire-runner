@@ -40,11 +40,28 @@ class SectionSummaryContext(Context):
     def get_page_title(
         self, current_location: Location, title_for_location: str
     ) -> str:
+
+        section_repeating_page_title = (
+            self._schema.get_repeating_page_title_for_section(
+                current_location.section_id
+            )
+        )
+
         if custom_page_title := self._schema.get_custom_page_title_for_section(
             current_location.section_id
         ):
+            custom_page_title = (
+                f"{section_repeating_page_title}: {custom_page_title}"
+                if section_repeating_page_title
+                else custom_page_title
+            )
             return self._resolve_custom_page_title(custom_page_title, current_location)
 
+        title_for_location = (
+            f"{section_repeating_page_title}: {title_for_location}"
+            if section_repeating_page_title
+            else title_for_location
+        )
         return self._get_safe_page_title(title_for_location)
 
     def _build_summary(self, location, return_to):

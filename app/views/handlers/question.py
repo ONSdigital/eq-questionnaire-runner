@@ -168,12 +168,29 @@ class Question(BlockHandler):
             variant_block["question"], self._current_location.list_item_id
         )
 
+        section_repeating_page_title = (
+            self._schema.get_repeating_page_title_for_section(
+                self._current_location.section_id
+            )
+        )
+
         if custom_page_title := variant_block.get("page_title"):
+            custom_page_title = (
+                f"{section_repeating_page_title}: {custom_page_title}"
+                if section_repeating_page_title
+                else custom_page_title
+            )
+
             page_title_vars = self._resolve_custom_page_title_vars()
             self.page_title = custom_page_title.format(**page_title_vars)
 
-        elif question := variant_block["question"]:
-            self.page_title = self._get_safe_page_title(question["title"])
+        elif question_title := variant_block["question"]:
+            safe_page_title = self._get_safe_page_title(question_title["title"])
+            self.page_title = (
+                f"{section_repeating_page_title}: {safe_page_title}"
+                if section_repeating_page_title
+                else safe_page_title
+            )
 
         return {
             **variant_block,

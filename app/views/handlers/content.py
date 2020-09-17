@@ -33,17 +33,33 @@ class Content(BlockHandler):
             self._current_location,
         )
 
+        section_repeating_page_title = (
+            self._schema.get_repeating_page_title_for_section(
+                self._current_location.section_id
+            )
+        )
+
         if custom_page_title := transformed_block.get("page_title"):
+            custom_page_title = (
+                f"{section_repeating_page_title}: {custom_page_title}"
+                if section_repeating_page_title
+                else custom_page_title
+            )
             page_title_vars = self._resolve_custom_page_title_vars()
             self.page_title = custom_page_title.format(**page_title_vars)
         else:
-            self.page_title = self._get_page_title(transformed_block)
+            safe_content_title = self._get_content_title(transformed_block)
+            self.page_title = (
+                f"{section_repeating_page_title}: {safe_content_title}"
+                if section_repeating_page_title
+                else safe_content_title
+            )
 
         return self.placeholder_renderer.render(
             transformed_block, self._current_location.list_item_id
         )
 
-    def _get_page_title(self, transformed_block):
+    def _get_content_title(self, transformed_block):
         content = transformed_block.get("content")
         if content:
             return self._get_safe_page_title(content["title"])

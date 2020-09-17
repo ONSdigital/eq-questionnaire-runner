@@ -26,20 +26,30 @@ class TestQuestionnaireCustomPageTitles(QuestionnaireTestCase):
 
         self.assertEqualPageTitle("Custom section summary page title")
 
+    def test_custom_repeating_page_titles(self):
+        self.launchSurvey("test_custom_page_titles")
+        self.post()
+        self.post({"anyone-else": "Yes"})
+        self.post({"first-name": "Marie", "last-name": "Doe"})
+        self.add_person("John", "Doe")
+        self.post({"anyone-else": "No"})
+        self.post({"relationship-answer": "Husband or Wife"})
         self.post()
         self.post()
-        self.assertEqualPageTitle("Person 1 individual interstitial")
+        self.assertEqualPageTitle("Person 1: individual interstitial")
 
         self.post()
-        self.assertEqualPageTitle("Person 1 proxy question")
+        self.assertEqualPageTitle("Person 1: proxy question")
+
+        self.post()
+        self.assertEqualPageTitle("Person 1: summary")
 
         self.post()
         self.post()
-        self.post()
-        self.post()
-        self.assertEqualPageTitle("Person 2 individual interstitial")
+        self.assertEqualPageTitle("Person 2: individual interstitial")
 
         self.post()
-        self.assertEqualPageTitle("Person 2 proxy question")
+        self.assertEqualPageTitle("Person 2: proxy question")
+
         self.post()
-        self.assertEqualPageTitle("Custom question page title")
+        self.assertEqualPageTitle("Person 2: summary")

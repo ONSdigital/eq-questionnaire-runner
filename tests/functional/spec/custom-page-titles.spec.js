@@ -3,14 +3,14 @@ import IndividualInterstitialPage from "../generated_pages/custom_page_titles/in
 import ListCollectorAddPage from "../generated_pages/custom_page_titles/list-collector-add.page.js";
 import ListCollectorEditPage from "../generated_pages/custom_page_titles/list-collector-edit.page.js";
 import ListCollectorPage from "../generated_pages/custom_page_titles/list-collector.page.js";
+import ProxyPage from "../generated_pages/custom_page_titles/proxy.page.js";
 import RelationshipsPage from "../generated_pages/custom_page_titles/relationships.page.js";
-import SectionSummaryPage from "../generated_pages/custom_page_titles/section-summary.page.js";
 
 describe("Feature: Custom Page Titles", () => {
   const schema = "test_custom_page_titles.json";
 
   describe("Given I am completing the test_custom_page_titles survey,", () => {
-    beforeEach("load the survey", () => {
+    before("load the survey", () => {
       browser.openQuestionnaire(schema);
     });
 
@@ -21,7 +21,6 @@ describe("Feature: Custom Page Titles", () => {
     });
 
     it("When I navigate to the add person page, Then I should see the custom page title", () => {
-      $(HubPage.submit()).click();
       $(ListCollectorPage.yes()).click();
       $(ListCollectorPage.submit()).click();
       const expectedPageTitle = browser.getTitle();
@@ -29,9 +28,6 @@ describe("Feature: Custom Page Titles", () => {
     });
 
     it("When I navigate to relationship collector pages, Then I should see the custom page titles", () => {
-      $(HubPage.submit()).click();
-      $(ListCollectorPage.yes()).click();
-      $(ListCollectorPage.submit()).click();
       $(ListCollectorAddPage.firstName()).setValue("Marcus");
       $(ListCollectorAddPage.lastName()).setValue("Twin");
       $(ListCollectorAddPage.submit()).click();
@@ -67,57 +63,24 @@ describe("Feature: Custom Page Titles", () => {
       expect(expectedPageTitle).to.equal("Custom section summary page title");
     });
 
-    it("When I navigate to individual section pages, Then I should see the custom page titles", () => {
-      $(HubPage.submit()).click();
-      $(ListCollectorPage.yes()).click();
-      $(ListCollectorPage.submit()).click();
-      $(ListCollectorAddPage.firstName()).setValue("Marcus");
-      $(ListCollectorAddPage.lastName()).setValue("Twin");
-      $(ListCollectorAddPage.submit()).click();
-      $(ListCollectorPage.yes()).click();
-      $(ListCollectorPage.submit()).click();
-      $(ListCollectorAddPage.firstName()).setValue("Samuel");
-      $(ListCollectorAddPage.lastName()).setValue("Clemens");
-      $(ListCollectorAddPage.submit()).click();
-      $(ListCollectorPage.yes()).click();
-      $(ListCollectorPage.submit()).click();
-      $(ListCollectorAddPage.firstName()).setValue("Olivia");
-      $(ListCollectorAddPage.lastName()).setValue("Clemens");
-      $(ListCollectorAddPage.submit()).click();
-      $(ListCollectorPage.no()).click();
-      $(ListCollectorPage.submit()).click();
-      $(RelationshipsPage.husbandOrWife()).click();
-      $(RelationshipsPage.submit()).click();
-      $(RelationshipsPage.sonOrDaughter()).click();
-      $(RelationshipsPage.submit()).click();
-      $(RelationshipsPage.submit()).click();
-      $(RelationshipsPage.sonOrDaughter()).click();
-      $(RelationshipsPage.submit()).click();
-      $(SectionSummaryPage.submit()).click();
-      $(HubPage.submit()).click();
-      let expectedPageTitle = browser.getTitle();
-      expect(expectedPageTitle).to.equal("Person 1 individual interstitial");
-
-      $(IndividualInterstitialPage.submit()).click();
-      expectedPageTitle = browser.getTitle();
-      expect(expectedPageTitle).to.equal("Person 1 proxy question");
-    });
-
     it("When I navigate to list edit and remove pages Then I should see the custom page titles", () => {
-      $(HubPage.submit()).click();
-      $(ListCollectorPage.yes()).click();
-      $(ListCollectorPage.submit()).click();
-      $(ListCollectorAddPage.firstName()).setValue("Marcus");
-      $(ListCollectorAddPage.lastName()).setValue("Twin");
-      $(ListCollectorAddPage.submit()).click();
       $(ListCollectorPage.listEditLink(1)).click();
       let expectedPageTitle = browser.getTitle();
       expect(expectedPageTitle).to.equal("Custom edit page title");
-
       $(ListCollectorEditPage.previous()).click();
       $(ListCollectorPage.listRemoveLink(1)).click();
       expectedPageTitle = browser.getTitle();
       expect(expectedPageTitle).to.equal("Custom remove page title");
+    });
+
+    it("When I navigate to a repeating section which has custom page title, Then all pages titles in the section should have the correct prefix", () => {
+      browser.url(HubPage.url());
+      $(HubPage.submit()).click();
+      expect(browser.getTitle()).to.equal("Person 1: individual interstitial");
+      $(IndividualInterstitialPage.submit()).click();
+      expect(browser.getTitle()).to.equal("Person 1: proxy question");
+      $(ProxyPage.submit()).click();
+      expect(browser.getTitle()).to.equal("Person 1: summary");
     });
   });
 });
