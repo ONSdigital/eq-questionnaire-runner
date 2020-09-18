@@ -60,7 +60,7 @@ class TestEmailConfirmation(IntegrationTestCase):
         self.assertInUrl("/submitted/thank-you/")
         self.assertInBody("Get confirmation email")
         self.assertEqualPageTitle(
-            "Thank you - Census 2021 - Confirmation email test schema"
+            "Thank you - Confirmation email test schema"
         )
 
     def test_census_themed_schema_with_confirmation_email_not_set(self):
@@ -112,7 +112,7 @@ class TestEmailConfirmation(IntegrationTestCase):
         self.assertInBody("There is a problem with this page")
         self.assertInBody("Enter an email address")
         self.assertEqualPageTitle(
-            "Error: Thank you - Census 2021 - Confirmation email test schema"
+            "Error: Thank you - Confirmation email test schema"
         )
 
     def test_thank_you_incorrect_email_format(self):
@@ -130,7 +130,7 @@ class TestEmailConfirmation(IntegrationTestCase):
         )
 
         self.assertEqualPageTitle(
-            "Error: Thank you - Census 2021 - Confirmation email test schema"
+            "Error: Thank you - Confirmation email test schema"
         )
 
     def test_confirmation_email_page_accessible_after_email_sent_from_thank_you(self):
@@ -144,7 +144,7 @@ class TestEmailConfirmation(IntegrationTestCase):
         self.get("/submitted/confirmation-email/send")
         self.assertInBody("Send another confirmation email")
         self.assertEqualPageTitle(
-            "Confirmation email - Census 2021 - Confirmation email test schema"
+            "Confirmation email - Confirmation email test schema"
         )
 
     def test_confirmation_email_page_missing_email(self):
@@ -161,7 +161,7 @@ class TestEmailConfirmation(IntegrationTestCase):
         self.assertInBody("There is a problem with this page")
         self.assertInBody("Enter an email address")
         self.assertEqualPageTitle(
-            "Error: Confirmation email - Census 2021 - Confirmation email test schema"
+            "Error: Confirmation email - Confirmation email test schema"
         )
 
     def test_confirmation_email_page_incorrect_email_format(self):
@@ -180,7 +180,7 @@ class TestEmailConfirmation(IntegrationTestCase):
             "Enter an email in a valid format, for example name@example.com"
         )
         self.assertEqualPageTitle(
-            "Error: Confirmation email - Census 2021 - Confirmation email test schema"
+            "Error: Confirmation email - Confirmation email test schema"
         )
 
     def test_confirmation_email_page(self):

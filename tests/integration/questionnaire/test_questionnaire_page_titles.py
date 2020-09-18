@@ -44,7 +44,7 @@ class TestQuestionnairePageTitles(IntegrationTestCase):
         self.post()
         # Then
         self.assertEqualPageTitle(
-            "We’ve received your answers - Final confirmation to submit - Final confirmation to submit"
+            "We’ve received your answers - Final confirmation to submit"
         )
 
     def test_session_expired_page_title(self):
@@ -54,7 +54,7 @@ class TestQuestionnairePageTitles(IntegrationTestCase):
         self.get("/session-expired")
         # Then
         self.assertEqualPageTitle(
-            "Session expired - Census 2021 - Final confirmation to submit"
+            "Session expired - Final confirmation to submit"
         )
 
     def test_should_have_content_title_in_page_title_when_interstitial(self):
