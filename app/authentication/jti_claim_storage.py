@@ -1,10 +1,10 @@
 from datetime import timedelta
-from uuid import UUID
 
 from flask import current_app
 from structlog import get_logger
 
 from app.data_models.app_models import UsedJtiClaim
+from app.helpers.uuid_helper import is_valid_uuid
 from app.storage.errors import ItemAlreadyExistsError
 
 logger = get_logger()
@@ -21,14 +21,6 @@ class JtiTokenUsed(Exception):
         )
 
 
-def _is_valid(jti_claim):
-    try:
-        UUID(jti_claim, version=4)
-    except ValueError:
-        return False
-    return True
-
-
 def use_jti_claim(jti_claim, expires_at):
     """
     Use a jti claim
@@ -40,7 +32,7 @@ def use_jti_claim(jti_claim, expires_at):
     """
     if jti_claim is None:
         raise ValueError
-    if not _is_valid(jti_claim):
+    if not is_valid_uuid(jti_claim):
         logger.info("jti claim is invalid", jti_claim=jti_claim)
         raise TypeError
 
