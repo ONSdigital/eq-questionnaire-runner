@@ -6,7 +6,7 @@ class TestQuestionnairePageTitles(IntegrationTestCase):
         # Given, When
         self.launchSurvey("test_final_confirmation")
         # Then
-        self.assertEqualPageTitle("Final confirmation to submit")
+        self.assertEqualPageTitle(" - Final confirmation to submit")
 
     def test_should_have_question_in_page_title_when_loading_questionnaire(self):
         # Given
@@ -44,7 +44,7 @@ class TestQuestionnairePageTitles(IntegrationTestCase):
         self.post()
         # Then
         self.assertEqualPageTitle(
-            "We’ve received your answers - Final confirmation to submit"
+            "We’ve received your answers - Final confirmation to submit - Final confirmation to submit"
         )
 
     def test_session_expired_page_title(self):
@@ -53,7 +53,9 @@ class TestQuestionnairePageTitles(IntegrationTestCase):
         # When
         self.get("/session-expired")
         # Then
-        self.assertEqualPageTitle("Session expired - Census 2021")
+        self.assertEqualPageTitle(
+            "Session expired - Census 2021 - Final confirmation to submit"
+        )
 
     def test_should_have_content_title_in_page_title_when_interstitial(self):
         # Given
