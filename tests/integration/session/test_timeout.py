@@ -29,7 +29,7 @@ class TestTimeout(IntegrationTestCase):
         self.get("/session")
         self.assertStatusUnauthorised()
         self.assertInBody("Sorry there is a problem")
-        self.assertEqualPageTitle(" - Census 2021")
+        self.assertEqualPageTitle("Page is not available - Census 2021")
 
     def test_schema_defined_timeout_cant_be_higher_than_server(self):
         self.launchSurvey("test_timeout")
