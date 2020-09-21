@@ -6,6 +6,8 @@ web_server=${WEB_SERVER:-gunicorn}
 
 if [ "$web_server" = "gunicorn" ]; then
     run_command="gunicorn application:application"
+elif [ "$web_server" = "gunicorn-gthread" ]; then
+    run_command="gunicorn --worker-class=gthread --workers=${WEB_SERVER_WORKERS} --threads=${WEB_SERVER_THREADS} application:application"
 elif [ "$web_server" = "uwsgi" ]; then
     run_command="uwsgi uwsgi.ini --workers ${WEB_SERVER_WORKERS}"
 elif [ "$web_server" = "uwsgi-threads" ]; then

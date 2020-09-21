@@ -58,6 +58,9 @@ run: build link-development-env
 run-gunicorn: link-development-env
 	WEB_SERVER=gunicorn pipenv run ./run_app.sh
 
+run-gunicorn-gthread: link-development-env
+	WEB_SERVER=gunicorn-gthread pipenv run ./run_app.sh
+
 run-uwsgi: link-development-env
 	WEB_SERVER=uwsgi pipenv run ./run_app.sh
 
