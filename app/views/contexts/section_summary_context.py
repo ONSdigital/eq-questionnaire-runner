@@ -193,6 +193,4 @@ class SectionSummaryContext(Context):
             )
 
     def _get_safe_page_title(self, title):
-        return safe_content(
-            f'{self._schema.get_single_string_value(title)} - {self._schema.json["title"]}'
-        )
+        return safe_content(self._schema.get_single_string_value(title))
