@@ -2,7 +2,7 @@ from tests.integration.integration_test_case import IntegrationTestCase
 
 
 class TestQuestionnairePageTitles(IntegrationTestCase):
-    def test_should_have_introduction_in_page_title_when_loading_introduction(self):
+    def test_introduction_has_introduction_in_page_title(self):
         # Given, When
         self.launchSurvey("test_final_confirmation")
         # Then
