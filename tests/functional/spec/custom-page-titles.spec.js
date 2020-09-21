@@ -18,14 +18,14 @@ describe("Feature: Custom Page Titles", () => {
     it("When I navigate to the list collector page, Then I should see the custom page title", () => {
       $(HubPage.submit()).click();
       const expectedPageTitle = browser.getTitle();
-      expect(expectedPageTitle).to.equal("Custom page title");
+      expect(expectedPageTitle).to.equal("Custom page title - Census 2021");
     });
 
     it("When I navigate to the add person page, Then I should see the custom page title", () => {
       $(ListCollectorPage.yes()).click();
       $(ListCollectorPage.submit()).click();
       let expectedPageTitle = browser.getTitle();
-      expect(expectedPageTitle).to.equal("Add person 1");
+      expect(expectedPageTitle).to.equal("Add person 1 - Census 2021");
 
       $(ListCollectorAddPage.firstName()).setValue("Marcus");
       $(ListCollectorAddPage.lastName()).setValue("Twin");
@@ -33,7 +33,7 @@ describe("Feature: Custom Page Titles", () => {
       $(ListCollectorPage.yes()).click();
       $(ListCollectorPage.submit()).click();
       expectedPageTitle = browser.getTitle();
-      expect(expectedPageTitle).to.equal("Add person 2");
+      expect(expectedPageTitle).to.equal("Add person 2 - Census 2021");
     });
 
     it("When I navigate to relationship collector pages, Then I should see the custom page titles", () => {
@@ -48,33 +48,33 @@ describe("Feature: Custom Page Titles", () => {
       $(ListCollectorPage.no()).click();
       $(ListCollectorPage.submit()).click();
       let expectedPageTitle = browser.getTitle();
-      expect(expectedPageTitle).to.equal("How Person 1 is related to Person 2");
+      expect(expectedPageTitle).to.equal("How Person 1 is related to Person 2 - Census 2021");
 
       $(RelationshipsPage.husbandOrWife()).click();
       $(RelationshipsPage.submit()).click();
       expectedPageTitle = browser.getTitle();
-      expect(expectedPageTitle).to.equal("How Person 1 is related to Person 3");
+      expect(expectedPageTitle).to.equal("How Person 1 is related to Person 3 - Census 2021");
 
       $(RelationshipsPage.sonOrDaughter()).click();
       $(RelationshipsPage.submit()).click();
       expectedPageTitle = browser.getTitle();
-      expect(expectedPageTitle).to.equal("How Person 2 is related to Person 3");
+      expect(expectedPageTitle).to.equal("How Person 2 is related to Person 3 - Census 2021");
 
       $(RelationshipsPage.submit()).click();
       $(RelationshipsPage.sonOrDaughter()).click();
       $(RelationshipsPage.submit()).click();
       expectedPageTitle = browser.getTitle();
-      expect(expectedPageTitle).to.equal("Custom section summary page title");
+      expect(expectedPageTitle).to.equal("Custom section summary page title - Census 2021");
     });
 
     it("When I navigate to list edit and remove pages Then I should see the custom page titles", () => {
       $(ListCollectorPage.listEditLink(1)).click();
       let expectedPageTitle = browser.getTitle();
-      expect(expectedPageTitle).to.equal("Edit person 1");
+      expect(expectedPageTitle).to.equal("Edit person 1 - Census 2021");
       $(ListCollectorEditPage.previous()).click();
       $(ListCollectorPage.listRemoveLink(1)).click();
       expectedPageTitle = browser.getTitle();
-      expect(expectedPageTitle).to.equal("Remove person 1");
+      expect(expectedPageTitle).to.equal("Remove person 1 - Census 2021");
     });
 
     it("When I navigate to a repeating section which has custom page title, Then all page titles in the section should have the correct prefix", () => {

@@ -4,7 +4,7 @@ from tests.integration.integration_test_case import IntegrationTestCase
 class IndividualResponseTestCase(IntegrationTestCase):
     def setUp(self):
         super().setUp()
-        self.launchSurvey("test_individual_response")
+        self.launchSurvey("test_individual_response", region_code="GB-ENG")
 
     @property
     def individual_section_link(self):

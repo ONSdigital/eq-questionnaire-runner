@@ -179,9 +179,7 @@ class TestSectionSummaryContext(TestStandardSummaryContext):
             self.metadata,
         )
         context = summary_context(current_location)
-        self.assertEqual(
-            context["summary"]["page_title"], "Household Summary - … - Section Summary"
-        )
+        self.assertEqual(context["summary"]["page_title"], "Household Summary - …")
 
     def test_section_summary_page_title_placeholder_text_plural_replaced(self):
         current_location = Location(section_id="household-count-section")
@@ -195,9 +193,7 @@ class TestSectionSummaryContext(TestStandardSummaryContext):
             self.metadata,
         )
         context = summary_context(current_location)
-        self.assertEqual(
-            context["summary"]["page_title"], "… people live here - Section Summary"
-        )
+        self.assertEqual(context["summary"]["page_title"], "… people live here")
 
     def test_section_summary_title_is_section_title(self):
         current_location = Location(section_id="property-details-section")
@@ -503,7 +499,7 @@ def test_context_for_section_list_summary(people_answer_store):
                     "type": "List",
                 },
             ],
-            "page_title": "People who live here and overnight visitors - Test ListCollector",
+            "page_title": "People who live here and overnight visitors",
             "summary_type": "SectionSummary",
             "title": "People who live here and overnight visitors",
         }
@@ -542,7 +538,7 @@ def test_context_for_driving_question_summary_empty_list():
                     "type": "List",
                 }
             ],
-            "page_title": "List Collector Driving Question Summary - Test ListCollectorDrivingQuestion",
+            "page_title": "List Collector Driving Question Summary",
             "summary_type": "SectionSummary",
             "title": "List Collector Driving Question Summary",
         }
@@ -602,7 +598,7 @@ def test_context_for_driving_question_summary():
                     "type": "List",
                 }
             ],
-            "page_title": "List Collector Driving Question Summary - Test ListCollectorDrivingQuestion",
+            "page_title": "List Collector Driving Question Summary",
             "summary_type": "SectionSummary",
             "title": "List Collector Driving Question Summary",
         }
