@@ -1,3 +1,6 @@
+from functools import cached_property
+
+from app.questionnaire.schema_utils import transform_variants
 from app.views.handlers import individual_response_url
 from app.views.handlers.block import BlockHandler
 
@@ -13,3 +16,23 @@ class Content(BlockHandler):
                 self._questionnaire_store,
             ),
         }
+
+    @cached_property
+    def rendered_block(self):
+        transformed_block = transform_variants(
+            self.block,
+            self._schema,
+            self._questionnaire_store.metadata,
+            self._questionnaire_store.answer_store,
+            self._questionnaire_store.list_store,
+            self._current_location,
+        )
+
+        content_page_title = transformed_block.get(
+            "page_title"
+        ) or self._get_content_title(transformed_block)
+        self._set_page_title(content_page_title)
+        rendered_question = self.placeholder_renderer.render(
+            transformed_block, self._current_location.list_item_id
+        )
+        return rendered_question

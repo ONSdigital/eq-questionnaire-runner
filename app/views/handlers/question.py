@@ -6,6 +6,7 @@ from flask_babel import gettext
 from app.forms.questionnaire_form import generate_form
 from app.questionnaire.location import Location
 from app.questionnaire.questionnaire_store_updater import QuestionnaireStoreUpdater
+from app.questionnaire.schema_utils import transform_variants
 from app.views.contexts import ListContext
 from app.views.contexts.question import build_question_context
 from app.views.handlers.block import BlockHandler
@@ -180,3 +181,26 @@ class Question(BlockHandler):
         if answer_ids_to_remove:
             self.questionnaire_store_updater.remove_answers(answer_ids_to_remove)
             self.questionnaire_store_updater.save()
+
+    @cached_property
+    def rendered_block(self):
+        transformed_block = transform_variants(
+            self.block,
+            self._schema,
+            self._questionnaire_store.metadata,
+            self._questionnaire_store.answer_store,
+            self._questionnaire_store.list_store,
+            self._current_location,
+        )
+        question_page_title = transformed_block.get(
+            "page_title"
+        ) or self._get_safe_page_title(transformed_block["question"]["title"])
+
+        self._set_page_title(question_page_title)
+        rendered_question = self.placeholder_renderer.render(
+            transformed_block["question"], self._current_location.list_item_id
+        )
+        return {
+            **transformed_block,
+            **{"question": rendered_question},
+        }

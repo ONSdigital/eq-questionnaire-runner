@@ -12,7 +12,6 @@ from app.questionnaire.questionnaire_schema import QuestionnaireSchema
 from app.questionnaire.questionnaire_store_updater import QuestionnaireStoreUpdater
 from app.questionnaire.relationship_location import RelationshipLocation
 from app.questionnaire.router import Router
-from app.questionnaire.schema_utils import transform_variants
 
 logger = get_logger()
 
@@ -78,41 +77,6 @@ class BlockHandler:
             progress_store=self._questionnaire_store.progress_store,
             metadata=self._questionnaire_store.metadata,
         )
-
-    @cached_property
-    def rendered_block(self):
-        transformed_block = transform_variants(
-            self.block,
-            self._schema,
-            self._questionnaire_store.metadata,
-            self._questionnaire_store.answer_store,
-            self._questionnaire_store.list_store,
-            self._current_location,
-        )
-        transformed_block_page_title = transformed_block.get("page_title")
-
-        if "question" in transformed_block:
-            question_page_title = transformed_block.get(
-                "page_title"
-            ) or self._get_safe_page_title(transformed_block["question"]["title"])
-
-            self._set_page_title(question_page_title)
-            rendered_question = self.placeholder_renderer.render(
-                transformed_block["question"], self._current_location.list_item_id
-            )
-            return {
-                **transformed_block,
-                **{"question": rendered_question},
-            }
-
-        content_page_title = transformed_block_page_title or self._get_content_title(
-            transformed_block
-        )
-        self._set_page_title(content_page_title)
-        rendered_question = self.placeholder_renderer.render(
-            transformed_block, self._current_location.list_item_id
-        )
-        return rendered_question
 
     def is_location_valid(self):
         return self.router.can_access_location(
