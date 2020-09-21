@@ -56,11 +56,11 @@ def _map_theme(theme):
 def render_template(template, **kwargs):
     template = f"{template.lower()}.html"
     theme = cookie_session.get("theme")
-    title = lazy_gettext("Census 2021")
+    survey_title = lazy_gettext("Census 2021")
     page_header_context = get_page_header_context(
         get_locale().language, theme or "census"
     )
-    page_header_context.update({"title": title})
+    page_header_context.update({"title": survey_title})
     google_tag_manager_context = get_google_tag_manager_context()
     cdn_url = f'{current_app.config["CDN_URL"]}{current_app.config["CDN_ASSETS_PATH"]}'
     contact_us_url = get_contact_us_url(theme, get_locale().language)
@@ -80,7 +80,7 @@ def render_template(template, **kwargs):
         languages=get_languages_context(),
         schema_theme=theme,
         language_code=get_locale().language,
-        survey_title=title,
+        survey_title=survey_title,
         cdn_url=cdn_url,
         data_layer=get_data_layer(theme),
         include_csrf_token=include_csrf_token,
