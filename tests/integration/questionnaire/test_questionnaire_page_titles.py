@@ -2,11 +2,11 @@ from tests.integration.integration_test_case import IntegrationTestCase
 
 
 class TestQuestionnairePageTitles(IntegrationTestCase):
-    def test_should_have_question_in_page_title_when_loading_introduction(self):
+    def test_should_have_introduction_in_page_title_when_loading_introduction(self):
         # Given, When
         self.launchSurvey("test_final_confirmation")
         # Then
-        self.assertEqualPageTitle("None - Census 2021")
+        self.assertEqualPageTitle("Introduction - Census 2021")
 
     def test_should_have_question_in_page_title_when_loading_questionnaire(self):
         # Given
