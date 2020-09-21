@@ -218,7 +218,7 @@ class TestPlaceholderParser(unittest.TestCase):
         assert self.transforms.format_name("Joe", "Michael", "Bloggs") == "Joe Bloggs"
         assert (
             self.transforms.format_name(
-                "Joe", "Michael", "Bloggs", include_middle_name=True
+                "Joe", "Michael", "Bloggs", include_middle_names=True
             )
             == "Joe Michael Bloggs"
         )

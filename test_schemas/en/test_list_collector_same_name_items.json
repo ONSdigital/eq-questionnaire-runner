@@ -331,7 +331,7 @@
                                                 {
                                                     "transform": "format_name",
                                                     "arguments": {
-                                                        "include_middle_name": { "source": "previous_transform" },
+                                                        "include_middle_names": { "source": "previous_transform" },
                                                         "first_name": {
                                                             "source": "answers",
                                                             "identifier": "first-name"

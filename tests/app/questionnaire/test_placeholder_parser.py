@@ -528,7 +528,7 @@ def test_placeholder_resolves_name_is_duplicate_chain():
                 {
                     "transform": "format_name",
                     "arguments": {
-                        "include_middle_name": {"source": "previous_transform"},
+                        "include_middle_names": {"source": "previous_transform"},
                         "first_name": {
                             "source": "answers",
                             "identifier": "first-name-answer",
@@ -631,7 +631,7 @@ def test_placeholder_resolves_list_has_items_chain():
                 {
                     "transform": "format_name",
                     "arguments": {
-                        "include_middle_name": {"source": "previous_transform"},
+                        "include_middle_names": {"source": "previous_transform"},
                         "first_name": {
                             "source": "answers",
                             "identifier": "first-name-answer",

@@ -194,9 +194,9 @@ class PlaceholderTransforms:
         return len(list_to_check) > 0
 
     @staticmethod
-    def format_name(first_name, middle_names, last_name, include_middle_name=False):
+    def format_name(first_name, middle_names, last_name, include_middle_names=False):
         return (
             f"{first_name} {middle_names} {last_name}"
-            if include_middle_name
+            if include_middle_names
             else f"{first_name} {last_name}"
         )
