@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2020-09-21 08:49+0100\n"
+"POT-Creation-Date: 2020-09-21 11:24+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -201,7 +201,7 @@ msgid "Office for National Statistics logo"
 msgstr ""
 
 #: app/helpers/template_helpers.py:29 app/helpers/template_helpers.py:38
-#: app/helpers/template_helpers.py:82 templates/confirmation-email-sent.html:3
+#: app/helpers/template_helpers.py:59 templates/confirmation-email-sent.html:3
 #: templates/signed-out.html:3
 msgid "Census 2021"
 msgstr ""
@@ -526,24 +526,28 @@ msgstr ""
 msgid "If you can’t answer questions for this person"
 msgstr ""
 
-#: templates/introduction.html:15
+#: templates/introduction.html:10
+msgid "Introduction"
+msgstr ""
+
+#: templates/introduction.html:17
 #, python-format
 msgid "You are completing this for <span>%(ru_name)s</span> (%(trading_as_name)s)"
 msgstr ""
 
-#: templates/introduction.html:19
+#: templates/introduction.html:21
 #, python-format
 msgid "You are completing this for <span>%(ru_name)s</span>"
 msgstr ""
 
-#: templates/introduction.html:23
+#: templates/introduction.html:25
 #, python-format
 msgid ""
 "If the company details or structure have changed contact us on "
 "%(telephone_number)s or email %(email_address)s"
 msgstr ""
 
-#: templates/introduction.html:38
+#: templates/introduction.html:40
 msgid "Your response is legally required"
 msgstr ""
 
