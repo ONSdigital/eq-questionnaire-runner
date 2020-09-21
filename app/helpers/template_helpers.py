@@ -79,7 +79,7 @@ def render_template(template, **kwargs):
         languages=get_languages_context(),
         schema_theme=theme,
         language_code=get_locale().language,
-        survey_title=get_survey_title(cookie_session.get("survey_title")),
+        survey_title=lazy_gettext("Census 2021"),
         cdn_url=cdn_url,
         data_layer=get_data_layer(theme),
         include_csrf_token=include_csrf_token,
@@ -145,10 +145,3 @@ def get_data_layer(schema_theme):
         return [{"nisra": False}]
 
     return []
-
-
-def get_survey_title(survey_title):
-    if survey_title:
-        return f" - {survey_title}"
-    else:
-        return " - Census 2021"

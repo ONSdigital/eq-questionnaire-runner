@@ -59,7 +59,7 @@ class TestEmailConfirmation(IntegrationTestCase):
         # When I am on the thank you page, Then there is an confirmation email form
         self.assertInUrl("/submitted/thank-you/")
         self.assertInBody("Get confirmation email")
-        self.assertEqualPageTitle("Thank you - Confirmation email test schema")
+        self.assertEqualPageTitle("Thank you - Census 2021")
 
     def test_census_themed_schema_with_confirmation_email_not_set(self):
         # Given I launch the test_thank_you_census_individual questionnaire, which doesn't have email confirmation set in the schema
@@ -109,7 +109,7 @@ class TestEmailConfirmation(IntegrationTestCase):
         self.assertInUrl("/submitted/thank-you/")
         self.assertInBody("There is a problem with this page")
         self.assertInBody("Enter an email address")
-        self.assertEqualPageTitle("Error: Thank you - Confirmation email test schema")
+        self.assertEqualPageTitle("Error: Thank you - Census 2021")
 
     def test_thank_you_incorrect_email_format(self):
         # Given I launch and complete the test_confirmation_email questionnaire
@@ -125,7 +125,7 @@ class TestEmailConfirmation(IntegrationTestCase):
             "Enter an email in a valid format, for example name@example.com"
         )
 
-        self.assertEqualPageTitle("Error: Thank you - Confirmation email test schema")
+        self.assertEqualPageTitle("Error: Thank you - Census 2021")
 
     def test_confirmation_email_page_accessible_after_email_sent_from_thank_you(self):
         # Given I launch and complete the test_confirmation_email questionnaire
@@ -137,7 +137,7 @@ class TestEmailConfirmation(IntegrationTestCase):
         # Then I can access the email confirmation page
         self.get("/submitted/confirmation-email/send")
         self.assertInBody("Send another confirmation email")
-        self.assertEqualPageTitle("Confirmation email - Confirmation email test schema")
+        self.assertEqualPageTitle("Confirmation email - Census 2021")
 
     def test_confirmation_email_page_missing_email(self):
         # Given I launch and complete the test_confirmation_email questionnaire and submit with a valid email from the thank you page
@@ -153,7 +153,7 @@ class TestEmailConfirmation(IntegrationTestCase):
         self.assertInBody("There is a problem with this page")
         self.assertInBody("Enter an email address")
         self.assertEqualPageTitle(
-            "Error: Confirmation email - Confirmation email test schema"
+            "Error: Confirmation email - Census 2021"
         )
 
     def test_confirmation_email_page_incorrect_email_format(self):
@@ -172,7 +172,7 @@ class TestEmailConfirmation(IntegrationTestCase):
             "Enter an email in a valid format, for example name@example.com"
         )
         self.assertEqualPageTitle(
-            "Error: Confirmation email - Confirmation email test schema"
+            "Error: Confirmation email - Census 2021"
         )
 
     def test_confirmation_email_page(self):
