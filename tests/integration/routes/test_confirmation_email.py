@@ -152,9 +152,7 @@ class TestEmailConfirmation(IntegrationTestCase):
         self.assertInUrl("/submitted/confirmation-email/send/")
         self.assertInBody("There is a problem with this page")
         self.assertInBody("Enter an email address")
-        self.assertEqualPageTitle(
-            "Error: Confirmation email - Census 2021"
-        )
+        self.assertEqualPageTitle("Error: Confirmation email - Census 2021")
 
     def test_confirmation_email_page_incorrect_email_format(self):
         # Given I launch and complete the test_confirmation_email questionnaire and submit with a valid email from the thank you page
@@ -171,9 +169,7 @@ class TestEmailConfirmation(IntegrationTestCase):
         self.assertInBody(
             "Enter an email in a valid format, for example name@example.com"
         )
-        self.assertEqualPageTitle(
-            "Error: Confirmation email - Census 2021"
-        )
+        self.assertEqualPageTitle("Error: Confirmation email - Census 2021")
 
     def test_confirmation_email_page(self):
         # Given I launch and complete the test_confirmation_email questionnaire and submit with a valid email from the thank you page

@@ -14,9 +14,7 @@ class TestQuestionnairePageTitles(IntegrationTestCase):
         # When
         self.post(action="start_questionnaire")
         # Then
-        self.assertEqualPageTitle(
-            "What is your favourite breakfast food - Census 2021"
-        )
+        self.assertEqualPageTitle("What is your favourite breakfast food - Census 2021")
 
     def test_should_have_question_in_page_title_when_loading_confirmation(self):
         # Given
@@ -43,9 +41,7 @@ class TestQuestionnairePageTitles(IntegrationTestCase):
         # When submit
         self.post()
         # Then
-        self.assertEqualPageTitle(
-            "We’ve received your answers - Census 2021"
-        )
+        self.assertEqualPageTitle("We’ve received your answers - Census 2021")
 
     def test_session_expired_page_title(self):
         # Given
@@ -76,9 +72,7 @@ class TestQuestionnairePageTitles(IntegrationTestCase):
         self.launchSurvey("test_checkbox")
         # When
         # Then
-        self.assertEqualPageTitle(
-            "Which pizza toppings would you like? - Census 2021"
-        )
+        self.assertEqualPageTitle("Which pizza toppings would you like? - Census 2021")
 
     def test_should_not_use_names_in_question_page_titles(self):
         # Given
@@ -97,9 +91,7 @@ class TestQuestionnairePageTitles(IntegrationTestCase):
         self.launchSurvey("test_interstitial_page_title")
         # When
         # Then
-        self.assertEqualPageTitle(
-            "This is the content title … - Census 2021"
-        )
+        self.assertEqualPageTitle("This is the content title … - Census 2021")
 
     def test_should_have_error_in_page_title_when_fail_validation(self):
         # Given
