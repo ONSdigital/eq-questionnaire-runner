@@ -811,6 +811,23 @@
                                 "type": "General"
                             },
                             "type": "Question"
+                        },
+                        {
+                            "type": "Question",
+                            "id": "date-of-birth",
+                            "question": {
+                                "id": "date-pipe-question",
+                                "title": "What is your date of birth",
+                                "type": "General",
+                                "answers": [
+                                    {
+                                        "id": "date-dob",
+                                        "label": "For example 20 March 1990",
+                                        "mandatory": false,
+                                        "type": "Date"
+                                    }
+                                ]
+                            }
                         }
                     ],
                     "id": "personal-details-group",

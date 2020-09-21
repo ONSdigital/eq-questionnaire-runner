@@ -12,6 +12,7 @@ from app.questionnaire.questionnaire_schema import QuestionnaireSchema
 from app.questionnaire.questionnaire_store_updater import QuestionnaireStoreUpdater
 from app.questionnaire.relationship_location import RelationshipLocation
 from app.questionnaire.router import Router
+from app.questionnaire.schema_utils import transform_variants
 
 logger = get_logger()
 
@@ -32,8 +33,8 @@ class BlockHandler:
         self._current_location = current_location
         self._request_args = request_args or {}
         self._form_data = form_data
-        self.block = self._schema.get_block(current_location.block_id)
 
+        self.block = self._schema.get_block(current_location.block_id)
         self._routing_path = self._get_routing_path()
         self.page_title = None
         self._return_to = request_args.get("return_to")
@@ -77,6 +78,41 @@ class BlockHandler:
             progress_store=self._questionnaire_store.progress_store,
             metadata=self._questionnaire_store.metadata,
         )
+
+    @cached_property
+    def rendered_block(self):
+        transformed_block = transform_variants(
+            self.block,
+            self._schema,
+            self._questionnaire_store.metadata,
+            self._questionnaire_store.answer_store,
+            self._questionnaire_store.list_store,
+            self._current_location,
+        )
+        transformed_block_page_title = transformed_block.get("page_title")
+
+        if "question" in transformed_block:
+            question_page_title = transformed_block.get(
+                "page_title"
+            ) or self._get_safe_page_title(transformed_block["question"]["title"])
+
+            self._set_page_title(question_page_title)
+            rendered_question = self.placeholder_renderer.render(
+                transformed_block["question"], self._current_location.list_item_id
+            )
+            return {
+                **transformed_block,
+                **{"question": rendered_question},
+            }
+
+        content_page_title = transformed_block_page_title or self._get_content_title(
+            transformed_block
+        )
+        self._set_page_title(content_page_title)
+        rendered_question = self.placeholder_renderer.render(
+            transformed_block, self._current_location.list_item_id
+        )
+        return rendered_question
 
     def is_location_valid(self):
         return self.router.can_access_location(
@@ -125,17 +161,34 @@ class BlockHandler:
 
     def _get_safe_page_title(self, page_title):
         page_title = self._schema.get_single_string_value(page_title)
-        title = self._schema.json["title"]
 
-        return safe_content(f"{page_title} - {title}")
+        return safe_content(f"{page_title}")
 
     def _resolve_custom_page_title_vars(self) -> MutableMapping:
-        if list_item_id := self.current_location.list_item_id:
-            list_item_position = (
-                self._questionnaire_store.list_store.list_item_position(
-                    self.current_location.list_name, list_item_id
-                )
-            )
-            return {"list_item_position": list_item_position}
+        list_item_position = self._questionnaire_store.list_store.list_item_position(
+            self.current_location.list_name, self.current_location.list_item_id
+        )
+        return {"list_item_position": list_item_position}
 
-        return {}
+    def _get_content_title(self, transformed_block):
+        content = transformed_block.get("content")
+        if content:
+            return self._get_safe_page_title(content["title"])
+
+    def _set_page_title(self, variant_page_title):
+        self.page_title = variant_page_title
+
+        section_repeating_page_title = (
+            self._schema.get_repeating_page_title_for_section(
+                self._current_location.section_id
+            )
+        )
+        if section_repeating_page_title:
+            self.page_title = f"{self.page_title}: {section_repeating_page_title}"
+
+        if self.page_title and (
+            self._current_location.list_item_id
+            or self.block["type"] == "ListAddQuestion"
+        ):
+            page_title_vars = self._resolve_custom_page_title_vars()
+            self.page_title = self.page_title.format(**page_title_vars)

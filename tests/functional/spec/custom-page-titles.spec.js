@@ -1,4 +1,5 @@
 import HubPage from "../base_pages/hub.page.js";
+import DateOfBirthPage from "../generated_pages/custom_page_titles/date-of-birth.page.js"
 import IndividualInterstitialPage from "../generated_pages/custom_page_titles/individual-interstitial.page.js";
 import ListCollectorAddPage from "../generated_pages/custom_page_titles/list-collector-add.page.js";
 import ListCollectorEditPage from "../generated_pages/custom_page_titles/list-collector-edit.page.js";
@@ -83,6 +84,8 @@ describe("Feature: Custom Page Titles", () => {
       $(IndividualInterstitialPage.submit()).click();
       expect(browser.getTitle()).to.equal("Proxy question: Person 1");
       $(ProxyPage.submit()).click();
+      expect(browser.getTitle()).to.equal("What is your date of birth: Person 1");
+      $(DateOfBirthPage.submit()).click();
       expect(browser.getTitle()).to.equal("Summary: Person 1");
     });
   });

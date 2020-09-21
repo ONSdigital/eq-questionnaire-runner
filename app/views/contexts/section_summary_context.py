@@ -46,23 +46,20 @@ class SectionSummaryContext(Context):
                 current_location.section_id
             )
         )
-
-        if custom_page_title := self._schema.get_custom_page_title_for_section(
+        page_title = self._schema.get_custom_page_title_for_section(
             current_location.section_id
-        ):
-            custom_page_title = (
-                f"{custom_page_title}: {section_repeating_page_title}"
-                if section_repeating_page_title
-                else custom_page_title
-            )
-            return self._resolve_custom_page_title(custom_page_title, current_location)
+        ) or self._get_safe_page_title(title_for_location)
 
-        title_for_location = (
-            f"{title_for_location}: {section_repeating_page_title}"
-            if section_repeating_page_title
-            else title_for_location
-        )
-        return self._get_safe_page_title(title_for_location)
+        if section_repeating_page_title:
+            page_title = f"{page_title}: {section_repeating_page_title}"
+
+        if current_location.list_item_id:
+            list_item_position = self._list_store.list_item_position(
+                current_location.list_name, current_location.list_item_id
+            )
+            page_title = page_title.format(list_item_position=list_item_position)
+
+        return page_title
 
     def _build_summary(self, location, return_to):
         """
@@ -122,17 +119,6 @@ class SectionSummaryContext(Context):
                 yield self._list_summary_element(
                     summary_element, current_location, section
                 )
-
-    def _resolve_custom_page_title(
-        self, page_title: str, current_location: Location
-    ) -> str:
-        if list_item_id := current_location.list_item_id:
-            list_item_position = self._list_store.list_item_position(
-                current_location.list_name, list_item_id
-            )
-            return page_title.format(list_item_position=list_item_position)
-
-        return page_title
 
     def _list_summary_element(self, summary, current_location, section) -> Mapping:
         current_list = self._list_store[summary["for_list"]]

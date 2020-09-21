@@ -6,7 +6,6 @@ from flask_babel import gettext
 from app.forms.questionnaire_form import generate_form
 from app.questionnaire.location import Location
 from app.questionnaire.questionnaire_store_updater import QuestionnaireStoreUpdater
-from app.questionnaire.schema_utils import transform_variants
 from app.views.contexts import ListContext
 from app.views.contexts.question import build_question_context
 from app.views.handlers.block import BlockHandler
@@ -40,10 +39,6 @@ class Question(BlockHandler):
             self._current_location,
             data=answers,
         )
-
-    @cached_property
-    def rendered_block(self):
-        return self._render_block(self.block["id"])
 
     @cached_property
     def questionnaire_store_updater(self):
@@ -151,51 +146,6 @@ class Question(BlockHandler):
                 list_item_id=self._current_location.list_item_id,
             )
         super().handle_post()
-
-    def _render_block(self, block_id):
-        block_schema = self._schema.get_block(block_id)
-
-        variant_block = transform_variants(
-            block_schema,
-            self._schema,
-            self._questionnaire_store.metadata,
-            self._questionnaire_store.answer_store,
-            self._questionnaire_store.list_store,
-            self._current_location,
-        )
-
-        rendered_question = self.placeholder_renderer.render(
-            variant_block["question"], self._current_location.list_item_id
-        )
-
-        section_repeating_page_title = (
-            self._schema.get_repeating_page_title_for_section(
-                self._current_location.section_id
-            )
-        )
-
-        if custom_page_title := variant_block.get("page_title"):
-            custom_page_title = (
-                f"{custom_page_title}: {section_repeating_page_title}"
-                if section_repeating_page_title
-                else custom_page_title
-            )
-
-            page_title_vars = self._resolve_custom_page_title_vars()
-            self.page_title = custom_page_title.format(**page_title_vars)
-
-        elif question_title := variant_block["question"]:
-            safe_page_title = self._get_safe_page_title(question_title["title"])
-            self.page_title = (
-                f"{safe_page_title}: {section_repeating_page_title}"
-                if section_repeating_page_title
-                else safe_page_title
-            )
-
-        return {
-            **variant_block,
-            **{"question": rendered_question},
-        }
 
     def get_return_to_hub_url(self):
         if (
