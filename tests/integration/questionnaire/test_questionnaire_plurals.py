@@ -7,9 +7,7 @@ class TestQuestionnairePlurals(IntegrationTestCase):
 
         self.post({"number-of-people-answer": 0})
 
-        self.assertEqualPageTitle(
-            "… people live here, is this correct? - Test Plural Forms"
-        )
+        self.assertEqualPageTitle("… people live here, is this correct? - Census 2021")
         self.assertInBody("0 people live here, is this correct?")
         self.assertInBody("Yes, 0 people live here")
 
