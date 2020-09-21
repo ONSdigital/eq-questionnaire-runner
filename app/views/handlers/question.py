@@ -50,6 +50,29 @@ class Question(BlockHandler):
             self.rendered_block.get("question"),
         )
 
+    @cached_property
+    def rendered_block(self):
+        transformed_block = transform_variants(
+            self.block,
+            self._schema,
+            self._questionnaire_store.metadata,
+            self._questionnaire_store.answer_store,
+            self._questionnaire_store.list_store,
+            self._current_location,
+        )
+        question_page_title = transformed_block.get(
+            "page_title"
+        ) or self._get_safe_page_title(transformed_block["question"]["title"])
+
+        self._set_page_title(question_page_title)
+        rendered_question = self.placeholder_renderer.render(
+            transformed_block["question"], self._current_location.list_item_id
+        )
+        return {
+            **transformed_block,
+            **{"question": rendered_question},
+        }
+
     def get_next_location_url(self):
         answer_action = self._get_answer_action()
         if self._has_redirect_to_list_add_action(answer_action):
@@ -181,26 +204,3 @@ class Question(BlockHandler):
         if answer_ids_to_remove:
             self.questionnaire_store_updater.remove_answers(answer_ids_to_remove)
             self.questionnaire_store_updater.save()
-
-    @cached_property
-    def rendered_block(self):
-        transformed_block = transform_variants(
-            self.block,
-            self._schema,
-            self._questionnaire_store.metadata,
-            self._questionnaire_store.answer_store,
-            self._questionnaire_store.list_store,
-            self._current_location,
-        )
-        question_page_title = transformed_block.get(
-            "page_title"
-        ) or self._get_safe_page_title(transformed_block["question"]["title"])
-
-        self._set_page_title(question_page_title)
-        rendered_question = self.placeholder_renderer.render(
-            transformed_block["question"], self._current_location.list_item_id
-        )
-        return {
-            **transformed_block,
-            **{"question": rendered_question},
-        }
