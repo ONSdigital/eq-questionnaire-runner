@@ -16,7 +16,6 @@ class TestQuestionnairePageTitles(IntegrationTestCase):
         # Then
         self.assertEqualPageTitle("What is your favourite breakfast food - Census 2021")
 
-
     def test_should_have_question_in_page_title_when_loading_confirmation(self):
         # Given
         self.launchSurvey("test_final_confirmation")
@@ -61,7 +60,6 @@ class TestQuestionnairePageTitles(IntegrationTestCase):
         # Then
         self.assertEqualPageTitle("Breakfast interstitial - Census 2021")
 
-
     def test_html_stripped_from_page_titles(self):
         # Given
         self.launchSurvey("test_markup")
@@ -94,7 +92,6 @@ class TestQuestionnairePageTitles(IntegrationTestCase):
         # When
         # Then
         self.assertEqualPageTitle("This is the content title … - Census 2021")
-
 
     def test_should_have_error_in_page_title_when_fail_validation(self):
         # Given

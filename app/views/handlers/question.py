@@ -60,11 +60,11 @@ class Question(BlockHandler):
             self._questionnaire_store.list_store,
             self._current_location,
         )
-        question_page_title = transformed_block.get(
-            "page_title"
-        ) or self._get_safe_page_title(transformed_block["question"]["title"])
+        page_title = transformed_block.get("page_title") or self._get_safe_page_title(
+            transformed_block["question"]["title"]
+        )
 
-        self._set_page_title(question_page_title)
+        self._set_page_title(page_title)
         rendered_question = self.placeholder_renderer.render(
             transformed_block["question"], self._current_location.list_item_id
         )

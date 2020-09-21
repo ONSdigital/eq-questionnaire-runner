@@ -21,10 +21,9 @@ class Content(BlockHandler):
             "page_title"
         ) or self._get_content_title(transformed_block)
         self._set_page_title(content_page_title)
-        rendered_question = self.placeholder_renderer.render(
+        return self.placeholder_renderer.render(
             transformed_block, self._current_location.list_item_id
         )
-        return rendered_question
 
     def get_context(self):
         return {
@@ -36,3 +35,8 @@ class Content(BlockHandler):
                 self._questionnaire_store,
             ),
         }
+
+    def _get_content_title(self, transformed_block):
+        content = transformed_block.get("content")
+        if content:
+            return self._get_safe_page_title(content["title"])

@@ -80,13 +80,13 @@ describe("Feature: Custom Page Titles", () => {
     it("When I navigate to a repeating section which has custom page title, Then all page titles in the section should have the correct prefix", () => {
       browser.url(HubPage.url());
       $(HubPage.submit()).click();
-      expect(browser.getTitle()).to.equal("Individual interstitial: Person 1");
+      expect(browser.getTitle()).to.equal("Individual interstitial: Person 1 - Census 2021");
       $(IndividualInterstitialPage.submit()).click();
-      expect(browser.getTitle()).to.equal("Proxy question: Person 1");
+      expect(browser.getTitle()).to.equal("Proxy question: Person 1 - Census 2021");
       $(ProxyPage.submit()).click();
-      expect(browser.getTitle()).to.equal("What is your date of birth: Person 1");
+      expect(browser.getTitle()).to.equal("Date of birth: Person 1 - Census 2021");
       $(DateOfBirthPage.submit()).click();
-      expect(browser.getTitle()).to.equal("Summary: Person 1");
+      expect(browser.getTitle()).to.equal("Summary: Person 1 - Census 2021");
     });
   });
 });

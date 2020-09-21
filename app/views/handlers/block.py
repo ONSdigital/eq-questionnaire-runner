@@ -133,25 +133,20 @@ class BlockHandler:
         )
         return {"list_item_position": list_item_position}
 
-    def _get_content_title(self, transformed_block):
-        content = transformed_block.get("content")
-        if content:
-            return self._get_safe_page_title(content["title"])
-
-    def _set_page_title(self, variant_page_title):
-        self.page_title = variant_page_title
-
+    def _set_page_title(self, page_title):
         section_repeating_page_title = (
             self._schema.get_repeating_page_title_for_section(
                 self._current_location.section_id
             )
         )
         if section_repeating_page_title:
-            self.page_title = f"{self.page_title}: {section_repeating_page_title}"
+            page_title = f"{page_title}: {section_repeating_page_title}"
 
-        if self.page_title and (
+        if (
             self._current_location.list_item_id
             or self.block["type"] == "ListAddQuestion"
         ):
             page_title_vars = self._resolve_custom_page_title_vars()
-            self.page_title = self.page_title.format(**page_title_vars)
+            page_title = page_title.format(**page_title_vars)
+
+        self.page_title = page_title
