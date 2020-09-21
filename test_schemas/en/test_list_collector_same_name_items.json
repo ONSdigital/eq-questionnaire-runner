@@ -315,14 +315,14 @@
                                             "placeholder": "person_name",
                                             "transforms": [
                                                 {
-                                                    "transform": "name_is_duplicate",
+                                                    "transform": "contains",
                                                     "arguments": {
-                                                        "same_name_item_ids": {
+                                                        "list_to_check": {
                                                             "source": "list",
                                                             "id_selector": "same_name_items",
                                                             "identifier": "people"
                                                         },
-                                                        "list_item_id": {
+                                                        "value": {
                                                             "source": "location",
                                                             "identifier": "list_item_id"
                                                         }

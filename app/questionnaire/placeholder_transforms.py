@@ -186,12 +186,12 @@ class PlaceholderTransforms:
         return ""
 
     @staticmethod
-    def name_is_duplicate(same_name_item_ids, list_item_id):
-        return list_item_id in same_name_item_ids
+    def contains(list_to_check, value):
+        return value in list_to_check
 
     @staticmethod
-    def list_has_duplicates(same_name_item_ids):
-        return len(same_name_item_ids) > 0
+    def list_has_items(list_to_check):
+        return len(list_to_check) > 0
 
     @staticmethod
     def format_name(first_name, middle_names, last_name, include_middle_name=False):

@@ -204,15 +204,15 @@ class TestPlaceholderParser(unittest.TestCase):
 
         assert self.transforms.first_non_empty_item(list_to_filter) == ""
 
-    def test_name_is_duplicate(self):
-        name_item_ids = ["abc123", "fgh789"]
+    def test_contains(self):
+        list_to_check = ["abc123", "fgh789"]
 
-        assert self.transforms.name_is_duplicate(name_item_ids, "abc123")
-        assert not self.transforms.name_is_duplicate(name_item_ids, "def456")
+        assert self.transforms.contains(list_to_check, "abc123")
+        assert not self.transforms.contains(list_to_check, "def456")
 
-    def test_list_has_duplicates(self):
-        assert self.transforms.list_has_duplicates(["abc123", "fgh789"])
-        assert not self.transforms.list_has_duplicates([])
+    def test_list_has_items(self):
+        assert self.transforms.list_has_items(["abc123", "fgh789"])
+        assert not self.transforms.list_has_items([])
 
     def test_format_name(self):
         assert self.transforms.format_name("Joe", "Michael", "Bloggs") == "Joe Bloggs"

@@ -512,14 +512,14 @@ def test_placeholder_resolves_name_is_duplicate_chain():
             "placeholder": "persons_name",
             "transforms": [
                 {
-                    "transform": "name_is_duplicate",
+                    "transform": "contains",
                     "arguments": {
-                        "same_name_item_ids": {
+                        "list_to_check": {
                             "source": "list",
                             "id_selector": "same_name_items",
                             "identifier": "people",
                         },
-                        "list_item_id": {
+                        "value": {
                             "source": "location",
                             "identifier": "list_item_id",
                         },
@@ -570,7 +570,7 @@ def test_placeholder_resolves_name_is_duplicate_chain():
     assert placeholders["persons_name"] == "Marie Smith"
 
 
-def test_placeholder_resolves_list_has_duplicates_chain():
+def test_placeholder_resolves_list_has_items_chain():
     list_store = ListStore(
         [
             {
@@ -619,9 +619,9 @@ def test_placeholder_resolves_list_has_duplicates_chain():
             "placeholder": "persons_name",
             "transforms": [
                 {
-                    "transform": "list_has_duplicates",
+                    "transform": "list_has_items",
                     "arguments": {
-                        "same_name_item_ids": {
+                        "list_to_check": {
                             "source": "list",
                             "id_selector": "same_name_items",
                             "identifier": "people",
