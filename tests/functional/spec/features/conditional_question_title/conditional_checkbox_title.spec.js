@@ -27,7 +27,7 @@ describe("Feature: Conditional checkbox and radio question titles", () => {
       $(NameEntryPage.name()).setValue("Mary");
       $(NameEntryPage.submit()).click();
 
-      expect(browser.getTitle()).to.contain("Did Mary make changes to this business? - Test Survey - Checkbox and Radio titles");
+      expect(browser.getTitle()).to.contain("Did Mary make changes to this business? - Census 2021");
     });
 
     it("When I enter another known name and go to the summary", () => {
