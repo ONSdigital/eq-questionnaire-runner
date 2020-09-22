@@ -20,10 +20,7 @@ logger = get_logger()
 
 class NumberCheck:
     def __init__(self, message=None):
-        if message:
-            self.message = message
-        else:
-            self.message = error_messages["INVALID_NUMBER"]
+        self.message = message or error_messages["INVALID_NUMBER"]
 
     def __call__(self, form, field):
         try:
@@ -424,3 +421,26 @@ class MutuallyExclusiveCheck:
                 self.messages["MANDATORY_QUESTION"], self.question_title
             )
             raise validators.ValidationError(message)
+
+
+def sanitise_mobile_number(data):
+    for char in [" ", ".", ",", "\t", "-", "{", "}", "[", "]", "(", ")", "/"]:
+        data = data.replace(char, "")
+
+    return data.lstrip("+044").lstrip("044").lstrip("0")
+
+
+class MobileNumberCheck:
+    def __init__(self, messages=None):
+        self.messages = {**error_messages, **(messages or {})}
+
+    def __call__(self, form, field):
+        data = sanitise_mobile_number(field.data)
+
+        if len(data) != 10:
+            raise validators.StopValidation(self.messages["INVALID_MOBILE_NUMBER"])
+
+        try:
+            int(data)
+        except ValueError:
+            raise validators.ValidationError(self.messages["INVALID_MOBILE_NUMBER"])

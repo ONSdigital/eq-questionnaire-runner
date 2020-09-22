@@ -23,6 +23,7 @@ error_messages = {
     "MANDATORY_ADDRESS": lazy_gettext("Enter an address to continue"),
     "MANDATORY_DURATION": lazy_gettext("Enter a duration to continue"),
     "MANDATORY_EMAIL": lazy_gettext("Enter an email address"),
+    "MANDATORY_MOBILE_NUMBER": lazy_gettext("Enter a UK mobile number"),
     "NUMBER_TOO_SMALL": lazy_gettext("Enter an answer more than or equal to %(min)s"),
     "NUMBER_TOO_LARGE": lazy_gettext("Enter an answer less than or equal to %(max)s"),
     "NUMBER_TOO_SMALL_EXCLUSIVE": lazy_gettext("Enter an answer more than %(min)s"),
@@ -54,6 +55,9 @@ error_messages = {
         "Enter a 'period to' date later than the 'period from' date"
     ),
     "INVALID_DURATION": lazy_gettext("Enter a valid duration"),
+    "INVALID_MOBILE_NUMBER": lazy_gettext(
+        "Enter a UK mobile number in a valid format, for example, 07700 912345 or +44 7700 912345"
+    ),
     "DATE_PERIOD_TOO_SMALL": lazy_gettext(
         "Enter a reporting period greater than or equal to %(min)s"
     ),

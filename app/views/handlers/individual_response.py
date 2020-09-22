@@ -12,6 +12,7 @@ from werkzeug.exceptions import NotFound
 
 from app.data_models.progress_store import CompletionStatus
 from app.forms.questionnaire_form import generate_form
+from app.forms.validators import sanitise_mobile_number
 from app.helpers.template_helpers import render_template
 from app.helpers.url_param_serializer import URLParamSerializer
 from app.questionnaire.placeholder_renderer import PlaceholderRenderer
@@ -691,7 +692,7 @@ class IndividualResponseTextHandler(IndividualResponseHandler):
             },
             "answers": [
                 {
-                    "type": "TextField",
+                    "type": "MobileNumber",
                     "id": "individual-response-enter-number-answer",
                     "mandatory": True,
                     "label": lazy_gettext("UK mobile number"),
@@ -844,7 +845,7 @@ class IndividualResponseTextConfirmHandler(IndividualResponseHandler):
     def handle_post(self):
         if self.selected_option == self.confirm_option:
             self._update_section_status(CompletionStatus.INDIVIDUAL_RESPONSE_REQUESTED)
-            self._publish_fulfilment_request(self.mobile_number)
+            self._publish_fulfilment_request(sanitise_mobile_number(self.mobile_number))
             return redirect(
                 url_for(
                     "individual_response.individual_response_text_message_confirmation",
