@@ -74,7 +74,7 @@ describe("Summary Screen", () => {
     expect($(SummaryPage.testCurrency()).getText()).to.contain("No answer provided");
   });
 
-  it("Given a survey has been completed, when submission content has been set in the schema, then the correct content should be displayed", () => {
+  it("Given a survey has been completed, when submission content has not been set in the schema, then the default content should be displayed", () => {
     completeAllQuestions();
 
     expect($(SummaryPage.questionText()).getText()).to.contain("Check your answers and submit");
@@ -102,7 +102,7 @@ describe("Summary Screen", () => {
     browser.openQuestionnaire("test_summary_with_submission_text.json");
   });
 
-  it("Given a survey has been completed, when submission content has not been set in the schema, then the default content should be displayed", () => {
+  it("Given a survey has been completed, when submission content has been set in the schema, then the correct content should be displayed", () => {
     completeAllQuestions();
 
     expect($(SummaryPage.questionText()).getText()).to.contain("Submission title");
