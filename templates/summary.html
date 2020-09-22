@@ -8,13 +8,20 @@
 
 {% block form_content %}
   {% if content.summary.summary_type == 'Summary' %}
-    <h1>{{ _("Check your answers and submit") }}</h1>
+    <h1>{{ content.title }}</h1>
+
+    {% if content.warning %}
+        {% call onsPanel({
+            "type": "warn"
+          }) %}
+          <p data-qa="warning">{{ content.warning }}</p>
+        {% endcall %}
+    {% endif %}
 
     {% call onsPanel({
       "classes": "print__hidden u-mb-l"
     }) %}
-      <strong>{{ _("Please submit this survey to complete it") }}</strong>
-      <p>{{ _("Check your answers before submitting") }}</p>
+      <strong>{{ content.guidance }}</strong>
     {% endcall %}
   {% elif content.summary.summary_type == 'CalculatedSummary' %}
     <h1 data-qa="calculated-summary-title">{{content.summary.title}}</h1>
