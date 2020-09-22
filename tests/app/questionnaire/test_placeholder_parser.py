@@ -429,3 +429,245 @@ def test_placeholder_resolves_answer_value_based_on_first_item_in_list():
 
     placeholders = parser(placeholder_list)
     assert str(placeholders["answer"]) == "Coffee"
+
+
+def test_placeholder_resolves_same_name_items():
+    list_store = ListStore(
+        [
+            {
+                "items": ["abc123", "cde456", "fgh789"],
+                "same_name_items": ["abc123", "fgh789"],
+                "name": "people",
+            }
+        ]
+    )
+    placeholder_list = [
+        {
+            "placeholder": "answer",
+            "value": {
+                "source": "list",
+                "id_selector": "same_name_items",
+                "identifier": "people",
+            },
+        },
+    ]
+
+    parser = PlaceholderParser(
+        language="en",
+        list_store=list_store,
+        list_item_id="abc123",
+    )
+
+    placeholders = parser(placeholder_list)
+
+    assert placeholders["answer"] == ["abc123", "fgh789"]
+
+
+def test_placeholder_resolves_name_is_duplicate_chain():
+    list_store = ListStore(
+        [
+            {
+                "items": ["abc123", "cde456", "fgh789"],
+                "same_name_items": ["abc123", "fgh789"],
+                "name": "people",
+            }
+        ]
+    )
+    answer_store = AnswerStore(
+        [
+            {
+                "answer_id": "first-name-answer",
+                "value": "Joe",
+                "list_item_id": "abc123",
+            },
+            {
+                "answer_id": "middle-names-answer",
+                "value": "Michael",
+                "list_item_id": "abc123",
+            },
+            {
+                "answer_id": "last-name-answer",
+                "value": "Smith",
+                "list_item_id": "abc123",
+            },
+            {
+                "answer_id": "first-name-answer",
+                "value": "Marie",
+                "list_item_id": "cde456",
+            },
+            {
+                "answer_id": "middle-names-answer",
+                "value": "Jane",
+                "list_item_id": "cde456",
+            },
+            {
+                "answer_id": "last-name-answer",
+                "value": "Smith",
+                "list_item_id": "cde456",
+            },
+        ]
+    )
+    placeholder_transforms = [
+        {
+            "placeholder": "persons_name",
+            "transforms": [
+                {
+                    "transform": "contains",
+                    "arguments": {
+                        "list_to_check": {
+                            "source": "list",
+                            "id_selector": "same_name_items",
+                            "identifier": "people",
+                        },
+                        "value": {
+                            "source": "location",
+                            "identifier": "list_item_id",
+                        },
+                    },
+                },
+                {
+                    "transform": "format_name",
+                    "arguments": {
+                        "include_middle_names": {"source": "previous_transform"},
+                        "first_name": {
+                            "source": "answers",
+                            "identifier": "first-name-answer",
+                        },
+                        "middle_names": {
+                            "source": "answers",
+                            "identifier": "middle-names-answer",
+                        },
+                        "last_name": {
+                            "source": "answers",
+                            "identifier": "last-name-answer",
+                        },
+                    },
+                },
+            ],
+        }
+    ]
+
+    parser = PlaceholderParser(
+        language="en",
+        list_store=list_store,
+        answer_store=answer_store,
+        list_item_id="abc123",
+    )
+
+    placeholders = parser(placeholder_transforms)
+
+    assert placeholders["persons_name"] == "Joe Michael Smith"
+
+    parser = PlaceholderParser(
+        language="en",
+        list_store=list_store,
+        answer_store=answer_store,
+        list_item_id="cde456",
+    )
+
+    placeholders = parser(placeholder_transforms)
+
+    assert placeholders["persons_name"] == "Marie Smith"
+
+
+def test_placeholder_resolves_list_has_items_chain():
+    list_store = ListStore(
+        [
+            {
+                "items": ["abc123", "cde456", "fgh789"],
+                "same_name_items": ["abc123", "fgh789"],
+                "name": "people",
+            }
+        ]
+    )
+    answer_store = AnswerStore(
+        [
+            {
+                "answer_id": "first-name-answer",
+                "value": "Joe",
+                "list_item_id": "abc123",
+            },
+            {
+                "answer_id": "middle-names-answer",
+                "value": "Michael",
+                "list_item_id": "abc123",
+            },
+            {
+                "answer_id": "last-name-answer",
+                "value": "Smith",
+                "list_item_id": "abc123",
+            },
+            {
+                "answer_id": "first-name-answer",
+                "value": "Marie",
+                "list_item_id": "cde456",
+            },
+            {
+                "answer_id": "middle-names-answer",
+                "value": "Jane",
+                "list_item_id": "cde456",
+            },
+            {
+                "answer_id": "last-name-answer",
+                "value": "Smith",
+                "list_item_id": "cde456",
+            },
+        ]
+    )
+    placeholder_transforms = [
+        {
+            "placeholder": "persons_name",
+            "transforms": [
+                {
+                    "transform": "list_has_items",
+                    "arguments": {
+                        "list_to_check": {
+                            "source": "list",
+                            "id_selector": "same_name_items",
+                            "identifier": "people",
+                        },
+                    },
+                },
+                {
+                    "transform": "format_name",
+                    "arguments": {
+                        "include_middle_names": {"source": "previous_transform"},
+                        "first_name": {
+                            "source": "answers",
+                            "identifier": "first-name-answer",
+                        },
+                        "middle_names": {
+                            "source": "answers",
+                            "identifier": "middle-names-answer",
+                        },
+                        "last_name": {
+                            "source": "answers",
+                            "identifier": "last-name-answer",
+                        },
+                    },
+                },
+            ],
+        }
+    ]
+
+    parser = PlaceholderParser(
+        language="en",
+        list_store=list_store,
+        answer_store=answer_store,
+        list_item_id="abc123",
+    )
+
+    placeholders = parser(placeholder_transforms)
+
+    assert placeholders["persons_name"] == "Joe Michael Smith"
+
+    parser = PlaceholderParser(
+        language="en",
+        list_store=list_store,
+        answer_store=answer_store,
+        list_item_id="cde456",
+    )
+
+    placeholders = parser(placeholder_transforms)
+
+    assert placeholders["persons_name"] == "Marie Jane Smith"
