@@ -705,7 +705,7 @@
             "title": "Individual Section",
             "summary": {
                 "show_on_completion": true,
-                "page_title": "Summary for person {list_item_position}"
+                "page_title": "Summary"
             },
             "groups": [
                 {
@@ -761,13 +761,13 @@
                                     "text": "{person_name}"
                                 }
                             },
-                            "page_title": "Person {list_item_position} individual interstitial",
+                            "page_title": "Individual interstitial",
                             "id": "individual-interstitial",
                             "type": "Interstitial"
                         },
                         {
                             "id": "proxy",
-                            "page_title": "Person {list_item_position} proxy question",
+                            "page_title": "Proxy question",
                             "question": {
                                 "answers": [
                                     {
@@ -814,8 +814,7 @@
                         },
                         {
                             "type": "Question",
-                            "id": "date-of-birth-block",
-                            "page_title": "Custom question page title",
+                            "id": "date-of-birth",
                             "question": {
                                 "id": "date-pipe-question",
                                 "title": "What is your date of birth?",
@@ -857,7 +856,8 @@
                         }
                     ],
                     "text": "{person_name}"
-                }
+                },
+                "page_title": "Person {list_item_position}"
             }
         }
     ]
