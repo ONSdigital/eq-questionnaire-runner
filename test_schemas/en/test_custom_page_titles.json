@@ -817,7 +817,7 @@
                             "id": "date-of-birth",
                             "question": {
                                 "id": "date-pipe-question",
-                                "title": "Date of birth",
+                                "title": "What is your date of birth?",
                                 "type": "General",
                                 "answers": [
                                     {

@@ -84,7 +84,7 @@ describe("Feature: Custom Page Titles", () => {
       $(IndividualInterstitialPage.submit()).click();
       expect(browser.getTitle()).to.equal("Proxy question: Person 1 - Census 2021");
       $(ProxyPage.submit()).click();
-      expect(browser.getTitle()).to.equal("Date of birth: Person 1 - Census 2021");
+      expect(browser.getTitle()).to.equal("What is your date of birth?: Person 1 - Census 2021");
       $(DateOfBirthPage.submit()).click();
       expect(browser.getTitle()).to.equal("Summary: Person 1 - Census 2021");
     });

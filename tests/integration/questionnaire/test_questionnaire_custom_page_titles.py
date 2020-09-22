@@ -45,7 +45,7 @@ class TestQuestionnaireCustomPageTitles(QuestionnaireTestCase):
         self.assertEqualPageTitle("Proxy question: Person 1 - Census 2021")
 
         self.post()
-        self.assertEqualPageTitle("Date of birth: Person 1 - Census 2021")
+        self.assertEqualPageTitle("What is your date of birth?: Person 1 - Census 2021")
 
         self.post()
         self.assertEqualPageTitle("Summary: Person 1 - Census 2021")
@@ -58,7 +58,7 @@ class TestQuestionnaireCustomPageTitles(QuestionnaireTestCase):
         self.assertEqualPageTitle("Proxy question: Person 2 - Census 2021")
 
         self.post()
-        self.assertEqualPageTitle("Date of birth: Person 2 - Census 2021")
+        self.assertEqualPageTitle("What is your date of birth?: Person 2 - Census 2021")
 
         self.post()
         self.assertEqualPageTitle("Summary: Person 2 - Census 2021")
