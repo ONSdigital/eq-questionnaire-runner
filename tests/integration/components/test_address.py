@@ -23,6 +23,7 @@ class TestRenderDropdownWidget(IntegrationTestCase):
             }
         )
         self.post({})
+        self.post({})
 
         # Then
         self.assertInBody("7 Evelyn Street<br/>CF63 4JG")
@@ -35,6 +36,7 @@ class TestRenderDropdownWidget(IntegrationTestCase):
                 "address-mandatory-postcode": "CF63 4JG",
             }
         )
+        self.post({})
         self.post({})
         self.assertInUrl("/summary")
 
@@ -50,6 +52,7 @@ class TestRenderDropdownWidget(IntegrationTestCase):
     ):
         # When
         self.post({"address-mandatory-line1": "first address"})
+        self.post({})
         self.post({})
 
         # Then
