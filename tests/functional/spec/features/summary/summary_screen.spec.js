@@ -5,7 +5,6 @@ import TestNumberPage from "../../../generated_pages/summary/test-number-block.p
 
 import DessertBlockPageSubmission from "../../../generated_pages/summary_with_submission_text/dessert-block.page.js";
 import RadioPageSubmission from "../../../generated_pages/summary_with_submission_text/radio.page.js";
-import SummaryPageSubmission from "../../../generated_pages/summary_with_submission_text/summary.page.js";
 import TestNumberPageSubmission from "../../../generated_pages/summary_with_submission_text/test-number-block.page.js";
 
 describe("Summary Screen", () => {

@@ -89,7 +89,6 @@ class QuestionPage extends BasePage {
   warning() {
     return '[data-qa="warning"]';
   }
-
 }
 
 export default QuestionPage;
