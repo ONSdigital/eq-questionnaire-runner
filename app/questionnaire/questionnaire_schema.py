@@ -218,11 +218,17 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
     def show_summary_on_completion_for_section(self, section_id: str) -> bool:
         return self.get_summary_for_section(section_id).get("show_on_completion", False)
 
+    def get_repeat_for_section(self, section_id):
+        return self._sections_by_id.get(section_id).get("repeat", {})
+
     def get_repeating_list_for_section(self, section_id):
-        return self._sections_by_id.get(section_id).get("repeat", {}).get("for_list")
+        return self.get_repeat_for_section(section_id).get("for_list")
 
     def get_repeating_title_for_section(self, section_id):
-        return self._sections_by_id.get(section_id).get("repeat", {}).get("title")
+        return self.get_repeat_for_section(section_id).get("title")
+
+    def get_repeating_page_title_for_section(self, section_id):
+        return self.get_repeat_for_section(section_id).get("page_title")
 
     def get_custom_page_title_for_section(self, section_id):
         return self.get_summary_for_section(section_id).get("page_title")

@@ -42,10 +42,6 @@ class Question(BlockHandler):
         )
 
     @cached_property
-    def rendered_block(self):
-        return self._render_block(self.block["id"])
-
-    @cached_property
     def questionnaire_store_updater(self):
         return QuestionnaireStoreUpdater(
             self._current_location,
@@ -53,6 +49,29 @@ class Question(BlockHandler):
             self._questionnaire_store,
             self.rendered_block.get("question"),
         )
+
+    @cached_property
+    def rendered_block(self):
+        transformed_block = transform_variants(
+            self.block,
+            self._schema,
+            self._questionnaire_store.metadata,
+            self._questionnaire_store.answer_store,
+            self._questionnaire_store.list_store,
+            self._current_location,
+        )
+        page_title = transformed_block.get("page_title") or self._get_safe_page_title(
+            transformed_block["question"]["title"]
+        )
+
+        self._set_page_title(page_title)
+        rendered_question = self.placeholder_renderer.render(
+            transformed_block["question"], self._current_location.list_item_id
+        )
+        return {
+            **transformed_block,
+            **{"question": rendered_question},
+        }
 
     def get_next_location_url(self):
         answer_action = self._get_answer_action()
@@ -151,34 +170,6 @@ class Question(BlockHandler):
                 list_item_id=self._current_location.list_item_id,
             )
         super().handle_post()
-
-    def _render_block(self, block_id):
-        block_schema = self._schema.get_block(block_id)
-
-        variant_block = transform_variants(
-            block_schema,
-            self._schema,
-            self._questionnaire_store.metadata,
-            self._questionnaire_store.answer_store,
-            self._questionnaire_store.list_store,
-            self._current_location,
-        )
-
-        rendered_question = self.placeholder_renderer.render(
-            variant_block["question"], self._current_location.list_item_id
-        )
-
-        if custom_page_title := variant_block.get("page_title"):
-            page_title_vars = self._resolve_custom_page_title_vars()
-            self.page_title = custom_page_title.format(**page_title_vars)
-
-        elif question := variant_block["question"]:
-            self.page_title = self._get_safe_page_title(question["title"])
-
-        return {
-            **variant_block,
-            **{"question": rendered_question},
-        }
 
     def get_return_to_hub_url(self):
         if (
