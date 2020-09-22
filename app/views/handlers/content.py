@@ -8,7 +8,22 @@ from app.views.handlers.block import BlockHandler
 class Content(BlockHandler):
     @cached_property
     def rendered_block(self):
-        return self._render_block(self.block["id"])
+        transformed_block = transform_variants(
+            self.block,
+            self._schema,
+            self._questionnaire_store.metadata,
+            self._questionnaire_store.answer_store,
+            self._questionnaire_store.list_store,
+            self._current_location,
+        )
+
+        content_page_title = transformed_block.get(
+            "page_title"
+        ) or self._get_content_title(transformed_block)
+        self._set_page_title(content_page_title)
+        return self.placeholder_renderer.render(
+            transformed_block, self._current_location.list_item_id
+        )
 
     def get_context(self):
         return {
@@ -21,29 +36,7 @@ class Content(BlockHandler):
             ),
         }
 
-    def _render_block(self, block_id):
-        block_schema = self._schema.get_block(block_id)
-
-        transformed_block = transform_variants(
-            block_schema,
-            self._schema,
-            self._questionnaire_store.metadata,
-            self._questionnaire_store.answer_store,
-            self._questionnaire_store.list_store,
-            self._current_location,
-        )
-
-        if custom_page_title := transformed_block.get("page_title"):
-            page_title_vars = self._resolve_custom_page_title_vars()
-            self.page_title = custom_page_title.format(**page_title_vars)
-        else:
-            self.page_title = self._get_page_title(transformed_block)
-
-        return self.placeholder_renderer.render(
-            transformed_block, self._current_location.list_item_id
-        )
-
-    def _get_page_title(self, transformed_block):
+    def _get_content_title(self, transformed_block):
         content = transformed_block.get("content")
         if content:
             return self._get_safe_page_title(content["title"])
