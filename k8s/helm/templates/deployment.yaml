@@ -103,6 +103,8 @@ spec:
               value: "{{- .Values.cdn.url }}"
             - name: CDN_ASSETS_PATH
               value: "{{- .Values.cdn.assets_path }}"
+            - name: ADDRESS_LOOKUP_API_URL
+              value: "{{- .Values.address_lookup_api.url }}"
             - name: EQ_REDIS_HOST
               valueFrom:
                 configMapKeyRef:

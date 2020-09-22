@@ -23,6 +23,7 @@ def format_number(value):
 
 
 def get_formatted_address(address_fields):
+    address_fields.pop("uprn", None)
     return "<br>".join(address_field for address_field in address_fields.values())
 
 
