@@ -184,3 +184,19 @@ class PlaceholderTransforms:
             return item
 
         return ""
+
+    @staticmethod
+    def contains(list_to_check, value):
+        return value in list_to_check
+
+    @staticmethod
+    def list_has_items(list_to_check):
+        return len(list_to_check) > 0
+
+    @staticmethod
+    def format_name(first_name, middle_names, last_name, include_middle_names=False):
+        return (
+            f"{first_name} {middle_names} {last_name}"
+            if include_middle_names
+            else f"{first_name} {last_name}"
+        )
