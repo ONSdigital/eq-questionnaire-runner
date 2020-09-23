@@ -90,6 +90,25 @@ class TestSummaryContext(TestStandardSummaryContext):
         summary_groups = questionnaire_summary_context()
         self.check_summary_rendering_context(summary_groups)
 
+    def test_summary_context_with_custom_submission_content(self):
+        self.schema = load_schema_from_name("test_summary_with_submission_text")
+
+        questionnaire_summary_context = QuestionnaireSummaryContext(
+            self.language,
+            self.schema,
+            self.answer_store,
+            self.progress_store,
+            self.list_store,
+            self.metadata,
+        )
+
+        summary_groups = questionnaire_summary_context()
+
+        self.assertEqual(summary_groups["title"], "Submission title")
+        self.assertEqual(summary_groups["guidance"], "Submission guidance")
+        self.assertEqual(summary_groups["warning"], "Submission warning")
+        self.assertEqual(summary_groups["submit_button"], "Submission button")
+
 
 class TestSectionSummaryContext(TestStandardSummaryContext):
     def setUp(self):
