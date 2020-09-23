@@ -18,13 +18,17 @@ class Summary(Content):
         collapsible = block.get("collapsible", False)
         context = questionnaire_summary_context(collapsible)
 
-        submission_schema = self._schema.get_submission()
-
-        if submission_schema:
-            context["title"] = submission_schema.get("title")
-            context["submit_button"] = submission_schema.get("button")
-            context["guidance"] = submission_schema.get("guidance")
-            context["warning"] = submission_schema.get("warning")
+        if submission_schema := self._schema.get_submission():
+            context["title"] = submission_schema.get("title") or lazy_gettext(
+                "Check your answers and submit"
+            )
+            context["submit_button"] = submission_schema.get("button") or lazy_gettext(
+                "Submit answers"
+            )
+            context["guidance"] = submission_schema.get("guidance") or lazy_gettext(
+                "Please submit this survey to complete it"
+            )
+            context["warning"] = submission_schema.get("warning") or None
         else:
             context["title"] = lazy_gettext("Check your answers and submit")
             context["submit_button"] = lazy_gettext("Submit answers")

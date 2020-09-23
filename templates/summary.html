@@ -21,7 +21,7 @@
     {% call onsPanel({
       "classes": "print__hidden u-mb-l"
     }) %}
-      <strong>{{ content.guidance }}</strong>
+      <strong data-qa="guidance">{{ content.guidance }}</strong>
     {% endcall %}
   {% elif content.summary.summary_type == 'CalculatedSummary' %}
     <h1 data-qa="calculated-summary-title">{{content.summary.title}}</h1>

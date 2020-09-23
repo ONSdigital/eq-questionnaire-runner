@@ -4,8 +4,6 @@ import SummaryPage from "../../../generated_pages/summary/summary.page.js";
 import TestNumberPage from "../../../generated_pages/summary/test-number-block.page.js";
 
 import DessertBlockPageSubmission from "../../../generated_pages/summary_with_submission_text/dessert-block.page.js";
-import RadioPageSubmission from "../../../generated_pages/summary_with_submission_text/radio.page.js";
-import TestNumberPageSubmission from "../../../generated_pages/summary_with_submission_text/test-number-block.page.js";
 
 describe("Summary Screen", () => {
   beforeEach("Load the survey", () => {
@@ -103,24 +101,11 @@ describe("Summary Screen", () => {
   });
 
   it("Given a survey has been completed, when submission content has been set in the schema, then the correct content should be displayed", () => {
-    completeAllQuestions();
-
-    expect($(SummaryPage.questionText()).getText()).to.contain("Submission title");
-    expect($(SummaryPage.warning()).getText()).to.contain("Submission warning");
-  });
-
-  function completeAllQuestions() {
-    $(RadioPageSubmission.bacon()).click();
-    $(RadioPageSubmission.submit()).click();
-    $(TestNumberPageSubmission.testCurrency()).setValue("1234");
-    $(TestNumberPageSubmission.squareKilometres()).setValue("123456");
-    $(TestNumberPageSubmission.testDecimal()).setValue("123456.78");
-    $(TestNumberPageSubmission.submit()).click();
     $(DessertBlockPageSubmission.dessert()).setValue("Crème Brûlée");
     $(DessertBlockPageSubmission.submit()).click();
-
-    const expectedUrl = browser.getUrl();
-
-    expect(expectedUrl).to.contain(SummaryPage.pageName);
-  }
+    expect($(SummaryPage.questionText()).getText()).to.contain("Submission title");
+    expect($(SummaryPage.warning()).getText()).to.contain("Submission warning");
+    expect($(SummaryPage.guidance()).getText()).to.contain("Submission guidance");
+    expect($(SummaryPage.submit()).getText()).to.contain("Submission button");
+  });
 });
