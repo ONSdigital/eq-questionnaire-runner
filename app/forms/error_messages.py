@@ -56,7 +56,7 @@ error_messages = {
     ),
     "INVALID_DURATION": lazy_gettext("Enter a valid duration"),
     "INVALID_MOBILE_NUMBER": lazy_gettext(
-        "Enter a UK mobile number in a valid format, for example, 07700 912345 or +44 7700 912345"
+        "Enter a UK mobile number in a valid format, for example, 07700 900345 or +44 7700 900345"
     ),
     "DATE_PERIOD_TOO_SMALL": lazy_gettext(
         "Enter a reporting period greater than or equal to %(min)s"
