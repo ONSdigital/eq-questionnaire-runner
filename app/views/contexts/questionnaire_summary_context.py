@@ -19,7 +19,8 @@ class QuestionnaireSummaryContext(Context):
             "Submit answers"
         )
         guidance = submission_schema.get("guidance") or lazy_gettext(
-            "Please submit this survey to complete it")
+            "Please submit this survey to complete it"
+        )
 
         warning = submission_schema.get("warning") or None
 
@@ -30,11 +31,11 @@ class QuestionnaireSummaryContext(Context):
                 "collapsible": collapsible,
                 "summary_type": "Summary",
             },
-                "title": title,
-                "guidance": guidance,
-                "warning": warning,
-                "submit_button": submit_button
-            }
+            "title": title,
+            "guidance": guidance,
+            "warning": warning,
+            "submit_button": submit_button,
+        }
 
         return context
 
