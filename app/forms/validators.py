@@ -424,10 +424,8 @@ class MutuallyExclusiveCheck:
 
 
 def sanitise_mobile_number(data):
-    for char in [" ", ".", ",", "\t", "-", "{", "}", "[", "]", "(", ")", "/"]:
-        data = data.replace(char, "")
-
-    return data.lstrip("+044").lstrip("044").lstrip("0")
+    data = re.sub(r"[\s.,\t\-{}\[\]()/]", "", data)
+    return re.sub(r"^(\+044|044|0)", "", data)
 
 
 class MobileNumberCheck:
@@ -437,10 +435,5 @@ class MobileNumberCheck:
     def __call__(self, form, field):
         data = sanitise_mobile_number(field.data)
 
-        if len(data) != 10:
-            raise validators.StopValidation(self.messages["INVALID_MOBILE_NUMBER"])
-
-        try:
-            int(data)
-        except ValueError:
+        if len(data) != 10 or not data.isdigit():
             raise validators.ValidationError(self.messages["INVALID_MOBILE_NUMBER"])

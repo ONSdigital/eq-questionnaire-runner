@@ -4,7 +4,7 @@
     "schema_version": "0.0.1",
     "data_version": "0.0.3",
     "survey_id": "001",
-    "title": "Other input fields",
+    "title": "Test mobile number",
     "theme": "default",
     "description": "A questionnaire to test a mobile number",
     "metadata": [
@@ -36,7 +36,6 @@
                                         "id": "mobile-number-answer",
                                         "label": "UK mobile Number",
                                         "mandatory": true,
-                                        "q_code": "0",
                                         "type": "MobileNumber"
                                     }
                                 ],
