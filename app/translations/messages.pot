@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2020-09-23 13:56+0100\n"
+"POT-Creation-Date: 2020-09-23 17:17+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -163,8 +163,8 @@ msgstr ""
 
 #: app/forms/error_messages.py:58
 msgid ""
-"Enter a UK mobile number in a valid format, for example, 07700 912345 or "
-"+44 7700 912345"
+"Enter a UK mobile number in a valid format, for example, 07700 900345 or "
+"+44 7700 900345"
 msgstr ""
 
 #: app/forms/error_messages.py:61
