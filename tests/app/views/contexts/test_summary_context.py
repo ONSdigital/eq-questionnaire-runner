@@ -82,8 +82,8 @@ class TestSummaryContext(TestStandardSummaryContext):
             self.language,
             self.schema,
             self.answer_store,
-            self.progress_store,
             self.list_store,
+            self.progress_store,
             self.metadata,
         )
 
@@ -97,8 +97,8 @@ class TestSummaryContext(TestStandardSummaryContext):
             self.language,
             self.schema,
             self.answer_store,
-            self.progress_store,
             self.list_store,
+            self.progress_store,
             self.metadata,
         )
 
