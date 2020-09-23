@@ -79,7 +79,6 @@ describe("Address Answer Type", () => {
       $(AddressMandatory.Line2()).setValue("Apt 7");
       $(AddressMandatory.Town()).setValue("Barry");
       $(AddressMandatory.Postcode()).setValue("CF63 4JG");
-
       $(AddressMandatory.submit()).click();
       $(AddressOptional.submit()).click();
       expect($(AddressConfirmation.questionText()).getText()).to.contain("Evelyn Street");
