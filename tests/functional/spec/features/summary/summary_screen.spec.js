@@ -89,9 +89,7 @@ describe("Summary Screen", () => {
     $(DessertBlockPage.dessert()).setValue("Crème Brûlée");
     $(DessertBlockPage.submit()).click();
 
-    const expectedUrl = browser.getUrl();
-
-    expect(expectedUrl).to.contain(SummaryPage.pageName);
+    expect(browser.getUrl()).to.contain(SummaryPage.pageName);
   }
 });
 
