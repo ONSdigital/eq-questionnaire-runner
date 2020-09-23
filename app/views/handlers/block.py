@@ -32,8 +32,8 @@ class BlockHandler:
         self._current_location = current_location
         self._request_args = request_args or {}
         self._form_data = form_data
-        self.block = self._schema.get_block(current_location.block_id)
 
+        self.block = self._schema.get_block(current_location.block_id)
         self._routing_path = self._get_routing_path()
         self.page_title = None
         self._return_to = request_args.get("return_to")
@@ -125,16 +125,28 @@ class BlockHandler:
 
     def _get_safe_page_title(self, page_title):
         page_title = self._schema.get_single_string_value(page_title)
-
         return safe_content(page_title)
 
     def _resolve_custom_page_title_vars(self) -> MutableMapping:
-        if list_item_id := self.current_location.list_item_id:
-            list_item_position = (
-                self._questionnaire_store.list_store.list_item_position(
-                    self.current_location.list_name, list_item_id
-                )
-            )
-            return {"list_item_position": list_item_position}
+        list_item_position = self._questionnaire_store.list_store.list_item_position(
+            self.current_location.list_name, self.current_location.list_item_id
+        )
+        return {"list_item_position": list_item_position}
 
-        return {}
+    def _set_page_title(self, page_title):
+        section_repeating_page_title = (
+            self._schema.get_repeating_page_title_for_section(
+                self._current_location.section_id
+            )
+        )
+        if section_repeating_page_title:
+            page_title = f"{page_title}: {section_repeating_page_title}"
+
+        if (
+            self._current_location.list_item_id
+            or self.block["type"] == "ListAddQuestion"
+        ):
+            page_title_vars = self._resolve_custom_page_title_vars()
+            page_title = page_title.format(**page_title_vars)
+
+        self.page_title = page_title
