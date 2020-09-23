@@ -1,3 +1,5 @@
+from flask_babel import lazy_gettext
+
 from app.questionnaire.location import Location
 
 from .context import Context
@@ -8,14 +10,32 @@ class QuestionnaireSummaryContext(Context):
     def __call__(self, collapsible=True, answers_are_editable=True):
         groups = list(self._build_all_groups())
 
+        submission_schema = self._schema.get_submission()
+
+        title = submission_schema.get("title") or lazy_gettext(
+            "Check your answers and submit"
+        )
+        submit_button = submission_schema.get("button") or lazy_gettext(
+            "Submit answers"
+        )
+        guidance = submission_schema.get("guidance") or lazy_gettext(
+            "Please submit this survey to complete it")
+
+        warning = submission_schema.get("warning") or None
+
         context = {
             "summary": {
                 "groups": groups,
                 "answers_are_editable": answers_are_editable,
                 "collapsible": collapsible,
                 "summary_type": "Summary",
+            },
+                "title": title,
+                "guidance": guidance,
+                "warning": warning,
+                "submit_button": submit_button
             }
-        }
+
         return context
 
     def _build_all_groups(self):
