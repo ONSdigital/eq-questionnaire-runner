@@ -81,7 +81,7 @@ describe("Address Answer Type", () => {
       $(AddressMandatory.Postcode()).setValue("CF63 4JG");
       $(AddressMandatory.submit()).click();
       $(AddressOptional.submit()).click();
-      expect($(AddressConfirmation.questionText()).getText()).to.contain("Evelyn Street");
+      expect($(AddressConfirmation.questionText()).getText()).to.equal("Please confirm the first line of your address is Evelyn Street");
     });
   });
 });
