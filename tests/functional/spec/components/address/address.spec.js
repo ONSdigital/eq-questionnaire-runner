@@ -1,3 +1,4 @@
+import AddressConfirmation from "../../../generated_pages/address/address-confirmation.page";
 import AddressMandatory from "../../../generated_pages/address/address-block-mandatory.page";
 import AddressOptional from "../../../generated_pages/address/address-block-optional.page";
 import Summary from "../../../generated_pages/address/summary.page";
@@ -16,6 +17,7 @@ describe("Address Answer Type", () => {
 
       $(AddressMandatory.submit()).click();
       $(AddressOptional.submit()).click();
+      $(AddressConfirmation.submit()).click();
       expect(browser.getUrl()).to.contain(Summary.pageName);
       expect($(Summary.addressMandatory()).getText()).to.equal("Evelyn Street\nApt 7\nBarry\nCF63 4JG");
       expect($(Summary.addressMandatory()).getHTML()).to.contain("Evelyn Street<br>Apt 7<br>Barry<br>CF63 4JG");
@@ -28,6 +30,7 @@ describe("Address Answer Type", () => {
 
       $(AddressMandatory.submit()).click();
       $(AddressOptional.submit()).click();
+      $(AddressConfirmation.submit()).click();
       expect(browser.getUrl()).to.contain(Summary.pageName);
       expect($(Summary.addressMandatory()).getText()).to.equal("Evelyn Street");
     });
@@ -47,6 +50,7 @@ describe("Address Answer Type", () => {
       $(AddressMandatory.submit()).click();
 
       $(AddressOptional.submit()).click();
+      $(AddressConfirmation.submit()).click();
       expect($(Summary.addressOptional()).getText()).to.equal("No answer provided");
     });
   });
@@ -67,6 +71,18 @@ describe("Address Answer Type", () => {
       expect($(AddressMandatory.Line2()).getValue()).to.contain("Apt 7");
       expect($(AddressMandatory.Town()).getValue()).to.contain("Barry");
       expect($(AddressMandatory.Postcode()).getValue()).to.contain("CF63 4JG");
+    });
+  });
+  describe("Given the user has submitted an address answer type question", () => {
+    it("When the user visits the address confirmation question page, Then the first line of the address is displayed", () => {
+      $(AddressMandatory.Line1()).setValue("Evelyn Street");
+      $(AddressMandatory.Line2()).setValue("Apt 7");
+      $(AddressMandatory.Town()).setValue("Barry");
+      $(AddressMandatory.Postcode()).setValue("CF63 4JG");
+
+      $(AddressMandatory.submit()).click();
+      $(AddressOptional.submit()).click();
+      expect($(AddressConfirmation.questionText()).getText()).to.contain("Evelyn Street");
     });
   });
 });

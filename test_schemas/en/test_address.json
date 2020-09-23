@@ -63,10 +63,10 @@
                         },
                         {
                             "type": "Question",
-                            "id": "confirmation-address",
+                            "id": "address-confirmation",
                             "question": {
                                 "type": "General",
-                                "id": "confirmation-address-question",
+                                "id": "address-confirmation-question",
                                 "title": {
                                     "placeholders": [
                                         {
@@ -83,7 +83,7 @@
                                 "answers": [
                                     {
                                         "type": "Radio",
-                                        "id": "radio-mandatory-answer",
+                                        "id": "address-confirmation-answer",
                                         "mandatory": false,
                                         "options": [
                                             {
