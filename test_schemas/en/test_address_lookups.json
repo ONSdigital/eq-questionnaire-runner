@@ -44,7 +44,7 @@
                                         "lookup_options": {
                                             "address_type": "Residential",
                                             "one_year_ago": false,
-                                            "region_code":  "GB-ENG"
+                                            "region_code": "GB-ENG"
                                         }
                                     }
                                 ]
@@ -65,7 +65,7 @@
                                         "lookup_options": {
                                             "address_type": "Workplace",
                                             "one_year_ago": true,
-                                            "region_code":  "GB-WLS"
+                                            "region_code": "GB-WLS"
                                         }
                                     }
                                 ]
