@@ -75,12 +75,13 @@ class TestLookupAddressFields(IntegrationTestCase):
         # Then
         self.assertInBody("Enter an address to continue")
 
-    def test_address_fields_are_filled_in_when_revisiting_the_page(self):
+    def test_address_fields_are_populated_in_when_revisiting_the_page(self):
         # Given
         self.post(
             {
                 "address-mandatory-line1": "7 Evelyn Street",
                 "address-mandatory-postcode": "CF63 4JG",
+                "address-mandatory-uprn": "123456789",
             }
         )
         self.post({})
@@ -92,6 +93,7 @@ class TestLookupAddressFields(IntegrationTestCase):
         # Then
         self.assertInBody("7 Evelyn Street")
         self.assertInBody("CF63 4JG")
+        self.assertInBody("123456789")
 
     def test_uprn_field_not_displayed_on_summary(self):
         # When
