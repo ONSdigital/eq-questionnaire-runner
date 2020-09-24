@@ -63,4 +63,5 @@ error_messages = {
     "SINGLE_DATE_PERIOD_TOO_EARLY": lazy_gettext("Enter a date after %(min)s"),
     "SINGLE_DATE_PERIOD_TOO_LATE": lazy_gettext("Enter a date before %(max)s"),
     "MUTUALLY_EXCLUSIVE": lazy_gettext("Remove an answer to continue"),
+    "MAX_EMAIL_CONFIRMATION_LIMIT_EXCEEDED": lazy_gettext("You have reached the maximum number of confirmation emails"),
 }

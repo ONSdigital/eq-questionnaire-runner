@@ -287,7 +287,7 @@ def get_thank_you(schema):
 
 @post_submission_blueprint.route("confirmation-email/send", methods=["GET", "POST"])
 def send_confirmation_email():
-    if not get_session_store().session_data.confirmation_email_sent:
+    if not get_session_store().session_data.confirmation_email_count:
         raise NotFound
 
     confirmation_email = ConfirmationEmail()
@@ -311,7 +311,7 @@ def send_confirmation_email():
 
 @post_submission_blueprint.route("confirmation-email/sent", methods=["GET"])
 def get_confirmation_email_sent():
-    if not get_session_store().session_data.confirmation_email_sent:
+    if not get_session_store().session_data.confirmation_email_count:
         raise NotFound
 
     email = URLParamSerializer().loads(request.args.get("email"))

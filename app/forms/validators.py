@@ -1,4 +1,5 @@
 import re
+import os
 from datetime import datetime
 from decimal import Decimal, InvalidOperation
 
@@ -10,6 +11,7 @@ from structlog import get_logger
 from wtforms import validators
 from wtforms.compat import string_types
 
+from app.globals import get_session_store
 from app.forms import error_messages
 from app.helpers.template_helpers import safe_content
 from app.jinja_filters import format_number, get_formatted_currency
@@ -424,3 +426,12 @@ class MutuallyExclusiveCheck:
                 self.messages["MANDATORY_QUESTION"], self.question_title
             )
             raise validators.ValidationError(message)
+
+
+class EmailConfirmationLimitExceededCheck:
+    def __init__(self, messages=None):
+        self.messages = {**error_messages, **(messages or {})}
+
+    def __call__(self, *args, **kwargs):
+        if get_session_store().session_data.confirmation_email_count > int(os.getenv("CONFIRMATION_EMAIL_REQUEST_LIMIT")):
+            raise validators.ValidationError(self.messages["MAX_EMAIL_CONFIRMATION_LIMIT_EXCEEDED"])

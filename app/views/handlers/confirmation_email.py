@@ -27,5 +27,5 @@ class ConfirmationEmail:
     @staticmethod
     def handle_post():
         session_store = get_session_store()
-        session_store.session_data.confirmation_email_sent = True
+        session_store.session_data.confirmation_email_count += 1
         session_store.save()
