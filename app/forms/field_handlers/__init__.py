@@ -2,6 +2,7 @@ from .address_handler import AddressHandler
 from .date_handlers import DateHandler, MonthYearDateHandler, YearDateHandler
 from .dropdown_handler import DropdownHandler
 from .duration_handler import DurationHandler
+from .mobile_number_handler import MobileNumberHandler
 from .number_handler import NumberHandler
 from .select_handlers import SelectHandler, SelectMultipleHandler
 from .string_handler import StringHandler
@@ -23,6 +24,7 @@ FIELD_HANDLER_MAPPINGS = {
     "YearDate": YearDateHandler,
     "Duration": DurationHandler,
     "Address": AddressHandler,
+    "MobileNumber": MobileNumberHandler,
 }
 
 
