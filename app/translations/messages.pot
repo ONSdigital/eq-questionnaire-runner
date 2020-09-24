@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2020-09-24 12:33+0100\n"
+"POT-Creation-Date: 2020-09-24 15:43+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -306,6 +306,19 @@ msgstr ""
 msgid " (You)"
 msgstr ""
 
+#: app/views/contexts/questionnaire_summary_context.py:15
+msgid "Check your answers and submit"
+msgstr ""
+
+#: app/views/contexts/questionnaire_summary_context.py:18
+#: templates/confirmation.html:6
+msgid "Submit answers"
+msgstr ""
+
+#: app/views/contexts/questionnaire_summary_context.py:21
+msgid "Please submit this survey to complete it"
+msgstr ""
+
 #: app/views/handlers/confirmation_email.py:10
 msgid "Confirmation email"
 msgstr ""
@@ -516,10 +529,6 @@ msgstr ""
 msgid "Send another confirmation email"
 msgstr ""
 
-#: templates/confirmation.html:6 templates/confirmation.html:27
-msgid "Submit answers"
-msgstr ""
-
 #: templates/confirmation.html:12
 msgid "Yes, I confirm these are correct"
 msgstr ""
@@ -596,19 +605,7 @@ msgstr ""
 msgid "Summary"
 msgstr ""
 
-#: templates/summary.html:11
-msgid "Check your answers and submit"
-msgstr ""
-
-#: templates/summary.html:16
-msgid "Please submit this survey to complete it"
-msgstr ""
-
-#: templates/summary.html:17
-msgid "Check your answers before submitting"
-msgstr ""
-
-#: templates/summary.html:26
+#: templates/summary.html:33
 msgid "Please review your answers and confirm these are correct"
 msgstr ""
 
