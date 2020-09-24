@@ -1,9 +1,9 @@
 import DessertBlockPage from "../../../generated_pages/summary/dessert-block.page.js";
+import DessertBlockPageSubmission from "../../../generated_pages/summary_with_submission_text/dessert-block.page.js";
 import RadioPage from "../../../generated_pages/summary/radio.page.js";
 import SummaryPage from "../../../generated_pages/summary/summary.page.js";
 import TestNumberPage from "../../../generated_pages/summary/test-number-block.page.js";
 
-import DessertBlockPageSubmission from "../../../generated_pages/summary_with_submission_text/dessert-block.page.js";
 
 describe("Summary Screen", () => {
   beforeEach("Load the survey", () => {
