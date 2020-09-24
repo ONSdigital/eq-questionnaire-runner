@@ -57,15 +57,3 @@ class TestPhoneNumberValidator(unittest.TestCase):
             validator(mock_form, mock_field)
 
         self.assertEqual(error_messages["INVALID_MOBILE_NUMBER"], str(ite.exception))
-
-    def test_valid_mobile_number(self):
-        validator = MobileNumberCheck()
-
-        mock_form = Mock()
-        mock_field = Mock()
-        mock_field.data = "+447700 900333"
-
-        try:
-            validator(mock_form, mock_field)
-        except ValidationError:
-            self.fail("Valid phone number raised ValidationError")
