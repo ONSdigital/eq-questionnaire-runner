@@ -1,3 +1,4 @@
+import os
 import flask_babel
 from flask import Blueprint, g, jsonify, redirect, request
 from flask import session as cookie_session
@@ -314,6 +315,8 @@ def get_confirmation_email_sent():
     if not get_session_store().session_data.confirmation_email_count:
         raise NotFound
 
+    hide_guidance = True if get_session_store().session_data.confirmation_email_count > int(os.getenv("CONFIRMATION_EMAIL_REQUEST_LIMIT")) else False
+
     email = URLParamSerializer().loads(request.args.get("email"))
 
     return render_template(
@@ -324,6 +327,7 @@ def get_confirmation_email_sent():
                 "post_submission.send_confirmation_email"
             ),
             "hide_signout_button": False,
+            "hide_guidance": hide_guidance,
             "sign_out_url": url_for("session.get_sign_out"),
         },
     )
