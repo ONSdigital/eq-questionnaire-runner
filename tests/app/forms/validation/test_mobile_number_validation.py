@@ -51,7 +51,7 @@ class TestPhoneNumberValidator(unittest.TestCase):
 
         mock_form = Mock()
         mock_field = Mock()
-        mock_field.data = "07700e900333"
+        mock_field.data = "07700e90033"
 
         with self.assertRaises(ValidationError) as ite:
             validator(mock_form, mock_field)
