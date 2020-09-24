@@ -845,7 +845,7 @@ class IndividualResponseTextConfirmHandler(IndividualResponseHandler):
     def handle_post(self):
         if self.selected_option == self.confirm_option:
             self._update_section_status(CompletionStatus.INDIVIDUAL_RESPONSE_REQUESTED)
-            self._publish_fulfilment_request(sanitise_mobile_number(self.mobile_number))
+            self._publish_fulfilment_request(self.mobile_number)
             return redirect(
                 url_for(
                     "individual_response.individual_response_text_message_confirmation",
@@ -878,7 +878,11 @@ class FulfilmentRequest:
         )
 
     def _get_contact_mapping(self) -> Mapping:
-        return {"telNo": self._mobile_number} if self._mobile_number else {}
+        return (
+            {"telNo": sanitise_mobile_number(self._mobile_number)}
+            if self._mobile_number
+            else {}
+        )
 
     def _get_fulfilment_code(self) -> str:
         fulfilment_codes = {
