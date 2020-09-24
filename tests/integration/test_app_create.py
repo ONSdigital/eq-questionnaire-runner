@@ -112,7 +112,12 @@ class TestCreateApp(unittest.TestCase):  # pylint: disable=too-many-public-metho
 
     def test_csp_policy_headers(self):
         cdn_url = "https://cdn.test.domain"
-        self._setting_overrides = {"EQ_ENABLE_LIVE_RELOAD": False, "CDN_URL": cdn_url}
+        address_lookup_api_url = "https://ai.test.domain"
+        self._setting_overrides = {
+            "EQ_ENABLE_LIVE_RELOAD": False,
+            "CDN_URL": cdn_url,
+            "ADDRESS_LOOKUP_API_URL": address_lookup_api_url,
+        }
 
         with create_app(self._setting_overrides).test_client() as client:
             headers = client.get(
@@ -143,7 +148,10 @@ class TestCreateApp(unittest.TestCase):  # pylint: disable=too-many-public-metho
             self.assertIn(
                 "frame-src https://www.googletagmanager.com", csp_policy_parts
             )
-            self.assertIn(f"connect-src 'self' {cdn_url}", csp_policy_parts)
+            self.assertIn(
+                f"connect-src 'self' {cdn_url} {address_lookup_api_url}",
+                csp_policy_parts,
+            )
 
     # Indirectly covered by higher level integration
     # tests, keeping to highlight that create_app is where
