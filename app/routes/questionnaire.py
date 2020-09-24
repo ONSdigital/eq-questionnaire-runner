@@ -1,4 +1,5 @@
 import os
+
 import flask_babel
 from flask import Blueprint, g, jsonify, redirect, request
 from flask import session as cookie_session
@@ -315,7 +316,12 @@ def get_confirmation_email_sent():
     if not get_session_store().session_data.confirmation_email_count:
         raise NotFound
 
-    hide_guidance = True if get_session_store().session_data.confirmation_email_count > int(os.getenv("CONFIRMATION_EMAIL_REQUEST_LIMIT")) else False
+    hide_guidance = (
+        True
+        if get_session_store().session_data.confirmation_email_count
+        > int(os.getenv("CONFIRMATION_EMAIL_REQUEST_LIMIT"))
+        else False
+    )
 
     email = URLParamSerializer().loads(request.args.get("email"))
 

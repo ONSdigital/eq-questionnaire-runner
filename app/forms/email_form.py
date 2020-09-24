@@ -12,7 +12,7 @@ class EmailForm(FlaskForm):
         validators=[
             InputRequired(error_messages["MANDATORY_EMAIL"]),
             Email(error_messages["INVALID_EMAIL_FORMAT"]),
-            EmailConfirmationLimitExceededCheck()
+            EmailConfirmationLimitExceededCheck(),
         ],
     )
 
