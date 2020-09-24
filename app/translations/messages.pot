@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2020-09-21 11:24+0100\n"
+"POT-Creation-Date: 2020-09-24 12:01+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,14 +17,14 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 2.8.0\n"
 
-#: app/forms/validators.py:341 app/jinja_filters.py:85
+#: app/forms/validators.py:343 app/jinja_filters.py:85
 #, python-format
 msgid "%(num)s year"
 msgid_plural "%(num)s years"
 msgstr[0] ""
 msgstr[1] ""
 
-#: app/forms/validators.py:345 app/jinja_filters.py:93
+#: app/forms/validators.py:347 app/jinja_filters.py:93
 #, python-format
 msgid "%(num)s month"
 msgid_plural "%(num)s months"
@@ -181,7 +181,11 @@ msgstr ""
 msgid "Remove an answer to continue"
 msgstr ""
 
-#: app/forms/validators.py:352
+#: app/forms/error_messages.py:66
+msgid "You have reached the maximum number of confirmation emails"
+msgstr ""
+
+#: app/forms/validators.py:354
 #, python-format
 msgid "%(num)s day"
 msgid_plural "%(num)s days"
@@ -201,8 +205,7 @@ msgid "Office for National Statistics logo"
 msgstr ""
 
 #: app/helpers/template_helpers.py:29 app/helpers/template_helpers.py:38
-#: app/helpers/template_helpers.py:59 templates/confirmation-email-sent.html:3
-#: templates/signed-out.html:3
+#: app/helpers/template_helpers.py:59 templates/signed-out.html:3
 msgid "Census 2021"
 msgstr ""
 
@@ -301,7 +304,7 @@ msgid "Confirmation email"
 msgstr ""
 
 #: app/views/handlers/confirmation_email.py:24
-#: app/views/handlers/question.py:133
+#: app/views/handlers/question.py:152
 msgid "Error: {page_title}"
 msgstr ""
 
@@ -484,19 +487,19 @@ msgstr ""
 msgid "A confirmation email has been sent to {email}"
 msgstr ""
 
-#: templates/confirmation-email-sent.html:17
+#: templates/confirmation-email-sent.html:18
 msgid "Didn't receive an email?"
 msgstr ""
 
-#: templates/confirmation-email-sent.html:18
+#: templates/confirmation-email-sent.html:19
 msgid ""
 "It can take a few minutes for the email to arrive. If it doesn't arrive, "
 "check your junk mail, or you can\n"
-"    <a href='{send_confirmation_email_url}' id='send-another-email'>send "
-"another confirmation email</a>.</p>"
+"      <a href='{send_confirmation_email_url}' id='send-another-"
+"email'>send another confirmation email</a>.</p>"
 msgstr ""
 
-#: templates/confirmation-email-sent.html:27
+#: templates/confirmation-email-sent.html:29
 msgid ""
 "Make sure you <a href='{sign_out_url}'>leave this page</a> or close your "
 "browser if using a shared device"
