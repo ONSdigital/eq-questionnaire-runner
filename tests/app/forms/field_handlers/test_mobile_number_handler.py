@@ -11,10 +11,10 @@ def test_phone_number_handler():
         "mandatory": False,
         "type": "PhoneNumber",
     }
-    phone_number_handler = MobileNumberHandler(answer_schema, disable_validation=False)
+    mobile_number_handler = MobileNumberHandler(answer_schema, disable_validation=False)
 
     class TestForm(Form):
-        test_field = phone_number_handler.get_field()
+        test_field = mobile_number_handler.get_field()
 
     form = TestForm()
 
