@@ -429,11 +429,11 @@ def sanitise_mobile_number(data):
 
 
 class MobileNumberCheck:
-    def __init__(self, messages=None):
-        self.messages = {**error_messages, **(messages or {})}
+    def __init__(self, message=None):
+        self.message = message or error_messages["INVALID_MOBILE_NUMBER"]
 
     def __call__(self, form, field):
         data = sanitise_mobile_number(field.data)
 
         if len(data) != 10 or not re.match("^[0-9]+$", data):
-            raise validators.ValidationError(self.messages["INVALID_MOBILE_NUMBER"])
+            raise validators.ValidationError(self.message)
