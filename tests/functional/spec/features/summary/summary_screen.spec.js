@@ -4,7 +4,6 @@ import RadioPage from "../../../generated_pages/summary/radio.page.js";
 import SummaryPage from "../../../generated_pages/summary/summary.page.js";
 import TestNumberPage from "../../../generated_pages/summary/test-number-block.page.js";
 
-
 describe("Summary Screen", () => {
   beforeEach("Load the survey", () => {
     browser.openQuestionnaire("test_summary.json");
