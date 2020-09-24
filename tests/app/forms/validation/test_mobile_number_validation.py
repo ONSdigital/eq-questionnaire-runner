@@ -16,10 +16,10 @@ class TestPhoneNumberValidator(unittest.TestCase):
         assert sanitise_mobile_number("07700-(900333)") == "7700900333"
         assert sanitise_mobile_number("/0770/090/0444") == "7700900444"
         assert sanitise_mobile_number("0447700 900555") == "7700900555"
-        assert sanitise_mobile_number("+0447700 900666") == "7700900666"
+        assert sanitise_mobile_number("+447700 900666") == "7700900666"
         assert sanitise_mobile_number("[07700] 900777") == "7700900777"
         assert sanitise_mobile_number("(07700) {900888}") == "7700900888"
-        assert sanitise_mobile_number("+0440447700900999") == "0447700900999"
+        assert sanitise_mobile_number("+440447700900999") == "0447700900999"
         assert sanitise_mobile_number(" 09[8./{}756gf}/{h]fgh") == "98756gfhfgh"
 
     def test_string_number_too_long(self):
@@ -63,7 +63,7 @@ class TestPhoneNumberValidator(unittest.TestCase):
 
         mock_form = Mock()
         mock_field = Mock()
-        mock_field.data = "+0447700 900333"
+        mock_field.data = "+447700 900333"
 
         try:
             validator(mock_form, mock_field)

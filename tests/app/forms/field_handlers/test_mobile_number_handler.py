@@ -4,16 +4,14 @@ from app.forms.field_handlers.mobile_number_handler import MobileNumberHandler
 
 
 def test_phone_number_handler():
-    string_field_definition = {
+    answer_schema = {
         "id": "phone-number-answer",
         "label": "Phone Number",
         "guidance": "Please enter your phone number.",
         "mandatory": False,
         "type": "PhoneNumber",
     }
-    phone_number_handler = MobileNumberHandler(
-        string_field_definition, disable_validation=False
-    )
+    phone_number_handler = MobileNumberHandler(answer_schema, disable_validation=False)
 
     class TestForm(Form):
         test_field = phone_number_handler.get_field()
@@ -21,5 +19,5 @@ def test_phone_number_handler():
     form = TestForm()
 
     assert isinstance(form.test_field, StringField)
-    assert form.test_field.label.text == string_field_definition["label"]
-    assert form.test_field.description == string_field_definition["guidance"]
+    assert form.test_field.label.text == answer_schema["label"]
+    assert form.test_field.description == answer_schema["guidance"]
