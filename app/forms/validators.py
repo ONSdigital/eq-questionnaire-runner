@@ -435,5 +435,5 @@ class MobileNumberCheck:
     def __call__(self, form, field):
         data = sanitise_mobile_number(field.data)
 
-        if len(data) != 10 or not data.isdigit():
+        if len(data) != 10 or not re.match("^[0-9]+$", data):
             raise validators.ValidationError(self.messages["INVALID_MOBILE_NUMBER"])
