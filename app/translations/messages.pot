@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2020-09-23 17:17+0100\n"
+"POT-Creation-Date: 2020-09-24 12:33+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,26 +17,26 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 2.8.0\n"
 
-#: app/forms/validators.py:338 app/jinja_filters.py:85
+#: app/forms/validators.py:338 app/jinja_filters.py:86
 #, python-format
 msgid "%(num)s year"
 msgid_plural "%(num)s years"
 msgstr[0] ""
 msgstr[1] ""
 
-#: app/forms/validators.py:342 app/jinja_filters.py:93
+#: app/forms/validators.py:342 app/jinja_filters.py:94
 #, python-format
 msgid "%(num)s month"
 msgid_plural "%(num)s months"
 msgstr[0] ""
 msgstr[1] ""
 
-#: app/jinja_filters.py:136
+#: app/jinja_filters.py:137
 #, python-format
 msgid "%(date)s at %(time)s"
 msgstr ""
 
-#: app/jinja_filters.py:147
+#: app/jinja_filters.py:148
 #, python-format
 msgid "%(from_date)s to %(to_date)s"
 msgstr ""
@@ -573,7 +573,7 @@ msgstr ""
 msgid "Close this window to continue with your current survey"
 msgstr ""
 
-#: templates/question.html:10
+#: templates/partials/answers/address.html:52 templates/question.html:10
 #, python-format
 msgid "There is a problem with your answer"
 msgid_plural "There are %(num)s problems with your answer"
@@ -928,12 +928,78 @@ msgstr ""
 msgid "Postcode"
 msgstr ""
 
-#: templates/partials/answers/address.html:27
+#: templates/partials/answers/address.html:29
 msgid "Search for an address"
 msgstr ""
 
-#: templates/partials/answers/address.html:28
+#: templates/partials/answers/address.html:30
 msgid "Manually enter address"
+msgstr ""
+
+#: templates/partials/answers/address.html:36
+msgid "Enter address or postcode and select from results"
+msgstr ""
+
+#: templates/partials/answers/address.html:40
+msgid ""
+"Use up and down keys to navigate suggestions once you’ve typed more than "
+"two characters. Use the enter key to select a suggestion. Touch device "
+"users, explore by touch or with swipe gestures."
+msgstr ""
+
+#: templates/partials/answers/address.html:41
+msgid "You have selected"
+msgstr ""
+
+#: templates/partials/answers/address.html:42
+msgid "Enter 3 or more characters for suggestions."
+msgstr ""
+
+#: templates/partials/answers/address.html:43
+msgid "There is one suggestion available."
+msgstr ""
+
+#: templates/partials/answers/address.html:44
+msgid "There are {n} suggestions available."
+msgstr ""
+
+#: templates/partials/answers/address.html:45
+msgid ""
+"Results have been limited to 10 suggestions. Type more characters to "
+"improve your search"
+msgstr ""
+
+#: templates/partials/answers/address.html:46
+msgid "Enter more of the address to improve results"
+msgstr ""
+
+#: templates/partials/answers/address.html:47
+#: templates/partials/answers/address.html:54
+msgid "Select an address"
+msgstr ""
+
+#: templates/partials/answers/address.html:48
+msgid "No results found. Try entering a different part of the address"
+msgstr ""
+
+#: templates/partials/answers/address.html:49
+msgid "{n} results found. Enter more of the address to improve results"
+msgstr ""
+
+#: templates/partials/answers/address.html:50
+msgid "Enter more of the address to get results"
+msgstr ""
+
+#: templates/partials/answers/address.html:53
+msgid "Enter an address"
+msgstr ""
+
+#: templates/partials/answers/address.html:55
+msgid "Sorry, there was a problem loading addresses"
+msgstr ""
+
+#: templates/partials/answers/address.html:56
+msgid "Enter address manually"
 msgstr ""
 
 #: templates/partials/answers/checkbox.html:8
