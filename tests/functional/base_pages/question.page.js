@@ -85,6 +85,14 @@ class QuestionPage extends BasePage {
   returnToHubLink() {
     return 'a[href="/questionnaire/"]';
   }
+
+  warning() {
+    return '[data-qa="warning"]';
+  }
+
+  guidance() {
+    return '[data-qa="guidance"]';
+  }
 }
 
 export default QuestionPage;

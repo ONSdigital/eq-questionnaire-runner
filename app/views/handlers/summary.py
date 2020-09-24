@@ -15,4 +15,5 @@ class Summary(Content):
         block = self._schema.get_block(self._current_location.block_id)
         collapsible = block.get("collapsible", False)
         context = questionnaire_summary_context(collapsible)
+
         return context
