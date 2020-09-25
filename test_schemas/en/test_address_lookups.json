@@ -1,0 +1,95 @@
+{
+    "mime_type": "application/json/ons/eq",
+    "language": "en",
+    "schema_version": "0.0.1",
+    "data_version": "0.0.3",
+    "survey_id": "0",
+    "title": "Test Address Answer Type With Lookups",
+    "theme": "default",
+    "description": "A questionnaire to test the Address answer type with lookups",
+    "metadata": [
+        {
+            "name": "user_id",
+            "type": "string"
+        },
+        {
+            "name": "period_id",
+            "type": "string"
+        },
+        {
+            "name": "ru_name",
+            "type": "string"
+        }
+    ],
+    "sections": [
+        {
+            "id": "section",
+            "groups": [
+                {
+                    "id": "group",
+                    "title": "List",
+                    "blocks": [
+                        {
+                            "type": "Question",
+                            "id": "address-block-mandatory",
+                            "question": {
+                                "type": "General",
+                                "id": "address-question-mandatory",
+                                "title": "What is your current address?",
+                                "answers": [
+                                    {
+                                        "id": "address-mandatory",
+                                        "mandatory": true,
+                                        "type": "Address",
+                                        "lookup_options": {
+                                            "address_type": "Residential",
+                                            "one_year_ago": false,
+                                            "region_code": "GB-ENG"
+                                        }
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "type": "Question",
+                            "id": "address-block-optional",
+                            "question": {
+                                "type": "General",
+                                "id": "address-question-optional",
+                                "title": "What was your workplace address one year ago?",
+                                "answers": [
+                                    {
+                                        "id": "address-optional",
+                                        "mandatory": false,
+                                        "type": "Address",
+                                        "lookup_options": {
+                                            "address_type": "Workplace",
+                                            "one_year_ago": true,
+                                            "region_code": "GB-WLS"
+                                        }
+                                    }
+                                ]
+                            }
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "summary-section",
+            "title": "Summary",
+            "groups": [
+                {
+                    "blocks": [
+                        {
+                            "type": "Summary",
+                            "id": "summary"
+                        }
+                    ],
+                    "id": "summary-group",
+                    "title": "Summary"
+                }
+            ]
+        }
+    ]
+}

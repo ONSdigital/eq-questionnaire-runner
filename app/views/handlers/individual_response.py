@@ -12,6 +12,7 @@ from werkzeug.exceptions import NotFound
 
 from app.data_models.progress_store import CompletionStatus
 from app.forms.questionnaire_form import generate_form
+from app.forms.validators import sanitise_mobile_number
 from app.helpers.template_helpers import render_template
 from app.helpers.url_param_serializer import URLParamSerializer
 from app.questionnaire.placeholder_renderer import PlaceholderRenderer
@@ -691,7 +692,7 @@ class IndividualResponseTextHandler(IndividualResponseHandler):
             },
             "answers": [
                 {
-                    "type": "TextField",
+                    "type": "MobileNumber",
                     "id": "individual-response-enter-number-answer",
                     "mandatory": True,
                     "label": lazy_gettext("UK mobile number"),
@@ -877,7 +878,11 @@ class FulfilmentRequest:
         )
 
     def _get_contact_mapping(self) -> Mapping:
-        return {"telNo": self._mobile_number} if self._mobile_number else {}
+        return (
+            {"telNo": sanitise_mobile_number(self._mobile_number)}
+            if self._mobile_number
+            else {}
+        )
 
     def _get_fulfilment_code(self) -> str:
         fulfilment_codes = {

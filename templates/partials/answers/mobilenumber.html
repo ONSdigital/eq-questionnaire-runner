@@ -1,0 +1,25 @@
+{% from "components/input/_macro.njk" import onsInput %}
+
+{% set input = form.fields[answer.id] if input is undefined else input %}
+
+{% set config = {
+  "id": answer.id,
+  "name": input.name,
+  "type": "tel",
+  "autocomplete": "tel",
+  "classes": "input--w-8",
+  "value": input._value() | e,
+  "label": {
+    "id": answer.id ~ "-label",
+    "text": answer.label,
+    "description": answer.description
+  },
+  "attributes": {
+    "data-qa": "input-text"
+  },
+  "legend": question_title,
+  "legendClasses": "u-vh",
+  "error": error
+} %}
+
+{{ onsInput(config) }}

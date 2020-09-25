@@ -82,6 +82,7 @@ def render_template(template, **kwargs):
         language_code=get_locale().language,
         survey_title=survey_title,
         cdn_url=cdn_url,
+        address_lookup_api_url=current_app.config["ADDRESS_LOOKUP_API_URL"],
         data_layer=get_data_layer(theme),
         include_csrf_token=include_csrf_token,
         sign_out_url=url_for("session.get_sign_out"),

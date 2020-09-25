@@ -22,10 +22,7 @@ logger = get_logger()
 
 class NumberCheck:
     def __init__(self, message=None):
-        if message:
-            self.message = message
-        else:
-            self.message = error_messages["INVALID_NUMBER"]
+        self.message = message or error_messages["INVALID_NUMBER"]
 
     def __call__(self, form, field):
         try:
@@ -439,3 +436,18 @@ class EmailConfirmationLimitExceededCheck:
             raise validators.ValidationError(
                 self.messages["MAX_EMAIL_CONFIRMATION_LIMIT_EXCEEDED"]
             )
+
+def sanitise_mobile_number(data):
+    data = re.sub(r"[\s.,\t\-{}\[\]()/]", "", data)
+    return re.sub(r"^(044|\+44|0)", "", data)
+
+
+class MobileNumberCheck:
+    def __init__(self, message=None):
+        self.message = message or error_messages["INVALID_MOBILE_NUMBER"]
+
+    def __call__(self, form, field):
+        data = sanitise_mobile_number(field.data)
+
+        if len(data) != 10 or not re.match("^[0-9]+$", data):
+            raise validators.ValidationError(self.message)

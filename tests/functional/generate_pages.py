@@ -346,6 +346,7 @@ def process_answer(answer, page_spec, long_names, page_name):
         page_spec.write(_write_address_answer(answer["id"], prefix))
     elif answer["type"] in {
         "TextField",
+        "MobileNumber",
         "Number",
         "TextArea",
         "Currency",
