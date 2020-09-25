@@ -423,19 +423,6 @@ class MutuallyExclusiveCheck:
             raise validators.ValidationError(message)
 
 
-class EmailConfirmationLimitExceededCheck:
-    def __init__(self, messages=None):
-        self.messages = {**error_messages, **(messages or {})}
-
-    def __call__(self, *args, **kwargs):
-        if get_session_store().session_data.confirmation_email_count >= int(
-            os.getenv("CONFIRMATION_EMAIL_REQUEST_LIMIT")
-        ):
-            raise validators.ValidationError(
-                self.messages["MAX_EMAIL_CONFIRMATION_LIMIT_EXCEEDED"]
-            )
-
-
 def sanitise_mobile_number(data):
     data = re.sub(r"[\s.,\t\-{}\[\]()/]", "", data)
     return re.sub(r"^(044|\+44|0)", "", data)
