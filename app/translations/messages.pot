@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2020-09-24 12:01+0100\n"
+"POT-Creation-Date: 2020-09-25 12:09+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,16 +17,14 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 2.8.0\n"
 
-
-#: app/forms/validators.py:343 app/jinja_filters.py:85
+#: app/forms/validators.py:338 app/jinja_filters.py:86
 #, python-format
 msgid "%(num)s year"
 msgid_plural "%(num)s years"
 msgstr[0] ""
 msgstr[1] ""
 
-
-#: app/forms/validators.py:347 app/jinja_filters.py:93
+#: app/forms/validators.py:342 app/jinja_filters.py:94
 #, python-format
 msgid "%(num)s month"
 msgid_plural "%(num)s months"
@@ -193,11 +191,7 @@ msgstr ""
 msgid "Remove an answer to continue"
 msgstr ""
 
-#: app/forms/error_messages.py:66
-msgid "You have reached the maximum number of confirmation emails"
-msgstr ""
-
-#: app/forms/validators.py:354
+#: app/forms/validators.py:349
 #, python-format
 msgid "%(num)s day"
 msgid_plural "%(num)s days"
@@ -324,11 +318,11 @@ msgstr ""
 msgid "Please submit this survey to complete it"
 msgstr ""
 
-#: app/views/handlers/confirmation_email.py:10
+#: app/views/handlers/confirmation_email.py:11
 msgid "Confirmation email"
 msgstr ""
 
-#: app/views/handlers/confirmation_email.py:24
+#: app/views/handlers/confirmation_email.py:25
 #: app/views/handlers/question.py:152
 msgid "Error: {page_title}"
 msgstr ""
@@ -488,17 +482,17 @@ msgid ""
 "confidential"
 msgstr ""
 
-#: templates/census-thank-you.html:52
+#: templates/census-thank-you.html:53
 msgid "Get confirmation email"
 msgstr ""
 
-#: templates/census-thank-you.html:53
+#: templates/census-thank-you.html:54
 msgid ""
 "If you would like to be sent confirmation that you have completed your "
 "census enter your email address"
 msgstr ""
 
-#: templates/census-thank-you.html:63
+#: templates/census-thank-you.html:65
 msgid ""
 "Make sure you <a href='{url}'>leave this page</a> or close your browser "
 "if using a shared device"
