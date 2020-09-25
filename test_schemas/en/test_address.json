@@ -60,6 +60,44 @@
                                     }
                                 ]
                             }
+                        },
+                        {
+                            "type": "Question",
+                            "id": "address-confirmation",
+                            "question": {
+                                "type": "General",
+                                "id": "address-confirmation-question",
+                                "title": {
+                                    "placeholders": [
+                                        {
+                                            "placeholder": "household_address_line1",
+                                            "value": {
+                                                "identifier": "address-mandatory",
+                                                "source": "answers",
+                                                "selector": "line1"
+                                            }
+                                        }
+                                    ],
+                                    "text": "Please confirm the first line of your address is {household_address_line1}"
+                                },
+                                "answers": [
+                                    {
+                                        "type": "Radio",
+                                        "id": "address-confirmation-answer",
+                                        "mandatory": false,
+                                        "options": [
+                                            {
+                                                "label": "Yes",
+                                                "value": "Yes"
+                                            },
+                                            {
+                                                "label": "No",
+                                                "value": "No"
+                                            }
+                                        ]
+                                    }
+                                ]
+                            }
                         }
                     ]
                 }
