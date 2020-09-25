@@ -1,5 +1,3 @@
-import os
-
 import flask_babel
 from flask import Blueprint, g, jsonify, redirect, request
 from flask import session as cookie_session
@@ -264,6 +262,9 @@ def relationship(schema, questionnaire_store, block_id, list_item_id, to_list_it
 def get_thank_you(schema):
     thank_you = ThankYou(schema)
 
+    confirmation = ConfirmationEmail()
+    hide_confirmation = confirmation.email_limit_exceeded()
+
     if request.method == "POST":
         if not thank_you.confirmation_email:
             raise NotFound
@@ -281,7 +282,7 @@ def get_thank_you(schema):
 
     return render_template(
         template=thank_you.template,
-        content=thank_you.get_context(),
+        content=thank_you.get_context(hide_confirmation),
         survey_id=schema.json["survey_id"],
         page_title=thank_you.get_page_title(),
     )
@@ -293,6 +294,9 @@ def send_confirmation_email():
         raise NotFound
 
     confirmation_email = ConfirmationEmail()
+
+    if confirmation_email.email_limit_exceeded():
+        return redirect(url_for("post_submission.get_thank_you"))
 
     if request.method == "POST" and confirmation_email.form.validate():
         confirmation_email.handle_post()
@@ -316,12 +320,9 @@ def get_confirmation_email_sent():
     if not get_session_store().session_data.confirmation_email_count:
         raise NotFound
 
-    hide_guidance = (
-        True
-        if get_session_store().session_data.confirmation_email_count
-        >= int(os.getenv("CONFIRMATION_EMAIL_REQUEST_LIMIT"))
-        else False
-    )
+    confirmation_email = ConfirmationEmail()
+
+    hide_guidance = confirmation_email.email_limit_exceeded()
 
     email = URLParamSerializer().loads(request.args.get("email"))
 

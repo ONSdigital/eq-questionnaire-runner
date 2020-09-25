@@ -38,7 +38,7 @@ class ThankYou:
             else None
         )
 
-    def get_context(self):
+    def get_context(self, hide_confirmation):
         if not self._is_census_theme:
             return build_default_thank_you_context(self.session_data)
 
@@ -47,7 +47,7 @@ class ThankYou:
         )
 
         return build_census_thank_you_context(
-            self.session_data, confirmation_email_form
+            self.session_data, confirmation_email_form, hide_confirmation
         )
 
     def get_page_title(self):

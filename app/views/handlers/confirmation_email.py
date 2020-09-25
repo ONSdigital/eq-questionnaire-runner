@@ -1,3 +1,4 @@
+from flask import current_app
 from flask_babel import gettext
 
 from app.forms.email_form import EmailForm
@@ -23,6 +24,15 @@ class ConfirmationEmail:
         if self.form.errors:
             return gettext("Error: {page_title}").format(page_title=self.page_title)
         return self.page_title
+
+    @staticmethod
+    def email_limit_exceeded():
+        return (
+            True
+            if get_session_store().session_data.confirmation_email_count
+            >= current_app.config["CONFIRMATION_EMAIL_REQUEST_LIMIT"]
+            else False
+        )
 
     @staticmethod
     def handle_post():
