@@ -319,7 +319,7 @@ def get_confirmation_email_sent():
     hide_guidance = (
         True
         if get_session_store().session_data.confirmation_email_count
-        > int(os.getenv("CONFIRMATION_EMAIL_REQUEST_LIMIT"))
+        >= int(os.getenv("CONFIRMATION_EMAIL_REQUEST_LIMIT"))
         else False
     )
 

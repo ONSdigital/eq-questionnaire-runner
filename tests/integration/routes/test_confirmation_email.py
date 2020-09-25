@@ -184,6 +184,30 @@ class TestEmailConfirmation(IntegrationTestCase):
         self.assertInUrl("confirmation-email/sent")
         self.assertInBody("A confirmation email has been sent to email@example.com")
 
+    def test_send_another_email_link_is_not_present_when_confirmation_limit_hit(self):
+        self._launch_and_complete_questionnaire()
+        self.post({"email": "email@example.com"})
+
+        self.get("/submitted/confirmation-email/send/")
+        self.post({"email": "email@example.com"})
+
+        self.assertInUrl("confirmation-email/sent")
+        self.assertNotInBody("Send another confirmation email")
+
+    def test_too_many_confirmation_emails_raises_limit_error(self):
+        self._launch_and_complete_questionnaire()
+        self.post({"email": "email@example.com"})
+
+        self.get("/submitted/confirmation-email/send/")
+        self.post({"email": "email@example.com"})
+
+        self.get("/submitted/confirmation-email/send/")
+        self.post({"email": "email@example.com"})
+
+        self.assertInBody(
+            "You have reached the maximum number of confirmation emails"
+        )
+
     def _launch_and_complete_questionnaire(self):
         self.launchSurvey("test_confirmation_email")
         self.post({"answer_id": "Yes"})

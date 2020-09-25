@@ -433,7 +433,7 @@ class EmailConfirmationLimitExceededCheck:
         self.messages = {**error_messages, **(messages or {})}
 
     def __call__(self, *args, **kwargs):
-        if get_session_store().session_data.confirmation_email_count > int(
+        if get_session_store().session_data.confirmation_email_count >= int(
             os.getenv("CONFIRMATION_EMAIL_REQUEST_LIMIT")
         ):
             raise validators.ValidationError(
