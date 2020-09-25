@@ -437,4 +437,3 @@ class MobileNumberCheck:
 
         if len(data) != 10 or not re.match("^[0-9]+$", data):
             raise validators.ValidationError(self.message)
-
