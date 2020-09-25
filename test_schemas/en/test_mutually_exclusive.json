@@ -106,13 +106,13 @@
                                 "mandatory": true,
                                 "answers": [
                                     {
-                                        "id": "date-answer",
+                                        "id": "mandatory-date-answer",
                                         "label": "Enter a date",
                                         "mandatory": false,
                                         "type": "Date"
                                     },
                                     {
-                                        "id": "date-exclusive-answer",
+                                        "id": "mandatory-date-exclusive-answer",
                                         "mandatory": false,
                                         "type": "Checkbox",
                                         "options": [
