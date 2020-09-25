@@ -5,8 +5,13 @@ from mock import patch
 from werkzeug.datastructures import MultiDict
 
 from app.data_models.answer_store import Answer, AnswerStore
+from app.forms import error_messages
 from app.forms.questionnaire_form import generate_form
-from app.forms.validators import DateRequired, ResponseRequired
+from app.forms.validators import (
+    DateRequired,
+    ResponseRequired,
+    format_message_with_title,
+)
 from app.questionnaire import QuestionnaireSchema
 from app.questionnaire.placeholder_renderer import PlaceholderRenderer
 from app.utilities.schema import load_schema_from_name
@@ -1227,7 +1232,9 @@ class TestQuestionnaireForm(
 
             self.assertEqual(
                 form.question_errors["mutually-exclusive-checkbox-question"],
-                "Enter an answer to continue",
+                format_message_with_title(
+                    error_messages["MANDATORY_CHECKBOX"], question_schema.get("title")
+                ),
             )
 
     def test_mandatory_mutually_exclusive_question_raises_error_with_question_text(
@@ -1258,9 +1265,9 @@ class TestQuestionnaireForm(
             form.validate_mutually_exclusive_question(question_schema)
             error = form.question_errors["mutually-exclusive-checkbox-question"]
 
-            assert (
-                error
-                == "Select an answer to ‘Did you really answer ‘Tuna’ to the previous question?’ to continue"
+            assert error == format_message_with_title(
+                error_messages["MANDATORY_CHECKBOX"],
+                "Did you really answer ‘Tuna’ to the previous question?",
             )
 
     def test_mutually_exclusive_question_raises_error_when_both_answered(self):
@@ -1291,7 +1298,7 @@ class TestQuestionnaireForm(
 
             self.assertEqual(
                 form.question_errors["mutually-exclusive-date-question"],
-                "Remove an answer to continue",
+                error_messages["MUTUALLY_EXCLUSIVE"],
             )
 
     def test_date_range_form(self):
