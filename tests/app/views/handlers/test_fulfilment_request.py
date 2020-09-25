@@ -6,6 +6,7 @@ import pytest
 from dateutil.tz import tzutc
 from freezegun import freeze_time
 
+from app.forms.validators import sanitise_mobile_number
 from app.helpers.uuid_helper import is_valid_uuid
 from app.views.handlers.individual_response import (
     GB_ENG_REGION_CODE,
@@ -45,7 +46,7 @@ def test_sms_fulfilment_request_payload():
         "payload": {
             "fulfilmentRequest": {
                 "fulfilmentCode": "UACITA1",
-                "contact": {"telNo": DUMMY_MOBILE_NUMBER},
+                "contact": {"telNo": sanitise_mobile_number(DUMMY_MOBILE_NUMBER)},
             }
         },
     }

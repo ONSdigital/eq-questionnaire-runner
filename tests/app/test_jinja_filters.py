@@ -425,3 +425,16 @@ def test_format_address_fields():
     assert (
         get_formatted_address(address_fields) == "7 Evelyn Street<br>Barry<br>CF63 4JG"
     )
+
+
+def test_format_address_fields_with_uprn():
+    address_fields = {
+        "line": "7 Evelyn Street",
+        "town": "Barry",
+        "postcode": "CF63 4JG",
+        "uprn": "64037876",
+    }
+
+    assert (
+        get_formatted_address(address_fields) == "7 Evelyn Street<br>Barry<br>CF63 4JG"
+    )

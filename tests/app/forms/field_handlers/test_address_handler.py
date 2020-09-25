@@ -26,7 +26,7 @@ def test_address_fields():
 
     assert isinstance(form.test_field, FormField)
 
-    address_fields = ["line1", "line2", "town", "postcode"]
+    address_fields = ["line1", "line2", "town", "postcode", "uprn"]
     assert all(field in form.test_field.data for field in address_fields)
 
 
