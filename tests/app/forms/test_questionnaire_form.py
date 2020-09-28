@@ -1217,7 +1217,7 @@ class TestQuestionnaireForm(
         with self.app_request_context():
             schema = load_schema_from_name("test_mutually_exclusive")
 
-            question_schema = schema.get_block("mutually-exclusive-checkbox").get(
+            question_schema = schema.get_block("mutually-exclusive-mandatory-date").get(
                 "question"
             )
 
@@ -1231,9 +1231,9 @@ class TestQuestionnaireForm(
             form.validate_mutually_exclusive_question(question_schema)
 
             self.assertEqual(
-                form.question_errors["mutually-exclusive-checkbox-question"],
+                form.question_errors["mutually-exclusive-mandatory-date-question"],
                 format_message_with_title(
-                    error_messages["MANDATORY_CHECKBOX"], question_schema.get("title")
+                    error_messages["MANDATORY_QUESTION"], question_schema.get("title")
                 ),
             )
 
