@@ -15,6 +15,7 @@ __all__ = [
     "IndividualResponseHowHandler",
     "IndividualResponsePostAddressConfirmHandler",
     "individual_response_url",
+    "show_individual_response_link",
 ]
 
 
@@ -38,3 +39,8 @@ def individual_response_url(
                 journey=journey,
             )
     return None
+
+
+def show_individual_response_link(current_location):
+    if current_location:
+        return True

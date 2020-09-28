@@ -1,7 +1,7 @@
 from functools import cached_property
 
 from app.questionnaire.schema_utils import transform_variants
-from app.views.handlers import individual_response_url
+from app.views.handlers import individual_response_url, show_individual_response_link
 from app.views.handlers.block import BlockHandler
 
 
@@ -34,6 +34,7 @@ class Content(BlockHandler):
                 self._current_location.list_item_id,
                 self._questionnaire_store,
             ),
+            "show_link": show_individual_response_link(self._current_location),
         }
 
     def _get_content_title(self, transformed_block):

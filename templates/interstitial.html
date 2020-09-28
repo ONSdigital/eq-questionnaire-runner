@@ -23,4 +23,8 @@
     {% set title = _("If you can’t answer questions for this person") %}
     {% include 'partials/individual-response-guidance.html' %}
   {% endif %}
+  {% if content.show_link %}
+    {% set title = _("If you can’t answer questions for this person") %}
+    {% include 'partials/individual-response-guidance.html' %}
+  {% endif %}
 {% endblock form_content %}
