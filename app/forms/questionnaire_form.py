@@ -122,7 +122,7 @@ class QuestionnaireForm(FlaskForm):
             question["validation"].get("messages") if "validation" in question else None
         )
         answers = (getattr(self, answer["id"]).data for answer in question["answers"])
-        only_checkboxes = all(
+        is_only_checkboxes = all(
             answer["type"] == "Checkbox" for answer in question["answers"]
         )
 
@@ -132,7 +132,7 @@ class QuestionnaireForm(FlaskForm):
         )
 
         try:
-            validator(answers, is_mandatory, only_checkboxes)
+            validator(answers, is_mandatory, is_only_checkboxes)
         except validators.ValidationError as e:
             self.question_errors[question["id"]] = str(e)
 

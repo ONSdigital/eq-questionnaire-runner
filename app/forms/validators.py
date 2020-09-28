@@ -412,14 +412,14 @@ class MutuallyExclusiveCheck:
         self.messages = {**error_messages, **(messages or {})}
         self.question_title = question_title
 
-    def __call__(self, answer_values, is_mandatory, only_checkboxes):
+    def __call__(self, answer_values, is_mandatory, is_only_checkboxes):
         total_answered = sum(1 for value in answer_values if value)
         if total_answered > 1:
             raise validators.ValidationError(self.messages["MUTUALLY_EXCLUSIVE"])
         if is_mandatory and total_answered < 1:
             message = format_message_with_title(
                 self.messages["MANDATORY_CHECKBOX"]
-                if only_checkboxes
+                if is_only_checkboxes
                 else self.messages["MANDATORY_QUESTION"],
                 self.question_title,
             )
