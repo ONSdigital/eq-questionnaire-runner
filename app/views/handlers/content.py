@@ -35,7 +35,7 @@ class Content(BlockHandler):
                 self._questionnaire_store,
             ),
             "show_individual_response_link": show_individual_response_link(
-                self._current_location
+                self._current_location, self._routing_path
             ),
         }
 
