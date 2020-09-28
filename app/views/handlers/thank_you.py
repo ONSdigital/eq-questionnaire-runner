@@ -7,7 +7,10 @@ from app.views.contexts.thank_you_context import (
     build_census_thank_you_context,
     build_default_thank_you_context,
 )
-from app.views.handlers.confirmation_email import ConfirmationEmail, email_limit_exceeded
+from app.views.handlers.confirmation_email import (
+    ConfirmationEmail,
+    email_limit_exceeded,
+)
 
 
 class ThankYou:
