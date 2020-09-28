@@ -7,7 +7,7 @@ from app.views.contexts.thank_you_context import (
     build_census_thank_you_context,
     build_default_thank_you_context,
 )
-from app.views.handlers.confirmation_email import ConfirmationEmail
+from app.views.handlers.confirmation_email import ConfirmationEmail, email_limit_exceeded
 
 
 class ThankYou:
@@ -19,6 +19,7 @@ class ThankYou:
         self.session_store = get_session_store()
         self.session_data = self.session_store.session_data
         self._schema = schema
+        self.hide_confirmation = email_limit_exceeded()
 
         if not self.session_data.submitted_time:
             raise NotFound
@@ -35,10 +36,11 @@ class ThankYou:
         self.confirmation_email = (
             ConfirmationEmail(self.PAGE_TITLE)
             if self._schema.get_submission().get("confirmation_email")
+            and not self.hide_confirmation
             else None
         )
 
-    def get_context(self, hide_confirmation):
+    def get_context(self):
         if not self._is_census_theme:
             return build_default_thank_you_context(self.session_data)
 
@@ -47,7 +49,7 @@ class ThankYou:
         )
 
         return build_census_thank_you_context(
-            self.session_data, confirmation_email_form, hide_confirmation
+            self.session_data, confirmation_email_form, self.hide_confirmation
         )
 
     def get_page_title(self):

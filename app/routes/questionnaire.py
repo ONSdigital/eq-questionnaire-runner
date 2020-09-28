@@ -265,8 +265,6 @@ def relationship(schema, questionnaire_store, block_id, list_item_id, to_list_it
 def get_thank_you(schema):
     thank_you = ThankYou(schema)
 
-    hide_confirmation = email_limit_exceeded()
-
     if request.method == "POST":
         if not thank_you.confirmation_email:
             raise NotFound
@@ -284,7 +282,7 @@ def get_thank_you(schema):
 
     return render_template(
         template=thank_you.template,
-        content=thank_you.get_context(hide_confirmation),
+        content=thank_you.get_context(),
         survey_id=schema.json["survey_id"],
         page_title=thank_you.get_page_title(),
     )
@@ -295,10 +293,10 @@ def send_confirmation_email():
     if not get_session_store().session_data.confirmation_email_count:
         raise NotFound
 
-    confirmation_email = ConfirmationEmail()
-
     if email_limit_exceeded():
         return redirect(url_for("post_submission.get_thank_you"))
+
+    confirmation_email = ConfirmationEmail()
 
     if request.method == "POST" and confirmation_email.form.validate():
         confirmation_email.handle_post()
@@ -334,7 +332,7 @@ def get_confirmation_email_sent():
                 "post_submission.send_confirmation_email"
             ),
             "hide_signout_button": False,
-            "hide_guidance": hide_guidance,
+            "show_send_another_email_guidance": hide_guidance,
             "sign_out_url": url_for("session.get_sign_out"),
         },
     )
