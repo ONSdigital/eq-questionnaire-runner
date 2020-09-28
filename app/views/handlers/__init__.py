@@ -41,6 +41,7 @@ def individual_response_url(
     return None
 
 
-def show_individual_response_link(location, routing_path):
-    if location.block_id == routing_path[0] and location.list_name == "household":
+def show_individual_response_link(location, schema):
+    section = schema.json.get("individual_response", {}).get("individual_section_id")
+    if location.block_id == schema.get_first_block_id_for_section(section):
         return True
