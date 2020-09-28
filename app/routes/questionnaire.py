@@ -20,7 +20,10 @@ from app.questionnaire.router import Router
 from app.utilities.schema import load_schema_from_session_data
 from app.views.contexts.hub_context import HubContext
 from app.views.handlers.block_factory import get_block_handler
-from app.views.handlers.confirmation_email import ConfirmationEmail
+from app.views.handlers.confirmation_email import (
+    ConfirmationEmail,
+    email_limit_exceeded,
+)
 from app.views.handlers.section import SectionHandler
 from app.views.handlers.submission import SubmissionHandler
 from app.views.handlers.thank_you import ThankYou
@@ -262,8 +265,7 @@ def relationship(schema, questionnaire_store, block_id, list_item_id, to_list_it
 def get_thank_you(schema):
     thank_you = ThankYou(schema)
 
-    confirmation = ConfirmationEmail()
-    hide_confirmation = confirmation.email_limit_exceeded()
+    hide_confirmation = email_limit_exceeded()
 
     if request.method == "POST":
         if not thank_you.confirmation_email:
@@ -295,7 +297,7 @@ def send_confirmation_email():
 
     confirmation_email = ConfirmationEmail()
 
-    if confirmation_email.email_limit_exceeded():
+    if email_limit_exceeded():
         return redirect(url_for("post_submission.get_thank_you"))
 
     if request.method == "POST" and confirmation_email.form.validate():
@@ -320,9 +322,7 @@ def get_confirmation_email_sent():
     if not get_session_store().session_data.confirmation_email_count:
         raise NotFound
 
-    confirmation_email = ConfirmationEmail()
-
-    hide_guidance = confirmation_email.email_limit_exceeded()
+    hide_guidance = email_limit_exceeded()
 
     email = URLParamSerializer().loads(request.args.get("email"))
 

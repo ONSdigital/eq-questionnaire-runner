@@ -26,16 +26,16 @@ class ConfirmationEmail:
         return self.page_title
 
     @staticmethod
-    def email_limit_exceeded():
-        return (
-            True
-            if get_session_store().session_data.confirmation_email_count
-            >= current_app.config["CONFIRMATION_EMAIL_REQUEST_LIMIT"]
-            else False
-        )
-
-    @staticmethod
     def handle_post():
         session_store = get_session_store()
         session_store.session_data.confirmation_email_count += 1
         session_store.save()
+
+
+def email_limit_exceeded():
+    return (
+        True
+        if get_session_store().session_data.confirmation_email_count
+        >= current_app.config["CONFIRMATION_EMAIL_REQUEST_LIMIT"]
+        else False
+    )
