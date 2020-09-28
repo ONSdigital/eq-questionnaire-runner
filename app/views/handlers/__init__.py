@@ -42,9 +42,5 @@ def individual_response_url(
 
 
 def show_individual_response_link(location, routing_path):
-    if (
-        location.block_id == routing_path[0]
-        and location.list_item_id != "primary-person"
-        and location.list_name == "household"
-    ):
+    if location.block_id == routing_path[0] and location.list_name == "household":
         return True
