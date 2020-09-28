@@ -33,9 +33,12 @@ class ConfirmationEmail:
 
 
 def email_limit_exceeded():
+    session_store = get_session_store()
+
     return (
         True
-        if get_session_store().session_data.confirmation_email_count
+        if session_store
+        and session_store.session_data.confirmation_email_count
         >= current_app.config["CONFIRMATION_EMAIL_REQUEST_LIMIT"]
         else False
     )
