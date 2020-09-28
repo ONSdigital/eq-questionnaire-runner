@@ -79,6 +79,22 @@ class IndividualResponseTestCase(IntegrationTestCase):
         self.post()
 
 
+class TestIndividualResponseHubDisabled(IndividualResponseTestCase):
+    def setUp(self):
+        super().setUp()
+        self.launchSurvey("test_individual_response_hub_disabled", region_code="GB-ENG")
+
+    def test_show_on_hub_false(self):
+        self._add_household_no_primary()
+
+        with self.assertRaises(AttributeError) as error:
+            individual_response_link = self.individual_response_link
+
+        self.assertEqual(
+            str(error.exception), "'NoneType' object has no attribute 'find_next'"
+        )
+
+
 class TestIndividualResponseErrorStatus(IndividualResponseTestCase):
     def test_ir_raises_401_without_session(self):
         # Given the hub is enabled
