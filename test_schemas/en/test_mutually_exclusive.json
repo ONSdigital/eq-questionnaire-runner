@@ -88,6 +88,48 @@
             ]
         },
         {
+            "id": "mutually-exclusive-mandatory-date-section",
+            "title": "Date",
+            "summary": { "show_on_completion": true },
+            "groups": [
+                {
+                    "id": "mutually-exclusive-mandatory-date-group",
+                    "title": "Mutually Exclusive With Single Checkbox Override - Mandatory",
+                    "blocks": [
+                        {
+                            "type": "Question",
+                            "id": "mutually-exclusive-mandatory-date",
+                            "question": {
+                                "id": "mutually-exclusive-mandatory-date-question",
+                                "type": "MutuallyExclusive",
+                                "title": "When did you leave your last paid job?",
+                                "mandatory": true,
+                                "answers": [
+                                    {
+                                        "id": "mandatory-date-answer",
+                                        "label": "Enter a date",
+                                        "mandatory": false,
+                                        "type": "Date"
+                                    },
+                                    {
+                                        "id": "mandatory-date-exclusive-answer",
+                                        "mandatory": false,
+                                        "type": "Checkbox",
+                                        "options": [
+                                            {
+                                                "label": "I prefer not to say",
+                                                "value": "I prefer not to say"
+                                            }
+                                        ]
+                                    }
+                                ]
+                            }
+                        }
+                    ]
+                }
+            ]
+        },
+        {
             "id": "mutually-exclusive-date-section",
             "title": "Date",
             "summary": { "show_on_completion": true },
