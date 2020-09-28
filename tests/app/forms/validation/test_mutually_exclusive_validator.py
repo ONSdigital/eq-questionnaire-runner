@@ -17,7 +17,9 @@ class TestMutuallyExclusive(unittest.TestCase):
         for values in answer_permutations:
             with self.assertRaises(ValidationError) as ite:
                 self.validator(
-                    answer_values=iter(values), is_mandatory=True, only_checkboxes=True
+                    answer_values=iter(values),
+                    is_mandatory=True,
+                    is_only_checkboxes=True,
                 )
 
             self.assertEqual(
@@ -33,7 +35,9 @@ class TestMutuallyExclusive(unittest.TestCase):
         for values in answer_permutations:
             with self.assertRaises(ValidationError) as ite:
                 self.validator(
-                    answer_values=iter(values), is_mandatory=True, only_checkboxes=False
+                    answer_values=iter(values),
+                    is_mandatory=True,
+                    is_only_checkboxes=False,
                 )
 
             self.assertEqual(
@@ -48,7 +52,7 @@ class TestMutuallyExclusive(unittest.TestCase):
 
         for values in answer_permutations:
             self.validator(
-                answer_values=iter(values), is_mandatory=False, only_checkboxes=True
+                answer_values=iter(values), is_mandatory=False, is_only_checkboxes=True
             )
 
     def test_mutually_exclusive_exception(self):
@@ -61,7 +65,9 @@ class TestMutuallyExclusive(unittest.TestCase):
         for values in answer_permutations:
             with self.assertRaises(ValidationError) as ite:
                 self.validator(
-                    answer_values=iter(values), is_mandatory=True, only_checkboxes=True
+                    answer_values=iter(values),
+                    is_mandatory=True,
+                    is_only_checkboxes=True,
                 )
 
             self.assertEqual(error_messages["MUTUALLY_EXCLUSIVE"], str(ite.exception))
@@ -78,5 +84,5 @@ class TestMutuallyExclusive(unittest.TestCase):
 
         for values in answer_permutations:
             self.validator(
-                answer_values=iter(values), is_mandatory=True, only_checkboxes=True
+                answer_values=iter(values), is_mandatory=True, is_only_checkboxes=True
             )
