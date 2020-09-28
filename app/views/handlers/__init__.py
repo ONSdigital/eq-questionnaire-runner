@@ -41,6 +41,9 @@ def individual_response_url(
     return None
 
 
-def show_individual_response_link(current_location):
-    if current_location:
+def show_individual_response_link(location):
+    if (
+        location.block_id == "individual-introduction"
+        and location.list_item_id != "primary-person"
+    ):
         return True

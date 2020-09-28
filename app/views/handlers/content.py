@@ -34,7 +34,9 @@ class Content(BlockHandler):
                 self._current_location.list_item_id,
                 self._questionnaire_store,
             ),
-            "show_link": show_individual_response_link(self._current_location),
+            "show_individual_response_link": show_individual_response_link(
+                self._current_location
+            ),
         }
 
     def _get_content_title(self, transformed_block):
