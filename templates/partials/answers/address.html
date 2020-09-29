@@ -55,9 +55,9 @@
     "errorMessageAPI": _("Sorry, there was a problem loading addresses"),
     "errorMessageAPILinkText": _("Enter address manually"),
     "options": {
-        "region_code": answer.lookup_options.region_code | lower,
-        "one_year_ago": "true" if answer.lookup_options.one_year_ago is defined and answer.lookup_options.one_year_ago else "false",
-        "address_type": answer.lookup_options.address_type | lower
+        "regionCode": answer.lookup_options.region_code | lower,
+        "oneYearAgo": answer.lookup_options.one_year_ago if answer.lookup_options.one_year_ago is defined,
+        "addressType": answer.lookup_options.address_type | lower
     }
   }) %}
 {% endif %}
