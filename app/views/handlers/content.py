@@ -34,7 +34,7 @@ class Content(BlockHandler):
                 self._current_location.list_item_id,
                 self._questionnaire_store,
             )
-            if self._is_block_first_block_in_individual_response
+            if self._is_block_first_block_in_individual_response()
             else None,
         }
 
