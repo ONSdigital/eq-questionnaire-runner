@@ -15,7 +15,7 @@ __all__ = [
     "IndividualResponseHowHandler",
     "IndividualResponsePostAddressConfirmHandler",
     "individual_response_url",
-    "show_individual_response_link",
+    "show_individual_response",
 ]
 
 
@@ -41,6 +41,6 @@ def individual_response_url(
     return None
 
 
-def show_individual_response_link(location, schema):
+def show_individual_response(location, schema):
     section = schema.json.get("individual_response", {}).get("individual_section_id")
     return location.block_id == schema.get_first_block_id_for_section(section)
