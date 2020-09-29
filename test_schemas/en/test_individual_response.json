@@ -334,6 +334,19 @@
                             "type": "Interstitial"
                         },
                         {
+                            "content": {
+                                "contents": [
+                                    {
+                                        "description": "Another interstitial page to check if individual response guidance is not present."
+                                    }
+                                ],
+                                "title": "Another interstitial"
+                            },
+                            "id": "another-interstitial",
+                            "page_title": "Another interstitial",
+                            "type": "Interstitial"
+                        },
+                        {
                             "id": "proxy",
                             "question": {
                                 "answers": [
