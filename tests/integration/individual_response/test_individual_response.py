@@ -14,11 +14,12 @@ class IndividualResponseTestCase(IntegrationTestCase):
 
     @property
     def individual_response_link(self):
-        return (
-            self.getHtmlSoup()
-            .find("p", {"data-qa": "individual-response-url"})
-            .find_next()["href"]
+        response_paragraph = self.getHtmlSoup().find(
+            "p", {"data-qa": "individual-response-url"}
         )
+
+        if response_paragraph:
+            return response_paragraph.find_next()["href"]
 
     def get_link(self, rowIndex, text):
         selector = f"[data-qa='list-item-{text}-{rowIndex}-link']"
@@ -77,6 +78,20 @@ class IndividualResponseTestCase(IntegrationTestCase):
             }
         )
         self.post()
+
+
+class TestIndividualResponseOnHubDisabled(IndividualResponseTestCase):
+    def setUp(self):
+        super().setUp()
+        self.launchSurvey(
+            "test_individual_response_on_hub_disabled", region_code="GB-ENG"
+        )
+
+    def test_show_on_hub_false(self):
+        self._add_household_no_primary()
+
+        self.assertIsNone(self.individual_response_link)
+        self.assertEqualUrl("questionnaire/")
 
 
 class TestIndividualResponseErrorStatus(IndividualResponseTestCase):
