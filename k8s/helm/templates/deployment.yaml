@@ -87,7 +87,7 @@ spec:
               value: "{{- .Values.webServer.workers }}"
             - name: WEB_SERVER_THREADS
               value: "{{- .Values.webServer.threads }}"
-            - name: WEB_SERVER_ASYNC_CORES
+            - name: UWSGI_ASYNC_CORES
               value: "{{- .Values.webServer.uwsgiAsyncCores }}"
             - name: DATASTORE_USE_GRPC
               value: "{{- .Values.datastore.useGRPC }}"
