@@ -29,7 +29,7 @@ helm upgrade --install \
     --set-string webServer.workerClass="${WEB_SERVER_WORKER_CLASS}" \
     --set-string webServer.workers="${WEB_SERVER_WORKERS}" \
     --set-string webServer.threads="${WEB_SERVER_THREADS}" \
-    --set-string webServer.workers="${WEB_SERVER_ASYNC_CORES}"
+    --set-string webServer.uwsgiAsyncCores="${WEB_SERVER_ASYNC_CORES}"
 
 kubectl rollout restart deployment.v1.apps/runner
 kubectl rollout status deployment.v1.apps/runner

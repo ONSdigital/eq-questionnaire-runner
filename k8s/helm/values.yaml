@@ -18,7 +18,7 @@ webServer:
   workerClass: "gevent"
   workers: "7"
   threads: "10"
-  asyncCores: "10"
+  uwsgiAsyncCores: "10"
 
 datastore:
   useGRPC: "False"
