@@ -14,11 +14,12 @@ class IndividualResponseTestCase(IntegrationTestCase):
 
     @property
     def individual_response_link(self):
-        return (
-            self.getHtmlSoup()
-            .find("p", {"data-qa": "individual-response-url"})
-            .find_next()["href"]
+        response_paragraph = self.getHtmlSoup().find(
+            "p", {"data-qa": "individual-response-url"}
         )
+
+        if response_paragraph:
+            return response_paragraph.find_next()["href"]
 
     def get_link(self, rowIndex, text):
         selector = f"[data-qa='list-item-{text}-{rowIndex}-link']"
@@ -87,12 +88,7 @@ class TestIndividualResponseHubDisabled(IndividualResponseTestCase):
     def test_show_on_hub_false(self):
         self._add_household_no_primary()
 
-        with self.assertRaises(AttributeError) as error:
-            individual_response_link = self.individual_response_link
-
-        self.assertEqual(
-            str(error.exception), "'NoneType' object has no attribute 'find_next'"
-        )
+        self.assertIsNone(self.individual_response_link)
 
 
 class TestIndividualResponseErrorStatus(IndividualResponseTestCase):
