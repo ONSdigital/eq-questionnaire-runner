@@ -497,3 +497,8 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
             messages.update(self.json["messages"])
 
         return messages
+
+    def get_individual_response_individual_section_id(self):
+        return self._questionnaire_json.get("individual_response", {}).get(
+            "individual_section_id"
+        )
