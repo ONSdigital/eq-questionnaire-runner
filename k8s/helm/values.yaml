@@ -20,6 +20,9 @@ webServer:
   threads: "10"
   asyncCores: "10"
 
+datastore:
+  useGRPC: "False"
+
 newRelic:
   enabled: "False"
   licenseKey: ""

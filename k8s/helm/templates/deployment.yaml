@@ -89,6 +89,8 @@ spec:
               value: "{{- .Values.webServer.threads }}"
             - name: WEB_SERVER_ASYNC_CORES
               value: "{{- .Values.webServer.asyncCores }}"
+            - name: DATASTORE_USE_GRPC
+              value: "{{- .Values.datastore.useGRPC }}"
             - name: HTTP_KEEP_ALIVE
               value: "650"
             - name: EQ_GCS_SUBMISSION_BUCKET_ID
