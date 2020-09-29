@@ -15,7 +15,6 @@ __all__ = [
     "IndividualResponseHowHandler",
     "IndividualResponsePostAddressConfirmHandler",
     "individual_response_url",
-    "show_individual_response",
 ]
 
 
