@@ -203,6 +203,9 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
     def get_individual_response_list(self):
         return self.json.get("individual_response", {}).get("for_list")
 
+    def get_individual_response_show_on_hub(self):
+        return self.json.get("individual_response", {}).get("show_on_hub", True)
+
     def get_title_for_section(self, section_id):
         return self._sections_by_id.get(section_id).get("title")
 
