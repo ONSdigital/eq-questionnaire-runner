@@ -34,9 +34,7 @@ class Content(BlockHandler):
                 self._current_location.list_item_id,
                 self._questionnaire_store,
             )
-            if self._is_block_first_block_in_individual_response(
-                self._current_location.block_id, self._schema
-            )
+            if self._is_block_first_block_in_individual_response
             else None,
         }
 
@@ -45,6 +43,11 @@ class Content(BlockHandler):
         if content:
             return self._get_safe_page_title(content["title"])
 
-    def _is_block_first_block_in_individual_response(self, block_id, schema):
-        section_id = schema.get_individual_response_individual_section_id()
-        return block_id == schema.get_first_block_id_for_section(section_id)
+    def _is_block_first_block_in_individual_response(self):
+        individual_section_id = (
+            self._schema.get_individual_response_individual_section_id()
+        )
+        return (
+            self._current_location.section_id == individual_section_id
+            and self._current_location.block_id == self._routing_path[0]
+        )
