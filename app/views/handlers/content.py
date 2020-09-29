@@ -1,10 +1,7 @@
 from functools import cached_property
 
 from app.questionnaire.schema_utils import transform_variants
-from app.views.handlers import (
-    individual_response_url,
-    is_first_block_in_individual_response,
-)
+from app.views.handlers import individual_response_url
 from app.views.handlers.block import BlockHandler
 
 
@@ -37,7 +34,7 @@ class Content(BlockHandler):
                 self._current_location.list_item_id,
                 self._questionnaire_store,
             )
-            if is_first_block_in_individual_response(
+            if self._is_first_block_in_individual_response(
                 self._current_location, self._schema
             )
             else None,
@@ -47,3 +44,9 @@ class Content(BlockHandler):
         content = transformed_block.get("content")
         if content:
             return self._get_safe_page_title(content["title"])
+
+    def _is_first_block_in_individual_response(self, location, schema):
+        section = schema.json.get("individual_response", {}).get(
+            "individual_section_id"
+        )
+        return location.block_id == schema.get_first_block_id_for_section(section)
