@@ -17,7 +17,6 @@ from app.helpers.template_helpers import render_template
 from app.helpers.url_param_serializer import URLParamSerializer
 from app.questionnaire.placeholder_renderer import PlaceholderRenderer
 from app.questionnaire.router import Router
-from app.settings import EQ_INDIVIDUAL_RESPONSE_LIMIT
 from app.views.contexts.question import build_question_context
 
 GB_ENG_REGION_CODE = "GB-ENG"
@@ -157,19 +156,19 @@ class IndividualResponseHandler:
             self._questionnaire_store.response_metadata.get(
                 "individual_response_count", 0
             )
-            >= EQ_INDIVIDUAL_RESPONSE_LIMIT
+            >= current_app.config["EQ_INDIVIDUAL_RESPONSE_LIMIT"]
         ):
             raise IndividualResponseLimitExceeded(
-                "Individual response count has reached its limit"
+                "Individual response limit has been exceeded"
             )
 
     def _update_individual_response_count(self):
         response_metadata = self._questionnaire_store.response_metadata
 
-        if not response_metadata.get("individual_response_count"):
-            response_metadata["individual_response_count"] = 1
-        else:
+        if response_metadata.get("individual_response_count"):
             response_metadata["individual_response_count"] += 1
+        else:
+            response_metadata["individual_response_count"] = 1
         self._questionnaire_store.save()
 
     def handle_get(self):

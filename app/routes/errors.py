@@ -73,7 +73,7 @@ def method_not_allowed(error=None):
 
 
 @errors_blueprint.app_errorhandler(IndividualResponseLimitExceeded)
-def to_many_ir_requests(error=None):
+def too_many_ir_requests(error=None):
     log_error(error, 429)
     return _render_error_page(429, template="429-ir")
 

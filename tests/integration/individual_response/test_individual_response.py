@@ -198,28 +198,33 @@ class TestIndividualResponseErrorStatus(IndividualResponseTestCase):
         # Then I should see the 404 page
         self.assertStatusCode(404)
 
-    def test_429_individual_response_request_limit(self):
-        # Given I successfully submit an IR request up to its response limit
+    def test_429_individual_response_limit_exceeded(self):
+        # Given I successfully request individual responses up to the limit
         self._add_household_no_primary()
         self.get(self.individual_section_link)
         self.get(self.individual_response_link)
         self.post()
         self.post({"individual-response-how-answer": "Text message"})
-        self.post({"individual-response-enter-number-answer": "07977306713"})
-        confirmation_page = self.last_url
-        self.post({"individual-response-text-confirm-answer": "Yes, send the text"})
-        self.get(confirmation_page)
-        self.post({"individual-response-text-confirm-answer": "Yes, send the text"})
+        self.post({"individual-response-enter-number-answer": "07970000000"})
 
-        # When I try to submit again
-        self.get(confirmation_page)
+        confirm_number_page = self.last_url
+
+        self.post({"individual-response-text-confirm-answer": "Yes, send the text"})
+        self.assertInUrl("/text/confirmation")
+
+        self.get(confirm_number_page)
+        self.post({"individual-response-text-confirm-answer": "Yes, send the text"})
+        self.assertInUrl("/text/confirmation")
+
+        # When I try to request an additional individual response, which would exceed the limit
+        self.get(confirm_number_page)
         self.post({"individual-response-text-confirm-answer": "Yes, send the text"})
 
         # Then I should see a 429 page
+        self.assertStatusCode(429)
         self.assertInBody(
             "You have reached the maximum number of individual access codes"
         )
-        self.assertStatusCode(429)
 
 
 class TestIndividualResponseIndividualSection(IndividualResponseTestCase):
