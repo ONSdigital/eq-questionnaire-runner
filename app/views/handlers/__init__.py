@@ -43,5 +43,4 @@ def individual_response_url(
 
 def show_individual_response_link(location, schema):
     section = schema.json.get("individual_response", {}).get("individual_section_id")
-    if location.block_id == schema.get_first_block_id_for_section(section):
-        return True
+    return location.block_id == schema.get_first_block_id_for_section(section)
