@@ -1,0 +1,8 @@
+{% extends 'layouts/_base.html' %}
+
+{% set page_title = _("Maximum number of individual access codes") %}
+
+{% block main %}
+<h1>{{ _("You have reached the maximum number of individual access codes") }}</h1>
+<p>{{ _("If you need more individual access codes, please <a href='{url}'>contact us</a>.").format(url=contact_us_url) }}</p>
+{% endblock %}

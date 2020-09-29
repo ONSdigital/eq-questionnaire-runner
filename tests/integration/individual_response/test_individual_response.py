@@ -1,8 +1,10 @@
+from app import settings
 from tests.integration.integration_test_case import IntegrationTestCase
 
 
 class IndividualResponseTestCase(IntegrationTestCase):
     def setUp(self):
+        settings.EQ_INDIVIDUAL_RESPONSE_LIMIT = 2
         super().setUp()
         self.launchSurvey("test_individual_response", region_code="GB-ENG")
 
@@ -195,6 +197,29 @@ class TestIndividualResponseErrorStatus(IndividualResponseTestCase):
 
         # Then I should see the 404 page
         self.assertStatusCode(404)
+
+    def test_429_individual_response_request_limit(self):
+        # Given I successfully submit an IR request up to its response limit
+        self._add_household_no_primary()
+        self.get(self.individual_section_link)
+        self.get(self.individual_response_link)
+        self.post()
+        self.post({"individual-response-how-answer": "Text message"})
+        self.post({"individual-response-enter-number-answer": "07977306713"})
+        confirmation_page = self.last_url
+        self.post({"individual-response-text-confirm-answer": "Yes, send the text"})
+        self.get(confirmation_page)
+        self.post({"individual-response-text-confirm-answer": "Yes, send the text"})
+
+        # When I try to submit again
+        self.get(confirmation_page)
+        self.post({"individual-response-text-confirm-answer": "Yes, send the text"})
+
+        # Then I should see a 429 page
+        self.assertInBody(
+            "You have reached the maximum number of individual access codes"
+        )
+        self.assertStatusCode(429)
 
 
 class TestIndividualResponseIndividualSection(IndividualResponseTestCase):

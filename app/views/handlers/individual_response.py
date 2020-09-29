@@ -17,11 +17,16 @@ from app.helpers.template_helpers import render_template
 from app.helpers.url_param_serializer import URLParamSerializer
 from app.questionnaire.placeholder_renderer import PlaceholderRenderer
 from app.questionnaire.router import Router
+from app.settings import EQ_INDIVIDUAL_RESPONSE_LIMIT
 from app.views.contexts.question import build_question_context
 
 GB_ENG_REGION_CODE = "GB-ENG"
 GB_WLS_REGION_CODE = "GB-WLS"
 GB_NIR_REGION_CODE = "GB-NIR"
+
+
+class IndividualResponseLimitExceeded(Exception):
+    pass
 
 
 class IndividualResponseHandler:
@@ -146,6 +151,26 @@ class IndividualResponseHandler:
         return current_app.eq["publisher"].publish(
             topic_id, message=fulfilment_request.payload
         )
+
+    def _check_individual_response_count(self):
+        if (
+            self._questionnaire_store.response_metadata.get(
+                "individual_response_count", 0
+            )
+            >= EQ_INDIVIDUAL_RESPONSE_LIMIT
+        ):
+            raise IndividualResponseLimitExceeded(
+                "Individual response count has reached its limit"
+            )
+
+    def _update_individual_response_count(self):
+        response_metadata = self._questionnaire_store.response_metadata
+
+        if not response_metadata.get("individual_response_count"):
+            response_metadata["individual_response_count"] = 1
+        else:
+            response_metadata["individual_response_count"] += 1
+        self._questionnaire_store.save()
 
     def handle_get(self):
         individual_section_first_block_id = self._schema.get_first_block_id_for_section(
@@ -574,9 +599,11 @@ class IndividualResponsePostAddressConfirmHandler(IndividualResponseHandler):
         )
 
     def handle_post(self):
+        self._check_individual_response_count()
         if self.selected_option == self.confirm_option:
             self._update_section_status(CompletionStatus.INDIVIDUAL_RESPONSE_REQUESTED)
             self._publish_fulfilment_request()
+            self._update_individual_response_count()
             return redirect(
                 url_for(
                     "individual_response.individual_response_post_address_confirmation",
@@ -843,9 +870,11 @@ class IndividualResponseTextConfirmHandler(IndividualResponseHandler):
         )
 
     def handle_post(self):
+        self._check_individual_response_count()
         if self.selected_option == self.confirm_option:
             self._update_section_status(CompletionStatus.INDIVIDUAL_RESPONSE_REQUESTED)
             self._publish_fulfilment_request(self.mobile_number)
+            self._update_individual_response_count()
             return redirect(
                 url_for(
                     "individual_response.individual_response_text_message_confirmation",
@@ -897,7 +926,6 @@ class FulfilmentRequest:
                 GB_NIR_REGION_CODE: "P_UAC_UACIP4",
             },
         }
-
         region_code = self._metadata["region_code"]
         return fulfilment_codes[self._fulfilment_type][region_code]
 
