@@ -80,7 +80,7 @@ class IndividualResponseTestCase(IntegrationTestCase):
         self.post()
 
 
-class TestIndividualResponseHubDisabled(IndividualResponseTestCase):
+class TestIndividualResponseOnHubDisabled(IndividualResponseTestCase):
     def setUp(self):
         super().setUp()
         self.launchSurvey(
@@ -91,6 +91,7 @@ class TestIndividualResponseHubDisabled(IndividualResponseTestCase):
         self._add_household_no_primary()
 
         self.assertIsNone(self.individual_response_link)
+        self.assertEqualUrl("questionnaire/")
 
 
 class TestIndividualResponseErrorStatus(IndividualResponseTestCase):
