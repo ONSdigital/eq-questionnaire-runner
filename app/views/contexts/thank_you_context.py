@@ -30,8 +30,6 @@ def build_census_thank_you_context(
     session_data: SessionData, confirmation_email_form
 ) -> Mapping:
 
-    show_confirmation_email_form = True if confirmation_email_form else False
-
     census_type_code = None
     census_type_mappings = {
         "census_household": "HH",
@@ -49,7 +47,7 @@ def build_census_thank_you_context(
         "census_type": census_type_code,
         "hide_signout_button": False,
         "sign_out_url": url_for("session.get_sign_out"),
-        "show_confirmation_email_form": show_confirmation_email_form,
+        "show_confirmation_email_form":  True if confirmation_email_form else False,
     }
     if confirmation_email_form:
         context.update(build_email_form_context(confirmation_email_form))
