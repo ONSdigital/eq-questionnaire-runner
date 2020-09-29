@@ -1,8 +1,10 @@
 from functools import cached_property
 
-from app.questionnaire.questionnaire_schema import QuestionnaireSchema
 from app.questionnaire.schema_utils import transform_variants
-from app.views.handlers import individual_response_url
+from app.views.handlers import (
+    individual_response_url,
+    is_first_block_in_individual_response,
+)
 from app.views.handlers.block import BlockHandler
 
 
@@ -35,7 +37,7 @@ class Content(BlockHandler):
                 self._current_location.list_item_id,
                 self._questionnaire_store,
             )
-            if QuestionnaireSchema.show_individual_response(
+            if is_first_block_in_individual_response(
                 self._current_location, self._schema
             )
             else None,
