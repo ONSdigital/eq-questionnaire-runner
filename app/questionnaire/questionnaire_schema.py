@@ -497,3 +497,10 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
             messages.update(self.json["messages"])
 
         return messages
+
+    @staticmethod
+    def show_individual_response(location, schema):
+        section = schema.json.get("individual_response", {}).get(
+            "individual_section_id"
+        )
+        return location.block_id == schema.get_first_block_id_for_section(section)
