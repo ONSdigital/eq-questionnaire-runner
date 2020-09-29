@@ -22,7 +22,6 @@ class ThankYou:
         self.session_store = get_session_store()
         self.session_data = self.session_store.session_data
         self._schema = schema
-        self.hide_confirmation = email_limit_exceeded()
 
         if not self.session_data.submitted_time:
             raise NotFound
@@ -39,7 +38,7 @@ class ThankYou:
         self.confirmation_email = (
             ConfirmationEmail(self.PAGE_TITLE)
             if self._schema.get_submission().get("confirmation_email")
-            and not self.hide_confirmation
+            and not email_limit_exceeded()
             else None
         )
 
@@ -52,7 +51,7 @@ class ThankYou:
         )
 
         return build_census_thank_you_context(
-            self.session_data, confirmation_email_form, self.hide_confirmation
+            self.session_data, confirmation_email_form
         )
 
     def get_page_title(self):

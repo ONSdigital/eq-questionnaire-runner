@@ -320,7 +320,7 @@ def get_confirmation_email_sent():
     if not get_session_store().session_data.confirmation_email_count:
         raise NotFound
 
-    hide_guidance = email_limit_exceeded()
+    show_send_another_email_guidance = True if not email_limit_exceeded() else False
 
     email = URLParamSerializer().loads(request.args.get("email"))
 
@@ -332,7 +332,7 @@ def get_confirmation_email_sent():
                 "post_submission.send_confirmation_email"
             ),
             "hide_signout_button": False,
-            "show_send_another_email_guidance": hide_guidance,
+            "show_send_another_email_guidance": show_send_another_email_guidance,
             "sign_out_url": url_for("session.get_sign_out"),
         },
     )
