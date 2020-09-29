@@ -187,7 +187,10 @@ class HubContext(Context):
 
     @cached_property
     def _individual_response_url(self) -> Union[str, None]:
-        if self._individual_response_enabled:
+        if (
+            self._individual_response_enabled
+            and self._schema.get_individual_response_show_on_hub()
+        ):
             return url_for(
                 "individual_response.request_individual_response", journey="hub"
             )
