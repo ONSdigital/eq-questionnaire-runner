@@ -14,8 +14,7 @@ googleTagManagerAuth: ""
 googleTagManagerPreview: ""
 
 webServer:
-  type: "gunicorn"
-  workerClass: "gevent"
+  type: "gunicorn-async"
   workers: "7"
   threads: "10"
   uwsgiAsyncCores: "10"

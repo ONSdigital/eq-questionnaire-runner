@@ -81,8 +81,6 @@ spec:
               value: eq-fulfilment-topic
             - name: WEB_SERVER_TYPE
               value: "{{- .Values.webServer.type }}"
-            - name: WEB_SERVER_WORKER_CLASS
-              value: "{{- .Values.webServer.workerClass }}"
             - name: WEB_SERVER_WORKERS
               value: "{{- .Values.webServer.workers }}"
             - name: WEB_SERVER_THREADS

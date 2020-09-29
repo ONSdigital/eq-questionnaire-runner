@@ -7,8 +7,7 @@ RUN apt update && apt install -y curl unzip libsnappy-dev build-essential jq
 COPY . /runner
 WORKDIR /runner
 
-ENV WEB_SERVER_TYPE gunicorn
-ENV WEB_SERVER_WORKER_CLASS gevent
+ENV WEB_SERVER_TYPE gunicorn-async
 ENV WEB_SERVER_WORKERS 3
 ENV WEB_SERVER_THREADS 10
 ENV UWSGI_ASYNC_CORES 10
