@@ -83,7 +83,9 @@ class IndividualResponseTestCase(IntegrationTestCase):
 class TestIndividualResponseHubDisabled(IndividualResponseTestCase):
     def setUp(self):
         super().setUp()
-        self.launchSurvey("test_individual_response_hub_disabled", region_code="GB-ENG")
+        self.launchSurvey(
+            "test_individual_response_on_hub_disabled", region_code="GB-ENG"
+        )
 
     def test_show_on_hub_false(self):
         self._add_household_no_primary()
