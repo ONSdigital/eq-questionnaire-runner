@@ -269,13 +269,17 @@ class TestIndividualResponseIndividualSection(IndividualResponseTestCase):
         self.assertInBody("You will need to know personal details such as")
         self.assertInBody("If you can’t answer questions for this person")
 
-    def test_ir_guidance_not_displayed_on_second_interstitial_page(
+    def test_ir_guidance_not_displayed_on_second_non_primary_interstitial_page(
         self,
     ):
         # Given I add a primary person and a household member
         self._add_primary_and_household()
 
         # When I navigate to the second interstitial page of non-primary individual section
+        self.post()
+        self.post()
+        self.post()
+        self.post({"proxy-answer": "Yes, I am"})
         self.post()
         self.post()
 
