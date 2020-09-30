@@ -145,6 +145,7 @@ class IndividualResponseHandler:
         return build_question_context(self.rendered_block, self.form)
 
     def _publish_fulfilment_request(self, mobile_number=None):
+        self._check_individual_response_count()
         topic_id = current_app.config["EQ_FULFILMENT_TOPIC_ID"]
         fulfilment_request = FulfilmentRequest(self._metadata, mobile_number)
         return current_app.eq["publisher"].publish(
@@ -169,7 +170,15 @@ class IndividualResponseHandler:
             response_metadata["individual_response_count"] += 1
         else:
             response_metadata["individual_response_count"] = 1
-        self._questionnaire_store.save()
+
+    def _update_questionnaire_store_on_publish(self):
+        self._update_section_status(CompletionStatus.INDIVIDUAL_RESPONSE_REQUESTED)
+        self._update_individual_response_count()
+        self._save_questionnaire_store()
+
+    def _save_questionnaire_store(self):
+        if self._questionnaire_store.progress_store.is_dirty:
+            self._questionnaire_store.save()
 
     def handle_get(self):
         individual_section_first_block_id = self._schema.get_first_block_id_for_section(
@@ -232,8 +241,6 @@ class IndividualResponseHandler:
         self._questionnaire_store.progress_store.update_section_status(
             status, self.individual_section_id, self._list_item_id
         )
-        if self._questionnaire_store.progress_store.is_dirty:
-            self._questionnaire_store.save()
 
 
 class IndividualResponseHowHandler(IndividualResponseHandler):
@@ -504,6 +511,7 @@ class IndividualResponseChangeHandler(IndividualResponseHandler):
                 else CompletionStatus.IN_PROGRESS
             )
         self._update_section_status(status)
+        self._save_questionnaire_store()
 
 
 class IndividualResponsePostAddressConfirmHandler(IndividualResponseHandler):
@@ -598,11 +606,10 @@ class IndividualResponsePostAddressConfirmHandler(IndividualResponseHandler):
         )
 
     def handle_post(self):
-        self._check_individual_response_count()
         if self.selected_option == self.confirm_option:
-            self._update_section_status(CompletionStatus.INDIVIDUAL_RESPONSE_REQUESTED)
             self._publish_fulfilment_request()
-            self._update_individual_response_count()
+            self._update_questionnaire_store_on_publish()
+
             return redirect(
                 url_for(
                     "individual_response.individual_response_post_address_confirmation",
@@ -869,11 +876,10 @@ class IndividualResponseTextConfirmHandler(IndividualResponseHandler):
         )
 
     def handle_post(self):
-        self._check_individual_response_count()
         if self.selected_option == self.confirm_option:
-            self._update_section_status(CompletionStatus.INDIVIDUAL_RESPONSE_REQUESTED)
             self._publish_fulfilment_request(self.mobile_number)
-            self._update_individual_response_count()
+            self._update_questionnaire_store_on_publish()
+
             return redirect(
                 url_for(
                     "individual_response.individual_response_text_message_confirmation",
