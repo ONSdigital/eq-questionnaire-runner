@@ -7,10 +7,18 @@ from app.helpers.url_param_serializer import URLParamSerializer
 from app.views.contexts.email_form_context import build_confirmation_email_form_context
 
 
+class EmailLimitExceeded(Exception):
+    def __init__(self):
+        super().__init__()
+
+
 class ConfirmationEmail:
     PAGE_TITLE = gettext("Confirmation email")
 
     def __init__(self, page_title=None):
+        self.email_limit_exceeded = email_limit_exceeded()
+        if self.email_limit_exceeded:
+            raise EmailLimitExceeded
         self.form = EmailForm()
         self.page_title = page_title or self.PAGE_TITLE
 
