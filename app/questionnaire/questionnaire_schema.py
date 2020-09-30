@@ -206,6 +206,11 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
     def get_individual_response_show_on_hub(self):
         return self.json.get("individual_response", {}).get("show_on_hub", True)
 
+    def get_individual_response_individual_section_id(self):
+        return self._questionnaire_json.get("individual_response", {}).get(
+            "individual_section_id"
+        )
+
     def get_title_for_section(self, section_id):
         return self._sections_by_id.get(section_id).get("title")
 
@@ -497,8 +502,3 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
             messages.update(self.json["messages"])
 
         return messages
-
-    def get_individual_response_individual_section_id(self):
-        return self._questionnaire_json.get("individual_response", {}).get(
-            "individual_section_id"
-        )
