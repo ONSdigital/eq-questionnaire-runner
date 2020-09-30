@@ -30,6 +30,7 @@
         "required_completed_sections": ["section"]
     },
     "individual_response": {
+        "show_on_hub": false,
         "for_list": "household",
         "individual_section_id": "individual-section"
     },
@@ -331,19 +332,6 @@
                                 }
                             },
                             "id": "individual-interstitial",
-                            "type": "Interstitial"
-                        },
-                        {
-                            "content": {
-                                "contents": [
-                                    {
-                                        "description": "Another interstitial page to ensure that the individual response guidance is only displayed for the first block in the individual section."
-                                    }
-                                ],
-                                "title": "Another interstitial"
-                            },
-                            "id": "another-interstitial",
-                            "page_title": "Another interstitial",
                             "type": "Interstitial"
                         },
                         {
