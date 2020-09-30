@@ -8,8 +8,7 @@ from app.views.contexts.email_form_context import build_confirmation_email_form_
 
 
 class EmailLimitExceeded(Exception):
-    def __init__(self):
-        super().__init__()
+    pass
 
 
 class ConfirmationEmail:
