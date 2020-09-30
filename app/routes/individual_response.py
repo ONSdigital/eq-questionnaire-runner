@@ -1,4 +1,5 @@
 from flask import Blueprint, g, redirect, request, url_for
+from flask_babel import lazy_gettext
 from flask_login import current_user, login_required
 from structlog import get_logger
 
@@ -160,6 +161,7 @@ def individual_response_post_address_confirmation(schema, questionnaire_store):
     return render_template(
         template="individual_response/confirmation-post",
         display_address=questionnaire_store.metadata.get("display_address"),
+        page_title=lazy_gettext("An individual access code has been sent by post"),
     )
 
 
@@ -250,4 +252,5 @@ def individual_response_text_message_confirmation(schema, questionnaire_store):
     return render_template(
         template="individual_response/confirmation-text-message",
         mobile_number=mobile_number,
+        page_title=lazy_gettext("An individual access code has been sent by text"),
     )
