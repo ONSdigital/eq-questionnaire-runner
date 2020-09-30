@@ -15,6 +15,7 @@ class TestPhoneNumberValidator(unittest.TestCase):
         assert sanitise_mobile_number("0447700\t900222") == "7700900222"
         assert sanitise_mobile_number("07700-(900333)") == "7700900333"
         assert sanitise_mobile_number("/0770/090/0444") == "7700900444"
+        assert sanitise_mobile_number("00447700 900555") == "7700900555"
         assert sanitise_mobile_number("0447700 900555") == "7700900555"
         assert sanitise_mobile_number("+447700 900666") == "7700900666"
         assert sanitise_mobile_number("[07700] 900777") == "7700900777"
