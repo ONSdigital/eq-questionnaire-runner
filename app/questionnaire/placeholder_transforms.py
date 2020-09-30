@@ -197,6 +197,6 @@ class PlaceholderTransforms:
     def format_name(first_name, middle_names, last_name, include_middle_names=False):
         return (
             f"{first_name} {middle_names} {last_name}"
-            if include_middle_names
+            if include_middle_names and middle_names
             else f"{first_name} {last_name}"
         )
