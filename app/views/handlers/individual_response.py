@@ -123,9 +123,7 @@ class IndividualResponseHandler:
 
     @cached_property
     def individual_section_id(self):
-        return self._schema.json.get("individual_response", {}).get(
-            "individual_section_id"
-        )
+        return self._schema.get_individual_response_individual_section_id()
 
     @cached_property
     def form(self):
