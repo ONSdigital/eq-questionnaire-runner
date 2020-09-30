@@ -1,14 +1,29 @@
 {% extends 'layouts/_base.html' %}
-{% import 'macros/helpers.html' as helpers %}
 {% from "components/button/_macro.njk" import onsButton %}
+{% from "components/breadcrumb/_macro.njk" import onsBreadcrumb %}
 
 {% set save_on_signout = true %}
-
 
 {% block main %}
     <button type="submit" class="u-d-no" hidden></button>
     <div class="u-mb-s">
-      <a {{ helpers.track('click', 'Navigation', 'Previous link click', position )}} href="{{ previous_location_url }}" id="top-previous">{{ _("Previous") }}</a>
+      {{
+        onsBreadcrumb({
+          "ariaLabel": 'Previous',
+          "itemsList": [
+            {
+              "url": previous_location_url,
+              "id": "top-previous",
+              "text": _("Previous"),
+                "attributes": {
+                  "data-ga": 'click',
+                  "data-ga-category": 'Navigation',
+                  "data-ga-action": 'Previous link click'
+                }
+            }
+          ]
+        })
+      }}
     </div>
     <h1 class="u-mt-m">{{_("If you can't answer questions for others in your household") }}</h1>
     <p>{{_("You can ask the people you live with to answer their own questions by sharing the household access code with them.") }}</p>
