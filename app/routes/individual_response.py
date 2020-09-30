@@ -158,14 +158,12 @@ def individual_response_post_address_confirmation(schema, questionnaire_store):
     if request.method == "POST":
         return redirect(url_for("questionnaire.get_questionnaire"))
 
-    individual_response_handler.set_page_title(
-        lazy_gettext("An individual access code has been sent by post")
-    )
-
     return render_template(
         template="individual_response/confirmation-post",
         display_address=questionnaire_store.metadata.get("display_address"),
-        page_title=individual_response_handler.page_title,
+        page_title=individual_response_handler.get_full_page_title(
+            lazy_gettext("An individual access code has been sent by post")
+        ),
     )
 
 
@@ -253,12 +251,10 @@ def individual_response_text_message_confirmation(schema, questionnaire_store):
 
     mobile_number = URLParamSerializer().loads(request.args.get("mobile_number"))
 
-    individual_response_handler.set_page_title(
-        lazy_gettext("An individual access code has been sent by text")
-    )
-
     return render_template(
         template="individual_response/confirmation-text-message",
         mobile_number=mobile_number,
-        page_title=individual_response_handler.page_title,
+        page_title=individual_response_handler.get_full_page_title(
+            lazy_gettext("An individual access code has been sent by text")
+        ),
     )
