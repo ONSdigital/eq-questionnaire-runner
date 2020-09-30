@@ -25,6 +25,10 @@ GB_WLS_REGION_CODE = "GB-WLS"
 GB_NIR_REGION_CODE = "GB-NIR"
 
 
+class FulfilmentRequestFailedException(Exception):
+    pass
+
+
 class IndividualResponseHandler:
     _person_name_transform: Mapping = {
         "arguments": {
@@ -142,9 +146,12 @@ class IndividualResponseHandler:
     def _publish_fulfilment_request(self, mobile_number=None):
         topic_id = current_app.config["EQ_FULFILMENT_TOPIC_ID"]
         fulfilment_request = FulfilmentRequest(self._metadata, mobile_number)
-        return current_app.eq["publisher"].publish(
-            topic_id, message=fulfilment_request.payload
-        )
+        try:
+            return current_app.eq["publisher"].publish(
+                topic_id, message=fulfilment_request.payload
+            )
+        except PublicationFailed:
+            raise FulfilmentRequestFailedException
 
     def handle_get(self):
         individual_section_first_block_id = self._schema.get_first_block_id_for_section(
@@ -575,18 +582,7 @@ class IndividualResponsePostAddressConfirmHandler(IndividualResponseHandler):
     def handle_post(self):
         if self.selected_option == self.confirm_option:
             self._update_section_status(CompletionStatus.INDIVIDUAL_RESPONSE_REQUESTED)
-            try:
-                self._publish_fulfilment_request()
-            except PublicationFailed:
-                retry_url = url_for(
-                    "individual_response.individual_response_post_address_confirm",
-                    list_item_id=self._list_item_id,
-                    **self._request_args,
-                )
-                return (
-                    render_template("errors/individual_response", retry_url=retry_url),
-                    500,
-                )
+            self._publish_fulfilment_request()
 
             return redirect(
                 url_for(
@@ -856,18 +852,7 @@ class IndividualResponseTextConfirmHandler(IndividualResponseHandler):
     def handle_post(self):
         if self.selected_option == self.confirm_option:
             self._update_section_status(CompletionStatus.INDIVIDUAL_RESPONSE_REQUESTED)
-            try:
-                self._publish_fulfilment_request(self.mobile_number)
-            except PublicationFailed:
-                retry_url = url_for(
-                    "individual_response.individual_response_text_message_confirm",
-                    list_item_id=self._list_item_id,
-                    **self._request_args,
-                )
-                return (
-                    render_template("errors/individual_response", retry_url=retry_url),
-                    500,
-                )
+            self._publish_fulfilment_request(self.mobile_number)
 
             return redirect(
                 url_for(
