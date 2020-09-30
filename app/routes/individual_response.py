@@ -145,7 +145,7 @@ def individual_response_post_address_confirm(schema, questionnaire_store, list_i
 @with_schema
 def individual_response_post_address_confirmation(schema, questionnaire_store):
     language_code = get_session_store().session_data.language_code
-    IndividualResponseHandler(
+    individual_response_handler = IndividualResponseHandler(
         block_definition=None,
         schema=schema,
         questionnaire_store=questionnaire_store,
@@ -158,10 +158,14 @@ def individual_response_post_address_confirmation(schema, questionnaire_store):
     if request.method == "POST":
         return redirect(url_for("questionnaire.get_questionnaire"))
 
+    individual_response_handler.set_page_title(
+        lazy_gettext("An individual access code has been sent by post")
+    )
+
     return render_template(
         template="individual_response/confirmation-post",
         display_address=questionnaire_store.metadata.get("display_address"),
-        page_title=lazy_gettext("An individual access code has been sent by post"),
+        page_title=individual_response_handler.page_title,
     )
 
 
@@ -234,7 +238,7 @@ def individual_response_text_message_confirm(schema, questionnaire_store, list_i
 @with_schema
 def individual_response_text_message_confirmation(schema, questionnaire_store):
     language_code = get_session_store().session_data.language_code
-    IndividualResponseHandler(
+    individual_response_handler = IndividualResponseHandler(
         block_definition=None,
         schema=schema,
         questionnaire_store=questionnaire_store,
@@ -249,8 +253,12 @@ def individual_response_text_message_confirmation(schema, questionnaire_store):
 
     mobile_number = URLParamSerializer().loads(request.args.get("mobile_number"))
 
+    individual_response_handler.set_page_title(
+        lazy_gettext("An individual access code has been sent by text")
+    )
+
     return render_template(
         template="individual_response/confirmation-text-message",
         mobile_number=mobile_number,
-        page_title=lazy_gettext("An individual access code has been sent by text"),
+        page_title=individual_response_handler.page_title,
     )

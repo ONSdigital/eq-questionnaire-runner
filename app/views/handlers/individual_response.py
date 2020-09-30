@@ -86,7 +86,7 @@ class IndividualResponseHandler:
     def _list_item_position(self):
         return self._list_model.index(self._list_item_id)
 
-    def _set_page_title(self, page_title):
+    def set_page_title(self, page_title):
         if self._list_item_id:
             page_title += ": Person {list_item_position}".format(
                 list_item_position=self._list_item_position
@@ -179,7 +179,7 @@ class IndividualResponseHandler:
         else:
             previous_location_url = url_for("questionnaire.get_questionnaire")
 
-        self._set_page_title(
+        self.set_page_title(
             lazy_gettext("Cannot answer questions for others in your household")
         )
 
@@ -325,7 +325,7 @@ class IndividualResponseHowHandler(IndividualResponseHandler):
                 list_item_id=self._list_item_id,
             )
 
-        self._set_page_title(lazy_gettext("Send individual access code"))
+        self.set_page_title(lazy_gettext("Send individual access code"))
 
         return render_template(
             "individual_response/question",
@@ -580,7 +580,7 @@ class IndividualResponsePostAddressConfirmHandler(IndividualResponseHandler):
             journey=self._request_args.get("journey"),
         )
 
-        self._set_page_title(lazy_gettext("Confirm address"))
+        self.set_page_title(lazy_gettext("Confirm address"))
 
         return render_template(
             "individual_response/question",
@@ -677,7 +677,7 @@ class IndividualResponseWhoHandler(IndividualResponseHandler):
                 journey=self._request_args.get("journey"),
             )
 
-            self._set_page_title(lazy_gettext("Separate Census"))
+            self.set_page_title(lazy_gettext("Separate Census"))
 
             return render_template(
                 "individual_response/question",
@@ -764,7 +764,7 @@ class IndividualResponseTextHandler(IndividualResponseHandler):
             journey=self._request_args.get("journey"),
         )
 
-        self._set_page_title(lazy_gettext("Mobile number"))
+        self.set_page_title(lazy_gettext("Mobile number"))
 
         return render_template(
             "individual_response/question",
@@ -859,7 +859,7 @@ class IndividualResponseTextConfirmHandler(IndividualResponseHandler):
             mobile_number=self._request_args.get("mobile_number"),
         )
 
-        self._set_page_title(lazy_gettext("Confirm mobile number"))
+        self.set_page_title(lazy_gettext("Confirm mobile number"))
         return render_template(
             "individual_response/question",
             language=self._language,
