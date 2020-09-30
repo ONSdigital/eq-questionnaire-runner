@@ -28,7 +28,7 @@ helm upgrade --install \
     --set-string webServer.type="${WEB_SERVER_TYPE}" \
     --set-string webServer.workers="${WEB_SERVER_WORKERS}" \
     --set-string webServer.threads="${WEB_SERVER_THREADS}" \
-    --set-string webServer.uwsgiAsyncCores="${UWSGI_ASYNC_CORES}" \
+    --set-string webServer.uwsgiAsyncCores="${WEB_SERVER_UWSGI_ASYNC_CORES}" \
     --set-string datastore.useGRPC="${DATASTORE_USE_GRPC}"
 
 kubectl rollout restart deployment.v1.apps/runner
