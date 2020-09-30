@@ -323,7 +323,7 @@ class IndividualResponseHowHandler(IndividualResponseHandler):
             previous_location_url=previous_location_url,
             show_contact_us_guidance=True,
             page_title=lazy_gettext(
-                f"Send individual access code: Person %(person_number)s"
+                "Send individual access code: Person %(person_number)s"
             )
             % {"person_number": self._person_number},
         )
@@ -577,7 +577,7 @@ class IndividualResponsePostAddressConfirmHandler(IndividualResponseHandler):
             language=self._language,
             content=self.get_context(),
             previous_location_url=previous_location_url,
-            page_title=lazy_gettext(f"Confirm address: Person %(person_number)s")
+            page_title=lazy_gettext("Confirm address: Person %(person_number)s")
             % {"person_number": self._person_number},
         )
 
@@ -758,7 +758,7 @@ class IndividualResponseTextHandler(IndividualResponseHandler):
             language=self._language,
             content=self.get_context(),
             previous_location_url=previous_location_url,
-            page_title=lazy_gettext(f"Mobile number: Person %(person_number)s")
+            page_title=lazy_gettext("Mobile number: Person %(person_number)s")
             % {"person_number": self._person_number},
         )
 
@@ -852,7 +852,7 @@ class IndividualResponseTextConfirmHandler(IndividualResponseHandler):
             language=self._language,
             content=self.get_context(),
             previous_location_url=previous_location_url,
-            page_title=lazy_gettext(f"Confirm mobile number: Person %(person_number)s")
+            page_title=lazy_gettext("Confirm mobile number: Person %(person_number)s")
             % {"person_number": self._person_number},
         )
 
