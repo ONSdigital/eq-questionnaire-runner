@@ -334,6 +334,19 @@
                             "type": "Interstitial"
                         },
                         {
+                            "content": {
+                                "contents": [
+                                    {
+                                        "description": "Another interstitial page to ensure that the individual response guidance is only displayed for the first block in the individual section."
+                                    }
+                                ],
+                                "title": "Another interstitial"
+                            },
+                            "id": "another-interstitial",
+                            "page_title": "Another interstitial",
+                            "type": "Interstitial"
+                        },
+                        {
                             "id": "proxy",
                             "question": {
                                 "answers": [
