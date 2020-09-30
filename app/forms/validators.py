@@ -428,7 +428,7 @@ class MutuallyExclusiveCheck:
 
 def sanitise_mobile_number(data):
     data = re.sub(r"[\s.,\t\-{}\[\]()/]", "", data)
-    return re.sub(r"^(044|\+44|0)", "", data)
+    return re.sub(r"^(0{1,2}44|\+44|0)", "", data)
 
 
 class MobileNumberCheck:
