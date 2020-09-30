@@ -240,7 +240,7 @@ class TestIndividualResponseErrorStatus(IndividualResponseTestCase):
         self._request_individual_response_by_text()
         self.assertStatusCode(500)
         self.assertEqualPageTitle(
-            "Sorry there was a problem sending the access code - Census 2021"
+            "Sorry, there was a problem sending the access code - Census 2021"
         )
         self.assertInSelectorCSS(
             self.last_url, "a", href=re.compile("individual-response")
@@ -254,7 +254,7 @@ class TestIndividualResponseErrorStatus(IndividualResponseTestCase):
         self._add_household_no_primary()
         self._request_individual_response_by_post()
         self.assertEqualPageTitle(
-            "Sorry there was a problem sending the access code - Census 2021"
+            "Sorry, there was a problem sending the access code - Census 2021"
         )
         self.assertInSelectorCSS(
             self.last_url, "a", href=re.compile("individual-response")
