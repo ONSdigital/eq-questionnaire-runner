@@ -15,6 +15,7 @@ from app.forms.questionnaire_form import generate_form
 from app.forms.validators import sanitise_mobile_number
 from app.helpers.template_helpers import render_template
 from app.helpers.url_param_serializer import URLParamSerializer
+from app.publisher.exceptions import PublicationFailed
 from app.questionnaire.placeholder_renderer import PlaceholderRenderer
 from app.questionnaire.router import Router
 from app.views.contexts.question import build_question_context
@@ -576,7 +577,19 @@ class IndividualResponsePostAddressConfirmHandler(IndividualResponseHandler):
     def handle_post(self):
         if self.selected_option == self.confirm_option:
             self._update_section_status(CompletionStatus.INDIVIDUAL_RESPONSE_REQUESTED)
-            self._publish_fulfilment_request()
+            try:
+                self._publish_fulfilment_request()
+            except PublicationFailed:
+                retry_url = url_for(
+                    "individual_response.individual_response_post_address_confirm",
+                    list_item_id=self._list_item_id,
+                    **self._request_args,
+                )
+                return (
+                    render_template("errors/individual_response", retry_url=retry_url),
+                    500,
+                )
+
             return redirect(
                 url_for(
                     "individual_response.individual_response_post_address_confirmation",
@@ -845,7 +858,19 @@ class IndividualResponseTextConfirmHandler(IndividualResponseHandler):
     def handle_post(self):
         if self.selected_option == self.confirm_option:
             self._update_section_status(CompletionStatus.INDIVIDUAL_RESPONSE_REQUESTED)
-            self._publish_fulfilment_request(self.mobile_number)
+            try:
+                self._publish_fulfilment_request(self.mobile_number)
+            except PublicationFailed:
+                retry_url = url_for(
+                    "individual_response.individual_response_text_message_confirm",
+                    list_item_id=self._list_item_id,
+                    **self._request_args,
+                )
+                return (
+                    render_template("errors/individual_response", retry_url=retry_url),
+                    500,
+                )
+
             return redirect(
                 url_for(
                     "individual_response.individual_response_text_message_confirmation",
