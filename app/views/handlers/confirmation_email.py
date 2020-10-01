@@ -15,8 +15,7 @@ class ConfirmationEmail:
     PAGE_TITLE = gettext("Confirmation email")
 
     def __init__(self, page_title=None):
-        self.email_limit_exceeded = email_limit_exceeded()
-        if self.email_limit_exceeded:
+        if email_limit_reached():
             raise ConfirmationEmailLimitReached
         self.form = EmailForm()
         self.page_title = page_title or self.PAGE_TITLE
@@ -39,7 +38,7 @@ class ConfirmationEmail:
         session_store.save()
 
 
-def email_limit_exceeded():
+def email_limit_reached():
     session_store = get_session_store()
 
     return (

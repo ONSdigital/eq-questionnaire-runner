@@ -23,7 +23,7 @@ from app.views.handlers.block_factory import get_block_handler
 from app.views.handlers.confirmation_email import (
     ConfirmationEmail,
     ConfirmationEmailLimitReached,
-    email_limit_exceeded,
+    email_limit_reached,
 )
 from app.views.handlers.section import SectionHandler
 from app.views.handlers.submission import SubmissionHandler
@@ -331,7 +331,7 @@ def get_confirmation_email_sent():
                 "post_submission.send_confirmation_email"
             ),
             "hide_signout_button": False,
-            "show_send_another_email_guidance": not email_limit_exceeded(),
+            "show_send_another_email_guidance": not email_limit_reached(),
             "sign_out_url": url_for("session.get_sign_out"),
         },
     )

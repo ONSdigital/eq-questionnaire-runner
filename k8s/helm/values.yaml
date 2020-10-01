@@ -47,4 +47,4 @@ cdn:
 address_lookup_api:
   url: "https://whitelodge-ai-api.census-gcp.onsdigital.uk"
 
-confirmationEmailRequestLimit: 10
+confirmationEmailLimit: 10
