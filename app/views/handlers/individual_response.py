@@ -332,9 +332,7 @@ class IndividualResponseHowHandler(IndividualResponseHandler):
             content=self.get_context(),
             previous_location_url=previous_location_url,
             show_contact_us_guidance=True,
-            page_title=self.page_title(
-                lazy_gettext("Send individual access code")
-            ),
+            page_title=self.page_title(lazy_gettext("Send individual access code")),
         )
 
     def handle_post(self):
