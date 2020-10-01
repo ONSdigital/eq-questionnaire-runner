@@ -37,13 +37,13 @@ def log_error(error, status_code):
     )
 
 
-def _render_error_page(status_code, template=None):
+def _render_error_page(status_code, template=None, **kwargs):
     handle_language()
     template = template or status_code
     using_edge = request.user_agent.browser == "edge"
 
     return (
-        render_template(template=f"errors/{template}", using_edge=using_edge),
+        render_template(template=f"errors/{template}", using_edge=using_edge, **kwargs),
         status_code,
     )
 
@@ -117,7 +117,4 @@ def fulfilment_request_failed(error):
         blueprint_method, list_item_id=request.view_args["list_item_id"], **request.args
     )
 
-    return (
-        render_template(template="errors/fulfilment_request", retry_url=retry_url),
-        500,
-    )
+    return _render_error_page(500, template="fulfilment-request", retry_url=retry_url)
