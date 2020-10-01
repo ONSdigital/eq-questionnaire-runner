@@ -87,7 +87,7 @@ class IndividualResponseHandler:
             self._list_name, self._list_item_id
         )
 
-    def get_full_page_title(self, page_title):
+    def page_title(self, page_title):
         if self._list_item_id:
             page_title += ": " + lazy_gettext(
                 "Person {list_item_position}".format(
@@ -186,7 +186,7 @@ class IndividualResponseHandler:
             template="individual_response/interstitial",
             language=self._language,
             previous_location_url=previous_location_url,
-            page_title=self.get_full_page_title(
+            page_title=self.page_title(
                 lazy_gettext("Cannot answer questions for others in your household")
             ),
         )
@@ -332,7 +332,7 @@ class IndividualResponseHowHandler(IndividualResponseHandler):
             content=self.get_context(),
             previous_location_url=previous_location_url,
             show_contact_us_guidance=True,
-            page_title=self.get_full_page_title(
+            page_title=self.page_title(
                 lazy_gettext("Send individual access code")
             ),
         )
@@ -586,7 +586,7 @@ class IndividualResponsePostAddressConfirmHandler(IndividualResponseHandler):
             language=self._language,
             content=self.get_context(),
             previous_location_url=previous_location_url,
-            page_title=self.get_full_page_title(lazy_gettext("Confirm address")),
+            page_title=self.page_title(lazy_gettext("Confirm address")),
         )
 
     def handle_post(self):
@@ -681,7 +681,7 @@ class IndividualResponseWhoHandler(IndividualResponseHandler):
                 language=self._language,
                 content=self.get_context(),
                 previous_location_url=previous_location_url,
-                page_title=self.get_full_page_title(lazy_gettext("Separate Census")),
+                page_title=self.page_title(lazy_gettext("Separate Census")),
             )
 
         raise NotFound
@@ -766,7 +766,7 @@ class IndividualResponseTextHandler(IndividualResponseHandler):
             language=self._language,
             content=self.get_context(),
             previous_location_url=previous_location_url,
-            page_title=self.get_full_page_title(lazy_gettext("Mobile number")),
+            page_title=self.page_title(lazy_gettext("Mobile number")),
         )
 
     def handle_post(self):
@@ -859,7 +859,7 @@ class IndividualResponseTextConfirmHandler(IndividualResponseHandler):
             language=self._language,
             content=self.get_context(),
             previous_location_url=previous_location_url,
-            page_title=self.get_full_page_title(lazy_gettext("Confirm mobile number")),
+            page_title=self.page_title(lazy_gettext("Confirm mobile number")),
         )
 
     def handle_post(self):
