@@ -83,12 +83,16 @@ class IndividualResponseHandler:
 
     @cached_property
     def _list_item_position(self):
-        return self._list_model.index(self._list_item_id)
+        return self._questionnaire_store.list_store.list_item_position(
+            self._list_item_id
+        )
 
     def get_full_page_title(self, page_title):
         if self._list_item_id:
-            page_title += ": Person {list_item_position}".format(
-                list_item_position=self._list_item_position
+            page_title += ": " + lazy_gettext(
+                "Person {list_item_position}".format(
+                    list_item_position=self._list_item_position
+                )
             )
         return page_title
 
