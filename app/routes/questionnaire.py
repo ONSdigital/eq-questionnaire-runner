@@ -22,7 +22,7 @@ from app.views.contexts.hub_context import HubContext
 from app.views.handlers.block_factory import get_block_handler
 from app.views.handlers.confirmation_email import (
     ConfirmationEmail,
-    EmailLimitExceeded,
+    ConfirmationEmailLimitReached,
     email_limit_exceeded,
 )
 from app.views.handlers.section import SectionHandler
@@ -296,7 +296,7 @@ def send_confirmation_email():
 
     try:
         confirmation_email = ConfirmationEmail()
-    except EmailLimitExceeded:
+    except ConfirmationEmailLimitReached:
         return redirect(url_for("post_submission.get_thank_you"))
 
     if request.method == "POST" and confirmation_email.form.validate():

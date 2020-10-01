@@ -7,7 +7,7 @@ from app.helpers.url_param_serializer import URLParamSerializer
 from app.views.contexts.email_form_context import build_confirmation_email_form_context
 
 
-class EmailLimitExceeded(Exception):
+class ConfirmationEmailLimitReached(Exception):
     pass
 
 
@@ -17,7 +17,7 @@ class ConfirmationEmail:
     def __init__(self, page_title=None):
         self.email_limit_exceeded = email_limit_exceeded()
         if self.email_limit_exceeded:
-            raise EmailLimitExceeded
+            raise ConfirmationEmailLimitReached
         self.form = EmailForm()
         self.page_title = page_title or self.PAGE_TITLE
 
@@ -45,5 +45,5 @@ def email_limit_exceeded():
     return (
         session_store
         and session_store.session_data.confirmation_email_count
-        >= current_app.config["CONFIRMATION_EMAIL_REQUEST_LIMIT"]
+        >= current_app.config["CONFIRMATION_EMAIL_LIMIT"]
     )

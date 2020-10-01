@@ -57,7 +57,7 @@ class IntegrationTestCase(unittest.TestCase):  # pylint: disable=too-many-public
 
         setting_overrides = {
             "EQ_ENABLE_HTML_MINIFY": False,
-            "CONFIRMATION_EMAIL_REQUEST_LIMIT": 2,
+            "CONFIRMATION_EMAIL_LIMIT": 2,
         }
 
         self._application = create_app(setting_overrides)
