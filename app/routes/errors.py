@@ -1,4 +1,4 @@
-from flask import Blueprint, redirect, request
+from flask import Blueprint, request
 from flask import session as cookie_session
 from flask.helpers import url_for
 from flask_login import current_user
