@@ -150,6 +150,9 @@ class IndividualResponseHandler:
             self.individual_section_id
         )
 
+        next_location_url = url_for("individual_response.individual_response_how",
+                                    list_item_id=self._list_item_id)
+
         if self._request_args.get("journey") == "remove-person":
             previous_location_url = url_for(
                 "questionnaire.block",
@@ -172,6 +175,7 @@ class IndividualResponseHandler:
             template="individual_response/interstitial",
             language=self._language,
             previous_location_url=previous_location_url,
+            next_location_url=next_location_url
         )
 
     def handle_post(self):
