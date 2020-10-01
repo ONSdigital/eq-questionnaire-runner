@@ -150,10 +150,23 @@ class IndividualResponseHandler:
             self.individual_section_id
         )
 
-        next_location_url = url_for(
-            "individual_response.individual_response_how",
-            list_item_id=self._list_item_id,
-        )
+        self._list_name = self._schema.get_individual_response_list()
+        list_model = self._questionnaire_store.list_store[self._list_name]
+
+        if self._list_item_id:
+            next_location_url = url_for(
+                ".individual_response_how",
+                list_item_id=self._list_item_id,
+                journey=self._request_args.get("journey"),
+            )
+        elif len(list_model.non_primary_people) == 1:
+            next_location_url = url_for(
+                ".individual_response_how",
+                list_item_id=list_model.non_primary_people[0],
+                journey="hub",
+            )
+        else:
+            next_location_url = url_for(".individual_response_who", journey="hub")
 
         if self._request_args.get("journey") == "remove-person":
             previous_location_url = url_for(
@@ -179,29 +192,6 @@ class IndividualResponseHandler:
             previous_location_url=previous_location_url,
             next_location_url=next_location_url,
         )
-
-    def handle_post(self):
-        if self._list_item_id:
-            return redirect(
-                url_for(
-                    ".individual_response_how",
-                    list_item_id=self._list_item_id,
-                    journey=self._request_args.get("journey"),
-                )
-            )
-
-        self._list_name = self._schema.get_individual_response_list()
-        list_model = self._questionnaire_store.list_store[self._list_name]
-
-        if len(list_model.non_primary_people) == 1:
-            return redirect(
-                url_for(
-                    ".individual_response_how",
-                    list_item_id=list_model.non_primary_people[0],
-                    journey="hub",
-                )
-            )
-        return redirect(url_for(".individual_response_who", journey="hub"))
 
     def _render_block(self):
         return self.placeholder_renderer.render(
