@@ -15,7 +15,7 @@ class ConfirmationEmail:
     PAGE_TITLE = gettext("Confirmation email")
 
     def __init__(self, page_title=None):
-        if email_limit_reached():
+        if self.is_limit_reached():
             raise ConfirmationEmailLimitReached
         self.form = EmailForm()
         self.page_title = page_title or self.PAGE_TITLE
