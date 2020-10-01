@@ -16,8 +16,7 @@
 
   {% if content.show_send_another_email_guidance %}
     <p><strong>{{ _("Didn't receive an email?")  }}</strong></p>
-    <p>{{ _("It can take a few minutes for the email to arrive. If it doesn't arrive, check your junk mail, or you can
-      <a href='{send_confirmation_email_url}' id='send-another-email'>send another confirmation email</a>.</p>").format(send_confirmation_email_url = content.send_confirmation_email_url)  }}
+    <p>{{ _("It can take a few minutes for the email to arrive. If it doesn't arrive, check your junk mail, or you can <a href='{send_confirmation_email_url}' id='send-another-email'>send another confirmation email</a>.").format(send_confirmation_email_url = content.send_confirmation_email_url)}}</p>
   {% endif %}
 
 
