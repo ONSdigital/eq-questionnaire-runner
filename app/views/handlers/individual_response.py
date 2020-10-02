@@ -179,20 +179,17 @@ class IndividualResponseHandler:
                 list_item_id=self._list_item_id,
                 journey=self._request_args.get("journey"),
             )
-        elif len(list_model.non_primary_people) == 1:
+
+        if len(list_model.non_primary_people) == 1:
             return url_for(
                 ".individual_response_how",
                 list_item_id=list_model.non_primary_people[0],
                 journey="hub",
             )
-        else:
-            return url_for(".individual_response_who", journey="hub")
+
+        return url_for(".individual_response_who", journey="hub")
 
     def _get_previous_location_url(self):
-        individual_section_first_block_id = self._schema.get_first_block_id_for_section(
-            self.individual_section_id
-        )
-
         if self._request_args.get("journey") == "remove-person":
             return url_for(
                 "questionnaire.block",
@@ -201,15 +198,19 @@ class IndividualResponseHandler:
                 block_id=self._schema.get_remove_block_id_for_list(self._list_name),
             )
 
-        elif self._list_item_id:
+        if self._list_item_id:
+            individual_section_first_block_id = (
+                self._schema.get_first_block_id_for_section(self.individual_section_id)
+            )
+
             return url_for(
                 "questionnaire.block",
                 list_name=self._list_name,
                 list_item_id=self._list_item_id,
                 block_id=individual_section_first_block_id,
             )
-        else:
-            return url_for("questionnaire.get_questionnaire")
+
+        return url_for("questionnaire.get_questionnaire")
 
     def _render_block(self):
         return self.placeholder_renderer.render(
