@@ -40,10 +40,9 @@ def log_error(error, status_code):
 def _render_error_page(status_code, template=None, **kwargs):
     handle_language()
     template = template or status_code
-    using_edge = request.user_agent.browser == "edge"
 
     return (
-        render_template(template=f"errors/{template}", using_edge=using_edge, **kwargs),
+        render_template(template=f"errors/{template}", **kwargs),
         status_code,
     )
 

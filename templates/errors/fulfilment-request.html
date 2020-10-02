@@ -4,7 +4,7 @@
 
 {% block main %}
 <h1>{{ _("Sorry, there was a problem sending the access code") }}</h1>
-<p>{{ _("You can try to <a href='{retry_url}'>request a new access code again</a>.".format(retry_url = retry_url)) }}</p>
-<p>{{ _("If this problem keeps happening, please contact us for help.") }}</p>
+<p data-qa="retry">{{ _("You can try to <a href='{retry_url}'>request a new access code again</a>.".format(retry_url = retry_url)) }}</p>
+<p >{{ _("If this problem keeps happening, please contact us for help.") }}</p>
 <p>{{ _("<a href='{url}'>Contact us</a> if you need to speak to someone about your survey.").format(url = contact_us_url)  }}</p>
 {% endblock %}

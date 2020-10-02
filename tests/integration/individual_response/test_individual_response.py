@@ -242,9 +242,7 @@ class TestIndividualResponseErrorStatus(IndividualResponseTestCase):
         self.assertEqualPageTitle(
             "Sorry, there was a problem sending the access code - Census 2021"
         )
-        self.assertInSelectorCSS(
-            self.last_url, "a", href=re.compile("individual-response")
-        )
+        self.assertInSelector(self.last_url, "p[data-qa=retry]")
 
     def test_500_publish_failed_post(self):
         publisher = self._application.eq["publisher"]
@@ -256,9 +254,7 @@ class TestIndividualResponseErrorStatus(IndividualResponseTestCase):
         self.assertEqualPageTitle(
             "Sorry, there was a problem sending the access code - Census 2021"
         )
-        self.assertInSelectorCSS(
-            self.last_url, "a", href=re.compile("individual-response")
-        )
+        self.assertInSelector(self.last_url, "p[data-qa=retry]")
 
 
 class TestIndividualResponseIndividualSection(IndividualResponseTestCase):
