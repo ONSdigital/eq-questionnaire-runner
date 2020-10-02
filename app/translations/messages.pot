@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2020-09-25 12:09+0100\n"
+"POT-Creation-Date: 2020-10-02 08:48+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -318,120 +318,120 @@ msgstr ""
 msgid "Please submit this survey to complete it"
 msgstr ""
 
-#: app/views/handlers/confirmation_email.py:11
+#: app/views/handlers/confirmation_email.py:15
 msgid "Confirmation email"
 msgstr ""
 
-#: app/views/handlers/confirmation_email.py:25
+#: app/views/handlers/confirmation_email.py:31
 #: app/views/handlers/question.py:152
 msgid "Error: {page_title}"
 msgstr ""
 
-#: app/views/handlers/individual_response.py:223
+#: app/views/handlers/individual_response.py:221
 msgid "How would you like <em>{person_name}</em> to receive a separate census?"
 msgstr ""
 
-#: app/views/handlers/individual_response.py:229
+#: app/views/handlers/individual_response.py:227
 msgid ""
 "For someone to complete a separate census, we need to send them an "
 "individual access code."
 msgstr ""
 
-#: app/views/handlers/individual_response.py:232
+#: app/views/handlers/individual_response.py:230
 msgid "Select how to send access code"
 msgstr ""
 
-#: app/views/handlers/individual_response.py:242
+#: app/views/handlers/individual_response.py:240
 msgid "Text message"
 msgstr ""
 
-#: app/views/handlers/individual_response.py:244
+#: app/views/handlers/individual_response.py:242
 msgid "We will need their mobile number for this"
 msgstr ""
 
-#: app/views/handlers/individual_response.py:249
+#: app/views/handlers/individual_response.py:247
 msgid "Post"
 msgstr ""
 
-#: app/views/handlers/individual_response.py:251
+#: app/views/handlers/individual_response.py:249
 msgid ""
 "We can only send this to an unnamed resident at the registered household "
 "address"
 msgstr ""
 
-#: app/views/handlers/individual_response.py:351
+#: app/views/handlers/individual_response.py:349
 msgid "How would you like to answer <em>{person_name_possessive}</em> questions?"
 msgstr ""
 
-#: app/views/handlers/individual_response.py:364
+#: app/views/handlers/individual_response.py:362
 msgid "I would like to request a separate census for them to complete"
 msgstr ""
 
-#: app/views/handlers/individual_response.py:370
+#: app/views/handlers/individual_response.py:368
 msgid "I will ask them to answer their own questions"
 msgstr ""
 
-#: app/views/handlers/individual_response.py:374
+#: app/views/handlers/individual_response.py:372
 msgid "They will need the household access code from the letter we sent you"
 msgstr ""
 
-#: app/views/handlers/individual_response.py:380
+#: app/views/handlers/individual_response.py:378
 msgid "I will answer for {person_name}"
 msgstr ""
 
-#: app/views/handlers/individual_response.py:492
+#: app/views/handlers/individual_response.py:490
 msgid "Do you want to send an individual access code for {person_name} by post?"
 msgstr ""
 
-#: app/views/handlers/individual_response.py:498
+#: app/views/handlers/individual_response.py:496
 msgid ""
 "A letter with an individual access code will be sent to your registered "
 "household address"
 msgstr ""
 
-#: app/views/handlers/individual_response.py:505
+#: app/views/handlers/individual_response.py:503
 msgid ""
 "The letter will be addressed to <strong>Individual Resident</strong> "
 "instead of the name provided"
 msgstr ""
 
-#: app/views/handlers/individual_response.py:518
+#: app/views/handlers/individual_response.py:516
 msgid "Yes, send the access code by post"
 msgstr ""
 
-#: app/views/handlers/individual_response.py:522
+#: app/views/handlers/individual_response.py:520
 msgid "No, send it another way"
 msgstr ""
 
-#: app/views/handlers/individual_response.py:638
+#: app/views/handlers/individual_response.py:636
 msgid "Who do you need to request a separate census for?"
 msgstr ""
 
-#: app/views/handlers/individual_response.py:688
+#: app/views/handlers/individual_response.py:686
 msgid "What is <em>{person_name_possessive}</em> mobile number?"
 msgstr ""
 
-#: app/views/handlers/individual_response.py:698
+#: app/views/handlers/individual_response.py:696
 msgid "UK mobile number"
 msgstr ""
 
-#: app/views/handlers/individual_response.py:699
+#: app/views/handlers/individual_response.py:697
 msgid "This will not be stored and only used once to send the access code"
 msgstr ""
 
-#: app/views/handlers/individual_response.py:796
+#: app/views/handlers/individual_response.py:794
 msgid "Is this mobile number correct?"
 msgstr ""
 
-#: app/views/handlers/individual_response.py:805
+#: app/views/handlers/individual_response.py:803
 msgid "Yes, send the text"
 msgstr ""
 
-#: app/views/handlers/individual_response.py:809
+#: app/views/handlers/individual_response.py:807
 msgid "No, I need to change it"
 msgstr ""
 
-#: app/views/handlers/thank_you.py:16
+#: app/views/handlers/thank_you.py:19
 msgid "Thank you"
 msgstr ""
 
@@ -482,17 +482,17 @@ msgid ""
 "confidential"
 msgstr ""
 
-#: templates/census-thank-you.html:53
+#: templates/census-thank-you.html:52
 msgid "Get confirmation email"
 msgstr ""
 
-#: templates/census-thank-you.html:54
+#: templates/census-thank-you.html:53
 msgid ""
 "If you would like to be sent confirmation that you have completed your "
 "census enter your email address"
 msgstr ""
 
-#: templates/census-thank-you.html:65
+#: templates/census-thank-you.html:63
 msgid ""
 "Make sure you <a href='{url}'>leave this page</a> or close your browser "
 "if using a shared device"
@@ -513,12 +513,11 @@ msgstr ""
 #: templates/confirmation-email-sent.html:19
 msgid ""
 "It can take a few minutes for the email to arrive. If it doesn't arrive, "
-"check your junk mail, or you can\n"
-"      <a href='{send_confirmation_email_url}' id='send-another-"
-"email'>send another confirmation email</a>.</p>"
+"check your junk mail, or you can <a href='{send_confirmation_email_url}' "
+"id='send-another-email'>send another confirmation email</a>."
 msgstr ""
 
-#: templates/confirmation-email-sent.html:29
+#: templates/confirmation-email-sent.html:28
 msgid ""
 "Make sure you <a href='{sign_out_url}'>leave this page</a> or close your "
 "browser if using a shared device"
@@ -604,7 +603,7 @@ msgstr ""
 msgid "Summary"
 msgstr ""
 
-#: templates/summary.html:33
+#: templates/summary.html:28
 msgid "Please review your answers and confirm these are correct"
 msgstr ""
 
