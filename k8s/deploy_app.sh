@@ -24,7 +24,8 @@ helm upgrade --install \
     --set-string autoscaler.targetCPUUtilizationPercentage="${TARGET_CPU_UTILIZATION_PERCENTAGE}" \
     --set-string newRelic.enabled="${EQ_NEW_RELIC_ENABLED}" \
     --set-string newRelic.licenseKey="${NEW_RELIC_LICENSE_KEY}" \
-    --set-string newRelic.appName="${NEW_RELIC_APP_NAME}"
+    --set-string newRelic.appName="${NEW_RELIC_APP_NAME}" \
+    --set-string individualResponseLimit="${EQ_INDIVIDUAL_RESPONSE_LIMIT}"
 
 kubectl rollout restart deployment.v1.apps/runner
 kubectl rollout status deployment.v1.apps/runner
