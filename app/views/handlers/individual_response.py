@@ -172,11 +172,7 @@ class IndividualResponseHandler:
     def _update_questionnaire_store_on_publish(self):
         self._update_section_status(CompletionStatus.INDIVIDUAL_RESPONSE_REQUESTED)
         self._update_individual_response_count()
-        self._save_questionnaire_store()
-
-    def _save_questionnaire_store(self):
-        if self._questionnaire_store.progress_store.is_dirty:
-            self._questionnaire_store.save()
+        self._questionnaire_store.save()
 
     def handle_get(self):
         individual_section_first_block_id = self._schema.get_first_block_id_for_section(
@@ -509,7 +505,8 @@ class IndividualResponseChangeHandler(IndividualResponseHandler):
                 else CompletionStatus.IN_PROGRESS
             )
         self._update_section_status(status)
-        self._save_questionnaire_store()
+        if self._questionnaire_store.progress_store.is_dirty:
+            self._questionnaire_store.save()
 
 
 class IndividualResponsePostAddressConfirmHandler(IndividualResponseHandler):
