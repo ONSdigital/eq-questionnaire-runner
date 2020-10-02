@@ -21,6 +21,11 @@ class IndividualResponseTestCase(IntegrationTestCase):
         if response_paragraph:
             return response_paragraph.find_next()["href"]
 
+    @property
+    def individual_response_start_link(self):
+        submit_button = self.getHtmlSoup().find("a", {"data-qa": "btn-submit"})
+        return submit_button.attrs["href"]
+
     def get_link(self, rowIndex, text):
         selector = f"[data-qa='list-item-{text}-{rowIndex}-link']"
         selected = self.getHtmlSoup().select(selector)
@@ -70,7 +75,7 @@ class IndividualResponseTestCase(IntegrationTestCase):
         self._add_household_no_primary()
         self.post()
         self.get(self.individual_response_link)
-        self.post()
+        self.get(self.individual_response_start_link)
         self.post({"individual-response-how-answer": "Post"})
         self.post(
             {
@@ -104,7 +109,6 @@ class TestIndividualResponseErrorStatus(IndividualResponseTestCase):
         individual_response_link = self.individual_response_link
         self.post()
         self.get(individual_response_link)
-        self.post()
         self.sign_out()
         self.get(individual_response_link)
 
@@ -213,6 +217,19 @@ class TestIndividualResponseErrorStatus(IndividualResponseTestCase):
 
 
 class TestIndividualResponseIndividualSection(IndividualResponseTestCase):
+    def test_ir_page_titles_render_correctly(self):
+        # Given I add household members
+        self._add_household_no_primary()
+
+        # When I navigate to the individual response interstitial
+        self.get(self.individual_section_link)
+        self.get(self.individual_response_link)
+
+        # I should see the correct page title
+        self.assertEqualPageTitle(
+            "Cannot answer questions for others in your household: Person 1 - Census 2021"
+        )
+
     def test_ir_guidance_not_displayed_when_primary(self):
         # Given I add a primary person
         self._add_primary()
@@ -360,7 +377,7 @@ class TestIndividualResponseNavigation(IndividualResponseTestCase):
 
         # When I start an IR journey then click the previous link
         self.get(self.individual_response_link)
-        self.post()
+        self.get(self.individual_response_start_link)
         self.previous()
         self.previous()
 
@@ -373,7 +390,7 @@ class TestIndividualResponseNavigation(IndividualResponseTestCase):
         self._add_household_no_primary()
         self.get(self.individual_section_link)
         self.get(self.individual_response_link)
-        self.post()
+        self.get(self.individual_response_start_link)
 
         # When I click the previous link
         self.previous()
@@ -402,7 +419,7 @@ class TestIndividualResponseNavigation(IndividualResponseTestCase):
 
         self.post()
         self.get(self.individual_response_link)
-        self.post()
+        self.get(self.individual_response_start_link)
 
         person_id = self.last_url.split("/")[2]
 
@@ -429,7 +446,7 @@ class TestIndividualResponseWho(IndividualResponseTestCase):
         self._add_household_no_primary()
 
         self.get(self.individual_response_link)
-        self.post()
+        self.get(self.individual_response_start_link)
 
         # Then I should skip the member selector
         self.assertInUrl("/how")
@@ -440,7 +457,7 @@ class TestIndividualResponseWho(IndividualResponseTestCase):
         self._add_household_multiple_members_no_primary()
 
         self.get(self.individual_response_link)
-        self.post()
+        self.get(self.individual_response_start_link)
 
         # Then I should be taken to the member selector
         self.assertInUrl("/who")
@@ -464,7 +481,7 @@ class TestIndividualResponseWho(IndividualResponseTestCase):
         self._add_household_multiple_members_no_primary()
 
         self.get(self.individual_response_link)
-        self.post()
+        self.get(self.individual_response_start_link)
 
         # When I choose previous
         self.previous()
@@ -478,7 +495,7 @@ class TestIndividualResponseWho(IndividualResponseTestCase):
         self._add_household_multiple_members_no_primary()
 
         self.get(self.individual_response_link)
-        self.post()
+        self.get(self.individual_response_start_link)
 
         self.post({"individual-response-who-answer": "Marie Day"})
 
@@ -494,7 +511,7 @@ class TestIndividualResponseWho(IndividualResponseTestCase):
         self._add_household_multiple_members_no_primary()
 
         self.get(self.individual_response_link)
-        self.post()
+        self.get(self.individual_response_start_link)
         self.post({"individual-response-who-answer": "Marie Day"})
 
         list_item_id = self.last_url.split("/")[2]
@@ -518,7 +535,7 @@ class TestIndividualResponseTextHandler(IndividualResponseTestCase):
         self._add_household_no_primary()
         self.get(self.individual_section_link)
         self.get(self.individual_response_link)
-        self.post()
+        self.get(self.individual_response_start_link)
         self.post({"individual-response-how-answer": "Text message"})
         self.post({"individual-response-enter-number-answer": self.DUMMY_MOBILE_NUMBER})
 
@@ -534,7 +551,7 @@ class TestIndividualResponseTextHandler(IndividualResponseTestCase):
         self._add_household_no_primary()
         self.get(self.individual_section_link)
         self.get(self.individual_response_link)
-        self.post()
+        self.get(self.individual_response_start_link)
         self.post({"individual-response-how-answer": "Text message"})
 
         # When I post the number
@@ -548,7 +565,7 @@ class TestIndividualResponseTextHandler(IndividualResponseTestCase):
         self._add_household_no_primary()
         self.get(self.individual_section_link)
         self.get(self.individual_response_link)
-        self.post()
+        self.get(self.individual_response_start_link)
         self.post({"individual-response-how-answer": "Text message"})
         self.post({"individual-response-enter-number-answer": self.DUMMY_MOBILE_NUMBER})
 
@@ -563,7 +580,7 @@ class TestIndividualResponseTextHandler(IndividualResponseTestCase):
         self._add_household_no_primary()
         self.get(self.individual_section_link)
         self.get(self.individual_response_link)
-        self.post()
+        self.get(self.individual_response_start_link)
         self.post({"individual-response-how-answer": "Text message"})
         self.post({"individual-response-enter-number-answer": self.DUMMY_MOBILE_NUMBER})
 
@@ -581,7 +598,7 @@ class TestIndividualResponseTextHandler(IndividualResponseTestCase):
         self._add_household_no_primary()
         self.get(self.individual_section_link)
         self.get(self.individual_response_link)
-        self.post()
+        self.get(self.individual_response_start_link)
         self.post({"individual-response-how-answer": "Text message"})
         self.post({"individual-response-enter-number-answer": self.DUMMY_MOBILE_NUMBER})
 
@@ -596,7 +613,7 @@ class TestIndividualResponseTextHandler(IndividualResponseTestCase):
         # Given I navigate to the enter number page
         self._add_household_no_primary()
         self.get(self.individual_response_link)
-        self.post()
+        self.get(self.individual_response_start_link)
         self.post({"individual-response-how-answer": "Text message"})
 
         # When I click the previous link
@@ -609,7 +626,7 @@ class TestIndividualResponseTextHandler(IndividualResponseTestCase):
         # Given I navigate to the confirm number page
         self._add_household_no_primary()
         self.get(self.individual_response_link)
-        self.post()
+        self.get(self.individual_response_start_link)
         self.post({"individual-response-how-answer": "Text message"})
         self.post({"individual-response-enter-number-answer": self.DUMMY_MOBILE_NUMBER})
 
@@ -626,7 +643,7 @@ class TestIndividualResponseConfirmationPage(IndividualResponseTestCase):
         self._add_household_no_primary()
         self.get(self.individual_section_link)
         self.get(self.individual_response_link)
-        self.post()
+        self.get(self.individual_response_start_link)
         self.post({"individual-response-how-answer": "Post"})
 
         # When I post "Yes, send the access code by post"
@@ -645,7 +662,7 @@ class TestIndividualResponseConfirmationPage(IndividualResponseTestCase):
         self._add_household_no_primary()
         self.get(self.individual_section_link)
         self.get(self.individual_response_link)
-        self.post()
+        self.get(self.individual_response_start_link)
         self.post({"individual-response-how-answer": "Post"})
 
         # When I click the previous link
@@ -660,7 +677,7 @@ class TestIndividualResponseConfirmationPage(IndividualResponseTestCase):
         self._add_household_no_primary()
         self.get(self.individual_section_link)
         self.get(self.individual_response_link)
-        self.post()
+        self.get(self.individual_response_start_link)
         self.post({"individual-response-how-answer": "Post"})
 
         # When I choose to send the individual response code another way
@@ -677,7 +694,7 @@ class TestIndividualResponseConfirmationPage(IndividualResponseTestCase):
         self._add_household_no_primary()
         self.get(self.individual_section_link)
         self.get(self.individual_response_link)
-        self.post()
+        self.get(self.individual_response_start_link)
         self.post({"individual-response-how-answer": "Post"})
 
         # When I post with no data
@@ -693,7 +710,7 @@ class TestIndividualResponseConfirmationPage(IndividualResponseTestCase):
         self._add_household_no_primary()
         self.get(self.individual_section_link)
         self.get(self.individual_response_link)
-        self.post()
+        self.get(self.individual_response_start_link)
 
         # When I post without selecting a radio button
         self.post()
@@ -803,7 +820,7 @@ class TestIndividualResponseChange(IndividualResponseTestCase):
         self.post()
         self.previous()
         self.get(self.individual_response_link)
-        self.post()
+        self.get(self.individual_response_start_link)
         self.post({"individual-response-how-answer": "Post"})
         self.post(
             {

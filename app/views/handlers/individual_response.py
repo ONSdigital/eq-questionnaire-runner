@@ -73,24 +73,38 @@ class IndividualResponseHandler:
         self._list_name = self._schema.get_individual_response_list()
 
         self._metadata = self._questionnaire_store.metadata
-        self.page_title = None
 
         if not self._is_location_valid():
             raise NotFound
 
+    @cached_property
+    def _list_model(self):
+        return self._questionnaire_store.list_store[self._list_name]
+
+    @cached_property
+    def _list_item_position(self):
+        return self._questionnaire_store.list_store.list_item_position(
+            self._list_name, self._list_item_id
+        )
+
+    def page_title(self, page_title):
+        if self._list_item_id:
+            page_title += ": " + lazy_gettext(
+                "Person {list_item_position}".format(
+                    list_item_position=self._list_item_position
+                )
+            )
+        return page_title
+
     def _is_location_valid(self):
-        self._list_name = self._schema.get_individual_response_list()
-
-        list_model = self._questionnaire_store.list_store[self._list_name]
-
-        if not list_model:
+        if not self._list_model:
             return False
 
         if self._list_item_id:
-            if self._list_item_id not in list_model:
+            if self._list_item_id not in self._list_model:
                 return False
 
-            if self._list_item_id == list_model.primary_person:
+            if self._list_item_id == self._list_model.primary_person:
                 return False
 
         return True
@@ -146,56 +160,56 @@ class IndividualResponseHandler:
         )
 
     def handle_get(self):
-        individual_section_first_block_id = self._schema.get_first_block_id_for_section(
-            self.individual_section_id
+        return render_template(
+            template="individual_response/interstitial",
+            language=self._language,
+            previous_location_url=self._get_previous_location_url(),
+            next_location_url=self._get_next_location_url(),
+            page_title=self.page_title(
+                lazy_gettext("Cannot answer questions for others in your household")
+            ),
         )
 
+    def _get_next_location_url(self):
+        list_model = self._questionnaire_store.list_store[self._list_name]
+
+        if self._list_item_id:
+            return url_for(
+                ".individual_response_how",
+                list_item_id=self._list_item_id,
+                journey=self._request_args.get("journey"),
+            )
+
+        if len(list_model.non_primary_people) == 1:
+            return url_for(
+                ".individual_response_how",
+                list_item_id=list_model.non_primary_people[0],
+                journey="hub",
+            )
+
+        return url_for(".individual_response_who", journey="hub")
+
+    def _get_previous_location_url(self):
         if self._request_args.get("journey") == "remove-person":
-            previous_location_url = url_for(
+            return url_for(
                 "questionnaire.block",
                 list_name=self._list_name,
                 list_item_id=self._list_item_id,
                 block_id=self._schema.get_remove_block_id_for_list(self._list_name),
             )
 
-        elif self._list_item_id:
-            previous_location_url = url_for(
+        if self._list_item_id:
+            individual_section_first_block_id = (
+                self._schema.get_first_block_id_for_section(self.individual_section_id)
+            )
+            return url_for(
                 "questionnaire.block",
                 list_name=self._list_name,
                 list_item_id=self._list_item_id,
                 block_id=individual_section_first_block_id,
             )
-        else:
-            previous_location_url = url_for("questionnaire.get_questionnaire")
 
-        return render_template(
-            template="individual_response/interstitial",
-            language=self._language,
-            previous_location_url=previous_location_url,
-        )
-
-    def handle_post(self):
-        if self._list_item_id:
-            return redirect(
-                url_for(
-                    ".individual_response_how",
-                    list_item_id=self._list_item_id,
-                    journey=self._request_args.get("journey"),
-                )
-            )
-
-        self._list_name = self._schema.get_individual_response_list()
-        list_model = self._questionnaire_store.list_store[self._list_name]
-
-        if len(list_model.non_primary_people) == 1:
-            return redirect(
-                url_for(
-                    ".individual_response_how",
-                    list_item_id=list_model.non_primary_people[0],
-                    journey="hub",
-                )
-            )
-        return redirect(url_for(".individual_response_who", journey="hub"))
+        return url_for("questionnaire.get_questionnaire")
 
     def _render_block(self):
         return self.placeholder_renderer.render(
@@ -281,11 +295,8 @@ class IndividualResponseHowHandler(IndividualResponseHandler):
         return self.form.get_data(answer_id)
 
     def handle_get(self):
-        self._list_name = self._schema.get_individual_response_list()
-        list_model = self._questionnaire_store.list_store[self._list_name]
-
         if self._request_args.get("journey") == "hub":
-            if len(list_model.non_primary_people) == 1:
+            if len(self._list_model.non_primary_people) == 1:
                 previous_location_url = url_for(
                     "individual_response.request_individual_response",
                     journey=self._request_args.get("journey"),
@@ -318,6 +329,7 @@ class IndividualResponseHowHandler(IndividualResponseHandler):
             content=self.get_context(),
             previous_location_url=previous_location_url,
             show_contact_us_guidance=True,
+            page_title=self.page_title(lazy_gettext("Send individual access code")),
         )
 
     def handle_post(self):
@@ -569,6 +581,7 @@ class IndividualResponsePostAddressConfirmHandler(IndividualResponseHandler):
             language=self._language,
             content=self.get_context(),
             previous_location_url=previous_location_url,
+            page_title=self.page_title(lazy_gettext("Confirm address")),
         )
 
     def handle_post(self):
@@ -630,6 +643,7 @@ class IndividualResponseWhoHandler(IndividualResponseHandler):
     def block_definition(self) -> Mapping:
         return {
             "type": "IndividualResponse",
+            "page_title": lazy_gettext("Separate Census"),
             "question": {
                 "type": "Question",
                 "id": "individual-response-who",
@@ -662,6 +676,7 @@ class IndividualResponseWhoHandler(IndividualResponseHandler):
                 language=self._language,
                 content=self.get_context(),
                 previous_location_url=previous_location_url,
+                page_title=self.page_title(lazy_gettext("Separate Census")),
             )
 
         raise NotFound
@@ -746,6 +761,7 @@ class IndividualResponseTextHandler(IndividualResponseHandler):
             language=self._language,
             content=self.get_context(),
             previous_location_url=previous_location_url,
+            page_title=self.page_title(lazy_gettext("Mobile number")),
         )
 
     def handle_post(self):
@@ -838,6 +854,7 @@ class IndividualResponseTextConfirmHandler(IndividualResponseHandler):
             language=self._language,
             content=self.get_context(),
             previous_location_url=previous_location_url,
+            page_title=self.page_title(lazy_gettext("Confirm mobile number")),
         )
 
     def handle_post(self):

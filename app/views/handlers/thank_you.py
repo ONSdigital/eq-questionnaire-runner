@@ -7,7 +7,10 @@ from app.views.contexts.thank_you_context import (
     build_census_thank_you_context,
     build_default_thank_you_context,
 )
-from app.views.handlers.confirmation_email import ConfirmationEmail
+from app.views.handlers.confirmation_email import (
+    ConfirmationEmail,
+    ConfirmationEmailLimitReached,
+)
 
 
 class ThankYou:
@@ -32,11 +35,16 @@ class ThankYou:
             if self._is_census_theme
             else self.DEFAULT_THANK_YOU_TEMPLATE
         )
-        self.confirmation_email = (
-            ConfirmationEmail(self.PAGE_TITLE)
-            if self._schema.get_submission().get("confirmation_email")
-            else None
-        )
+        self.confirmation_email = self._get_confirmation_email()
+
+    def _get_confirmation_email(self):
+        if not self._schema.get_submission().get("confirmation_email"):
+            return None
+
+        try:
+            return ConfirmationEmail(self.PAGE_TITLE)
+        except ConfirmationEmailLimitReached:
+            return None
 
     def get_context(self):
         if not self._is_census_theme:
