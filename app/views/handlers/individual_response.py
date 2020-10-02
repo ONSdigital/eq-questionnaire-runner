@@ -168,59 +168,56 @@ class IndividualResponseHandler:
             raise FulfilmentRequestFailedException
 
     def handle_get(self):
-        individual_section_first_block_id = self._schema.get_first_block_id_for_section(
-            self.individual_section_id
+        return render_template(
+            template="individual_response/interstitial",
+            language=self._language,
+            previous_location_url=self._get_previous_location_url(),
+            next_location_url=self._get_next_location_url(),
+            page_title=self.page_title(
+                lazy_gettext("Cannot answer questions for others in your household")
+            ),
         )
 
+    def _get_next_location_url(self):
+        list_model = self._questionnaire_store.list_store[self._list_name]
+
+        if self._list_item_id:
+            return url_for(
+                ".individual_response_how",
+                list_item_id=self._list_item_id,
+                journey=self._request_args.get("journey"),
+            )
+
+        if len(list_model.non_primary_people) == 1:
+            return url_for(
+                ".individual_response_how",
+                list_item_id=list_model.non_primary_people[0],
+                journey="hub",
+            )
+
+        return url_for(".individual_response_who", journey="hub")
+
+    def _get_previous_location_url(self):
         if self._request_args.get("journey") == "remove-person":
-            previous_location_url = url_for(
+            return url_for(
                 "questionnaire.block",
                 list_name=self._list_name,
                 list_item_id=self._list_item_id,
                 block_id=self._schema.get_remove_block_id_for_list(self._list_name),
             )
 
-        elif self._list_item_id:
-            previous_location_url = url_for(
+        if self._list_item_id:
+            individual_section_first_block_id = (
+                self._schema.get_first_block_id_for_section(self.individual_section_id)
+            )
+            return url_for(
                 "questionnaire.block",
                 list_name=self._list_name,
                 list_item_id=self._list_item_id,
                 block_id=individual_section_first_block_id,
             )
-        else:
-            previous_location_url = url_for("questionnaire.get_questionnaire")
 
-        return render_template(
-            template="individual_response/interstitial",
-            language=self._language,
-            previous_location_url=previous_location_url,
-            page_title=self.page_title(
-                lazy_gettext("Cannot answer questions for others in your household")
-            ),
-        )
-
-    def handle_post(self):
-        if self._list_item_id:
-            return redirect(
-                url_for(
-                    ".individual_response_how",
-                    list_item_id=self._list_item_id,
-                    journey=self._request_args.get("journey"),
-                )
-            )
-
-        self._list_name = self._schema.get_individual_response_list()
-        list_model = self._questionnaire_store.list_store[self._list_name]
-
-        if len(list_model.non_primary_people) == 1:
-            return redirect(
-                url_for(
-                    ".individual_response_how",
-                    list_item_id=list_model.non_primary_people[0],
-                    journey="hub",
-                )
-            )
-        return redirect(url_for(".individual_response_who", journey="hub"))
+        return url_for("questionnaire.get_questionnaire")
 
     def _render_block(self):
         return self.placeholder_renderer.render(

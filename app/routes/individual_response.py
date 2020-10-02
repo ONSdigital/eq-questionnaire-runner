@@ -54,7 +54,7 @@ def before_individual_response_request():
     g.schema = load_schema_from_session_data(session_store.session_data)
 
 
-@individual_response_blueprint.route("/", methods=["GET", "POST"])
+@individual_response_blueprint.route("/", methods=["GET"])
 @with_questionnaire_store
 @with_schema
 def request_individual_response(schema, questionnaire_store):
@@ -70,9 +70,6 @@ def request_individual_response(schema, questionnaire_store):
         form_data=request.form,
         list_item_id=list_item_id,
     )
-
-    if request.method == "POST":
-        return individual_response_handler.handle_post()
 
     return individual_response_handler.handle_get()
 
