@@ -121,3 +121,5 @@ spec:
               value: "{{- .Values.newRelic.licenseKey }}"
             - name: NEW_RELIC_APP_NAME
               value: "{{- .Values.newRelic.appName }}"
+            - name: CONFIRMATION_EMAIL_LIMIT
+              value: "{{- .Values.confirmationEmailLimit }}"

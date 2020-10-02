@@ -1,3 +1,4 @@
+from flask import current_app
 from flask_babel import gettext
 
 from app.forms.email_form import EmailForm
@@ -6,10 +7,16 @@ from app.helpers.url_param_serializer import URLParamSerializer
 from app.views.contexts.email_form_context import build_confirmation_email_form_context
 
 
+class ConfirmationEmailLimitReached(Exception):
+    pass
+
+
 class ConfirmationEmail:
     PAGE_TITLE = gettext("Confirmation email")
 
     def __init__(self, page_title=None):
+        if self.is_limit_reached():
+            raise ConfirmationEmailLimitReached
         self.form = EmailForm()
         self.page_title = page_title or self.PAGE_TITLE
 
@@ -27,5 +34,15 @@ class ConfirmationEmail:
     @staticmethod
     def handle_post():
         session_store = get_session_store()
-        session_store.session_data.confirmation_email_sent = True
+        session_store.session_data.confirmation_email_count += 1
         session_store.save()
+
+    @staticmethod
+    def is_limit_reached():
+        session_store = get_session_store()
+
+        return (
+            session_store
+            and session_store.session_data.confirmation_email_count
+            >= current_app.config["CONFIRMATION_EMAIL_LIMIT"]
+        )

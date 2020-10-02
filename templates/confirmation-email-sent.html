@@ -1,6 +1,6 @@
 {% extends 'layouts/_base.html' %}
 {% from 'components/panel/_macro.njk' import onsPanel %}
-{% set page_title = _("Confirmation email sent") ~ " - " ~ _("Census 2021") %}
+{% set page_title = _("Confirmation email sent") %}
 {% set hide_signout_button = content.hide_signout_button %}
 {% set sign_out_url = content.sign_out_url %}
 
@@ -14,9 +14,10 @@
   <h1 data-qa="confirmation-text">{{ _("A confirmation email has been sent to {email}").format(email = content.email)  }}</h1>
  {% endcall %}
 
-  <p><strong>{{ _("Didn't receive an email?")  }}</strong></p>
-  <p>{{ _("It can take a few minutes for the email to arrive. If it doesn't arrive, check your junk mail, or you can
-    <a href='{send_confirmation_email_url}' id='send-another-email'>send another confirmation email</a>.</p>").format(send_confirmation_email_url = content.send_confirmation_email_url)  }}
+  {% if content.show_send_another_email_guidance %}
+    <p><strong>{{ _("Didn't receive an email?")  }}</strong></p>
+    <p>{{ _("It can take a few minutes for the email to arrive. If it doesn't arrive, check your junk mail, or you can <a href='{send_confirmation_email_url}' id='send-another-email'>send another confirmation email</a>.").format(send_confirmation_email_url = content.send_confirmation_email_url)}}</p>
+  {% endif %}
 
 
 {% call onsPanel({
