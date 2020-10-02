@@ -237,6 +237,14 @@ msgid_plural "{number_of_days} days"
 msgstr[0] ""
 msgstr[1] ""
 
+#: app/routes/individual_response.py:165
+msgid "An individual access code has been sent by post"
+msgstr ""
+
+#: app/routes/individual_response.py:258
+msgid "An individual access code has been sent by text"
+msgstr ""
+
 #: app/views/contexts/hub_context.py:15
 msgid "Completed"
 msgstr ""
@@ -326,6 +334,7 @@ msgstr ""
 #: app/views/handlers/question.py:152
 msgid "Error: {page_title}"
 msgstr ""
+
 
 #: app/views/handlers/individual_response.py:221
 msgid "How would you like <em>{person_name}</em> to receive a separate census?"

@@ -213,6 +213,19 @@ class TestIndividualResponseErrorStatus(IndividualResponseTestCase):
 
 
 class TestIndividualResponseIndividualSection(IndividualResponseTestCase):
+    def test_ir_page_titles_render_correctly(self):
+        # Given I add household members
+        self._add_household_no_primary()
+
+        # When I navigate to the individual response interstitial
+        self.get(self.individual_section_link)
+        self.get(self.individual_response_link)
+
+        # I should see the correct page title
+        self.assertEqualPageTitle(
+            "Cannot answer questions for others in your household: Person 1 - Census 2021"
+        )
+
     def test_ir_guidance_not_displayed_when_primary(self):
         # Given I add a primary person
         self._add_primary()
