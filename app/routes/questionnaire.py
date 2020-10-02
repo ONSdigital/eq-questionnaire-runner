@@ -20,7 +20,10 @@ from app.questionnaire.router import Router
 from app.utilities.schema import load_schema_from_session_data
 from app.views.contexts.hub_context import HubContext
 from app.views.handlers.block_factory import get_block_handler
-from app.views.handlers.confirmation_email import ConfirmationEmail
+from app.views.handlers.confirmation_email import (
+    ConfirmationEmail,
+    ConfirmationEmailLimitReached,
+)
 from app.views.handlers.section import SectionHandler
 from app.views.handlers.submission import SubmissionHandler
 from app.views.handlers.thank_you import ThankYou
@@ -287,10 +290,13 @@ def get_thank_you(schema):
 
 @post_submission_blueprint.route("confirmation-email/send", methods=["GET", "POST"])
 def send_confirmation_email():
-    if not get_session_store().session_data.confirmation_email_sent:
+    if not get_session_store().session_data.confirmation_email_count:
         raise NotFound
 
-    confirmation_email = ConfirmationEmail()
+    try:
+        confirmation_email = ConfirmationEmail()
+    except ConfirmationEmailLimitReached:
+        return redirect(url_for("post_submission.get_thank_you"))
 
     if request.method == "POST" and confirmation_email.form.validate():
         confirmation_email.handle_post()
@@ -311,7 +317,7 @@ def send_confirmation_email():
 
 @post_submission_blueprint.route("confirmation-email/sent", methods=["GET"])
 def get_confirmation_email_sent():
-    if not get_session_store().session_data.confirmation_email_sent:
+    if not get_session_store().session_data.confirmation_email_count:
         raise NotFound
 
     email = URLParamSerializer().loads(request.args.get("email"))
@@ -324,6 +330,7 @@ def get_confirmation_email_sent():
                 "post_submission.send_confirmation_email"
             ),
             "hide_signout_button": False,
+            "show_send_another_email_guidance": not ConfirmationEmail.is_limit_reached(),
             "sign_out_url": url_for("session.get_sign_out"),
         },
     )

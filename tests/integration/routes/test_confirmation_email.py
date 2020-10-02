@@ -1,7 +1,12 @@
+from app import settings
 from tests.integration.integration_test_case import IntegrationTestCase
 
 
 class TestEmailConfirmation(IntegrationTestCase):
+    def setUp(self):
+        settings.CONFIRMATION_EMAIL_LIMIT = 2
+        super().setUp()
+
     def test_thank_you_page_get_not_allowed(self):
         # Given I launch the test_confirmation_email questionnaire
         self.launchSurvey("test_confirmation_email")
@@ -183,6 +188,53 @@ class TestEmailConfirmation(IntegrationTestCase):
         # Then I get confirmation that the email has been sent
         self.assertInUrl("confirmation-email/sent")
         self.assertInBody("A confirmation email has been sent to email@example.com")
+
+    def test_send_another_email_link_is_not_present_on_thank_you_page_when_confirmation_limit_hit(
+        self,
+    ):
+        # Given I launch and complete the test_confirmation_email questionnaire and submit with a valid email from the thank you page
+        self._launch_and_complete_questionnaire()
+        self.post({"email": "email@example.com"})
+
+        # When I reach the limit of the number of confirmation emails able to be sent
+        self.get("/submitted/thank-you/")
+        self.post({"email": "email@example.com"})
+
+        # Then I no longer see the option to send a confirmation email
+        self.get("/submitted/thank-you/")
+        self.assertInUrl("/submitted/thank-you/")
+        self.assertNotInBody("Get confirmation email")
+
+    def test_send_another_email_link_is_not_present_on_confirmation_sent_page_when_confirmation_limit_hit(
+        self,
+    ):
+        # Given I launch and complete the test_confirmation_email questionnaire and submit with a valid email from the thank you page
+        self._launch_and_complete_questionnaire()
+        self.post({"email": "email@example.com"})
+
+        # When I reach the limit of the number of confirmation emails able to be sent
+        self.get("/submitted/confirmation-email/send/")
+        self.post({"email": "email@example.com"})
+
+        # Then I no longer see the option to send another confirmation email
+        self.assertInUrl("confirmation-email/sent")
+        self.assertNotInBody("send another confirmation email.")
+
+    def test_redirect_from_send_confirmation_to_thank_you_page_when_limit_exceeded(
+        self,
+    ):
+        # Given I launch and complete the test_confirmation_email questionnaire and submit with a valid email from the thank you page
+        self._launch_and_complete_questionnaire()
+        self.post({"email": "email@example.com"})
+
+        # When I reach the limit of the number of confirmation emails and attempt to return to send another
+        self.get("/submitted/confirmation-email/send/")
+        self.post({"email": "email@example.com"})
+        self.get("/submitted/confirmation-email/send/")
+
+        # Then I should be redirected to the thank you page
+        self.assertInUrl("/submitted/thank-you/")
+        self.assertNotInBody("Get confirmation email")
 
     def _launch_and_complete_questionnaire(self):
         self.launchSurvey("test_confirmation_email")
