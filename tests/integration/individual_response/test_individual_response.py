@@ -95,7 +95,7 @@ class IndividualResponseTestCase(IntegrationTestCase):
         self._add_household_no_primary()
         self.post()
         self.get(self.individual_response_link)
-        self.post()
+        self.get(self.individual_response_start_link)
         self.post({"individual-response-how-answer": "Text message"})
         self.post(
             {
@@ -240,7 +240,6 @@ class TestIndividualResponseErrorStatus(IndividualResponseTestCase):
         publisher.publish = MagicMock(side_effect=PublicationFailed)
 
         # Given I add a household member
-        self._add_household_no_primary()
         self._request_individual_response_by_text()
         self.assertStatusCode(500)
         self.assertEqualPageTitle(
@@ -253,7 +252,6 @@ class TestIndividualResponseErrorStatus(IndividualResponseTestCase):
         publisher.publish = MagicMock(side_effect=PublicationFailed)
 
         # Given I add a household member
-        self._add_household_no_primary()
         self._request_individual_response_by_post()
         self.assertEqualPageTitle(
             "Sorry, there was a problem sending the access code - Census 2021"
