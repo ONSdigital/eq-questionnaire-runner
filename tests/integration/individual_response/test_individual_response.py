@@ -22,9 +22,7 @@ class IndividualResponseTestCase(IntegrationTestCase):
             return response_paragraph.find_next()["href"]
 
     def get_next_location_url_from_interstitial_page(self):
-        submit_button = self.getHtmlSoup().find("a",
-            {"data-qa": "btn-submit"}
-        )
+        submit_button = self.getHtmlSoup().find("a", {"data-qa": "btn-submit"})
         return submit_button.attrs["href"]
 
     def get_link(self, rowIndex, text):
