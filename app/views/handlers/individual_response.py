@@ -202,7 +202,6 @@ class IndividualResponseHandler:
             individual_section_first_block_id = (
                 self._schema.get_first_block_id_for_section(self.individual_section_id)
             )
-
             return url_for(
                 "questionnaire.block",
                 list_name=self._list_name,
