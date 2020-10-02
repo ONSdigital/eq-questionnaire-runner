@@ -1,7 +1,12 @@
+from app import settings
 from tests.integration.integration_test_case import IntegrationTestCase
 
 
 class TestEmailConfirmation(IntegrationTestCase):
+    def setUp(self):
+        settings.CONFIRMATION_EMAIL_LIMIT = 2
+        super().setUp()
+
     def test_thank_you_page_get_not_allowed(self):
         # Given I launch the test_confirmation_email questionnaire
         self.launchSurvey("test_confirmation_email")
