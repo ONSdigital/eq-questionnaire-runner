@@ -222,7 +222,9 @@ class TestIndividualResponseIndividualSection(IndividualResponseTestCase):
         self.get(self.individual_response_link)
 
         # I should see the correct page title
-        self.assertEqualPageTitle("Cannot answer questions for others in your household: Person 1 - Census 2021")
+        self.assertEqualPageTitle(
+            "Cannot answer questions for others in your household: Person 1 - Census 2021"
+        )
 
     def test_ir_guidance_not_displayed_when_primary(self):
         # Given I add a primary person
