@@ -146,30 +146,38 @@ class IndividualResponseHandler:
         )
 
     def handle_get(self):
-        individual_section_first_block_id = self._schema.get_first_block_id_for_section(
-            self.individual_section_id
+        return render_template(
+            template="individual_response/interstitial",
+            language=self._language,
+            previous_location_url=self._get_previous_location_url(),
+            next_location_url=self._get_next_location_url(),
         )
 
-        self._list_name = self._schema.get_individual_response_list()
+    def _get_next_location_url(self):
         list_model = self._questionnaire_store.list_store[self._list_name]
 
         if self._list_item_id:
-            next_location_url = url_for(
+            return url_for(
                 ".individual_response_how",
                 list_item_id=self._list_item_id,
                 journey=self._request_args.get("journey"),
             )
         elif len(list_model.non_primary_people) == 1:
-            next_location_url = url_for(
+            return url_for(
                 ".individual_response_how",
                 list_item_id=list_model.non_primary_people[0],
                 journey="hub",
             )
         else:
-            next_location_url = url_for(".individual_response_who", journey="hub")
+            return url_for(".individual_response_who", journey="hub")
+
+    def _get_previous_location_url(self):
+        individual_section_first_block_id = self._schema.get_first_block_id_for_section(
+            self.individual_section_id
+        )
 
         if self._request_args.get("journey") == "remove-person":
-            previous_location_url = url_for(
+            return url_for(
                 "questionnaire.block",
                 list_name=self._list_name,
                 list_item_id=self._list_item_id,
@@ -177,21 +185,14 @@ class IndividualResponseHandler:
             )
 
         elif self._list_item_id:
-            previous_location_url = url_for(
+            return url_for(
                 "questionnaire.block",
                 list_name=self._list_name,
                 list_item_id=self._list_item_id,
                 block_id=individual_section_first_block_id,
             )
         else:
-            previous_location_url = url_for("questionnaire.get_questionnaire")
-
-        return render_template(
-            template="individual_response/interstitial",
-            language=self._language,
-            previous_location_url=previous_location_url,
-            next_location_url=next_location_url,
-        )
+            return url_for("questionnaire.get_questionnaire")
 
     def _render_block(self):
         return self.placeholder_renderer.render(
