@@ -279,7 +279,7 @@ def setup_dynamodb(application):
 
 
 def setup_datastore(application):
-    client = datastore.Client(_use_grpc=False)
+    client = datastore.Client(_use_grpc=application.config["DATASTORE_USE_GRPC"])
     application.eq["storage"] = Datastore(client)
 
 

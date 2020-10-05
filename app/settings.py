@@ -38,6 +38,7 @@ def get_env_or_fail(key):
     return value
 
 
+DATASTORE_USE_GRPC = parse_mode(os.getenv("DATASTORE_USE_GRPC", "False"))
 CDN_URL = os.getenv("CDN_URL", "https://cdn.ons.gov.uk")
 CDN_ASSETS_PATH = os.getenv("CDN_ASSETS_PATH", "/sdc/design-system")
 EQ_MINIMIZE_ASSETS = parse_mode(os.getenv("EQ_MINIMIZE_ASSETS", "True"))
