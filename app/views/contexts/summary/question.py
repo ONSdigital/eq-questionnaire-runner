@@ -25,7 +25,10 @@ class Question:
             elif isinstance(answer.value, dict):
                 answer_dict = {}
                 for answer_field in answer.value:
-                    answer_dict[answer_field] = (escape(answer.value[answer_field]))
+                    if isinstance(answer.value[answer_field], str):
+                        answer_dict[answer_field] = escape(answer.value[answer_field])
+                    else:
+                        answer_dict[answer_field] = answer.value[answer_field]
                 return answer_dict
             return answer.value
 

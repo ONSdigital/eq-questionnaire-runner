@@ -58,8 +58,9 @@ class PlaceholderParser:
             elif isinstance(answer.value, dict):
                 answer_dict = {}
                 for answer_field in answer.value:
-                    answer_dict[answer_field] = (escape(answer.value[answer_field]))
+                    answer_dict[answer_field] = escape(answer.value[answer_field])
                 return answer_dict
+            return answer.value
         return None
 
     def _resolve_value_source(self, value_source):
