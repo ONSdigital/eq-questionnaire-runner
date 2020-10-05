@@ -257,15 +257,23 @@ The following environment variables are optional:
 
 | Variable Name                      | Default | Description                                                                       |
 |------------------------------------| --------|-----------------------------------------------------------------------------------|
-| ROLLING_UPDATE_MAX_UNAVAILABLE     | 25%     | The maximum number of Pods that can be unavailable during the update process.     |
-| ROLLING_UPDATE_MAX_SURGE           | 25%     | The maximum number of Pods that can be created over the desired number of Pods.   |
-| TARGET_CPU_UTILIZATION_PERCENTAGE  |         | The average CPU utilization usage before auto scaling applies                     |
+| ROLLING_UPDATE_MAX_UNAVAILABLE     | 25%     | The maximum number of Pods that can be unavailable during the update process     |
+| ROLLING_UPDATE_MAX_SURGE           | 25%     | The maximum number of Pods that can be created over the desired number of Pods   |
+| TARGET_CPU_UTILIZATION_PERCENTAGE  |         | The average CPU utilization usage before auto scaling applies                    |
 | GOOGLE_TAG_MANAGER_ID              |         |                                                                                   |
 | GOOGLE_TAG_MANAGER_AUTH            |         |                                                                                   |
 | GOOGLE_TAG_MANAGER_PREVIEW         |         |                                                                                   |
 | EQ_NEW_RELIC_ENABLED               | False   | Enable New Relic monitoring                                                       |
 | NEW_RELIC_LICENSE_KEY              |         | New Relic license key                                                             |
 | NEW_RELIC_APP_NAME                 |         | Display name for the application in New Relic                                     |
+| WEB_SERVER_TYPE                    | gunicorn-async | Web server type used to run the application. This also determines the worker class which can be async/threaded
+| WEB_SERVER_WORKERS                 | 7        | The number of worker processes
+| WEB_SERVER_THREADS                 | 10       | The number of worker threads per worker
+| WEB_SERVER_UWSGI_ASYNC_CORES       | 10       | The number of cores to initialise when using "uwsgi-async" web server worker type
+| DATASTORE_USE_GRPC                 | False    | Determines whether to use gRPC for Datastore. gRPC is currently only supported for threaded web servers
+
+
+
 
 To deploy the app to the cluster, run the following command:
 
@@ -330,7 +338,12 @@ The following env variables can be used
 | EQ_NEW_RELIC_ENABLED                      | False                 | Enable New Relic monitoring                                                                   |
 | NEW_RELIC_LICENSE_KEY                     |                       | Enable new relic monitoring by supplying a New Relic license key                              |
 | NEW_RELIC_APP_NAME                        |                       | The name to display for the application in New Relic                                          |
-| COOKIE_SETTINGS_URL                       |                       | URL for the Webstie Cookie Settings page                                                      |
+| COOKIE_SETTINGS_URL                       |                       | URL for the Website Cookie Settings page                                                      |
+| WEB_SERVER_TYPE                           |                       | Web server type used to run the application. This also determines the worker class which can be async/threaded
+| WEB_SERVER_WORKERS                        |                       | The number of worker processes
+| WEB_SERVER_THREADS                        |                       | The number of worker threads per worker
+| WEB_SERVER_UWSGI_ASYNC_CORES              |                       | The number of cores to initialise when using "uwsgi-async" web server worker type
+| DATASTORE_USE_GRPC                        | False                 | Determines whether to use gRPC for Datastore. gRPC is currently only supported for threaded web servers
 
 The following env variables can be used when running tests
 
