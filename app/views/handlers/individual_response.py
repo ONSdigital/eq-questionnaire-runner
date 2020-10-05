@@ -24,7 +24,7 @@ GB_WLS_REGION_CODE = "GB-WLS"
 GB_NIR_REGION_CODE = "GB-NIR"
 
 
-class IndividualResponseLimitExceeded(Exception):
+class IndividualResponseLimitReached(Exception):
     pass
 
 
@@ -171,7 +171,7 @@ class IndividualResponseHandler:
             )
             >= current_app.config["EQ_INDIVIDUAL_RESPONSE_LIMIT"]
         ):
-            raise IndividualResponseLimitExceeded(
+            raise IndividualResponseLimitReached(
                 "Individual response limit has been exceeded"
             )
 
