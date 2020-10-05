@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2020-10-02 09:53+0100\n"
+"POT-Creation-Date: 2020-10-05 10:24+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -237,11 +237,11 @@ msgid_plural "{number_of_days} days"
 msgstr[0] ""
 msgstr[1] ""
 
-#: app/routes/individual_response.py:165
+#: app/routes/individual_response.py:162
 msgid "An individual access code has been sent by post"
 msgstr ""
 
-#: app/routes/individual_response.py:258
+#: app/routes/individual_response.py:255
 msgid "An individual access code has been sent by text"
 msgstr ""
 
@@ -335,215 +335,136 @@ msgstr ""
 msgid "Error: {page_title}"
 msgstr ""
 
-#: app/views/handlers/individual_response.py:247
-msgid "How would you like <em>{person_name}</em> to receive a separate census?"
-msgstr ""
-
-#: app/views/handlers/individual_response.py:253
-#: app/views/handlers/individual_response.py:93
+#: app/views/handlers/individual_response.py:97
 msgid "Person {list_item_position}"
 msgstr ""
 
-#: app/views/handlers/individual_response.py:190
+#: app/views/handlers/individual_response.py:198
 msgid "Cannot answer questions for others in your household"
 msgstr ""
 
-#: app/views/handlers/individual_response.py:238
+#: app/views/handlers/individual_response.py:262
 msgid "How would you like <em>{person_name}</em> to receive a separate census?"
 msgstr ""
 
-#: app/views/handlers/individual_response.py:244
+#: app/views/handlers/individual_response.py:268
 msgid ""
 "For someone to complete a separate census, we need to send them an "
 "individual access code."
 msgstr ""
 
-#: app/views/handlers/individual_response.py:256
+#: app/views/handlers/individual_response.py:271
 msgid "Select how to send access code"
 msgstr ""
 
-#: app/views/handlers/individual_response.py:266
+#: app/views/handlers/individual_response.py:281
 msgid "Text message"
 msgstr ""
 
-#: app/views/handlers/individual_response.py:268
+#: app/views/handlers/individual_response.py:283
 msgid "We will need their mobile number for this"
 msgstr ""
 
-#: app/views/handlers/individual_response.py:273
+#: app/views/handlers/individual_response.py:288
 msgid "Post"
 msgstr ""
 
-#: app/views/handlers/individual_response.py:275
-#: app/views/handlers/individual_response.py:247
-msgid "Select how to send access code"
-msgstr ""
-
-#: app/views/handlers/individual_response.py:257
-msgid "Text message"
-msgstr ""
-
-#: app/views/handlers/individual_response.py:259
-msgid "We will need their mobile number for this"
-msgstr ""
-
-#: app/views/handlers/individual_response.py:264
-msgid "Post"
-msgstr ""
-
-#: app/views/handlers/individual_response.py:266
+#: app/views/handlers/individual_response.py:290
 msgid ""
 "We can only send this to an unnamed resident at the registered household "
 "address"
 msgstr ""
 
-#: app/views/handlers/individual_response.py:375
-msgid "How would you like to answer <em>{person_name_possessive}</em> questions?"
-msgstr ""
-
-#: app/views/handlers/individual_response.py:388
-msgid "I would like to request a separate census for them to complete"
-msgstr ""
-
-#: app/views/handlers/individual_response.py:394
-msgid "I will ask them to answer their own questions"
-msgstr ""
-
-#: app/views/handlers/individual_response.py:398
-msgid "They will need the household access code from the letter we sent you"
-msgstr ""
-
-#: app/views/handlers/individual_response.py:404
-msgid "I will answer for {person_name}"
-msgstr ""
-
-#: app/views/handlers/individual_response.py:516
-msgid "Do you want to send an individual access code for {person_name} by post?"
-msgstr ""
-
-#: app/views/handlers/individual_response.py:522
-#: app/views/handlers/individual_response.py:335
+#: app/views/handlers/individual_response.py:359
 msgid "Send individual access code"
 msgstr ""
 
-#: app/views/handlers/individual_response.py:364
+#: app/views/handlers/individual_response.py:388
 msgid "How would you like to answer <em>{person_name_possessive}</em> questions?"
 msgstr ""
 
-#: app/views/handlers/individual_response.py:377
+#: app/views/handlers/individual_response.py:401
 msgid "I would like to request a separate census for them to complete"
 msgstr ""
 
-#: app/views/handlers/individual_response.py:383
+#: app/views/handlers/individual_response.py:407
 msgid "I will ask them to answer their own questions"
 msgstr ""
 
-#: app/views/handlers/individual_response.py:387
+#: app/views/handlers/individual_response.py:411
 msgid "They will need the household access code from the letter we sent you"
 msgstr ""
 
-#: app/views/handlers/individual_response.py:393
+#: app/views/handlers/individual_response.py:417
 msgid "I will answer for {person_name}"
 msgstr ""
 
-#: app/views/handlers/individual_response.py:505
+#: app/views/handlers/individual_response.py:531
 msgid "Do you want to send an individual access code for {person_name} by post?"
 msgstr ""
 
-#: app/views/handlers/individual_response.py:511
+#: app/views/handlers/individual_response.py:537
 msgid ""
 "A letter with an individual access code will be sent to your registered "
 "household address"
 msgstr ""
 
-#: app/views/handlers/individual_response.py:529
+#: app/views/handlers/individual_response.py:544
 msgid ""
 "The letter will be addressed to <strong>Individual Resident</strong> "
 "instead of the name provided"
 msgstr ""
 
-#: app/views/handlers/individual_response.py:542
+#: app/views/handlers/individual_response.py:557
 msgid "Yes, send the access code by post"
 msgstr ""
 
-#: app/views/handlers/individual_response.py:546
+#: app/views/handlers/individual_response.py:561
 msgid "No, send it another way"
 msgstr ""
 
-#: app/views/handlers/individual_response.py:664
-msgid "Who do you need to request a separate census for?"
-msgstr ""
-
-#: app/views/handlers/individual_response.py:714
-msgid "What is <em>{person_name_possessive}</em> mobile number?"
-msgstr ""
-
-#: app/views/handlers/individual_response.py:724
-msgid "UK mobile number"
-msgstr ""
-
-#: app/views/handlers/individual_response.py:725
-msgid "This will not be stored and only used once to send the access code"
-msgstr ""
-
-#: app/views/handlers/individual_response.py:822
-msgid "Is this mobile number correct?"
-msgstr ""
-
-#: app/views/handlers/individual_response.py:831
-msgid "Yes, send the text"
-msgstr ""
-
-#: app/views/handlers/individual_response.py:531
-msgid "Yes, send the access code by post"
-msgstr ""
-
-#: app/views/handlers/individual_response.py:535
-msgid "No, send it another way"
-msgstr ""
-
-#: app/views/handlers/individual_response.py:587
+#: app/views/handlers/individual_response.py:613
 msgid "Confirm address"
 msgstr ""
 
-#: app/views/handlers/individual_response.py:649
-#: app/views/handlers/individual_response.py:682
+#: app/views/handlers/individual_response.py:676
+#: app/views/handlers/individual_response.py:709
 msgid "Separate Census"
 msgstr ""
 
-#: app/views/handlers/individual_response.py:653
+#: app/views/handlers/individual_response.py:680
 msgid "Who do you need to request a separate census for?"
 msgstr ""
 
-#: app/views/handlers/individual_response.py:704
+#: app/views/handlers/individual_response.py:731
 msgid "What is <em>{person_name_possessive}</em> mobile number?"
 msgstr ""
 
-#: app/views/handlers/individual_response.py:714
+#: app/views/handlers/individual_response.py:741
 msgid "UK mobile number"
 msgstr ""
 
-#: app/views/handlers/individual_response.py:715
+#: app/views/handlers/individual_response.py:742
 msgid "This will not be stored and only used once to send the access code"
 msgstr ""
 
-#: app/views/handlers/individual_response.py:767
+#: app/views/handlers/individual_response.py:794
 msgid "Mobile number"
 msgstr ""
 
-#: app/views/handlers/individual_response.py:813
+#: app/views/handlers/individual_response.py:840
 msgid "Is this mobile number correct?"
 msgstr ""
 
-#: app/views/handlers/individual_response.py:822
+#: app/views/handlers/individual_response.py:849
 msgid "Yes, send the text"
 msgstr ""
 
-#: app/views/handlers/individual_response.py:826
+#: app/views/handlers/individual_response.py:853
 msgid "No, I need to change it"
 msgstr ""
 
-#: app/views/handlers/individual_response.py:860
+#: app/views/handlers/individual_response.py:887
 msgid "Confirm mobile number"
 msgstr ""
 
@@ -793,15 +714,15 @@ msgid ""
 "href='{url}'>contact us</a> for more help."
 msgstr ""
 
-#: templates/errors/429-ir.html:3
+#: templates/errors/429-individual-response.html:3
 msgid "Maximum number of individual access codes reached"
 msgstr ""
 
-#: templates/errors/429-ir.html:6
+#: templates/errors/429-individual-response.html:6
 msgid "You have reached the maximum number of individual access codes"
 msgstr ""
 
-#: templates/errors/429-ir.html:7
+#: templates/errors/429-individual-response.html:7
 msgid ""
 "If you need more individual access codes, please <a href='{url}'>contact "
 "us</a>."

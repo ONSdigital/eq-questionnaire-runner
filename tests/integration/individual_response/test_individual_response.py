@@ -222,7 +222,7 @@ class TestIndividualResponseErrorStatus(IndividualResponseTestCase):
         self._add_household_no_primary()
         self.get(self.individual_section_link)
         self.get(self.individual_response_link)
-        self.post()
+        self.get(self.individual_response_start_link)
         self.post({"individual-response-how-answer": "Text message"})
         self.post({"individual-response-enter-number-answer": "07970000000"})
 
