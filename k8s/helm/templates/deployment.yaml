@@ -79,6 +79,8 @@ spec:
               value: pubsub
             - name: EQ_FULFILMENT_TOPIC_ID
               value: eq-fulfilment-topic
+            - name: EQ_INDIVIDUAL_RESPONSE_LIMIT
+              value: "{{- .Values.individualResponseLimit }}"
             - name: WEB_SERVER_TYPE
               value: "{{- .Values.webServer.type }}"
             - name: WEB_SERVER_WORKERS

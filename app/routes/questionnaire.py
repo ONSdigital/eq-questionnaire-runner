@@ -29,7 +29,6 @@ from app.views.handlers.submission import SubmissionHandler
 from app.views.handlers.thank_you import ThankYou
 
 END_BLOCKS = "Summary", "Confirmation"
-
 logger = get_logger()
 
 questionnaire_blueprint = Blueprint(

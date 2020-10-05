@@ -58,7 +58,7 @@ def convert_answers(schema, questionnaire_store, routing_path, flushed=False):
         Data payload
     """
     metadata = questionnaire_store.metadata
-    collection_metadata = questionnaire_store.collection_metadata
+    response_metadata = questionnaire_store.response_metadata
     answer_store = questionnaire_store.answer_store
     list_store = questionnaire_store.list_store
 
@@ -87,8 +87,8 @@ def convert_answers(schema, questionnaire_store, routing_path, flushed=False):
         payload["form_type"] = metadata["form_type"]
     if metadata.get("region_code"):
         payload["region_code"] = metadata["region_code"]
-    if collection_metadata.get("started_at"):
-        payload["started_at"] = collection_metadata["started_at"]
+    if response_metadata.get("started_at"):
+        payload["started_at"] = response_metadata["started_at"]
     if metadata.get("case_id"):
         payload["case_id"] = metadata["case_id"]
     if metadata.get("case_ref"):
