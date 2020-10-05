@@ -3,9 +3,9 @@
 set -e
 
 if [ "$WEB_SERVER_TYPE" = "gunicorn-async" ]; then
-    run_command="WEB_SERVER_WORKER_CLASS=gevent gunicorn application:application"
+    run_command="gunicorn application:application --worker-class gevent"
 elif [ "$WEB_SERVER_TYPE" = "gunicorn-threads" ]; then
-    run_command="WEB_SERVER_WORKER_CLASS=gthread gunicorn application:application"
+    run_command="gunicorn application:application --worker-class gthread"
 elif [ "$WEB_SERVER_TYPE" = "uwsgi" ]; then
     run_command="uwsgi uwsgi.ini --workers ${WEB_SERVER_WORKERS}"
 elif [ "$WEB_SERVER_TYPE" = "uwsgi-threads" ]; then
