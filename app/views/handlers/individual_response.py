@@ -15,6 +15,7 @@ from app.forms.questionnaire_form import generate_form
 from app.forms.validators import sanitise_mobile_number
 from app.helpers.template_helpers import render_template
 from app.helpers.url_param_serializer import URLParamSerializer
+from app.publisher.exceptions import PublicationFailed
 from app.questionnaire.placeholder_renderer import PlaceholderRenderer
 from app.questionnaire.router import Router
 from app.views.contexts.question import build_question_context
@@ -22,6 +23,10 @@ from app.views.contexts.question import build_question_context
 GB_ENG_REGION_CODE = "GB-ENG"
 GB_WLS_REGION_CODE = "GB-WLS"
 GB_NIR_REGION_CODE = "GB-NIR"
+
+
+class FulfilmentRequestFailedException(Exception):
+    pass
 
 
 class IndividualResponseHandler:
@@ -155,9 +160,12 @@ class IndividualResponseHandler:
     def _publish_fulfilment_request(self, mobile_number=None):
         topic_id = current_app.config["EQ_FULFILMENT_TOPIC_ID"]
         fulfilment_request = FulfilmentRequest(self._metadata, mobile_number)
-        return current_app.eq["publisher"].publish(
-            topic_id, message=fulfilment_request.payload
-        )
+        try:
+            return current_app.eq["publisher"].publish(
+                topic_id, message=fulfilment_request.payload
+            )
+        except PublicationFailed:
+            raise FulfilmentRequestFailedException
 
     def handle_get(self):
         return render_template(
@@ -588,6 +596,7 @@ class IndividualResponsePostAddressConfirmHandler(IndividualResponseHandler):
         if self.selected_option == self.confirm_option:
             self._update_section_status(CompletionStatus.INDIVIDUAL_RESPONSE_REQUESTED)
             self._publish_fulfilment_request()
+
             return redirect(
                 url_for(
                     "individual_response.individual_response_post_address_confirmation",
@@ -861,6 +870,7 @@ class IndividualResponseTextConfirmHandler(IndividualResponseHandler):
         if self.selected_option == self.confirm_option:
             self._update_section_status(CompletionStatus.INDIVIDUAL_RESPONSE_REQUESTED)
             self._publish_fulfilment_request(self.mobile_number)
+
             return redirect(
                 url_for(
                     "individual_response.individual_response_text_message_confirmation",
