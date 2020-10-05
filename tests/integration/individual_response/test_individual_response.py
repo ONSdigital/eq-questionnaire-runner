@@ -264,7 +264,7 @@ class TestIndividualResponseErrorStatus(IndividualResponseTestCase):
         self.assertInBody(
             "You have reached the maximum number of individual access codes"
         )
-        
+
     def test_500_publish_failed_text(self):
         publisher = self._application.eq["publisher"]
         publisher.publish = MagicMock(side_effect=PublicationFailed)

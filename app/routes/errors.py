@@ -16,8 +16,8 @@ from app.helpers.template_helpers import render_template
 from app.settings import EQ_SESSION_ID
 from app.submitter.submission_failed import SubmissionFailedException
 from app.views.handlers.individual_response import (
-    FulfilmentRequestFailedException, 
-    IndividualResponseLimitReached
+    FulfilmentRequestFailedException,
+    IndividualResponseLimitReached,
 )
 
 logger = get_logger()

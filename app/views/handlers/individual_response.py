@@ -27,8 +27,11 @@ GB_NIR_REGION_CODE = "GB-NIR"
 
 class IndividualResponseLimitReached(Exception):
     pass
+
+
 class FulfilmentRequestFailedException(Exception):
     pass
+
 
 class IndividualResponseHandler:
     _person_name_transform: Mapping = {
