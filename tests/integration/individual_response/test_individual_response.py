@@ -1,12 +1,14 @@
 import re
 from unittest.mock import MagicMock
 
+from app import settings
 from app.publisher.exceptions import PublicationFailed
 from tests.integration.integration_test_case import IntegrationTestCase
 
 
 class IndividualResponseTestCase(IntegrationTestCase):
     def setUp(self):
+        settings.EQ_INDIVIDUAL_RESPONSE_LIMIT = 2
         # Dummy mobile number from the range published by Ofcom
         # https://www.ofcom.org.uk/phones-telecoms-and-internet/information-for-industry/numbering/numbers-for-drama
         self.DUMMY_MOBILE_NUMBER = "07700900258"
@@ -234,6 +236,34 @@ class TestIndividualResponseErrorStatus(IndividualResponseTestCase):
 
         # Then I should see the 404 page
         self.assertStatusCode(404)
+
+    def test_429_individual_response_limit_exceeded(self):
+        # Given I successfully request individual responses up to the limit
+        self._add_household_no_primary()
+        self.get(self.individual_section_link)
+        self.get(self.individual_response_link)
+        self.get(self.individual_response_start_link)
+        self.post({"individual-response-how-answer": "Text message"})
+        self.post({"individual-response-enter-number-answer": "07970000000"})
+
+        confirm_number_page = self.last_url
+
+        self.post({"individual-response-text-confirm-answer": "Yes, send the text"})
+        self.assertInUrl("/text/confirmation")
+
+        self.get(confirm_number_page)
+        self.post({"individual-response-text-confirm-answer": "Yes, send the text"})
+        self.assertInUrl("/text/confirmation")
+
+        # When I try to request an additional individual response, which would exceed the limit
+        self.get(confirm_number_page)
+        self.post({"individual-response-text-confirm-answer": "Yes, send the text"})
+
+        # Then I should see a 429 page
+        self.assertStatusCode(429)
+        self.assertInBody(
+            "You have reached the maximum number of individual access codes"
+        )
 
     def test_500_publish_failed_text(self):
         publisher = self._application.eq["publisher"]

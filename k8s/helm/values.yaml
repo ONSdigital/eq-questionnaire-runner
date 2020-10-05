@@ -7,6 +7,8 @@ image:
   tag: latest
   pullPolicy: Always
 
+individualResponseLimit: "75"
+
 submissionBucket: ""
 
 googleTagManagerId: ""

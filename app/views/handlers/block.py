@@ -117,11 +117,11 @@ class BlockHandler:
         )
 
     def _set_started_at_metadata(self):
-        collection_metadata = self._questionnaire_store.collection_metadata
-        if not collection_metadata.get("started_at"):
+        response_metadata = self._questionnaire_store.response_metadata
+        if not response_metadata.get("started_at"):
             started_at = datetime.utcnow().isoformat()
             logger.info("Survey started", started_at=started_at)
-            collection_metadata["started_at"] = started_at
+            response_metadata["started_at"] = started_at
 
     def _get_safe_page_title(self, page_title):
         page_title = self._schema.get_single_string_value(page_title)

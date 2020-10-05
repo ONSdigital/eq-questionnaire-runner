@@ -15,7 +15,10 @@ from app.helpers.language_helper import handle_language
 from app.helpers.template_helpers import render_template
 from app.settings import EQ_SESSION_ID
 from app.submitter.submission_failed import SubmissionFailedException
-from app.views.handlers.individual_response import FulfilmentRequestFailedException
+from app.views.handlers.individual_response import (
+    FulfilmentRequestFailedException,
+    IndividualResponseLimitReached,
+)
 
 logger = get_logger()
 
@@ -70,6 +73,12 @@ def forbidden(error=None):
 def method_not_allowed(error=None):
     log_error(error, 405)
     return _render_error_page(405, template="404")
+
+
+@errors_blueprint.app_errorhandler(IndividualResponseLimitReached)
+def too_many_individual_response_requests(error=None):
+    log_error(error, 429)
+    return _render_error_page(429, template="429-individual-response")
 
 
 @errors_blueprint.app_errorhandler(SubmissionFailedException)
