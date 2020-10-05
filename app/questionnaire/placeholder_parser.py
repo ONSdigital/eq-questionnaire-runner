@@ -52,9 +52,14 @@ class PlaceholderParser:
                     else answer.value
                     for list_item in answer.value
                 ]
-            return (
-                escape(answer.value) if isinstance(answer.value, str) else answer.value
-            )
+
+            if isinstance(answer.value, str):
+                return escape(answer.value)
+            elif isinstance(answer.value, dict):
+                answer_dict = {}
+                for answer_field in answer.value:
+                    answer_dict[answer_field] = (escape(answer.value[answer_field]))
+                return answer_dict
         return None
 
     def _resolve_value_source(self, value_source):
