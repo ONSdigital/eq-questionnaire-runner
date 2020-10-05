@@ -1,10 +1,18 @@
+import re
+from unittest.mock import MagicMock
+
 from app import settings
+from app.publisher.exceptions import PublicationFailed
 from tests.integration.integration_test_case import IntegrationTestCase
 
 
 class IndividualResponseTestCase(IntegrationTestCase):
     def setUp(self):
         settings.EQ_INDIVIDUAL_RESPONSE_LIMIT = 2
+        # Dummy mobile number from the range published by Ofcom
+        # https://www.ofcom.org.uk/phones-telecoms-and-internet/information-for-industry/numbering/numbers-for-drama
+        self.DUMMY_MOBILE_NUMBER = "07700900258"
+
         super().setUp()
         self.launchSurvey("test_individual_response", region_code="GB-ENG")
 
@@ -73,7 +81,7 @@ class IndividualResponseTestCase(IntegrationTestCase):
         self.post({"anyone-else": "No"})
         self.get("questionnaire/")
 
-    def _request_individual_response(self):
+    def _request_individual_response_by_post(self):
         self._add_household_no_primary()
         self.post()
         self.get(self.individual_response_link)
@@ -84,7 +92,19 @@ class IndividualResponseTestCase(IntegrationTestCase):
                 "individual-response-post-confirm-answer": "Yes, send the access code by post"
             }
         )
+
+    def _request_individual_response_by_text(self):
+        self._add_household_no_primary()
         self.post()
+        self.get(self.individual_response_link)
+        self.get(self.individual_response_start_link)
+        self.post({"individual-response-how-answer": "Text message"})
+        self.post(
+            {
+                "individual-response-enter-number-answer": self.DUMMY_MOBILE_NUMBER,
+            }
+        )
+        self.post({"individual-response-text-confirm-answer": "Yes, send the text"})
 
 
 class TestIndividualResponseOnHubDisabled(IndividualResponseTestCase):
@@ -244,6 +264,29 @@ class TestIndividualResponseErrorStatus(IndividualResponseTestCase):
         self.assertInBody(
             "You have reached the maximum number of individual access codes"
         )
+        
+    def test_500_publish_failed_text(self):
+        publisher = self._application.eq["publisher"]
+        publisher.publish = MagicMock(side_effect=PublicationFailed)
+
+        # Given I add a household member
+        self._request_individual_response_by_text()
+        self.assertStatusCode(500)
+        self.assertEqualPageTitle(
+            "Sorry, there was a problem sending the access code - Census 2021"
+        )
+        self.assertInSelector(self.last_url, "p[data-qa=retry]")
+
+    def test_500_publish_failed_post(self):
+        publisher = self._application.eq["publisher"]
+        publisher.publish = MagicMock(side_effect=PublicationFailed)
+
+        # Given I add a household member
+        self._request_individual_response_by_post()
+        self.assertEqualPageTitle(
+            "Sorry, there was a problem sending the access code - Census 2021"
+        )
+        self.assertInSelector(self.last_url, "p[data-qa=retry]")
 
 
 class TestIndividualResponseIndividualSection(IndividualResponseTestCase):
@@ -353,7 +396,7 @@ class TestIndividualResponseIndividualSection(IndividualResponseTestCase):
 class TestIndividualResponseHubViews(IndividualResponseTestCase):
     def test_individual_response_requested(self):
         # Given I request an individual response by post
-        self._request_individual_response()
+        self._request_individual_response_by_post()
 
         # When I navigate to the hub
         self.get("/questionnaire")
@@ -556,10 +599,6 @@ class TestIndividualResponseWho(IndividualResponseTestCase):
 
 
 class TestIndividualResponseTextHandler(IndividualResponseTestCase):
-    # Dummy mobile number from the range published by Ofcom
-    # https://www.ofcom.org.uk/phones-telecoms-and-internet/information-for-industry/numbering/numbers-for-drama
-    DUMMY_MOBILE_NUMBER = "07700900258"
-
     def test_display_mobile_number_on_confirmation_page(self):
         # Given I navigate to the confirmation page
         self._add_household_no_primary()
@@ -752,7 +791,7 @@ class TestIndividualResponseConfirmationPage(IndividualResponseTestCase):
 class TestIndividualResponseChange(IndividualResponseTestCase):
     def test_hub_change_link_goes_to_change_page(self):
         # Given I request an individual response by post
-        self._request_individual_response()
+        self._request_individual_response_by_post()
 
         # When I navigate to the hub and click on the change individual response link
         self.get("/questionnaire")
@@ -763,7 +802,7 @@ class TestIndividualResponseChange(IndividualResponseTestCase):
 
     def test_change_page_previous_goes_to_hub(self):
         # Given I navigate to the individual response change page
-        self._request_individual_response()
+        self._request_individual_response_by_post()
         self.get("/questionnaire")
         self.get(self.individual_section_link)
 
@@ -775,7 +814,7 @@ class TestIndividualResponseChange(IndividualResponseTestCase):
 
     def test_request_separate_census_option_is_preselected(self):
         # Given I request an individual response
-        self._request_individual_response()
+        self._request_individual_response_by_post()
 
         # When I navigate to the individual response change page
         self.get("/questionnaire")
@@ -789,7 +828,7 @@ class TestIndividualResponseChange(IndividualResponseTestCase):
 
     def test_request_separate_census_option_goes_to_how_page(self):
         # Given I navigate to the individual response change page
-        self._request_individual_response()
+        self._request_individual_response_by_post()
         self.get("/questionnaire")
         self.get(self.individual_section_link)
 
@@ -809,7 +848,7 @@ class TestIndividualResponseChange(IndividualResponseTestCase):
 
     def test_answer_own_questions_option_goes_to_hub(self):
         # Given I navigate to the individual response change page
-        self._request_individual_response()
+        self._request_individual_response_by_post()
         self.get("/questionnaire")
         self.get(self.individual_section_link)
 
@@ -825,7 +864,7 @@ class TestIndividualResponseChange(IndividualResponseTestCase):
 
     def test_answer_own_questions_option_updates_section_status(self):
         # Given I navigate to the individual response change page
-        self._request_individual_response()
+        self._request_individual_response_by_post()
         self.get("/questionnaire")
         self.get(self.individual_section_link)
 
@@ -875,7 +914,7 @@ class TestIndividualResponseChange(IndividualResponseTestCase):
 
     def test_i_will_answer_option_goes_to_individual_section(self):
         # Given I navigate to the individual response change page
-        self._request_individual_response()
+        self._request_individual_response_by_post()
         self.get("/questionnaire")
         self.get(self.individual_section_link)
 
@@ -893,7 +932,7 @@ class TestIndividualResponseChange(IndividualResponseTestCase):
 
     def test_how_page_previous_goes_to_change_page(self):
         # Given I navigate to the individual response how page
-        self._request_individual_response()
+        self._request_individual_response_by_post()
         self.get("/questionnaire")
         self.get(self.individual_section_link)
         self.post(
@@ -910,7 +949,7 @@ class TestIndividualResponseChange(IndividualResponseTestCase):
 
     def test_post_confirm_previous_previous_goes_to_change_page(self):
         # Given I navigate to the individual response post confirm page
-        self._request_individual_response()
+        self._request_individual_response_by_post()
         self.get("/questionnaire")
         self.get(self.individual_section_link)
         self.post(

@@ -15,6 +15,7 @@ from app.forms.questionnaire_form import generate_form
 from app.forms.validators import sanitise_mobile_number
 from app.helpers.template_helpers import render_template
 from app.helpers.url_param_serializer import URLParamSerializer
+from app.publisher.exceptions import PublicationFailed
 from app.questionnaire.placeholder_renderer import PlaceholderRenderer
 from app.questionnaire.router import Router
 from app.views.contexts.question import build_question_context
@@ -26,7 +27,8 @@ GB_NIR_REGION_CODE = "GB-NIR"
 
 class IndividualResponseLimitReached(Exception):
     pass
-
+class FulfilmentRequestFailedException(Exception):
+    pass
 
 class IndividualResponseHandler:
     _person_name_transform: Mapping = {
@@ -160,9 +162,12 @@ class IndividualResponseHandler:
         self._check_individual_response_count()
         topic_id = current_app.config["EQ_FULFILMENT_TOPIC_ID"]
         fulfilment_request = FulfilmentRequest(self._metadata, mobile_number)
-        return current_app.eq["publisher"].publish(
-            topic_id, message=fulfilment_request.payload
-        )
+        try:
+            return current_app.eq["publisher"].publish(
+                topic_id, message=fulfilment_request.payload
+            )
+        except PublicationFailed:
+            raise FulfilmentRequestFailedException
 
     def _check_individual_response_count(self):
         if (
