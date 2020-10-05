@@ -25,36 +25,62 @@ GB_NIR_REGION_CODE = "GB-NIR"
 
 
 class IndividualResponseHandler:
-    _person_name_transform: Mapping = {
-        "arguments": {
-            "delimiter": " ",
-            "list_to_concatenate": {
-                "identifier": ["first-name", "last-name"],
-                "source": "answers",
-            },
-        },
-        "transform": "concatenate_list",
-    }
-    _person_name_placeholder: List[Mapping] = [
-        {"placeholder": "person_name", "transforms": [_person_name_transform]}
-    ]
-
-    _person_name_placeholder_possessive: List[Mapping] = [
-        {
-            "placeholder": "person_name_possessive",
-            "transforms": [
-                _person_name_transform,
-                {
-                    "arguments": {"string_to_format": {"source": "previous_transform"}},
-                    "transform": "format_possessive",
+    @staticmethod
+    def _person_name_transforms(list_name) -> List[Mapping]:
+        return [
+            {
+                "transform": "contains",
+                "arguments": {
+                    "list_to_check": {
+                        "source": "list",
+                        "id_selector": "same_name_items",
+                        "identifier": list_name,
+                    },
+                    "value": {"source": "location", "identifier": "list_item_id"},
                 },
-            ],
-        }
-    ]
+            },
+            {
+                "transform": "format_name",
+                "arguments": {
+                    "include_middle_names": {"source": "previous_transform"},
+                    "first_name": {"source": "answers", "identifier": "first-name"},
+                    "middle_names": {"source": "answers", "identifier": "middle-names"},
+                    "last_name": {"source": "answers", "identifier": "last-name"},
+                },
+            },
+        ]
+
+    @staticmethod
+    def _person_name_placeholder(list_name) -> List[Mapping]:
+        return [
+            {
+                "placeholder": "person_name",
+                "transforms": IndividualResponseHandler._person_name_transforms(
+                    list_name
+                ),
+            }
+        ]
+
+    @staticmethod
+    def _person_name_placeholder_possessive(list_name) -> List[Mapping]:
+        name_transforms = IndividualResponseHandler._person_name_transforms(list_name)
+        return [
+            {
+                "placeholder": "person_name_possessive",
+                "transforms": name_transforms
+                + [
+                    {
+                        "arguments": {
+                            "string_to_format": {"source": "previous_transform"}
+                        },
+                        "transform": "format_possessive",
+                    }
+                ],
+            }
+        ]
 
     def __init__(
         self,
-        block_definition,
         schema,
         questionnaire_store,
         language,
@@ -62,7 +88,6 @@ class IndividualResponseHandler:
         form_data,
         list_item_id=None,
     ):
-        self._block_definition = block_definition
         self._schema = schema
         self._questionnaire_store = questionnaire_store
         self._language = language
@@ -76,6 +101,10 @@ class IndividualResponseHandler:
 
         if not self._is_location_valid():
             raise NotFound
+
+    @cached_property
+    def block_definition(self) -> Mapping:
+        return {}
 
     @cached_property
     def _list_model(self):
@@ -213,7 +242,7 @@ class IndividualResponseHandler:
 
     def _render_block(self):
         return self.placeholder_renderer.render(
-            self._block_definition, self._list_item_id
+            self.block_definition, self._list_item_id
         )
 
     def _update_section_status(self, status):
@@ -225,69 +254,54 @@ class IndividualResponseHandler:
 
 
 class IndividualResponseHowHandler(IndividualResponseHandler):
-    block_definition: Mapping = {
-        "type": "IndividualResponse",
-        "id": "individual-response",
-        "question": {
-            "type": "Question",
-            "id": "individual-response-how",
-            "title": {
-                "text": lazy_gettext(
-                    "How would you like <em>{person_name}</em> to receive a separate census?"
-                ),
-                "placeholders": IndividualResponseHandler._person_name_placeholder,
+    @cached_property
+    def block_definition(self) -> Mapping:
+        return {
+            "type": "IndividualResponse",
+            "id": "individual-response",
+            "question": {
+                "type": "Question",
+                "id": "individual-response-how",
+                "title": {
+                    "text": lazy_gettext(
+                        "How would you like <em>{person_name}</em> to receive a separate census?"
+                    ),
+                    "placeholders": IndividualResponseHandler._person_name_placeholder(
+                        self._list_name
+                    ),
+                },
+                "description": [
+                    lazy_gettext(
+                        "For someone to complete a separate census, we need to send them an individual access code."
+                    ),
+                    lazy_gettext("Select how to send access code"),
+                ],
+                "answers": [
+                    {
+                        "type": "Radio",
+                        "id": "individual-response-how-answer",
+                        "mandatory": False,
+                        "default": "Post",
+                        "options": [
+                            {
+                                "label": lazy_gettext("Text message"),
+                                "value": "Text message",
+                                "description": lazy_gettext(
+                                    "We will need their mobile number for this"
+                                ),
+                            },
+                            {
+                                "label": lazy_gettext("Post"),
+                                "value": "Post",
+                                "description": lazy_gettext(
+                                    "We can only send this to an unnamed resident at the registered household address"
+                                ),
+                            },
+                        ],
+                    }
+                ],
             },
-            "description": [
-                lazy_gettext(
-                    "For someone to complete a separate census, we need to send them an individual access code."
-                ),
-                lazy_gettext("Select how to send access code"),
-            ],
-            "answers": [
-                {
-                    "type": "Radio",
-                    "id": "individual-response-how-answer",
-                    "mandatory": False,
-                    "default": "Post",
-                    "options": [
-                        {
-                            "label": lazy_gettext("Text message"),
-                            "value": "Text message",
-                            "description": lazy_gettext(
-                                "We will need their mobile number for this"
-                            ),
-                        },
-                        {
-                            "label": lazy_gettext("Post"),
-                            "value": "Post",
-                            "description": lazy_gettext(
-                                "We can only send this to an unnamed resident at the registered household address"
-                            ),
-                        },
-                    ],
-                }
-            ],
-        },
-    }
-
-    def __init__(
-        self,
-        schema,
-        questionnaire_store,
-        language,
-        request_args,
-        form_data,
-        list_item_id,
-    ):
-        super().__init__(
-            self.block_definition,
-            schema,
-            questionnaire_store,
-            language,
-            request_args,
-            form_data,
-            list_item_id,
-        )
+        }
 
     @cached_property
     def selected_option(self):
@@ -351,71 +365,60 @@ class IndividualResponseHowHandler(IndividualResponseHandler):
 
 
 class IndividualResponseChangeHandler(IndividualResponseHandler):
-    block_definition: Mapping = {
-        "type": "IndividualResponse",
-        "id": "individual-response-change",
-        "question": {
-            "type": "Question",
-            "id": "individual-response-change-question",
-            "title": {
-                "text": lazy_gettext(
-                    "How would you like to answer <em>{person_name_possessive}</em> questions?"
-                ),
-                "placeholders": IndividualResponseHandler._person_name_placeholder_possessive,
-            },
-            "answers": [
-                {
-                    "type": "Radio",
-                    "id": "individual-response-change-answer",
-                    "mandatory": False,
-                    "default": "I would like to request a separate census for them to complete",
-                    "options": [
-                        {
-                            "label": lazy_gettext(
-                                "I would like to request a separate census for them to complete"
-                            ),
-                            "value": "I would like to request a separate census for them to complete",
-                        },
-                        {
-                            "label": lazy_gettext(
-                                "I will ask them to answer their own questions"
-                            ),
-                            "value": "I will ask them to answer their own questions",
-                            "description": lazy_gettext(
-                                "They will need the household access code from the letter we sent you"
-                            ),
-                        },
-                        {
-                            "label": {
-                                "text": lazy_gettext("I will answer for {person_name}"),
-                                "placeholders": IndividualResponseHandler._person_name_placeholder,
+    @cached_property
+    def block_definition(self) -> Mapping:
+        return {
+            "type": "IndividualResponse",
+            "id": "individual-response-change",
+            "question": {
+                "type": "Question",
+                "id": "individual-response-change-question",
+                "title": {
+                    "text": lazy_gettext(
+                        "How would you like to answer <em>{person_name_possessive}</em> questions?"
+                    ),
+                    "placeholders": IndividualResponseHandler._person_name_placeholder_possessive(
+                        self._list_name
+                    ),
+                },
+                "answers": [
+                    {
+                        "type": "Radio",
+                        "id": "individual-response-change-answer",
+                        "mandatory": False,
+                        "default": "I would like to request a separate census for them to complete",
+                        "options": [
+                            {
+                                "label": lazy_gettext(
+                                    "I would like to request a separate census for them to complete"
+                                ),
+                                "value": "I would like to request a separate census for them to complete",
                             },
-                            "value": "I will answer for {person_name}",
-                        },
-                    ],
-                }
-            ],
-        },
-    }
-
-    def __init__(
-        self,
-        schema,
-        questionnaire_store,
-        language,
-        request_args,
-        form_data,
-        list_item_id,
-    ):
-        super().__init__(
-            self.block_definition,
-            schema,
-            questionnaire_store,
-            language,
-            request_args,
-            form_data,
-            list_item_id,
-        )
+                            {
+                                "label": lazy_gettext(
+                                    "I will ask them to answer their own questions"
+                                ),
+                                "value": "I will ask them to answer their own questions",
+                                "description": lazy_gettext(
+                                    "They will need the household access code from the letter we sent you"
+                                ),
+                            },
+                            {
+                                "label": {
+                                    "text": lazy_gettext(
+                                        "I will answer for {person_name}"
+                                    ),
+                                    "placeholders": IndividualResponseHandler._person_name_placeholder(
+                                        self._list_name
+                                    ),
+                                },
+                                "value": "I will answer for {person_name}",
+                            },
+                        ],
+                    }
+                ],
+            },
+        }
 
     @cached_property
     def request_separate_census_option(self):
@@ -493,69 +496,56 @@ class IndividualResponseChangeHandler(IndividualResponseHandler):
 
 
 class IndividualResponsePostAddressConfirmHandler(IndividualResponseHandler):
-    block_definition: Mapping = {
-        "type": "IndividualResponse",
-        "question": {
-            "type": "Question",
-            "id": "individual-response-post-confirm",
-            "title": {
-                "text": lazy_gettext(
-                    "Do you want to send an individual access code for {person_name} by post?"
-                ),
-                "placeholders": IndividualResponseHandler._person_name_placeholder,
-            },
-            "description": [
-                lazy_gettext(
-                    "A letter with an individual access code will be sent to your registered household address"
-                )
-            ],
-            "guidance": {
-                "contents": [
+    @cached_property
+    def block_definition(self) -> Mapping:
+        return {
+            "type": "IndividualResponse",
+            "question": {
+                "type": "Question",
+                "id": "individual-response-post-confirm",
+                "title": {
+                    "text": lazy_gettext(
+                        "Do you want to send an individual access code for {person_name} by post?"
+                    ),
+                    "placeholders": IndividualResponseHandler._person_name_placeholder(
+                        self._list_name
+                    ),
+                },
+                "description": [
+                    lazy_gettext(
+                        "A letter with an individual access code will be sent to your registered household address"
+                    )
+                ],
+                "guidance": {
+                    "contents": [
+                        {
+                            "description": lazy_gettext(
+                                "The letter will be addressed to <strong>Individual Resident</strong> instead of the name provided"
+                            )
+                        }
+                    ]
+                },
+                "answers": [
                     {
-                        "description": lazy_gettext(
-                            "The letter will be addressed to <strong>Individual Resident</strong> instead of the name provided"
-                        )
+                        "type": "Radio",
+                        "id": "individual-response-post-confirm-answer",
+                        "mandatory": True,
+                        "options": [
+                            {
+                                "label": lazy_gettext(
+                                    "Yes, send the access code by post"
+                                ),
+                                "value": "Yes, send the access code by post",
+                            },
+                            {
+                                "label": lazy_gettext("No, send it another way"),
+                                "value": "No, send it another way",
+                            },
+                        ],
                     }
-                ]
+                ],
             },
-            "answers": [
-                {
-                    "type": "Radio",
-                    "id": "individual-response-post-confirm-answer",
-                    "mandatory": True,
-                    "options": [
-                        {
-                            "label": lazy_gettext("Yes, send the access code by post"),
-                            "value": "Yes, send the access code by post",
-                        },
-                        {
-                            "label": lazy_gettext("No, send it another way"),
-                            "value": "No, send it another way",
-                        },
-                    ],
-                }
-            ],
-        },
-    }
-
-    def __init__(
-        self,
-        schema,
-        questionnaire_store,
-        language,
-        request_args,
-        form_data,
-        list_item_id,
-    ):
-        super().__init__(
-            self.block_definition,
-            schema,
-            questionnaire_store,
-            language,
-            request_args,
-            form_data,
-            list_item_id,
-        )
+        }
 
     @cached_property
     def answer_id(self):
@@ -610,16 +600,19 @@ class IndividualResponseWhoHandler(IndividualResponseHandler):
         list_model = questionnaire_store.list_store[self._list_name]
         self.non_primary_people_names = {}
 
+        if list_model.same_name_items:
+            name_answer_ids = ["first-name", "middle-names", "last-name"]
+        else:
+            name_answer_ids = ["first-name", "last-name"]
+
         for list_item_id in list_model.non_primary_people:
-            name_answer = questionnaire_store.answer_store.get_answers_by_answer_id(
-                ["first-name", "last-name"], list_item_id=list_item_id
+            name_answers = questionnaire_store.answer_store.get_answers_by_answer_id(
+                name_answer_ids, list_item_id=list_item_id
             )
-            self.non_primary_people_names[
-                f"{name_answer[0].value} {name_answer[1].value}"
-            ] = list_item_id
+            name = " ".join(name_answer.value for name_answer in name_answers)
+            self.non_primary_people_names[list_item_id] = name
 
         super().__init__(
-            self.block_definition,
             schema,
             questionnaire_store,
             language,
@@ -627,17 +620,6 @@ class IndividualResponseWhoHandler(IndividualResponseHandler):
             form_data,
             request_args.get("list_item_id"),
         )
-
-    @cached_property
-    def selected_option(self):
-        answer_id = self.rendered_block["question"]["answers"][0]["id"]
-        return self.form.get_data(answer_id)
-
-    @cached_property
-    def selected_list_item(self):
-        answer_value = self.selected_option
-
-        return self.non_primary_people_names[answer_value]
 
     @cached_property
     def block_definition(self) -> Mapping:
@@ -656,13 +638,18 @@ class IndividualResponseWhoHandler(IndividualResponseHandler):
                         "id": "individual-response-who-answer",
                         "mandatory": True,
                         "options": [
-                            {"label": name, "value": name}
-                            for name in self.non_primary_people_names
+                            {"label": name, "value": list_item_id}
+                            for list_item_id, name in self.non_primary_people_names.items()
                         ],
                     }
                 ],
             },
         }
+
+    @cached_property
+    def selected_option(self):
+        answer_id = self.rendered_block["question"]["answers"][0]["id"]
+        return self.form.get_data(answer_id)
 
     def handle_get(self):
         if len(self.non_primary_people_names) > 1:
@@ -686,55 +673,40 @@ class IndividualResponseWhoHandler(IndividualResponseHandler):
             url_for(
                 ".individual_response_how",
                 journey=self._request_args.get("journey"),
-                list_item_id=self.selected_list_item,
+                list_item_id=self.selected_option,
             )
         )
 
 
 class IndividualResponseTextHandler(IndividualResponseHandler):
-    block_definition: Mapping = {
-        "type": "IndividualResponse",
-        "question": {
-            "type": "Question",
-            "id": "individual-response-enter-number",
-            "title": {
-                "text": lazy_gettext(
-                    "What is <em>{person_name_possessive}</em> mobile number?"
-                ),
-                "placeholders": IndividualResponseHandler._person_name_placeholder_possessive,
-            },
-            "answers": [
-                {
-                    "type": "MobileNumber",
-                    "id": "individual-response-enter-number-answer",
-                    "mandatory": True,
-                    "label": lazy_gettext("UK mobile number"),
-                    "description": lazy_gettext(
-                        "This will not be stored and only used once to send the access code"
+    @cached_property
+    def block_definition(self) -> Mapping:
+        return {
+            "type": "IndividualResponse",
+            "question": {
+                "type": "Question",
+                "id": "individual-response-enter-number",
+                "title": {
+                    "text": lazy_gettext(
+                        "What is <em>{person_name_possessive}</em> mobile number?"
                     ),
-                }
-            ],
-        },
-    }
-
-    def __init__(
-        self,
-        schema,
-        questionnaire_store,
-        language,
-        request_args,
-        form_data,
-        list_item_id,
-    ):
-        super().__init__(
-            self.block_definition,
-            schema,
-            questionnaire_store,
-            language,
-            request_args,
-            form_data,
-            list_item_id,
-        )
+                    "placeholders": IndividualResponseHandler._person_name_placeholder_possessive(
+                        self._list_name
+                    ),
+                },
+                "answers": [
+                    {
+                        "type": "MobileNumber",
+                        "id": "individual-response-enter-number-answer",
+                        "mandatory": True,
+                        "label": lazy_gettext("UK mobile number"),
+                        "description": lazy_gettext(
+                            "This will not be stored and only used once to send the access code"
+                        ),
+                    }
+                ],
+            },
+        }
 
     @cached_property
     def answer_id(self):
@@ -792,7 +764,6 @@ class IndividualResponseTextConfirmHandler(IndividualResponseHandler):
         )
 
         super().__init__(
-            self.block_definition(),
             schema,
             questionnaire_store,
             language,
@@ -801,6 +772,7 @@ class IndividualResponseTextConfirmHandler(IndividualResponseHandler):
             list_item_id,
         )
 
+    @cached_property
     def block_definition(self) -> Mapping:
         return {
             "type": "IndividualResponse",
