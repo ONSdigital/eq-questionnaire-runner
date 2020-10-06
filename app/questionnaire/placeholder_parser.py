@@ -56,10 +56,9 @@ class PlaceholderParser:
             if isinstance(answer.value, str):
                 return escape(answer.value)
             elif isinstance(answer.value, dict):
-                answer_dict = {}
                 for answer_field in answer.value:
-                    answer_dict[answer_field] = escape(answer.value[answer_field])
-                return answer_dict
+                    answer.value[answer_field] = escape(answer.value[answer_field])
+                return answer.value
             return answer.value
         return None
 
