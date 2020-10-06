@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 from typing import Dict, List, Optional
+
 from jinja2 import escape
 
 from app.data_models.answer import Answer
