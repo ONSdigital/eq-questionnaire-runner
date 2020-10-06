@@ -103,10 +103,6 @@ class IndividualResponseHandler:
             raise NotFound
 
     @cached_property
-    def block_definition(self) -> Mapping:
-        return {}
-
-    @cached_property
     def _list_model(self):
         return self._questionnaire_store.list_store[self._list_name]
 
