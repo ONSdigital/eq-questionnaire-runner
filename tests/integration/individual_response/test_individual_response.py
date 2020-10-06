@@ -979,11 +979,11 @@ class TestIndividualResponseSameNames(IndividualResponseTestCase):
         self.assertEqual(self.get_who_choice(1)["label"], "Marie Carla Day")
         self.assertEqual(self.get_who_choice(2)["label"], "Joe Day")
         self.assertEqual(self.get_who_choice(3)["label"], "Joe Day")
-        self.assertNotEquals(
+        self.assertNotEqual(
             self.get_who_choice(0)["list_item_id"],
             self.get_who_choice(1)["list_item_id"],
         )
-        self.assertNotEquals(
+        self.assertNotEqual(
             self.get_who_choice(2)["list_item_id"],
             self.get_who_choice(3)["list_item_id"],
         )
