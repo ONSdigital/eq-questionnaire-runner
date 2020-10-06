@@ -1,5 +1,6 @@
 from flask import Blueprint, request
 from flask import session as cookie_session
+from flask.helpers import url_for
 from flask_login import current_user
 from flask_wtf.csrf import CSRFError
 from sdc.crypto.exceptions import InvalidTokenException
@@ -14,6 +15,10 @@ from app.helpers.language_helper import handle_language
 from app.helpers.template_helpers import render_template
 from app.settings import EQ_SESSION_ID
 from app.submitter.submission_failed import SubmissionFailedException
+from app.views.handlers.individual_response import (
+    FulfilmentRequestFailedException,
+    IndividualResponseLimitReached,
+)
 
 logger = get_logger()
 
@@ -35,13 +40,12 @@ def log_error(error, status_code):
     )
 
 
-def _render_error_page(status_code, template=None):
+def _render_error_page(status_code, template=None, **kwargs):
     handle_language()
     template = template or status_code
-    using_edge = request.user_agent.browser == "edge"
 
     return (
-        render_template(template=f"errors/{template}", using_edge=using_edge),
+        render_template(template=f"errors/{template}", **kwargs),
         status_code,
     )
 
@@ -71,6 +75,12 @@ def method_not_allowed(error=None):
     return _render_error_page(405, template="404")
 
 
+@errors_blueprint.app_errorhandler(IndividualResponseLimitReached)
+def too_many_individual_response_requests(error=None):
+    log_error(error, 429)
+    return _render_error_page(429, template="429-individual-response")
+
+
 @errors_blueprint.app_errorhandler(SubmissionFailedException)
 @errors_blueprint.app_errorhandler(Exception)
 def internal_server_error(error=None):
@@ -92,3 +102,27 @@ def internal_server_error(error=None):
 def http_exception(error):
     log_error(error, error.code)
     return _render_error_page(error.code)
+
+
+@errors_blueprint.app_errorhandler(FulfilmentRequestFailedException)
+def fulfilment_request_failed(error):
+    logger.exception(
+        "An individual response fulfilment request failed",
+        url=request.url,
+        status_code=500,
+    )
+
+    if "mobile_number" in request.args:
+        blueprint_method = (
+            "individual_response.individual_response_text_message_confirm"
+        )
+    else:
+        blueprint_method = (
+            "individual_response.individual_response_post_address_confirm"
+        )
+
+    retry_url = url_for(
+        blueprint_method, list_item_id=request.view_args["list_item_id"], **request.args
+    )
+
+    return _render_error_page(500, template="fulfilment-request", retry_url=retry_url)

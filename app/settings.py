@@ -38,6 +38,7 @@ def get_env_or_fail(key):
     return value
 
 
+DATASTORE_USE_GRPC = parse_mode(os.getenv("DATASTORE_USE_GRPC", "False"))
 CDN_URL = os.getenv("CDN_URL", "https://cdn.ons.gov.uk")
 CDN_ASSETS_PATH = os.getenv("CDN_ASSETS_PATH", "/sdc/design-system")
 EQ_MINIMIZE_ASSETS = parse_mode(os.getenv("EQ_MINIMIZE_ASSETS", "True"))
@@ -51,6 +52,7 @@ EQ_KEYS_FILE = os.getenv("EQ_KEYS_FILE", "keys.yml")
 
 EQ_PUBLISHER_BACKEND = os.getenv("EQ_PUBLISHER_BACKEND")
 EQ_FULFILMENT_TOPIC_ID = os.getenv("EQ_FULFILMENT_TOPIC_ID", "eq-fulfilment-topic")
+EQ_INDIVIDUAL_RESPONSE_LIMIT = int(os.getenv("EQ_INDIVIDUAL_RESPONSE_LIMIT", "1"))
 
 EQ_SUBMISSION_BACKEND = os.getenv("EQ_SUBMISSION_BACKEND")
 EQ_GCS_SUBMISSION_BUCKET_ID = os.getenv("EQ_GCS_SUBMISSION_BUCKET_ID")

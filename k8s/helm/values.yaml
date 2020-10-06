@@ -7,11 +7,22 @@ image:
   tag: latest
   pullPolicy: Always
 
+individualResponseLimit: "75"
+
 submissionBucket: ""
 
 googleTagManagerId: ""
 googleTagManagerAuth: ""
 googleTagManagerPreview: ""
+
+webServer:
+  type: "gunicorn-async"
+  workers: "7"
+  threads: "10"
+  uwsgiAsyncCores: "10"
+
+datastore:
+  useGRPC: "False"
 
 newRelic:
   enabled: "False"

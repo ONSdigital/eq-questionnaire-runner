@@ -15,6 +15,7 @@ from app.forms.questionnaire_form import generate_form
 from app.forms.validators import sanitise_mobile_number
 from app.helpers.template_helpers import render_template
 from app.helpers.url_param_serializer import URLParamSerializer
+from app.publisher.exceptions import PublicationFailed
 from app.questionnaire.placeholder_renderer import PlaceholderRenderer
 from app.questionnaire.router import Router
 from app.views.contexts.question import build_question_context
@@ -22,6 +23,14 @@ from app.views.contexts.question import build_question_context
 GB_ENG_REGION_CODE = "GB-ENG"
 GB_WLS_REGION_CODE = "GB-WLS"
 GB_NIR_REGION_CODE = "GB-NIR"
+
+
+class IndividualResponseLimitReached(Exception):
+    pass
+
+
+class FulfilmentRequestFailedException(Exception):
+    pass
 
 
 class IndividualResponseHandler:
@@ -178,11 +187,39 @@ class IndividualResponseHandler:
         return build_question_context(self.rendered_block, self.form)
 
     def _publish_fulfilment_request(self, mobile_number=None):
+        self._check_individual_response_count()
         topic_id = current_app.config["EQ_FULFILMENT_TOPIC_ID"]
         fulfilment_request = FulfilmentRequest(self._metadata, mobile_number)
-        return current_app.eq["publisher"].publish(
-            topic_id, message=fulfilment_request.payload
-        )
+        try:
+            return current_app.eq["publisher"].publish(
+                topic_id, message=fulfilment_request.payload
+            )
+        except PublicationFailed:
+            raise FulfilmentRequestFailedException
+
+    def _check_individual_response_count(self):
+        if (
+            self._questionnaire_store.response_metadata.get(
+                "individual_response_count", 0
+            )
+            >= current_app.config["EQ_INDIVIDUAL_RESPONSE_LIMIT"]
+        ):
+            raise IndividualResponseLimitReached(
+                "Individual response limit has been reached"
+            )
+
+    def _update_individual_response_count(self):
+        response_metadata = self._questionnaire_store.response_metadata
+
+        if response_metadata.get("individual_response_count"):
+            response_metadata["individual_response_count"] += 1
+        else:
+            response_metadata["individual_response_count"] = 1
+
+    def _update_questionnaire_store_on_publish(self):
+        self._update_section_status(CompletionStatus.INDIVIDUAL_RESPONSE_REQUESTED)
+        self._update_individual_response_count()
+        self._questionnaire_store.save()
 
     def handle_get(self):
         return render_template(
@@ -245,8 +282,6 @@ class IndividualResponseHandler:
         self._questionnaire_store.progress_store.update_section_status(
             status, self.individual_section_id, self._list_item_id
         )
-        if self._questionnaire_store.progress_store.is_dirty:
-            self._questionnaire_store.save()
 
 
 class IndividualResponseHowHandler(IndividualResponseHandler):
@@ -489,6 +524,8 @@ class IndividualResponseChangeHandler(IndividualResponseHandler):
                 else CompletionStatus.IN_PROGRESS
             )
         self._update_section_status(status)
+        if self._questionnaire_store.progress_store.is_dirty:
+            self._questionnaire_store.save()
 
 
 class IndividualResponsePostAddressConfirmHandler(IndividualResponseHandler):
@@ -572,8 +609,9 @@ class IndividualResponsePostAddressConfirmHandler(IndividualResponseHandler):
 
     def handle_post(self):
         if self.selected_option == self.confirm_option:
-            self._update_section_status(CompletionStatus.INDIVIDUAL_RESPONSE_REQUESTED)
             self._publish_fulfilment_request()
+            self._update_questionnaire_store_on_publish()
+
             return redirect(
                 url_for(
                     "individual_response.individual_response_post_address_confirmation",
@@ -827,8 +865,9 @@ class IndividualResponseTextConfirmHandler(IndividualResponseHandler):
 
     def handle_post(self):
         if self.selected_option == self.confirm_option:
-            self._update_section_status(CompletionStatus.INDIVIDUAL_RESPONSE_REQUESTED)
             self._publish_fulfilment_request(self.mobile_number)
+            self._update_questionnaire_store_on_publish()
+
             return redirect(
                 url_for(
                     "individual_response.individual_response_text_message_confirmation",
@@ -880,7 +919,6 @@ class FulfilmentRequest:
                 GB_NIR_REGION_CODE: "P_UAC_UACIP4",
             },
         }
-
         region_code = self._metadata["region_code"]
         return fulfilment_codes[self._fulfilment_type][region_code]
 

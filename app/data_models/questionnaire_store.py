@@ -18,7 +18,7 @@ class QuestionnaireStore:
         self._metadata = {}
         # self.metadata is a read-only view over self._metadata
         self.metadata = MappingProxyType(self._metadata)
-        self.collection_metadata = {}
+        self.response_metadata = {}
         self.list_store = ListStore()
         self.answer_store = AnswerStore()
         self.progress_store = ProgressStore()
@@ -48,7 +48,7 @@ class QuestionnaireStore:
         self.set_metadata(json_data.get("METADATA", {}))
         self.answer_store = AnswerStore(json_data.get("ANSWERS"))
         self.list_store = ListStore.deserialize(json_data.get("LISTS"))
-        self.collection_metadata = json_data.get("COLLECTION_METADATA", {})
+        self.response_metadata = json_data.get("RESPONSE_METADATA", {})
 
     def serialize(self):
         data = {
@@ -56,14 +56,14 @@ class QuestionnaireStore:
             "ANSWERS": list(self.answer_store),
             "LISTS": self.list_store.serialize(),
             "PROGRESS": self.progress_store.serialize(),
-            "COLLECTION_METADATA": self.collection_metadata,
+            "RESPONSE_METADATA": self.response_metadata,
         }
         return json.dumps(data, for_json=True)
 
     def delete(self):
         self._storage.delete()
         self._metadata.clear()
-        self.collection_metadata = {}
+        self.response_metadata = {}
         self.answer_store.clear()
         self.progress_store.clear()
 

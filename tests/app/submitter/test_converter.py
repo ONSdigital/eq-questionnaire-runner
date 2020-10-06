@@ -53,7 +53,7 @@ def test_convert_answers_flushed_flag_overriden_to_true(
     assert answer_object["flushed"]
 
 
-def test_started_at_should_be_set_in_payload_if_present_in_collection_metadata(
+def test_started_at_should_be_set_in_payload_if_present_in_response_metadata(
     fake_questionnaire_schema, fake_questionnaire_store
 ):
     answer_object = convert_answers(
@@ -62,20 +62,20 @@ def test_started_at_should_be_set_in_payload_if_present_in_collection_metadata(
 
     assert (
         answer_object["started_at"]
-        == fake_questionnaire_store.collection_metadata["started_at"]
+        == fake_questionnaire_store.response_metadata["started_at"]
     )
 
 
-def test_started_at_should_not_be_set_in_payload_if_absent_in_collection_metadata(
+def test_started_at_should_not_be_set_in_payload_if_absent_in_response_metadata(
     fake_questionnaire_schema,
     fake_questionnaire_store,
-    fake_collection_metadata,
+    fake_response_metadata,
     fake_metadata,
 ):
-    del fake_collection_metadata["started_at"]
+    del fake_response_metadata["started_at"]
 
     fake_questionnaire_store.set_metadata(fake_metadata)
-    fake_questionnaire_store.collection_metadata = fake_collection_metadata
+    fake_questionnaire_store.response_metadata = fake_response_metadata
 
     answer_object = convert_answers(
         fake_questionnaire_schema, fake_questionnaire_store, {}
@@ -144,12 +144,12 @@ def test_converter_raises_runtime_error_for_unsupported_version(
 def test_converter_language_code_not_set_in_payload(
     fake_questionnaire_schema,
     fake_questionnaire_store,
-    fake_collection_metadata,
+    fake_response_metadata,
     fake_metadata,
 ):
 
     fake_questionnaire_store.set_metadata(fake_metadata)
-    fake_questionnaire_store.collection_metadata = fake_collection_metadata
+    fake_questionnaire_store.response_metadata = fake_response_metadata
 
     answer_object = convert_answers(
         fake_questionnaire_schema, fake_questionnaire_store, {}
@@ -161,12 +161,12 @@ def test_converter_language_code_not_set_in_payload(
 def test_converter_language_code_set_in_payload(
     fake_questionnaire_schema,
     fake_questionnaire_store,
-    fake_collection_metadata,
+    fake_response_metadata,
     fake_metadata,
 ):
     fake_metadata["language_code"] = "ga"
     fake_questionnaire_store.set_metadata(fake_metadata)
-    fake_questionnaire_store.collection_metadata = fake_collection_metadata
+    fake_questionnaire_store.response_metadata = fake_response_metadata
 
     answer_object = convert_answers(
         fake_questionnaire_schema, fake_questionnaire_store, {}
