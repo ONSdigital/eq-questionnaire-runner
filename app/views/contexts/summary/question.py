@@ -18,19 +18,9 @@ class Question:
         self.answers = self._build_answers(answer_store, question_schema)
 
     def _get_answer(self, answer_store, answer_id):
-        answer = answer_store.get_answer(answer_id, self.list_item_id)
+        answer = answer_store.get_escaped_answer(answer_id, self.list_item_id)
         if answer:
-            if isinstance(answer.value, str):
-                return escape(answer.value)
-            elif isinstance(answer.value, dict):
-                for answer_field in answer.value:
-                    if isinstance(answer.value[answer_field], str):
-                        answer.value[answer_field] = escape(answer.value[answer_field])
-                    else:
-                        answer.value[answer_field] = answer.value[answer_field]
-                return answer.value
             return answer.value
-
         return None
 
     def _build_answers(self, answer_store, question_schema):

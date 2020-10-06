@@ -1,7 +1,5 @@
 from typing import Dict, List, Mapping, Sequence, Union
 
-from jinja2 import escape
-
 from app.data_models.answer_store import AnswerStore
 from app.questionnaire import QuestionnaireSchema
 from app.questionnaire.placeholder_transforms import PlaceholderTransforms
@@ -43,22 +41,8 @@ class PlaceholderParser:
         return self._placeholder_map
 
     def _lookup_answer(self, answer_id: str, list_item_id: str = None):
-        answer = self._answer_store.get_answer(answer_id, list_item_id)
+        answer = self._answer_store.get_escaped_answer(answer_id, list_item_id)
         if answer:
-            if isinstance(answer.value, list):
-                return [
-                    escape(list_item)
-                    if list_item and isinstance(list_item, str)
-                    else answer.value
-                    for list_item in answer.value
-                ]
-
-            if isinstance(answer.value, str):
-                return escape(answer.value)
-            elif isinstance(answer.value, dict):
-                for answer_field in answer.value:
-                    answer.value[answer_field] = escape(answer.value[answer_field])
-                return answer.value
             return answer.value
         return None
 
