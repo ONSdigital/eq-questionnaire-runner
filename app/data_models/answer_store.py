@@ -138,28 +138,25 @@ class AnswerStore:
         return list(self.answer_map.values())
 
     def get_escaped_answer(self, answer_id, list_item_id):
-        answer = self.get_answer(answer_id, list_item_id)
-        if answer:
-            if isinstance(answer.value, str):
-                escaped_answer = escape(answer.value)
-
-            elif isinstance(answer.value, list):
-                escaped_answer = []
+        if answer := self.get_answer(answer_id, list_item_id):
+            if isinstance(answer.value, list):
+                escaped_list = []
                 for list_item in answer.value:
-                    if isinstance(list_item, str):
-                        escaped_answer.append(escape(list_item))
-                    else:
-                        escaped_answer.append(list_item)
+                    escaped_list.append(escape(list_item)) if isinstance(
+                        list_item, str
+                    ) else escaped_list.append(list_item)
+                return escaped_list
 
-            elif isinstance(answer.value, dict):
-                escaped_answer = {}
+            if isinstance(answer.value, dict):
+                escaped_dict = {}
                 for key, value in answer.value.items():
-                    escaped_answer[key] = (
+                    escaped_dict[key] = (
                         escape(value) if isinstance(value, str) else value
                     )
-            else:
-                escaped_answer = answer.value
+                return escaped_dict
 
-            return escaped_answer
+            return (
+                escape(answer.value) if isinstance(answer.value, str) else answer.value
+            )
 
         return None
