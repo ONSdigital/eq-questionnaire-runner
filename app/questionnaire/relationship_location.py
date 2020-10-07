@@ -21,7 +21,6 @@ class RelationshipLocation:
     def url(self, **kwargs) -> str:
         return url_for(
             "questionnaire.relationship",
-            block_id=self.block_id,
             list_item_id=self.list_item_id,
             to_list_item_id=self.to_list_item_id,
             **kwargs,

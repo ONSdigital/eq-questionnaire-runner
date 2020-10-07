@@ -11,6 +11,7 @@ from app.views.handlers.primary_person_question import PrimaryPersonQuestion
 from app.views.handlers.question import Question
 from app.views.handlers.relationship_collector import RelationshipCollector
 from app.views.handlers.summary import Summary
+from app.views.handlers.unrelated_relationship import UnrelatedRelationship
 
 BLOCK_MAPPINGS = {
     "Question": Question,
@@ -23,6 +24,7 @@ BLOCK_MAPPINGS = {
     "PrimaryPersonListCollector": PrimaryPersonListCollector,
     "PrimaryPersonListAddOrEditQuestion": PrimaryPersonQuestion,
     "RelationshipCollector": RelationshipCollector,
+    "UnrelatedRelationship": UnrelatedRelationship,
     "Introduction": Content,
     "Interstitial": Content,
     "Confirmation": Content,
@@ -61,9 +63,16 @@ def get_block_handler(
     if not block_class:
         raise ValueError(f"block type {block_type} is not valid")
 
+    if to_list_item_id and block_type == "RelationshipCollector":
+        list_name = block["for_list"]
+    elif block_type == "UnrelatedRelationship":
+        parent_block_id = schema.parent_id_map[block_id]
+        parent_block = schema.get_block(parent_block_id)
+        list_name = parent_block["for_list"]
+
     section_id = schema.get_section_id_for_block_id(block_id)
 
-    if to_list_item_id:
+    if to_list_item_id or block_type == "UnrelatedRelationship":
         location = RelationshipLocation(
             section_id=section_id,
             block_id=block_id,

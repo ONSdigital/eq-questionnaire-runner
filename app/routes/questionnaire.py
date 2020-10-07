@@ -223,11 +223,17 @@ def block(schema, questionnaire_store, block_id, list_name=None, list_item_id=No
 
 
 @questionnaire_blueprint.route(
-    "<block_id>/<list_item_id>/to/<to_list_item_id>/", methods=["GET", "POST"]
+    "relationships/<list_item_id>/to/<to_list_item_id>/", methods=["GET", "POST"]
+)
+@questionnaire_blueprint.route(
+    "relationships/<list_item_id>/<block_id>/", methods=["GET", "POST"]
 )
 @with_questionnaire_store
 @with_schema
-def relationship(schema, questionnaire_store, block_id, list_item_id, to_list_item_id):
+def relationship(
+    schema, questionnaire_store, list_item_id, to_list_item_id=None, block_id=None
+):
+    block_id = block_id or "relationships"
     try:
         block_handler = get_block_handler(
             schema=schema,
@@ -236,7 +242,6 @@ def relationship(schema, questionnaire_store, block_id, list_item_id, to_list_it
             to_list_item_id=to_list_item_id,
             questionnaire_store=questionnaire_store,
             language=flask_babel.get_locale().language,
-            list_name=schema.get_block(block_id)["for_list"],
             request_args=request.args,
             form_data=request.form,
         )
