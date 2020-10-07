@@ -137,7 +137,7 @@ class AnswerStore:
     def serialize(self):
         return list(self.answer_map.values())
 
-    def get_escaped_answer_value(self, answer_id, list_item_id):
+    def get_escaped_answer_value(self, answer_id, list_item_id=None):
         if answer := self.get_answer(answer_id, list_item_id):
             if isinstance(answer.value, list):
                 return [

@@ -40,9 +40,6 @@ class PlaceholderParser:
                 ] = self._parse_placeholder(placeholder)
         return self._placeholder_map
 
-    def _lookup_answer(self, answer_id: str, list_item_id: str = None):
-        return self._answer_store.get_escaped_answer_value(answer_id, list_item_id)
-
     def _resolve_value_source(self, value_source):
         if value_source["source"] == "answers":
             return self._resolve_answer_value(value_source)
@@ -63,10 +60,14 @@ class PlaceholderParser:
 
         if isinstance(value_source["identifier"], (list, tuple)):
             return [
-                self._lookup_answer(each_identifier, list_item_id)
+                self._answer_store.get_escaped_answer_value(
+                    each_identifier, list_item_id
+                )
                 for each_identifier in value_source["identifier"]
             ]
-        answer = self._lookup_answer(value_source["identifier"], list_item_id)
+        answer = self._answer_store.get_escaped_answer_value(
+            value_source["identifier"], list_item_id
+        )
         return (
             answer.get(value_source["selector"])
             if "selector" in value_source

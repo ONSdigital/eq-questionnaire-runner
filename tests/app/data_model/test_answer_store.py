@@ -29,16 +29,15 @@ def basic_answer_store():
     answer_store.add_or_update(Answer(answer_id="another-answer3", value=35))
 
     answer_store.add_or_update(
-        Answer(answer_id="answer4", value="<p>abc123</p>", list_item_id="xyz987")
+        Answer(answer_id="answer4", value="<p>abc123</p>")
     )
     answer_store.add_or_update(
-        Answer(answer_id="answer5", value=["<p>abc123</p>", 1], list_item_id="xyz987")
+        Answer(answer_id="answer5", value=["<p>abc123</p>", 1])
     )
     answer_store.add_or_update(
         Answer(
             answer_id="answer6",
-            value={"item1": "<p>abc123</p>", "item2": 1},
-            list_item_id="xyz987",
+            value={"item1": "<p>abc123</p>", "item2": 1}
         )
     )
 
@@ -217,14 +216,14 @@ def test_bad_answer_type(basic_answer_store):
 
 def test_escaped_answer_value_method(basic_answer_store):
     assert (
-        basic_answer_store.get_escaped_answer_value("answer4", "xyz987")
+        basic_answer_store.get_escaped_answer_value("answer4")
         == "&lt;p&gt;abc123&lt;/p&gt;"
     )
-    assert basic_answer_store.get_escaped_answer_value("answer5", "xyz987") == [
+    assert basic_answer_store.get_escaped_answer_value("answer5") == [
         "&lt;p&gt;abc123&lt;/p&gt;",
         1,
     ]
-    assert basic_answer_store.get_escaped_answer_value("answer6", "xyz987") == {
+    assert basic_answer_store.get_escaped_answer_value("answer6") == {
         "item1": "&lt;p&gt;abc123&lt;/p&gt;",
         "item2": 1,
     }
