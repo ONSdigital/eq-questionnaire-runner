@@ -41,10 +41,7 @@ class PlaceholderParser:
         return self._placeholder_map
 
     def _lookup_answer(self, answer_id: str, list_item_id: str = None):
-        answer = self._answer_store.get_escaped_answer(answer_id, list_item_id)
-        if answer:
-            return answer.value
-        return None
+        return self._answer_store.get_escaped_answer(answer_id, list_item_id)
 
     def _resolve_value_source(self, value_source):
         if value_source["source"] == "answers":
