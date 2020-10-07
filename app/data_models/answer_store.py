@@ -140,8 +140,10 @@ class AnswerStore:
     def get_escaped_answer(self, answer_id, list_item_id):
         answer = self.get_answer(answer_id, list_item_id)
         if answer:
-            escaped_answer = answer.value
-            if isinstance(answer.value, list):
+            if isinstance(answer.value, str):
+                escaped_answer = escape(answer.value)
+
+            elif isinstance(answer.value, list):
                 escaped_answer = []
                 for list_item in answer.value:
                     if isinstance(list_item, str):
@@ -149,15 +151,14 @@ class AnswerStore:
                     else:
                         escaped_answer.append(list_item)
 
-            if isinstance(answer.value, str):
-                escaped_answer = escape(answer.value)
-
-            if isinstance(answer.value, dict):
+            elif isinstance(answer.value, dict):
                 escaped_answer = {}
                 for key, value in answer.value.items():
                     escaped_answer[key] = (
                         escape(value) if isinstance(value, str) else value
                     )
+            else:
+                escaped_answer = answer.value
 
             return escaped_answer
 
