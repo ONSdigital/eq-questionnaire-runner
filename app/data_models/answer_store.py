@@ -137,15 +137,15 @@ class AnswerStore:
     def serialize(self):
         return list(self.answer_map.values())
 
-    def get_escaped_answer(self, answer_id, list_item_id):
+    def get_escaped_answer_value(self, answer_id, list_item_id):
         if answer := self.get_answer(answer_id, list_item_id):
             if isinstance(answer.value, list):
-                escaped_list = []
-                for list_item in answer.value:
-                    escaped_list.append(escape(list_item)) if isinstance(
-                        list_item, str
-                    ) else escaped_list.append(list_item)
-                return escaped_list
+                return [
+                    escape(list_item)
+                    if list_item and isinstance(list_item, str)
+                    else list_item
+                    for list_item in answer.value
+                ]
 
             if isinstance(answer.value, dict):
                 escaped_dict = {}
