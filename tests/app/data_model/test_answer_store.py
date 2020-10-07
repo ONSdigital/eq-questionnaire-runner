@@ -28,17 +28,10 @@ def basic_answer_store():
     answer_store.add_or_update(Answer(answer_id="answer3", value=30))
     answer_store.add_or_update(Answer(answer_id="another-answer3", value=35))
 
+    answer_store.add_or_update(Answer(answer_id="answer4", value="<p>abc123</p>"))
+    answer_store.add_or_update(Answer(answer_id="answer5", value=["<p>abc123</p>", 1]))
     answer_store.add_or_update(
-        Answer(answer_id="answer4", value="<p>abc123</p>")
-    )
-    answer_store.add_or_update(
-        Answer(answer_id="answer5", value=["<p>abc123</p>", 1])
-    )
-    answer_store.add_or_update(
-        Answer(
-            answer_id="answer6",
-            value={"item1": "<p>abc123</p>", "item2": 1}
-        )
+        Answer(answer_id="answer6", value={"item1": "<p>abc123</p>", "item2": 1})
     )
 
     answer_store.add_or_update(Answer(answer_id="to-escape", value="'Twenty Five'"))
