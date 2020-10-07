@@ -62,7 +62,6 @@ def request_individual_response(schema, questionnaire_store):
     list_item_id = request.args.get("list_item_id")
 
     individual_response_handler = IndividualResponseHandler(
-        block_definition=None,
         schema=schema,
         questionnaire_store=questionnaire_store,
         language=language_code,
@@ -143,7 +142,6 @@ def individual_response_post_address_confirm(schema, questionnaire_store, list_i
 def individual_response_post_address_confirmation(schema, questionnaire_store):
     language_code = get_session_store().session_data.language_code
     individual_response_handler = IndividualResponseHandler(
-        block_definition=None,
         schema=schema,
         questionnaire_store=questionnaire_store,
         language=language_code,
@@ -234,7 +232,6 @@ def individual_response_text_message_confirm(schema, questionnaire_store, list_i
 def individual_response_text_message_confirmation(schema, questionnaire_store):
     language_code = get_session_store().session_data.language_code
     individual_response_handler = IndividualResponseHandler(
-        block_definition=None,
         schema=schema,
         questionnaire_store=questionnaire_store,
         language=language_code,

@@ -76,6 +76,7 @@
                             "id": "primary-person-list-collector",
                             "type": "PrimaryPersonListCollector",
                             "for_list": "household",
+                            "same_name_answer_ids": ["first-name", "last-name"],
                             "add_or_edit_block": {
                                 "id": "add-or-edit-primary-person",
                                 "type": "PrimaryPersonListAddOrEditQuestion",
@@ -88,6 +89,12 @@
                                             "id": "first-name",
                                             "label": "First name",
                                             "mandatory": true,
+                                            "type": "TextField"
+                                        },
+                                        {
+                                            "id": "middle-names",
+                                            "label": "Middle names",
+                                            "mandatory": false,
                                             "type": "TextField"
                                         },
                                         {
@@ -129,6 +136,7 @@
                             "id": "list-collector",
                             "type": "ListCollector",
                             "for_list": "household",
+                            "same_name_answer_ids": ["first-name", "last-name"],
                             "question": {
                                 "id": "confirmation-question",
                                 "type": "General",
@@ -169,6 +177,12 @@
                                             "type": "TextField"
                                         },
                                         {
+                                            "id": "middle-names",
+                                            "label": "Middle names",
+                                            "mandatory": false,
+                                            "type": "TextField"
+                                        },
+                                        {
                                             "id": "last-name",
                                             "label": "Last name",
                                             "mandatory": true,
@@ -189,6 +203,12 @@
                                             "id": "first-name",
                                             "label": "First name",
                                             "mandatory": true,
+                                            "type": "TextField"
+                                        },
+                                        {
+                                            "id": "middle-names",
+                                            "label": "Middle names",
+                                            "mandatory": false,
                                             "type": "TextField"
                                         },
                                         {
