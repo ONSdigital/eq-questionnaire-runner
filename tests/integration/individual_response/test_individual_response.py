@@ -36,10 +36,26 @@ class IndividualResponseTestCase(IntegrationTestCase):
         submit_button = self.getHtmlSoup().find("a", {"data-qa": "btn-submit"})
         return submit_button.attrs["href"]
 
-    def get_link(self, rowIndex, text):
-        selector = f"[data-qa='list-item-{text}-{rowIndex}-link']"
+    def get_link(self, index, text):
+        selector = f"[data-qa='list-item-{text}-{index}-link']"
         selected = self.getHtmlSoup().select(selector)
         return selected[0].get("href")
+
+    def get_who_choice(self, index):
+        label = (
+            self.getHtmlSoup()
+            .select(f"#individual-response-who-answer-{index}-label")[0]
+            .text.strip()
+        )
+        list_item_id = (
+            self.getHtmlSoup()
+            .select(f"#individual-response-who-answer-{index}")[0]
+            .attrs["value"]
+        )
+        return {
+            "label": label,
+            "list_item_id": list_item_id,
+        }
 
     def _add_no_household_members(self):
         self.get("questionnaire/primary-person-list-collector/")
@@ -75,7 +91,21 @@ class IndividualResponseTestCase(IntegrationTestCase):
         self.get("questionnaire/primary-person-list-collector/")
         self.post({"you-live-here": "No"})
         self.post({"anyone-else": "Yes"})
-        self.post({"first-name": "Marie", "last-name": "Day"})
+        self.post({"first-name": "Marie", "middle-names": "Carla", "last-name": "Day"})
+        self.post({"anyone-else": "Yes"})
+        self.post({"first-name": "Joe", "middle-names": "David", "last-name": "Day"})
+        self.post({"anyone-else": "No"})
+        self.get("questionnaire/")
+
+    def _add_household_members_with_same_names(self):
+        self.get("questionnaire/primary-person-list-collector/")
+        self.post({"you-live-here": "No"})
+        self.post({"anyone-else": "Yes"})
+        self.post({"first-name": "Marie", "middle-names": "Carla", "last-name": "Day"})
+        self.post({"anyone-else": "Yes"})
+        self.post({"first-name": "Joe", "middle-names": "David", "last-name": "Day"})
+        self.post({"anyone-else": "Yes"})
+        self.post({"first-name": "Joe", "middle-names": "Eric", "last-name": "Day"})
         self.post({"anyone-else": "Yes"})
         self.post({"first-name": "Joe", "last-name": "Day"})
         self.post({"anyone-else": "No"})
@@ -570,7 +600,8 @@ class TestIndividualResponseWho(IndividualResponseTestCase):
         self.get(self.individual_response_link)
         self.get(self.individual_response_start_link)
 
-        self.post({"individual-response-who-answer": "Marie Day"})
+        list_item_id = self.get_who_choice(0)["list_item_id"]
+        self.post({"individual-response-who-answer": list_item_id})
 
         # When I choose previous
         self.previous()
@@ -585,9 +616,8 @@ class TestIndividualResponseWho(IndividualResponseTestCase):
 
         self.get(self.individual_response_link)
         self.get(self.individual_response_start_link)
-        self.post({"individual-response-who-answer": "Marie Day"})
-
-        list_item_id = self.last_url.split("/")[2]
+        list_item_id = self.get_who_choice(0)["list_item_id"]
+        self.post({"individual-response-who-answer": list_item_id})
 
         self.post({"individual-response-how-answer": "Post"})
 
@@ -965,3 +995,112 @@ class TestIndividualResponseChange(IndividualResponseTestCase):
 
         # Then I should be taken to the change page
         self.assertInUrl("/change")
+
+
+class TestIndividualResponseSameNames(IndividualResponseTestCase):
+    def test_who_doesnt_display_middle_names_when_no_same_names(self):
+        # Given I add some people without same names
+        self._add_household_multiple_members_no_primary()
+
+        # When I navigate to the who page
+        self.get(self.individual_response_link)
+        self.get(self.individual_response_start_link)
+
+        # Then the member selector should not show the middle names for anyone
+        self.assertNotInBody("Carla")
+        self.assertNotInBody("David")
+
+    def test_who_displays_middle_names_when_same_names_exist(self):
+        # Given I add some people with same names
+        self._add_household_members_with_same_names()
+
+        # When I navigate to the who page
+        self.get(self.individual_response_link)
+        self.get(self.individual_response_start_link)
+
+        # Then the member selector should show the middle names for everyone that has one
+        self.assertInBody("Marie Carla Day")
+        self.assertInBody("Joe David Day")
+        self.assertInBody("Joe Eric Day")
+        self.assertInBody("Joe Day")
+
+    def test_who_displays_all_names_when_duplicates_exist(self):
+        # Given I add some people with duplicate names
+        self.get("questionnaire/primary-person-list-collector/")
+        self.post({"you-live-here": "No"})
+        self.post({"anyone-else": "Yes"})
+        self.post({"first-name": "Marie", "middle-names": "Carla", "last-name": "Day"})
+        self.post({"anyone-else": "Yes"})
+        self.post({"first-name": "Marie", "middle-names": "Carla", "last-name": "Day"})
+        self.post({"anyone-else": "Yes"})
+        self.post({"first-name": "Joe", "last-name": "Day"})
+        self.post({"anyone-else": "Yes"})
+        self.post({"first-name": "Joe", "last-name": "Day"})
+        self.post({"anyone-else": "No"})
+        self.get("questionnaire/")
+
+        # When I navigate to the who page
+        self.get(self.individual_response_link)
+        self.get(self.individual_response_start_link)
+
+        # Then everyone should be displayed
+        self.assertEqual(self.get_who_choice(0)["label"], "Marie Carla Day")
+        self.assertEqual(self.get_who_choice(1)["label"], "Marie Carla Day")
+        self.assertEqual(self.get_who_choice(2)["label"], "Joe Day")
+        self.assertEqual(self.get_who_choice(3)["label"], "Joe Day")
+        self.assertNotEqual(
+            self.get_who_choice(0)["list_item_id"],
+            self.get_who_choice(1)["list_item_id"],
+        )
+        self.assertNotEqual(
+            self.get_who_choice(2)["list_item_id"],
+            self.get_who_choice(3)["list_item_id"],
+        )
+
+    def test_how_doesnt_display_middle_names_when_not_same_name(self):
+        # Given I add some people with same names
+        self._add_household_members_with_same_names()
+
+        self.get(self.individual_response_link)
+        self.get(self.individual_response_start_link)
+
+        # When I choose someone that doesn't have a same name
+        list_item_id = self.get_who_choice(0)["list_item_id"]
+        self.post({"individual-response-who-answer": list_item_id})
+
+        # Then the how page should not show the middle names
+        self.assertInBody("Marie Day")
+
+    def test_how_displays_middle_names_when_same_name(self):
+        # Given I add some people with same names
+        self._add_household_members_with_same_names()
+
+        self.get(self.individual_response_link)
+        self.get(self.individual_response_start_link)
+
+        # When I choose someone with a same name
+        list_item_id = self.get_who_choice(1)["list_item_id"]
+        self.post({"individual-response-who-answer": list_item_id})
+
+        # Then the how page should show the middle names
+        self.assertInBody("Joe David Day")
+
+    def test_how_has_correct_list_item_id_when_duplicates_exist(self):
+        # Given I add some people with duplicate names
+        self.get("questionnaire/primary-person-list-collector/")
+        self.post({"you-live-here": "No"})
+        self.post({"anyone-else": "Yes"})
+        self.post({"first-name": "Marie", "middle-names": "Carla", "last-name": "Day"})
+        self.post({"anyone-else": "Yes"})
+        self.post({"first-name": "Marie", "middle-names": "Carla", "last-name": "Day"})
+        self.post({"anyone-else": "No"})
+        self.get("questionnaire/")
+
+        # When I navigate to the who page and select someone
+        self.get(self.individual_response_link)
+        self.get(self.individual_response_start_link)
+        list_item_id = self.get_who_choice(0)["list_item_id"]
+        self.post({"individual-response-who-answer": list_item_id})
+
+        # Then I should be on the how page for that person
+        self.assertInUrl(list_item_id)
