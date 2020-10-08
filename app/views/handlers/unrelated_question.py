@@ -2,7 +2,7 @@ from app.questionnaire.location import Location
 from app.views.handlers.question import Question
 
 
-class UnrelatedRelationship(Question):
+class UnrelatedQuestion(Question):
     @property
     def parent_location(self):
         parent_block_id = self._schema.parent_id_map[self.block["id"]]

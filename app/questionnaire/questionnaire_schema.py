@@ -19,7 +19,7 @@ LIST_COLLECTOR_CHILDREN = [
     "PrimaryPersonListAddOrEditQuestion",
 ]
 
-RELATIONSHIP_CHILDREN = ["UnrelatedRelationship"]
+RELATIONSHIP_CHILDREN = ["UnrelatedQuestion"]
 
 
 class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
@@ -102,7 +102,7 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
                         "edit_block",
                         "remove_block",
                         "add_or_edit_block",
-                        "unrelated_relationship_block",
+                        "unrelated_block",
                     ]:
                         if block.get(nested_block_name):
                             nested_block = block[nested_block_name]
