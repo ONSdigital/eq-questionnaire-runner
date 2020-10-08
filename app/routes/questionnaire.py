@@ -237,9 +237,8 @@ def relationships(
     list_name,
     list_item_id,
     to_list_item_id=None,
-    block_id=None,
+    block_id="relationships",
 ):
-    block_id = block_id or "relationships"
     try:
         block_handler = get_block_handler(
             schema=schema,
