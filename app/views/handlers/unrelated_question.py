@@ -18,12 +18,18 @@ class UnrelatedQuestion(Question):
             self.parent_location, self._routing_path
         )
 
-        if not self.router.is_list_item_in_list_store(
-            self.current_location.list_item_id, self.current_location.list_name
+        if not can_access_parent_location:
+            return False
+
+        if (
+            self.current_location.list_item_id
+            and not self.router.is_list_item_in_list_store(
+                self.current_location.list_item_id, self.current_location.list_name
+            )
         ):
             return False
 
-        return can_access_parent_location
+        return True
 
     def get_previous_location_url(self):
         pass

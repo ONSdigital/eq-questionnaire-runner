@@ -31,7 +31,7 @@ class Router:
         ]
 
     def is_list_item_in_list_store(self, list_item_id, list_name):
-        return not list_item_id or (list_item_id in self._list_store[list_name])
+        return list_item_id in self._list_store[list_name]
 
     def can_access_location(self, location: Location, routing_path):
         """
@@ -41,7 +41,7 @@ class Router:
         if location.section_id not in self.enabled_section_ids:
             return False
 
-        if not self.is_list_item_in_list_store(
+        if location.list_item_id and not self.is_list_item_in_list_store(
             location.list_item_id, location.list_name
         ):
             return False
