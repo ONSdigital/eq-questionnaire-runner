@@ -1,7 +1,5 @@
 from typing import Dict, List, Mapping, Sequence, Union
 
-from jinja2 import escape
-
 from app.data_models.answer_store import AnswerStore
 from app.questionnaire import QuestionnaireSchema
 from app.questionnaire.placeholder_transforms import PlaceholderTransforms
@@ -42,21 +40,6 @@ class PlaceholderParser:
                 ] = self._parse_placeholder(placeholder)
         return self._placeholder_map
 
-    def _lookup_answer(self, answer_id: str, list_item_id: str = None):
-        answer = self._answer_store.get_answer(answer_id, list_item_id)
-        if answer:
-            if isinstance(answer.value, list):
-                return [
-                    escape(list_item)
-                    if list_item and isinstance(list_item, str)
-                    else answer.value
-                    for list_item in answer.value
-                ]
-            return (
-                escape(answer.value) if isinstance(answer.value, str) else answer.value
-            )
-        return None
-
     def _resolve_value_source(self, value_source):
         if value_source["source"] == "answers":
             return self._resolve_answer_value(value_source)
@@ -77,10 +60,14 @@ class PlaceholderParser:
 
         if isinstance(value_source["identifier"], (list, tuple)):
             return [
-                self._lookup_answer(each_identifier, list_item_id)
+                self._answer_store.get_escaped_answer_value(
+                    each_identifier, list_item_id
+                )
                 for each_identifier in value_source["identifier"]
             ]
-        answer = self._lookup_answer(value_source["identifier"], list_item_id)
+        answer = self._answer_store.get_escaped_answer_value(
+            value_source["identifier"], list_item_id
+        )
         return (
             answer.get(value_source["selector"])
             if "selector" in value_source
