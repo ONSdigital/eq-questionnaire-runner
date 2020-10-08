@@ -4,7 +4,7 @@
     "schema_version": "0.0.1",
     "data_version": "0.0.3",
     "survey_id": "0",
-    "title": "Test Relationships Unrelated Relationships",
+    "title": "Test Relationships Unrelated Question",
     "theme": "default",
     "description": "A questionnaire to test capturing of relationships.",
     "messages": {},
@@ -490,8 +490,8 @@
                                     ]
                                 }
                             ],
-                            "unrelated_relationship_block": {
-                                "type": "UnrelatedRelationship",
+                            "unrelated_block": {
+                                "type": "UnrelatedQuestion",
                                 "id": "related-to-anyone-else",
                                 "page_title": "How person {list_item_position} is related to anyone else",
                                 "title": "Related to anyone",
