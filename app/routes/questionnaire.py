@@ -231,7 +231,7 @@ def block(schema, questionnaire_store, block_id, list_name=None, list_item_id=No
 )
 @with_questionnaire_store
 @with_schema
-def relationship(
+def relationships(
     schema,
     questionnaire_store,
     list_name,
