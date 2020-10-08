@@ -9,9 +9,8 @@ from app.views.handlers.list_remove_question import ListRemoveQuestion
 from app.views.handlers.primary_person_list_collector import PrimaryPersonListCollector
 from app.views.handlers.primary_person_question import PrimaryPersonQuestion
 from app.views.handlers.question import Question
-from app.views.handlers.relationship_collector import RelationshipCollector
+from app.views.handlers.relationships import RelationshipCollector, UnrelatedQuestion
 from app.views.handlers.summary import Summary
-from app.views.handlers.unrelated_question import UnrelatedQuestion
 
 BLOCK_MAPPINGS = {
     "Question": Question,

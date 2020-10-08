@@ -8,7 +8,9 @@ class TestQuestionnaireRelationshipsUnrelated(QuestionnaireTestCase):
         self.add_person("John", "Doe")
         self.post({"anyone-else": "No"})
 
-    def test_relationship_unrelated_is_accessible_when_list_name_and_list_item_valid(self):
+    def test_relationship_unrelated_is_accessible_when_list_name_and_list_item_valid(
+        self,
+    ):
         self.launch_survey_and_add_people()
 
         first_list_item = self.dump_debug()["LISTS"][0]["items"][0]
