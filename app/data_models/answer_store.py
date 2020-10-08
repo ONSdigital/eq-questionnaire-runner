@@ -2,6 +2,8 @@ from __future__ import annotations
 
 from typing import Dict, List, Optional
 
+from jinja2 import escape
+
 from app.data_models.answer import Answer
 
 
@@ -134,3 +136,27 @@ class AnswerStore:
 
     def serialize(self):
         return list(self.answer_map.values())
+
+    def get_escaped_answer_value(self, answer_id, list_item_id=None):
+        if answer := self.get_answer(answer_id, list_item_id):
+            if isinstance(answer.value, list):
+                return [
+                    escape(list_item)
+                    if list_item and isinstance(list_item, str)
+                    else list_item
+                    for list_item in answer.value
+                ]
+
+            if isinstance(answer.value, dict):
+                escaped_dict = {}
+                for key, value in answer.value.items():
+                    escaped_dict[key] = (
+                        escape(value) if isinstance(value, str) else value
+                    )
+                return escaped_dict
+
+            return (
+                escape(answer.value) if isinstance(answer.value, str) else answer.value
+            )
+
+        return None
