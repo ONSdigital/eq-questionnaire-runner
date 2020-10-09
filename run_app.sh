@@ -11,7 +11,7 @@ elif [ "$WEB_SERVER_TYPE" = "uwsgi" ]; then
 elif [ "$WEB_SERVER_TYPE" = "uwsgi-threads" ]; then
     run_command="uwsgi uwsgi.ini --workers ${WEB_SERVER_WORKERS} --enable-threads --threads ${WEB_SERVER_THREADS}"
 elif [ "$WEB_SERVER_TYPE" = "uwsgi-async" ]; then
-    run_command="uwsgi uwsgi.ini --module patched:application --workers ${WEB_SERVER_WORKERS} --single-interpreter --gevent ${WEB_SERVER_UWSGI_ASYNC_CORES}"
+    run_command="uwsgi uwsgi.ini --module patched:application --workers ${WEB_SERVER_WORKERS} --gevent ${WEB_SERVER_UWSGI_ASYNC_CORES}"
 fi
 
 if [ "$EQ_NEW_RELIC_ENABLED" = "True" ]; then

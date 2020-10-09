@@ -9,7 +9,7 @@ from app.views.handlers.list_remove_question import ListRemoveQuestion
 from app.views.handlers.primary_person_list_collector import PrimaryPersonListCollector
 from app.views.handlers.primary_person_question import PrimaryPersonQuestion
 from app.views.handlers.question import Question
-from app.views.handlers.relationship_collector import RelationshipCollector
+from app.views.handlers.relationships import RelationshipCollector, UnrelatedQuestion
 from app.views.handlers.summary import Summary
 
 BLOCK_MAPPINGS = {
@@ -23,6 +23,7 @@ BLOCK_MAPPINGS = {
     "PrimaryPersonListCollector": PrimaryPersonListCollector,
     "PrimaryPersonListAddOrEditQuestion": PrimaryPersonQuestion,
     "RelationshipCollector": RelationshipCollector,
+    "UnrelatedQuestion": UnrelatedQuestion,
     "Introduction": Content,
     "Interstitial": Content,
     "Confirmation": Content,
@@ -63,7 +64,7 @@ def get_block_handler(
 
     section_id = schema.get_section_id_for_block_id(block_id)
 
-    if to_list_item_id:
+    if to_list_item_id or block_type == "UnrelatedQuestion":
         location = RelationshipLocation(
             section_id=section_id,
             block_id=block_id,

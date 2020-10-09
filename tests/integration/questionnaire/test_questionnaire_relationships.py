@@ -26,7 +26,7 @@ class TestQuestionnaireRelationships(QuestionnaireTestCase):
 
     def test_invalid_relationship_raises_404(self):
         self.launchSurvey("test_relationships")
-        self.get("/questionnaire/relationships/fake-id/to/another-fake-id")
+        self.get("/questionnaire/relationships/people/fake-id/to/another-fake-id")
         self.assertStatusNotFound()
 
     def test_go_to_invalid_relationship(self):
@@ -35,7 +35,7 @@ class TestQuestionnaireRelationships(QuestionnaireTestCase):
         self.add_person("John", "Doe")
         self.post({"anyone-else": "No"})
 
-        self.get("/questionnaire/relationships/fake-id/to/another-fake-id")
+        self.get("/questionnaire/relationships/people/fake-id/to/another-fake-id")
         self.assertInUrl("/questionnaire/relationships")
 
     def test_failed_validation(self):

@@ -15,7 +15,7 @@ class TestRelationshipLocation(AppContextTestCase):
 
         self.assertEqual(
             location_url,
-            "http://test.localdomain/questionnaire/relationships/id1/to/id2/",
+            "http://test.localdomain/questionnaire/relationships/household/id1/to/id2/",
         )
 
     def test_create_location_from_dict(self):
