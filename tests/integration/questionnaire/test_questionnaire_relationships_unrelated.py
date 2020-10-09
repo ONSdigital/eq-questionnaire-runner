@@ -8,7 +8,7 @@ class TestQuestionnaireRelationshipsUnrelated(QuestionnaireTestCase):
         self.add_person("John", "Doe")
         self.post({"anyone-else": "No"})
 
-    def test_relationship_unrelated_is_accessible_when_list_name_and_list_item_valid(
+    def test_is_accessible_when_list_name_and_list_item_valid(
         self,
     ):
         self.launch_survey_and_add_people()
@@ -21,14 +21,14 @@ class TestQuestionnaireRelationshipsUnrelated(QuestionnaireTestCase):
         self.assertInBody("Marie Doe")
         self.assertInBody("John Doe")
 
-    def test_unrelated_relationship_is_not_accessible_when_invalid_list_item(self):
+    def test_is_not_accessible_when_invalid_list_item(self):
         self.launchSurvey("test_relationships_unrelated")
         self.get(
             f"/questionnaire/relationships/people/invalid-id/related-to-anyone-else"
         )
         self.assertStatusNotFound()
 
-    def test_relationship_unrelated_is_not_accessible_when_invalid_list_name(self):
+    def test_is_not_accessible_when_invalid_list_name(self):
         self.launch_survey_and_add_people()
 
         first_list_item = self.dump_debug()["LISTS"][0]["items"][0]
@@ -37,7 +37,7 @@ class TestQuestionnaireRelationshipsUnrelated(QuestionnaireTestCase):
         )
         self.assertStatusNotFound()
 
-    def test_unrelated_relationship_is_not_accessible_when_invalid_block_id(self):
+    def test_is_not_accessible_when_invalid_block_id(self):
         self.launch_survey_and_add_people()
 
         first_list_item = self.dump_debug()["LISTS"][0]["items"][0]
