@@ -3,6 +3,10 @@ from app.views.handlers.question import Question
 
 
 class UnrelatedQuestion(Question):
+    def _get_parent_list_name(self):
+        parent_block_id = self._schema.parent_id_map[self.block["id"]]
+        return self._schema.get_block(parent_block_id)["for_list"]
+
     @property
     def parent_location(self):
         parent_block_id = self._schema.parent_id_map[self.block["id"]]
@@ -21,7 +25,7 @@ class UnrelatedQuestion(Question):
         if not can_access_parent_location:
             return False
 
-        if (
+        if self.current_location.list_name != self._get_parent_list_name() or (
             self.current_location.list_item_id
             and not self.router.is_list_item_in_list_store(
                 self.current_location.list_item_id, self.current_location.list_name
