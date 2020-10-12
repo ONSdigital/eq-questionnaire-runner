@@ -8,6 +8,24 @@
   }
 } %}
 
+{% if previous_location_url %}
+  {% set breadcrumbs = {
+    "ariaLabel": 'Previous',
+    "itemsList": [
+      {
+        "url": previous_location_url,
+        "id": "top-previous",
+        "text": _("Previous"),
+          "attributes": {
+            "data-ga": 'click',
+            "data-ga-category": 'Navigation',
+            "data-ga-action": 'Previous link click'
+          }
+      }
+    ]
+  } %}
+{% endif %}
+
 {% set full_page_title = page_title ~ " - " ~ survey_title %}
 
 {% set pageConfig = {
@@ -18,6 +36,7 @@
   "cdn": {
     "url": cdn_url
   },
+  "breadcrumbs": breadcrumbs
 } %}
 
 {% include 'layouts/configs/_save-sign-out-button.html' %}

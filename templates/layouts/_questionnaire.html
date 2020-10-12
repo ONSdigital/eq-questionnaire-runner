@@ -1,7 +1,6 @@
 {% extends 'layouts/_base.html' %}
 {% from "components/button/_macro.njk" import onsButton %}
 {% from "components/cookies-banner/_macro.njk" import onsCookiesBanner %}
-{% from "components/breadcrumb/_macro.njk" import onsBreadcrumb %}
 
 {% set block = content.block %}
 {% set form = content.form %}
@@ -9,27 +8,6 @@
 
 {% block main %}
   <button type="submit" class="u-d-no" hidden></button>
-  {% if previous_location_url %}
-    <div class="u-mb-s">
-      {{
-        onsBreadcrumb({
-          "ariaLabel": 'Previous',
-          "itemsList": [
-            {
-              "url": previous_location_url,
-              "id": "top-previous",
-              "text": _("Previous"),
-                "attributes": {
-                  "data-ga": 'click',
-                  "data-ga-category": 'Navigation',
-                  "data-ga-action": 'Previous link click'
-                }
-            }
-          ]
-        })
-      }}
-    </div>
-  {% endif %}
 
   {% block form_errors %}{% endblock %}
 
