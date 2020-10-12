@@ -79,15 +79,19 @@ spec:
               value: pubsub
             - name: EQ_FULFILMENT_TOPIC_ID
               value: eq-fulfilment-topic
-            - name: WEB_SERVER
-              value: "gunicorn"
+            - name: EQ_INDIVIDUAL_RESPONSE_LIMIT
+              value: "{{- .Values.individualResponseLimit }}"
+            - name: WEB_SERVER_TYPE
+              value: "{{- .Values.webServer.type }}"
             - name: WEB_SERVER_WORKERS
-              value: "7"
+              value: "{{- .Values.webServer.workers }}"
             - name: WEB_SERVER_THREADS
-              value: "50"
-            - name: WEB_SERVER_ASYNC_CORES
-              value: "20"
-            - name: GUNICORN_KEEP_ALIVE
+              value: "{{- .Values.webServer.threads }}"
+            - name: WEB_SERVER_UWSGI_ASYNC_CORES
+              value: "{{- .Values.webServer.uwsgiAsyncCores }}"
+            - name: DATASTORE_USE_GRPC
+              value: "{{- .Values.datastore.useGRPC }}"
+            - name: HTTP_KEEP_ALIVE
               value: "650"
             - name: EQ_GCS_SUBMISSION_BUCKET_ID
               value: "{{- .Values.submissionBucket }}"
@@ -121,3 +125,5 @@ spec:
               value: "{{- .Values.newRelic.licenseKey }}"
             - name: NEW_RELIC_APP_NAME
               value: "{{- .Values.newRelic.appName }}"
+            - name: CONFIRMATION_EMAIL_LIMIT
+              value: "{{- .Values.confirmationEmailLimit }}"

@@ -19,6 +19,8 @@ LIST_COLLECTOR_CHILDREN = [
     "PrimaryPersonListAddOrEditQuestion",
 ]
 
+RELATIONSHIP_CHILDREN = ["UnrelatedQuestion"]
+
 
 class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
     def __init__(self, questionnaire_json, language_code=DEFAULT_LANGUAGE_CODE):
@@ -90,12 +92,17 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
                 self._parent_id_map[block_id] = group["id"]
 
                 blocks[block_id] = block
-                if block["type"] in ("ListCollector", "PrimaryPersonListCollector"):
+                if block["type"] in (
+                    "ListCollector",
+                    "PrimaryPersonListCollector",
+                    "RelationshipCollector",
+                ):
                     for nested_block_name in [
                         "add_block",
                         "edit_block",
                         "remove_block",
                         "add_or_edit_block",
+                        "unrelated_block",
                     ]:
                         if block.get(nested_block_name):
                             nested_block = block[nested_block_name]
@@ -244,8 +251,8 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
     def get_section_for_block_id(self, block_id):
         block = self.get_block(block_id)
 
-        if block.get("type") in LIST_COLLECTOR_CHILDREN:
-            section_id = self._get_section_id_for_list_block(block_id)
+        if block.get("type") in LIST_COLLECTOR_CHILDREN + RELATIONSHIP_CHILDREN:
+            section_id = self._get_parent_section_id_for_block(block_id)
         else:
             group_id = self._parent_id_map[block_id]
             section_id = self._parent_id_map[group_id]
@@ -467,7 +474,7 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
             "ConfirmationQuestion",
         ]
 
-    def _get_section_id_for_list_block(self, block_id):
+    def _get_parent_section_id_for_block(self, block_id):
         parent_block_id = self._parent_id_map[block_id]
         group_id = self._parent_id_map[parent_block_id]
         section_id = self._parent_id_map[group_id]

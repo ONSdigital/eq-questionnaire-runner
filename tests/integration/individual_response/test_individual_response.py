@@ -1,8 +1,18 @@
+import re
+from unittest.mock import MagicMock
+
+from app import settings
+from app.publisher.exceptions import PublicationFailed
 from tests.integration.integration_test_case import IntegrationTestCase
 
 
 class IndividualResponseTestCase(IntegrationTestCase):
     def setUp(self):
+        settings.EQ_INDIVIDUAL_RESPONSE_LIMIT = 2
+        # Dummy mobile number from the range published by Ofcom
+        # https://www.ofcom.org.uk/phones-telecoms-and-internet/information-for-industry/numbering/numbers-for-drama
+        self.DUMMY_MOBILE_NUMBER = "07700900258"
+
         super().setUp()
         self.launchSurvey("test_individual_response", region_code="GB-ENG")
 
@@ -21,10 +31,31 @@ class IndividualResponseTestCase(IntegrationTestCase):
         if response_paragraph:
             return response_paragraph.find_next()["href"]
 
-    def get_link(self, rowIndex, text):
-        selector = f"[data-qa='list-item-{text}-{rowIndex}-link']"
+    @property
+    def individual_response_start_link(self):
+        submit_button = self.getHtmlSoup().find("a", {"data-qa": "btn-submit"})
+        return submit_button.attrs["href"]
+
+    def get_link(self, index, text):
+        selector = f"[data-qa='list-item-{text}-{index}-link']"
         selected = self.getHtmlSoup().select(selector)
         return selected[0].get("href")
+
+    def get_who_choice(self, index):
+        label = (
+            self.getHtmlSoup()
+            .select(f"#individual-response-who-answer-{index}-label")[0]
+            .text.strip()
+        )
+        list_item_id = (
+            self.getHtmlSoup()
+            .select(f"#individual-response-who-answer-{index}")[0]
+            .attrs["value"]
+        )
+        return {
+            "label": label,
+            "list_item_id": list_item_id,
+        }
 
     def _add_no_household_members(self):
         self.get("questionnaire/primary-person-list-collector/")
@@ -60,24 +91,50 @@ class IndividualResponseTestCase(IntegrationTestCase):
         self.get("questionnaire/primary-person-list-collector/")
         self.post({"you-live-here": "No"})
         self.post({"anyone-else": "Yes"})
-        self.post({"first-name": "Marie", "last-name": "Day"})
+        self.post({"first-name": "Marie", "middle-names": "Carla", "last-name": "Day"})
+        self.post({"anyone-else": "Yes"})
+        self.post({"first-name": "Joe", "middle-names": "David", "last-name": "Day"})
+        self.post({"anyone-else": "No"})
+        self.get("questionnaire/")
+
+    def _add_household_members_with_same_names(self):
+        self.get("questionnaire/primary-person-list-collector/")
+        self.post({"you-live-here": "No"})
+        self.post({"anyone-else": "Yes"})
+        self.post({"first-name": "Marie", "middle-names": "Carla", "last-name": "Day"})
+        self.post({"anyone-else": "Yes"})
+        self.post({"first-name": "Joe", "middle-names": "David", "last-name": "Day"})
+        self.post({"anyone-else": "Yes"})
+        self.post({"first-name": "Joe", "middle-names": "Eric", "last-name": "Day"})
         self.post({"anyone-else": "Yes"})
         self.post({"first-name": "Joe", "last-name": "Day"})
         self.post({"anyone-else": "No"})
         self.get("questionnaire/")
 
-    def _request_individual_response(self):
+    def _request_individual_response_by_post(self):
         self._add_household_no_primary()
         self.post()
         self.get(self.individual_response_link)
-        self.post()
+        self.get(self.individual_response_start_link)
         self.post({"individual-response-how-answer": "Post"})
         self.post(
             {
                 "individual-response-post-confirm-answer": "Yes, send the access code by post"
             }
         )
+
+    def _request_individual_response_by_text(self):
+        self._add_household_no_primary()
         self.post()
+        self.get(self.individual_response_link)
+        self.get(self.individual_response_start_link)
+        self.post({"individual-response-how-answer": "Text message"})
+        self.post(
+            {
+                "individual-response-enter-number-answer": self.DUMMY_MOBILE_NUMBER,
+            }
+        )
+        self.post({"individual-response-text-confirm-answer": "Yes, send the text"})
 
 
 class TestIndividualResponseOnHubDisabled(IndividualResponseTestCase):
@@ -104,7 +161,6 @@ class TestIndividualResponseErrorStatus(IndividualResponseTestCase):
         individual_response_link = self.individual_response_link
         self.post()
         self.get(individual_response_link)
-        self.post()
         self.sign_out()
         self.get(individual_response_link)
 
@@ -211,8 +267,72 @@ class TestIndividualResponseErrorStatus(IndividualResponseTestCase):
         # Then I should see the 404 page
         self.assertStatusCode(404)
 
+    def test_429_individual_response_limit_exceeded(self):
+        # Given I successfully request individual responses up to the limit
+        self._add_household_no_primary()
+        self.get(self.individual_section_link)
+        self.get(self.individual_response_link)
+        self.get(self.individual_response_start_link)
+        self.post({"individual-response-how-answer": "Text message"})
+        self.post({"individual-response-enter-number-answer": "07970000000"})
+
+        confirm_number_page = self.last_url
+
+        self.post({"individual-response-text-confirm-answer": "Yes, send the text"})
+        self.assertInUrl("/text/confirmation")
+
+        self.get(confirm_number_page)
+        self.post({"individual-response-text-confirm-answer": "Yes, send the text"})
+        self.assertInUrl("/text/confirmation")
+
+        # When I try to request an additional individual response, which would exceed the limit
+        self.get(confirm_number_page)
+        self.post({"individual-response-text-confirm-answer": "Yes, send the text"})
+
+        # Then I should see a 429 page
+        self.assertStatusCode(429)
+        self.assertInBody(
+            "You have reached the maximum number of individual access codes"
+        )
+
+    def test_500_publish_failed_text(self):
+        publisher = self._application.eq["publisher"]
+        publisher.publish = MagicMock(side_effect=PublicationFailed)
+
+        # Given I add a household member
+        self._request_individual_response_by_text()
+        self.assertStatusCode(500)
+        self.assertEqualPageTitle(
+            "Sorry, there was a problem sending the access code - Census 2021"
+        )
+        self.assertInSelector(self.last_url, "p[data-qa=retry]")
+
+    def test_500_publish_failed_post(self):
+        publisher = self._application.eq["publisher"]
+        publisher.publish = MagicMock(side_effect=PublicationFailed)
+
+        # Given I add a household member
+        self._request_individual_response_by_post()
+        self.assertEqualPageTitle(
+            "Sorry, there was a problem sending the access code - Census 2021"
+        )
+        self.assertInSelector(self.last_url, "p[data-qa=retry]")
+
 
 class TestIndividualResponseIndividualSection(IndividualResponseTestCase):
+    def test_ir_page_titles_render_correctly(self):
+        # Given I add household members
+        self._add_household_no_primary()
+
+        # When I navigate to the individual response interstitial
+        self.get(self.individual_section_link)
+        self.get(self.individual_response_link)
+
+        # I should see the correct page title
+        self.assertEqualPageTitle(
+            "Cannot answer questions for others in your household: Person 1 - Census 2021"
+        )
+
     def test_ir_guidance_not_displayed_when_primary(self):
         # Given I add a primary person
         self._add_primary()
@@ -306,7 +426,7 @@ class TestIndividualResponseIndividualSection(IndividualResponseTestCase):
 class TestIndividualResponseHubViews(IndividualResponseTestCase):
     def test_individual_response_requested(self):
         # Given I request an individual response by post
-        self._request_individual_response()
+        self._request_individual_response_by_post()
 
         # When I navigate to the hub
         self.get("/questionnaire")
@@ -360,7 +480,7 @@ class TestIndividualResponseNavigation(IndividualResponseTestCase):
 
         # When I start an IR journey then click the previous link
         self.get(self.individual_response_link)
-        self.post()
+        self.get(self.individual_response_start_link)
         self.previous()
         self.previous()
 
@@ -373,7 +493,7 @@ class TestIndividualResponseNavigation(IndividualResponseTestCase):
         self._add_household_no_primary()
         self.get(self.individual_section_link)
         self.get(self.individual_response_link)
-        self.post()
+        self.get(self.individual_response_start_link)
 
         # When I click the previous link
         self.previous()
@@ -402,7 +522,7 @@ class TestIndividualResponseNavigation(IndividualResponseTestCase):
 
         self.post()
         self.get(self.individual_response_link)
-        self.post()
+        self.get(self.individual_response_start_link)
 
         person_id = self.last_url.split("/")[2]
 
@@ -429,7 +549,7 @@ class TestIndividualResponseWho(IndividualResponseTestCase):
         self._add_household_no_primary()
 
         self.get(self.individual_response_link)
-        self.post()
+        self.get(self.individual_response_start_link)
 
         # Then I should skip the member selector
         self.assertInUrl("/how")
@@ -440,7 +560,7 @@ class TestIndividualResponseWho(IndividualResponseTestCase):
         self._add_household_multiple_members_no_primary()
 
         self.get(self.individual_response_link)
-        self.post()
+        self.get(self.individual_response_start_link)
 
         # Then I should be taken to the member selector
         self.assertInUrl("/who")
@@ -464,7 +584,7 @@ class TestIndividualResponseWho(IndividualResponseTestCase):
         self._add_household_multiple_members_no_primary()
 
         self.get(self.individual_response_link)
-        self.post()
+        self.get(self.individual_response_start_link)
 
         # When I choose previous
         self.previous()
@@ -478,9 +598,10 @@ class TestIndividualResponseWho(IndividualResponseTestCase):
         self._add_household_multiple_members_no_primary()
 
         self.get(self.individual_response_link)
-        self.post()
+        self.get(self.individual_response_start_link)
 
-        self.post({"individual-response-who-answer": "Marie Day"})
+        list_item_id = self.get_who_choice(0)["list_item_id"]
+        self.post({"individual-response-who-answer": list_item_id})
 
         # When I choose previous
         self.previous()
@@ -494,10 +615,9 @@ class TestIndividualResponseWho(IndividualResponseTestCase):
         self._add_household_multiple_members_no_primary()
 
         self.get(self.individual_response_link)
-        self.post()
-        self.post({"individual-response-who-answer": "Marie Day"})
-
-        list_item_id = self.last_url.split("/")[2]
+        self.get(self.individual_response_start_link)
+        list_item_id = self.get_who_choice(0)["list_item_id"]
+        self.post({"individual-response-who-answer": list_item_id})
 
         self.post({"individual-response-how-answer": "Post"})
 
@@ -509,16 +629,12 @@ class TestIndividualResponseWho(IndividualResponseTestCase):
 
 
 class TestIndividualResponseTextHandler(IndividualResponseTestCase):
-    # Dummy mobile number from the range published by Ofcom
-    # https://www.ofcom.org.uk/phones-telecoms-and-internet/information-for-industry/numbering/numbers-for-drama
-    DUMMY_MOBILE_NUMBER = "07700900258"
-
     def test_display_mobile_number_on_confirmation_page(self):
         # Given I navigate to the confirmation page
         self._add_household_no_primary()
         self.get(self.individual_section_link)
         self.get(self.individual_response_link)
-        self.post()
+        self.get(self.individual_response_start_link)
         self.post({"individual-response-how-answer": "Text message"})
         self.post({"individual-response-enter-number-answer": self.DUMMY_MOBILE_NUMBER})
 
@@ -534,7 +650,7 @@ class TestIndividualResponseTextHandler(IndividualResponseTestCase):
         self._add_household_no_primary()
         self.get(self.individual_section_link)
         self.get(self.individual_response_link)
-        self.post()
+        self.get(self.individual_response_start_link)
         self.post({"individual-response-how-answer": "Text message"})
 
         # When I post the number
@@ -548,7 +664,7 @@ class TestIndividualResponseTextHandler(IndividualResponseTestCase):
         self._add_household_no_primary()
         self.get(self.individual_section_link)
         self.get(self.individual_response_link)
-        self.post()
+        self.get(self.individual_response_start_link)
         self.post({"individual-response-how-answer": "Text message"})
         self.post({"individual-response-enter-number-answer": self.DUMMY_MOBILE_NUMBER})
 
@@ -563,7 +679,7 @@ class TestIndividualResponseTextHandler(IndividualResponseTestCase):
         self._add_household_no_primary()
         self.get(self.individual_section_link)
         self.get(self.individual_response_link)
-        self.post()
+        self.get(self.individual_response_start_link)
         self.post({"individual-response-how-answer": "Text message"})
         self.post({"individual-response-enter-number-answer": self.DUMMY_MOBILE_NUMBER})
 
@@ -581,7 +697,7 @@ class TestIndividualResponseTextHandler(IndividualResponseTestCase):
         self._add_household_no_primary()
         self.get(self.individual_section_link)
         self.get(self.individual_response_link)
-        self.post()
+        self.get(self.individual_response_start_link)
         self.post({"individual-response-how-answer": "Text message"})
         self.post({"individual-response-enter-number-answer": self.DUMMY_MOBILE_NUMBER})
 
@@ -596,7 +712,7 @@ class TestIndividualResponseTextHandler(IndividualResponseTestCase):
         # Given I navigate to the enter number page
         self._add_household_no_primary()
         self.get(self.individual_response_link)
-        self.post()
+        self.get(self.individual_response_start_link)
         self.post({"individual-response-how-answer": "Text message"})
 
         # When I click the previous link
@@ -609,7 +725,7 @@ class TestIndividualResponseTextHandler(IndividualResponseTestCase):
         # Given I navigate to the confirm number page
         self._add_household_no_primary()
         self.get(self.individual_response_link)
-        self.post()
+        self.get(self.individual_response_start_link)
         self.post({"individual-response-how-answer": "Text message"})
         self.post({"individual-response-enter-number-answer": self.DUMMY_MOBILE_NUMBER})
 
@@ -626,7 +742,7 @@ class TestIndividualResponseConfirmationPage(IndividualResponseTestCase):
         self._add_household_no_primary()
         self.get(self.individual_section_link)
         self.get(self.individual_response_link)
-        self.post()
+        self.get(self.individual_response_start_link)
         self.post({"individual-response-how-answer": "Post"})
 
         # When I post "Yes, send the access code by post"
@@ -645,7 +761,7 @@ class TestIndividualResponseConfirmationPage(IndividualResponseTestCase):
         self._add_household_no_primary()
         self.get(self.individual_section_link)
         self.get(self.individual_response_link)
-        self.post()
+        self.get(self.individual_response_start_link)
         self.post({"individual-response-how-answer": "Post"})
 
         # When I click the previous link
@@ -660,7 +776,7 @@ class TestIndividualResponseConfirmationPage(IndividualResponseTestCase):
         self._add_household_no_primary()
         self.get(self.individual_section_link)
         self.get(self.individual_response_link)
-        self.post()
+        self.get(self.individual_response_start_link)
         self.post({"individual-response-how-answer": "Post"})
 
         # When I choose to send the individual response code another way
@@ -677,7 +793,7 @@ class TestIndividualResponseConfirmationPage(IndividualResponseTestCase):
         self._add_household_no_primary()
         self.get(self.individual_section_link)
         self.get(self.individual_response_link)
-        self.post()
+        self.get(self.individual_response_start_link)
         self.post({"individual-response-how-answer": "Post"})
 
         # When I post with no data
@@ -693,7 +809,7 @@ class TestIndividualResponseConfirmationPage(IndividualResponseTestCase):
         self._add_household_no_primary()
         self.get(self.individual_section_link)
         self.get(self.individual_response_link)
-        self.post()
+        self.get(self.individual_response_start_link)
 
         # When I post without selecting a radio button
         self.post()
@@ -705,7 +821,7 @@ class TestIndividualResponseConfirmationPage(IndividualResponseTestCase):
 class TestIndividualResponseChange(IndividualResponseTestCase):
     def test_hub_change_link_goes_to_change_page(self):
         # Given I request an individual response by post
-        self._request_individual_response()
+        self._request_individual_response_by_post()
 
         # When I navigate to the hub and click on the change individual response link
         self.get("/questionnaire")
@@ -716,7 +832,7 @@ class TestIndividualResponseChange(IndividualResponseTestCase):
 
     def test_change_page_previous_goes_to_hub(self):
         # Given I navigate to the individual response change page
-        self._request_individual_response()
+        self._request_individual_response_by_post()
         self.get("/questionnaire")
         self.get(self.individual_section_link)
 
@@ -728,7 +844,7 @@ class TestIndividualResponseChange(IndividualResponseTestCase):
 
     def test_request_separate_census_option_is_preselected(self):
         # Given I request an individual response
-        self._request_individual_response()
+        self._request_individual_response_by_post()
 
         # When I navigate to the individual response change page
         self.get("/questionnaire")
@@ -742,7 +858,7 @@ class TestIndividualResponseChange(IndividualResponseTestCase):
 
     def test_request_separate_census_option_goes_to_how_page(self):
         # Given I navigate to the individual response change page
-        self._request_individual_response()
+        self._request_individual_response_by_post()
         self.get("/questionnaire")
         self.get(self.individual_section_link)
 
@@ -762,7 +878,7 @@ class TestIndividualResponseChange(IndividualResponseTestCase):
 
     def test_answer_own_questions_option_goes_to_hub(self):
         # Given I navigate to the individual response change page
-        self._request_individual_response()
+        self._request_individual_response_by_post()
         self.get("/questionnaire")
         self.get(self.individual_section_link)
 
@@ -778,7 +894,7 @@ class TestIndividualResponseChange(IndividualResponseTestCase):
 
     def test_answer_own_questions_option_updates_section_status(self):
         # Given I navigate to the individual response change page
-        self._request_individual_response()
+        self._request_individual_response_by_post()
         self.get("/questionnaire")
         self.get(self.individual_section_link)
 
@@ -803,7 +919,7 @@ class TestIndividualResponseChange(IndividualResponseTestCase):
         self.post()
         self.previous()
         self.get(self.individual_response_link)
-        self.post()
+        self.get(self.individual_response_start_link)
         self.post({"individual-response-how-answer": "Post"})
         self.post(
             {
@@ -828,7 +944,7 @@ class TestIndividualResponseChange(IndividualResponseTestCase):
 
     def test_i_will_answer_option_goes_to_individual_section(self):
         # Given I navigate to the individual response change page
-        self._request_individual_response()
+        self._request_individual_response_by_post()
         self.get("/questionnaire")
         self.get(self.individual_section_link)
 
@@ -846,7 +962,7 @@ class TestIndividualResponseChange(IndividualResponseTestCase):
 
     def test_how_page_previous_goes_to_change_page(self):
         # Given I navigate to the individual response how page
-        self._request_individual_response()
+        self._request_individual_response_by_post()
         self.get("/questionnaire")
         self.get(self.individual_section_link)
         self.post(
@@ -863,7 +979,7 @@ class TestIndividualResponseChange(IndividualResponseTestCase):
 
     def test_post_confirm_previous_previous_goes_to_change_page(self):
         # Given I navigate to the individual response post confirm page
-        self._request_individual_response()
+        self._request_individual_response_by_post()
         self.get("/questionnaire")
         self.get(self.individual_section_link)
         self.post(
@@ -879,3 +995,112 @@ class TestIndividualResponseChange(IndividualResponseTestCase):
 
         # Then I should be taken to the change page
         self.assertInUrl("/change")
+
+
+class TestIndividualResponseSameNames(IndividualResponseTestCase):
+    def test_who_doesnt_display_middle_names_when_no_same_names(self):
+        # Given I add some people without same names
+        self._add_household_multiple_members_no_primary()
+
+        # When I navigate to the who page
+        self.get(self.individual_response_link)
+        self.get(self.individual_response_start_link)
+
+        # Then the member selector should not show the middle names for anyone
+        self.assertNotInBody("Carla")
+        self.assertNotInBody("David")
+
+    def test_who_displays_middle_names_when_same_names_exist(self):
+        # Given I add some people with same names
+        self._add_household_members_with_same_names()
+
+        # When I navigate to the who page
+        self.get(self.individual_response_link)
+        self.get(self.individual_response_start_link)
+
+        # Then the member selector should show the middle names for everyone that has one
+        self.assertInBody("Marie Carla Day")
+        self.assertInBody("Joe David Day")
+        self.assertInBody("Joe Eric Day")
+        self.assertInBody("Joe Day")
+
+    def test_who_displays_all_names_when_duplicates_exist(self):
+        # Given I add some people with duplicate names
+        self.get("questionnaire/primary-person-list-collector/")
+        self.post({"you-live-here": "No"})
+        self.post({"anyone-else": "Yes"})
+        self.post({"first-name": "Marie", "middle-names": "Carla", "last-name": "Day"})
+        self.post({"anyone-else": "Yes"})
+        self.post({"first-name": "Marie", "middle-names": "Carla", "last-name": "Day"})
+        self.post({"anyone-else": "Yes"})
+        self.post({"first-name": "Joe", "last-name": "Day"})
+        self.post({"anyone-else": "Yes"})
+        self.post({"first-name": "Joe", "last-name": "Day"})
+        self.post({"anyone-else": "No"})
+        self.get("questionnaire/")
+
+        # When I navigate to the who page
+        self.get(self.individual_response_link)
+        self.get(self.individual_response_start_link)
+
+        # Then everyone should be displayed
+        self.assertEqual(self.get_who_choice(0)["label"], "Marie Carla Day")
+        self.assertEqual(self.get_who_choice(1)["label"], "Marie Carla Day")
+        self.assertEqual(self.get_who_choice(2)["label"], "Joe Day")
+        self.assertEqual(self.get_who_choice(3)["label"], "Joe Day")
+        self.assertNotEqual(
+            self.get_who_choice(0)["list_item_id"],
+            self.get_who_choice(1)["list_item_id"],
+        )
+        self.assertNotEqual(
+            self.get_who_choice(2)["list_item_id"],
+            self.get_who_choice(3)["list_item_id"],
+        )
+
+    def test_how_doesnt_display_middle_names_when_not_same_name(self):
+        # Given I add some people with same names
+        self._add_household_members_with_same_names()
+
+        self.get(self.individual_response_link)
+        self.get(self.individual_response_start_link)
+
+        # When I choose someone that doesn't have a same name
+        list_item_id = self.get_who_choice(0)["list_item_id"]
+        self.post({"individual-response-who-answer": list_item_id})
+
+        # Then the how page should not show the middle names
+        self.assertInBody("Marie Day")
+
+    def test_how_displays_middle_names_when_same_name(self):
+        # Given I add some people with same names
+        self._add_household_members_with_same_names()
+
+        self.get(self.individual_response_link)
+        self.get(self.individual_response_start_link)
+
+        # When I choose someone with a same name
+        list_item_id = self.get_who_choice(1)["list_item_id"]
+        self.post({"individual-response-who-answer": list_item_id})
+
+        # Then the how page should show the middle names
+        self.assertInBody("Joe David Day")
+
+    def test_how_has_correct_list_item_id_when_duplicates_exist(self):
+        # Given I add some people with duplicate names
+        self.get("questionnaire/primary-person-list-collector/")
+        self.post({"you-live-here": "No"})
+        self.post({"anyone-else": "Yes"})
+        self.post({"first-name": "Marie", "middle-names": "Carla", "last-name": "Day"})
+        self.post({"anyone-else": "Yes"})
+        self.post({"first-name": "Marie", "middle-names": "Carla", "last-name": "Day"})
+        self.post({"anyone-else": "No"})
+        self.get("questionnaire/")
+
+        # When I navigate to the who page and select someone
+        self.get(self.individual_response_link)
+        self.get(self.individual_response_start_link)
+        list_item_id = self.get_who_choice(0)["list_item_id"]
+        self.post({"individual-response-who-answer": list_item_id})
+
+        # Then I should be on the how page for that person
+        self.assertInUrl(list_item_id)

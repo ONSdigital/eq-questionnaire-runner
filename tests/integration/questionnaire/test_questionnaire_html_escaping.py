@@ -78,3 +78,30 @@ class TestQuestionnaireHtmlEscaping(IntegrationTestCase):
             'data-playback="Dave Jones is &amp;#34;&amp;gt;&amp;lt;b&amp;gt;some html&amp;lt;/b&amp;gt; Jones’ &lt;em&gt;brother or sister&lt;/em&gt;"'
             in self.getResponseData()
         )
+
+    def test_composite_address(self):
+        self.launchSurvey("test_address")
+        self.post(
+            {
+                "address-mandatory-line1": "<p>7 Evelyn Street</p>",
+                "address-mandatory-postcode": "CF63 4JG",
+            }
+        )
+        self.post({})
+        self.assertInUrl("/address-confirmation")
+        self.assertInBody(
+            "Please confirm the first line of your address is &lt;p&gt;7 Evelyn Street&lt;/p&gt;</h1>"
+        )
+
+    def test_composite_address_summary(self):
+        self.launchSurvey("test_address")
+        self.post(
+            {
+                "address-mandatory-line1": "<p>7 Evelyn Street</p>",
+                "address-mandatory-postcode": "CF63 4JG",
+            }
+        )
+        self.post({})
+        self.post({})
+        self.assertInUrl("/summary")
+        self.assertInBody("&lt;p&gt;7 Evelyn Street&lt;/p&gt;")

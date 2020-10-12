@@ -215,6 +215,13 @@ class TestPlaceholderParser(unittest.TestCase):
         assert not self.transforms.list_has_items([])
 
     def test_format_name(self):
+        assert self.transforms.format_name("Joe", None, "Bloggs") == "Joe Bloggs"
+        assert (
+            self.transforms.format_name(
+                "Joe", None, "Bloggs", include_middle_names=True
+            )
+            == "Joe Bloggs"
+        )
         assert self.transforms.format_name("Joe", "Michael", "Bloggs") == "Joe Bloggs"
         assert (
             self.transforms.format_name(

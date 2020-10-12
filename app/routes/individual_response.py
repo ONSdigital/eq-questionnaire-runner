@@ -1,4 +1,5 @@
 from flask import Blueprint, g, redirect, request, url_for
+from flask_babel import lazy_gettext
 from flask_login import current_user, login_required
 from structlog import get_logger
 
@@ -53,7 +54,7 @@ def before_individual_response_request():
     g.schema = load_schema_from_session_data(session_store.session_data)
 
 
-@individual_response_blueprint.route("/", methods=["GET", "POST"])
+@individual_response_blueprint.route("/", methods=["GET"])
 @with_questionnaire_store
 @with_schema
 def request_individual_response(schema, questionnaire_store):
@@ -61,7 +62,6 @@ def request_individual_response(schema, questionnaire_store):
     list_item_id = request.args.get("list_item_id")
 
     individual_response_handler = IndividualResponseHandler(
-        block_definition=None,
         schema=schema,
         questionnaire_store=questionnaire_store,
         language=language_code,
@@ -69,9 +69,6 @@ def request_individual_response(schema, questionnaire_store):
         form_data=request.form,
         list_item_id=list_item_id,
     )
-
-    if request.method == "POST":
-        return individual_response_handler.handle_post()
 
     return individual_response_handler.handle_get()
 
@@ -144,8 +141,7 @@ def individual_response_post_address_confirm(schema, questionnaire_store, list_i
 @with_schema
 def individual_response_post_address_confirmation(schema, questionnaire_store):
     language_code = get_session_store().session_data.language_code
-    IndividualResponseHandler(
-        block_definition=None,
+    individual_response_handler = IndividualResponseHandler(
         schema=schema,
         questionnaire_store=questionnaire_store,
         language=language_code,
@@ -160,6 +156,9 @@ def individual_response_post_address_confirmation(schema, questionnaire_store):
     return render_template(
         template="individual_response/confirmation-post",
         display_address=questionnaire_store.metadata.get("display_address"),
+        page_title=individual_response_handler.page_title(
+            lazy_gettext("An individual access code has been sent by post")
+        ),
     )
 
 
@@ -232,8 +231,7 @@ def individual_response_text_message_confirm(schema, questionnaire_store, list_i
 @with_schema
 def individual_response_text_message_confirmation(schema, questionnaire_store):
     language_code = get_session_store().session_data.language_code
-    IndividualResponseHandler(
-        block_definition=None,
+    individual_response_handler = IndividualResponseHandler(
         schema=schema,
         questionnaire_store=questionnaire_store,
         language=language_code,
@@ -250,4 +248,7 @@ def individual_response_text_message_confirmation(schema, questionnaire_store):
     return render_template(
         template="individual_response/confirmation-text-message",
         mobile_number=mobile_number,
+        page_title=individual_response_handler.page_title(
+            lazy_gettext("An individual access code has been sent by text")
+        ),
     )
