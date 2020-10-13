@@ -91,3 +91,33 @@ def test_assert_primary_person_string_appended(
     assert list_context["list"]["list_items"][0]["primary_person"] is True
     assert list_context["list"]["list_items"][0]["item_title"] == "Toni Morrison (You)"
     assert list_context["list"]["list_items"][1]["item_title"] == "Barry Pheloung"
+
+
+@pytest.mark.usefixtures("app")
+def test_filter_list_item_ids(
+    list_collector_block, people_answer_store, people_list_store
+):
+    schema = load_schema_from_name("test_list_collector_primary_person")
+
+    list_context = ListContext(
+        language=DEFAULT_LANGUAGE_CODE,
+        progress_store=ProgressStore(),
+        list_store=people_list_store,
+        schema=schema,
+        answer_store=people_answer_store,
+        metadata=None,
+    )
+    list_context = list_context(
+        list_collector_block["summary"],
+        list_collector_block["for_list"],
+        filter_list_item_ids=["UHPLbX"],
+    )
+
+    expected = [
+        {
+            "item_title": "Barry Pheloung",
+            "primary_person": False,
+        }
+    ]
+
+    assert expected == list_context["list"]["list_items"]

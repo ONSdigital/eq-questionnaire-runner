@@ -18,7 +18,7 @@ class TestQuestionnaireRelationshipsUnrelated(QuestionnaireTestCase):
             f"/questionnaire/relationships/people/{first_list_item}/related-to-anyone-else"
         )
         self.assertInBody("Are any of these people related to you?")
-        self.assertInBody("Marie Doe")
+        self.assertNotInBody("Marie Doe")
         self.assertInBody("John Doe")
 
     def test_is_not_accessible_when_invalid_list_item(self):
