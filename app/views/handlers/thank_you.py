@@ -16,7 +16,7 @@ from app.views.handlers.confirmation_email import (
 class ThankYou:
     DEFAULT_THANK_YOU_TEMPLATE = "thank-you"
     CENSUS_THANK_YOU_TEMPLATE = "census-thank-you"
-    PAGE_TITLE = gettext("Thank you")
+    PAGE_TITLE = gettext("Thank you for completing the census")
 
     def __init__(self, schema):
         self.session_store = get_session_store()
