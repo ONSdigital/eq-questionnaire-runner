@@ -491,19 +491,19 @@ msgstr ""
 #: templates/census-thank-you.html:31
 msgid ""
 "Your individual census has been submitted for "
-"<strong>{display_address}</strong>"
+"<strong>{display_address}</strong>."
 msgstr ""
 
 #: templates/census-thank-you.html:33
 msgid ""
 "Your census has been submitted for the household at "
-"<strong>{display_address}</strong>"
+"<strong>{display_address}</strong>."
 msgstr ""
 
 #: templates/census-thank-you.html:35
 msgid ""
 "Your census has been submitted for the accommodation at "
-"<strong>{display_address}</strong>"
+"<strong>{display_address}</strong>."
 msgstr ""
 
 #: templates/census-thank-you.html:36
@@ -516,7 +516,7 @@ msgstr ""
 #: templates/census-thank-you.html:48
 msgid ""
 "Your personal information is protected by law and will be kept "
-"confidential"
+"confidential."
 msgstr ""
 
 #: templates/census-thank-you.html:52
@@ -526,7 +526,7 @@ msgstr ""
 #: templates/census-thank-you.html:53
 msgid ""
 "If you would like to be sent confirmation that you have completed your "
-"census enter your email address"
+"census enter your email address."
 msgstr ""
 
 #: templates/census-thank-you.html:63
