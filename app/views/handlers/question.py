@@ -73,6 +73,17 @@ class Question(BlockHandler):
             **{"question": rendered_question},
         }
 
+    @cached_property
+    def list_context(self):
+        return ListContext(
+            self._language,
+            self._schema,
+            self._questionnaire_store.answer_store,
+            self._questionnaire_store.list_store,
+            self._questionnaire_store.progress_store,
+            self._questionnaire_store.metadata,
+        )
+
     def get_next_location_url(self):
         answer_action = self._get_answer_action()
         if self._has_redirect_to_list_add_action(answer_action):
@@ -132,21 +143,7 @@ class Question(BlockHandler):
         ] = self.get_last_viewed_question_guidance_context()
 
         if "list_summary" in self.rendered_block:
-            list_context = ListContext(
-                self._language,
-                self._schema,
-                self._questionnaire_store.answer_store,
-                self._questionnaire_store.list_store,
-                self._questionnaire_store.progress_store,
-                self._questionnaire_store.metadata,
-            )
-
-            context.update(
-                list_context(
-                    self.rendered_block["list_summary"]["summary"],
-                    self.rendered_block["list_summary"]["for_list"],
-                )
-            )
+            context.update(self.get_list_summary_context())
 
         if self.form.errors or self.form.question_errors:
             self.page_title = gettext("Error: {page_title}").format(
@@ -161,6 +158,12 @@ class Question(BlockHandler):
                 self._routing_path
             ).url()
             return {"first_location_in_section_url": first_location_in_section_url}
+
+    def get_list_summary_context(self):
+        return self.list_context(
+            self.rendered_block["list_summary"]["summary"],
+            self.rendered_block["list_summary"]["for_list"],
+        )
 
     def handle_post(self):
         self.questionnaire_store_updater.update_answers(self.form.data)

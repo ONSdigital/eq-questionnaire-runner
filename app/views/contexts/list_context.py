@@ -15,6 +15,7 @@ class ListContext(Context):
         edit_block_id=None,
         remove_block_id=None,
         primary_person_edit_block_id=None,
+        for_list_item_ids=None,
     ):
         list_items = (
             list(
@@ -25,6 +26,7 @@ class ListContext(Context):
                     edit_block_id,
                     remove_block_id,
                     primary_person_edit_block_id,
+                    for_list_item_ids,
                 )
             )
             if summary_definition
@@ -46,8 +48,15 @@ class ListContext(Context):
         edit_block_id,
         remove_block_id,
         primary_person_edit_block_id,
+        for_list_item_ids,
     ):
         list_item_ids = self._list_store[for_list]
+        if for_list_item_ids:
+            list_item_ids = [
+                list_item_id
+                for list_item_id in list_item_ids
+                if list_item_id in for_list_item_ids
+            ]
         primary_person = self._list_store[for_list].primary_person
 
         for list_item_id in list_item_ids:
