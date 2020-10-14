@@ -1,9 +1,29 @@
+from unittest.mock import Mock
+
 from tests.integration.integration_test_case import IntegrationTestCase
 
 HUB_URL = "/questionnaire/"
 
 
 class TestQuestionnaireHub(IntegrationTestCase):
+    def _launch_and_submit_survey(self):
+        # Launch survey
+        self.launchSurvey("test_hub_and_spoke")
+
+        # Answer questions and submit survey
+        self.post()
+        self.post({"employment-status-answer": "Working as an employee"})
+        self.post()
+        self.post()
+        self.post()
+        self.post()
+        self.post({"does-anyone-live-here-answer": "No"})
+        self.post()
+        self.post()
+        self.post({"relationships-answer": "No"})
+        self.post()
+        self.post()
+
     def test_navigation_to_hub_route_when_hub_not_enabled(self):
         # Given the hub is not enabled
         self.launchSurvey("test_checkbox")
@@ -25,27 +45,6 @@ class TestQuestionnaireHub(IntegrationTestCase):
 
         # Then I should be redirected to the hub
         self.assertEqualUrl(HUB_URL)
-
-    def test_survey_submission_from_hub(self):
-        # Given the hub is enabled
-        self.launchSurvey("test_hub_and_spoke")
-
-        # When I submit the survey
-        self.post()
-        self.post({"employment-status-answer": "Working as an employee"})
-        self.post()
-        self.post()
-        self.post()
-        self.post()
-        self.post({"does-anyone-live-here-answer": "No"})
-        self.post()
-        self.post()
-        self.post({"relationships-answer": "No"})
-        self.post()
-        self.post()
-
-        # Then I should see the thank you page
-        self.assertEqualUrl("/submitted/thank-you/")
 
     def test_hub_section_url_when_hub_not_enabled(self):
         # Given the hub is not enabled
@@ -198,3 +197,27 @@ class TestQuestionnaireHub(IntegrationTestCase):
 
         # Then I should be redirected to the second section
         self.assertEqualUrl("/questionnaire/relationships-count/")
+
+    def test_successful_survey_submission_from_hub(self):
+        # Given the hub is enabled, When I answer and submit the survey
+        self._launch_and_submit_survey()
+
+        # Then I should see the thank you page
+        self.assertEqualUrl("/submitted/thank-you/")
+
+    def test_unsuccessful_survey_submission_from_hub(self):
+        submitter = self._application.eq["submitter"]
+        submitter.send_message = Mock(return_value=False)
+
+        # Given I launch a survey with the hub enabled, When I submit the survey but submission fails
+        self._launch_and_submit_survey()
+
+        # Then I should see an error page
+        self.assertStatusCode(500)
+        self.assertEqualPageTitle("Sorry, there is a problem - Census 2021")
+
+        retry_url = (
+            self.getHtmlSoup().find("p", {"data-qa": "retry"}).find("a").attrs["href"]
+        )
+        self.get(retry_url)
+        self.assertInUrl(HUB_URL)
