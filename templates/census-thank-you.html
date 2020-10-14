@@ -28,11 +28,11 @@
 
       {% if content.census_type %}
         {% if content.census_type == "IR" %}
-          <p data-qa="guidance">{{ _("Your individual census has been submitted for <strong>{display_address}</strong>").format(display_address = content.display_address) }}</p>
+          <p data-qa="guidance">{{ _("Your individual census has been submitted for <strong>{display_address}</strong>.").format(display_address = content.display_address) }}</p>
         {% elif content.census_type == "HH" %}
-          <p data-qa="guidance">{{ _("Your census has been submitted for the household at <strong>{display_address}</strong>").format(display_address = content.display_address) }}</p>
+          <p data-qa="guidance">{{ _("Your census has been submitted for the household at <strong>{display_address}</strong>.").format(display_address = content.display_address) }}</p>
         {% elif content.census_type == "CE" %}
-          <p data-qa="guidance">{{ _("Your census has been submitted for the accommodation at <strong>{display_address}</strong>").format(display_address = content.display_address) }}</p>
+          <p data-qa="guidance">{{ _("Your census has been submitted for the accommodation at <strong>{display_address}</strong>.").format(display_address = content.display_address) }}</p>
           <p>{{ _("Anyone staying at this accommodation for at least 6 months needs to fill in their own individual census, including staff. Your Census Officer will provide you with census forms for your residents.") }}</p>
         {% endif %}
       {% endif %}
@@ -45,12 +45,12 @@
     "icon": "lock"
     })
   %}
-    <p>{{ _("Your personal information is protected by law and will be kept confidential") }}</p>
+    <p>{{ _("Your personal information is protected by law and will be kept confidential.") }}</p>
   {% endcall %}
 
   {% if form %}
     <h2>{{ _("Get confirmation email") }}</h2>
-    <p>{{ _("If you would like to be sent confirmation that you have completed your census enter your email address") }}</p>
+    <p>{{ _("If you would like to be sent confirmation that you have completed your census enter your email address.") }}</p>
     {% include 'partials/email-form.html' %}
   {% endif %}
   <br><br>
