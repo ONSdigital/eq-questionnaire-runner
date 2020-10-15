@@ -1,35 +1,14 @@
-from unittest.mock import Mock
-
 from tests.integration.integration_test_case import IntegrationTestCase
-
-HUB_URL = "/questionnaire/"
+from tests.integration.questionnaire import URL
 
 
 class TestQuestionnaireHub(IntegrationTestCase):
-    def _launch_and_submit_survey(self):
-        # Launch survey
-        self.launchSurvey("test_hub_and_spoke")
-
-        # Answer questions and submit survey
-        self.post()
-        self.post({"employment-status-answer": "Working as an employee"})
-        self.post()
-        self.post()
-        self.post()
-        self.post()
-        self.post({"does-anyone-live-here-answer": "No"})
-        self.post()
-        self.post()
-        self.post({"relationships-answer": "No"})
-        self.post()
-        self.post()
-
     def test_navigation_to_hub_route_when_hub_not_enabled(self):
         # Given the hub is not enabled
         self.launchSurvey("test_checkbox")
 
         # When I navigate to the hub url
-        self.get(HUB_URL)
+        self.get(URL.HUB)
 
         # Then I should be redirected to the first incomplete question
         self.assertInBody("Which pizza toppings would you like?")
@@ -44,7 +23,7 @@ class TestQuestionnaireHub(IntegrationTestCase):
         self.post({"employment-status-answer": "Working as an employee"})
 
         # Then I should be redirected to the hub
-        self.assertEqualUrl(HUB_URL)
+        self.assertEqualUrl(URL.HUB)
 
     def test_hub_section_url_when_hub_not_enabled(self):
         # Given the hub is not enabled
@@ -71,9 +50,9 @@ class TestQuestionnaireHub(IntegrationTestCase):
         self.launchSurvey("test_hub_and_spoke")
         self.post()
         self.post({"employment-status-answer-exclusive": "None of these apply"})
-        self.get(HUB_URL)
+        self.get(URL.HUB)
         self.assertInBody("Partially completed")
-        self.assertEqualUrl(HUB_URL)
+        self.assertEqualUrl(URL.HUB)
 
         # When I navigate to the url for a hub's section that is in-progress
         self.get("/questionnaire/employment-type/?resume=True")
@@ -88,7 +67,7 @@ class TestQuestionnaireHub(IntegrationTestCase):
         self.post()
         self.post()
         self.assertInBody("View answers")
-        self.assertEqualUrl(HUB_URL)
+        self.assertEqualUrl(URL.HUB)
 
         # When I navigate to the url for a hub's section that is complete
         self.get("/questionnaire/sections/accommodation-section/")
@@ -99,7 +78,7 @@ class TestQuestionnaireHub(IntegrationTestCase):
     def test_hub_inaccessible_if_sections_required_and_incomplete(self):
         self.launchSurvey("test_hub_complete_sections")
 
-        self.get("/questionnaire/")
+        self.get(URL.HUB)
 
         # Redirected to first question to complete
         self.assertEqualUrl("/questionnaire/employment-status/")
@@ -110,9 +89,9 @@ class TestQuestionnaireHub(IntegrationTestCase):
         self.post({"employment-status-answer": "Working as an employee"})
         self.post()
 
-        self.get("/questionnaire/")
+        self.get(URL.HUB)
 
-        self.assertEqualUrl("/questionnaire/")
+        self.assertEqualUrl(URL.HUB)
 
     def test_hub_displays_repeating_sections_with_valid_urls(self):
         # Given the hub is enabled and a section is complete
@@ -162,7 +141,7 @@ class TestQuestionnaireHub(IntegrationTestCase):
 
         self.assertInBody("What is <em>John Doe’s</em> date of birth?")
 
-        self.get(HUB_URL)
+        self.get(URL.HUB)
 
         # Go to second section
         second_repeating_section_url = section_urls[2].attrs["href"]
@@ -184,9 +163,9 @@ class TestQuestionnaireHub(IntegrationTestCase):
         self.post({"household-relationships-answer": "No"})
 
         # Then I should be redirected to the hub and can submit my answers without completing the other section
-        self.assertEqualUrl(HUB_URL)
+        self.assertEqualUrl(URL.HUB)
         self.post()
-        self.assertEqualUrl("/submitted/thank-you/")
+        self.assertEqualUrl(URL.THANK_YOU)
 
     def test_hub_section_required_but_enabled_true(self):
         # Given the hub is enabled and there are two required sections
@@ -197,27 +176,3 @@ class TestQuestionnaireHub(IntegrationTestCase):
 
         # Then I should be redirected to the second section
         self.assertEqualUrl("/questionnaire/relationships-count/")
-
-    def test_successful_survey_submission_from_hub(self):
-        # Given the hub is enabled, When I answer and submit the survey
-        self._launch_and_submit_survey()
-
-        # Then I should see the thank you page
-        self.assertEqualUrl("/submitted/thank-you/")
-
-    def test_unsuccessful_survey_submission_from_hub(self):
-        submitter = self._application.eq["submitter"]
-        submitter.send_message = Mock(return_value=False)
-
-        # Given I launch a survey with the hub enabled, When I submit the survey but submission fails
-        self._launch_and_submit_survey()
-
-        # Then I should see an error page
-        self.assertStatusCode(500)
-        self.assertEqualPageTitle("Sorry, there is a problem - Census 2021")
-
-        retry_url = (
-            self.getHtmlSoup().find("p", {"data-qa": "retry"}).find("a").attrs["href"]
-        )
-        self.get(retry_url)
-        self.assertInUrl(HUB_URL)

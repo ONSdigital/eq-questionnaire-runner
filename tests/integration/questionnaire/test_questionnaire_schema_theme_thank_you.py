@@ -1,5 +1,3 @@
-from unittest.mock import Mock
-
 from tests.integration.integration_test_case import IntegrationTestCase
 
 
@@ -45,32 +43,3 @@ class TestSchemaThemeThankYou(IntegrationTestCase):
         self.post({"schema-confirmation-answer": "Yes"})
         self.post()
         self.assertInBody("Thank you for completing the survey")
-
-    def test_default(self):
-        self.launchSurvey("test_textfield")
-        self.post({"name-answer": "John Smith"})
-        self.post()
-        self.assertInBody(
-            "Your answers were submitted for <span>Integration Testing</span>"
-        )
-
-    def test_unsuccessful_survey_submission_from_summary(self):
-        submitter = self._application.eq["submitter"]
-        submitter.send_message = Mock(return_value=False)
-
-        # Given I launch a survey with a final summary, When I submit the survey but submission fails
-        self.launchSurvey("test_summary")
-        self.post()
-        self.post()
-        self.post()
-        self.post()
-
-        # Then I should see an error page
-        self.assertStatusCode(500)
-        self.assertEqualPageTitle("Sorry, there is a problem - Census 2021")
-
-        retry_url = (
-            self.getHtmlSoup().find("p", {"data-qa": "retry"}).find("a").attrs["href"]
-        )
-        self.get(retry_url)
-        self.assertInUrl("questionnaire/summary/")
