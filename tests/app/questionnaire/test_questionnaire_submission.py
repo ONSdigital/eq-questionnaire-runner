@@ -3,6 +3,9 @@ from unittest.mock import Mock
 from tests.integration.integration_test_case import IntegrationTestCase
 from tests.integration.questionnaire import URL
 
+FINAL_SUMMARY = "/questionnaire/summary/"
+FINAL_CONFIRMATION = "/questionnaire/confirmation/"
+
 
 class SubmissionTestCase(IntegrationTestCase):
     @property
@@ -47,7 +50,7 @@ class TestQuestionnaireSubmissionFinalConfirmation(SubmissionTestCase):
         self.assertEqualPageTitle("Sorry, there is a problem - Census 2021")
 
         self.get(self.retry_url)
-        self.assertInUrl(URL.FINAL_CONFIRMATION)
+        self.assertInUrl(FINAL_CONFIRMATION)
 
 
 class TestQuestionnaireSubmissionHub(SubmissionTestCase):
@@ -129,4 +132,4 @@ class TestQuestionnaireSubmissionFinalSummary(SubmissionTestCase):
         self.assertEqualPageTitle("Sorry, there is a problem - Census 2021")
 
         self.get(self.retry_url)
-        self.assertInUrl(URL.FINAL_SUMMARY)
+        self.assertInUrl(FINAL_SUMMARY)

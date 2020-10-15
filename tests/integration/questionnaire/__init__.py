@@ -3,8 +3,6 @@ from tests.integration.integration_test_case import IntegrationTestCase
 
 class URL:
     HUB = "/questionnaire/"
-    FINAL_SUMMARY = "/questionnaire/summary/"
-    FINAL_CONFIRMATION = "/questionnaire/confirmation/"
     THANK_YOU = "/submitted/thank-you/"
 
 

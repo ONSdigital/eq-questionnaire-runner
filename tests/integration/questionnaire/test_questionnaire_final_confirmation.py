@@ -1,7 +1,6 @@
-from unittest.mock import Mock
-
 from tests.integration.integration_test_case import IntegrationTestCase
-from tests.integration.questionnaire import URL
+
+FINAL_CONFIRMATION = "/questionnaire/confirmation/"
 
 
 class TestQuestionnaireFinalConfirmation(IntegrationTestCase):
@@ -15,7 +14,7 @@ class TestQuestionnaireFinalConfirmation(IntegrationTestCase):
         self.post({"breakfast-answer": "Bacon"})
 
         # Then we are presented with a confirmation page
-        self.assertInUrl(URL.FINAL_CONFIRMATION)
+        self.assertInUrl(FINAL_CONFIRMATION)
         self.assertInBody("Thank you for your answers, do you wish to submit")
         self.assertInBody("Submit answers")
 
@@ -28,7 +27,7 @@ class TestQuestionnaireFinalConfirmation(IntegrationTestCase):
         self.assertInBody("What is your favourite breakfast food")
 
         # And try posting straight to the confirmation screen
-        self.post(url=URL.FINAL_CONFIRMATION)
+        self.post(url=FINAL_CONFIRMATION)
 
         # Then we are shown a 404 page
         self.assertStatusNotFound()
