@@ -96,10 +96,12 @@ class TestQuestionnaireSubmissionHub(SubmissionTestCase):
 class TestQuestionnaireSubmissionFinalSummary(SubmissionTestCase):
     def _launch_and_submit_questionnaire(self):
         # Launch questionnaire
-        self.launchSurvey("test_textfield")
+        self.launchSurvey("test_summary")
 
         # Answer questions and submit survey
-        self.post({"name-answer": "John Smith"})
+        self.post()
+        self.post()
+        self.post()
         self.post()
 
     def test_successful_submission(self):
