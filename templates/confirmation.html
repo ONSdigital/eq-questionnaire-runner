@@ -16,7 +16,7 @@
         }
       })
     }}
-  {% else  %}
+  {% else %}
     {% if block and block.content %}
       {% set content_block = block.content %}
       {% include 'partials/content-block.html' %}
@@ -24,7 +24,7 @@
     <p class="u-mt-m">
       {{
         onsButton({
-          "text": content.submit_button,
+          "text": _("Submit answers"),
           "submitType": 'timer',
           "classes": "btn--loader js-btn-submit",
           "attributes": {

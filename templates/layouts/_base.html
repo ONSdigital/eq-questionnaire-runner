@@ -18,11 +18,11 @@
   "cdn": {
     "url": cdn_url
   },
+  "cspNonce": csp_nonce,
 } %}
 
 {% include 'layouts/configs/_save-sign-out-button.html' %}
 {% include 'layouts/configs/_footer.html' %}
-{% include 'layouts/configs/_feedback.html' %}
 
 {# if there is not a previous link add extra margin top to the page #}
 {% if not previous_location_url %}
@@ -51,12 +51,12 @@
     Information such as events or variables can be passed to Google Tag Manager via the data layer,
     and triggers can be set up in Google Tag Manager
     -->
-    <script nonce="{{ csp_nonce() }}">
+    <script nonce="{{ csp_nonce }}">
       dataLayer = {{ data_layer | tojson }}
     </script>
 
     <!-- Google Tag Manager -->
-    <script nonce="{{ csp_nonce() }}">
+    <script nonce="{{ csp_nonce }}">
       (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
       new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
       j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
@@ -78,16 +78,13 @@
     </noscript>
     <!-- End Google Tag Manager (noscript) -->
   {% endif %}
-
-
-
 {% endblock %}
 
 
 {% block scripts %}
   {% if config['EQ_ENABLE_LIVE_RELOAD'] %}
-    <script nonce="{{ csp_nonce() }}" id="__bs_script__">//<![CDATA[
-      document.write("<script async nonce='{{ csp_nonce() }}' src='http://HOST:35729/livereload.js'><\/script>".replace("HOST", location.hostname));
+    <script nonce="{{ csp_nonce }}" id="__bs_script__">//<![CDATA[
+      document.write("<script async nonce='{{ csp_nonce }}' src='http://HOST:35729/livereload.js'><\/script>".replace("HOST", location.hostname));
     //]]></script>
   {% endif %}
 {% endblock %}

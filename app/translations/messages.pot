@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2020-10-13 16:17+0100\n"
+"POT-Creation-Date: 2020-10-13 13:50+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -318,7 +318,7 @@ msgid "Check your answers and submit"
 msgstr ""
 
 #: app/views/contexts/questionnaire_summary_context.py:18
-#: templates/confirmation.html:6
+#: templates/confirmation.html:6 templates/confirmation.html:27
 msgid "Submit answers"
 msgstr ""
 
@@ -836,7 +836,7 @@ msgstr ""
 msgid "Request separate census"
 msgstr ""
 
-#: templates/layouts/_base.html:40
+#: templates/layouts/_base.html:39
 msgid "We use cookies to improve your experience of census.gov.uk"
 msgstr ""
 
@@ -846,30 +846,6 @@ msgstr ""
 
 #: templates/layouts/_questionnaire.html:43
 msgid "Choose another section and return to this later"
-msgstr ""
-
-#: templates/layouts/configs/_feedback.html:3
-msgid "Give us feedback and help us improve this service"
-msgstr ""
-
-#: templates/layouts/configs/_feedback.html:12
-msgid "Tell us what you think of this service by emailing"
-msgstr ""
-
-#: templates/layouts/configs/_feedback.html:13
-msgid "If you need help with your census, get in touch with our contact centre."
-msgstr ""
-
-#: templates/layouts/configs/_feedback.html:14
-msgid "Census 2021 feedback: "
-msgstr ""
-
-#: templates/layouts/configs/_feedback.html:15
-msgid ""
-"This email is for feedback on the census rehearsal, which will help us to"
-" improve Census 2021.\n"
-"If you need help with your census, visit https://www.census.gov.uk"
-"/contact-us."
 msgstr ""
 
 #: templates/layouts/configs/_footer.html:31
