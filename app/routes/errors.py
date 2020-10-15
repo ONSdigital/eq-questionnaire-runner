@@ -82,6 +82,11 @@ def too_many_individual_response_requests(error=None):
 
 
 @errors_blueprint.app_errorhandler(SubmissionFailedException)
+def submission_failed(error=None):
+    log_error(error, 500)
+    return _render_error_page(500, template="submission-failed")
+
+
 @errors_blueprint.app_errorhandler(Exception)
 def internal_server_error(error=None):
     try:
