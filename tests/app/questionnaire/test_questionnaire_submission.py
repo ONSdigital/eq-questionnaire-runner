@@ -1,10 +1,10 @@
 from unittest.mock import Mock
 
 from tests.integration.integration_test_case import IntegrationTestCase
-from tests.integration.questionnaire import HUB_URL, THANK_YOU_URL
+from tests.integration.questionnaire import HUB_URL_PATH, THANK_YOU_URL_PATH
 
-FINAL_SUMMARY = "/questionnaire/summary/"
-FINAL_CONFIRMATION = "/questionnaire/confirmation/"
+FINAL_SUMMARY_PATH = "/questionnaire/summary/"
+FINAL_CONFIRMATION_PATH = "/questionnaire/confirmation/"
 
 
 class SubmissionTestCase(IntegrationTestCase):
@@ -37,7 +37,7 @@ class TestQuestionnaireSubmissionFinalConfirmation(SubmissionTestCase):
         self.assertInBody(
             "Your answers were submitted for <span>Integration Testing</span>"
         )
-        self.assertInUrl(THANK_YOU_URL)
+        self.assertInUrl(THANK_YOU_URL_PATH)
 
     def test_unsuccessful_submission(self):
         self._mock_submission_failure()
@@ -50,7 +50,7 @@ class TestQuestionnaireSubmissionFinalConfirmation(SubmissionTestCase):
         self.assertEqualPageTitle("Sorry, there is a problem - Census 2021")
 
         self.get(self.retry_url)
-        self.assertInUrl(FINAL_CONFIRMATION)
+        self.assertInUrl(FINAL_CONFIRMATION_PATH)
 
 
 class TestQuestionnaireSubmissionHub(SubmissionTestCase):
@@ -80,7 +80,7 @@ class TestQuestionnaireSubmissionHub(SubmissionTestCase):
         self.assertInBody(
             "Your answers were submitted for <span>Integration Testing</span>"
         )
-        self.assertEqualUrl(THANK_YOU_URL)
+        self.assertEqualUrl(THANK_YOU_URL_PATH)
 
     def test_unsuccessful_submission(self):
         self._mock_submission_failure()
@@ -93,7 +93,7 @@ class TestQuestionnaireSubmissionHub(SubmissionTestCase):
         self.assertEqualPageTitle("Sorry, there is a problem - Census 2021")
 
         self.get(self.retry_url)
-        self.assertInUrl(HUB_URL)
+        self.assertInUrl(HUB_URL_PATH)
 
 
 class TestQuestionnaireSubmissionFinalSummary(SubmissionTestCase):
@@ -115,7 +115,7 @@ class TestQuestionnaireSubmissionFinalSummary(SubmissionTestCase):
         self.assertInBody(
             "Your answers were submitted for <span>Integration Testing</span>"
         )
-        self.assertInUrl(THANK_YOU_URL)
+        self.assertInUrl(THANK_YOU_URL_PATH)
 
     def test_unsuccessful_submission(self):
         self._mock_submission_failure()
@@ -132,4 +132,4 @@ class TestQuestionnaireSubmissionFinalSummary(SubmissionTestCase):
         self.assertEqualPageTitle("Sorry, there is a problem - Census 2021")
 
         self.get(self.retry_url)
-        self.assertInUrl(FINAL_SUMMARY)
+        self.assertInUrl(FINAL_SUMMARY_PATH)

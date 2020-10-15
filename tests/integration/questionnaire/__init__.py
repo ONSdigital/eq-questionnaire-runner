@@ -1,7 +1,7 @@
 from tests.integration.integration_test_case import IntegrationTestCase
 
-HUB_URL = "/questionnaire/"
-THANK_YOU_URL = "/submitted/thank-you/"
+HUB_URL_PATH = "/questionnaire/"
+THANK_YOU_URL_PATH = "/submitted/thank-you/"
 
 
 class QuestionnaireTestCase(IntegrationTestCase):
