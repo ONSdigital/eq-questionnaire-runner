@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2020-10-13 16:17+0100\n"
+"POT-Creation-Date: 2020-10-15 09:58+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -309,7 +309,7 @@ msgstr ""
 msgid "Continue"
 msgstr ""
 
-#: app/views/contexts/list_context.py:94
+#: app/views/contexts/list_context.py:103
 msgid " (You)"
 msgstr ""
 
@@ -331,7 +331,7 @@ msgid "Confirmation email"
 msgstr ""
 
 #: app/views/handlers/confirmation_email.py:31
-#: app/views/handlers/question.py:152
+#: app/views/handlers/question.py:149
 msgid "Error: {page_title}"
 msgstr ""
 
@@ -677,6 +677,8 @@ msgid "For more information on how we use this data."
 msgstr ""
 
 #: templates/errors/403.html:3 templates/errors/403.html:6
+#: templates/errors/submission-failed.html:5
+#: templates/errors/submission-failed.html:8
 msgid "Sorry, there is a problem"
 msgstr ""
 
@@ -797,6 +799,16 @@ msgstr ""
 
 #: templates/errors/submission-complete.html:7
 msgid "Your census has been submitted"
+msgstr ""
+
+#: templates/errors/submission-failed.html:9
+msgid "You can try to <a href='{url}'>submit your census again</a>"
+msgstr ""
+
+#: templates/errors/submission-failed.html:10
+msgid ""
+"If this problem keeps happening, please <a href='{url}'>contact us</a> "
+"for help."
 msgstr ""
 
 #: templates/individual_response/confirmation-post.html:15
