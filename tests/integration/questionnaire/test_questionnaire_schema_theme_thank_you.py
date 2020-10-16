@@ -43,11 +43,3 @@ class TestSchemaThemeThankYou(IntegrationTestCase):
         self.post({"schema-confirmation-answer": "Yes"})
         self.post()
         self.assertInBody("Thank you for completing the survey")
-
-    def test_default(self):
-        self.launchSurvey("test_textfield")
-        self.post({"name-answer": "John Smith"})
-        self.post()
-        self.assertInBody(
-            "Your answers were submitted for <span>Integration Testing</span>"
-        )

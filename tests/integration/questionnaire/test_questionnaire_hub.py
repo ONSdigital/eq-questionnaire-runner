@@ -1,6 +1,5 @@
 from tests.integration.integration_test_case import IntegrationTestCase
-
-HUB_URL = "/questionnaire/"
+from tests.integration.questionnaire import HUB_URL_PATH, THANK_YOU_URL_PATH
 
 
 class TestQuestionnaireHub(IntegrationTestCase):
@@ -9,7 +8,7 @@ class TestQuestionnaireHub(IntegrationTestCase):
         self.launchSurvey("test_checkbox")
 
         # When I navigate to the hub url
-        self.get(HUB_URL)
+        self.get(HUB_URL_PATH)
 
         # Then I should be redirected to the first incomplete question
         self.assertInBody("Which pizza toppings would you like?")
@@ -24,28 +23,7 @@ class TestQuestionnaireHub(IntegrationTestCase):
         self.post({"employment-status-answer": "Working as an employee"})
 
         # Then I should be redirected to the hub
-        self.assertEqualUrl(HUB_URL)
-
-    def test_survey_submission_from_hub(self):
-        # Given the hub is enabled
-        self.launchSurvey("test_hub_and_spoke")
-
-        # When I submit the survey
-        self.post()
-        self.post({"employment-status-answer": "Working as an employee"})
-        self.post()
-        self.post()
-        self.post()
-        self.post()
-        self.post({"does-anyone-live-here-answer": "No"})
-        self.post()
-        self.post()
-        self.post({"relationships-answer": "No"})
-        self.post()
-        self.post()
-
-        # Then I should see the thank you page
-        self.assertEqualUrl("/submitted/thank-you/")
+        self.assertEqualUrl(HUB_URL_PATH)
 
     def test_hub_section_url_when_hub_not_enabled(self):
         # Given the hub is not enabled
@@ -72,9 +50,9 @@ class TestQuestionnaireHub(IntegrationTestCase):
         self.launchSurvey("test_hub_and_spoke")
         self.post()
         self.post({"employment-status-answer-exclusive": "None of these apply"})
-        self.get(HUB_URL)
+        self.get(HUB_URL_PATH)
         self.assertInBody("Partially completed")
-        self.assertEqualUrl(HUB_URL)
+        self.assertEqualUrl(HUB_URL_PATH)
 
         # When I navigate to the url for a hub's section that is in-progress
         self.get("/questionnaire/employment-type/?resume=True")
@@ -89,7 +67,7 @@ class TestQuestionnaireHub(IntegrationTestCase):
         self.post()
         self.post()
         self.assertInBody("View answers")
-        self.assertEqualUrl(HUB_URL)
+        self.assertEqualUrl(HUB_URL_PATH)
 
         # When I navigate to the url for a hub's section that is complete
         self.get("/questionnaire/sections/accommodation-section/")
@@ -100,7 +78,7 @@ class TestQuestionnaireHub(IntegrationTestCase):
     def test_hub_inaccessible_if_sections_required_and_incomplete(self):
         self.launchSurvey("test_hub_complete_sections")
 
-        self.get("/questionnaire/")
+        self.get(HUB_URL_PATH)
 
         # Redirected to first question to complete
         self.assertEqualUrl("/questionnaire/employment-status/")
@@ -111,9 +89,9 @@ class TestQuestionnaireHub(IntegrationTestCase):
         self.post({"employment-status-answer": "Working as an employee"})
         self.post()
 
-        self.get("/questionnaire/")
+        self.get(HUB_URL_PATH)
 
-        self.assertEqualUrl("/questionnaire/")
+        self.assertEqualUrl(HUB_URL_PATH)
 
     def test_hub_displays_repeating_sections_with_valid_urls(self):
         # Given the hub is enabled and a section is complete
@@ -163,7 +141,7 @@ class TestQuestionnaireHub(IntegrationTestCase):
 
         self.assertInBody("What is <em>John Doe’s</em> date of birth?")
 
-        self.get(HUB_URL)
+        self.get(HUB_URL_PATH)
 
         # Go to second section
         second_repeating_section_url = section_urls[2].attrs["href"]
@@ -185,9 +163,9 @@ class TestQuestionnaireHub(IntegrationTestCase):
         self.post({"household-relationships-answer": "No"})
 
         # Then I should be redirected to the hub and can submit my answers without completing the other section
-        self.assertEqualUrl(HUB_URL)
+        self.assertEqualUrl(HUB_URL_PATH)
         self.post()
-        self.assertEqualUrl("/submitted/thank-you/")
+        self.assertEqualUrl(THANK_YOU_URL_PATH)
 
     def test_hub_section_required_but_enabled_true(self):
         # Given the hub is enabled and there are two required sections
