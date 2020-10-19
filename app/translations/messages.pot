@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2020-10-05 11:40+0100\n"
+"POT-Creation-Date: 2020-10-16 08:37+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -237,11 +237,11 @@ msgid_plural "{number_of_days} days"
 msgstr[0] ""
 msgstr[1] ""
 
-#: app/routes/individual_response.py:162
+#: app/routes/individual_response.py:160
 msgid "An individual access code has been sent by post"
 msgstr ""
 
-#: app/routes/individual_response.py:255
+#: app/routes/individual_response.py:252
 msgid "An individual access code has been sent by text"
 msgstr ""
 
@@ -309,7 +309,7 @@ msgstr ""
 msgid "Continue"
 msgstr ""
 
-#: app/views/contexts/list_context.py:94
+#: app/views/contexts/list_context.py:103
 msgid " (You)"
 msgstr ""
 
@@ -318,7 +318,7 @@ msgid "Check your answers and submit"
 msgstr ""
 
 #: app/views/contexts/questionnaire_summary_context.py:18
-#: templates/confirmation.html:6
+#: templates/confirmation.html:6 templates/confirmation.html:27
 msgid "Submit answers"
 msgstr ""
 
@@ -331,145 +331,145 @@ msgid "Confirmation email"
 msgstr ""
 
 #: app/views/handlers/confirmation_email.py:31
-#: app/views/handlers/question.py:152
+#: app/views/handlers/question.py:149
 msgid "Error: {page_title}"
 msgstr ""
 
-#: app/views/handlers/individual_response.py:102
+#: app/views/handlers/individual_response.py:127
 msgid "Person {list_item_position}"
 msgstr ""
 
-#: app/views/handlers/individual_response.py:206
+#: app/views/handlers/individual_response.py:231
 msgid "Cannot answer questions for others in your household"
 msgstr ""
 
-#: app/views/handlers/individual_response.py:270
+#: app/views/handlers/individual_response.py:297
 msgid "How would you like <em>{person_name}</em> to receive a separate census?"
 msgstr ""
 
-#: app/views/handlers/individual_response.py:276
+#: app/views/handlers/individual_response.py:305
 msgid ""
 "For someone to complete a separate census, we need to send them an "
 "individual access code."
 msgstr ""
 
-#: app/views/handlers/individual_response.py:279
+#: app/views/handlers/individual_response.py:308
 msgid "Select how to send access code"
 msgstr ""
 
-#: app/views/handlers/individual_response.py:289
+#: app/views/handlers/individual_response.py:318
 msgid "Text message"
 msgstr ""
 
-#: app/views/handlers/individual_response.py:291
+#: app/views/handlers/individual_response.py:320
 msgid "We will need their mobile number for this"
 msgstr ""
 
-#: app/views/handlers/individual_response.py:296
+#: app/views/handlers/individual_response.py:325
 msgid "Post"
 msgstr ""
 
-#: app/views/handlers/individual_response.py:298
+#: app/views/handlers/individual_response.py:327
 msgid ""
 "We can only send this to an unnamed resident at the registered household "
 "address"
 msgstr ""
 
-#: app/views/handlers/individual_response.py:367
+#: app/views/handlers/individual_response.py:377
 msgid "Send individual access code"
 msgstr ""
 
-#: app/views/handlers/individual_response.py:396
+#: app/views/handlers/individual_response.py:408
 msgid "How would you like to answer <em>{person_name_possessive}</em> questions?"
 msgstr ""
 
-#: app/views/handlers/individual_response.py:409
+#: app/views/handlers/individual_response.py:423
 msgid "I would like to request a separate census for them to complete"
 msgstr ""
 
-#: app/views/handlers/individual_response.py:415
+#: app/views/handlers/individual_response.py:429
 msgid "I will ask them to answer their own questions"
 msgstr ""
 
-#: app/views/handlers/individual_response.py:419
+#: app/views/handlers/individual_response.py:433
 msgid "They will need the household access code from the letter we sent you"
 msgstr ""
 
-#: app/views/handlers/individual_response.py:425
+#: app/views/handlers/individual_response.py:439
 msgid "I will answer for {person_name}"
 msgstr ""
 
-#: app/views/handlers/individual_response.py:539
+#: app/views/handlers/individual_response.py:540
 msgid "Do you want to send an individual access code for {person_name} by post?"
 msgstr ""
 
-#: app/views/handlers/individual_response.py:545
+#: app/views/handlers/individual_response.py:548
 msgid ""
 "A letter with an individual access code will be sent to your registered "
 "household address"
 msgstr ""
 
-#: app/views/handlers/individual_response.py:552
+#: app/views/handlers/individual_response.py:555
 msgid ""
 "The letter will be addressed to <strong>Individual Resident</strong> "
 "instead of the name provided"
 msgstr ""
 
-#: app/views/handlers/individual_response.py:565
+#: app/views/handlers/individual_response.py:568
 msgid "Yes, send the access code by post"
 msgstr ""
 
-#: app/views/handlers/individual_response.py:569
+#: app/views/handlers/individual_response.py:574
 msgid "No, send it another way"
 msgstr ""
 
-#: app/views/handlers/individual_response.py:621
+#: app/views/handlers/individual_response.py:607
 msgid "Confirm address"
 msgstr ""
 
-#: app/views/handlers/individual_response.py:684
-#: app/views/handlers/individual_response.py:717
+#: app/views/handlers/individual_response.py:662
+#: app/views/handlers/individual_response.py:700
 msgid "Separate Census"
 msgstr ""
 
-#: app/views/handlers/individual_response.py:688
+#: app/views/handlers/individual_response.py:666
 msgid "Who do you need to request a separate census for?"
 msgstr ""
 
-#: app/views/handlers/individual_response.py:739
+#: app/views/handlers/individual_response.py:724
 msgid "What is <em>{person_name_possessive}</em> mobile number?"
 msgstr ""
 
-#: app/views/handlers/individual_response.py:749
+#: app/views/handlers/individual_response.py:736
 msgid "UK mobile number"
 msgstr ""
 
-#: app/views/handlers/individual_response.py:750
+#: app/views/handlers/individual_response.py:737
 msgid "This will not be stored and only used once to send the access code"
 msgstr ""
 
-#: app/views/handlers/individual_response.py:802
+#: app/views/handlers/individual_response.py:770
 msgid "Mobile number"
 msgstr ""
 
-#: app/views/handlers/individual_response.py:848
+#: app/views/handlers/individual_response.py:816
 msgid "Is this mobile number correct?"
 msgstr ""
 
-#: app/views/handlers/individual_response.py:857
+#: app/views/handlers/individual_response.py:825
 msgid "Yes, send the text"
 msgstr ""
 
-#: app/views/handlers/individual_response.py:861
+#: app/views/handlers/individual_response.py:829
 msgid "No, I need to change it"
 msgstr ""
 
-#: app/views/handlers/individual_response.py:895
+#: app/views/handlers/individual_response.py:863
 msgid "Confirm mobile number"
 msgstr ""
 
-#: app/views/handlers/thank_you.py:19
-msgid "Thank you"
+#: app/views/handlers/thank_you.py:19 templates/census-thank-you.html:23
+msgid "Thank you for completing the census"
 msgstr ""
 
 #: templates/census-thank-you.html:9 templates/confirmation-email.html:8
@@ -480,10 +480,6 @@ msgstr ""
 msgid "Thank you for completing your census"
 msgstr ""
 
-#: templates/census-thank-you.html:23
-msgid "Thank you for completing the census"
-msgstr ""
-
 #: templates/census-thank-you.html:25
 msgid "Thank you for completing the survey"
 msgstr ""
@@ -491,19 +487,19 @@ msgstr ""
 #: templates/census-thank-you.html:31
 msgid ""
 "Your individual census has been submitted for "
-"<strong>{display_address}</strong>"
+"<strong>{display_address}</strong>."
 msgstr ""
 
 #: templates/census-thank-you.html:33
 msgid ""
 "Your census has been submitted for the household at "
-"<strong>{display_address}</strong>"
+"<strong>{display_address}</strong>."
 msgstr ""
 
 #: templates/census-thank-you.html:35
 msgid ""
 "Your census has been submitted for the accommodation at "
-"<strong>{display_address}</strong>"
+"<strong>{display_address}</strong>."
 msgstr ""
 
 #: templates/census-thank-you.html:36
@@ -516,7 +512,7 @@ msgstr ""
 #: templates/census-thank-you.html:48
 msgid ""
 "Your personal information is protected by law and will be kept "
-"confidential"
+"confidential."
 msgstr ""
 
 #: templates/census-thank-you.html:52
@@ -526,7 +522,7 @@ msgstr ""
 #: templates/census-thank-you.html:53
 msgid ""
 "If you would like to be sent confirmation that you have completed your "
-"census enter your email address"
+"census enter your email address."
 msgstr ""
 
 #: templates/census-thank-you.html:63
@@ -681,6 +677,8 @@ msgid "For more information on how we use this data."
 msgstr ""
 
 #: templates/errors/403.html:3 templates/errors/403.html:6
+#: templates/errors/submission-failed.html:5
+#: templates/errors/submission-failed.html:8
 msgid "Sorry, there is a problem"
 msgstr ""
 
@@ -803,6 +801,16 @@ msgstr ""
 msgid "Your census has been submitted"
 msgstr ""
 
+#: templates/errors/submission-failed.html:9
+msgid "You can try to <a href='{url}'>submit your census again</a>"
+msgstr ""
+
+#: templates/errors/submission-failed.html:10
+msgid ""
+"If this problem keeps happening, please <a href='{url}'>contact us</a> "
+"for help."
+msgstr ""
+
 #: templates/individual_response/confirmation-post.html:15
 msgid ""
 "The letter with an individual access code should arrive soon for them to "
@@ -815,65 +823,40 @@ msgid ""
 "them to complete their own census"
 msgstr ""
 
-#: templates/individual_response/interstitial.html:11
-#: templates/layouts/_questionnaire.html:14
-msgid "Previous"
-msgstr ""
-
-#: templates/individual_response/interstitial.html:13
+#: templates/individual_response/interstitial.html:8
 msgid "If you can't answer questions for others in your household"
 msgstr ""
 
-#: templates/individual_response/interstitial.html:14
+#: templates/individual_response/interstitial.html:9
 msgid ""
 "You can ask the people you live with to answer their own questions by "
 "sharing the household access code with them."
 msgstr ""
 
-#: templates/individual_response/interstitial.html:15
+#: templates/individual_response/interstitial.html:10
 msgid ""
 "If this is not possible, you can request a separate census for them to "
 "complete."
 msgstr ""
 
-#: templates/individual_response/interstitial.html:18
+#: templates/individual_response/interstitial.html:13
 msgid "Request separate census"
 msgstr ""
 
-#: templates/layouts/_base.html:40
+#: templates/layouts/_base.html:18
+msgid "Previous"
+msgstr ""
+
+#: templates/layouts/_base.html:59
 msgid "We use cookies to improve your experience of census.gov.uk"
 msgstr ""
 
-#: templates/layouts/_questionnaire.html:32
+#: templates/layouts/_questionnaire.html:26
 msgid "Save and continue"
 msgstr ""
 
-#: templates/layouts/_questionnaire.html:43
+#: templates/layouts/_questionnaire.html:37
 msgid "Choose another section and return to this later"
-msgstr ""
-
-#: templates/layouts/configs/_feedback.html:3
-msgid "Give us feedback and help us improve this service"
-msgstr ""
-
-#: templates/layouts/configs/_feedback.html:12
-msgid "Tell us what you think of this service by emailing"
-msgstr ""
-
-#: templates/layouts/configs/_feedback.html:13
-msgid "If you need help with your census, get in touch with our contact centre."
-msgstr ""
-
-#: templates/layouts/configs/_feedback.html:14
-msgid "Census 2021 feedback: "
-msgstr ""
-
-#: templates/layouts/configs/_feedback.html:15
-msgid ""
-"This email is for feedback on the census rehearsal, which will help us to"
-" improve Census 2021.\n"
-"If you need help with your census, visit https://www.census.gov.uk"
-"/contact-us."
 msgstr ""
 
 #: templates/layouts/configs/_footer.html:31
@@ -909,7 +892,7 @@ msgstr ""
 msgid "Exit"
 msgstr ""
 
-#: templates/macros/helpers.html:39
+#: templates/macros/helpers.html:29
 msgid "Interviewer note:"
 msgstr ""
 
