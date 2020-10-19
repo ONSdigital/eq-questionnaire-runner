@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2020-10-15 13:52+0100\n"
+"POT-Creation-Date: 2020-10-16 08:37+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -823,40 +823,39 @@ msgid ""
 "them to complete their own census"
 msgstr ""
 
-#: templates/individual_response/interstitial.html:11
-#: templates/layouts/_questionnaire.html:14
-msgid "Previous"
-msgstr ""
-
-#: templates/individual_response/interstitial.html:13
+#: templates/individual_response/interstitial.html:8
 msgid "If you can't answer questions for others in your household"
 msgstr ""
 
-#: templates/individual_response/interstitial.html:14
+#: templates/individual_response/interstitial.html:9
 msgid ""
 "You can ask the people you live with to answer their own questions by "
 "sharing the household access code with them."
 msgstr ""
 
-#: templates/individual_response/interstitial.html:15
+#: templates/individual_response/interstitial.html:10
 msgid ""
 "If this is not possible, you can request a separate census for them to "
 "complete."
 msgstr ""
 
-#: templates/individual_response/interstitial.html:18
+#: templates/individual_response/interstitial.html:13
 msgid "Request separate census"
 msgstr ""
 
-#: templates/layouts/_base.html:40
+#: templates/layouts/_base.html:18
+msgid "Previous"
+msgstr ""
+
+#: templates/layouts/_base.html:59
 msgid "We use cookies to improve your experience of census.gov.uk"
 msgstr ""
 
-#: templates/layouts/_questionnaire.html:32
+#: templates/layouts/_questionnaire.html:26
 msgid "Save and continue"
 msgstr ""
 
-#: templates/layouts/_questionnaire.html:43
+#: templates/layouts/_questionnaire.html:37
 msgid "Choose another section and return to this later"
 msgstr ""
 
@@ -893,7 +892,7 @@ msgstr ""
 msgid "Exit"
 msgstr ""
 
-#: templates/macros/helpers.html:39
+#: templates/macros/helpers.html:29
 msgid "Interviewer note:"
 msgstr ""
 
