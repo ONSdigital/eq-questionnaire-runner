@@ -1,0 +1,23 @@
+{% extends 'layouts/_base.html' %}
+{% from 'components/panel/_macro.njk' import onsPanel %}
+
+{% set hide_signout_button = content.hide_signout_button %}
+{% set page_title = _("Feedback sent") %}
+{% set sign_out_url = content.sign_out_url %}
+
+{% block main %}
+   {% call onsPanel({
+     "spacious": true,
+     "type": "success",
+     "classes": "u-mb-s"
+     })
+   %}
+
+  <h1 data-qa="feedback-thank-you-text">{{ _("Thank you for your feedback") }}</h1>
+  <p>{{ _("Your comments will help us make improvements to our surveys. We are not able to reply to comments, but we appreciate your feedback") }}</p>
+
+  {% endcall %}
+
+  {% include 'partials/make-sure-you-leave.html' %}
+
+{% endblock %}

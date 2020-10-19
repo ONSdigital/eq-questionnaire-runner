@@ -1,0 +1,36 @@
+{% extends 'layouts/_base.html' %}
+{% import 'macros/helpers.html' as helpers %}
+{% from "components/button/_macro.njk" import onsButton %}
+{% from 'components/panel/_macro.njk' import onsPanel %}
+
+{% set hide_signout_button = content.hide_signout_button %}
+{% set question = content.question %}
+{% set sign_out_url = content.sign_out_url %}
+
+{% block main %}
+  {% set form = content.form %}
+  {% if form.mapped_errors %}
+    {% set error_title = ngettext('There is a problem with your answer', 'There are %(num)s problems with your answer', form.mapped_errors | length) %}
+    {% include 'partials/error-panel.html' %}
+  {% endif %}
+
+  <h1 data-qa="title">{{ content.question.title }}</h1>
+
+  {%- for answer in question.answers -%}
+    {% include 'partials/answer.html' %}
+  {%- endfor -%}
+
+  {{
+    onsButton({
+      "text": _("Send feedback"),
+      "classes": "u-mt-s",
+      "attributes": {
+        "data-qa": "btn-submit"
+      }
+    })
+  }}
+  <br><br>
+
+  {% include 'partials/make-sure-you-leave.html' %}
+
+{% endblock %}
