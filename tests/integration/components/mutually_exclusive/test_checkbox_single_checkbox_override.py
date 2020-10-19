@@ -48,4 +48,4 @@ class TestCheckboxSingleCheckboxOverride(IntegrationTestCase):
         )
 
         # Then
-        self.assertInBody("Remove an answer to continue")
+        self.assertInBody("Remove an answer")
