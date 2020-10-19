@@ -27,7 +27,7 @@ from app.views.handlers.confirmation_email import (
 from app.views.handlers.feedback import (
     Feedback,
     FeedbackAlreadySent,
-    FeedbackFormNotAccessible,
+    FeedbackNotEnabled,
 )
 from app.views.handlers.section import SectionHandler
 from app.views.handlers.submission import SubmissionHandler
@@ -356,7 +356,7 @@ def get_confirmation_email_sent():
 def send_feedback(schema):
     try:
         feedback = Feedback(schema, form_data=request.form)
-    except FeedbackFormNotAccessible:
+    except FeedbackNotEnabled:
         raise NotFound
     except FeedbackAlreadySent:
         return redirect(url_for("post_submission.get_feedback_sent"))

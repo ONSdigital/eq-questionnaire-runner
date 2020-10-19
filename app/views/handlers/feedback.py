@@ -7,7 +7,7 @@ from app.globals import get_session_store
 from app.views.contexts.feedback_form_context import build_feedback_context
 
 
-class FeedbackFormNotAccessible(Exception):
+class FeedbackNotEnabled(Exception):
     pass
 
 
@@ -65,18 +65,18 @@ class Feedback:
 
     def __init__(self, schema, form_data):
         self._schema = schema
-        self._answers = None
-        self._form_data = form_data
-        self._session_store = get_session_store()
 
         if not schema.get_submission().get("feedback"):
-            raise FeedbackFormNotAccessible
+            raise FeedbackNotEnabled
 
+        self._session_store = get_session_store()
         if not self._session_store.session_data.submitted_time:
-            raise FeedbackFormNotAccessible
+            raise FeedbackNotEnabled
 
         if get_session_store().session_data.feedback_sent:
             raise FeedbackAlreadySent
+
+        self._form_data = form_data
 
     @cached_property
     def form(self):
@@ -85,7 +85,7 @@ class Feedback:
             question_schema=self.QUESTION_SCHEMA,
             answer_store=None,
             metadata=None,
-            data=self._answers,
+            data=None,
             form_data=self._form_data,
         )
 

@@ -45,7 +45,7 @@ class TestFeedback(IntegrationTestCase):
         # Then I get shown a 404 error
         self.assertStatusNotFound()
 
-    def test_feedback_submitted(self):
+    def test_valid_feedback(self):
         # Given I launch and complete the test_feedback questionnaire
         self._launch_and_complete_questionnaire()
         self.get("/submitted/feedback/send")
