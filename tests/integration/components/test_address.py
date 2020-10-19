@@ -12,7 +12,7 @@ class TestAddressFields(IntegrationTestCase):
         self.post({})
 
         # Then
-        self.assertInBody("Enter an address to continue")
+        self.assertInBody("Enter an address")
 
     def test_empty_address_field_are_not_displayed_on_summary(self):
         # When
@@ -76,7 +76,7 @@ class TestLookupAddressFields(IntegrationTestCase):
         self.post({})
 
         # Then
-        self.assertInBody("Enter an address to continue")
+        self.assertInBody("Enter an address")
 
     def test_address_fields_are_populated_in_when_revisiting_the_page(self):
         # Given
