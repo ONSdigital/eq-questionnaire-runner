@@ -19,7 +19,7 @@ describe("Component: Dropdown", () => {
 
     it("When I have not selected a dropdown option and click Continue, Then the default error message should be displayed", () => {
       $(DropdownMandatoryPage.submit()).click();
-      expect($(DropdownMandatoryPage.errorNumber(1)).getText()).to.contain("Select an answer to continue");
+      expect($(DropdownMandatoryPage.errorNumber(1)).getText()).to.contain("Select an answer");
     });
 
     it("When I have selected a dropdown option and I try to select a default (disabled) dropdown option, Then the already selected option should be displayed in summary", () => {
