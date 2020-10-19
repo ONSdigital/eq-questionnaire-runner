@@ -63,9 +63,7 @@ class TestDurationForm(AppContextTestCase):
         self._test_validation(False, "5", None, True)
         self._test_validation(True, "5", None, True)
         self._test_validation(False, "", None, True)
-        self._test_validation(
-            True, "", None, False, error="Enter a duration"
-        )
+        self._test_validation(True, "", None, False, error="Enter a duration")
         self._test_validation(
             False, "word", None, False, error="Enter a valid duration"
         )
@@ -77,9 +75,7 @@ class TestDurationForm(AppContextTestCase):
         self._test_validation(False, None, "5", True)
         self._test_validation(True, None, "5", True)
         self._test_validation(False, None, "", True)
-        self._test_validation(
-            True, None, "", False, error="Enter a duration"
-        )
+        self._test_validation(True, None, "", False, error="Enter a duration")
         self._test_validation(
             False, None, "word", False, error="Enter a valid duration"
         )
