@@ -1,8 +1,8 @@
-import QuestionPage from "./question.page";
+import FeedbackBasePage from "./feedback-base.page.js";
 
-class FeedbackSentPage extends QuestionPage {
+class FeedbackSentPage extends FeedbackBasePage {
   constructor() {
-    super("feedback/sent");
+    super("sent");
   }
 
   feedbackThankYouText() {

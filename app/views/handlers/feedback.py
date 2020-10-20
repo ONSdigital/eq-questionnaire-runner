@@ -1,6 +1,6 @@
 from functools import cached_property
 
-from flask_babel import gettext
+from flask_babel import gettext, lazy_gettext
 
 from app.forms.questionnaire_form import generate_form
 from app.globals import get_session_store
@@ -20,8 +20,8 @@ class Feedback:
     QUESTION_SCHEMA = {
         "type": "General",
         "id": "feedback",
-        "title": "Give feedback about this service",
-        "label": "Select what feedback is about",
+        "title": lazy_gettext("Give feedback about this service"),
+        "label": lazy_gettext("Select what feedback is about"),
         "answers": [
             {
                 "type": "Radio",
@@ -29,35 +29,43 @@ class Feedback:
                 "mandatory": True,
                 "options": [
                     {
-                        "label": "The census questions",
-                        "value": "The census questions",
-                        "description": "For example, question not clear, answer option not relevant",
+                        "label": lazy_gettext("The census questions"),
+                        "value": lazy_gettext("The census questions"),
+                        "description": lazy_gettext(
+                            "For example, question not clear, answer option not relevant"
+                        ),
                     },
                     {
-                        "label": "Page design and structure",
-                        "value": "Page design and structure",
+                        "label": lazy_gettext("Page design and structure"),
+                        "value": lazy_gettext("Page design and structure"),
                     },
                     {
-                        "label": "General feedback about this service",
-                        "value": "General feedback about this service",
+                        "label": lazy_gettext("General feedback about this service"),
+                        "value": lazy_gettext("General feedback about this service"),
                     },
                 ],
                 "validation": {
                     "messages": {
-                        "MANDATORY_RADIO": "Select what your feedback is about"
+                        "MANDATORY_RADIO": lazy_gettext(
+                            "Select what your feedback is about"
+                        )
                     }
                 },
             },
             {
                 "id": "feedback-text",
-                "label": "Enter your comments",
-                "description": "For example, question not clear, answer option not relevant",
+                "label": lazy_gettext("Enter your comments"),
+                "description": lazy_gettext(
+                    "Do not include confidential information, such as your contact details."
+                ),
                 "rows": 8,
                 "mandatory": True,
                 "type": "TextArea",
                 "max_length": 1000,
                 "validation": {
-                    "messages": {"MANDATORY_TEXTAREA": "Enter your feedback"}
+                    "messages": {
+                        "MANDATORY_TEXTAREA": lazy_gettext("Enter your feedback")
+                    }
                 },
             },
         ],
@@ -73,7 +81,7 @@ class Feedback:
         if not self._session_store.session_data.submitted_time:
             raise FeedbackNotEnabled
 
-        if get_session_store().session_data.feedback_sent:
+        if self._session_store.session_data.feedback_sent:
             raise FeedbackAlreadySent
 
         self._form_data = form_data

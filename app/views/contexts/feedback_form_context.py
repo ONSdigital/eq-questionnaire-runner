@@ -9,9 +9,7 @@ def build_feedback_context(question_schema, form):
         },
     }
 
-    answer_ids = []
-    for answer in question_schema["answers"]:
-        answer_ids.append(answer["id"])
+    answer_ids = (answer["id"] for answer in question_schema["answers"])
 
     for answer_id in answer_ids:
         context["form"]["answer_errors"][answer_id] = form.answer_errors(answer_id)

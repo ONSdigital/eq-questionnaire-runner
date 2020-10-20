@@ -1,12 +1,12 @@
-import QuestionPage from "./question.page";
+import FeedbackBasePage from "./feedback-base.page.js";
 
-class FeedbackPage extends QuestionPage {
+class FeedbackPage extends FeedbackBasePage {
   constructor() {
-    super("feedback/send");
+    super("send");
   }
 
-  title() {
-    return '[data-qa="title"]';
+  feedbackTitle() {
+    return '[data-qa="feedback-title"]';
   }
 
   feedbackType() {
@@ -15,10 +15,6 @@ class FeedbackPage extends QuestionPage {
 
   feedbackText() {
     return "#feedback-text";
-  }
-
-  submit() {
-    return '[data-qa="btn-submit"]';
   }
 
   errorPanel() {

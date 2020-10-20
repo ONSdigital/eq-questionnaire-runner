@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2020-10-19 13:12+0100\n"
+"POT-Creation-Date: 2020-10-20 11:34+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -331,12 +331,52 @@ msgid "Confirmation email"
 msgstr ""
 
 #: app/views/handlers/confirmation_email.py:31
-#: app/views/handlers/feedback.py:97 app/views/handlers/question.py:149
+#: app/views/handlers/feedback.py:105 app/views/handlers/question.py:155
 msgid "Error: {page_title}"
 msgstr ""
 
 #: app/views/handlers/feedback.py:19
 msgid "Feedback"
+msgstr ""
+
+#: app/views/handlers/feedback.py:23
+msgid "Give feedback about this service"
+msgstr ""
+
+#: app/views/handlers/feedback.py:24
+msgid "Select what feedback is about"
+msgstr ""
+
+#: app/views/handlers/feedback.py:32 app/views/handlers/feedback.py:33
+msgid "The census questions"
+msgstr ""
+
+#: app/views/handlers/feedback.py:34
+msgid "For example, question not clear, answer option not relevant"
+msgstr ""
+
+#: app/views/handlers/feedback.py:39 app/views/handlers/feedback.py:40
+msgid "Page design and structure"
+msgstr ""
+
+#: app/views/handlers/feedback.py:43 app/views/handlers/feedback.py:44
+msgid "General feedback about this service"
+msgstr ""
+
+#: app/views/handlers/feedback.py:49
+msgid "Select what your feedback is about"
+msgstr ""
+
+#: app/views/handlers/feedback.py:57
+msgid "Enter your comments"
+msgstr ""
+
+#: app/views/handlers/feedback.py:58
+msgid "Do not include confidential information, such as your contact details."
+msgstr ""
+
+#: app/views/handlers/feedback.py:67
+msgid "Enter your feedback"
 msgstr ""
 
 #: app/views/handlers/individual_response.py:127
@@ -574,11 +614,10 @@ msgid ""
 "able to reply to comments, but we appreciate your feedback"
 msgstr ""
 
-#: templates/feedback.html:13 templates/partials/answers/address.html:52
-#: templates/question.html:10
+#: templates/feedback.html:13
 #, python-format
-msgid "There is a problem with your answer"
-msgid_plural "There are %(num)s problems with your answer"
+msgid "There is a problem with your feedback"
+msgid_plural "There are %(num)s problems with your feedback"
 msgstr[0] ""
 msgstr[1] ""
 
@@ -630,6 +669,13 @@ msgstr ""
 #: templates/multiple_survey.html:17
 msgid "Close this window to continue with your current survey"
 msgstr ""
+
+#: templates/partials/answers/address.html:52 templates/question.html:10
+#, python-format
+msgid "There is a problem with your answer"
+msgid_plural "There are %(num)s problems with your answer"
+msgstr[0] ""
+msgstr[1] ""
 
 #: templates/signed-out.html:3
 msgid "Signed out"
