@@ -13,7 +13,7 @@ describe("Feedback", () => {
     });
 
     it("When I try to submit without providing feedback, then I stay on the feedback page and get an error message", () => {
-      browser.url("/submitted/feedback/send");
+      browser.url(FeedbackPage.url());
       expect(browser.getUrl()).to.contain(FeedbackPage.pageName);
       expect($(FeedbackPage.feedbackTitle()).getText()).to.contain("Give feedback about this service");
       $(FeedbackPage.submit()).click();
@@ -25,6 +25,7 @@ describe("Feedback", () => {
     });
 
     it("When I enter valid feedback, Then I can submit the feedback page and get confirmation that the feedback has been sent", () => {
+      browser.url(FeedbackPage.url());
       $(FeedbackPage.feedbackType()).click();
       $(FeedbackPage.feedbackText()).setValue("The census questions");
       $(FeedbackPage.submit()).click();

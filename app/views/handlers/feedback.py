@@ -16,7 +16,7 @@ class FeedbackAlreadySent(Exception):
 
 
 class Feedback:
-    PAGE_TITLE = gettext("Feedback")
+    PAGE_TITLE = lazy_gettext("Feedback")
     QUESTION_SCHEMA = {
         "type": "General",
         "id": "feedback",

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2020-10-20 11:34+0100\n"
+"POT-Creation-Date: 2020-10-20 16:42+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -328,7 +328,7 @@ msgid "Confirmation email"
 msgstr ""
 
 #: app/views/handlers/confirmation_email.py:31
-#: app/views/handlers/feedback.py:105 app/views/handlers/question.py:155
+#: app/views/handlers/feedback.py:105 app/views/handlers/question.py:149
 msgid "Error: {page_title}"
 msgstr ""
 
@@ -984,12 +984,6 @@ msgid ""
 " of the section</a>"
 msgstr ""
 
-#: templates/partials/make-sure-you-leave.html:8
-msgid ""
-"Make sure you <a href='{sign_out_url}'>leave this page</a> or close your "
-"browser if using a shared device"
-msgstr ""
-
 #: templates/partials/question.html:60
 msgid "Selecting this will clear your answer"
 msgstr ""
@@ -1008,6 +1002,12 @@ msgstr ""
 
 #: templates/partials/question.html:69
 msgid "Or"
+msgstr ""
+
+#: templates/partials/sign-out-pre-footer-panel.html:8
+msgid ""
+"Make sure you <a href='{sign_out_url}'>leave this page</a> or close your "
+"browser if using a shared device"
 msgstr ""
 
 #: templates/partials/answers/address.html:10
