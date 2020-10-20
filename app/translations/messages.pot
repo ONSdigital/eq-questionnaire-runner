@@ -43,7 +43,7 @@ msgstr ""
 
 #: app/forms/error_messages.py:11 app/forms/error_messages.py:12
 #: app/forms/error_messages.py:13 app/forms/error_messages.py:14
-msgid "Enter an answer to continue"
+msgid "Enter an answer"
 msgstr ""
 
 #: app/forms/error_messages.py:15
@@ -52,7 +52,8 @@ msgid "Select an answer <span class=\"u-vh\">to ‘%(question_title)s’</span>"
 msgstr ""
 
 #: app/forms/error_messages.py:18
-msgid "Select an answer to continue"
+#: app/forms/field_handlers/dropdown_handler.py:12
+msgid "Select an answer"
 msgstr ""
 
 #: app/forms/error_messages.py:19
@@ -63,15 +64,15 @@ msgid ""
 msgstr ""
 
 #: app/forms/error_messages.py:22
-msgid "Enter a date to continue"
+msgid "Enter a date"
 msgstr ""
 
-#: app/forms/error_messages.py:23
-msgid "Enter an address to continue"
+#: app/forms/error_messages.py:23 templates/partials/answers/address.html:53
+msgid "Enter an address"
 msgstr ""
 
 #: app/forms/error_messages.py:24
-msgid "Enter a duration to continue"
+msgid "Enter a duration"
 msgstr ""
 
 #: app/forms/error_messages.py:25
@@ -188,7 +189,7 @@ msgid "Enter a date before %(max)s"
 msgstr ""
 
 #: app/forms/error_messages.py:69
-msgid "Remove an answer to continue"
+msgid "Remove an answer"
 msgstr ""
 
 #: app/forms/validators.py:349
@@ -197,10 +198,6 @@ msgid "%(num)s day"
 msgid_plural "%(num)s days"
 msgstr[0] ""
 msgstr[1] ""
-
-#: app/forms/field_handlers/dropdown_handler.py:12
-msgid "Select an answer"
-msgstr ""
 
 #: app/forms/fields/select_field_with_detail_answer.py:35
 msgid "Not a valid choice"
@@ -1075,7 +1072,6 @@ msgid "Enter more of the address to improve results"
 msgstr ""
 
 #: templates/partials/answers/address.html:47
-#: templates/partials/answers/address.html:54
 msgid "Select an address"
 msgstr ""
 
@@ -1091,8 +1087,8 @@ msgstr ""
 msgid "Enter more of the address to get results"
 msgstr ""
 
-#: templates/partials/answers/address.html:53
-msgid "Enter an address"
+#: templates/partials/answers/address.html:54
+msgid "Select or manually enter an address"
 msgstr ""
 
 #: templates/partials/answers/address.html:55

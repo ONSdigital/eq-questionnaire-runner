@@ -37,7 +37,7 @@ def test_address_mandatory_line1_validator():
     validator = address_handler.validators
 
     assert isinstance(validator[0], InputRequired)
-    assert validator[0].message == "Enter an address to continue"
+    assert validator[0].message == "Enter an address"
 
 
 def test_no_validation_when_address_not_mandatory():
@@ -57,7 +57,7 @@ def test_mandatory_validation_when_address_line_1_missing():
     form = test_form_class(MultiDict({"test_field": "1"}))
     form.validate()
 
-    assert form.errors["test_field"]["line1"][0] == "Enter an address to continue"
+    assert form.errors["test_field"]["line1"][0] == "Enter an address"
 
 
 def test_address_validator_with_message_override():

@@ -39,7 +39,7 @@ describe("Address Answer Type", () => {
   describe("Given the user is on an mandatory address input question", () => {
     it("When the user submits the page without entering address line 1, Then an error is displayed", () => {
       $(AddressMandatory.submit()).click();
-      expect($(AddressMandatory.error()).getText()).to.equal("Enter an address to continue");
+      expect($(AddressMandatory.error()).getText()).to.equal("Enter an address");
     });
   });
 
