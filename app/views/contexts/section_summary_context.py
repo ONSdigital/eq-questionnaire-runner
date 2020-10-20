@@ -122,9 +122,24 @@ class SectionSummaryContext(Context):
 
     def _list_summary_element(self, summary, current_location, section) -> Mapping:
         current_list = self._list_store[summary["for_list"]]
-        list_collector_block = self._schema.get_list_collector_for_list(
-            section, for_list=summary["for_list"]
+
+        routing_path = self._router.routing_path(
+            section["id"], current_location.list_item_id
         )
+
+        list_collector_blocks_on_path = [
+            list_collector_block
+            for list_collector_block in self._schema.get_list_collectors_for_list(
+                section, for_list=summary["for_list"]
+            )
+            if list_collector_block["id"] in routing_path.block_ids
+        ]
+        if len(list_collector_blocks_on_path) == 0:
+            list_collector_block = self._schema.get_list_collector_for_list(
+                section, for_list=summary["for_list"]
+            )
+        else:
+            list_collector_block = list_collector_blocks_on_path[0]
 
         primary_person_edit_block_id = None
 
