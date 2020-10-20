@@ -1,12 +1,17 @@
+from flask import url_for
+
+
 def build_feedback_context(question_schema, form):
     context = {
-        "question": question_schema,
         "form": {
             "errors": form.errors,
             "mapped_errors": form.map_errors(),
             "answer_errors": {},
             "fields": {},
         },
+        "hide_signout_button": False,
+        "question": question_schema,
+        "sign_out_url": url_for("session.get_sign_out"),
     }
 
     answer_ids = (answer["id"] for answer in question_schema["answers"])
