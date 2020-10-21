@@ -21,4 +21,13 @@
 
   {% include 'partials/sign-out-pre-footer-panel.html' %}
 
+  {% call onsPanel({
+      "type": "bare",
+      "classes": "u-mb-s",
+      "icon": "lock"
+      })
+  %}
+      <p>{{ _("The email will be sent from <em>census.2021@notifications.service.gov.uk</em>") }}</p>
+  {% endcall %}
+
 {% endblock %}
