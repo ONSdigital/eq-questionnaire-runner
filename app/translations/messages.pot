@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2020-10-21 21:41+0100\n"
+"POT-Creation-Date: 2020-10-21 21:50+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -591,13 +591,6 @@ msgid ""
 "<em>census.2021@notifications.service.gov.uk</em>"
 msgstr ""
 
-#: templates/confirmation-email-sent.html:38
-#: templates/partials/sign-out-pre-footer-panel.html:8
-msgid ""
-"Make sure you <a href='{sign_out_url}'>leave this page</a> or close your "
-"browser if using a shared device"
-msgstr ""
-
 #: templates/confirmation-email.html:12
 msgid "Send another confirmation email"
 msgstr ""
@@ -1019,6 +1012,12 @@ msgstr ""
 
 #: templates/partials/question.html:69
 msgid "Or"
+msgstr ""
+
+#: templates/partials/sign-out-pre-footer-panel.html:8
+msgid ""
+"Make sure you <a href='{sign_out_url}'>leave this page</a> or close your "
+"browser if using a shared device"
 msgstr ""
 
 #: templates/partials/answers/address.html:10
