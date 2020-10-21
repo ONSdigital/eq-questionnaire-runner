@@ -314,7 +314,10 @@ class TestJinjaFilters(AppContextTestCase):  # pylint: disable=too-many-public-m
 
 
 def test_map_list_collector_config_no_actions():
-    list_items = [{"item_title": "Mark Bloggs"}, {"item_title": "Joe Bloggs"}]
+    list_items = [
+        {"item_title": "Mark Bloggs", "list_item_id": "one"},
+        {"item_title": "Joe Bloggs", "list_item_id": "two"},
+    ]
 
     output = map_list_collector_config(list_items, "icon")
 
@@ -325,7 +328,10 @@ def test_map_list_collector_config_no_actions():
                     "actions": [],
                     "icon": "icon",
                     "rowTitle": "Mark Bloggs",
-                    "rowTitleAttributes": {"data-qa": "list-item-1-label"},
+                    "rowTitleAttributes": {
+                        "data-qa": "list-item-1-label",
+                        "data-list-item-id": "one",
+                    },
                 }
             ]
         },
@@ -335,7 +341,10 @@ def test_map_list_collector_config_no_actions():
                     "actions": [],
                     "icon": "icon",
                     "rowTitle": "Joe Bloggs",
-                    "rowTitleAttributes": {"data-qa": "list-item-2-label"},
+                    "rowTitleAttributes": {
+                        "data-qa": "list-item-2-label",
+                        "data-list-item-id": "two",
+                    },
                 }
             ]
         },
@@ -351,12 +360,14 @@ def test_map_list_collector_config():
             "edit_link": "/primary/change",
             "primary_person": True,
             "item_title": "Mark Bloggs (You)",
+            "list_item_id": "primary",
         },
         {
             "remove_link": "/nonprimary/remove",
             "edit_link": "/nonprimary/change",
             "primary_person": False,
             "item_title": "Joe Bloggs",
+            "list_item_id": "nonprimary",
         },
     ]
 
@@ -383,7 +394,10 @@ def test_map_list_collector_config():
                     ],
                     "icon": "icon",
                     "rowTitle": "Mark Bloggs (You)",
-                    "rowTitleAttributes": {"data-qa": "list-item-1-label"},
+                    "rowTitleAttributes": {
+                        "data-qa": "list-item-1-label",
+                        "data-list-item-id": "primary",
+                    },
                 }
             ]
         },
@@ -406,7 +420,10 @@ def test_map_list_collector_config():
                     ],
                     "icon": "icon",
                     "rowTitle": "Joe Bloggs",
-                    "rowTitleAttributes": {"data-qa": "list-item-2-label"},
+                    "rowTitleAttributes": {
+                        "data-qa": "list-item-2-label",
+                        "data-list-item-id": "nonprimary",
+                    },
                 }
             ]
         },

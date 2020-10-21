@@ -407,7 +407,7 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
 
         return answer_ids
 
-    def get_relationship_answer_id_for_block(self, block_id):
+    def get_first_answer_id_for_block(self, block_id):
         answer_ids = self.get_answer_ids_for_block(block_id)
         return answer_ids[0]
 

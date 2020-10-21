@@ -30,8 +30,7 @@ class Question(BlockHandler):
                 form_data=self._form_data,
             )
 
-        answer_ids = self._schema.get_answer_ids_for_question(question_json)
-        answers = self._get_answers_from_answer_store(answer_ids)
+        answers = self._get_answers_for_question(question_json)
         return generate_form(
             self._schema,
             question_json,
@@ -96,7 +95,8 @@ class Question(BlockHandler):
             self._current_location, self._routing_path, self._return_to
         )
 
-    def _get_answers_from_answer_store(self, answer_ids):
+    def _get_answers_for_question(self, question_json):
+        answer_ids = self._schema.get_answer_ids_for_question(question_json)
         answers = self._questionnaire_store.answer_store.get_answers_by_answer_id(
             answer_ids=answer_ids, list_item_id=self._current_location.list_item_id
         )

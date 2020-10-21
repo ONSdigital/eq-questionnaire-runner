@@ -602,7 +602,10 @@ def map_list_collector_config(
                         "icon": icon,
                         "actions": actions,
                         "rowTitle": item_name,
-                        "rowTitleAttributes": {"data-qa": f"list-item-{index}-label"},
+                        "rowTitleAttributes": {
+                            "data-qa": f"list-item-{index}-label",
+                            "data-list-item-id": list_item.get("list_item_id"),
+                        },
                     }
                 ]
             }
