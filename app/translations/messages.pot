@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2020-10-19 12:54+0100\n"
+"POT-Creation-Date: 2020-10-20 16:42+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -328,8 +328,52 @@ msgid "Confirmation email"
 msgstr ""
 
 #: app/views/handlers/confirmation_email.py:31
-#: app/views/handlers/question.py:149
+#: app/views/handlers/feedback.py:105 app/views/handlers/question.py:149
 msgid "Error: {page_title}"
+msgstr ""
+
+#: app/views/handlers/feedback.py:19
+msgid "Feedback"
+msgstr ""
+
+#: app/views/handlers/feedback.py:23
+msgid "Give feedback about this service"
+msgstr ""
+
+#: app/views/handlers/feedback.py:24
+msgid "Select what feedback is about"
+msgstr ""
+
+#: app/views/handlers/feedback.py:32 app/views/handlers/feedback.py:33
+msgid "The census questions"
+msgstr ""
+
+#: app/views/handlers/feedback.py:34
+msgid "For example, question not clear, answer option not relevant"
+msgstr ""
+
+#: app/views/handlers/feedback.py:39 app/views/handlers/feedback.py:40
+msgid "Page design and structure"
+msgstr ""
+
+#: app/views/handlers/feedback.py:43 app/views/handlers/feedback.py:44
+msgid "General feedback about this service"
+msgstr ""
+
+#: app/views/handlers/feedback.py:49
+msgid "Select what your feedback is about"
+msgstr ""
+
+#: app/views/handlers/feedback.py:57
+msgid "Enter your comments"
+msgstr ""
+
+#: app/views/handlers/feedback.py:58
+msgid "Do not include confidential information, such as your contact details."
+msgstr ""
+
+#: app/views/handlers/feedback.py:67
+msgid "Enter your feedback"
 msgstr ""
 
 #: app/views/handlers/individual_response.py:127
@@ -522,12 +566,6 @@ msgid ""
 "census enter your email address."
 msgstr ""
 
-#: templates/census-thank-you.html:63
-msgid ""
-"Make sure you <a href='{url}'>leave this page</a> or close your browser "
-"if using a shared device"
-msgstr ""
-
 #: templates/confirmation-email-sent.html:3
 msgid "Confirmation email sent"
 msgstr ""
@@ -547,12 +585,6 @@ msgid ""
 "id='send-another-email'>send another confirmation email</a>."
 msgstr ""
 
-#: templates/confirmation-email-sent.html:28
-msgid ""
-"Make sure you <a href='{sign_out_url}'>leave this page</a> or close your "
-"browser if using a shared device"
-msgstr ""
-
 #: templates/confirmation-email.html:12
 msgid "Send another confirmation email"
 msgstr ""
@@ -563,6 +595,31 @@ msgstr ""
 
 #: templates/confirmation.html:32
 msgid "Submitting"
+msgstr ""
+
+#: templates/feedback-sent.html:5
+msgid "Feedback sent"
+msgstr ""
+
+#: templates/feedback-sent.html:16
+msgid "Thank you for your feedback"
+msgstr ""
+
+#: templates/feedback-sent.html:17
+msgid ""
+"Your comments will help us make improvements to our surveys. We are not "
+"able to reply to comments, but we appreciate your feedback"
+msgstr ""
+
+#: templates/feedback.html:13
+#, python-format
+msgid "There is a problem with your feedback"
+msgid_plural "There are %(num)s problems with your feedback"
+msgstr[0] ""
+msgstr[1] ""
+
+#: templates/feedback.html:25
+msgid "Send feedback"
 msgstr ""
 
 #: templates/hub.html:39
@@ -945,6 +1002,12 @@ msgstr ""
 
 #: templates/partials/question.html:69
 msgid "Or"
+msgstr ""
+
+#: templates/partials/sign-out-pre-footer-panel.html:8
+msgid ""
+"Make sure you <a href='{sign_out_url}'>leave this page</a> or close your "
+"browser if using a shared device"
 msgstr ""
 
 #: templates/partials/answers/address.html:10

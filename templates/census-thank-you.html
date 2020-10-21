@@ -55,12 +55,6 @@
   {% endif %}
   <br><br>
 
-  {% call onsPanel({
-    "id": "submission-warning",
-    "type": "warn"
-    })
-  %}
-  {{ _("Make sure you <a href='{url}'>leave this page</a> or close your browser if using a shared device").format(url = sign_out_url) }}
-  {% endcall %}
+  {% include 'partials/sign-out-pre-footer-panel.html' %}
 
 {% endblock %}
