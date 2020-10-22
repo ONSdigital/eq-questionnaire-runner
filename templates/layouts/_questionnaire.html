@@ -1,5 +1,4 @@
 {% extends 'layouts/_base.html' %}
-{% import 'macros/helpers.html' as helpers %}
 {% from "components/button/_macro.njk" import onsButton %}
 {% from "components/cookies-banner/_macro.njk" import onsCookiesBanner %}
 
@@ -9,11 +8,6 @@
 
 {% block main %}
   <button type="submit" class="u-d-no" hidden></button>
-  {% if previous_location_url %}
-    <div class="u-mb-s">
-      <a {{ helpers.track('click', 'Navigation', 'Previous link click', position )}} href="{{ previous_location_url }}" id="top-previous">{{ _("Previous") }}</a>
-    </div>
-  {% endif %}
 
   {% block form_errors %}{% endblock %}
 

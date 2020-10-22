@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2020-10-15 13:52+0100\n"
+"POT-Creation-Date: 2020-10-20 16:42+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -43,7 +43,7 @@ msgstr ""
 
 #: app/forms/error_messages.py:11 app/forms/error_messages.py:12
 #: app/forms/error_messages.py:13 app/forms/error_messages.py:14
-msgid "Enter an answer to continue"
+msgid "Enter an answer"
 msgstr ""
 
 #: app/forms/error_messages.py:15
@@ -52,7 +52,8 @@ msgid "Select an answer <span class=\"u-vh\">to ‘%(question_title)s’</span>"
 msgstr ""
 
 #: app/forms/error_messages.py:18
-msgid "Select an answer to continue"
+#: app/forms/field_handlers/dropdown_handler.py:12
+msgid "Select an answer"
 msgstr ""
 
 #: app/forms/error_messages.py:19
@@ -63,15 +64,15 @@ msgid ""
 msgstr ""
 
 #: app/forms/error_messages.py:22
-msgid "Enter a date to continue"
+msgid "Enter a date"
 msgstr ""
 
-#: app/forms/error_messages.py:23
-msgid "Enter an address to continue"
+#: app/forms/error_messages.py:23 templates/partials/answers/address.html:53
+msgid "Enter an address"
 msgstr ""
 
 #: app/forms/error_messages.py:24
-msgid "Enter a duration to continue"
+msgid "Enter a duration"
 msgstr ""
 
 #: app/forms/error_messages.py:25
@@ -188,7 +189,7 @@ msgid "Enter a date before %(max)s"
 msgstr ""
 
 #: app/forms/error_messages.py:69
-msgid "Remove an answer to continue"
+msgid "Remove an answer"
 msgstr ""
 
 #: app/forms/validators.py:349
@@ -197,10 +198,6 @@ msgid "%(num)s day"
 msgid_plural "%(num)s days"
 msgstr[0] ""
 msgstr[1] ""
-
-#: app/forms/field_handlers/dropdown_handler.py:12
-msgid "Select an answer"
-msgstr ""
 
 #: app/forms/fields/select_field_with_detail_answer.py:35
 msgid "Not a valid choice"
@@ -331,8 +328,52 @@ msgid "Confirmation email"
 msgstr ""
 
 #: app/views/handlers/confirmation_email.py:31
-#: app/views/handlers/question.py:149
+#: app/views/handlers/feedback.py:105 app/views/handlers/question.py:149
 msgid "Error: {page_title}"
+msgstr ""
+
+#: app/views/handlers/feedback.py:19
+msgid "Feedback"
+msgstr ""
+
+#: app/views/handlers/feedback.py:23
+msgid "Give feedback about this service"
+msgstr ""
+
+#: app/views/handlers/feedback.py:24
+msgid "Select what feedback is about"
+msgstr ""
+
+#: app/views/handlers/feedback.py:32 app/views/handlers/feedback.py:33
+msgid "The census questions"
+msgstr ""
+
+#: app/views/handlers/feedback.py:34
+msgid "For example, question not clear, answer option not relevant"
+msgstr ""
+
+#: app/views/handlers/feedback.py:39 app/views/handlers/feedback.py:40
+msgid "Page design and structure"
+msgstr ""
+
+#: app/views/handlers/feedback.py:43 app/views/handlers/feedback.py:44
+msgid "General feedback about this service"
+msgstr ""
+
+#: app/views/handlers/feedback.py:49
+msgid "Select what your feedback is about"
+msgstr ""
+
+#: app/views/handlers/feedback.py:57
+msgid "Enter your comments"
+msgstr ""
+
+#: app/views/handlers/feedback.py:58
+msgid "Do not include confidential information, such as your contact details."
+msgstr ""
+
+#: app/views/handlers/feedback.py:67
+msgid "Enter your feedback"
 msgstr ""
 
 #: app/views/handlers/individual_response.py:127
@@ -525,12 +566,6 @@ msgid ""
 "census enter your email address."
 msgstr ""
 
-#: templates/census-thank-you.html:63
-msgid ""
-"Make sure you <a href='{url}'>leave this page</a> or close your browser "
-"if using a shared device"
-msgstr ""
-
 #: templates/confirmation-email-sent.html:3
 msgid "Confirmation email sent"
 msgstr ""
@@ -550,12 +585,6 @@ msgid ""
 "id='send-another-email'>send another confirmation email</a>."
 msgstr ""
 
-#: templates/confirmation-email-sent.html:28
-msgid ""
-"Make sure you <a href='{sign_out_url}'>leave this page</a> or close your "
-"browser if using a shared device"
-msgstr ""
-
 #: templates/confirmation-email.html:12
 msgid "Send another confirmation email"
 msgstr ""
@@ -566,6 +595,31 @@ msgstr ""
 
 #: templates/confirmation.html:32
 msgid "Submitting"
+msgstr ""
+
+#: templates/feedback-sent.html:5
+msgid "Feedback sent"
+msgstr ""
+
+#: templates/feedback-sent.html:16
+msgid "Thank you for your feedback"
+msgstr ""
+
+#: templates/feedback-sent.html:17
+msgid ""
+"Your comments will help us make improvements to our surveys. We are not "
+"able to reply to comments, but we appreciate your feedback"
+msgstr ""
+
+#: templates/feedback.html:13
+#, python-format
+msgid "There is a problem with your feedback"
+msgid_plural "There are %(num)s problems with your feedback"
+msgstr[0] ""
+msgstr[1] ""
+
+#: templates/feedback.html:25
+msgid "Send feedback"
 msgstr ""
 
 #: templates/hub.html:39
@@ -823,40 +877,39 @@ msgid ""
 "them to complete their own census"
 msgstr ""
 
-#: templates/individual_response/interstitial.html:11
-#: templates/layouts/_questionnaire.html:14
-msgid "Previous"
-msgstr ""
-
-#: templates/individual_response/interstitial.html:13
+#: templates/individual_response/interstitial.html:8
 msgid "If you can't answer questions for others in your household"
 msgstr ""
 
-#: templates/individual_response/interstitial.html:14
+#: templates/individual_response/interstitial.html:9
 msgid ""
 "You can ask the people you live with to answer their own questions by "
 "sharing the household access code with them."
 msgstr ""
 
-#: templates/individual_response/interstitial.html:15
+#: templates/individual_response/interstitial.html:10
 msgid ""
 "If this is not possible, you can request a separate census for them to "
 "complete."
 msgstr ""
 
-#: templates/individual_response/interstitial.html:18
+#: templates/individual_response/interstitial.html:13
 msgid "Request separate census"
 msgstr ""
 
-#: templates/layouts/_base.html:40
+#: templates/layouts/_base.html:18
+msgid "Previous"
+msgstr ""
+
+#: templates/layouts/_base.html:59
 msgid "We use cookies to improve your experience of census.gov.uk"
 msgstr ""
 
-#: templates/layouts/_questionnaire.html:32
+#: templates/layouts/_questionnaire.html:26
 msgid "Save and continue"
 msgstr ""
 
-#: templates/layouts/_questionnaire.html:43
+#: templates/layouts/_questionnaire.html:37
 msgid "Choose another section and return to this later"
 msgstr ""
 
@@ -893,7 +946,7 @@ msgstr ""
 msgid "Exit"
 msgstr ""
 
-#: templates/macros/helpers.html:39
+#: templates/macros/helpers.html:29
 msgid "Interviewer note:"
 msgstr ""
 
@@ -949,6 +1002,12 @@ msgstr ""
 
 #: templates/partials/question.html:69
 msgid "Or"
+msgstr ""
+
+#: templates/partials/sign-out-pre-footer-panel.html:8
+msgid ""
+"Make sure you <a href='{sign_out_url}'>leave this page</a> or close your "
+"browser if using a shared device"
 msgstr ""
 
 #: templates/partials/answers/address.html:10
@@ -1013,7 +1072,6 @@ msgid "Enter more of the address to improve results"
 msgstr ""
 
 #: templates/partials/answers/address.html:47
-#: templates/partials/answers/address.html:54
 msgid "Select an address"
 msgstr ""
 
@@ -1029,8 +1087,8 @@ msgstr ""
 msgid "Enter more of the address to get results"
 msgstr ""
 
-#: templates/partials/answers/address.html:53
-msgid "Enter an address"
+#: templates/partials/answers/address.html:54
+msgid "Select or manually enter an address"
 msgstr ""
 
 #: templates/partials/answers/address.html:55

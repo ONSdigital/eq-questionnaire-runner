@@ -8,20 +8,20 @@ from flask_babel import lazy_gettext
 # validators - using `.format` for non-WTForm field validation would introduce
 # inconsistency.
 error_messages = {
-    "MANDATORY_QUESTION": lazy_gettext("Enter an answer to continue"),
-    "MANDATORY_TEXTFIELD": lazy_gettext("Enter an answer to continue"),
-    "MANDATORY_NUMBER": lazy_gettext("Enter an answer to continue"),
-    "MANDATORY_TEXTAREA": lazy_gettext("Enter an answer to continue"),
+    "MANDATORY_QUESTION": lazy_gettext("Enter an answer"),
+    "MANDATORY_TEXTFIELD": lazy_gettext("Enter an answer"),
+    "MANDATORY_NUMBER": lazy_gettext("Enter an answer"),
+    "MANDATORY_TEXTAREA": lazy_gettext("Enter an answer"),
     "MANDATORY_RADIO": lazy_gettext(
         'Select an answer <span class="u-vh">to ‘%(question_title)s’</span>'
     ),
-    "MANDATORY_DROPDOWN": lazy_gettext("Select an answer to continue"),
+    "MANDATORY_DROPDOWN": lazy_gettext("Select an answer"),
     "MANDATORY_CHECKBOX": lazy_gettext(
         'Select at least one answer <span class="u-vh">to ‘%(question_title)s’</span>'
     ),
-    "MANDATORY_DATE": lazy_gettext("Enter a date to continue"),
-    "MANDATORY_ADDRESS": lazy_gettext("Enter an address to continue"),
-    "MANDATORY_DURATION": lazy_gettext("Enter a duration to continue"),
+    "MANDATORY_DATE": lazy_gettext("Enter a date"),
+    "MANDATORY_ADDRESS": lazy_gettext("Enter an address"),
+    "MANDATORY_DURATION": lazy_gettext("Enter a duration"),
     "MANDATORY_EMAIL": lazy_gettext("Enter an email address"),
     "MANDATORY_MOBILE_NUMBER": lazy_gettext("Enter a UK mobile number"),
     "NUMBER_TOO_SMALL": lazy_gettext("Enter an answer more than or equal to %(min)s"),
@@ -66,5 +66,5 @@ error_messages = {
     ),
     "SINGLE_DATE_PERIOD_TOO_EARLY": lazy_gettext("Enter a date after %(min)s"),
     "SINGLE_DATE_PERIOD_TOO_LATE": lazy_gettext("Enter a date before %(max)s"),
-    "MUTUALLY_EXCLUSIVE": lazy_gettext("Remove an answer to continue"),
+    "MUTUALLY_EXCLUSIVE": lazy_gettext("Remove an answer"),
 }

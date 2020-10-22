@@ -88,6 +88,6 @@ describe("Durations", () => {
     $(DurationPage.mandatoryMonthMonths()).setValue(1);
     $(DurationPage.submit()).click();
 
-    expect($(DurationPage.errorNumber(1)).getText()).to.contain("Enter a duration to continue");
+    expect($(DurationPage.errorNumber(1)).getText()).to.contain("Enter a duration");
   });
 });

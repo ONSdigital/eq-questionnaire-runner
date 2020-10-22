@@ -24,6 +24,11 @@ from app.views.handlers.confirmation_email import (
     ConfirmationEmail,
     ConfirmationEmailLimitReached,
 )
+from app.views.handlers.feedback import (
+    Feedback,
+    FeedbackAlreadySent,
+    FeedbackNotEnabled,
+)
 from app.views.handlers.section import SectionHandler
 from app.views.handlers.submission import SubmissionHandler
 from app.views.handlers.thank_you import ThankYou
@@ -341,6 +346,42 @@ def get_confirmation_email_sent():
             ),
             "hide_signout_button": False,
             "show_send_another_email_guidance": not ConfirmationEmail.is_limit_reached(),
+            "sign_out_url": url_for("session.get_sign_out"),
+        },
+    )
+
+
+@post_submission_blueprint.route("feedback/send", methods=["GET", "POST"])
+@with_schema
+def send_feedback(schema):
+    try:
+        feedback = Feedback(schema, form_data=request.form)
+    except FeedbackNotEnabled:
+        raise NotFound
+    except FeedbackAlreadySent:
+        return redirect(url_for("post_submission.get_feedback_sent"))
+
+    if request.method == "POST" and feedback.form.validate():
+        feedback.handle_post()
+        return redirect(url_for("post_submission.get_feedback_sent"))
+
+    return render_template(
+        template="feedback",
+        content=feedback.get_context(),
+        previous_location_url=url_for("post_submission.get_thank_you"),
+        page_title=feedback.get_page_title(),
+    )
+
+
+@post_submission_blueprint.route("feedback/sent", methods=["GET"])
+def get_feedback_sent():
+    if not get_session_store().session_data.feedback_sent:
+        raise NotFound
+
+    return render_template(
+        template="feedback-sent",
+        content={
+            "hide_signout_button": False,
             "sign_out_url": url_for("session.get_sign_out"),
         },
     )

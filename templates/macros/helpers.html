@@ -2,16 +2,6 @@
   {% with dataHandle = data %}{% include path %}{% endwith %}
 {% endmacro %}
 
-{%- macro track(event, category, action, label) -%}
-  {% set attr = {
-    "data-ga": event,
-    "data-ga-category": category,
-    "data-ga-action": action,
-    "data-ga-label": label,
-  } %}
-  {{attr|xmlattr}}
-{%- endmacro -%}
-
 {%- macro format_paragraphs(paragraphs) -%}
   {%- for paragraph in paragraphs -%}
     <p>{{paragraph}}</p>
