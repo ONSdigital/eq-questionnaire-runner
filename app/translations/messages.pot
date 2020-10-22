@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2020-10-20 16:42+0100\n"
+"POT-Creation-Date: 2020-10-22 09:09+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -300,7 +300,7 @@ msgstr ""
 
 #: app/views/contexts/hub_context.py:60
 #: templates/individual_response/confirmation-post.html:19
-#: templates/individual_response/confirmation-text-message.html:19
+#: templates/individual_response/confirmation-text-message.html:29
 #: templates/individual_response/question.html:5 templates/interstitial.html:8
 #: templates/sectionsummary.html:11 templates/sectionsummary.html:53
 msgid "Continue"
@@ -574,11 +574,17 @@ msgstr ""
 msgid "A confirmation email has been sent to {email}"
 msgstr ""
 
-#: templates/confirmation-email-sent.html:18
+#: templates/confirmation-email-sent.html:23
+msgid ""
+"The email will be sent from "
+"<em>census.2021@notifications.service.gov.uk</em>"
+msgstr ""
+
+#: templates/confirmation-email-sent.html:27
 msgid "Didn't receive an email?"
 msgstr ""
 
-#: templates/confirmation-email-sent.html:19
+#: templates/confirmation-email-sent.html:28
 msgid ""
 "It can take a few minutes for the email to arrive. If it doesn't arrive, "
 "check your junk mail, or you can <a href='{send_confirmation_email_url}' "
@@ -875,6 +881,10 @@ msgstr ""
 msgid ""
 "The text message with an individual access code should arrive soon for "
 "them to complete their own census"
+msgstr ""
+
+#: templates/individual_response/confirmation-text-message.html:24
+msgid "The text will be sent from <em>Census2021</em>"
 msgstr ""
 
 #: templates/individual_response/interstitial.html:8
