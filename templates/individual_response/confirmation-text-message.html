@@ -14,6 +14,16 @@
     </h1>
     <p>{{ _("The text message with an individual access code should arrive soon for them to complete their own census") }}</p>
     {% endcall %}
+
+    {% call onsPanel({
+        "type": "bare",
+        "classes": "u-mb-s",
+        "icon": "lock"
+        })
+    %}
+        <p>{{ _("The text will be sent from <em>Census2021</em>") }}</p>
+    {% endcall %}
+
     {{
         onsButton({
             "text": _("Continue"),
