@@ -152,9 +152,7 @@ class SectionSummaryContext(Context):
                 "id"
             ]
 
-        add_link = self._add_link(
-            summary, current_location, section, list_collector_block
-        )
+        add_link = self._add_link(summary, section, list_collector_block, routing_path)
 
         list_context = ListContext(
             self._language,
@@ -186,10 +184,8 @@ class SectionSummaryContext(Context):
             ),
         }
 
-    def _add_link(self, summary, current_location, section, list_collector_block):
-        routing_path = self._router.routing_path(
-            section["id"], current_location.list_item_id
-        )
+    @staticmethod
+    def _add_link(summary, section, list_collector_block, routing_path):
 
         if list_collector_block["id"] in routing_path:
             return url_for(
