@@ -164,3 +164,13 @@ class TestQuestionnaireListCollector(IntegrationTestCase):
         self.get(first_person_change_link)
 
         self.assertInBody("Change details for Marie Day")
+
+        self.post({"first-name": "James", "last-name": "May"})
+
+        self.assertInUrl("/questionnaire/sections/section/")
+
+        first_person_remove_link = self.get_link(1, "Remove")
+
+        self.get(first_person_remove_link)
+
+        self.assertInBody("Are you sure you want to remove this person?")
