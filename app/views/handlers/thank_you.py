@@ -2,7 +2,6 @@ from flask import session as cookie_session
 from flask_babel import gettext
 from werkzeug.exceptions import NotFound
 
-from app.data_models.app_models import EQSession
 from app.data_models.session_data import SessionData
 from app.data_models.session_store import SessionStore
 from app.globals import get_session_store
