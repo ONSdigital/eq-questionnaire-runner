@@ -47,6 +47,18 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
         return self.serialize(self._questionnaire_json)
 
     @cached_property
+    def survey(self):
+        return self.json.get("survey")
+
+    @cached_property
+    def form_type(self):
+        return self.json.get("form_type")
+
+    @cached_property
+    def region_code(self):
+        return self.json.get("region_code")
+
+    @cached_property
     def parent_id_map(self):
         return self.serialize(self._parent_id_map)
 
