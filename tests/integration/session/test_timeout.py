@@ -37,7 +37,7 @@ class TestTimeout(IntegrationTestCase):
         self.get(self.last_url)
         self.assertStatusUnauthorised()
         self.assertInBody("To help protect your information we have timed you out")
-        self.assertEqualPageTitle("Session expired - Census 2021")
+        self.assertEqualPageTitle("Session timed out - Census 2021")
 
     def test_submission_complete_timeout(self):
         self.launchSurvey("test_timeout")

@@ -43,13 +43,13 @@ class TestQuestionnairePageTitles(IntegrationTestCase):
         # Then
         self.assertEqualPageTitle("We’ve received your answers - Census 2021")
 
-    def test_session_expired_page_title(self):
+    def test_session_timed_out_page_title(self):
         # Given
         self.launchSurvey("test_final_confirmation")
         # When
         self.get("/session-expired")
         # Then
-        self.assertEqualPageTitle("Session expired - Census 2021")
+        self.assertEqualPageTitle("Session timed out - Census 2021")
 
     def test_should_have_content_title_in_page_title_when_interstitial(self):
         # Given
