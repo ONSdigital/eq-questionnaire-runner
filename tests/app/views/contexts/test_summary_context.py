@@ -551,7 +551,10 @@ def test_context_for_driving_question_summary_empty_list():
         {},
     )
 
-    context = summary_context(current_location, routing_path=MagicMock())
+    context = summary_context(
+        current_location,
+        routing_path=RoutingPath(["anyone-usually-live-at"], section_id="section"),
+    )
     expected = {
         "summary": {
             "answers_are_editable": True,
@@ -562,7 +565,6 @@ def test_context_for_driving_question_summary_empty_list():
                     "add_link_text": "Add someone to this household",
                     "empty_list_text": "There are no householders",
                     "list_name": "people",
-                    "list": {"list_items": [], "editable": True},
                     "title": "Household members",
                     "type": "List",
                 }
@@ -692,7 +694,17 @@ def test_primary_only_links_for_section_summary(people_answer_store):
         progress_store=ProgressStore(),
         metadata={"display_address": "70 Abingdon Road, Goathill"},
     )
-    context = summary_context(current_location, routing_path=MagicMock())
+    context = summary_context(
+        current_location,
+        routing_path=RoutingPath(
+            [
+                "primary-person-list-collector",
+                "list-collector",
+                "visitor-list-collector",
+            ],
+            section_id="section",
+        ),
+    )
 
     list_items = context["summary"]["custom_summary"][0]["list"]["list_items"]
 
@@ -720,9 +732,19 @@ def test_primary_links_for_section_summary(people_answer_store):
         progress_store=ProgressStore(),
         metadata={"display_address": "70 Abingdon Road, Goathill"},
     )
-    context = summary_context(current_location, routing_path=MagicMock())
+    context = summary_context(
+        current_location,
+        routing_path=RoutingPath(
+            [
+                "primary-person-list-collector",
+                "list-collector",
+                "visitor-list-collector",
+            ],
+            section_id="section",
+        ),
+    )
 
     list_items = context["summary"]["custom_summary"][0]["list"]["list_items"]
 
-    assert "/edit-person/" in list_items[0]["edit_link"]
+    assert "/add-or-edit-primary-person/" in list_items[0]["edit_link"]
     assert "/edit-person/" in list_items[1]["edit_link"]
