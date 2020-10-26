@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2020-10-22 09:09+0100\n"
+"POT-Creation-Date: 2020-10-26 07:11+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -67,7 +67,7 @@ msgstr ""
 msgid "Enter a date"
 msgstr ""
 
-#: app/forms/error_messages.py:23 templates/partials/answers/address.html:53
+#: app/forms/error_messages.py:23 templates/partials/answers/address.html:54
 msgid "Enter an address"
 msgstr ""
 
@@ -673,7 +673,7 @@ msgstr ""
 msgid "Close this window to continue with your current survey"
 msgstr ""
 
-#: templates/partials/answers/address.html:52 templates/question.html:10
+#: templates/partials/answers/address.html:53 templates/question.html:10
 #, python-format
 msgid "There is a problem with your answer"
 msgid_plural "There are %(num)s problems with your answer"
@@ -836,7 +836,7 @@ msgid "Session expired"
 msgstr ""
 
 #: templates/errors/session-expired.html:6
-msgid "Your session has expired due to inactivity"
+msgid "Your session has timed out due to inactivity"
 msgstr ""
 
 #: templates/errors/session-expired.html:7
@@ -1048,64 +1048,64 @@ msgstr ""
 msgid "Enter address or postcode and select from results"
 msgstr ""
 
-#: templates/partials/answers/address.html:40
+#: templates/partials/answers/address.html:41
 msgid ""
 "Use up and down keys to navigate suggestions once you’ve typed more than "
 "two characters. Use the enter key to select a suggestion. Touch device "
 "users, explore by touch or with swipe gestures."
 msgstr ""
 
-#: templates/partials/answers/address.html:41
+#: templates/partials/answers/address.html:42
 msgid "You have selected"
 msgstr ""
 
-#: templates/partials/answers/address.html:42
+#: templates/partials/answers/address.html:43
 msgid "Enter 3 or more characters for suggestions."
 msgstr ""
 
-#: templates/partials/answers/address.html:43
+#: templates/partials/answers/address.html:44
 msgid "There is one suggestion available."
 msgstr ""
 
-#: templates/partials/answers/address.html:44
+#: templates/partials/answers/address.html:45
 msgid "There are {n} suggestions available."
 msgstr ""
 
-#: templates/partials/answers/address.html:45
+#: templates/partials/answers/address.html:46
 msgid ""
 "Results have been limited to 10 suggestions. Type more characters to "
 "improve your search"
 msgstr ""
 
-#: templates/partials/answers/address.html:46
+#: templates/partials/answers/address.html:47
 msgid "Enter more of the address to improve results"
 msgstr ""
 
-#: templates/partials/answers/address.html:47
+#: templates/partials/answers/address.html:48
 msgid "Select an address"
 msgstr ""
 
-#: templates/partials/answers/address.html:48
+#: templates/partials/answers/address.html:49
 msgid "No results found. Try entering a different part of the address"
 msgstr ""
 
-#: templates/partials/answers/address.html:49
+#: templates/partials/answers/address.html:50
 msgid "{n} results found. Enter more of the address to improve results"
 msgstr ""
 
-#: templates/partials/answers/address.html:50
+#: templates/partials/answers/address.html:51
 msgid "Enter more of the address to get results"
 msgstr ""
 
-#: templates/partials/answers/address.html:54
+#: templates/partials/answers/address.html:55
 msgid "Select or manually enter an address"
 msgstr ""
 
-#: templates/partials/answers/address.html:55
+#: templates/partials/answers/address.html:56
 msgid "Sorry, there was a problem loading addresses"
 msgstr ""
 
-#: templates/partials/answers/address.html:56
+#: templates/partials/answers/address.html:57
 msgid "Enter address manually"
 msgstr ""
 
