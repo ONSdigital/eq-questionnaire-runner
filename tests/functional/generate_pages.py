@@ -428,7 +428,9 @@ def process_final_summary(schema_data, page_spec, collapsible, section_summary=F
 
 
 def process_definition(definition_title, page_spec):
-    camel_case_definition_title = "".join(x for x in definition_title.title() if not x.isspace())
+    camel_case_definition_title = "".join(
+        x for x in definition_title.title() if not x.isspace()
+    )
     definition_context = {
         "definitionTitle": definition_title.lower(),
         "camelCaseDefinitionTitle": camel_case_definition_title,
@@ -659,12 +661,13 @@ def process_block(
                 block["calculation"]["answers_to_calculate"], page_spec
             )
         elif block["type"] == "Interstitial":
-
             definitions = []
             if "content_variants" in block:
                 for variant in block["content_variants"]:
                     block_contents = variant["content"]["contents"]
-                    definitions.extend(_get_definitions_in_block_contents(block_contents))
+                    definitions.extend(
+                        _get_definitions_in_block_contents(block_contents)
+                    )
             else:
                 block_contents = block["content"].get("contents", [])
                 definitions = _get_definitions_in_block_contents(block_contents)
