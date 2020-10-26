@@ -138,12 +138,13 @@ class SectionSummaryContext(Context):
             if list_collector_block["id"] in routing_path.block_ids
         ]
 
-        if not list_collector_blocks_on_path:
-            list_collector_block = self._schema.get_list_collector_for_list(
+        list_collector_block = (
+            list_collector_blocks_on_path[0]
+            if list_collector_blocks_on_path
+            else self._schema.get_list_collector_for_list(
                 section, for_list=summary["for_list"]
             )
-        else:
-            list_collector_block = list_collector_blocks_on_path[0]
+        )
 
         primary_person_edit_block_id = None
 
