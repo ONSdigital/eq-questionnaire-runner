@@ -13,9 +13,12 @@ from .summary import Group
 
 class SectionSummaryContext(Context):
     def __call__(
-        self, current_location: Location, return_to: str = "section-summary"
+        self,
+        current_location: Location,
+        routing_path,
+        return_to: str = "section-summary",
     ) -> Mapping:
-        summary = self._build_summary(current_location, return_to)
+        summary = self._build_summary(current_location, return_to, routing_path)
         title_for_location = self._title_for_location(current_location)
         title = (
             self._placeholder_renderer.render_placeholder(
@@ -61,7 +64,7 @@ class SectionSummaryContext(Context):
 
         return page_title
 
-    def _build_summary(self, location, return_to):
+    def _build_summary(self, location, return_to, routing_path):
         """
         Build a summary context for a particular location.
 
@@ -75,7 +78,7 @@ class SectionSummaryContext(Context):
             summary_elements = {
                 "custom_summary": list(
                     self._custom_summary_elements(
-                        section["summary"]["items"], location, section
+                        section["summary"]["items"], location, section, routing_path
                     )
                 )
             }
@@ -113,19 +116,19 @@ class SectionSummaryContext(Context):
         )
         return title
 
-    def _custom_summary_elements(self, section_summary, current_location, section):
+    def _custom_summary_elements(
+        self, section_summary, current_location, section, routing_path
+    ):
         for summary_element in section_summary:
             if summary_element["type"] == "List":
                 yield self._list_summary_element(
-                    summary_element, current_location, section
+                    summary_element, current_location, section, routing_path
                 )
 
-    def _list_summary_element(self, summary, current_location, section) -> Mapping:
+    def _list_summary_element(
+        self, summary, current_location, section, routing_path
+    ) -> Mapping:
         current_list = self._list_store[summary["for_list"]]
-
-        routing_path = self._router.routing_path(
-            section["id"], current_location.list_item_id
-        )
 
         list_collector_blocks_on_path = [
             list_collector_block

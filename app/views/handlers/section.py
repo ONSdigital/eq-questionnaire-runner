@@ -41,7 +41,7 @@ class SectionHandler:
             self._questionnaire_store.progress_store,
             self._questionnaire_store.metadata,
         )
-        return section_summary_context(self.current_location)
+        return section_summary_context(self.current_location, self._routing_path)
 
     def get_next_location_url(self):
         if self._schema.is_hub_enabled():
