@@ -27,24 +27,12 @@ def build_default_thank_you_context(session_data: SessionData) -> Mapping:
 
 
 def build_census_thank_you_context(
-    session_data: SessionData, confirmation_email_form
+    session_data: SessionData, confirmation_email_form, form_type
 ) -> Mapping:
-
-    census_type_code = None
-    census_type_mappings = {
-        "census_household": "HH",
-        "census_communal_establishment": "CE",
-        "census_individual": "IR",
-    }
-
-    for census_type in census_type_mappings:
-        if census_type in session_data.schema_name:
-            census_type_code = census_type_mappings[census_type]
-            break
 
     context = {
         "display_address": session_data.display_address,
-        "census_type": census_type_code,
+        "form_type": form_type,
         "hide_signout_button": False,
         "sign_out_url": url_for("session.get_sign_out"),
     }

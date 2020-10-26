@@ -17,21 +17,21 @@
     })
   %}
     <h1 data-qa="title">
-      {% if content.census_type == "IR" %}
+      {% if content.form_type == "I" %}
         {{ _("Thank you for completing your census") }}
-      {% elif content.census_type %}
+      {% elif content.form_type %}
         {{ _("Thank you for completing the census") }}
       {% else %}
         {{ _("Thank you for completing the survey") }}
       {% endif %}
     </h1>
 
-      {% if content.census_type %}
-        {% if content.census_type == "IR" %}
+      {% if content.form_type %}
+        {% if content.form_type == "I" %}
           <p data-qa="guidance">{{ _("Your individual census has been submitted for <strong>{display_address}</strong>.").format(display_address = content.display_address) }}</p>
-        {% elif content.census_type == "HH" %}
+        {% elif content.form_type == "H" %}
           <p data-qa="guidance">{{ _("Your census has been submitted for the household at <strong>{display_address}</strong>.").format(display_address = content.display_address) }}</p>
-        {% elif content.census_type == "CE" %}
+        {% elif content.form_type == "C" %}
           <p data-qa="guidance">{{ _("Your census has been submitted for the accommodation at <strong>{display_address}</strong>.").format(display_address = content.display_address) }}</p>
           <p>{{ _("Anyone staying at this accommodation for at least 6 months needs to fill in their own individual census, including staff. Your Census Officer will provide you with census forms for your residents.") }}</p>
         {% endif %}
