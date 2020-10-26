@@ -698,7 +698,7 @@ def process_block(
 
 
 def _get_definitions_in_block_contents(block_contents):
-    return [element for element in block_contents if element.get("definition")]
+    return [element for element in block_contents if "definition" in element]
 
 
 def process_schema(in_schema, out_dir, spec_file, require_path=".."):
