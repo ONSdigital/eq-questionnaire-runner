@@ -6,7 +6,7 @@ from tests.integration.integration_test_case import IntegrationTestCase
 class TestSession(IntegrationTestCase):
     def test_session_expired(self):
         self.get("/session-expired")
-        self.assertInBody("Your session has expired")
+        self.assertInBody("Your session has timed out due to inactivity")
 
     def test_session_signed_out(self):
 

@@ -21,7 +21,7 @@ describe("SaveSignOut", () => {
 
     browser.back();
 
-    expect($("body").getHTML()).to.contain("Your session has expired");
+    expect($("body").getHTML()).to.contain("Your session has timed out due to inactivity");
   });
 
   it("Given I have started a questionnaire, when I return to the questionnaire, then I am returned to the page I was on and can then complete the survey", () => {
