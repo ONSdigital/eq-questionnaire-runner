@@ -80,10 +80,7 @@
                                                 "value": "Question"
                                             }
                                         ],
-                                        "type": "Radio",
-                                        "validation": {
-                                            "messages": {}
-                                        }
+                                        "type": "Radio"
                                     }
                                 ],
 

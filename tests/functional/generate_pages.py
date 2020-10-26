@@ -432,7 +432,7 @@ def process_definition(definition_title, page_spec):
         x for x in definition_title.title() if not x.isspace()
     )
     definition_context = {
-        "definitionTitle": definition_title.lower(),
+        "definitionTitle": definition_title.lower().replace(" ", "-"),
         "camelCaseDefinitionTitle": camel_case_definition_title,
     }
     page_spec.write(DEFINITION_TITLE_GETTER.substitute(definition_context))

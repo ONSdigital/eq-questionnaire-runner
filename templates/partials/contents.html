@@ -1,6 +1,8 @@
 {% for item in contents %}
   {%- if item.definition -%}
     {% set definition = item.definition %}
+    {% set definition_id = 'definition-' ~ definition.title.strip() | lower | replace(' ', '-') %}
+    {% set category = 'Definition' %}
     {%- include 'partials/definition.html' -%}
   {%- endif -%}
 

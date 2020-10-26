@@ -1,33 +1,31 @@
 {% from "components/collapsible/_macro.njk" import onsCollapsible %}
 
-{% set definition_id = definition.title | lower %}
-
 {% call onsCollapsible({
-  "id": "definition-" ~ definition_id,
+  "id": definition_id,
   "title": definition.title,
   "classes": "u-mb-s",
   "headingAttributes": {
     "data-ga": "click",
-    "data-ga-category": "Definition",
+    "data-ga-category": category,
     "data-ga-action": "Open panel",
-    "data-ga-label": definition_id,
-    "data-qa": "definition-" ~ definition_id ~ "-title"
+    "data-ga-label": definition.title,
+    "data-qa": definition_id ~ "-title"
   },
   "contentAttributes": {
-    "data-qa": "definition-" ~ definition_id ~ "-content"
+  "data-qa": definition_id ~ "-content"
   },
   "button": {
     "close": _("Hide this"),
     "contextSuffix": "content",
     "attributes": {
       "data-ga": "click",
-      "data-ga-category": "Definition",
+      "data-ga-category": category,
       "data-ga-action": "Close panel",
-      "data-ga-label": definition_id,
-      "data-qa": "definition-"  ~ definition_id ~ "-button"
+      "data-ga-label": definition.title,
+      "data-qa": definition_id ~ "-button"
     }
   }
-})%}
-  {% set contents = item.definition.contents %}
+}) %}
+  {% set contents = definition.contents %}
   {% include 'partials/contents.html' %}
 {% endcall %}
