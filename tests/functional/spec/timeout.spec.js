@@ -9,6 +9,6 @@ describe("Timeout", () => {
     browser.pause(6000);
     $(TimeoutBlockPage.submit()).click();
 
-    expect($("body").getHTML()).to.contain("Your session has expired");
+    expect($("body").getHTML()).to.contain("Your session has timed out due to inactivity");
   });
 });

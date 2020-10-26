@@ -23,7 +23,7 @@ class TestTimeout(IntegrationTestCase):
         time.sleep(5)
         self.get(self.last_url)
         self.assertStatusUnauthorised()
-        self.assertInBody("Your session has expired due to inactivity")
+        self.assertInBody("Your session has timed out due to inactivity")
 
     def test_alternate_401_page_is_displayed_when_no_cookie(self):
         self.get("/session")
