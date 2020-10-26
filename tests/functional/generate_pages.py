@@ -99,6 +99,24 @@ QUESTION_DEFINITION_BUTTON_GETTER = Template(
 """
 )
 
+DEFINITION_TITLE_GETTER = Template(
+    r"""  definition${camelCaseDefinitionTitle}Title() { return `[data-qa='definition-${definitionTitle}-title']`; }
+
+"""
+)
+
+DEFINITION_CONTENT_GETTER = Template(
+    r"""  definition${camelCaseDefinitionTitle}Content() { return `[data-qa='definition-${definitionTitle}-content']`; }
+
+"""
+)
+
+DEFINITION_BUTTON_GETTER = Template(
+    r"""  definition${camelCaseDefinitionTitle}Button() { return `[data-qa='definition-${definitionTitle}-button']`; }
+
+"""
+)
+
 ANSWER_LABEL_GETTER = Template(
     r"""  ${answerName}Label() {
     return `[for=${answerId}]`;
@@ -409,6 +427,17 @@ def process_final_summary(schema_data, page_spec, collapsible, section_summary=F
         page_spec.write(COLLAPSIBLE_SUMMARY_GETTER)
 
 
+def process_definition(definition_title, page_spec):
+    camel_case_definition_title = "".join(x for x in definition_title.title() if not x.isspace())
+    definition_context = {
+        "definitionTitle": definition_title.lower(),
+        "camelCaseDefinitionTitle": camel_case_definition_title,
+    }
+    page_spec.write(DEFINITION_TITLE_GETTER.substitute(definition_context))
+    page_spec.write(DEFINITION_CONTENT_GETTER.substitute(definition_context))
+    page_spec.write(DEFINITION_BUTTON_GETTER.substitute(definition_context))
+
+
 def write_summary_spec(collapsible, page_spec, section, section_summary):
     list_summaries = [
         summary_element
@@ -629,6 +658,20 @@ def process_block(
             process_calculated_summary(
                 block["calculation"]["answers_to_calculate"], page_spec
             )
+        elif block["type"] == "Interstitial":
+
+            definitions = []
+            if "content_variants" in block:
+                for variant in block["content_variants"]:
+                    block_contents = variant["content"]["contents"]
+                    definitions.extend(_get_definitions_in_block_contents(block_contents))
+            else:
+                block_contents = block["content"].get("contents", [])
+                definitions = _get_definitions_in_block_contents(block_contents)
+
+            for definition in definitions:
+                process_definition(definition["definition"]["title"], page_spec)
+
         else:
             if block.get("description"):
                 page_spec.write(BLOCK_DESCRIPTION.substitute(block_context))
@@ -649,6 +692,10 @@ def process_block(
 
         if spec_file:
             append_spec_page_import(block_context, spec_file)
+
+
+def _get_definitions_in_block_contents(block_contents):
+    return [element for element in block_contents if element.get("definition")]
 
 
 def process_schema(in_schema, out_dir, spec_file, require_path=".."):
