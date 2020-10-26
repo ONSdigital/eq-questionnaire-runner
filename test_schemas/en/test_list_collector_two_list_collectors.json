@@ -81,17 +81,6 @@
                                     }
                                 }
                             ],
-                            "skip_conditions": [
-                                {
-                                    "when": [
-                                        {
-                                            "condition": "equals",
-                                            "id": "you-live-here",
-                                            "value": "Yes"
-                                        }
-                                    ]
-                                }
-                            ],
                             "type": "Question"
                         },
                         {
@@ -277,17 +266,6 @@
                                     "goto": {
                                         "block": "another-list-collector"
                                     }
-                                }
-                            ],
-                            "skip_conditions": [
-                                {
-                                    "when": [
-                                        {
-                                            "condition": "equals",
-                                            "id": "you-live-here",
-                                            "value": "Yes"
-                                        }
-                                    ]
                                 }
                             ],
                             "type": "Question"

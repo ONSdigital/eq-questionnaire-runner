@@ -284,3 +284,44 @@ class TestQuestionnaireListCollector(QuestionnaireTestCase):
         # Then my next location is the parent list collector without last updated guidance being shown
         self.assertInBody("Does anyone else live at 1 Pleasant Lane?")
         self.assertNotInBody("This is the last viewed question in this section")
+
+    def test_adding_person_using_second_list_collector_when_no_people(
+        self,
+    ):
+        self.launchSurvey("test_list_collector_two_list_collectors")
+
+        self.assertInBody("Does anyone else live at your address?")
+
+        self.post({"anyone-usually-live-at-answer": "No"})
+
+        self.assertInBody("Does anyone else live here?")
+
+        self.post({"anyone-else": "No"})
+
+        self.assertInBody("Does anyone else live at your address?")
+
+        self.post({"another-anyone-usually-live-at-answer": "Yes"})
+
+        self.assertInBody("What is the name of the person?")
+
+        self.post({"first-name": "Marie", "last-name": "Day"})
+
+        self.post({"another-anyone-else": "No"})
+
+        self.assertInUrl("/questionnaire/sections/section/")
+
+        first_person_change_link = self.get_link(1, "change")
+
+        self.get(first_person_change_link)
+
+        self.assertInBody("Change details for Marie Day")
+
+        self.post({"first-name": "James", "last-name": "May"})
+
+        self.assertInUrl("/questionnaire/sections/section/")
+
+        first_person_remove_link = self.get_link(1, "remove")
+
+        self.get(first_person_remove_link)
+
+        self.assertInBody("Are you sure you want to remove this person?")
