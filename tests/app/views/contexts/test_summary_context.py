@@ -1,4 +1,4 @@
-from unittest.mock import Mock, patch
+from unittest.mock import Mock, patch, MagicMock
 
 import pytest
 
@@ -6,6 +6,7 @@ from app.data_models.answer_store import Answer, AnswerStore
 from app.data_models.list_store import ListStore
 from app.data_models.progress_store import ProgressStore
 from app.questionnaire.location import Location
+from app.questionnaire.routing_path import RoutingPath
 from app.questionnaire.questionnaire_schema import DEFAULT_LANGUAGE_CODE
 from app.utilities.schema import load_schema_from_name
 from app.views.contexts import QuestionnaireSummaryContext, SectionSummaryContext
@@ -130,7 +131,7 @@ class TestSectionSummaryContext(TestStandardSummaryContext):
         )
 
         single_section_context = section_summary_context(
-            Location(section_id="property-details-section")
+            Location(section_id="property-details-section"), routing_path=MagicMock()
         )
 
         self.check_summary_rendering_context(single_section_context)
@@ -148,7 +149,7 @@ class TestSectionSummaryContext(TestStandardSummaryContext):
             self.list_store,
             self.metadata,
         )
-        context = summary_context(current_location)
+        context = summary_context(current_location, routing_path=MagicMock())
 
         self.check_context(context)
         self.check_summary_rendering_context(context)
@@ -166,7 +167,7 @@ class TestSectionSummaryContext(TestStandardSummaryContext):
             self.progress_store,
             self.metadata,
         )
-        context = summary_context(current_location)
+        context = summary_context(current_location, routing_path=MagicMock())
         self.assertEqual(
             "Household Summary - Semi-detached", context["summary"]["title"]
         )
@@ -181,7 +182,7 @@ class TestSectionSummaryContext(TestStandardSummaryContext):
             self.progress_store,
             self.metadata,
         )
-        context = summary_context(current_location)
+        context = summary_context(current_location, routing_path=MagicMock())
         self.assertEqual(
             "Custom section summary title", context["summary"]["page_title"]
         )
@@ -197,7 +198,7 @@ class TestSectionSummaryContext(TestStandardSummaryContext):
             self.list_store,
             self.metadata,
         )
-        context = summary_context(current_location)
+        context = summary_context(current_location, routing_path=MagicMock())
         self.assertEqual(context["summary"]["page_title"], "Household Summary - …")
 
     def test_section_summary_page_title_placeholder_text_plural_replaced(self):
@@ -211,7 +212,7 @@ class TestSectionSummaryContext(TestStandardSummaryContext):
             self.progress_store,
             self.metadata,
         )
-        context = summary_context(current_location)
+        context = summary_context(current_location, routing_path=MagicMock())
         self.assertEqual(context["summary"]["page_title"], "… people live here")
 
     def test_section_summary_title_is_section_title(self):
@@ -224,7 +225,7 @@ class TestSectionSummaryContext(TestStandardSummaryContext):
             self.list_store,
             self.metadata,
         )
-        context = summary_context(current_location)
+        context = summary_context(current_location, routing_path=MagicMock())
         self.assertEqual(context["summary"]["title"], "Property Details Section")
 
 
@@ -466,8 +467,17 @@ def test_context_for_section_list_summary(people_answer_store):
         progress_store=ProgressStore(),
         metadata={"display_address": "70 Abingdon Road, Goathill"},
     )
-    context = summary_context(current_location)
-
+    context = summary_context(
+        current_location,
+        routing_path=RoutingPath(
+            [
+                "primary-person-list-collector",
+                "list-collector",
+                "visitor-list-collector",
+            ],
+            section_id="section",
+        ),
+    )
     expected = {
         "summary": {
             "answers_are_editable": True,
@@ -541,7 +551,7 @@ def test_context_for_driving_question_summary_empty_list():
         {},
     )
 
-    context = summary_context(current_location)
+    context = summary_context(current_location, routing_path=MagicMock())
     expected = {
         "summary": {
             "answers_are_editable": True,
@@ -590,7 +600,12 @@ def test_context_for_driving_question_summary():
         {},
     )
 
-    context = summary_context(current_location)
+    context = summary_context(
+        current_location,
+        routing_path=RoutingPath(
+            ["anyone-usually-live-at", "anyone-else-live-at"], section_id="section"
+        ),
+    )
 
     expected = {
         "summary": {
@@ -647,7 +662,7 @@ def test_titles_for_repeating_section_summary(people_answer_store):
         {},
     )
 
-    context = section_summary_context(current_location)
+    context = section_summary_context(current_location, routing_path=MagicMock())
 
     assert context["summary"]["title"] == "Toni Morrison"
 
@@ -658,7 +673,7 @@ def test_titles_for_repeating_section_summary(people_answer_store):
         list_item_id="UHPLbX",
     )
 
-    context = section_summary_context(new_location)
+    context = section_summary_context(new_location, routing_path=MagicMock())
     assert context["summary"]["title"] == "Barry Pheloung"
 
 
@@ -677,7 +692,7 @@ def test_primary_only_links_for_section_summary(people_answer_store):
         progress_store=ProgressStore(),
         metadata={"display_address": "70 Abingdon Road, Goathill"},
     )
-    context = summary_context(current_location)
+    context = summary_context(current_location, routing_path=MagicMock())
 
     list_items = context["summary"]["custom_summary"][0]["list"]["list_items"]
 
@@ -705,7 +720,7 @@ def test_primary_links_for_section_summary(people_answer_store):
         progress_store=ProgressStore(),
         metadata={"display_address": "70 Abingdon Road, Goathill"},
     )
-    context = summary_context(current_location)
+    context = summary_context(current_location, routing_path=MagicMock())
 
     list_items = context["summary"]["custom_summary"][0]["list"]["list_items"]
 
