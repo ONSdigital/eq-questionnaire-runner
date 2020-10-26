@@ -14,7 +14,7 @@ describe("Post submission exit", () => {
     expect(browser.getUrl()).to.equal("https://census.gov.uk/");
   });
 
-  it("Given I have clicked the exit button When I navigate back Then I am taken to the session expired page", () => {
+  it("Given I have clicked the exit button When I navigate back Then I am taken to the session timed out page", () => {
     $(HouseholdConfirmationPage.submit()).click();
     $(SummaryPage.submit()).click();
     $(CensusThankYouPage.exit()).click();
