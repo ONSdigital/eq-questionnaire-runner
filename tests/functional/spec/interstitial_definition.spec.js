@@ -7,37 +7,37 @@ describe("Component: Interstitial Definition", () => {
     });
 
     it("When there is a definition on an interstitial, then the page is displayed correctly", () => {
-      expect($(InterstitialDefinitionPage.definitionSuccessfullyTitle()).isDisplayed()).to.be.true;
-      expect($(InterstitialDefinitionPage.definitionSuccessfullyContent()).isDisplayed()).to.be.false;
-      expect($(InterstitialDefinitionPage.definitionSuccessfullyButton()).isDisplayed()).to.be.false;
+      expect($(InterstitialDefinitionPage.definition0Title()).isDisplayed()).to.be.true;
+      expect($(InterstitialDefinitionPage.definition0Content()).isDisplayed()).to.be.false;
+      expect($(InterstitialDefinitionPage.definition0Button()).isDisplayed()).to.be.false;
 
-      expect($(InterstitialDefinitionPage.definitionQuestionnaireTitle()).isDisplayed()).to.be.true;
-      expect($(InterstitialDefinitionPage.definitionQuestionnaireContent()).isDisplayed()).to.be.false;
-      expect($(InterstitialDefinitionPage.definitionQuestionnaireButton()).isDisplayed()).to.be.false;
+      expect($(InterstitialDefinitionPage.definition1Title()).isDisplayed()).to.be.true;
+      expect($(InterstitialDefinitionPage.definition1Content()).isDisplayed()).to.be.false;
+      expect($(InterstitialDefinitionPage.definition1Button()).isDisplayed()).to.be.false;
     });
 
     it("When I click on a definition title, the content and button is display for just that definition", () => {
-      $(InterstitialDefinitionPage.definitionSuccessfullyTitle()).click();
+      $(InterstitialDefinitionPage.definition0Title()).click();
 
-      expect($(InterstitialDefinitionPage.definitionSuccessfullyTitle()).isDisplayed()).to.be.true;
-      expect($(InterstitialDefinitionPage.definitionSuccessfullyContent()).isDisplayed()).to.be.true;
-      expect($(InterstitialDefinitionPage.definitionSuccessfullyButton()).isDisplayed()).to.be.true;
+      expect($(InterstitialDefinitionPage.definition0Title()).isDisplayed()).to.be.true;
+      expect($(InterstitialDefinitionPage.definition0Content()).isDisplayed()).to.be.true;
+      expect($(InterstitialDefinitionPage.definition0Button()).isDisplayed()).to.be.true;
 
-      expect($(InterstitialDefinitionPage.definitionQuestionnaireTitle()).isDisplayed()).to.be.true;
-      expect($(InterstitialDefinitionPage.definitionQuestionnaireContent()).isDisplayed()).to.be.false;
-      expect($(InterstitialDefinitionPage.definitionQuestionnaireButton()).isDisplayed()).to.be.false;
+      expect($(InterstitialDefinitionPage.definition1Title()).isDisplayed()).to.be.true;
+      expect($(InterstitialDefinitionPage.definition1Content()).isDisplayed()).to.be.false;
+      expect($(InterstitialDefinitionPage.definition1Button()).isDisplayed()).to.be.false;
     });
 
     it("When I click on the hide content button, then the page is displayed correctly", () => {
-      $(InterstitialDefinitionPage.definitionSuccessfullyButton()).click();
+      $(InterstitialDefinitionPage.definition0Button()).click();
 
-      expect($(InterstitialDefinitionPage.definitionSuccessfullyTitle()).isDisplayed()).to.be.true;
-      expect($(InterstitialDefinitionPage.definitionSuccessfullyContent()).isDisplayed()).to.be.false;
-      expect($(InterstitialDefinitionPage.definitionSuccessfullyButton()).isDisplayed()).to.be.false;
+      expect($(InterstitialDefinitionPage.definition0Title()).isDisplayed()).to.be.true;
+      expect($(InterstitialDefinitionPage.definition0Content()).isDisplayed()).to.be.false;
+      expect($(InterstitialDefinitionPage.definition0Button()).isDisplayed()).to.be.false;
 
-      expect($(InterstitialDefinitionPage.definitionQuestionnaireTitle()).isDisplayed()).to.be.true;
-      expect($(InterstitialDefinitionPage.definitionQuestionnaireContent()).isDisplayed()).to.be.false;
-      expect($(InterstitialDefinitionPage.definitionQuestionnaireButton()).isDisplayed()).to.be.false;
+      expect($(InterstitialDefinitionPage.definition1Title()).isDisplayed()).to.be.true;
+      expect($(InterstitialDefinitionPage.definition1Content()).isDisplayed()).to.be.false;
+      expect($(InterstitialDefinitionPage.definition1Button()).isDisplayed()).to.be.false;
     });
   });
 });

@@ -100,19 +100,19 @@ QUESTION_DEFINITION_BUTTON_GETTER = Template(
 )
 
 DEFINITION_TITLE_GETTER = Template(
-    r"""  definition${camelCaseDefinitionTitle}Title() { return `[data-qa='definition-${definitionTitle}-title']`; }
+    r"""  definition${definitionIndex}Title() { return `[data-qa='definition-${definitionIndex}-title']`; }
 
 """
 )
 
 DEFINITION_CONTENT_GETTER = Template(
-    r"""  definition${camelCaseDefinitionTitle}Content() { return `[data-qa='definition-${definitionTitle}-content']`; }
+    r"""  definition${definitionIndex}Content() { return `[data-qa='definition-${definitionIndex}-content']`; }
 
 """
 )
 
 DEFINITION_BUTTON_GETTER = Template(
-    r"""  definition${camelCaseDefinitionTitle}Button() { return `[data-qa='definition-${definitionTitle}-button']`; }
+    r"""  definition${definitionIndex}Button() { return `[data-qa='definition-${definitionIndex}-button']`; }
 
 """
 )
@@ -427,14 +427,8 @@ def process_final_summary(schema_data, page_spec, collapsible, section_summary=F
         page_spec.write(COLLAPSIBLE_SUMMARY_GETTER)
 
 
-def process_definition(definition_title, page_spec):
-    camel_case_definition_title = "".join(
-        x for x in definition_title.title() if not x.isspace()
-    )
-    definition_context = {
-        "definitionTitle": definition_title.lower().replace(" ", "-"),
-        "camelCaseDefinitionTitle": camel_case_definition_title,
-    }
+def process_definition(index, page_spec):
+    definition_context = {"definitionIndex": index}
     page_spec.write(DEFINITION_TITLE_GETTER.substitute(definition_context))
     page_spec.write(DEFINITION_CONTENT_GETTER.substitute(definition_context))
     page_spec.write(DEFINITION_BUTTON_GETTER.substitute(definition_context))
@@ -672,8 +666,8 @@ def process_block(
                 block_contents = block["content"].get("contents", [])
                 definitions = _get_definitions_in_block_contents(block_contents)
 
-            for definition in definitions:
-                process_definition(definition["definition"]["title"], page_spec)
+            for i in range(len(definitions)):
+                process_definition(i, page_spec)
 
         else:
             if block.get("description"):
