@@ -8,7 +8,9 @@
    {% call onsPanel({
      "spacious": true,
      "type": "success",
-     "classes": "u-mb-s"
+     "classes": "u-mb-s",
+     "icon": "check",
+     "iconSize": "s"
      })
    %}
   <h1 data-qa="confirmation-text">{{ _("A confirmation email has been sent to {email}").format(email = content.email)  }}</h1>
