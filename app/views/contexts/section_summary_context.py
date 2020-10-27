@@ -135,9 +135,15 @@ class SectionSummaryContext(Context):
             if list_collector_block["id"] in routing_path.block_ids
         ]
 
-        list_collector_block = (
-            list_collector_blocks_on_path[0] if list_collector_blocks_on_path else None
-        )
+        edit_block_id = None
+        remove_block_id = None
+
+        if list_collector_blocks_on_path:
+            list_collector_block = list_collector_blocks_on_path[0]
+            edit_block_id = list_collector_block["edit_block"]["id"]
+            remove_block_id = list_collector_block["remove_block"]["id"]
+        else:
+            list_collector_block = None
 
         primary_person_edit_block_id = None
 
@@ -155,13 +161,6 @@ class SectionSummaryContext(Context):
         rendered_summary = self._placeholder_renderer.render(
             summary, current_location.list_item_id
         )
-
-        if list_collector_blocks_on_path:
-            edit_block_id = list_collector_block["edit_block"]["id"]
-            remove_block_id = list_collector_block["remove_block"]["id"]
-        else:
-            edit_block_id = None
-            remove_block_id = None
 
         list_summary_context = {}
 
