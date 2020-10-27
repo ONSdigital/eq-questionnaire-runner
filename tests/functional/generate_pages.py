@@ -81,38 +81,20 @@ SECTION_SUMMARY_PAGE_URL = r"""  url() { return `/questionnaire/sections/${this.
 
 """
 
-QUESTION_DEFINITION_TITLE_GETTER = Template(
-    r"""  definitionTitle(definitionIndex) { return `[data-qa='question-definition-${definitionIndex}-title']`; }
-
-"""
-)
-
-QUESTION_DEFINITION_CONTENT_GETTER = Template(
-    r"""  definitionContent(definitionIndex) { return `[data-qa='question-definition-${definitionIndex}-content']`; }
-
-"""
-)
-
-QUESTION_DEFINITION_BUTTON_GETTER = Template(
-    r"""  definitionButton(definitionIndex) { return `[data-qa='question-definition-${definitionIndex}-button']`; }
-
-"""
-)
-
 DEFINITION_TITLE_GETTER = Template(
-    r"""  definition${definitionIndex}Title() { return `[data-qa='definition-${definitionIndex}-title']`; }
+    r"""  definitionTitle(definitionIndex) { return `[data-qa='${definitionId}-${definitionIndex}-title']`; }
 
 """
 )
 
 DEFINITION_CONTENT_GETTER = Template(
-    r"""  definition${definitionIndex}Content() { return `[data-qa='definition-${definitionIndex}-content']`; }
+    r"""  definitionContent(definitionIndex) { return `[data-qa='${definitionId}-${definitionIndex}-content']`; }
 
 """
 )
 
 DEFINITION_BUTTON_GETTER = Template(
-    r"""  definition${definitionIndex}Button() { return `[data-qa='definition-${definitionIndex}-button']`; }
+    r"""  definitionButton(definitionIndex) { return `[data-qa='${definitionId}-${definitionIndex}-button']`; }
 
 """
 )
@@ -393,17 +375,8 @@ def process_question(question, page_spec, num_questions, page_name):
     long_names = long_names_required(question, num_questions)
 
     if "definitions" in question:
-        for index, _ in enumerate(question["definitions"]):
-            definition_context = {"definitionIndex": index}
-            page_spec.write(
-                QUESTION_DEFINITION_TITLE_GETTER.substitute(definition_context)
-            )
-            page_spec.write(
-                QUESTION_DEFINITION_CONTENT_GETTER.substitute(definition_context)
-            )
-            page_spec.write(
-                QUESTION_DEFINITION_BUTTON_GETTER.substitute(definition_context)
-            )
+        context = {"definitionId": "question-definition"}
+        process_definition(context, page_spec)
 
     for answer in question.get("answers", []):
         process_answer(answer, page_spec, long_names, page_name)
@@ -427,11 +400,10 @@ def process_final_summary(schema_data, page_spec, collapsible, section_summary=F
         page_spec.write(COLLAPSIBLE_SUMMARY_GETTER)
 
 
-def process_definition(index, page_spec):
-    definition_context = {"definitionIndex": index}
-    page_spec.write(DEFINITION_TITLE_GETTER.substitute(definition_context))
-    page_spec.write(DEFINITION_CONTENT_GETTER.substitute(definition_context))
-    page_spec.write(DEFINITION_BUTTON_GETTER.substitute(definition_context))
+def process_definition(context, page_spec):
+    page_spec.write(DEFINITION_TITLE_GETTER.safe_substitute(context))
+    page_spec.write(DEFINITION_CONTENT_GETTER.safe_substitute(context))
+    page_spec.write(DEFINITION_BUTTON_GETTER.safe_substitute(context))
 
 
 def write_summary_spec(collapsible, page_spec, section, section_summary):
@@ -655,20 +627,20 @@ def process_block(
                 block["calculation"]["answers_to_calculate"], page_spec
             )
         elif block["type"] == "Interstitial":
-            definitions = []
+            has_definition = False
             if "content_variants" in block:
                 for variant in block["content_variants"]:
                     block_contents = variant["content"]["contents"]
-                    definitions.extend(
-                        _get_definitions_in_block_contents(block_contents)
-                    )
+                    if _has_definitions_in_block_contents(block_contents):
+                        has_definition = True
             else:
                 block_contents = block["content"].get("contents", [])
-                definitions = _get_definitions_in_block_contents(block_contents)
+                if _has_definitions_in_block_contents(block_contents):
+                    has_definition = True
 
-            for index, _ in enumerate(definitions):
-            	process_definition(index, page_spec)
-                process_definition(i, page_spec)
+            if has_definition:
+                context = {"definitionId": "definition"}
+                process_definition(context, page_spec)
 
         else:
             if block.get("description"):
@@ -692,8 +664,8 @@ def process_block(
             append_spec_page_import(block_context, spec_file)
 
 
-def _get_definitions_in_block_contents(block_contents):
-    return [element for element in block_contents if "definition" in element]
+def _has_definitions_in_block_contents(block_contents):
+    return any("definition" in element for element in block_contents)
 
 
 def process_schema(in_schema, out_dir, spec_file, require_path=".."):
