@@ -666,7 +666,8 @@ def process_block(
                 block_contents = block["content"].get("contents", [])
                 definitions = _get_definitions_in_block_contents(block_contents)
 
-            for i in range(len(definitions)):
+            for index, _ in enumerate(definitions):
+            	process_definition(index, page_spec)
                 process_definition(i, page_spec)
 
         else:
