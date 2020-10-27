@@ -15,7 +15,7 @@ class SectionSummaryContext(Context):
     def __call__(
         self,
         current_location: Location,
-        routing_path,
+        routing_path: RoutingPath,
         return_to: str = "section-summary",
     ) -> Mapping:
         summary = self._build_summary(current_location, return_to, routing_path)
