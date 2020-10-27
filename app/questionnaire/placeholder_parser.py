@@ -50,11 +50,8 @@ class PlaceholderParser:
             id_selector = value_source.get("id_selector")
             list_store: ListModel = self._list_store[value_source["identifier"]]
 
-            if id_selector == "same_name_items":
-                return list_store.same_name_items
-
-            if id_selector == "first":
-                return list_store.first
+            if id_selector:
+                return getattr(list_store, id_selector)
 
             return len(list_store)
         if (
