@@ -140,7 +140,7 @@ class SectionSummaryContext(Context):
 
         primary_person_edit_block_id = None
 
-        if len(current_list) > 0 and current_list.primary_person:
+        if len(current_list) == 1 and current_list.primary_person:
             primary_person_block = self._schema.get_list_collector_for_list(
                 section, for_list=summary["for_list"], primary=True
             )
@@ -154,6 +154,13 @@ class SectionSummaryContext(Context):
         rendered_summary = self._placeholder_renderer.render(
             summary, current_location.list_item_id
         )
+
+        if list_collector_blocks_on_path:
+            edit_block_id = list_collector_block["edit_block"]["id"]
+            remove_block_id = list_collector_block["remove_block"]["id"]
+        else:
+            edit_block_id = None
+            remove_block_id = None
 
         list_summary_context = {}
 
@@ -170,8 +177,8 @@ class SectionSummaryContext(Context):
                 list_collector_block["summary"],
                 for_list=list_collector_block["for_list"],
                 return_to="section-summary",
-                edit_block_id=list_collector_block["edit_block"]["id"],
-                remove_block_id=list_collector_block["remove_block"]["id"],
+                edit_block_id=edit_block_id,
+                remove_block_id=remove_block_id,
                 primary_person_edit_block_id=primary_person_edit_block_id,
             )
 

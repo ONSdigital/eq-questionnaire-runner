@@ -746,5 +746,5 @@ def test_primary_links_for_section_summary(people_answer_store):
 
     list_items = context["summary"]["custom_summary"][0]["list"]["list_items"]
 
-    assert "/add-or-edit-primary-person/" in list_items[0]["edit_link"]
+    assert "/edit-person/" in list_items[0]["edit_link"]
     assert "/edit-person/" in list_items[1]["edit_link"]
