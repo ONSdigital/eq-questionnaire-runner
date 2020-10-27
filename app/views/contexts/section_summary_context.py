@@ -5,6 +5,7 @@ from flask import url_for
 from app.helpers.template_helpers import safe_content
 from app.questionnaire import QuestionnaireSchema
 from app.questionnaire.location import Location
+from app.questionnaire.routing_path import RoutingPath
 
 from .context import Context
 from .list_context import ListContext
