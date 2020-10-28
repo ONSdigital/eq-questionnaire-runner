@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2020-10-28 17:37+0000\n"
+"POT-Creation-Date: 2020-10-28 22:57+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -340,8 +340,8 @@ msgstr ""
 msgid "Give feedback about this service"
 msgstr ""
 
-#: app/views/handlers/feedback.py:26
-msgid "Select what feedback is about"
+#: app/views/handlers/feedback.py:26 app/views/handlers/feedback.py:51
+msgid "Select what your feedback is about"
 msgstr ""
 
 #: app/views/handlers/feedback.py:34 app/views/handlers/feedback.py:35
@@ -360,20 +360,12 @@ msgstr ""
 msgid "General feedback about this service"
 msgstr ""
 
-#: app/views/handlers/feedback.py:51
-msgid "Select what your feedback is about"
-msgstr ""
-
-#: app/views/handlers/feedback.py:59
-msgid "Enter your comments"
+#: app/views/handlers/feedback.py:59 app/views/handlers/feedback.py:69
+msgid "Enter your feedback"
 msgstr ""
 
 #: app/views/handlers/feedback.py:60
 msgid "Do not include confidential information, such as your contact details."
-msgstr ""
-
-#: app/views/handlers/feedback.py:69
-msgid "Enter your feedback"
 msgstr ""
 
 #: app/views/handlers/individual_response.py:127
@@ -566,15 +558,15 @@ msgid ""
 "census enter your email address."
 msgstr ""
 
-#: templates/census-thank-you.html:64 templates/confirmation-email-sent.html:37
+#: templates/census-thank-you.html:65 templates/confirmation-email-sent.html:38
 msgid "What do you think about this service?"
 msgstr ""
 
-#: templates/census-thank-you.html:65 templates/confirmation-email-sent.html:38
+#: templates/census-thank-you.html:66 templates/confirmation-email-sent.html:39
 msgid "Your comments will help us make improvements"
 msgstr ""
 
-#: templates/census-thank-you.html:67 templates/confirmation-email-sent.html:40
+#: templates/census-thank-you.html:68 templates/confirmation-email-sent.html:41
 msgid "Give feedback"
 msgstr ""
 
@@ -615,28 +607,32 @@ msgstr ""
 msgid "Submitting"
 msgstr ""
 
-#: templates/feedback-sent.html:5
+#: templates/feedback-sent.html:6
 msgid "Feedback sent"
 msgstr ""
 
-#: templates/feedback-sent.html:18
+#: templates/feedback-sent.html:19
 msgid "Thank you for your feedback"
 msgstr ""
 
-#: templates/feedback-sent.html:19
+#: templates/feedback-sent.html:20
 msgid ""
 "Your comments will help us make improvements to our surveys. We are not "
 "able to reply to comments, but we appreciate your feedback"
 msgstr ""
 
-#: templates/feedback.html:13
+#: templates/feedback.html:15
+msgid "Back"
+msgstr ""
+
+#: templates/feedback.html:28
 #, python-format
 msgid "There is a problem with your feedback"
 msgid_plural "There are %(num)s problems with your feedback"
 msgstr[0] ""
 msgstr[1] ""
 
-#: templates/feedback.html:25
+#: templates/feedback.html:41
 msgid "Send feedback"
 msgstr ""
 
