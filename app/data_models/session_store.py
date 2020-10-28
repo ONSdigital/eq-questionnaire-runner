@@ -84,9 +84,7 @@ class SessionStore:
             "finding eq_session_id in database", eq_session_id=self.eq_session_id
         )
 
-        self._eq_session = current_app.eq["storage"].get(
-            EQSession, self.eq_session_id
-        )
+        self._eq_session = current_app.eq["storage"].get(EQSession, self.eq_session_id)
 
         if self._eq_session:
 
