@@ -86,8 +86,8 @@ class RelationshipQuestion(Question):
             self._current_location
         )
         if previous_location:
-        	return previous_location.url()
-        
+            return previous_location.url()
+
         return self.router.get_previous_location_url(
             self.parent_location, self._routing_path
         )
