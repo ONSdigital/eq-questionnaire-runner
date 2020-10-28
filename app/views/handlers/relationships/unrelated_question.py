@@ -25,6 +25,11 @@ class UnrelatedQuestion(RelationshipQuestion):
         )
 
     def get_remaining_relationships_for_individual(self):
+        """
+        Returns a list of 'to' item ids for the remaining relationships.
+        These relationships won't be on the path if the user has selected
+        "No" to the unrelated question, so we get them from the list store.
+        """
         list_model = self._questionnaire_store.list_store[self.list_name]
         previous_location = self.relationship_router.get_previous_location(
             self.current_location
