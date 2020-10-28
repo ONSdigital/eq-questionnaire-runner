@@ -23,7 +23,7 @@ class Feedback:
         "type": "General",
         "id": "feedback",
         "title": lazy_gettext("Give feedback about this service"),
-        "label": lazy_gettext("Select what feedback is about"),
+        "label": lazy_gettext("Select what your feedback is about"),
         "answers": [
             {
                 "type": "Radio",
@@ -56,7 +56,7 @@ class Feedback:
             },
             {
                 "id": "feedback-text",
-                "label": lazy_gettext("Enter your comments"),
+                "label": lazy_gettext("Enter your feedback"),
                 "description": lazy_gettext(
                     "Do not include confidential information, such as your contact details."
                 ),

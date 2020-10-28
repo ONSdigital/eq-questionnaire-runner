@@ -377,7 +377,6 @@ def send_feedback(schema):
     return render_template(
         template="feedback",
         content=feedback.get_context(),
-        previous_location_url=url_for(".get_thank_you"),
         page_title=feedback.get_page_title(),
     )
 

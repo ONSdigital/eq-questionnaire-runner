@@ -6,6 +6,21 @@
 {% set hide_signout_button = content.hide_signout_button %}
 {% set question = content.question %}
 {% set sign_out_url = content.sign_out_url %}
+{% set breadcrumbs = {
+  "ariaLabel": 'Back',
+  "itemsList": [
+    {
+      "url": url_for("post_submission.get_thank_you"),
+      "id": "top-previous",
+      "text": _("Back"),
+      "attributes": {
+        "data-ga": 'click',
+        "data-ga-category": 'Navigation',
+        "data-ga-action": 'Previous link click'
+      }
+    }
+  ]
+} %}
 
 {% block main %}
   {% set form = content.form %}
@@ -14,9 +29,10 @@
     {% include 'partials/error-panel.html' %}
   {% endif %}
 
-  <h1 data-qa="feedback-title">{{ content.question.title }}</h1>
-
+  <h1 class="question__title u-fs-xxl" data-qa="feedback-title">{{ content.question.title }}</h1>
+  <legend class="fieldset__legend">{{ content.question.label}}</legend>
   {%- for answer in question.answers -%}
+    {% set question_title = answer.title %}
     {% include 'partials/answer.html' %}
   {%- endfor -%}
 
