@@ -131,6 +131,18 @@ class TestFeedback(IntegrationTestCase):
         # Then I should be taken to the thank you page
         self.assertInUrl("/submitted/thank-you")
 
+    def test_feedback_call_to_action_shown(self):
+        # Given I launch and complete the test_feedback questionnaire
+        self.launchSurvey("test_feedback")
+        self.post({"answer_id": "Yes"})
+
+        # When I view the thank you page
+        self.post()
+
+        # Then I should see the feedback call to action
+        self.assertInBody("What do you think about this service?")
+        self.assertInSelectorCSS("/submitted/feedback/send", class_="feedback__link")
+
     def _launch_and_complete_questionnaire(self):
         self.launchSurvey("test_feedback")
         self.post({"answer_id": "Yes"})
