@@ -52,18 +52,6 @@ class RelationshipRouter:
             return None
         return self.path[location_index - 1]
 
-    def get_remaining_relationships_for_individual(self, current_location):
-        path_for_individual = [
-            location
-            for location in self.path
-            if location.list_item_id == current_location.list_item_id
-        ]
-        current_index = path_for_individual.index(current_location)
-        return [
-            location.to_list_item_id
-            for location in path_for_individual[current_index + 1 :]
-        ]
-
     def _relationships_routing_path(self):
         path = []
         for from_index, from_list_item_id in enumerate(self.list_item_ids):

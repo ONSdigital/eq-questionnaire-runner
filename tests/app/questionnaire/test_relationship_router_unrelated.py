@@ -180,26 +180,3 @@ def test_get_next_location_from_unrelated_question(
     location = unrelated_relationship_location("abc123")
     next_location = router.get_next_location(location)
     assert next_location == expected_next_location
-
-
-def test_get_remaining_relationships_for_individual():
-    relationships = [
-        {
-            "list_item_id": "abc123",
-            "to_list_item_id": "def123",
-            "relationship": "Unrelated",
-        },
-        {
-            "list_item_id": "abc123",
-            "to_list_item_id": "ghi123",
-            "relationship": "Unrelated",
-        },
-    ]
-    router = relationship_router(
-        relationships=relationships,
-    )
-    location = unrelated_relationship_location("abc123")
-    remaining_relationships = router.get_remaining_relationships_for_individual(
-        location
-    )
-    assert remaining_relationships == ["jkl123", "mno123", "pqr123"]

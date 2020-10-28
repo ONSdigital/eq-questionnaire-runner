@@ -77,20 +77,3 @@ def test_get_previous_location_goes_to_previous_person():
     previous_location = relationship_router().get_previous_location(location)
     expected_location = relationship_location("abc123", "jkl123")
     assert previous_location == expected_location
-
-
-@pytest.mark.parametrize(
-    "location, expected_remaining_relationships",
-    [
-        (relationship_location("abc123", "def123"), ["ghi123", "jkl123"]),
-        (relationship_location("abc123", "ghi123"), ["jkl123"]),
-        (relationship_location("abc123", "jkl123"), []),
-    ],
-)
-def test_get_remaining_relationships_for_individual(
-    location, expected_remaining_relationships
-):
-    remaining_relationships = (
-        relationship_router().get_remaining_relationships_for_individual(location)
-    )
-    assert remaining_relationships == expected_remaining_relationships

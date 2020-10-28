@@ -86,3 +86,18 @@ class TestQuestionnaireRelationshipsUnrelated(QuestionnaireTestCase):
         self.previous()
         self.post({"relationship-answer": "Husband or Wife"})
         self.assertNotInBody("Are any of these people related to you?")
+
+    def test_returning_to_list_summary_displays_the_correct_list(self):
+        self.launch_survey_and_add_people()
+        self.post({"anyone-else": "No"})
+        self.post({"relationship-answer": "Unrelated"})
+        self.post({"relationship-answer": "Unrelated"})
+        self.assertInBody("Are any of these people related to you?")
+        self.post({"related-to-anyone-else-answer": "No"})
+        self.previous()
+        self.assertNotInBody("Andrew Austin")
+        self.assertNotInBody("Betty Burns")
+        self.assertNotInBody("Carla Clark")
+        self.assertInBody("Daniel Davis")
+        self.assertInBody("Eve Elliot")
+        self.assertInBody("Fred Francis")
