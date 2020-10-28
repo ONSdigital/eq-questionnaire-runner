@@ -71,7 +71,7 @@ class HubContext(Context):
             "submit_button": submit_button,
             "title": title,
             "warning": warning,
-            "survey_complete": survey_complete
+            "survey_complete": survey_complete,
         }
 
     def get_row_context_for_section(
