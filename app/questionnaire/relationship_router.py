@@ -62,10 +62,9 @@ class RelationshipRouter:
 
     def _relationships_routing_path(self):
         path = []
-        for from_item in self.list_item_ids:
-            from_index = self.list_item_ids.index(from_item)
+        for from_index, from_list_item_id in enumerate(self.list_item_ids):
             path += self._individual_relationships_routing_path(
-                from_list_item_id=self.list_item_ids[from_index],
+                from_list_item_id=from_list_item_id,
                 to_list_item_ids=self.list_item_ids[from_index + 1 :],
             )
 
