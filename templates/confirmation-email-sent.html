@@ -1,5 +1,6 @@
 {% extends 'layouts/_base.html' %}
 {% from 'components/panel/_macro.njk' import onsPanel %}
+{% from 'components/feedback/_macro.njk' import onsFeedback %}
 {% set page_title = _("Confirmation email sent") %}
 {% set hide_signout_button = content.hide_signout_button %}
 {% set sign_out_url = content.sign_out_url %}
@@ -28,6 +29,18 @@
   {% if content.show_send_another_email_guidance %}
     <p><strong>{{ _("Didn't receive an email?")  }}</strong></p>
     <p>{{ _("It can take a few minutes for the email to arrive. If it doesn't arrive, check your junk mail, or you can <a href='{send_confirmation_email_url}' id='send-another-email'>send another confirmation email</a>.").format(send_confirmation_email_url = content.send_confirmation_email_url)}}</p>
+  {% endif %}
+
+  {% if content.show_feedback_call_to_action %}
+    {{
+        onsFeedback({
+            "id": "feedback u-mt-xl",
+            "heading": _("What do you think about this service?"),
+            "content": _("Your comments will help us make improvements"),
+            "url": url_for('post_submission.send_feedback'),
+            "linkText": _("Give feedback")
+        })
+    }}
   {% endif %}
 
   {% include 'partials/sign-out-pre-footer-panel.html' %}

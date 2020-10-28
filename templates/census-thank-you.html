@@ -1,5 +1,6 @@
 {% extends 'layouts/_base.html' %}
 {% from 'components/panel/_macro.njk' import onsPanel %}
+{% from 'components/feedback/_macro.njk' import onsFeedback %}
 {% set hide_signout_button = content.hide_signout_button %}
 {% set sign_out_url = content.sign_out_url %}
 
@@ -49,12 +50,25 @@
     <p>{{ _("Your personal information is protected by law and will be kept confidential.") }}</p>
   {% endcall %}
 
+  <hr class="u-mt-no">
+
   {% if form %}
-    <h2>{{ _("Get confirmation email") }}</h2>
+    <h2 class="u-mt-m">{{ _("Get confirmation email") }}</h2>
     <p>{{ _("If you would like to be sent confirmation that you have completed your census enter your email address.") }}</p>
     {% include 'partials/email-form.html' %}
   {% endif %}
-  <br><br>
+
+  {% if content.show_feedback_call_to_action %}
+    {{
+        onsFeedback({
+            "id": "feedback u-mt-xl",
+            "heading": _("What do you think about this service?"),
+            "content": _("Your comments will help us make improvements"),
+            "url": url_for('post_submission.send_feedback'),
+            "linkText": _("Give feedback")
+        })
+    }}
+  {% endif %}
 
   {% include 'partials/sign-out-pre-footer-panel.html' %}
 

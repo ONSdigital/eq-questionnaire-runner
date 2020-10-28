@@ -279,7 +279,6 @@ def relationships(
 @with_schema
 def get_thank_you(schema):
     thank_you = ThankYou(schema)
-
     if request.method == "POST":
         if not thank_you.confirmation_email:
             raise NotFound
@@ -290,14 +289,24 @@ def get_thank_you(schema):
             confirmation_email.handle_post()
             return redirect(
                 url_for(
-                    "post_submission.get_confirmation_email_sent",
+                    ".get_confirmation_email_sent",
                     email=confirmation_email.get_url_safe_serialized_email(),
                 )
             )
 
+    show_feedback_call_to_action = True
+
+    try:
+        Feedback(schema, form_data=request.form)
+    except (FeedbackNotEnabled, FeedbackAlreadySent):
+        show_feedback_call_to_action = False
+
     return render_template(
         template=thank_you.template,
-        content=thank_you.get_context(),
+        content={
+            **thank_you.get_context(),
+            **{"show_feedback_call_to_action": show_feedback_call_to_action},
+        },
         survey_id=schema.json["survey_id"],
         page_title=thank_you.get_page_title(),
     )
@@ -311,13 +320,13 @@ def send_confirmation_email():
     try:
         confirmation_email = ConfirmationEmail()
     except ConfirmationEmailLimitReached:
-        return redirect(url_for("post_submission.get_thank_you"))
+        return redirect(url_for(".get_thank_you"))
 
     if request.method == "POST" and confirmation_email.form.validate():
         confirmation_email.handle_post()
         return redirect(
             url_for(
-                "post_submission.get_confirmation_email_sent",
+                ".get_confirmation_email_sent",
                 email=confirmation_email.get_url_safe_serialized_email(),
             )
         )
@@ -359,16 +368,16 @@ def send_feedback(schema):
     except FeedbackNotEnabled:
         raise NotFound
     except FeedbackAlreadySent:
-        return redirect(url_for("post_submission.get_feedback_sent"))
+        return redirect(url_for(".get_feedback_sent"))
 
     if request.method == "POST" and feedback.form.validate():
         feedback.handle_post()
-        return redirect(url_for("post_submission.get_feedback_sent"))
+        return redirect(url_for(".get_feedback_sent"))
 
     return render_template(
         template="feedback",
         content=feedback.get_context(),
-        previous_location_url=url_for("post_submission.get_thank_you"),
+        previous_location_url=url_for(".get_thank_you"),
         page_title=feedback.get_page_title(),
     )
 

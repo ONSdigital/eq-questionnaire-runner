@@ -1,9 +1,11 @@
 from functools import cached_property
+from typing import Mapping
 
 from flask_babel import gettext, lazy_gettext
 
 from app.forms.questionnaire_form import generate_form
 from app.globals import get_session_store
+from app.questionnaire.questionnaire_schema import QuestionnaireSchema
 from app.views.contexts.feedback_form_context import build_feedback_context
 
 
@@ -71,7 +73,7 @@ class Feedback:
         ],
     }
 
-    def __init__(self, schema, form_data):
+    def __init__(self, schema: QuestionnaireSchema, form_data: Mapping):
         self._schema = schema
 
         if not schema.get_submission().get("feedback"):

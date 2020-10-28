@@ -93,6 +93,14 @@ class QuestionPage extends BasePage {
   guidance() {
     return '[data-qa="guidance"]';
   }
+
+  feedback() {
+    return ".feedback";
+  }
+
+  feedbackLink() {
+    return ".feedback a";
+  }
 }
 
 export default QuestionPage;
