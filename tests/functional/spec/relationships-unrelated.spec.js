@@ -60,6 +60,8 @@ describe("Unrelated Relationships", () => {
       it("When I click previous, Then I will go back to the 'related to anyone else' question for the first person", () => {
         $(RelationshipsPage.previous()).click();
         expect($(RelatedToAnyoneElsePage.questionText()).getText()).to.contain("Are any of these people related to you?");
+        expect($(RelatedToAnyoneElsePage.listLabel(1)).getText()).to.equal("Daniel Davis");
+        expect($(RelatedToAnyoneElsePage.listLabel(2)).getText()).to.equal("Eve Elliot");
         expect($(RelatedToAnyoneElsePage.no()).isSelected()).to.be.true;
       });
 
