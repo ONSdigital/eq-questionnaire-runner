@@ -12,7 +12,7 @@ class QuestionnaireTestCase(IntegrationTestCase):
         return self.get_list_item_ids()[number_of_people - 1]
 
     def number_of_people(self):
-        return len(self.getHtmlSoup().find_all(attrs={"data-list-item-id": True}))
+        return len(self.get_list_item_ids())
 
     def get_list_item_ids(self):
         return [
