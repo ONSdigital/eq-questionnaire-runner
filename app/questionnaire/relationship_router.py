@@ -24,7 +24,7 @@ class RelationshipRouter:
         self.relationships_block_id = relationships_block_id
         self.unrelated_block_id = unrelated_block_id
         self.unrelated_answer_id = unrelated_answer_id
-        self.path = self._generate_relationships_routing_path()
+        self.path = self._relationships_routing_path()
 
     def can_access_location(self, location):
         return location in self.path
@@ -60,18 +60,18 @@ class RelationshipRouter:
             for location in path_for_individual[current_index + 1 :]
         ]
 
-    def _generate_relationships_routing_path(self):
+    def _relationships_routing_path(self):
         path = []
         for from_item in self.list_item_ids:
             from_index = self.list_item_ids.index(from_item)
-            path += self._get_individual_relationships_routing_path(
+            path += self._individual_relationships_routing_path(
                 from_list_item_id=self.list_item_ids[from_index],
                 to_list_item_ids=self.list_item_ids[from_index + 1 :],
             )
 
         return path
 
-    def _get_individual_relationships_routing_path(
+    def _individual_relationships_routing_path(
         self, from_list_item_id, to_list_item_ids
     ):
         path = []
