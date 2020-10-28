@@ -144,6 +144,10 @@ class TestQuestionnaireListCollector(IntegrationTestCase):
             "test_list_collector_primary_and_collector_with_driving_question"
         )
 
+        self.assertInBody("Start section")
+
+        self.post()
+
         self.assertInBody("Do you live here?")
 
         self.post({"you-live-here": "Yes"})

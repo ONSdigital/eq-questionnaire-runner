@@ -22,7 +22,7 @@
         }
     ],
     "hub": {
-        "enabled": false
+        "enabled": true
     },
     "sections": [
         {
