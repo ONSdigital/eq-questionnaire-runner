@@ -1,33 +1,7 @@
 {% from "components/collapsible/_macro.njk" import onsCollapsible %}
 
 {% for definition in question.definitions %}
-  {% call onsCollapsible({
-      "id": "question-definition-" ~ loop.index,
-      "title": definition.title,
-      "classes": "u-mb-s",
-      "headingAttributes": {
-        "data-ga": "click",
-        "data-ga-category": "Question definition",
-        "data-ga-action": "Open panel",
-        "data-ga-label": definition.title,
-        "data-qa": "question-definition-" ~ loop.index ~ "-title"
-      },
-      "contentAttributes": {
-        "data-qa": "question-definition-" ~ loop.index ~ "-content"
-      },
-      "button": {
-        "close": _("Hide this"),
-        "contextSuffix": "content",
-        "attributes": {
-          "data-ga": "click",
-          "data-ga-category": "Question definition",
-          "data-ga-action": "Close panel",
-          "data-ga-label": definition.title,
-          "data-qa": "question-definition-"  ~ loop.index ~ "-button"
-        }
-      }
-  }) %}
-    {% set contents = definition.contents %}
-    {% include 'partials/contents.html' %}
-  {% endcall %}
+  {% set definition_id = "question-definition-" ~ loop.index %}
+  {% set category = 'Question definition' %}
+  {%- include 'partials/definition.html' -%}
 {% endfor %}

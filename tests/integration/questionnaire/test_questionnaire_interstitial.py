@@ -21,3 +21,20 @@ class TestQuestionnaireInterstitial(IntegrationTestCase):
         self.assertInUrl("confirmation")
         self.post()
         self.assertInBody("Submission successful")
+
+    def test_interstitial_definition(self):
+        self.launchSurvey("test_interstitial_definition")
+        self.assertInBody("Successfully")
+        self.assertInBody("Questionnaire")
+        self.assertInBody("In a way that accomplishes a desired aim or result")
+        self.assertInBody(
+            "A set of printed or written questions with a choice of answers, devised for the purposes of a survey or statistical study"
+        )
+
+    def test_interstitial_content_variant_definition(self):
+        self.launchSurvey("test_interstitial_definition")
+        self.post()
+        self.post({"content-variant-definition-answer": "Answer"})
+
+        self.assertInBody("Answer")
+        self.assertInBody("A spoken or written reply or response to a question")

@@ -1,4 +1,14 @@
+{% set definition_count = namespace(value=1) %}
+
 {% for item in contents %}
+  {%- if item.definition -%}
+    {% set definition = item.definition %}
+    {% set definition_id = 'definition-' ~ definition_count.value %}
+    {% set category = 'Definition' %}
+    {%- include 'partials/definition.html' -%}
+    {% set definition_count.value = definition_count.value + 1 %}
+  {%- endif -%}
+
   {%- if item.title -%}
     {%- if block and block.type == 'Interstitial' -%}
       <h2>{{item.title}}</h2>
@@ -6,9 +16,11 @@
       <strong class="u-mb-s">{{item.title}}</strong>
     {%- endif -%}
   {% endif %}
+
   {%- if item.description -%}
     <p>{{item.description}}</p>
   {% endif %}
+
   {%- if item.list -%}
     <ul>
       {%- for list_item in item.list -%}
