@@ -35,7 +35,7 @@
         <p class="u-mb-no" data-qa="guidance">{{ content.guidance }}</p>
       </div>
     {% endif %}
-    {% if content.individual_response_url %}
+    {% if content.individual_response_url and not content.survey_complete %}
       {% set title = _("If you can’t answer someone else’s questions") %}
       {% include 'partials/individual-response-guidance.html' %}
     {% endif %}
