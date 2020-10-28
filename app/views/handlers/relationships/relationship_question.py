@@ -85,11 +85,12 @@ class RelationshipQuestion(Question):
         previous_location = self.relationship_router.get_previous_location(
             self._current_location
         )
-        if not previous_location:
-            return self.router.get_previous_location_url(
-                self.parent_location, self._routing_path
-            )
-        return previous_location.url()
+        if previous_location:
+        	return previous_location.url()
+        
+        return self.router.get_previous_location_url(
+            self.parent_location, self._routing_path
+        )
 
     def get_next_location_url(self):
         next_location = self.relationship_router.get_next_location(
