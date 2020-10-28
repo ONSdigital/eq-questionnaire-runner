@@ -1,3 +1,7 @@
+from typing import List, Optional
+
+from app.data_models.answer_store import AnswerStore
+from app.data_models.relationship_store import RelationshipStore
 from app.questionnaire.relationship_location import RelationshipLocation
 
 
@@ -7,14 +11,14 @@ class RelationshipRouter:
 
     def __init__(
         self,
-        answer_store,
-        relationship_store,
-        section_id,
-        list_name,
-        list_item_ids,
-        relationships_block_id,
-        unrelated_block_id=None,
-        unrelated_answer_id=None,
+        answer_store: AnswerStore,
+        relationship_store: RelationshipStore,
+        section_id: str,
+        list_name: str,
+        list_item_ids: List[str],
+        relationships_block_id: str,
+        unrelated_block_id: Optional[str] = None,
+        unrelated_answer_id: Optional[str] = None,
     ):
         self.answer_store = answer_store
         self.relationship_store = relationship_store
