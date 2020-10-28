@@ -48,12 +48,12 @@ class PlaceholderParser:
             return self._resolve_metadata_value(value_source["identifier"])
         if value_source["source"] == "list":
             id_selector = value_source.get("id_selector")
-            list_store: ListModel = self._list_store[value_source["identifier"]]
+            list_model: ListModel = self._list_store[value_source["identifier"]]
 
             if id_selector:
-                return getattr(list_store, id_selector)
+                return getattr(list_model, id_selector)
 
-            return len(list_store)
+            return len(list_model)
         if (
             value_source["source"] == "location"
             and value_source["identifier"] == "list_item_id"
