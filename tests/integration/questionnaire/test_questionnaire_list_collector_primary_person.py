@@ -14,6 +14,11 @@ class TestQuestionnaireListCollector(IntegrationTestCase):
 
         return filtered[0].get("href")
 
+    def get_section_summary_link(self, row_index, text):
+        selector = f"[data-qa='list-item-{text}-{row_index}-link']"
+        selected = self.getHtmlSoup().select(selector)
+        return selected[0].get("href")
+
     def test_invalid_list_on_primary_person_collector(self):
         self.launchSurvey("test_list_collector_primary_person")
 
@@ -131,3 +136,30 @@ class TestQuestionnaireListCollector(IntegrationTestCase):
         # Then on resuming, I am returned to the primary-person-list-collector
         self.launchSurvey("test_list_collector_primary_person", reponse_id=response_id)
         self.assertInUrl("/questionnaire/primary-person-list-collector/")
+
+    def test_section_summary_with_primary_no_driving_question_on_path(
+        self,
+    ):
+        self.launchSurvey(
+            "test_list_collector_primary_and_collector_with_driving_question"
+        )
+
+        self.assertInBody("Do you live here?")
+
+        self.post({"you-live-here": "Yes"})
+
+        self.post({"first-name": "James", "last-name": "May"})
+
+        self.assertInUrl("/questionnaire/anyone-else-usually-live-at/")
+
+        self.assertInBody("Does anyone else usually live at")
+
+        self.post({"anyone-else-usually-live-at-answer": "No"})
+
+        self.assertInUrl("/questionnaire/sections/section/")
+
+        first_person_change_link = self.get_section_summary_link(1, "change")
+
+        self.get(first_person_change_link)
+
+        self.assertInBody("What is your name")

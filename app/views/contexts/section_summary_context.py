@@ -160,6 +160,7 @@ class SectionSummaryContext(Context):
             primary_person_edit_block_id = primary_person_block["add_or_edit_block"][
                 "id"
             ]
+            edit_block_id = primary_person_block["add_or_edit_block"]["id"]
 
         add_link = self._add_link(
             summary, section, list_collector_block, list_collector_blocks_on_path
