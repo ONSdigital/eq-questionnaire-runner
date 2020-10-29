@@ -55,6 +55,8 @@ class HubContext(Context):
                 "You must submit this survey to complete it"
             )
             individual_response_enabled = False
+            self._individual_response_url = None
+
         else:
             title = lazy_gettext("Choose another section to complete")
             submit_button = lazy_gettext("Continue")
