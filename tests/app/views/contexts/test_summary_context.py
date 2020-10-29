@@ -223,7 +223,6 @@ class TestSectionSummaryContext(TestStandardSummaryContext):
         self.assertEqual(context["summary"]["page_title"], "… people live here")
 
     def test_section_summary_title_is_section_title(self):
-        current_location = Location(section_id="property-details-section")
         summary_context = SectionSummaryContext(
             self.language,
             self.schema,
@@ -232,7 +231,7 @@ class TestSectionSummaryContext(TestStandardSummaryContext):
             self.list_store,
             self.metadata,
             routing_path=MagicMock(),
-            current_location=current_location,
+            current_location=Location(section_id="property-details-section"),
         )
         context = summary_context()
         self.assertEqual(context["summary"]["title"], "Property Details Section")
@@ -461,7 +460,6 @@ class TestCalculatedSummaryContext(TestStandardSummaryContext):
 @pytest.mark.usefixtures("app")
 def test_context_for_section_list_summary(people_answer_store):
     schema = load_schema_from_name("test_list_collector_section_summary")
-    current_location = Location(section_id="section")
 
     summary_context = SectionSummaryContext(
         language=DEFAULT_LANGUAGE_CODE,
@@ -475,7 +473,7 @@ def test_context_for_section_list_summary(people_answer_store):
         ),
         progress_store=ProgressStore(),
         metadata={"display_address": "70 Abingdon Road, Goathill"},
-        current_location=current_location,
+        current_location=Location(section_id="section"),
         routing_path=RoutingPath(
             [
                 "primary-person-list-collector",
@@ -548,7 +546,6 @@ def test_context_for_section_list_summary(people_answer_store):
 @pytest.mark.usefixtures("app")
 def test_context_for_driving_question_summary_empty_list():
     schema = load_schema_from_name("test_list_collector_driving_question")
-    current_location = Location(section_id="section")
 
     summary_context = SectionSummaryContext(
         DEFAULT_LANGUAGE_CODE,
@@ -557,7 +554,7 @@ def test_context_for_driving_question_summary_empty_list():
         ListStore(),
         ProgressStore(),
         {},
-        current_location=current_location,
+        current_location=Location(section_id="section"),
         routing_path=RoutingPath(["anyone-usually-live-at"], section_id="section"),
     )
 
@@ -589,7 +586,6 @@ def test_context_for_driving_question_summary_empty_list():
 @pytest.mark.usefixtures("app")
 def test_context_for_driving_question_summary():
     schema = load_schema_from_name("test_list_collector_driving_question")
-    current_location = Location(section_id="section")
 
     summary_context = SectionSummaryContext(
         DEFAULT_LANGUAGE_CODE,
@@ -608,7 +604,7 @@ def test_context_for_driving_question_summary():
         ListStore([{"items": ["PlwgoG"], "name": "people"}]),
         ProgressStore(),
         {},
-        current_location=current_location,
+        current_location=Location(section_id="section"),
         routing_path=RoutingPath(
             ["anyone-usually-live-at", "anyone-else-live-at"], section_id="section"
         ),
