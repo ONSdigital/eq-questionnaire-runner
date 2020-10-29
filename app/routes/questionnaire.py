@@ -26,7 +26,7 @@ from app.views.handlers.confirmation_email import (
 )
 from app.views.handlers.feedback import (
     Feedback,
-    FeedbackAlreadySent,
+    FeedbackLimitReached,
     FeedbackNotEnabled,
 )
 from app.views.handlers.section import SectionHandler
@@ -298,7 +298,7 @@ def get_thank_you(schema):
 
     try:
         Feedback(schema, form_data=request.form)
-    except (FeedbackNotEnabled, FeedbackAlreadySent):
+    except (FeedbackNotEnabled, FeedbackLimitReached):
         show_feedback_call_to_action = False
 
     return render_template(
@@ -367,8 +367,6 @@ def send_feedback(schema):
         feedback = Feedback(schema, form_data=request.form)
     except FeedbackNotEnabled:
         raise NotFound
-    except FeedbackAlreadySent:
-        return redirect(url_for(".get_feedback_sent"))
 
     if request.method == "POST" and feedback.form.validate():
         feedback.handle_post()
@@ -383,7 +381,7 @@ def send_feedback(schema):
 
 @post_submission_blueprint.route("feedback/sent", methods=["GET"])
 def get_feedback_sent():
-    if not get_session_store().session_data.feedback_sent:
+    if not get_session_store().session_data.feedback_sent_count:
         raise NotFound
 
     return render_template(

@@ -13,7 +13,7 @@ class FeedbackNotEnabled(Exception):
     pass
 
 
-class FeedbackAlreadySent(Exception):
+class FeedbackLimitReached(Exception):
     pass
 
 
@@ -83,8 +83,8 @@ class Feedback:
         if not self._session_store.session_data.submitted_time:
             raise FeedbackNotEnabled
 
-        if self._session_store.session_data.feedback_sent:
-            raise FeedbackAlreadySent
+        if self._session_store.session_data.feedback_sent_count >= 10:
+            raise FeedbackLimitReached
 
         self._form_data = form_data
 
@@ -108,5 +108,5 @@ class Feedback:
         return self.PAGE_TITLE
 
     def handle_post(self):
-        self._session_store.session_data.feedback_sent = True
+        self._session_store.session_data.feedback_sent_count += 1
         self._session_store.save()

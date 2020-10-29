@@ -1,4 +1,3 @@
-from app import settings
 from tests.integration.integration_test_case import IntegrationTestCase
 
 
@@ -62,7 +61,28 @@ class TestFeedback(IntegrationTestCase):
         self.assertInUrl(self.SENT_FEEDBACK_URL)
         self.assertInBody("Thank you for your feedback")
 
-    def test_second_submission(self):
+    def test_eleventh_submission_errors(self):
+        # Given I launch and complete the test_feedback questionnaire, and provide feedback 11 times
+        self._launch_and_complete_questionnaire()
+
+        for _ in range(0, 11):
+            self.get(self.SEND_FEEDBACK_URL)
+            self.post(
+                {
+                    "feedback-type": "Page design and structure",
+                    "feedback-text": "Feedback",
+                }
+            )
+
+        # When I view the feedback sent page
+        self.assertInUrl(self.SEND_FEEDBACK_URL)
+
+        # Then an appropriate error is shown
+        self.assertInBody(
+            "You have reached the maximum number of times for submitting feedback"
+        )
+
+    def test_submission(self):
         # Given I launch and complete the test_feedback questionnaire, and provide feedback
         self._launch_and_complete_questionnaire()
         self.get(self.SEND_FEEDBACK_URL)
@@ -74,8 +94,8 @@ class TestFeedback(IntegrationTestCase):
         # When I go to the feedback send page again
         self.get(self.SEND_FEEDBACK_URL)
 
-        # Then I get redirected to the sent page
-        self.assertInUrl(self.SENT_FEEDBACK_URL)
+        # Then I go to the feedback send page
+        self.assertInUrl(self.SEND_FEEDBACK_URL)
 
     def test_feedback_type_missing(self):
         # Given I launch and complete the test_feedback questionnaire
