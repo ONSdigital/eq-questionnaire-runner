@@ -3,21 +3,22 @@ from . import QuestionnaireTestCase
 
 class TestQuestionnaireRelationshipsUnrelated(QuestionnaireTestCase):
     def launch_survey_and_add_people(self):
-        self.launchSurvey("test_relationships_unrelated", roles=["dumper"])
-        self.add_person("Marie", "Doe")
-        self.add_person("John", "Doe")
-        self.add_person("Jane", "Doe")
-        self.post({"anyone-else": "No"})
+        self.launchSurvey("test_relationships_unrelated")
+        self.add_person("Andrew", "Austin")
+        self.add_person("Betty", "Burns")
+        self.add_person("Carla", "Clark")
+        self.add_person("Daniel", "Davis")
+        self.add_person("Eve", "Elliot")
+        self.add_person("Fred", "Francis")
 
     def test_is_accessible_when_list_name_and_list_item_valid(
         self,
     ):
         self.launch_survey_and_add_people()
+        self.post({"anyone-else": "No"})
+        self.post({"relationship-answer": "Unrelated"})
+        self.post({"relationship-answer": "Unrelated"})
 
-        first_list_item = self.dump_debug()["LISTS"][0]["items"][0]
-        self.get(
-            f"/questionnaire/relationships/people/{first_list_item}/related-to-anyone-else"
-        )
         self.assertInBody("Are any of these people related to you?")
 
     def test_is_not_accessible_when_invalid_list_item(self):
@@ -29,8 +30,9 @@ class TestQuestionnaireRelationshipsUnrelated(QuestionnaireTestCase):
 
     def test_is_not_accessible_when_invalid_list_name(self):
         self.launch_survey_and_add_people()
+        first_list_item = self.get_list_item_ids()[0]
+        self.post({"anyone-else": "No"})
 
-        first_list_item = self.dump_debug()["LISTS"][0]["items"][0]
         self.get(
             f"/questionnaire/relationships/invalid-list-name/{first_list_item}/related-to-anyone-else"
         )
@@ -38,8 +40,9 @@ class TestQuestionnaireRelationshipsUnrelated(QuestionnaireTestCase):
 
     def test_is_not_accessible_when_invalid_block_id(self):
         self.launch_survey_and_add_people()
+        first_list_item = self.get_list_item_ids()[0]
+        self.post({"anyone-else": "No"})
 
-        first_list_item = self.dump_debug()["LISTS"][0]["items"][0]
         self.get(
             f"/questionnaire/relationships/people/{first_list_item}/invalid-block-id"
         )
@@ -47,19 +50,54 @@ class TestQuestionnaireRelationshipsUnrelated(QuestionnaireTestCase):
 
     def test_list_summary(self):
         self.launch_survey_and_add_people()
+        self.post({"anyone-else": "No"})
+        self.post({"relationship-answer": "Unrelated"})
+        self.post({"relationship-answer": "Unrelated"})
 
-        first_list_item = self.dump_debug()["LISTS"][0]["items"][0]
-        self.get(
-            f"/questionnaire/relationships/people/{first_list_item}/related-to-anyone-else"
-        )
-        self.assertNotInBody("Marie Doe")
-        self.assertInBody("John Doe")
-        self.assertInBody("Jane Doe")
+        self.assertNotInBody("Andrew Austin")
+        self.assertNotInBody("Betty Burns")
+        self.assertNotInBody("Carla Clark")
+        self.assertInBody("Daniel Davis")
+        self.assertInBody("Eve Elliot")
+        self.assertInBody("Fred Francis")
 
-        second_list_item = self.dump_debug()["LISTS"][0]["items"][1]
-        self.get(
-            f"/questionnaire/relationships/people/{second_list_item}/related-to-anyone-else"
-        )
-        self.assertNotInBody("Marie Doe")
-        self.assertNotInBody("John Doe")
-        self.assertInBody("Jane Doe")
+    def test_list_summary_for_second_person(self):
+        self.launch_survey_and_add_people()
+        self.post({"anyone-else": "No"})
+        self.post({"relationship-answer": "Unrelated"})
+        self.post({"relationship-answer": "Unrelated"})
+        self.post({"related-to-anyone-else-answer": "No"})
+        self.post({"relationship-answer": "Unrelated"})
+        self.post({"relationship-answer": "Unrelated"})
+
+        self.assertNotInBody("Andrew Austin")
+        self.assertNotInBody("Betty Burns")
+        self.assertNotInBody("Carla Clark")
+        self.assertNotInBody("Daniel Davis")
+        self.assertInBody("Eve Elliot")
+        self.assertInBody("Fred Francis")
+
+    def test_change_answer_changes_routing_path(self):
+        self.launch_survey_and_add_people()
+        self.post({"anyone-else": "No"})
+        self.post({"relationship-answer": "Unrelated"})
+        self.post({"relationship-answer": "Unrelated"})
+        self.assertInBody("Are any of these people related to you?")
+        self.previous()
+        self.post({"relationship-answer": "Husband or Wife"})
+        self.assertNotInBody("Are any of these people related to you?")
+
+    def test_returning_to_list_summary_displays_the_correct_list(self):
+        self.launch_survey_and_add_people()
+        self.post({"anyone-else": "No"})
+        self.post({"relationship-answer": "Unrelated"})
+        self.post({"relationship-answer": "Unrelated"})
+        self.assertInBody("Are any of these people related to you?")
+        self.post({"related-to-anyone-else-answer": "No"})
+        self.previous()
+        self.assertNotInBody("Andrew Austin")
+        self.assertNotInBody("Betty Burns")
+        self.assertNotInBody("Carla Clark")
+        self.assertInBody("Daniel Davis")
+        self.assertInBody("Eve Elliot")
+        self.assertInBody("Fred Francis")

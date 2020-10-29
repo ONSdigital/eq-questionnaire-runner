@@ -586,6 +586,16 @@ def process_block(
             page_filename=f'{block["id"]}-add.page.js',
         )
 
+    if block["type"] == "RelationshipCollector" and "unrelated_block" in block:
+        process_block(
+            block["unrelated_block"],
+            dir_out,
+            schema_data,
+            spec_file,
+            relative_require,
+            page_filename=f'{block["unrelated_block"]["id"]}.page.js',
+        )
+
     page_path = os.path.join(dir_out, page_filename)
 
     logger.info("creating %s...", page_path)
@@ -657,6 +667,9 @@ def process_block(
             page_spec.write(LIST_SUMMARY_EDIT_LINK_GETTER)
             page_spec.write(LIST_SUMMARY_REMOVE_LINK_GETTER)
             page_spec.write(LIST_SUMMARY_LIST_GETTER)
+
+        if block["type"] == "UnrelatedQuestion":
+            page_spec.write(LIST_SUMMARY_LABEL_GETTER)
 
         page_spec.write(FOOTER.substitute(block_context))
 
