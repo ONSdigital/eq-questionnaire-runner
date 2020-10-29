@@ -431,6 +431,29 @@ def test_placeholder_resolves_answer_value_based_on_first_item_in_list():
     assert str(placeholders["answer"]) == "Coffee"
 
 
+def test_placeholder_resolves_list_item_value_based_on_first_item_in_list():
+    placeholder_list = [
+        {
+            "placeholder": "first_person_list_item_id",
+            "value": {
+                "source": "list",
+                "id_selector": "first",
+                "identifier": "people",
+            },
+        }
+    ]
+
+    list_store = ListStore([{"items": ["item-1", "item-2"], "name": "people"}])
+
+    parser = PlaceholderParser(
+        language="en", list_store=list_store, answer_store=AnswerStore()
+    )
+
+    placeholders = parser(placeholder_list)
+
+    assert str(placeholders["first_person_list_item_id"]) == list_store["people"].first
+
+
 def test_placeholder_resolves_same_name_items():
     list_store = ListStore(
         [
