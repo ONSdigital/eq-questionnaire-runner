@@ -15,8 +15,11 @@ from app.helpers.language_helper import handle_language
 from app.helpers.template_helpers import render_template
 from app.settings import EQ_SESSION_ID
 from app.submitter.submission_failed import SubmissionFailedException
+from app.views.handlers.confirmation_email import (
+    ConfirmationEmailFulfilmentRequestFailed,
+)
 from app.views.handlers.individual_response import (
-    FulfilmentRequestFailedException,
+    IndividualResponseFulfilmentRequestFailed,
     IndividualResponseLimitReached,
 )
 
@@ -109,7 +112,7 @@ def http_exception(error):
     return _render_error_page(error.code)
 
 
-@errors_blueprint.app_errorhandler(FulfilmentRequestFailedException)
+@errors_blueprint.app_errorhandler(IndividualResponseFulfilmentRequestFailed)
 def fulfilment_request_failed(error):
     logger.exception(
         "An individual response fulfilment request failed",
@@ -130,4 +133,17 @@ def fulfilment_request_failed(error):
         blueprint_method, list_item_id=request.view_args["list_item_id"], **request.args
     )
 
-    return _render_error_page(500, template="fulfilment-request", retry_url=retry_url)
+    return _render_error_page(
+        500, template="500-individual-response", retry_url=retry_url
+    )
+
+
+@errors_blueprint.app_errorhandler(ConfirmationEmailFulfilmentRequestFailed)
+def confirmation_email_failed(error):
+    logger.exception(
+        "A confirmation email fulfilment request failed",
+        url=request.url,
+        status_code=500,
+    )
+
+    return _render_error_page(500, template="500-confirmation-email")

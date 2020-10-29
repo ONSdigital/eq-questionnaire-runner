@@ -12,7 +12,7 @@ from app.views.handlers.individual_response import (
     GB_ENG_REGION_CODE,
     GB_NIR_REGION_CODE,
     GB_WLS_REGION_CODE,
-    FulfilmentRequest,
+    IndividualResponseFulfilmentRequest,
 )
 
 DUMMY_MOBILE_NUMBER = "07700900258"
@@ -21,7 +21,9 @@ DUMMY_MOBILE_NUMBER = "07700900258"
 @freeze_time(datetime.utcnow().isoformat())
 def test_sms_fulfilment_request_payload():
     metadata = {"region_code": "GB-ENG", "case_id": str(uuid4())}
-    fulfilment_request = FulfilmentRequest(metadata, DUMMY_MOBILE_NUMBER)
+    fulfilment_request = IndividualResponseFulfilmentRequest(
+        metadata, DUMMY_MOBILE_NUMBER
+    )
 
     assert isinstance(fulfilment_request.payload, bytes)
 
@@ -56,7 +58,7 @@ def test_sms_fulfilment_request_payload():
 @freeze_time(datetime.utcnow().isoformat())
 def test_postal_fulfilment_request_payload():
     metadata = {"region_code": "GB-ENG", "case_id": str(uuid4())}
-    fulfilment_request = FulfilmentRequest(metadata)
+    fulfilment_request = IndividualResponseFulfilmentRequest(metadata)
 
     assert isinstance(fulfilment_request.payload, bytes)
 
@@ -91,7 +93,7 @@ def test_postal_fulfilment_request_payload():
 @freeze_time(datetime.utcnow().isoformat())
 def test_individual_case_id_not_present_when_case_type_spg():
     metadata = {"region_code": "GB-ENG", "case_id": str(uuid4()), "case_type": "SPG"}
-    fulfilment_request = FulfilmentRequest(metadata)
+    fulfilment_request = IndividualResponseFulfilmentRequest(metadata)
 
     assert isinstance(fulfilment_request.payload, bytes)
 
@@ -110,7 +112,9 @@ def test_individual_case_id_not_present_when_case_type_spg():
 )
 def test_fulfilment_code_for_sms(region_code, expected_fulfilment_code):
     metadata = {"region_code": region_code, "case_id": str(uuid4()), "case_type": "SPG"}
-    fulfilment_request = FulfilmentRequest(metadata, DUMMY_MOBILE_NUMBER)
+    fulfilment_request = IndividualResponseFulfilmentRequest(
+        metadata, DUMMY_MOBILE_NUMBER
+    )
     json_payload = json.loads(fulfilment_request.payload)
 
     assert (
@@ -129,7 +133,7 @@ def test_fulfilment_code_for_sms(region_code, expected_fulfilment_code):
 )
 def test_fulfilment_code_for_postal(region_code, expected_fulfilment_code):
     metadata = {"region_code": region_code, "case_id": str(uuid4()), "case_type": "SPG"}
-    fulfilment_request = FulfilmentRequest(metadata)
+    fulfilment_request = IndividualResponseFulfilmentRequest(metadata)
     json_payload = json.loads(fulfilment_request.payload)
 
     assert (

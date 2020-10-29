@@ -45,7 +45,7 @@ class ThankYou:
             return None
 
         try:
-            return ConfirmationEmail(self.PAGE_TITLE)
+            return ConfirmationEmail(self.PAGE_TITLE, schema=self._schema)
         except ConfirmationEmailLimitReached:
             return None
 

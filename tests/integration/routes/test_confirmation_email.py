@@ -1,4 +1,7 @@
+from unittest.mock import MagicMock
+
 from app import settings
+from app.publisher.exceptions import PublicationFailed
 from tests.integration.integration_test_case import IntegrationTestCase
 
 
@@ -6,6 +9,11 @@ class TestEmailConfirmation(IntegrationTestCase):
     def setUp(self):
         settings.CONFIRMATION_EMAIL_LIMIT = 2
         super().setUp()
+
+    def _launch_and_complete_questionnaire(self):
+        self.launchSurvey("test_confirmation_email")
+        self.post({"answer_id": "Yes"})
+        self.post()
 
     def test_thank_you_page_get_not_allowed(self):
         # Given I launch the test_confirmation_email questionnaire
@@ -240,7 +248,18 @@ class TestEmailConfirmation(IntegrationTestCase):
         self.assertInUrl("/submitted/thank-you/")
         self.assertNotInBody("Get confirmation email")
 
-    def _launch_and_complete_questionnaire(self):
-        self.launchSurvey("test_confirmation_email")
-        self.post({"answer_id": "Yes"})
-        self.post()
+    def test_500_publish_failed(self):
+        publisher = self._application.eq["publisher"]
+        publisher.publish = MagicMock(side_effect=PublicationFailed)
+
+        # Given I launch and complete the test_confirmation_email questionnaire and submit with a valid email from the thank you page
+        self._launch_and_complete_questionnaire()
+
+        # When the email fulfilment request fails to publish
+        self.post({"email": "email@example.com"})
+
+        # Then an error page is shown
+        self.assertEqualPageTitle(
+            "Sorry, there was a problem sending the confirmation email - Census 2021"
+        )
+        self.assertInSelector(self.last_url, "p[data-qa=retry]")

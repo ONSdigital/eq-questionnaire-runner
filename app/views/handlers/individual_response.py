@@ -29,7 +29,7 @@ class IndividualResponseLimitReached(Exception):
     pass
 
 
-class FulfilmentRequestFailedException(Exception):
+class IndividualResponseFulfilmentRequestFailed(Exception):
     pass
 
 
@@ -189,13 +189,15 @@ class IndividualResponseHandler:
     def _publish_fulfilment_request(self, mobile_number=None):
         self._check_individual_response_count()
         topic_id = current_app.config["EQ_FULFILMENT_TOPIC_ID"]
-        fulfilment_request = FulfilmentRequest(self._metadata, mobile_number)
+        fulfilment_request = IndividualResponseFulfilmentRequest(
+            self._metadata, mobile_number
+        )
         try:
             return current_app.eq["publisher"].publish(
                 topic_id, message=fulfilment_request.payload
             )
         except PublicationFailed:
-            raise FulfilmentRequestFailedException
+            raise IndividualResponseFulfilmentRequestFailed
 
     def _check_individual_response_count(self):
         if (
@@ -886,7 +888,7 @@ class IndividualResponseTextConfirmHandler(IndividualResponseHandler):
         )
 
 
-class FulfilmentRequest:
+class IndividualResponseFulfilmentRequest:
     def __init__(self, metadata: Mapping, mobile_number: Optional[str] = None):
         self._metadata = metadata
         self._mobile_number = mobile_number

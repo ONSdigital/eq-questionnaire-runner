@@ -338,6 +338,13 @@ def get_confirmation_email_sent():
 
     email = URLParamSerializer().loads(request.args.get("email"))
 
+    try:
+        ConfirmationEmail()
+    except ConfirmationEmailLimitReached:
+        show_send_another_email_guidance = False
+    else:
+        show_send_another_email_guidance = True
+
     return render_template(
         template="confirmation-email-sent",
         content={
@@ -346,7 +353,7 @@ def get_confirmation_email_sent():
                 "post_submission.send_confirmation_email"
             ),
             "hide_signout_button": False,
-            "show_send_another_email_guidance": not ConfirmationEmail.is_limit_reached(),
+            "show_send_another_email_guidance": show_send_another_email_guidance,
             "sign_out_url": url_for("session.get_sign_out"),
         },
     )
