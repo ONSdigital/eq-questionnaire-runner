@@ -5,7 +5,7 @@ import HowManyPeopleLiveHere from "../../../generated_pages/hub_and_spoke/how-ma
 import ProxyPage from "../../../generated_pages/hub_and_spoke/proxy.page.js";
 import AccomodationDetailsSummaryBlockPage from "../../../generated_pages/hub_and_spoke/accommodation-section-summary.page.js";
 import DoesAnyoneLiveHere from "../../../generated_pages/hub_and_spoke/does-anyone-live-here.page.js";
-import Relationships from "../../../generated_pages/hub_and_spoke/relationships.page.js";
+import AnyoneRelated from "../../../generated_pages/hub_and_spoke/anyone-related.page.js";
 import RelationshipsSummary from "../../../generated_pages/hub_and_spoke/relationships-section-summary.page.js";
 import HubPage from "../../../base_pages/hub.page.js";
 
@@ -188,8 +188,8 @@ describe("Feature: Hub and Spoke", () => {
       $(DoesAnyoneLiveHere.submit()).click();
       $(HouseholdSummary.submit()).click();
       $(HubPage.submit()).click();
-      $(Relationships.yes()).click();
-      $(Relationships.submit()).click();
+      $(AnyoneRelated.yes()).click();
+      $(AnyoneRelated.submit()).click();
       $(RelationshipsSummary.submit()).click();
     });
 

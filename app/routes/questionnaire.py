@@ -190,9 +190,6 @@ def block(schema, questionnaire_store, block_id, list_name=None, list_item_id=No
     except InvalidLocationException:
         raise NotFound
 
-    if block_handler.block["type"] == "RelationshipCollector":
-        return redirect(block_handler.get_first_location_url())
-
     if "action[clear_radios]" in request.form:
         block_handler.clear_radio_answers()
         return redirect(request.url)
@@ -228,6 +225,10 @@ def block(schema, questionnaire_store, block_id, list_name=None, list_item_id=No
 
 
 @questionnaire_blueprint.route(
+    "relationships/",
+    methods=["GET"],
+)
+@questionnaire_blueprint.route(
     "relationships/<list_name>/<list_item_id>/to/<to_list_item_id>/",
     methods=["GET", "POST"],
 )
@@ -239,8 +240,8 @@ def block(schema, questionnaire_store, block_id, list_name=None, list_item_id=No
 def relationships(
     schema,
     questionnaire_store,
-    list_name,
-    list_item_id,
+    list_name=None,
+    list_item_id=None,
     to_list_item_id=None,
     block_id="relationships",
 ):
@@ -258,6 +259,11 @@ def relationships(
         )
     except InvalidLocationException:
         raise NotFound
+
+    if not list_name:
+        if "last" in request.args:
+            return redirect(block_handler.get_last_location_url())
+        return redirect(block_handler.get_first_location_url())
 
     if request.method == "GET" or (
         hasattr(block_handler, "form") and not block_handler.form.validate()

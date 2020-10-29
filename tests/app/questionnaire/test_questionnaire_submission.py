@@ -68,7 +68,7 @@ class TestQuestionnaireSubmissionHub(SubmissionTestCase):
         self.post({"does-anyone-live-here-answer": "No"})
         self.post()
         self.post()
-        self.post({"relationships-answer": "No"})
+        self.post({"anyone-related-answer": "No"})
         self.post()
         self.post()
 
