@@ -1,14 +1,13 @@
-from functools import cached_property
 from typing import Mapping
 
 from flask import url_for
 
+from app.data_models import AnswerStore, ListStore, ProgressStore
 from app.helpers.template_helpers import safe_content
 from app.questionnaire import QuestionnaireSchema
 from app.questionnaire.location import Location
 from app.questionnaire.routing_path import RoutingPath
 
-from ...data_models import AnswerStore, ListStore, ProgressStore
 from .context import Context
 from .list_context import ListContext
 from .summary import Group
@@ -64,11 +63,11 @@ class SectionSummaryContext(Context):
             }
         }
 
-    @cached_property
+    @property
     def section(self):
         return self._schema.get_section(self.current_location.section_id)
 
-    @cached_property
+    @property
     def list_context(self):
         return ListContext(
             self._language,
