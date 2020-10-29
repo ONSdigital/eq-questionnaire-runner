@@ -114,7 +114,6 @@ def test_get_context(progress_store, answer_store, list_store, router):
         "submit_button": "Continue",
         "title": "Choose another section to complete",
         "warning": None,
-        "survey_complete": False,
     }
 
     assert expected_context == hub.get_context(
@@ -143,7 +142,6 @@ def test_get_context_custom_content_incomplete(
         "submit_button": "Continue",
         "title": "Choose another section to complete",
         "warning": None,
-        "survey_complete": False,
     }
 
     assert expected_context == hub_context.get_context(
@@ -172,7 +170,6 @@ def test_get_context_custom_content_complete(
         "submit_button": "Submission button",
         "title": "Submission title",
         "warning": "Submission warning",
-        "survey_complete": True,
     }
 
     assert expected_context == hub_context.get_context(
