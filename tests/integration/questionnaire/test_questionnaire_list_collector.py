@@ -305,7 +305,7 @@ class TestQuestionnaireListCollector(QuestionnaireTestCase):
 
         self.assertInUrl("/questionnaire/sections/section/")
 
-        first_person_change_link = self.get_link(1, "change")
+        first_person_change_link = self.get_link("change", 1)
 
         self.get(first_person_change_link)
 
@@ -315,7 +315,7 @@ class TestQuestionnaireListCollector(QuestionnaireTestCase):
 
         self.assertInUrl("/questionnaire/sections/section/")
 
-        first_person_remove_link = self.get_link(1, "remove")
+        first_person_remove_link = self.get_link("remove", 1)
 
         self.get(first_person_remove_link)
 
