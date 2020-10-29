@@ -146,7 +146,7 @@ class TestQuestionnaireListCollector(QuestionnaireTestCase):
 
         self.post({"remove-confirmation": "Yes"})
 
-        self.assertInBody("There are no householders")
+        self.assertInBody("Add someone to this household")
 
         self.post()
 
