@@ -31,7 +31,7 @@
           {% if summary.list.list_items %}
             {% set list = summary.list %}
             {% include 'partials/summary/list-summary.html' %}
-            {% else %}
+            {% elif summary.empty_list_text %}
               <div class="u-mb-s">
                 {{ summary.empty_list_text }}
               </div>
