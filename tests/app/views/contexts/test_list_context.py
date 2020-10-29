@@ -46,12 +46,14 @@ def test_build_list_summary_context(
             "edit_link": "/questionnaire/people/PlwgoG/edit-person/",
             "remove_link": "/questionnaire/people/PlwgoG/remove-person/",
             "primary_person": False,
+            "list_item_id": "PlwgoG",
         },
         {
             "item_title": "Barry Pheloung",
             "edit_link": "/questionnaire/people/UHPLbX/edit-person/",
             "remove_link": "/questionnaire/people/UHPLbX/remove-person/",
             "primary_person": False,
+            "list_item_id": "UHPLbX",
         },
     ]
 
@@ -117,6 +119,7 @@ def test_for_list_item_ids(
         {
             "item_title": "Barry Pheloung",
             "primary_person": False,
+            "list_item_id": "UHPLbX",
         }
     ]
 

@@ -103,10 +103,23 @@ def test_delete_list_item_id_does_not_raise():
         pytest.fail("Deleting a non-existent list item raised an error")
 
 
-def test_list_representation_equal():
-    assert ListModel(["123", "123"]) != "123"
+def test_list_representation_equality():
+    assert ListModel("list", ["1", "2"]) == ListModel("list", ["1", "2"])
+    assert ListModel("list", ["1", "2"]) != ListModel("list", ["1"])
 
-    assert ListModel(["1", "2"]) == ListModel(["1", "2"])
+    assert ListModel("list", ["1"], primary_person="1") == ListModel(
+        "list", ["1"], primary_person="1"
+    )
+    assert ListModel("list", ["1"], primary_person="1") != ListModel(
+        "list", ["1"], primary_person="2"
+    )
+
+    assert ListModel("list", ["1"]) != ["1"]
+
+
+def test_list_model_get_item():
+    assert ListModel("list", ["1", "2"])[0] == "1"
+    assert ListModel("list", ["1", "2"])[-1] == "2"
 
 
 def test_repr():
