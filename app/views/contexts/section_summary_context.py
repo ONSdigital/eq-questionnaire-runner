@@ -154,11 +154,18 @@ class SectionSummaryContext(Context):
             summary, current_location.list_item_id
         )
 
+        empty_list_text = (
+            rendered_summary["empty_list_text"]
+            if "empty_list_text" in summary.keys()
+            else None
+        )
+
         return {
             "title": rendered_summary["title"],
             "type": rendered_summary["type"],
             "add_link": add_link,
             "add_link_text": rendered_summary["add_link_text"],
+            "empty_list_text": empty_list_text,
             "list_name": rendered_summary["for_list"],
             **list_context(
                 list_collector_block["summary"],

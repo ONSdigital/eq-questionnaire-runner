@@ -476,6 +476,7 @@ def test_context_for_section_list_summary(people_answer_store):
                 {
                     "add_link": "/questionnaire/people/add-person/?return_to=section-summary",
                     "add_link_text": "Add someone to this household",
+                    "empty_list_text": "There are no householders",
                     "list": {
                         "editable": True,
                         "list_items": [
@@ -500,6 +501,7 @@ def test_context_for_section_list_summary(people_answer_store):
                 {
                     "add_link": "/questionnaire/visitors/add-visitor/?return_to=section-summary",
                     "add_link_text": "Add another visitor to this household",
+                    "empty_list_text": "There are no visitors",
                     "list": {
                         "editable": True,
                         "list_items": [
@@ -548,6 +550,7 @@ def test_context_for_driving_question_summary_empty_list():
                 {
                     "add_link": "/questionnaire/anyone-usually-live-at/?return_to=section-summary",
                     "add_link_text": "Add someone to this household",
+                    "empty_list_text": "There are no householders",
                     "list_name": "people",
                     "list": {"list_items": [], "editable": True},
                     "title": "Household members",
@@ -597,6 +600,7 @@ def test_context_for_driving_question_summary():
                 {
                     "add_link": "/questionnaire/people/add-person/?return_to=section-summary",
                     "add_link_text": "Add someone to this household",
+                    "empty_list_text": "There are no householders",
                     "list": {
                         "editable": True,
                         "list_items": [
