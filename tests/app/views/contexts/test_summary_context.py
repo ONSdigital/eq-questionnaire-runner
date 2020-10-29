@@ -128,18 +128,15 @@ class TestSectionSummaryContext(TestStandardSummaryContext):
             self.progress_store,
             self.list_store,
             self.metadata,
+            current_location=Location(section_id="property-details-section"),
+            routing_path=MagicMock(),
         )
 
-        single_section_context = section_summary_context(
-            Location(section_id="property-details-section"), routing_path=MagicMock()
-        )
+        single_section_context = section_summary_context()
 
         self.check_summary_rendering_context(single_section_context)
 
     def test_build_view_context_for_section_summary(self):
-        current_location = Location(
-            section_id="property-details-section", block_id="property-details-summary"
-        )
 
         summary_context = SectionSummaryContext(
             self.language,
@@ -148,16 +145,20 @@ class TestSectionSummaryContext(TestStandardSummaryContext):
             self.progress_store,
             self.list_store,
             self.metadata,
+            current_location=Location(
+                section_id="property-details-section",
+                block_id="property-details-summary",
+            ),
+            routing_path=MagicMock(),
         )
-        context = summary_context(current_location, routing_path=MagicMock())
+        context = summary_context()
 
         self.check_context(context)
         self.check_summary_rendering_context(context)
         self.assertEqual(len(context["summary"]), 6)
         self.assertTrue("title" in context["summary"])
 
-    def test_custom_setion_summary_title(self):
-        current_location = Location(section_id="house-details-section")
+    def test_custom_section_summary_title(self):
         answers = [{"answer_id": "house-type-answer", "value": "Semi-detached"}]
         summary_context = SectionSummaryContext(
             self.language,
@@ -166,14 +167,15 @@ class TestSectionSummaryContext(TestStandardSummaryContext):
             self.list_store,
             self.progress_store,
             self.metadata,
+            current_location=Location(section_id="house-details-section"),
+            routing_path=MagicMock(),
         )
-        context = summary_context(current_location, routing_path=MagicMock())
+        context = summary_context()
         self.assertEqual(
             "Household Summary - Semi-detached", context["summary"]["title"]
         )
 
     def test_custom_section_summary_page_title(self):
-        current_location = Location(section_id="property-details-section")
         summary_context = SectionSummaryContext(
             self.language,
             self.schema,
@@ -181,14 +183,16 @@ class TestSectionSummaryContext(TestStandardSummaryContext):
             self.list_store,
             self.progress_store,
             self.metadata,
+            current_location=Location(section_id="property-details-section"),
+            routing_path=MagicMock(),
         )
-        context = summary_context(current_location, routing_path=MagicMock())
+        context = summary_context()
         self.assertEqual(
             "Custom section summary title", context["summary"]["page_title"]
         )
 
     def test_section_summary_page_title_placeholder_text_replaced(self):
-        current_location = Location(section_id="house-details-section")
+
         answers = [{"answer_id": "house-type-answer", "value": "Semi-detached"}]
         summary_context = SectionSummaryContext(
             self.language,
@@ -197,12 +201,13 @@ class TestSectionSummaryContext(TestStandardSummaryContext):
             self.progress_store,
             self.list_store,
             self.metadata,
+            current_location=Location(section_id="house-details-section"),
+            routing_path=MagicMock(),
         )
-        context = summary_context(current_location, routing_path=MagicMock())
+        context = summary_context()
         self.assertEqual(context["summary"]["page_title"], "Household Summary - …")
 
     def test_section_summary_page_title_placeholder_text_plural_replaced(self):
-        current_location = Location(section_id="household-count-section")
         answers = [{"answer_id": "number-of-people-answer", "value": 3}]
         summary_context = SectionSummaryContext(
             self.language,
@@ -211,8 +216,10 @@ class TestSectionSummaryContext(TestStandardSummaryContext):
             self.list_store,
             self.progress_store,
             self.metadata,
+            current_location=Location(section_id="household-count-section"),
+            routing_path=MagicMock(),
         )
-        context = summary_context(current_location, routing_path=MagicMock())
+        context = summary_context()
         self.assertEqual(context["summary"]["page_title"], "… people live here")
 
     def test_section_summary_title_is_section_title(self):
@@ -224,8 +231,10 @@ class TestSectionSummaryContext(TestStandardSummaryContext):
             self.progress_store,
             self.list_store,
             self.metadata,
+            routing_path=MagicMock(),
+            current_location=current_location,
         )
-        context = summary_context(current_location, routing_path=MagicMock())
+        context = summary_context()
         self.assertEqual(context["summary"]["title"], "Property Details Section")
 
 
@@ -466,9 +475,7 @@ def test_context_for_section_list_summary(people_answer_store):
         ),
         progress_store=ProgressStore(),
         metadata={"display_address": "70 Abingdon Road, Goathill"},
-    )
-    context = summary_context(
-        current_location,
+        current_location=current_location,
         routing_path=RoutingPath(
             [
                 "primary-person-list-collector",
@@ -478,6 +485,7 @@ def test_context_for_section_list_summary(people_answer_store):
             section_id="section",
         ),
     )
+    context = summary_context()
     expected = {
         "summary": {
             "answers_are_editable": True,
@@ -549,12 +557,11 @@ def test_context_for_driving_question_summary_empty_list():
         ListStore(),
         ProgressStore(),
         {},
-    )
-
-    context = summary_context(
-        current_location,
+        current_location=current_location,
         routing_path=RoutingPath(["anyone-usually-live-at"], section_id="section"),
     )
+
+    context = summary_context()
     expected = {
         "summary": {
             "answers_are_editable": True,
@@ -601,14 +608,13 @@ def test_context_for_driving_question_summary():
         ListStore([{"items": ["PlwgoG"], "name": "people"}]),
         ProgressStore(),
         {},
-    )
-
-    context = summary_context(
-        current_location,
+        current_location=current_location,
         routing_path=RoutingPath(
             ["anyone-usually-live-at", "anyone-else-live-at"], section_id="section"
         ),
     )
+
+    context = summary_context()
 
     expected = {
         "summary": {
@@ -647,9 +653,6 @@ def test_context_for_driving_question_summary():
 @pytest.mark.usefixtures("app")
 def test_titles_for_repeating_section_summary(people_answer_store):
     schema = load_schema_from_name("test_repeating_sections_with_hub_and_spoke")
-    current_location = Location(
-        section_id="personal-details-section", list_name="people", list_item_id="PlwgoG"
-    )
 
     section_summary_context = SectionSummaryContext(
         DEFAULT_LANGUAGE_CODE,
@@ -663,27 +666,46 @@ def test_titles_for_repeating_section_summary(people_answer_store):
         ),
         ProgressStore(),
         {},
+        current_location=Location(
+            section_id="personal-details-section",
+            list_name="people",
+            list_item_id="PlwgoG",
+        ),
+        routing_path=MagicMock(),
     )
 
-    context = section_summary_context(current_location, routing_path=MagicMock())
+    context = section_summary_context()
 
     assert context["summary"]["title"] == "Toni Morrison"
 
-    new_location = Location(
-        block_id="personal-summary",
-        section_id="personal-details-section",
-        list_name="people",
-        list_item_id="UHPLbX",
+    section_summary_context = SectionSummaryContext(
+        DEFAULT_LANGUAGE_CODE,
+        schema,
+        people_answer_store,
+        ListStore(
+            [
+                {"items": ["PlwgoG", "UHPLbX"], "name": "people"},
+                {"items": ["gTrlio"], "name": "visitors"},
+            ]
+        ),
+        ProgressStore(),
+        {},
+        current_location=Location(
+            block_id="personal-summary",
+            section_id="personal-details-section",
+            list_name="people",
+            list_item_id="UHPLbX",
+        ),
+        routing_path=MagicMock(),
     )
 
-    context = section_summary_context(new_location, routing_path=MagicMock())
+    context = section_summary_context()
     assert context["summary"]["title"] == "Barry Pheloung"
 
 
 @pytest.mark.usefixtures("app")
 def test_primary_only_links_for_section_summary(people_answer_store):
     schema = load_schema_from_name("test_list_collector_section_summary")
-    current_location = Location(section_id="section")
 
     summary_context = SectionSummaryContext(
         language=DEFAULT_LANGUAGE_CODE,
@@ -694,9 +716,7 @@ def test_primary_only_links_for_section_summary(people_answer_store):
         ),
         progress_store=ProgressStore(),
         metadata={"display_address": "70 Abingdon Road, Goathill"},
-    )
-    context = summary_context(
-        current_location,
+        current_location=Location(section_id="section"),
         routing_path=RoutingPath(
             [
                 "primary-person-list-collector",
@@ -706,6 +726,7 @@ def test_primary_only_links_for_section_summary(people_answer_store):
             section_id="section",
         ),
     )
+    context = summary_context()
 
     list_items = context["summary"]["custom_summary"][0]["list"]["list_items"]
 
@@ -715,7 +736,6 @@ def test_primary_only_links_for_section_summary(people_answer_store):
 @pytest.mark.usefixtures("app")
 def test_primary_links_for_section_summary(people_answer_store):
     schema = load_schema_from_name("test_list_collector_section_summary")
-    current_location = Location(section_id="section")
 
     summary_context = SectionSummaryContext(
         language=DEFAULT_LANGUAGE_CODE,
@@ -732,9 +752,7 @@ def test_primary_links_for_section_summary(people_answer_store):
         ),
         progress_store=ProgressStore(),
         metadata={"display_address": "70 Abingdon Road, Goathill"},
-    )
-    context = summary_context(
-        current_location,
+        current_location=Location(section_id="section"),
         routing_path=RoutingPath(
             [
                 "primary-person-list-collector",
@@ -744,6 +762,7 @@ def test_primary_links_for_section_summary(people_answer_store):
             section_id="section",
         ),
     )
+    context = summary_context()
 
     list_items = context["summary"]["custom_summary"][0]["list"]["list_items"]
 
