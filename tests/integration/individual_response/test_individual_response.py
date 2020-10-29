@@ -532,6 +532,24 @@ class TestIndividualResponseNavigation(IndividualResponseTestCase):
         # Then I should be taken to the previous page
         self.assertInUrl(f"/individual-response/?list_item_id={person_id}")
 
+    def test_ir_guidance_not_displayed_on_hub_if_survey_complete(self):
+        # Given the survey had been completed
+        self._add_primary_and_household()
+
+        # When I reach the hub
+        self.post()
+        self.post()
+        self.post()
+        self.post({"proxy-answer": "Yes, I am"})
+        self.post()
+        self.post()
+        self.post()
+        self.post({"proxy-answer": "Yes, I am"})
+
+        # Then I should not see the individual response guidance
+        self.assertInBody("Submit survey")
+        self.assertNotInBody("If you can’t answer someone else’s questions")
+
 
 class TestIndividualResponseWho(IndividualResponseTestCase):
     def test_who_not_shown_for_primary_only(self):
