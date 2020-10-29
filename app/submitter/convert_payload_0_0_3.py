@@ -107,9 +107,7 @@ def add_relationship_answers(
     unrelated_block_id, unrelated_answer_id = None, None
     if unrelated_block := relationships_block.get("unrelated_block"):
         unrelated_block_id = unrelated_block["id"]
-        unrelated_answer_id = schema.get_first_answer_id_for_block(
-            unrelated_block["id"]
-        )
+        unrelated_answer_id = schema.get_first_answer_id_for_block(unrelated_block_id)
 
     relationship_router = RelationshipRouter(
         answer_store=answer_store,
