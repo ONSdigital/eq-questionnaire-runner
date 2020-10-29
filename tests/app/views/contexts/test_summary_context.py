@@ -501,12 +501,14 @@ def test_context_for_section_list_summary(people_answer_store):
                                 "item_title": "Toni Morrison",
                                 "primary_person": False,
                                 "remove_link": "/questionnaire/people/PlwgoG/remove-person/?return_to=section-summary",
+                                "list_item_id": "PlwgoG",
                             },
                             {
                                 "edit_link": "/questionnaire/people/UHPLbX/edit-person/?return_to=section-summary",
                                 "item_title": "Barry Pheloung",
                                 "primary_person": False,
                                 "remove_link": "/questionnaire/people/UHPLbX/remove-person/?return_to=section-summary",
+                                "list_item_id": "UHPLbX",
                             },
                         ],
                     },
@@ -526,6 +528,7 @@ def test_context_for_section_list_summary(people_answer_store):
                                 "item_title": "",
                                 "primary_person": False,
                                 "remove_link": "/questionnaire/visitors/gTrlio/remove-visitor/?return_to=section-summary",
+                                "list_item_id": "gTrlio",
                             }
                         ],
                     },
@@ -629,6 +632,7 @@ def test_context_for_driving_question_summary():
                                 "primary_person": False,
                                 "edit_link": "/questionnaire/people/PlwgoG/edit-person/?return_to=section-summary",
                                 "remove_link": "/questionnaire/people/PlwgoG/remove-person/?return_to=section-summary",
+                                "list_item_id": "PlwgoG",
                             }
                         ],
                     },

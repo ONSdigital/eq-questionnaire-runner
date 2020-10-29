@@ -570,3 +570,318 @@ def test_primary_person_not_in_payload_when_not_answered(fake_questionnaire_stor
     data_dict = json.loads(json.dumps(output["data"]["lists"], for_json=True))
 
     assert "primary_person" not in data_dict[0]
+
+
+def test_relationships_in_payload(fake_questionnaire_store):
+    routing_path = [
+        RoutingPath(
+            ["list-collector", "relationships"],
+            section_id="section",
+        )
+    ]
+
+    answer_objects = [
+        {"answer_id": "first-name", "value": "1", "list_item_id": "person1"},
+        {"answer_id": "last-name", "value": "1", "list_item_id": "person1"},
+        {"answer_id": "first-name", "value": "2", "list_item_id": "person2"},
+        {"answer_id": "last-name", "value": "2", "list_item_id": "person2"},
+        {"answer_id": "first-name", "value": "3", "list_item_id": "person3"},
+        {"answer_id": "last-name", "value": "3", "list_item_id": "person3"},
+        {"answer_id": "anyone-else", "value": "No"},
+        {
+            "answer_id": "relationship-answer",
+            "value": [
+                {
+                    "list_item_id": "person1",
+                    "to_list_item_id": "person2",
+                    "relationship": "Husband or Wife",
+                },
+                {
+                    "list_item_id": "person1",
+                    "to_list_item_id": "person3",
+                    "relationship": "Son or daughter",
+                },
+            ],
+        },
+    ]
+
+    answers = AnswerStore(answer_objects)
+
+    list_store = ListStore(
+        existing_items=[
+            {
+                "name": "people",
+                "items": [
+                    "person1",
+                    "person2",
+                    "person3",
+                ],
+            }
+        ]
+    )
+
+    fake_questionnaire_store.answer_store = answers
+    fake_questionnaire_store.list_store = list_store
+
+    schema = load_schema("test_relationships")
+
+    output = convert_answers(schema, fake_questionnaire_store, routing_path)
+    data = json.loads(json.dumps(output["data"]["answers"], for_json=True))
+    answers = {answer["answer_id"]: answer for answer in data}
+
+    expected_relationships_answer = [
+        {
+            "list_item_id": "person1",
+            "relationship": "Husband or Wife",
+            "to_list_item_id": "person2",
+        },
+        {
+            "list_item_id": "person1",
+            "relationship": "Son or daughter",
+            "to_list_item_id": "person3",
+        },
+    ]
+
+    relationships_answer = answers["relationship-answer"]
+    assert expected_relationships_answer == relationships_answer["value"]
+
+
+def test_no_relationships_in_payload(fake_questionnaire_store):
+    routing_path = [
+        RoutingPath(
+            ["list-collector", "relationships"],
+            section_id="section",
+        )
+    ]
+
+    answer_objects = [
+        {"answer_id": "first-name", "value": "1", "list_item_id": "person1"},
+        {"answer_id": "last-name", "value": "1", "list_item_id": "person1"},
+        {"answer_id": "first-name", "value": "2", "list_item_id": "person2"},
+        {"answer_id": "last-name", "value": "2", "list_item_id": "person2"},
+        {"answer_id": "first-name", "value": "3", "list_item_id": "person3"},
+        {"answer_id": "last-name", "value": "3", "list_item_id": "person3"},
+        {"answer_id": "anyone-else", "value": "No"},
+    ]
+
+    answers = AnswerStore(answer_objects)
+
+    list_store = ListStore(
+        existing_items=[
+            {
+                "name": "people",
+                "items": [
+                    "person1",
+                    "person2",
+                    "person3",
+                ],
+            }
+        ]
+    )
+
+    fake_questionnaire_store.answer_store = answers
+    fake_questionnaire_store.list_store = list_store
+
+    schema = load_schema("test_relationships")
+
+    output = convert_answers(schema, fake_questionnaire_store, routing_path)
+    data = json.loads(json.dumps(output["data"]["answers"], for_json=True))
+    answers = {answer["answer_id"]: answer for answer in data}
+
+    assert "relationship-answer" not in answers
+
+
+def test_unrelated_answers_in_payload(fake_questionnaire_store):
+    routing_path = [
+        RoutingPath(
+            ["list-collector", "relationships"],
+            section_id="section",
+        )
+    ]
+
+    answer_objects = [
+        {"answer_id": "first-name", "value": "1", "list_item_id": "person1"},
+        {"answer_id": "last-name", "value": "1", "list_item_id": "person1"},
+        {"answer_id": "first-name", "value": "2", "list_item_id": "person2"},
+        {"answer_id": "last-name", "value": "2", "list_item_id": "person2"},
+        {"answer_id": "first-name", "value": "3", "list_item_id": "person3"},
+        {"answer_id": "last-name", "value": "3", "list_item_id": "person3"},
+        {"answer_id": "first-name", "value": "4", "list_item_id": "person4"},
+        {"answer_id": "last-name", "value": "4", "list_item_id": "person4"},
+        {"answer_id": "first-name", "value": "5", "list_item_id": "person5"},
+        {"answer_id": "last-name", "value": "5", "list_item_id": "person5"},
+        {"answer_id": "anyone-else", "value": "No"},
+        {
+            "answer_id": "relationship-answer",
+            "value": [
+                {
+                    "list_item_id": "person1",
+                    "to_list_item_id": "person2",
+                    "relationship": "Unrelated",
+                },
+                {
+                    "list_item_id": "person1",
+                    "to_list_item_id": "person3",
+                    "relationship": "Unrelated",
+                },
+                {
+                    "list_item_id": "person1",
+                    "to_list_item_id": "person4",
+                    "relationship": "Unrelated",
+                },
+            ],
+        },
+        {
+            "answer_id": "related-to-anyone-else-answer",
+            "value": "Yes",
+            "list_item_id": "person1",
+        },
+    ]
+
+    answers = AnswerStore(answer_objects)
+
+    list_store = ListStore(
+        existing_items=[
+            {
+                "name": "people",
+                "items": [
+                    "person1",
+                    "person2",
+                    "person3",
+                    "person4",
+                    "person5",
+                ],
+            }
+        ]
+    )
+
+    fake_questionnaire_store.answer_store = answers
+    fake_questionnaire_store.list_store = list_store
+
+    schema = load_schema("test_relationships_unrelated")
+
+    output = convert_answers(schema, fake_questionnaire_store, routing_path)
+    data = json.loads(json.dumps(output["data"]["answers"], for_json=True))
+    answers = {
+        (answer["answer_id"], answer.get("list_item_id")): answer for answer in data
+    }
+
+    expected_relationships_answer = [
+        {
+            "list_item_id": "person1",
+            "relationship": "Unrelated",
+            "to_list_item_id": "person2",
+        },
+        {
+            "list_item_id": "person1",
+            "relationship": "Unrelated",
+            "to_list_item_id": "person3",
+        },
+        {
+            "list_item_id": "person1",
+            "relationship": "Unrelated",
+            "to_list_item_id": "person4",
+        },
+    ]
+
+    assert ("related-to-anyone-else-answer", "person1") in answers
+    relationships_answer = answers[("relationship-answer", None)]
+    assert expected_relationships_answer == relationships_answer["value"]
+
+
+def test_unrelated_answers_not_on_path_not_in_payload(fake_questionnaire_store):
+    routing_path = [
+        RoutingPath(
+            ["list-collector", "relationships"],
+            section_id="section",
+        )
+    ]
+
+    answer_objects = [
+        {"answer_id": "first-name", "value": "1", "list_item_id": "person1"},
+        {"answer_id": "last-name", "value": "1", "list_item_id": "person1"},
+        {"answer_id": "first-name", "value": "2", "list_item_id": "person2"},
+        {"answer_id": "last-name", "value": "2", "list_item_id": "person2"},
+        {"answer_id": "first-name", "value": "3", "list_item_id": "person3"},
+        {"answer_id": "last-name", "value": "3", "list_item_id": "person3"},
+        {"answer_id": "first-name", "value": "4", "list_item_id": "person4"},
+        {"answer_id": "last-name", "value": "4", "list_item_id": "person4"},
+        {"answer_id": "first-name", "value": "5", "list_item_id": "person5"},
+        {"answer_id": "last-name", "value": "5", "list_item_id": "person5"},
+        {"answer_id": "anyone-else", "value": "No"},
+        {
+            "answer_id": "relationship-answer",
+            "value": [
+                {
+                    "list_item_id": "person1",
+                    "to_list_item_id": "person2",
+                    "relationship": "Unrelated",
+                },
+                {
+                    "list_item_id": "person1",
+                    "to_list_item_id": "person3",
+                    "relationship": "Unrelated",
+                },
+                {
+                    "list_item_id": "person1",
+                    "to_list_item_id": "person4",
+                    "relationship": "Related",
+                },
+            ],
+        },
+        {
+            "answer_id": "related-to-anyone-else-answer",
+            "value": "No",
+            "list_item_id": "person1",
+        },
+        {
+            "answer_id": "related-to-anyone-else-answer",
+            "value": "Yes",
+            "list_item_id": "person2",
+        },
+    ]
+
+    answers = AnswerStore(answer_objects)
+
+    list_store = ListStore(
+        existing_items=[
+            {
+                "name": "people",
+                "items": [
+                    "person1",
+                    "person2",
+                    "person3",
+                    "person4",
+                    "person5",
+                ],
+            }
+        ]
+    )
+
+    fake_questionnaire_store.answer_store = answers
+    fake_questionnaire_store.list_store = list_store
+
+    schema = load_schema("test_relationships_unrelated")
+
+    output = convert_answers(schema, fake_questionnaire_store, routing_path)
+    data = json.loads(json.dumps(output["data"]["answers"], for_json=True))
+    answers = {
+        (answer["answer_id"], answer.get("list_item_id")): answer for answer in data
+    }
+
+    expected_relationships_answer = [
+        {
+            "list_item_id": "person1",
+            "relationship": "Unrelated",
+            "to_list_item_id": "person2",
+        },
+        {
+            "list_item_id": "person1",
+            "relationship": "Unrelated",
+            "to_list_item_id": "person3",
+        },
+    ]
+
+    assert ("related-to-anyone-else-answer", "person2") not in answers
+    relationships_answer = answers[("relationship-answer", None)]
+    assert expected_relationships_answer == relationships_answer["value"]
