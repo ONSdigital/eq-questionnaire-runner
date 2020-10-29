@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2020-10-28 22:57+0000\n"
+"POT-Creation-Date: 2020-10-29 15:39+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -234,6 +234,24 @@ msgid_plural "{number_of_days} days"
 msgstr[0] ""
 msgstr[1] ""
 
+#: app/routes/errors.py:83
+msgid "You have reached the maximum number of individual access codes"
+msgstr ""
+
+#: app/routes/errors.py:86
+msgid ""
+"If you need more individual access codes, please <a href='{url}'>contact "
+"us</a>."
+msgstr ""
+
+#: app/routes/errors.py:102 app/routes/errors.py:112
+msgid "You have reached the maximum number of times for submitting feedback"
+msgstr ""
+
+#: app/routes/errors.py:105
+msgid "If you need to give more feedback, please <a href='{url}'>contact us</a>."
+msgstr ""
+
 #: app/routes/individual_response.py:160
 msgid "An individual access code has been sent by post"
 msgstr ""
@@ -294,11 +312,11 @@ msgstr ""
 msgid "You must submit this survey to complete it"
 msgstr ""
 
-#: app/views/contexts/hub_context.py:59
+#: app/views/contexts/hub_context.py:61
 msgid "Choose another section to complete"
 msgstr ""
 
-#: app/views/contexts/hub_context.py:60
+#: app/views/contexts/hub_context.py:62
 #: templates/individual_response/confirmation-post.html:21
 #: templates/individual_response/confirmation-text-message.html:31
 #: templates/individual_response/question.html:5 templates/interstitial.html:8
@@ -778,20 +796,6 @@ msgstr ""
 msgid ""
 "If the web address is correct or you selected a link or button, <a "
 "href='{url}'>contact us</a> for more help."
-msgstr ""
-
-#: templates/errors/429-individual-response.html:3
-msgid "Maximum number of individual access codes reached"
-msgstr ""
-
-#: templates/errors/429-individual-response.html:6
-msgid "You have reached the maximum number of individual access codes"
-msgstr ""
-
-#: templates/errors/429-individual-response.html:7
-msgid ""
-"If you need more individual access codes, please <a href='{url}'>contact "
-"us</a>."
 msgstr ""
 
 #: templates/errors/500.html:3
