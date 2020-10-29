@@ -1,71 +1,79 @@
+import pytest
+
+from app.data_models.answer_store import AnswerStore
+from app.data_models.relationship_store import RelationshipStore
 from app.questionnaire.relationship_location import RelationshipLocation
 from app.questionnaire.relationship_router import RelationshipRouter
-from tests.app.app_context_test_case import AppContextTestCase
 
 
-class TestRelationshipRouter(AppContextTestCase):
-    router = RelationshipRouter(
+def relationship_router(answers=None, relationships=None):
+    return RelationshipRouter(
+        answer_store=AnswerStore(answers),
+        relationship_store=RelationshipStore(relationships),
         section_id="relationships-section",
-        block_id="relationships",
         list_name="people",
-        list_item_ids=["abc123", "def123", "ghi123"],
+        list_item_ids=["abc123", "def123", "ghi123", "jkl123"],
+        relationships_block_id="relationships",
     )
 
-    @staticmethod
-    def _get_relationship_location(list_item_id, to_list_item_id):
-        return RelationshipLocation(
-            section_id="relationships-section",
-            block_id="relationships",
-            list_name="people",
-            list_item_id=list_item_id,
-            to_list_item_id=to_list_item_id,
-        )
 
-    def test_can_access_location(self):
-        location = self._get_relationship_location(
-            list_item_id="abc123",
-            to_list_item_id="def123",
-        )
-        can_access_location = self.router.can_access_location(location)
-        self.assertTrue(can_access_location)
+def relationship_location(list_item_id, to_list_item_id):
+    return RelationshipLocation(
+        section_id="relationships-section",
+        list_name="people",
+        list_item_id=list_item_id,
+        to_list_item_id=to_list_item_id,
+        block_id="relationships",
+    )
 
-    def test_cant_access_location(self):
-        location = self._get_relationship_location(
-            list_item_id="def123",
-            to_list_item_id="abc123",
-        )
-        can_access_location = self.router.can_access_location(location)
-        self.assertFalse(can_access_location)
 
-    def test_get_first_location_url(self):
-        first_location_url = self.router.get_first_location_url()
-        expected_location_url = "relationships/people/abc123/to/def123"
-        self.assertIn(expected_location_url, first_location_url)
+def test_can_access_location():
+    location = relationship_location("abc123", "def123")
+    can_access_location = relationship_router().can_access_location(location)
+    assert can_access_location
 
-    def test_get_first_location_url_with_resume(self):
-        first_location_url = self.router.get_first_location_url(resume=True)
-        expected_location_url = "relationships/people/abc123/to/def123/?resume=True"
-        self.assertIn(expected_location_url, first_location_url)
 
-    def test_get_last_location_url(self):
-        last_location_url = self.router.get_last_location_url()
-        expected_location_url = "relationships/people/def123/to/ghi123"
-        self.assertIn(expected_location_url, last_location_url)
+def test_cant_access_location():
+    location = relationship_location("def123", "abc123")
+    can_access_location = relationship_router().can_access_location(location)
+    assert not can_access_location
 
-    def test_next_location_url(self):
-        location = self._get_relationship_location(
-            list_item_id="abc123",
-            to_list_item_id="def123",
-        )
-        next_location_url = self.router.get_next_location_url(location)
-        expected_location_url = "relationships/people/abc123/to/ghi123"
-        self.assertIn(expected_location_url, next_location_url)
 
-    def test_get_previous_location_url(self):
-        location = self._get_relationship_location(
-            list_item_id="abc123",
-            to_list_item_id="ghi123",
-        )
-        previous_location_url = self.router.get_previous_location_url(location)
-        expected_location_url = "relationships/people/abc123/to/def123"
-        self.assertIn(expected_location_url, previous_location_url)
+def test_get_first_location():
+    first_location = relationship_router().get_first_location()
+    expected_location = relationship_location("abc123", "def123")
+    assert first_location == expected_location
+
+
+def test_get_last_location():
+    last_location = relationship_router().get_last_location()
+    expected_location = relationship_location("ghi123", "jkl123")
+    assert last_location == expected_location
+
+
+def test_get_next_location():
+    location = relationship_location("abc123", "def123")
+    next_location = relationship_router().get_next_location(location)
+    expected_location = relationship_location("abc123", "ghi123")
+    assert next_location == expected_location
+
+
+def test_get_next_location_goes_to_next_person():
+    location = relationship_location("abc123", "jkl123")
+    next_location = relationship_router().get_next_location(location)
+    expected_location = relationship_location("def123", "ghi123")
+    assert next_location == expected_location
+
+
+def test_get_previous_location():
+    location = relationship_location("abc123", "ghi123")
+    previous_location = relationship_router().get_previous_location(location)
+    expected_location = relationship_location("abc123", "def123")
+    assert previous_location == expected_location
+
+
+def test_get_previous_location_goes_to_previous_person():
+    location = relationship_location("def123", "ghi123")
+    previous_location = relationship_router().get_previous_location(location)
+    expected_location = relationship_location("abc123", "jkl123")
+    assert previous_location == expected_location

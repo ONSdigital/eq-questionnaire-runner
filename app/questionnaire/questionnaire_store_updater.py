@@ -3,7 +3,7 @@ from typing import Dict, Iterable, List, Optional, Tuple, Union
 
 from app.data_models.answer_store import Answer
 from app.data_models.progress_store import CompletionStatus
-from app.data_models.relationship_store import Relationship, RelationshipStore
+from app.data_models.relationship_store import Relationship
 from app.questionnaire.location import Location
 
 
@@ -34,28 +34,19 @@ class QuestionnaireStoreUpdater:
             return True
         return False
 
-    def update_relationship_answer(self, form_data, list_item_id, to_list_item_id):
-        relationship_answer_id = self._schema.get_relationship_answer_id_for_block(
-            self._current_location.block_id
-        )
-        answer = self._answer_store.get_answer(relationship_answer_id)
-        self._create_relationship_store_and_update_answer(
-            relationship_answer_id, answer, form_data, list_item_id, to_list_item_id
-        )
-
-    def _create_relationship_store_and_update_answer(
-        self, relationship_answer_id, answer, form_data, list_item_id, to_list_item_id
+    def update_relationships_answer(
+        self,
+        relationship_store,
+        form_data,
+        relationships_answer_id,
+        list_item_id,
+        to_list_item_id,
     ):
-        try:
-            relationship_store = RelationshipStore(answer.value)
-        except AttributeError:
-            relationship_store = RelationshipStore()
-
-        relationship_answer = form_data.get(relationship_answer_id)
+        relationship_answer = form_data.get(relationships_answer_id)
         relationship = Relationship(list_item_id, to_list_item_id, relationship_answer)
         relationship_store.add_or_update(relationship)
         self._answer_store.add_or_update(
-            Answer(relationship_answer_id, relationship_store.serialize())
+            Answer(relationships_answer_id, relationship_store.serialize())
         )
 
     def remove_completed_relationship_locations_for_list_name(
@@ -82,7 +73,7 @@ class QuestionnaireStoreUpdater:
 
         for collector in relationship_collectors:
 
-            relationship_answer_id = self._schema.get_relationship_answer_id_for_block(
+            relationship_answer_id = self._schema.get_first_answer_id_for_block(
                 collector["id"]
             )
             relationship_answers = self._get_relationships_in_answer_store(
@@ -165,7 +156,7 @@ class QuestionnaireStoreUpdater:
             return None
 
         relationship_answer_ids = [
-            self._schema.get_relationship_answer_id_for_block(block["id"])
+            self._schema.get_first_answer_id_for_block(block["id"])
             for block in associated_relationship_collectors
         ]
 

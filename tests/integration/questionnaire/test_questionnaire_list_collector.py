@@ -2,11 +2,6 @@ from . import QuestionnaireTestCase
 
 
 class TestQuestionnaireListCollector(QuestionnaireTestCase):
-    def get_link(self, rowIndex, text):
-        selector = f"[data-qa='list-item-{text}-{rowIndex}-link']"
-        selected = self.getHtmlSoup().select(selector)
-        return selected[0].get("href")
-
     def get_add_someone_link(self):
         selector = f"[data-qa='add-item-link']"
         selected = self.getHtmlSoup().select(selector)
@@ -58,7 +53,7 @@ class TestQuestionnaireListCollector(QuestionnaireTestCase):
 
         # Make another mistake
 
-        mistake_change_link = self.get_link("3", "change")
+        mistake_change_link = self.get_link("change", 3)
 
         self.get(mistake_change_link)
 
@@ -68,7 +63,7 @@ class TestQuestionnaireListCollector(QuestionnaireTestCase):
 
         # Get rid of the mistake
 
-        mistake_remove_link = self.get_link("3", "remove")
+        mistake_remove_link = self.get_link("remove", 3)
 
         self.get(mistake_remove_link)
 
@@ -90,8 +85,8 @@ class TestQuestionnaireListCollector(QuestionnaireTestCase):
         self.assertInSelector("Johnny Doe", "[data-qa='list-item-3-label']")
 
         # Test the previous links
-        john_change_link = self.get_link("2", "change")
-        john_remove_link = self.get_link("2", "remove")
+        john_change_link = self.get_link("change", 2)
+        john_remove_link = self.get_link("remove", 2)
 
         self.get(john_change_link)
 
@@ -134,9 +129,9 @@ class TestQuestionnaireListCollector(QuestionnaireTestCase):
 
         self.assertInBody("Household members")
 
-        john_remove_link = self.get_link("2", "remove")
+        john_remove_link = self.get_link("remove", 2)
 
-        mary_remove_link = self.get_link("1", "remove")
+        mary_remove_link = self.get_link("remove", 1)
 
         self.get(john_remove_link)
 
@@ -239,7 +234,7 @@ class TestQuestionnaireListCollector(QuestionnaireTestCase):
 
         self.add_person("Someone", "Else")
 
-        change_link = self.get_link("1", "change")
+        change_link = self.get_link("change", 1)
 
         self.get(change_link)
 
@@ -254,7 +249,7 @@ class TestQuestionnaireListCollector(QuestionnaireTestCase):
 
         self.add_person("Someone", "Else")
 
-        remove_link = self.get_link("1", "remove")
+        remove_link = self.get_link("remove", 1)
 
         self.get(remove_link)
 

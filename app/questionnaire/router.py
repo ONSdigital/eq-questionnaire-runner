@@ -2,7 +2,6 @@ from flask import url_for
 
 from app.questionnaire.location import Location
 from app.questionnaire.path_finder import PathFinder
-from app.questionnaire.relationship_router import RelationshipRouter
 from app.questionnaire.rules import evaluate_when_rules
 
 
@@ -116,15 +115,10 @@ class Router:
             previous_block_id = routing_path[block_id_index - 1]
             previous_block = self._schema.get_block(previous_block_id)
             if previous_block["type"] == "RelationshipCollector":
-                list_name = previous_block["for_list"]
-                list_items = self._list_store.get(list_name)
-                relationship_router = RelationshipRouter(
-                    section_id=routing_path.section_id,
-                    block_id=previous_block["id"],
-                    list_item_ids=list_items,
-                    list_name=list_name,
+                return url_for(
+                    "questionnaire.relationships",
+                    last=True,
                 )
-                return relationship_router.get_last_location_url()
             return url_for(
                 "questionnaire.block",
                 block_id=previous_block_id,

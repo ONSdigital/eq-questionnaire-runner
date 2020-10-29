@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2020-10-26 09:57+0000\n"
+"POT-Creation-Date: 2020-10-27 09:19+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -306,7 +306,7 @@ msgstr ""
 msgid "Continue"
 msgstr ""
 
-#: app/views/contexts/list_context.py:103
+#: app/views/contexts/list_context.py:104
 msgid " (You)"
 msgstr ""
 
@@ -509,7 +509,7 @@ msgstr ""
 msgid "Confirm mobile number"
 msgstr ""
 
-#: app/views/handlers/thank_you.py:19 templates/census-thank-you.html:23
+#: app/views/handlers/thank_you.py:22 templates/census-thank-you.html:23
 msgid "Thank you for completing the census"
 msgstr ""
 
