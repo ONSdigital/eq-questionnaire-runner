@@ -125,14 +125,15 @@ class SectionSummaryContext(Context):
     def _list_summary_element(
         self, summary, current_location, section, routing_path
     ) -> Mapping:
+        list_collector_block = None
+        edit_block_id, remove_block_id, primary_person_edit_block_id = None, None, None
         current_list = self._list_store[summary["for_list"]]
 
-        list_collector_blocks = [
-            list_collector_block
-            for list_collector_block in self._schema.get_list_collectors_for_list(
+        list_collector_blocks = list(
+            self._schema.get_list_collectors_for_list(
                 section, for_list=summary["for_list"]
             )
-        ]
+        )
 
         list_collector_blocks_on_path = [
             list_collector_block
@@ -140,17 +141,12 @@ class SectionSummaryContext(Context):
             if list_collector_block["id"] in routing_path.block_ids
         ]
 
-        edit_block_id = None
-        remove_block_id = None
-
         if list_collector_blocks_on_path:
             list_collector_block = list_collector_blocks_on_path[0]
             edit_block_id = list_collector_block["edit_block"]["id"]
             remove_block_id = list_collector_block["remove_block"]["id"]
-        else:
-            list_collector_block = list_collector_blocks[0]
 
-        primary_person_edit_block_id = None
+        add_link = self._add_link(summary, section, list_collector_block)
 
         if len(current_list) == 1 and current_list.primary_person:
             primary_person_block = self._schema.get_list_collector_for_list(
@@ -162,33 +158,28 @@ class SectionSummaryContext(Context):
             ]
             edit_block_id = primary_person_block["add_or_edit_block"]["id"]
 
-        add_link = self._add_link(
-            summary, section, list_collector_block, list_collector_blocks_on_path
-        )
-
         rendered_summary = self._placeholder_renderer.render(
             summary, current_location.list_item_id
         )
 
-        list_summary_context = {}
+        list_collector_block = list_collector_block or list_collector_blocks[0]
 
-        if list_collector_block:
-            list_context = ListContext(
-                self._language,
-                self._schema,
-                self._answer_store,
-                self._list_store,
-                self._progress_store,
-                self._metadata,
-            )
-            list_summary_context = list_context(
-                list_collector_block["summary"],
-                for_list=list_collector_block["for_list"],
-                return_to="section-summary",
-                edit_block_id=edit_block_id,
-                remove_block_id=remove_block_id,
-                primary_person_edit_block_id=primary_person_edit_block_id,
-            )
+        list_context = ListContext(
+            self._language,
+            self._schema,
+            self._answer_store,
+            self._list_store,
+            self._progress_store,
+            self._metadata,
+        )
+        list_summary_context = list_context(
+            list_collector_block["summary"],
+            for_list=list_collector_block["for_list"],
+            return_to="section-summary",
+            edit_block_id=edit_block_id,
+            remove_block_id=remove_block_id,
+            primary_person_edit_block_id=primary_person_edit_block_id,
+        )
 
         return {
             "title": rendered_summary["title"],
@@ -201,11 +192,9 @@ class SectionSummaryContext(Context):
         }
 
     @staticmethod
-    def _add_link(
-        summary, section, list_collector_block, list_collector_blocks_on_path
-    ):
+    def _add_link(summary, section, list_collector_block):
 
-        if list_collector_block and list_collector_blocks_on_path:
+        if list_collector_block:
             return url_for(
                 "questionnaire.block",
                 list_name=summary["for_list"],
