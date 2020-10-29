@@ -157,7 +157,7 @@ class SectionSummaryContext(Context):
         empty_list_text = (
             rendered_summary["empty_list_text"]
             if "empty_list_text" in summary.keys()
-            else None
+            else ""
         )
 
         return {
