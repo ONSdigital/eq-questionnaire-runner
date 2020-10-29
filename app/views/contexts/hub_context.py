@@ -71,7 +71,7 @@ class HubContext(Context):
             "rows": rows,
             "submit_button": submit_button,
             "title": title,
-            "warning": warning
+            "warning": warning,
         }
 
     def get_row_context_for_section(
