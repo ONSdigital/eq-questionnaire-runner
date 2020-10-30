@@ -214,15 +214,77 @@ class TestFeedback(IntegrationTestCase):
 
     def test_feedback_call_to_action_shown(self):
         # Given I launch and complete the test_feedback questionnaire
-        self.launchSurvey("test_feedback")
-        self.post({"answer_id": "Yes"})
-        self.post()
+        self._launch_and_complete_questionnaire()
 
         # Then I should see the feedback call to action
         self.assertInBody("What do you think about this service?")
         self.assertInSelectorCSS("/submitted/feedback/send", class_="feedback__link")
 
+    def test_feedback_submission(self):
+        # Given I submit the email confirmation form
+        self.launchSurvey("test_feedback_email_confirmation")
+        self.post({"answer_id": "Yes"})
+        self.post()
+        self.post({"email": "email@example.com"})
+
+        # When I request the feedback page
+        self.get("/submitted/feedback/send")
+
+        # Then I am able to submit feedback
+        self.post(
+            {"feedback-type": "Page design and structure", "feedback-text": "Feedback"}
+        )
+        self.assertInUrl("/submitted/feedback/sent")
+
+    def test_feedback_submission_from_email_confirmation(self):
+        # Given I submit the email confirmation form
+        self.launchSurvey("test_feedback_email_confirmation")
+        self.post({"answer_id": "Yes"})
+        self.post()
+        self.post({"email": "email@example.com"})
+
+        # When I request the feedback page
+        self.get("/submitted/feedback/send")
+
+        # Then I am able to submit feedback
+        self.post(
+            {"feedback-type": "Page design and structure", "feedback-text": "Feedback"}
+        )
+        self.assertInUrl("/submitted/feedback/sent")
+
+    def test_feedback_back_breadcrumb_after_email_confirmation(self):
+        # Given I submit the email confirmation form
+        self.launchSurvey("test_feedback_email_confirmation")
+        self.post({"answer_id": "Yes"})
+        self.post()
+        self.post({"email": "email@example.com"})
+
+        # When I request the feedback send page
+        self.get("/submitted/feedback/send")
+
+        # Then the back breadcrumb should navigate to the thank you page
+        self.assertInSelectorCSS("/submitted/thank-you", class_="breadcrumb__link")
+
+    def test_feedback_submitted_done_button_after_email_confirmation(self):
+        # Given I submit the email confirmation form after submitting feedback
+        self.launchSurvey("test_feedback_email_confirmation")
+        self.post({"answer_id": "Yes"})
+        self.post()
+        self.get("/submitted/feedback/send")
+        self.post(
+            {"feedback-type": "Page design and structure", "feedback-text": "Feedback"}
+        )
+        self.post()
+        self.post({"email": "email@example.com"})
+
+        # When I request the feedback sent page
+        self.get("/submitted/feedback/sent")
+
+        # Then the done button should navigate to the thank you page
+        selector = "[data-qa='btn-done']"
+        self.assertInSelector("/submitted/thank-you", selector)
+
     def _launch_and_complete_questionnaire(self):
         self.launchSurvey("test_feedback")
         self.post({"answer_id": "Yes"})
-        self.post()
+        self.post({"feedback-type": "Page design and structure"})
