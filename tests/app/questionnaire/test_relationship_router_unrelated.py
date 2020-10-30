@@ -145,6 +145,10 @@ def test_get_next_location_is_not_unrelated_question_when_less_than_two_relation
         (None, relationship_location("abc123", "jkl123")),
         ("Yes", relationship_location("abc123", "jkl123")),
         ("No", relationship_location("def123", "ghi123")),
+        (
+            "No, they are not related to anyone else",
+            relationship_location("def123", "ghi123"),
+        ),
     ],
 )
 def test_get_next_location_from_unrelated_question(
