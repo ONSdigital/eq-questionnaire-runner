@@ -19,7 +19,7 @@ class SessionData:
         trad_as=None,
         display_address=None,
         confirmation_email_count=0,
-        feedback_sent=False,
+        feedback_count=0,
         **_,
     ):  # pylint: disable=too-many-locals
         self.tx_id = tx_id
@@ -40,4 +40,4 @@ class SessionData:
         self.account_service_log_out_url = account_service_log_out_url
         self.display_address = display_address
         self.confirmation_email_count = confirmation_email_count
-        self.feedback_sent = feedback_sent
+        self.feedback_count = feedback_count

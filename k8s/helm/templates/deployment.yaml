@@ -81,6 +81,8 @@ spec:
               value: eq-fulfilment-topic
             - name: EQ_INDIVIDUAL_RESPONSE_LIMIT
               value: "{{- .Values.individualResponseLimit }}"
+            - name: EQ_FEEDBACK_LIMIT
+              value: "{{- .Values.feedbackLimit }}"
             - name: WEB_SERVER_TYPE
               value: "{{- .Values.webServer.type }}"
             - name: WEB_SERVER_WORKERS

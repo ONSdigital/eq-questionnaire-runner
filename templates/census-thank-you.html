@@ -49,12 +49,17 @@
     <p>{{ _("Your personal information is protected by law and will be kept confidential.") }}</p>
   {% endcall %}
 
+
   {% if form %}
-    <h2>{{ _("Get confirmation email") }}</h2>
+    <hr class="u-mt-no">
+    <h2 class="u-mt-m">{{ _("Get confirmation email") }}</h2>
     <p>{{ _("If you would like to be sent confirmation that you have completed your census enter your email address.") }}</p>
     {% include 'partials/email-form.html' %}
   {% endif %}
-  <br><br>
+
+  {% if content.show_feedback_call_to_action %}
+    {% include 'partials/feedback-call-to-action.html' %}
+  {% endif %}
 
   {% include 'partials/sign-out-pre-footer-panel.html' %}
 

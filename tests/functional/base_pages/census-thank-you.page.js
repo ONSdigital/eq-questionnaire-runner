@@ -16,6 +16,14 @@ class CensusThankYouPage extends QuestionPage {
   exit() {
     return '[data-qa="btn-exit"]';
   }
+
+  feedback() {
+    return ".feedback";
+  }
+
+  feedbackLink() {
+    return ".feedback a";
+  }
 }
 
 export default new CensusThankYouPage();

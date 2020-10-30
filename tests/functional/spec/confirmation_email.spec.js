@@ -64,3 +64,18 @@ describe("Email confirmation", () => {
     });
   });
 });
+
+describe("Email confirmation", () => {
+  describe("Given I launch the test email confirmation survey", () => {
+    before(() => {
+      browser.openQuestionnaire("test_confirmation_email.json");
+    });
+    it("When I view the email confirmation page, Then I should not see the feedback call to action", () => {
+      $(SchemaConfirmationPage.submit()).click();
+      $(SummaryPage.submit()).click();
+      $(ThankYouPage.email()).setValue("name@example.com");
+      $(ThankYouPage.submit()).click();
+      expect($(ConfirmationEmailSentPage.feedbackLink()).isExisting()).to.equal(false);
+    });
+  });
+});
