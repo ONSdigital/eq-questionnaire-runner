@@ -93,7 +93,6 @@ class QuestionPage extends BasePage {
   guidance() {
     return '[data-qa="guidance"]';
   }
-
 }
 
 export default QuestionPage;
