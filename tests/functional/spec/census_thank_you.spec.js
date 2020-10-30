@@ -4,7 +4,7 @@ import Summary from "../generated_pages/thank_you_census_household/summary.page"
 import ThankYouPage from "../base_pages/thank-you.page";
 
 describe("Thank You Census Household", () => {
-  describe("Given I launch the Thank You Census Household schema", () => {
+  describe("Given I launch a census schema without feedback enabled", () => {
     beforeEach(() => {
       browser.openQuestionnaire("test_thank_you_census_household.json");
     });

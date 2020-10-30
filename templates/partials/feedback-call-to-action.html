@@ -1,6 +1,5 @@
 {% from 'components/feedback/_macro.njk' import onsFeedback %}
 
-{% if content.show_feedback_call_to_action %}
 {{
     onsFeedback({
         "id": "feedback",
@@ -10,4 +9,3 @@
         "linkText": _("Give feedback")
     })
 }}
-{% endif %}

@@ -1,7 +1,6 @@
 from flask import session as cookie_session
 from flask_babel import gettext
 
-from app.data_models.session_data import SessionData
 from app.data_models.session_store import SessionStore
 from app.questionnaire import QuestionnaireSchema
 from app.views.contexts.thank_you_context import (
@@ -22,8 +21,6 @@ class ThankYou:
     def __init__(self, schema: QuestionnaireSchema, session_store: SessionStore):
         self.session_store: SessionStore = session_store
         self._schema: QuestionnaireSchema = schema
-
-        self.session_data: SessionData = self.session_store.session_data
 
         self._is_census_theme = cookie_session.get("theme") in [
             "census",
@@ -47,14 +44,16 @@ class ThankYou:
 
     def get_context(self):
         if not self._is_census_theme:
-            return build_default_thank_you_context(self.session_data)
+            return build_default_thank_you_context(self.session_store.session_data)
 
         confirmation_email_form = (
             self.confirmation_email.form if self.confirmation_email else None
         )
 
         return build_census_thank_you_context(
-            self.session_data, confirmation_email_form, self._schema.form_type
+            self.session_store.session_data,
+            confirmation_email_form,
+            self._schema.form_type,
         )
 
     def get_page_title(self):

@@ -57,7 +57,10 @@
     {% include 'partials/email-form.html' %}
   {% endif %}
 
-  {% include 'partials/feedback-call-to-action.html' %}
+  {% if content.show_feedback_call_to_action %}
+    {% include 'partials/feedback-call-to-action.html' %}
+  {% endif %}
+
   {% include 'partials/sign-out-pre-footer-panel.html' %}
 
 {% endblock %}

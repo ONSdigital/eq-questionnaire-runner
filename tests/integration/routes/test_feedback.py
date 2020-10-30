@@ -121,7 +121,8 @@ class TestFeedback(IntegrationTestCase):
         self.get(self.SEND_FEEDBACK_URL)
 
         # Then I should see the Back breadcrumb
-        self.assertInSelectorCSS("Back", class_="breadcrumb__link")
+        selector = "[id=top-previous]"
+        self.assertInSelector("Back", selector)
 
     def test_submission(self):
         # Given I launch and complete the test_feedback questionnaire, and provide
@@ -132,12 +133,6 @@ class TestFeedback(IntegrationTestCase):
             {"feedback-type": "Page design and structure", "feedback-text": "Feedback"}
         )
         self.assertInUrl(self.SENT_FEEDBACK_URL)
-
-        # When I request the send feedback page
-        self.get(self.SEND_FEEDBACK_URL)
-
-        # Then I go to the feedback send page
-        self.assertInUrl(self.SEND_FEEDBACK_URL)
 
     def test_multiple_submissions(self):
         # Given I launch and complete the test_feedback questionnaire, and provide
@@ -152,11 +147,7 @@ class TestFeedback(IntegrationTestCase):
             {"feedback-type": "Page design and structure", "feedback-text": "Feedback"}
         )
 
-        # When I request the send feedback page
-        self.get(self.SEND_FEEDBACK_URL)
-
-        # Then I go to the feedback send page
-        self.assertInUrl(self.SEND_FEEDBACK_URL)
+        self.assertInUrl("/submitted/feedback/sent")
 
     def test_feedback_type_missing(self):
         # Given I launch and complete the test_feedback questionnaire

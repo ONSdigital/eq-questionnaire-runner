@@ -311,7 +311,7 @@ def get_thank_you(schema, session_store):
         template=thank_you.template,
         content={
             **thank_you.get_context(),
-            **{"show_feedback_call_to_action": show_feedback_call_to_action},
+            "show_feedback_call_to_action": show_feedback_call_to_action,
         },
         survey_id=schema.json["survey_id"],
         page_title=thank_you.get_page_title(),
