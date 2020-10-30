@@ -3,8 +3,8 @@ from typing import Mapping
 
 from flask_babel import gettext, lazy_gettext
 
+from app.data_models.session_store import SessionStore
 from app.forms.questionnaire_form import generate_form
-from app.globals import get_session_store
 from app.questionnaire.questionnaire_schema import QuestionnaireSchema
 from app.settings import EQ_FEEDBACK_LIMIT
 from app.views.contexts.feedback_form_context import build_feedback_context
@@ -74,14 +74,16 @@ class Feedback:
         ],
     }
 
-    def __init__(self, schema: QuestionnaireSchema, form_data: Mapping):
+    def __init__(
+        self,
+        schema: QuestionnaireSchema,
+        session_store: SessionStore,
+        form_data: Mapping,
+    ):
         self._schema = schema
+        self._session_store = session_store
 
         if not schema.get_submission().get("feedback"):
-            raise FeedbackNotEnabled
-
-        self._session_store = get_session_store()
-        if not self._session_store.session_data.submitted_time:
             raise FeedbackNotEnabled
 
         if self._session_store.session_data.feedback_count >= EQ_FEEDBACK_LIMIT:

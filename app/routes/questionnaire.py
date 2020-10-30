@@ -12,7 +12,7 @@ from app.authentication.no_questionnaire_state_exception import (
 from app.globals import get_metadata, get_session_store, get_session_timeout_in_seconds
 from app.helpers.language_helper import handle_language
 from app.helpers.schema_helpers import with_schema
-from app.helpers.session_helpers import with_questionnaire_store
+from app.helpers.session_helpers import with_questionnaire_store, with_session_store
 from app.helpers.template_helpers import get_census_base_url, render_template
 from app.helpers.url_param_serializer import URLParamSerializer
 from app.questionnaire.location import InvalidLocationException
@@ -72,7 +72,10 @@ def before_questionnaire_request():
 @post_submission_blueprint.before_request
 @login_required
 def before_post_submission_request():
-    session_data = get_session_store().session_data
+    session_store = get_session_store()
+    session_data = session_store.session_data
+    if not session_data.submitted_time:
+        raise NotFound
 
     handle_language()
 
@@ -277,9 +280,11 @@ def relationships(
 
 
 @post_submission_blueprint.route("thank-you/", methods=["GET", "POST"])
+@with_session_store
 @with_schema
-def get_thank_you(schema):
-    thank_you = ThankYou(schema)
+def get_thank_you(schema, session_store):
+    thank_you = ThankYou(schema, session_store)
+
     if request.method == "POST":
         if not thank_you.confirmation_email:
             raise NotFound
@@ -287,7 +292,7 @@ def get_thank_you(schema):
         confirmation_email = thank_you.confirmation_email
 
         if confirmation_email.form.validate():
-            confirmation_email.handle_post()
+            confirmation_email.handle_post(session_store)
             return redirect(
                 url_for(
                     ".get_confirmation_email_sent",
@@ -298,7 +303,7 @@ def get_thank_you(schema):
     show_feedback_call_to_action = True
 
     try:
-        Feedback(schema, form_data=request.form)
+        Feedback(schema, session_store, form_data=request.form)
     except (FeedbackNotEnabled, FeedbackLimitReached):
         show_feedback_call_to_action = False
 
@@ -314,8 +319,9 @@ def get_thank_you(schema):
 
 
 @post_submission_blueprint.route("confirmation-email/send", methods=["GET", "POST"])
-def send_confirmation_email():
-    if not get_session_store().session_data.confirmation_email_count:
+@with_session_store
+def send_confirmation_email(session_store):
+    if not session_store.session_data.confirmation_email_count:
         raise NotFound
 
     try:
@@ -324,7 +330,7 @@ def send_confirmation_email():
         return redirect(url_for(".get_thank_you"))
 
     if request.method == "POST" and confirmation_email.form.validate():
-        confirmation_email.handle_post()
+        confirmation_email.handle_post(session_store)
         return redirect(
             url_for(
                 ".get_confirmation_email_sent",
@@ -341,8 +347,9 @@ def send_confirmation_email():
 
 
 @post_submission_blueprint.route("confirmation-email/sent", methods=["GET"])
-def get_confirmation_email_sent():
-    if not get_session_store().session_data.confirmation_email_count:
+@with_session_store
+def get_confirmation_email_sent(session_store):
+    if not session_store.session_data.confirmation_email_count:
         raise NotFound
 
     email = URLParamSerializer().loads(request.args.get("email"))
@@ -362,10 +369,11 @@ def get_confirmation_email_sent():
 
 
 @post_submission_blueprint.route("feedback/send", methods=["GET", "POST"])
+@with_session_store
 @with_schema
-def send_feedback(schema):
+def send_feedback(schema, session_store):
     try:
-        feedback = Feedback(schema, form_data=request.form)
+        feedback = Feedback(schema, session_store, form_data=request.form)
     except FeedbackNotEnabled:
         raise NotFound
 
@@ -381,8 +389,9 @@ def send_feedback(schema):
 
 
 @post_submission_blueprint.route("feedback/sent", methods=["GET"])
-def get_feedback_sent():
-    if not get_session_store().session_data.feedback_count:
+@with_session_store
+def get_feedback_sent(session_store):
+    if not session_store.session_data.feedback_count:
         raise NotFound
 
     return render_template(

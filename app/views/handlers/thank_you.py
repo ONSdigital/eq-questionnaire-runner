@@ -1,10 +1,8 @@
 from flask import session as cookie_session
 from flask_babel import gettext
-from werkzeug.exceptions import NotFound
 
 from app.data_models.session_data import SessionData
 from app.data_models.session_store import SessionStore
-from app.globals import get_session_store
 from app.questionnaire import QuestionnaireSchema
 from app.views.contexts.thank_you_context import (
     build_census_thank_you_context,
@@ -21,13 +19,11 @@ class ThankYou:
     CENSUS_THANK_YOU_TEMPLATE = "census-thank-you"
     PAGE_TITLE = gettext("Thank you for completing the census")
 
-    def __init__(self, schema):
-        self.session_store: SessionStore = get_session_store()
-        self.session_data: SessionData = self.session_store.session_data
+    def __init__(self, schema: QuestionnaireSchema, session_store: SessionStore):
+        self.session_store: SessionStore = session_store
         self._schema: QuestionnaireSchema = schema
 
-        if not self.session_data.submitted_time:
-            raise NotFound
+        self.session_data: SessionData = self.session_store.session_data
 
         self._is_census_theme = cookie_session.get("theme") in [
             "census",
