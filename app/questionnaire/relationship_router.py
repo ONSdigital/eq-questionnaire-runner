@@ -88,9 +88,8 @@ class RelationshipRouter:
                 unrelated_answer = self.answer_store.get_answer(
                     self.unrelated_answer_id, from_list_item_id
                 )
-                if (
-                    unrelated_answer
-                    and unrelated_answer.value == self.UNRELATED_NO_ANSWER_VALUE
+                if unrelated_answer and unrelated_answer.value.startswith(
+                    self.UNRELATED_NO_ANSWER_VALUE
                 ):
                     return path
 
