@@ -109,9 +109,7 @@ def too_many_feedback_requests(error=None):
     return _render_error_page(
         429,
         template="429",
-        page_title=lazy_gettext(
-            "You have reached the maximum number of times for submitting feedback"
-        ),
+        page_title=title,
         heading=title,
         contact_us_message=contact_us_message,
     )
