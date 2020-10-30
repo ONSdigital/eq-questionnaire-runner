@@ -82,7 +82,7 @@ class TestFeedback(IntegrationTestCase):
             "You have reached the maximum number of times for submitting feedback"
         )
 
-    def test_submission(self):
+    def test_multiple_submissions(self):
         # Given I launch and complete the test_feedback questionnaire, and provide feedback
         self._launch_and_complete_questionnaire()
         self.get(self.SEND_FEEDBACK_URL)
