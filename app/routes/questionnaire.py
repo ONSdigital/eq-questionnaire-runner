@@ -45,8 +45,8 @@ post_submission_blueprint = Blueprint(
 )
 
 
-@login_required
 @questionnaire_blueprint.before_request
+@login_required
 def before_questionnaire_request():
     metadata = get_metadata(current_user)
     if not metadata:
@@ -69,14 +69,10 @@ def before_questionnaire_request():
     g.schema = load_schema_from_session_data(session_store.session_data)
 
 
-@login_required
 @post_submission_blueprint.before_request
+@login_required
 def before_post_submission_request():
-    session_store = get_session_store()
-    if not session_store or not session_store.session_data:
-        raise NoQuestionnaireStateException(401)
-
-    session_data = session_store.session_data
+    session_data = get_session_store().session_data
 
     handle_language()
 
@@ -90,7 +86,6 @@ def before_post_submission_request():
 
 
 @questionnaire_blueprint.route("/", methods=["GET", "POST"])
-@login_required
 @with_questionnaire_store
 @with_schema
 def get_questionnaire(schema, questionnaire_store):
