@@ -206,7 +206,7 @@ class SectionSummaryContext(Context):
             "type": rendered_summary["type"],
             "add_link": add_link,
             "add_link_text": rendered_summary["add_link_text"],
-            "empty_list_text": rendered_summary["empty_list_text"],
+            "empty_list_text": rendered_summary.get("empty_list_text"),
             "list_name": rendered_summary["for_list"],
             **list_summary_context,
         }
