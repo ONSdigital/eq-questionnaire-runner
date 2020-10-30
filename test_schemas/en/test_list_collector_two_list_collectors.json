@@ -43,36 +43,37 @@
                     "title": "People",
                     "blocks": [
                         {
+                            "type": "ListCollectorDrivingQuestion",
                             "id": "anyone-usually-live-at",
+                            "for_list": "people",
                             "question": {
+                                "type": "General",
+                                "id": "anyone-usually-live-at-question",
+                                "title": "Does anyone live at your address?",
                                 "answers": [
                                     {
+                                        "type": "Radio",
                                         "id": "anyone-usually-live-at-answer",
                                         "mandatory": true,
                                         "options": [
                                             {
+                                                "label": "Yes",
+                                                "value": "Yes",
                                                 "action": {
+                                                    "type": "RedirectToListAddBlock",
                                                     "params": {
                                                         "block_id": "add-person",
                                                         "list_name": "people"
-                                                    },
-                                                    "type": "RedirectToListAddBlock"
-                                                },
-                                                "label": "Yes",
-                                                "value": "Yes"
+                                                    }
+                                                }
                                             },
                                             {
-                                                "description": "For example, this is a second address or holiday home",
                                                 "label": "No",
                                                 "value": "No"
                                             }
-                                        ],
-                                        "type": "Radio"
+                                        ]
                                     }
-                                ],
-                                "id": "anyone-usually-live-at-question",
-                                "title": "Does anyone else live at your address?",
-                                "type": "General"
+                                ]
                             },
                             "routing_rules": [
                                 {
@@ -80,8 +81,7 @@
                                         "block": "list-collector"
                                     }
                                 }
-                            ],
-                            "type": "Question"
+                            ]
                         },
                         {
                             "id": "list-collector",

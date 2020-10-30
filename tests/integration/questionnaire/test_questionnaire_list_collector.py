@@ -285,7 +285,7 @@ class TestQuestionnaireListCollector(QuestionnaireTestCase):
     ):
         self.launchSurvey("test_list_collector_two_list_collectors")
 
-        self.assertInBody("Does anyone else live at your address?")
+        self.assertInBody("Does anyone live at your address?")
 
         self.post({"anyone-usually-live-at-answer": "No"})
 
