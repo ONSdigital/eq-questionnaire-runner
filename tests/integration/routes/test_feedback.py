@@ -227,7 +227,7 @@ class TestFeedback(IntegrationTestCase):
         )
         self.assertInUrl("/submitted/feedback/sent")
 
-    def test_feedback_cta_visible_on_email_confirmation(self):
+    def test_feedback_call_to_action_visible_on_email_confirmation(self):
         # Given I complete the survey
         self.launchSurvey("test_feedback_email_confirmation")
         self.post({"answer_id": "Yes"})
