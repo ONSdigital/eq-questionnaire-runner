@@ -23,9 +23,10 @@
 
   {{
     onsButton({
-        "type": 'button',
-        "text": 'Done',
-        "classes": 'u-mb-m',
+        "attributes": {"data-qa": "btn-done"},
+        "type": "button",
+        "text": "Done",
+        "classes": "u-mb-m",
         "url": url_for('post_submission.get_thank_you')
     })
   }}

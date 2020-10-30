@@ -6,6 +6,7 @@ from flask_babel import gettext, lazy_gettext
 from app.forms.questionnaire_form import generate_form
 from app.globals import get_session_store
 from app.questionnaire.questionnaire_schema import QuestionnaireSchema
+from app.settings import EQ_FEEDBACK_LIMIT
 from app.views.contexts.feedback_form_context import build_feedback_context
 
 
@@ -83,7 +84,7 @@ class Feedback:
         if not self._session_store.session_data.submitted_time:
             raise FeedbackNotEnabled
 
-        if self._session_store.session_data.feedback_sent_count >= 10:
+        if self._session_store.session_data.feedback_count >= EQ_FEEDBACK_LIMIT:
             raise FeedbackLimitReached
 
         self._form_data = form_data
@@ -108,5 +109,5 @@ class Feedback:
         return self.PAGE_TITLE
 
     def handle_post(self):
-        self._session_store.session_data.feedback_sent_count += 1
+        self._session_store.session_data.feedback_count += 1
         self._session_store.save()

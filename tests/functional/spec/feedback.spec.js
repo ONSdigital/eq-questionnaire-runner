@@ -39,5 +39,15 @@ describe("Feedback", () => {
       expect(browser.getUrl()).to.contain(FeedbackSentPage.pageName);
       expect($(FeedbackSentPage.feedbackThankYouText()).getText()).to.contain("Thank you for your feedback");
     });
+
+    it("When I click the done button on the feedback sent page, Then I am taken to the thank you page", () => {
+      browser.url(FeedbackPage.url());
+      $(FeedbackPage.feedbackType()).click();
+      $(FeedbackPage.feedbackText()).setValue("The census questions");
+      $(FeedbackPage.submit()).click();
+      $(FeedbackSentPage.doneButton()).click();
+      expect(browser.getUrl()).to.contain("thank-you");
+      expect($(CensusThankYouPage.title()).getText()).to.contain("Thank you for completing the survey");
+    });
   });
 });

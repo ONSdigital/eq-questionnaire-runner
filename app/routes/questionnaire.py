@@ -387,7 +387,7 @@ def send_feedback(schema):
 
 @post_submission_blueprint.route("feedback/sent", methods=["GET"])
 def get_feedback_sent():
-    if not get_session_store().session_data.feedback_sent_count:
+    if not get_session_store().session_data.feedback_count:
         raise NotFound
 
     return render_template(

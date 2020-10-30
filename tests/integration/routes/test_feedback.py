@@ -1,3 +1,4 @@
+from app.settings import EQ_FEEDBACK_LIMIT
 from tests.integration.integration_test_case import IntegrationTestCase
 
 
@@ -61,11 +62,12 @@ class TestFeedback(IntegrationTestCase):
         self.assertInUrl(self.SENT_FEEDBACK_URL)
         self.assertInBody("Thank you for your feedback")
 
-    def test_eleventh_submission_errors(self):
-        # Given I launch and complete the test_feedback questionnaire, and provide feedback 11 times
+    def test_feedback_error_message_on_get_when_limit_reached(self):
+        # Given I launch and complete the test_feedback questionnaire, and provide
+        # feedback the maximum number of times
         self._launch_and_complete_questionnaire()
 
-        for _ in range(0, 11):
+        for _ in range(0, EQ_FEEDBACK_LIMIT):
             self.get(self.SEND_FEEDBACK_URL)
             self.post(
                 {
@@ -74,22 +76,71 @@ class TestFeedback(IntegrationTestCase):
                 }
             )
 
-        # When I view the feedback sent page
-        self.assertInUrl(self.SEND_FEEDBACK_URL)
+        # When I get the send feedback url
+        self.get(self.SEND_FEEDBACK_URL)
 
         # Then an appropriate error is shown
         self.assertInBody(
             "You have reached the maximum number of times for submitting feedback"
         )
 
+    def test_feedback_error_message_on_post_when_limit_reached(self):
+        # Given I launch and complete the test_feedback questionnaire, and provide
+        # feedback the maximum number of times
+        self._launch_and_complete_questionnaire()
+
+        for _ in range(0, EQ_FEEDBACK_LIMIT):
+            self.get(self.SEND_FEEDBACK_URL)
+            self.post(
+                {
+                    "feedback-type": "Page design and structure",
+                    "feedback-text": "Feedback",
+                }
+            )
+
+        self.get(self.SEND_FEEDBACK_URL)
+
+        # When I post more feedback
+        self.post(
+            {
+                "feedback-type": "Page design and structure",
+                "feedback-text": "Feedback",
+            }
+        )
+
+        # Then I should see an appropriate error
+        self.assertInBody(
+            "You have reached the maximum number of times for submitting feedback"
+        )
+
     def test_submission(self):
-        # Given I launch and complete the test_feedback questionnaire, and provide feedback
+        # Given I launch and complete the test_feedback questionnaire, and provide
+        # feedback
         self._launch_and_complete_questionnaire()
         self.get(self.SEND_FEEDBACK_URL)
         self.post(
             {"feedback-type": "Page design and structure", "feedback-text": "Feedback"}
         )
         self.assertInUrl(self.SENT_FEEDBACK_URL)
+
+        # When I go to the feedback send page again
+        self.get(self.SEND_FEEDBACK_URL)
+
+        # Then I go to the feedback send page
+        self.assertInUrl(self.SEND_FEEDBACK_URL)
+
+    def test_multiple_submissions(self):
+        # Given I launch and complete the test_feedback questionnaire, and provide
+        # multiple feedback submissions
+        self._launch_and_complete_questionnaire()
+        self.get(self.SEND_FEEDBACK_URL)
+        self.post(
+            {"feedback-type": "Page design and structure", "feedback-text": "Feedback"}
+        )
+        self.get(self.SEND_FEEDBACK_URL)
+        self.post(
+            {"feedback-type": "Page design and structure", "feedback-text": "Feedback"}
+        )
 
         # When I go to the feedback send page again
         self.get(self.SEND_FEEDBACK_URL)
