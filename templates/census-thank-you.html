@@ -1,6 +1,5 @@
 {% extends 'layouts/_base.html' %}
 {% from 'components/panel/_macro.njk' import onsPanel %}
-{% from 'components/feedback/_macro.njk' import onsFeedback %}
 {% set hide_signout_button = content.hide_signout_button %}
 {% set sign_out_url = content.sign_out_url %}
 
@@ -58,18 +57,7 @@
     {% include 'partials/email-form.html' %}
   {% endif %}
 
-  {% if content.show_feedback_call_to_action %}
-    {{
-        onsFeedback({
-            "id": "feedback",
-            "heading": _("What do you think about this service?"),
-            "content": _("Your comments will help us make improvements"),
-            "url": url_for('post_submission.send_feedback'),
-            "linkText": _("Give feedback")
-        })
-    }}
-  {% endif %}
-
+  {% include 'partials/feedback-call-to-action.html' %}
   {% include 'partials/sign-out-pre-footer-panel.html' %}
 
 {% endblock %}
