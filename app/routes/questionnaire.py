@@ -348,11 +348,19 @@ def send_confirmation_email(session_store):
 
 @post_submission_blueprint.route("confirmation-email/sent", methods=["GET"])
 @with_session_store
-def get_confirmation_email_sent(session_store):
+@with_schema
+def get_confirmation_email_sent(schema, session_store):
     if not session_store.session_data.confirmation_email_count:
         raise NotFound
 
     email = URLParamSerializer().loads(request.args.get("email"))
+
+    show_feedback_call_to_action = True
+
+    try:
+        Feedback(schema, session_store, form_data=request.form)
+    except (FeedbackNotEnabled, FeedbackLimitReached):
+        show_feedback_call_to_action = False
 
     return render_template(
         template="confirmation-email-sent",
@@ -364,6 +372,7 @@ def get_confirmation_email_sent(session_store):
             "hide_signout_button": False,
             "show_send_another_email_guidance": not ConfirmationEmail.is_limit_reached(),
             "sign_out_url": url_for("session.get_sign_out"),
+            "show_feedback_call_to_action": show_feedback_call_to_action,
         },
     )
 

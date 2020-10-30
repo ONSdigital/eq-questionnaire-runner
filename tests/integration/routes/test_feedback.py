@@ -236,6 +236,18 @@ class TestFeedback(IntegrationTestCase):
         )
         self.assertInUrl("/submitted/feedback/sent")
 
+    def test_feedback_cta_visible_on_email_confirmation(self):
+        # Given I complete the survey
+        self.launchSurvey("test_feedback_email_confirmation")
+        self.post({"answer_id": "Yes"})
+        self.post()
+
+        # When I submit the email confirmation form
+        self.post({"email": "email@example.com"})
+
+        # Then I should see the feedback call to action
+        self.assertInBody("What do you think about this service?")
+
     def test_feedback_submission_from_email_confirmation(self):
         # Given I submit the email confirmation form
         self.launchSurvey("test_feedback_email_confirmation")
