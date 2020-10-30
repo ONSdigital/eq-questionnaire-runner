@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2020-10-29 15:39+0000\n"
+"POT-Creation-Date: 2020-10-30 11:38+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -346,43 +346,43 @@ msgid "Confirmation email"
 msgstr ""
 
 #: app/views/handlers/confirmation_email.py:31
-#: app/views/handlers/feedback.py:107 app/views/handlers/question.py:149
+#: app/views/handlers/feedback.py:108 app/views/handlers/question.py:149
 msgid "Error: {page_title}"
 msgstr ""
 
-#: app/views/handlers/feedback.py:21
+#: app/views/handlers/feedback.py:22
 msgid "Feedback"
 msgstr ""
 
-#: app/views/handlers/feedback.py:25
+#: app/views/handlers/feedback.py:26
 msgid "Give feedback about this service"
 msgstr ""
 
-#: app/views/handlers/feedback.py:26 app/views/handlers/feedback.py:51
+#: app/views/handlers/feedback.py:27 app/views/handlers/feedback.py:52
 msgid "Select what your feedback is about"
 msgstr ""
 
-#: app/views/handlers/feedback.py:34 app/views/handlers/feedback.py:35
+#: app/views/handlers/feedback.py:35 app/views/handlers/feedback.py:36
 msgid "The census questions"
 msgstr ""
 
-#: app/views/handlers/feedback.py:36
+#: app/views/handlers/feedback.py:37
 msgid "For example, question not clear, answer option not relevant"
 msgstr ""
 
-#: app/views/handlers/feedback.py:41 app/views/handlers/feedback.py:42
+#: app/views/handlers/feedback.py:42 app/views/handlers/feedback.py:43
 msgid "Page design and structure"
 msgstr ""
 
-#: app/views/handlers/feedback.py:45 app/views/handlers/feedback.py:46
+#: app/views/handlers/feedback.py:46 app/views/handlers/feedback.py:47
 msgid "General feedback about this service"
 msgstr ""
 
-#: app/views/handlers/feedback.py:59 app/views/handlers/feedback.py:69
+#: app/views/handlers/feedback.py:60 app/views/handlers/feedback.py:70
 msgid "Enter your feedback"
 msgstr ""
 
-#: app/views/handlers/feedback.py:60
+#: app/views/handlers/feedback.py:61
 msgid "Do not include confidential information, such as your contact details."
 msgstr ""
 
@@ -519,94 +519,82 @@ msgstr ""
 msgid "Confirm mobile number"
 msgstr ""
 
-#: app/views/handlers/thank_you.py:22 templates/census-thank-you.html:25
+#: app/views/handlers/thank_you.py:22 templates/census-thank-you.html:24
 msgid "Thank you for completing the census"
 msgstr ""
 
-#: templates/census-thank-you.html:10 templates/confirmation-email.html:8
+#: templates/census-thank-you.html:9 templates/confirmation-email.html:8
 msgid "There is a problem with this page"
 msgstr ""
 
-#: templates/census-thank-you.html:23
+#: templates/census-thank-you.html:22
 msgid "Thank you for completing your census"
 msgstr ""
 
-#: templates/census-thank-you.html:27
+#: templates/census-thank-you.html:26
 msgid "Thank you for completing the survey"
 msgstr ""
 
-#: templates/census-thank-you.html:33
+#: templates/census-thank-you.html:32
 msgid ""
 "Your individual census has been submitted for "
 "<strong>{display_address}</strong>."
 msgstr ""
 
-#: templates/census-thank-you.html:35
+#: templates/census-thank-you.html:34
 msgid ""
 "Your census has been submitted for the household at "
 "<strong>{display_address}</strong>."
 msgstr ""
 
-#: templates/census-thank-you.html:37
+#: templates/census-thank-you.html:36
 msgid ""
 "Your census has been submitted for the accommodation at "
 "<strong>{display_address}</strong>."
 msgstr ""
 
-#: templates/census-thank-you.html:38
+#: templates/census-thank-you.html:37
 msgid ""
 "Anyone staying at this accommodation for at least 6 months needs to fill "
 "in their own individual census, including staff. Your Census Officer will"
 " provide you with census forms for your residents."
 msgstr ""
 
-#: templates/census-thank-you.html:50
+#: templates/census-thank-you.html:49
 msgid ""
 "Your personal information is protected by law and will be kept "
 "confidential."
 msgstr ""
 
-#: templates/census-thank-you.html:56
+#: templates/census-thank-you.html:55
 msgid "Get confirmation email"
 msgstr ""
 
-#: templates/census-thank-you.html:57
+#: templates/census-thank-you.html:56
 msgid ""
 "If you would like to be sent confirmation that you have completed your "
 "census enter your email address."
 msgstr ""
 
-#: templates/census-thank-you.html:65 templates/confirmation-email-sent.html:38
-msgid "What do you think about this service?"
-msgstr ""
-
-#: templates/census-thank-you.html:66 templates/confirmation-email-sent.html:39
-msgid "Your comments will help us make improvements"
-msgstr ""
-
-#: templates/census-thank-you.html:68 templates/confirmation-email-sent.html:41
-msgid "Give feedback"
-msgstr ""
-
-#: templates/confirmation-email-sent.html:4
+#: templates/confirmation-email-sent.html:3
 msgid "Confirmation email sent"
 msgstr ""
 
-#: templates/confirmation-email-sent.html:17
+#: templates/confirmation-email-sent.html:16
 msgid "A confirmation email has been sent to {email}"
 msgstr ""
 
-#: templates/confirmation-email-sent.html:26
+#: templates/confirmation-email-sent.html:25
 msgid ""
 "The email will be sent from "
 "<em>census.2021@notifications.service.gov.uk</em>"
 msgstr ""
 
-#: templates/confirmation-email-sent.html:30
+#: templates/confirmation-email-sent.html:29
 msgid "Didn't receive an email?"
 msgstr ""
 
-#: templates/confirmation-email-sent.html:31
+#: templates/confirmation-email-sent.html:30
 msgid ""
 "It can take a few minutes for the email to arrive. If it doesn't arrive, "
 "check your junk mail, or you can <a href='{send_confirmation_email_url}' "
@@ -964,7 +952,7 @@ msgstr ""
 msgid "Save and complete later"
 msgstr ""
 
-#: templates/layouts/configs/_save-sign-out-button.html:24
+#: templates/layouts/configs/_save-sign-out-button.html:25
 msgid "Exit"
 msgstr ""
 
@@ -988,6 +976,18 @@ msgstr ""
 
 #: templates/partials/email-form.html:39
 msgid "Send confirmation"
+msgstr ""
+
+#: templates/partials/feedback-call-to-action.html:7
+msgid "What do you think about this service?"
+msgstr ""
+
+#: templates/partials/feedback-call-to-action.html:8
+msgid "Your comments will help us make improvements"
+msgstr ""
+
+#: templates/partials/feedback-call-to-action.html:10
+msgid "Give feedback"
 msgstr ""
 
 #: templates/partials/individual-response-guidance.html:24
