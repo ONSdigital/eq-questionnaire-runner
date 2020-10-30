@@ -266,7 +266,8 @@ class TestFeedback(IntegrationTestCase):
         self.get("/submitted/feedback/send")
 
         # Then the back breadcrumb should navigate to the thank you page
-        self.assertInSelectorCSS("/submitted/thank-you", class_="breadcrumb__link")
+        selector = "[id=top-previous]"
+        self.assertInSelector("/submitted/thank-you", selector)
 
     def test_feedback_submitted_done_button_after_email_confirmation(self):
         # Given I submit the email confirmation form after submitting feedback

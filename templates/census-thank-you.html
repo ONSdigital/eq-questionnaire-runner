@@ -49,9 +49,9 @@
     <p>{{ _("Your personal information is protected by law and will be kept confidential.") }}</p>
   {% endcall %}
 
-  <hr class="u-mt-no">
 
   {% if form %}
+    <hr class="u-mt-no">
     <h2 class="u-mt-m">{{ _("Get confirmation email") }}</h2>
     <p>{{ _("If you would like to be sent confirmation that you have completed your census enter your email address.") }}</p>
     {% include 'partials/email-form.html' %}
