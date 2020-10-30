@@ -123,7 +123,7 @@ class TestFeedback(IntegrationTestCase):
         )
         self.assertInUrl(self.SENT_FEEDBACK_URL)
 
-        # When I go to the feedback send page again
+        # When I request the send feedback page
         self.get(self.SEND_FEEDBACK_URL)
 
         # Then I go to the feedback send page
@@ -142,7 +142,7 @@ class TestFeedback(IntegrationTestCase):
             {"feedback-type": "Page design and structure", "feedback-text": "Feedback"}
         )
 
-        # When I go to the feedback send page again
+        # When I request the send feedback page
         self.get(self.SEND_FEEDBACK_URL)
 
         # Then I go to the feedback send page
