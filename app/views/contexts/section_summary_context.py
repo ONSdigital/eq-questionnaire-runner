@@ -1,3 +1,4 @@
+from functools import cached_property
 from typing import Mapping
 
 from flask import url_for
@@ -63,7 +64,7 @@ class SectionSummaryContext(Context):
             }
         }
 
-    @property
+    @cached_property
     def section(self):
         return self._schema.get_section(self.current_location.section_id)
 
