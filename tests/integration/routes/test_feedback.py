@@ -113,6 +113,16 @@ class TestFeedback(IntegrationTestCase):
             "You have reached the maximum number of times for submitting feedback"
         )
 
+    def test_send_feedback_back_breadcrumb(self):
+        # Given I launch and complete the test_feedback questionnaire
+        self._launch_and_complete_questionnaire()
+
+        # When I view the send feedback page
+        self.get(self.SEND_FEEDBACK_URL)
+
+        # Then I should see the Back breadcrumb
+        self.assertInSelectorCSS("Back", class_="breadcrumb__link")
+
     def test_submission(self):
         # Given I launch and complete the test_feedback questionnaire, and provide
         # feedback
@@ -206,8 +216,6 @@ class TestFeedback(IntegrationTestCase):
         # Given I launch and complete the test_feedback questionnaire
         self.launchSurvey("test_feedback")
         self.post({"answer_id": "Yes"})
-
-        # When I view the thank you page
         self.post()
 
         # Then I should see the feedback call to action
