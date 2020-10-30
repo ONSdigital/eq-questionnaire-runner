@@ -28,19 +28,19 @@
       {% if summary.type == 'List' %}
         <div data-qa="{{summary.list_name}}-list-summary">
           <h2>{{summary.title}}</h2>
-            {% if summary.list.list_items %}
-              {% set list = summary.list %}
-              {% include 'partials/summary/list-summary.html' %}
-            {% elif summary.empty_list_text %}
-              <div class="u-mb-s">
-                {{ summary.empty_list_text }}
-              </div>
-            {% endif %}
-            {% if summary.add_link %}
-              <div class="u-mb-l">
-                <a data-qa="add-item-link" href="{{summary.add_link}}">{{summary.add_link_text}}</a>
-              </div>
-            {% endif %}
+          {% if summary.list.list_items %}
+            {% set list = summary.list %}
+            {% include 'partials/summary/list-summary.html' %}
+          {% elif summary.empty_list_text %}
+            <div class="u-mb-s">
+              {{ summary.empty_list_text }}
+            </div>
+          {% endif %}
+          {% if summary.add_link %}
+            <div class="u-mb-l">
+              <a data-qa="add-item-link" href="{{summary.add_link}}">{{summary.add_link_text}}</a>
+            </div>
+          {% endif %}
           </div>
         {% endif %}
       {% endfor %}
