@@ -9,7 +9,7 @@ describe("Thank You Census Household", () => {
       browser.openQuestionnaire("test_thank_you_census_household.json");
     });
 
-    it("When I navigate to the thank you page I should not see the, Then I should not see the feedback call to action", () => {
+    it("When I navigate to the thank you page, Then I should not see the feedback call to action", () => {
       $(HouseholdConfirmationPage.submit()).click();
       $(Summary.submit()).click();
       expect(browser.getUrl()).to.contain(ThankYouPage.pageName);
