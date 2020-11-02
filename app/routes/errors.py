@@ -148,11 +148,7 @@ def http_exception(error):
 
 @errors_blueprint.app_errorhandler(IndividualResponseFulfilmentRequestFailed)
 def fulfilment_request_failed(error):
-    logger.exception(
-        "An individual response fulfilment request failed",
-        url=request.url,
-        status_code=500,
-    )
+    log_error(error, 500)
 
     if "mobile_number" in request.args:
         blueprint_method = (
@@ -163,21 +159,47 @@ def fulfilment_request_failed(error):
             "individual_response.individual_response_post_address_confirm"
         )
 
+    title = lazy_gettext("Sorry, there was a problem sending the access code")
     retry_url = url_for(
         blueprint_method, list_item_id=request.view_args["list_item_id"], **request.args
     )
+    retry_message = lazy_gettext(
+        "You can try to <a href='{retry_url}'>request a new access code again</a>.".format(
+            retry_url=retry_url
+        )
+    )
+    contact_us_message = lazy_gettext(
+        "<a href='{contact_us_url}'>Contact us</a> if you need to speak to someone about your survey."
+    )
 
     return _render_error_page(
-        500, template="500-individual-response", retry_url=retry_url
+        500,
+        template="500-with-retry",
+        page_title=title,
+        heading=title,
+        retry_message=retry_message,
+        contact_us_message=contact_us_message,
     )
 
 
 @errors_blueprint.app_errorhandler(ConfirmationEmailFulfilmentRequestFailed)
 def confirmation_email_failed(error):
-    logger.exception(
-        "A confirmation email fulfilment request failed",
-        url=request.url,
-        status_code=500,
+    log_error(error, 500)
+    title = lazy_gettext("Sorry, there was a problem sending the confirmation email")
+    retry_message = lazy_gettext(
+        "You can try to <a href='{retry_url}'>send the email again</a>.".format(
+            retry_url=request.url
+        )
+    )
+    contact_us_message = lazy_gettext(
+        "If this problem keeps happening, please  <a href='{contact_us_url}'>contact us</a> for help."
     )
 
-    return _render_error_page(500, template="500-confirmation-email")
+    return _render_error_page(
+        500,
+        template="500-with-retry",
+        page_title=title,
+        heading=title,
+        retry_message=retry_message,
+        contact_us_message=contact_us_message,
+    )

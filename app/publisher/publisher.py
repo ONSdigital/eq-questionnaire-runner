@@ -28,6 +28,7 @@ class PubSubPublisher(Publisher):
         return response
 
     def publish(self, topic_id, message: bytes):
+        raise PublicationFailed
         response = self._publish(topic_id, message)
         try:
             # Resolve the future

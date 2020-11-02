@@ -1,9 +1,0 @@
-{% extends 'layouts/_base.html' %}
-
-{% set page_title = _("Sorry, there was a problem sending the confirmation email") %}
-
-{% block main %}
-<h1>{{ _("Sorry, there was a problem sending the confirmation email") }}</h1>
-<p data-qa="retry">{{ _("You can try to <a href='{retry_url}'>send the email again</a>.".format(retry_url=url_for(request.endpoint))) }}</p>
-<p>{{ _("If this problem keeps happening, please  <a href='{contact_us_url}'>contact us</a> for help.").format(contact_us_url=contact_us_url) }}</p>
-{% endblock %}
