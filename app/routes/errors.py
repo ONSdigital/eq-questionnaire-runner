@@ -16,6 +16,9 @@ from app.helpers.language_helper import handle_language
 from app.helpers.template_helpers import render_template
 from app.settings import EQ_SESSION_ID
 from app.submitter.submission_failed import SubmissionFailedException
+from app.views.handlers.confirmation_email import (
+    ConfirmationEmailFulfilmentRequestFailed,
+)
 from app.views.handlers.feedback import FeedbackLimitReached
 from app.views.handlers.individual_response import (
     IndividualResponseFulfilmentRequestFailed,

@@ -1,3 +1,5 @@
+from functools import cached_property
+
 from flask import session as cookie_session
 from flask_babel import gettext
 
@@ -31,14 +33,14 @@ class ThankYou:
             if self._is_census_theme
             else self.DEFAULT_THANK_YOU_TEMPLATE
         )
-        self.confirmation_email = self._get_confirmation_email()
 
-    def _get_confirmation_email(self):
+    @cached_property
+    def confirmation_email(self):
         if not self._schema.get_submission().get("confirmation_email"):
             return None
 
         try:
-            return ConfirmationEmail(self.PAGE_TITLE, schema=self._schema)
+            return ConfirmationEmail(self.session_store, self._schema, self.PAGE_TITLE)
         except ConfirmationEmailLimitReached:
             return None
 

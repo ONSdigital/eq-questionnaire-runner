@@ -1,17 +1,20 @@
+import json
+from dataclasses import dataclass
+from datetime import datetime
+from functools import cached_property
 from typing import Optional
+from uuid import uuid4
 
+from dateutil.tz import tzutc
 from flask import current_app
 from flask_babel import gettext, lazy_gettext
 
 from app.data_models.session_data import SessionData
 from app.data_models.session_store import SessionStore
-from app.data_models.session_store import SessionStore
 from app.forms.email_form import EmailForm
-from app.globals import get_session_store
 from app.helpers.url_param_serializer import URLParamSerializer
 from app.publisher.exceptions import PublicationFailed
 from app.questionnaire import QuestionnaireSchema
-from app.utilities.schema import load_schema_from_session_data
 from app.views.contexts.email_form_context import build_confirmation_email_form_context
 
 
@@ -24,13 +27,26 @@ class ConfirmationEmailFulfilmentRequestFailed(Exception):
 
 
 class ConfirmationEmail:
-    PAGE_TITLE = gettext("Confirmation email")
-
-    def __init__(self, page_title: Optional[str] = None):
-        if self.is_limit_reached():
+    def __init__(
+        self,
+        session_store: SessionStore,
+        schema: QuestionnaireSchema,
+        page_title: Optional[str] = None,
+    ):
+        self._session_store = session_store
+        if self.is_limit_reached(self._session_store.session_data):
             raise ConfirmationEmailLimitReached
-        self.form = EmailForm()
-        self.page_title = page_title or self.PAGE_TITLE
+
+        self._schema = schema
+        self._page_title = page_title
+
+    @property
+    def page_title(self):
+        return self._page_title or lazy_gettext("Confirmation email")
+
+    @cached_property
+    def form(self):
+        return EmailForm()
 
     def get_context(self):
         return build_confirmation_email_form_context(self.form)
@@ -46,7 +62,7 @@ class ConfirmationEmail:
     def _publish_fulfilment_request(self):
         topic_id = current_app.config["EQ_SUBMISSION_CONFIRMATION_TOPIC_ID"]
         fulfilment_request = ConfirmationEmailFulfilmentRequest(
-            self.form.email.data, self._session_data, self._schema
+            self.form.email.data, self._session_store.session_data, self._schema
         )
         try:
             return current_app.eq["publisher"].publish(
@@ -60,9 +76,10 @@ class ConfirmationEmail:
         self._session_store.session_data.confirmation_email_count += 1
         self._session_store.save()
 
-    def _is_limit_reached(self):
+    @staticmethod
+    def is_limit_reached(session_data):
         return (
-            self._session_data.confirmation_email_count
+            session_data.confirmation_email_count
             >= current_app.config["CONFIRMATION_EMAIL_LIMIT"]
         )
 

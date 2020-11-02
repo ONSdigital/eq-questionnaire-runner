@@ -292,7 +292,7 @@ def get_thank_you(schema, session_store):
         confirmation_email = thank_you.confirmation_email
 
         if confirmation_email.form.validate():
-            confirmation_email.handle_post(session_store)
+            confirmation_email.handle_post()
             return redirect(
                 url_for(
                     ".get_confirmation_email_sent",
@@ -319,18 +319,19 @@ def get_thank_you(schema, session_store):
 
 
 @post_submission_blueprint.route("confirmation-email/send", methods=["GET", "POST"])
+@with_schema
 @with_session_store
-def send_confirmation_email(session_store):
+def send_confirmation_email(session_store, schema):
     if not session_store.session_data.confirmation_email_count:
         raise NotFound
 
     try:
-        confirmation_email = ConfirmationEmail()
+        confirmation_email = ConfirmationEmail(session_store, schema)
     except ConfirmationEmailLimitReached:
         return redirect(url_for(".get_thank_you"))
 
     if request.method == "POST" and confirmation_email.form.validate():
-        confirmation_email.handle_post(session_store)
+        confirmation_email.handle_post()
         return redirect(
             url_for(
                 ".get_confirmation_email_sent",
@@ -347,9 +348,9 @@ def send_confirmation_email(session_store):
 
 
 @post_submission_blueprint.route("confirmation-email/sent", methods=["GET"])
-@with_session_store
 @with_schema
-def get_confirmation_email_sent(schema, session_store):
+@with_session_store
+def get_confirmation_email_sent(session_store, schema):
     if not session_store.session_data.confirmation_email_count:
         raise NotFound
 
@@ -370,7 +371,9 @@ def get_confirmation_email_sent(schema, session_store):
                 "post_submission.send_confirmation_email"
             ),
             "hide_signout_button": False,
-            "show_send_another_email_guidance": not ConfirmationEmail.is_limit_reached(),
+            "show_send_another_email_guidance": not ConfirmationEmail.is_limit_reached(
+                session_store.session_data
+            ),
             "sign_out_url": url_for("session.get_sign_out"),
             "show_feedback_call_to_action": show_feedback_call_to_action,
         },
