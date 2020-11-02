@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2020-11-02 12:22+0000\n"
+"POT-Creation-Date: 2020-11-02 16:07+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -234,40 +234,52 @@ msgid_plural "{number_of_days} days"
 msgstr[0] ""
 msgstr[1] ""
 
-#: app/routes/errors.py:86
+#: app/routes/errors.py:107
 msgid "You have reached the maximum number of individual access codes"
 msgstr ""
 
-#: app/routes/errors.py:89
+#: app/routes/errors.py:110
 msgid ""
-"If you need more individual access codes, please <a href='{url}'>contact "
-"us</a>."
+"If you need more individual access codes, please <a "
+"href='{contact_us_url}'>contact us</a>."
 msgstr ""
 
-#: app/routes/errors.py:105
+#: app/routes/errors.py:126
 msgid "You have reached the maximum number of times for submitting feedback"
 msgstr ""
 
-#: app/routes/errors.py:108
-msgid "If you need to give more feedback, please <a href='{url}'>contact us</a>."
+#: app/routes/errors.py:129
+msgid ""
+"If you need to give more feedback, please <a "
+"href='{contact_us_url}'>contact us</a>."
 msgstr ""
 
-#: app/routes/errors.py:163 templates/errors/500-individual-response.html:3
-#: templates/errors/500-individual-response.html:6
-msgid "Sorry, there was a problem sending the access code"
-msgstr ""
-
-#: app/routes/errors.py:167
-msgid "You can try to <a href='{retry_url}'>request a new access code again</a>."
-msgstr ""
-
-#: app/routes/errors.py:177 templates/errors/500-confirmation-email.html:3
-#: templates/errors/500-confirmation-email.html:6
+#: app/routes/errors.py:153
 msgid "Sorry, there was a problem sending the confirmation email"
 msgstr ""
 
-#: app/routes/errors.py:178
+#: app/routes/errors.py:157
 msgid "You can try to <a href='{retry_url}'>send the email again</a>."
+msgstr ""
+
+#: app/routes/errors.py:161
+msgid ""
+"If this problem keeps happening, please  <a "
+"href='{contact_us_url}'>contact us</a> for help."
+msgstr ""
+
+#: app/routes/errors.py:174
+msgid "Sorry, there was a problem sending the access code"
+msgstr ""
+
+#: app/routes/errors.py:181
+msgid "You can try to <a href='{retry_url}'>request a new access code again</a>."
+msgstr ""
+
+#: app/routes/errors.py:185
+msgid ""
+"<a href='{contact_us_url}'>Contact us</a> if you need to speak to someone"
+" about your survey."
 msgstr ""
 
 #: app/routes/individual_response.py:160
@@ -359,11 +371,11 @@ msgstr ""
 msgid "Please submit this survey to complete it"
 msgstr ""
 
-#: app/views/handlers/confirmation_email.py:45
+#: app/views/handlers/confirmation_email.py:49
 msgid "Confirmation email"
 msgstr ""
 
-#: app/views/handlers/confirmation_email.py:59
+#: app/views/handlers/confirmation_email.py:63
 #: app/views/handlers/feedback.py:111 app/views/handlers/question.py:149
 msgid "Error: {page_title}"
 msgstr ""
@@ -804,24 +816,6 @@ msgid ""
 "href='{url}'>contact us</a> for more help."
 msgstr ""
 
-#: templates/errors/500-confirmation-email.html:8
-msgid ""
-"If this problem keeps happening, please  <a "
-"href='{contact_us_url}'>contact us</a> for help."
-msgstr ""
-
-#: templates/errors/500-individual-response.html:8
-#: templates/errors/500-publication-failed.html:6
-msgid "If this problem keeps happening, please contact us for help."
-msgstr ""
-
-#: templates/errors/500-individual-response.html:9
-#: templates/errors/500-publication-failed.html:7 templates/errors/500.html:9
-msgid ""
-"<a href='{url}'>Contact us</a> if you need to speak to someone about your"
-" survey."
-msgstr ""
-
 #: templates/errors/500.html:3
 msgid "An error has occurred"
 msgstr ""
@@ -836,6 +830,12 @@ msgstr ""
 
 #: templates/errors/500.html:8
 msgid "If you have started a survey, your answers have been saved."
+msgstr ""
+
+#: templates/errors/500.html:9
+msgid ""
+"<a href='{url}'>Contact us</a> if you need to speak to someone about your"
+" survey."
 msgstr ""
 
 #: templates/errors/no-cookie.html:3
