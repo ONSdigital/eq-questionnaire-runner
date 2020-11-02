@@ -77,7 +77,7 @@ class ConfirmationEmail:
         self._session_store.save()
 
     @staticmethod
-    def is_limit_reached(session_data):
+    def is_limit_reached(session_data: SessionData) -> bool:
         return (
             session_data.confirmation_email_count
             >= current_app.config["CONFIRMATION_EMAIL_LIMIT"]

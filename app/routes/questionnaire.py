@@ -24,11 +24,7 @@ from app.views.handlers.confirmation_email import (
     ConfirmationEmail,
     ConfirmationEmailLimitReached,
 )
-from app.views.handlers.feedback import (
-    Feedback,
-    FeedbackLimitReached,
-    FeedbackNotEnabled,
-)
+from app.views.handlers.feedback import Feedback, FeedbackNotEnabled
 from app.views.handlers.section import SectionHandler
 from app.views.handlers.submission import SubmissionHandler
 from app.views.handlers.thank_you import ThankYou
@@ -300,12 +296,9 @@ def get_thank_you(schema, session_store):
                 )
             )
 
-    show_feedback_call_to_action = True
-
-    try:
-        Feedback(schema, session_store, form_data=request.form)
-    except (FeedbackNotEnabled, FeedbackLimitReached):
-        show_feedback_call_to_action = False
+    show_feedback_call_to_action = Feedback.is_enabled(
+        schema
+    ) and not Feedback.is_limit_reached(session_store.session_data)
 
     return render_template(
         template=thank_you.template,
@@ -356,12 +349,12 @@ def get_confirmation_email_sent(session_store, schema):
 
     email = URLParamSerializer().loads(request.args.get("email"))
 
-    show_feedback_call_to_action = True
-
-    try:
-        Feedback(schema, session_store, form_data=request.form)
-    except (FeedbackNotEnabled, FeedbackLimitReached):
-        show_feedback_call_to_action = False
+    show_send_another_email_guidance = not ConfirmationEmail.is_limit_reached(
+        session_store.session_data
+    )
+    show_feedback_call_to_action = Feedback.is_enabled(
+        schema
+    ) and not Feedback.is_limit_reached(session_store.session_data)
 
     return render_template(
         template="confirmation-email-sent",
@@ -371,9 +364,7 @@ def get_confirmation_email_sent(session_store, schema):
                 "post_submission.send_confirmation_email"
             ),
             "hide_signout_button": False,
-            "show_send_another_email_guidance": not ConfirmationEmail.is_limit_reached(
-                session_store.session_data
-            ),
+            "show_send_another_email_guidance": show_send_another_email_guidance,
             "sign_out_url": url_for("session.get_sign_out"),
             "show_feedback_call_to_action": show_feedback_call_to_action,
         },

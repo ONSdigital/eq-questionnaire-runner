@@ -1,12 +1,13 @@
 from functools import cached_property
 from typing import Mapping
 
+from flask import current_app
 from flask_babel import gettext, lazy_gettext
 
+from app.data_models.session_data import SessionData
 from app.data_models.session_store import SessionStore
 from app.forms.questionnaire_form import generate_form
 from app.questionnaire.questionnaire_schema import QuestionnaireSchema
-from app.settings import EQ_FEEDBACK_LIMIT
 from app.views.contexts.feedback_form_context import build_feedback_context
 
 
@@ -83,10 +84,10 @@ class Feedback:
         self._schema = schema
         self._session_store = session_store
 
-        if not schema.get_submission().get("feedback"):
+        if not self.is_enabled(self._schema):
             raise FeedbackNotEnabled
 
-        if self._session_store.session_data.feedback_count >= EQ_FEEDBACK_LIMIT:
+        if self.is_limit_reached(self._session_store.session_data):
             raise FeedbackLimitReached
 
         self._form_data = form_data
@@ -113,3 +114,11 @@ class Feedback:
     def handle_post(self):
         self._session_store.session_data.feedback_count += 1
         self._session_store.save()
+
+    @staticmethod
+    def is_limit_reached(session_data: SessionData) -> bool:
+        return session_data.feedback_count >= current_app.config["EQ_FEEDBACK_LIMIT"]
+
+    @staticmethod
+    def is_enabled(schema: QuestionnaireSchema) -> bool:
+        return schema.get_submission().get("feedback")
