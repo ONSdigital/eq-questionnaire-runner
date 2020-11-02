@@ -1,13 +1,10 @@
-import json
-from dataclasses import dataclass
-from datetime import datetime
-from uuid import uuid4
+from typing import Optional
 
-from dateutil.tz import tzutc
 from flask import current_app
 from flask_babel import gettext, lazy_gettext
 
 from app.data_models.session_data import SessionData
+from app.data_models.session_store import SessionStore
 from app.data_models.session_store import SessionStore
 from app.forms.email_form import EmailForm
 from app.globals import get_session_store
@@ -27,18 +24,13 @@ class ConfirmationEmailFulfilmentRequestFailed(Exception):
 
 
 class ConfirmationEmail:
-    def __init__(self, page_title=None, schema=None):
-        self._session_store: SessionStore = get_session_store()
-        self._session_data: SessionData = self._session_store.session_data
+    PAGE_TITLE = gettext("Confirmation email")
 
-        if self._is_limit_reached():
+    def __init__(self, page_title: Optional[str] = None):
+        if self.is_limit_reached():
             raise ConfirmationEmailLimitReached
-
-        self.form: EmailForm = EmailForm()
-        self.page_title: str = page_title or lazy_gettext("Confirmation email")
-        self._schema: QuestionnaireSchema = schema or load_schema_from_session_data(
-            self._session_data
-        )
+        self.form = EmailForm()
+        self.page_title = page_title or self.PAGE_TITLE
 
     def get_context(self):
         return build_confirmation_email_form_context(self.form)

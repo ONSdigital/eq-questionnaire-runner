@@ -1,6 +1,6 @@
 import HouseholdConfirmationPage from "../generated_pages/thank_you_census_household/household-confirmation.page";
 import SummaryPage from "../generated_pages/thank_you_census_household/summary.page";
-import CensusThankYouPage from "../base_pages/census-thank-you.js";
+import CensusThankYouPage from "../base_pages/census-thank-you.page.js";
 
 describe("Post submission exit", () => {
   beforeEach("Load the survey", () => {

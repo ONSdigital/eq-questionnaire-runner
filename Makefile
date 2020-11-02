@@ -17,6 +17,7 @@ build: load-design-system-templates
 
 lint:
 	pipenv run ./scripts/run_lint_python.sh
+	yarn lint
 
 format: format-python
 	yarn format

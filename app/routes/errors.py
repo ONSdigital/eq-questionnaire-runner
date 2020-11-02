@@ -1,6 +1,7 @@
 from flask import Blueprint, request
 from flask import session as cookie_session
 from flask.helpers import url_for
+from flask_babel import lazy_gettext
 from flask_login import current_user
 from flask_wtf.csrf import CSRFError
 from sdc.crypto.exceptions import InvalidTokenException
@@ -15,9 +16,7 @@ from app.helpers.language_helper import handle_language
 from app.helpers.template_helpers import render_template
 from app.settings import EQ_SESSION_ID
 from app.submitter.submission_failed import SubmissionFailedException
-from app.views.handlers.confirmation_email import (
-    ConfirmationEmailFulfilmentRequestFailed,
-)
+from app.views.handlers.feedback import FeedbackLimitReached
 from app.views.handlers.individual_response import (
     IndividualResponseFulfilmentRequestFailed,
     IndividualResponseLimitReached,
@@ -81,7 +80,39 @@ def method_not_allowed(error=None):
 @errors_blueprint.app_errorhandler(IndividualResponseLimitReached)
 def too_many_individual_response_requests(error=None):
     log_error(error, 429)
-    return _render_error_page(429, template="429-individual-response")
+    title = lazy_gettext(
+        "You have reached the maximum number of individual access codes"
+    )
+    contact_us_message = lazy_gettext(
+        "If you need more individual access codes, please <a href='{url}'>contact us</a>."
+    )
+
+    return _render_error_page(
+        429,
+        template="429",
+        page_title=title,
+        heading=title,
+        contact_us_message=contact_us_message,
+    )
+
+
+@errors_blueprint.app_errorhandler(FeedbackLimitReached)
+def too_many_feedback_requests(error=None):
+    log_error(error, 429)
+    title = lazy_gettext(
+        "You have reached the maximum number of times for submitting feedback"
+    )
+    contact_us_message = lazy_gettext(
+        "If you need to give more feedback, please <a href='{url}'>contact us</a>."
+    )
+
+    return _render_error_page(
+        429,
+        template="429",
+        page_title=title,
+        heading=title,
+        contact_us_message=contact_us_message,
+    )
 
 
 @errors_blueprint.app_errorhandler(SubmissionFailedException)

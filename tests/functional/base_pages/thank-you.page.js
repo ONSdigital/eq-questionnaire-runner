@@ -28,5 +28,13 @@ class ThankYouPage extends QuestionPage {
   errorPanel() {
     return '[data-qa="error-body"]';
   }
+
+  feedback() {
+    return ".feedback";
+  }
+
+  feedbackLink() {
+    return ".feedback__link";
+  }
 }
 export default new ThankYouPage();

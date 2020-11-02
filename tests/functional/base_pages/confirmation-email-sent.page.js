@@ -12,5 +12,13 @@ class ConfirmationEmailSentPage extends QuestionPage {
   sendAnotherEmail() {
     return 'a[id="send-another-email"]';
   }
+
+  feedback() {
+    return ".feedback";
+  }
+
+  feedbackLink() {
+    return ".feedback__link";
+  }
 }
 export default new ConfirmationEmailSentPage();

@@ -1,5 +1,6 @@
 {% extends 'layouts/_base.html' %}
 {% from 'components/panel/_macro.njk' import onsPanel %}
+{% from 'components/button/_macro.njk' import onsButton %}
 
 {% set hide_signout_button = content.hide_signout_button %}
 {% set page_title = _("Feedback sent") %}
@@ -19,6 +20,16 @@
   <p>{{ _("Your comments will help us make improvements to our surveys. We are not able to reply to comments, but we appreciate your feedback") }}</p>
 
   {% endcall %}
+
+  {{
+    onsButton({
+        "attributes": {"data-qa": "btn-done"},
+        "type": "button",
+        "text": "Done",
+        "classes": "u-mb-m",
+        "url": url_for('post_submission.get_thank_you')
+    })
+  }}
 
   {% include 'partials/sign-out-pre-footer-panel.html' %}
 
