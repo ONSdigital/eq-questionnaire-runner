@@ -2,6 +2,8 @@
 
 {% block main %}
 <h1>{{ heading }}</h1>
-<p data-qa="retry">{{ retry_message }}</p>
+{%- if retry_message -%}
+  <p data-qa="retry">{{ retry_message }}</p>
+{%- endif -%}
 <p>{{ contact_us_message.format(contact_us_url=contact_us_url)  }}</p>
 {% endblock %}

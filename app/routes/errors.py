@@ -87,12 +87,12 @@ def too_many_individual_response_requests(error=None):
         "You have reached the maximum number of individual access codes"
     )
     contact_us_message = lazy_gettext(
-        "If you need more individual access codes, please <a href='{url}'>contact us</a>."
+        "If you need more individual access codes, please <a href='{contact_us_url}'>contact us</a>."
     )
 
     return _render_error_page(
         429,
-        template="429",
+        template="error",
         page_title=title,
         heading=title,
         contact_us_message=contact_us_message,
@@ -106,12 +106,12 @@ def too_many_feedback_requests(error=None):
         "You have reached the maximum number of times for submitting feedback"
     )
     contact_us_message = lazy_gettext(
-        "If you need to give more feedback, please <a href='{url}'>contact us</a>."
+        "If you need to give more feedback, please <a href='{contact_us_url}'>contact us</a>."
     )
 
     return _render_error_page(
         429,
-        template="429",
+        template="error",
         page_title=title,
         heading=title,
         contact_us_message=contact_us_message,
@@ -174,7 +174,7 @@ def fulfilment_request_failed(error):
 
     return _render_error_page(
         500,
-        template="500-with-retry",
+        template="error",
         page_title=title,
         heading=title,
         retry_message=retry_message,
@@ -197,7 +197,7 @@ def confirmation_email_failed(error):
 
     return _render_error_page(
         500,
-        template="500-with-retry",
+        template="error",
         page_title=title,
         heading=title,
         retry_message=retry_message,
