@@ -16,6 +16,10 @@ from app.helpers.url_param_serializer import URLParamSerializer
 from app.publisher.exceptions import PublicationFailed
 from app.questionnaire import QuestionnaireSchema
 from app.views.contexts.email_form_context import build_confirmation_email_form_context
+from app.views.handlers.fulfilment_request import (
+    FulfilmentRequest,
+    FulfilmentRequestPublicationFailed,
+)
 
 
 class ConfirmationEmailLimitReached(Exception):
@@ -69,7 +73,7 @@ class ConfirmationEmail:
                 topic_id, message=fulfilment_request.payload
             )
         except PublicationFailed:
-            raise ConfirmationEmailFulfilmentRequestFailed
+            raise FulfilmentRequestPublicationFailed(invoked_by=self)
 
     def handle_post(self):
         self._publish_fulfilment_request()
@@ -85,13 +89,13 @@ class ConfirmationEmail:
 
 
 @dataclass
-class ConfirmationEmailFulfilmentRequest:
+class ConfirmationEmailFulfilmentRequest(FulfilmentRequest):
     email_address: str
     session_data: SessionData
     schema: QuestionnaireSchema
 
     @property
-    def payload(self):
+    def payload(self) -> bytes:
         message = {
             "email_address": self.email_address,
             "form_type": self.schema.form_type,

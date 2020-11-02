@@ -19,6 +19,10 @@ from app.publisher.exceptions import PublicationFailed
 from app.questionnaire.placeholder_renderer import PlaceholderRenderer
 from app.questionnaire.router import Router
 from app.views.contexts.question import build_question_context
+from app.views.handlers.fulfilment_request import (
+    FulfilmentRequest,
+    FulfilmentRequestPublicationFailed,
+)
 
 GB_ENG_REGION_CODE = "GB-ENG"
 GB_WLS_REGION_CODE = "GB-WLS"
@@ -26,10 +30,6 @@ GB_NIR_REGION_CODE = "GB-NIR"
 
 
 class IndividualResponseLimitReached(Exception):
-    pass
-
-
-class IndividualResponseFulfilmentRequestFailed(Exception):
     pass
 
 
@@ -197,7 +197,7 @@ class IndividualResponseHandler:
                 topic_id, message=fulfilment_request.payload
             )
         except PublicationFailed:
-            raise IndividualResponseFulfilmentRequestFailed
+            raise FulfilmentRequestPublicationFailed(invoked_by=self)
 
     def _check_individual_response_count(self):
         if (
@@ -888,7 +888,7 @@ class IndividualResponseTextConfirmHandler(IndividualResponseHandler):
         )
 
 
-class IndividualResponseFulfilmentRequest:
+class IndividualResponseFulfilmentRequest(FulfilmentRequest):
     def __init__(self, metadata: Mapping, mobile_number: Optional[str] = None):
         self._metadata = metadata
         self._mobile_number = mobile_number

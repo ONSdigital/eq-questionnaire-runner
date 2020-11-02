@@ -16,12 +16,11 @@ from app.helpers.language_helper import handle_language
 from app.helpers.template_helpers import render_template
 from app.settings import EQ_SESSION_ID
 from app.submitter.submission_failed import SubmissionFailedException
-from app.views.handlers.confirmation_email import (
-    ConfirmationEmailFulfilmentRequestFailed,
-)
+from app.views.handlers.confirmation_email import ConfirmationEmail
 from app.views.handlers.feedback import FeedbackLimitReached
+from app.views.handlers.fulfilment_request import FulfilmentRequestPublicationFailed
 from app.views.handlers.individual_response import (
-    IndividualResponseFulfilmentRequestFailed,
+    IndividualResponseHandler,
     IndividualResponseLimitReached,
 )
 
@@ -80,6 +79,28 @@ def method_not_allowed(error=None):
     return _render_error_page(405, template="404")
 
 
+@errors_blueprint.app_errorhandler(403)
+@errors_blueprint.app_errorhandler(404)
+def http_exception(error):
+    log_error(error, error.code)
+    return _render_error_page(error.code)
+
+
+@errors_blueprint.app_errorhandler(Exception)
+def internal_server_error(error=None):
+    try:
+        log_error(error, 500)
+        return _render_error_page(500)
+    except Exception:  # pylint:disable=broad-except
+        logger.error(
+            "an error has occurred when rendering 500 error",
+            exc_info=True,
+            url=request.url,
+            status_code=500,
+        )
+        return render_template(template="errors/500"), 500
+
+
 @errors_blueprint.app_errorhandler(IndividualResponseLimitReached)
 def too_many_individual_response_requests(error=None):
     log_error(error, 429)
@@ -124,76 +145,48 @@ def submission_failed(error=None):
     return _render_error_page(500, template="submission-failed")
 
 
-@errors_blueprint.app_errorhandler(Exception)
-def internal_server_error(error=None):
-    try:
-        log_error(error, 500)
-        return _render_error_page(500)
-    except Exception:  # pylint:disable=broad-except
-        logger.error(
-            "an error has occurred when rendering 500 error",
-            exc_info=True,
-            url=request.url,
-            status_code=500,
-        )
-        return render_template(template="errors/500"), 500
-
-
-@errors_blueprint.app_errorhandler(403)
-@errors_blueprint.app_errorhandler(404)
-def http_exception(error):
-    log_error(error, error.code)
-    return _render_error_page(error.code)
-
-
-@errors_blueprint.app_errorhandler(IndividualResponseFulfilmentRequestFailed)
-def fulfilment_request_failed(error):
+@errors_blueprint.app_errorhandler(FulfilmentRequestPublicationFailed)
+def fulfilment_request_publication_failed(error):
     log_error(error, 500)
 
-    if "mobile_number" in request.args:
-        blueprint_method = (
-            "individual_response.individual_response_text_message_confirm"
+    if isinstance(error.invoked_by, ConfirmationEmail):
+        title = lazy_gettext(
+            "Sorry, there was a problem sending the confirmation email"
+        )
+        retry_message = lazy_gettext(
+            "You can try to <a href='{retry_url}'>send the email again</a>.".format(
+                retry_url=request.url
+            )
+        )
+        contact_us_message = lazy_gettext(
+            "If this problem keeps happening, please  <a href='{contact_us_url}'>contact us</a> for help."
+        )
+    elif isinstance(error.invoked_by, IndividualResponseHandler):
+        if "mobile_number" in request.args:
+            blueprint_method = (
+                "individual_response.individual_response_text_message_confirm"
+            )
+        else:
+            blueprint_method = (
+                "individual_response.individual_response_post_address_confirm"
+            )
+
+        title = lazy_gettext("Sorry, there was a problem sending the access code")
+        retry_url = url_for(
+            blueprint_method,
+            list_item_id=request.view_args["list_item_id"],
+            **request.args,
+        )
+        retry_message = lazy_gettext(
+            "You can try to <a href='{retry_url}'>request a new access code again</a>.".format(
+                retry_url=retry_url
+            )
+        )
+        contact_us_message = lazy_gettext(
+            "<a href='{contact_us_url}'>Contact us</a> if you need to speak to someone about your survey."
         )
     else:
-        blueprint_method = (
-            "individual_response.individual_response_post_address_confirm"
-        )
-
-    title = lazy_gettext("Sorry, there was a problem sending the access code")
-    retry_url = url_for(
-        blueprint_method, list_item_id=request.view_args["list_item_id"], **request.args
-    )
-    retry_message = lazy_gettext(
-        "You can try to <a href='{retry_url}'>request a new access code again</a>.".format(
-            retry_url=retry_url
-        )
-    )
-    contact_us_message = lazy_gettext(
-        "<a href='{contact_us_url}'>Contact us</a> if you need to speak to someone about your survey."
-    )
-
-    return _render_error_page(
-        500,
-        template="error",
-        page_title=title,
-        heading=title,
-        retry_message=retry_message,
-        contact_us_message=contact_us_message,
-    )
-
-
-@errors_blueprint.app_errorhandler(ConfirmationEmailFulfilmentRequestFailed)
-def confirmation_email_failed(error):
-    log_error(error, 500)
-    title = lazy_gettext("Sorry, there was a problem sending the confirmation email")
-    retry_message = lazy_gettext(
-        "You can try to <a href='{retry_url}'>send the email again</a>.".format(
-            retry_url=request.url
-        )
-    )
-    contact_us_message = lazy_gettext(
-        "If this problem keeps happening, please  <a href='{contact_us_url}'>contact us</a> for help."
-    )
+        raise NotImplementedError  # pragma: no cover
 
     return _render_error_page(
         500,
