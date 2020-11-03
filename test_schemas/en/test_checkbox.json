@@ -79,7 +79,7 @@
                                                 "value": "Other",
                                                 "detail_answer": {
                                                     "mandatory": true,
-                                                    "id": "other-answer-mandatory",
+                                                    "id": "show-label-other-answer-mandatory",
                                                     "label": "Please specify other",
                                                     "type": "TextField"
                                                 }
