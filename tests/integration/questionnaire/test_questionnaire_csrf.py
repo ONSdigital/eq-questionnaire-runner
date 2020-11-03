@@ -68,6 +68,7 @@ class TestQuestionnaireCsrf(IntegrationTestCase):
     ):
         # Given
         self.launchSurvey("test_checkbox", roles=["dumper"])
+        self.post()
         self.post(
             {
                 "mandatory-checkbox-answer": "Other",

@@ -98,6 +98,7 @@ class TestQuestionnairePageTitles(IntegrationTestCase):
         self.launchSurvey("test_checkbox")
         # When
         self.post()
+        self.post()
         # Then
         self.assertEqualPageTitle(
             "Error: Which pizza toppings would you like? - Census 2021"
