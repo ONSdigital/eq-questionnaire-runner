@@ -64,7 +64,7 @@ def render_template(template, **kwargs):
     cdn_url = f'{current_app.config["CDN_URL"]}{current_app.config["CDN_ASSETS_PATH"]}'
     base_url = get_census_base_url(theme, language_code)
     contact_us_url = get_contact_us_url(language_code, base_url)
-    footer_urls = get_footer_urls(theme, language_code, base_url)
+    footer_urls = get_footer_urls(language_code, base_url, theme)
     include_csrf_token = request.url_rule and "POST" in request.url_rule.methods
     account_service_url = cookie_session.get(
         "account_service_url", f"{CENSUS_BASE_URL}en/start"
@@ -124,7 +124,7 @@ def get_contact_us_url(language_code: str, base_url: str):
     return f"{base_url}contact-us/"
 
 
-def get_footer_urls(schema_theme: str, language_code: str, base_url: str):
+def get_footer_urls(language_code: str, base_url: str, schema_theme: str):
     if language_code == "cy":
         return {
             "help": f"{base_url}help/sut-i-ateb-y-cwestiynau/help-y-cwestiynau-ar-lein/",

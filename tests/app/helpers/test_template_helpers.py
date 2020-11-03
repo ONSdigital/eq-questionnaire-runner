@@ -40,7 +40,7 @@ def test_get_footer_urls_nisra_theme():
         "terms_and_conditions": f"{base_url}terms-and-conditions/",
     }
 
-    result = get_footer_urls("census-nisra", "en", base_url)
+    result = get_footer_urls("en", base_url, "census-nisra")
 
     assert expected == result
 
@@ -55,7 +55,7 @@ def test_get_footer_urls_census_en():
         "terms_and_conditions": f"{base_url}terms-and-conditions/",
     }
 
-    result = get_footer_urls("census", "en", base_url)
+    result = get_footer_urls("en", base_url, "census")
 
     assert expected == result
 
@@ -69,7 +69,7 @@ def test_get_footer_urls_census_cy():
         "privacy_and_data_protection": f"{base_url}preifatrwydd-a-diogelu-data/",
         "terms_and_conditions": f"{base_url}telerau-ac-amodau/",
     }
-    result = get_footer_urls("census", "cy", base_url)
+    result = get_footer_urls("cy", base_url, "census")
 
     assert expected == result
 
