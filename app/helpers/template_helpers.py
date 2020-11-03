@@ -57,13 +57,14 @@ def render_template(template, **kwargs):
     template = f"{template.lower()}.html"
     theme = cookie_session.get("theme")
     survey_title = lazy_gettext("Census 2021")
-    page_header_context = get_page_header_context(
-        get_locale().language, theme or "census"
-    )
+    language_code = get_locale().language
+    page_header_context = get_page_header_context(language_code, theme or "census")
     page_header_context.update({"title": survey_title})
     google_tag_manager_context = get_google_tag_manager_context()
     cdn_url = f'{current_app.config["CDN_URL"]}{current_app.config["CDN_ASSETS_PATH"]}'
-    contact_us_url = get_contact_us_url(theme, get_locale().language)
+    base_url = get_census_base_url(theme, language_code)
+    contact_us_url = get_contact_us_url(language_code, base_url)
+    footer_urls = get_footer_urls(theme, language_code, base_url)
     include_csrf_token = request.url_rule and "POST" in request.url_rule.methods
     account_service_url = cookie_session.get(
         "account_service_url", f"{CENSUS_BASE_URL}en/start"
@@ -74,6 +75,7 @@ def render_template(template, **kwargs):
         account_service_url=account_service_url,
         account_service_log_out_url=cookie_session.get("account_service_log_out_url"),
         contact_us_url=contact_us_url,
+        footer_urls=footer_urls,
         cookie_settings_url=current_app.config["COOKIE_SETTINGS_URL"],
         page_header=page_header_context,
         theme=_map_theme(theme),
@@ -115,13 +117,40 @@ def get_census_base_url(schema_theme: str, language_code: str) -> str:
     return CENSUS_BASE_URL
 
 
-def get_contact_us_url(schema_theme: str, language_code: str):
-    base_url = get_census_base_url(schema_theme, language_code)
-
+def get_contact_us_url(language_code: str, base_url: str):
     if language_code == "cy":
         return f"{base_url}cysylltu-a-ni/"
 
     return f"{base_url}contact-us/"
+
+
+def get_footer_urls(schema_theme: str, language_code: str, base_url: str):
+    if language_code == "cy":
+        return {
+            "help": f"{base_url}help/sut-i-ateb-y-cwestiynau/help-y-cwestiynau-ar-lein/",
+            "cookies": f"{base_url}cwcis/",
+            "accessibility_statement": f"{base_url}hygyrchedd/",
+            "privacy_and_data_protection": f"{base_url}preifatrwydd-a-diogelu-data/",
+            "terms_and_conditions": f"{base_url}telerau-ac-amodau/",
+        }
+
+    footer_urls = {
+        "cookies": f"{base_url}cookies/",
+        "accessibility_statement": f"{base_url}accessibility/",
+        "privacy_and_data_protection": f"{base_url}privacy-and-data-protection/",
+        "terms_and_conditions": f"{base_url}terms-and-conditions/",
+    }
+
+    if schema_theme == "census-nisra":
+        footer_urls[
+            "help"
+        ] = f"{base_url}help/help-with-the-questions/online-questions-help/"
+    else:
+        footer_urls[
+            "help"
+        ] = f"{base_url}help/how-to-answer-questions/online-questions-help/"
+
+    return footer_urls
 
 
 def safe_content(content):

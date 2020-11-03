@@ -1,62 +1,56 @@
-{% set cookies_url = "https://census.gov.uk/cookies/" %}
-{% set help_url = "https://census.gov.uk/help/how-to-answer-questions/online-questions-help/" %}
+{% from "components/footer/_macro.njk" import onsFooter %}
 
-{% if schema_theme == "census-nisra" %}
-
-  {% set cookies_url = "https://census.gov.uk/ni/cookies/" %}
-  {% set help_url = "https://census.gov.uk/ni/help/help-with-the-questions/online-questions-help/" %}
-  {% set logo = "nisra-logo-black-en" %}
-  {% set alt = "Nisra Logo" %}
-  {% set class_small_logo = "footer__poweredby-img--small" %}
-
-{% elif language_code == "cy" %}
-
-  {% set cookies_url = "https://cyfrifiad.gov.uk/cwcis/" %}
-  {% set help_url = "https://cyfrifiad.gov.uk/help/sut-i-ateb-y-cwestiynau/help-y-cwestiynau-ar-lein/" %}
-
-{% endif %}
-
-{% set footer = {
-  "poweredBy": {
-    "logo": logo,
-    "classes": class_small_logo,
-    "alt": ""
-  }
-} %}
-
-{% do footer | setAttribute("rows", [
-  {
-    "itemsList": [
-      {
-        "text": _("Contact us"),
-        "url": contact_us_url,
-        "target": "_blank"
-      },
-      {
-        "text": _("Help"),
-        "url": help_url,
-        "target": "_blank"
-      }
-    ]
-  },
-  {
-    "itemsList": [
-      {
-        "text": _("Cookies"),
-        "url": cookies_url
-      },
-      {
-        "text": _("Privacy and data protection"),
-        "url": "/privacy",
-        "target": "_blank"
-      },
-      {
-        "text": _("Accessibility"),
-        "url": "/accessibility",
-        "target": "_blank"
-      }
-    ]
-  }
-]) %}
-
-{% do pageConfig | setAttribute("footer", footer) %}
+{{
+    onsFooter({
+        "crest": true,
+        "newTabWarning": _("The following links open in a new tab"),
+        "assetsURL": assetsURL,
+        "rows": [
+            {
+                "itemsList": [
+                    {
+                        "text": _("Help"),
+                        "url": footer_urls.help,
+                        "target": "_blank"
+                    },
+                    {
+                        "text": _("Contact us"),
+                        "url": contact_us_url,
+                        "target": "_blank"
+                    }
+                ]
+            },
+            {
+                "itemsList": [
+                    {
+                        "text": _("Cookies"),
+                        "url": footer_urls.cookies,
+                        "target": "_blank"
+                    },
+                    {
+                        "text": _("Accessibility statement"),
+                        "url": footer_urls.accessibility_statement,
+                        "target": "_blank"
+                    },
+                    {
+                        "text": _("Privacy and data protection"),
+                        "url": footer_urls.privacy_and_data_protection,
+                        "target": "_blank"
+                    },
+                    {
+                        "text": _("Terms and conditions"),
+                        "url": footer_urls.terms_and_conditions,
+                        "target": "_blank"
+                    }
+                ]
+            }
+        ],
+        "copyrightDeclaration": {
+            "copyright": _("Crown copyright and database rights 2020 OS 100019153."),
+            "text": _("Use of address data is subject to the"),
+            "link": _("terms and conditions"),
+            "url": footer_urls.terms_and_conditions,
+            "target": "_blank"
+        }
+    })
+}}
