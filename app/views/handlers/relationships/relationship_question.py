@@ -34,7 +34,14 @@ class RelationshipQuestion(Question):
             return self._schema.get_first_answer_id_for_block(self.unrelated_block_id)
         return None
 
-    @property
+    @cached_property
+    def unrelated_no_answer_value(self):
+        if self.unrelated_answer_id:
+            return self._schema.get_unrelated_block_no_answer_value(
+                self.unrelated_answer_id
+            )
+
+    @cached_property
     def relationship_store(self):
         answer = self._questionnaire_store.answer_store.get_answer(
             self.relationships_answer_id
@@ -57,6 +64,7 @@ class RelationshipQuestion(Question):
             relationships_block_id=self.relationships_block["id"],
             unrelated_block_id=self.unrelated_block_id,
             unrelated_answer_id=self.unrelated_answer_id,
+            unrelated_no_answer_value=self.unrelated_no_answer_value,
         )
 
     def _get_routing_path(self):

@@ -16,6 +16,7 @@ def relationship_router(answers=None, relationships=None):
         relationships_block_id="relationships",
         unrelated_block_id="related-to-anyone-else",
         unrelated_answer_id="anyone-else-answer",
+        unrelated_no_answer_value="No",
     )
 
 
@@ -145,10 +146,6 @@ def test_get_next_location_is_not_unrelated_question_when_less_than_two_relation
         (None, relationship_location("abc123", "jkl123")),
         ("Yes", relationship_location("abc123", "jkl123")),
         ("No", relationship_location("def123", "ghi123")),
-        (
-            "No, they are not related to anyone else",
-            relationship_location("def123", "ghi123"),
-        ),
     ],
 )
 def test_get_next_location_from_unrelated_question(

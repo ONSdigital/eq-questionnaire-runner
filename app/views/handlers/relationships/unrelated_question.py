@@ -1,5 +1,6 @@
 from functools import cached_property
 
+from app.data_models.relationship_store import Relationship
 from app.views.handlers.relationships.relationship_question import RelationshipQuestion
 
 
@@ -38,7 +39,41 @@ class UnrelatedQuestion(RelationshipQuestion):
         return list_model[previous_item_index + 1 :]
 
     def handle_post(self):
+        if answer_action := self._get_answer_action():
+            self.handle_answer_action(answer_action["type"])
+
         self.questionnaire_store_updater.update_answers(
             self.form.data, list_item_id=self.current_location.list_item_id
         )
         self.questionnaire_store_updater.save()
+
+    def handle_answer_action(self, answer_action_type):
+        from_list_item_id = self.current_location.list_item_id
+
+        if answer_action_type == "RemoveUnrelatedRelationships":
+            for to_list_item_id in self.get_remaining_relationships_for_individual():
+                relationship = self.relationship_store.get_relationship(
+                    from_list_item_id, to_list_item_id
+                )
+                if relationship and (
+                    relationship.relationship
+                    == self.relationship_router.UNRELATED_RELATIONSHIP_VALUE
+                ):
+                    self.relationship_store.remove_relationship(
+                        from_list_item_id, to_list_item_id
+                    )
+
+        if answer_action_type == "AddUnrelatedRelationships":
+            for to_list_item_id in self.get_remaining_relationships_for_individual():
+                relationship = Relationship(
+                    list_item_id=from_list_item_id,
+                    to_list_item_id=to_list_item_id,
+                    relationship=self.relationship_router.UNRELATED_RELATIONSHIP_VALUE,
+                )
+                self.relationship_store.add_or_update(relationship)
+
+        if self.relationship_store.is_dirty:
+            self.questionnaire_store_updater.update_relationships_answer(
+                relationship_store=self.relationship_store,
+                relationships_answer_id=self.relationships_answer_id,
+            )

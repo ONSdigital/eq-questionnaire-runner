@@ -539,11 +539,17 @@
                                             "options": [
                                                 {
                                                     "label": "Yes",
-                                                    "value": "Yes"
+                                                    "value": "Yes",
+                                                    "action": {
+                                                        "type": "RemoveUnrelatedRelationships"
+                                                    }
                                                 },
                                                 {
                                                     "label": "No",
-                                                    "value": "No"
+                                                    "value": "No",
+                                                    "action": {
+                                                        "type": "AddUnrelatedRelationships"
+                                                    }
                                                 }
                                             ]
                                         }

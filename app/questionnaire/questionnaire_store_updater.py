@@ -3,7 +3,6 @@ from typing import Dict, Iterable, List, Optional, Tuple, Union
 
 from app.data_models.answer_store import Answer
 from app.data_models.progress_store import CompletionStatus
-from app.data_models.relationship_store import Relationship
 from app.questionnaire.location import Location
 
 
@@ -37,14 +36,8 @@ class QuestionnaireStoreUpdater:
     def update_relationships_answer(
         self,
         relationship_store,
-        form_data,
         relationships_answer_id,
-        list_item_id,
-        to_list_item_id,
     ):
-        relationship_answer = form_data.get(relationships_answer_id)
-        relationship = Relationship(list_item_id, to_list_item_id, relationship_answer)
-        relationship_store.add_or_update(relationship)
         self._answer_store.add_or_update(
             Answer(relationships_answer_id, relationship_store.serialize())
         )
