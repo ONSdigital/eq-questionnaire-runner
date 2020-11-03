@@ -2,13 +2,21 @@
 
 {% if answer.label %}
   {% set checkbox_label = answer.label %}
-{% elif answer.options|length == 1 %}
-  {% set checkbox_label = '' %}
-{% else %}
+{% elif answer.no_label != True and answer.options|length != 1 %}
   {% set checkbox_label = _("Select all that apply") %}
 {% endif %}
 
-{{ onsCheckboxes({
+{% if answer.no_label or answer.options|length == 1 %}
+  {{ onsCheckboxes({
+    "legend": question_title,
+    "id": answer.id,
+    "legendClasses": "u-vh",
+    "checkboxes": map_checkbox_config(form, answer),
+    "mutuallyExclusive": mutuallyExclusive,
+    "error": error
+  }) }}
+{% else %}
+  {{ onsCheckboxes({
   "legend": question_title,
   "id": answer.id,
   "legendClasses": "u-vh",
@@ -17,4 +25,4 @@
   "mutuallyExclusive": mutuallyExclusive,
   "error": error
 }) }}
-
+{% endif %}
