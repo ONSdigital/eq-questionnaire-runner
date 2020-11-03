@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2020-10-30 11:43+0000\n"
+"POT-Creation-Date: 2020-11-03 15:35+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -341,12 +341,12 @@ msgstr ""
 msgid "Please submit this survey to complete it"
 msgstr ""
 
-#: app/views/handlers/confirmation_email.py:15
+#: app/views/handlers/confirmation_email.py:18
 msgid "Confirmation email"
 msgstr ""
 
-#: app/views/handlers/confirmation_email.py:31
-#: app/views/handlers/feedback.py:108 app/views/handlers/question.py:149
+#: app/views/handlers/confirmation_email.py:34
+#: app/views/handlers/feedback.py:110 app/views/handlers/question.py:149
 msgid "Error: {page_title}"
 msgstr ""
 
@@ -519,7 +519,7 @@ msgstr ""
 msgid "Confirm mobile number"
 msgstr ""
 
-#: app/views/handlers/thank_you.py:22 templates/census-thank-you.html:24
+#: app/views/handlers/thank_you.py:19 templates/census-thank-you.html:24
 msgid "Thank you for completing the census"
 msgstr ""
 
@@ -923,25 +923,46 @@ msgstr ""
 msgid "Choose another section and return to this later"
 msgstr ""
 
-#: templates/layouts/configs/_footer.html:31
-msgid "Contact us"
+#: templates/layouts/configs/_footer.html:6
+msgid "The following links open in a new tab"
 msgstr ""
 
-#: templates/layouts/configs/_footer.html:36
+#: templates/layouts/configs/_footer.html:12
 msgid "Help"
 msgstr ""
 
-#: templates/layouts/configs/_footer.html:45
+#: templates/layouts/configs/_footer.html:17
+msgid "Contact us"
+msgstr ""
+
+#: templates/layouts/configs/_footer.html:26
 msgid "Cookies"
 msgstr ""
 
-#: templates/layouts/configs/_footer.html:49 templates/static/privacy.html:4
+#: templates/layouts/configs/_footer.html:31
+#: templates/static/accessibility.html:4 templates/static/accessibility.html:10
+msgid "Accessibility statement"
+msgstr ""
+
+#: templates/layouts/configs/_footer.html:36 templates/static/privacy.html:4
 #: templates/static/privacy.html:10
 msgid "Privacy and data protection"
 msgstr ""
 
-#: templates/layouts/configs/_footer.html:54
-msgid "Accessibility"
+#: templates/layouts/configs/_footer.html:41
+msgid "Terms and conditions"
+msgstr ""
+
+#: templates/layouts/configs/_footer.html:49
+msgid "Crown copyright and database rights 2020 OS 100019153."
+msgstr ""
+
+#: templates/layouts/configs/_footer.html:50
+msgid "Use of address data is subject to the"
+msgstr ""
+
+#: templates/layouts/configs/_footer.html:51
+msgid "terms and conditions"
 msgstr ""
 
 #: templates/layouts/configs/_save-sign-out-button.html:5
@@ -978,15 +999,15 @@ msgstr ""
 msgid "Send confirmation"
 msgstr ""
 
-#: templates/partials/feedback-call-to-action.html:7
+#: templates/partials/feedback-call-to-action.html:6
 msgid "What do you think about this service?"
 msgstr ""
 
-#: templates/partials/feedback-call-to-action.html:8
+#: templates/partials/feedback-call-to-action.html:7
 msgid "Your comments will help us make improvements"
 msgstr ""
 
-#: templates/partials/feedback-call-to-action.html:10
+#: templates/partials/feedback-call-to-action.html:9
 msgid "Give feedback"
 msgstr ""
 
@@ -1230,10 +1251,6 @@ msgstr ""
 
 #: templates/partials/summary/list-summary.html:16
 msgid "Remove {item_name}"
-msgstr ""
-
-#: templates/static/accessibility.html:4 templates/static/accessibility.html:10
-msgid "Accessibility statement"
 msgstr ""
 
 #: templates/static/accessibility.html:12
