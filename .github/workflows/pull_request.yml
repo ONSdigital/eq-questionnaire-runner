@@ -11,7 +11,7 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - run: |
-          echo "name=PYTHON_VERSION::$(cat .python-version)" >> $GITHUB_ENV
+          echo "PYTHON_VERSION=$(cat .python-version)" >> $GITHUB_ENV
       - uses: actions/setup-python@v2
         with:
           python-version: ${{ env.PYTHON_VERSION }}
@@ -53,7 +53,7 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - run: |
-          echo "name=PYTHON_VERSION::$(cat .python-version)" >> $GITHUB_ENV
+          echo "PYTHON_VERSION=$(cat .python-version)" >> $GITHUB_ENV
       - uses: actions/setup-python@v2
         with:
           python-version: ${{ env.PYTHON_VERSION }}
@@ -107,7 +107,7 @@ jobs:
         with:
           node-version: "12.14.1"
       - run: |
-          echo "name=PYTHON_VERSION::$(cat .python-version)" >> $GITHUB_ENV
+          echo "PYTHON_VERSION=$(cat .python-version)" >> $GITHUB_ENV
       - uses: actions/setup-python@v2
         with:
           python-version: ${{ env.PYTHON_VERSION }}
@@ -152,8 +152,8 @@ jobs:
       - name: Set Tag and SHA
         run: |
           CLEAN_TAG=$(echo "${{ github.event.pull_request.head.ref  }}"  | tr / -)
-          echo "name=TAG::$CLEAN_TAG" >> $GITHUB_ENV
-          echo "name=SHA::${{ github.event.pull_request.head.sha }}" >> $GITHUB_ENV
+          echo "TAG=$CLEAN_TAG" >> $GITHUB_ENV
+          echo "SHA=${{ github.event.pull_request.head.sha }}" >> $GITHUB_ENV
       - name: Write app version
         run: |
           echo "Writing SHA $SHA to .application_version"
