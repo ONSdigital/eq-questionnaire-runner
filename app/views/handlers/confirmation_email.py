@@ -16,17 +16,14 @@ from app.helpers.url_param_serializer import URLParamSerializer
 from app.publisher.exceptions import PublicationFailed
 from app.questionnaire import QuestionnaireSchema
 from app.views.contexts.email_form_context import build_confirmation_email_form_context
-from app.views.handlers.fulfilment_request import (
-    FulfilmentRequest,
-    FulfilmentRequestPublicationFailed,
-)
+from app.views.handlers.fulfilment_request import FulfilmentRequest
 
 
 class ConfirmationEmailLimitReached(Exception):
     pass
 
 
-class ConfirmationEmailFulfilmentRequestFailed(Exception):
+class ConfirmationEmailFulfilmentRequestPublicationFailed(Exception):
     pass
 
 
@@ -73,7 +70,7 @@ class ConfirmationEmail:
                 topic_id, message=fulfilment_request.payload
             )
         except PublicationFailed:
-            raise FulfilmentRequestPublicationFailed(invoked_by=self)
+            raise ConfirmationEmailFulfilmentRequestPublicationFailed
 
     def handle_post(self):
         self._publish_fulfilment_request()
