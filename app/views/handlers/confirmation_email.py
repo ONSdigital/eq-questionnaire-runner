@@ -37,10 +37,10 @@ class ConfirmationEmail:
         schema: QuestionnaireSchema,
         page_title: Optional[str] = None,
     ):
-        self._session_store = session_store
-        if self.is_limit_reached(self._session_store.session_data):
+        if self.is_limit_reached(session_store.session_data):
             raise ConfirmationEmailLimitReached
 
+        self._session_store = session_store
         self._schema = schema
         self._page_title = page_title
 

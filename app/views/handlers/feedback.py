@@ -81,15 +81,14 @@ class Feedback:
         session_store: SessionStore,
         form_data: Mapping,
     ):
-        self._schema = schema
-        self._session_store = session_store
-
-        if not self.is_enabled(self._schema):
+        if not self.is_enabled(schema):
             raise FeedbackNotEnabled
 
-        if self.is_limit_reached(self._session_store.session_data):
+        if self.is_limit_reached(session_store.session_data):
             raise FeedbackLimitReached
 
+        self._schema = schema
+        self._session_store = session_store
         self._form_data = form_data
 
     @cached_property
