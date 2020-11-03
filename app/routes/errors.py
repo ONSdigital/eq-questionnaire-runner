@@ -29,7 +29,7 @@ logger = get_logger()
 errors_blueprint = Blueprint("errors", __name__)
 
 
-def log_error(error, status_code):
+def log_exception(exception, status_code):
     metadata = get_metadata(current_user)
     if metadata:
         logger.bind(tx_id=metadata["tx_id"])
@@ -38,7 +38,7 @@ def log_error(error, status_code):
 
     log(
         "an error has occurred",
-        exc_info=error,
+        exc_info=exception,
         url=request.url,
         status_code=status_code,
     )
@@ -58,8 +58,8 @@ def _render_error_page(status_code, template=None, **kwargs):
 @errors_blueprint.app_errorhandler(CSRFError)
 @errors_blueprint.app_errorhandler(NoTokenException)
 @errors_blueprint.app_errorhandler(NoQuestionnaireStateException)
-def unauthorized(error=None):
-    log_error(error, 401)
+def unauthorized(exception=None):
+    log_exception(exception, 401)
     if EQ_SESSION_ID not in cookie_session:
         return _render_error_page(401, "no-cookie")
     if cookie_session.get("submitted", False):
@@ -68,33 +68,32 @@ def unauthorized(error=None):
 
 
 @errors_blueprint.app_errorhandler(InvalidTokenException)
-def forbidden(error=None):
-    log_error(error, 403)
+def forbidden(exception=None):
+    log_exception(exception, 403)
     return _render_error_page(403)
 
 
 @errors_blueprint.app_errorhandler(405)
-def method_not_allowed(error=None):
-    log_error(error, 405)
+def method_not_allowed(exception=None):
+    log_exception(exception, 405)
     return _render_error_page(405, template="404")
 
 
 @errors_blueprint.app_errorhandler(403)
 @errors_blueprint.app_errorhandler(404)
-def http_exception(error):
-    log_error(error, error.code)
-    return _render_error_page(error.code)
+def http_exception(exception):
+    log_exception(exception, exception.code)
+    return _render_error_page(exception.code)
 
 
 @errors_blueprint.app_errorhandler(Exception)
-def internal_server_error(error=None):
+def internal_server_error(exception=None):
     try:
-        log_error(error, 500)
+        log_exception(exception, 500)
         return _render_error_page(500)
     except Exception:  # pylint:disable=broad-except
-        logger.error(
+        logger.exception(
             "an error has occurred when rendering 500 error",
-            exc_info=True,
             url=request.url,
             status_code=500,
         )
@@ -102,8 +101,8 @@ def internal_server_error(error=None):
 
 
 @errors_blueprint.app_errorhandler(IndividualResponseLimitReached)
-def too_many_individual_response_requests(error=None):
-    log_error(error, 429)
+def too_many_individual_response_requests(exception=None):
+    log_exception(exception, 429)
     title = lazy_gettext(
         "You have reached the maximum number of individual access codes"
     )
@@ -121,8 +120,8 @@ def too_many_individual_response_requests(error=None):
 
 
 @errors_blueprint.app_errorhandler(FeedbackLimitReached)
-def too_many_feedback_requests(error=None):
-    log_error(error, 429)
+def too_many_feedback_requests(exception=None):
+    log_exception(exception, 429)
     title = lazy_gettext(
         "You have reached the maximum number of times for submitting feedback"
     )
@@ -140,16 +139,16 @@ def too_many_feedback_requests(error=None):
 
 
 @errors_blueprint.app_errorhandler(SubmissionFailedException)
-def submission_failed(error=None):
-    log_error(error, 500)
+def submission_failed(exception=None):
+    log_exception(exception, 500)
     return _render_error_page(500, template="submission-failed")
 
 
 @errors_blueprint.app_errorhandler(FulfilmentRequestPublicationFailed)
-def fulfilment_request_publication_failed(error):
-    log_error(error, 500)
+def fulfilment_request_publication_failed(exception):
+    log_exception(exception, 500)
 
-    if isinstance(error.invoked_by, ConfirmationEmail):
+    if isinstance(exception.invoked_by, ConfirmationEmail):
         title = lazy_gettext(
             "Sorry, there was a problem sending the confirmation email"
         )
@@ -161,7 +160,7 @@ def fulfilment_request_publication_failed(error):
         contact_us_message = lazy_gettext(
             "If this problem keeps happening, please  <a href='{contact_us_url}'>contact us</a> for help."
         )
-    elif isinstance(error.invoked_by, IndividualResponseHandler):
+    elif isinstance(exception.invoked_by, IndividualResponseHandler):
         if "mobile_number" in request.args:
             blueprint_method = (
                 "individual_response.individual_response_text_message_confirm"
