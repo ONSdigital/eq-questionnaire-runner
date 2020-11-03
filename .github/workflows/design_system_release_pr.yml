@@ -13,8 +13,8 @@ jobs:
           ref: 'master'
       - run: |
           TAG=$(curl https://api.github.com/repos/ONSdigital/design-system/releases/latest -s | jq .name -r)
-          echo "::set-env name=DESIGN_SYSTEM_VERSION::$TAG"
-          echo "::set-env name=CURRENT_DESIGN_SYSTEM_VERSION::$(cat .design-system-version)"
+          echo "name=DESIGN_SYSTEM_VERSION::$TAG" >> $GITHUB_ENV
+          echo "name=CURRENT_DESIGN_SYSTEM_VERSION::$(cat .design-system-version)" >> $GITHUB_ENV
       - if: ${{ env.CURRENT_DESIGN_SYSTEM_VERSION }} != ${{ env.DESIGN_SYSTEM_VERSION }}
         name: Update and commit design system version
         run: |
