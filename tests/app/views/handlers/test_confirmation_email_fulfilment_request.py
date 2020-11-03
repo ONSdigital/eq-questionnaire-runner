@@ -49,19 +49,28 @@ def test_confirmation_email_fulfilment_request_payload(session_data, schema):
 
     confirmation_email_json_payload = json.loads(fulfilment_request.payload)
 
-    confirmation_id = confirmation_email_json_payload.pop("id")
-    assert is_valid_uuid(confirmation_id, version=4) is True
+    transaction_id = confirmation_email_json_payload["event"].pop("transactionId")
+    assert is_valid_uuid(transaction_id, version=4) is True
 
     expected_payload = {
-        "email_address": email_address,
-        "form_type": "H",
-        "region_code": "GB-WLS",
-        "questionnaire_id": "987",
-        "tx_id": "123",
-        "language_code": "cy",
-        "display_address": "68 Abingdon Road, Goathill",
-        "submitted_at": datetime.now(tzutc()).isoformat(),
-        "datetime": datetime.now(tzutc()).isoformat(),
+        "event": {
+            "type": "FULFILMENT_REQUESTED",
+            "source": "QUESTIONNAIRE_RUNNER",
+            "channel": "EQ",
+            "dateTime": datetime.now(tz=tzutc()).isoformat(),
+        },
+        "payload": {
+            "fulfilmentRequest": {
+                "email_address": email_address,
+                "form_type": "H",
+                "region_code": "GB-WLS",
+                "questionnaire_id": "987",
+                "tx_id": "123",
+                "language_code": "cy",
+                "display_address": "68 Abingdon Road, Goathill",
+                "submitted_at": datetime.now(tz=tzutc()).isoformat(),
+            }
+        },
     }
 
     assert confirmation_email_json_payload == expected_payload

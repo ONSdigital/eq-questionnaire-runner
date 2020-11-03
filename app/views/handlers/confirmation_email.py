@@ -94,16 +94,25 @@ class ConfirmationEmailFulfilmentRequest(FulfilmentRequest):
     @property
     def payload(self) -> bytes:
         message = {
-            "email_address": self.email_address,
-            "form_type": self.schema.form_type,
-            "region_code": self.schema.region_code,
-            "questionnaire_id": self.session_data.questionnaire_id,
-            "tx_id": self.session_data.tx_id,
-            "language_code": self.session_data.language_code,
-            "display_address": self.session_data.display_address,
-            "submitted_at": self.session_data.submitted_time,
-            "datetime": datetime.now(tzutc()).isoformat(),
-            "id": str(uuid4()),
+            "event": {
+                "type": "FULFILMENT_REQUESTED",
+                "source": "QUESTIONNAIRE_RUNNER",
+                "channel": "EQ",
+                "dateTime": datetime.now(tz=tzutc()).isoformat(),
+                "transactionId": str(uuid4()),
+            },
+            "payload": {
+                "fulfilmentRequest": {
+                    "email_address": self.email_address,
+                    "form_type": self.schema.form_type,
+                    "region_code": self.schema.region_code,
+                    "questionnaire_id": self.session_data.questionnaire_id,
+                    "tx_id": self.session_data.tx_id,
+                    "language_code": self.session_data.language_code,
+                    "display_address": self.session_data.display_address,
+                    "submitted_at": self.session_data.submitted_time,
+                }
+            },
         }
 
         return json.dumps(message).encode("utf-8")
