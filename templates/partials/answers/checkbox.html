@@ -1,6 +1,6 @@
 {% from "components/checkboxes/_macro.njk" import onsCheckboxes %}
 
-{% if answer.show_label == False or answer.options|length == 1 %}
+{% if answer.label == None or answer.options|length == 1 %}
   {{ onsCheckboxes({
     "legend": question_title,
     "id": answer.id,

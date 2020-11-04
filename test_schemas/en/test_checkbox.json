@@ -40,7 +40,7 @@
                                     {
                                         "id": "show-label-checkbox-answer",
                                         "mandatory": false,
-                                        "show_label": false,
+                                        "label": null,
                                         "options": [
                                             {
                                                 "label": "None",
