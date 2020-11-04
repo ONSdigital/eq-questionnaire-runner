@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2020-10-30 11:43+0000\n"
+"POT-Creation-Date: 2020-11-04 12:58+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -341,12 +341,12 @@ msgstr ""
 msgid "Please submit this survey to complete it"
 msgstr ""
 
-#: app/views/handlers/confirmation_email.py:15
+#: app/views/handlers/confirmation_email.py:18
 msgid "Confirmation email"
 msgstr ""
 
-#: app/views/handlers/confirmation_email.py:31
-#: app/views/handlers/feedback.py:108 app/views/handlers/question.py:149
+#: app/views/handlers/confirmation_email.py:34
+#: app/views/handlers/feedback.py:110 app/views/handlers/question.py:149
 msgid "Error: {page_title}"
 msgstr ""
 
@@ -519,7 +519,7 @@ msgstr ""
 msgid "Confirm mobile number"
 msgstr ""
 
-#: app/views/handlers/thank_you.py:22 templates/census-thank-you.html:24
+#: app/views/handlers/thank_you.py:19 templates/census-thank-you.html:24
 msgid "Thank you for completing the census"
 msgstr ""
 
@@ -707,7 +707,7 @@ msgid "Return to your account"
 msgstr ""
 
 #: templates/summary.html:6
-msgid "Summary"
+msgid "Submit census"
 msgstr ""
 
 #: templates/summary.html:28
@@ -978,15 +978,15 @@ msgstr ""
 msgid "Send confirmation"
 msgstr ""
 
-#: templates/partials/feedback-call-to-action.html:7
+#: templates/partials/feedback-call-to-action.html:6
 msgid "What do you think about this service?"
 msgstr ""
 
-#: templates/partials/feedback-call-to-action.html:8
+#: templates/partials/feedback-call-to-action.html:7
 msgid "Your comments will help us make improvements"
 msgstr ""
 
-#: templates/partials/feedback-call-to-action.html:10
+#: templates/partials/feedback-call-to-action.html:9
 msgid "Give feedback"
 msgstr ""
 
