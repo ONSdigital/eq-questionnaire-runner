@@ -190,7 +190,7 @@ def confirmation_email_fulfilment_request_publication_failed(exception):
         "You can try to <a href='{retry_url}'>send the email again</a>."
     ).format(retry_url=request.url)
     contact_us_message = lazy_gettext(
-        "If this problem keeps happening, please  <a href='{contact_us_url}'>contact us</a> for help."
+        "If this problem keeps happening, please <a href='{contact_us_url}'>contact us</a> for help."
     )
 
     return _render_error_page(
