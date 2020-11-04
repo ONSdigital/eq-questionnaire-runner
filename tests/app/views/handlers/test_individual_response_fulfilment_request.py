@@ -25,20 +25,12 @@ def test_sms_fulfilment_request_payload():
         metadata, DUMMY_MOBILE_NUMBER
     )
 
-    assert isinstance(fulfilment_request.payload, bytes)
+    assert isinstance(fulfilment_request.message, bytes)
 
-    sms_json_payload = json.loads(fulfilment_request.payload)
-    transaction_id = sms_json_payload["event"].pop("transactionId")
-    individual_case_id = sms_json_payload["payload"]["fulfilmentRequest"].pop(
-        "individualCaseId"
-    )
-    case_id = sms_json_payload["payload"]["fulfilmentRequest"].pop("caseId")
+    sms_json_message = json.loads(fulfilment_request.message)
+    validate_uuids_in_message(sms_json_message)
 
-    assert is_valid_uuid(transaction_id, version=4) is True
-    assert is_valid_uuid(individual_case_id, version=4) is True
-    assert is_valid_uuid(case_id, version=4) is True
-
-    expected_sms_payload = {
+    expected_sms_message = {
         "event": {
             "type": "FULFILMENT_REQUESTED",
             "source": "QUESTIONNAIRE_RUNNER",
@@ -52,28 +44,20 @@ def test_sms_fulfilment_request_payload():
             }
         },
     }
-    assert sms_json_payload == expected_sms_payload
+    assert sms_json_message == expected_sms_message
 
 
 @freeze_time(datetime.utcnow().isoformat())
-def test_postal_fulfilment_request_payload():
+def test_postal_fulfilment_request_message():
     metadata = {"region_code": "GB-ENG", "case_id": str(uuid4())}
     fulfilment_request = IndividualResponseFulfilmentRequest(metadata)
 
-    assert isinstance(fulfilment_request.payload, bytes)
+    assert isinstance(fulfilment_request.message, bytes)
 
-    postal_json_payload = json.loads(fulfilment_request.payload)
-    transaction_id = postal_json_payload["event"].pop("transactionId")
-    individual_case_id = postal_json_payload["payload"]["fulfilmentRequest"].pop(
-        "individualCaseId"
-    )
-    case_id = postal_json_payload["payload"]["fulfilmentRequest"].pop("caseId")
+    postal_json_message = json.loads(fulfilment_request.message)
+    validate_uuids_in_message(postal_json_message)
 
-    assert is_valid_uuid(transaction_id, version=4) is True
-    assert is_valid_uuid(individual_case_id, version=4) is True
-    assert is_valid_uuid(case_id, version=4) is True
-
-    expected_sms_payload = {
+    expected_sms_message = {
         "event": {
             "type": "FULFILMENT_REQUESTED",
             "source": "QUESTIONNAIRE_RUNNER",
@@ -87,7 +71,19 @@ def test_postal_fulfilment_request_payload():
             }
         },
     }
-    assert postal_json_payload == expected_sms_payload
+    assert postal_json_message == expected_sms_message
+
+
+def validate_uuids_in_message(json_message):
+    transaction_id = json_message["event"].pop("transactionId")
+    individual_case_id = json_message["payload"]["fulfilmentRequest"].pop(
+        "individualCaseId"
+    )
+    case_id = json_message["payload"]["fulfilmentRequest"].pop("caseId")
+
+    assert is_valid_uuid(transaction_id, version=4) is True
+    assert is_valid_uuid(individual_case_id, version=4) is True
+    assert is_valid_uuid(case_id, version=4) is True
 
 
 @freeze_time(datetime.utcnow().isoformat())
@@ -95,11 +91,11 @@ def test_individual_case_id_not_present_when_case_type_spg():
     metadata = {"region_code": "GB-ENG", "case_id": str(uuid4()), "case_type": "SPG"}
     fulfilment_request = IndividualResponseFulfilmentRequest(metadata)
 
-    assert isinstance(fulfilment_request.payload, bytes)
+    assert isinstance(fulfilment_request.message, bytes)
 
-    json_payload = json.loads(fulfilment_request.payload)
+    json_message = json.loads(fulfilment_request.message)
 
-    assert "individualCaseId" not in json_payload["payload"]["fulfilmentRequest"]
+    assert "individualCaseId" not in json_message["payload"]["fulfilmentRequest"]
 
 
 @pytest.mark.parametrize(
@@ -115,10 +111,10 @@ def test_fulfilment_code_for_sms(region_code, expected_fulfilment_code):
     fulfilment_request = IndividualResponseFulfilmentRequest(
         metadata, DUMMY_MOBILE_NUMBER
     )
-    json_payload = json.loads(fulfilment_request.payload)
+    json_message = json.loads(fulfilment_request.message)
 
     assert (
-        json_payload["payload"]["fulfilmentRequest"]["fulfilmentCode"]
+        json_message["payload"]["fulfilmentRequest"]["fulfilmentCode"]
         == expected_fulfilment_code
     )
 
@@ -134,9 +130,9 @@ def test_fulfilment_code_for_sms(region_code, expected_fulfilment_code):
 def test_fulfilment_code_for_postal(region_code, expected_fulfilment_code):
     metadata = {"region_code": region_code, "case_id": str(uuid4()), "case_type": "SPG"}
     fulfilment_request = IndividualResponseFulfilmentRequest(metadata)
-    json_payload = json.loads(fulfilment_request.payload)
+    json_message = json.loads(fulfilment_request.message)
 
     assert (
-        json_payload["payload"]["fulfilmentRequest"]["fulfilmentCode"]
+        json_message["payload"]["fulfilmentRequest"]["fulfilmentCode"]
         == expected_fulfilment_code
     )

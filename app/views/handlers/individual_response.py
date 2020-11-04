@@ -1,10 +1,7 @@
-import json
-from datetime import datetime
 from functools import cached_property
 from typing import List, Mapping, Optional
 from uuid import uuid4
 
-from dateutil.tz import tzutc
 from flask import current_app, redirect
 from flask.helpers import url_for
 from flask_babel import lazy_gettext
@@ -195,7 +192,7 @@ class IndividualResponseHandler:
         )
         try:
             return current_app.eq["publisher"].publish(
-                topic_id, message=fulfilment_request.payload
+                topic_id, message=fulfilment_request.message
             )
         except PublicationFailed:
             raise IndividualResponseFulfilmentRequestPublicationFailed
@@ -925,24 +922,12 @@ class IndividualResponseFulfilmentRequest(FulfilmentRequest):
         region_code = self._metadata["region_code"]
         return fulfilment_codes[self._fulfilment_type][region_code]
 
-    @property
-    def payload(self) -> bytes:
-        message = {
-            "event": {
-                "type": "FULFILMENT_REQUESTED",
-                "source": "QUESTIONNAIRE_RUNNER",
-                "channel": "EQ",
-                "dateTime": datetime.now(tz=tzutc()).isoformat(),
-                "transactionId": str(uuid4()),
-            },
-            "payload": {
-                "fulfilmentRequest": {
-                    **self._get_individual_case_id_mapping(),
-                    "fulfilmentCode": self._get_fulfilment_code(),
-                    "caseId": self._metadata["case_id"],
-                    "contact": self._get_contact_mapping(),
-                }
-            },
+    def _payload(self) -> Mapping:
+        return {
+            "fulfilmentRequest": {
+                **self._get_individual_case_id_mapping(),
+                "fulfilmentCode": self._get_fulfilment_code(),
+                "caseId": self._metadata["case_id"],
+                "contact": self._get_contact_mapping(),
+            }
         }
-
-        return json.dumps(message).encode("utf-8")

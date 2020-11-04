@@ -1,11 +1,7 @@
-import json
 from dataclasses import dataclass
-from datetime import datetime
 from functools import cached_property
-from typing import Optional
-from uuid import uuid4
+from typing import Mapping, Optional
 
-from dateutil.tz import tzutc
 from flask import current_app
 from flask_babel import gettext, lazy_gettext
 
@@ -67,7 +63,7 @@ class ConfirmationEmail:
         )
         try:
             return current_app.eq["publisher"].publish(
-                topic_id, message=fulfilment_request.payload
+                topic_id, message=fulfilment_request.message
             )
         except PublicationFailed:
             raise ConfirmationEmailFulfilmentRequestPublicationFailed
@@ -91,28 +87,16 @@ class ConfirmationEmailFulfilmentRequest(FulfilmentRequest):
     session_data: SessionData
     schema: QuestionnaireSchema
 
-    @property
-    def payload(self) -> bytes:
-        message = {
-            "event": {
-                "type": "FULFILMENT_REQUESTED",
-                "source": "QUESTIONNAIRE_RUNNER",
-                "channel": "EQ",
-                "dateTime": datetime.now(tz=tzutc()).isoformat(),
-                "transactionId": str(uuid4()),
-            },
-            "payload": {
-                "fulfilmentRequest": {
-                    "email_address": self.email_address,
-                    "form_type": self.schema.form_type,
-                    "region_code": self.schema.region_code,
-                    "questionnaire_id": self.session_data.questionnaire_id,
-                    "tx_id": self.session_data.tx_id,
-                    "language_code": self.session_data.language_code,
-                    "display_address": self.session_data.display_address,
-                    "submitted_at": self.session_data.submitted_time,
-                }
-            },
+    def _payload(self) -> Mapping:
+        return {
+            "fulfilmentRequest": {
+                "email_address": self.email_address,
+                "form_type": self.schema.form_type,
+                "region_code": self.schema.region_code,
+                "questionnaire_id": self.session_data.questionnaire_id,
+                "tx_id": self.session_data.tx_id,
+                "language_code": self.session_data.language_code,
+                "display_address": self.session_data.display_address,
+                "submitted_at": self.session_data.submitted_time,
+            }
         }
-
-        return json.dumps(message).encode("utf-8")

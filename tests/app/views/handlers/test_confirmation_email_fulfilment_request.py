@@ -39,20 +39,20 @@ def schema():
 
 
 @freeze_time(time_to_freeze)
-def test_confirmation_email_fulfilment_request_payload(session_data, schema):
+def test_confirmation_email_fulfilment_request_message(session_data, schema):
     email_address = "name@example.com"
     fulfilment_request = ConfirmationEmailFulfilmentRequest(
         email_address, session_data, schema
     )
 
-    assert isinstance(fulfilment_request.payload, bytes)
+    assert isinstance(fulfilment_request.message, bytes)
 
-    confirmation_email_json_payload = json.loads(fulfilment_request.payload)
+    confirmation_email_json_message = json.loads(fulfilment_request.message)
 
-    transaction_id = confirmation_email_json_payload["event"].pop("transactionId")
+    transaction_id = confirmation_email_json_message["event"].pop("transactionId")
     assert is_valid_uuid(transaction_id, version=4) is True
 
-    expected_payload = {
+    expected_message = {
         "event": {
             "type": "FULFILMENT_REQUESTED",
             "source": "QUESTIONNAIRE_RUNNER",
@@ -73,4 +73,4 @@ def test_confirmation_email_fulfilment_request_payload(session_data, schema):
         },
     }
 
-    assert confirmation_email_json_payload == expected_payload
+    assert confirmation_email_json_message == expected_message
