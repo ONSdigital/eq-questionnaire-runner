@@ -12,7 +12,7 @@ class TestQuestionnaireHub(IntegrationTestCase):
 
         # Then I should be redirected to the first incomplete question
         self.assertInBody("Which pizza toppings would you like?")
-        self.assertInUrl("show-label-checkbox")
+        self.assertInUrl("null-label-checkbox")
 
     def test_redirect_to_hub_when_section_complete(self):
         # Given the hub is enabled
@@ -33,7 +33,7 @@ class TestQuestionnaireHub(IntegrationTestCase):
         self.get("/questionnaire/sections/default-section/")
 
         # Then I should be redirected to the correct location for that section
-        self.assertEqualUrl("/questionnaire/show-label-checkbox/")
+        self.assertEqualUrl("/questionnaire/null-label-checkbox/")
 
     def test_section_url_when_hub_enabled_and_section_not_started(self):
         # Given the hub is enabled

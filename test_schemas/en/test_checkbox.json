@@ -34,11 +34,11 @@
                     "blocks": [
                         {
                             "type": "Question",
-                            "id": "show-label-checkbox",
+                            "id": "null-label-checkbox",
                             "question": {
                                 "answers": [
                                     {
-                                        "id": "show-label-checkbox-answer",
+                                        "id": "null-label-checkbox-answer",
                                         "mandatory": false,
                                         "label": null,
                                         "options": [
@@ -79,7 +79,7 @@
                                                 "value": "Other",
                                                 "detail_answer": {
                                                     "mandatory": true,
-                                                    "id": "show-label-other-answer-mandatory",
+                                                    "id": "null-label-other-answer-mandatory",
                                                     "label": "Please specify other",
                                                     "type": "TextField"
                                                 }
@@ -88,7 +88,7 @@
                                         "type": "Checkbox"
                                     }
                                 ],
-                                "id": "show-label-checkbox-question",
+                                "id": "null-label-checkbox-question",
                                 "title": "Which pizza toppings would you like?",
                                 "type": "General"
                             }

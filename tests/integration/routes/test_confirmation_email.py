@@ -83,7 +83,7 @@ class TestEmailConfirmation(IntegrationTestCase):
         self.launchSurvey("test_checkbox")
 
         # When I complete the questionnaire
-        self.post({"show-label-checkbox-answer": "Cheese"})
+        self.post({"null-label-checkbox-answer": "Cheese"})
         self.post({"mandatory-checkbox-answer": "Tuna"})
         self.post({"non-mandatory-checkbox-answer": "Pineapple"})
         self.post({"single-checkbox-answer": "Estimate"})

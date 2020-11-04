@@ -661,7 +661,7 @@ class TestRouter(AppContextTestCase):  # pylint: disable=too-many-public-methods
         expected_path = [
             RoutingPath(
                 [
-                    "show-label-checkbox",
+                    "null-label-checkbox",
                     "mandatory-checkbox",
                     "non-mandatory-checkbox",
                     "single-checkbox",

@@ -215,7 +215,7 @@ class TestPathFinder(AppContextTestCase):
         section_id = schema.get_section_id_for_block_id("mandatory-checkbox")
         expected_path = RoutingPath(
             [
-                "show-label-checkbox",
+                "null-label-checkbox",
                 "mandatory-checkbox",
                 "non-mandatory-checkbox",
                 "single-checkbox",
@@ -224,7 +224,7 @@ class TestPathFinder(AppContextTestCase):
             section_id="default-section",
         )
 
-        answer_1 = Answer(answer_id="show-label-checkbox-answer", value="Tuna")
+        answer_1 = Answer(answer_id="null-label-checkbox-answer", value="Tuna")
         answer_2 = Answer(answer_id="mandatory-checkbox-answer", value="Cheese")
         answer_3 = Answer(answer_id="non-mandatory-checkbox-answer", value="deep pan")
         answer_4 = Answer(answer_id="single-checkbox-answer", value="Estimate")
