@@ -1,9 +1,10 @@
-{% from 'components/panel/_macro.njk' import onsPanel %}
+{% from "components/footer/_macro.njk" import onsFooter %}
 
-{% call onsPanel({
-  "id": "submission-warning",
-  "type": "warn"
+{%  set poweredBy = None %}
+{{
+    onsFooter({
+        "assetsURL": assetsURL,
+        "footerWarning": _("Make sure you <a href='/sign-out'>leave this page</a> or close your browser if using a shared device")
     })
-  %}
-    {{ _("Make sure you <a href='{sign_out_url}'>leave this page</a> or close your browser if using a shared device").format(sign_out_url=sign_out_url)  }}
-{% endcall %}
+}}
+
