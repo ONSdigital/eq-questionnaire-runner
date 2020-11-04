@@ -6,7 +6,6 @@ from dateutil.tz import tzutc
 from freezegun import freeze_time
 
 from app.data_models.session_data import SessionData
-from app.helpers.uuid_helper import is_valid_uuid
 from app.questionnaire import QuestionnaireSchema
 from app.views.handlers.confirmation_email import ConfirmationEmailFulfilmentRequest
 
@@ -45,32 +44,19 @@ def test_confirmation_email_fulfilment_request_message(session_data, schema):
         email_address, session_data, schema
     )
 
-    assert isinstance(fulfilment_request.message, bytes)
-
     confirmation_email_json_message = json.loads(fulfilment_request.message)
 
-    transaction_id = confirmation_email_json_message["event"].pop("transactionId")
-    assert is_valid_uuid(transaction_id, version=4) is True
-
-    expected_message = {
-        "event": {
-            "type": "FULFILMENT_REQUESTED",
-            "source": "QUESTIONNAIRE_RUNNER",
-            "channel": "EQ",
-            "dateTime": datetime.now(tz=tzutc()).isoformat(),
-        },
-        "payload": {
-            "fulfilmentRequest": {
-                "email_address": email_address,
-                "form_type": "H",
-                "region_code": "GB-WLS",
-                "questionnaire_id": "987",
-                "tx_id": "123",
-                "language_code": "cy",
-                "display_address": "68 Abingdon Road, Goathill",
-                "submitted_at": datetime.now(tz=tzutc()).isoformat(),
-            }
-        },
+    expected_payload = {
+        "fulfilmentRequest": {
+            "email_address": email_address,
+            "form_type": "H",
+            "region_code": "GB-WLS",
+            "questionnaire_id": "987",
+            "tx_id": "123",
+            "language_code": "cy",
+            "display_address": "68 Abingdon Road, Goathill",
+            "submitted_at": datetime.now(tz=tzutc()).isoformat(),
+        }
     }
 
-    assert confirmation_email_json_message == expected_message
+    assert confirmation_email_json_message["payload"] == expected_payload

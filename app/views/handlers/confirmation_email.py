@@ -5,14 +5,12 @@ from typing import Mapping, Optional
 from flask import current_app
 from flask_babel import gettext, lazy_gettext
 
-from app.data_models.session_data import SessionData
-from app.data_models.session_store import SessionStore
+from app.data_models import FulfilmentRequest, SessionData, SessionStore
 from app.forms.email_form import EmailForm
 from app.helpers.url_param_serializer import URLParamSerializer
 from app.publisher.exceptions import PublicationFailed
 from app.questionnaire import QuestionnaireSchema
 from app.views.contexts.email_form_context import build_confirmation_email_form_context
-from app.views.handlers.fulfilment_request import FulfilmentRequest
 
 
 class ConfirmationEmailLimitReached(Exception):

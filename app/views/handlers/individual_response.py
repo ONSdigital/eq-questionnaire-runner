@@ -7,7 +7,7 @@ from flask.helpers import url_for
 from flask_babel import lazy_gettext
 from werkzeug.exceptions import NotFound
 
-from app.data_models.progress_store import CompletionStatus
+from app.data_models import CompletionStatus, FulfilmentRequest
 from app.forms.questionnaire_form import generate_form
 from app.forms.validators import sanitise_mobile_number
 from app.helpers.template_helpers import render_template
@@ -16,7 +16,6 @@ from app.publisher.exceptions import PublicationFailed
 from app.questionnaire.placeholder_renderer import PlaceholderRenderer
 from app.questionnaire.router import Router
 from app.views.contexts.question import build_question_context
-from app.views.handlers.fulfilment_request import FulfilmentRequest
 
 GB_ENG_REGION_CODE = "GB-ENG"
 GB_WLS_REGION_CODE = "GB-WLS"
