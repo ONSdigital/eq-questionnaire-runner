@@ -1,16 +1,13 @@
-import json
-from datetime import datetime
 from functools import cached_property
 from typing import List, Mapping, Optional
 from uuid import uuid4
 
-from dateutil.tz import tzutc
 from flask import current_app, redirect
 from flask.helpers import url_for
 from flask_babel import lazy_gettext
 from werkzeug.exceptions import NotFound
 
-from app.data_models.progress_store import CompletionStatus
+from app.data_models import CompletionStatus, FulfilmentRequest
 from app.forms.questionnaire_form import generate_form
 from app.forms.validators import sanitise_mobile_number
 from app.helpers.template_helpers import render_template
@@ -29,7 +26,7 @@ class IndividualResponseLimitReached(Exception):
     pass
 
 
-class FulfilmentRequestFailedException(Exception):
+class IndividualResponseFulfilmentRequestPublicationFailed(Exception):
     pass
 
 
@@ -189,13 +186,15 @@ class IndividualResponseHandler:
     def _publish_fulfilment_request(self, mobile_number=None):
         self._check_individual_response_count()
         topic_id = current_app.config["EQ_FULFILMENT_TOPIC_ID"]
-        fulfilment_request = FulfilmentRequest(self._metadata, mobile_number)
+        fulfilment_request = IndividualResponseFulfilmentRequest(
+            self._metadata, mobile_number
+        )
         try:
             return current_app.eq["publisher"].publish(
-                topic_id, message=fulfilment_request.payload
+                topic_id, message=fulfilment_request.message
             )
         except PublicationFailed:
-            raise FulfilmentRequestFailedException
+            raise IndividualResponseFulfilmentRequestPublicationFailed
 
     def _check_individual_response_count(self):
         if (
@@ -886,7 +885,7 @@ class IndividualResponseTextConfirmHandler(IndividualResponseHandler):
         )
 
 
-class FulfilmentRequest:
+class IndividualResponseFulfilmentRequest(FulfilmentRequest):
     def __init__(self, metadata: Mapping, mobile_number: Optional[str] = None):
         self._metadata = metadata
         self._mobile_number = mobile_number
@@ -922,24 +921,12 @@ class FulfilmentRequest:
         region_code = self._metadata["region_code"]
         return fulfilment_codes[self._fulfilment_type][region_code]
 
-    @property
-    def payload(self) -> bytes:
-        message = {
-            "event": {
-                "type": "FULFILMENT_REQUESTED",
-                "source": "QUESTIONNAIRE_RUNNER",
-                "channel": "EQ",
-                "dateTime": datetime.now(tz=tzutc()).isoformat(),
-                "transactionId": str(uuid4()),
-            },
-            "payload": {
-                "fulfilmentRequest": {
-                    **self._get_individual_case_id_mapping(),
-                    "fulfilmentCode": self._get_fulfilment_code(),
-                    "caseId": self._metadata["case_id"],
-                    "contact": self._get_contact_mapping(),
-                }
-            },
+    def _payload(self) -> Mapping:
+        return {
+            "fulfilmentRequest": {
+                **self._get_individual_case_id_mapping(),
+                "fulfilmentCode": self._get_fulfilment_code(),
+                "caseId": self._metadata["case_id"],
+                "contact": self._get_contact_mapping(),
+            }
         }
-
-        return json.dumps(message).encode("utf-8")
