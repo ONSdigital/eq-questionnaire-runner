@@ -13,6 +13,10 @@ from app.questionnaire import QuestionnaireSchema
 from app.views.contexts.email_form_context import build_confirmation_email_form_context
 
 
+class ConfirmationEmailNotEnabled(Exception):
+    pass
+
+
 class ConfirmationEmailLimitReached(Exception):
     pass
 
@@ -28,6 +32,10 @@ class ConfirmationEmail:
         schema: QuestionnaireSchema,
         page_title: Optional[str] = None,
     ):
+
+        if not self.is_enabled(schema):
+            raise ConfirmationEmailNotEnabled
+
         if self.is_limit_reached(session_store.session_data):
             raise ConfirmationEmailLimitReached
 
@@ -77,6 +85,10 @@ class ConfirmationEmail:
             session_data.confirmation_email_count
             >= current_app.config["CONFIRMATION_EMAIL_LIMIT"]
         )
+
+    @staticmethod
+    def is_enabled(schema: QuestionnaireSchema):
+        return schema.get_submission().get("confirmation_email")
 
 
 @dataclass

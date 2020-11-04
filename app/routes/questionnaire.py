@@ -282,10 +282,9 @@ def get_thank_you(schema, session_store):
     thank_you = ThankYou(schema, session_store)
 
     if request.method == "POST":
-        if not thank_you.confirmation_email:
-            raise NotFound
-
         confirmation_email = thank_you.confirmation_email
+        if not confirmation_email:
+            return redirect(url_for(".get_thank_you"))
 
         if confirmation_email.form.validate():
             confirmation_email.handle_post()
