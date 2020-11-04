@@ -31,7 +31,7 @@ class TestQuestionnairePageTitles(IntegrationTestCase):
         # When
         self.post({"answer": ""})
         # Then
-        self.assertEqualPageTitle("Summary - Census 2021")
+        self.assertEqualPageTitle("Submit Census - Census 2021")
 
     def test_should_have_survey_in_page_title_when_thank_you(self):
         # Given
