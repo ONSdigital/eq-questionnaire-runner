@@ -126,31 +126,29 @@ def get_contact_us_url(language_code: str, base_url: str):
 
 def get_footer_urls(language_code: str, base_url: str, schema_theme: str):
     if language_code == "cy":
-        return {
-            "help": f"{base_url}help/sut-i-ateb-y-cwestiynau/help-y-cwestiynau-ar-lein/",
-            "cookies": f"{base_url}cwcis/",
-            "accessibility_statement": f"{base_url}hygyrchedd/",
-            "privacy_and_data_protection": f"{base_url}preifatrwydd-a-diogelu-data/",
-            "terms_and_conditions": f"{base_url}telerau-ac-amodau/",
-        }
-
-    footer_urls = {
-        "cookies": f"{base_url}cookies/",
-        "accessibility_statement": f"{base_url}accessibility/",
-        "privacy_and_data_protection": f"{base_url}privacy-and-data-protection/",
-        "terms_and_conditions": f"{base_url}terms-and-conditions/",
-    }
-
-    if schema_theme == "census-nisra":
-        footer_urls[
-            "help"
-        ] = f"{base_url}help/help-with-the-questions/online-questions-help/"
+        help_path = "help/sut-i-ateb-y-cwestiynau/help-y-cwestiynau-ar-lein/"
+        cookies_path = "cwcis/"
+        accessibility_statement_path = "hygyrchedd/"
+        privacy_and_data_protection_path = "preifatrwydd-a-diogelu-data/"
+        terms_and_conditions_path = "telerau-ac-amodau/"
     else:
-        footer_urls[
-            "help"
-        ] = f"{base_url}help/how-to-answer-questions/online-questions-help/"
+        cookies_path = "cookies/"
+        accessibility_statement_path = "accessibility/"
+        privacy_and_data_protection_path = "privacy-and-data-protection/"
+        terms_and_conditions_path = "terms-and-conditions/"
+        help_path = (
+            "help/help-with-the-questions/online-questions-help/"
+            if schema_theme == "census-nisra"
+            else "help/how-to-answer-questions/online-questions-help/"
+        )
 
-    return footer_urls
+    return {
+        "help": f"{base_url}{help_path}",
+        "cookies": f"{base_url}{cookies_path}",
+        "accessibility_statement": f"{base_url}{accessibility_statement_path}",
+        "privacy_and_data_protection": f"{base_url}{privacy_and_data_protection_path}",
+        "terms_and_conditions": f"{base_url}{terms_and_conditions_path}",
+    }
 
 
 def safe_content(content):
