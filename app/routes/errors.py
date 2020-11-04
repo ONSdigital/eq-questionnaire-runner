@@ -168,7 +168,7 @@ def individual_response_fulfilment_request_publication_failed(exception):
         "You can try to <a href='{retry_url}'>request a new access code again</a>."
     ).format(retry_url=retry_url)
     contact_us_message = lazy_gettext(
-        "If this problem keeps happening, please  <a href='{contact_us_url}'>contact us</a> for help."
+        "If this problem keeps happening, please <a href='{contact_us_url}'>contact us</a> for help."
     )
 
     return _render_error_page(
