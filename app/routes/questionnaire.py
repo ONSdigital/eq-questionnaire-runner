@@ -24,11 +24,7 @@ from app.views.handlers.confirmation_email import (
     ConfirmationEmail,
     ConfirmationEmailLimitReached,
 )
-from app.views.handlers.feedback import (
-    Feedback,
-    FeedbackLimitReached,
-    FeedbackNotEnabled,
-)
+from app.views.handlers.feedback import Feedback, FeedbackNotEnabled
 from app.views.handlers.section import SectionHandler
 from app.views.handlers.submission import SubmissionHandler
 from app.views.handlers.thank_you import ThankYou
@@ -286,13 +282,12 @@ def get_thank_you(schema, session_store):
     thank_you = ThankYou(schema, session_store)
 
     if request.method == "POST":
-        if not thank_you.confirmation_email:
-            raise NotFound
-
         confirmation_email = thank_you.confirmation_email
+        if not confirmation_email:
+            return redirect(url_for(".get_thank_you"))
 
         if confirmation_email.form.validate():
-            confirmation_email.handle_post(session_store)
+            confirmation_email.handle_post()
             return redirect(
                 url_for(
                     ".get_confirmation_email_sent",
@@ -300,12 +295,9 @@ def get_thank_you(schema, session_store):
                 )
             )
 
-    show_feedback_call_to_action = True
-
-    try:
-        Feedback(schema, session_store, form_data=request.form)
-    except (FeedbackNotEnabled, FeedbackLimitReached):
-        show_feedback_call_to_action = False
+    show_feedback_call_to_action = Feedback.is_enabled(
+        schema
+    ) and not Feedback.is_limit_reached(session_store.session_data)
 
     return render_template(
         template=thank_you.template,
@@ -319,18 +311,19 @@ def get_thank_you(schema, session_store):
 
 
 @post_submission_blueprint.route("confirmation-email/send", methods=["GET", "POST"])
+@with_schema
 @with_session_store
-def send_confirmation_email(session_store):
+def send_confirmation_email(session_store, schema):
     if not session_store.session_data.confirmation_email_count:
         raise NotFound
 
     try:
-        confirmation_email = ConfirmationEmail()
+        confirmation_email = ConfirmationEmail(session_store, schema)
     except ConfirmationEmailLimitReached:
         return redirect(url_for(".get_thank_you"))
 
     if request.method == "POST" and confirmation_email.form.validate():
-        confirmation_email.handle_post(session_store)
+        confirmation_email.handle_post()
         return redirect(
             url_for(
                 ".get_confirmation_email_sent",
@@ -347,20 +340,20 @@ def send_confirmation_email(session_store):
 
 
 @post_submission_blueprint.route("confirmation-email/sent", methods=["GET"])
-@with_session_store
 @with_schema
-def get_confirmation_email_sent(schema, session_store):
+@with_session_store
+def get_confirmation_email_sent(session_store, schema):
     if not session_store.session_data.confirmation_email_count:
         raise NotFound
 
     email = URLParamSerializer().loads(request.args.get("email"))
 
-    show_feedback_call_to_action = True
-
-    try:
-        Feedback(schema, session_store, form_data=request.form)
-    except (FeedbackNotEnabled, FeedbackLimitReached):
-        show_feedback_call_to_action = False
+    show_send_another_email_guidance = not ConfirmationEmail.is_limit_reached(
+        session_store.session_data
+    )
+    show_feedback_call_to_action = Feedback.is_enabled(
+        schema
+    ) and not Feedback.is_limit_reached(session_store.session_data)
 
     return render_template(
         template="confirmation-email-sent",
@@ -370,7 +363,7 @@ def get_confirmation_email_sent(schema, session_store):
                 "post_submission.send_confirmation_email"
             ),
             "hide_signout_button": False,
-            "show_send_another_email_guidance": not ConfirmationEmail.is_limit_reached(),
+            "show_send_another_email_guidance": show_send_another_email_guidance,
             "sign_out_url": url_for("session.get_sign_out"),
             "show_feedback_call_to_action": show_feedback_call_to_action,
         },
