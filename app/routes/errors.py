@@ -166,7 +166,7 @@ def individual_response_fulfilment_request_publication_failed(exception):
     )
     retry_message = lazy_gettext(
         "You can try to <a href='{retry_url}'>request a new access code again</a>."
-    ).format(retry_url=retry_url)
+    )
     contact_us_message = lazy_gettext(
         "If this problem keeps happening, please <a href='{contact_us_url}'>contact us</a> for help."
     )
@@ -176,6 +176,7 @@ def individual_response_fulfilment_request_publication_failed(exception):
         template="error",
         page_title=title,
         heading=title,
+        retry_url=retry_url,
         retry_message=retry_message,
         contact_us_message=contact_us_message,
     )
@@ -188,7 +189,7 @@ def confirmation_email_fulfilment_request_publication_failed(exception):
     title = lazy_gettext("Sorry, there was a problem sending the confirmation email")
     retry_message = lazy_gettext(
         "You can try to <a href='{retry_url}'>send the email again</a>."
-    ).format(retry_url=request.url)
+    )
     contact_us_message = lazy_gettext(
         "If this problem keeps happening, please <a href='{contact_us_url}'>contact us</a> for help."
     )
@@ -198,6 +199,7 @@ def confirmation_email_fulfilment_request_publication_failed(exception):
         template="error",
         page_title=title,
         heading=title,
+        retry_url=request.url,
         retry_message=retry_message,
         contact_us_message=contact_us_message,
     )
