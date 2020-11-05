@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2020-11-05 17:25+0000\n"
+"POT-Creation-Date: 2020-11-05 17:38+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -934,30 +934,50 @@ msgstr ""
 msgid "Choose another section and return to this later"
 msgstr ""
 
-#: templates/layouts/configs/_footer.html:28
-msgid ""
-"Make sure you <a href='/sign-out'>leave this page</a> or close your "
-"browser if using a shared device"
+#: templates/layouts/configs/_footer.html:5
+msgid "The following links open in a new tab"
 msgstr ""
 
-#: templates/layouts/configs/_footer.html:35
-msgid "Contact us"
-msgstr ""
-
-#: templates/layouts/configs/_footer.html:40
+#: templates/layouts/configs/_footer.html:11
 msgid "Help"
 msgstr ""
 
-#: templates/layouts/configs/_footer.html:49
+#: templates/layouts/configs/_footer.html:16
+msgid "Contact us"
+msgstr ""
+
+#: templates/layouts/configs/_footer.html:25
 msgid "Cookies"
 msgstr ""
 
-#: templates/layouts/configs/_footer.html:53
+#: templates/layouts/configs/_footer.html:30
+msgid "Accessibility statement"
+msgstr ""
+
+#: templates/layouts/configs/_footer.html:35
 msgid "Privacy and data protection"
 msgstr ""
 
-#: templates/layouts/configs/_footer.html:58
-msgid "Accessibility"
+#: templates/layouts/configs/_footer.html:40
+msgid "Terms and conditions"
+msgstr ""
+
+#: templates/layouts/configs/_footer.html:48
+msgid "Crown copyright and database rights 2020 OS 100019153."
+msgstr ""
+
+#: templates/layouts/configs/_footer.html:49
+msgid "Use of address data is subject to the"
+msgstr ""
+
+#: templates/layouts/configs/_footer.html:50
+msgid "terms and conditions"
+msgstr ""
+
+#: templates/layouts/configs/_footer.html:57
+msgid ""
+"Make sure you <a href='/sign-out'>leave this page</a> or close your "
+"browser if using a shared device"
 msgstr ""
 
 #: templates/layouts/configs/_save-sign-out-button.html:5
