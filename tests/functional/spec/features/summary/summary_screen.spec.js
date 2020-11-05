@@ -103,6 +103,6 @@ describe("Summary Screen", () => {
     expect($(SummaryPage.questionText()).getText()).to.contain("Submission title");
     expect($(SummaryPage.warning()).getText()).to.contain("Submission warning");
     expect($(SummaryPage.guidance()).getText()).to.contain("Submission guidance");
-    expect($(SummaryPage.submit()).getText()).to.contain("Submit answers");
+    expect($(SummaryPage.submit()).getText()).to.contain("Submission button");
   });
 });
