@@ -9,7 +9,7 @@
   "error": error
 } %}
 
-{% if answer.label != None or answer.options|length != 1 %}
+{% if answer.label != None and answer.options|length != 1 %}
   {% set config = config | setAttribute("checkboxesLabel", answer.label or _("Select all that apply")) %}
 {% endif %}
 
