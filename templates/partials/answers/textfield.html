@@ -24,7 +24,9 @@
   {% set config = config | setAttribute("charCheckLimit", {
     "limit": answer.max_length,
     "charCountOverLimitSingular": _("{x} character too many"),
-    "charCountOverLimitPlural": _("{x} characters too many")
+    "charCountOverLimitPlural": _("{x} characters too many"),
+    "charCountSingular": _("You have {x} character remaining"),
+    "charCountPlural": _("You have {x} characters remaining")
   }) %}
 {% endif %}
 

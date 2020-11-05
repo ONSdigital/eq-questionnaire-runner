@@ -730,10 +730,6 @@ msgstr ""
 msgid "Return to your account"
 msgstr ""
 
-#: templates/summary.html:6
-msgid "Summary"
-msgstr ""
-
 #: templates/summary.html:28
 msgid "Please review your answers and confirm these are correct"
 msgstr ""
@@ -1176,10 +1172,12 @@ msgid "Clear selection"
 msgstr ""
 
 #: templates/partials/answers/textarea.html:16
+#: templates/partials/answers/textfield.html:28
 msgid "You have {x} character remaining"
 msgstr ""
 
 #: templates/partials/answers/textarea.html:17
+#: templates/partials/answers/textfield.html:29
 msgid "You have {x} characters remaining"
 msgstr ""
 
@@ -1191,26 +1189,26 @@ msgstr ""
 msgid "{x} characters too many"
 msgstr ""
 
-#: templates/partials/answers/textfield.html:33
+#: templates/partials/answers/textfield.html:35
 msgid ""
 "Use up and down keys to navigate suggestions once you've typed more than "
 "two characters. Use the enter key to select a suggestion. Touch device "
 "users, explore by touch or with swipe gestures."
 msgstr ""
 
-#: templates/partials/answers/textfield.html:34
+#: templates/partials/answers/textfield.html:36
 msgid "Continue entering to improve suggestions"
 msgstr ""
 
-#: templates/partials/answers/textfield.html:35
+#: templates/partials/answers/textfield.html:37
 msgid "Suggestions"
 msgstr ""
 
-#: templates/partials/answers/textfield.html:36
+#: templates/partials/answers/textfield.html:38
 msgid "No results found"
 msgstr ""
 
-#: templates/partials/answers/textfield.html:37
+#: templates/partials/answers/textfield.html:39
 msgid "Continue entering to get suggestions"
 msgstr ""
 
