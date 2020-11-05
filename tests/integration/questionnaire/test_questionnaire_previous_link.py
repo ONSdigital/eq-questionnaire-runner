@@ -37,8 +37,8 @@ class TestQuestionnairePreviousLink(IntegrationTestCase):
         self.launchSurvey("test_checkbox")
 
         # When I answer a question
-        self.assertInUrl("null-label-checkbox")
-        self.post({"show-label-checkbox-answer": "None"})
+        self.assertInUrl("mandatory-checkbox")
+        self.post({"mandatory-checkbox-answer": "None"})
 
         # Then there should be a previous link on the current page
         self.assertInBody("Previous")
