@@ -4,9 +4,9 @@
     "schema_version": "0.0.1",
     "data_version": "0.0.3",
     "survey_id": "0",
-    "title": "Other input fields",
+    "title": "Test checkbox answer label",
     "theme": "default",
-    "description": "A questionnaire to demo checkbox label variants.",
+    "description": "A questionnaire to test checkbox answer label.",
     "metadata": [
         {
             "name": "user_id",
