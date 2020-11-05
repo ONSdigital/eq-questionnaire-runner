@@ -730,10 +730,6 @@ msgstr ""
 msgid "Return to your account"
 msgstr ""
 
-#: templates/summary.html:6
-msgid "Summary"
-msgstr ""
-
 #: templates/summary.html:28
 msgid "Please review your answers and confirm these are correct"
 msgstr ""
