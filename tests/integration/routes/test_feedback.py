@@ -1,3 +1,4 @@
+from app import settings
 from app.settings import EQ_FEEDBACK_LIMIT
 from tests.integration.integration_test_case import IntegrationTestCase
 
@@ -5,6 +6,10 @@ from tests.integration.integration_test_case import IntegrationTestCase
 class TestFeedback(IntegrationTestCase):
     SEND_FEEDBACK_URL = "/submitted/feedback/send"
     SENT_FEEDBACK_URL = "/submitted/feedback/sent"
+
+    def setUp(self):
+        settings.EQ_FEEDBACK_LIMIT = 2
+        super().setUp()
 
     def test_questionnaire_not_completed(self):
         # Given I launch the test_feedback questionnaire

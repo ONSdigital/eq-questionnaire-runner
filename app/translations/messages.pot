@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2020-10-30 11:43+0000\n"
+"POT-Creation-Date: 2020-11-04 09:32+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -234,22 +234,46 @@ msgid_plural "{number_of_days} days"
 msgstr[0] ""
 msgstr[1] ""
 
-#: app/routes/errors.py:83
+#: app/routes/errors.py:107
 msgid "You have reached the maximum number of individual access codes"
 msgstr ""
 
-#: app/routes/errors.py:86
+#: app/routes/errors.py:110
 msgid ""
-"If you need more individual access codes, please <a href='{url}'>contact "
-"us</a>."
+"If you need more individual access codes, please <a "
+"href='{contact_us_url}'>contact us</a>."
 msgstr ""
 
-#: app/routes/errors.py:102
+#: app/routes/errors.py:126
 msgid "You have reached the maximum number of times for submitting feedback"
 msgstr ""
 
-#: app/routes/errors.py:105
-msgid "If you need to give more feedback, please <a href='{url}'>contact us</a>."
+#: app/routes/errors.py:129
+msgid ""
+"If you need to give more feedback, please <a "
+"href='{contact_us_url}'>contact us</a>."
+msgstr ""
+
+#: app/routes/errors.py:161
+msgid "Sorry, there was a problem sending the access code"
+msgstr ""
+
+#: app/routes/errors.py:167
+msgid "You can try to <a href='{retry_url}'>request a new access code again</a>."
+msgstr ""
+
+#: app/routes/errors.py:170 app/routes/errors.py:192
+msgid ""
+"If this problem keeps happening, please <a "
+"href='{contact_us_url}'>contact us</a> for help."
+msgstr ""
+
+#: app/routes/errors.py:188
+msgid "Sorry, there was a problem sending the confirmation email"
+msgstr ""
+
+#: app/routes/errors.py:189
+msgid "You can try to <a href='{retry_url}'>send the email again</a>."
 msgstr ""
 
 #: app/routes/individual_response.py:160
@@ -341,52 +365,52 @@ msgstr ""
 msgid "Please submit this survey to complete it"
 msgstr ""
 
-#: app/views/handlers/confirmation_email.py:15
+#: app/views/handlers/confirmation_email.py:42
 msgid "Confirmation email"
 msgstr ""
 
-#: app/views/handlers/confirmation_email.py:31
-#: app/views/handlers/feedback.py:108 app/views/handlers/question.py:149
+#: app/views/handlers/confirmation_email.py:56
+#: app/views/handlers/feedback.py:110 app/views/handlers/question.py:149
 msgid "Error: {page_title}"
 msgstr ""
 
-#: app/views/handlers/feedback.py:22
+#: app/views/handlers/feedback.py:23
 msgid "Feedback"
 msgstr ""
 
-#: app/views/handlers/feedback.py:26
+#: app/views/handlers/feedback.py:27
 msgid "Give feedback about this service"
 msgstr ""
 
-#: app/views/handlers/feedback.py:27 app/views/handlers/feedback.py:52
+#: app/views/handlers/feedback.py:28 app/views/handlers/feedback.py:53
 msgid "Select what your feedback is about"
 msgstr ""
 
-#: app/views/handlers/feedback.py:35 app/views/handlers/feedback.py:36
+#: app/views/handlers/feedback.py:36 app/views/handlers/feedback.py:37
 msgid "The census questions"
 msgstr ""
 
-#: app/views/handlers/feedback.py:37
+#: app/views/handlers/feedback.py:38
 msgid "For example, question not clear, answer option not relevant"
 msgstr ""
 
-#: app/views/handlers/feedback.py:42 app/views/handlers/feedback.py:43
+#: app/views/handlers/feedback.py:43 app/views/handlers/feedback.py:44
 msgid "Page design and structure"
 msgstr ""
 
-#: app/views/handlers/feedback.py:46 app/views/handlers/feedback.py:47
+#: app/views/handlers/feedback.py:47 app/views/handlers/feedback.py:48
 msgid "General feedback about this service"
 msgstr ""
 
-#: app/views/handlers/feedback.py:60 app/views/handlers/feedback.py:70
+#: app/views/handlers/feedback.py:61 app/views/handlers/feedback.py:71
 msgid "Enter your feedback"
 msgstr ""
 
-#: app/views/handlers/feedback.py:61
+#: app/views/handlers/feedback.py:62
 msgid "Do not include confidential information, such as your contact details."
 msgstr ""
 
-#: app/views/handlers/individual_response.py:127
+#: app/views/handlers/individual_response.py:125
 msgid "Person {list_item_position}"
 msgstr ""
 
@@ -519,7 +543,7 @@ msgstr ""
 msgid "Confirm mobile number"
 msgstr ""
 
-#: app/views/handlers/thank_you.py:22 templates/census-thank-you.html:24
+#: app/views/handlers/thank_you.py:21 templates/census-thank-you.html:24
 msgid "Thank you for completing the census"
 msgstr ""
 
@@ -802,19 +826,10 @@ msgstr ""
 msgid "If you have started a survey, your answers have been saved."
 msgstr ""
 
-#: templates/errors/500.html:9 templates/errors/fulfilment-request.html:9
+#: templates/errors/500.html:9
 msgid ""
 "<a href='{url}'>Contact us</a> if you need to speak to someone about your"
 " survey."
-msgstr ""
-
-#: templates/errors/fulfilment-request.html:3
-#: templates/errors/fulfilment-request.html:6
-msgid "Sorry, there was a problem sending the access code"
-msgstr ""
-
-#: templates/errors/fulfilment-request.html:8
-msgid "If this problem keeps happening, please contact us for help."
 msgstr ""
 
 #: templates/errors/no-cookie.html:3
@@ -978,15 +993,15 @@ msgstr ""
 msgid "Send confirmation"
 msgstr ""
 
-#: templates/partials/feedback-call-to-action.html:7
+#: templates/partials/feedback-call-to-action.html:6
 msgid "What do you think about this service?"
 msgstr ""
 
-#: templates/partials/feedback-call-to-action.html:8
+#: templates/partials/feedback-call-to-action.html:7
 msgid "Your comments will help us make improvements"
 msgstr ""
 
-#: templates/partials/feedback-call-to-action.html:10
+#: templates/partials/feedback-call-to-action.html:9
 msgid "Give feedback"
 msgstr ""
 

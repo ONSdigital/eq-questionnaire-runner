@@ -1,4 +1,7 @@
+from unittest.mock import MagicMock
+
 from app import settings
+from app.publisher.exceptions import PublicationFailed
 from tests.integration.integration_test_case import IntegrationTestCase
 
 
@@ -6,6 +9,11 @@ class TestEmailConfirmation(IntegrationTestCase):
     def setUp(self):
         settings.CONFIRMATION_EMAIL_LIMIT = 2
         super().setUp()
+
+    def _launch_and_complete_questionnaire(self):
+        self.launchSurvey("test_confirmation_email")
+        self.post({"answer_id": "Yes"})
+        self.post()
 
     def test_thank_you_page_get_not_allowed(self):
         # Given I launch the test_confirmation_email questionnaire
@@ -225,23 +233,74 @@ class TestEmailConfirmation(IntegrationTestCase):
         self.assertInUrl("confirmation-email/sent")
         self.assertNotInBody("send another confirmation email.")
 
-    def test_redirect_from_send_confirmation_to_thank_you_page_when_limit_exceeded(
+    def test_visiting_send_another_email_page_redirects_to_thank_you_page_when_limit_exceeded(
         self,
     ):
-        # Given I launch and complete the test_confirmation_email questionnaire and submit with a valid email from the thank you page
+        # Given I launch and complete the test_confirmation_email questionnaire and have reached the email limit
         self._launch_and_complete_questionnaire()
         self.post({"email": "email@example.com"})
-
-        # When I reach the limit of the number of confirmation emails and attempt to return to send another
         self.get("/submitted/confirmation-email/send/")
         self.post({"email": "email@example.com"})
+
+        # When I try to access the send another email page
         self.get("/submitted/confirmation-email/send/")
 
         # Then I should be redirected to the thank you page
         self.assertInUrl("/submitted/thank-you/")
         self.assertNotInBody("Get confirmation email")
 
-    def _launch_and_complete_questionnaire(self):
-        self.launchSurvey("test_confirmation_email")
-        self.post({"answer_id": "Yes"})
-        self.post()
+    def test_submitting_email_on_thank_you_page_reloads_the_page_when_limit_exceeded(
+        self,
+    ):
+        # Given I launch and complete the test_confirmation_email questionnaire and have reached the email limit
+        self._launch_and_complete_questionnaire()
+        self.post({"email": "email@example.com"})
+        self.assertInUrl("confirmation-email/sent")
+
+        # Load the thank you page with the email form
+        self.get("/submitted/thank-you/")
+        # Set the new email limit so the limit will be reached on the next request
+        self._application.config["CONFIRMATION_EMAIL_LIMIT"] = 1
+
+        # When I try to submit another email
+        self.post({"email": "email@example.com"})
+
+        # Then the thank you page should be reloaded without the email form
+        self.assertInUrl("/submitted/thank-you/")
+        self.assertNotInBody("Get confirmation email")
+
+    def test_submitting_email_on_send_another_email_page_redirect_to_thank_you_when_limit_exceeded(
+        self,
+    ):
+        # Given I launch and complete the test_confirmation_email questionnaire and have reached the email limit
+        self._launch_and_complete_questionnaire()
+        self.post({"email": "email@example.com"})
+        self.assertInUrl("confirmation-email/sent")
+
+        # Load the send another email page with the email form
+        self.get("/submitted/confirmation-email/send/")
+        # Set the new email limit so the limit will be reached on the next request
+        self._application.config["CONFIRMATION_EMAIL_LIMIT"] = 1
+
+        # When I try to submit another email
+        self.post({"email": "email@example.com"})
+
+        # I should be redirected to the thank you page
+        self.assertInUrl("/submitted/thank-you/")
+        self.assertNotInBody("Get confirmation email")
+
+    def test_500_publish_failed(self):
+        publisher = self._application.eq["publisher"]
+        publisher.publish = MagicMock(side_effect=PublicationFailed)
+
+        # Given I launch and complete the test_confirmation_email questionnaire and submit with a valid email from the thank you page
+        self._launch_and_complete_questionnaire()
+
+        # When the email fulfilment request fails to publish
+        self.post({"email": "email@example.com"})
+
+        # Then an error page is shown
+        self.assertEqualPageTitle(
+            "Sorry, there was a problem sending the confirmation email - Census 2021"
+        )
+        self.assertInSelector(self.last_url, "p[data-qa=retry]")
