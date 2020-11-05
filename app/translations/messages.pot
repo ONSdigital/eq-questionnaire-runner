@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2020-11-04 15:27+0000\n"
+"POT-Creation-Date: 2020-11-04 15:11+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -262,17 +262,17 @@ msgstr ""
 msgid "You can try to <a href='{retry_url}'>request a new access code again</a>."
 msgstr ""
 
-#: app/routes/errors.py:170 app/routes/errors.py:192
+#: app/routes/errors.py:170 app/routes/errors.py:193
 msgid ""
 "If this problem keeps happening, please <a "
 "href='{contact_us_url}'>contact us</a> for help."
 msgstr ""
 
-#: app/routes/errors.py:188
+#: app/routes/errors.py:189
 msgid "Sorry, there was a problem sending the confirmation email"
 msgstr ""
 
-#: app/routes/errors.py:189
+#: app/routes/errors.py:190
 msgid "You can try to <a href='{retry_url}'>send the email again</a>."
 msgstr ""
 
@@ -365,11 +365,11 @@ msgstr ""
 msgid "Please submit this survey to complete it"
 msgstr ""
 
-#: app/views/handlers/confirmation_email.py:18
+#: app/views/handlers/confirmation_email.py:48
 msgid "Confirmation email"
 msgstr ""
 
-#: app/views/handlers/confirmation_email.py:34
+#: app/views/handlers/confirmation_email.py:62
 #: app/views/handlers/feedback.py:110 app/views/handlers/question.py:149
 msgid "Error: {page_title}"
 msgstr ""
@@ -410,140 +410,140 @@ msgstr ""
 msgid "Do not include confidential information, such as your contact details."
 msgstr ""
 
-#: app/views/handlers/individual_response.py:125
+#: app/views/handlers/individual_response.py:124
 msgid "Person {list_item_position}"
 msgstr ""
 
-#: app/views/handlers/individual_response.py:231
+#: app/views/handlers/individual_response.py:230
 msgid "Cannot answer questions for others in your household"
 msgstr ""
 
-#: app/views/handlers/individual_response.py:297
+#: app/views/handlers/individual_response.py:296
 msgid "How would you like <em>{person_name}</em> to receive a separate census?"
 msgstr ""
 
-#: app/views/handlers/individual_response.py:305
+#: app/views/handlers/individual_response.py:304
 msgid ""
 "For someone to complete a separate census, we need to send them an "
 "individual access code."
 msgstr ""
 
-#: app/views/handlers/individual_response.py:308
+#: app/views/handlers/individual_response.py:307
 msgid "Select how to send access code"
 msgstr ""
 
-#: app/views/handlers/individual_response.py:318
+#: app/views/handlers/individual_response.py:317
 msgid "Text message"
 msgstr ""
 
-#: app/views/handlers/individual_response.py:320
+#: app/views/handlers/individual_response.py:319
 msgid "We will need their mobile number for this"
 msgstr ""
 
-#: app/views/handlers/individual_response.py:325
+#: app/views/handlers/individual_response.py:324
 msgid "Post"
 msgstr ""
 
-#: app/views/handlers/individual_response.py:327
+#: app/views/handlers/individual_response.py:326
 msgid ""
 "We can only send this to an unnamed resident at the registered household "
 "address"
 msgstr ""
 
-#: app/views/handlers/individual_response.py:377
+#: app/views/handlers/individual_response.py:376
 msgid "Send individual access code"
 msgstr ""
 
-#: app/views/handlers/individual_response.py:408
+#: app/views/handlers/individual_response.py:407
 msgid "How would you like to answer <em>{person_name_possessive}</em> questions?"
 msgstr ""
 
-#: app/views/handlers/individual_response.py:423
+#: app/views/handlers/individual_response.py:422
 msgid "I would like to request a separate census for them to complete"
 msgstr ""
 
-#: app/views/handlers/individual_response.py:429
+#: app/views/handlers/individual_response.py:428
 msgid "I will ask them to answer their own questions"
 msgstr ""
 
-#: app/views/handlers/individual_response.py:433
+#: app/views/handlers/individual_response.py:432
 msgid "They will need the household access code from the letter we sent you"
 msgstr ""
 
-#: app/views/handlers/individual_response.py:439
+#: app/views/handlers/individual_response.py:438
 msgid "I will answer for {person_name}"
 msgstr ""
 
-#: app/views/handlers/individual_response.py:540
+#: app/views/handlers/individual_response.py:539
 msgid "Do you want to send an individual access code for {person_name} by post?"
 msgstr ""
 
-#: app/views/handlers/individual_response.py:548
+#: app/views/handlers/individual_response.py:547
 msgid ""
 "A letter with an individual access code will be sent to your registered "
 "household address"
 msgstr ""
 
-#: app/views/handlers/individual_response.py:555
+#: app/views/handlers/individual_response.py:554
 msgid ""
 "The letter will be addressed to <strong>Individual Resident</strong> "
 "instead of the name provided"
 msgstr ""
 
-#: app/views/handlers/individual_response.py:568
+#: app/views/handlers/individual_response.py:567
 msgid "Yes, send the access code by post"
 msgstr ""
 
-#: app/views/handlers/individual_response.py:574
+#: app/views/handlers/individual_response.py:573
 msgid "No, send it another way"
 msgstr ""
 
-#: app/views/handlers/individual_response.py:607
+#: app/views/handlers/individual_response.py:606
 msgid "Confirm address"
 msgstr ""
 
-#: app/views/handlers/individual_response.py:662
-#: app/views/handlers/individual_response.py:700
+#: app/views/handlers/individual_response.py:661
+#: app/views/handlers/individual_response.py:699
 msgid "Separate Census"
 msgstr ""
 
-#: app/views/handlers/individual_response.py:666
+#: app/views/handlers/individual_response.py:665
 msgid "Who do you need to request a separate census for?"
 msgstr ""
 
-#: app/views/handlers/individual_response.py:724
+#: app/views/handlers/individual_response.py:723
 msgid "What is <em>{person_name_possessive}</em> mobile number?"
 msgstr ""
 
-#: app/views/handlers/individual_response.py:736
+#: app/views/handlers/individual_response.py:735
 msgid "UK mobile number"
 msgstr ""
 
-#: app/views/handlers/individual_response.py:737
+#: app/views/handlers/individual_response.py:736
 msgid "This will not be stored and only used once to send the access code"
 msgstr ""
 
-#: app/views/handlers/individual_response.py:770
+#: app/views/handlers/individual_response.py:769
 msgid "Mobile number"
 msgstr ""
 
-#: app/views/handlers/individual_response.py:816
+#: app/views/handlers/individual_response.py:815
 msgid "Is this mobile number correct?"
 msgstr ""
 
-#: app/views/handlers/individual_response.py:825
+#: app/views/handlers/individual_response.py:824
 msgid "Yes, send the text"
 msgstr ""
 
-#: app/views/handlers/individual_response.py:829
+#: app/views/handlers/individual_response.py:828
 msgid "No, I need to change it"
 msgstr ""
 
-#: app/views/handlers/individual_response.py:863
+#: app/views/handlers/individual_response.py:862
 msgid "Confirm mobile number"
 msgstr ""
 
-#: app/views/handlers/thank_you.py:19 templates/census-thank-you.html:24
+#: app/views/handlers/thank_you.py:22 templates/census-thank-you.html:24
 msgid "Thank you for completing the census"
 msgstr ""
 
@@ -1153,10 +1153,12 @@ msgid "Clear selection"
 msgstr ""
 
 #: templates/partials/answers/textarea.html:16
+#: templates/partials/answers/textfield.html:28
 msgid "You have {x} character remaining"
 msgstr ""
 
 #: templates/partials/answers/textarea.html:17
+#: templates/partials/answers/textfield.html:29
 msgid "You have {x} characters remaining"
 msgstr ""
 
@@ -1168,26 +1170,26 @@ msgstr ""
 msgid "{x} characters too many"
 msgstr ""
 
-#: templates/partials/answers/textfield.html:33
+#: templates/partials/answers/textfield.html:35
 msgid ""
 "Use up and down keys to navigate suggestions once you've typed more than "
 "two characters. Use the enter key to select a suggestion. Touch device "
 "users, explore by touch or with swipe gestures."
 msgstr ""
 
-#: templates/partials/answers/textfield.html:34
+#: templates/partials/answers/textfield.html:36
 msgid "Continue entering to improve suggestions"
 msgstr ""
 
-#: templates/partials/answers/textfield.html:35
+#: templates/partials/answers/textfield.html:37
 msgid "Suggestions"
 msgstr ""
 
-#: templates/partials/answers/textfield.html:36
+#: templates/partials/answers/textfield.html:38
 msgid "No results found"
 msgstr ""
 
-#: templates/partials/answers/textfield.html:37
+#: templates/partials/answers/textfield.html:39
 msgid "Continue entering to get suggestions"
 msgstr ""
 
