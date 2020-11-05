@@ -382,11 +382,6 @@ def add_blueprints(application):
 
     application.register_blueprint(filter_blueprint)
 
-    from app.routes.static import static_blueprint
-
-    application.register_blueprint(static_blueprint)
-    static_blueprint.config = application.config.copy()
-
     from app.routes.schema import schema_blueprint
 
     application.register_blueprint(schema_blueprint)
