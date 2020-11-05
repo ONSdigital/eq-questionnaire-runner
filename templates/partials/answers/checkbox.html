@@ -1,22 +1,16 @@
 {% from "components/checkboxes/_macro.njk" import onsCheckboxes %}
 
-{% if answer.label == None or answer.options|length == 1 %}
-  {{ onsCheckboxes({
-    "legend": question_title,
-    "id": answer.id,
-    "legendClasses": "u-vh",
-    "checkboxes": map_checkbox_config(form, answer),
-    "mutuallyExclusive": mutuallyExclusive,
-    "error": error
-  }) }}
-{% else %}
-  {{ onsCheckboxes({
+{% set config = {
   "legend": question_title,
   "id": answer.id,
   "legendClasses": "u-vh",
-  "checkboxesLabel": answer.label or _("Select all that apply"),
   "checkboxes": map_checkbox_config(form, answer),
   "mutuallyExclusive": mutuallyExclusive,
   "error": error
-}) }}
+} %}
+
+{% if answer.label != None or answer.options|length != 1 %}
+  {% set config = config | setAttribute("checkboxesLabel", answer.label or _("Select all that apply")) %}
 {% endif %}
+
+{{ onsCheckboxes(config) }}
