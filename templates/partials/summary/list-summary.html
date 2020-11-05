@@ -1,41 +1,47 @@
 {% from "components/summary/_macro.njk" import onsSummary %}
 
+{% set display_summary = list.list_items | length > 0 %}
+
 {% if list.editable %}
-  {{ onsSummary({
-    "withinQuestion": true,
-    "summaries": [
-      {
-        "groups": [
-          {
-            "rows": map_list_collector_config(
-              list.list_items,
-              "person",
-              _("Change"),
-              _("Change details for {item_name}"),
-              _("Remove"),
-              _("Remove {item_name}")
-            ),
-          }
-        ]
-      }
-    ],
-    "classes": "u-mt-s u-mb-m"
-  }) }}
+  {% if display_summary %}
+    {{ onsSummary({
+      "withinQuestion": true,
+      "summaries": [
+        {
+          "groups": [
+            {
+              "rows": map_list_collector_config(
+                list.list_items,
+                "person",
+                _("Change"),
+                _("Change details for {item_name}"),
+                _("Remove"),
+                _("Remove {item_name}")
+              ),
+            }
+          ]
+        }
+      ],
+      "classes": "u-mt-s u-mb-m"
+    }) }}
+  {% endif %}
 {% else %}
-  {{ onsSummary({
-    "withinQuestion": true,
-    "summaries": [
-      {
-        "groups": [
-          {
-            "rows": map_list_collector_config(
-              list.list_items,
-              "person"
-            ),
-          }
-        ]
-      }
-    ],
-    "classes": "u-mt-s u-mb-m"
-  }) }}
+  {% if display_summary %}
+    {{ onsSummary({
+      "withinQuestion": true,
+      "summaries": [
+        {
+          "groups": [
+            {
+              "rows": map_list_collector_config(
+                list.list_items,
+                "person"
+              ),
+            }
+          ]
+        }
+      ],
+      "classes": "u-mt-s u-mb-m"
+    }) }}
+  {% endif %}
 {% endif %}
