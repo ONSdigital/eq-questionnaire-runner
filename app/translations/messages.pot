@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2020-10-30 11:43+0000\n"
+"POT-Creation-Date: 2020-11-05 15:12+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -341,12 +341,12 @@ msgstr ""
 msgid "Please submit this survey to complete it"
 msgstr ""
 
-#: app/views/handlers/confirmation_email.py:15
+#: app/views/handlers/confirmation_email.py:18
 msgid "Confirmation email"
 msgstr ""
 
-#: app/views/handlers/confirmation_email.py:31
-#: app/views/handlers/feedback.py:108 app/views/handlers/question.py:149
+#: app/views/handlers/confirmation_email.py:34
+#: app/views/handlers/feedback.py:110 app/views/handlers/question.py:149
 msgid "Error: {page_title}"
 msgstr ""
 
@@ -519,7 +519,7 @@ msgstr ""
 msgid "Confirm mobile number"
 msgstr ""
 
-#: app/views/handlers/thank_you.py:22 templates/census-thank-you.html:24
+#: app/views/handlers/thank_you.py:19 templates/census-thank-you.html:24
 msgid "Thank you for completing the census"
 msgstr ""
 
@@ -923,24 +923,31 @@ msgstr ""
 msgid "Choose another section and return to this later"
 msgstr ""
 
-#: templates/layouts/configs/_footer.html:31
+#: templates/layouts/configs/_footer.html:28
+#: templates/partials/sign-out-pre-footer-panel.html:7
+msgid ""
+"Make sure you <a href='/sign-out'>leave this page</a> or close your "
+"browser if using a shared device"
+msgstr ""
+
+#: templates/layouts/configs/_footer.html:35
 msgid "Contact us"
 msgstr ""
 
-#: templates/layouts/configs/_footer.html:36
+#: templates/layouts/configs/_footer.html:40
 msgid "Help"
 msgstr ""
 
-#: templates/layouts/configs/_footer.html:45
+#: templates/layouts/configs/_footer.html:49
 msgid "Cookies"
 msgstr ""
 
-#: templates/layouts/configs/_footer.html:49 templates/static/privacy.html:4
+#: templates/layouts/configs/_footer.html:53 templates/static/privacy.html:4
 #: templates/static/privacy.html:10
 msgid "Privacy and data protection"
 msgstr ""
 
-#: templates/layouts/configs/_footer.html:54
+#: templates/layouts/configs/_footer.html:58
 msgid "Accessibility"
 msgstr ""
 
@@ -978,15 +985,15 @@ msgstr ""
 msgid "Send confirmation"
 msgstr ""
 
-#: templates/partials/feedback-call-to-action.html:7
+#: templates/partials/feedback-call-to-action.html:6
 msgid "What do you think about this service?"
 msgstr ""
 
-#: templates/partials/feedback-call-to-action.html:8
+#: templates/partials/feedback-call-to-action.html:7
 msgid "Your comments will help us make improvements"
 msgstr ""
 
-#: templates/partials/feedback-call-to-action.html:10
+#: templates/partials/feedback-call-to-action.html:9
 msgid "Give feedback"
 msgstr ""
 
@@ -1024,12 +1031,6 @@ msgstr ""
 
 #: templates/partials/question.html:69
 msgid "Or"
-msgstr ""
-
-#: templates/partials/sign-out-pre-footer-panel.html:8
-msgid ""
-"Make sure you <a href='{sign_out_url}'>leave this page</a> or close your "
-"browser if using a shared device"
 msgstr ""
 
 #: templates/partials/answers/address.html:10

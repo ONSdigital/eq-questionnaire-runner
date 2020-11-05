@@ -24,6 +24,10 @@
   }
 } %}
 
+{% if content.submitted_time %}
+  {% do footer | setAttribute("footerWarning", _("Make sure you <a href='/sign-out'>leave this page</a> or close your browser if using a shared device")) %}
+{% endif %}
+
 {% do footer | setAttribute("rows", [
   {
     "itemsList": [
