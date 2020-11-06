@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2020-11-05 17:38+0000\n"
+"POT-Creation-Date: 2020-11-06 08:05+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -976,7 +976,7 @@ msgstr ""
 
 #: templates/layouts/configs/_footer.html:57
 msgid ""
-"Make sure you <a href='/sign-out'>leave this page</a> or close your "
+"Make sure you <a href={sign_out_url}>leave this page</a> or close your "
 "browser if using a shared device"
 msgstr ""
 
