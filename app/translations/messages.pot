@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2020-11-04 16:05+0000\n"
+"POT-Creation-Date: 2020-11-05 14:44+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -474,72 +474,76 @@ msgstr ""
 msgid "I will answer for {person_name}"
 msgstr ""
 
-#: app/views/handlers/individual_response.py:539
+#: app/views/handlers/individual_response.py:480
+msgid "How to answer questions"
+msgstr ""
+
+#: app/views/handlers/individual_response.py:540
 msgid "Do you want to send an individual access code for {person_name} by post?"
 msgstr ""
 
-#: app/views/handlers/individual_response.py:547
+#: app/views/handlers/individual_response.py:548
 msgid ""
 "A letter with an individual access code will be sent to your registered "
 "household address"
 msgstr ""
 
-#: app/views/handlers/individual_response.py:554
+#: app/views/handlers/individual_response.py:555
 msgid ""
 "The letter will be addressed to <strong>Individual Resident</strong> "
 "instead of the name provided"
 msgstr ""
 
-#: app/views/handlers/individual_response.py:567
+#: app/views/handlers/individual_response.py:568
 msgid "Yes, send the access code by post"
 msgstr ""
 
-#: app/views/handlers/individual_response.py:573
+#: app/views/handlers/individual_response.py:574
 msgid "No, send it another way"
 msgstr ""
 
-#: app/views/handlers/individual_response.py:606
+#: app/views/handlers/individual_response.py:607
 msgid "Confirm address"
 msgstr ""
 
-#: app/views/handlers/individual_response.py:661
-#: app/views/handlers/individual_response.py:699
+#: app/views/handlers/individual_response.py:662
+#: app/views/handlers/individual_response.py:700
 msgid "Separate Census"
 msgstr ""
 
-#: app/views/handlers/individual_response.py:665
+#: app/views/handlers/individual_response.py:666
 msgid "Who do you need to request a separate census for?"
 msgstr ""
 
-#: app/views/handlers/individual_response.py:723
+#: app/views/handlers/individual_response.py:724
 msgid "What is <em>{person_name_possessive}</em> mobile number?"
 msgstr ""
 
-#: app/views/handlers/individual_response.py:735
+#: app/views/handlers/individual_response.py:736
 msgid "UK mobile number"
 msgstr ""
 
-#: app/views/handlers/individual_response.py:736
+#: app/views/handlers/individual_response.py:737
 msgid "This will not be stored and only used once to send the access code"
 msgstr ""
 
-#: app/views/handlers/individual_response.py:769
+#: app/views/handlers/individual_response.py:770
 msgid "Mobile number"
 msgstr ""
 
-#: app/views/handlers/individual_response.py:815
+#: app/views/handlers/individual_response.py:816
 msgid "Is this mobile number correct?"
 msgstr ""
 
-#: app/views/handlers/individual_response.py:824
+#: app/views/handlers/individual_response.py:825
 msgid "Yes, send the text"
 msgstr ""
 
-#: app/views/handlers/individual_response.py:828
+#: app/views/handlers/individual_response.py:829
 msgid "No, I need to change it"
 msgstr ""
 
-#: app/views/handlers/individual_response.py:862
+#: app/views/handlers/individual_response.py:863
 msgid "Confirm mobile number"
 msgstr ""
 
