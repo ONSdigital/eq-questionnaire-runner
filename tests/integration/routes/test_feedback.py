@@ -67,6 +67,22 @@ class TestFeedback(IntegrationTestCase):
         self.assertInUrl(self.SENT_FEEDBACK_URL)
         self.assertInBody("Thank you for your feedback")
 
+    def _test_feedback_show_warning(self):
+        # Given I launch and complete the test_feedback questionnaire
+        self._launch_and_complete_questionnaire()
+        self.get(self.SEND_FEEDBACK_URL)
+
+        # When I enter a valid feedback and submit
+        self.post(
+            {"feedback-type": "Page design and structure", "feedback-text": "Feedback"}
+        )
+
+        # Then I get a sign out warning
+        self.assertInUrl(self.SENT_FEEDBACK_URL)
+        self.assertInBody(
+            'Make sure you <a href="/sign-out">leave this page</a> or close your browser if using a shared device'
+        )
+
     def test_feedback_error_message_on_get_when_limit_reached(self):
         # Given I launch and complete the test_feedback questionnaire, and provide
         # feedback the maximum number of times

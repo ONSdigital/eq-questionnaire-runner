@@ -1,7 +1,6 @@
 {% from "components/footer/_macro.njk" import onsFooter %}
 
-{{
-    onsFooter({
+{% set config = {
         "crest": true,
         "newTabWarning": _("The following links open in a new tab"),
         "assetsURL": assetsURL,
@@ -52,5 +51,10 @@
             "url": footer_urls.terms_and_conditions,
             "target": "_blank"
         }
-    })
-}}
+} %}
+
+{% if content and content.show_sign_out_warning %}
+  {% set config = config | setAttribute("footerWarning", _("Make sure you <a href={sign_out_url}>leave this page</a> or close your browser if using a shared device").format(sign_out_url = content.sign_out_url)) %}
+{% endif %}
+
+{{ onsFooter(config) }}
