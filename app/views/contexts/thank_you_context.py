@@ -10,6 +10,7 @@ from app.views.contexts.email_form_context import build_email_form_context
 def build_default_thank_you_context(session_data: SessionData) -> Mapping:
 
     context = {
+        "show_sign_out_warning": True,
         "submitted_time": session_data.submitted_time,
         "tx_id": convert_tx_id(session_data.tx_id),
         "ru_ref": session_data.ru_ref,
@@ -31,7 +32,7 @@ def build_census_thank_you_context(
 ) -> Mapping:
 
     context = {
-        "show_warning": True,
+        "show_sign_out_warning": True,
         "display_address": session_data.display_address,
         "form_type": form_type,
         "hide_signout_button": False,
