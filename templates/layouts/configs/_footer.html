@@ -54,7 +54,7 @@
 } %}
 
 {% if content and content.submitted_time %}
-  {% set config = config | setAttribute("footerWarning", _("Make sure you <a href='/sign-out'>leave this page</a> or close your browser if using a shared device")) %}
+  {% set config = config | setAttribute("footerWarning", _("Make sure you <a href={sign_out_url}>leave this page</a> or close your browser if using a shared device").format(sign_out_url = content.sign_out_url)) %}
 {% endif %}
 
 {{ onsFooter(config) }}
