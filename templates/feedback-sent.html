@@ -2,7 +2,7 @@
 {% from 'components/panel/_macro.njk' import onsPanel %}
 {% from 'components/button/_macro.njk' import onsButton %}
 
-{% set hide_signout_button = content.hide_signout_button %}
+{% set hide_sign_out_button = content.hide_sign_out_button %}
 {% set page_title = _("Feedback sent") %}
 {% set sign_out_url = content.sign_out_url %}
 
@@ -30,7 +30,5 @@
         "url": url_for('post_submission.get_thank_you')
     })
   }}
-
-  {% include 'partials/sign-out-pre-footer-panel.html' %}
 
 {% endblock %}
