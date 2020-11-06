@@ -2,26 +2,74 @@ from app.helpers.template_helpers import (
     get_census_base_url,
     get_contact_us_url,
     get_data_layer,
+    get_footer_urls,
 )
 
 
-def test_get_contact_us_url_nisra_theme():
-    expected = "https://census.gov.uk/ni/contact-us/"
-    result = get_contact_us_url("census-nisra", "en")
+def test_get_contact_us_url_census_nisra():
+    base_url = "https://census.gov.uk/ni"
+    expected = f"{base_url}contact-us/"
+    result = get_contact_us_url("en", base_url)
 
     assert expected == result
 
 
 def test_get_contact_us_url_census_en():
-    expected = "https://census.gov.uk/contact-us/"
-    result = get_contact_us_url("census", "en")
+    base_url = "https://census.gov.uk/"
+    expected = f"{base_url}contact-us/"
+    result = get_contact_us_url("en", base_url)
 
     assert expected == result
 
 
 def test_get_contact_us_url_census_cy():
-    expected = "https://cyfrifiad.gov.uk/cysylltu-a-ni/"
-    result = get_contact_us_url("census", "cy")
+    base_url = "https://census.gov.uk/"
+    expected = f"{base_url}cysylltu-a-ni/"
+    result = get_contact_us_url("cy", base_url)
+
+    assert expected == result
+
+
+def test_get_footer_urls_nisra_theme():
+    base_url = "https://census.gov.uk/ni"
+    expected = {
+        "help": f"{base_url}help/help-with-the-questions/online-questions-help/",
+        "cookies": f"{base_url}cookies/",
+        "accessibility_statement": f"{base_url}accessibility/",
+        "privacy_and_data_protection": f"{base_url}privacy-and-data-protection/",
+        "terms_and_conditions": f"{base_url}terms-and-conditions/",
+    }
+
+    result = get_footer_urls("en", base_url, "census-nisra")
+
+    assert expected == result
+
+
+def test_get_footer_urls_census_en():
+    base_url = "https://census.gov.uk/"
+    expected = {
+        "help": f"{base_url}help/how-to-answer-questions/online-questions-help/",
+        "cookies": f"{base_url}cookies/",
+        "accessibility_statement": f"{base_url}accessibility/",
+        "privacy_and_data_protection": f"{base_url}privacy-and-data-protection/",
+        "terms_and_conditions": f"{base_url}terms-and-conditions/",
+    }
+
+    result = get_footer_urls("en", base_url, "census")
+
+    assert expected == result
+
+
+def test_get_footer_urls_census_cy():
+    base_url = "https://cyfrifiad.gov.uk/"
+    expected = {
+        "help": f"{base_url}help/sut-i-ateb-y-cwestiynau/help-y-cwestiynau-ar-lein/",
+        "cookies": f"{base_url}cwcis/",
+        "accessibility_statement": f"{base_url}hygyrchedd/",
+        "privacy_and_data_protection": f"{base_url}preifatrwydd-a-diogelu-data/",
+        "terms_and_conditions": f"{base_url}telerau-ac-amodau/",
+    }
+    result = get_footer_urls("cy", base_url, "census")
 
     assert expected == result
 
