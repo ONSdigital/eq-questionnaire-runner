@@ -938,44 +938,50 @@ msgstr ""
 msgid "Choose another section and return to this later"
 msgstr ""
 
-#: templates/layouts/configs/_footer.html:6
+#: templates/layouts/configs/_footer.html:5
 msgid "The following links open in a new tab"
 msgstr ""
 
-#: templates/layouts/configs/_footer.html:12
+#: templates/layouts/configs/_footer.html:11
 msgid "Help"
 msgstr ""
 
-#: templates/layouts/configs/_footer.html:17
+#: templates/layouts/configs/_footer.html:16
 msgid "Contact us"
 msgstr ""
 
-#: templates/layouts/configs/_footer.html:26
+#: templates/layouts/configs/_footer.html:25
 msgid "Cookies"
 msgstr ""
 
-#: templates/layouts/configs/_footer.html:31
+#: templates/layouts/configs/_footer.html:30
 msgid "Accessibility statement"
 msgstr ""
 
-#: templates/layouts/configs/_footer.html:36
+#: templates/layouts/configs/_footer.html:35
 msgid "Privacy and data protection"
 msgstr ""
 
-#: templates/layouts/configs/_footer.html:41
+#: templates/layouts/configs/_footer.html:40
 msgid "Terms and conditions"
 msgstr ""
 
-#: templates/layouts/configs/_footer.html:49
+#: templates/layouts/configs/_footer.html:48
 msgid "Crown copyright and database rights 2020 OS 100019153."
 msgstr ""
 
-#: templates/layouts/configs/_footer.html:50
+#: templates/layouts/configs/_footer.html:49
 msgid "Use of address data is subject to the"
 msgstr ""
 
-#: templates/layouts/configs/_footer.html:51
+#: templates/layouts/configs/_footer.html:50
 msgid "terms and conditions"
+msgstr ""
+
+#: templates/layouts/configs/_footer.html:57
+msgid ""
+"Make sure you <a href={sign_out_url}>leave this page</a> or close your "
+"browser if using a shared device"
 msgstr ""
 
 #: templates/layouts/configs/_save-sign-out-button.html:5
@@ -1058,12 +1064,6 @@ msgstr ""
 
 #: templates/partials/question.html:69
 msgid "Or"
-msgstr ""
-
-#: templates/partials/sign-out-pre-footer-panel.html:8
-msgid ""
-"Make sure you <a href='{sign_out_url}'>leave this page</a> or close your "
-"browser if using a shared device"
 msgstr ""
 
 #: templates/partials/answers/address.html:10

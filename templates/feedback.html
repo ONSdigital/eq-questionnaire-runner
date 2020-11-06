@@ -3,7 +3,7 @@
 {% from "components/button/_macro.njk" import onsButton %}
 {% from 'components/panel/_macro.njk' import onsPanel %}
 
-{% set hide_signout_button = content.hide_signout_button %}
+{% set hide_sign_out_button = content.hide_sign_out_button %}
 {% set question = content.question %}
 {% set sign_out_url = content.sign_out_url %}
 {% set breadcrumbs = {
@@ -46,7 +46,5 @@
     })
   }}
   <br><br>
-
-  {% include 'partials/sign-out-pre-footer-panel.html' %}
 
 {% endblock %}
