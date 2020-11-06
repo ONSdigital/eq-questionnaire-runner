@@ -3,6 +3,7 @@ from flask import url_for
 
 def build_feedback_context(question_schema, form):
     context = {
+        "show_warning": True,
         "form": {
             "errors": form.errors,
             "mapped_errors": form.map_errors(),

@@ -358,6 +358,7 @@ def get_confirmation_email_sent(session_store, schema):
     return render_template(
         template="confirmation-email-sent",
         content={
+            "show_warning": True,
             "email": email,
             "send_confirmation_email_url": url_for(
                 "post_submission.send_confirmation_email"
@@ -399,6 +400,7 @@ def get_feedback_sent(session_store):
     return render_template(
         template="feedback-sent",
         content={
+            "show_warning": True,
             "hide_signout_button": False,
             "sign_out_url": url_for("session.get_sign_out"),
         },

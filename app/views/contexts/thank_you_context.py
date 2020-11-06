@@ -31,7 +31,7 @@ def build_census_thank_you_context(
 ) -> Mapping:
 
     context = {
-        "submitted_time": session_data.submitted_time,
+        "show_warning": True,
         "display_address": session_data.display_address,
         "form_type": form_type,
         "hide_signout_button": False,
