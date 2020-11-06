@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2020-11-05 14:44+0000\n"
+"POT-Creation-Date: 2020-11-06 13:00+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -344,7 +344,7 @@ msgstr ""
 #: templates/individual_response/confirmation-post.html:21
 #: templates/individual_response/confirmation-text-message.html:31
 #: templates/individual_response/question.html:5 templates/interstitial.html:8
-#: templates/sectionsummary.html:11 templates/sectionsummary.html:53
+#: templates/sectionsummary.html:11 templates/sectionsummary.html:54
 msgid "Continue"
 msgstr ""
 
@@ -678,6 +678,10 @@ msgstr ""
 msgid "If you can’t answer questions for this person"
 msgstr ""
 
+#: templates/interstitial.html:32 templates/layouts/_questionnaire.html:26
+msgid "Save and continue"
+msgstr ""
+
 #: templates/introduction.html:10
 msgid "Introduction"
 msgstr ""
@@ -930,10 +934,6 @@ msgstr ""
 msgid "We use cookies to improve your experience of census.gov.uk"
 msgstr ""
 
-#: templates/layouts/_questionnaire.html:26
-msgid "Save and continue"
-msgstr ""
-
 #: templates/layouts/_questionnaire.html:37
 msgid "Choose another section and return to this later"
 msgstr ""
@@ -1155,7 +1155,7 @@ msgstr ""
 msgid "Enter address manually"
 msgstr ""
 
-#: templates/partials/answers/checkbox.html:8
+#: templates/partials/answers/checkbox.html:13
 msgid "Select all that apply"
 msgstr ""
 
@@ -1246,7 +1246,7 @@ msgid "No answer provided"
 msgstr ""
 
 #: templates/partials/summary/collapsible-summary.html:36
-#: templates/partials/summary/list-summary.html:13
+#: templates/partials/summary/list-summary.html:16
 #: templates/partials/summary/summary.html:18
 msgid "Change"
 msgstr ""
@@ -1256,15 +1256,15 @@ msgstr ""
 msgid "Change your answer for:"
 msgstr ""
 
-#: templates/partials/summary/list-summary.html:14
+#: templates/partials/summary/list-summary.html:17
 msgid "Change details for {item_name}"
 msgstr ""
 
-#: templates/partials/summary/list-summary.html:15
+#: templates/partials/summary/list-summary.html:18
 msgid "Remove"
 msgstr ""
 
-#: templates/partials/summary/list-summary.html:16
+#: templates/partials/summary/list-summary.html:19
 msgid "Remove {item_name}"
 msgstr ""
 
