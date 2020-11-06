@@ -111,6 +111,19 @@ class TestEmailConfirmation(IntegrationTestCase):
         self.assertInUrl("confirmation-email/sent")
         self.assertInBody("A confirmation email has been sent")
 
+    def test_thank_you_page_confirmation_email_show_warning(self):
+        # Given I launch and complete the test_confirmation_email questionnaire
+        self._launch_and_complete_questionnaire()
+
+        # When I enter a valid email and submit
+        self.post({"email": "email@example.com"})
+
+        # Then I get a sign out warning
+        self.assertInUrl("confirmation-email/sent")
+        self.assertInBody(
+            'Make sure you <a href="/sign-out">leave this page</a> or close your browser if using a shared device'
+        )
+
     def test_thank_you_missing_email(self):
         # Given I launch and complete the test_confirmation_email questionnaire
         self._launch_and_complete_questionnaire()

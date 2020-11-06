@@ -13,6 +13,9 @@ class TestSchemaThemeThankYou(IntegrationTestCase):
         self.assertInBody(
             "Your individual census has been submitted for <strong>68 Abingdon Road, Goathill</strong>"
         )
+        self.assertInBody(
+            'Make sure you <a href="/sign-out">leave this page</a> or close your browser if using a shared device'
+        )
 
     def test_census_household(self):
         self.launchSurvey(
