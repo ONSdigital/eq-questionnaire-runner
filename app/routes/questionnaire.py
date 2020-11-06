@@ -334,7 +334,7 @@ def send_confirmation_email(session_store, schema):
     return render_template(
         template="confirmation-email",
         content=confirmation_email.get_context(),
-        hide_signout_button=True,
+        hide_sign_out_button=True,
         page_title=confirmation_email.get_page_title(),
     )
 
@@ -363,7 +363,7 @@ def get_confirmation_email_sent(session_store, schema):
             "send_confirmation_email_url": url_for(
                 "post_submission.send_confirmation_email"
             ),
-            "hide_signout_button": False,
+            "hide_sign_out_button": False,
             "show_send_another_email_guidance": show_send_another_email_guidance,
             "sign_out_url": url_for("session.get_sign_out"),
             "show_feedback_call_to_action": show_feedback_call_to_action,
@@ -401,7 +401,7 @@ def get_feedback_sent(session_store):
         template="feedback-sent",
         content={
             "show_sign_out_warning": True,
-            "hide_signout_button": False,
+            "hide_sign_out_button": False,
             "sign_out_url": url_for("session.get_sign_out"),
         },
     )

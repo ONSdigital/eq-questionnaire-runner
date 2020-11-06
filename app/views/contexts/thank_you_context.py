@@ -16,7 +16,7 @@ def build_default_thank_you_context(session_data: SessionData) -> Mapping:
         "ru_ref": session_data.ru_ref,
         "trad_as": session_data.trad_as,
         "account_service_url": session_data.account_service_url,
-        "hide_signout_button": True,
+        "hide_sign_out_button": True,
     }
 
     if session_data.period_str:
@@ -35,7 +35,7 @@ def build_census_thank_you_context(
         "show_sign_out_warning": True,
         "display_address": session_data.display_address,
         "form_type": form_type,
-        "hide_signout_button": False,
+        "hide_sign_out_button": False,
         "sign_out_url": url_for("session.get_sign_out"),
     }
     if confirmation_email_form:

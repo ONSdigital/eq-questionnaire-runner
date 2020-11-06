@@ -10,7 +10,7 @@ def build_feedback_context(question_schema, form):
             "answer_errors": {},
             "fields": {},
         },
-        "hide_signout_button": False,
+        "hide_sign_out_button": False,
         "question": question_schema,
         "sign_out_url": url_for("session.get_sign_out"),
     }
