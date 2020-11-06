@@ -1,0 +1,132 @@
+{
+    "mime_type": "application/json/ons/eq",
+    "language": "en",
+    "schema_version": "0.0.1",
+    "data_version": "0.0.3",
+    "survey_id": "0",
+    "title": "Test checkbox answer label",
+    "theme": "default",
+    "description": "A questionnaire to test checkbox answer label.",
+    "metadata": [
+        {
+            "name": "user_id",
+            "type": "string"
+        },
+        {
+            "name": "period_id",
+            "type": "string"
+        },
+        {
+            "name": "ru_name",
+            "type": "string"
+        }
+    ],
+    "sections": [
+        {
+            "id": "default-section",
+            "groups": [
+                {
+                    "blocks": [
+                        {
+                            "type": "Question",
+                            "id": "default-label-checkbox",
+                            "question": {
+                                "answers": [
+                                    {
+                                        "id": "default-label-checkbox-answer",
+                                        "mandatory": false,
+                                        "options": [
+                                            {
+                                                "label": "Red",
+                                                "value": "Red"
+                                            },
+                                            {
+                                                "label": "Blue",
+                                                "value": "Blue"
+                                            },
+                                            {
+                                                "label": "Green",
+                                                "value": "Green"
+                                            }
+                                        ],
+                                        "type": "Checkbox"
+                                    }
+                                ],
+                                "id": "default-label-checkbox-question",
+                                "title": "What is your favourite colour?",
+                                "type": "General"
+                            }
+                        },
+                        {
+                            "type": "Question",
+                            "id": "no-label-checkbox",
+                            "question": {
+                                "answers": [
+                                    {
+                                        "id": "no-label-checkbox-answer",
+                                        "mandatory": false,
+                                        "label": null,
+                                        "options": [
+                                            {
+                                                "label": "Rugby",
+                                                "value": "Rugby"
+                                            },
+                                            {
+                                                "label": "Golf",
+                                                "value": "Golf"
+                                            },
+                                            {
+                                                "label": "Tennis",
+                                                "value": "Tennis"
+                                            }
+                                        ],
+                                        "type": "Checkbox"
+                                    }
+                                ],
+                                "id": "no-label-checkbox-question",
+                                "title": "What is your favourite sport?",
+                                "type": "General"
+                            }
+                        },
+                        {
+                            "type": "Question",
+                            "id": "custom-label-checkbox",
+                            "question": {
+                                "answers": [
+                                    {
+                                        "id": "custom-label-checkbox-answer",
+                                        "mandatory": false,
+                                        "label": "Select your answer",
+                                        "options": [
+                                            {
+                                                "label": "Monday",
+                                                "value": "Monday"
+                                            },
+                                            {
+                                                "label": "Saturday",
+                                                "value": "Saturday"
+                                            },
+                                            {
+                                                "label": "Sunday",
+                                                "value": "Sunday"
+                                            }
+                                        ],
+                                        "type": "Checkbox"
+                                    }
+                                ],
+                                "id": "custom-label-checkbox-question",
+                                "title": "What is your favorite day of the week?",
+                                "type": "General"
+                            }
+                        },
+                        {
+                            "type": "Summary",
+                            "id": "summary"
+                        }
+                    ],
+                    "id": "checkboxes"
+                }
+            ]
+        }
+    ]
+}
