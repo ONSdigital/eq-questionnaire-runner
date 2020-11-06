@@ -1,7 +1,7 @@
 from tests.integration.integration_test_case import IntegrationTestCase
 
 
-class TestCookieBanner(IntegrationTestCase):
+class TestCookiesBanner(IntegrationTestCase):
     def setUp(self):
         super().setUp()
         self.launchSurvey("test_dropdown_mandatory")
