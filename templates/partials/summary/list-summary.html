@@ -2,8 +2,8 @@
 
 {% set display_summary = list.list_items | length > 0 %}
 
-{% if list.editable %}
-  {% if display_summary %}
+{% if display_summary %}
+  {% if list.editable %}
     {{ onsSummary({
       "withinQuestion": true,
       "summaries": [
@@ -24,9 +24,7 @@
       ],
       "classes": "u-mt-s u-mb-m"
     }) }}
-  {% endif %}
-{% else %}
-  {% if display_summary %}
+  {% else %}
     {{ onsSummary({
       "withinQuestion": true,
       "summaries": [
