@@ -40,8 +40,8 @@ def convert_answers_to_payload_0_0_3(
         for block_id in routing_path:
             block = schema.get_block(block_id)
             block_type = block["type"]
-            if block_type == "RelationshipCollector":
-                add_relationship_answers(
+            if block_type == "RelationshipCollector" and "unrelated_block" in block:
+                add_relationships_unrelated_answers(
                     answer_store=answer_store,
                     list_store=list_store,
                     schema=schema,
@@ -49,7 +49,6 @@ def convert_answers_to_payload_0_0_3(
                     relationships_block=block,
                     answers_payload=answers_payload,
                 )
-                continue
 
             if schema.is_list_block_type(
                 block_type
@@ -91,7 +90,7 @@ def add_list_collector_answers(
                 answers_payload.add_or_update(answer)
 
 
-def add_relationship_answers(
+def add_relationships_unrelated_answers(
     answer_store, list_store, schema, section_id, relationships_block, answers_payload
 ):
     relationships_answer_id = schema.get_first_answer_id_for_block(
@@ -100,14 +99,15 @@ def add_relationship_answers(
     relationships_answer = answer_store.get_answer(relationships_answer_id)
     if not relationships_answer:
         return None
+
     relationship_store = RelationshipStore(relationships_answer.value)
-
     list_name = relationships_block["for_list"]
-
-    unrelated_block_id, unrelated_answer_id = None, None
-    if unrelated_block := relationships_block.get("unrelated_block"):
-        unrelated_block_id = unrelated_block["id"]
-        unrelated_answer_id = schema.get_first_answer_id_for_block(unrelated_block_id)
+    unrelated_block = relationships_block["unrelated_block"]
+    unrelated_block_id = unrelated_block["id"]
+    unrelated_answer_id = schema.get_first_answer_id_for_block(unrelated_block_id)
+    unrelated_no_answer_value = schema.get_unrelated_block_no_answer_value(
+        unrelated_answer_id
+    )
 
     relationship_router = RelationshipRouter(
         answer_store=answer_store,
@@ -118,21 +118,13 @@ def add_relationship_answers(
         relationships_block_id=relationships_block["id"],
         unrelated_block_id=unrelated_block_id,
         unrelated_answer_id=unrelated_answer_id,
+        unrelated_no_answer_value=unrelated_no_answer_value,
     )
 
-    relationship_answers = []
     for location in relationship_router.path:
-        if location.to_list_item_id:
-            if relationship_answer := relationship_store.get_relationship(
-                location.list_item_id, location.to_list_item_id
-            ):
-                relationship_answers.append(relationship_answer)
-        else:
-            if unrelated_answer := answer_store.get_answer(
+        if location.block_id == unrelated_block_id and (
+            unrelated_answer := answer_store.get_answer(
                 unrelated_answer_id, list_item_id=location.list_item_id
-            ):
-                answers_payload.add_or_update(unrelated_answer)
-
-    if relationship_answers:
-        relationships_answer.value = relationship_answers
-        answers_payload.add_or_update(relationships_answer)
+            )
+        ):
+            answers_payload.add_or_update(unrelated_answer)

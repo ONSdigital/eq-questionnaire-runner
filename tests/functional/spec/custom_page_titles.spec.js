@@ -60,7 +60,6 @@ describe("Feature: Custom Page Titles", () => {
       expectedPageTitle = browser.getTitle();
       expect(expectedPageTitle).to.equal("How Person 2 is related to Person 3 - Census 2021");
 
-      $(RelationshipsPage.submit()).click();
       $(RelationshipsPage.sonOrDaughter()).click();
       $(RelationshipsPage.submit()).click();
       expectedPageTitle = browser.getTitle();

@@ -477,6 +477,7 @@ class IndividualResponseChangeHandler(IndividualResponseHandler):
             content=self.get_context(),
             previous_location_url=url_for("questionnaire.get_questionnaire"),
             show_contact_us_guidance=True,
+            page_title=self.page_title(lazy_gettext("How to answer questions")),
         )
 
     def handle_post(self):

@@ -439,6 +439,12 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
                 if block["for_list"] == list_name
             ]
 
+    def get_unrelated_block_no_answer_value(self, unrelated_answer_id):
+        unrelated_answer = self.get_answers_by_answer_id(unrelated_answer_id)[0]
+        for option in unrelated_answer["options"]:
+            if option.get("action", {}).get("type") == "AddUnrelatedRelationships":
+                return option["value"]
+
     @staticmethod
     def get_single_string_value(schema_object):
         """
