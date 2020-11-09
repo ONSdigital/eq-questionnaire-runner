@@ -38,6 +38,8 @@ def test_get_footer_urls_nisra_theme():
         "accessibility_statement": f"{base_url}accessibility/",
         "privacy_and_data_protection": f"{base_url}privacy-and-data-protection/",
         "terms_and_conditions": f"{base_url}terms-and-conditions/",
+        "schema_theme": "census-nisra",
+        "ons_logo_language": "en",
     }
 
     result = get_footer_urls("en", base_url, "census-nisra")
@@ -53,6 +55,8 @@ def test_get_footer_urls_census_en():
         "accessibility_statement": f"{base_url}accessibility/",
         "privacy_and_data_protection": f"{base_url}privacy-and-data-protection/",
         "terms_and_conditions": f"{base_url}terms-and-conditions/",
+        "schema_theme": "census",
+        "ons_logo_language": "en",
     }
 
     result = get_footer_urls("en", base_url, "census")
@@ -68,6 +72,8 @@ def test_get_footer_urls_census_cy():
         "accessibility_statement": f"{base_url}hygyrchedd/",
         "privacy_and_data_protection": f"{base_url}preifatrwydd-a-diogelu-data/",
         "terms_and_conditions": f"{base_url}telerau-ac-amodau/",
+        "schema_theme": "census",
+        "ons_logo_language": "cy",
     }
     result = get_footer_urls("cy", base_url, "census")
 

@@ -1,7 +1,16 @@
 {% from "components/footer/_macro.njk" import onsFooter %}
 
+{% if footer_urls.schema_theme == "census-nisra" %}
+  {% set nisraLogo = {
+      "logo": 'nisra-logo-black-en',
+      "alt": 'NISRA - Northern Ireland Statistics and Research Agency'
+      }
+  %}
+{% endif %}
+
 {{
     onsFooter({
+        "lang": footer_urls.ons_logo_language,
         "crest": true,
         "newTabWarning": _("The following links open in a new tab"),
         "assetsURL": assetsURL,
@@ -51,6 +60,7 @@
             "link": _("terms and conditions"),
             "url": footer_urls.terms_and_conditions,
             "target": "_blank"
-        }
+        },
+        "poweredBy": nisraLogo
     })
 }}

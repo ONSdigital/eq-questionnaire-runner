@@ -131,6 +131,7 @@ def get_footer_urls(language_code: str, base_url: str, schema_theme: str):
         accessibility_statement_path = "hygyrchedd/"
         privacy_and_data_protection_path = "preifatrwydd-a-diogelu-data/"
         terms_and_conditions_path = "telerau-ac-amodau/"
+        ons_logo_language = "cy"
     else:
         cookies_path = "cookies/"
         accessibility_statement_path = "accessibility/"
@@ -141,6 +142,7 @@ def get_footer_urls(language_code: str, base_url: str, schema_theme: str):
             if schema_theme == "census-nisra"
             else "help/how-to-answer-questions/online-questions-help/"
         )
+        ons_logo_language = "en"
 
     return {
         "help": f"{base_url}{help_path}",
@@ -148,6 +150,8 @@ def get_footer_urls(language_code: str, base_url: str, schema_theme: str):
         "accessibility_statement": f"{base_url}{accessibility_statement_path}",
         "privacy_and_data_protection": f"{base_url}{privacy_and_data_protection_path}",
         "terms_and_conditions": f"{base_url}{terms_and_conditions_path}",
+        "schema_theme": schema_theme,
+        "ons_logo_language": ons_logo_language,
     }
 
 
