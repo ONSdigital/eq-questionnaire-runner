@@ -1,7 +1,7 @@
 {% extends 'layouts/_base.html' %}
 {% from 'components/panel/_macro.njk' import onsPanel %}
 {% set page_title = _("Confirmation email sent") %}
-{% set hide_signout_button = content.hide_signout_button %}
+{% set hide_sign_out_button = content.hide_sign_out_button %}
 {% set sign_out_url = content.sign_out_url %}
 
 {% block main %}
@@ -33,7 +33,5 @@
   {% if content.show_feedback_call_to_action %}
     {% include 'partials/feedback-call-to-action.html' %}
   {% endif %}
-
-  {% include 'partials/sign-out-pre-footer-panel.html' %}
 
 {% endblock %}

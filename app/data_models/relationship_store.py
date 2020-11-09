@@ -54,6 +54,11 @@ class RelationshipStore:
         key = (list_item_id, to_list_item_id)
         return self._relationships.get(key)
 
+    def remove_relationship(self, list_item_id, to_list_item_id):
+        key = (list_item_id, to_list_item_id)
+        if self._relationships.pop(key, None):
+            self._is_dirty = True
+
     def add_or_update(self, relationship: Relationship):
         key = (relationship.list_item_id, relationship.to_list_item_id)
 
