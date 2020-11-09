@@ -695,6 +695,10 @@ msgid ""
 "able to reply to comments, but we appreciate your feedback"
 msgstr ""
 
+#: templates/feedback-sent.html:28
+msgid "Done"
+msgstr ""
+
 #: templates/feedback.html:15
 msgid "Back"
 msgstr ""
