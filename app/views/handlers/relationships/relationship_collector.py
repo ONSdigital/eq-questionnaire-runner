@@ -22,10 +22,12 @@ class RelationshipCollector(RelationshipQuestion):
             relationship_answer,
         )
         self.relationship_store.add_or_update(relationship)
-        self.questionnaire_store_updater.update_relationships_answer(
-            relationship_store=self.relationship_store,
-            relationships_answer_id=self.relationships_answer_id,
-        )
+
+        if self.relationship_store.is_dirty:
+            self.questionnaire_store_updater.update_relationships_answer(
+                relationship_store=self.relationship_store,
+                relationships_answer_id=self.relationships_answer_id,
+            )
 
         if self._is_last_relationship():
             self.questionnaire_store_updater.add_completed_location(
