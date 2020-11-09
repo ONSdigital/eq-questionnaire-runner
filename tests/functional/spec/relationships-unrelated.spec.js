@@ -42,7 +42,7 @@ describe("Unrelated Relationships", () => {
         $(RelationshipsPage.submit()).click();
         $(RelatedToAnyoneElsePage.yes()).click();
         $(RelatedToAnyoneElsePage.submit()).click();
-        expect($(RelationshipsPage.questionText()).getText()).to.contain("Thinking of Andrew Austin, Daniel Davis is their");
+        expect($(RelationshipsPage.questionText()).getText()).to.contain("Thinking about Andrew Austin, Daniel Davis is their");
       });
 
       it("When I click previous, Then I will go back to the 'related to anyone else' question", () => {
@@ -54,7 +54,7 @@ describe("Unrelated Relationships", () => {
       it("When I select 'No' to the 'related to anyone else' question, Then I will be taken to the first relationship for the second person", () => {
         $(RelatedToAnyoneElsePage.no()).click();
         $(RelatedToAnyoneElsePage.submit()).click();
-        expect($(RelationshipsPage.questionText()).getText()).to.contain("Thinking of Betty Burns, Carla Clark is their");
+        expect($(RelationshipsPage.questionText()).getText()).to.contain("Thinking about Betty Burns, Carla Clark is their");
       });
 
       it("When I click previous, Then I will go back to the 'related to anyone else' question for the first person", () => {

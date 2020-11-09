@@ -1,5 +1,6 @@
 from typing import MutableMapping
 
+from app.data_models.relationship_store import Relationship
 from app.questionnaire.location import Location
 from app.views.handlers.relationships.relationship_question import RelationshipQuestion
 
@@ -14,13 +15,19 @@ class RelationshipCollector(RelationshipQuestion):
         return super().is_location_valid()
 
     def handle_post(self):
-        self.questionnaire_store_updater.update_relationships_answer(
-            relationship_store=self.relationship_store,
-            form_data=self.form.data,
-            relationships_answer_id=self.relationships_answer_id,
-            list_item_id=self._current_location.list_item_id,
-            to_list_item_id=self._current_location.to_list_item_id,
+        relationship_answer = self.form.data.get(self.relationships_answer_id)
+        relationship = Relationship(
+            self._current_location.list_item_id,
+            self._current_location.to_list_item_id,
+            relationship_answer,
         )
+        self.relationship_store.add_or_update(relationship)
+
+        if self.relationship_store.is_dirty:
+            self.questionnaire_store_updater.update_relationships_answer(
+                relationship_store=self.relationship_store,
+                relationships_answer_id=self.relationships_answer_id,
+            )
 
         if self._is_last_relationship():
             self.questionnaire_store_updater.add_completed_location(
