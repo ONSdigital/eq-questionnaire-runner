@@ -122,8 +122,9 @@ def add_relationships_unrelated_answers(
     )
 
     for location in relationship_router.path:
-        if location.block_id == unrelated_block_id:
-            if unrelated_answer := answer_store.get_answer(
+        if location.block_id == unrelated_block_id and (
+            unrelated_answer := answer_store.get_answer(
                 unrelated_answer_id, list_item_id=location.list_item_id
-            ):
-                answers_payload.add_or_update(unrelated_answer)
+            )
+        ):
+            answers_payload.add_or_update(unrelated_answer)
