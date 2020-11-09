@@ -31,51 +31,42 @@ def test_get_contact_us_url_census_cy():
 
 
 def test_get_footer_urls_nisra_theme():
-    base_url = "https://census.gov.uk/ni"
     expected = {
-        "help": f"{base_url}help/help-with-the-questions/online-questions-help/",
-        "cookies": f"{base_url}cookies/",
-        "accessibility_statement": f"{base_url}accessibility/",
-        "privacy_and_data_protection": f"{base_url}privacy-and-data-protection/",
-        "terms_and_conditions": f"{base_url}terms-and-conditions/",
-        "schema_theme": "census-nisra",
-        "ons_logo_language": "en",
+        "help_path": "help/help-with-the-questions/online-questions-help/",
+        "cookies_path": "cookies/",
+        "accessibility_statement_path": "accessibility/",
+        "privacy_and_data_protection_path": "privacy-and-data-protection/",
+        "terms_and_conditions_path": "terms-and-conditions/"
     }
 
-    result = get_footer_urls("en", base_url, "census-nisra")
+    result = get_footer_urls("en", "census-nisra")
 
     assert expected == result
 
 
 def test_get_footer_urls_census_en():
-    base_url = "https://census.gov.uk/"
     expected = {
-        "help": f"{base_url}help/how-to-answer-questions/online-questions-help/",
-        "cookies": f"{base_url}cookies/",
-        "accessibility_statement": f"{base_url}accessibility/",
-        "privacy_and_data_protection": f"{base_url}privacy-and-data-protection/",
-        "terms_and_conditions": f"{base_url}terms-and-conditions/",
-        "schema_theme": "census",
-        "ons_logo_language": "en",
+        "help_path": "help/how-to-answer-questions/online-questions-help/",
+        "cookies_path": "cookies/",
+        "accessibility_statement_path": "accessibility/",
+        "privacy_and_data_protection_path": "privacy-and-data-protection/",
+        "terms_and_conditions_path": "terms-and-conditions/"
     }
 
-    result = get_footer_urls("en", base_url, "census")
+    result = get_footer_urls("en", "census")
 
     assert expected == result
 
 
 def test_get_footer_urls_census_cy():
-    base_url = "https://cyfrifiad.gov.uk/"
     expected = {
-        "help": f"{base_url}help/sut-i-ateb-y-cwestiynau/help-y-cwestiynau-ar-lein/",
-        "cookies": f"{base_url}cwcis/",
-        "accessibility_statement": f"{base_url}hygyrchedd/",
-        "privacy_and_data_protection": f"{base_url}preifatrwydd-a-diogelu-data/",
-        "terms_and_conditions": f"{base_url}telerau-ac-amodau/",
-        "schema_theme": "census",
-        "ons_logo_language": "cy",
+        "help_path": "help/sut-i-ateb-y-cwestiynau/help-y-cwestiynau-ar-lein/",
+        "cookies_path": "cwcis/",
+        "accessibility_statement_path": "hygyrchedd/",
+        "privacy_and_data_protection_path": "preifatrwydd-a-diogelu-data/",
+        "terms_and_conditions_path": "telerau-ac-amodau/"
     }
-    result = get_footer_urls("cy", base_url, "census")
+    result = get_footer_urls("cy", "census")
 
     assert expected == result
 

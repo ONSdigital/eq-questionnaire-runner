@@ -42,6 +42,81 @@ def get_page_header_context(language, theme):
     return context.get(theme)
 
 
+def get_footer_context(language_code, theme, base_url, contact_us_url):
+    footer_urls = get_footer_urls(language_code, theme)
+
+    default_context = {
+        "crest": True,
+        "newTabWarning": lazy_gettext("The following links open in a new tab"),
+        "copyrightDeclaration": {
+            "copyright": lazy_gettext(
+                "Crown copyright and database rights 2020 OS 100019153."
+            ),
+            "text": lazy_gettext("Use of address data is subject to the"),
+            "link": lazy_gettext("terms and conditions"),
+            "url": f"{base_url}/{footer_urls['terms_and_conditions_path']}",
+            "target": "_blank",
+        },
+        "rows": [
+            {
+                "itemsList": [
+                    {
+                        "text": lazy_gettext("Help"),
+                        "url": f"{base_url}/{footer_urls['help_path']}",
+                        "target": "_blank",
+                    },
+                    {
+                        "text": lazy_gettext("Contact us"),
+                        "url": contact_us_url,
+                        "target": "_blank",
+                    },
+                ]
+            },
+            {
+                "itemsList": [
+                    {
+                        "text": lazy_gettext("Cookies"),
+                        "url": f"{base_url}/{footer_urls['cookies_path']}",
+                        "target": "_blank",
+                    },
+                    {
+                        "text": lazy_gettext("Accessibility statement"),
+                        "url": f"{base_url}/{footer_urls['accessibility_statement_path']}",
+                        "target": "_blank",
+                    },
+                    {
+                        "text": lazy_gettext("Privacy and data protection"),
+                        "url": f"{base_url}/{footer_urls['privacy_and_data_protection_path']}",
+                        "target": "_blank",
+                    },
+                    {
+                        "text": lazy_gettext("Terms and conditions"),
+                        "url": f"{base_url}/{footer_urls['terms_and_conditions_path']}",
+                        "target": "_blank",
+                    },
+                ]
+            },
+        ],
+    }
+    context = {
+        "census": {
+            **default_context,
+            "schema_theme": theme,
+            "lang": language_code,
+        },
+        "census-nisra": {
+            **default_context,
+            "schema_theme": theme,
+            "lang": "en",
+            "poweredBy": {
+                "logo": "nisra-logo-black-en",
+                "alt": "NISRA - Northern Ireland Statistics and Research Agency",
+            },
+        },
+    }
+    return context.get(theme)
+
+
 def _map_theme(theme):
     """Maps a survey schema theme to a design system theme
 
@@ -64,7 +139,7 @@ def render_template(template, **kwargs):
     cdn_url = f'{current_app.config["CDN_URL"]}{current_app.config["CDN_ASSETS_PATH"]}'
     base_url = get_census_base_url(theme, language_code)
     contact_us_url = get_contact_us_url(language_code, base_url)
-    footer_urls = get_footer_urls(language_code, base_url, theme)
+    footer_context = get_footer_context(language_code, theme, base_url, contact_us_url)
     include_csrf_token = request.url_rule and "POST" in request.url_rule.methods
     account_service_url = cookie_session.get(
         "account_service_url", f"{CENSUS_BASE_URL}en/start"
@@ -75,9 +150,9 @@ def render_template(template, **kwargs):
         account_service_url=account_service_url,
         account_service_log_out_url=cookie_session.get("account_service_log_out_url"),
         contact_us_url=contact_us_url,
-        footer_urls=footer_urls,
         cookie_settings_url=current_app.config["COOKIE_SETTINGS_URL"],
         page_header=page_header_context,
+        footer=footer_context,
         theme=_map_theme(theme),
         languages=get_languages_context(),
         schema_theme=theme,
@@ -124,35 +199,29 @@ def get_contact_us_url(language_code: str, base_url: str):
     return f"{base_url}contact-us/"
 
 
-def get_footer_urls(language_code: str, base_url: str, schema_theme: str):
+def get_footer_urls(language_code: str, schema_theme: str):
     if language_code == "cy":
-        help_path = "help/sut-i-ateb-y-cwestiynau/help-y-cwestiynau-ar-lein/"
-        cookies_path = "cwcis/"
-        accessibility_statement_path = "hygyrchedd/"
-        privacy_and_data_protection_path = "preifatrwydd-a-diogelu-data/"
-        terms_and_conditions_path = "telerau-ac-amodau/"
-        ons_logo_language = "cy"
+        return {
+            "help_path": "help/sut-i-ateb-y-cwestiynau/help-y-cwestiynau-ar-lein/",
+            "cookies_path": "cwcis/",
+            "accessibility_statement_path": "hygyrchedd/",
+            "privacy_and_data_protection_path": "preifatrwydd-a-diogelu-data/",
+            "terms_and_conditions_path": "telerau-ac-amodau/",
+        }
     else:
-        cookies_path = "cookies/"
-        accessibility_statement_path = "accessibility/"
-        privacy_and_data_protection_path = "privacy-and-data-protection/"
-        terms_and_conditions_path = "terms-and-conditions/"
         help_path = (
             "help/help-with-the-questions/online-questions-help/"
             if schema_theme == "census-nisra"
             else "help/how-to-answer-questions/online-questions-help/"
         )
-        ons_logo_language = "en"
 
-    return {
-        "help": f"{base_url}{help_path}",
-        "cookies": f"{base_url}{cookies_path}",
-        "accessibility_statement": f"{base_url}{accessibility_statement_path}",
-        "privacy_and_data_protection": f"{base_url}{privacy_and_data_protection_path}",
-        "terms_and_conditions": f"{base_url}{terms_and_conditions_path}",
-        "schema_theme": schema_theme,
-        "ons_logo_language": ons_logo_language,
-    }
+        return {
+            "help_path": help_path,
+            "cookies_path": "cookies/",
+            "accessibility_statement_path": "accessibility/",
+            "privacy_and_data_protection_path": "privacy-and-data-protection/",
+            "terms_and_conditions_path": "terms-and-conditions/",
+        }
 
 
 def safe_content(content):

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2020-11-04 16:05+0000\n"
+"POT-Creation-Date: 2020-11-09 15:59+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -208,12 +208,52 @@ msgid "Office for National Statistics logo"
 msgstr ""
 
 #: app/helpers/template_helpers.py:29 app/helpers/template_helpers.py:38
-#: app/helpers/template_helpers.py:59 templates/signed-out.html:3
+#: app/helpers/template_helpers.py:134 templates/signed-out.html:3
 msgid "Census 2021"
 msgstr ""
 
 #: app/helpers/template_helpers.py:34
 msgid "Northern Ireland Statistics and Research Agency logo"
+msgstr ""
+
+#: app/helpers/template_helpers.py:50 templates/layouts/configs/_footer.html:14
+msgid "The following links open in a new tab"
+msgstr ""
+
+#: app/helpers/template_helpers.py:52 templates/layouts/configs/_footer.html:58
+msgid "Crown copyright and database rights 2020 OS 100019153."
+msgstr ""
+
+#: app/helpers/template_helpers.py:55 templates/layouts/configs/_footer.html:59
+msgid "Use of address data is subject to the"
+msgstr ""
+
+#: app/helpers/template_helpers.py:56 templates/layouts/configs/_footer.html:60
+msgid "terms and conditions"
+msgstr ""
+
+#: app/helpers/template_helpers.py:64 templates/layouts/configs/_footer.html:20
+msgid "Help"
+msgstr ""
+
+#: app/helpers/template_helpers.py:69 templates/layouts/configs/_footer.html:25
+msgid "Contact us"
+msgstr ""
+
+#: app/helpers/template_helpers.py:78 templates/layouts/configs/_footer.html:34
+msgid "Cookies"
+msgstr ""
+
+#: app/helpers/template_helpers.py:83 templates/layouts/configs/_footer.html:39
+msgid "Accessibility statement"
+msgstr ""
+
+#: app/helpers/template_helpers.py:88 templates/layouts/configs/_footer.html:44
+msgid "Privacy and data protection"
+msgstr ""
+
+#: app/helpers/template_helpers.py:93 templates/layouts/configs/_footer.html:49
+msgid "Terms and conditions"
 msgstr ""
 
 #: app/questionnaire/placeholder_transforms.py:92
@@ -922,7 +962,7 @@ msgstr ""
 msgid "Previous"
 msgstr ""
 
-#: templates/layouts/_base.html:59
+#: templates/layouts/_base.html:60
 msgid "We use cookies to improve your experience of census.gov.uk"
 msgstr ""
 
@@ -934,44 +974,10 @@ msgstr ""
 msgid "Choose another section and return to this later"
 msgstr ""
 
-#: templates/layouts/configs/_footer.html:6
-msgid "The following links open in a new tab"
-msgstr ""
-
-#: templates/layouts/configs/_footer.html:12
-msgid "Help"
-msgstr ""
-
-#: templates/layouts/configs/_footer.html:17
-msgid "Contact us"
-msgstr ""
-
-#: templates/layouts/configs/_footer.html:26
-msgid "Cookies"
-msgstr ""
-
-#: templates/layouts/configs/_footer.html:31
-msgid "Accessibility statement"
-msgstr ""
-
-#: templates/layouts/configs/_footer.html:36
-msgid "Privacy and data protection"
-msgstr ""
-
-#: templates/layouts/configs/_footer.html:41
-msgid "Terms and conditions"
-msgstr ""
-
-#: templates/layouts/configs/_footer.html:49
-msgid "Crown copyright and database rights 2020 OS 100019153."
-msgstr ""
-
-#: templates/layouts/configs/_footer.html:50
-msgid "Use of address data is subject to the"
-msgstr ""
-
-#: templates/layouts/configs/_footer.html:51
-msgid "terms and conditions"
+#: templates/layouts/configs/_footer.html:67
+msgid ""
+"Make sure you <a href={sign_out_url}>leave this page</a> or close your "
+"browser if using a shared device"
 msgstr ""
 
 #: templates/layouts/configs/_save-sign-out-button.html:5
