@@ -63,7 +63,7 @@ class UnrelatedQuestion(RelationshipQuestion):
                         from_list_item_id, to_list_item_id
                     )
 
-        if answer_action_type == "AddUnrelatedRelationships":
+        elif answer_action_type == "AddUnrelatedRelationships":
             for to_list_item_id in self.get_remaining_relationships_for_individual():
                 relationship = Relationship(
                     list_item_id=from_list_item_id,
