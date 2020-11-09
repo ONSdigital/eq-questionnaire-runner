@@ -202,12 +202,17 @@ class TestJinjaFilters(AppContextTestCase):  # pylint: disable=too-many-public-m
                     "label": "Other",
                     "value": "Other",
                     "detail_answer": {
-                        "mandatory": False,
-                        "id": "other-answer",
-                        "label": "Please enter a number of items",
-                        "type": "Number",
-                        "parent_id": "radio-question-numeric-detail",
+                        "type": "Dropdown",
+                        "id": "mandatory-checkbox-with-mandatory-dropdown-detail-answer",
+                        "mandatory": True,
                         "visible": True,
+                        "label": "Please specify heat level",
+                        "placeholder": "Select heat level",
+                        "options": [
+                            {"label": "Mild", "value": "Mild"},
+                            {"label": "Medium", "value": "Medium"},
+                            {"label": "Hot", "value": "Hot"},
+                        ],
                     },
                 }
             ],

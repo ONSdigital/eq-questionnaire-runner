@@ -6,7 +6,7 @@
     "survey_id": "0",
     "title": "Other input fields",
     "theme": "default",
-    "description": "A questionnaire to demo checkbox field Other input.",
+    "description": "A questionnaire to demo checkbox field detail answer input.",
     "messages": {
         "NUMBER_TOO_LARGE": "Number is too large",
         "NUMBER_TOO_SMALL": "Number cannot be less than zero",
