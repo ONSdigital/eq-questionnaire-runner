@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2020-11-06 08:05+0000\n"
+"POT-Creation-Date: 2020-11-06 14:44+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -926,8 +926,36 @@ msgstr ""
 msgid "Previous"
 msgstr ""
 
-#: templates/layouts/_base.html:59
-msgid "We use cookies to improve your experience of census.gov.uk"
+#: templates/layouts/_base.html:60
+msgid "Tell us whether you accept cookies"
+msgstr ""
+
+#: templates/layouts/_base.html:61
+msgid ""
+"We use <a href='{cookie_settings_url}'>cookies to collect information</a>"
+" about how you use census.gov.uk. We use this information to make the "
+"website work as well as possible and improve our services."
+msgstr ""
+
+#: templates/layouts/_base.html:62
+msgid ""
+"You’ve accepted all cookies. You can <a "
+"href='{cookie_settings_url}'>change your cookie preferences</a> at any "
+"time."
+msgstr ""
+
+#: templates/layouts/_base.html:63
+msgid "Accept all cookies"
+msgstr ""
+
+#: templates/layouts/_base.html:64
+msgid "Set cookie preferences"
+msgstr ""
+
+#: templates/layouts/_base.html:65
+#: templates/partials/introduction/preview.html:30
+#: templates/partials/summary/collapsible-summary.html:14
+msgid "Hide"
 msgstr ""
 
 #: templates/layouts/_questionnaire.html:26
@@ -1155,7 +1183,7 @@ msgstr ""
 msgid "Enter address manually"
 msgstr ""
 
-#: templates/partials/answers/checkbox.html:8
+#: templates/partials/answers/checkbox.html:13
 msgid "Select all that apply"
 msgstr ""
 
@@ -1219,11 +1247,6 @@ msgstr ""
 #: templates/partials/introduction/preview.html:29
 #: templates/partials/summary/collapsible-summary.html:13
 msgid "Show"
-msgstr ""
-
-#: templates/partials/introduction/preview.html:30
-#: templates/partials/summary/collapsible-summary.html:14
-msgid "Hide"
 msgstr ""
 
 #: templates/partials/introduction/preview.html:48
