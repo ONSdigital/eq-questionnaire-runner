@@ -47,7 +47,9 @@ def get_footer_context(language_code, theme, base_url, contact_us_url, sign_out_
 
     footer_warning = (
         lazy_gettext(
-            "Make sure you <a href='{sign_out_url}'>leave this page</a> or close your browser if using a shared device".format(sign_out_url=sign_out_url)
+            "Make sure you <a href='{sign_out_url}'>leave this page</a> or close your browser if using a shared device".format(
+                sign_out_url=sign_out_url
+            )
         )
         if request.blueprint == "post_submission"
         else None
@@ -110,12 +112,10 @@ def get_footer_context(language_code, theme, base_url, contact_us_url, sign_out_
     context = {
         "census": {
             **default_context,
-            "schema_theme": theme,
             "lang": language_code,
         },
         "census-nisra": {
             **default_context,
-            "schema_theme": theme,
             "lang": "en",
             "poweredBy": {
                 "logo": "nisra-logo-black-en",
@@ -213,27 +213,30 @@ def get_contact_us_url(language_code: str, base_url: str):
 
 def get_footer_urls(language_code: str, schema_theme: str):
     if language_code == "cy":
-        return {
-            "help_path": "help/sut-i-ateb-y-cwestiynau/help-y-cwestiynau-ar-lein/",
-            "cookies_path": "cwcis/",
-            "accessibility_statement_path": "hygyrchedd/",
-            "privacy_and_data_protection_path": "preifatrwydd-a-diogelu-data/",
-            "terms_and_conditions_path": "telerau-ac-amodau/",
-        }
+        help_path = "help/sut-i-ateb-y-cwestiynau/help-y-cwestiynau-ar-lein/"
+        cookies_path = "cwcis/"
+        accessibility_statement_path = "hygyrchedd/"
+        privacy_and_data_protection_path = "preifatrwydd-a-diogelu-data/"
+        terms_and_conditions_path = "telerau-ac-amodau/"
+
     else:
         help_path = (
             "help/help-with-the-questions/online-questions-help/"
             if schema_theme == "census-nisra"
             else "help/how-to-answer-questions/online-questions-help/"
         )
+        cookies_path = "cookies/"
+        accessibility_statement_path = "accessibility/"
+        privacy_and_data_protection_path = "privacy-and-data-protection/"
+        terms_and_conditions_path = "terms-and-conditions/"
 
-        return {
-            "help_path": help_path,
-            "cookies_path": "cookies/",
-            "accessibility_statement_path": "accessibility/",
-            "privacy_and_data_protection_path": "privacy-and-data-protection/",
-            "terms_and_conditions_path": "terms-and-conditions/",
-        }
+    return {
+        "help_path": help_path,
+        "cookies_path": cookies_path,
+        "accessibility_statement_path": accessibility_statement_path,
+        "privacy_and_data_protection_path": privacy_and_data_protection_path,
+        "terms_and_conditions_path": terms_and_conditions_path,
+    }
 
 
 def safe_content(content):
