@@ -101,10 +101,8 @@ def get_footer_context(language_code, theme, base_url, contact_us_url, sign_out_
 
     if request.blueprint == "post_submission":
         default_context["footerWarning"] = lazy_gettext(
-            "Make sure you <a href='{sign_out_url}'>leave this page</a> or close your browser if using a shared device".format(
-                sign_out_url=sign_out_url
-            )
-        )
+            "Make sure you <a href='{sign_out_url}'>leave this page</a> or close your browser if using a shared device"
+        ).format(sign_out_url=sign_out_url)
 
     context = {
         "census": {
