@@ -42,9 +42,7 @@ def get_page_header_context(language, theme):
     return context.get(theme)
 
 
-def get_footer_context(language_code, theme, base_url, contact_us_url, sign_out_url):
-    footer_urls = get_footer_urls(language_code, theme)
-
+def get_footer_context(language_code, theme, content_urls, sign_out_url):
     default_context = {
         "crest": True,
         "newTabWarning": lazy_gettext("The following links open in a new tab"),
@@ -54,7 +52,7 @@ def get_footer_context(language_code, theme, base_url, contact_us_url, sign_out_
             ),
             "text": lazy_gettext("Use of address data is subject to the"),
             "link": lazy_gettext("terms and conditions"),
-            "url": f"{base_url}/{footer_urls['terms_and_conditions_path']}",
+            "url": content_urls["terms_and_conditions"],
             "target": "_blank",
         },
         "rows": [
@@ -62,12 +60,12 @@ def get_footer_context(language_code, theme, base_url, contact_us_url, sign_out_
                 "itemsList": [
                     {
                         "text": lazy_gettext("Help"),
-                        "url": f"{base_url}/{footer_urls['help_path']}",
+                        "url": content_urls["help"],
                         "target": "_blank",
                     },
                     {
                         "text": lazy_gettext("Contact us"),
-                        "url": contact_us_url,
+                        "url": content_urls["contact_us"],
                         "target": "_blank",
                     },
                 ]
@@ -76,22 +74,22 @@ def get_footer_context(language_code, theme, base_url, contact_us_url, sign_out_
                 "itemsList": [
                     {
                         "text": lazy_gettext("Cookies"),
-                        "url": f"{base_url}/{footer_urls['cookies_path']}",
+                        "url": content_urls["cookies"],
                         "target": "_blank",
                     },
                     {
                         "text": lazy_gettext("Accessibility statement"),
-                        "url": f"{base_url}/{footer_urls['accessibility_statement_path']}",
+                        "url": content_urls["accessibility_statement"],
                         "target": "_blank",
                     },
                     {
                         "text": lazy_gettext("Privacy and data protection"),
-                        "url": f"{base_url}/{footer_urls['privacy_and_data_protection_path']}",
+                        "url": content_urls["privacy_and_data_protection"],
                         "target": "_blank",
                     },
                     {
                         "text": lazy_gettext("Terms and conditions"),
-                        "url": f"{base_url}/{footer_urls['terms_and_conditions_path']}",
+                        "url": content_urls["terms_and_conditions"],
                         "target": "_blank",
                     },
                 ]
@@ -143,21 +141,21 @@ def render_template(template, **kwargs):
     google_tag_manager_context = get_google_tag_manager_context()
     cdn_url = f'{current_app.config["CDN_URL"]}{current_app.config["CDN_ASSETS_PATH"]}'
     base_url = get_census_base_url(theme, language_code)
-    contact_us_url = get_contact_us_url(language_code, base_url)
     include_csrf_token = request.url_rule and "POST" in request.url_rule.methods
     account_service_url = cookie_session.get(
         "account_service_url", f"{CENSUS_BASE_URL}en/start"
     )
     sign_out_url = url_for("session.get_sign_out")
+    content_urls = get_static_content_urls(language_code, base_url, theme)
     footer_context = get_footer_context(
-        language_code, theme, base_url, contact_us_url, sign_out_url
+        language_code, theme, content_urls, sign_out_url
     )
 
     return flask_render_template(
         template,
         account_service_url=account_service_url,
         account_service_log_out_url=cookie_session.get("account_service_log_out_url"),
-        contact_us_url=contact_us_url,
+        contact_us_url=content_urls["contact_us"],
         cookie_settings_url=current_app.config["COOKIE_SETTINGS_URL"],
         page_header=page_header_context,
         footer=footer_context,
@@ -200,20 +198,14 @@ def get_census_base_url(schema_theme: str, language_code: str) -> str:
     return CENSUS_BASE_URL
 
 
-def get_contact_us_url(language_code: str, base_url: str):
-    if language_code == "cy":
-        return f"{base_url}cysylltu-a-ni/"
-
-    return f"{base_url}contact-us/"
-
-
-def get_footer_urls(language_code: str, schema_theme: str):
+def get_static_content_urls(language_code: str, base_url: str, schema_theme: str):
     if language_code == "cy":
         help_path = "help/sut-i-ateb-y-cwestiynau/help-y-cwestiynau-ar-lein/"
         cookies_path = "cwcis/"
         accessibility_statement_path = "hygyrchedd/"
         privacy_and_data_protection_path = "preifatrwydd-a-diogelu-data/"
         terms_and_conditions_path = "telerau-ac-amodau/"
+        contact_us = "cysylltu-a-ni/"
 
     else:
         help_path = (
@@ -225,13 +217,15 @@ def get_footer_urls(language_code: str, schema_theme: str):
         accessibility_statement_path = "accessibility/"
         privacy_and_data_protection_path = "privacy-and-data-protection/"
         terms_and_conditions_path = "terms-and-conditions/"
+        contact_us = "contact-us/"
 
     return {
-        "help_path": help_path,
-        "cookies_path": cookies_path,
-        "accessibility_statement_path": accessibility_statement_path,
-        "privacy_and_data_protection_path": privacy_and_data_protection_path,
-        "terms_and_conditions_path": terms_and_conditions_path,
+        "help": f"{base_url}{help_path}",
+        "cookies": f"{base_url}{cookies_path}",
+        "accessibility_statement": f"{base_url}{accessibility_statement_path}",
+        "privacy_and_data_protection": f"{base_url}{privacy_and_data_protection_path}",
+        "terms_and_conditions": f"{base_url}{terms_and_conditions_path}",
+        "contact_us": f"{base_url}{contact_us}",
     }
 
 
