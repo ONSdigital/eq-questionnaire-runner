@@ -107,6 +107,7 @@ def get_footer_context(
     context = {
         "default": {
             **default_context,
+            "lang": language_code,
         },
         "census": {
             **default_context,
