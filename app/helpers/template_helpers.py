@@ -42,7 +42,7 @@ def get_page_header_context(language, theme):
     return context.get(theme)
 
 
-def get_footer_context(language_code, theme, content_urls, sign_out_url):
+def get_footer_context(language_code, content_urls, sign_out_url, theme='census'):
     default_context = {
         "crest": True,
         "newTabWarning": lazy_gettext("The following links open in a new tab"),
@@ -103,6 +103,9 @@ def get_footer_context(language_code, theme, content_urls, sign_out_url):
         ).format(sign_out_url=sign_out_url)
 
     context = {
+        "default": {
+            **default_context,
+        },
         "census": {
             **default_context,
             "lang": language_code,
@@ -148,7 +151,7 @@ def render_template(template, **kwargs):
     sign_out_url = url_for("session.get_sign_out")
     content_urls = get_static_content_urls(language_code, base_url, theme)
     footer_context = get_footer_context(
-        language_code, theme, content_urls, sign_out_url
+        language_code, content_urls, sign_out_url, theme,
     )
 
     return flask_render_template(
