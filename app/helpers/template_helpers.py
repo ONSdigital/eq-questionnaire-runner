@@ -42,7 +42,9 @@ def get_page_header_context(language, theme):
     return context.get(theme)
 
 
-def get_footer_context(language_code, content_urls, sign_out_url, theme='census'):
+def get_footer_context(
+    language_code, static_content_urls, sign_out_url, theme="census"
+):
     default_context = {
         "crest": True,
         "newTabWarning": lazy_gettext("The following links open in a new tab"),
@@ -52,7 +54,7 @@ def get_footer_context(language_code, content_urls, sign_out_url, theme='census'
             ),
             "text": lazy_gettext("Use of address data is subject to the"),
             "link": lazy_gettext("terms and conditions"),
-            "url": content_urls["terms_and_conditions"],
+            "url": static_content_urls["terms_and_conditions"],
             "target": "_blank",
         },
         "rows": [
@@ -60,12 +62,12 @@ def get_footer_context(language_code, content_urls, sign_out_url, theme='census'
                 "itemsList": [
                     {
                         "text": lazy_gettext("Help"),
-                        "url": content_urls["help"],
+                        "url": static_content_urls["help"],
                         "target": "_blank",
                     },
                     {
                         "text": lazy_gettext("Contact us"),
-                        "url": content_urls["contact_us"],
+                        "url": static_content_urls["contact_us"],
                         "target": "_blank",
                     },
                 ]
@@ -74,22 +76,22 @@ def get_footer_context(language_code, content_urls, sign_out_url, theme='census'
                 "itemsList": [
                     {
                         "text": lazy_gettext("Cookies"),
-                        "url": content_urls["cookies"],
+                        "url": static_content_urls["cookies"],
                         "target": "_blank",
                     },
                     {
                         "text": lazy_gettext("Accessibility statement"),
-                        "url": content_urls["accessibility_statement"],
+                        "url": static_content_urls["accessibility_statement"],
                         "target": "_blank",
                     },
                     {
                         "text": lazy_gettext("Privacy and data protection"),
-                        "url": content_urls["privacy_and_data_protection"],
+                        "url": static_content_urls["privacy_and_data_protection"],
                         "target": "_blank",
                     },
                     {
                         "text": lazy_gettext("Terms and conditions"),
-                        "url": content_urls["terms_and_conditions"],
+                        "url": static_content_urls["terms_and_conditions"],
                         "target": "_blank",
                     },
                 ]
@@ -149,16 +151,19 @@ def render_template(template, **kwargs):
         "account_service_url", f"{CENSUS_BASE_URL}en/start"
     )
     sign_out_url = url_for("session.get_sign_out")
-    content_urls = get_static_content_urls(language_code, base_url, theme)
+    static_content_urls = get_static_content_urls(language_code, base_url, theme)
     footer_context = get_footer_context(
-        language_code, content_urls, sign_out_url, theme,
+        language_code,
+        static_content_urls,
+        sign_out_url,
+        theme,
     )
 
     return flask_render_template(
         template,
         account_service_url=account_service_url,
         account_service_log_out_url=cookie_session.get("account_service_log_out_url"),
-        contact_us_url=content_urls["contact_us"],
+        contact_us_url=static_content_urls["contact_us"],
         cookie_settings_url=current_app.config["COOKIE_SETTINGS_URL"],
         page_header=page_header_context,
         footer=footer_context,
