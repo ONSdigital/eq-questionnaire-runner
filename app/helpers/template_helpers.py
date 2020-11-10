@@ -45,16 +45,6 @@ def get_page_header_context(language, theme):
 def get_footer_context(language_code, theme, base_url, contact_us_url, sign_out_url):
     footer_urls = get_footer_urls(language_code, theme)
 
-    footer_warning = (
-        lazy_gettext(
-            "Make sure you <a href='{sign_out_url}'>leave this page</a> or close your browser if using a shared device".format(
-                sign_out_url=sign_out_url
-            )
-        )
-        if request.blueprint == "post_submission"
-        else None
-    )
-
     default_context = {
         "crest": True,
         "newTabWarning": lazy_gettext("The following links open in a new tab"),
@@ -67,7 +57,6 @@ def get_footer_context(language_code, theme, base_url, contact_us_url, sign_out_
             "url": f"{base_url}/{footer_urls['terms_and_conditions_path']}",
             "target": "_blank",
         },
-        "footerWarning": footer_warning,
         "rows": [
             {
                 "itemsList": [
@@ -109,6 +98,14 @@ def get_footer_context(language_code, theme, base_url, contact_us_url, sign_out_
             },
         ],
     }
+
+    if request.blueprint == "post_submission":
+        default_context["footerWarning"] = lazy_gettext(
+            "Make sure you <a href='{sign_out_url}'>leave this page</a> or close your browser if using a shared device".format(
+                sign_out_url=sign_out_url
+            )
+        )
+
     context = {
         "census": {
             **default_context,
@@ -123,6 +120,7 @@ def get_footer_context(language_code, theme, base_url, contact_us_url, sign_out_
             },
         },
     }
+
     return context.get(theme)
 
 
