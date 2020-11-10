@@ -42,8 +42,16 @@ def get_page_header_context(language, theme):
     return context.get(theme)
 
 
-def get_footer_context(language_code, theme, base_url, contact_us_url):
+def get_footer_context(language_code, theme, base_url, contact_us_url, sign_out_url):
     footer_urls = get_footer_urls(language_code, theme)
+
+    footer_warning = (
+        lazy_gettext(
+            f"Make sure you <a href='{sign_out_url}'>leave this page</a> or close your browser if using a shared device"
+        )
+        if request.blueprint == "post_submission"
+        else None
+    )
 
     default_context = {
         "crest": True,
@@ -57,6 +65,7 @@ def get_footer_context(language_code, theme, base_url, contact_us_url):
             "url": f"{base_url}/{footer_urls['terms_and_conditions_path']}",
             "target": "_blank",
         },
+        "footerWarning": footer_warning,
         "rows": [
             {
                 "itemsList": [
@@ -139,10 +148,13 @@ def render_template(template, **kwargs):
     cdn_url = f'{current_app.config["CDN_URL"]}{current_app.config["CDN_ASSETS_PATH"]}'
     base_url = get_census_base_url(theme, language_code)
     contact_us_url = get_contact_us_url(language_code, base_url)
-    footer_context = get_footer_context(language_code, theme, base_url, contact_us_url)
     include_csrf_token = request.url_rule and "POST" in request.url_rule.methods
     account_service_url = cookie_session.get(
         "account_service_url", f"{CENSUS_BASE_URL}en/start"
+    )
+    sign_out_url = url_for("session.get_sign_out")
+    footer_context = get_footer_context(
+        language_code, theme, base_url, contact_us_url, sign_out_url
     )
 
     return flask_render_template(
@@ -163,7 +175,7 @@ def render_template(template, **kwargs):
         address_lookup_api_url=current_app.config["ADDRESS_LOOKUP_API_URL"],
         data_layer=get_data_layer(theme),
         include_csrf_token=include_csrf_token,
-        sign_out_url=url_for("session.get_sign_out"),
+        sign_out_url=sign_out_url,
         **google_tag_manager_context,
         **kwargs,
     )
