@@ -45,6 +45,7 @@ def get_page_header_context(language, theme):
 
 def get_footer_context(language_code, static_content_urls, sign_out_url, theme):
     default_context = {
+        "lang": language_code,
         "crest": True,
         "newTabWarning": lazy_gettext("The following links open in a new tab"),
         "copyrightDeclaration": {
@@ -106,11 +107,15 @@ def get_footer_context(language_code, static_content_urls, sign_out_url, theme):
     context = {
         "default": {
             **default_context,
-            "lang": language_code,
+        },
+        "social": {
+            **default_context,
+        },
+        "northernireland": {
+            **default_context,
         },
         "census": {
             **default_context,
-            "lang": language_code,
         },
         "census-nisra": {
             **default_context,
