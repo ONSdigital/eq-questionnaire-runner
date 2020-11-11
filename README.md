@@ -247,6 +247,7 @@ The following environment variables must be set when deploying the app.
 | Variable Name                             | Description                                                                          |
 |-------------------------------------------|--------------------------------------------------------------------------------------|
 | SUBMISSION_BUCKET_NAME                    | The name of the bucket that submissions will be stored in                            |
+| FEEDBACK_BUCKET_NAME                      | The name of the bucket that feedback will be stored in                                               |
 | DOCKER_REGISTRY                           | The FQDN of the target Docker registry                                               |
 | IMAGE_TAG                                 |                                                                                      |
 | REQUESTED_CPU_PER_POD                     | No. of CPUs to request per Pod                                                       |

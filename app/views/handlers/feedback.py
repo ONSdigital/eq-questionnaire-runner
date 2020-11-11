@@ -3,6 +3,8 @@ from typing import Mapping
 
 from flask import current_app
 from flask_babel import gettext, lazy_gettext
+from google.cloud import storage
+from structlog import get_logger
 
 from app.data_models.session_data import SessionData
 from app.data_models.session_store import SessionStore
@@ -10,12 +12,18 @@ from app.forms.questionnaire_form import generate_form
 from app.questionnaire.questionnaire_schema import QuestionnaireSchema
 from app.views.contexts.feedback_form_context import build_feedback_context
 
+logger = get_logger()
+
 
 class FeedbackNotEnabled(Exception):
     pass
 
 
 class FeedbackLimitReached(Exception):
+    pass
+
+
+class FeedbackSentFailedException(Exception):
     pass
 
 
@@ -111,6 +119,14 @@ class Feedback:
         return self.PAGE_TITLE
 
     def handle_post(self):
+
+        feedback_send = current_app.eq["feedback"].send_feedback(
+            self._schema, self.form.data, self._session_store.session_data
+        )
+
+        if not feedback_send:
+            raise FeedbackSentFailedException()
+
         self._session_store.session_data.feedback_count += 1
         self._session_store.save()
 
@@ -121,3 +137,46 @@ class Feedback:
     @staticmethod
     def is_enabled(schema: QuestionnaireSchema) -> bool:
         return schema.get_submission().get("feedback")
+
+
+class GCSFeedback:
+    def __init__(self, bucket_name):
+        client = storage.Client()
+        self.bucket = client.get_bucket(bucket_name)
+
+    def send_feedback(self, schema, form_data, session_data):
+        feedback = {
+            "feedback_text": form_data["feedback-type"],
+            "feedback_topic": form_data["feedback-text"],
+        }
+        blob = self.bucket.blob(session_data.tx_id)
+        blob.metadata = {
+            "tx_id": session_data.tx_id,
+            "submitted_at": session_data.submitted_time,
+            "form_type": schema.form_type,
+            "region_code": schema.region_code,
+            "feedback_count": session_data.feedback_count,
+        }
+
+        blob.upload_from_string(str(feedback).encode("utf8"))
+
+        return True
+
+
+class LogFeedback:
+    @staticmethod
+    def send_feedback(schema, form_data, session_data):
+        logger.info("sending feedback")
+        logger.info(
+            "message payload",
+            feedback_topic=form_data["feedback-type"],
+            feedback_text=form_data["feedback-text"],
+            feedback_count=session_data.feedback_count,
+            submission_language=session_data.language_code,
+            form_type=schema.form_type,
+            region_code=schema.region_code,
+            tx_id=session_data.tx_id,
+            submitted_at=session_data.submitted_time,
+        )
+
+        return True
