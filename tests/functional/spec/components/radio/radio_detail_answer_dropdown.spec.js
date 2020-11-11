@@ -10,30 +10,34 @@ describe("Optional Radio with a Dropdown detail answer", () => {
   describe("Given an optional radio with a dropdown detail answer", () => {
     it("When a placeholder choice is provided for the detail answer dropdown, Then then provided placeholder should be displayed as the first option'", () => {
       $(RadioDropdownPage.fruit()).click();
+
       expect($(RadioDropdownPage.fruitDetail()).getText()).to.contain("Select fruit");
     });
 
     it("When a placeholder choice is not provided for the detail answer dropdown, Then the default placeholder should be displayed as the first option'", () => {
       $(RadioDropdownPage.jam()).click();
+
       expect($(RadioDropdownPage.jamDetail()).getText()).to.contain("Select an answer");
     });
 
     it("When the user does not provide an answer and submits, Then the summary should display 'No answer provided'", () => {
       $(RadioDropdownPage.submit()).click();
+
       expect($(SummaryPage.optionalRadioWithDropdownDetailAnswer()).getText()).to.equal("No answer provided");
     });
 
     it("When the user selects an option with an optional detail answer but does not provide a detail answer, Then the summary should display the chosen option without the detail answer", () => {
       $(RadioDropdownPage.fruit()).click();
       $(RadioDropdownPage.submit()).click();
+
       expect($(SummaryPage.optionalRadioWithDropdownDetailAnswer()).getText()).to.equal("Fruit");
     });
 
     it("When the user selects an option with an optional detail answer and provides a detail answer, Then the summary should display the chosen option and its details", () => {
       $(RadioDropdownPage.fruit()).click();
       $(RadioDropdownPage.fruitDetail()).selectByAttribute("value", "Mango");
-      expect($(RadioDropdownPage.fruitDetail()).getValue()).to.equal("Mango");
       $(RadioDropdownPage.submit()).click();
+
       expect($(SummaryPage.optionalRadioWithDropdownDetailAnswer()).getText()).to.equal("Fruit\nMango");
     });
 
@@ -41,25 +45,25 @@ describe("Optional Radio with a Dropdown detail answer", () => {
       $(RadioDropdownPage.fruit()).click();
       $(RadioDropdownPage.fruitDetail()).selectByAttribute("value", "Mango");
       $(RadioDropdownPage.submit()).click();
-      expect($(SummaryPage.optionalRadioWithDropdownDetailAnswer()).getText()).to.equal("Fruit\nMango");
-
       $(SummaryPage.previous()).click();
       $(RadioDropdownPage.fruitDetail()).selectByVisibleText("Select fruit");
       $(RadioDropdownPage.submit()).click();
+
       expect($(SummaryPage.optionalRadioWithDropdownDetailAnswer()).getText()).to.equal("Fruit");
     });
 
     it("When the user selects an option with an mandatory detail answer but does not provide a detail answer, Then an error should be displayed when the user submits", () => {
       $(RadioDropdownPage.jam()).click();
       $(RadioDropdownPage.submit()).click();
+
       expect($(DropdownMandatoryPage.errorNumber(1)).getText()).to.equal("Please select the type of Jam");
     });
 
     it("When the user selects an option with an mandatory detail answer and provides a detail answer, Then the summary should display the chosen option and its details", () => {
       $(RadioDropdownPage.jam()).click();
       $(RadioDropdownPage.jamDetail()).selectByAttribute("value", "Strawberry");
-      expect($(RadioDropdownPage.jamDetail()).getValue()).to.equal("Strawberry");
       $(RadioDropdownPage.submit()).click();
+
       expect($(SummaryPage.optionalRadioWithDropdownDetailAnswer()).getText()).to.equal("Jam\nStrawberry");
     });
 
@@ -67,11 +71,10 @@ describe("Optional Radio with a Dropdown detail answer", () => {
       $(RadioDropdownPage.jam()).click();
       $(RadioDropdownPage.jamDetail()).selectByAttribute("value", "Raspberry");
       $(RadioDropdownPage.submit()).click();
-      expect($(SummaryPage.optionalRadioWithDropdownDetailAnswer()).getText()).to.equal("Jam\nRaspberry");
-
       $(SummaryPage.previous()).click();
       $(RadioDropdownPage.fruit()).click();
       $(RadioDropdownPage.submit()).click();
+
       expect($(SummaryPage.optionalRadioWithDropdownDetailAnswer()).getText()).to.equal("Fruit");
     });
   });

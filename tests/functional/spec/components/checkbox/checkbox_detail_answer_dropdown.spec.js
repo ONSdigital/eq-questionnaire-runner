@@ -10,30 +10,34 @@ describe("Optional Checkbox with a Dropdown detail answer", () => {
   describe("Given an optional checkbox with a dropdown detail answer", () => {
     it("When a placeholder choice is provided for the detail answer dropdown, Then then provided placeholder should be displayed as the first option'", () => {
       $(CheckboxDropdownPage.fruit()).click();
+
       expect($(CheckboxDropdownPage.fruitDetail()).getText()).to.contain("Select fruit");
     });
 
     it("When a placeholder choice is not provided for the detail answer dropdown, Then the default placeholder should be displayed as the first option'", () => {
       $(CheckboxDropdownPage.jam()).click();
+
       expect($(CheckboxDropdownPage.jamDetail()).getText()).to.contain("Select an answer");
     });
 
     it("When the user does not provide an answer and submits, Then the summary should display 'No answer provided'", () => {
       $(CheckboxDropdownPage.submit()).click();
+
       expect($(SummaryPage.optionalCheckboxWithDropdownDetailAnswer()).getText()).to.equal("No answer provided");
     });
 
     it("When the user selects an option with an optional detail answer but does not provide a detail answer, Then the summary should display the chosen option without the detail answer", () => {
       $(CheckboxDropdownPage.fruit()).click();
       $(CheckboxDropdownPage.submit()).click();
+
       expect($(SummaryPage.optionalCheckboxWithDropdownDetailAnswer()).getText()).to.equal("Fruit");
     });
 
     it("When the user selects an option with an optional detail answer and provides a detail answer, Then the summary should display the chosen option and its details", () => {
       $(CheckboxDropdownPage.fruit()).click();
       $(CheckboxDropdownPage.fruitDetail()).selectByAttribute("value", "Mango");
-      expect($(CheckboxDropdownPage.fruitDetail()).getValue()).to.equal("Mango");
       $(CheckboxDropdownPage.submit()).click();
+
       expect($(SummaryPage.optionalCheckboxWithDropdownDetailAnswer()).getText()).to.equal("Fruit\nMango");
     });
 
@@ -41,25 +45,25 @@ describe("Optional Checkbox with a Dropdown detail answer", () => {
       $(CheckboxDropdownPage.fruit()).click();
       $(CheckboxDropdownPage.fruitDetail()).selectByAttribute("value", "Mango");
       $(CheckboxDropdownPage.submit()).click();
-      expect($(SummaryPage.optionalCheckboxWithDropdownDetailAnswer()).getText()).to.equal("Fruit\nMango");
-
       $(SummaryPage.previous()).click();
       $(CheckboxDropdownPage.fruitDetail()).selectByVisibleText("Select fruit");
       $(CheckboxDropdownPage.submit()).click();
+
       expect($(SummaryPage.optionalCheckboxWithDropdownDetailAnswer()).getText()).to.equal("Fruit");
     });
 
     it("When the user selects an option with an mandatory detail answer but does not provide a detail answer, Then an error should be displayed when the user submits", () => {
       $(CheckboxDropdownPage.jam()).click();
       $(CheckboxDropdownPage.submit()).click();
+
       expect($(DropdownMandatoryPage.errorNumber(1)).getText()).to.equal("Please select the type of Jam");
     });
 
     it("When the user selects an option with an mandatory detail answer and provides a detail answer, Then the summary should display the chosen option and its details", () => {
       $(CheckboxDropdownPage.jam()).click();
       $(CheckboxDropdownPage.jamDetail()).selectByAttribute("value", "Strawberry");
-      expect($(CheckboxDropdownPage.jamDetail()).getValue()).to.equal("Strawberry");
       $(CheckboxDropdownPage.submit()).click();
+
       expect($(SummaryPage.optionalCheckboxWithDropdownDetailAnswer()).getText()).to.equal("Jam\nStrawberry");
     });
 
@@ -67,24 +71,20 @@ describe("Optional Checkbox with a Dropdown detail answer", () => {
       $(CheckboxDropdownPage.fruit()).click();
       $(CheckboxDropdownPage.fruitDetail()).selectByAttribute("value", "Mango");
       $(CheckboxDropdownPage.submit()).click();
-      expect($(SummaryPage.optionalCheckboxWithDropdownDetailAnswer()).getText()).to.equal("Fruit\nMango");
-
       $(SummaryPage.previous()).click();
       $(CheckboxDropdownPage.fruit()).click();
       $(CheckboxDropdownPage.submit()).click();
+
       expect($(SummaryPage.optionalCheckboxWithDropdownDetailAnswer()).getText()).to.equal("No answer provided");
     });
 
-    it("When the user selects multiple options with detail answers and submits, Then the summary should display the sll the chosen options and their details", () => {
+    it("When the user selects multiple options with detail answers and submits, Then the summary should display all the chosen options and their details", () => {
       $(CheckboxDropdownPage.fruit()).click();
       $(CheckboxDropdownPage.fruitDetail()).selectByAttribute("value", "Mango");
       $(CheckboxDropdownPage.jam()).click();
       $(CheckboxDropdownPage.jamDetail()).selectByAttribute("value", "Strawberry");
-
-      expect($(CheckboxDropdownPage.jamDetail()).getValue()).to.equal("Strawberry");
-      expect($(CheckboxDropdownPage.jamDetail()).getValue()).to.equal("Strawberry");
-
       $(CheckboxDropdownPage.submit()).click();
+
       expect($(SummaryPage.optionalCheckboxWithDropdownDetailAnswer()).getText()).to.equal("Fruit\nMango\nJam\nStrawberry");
     });
   });
