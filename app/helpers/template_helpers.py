@@ -11,6 +11,7 @@ from flask_babel import get_locale, lazy_gettext
 from app.helpers.language_helper import get_languages_context
 
 CENSUS_BASE_URL = "https://census.gov.uk/"
+DEFAULT_THEME = "census"
 
 
 @lru_cache(maxsize=None)
@@ -42,9 +43,7 @@ def get_page_header_context(language, theme):
     return context.get(theme)
 
 
-def get_footer_context(
-    language_code, static_content_urls, sign_out_url, theme="census"
-):
+def get_footer_context(language_code, static_content_urls, sign_out_url, theme):
     default_context = {
         "crest": True,
         "newTabWarning": lazy_gettext("The following links open in a new tab"),
@@ -139,10 +138,10 @@ def _map_theme(theme):
 
 def render_template(template, **kwargs):
     template = f"{template.lower()}.html"
-    theme = cookie_session.get("theme")
+    theme = cookie_session.get("theme", DEFAULT_THEME)
     survey_title = lazy_gettext("Census 2021")
     language_code = get_locale().language
-    page_header_context = get_page_header_context(language_code, theme or "census")
+    page_header_context = get_page_header_context(language_code, theme)
     page_header_context.update({"title": survey_title})
     google_tag_manager_context = get_google_tag_manager_context()
     cdn_url = f'{current_app.config["CDN_URL"]}{current_app.config["CDN_ASSETS_PATH"]}'
@@ -207,6 +206,7 @@ def get_census_base_url(schema_theme: str, language_code: str) -> str:
     return CENSUS_BASE_URL
 
 
+@lru_cache(maxsize=None)
 def get_static_content_urls(language_code: str, base_url: str, schema_theme: str):
     if language_code == "cy":
         help_path = "help/sut-i-ateb-y-cwestiynau/help-y-cwestiynau-ar-lein/"
