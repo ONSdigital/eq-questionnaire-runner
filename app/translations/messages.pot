@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2020-11-09 09:45+0000\n"
+"POT-Creation-Date: 2020-11-10 17:17+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -67,7 +67,7 @@ msgstr ""
 msgid "Enter a date"
 msgstr ""
 
-#: app/forms/error_messages.py:23 templates/partials/answers/address.html:54
+#: app/forms/error_messages.py:23 templates/partials/answers/address.html:56
 msgid "Enter an address"
 msgstr ""
 
@@ -719,7 +719,7 @@ msgstr ""
 msgid "Close this window to continue with your current survey"
 msgstr ""
 
-#: templates/partials/answers/address.html:53 templates/question.html:10
+#: templates/partials/answers/address.html:55 templates/question.html:10
 #, python-format
 msgid "There is a problem with your answer"
 msgid_plural "There are %(num)s problems with your answer"
@@ -1156,34 +1156,42 @@ msgid ""
 msgstr ""
 
 #: templates/partials/answers/address.html:47
-msgid "Enter more of the address to improve results"
+msgid "There are {n} for {x}"
 msgstr ""
 
 #: templates/partials/answers/address.html:48
-msgid "Select an address"
+msgid "{n} addresses"
 msgstr ""
 
 #: templates/partials/answers/address.html:49
-msgid "No results found. Try entering a different part of the address"
+msgid "Enter more of the address to improve results"
 msgstr ""
 
 #: templates/partials/answers/address.html:50
-msgid "{n} results found. Enter more of the address to improve results"
+msgid "Select an address"
 msgstr ""
 
 #: templates/partials/answers/address.html:51
+msgid "No results found. Try entering a different part of the address"
+msgstr ""
+
+#: templates/partials/answers/address.html:52
+msgid "{n} results found. Enter more of the address to improve results"
+msgstr ""
+
+#: templates/partials/answers/address.html:53
 msgid "Enter more of the address to get results"
 msgstr ""
 
-#: templates/partials/answers/address.html:55
+#: templates/partials/answers/address.html:57
 msgid "Select or manually enter an address"
 msgstr ""
 
-#: templates/partials/answers/address.html:56
+#: templates/partials/answers/address.html:58
 msgid "Sorry, there was a problem loading addresses"
 msgstr ""
 
-#: templates/partials/answers/address.html:57
+#: templates/partials/answers/address.html:59
 msgid "Enter address manually"
 msgstr ""
 
