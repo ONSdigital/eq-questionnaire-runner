@@ -1,8 +1,8 @@
-import MandatoryRadioPage from "../../../generated_pages/radio_multiple_detail_answers/radio-mandatory.page";
-import SummaryPage from "../../../generated_pages/radio_multiple_detail_answers/summary.page";
+import MandatoryRadioPage from "../../../generated_pages/radio_detail_answer_multiple/radio-mandatory.page";
+import SummaryPage from "../../../generated_pages/radio_detail_answer_multiple/summary.page";
 
 describe('Radio with multiple "detail_answer" options', () => {
-  const radioSchema = "test_radio_multiple_detail_answers.json";
+  const radioSchema = "test_radio_detail_answer_multiple.json";
 
   it("Given detail answer options are available, When the user clicks an option, Then the detail answer input should be visible.", () => {
     browser.openQuestionnaire(radioSchema);

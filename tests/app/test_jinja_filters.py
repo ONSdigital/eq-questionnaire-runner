@@ -1,12 +1,12 @@
 # coding: utf-8
 from unittest.mock import MagicMock, patch
 
+import pytest
 from jinja2 import Undefined
 from mock import Mock
 
 from app.jinja_filters import (
-    CheckboxConfig,
-    RadioConfig,
+    OtherConfig,
     format_datetime,
     format_duration,
     format_number,
@@ -191,126 +191,43 @@ class TestJinjaFilters(AppContextTestCase):  # pylint: disable=too-many-public-m
         answer = {"maximum": {"value": 123456789012345678901}}
         self.assertIsNone(get_width_class_for_number(answer))
 
-    @staticmethod
-    def test_radio_class_visible_attribute():
-        answer = {
-            "type": "Radio",
-            "id": "radio-answer-numeric-detail",
-            "mandatory": False,
-            "options": [
-                {
-                    "label": "Other",
-                    "value": "Other",
-                    "detail_answer": {
-                        "mandatory": False,
-                        "id": "other-answer",
-                        "label": "Please enter a number of items",
-                        "type": "Number",
-                        "parent_id": "radio-question-numeric-detail",
-                        "visible": True,
-                    },
-                }
-            ],
-            "parent_id": "radio-question-numeric-detail",
-        }
 
-        option = Mock()
-        option.detail_answer_id = "other-answer"
-        radio = RadioConfig(option=option, index=0, form=MagicMock(), answer=answer)
+@pytest.fixture
+def answer_schema_dropdown():
+    return {
+        "type": "Dropdown",
+        "id": "mandatory-checkbox-with-mandatory-dropdown-detail-answer",
+        "mandatory": True,
+        "label": "Please specify heat level",
+        "placeholder": "Select heat level",
+        "options": [
+            {"label": "Mild", "value": "Mild"},
+            {"label": "Medium", "value": "Medium"},
+            {"label": "Hot", "value": "Hot"},
+        ],
+    }
 
-        assert radio.other.open is True
 
-    @staticmethod
-    def test_checkbox_detail_answer_visible_attribute():
-        answer = {
-            "type": "Checkbox",
-            "id": "checkbox-answer-numeric-detail",
-            "mandatory": False,
-            "options": [
-                {
-                    "label": "Other",
-                    "value": "Other",
-                    "detail_answer": {
-                        "mandatory": False,
-                        "id": "other-answer",
-                        "label": "Please enter a number of items",
-                        "type": "Number",
-                        "parent_id": "checkbox-question-numeric-detail",
-                        "visible": True,
-                    },
-                }
-            ],
-            "parent_id": "checkbox-question-numeric-detail",
-        }
+@pytest.fixture
+def answer_schema_number():
+    return {
+        "mandatory": False,
+        "id": "other-answer",
+        "label": "Please enter a number of items",
+        "type": "Number",
+        "parent_id": "checkbox-question-numeric-detail",
+    }
 
-        option = Mock()
-        option.detail_answer_id = "other-answer"
-        checkbox = CheckboxConfig(
-            option=option, index=0, form=MagicMock(), answer=answer
-        )
 
-        assert checkbox.other.open is True
-
-    @staticmethod
-    def test_checkbox_mutually_exclusive_detail_answer_visible_attribute():
-        answer = {
-            "type": "MutuallyExclusive",
-            "id": "answer-numeric-detail-exclusive",
-            "mandatory": False,
-            "options": [
-                {
-                    "label": "Other",
-                    "value": "Other",
-                    "detail_answer": {
-                        "mandatory": False,
-                        "id": "other-answer",
-                        "label": "Please enter a number of items",
-                        "type": "Number",
-                        "parent_id": "checkbox-question-numeric-exclusive",
-                        "visible": True,
-                    },
-                }
-            ],
-            "parent_id": "question-numeric-detail-exclusive",
-        }
-
-        option = Mock()
-        option.detail_answer_id = "other-answer"
-        checkbox = CheckboxConfig(
-            option=option, index=0, form=MagicMock(), answer=answer
-        )
-
-        assert checkbox.other.open is True
-
-    @staticmethod
-    def test_radio_class_detail_answer_display_width_with_max_value():
-        answer = {
-            "type": "Radio",
-            "id": "radio-answer-numeric-detail",
-            "mandatory": False,
-            "options": [
-                {
-                    "label": "Other",
-                    "value": "Other",
-                    "detail_answer": {
-                        "mandatory": False,
-                        "id": "other-answer",
-                        "label": "Please enter a number of items",
-                        "type": "Number",
-                        "maximum": {"value": 20},
-                        "parent_id": "radio-question-numeric-detail",
-                        "visible": False,
-                    },
-                }
-            ],
-            "parent_id": "radio-question-numeric-detail",
-        }
-
-        option = Mock()
-        option.detail_answer_id = "other-answer"
-        radio = RadioConfig(option=option, index=0, form=MagicMock(), answer=answer)
-
-        assert radio.other.classes == "input--w-2"
+@pytest.fixture
+def answer_schema_textfield():
+    return {
+        "mandatory": False,
+        "id": "other-answer",
+        "label": "Please specify",
+        "type": "TextField",
+        "parent_id": "checkbox-question-textfield-detail",
+    }
 
 
 def test_map_list_collector_config_no_actions():
@@ -455,3 +372,61 @@ def test_format_address_fields_with_uprn():
     assert (
         get_formatted_address(address_fields) == "7 Evelyn Street<br>Barry<br>CF63 4JG"
     )
+
+
+@pytest.mark.parametrize(
+    "max_value, expected_width",
+    [
+        (None, 10),
+        (1, 1),
+        (123123123123, 20),
+    ],
+)
+def test_other_config_numeric_input_class(
+    answer_schema_number, max_value, expected_width
+):
+    if max_value:
+        answer_schema_number["maximum"] = {"value": max_value}
+
+    other = OtherConfig(Mock(), answer_schema_number)
+    assert other.classes == f"input--w-{expected_width}"
+
+
+def test_other_config_non_dropdown_input_type(answer_schema_textfield):
+    other = OtherConfig(Mock(), answer_schema_textfield)
+    assert other.otherType == "input"
+
+
+def test_other_config_dropdown_input_type(answer_schema_dropdown):
+    other = OtherConfig(MagicMock(), answer_schema_dropdown)
+    assert other.otherType == "select"
+
+
+def test_other_config_dropdown_has_options_attribute(answer_schema_dropdown):
+    other = OtherConfig(MagicMock(), answer_schema_dropdown)
+    assert hasattr(other, "options")
+    assert not hasattr(other, "value")
+
+
+def test_other_config_non_dropdown_has_value_attribute(answer_schema_textfield):
+    other = OtherConfig(MagicMock(), answer_schema_textfield)
+    assert hasattr(other, "value")
+    assert not hasattr(other, "options")
+
+
+@pytest.mark.parametrize(
+    "is_visible, expected_visibility",
+    [
+        (True, True),
+        (False, False),
+        (None, False),
+    ],
+)
+def test_other_config_visibility(
+    answer_schema_textfield, is_visible, expected_visibility
+):
+    if is_visible is not None:
+        answer_schema_textfield["visible"] = is_visible
+
+    other = OtherConfig(Mock(), answer_schema_textfield)
+    assert other.open is expected_visibility

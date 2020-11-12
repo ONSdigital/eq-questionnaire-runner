@@ -1,8 +1,8 @@
-import MandatoryCheckboxPage from "../../../generated_pages/checkbox_multiple_detail_answers/mandatory-checkbox.page";
-import SummaryPage from "../../../generated_pages/checkbox_multiple_detail_answers/summary.page";
+import MandatoryCheckboxPage from "../../../generated_pages/checkbox_detail_answer_multiple/mandatory-checkbox.page";
+import SummaryPage from "../../../generated_pages/checkbox_detail_answer_multiple/summary.page";
 
 describe('Checkbox with multiple "detail_answer" options', () => {
-  const checkboxSchema = "test_checkbox_multiple_detail_answers.json";
+  const checkboxSchema = "test_checkbox_detail_answer_multiple.json";
 
   it("Given detail answer options are available, When the user clicks an option, Then the detail answer input should be visible.", () => {
     browser.openQuestionnaire(checkboxSchema);

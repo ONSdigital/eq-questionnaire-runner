@@ -1,10 +1,10 @@
 {
     "mime_type": "application/json/ons/eq",
     "language": "en",
-    "schema_version": "0.0.2",
+    "schema_version": "0.0.1",
     "data_version": "0.0.3",
     "survey_id": "0",
-    "title": "Radio Optional with Mandatory Other Overridden Error",
+    "title": "Radio Mandatory with Mandatory Detail Answer Overridden Error",
     "theme": "default",
     "metadata": [
         {
@@ -26,19 +26,19 @@
             "groups": [
                 {
                     "id": "radio",
-                    "title": "Radio Optional with Mandatory Other Overridden Error",
+                    "title": "Radio Mandatory with Mandatory Detail Answer Overridden Error",
                     "blocks": [
                         {
                             "type": "Question",
-                            "id": "radio-non-mandatory",
+                            "id": "radio-mandatory",
                             "question": {
                                 "type": "General",
-                                "id": "radio-non-mandatory-question",
-                                "title": "What do you prefer for breakfast?",
+                                "id": "radio-mandatory-question",
+                                "title": "What is you favourite breakfast item?",
                                 "answers": [
                                     {
                                         "type": "Radio",
-                                        "id": "radio-non-mandatory-answer",
+                                        "id": "radio-mandatory-answer",
                                         "mandatory": true,
                                         "options": [
                                             {
@@ -46,17 +46,27 @@
                                                 "value": "Toast"
                                             },
                                             {
-                                                "label": "Other",
-                                                "description": "This is mandatory.",
-                                                "value": "Other",
+                                                "label": "Eggs",
+                                                "value": "Eggs",
+                                                "detail_answer": {
+                                                    "mandatory": false,
+                                                    "id": "eggs-answer",
+                                                    "label": "Please write your favourite egg type",
+                                                    "type": "TextField"
+                                                }
+                                            },
+                                            {
+                                                "label": "Favourite not listed",
+                                                "description": "An answer is required.",
+                                                "value": "Favourite not listed",
                                                 "detail_answer": {
                                                     "mandatory": true,
-                                                    "id": "other-answer-non-mandatory",
-                                                    "label": "Please specify other",
+                                                    "id": "alternate-answer",
+                                                    "label": "Please write your favourite",
                                                     "type": "TextField",
                                                     "validation": {
                                                         "messages": {
-                                                            "MANDATORY_TEXTFIELD": "Test error message is overridden"
+                                                            "MANDATORY_TEXTFIELD": "Enter your favourite to continue"
                                                         }
                                                     }
                                                 }

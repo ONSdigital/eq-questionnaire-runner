@@ -4,13 +4,8 @@
     "schema_version": "0.0.1",
     "data_version": "0.0.3",
     "survey_id": "0",
-    "title": "Numeric Radio with other",
+    "title": "Radio Optional with Mandatory Detail Answer",
     "theme": "default",
-    "messages": {
-        "NUMBER_TOO_LARGE": "Number is too large",
-        "NUMBER_TOO_SMALL": "Number cannot be less than zero",
-        "INVALID_NUMBER": "Please enter an integer"
-    },
     "metadata": [
         {
             "name": "user_id",
@@ -31,47 +26,34 @@
             "groups": [
                 {
                     "id": "radio",
-                    "title": "Numeric Radio with other",
+                    "title": "Radio Optional with Detail Answer",
                     "blocks": [
                         {
                             "type": "Question",
-                            "id": "radio-numeric-detail",
+                            "id": "radio-non-mandatory",
                             "question": {
                                 "type": "General",
-                                "id": "radio-question-numeric-detail",
-                                "title": "How many items would you like on your breakfast?",
+                                "id": "radio-non-mandatory-question",
+                                "title": "What is you favourite breakfast item?",
                                 "answers": [
                                     {
                                         "type": "Radio",
-                                        "validation": {
-                                            "messages": {}
-                                        },
-                                        "id": "radio-answer-numeric-detail",
-                                        "mandatory": false,
+                                        "id": "radio-non-mandatory-answer",
+                                        "mandatory": true,
                                         "options": [
                                             {
-                                                "label": "1",
-                                                "value": "1"
-                                            },
-                                            {
-                                                "label": "2",
-                                                "value": "2"
-                                            },
-                                            {
-                                                "label": "None",
-                                                "value": "None"
+                                                "label": "Toast",
+                                                "value": "Toast"
                                             },
                                             {
                                                 "label": "Other",
+                                                "description": "This is mandatory.",
                                                 "value": "Other",
                                                 "detail_answer": {
                                                     "mandatory": false,
-                                                    "id": "other-answer",
-                                                    "label": "Please enter a number of items",
-                                                    "type": "Number",
-                                                    "maximum": {
-                                                        "value": 20
-                                                    }
+                                                    "id": "other-answer-non-mandatory",
+                                                    "label": "Please specify other",
+                                                    "type": "TextField"
                                                 }
                                             }
                                         ]
