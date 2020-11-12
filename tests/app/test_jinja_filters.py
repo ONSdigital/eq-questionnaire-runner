@@ -377,23 +377,6 @@ def test_format_address_fields_with_uprn():
     )
 
 
-def _get_test_field_from_answer_schema(answer_schema):
-    questionnaire_schema = Mock()
-    questionnaire_schema.error_messages = error_messages
-    question_schema = {"answers": [answer_schema]}
-    form = generate_form(
-        questionnaire_schema,
-        question_schema,
-        answer_store=Mock(),
-        metadata={},
-        location=None,
-        data=None,
-        form_data=None,
-    )
-
-    return getattr(form, answer_schema["id"])
-
-
 @pytest.mark.parametrize(
     "min_or_max_value, expected_width",
     [
@@ -412,69 +395,43 @@ def test_numeric_detail_answer_input_class_config(
     assert other.classes == f"input--w-{expected_width}"
 
 
-def _test_detail_answer_config(answer_schema, is_visible, expected_visibility):
+def test_non_dropdown_detail_answer_input_type_config(answer_schema_textfield):
+    other = OtherConfig(Mock(), answer_schema_textfield)
+    assert other.otherType == "input"
+
+
+def test_dropdown_detail_answer_input_type_config(answer_schema_dropdown):
+    other = OtherConfig(MagicMock(), answer_schema_dropdown)
+    assert other.otherType == "select"
+
+
+def test_dropdown_detail_answer_has_options_attribute_config(answer_schema_dropdown):
+    other = OtherConfig(MagicMock(), answer_schema_dropdown)
+    assert hasattr(other, "options")
+    assert not hasattr(other, "value")
+
+
+def test_non_dropdown_detail_answer_has_value_attribute_config(answer_schema_textfield):
+    other = OtherConfig(MagicMock(), answer_schema_textfield)
+    assert hasattr(other, "value")
+    assert not hasattr(other, "options")
+
+
+@pytest.mark.parametrize(
+    "is_visible, expected_visibility",
+    [
+        (True, True),
+        (False, False),
+        (None, False),
+    ],
+)
+def test_visible_detail_answer_config(
+    answer_schema_textfield, is_visible, expected_visibility
+):
     if is_visible is True:
-        answer_schema["visible"] = True
+        answer_schema_textfield["visible"] = True
     elif is_visible is False:
-        answer_schema["visible"] = False
+        answer_schema_textfield["visible"] = False
 
-    field = _get_test_field_from_answer_schema(answer_schema=answer_schema)
-
-    other = OtherConfig(field, answer_schema)
-
-    if answer_schema["type"] == "Dropdown":
-        expected_type = "select"
-        assert hasattr(other, "options")
-        assert not hasattr(other, "value")
-    else:
-        expected_type = "input"
-        assert not hasattr(other, "options")
-        assert hasattr(other, "value")
-
-    assert other.id == answer_schema["id"]
-    assert other.name == answer_schema["id"]
-    assert other.label.text == answer_schema["label"]
-    assert other.otherType == expected_type
+    other = OtherConfig(Mock(), answer_schema_textfield)
     assert other.open is expected_visibility
-
-
-@pytest.mark.parametrize(
-    "is_visible, expected_visibility",
-    [
-        (True, True),
-        (False, False),
-        (None, False),
-    ],
-)
-def test_numeric_detail_answer_config(
-    app, answer_schema_number, is_visible, expected_visibility
-):
-    _test_detail_answer_config(answer_schema_number, is_visible, expected_visibility)
-
-
-@pytest.mark.parametrize(
-    "is_visible, expected_visibility",
-    [
-        (True, True),
-        (False, False),
-        (None, False),
-    ],
-)
-def test_textfield_detail_answer_config(
-    app, answer_schema_textfield, is_visible, expected_visibility
-):
-    _test_detail_answer_config(answer_schema_textfield, is_visible, expected_visibility)
-
-
-@pytest.mark.parametrize(
-    "is_visible, expected_visibility",
-    [
-        (True, True),
-        (False, False),
-        (None, False),
-    ],
-)
-def test_dropdown_detail_answer_config(
-    app, answer_schema_dropdown, is_visible, expected_visibility
-):
-    _test_detail_answer_config(answer_schema_dropdown, is_visible, expected_visibility)
