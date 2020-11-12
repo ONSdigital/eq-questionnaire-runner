@@ -8,13 +8,13 @@ describe("Optional Radio with a Dropdown detail answer", () => {
   });
 
   describe("Given an optional radio with a dropdown detail answer", () => {
-    it("When a placeholder choice is provided for the detail answer dropdown, Then then provided placeholder should be displayed as the first option'", () => {
+    it("When a placeholder is set for the detail answer, Then that value should be displayed as the first option", () => {
       $(RadioDropdownPage.fruit()).click();
 
       expect($(RadioDropdownPage.fruitDetail()).getText()).to.contain("Select fruit");
     });
 
-    it("When a placeholder choice is not provided for the detail answer dropdown, Then the default placeholder should be displayed as the first option'", () => {
+    it("When a placeholder is not set for the detail answer dropdown, Then the default placeholder should be displayed as the first option", () => {
       $(RadioDropdownPage.jam()).click();
 
       expect($(RadioDropdownPage.jamDetail()).getText()).to.contain("Select an answer");
@@ -33,7 +33,7 @@ describe("Optional Radio with a Dropdown detail answer", () => {
       expect($(SummaryPage.optionalRadioWithDropdownDetailAnswer()).getText()).to.equal("Fruit");
     });
 
-    it("When the user selects an option with an optional detail answer and provides a detail answer, Then the summary should display the chosen option and its details", () => {
+    it("When the user selects an option with an optional detail answer and provides a detail answer, Then the summary should display the chosen option and the detail answer", () => {
       $(RadioDropdownPage.fruit()).click();
       $(RadioDropdownPage.fruitDetail()).selectByAttribute("value", "Mango");
       $(RadioDropdownPage.submit()).click();
@@ -59,7 +59,7 @@ describe("Optional Radio with a Dropdown detail answer", () => {
       expect($(DropdownMandatoryPage.errorNumber(1)).getText()).to.equal("Please select the type of Jam");
     });
 
-    it("When the user selects an option with an mandatory detail answer and provides a detail answer, Then the summary should display the chosen option and its details", () => {
+    it("When the user selects an option with an mandatory detail answer and provides a detail answer, Then the summary should display the chosen option and its detail answer", () => {
       $(RadioDropdownPage.jam()).click();
       $(RadioDropdownPage.jamDetail()).selectByAttribute("value", "Strawberry");
       $(RadioDropdownPage.submit()).click();

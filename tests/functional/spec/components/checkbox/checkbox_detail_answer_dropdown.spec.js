@@ -8,13 +8,13 @@ describe("Optional Checkbox with a Dropdown detail answer", () => {
   });
 
   describe("Given an optional checkbox with a dropdown detail answer", () => {
-    it("When a placeholder choice is provided for the detail answer dropdown, Then then provided placeholder should be displayed as the first option'", () => {
+    it("When a placeholder is set for the detail answer, Then that value should be displayed as the first option", () => {
       $(CheckboxDropdownPage.fruit()).click();
 
       expect($(CheckboxDropdownPage.fruitDetail()).getText()).to.contain("Select fruit");
     });
 
-    it("When a placeholder choice is not provided for the detail answer dropdown, Then the default placeholder should be displayed as the first option'", () => {
+    it("When a placeholder is not set for the detail answer dropdown, Then the default placeholder should be displayed as the first option", () => {
       $(CheckboxDropdownPage.jam()).click();
 
       expect($(CheckboxDropdownPage.jamDetail()).getText()).to.contain("Select an answer");
@@ -33,7 +33,7 @@ describe("Optional Checkbox with a Dropdown detail answer", () => {
       expect($(SummaryPage.optionalCheckboxWithDropdownDetailAnswer()).getText()).to.equal("Fruit");
     });
 
-    it("When the user selects an option with an optional detail answer and provides a detail answer, Then the summary should display the chosen option and its details", () => {
+    it("When the user selects an option with an optional detail answer and provides a detail answer, Then the summary should display the chosen option and the detail answer", () => {
       $(CheckboxDropdownPage.fruit()).click();
       $(CheckboxDropdownPage.fruitDetail()).selectByAttribute("value", "Mango");
       $(CheckboxDropdownPage.submit()).click();
@@ -78,7 +78,7 @@ describe("Optional Checkbox with a Dropdown detail answer", () => {
       expect($(SummaryPage.optionalCheckboxWithDropdownDetailAnswer()).getText()).to.equal("No answer provided");
     });
 
-    it("When the user selects multiple options with detail answers and submits, Then the summary should display all the chosen options and their details", () => {
+    it("When the user selects multiple options with detail answers and submits, Then the summary should display all the chosen options and their detail answer", () => {
       $(CheckboxDropdownPage.fruit()).click();
       $(CheckboxDropdownPage.fruitDetail()).selectByAttribute("value", "Mango");
       $(CheckboxDropdownPage.jam()).click();
