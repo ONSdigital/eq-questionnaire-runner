@@ -311,7 +311,7 @@ class IndividualResponseHowHandler(IndividualResponseHandler):
                         "type": "Radio",
                         "id": "individual-response-how-answer",
                         "mandatory": False,
-                        "default": "Post",
+                        "default": "Text message",
                         "options": [
                             {
                                 "label": lazy_gettext("Text message"),
@@ -377,17 +377,17 @@ class IndividualResponseHowHandler(IndividualResponseHandler):
         )
 
     def handle_post(self):
-        if self.selected_option == "Text message":
+        if self.selected_option == "Post":
             return redirect(
                 url_for(
-                    ".individual_response_text_message",
+                    ".individual_response_post_address_confirm",
                     list_item_id=self._list_item_id,
                     journey=self._request_args.get("journey"),
                 )
             )
         return redirect(
             url_for(
-                ".individual_response_post_address_confirm",
+                ".individual_response_text_message",
                 list_item_id=self._list_item_id,
                 journey=self._request_args.get("journey"),
             )

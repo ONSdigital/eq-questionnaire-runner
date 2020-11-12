@@ -821,7 +821,7 @@ class TestIndividualResponseConfirmationPage(IndividualResponseTestCase):
         self.assertInUrl("/confirm-address")
         self.assertInBody("There is a problem with your answer")
 
-    def test_default_post_routing(self):
+    def test_default_routing_uses_text_option(self):
         # Given I navigate to the individual response how page
         # after adding a household member
         self._add_household_no_primary()
@@ -832,8 +832,8 @@ class TestIndividualResponseConfirmationPage(IndividualResponseTestCase):
         # When I post without selecting a radio button
         self.post()
 
-        # Then I should see the post confirm address page
-        self.assertInUrl("post/confirm-address")
+        # Then I should see the text 'enter number' page
+        self.assertInUrl("text/enter-number")
 
 
 class TestIndividualResponseChange(IndividualResponseTestCase):
