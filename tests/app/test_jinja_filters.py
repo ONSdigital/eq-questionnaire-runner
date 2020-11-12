@@ -375,7 +375,7 @@ def test_format_address_fields_with_uprn():
 
 
 @pytest.mark.parametrize(
-    "min_or_max_value, expected_width",
+    "max_value, expected_width",
     [
         (None, 10),
         (1, 1),
@@ -383,10 +383,10 @@ def test_format_address_fields_with_uprn():
     ],
 )
 def test_numeric_detail_answer_input_class_config(
-    answer_schema_number, min_or_max_value, expected_width
+    answer_schema_number, max_value, expected_width
 ):
-    if min_or_max_value:
-        answer_schema_number["maximum"] = {"value": min_or_max_value}
+    if max_value:
+        answer_schema_number["maximum"] = {"value": max_value}
 
     other = OtherConfig(Mock(), answer_schema_number)
     assert other.classes == f"input--w-{expected_width}"
