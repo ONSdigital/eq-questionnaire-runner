@@ -1,9 +1,9 @@
-import RadioNumericDetailPage from "../../../generated_pages/radio_numeric_detail_answers/radio-numeric-detail.page";
-import SummaryPage from "../../../generated_pages/radio_numeric_detail_answers/summary.page";
+import RadioNumericDetailPage from "../../../generated_pages/radio_detail_answer_numeric/radio-numeric-detail.page";
+import SummaryPage from "../../../generated_pages/radio_detail_answer_numeric/summary.page";
 
 describe('Radio with a numeric "detail_answer" option', () => {
   beforeEach(() => {
-    browser.openQuestionnaire("test_radio_numeric_detail_answers.json");
+    browser.openQuestionnaire("test_radio_detail_answer_numeric.json");
     $(RadioNumericDetailPage.other()).click();
   });
 
