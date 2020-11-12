@@ -98,7 +98,7 @@ def get_footer_context(language_code, static_content_urls, sign_out_url, theme):
                     },
                 ],
             },
-        ]
+        ],
     }
 
     if request.blueprint == "post_submission":
