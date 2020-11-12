@@ -1,6 +1,7 @@
 from functools import lru_cache
 from glob import glob
 from pathlib import Path
+from typing import Mapping, Optional, Tuple
 
 import requests
 import simplejson as json
@@ -14,7 +15,8 @@ from app.questionnaire.questionnaire_schema import (
 
 logger = get_logger()
 
-DEFAULT_SCHEMA_DIRS = ["schemas", "test_schemas"]
+SCHEMA_DIR = "schemas"
+DEFAULT_SCHEMA_DIRS = (SCHEMA_DIR, "test_schemas")
 
 LANGUAGES_MAP = {
     "test_language": [["en", "cy"], ["en", "ga"]],
@@ -27,10 +29,12 @@ LANGUAGES_MAP = {
 }
 
 
-def get_schema_path_map_for_language(language_code):
+def get_schema_path_map_for_language(
+    language_code: str, dirs: Optional[Tuple[str, ...]] = None
+) -> Mapping:
     schema_files = []
 
-    for schema_dir in DEFAULT_SCHEMA_DIRS:
+    for schema_dir in dirs or DEFAULT_SCHEMA_DIRS:
         schema_files.extend(glob(f"{schema_dir}/{language_code}/*.json"))
 
     return {
@@ -39,22 +43,24 @@ def get_schema_path_map_for_language(language_code):
     }
 
 
-def get_schema_path_map():
-    language_map_codes = ["en", "cy", "ga", "eo"]
+@lru_cache(maxsize=None)
+def get_schema_path_map(dirs: Optional[Tuple[str, ...]] = None) -> Mapping:
+    language_map_codes = {"en", "cy", "ga", "eo"}
 
     return {
-        language_code: get_schema_path_map_for_language(language_code)
+        language_code: get_schema_path_map_for_language(
+            language_code, dirs or DEFAULT_SCHEMA_DIRS
+        )
         for language_code in language_map_codes
     }
 
 
-SCHEMA_PATH_MAP = get_schema_path_map()
-
-
-def schema_exists(language_code, schema_name):
+@lru_cache(maxsize=None)
+def _schema_exists(language_code, schema_name):
+    schema_path_map = get_schema_path_map()
     return (
-        language_code in SCHEMA_PATH_MAP
-        and schema_name in SCHEMA_PATH_MAP[language_code]
+        language_code in schema_path_map
+        and schema_name in schema_path_map[language_code]
     )
 
 
@@ -80,9 +86,12 @@ def load_schema_from_session_data(session_data):
     return load_schema_from_metadata(vars(session_data))
 
 
+def load_schema_from_name(schema_name, language_code=DEFAULT_LANGUAGE_CODE):
+    return _load_schema_from_name(schema_name, language_code)
+
+
 @lru_cache(maxsize=None)
-def load_schema_from_name(schema_name, language_code=None):
-    language_code = language_code or DEFAULT_LANGUAGE_CODE
+def _load_schema_from_name(schema_name, language_code):
     schema_json = _load_schema_file(schema_name, language_code)
 
     return QuestionnaireSchema(schema_json, language_code)
@@ -129,7 +138,7 @@ def _load_schema_file(schema_name, language_code):
     :param schema_name: The name of the schema e.g. census_household
     :param language_code: ISO 2-character code for language e.g. 'en', 'cy'
     """
-    if language_code != DEFAULT_LANGUAGE_CODE and not schema_exists(
+    if language_code != DEFAULT_LANGUAGE_CODE and not _schema_exists(
         language_code, schema_name
     ):
         language_code = DEFAULT_LANGUAGE_CODE
@@ -139,7 +148,7 @@ def _load_schema_file(schema_name, language_code):
             language_code=language_code,
         )
 
-    if not schema_exists(language_code, schema_name):
+    if not _schema_exists(language_code, schema_name):
         logger.error(
             "no schema file exists",
             schema_name=schema_name,
@@ -180,4 +189,10 @@ def load_schema_from_url(survey_url, language_code):
 
 
 def get_schema_file_path(schema_name, language_code):
-    return SCHEMA_PATH_MAP.get(language_code, {}).get(schema_name)
+    return get_schema_path_map().get(language_code, {}).get(schema_name)
+
+
+def load_questionnaire_schemas_into_cache():
+    for language_code, schemas in get_schema_path_map(dirs=(SCHEMA_DIR,)).items():
+        for schema in schemas:
+            load_schema_from_name(schema, language_code)

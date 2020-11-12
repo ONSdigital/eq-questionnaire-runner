@@ -1,14 +1,25 @@
 import os
+from unittest.mock import patch
 
 import pytest
+import responses
+from werkzeug.exceptions import NotFound
 
+from app.questionnaire import QuestionnaireSchema
+from app.setup import create_app
 from app.utilities.schema import (
+    _load_schema_from_name,
     get_allowed_languages,
     get_schema_name_from_census_params,
     get_schema_path_map,
     get_schema_path_map_for_language,
+    load_questionnaire_schemas_into_cache,
+    load_schema_from_metadata,
     load_schema_from_name,
+    load_schema_from_url,
 )
+
+TEST_SCHEMA_URL = "http://test.domain/schema.json"
 
 
 def test_valid_schema_names_from_census_params():
@@ -67,29 +78,95 @@ def test_get_schema_path_map_for_language():
     )
 
 
-def test_schema_cache():
-    load_schema_from_name.cache_clear()
+def test_schema_cache_on_function_call():
+    _load_schema_from_name.cache_clear()
 
     # load first schema into cache
     load_schema_from_name("test_language", "en")
-    cache_info = load_schema_from_name.cache_info()
+    cache_info = _load_schema_from_name.cache_info()
     assert cache_info.currsize == 1
     assert cache_info.hits == 0
 
     # same schema in same language loads from cache
     load_schema_from_name("test_language", "en")
-    cache_info = load_schema_from_name.cache_info()
+    cache_info = _load_schema_from_name.cache_info()
     assert cache_info.currsize == 1
     assert cache_info.hits == 1
 
+    # same schema in same language as keyword argument loads from cache
+    load_schema_from_name("test_language", language_code="en")
+    cache_info = _load_schema_from_name.cache_info()
+    assert cache_info.currsize == 1
+    assert cache_info.hits == 2
+
     # same schema in different language adds to cache
     load_schema_from_name("test_language", "cy")
-    cache_info = load_schema_from_name.cache_info()
+    cache_info = _load_schema_from_name.cache_info()
     assert cache_info.currsize == 2
-    assert cache_info.hits == 1
+    assert cache_info.hits == 2
 
     # loading a different schema adds to cache
     load_schema_from_name("test_textfield", "en")
-    cache_info = load_schema_from_name.cache_info()
+    cache_info = _load_schema_from_name.cache_info()
     assert cache_info.currsize == 3
-    assert cache_info.hits == 1
+    assert cache_info.hits == 2
+
+
+@patch("app.utilities.schema.SCHEMA_DIR", "test_schemas")
+def test_schema_cache_on_app_start_up():
+    _load_schema_from_name.cache_clear()
+    cache_info = _load_schema_from_name.cache_info()
+    assert cache_info.currsize == 0
+    assert cache_info.hits == 0
+
+    # create app and load schemas into cache
+    create_app()
+
+    total_schemas = sum(
+        len(schemas) for schemas in get_schema_path_map(dirs=("test_schemas",)).values()
+    )
+    cache_info = _load_schema_from_name.cache_info()
+    assert cache_info.currsize == total_schemas
+    assert cache_info.hits == 0
+
+    # loads schema again to fetch from cache
+    load_questionnaire_schemas_into_cache()
+    cache_info = _load_schema_from_name.cache_info()
+    assert cache_info.currsize == total_schemas
+    assert cache_info.hits == total_schemas
+
+
+@responses.activate
+def test_load_schema_from_url_200():
+    load_schema_from_url.cache_clear()
+
+    mock_schema = QuestionnaireSchema({}, language_code="cy")
+    responses.add(responses.GET, TEST_SCHEMA_URL, json=mock_schema.json, status=200)
+    loaded_schema = load_schema_from_url(survey_url=TEST_SCHEMA_URL, language_code="cy")
+
+    assert loaded_schema.json == mock_schema.json
+    assert loaded_schema.language_code == mock_schema.language_code
+
+
+@responses.activate
+def test_load_schema_from_url_404():
+    load_schema_from_url.cache_clear()
+
+    mock_schema = QuestionnaireSchema({})
+    responses.add(responses.GET, TEST_SCHEMA_URL, json=mock_schema.json, status=404)
+
+    with pytest.raises(NotFound):
+        load_schema_from_url(survey_url=TEST_SCHEMA_URL, language_code="en")
+
+
+@responses.activate
+def test_load_schema_from_metadata_with_survey_url():
+    load_schema_from_url.cache_clear()
+
+    metadata = {"survey_url": TEST_SCHEMA_URL, "language_code": "cy"}
+    mock_schema = QuestionnaireSchema({}, language_code="cy")
+    responses.add(responses.GET, TEST_SCHEMA_URL, json=mock_schema.json, status=200)
+    loaded_schema = load_schema_from_metadata(metadata=metadata)
+
+    assert loaded_schema.json == mock_schema.json
+    assert loaded_schema.language_code == mock_schema.language_code

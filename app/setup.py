@@ -30,6 +30,7 @@ from app.publisher import LogPublisher, PubSubPublisher
 from app.secrets import SecretStore, validate_required_secrets
 from app.storage import Datastore, Dynamodb, Redis
 from app.submitter import GCSSubmitter, LogSubmitter, RabbitMQSubmitter
+from app.utilities.schema import load_questionnaire_schemas_into_cache
 
 CACHE_HEADERS = {
     "Cache-Control": "no-cache, no-store, must-revalidate",
@@ -141,6 +142,8 @@ def create_app(  # noqa: C901  pylint: disable=too-complex, too-many-statements
             "EQ_SERVER_SIDE_STORAGE_USER_IK_SALT"
         ),
     )
+
+    load_questionnaire_schemas_into_cache()
 
     setup_secure_cookies(application)
 
