@@ -14,7 +14,7 @@ describe("Optional Radio with a Dropdown detail answer", () => {
       expect($(RadioDropdownPage.fruitDetail()).getText()).to.contain("Select fruit");
     });
 
-    it("When a placeholder is not set for the detail answer dropdown, Then the default placeholder should be displayed as the first option", () => {
+    it("When a placeholder is not set for the detail answer, Then the default placeholder should be displayed as the first option", () => {
       $(RadioDropdownPage.jam()).click();
 
       expect($(RadioDropdownPage.jamDetail()).getText()).to.contain("Select an answer");

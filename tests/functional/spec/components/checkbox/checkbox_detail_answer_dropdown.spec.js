@@ -14,7 +14,7 @@ describe("Optional Checkbox with a Dropdown detail answer", () => {
       expect($(CheckboxDropdownPage.fruitDetail()).getText()).to.contain("Select fruit");
     });
 
-    it("When a placeholder is not set for the detail answer dropdown, Then the default placeholder should be displayed as the first option", () => {
+    it("When a placeholder is not set for the detail answer, Then the default placeholder should be displayed as the first option", () => {
       $(CheckboxDropdownPage.jam()).click();
 
       expect($(CheckboxDropdownPage.jamDetail()).getText()).to.contain("Select an answer");
