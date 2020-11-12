@@ -1,9 +1,9 @@
-import CheckboxNumericDetailPage from "../../../generated_pages/checkbox_numeric_detail_answers/checkbox-numeric-detail.page";
-import SummaryPage from "../../../generated_pages/checkbox_numeric_detail_answers/summary.page";
+import CheckboxNumericDetailPage from "../../../generated_pages/checkbox_detail_answer_numeric/checkbox-numeric-detail.page";
+import SummaryPage from "../../../generated_pages/checkbox_detail_answer_numeric/summary.page";
 
 describe('Checkbox with a numeric "detail_answer" option', () => {
   beforeEach(() => {
-    browser.openQuestionnaire("test_checkbox_numeric_detail_answers.json");
+    browser.openQuestionnaire("test_checkbox_detail_answer_numeric.json");
     $(CheckboxNumericDetailPage.other()).click();
   });
 

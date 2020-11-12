@@ -1,10 +1,10 @@
 {
     "mime_type": "application/json/ons/eq",
     "language": "en",
-    "schema_version": "0.0.1",
+    "schema_version": "0.0.2",
     "data_version": "0.0.3",
     "survey_id": "0",
-    "title": "Radio Optional with Mandatory Other",
+    "title": "Radio Optional with Mandatory Detail Answer Overridden Error",
     "theme": "default",
     "metadata": [
         {
@@ -26,7 +26,7 @@
             "groups": [
                 {
                     "id": "radio",
-                    "title": "Radio Optional with Mandatory Other",
+                    "title": "Radio Optional with Mandatory Detail Answer Overridden Error",
                     "blocks": [
                         {
                             "type": "Question",
@@ -34,7 +34,7 @@
                             "question": {
                                 "type": "General",
                                 "id": "radio-non-mandatory-question",
-                                "title": "What is you favourite breakfast item?",
+                                "title": "What do you prefer for breakfast?",
                                 "answers": [
                                     {
                                         "type": "Radio",
@@ -50,10 +50,15 @@
                                                 "description": "This is mandatory.",
                                                 "value": "Other",
                                                 "detail_answer": {
-                                                    "mandatory": false,
+                                                    "mandatory": true,
                                                     "id": "other-answer-non-mandatory",
                                                     "label": "Please specify other",
-                                                    "type": "TextField"
+                                                    "type": "TextField",
+                                                    "validation": {
+                                                        "messages": {
+                                                            "MANDATORY_TEXTFIELD": "Test error message is overridden"
+                                                        }
+                                                    }
                                                 }
                                             }
                                         ]
