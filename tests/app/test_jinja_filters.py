@@ -5,9 +5,6 @@ import pytest
 from jinja2 import Undefined
 from mock import Mock
 
-from app.forms import error_messages
-from app.forms.field_handlers import get_field_handler
-from app.forms.questionnaire_form import generate_form
 from app.jinja_filters import (
     OtherConfig,
     format_datetime,
