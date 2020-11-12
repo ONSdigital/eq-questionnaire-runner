@@ -382,7 +382,7 @@ def test_format_address_fields_with_uprn():
         (123123123123, 20),
     ],
 )
-def test_numeric_detail_answer_input_class_config(
+def test_other_config_numeric_input_class(
     answer_schema_number, max_value, expected_width
 ):
     if max_value:
@@ -392,23 +392,23 @@ def test_numeric_detail_answer_input_class_config(
     assert other.classes == f"input--w-{expected_width}"
 
 
-def test_non_dropdown_detail_answer_input_type_config(answer_schema_textfield):
+def test_other_config_non_dropdown_input_type(answer_schema_textfield):
     other = OtherConfig(Mock(), answer_schema_textfield)
     assert other.otherType == "input"
 
 
-def test_dropdown_detail_answer_input_type_config(answer_schema_dropdown):
+def test_other_config_dropdown_input_type(answer_schema_dropdown):
     other = OtherConfig(MagicMock(), answer_schema_dropdown)
     assert other.otherType == "select"
 
 
-def test_dropdown_detail_answer_has_options_attribute_config(answer_schema_dropdown):
+def test_other_config_dropdown_has_options_attribute(answer_schema_dropdown):
     other = OtherConfig(MagicMock(), answer_schema_dropdown)
     assert hasattr(other, "options")
     assert not hasattr(other, "value")
 
 
-def test_non_dropdown_detail_answer_has_value_attribute_config(answer_schema_textfield):
+def test_other_config_non_dropdown_has_value_attribute(answer_schema_textfield):
     other = OtherConfig(MagicMock(), answer_schema_textfield)
     assert hasattr(other, "value")
     assert not hasattr(other, "options")
@@ -422,7 +422,7 @@ def test_non_dropdown_detail_answer_has_value_attribute_config(answer_schema_tex
         (None, False),
     ],
 )
-def test_visible_detail_answer_config(
+def test_other_config_visibility(
     answer_schema_textfield, is_visible, expected_visibility
 ):
     if is_visible is not None:
