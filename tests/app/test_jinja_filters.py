@@ -428,10 +428,8 @@ def test_non_dropdown_detail_answer_has_value_attribute_config(answer_schema_tex
 def test_visible_detail_answer_config(
     answer_schema_textfield, is_visible, expected_visibility
 ):
-    if is_visible is True:
-        answer_schema_textfield["visible"] = True
-    elif is_visible is False:
-        answer_schema_textfield["visible"] = False
+    if is_visible is not None:
+        answer_schema_textfield["visible"] = is_visible
 
     other = OtherConfig(Mock(), answer_schema_textfield)
     assert other.open is expected_visibility
