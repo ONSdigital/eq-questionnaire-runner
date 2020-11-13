@@ -105,7 +105,7 @@ def add_relationships_unrelated_answers(
     unrelated_block = relationships_block["unrelated_block"]
     unrelated_block_id = unrelated_block["id"]
     unrelated_answer_id = schema.get_first_answer_id_for_block(unrelated_block_id)
-    unrelated_no_answer_value = schema.get_unrelated_block_no_answer_value(
+    unrelated_no_answer_values = schema.get_unrelated_block_no_answer_values(
         unrelated_answer_id
     )
 
@@ -118,7 +118,7 @@ def add_relationships_unrelated_answers(
         relationships_block_id=relationships_block["id"],
         unrelated_block_id=unrelated_block_id,
         unrelated_answer_id=unrelated_answer_id,
-        unrelated_no_answer_value=unrelated_no_answer_value,
+        unrelated_no_answer_values=unrelated_no_answer_values,
     )
 
     for location in relationship_router.path:
