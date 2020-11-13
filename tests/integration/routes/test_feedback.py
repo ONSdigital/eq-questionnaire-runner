@@ -309,6 +309,32 @@ class TestFeedback(IntegrationTestCase):
         selector = "[data-qa='btn-done']"
         self.assertInSelector("/submitted/thank-you", selector)
 
+    def test_feedback_dropdown_form_type(self):
+        self.launchSurvey("test_feedback_communal_establishment")
+        self.post({"answer_id": "Yes"})
+        self.post()
+        self.get("/submitted/feedback/send")
+        self.post(
+            {
+                "feedback-type": "The census questions",
+                "feedback-type-dropdown": "This establishment",
+                "feedback-text": "Feedback",
+            }
+        )
+        self.assertInUrl("/submitted/feedback/sent")
+        self.launchSurvey("test_feedback_individual")
+        self.post({"answer_id": "Yes"})
+        self.post()
+        self.get("/submitted/feedback/send")
+        self.post(
+            {
+                "feedback-type": "The census questions",
+                "feedback-type-dropdown": "Accommodation",
+                "feedback-text": "Feedback",
+            }
+        )
+        self.assertInUrl("/submitted/feedback/sent")
+
     def _launch_and_complete_questionnaire(self):
         self.launchSurvey("test_feedback")
         self.post({"answer_id": "Yes"})
