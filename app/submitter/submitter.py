@@ -1,3 +1,5 @@
+from uuid import uuid4
+
 from google.cloud import storage
 from pika import BasicProperties, BlockingConnection, URLParameters
 from pika.exceptions import AMQPError
@@ -141,3 +143,46 @@ class RabbitMQSubmitter:
         finally:
             if connection:
                 self._disconnect(connection)
+
+
+class GCSFeedback:
+    def __init__(self, bucket_name):
+        client = storage.Client()
+        self.bucket = client.get_bucket(bucket_name)
+        self.bucket.retention_period = 86400
+
+    def upload(self, schema, feedback_data, session_data):
+        object_key = str(uuid4())
+        blob = self.bucket.blob(object_key)
+        blob.metadata = {
+            "feedback_count": session_data.feedback_count + 1,
+            "form_type": schema.form_type,
+            "language_code": session_data.language_code,
+            "object_key": object_key,
+            "region_code": schema.region_code,
+            "submitted_at": session_data.submitted_time,
+            "tx_id": session_data.tx_id,
+        }
+        blob.upload_from_string(str(feedback_data).encode("utf8"))
+
+        return True
+
+
+class LogFeedback:
+    @staticmethod
+    def upload(schema, feedback_data, session_data):
+        logger.info("uploading feedback")
+        logger.info(
+            "feedback payload",
+            feedback_count=session_data.feedback_count + 1,
+            feedback_data=feedback_data,
+            form_type=schema.form_type,
+            language_code=session_data.language_code,
+            object_key=uuid4(),
+            region_code=schema.region_code,
+            submission_language=session_data.language_code,
+            submitted_at=session_data.submitted_time,
+            tx_id=session_data.tx_id,
+        )
+
+        return True

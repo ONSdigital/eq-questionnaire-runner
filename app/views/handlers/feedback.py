@@ -19,6 +19,10 @@ class FeedbackLimitReached(Exception):
     pass
 
 
+class FeedbackUploadFailedException(Exception):
+    pass
+
+
 class Feedback:
     PAGE_TITLE = lazy_gettext("Feedback")
     QUESTION_SCHEMA = {
@@ -111,6 +115,18 @@ class Feedback:
         return self.PAGE_TITLE
 
     def handle_post(self):
+        feedback_data = {
+            "feedback_text": self.form.data["feedback-type"],
+            "feedback_topic": self.form.data["feedback-text"],
+        }
+
+        feedback_upload = current_app.eq["feedback"].upload(
+            self._schema, feedback_data, self._session_store.session_data
+        )
+
+        if not feedback_upload:
+            raise FeedbackUploadFailedException()
+
         self._session_store.session_data.feedback_count += 1
         self._session_store.save()
 

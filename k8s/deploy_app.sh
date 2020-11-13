@@ -6,10 +6,16 @@ if [[ -z "$SUBMISSION_BUCKET_NAME" ]]; then
   exit 1
 fi
 
+if [[ -z "$FEEDBACK_BUCKET_NAME" ]]; then
+  echo "FEEDBACK_BUCKET_NAME is mandatory"
+  exit 1
+fi
+
 helm upgrade --install \
     questionnaire-runner \
     k8s/helm \
     --set-string submissionBucket="${SUBMISSION_BUCKET_NAME}" \
+    --set-string feedbackBucket="${FEEDBACK_BUCKET_NAME}" \
     --set-string googleTagManagerId="${GOOGLE_TAG_MANAGER_ID}" \
     --set-string googleTagManagerAuth="${GOOGLE_TAG_MANAGER_AUTH}" \
     --set-string googleTagManagerPreview="${GOOGLE_TAG_MANAGER_PREVIEW}" \

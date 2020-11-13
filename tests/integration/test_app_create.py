@@ -11,7 +11,7 @@ from app.publisher import LogPublisher, PubSubPublisher
 from app.setup import create_app
 from app.storage.datastore import Datastore
 from app.storage.dynamodb import Dynamodb
-from app.submitter.submitter import GCSSubmitter, LogSubmitter, RabbitMQSubmitter
+from app.submitter.submitter import GCSSubmitter, GCSFeedback, LogSubmitter, RabbitMQSubmitter
 
 
 class TestCreateApp(unittest.TestCase):  # pylint: disable=too-many-public-methods
@@ -290,3 +290,37 @@ class TestCreateApp(unittest.TestCase):  # pylint: disable=too-many-public-metho
 
         with self.assertRaises(Exception):
             create_app(self._setting_overrides)
+
+    def test_eq_feedback_backend_not_set(self):
+        # Given
+        self._setting_overrides["EQ_FEEDBACK_BACKEND"] = ""
+
+        # When
+        with self.assertRaises(Exception) as ex:
+            create_app(self._setting_overrides)
+
+        # Then
+        assert "Unknown EQ_FEEDBACK_BACKEND" in str(ex.exception)
+
+    def test_adds_gcs_feedback_to_the_application(self):
+        # Given
+        self._setting_overrides["EQ_FEEDBACK_BACKEND"] = "gcs"
+        self._setting_overrides["EQ_GCS_FEEDBACK_BUCKET_ID"] = "123456"
+
+        # When
+        with patch("google.cloud.storage.Client"):
+            application = create_app(self._setting_overrides)
+
+        # Then
+        assert isinstance(application.eq["feedback"], GCSFeedback)
+
+    def test_gcs_feedback_bucket_id_not_set_raises_exception(self):
+        # Given
+        self._setting_overrides["EQ_FEEDBACK_BACKEND"] = "gcs"
+
+        # When
+        with self.assertRaises(Exception) as ex:
+            create_app(self._setting_overrides)
+
+        # Then
+        assert "Setting EQ_GCS_FEEDBACK_BUCKET_ID Missing" in str(ex.exception)

@@ -4,7 +4,9 @@ from unittest import TestCase
 from mock import Mock, call, patch
 from pika.exceptions import AMQPError
 
-from app.submitter.submitter import GCSSubmitter, RabbitMQSubmitter
+from app.data_models.session_data import SessionData
+from app.questionnaire.questionnaire_schema import QuestionnaireSchema
+from app.submitter.submitter import GCSFeedback, GCSSubmitter, RabbitMQSubmitter
 
 
 class TestRabbitMQSubmitter(TestCase):
@@ -262,3 +264,55 @@ class TestGCSSubmitter(TestCase):
                 "questionnaire_id": "0123456789000000",
                 "case_id": "456",
             }
+
+
+class TestGCSFeedback(TestCase):
+    @staticmethod
+    @patch("app.submitter.submitter.storage.Client")
+    def test_upload_feedback(client):
+        # Given
+        feedback = GCSFeedback(bucket_name="feedback")
+        feedback_data = {
+            "feedback-type": "Feedback type",
+            "feedback-text": "Feedback text",
+        }
+        session_data = SessionData(
+            tx_id="12345",
+            period_str="2020-01-01",
+            language_code="en",
+            launch_language_code="cy",
+            survey_url=None,
+            ru_name="111",
+            ru_ref="222",
+            questionnaire_id="333",
+            schema_name="444",
+            response_id="555",
+        )
+
+        schema = QuestionnaireSchema({"form_type": "H", "region_code": "GB-ENG"})
+
+        # When
+        feedback_upload = feedback.upload(
+            schema=schema,
+            feedback_data=feedback_data,
+            session_data=session_data,
+        )
+        # Then
+        bucket = client.return_value.get_bucket.return_value
+        blob = bucket.blob.return_value
+
+        assert blob.metadata["feedback_count"], 1
+        assert blob.metadata["form_type"], "H"
+        assert blob.metadata["language_code"], "cy"
+        assert blob.metadata["region_code"], "GB-ENG"
+        assert blob.metadata["tx_id"], "12345"
+        assert "object_key" in blob.metadata
+        assert "submitted_at" in blob.metadata
+
+        blob_contents = blob.upload_from_string.call_args[0][0]
+
+        assert (
+            blob_contents
+            == b"{'feedback-type': 'Feedback type', 'feedback-text': 'Feedback text'}"
+        )
+        assert feedback_upload is True
