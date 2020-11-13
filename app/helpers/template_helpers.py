@@ -72,6 +72,8 @@ def get_footer_context(language_code, static_content_urls, sign_out_url, theme):
                     },
                 ]
             },
+        ],
+        "legal": [
             {
                 "itemsList": [
                     {
@@ -94,7 +96,7 @@ def get_footer_context(language_code, static_content_urls, sign_out_url, theme):
                         "url": static_content_urls["terms_and_conditions"],
                         "target": "_blank",
                     },
-                ]
+                ],
             },
         ],
     }
