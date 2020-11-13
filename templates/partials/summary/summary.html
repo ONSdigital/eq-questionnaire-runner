@@ -10,6 +10,7 @@
         "groups": [
           {
             "groupTitle": '<div id="' + group.id +'">' + group.title + '</div>' if group.title else None,
+            "headers": ["Question", "Answer given", "Change answer"],
             "rows": map_summary_item_config(
                       group,
                       content.summary.summary_type,
