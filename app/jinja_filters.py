@@ -308,13 +308,25 @@ class OtherConfig:
     def __init__(self, detail_answer_field, detail_answer_schema):
         self.id = detail_answer_field.id
         self.name = detail_answer_field.name
-        self.value = escape(
-            detail_answer_field._value()
-        )  # pylint: disable=protected-access
+
         self.label = LabelConfig(detail_answer_field.id, detail_answer_field.label.text)
         self.open = detail_answer_schema.get("visible", False)
-        if detail_answer_schema["type"] == "Number":
-            self.classes = get_width_class_for_number(detail_answer_schema)
+        answer_type = detail_answer_schema["type"]
+
+        if answer_type == "Dropdown":
+            self.otherType = "select"
+            self.options = [
+                SelectOptionConfig(choice, detail_answer_field)
+                for choice in detail_answer_field.choices
+            ]
+        else:
+            self.otherType = "input"
+            self.value = escape(
+                detail_answer_field._value()
+            )  # pylint: disable=protected-access
+
+            if answer_type == "Number":
+                self.classes = get_width_class_for_number(detail_answer_schema)
 
 
 @blueprint.app_template_filter()
@@ -357,15 +369,14 @@ def map_relationships_config_processor():
 
 class SelectOptionConfig:
     def __init__(self, option, select):
-        self.text = option[1]
-        self.value = option[0]
+        self.value, self.text = option
         self.selected = select.data == self.value
         self.disabled = self.value == "" and select.flags.required
 
 
 @blueprint.app_template_filter()
 def map_select_config(select):
-    return [SelectOptionConfig(tuple[1], select) for tuple in enumerate(select.choices)]
+    return [SelectOptionConfig(choice, select) for choice in select.choices]
 
 
 @blueprint.app_context_processor

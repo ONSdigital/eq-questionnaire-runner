@@ -3,7 +3,6 @@ from flask import url_for
 
 def build_confirmation_email_form_context(email_confirmation_form):
     context = {
-        "show_sign_out_warning": True,
         "hide_sign_out_button": False,
         "sign_out_url": url_for("session.get_sign_out"),
     }

@@ -1133,7 +1133,7 @@ class TestQuestionnaireForm(
     def test_detail_answer_mandatory_only_checked_if_option_selected(self):
         # The detail_answer can only be mandatory if the option it is associated with is answered
         with self.app_request_context():
-            schema = load_schema_from_name("test_checkbox_multiple_detail_answers")
+            schema = load_schema_from_name("test_checkbox_detail_answer_multiple")
 
             question_schema = schema.get_block("mandatory-checkbox").get("question")
 
@@ -1163,7 +1163,9 @@ class TestQuestionnaireForm(
 
     def test_answer_with_detail_answer_errors_are_correctly_mapped(self):
         with self.app_request_context():
-            schema = load_schema_from_name("test_radio_mandatory_with_mandatory_other")
+            schema = load_schema_from_name(
+                "test_radio_mandatory_with_detail_answer_mandatory"
+            )
 
             question_schema = schema.get_block("radio-mandatory").get("question")
 
@@ -1355,7 +1357,9 @@ class TestQuestionnaireForm(
 
     def test_form_for_radio_other_not_selected(self):
         with self.app_request_context():
-            schema = load_schema_from_name("test_radio_mandatory_with_mandatory_other")
+            schema = load_schema_from_name(
+                "test_radio_mandatory_with_detail_answer_mandatory"
+            )
 
             question_schema = schema.get_block("radio-mandatory").get("question")
 
@@ -1380,7 +1384,9 @@ class TestQuestionnaireForm(
 
     def test_form_for_radio_other_selected(self):
         with self.app_request_context():
-            schema = load_schema_from_name("test_radio_mandatory_with_mandatory_other")
+            schema = load_schema_from_name(
+                "test_radio_mandatory_with_detail_answer_mandatory"
+            )
 
             question_schema = schema.get_block("radio-mandatory").get("question")
 

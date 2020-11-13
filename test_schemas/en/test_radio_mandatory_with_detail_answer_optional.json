@@ -4,7 +4,7 @@
     "schema_version": "0.0.1",
     "data_version": "0.0.3",
     "survey_id": "0",
-    "title": "Radio Mandatory with Optional Other",
+    "title": "Radio Mandatory with Optional Detail Answer",
     "theme": "default",
     "metadata": [
         {
@@ -26,7 +26,7 @@
             "groups": [
                 {
                     "id": "radio",
-                    "title": "Radio Mandatory with Optional Other",
+                    "title": "Radio Mandatory with Optional Detail Answer",
                     "blocks": [
                         {
                             "type": "Question",

@@ -22,7 +22,7 @@ class TestQuestionnaireHtmlEscaping(IntegrationTestCase):
         assert ESCAPED_CONTENT in self.getResponseData()
 
     def test_quotes_in_detail_answer(self):
-        self.launchSurvey("test_radio_mandatory_with_mandatory_other")
+        self.launchSurvey("test_radio_mandatory_with_detail_answer_mandatory")
         self.post(
             {"radio-mandatory-answer": "Other", "other-answer-mandatory": HTML_CONTENT}
         )

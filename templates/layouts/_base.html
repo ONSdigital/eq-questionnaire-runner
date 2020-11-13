@@ -32,6 +32,7 @@
   "title": full_page_title,
   "theme": theme,
   "header": page_header,
+  "footer": footer,
   "language": languages,
   "cdn": {
     "url": cdn_url
@@ -111,5 +112,4 @@
       document.write("<script async nonce='{{ csp_nonce }}' src='http://HOST:35729/livereload.js'><\/script>".replace("HOST", location.hostname));
     //]]></script>
   {% endif %}
-{% include 'layouts/configs/_footer.html' %}
 {% endblock %}

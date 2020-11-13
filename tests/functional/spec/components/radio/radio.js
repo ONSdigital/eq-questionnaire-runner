@@ -1,20 +1,20 @@
 import RadioMandatoryPage from "../../../generated_pages/radio_mandatory/radio-mandatory.page";
 import RadioMandatorySummary from "../../../generated_pages/radio_mandatory/summary.page";
 
-import RadioMandatoryOptionalOtherPage from "../../../generated_pages/radio_mandatory_with_optional_other/radio-mandatory.page";
-import RadioMandatoryOptionOtherSummary from "../../../generated_pages/radio_mandatory_with_optional_other/summary.page";
+import RadioMandatoryOptionalDetailAnswerPage from "../../../generated_pages/radio_mandatory_with_detail_answer_optional/radio-mandatory.page";
+import RadioMandatoryOptionDetailAnswerSummary from "../../../generated_pages/radio_mandatory_with_detail_answer_optional/summary.page";
 
-import RadioMandatoryOtherOverriddenPage from "../../../generated_pages/radio_mandatory_with_mandatory_other_overridden_error/radio-mandatory.page";
+import RadioMandatoryDetailAnswerOverriddenPage from "../../../generated_pages/radio_mandatory_with_detail_answer_mandatory_with_overridden_error/radio-mandatory.page";
 
 import RadioMandatoryOverriddenPage from "../../../generated_pages/radio_mandatory_with_overridden_error/radio-mandatory.page";
 
 import RadioNonMandatoryPage from "../../../generated_pages/radio_optional/radio-non-mandatory.page";
 import RadioNonMandatorySummary from "../../../generated_pages/radio_optional/summary.page";
 
-import RadioNonMandatoryOtherOverriddenPage from "../../../generated_pages/radio_optional_with_mandatory_other_overridden_error/radio-non-mandatory.page";
+import RadioNonMandatoryDetailAnswerOverriddenPage from "../../../generated_pages/radio_optional_with_detail_answer_mandatory_with_overridden_error/radio-non-mandatory.page";
 
-import RadioNonMandatoryOtherPage from "../../../generated_pages/radio_optional_with_mandatory_other/radio-non-mandatory.page";
-import RadioNonMandatoryOtherSummary from "../../../generated_pages/radio_optional_with_mandatory_other/summary.page";
+import RadioNonMandatoryDetailAnswerPage from "../../../generated_pages/radio_optional_with_detail_answer_mandatory/radio-non-mandatory.page";
+import RadioNonMandatoryDetailAnswerSummary from "../../../generated_pages/radio_optional_with_detail_answer_mandatory/summary.page";
 
 describe("Component: Radio", () => {
   describe("Given I start a Mandatory Radio survey", () => {
@@ -43,45 +43,45 @@ describe("Component: Radio", () => {
     });
   });
 
-  describe("Given I start a Mandatory Radio Other survey", () => {
+  describe("Given I start a Mandatory Radio DetailAnswer survey", () => {
     before(() => {
-      browser.openQuestionnaire("test_radio_mandatory_with_mandatory_other.json");
+      browser.openQuestionnaire("test_radio_mandatory_with_detail_answer_mandatory.json");
     });
 
     it("When I have selected a other text field, Then the selected option should be displayed in the summary", () => {
-      $(RadioMandatoryOptionalOtherPage.other()).click();
-      $(RadioMandatoryOptionalOtherPage.otherDetail()).setValue("Hello World");
-      $(RadioMandatoryOptionalOtherPage.submit()).click();
-      expect(browser.getUrl()).to.contain(RadioMandatoryOptionOtherSummary.pageName);
-      expect($(RadioMandatoryOptionOtherSummary.radioMandatoryAnswer()).getText()).to.contain("Hello World");
+      $(RadioMandatoryOptionalDetailAnswerPage.other()).click();
+      $(RadioMandatoryOptionalDetailAnswerPage.otherDetail()).setValue("Hello World");
+      $(RadioMandatoryOptionalDetailAnswerPage.submit()).click();
+      expect(browser.getUrl()).to.contain(RadioMandatoryOptionDetailAnswerSummary.pageName);
+      expect($(RadioMandatoryOptionDetailAnswerSummary.radioMandatoryAnswer()).getText()).to.contain("Hello World");
     });
   });
 
-  describe("Given I start a Mandatory Radio Other Overridden Error survey ", () => {
+  describe("Given I start a Mandatory Radio DetailAnswer Overridden Error survey ", () => {
     before(() => {
-      browser.openQuestionnaire("test_radio_mandatory_with_mandatory_other_overridden_error.json");
+      browser.openQuestionnaire("test_radio_mandatory_with_detail_answer_mandatory_with_overridden_error.json");
     });
 
     it("When I submit without any data in the other text field it should Then throw an overridden error", () => {
-      $(RadioMandatoryOtherOverriddenPage.other()).click();
-      $(RadioMandatoryOtherOverriddenPage.submit()).click();
-      expect($(RadioMandatoryOtherOverriddenPage.errorNumber(1)).getText()).to.contain("Test error message is overridden");
+      $(RadioMandatoryDetailAnswerOverriddenPage.other()).click();
+      $(RadioMandatoryDetailAnswerOverriddenPage.submit()).click();
+      expect($(RadioMandatoryDetailAnswerOverriddenPage.errorNumber(1)).getText()).to.contain("Test error message is overridden");
     });
   });
 
-  describe("Given I start a Mandatory Radio Other survey ", () => {
+  describe("Given I start a Mandatory Radio DetailAnswer survey ", () => {
     before(() => {
-      browser.openQuestionnaire("test_radio_mandatory_with_optional_other.json");
+      browser.openQuestionnaire("test_radio_mandatory_with_detail_answer_optional.json");
     });
 
     it("When I submit without any data in the other text field is selected, Then the selected option should be displayed in the summary", () => {
-      $(RadioMandatoryOptionalOtherPage.submit()).click();
-      expect(browser.getUrl()).to.contain(RadioMandatoryOptionOtherSummary.pageName);
-      expect($(RadioMandatoryOptionOtherSummary.radioMandatoryAnswer()).getText()).to.contain("No answer provided");
+      $(RadioMandatoryOptionalDetailAnswerPage.submit()).click();
+      expect(browser.getUrl()).to.contain(RadioMandatoryOptionDetailAnswerSummary.pageName);
+      expect($(RadioMandatoryOptionDetailAnswerSummary.radioMandatoryAnswer()).getText()).to.contain("No answer provided");
     });
   });
 
-  describe("Given I start a Mandatory Radio Other Overridden error survey  ", () => {
+  describe("Given I start a Mandatory Radio DetailAnswer Overridden error survey  ", () => {
     before(() => {
       browser.openQuestionnaire("test_radio_mandatory_with_overridden_error.json");
     });
@@ -104,29 +104,29 @@ describe("Component: Radio", () => {
     });
   });
 
-  describe("Given I start a Optional Other Overridden error survey", () => {
+  describe("Given I start a Optional DetailAnswer Overridden error survey", () => {
     before(() => {
-      browser.openQuestionnaire("test_radio_optional_with_mandatory_other_overridden_error.json");
+      browser.openQuestionnaire("test_radio_optional_with_detail_answer_mandatory_with_overridden_error.json");
     });
 
     it("When I have submitted an other option with an empty text field, Then an overridden error is displayed", () => {
-      $(RadioNonMandatoryOtherOverriddenPage.other()).click();
-      $(RadioNonMandatoryOtherOverriddenPage.submit()).click();
-      expect($(RadioNonMandatoryOtherOverriddenPage.errorNumber(1)).getText()).to.contain("Test error message is overridden");
+      $(RadioNonMandatoryDetailAnswerOverriddenPage.other()).click();
+      $(RadioNonMandatoryDetailAnswerOverriddenPage.submit()).click();
+      expect($(RadioNonMandatoryDetailAnswerOverriddenPage.errorNumber(1)).getText()).to.contain("Test error message is overridden");
     });
   });
 
-  describe("Given I Start a Optional Mandatory Other survey", () => {
+  describe("Given I Start a Optional Mandatory DetailAnswer survey", () => {
     before(() => {
-      browser.openQuestionnaire("test_radio_optional_with_mandatory_other.json");
+      browser.openQuestionnaire("test_radio_optional_with_detail_answer_mandatory.json");
     });
 
     it("When I submit data in the other text field it should be persisted and Then displayed on the summary", () => {
-      $(RadioNonMandatoryOtherPage.other()).click();
-      $(RadioNonMandatoryOtherPage.otherDetail()).setValue("Hello World");
-      $(RadioNonMandatoryOtherPage.submit()).click();
-      expect(browser.getUrl()).to.contain(RadioNonMandatoryOtherSummary.pageName);
-      expect($(RadioNonMandatoryOtherSummary.radioNonMandatoryAnswer()).getText()).to.contain("Hello World");
+      $(RadioNonMandatoryDetailAnswerPage.other()).click();
+      $(RadioNonMandatoryDetailAnswerPage.otherDetail()).setValue("Hello World");
+      $(RadioNonMandatoryDetailAnswerPage.submit()).click();
+      expect(browser.getUrl()).to.contain(RadioNonMandatoryDetailAnswerSummary.pageName);
+      expect($(RadioNonMandatoryDetailAnswerSummary.radioNonMandatoryAnswer()).getText()).to.contain("Hello World");
     });
   });
 });

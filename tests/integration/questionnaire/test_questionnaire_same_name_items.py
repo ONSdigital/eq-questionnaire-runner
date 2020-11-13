@@ -1,17 +1,9 @@
 import json
 
-from tests.integration.integration_test_case import IntegrationTestCase
+from . import QuestionnaireTestCase
 
 
-class TestQuestionnaireSameNameItems(IntegrationTestCase):
-    def get_link(self, row_index, text):
-        selector = f"tbody:nth-child({row_index}) td:last-child a"
-        selected = self.getHtmlSoup().select(selector)
-
-        filtered = [html for html in selected if text in html.get_text()]
-
-        return filtered[0].get("href")
-
+class TestQuestionnaireSameNameItems(QuestionnaireTestCase):
     def test_same_name_items(self):
         self.launchSurvey("test_list_collector_same_name_items", roles=["dumper"])
 
@@ -38,7 +30,7 @@ class TestQuestionnaireSameNameItems(IntegrationTestCase):
         self.post({"anyone-else": "Yes"})
         self.post({"first-name": "James", "last-name": "May"})
 
-        primary_person_change_link = self.get_link(1, "Change")
+        primary_person_change_link = self.get_link("change", 1)
 
         self.get(primary_person_change_link)
 
@@ -76,7 +68,7 @@ class TestQuestionnaireSameNameItems(IntegrationTestCase):
         self.post({"anyone-else": "Yes"})
         self.post({"first-name": "James", "last-name": "May"})
 
-        first_person_remove_link = self.get_link(2, "Remove")
+        first_person_remove_link = self.get_link("remove", 2)
 
         self.get(first_person_remove_link)
 
@@ -96,7 +88,7 @@ class TestQuestionnaireSameNameItems(IntegrationTestCase):
         self.post({"anyone-else": "Yes"})
         self.post({"first-name": "Barry", "last-name": "Bloggs"})
 
-        first_person_change_link = self.get_link(2, "Change")
+        first_person_change_link = self.get_link("change", 2)
 
         self.get(first_person_change_link)
 
