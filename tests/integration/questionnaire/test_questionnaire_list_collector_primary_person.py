@@ -2,23 +2,10 @@ import random
 import re
 import string
 
-from tests.integration.integration_test_case import IntegrationTestCase
+from . import QuestionnaireTestCase
 
 
-class TestQuestionnaireListCollector(IntegrationTestCase):
-    def get_link(self, row_index, text):
-        selector = f"tbody:nth-child({row_index + 1}) td:last-child a"
-        selected = self.getHtmlSoup().select(selector)
-
-        filtered = [html for html in selected if text in html.get_text()]
-
-        return filtered[0].get("href")
-
-    def get_section_summary_link(self, row_index, text):
-        selector = f"[data-qa='list-item-{text}-{row_index}-link']"
-        selected = self.getHtmlSoup().select(selector)
-        return selected[0].get("href")
-
+class TestQuestionnaireListCollector(QuestionnaireTestCase):
     def test_invalid_list_on_primary_person_collector(self):
         self.launchSurvey("test_list_collector_primary_person")
 
@@ -44,7 +31,7 @@ class TestQuestionnaireListCollector(IntegrationTestCase):
         self.post({"anyone-usually-live-at-answer": "Yes"})
         self.post({"first-name": "John", "last-name": "Doe"})
 
-        first_person_change_link = self.get_link(1, "Change")
+        first_person_change_link = self.get_link("change", 1)
 
         self.get(first_person_change_link)
 
@@ -162,7 +149,7 @@ class TestQuestionnaireListCollector(IntegrationTestCase):
 
         self.assertInUrl("/questionnaire/sections/section/")
 
-        first_person_change_link = self.get_section_summary_link(1, "change")
+        first_person_change_link = self.get_link("change", 1)
 
         self.get(first_person_change_link)
 
