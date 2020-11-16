@@ -859,7 +859,7 @@ msgstr "Gallwch geisio <a href='{url}'>cyflwyno eich cyfrifiad eto</a>"
 
 #: templates/errors/submission-failed.html:10
 msgid "If this problem keeps happening, please <a href='{url}'>contact us</a> for help."
-msgstr "Os bydd y broblem hon yn parhau, <a href='{url}'>cysylltwch â ni </a>i gael cymorth."
+msgstr "Os bydd y broblem hon yn parhau, <a href='{url}'>cysylltwch â ni</a> i gael cymorth."
 
 #: templates/individual_response/confirmation-post.html:17
 msgid "The letter with an individual access code should arrive soon for them to complete their own census"
@@ -1695,4 +1695,3 @@ msgstr "Swyddfa'r Comisiynydd Gwybodaeth yw'r sefydliad annibynnol sy'n gyfrifol
 #: templates/static/privacy.html:150
 msgid "You can contact the ICO by:"
 msgstr "Gallwch gysylltu â Swyddfa'r Comisiynydd Gwybodaeth fel a ganlyn:"
-
