@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2020-11-13 11:39+0000\n"
+"POT-Creation-Date: 2020-11-16 08:30+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -424,80 +424,39 @@ msgstr ""
 msgid "Feedback"
 msgstr ""
 
-#: app/views/handlers/feedback.py:67 app/views/handlers/feedback.py:80
-#: app/views/handlers/feedback.py:92
-msgid "General"
-msgstr ""
-
-#: app/views/handlers/feedback.py:69
-msgid "This establishment"
-msgstr ""
-
-#: app/views/handlers/feedback.py:73 app/views/handlers/feedback.py:94
-msgid "People who live here"
-msgstr ""
-
-#: app/views/handlers/feedback.py:76 app/views/handlers/feedback.py:97
-msgid "Visitors"
-msgstr ""
-
-#: app/views/handlers/feedback.py:81
-msgid "Accommodation"
-msgstr ""
-
-#: app/views/handlers/feedback.py:83 app/views/handlers/feedback.py:103
-msgid "Personal details"
-msgstr ""
-
-#: app/views/handlers/feedback.py:86 app/views/handlers/feedback.py:106
-msgid "Health"
-msgstr ""
-
-#: app/views/handlers/feedback.py:87 app/views/handlers/feedback.py:107
-msgid "Qualifications"
-msgstr ""
-
-#: app/views/handlers/feedback.py:88 app/views/handlers/feedback.py:108
-msgid "Employment"
-msgstr ""
-
-#: app/views/handlers/feedback.py:99
-msgid "Household and accommodation"
-msgstr ""
-
-#: app/views/handlers/feedback.py:114
+#: app/views/handlers/feedback.py:95
 msgid "Give feedback about this service"
 msgstr ""
 
-#: app/views/handlers/feedback.py:115 app/views/handlers/feedback.py:158
+#: app/views/handlers/feedback.py:96 app/views/handlers/feedback.py:139
 msgid "Select what your feedback is about"
 msgstr ""
 
-#: app/views/handlers/feedback.py:123 app/views/handlers/feedback.py:124
+#: app/views/handlers/feedback.py:104 app/views/handlers/feedback.py:105
 msgid "The census questions"
 msgstr ""
 
-#: app/views/handlers/feedback.py:129
+#: app/views/handlers/feedback.py:110
 msgid "For example, question not clear, answer option not relevant"
 msgstr ""
 
-#: app/views/handlers/feedback.py:132 app/views/handlers/feedback.py:135
+#: app/views/handlers/feedback.py:113 app/views/handlers/feedback.py:116
 msgid "Select an option"
 msgstr ""
 
-#: app/views/handlers/feedback.py:144 app/views/handlers/feedback.py:145
+#: app/views/handlers/feedback.py:125 app/views/handlers/feedback.py:126
 msgid "Page design and structure"
 msgstr ""
 
-#: app/views/handlers/feedback.py:148 app/views/handlers/feedback.py:151
+#: app/views/handlers/feedback.py:129 app/views/handlers/feedback.py:132
 msgid "General feedback about this service"
 msgstr ""
 
-#: app/views/handlers/feedback.py:166 app/views/handlers/feedback.py:176
+#: app/views/handlers/feedback.py:147 app/views/handlers/feedback.py:157
 msgid "Enter your feedback"
 msgstr ""
 
-#: app/views/handlers/feedback.py:167
+#: app/views/handlers/feedback.py:148
 msgid "Do not include confidential information, such as your contact details."
 msgstr ""
 
