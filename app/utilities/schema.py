@@ -192,7 +192,7 @@ def get_schema_file_path(schema_name, language_code):
     return get_schema_path_map().get(language_code, {}).get(schema_name)
 
 
-def load_questionnaire_schemas_into_cache():
+def cache_questionnaire_schemas():
     for language_code, schemas in get_schema_path_map(dirs=(SCHEMA_DIR,)).items():
         for schema in schemas:
             load_schema_from_name(schema, language_code)

@@ -9,11 +9,11 @@ from app.questionnaire import QuestionnaireSchema
 from app.setup import create_app
 from app.utilities.schema import (
     _load_schema_from_name,
+    cache_questionnaire_schemas,
     get_allowed_languages,
     get_schema_name_from_census_params,
     get_schema_path_map,
     get_schema_path_map_for_language,
-    load_questionnaire_schemas_into_cache,
     load_schema_from_metadata,
     load_schema_from_name,
     load_schema_from_url,
@@ -130,7 +130,7 @@ def test_schema_cache_on_app_start_up():
     assert cache_info.hits == 0
 
     # loads schema again to fetch from cache
-    load_questionnaire_schemas_into_cache()
+    cache_questionnaire_schemas()
     cache_info = _load_schema_from_name.cache_info()
     assert cache_info.currsize == total_schemas
     assert cache_info.hits == total_schemas
