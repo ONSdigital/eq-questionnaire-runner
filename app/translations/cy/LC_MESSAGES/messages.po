@@ -281,7 +281,7 @@ msgstr ""
 
 #: app/routes/errors.py:170 app/routes/errors.py:192
 msgid "If this problem keeps happening, please <a href='{contact_us_url}'>contact us</a> for help."
-msgstr "Os bydd y broblem hon yn parhau,<a href='{contact_us_url}'>cysylltwch â ni i</a> gael cymorth."
+msgstr "Os bydd y broblem hon yn parhau, <a href='{contact_us_url}'>cysylltwch â ni i</a> gael cymorth."
 
 #: app/routes/errors.py:188
 msgid "Sorry, there was a problem sending the confirmation email"
