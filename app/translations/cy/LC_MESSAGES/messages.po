@@ -704,7 +704,7 @@ msgstr "Caewch y ffenestr hon i barhau â'ch arolwg presennol"
 #, python-format
 msgid "There is a problem with your answer"
 msgid_plural "There are %(num)s problems with your answer"
-msgstr[0] "Mae %(num)s broblem gyda'ch ateb"
+msgstr[0] "Mae problem gyda'ch ateb"
 msgstr[1] "Mae problem gyda'ch ateb"
 msgstr[2] "Mae %(num)s broblem gyda'ch ateb"
 msgstr[3] "Mae %(num)s broblem gyda'ch ateb"
