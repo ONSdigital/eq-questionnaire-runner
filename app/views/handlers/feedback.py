@@ -86,7 +86,7 @@ class Feedback:
         }
 
         options = (
-            {"label": lazy_gettext(value), "value": value}
+            {"label": lazy_gettext(value), "value": lazy_gettext(value)}
             for value in detail_answers_option_map.get(self._schema.form_type or "H")
         )
 
