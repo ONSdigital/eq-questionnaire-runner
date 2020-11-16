@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: eq-census\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2020-11-04 15:27+0000\n"
-"PO-Revision-Date: 2020-11-05 14:24\n"
+"PO-Revision-Date: 2020-11-16 12:10\n"
 "Last-Translator: \n"
 "Language-Team: Welsh\n"
 "MIME-Version: 1.0\n"
@@ -58,7 +58,7 @@ msgstr "Rhowch ateb"
 #: app/forms/error_messages.py:15
 #, python-format
 msgid "Select an answer <span class=\"u-vh\">to ‘%(question_title)s’</span>"
-msgstr "Dewiswch ateb <span class=\"u-vh\">i ‘%(question_title)s’</span>"
+msgstr ""
 
 #: app/forms/error_messages.py:18
 #: app/forms/field_handlers/dropdown_handler.py:12
@@ -281,7 +281,7 @@ msgstr ""
 
 #: app/routes/errors.py:170 app/routes/errors.py:192
 msgid "If this problem keeps happening, please <a href='{contact_us_url}'>contact us</a> for help."
-msgstr ""
+msgstr "Os bydd y broblem hon yn parhau,<a href='{contact_us_url}'> cysylltwch â ni i</a> gael cymorth."
 
 #: app/routes/errors.py:188
 msgid "Sorry, there was a problem sending the confirmation email"
@@ -293,11 +293,11 @@ msgstr ""
 
 #: app/routes/individual_response.py:160
 msgid "An individual access code has been sent by post"
-msgstr ""
+msgstr "Mae cod mynediad unigol wedi cael ei anfon drwy'r post"
 
 #: app/routes/individual_response.py:252
 msgid "An individual access code has been sent by text"
-msgstr ""
+msgstr "Mae cod mynediad unigol wedi cael ei anfon drwy neges destun"
 
 #: app/views/contexts/hub_context.py:15
 msgid "Completed"
@@ -391,7 +391,7 @@ msgstr ""
 
 #: app/views/handlers/feedback.py:23
 msgid "Feedback"
-msgstr ""
+msgstr "Adborth"
 
 #: app/views/handlers/feedback.py:27
 msgid "Give feedback about this service"
@@ -431,7 +431,7 @@ msgstr ""
 
 #: app/views/handlers/individual_response.py:231
 msgid "Cannot answer questions for others in your household"
-msgstr ""
+msgstr "Methu ateb cwestiynau ar ran pobl eraill yn eich cartref"
 
 #: app/views/handlers/individual_response.py:297
 msgid "How would you like <em>{person_name}</em> to receive a separate census?"
@@ -463,7 +463,7 @@ msgstr "Dim ond i gyfeiriad cofrestredig y cartref y gallwn anfon hwn"
 
 #: app/views/handlers/individual_response.py:377
 msgid "Send individual access code"
-msgstr ""
+msgstr "Anfon cod mynediad unigol"
 
 #: app/views/handlers/individual_response.py:408
 msgid "How would you like to answer <em>{person_name_possessive}</em> questions?"
@@ -487,11 +487,11 @@ msgstr "Byddaf yn ateb ar ran{person_name}"
 
 #: app/views/handlers/individual_response.py:540
 msgid "Do you want to send an individual access code for {person_name} by post?"
-msgstr "Ydych chi am anfon cod mynediad unigol at{person_name} drwy’r post?"
+msgstr "Ydych chi am anfon cod mynediad unigolyn at{person_name} drwy’r post?"
 
 #: app/views/handlers/individual_response.py:548
 msgid "A letter with an individual access code will be sent to your registered household address"
-msgstr "Bydd llythyr â chod mynediad unigol yn cael ei anfon i gyfeiriad cofrestredig eich cartref"
+msgstr "Bydd llythyr â chod mynediad unigolyn yn cael ei anfon i gyfeiriad cofrestredig eich cartref"
 
 #: app/views/handlers/individual_response.py:555
 msgid "The letter will be addressed to <strong>Individual Resident</strong> instead of the name provided"
@@ -507,12 +507,12 @@ msgstr "Nac ydw, anfonwch y cod mynediad mewn ffordd arall"
 
 #: app/views/handlers/individual_response.py:607
 msgid "Confirm address"
-msgstr ""
+msgstr "Cadarnhau'r cyfeiriad"
 
 #: app/views/handlers/individual_response.py:662
 #: app/views/handlers/individual_response.py:700
 msgid "Separate Census"
-msgstr ""
+msgstr "Cyfrifiad ar wahân"
 
 #: app/views/handlers/individual_response.py:666
 msgid "Who do you need to request a separate census for?"
@@ -532,7 +532,7 @@ msgstr "Ni chaiff ei storio a bydd ond yn cael ei ddefnyddio unwaith i anfon y c
 
 #: app/views/handlers/individual_response.py:770
 msgid "Mobile number"
-msgstr ""
+msgstr "Rhif ffôn symudol"
 
 #: app/views/handlers/individual_response.py:816
 msgid "Is this mobile number correct?"
@@ -548,7 +548,7 @@ msgstr "Nac ydy, mae angen i mi ei newid"
 
 #: app/views/handlers/individual_response.py:863
 msgid "Confirm mobile number"
-msgstr ""
+msgstr "Cadarnhau'r rhif ffôn symudol"
 
 #: app/views/handlers/thank_you.py:19 templates/census-thank-you.html:24
 msgid "Thank you for completing the census"
@@ -576,11 +576,11 @@ msgstr "Mae eich cyfrifiad wedi cael ei gyflwyno ar gyfer y cartref yn <strong>{
 
 #: templates/census-thank-you.html:36
 msgid "Your census has been submitted for the accommodation at <strong>{display_address}</strong>."
-msgstr "Mae eich cyfrifiad wedi cael ei gyflwyno ar gyfer y llety yn {display_address}."
+msgstr "Mae eich cyfrifiad wedi cael ei gyflwyno ar gyfer y sefydliad yn<strong> {display_address}</strong>."
 
 #: templates/census-thank-you.html:37
 msgid "Anyone staying at this accommodation for at least 6 months needs to fill in their own individual census, including staff. Your Census Officer will provide you with census forms for your residents."
-msgstr "Bydd angen i unrhyw un sy'n aros yn y llety hwn am o leiaf 6 mis lenwi ei gyfrifiad unigol ei hun, gan gynnwys y staff. Bydd Swyddog y Cyfrifiad yn dosbarthu ffurflenni'r cyfrifiad i'ch preswylwyr."
+msgstr "Bydd angen i unrhyw un sy'n aros yn y sefydliad hwn am o leiaf 6 mis lenwi ei gyfrifiad unigol ei hun, gan gynnwys y staff. Bydd Swyddog y Cyfrifiad yn dosbarthu ffurflenni'r cyfrifiad i'ch preswylwyr."
 
 #: templates/census-thank-you.html:49
 msgid "Your personal information is protected by law and will be kept confidential."
@@ -596,7 +596,7 @@ msgstr "Os hoffech gael cadarnhad eich bod wedi cwblhau eich cyfrifiad, nodwch e
 
 #: templates/confirmation-email-sent.html:3
 msgid "Confirmation email sent"
-msgstr ""
+msgstr "Wedi anfon e-bost cadarnhau"
 
 #: templates/confirmation-email-sent.html:16
 msgid "A confirmation email has been sent to {email}"
@@ -628,7 +628,7 @@ msgstr "Yn cyflwyno"
 
 #: templates/feedback-sent.html:6
 msgid "Feedback sent"
-msgstr ""
+msgstr "Wedi anfon adborth"
 
 #: templates/feedback-sent.html:19
 msgid "Thank you for your feedback"
@@ -704,7 +704,7 @@ msgstr "Caewch y ffenestr hon i barhau â'ch arolwg presennol"
 #, python-format
 msgid "There is a problem with your answer"
 msgid_plural "There are %(num)s problems with your answer"
-msgstr[0] "Mae problem gyda'ch ateb"
+msgstr[0] "Mae %(num)s broblem gyda'ch ateb"
 msgstr[1] "Mae problem gyda'ch ateb"
 msgstr[2] "Mae %(num)s broblem gyda'ch ateb"
 msgstr[3] "Mae %(num)s broblem gyda'ch ateb"
@@ -775,7 +775,7 @@ msgstr "Os bydd y broblem yn parhau, rhowch gynnig ar ddefnyddio porwr neu ddyfa
 
 #: templates/errors/403.html:9
 msgid "For further help, please <a href='{url}'>contact us</a>."
-msgstr "I gael mwy o help, <a href='{url}'>cysylltwch â ni </a>."
+msgstr "I gael rhagor o gymorth, <a href='{url}'> cysylltwch â ni </a>."
 
 #: templates/errors/404.html:3 templates/errors/404.html:6
 msgid "Page not found"
@@ -831,11 +831,11 @@ msgstr ""
 
 #: templates/errors/session-expired.html:6
 msgid "Your session has timed out due to inactivity"
-msgstr "Mae eich sesiwn wedi cyrraedd y terfyn amser oherwydd anweithgarwch"
+msgstr "Mae eich sesiwn wedi dod i ben oherwydd nad oedd gweithgarwch"
 
 #: templates/errors/session-expired.html:7
 msgid "To help protect your information we have timed you out"
-msgstr "I ddiogelu eich gwybodaeth, rydyn ni wedi rhoi terfyn amser ar eich sesiwn"
+msgstr "Er mwyn helpu i ddiogelu eich gwybodaeth, rydyn ni wedi dod â’ch sesiwn i ben"
 
 #: templates/errors/session-expired.html:8
 msgid "You will need to <a href='{url}'>enter your 16-character access code</a> again to continue your census."
@@ -859,7 +859,7 @@ msgstr "Gallwch geisio <a href='{url}'>cyflwyno eich cyfrifiad eto</a>"
 
 #: templates/errors/submission-failed.html:10
 msgid "If this problem keeps happening, please <a href='{url}'>contact us</a> for help."
-msgstr "Os bydd y broblem hon yn parhau, <a href='{url}'>cysylltwch â ni </a>i gael help."
+msgstr "Os bydd y broblem hon yn parhau, <a href='{url}'>cysylltwch â ni </a>i gael cymorth."
 
 #: templates/individual_response/confirmation-post.html:17
 msgid "The letter with an individual access code should arrive soon for them to complete their own census"
@@ -954,7 +954,7 @@ msgstr "Cyfeiriad e-bost"
 
 #: templates/partials/email-form.html:26
 msgid "This will not be stored and only used once to send your confirmation"
-msgstr "Ni fydd hwn yn cael ei storio a bydd ond yn cael ei ddefnyddio unwaith er mwyn anfon eich cadarnhad"
+msgstr "Ni fydd hwn yn cael ei storio ac ni fydd ond yn cael ei ddefnyddio unwaith er mwyn anfon cadarnhad atoch"
 
 #: templates/partials/email-form.html:39
 msgid "Send confirmation"
