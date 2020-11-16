@@ -67,6 +67,22 @@ class TestFeedback(IntegrationTestCase):
         self.assertInUrl(self.SENT_FEEDBACK_URL)
         self.assertInBody("Thank you for your feedback")
 
+    def test_valid_feedback_with_topic(self):
+        # Given I launch and complete the test_feedback questionnaire
+        self._launch_and_complete_questionnaire()
+        self.get(self.SEND_FEEDBACK_URL)
+        # When I enter a valid feedback and submit
+        self.post(
+            {
+                "feedback-topic": "The census questions",
+                "feedback-text": "Feedback",
+                "feedback-type": "Visitors",
+            }
+        )
+        # Then I get the feedback sent page
+        self.assertInUrl(self.SENT_FEEDBACK_URL)
+        self.assertInBody("Thank you for your feedback")
+
     def _test_feedback_show_warning(self):
         # Given I launch and complete the test_feedback questionnaire
         self._launch_and_complete_questionnaire()
@@ -198,6 +214,22 @@ class TestFeedback(IntegrationTestCase):
         self.assertInBody("Enter your feedback")
         self.assertEqualPageTitle("Error: Feedback - Census 2021")
 
+    def test_feedback_topic_missing(self):
+        # Given I launch and complete the test_feedback questionnaire
+        self._launch_and_complete_questionnaire()
+        self.get(self.SEND_FEEDBACK_URL)
+
+        # When I submit without selecting a feedback topic
+        self.post(
+            {"feedback-type": "The census questions", "feedback-text": "Feedback"}
+        )
+
+        # Then I stay on the send page and am presented with an error
+        self.assertInUrl(self.SEND_FEEDBACK_URL)
+        self.assertInBody("There is a problem with your feedback")
+        self.assertInBody("Select an option")
+        self.assertEqualPageTitle("Error: Feedback - Census 2021")
+
     def test_feedback_type_and_text_missing(self):
         # Given I launch and complete the test_feedback questionnaire
         self._launch_and_complete_questionnaire()
@@ -308,32 +340,6 @@ class TestFeedback(IntegrationTestCase):
         # Then the done button should navigate to the thank you page
         selector = "[data-qa='btn-done']"
         self.assertInSelector("/submitted/thank-you", selector)
-
-    def test_feedback_dropdown_form_type(self):
-        self.launchSurvey("test_feedback_communal_establishment")
-        self.post({"answer_id": "Yes"})
-        self.post()
-        self.get("/submitted/feedback/send")
-        self.post(
-            {
-                "feedback-type": "The census questions",
-                "feedback-type-question-category": "This establishment",
-                "feedback-text": "Feedback",
-            }
-        )
-        self.assertInUrl("/submitted/feedback/sent")
-        self.launchSurvey("test_feedback_individual")
-        self.post({"answer_id": "Yes"})
-        self.post()
-        self.get("/submitted/feedback/send")
-        self.post(
-            {
-                "feedback-type": "The census questions",
-                "feedback-type-question-category": "Accommodation",
-                "feedback-text": "Feedback",
-            }
-        )
-        self.assertInUrl("/submitted/feedback/sent")
 
     def _launch_and_complete_questionnaire(self):
         self.launchSurvey("test_feedback")
