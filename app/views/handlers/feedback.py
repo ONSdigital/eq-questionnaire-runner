@@ -62,51 +62,32 @@ class Feedback:
         self._session_store.save()
 
     def get_question_schema(self):
-        if self._schema.form_type == "C":
-            options = [
-                {"label": lazy_gettext("General"), "value": "General"},
-                {
-                    "label": lazy_gettext("This establishment"),
-                    "value": "This establishment",
-                },
-                {
-                    "label": lazy_gettext("People who live here"),
-                    "value": "People who live here",
-                },
-                {"label": lazy_gettext("Visitors"), "value": "Visitors"},
-            ]
-        elif self._schema.form_type == "I":
-            options = [
-                {"label": lazy_gettext("General"), "value": "General"},
-                {"label": lazy_gettext("Accommodation"), "value": "Accommodation"},
-                {
-                    "label": lazy_gettext("Personal details"),
-                    "value": "Personal details",
-                },
-                {"label": lazy_gettext("Health"), "value": "Health"},
-                {"label": lazy_gettext("Qualifications"), "value": "Qualifications"},
-                {"label": lazy_gettext("Employment"), "value": "Employment"},
-            ]
-        else:
-            options = [
-                {"label": lazy_gettext("General"), "value": "General"},
-                {
-                    "label": lazy_gettext("People who live here"),
-                    "value": "People who live here",
-                },
-                {"label": lazy_gettext("Visitors"), "value": "Visitors"},
-                {
-                    "label": lazy_gettext("Household and accommodation"),
-                    "value": "Household and accommodation",
-                },
-                {
-                    "label": lazy_gettext("Personal details"),
-                    "value": "Personal details",
-                },
-                {"label": lazy_gettext("Health"), "value": "Health"},
-                {"label": lazy_gettext("Qualifications"), "value": "Qualifications"},
-                {"label": lazy_gettext("Employment"), "value": "Employment"},
-            ]
+        detail_answers_option_map = {
+            "C": ["General", "This establishment", "People who live here", "Visitors"],
+            "I": [
+                "General",
+                "Accommodation",
+                "Personal details",
+                "Health",
+                "Qualifications",
+                "Employment",
+            ],
+            "H": [
+                "General",
+                "People who live here",
+                "Visitors",
+                "Household and accommodation",
+                "Personal details",
+                "Health",
+                "Qualifications",
+                "Employment",
+            ],
+        }
+
+        options = (
+            {"label": lazy_gettext(value), "value": value}
+            for value in detail_answers_option_map.get(self._schema.form_type or "H")
+        )
 
         return {
             "type": "General",
