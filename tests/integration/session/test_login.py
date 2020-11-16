@@ -2,9 +2,11 @@ import time
 
 from httmock import HTTMock, response, urlmatch
 
-from app.utilities.schema import SCHEMA_PATH_MAP
+from app.utilities.schema import get_schema_path_map
 from tests.integration.create_token import PAYLOAD
 from tests.integration.integration_test_case import IntegrationTestCase
+
+SCHEMA_PATH_MAP = get_schema_path_map()
 
 
 class TestLoginWithGetRequest(IntegrationTestCase):
