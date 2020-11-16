@@ -487,7 +487,7 @@ msgstr "Byddaf yn ateb ar ran{person_name}"
 
 #: app/views/handlers/individual_response.py:540
 msgid "Do you want to send an individual access code for {person_name} by post?"
-msgstr "Ydych chi am anfon cod mynediad unigolyn at{person_name} drwy’r post?"
+msgstr "Ydych chi am anfon cod mynediad unigolyn at {person_name} drwy’r post?"
 
 #: app/views/handlers/individual_response.py:548
 msgid "A letter with an individual access code will be sent to your registered household address"
