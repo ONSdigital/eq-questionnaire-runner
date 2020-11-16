@@ -52,7 +52,7 @@ describe("Unrelated Relationships", () => {
       });
 
       it("When I select 'No' to the 'related to anyone else' question, Then I will be taken to the first relationship for the second person", () => {
-        $(RelatedToAnyoneElsePage.no()).click();
+        $(RelatedToAnyoneElsePage.noNoneOfThesePeopleAreRelatedToMe()).click();
         $(RelatedToAnyoneElsePage.submit()).click();
         expect($(RelationshipsPage.questionText()).getText()).to.contain("Thinking about Betty Burns, Carla Clark is their");
       });
@@ -62,7 +62,7 @@ describe("Unrelated Relationships", () => {
         expect($(RelatedToAnyoneElsePage.questionText()).getText()).to.contain("Are any of these people related to you?");
         expect($(RelatedToAnyoneElsePage.listLabel(1)).getText()).to.equal("Daniel Davis");
         expect($(RelatedToAnyoneElsePage.listLabel(2)).getText()).to.equal("Eve Elliot");
-        expect($(RelatedToAnyoneElsePage.no()).isSelected()).to.be.true;
+        expect($(RelatedToAnyoneElsePage.noNoneOfThesePeopleAreRelatedToMe()).isSelected()).to.be.true;
       });
 
       it("When I click complete the remaining relationships, Then I will go to the relationships section complete page", () => {
