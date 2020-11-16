@@ -32,14 +32,11 @@ LANGUAGES_MAP = {
 def get_schema_path_map_for_language(
     language_code: str, dirs: Optional[Tuple[str, ...]] = None
 ) -> Mapping:
-    schema_files = []
-
-    for schema_dir in dirs or DEFAULT_SCHEMA_DIRS:
-        schema_files.extend(glob(f"{schema_dir}/{language_code}/*.json"))
 
     return {
         Path(schema_file).with_suffix("").name: schema_file
-        for schema_file in schema_files
+        for schema_dir in dirs or DEFAULT_SCHEMA_DIRS
+        for schema_file in glob(f"{schema_dir}/{language_code}/*.json")
     }
 
 
