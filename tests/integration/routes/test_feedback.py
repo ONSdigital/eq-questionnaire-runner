@@ -67,16 +67,16 @@ class TestFeedback(IntegrationTestCase):
         self.assertInUrl(self.SENT_FEEDBACK_URL)
         self.assertInBody("Thank you for your feedback")
 
-    def test_valid_feedback_with_topic(self):
+    def test_valid_feedback_with_question_category(self):
         # Given I launch and complete the test_feedback questionnaire
         self._launch_and_complete_questionnaire()
         self.get(self.SEND_FEEDBACK_URL)
         # When I enter a valid feedback and submit
         self.post(
             {
-                "feedback-topic": "The census questions",
+                "feedback-type": "The census questions",
+                "feedback-type-question-category": "Visitors",
                 "feedback-text": "Feedback",
-                "feedback-type": "Visitors",
             }
         )
         # Then I get the feedback sent page
@@ -214,7 +214,7 @@ class TestFeedback(IntegrationTestCase):
         self.assertInBody("Enter your feedback")
         self.assertEqualPageTitle("Error: Feedback - Census 2021")
 
-    def test_feedback_topic_missing(self):
+    def test_feedback_question_category_missing(self):
         # Given I launch and complete the test_feedback questionnaire
         self._launch_and_complete_questionnaire()
         self.get(self.SEND_FEEDBACK_URL)
