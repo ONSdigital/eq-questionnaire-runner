@@ -42,7 +42,7 @@ class Feedback:
     def form(self):
         return generate_form(
             schema=self._schema,
-            question_schema=self.get_question_schema(),
+            question_schema=self.question_schema,
             answer_store=None,
             metadata=None,
             data=None,
@@ -50,7 +50,7 @@ class Feedback:
         )
 
     def get_context(self):
-        return build_feedback_context(self.get_question_schema(), self.form)
+        return build_feedback_context(self.question_schema, self.form)
 
     def get_page_title(self):
         if self.form.errors:
@@ -61,7 +61,8 @@ class Feedback:
         self._session_store.session_data.feedback_count += 1
         self._session_store.save()
 
-    def get_question_schema(self):
+    @cached_property
+    def question_schema(self):
         detail_answers_option_map = {
             "C": ["General", "This establishment", "People who live here", "Visitors"],
             "I": [
@@ -105,7 +106,7 @@ class Feedback:
                             "value": lazy_gettext("The census questions"),
                             "detail_answer": {
                                 "type": "Dropdown",
-                                "id": "feedback-type-dropdown",
+                                "id": "feedback-type-question-category",
                                 "mandatory": True,
                                 "label": lazy_gettext(
                                     "For example, question not clear, answer option not relevant"

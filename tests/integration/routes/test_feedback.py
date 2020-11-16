@@ -317,7 +317,7 @@ class TestFeedback(IntegrationTestCase):
         self.post(
             {
                 "feedback-type": "The census questions",
-                "feedback-type-dropdown": "This establishment",
+                "feedback-type-question-category": "This establishment",
                 "feedback-text": "Feedback",
             }
         )
@@ -329,7 +329,7 @@ class TestFeedback(IntegrationTestCase):
         self.post(
             {
                 "feedback-type": "The census questions",
-                "feedback-type-dropdown": "Accommodation",
+                "feedback-type-question-category": "Accommodation",
                 "feedback-text": "Feedback",
             }
         )
