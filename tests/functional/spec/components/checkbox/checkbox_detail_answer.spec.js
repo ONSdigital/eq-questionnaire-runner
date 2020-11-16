@@ -1,11 +1,11 @@
-import CheckboxVisibleTruePage from "../../../generated_pages/checkbox_detail_answer/checkbox-visible-true.page.js";
-import CheckboxVisibleFalsePage from "../../../generated_pages/checkbox_detail_answer/checkbox-visible-false.page.js";
-import CheckboxVisibleNonePage from "../../../generated_pages/checkbox_detail_answer/checkbox-visible-none.page.js";
-import MutuallyExclusivePage from "../../../generated_pages/checkbox_detail_answer/mutually-exclusive.page.js";
+import CheckboxVisibleTruePage from "../../../generated_pages/checkbox_detail_answer_textfield/checkbox-visible-true.page.js";
+import CheckboxVisibleFalsePage from "../../../generated_pages/checkbox_detail_answer_textfield/checkbox-visible-false.page.js";
+import CheckboxVisibleNonePage from "../../../generated_pages/checkbox_detail_answer_textfield/checkbox-visible-none.page.js";
+import MutuallyExclusivePage from "../../../generated_pages/checkbox_detail_answer_textfield/mutually-exclusive.page.js";
 
 describe("Given the checkbox detail_answer questionnaire,", () => {
   beforeEach(() => {
-    browser.openQuestionnaire("test_checkbox_detail_answer.json");
+    browser.openQuestionnaire("test_checkbox_detail_answer_textfield.json");
   });
   it("When a checkbox has a detail_answer with visible set to true, Then the detail answer write-in field should be shown", () => {
     expect($(CheckboxVisibleTruePage.otherDetail()).isDisplayed()).to.be.true;

@@ -76,6 +76,24 @@ def test_get_relationship_that_doesnt_exist():
     assert not relationship
 
 
+def test_remove_relationship():
+    relationship_store = RelationshipStore(relationships)
+    relationship_store.remove_relationship(
+        list_item_id="123456", to_list_item_id="789101"
+    )
+    assert relationship_store.is_dirty
+    assert len(relationship_store) == 1
+
+
+def test_remove_relationship_that_doesnt_exist():
+    relationship_store = RelationshipStore(relationships)
+    relationship_store.remove_relationship(
+        list_item_id="123456", to_list_item_id="yyyyyy"
+    )
+    assert not relationship_store.is_dirty
+    assert len(relationship_store) == 2
+
+
 def test_remove_id_in_multiple_relationships():
     relationship_store = RelationshipStore(relationships)
     relationship_store.remove_all_relationships_for_list_item_id("123456")

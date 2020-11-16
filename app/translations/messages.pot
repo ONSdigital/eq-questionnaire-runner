@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2020-11-06 14:44+0000\n"
+"POT-Creation-Date: 2020-11-10 11:27+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -67,7 +67,7 @@ msgstr ""
 msgid "Enter a date"
 msgstr ""
 
-#: app/forms/error_messages.py:23 templates/partials/answers/address.html:54
+#: app/forms/error_messages.py:23 templates/partials/answers/address.html:56
 msgid "Enter an address"
 msgstr ""
 
@@ -208,12 +208,58 @@ msgid "Office for National Statistics logo"
 msgstr ""
 
 #: app/helpers/template_helpers.py:29 app/helpers/template_helpers.py:38
-#: app/helpers/template_helpers.py:59 templates/signed-out.html:3
+#: app/helpers/template_helpers.py:141 templates/signed-out.html:3
 msgid "Census 2021"
 msgstr ""
 
 #: app/helpers/template_helpers.py:34
 msgid "Northern Ireland Statistics and Research Agency logo"
+msgstr ""
+
+#: app/helpers/template_helpers.py:50
+msgid "The following links open in a new tab"
+msgstr ""
+
+#: app/helpers/template_helpers.py:52
+msgid "Crown copyright and database rights 2020 OS 100019153."
+msgstr ""
+
+#: app/helpers/template_helpers.py:55
+msgid "Use of address data is subject to the"
+msgstr ""
+
+#: app/helpers/template_helpers.py:56
+msgid "terms and conditions"
+msgstr ""
+
+#: app/helpers/template_helpers.py:64
+msgid "Help"
+msgstr ""
+
+#: app/helpers/template_helpers.py:69
+msgid "Contact us"
+msgstr ""
+
+#: app/helpers/template_helpers.py:78
+msgid "Cookies"
+msgstr ""
+
+#: app/helpers/template_helpers.py:83
+msgid "Accessibility statement"
+msgstr ""
+
+#: app/helpers/template_helpers.py:88
+msgid "Privacy and data protection"
+msgstr ""
+
+#: app/helpers/template_helpers.py:93
+msgid "Terms and conditions"
+msgstr ""
+
+#: app/helpers/template_helpers.py:104
+msgid ""
+"Make sure you <a href='{sign_out_url}'>leave this page</a> or close your "
+"browser if using a shared device"
 msgstr ""
 
 #: app/questionnaire/placeholder_transforms.py:92
@@ -655,6 +701,10 @@ msgid ""
 "able to reply to comments, but we appreciate your feedback"
 msgstr ""
 
+#: templates/feedback-sent.html:28
+msgid "Done"
+msgstr ""
+
 #: templates/feedback.html:15
 msgid "Back"
 msgstr ""
@@ -719,7 +769,7 @@ msgstr ""
 msgid "Close this window to continue with your current survey"
 msgstr ""
 
-#: templates/partials/answers/address.html:53 templates/question.html:10
+#: templates/partials/answers/address.html:55 templates/question.html:10
 #, python-format
 msgid "There is a problem with your answer"
 msgid_plural "There are %(num)s problems with your answer"
@@ -930,33 +980,33 @@ msgstr ""
 msgid "Previous"
 msgstr ""
 
-#: templates/layouts/_base.html:60
+#: templates/layouts/_base.html:61
 msgid "Tell us whether you accept cookies"
 msgstr ""
 
-#: templates/layouts/_base.html:61
+#: templates/layouts/_base.html:62
 msgid ""
 "We use <a href='{cookie_settings_url}'>cookies to collect information</a>"
 " about how you use census.gov.uk. We use this information to make the "
 "website work as well as possible and improve our services."
 msgstr ""
 
-#: templates/layouts/_base.html:62
+#: templates/layouts/_base.html:63
 msgid ""
 "You’ve accepted all cookies. You can <a "
 "href='{cookie_settings_url}'>change your cookie preferences</a> at any "
 "time."
 msgstr ""
 
-#: templates/layouts/_base.html:63
+#: templates/layouts/_base.html:64
 msgid "Accept all cookies"
 msgstr ""
 
-#: templates/layouts/_base.html:64
+#: templates/layouts/_base.html:65
 msgid "Set cookie preferences"
 msgstr ""
 
-#: templates/layouts/_base.html:65
+#: templates/layouts/_base.html:66
 #: templates/partials/introduction/preview.html:30
 #: templates/partials/summary/collapsible-summary.html:14
 msgid "Hide"
@@ -964,52 +1014,6 @@ msgstr ""
 
 #: templates/layouts/_questionnaire.html:37
 msgid "Choose another section and return to this later"
-msgstr ""
-
-#: templates/layouts/configs/_footer.html:5
-msgid "The following links open in a new tab"
-msgstr ""
-
-#: templates/layouts/configs/_footer.html:11
-msgid "Help"
-msgstr ""
-
-#: templates/layouts/configs/_footer.html:16
-msgid "Contact us"
-msgstr ""
-
-#: templates/layouts/configs/_footer.html:25
-msgid "Cookies"
-msgstr ""
-
-#: templates/layouts/configs/_footer.html:30
-msgid "Accessibility statement"
-msgstr ""
-
-#: templates/layouts/configs/_footer.html:35
-msgid "Privacy and data protection"
-msgstr ""
-
-#: templates/layouts/configs/_footer.html:40
-msgid "Terms and conditions"
-msgstr ""
-
-#: templates/layouts/configs/_footer.html:48
-msgid "Crown copyright and database rights 2020 OS 100019153."
-msgstr ""
-
-#: templates/layouts/configs/_footer.html:49
-msgid "Use of address data is subject to the"
-msgstr ""
-
-#: templates/layouts/configs/_footer.html:50
-msgid "terms and conditions"
-msgstr ""
-
-#: templates/layouts/configs/_footer.html:57
-msgid ""
-"Make sure you <a href={sign_out_url}>leave this page</a> or close your "
-"browser if using a shared device"
 msgstr ""
 
 #: templates/layouts/configs/_save-sign-out-button.html:5
@@ -1152,34 +1156,42 @@ msgid ""
 msgstr ""
 
 #: templates/partials/answers/address.html:47
-msgid "Enter more of the address to improve results"
+msgid "There are {n} for {x}"
 msgstr ""
 
 #: templates/partials/answers/address.html:48
-msgid "Select an address"
+msgid "{n} addresses"
 msgstr ""
 
 #: templates/partials/answers/address.html:49
-msgid "No results found. Try entering a different part of the address"
+msgid "Enter more of the address to improve results"
 msgstr ""
 
 #: templates/partials/answers/address.html:50
-msgid "{n} results found. Enter more of the address to improve results"
+msgid "Select an address"
 msgstr ""
 
 #: templates/partials/answers/address.html:51
+msgid "No results found. Try entering a different part of the address"
+msgstr ""
+
+#: templates/partials/answers/address.html:52
+msgid "{n} results found. Enter more of the address to improve results"
+msgstr ""
+
+#: templates/partials/answers/address.html:53
 msgid "Enter more of the address to get results"
 msgstr ""
 
-#: templates/partials/answers/address.html:55
+#: templates/partials/answers/address.html:57
 msgid "Select or manually enter an address"
 msgstr ""
 
-#: templates/partials/answers/address.html:56
+#: templates/partials/answers/address.html:58
 msgid "Sorry, there was a problem loading addresses"
 msgstr ""
 
-#: templates/partials/answers/address.html:57
+#: templates/partials/answers/address.html:59
 msgid "Enter address manually"
 msgstr ""
 
