@@ -775,7 +775,7 @@ msgstr "Os bydd y broblem yn parhau, rhowch gynnig ar ddefnyddio porwr neu ddyfa
 
 #: templates/errors/403.html:9
 msgid "For further help, please <a href='{url}'>contact us</a>."
-msgstr "I gael rhagor o gymorth, <a href='{url}'> cysylltwch â ni </a>."
+msgstr "I gael rhagor o gymorth, <a href='{url}'>cysylltwch â ni</a>."
 
 #: templates/errors/404.html:3 templates/errors/404.html:6
 msgid "Page not found"
