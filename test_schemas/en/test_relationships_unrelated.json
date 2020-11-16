@@ -512,41 +512,150 @@
                                         }
                                     }
                                 },
-                                "question": {
-                                    "id": "relationship-question",
-                                    "type": "General",
-                                    "title": "Are any of these people related to you?",
-                                    "guidance": {
-                                        "contents": [
+                                "question_variants": [
+                                    {
+                                        "question": {
+                                            "id": "related-to-anyone-else-question",
+                                            "type": "General",
+                                            "title": "Are any of these people related to you?",
+                                            "guidance": {
+                                                "contents": [
+                                                    {
+                                                        "description": "Remember to include partners, step-parents, and stepchildren as related"
+                                                    }
+                                                ]
+                                            },
+                                            "answers": [
+                                                {
+                                                    "id": "related-to-anyone-else-answer",
+                                                    "mandatory": true,
+                                                    "type": "Radio",
+                                                    "options": [
+                                                        {
+                                                            "label": "Yes",
+                                                            "value": "Yes",
+                                                            "action": {
+                                                                "type": "RemoveUnrelatedRelationships"
+                                                            }
+                                                        },
+                                                        {
+                                                            "label": "No, none of these people are related to me",
+                                                            "value": "No, none of these people are related to me",
+                                                            "action": {
+                                                                "type": "AddUnrelatedRelationships"
+                                                            }
+                                                        }
+                                                    ]
+                                                }
+                                            ]
+                                        },
+                                        "when": [
                                             {
-                                                "description": "Remember to include partners, step-parents, and stepchildren as related"
+                                                "comparison": {
+                                                    "id": "list_item_id",
+                                                    "source": "location"
+                                                },
+                                                "condition": "equals",
+                                                "id_selector": "first",
+                                                "list": "people"
                                             }
                                         ]
                                     },
-                                    "answers": [
-                                        {
-                                            "id": "related-to-anyone-else-answer",
-                                            "mandatory": true,
-                                            "type": "Radio",
-                                            "options": [
-                                                {
-                                                    "label": "Yes",
-                                                    "value": "Yes",
-                                                    "action": {
-                                                        "type": "RemoveUnrelatedRelationships"
+                                    {
+                                        "question": {
+                                            "id": "related-to-anyone-else-question",
+                                            "type": "General",
+                                            "title": {
+                                                "placeholders": [
+                                                    {
+                                                        "placeholder": "person_name",
+                                                        "transforms": [
+                                                            {
+                                                                "transform": "concatenate_list",
+                                                                "arguments": {
+                                                                    "list_to_concatenate": {
+                                                                        "source": "answers",
+                                                                        "identifier": ["first-name", "last-name"],
+                                                                        "list_item_selector": {
+                                                                            "source": "location",
+                                                                            "id": "list_item_id"
+                                                                        }
+                                                                    },
+                                                                    "delimiter": " "
+                                                                }
+                                                            }
+                                                        ]
                                                     }
-                                                },
-                                                {
-                                                    "label": "No",
-                                                    "value": "No",
-                                                    "action": {
-                                                        "type": "AddUnrelatedRelationships"
+                                                ],
+                                                "text": "Are any of these people related to <em>{person_name}</em>?"
+                                            },
+                                            "guidance": {
+                                                "contents": [
+                                                    {
+                                                        "description": "Remember to include partners, step-parents, and stepchildren as related"
                                                     }
+                                                ]
+                                            },
+                                            "answers": [
+                                                {
+                                                    "id": "related-to-anyone-else-answer",
+                                                    "mandatory": true,
+                                                    "type": "Radio",
+                                                    "options": [
+                                                        {
+                                                            "label": "Yes",
+                                                            "value": "Yes",
+                                                            "action": {
+                                                                "type": "RemoveUnrelatedRelationships"
+                                                            }
+                                                        },
+                                                        {
+                                                            "label": {
+                                                                "placeholders": [
+                                                                    {
+                                                                        "placeholder": "person_name",
+                                                                        "transforms": [
+                                                                            {
+                                                                                "transform": "concatenate_list",
+                                                                                "arguments": {
+                                                                                    "list_to_concatenate": {
+                                                                                        "source": "answers",
+                                                                                        "identifier": ["first-name", "last-name"],
+                                                                                        "list_item_selector": {
+                                                                                            "source": "location",
+                                                                                            "id": "list_item_id"
+                                                                                        }
+                                                                                    },
+                                                                                    "delimiter": " "
+                                                                                }
+                                                                            }
+                                                                        ]
+                                                                    }
+                                                                ],
+                                                                "text": "No, none of these people are related to {person_name}"
+                                                            },
+                                                            "value": "No, none of these people are related to {person_name}",
+                                                            "action": {
+                                                                "type": "AddUnrelatedRelationships"
+                                                            }
+                                                        }
+                                                    ]
                                                 }
                                             ]
-                                        }
-                                    ]
-                                }
+                                        },
+                                        "when": [
+                                            {
+                                                "comparison": {
+                                                    "id": "list_item_id",
+                                                    "source": "location"
+                                                },
+                                                "condition": "not equals",
+                                                "id_selector": "first",
+                                                "list": "people"
+                                            }
+                                        ]
+                                    }
+                                ]
                             }
                         },
                         {

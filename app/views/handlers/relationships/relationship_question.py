@@ -35,9 +35,9 @@ class RelationshipQuestion(Question):
         return None
 
     @cached_property
-    def unrelated_no_answer_value(self):
+    def unrelated_no_answer_values(self):
         if self.unrelated_answer_id:
-            return self._schema.get_unrelated_block_no_answer_value(
+            return self._schema.get_unrelated_block_no_answer_values(
                 self.unrelated_answer_id
             )
 
@@ -64,7 +64,7 @@ class RelationshipQuestion(Question):
             relationships_block_id=self.relationships_block["id"],
             unrelated_block_id=self.unrelated_block_id,
             unrelated_answer_id=self.unrelated_answer_id,
-            unrelated_no_answer_value=self.unrelated_no_answer_value,
+            unrelated_no_answer_values=self.unrelated_no_answer_values,
         )
 
     def _get_routing_path(self):

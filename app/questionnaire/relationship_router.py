@@ -18,7 +18,7 @@ class RelationshipRouter:
         relationships_block_id: str,
         unrelated_block_id: Optional[str] = None,
         unrelated_answer_id: Optional[str] = None,
-        unrelated_no_answer_value: Optional[str] = None,
+        unrelated_no_answer_values: Optional[List[str]] = None,
     ):
         self.answer_store = answer_store
         self.relationship_store = relationship_store
@@ -28,7 +28,7 @@ class RelationshipRouter:
         self.relationships_block_id = relationships_block_id
         self.unrelated_block_id = unrelated_block_id
         self.unrelated_answer_id = unrelated_answer_id
-        self.unrelated_no_answer_value = unrelated_no_answer_value
+        self.unrelated_no_answer_values = unrelated_no_answer_values
         self.path = self._relationships_routing_path()
 
     def can_access_location(self, location):
@@ -91,7 +91,7 @@ class RelationshipRouter:
                 )
                 if (
                     unrelated_answer
-                    and unrelated_answer.value == self.unrelated_no_answer_value
+                    and unrelated_answer.value in self.unrelated_no_answer_values
                 ):
                     return path
 

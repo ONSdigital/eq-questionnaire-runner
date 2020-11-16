@@ -80,12 +80,15 @@ class TestQuestionnaireRelationshipsUnrelated(QuestionnaireTestCase):
         self.post({"anyone-else": "No"})
         self.post({"relationship-answer": "Unrelated"})
         self.post({"relationship-answer": "Unrelated"})
-        self.post({"related-to-anyone-else-answer": "No"})
+        self.post(
+            {
+                "related-to-anyone-else-answer": "No, none of these people are related to me"
+            }
+        )
         self.post({"relationship-answer": "Unrelated"})
         self.post({"relationship-answer": "Unrelated"})
 
         self.assertNotInBody("Andrew Austin")
-        self.assertNotInBody("Betty Burns")
         self.assertNotInBody("Carla Clark")
         self.assertNotInBody("Daniel Davis")
         self.assertInBody("Eve Elliot")
@@ -107,7 +110,11 @@ class TestQuestionnaireRelationshipsUnrelated(QuestionnaireTestCase):
         self.post({"relationship-answer": "Unrelated"})
         self.post({"relationship-answer": "Unrelated"})
         self.assertInBody("Are any of these people related to you?")
-        self.post({"related-to-anyone-else-answer": "No"})
+        self.post(
+            {
+                "related-to-anyone-else-answer": "No, none of these people are related to me"
+            }
+        )
         self.previous()
         self.assertNotInBody("Andrew Austin")
         self.assertNotInBody("Betty Burns")
@@ -115,6 +122,39 @@ class TestQuestionnaireRelationshipsUnrelated(QuestionnaireTestCase):
         self.assertInBody("Daniel Davis")
         self.assertInBody("Eve Elliot")
         self.assertInBody("Fred Francis")
+
+    def test_variants(self):
+        self.launch_survey_and_add_people()
+        self.post({"anyone-else": "No"})
+        self.post({"relationship-answer": "Unrelated"})
+        self.post({"relationship-answer": "Unrelated"})
+        self.post(
+            {
+                "related-to-anyone-else-answer": "No, none of these people are related to me"
+            }
+        )
+        self.post({"relationship-answer": "Unrelated"})
+        self.post({"relationship-answer": "Unrelated"})
+        self.assertInBody("Are any of these people related to <em>Betty Burns</em>?")
+
+    def test_variant_no_answer_routes_to_next_person(self):
+        self.launch_survey_and_add_people()
+        self.post({"anyone-else": "No"})
+        self.post({"relationship-answer": "Unrelated"})
+        self.post({"relationship-answer": "Unrelated"})
+        self.post(
+            {
+                "related-to-anyone-else-answer": "No, none of these people are related to me"
+            }
+        )
+        self.post({"relationship-answer": "Unrelated"})
+        self.post({"relationship-answer": "Unrelated"})
+        self.post(
+            {
+                "related-to-anyone-else-answer": "No, none of these people are related to {person_name}"
+            }
+        )
+        self.assertInBody("Thinking about Carla Clark, Daniel Davis is their")
 
     def test_yes_answer_clears_unrelated_relationships(self):
         self.launch_survey_and_add_people()
@@ -145,7 +185,11 @@ class TestQuestionnaireRelationshipsUnrelated(QuestionnaireTestCase):
         self.post({"anyone-else": "No"})
         self.post({"relationship-answer": "Unrelated"})
         self.post({"relationship-answer": "Unrelated"})
-        self.post({"related-to-anyone-else-answer": "No"})
+        self.post(
+            {
+                "related-to-anyone-else-answer": "No, none of these people are related to me"
+            }
+        )
         relationship_answers = self.get_relationship_answer_from_answer_store()
         relationships = [
             relationship_answer["relationship"]
