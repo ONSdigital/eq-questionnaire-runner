@@ -19,10 +19,7 @@ from app.submitter.submission_failed import SubmissionFailedException
 from app.views.handlers.confirmation_email import (
     ConfirmationEmailFulfilmentRequestPublicationFailed,
 )
-from app.views.handlers.feedback import (
-    FeedbackLimitReached,
-    FeedbackUploadFailedException,
-)
+from app.views.handlers.feedback import FeedbackLimitReached, FeedbackUploadFailed
 from app.views.handlers.individual_response import (
     IndividualResponseFulfilmentRequestPublicationFailed,
     IndividualResponseLimitReached,
@@ -208,7 +205,7 @@ def confirmation_email_fulfilment_request_publication_failed(exception):
     )
 
 
-@errors_blueprint.app_errorhandler(FeedbackUploadFailedException)
+@errors_blueprint.app_errorhandler(FeedbackUploadFailed)
 def feedback_upload_failed(exception):
     log_exception(exception, 500)
     title = lazy_gettext("Sorry, there is a problem")

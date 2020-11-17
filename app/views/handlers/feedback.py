@@ -1,5 +1,6 @@
 from functools import cached_property
 from typing import Mapping
+from uuid import uuid4
 
 from flask import current_app
 from flask_babel import gettext, lazy_gettext
@@ -19,7 +20,7 @@ class FeedbackLimitReached(Exception):
     pass
 
 
-class FeedbackUploadFailedException(Exception):
+class FeedbackUploadFailed(Exception):
     pass
 
 
@@ -115,17 +116,25 @@ class Feedback:
         return self.PAGE_TITLE
 
     def handle_post(self):
-        feedback_data = {
+
+        session_data = self._session_store.session_data
+        data = {
             "feedback_text": self.form.data["feedback-type"],
             "feedback_topic": self.form.data["feedback-text"],
         }
+        metadata = {
+            "feedback_count": session_data.feedback_count + 1,
+            "form_type": self._schema.form_type,
+            "language_code": session_data.language_code,
+            "object_key": str(uuid4()),
+            "region_code": self._schema.region_code,
+            "tx_id": session_data.tx_id,
+        }
 
-        feedback_upload = current_app.eq["feedback"].upload(
-            self._schema, feedback_data, self._session_store.session_data
-        )
+        feedback_upload = current_app.eq["feedback"].upload(data, metadata)
 
         if not feedback_upload:
-            raise FeedbackUploadFailedException()
+            raise FeedbackUploadFailed()
 
         self._session_store.session_data.feedback_count += 1
         self._session_store.save()

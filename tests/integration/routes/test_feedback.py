@@ -328,6 +328,9 @@ class TestFeedback(IntegrationTestCase):
         self.assertEqualPageTitle("Sorry, there is a problem - Census 2021")
         self.assertInBody("submit your feedback again")
 
+        self.get(self.getHtmlSoup().find("p", {"data-qa": "retry"}).find("a").attrs["href"])
+        self.assertInUrl("/submitted/feedback/send")
+
     def _launch_and_complete_questionnaire(self):
         self.launchSurvey("test_feedback")
         self.post({"answer_id": "Yes"})

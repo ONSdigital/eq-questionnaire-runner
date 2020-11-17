@@ -1,5 +1,3 @@
-from uuid import uuid4
-
 from google.cloud import storage
 from pika import BasicProperties, BlockingConnection, URLParameters
 from pika.exceptions import AMQPError
@@ -149,40 +147,36 @@ class GCSFeedback:
     def __init__(self, bucket_name):
         client = storage.Client()
         self.bucket = client.get_bucket(bucket_name)
-        self.bucket.retention_period = 86400
 
-    def upload(self, schema, feedback_data, session_data):
-        object_key = str(uuid4())
-        blob = self.bucket.blob(object_key)
+    def upload(self, data, meta_data):
+        blob = self.bucket.blob(meta_data["object_key"])
         blob.metadata = {
-            "feedback_count": session_data.feedback_count + 1,
-            "form_type": schema.form_type,
-            "language_code": session_data.language_code,
-            "object_key": object_key,
-            "region_code": schema.region_code,
-            "submitted_at": session_data.submitted_time,
-            "tx_id": session_data.tx_id,
+            "feedback_count": meta_data["feedback_count"],
+            "form_type": meta_data["form_type"],
+            "language_code": meta_data["language_code"],
+            "region_code": meta_data["region_code"],
+            "tx_id": meta_data["tx_id"],
         }
-        blob.upload_from_string(str(feedback_data).encode("utf8"))
+        blob.upload_from_string(
+            str(data).encode("utf8"), content_type="application/json"
+        )
 
         return True
 
 
 class LogFeedback:
     @staticmethod
-    def upload(schema, feedback_data, session_data):
+    def upload(data, meta_data):
         logger.info("uploading feedback")
         logger.info(
             "feedback payload",
-            feedback_count=session_data.feedback_count + 1,
-            feedback_data=feedback_data,
-            form_type=schema.form_type,
-            language_code=session_data.language_code,
-            object_key=uuid4(),
-            region_code=schema.region_code,
-            submission_language=session_data.language_code,
-            submitted_at=session_data.submitted_time,
-            tx_id=session_data.tx_id,
+            data=data,
+            feedback_count=meta_data["feedback_count"],
+            form_type=meta_data["form_type"],
+            language_code=meta_data["language_code"],
+            object_key=meta_data["object_key"],
+            region_code=meta_data["region_code"],
+            tx_id=meta_data["tx_id"],
         )
 
         return True

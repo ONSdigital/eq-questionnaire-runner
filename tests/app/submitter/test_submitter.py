@@ -272,42 +272,34 @@ class TestGCSFeedback(TestCase):
     def test_upload_feedback(client):
         # Given
         feedback = GCSFeedback(bucket_name="feedback")
-        feedback_data = {
+        data = {
             "feedback-type": "Feedback type",
             "feedback-text": "Feedback text",
         }
-        session_data = SessionData(
-            tx_id="12345",
-            period_str="2020-01-01",
-            language_code="en",
-            launch_language_code="cy",
-            survey_url=None,
-            ru_name="111",
-            ru_ref="222",
-            questionnaire_id="333",
-            schema_name="444",
-            response_id="555",
-        )
 
-        schema = QuestionnaireSchema({"form_type": "H", "region_code": "GB-ENG"})
+        metadata_data = {
+            "feedback_count": 1,
+            "form_type": "H",
+            "language_code": "cy",
+            "object_key": "aafdefd3-7b9c-4c6c-a931-43f118d21493",
+            "region_code": "GB-ENG",
+            "tx_id": "12345",
+        }
 
         # When
         feedback_upload = feedback.upload(
-            schema=schema,
-            feedback_data=feedback_data,
-            session_data=session_data,
+            data=data,
+            meta_data=metadata_data,
         )
         # Then
         bucket = client.return_value.get_bucket.return_value
         blob = bucket.blob.return_value
 
-        assert blob.metadata["feedback_count"], 1
-        assert blob.metadata["form_type"], "H"
-        assert blob.metadata["language_code"], "cy"
-        assert blob.metadata["region_code"], "GB-ENG"
-        assert blob.metadata["tx_id"], "12345"
-        assert "object_key" in blob.metadata
-        assert "submitted_at" in blob.metadata
+        assert blob.metadata["feedback_count"] == 1
+        assert blob.metadata["form_type"] == "H"
+        assert blob.metadata["language_code"] == "cy"
+        assert blob.metadata["region_code"] == "GB-ENG"
+        assert blob.metadata["tx_id"] == "12345"
 
         blob_contents = blob.upload_from_string.call_args[0][0]
 
