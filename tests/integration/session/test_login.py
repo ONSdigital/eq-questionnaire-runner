@@ -6,7 +6,7 @@ from app.utilities.schema import get_schema_path_map
 from tests.integration.create_token import PAYLOAD
 from tests.integration.integration_test_case import IntegrationTestCase
 
-SCHEMA_PATH_MAP = get_schema_path_map()
+SCHEMA_PATH_MAP = get_schema_path_map(include_test_schemas=True)
 
 
 class TestLoginWithGetRequest(IntegrationTestCase):

@@ -59,7 +59,7 @@ def test_get_allowed_languages(schema_name, launch_language, expected):
 
 
 def test_get_schema_path_map():
-    schema_path_map = get_schema_path_map()
+    schema_path_map = get_schema_path_map(include_test_schemas=True)
 
     assert all(
         language_code in schema_path_map.keys() for language_code in ["en", "cy"]
@@ -111,7 +111,6 @@ def test_schema_cache_on_function_call():
 )
 def test_schema_cache_on_app_start_up():
     _load_schema_from_name.cache_clear()
-    get_schema_path_map.cache_clear()
     cache_info = _load_schema_from_name.cache_info()
     assert cache_info.currsize == 0
     assert cache_info.hits == 0
