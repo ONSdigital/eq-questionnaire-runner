@@ -116,7 +116,6 @@ class Feedback:
         return self.PAGE_TITLE
 
     def handle_post(self):
-
         session_data = self._session_store.session_data
         self._session_store.session_data.feedback_count += 1
 
