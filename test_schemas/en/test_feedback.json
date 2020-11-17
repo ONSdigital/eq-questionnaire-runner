@@ -6,6 +6,7 @@
     "survey_id": "0",
     "title": "Feedback test schema",
     "theme": "census",
+    "form_type": "H",
     "description": "A questionnaire to test feedback",
     "metadata": [
         {
