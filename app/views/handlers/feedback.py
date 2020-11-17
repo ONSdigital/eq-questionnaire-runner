@@ -118,12 +118,14 @@ class Feedback:
     def handle_post(self):
 
         session_data = self._session_store.session_data
+        self._session_store.session_data.feedback_count += 1
+
         data = {
             "feedback_text": self.form.data["feedback-type"],
             "feedback_topic": self.form.data["feedback-text"],
         }
         metadata = {
-            "feedback_count": session_data.feedback_count + 1,
+            "feedback_count": session_data.feedback_count,
             "form_type": self._schema.form_type,
             "language_code": session_data.language_code,
             "object_key": str(uuid4()),
@@ -136,7 +138,6 @@ class Feedback:
         if not feedback_upload:
             raise FeedbackUploadFailed()
 
-        self._session_store.session_data.feedback_count += 1
         self._session_store.save()
 
     @staticmethod
