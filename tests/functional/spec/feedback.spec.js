@@ -47,7 +47,7 @@ describe("Feedback", () => {
       $(FeedbackPage.submit()).click();
       $(FeedbackSentPage.doneButton()).click();
       expect(browser.getUrl()).to.contain("thank-you");
-      expect($(CensusThankYouPage.title()).getText()).to.contain("Thank you for completing the survey");
+      expect($(CensusThankYouPage.title()).getText()).to.contain("Thank you for completing the census");
     });
   });
 });

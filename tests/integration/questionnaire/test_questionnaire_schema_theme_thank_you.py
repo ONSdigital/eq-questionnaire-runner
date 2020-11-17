@@ -42,7 +42,7 @@ class TestSchemaThemeThankYou(IntegrationTestCase):
         )
 
     def test_census_theme_schema_name_not_mapped_to_census_type(self):
-        self.launchSurvey("test_feedback")
+        self.launchSurvey("test_feedback_email_confirmation")
         self.post({"schema-confirmation-answer": "Yes"})
         self.post()
         self.assertInBody("Thank you for completing the survey")

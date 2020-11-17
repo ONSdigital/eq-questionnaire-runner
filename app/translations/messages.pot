@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2020-11-10 11:27+0000\n"
+"POT-Creation-Date: 2020-11-17 08:36+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -52,7 +52,7 @@ msgid "Select an answer <span class=\"u-vh\">to ‘%(question_title)s’</span>"
 msgstr ""
 
 #: app/forms/error_messages.py:18
-#: app/forms/field_handlers/dropdown_handler.py:12
+#: app/forms/field_handlers/dropdown_handler.py:11
 msgid "Select an answer"
 msgstr ""
 
@@ -203,16 +203,16 @@ msgstr[1] ""
 msgid "Not a valid choice"
 msgstr ""
 
-#: app/helpers/template_helpers.py:20
+#: app/helpers/template_helpers.py:21
 msgid "Office for National Statistics logo"
 msgstr ""
 
-#: app/helpers/template_helpers.py:29 app/helpers/template_helpers.py:38
-#: app/helpers/template_helpers.py:141 templates/signed-out.html:3
+#: app/helpers/template_helpers.py:30 app/helpers/template_helpers.py:39
+#: app/helpers/template_helpers.py:149 templates/signed-out.html:3
 msgid "Census 2021"
 msgstr ""
 
-#: app/helpers/template_helpers.py:34
+#: app/helpers/template_helpers.py:35
 msgid "Northern Ireland Statistics and Research Agency logo"
 msgstr ""
 
@@ -240,23 +240,23 @@ msgstr ""
 msgid "Contact us"
 msgstr ""
 
-#: app/helpers/template_helpers.py:78
+#: app/helpers/template_helpers.py:80
 msgid "Cookies"
 msgstr ""
 
-#: app/helpers/template_helpers.py:83
+#: app/helpers/template_helpers.py:85
 msgid "Accessibility statement"
 msgstr ""
 
-#: app/helpers/template_helpers.py:88
+#: app/helpers/template_helpers.py:90
 msgid "Privacy and data protection"
 msgstr ""
 
-#: app/helpers/template_helpers.py:93
+#: app/helpers/template_helpers.py:95
 msgid "Terms and conditions"
 msgstr ""
 
-#: app/helpers/template_helpers.py:104
+#: app/helpers/template_helpers.py:105
 msgid ""
 "Make sure you <a href='{sign_out_url}'>leave this page</a> or close your "
 "browser if using a shared device"
@@ -416,7 +416,7 @@ msgid "Confirmation email"
 msgstr ""
 
 #: app/views/handlers/confirmation_email.py:62
-#: app/views/handlers/feedback.py:110 app/views/handlers/question.py:149
+#: app/views/handlers/feedback.py:57 app/views/handlers/question.py:149
 msgid "Error: {page_title}"
 msgstr ""
 
@@ -424,35 +424,80 @@ msgstr ""
 msgid "Feedback"
 msgstr ""
 
-#: app/views/handlers/feedback.py:27
+#: app/views/handlers/feedback.py:68 app/views/handlers/feedback.py:74
+#: app/views/handlers/feedback.py:82
+msgid "General"
+msgstr ""
+
+#: app/views/handlers/feedback.py:69
+msgid "This establishment"
+msgstr ""
+
+#: app/views/handlers/feedback.py:70 app/views/handlers/feedback.py:83
+msgid "People who live here"
+msgstr ""
+
+#: app/views/handlers/feedback.py:71 app/views/handlers/feedback.py:84
+msgid "Visitors"
+msgstr ""
+
+#: app/views/handlers/feedback.py:75
+msgid "Accommodation"
+msgstr ""
+
+#: app/views/handlers/feedback.py:76 app/views/handlers/feedback.py:86
+msgid "Personal details"
+msgstr ""
+
+#: app/views/handlers/feedback.py:77 app/views/handlers/feedback.py:87
+msgid "Health"
+msgstr ""
+
+#: app/views/handlers/feedback.py:78 app/views/handlers/feedback.py:88
+msgid "Qualifications"
+msgstr ""
+
+#: app/views/handlers/feedback.py:79 app/views/handlers/feedback.py:89
+msgid "Employment"
+msgstr ""
+
+#: app/views/handlers/feedback.py:85
+msgid "Household and accommodation"
+msgstr ""
+
+#: app/views/handlers/feedback.py:101
 msgid "Give feedback about this service"
 msgstr ""
 
-#: app/views/handlers/feedback.py:28 app/views/handlers/feedback.py:53
+#: app/views/handlers/feedback.py:102 app/views/handlers/feedback.py:145
 msgid "Select what your feedback is about"
 msgstr ""
 
-#: app/views/handlers/feedback.py:36 app/views/handlers/feedback.py:37
+#: app/views/handlers/feedback.py:110 app/views/handlers/feedback.py:111
 msgid "The census questions"
 msgstr ""
 
-#: app/views/handlers/feedback.py:38
+#: app/views/handlers/feedback.py:116
 msgid "For example, question not clear, answer option not relevant"
 msgstr ""
 
-#: app/views/handlers/feedback.py:43 app/views/handlers/feedback.py:44
+#: app/views/handlers/feedback.py:119 app/views/handlers/feedback.py:122
+msgid "Select an option"
+msgstr ""
+
+#: app/views/handlers/feedback.py:131 app/views/handlers/feedback.py:132
 msgid "Page design and structure"
 msgstr ""
 
-#: app/views/handlers/feedback.py:47 app/views/handlers/feedback.py:48
+#: app/views/handlers/feedback.py:135 app/views/handlers/feedback.py:138
 msgid "General feedback about this service"
 msgstr ""
 
-#: app/views/handlers/feedback.py:61 app/views/handlers/feedback.py:71
+#: app/views/handlers/feedback.py:153 app/views/handlers/feedback.py:163
 msgid "Enter your feedback"
 msgstr ""
 
-#: app/views/handlers/feedback.py:62
+#: app/views/handlers/feedback.py:154
 msgid "Do not include confidential information, such as your contact details."
 msgstr ""
 
@@ -720,7 +765,7 @@ msgstr[1] ""
 msgid "Send feedback"
 msgstr ""
 
-#: templates/hub.html:39
+#: templates/hub.html:40
 msgid "If you can’t answer someone else’s questions"
 msgstr ""
 
@@ -1276,30 +1321,30 @@ msgid "Start survey"
 msgstr ""
 
 #: templates/partials/summary/collapsible-summary.html:35
-#: templates/partials/summary/summary.html:17
+#: templates/partials/summary/summary.html:18
 msgid "No answer provided"
 msgstr ""
 
 #: templates/partials/summary/collapsible-summary.html:36
-#: templates/partials/summary/list-summary.html:13
-#: templates/partials/summary/summary.html:18
+#: templates/partials/summary/list-summary.html:14
+#: templates/partials/summary/summary.html:19
 msgid "Change"
 msgstr ""
 
 #: templates/partials/summary/collapsible-summary.html:37
-#: templates/partials/summary/summary.html:19
+#: templates/partials/summary/summary.html:20
 msgid "Change your answer for:"
 msgstr ""
 
-#: templates/partials/summary/list-summary.html:14
+#: templates/partials/summary/list-summary.html:15
 msgid "Change details for {item_name}"
 msgstr ""
 
-#: templates/partials/summary/list-summary.html:15
+#: templates/partials/summary/list-summary.html:16
 msgid "Remove"
 msgstr ""
 
-#: templates/partials/summary/list-summary.html:16
+#: templates/partials/summary/list-summary.html:17
 msgid "Remove {item_name}"
 msgstr ""
 
