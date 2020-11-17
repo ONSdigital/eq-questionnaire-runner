@@ -29,26 +29,15 @@ LANGUAGES_MAP = {
 }
 
 
-def get_schema_path_map_for_language(
-    language_code: str, dirs: Optional[Tuple[str, ...]] = None
-) -> Mapping:
-
-    return {
-        Path(schema_file).with_suffix("").name: schema_file
-        for schema_dir in dirs or DEFAULT_SCHEMA_DIRS
-        for schema_file in glob(f"{schema_dir}/{language_code}/*.json")
-    }
-
-
 @lru_cache(maxsize=None)
 def get_schema_path_map(dirs: Optional[Tuple[str, ...]] = None) -> Mapping:
-    language_map_codes = {"en", "cy", "ga", "eo"}
-
     return {
-        language_code: get_schema_path_map_for_language(
-            language_code, dirs or DEFAULT_SCHEMA_DIRS
-        )
-        for language_code in language_map_codes
+        language_code: {
+            Path(schema_file).with_suffix("").name: schema_file
+            for schema_dir in dirs or DEFAULT_SCHEMA_DIRS
+            for schema_file in glob(f"{schema_dir}/{language_code}/*.json")
+        }
+        for language_code in {"en", "cy", "ga", "eo"}
     }
 
 
