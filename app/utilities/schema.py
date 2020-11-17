@@ -42,7 +42,6 @@ def get_schema_path_map(include_test_schemas: Optional[bool] = False) -> Mapping
     }
 
 
-@lru_cache(maxsize=None)
 def _schema_exists(language_code, schema_name):
     schema_path_map = get_schema_path_map(include_test_schemas=True)
     return (
