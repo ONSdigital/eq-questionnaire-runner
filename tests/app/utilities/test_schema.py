@@ -1,5 +1,5 @@
 import os
-from unittest.mock import patch
+from unittest.mock import Mock, patch
 
 import pytest
 import responses
@@ -105,9 +105,13 @@ def test_schema_cache_on_function_call():
     assert cache_info.hits == 2
 
 
-@patch("app.utilities.schema.SCHEMA_DIR", "test_schemas")
+@patch(
+    "app.utilities.schema.get_schema_path_map",
+    Mock(return_value=get_schema_path_map(include_test_schemas=True)),
+)
 def test_schema_cache_on_app_start_up():
     _load_schema_from_name.cache_clear()
+    get_schema_path_map.cache_clear()
     cache_info = _load_schema_from_name.cache_info()
     assert cache_info.currsize == 0
     assert cache_info.hits == 0
@@ -116,10 +120,11 @@ def test_schema_cache_on_app_start_up():
     create_app()
 
     total_schemas = sum(
-        len(schemas) for schemas in get_schema_path_map(dirs=("test_schemas",)).values()
+        len(schemas)
+        for schemas in get_schema_path_map(include_test_schemas=True).values()
     )
     cache_info = _load_schema_from_name.cache_info()
-    assert cache_info.currsize == total_schemas
+    assert cache_info.currsize > 0 and cache_info.currsize == total_schemas
     assert cache_info.hits == 0
 
     # loads schema again to fetch from cache

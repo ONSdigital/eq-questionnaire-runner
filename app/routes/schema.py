@@ -20,6 +20,8 @@ def get_schema_json_from_name(schema_name):
 
 @schema_blueprint.route("/schemas", methods=["GET"])
 def list_schemas():
-    default_schema_map = get_schema_path_map().get(DEFAULT_LANGUAGE_CODE)
+    default_schema_map = get_schema_path_map(include_test_schemas=True).get(
+        DEFAULT_LANGUAGE_CODE
+    )
 
     return jsonify(list(default_schema_map.keys()))
