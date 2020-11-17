@@ -64,12 +64,8 @@ class Feedback:
 
     def handle_post(self):
         session_data = self._session_store.session_data
-        self._session_store.session_data.feedback_count += 1
+        session_data.feedback_count += 1
 
-        data = {
-            "feedback_text": self.form.data["feedback-type"],
-            "feedback_topic": self.form.data["feedback-text"],
-        }
         metadata = {
             "feedback_count": session_data.feedback_count,
             "form_type": self._schema.form_type,
@@ -77,6 +73,11 @@ class Feedback:
             "object_key": str(uuid4()),
             "region_code": self._schema.region_code,
             "tx_id": session_data.tx_id,
+        }
+        data = {
+            "feedback_text": self.form.data["feedback-type"],
+            "feedback_topic": self.form.data["feedback-text"],
+            **metadata,
         }
 
         feedback_upload = current_app.eq["feedback"].upload(data, metadata)

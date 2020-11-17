@@ -277,7 +277,7 @@ class TestGCSFeedback(TestCase):
             "feedback-text": "Feedback text",
         }
 
-        metadata_data = {
+        metadata = {
             "feedback_count": 1,
             "form_type": "H",
             "language_code": "cy",
@@ -289,7 +289,7 @@ class TestGCSFeedback(TestCase):
         # When
         feedback_upload = feedback.upload(
             data=data,
-            meta_data=metadata_data,
+            metadata=metadata,
         )
         # Then
         bucket = client.return_value.get_bucket.return_value

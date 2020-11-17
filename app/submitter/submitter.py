@@ -148,15 +148,9 @@ class GCSFeedback:
         client = storage.Client()
         self.bucket = client.get_bucket(bucket_name)
 
-    def upload(self, data, meta_data):
-        blob = self.bucket.blob(meta_data["object_key"])
-        blob.metadata = {
-            "feedback_count": meta_data["feedback_count"],
-            "form_type": meta_data["form_type"],
-            "language_code": meta_data["language_code"],
-            "region_code": meta_data["region_code"],
-            "tx_id": meta_data["tx_id"],
-        }
+    def upload(self, data, metadata):
+        blob = self.bucket.blob(metadata["object_key"])
+        blob.metadata = metadata
         blob.upload_from_string(
             str(data).encode("utf8"), content_type="application/json"
         )
