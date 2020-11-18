@@ -11,6 +11,7 @@ from app.utilities.schema import (
     _load_schema_from_name,
     cache_questionnaire_schemas,
     get_allowed_languages,
+    get_schema_list,
     get_schema_name_from_census_params,
     get_schema_path_map,
     load_schema_from_metadata,
@@ -68,6 +69,12 @@ def test_get_schema_path_map():
     assert all(
         os.path.basename(path).replace(".json", "") == schema_name
         for schema_name, path in schema_path_map["en"].items()
+    )
+
+
+def test_get_schema_list():
+    assert get_schema_list() == list(
+        get_schema_path_map(include_test_schemas=True)["en"].keys()
     )
 
 

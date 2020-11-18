@@ -1,7 +1,7 @@
 from functools import lru_cache
 from glob import glob
 from pathlib import Path
-from typing import Mapping, Optional
+from typing import List, Mapping, Optional
 
 import requests
 import simplejson as json
@@ -27,6 +27,10 @@ LANGUAGES_MAP = {
     "census_individual_gb_nir": [["en"], ["en", "ga"], ["en", "eo"]],
     "census_communal_establishment_gb_wls": [["en", "cy"]],
 }
+
+
+def get_schema_list(language_code: str = DEFAULT_LANGUAGE_CODE) -> List:
+    return list(get_schema_path_map(include_test_schemas=True)[language_code].keys())
 
 
 @lru_cache(maxsize=None)
