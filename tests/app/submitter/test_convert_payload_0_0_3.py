@@ -6,7 +6,8 @@ from app.data_models.list_store import ListStore
 from app.questionnaire.questionnaire_schema import QuestionnaireSchema
 from app.questionnaire.routing_path import RoutingPath
 from app.submitter.converter import convert_answers
-from tests.app.submitter.schema import load_schema, make_schema
+from app.utilities.schema import load_schema_from_name
+from tests.app.submitter.schema import make_schema
 
 
 def test_convert_answers_to_payload_0_0_3(fake_questionnaire_store):
@@ -385,7 +386,7 @@ def test_primary_person_list_item_conversion(fake_questionnaire_store):
     fake_questionnaire_store.answer_store = answers
     fake_questionnaire_store.list_store = list_store
 
-    schema = load_schema("test_list_collector_primary_person")
+    schema = load_schema_from_name("test_list_collector_primary_person")
 
     output = convert_answers(schema, fake_questionnaire_store, routing_path)
 
@@ -423,7 +424,7 @@ def test_list_item_conversion(fake_questionnaire_store):
     fake_questionnaire_store.answer_store = answers
     fake_questionnaire_store.list_store = list_store
 
-    schema = load_schema("test_list_collector")
+    schema = load_schema_from_name("test_list_collector")
 
     output = convert_answers(schema, fake_questionnaire_store, routing_path)
 
@@ -456,7 +457,7 @@ def test_list_item_conversion_empty_list(fake_questionnaire_store):
     fake_questionnaire_store.answer_store = AnswerStore(answer_objects)
     fake_questionnaire_store.list_store = ListStore()
 
-    schema = load_schema("test_list_collector")
+    schema = load_schema_from_name("test_list_collector")
 
     output = convert_answers(schema, fake_questionnaire_store, routing_path)
 
@@ -474,7 +475,7 @@ def test_list_item_conversion_empty_list(fake_questionnaire_store):
 def test_default_answers_not_present_when_not_answered(fake_questionnaire_store):
     """Test that default values aren't submitted downstream when an answer with
     a default value is not present in the answer store."""
-    schema = load_schema("test_default")
+    schema = load_schema_from_name("test_default")
 
     answer_objects = [{"answer_id": "number-question-two", "value": "12"}]
 
@@ -525,7 +526,7 @@ def test_list_structure_in_payload_is_as_expected(fake_questionnaire_store):
     fake_questionnaire_store.answer_store = answers
     fake_questionnaire_store.list_store = list_store
 
-    schema = load_schema("test_list_collector_primary_person")
+    schema = load_schema_from_name("test_list_collector_primary_person")
 
     output = convert_answers(schema, fake_questionnaire_store, routing_path)
 
@@ -563,7 +564,7 @@ def test_primary_person_not_in_payload_when_not_answered(fake_questionnaire_stor
     fake_questionnaire_store.answer_store = answers
     fake_questionnaire_store.list_store = list_store
 
-    schema = load_schema("test_list_collector")
+    schema = load_schema_from_name("test_list_collector")
 
     output = convert_answers(schema, fake_questionnaire_store, routing_path)
 
@@ -623,7 +624,7 @@ def test_relationships_in_payload(fake_questionnaire_store):
     fake_questionnaire_store.answer_store = answers
     fake_questionnaire_store.list_store = list_store
 
-    schema = load_schema("test_relationships")
+    schema = load_schema_from_name("test_relationships")
 
     output = convert_answers(schema, fake_questionnaire_store, routing_path)
     data = json.loads(json.dumps(output["data"]["answers"], for_json=True))
@@ -682,7 +683,7 @@ def test_no_relationships_in_payload(fake_questionnaire_store):
     fake_questionnaire_store.answer_store = answers
     fake_questionnaire_store.list_store = list_store
 
-    schema = load_schema("test_relationships_unrelated")
+    schema = load_schema_from_name("test_relationships_unrelated")
 
     output = convert_answers(schema, fake_questionnaire_store, routing_path)
     data = json.loads(json.dumps(output["data"]["answers"], for_json=True))
@@ -758,7 +759,7 @@ def test_unrelated_block_answers_in_payload(fake_questionnaire_store):
     fake_questionnaire_store.answer_store = answers
     fake_questionnaire_store.list_store = list_store
 
-    schema = load_schema("test_relationships_unrelated")
+    schema = load_schema_from_name("test_relationships_unrelated")
 
     output = convert_answers(schema, fake_questionnaire_store, routing_path)
     data = json.loads(json.dumps(output["data"]["answers"], for_json=True))
@@ -851,7 +852,7 @@ def test_unrelated_block_answers_not_on_path_not_in_payload(fake_questionnaire_s
     fake_questionnaire_store.answer_store = answers
     fake_questionnaire_store.list_store = list_store
 
-    schema = load_schema("test_relationships_unrelated")
+    schema = load_schema_from_name("test_relationships_unrelated")
 
     output = convert_answers(schema, fake_questionnaire_store, routing_path)
     data = json.loads(json.dumps(output["data"]["answers"], for_json=True))
@@ -934,7 +935,7 @@ def test_relationship_answers_not_on_path_in_payload(fake_questionnaire_store):
     fake_questionnaire_store.answer_store = answers
     fake_questionnaire_store.list_store = list_store
 
-    schema = load_schema("test_relationships_unrelated")
+    schema = load_schema_from_name("test_relationships_unrelated")
 
     output = convert_answers(schema, fake_questionnaire_store, routing_path)
     data = json.loads(json.dumps(output["data"]["answers"], for_json=True))
