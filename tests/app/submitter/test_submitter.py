@@ -272,25 +272,24 @@ class TestGCSFeedback(TestCase):
     def test_upload_feedback(client):
         # Given
         feedback = GCSFeedback(bucket_name="feedback")
-        data = {
-            "feedback-type": "Feedback type",
-            "feedback-text": "Feedback text",
-        }
 
-        metadata = {
-            "feedback_count": 1,
-            "form_type": "H",
-            "language_code": "cy",
-            "object_key": "aafdefd3-7b9c-4c6c-a931-43f118d21493",
-            "region_code": "GB-ENG",
-            "tx_id": "12345",
+        message = {
+            "metadata": {
+                "feedback_count": 1,
+                "form_type": "H",
+                "language_code": "cy",
+                "region_code": "GB-ENG",
+                "tx_id": "12345",
+            },
+            "payload": {
+                "feedback-type": "Feedback type",
+                "feedback-text": "Feedback text",
+            },
         }
 
         # When
-        feedback_upload = feedback.upload(
-            data=data,
-            metadata=metadata,
-        )
+        feedback_upload = feedback.upload(message)
+
         # Then
         bucket = client.return_value.get_bucket.return_value
         blob = bucket.blob.return_value

@@ -1,6 +1,5 @@
 from functools import cached_property
 from typing import Mapping
-from uuid import uuid4
 
 from flask import current_app
 from flask_babel import gettext, lazy_gettext
@@ -65,22 +64,15 @@ class Feedback:
     def handle_post(self):
         session_data = self._session_store.session_data
         session_data.feedback_count += 1
-
-        metadata = {
-            "feedback_count": session_data.feedback_count,
-            "form_type": self._schema.form_type,
-            "language_code": session_data.language_code,
-            "object_key": str(uuid4()),
-            "region_code": self._schema.region_code,
-            "tx_id": session_data.tx_id,
-        }
-        data = {
-            "feedback_text": self.form.data["feedback-type"],
-            "feedback_topic": self.form.data["feedback-text"],
-            **metadata,
-        }
-
-        feedback_upload = current_app.eq["feedback"].upload(data, metadata)
+        feedback_upload = FeedbackUpload(
+            session_data.feedback_count,
+            self._schema.form_type,
+            session_data.language_code,
+            self._schema.region_code,
+            session_data.tx_id,
+            self.form.data,
+        )
+        feedback_upload = current_app.eq["feedback"].upload(feedback_upload.message)
 
         if not feedback_upload:
             raise FeedbackUploadFailed()
@@ -200,3 +192,40 @@ class Feedback:
     @staticmethod
     def is_enabled(schema: QuestionnaireSchema) -> bool:
         return schema.get_submission().get("feedback")
+
+
+class FeedbackUpload:
+    def __init__(
+        self, feedback_count, form_type, language_code, region_code, tx_id, form_data
+    ):
+        self.feedback_count = feedback_count
+        self.form_type = form_type
+        self.language_code = language_code
+        self.region_code = region_code
+        self.tx_id = tx_id
+        self.form_data = form_data
+
+    @property
+    def message(self) -> Mapping:
+        return {
+            "metadata": {
+                "feedback_count": self.feedback_count,
+                "form_type": self.form_type,
+                "language_code": self.language_code,
+                "region_code": self.region_code,
+                "tx_id": self.tx_id,
+            },
+            "payload": self._payload(),
+        }
+
+    def _payload(self) -> Mapping:
+        payload = {
+            "feedback_text": self.form_data["feedback-text"],
+            "feedback_type": self.form_data["feedback-type"],
+        }
+        if "feedback-type-question-category" in self.form_data:
+            payload["feedback_type_question_category"] = self.form_data[
+                "feedback-type-question-category"
+            ]
+
+        return payload

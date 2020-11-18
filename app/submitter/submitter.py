@@ -1,3 +1,5 @@
+from uuid import uuid4
+
 from google.cloud import storage
 from pika import BasicProperties, BlockingConnection, URLParameters
 from pika.exceptions import AMQPError
@@ -148,11 +150,11 @@ class GCSFeedback:
         client = storage.Client()
         self.bucket = client.get_bucket(bucket_name)
 
-    def upload(self, data, metadata):
-        blob = self.bucket.blob(metadata["object_key"])
-        blob.metadata = metadata
+    def upload(self, message):
+        blob = self.bucket.blob(str(uuid4()))
+        blob.metadata = message["metadata"]
         blob.upload_from_string(
-            str(data).encode("utf8"), content_type="application/json"
+            str(message["payload"]).encode("utf8"), content_type="application/json"
         )
 
         return True
@@ -160,17 +162,17 @@ class GCSFeedback:
 
 class LogFeedback:
     @staticmethod
-    def upload(data, meta_data):
+    def upload(message):
+        metadata = message["metadata"]
         logger.info("uploading feedback")
         logger.info(
             "feedback payload",
-            data=data,
-            feedback_count=meta_data["feedback_count"],
-            form_type=meta_data["form_type"],
-            language_code=meta_data["language_code"],
-            object_key=meta_data["object_key"],
-            region_code=meta_data["region_code"],
-            tx_id=meta_data["tx_id"],
+            feedback_count=metadata["feedback_count"],
+            form_type=metadata["form_type"],
+            language_code=metadata["language_code"],
+            region_code=metadata["region_code"],
+            tx_id=metadata["tx_id"],
+            payload=message["payload"],
         )
 
         return True
