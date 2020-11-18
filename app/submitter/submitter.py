@@ -145,14 +145,14 @@ class RabbitMQSubmitter:
                 self._disconnect(connection)
 
 
-class GCSFeedback:
+class GCSFeedbackSubmitter:
     def __init__(self, bucket_name):
         client = storage.Client()
         self.bucket = client.get_bucket(bucket_name)
 
     def upload(self, message):
         blob = self.bucket.blob(str(uuid4()))
-        blob.metadata = message["metadata"]
+        blob.metadata = message["meta_data"]
         blob.upload_from_string(
             str(message["payload"]).encode("utf8"), content_type="application/json"
         )
@@ -160,18 +160,13 @@ class GCSFeedback:
         return True
 
 
-class LogFeedback:
+class LogFeedbackSubmitter:
     @staticmethod
     def upload(message):
-        metadata = message["metadata"]
         logger.info("uploading feedback")
         logger.info(
             "feedback payload",
-            feedback_count=metadata["feedback_count"],
-            form_type=metadata["form_type"],
-            language_code=metadata["language_code"],
-            region_code=metadata["region_code"],
-            tx_id=metadata["tx_id"],
+            meta_data=message["meta_data"],
             payload=message["payload"],
         )
 

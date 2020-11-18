@@ -1,7 +1,7 @@
 from .submitter import (
-    GCSFeedback,
+    GCSFeedbackSubmitter,
     GCSSubmitter,
-    LogFeedback,
+    LogFeedbackSubmitter,
     LogSubmitter,
     RabbitMQSubmitter,
 )
@@ -10,6 +10,6 @@ __all__ = [
     "GCSSubmitter",
     "LogSubmitter",
     "RabbitMQSubmitter",
-    "GCSFeedback",
-    "LogFeedback",
+    "GCSFeedbackSubmitter",
+    "LogFeedbackSubmitter",
 ]

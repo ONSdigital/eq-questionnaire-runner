@@ -6,7 +6,11 @@ from pika.exceptions import AMQPError
 
 from app.data_models.session_data import SessionData
 from app.questionnaire.questionnaire_schema import QuestionnaireSchema
-from app.submitter.submitter import GCSFeedback, GCSSubmitter, RabbitMQSubmitter
+from app.submitter.submitter import (
+    GCSFeedbackSubmitter,
+    GCSSubmitter,
+    RabbitMQSubmitter,
+)
 
 
 class TestRabbitMQSubmitter(TestCase):
@@ -266,15 +270,15 @@ class TestGCSSubmitter(TestCase):
             }
 
 
-class TestGCSFeedback(TestCase):
+class TestGCSFeedbackSubmitter(TestCase):
     @staticmethod
     @patch("app.submitter.submitter.storage.Client")
     def test_upload_feedback(client):
         # Given
-        feedback = GCSFeedback(bucket_name="feedback")
+        feedback = GCSFeedbackSubmitter(bucket_name="feedback")
 
         message = {
-            "metadata": {
+            "meta_data": {
                 "feedback_count": 1,
                 "form_type": "H",
                 "language_code": "cy",

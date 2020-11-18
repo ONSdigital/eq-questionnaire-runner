@@ -345,7 +345,7 @@ class TestFeedback(IntegrationTestCase):
 
     def test_feedback_upload_failed(self):
         # Given I launch and complete the test_feedback question, mocking the upload to return false
-        feedback = self._application.eq["feedback"]
+        feedback = self._application.eq["feedback_submitter"]
         feedback.upload = Mock(return_value=False)
         self._launch_and_complete_questionnaire()
         self.get("/submitted/feedback/send")

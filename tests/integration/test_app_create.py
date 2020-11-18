@@ -12,7 +12,7 @@ from app.setup import create_app
 from app.storage.datastore import Datastore
 from app.storage.dynamodb import Dynamodb
 from app.submitter.submitter import (
-    GCSFeedback,
+    GCSFeedbackSubmitter,
     GCSSubmitter,
     LogSubmitter,
     RabbitMQSubmitter,
@@ -317,7 +317,7 @@ class TestCreateApp(unittest.TestCase):  # pylint: disable=too-many-public-metho
             application = create_app(self._setting_overrides)
 
         # Then
-        assert isinstance(application.eq["feedback"], GCSFeedback)
+        assert isinstance(application.eq["feedback_submitter"], GCSFeedbackSubmitter)
 
     def test_gcs_feedback_bucket_id_not_set_raises_exception(self):
         # Given

@@ -72,7 +72,9 @@ class Feedback:
             session_data.tx_id,
             self.form.data,
         )
-        feedback_upload = current_app.eq["feedback"].upload(feedback_upload.message)
+        feedback_upload = current_app.eq["feedback_submitter"].upload(
+            feedback_upload.message
+        )
 
         if not feedback_upload:
             raise FeedbackUploadFailed()
@@ -208,7 +210,7 @@ class FeedbackUpload:
     @property
     def message(self) -> Mapping:
         return {
-            "metadata": {
+            "meta_data": {
                 "feedback_count": self.feedback_count,
                 "form_type": self.form_type,
                 "language_code": self.language_code,

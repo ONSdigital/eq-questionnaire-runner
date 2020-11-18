@@ -30,9 +30,9 @@ from app.publisher import LogPublisher, PubSubPublisher
 from app.secrets import SecretStore, validate_required_secrets
 from app.storage import Datastore, Dynamodb, Redis
 from app.submitter import (
-    GCSFeedback,
+    GCSFeedbackSubmitter,
     GCSSubmitter,
-    LogFeedback,
+    LogFeedbackSubmitter,
     LogSubmitter,
     RabbitMQSubmitter,
 )
@@ -356,10 +356,12 @@ def setup_feedback(application):
         if not bucket_id:
             raise Exception("Setting EQ_GCS_FEEDBACK_BUCKET_ID Missing")
 
-        application.eq["feedback"] = GCSFeedback(bucket_name=bucket_id)
+        application.eq["feedback_submitter"] = GCSFeedbackSubmitter(
+            bucket_name=bucket_id
+        )
 
     elif application.config["EQ_FEEDBACK_BACKEND"] == "log":
-        application.eq["feedback"] = LogFeedback()
+        application.eq["feedback_submitter"] = LogFeedbackSubmitter()
     else:
         raise Exception("Unknown EQ_FEEDBACK_BACKEND")
 
