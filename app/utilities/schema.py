@@ -29,6 +29,7 @@ LANGUAGES_MAP = {
 }
 
 
+@lru_cache(maxsize=None)
 def get_schema_list(language_code: str = DEFAULT_LANGUAGE_CODE) -> List:
     return list(get_schema_path_map(include_test_schemas=True)[language_code].keys())
 
