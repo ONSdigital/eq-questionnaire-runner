@@ -76,7 +76,7 @@ class Feedback:
         feedback_message = FeedbackPayload(
             self.form.data.get("feedback_text"),
             self.form.data.get("feedback_type"),
-            self.form.data.get("feedback_type_question_category")
+            self.form.data.get("feedback_type_question_category"),
         )
 
         feedback_upload = current_app.eq["feedback_submitter"].upload(
@@ -204,14 +204,7 @@ class Feedback:
 
 
 class FeedbackMetadata:
-    def __init__(
-        self,
-        feedback_count,
-        form_type,
-        language_code,
-        region_code,
-        tx_id
-    ):
+    def __init__(self, feedback_count, form_type, language_code, region_code, tx_id):
         self.feedback_count = feedback_count
         self.form_type = form_type
         self.language_code = language_code
