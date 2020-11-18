@@ -16,7 +16,7 @@ from app.questionnaire.questionnaire_schema import (
 logger = get_logger()
 
 SCHEMA_DIR = "schemas"
-DEFAULT_SCHEMA_DIRS = (SCHEMA_DIR, "test_schemas")
+TEST_SCHEMA_DIR = "test_schemas"
 
 LANGUAGES_MAP = {
     "test_language": [["en", "cy"], ["en", "ga"]],
@@ -31,7 +31,10 @@ LANGUAGES_MAP = {
 
 @lru_cache(maxsize=None)
 def get_schema_path_map(include_test_schemas: Optional[bool] = False) -> Mapping:
-    dirs = DEFAULT_SCHEMA_DIRS if include_test_schemas else SCHEMA_DIR
+    dirs = [SCHEMA_DIR]
+    if include_test_schemas:
+        dirs.append(TEST_SCHEMA_DIR)
+
     return {
         language_code: {
             Path(schema_file).with_suffix("").name: schema_file
