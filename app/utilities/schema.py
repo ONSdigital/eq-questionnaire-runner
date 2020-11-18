@@ -17,6 +17,7 @@ logger = get_logger()
 
 SCHEMA_DIR = "schemas"
 TEST_SCHEMA_DIR = "test_schemas"
+LANGUAGE_CODES = ("en", "cy", "ga", "eo")
 
 LANGUAGES_MAP = {
     "test_language": [["en", "cy"], ["en", "ga"]],
@@ -46,7 +47,7 @@ def get_schema_path_map(include_test_schemas: Optional[bool] = False) -> Mapping
             for schema_dir in dirs
             for schema_file in glob(f"{schema_dir}/{language_code}/*.json")
         }
-        for language_code in {"en", "cy", "ga", "eo"}
+        for language_code in LANGUAGE_CODES
     }
 
 
