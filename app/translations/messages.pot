@@ -400,7 +400,7 @@ msgstr ""
 #: templates/individual_response/confirmation-post.html:21
 #: templates/individual_response/confirmation-text-message.html:31
 #: templates/individual_response/question.html:5 templates/interstitial.html:8
-#: templates/sectionsummary.html:11 templates/sectionsummary.html:53
+#: templates/sectionsummary.html:11 templates/sectionsummary.html:54
 msgid "Continue"
 msgstr ""
 
@@ -783,6 +783,10 @@ msgstr ""
 msgid "If you can’t answer questions for this person"
 msgstr ""
 
+#: templates/interstitial.html:32 templates/layouts/_questionnaire.html:26
+msgid "Save and continue"
+msgstr ""
+
 #: templates/introduction.html:10
 msgid "Introduction"
 msgstr ""
@@ -1057,10 +1061,6 @@ msgstr ""
 msgid "Hide"
 msgstr ""
 
-#: templates/layouts/_questionnaire.html:26
-msgid "Save and continue"
-msgstr ""
-
 #: templates/layouts/_questionnaire.html:37
 msgid "Choose another section and return to this later"
 msgstr ""
@@ -1330,7 +1330,7 @@ msgid "No answer provided"
 msgstr ""
 
 #: templates/partials/summary/collapsible-summary.html:36
-#: templates/partials/summary/list-summary.html:14
+#: templates/partials/summary/list-summary.html:10
 #: templates/partials/summary/summary.html:19
 msgid "Change"
 msgstr ""
@@ -1340,15 +1340,15 @@ msgstr ""
 msgid "Change your answer for:"
 msgstr ""
 
-#: templates/partials/summary/list-summary.html:15
+#: templates/partials/summary/list-summary.html:11
 msgid "Change details for {item_name}"
 msgstr ""
 
-#: templates/partials/summary/list-summary.html:16
+#: templates/partials/summary/list-summary.html:12
 msgid "Remove"
 msgstr ""
 
-#: templates/partials/summary/list-summary.html:17
+#: templates/partials/summary/list-summary.html:13
 msgid "Remove {item_name}"
 msgstr ""
 

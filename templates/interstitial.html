@@ -23,4 +23,17 @@
     {% set title = _("If you can’t answer questions for this person") %}
     {% include 'partials/individual-response-guidance.html' %}
   {% endif %}
+
 {% endblock form_content %}
+
+{% block submit_button %}
+    {{
+        onsButton({
+            "text": continue_button_text | default(_("Save and continue")),
+            "classes": "u-mt-l",
+            "attributes": {
+                "data-qa": "btn-submit"
+            }
+        })
+    }}
+{% endblock %}
