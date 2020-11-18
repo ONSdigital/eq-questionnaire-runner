@@ -36,6 +36,8 @@ from app.submitter import (
     LogSubmitter,
     RabbitMQSubmitter,
 )
+from app.utilities.schema import cache_questionnaire_schemas
+
 
 CACHE_HEADERS = {
     "Cache-Control": "no-cache, no-store, must-revalidate",
@@ -149,6 +151,8 @@ def create_app(  # noqa: C901  pylint: disable=too-complex, too-many-statements
             "EQ_SERVER_SIDE_STORAGE_USER_IK_SALT"
         ),
     )
+
+    cache_questionnaire_schemas()
 
     setup_secure_cookies(application)
 

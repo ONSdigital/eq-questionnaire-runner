@@ -23,10 +23,3 @@ def make_schema(data_version, section, group, block, question):
             }
         ],
     }
-
-
-def load_schema(schema_name, language_code=None):
-    language_code = language_code or DEFAULT_LANGUAGE_CODE
-    schema_json = _load_schema_file(schema_name, language_code)
-
-    return QuestionnaireSchema(schema_json, language_code)
