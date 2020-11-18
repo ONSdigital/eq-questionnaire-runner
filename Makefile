@@ -15,9 +15,11 @@ load-design-system-templates:
 build: load-design-system-templates
 	make translate
 
-lint:
-	pipenv run ./scripts/run_lint_python.sh
+lint: lint-python
 	yarn lint
+
+lint-python:
+	pipenv run ./scripts/run_lint_python.sh
 
 format: format-python
 	yarn format
