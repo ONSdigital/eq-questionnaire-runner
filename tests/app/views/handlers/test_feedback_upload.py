@@ -1,46 +1,38 @@
-from app.views.handlers.feedback import FeedbackUpload
+from app.views.handlers.feedback import FeedbackMetadata
+from app.views.handlers.feedback import FeedbackPayload
 
 
-def test_feedback_upload_with_feedback_type_question_category():
-    form_data = {
-        "feedback-type": "Feedback type",
-        "feedback-text": "Feedback text",
-        "feedback-type-question-category": "Feedback type question category",
+def test_feedback_payload_with_feedback_type_question_category():
+
+    feedback_payload = FeedbackPayload("Feedback text", "Feedback type", "Feedback type question category")
+    expected_payload = {
+        "feedback_text": "Feedback text",
+        "feedback_type": "Feedback type",
+        "feedback_type_question_category": "Feedback type question category",
     }
 
-    feedback_upload = FeedbackUpload(1, "H", "cy", "GB-ENG", "123", form_data)
-    expected_message = {
-        "meta_data": {
-            "feedback_count": 1,
-            "form_type": "H",
-            "language_code": "cy",
-            "region_code": "GB-ENG",
-            "tx_id": "123",
-        },
-        "payload": {
-            "feedback_text": "Feedback text",
-            "feedback_type": "Feedback type",
-            "feedback_type_question_category": "Feedback type question category",
-        },
+    assert feedback_payload.payload == expected_payload
+
+
+def test_feedback_payload_without_feedback_type_question_category():
+    feedback_payload = FeedbackPayload("Feedback text", "Feedback type")
+    expected_payload = {
+        "feedback_text": "Feedback text",
+        "feedback_type": "Feedback type"
     }
 
-    assert feedback_upload.message == expected_message
+    assert feedback_payload.payload == expected_payload
 
 
-def test_feedback_upload_without_feedback_type_question_category():
-    form_data = {"feedback-type": "Feedback type", "feedback-text": "Feedback text"}
+def test_feedback_metadata():
+    feedback_metadata = FeedbackMetadata(1, "H", "cy", "GB-ENG", "123")
 
-    feedback_upload = FeedbackUpload(1, "H", "cy", "GB-ENG", "123", form_data)
-
-    expected_message = {
-        "meta_data": {
-            "feedback_count": 1,
-            "form_type": "H",
-            "language_code": "cy",
-            "region_code": "GB-ENG",
-            "tx_id": "123",
-        },
-        "payload": {"feedback_text": "Feedback text", "feedback_type": "Feedback type"},
+    expected_metadata = {
+        "feedback_count": 1,
+        "form_type": "H",
+        "language_code": "cy",
+        "region_code": "GB-ENG",
+        "tx_id": "123"
     }
 
-    assert feedback_upload.message == expected_message
+    assert feedback_metadata.metadata == expected_metadata

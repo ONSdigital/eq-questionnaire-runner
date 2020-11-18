@@ -150,11 +150,11 @@ class GCSFeedbackSubmitter:
         client = storage.Client()
         self.bucket = client.get_bucket(bucket_name)
 
-    def upload(self, message):
+    def upload(self, metadata, payload):
         blob = self.bucket.blob(str(uuid4()))
-        blob.metadata = message["meta_data"]
+        blob.metadata = metadata
         blob.upload_from_string(
-            str(message["payload"]).encode("utf8"), content_type="application/json"
+            str(payload).encode("utf8"), content_type="application/json"
         )
 
         return True
@@ -162,12 +162,12 @@ class GCSFeedbackSubmitter:
 
 class LogFeedbackSubmitter:
     @staticmethod
-    def upload(message):
+    def upload(metadata, payload):
         logger.info("uploading feedback")
         logger.info(
-            "feedback payload",
-            meta_data=message["meta_data"],
-            payload=message["payload"],
+            "feedback message",
+            meta_data=metadata,
+            payload=payload,
         )
 
         return True

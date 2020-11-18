@@ -64,16 +64,23 @@ class Feedback:
     def handle_post(self):
         session_data = self._session_store.session_data
         session_data.feedback_count += 1
-        feedback_upload = FeedbackUpload(
+
+        feedback_metadata = FeedbackMetadata(
             session_data.feedback_count,
             self._schema.form_type,
             session_data.language_code,
             self._schema.region_code,
             session_data.tx_id,
-            self.form.data,
         )
+
+        feedback_message = FeedbackPayload(
+            self.form.data.get("feedback_text"),
+            self.form.data.get("feedback_type"),
+            self.form.data.get("feedback_type_question_category")
+        )
+
         feedback_upload = current_app.eq["feedback_submitter"].upload(
-            feedback_upload.message
+            feedback_metadata.metadata, feedback_message.payload
         )
 
         if not feedback_upload:
@@ -196,38 +203,52 @@ class Feedback:
         return schema.get_submission().get("feedback")
 
 
-class FeedbackUpload:
+class FeedbackMetadata:
     def __init__(
-        self, feedback_count, form_type, language_code, region_code, tx_id, form_data
+        self,
+        feedback_count,
+        form_type,
+        language_code,
+        region_code,
+        tx_id
     ):
         self.feedback_count = feedback_count
         self.form_type = form_type
         self.language_code = language_code
         self.region_code = region_code
         self.tx_id = tx_id
-        self.form_data = form_data
 
     @property
-    def message(self) -> Mapping:
+    def metadata(self) -> Mapping:
         return {
-            "meta_data": {
-                "feedback_count": self.feedback_count,
-                "form_type": self.form_type,
-                "language_code": self.language_code,
-                "region_code": self.region_code,
-                "tx_id": self.tx_id,
-            },
-            "payload": self._payload(),
+            "feedback_count": self.feedback_count,
+            "form_type": self.form_type,
+            "language_code": self.language_code,
+            "region_code": self.region_code,
+            "tx_id": self.tx_id,
         }
 
-    def _payload(self) -> Mapping:
+
+class FeedbackPayload:
+    def __init__(
+        self,
+        feedback_text,
+        feedback_type,
+        feedback_type_question_category=None,
+    ):
+        self.feedback_text = feedback_text
+        self.feedback_type = feedback_type
+        self.feedback_type_question_category = feedback_type_question_category
+
+    @property
+    def payload(self) -> Mapping:
         payload = {
-            "feedback_text": self.form_data["feedback-text"],
-            "feedback_type": self.form_data["feedback-type"],
+            "feedback_text": self.feedback_text,
+            "feedback_type": self.feedback_type,
         }
-        if "feedback-type-question-category" in self.form_data:
-            payload["feedback_type_question_category"] = self.form_data[
-                "feedback-type-question-category"
-            ]
+        if self.feedback_type_question_category:
+            payload[
+                "feedback_type_question_category"
+            ] = self.feedback_type_question_category
 
         return payload
