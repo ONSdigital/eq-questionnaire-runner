@@ -142,7 +142,7 @@ def _load_schema_file(schema_name, language_code):
         )
         raise FileNotFoundError
 
-    schema_path = get_schema_path_map(include_test_schemas=True)[language_code][
+    schema_path_map = get_schema_path_map(include_test_schemas=True)[language_code][
         schema_name
     ]
 
@@ -150,10 +150,10 @@ def _load_schema_file(schema_name, language_code):
         "loading schema",
         schema_name=schema_name,
         language_code=language_code,
-        schema_path=schema_path,
+        schema_path=schema_path_map,
     )
 
-    with open(schema_path, encoding="utf8") as json_file:
+    with open(schema_path_map, encoding="utf8") as json_file:
         return json.load(json_file, use_decimal=True)
 
 
