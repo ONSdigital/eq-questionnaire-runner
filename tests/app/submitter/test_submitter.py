@@ -4,8 +4,6 @@ from unittest import TestCase
 from mock import Mock, call, patch
 from pika.exceptions import AMQPError
 
-from app.data_models.session_data import SessionData
-from app.questionnaire.questionnaire_schema import QuestionnaireSchema
 from app.submitter.submitter import (
     GCSFeedbackSubmitter,
     GCSSubmitter,

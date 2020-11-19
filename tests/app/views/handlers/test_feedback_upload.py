@@ -12,7 +12,7 @@ def test_feedback_payload_with_feedback_type_question_category():
         "feedback_type_question_category": "Feedback type question category",
     }
 
-    assert feedback_payload.payload == expected_payload
+    assert feedback_payload() == expected_payload
 
 
 def test_feedback_payload_without_feedback_type_question_category():
@@ -22,7 +22,7 @@ def test_feedback_payload_without_feedback_type_question_category():
         "feedback_type": "Feedback type",
     }
 
-    assert feedback_payload.payload == expected_payload
+    assert feedback_payload() == expected_payload
 
 
 def test_feedback_metadata():
@@ -36,4 +36,4 @@ def test_feedback_metadata():
         "tx_id": "123",
     }
 
-    assert feedback_metadata.metadata == expected_metadata
+    assert feedback_metadata() == expected_metadata

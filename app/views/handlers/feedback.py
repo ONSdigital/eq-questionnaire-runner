@@ -79,11 +79,9 @@ class Feedback:
             self.form.data.get("feedback_type_question_category"),
         )
 
-        feedback_upload = current_app.eq["feedback_submitter"].upload(
-            feedback_metadata.metadata, feedback_message.payload
-        )
-
-        if not feedback_upload:
+        if not current_app.eq["feedback_submitter"].upload(
+            feedback_metadata(), feedback_message()
+        ):
             raise FeedbackUploadFailed()
 
         self._session_store.save()
@@ -211,8 +209,7 @@ class FeedbackMetadata:
         self.region_code = region_code
         self.tx_id = tx_id
 
-    @property
-    def metadata(self) -> Mapping:
+    def __call__(self) -> Mapping:
         return {
             "feedback_count": self.feedback_count,
             "form_type": self.form_type,
@@ -233,8 +230,7 @@ class FeedbackPayload:
         self.feedback_type = feedback_type
         self.feedback_type_question_category = feedback_type_question_category
 
-    @property
-    def payload(self) -> Mapping:
+    def __call__(self) -> Mapping:
         payload = {
             "feedback_text": self.feedback_text,
             "feedback_type": self.feedback_type,

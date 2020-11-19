@@ -166,7 +166,7 @@ class LogFeedbackSubmitter:
         logger.info("uploading feedback")
         logger.info(
             "feedback message",
-            meta_data=metadata,
+            metadata=metadata,
             payload=payload,
         )
 
