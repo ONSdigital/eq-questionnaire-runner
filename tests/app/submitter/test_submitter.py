@@ -4,11 +4,7 @@ from unittest import TestCase
 from mock import Mock, call, patch
 from pika.exceptions import AMQPError
 
-from app.submitter.submitter import (
-    GCSFeedbackSubmitter,
-    GCSSubmitter,
-    RabbitMQSubmitter,
-)
+from app.submitter import GCSFeedbackSubmitter, GCSSubmitter, RabbitMQSubmitter
 
 
 class TestRabbitMQSubmitter(TestCase):
@@ -277,6 +273,7 @@ class TestGCSFeedbackSubmitter(TestCase):
 
         metadata = {
             "feedback_count": 1,
+            "feedback_submission_date": "2021-03-23",
             "form_type": "H",
             "language_code": "cy",
             "region_code": "GB-ENG",
@@ -296,15 +293,18 @@ class TestGCSFeedbackSubmitter(TestCase):
         blob = bucket.blob.return_value
 
         assert blob.metadata["feedback_count"] == 1
+        assert blob.metadata["feedback_submission_date"] == "2021-03-23"
         assert blob.metadata["form_type"] == "H"
         assert blob.metadata["language_code"] == "cy"
-        assert blob.metadata["region_code"] == "GB-ENG"
         assert blob.metadata["tx_id"] == "12345"
+        assert blob.metadata["region_code"] == "GB-ENG"
 
         blob_contents = blob.upload_from_string.call_args[0][0]
 
         assert (
             blob_contents
-            == b"{'feedback-type': 'Feedback type', 'feedback-text': 'Feedback text'}"
+            == b"{'feedback-type': 'Feedback type', 'feedback-text': 'Feedback text', "
+            b"'feedback_count': 1, 'feedback_submission_date': '2021-03-23', 'form_type': 'H', "
+            b"'language_code': 'cy', 'region_code': 'GB-ENG', 'tx_id': '12345'}"
         )
         assert feedback_upload is True

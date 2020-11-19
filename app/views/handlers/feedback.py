@@ -1,3 +1,4 @@
+from datetime import datetime
 from functools import cached_property
 from typing import Mapping
 
@@ -216,6 +217,7 @@ class FeedbackMetadata:
             "language_code": self.language_code,
             "region_code": self.region_code,
             "tx_id": self.tx_id,
+            "feedback_submission_date": datetime.utcnow().strftime("%Y-%m-%d"),
         }
 
 

@@ -154,7 +154,7 @@ class GCSFeedbackSubmitter:
         blob = self.bucket.blob(str(uuid4()))
         blob.metadata = metadata
         blob.upload_from_string(
-            str(payload).encode("utf8"), content_type="application/json"
+            str({**payload, **metadata}).encode("utf8"), content_type="application/json"
         )
 
         return True
