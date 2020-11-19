@@ -225,13 +225,8 @@ class FeedbackPayload:
         self.feedback_type_question_category = feedback_type_question_category
 
     def __call__(self) -> Mapping:
-        payload = {
-            "feedback_text": self.feedback_text,
-            "feedback_type": self.feedback_type,
-        }
-        if self.feedback_type_question_category:
-            payload[
-                "feedback_type_question_category"
-            ] = self.feedback_type_question_category
+        payload = vars(self)
+        if not self.feedback_type_question_category:
+            del payload["feedback_type_question_category"]
 
         return payload
