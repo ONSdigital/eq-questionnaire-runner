@@ -13,7 +13,6 @@ submissionBucket: ""
 
 googleTagManagerId: ""
 googleTagManagerAuth: ""
-googleTagManagerPreview: ""
 
 webServer:
   type: "gunicorn-async"
