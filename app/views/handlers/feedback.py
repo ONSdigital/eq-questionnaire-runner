@@ -210,13 +210,7 @@ class FeedbackMetadata:
         self.tx_id = tx_id
 
     def __call__(self) -> Mapping:
-        return {
-            "feedback_count": self.feedback_count,
-            "form_type": self.form_type,
-            "language_code": self.language_code,
-            "region_code": self.region_code,
-            "tx_id": self.tx_id,
-        }
+        return vars(self)
 
 
 class FeedbackPayload:
