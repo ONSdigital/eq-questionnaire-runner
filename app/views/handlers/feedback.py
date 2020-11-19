@@ -74,9 +74,9 @@ class Feedback:
         )
 
         feedback_message = FeedbackPayload(
-            self.form.data.get("feedback_text"),
-            self.form.data.get("feedback_type"),
-            self.form.data.get("feedback_type_question_category"),
+            self.form.data.get("feedback-text"),
+            self.form.data.get("feedback-type"),
+            self.form.data.get("feedback-type-question-category"),
         )
 
         if not current_app.eq["feedback_submitter"].upload(
