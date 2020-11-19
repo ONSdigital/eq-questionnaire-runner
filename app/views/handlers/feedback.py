@@ -75,9 +75,9 @@ class Feedback:
         )
 
         feedback_message = FeedbackPayload(
-            self.form.data.get("feedback_text"),
-            self.form.data.get("feedback_type"),
-            self.form.data.get("feedback_type_question_category"),
+            self.form.data.get("feedback-text"),
+            self.form.data.get("feedback-type"),
+            self.form.data.get("feedback-type-question-category"),
         )
 
         if not current_app.eq["feedback_submitter"].upload(
@@ -233,13 +233,8 @@ class FeedbackPayload:
         self.feedback_type_question_category = feedback_type_question_category
 
     def __call__(self) -> Mapping:
-        payload = {
-            "feedback_text": self.feedback_text,
-            "feedback_type": self.feedback_type,
-        }
-        if self.feedback_type_question_category:
-            payload[
-                "feedback_type_question_category"
-            ] = self.feedback_type_question_category
+        payload = vars(self)
+        if not self.feedback_type_question_category:
+            del payload["feedback_type_question_category"]
 
         return payload
