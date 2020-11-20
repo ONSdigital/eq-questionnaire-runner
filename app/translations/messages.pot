@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2020-11-17 08:36+0000\n"
+"POT-Creation-Date: 2020-11-20 11:07+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -469,7 +469,7 @@ msgstr ""
 msgid "Give feedback about this service"
 msgstr ""
 
-#: app/views/handlers/feedback.py:102 app/views/handlers/feedback.py:145
+#: app/views/handlers/feedback.py:102 app/views/handlers/feedback.py:146
 msgid "Select what your feedback is about"
 msgstr ""
 
@@ -477,28 +477,32 @@ msgstr ""
 msgid "The census questions"
 msgstr ""
 
-#: app/views/handlers/feedback.py:116
+#: app/views/handlers/feedback.py:112
 msgid "For example, question not clear, answer option not relevant"
 msgstr ""
 
-#: app/views/handlers/feedback.py:119 app/views/handlers/feedback.py:122
+#: app/views/handlers/feedback.py:119
+msgid "Question topic"
+msgstr ""
+
+#: app/views/handlers/feedback.py:120 app/views/handlers/feedback.py:123
 msgid "Select an option"
 msgstr ""
 
-#: app/views/handlers/feedback.py:131 app/views/handlers/feedback.py:132
+#: app/views/handlers/feedback.py:132 app/views/handlers/feedback.py:133
 msgid "Page design and structure"
 msgstr ""
 
-#: app/views/handlers/feedback.py:135 app/views/handlers/feedback.py:138
+#: app/views/handlers/feedback.py:136 app/views/handlers/feedback.py:139
 msgid "General feedback about this service"
 msgstr ""
 
-#: app/views/handlers/feedback.py:153 app/views/handlers/feedback.py:163
+#: app/views/handlers/feedback.py:154 app/views/handlers/feedback.py:164
 msgid "Enter your feedback"
 msgstr ""
 
-#: app/views/handlers/feedback.py:154
-msgid "Do not include confidential information, such as your contact details."
+#: app/views/handlers/feedback.py:155
+msgid "Do not include confidential information, such as your contact details"
 msgstr ""
 
 #: app/views/handlers/individual_response.py:124
