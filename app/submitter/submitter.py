@@ -1,3 +1,4 @@
+import json
 from uuid import uuid4
 
 from google.cloud import storage
@@ -151,10 +152,11 @@ class GCSFeedbackSubmitter:
         self.bucket = client.get_bucket(bucket_name)
 
     def upload(self, metadata, payload):
+        payload.update(metadata)
         blob = self.bucket.blob(str(uuid4()))
         blob.metadata = metadata
         blob.upload_from_string(
-            str({**payload, **metadata}).encode("utf8"), content_type="application/json"
+            json.dumps(payload).encode("utf8"), content_type="application/json"
         )
 
         return True
