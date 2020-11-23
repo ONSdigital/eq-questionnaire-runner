@@ -19,7 +19,7 @@ from app.submitter.submission_failed import SubmissionFailedException
 from app.views.handlers.confirmation_email import (
     ConfirmationEmailFulfilmentRequestPublicationFailed,
 )
-from app.views.handlers.feedback import FeedbackLimitReached
+from app.views.handlers.feedback import FeedbackLimitReached, FeedbackUploadFailed
 from app.views.handlers.individual_response import (
     IndividualResponseFulfilmentRequestPublicationFailed,
     IndividualResponseLimitReached,
@@ -194,6 +194,27 @@ def confirmation_email_fulfilment_request_publication_failed(exception):
         "If this problem keeps happening, please <a href='{contact_us_url}'>contact us</a> for help."
     )
 
+    return _render_error_page(
+        500,
+        template="error",
+        page_title=title,
+        heading=title,
+        retry_url=request.url,
+        retry_message=retry_message,
+        contact_us_message=contact_us_message,
+    )
+
+
+@errors_blueprint.app_errorhandler(FeedbackUploadFailed)
+def feedback_upload_failed(exception):
+    log_exception(exception, 500)
+    title = lazy_gettext("Sorry, there is a problem")
+    retry_message = lazy_gettext(
+        "You can try to <a href='{retry_url}'>submit your feedback again</a>."
+    )
+    contact_us_message = lazy_gettext(
+        "If this problem keeps happening, please <a href='{contact_us_url}'>contact us</a> for help."
+    )
     return _render_error_page(
         500,
         template="error",

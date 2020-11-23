@@ -10,6 +10,7 @@ image:
 individualResponseLimit: "75"
 
 submissionBucket: ""
+feedbackBucket: ""
 
 googleTagManagerId: ""
 googleTagManagerAuth: ""
