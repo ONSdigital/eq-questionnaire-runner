@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2020-11-17 11:23+0000\n"
+"POT-Creation-Date: 2020-11-23 09:40+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -434,81 +434,85 @@ msgstr ""
 msgid "Feedback"
 msgstr ""
 
-#: app/views/handlers/feedback.py:93 app/views/handlers/feedback.py:99
-#: app/views/handlers/feedback.py:107
+#: app/views/handlers/feedback.py:94 app/views/handlers/feedback.py:100
+#: app/views/handlers/feedback.py:108
 msgid "General"
 msgstr ""
 
-#: app/views/handlers/feedback.py:94
+#: app/views/handlers/feedback.py:95
 msgid "This establishment"
 msgstr ""
 
-#: app/views/handlers/feedback.py:95 app/views/handlers/feedback.py:108
+#: app/views/handlers/feedback.py:96 app/views/handlers/feedback.py:109
 msgid "People who live here"
 msgstr ""
 
-#: app/views/handlers/feedback.py:96 app/views/handlers/feedback.py:109
+#: app/views/handlers/feedback.py:97 app/views/handlers/feedback.py:110
 msgid "Visitors"
 msgstr ""
 
-#: app/views/handlers/feedback.py:100
+#: app/views/handlers/feedback.py:101
 msgid "Accommodation"
 msgstr ""
 
-#: app/views/handlers/feedback.py:101 app/views/handlers/feedback.py:111
+#: app/views/handlers/feedback.py:102 app/views/handlers/feedback.py:112
 msgid "Personal details"
 msgstr ""
 
-#: app/views/handlers/feedback.py:102 app/views/handlers/feedback.py:112
+#: app/views/handlers/feedback.py:103 app/views/handlers/feedback.py:113
 msgid "Health"
 msgstr ""
 
-#: app/views/handlers/feedback.py:103 app/views/handlers/feedback.py:113
+#: app/views/handlers/feedback.py:104 app/views/handlers/feedback.py:114
 msgid "Qualifications"
 msgstr ""
 
-#: app/views/handlers/feedback.py:104 app/views/handlers/feedback.py:114
+#: app/views/handlers/feedback.py:105 app/views/handlers/feedback.py:115
 msgid "Employment"
 msgstr ""
 
-#: app/views/handlers/feedback.py:110
+#: app/views/handlers/feedback.py:111
 msgid "Household and accommodation"
 msgstr ""
 
-#: app/views/handlers/feedback.py:126
+#: app/views/handlers/feedback.py:127
 msgid "Give feedback about this service"
 msgstr ""
 
-#: app/views/handlers/feedback.py:127 app/views/handlers/feedback.py:170
+#: app/views/handlers/feedback.py:128 app/views/handlers/feedback.py:172
 msgid "Select what your feedback is about"
 msgstr ""
 
-#: app/views/handlers/feedback.py:135 app/views/handlers/feedback.py:136
+#: app/views/handlers/feedback.py:136 app/views/handlers/feedback.py:137
 msgid "The census questions"
 msgstr ""
 
-#: app/views/handlers/feedback.py:141
-msgid "For example, question not clear, answer option not relevant"
+#: app/views/handlers/feedback.py:138
+msgid "For example, questions not clear, answer options not relevant"
 msgstr ""
 
-#: app/views/handlers/feedback.py:144 app/views/handlers/feedback.py:147
+#: app/views/handlers/feedback.py:145
+msgid "Question topic"
+msgstr ""
+
+#: app/views/handlers/feedback.py:146 app/views/handlers/feedback.py:149
 msgid "Select an option"
 msgstr ""
 
-#: app/views/handlers/feedback.py:156 app/views/handlers/feedback.py:157
+#: app/views/handlers/feedback.py:158 app/views/handlers/feedback.py:159
 msgid "Page design and structure"
 msgstr ""
 
-#: app/views/handlers/feedback.py:160 app/views/handlers/feedback.py:163
+#: app/views/handlers/feedback.py:162 app/views/handlers/feedback.py:165
 msgid "General feedback about this service"
 msgstr ""
 
-#: app/views/handlers/feedback.py:178 app/views/handlers/feedback.py:188
+#: app/views/handlers/feedback.py:180 app/views/handlers/feedback.py:190
 msgid "Enter your feedback"
 msgstr ""
 
-#: app/views/handlers/feedback.py:179
-msgid "Do not include confidential information, such as your contact details."
+#: app/views/handlers/feedback.py:181
+msgid "Do not include confidential information, such as your contact details"
 msgstr ""
 
 #: app/views/handlers/individual_response.py:124

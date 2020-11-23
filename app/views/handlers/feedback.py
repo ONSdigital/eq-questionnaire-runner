@@ -135,13 +135,14 @@ class Feedback:
                         {
                             "label": lazy_gettext("The census questions"),
                             "value": lazy_gettext("The census questions"),
+                            "description": lazy_gettext(
+                                "For example, questions not clear, answer options not relevant"
+                            ),
                             "detail_answer": {
                                 "type": "Dropdown",
                                 "id": "feedback-type-question-category",
                                 "mandatory": True,
-                                "label": lazy_gettext(
-                                    "For example, question not clear, answer option not relevant"
-                                ),
+                                "label": lazy_gettext("Question topic"),
                                 "placeholder": lazy_gettext("Select an option"),
                                 "validation": {
                                     "messages": {
@@ -178,7 +179,7 @@ class Feedback:
                     "id": "feedback-text",
                     "label": lazy_gettext("Enter your feedback"),
                     "description": lazy_gettext(
-                        "Do not include confidential information, such as your contact details."
+                        "Do not include confidential information, such as your contact details"
                     ),
                     "rows": 8,
                     "mandatory": True,
