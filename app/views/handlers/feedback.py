@@ -110,7 +110,7 @@ class Feedback:
                             "label": lazy_gettext("The census questions"),
                             "value": lazy_gettext("The census questions"),
                             "description": lazy_gettext(
-                                "For example, question not clear, answer option not relevant"
+                                "For example, questions not clear, answer options not relevant"
                             ),
                             "detail_answer": {
                                 "type": "Dropdown",
