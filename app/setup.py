@@ -29,7 +29,13 @@ from app.keys import KEY_PURPOSE_SUBMISSION
 from app.publisher import LogPublisher, PubSubPublisher
 from app.secrets import SecretStore, validate_required_secrets
 from app.storage import Datastore, Dynamodb, Redis
-from app.submitter import GCSSubmitter, LogSubmitter, RabbitMQSubmitter
+from app.submitter import (
+    GCSFeedbackSubmitter,
+    GCSSubmitter,
+    LogFeedbackSubmitter,
+    LogSubmitter,
+    RabbitMQSubmitter,
+)
 from app.utilities.schema import cache_questionnaire_schemas
 
 CACHE_HEADERS = {
@@ -130,6 +136,8 @@ def create_app(  # noqa: C901  pylint: disable=too-complex, too-many-statements
     setup_storage(application)
 
     setup_submitter(application)
+
+    setup_feedback(application)
 
     setup_publisher(application)
 
@@ -342,6 +350,23 @@ def setup_publisher(application):
 
     else:
         raise Exception("Unknown EQ_PUBLISHER_BACKEND")
+
+
+def setup_feedback(application):
+    if application.config["EQ_FEEDBACK_BACKEND"] == "gcs":
+        bucket_id = application.config.get("EQ_GCS_FEEDBACK_BUCKET_ID")
+
+        if not bucket_id:
+            raise Exception("Setting EQ_GCS_FEEDBACK_BUCKET_ID Missing")
+
+        application.eq["feedback_submitter"] = GCSFeedbackSubmitter(
+            bucket_name=bucket_id
+        )
+
+    elif application.config["EQ_FEEDBACK_BACKEND"] == "log":
+        application.eq["feedback_submitter"] = LogFeedbackSubmitter()
+    else:
+        raise Exception("Unknown EQ_FEEDBACK_BACKEND")
 
 
 # pylint: disable=import-outside-toplevel
