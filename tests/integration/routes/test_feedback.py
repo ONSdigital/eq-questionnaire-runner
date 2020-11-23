@@ -1,3 +1,5 @@
+from unittest.mock import Mock
+
 from app import settings
 from app.settings import EQ_FEEDBACK_LIMIT
 from tests.integration.integration_test_case import IntegrationTestCase
@@ -340,6 +342,29 @@ class TestFeedback(IntegrationTestCase):
         # Then the done button should navigate to the thank you page
         selector = "[data-qa='btn-done']"
         self.assertInSelector("/submitted/thank-you", selector)
+
+    def test_feedback_upload_failed(self):
+        # Given I launch and complete the test_feedback question, mocking the upload to return false
+        feedback = self._application.eq["feedback_submitter"]
+        feedback.upload = Mock(return_value=False)
+        self._launch_and_complete_questionnaire()
+        self.get("/submitted/feedback/send")
+
+        # When I post my feedback
+        self.post(
+            {"feedback-type": "Page design and structure", "feedback-text": "Feedback"}
+        )
+
+        # Then I should see an error page
+        self.assertStatusCode(500)
+        self.assertEqualPageTitle("Sorry, there is a problem - Census 2021")
+        self.assertInBody("submit your feedback again")
+
+        retry_url = (
+            self.getHtmlSoup().find("p", {"data-qa": "retry"}).find("a").attrs["href"]
+        )
+        self.get(retry_url)
+        self.assertInUrl("/submitted/feedback/send")
 
     def _launch_and_complete_questionnaire(self):
         self.launchSurvey("test_feedback")

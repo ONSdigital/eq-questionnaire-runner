@@ -1,3 +1,6 @@
+import json
+from uuid import uuid4
+
 from google.cloud import storage
 from pika import BasicProperties, BlockingConnection, URLParameters
 from pika.exceptions import AMQPError
@@ -141,3 +144,32 @@ class RabbitMQSubmitter:
         finally:
             if connection:
                 self._disconnect(connection)
+
+
+class GCSFeedbackSubmitter:
+    def __init__(self, bucket_name):
+        client = storage.Client()
+        self.bucket = client.get_bucket(bucket_name)
+
+    def upload(self, metadata, payload):
+        payload.update(metadata)
+        blob = self.bucket.blob(str(uuid4()))
+        blob.metadata = metadata
+        blob.upload_from_string(
+            json.dumps(payload).encode("utf8"), content_type="application/json"
+        )
+
+        return True
+
+
+class LogFeedbackSubmitter:
+    @staticmethod
+    def upload(metadata, payload):
+        logger.info("uploading feedback")
+        logger.info(
+            "feedback message",
+            metadata=metadata,
+            payload=payload,
+        )
+
+        return True

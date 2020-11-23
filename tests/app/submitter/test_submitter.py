@@ -4,7 +4,7 @@ from unittest import TestCase
 from mock import Mock, call, patch
 from pika.exceptions import AMQPError
 
-from app.submitter.submitter import GCSSubmitter, RabbitMQSubmitter
+from app.submitter import GCSFeedbackSubmitter, GCSSubmitter, RabbitMQSubmitter
 
 
 class TestRabbitMQSubmitter(TestCase):
@@ -262,3 +262,49 @@ class TestGCSSubmitter(TestCase):
                 "questionnaire_id": "0123456789000000",
                 "case_id": "456",
             }
+
+
+class TestGCSFeedbackSubmitter(TestCase):
+    @staticmethod
+    @patch("app.submitter.submitter.storage.Client")
+    def test_upload_feedback(client):
+        # Given
+        feedback = GCSFeedbackSubmitter(bucket_name="feedback")
+
+        metadata = {
+            "feedback_count": 1,
+            "feedback_submission_date": "2021-03-23",
+            "form_type": "H",
+            "language_code": "cy",
+            "region_code": "GB-ENG",
+            "tx_id": "12345",
+        }
+
+        payload = {
+            "feedback-type": "Feedback type",
+            "feedback-text": "Feedback text",
+        }
+
+        # When
+        feedback_upload = feedback.upload(metadata, payload)
+
+        # Then
+        bucket = client.return_value.get_bucket.return_value
+        blob = bucket.blob.return_value
+
+        assert blob.metadata["feedback_count"] == 1
+        assert blob.metadata["feedback_submission_date"] == "2021-03-23"
+        assert blob.metadata["form_type"] == "H"
+        assert blob.metadata["language_code"] == "cy"
+        assert blob.metadata["tx_id"] == "12345"
+        assert blob.metadata["region_code"] == "GB-ENG"
+
+        blob_contents = blob.upload_from_string.call_args[0][0]
+
+        assert (
+            blob_contents
+            == b'{"feedback-type": "Feedback type", "feedback-text": "Feedback text", '
+            b'"feedback_count": 1, "feedback_submission_date": "2021-03-23", '
+            b'"form_type": "H", "language_code": "cy", "region_code": "GB-ENG", "tx_id": "12345"}'
+        )
+        assert feedback_upload is True

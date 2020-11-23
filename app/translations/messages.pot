@@ -308,7 +308,7 @@ msgstr ""
 msgid "You can try to <a href='{retry_url}'>request a new access code again</a>."
 msgstr ""
 
-#: app/routes/errors.py:170 app/routes/errors.py:193
+#: app/routes/errors.py:170 app/routes/errors.py:193 app/routes/errors.py:215
 msgid ""
 "If this problem keeps happening, please <a "
 "href='{contact_us_url}'>contact us</a> for help."
@@ -320,6 +320,16 @@ msgstr ""
 
 #: app/routes/errors.py:190
 msgid "You can try to <a href='{retry_url}'>send the email again</a>."
+msgstr ""
+
+#: app/routes/errors.py:211 templates/errors/403.html:3
+#: templates/errors/403.html:6 templates/errors/submission-failed.html:5
+#: templates/errors/submission-failed.html:8
+msgid "Sorry, there is a problem"
+msgstr ""
+
+#: app/routes/errors.py:212
+msgid "You can try to <a href='{retry_url}'>submit your feedback again</a>."
 msgstr ""
 
 #: app/routes/individual_response.py:160
@@ -416,56 +426,56 @@ msgid "Confirmation email"
 msgstr ""
 
 #: app/views/handlers/confirmation_email.py:62
-#: app/views/handlers/feedback.py:57 app/views/handlers/question.py:149
+#: app/views/handlers/feedback.py:62 app/views/handlers/question.py:149
 msgid "Error: {page_title}"
 msgstr ""
 
-#: app/views/handlers/feedback.py:23
+#: app/views/handlers/feedback.py:28
 msgid "Feedback"
 msgstr ""
 
-#: app/views/handlers/feedback.py:68 app/views/handlers/feedback.py:74
-#: app/views/handlers/feedback.py:82
+#: app/views/handlers/feedback.py:93 app/views/handlers/feedback.py:99
+#: app/views/handlers/feedback.py:107
 msgid "General"
 msgstr ""
 
-#: app/views/handlers/feedback.py:69
+#: app/views/handlers/feedback.py:94
 msgid "This establishment"
 msgstr ""
 
-#: app/views/handlers/feedback.py:70 app/views/handlers/feedback.py:83
+#: app/views/handlers/feedback.py:95 app/views/handlers/feedback.py:108
 msgid "People who live here"
 msgstr ""
 
-#: app/views/handlers/feedback.py:71 app/views/handlers/feedback.py:84
+#: app/views/handlers/feedback.py:96 app/views/handlers/feedback.py:109
 msgid "Visitors"
 msgstr ""
 
-#: app/views/handlers/feedback.py:75
+#: app/views/handlers/feedback.py:100
 msgid "Accommodation"
 msgstr ""
 
-#: app/views/handlers/feedback.py:76 app/views/handlers/feedback.py:86
+#: app/views/handlers/feedback.py:101 app/views/handlers/feedback.py:111
 msgid "Personal details"
 msgstr ""
 
-#: app/views/handlers/feedback.py:77 app/views/handlers/feedback.py:87
+#: app/views/handlers/feedback.py:102 app/views/handlers/feedback.py:112
 msgid "Health"
 msgstr ""
 
-#: app/views/handlers/feedback.py:78 app/views/handlers/feedback.py:88
+#: app/views/handlers/feedback.py:103 app/views/handlers/feedback.py:113
 msgid "Qualifications"
 msgstr ""
 
-#: app/views/handlers/feedback.py:79 app/views/handlers/feedback.py:89
+#: app/views/handlers/feedback.py:104 app/views/handlers/feedback.py:114
 msgid "Employment"
 msgstr ""
 
-#: app/views/handlers/feedback.py:85
+#: app/views/handlers/feedback.py:110
 msgid "Household and accommodation"
 msgstr ""
 
-#: app/views/handlers/feedback.py:101
+#: app/views/handlers/feedback.py:126
 msgid "Give feedback about this service"
 msgstr ""
 
@@ -473,7 +483,7 @@ msgstr ""
 msgid "Select what your feedback is about"
 msgstr ""
 
-#: app/views/handlers/feedback.py:110 app/views/handlers/feedback.py:111
+#: app/views/handlers/feedback.py:135 app/views/handlers/feedback.py:136
 msgid "The census questions"
 msgstr ""
 
@@ -875,12 +885,6 @@ msgstr ""
 
 #: templates/thank-you.html:37
 msgid "For more information on how we use this data."
-msgstr ""
-
-#: templates/errors/403.html:3 templates/errors/403.html:6
-#: templates/errors/submission-failed.html:5
-#: templates/errors/submission-failed.html:8
-msgid "Sorry, there is a problem"
 msgstr ""
 
 #: templates/errors/403.html:7

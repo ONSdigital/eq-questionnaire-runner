@@ -1,3 +1,4 @@
+from datetime import datetime
 from functools import cached_property
 from typing import Mapping
 
@@ -16,6 +17,10 @@ class FeedbackNotEnabled(Exception):
 
 
 class FeedbackLimitReached(Exception):
+    pass
+
+
+class FeedbackUploadFailed(Exception):
     pass
 
 
@@ -58,7 +63,28 @@ class Feedback:
         return self.PAGE_TITLE
 
     def handle_post(self):
-        self._session_store.session_data.feedback_count += 1
+        session_data = self._session_store.session_data
+        session_data.feedback_count += 1
+
+        feedback_metadata = FeedbackMetadata(
+            session_data.feedback_count,
+            self._schema.form_type,
+            session_data.language_code,
+            self._schema.region_code,
+            session_data.tx_id,
+        )
+
+        feedback_message = FeedbackPayload(
+            self.form.data.get("feedback-text"),
+            self.form.data.get("feedback-type"),
+            self.form.data.get("feedback-type-question-category"),
+        )
+
+        if not current_app.eq["feedback_submitter"].upload(
+            feedback_metadata(), feedback_message()
+        ):
+            raise FeedbackUploadFailed()
+
         self._session_store.save()
 
     @cached_property
@@ -175,3 +201,35 @@ class Feedback:
     @staticmethod
     def is_enabled(schema: QuestionnaireSchema) -> bool:
         return schema.get_submission().get("feedback")
+
+
+class FeedbackMetadata:
+    def __init__(self, feedback_count, form_type, language_code, region_code, tx_id):
+        self.feedback_count = feedback_count
+        self.feedback_submission_date = datetime.utcnow().strftime("%Y-%m-%d")
+        self.form_type = form_type
+        self.language_code = language_code
+        self.region_code = region_code
+        self.tx_id = tx_id
+
+    def __call__(self) -> Mapping:
+        return vars(self)
+
+
+class FeedbackPayload:
+    def __init__(
+        self,
+        feedback_text,
+        feedback_type,
+        feedback_type_question_category=None,
+    ):
+        self.feedback_text = feedback_text
+        self.feedback_type = feedback_type
+        self.feedback_type_question_category = feedback_type_question_category
+
+    def __call__(self) -> Mapping:
+        payload = vars(self)
+        if not self.feedback_type_question_category:
+            del payload["feedback_type_question_category"]
+
+        return payload

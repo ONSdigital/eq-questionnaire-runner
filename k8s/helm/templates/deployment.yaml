@@ -75,6 +75,8 @@ spec:
               value: used-jti-claim
             - name: EQ_SUBMISSION_BACKEND
               value: gcs
+            - name: EQ_FEEDBACK_BACKEND
+              value: gcs
             - name: EQ_PUBLISHER_BACKEND
               value: pubsub
             - name: EQ_FULFILMENT_TOPIC_ID
@@ -99,6 +101,8 @@ spec:
               value: "650"
             - name: EQ_GCS_SUBMISSION_BUCKET_ID
               value: "{{- .Values.submissionBucket }}"
+            - name: EQ_GCS_FEEDBACK_BUCKET_ID
+              value: "{{- .Values.feedbackBucket }}"
             - name: EQ_GOOGLE_TAG_MANAGER_ID
               value: "{{- .Values.googleTagManagerId }}"
             - name: EQ_GOOGLE_TAG_MANAGER_AUTH
