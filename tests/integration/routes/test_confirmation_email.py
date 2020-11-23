@@ -150,7 +150,7 @@ class TestEmailConfirmation(IntegrationTestCase):
         self.assertInUrl("thank-you")
         self.assertInBody("There is a problem with this page")
         self.assertInBody(
-            "Enter an email in a valid format, for example name@example.com"
+            "Enter an email address in a valid format, for example name@example.com"
         )
 
         self.assertEqualPageTitle(
@@ -197,7 +197,7 @@ class TestEmailConfirmation(IntegrationTestCase):
         self.assertInUrl("/submitted/confirmation-email/send/")
         self.assertInBody("There is a problem with this page")
         self.assertInBody(
-            "Enter an email in a valid format, for example name@example.com"
+            "Enter an email address in a valid format, for example name@example.com"
         )
         self.assertEqualPageTitle("Error: Confirmation email - Census 2021")
 
