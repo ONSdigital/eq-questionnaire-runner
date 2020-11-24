@@ -196,9 +196,6 @@ def get_google_tag_manager_context():
         return {
             "google_tag_manager_id": current_app.config["EQ_GOOGLE_TAG_MANAGER_ID"],
             "google_tag_manager_auth": current_app.config["EQ_GOOGLE_TAG_MANAGER_AUTH"],
-            "google_tag_manager_preview": current_app.config[
-                "EQ_GOOGLE_TAG_MANAGER_PREVIEW"
-            ],
         }
     return {}
 
