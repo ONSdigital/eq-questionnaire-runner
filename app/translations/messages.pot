@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2020-11-23 11:43+0000\n"
+"POT-Creation-Date: 2020-11-24 13:56+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -814,6 +814,10 @@ msgstr ""
 
 #: templates/introduction.html:40
 msgid "Your response is legally required"
+msgstr ""
+
+#: templates/list-action.html:9
+msgid "Cancel and return to the previous page"
 msgstr ""
 
 #: templates/multiple_survey.html:4 templates/multiple_survey.html:7
