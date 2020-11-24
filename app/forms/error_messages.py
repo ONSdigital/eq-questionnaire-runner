@@ -42,7 +42,7 @@ error_messages = {
         "Enter answers that add up to or are greater than %(total)s"
     ),
     "INVALID_EMAIL_FORMAT": lazy_gettext(
-        "Enter an email in a valid format, for example name@example.com"
+        "Enter an email address in a valid format, for example name@example.com"
     ),
     "INVALID_NUMBER": lazy_gettext("Enter a number"),
     "INVALID_INTEGER": lazy_gettext("Enter a whole number"),
