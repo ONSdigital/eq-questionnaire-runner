@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2020-11-24 13:56+0000\n"
+"POT-Creation-Date: 2020-11-24 14:45+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -1123,6 +1123,12 @@ msgstr ""
 msgid ""
 "You can <em>share your household access code</em> with the people you "
 "live with so they can complete their own sections."
+msgstr ""
+
+#: templates/partials/individual-response-guidance.html:25
+msgid ""
+"If this is not possible, there are <a href={url}>other ways each person "
+"can complete their own census.</a>"
 msgstr ""
 
 #: templates/partials/last_viewed_question_guidance.html:7
