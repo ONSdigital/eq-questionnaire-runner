@@ -313,7 +313,7 @@ msgstr "Ni allwch gyflwyno rhagor o adborth"
 
 #: app/routes/errors.py:129
 msgid "If you need to give more feedback, please <a href='{contact_us_url}'>contact us</a>."
-msgstr "<a href='{contact_us_url}'>Cysylltwch â ni </a>os bydd angen i chi roi fwy adborth."
+msgstr "<a href='{contact_us_url}'>Cysylltwch â ni</a> os bydd angen i chi roi fwy adborth."
 
 #: app/routes/errors.py:161
 msgid "Sorry, there was a problem sending the access code"
@@ -343,7 +343,7 @@ msgstr "Mae'n ddrwg gennym, mae problem wedi codi"
 
 #: app/routes/errors.py:212
 msgid "You can try to <a href='{retry_url}'>submit your feedback again</a>."
-msgstr "Gallwch chi geisio<a href='{retry_url}'> cyflwyno eich adborth eto</a>."
+msgstr "Gallwch chi geisio <a href='{retry_url}'>cyflwyno eich adborth eto</a>."
 
 #: app/routes/individual_response.py:160
 msgid "An individual access code has been sent by post"
@@ -719,7 +719,7 @@ msgstr "Heb gael e-bost?"
 
 #: templates/confirmation-email-sent.html:30
 msgid "It can take a few minutes for the email to arrive. If it doesn't arrive, check your junk mail, or you can <a href='{send_confirmation_email_url}' id='send-another-email'>send another confirmation email</a>."
-msgstr "Gall gymryd ychydig funudau i’r e-bost gyrraedd. Os na fydd yn cyrraedd, edrychwch yn eich ffolder post sothach, neu gallwch<a href='{send_confirmation_email_url}' id='send-another-email'> anfon e-bost cadarnhau arall</a>."
+msgstr "Gall gymryd ychydig funudau i’r e-bost gyrraedd. Os na fydd yn cyrraedd, edrychwch yn eich ffolder post sothach, neu gallwch <a href='{send_confirmation_email_url}' id='send-another-email'>anfon e-bost cadarnhau arall</a>."
 
 #: templates/confirmation-email.html:12
 msgid "Send another confirmation email"
@@ -972,7 +972,7 @@ msgstr "Gallwch geisio <a href='{url}'>cyflwyno eich cyfrifiad eto</a>"
 
 #: templates/errors/submission-failed.html:10
 msgid "If this problem keeps happening, please <a href='{url}'>contact us</a> for help."
-msgstr "Os bydd y broblem hon yn parhau, <a href='{url}'>cysylltwch â ni </a>i gael cymorth."
+msgstr "Os bydd y broblem hon yn parhau, <a href='{url}'>cysylltwch â ni</a> i gael cymorth."
 
 #: templates/individual_response/confirmation-post.html:15
 msgid "A letter has been sent to Individual Resident at {display_address}"
