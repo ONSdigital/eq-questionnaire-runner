@@ -1,7 +1,7 @@
 from abc import ABC, abstractmethod
 
-import google
-from google.cloud.pubsub_v1 import PublisherClient
+import google.auth
+from google.cloud.pubsub import PublisherClient
 from google.cloud.pubsub_v1.futures import Future
 from structlog import get_logger
 
