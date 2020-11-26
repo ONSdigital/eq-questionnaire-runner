@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: eq-census\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2020-11-24 14:56+0000\n"
-"PO-Revision-Date: 2020-11-25 09:21\n"
+"PO-Revision-Date: 2020-11-26 13:05\n"
 "Last-Translator: \n"
 "Language-Team: Welsh\n"
 "MIME-Version: 1.0\n"
@@ -84,7 +84,7 @@ msgstr ""
 
 #: app/forms/error_messages.py:25
 msgid "Enter an email address"
-msgstr ""
+msgstr "Rhowch gyfeiriad e-bost"
 
 #: app/forms/error_messages.py:26
 msgid "Enter a UK mobile number"
@@ -137,7 +137,7 @@ msgstr "Nodwch atebion sy'n creu cyfanswm o neu sydd dros %(total)s"
 
 #: app/forms/error_messages.py:44
 msgid "Enter an email address in a valid format, for example name@example.com"
-msgstr ""
+msgstr "Rhowch gyfeiriad e-bost mewn fformat dilys, er enghraifft enw@enghraifft.com"
 
 #: app/forms/error_messages.py:47
 msgid "Enter a number"
@@ -235,7 +235,7 @@ msgstr "Hawlfraint y goron a hawliau cronfa ddata 2020 OS 100019153. Mae defnydd
 
 #: app/helpers/template_helpers.py:55
 msgid "Use of address data is subject to the"
-msgstr "Mae defnyddio data cyfeiriadau yn ddarostyngedig i’r"
+msgstr "Mae defnydd o ddata ar gyfeiriadau yn amodol ar y"
 
 #: app/helpers/template_helpers.py:56
 msgid "terms and conditions"
@@ -329,11 +329,11 @@ msgstr "Os bydd y broblem hon yn parhau, <a href='{contact_us_url}'>cysylltwch �
 
 #: app/routes/errors.py:189
 msgid "Sorry, there was a problem sending the confirmation email"
-msgstr ""
+msgstr "Mae'n ddrwg gennym, roedd problem wrth anfon yr e-bost cadarnhau"
 
 #: app/routes/errors.py:190
 msgid "You can try to <a href='{retry_url}'>send the email again</a>."
-msgstr ""
+msgstr "Gallwch chi geisio <a href='{retry_url}'>anfon yr e-bost eto</a>."
 
 #: app/routes/errors.py:211 templates/errors/403.html:3
 #: templates/errors/403.html:6 templates/errors/submission-failed.html:5
@@ -436,12 +436,12 @@ msgstr "Cyflwynwch yr arolwg hwn i'w gwblhau"
 
 #: app/views/handlers/confirmation_email.py:48
 msgid "Confirmation email"
-msgstr ""
+msgstr "E-bost cadarnhau"
 
 #: app/views/handlers/confirmation_email.py:62
 #: app/views/handlers/feedback.py:62 app/views/handlers/question.py:149
 msgid "Error: {page_title}"
-msgstr ""
+msgstr "Gwall: {page_title}"
 
 #: app/views/handlers/feedback.py:28
 msgid "Feedback"
@@ -683,7 +683,7 @@ msgstr "Mae eich cyfrifiad wedi cael ei gyflwyno ar gyfer y cartref yn <strong>{
 
 #: templates/census-thank-you.html:36
 msgid "Your census has been submitted for the accommodation at <strong>{display_address}</strong>"
-msgstr ""
+msgstr "Mae eich cyfrifiad wedi cael ei gyflwyno ar gyfer y llety yn <strong>{display_address}</strong>"
 
 #: templates/census-thank-you.html:37
 msgid "Anyone staying at this accommodation for at least 6 months needs to fill in their own individual census, including staff. Your Census Officer will provide you with census forms for your residents."
@@ -723,7 +723,7 @@ msgstr "Gall gymryd ychydig funudau i’r e-bost gyrraedd. Os na fydd yn cyrraed
 
 #: templates/confirmation-email.html:12
 msgid "Send another confirmation email"
-msgstr ""
+msgstr "Anfon e-bost cadarnhau arall"
 
 #: templates/confirmation.html:12
 msgid "Yes, I confirm these are correct"
@@ -747,7 +747,7 @@ msgstr "Bydd eich sylwadau yn ein helpu ni i wella ein harolygon. Ni allwn ymate
 
 #: templates/feedback-sent.html:28
 msgid "Done"
-msgstr ""
+msgstr "Cwblhawyd"
 
 #: templates/feedback.html:15
 msgid "Back"
@@ -757,12 +757,12 @@ msgstr "Yn ôl"
 #, python-format
 msgid "There is a problem with your feedback"
 msgid_plural "There are %(num)s problems with your feedback"
-msgstr[0] ""
-msgstr[1] ""
-msgstr[2] ""
-msgstr[3] ""
-msgstr[4] ""
-msgstr[5] ""
+msgstr[0] "Mae %(num)s o broblemau gyda'ch adborth"
+msgstr[1] "Mae problem gyda'ch adborth"
+msgstr[2] "Mae %(num)s o broblemau gyda'ch adborth"
+msgstr[3] "Mae %(num)s o broblemau gyda'ch adborth"
+msgstr[4] "Mae %(num)s o broblemau gyda'ch adborth"
+msgstr[5] "Mae %(num)s o broblemau gyda'ch adborth"
 
 #: templates/feedback.html:41
 msgid "Send feedback"
@@ -928,7 +928,7 @@ msgstr "<a href='{url}'>Cysylltwch â ni</a> os oes angen i chi siarad â rhywun
 
 #: templates/errors/no-cookie.html:3
 msgid "Page is not available"
-msgstr ""
+msgstr "Nid yw'r dudalen ar gael"
 
 #: templates/errors/no-cookie.html:6
 msgid "Sorry there is a problem"
@@ -1020,23 +1020,23 @@ msgstr "Blaenorol"
 
 #: templates/layouts/_base.html:61
 msgid "Tell us whether you accept cookies"
-msgstr ""
+msgstr "Dywedwch wrthym a ydych chi'n derbyn cwcis"
 
 #: templates/layouts/_base.html:62
 msgid "We use <a href='{cookie_settings_url}'>cookies to collect information</a> about how you use census.gov.uk. We use this information to make the website work as well as possible and improve our services."
-msgstr ""
+msgstr "Rydym ni'n defnyddio <a href='{cookie_settings_url}'>cwcis i gasglu gwybodaeth</a> am y ffordd rydych chi'n defnyddio cyfrifiad.gov.uk. Rydym ni'n defnyddio'r wybodaeth hon i sicrhau bod y wefan yn gweithio cystal â phosibl ac i wella ein gwasanaethau."
 
 #: templates/layouts/_base.html:63
 msgid "You’ve accepted all cookies. You can <a href='{cookie_settings_url}'>change your cookie preferences</a> at any time."
-msgstr ""
+msgstr "Rydych chi wedi derbyn yr holl gwcis Gallwch chi <a href='{cookie_settings_url}'>newid eich dewisiadau o ran cwcis</a> ar unrhyw adeg."
 
 #: templates/layouts/_base.html:64
 msgid "Accept all cookies"
-msgstr ""
+msgstr "Derbyn yr holl gwcis"
 
 #: templates/layouts/_base.html:65
 msgid "Set cookie preferences"
-msgstr ""
+msgstr "Gosod dewisiadau o ran cwcis"
 
 #: templates/layouts/_base.html:66
 #: templates/partials/introduction/preview.html:30
@@ -1160,31 +1160,31 @@ msgstr "Nodwch y cyfeiriad neu'r cod post a dewiswch o'r canlyniadau"
 
 #: templates/partials/answers/address.html:41
 msgid "Use up and down keys to navigate suggestions once you’ve typed more than two characters. Use the enter key to select a suggestion. Touch device users, explore by touch or with swipe gestures."
-msgstr ""
+msgstr "Defnyddiwch y bysellau i fyny ac i lawr i edrych drwy'r awgrymiadau unwaith y byddwch chi wedi teipio mwy na dau nod. Defnyddiwch y fysell ‘enter’ i ddewis awgrym. Gall defnyddwyr dyfeisiau cyffwrdd symud o gwmpas drwy gyffwrdd neu sweipio."
 
 #: templates/partials/answers/address.html:42
 msgid "You have selected"
-msgstr ""
+msgstr "Rydych chi wedi dewis"
 
 #: templates/partials/answers/address.html:43
 msgid "Enter 3 or more characters for suggestions."
-msgstr ""
+msgstr "Rhowch 3 nod neu fwy i gael awgrymiadau."
 
 #: templates/partials/answers/address.html:44
 msgid "There is one suggestion available."
-msgstr ""
+msgstr "Mae un awgrym ar gael."
 
 #: templates/partials/answers/address.html:45
 msgid "There are {n} suggestions available."
-msgstr ""
+msgstr "Mae {n} o awgrymiadau ar gael."
 
 #: templates/partials/answers/address.html:46
 msgid "Results have been limited to 10 suggestions. Type more characters to improve your search"
-msgstr ""
+msgstr "Mae'r canlyniadau wedi cael eu cyfyngu i 10 awgrym. Teipiwch fwy o nodau i wella eich chwiliad"
 
 #: templates/partials/answers/address.html:47
 msgid "There are {n} for {x}"
-msgstr ""
+msgstr "Mae {n} ar gyfer {x}"
 
 #: templates/partials/answers/address.html:48
 msgid "{n} addresses"
@@ -1200,15 +1200,15 @@ msgstr "Dewiswch gyfeiriad"
 
 #: templates/partials/answers/address.html:51
 msgid "No results found. Try entering a different part of the address"
-msgstr ""
+msgstr "Heb ddod o hyd i unrhyw ganlyniadau. Ceisiwch ddefnyddio rhan wahanol o'r cyfeiriad"
 
 #: templates/partials/answers/address.html:52
 msgid "{n} results found. Enter more of the address to improve results"
-msgstr ""
+msgstr "Wedi dod o hyd i {n} o ganlyniadau. Rhowch fwy o'r cyfeiriad i wella'r canlyniadau"
 
 #: templates/partials/answers/address.html:53
 msgid "Enter more of the address to get results"
-msgstr ""
+msgstr "Rhowch fwy o'r cyfeiriad i gael canlyniadau"
 
 #: templates/partials/answers/address.html:57
 msgid "Select or manually enter an address"
@@ -1216,11 +1216,11 @@ msgstr "Dewiswch gyfeiriad neu nodwch â llaw"
 
 #: templates/partials/answers/address.html:58
 msgid "Sorry, there was a problem loading addresses"
-msgstr ""
+msgstr "Mae'n ddrwg gennym, roedd problem wrth lwytho cyfeiriadau"
 
 #: templates/partials/answers/address.html:59
 msgid "Enter address manually"
-msgstr ""
+msgstr "Teipiwch y cyfeiriad eich hun"
 
 #: templates/partials/answers/checkbox.html:13
 msgid "Select all that apply"
@@ -1254,7 +1254,7 @@ msgstr "Mae gennych chi {x} o nodau ar ôl"
 
 #: templates/partials/answers/textfield.html:26
 msgid "{x} character too many"
-msgstr ""
+msgstr "{x} o nodau yn ormod"
 
 #: templates/partials/answers/textfield.html:27
 msgid "{x} characters too many"
@@ -1262,15 +1262,15 @@ msgstr "{x} nod yn ormod"
 
 #: templates/partials/answers/textfield.html:35
 msgid "Use up and down keys to navigate suggestions once you've typed more than two characters. Use the enter key to select a suggestion. Touch device users, explore by touch or with swipe gestures."
-msgstr ""
+msgstr "Defnyddiwch y bysellau i fyny ac i lawr i edrych drwy'r awgrymiadau unwaith y byddwch chi wedi teipio mwy na dau nod. Defnyddiwch y fysell ‘enter’ i ddewis awgrym. Gall defnyddwyr dyfeisiau cyffwrdd symud o gwmpas drwy gyffwrdd neu sweipio."
 
 #: templates/partials/answers/textfield.html:36
 msgid "Continue entering to improve suggestions"
-msgstr ""
+msgstr "Parhewch i roi nodau er mwyn gwella'r awgrymiadau"
 
 #: templates/partials/answers/textfield.html:37
 msgid "Suggestions"
-msgstr ""
+msgstr "Awgrymiadau"
 
 #: templates/partials/answers/textfield.html:38
 msgid "No results found"
@@ -1278,7 +1278,7 @@ msgstr "Heb ganfod unrhyw ganlyniadau"
 
 #: templates/partials/answers/textfield.html:39
 msgid "Continue entering to get suggestions"
-msgstr ""
+msgstr "Parhewch i roi nodau er mwyn cael awgrymiadau"
 
 #: templates/partials/introduction/preview.html:29
 #: templates/partials/summary/collapsible-summary.html:13
