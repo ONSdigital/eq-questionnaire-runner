@@ -329,3 +329,7 @@ class TestCreateApp(unittest.TestCase):  # pylint: disable=too-many-public-metho
 
         # Then
         assert "Setting EQ_GCS_FEEDBACK_BUCKET_ID Missing" in str(ex.exception)
+
+    def test_defaults_to_gzip_compression(self):
+        application = create_app(self._setting_overrides)
+        assert application.config["COMPRESS_ALGORITHM"] == ["gzip", "br", "deflate"]
