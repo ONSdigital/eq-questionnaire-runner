@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2020-11-23 11:43+0000\n"
+"POT-Creation-Date: 2020-11-24 14:56+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -816,6 +816,10 @@ msgstr ""
 msgid "Your response is legally required"
 msgstr ""
 
+#: templates/list-action.html:9
+msgid "Cancel and return to the previous page"
+msgstr ""
+
 #: templates/multiple_survey.html:4 templates/multiple_survey.html:7
 msgid "Information"
 msgstr ""
@@ -993,10 +997,18 @@ msgid ""
 "for help."
 msgstr ""
 
+#: templates/individual_response/confirmation-post.html:15
+msgid "A letter has been sent to Individual Resident at {display_address}"
+msgstr ""
+
 #: templates/individual_response/confirmation-post.html:17
 msgid ""
 "The letter with an individual access code should arrive soon for them to "
 "complete their own census"
+msgstr ""
+
+#: templates/individual_response/confirmation-text-message.html:15
+msgid "We have sent a text to {mobile_number}"
 msgstr ""
 
 #: templates/individual_response/confirmation-text-message.html:17
@@ -1027,6 +1039,12 @@ msgstr ""
 
 #: templates/individual_response/interstitial.html:13
 msgid "Request separate census"
+msgstr ""
+
+#: templates/individual_response/question.html:9
+msgid ""
+"To request a census in a different format or for further help, please <a "
+"href='{contact_us_url}'>contact us</a>"
 msgstr ""
 
 #: templates/layouts/_base.html:18
@@ -1119,6 +1137,12 @@ msgstr ""
 msgid ""
 "You can <em>share your household access code</em> with the people you "
 "live with so they can complete their own sections."
+msgstr ""
+
+#: templates/partials/individual-response-guidance.html:25
+msgid ""
+"If this is not possible, there are <a href={url}>other ways each person "
+"can complete their own census.</a>"
 msgstr ""
 
 #: templates/partials/last_viewed_question_guidance.html:7

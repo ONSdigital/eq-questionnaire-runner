@@ -7,7 +7,6 @@ class TestApplicationVariables(IntegrationTestCase):
         settings.EQ_ENABLE_LIVE_RELOAD = True
         settings.EQ_GOOGLE_TAG_MANAGER_ID = "TestId"
         settings.EQ_GOOGLE_TAG_MANAGER_AUTH = "TestAuth"
-        settings.EQ_GOOGLE_TAG_MANAGER_PREVIEW = "TestPreview"
         super().setUp()
 
     def tearDown(self):
@@ -15,7 +14,6 @@ class TestApplicationVariables(IntegrationTestCase):
         settings.EQ_ENABLE_LIVE_RELOAD = False
         settings.EQ_GOOGLE_TAG_MANAGER_ID = None
         settings.EQ_GOOGLE_TAG_MANAGER_AUTH = None
-        settings.EQ_GOOGLE_TAG_MANAGER_PREVIEW = None
 
     def test_google_analytics_code_is_present(self):
         self.launchSurvey("test_textfield")

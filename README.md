@@ -261,8 +261,7 @@ The following environment variables are optional:
 | ROLLING_UPDATE_MAX_SURGE           | 25%     | The maximum number of Pods that can be created over the desired number of Pods   |
 | TARGET_CPU_UTILIZATION_PERCENTAGE  |         | The average CPU utilization usage before auto scaling applies                    |
 | GOOGLE_TAG_MANAGER_ID              |         |                                                                                   |
-| GOOGLE_TAG_MANAGER_AUTH            |         |                                                                                   |
-| GOOGLE_TAG_MANAGER_PREVIEW         |         |                                                                                   |
+| GOOGLE_TAG_MANAGER_AUTH            |         |                                                                                   |                                                                              |
 | EQ_NEW_RELIC_ENABLED               | False   | Enable New Relic monitoring                                                       |
 | NEW_RELIC_LICENSE_KEY              |         | New Relic license key                                                             |
 | NEW_RELIC_APP_NAME                 |         | Display name for the application in New Relic                                     |
@@ -309,7 +308,6 @@ The following env variables can be used
 | EQ_PROFILING                              | False                 | Enables or disables profiling (True/False) Default False/Disabled                             |
 | EQ_GOOGLE_TAG_MANAGER_ID                  |                       | The Google Tag Manger ID - Specifies the GTM account                                          |
 | EQ_GOOGLE_TAG_MANAGER_AUTH                |                       | The Google Tag Manger Auth - Ties the GTM container with the whole enviroment                 |
-| EQ_GOOGLE_TAG_MANAGER_PREVIEW             |                       | The Google Tag Manger Preview - Specifies the environment                                     |
 | EQ_ENABLE_HTML_MINIFY                     | True                  | Enable minification of html                                                                   |
 | EQ_ENABLE_SECURE_SESSION_COOKIE           | True                  | Set secure session cookies                                                                    |
 | EQ_MAX_HTTP_POST_CONTENT_LENGTH           | 65536                 | The maximum http post content length that the system wil accept                               |
