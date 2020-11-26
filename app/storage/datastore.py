@@ -18,12 +18,12 @@ class Datastore(StorageHandler):
         key_value = getattr(model, storage_model.key_field)
 
         key = self.client.key(storage_model.table_name, key_value)
-        exclude_from_indexes = [
+        exclude_from_indexes = tuple(
             field
             for field in serialized_item.keys()
             if field not in storage_model.index_fields
-        ]
-        entity = Entity(key=key, exclude_from_indexes=tuple(exclude_from_indexes))
+        )
+        entity = Entity(key=key, exclude_from_indexes=exclude_from_indexes)
         entity.update(serialized_item)
 
         self.client.put(entity)

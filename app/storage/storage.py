@@ -47,7 +47,7 @@ class StorageModel:
 
     @cached_property
     def index_fields(self):
-        return self._config.get("index_fields") or []
+        return self._config.get("index_fields", [])
 
     @cached_property
     def table_name(self):
