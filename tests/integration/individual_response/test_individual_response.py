@@ -1141,7 +1141,7 @@ class TestIndividualResponseHow(IndividualResponseTestCase):
         self.get(self.individual_response_link)
         self.get(self.individual_response_start_link)
 
-        # Then I should have the Post option
+        # Then one of my radio box options should be 'Post'
         self.assertInBody("Post")
         self.assertInBody(
             "We can only send this to an unnamed resident at the registered household address"
@@ -1158,7 +1158,7 @@ class TestIndividualResponseHow(IndividualResponseTestCase):
         self.get(self.individual_response_link)
         self.get(self.individual_response_start_link)
 
-        # Then I should not have the Post option, and have a message saying its not possible
+        # Then 'Post' should not be one of my radio box options, and I should have a message telling me it's no longer possible
         self.assertNotInBody("Post")
         self.assertNotInBody(
             "We can only send this to an unnamed resident at the registered household address"
@@ -1169,15 +1169,29 @@ class TestIndividualResponseHow(IndividualResponseTestCase):
 
 class TestIndividualResponsePostAddressConfirmHandler(IndividualResponseTestCase):
     @freeze_time("2020-11-25T12:01:00")
-    def test_handler_after_post_deadline(self):
-        # Given I add household member
+    def test_address_confirm_after_deadline(self):
+        # Given I add a number of non primary household members
         self._add_household_multiple_members_no_primary()
 
-        # When I try to directly access the post address confirm handler after the deadline
+        # When I try to access the address confirmation page after the deadline
         self.get(self.individual_response_link)
         self.get(self.individual_response_start_link)
         list_item_id = self.get_who_choice(0)["list_item_id"]
         self.get(f"/individual-response/{list_item_id}/post/confirm-address")
+
+        # Then I should be redirect to the how page
+        self.assertInUrl(f"/individual-response/{list_item_id}/how")
+
+    @freeze_time("2020-11-25T12:01:00")
+    def test_address_confirm_after_deadline_post(self):
+        # Given I add a number of non primary household members
+        self._add_household_multiple_members_no_primary()
+
+        # When I try to post to the address confirmation page after the deadline
+        self.get(self.individual_response_link)
+        self.get(self.individual_response_start_link)
+        list_item_id = self.get_who_choice(0)["list_item_id"]
+        self.post(url=f"/individual-response/{list_item_id}/post/confirm-address")
 
         # Then I should be redirect to the how page
         self.assertInUrl(f"/individual-response/{list_item_id}/how")

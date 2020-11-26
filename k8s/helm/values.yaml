@@ -8,7 +8,7 @@ image:
   pullPolicy: Always
 
 individualResponseLimit: "75"
-individualResponsePostDeadline: "2020-04-28T14:00:00"
+individualResponsePostDeadline: "2021-04-28T14:00:00"
 
 submissionBucket: ""
 feedbackBucket: ""

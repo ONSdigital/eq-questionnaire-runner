@@ -96,12 +96,6 @@ class IndividualResponseHandler:
         individual_response_post_deadline = current_app.config[
             "EQ_INDIVIDUAL_RESPONSE_POST_DEADLINE"
         ]
-
-        from structlog import get_logger
-
-        logger = get_logger()
-        logger.error(individual_response_post_deadline)
-        logger.error(datetime.now(tz=tzutc()))
         return individual_response_post_deadline < datetime.now(tz=tzutc())
 
     def __init__(
@@ -351,7 +345,7 @@ class IndividualResponseHowHandler(IndividualResponseHandler):
         if not has_post_deadline_passed:
             how_handler_options.append(
                 {
-                    "label": "Post",
+                    "label": lazy_gettext("Post"),
                     "value": "Post",
                     "description": lazy_gettext(
                         "We can only send this to an unnamed resident at the registered household address"
