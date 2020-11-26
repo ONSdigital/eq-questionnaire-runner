@@ -57,8 +57,8 @@ VALIDATORS = {
 
 
 class StripWhitespaceMixin:
-    @pre_load
-    def strip_whitespace(self, items):  # pylint: disable=no-self-use
+    @pre_load()
+    def strip_whitespace(self, items, many, **kwargs):  # pylint: disable=no-self-use
         for key, value in items.items():
             if isinstance(value, str):
                 items[key] = value.strip()
@@ -68,33 +68,41 @@ class StripWhitespaceMixin:
 class RunnerMetadataSchema(Schema, StripWhitespaceMixin):
     """Metadata which is required for the operation of runner itself"""
 
-    jti = VALIDATORS["uuid"]()
-    ru_ref = VALIDATORS["string"](validate=validate.Length(min=1))
-    collection_exercise_sid = VALIDATORS["string"](validate=validate.Length(min=1))
-    tx_id = VALIDATORS["uuid"]()
-    questionnaire_id = VALIDATORS["string"](validate=validate.Length(min=1))
-    response_id = VALIDATORS["string"](validate=validate.Length(min=1))
+    jti = VALIDATORS["uuid"]()  # type:ignore
+    ru_ref = VALIDATORS["string"](validate=validate.Length(min=1))  # type:ignore
+    collection_exercise_sid = VALIDATORS["string"](
+        validate=validate.Length(min=1)
+    )  # type:ignore
+    tx_id = VALIDATORS["uuid"]()  # type:ignore
+    questionnaire_id = VALIDATORS["string"](
+        validate=validate.Length(min=1)
+    )  # type:ignore
+    response_id = VALIDATORS["string"](validate=validate.Length(min=1))  # type:ignore
 
-    account_service_url = VALIDATORS["url"](required=False)
-    case_id = VALIDATORS["uuid"](required=False)
-    account_service_log_out_url = VALIDATORS["url"](required=False)
+    account_service_url = VALIDATORS["url"](required=False)  # type:ignore
+    case_id = VALIDATORS["uuid"](required=False)  # type:ignore
+    account_service_log_out_url = VALIDATORS["url"](required=False)  # type:ignore
     roles = fields.List(fields.String(), required=False)
-    survey_url = VALIDATORS["url"](required=False)
-    language_code = VALIDATORS["string"](required=False)
-    channel = VALIDATORS["string"](required=False, validate=validate.Length(min=1))
-    case_type = VALIDATORS["string"](required=False)
+    survey_url = VALIDATORS["url"](required=False)  # type:ignore
+    language_code = VALIDATORS["string"](required=False)  # type:ignore
+    channel = VALIDATORS["string"](
+        required=False, validate=validate.Length(min=1)
+    )  # type:ignore
+    case_type = VALIDATORS["string"](required=False)  # type:ignore
 
     # Either schema_name OR the three census parameters are required. Should be required after census.
-    schema_name = VALIDATORS["string"](required=False)
+    schema_name = VALIDATORS["string"](required=False)  # type:ignore
 
     # The following three parameters can be removed after Census
     survey = VALIDATORS["string"](
         required=False, validate=validate.OneOf(("CENSUS", "CCS")), missing="CENSUS"
-    )
+    )  # type:ignore
     form_type = VALIDATORS["string"](
         required=False, validate=validate.OneOf(("H", "I", "C"))
-    )
-    region_code = VALIDATORS["string"](required=False, validate=RegionCode())
+    )  # type:ignore
+    region_code = VALIDATORS["string"](
+        required=False, validate=RegionCode()
+    )  # type:ignore
 
     @validates_schema
     def validate_schema_name(self, data, **kwargs):
