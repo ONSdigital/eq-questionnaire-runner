@@ -1,7 +1,9 @@
+from datetime import datetime
 from functools import cached_property
 from typing import List, Mapping, Optional
 from uuid import uuid4
 
+from dateutil.tz import tzutc
 from flask import current_app, redirect
 from flask.helpers import url_for
 from flask_babel import lazy_gettext
@@ -27,6 +29,10 @@ class IndividualResponseLimitReached(Exception):
 
 
 class IndividualResponseFulfilmentRequestPublicationFailed(Exception):
+    pass
+
+
+class IndividualResponsePostDeadlinePast(Exception):
     pass
 
 
@@ -84,6 +90,19 @@ class IndividualResponseHandler:
                 ],
             }
         ]
+
+    @staticmethod
+    def has_post_deadline_passed():
+        individual_response_post_deadline = current_app.config[
+            "EQ_INDIVIDUAL_RESPONSE_POST_DEADLINE"
+        ]
+
+        from structlog import get_logger
+
+        logger = get_logger()
+        logger.error(individual_response_post_deadline)
+        logger.error(datetime.now(tz=tzutc()))
+        return individual_response_post_deadline < datetime.now(tz=tzutc())
 
     def __init__(
         self,
@@ -286,6 +305,7 @@ class IndividualResponseHandler:
 class IndividualResponseHowHandler(IndividualResponseHandler):
     @cached_property
     def block_definition(self) -> Mapping:
+        has_post_deadline_passed = self.has_post_deadline_passed()
         return {
             "type": "IndividualResponse",
             "id": "individual-response",
@@ -300,38 +320,59 @@ class IndividualResponseHowHandler(IndividualResponseHandler):
                         self._list_name
                     ),
                 },
-                "description": [
-                    lazy_gettext(
-                        "For someone to complete a separate census, we need to send them an individual access code."
-                    ),
-                    lazy_gettext("Select how to send access code"),
-                ],
+                "description": self._build_how_question_description(
+                    has_post_deadline_passed
+                ),
                 "answers": [
                     {
                         "type": "Radio",
                         "id": "individual-response-how-answer",
                         "mandatory": False,
                         "default": "Text message",
-                        "options": [
-                            {
-                                "label": lazy_gettext("Text message"),
-                                "value": "Text message",
-                                "description": lazy_gettext(
-                                    "We will need their mobile number for this"
-                                ),
-                            },
-                            {
-                                "label": lazy_gettext("Post"),
-                                "value": "Post",
-                                "description": lazy_gettext(
-                                    "We can only send this to an unnamed resident at the registered household address"
-                                ),
-                            },
-                        ],
+                        "options": self._build_how_handler_answer_options(
+                            has_post_deadline_passed
+                        ),
                     }
                 ],
             },
         }
+
+    @staticmethod
+    def _build_how_handler_answer_options(has_post_deadline_passed):
+        how_handler_options = [
+            {
+                "label": lazy_gettext("Text message"),
+                "value": "Text message",
+                "description": lazy_gettext(
+                    "We will need their mobile number for this"
+                ),
+            }
+        ]
+        if not has_post_deadline_passed:
+            how_handler_options.append(
+                {
+                    "label": "Post",
+                    "value": "Post",
+                    "description": lazy_gettext(
+                        "We can only send this to an unnamed resident at the registered household address"
+                    ),
+                }
+            )
+        return how_handler_options
+
+    @staticmethod
+    def _build_how_question_description(has_post_deadline_passed):
+        how_description = [
+            lazy_gettext(
+                "For someone to complete a separate census, we need to send them an individual access code."
+            )
+        ]
+        how_description.append(
+            lazy_gettext("It is no longer possible to receive an access code by post")
+        ) if has_post_deadline_passed else how_description.append(
+            lazy_gettext("Select how to send access code")
+        )
+        return how_description
 
     @cached_property
     def selected_option(self):
@@ -529,6 +570,11 @@ class IndividualResponseChangeHandler(IndividualResponseHandler):
 
 
 class IndividualResponsePostAddressConfirmHandler(IndividualResponseHandler):
+    def __init__(self, **kwargs):
+        if self.has_post_deadline_passed():
+            raise IndividualResponsePostDeadlinePast
+        super().__init__(**kwargs)
+
     @cached_property
     def block_definition(self) -> Mapping:
         return {

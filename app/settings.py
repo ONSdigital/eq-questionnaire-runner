@@ -1,5 +1,7 @@
 import os
+from datetime import datetime
 
+from dateutil.tz import tzutc
 from structlog import get_logger
 
 logger = get_logger()
@@ -56,6 +58,9 @@ EQ_SUBMISSION_CONFIRMATION_TOPIC_ID = os.getenv(
     "EQ_SUBMISSION_CONFIRMATION_TOPIC_ID", "eq-submission-confirmation-topic"
 )
 EQ_INDIVIDUAL_RESPONSE_LIMIT = int(os.getenv("EQ_INDIVIDUAL_RESPONSE_LIMIT", "1"))
+EQ_INDIVIDUAL_RESPONSE_POST_DEADLINE = datetime.fromisoformat(
+    get_env_or_fail("EQ_INDIVIDUAL_RESPONSE_POST_DEADLINE")
+).astimezone(tz=tzutc())
 
 EQ_FEEDBACK_LIMIT = int(os.getenv("EQ_FEEDBACK_LIMIT", "10"))
 EQ_FEEDBACK_BACKEND = os.getenv("EQ_FEEDBACK_BACKEND")

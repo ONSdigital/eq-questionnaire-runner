@@ -18,6 +18,7 @@ from app.views.handlers.individual_response import (
     IndividualResponseHandler,
     IndividualResponseHowHandler,
     IndividualResponsePostAddressConfirmHandler,
+    IndividualResponsePostDeadlinePast,
     IndividualResponseTextConfirmHandler,
     IndividualResponseTextHandler,
     IndividualResponseWhoHandler,
@@ -121,14 +122,18 @@ def individual_response_change(schema, questionnaire_store, list_item_id):
 @with_schema
 def individual_response_post_address_confirm(schema, questionnaire_store, list_item_id):
     language_code = get_session_store().session_data.language_code
-    individual_response_handler = IndividualResponsePostAddressConfirmHandler(
-        schema=schema,
-        questionnaire_store=questionnaire_store,
-        language=language_code,
-        request_args=request.args,
-        form_data=request.form,
-        list_item_id=list_item_id,
-    )
+
+    try:
+        individual_response_handler = IndividualResponsePostAddressConfirmHandler(
+            schema=schema,
+            questionnaire_store=questionnaire_store,
+            language=language_code,
+            request_args=request.args,
+            form_data=request.form,
+            list_item_id=list_item_id,
+        )
+    except IndividualResponsePostDeadlinePast:
+        return redirect(url_for(".individual_response_how", list_item_id=list_item_id))
 
     if request.method == "POST" and individual_response_handler.form.validate():
         return individual_response_handler.handle_post()
