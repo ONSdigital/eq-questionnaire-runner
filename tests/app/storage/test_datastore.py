@@ -1,10 +1,15 @@
 import contextlib
+from datetime import datetime
 
 import mock
 from google.api_core import exceptions
 from google.cloud import datastore as google_datastore
 
-from app.data_models.app_models import QuestionnaireState, QuestionnaireStateSchema
+from app.data_models.app_models import (
+    EQSession,
+    QuestionnaireState,
+    QuestionnaireStateSchema,
+)
 from app.storage.datastore import Datastore
 from tests.app.app_context_test_case import AppContextTestCase
 
@@ -55,6 +60,22 @@ class TestDatastore(AppContextTestCase):
 
         self.assertEqual(
             exception.exception.args[0], "Unique key checking not supported"
+        )
+
+    @mock.patch("app.storage.datastore.Entity")
+    def test_put_exclude_indexes(self, mock_entity):
+        model = QuestionnaireState("someuser", "data", 1)
+        self.ds.put(model)
+        put_call_args = mock_entity.call_args.kwargs
+        self.assertIn("exclude_from_indexes", put_call_args)
+        self.assertEqual(len(put_call_args["exclude_from_indexes"]), 5)
+
+    @mock.patch("app.storage.datastore.Entity")
+    def test_put_with_index(self, mock_entity):
+        model = EQSession("session-id", "user-id", datetime.now(), "session-data")
+        self.ds.put(model)
+        self.assertNotIn(
+            "expires_at", mock_entity.call_args.kwargs["exclude_from_indexes"]
         )
 
     def test_delete(self):
