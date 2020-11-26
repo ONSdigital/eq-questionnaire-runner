@@ -58,8 +58,8 @@ EQ_SUBMISSION_CONFIRMATION_TOPIC_ID = os.getenv(
     "EQ_SUBMISSION_CONFIRMATION_TOPIC_ID", "eq-submission-confirmation-topic"
 )
 EQ_INDIVIDUAL_RESPONSE_LIMIT = int(os.getenv("EQ_INDIVIDUAL_RESPONSE_LIMIT", "1"))
-EQ_INDIVIDUAL_RESPONSE_POST_DEADLINE = datetime.fromisoformat(
-    get_env_or_fail("EQ_INDIVIDUAL_RESPONSE_POST_DEADLINE")
+EQ_INDIVIDUAL_RESPONSE_POSTAL_DEADLINE = datetime.fromisoformat(
+    get_env_or_fail("EQ_INDIVIDUAL_RESPONSE_POSTAL_DEADLINE")
 ).astimezone(tz=tzutc())
 
 EQ_FEEDBACK_LIMIT = int(os.getenv("EQ_FEEDBACK_LIMIT", "10"))

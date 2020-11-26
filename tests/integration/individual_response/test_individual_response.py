@@ -13,7 +13,7 @@ from tests.integration.integration_test_case import IntegrationTestCase
 class IndividualResponseTestCase(IntegrationTestCase):
     def setUp(self):
         settings.EQ_INDIVIDUAL_RESPONSE_LIMIT = 2
-        settings.EQ_INDIVIDUAL_RESPONSE_POST_DEADLINE = datetime.fromisoformat(
+        settings.EQ_INDIVIDUAL_RESPONSE_POSTAL_DEADLINE = datetime.fromisoformat(
             "2020-11-25T12:00:00"
         ).astimezone(tz=tzutc())
         # Dummy mobile number from the range published by Ofcom
@@ -1132,12 +1132,12 @@ class TestIndividualResponseSameNames(IndividualResponseTestCase):
 
 
 class TestIndividualResponseHow(IndividualResponseTestCase):
-    def test_block_definition_before_post_deadline(self):
+    def test_block_definition_before_postal_deadline(self):
         # Given I add a household member
         self._add_household_no_primary()
         self.post()
 
-        # When I navigate to the individual response how page before the post deadline
+        # When I navigate to the individual response how page before the postal deadline
         self.get(self.individual_response_link)
         self.get(self.individual_response_start_link)
 
@@ -1149,12 +1149,12 @@ class TestIndividualResponseHow(IndividualResponseTestCase):
         self.assertInBody("Select how to send access code")
 
     @freeze_time("2020-11-25T12:01:00")
-    def test_block_definition_after_post_deadline(self):
+    def test_block_definition_after_postal_deadline(self):
         # Given I add a household member
         self._add_household_no_primary()
         self.post()
 
-        # When I navigate to the individual response how page after the post deadline
+        # When I navigate to the individual response how page after the postal deadline
         self.get(self.individual_response_link)
         self.get(self.individual_response_start_link)
 
@@ -1169,11 +1169,11 @@ class TestIndividualResponseHow(IndividualResponseTestCase):
 
 class TestIndividualResponsePostAddressConfirmHandler(IndividualResponseTestCase):
     @freeze_time("2020-11-25T12:01:00")
-    def test_address_confirm_after_deadline(self):
+    def test_address_confirm_after_postal_deadline(self):
         # Given I add a number of non primary household members
         self._add_household_multiple_members_no_primary()
 
-        # When I try to access the address confirmation page after the deadline
+        # When I try to access the address confirmation page after the postal deadline
         self.get(self.individual_response_link)
         self.get(self.individual_response_start_link)
         list_item_id = self.get_who_choice(0)["list_item_id"]
@@ -1183,11 +1183,11 @@ class TestIndividualResponsePostAddressConfirmHandler(IndividualResponseTestCase
         self.assertInUrl(f"/individual-response/{list_item_id}/how")
 
     @freeze_time("2020-11-25T12:01:00")
-    def test_address_confirm_after_deadline_post(self):
+    def test_address_confirm_after_postal_deadline_post(self):
         # Given I add a number of non primary household members
         self._add_household_multiple_members_no_primary()
 
-        # When I try to post to the address confirmation page after the deadline
+        # When I try to post to the address confirmation page after the postal deadline
         self.get(self.individual_response_link)
         self.get(self.individual_response_start_link)
         list_item_id = self.get_who_choice(0)["list_item_id"]

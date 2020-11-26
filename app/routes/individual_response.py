@@ -18,7 +18,7 @@ from app.views.handlers.individual_response import (
     IndividualResponseHandler,
     IndividualResponseHowHandler,
     IndividualResponsePostAddressConfirmHandler,
-    IndividualResponsePostDeadlinePast,
+    IndividualResponsePostalDeadlinePast,
     IndividualResponseTextConfirmHandler,
     IndividualResponseTextHandler,
     IndividualResponseWhoHandler,
@@ -132,7 +132,7 @@ def individual_response_post_address_confirm(schema, questionnaire_store, list_i
             form_data=request.form,
             list_item_id=list_item_id,
         )
-    except IndividualResponsePostDeadlinePast:
+    except IndividualResponsePostalDeadlinePast:
         return redirect(url_for(".individual_response_how", list_item_id=list_item_id))
 
     if request.method == "POST" and individual_response_handler.form.validate():

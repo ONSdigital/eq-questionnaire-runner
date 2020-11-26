@@ -32,7 +32,7 @@ class IndividualResponseFulfilmentRequestPublicationFailed(Exception):
     pass
 
 
-class IndividualResponsePostDeadlinePast(Exception):
+class IndividualResponsePostalDeadlinePast(Exception):
     pass
 
 
@@ -92,11 +92,11 @@ class IndividualResponseHandler:
         ]
 
     @staticmethod
-    def has_post_deadline_passed():
-        individual_response_post_deadline = current_app.config[
-            "EQ_INDIVIDUAL_RESPONSE_POST_DEADLINE"
+    def has_postal_deadline_passed():
+        individual_response_postal_deadline = current_app.config[
+            "EQ_INDIVIDUAL_RESPONSE_POSTAL_DEADLINE"
         ]
-        return individual_response_post_deadline < datetime.now(tz=tzutc())
+        return individual_response_postal_deadline < datetime.now(tz=tzutc())
 
     def __init__(
         self,
@@ -299,7 +299,7 @@ class IndividualResponseHandler:
 class IndividualResponseHowHandler(IndividualResponseHandler):
     @cached_property
     def block_definition(self) -> Mapping:
-        has_post_deadline_passed = self.has_post_deadline_passed()
+        has_postal_deadline_passed = self.has_postal_deadline_passed()
         return {
             "type": "IndividualResponse",
             "id": "individual-response",
@@ -315,7 +315,7 @@ class IndividualResponseHowHandler(IndividualResponseHandler):
                     ),
                 },
                 "description": self._build_how_question_description(
-                    has_post_deadline_passed
+                    has_postal_deadline_passed
                 ),
                 "answers": [
                     {
@@ -324,7 +324,7 @@ class IndividualResponseHowHandler(IndividualResponseHandler):
                         "mandatory": False,
                         "default": "Text message",
                         "options": self._build_how_handler_answer_options(
-                            has_post_deadline_passed
+                            has_postal_deadline_passed
                         ),
                     }
                 ],
@@ -332,7 +332,7 @@ class IndividualResponseHowHandler(IndividualResponseHandler):
         }
 
     @staticmethod
-    def _build_how_handler_answer_options(has_post_deadline_passed):
+    def _build_how_handler_answer_options(has_postal_deadline_passed):
         how_handler_options = [
             {
                 "label": lazy_gettext("Text message"),
@@ -342,7 +342,7 @@ class IndividualResponseHowHandler(IndividualResponseHandler):
                 ),
             }
         ]
-        if not has_post_deadline_passed:
+        if not has_postal_deadline_passed:
             how_handler_options.append(
                 {
                     "label": lazy_gettext("Post"),
@@ -355,7 +355,7 @@ class IndividualResponseHowHandler(IndividualResponseHandler):
         return how_handler_options
 
     @staticmethod
-    def _build_how_question_description(has_post_deadline_passed):
+    def _build_how_question_description(has_postal_deadline_passed):
         how_description = [
             lazy_gettext(
                 "For someone to complete a separate census, we need to send them an individual access code."
@@ -363,7 +363,7 @@ class IndividualResponseHowHandler(IndividualResponseHandler):
         ]
         how_description.append(
             lazy_gettext("It is no longer possible to receive an access code by post")
-        ) if has_post_deadline_passed else how_description.append(
+        ) if has_postal_deadline_passed else how_description.append(
             lazy_gettext("Select how to send access code")
         )
         return how_description
@@ -565,8 +565,8 @@ class IndividualResponseChangeHandler(IndividualResponseHandler):
 
 class IndividualResponsePostAddressConfirmHandler(IndividualResponseHandler):
     def __init__(self, **kwargs):
-        if self.has_post_deadline_passed():
-            raise IndividualResponsePostDeadlinePast
+        if self.has_postal_deadline_passed():
+            raise IndividualResponsePostalDeadlinePast
         super().__init__(**kwargs)
 
     @cached_property
