@@ -169,7 +169,7 @@ def create_app(  # noqa: C901  pylint: disable=too-complex, too-many-statements
 
     add_safe_health_check(application)
 
-    compress.init_app(application)
+    setup_compression(application)
 
     setup_jinja_env(application)
 
@@ -445,6 +445,11 @@ def setup_babel(application):
     def get_timezone():  # pylint: disable=unused-variable
         # For now regardless of locale we will show times in GMT/BST
         return "Europe/London"
+
+
+def setup_compression(application):
+    application.config["COMPRESS_ALGORITHM"] = ["gzip", "br", "deflate"]
+    compress.init_app(application)
 
 
 def add_safe_health_check(application):

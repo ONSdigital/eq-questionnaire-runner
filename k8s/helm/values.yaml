@@ -15,7 +15,6 @@ feedbackBucket: ""
 
 googleTagManagerId: ""
 googleTagManagerAuth: ""
-googleTagManagerPreview: ""
 
 webServer:
   type: "gunicorn-async"

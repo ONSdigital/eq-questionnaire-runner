@@ -40,7 +40,7 @@ def get_env_or_fail(key):
     return value
 
 
-DATASTORE_USE_GRPC = parse_mode(os.getenv("DATASTORE_USE_GRPC", "False"))
+DATASTORE_USE_GRPC = parse_mode(os.getenv("DATASTORE_USE_GRPC", "True"))
 CDN_URL = os.getenv("CDN_URL", "https://cdn.ons.gov.uk")
 CDN_ASSETS_PATH = os.getenv("CDN_ASSETS_PATH", "/sdc/design-system")
 EQ_MINIMIZE_ASSETS = parse_mode(os.getenv("EQ_MINIMIZE_ASSETS", "True"))
@@ -78,7 +78,6 @@ EQ_SESSION_TIMEOUT_SECONDS = int(os.getenv("EQ_SESSION_TIMEOUT_SECONDS", str(45 
 
 EQ_GOOGLE_TAG_MANAGER_ID = os.getenv("EQ_GOOGLE_TAG_MANAGER_ID")
 EQ_GOOGLE_TAG_MANAGER_AUTH = os.getenv("EQ_GOOGLE_TAG_MANAGER_AUTH")
-EQ_GOOGLE_TAG_MANAGER_PREVIEW = os.getenv("EQ_GOOGLE_TAG_MANAGER_PREVIEW")
 
 EQ_NEW_RELIC_ENABLED = parse_mode(os.getenv("EQ_NEW_RELIC_ENABLED", "False"))
 EQ_APPLICATION_VERSION_PATH = ".application-version"

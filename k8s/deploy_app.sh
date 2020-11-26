@@ -18,7 +18,6 @@ helm upgrade --install \
     --set-string feedbackBucket="${FEEDBACK_BUCKET_NAME}" \
     --set-string googleTagManagerId="${GOOGLE_TAG_MANAGER_ID}" \
     --set-string googleTagManagerAuth="${GOOGLE_TAG_MANAGER_AUTH}" \
-    --set-string googleTagManagerPreview="${GOOGLE_TAG_MANAGER_PREVIEW}" \
     --set-string image.repository="${DOCKER_REGISTRY}/eq-questionnaire-runner" \
     --set-string image.tag="${IMAGE_TAG}" \
     --set-string cookieSettingsUrl="${COOKIE_SETTINGS_URL}" \

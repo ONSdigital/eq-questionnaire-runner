@@ -109,8 +109,6 @@ spec:
               value: "{{- .Values.googleTagManagerId }}"
             - name: EQ_GOOGLE_TAG_MANAGER_AUTH
               value: "{{- .Values.googleTagManagerAuth }}"
-            - name: EQ_GOOGLE_TAG_MANAGER_PREVIEW
-              value: "{{- .Values.googleTagManagerPreview }}"
             - name: COOKIE_SETTINGS_URL
               value: "{{- .Values.cookieSettingsUrl }}"
             - name: CDN_URL

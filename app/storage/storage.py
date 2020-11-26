@@ -16,6 +16,7 @@ class StorageModel:
         app_models.EQSession: {
             "key_field": "eq_session_id",
             "expiry_field": "expires_at",
+            "index_fields": ["expires_at"],
             "table_name_key": "EQ_SESSION_TABLE_NAME",
             "schema": app_models.EQSessionSchema,
         },
@@ -43,6 +44,10 @@ class StorageModel:
     @cached_property
     def expiry_field(self):
         return self._config.get("expiry_field")
+
+    @cached_property
+    def index_fields(self):
+        return self._config.get("index_fields", [])
 
     @cached_property
     def table_name(self):
