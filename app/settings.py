@@ -1,7 +1,6 @@
 import os
 from datetime import datetime
 
-from dateutil.tz import tzutc
 from structlog import get_logger
 
 logger = get_logger()
@@ -40,6 +39,12 @@ def get_env_or_fail(key):
     return value
 
 
+def utcoffset_or_fail(date_value, key):
+    if date_value.utcoffset() is None:
+        raise Exception("'{}' datetime offset missing".format(key))
+    return date_value
+
+
 DATASTORE_USE_GRPC = parse_mode(os.getenv("DATASTORE_USE_GRPC", "True"))
 CDN_URL = os.getenv("CDN_URL", "https://cdn.ons.gov.uk")
 CDN_ASSETS_PATH = os.getenv("CDN_ASSETS_PATH", "/sdc/design-system")
@@ -58,9 +63,10 @@ EQ_SUBMISSION_CONFIRMATION_TOPIC_ID = os.getenv(
     "EQ_SUBMISSION_CONFIRMATION_TOPIC_ID", "eq-submission-confirmation-topic"
 )
 EQ_INDIVIDUAL_RESPONSE_LIMIT = int(os.getenv("EQ_INDIVIDUAL_RESPONSE_LIMIT", "1"))
-EQ_INDIVIDUAL_RESPONSE_POSTAL_DEADLINE = datetime.fromisoformat(
-    get_env_or_fail("EQ_INDIVIDUAL_RESPONSE_POSTAL_DEADLINE")
-).astimezone(tz=tzutc())
+EQ_INDIVIDUAL_RESPONSE_POSTAL_DEADLINE = utcoffset_or_fail(
+    datetime.fromisoformat(get_env_or_fail("EQ_INDIVIDUAL_RESPONSE_POSTAL_DEADLINE")),
+    "EQ_INDIVIDUAL_RESPONSE_POSTAL_DEADLINE",
+)
 
 EQ_FEEDBACK_LIMIT = int(os.getenv("EQ_FEEDBACK_LIMIT", "10"))
 EQ_FEEDBACK_BACKEND = os.getenv("EQ_FEEDBACK_BACKEND")

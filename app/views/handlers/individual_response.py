@@ -1,9 +1,8 @@
-from datetime import datetime
+from datetime import datetime, timezone
 from functools import cached_property
 from typing import List, Mapping, Optional
 from uuid import uuid4
 
-from dateutil.tz import tzutc
 from flask import current_app, redirect
 from flask.helpers import url_for
 from flask_babel import lazy_gettext
@@ -96,7 +95,7 @@ class IndividualResponseHandler:
         individual_response_postal_deadline = current_app.config[
             "EQ_INDIVIDUAL_RESPONSE_POSTAL_DEADLINE"
         ]
-        return individual_response_postal_deadline < datetime.now(tz=tzutc())
+        return individual_response_postal_deadline < datetime.now(timezone.utc)
 
     def __init__(
         self,
@@ -314,7 +313,7 @@ class IndividualResponseHowHandler(IndividualResponseHandler):
                         self._list_name
                     ),
                 },
-                "description": self._build_how_question_description(
+                "description": self._build_question_description(
                     has_postal_deadline_passed
                 ),
                 "answers": [
@@ -323,7 +322,7 @@ class IndividualResponseHowHandler(IndividualResponseHandler):
                         "id": "individual-response-how-answer",
                         "mandatory": False,
                         "default": "Text message",
-                        "options": self._build_how_handler_answer_options(
+                        "options": self._build_handler_answer_options(
                             has_postal_deadline_passed
                         ),
                     }
@@ -332,8 +331,8 @@ class IndividualResponseHowHandler(IndividualResponseHandler):
         }
 
     @staticmethod
-    def _build_how_handler_answer_options(has_postal_deadline_passed):
-        how_handler_options = [
+    def _build_handler_answer_options(has_postal_deadline_passed):
+        handler_options = [
             {
                 "label": lazy_gettext("Text message"),
                 "value": "Text message",
@@ -343,7 +342,7 @@ class IndividualResponseHowHandler(IndividualResponseHandler):
             }
         ]
         if not has_postal_deadline_passed:
-            how_handler_options.append(
+            handler_options.append(
                 {
                     "label": lazy_gettext("Post"),
                     "value": "Post",
@@ -352,21 +351,21 @@ class IndividualResponseHowHandler(IndividualResponseHandler):
                     ),
                 }
             )
-        return how_handler_options
+        return handler_options
 
     @staticmethod
-    def _build_how_question_description(has_postal_deadline_passed):
-        how_description = [
+    def _build_question_description(has_postal_deadline_passed):
+        description = [
             lazy_gettext(
                 "For someone to complete a separate census, we need to send them an individual access code."
             )
         ]
-        how_description.append(
+        description.append(
             lazy_gettext("It is no longer possible to receive an access code by post")
-        ) if has_postal_deadline_passed else how_description.append(
+        ) if has_postal_deadline_passed else description.append(
             lazy_gettext("Select how to send access code")
         )
-        return how_description
+        return description
 
     @cached_property
     def selected_option(self):
