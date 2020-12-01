@@ -61,8 +61,9 @@ describe("Date checks", () => {
 
     $(DateRangePage.submit()).click();
 
-    // Then an error message is shown
+    // Then an error message is shown and the question panel is highlighted
     expect($(DateRangePage.errorNumber(1)).getText()).to.contain("Enter a 'period to' date later than the 'period from' date");
+    expect($(DateRangePage.dateRangeQuestionErrorPanel()).isExisting()).to.be.true;
 
     // Then clicking error should focus on first input field
     $(DateRangePage.errorNumber(1)).click();
@@ -81,8 +82,9 @@ describe("Date checks", () => {
 
     $(DateRangePage.submit()).click();
 
-    // Then an error message is shown
+    // Then an error message is shown and the question panel is highlighted
     expect($(DateRangePage.errorNumber(1)).getText()).to.contain("Enter a 'period to' date later than the 'period from' date");
+    expect($(DateRangePage.dateRangeQuestionErrorPanel()).isExisting()).to.be.true;
   });
 
   it("Given the test_dates survey is selected when an invalid date is entered in a date range then an error message is shown", () => {
