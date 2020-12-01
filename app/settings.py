@@ -1,4 +1,5 @@
 import os
+from datetime import datetime
 
 from structlog import get_logger
 
@@ -33,9 +34,15 @@ def read_file(file_name):
 def get_env_or_fail(key):
     value = os.getenv(key)
     if value is None:
-        raise Exception("Setting '{}' Missing".format(key))
+        raise Exception(f"Setting '{key}' Missing")
 
     return value
+
+
+def utcoffset_or_fail(date_value, key):
+    if date_value.utcoffset() is None:
+        raise Exception(f"'{key}' datetime offset missing")
+    return date_value
 
 
 DATASTORE_USE_GRPC = parse_mode(os.getenv("DATASTORE_USE_GRPC", "True"))
@@ -56,6 +63,10 @@ EQ_SUBMISSION_CONFIRMATION_TOPIC_ID = os.getenv(
     "EQ_SUBMISSION_CONFIRMATION_TOPIC_ID", "eq-submission-confirmation-topic"
 )
 EQ_INDIVIDUAL_RESPONSE_LIMIT = int(os.getenv("EQ_INDIVIDUAL_RESPONSE_LIMIT", "1"))
+EQ_INDIVIDUAL_RESPONSE_POSTAL_DEADLINE = utcoffset_or_fail(
+    datetime.fromisoformat(get_env_or_fail("EQ_INDIVIDUAL_RESPONSE_POSTAL_DEADLINE")),
+    "EQ_INDIVIDUAL_RESPONSE_POSTAL_DEADLINE",
+)
 
 EQ_FEEDBACK_LIMIT = int(os.getenv("EQ_FEEDBACK_LIMIT", "10"))
 EQ_FEEDBACK_BACKEND = os.getenv("EQ_FEEDBACK_BACKEND")

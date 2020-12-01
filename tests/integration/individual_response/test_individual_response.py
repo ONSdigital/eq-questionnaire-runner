@@ -1,14 +1,20 @@
-import re
+from datetime import datetime, timezone
 from unittest.mock import MagicMock
+
+from freezegun import freeze_time
 
 from app import settings
 from app.publisher.exceptions import PublicationFailed
 from tests.integration.integration_test_case import IntegrationTestCase
 
 
+@freeze_time("2020-11-25T11:59:00")
 class IndividualResponseTestCase(IntegrationTestCase):
     def setUp(self):
         settings.EQ_INDIVIDUAL_RESPONSE_LIMIT = 2
+        settings.EQ_INDIVIDUAL_RESPONSE_POSTAL_DEADLINE = datetime.fromisoformat(
+            "2020-11-25T12:00:00+00:00"
+        )
         # Dummy mobile number from the range published by Ofcom
         # https://www.ofcom.org.uk/phones-telecoms-and-internet/information-for-industry/numbering/numbers-for-drama
         self.DUMMY_MOBILE_NUMBER = "07700900258"
@@ -1122,3 +1128,69 @@ class TestIndividualResponseSameNames(IndividualResponseTestCase):
 
         # Then I should be on the how page for that person
         self.assertInUrl(list_item_id)
+
+
+class TestIndividualResponseHow(IndividualResponseTestCase):
+    def test_block_definition_before_postal_deadline(self):
+        # Given I add a household member
+        self._add_household_no_primary()
+        self.post()
+
+        # When I navigate to the individual response how page before the postal deadline
+        self.get(self.individual_response_link)
+        self.get(self.individual_response_start_link)
+
+        # Then one of my radio box options should be 'Post'
+        self.assertInBody("Post")
+        self.assertInBody(
+            "We can only send this to an unnamed resident at the registered household address"
+        )
+        self.assertInBody("Select how to send access code")
+
+    @freeze_time("2020-11-25T12:01:00")
+    def test_block_definition_after_postal_deadline(self):
+        # Given I add a household member
+        self._add_household_no_primary()
+        self.post()
+
+        # When I navigate to the individual response how page after the postal deadline
+        self.get(self.individual_response_link)
+        self.get(self.individual_response_start_link)
+
+        # Then 'Post' should not be one of my radio box options, and I should have a message telling me it's no longer possible
+        self.assertNotInBody("Post")
+        self.assertNotInBody(
+            "We can only send this to an unnamed resident at the registered household address"
+        )
+        self.assertNotInBody("Select how to send access code")
+        self.assertInBody("It is no longer possible to receive an access code by post")
+
+
+class TestIndividualResponsePostAddressConfirmHandler(IndividualResponseTestCase):
+    @freeze_time("2020-11-25T12:01:00")
+    def test_address_confirm_after_postal_deadline(self):
+        # Given I add a number of non primary household members
+        self._add_household_multiple_members_no_primary()
+
+        # When I try to access the address confirmation page after the postal deadline
+        self.get(self.individual_response_link)
+        self.get(self.individual_response_start_link)
+        list_item_id = self.get_who_choice(0)["list_item_id"]
+        self.get(f"/individual-response/{list_item_id}/post/confirm-address")
+
+        # Then I should be redirect to the how page
+        self.assertInUrl(f"/individual-response/{list_item_id}/how")
+
+    @freeze_time("2020-11-25T12:01:00")
+    def test_address_confirm_after_postal_deadline_post(self):
+        # Given I add a number of non primary household members
+        self._add_household_multiple_members_no_primary()
+
+        # When I try to post to the address confirmation page after the postal deadline
+        self.get(self.individual_response_link)
+        self.get(self.individual_response_start_link)
+        list_item_id = self.get_who_choice(0)["list_item_id"]
+        self.post(url=f"/individual-response/{list_item_id}/post/confirm-address")
+
+        # Then I should be redirect to the how page
+        self.assertInUrl(f"/individual-response/{list_item_id}/how")

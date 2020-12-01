@@ -16,6 +16,7 @@ helm upgrade --install \
     k8s/helm \
     --set-string submissionBucket="${SUBMISSION_BUCKET_NAME}" \
     --set-string feedbackBucket="${FEEDBACK_BUCKET_NAME}" \
+    --set-string individualResponsePostalDeadline="${INDIVIDUAL_RESPONSE_POSTAL_DEADLINE}" \
     --set-string googleTagManagerId="${GOOGLE_TAG_MANAGER_ID}" \
     --set-string googleTagManagerAuth="${GOOGLE_TAG_MANAGER_AUTH}" \
     --set-string image.repository="${DOCKER_REGISTRY}/eq-questionnaire-runner" \
