@@ -349,9 +349,9 @@ class IndividualResponseHowHandler(IndividualResponseHandler):
 
     def _build_question_description(self):
         description = (
-            "It is no longer possible to receive an access code by post"
+            lazy_gettext("It is no longer possible to receive an access code by post")
             if self.has_postal_deadline_passed
-            else "Select how to send access code"
+            else lazy_gettext("Select how to send access code")
         )
         return [
             lazy_gettext(
