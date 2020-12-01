@@ -1,7 +1,6 @@
-from datetime import datetime
+from datetime import datetime, timezone
 from unittest.mock import MagicMock
 
-from dateutil.tz import tzutc
 from freezegun import freeze_time
 
 from app import settings
@@ -14,8 +13,8 @@ class IndividualResponseTestCase(IntegrationTestCase):
     def setUp(self):
         settings.EQ_INDIVIDUAL_RESPONSE_LIMIT = 2
         settings.EQ_INDIVIDUAL_RESPONSE_POSTAL_DEADLINE = datetime.fromisoformat(
-            "2020-11-25T12:00:00"
-        ).astimezone(tz=tzutc())
+            "2020-11-25T12:00:00+00:00"
+        )
         # Dummy mobile number from the range published by Ofcom
         # https://www.ofcom.org.uk/phones-telecoms-and-internet/information-for-industry/numbering/numbers-for-drama
         self.DUMMY_MOBILE_NUMBER = "07700900258"

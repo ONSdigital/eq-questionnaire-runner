@@ -34,14 +34,14 @@ def read_file(file_name):
 def get_env_or_fail(key):
     value = os.getenv(key)
     if value is None:
-        raise Exception("Setting '{}' Missing".format(key))
+        raise Exception(f"Setting '{key}' Missing")
 
     return value
 
 
 def utcoffset_or_fail(date_value, key):
     if date_value.utcoffset() is None:
-        raise Exception("'{}' datetime offset missing".format(key))
+        raise Exception(f"'{key}' datetime offset missing")
     return date_value
 
 
