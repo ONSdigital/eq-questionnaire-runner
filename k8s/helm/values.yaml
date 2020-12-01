@@ -8,7 +8,7 @@ image:
   pullPolicy: Always
 
 individualResponseLimit: "75"
-individualResponsePostalDeadline: "2021-04-28T14:00:00+02:00"
+individualResponsePostalDeadline: "2021-04-28T14:02:00+00:00"
 
 submissionBucket: ""
 feedbackBucket: ""
