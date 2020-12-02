@@ -85,6 +85,8 @@ spec:
               value: eq-submission-confirmation-topic
             - name: EQ_INDIVIDUAL_RESPONSE_LIMIT
               value: "{{- .Values.individualResponseLimit }}"
+            - name: EQ_INDIVIDUAL_RESPONSE_POSTAL_DEADLINE
+              value: "{{- .Values.individualResponsePostalDeadline }}"
             - name: EQ_FEEDBACK_LIMIT
               value: "{{- .Values.feedbackLimit }}"
             - name: WEB_SERVER_TYPE

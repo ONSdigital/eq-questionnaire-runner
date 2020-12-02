@@ -1,3 +1,4 @@
+from datetime import datetime, timezone
 from functools import cached_property
 from typing import List, Mapping, Optional
 from uuid import uuid4
@@ -27,6 +28,10 @@ class IndividualResponseLimitReached(Exception):
 
 
 class IndividualResponseFulfilmentRequestPublicationFailed(Exception):
+    pass
+
+
+class IndividualResponsePostalDeadlinePast(Exception):
     pass
 
 
@@ -84,6 +89,13 @@ class IndividualResponseHandler:
                 ],
             }
         ]
+
+    @cached_property
+    def has_postal_deadline_passed(self):
+        individual_response_postal_deadline = current_app.config[
+            "EQ_INDIVIDUAL_RESPONSE_POSTAL_DEADLINE"
+        ]
+        return individual_response_postal_deadline < datetime.now(timezone.utc)
 
     def __init__(
         self,
@@ -300,38 +312,53 @@ class IndividualResponseHowHandler(IndividualResponseHandler):
                         self._list_name
                     ),
                 },
-                "description": [
-                    lazy_gettext(
-                        "For someone to complete a separate census, we need to send them an individual access code."
-                    ),
-                    lazy_gettext("Select how to send access code"),
-                ],
+                "description": self._build_question_description(),
                 "answers": [
                     {
                         "type": "Radio",
                         "id": "individual-response-how-answer",
                         "mandatory": False,
                         "default": "Text message",
-                        "options": [
-                            {
-                                "label": lazy_gettext("Text message"),
-                                "value": "Text message",
-                                "description": lazy_gettext(
-                                    "We will need their mobile number for this"
-                                ),
-                            },
-                            {
-                                "label": lazy_gettext("Post"),
-                                "value": "Post",
-                                "description": lazy_gettext(
-                                    "We can only send this to an unnamed resident at the registered household address"
-                                ),
-                            },
-                        ],
+                        "options": self._build_handler_answer_options(),
                     }
                 ],
             },
         }
+
+    def _build_handler_answer_options(self):
+        handler_options = [
+            {
+                "label": lazy_gettext("Text message"),
+                "value": "Text message",
+                "description": lazy_gettext(
+                    "We will need their mobile number for this"
+                ),
+            }
+        ]
+        if not self.has_postal_deadline_passed:
+            handler_options.append(
+                {
+                    "label": lazy_gettext("Post"),
+                    "value": "Post",
+                    "description": lazy_gettext(
+                        "We can only send this to an unnamed resident at the registered household address"
+                    ),
+                }
+            )
+        return handler_options
+
+    def _build_question_description(self):
+        description = (
+            lazy_gettext("It is no longer possible to receive an access code by post")
+            if self.has_postal_deadline_passed
+            else lazy_gettext("Select how to send access code")
+        )
+        return [
+            lazy_gettext(
+                "For someone to complete a separate census, we need to send them an individual access code."
+            ),
+            lazy_gettext(description),
+        ]
 
     @cached_property
     def selected_option(self):
@@ -529,6 +556,11 @@ class IndividualResponseChangeHandler(IndividualResponseHandler):
 
 
 class IndividualResponsePostAddressConfirmHandler(IndividualResponseHandler):
+    def __init__(self, **kwargs):
+        if self.has_postal_deadline_passed:
+            raise IndividualResponsePostalDeadlinePast
+        super().__init__(**kwargs)
+
     @cached_property
     def block_definition(self) -> Mapping:
         return {
