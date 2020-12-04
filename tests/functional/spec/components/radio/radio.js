@@ -28,7 +28,7 @@ describe("Component: Radio", () => {
       expect(browser.getUrl()).to.contain(RadioMandatorySummary.pageName);
       expect($(RadioMandatorySummary.radioMandatoryAnswer()).getText()).to.contain("Tea & Coffee");
     });
-   });
+  });
 
   describe("Given I start a Mandatory Radio survey", () => {
     before(() => {
