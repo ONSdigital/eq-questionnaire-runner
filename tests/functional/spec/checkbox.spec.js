@@ -95,7 +95,7 @@ describe('Checkbox with "other" option', () => {
     expect($(SummaryPage.nonMandatoryCheckboxAnswer()).getText()).to.contain("The other value");
   });
 
-  t("Given that there is an escaped character in an answer label, when the user selects the answer, then the label should be displayed on the summary screen", () => {
+  it("Given that there is an escaped character in an answer label, when the user selects the answer, then the label should be displayed on the summary screen", () => {
     // When
     $(MandatoryCheckboxPage.hamCheese()).click();
     $(MandatoryCheckboxPage.submit()).click();
