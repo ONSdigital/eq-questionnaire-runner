@@ -95,6 +95,18 @@ describe('Checkbox with "other" option', () => {
     expect($(SummaryPage.nonMandatoryCheckboxAnswer()).getText()).to.contain("The other value");
   });
 
+  t("Given that there is an escaped character in an answer label, when the user selects the answer, then the label should be displayed on the summary screen", () => {
+    // When
+    $(MandatoryCheckboxPage.hamCheese()).click();
+    $(MandatoryCheckboxPage.submit()).click();
+    $(NonMandatoryCheckboxPage.other()).click();
+    $(NonMandatoryCheckboxPage.otherDetail()).setValue("The other value");
+    $(NonMandatoryCheckboxPage.submit()).click();
+    $(singleCheckboxPage.submit()).click();
+    // Then
+    expect($(SummaryPage.mandatoryCheckboxAnswer()).getText()).to.contain("Ham & Cheese");
+  });
+
   it("Given I have previously added text in other textfield and saved, when I uncheck other options and select a different checkbox as answer, then the text entered in other field must be wiped.", () => {
     // When
     $(MandatoryCheckboxPage.other()).click();
@@ -102,7 +114,7 @@ describe('Checkbox with "other" option', () => {
     $(MandatoryCheckboxPage.submit()).click();
     $(NonMandatoryCheckboxPage.previous()).click();
     $(MandatoryCheckboxPage.other()).click();
-    $(MandatoryCheckboxPage.cheese()).click();
+    $(MandatoryCheckboxPage.hamCheese()).click();
     $(MandatoryCheckboxPage.submit()).click();
     $(NonMandatoryCheckboxPage.previous()).click();
     // Then
@@ -126,7 +138,7 @@ describe('Checkbox with "other" option', () => {
   it("Given a mandatory checkbox answer, when the user selects more than one option, then the answer should be displayed as a list on the summary screen", () => {
     // When
     $(MandatoryCheckboxPage.ham()).click();
-    $(MandatoryCheckboxPage.cheese()).click();
+    $(MandatoryCheckboxPage.hamCheese()).click();
     $(MandatoryCheckboxPage.submit()).click();
     $(NonMandatoryCheckboxPage.submit()).click();
     $(singleCheckboxPage.submit()).click();

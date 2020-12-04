@@ -28,6 +28,13 @@ describe("Component: Radio", () => {
       expect(browser.getUrl()).to.contain(RadioMandatorySummary.pageName);
       expect($(RadioMandatorySummary.radioMandatoryAnswer()).getText()).to.contain("Coffee");
     });
+
+    it("When I have selected a radio option that contains an escaped character, Then the selected option should be displayed in the summary", () => {
+      $(RadioMandatoryPage.teaCoffee()).click();
+      $(RadioMandatoryPage.submit()).click();
+      expect(browser.getUrl()).to.contain(RadioMandatorySummary.pageName);
+      expect($(RadioMandatorySummary.radioMandatoryAnswer()).getText()).to.contain("Tea & Coffee");
+    });
   });
 
   describe("Given I start a Mandatory Radio survey  ", () => {

@@ -48,6 +48,10 @@
                                             {
                                                 "label": "Tea",
                                                 "value": "Tea"
+                                            },
+                                            {
+                                                "label": "Tea & Coffee",
+                                                "value": "Tea & Coffee"
                                             }
                                         ]
                                     }

@@ -1,3 +1,4 @@
+from jinja2 import escape, Markup
 from app.views.contexts.summary.answer import Answer
 
 
@@ -95,7 +96,7 @@ class Question:
     def _build_checkbox_answers(self, answer, answer_schema, answer_store):
         multiple_answers = []
         for option in answer_schema["options"]:
-            if option["value"] in answer:
+            if escape(option["value"]) in answer:
                 detail_answer_value = self._get_detail_answer_value(
                     option, answer_store
                 )
@@ -116,7 +117,7 @@ class Question:
 
     def _build_radio_answer(self, answer, answer_schema, answer_store):
         for option in answer_schema["options"]:
-            if answer == option["value"]:
+            if answer == escape(option["value"]):
                 detail_answer_value = self._get_detail_answer_value(
                     option, answer_store
                 )
