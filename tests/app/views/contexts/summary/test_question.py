@@ -401,12 +401,12 @@ class TestQuestion(AppContextTestCase):  # pylint: disable=too-many-public-metho
     def test_checkbox_answer_with_numeric_detail_answer_returns_number(self):
         # Given
         self.answer_store.add_or_update(
-            Answer(answer_id="answer_1", value=[1, "Other"])
+            Answer(answer_id="answer_1", value=["1", "Other"])
         )
         self.answer_store.add_or_update(Answer(answer_id="child_answer", value=2))
 
         options = [
-            {"label": 1, "value": 1},
+            {"label": "1", "value": "1"},
             {
                 "label": "Other",
                 "value": "Other",
