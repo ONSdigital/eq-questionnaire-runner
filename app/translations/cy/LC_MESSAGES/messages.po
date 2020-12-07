@@ -723,7 +723,7 @@ msgstr "Heb gael e-bost?"
 
 #: templates/confirmation-email-sent.html:30
 msgid "It can take a few minutes for the email to arrive. If it doesn't arrive, check your junk mail, or you can <a href='{send_confirmation_email_url}' id='send-another-email'>send another confirmation email</a>."
-msgstr "Gall gymryd ychydig funudau i’r e-bost gyrraedd. Os na fydd yn cyrraedd, edrychwch yn eich ffolder post sothach, neu gallwch <a href='{send_confirmation_email_url}' id='send-another-email'> anfon e-bost cadarnhau arall</a>."
+msgstr "Gall gymryd ychydig funudau i’r e-bost gyrraedd. Os na fydd yn cyrraedd, edrychwch yn eich ffolder post sothach, neu gallwch <a href='{send_confirmation_email_url}' id='send-another-email'>anfon e-bost cadarnhau arall</a>."
 
 #: templates/confirmation-email.html:12
 msgid "Send another confirmation email"
