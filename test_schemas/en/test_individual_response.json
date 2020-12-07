@@ -290,6 +290,148 @@
                                     ]
                                 }
                             }
+                        },
+                        {
+                            "id": "visitor-list-collector",
+                            "type": "ListCollector",
+                            "for_list": "visitor",
+                            "question": {
+                                "id": "visitor-question",
+                                "type": "General",
+                                "title": "Any visitors?",
+                                "answers": [
+                                    {
+                                        "id": "any-visitors",
+                                        "mandatory": true,
+                                        "type": "Radio",
+                                        "options": [
+                                            {
+                                                "label": "Yes",
+                                                "value": "Yes",
+                                                "action": {
+                                                    "type": "RedirectToListAddBlock"
+                                                }
+                                            },
+                                            {
+                                                "label": "No",
+                                                "value": "No"
+                                            }
+                                        ]
+                                    }
+                                ]
+                            },
+                            "add_block": {
+                                "id": "add-visitor",
+                                "type": "ListAddQuestion",
+                                "question": {
+                                    "id": "visitor-add-person",
+                                    "type": "General",
+                                    "title": "What is the name of the visitor?",
+                                    "answers": [
+                                        {
+                                            "id": "visitor-first-name",
+                                            "label": "First name",
+                                            "mandatory": true,
+                                            "type": "TextField"
+                                        },
+                                        {
+                                            "id": "visitor-middle-names",
+                                            "label": "Middle names",
+                                            "mandatory": false,
+                                            "type": "TextField"
+                                        },
+                                        {
+                                            "id": "visitor-last-name",
+                                            "label": "Last name",
+                                            "mandatory": true,
+                                            "type": "TextField"
+                                        }
+                                    ]
+                                }
+                            },
+                            "edit_block": {
+                                "id": "visitor-edit-person",
+                                "type": "ListEditQuestion",
+                                "question": {
+                                    "id": "visitor-edit-question",
+                                    "type": "General",
+                                    "title": "What is the name of the visitor?",
+                                    "answers": [
+                                        {
+                                            "id": "visitor-first-name",
+                                            "label": "First name",
+                                            "mandatory": true,
+                                            "type": "TextField"
+                                        },
+                                        {
+                                            "id": "visitor-middle-names",
+                                            "label": "Middle names",
+                                            "mandatory": false,
+                                            "type": "TextField"
+                                        },
+                                        {
+                                            "id": "visitor-last-name",
+                                            "label": "Last name",
+                                            "mandatory": true,
+                                            "type": "TextField"
+                                        }
+                                    ]
+                                }
+                            },
+                            "remove_block": {
+                                "id": "visitor-remove-person",
+                                "type": "ListRemoveQuestion",
+                                "question": {
+                                    "id": "visitor-remove-question",
+                                    "type": "General",
+                                    "title": "Are you sure you want to remove this visitor?",
+                                    "answers": [
+                                        {
+                                            "id": "visitor-remove-confirmation",
+                                            "mandatory": true,
+                                            "type": "Radio",
+                                            "options": [
+                                                {
+                                                    "label": "Yes",
+                                                    "value": "Yes",
+                                                    "action": {
+                                                        "type": "RemoveListItemAndAnswers"
+                                                    }
+                                                },
+                                                {
+                                                    "label": "No",
+                                                    "value": "No"
+                                                }
+                                            ]
+                                        }
+                                    ]
+                                }
+                            },
+                            "summary": {
+                                "title": {
+                                    "text": "Visitors"
+                                },
+                                "item_title": {
+                                    "text": "{visitor_name}",
+                                    "placeholders": [
+                                        {
+                                            "placeholder": "visitor_name",
+                                            "transforms": [
+                                                {
+                                                    "arguments": {
+                                                        "delimiter": " ",
+                                                        "list_to_concatenate": {
+                                                            "identifier": ["visitor-first-name", "visitor-last-name"],
+                                                            "source": "answers"
+                                                        }
+                                                    },
+                                                    "transform": "concatenate_list"
+                                                }
+                                            ]
+                                        }
+                                    ]
+                                }
+                            }
                         }
                     ]
                 }
