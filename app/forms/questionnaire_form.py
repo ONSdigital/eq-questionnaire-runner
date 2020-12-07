@@ -299,7 +299,10 @@ class QuestionnaireForm(FlaskForm):
 
         if self.question["id"] in self.question_errors:
             ordered_errors += [
-                (self.question["id"], self.question_errors[self.question["id"]])
+                (
+                    _get_error_id(self.question["id"]),
+                    self.question_errors[self.question["id"]],
+                )
             ]
 
         for answer in self.question["answers"]:
@@ -383,8 +386,8 @@ def map_detail_answer_errors(errors, answer_json):
     return detail_answer_errors
 
 
-def _get_error_id(answer_id):
-    return f"{answer_id}-error"
+def _get_error_id(id):
+    return f"{id}-error"
 
 
 def _clear_detail_answer_field(form_data, question_schema):
