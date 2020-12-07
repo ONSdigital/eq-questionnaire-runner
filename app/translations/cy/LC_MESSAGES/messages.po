@@ -976,7 +976,7 @@ msgstr "Gallwch geisio <a href='{url}'>cyflwyno eich cyfrifiad eto</a>"
 
 #: templates/errors/submission-failed.html:10
 msgid "If this problem keeps happening, please <a href='{url}'>contact us</a> for help."
-msgstr "Os bydd y broblem hon yn parhau, <a href='{url}'>cysylltwch â ni </a> i gael cymorth."
+msgstr "Os bydd y broblem hon yn parhau, <a href='{url}'>cysylltwch â ni</a> i gael cymorth."
 
 #: templates/individual_response/confirmation-post.html:15
 msgid "A letter has been sent to Individual Resident at {display_address}"
