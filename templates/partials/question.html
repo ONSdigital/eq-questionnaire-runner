@@ -1,8 +1,9 @@
 {% from "components/question/_macro.njk" import onsQuestion %}
 {% from "components/fieldset/_macro.njk" import onsFieldset %}
 {% from "components/panel/_macro.njk" import onsPanel %}
-{% from 'macros/helpers.html' import format_paragraphs %}
+{% from "components/error/_macro.njk" import onsError %}
 
+{% from 'macros/helpers.html' import format_paragraphs %}
 {% from 'macros/helpers.html' import interviewer_note %}
 
 {% set form = content.form %}
@@ -11,6 +12,7 @@
 {% set question_title= question.title %}
 {% set question_description = format_paragraphs(question.description) %}
 {% set question_instruction = format_paragraphs(question.instruction) %}
+{% set question_error = form.question_errors[question.id] %}
 
 {% set should_wrap_with_fieldset = should_wrap_with_fieldset(question) %}
 
@@ -93,6 +95,7 @@
     {%- endif -%}
   {%- endif -%}
 {% endset %}
+
 {% call onsQuestion({
   "id": question.id,
   "title": title,
@@ -107,5 +110,23 @@
   {{ individual_response_guidance }}
   {{ question_definition }}
   {{ question_guidance }}
-  {{ question_answers }}
+
+  {% if question_error %}
+    {% set config = {
+      "text": question_error,
+      "id": question.id ~ '-error',
+      "attributes": {
+        "data-ga": "question-error",
+        "data-ga-category": "Question error",
+        "data-ga-action": question_error | striptags,
+        "data-ga-label": question.id
+      }
+    }%}
+    {% call onsError(config) %}
+      {{ question_answers }}
+    {% endcall %}
+  {% else %}
+    {{ question_answers }}
+  {% endif %}
+
 {% endcall %}
