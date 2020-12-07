@@ -408,9 +408,7 @@
                                 }
                             },
                             "summary": {
-                                "title": {
-                                    "text": "Visitors"
-                                },
+                                "title": "Visitors",
                                 "item_title": {
                                     "text": "{visitor_name}",
                                     "placeholders": [
