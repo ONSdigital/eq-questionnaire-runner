@@ -2,14 +2,14 @@ msgid ""
 msgstr ""
 "Project-Id-Version: eq-census\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2020-11-24 14:56+0000\n"
-"PO-Revision-Date: 2020-11-26 13:05\n"
+"POT-Creation-Date: 2020-12-04 07:21+0000\n"
+"PO-Revision-Date: 2020-12-07 12:23\n"
 "Last-Translator: \n"
 "Language-Team: Welsh\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Generated-By: Babel 2.8.0\n"
+"Generated-By: Babel 2.9.0\n"
 "Plural-Forms: nplurals=6; plural=(n == 0) ? 0 : ((n == 1) ? 1 : ((n == 2) ? 2 : ((n == 3) ? 3 : ((n == 6) ? 4 : 5))));\n"
 "X-Crowdin-Project: eq-census\n"
 "X-Crowdin-Project-ID: 345379\n"
@@ -345,11 +345,11 @@ msgstr "Mae'n ddrwg gennym, mae problem wedi codi"
 msgid "You can try to <a href='{retry_url}'>submit your feedback again</a>."
 msgstr "Gallwch chi geisio <a href='{retry_url}'>cyflwyno eich adborth eto</a>."
 
-#: app/routes/individual_response.py:160
+#: app/routes/individual_response.py:165
 msgid "An individual access code has been sent by post"
 msgstr "Mae cod mynediad unigol wedi cael ei anfon drwy'r post"
 
-#: app/routes/individual_response.py:252
+#: app/routes/individual_response.py:257
 msgid "An individual access code has been sent by text"
 msgstr "Mae cod mynediad unigol wedi cael ei anfon drwy neges destun"
 
@@ -528,132 +528,136 @@ msgstr "Rhowch eich adborth"
 msgid "Do not include confidential information, such as your contact details"
 msgstr "Peidiwch â chynnwys gwybodaeth gyfrinachol, fel eich manylion cyswllt"
 
-#: app/views/handlers/individual_response.py:124
+#: app/views/handlers/individual_response.py:136
 msgid "Person {list_item_position}"
 msgstr "Unigolion {list_item_position}"
 
-#: app/views/handlers/individual_response.py:230
+#: app/views/handlers/individual_response.py:242
 msgid "Cannot answer questions for others in your household"
 msgstr "Methu ateb cwestiynau ar ran pobl eraill yn eich cartref"
 
-#: app/views/handlers/individual_response.py:296
+#: app/views/handlers/individual_response.py:308
 msgid "How would you like <em>{person_name}</em> to receive a separate census?"
 msgstr "Sut hoffech chi i <em>{person_name}</em> gael cyfrifiad ar wahân?"
 
-#: app/views/handlers/individual_response.py:304
-msgid "For someone to complete a separate census, we need to send them an individual access code."
-msgstr "Er mwyn i rywun allu cwblhau cyfrifiad ar wahân, bydd angen i ni anfon cod mynediad unigol ato."
-
-#: app/views/handlers/individual_response.py:307
-msgid "Select how to send access code"
-msgstr "Dewiswch sut i anfon y cod mynediad"
-
-#: app/views/handlers/individual_response.py:317
+#: app/views/handlers/individual_response.py:331
 msgid "Text message"
 msgstr "Neges destun"
 
-#: app/views/handlers/individual_response.py:319
+#: app/views/handlers/individual_response.py:333
 msgid "We will need their mobile number for this"
 msgstr "Bydd angen rhif ffôn symudol yr unigolyn arnom ar gyfer hyn"
 
-#: app/views/handlers/individual_response.py:324
+#: app/views/handlers/individual_response.py:341
 msgid "Post"
 msgstr "Post"
 
-#: app/views/handlers/individual_response.py:326
+#: app/views/handlers/individual_response.py:343
 msgid "We can only send this to an unnamed resident at the registered household address"
 msgstr "Dim ond i gyfeiriad cofrestredig y cartref y gallwn anfon hwn"
 
-#: app/views/handlers/individual_response.py:376
+#: app/views/handlers/individual_response.py:352
+msgid "It is no longer possible to receive an access code by post."
+msgstr "Nid yw’n bosibl cael cod mynediad drwy’r post mwyach."
+
+#: app/views/handlers/individual_response.py:354
+msgid "Select how to send access code."
+msgstr "Dewiswch sut i anfon y cod mynediad."
+
+#: app/views/handlers/individual_response.py:357
+msgid "For someone to complete a separate census, we need to send them an individual access code."
+msgstr "Er mwyn i rywun allu cwblhau cyfrifiad ar wahân, bydd angen i ni anfon cod mynediad unigol ato."
+
+#: app/views/handlers/individual_response.py:403
 msgid "Send individual access code"
 msgstr "Anfon cod mynediad unigol"
 
-#: app/views/handlers/individual_response.py:407
+#: app/views/handlers/individual_response.py:434
 msgid "How would you like to answer <em>{person_name_possessive}</em> questions?"
 msgstr "Sut hoffech chi ateb cwestiynau <em>{person_name_possessive}</em>?"
 
-#: app/views/handlers/individual_response.py:422
+#: app/views/handlers/individual_response.py:449
 msgid "I would like to request a separate census for them to complete"
 msgstr "Hoffwn i wneud cais am gyfrifiad ar wahân i’r unigolyn ei gwblhau"
 
-#: app/views/handlers/individual_response.py:428
+#: app/views/handlers/individual_response.py:455
 msgid "I will ask them to answer their own questions"
 msgstr "Byddaf yn gofyn i’r unigolyn ateb ei gwestiynau ei hun"
 
-#: app/views/handlers/individual_response.py:432
+#: app/views/handlers/individual_response.py:459
 msgid "They will need the household access code from the letter we sent you"
 msgstr "Bydd angen cod mynediad y cartref ar yr unigolyn o’r llythyr y gwnaethom ei anfon atoch"
 
-#: app/views/handlers/individual_response.py:438
+#: app/views/handlers/individual_response.py:465
 msgid "I will answer for {person_name}"
 msgstr "Byddaf yn ateb ar ran{person_name}"
 
-#: app/views/handlers/individual_response.py:480
+#: app/views/handlers/individual_response.py:507
 msgid "How to answer questions"
 msgstr "Sut i ateb cwestiynau"
 
-#: app/views/handlers/individual_response.py:540
+#: app/views/handlers/individual_response.py:572
 msgid "Do you want to send an individual access code for {person_name} by post?"
 msgstr "Ydych chi am anfon cod mynediad unigolyn at {person_name} drwy’r post?"
 
-#: app/views/handlers/individual_response.py:548
+#: app/views/handlers/individual_response.py:580
 msgid "A letter with an individual access code will be sent to your registered household address"
 msgstr "Bydd llythyr â chod mynediad unigolyn yn cael ei anfon i gyfeiriad cofrestredig eich cartref"
 
-#: app/views/handlers/individual_response.py:555
+#: app/views/handlers/individual_response.py:587
 msgid "The letter will be addressed to <strong>Individual Resident</strong> instead of the name provided"
 msgstr "Bydd y llythyr wedi'i gyfeirio at y<strong> Preswylydd Unigol</strong> yn hytrach na'r enw a gafodd ei roi"
 
-#: app/views/handlers/individual_response.py:568
+#: app/views/handlers/individual_response.py:600
 msgid "Yes, send the access code by post"
 msgstr "Ydw, anfonwch y cod mynediad drwy'r post"
 
-#: app/views/handlers/individual_response.py:574
+#: app/views/handlers/individual_response.py:606
 msgid "No, send it another way"
 msgstr "Nac ydw, anfonwch y cod mynediad mewn ffordd arall"
 
-#: app/views/handlers/individual_response.py:607
+#: app/views/handlers/individual_response.py:639
 msgid "Confirm address"
 msgstr "Cadarnhau'r cyfeiriad"
 
-#: app/views/handlers/individual_response.py:662
-#: app/views/handlers/individual_response.py:700
+#: app/views/handlers/individual_response.py:694
+#: app/views/handlers/individual_response.py:732
 msgid "Separate Census"
 msgstr "Cyfrifiad ar wahân"
 
-#: app/views/handlers/individual_response.py:666
+#: app/views/handlers/individual_response.py:698
 msgid "Who do you need to request a separate census for?"
 msgstr "Ar gyfer pwy y mae angen i chi wneud cais am gyfrifiad ar wahân?"
 
-#: app/views/handlers/individual_response.py:724
+#: app/views/handlers/individual_response.py:756
 msgid "What is <em>{person_name_possessive}</em> mobile number?"
 msgstr "Beth yw rhif ffôn symudol <em>{person_name_possessive}</em>?"
 
-#: app/views/handlers/individual_response.py:736
+#: app/views/handlers/individual_response.py:768
 msgid "UK mobile number"
 msgstr "Rhif ffôn symudol"
 
-#: app/views/handlers/individual_response.py:737
+#: app/views/handlers/individual_response.py:769
 msgid "This will not be stored and only used once to send the access code"
 msgstr "Ni chaiff ei storio a bydd ond yn cael ei ddefnyddio unwaith i anfon y cod mynediad"
 
-#: app/views/handlers/individual_response.py:770
+#: app/views/handlers/individual_response.py:802
 msgid "Mobile number"
 msgstr "Rhif ffôn symudol"
 
-#: app/views/handlers/individual_response.py:816
+#: app/views/handlers/individual_response.py:848
 msgid "Is this mobile number correct?"
 msgstr "Ydy’r rhif ffôn symudol hwn yn gywir?"
 
-#: app/views/handlers/individual_response.py:825
+#: app/views/handlers/individual_response.py:857
 msgid "Yes, send the text"
 msgstr "Ydy, anfonwch y neges destun nawr"
 
-#: app/views/handlers/individual_response.py:829
+#: app/views/handlers/individual_response.py:861
 msgid "No, I need to change it"
 msgstr "Nac ydy, mae angen i mi ei newid"
 
-#: app/views/handlers/individual_response.py:863
+#: app/views/handlers/individual_response.py:895
 msgid "Confirm mobile number"
 msgstr "Cadarnhau'r rhif ffôn symudol"
 
