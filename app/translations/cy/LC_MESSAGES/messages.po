@@ -313,7 +313,7 @@ msgstr "Ni allwch gyflwyno rhagor o adborth"
 
 #: app/routes/errors.py:129
 msgid "If you need to give more feedback, please <a href='{contact_us_url}'>contact us</a>."
-msgstr "<a href='{contact_us_url}'>Cysylltwch â ni</a>os bydd angen i chi roi fwy adborth."
+msgstr "<a href='{contact_us_url}'>Cysylltwch â ni</a> os bydd angen i chi roi fwy adborth."
 
 #: app/routes/errors.py:161
 msgid "Sorry, there was a problem sending the access code"
