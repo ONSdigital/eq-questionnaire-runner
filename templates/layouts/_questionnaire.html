@@ -23,6 +23,7 @@
   {% block submit_button %}
       {{
           onsButton({
+              "submitType": "timer",
               "text": continue_button_text | default(_("Save and continue")),
               "classes": "u-mt-xl",
               "attributes": {
