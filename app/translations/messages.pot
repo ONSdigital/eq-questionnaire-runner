@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2020-12-01 15:15+0000\n"
+"POT-Creation-Date: 2020-12-04 07:21+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -546,11 +546,11 @@ msgid ""
 msgstr ""
 
 #: app/views/handlers/individual_response.py:352
-msgid "It is no longer possible to receive an access code by post"
+msgid "It is no longer possible to receive an access code by post."
 msgstr ""
 
 #: app/views/handlers/individual_response.py:354
-msgid "Select how to send access code"
+msgid "Select how to send access code."
 msgstr ""
 
 #: app/views/handlers/individual_response.py:357
