@@ -173,7 +173,7 @@ class TestLastViewedGuidance(IntegrationTestCase):
         )
         self._assert_last_viewed_question_guidance_shown()
 
-    def test_shown_on_section_in_progress_resume_relationships(self):
+    def test_not_shown_on_section_in_progress_resume_relationships(self):
         # Given
         self.launchSurvey(
             "test_last_viewed_question_guidance", reponse_id=self.response_id
@@ -192,11 +192,8 @@ class TestLastViewedGuidance(IntegrationTestCase):
             "test_last_viewed_question_guidance", reponse_id=self.response_id
         )
 
-        # Then the last viewed guidance is shown
-        self._assert_last_viewed_question_guidance_link(
-            "/questionnaire/relationship-interstitial/"
-        )
-        self._assert_last_viewed_question_guidance_shown()
+        # Then the last viewed guidance is not shown
+        self._assert_last_viewed_question_guidance_not_shown()
 
     def test_not_shown_on_survey_launch_hub_not_available(self):
         # Given

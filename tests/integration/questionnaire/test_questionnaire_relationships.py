@@ -18,15 +18,16 @@ class TestQuestionnaireRelationships(QuestionnaireTestCase):
         self.post()
         self.assertInUrl("/questionnaire/sections/")
 
-    def test_get_first_relationship_with_resume(self):
+    def test_resume_should_not_show_last_viewed_guidance(self):
         self.launchSurvey("test_relationships")
         first_list_item_id = self.add_person("Marie", "Doe")
         second_list_item_id = self.add_person("John", "Doe")
         self.post({"anyone-else": "No"})
         self.get("/questionnaire/relationships?resume=True")
         self.assertInUrl(
-            f"/questionnaire/relationships/people/{first_list_item_id}/to/{second_list_item_id}/?resume=True"
+            f"/questionnaire/relationships/people/{first_list_item_id}/to/{second_list_item_id}"
         )
+        self.assertNotInBody("This is the last viewed question in this section")
 
     def test_last_relationship(self):
         self.launchSurvey("test_relationships")
@@ -34,7 +35,6 @@ class TestQuestionnaireRelationships(QuestionnaireTestCase):
         second_list_item_id = self.add_person("John", "Doe")
         self.post({"anyone-else": "No"})
         self.get("/questionnaire/relationships?last=True")
-
         self.assertInUrl(
             f"/questionnaire/relationships/people/{first_list_item_id}/to/{second_list_item_id}"
         )
