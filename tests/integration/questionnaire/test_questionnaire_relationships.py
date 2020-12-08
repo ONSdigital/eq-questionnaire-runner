@@ -20,6 +20,8 @@ class TestQuestionnaireRelationships(QuestionnaireTestCase):
 
     def test_resume_should_not_show_last_viewed_guidance(self):
         self.launchSurvey("test_relationships")
+        self.add_person("Marie", "Doe")
+        self.add_person("John", "Doe")
         self.post({"anyone-else": "No"})
         self.get("/questionnaire/relationships?resume=True")
         self.assertNotInUrl("resume=True")
