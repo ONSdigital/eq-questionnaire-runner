@@ -67,6 +67,7 @@ class IndividualResponseTestCase(IntegrationTestCase):
         self.get("questionnaire/primary-person-list-collector/")
         self.post({"you-live-here": "No"})
         self.post({"anyone-else": "No"})
+        self.post({"any-visitors": "No"})
         self.get("questionnaire/")
 
     def _add_primary(self):
@@ -74,6 +75,7 @@ class IndividualResponseTestCase(IntegrationTestCase):
         self.post({"you-live-here": "Yes"})
         self.post({"first-name": "Marie", "last-name": "Day"})
         self.post({"anyone-else": "No"})
+        self.post({"any-visitors": "No"})
         self.get("questionnaire/")
 
     def _add_primary_and_household(self):
@@ -83,6 +85,7 @@ class IndividualResponseTestCase(IntegrationTestCase):
         self.post({"anyone-else": "Yes"})
         self.post({"first-name": "John", "last-name": "Doe"})
         self.post({"anyone-else": "No"})
+        self.post({"any-visitors": "No"})
         self.get("questionnaire/")
 
     def _add_household_no_primary(self):
@@ -91,6 +94,7 @@ class IndividualResponseTestCase(IntegrationTestCase):
         self.post({"anyone-else": "Yes"})
         self.post({"first-name": "Marie", "last-name": "Day"})
         self.post({"anyone-else": "No"})
+        self.post({"any-visitors": "No"})
         self.get("questionnaire/")
 
     def _add_household_multiple_members_no_primary(self):
@@ -101,6 +105,7 @@ class IndividualResponseTestCase(IntegrationTestCase):
         self.post({"anyone-else": "Yes"})
         self.post({"first-name": "Joe", "middle-names": "David", "last-name": "Day"})
         self.post({"anyone-else": "No"})
+        self.post({"any-visitors": "No"})
         self.get("questionnaire/")
 
     def _add_household_members_with_same_names(self):
@@ -115,6 +120,7 @@ class IndividualResponseTestCase(IntegrationTestCase):
         self.post({"anyone-else": "Yes"})
         self.post({"first-name": "Joe", "last-name": "Day"})
         self.post({"anyone-else": "No"})
+        self.post({"any-visitors": "No"})
         self.get("questionnaire/")
 
     def _request_individual_response_by_post(self):
@@ -427,6 +433,23 @@ class TestIndividualResponseIndividualSection(IndividualResponseTestCase):
 
         # Then I should see the individual response guidance
         self.assertInBody("If you can’t answer questions for this person")
+
+    def test_ir_guidance_not_displayed_on_non_individual_response_list_remove_page(
+        self,
+    ):
+        # Given I add a visitor
+        self.get("questionnaire/primary-person-list-collector/")
+        self.post({"you-live-here": "No"})
+        self.post({"anyone-else": "No"})
+        self.post({"any-visitors": "Yes"})
+        self.post({"visitor-first-name": "John", "visitor-last-name": "Doe"})
+
+        # When I try to remove the visitor
+        visitor_remove_link = self.get_link("1", "remove")
+        self.get(visitor_remove_link)
+
+        # Then I should not see the individual response guidance
+        self.assertNotInBody("If you can’t answer questions for this person")
 
 
 class TestIndividualResponseHubViews(IndividualResponseTestCase):
@@ -1061,6 +1084,7 @@ class TestIndividualResponseSameNames(IndividualResponseTestCase):
         self.post({"anyone-else": "Yes"})
         self.post({"first-name": "Joe", "last-name": "Day"})
         self.post({"anyone-else": "No"})
+        self.post({"any-visitors": "No"})
         self.get("questionnaire/")
 
         # When I navigate to the who page
@@ -1118,6 +1142,7 @@ class TestIndividualResponseSameNames(IndividualResponseTestCase):
         self.post({"anyone-else": "Yes"})
         self.post({"first-name": "Marie", "middle-names": "Carla", "last-name": "Day"})
         self.post({"anyone-else": "No"})
+        self.post({"any-visitors": "No"})
         self.get("questionnaire/")
 
         # When I navigate to the who page and select someone
