@@ -82,8 +82,6 @@ class RelationshipQuestion(Question):
         return True
 
     def get_first_location_url(self):
-        if self.resume:
-            return self.relationship_router.get_first_location().url(resume=self.resume)
         return self.relationship_router.get_first_location().url()
 
     def get_last_location_url(self):
