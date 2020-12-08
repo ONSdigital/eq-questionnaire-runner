@@ -32,9 +32,9 @@ class ListRemoveQuestion(ListAction):
         return super().handle_post()
 
     def individual_response_enabled(self) -> bool:
-        if self._schema.json.get("individual_response"):
-            return True
-        return False
+        return (
+            self.parent_block["for_list"] == self._schema.get_individual_response_list()
+        )
 
     def get_context(self):
         context = super().get_context()
