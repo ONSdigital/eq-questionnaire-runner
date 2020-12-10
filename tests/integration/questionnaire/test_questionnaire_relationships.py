@@ -118,3 +118,11 @@ class TestQuestionnaireRelationships(QuestionnaireTestCase):
         self.post({"anyone-else": "No"})
 
         self.assertEqual(list_item_ids_original, list_item_ids_new)
+
+    def test_post_to_relationships_root(self):
+        self.launchSurvey("test_relationships")
+        self.add_person("Marie", "Doe")
+        self.add_person("John", "Doe")
+        self.post({"anyone-else": "No"})
+        self.post(url="/questionnaire/relationships")
+        self.assertStatusOK()

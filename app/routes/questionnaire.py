@@ -220,7 +220,7 @@ def block(schema, questionnaire_store, block_id, list_name=None, list_item_id=No
 
 @questionnaire_blueprint.route(
     "relationships/",
-    methods=["GET"],
+    methods=["GET", "POST"],
 )
 @questionnaire_blueprint.route(
     "relationships/<list_name>/<list_item_id>/to/<to_list_item_id>/",
