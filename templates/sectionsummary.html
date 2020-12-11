@@ -26,8 +26,10 @@
     <h1>{{content.summary.title}}</h1>
     {% for summary in content.summary.custom_summary %}
       {% if summary.type == 'List' %}
-
-          <div {{'class="u-mb-l"' if not loop.last }} data-qa="{{summary.list_name}}-list-summary">
+          {% set add_link = summary.add_link %}
+          {% set add_link_text = summary.add_link_text %}
+          {% set list_name = summary.list_name %}
+          <div {{'class="u-mb-l"' if not loop.last }} data-qa="{{list_name}}-list-summary">
           <h2>{{summary.title}}</h2>
           {% if summary.list and summary.list.list_items %}
             {% set list = summary.list %}
@@ -37,10 +39,8 @@
               {{ summary.empty_list_text }}
             </div>
           {% endif %}
-          {% if summary.add_link %}
-            <div>
-              <a data-qa="add-item-link" href="{{summary.add_link}}">{{summary.add_link_text}}</a>
-            </div>
+          {% if not summary.list.list_items %}
+            {% include 'partials/summary/empty-list-summary.html' %}
           {% endif %}
           </div>
         {% endif %}
