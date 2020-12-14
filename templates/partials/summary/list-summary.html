@@ -1,39 +1,42 @@
 {% from "components/summary/_macro.njk" import onsSummary %}
 
-{% if list.list_items | length > 0 %}
-
-  {% if list.editable %}
-    {% set headers = ["Name of person", "Action"] %}
-    {% set rows = map_list_collector_config(
-      list.list_items,
-      "person",
-      _("Change"),
-      _("Change details for {item_name}"),
-      _("Remove"),
-      _("Remove {item_name}")
-    ) %}
-  {% else %}
-    {% set headers = ["Name of person"] %}
-    {% set rows = map_list_collector_config(
-      list.list_items,
-      "person"
-    ) %}
-  {% endif %}
-
-  {{ onsSummary({
-    "withinQuestion": true,
-    "summaries": [
-      {
-        "groups": [
-          {
-            "headers": headers,
-            "rows": rows,
-            "summaryLink": {"url": add_link, "text": add_link_text, "dataQa": "add-item-link"},
-          }
-        ]
-      }
-    ],
-    "classes": "u-mt-s u-mb-m"
-  }) }}
-
+{% if list.editable %}
+  {% set headers = ["Name of person", "Action"] %}
+  {% set rows = map_list_collector_config(
+    list.list_items,
+    "person",
+    _("Change"),
+    _("Change details for {item_name}"),
+    _("Remove"),
+    _("Remove {item_name}")
+  ) %}
+{% else %}
+  {% set headers = ["Name of person"] %}
+  {% set rows = map_list_collector_config(
+    list.list_items,
+    "person"
+  ) %}
 {% endif %}
+
+{% set groups_config = {
+  "groupTitle": summary_title,
+  "headers": headers,
+  "rows": rows,
+  "summaryLink": {"url": add_link, "text": add_link_text, "dataQa": "add-item-link"},
+} %}
+
+{% if empty_list_text %}
+  {% do groups_config.update({"placeholderText": empty_list_text}) %}
+{% endif %}
+
+{{ onsSummary({
+  "withinQuestion": true,
+  "summaries": [
+    {
+      "groups": [
+        groups_config
+      ]
+    }
+  ],
+  "classes": "u-mt-s"
+}) }}
