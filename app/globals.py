@@ -13,16 +13,12 @@ from app.data_models.answer_store import AnswerStore
 from app.data_models.session_store import SessionStore
 from app.questionnaire import QuestionnaireSchema
 from app.settings import EQ_SESSION_ID, USER_IK
+from app.storage.encrypted_questionnaire_storage import EncryptedQuestionnaireStorage
 
 logger = get_logger()
 
 
-# pylint: disable=import-outside-toplevel
 def get_questionnaire_store(user_id: str, user_ik: str) -> QuestionnaireStore:
-    from app.storage.encrypted_questionnaire_storage import (
-        EncryptedQuestionnaireStorage,
-    )
-
     # Sets up a single QuestionnaireStore instance per request.
     store = g.get("_questionnaire_store")
     if store is None:
