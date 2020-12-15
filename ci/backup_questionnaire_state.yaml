@@ -7,6 +7,7 @@ image_resource:
 params:
   SERVICE_ACCOUNT_JSON: ((gcp.service_account_json))
   PROJECT_ID:
+  BUCKET_NAME:
 outputs:
   - name: backup-questionnaire-state-output
 run:
@@ -22,11 +23,10 @@ run:
       gcloud auth activate-service-account --key-file $GOOGLE_APPLICATION_CREDENTIALS
       gcloud config set project "${PROJECT_ID}"
 
-      EXPORT_DESTINATION_BUCKET="$PROJECT_ID-datastore-exports"
-      EXPORT_OPERATION=$(gcloud datastore export --kinds="questionnaire-state" gs://"$EXPORT_DESTINATION_BUCKET" --format="value(name.scope())")
+      EXPORT_OPERATION=$(gcloud datastore export --kinds="questionnaire-state" gs://"${BUCKET_NAME}" --format="value(name.scope())")
       EXPORT_STATE=$(gcloud datastore operations describe "$EXPORT_OPERATION" --format="value(metadata.common.state.scope())")
       TOTAL_ENTITIES_EXPORTED=$(gcloud datastore operations describe "$EXPORT_OPERATION" --format="value(metadata.progressEntities.workCompleted.scope())")
-      
+
       if [[ "$EXPORT_STATE" == "SUCCESSFUL" ]]; then
         echo "Questionnaire State Backup Successful - ${TOTAL_ENTITIES_EXPORTED:-0} entities exported" > "backup-questionnaire-state-output/notification-message"
       else
