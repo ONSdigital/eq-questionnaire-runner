@@ -19,15 +19,12 @@
 {% endif %}
 
 {% set groups_config = {
-  "groupTitle": summary_title,
+  "groupTitle": title,
   "headers": headers,
   "rows": rows,
   "summaryLink": {"url": add_link, "text": add_link_text, "dataQa": "add-item-link"},
+  "placeholderText": empty_list_text,
 } %}
-
-{% if empty_list_text %}
-  {% do groups_config.update({"placeholderText": empty_list_text}) %}
-{% endif %}
 
 {{ onsSummary({
   "withinQuestion": true,
