@@ -1,10 +1,10 @@
-import json
 from copy import deepcopy
 from typing import Dict
 from uuid import uuid4
 
 import boto3
 import redis
+import simplejson as json
 import yaml
 from botocore.config import Config
 from flask import Flask

@@ -11,8 +11,8 @@ from werkzeug.exceptions import NotFound
 from app.data_models import CompletionStatus, FulfilmentRequest
 from app.forms.questionnaire_form import generate_form
 from app.forms.validators import sanitise_mobile_number
+from app.helpers import url_safe_serializer
 from app.helpers.template_helpers import render_template
-from app.helpers.url_param_serializer import URLParamSerializer
 from app.publisher.exceptions import PublicationFailed
 from app.questionnaire.placeholder_renderer import PlaceholderRenderer
 from app.questionnaire.router import Router
@@ -784,7 +784,7 @@ class IndividualResponseTextHandler(IndividualResponseHandler):
 
     def handle_get(self):
         if "mobile_number" in self._request_args:
-            mobile_number = URLParamSerializer().loads(
+            mobile_number = url_safe_serializer().loads(
                 self._request_args["mobile_number"]
             )
             self._answers = {"individual-response-enter-number-answer": mobile_number}
@@ -803,7 +803,7 @@ class IndividualResponseTextHandler(IndividualResponseHandler):
         )
 
     def handle_post(self):
-        mobile_number = URLParamSerializer().dumps(self.mobile_number)
+        mobile_number = url_safe_serializer().dumps(self.mobile_number)
 
         return redirect(
             url_for(
@@ -825,7 +825,7 @@ class IndividualResponseTextConfirmHandler(IndividualResponseHandler):
         form_data,
         list_item_id,
     ):
-        self.mobile_number = URLParamSerializer().loads(
+        self.mobile_number = url_safe_serializer().loads(
             request_args.get("mobile_number")
         )
 
