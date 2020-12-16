@@ -42,6 +42,10 @@ class IntegrationTestCase(unittest.TestCase):  # pylint: disable=too-many-public
         # Perform setup steps
         self._set_up_app()
 
+    @property
+    def test_app(self):
+        return self._application
+
     def _set_up_app(self):
         self._ds = patch("app.setup.datastore.Client", MockDatastore)
         self._ds.start()

@@ -378,3 +378,43 @@ def test_get_list_collector_for_list(list_collector_variant_schema):
     )
 
     assert no_result is None
+
+
+def test_has_address_lookup_answer():
+    question = {
+        "type": "General",
+        "id": "address-question",
+        "title": "What is your current address?",
+        "answers": [
+            {
+                "id": "address-answer",
+                "mandatory": True,
+                "type": "Address",
+                "lookup_options": {
+                    "address_type": "Residential",
+                    "region_code": "GB-ENG",
+                },
+            }
+        ],
+    }
+
+    has_lookup_answer = QuestionnaireSchema.has_address_lookup_answer(question)
+    assert has_lookup_answer
+
+
+def test_doesnt_have_address_lookup_answer():
+    question = {
+        "type": "General",
+        "id": "address-question",
+        "title": "What is your current address?",
+        "answers": [
+            {
+                "id": "address-answer",
+                "mandatory": True,
+                "type": "Address",
+            }
+        ],
+    }
+
+    has_lookup_answer = QuestionnaireSchema.has_address_lookup_answer(question)
+    assert not has_lookup_answer

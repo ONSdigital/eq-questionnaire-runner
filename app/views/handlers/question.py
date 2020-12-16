@@ -4,6 +4,7 @@ from flask import url_for
 from flask_babel import gettext
 
 from app.forms.questionnaire_form import generate_form
+from app.helpers import get_address_lookup_api_auth_token
 from app.questionnaire.location import Location
 from app.questionnaire.questionnaire_store_updater import QuestionnaireStoreUpdater
 from app.questionnaire.schema_utils import transform_variants
@@ -149,6 +150,11 @@ class Question(BlockHandler):
             self.page_title = gettext("Error: {page_title}").format(
                 page_title=self.page_title
             )
+
+        if self._schema.has_address_lookup_answer(self.rendered_block["question"]):
+            context[
+                "address_lookup_api_auth_token"
+            ] = get_address_lookup_api_auth_token()
 
         return context
 

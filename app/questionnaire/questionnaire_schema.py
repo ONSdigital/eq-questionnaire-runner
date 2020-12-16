@@ -494,6 +494,13 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
             "ConfirmationQuestion",
         ]
 
+    @staticmethod
+    def has_address_lookup_answer(question):
+        for answer in question["answers"]:
+            if answer["type"] == "Address" and "lookup_options" in answer:
+                return True
+        return False
+
     def _get_parent_section_id_for_block(self, block_id):
         parent_block_id = self._parent_id_map[block_id]
         group_id = self._parent_id_map[parent_block_id]
