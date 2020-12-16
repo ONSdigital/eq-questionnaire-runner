@@ -18,14 +18,6 @@
   ) %}
 {% endif %}
 
-{% set groups_config = {
-  "groupTitle": title,
-  "headers": headers,
-  "rows": rows,
-  "summaryLink": {"url": add_link, "text": add_link_text, "dataQa": "add-item-link"},
-  "placeholderText": empty_list_text,
-} %}
-
 {{ onsSummary({
   "withinQuestion": true,
   "summaries": [
