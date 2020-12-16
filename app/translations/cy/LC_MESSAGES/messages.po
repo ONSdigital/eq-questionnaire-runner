@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: eq-census\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2020-12-04 07:21+0000\n"
-"PO-Revision-Date: 2020-12-07 12:23\n"
+"PO-Revision-Date: 2020-12-16 16:08\n"
 "Last-Translator: \n"
 "Language-Team: Welsh\n"
 "MIME-Version: 1.0\n"
@@ -98,7 +98,7 @@ msgstr ""
 #: app/forms/error_messages.py:28
 #, python-format
 msgid "Enter an answer less than or equal to %(max)s"
-msgstr "Nodwch ateb sy'n llai nag 20 neu'n hafal iddo %(max)s"
+msgstr "Nodwch ateb sy'n llai na neu'n hafal iddo %(max)s"
 
 #: app/forms/error_messages.py:29
 #, python-format
@@ -313,7 +313,7 @@ msgstr "Ni allwch gyflwyno rhagor o adborth"
 
 #: app/routes/errors.py:129
 msgid "If you need to give more feedback, please <a href='{contact_us_url}'>contact us</a>."
-msgstr "<a href='{contact_us_url}'>Cysylltwch â ni</a> os bydd angen i chi roi fwy adborth."
+msgstr "<a href='{contact_us_url}'>Cysylltwch â ni</a> os bydd angen i chi roi rhagor o adborth."
 
 #: app/routes/errors.py:161
 msgid "Sorry, there was a problem sending the access code"
@@ -403,7 +403,7 @@ msgstr "Cyflwyno'r arolwg"
 
 #: app/views/contexts/hub_context.py:54
 msgid "You must submit this survey to complete it"
-msgstr ""
+msgstr "Cyflwynwch y arolwg hwn i'w gwblhau"
 
 #: app/views/contexts/hub_context.py:61
 msgid "Choose another section to complete"
@@ -566,7 +566,7 @@ msgstr "Dewiswch sut i anfon y cod mynediad."
 
 #: app/views/handlers/individual_response.py:357
 msgid "For someone to complete a separate census, we need to send them an individual access code."
-msgstr "Er mwyn i rywun allu cwblhau cyfrifiad ar wahân, bydd angen i ni anfon cod mynediad unigol ato."
+msgstr "Er mwyn i unigolyn allu cwblhau cyfrifiad ar wahân, bydd angen i ni anfon cod mynediad unigol atynt."
 
 #: app/views/handlers/individual_response.py:403
 msgid "Send individual access code"
@@ -602,7 +602,7 @@ msgstr "Ydych chi am anfon cod mynediad unigolyn at {person_name} drwy’r post?
 
 #: app/views/handlers/individual_response.py:580
 msgid "A letter with an individual access code will be sent to your registered household address"
-msgstr "Bydd llythyr â chod mynediad unigolyn yn cael ei anfon i gyfeiriad cofrestredig eich cartref"
+msgstr "Bydd llythyr â chod mynediad unigryw yn cael ei anfon i'ch cyfeiriad cartref"
 
 #: app/views/handlers/individual_response.py:587
 msgid "The letter will be addressed to <strong>Individual Resident</strong> instead of the name provided"
@@ -675,7 +675,7 @@ msgstr "Diolch am gwblhau'r cyfrifiad"
 
 #: templates/census-thank-you.html:26
 msgid "Thank you for completing the survey"
-msgstr ""
+msgstr "Diolch am gwblhau'r arolwg"
 
 #: templates/census-thank-you.html:32
 msgid "Your individual census has been submitted for <strong>{display_address}</strong>"
@@ -723,7 +723,7 @@ msgstr "Heb gael e-bost?"
 
 #: templates/confirmation-email-sent.html:30
 msgid "It can take a few minutes for the email to arrive. If it doesn't arrive, check your junk mail, or you can <a href='{send_confirmation_email_url}' id='send-another-email'>send another confirmation email</a>."
-msgstr "Gall gymryd ychydig funudau i’r e-bost gyrraedd. Os na fydd yn cyrraedd, edrychwch yn eich ffolder post sothach, neu gallwch <a href='{send_confirmation_email_url}' id='send-another-email'>anfon e-bost cadarnhau arall</a>."
+msgstr "Gall gymryd ychydig funudau i’r e-bost gyrraedd. Os na fydd yn cyrraedd, edrychwch yn eich ffolder post sothach, neu gallwch <a href='{send_confirmation_email_url}' id='send-another-email'> anfon e-bost cadarnhau arall</a>."
 
 #: templates/confirmation-email.html:12
 msgid "Send another confirmation email"
@@ -761,7 +761,7 @@ msgstr "Yn ôl"
 #, python-format
 msgid "There is a problem with your feedback"
 msgid_plural "There are %(num)s problems with your feedback"
-msgstr[0] ""
+msgstr[0] "Mae %(num)s o broblemau gyda'ch adborth"
 msgstr[1] "Mae problem gyda'ch adborth"
 msgstr[2] "Mae %(num)s o broblemau gyda'ch adborth"
 msgstr[3] "Mae %(num)s o broblemau gyda'ch adborth"
@@ -778,7 +778,7 @@ msgstr "Os na allwch chi ateb cwestiynau rhywun arall"
 
 #: templates/interstitial.html:23 templates/partials/question.html:25
 msgid "If you can’t answer questions for this person"
-msgstr "Os na allwch ateb cwestiynau ar ran y person hwn"
+msgstr "Os na allwch ateb cwestiynau ar ran yr unigolyn hwn"
 
 #: templates/interstitial.html:32 templates/layouts/_questionnaire.html:26
 msgid "Save and continue"
@@ -908,7 +908,7 @@ msgstr "Os gwnaethoch chi ludo'r cyfeiriad gwe, gwnewch yn siŵr eich bod wedi c
 
 #: templates/errors/404.html:9
 msgid "If the web address is correct or you selected a link or button, <a href='{url}'>contact us</a> for more help."
-msgstr "Os yw'r cyfeiriad gwe yn gywir, neu os gwnaethoch chi ddewis dolen neu fotwm, <a href='{url}'>cysylltwch â ni</a> am fwy o help."
+msgstr "Os yw'r cyfeiriad gwe yn gywir, neu os gwnaethoch chi ddewis dolen neu fotwm, <a href='{url}'>cysylltwch â ni</a> am fwy o gymorth."
 
 #: templates/errors/500.html:3
 msgid "An error has occurred"
@@ -948,7 +948,7 @@ msgstr ""
 
 #: templates/errors/session-expired.html:6
 msgid "Your session has timed out due to inactivity"
-msgstr "Mae eich sesiwn wedi dod i ben oherwydd nad oedd gweithgarwch"
+msgstr "Mae eich sesiwn wedi dod i ben gan nad oedd gweithgarwch"
 
 #: templates/errors/session-expired.html:7
 msgid "To help protect your information we have timed you out"
@@ -976,7 +976,7 @@ msgstr "Gallwch geisio <a href='{url}'>cyflwyno eich cyfrifiad eto</a>"
 
 #: templates/errors/submission-failed.html:10
 msgid "If this problem keeps happening, please <a href='{url}'>contact us</a> for help."
-msgstr "Os bydd y broblem hon yn parhau, <a href='{url}'>cysylltwch â ni</a> i gael cymorth."
+msgstr "Os bydd y broblem hon yn parhau, <a href='{url}'>cysylltwch â ni </a>i gael cymorth."
 
 #: templates/individual_response/confirmation-post.html:15
 msgid "A letter has been sent to Individual Resident at {display_address}"
@@ -1016,7 +1016,7 @@ msgstr "Gwneud cais am gyfrifiad ar wahân"
 
 #: templates/individual_response/question.html:9
 msgid "To request a census in a different format or for further help, please <a href='{contact_us_url}'>contact us</a>"
-msgstr "I wneud cais am gyfrifiad mewn fformat gwahanol neu am fwy o help, <a href='{contact_us_url}'>cysylltwch â ni</a>"
+msgstr "I wneud cais am gyfrifiad mewn fformat gwahanol neu am fwy o gymorth, <a href='{contact_us_url}'>cysylltwch â ni</a>"
 
 #: templates/layouts/_base.html:18
 msgid "Previous"
@@ -1050,7 +1050,7 @@ msgstr "Cuddio"
 
 #: templates/layouts/_questionnaire.html:37
 msgid "Choose another section and return to this later"
-msgstr "Dewiswch adran arall a dewch yn ôl yn nes ymlaen"
+msgstr "Dewiswch adran arall a dod yn ôl yn nes ymlaen"
 
 #: templates/layouts/configs/_save-sign-out-button.html:5
 msgid "Save and sign out"
@@ -1066,7 +1066,7 @@ msgstr "Cau"
 
 #: templates/macros/helpers.html:29
 msgid "Interviewer note:"
-msgstr ""
+msgstr "Nodyn i’r cyfwelydd:"
 
 #: templates/partials/answer-guidance.html:18
 #: templates/partials/definition.html:18
@@ -1080,7 +1080,7 @@ msgstr "Cyfeiriad e-bost"
 
 #: templates/partials/email-form.html:26
 msgid "This will not be stored and only used once to send your confirmation"
-msgstr "Ni fydd hwn yn cael ei storio ac ni fydd ond yn cael ei ddefnyddio unwaith er mwyn anfon cadarnhad atoch"
+msgstr "Ni fydd hwn yn cael ei storio a dim ond unwaith y bydd yn cael ei ddefnyddio er mwyn anfon cadarnhad atoch"
 
 #: templates/partials/email-form.html:39
 msgid "Send confirmation"
@@ -1249,12 +1249,12 @@ msgstr "Clirio’r dewis"
 #: templates/partials/answers/textarea.html:16
 #: templates/partials/answers/textfield.html:28
 msgid "You have {x} character remaining"
-msgstr "Mae gennych {x} nod ar ôl"
+msgstr "Mae gennych chi {x} nod ar ôl"
 
 #: templates/partials/answers/textarea.html:17
 #: templates/partials/answers/textfield.html:29
 msgid "You have {x} characters remaining"
-msgstr "Mae gennych chi {x} o nodau ar ôl"
+msgstr "Mae gennych chi {x} nod ar ôl"
 
 #: templates/partials/answers/textfield.html:26
 msgid "{x} character too many"
