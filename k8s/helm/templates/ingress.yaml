@@ -19,19 +19,19 @@ spec:
   rules:
   - http:
       paths:
-      - path: /session*
+      - path: /session/*
         backend:
           serviceName: runner
           servicePort: 80
-      - path: /questionnaire*
+      - path: /questionnaire/*
         backend:
           serviceName: runner
           servicePort: 80
-      - path: /submitted*
+      - path: /submitted/*
         backend:
           serviceName: runner
           servicePort: 80
-      - path: /individual-response*
+      - path: /individual-response/*
         backend:
           serviceName: runner
           servicePort: 80
