@@ -331,6 +331,4 @@ class TestEmailConfirmation(IntegrationTestCase):
 
         # Then a 500 error is returned
         self.assertStatusCode(500)
-        self.assertEqualPageTitle(
-            "Sorry, there was a problem sending the confirmation email - Census 2021"
-        )
+        self.assertEqualPageTitle("An error has occurred - Census 2021")
