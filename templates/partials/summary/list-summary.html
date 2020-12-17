@@ -25,6 +25,16 @@
   "placeholderText": empty_list_text,
 } %}
 
+{% if add_link %}
+  {% set group_config = group_config | setAttribute("summaryLink", {
+    "url": add_link,
+    "text": add_link_text,
+    "attributes": {
+      "data-qa": "add-item-link"
+    }
+  }) %}
+{% endif %}
+
 {% set config = {
   "withinQuestion": true,
   "summaries": [
@@ -36,15 +46,5 @@
   ],
   "classes": "u-mt-s"
 } %}
-
-{% if add_link %}
-  {% set group_config = group_config | setAttribute("summaryLink", {
-    "url": add_link,
-    "text": add_link_text,
-    "attributes": {
-      "data-qa": "add-item-link"
-    }
-  }) %}
-{% endif %}
 
 {{ onsSummary(config) }}
