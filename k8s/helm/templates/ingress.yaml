@@ -13,9 +13,6 @@ metadata:
       ingress.gcp.kubernetes.io/pre-shared-cert: runner
       kubernetes.io/ingress.allow-http: "false"
 spec:
-  backend:
-    serviceName: {{ .Chart.Name }}
-    servicePort: {{ .Values.service.port }}
   rules:
   - http:
       paths:
