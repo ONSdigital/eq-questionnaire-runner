@@ -316,3 +316,21 @@ class TestEmailConfirmation(IntegrationTestCase):
             "Sorry, there was a problem sending the confirmation email - Census 2021"
         )
         self.assertInSelector(self.last_url, "p[data-qa=retry]")
+
+    def test_attempting_to_deserialize_email_hash_from_different_session_fails(self):
+        # Given I request a confirmation to my email address
+        self._launch_and_complete_questionnaire()
+        self.post({"email": "email@example.com"})
+
+        # When I use the email hash in a different session
+        query_params = self.last_url.split("?")[-1]
+        self.exit()
+        self._launch_and_complete_questionnaire()
+        self.post({"email": "new-email@new-example.com"})
+        self.get(f"/submitted/confirmation-email/sent?{query_params}")
+
+        # Then a 500 error is returned
+        self.assertStatusCode(500)
+        self.assertEqualPageTitle(
+            "Sorry, there was a problem sending the confirmation email - Census 2021"
+        )
