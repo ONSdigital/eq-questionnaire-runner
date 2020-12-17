@@ -11,9 +11,6 @@ logger = get_logger()
 
 class EncryptedQuestionnaireStorage:
     def __init__(self, user_id, user_ik, pepper):
-        if user_id is None:
-            raise ValueError("User id must be set")
-
         self._user_id = user_id
         self.encrypter = StorageEncryption(user_id, user_ik, pepper)
 
