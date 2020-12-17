@@ -1,22 +1,24 @@
 from datetime import datetime, timedelta
+from types import MappingProxyType
+from typing import Union
 
 from dateutil.tz import tzutc
 from flask import current_app, g
 from flask import session as cookie_session
 from structlog import get_logger
 
+from app.authentication.user import User
 from app.data_models import QuestionnaireStore
+from app.data_models.answer_store import AnswerStore
+from app.data_models.session_store import SessionStore
+from app.questionnaire import QuestionnaireSchema
 from app.settings import EQ_SESSION_ID, USER_IK
+from app.storage.encrypted_questionnaire_storage import EncryptedQuestionnaireStorage
 
 logger = get_logger()
 
 
-# pylint: disable=import-outside-toplevel
-def get_questionnaire_store(user_id, user_ik):
-    from app.storage.encrypted_questionnaire_storage import (
-        EncryptedQuestionnaireStorage,
-    )
-
+def get_questionnaire_store(user_id: str, user_ik: str) -> QuestionnaireStore:
     # Sets up a single QuestionnaireStore instance per request.
     store = g.get("_questionnaire_store")
     if store is None:
@@ -29,14 +31,11 @@ def get_questionnaire_store(user_id, user_ik):
     return store
 
 
-# pylint: disable=import-outside-toplevel
-def get_session_store():
-    from app.data_models.session_store import SessionStore
-
+def get_session_store() -> Union[SessionStore, None]:
     if USER_IK not in cookie_session or EQ_SESSION_ID not in cookie_session:
         return None
 
-    # Sets up a single SessionStore instance per request.
+    # Sets up a single SessionStore instance per request context.
     store = g.get("_session_store")
 
     if store is None:
@@ -50,7 +49,7 @@ def get_session_store():
     return store
 
 
-def get_session_timeout_in_seconds(schema):
+def get_session_timeout_in_seconds(schema: QuestionnaireSchema) -> int:
     """
     Gets the session timeout in seconds from the schema/env variable.
     :return: Timeout in seconds
@@ -66,10 +65,9 @@ def get_session_timeout_in_seconds(schema):
     return timeout
 
 
-# pylint: disable=import-outside-toplevel
-def create_session_store(eq_session_id, user_id, user_ik, session_data):
-    from app.data_models.session_store import SessionStore
-
+def create_session_store(
+    eq_session_id: str, user_id: str, user_ik: str, session_data: str
+) -> None:
     pepper = current_app.eq["secret_store"].get_secret_by_name(
         "EQ_SERVER_SIDE_STORAGE_ENCRYPTION_USER_PEPPER"
     )
@@ -86,7 +84,7 @@ def create_session_store(eq_session_id, user_id, user_ik, session_data):
     )
 
 
-def get_metadata(user):
+def get_metadata(user: User) -> Union[None, MappingProxyType]:
     if user.is_anonymous:
         logger.debug("anonymous user requesting metadata get instance")
         return None
@@ -95,6 +93,6 @@ def get_metadata(user):
     return questionnaire_store.metadata
 
 
-def get_answer_store(user):
+def get_answer_store(user: User) -> AnswerStore:
     questionnaire_store = get_questionnaire_store(user.user_id, user.user_ik)
     return questionnaire_store.answer_store
