@@ -1,6 +1,6 @@
+import uuid
 from datetime import datetime, timedelta
 from uuid import uuid4
-import uuid
 
 from dateutil.tz import tzutc
 from flask import session as cookie_session
