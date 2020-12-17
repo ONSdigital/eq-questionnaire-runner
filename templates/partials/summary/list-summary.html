@@ -18,26 +18,33 @@
   ) %}
 {% endif %}
 
-{{ onsSummary({
+{% set group_config = {
+  "groupTitle": list_title,
+  "headers": headers,
+  "rows": rows,
+  "placeholderText": empty_list_text,
+} %}
+
+{% set config = {
   "withinQuestion": true,
   "summaries": [
     {
       "groups": [
-        {
-          "groupTitle": list_title,
-          "headers": headers,
-          "rows": rows,
-          "summaryLink": {
-            "url": add_link,
-            "text": add_link_text,
-            "attributes": {
-              "data-qa": "add-item-link"
-            }
-          },
-          "placeholderText": empty_list_text,
-        }
+        group_config
       ]
     }
   ],
   "classes": "u-mt-s"
-}) }}
+} %}
+
+{% if add_link %}
+  {% set group_config = group_config | setAttribute("summaryLink", {
+    "url": add_link,
+    "text": add_link_text,
+    "attributes": {
+      "data-qa": "add-item-link"
+    }
+  }) %}
+{% endif %}
+
+{{ onsSummary(config) }}
