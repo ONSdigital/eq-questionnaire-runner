@@ -1,6 +1,6 @@
 from datetime import datetime
+import json
 
-import simplejson as json
 from dateutil.tz import tzutc
 
 from app.storage.errors import ItemAlreadyExistsError

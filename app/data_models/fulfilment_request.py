@@ -2,8 +2,8 @@ from abc import ABC, abstractmethod
 from datetime import datetime
 from typing import Mapping
 from uuid import uuid4
+import json
 
-import simplejson as json
 from dateutil.tz import tzutc
 
 
