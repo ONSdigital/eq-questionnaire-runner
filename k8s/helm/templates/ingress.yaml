@@ -40,6 +40,10 @@ spec:
         backend:
           serviceName: {{ .Chart.Name }}
           servicePort: {{ .Values.service.port }}
+      -   path: /sign-out
+          backend:
+            serviceName: {{ .Chart.Name }}
+            servicePort: {{ .Values.service.port }}
       - path: /flush
         backend:
           serviceName: {{ .Chart.Name }}
