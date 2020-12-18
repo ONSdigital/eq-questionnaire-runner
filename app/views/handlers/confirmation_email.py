@@ -7,7 +7,7 @@ from flask_babel import gettext, lazy_gettext
 
 from app.data_models import FulfilmentRequest, SessionData, SessionStore
 from app.forms.email_form import EmailForm
-from app.helpers.url_param_serializer import URLParamSerializer
+from app.helpers import url_safe_serializer
 from app.publisher.exceptions import PublicationFailed
 from app.questionnaire import QuestionnaireSchema
 from app.views.contexts.email_form_context import build_confirmation_email_form_context
@@ -55,7 +55,7 @@ class ConfirmationEmail:
         return build_confirmation_email_form_context(self.form)
 
     def get_url_safe_serialized_email(self):
-        return URLParamSerializer().dumps(self.form.email.data)
+        return url_safe_serializer().dumps(self.form.email.data)
 
     def get_page_title(self):
         if self.form.errors:

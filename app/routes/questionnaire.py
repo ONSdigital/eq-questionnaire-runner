@@ -10,11 +10,11 @@ from app.authentication.no_questionnaire_state_exception import (
     NoQuestionnaireStateException,
 )
 from app.globals import get_metadata, get_session_store, get_session_timeout_in_seconds
+from app.helpers import url_safe_serializer
 from app.helpers.language_helper import handle_language
 from app.helpers.schema_helpers import with_schema
 from app.helpers.session_helpers import with_questionnaire_store, with_session_store
 from app.helpers.template_helpers import get_census_base_url, render_template
-from app.helpers.url_param_serializer import URLParamSerializer
 from app.questionnaire.location import InvalidLocationException
 from app.questionnaire.router import Router
 from app.utilities.schema import load_schema_from_session_data
@@ -346,7 +346,7 @@ def get_confirmation_email_sent(session_store, schema):
     if not session_store.session_data.confirmation_email_count:
         raise NotFound
 
-    email = URLParamSerializer().loads(request.args.get("email"))
+    email = url_safe_serializer().loads(request.args.get("email"))
 
     show_send_another_email_guidance = not ConfirmationEmail.is_limit_reached(
         session_store.session_data
