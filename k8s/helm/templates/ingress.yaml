@@ -16,7 +16,7 @@ spec:
   rules:
   - http:
       paths:
-      - path: /session/*
+      - path: /session
         backend:
           serviceName: runner
           servicePort: 80
