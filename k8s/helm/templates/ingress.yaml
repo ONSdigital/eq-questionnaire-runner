@@ -18,30 +18,30 @@ spec:
       paths:
       - path: /session
         backend:
-          serviceName: runner
-          servicePort: 80
+          serviceName: {{ .Chart.Name }}
+          servicePort: {{ .Values.service.port }}
       - path: /questionnaire/*
         backend:
-          serviceName: runner
-          servicePort: 80
+          serviceName: {{ .Chart.Name }}
+          servicePort: {{ .Values.service.port }}
       - path: /submitted/*
         backend:
-          serviceName: runner
-          servicePort: 80
+          serviceName: {{ .Chart.Name }}
+          servicePort: {{ .Values.service.port }}
       - path: /individual-response/*
         backend:
-          serviceName: runner
-          servicePort: 80
+          serviceName: {{ .Chart.Name }}
+          servicePort: {{ .Values.service.port }}
       - path: /status
         backend:
-          serviceName: runner
-          servicePort: 80
+          serviceName: {{ .Chart.Name }}
+          servicePort: {{ .Values.service.port }}
       - path: /schemas
         backend:
-          serviceName: runner
-          servicePort: 80
+          serviceName: {{ .Chart.Name }}
+          servicePort: {{ .Values.service.port }}
       - path: /flush
         backend:
-          serviceName: runner
-          servicePort: 80
+          serviceName: {{ .Chart.Name }}
+          servicePort: {{ .Values.service.port }}
 {{- end }}
