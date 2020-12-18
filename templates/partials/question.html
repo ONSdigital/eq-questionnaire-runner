@@ -104,7 +104,9 @@
 }) %}
   {%- if content.list -%}
     {% set list = content.list %}
-    {% include 'partials/summary/list-summary.html' %}
+    <div class="u-mb-m">
+       {% include 'partials/summary/list-summary.html' %}
+    </div>
   {% endif %}
   {{ question_warning }}
   {{ individual_response_guidance }}
