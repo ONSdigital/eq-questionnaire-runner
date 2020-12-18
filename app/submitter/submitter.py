@@ -1,6 +1,6 @@
-import json
 from uuid import uuid4
 
+import simplejson as json
 from google.cloud import storage
 from pika import BasicProperties, BlockingConnection, URLParameters
 from pika.exceptions import AMQPError
