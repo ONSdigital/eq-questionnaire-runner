@@ -7,11 +7,11 @@ from app.authentication.no_questionnaire_state_exception import (
     NoQuestionnaireStateException,
 )
 from app.globals import get_metadata, get_session_store
+from app.helpers import url_safe_serializer
 from app.helpers.language_helper import handle_language
 from app.helpers.schema_helpers import with_schema
 from app.helpers.session_helpers import with_questionnaire_store
 from app.helpers.template_helpers import render_template
-from app.helpers.url_param_serializer import URLParamSerializer
 from app.utilities.schema import load_schema_from_session_data
 from app.views.handlers.individual_response import (
     IndividualResponseChangeHandler,
@@ -248,7 +248,7 @@ def individual_response_text_message_confirmation(schema, questionnaire_store):
     if request.method == "POST":
         return redirect(url_for("questionnaire.get_questionnaire"))
 
-    mobile_number = URLParamSerializer().loads(request.args.get("mobile_number"))
+    mobile_number = url_safe_serializer().loads(request.args.get("mobile_number"))
 
     return render_template(
         template="individual_response/confirmation-text-message",

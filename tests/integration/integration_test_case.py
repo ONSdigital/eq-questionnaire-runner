@@ -143,7 +143,7 @@ class IntegrationTestCase(unittest.TestCase):  # pylint: disable=too-many-public
         self.assertStatusOK()
         return json.loads(self.getResponseData())
 
-    def get(self, url, **kwargs):
+    def get(self, url, follow_redirects=True, **kwargs):
         """
         GETs the specified URL, following any redirects.
 
@@ -155,7 +155,7 @@ class IntegrationTestCase(unittest.TestCase):  # pylint: disable=too-many-public
         :param url: the URL to GET
         """
         environ, response = self._client.get(
-            url, as_tuple=True, follow_redirects=True, **kwargs
+            url, as_tuple=True, follow_redirects=follow_redirects, **kwargs
         )
 
         self._cache_response(environ, response)
@@ -192,6 +192,14 @@ class IntegrationTestCase(unittest.TestCase):  # pylint: disable=too-many-public
     def sign_out(self):
         selected = self.getHtmlSoup().find("a", {"name": "btn-save-sign-out"})
         return self.get(selected["href"])
+
+    def exit(self):
+        """
+        GETs the sign-out url from the exit button. Does not follow the external
+        redirect.
+        """
+        url = self.getHtmlSoup().find("a", {"name": "btn-exit"})["href"]
+        self.get(url, follow_redirects=False)
 
     def previous(self):
         selector = "#top-previous"
