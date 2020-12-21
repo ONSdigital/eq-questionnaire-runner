@@ -2,7 +2,12 @@ from datetime import datetime, timedelta
 from uuid import uuid4
 
 from flask import current_app
-from jose import jwt
+from jwcrypto import jwk, jwt
+from jwcrypto.common import base64url_encode
+
+
+def get_jwk_from_secret(secret):
+    return jwk.JWK(kty="oct", k=base64url_encode(bytes(secret.encode("utf-8"))))
 
 
 def get_address_lookup_api_auth_token():
@@ -13,11 +18,17 @@ def get_address_lookup_api_auth_token():
         session_timeout = current_app.config["EQ_SESSION_TIMEOUT_SECONDS"]
         leeway = current_app.config["ADDRESS_LOOKUP_API_AUTH_TOKEN_LEEWAY_IN_SECONDS"]
         expiry_seconds = session_timeout + leeway
+        expiry_time = datetime.utcnow() + timedelta(seconds=expiry_seconds)
 
-        payload = {
-            "exp": datetime.utcnow() + timedelta(seconds=expiry_seconds),
-            "jti": str(uuid4()),
-            "iss": "eq",
-        }
+        token = jwt.JWT(
+            header={"alg": "HS256"},
+            claims={
+                "exp": expiry_time.timestamp(),
+                "jti": str(uuid4()),
+                "iss": "eq",
+            },
+        )
+        key = get_jwk_from_secret(secret)
+        token.make_signed_token(key)
 
-        return jwt.encode(payload, secret, algorithm="HS256")
+        return token.serialize()

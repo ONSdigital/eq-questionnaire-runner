@@ -1,9 +1,11 @@
+import json
 from datetime import datetime, timedelta, timezone
 
 from freezegun import freeze_time
-from jose import jwt
+from jwcrypto import jwt
 
 from app.helpers import get_address_lookup_api_auth_token
+from app.helpers.address_lookup_api_helper import get_jwk_from_secret
 from app.helpers.uuid_helper import is_valid_uuid
 from tests.app.app_context_test_case import AppContextTestCase
 
@@ -30,9 +32,10 @@ class TestAddressLookupApiAuthToken(AppContextTestCase):
             expiry_time = datetime.utcnow() + timedelta(seconds=expiry_seconds)
 
             token = get_address_lookup_api_auth_token()
-            decoded_token = jwt.decode(token, secret, algorithms="HS256")
+            key = get_jwk_from_secret(secret)
+            decoded_token = jwt.JWT(key=key, jwt=token)
+            claims = json.loads(decoded_token.claims)
 
-            assert len(decoded_token) == 3
-            assert decoded_token["iss"] == "eq"
-            assert decoded_token["exp"] == expiry_time.timestamp()
-            assert is_valid_uuid(decoded_token["jti"])
+            assert claims["iss"] == "eq"
+            assert claims["exp"] == expiry_time.timestamp()
+            assert is_valid_uuid(claims["jti"])
