@@ -1,8 +1,8 @@
-import DessertBlockPage from "../../../generated_pages/summary/dessert-block.page.js";
-import DessertBlockPageSubmission from "../../../generated_pages/summary_with_submission_text/dessert-block.page.js";
+import DessertPage from "../../../generated_pages/summary/dessert.page.js";
+import DessertConfirmationPage from "../../../generated_pages/summary/dessert-confirmation.page.js";
+import NumbersPage from "../../../generated_pages/summary/numbers.page.js";
 import RadioPage from "../../../generated_pages/summary/radio.page.js";
 import SummaryPage from "../../../generated_pages/summary/summary.page.js";
-import TestNumberPage from "../../../generated_pages/summary/test-number-block.page.js";
 
 describe("Summary Screen", () => {
   beforeEach("Load the survey", () => {
@@ -13,10 +13,12 @@ describe("Summary Screen", () => {
     completeAllQuestions();
 
     expect($(SummaryPage.radioAnswer()).getText()).to.contain("Bacon");
-    expect($(SummaryPage.testCurrency()).getText()).to.contain("£1,234.00");
-    expect($(SummaryPage.squareKilometres()).getText()).to.contain("123,456 km²");
-    expect($(SummaryPage.testDecimal()).getText()).to.contain("123,456.78");
     expect($(SummaryPage.dessertGroupTitle()).getText()).to.contain("Dessert");
+    expect($(SummaryPage.dessertAnswer()).getText()).to.contain("Crème Brûlée");
+    expect($(SummaryPage.dessertConfirmationAnswer()).getText()).to.contain("Yes");
+    expect($(SummaryPage.numbersCurrencyAnswer()).getText()).to.contain("£1,234.00");
+    expect($(SummaryPage.numbersUnitAnswer()).getText()).to.contain("123,456 km²");
+    expect($(SummaryPage.numbersDecimalAnswer()).getText()).to.contain("123,456.78");
   });
 
   it("Given a survey has been completed when a summary page is displayed then I should be able to submit the answers", () => {
@@ -46,29 +48,28 @@ describe("Summary Screen", () => {
   it("Given the edit link is used when a question is updated then the summary screen should show the new answer", () => {
     completeAllQuestions();
 
-    expect($(SummaryPage.squareKilometres()).getText()).to.contain("123,456 km²");
-    $(SummaryPage.squareKilometresEdit()).click();
-    expect($(TestNumberPage.squareKilometres()).isFocused()).to.be.true;
-    $(TestNumberPage.squareKilometres()).setValue("654321");
-    $(TestNumberPage.submit()).click();
-    expect($(SummaryPage.squareKilometres()).getText()).to.contain("654,321 km²");
+    $(SummaryPage.numbersUnitAnswerEdit()).click();
+    expect($(NumbersPage.unit()).isFocused()).to.be.true;
+    $(NumbersPage.unit()).setValue("654321");
+    $(NumbersPage.submit()).click();
+    expect($(SummaryPage.numbersUnitAnswer()).getText()).to.contain("654,321 km²");
   });
 
   it("Given a number value of zero is entered when on the summary screen then formatted 0 should be displayed", () => {
     $(RadioPage.submit()).click();
-    $(TestNumberPage.testCurrency()).setValue("0");
-    $(TestNumberPage.submit()).click();
-    $(DessertBlockPage.submit()).click();
-    expect(browser.getUrl()).to.contain(SummaryPage.pageName);
-    expect($(SummaryPage.testCurrency()).getText()).to.contain("£0.00");
+    $(DessertPage.submit()).click();
+    $(DessertConfirmationPage.submit()).click();
+    $(NumbersPage.currency()).setValue("0");
+    $(NumbersPage.submit()).click();
+    expect($(SummaryPage.numbersCurrencyAnswer()).getText()).to.contain("£0.00");
   });
 
   it("Given no value is entered when on the summary screen then the correct response should be displayed", () => {
     $(RadioPage.submit()).click();
-    $(TestNumberPage.submit()).click();
-    $(DessertBlockPage.submit()).click();
-    expect(browser.getUrl()).to.contain(SummaryPage.pageName);
-    expect($(SummaryPage.testCurrency()).getText()).to.contain("No answer provided");
+    $(DessertPage.submit()).click();
+    $(DessertConfirmationPage.submit()).click();
+    $(NumbersPage.submit()).click();
+    expect($(SummaryPage.numbersCurrencyAnswer()).getText()).to.contain("No answer provided");
   });
 
   it("Given a survey has been completed, when submission content has not been set in the schema, then the default content should be displayed", () => {
@@ -81,28 +82,15 @@ describe("Summary Screen", () => {
   function completeAllQuestions() {
     $(RadioPage.bacon()).click();
     $(RadioPage.submit()).click();
-    $(TestNumberPage.testCurrency()).setValue("1234");
-    $(TestNumberPage.squareKilometres()).setValue("123456");
-    $(TestNumberPage.testDecimal()).setValue("123456.78");
-    $(TestNumberPage.submit()).click();
-    $(DessertBlockPage.dessert()).setValue("Crème Brûlée");
-    $(DessertBlockPage.submit()).click();
+    $(DessertPage.answer()).setValue("Crème Brûlée");
+    $(DessertPage.submit()).click();
+    $(DessertConfirmationPage.yes()).click();
+    $(DessertConfirmationPage.submit()).click();
+    $(NumbersPage.currency()).setValue("1234");
+    $(NumbersPage.unit()).setValue("123456");
+    $(NumbersPage.decimal()).setValue("123456.78");
+    $(NumbersPage.submit()).click();
 
     expect(browser.getUrl()).to.contain(SummaryPage.pageName);
   }
-});
-
-describe("Summary Screen", () => {
-  beforeEach("Load the survey", () => {
-    browser.openQuestionnaire("test_summary_with_submission_text.json");
-  });
-
-  it("Given a survey has been completed, when submission content has been set in the schema, then the correct content should be displayed", () => {
-    $(DessertBlockPageSubmission.dessert()).setValue("Crème Brûlée");
-    $(DessertBlockPageSubmission.submit()).click();
-    expect($(SummaryPage.questionText()).getText()).to.contain("Submission title");
-    expect($(SummaryPage.warning()).getText()).to.contain("Submission warning");
-    expect($(SummaryPage.guidance()).getText()).to.contain("Submission guidance");
-    expect($(SummaryPage.submit()).getText()).to.contain("Submission button");
-  });
 });

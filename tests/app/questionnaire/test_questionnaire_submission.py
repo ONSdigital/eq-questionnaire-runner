@@ -106,6 +106,7 @@ class TestQuestionnaireSubmissionFinalSummary(SubmissionTestCase):
         self.post()
         self.post()
         self.post()
+        self.post()
 
     def test_successful_submission(self):
         # Given I launch and answer a questionnaire, When I submit and the submissions succeeds
@@ -122,6 +123,7 @@ class TestQuestionnaireSubmissionFinalSummary(SubmissionTestCase):
 
         # Given I launch and answer a questionnaire, When I submit but the submissions fails
         self.launchSurvey("test_summary")
+        self.post()
         self.post()
         self.post()
         self.post()
