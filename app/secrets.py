@@ -8,8 +8,11 @@ EXPECTED_SECRETS = [
 ]
 
 
-def validate_required_secrets(secrets):
-    for required_secret in EXPECTED_SECRETS:
+def validate_required_secrets(secrets, expected_secrets=None):
+    all_expected_secrets = (
+        EXPECTED_SECRETS + expected_secrets if expected_secrets else EXPECTED_SECRETS
+    )
+    for required_secret in all_expected_secrets:
         if required_secret not in secrets["secrets"]:
             raise Exception("Missing Secret [{}]".format(required_secret))
 

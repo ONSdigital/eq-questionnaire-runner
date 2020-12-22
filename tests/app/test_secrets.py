@@ -19,3 +19,14 @@ class TestSecrets(TestCase):
     def test_validate_required_secrets_passes(self):
         secrets = {"secrets": {secret: "abc" for secret in EXPECTED_SECRETS}}
         self.assertIsNone(validate_required_secrets(secrets))
+
+    def test_validate_required_secrets_fails_on_conditional_secret(self):
+        secrets = {"secrets": {secret: "abc" for secret in EXPECTED_SECRETS}}
+
+        with self.assertRaises(Exception) as exception:
+            validate_required_secrets(secrets, expected_secrets=["MY_EXPECTED_SECRET"])
+
+            self.assertIn(
+                "Missing Secret [MY_EXPECTED_SECRET]",
+                str(exception.exception),
+            )
