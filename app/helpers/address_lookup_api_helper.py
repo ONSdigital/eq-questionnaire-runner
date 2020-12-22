@@ -1,4 +1,4 @@
-from datetime import datetime, timedelta
+from datetime import datetime
 from uuid import uuid4
 
 from flask import current_app
@@ -17,13 +17,12 @@ def get_address_lookup_api_auth_token():
         )
         session_timeout = current_app.config["EQ_SESSION_TIMEOUT_SECONDS"]
         leeway = current_app.config["ADDRESS_LOOKUP_API_AUTH_TOKEN_LEEWAY_IN_SECONDS"]
-        expiry_seconds = session_timeout + leeway
-        expiry_time = datetime.utcnow() + timedelta(seconds=expiry_seconds)
+        expiry_time = int(datetime.utcnow().timestamp()) + session_timeout + leeway
 
         token = jwt.JWT(
             header={"alg": "HS256"},
             claims={
-                "exp": expiry_time.timestamp(),
+                "exp": expiry_time,
                 "jti": str(uuid4()),
                 "iss": "eq",
             },
