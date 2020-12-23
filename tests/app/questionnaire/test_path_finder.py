@@ -164,7 +164,12 @@ class TestPathFinder(AppContextTestCase):
                     "section_id": "default-section",
                     "list_item_id": None,
                     "status": CompletionStatus.COMPLETED,
-                    "block_ids": ["radio", "dessert", "dessert-confirmation", "numbers"],
+                    "block_ids": [
+                        "radio",
+                        "dessert",
+                        "dessert-confirmation",
+                        "numbers",
+                    ],
                 }
             ]
         )

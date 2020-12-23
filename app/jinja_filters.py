@@ -14,6 +14,16 @@ from app.settings import MAX_NUMBER
 blueprint = flask.Blueprint("filters", __name__)
 
 
+def mark_safe(context, value):
+    if context.autoescape:
+        value = Markup(value)
+    return value
+
+
+def strip_tags(value):
+    return escape(Markup(value).striptags())
+
+
 @blueprint.app_template_filter()
 def format_number(value):
     if value or value == 0:
@@ -162,12 +172,6 @@ def format_unit_input_label_processor():
 @blueprint.app_context_processor
 def get_currency_symbol_processor():
     return dict(get_currency_symbol=get_currency_symbol)
-
-
-def mark_safe(context, value):
-    if context.autoescape:
-        value = Markup(value)
-    return value
 
 
 @blueprint.app_template_filter()
@@ -439,7 +443,7 @@ class SummaryRowItem:
             self.rowTitle = answer["label"]
             self.rowTitleAttributes = {"data-qa": answer["id"] + "-label"}
         else:
-            self.rowTitle = question["title"]
+            self.rowTitle = strip_tags(question["title"])
             self.rowTitleAttributes = {"data-qa": question["id"]}
 
         value = answer["value"]
@@ -507,7 +511,7 @@ class SummaryRow:
         edit_link_text,
         edit_link_aria_label,
     ):
-        self.rowTitle = question["title"]
+        self.rowTitle = strip_tags(question["title"])
         self.rowItems = []
 
         multiple_answers = len(question["answers"]) > 1

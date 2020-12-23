@@ -18,6 +18,7 @@ from app.jinja_filters import (
     get_formatted_currency,
     get_width_class_for_number,
     map_list_collector_config,
+    strip_tags,
 )
 from tests.app.app_context_test_case import AppContextTestCase
 
@@ -26,6 +27,17 @@ class TestJinjaFilters(AppContextTestCase):  # pylint: disable=too-many-public-m
     def setUp(self):
         self.autoescape_context = Mock(autoescape=True)
         super(TestJinjaFilters, self).setUp()
+
+    def test_strip_tags(self):
+        self.assertEqual(strip_tags("Hello <b>world</b>"), "Hello world")
+        self.assertEqual(
+            strip_tags("Hello &lt;i&gt;world&lt;/i&gt;"),
+            "Hello &lt;i&gt;world&lt;/i&gt;",
+        )
+        self.assertEqual(
+            strip_tags("Hello <b>&lt;i&gt;world&lt;/i&gt;</b>"),
+            "Hello &lt;i&gt;world&lt;/i&gt;",
+        )
 
     @patch("app.jinja_filters.flask_babel.get_locale", Mock(return_value="en_GB"))
     def test_get_currency_symbol(self):

@@ -107,7 +107,7 @@
                                             "placeholder": "dessert",
                                             "value": {
                                                 "source": "answers",
-                                                "identifier": "dessert"
+                                                "identifier": "dessert-answer"
                                             }
                                         }
                                     ]
@@ -117,7 +117,7 @@
                                     {
                                         "id": "dessert-confirmation-answer",
                                         "label": "Radio",
-                                        "mandatory": false,
+                                        "mandatory": true,
                                         "type": "Radio",
                                         "options": [
                                             {

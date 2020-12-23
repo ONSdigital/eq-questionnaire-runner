@@ -49,7 +49,7 @@ class TestQuestionnaireHtmlEscaping(IntegrationTestCase):
 
                 assert ESCAPED_CONTENT in self.getResponseData()
 
-    def test_summary(self):
+    def test_textfield_summary(self):
         self.launchSurvey("test_textfield")
         self.post({"name-answer": HTML_CONTENT})
         assert ESCAPED_CONTENT in self.getResponseData()
@@ -105,3 +105,45 @@ class TestQuestionnaireHtmlEscaping(IntegrationTestCase):
         self.post({})
         self.assertInUrl("/summary")
         self.assertInBody("&lt;p&gt;7 Evelyn Street&lt;/p&gt;")
+
+    def test_list_collector(self):
+        self.launchSurvey("test_list_collector")
+        self.post({"anyone-else": "Yes"})
+        self.post(
+            {
+                "first-name": HTML_CONTENT,
+                "last-name": "Bloggs",
+            }
+        )
+
+        expected_change_aria_label = f"Change details for {ESCAPED_CONTENT} Bloggs"
+        expected_remove_aria_label = f"Remove {ESCAPED_CONTENT} Bloggs"
+        assert expected_change_aria_label in self.getResponseData()
+        assert expected_remove_aria_label in self.getResponseData()
+
+    def test_summary(self):
+        self.launchSurvey("test_summary")
+        self.post({"radio-answer": "Bacon"})
+        self.post({"dessert-answer": HTML_CONTENT})
+        self.post({"dessert-confirmation-answer": "Yes"})
+        self.post()
+
+        expected_question_text = f">Are you sure {ESCAPED_CONTENT} is your favourite?"
+        expected_change_aria_label = (
+            f"Change your answer for: Are you sure {ESCAPED_CONTENT} is your favourite?"
+        )
+        assert expected_question_text in self.getResponseData()
+        assert expected_change_aria_label in self.getResponseData()
+
+    def test_radio_mandatory_error_with_placeholders(self):
+        self.launchSurvey("test_summary")
+        self.post({"radio-answer": "Bacon"})
+        self.post({"dessert-answer": HTML_CONTENT})
+        self.post()
+
+        expected_question_text = (
+            f"Are you sure <em>{ESCAPED_CONTENT}</em> is your favourite?"
+        )
+        expected_error_message = f'Select an answer <span class="u-vh">to ‘Are you sure {ESCAPED_CONTENT} is your favourite?’</span>'
+        assert expected_question_text in self.getResponseData()
+        assert expected_error_message in self.getResponseData()

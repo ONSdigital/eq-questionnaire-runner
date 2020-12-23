@@ -104,7 +104,7 @@ class TestQuestionnaireSubmissionFinalSummary(SubmissionTestCase):
         # Answer questions and submit survey
         self.post()
         self.post()
-        self.post()
+        self.post({"dessert-confirmation-answer": "Yes"})
         self.post()
         self.post()
 
@@ -125,7 +125,7 @@ class TestQuestionnaireSubmissionFinalSummary(SubmissionTestCase):
         self.launchSurvey("test_summary")
         self.post()
         self.post()
-        self.post()
+        self.post({"dessert-confirmation-answer": "Yes"})
         self.post()
         self.post()
 
