@@ -336,7 +336,7 @@ class TestCreateApp(unittest.TestCase):  # pylint: disable=too-many-public-metho
         assert application.config["COMPRESS_ALGORITHM"] == ["gzip", "br", "deflate"]
 
     @mock.patch("yaml.safe_load")
-    @mock.patch("app.secrets.EXPECTED_SECRETS", [])
+    @mock.patch("app.secrets.REQUIRED_SECRETS", [])
     def test_conditional_expected_secret(self, mock_safe_load):
         mock_safe_load.return_value = {"secrets": {}}
         self._setting_overrides["ADDRESS_LOOKUP_API_AUTH_ENABLED"] = True

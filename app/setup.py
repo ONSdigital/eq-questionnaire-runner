@@ -96,12 +96,12 @@ def create_app(  # noqa: C901  pylint: disable=too-complex, too-many-statements
 
     with open(application.config["EQ_SECRETS_FILE"]) as secrets_file:
         secrets = yaml.safe_load(secrets_file)
-    expected_secrets = (
+    required_secrets = (
         ["ADDRESS_LOOKUP_API_AUTH_TOKEN_SECRET"]
         if application.config["ADDRESS_LOOKUP_API_AUTH_ENABLED"]
         else []
     )
-    validate_required_secrets(secrets, expected_secrets)
+    validate_required_secrets(secrets, required_secrets)
     application.eq["secret_store"] = SecretStore(secrets)
 
     with open(application.config["EQ_KEYS_FILE"]) as keys_file:
