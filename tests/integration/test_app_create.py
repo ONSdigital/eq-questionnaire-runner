@@ -1,5 +1,6 @@
 import unittest
 from contextlib import contextmanager
+from unittest import mock
 from unittest.mock import Mock
 from uuid import UUID
 
@@ -333,3 +334,14 @@ class TestCreateApp(unittest.TestCase):  # pylint: disable=too-many-public-metho
     def test_defaults_to_gzip_compression(self):
         application = create_app(self._setting_overrides)
         assert application.config["COMPRESS_ALGORITHM"] == ["gzip", "br", "deflate"]
+
+    @mock.patch("yaml.safe_load")
+    @mock.patch("app.secrets.REQUIRED_SECRETS", [])
+    def test_conditional_expected_secret(self, mock_safe_load):
+        mock_safe_load.return_value = {"secrets": {}}
+        self._setting_overrides["ADDRESS_LOOKUP_API_AUTH_ENABLED"] = True
+        with self.assertRaises(Exception) as ex:
+            create_app(self._setting_overrides)
+        assert "Missing Secret [ADDRESS_LOOKUP_API_AUTH_TOKEN_SECRET]" in str(
+            ex.exception
+        )
