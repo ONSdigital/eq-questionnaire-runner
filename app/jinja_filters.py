@@ -15,9 +15,7 @@ blueprint = flask.Blueprint("filters", __name__)
 
 
 def mark_safe(context, value):
-    if context.autoescape:
-        value = Markup(value)
-    return value
+    return Markup(value) if context.autoescape else value
 
 
 def strip_tags(value):
