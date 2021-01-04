@@ -116,7 +116,11 @@ spec:
             - name: CDN_ASSETS_PATH
               value: "{{- .Values.cdn.assets_path }}"
             - name: ADDRESS_LOOKUP_API_URL
-              value: "{{- .Values.address_lookup_api.url }}"
+              value: "{{- .Values.addressLookupApi.url }}"
+            - name: ADDRESS_LOOKUP_API_AUTH_ENABLED
+              value: "{{- .Values.addressLookupApi.authEnabled }}"
+            - name: ADDRESS_LOOKUP_API_AUTH_TOKEN_LEEWAY_IN_SECONDS
+              value: "{{- .Values.addressLookupApi.authTokenLeewayInSeconds }}"
             - name: EQ_REDIS_HOST
               valueFrom:
                 configMapKeyRef:

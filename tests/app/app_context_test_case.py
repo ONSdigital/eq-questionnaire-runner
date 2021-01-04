@@ -43,6 +43,10 @@ class AppContextTestCase(unittest.TestCase):
     LOGIN_DISABLED = False
     setting_overrides = {}
 
+    @property
+    def test_app(self):
+        return self._app
+
     def setUp(self):
         self._ds = patch("app.setup.datastore.Client", MockDatastore)
         self._ds.start()

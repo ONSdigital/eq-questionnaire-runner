@@ -111,3 +111,20 @@ class TestLookupAddressFields(IntegrationTestCase):
 
         # Then
         self.assertNotInBody("123456789")
+
+    def test_auth_token_not_in_page(self):
+        self.assertNotInBody("data-authorization-token")
+
+    def test_auth_token_in_page(self):
+        self.test_app.config["ADDRESS_LOOKUP_API_URL"] = "https://address-lookup-api"
+        self.test_app.config["ADDRESS_LOOKUP_API_AUTH_ENABLED"] = True
+        # When
+        self.get("questionnaire/address-block-mandatory/")
+        # Then
+        auth_token = (
+            self.getHtmlSoup()
+            .select(f"#address-mandatory-autosuggest-container")[0]
+            .get("data-authorization-token")
+        )
+        assert auth_token
+        assert len(auth_token.split(".")) == 3

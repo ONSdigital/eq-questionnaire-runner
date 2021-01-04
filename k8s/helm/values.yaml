@@ -56,8 +56,10 @@ cdn:
   url: "https://cdn.eq.census-gcp.onsdigital.uk"
   assets_path: "/design-system"
 
-address_lookup_api:
+addressLookupApi:
   url: "https://whitelodge-ai-api.census-gcp.onsdigital.uk"
+  authEnabled: "False"
+  authTokenLeewayInSeconds: 300
 
 confirmationEmailLimit: 10
 feedbackLimit: 10

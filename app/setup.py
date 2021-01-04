@@ -90,21 +90,22 @@ def create_app(  # noqa: C901  pylint: disable=too-complex, too-many-statements
 ):
     application = Flask(__name__, template_folder="../templates")
     application.config.from_object(settings)
+    if setting_overrides:
+        application.config.update(setting_overrides)
     application.eq = {}
 
     with open(application.config["EQ_SECRETS_FILE"]) as secrets_file:
         secrets = yaml.safe_load(secrets_file)
+    conditional_required_secrets = []
+    if application.config["ADDRESS_LOOKUP_API_AUTH_ENABLED"]:
+        conditional_required_secrets.append("ADDRESS_LOOKUP_API_AUTH_TOKEN_SECRET")
+    validate_required_secrets(secrets, conditional_required_secrets)
+    application.eq["secret_store"] = SecretStore(secrets)
 
     with open(application.config["EQ_KEYS_FILE"]) as keys_file:
         keys = yaml.safe_load(keys_file)
-
-    validate_required_secrets(secrets)
     validate_required_keys(keys, KEY_PURPOSE_SUBMISSION)
-    application.eq["secret_store"] = SecretStore(secrets)
     application.eq["key_store"] = KeyStore(keys)
-
-    if setting_overrides:
-        application.config.update(setting_overrides)
 
     if application.config["EQ_APPLICATION_VERSION"]:
         logger.info(

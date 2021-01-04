@@ -35,7 +35,9 @@ helm upgrade --install \
     --set-string webServer.workers="${WEB_SERVER_WORKERS}" \
     --set-string webServer.threads="${WEB_SERVER_THREADS}" \
     --set-string webServer.uwsgiAsyncCores="${WEB_SERVER_UWSGI_ASYNC_CORES}" \
-    --set-string datastore.useGRPC="${DATASTORE_USE_GRPC}"
+    --set-string datastore.useGRPC="${DATASTORE_USE_GRPC}" \
+    --set-string addressLookupApi.url="${ADDRESS_LOOKUP_API_URL}" \
+    --set-string addressLookupApi.authEnabled="${ADDRESS_LOOKUP_API_AUTH_ENABLED}"
 
 kubectl rollout restart deployment.v1.apps/runner
 kubectl rollout status deployment.v1.apps/runner
