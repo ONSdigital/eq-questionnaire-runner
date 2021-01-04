@@ -151,10 +151,10 @@ class Question(BlockHandler):
                 page_title=self.page_title
             )
 
-        if self._schema.has_address_lookup_answer(self.rendered_block["question"]):
-            context[
-                "address_lookup_api_auth_token"
-            ] = get_address_lookup_api_auth_token()
+        if self._schema.has_address_lookup_answer(self.rendered_block["question"]) and (
+            address_lookup_api_auth_token := get_address_lookup_api_auth_token()
+        ):
+            context["address_lookup_api_auth_token"] = address_lookup_api_auth_token
 
         return context
 
