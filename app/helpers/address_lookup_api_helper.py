@@ -7,7 +7,7 @@ from jwcrypto.common import base64url_encode
 
 
 def get_jwk_from_secret(secret):
-    return jwk.JWK(kty="oct", k=base64url_encode(bytes(secret.encode("utf-8"))))
+    return jwk.JWK(kty="oct", k=base64url_encode(secret.encode("utf-8")))
 
 
 def get_address_lookup_api_auth_token():
