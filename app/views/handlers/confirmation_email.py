@@ -63,16 +63,13 @@ class ConfirmationEmail:
         return self.page_title
 
     def _publish_fulfilment_request(self):
-        topic_id = current_app.config["EQ_SUBMISSION_CONFIRMATION_TOPIC_ID"]
         fulfilment_request = ConfirmationEmailFulfilmentRequest(
             self.form.email.data, self._session_store.session_data, self._schema
         )
         try:
-            return current_app.eq["publisher"].publish(
-                topic_id, message=fulfilment_request.message
-            )
-        except PublicationFailed:
-            raise ConfirmationEmailFulfilmentRequestPublicationFailed
+            return current_app.eq["task-client"].create_task(fulfilment_request.message)
+        except PublicationFailed as exc:
+            raise ConfirmationEmailFulfilmentRequestPublicationFailed from exc
 
     def handle_post(self):
         self._publish_fulfilment_request()

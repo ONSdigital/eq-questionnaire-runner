@@ -59,9 +59,10 @@ EQ_KEYS_FILE = os.getenv("EQ_KEYS_FILE", "keys.yml")
 
 EQ_PUBLISHER_BACKEND = os.getenv("EQ_PUBLISHER_BACKEND")
 EQ_FULFILMENT_TOPIC_ID = os.getenv("EQ_FULFILMENT_TOPIC_ID", "eq-fulfilment-topic")
-EQ_SUBMISSION_CONFIRMATION_TOPIC_ID = os.getenv(
-    "EQ_SUBMISSION_CONFIRMATION_TOPIC_ID", "eq-submission-confirmation-topic"
+EQ_SUBMISSION_CONFIRMATION_QUEUE = os.getenv(
+    "EQ_SUBMISSION_CONFIRMATION_QUEUE", "eq-submission-confirmation"
 )
+EQ_CLOUD_TASK_CLIENT = os.getenv("EQ_CLOUD_TASK_CLIENT", "cloud-tasks")
 EQ_INDIVIDUAL_RESPONSE_LIMIT = int(os.getenv("EQ_INDIVIDUAL_RESPONSE_LIMIT", "1"))
 EQ_INDIVIDUAL_RESPONSE_POSTAL_DEADLINE = utcoffset_or_fail(
     datetime.fromisoformat(get_env_or_fail("EQ_INDIVIDUAL_RESPONSE_POSTAL_DEADLINE")),
