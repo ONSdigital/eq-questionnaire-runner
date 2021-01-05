@@ -152,9 +152,9 @@ class TestPathFinder(AppContextTestCase):
 
     def test_routing_path(self):
         schema = load_schema_from_name("test_summary")
-        section_id = schema.get_section_id_for_block_id("dessert-block")
+        section_id = schema.get_section_id_for_block_id("dessert")
         expected_path = RoutingPath(
-            ["radio", "test-number-block", "dessert-block", "summary"],
+            ["radio", "dessert", "dessert-confirmation", "numbers", "summary"],
             section_id="default-section",
         )
 
@@ -164,7 +164,12 @@ class TestPathFinder(AppContextTestCase):
                     "section_id": "default-section",
                     "list_item_id": None,
                     "status": CompletionStatus.COMPLETED,
-                    "block_ids": ["radio", "test-number-block", "dessert-block"],
+                    "block_ids": [
+                        "radio",
+                        "dessert",
+                        "dessert-confirmation",
+                        "numbers",
+                    ],
                 }
             ]
         )
