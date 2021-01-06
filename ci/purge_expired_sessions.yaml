@@ -7,16 +7,16 @@ params:
   PROJECT_ID:
   DATETIME:
 run:
-  path: sh
+  path: bash
   args:
     - -exc
     - |
-      export GOOGLE_APPLICATION_CREDENTIALS=~/gcloud-service-key.json
+      export GOOGLE_APPLICATION_CREDENTIALS=/root/gcloud-service-key.json
       cat >$GOOGLE_APPLICATION_CREDENTIALS <<EOL
       $SERVICE_ACCOUNT_JSON
       EOL
 
-      gcloud auth activate-service-account --key-file $GOOGLE_APPLICATION_CREDENTIALS
+      gcloud auth activate-service-account --key-file "${GOOGLE_APPLICATION_CREDENTIALS}"
 
       gcloud dataflow jobs run purgesession \
       --region europe-west2 \
