@@ -42,7 +42,8 @@
     "ariaOneResult": "There is one suggestion available.",
     "ariaNResults": "There are {n} suggestions available.",
     "ariaLimitedResults": "Results have been limited to 10 suggestions. Type more characters to improve your search.",
-    "autosuggestData": answer.suggestions_url
+    "autosuggestData": answer.suggestions_url,
+    "allowMultiple": answer.allow_multiple | lower if answer.allow_multiple is defined,
   }) %}
   {% set config = config | setAttribute("autocomplete", "off") %}
 {% endif %}

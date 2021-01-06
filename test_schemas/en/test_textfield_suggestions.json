@@ -47,6 +47,26 @@
                             "routing_rules": []
                         },
                         {
+                            "type": "Question",
+                            "id": "country-block-multiple-selections",
+                            "question": {
+                                "answers": [
+                                    {
+                                        "id": "country-multiple-selections-answer",
+                                        "label": "What is your country of birth?",
+                                        "mandatory": false,
+                                        "suggestions_url": "https://cdn.eq.census-gcp.onsdigital.uk/data/v5.0.0/gb/en/countries-of-birth.json",
+                                        "allow_multiple": true,
+                                        "type": "TextField"
+                                    }
+                                ],
+                                "id": "country-of-birth-multiple-selections-question",
+                                "title": "Title",
+                                "type": "General"
+                            },
+                            "routing_rules": []
+                        },
+                        {
                             "type": "Summary",
                             "id": "summary"
                         }
