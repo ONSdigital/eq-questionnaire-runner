@@ -11,6 +11,13 @@ run:
   args:
     - -exc
     - |
+      export GOOGLE_APPLICATION_CREDENTIALS=~/gcloud-service-key.json
+      cat >$GOOGLE_APPLICATION_CREDENTIALS <<EOL
+      $SERVICE_ACCOUNT_JSON
+      EOL
+
+      gcloud auth activate-service-account --key-file $GOOGLE_APPLICATION_CREDENTIALS
+
       gcloud dataflow jobs run purgesession \
       --region europe-west2 \
       --gcs-location gs://dataflow-templates/latest/Datastore_to_Datastore_Delete \
