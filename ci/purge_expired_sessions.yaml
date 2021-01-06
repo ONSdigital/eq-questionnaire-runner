@@ -4,6 +4,7 @@ image_resource:
   source:
     repository: google/cloud-sdk
 params:
+  SERVICE_ACCOUNT_JSON: ((gcp.service_account_json))
   PROJECT_ID:
   DATETIME:
 run:
