@@ -52,7 +52,10 @@ def _get_language_context(language_code):
             for key in query:
                 if key != "language_code":
                     url = f"{key}={query[key][0]}"
-            url = f"?{url}&language_code={language_code}"
+            if url:
+                url = f"?{url}&language_code={language_code}"
+            else:
+                url = f"?language_code={language_code}"
         else:
             url = f"?{urlparse(request.url).query}&language_code={language_code}"
     else:
