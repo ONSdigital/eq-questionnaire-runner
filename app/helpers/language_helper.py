@@ -1,7 +1,7 @@
+from urllib.parse import parse_qs, urlparse
+
 from flask import g, request
 from flask_babel import get_locale
-from urllib.parse import urlparse
-from urllib.parse import parse_qs
 
 from app.globals import get_session_store
 from app.questionnaire.questionnaire_schema import DEFAULT_LANGUAGE_CODE
