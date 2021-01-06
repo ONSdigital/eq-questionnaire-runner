@@ -214,5 +214,5 @@ class TestQuestionnaireLanguage(IntegrationTestCase):
         self.assertInBody("This is the last viewed question in this section")
 
         # Switch the language to welsh and check that the last viewed guidance is still being displayed (in welsh)
-        self.get("{}?language_code=cy".format(self.last_url))
+        self.get("{}&language_code=cy".format(self.last_url))
         self.assertInBody("Dyma'r cwestiwn a gafodd ei weld ddiwethaf yn yr adran hon")
