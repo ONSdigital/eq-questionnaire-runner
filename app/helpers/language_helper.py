@@ -1,5 +1,8 @@
+import re
 from flask import g, request
 from flask_babel import get_locale
+from urllib.parse import urlparse
+from urllib.parse import parse_qs
 
 from app.globals import get_session_store
 from app.questionnaire.questionnaire_schema import DEFAULT_LANGUAGE_CODE
@@ -43,9 +46,22 @@ def get_languages_context():
 
 
 def _get_language_context(language_code):
+    url = ""
+    if request.args:
+        query = parse_qs(urlparse(request.url).query)
+        if "language_code" in query:
+            for key in query:
+                if key != "language_code":
+                    url = f"{key}={query[key][0]}"
+            url = f"?{url}&language_code={language_code}"
+        else:
+            url = f"?{urlparse(request.url).query}&language_code={language_code}"
+    else:
+        url = f"?language_code={language_code}"
+
     return {
         "ISOCode": language_code,
-        "url": "?language_code=" + language_code,
+        "url": url,
         "text": LANGUAGE_TEXT.get(language_code),
         "current": language_code == get_locale().language,
     }
