@@ -203,7 +203,6 @@ class TestQuestionnaireLanguage(IntegrationTestCase):
         self.assertInBody("Canllawiau cyflwyno")
         self.assertInBody("Botwm cyflwyno")
 
-
     def test_last_viewed_guidance_is_displayed_after_language_switch(self):
         # load a welsh survey
         self.launchSurvey("test_language", language_code="en")
@@ -216,6 +215,5 @@ class TestQuestionnaireLanguage(IntegrationTestCase):
 
         # Switch the language to welsh and check that the last viewed guidance is still being displayed (in welsh)
         self.get("{}?language_code=cy".format(self.last_url))
-        self.assertInBody("")
-
+        self.assertInBody("Dyma'r cwestiwn a gafodd ei weld ddiwethaf yn yr adran hon")
 

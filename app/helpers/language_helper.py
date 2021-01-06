@@ -1,4 +1,3 @@
-import re
 from flask import g, request
 from flask_babel import get_locale
 from urllib.parse import urlparse
