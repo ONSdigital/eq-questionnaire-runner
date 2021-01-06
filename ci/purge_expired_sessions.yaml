@@ -21,10 +21,10 @@ run:
       gcloud config set project "${PROJECT_ID}"
 
       gcloud dataflow jobs run purgesession \
+      --project "${PROJECT_ID}" \
       --region europe-west2 \
       --gcs-location gs://dataflow-templates/latest/Datastore_to_Datastore_Delete \
       --parameters \
-      --project "${PROJECT_ID}" \
       datastoreReadGqlQuery="SELECT * FROM \`eq-session\` WHERE expires_at < `date +%s`",\
       datastoreReadProjectId="${PROJECT_ID}",\
       datastoreDeleteProjectId="${PROJECT_ID}"
