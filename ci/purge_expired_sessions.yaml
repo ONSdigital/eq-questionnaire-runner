@@ -18,6 +18,7 @@ run:
       EOL
 
       gcloud auth activate-service-account --key-file "${GOOGLE_APPLICATION_CREDENTIALS}"
+      gcloud config set project "${PROJECT_ID}"
 
       gcloud dataflow jobs run purgesession \
       --region europe-west2 \
