@@ -36,15 +36,17 @@
                                         "id": "country-answer",
                                         "label": "What is your country of birth?",
                                         "mandatory": false,
-                                        "suggestions_url": "https://cdn.eq.census-gcp.onsdigital.uk/data/v5.0.0/gb/en/countries-of-birth.json",
+                                        "suggestions": {
+                                            "url": "https://cdn.eq.census-gcp.onsdigital.uk/eq-lookup-suggestions-data/v5.3.0/gb/en/countries-of-birth.json",
+                                            "allow_multiple": true
+                                        },
                                         "type": "TextField"
                                     }
                                 ],
                                 "id": "country-of-birth-question",
                                 "title": "Title",
                                 "type": "General"
-                            },
-                            "routing_rules": []
+                            }
                         },
                         {
                             "type": "Question",
@@ -55,16 +57,17 @@
                                         "id": "country-multiple-selections-answer",
                                         "label": "What is your country of birth?",
                                         "mandatory": false,
-                                        "suggestions_url": "https://cdn.eq.census-gcp.onsdigital.uk/data/v5.0.0/gb/en/countries-of-birth.json",
-                                        "allow_multiple": true,
+                                        "suggestions": {
+                                            "url": "https://cdn.eq.census-gcp.onsdigital.uk/eq-lookup-suggestions-data/v5.3.0/gb/en/countries-of-birth.json",
+                                            "allow_multiple": true
+                                        },
                                         "type": "TextField"
                                     }
                                 ],
                                 "id": "country-of-birth-multiple-selections-question",
                                 "title": "Title",
                                 "type": "General"
-                            },
-                            "routing_rules": []
+                            }
                         },
                         {
                             "type": "Summary",
