@@ -47,23 +47,16 @@ def get_languages_context():
 def _get_language_context(language_code):
     return {
         "ISOCode": language_code,
-        "url": _resolve_url(parse_qs(urlparse(request.url).query), language_code),
+        "url": _get_query_with_language(language_code),
         "text": LANGUAGE_TEXT.get(language_code),
         "current": language_code == get_locale().language,
     }
 
 
-def _resolve_url(query, language_code):
-    url_params = []
-    if request.args:
-        if "language_code" in query and len(query) == 1:
-            return f"?language_code={language_code}"
-        else:
-            for key in query:
-                if key != "language_code":
-                    url_params.append(f"{key}={query[key][0]}")
-
-            url = "&".join(url_params)
-            return f"?{url}&language_code={language_code}"
-    else:
-        return f"?language_code={language_code}"
+def _get_query_with_language(language_code):
+    query_mapping = parse_qs(urlparse(request.url).query)
+    query_mapping["language_code"] = [language_code]
+    query_string = "&".join(
+        f"{key}={value}" for key, values in query_mapping.items() for value in values
+    )
+    return f"?{query_string}"
