@@ -190,33 +190,36 @@ exports.config = {
 
     global.expect = chai.expect;
 
-    browser.addCommand("openQuestionnaire", async function (
-      schema,
-      {
-        userId = JwtHelper.getRandomString(10),
-        collectionId = JwtHelper.getRandomString(10),
-        responseId = JwtHelper.getRandomString(16),
-        periodId = "201605",
-        periodStr = "May 2016",
-        region = "GB-ENG",
-        language = "en",
-        sexualIdentity = false,
-        includeLogoutUrl = false,
-      } = {}
-    ) {
-      const token = await JwtHelper.generateToken(schema, {
-        userId,
-        collectionId,
-        responseId,
-        periodId,
-        periodStr,
-        regionCode: region,
-        languageCode: language,
-        sexualIdentity,
-        includeLogoutUrl,
-      });
-      this.url(`/session?token=${token}`);
-    });
+    browser.addCommand(
+      "openQuestionnaire",
+      async function (
+        schema,
+        {
+          userId = JwtHelper.getRandomString(10),
+          collectionId = JwtHelper.getRandomString(10),
+          responseId = JwtHelper.getRandomString(16),
+          periodId = "201605",
+          periodStr = "May 2016",
+          region = "GB-ENG",
+          language = "en",
+          sexualIdentity = false,
+          includeLogoutUrl = false,
+        } = {}
+      ) {
+        const token = await JwtHelper.generateToken(schema, {
+          userId,
+          collectionId,
+          responseId,
+          periodId,
+          periodStr,
+          regionCode: region,
+          languageCode: language,
+          sexualIdentity,
+          includeLogoutUrl,
+        });
+        this.url(`/session?token=${token}`);
+      }
+    );
   },
   // beforeCommand: function (commandName, args) {
   // },
