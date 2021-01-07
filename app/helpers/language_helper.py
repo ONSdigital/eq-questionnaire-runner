@@ -54,16 +54,16 @@ def _get_language_context(language_code):
 
 
 def _resolve_url(query, language_code):
-    url = ""
+    url_params = []
     if request.args:
         if "language_code" in query and len(query) == 1:
             return f"?language_code={language_code}"
-        elif len(query) > 1:
+        else:
             for key in query:
                 if key != "language_code":
-                    url = f"{key}={query[key][0]}"
+                    url_params.append(f"{key}={query[key][0]}")
+
+            url = "&".join(url_params)
             return f"?{url}&language_code={language_code}"
-        else:
-            return f"?{urlparse(request.url).query}&language_code={language_code}"
     else:
         return f"?language_code={language_code}"
