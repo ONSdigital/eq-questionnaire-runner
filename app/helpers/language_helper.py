@@ -1,3 +1,5 @@
+from urllib.parse import urlencode
+
 from flask import g, request
 from flask_babel import get_locale
 
@@ -45,7 +47,13 @@ def get_languages_context():
 def _get_language_context(language_code):
     return {
         "ISOCode": language_code,
-        "url": "?language_code=" + language_code,
+        "url": _get_query_string_with_language(language_code),
         "text": LANGUAGE_TEXT.get(language_code),
         "current": language_code == get_locale().language,
     }
+
+
+def _get_query_string_with_language(language_code):
+    request_args = dict(request.args.items())
+    request_args["language_code"] = language_code
+    return f"?{urlencode(request_args)}"
