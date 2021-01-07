@@ -16,15 +16,15 @@ describe("Suggestions", () => {
     $(SuggestionsPage.country()).setValue("United States of America");
     $(SuggestionsPage.submit()).click();
     $(MultipleSuggestionsPage.countryMultipleSelections()).click();
-    browser.keys("Ita")
+    browser.keys("Ita");
     $("#country-multiple-selections-answer-listbox li").waitForDisplayed();
     expect($$(".js-autosuggest-listbox li").length).to.equal(2);
-    $("#country-multiple-selections-answer-listbox__option--0").click()
+    $("#country-multiple-selections-answer-listbox__option--0").click();
     $(MultipleSuggestionsPage.countryMultipleSelections()).click();
-    // Browser needs to pause in order to fetch api results, otherwise it works instantly
-    browser.pause(500)
-    browser.keys(' Canada')
+    // Browser needs to pause before typing starts, otherwise this sequence is executed almost instantly
+    browser.pause(500);
+    browser.keys(" United States");
     $("#country-multiple-selections-answer-listbox li").waitForDisplayed();
-    expect($$(".js-autosuggest-listbox li").length).to.equal(1);
+    expect($$(".js-autosuggest-listbox li").length).to.equal(3);
   });
 });
