@@ -11,7 +11,7 @@ describe("Suggestions", () => {
 });
 
 describe("Suggestions", () => {
-  it("Given I open a textfield with a suggestions url, when I have entered text followed by comma, then it will show multiple suggestions", () => {
+  it("Given I open a textfield with a suggestions url, when I have entered text followed by comma, then it will allow multiple suggestions", () => {
     browser.openQuestionnaire("test_textfield_suggestions.json");
     $(SuggestionsPage.country()).setValue("United States of America");
     $(SuggestionsPage.submit()).click();
