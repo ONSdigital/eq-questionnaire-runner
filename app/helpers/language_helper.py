@@ -45,25 +45,25 @@ def get_languages_context():
 
 
 def _get_language_context(language_code):
-    url = ""
-    if request.args:
-        query = parse_qs(urlparse(request.url).query)
-        if "language_code" in query:
-            for key in query:
-                if key != "language_code":
-                    url = f"{key}={query[key][0]}"
-            if url:
-                url = f"?{url}&language_code={language_code}"
-            else:
-                url = f"?language_code={language_code}"
-        else:
-            url = f"?{urlparse(request.url).query}&language_code={language_code}"
-    else:
-        url = f"?language_code={language_code}"
-
     return {
         "ISOCode": language_code,
-        "url": url,
+        "url": _resolve_url(parse_qs(urlparse(request.url).query), language_code),
         "text": LANGUAGE_TEXT.get(language_code),
         "current": language_code == get_locale().language,
     }
+
+
+def _resolve_url(query, language_code):
+    url = ""
+    if request.args:
+        if "language_code" in query and len(query) == 1:
+            return f"?language_code={language_code}"
+        elif len(query) > 1:
+            for key in query:
+                if key != "language_code":
+                    url = f"{key}={query[key][0]}"
+            return f"?{url}&language_code={language_code}"
+        else:
+            return f"?{urlparse(request.url).query}&language_code={language_code}"
+    else:
+        return f"?language_code={language_code}"
