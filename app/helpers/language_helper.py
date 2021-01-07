@@ -54,8 +54,6 @@ def _get_language_context(language_code):
 
 
 def _get_query_string_with_language(language_code):
-    request_args = {}
-    for key, value in request.args.items():
-        request_args[key] = value
+    request_args = dict(request.args.items())
     request_args["language_code"] = language_code
     return f"?{urlencode(request_args)}"
