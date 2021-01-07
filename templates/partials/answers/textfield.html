@@ -30,7 +30,7 @@
   }) %}
 {% endif %}
 
-{% if answer.suggestions.url %}
+{% if answer.suggestions %}
   {% set config = config | setAttribute("autosuggest", {
     "instructions": _("Use up and down keys to navigate suggestions once you\'ve typed more than two characters. Use the enter key to select a suggestion. Touch device users, explore by touch or with swipe gestures."),
     "moreResults": _("Continue entering to improve suggestions"),
