@@ -38,6 +38,24 @@ Questionnaire state can be backed up using the `backup_questionnaire_state.yaml`
 
 ```sh
 PROJECT_ID=<project_id> \
+BUCKET_NAME=<bucket_name> \
 fly -t <target-concourse> execute \
   --config ci/backup_questionnaire_state.yaml
 ```
+
+- `BUCKET_NAME` should not contain `gs://`
+
+## Restoring questionnaire state
+
+Questionnaire state can be restored using the `restore_questionnaire_state.yaml` task. This can be done via Concourse using the following command:
+
+```sh
+PROJECT_ID=<project_id> \
+BUCKET_NAME=<bucket_name> \
+BACKUP_NAME=<backup_name> \
+fly -t <target-concourse> execute \
+  --config ci/restore_questionnaire_state.yaml
+```
+
+- `BUCKET_NAME` should not contain `gs://`
+- `BACKUP_NAME` is the timestamped folder name containing the backup files and folders e.g. `2021-01-05T09:37:15_88808`
