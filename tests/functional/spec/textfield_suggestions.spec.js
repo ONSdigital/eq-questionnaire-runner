@@ -11,7 +11,7 @@ describe("Suggestions", () => {
 });
 
 describe("Suggestions", () => {
-  it("Given I open a textfield with a suggestions url, when I have entered text and picked suggestion from a list, then after typing text it will show new suggestions", () => {
+  it("Given I open a textfield with a suggestions url, when I have entered text and picked suggestion from a list, then after typing more text it will show new suggestions", () => {
     browser.openQuestionnaire("test_textfield_suggestions.json");
     $(SuggestionsPage.country()).setValue("United States of America");
     $(SuggestionsPage.submit()).click();
