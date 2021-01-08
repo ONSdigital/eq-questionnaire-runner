@@ -1,0 +1,27 @@
+platform: linux
+image_resource:
+  type: docker-image
+  source:
+    repository: google/cloud-sdk
+params:
+  SERVICE_ACCOUNT_JSON: ((gcp.service_account_json))
+  PROJECT_ID:
+run:
+  path: bash
+  args:
+    - -exc
+    - |
+      export GOOGLE_APPLICATION_CREDENTIALS=/root/gcloud-service-key.json
+      cat >$GOOGLE_APPLICATION_CREDENTIALS <<EOL
+      $SERVICE_ACCOUNT_JSON
+      EOL
+
+      gcloud auth activate-service-account --key-file "${GOOGLE_APPLICATION_CREDENTIALS}"
+      gcloud config set project "${PROJECT_ID}"
+      gcloud dataflow jobs run purgesession \
+      --region europe-west2 \
+      --gcs-location gs://dataflow-templates/2020-11-30-00_RC00/Datastore_to_Datastore_Delete \
+      --parameters \
+      datastoreReadGqlQuery="SELECT * FROM \`eq-session\` WHERE expires_at < `date --set=00:00:00 +%s`",\
+      datastoreReadProjectId="${PROJECT_ID}",\
+      datastoreDeleteProjectId="${PROJECT_ID}"

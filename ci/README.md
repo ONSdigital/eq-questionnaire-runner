@@ -59,3 +59,15 @@ fly -t <target-concourse> execute \
 
 - `BUCKET_NAME` should not contain `gs://`
 - `BACKUP_NAME` is the timestamped folder name containing the backup files and folders e.g. `2021-01-05T09:37:15_88808`
+
+## Purge sessions from Datastore
+
+Sessions can be purged from Datastore using the `purge_sessions_from_datastore.yaml` task. This can be done via Concourse using the following command:
+
+```sh
+PROJECT_ID=<project_id> \
+fly -t <target-concourse> execute \
+  --config ci/purge_sessions_from_datastore.yaml
+```
+
+- All sessions will be purged before 12 am on the day that the task is run
