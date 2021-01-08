@@ -17,13 +17,13 @@ describe("Suggestions", () => {
     $(SuggestionsPage.submit()).click();
     $(MultipleSuggestionsPage.multipleCountry()).click();
     browser.keys("Ita");
-    $("#multiple-country-answer-listbox li").waitForDisplayed();
+    $("#multiple-country-answer-listbox li").waitForExist();
     $("#multiple-country-answer-listbox__option--0").click();
     $(MultipleSuggestionsPage.multipleCountry()).click();
     // Browser needs to pause before typing starts, otherwise this sequence is executed almost instantly
     browser.pause(500);
     browser.keys(" United");
-    $("#multiple-country-answer-listbox li").waitForDisplayed();
+    $("#multiple-country-answer-listbox li").waitForExist();
     expect($$(".js-autosuggest-listbox li").length).to.not.equal(0);
     $("#multiple-country-answer-listbox__option--0").click();
     $(MultipleSuggestionsPage.submit()).click();
