@@ -34,7 +34,7 @@
                                 "answers": [
                                     {
                                         "id": "country-answer",
-                                        "label": "What is your country of birth?",
+                                        "label": "Country",
                                         "mandatory": false,
                                         "suggestions": {
                                             "url": "https://cdn.eq.census-gcp.onsdigital.uk/eq-lookup-suggestions-data/v5.3.0/gb/en/countries-of-birth.json",
@@ -44,7 +44,7 @@
                                     }
                                 ],
                                 "id": "country-of-birth-question",
-                                "title": "Title",
+                                "title": "What is your country of birth?",
                                 "type": "General"
                             }
                         },
@@ -55,7 +55,7 @@
                                 "answers": [
                                     {
                                         "id": "country-multiple-selections-answer",
-                                        "label": "What is your country of birth?",
+                                        "label": "Country",
                                         "mandatory": false,
                                         "suggestions": {
                                             "url": "https://cdn.eq.census-gcp.onsdigital.uk/eq-lookup-suggestions-data/v5.3.0/gb/en/countries-of-birth.json",
@@ -65,7 +65,7 @@
                                     }
                                 ],
                                 "id": "country-of-birth-multiple-selections-question",
-                                "title": "Title",
+                                "title": "What is your country of birth?",
                                 "type": "General"
                             }
                         },
