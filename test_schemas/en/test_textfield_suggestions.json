@@ -38,7 +38,7 @@
                                         "mandatory": false,
                                         "suggestions": {
                                             "url": "https://cdn.eq.census-gcp.onsdigital.uk/eq-lookup-suggestions-data/v5.3.0/gb/en/countries-of-birth.json",
-                                            "allow_multiple": true
+                                            "allow_multiple": false
                                         },
                                         "type": "TextField"
                                     }
