@@ -24,6 +24,9 @@ class CloudTaskPublisher:
             "http_request": {
                 "http_method": HttpMethod.POST,
                 "url": url,
+                "oidc_token": {
+                    "service_account_email": "cloud-task-http-function-invok@james-test-292314.iam.gserviceaccount.com"
+                },
                 "headers": {
                     "Content-type": "application/json",
                 },
@@ -32,10 +35,9 @@ class CloudTaskPublisher:
 
     def _create(self, payload: bytes) -> Task:
         logger.info("creating cloud task")
-        task_with_payload = {**self._task, **{"http_request": {"body": payload}}}
-        return self._client.create_task(
-            request={"parent": self._parent, "task": task_with_payload}
-        )
+        task = self._task.copy()
+        task["http_request"]["body"] = payload
+        return self._client.create_task(request={"parent": self._parent, "task": task})
 
     def create_task(self, payload: bytes) -> None:
         try:

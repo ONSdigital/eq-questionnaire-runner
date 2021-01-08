@@ -2,10 +2,11 @@ from dataclasses import dataclass
 from functools import cached_property
 from typing import Mapping, Optional
 
+import simplejson as json
 from flask import current_app
 from flask_babel import gettext, lazy_gettext
 
-from app.data_models import FulfilmentRequest, SessionData, SessionStore
+from app.data_models import SessionData, SessionStore
 from app.forms.email_form import EmailForm
 from app.helpers import url_safe_serializer
 from app.publisher.exceptions import PublicationFailed
@@ -21,7 +22,7 @@ class ConfirmationEmailLimitReached(Exception):
     pass
 
 
-class ConfirmationEmailFulfilmentRequestPublicationFailed(Exception):
+class ConfirmationEmailTaskPublicationFailed(Exception):
     pass
 
 
@@ -63,13 +64,13 @@ class ConfirmationEmail:
         return self.page_title
 
     def _publish_fulfilment_request(self):
-        fulfilment_request = ConfirmationEmailFulfilmentRequest(
+        fulfilment_request = ConfirmationEmailTask(
             self.form.email.data, self._session_store.session_data, self._schema
         )
         try:
-            return current_app.eq["task-client"].create_task(fulfilment_request.message)
+            return current_app.eq["task-client"].create_task(fulfilment_request.payload)
         except PublicationFailed as exc:
-            raise ConfirmationEmailFulfilmentRequestPublicationFailed from exc
+            raise ConfirmationEmailTaskPublicationFailed from exc
 
     def handle_post(self):
         self._publish_fulfilment_request()
@@ -89,21 +90,16 @@ class ConfirmationEmail:
 
 
 @dataclass
-class ConfirmationEmailFulfilmentRequest(FulfilmentRequest):
+class ConfirmationEmailTask:
     email_address: str
     session_data: SessionData
     schema: QuestionnaireSchema
 
-    def _payload(self) -> Mapping:
-        return {
-            "fulfilmentRequest": {
+    @property
+    def payload(self) -> Mapping:
+        return json.dumps(
+            {
                 "email_address": self.email_address,
-                "form_type": self.schema.form_type,
-                "region_code": self.schema.region_code,
-                "questionnaire_id": self.session_data.questionnaire_id,
-                "tx_id": self.session_data.tx_id,
-                "language_code": self.session_data.language_code,
-                "display_address": self.session_data.display_address,
-                "submitted_at": self.session_data.submitted_time,
+                "personalisation": {"address": self.session_data.display_address},
             }
-        }
+        ).encode("utf-8")
