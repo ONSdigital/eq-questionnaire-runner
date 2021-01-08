@@ -16,6 +16,7 @@ describe("Suggestions", () => {
     $(SuggestionsPage.country()).setValue("United States of America");
     $(SuggestionsPage.submit()).click();
     $(MultipleSuggestionsPage.multipleCountry()).click();
+    browser.pause(1000);
     browser.keys("Ita");
     $("#multiple-country-answer-listbox li").waitForExist();
     browser.pause(1000);
