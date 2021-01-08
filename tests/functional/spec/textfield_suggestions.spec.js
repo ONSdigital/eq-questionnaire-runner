@@ -18,7 +18,6 @@ describe("Suggestions", () => {
     $(MultipleSuggestionsPage.multipleCountry()).click();
     browser.keys("Ita");
     $("#multiple-country-answer-listbox li").waitForDisplayed();
-    expect($$(".js-autosuggest-listbox li").length).to.not.equal(0);
     $("#multiple-country-answer-listbox__option--0").click();
     $(MultipleSuggestionsPage.multipleCountry()).click();
     // Browser needs to pause before typing starts, otherwise this sequence is executed almost instantly
@@ -26,5 +25,8 @@ describe("Suggestions", () => {
     browser.keys(" United");
     $("#multiple-country-answer-listbox li").waitForDisplayed();
     expect($$(".js-autosuggest-listbox li").length).to.not.equal(0);
+    $("#multiple-country-answer-listbox__option--0").click();
+    $(MultipleSuggestionsPage.submit()).click();
+    expect(browser.getUrl()).to.contain("summary");
   });
 });
