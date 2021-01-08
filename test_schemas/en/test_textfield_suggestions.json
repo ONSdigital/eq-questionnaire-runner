@@ -50,22 +50,22 @@
                         },
                         {
                             "type": "Question",
-                            "id": "country-block-multiple-selections",
+                            "id": "multiple-country-block",
                             "question": {
                                 "answers": [
                                     {
-                                        "id": "country-multiple-selections-answer",
-                                        "label": "Country",
+                                        "id": "multiple-country-answer",
+                                        "label": "Passports",
                                         "mandatory": false,
                                         "suggestions": {
-                                            "url": "https://cdn.eq.census-gcp.onsdigital.uk/eq-lookup-suggestions-data/v5.3.0/gb/en/countries-of-birth.json",
+                                            "url": "https://cdn.eq.census-gcp.onsdigital.uk/eq-lookup-suggestions-data/v5.3.0/gb/en/passport-countries.json",
                                             "allow_multiple": true
                                         },
                                         "type": "TextField"
                                     }
                                 ],
-                                "id": "country-of-birth-multiple-selections-question",
-                                "title": "What is your country of birth?",
+                                "id": "multiple-country-question",
+                                "title": "What passports do you hold?",
                                 "type": "General"
                             }
                         },
