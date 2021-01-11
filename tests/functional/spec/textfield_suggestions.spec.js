@@ -21,7 +21,7 @@ describe("Suggestions", () => {
     $("#multiple-country-answer-listbox li").waitForExist();
     $("#multiple-country-answer-listbox__option--0").click();
     $(MultipleSuggestionsPage.multipleCountry()).click();
-    // Browser needs to pause before typing starts, otherwise this sequence is executed almost instantly
+    // Browser needs to pause before typing starts to allow for the autosuggest Javascript to initialise
     browser.pause(500);
     browser.keys(" United");
     $("#multiple-country-answer-listbox li").waitForExist();
