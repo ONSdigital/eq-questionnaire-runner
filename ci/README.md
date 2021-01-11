@@ -66,9 +66,11 @@ Expired sessions can be purged from Datastore using the `purge_expired_sessions_
 
 ```sh
 PROJECT_ID=<project_id> \
+DATAFLOW_TEMPLATE_VERSION=<dataflow_template_version> \
+EXPIRATION_TIME_OFFSET=<expiration_time_offset> \
 fly -t <target-concourse> execute \
   --config ci/purge_expired_sessions_from_datastore.yaml
 ```
 
-- `SECONDS_OFFSET` is the offset in seconds expired sessions will be purged from (i.e 3600 would delete all sessions more than an hour old)
-- `TEMPLATE_VERSION` is the dataflow template version
+- `DATAFLOW_TEMPLATE_VERSION` is the dataflow template version
+- `EXPIRATION_TIME_OFFSET` is the offset in seconds expired sessions will be purged from (i.e 3600 would delete all sessions more than an hour old)

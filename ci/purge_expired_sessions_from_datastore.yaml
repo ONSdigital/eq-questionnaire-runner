@@ -6,8 +6,8 @@ image_resource:
 params:
   SERVICE_ACCOUNT_JSON: ((gcp.service_account_json))
   PROJECT_ID:
-  SECONDS_OFFSET:
-  TEMPLATE_VERSION:
+  DATAFLOW_TEMPLATE_VERSION:
+  EXPIRATION_TIME_OFFSET:
 run:
   path: bash
   args:
@@ -22,8 +22,8 @@ run:
       gcloud config set project "${PROJECT_ID}"
       gcloud dataflow jobs run purgesession \
       --region europe-west2 \
-      --gcs-location gs://dataflow-templates/"${TEMPLATE_VERSION}"/Datastore_to_Datastore_Delete \
+      --gcs-location gs://dataflow-templates/"${DATAFLOW_TEMPLATE_VERSION}"/Datastore_to_Datastore_Delete \
       --parameters \
-      datastoreReadGqlQuery="SELECT * FROM \`eq-session\` WHERE expires_at < $((`date --utc +%s` - SECONDS_OFFSET)) ",\
+      datastoreReadGqlQuery="SELECT * FROM \`eq-session\` WHERE expires_at < $((`date --utc +%s` - EXPIRATION_TIME_OFFSET)) ",\
       datastoreReadProjectId="${PROJECT_ID}",\
       datastoreDeleteProjectId="${PROJECT_ID}"
