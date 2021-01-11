@@ -1,4 +1,4 @@
-from unittest.mock import MagicMock
+from unittest.mock import MagicMock, Mock, patch
 
 from app import settings
 from app.publisher.exceptions import PublicationFailed
@@ -302,8 +302,8 @@ class TestEmailConfirmation(IntegrationTestCase):
         self.assertNotInBody("Get confirmation email")
 
     def test_500_publish_failed(self):
-        publisher = self._application.eq["publisher"]
-        publisher.publish = MagicMock(side_effect=PublicationFailed)
+        publisher = self._application.eq["task-client"]
+        publisher.create_task = MagicMock(side_effect=PublicationFailed)
 
         # Given I launch and complete the test_confirmation_email questionnaire and submit with a valid email from the thank you page
         self._launch_and_complete_questionnaire()

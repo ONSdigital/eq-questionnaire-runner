@@ -23,10 +23,10 @@ from app import settings
 from app.authentication.authenticator import login_manager
 from app.authentication.cookie_session import SHA256SecureCookieSessionInterface
 from app.authentication.user_id_generator import UserIDGenerator
+from app.cloud_tasks import CloudTaskPublisher, LogCloudTaskPublisher
 from app.globals import get_session_store
 from app.helpers import get_span_and_trace
 from app.keys import KEY_PURPOSE_SUBMISSION
-from app.cloud_tasks import CloudTaskPublisher, LogCloudTaskPublisher
 from app.publisher import LogPublisher, PubSubPublisher
 from app.secrets import SecretStore, validate_required_secrets
 from app.storage import Datastore, Dynamodb, Redis

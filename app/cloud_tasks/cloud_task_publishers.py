@@ -1,6 +1,5 @@
 from google import auth
-from google.cloud.tasks_v2 import CloudTasksClient
-from google.cloud.tasks_v2 import HttpMethod
+from google.cloud.tasks_v2 import CloudTasksClient, HttpMethod
 from google.cloud.tasks_v2.types.task import Task
 from structlog import get_logger
 

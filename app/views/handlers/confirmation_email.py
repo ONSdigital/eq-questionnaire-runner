@@ -1,6 +1,6 @@
 from dataclasses import dataclass
 from functools import cached_property
-from typing import Mapping, Optional
+from typing import Optional
 
 import simplejson as json
 from flask import current_app
@@ -96,10 +96,12 @@ class ConfirmationEmailTask:
     schema: QuestionnaireSchema
 
     @property
-    def payload(self) -> Mapping:
+    def payload(self):
         return json.dumps(
             {
                 "email_address": self.email_address,
                 "personalisation": {"address": self.session_data.display_address},
+                "form_type": self.schema.form_type,
+                "language_code": self.session_data.language_code,
             }
         ).encode("utf-8")
