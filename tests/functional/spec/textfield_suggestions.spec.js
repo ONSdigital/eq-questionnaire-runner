@@ -16,6 +16,7 @@ describe("Suggestions", () => {
     $(SuggestionsPage.country()).setValue("United States of America");
     $(SuggestionsPage.submit()).click();
     $(MultipleSuggestionsPage.multipleCountry()).click();
+    // Browser needs to pause before typing starts to allow for the autosuggest Javascript to initialise
     browser.pause(500);
     browser.keys("Ita");
     $("#multiple-country-answer-listbox li").waitForExist();
