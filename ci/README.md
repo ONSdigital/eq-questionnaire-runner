@@ -72,5 +72,5 @@ fly -t <target-concourse> execute \
   --config ci/purge_expired_sessions_from_datastore.yaml
 ```
 
-- `DATAFLOW_TEMPLATE_VERSION` is the dataflow template version
+- `DATAFLOW_TEMPLATE_VERSION` is the template version on GCP you want to use
 - `EXPIRATION_TIME_OFFSET` is the offset in seconds expired sessions will be purged from (i.e 3600 would delete all sessions more than an hour old)
