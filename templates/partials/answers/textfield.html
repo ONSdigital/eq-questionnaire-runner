@@ -43,7 +43,7 @@
     "ariaNResults": "There are {n} suggestions available.",
     "ariaLimitedResults": "Results have been limited to 10 suggestions. Type more characters to improve your search.",
     "autosuggestData": answer.suggestions.url,
-    "allowMultiple": answer.suggestions.allow_multiple | lower if answer.suggestions.allow_multiple is defined,
+    "allowMultiple": "true" if answer.suggestions.allow_multiple else "false"
   }) %}
   {% set config = config | setAttribute("autocomplete", "off") %}
 {% endif %}
