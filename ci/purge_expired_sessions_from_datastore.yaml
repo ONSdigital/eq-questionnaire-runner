@@ -20,10 +20,25 @@ run:
 
       gcloud auth activate-service-account --key-file "${GOOGLE_APPLICATION_CREDENTIALS}"
       gcloud config set project "${PROJECT_ID}"
-      gcloud dataflow jobs run purgesession \
+
+      DATAFLOW_JOB=$(gcloud dataflow jobs run purgesession \
       --region europe-west2 \
       --gcs-location gs://dataflow-templates/"${DATAFLOW_TEMPLATE_VERSION}"/Datastore_to_Datastore_Delete \
       --parameters \
       datastoreReadGqlQuery="SELECT * FROM \`eq-session\` WHERE expires_at < $((`date --utc +%s` - EXPIRATION_TIME_OFFSET)) ",\
       datastoreReadProjectId="${PROJECT_ID}",\
-      datastoreDeleteProjectId="${PROJECT_ID}"
+      datastoreDeleteProjectId="${PROJECT_ID}" \
+      --format="value(id.scope())")
+
+      DATAFLOW_JOB_STATE=$(gcloud dataflow jobs describe "${DATAFLOW_JOB}" --region europe-west2 --format="value(currentState)")
+
+      while [[ $DATAFLOW_JOB_STATE == "JOB_STATE_RUNNING" || $DATAFLOW_JOB_STATE == "JOB_STATE_PENDING" ]]; do
+        sleep 60
+        DATAFLOW_JOB_STATE=$(gcloud dataflow jobs describe "${DATAFLOW_JOB}" --region europe-west2 --format="value(currentState)")
+      done
+
+      if [[ "${DATAFLOW_JOB_STATE}" == "JOB_STATE_DONE" ]]; then
+        echo "Expired sessions purged successfully from Datastore"
+      else
+        exit 1
+      fi
