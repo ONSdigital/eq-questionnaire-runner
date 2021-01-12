@@ -21,7 +21,7 @@ run:
       gcloud auth activate-service-account --key-file "${GOOGLE_APPLICATION_CREDENTIALS}"
       gcloud config set project "${PROJECT_ID}"
 
-      DATAFLOW_JOB_ID=$(gcloud dataflow jobs run purge_session \
+      DATAFLOW_JOB=$(gcloud dataflow jobs run purge_session \
       --region europe-west2 \
       --gcs-location gs://dataflow-templates/"${DATAFLOW_TEMPLATE_VERSION}"/Datastore_to_Datastore_Delete \
       --parameters \
@@ -30,11 +30,11 @@ run:
       datastoreDeleteProjectId="${PROJECT_ID}" \
       --format="value(id.scope())")
 
-      DATAFLOW_JOB_STATE=$(gcloud dataflow jobs describe "${DATAFLOW_JOB_ID}" --region europe-west2 --format="value(currentState)")
+      DATAFLOW_JOB_STATE=$(gcloud dataflow jobs describe "${DATAFLOW_JOB}" --region europe-west2 --format="value(currentState)")
 
       while [[ $DATAFLOW_JOB_STATE == "JOB_STATE_RUNNING" || $DATAFLOW_JOB_STATE == "JOB_STATE_PENDING" ]]; do
         sleep 60
-        DATAFLOW_JOB_STATE=$(gcloud dataflow jobs describe "${DATAFLOW_JOB_ID}" --region europe-west2 --format="value(currentState)")
+        DATAFLOW_JOB_STATE=$(gcloud dataflow jobs describe "${DATAFLOW_JOB}" --region europe-west2 --format="value(currentState)")
       done
 
       if [[ "${DATAFLOW_JOB_STATE}" == "JOB_STATE_DONE" ]]; then
