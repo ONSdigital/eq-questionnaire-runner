@@ -6,8 +6,8 @@ image_resource:
 params:
   SERVICE_ACCOUNT_JSON: ((gcp.service_account_json))
   PROJECT_ID:
-  DATAFLOW_TEMPLATE_VERSION:
-  EXPIRATION_TIME_OFFSET:
+  DATAFLOW_TEMPLATE_VERSION: '2020-11-30-00_RC00'
+  EXPIRATION_TIME_OFFSET_IN_SECONDS: 10800
 run:
   path: bash
   args:
@@ -21,20 +21,20 @@ run:
       gcloud auth activate-service-account --key-file "${GOOGLE_APPLICATION_CREDENTIALS}"
       gcloud config set project "${PROJECT_ID}"
 
-      DATAFLOW_JOB=$(gcloud dataflow jobs run purgesession \
+      DATAFLOW_JOB_ID=$(gcloud dataflow jobs run purge_session \
       --region europe-west2 \
       --gcs-location gs://dataflow-templates/"${DATAFLOW_TEMPLATE_VERSION}"/Datastore_to_Datastore_Delete \
       --parameters \
-      datastoreReadGqlQuery="SELECT * FROM \`eq-session\` WHERE expires_at < $((`date --utc +%s` - EXPIRATION_TIME_OFFSET)) ",\
+      datastoreReadGqlQuery="SELECT * FROM \`eq-session\` WHERE expires_at < $((`date --utc +%s` - EXPIRATION_TIME_OFFSET_IN_SECONDS)) ",\
       datastoreReadProjectId="${PROJECT_ID}",\
       datastoreDeleteProjectId="${PROJECT_ID}" \
       --format="value(id.scope())")
 
-      DATAFLOW_JOB_STATE=$(gcloud dataflow jobs describe "${DATAFLOW_JOB}" --region europe-west2 --format="value(currentState)")
+      DATAFLOW_JOB_STATE=$(gcloud dataflow jobs describe "${DATAFLOW_JOB_ID}" --region europe-west2 --format="value(currentState)")
 
       while [[ $DATAFLOW_JOB_STATE == "JOB_STATE_RUNNING" || $DATAFLOW_JOB_STATE == "JOB_STATE_PENDING" ]]; do
         sleep 60
-        DATAFLOW_JOB_STATE=$(gcloud dataflow jobs describe "${DATAFLOW_JOB}" --region europe-west2 --format="value(currentState)")
+        DATAFLOW_JOB_STATE=$(gcloud dataflow jobs describe "${DATAFLOW_JOB_ID}" --region europe-west2 --format="value(currentState)")
       done
 
       if [[ "${DATAFLOW_JOB_STATE}" == "JOB_STATE_DONE" ]]; then
