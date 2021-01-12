@@ -74,4 +74,4 @@ fly -t <target-concourse> execute \
 There are defaults for both DATAFLOW_TEMPLATE_VERSION and EXPIRATION_TIME_OFFSET_IN_SECONDS if not set
 
 - `DATAFLOW_TEMPLATE_VERSION` is the template version on GCP you want to use
-- `EXPIRATION_TIME_OFFSET` is the offset in seconds expired sessions will be purged from (i.e 3600 would delete all sessions more than an hour old)
+- `EXPIRATION_TIME_OFFSET_IN_SECONDS` is the offset in seconds expired sessions will be purged from (i.e 3600 would delete all sessions more than an hour old)
