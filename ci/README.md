@@ -60,16 +60,16 @@ fly -t <target-concourse> execute \
 - `BUCKET_NAME` should not contain `gs://`
 - `BACKUP_NAME` is the timestamped folder name containing the backup files and folders e.g. `2021-01-05T09:37:15_88808`
 
-## Purge expired sessions from Datastore
+## Purge expired sessions
 
-Expired sessions can be purged from Datastore using the `purge_expired_sessions_from_datastore.yaml` task. This can be done via Concourse using the following command:
+Expired sessions can be purged from Datastore using the `purge_expired_sessions.yaml` task. This can be done via Concourse using the following command:
 
 ```sh
 PROJECT_ID=<project_id> \
 DATAFLOW_TEMPLATE_VERSION=<dataflow_template_version> \
 EXPIRATION_TIME_OFFSET_IN_SECONDS=<expiration_time_offset_in_seconds> \
 fly -t <target-concourse> execute \
-  --config ci/purge_expired_sessions_from_datastore.yaml
+  --config ci/purge_expired_sessions.yaml
 ```
 There are defaults for both DATAFLOW_TEMPLATE_VERSION and EXPIRATION_TIME_OFFSET_IN_SECONDS if not set
 
