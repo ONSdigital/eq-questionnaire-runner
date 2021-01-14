@@ -278,7 +278,7 @@ class TestCreateApp(unittest.TestCase):  # pylint: disable=too-many-public-metho
         assert isinstance(application.eq["publisher"], LogPublisher)
 
     def test_adds_cloud_task_publisher_to_the_application(self):
-        self._setting_overrides["EQ_CLOUD_TASK_CLIENT"] = "cloud-tasks"
+        self._setting_overrides["EQ_SUBMISSION_CONFIRMATION_BACKEND"] = "cloud-tasks"
 
         # When
         with patch(

@@ -62,7 +62,7 @@ class IntegrationTestCase(unittest.TestCase):  # pylint: disable=too-many-public
 
         setting_overrides = {
             "EQ_ENABLE_HTML_MINIFY": False,
-            "EQ_CLOUD_TASK_CLIENT": "log",
+            "EQ_SUBMISSION_CONFIRMATION_BACKEND": "log",
         }
 
         with patch(

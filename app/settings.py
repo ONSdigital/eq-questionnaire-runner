@@ -62,7 +62,9 @@ EQ_FULFILMENT_TOPIC_ID = os.getenv("EQ_FULFILMENT_TOPIC_ID", "eq-fulfilment-topi
 EQ_SUBMISSION_CONFIRMATION_QUEUE = os.getenv(
     "EQ_SUBMISSION_CONFIRMATION_QUEUE", "eq-submission-confirmation"
 )
-EQ_CLOUD_TASK_CLIENT = os.getenv("EQ_CLOUD_TASK_CLIENT", "cloud-tasks")
+EQ_SUBMISSION_CONFIRMATION_BACKEND = os.getenv(
+    "EQ_SUBMISSION_CONFIRMATION_BACKEND", "cloud-tasks"
+)
 EQ_INDIVIDUAL_RESPONSE_LIMIT = int(os.getenv("EQ_INDIVIDUAL_RESPONSE_LIMIT", "1"))
 EQ_INDIVIDUAL_RESPONSE_POSTAL_DEADLINE = utcoffset_or_fail(
     datetime.fromisoformat(get_env_or_fail("EQ_INDIVIDUAL_RESPONSE_POSTAL_DEADLINE")),
