@@ -3,6 +3,8 @@ from google.cloud.tasks_v2 import CloudTasksClient, HttpMethod
 from google.cloud.tasks_v2.types.task import Task
 from structlog import get_logger
 
+from app.settings import SUBMISSION_CONFIRMATION_CONSUMER
+
 from .exceptions import CloudTaskCreationFailed
 
 logger = get_logger(__name__)
@@ -18,7 +20,7 @@ class CloudTaskPublisher:
             self._project_id, "europe-west2", queue_name
         )
 
-        url = f"https://europe-west2-{self._project_id}.cloudfunctions.net/eq-submission-confirmation-consumer"
+        url = f"https://europe-west2-{self._project_id}.cloudfunctions.net/{SUBMISSION_CONFIRMATION_CONSUMER}"
         self._task = {
             "http_request": {
                 "http_method": HttpMethod.POST,
