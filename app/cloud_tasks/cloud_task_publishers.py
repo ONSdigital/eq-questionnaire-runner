@@ -24,7 +24,7 @@ class CloudTaskPublisher:
                 "http_method": HttpMethod.POST,
                 "url": url,
                 "oidc_token": {
-                    "service_account_email": "cloud-task-http-function-invok@james-test-292314.iam.gserviceaccount.com"
+                    "service_account_email": f"cloud-function-invoker@{self._project_id}.iam.gserviceaccount.com"
                 },
                 "headers": {
                     "Content-type": "application/json",
