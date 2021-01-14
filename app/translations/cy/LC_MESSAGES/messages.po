@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: eq-census\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2020-12-04 07:21+0000\n"
-"PO-Revision-Date: 2020-12-16 16:08\n"
+"PO-Revision-Date: 2021-01-14 13:32\n"
 "Last-Translator: \n"
 "Language-Team: Welsh\n"
 "MIME-Version: 1.0\n"
@@ -98,7 +98,7 @@ msgstr ""
 #: app/forms/error_messages.py:28
 #, python-format
 msgid "Enter an answer less than or equal to %(max)s"
-msgstr "Nodwch ateb sy'n llai na neu'n hafal iddo %(max)s"
+msgstr "Nodwch ateb sy'n hafal i %(max)s neu’n llai"
 
 #: app/forms/error_messages.py:29
 #, python-format
