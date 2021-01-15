@@ -4,7 +4,6 @@ from datetime import datetime
 import pytest
 from dateutil.tz import tzutc
 from freezegun import freeze_time
-from mock import Mock, patch
 
 from app.data_models.session_data import SessionData
 from app.questionnaire import QuestionnaireSchema
@@ -56,6 +55,7 @@ def test_confirmation_email_fulfilment_request_message(session_data, schema):
         "personalisation": {"address": "68 Abingdon Road, Goathill"},
         "form_type": schema.form_type,
         "language_code": session_data.language_code,
+        "region_code": schema.region_code,
     }
 
     assert confirmation_email_json_message == expected_payload

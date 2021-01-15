@@ -103,5 +103,6 @@ class ConfirmationEmailTask:
                 "personalisation": {"address": self.session_data.display_address},
                 "form_type": self.schema.form_type,
                 "language_code": self.session_data.language_code,
+                "region_code": self.schema.region_code,
             }
         ).encode("utf-8")
