@@ -1,13 +1,12 @@
 from dataclasses import dataclass
 from functools import cached_property
-from typing import Optional
+from typing import Mapping, Optional
 
-import simplejson as json
 from flask import current_app
 from flask_babel import gettext, lazy_gettext
 
 from app.cloud_tasks.exceptions import CloudTaskCreationFailed
-from app.data_models import SessionData, SessionStore
+from app.data_models import FulfilmentRequest, SessionData, SessionStore
 from app.forms.email_form import EmailForm
 from app.helpers import url_safe_serializer
 from app.questionnaire import QuestionnaireSchema
@@ -70,7 +69,7 @@ class ConfirmationEmail:
         )
         try:
             return current_app.eq["task-client"].create_task(
-                payload=fulfilment_request.payload,
+                payload=fulfilment_request.message,
                 queue_name=EQ_SUBMISSION_CONFIRMATION_QUEUE,
             )
         except CloudTaskCreationFailed as exc:
@@ -94,19 +93,18 @@ class ConfirmationEmail:
 
 
 @dataclass
-class ConfirmationEmailTask:
+class ConfirmationEmailTask(FulfilmentRequest):
     email_address: str
     session_data: SessionData
     schema: QuestionnaireSchema
 
-    @property
-    def payload(self):
-        return json.dumps(
-            {
+    def _payload(self) -> Mapping:
+        return {
+            "fulfilmentRequest": {
                 "email_address": self.email_address,
                 "personalisation": {"address": self.session_data.display_address},
                 "form_type": self.schema.form_type,
                 "language_code": self.session_data.language_code,
                 "region_code": self.schema.region_code,
             }
-        ).encode("utf-8")
+        }

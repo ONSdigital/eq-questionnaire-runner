@@ -48,7 +48,7 @@ def test_confirmation_email_fulfilment_request_message(session_data, schema):
     email_address = "name@example.com"
     fulfilment_request = ConfirmationEmailTask(email_address, session_data, schema)
 
-    confirmation_email_json_message = json.loads(fulfilment_request.payload)
+    confirmation_email_json_message = json.loads(fulfilment_request.message)
 
     expected_payload = {
         "email_address": "name@example.com",
@@ -58,4 +58,7 @@ def test_confirmation_email_fulfilment_request_message(session_data, schema):
         "region_code": schema.region_code,
     }
 
-    assert confirmation_email_json_message == expected_payload
+    assert (
+        confirmation_email_json_message["payload"]["fulfilmentRequest"]
+        == expected_payload
+    )

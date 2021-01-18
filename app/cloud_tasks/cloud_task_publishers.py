@@ -42,7 +42,7 @@ class CloudTaskPublisher:
     def create_task(self, payload: bytes, queue_name: str) -> None:
         try:
             self._create(payload, queue_name)
-            logger.info("task published successfully")  # pragma: no cover
+            logger.info("task created successfully")  # pragma: no cover
         except Exception as ex:  # pylint:disable=broad-except
             logger.exception(
                 "task creation failed",
