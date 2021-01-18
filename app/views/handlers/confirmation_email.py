@@ -102,9 +102,11 @@ class ConfirmationEmailTask(FulfilmentRequest):
         return {
             "fulfilmentRequest": {
                 "email_address": self.email_address,
-                "personalisation": {"address": self.session_data.display_address},
+                "display_address": self.session_data.display_address,
                 "form_type": self.schema.form_type,
                 "language_code": self.session_data.language_code,
                 "region_code": self.schema.region_code,
+                "questionnaire_id": self.session_data.questionnaire_id,
+                "tx_id": self.session_data.tx_id,
             }
         }

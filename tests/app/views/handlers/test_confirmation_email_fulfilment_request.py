@@ -52,10 +52,12 @@ def test_confirmation_email_fulfilment_request_message(session_data, schema):
 
     expected_payload = {
         "email_address": "name@example.com",
-        "personalisation": {"address": "68 Abingdon Road, Goathill"},
+        "display_address": "68 Abingdon Road, Goathill",
         "form_type": schema.form_type,
         "language_code": session_data.language_code,
         "region_code": schema.region_code,
+        "questionnaire_id": session_data.questionnaire_id,
+        "tx_id": session_data.tx_id,
     }
 
     assert (
