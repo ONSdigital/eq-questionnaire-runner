@@ -11,14 +11,10 @@ logger = get_logger(__name__)
 
 
 class CloudTaskPublisher:
-    def __init__(self, queue_name: str):
+    def __init__(self):
         self._client = CloudTasksClient()
 
         _, self._project_id = auth.default()
-
-        self._parent = self._client.queue_path(
-            self._project_id, "europe-west2", queue_name
-        )
 
         url = f"https://europe-west2-{self._project_id}.cloudfunctions.net/{SUBMISSION_CONFIRMATION_CONSUMER}"
         self._task = {
@@ -34,15 +30,19 @@ class CloudTaskPublisher:
             },
         }
 
-    def _create(self, payload: bytes) -> Task:
+    def _create(self, payload: bytes, queue_name: str) -> Task:
+        self._parent = self._client.queue_path(
+            self._project_id, "europe-west2", queue_name
+        )
+
         logger.info("creating cloud task")
         task = self._task.copy()
         task["http_request"]["body"] = payload
         return self._client.create_task(request={"parent": self._parent, "task": task})
 
-    def create_task(self, payload: bytes) -> None:
+    def create_task(self, payload: bytes, queue_name: str) -> None:
         try:
-            self._create(payload)
+            self._create(payload, queue_name)
             logger.info("task published successfully")  # pragma: no cover
         except Exception as ex:  # pylint:disable=broad-except
             logger.exception(
@@ -53,5 +53,5 @@ class CloudTaskPublisher:
 
 class LogCloudTaskPublisher:
     @staticmethod
-    def create_task(payload: bytes) -> None:
-        logger.info("creating cloud task", payload=payload)
+    def create_task(payload: bytes, queue_name: str) -> None:
+        logger.info("creating cloud task", payload=payload, queue_name=queue_name)

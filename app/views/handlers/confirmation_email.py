@@ -11,6 +11,7 @@ from app.forms.email_form import EmailForm
 from app.helpers import url_safe_serializer
 from app.publisher.exceptions import PublicationFailed
 from app.questionnaire import QuestionnaireSchema
+from app.settings import EQ_SUBMISSION_CONFIRMATION_QUEUE
 from app.views.contexts.email_form_context import build_confirmation_email_form_context
 
 
@@ -68,7 +69,10 @@ class ConfirmationEmail:
             self.form.email.data, self._session_store.session_data, self._schema
         )
         try:
-            return current_app.eq["task-client"].create_task(fulfilment_request.payload)
+            return current_app.eq["task-client"].create_task(
+                payload=fulfilment_request.payload,
+                queue_name=EQ_SUBMISSION_CONFIRMATION_QUEUE,
+            )
         except PublicationFailed as exc:
             raise ConfirmationEmailTaskPublicationFailed from exc
 
