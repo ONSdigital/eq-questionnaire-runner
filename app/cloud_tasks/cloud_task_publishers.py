@@ -23,14 +23,16 @@ class CloudTaskPublisher:
             self._project_id, "europe-west2", queue_name
         )
 
+        service_account_email = (
+            f"cloud-functions@{self._project_id}.iam.gserviceaccount.com"
+        )
+
         url = f"https://europe-west2-{self._project_id}.cloudfunctions.net/{SUBMISSION_CONFIRMATION_CLOUD_FUNCTION_NAME}"
         task = {
             "http_request": {
                 "http_method": HttpMethod.POST,
                 "url": url,
-                "oidc_token": {
-                    "service_account_email": f"cloud-functions@{self._project_id}.iam.gserviceaccount.com"
-                },
+                "oidc_token": {"service_account_email": service_account_email},
                 "headers": {
                     "Content-type": "application/json",
                 },
