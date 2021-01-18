@@ -16,28 +16,27 @@ class CloudTaskPublisher:
 
         _, self._project_id = auth.default()
 
-        url = f"https://europe-west2-{self._project_id}.cloudfunctions.net/{SUBMISSION_CONFIRMATION_CONSUMER}"
-        self._task = {
-            "http_request": {
-                "http_method": HttpMethod.POST,
-                "url": url,
-                "oidc_token": {
-                    "service_account_email": f"cloud-function-invoker@{self._project_id}.iam.gserviceaccount.com"
-                },
-                "headers": {
-                    "Content-type": "application/json",
-                },
-            },
-        }
-
     def _create(self, payload: bytes, queue_name: str) -> Task:
+        logger.info("creating cloud task")
+
         self._parent = self._client.queue_path(
             self._project_id, "europe-west2", queue_name
         )
 
-        logger.info("creating cloud task")
-        task = self._task.copy()
-        task["http_request"]["body"] = payload
+        url = f"https://europe-west2-{self._project_id}.cloudfunctions.net/{SUBMISSION_CONFIRMATION_CONSUMER}"
+        task = {
+            "http_request": {
+                "http_method": HttpMethod.POST,
+                "url": url,
+                "oidc_token": {
+                    "service_account_email": f"cloud-functions@{self._project_id}.iam.gserviceaccount.com"
+                },
+                "headers": {
+                    "Content-type": "application/json",
+                },
+                "body": payload,
+            },
+        }
         return self._client.create_task(request={"parent": self._parent, "task": task})
 
     def create_task(self, payload: bytes, queue_name: str) -> None:

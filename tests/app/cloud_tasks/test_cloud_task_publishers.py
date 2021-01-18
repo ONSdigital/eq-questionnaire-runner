@@ -1,6 +1,8 @@
 from unittest import TestCase
 from unittest.mock import Mock, patch
 
+from google.cloud.tasks_v2 import HttpMethod
+
 from app.cloud_tasks.cloud_task_publishers import CloudTaskPublisher
 from app.cloud_tasks.exceptions import CloudTaskCreationFailed
 
@@ -16,8 +18,21 @@ class TestCloudTaskPublisher(TestCase):
     def test_create_task(self):
         queue_name = "test"
         payload = bytes("test", "utf-8")
-        task = self.cloudTaskPublisher._task.copy()
-        task["http_request"]["body"] = payload
+
+        url = "https://europe-west2-test-project-id.cloudfunctions.net/None"
+        task = {
+            "http_request": {
+                "http_method": HttpMethod.POST,
+                "url": url,
+                "oidc_token": {
+                    "service_account_email": f"cloud-functions@test-project-id.iam.gserviceaccount.com"
+                },
+                "headers": {
+                    "Content-type": "application/json",
+                },
+                "body": payload,
+            },
+        }
 
         self.cloudTaskPublisher._client = Mock()
 
