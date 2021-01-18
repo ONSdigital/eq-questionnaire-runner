@@ -352,6 +352,11 @@ def setup_task_client(application):
         if not application.config["EQ_SUBMISSION_CONFIRMATION_QUEUE"]:
             raise Exception("Setting EQ_SUBMISSION_CONFIRMATION_QUEUE Missing")
 
+        if not application.config["SUBMISSION_CONFIRMATION_CLOUD_FUNCTION_NAME"]:
+            raise Exception(
+                "Setting SUBMISSION_CONFIRMATION_CLOUD_FUNCTION_NAME Missing"
+            )
+
     elif application.config["EQ_SUBMISSION_CONFIRMATION_BACKEND"] == "log":
         application.eq["task-client"] = LogCloudTaskPublisher()
     else:
