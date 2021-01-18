@@ -347,9 +347,13 @@ def setup_submitter(application):
 
 def setup_task_client(application):
     if application.config["EQ_SUBMISSION_CONFIRMATION_BACKEND"] == "cloud-tasks":
-        application.eq["task-client"] = CloudTaskPublisher(
-            application.config["EQ_SUBMISSION_CONFIRMATION_QUEUE"]
-        )
+        queue = application.config["EQ_SUBMISSION_CONFIRMATION_QUEUE"]
+
+        if not queue:
+            raise Exception("Setting EQ_SUBMISSION_CONFIRMATION_QUEUE Missing")
+
+        application.eq["task-client"] = CloudTaskPublisher(queue)
+
     else:
         application.eq["task-client"] = LogCloudTaskPublisher()
 
