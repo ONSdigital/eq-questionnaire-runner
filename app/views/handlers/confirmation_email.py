@@ -6,10 +6,10 @@ import simplejson as json
 from flask import current_app
 from flask_babel import gettext, lazy_gettext
 
+from app.cloud_tasks.exceptions import CloudTaskCreationFailed
 from app.data_models import SessionData, SessionStore
 from app.forms.email_form import EmailForm
 from app.helpers import url_safe_serializer
-from app.publisher.exceptions import PublicationFailed
 from app.questionnaire import QuestionnaireSchema
 from app.settings import EQ_SUBMISSION_CONFIRMATION_QUEUE
 from app.views.contexts.email_form_context import build_confirmation_email_form_context
@@ -23,7 +23,7 @@ class ConfirmationEmailLimitReached(Exception):
     pass
 
 
-class ConfirmationEmailTaskPublicationFailed(Exception):
+class ConfirmationEmailTaskCreationFailed(Exception):
     pass
 
 
@@ -73,8 +73,8 @@ class ConfirmationEmail:
                 payload=fulfilment_request.payload,
                 queue_name=EQ_SUBMISSION_CONFIRMATION_QUEUE,
             )
-        except PublicationFailed as exc:
-            raise ConfirmationEmailTaskPublicationFailed from exc
+        except CloudTaskCreationFailed as exc:
+            raise ConfirmationEmailTaskCreationFailed from exc
 
     def handle_post(self):
         self._publish_fulfilment_request()
