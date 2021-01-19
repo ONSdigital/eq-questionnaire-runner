@@ -19,7 +19,7 @@ class TestCloudTaskPublisher(TestCase):
         queue_name = "test"
         payload = bytes("test", "utf-8")
 
-        url = "https://europe-west2-test-project-id.cloudfunctions.net/None"
+        url = "https://europe-west2-test-project-id.cloudfunctions.net/eq-submission-confirmation-consumer"
         task = {
             "http_request": {
                 "http_method": HttpMethod.POST,
