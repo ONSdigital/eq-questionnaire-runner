@@ -4,7 +4,6 @@ from typing import Mapping, Optional
 
 from flask import current_app
 from flask_babel import gettext, lazy_gettext
-from google.cloud.tasks_v2 import HttpMethod
 
 from app.cloud_tasks.exceptions import CloudTaskCreationFailed
 from app.data_models import FulfilmentRequest, SessionData, SessionStore
@@ -72,26 +71,11 @@ class ConfirmationEmail:
             self.form.email.data, self._session_store.session_data, self._schema
         )
 
-        service_account_email = f"cloud-functions@{current_app.eq['cloud_tasks']._project_id}.iam.gserviceaccount.com"
-
-        url = f"https://europe-west2-{current_app.eq['cloud_tasks']._project_id}.cloudfunctions.net/{SUBMISSION_CONFIRMATION_CLOUD_FUNCTION_NAME}"
-
-        task = {
-            "http_request": {
-                "http_method": HttpMethod.POST,
-                "url": url,
-                "oidc_token": {"service_account_email": service_account_email},
-                "headers": {
-                    "Content-type": "application/json",
-                },
-                "body": fulfilment_request.message,
-            },
-        }
-
         try:
             return current_app.eq["cloud_tasks"].create_task(
-                task=task,
+                body=fulfilment_request.message,
                 queue_name=EQ_SUBMISSION_CONFIRMATION_QUEUE,
+                function_name=SUBMISSION_CONFIRMATION_CLOUD_FUNCTION_NAME,
             )
         except CloudTaskCreationFailed as exc:
             raise ConfirmationEmailTaskCreationFailed from exc
