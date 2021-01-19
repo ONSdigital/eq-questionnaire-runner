@@ -291,22 +291,6 @@ class TestCreateApp(unittest.TestCase):  # pylint: disable=too-many-public-metho
         # Then
         assert isinstance(application.eq["task-client"], CloudTaskPublisher)
 
-    def test_submission_confirmation_queue_not_set_raises_exception(self):
-        # Given
-        self._setting_overrides["EQ_SUBMISSION_CONFIRMATION_BACKEND"] = "cloud-tasks"
-        self._setting_overrides["EQ_SUBMISSION_CONFIRMATION_QUEUE"] = ""
-
-        # When
-        with patch(
-            "google.auth._default._get_explicit_environ_credentials",
-            return_value=(Mock(), "test-project-id"),
-        ):
-            with self.assertRaises(Exception) as ex:
-                create_app(self._setting_overrides)
-
-        # Then
-        assert "Setting EQ_SUBMISSION_CONFIRMATION_QUEUE Missing" in str(ex.exception)
-
     def test_submission_backend_not_set_raises_exception(self):
         # Given
         self._setting_overrides["EQ_SUBMISSION_CONFIRMATION_BACKEND"] = ""
@@ -322,24 +306,6 @@ class TestCreateApp(unittest.TestCase):  # pylint: disable=too-many-public-metho
 
         # Then
         assert "Unknown EQ_SUBMISSION_CONFIRMATION_BACKEND" in str(ex.exception)
-
-    def test_cloud_function_name_not_set_raises_exception(self):
-        # Given
-        self._setting_overrides["EQ_SUBMISSION_CONFIRMATION_BACKEND"] = "cloud-tasks"
-        self._setting_overrides["SUBMISSION_CONFIRMATION_CLOUD_FUNCTION_NAME"] = ""
-
-        # When
-        with patch(
-            "google.auth._default._get_explicit_environ_credentials",
-            return_value=(Mock(), "test-project-id"),
-        ):
-            with self.assertRaises(Exception) as ex:
-                create_app(self._setting_overrides)
-
-        # Then
-        assert "Setting SUBMISSION_CONFIRMATION_CLOUD_FUNCTION_NAME Missing" in str(
-            ex.exception
-        )
 
     def test_setup_datastore(self):
         self._setting_overrides["EQ_STORAGE_BACKEND"] = "datastore"
