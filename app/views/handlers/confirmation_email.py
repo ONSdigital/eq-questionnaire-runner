@@ -11,7 +11,10 @@ from app.data_models import FulfilmentRequest, SessionData, SessionStore
 from app.forms.email_form import EmailForm
 from app.helpers import url_safe_serializer
 from app.questionnaire import QuestionnaireSchema
-from app.settings import EQ_SUBMISSION_CONFIRMATION_QUEUE
+from app.settings import (
+    EQ_SUBMISSION_CONFIRMATION_QUEUE,
+    SUBMISSION_CONFIRMATION_CLOUD_FUNCTION_NAME,
+)
 from app.views.contexts.email_form_context import build_confirmation_email_form_context
 
 
@@ -69,11 +72,15 @@ class ConfirmationEmail:
             self.form.email.data, self._session_store.session_data, self._schema
         )
 
+        service_account_email = f"cloud-functions@{current_app.eq['cloud_tasks']._project_id}.iam.gserviceaccount.com"
+
+        url = f"https://europe-west2-{current_app.eq['cloud_tasks']._project_id}.cloudfunctions.net/{SUBMISSION_CONFIRMATION_CLOUD_FUNCTION_NAME}"
+
         task = {
             "http_request": {
                 "http_method": HttpMethod.POST,
-                "url": "",
-                "oidc_token": {"service_account_email": ""},
+                "url": url,
+                "oidc_token": {"service_account_email": service_account_email},
                 "headers": {
                     "Content-type": "application/json",
                 },
