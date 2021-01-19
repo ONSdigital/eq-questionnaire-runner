@@ -1,5 +1,5 @@
 from google import auth
-from google.cloud.tasks_v2 import CloudTasksClient, HttpMethod
+from google.cloud.tasks_v2 import CloudTasksClient
 from google.cloud.tasks_v2.types.task import Task
 from structlog import get_logger
 
@@ -16,7 +16,7 @@ class CloudTaskPublisher:
 
         _, self._project_id = auth.default()
 
-    def _create(self, payload: bytes, queue_name: str) -> Task:
+    def _create(self, task: dict, queue_name: str) -> Task:
         logger.info("creating cloud task")
 
         self._parent = self._client.queue_path(
@@ -28,22 +28,19 @@ class CloudTaskPublisher:
         )
 
         url = f"https://europe-west2-{self._project_id}.cloudfunctions.net/{SUBMISSION_CONFIRMATION_CLOUD_FUNCTION_NAME}"
-        task = {
-            "http_request": {
-                "http_method": HttpMethod.POST,
-                "url": url,
-                "oidc_token": {"service_account_email": service_account_email},
-                "headers": {
-                    "Content-type": "application/json",
-                },
-                "body": payload,
-            },
+
+        keys = {
+            "url": url,
+            "oidc_token": {"service_account_email": service_account_email},
         }
+
+        task.update(keys)
+
         return self._client.create_task(request={"parent": self._parent, "task": task})
 
-    def create_task(self, payload: bytes, queue_name: str) -> None:
+    def create_task(self, task: dict, queue_name: str) -> None:
         try:
-            self._create(payload, queue_name)
+            self._create(task, queue_name)
             logger.info("task created successfully")  # pragma: no cover
         except Exception as ex:  # pylint:disable=broad-except
             logger.exception(
@@ -54,5 +51,5 @@ class CloudTaskPublisher:
 
 class LogCloudTaskPublisher:
     @staticmethod
-    def create_task(payload: bytes, queue_name: str) -> None:
-        logger.info("creating cloud task", payload=payload, queue_name=queue_name)
+    def create_task(task: dict, queue_name: str) -> None:
+        logger.info("creating cloud task", task=task, queue_name=queue_name)

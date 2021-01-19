@@ -347,9 +347,9 @@ def setup_submitter(application):
 
 def setup_task_client(application):
     if application.config["EQ_SUBMISSION_CONFIRMATION_BACKEND"] == "cloud-tasks":
-        application.eq["task-client"] = CloudTaskPublisher()
+        application.eq["cloud_tasks"] = CloudTaskPublisher()
     elif application.config["EQ_SUBMISSION_CONFIRMATION_BACKEND"] == "log":
-        application.eq["task-client"] = LogCloudTaskPublisher()
+        application.eq["cloud_tasks"] = LogCloudTaskPublisher()
     else:
         raise Exception("Unknown EQ_SUBMISSION_CONFIRMATION_BACKEND")
 

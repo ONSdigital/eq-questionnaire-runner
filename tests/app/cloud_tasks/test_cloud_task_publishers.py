@@ -36,7 +36,7 @@ class TestCloudTaskPublisher(TestCase):
 
         self.cloudTaskPublisher._client = Mock()
 
-        self.cloudTaskPublisher.create_task(payload=payload, queue_name=queue_name)
+        self.cloudTaskPublisher.create_task(task=task, queue_name=queue_name)
 
         self.cloudTaskPublisher._client.create_task.assert_called_once_with(
             request={"parent": self.cloudTaskPublisher._parent, "task": task}
@@ -44,9 +44,9 @@ class TestCloudTaskPublisher(TestCase):
 
     def test_create_task_raises_exception(self):
         queue_name = "test"
-        payload = bytes("test", "utf-8")
+        task = {"test": "test"}
 
         self.cloudTaskPublisher._create = Mock(side_effect=Exception)
 
         with self.assertRaises(CloudTaskCreationFailed):
-            self.cloudTaskPublisher.create_task(payload=payload, queue_name=queue_name)
+            self.cloudTaskPublisher.create_task(task=task, queue_name=queue_name)
