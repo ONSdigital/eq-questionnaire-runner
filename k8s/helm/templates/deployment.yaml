@@ -137,3 +137,5 @@ spec:
               value: "{{- .Values.newRelic.appName }}"
             - name: CONFIRMATION_EMAIL_LIMIT
               value: "{{- .Values.confirmationEmailLimit }}"
+            - name: EQ_SUBMISSION_CONFIRMATION_BACKEND
+              value: "{{- .Values.eqSubmissionConfirmationBackend }}"
