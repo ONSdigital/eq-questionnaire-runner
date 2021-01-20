@@ -302,7 +302,7 @@ class TestEmailConfirmation(IntegrationTestCase):
         self.assertNotInBody("Get confirmation email")
 
     def test_500_publish_failed(self):
-        publisher = self._application.eq["cloud-tasks"]
+        publisher = self._application.eq["cloud_tasks"]
         publisher.create_task = MagicMock(side_effect=CloudTaskCreationFailed)
 
         # Given I launch and complete the test_confirmation_email questionnaire and submit with a valid email from the thank you page

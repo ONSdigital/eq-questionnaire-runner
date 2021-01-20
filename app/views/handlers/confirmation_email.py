@@ -72,7 +72,7 @@ class ConfirmationEmail:
         )
 
         try:
-            return current_app.eq["cloud-tasks"].create_task(
+            return current_app.eq["cloud_tasks"].create_task(
                 body=fulfilment_request.message,
                 queue_name=EQ_SUBMISSION_CONFIRMATION_QUEUE,
                 function_name=EQ_SUBMISSION_CONFIRMATION_CLOUD_FUNCTION_NAME,

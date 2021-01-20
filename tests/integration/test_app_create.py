@@ -291,7 +291,7 @@ class TestCreateApp(unittest.TestCase):  # pylint: disable=too-many-public-metho
             application = create_app(self._setting_overrides)
 
         # Then
-        assert isinstance(application.eq["cloud-tasks"], CloudTaskPublisher)
+        assert isinstance(application.eq["cloud_tasks"], CloudTaskPublisher)
 
     def test_submission_backend_not_set_raises_exception(self):
         # Given
