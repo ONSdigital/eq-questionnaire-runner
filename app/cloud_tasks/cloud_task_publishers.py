@@ -14,7 +14,7 @@ class CloudTaskPublisher:
 
         _, self._project_id = auth.default()
 
-    def get_task(self, body: bytes, function_name: str):
+    def _get_task(self, body: bytes, function_name: str):
         service_account_email = (
             f"cloud-functions@{self._project_id}.iam.gserviceaccount.com"
         )
@@ -35,21 +35,19 @@ class CloudTaskPublisher:
             }
         )
 
-    def _create(self, body: bytes, queue_name: str, function_name: str) -> Task:
-        logger.info("creating cloud task")
-
-        self._parent = self._client.queue_path(
-            self._project_id, "europe-west2", queue_name
-        )
-
-        return self._client.create_task(
-            parent=self._parent,
-            task=self.get_task(body=body, function_name=function_name),
-        )
-
     def create_task(self, body: bytes, queue_name: str, function_name: str) -> None:
         try:
-            self._create(body, queue_name, function_name)
+            logger.info("creating cloud task")
+
+            self._parent = self._client.queue_path(
+                self._project_id, "europe-west2", queue_name
+            )
+
+            self._client.create_task(
+                parent=self._parent,
+                task=self._get_task(body=body, function_name=function_name),
+            )
+
             logger.info("task created successfully")  # pragma: no cover
         except Exception as ex:  # pylint:disable=broad-except
             logger.exception(

@@ -11,8 +11,8 @@ from app.forms.email_form import EmailForm
 from app.helpers import url_safe_serializer
 from app.questionnaire import QuestionnaireSchema
 from app.settings import (
+    EQ_SUBMISSION_CONFIRMATION_CLOUD_FUNCTION_NAME,
     EQ_SUBMISSION_CONFIRMATION_QUEUE,
-    SUBMISSION_CONFIRMATION_CLOUD_FUNCTION_NAME,
 )
 from app.views.contexts.email_form_context import build_confirmation_email_form_context
 
@@ -67,7 +67,7 @@ class ConfirmationEmail:
         return self.page_title
 
     def _publish_fulfilment_request(self):
-        fulfilment_request = ConfirmationEmailTask(
+        fulfilment_request = ConfirmationEmailFulfilmentRequest(
             self.form.email.data, self._session_store.session_data, self._schema
         )
 
@@ -75,7 +75,7 @@ class ConfirmationEmail:
             return current_app.eq["cloud_tasks"].create_task(
                 body=fulfilment_request.message,
                 queue_name=EQ_SUBMISSION_CONFIRMATION_QUEUE,
-                function_name=SUBMISSION_CONFIRMATION_CLOUD_FUNCTION_NAME,
+                function_name=EQ_SUBMISSION_CONFIRMATION_CLOUD_FUNCTION_NAME,
             )
         except CloudTaskCreationFailed as exc:
             raise ConfirmationEmailTaskCreationFailed from exc
@@ -98,7 +98,7 @@ class ConfirmationEmail:
 
 
 @dataclass
-class ConfirmationEmailTask(FulfilmentRequest):
+class ConfirmationEmailFulfilmentRequest(FulfilmentRequest):
     email_address: str
     session_data: SessionData
     schema: QuestionnaireSchema

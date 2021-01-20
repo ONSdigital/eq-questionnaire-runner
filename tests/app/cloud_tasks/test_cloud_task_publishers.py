@@ -28,7 +28,7 @@ class TestCloudTaskPublisher(TestCase):
         ) as call:
 
             # Designate an appropriate return value for the call.
-            call.return_value = self.cloud_task_publisher.get_task(
+            call.return_value = self.cloud_task_publisher._get_task(
                 body=body, function_name=function_name
             )
             self.cloud_task_publisher.create_task(
@@ -41,7 +41,7 @@ class TestCloudTaskPublisher(TestCase):
             assert args[0] == CreateTaskRequest(
                 mapping={
                     "parent": f"projects/{self.PROJECT_ID}/locations/europe-west2/queues/test",
-                    "task": self.cloud_task_publisher.get_task(
+                    "task": self.cloud_task_publisher._get_task(
                         body=body, function_name=function_name
                     ),
                 }
