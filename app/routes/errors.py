@@ -16,7 +16,9 @@ from app.helpers.language_helper import handle_language
 from app.helpers.template_helpers import render_template
 from app.settings import EQ_SESSION_ID
 from app.submitter.submission_failed import SubmissionFailedException
-from app.views.handlers.confirmation_email import ConfirmationEmailTaskCreationFailed
+from app.views.handlers.confirmation_email import (
+    ConfirmationEmailFulfilmentRequestPublicationFailed,
+)
 from app.views.handlers.feedback import FeedbackLimitReached, FeedbackUploadFailed
 from app.views.handlers.individual_response import (
     IndividualResponseFulfilmentRequestPublicationFailed,
@@ -180,7 +182,7 @@ def individual_response_fulfilment_request_publication_failed(exception):
     )
 
 
-@errors_blueprint.app_errorhandler(ConfirmationEmailTaskCreationFailed)
+@errors_blueprint.app_errorhandler(ConfirmationEmailFulfilmentRequestPublicationFailed)
 def confirmation_email_fulfilment_request_publication_failed(exception):
     log_exception(exception, 500)
 

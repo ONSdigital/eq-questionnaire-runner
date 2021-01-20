@@ -278,8 +278,10 @@ class TestCreateApp(unittest.TestCase):  # pylint: disable=too-many-public-metho
         assert isinstance(application.eq["publisher"], LogPublisher)
 
     def test_adds_cloud_task_publisher_to_the_application(self):
-        self._setting_overrides["EQ_SUBMISSION_CONFIRMATION_BACKEND"] = "cloud_tasks"
-        self._setting_overrides["EQ_SUBMISSION_CONFIRMATION_CLOUD_FUNCTION_NAME"] = "test"
+        self._setting_overrides["EQ_SUBMISSION_CONFIRMATION_BACKEND"] = "cloud-tasks"
+        self._setting_overrides[
+            "EQ_SUBMISSION_CONFIRMATION_CLOUD_FUNCTION_NAME"
+        ] = "test"
 
         # When
         with patch(
@@ -289,12 +291,14 @@ class TestCreateApp(unittest.TestCase):  # pylint: disable=too-many-public-metho
             application = create_app(self._setting_overrides)
 
         # Then
-        assert isinstance(application.eq["cloud_tasks"], CloudTaskPublisher)
+        assert isinstance(application.eq["cloud-tasks"], CloudTaskPublisher)
 
     def test_submission_backend_not_set_raises_exception(self):
         # Given
         self._setting_overrides["EQ_SUBMISSION_CONFIRMATION_BACKEND"] = ""
-        self._setting_overrides["EQ_SUBMISSION_CONFIRMATION_CLOUD_FUNCTION_NAME"] = "test"
+        self._setting_overrides[
+            "EQ_SUBMISSION_CONFIRMATION_CLOUD_FUNCTION_NAME"
+        ] = "test"
 
         # When
         with patch(

@@ -64,4 +64,4 @@ addressLookupApi:
 confirmationEmailLimit: 10
 feedbackLimit: 10
 
-submissionConfirmationBackend: "cloud_tasks"
+submissionConfirmationBackend: "cloud-tasks"
