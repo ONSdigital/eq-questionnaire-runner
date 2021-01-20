@@ -21,17 +21,19 @@ class CloudTaskPublisher:
 
         url = f"https://europe-west2-{self._project_id}.cloudfunctions.net/{function_name}"
 
-        return {
-            "http_request": {
-                "http_method": HttpMethod.POST,
-                "url": url,
-                "oidc_token": {"service_account_email": service_account_email},
-                "headers": {
-                    "Content-type": "application/json",
+        return Task(
+            {
+                "http_request": {
+                    "http_method": HttpMethod.POST,
+                    "url": url,
+                    "oidc_token": {"service_account_email": service_account_email},
+                    "headers": {
+                        "Content-type": "application/json",
+                    },
+                    "body": body,
                 },
-                "body": body,
-            },
-        }
+            }
+        )
 
     def _create(self, body: bytes, queue_name: str, function_name: str) -> Task:
         logger.info("creating cloud task")
@@ -41,10 +43,8 @@ class CloudTaskPublisher:
         )
 
         return self._client.create_task(
-            request={
-                "parent": self._parent,
-                "task": self.get_task(body=body, function_name=function_name),
-            }
+            parent=self._parent,
+            task=self.get_task(body=body, function_name=function_name),
         )
 
     def create_task(self, body: bytes, queue_name: str, function_name: str) -> None:
