@@ -717,7 +717,7 @@ msgstr "Ní bhfuair tú r-phost?"
 
 #: templates/confirmation-email-sent.html:30
 msgid "It can take a few minutes for the email to arrive. If it doesn't arrive, check your junk mail, or you can <a href='{send_confirmation_email_url}' id='send-another-email'>send another confirmation email</a>."
-msgstr "Glacann sé cúpla bomaite ar an r-phost teacht chugat. Mura dtagann sé, seiceáil do dhramhphost, nó tig leat <a href='{send_confirmation_email_url}' id='send-another-email'> r-phost dearbhaithe eile a sheoladh</a>."
+msgstr "Glacann sé cúpla bomaite ar an r-phost teacht chugat. Mura dtagann sé, seiceáil do dhramhphost, nó tig leat <a href='{send_confirmation_email_url}' id='send-another-email'>r-phost dearbhaithe eile a sheoladh</a>."
 
 #: templates/confirmation-email.html:12
 msgid "Send another confirmation email"
@@ -1322,4 +1322,3 @@ msgstr "Bain"
 #: templates/partials/summary/list-summary.html:13
 msgid "Remove {item_name}"
 msgstr "Bain {item_name}"
-
