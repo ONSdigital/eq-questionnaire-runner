@@ -900,7 +900,7 @@ msgstr "Má ghreamaigh tú an seoladh idirlín isteach, déan seiceáil gur chó
 
 #: templates/errors/404.html:9
 msgid "If the web address is correct or you selected a link or button, <a href='{url}'>contact us</a> for more help."
-msgstr "Má tá an seoladh idirlín ceart nó má roghnaigh tú nasc nó cnaipe, <a href='{url}'> déan teagmháil linn </a> do thuilleadh cuidithe."
+msgstr "Má tá an seoladh idirlín ceart nó má roghnaigh tú nasc nó cnaipe, <a href='{url}'>déan teagmháil linn</a> do thuilleadh cuidithe."
 
 #: templates/errors/500.html:3
 msgid "An error has occurred"
