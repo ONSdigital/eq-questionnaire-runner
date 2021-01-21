@@ -1104,7 +1104,7 @@ msgstr "Is í seo an cheist bhreathnaithe dheireanach sa mhír seo"
 
 #: templates/partials/last_viewed_question_guidance.html:10
 msgid "You can also <a id='section-start-link' href='{url}'>go back to the start of the section</a>"
-msgstr "Is féidir fosta <a id='section-start-link' href='{url}'> dul ar ais chuig tús na míre</a>"
+msgstr "Is féidir fosta <a id='section-start-link' href='{url}'>dul ar ais chuig tús na míre</a>"
 
 #: templates/partials/question.html:60
 msgid "Selecting this will clear your answer"
