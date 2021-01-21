@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: eq-census-nisra\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2020-12-04 07:21+0000\n"
-"PO-Revision-Date: 2021-01-21 14:31\n"
+"PO-Revision-Date: 2021-01-21 14:43\n"
 "Last-Translator: \n"
 "Language-Team: Ulster Scots\n"
 "MIME-Version: 1.0\n"
@@ -255,7 +255,7 @@ msgstr "Terms an condeetions"
 
 #: app/helpers/template_helpers.py:105
 msgid "Make sure you <a href='{sign_out_url}'>leave this page</a> or close your browser if using a shared device"
-msgstr "Mak shair ye <a href='{sign_out_url}'>lea this page</a>or shut yer browser gin ye'r oan a yoke wi anither bodie"
+msgstr "Mak shair ye <a href='{sign_out_url}'>lea this page</a> or shut yer browser gin ye'r oan a yoke wi anither bodie"
 
 #: app/questionnaire/placeholder_transforms.py:92
 msgid "{number_of_years} year"
@@ -289,7 +289,7 @@ msgstr "Ye hae wun til tha maist nummer o times fur pittin in feedbak"
 
 #: app/routes/errors.py:129
 msgid "If you need to give more feedback, please <a href='{contact_us_url}'>contact us</a>."
-msgstr "Gin ye need tae gie mair feedbak, plaise<a href='{contact_us_url}'>get tha houl o us</a>."
+msgstr "Gin ye need tae gie mair feedbak, plaise <a href='{contact_us_url}'>get tha houl o us</a>."
 
 #: app/routes/errors.py:161
 msgid "Sorry, there was a problem sending the access code"
@@ -297,11 +297,11 @@ msgstr "Thair wus a problem sennin tha ingang code"
 
 #: app/routes/errors.py:167
 msgid "You can try to <a href='{retry_url}'>request a new access code again</a>."
-msgstr "Ye can try tae<a href='{retry_url}'>ax fur a new ingang code agane</a>."
+msgstr "Ye can try tae <a href='{retry_url}'>ax fur a new ingang code agane</a>."
 
 #: app/routes/errors.py:170 app/routes/errors.py:193 app/routes/errors.py:215
 msgid "If this problem keeps happening, please <a href='{contact_us_url}'>contact us</a> for help."
-msgstr "Gin this gies ye mair bother, plaise <a href='{contact_us_url}'> get tha houl o us</a>fur a pull oot."
+msgstr "Gin this gies ye mair bother, plaise <a href='{contact_us_url}'> get tha houl o us</a> fur a pull oot."
 
 #: app/routes/errors.py:189
 msgid "Sorry, there was a problem sending the confirmation email"
@@ -309,7 +309,7 @@ msgstr "Thair wus a problem sennin tha homologatin email"
 
 #: app/routes/errors.py:190
 msgid "You can try to <a href='{retry_url}'>send the email again</a>."
-msgstr "Ye can try tae<a href='{retry_url}'>sen tha email agane</a>."
+msgstr "Ye can try tae <a href='{retry_url}'>sen tha email agane</a>."
 
 #: app/routes/errors.py:211 templates/errors/403.html:3
 #: templates/errors/403.html:6 templates/errors/submission-failed.html:5
@@ -319,7 +319,7 @@ msgstr "We'r hairt-sair, thar's a pall"
 
 #: app/routes/errors.py:212
 msgid "You can try to <a href='{retry_url}'>submit your feedback again</a>."
-msgstr "Ye can try tae<a href='{retry_url}'>pit in yer feedbak agane</a>."
+msgstr "Ye can try tae <a href='{retry_url}'>pit in yer feedbak agane</a>."
 
 #: app/routes/individual_response.py:165
 msgid "An individual access code has been sent by post"
@@ -763,7 +763,7 @@ msgstr "Stairt-aff"
 #: templates/introduction.html:17
 #, python-format
 msgid "You are completing this for <span>%(ru_name)s</span> (%(trading_as_name)s)"
-msgstr "Ye'r fillin this oot fur <span>%(ru_name)s</span>(%(trading_as_name)s)"
+msgstr "Ye'r fillin this oot fur <span>%(ru_name)s</span> (%(trading_as_name)s)"
 
 #: templates/introduction.html:21
 #, python-format
@@ -828,7 +828,7 @@ msgstr "Ye hae cum speed wi pittin in"
 
 #: templates/thank-you.html:21
 msgid "Your answers were submitted for <span>{ru_name}</span> ({trading_as_name}) on {submitted_date_time}"
-msgstr "Yer repones wus pit in fur <span>{ru_name}</span>({trading_as_name}) oan {submitted_date_time}"
+msgstr "Yer repones wus pit in fur <span>{ru_name}</span> ({trading_as_name}) oan {submitted_date_time}"
 
 #: templates/thank-you.html:26
 msgid "Your answers were submitted for <span>{ru_name}</span> on {submitted_date_time}"
@@ -908,7 +908,7 @@ msgstr "We'r hairt-sair thar's a pall"
 
 #: templates/errors/no-cookie.html:7
 msgid "To access this page you need to <a href='{url}'>enter your 16-character access code</a>."
-msgstr "Furtae ingang this page ye maun<a href='{url}'>pit in yer 16-chairacter ingang code</a>."
+msgstr "Furtae ingang this page ye maun <a href='{url}'>pit in yer 16-chairacter ingang code</a>."
 
 #: templates/errors/session-expired.html:3
 msgid "Session timed out"
@@ -924,7 +924,7 @@ msgstr "Tae help bield yer wittins we hae timed ye oot"
 
 #: templates/errors/session-expired.html:8
 msgid "You will need to <a href='{url}'>enter your 16-character access code</a> again to continue your census."
-msgstr "Ye maun<a href='{url}'>pit in yer 16-chairacter ingang code</a>agane tae conteenye wi yer heid-coont."
+msgstr "Ye maun <a href='{url}'>pit in yer 16-chairacter ingang code</a> agane tae conteenye wi yer heid-coont."
 
 #: templates/errors/submission-complete.html:3
 msgid "Submission Complete"
@@ -940,11 +940,11 @@ msgstr "Yer heid-coont haes bin pit in"
 
 #: templates/errors/submission-failed.html:9
 msgid "You can try to <a href='{url}'>submit your census again</a>"
-msgstr "Ye can try tae<a href='{url}'>pit in yer feedbak agane</a>"
+msgstr "Ye can try tae <a href='{url}'>pit in yer feedbak agane</a>"
 
 #: templates/errors/submission-failed.html:10
 msgid "If this problem keeps happening, please <a href='{url}'>contact us</a> for help."
-msgstr "Gin this gies ye mair bother, plaise <a href='{url}'> get tha houl o us</a>fur a pull oot."
+msgstr "Gin this gies ye mair bother, plaise <a href='{url}'> get tha houl o us</a> fur a pull oot."
 
 #: templates/individual_response/confirmation-post.html:15
 msgid "A letter has been sent to Individual Resident at {display_address}"
@@ -984,7 +984,7 @@ msgstr "Ax fur anither heid-coont"
 
 #: templates/individual_response/question.html:9
 msgid "To request a census in a different format or for further help, please <a href='{contact_us_url}'>contact us</a>"
-msgstr "Tae ax fur a heid-coont in anither lay-oot, or fur mair help, plaise<a href='{contact_us_url}'>get tha houl o us</a>"
+msgstr "Tae ax fur a heid-coont in anither lay-oot, or fur mair help, plaise <a href='{contact_us_url}'>get tha houl o us</a>"
 
 #: templates/layouts/_base.html:18
 msgid "Previous"
@@ -996,11 +996,11 @@ msgstr "Tell us gin ye accept cookies"
 
 #: templates/layouts/_base.html:62
 msgid "We use <a href='{cookie_settings_url}'>cookies to collect information</a> about how you use census.gov.uk. We use this information to make the website work as well as possible and improve our services."
-msgstr "We uise<a href='{cookie_settings_url}'>cookies tae gether wittins </a>aboot hoo ye uise census.gov.uk We uise these wittins tae mak tha wabsteid wark as weel as able an better oor sarvice."
+msgstr "We uise <a href='{cookie_settings_url}'>cookies tae gether wittins</a> aboot hoo ye uise census.gov.uk We uise these wittins tae mak tha wabsteid wark as weel as able an better oor sarvice."
 
 #: templates/layouts/_base.html:63
 msgid "You’ve accepted all cookies. You can <a href='{cookie_settings_url}'>change your cookie preferences</a> at any time."
-msgstr "Ye hae acceptit aa tha cookies. Ye can <a href='{cookie_settings_url}'> cheynge yer cookie preferences</a>onietim ye lake."
+msgstr "Ye hae acceptit aa tha cookies. Ye can <a href='{cookie_settings_url}'> cheynge yer cookie preferences</a> onietim ye lake."
 
 #: templates/layouts/_base.html:64
 msgid "Accept all cookies"
@@ -1080,7 +1080,7 @@ msgstr "This bes tha last leukit speirin in this lay-oot"
 
 #: templates/partials/last_viewed_question_guidance.html:10
 msgid "You can also <a id='section-start-link' href='{url}'>go back to the start of the section</a>"
-msgstr "Forbye, ye can<a id='section-start-link' href='{url}'>ga'bak til tha stairt o tha lay-oot</a>"
+msgstr "Forbye, ye can <a id='section-start-link' href='{url}'>ga'bak til tha stairt o tha lay-oot</a>"
 
 #: templates/partials/question.html:60
 msgid "Selecting this will clear your answer"
