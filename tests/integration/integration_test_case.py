@@ -3,6 +3,7 @@ import os
 import re
 import unittest
 import zlib
+from unittest.mock import Mock
 
 import fakeredis
 from bs4 import BeautifulSoup
@@ -59,9 +60,16 @@ class IntegrationTestCase(unittest.TestCase):  # pylint: disable=too-many-public
 
         configure_logging()
 
-        setting_overrides = {"EQ_ENABLE_HTML_MINIFY": False}
+        setting_overrides = {
+            "EQ_ENABLE_HTML_MINIFY": False,
+            "EQ_SUBMISSION_CONFIRMATION_BACKEND": "log",
+        }
 
-        self._application = create_app(setting_overrides)
+        with patch(
+            "google.auth._default._get_explicit_environ_credentials",
+            return_value=(Mock(), "test-project-id"),
+        ):
+            self._application = create_app(setting_overrides)
 
         self._key_store = KeyStore(
             {

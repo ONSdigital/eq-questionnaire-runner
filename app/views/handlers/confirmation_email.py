@@ -5,11 +5,15 @@ from typing import Mapping, Optional
 from flask import current_app
 from flask_babel import gettext, lazy_gettext
 
+from app.cloud_tasks.exceptions import CloudTaskCreationFailed
 from app.data_models import FulfilmentRequest, SessionData, SessionStore
 from app.forms.email_form import EmailForm
 from app.helpers import url_safe_serializer
-from app.publisher.exceptions import PublicationFailed
 from app.questionnaire import QuestionnaireSchema
+from app.settings import (
+    EQ_SUBMISSION_CONFIRMATION_CLOUD_FUNCTION_NAME,
+    EQ_SUBMISSION_CONFIRMATION_QUEUE,
+)
 from app.views.contexts.email_form_context import build_confirmation_email_form_context
 
 
@@ -63,16 +67,18 @@ class ConfirmationEmail:
         return self.page_title
 
     def _publish_fulfilment_request(self):
-        topic_id = current_app.config["EQ_SUBMISSION_CONFIRMATION_TOPIC_ID"]
         fulfilment_request = ConfirmationEmailFulfilmentRequest(
             self.form.email.data, self._session_store.session_data, self._schema
         )
+
         try:
-            return current_app.eq["publisher"].publish(
-                topic_id, message=fulfilment_request.message
+            return current_app.eq["cloud_tasks"].create_task(
+                body=fulfilment_request.message,
+                queue_name=EQ_SUBMISSION_CONFIRMATION_QUEUE,
+                function_name=EQ_SUBMISSION_CONFIRMATION_CLOUD_FUNCTION_NAME,
             )
-        except PublicationFailed:
-            raise ConfirmationEmailFulfilmentRequestPublicationFailed
+        except CloudTaskCreationFailed as exc:
+            raise ConfirmationEmailFulfilmentRequestPublicationFailed from exc
 
     def handle_post(self):
         self._publish_fulfilment_request()
@@ -101,12 +107,11 @@ class ConfirmationEmailFulfilmentRequest(FulfilmentRequest):
         return {
             "fulfilmentRequest": {
                 "email_address": self.email_address,
+                "display_address": self.session_data.display_address,
                 "form_type": self.schema.form_type,
+                "language_code": self.session_data.language_code,
                 "region_code": self.schema.region_code,
                 "questionnaire_id": self.session_data.questionnaire_id,
                 "tx_id": self.session_data.tx_id,
-                "language_code": self.session_data.language_code,
-                "display_address": self.session_data.display_address,
-                "submitted_at": self.session_data.submitted_time,
             }
         }

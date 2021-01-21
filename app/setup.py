@@ -23,6 +23,7 @@ from app import settings
 from app.authentication.authenticator import login_manager
 from app.authentication.cookie_session import SHA256SecureCookieSessionInterface
 from app.authentication.user_id_generator import UserIDGenerator
+from app.cloud_tasks import CloudTaskPublisher, LogCloudTaskPublisher
 from app.globals import get_session_store
 from app.helpers import get_span_and_trace
 from app.keys import KEY_PURPOSE_SUBMISSION
@@ -141,6 +142,8 @@ def create_app(  # noqa: C901  pylint: disable=too-complex, too-many-statements
     setup_feedback(application)
 
     setup_publisher(application)
+
+    setup_task_client(application)
 
     application.eq["id_generator"] = UserIDGenerator(
         application.config["EQ_SERVER_SIDE_STORAGE_USER_ID_ITERATIONS"],
@@ -340,6 +343,15 @@ def setup_submitter(application):
 
     else:
         raise Exception("Unknown EQ_SUBMISSION_BACKEND")
+
+
+def setup_task_client(application):
+    if application.config["EQ_SUBMISSION_CONFIRMATION_BACKEND"] == "cloud-tasks":
+        application.eq["cloud_tasks"] = CloudTaskPublisher()
+    elif application.config["EQ_SUBMISSION_CONFIRMATION_BACKEND"] == "log":
+        application.eq["cloud_tasks"] = LogCloudTaskPublisher()
+    else:
+        raise Exception("Unknown EQ_SUBMISSION_CONFIRMATION_BACKEND")
 
 
 def setup_publisher(application):

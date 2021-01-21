@@ -64,6 +64,7 @@ uwsgi = "*"
 email-validator = "*"
 itsdangerous = "*"
 google-cloud-pubsub = "*"
+google-cloud-tasks = "*"
 
 [requires]
 python_version = "3.8"
