@@ -337,7 +337,7 @@ msgstr "Tá brón orm, tá fadhb ann"
 
 #: app/routes/errors.py:212
 msgid "You can try to <a href='{retry_url}'>submit your feedback again</a>."
-msgstr "Is féidir triail a bhaint as <a href='{retry_url}'> d'aiseolas a chur isteach arís</a>."
+msgstr "Is féidir triail a bhaint as <a href='{retry_url}'>d'aiseolas a chur isteach arís</a>."
 
 #: app/routes/individual_response.py:165
 msgid "An individual access code has been sent by post"
