@@ -8,6 +8,7 @@ from flask import Flask, request
 from flask_babel import Babel
 from mock import patch
 
+from app.cloud_tasks import CloudTaskPublisher
 from app.publisher import LogPublisher, PubSubPublisher
 from app.setup import create_app
 from app.storage.datastore import Datastore
@@ -275,6 +276,40 @@ class TestCreateApp(unittest.TestCase):  # pylint: disable=too-many-public-metho
 
         # Then
         assert isinstance(application.eq["publisher"], LogPublisher)
+
+    def test_adds_cloud_task_publisher_to_the_application(self):
+        self._setting_overrides["EQ_SUBMISSION_CONFIRMATION_BACKEND"] = "cloud-tasks"
+        self._setting_overrides[
+            "EQ_SUBMISSION_CONFIRMATION_CLOUD_FUNCTION_NAME"
+        ] = "test"
+
+        # When
+        with patch(
+            "google.auth._default._get_explicit_environ_credentials",
+            return_value=(Mock(), "test-project-id"),
+        ):
+            application = create_app(self._setting_overrides)
+
+        # Then
+        assert isinstance(application.eq["cloud_tasks"], CloudTaskPublisher)
+
+    def test_submission_backend_not_set_raises_exception(self):
+        # Given
+        self._setting_overrides["EQ_SUBMISSION_CONFIRMATION_BACKEND"] = ""
+        self._setting_overrides[
+            "EQ_SUBMISSION_CONFIRMATION_CLOUD_FUNCTION_NAME"
+        ] = "test"
+
+        # When
+        with patch(
+            "google.auth._default._get_explicit_environ_credentials",
+            return_value=(Mock(), "test-project-id"),
+        ):
+            with self.assertRaises(Exception) as ex:
+                create_app(self._setting_overrides)
+
+        # Then
+        assert "Unknown EQ_SUBMISSION_CONFIRMATION_BACKEND" in str(ex.exception)
 
     def test_setup_datastore(self):
         self._setting_overrides["EQ_STORAGE_BACKEND"] = "datastore"
