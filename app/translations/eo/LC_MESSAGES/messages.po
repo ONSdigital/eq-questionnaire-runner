@@ -2,283 +2,786 @@ msgid ""
 msgstr ""
 "Project-Id-Version: eq-census-nisra\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2019-10-03 14:12+0100\n"
-"PO-Revision-Date: 2019-10-03 14:31\n"
-"Last-Translator: ONS_Census\n"
+"POT-Creation-Date: 2020-12-04 07:21+0000\n"
+"PO-Revision-Date: 2021-01-21 09:18\n"
+"Last-Translator: \n"
 "Language-Team: Ulster Scots\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Generated-By: Babel 2.7.0\n"
+"Generated-By: Babel 2.9.0\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: crowdin.com\n"
 "X-Crowdin-Project: eq-census-nisra\n"
+"X-Crowdin-Project-ID: 360567\n"
 "X-Crowdin-Language: sco-ulster\n"
 "X-Crowdin-File: messages.pot\n"
+"X-Crowdin-File-ID: 24\n"
 "Language: sco_ulster\n"
 
-#: app/jinja_filters.py:79 app/validation/validators.py:340
+#: app/forms/validators.py:338 app/jinja_filters.py:86
 #, python-format
 msgid "%(num)s year"
 msgid_plural "%(num)s years"
 msgstr[0] "%(num)s yeir"
-msgstr[1] "%(num)s yeir"
+msgstr[1] "%(num)s yeirs"
 
-#: app/jinja_filters.py:87 app/validation/validators.py:344
+#: app/forms/validators.py:342 app/jinja_filters.py:94
 #, python-format
 msgid "%(num)s month"
 msgid_plural "%(num)s months"
 msgstr[0] "%(num)s mond"
 msgstr[1] "%(num)s monds"
 
-#: app/jinja_filters.py:130
+#: app/jinja_filters.py:137
 #, python-format
 msgid "%(date)s at %(time)s"
 msgstr "%(date)s at %(time)s"
 
-#: app/jinja_filters.py:141
+#: app/jinja_filters.py:148
 #, python-format
 msgid "%(from_date)s to %(to_date)s"
 msgstr "%(from_date)s tae %(to_date)s"
 
-#: app/forms/custom_fields.py:130
-msgid "Not a valid choice"
-msgstr "No a richt walin"
+#: app/forms/error_messages.py:11 app/forms/error_messages.py:12
+#: app/forms/error_messages.py:13 app/forms/error_messages.py:14
+msgid "Enter an answer"
+msgstr "Pit in a repone"
 
-#: app/forms/fields.py:231
+#: app/forms/error_messages.py:15
+#, python-format
+msgid "Select an answer <span class=\"u-vh\">to ‘%(question_title)s’</span>"
+msgstr "Ootwale a repone <span class=\"u-vh\">tae ‘%(question_title)s’</span>"
+
+#: app/forms/error_messages.py:18
+#: app/forms/field_handlers/dropdown_handler.py:11
 msgid "Select an answer"
 msgstr "Ootwale a repone"
 
-#: app/helpers/template_helper.py:19
-msgid "Office for National Statistics logo"
-msgstr "Offys fur Kintrie Nummerin"
-
-#: app/helpers/template_helper.py:28 app/helpers/template_helper.py:36
-msgid "Census 2021"
-msgstr "Census 20an21"
-
-#: app/helpers/template_helper.py:32
-msgid "Northern Ireland Statistics and Research Agency logo"
-msgstr "Norlin Airlann Nummerin an Screengin Agentrie logo"
-
-#: app/validation/error_messages.py:7 app/validation/error_messages.py:8
-#: app/validation/error_messages.py:9 app/validation/error_messages.py:10
-msgid "Enter an answer to continue."
-msgstr "Pit in a repone furtae haud."
-
-#: app/validation/error_messages.py:11 app/validation/error_messages.py:12
-msgid "Select an answer to continue."
-msgstr "Wale a repone furtae haud."
-
-#: app/validation/error_messages.py:13
-msgid "Select all that apply to continue."
-msgstr "Ootwale aa tha yins 'at effeirs furtae haud."
-
-#: app/validation/error_messages.py:14
-msgid "Enter a date to continue."
-msgstr "Pit in a date furtae haud."
-
-#: app/validation/error_messages.py:15
-msgid "Enter a duration to continue."
-msgstr "Pit in a tack furtae haud."
-
-#: app/validation/error_messages.py:16
+#: app/forms/error_messages.py:19
 #, python-format
-msgid "Enter an answer more than or equal to %(min)s."
-msgstr "Pit in a repone mair nor, ur even'd wi, %(min)s."
+msgid "Select at least one answer <span class=\"u-vh\">to ‘%(question_title)s’</span>"
+msgstr "Ootwale a repone <span class=\"u-vh\">tae ‘%(question_title)s’</span>"
 
-#: app/validation/error_messages.py:17
+#: app/forms/error_messages.py:22
+msgid "Enter a date"
+msgstr "Pit in a date"
+
+#: app/forms/error_messages.py:23 templates/partials/answers/address.html:56
+msgid "Enter an address"
+msgstr "Pit in a bakkin"
+
+#: app/forms/error_messages.py:24
+msgid "Enter a duration"
+msgstr "Inpit a lestin"
+
+#: app/forms/error_messages.py:25
+msgid "Enter an email address"
+msgstr "Pit in an email address"
+
+#: app/forms/error_messages.py:26
+msgid "Enter a UK mobile number"
+msgstr "Pit in a UK mobil phone nummer"
+
+#: app/forms/error_messages.py:27
 #, python-format
-msgid "Enter an answer less than or equal to %(max)s."
-msgstr "Pit in a repone ablow ur evened wi %(max)s."
+msgid "Enter an answer more than or equal to %(min)s"
+msgstr "Pit in a repone mair nor, ur even'd wi, %(min)s"
 
-#: app/validation/error_messages.py:18
+#: app/forms/error_messages.py:28
 #, python-format
-msgid "Enter an answer more than %(min)s."
-msgstr "Pit in a repone mair nor %(min)s."
+msgid "Enter an answer less than or equal to %(max)s"
+msgstr "Pit in a repone ablow ur evened wi %(max)s"
 
-#: app/validation/error_messages.py:19
+#: app/forms/error_messages.py:29
 #, python-format
-msgid "Enter an answer less than %(max)s."
-msgstr "Pit in a repone ablow %(max)s."
+msgid "Enter an answer more than %(min)s"
+msgstr "Pit in a repone mair nor %(min)s"
 
-#: app/validation/error_messages.py:20
+#: app/forms/error_messages.py:30
+#, python-format
+msgid "Enter an answer less than %(max)s"
+msgstr "Pit in a repone ablow %(max)s"
+
+#: app/forms/error_messages.py:31
 #, python-format
 msgid "Enter answers that add up to %(total)s"
 msgstr "Pit in repones 'at eiks til %(total)s"
 
-#: app/validation/error_messages.py:21
+#: app/forms/error_messages.py:32
 #, python-format
 msgid "Enter answers that add up to or are less than %(total)s"
 msgstr "Pit in repones 'at eiks til ur bes ablow %(total)s"
 
-#: app/validation/error_messages.py:24
+#: app/forms/error_messages.py:35
 #, python-format
 msgid "Enter answers that add up to less than %(total)s"
 msgstr "Pit in repones 'at eiks til ablow %(total)s"
 
-#: app/validation/error_messages.py:27
+#: app/forms/error_messages.py:38
 #, python-format
 msgid "Enter answers that add up to greater than %(total)s"
 msgstr "Pit in repones 'at eiks til mair nor %(total)s"
 
-#: app/validation/error_messages.py:30
+#: app/forms/error_messages.py:41
 #, python-format
 msgid "Enter answers that add up to or are greater than %(total)s"
 msgstr "Pit in repones 'at eiks til ur is mair nor %(total)s"
 
-#: app/validation/error_messages.py:33
-msgid "Enter a number."
-msgstr "Pit in a nummer."
+#: app/forms/error_messages.py:44
+msgid "Enter an email address in a valid format, for example name@example.com"
+msgstr "Pit in an email address in a richt wye, tha like o name@example.com"
 
-#: app/validation/error_messages.py:34
-msgid "Enter a whole number."
-msgstr "Pit in a hail nummer."
+#: app/forms/error_messages.py:47
+msgid "Enter a number"
+msgstr "Pit in a nummer"
 
-#: app/validation/error_messages.py:35
+#: app/forms/error_messages.py:48
+msgid "Enter a whole number"
+msgstr "Pit in a hail nummer"
+
+#: app/forms/error_messages.py:49
 #, python-format
-msgid "Enter a number rounded to %(max)d decimal places."
-msgstr "Pit in a nummer adjistit tae %(max)d decymal places."
+msgid "Enter a number rounded to %(max)d decimal places"
+msgstr "Pit in a nummer adjistit tae %(max)d decymal places"
 
-#: app/validation/error_messages.py:38
+#: app/forms/error_messages.py:50
 #, python-format
-msgid "Your answer is too long, it has to be less than %(max)d characters."
-msgstr "Yer repone's owre lang; it maun be ablow %(max)d teeps."
+msgid "You have entered too many characters. Enter up to %(max)d characters"
+msgstr "Ye hae pit in tae monie chairacters. Pit in up tae %(max)d chairacters"
 
-#: app/validation/error_messages.py:41
-msgid "Enter a valid date."
-msgstr "Pit in a richt date."
+#: app/forms/error_messages.py:53
+msgid "Enter a valid date"
+msgstr "Pit in a richt date"
 
-#: app/validation/error_messages.py:42
-msgid "Enter a 'period to' date later than the 'period from' date."
-msgstr "Pit in a 'tack til' date eftèr tha 'tack frae' date."
+#: app/forms/error_messages.py:54
+msgid "Enter a 'period to' date later than the 'period from' date"
+msgstr "Pit in a 'tack til' date eftèr tha 'tack frae' date"
 
-#: app/validation/error_messages.py:45
-msgid "Enter a valid duration."
-msgstr "Pit in a richt lestin."
+#: app/forms/error_messages.py:57
+msgid "Enter a valid duration"
+msgstr "Pit in a richt lenth"
 
-#: app/validation/error_messages.py:46
+#: app/forms/error_messages.py:58
+msgid "Enter a UK mobile number in a valid format, for example, 07700 900345 or +44 7700 900345"
+msgstr "Pit in a UK mobil phone nummer in a richt wye, tha like o 07700 900345 or +44 7700 900345"
+
+#: app/forms/error_messages.py:61
 #, python-format
-msgid "Enter a reporting period greater than or equal to %(min)s."
-msgstr "Pit in a fynnin tack mair nor ur marrowed wi %(min)s."
+msgid "Enter a reporting period greater than or equal to %(min)s"
+msgstr "Pit in an accoontin tack mair nor or siclike tae %(min)s"
 
-#: app/validation/error_messages.py:49
+#: app/forms/error_messages.py:64
 #, python-format
-msgid "Enter a reporting period less than or equal to %(max)s."
-msgstr "Pit in a fynnin tack ablow ur marrowed wi %(max)s."
+msgid "Enter a reporting period less than or equal to %(max)s"
+msgstr "Pit in an accoontin tack ablow or siclike tae %(max)s"
 
-#: app/validation/error_messages.py:52
+#: app/forms/error_messages.py:67
 #, python-format
-msgid "Enter a date after %(min)s."
-msgstr "Pit in a date eftèr %(min)s."
+msgid "Enter a date after %(min)s"
+msgstr "Pit in a date eftèr %(min)s"
 
-#: app/validation/error_messages.py:53
+#: app/forms/error_messages.py:68
 #, python-format
-msgid "Enter a date before %(max)s."
-msgstr "Pit in a date afore %(max)s."
+msgid "Enter a date before %(max)s"
+msgstr "Pit in a date afore %(max)s"
 
-#: app/validation/error_messages.py:54
-msgid "Remove an answer to continue."
-msgstr "Tak oot a repone furtae haud."
+#: app/forms/error_messages.py:69
+msgid "Remove an answer"
+msgstr "Tak oot a repone"
 
-#: app/validation/validators.py:351
+#: app/forms/validators.py:349
 #, python-format
 msgid "%(num)s day"
 msgid_plural "%(num)s days"
 msgstr[0] "%(num)s day"
 msgstr[1] "%(num)s days"
 
-#: app/views/contexts/hub_context.py:15 app/views/contexts/hub_context.py:17
-msgid "Submit survey"
-msgstr "Pit in scance"
+#: app/forms/fields/select_field_with_detail_answer.py:35
+msgid "Not a valid choice"
+msgstr "No a richt walin"
 
-#: app/views/contexts/hub_context.py:16 templates/summary.html:17
-msgid "Please submit this survey to complete it"
-msgstr "Ableeged gin ye'd pit in this scance furtae throch it"
+#: app/helpers/template_helpers.py:21
+msgid "Office for National Statistics logo"
+msgstr "Offys fur Kintrie Nummerin"
 
-#: app/views/contexts/hub_context.py:20
-msgid "Choose another section to complete"
-msgstr "Ootwale anither shaidin furtae throch"
+#: app/helpers/template_helpers.py:30 app/helpers/template_helpers.py:39
+#: app/helpers/template_helpers.py:149 templates/signed-out.html:3
+msgid "Census 2021"
+msgstr "Heid-coont 20an21"
 
-#: app/views/contexts/hub_context.py:21
-msgid "You must complete all sections in order to submit this survey"
-msgstr "Ye maun throch aa tha shaidins furtae pit in this scance"
+#: app/helpers/template_helpers.py:35
+msgid "Northern Ireland Statistics and Research Agency logo"
+msgstr "Norlin Airlann Nummerin an Screengin Agentrie logo"
 
-#: app/views/contexts/hub_context.py:24 templates/confirmation.html:12
-#: templates/interstitial.html:5
-msgid "Continue"
-msgstr "Haud"
+#: app/helpers/template_helpers.py:50
+msgid "The following links open in a new tab"
+msgstr "Tha follaein cleeks apen in a new tab"
 
-#: app/views/contexts/hub_context.py:30
+#: app/helpers/template_helpers.py:52
+msgid "Crown copyright and database rights 2020 OS 100019153."
+msgstr "Croon copyricht an database richts 20an20 OS 1000191153."
+
+#: app/helpers/template_helpers.py:55
+msgid "Use of address data is subject to the"
+msgstr "Uise o address data is subjeck tae tha"
+
+#: app/helpers/template_helpers.py:56
+msgid "terms and conditions"
+msgstr "terms an condeetions"
+
+#: app/helpers/template_helpers.py:64
+msgid "Help"
+msgstr "Help"
+
+#: app/helpers/template_helpers.py:69
+msgid "Contact us"
+msgstr "Get tha houl o us"
+
+#: app/helpers/template_helpers.py:80
+msgid "Cookies"
+msgstr "Cookies"
+
+#: app/helpers/template_helpers.py:85
+msgid "Accessibility statement"
+msgstr "Ingangin statement"
+
+#: app/helpers/template_helpers.py:90
+msgid "Privacy and data protection"
+msgstr "Hiddlins an gien taxt hainin"
+
+#: app/helpers/template_helpers.py:95
+msgid "Terms and conditions"
+msgstr "Terms an condeetions"
+
+#: app/helpers/template_helpers.py:105
+msgid "Make sure you <a href='{sign_out_url}'>leave this page</a> or close your browser if using a shared device"
+msgstr "Mak shair ye <a href='{sign_out_url}'>lea this page</a>or shut yer browser gin ye'r oan a yoke wi anither bodie"
+
+#: app/questionnaire/placeholder_transforms.py:92
+msgid "{number_of_years} year"
+msgid_plural "{number_of_years} years"
+msgstr[0] "{number_of_years} twalmond"
+msgstr[1] "{number_of_years} yeirs"
+
+#: app/questionnaire/placeholder_transforms.py:98
+msgid "{number_of_months} month"
+msgid_plural "{number_of_months} months"
+msgstr[0] "{number_of_months} mond"
+msgstr[1] "{number_of_months} monds"
+
+#: app/questionnaire/placeholder_transforms.py:103
+msgid "{number_of_days} day"
+msgid_plural "{number_of_days} days"
+msgstr[0] "{number_of_days} day"
+msgstr[1] "{number_of_days} days"
+
+#: app/routes/errors.py:107
+msgid "You have reached the maximum number of individual access codes"
+msgstr "Ye hae wun til tha maist nummer o sing'l ingang codes ye can get"
+
+#: app/routes/errors.py:110
+msgid "If you need more individual access codes, please <a href='{contact_us_url}'>contact us</a>."
+msgstr "Gin ye need mair sing'l ingang codes, plaise <a href='{contact_us_url}'>get tha houl o us</a>."
+
+#: app/routes/errors.py:126
+msgid "You have reached the maximum number of times for submitting feedback"
+msgstr "Ye hae wun til tha maist nummer o times fur pittin in feedbak"
+
+#: app/routes/errors.py:129
+msgid "If you need to give more feedback, please <a href='{contact_us_url}'>contact us</a>."
+msgstr "Gin ye need tae gie mair feedbak, plaise<a href='{contact_us_url}'>get tha houl o us</a>."
+
+#: app/routes/errors.py:161
+msgid "Sorry, there was a problem sending the access code"
+msgstr "Thair wus a problem sennin tha ingang code"
+
+#: app/routes/errors.py:167
+msgid "You can try to <a href='{retry_url}'>request a new access code again</a>."
+msgstr "Ye can try tae<a href='{retry_url}'>ax fur a new ingang code agane</a>."
+
+#: app/routes/errors.py:170 app/routes/errors.py:193 app/routes/errors.py:215
+msgid "If this problem keeps happening, please <a href='{contact_us_url}'>contact us</a> for help."
+msgstr "Gin this gies ye mair bother, plaise <a href='{contact_us_url}'> get tha houl o us</a>fur a pull oot."
+
+#: app/routes/errors.py:189
+msgid "Sorry, there was a problem sending the confirmation email"
+msgstr "Thair wus a problem sennin tha homologatin email"
+
+#: app/routes/errors.py:190
+msgid "You can try to <a href='{retry_url}'>send the email again</a>."
+msgstr "Ye can try tae<a href='{retry_url}'>sen tha email agane</a>."
+
+#: app/routes/errors.py:211 templates/errors/403.html:3
+#: templates/errors/403.html:6 templates/errors/submission-failed.html:5
+#: templates/errors/submission-failed.html:8
+msgid "Sorry, there is a problem"
+msgstr "We'r hairt-sair, thar's a pall"
+
+#: app/routes/errors.py:212
+msgid "You can try to <a href='{retry_url}'>submit your feedback again</a>."
+msgstr "Ye can try tae<a href='{retry_url}'>pit in yer feedbak agane</a>."
+
+#: app/routes/individual_response.py:165
+msgid "An individual access code has been sent by post"
+msgstr "A sing'l ingang code haes bin sent in tha poast"
+
+#: app/routes/individual_response.py:257
+msgid "An individual access code has been sent by text"
+msgstr "A sing'l ingang code haes bin sent by text"
+
+#: app/views/contexts/hub_context.py:15
 msgid "Completed"
 msgstr "Throcht"
 
-#: app/views/contexts/hub_context.py:32
+#: app/views/contexts/hub_context.py:17
 msgid "View answers"
 msgstr "Hae a leuk at repones"
 
-#: app/views/contexts/hub_context.py:33
+#: app/views/contexts/hub_context.py:18
 msgid "View answers for {section_name}"
 msgstr "Hae a leuk at repones fur {section_name}"
 
-#: app/views/contexts/hub_context.py:37
+#: app/views/contexts/hub_context.py:22
 msgid "Partially completed"
-msgstr "A feck o't throcht"
+msgstr "Onlie pairtly fillt oot"
 
-#: app/views/contexts/hub_context.py:39
+#: app/views/contexts/hub_context.py:24
 msgid "Continue with section"
-msgstr "Haud til shaidin"
+msgstr "Conteenye wi lay-oot"
 
-#: app/views/contexts/hub_context.py:40
+#: app/views/contexts/hub_context.py:25
 msgid "Continue with {section_name} section"
-msgstr "Haud til {section_name} shaidin"
+msgstr "Conteenye wi {section_name} lay-oot"
 
-#: app/views/contexts/hub_context.py:44
+#: app/views/contexts/hub_context.py:29
 msgid "Not started"
 msgstr "No stairtit"
 
-#: app/views/contexts/hub_context.py:46
+#: app/views/contexts/hub_context.py:31
 msgid "Start section"
-msgstr "Stairt shaidin"
+msgstr "Stairt lay-oot"
 
-#: app/views/contexts/hub_context.py:47
+#: app/views/contexts/hub_context.py:32
 msgid "Start {section_name} section"
-msgstr "Stairt {section_name} shaidin"
+msgstr "Stairt {section_name} lay-oot"
 
-#: app/views/contexts/list_collector.py:33
+#: app/views/contexts/hub_context.py:36
+msgid "Separate census requested"
+msgstr "Anither heid-coont socht"
+
+#: app/views/contexts/hub_context.py:38 app/views/contexts/hub_context.py:39
+msgid "Change or resend"
+msgstr "Cheynge or sen agane"
+
+#: app/views/contexts/hub_context.py:49 app/views/contexts/hub_context.py:50
+msgid "Submit survey"
+msgstr "Pit in scance"
+
+#: app/views/contexts/hub_context.py:54
+msgid "You must submit this survey to complete it"
+msgstr "Ye maun pit in this scance tae get redd up"
+
+#: app/views/contexts/hub_context.py:61
+msgid "Choose another section to complete"
+msgstr "Ootwale anither lay-oot furtae get redd up"
+
+#: app/views/contexts/hub_context.py:62
+#: templates/individual_response/confirmation-post.html:21
+#: templates/individual_response/confirmation-text-message.html:31
+#: templates/individual_response/question.html:5 templates/interstitial.html:8
+#: templates/sectionsummary.html:11 templates/sectionsummary.html:54
+msgid "Continue"
+msgstr "Conteenye"
+
+#: app/views/contexts/list_context.py:104
 msgid " (You)"
 msgstr " (Yersel)"
 
-#: templates/confirmation.html:6 templates/confirmation.html:37
+#: app/views/contexts/questionnaire_summary_context.py:15
+msgid "Check your answers and submit"
+msgstr "Leuk owre yer repones an inpit thaim"
+
+#: app/views/contexts/questionnaire_summary_context.py:18
+#: templates/confirmation.html:6 templates/confirmation.html:27
 msgid "Submit answers"
 msgstr "Pit in repones"
 
-#: templates/confirmation.html:22
+#: app/views/contexts/questionnaire_summary_context.py:21
+msgid "Please submit this survey to complete it"
+msgstr "Ableeged gin ye'd pit in this scance furtae throch it"
+
+#: app/views/handlers/confirmation_email.py:48
+msgid "Confirmation email"
+msgstr "Homologatin email"
+
+#: app/views/handlers/confirmation_email.py:62
+#: app/views/handlers/feedback.py:62 app/views/handlers/question.py:149
+msgid "Error: {page_title}"
+msgstr "Mistak{page_title}"
+
+#: app/views/handlers/feedback.py:28
+msgid "Feedback"
+msgstr "Feedbak"
+
+#: app/views/handlers/feedback.py:94 app/views/handlers/feedback.py:100
+#: app/views/handlers/feedback.py:108
+msgid "General"
+msgstr "Genèral"
+
+#: app/views/handlers/feedback.py:95
+msgid "This establishment"
+msgstr "This estaiblishment"
+
+#: app/views/handlers/feedback.py:96 app/views/handlers/feedback.py:109
+msgid "People who live here"
+msgstr "Fowk 'at bides here"
+
+#: app/views/handlers/feedback.py:97 app/views/handlers/feedback.py:110
+msgid "Visitors"
+msgstr "Landèrs"
+
+#: app/views/handlers/feedback.py:101
+msgid "Accommodation"
+msgstr "Aisements"
+
+#: app/views/handlers/feedback.py:102 app/views/handlers/feedback.py:112
+msgid "Personal details"
+msgstr "Rinnins Anent a Bodie's Sel"
+
+#: app/views/handlers/feedback.py:103 app/views/handlers/feedback.py:113
+msgid "Health"
+msgstr "Poust"
+
+#: app/views/handlers/feedback.py:104 app/views/handlers/feedback.py:114
+msgid "Qualifications"
+msgstr "Collegianer's lines"
+
+#: app/views/handlers/feedback.py:105 app/views/handlers/feedback.py:115
+msgid "Employment"
+msgstr "Tacks o wark"
+
+#: app/views/handlers/feedback.py:111
+msgid "Household and accommodation"
+msgstr "Aisements o tha hoosehaud"
+
+#: app/views/handlers/feedback.py:127
+msgid "Give feedback about this service"
+msgstr "Gie feedbak aboot this sarvice"
+
+#: app/views/handlers/feedback.py:128 app/views/handlers/feedback.py:172
+msgid "Select what your feedback is about"
+msgstr "Ootwale tha yin yer feedbak bes aboot"
+
+#: app/views/handlers/feedback.py:136 app/views/handlers/feedback.py:137
+msgid "The census questions"
+msgstr "Tha heid-coont speirins"
+
+#: app/views/handlers/feedback.py:138
+msgid "For example, questions not clear, answer options not relevant"
+msgstr "Tha like o, cannae mak oot speirins, repone wales nae uise"
+
+#: app/views/handlers/feedback.py:145
+msgid "Question topic"
+msgstr "Speirin subject"
+
+#: app/views/handlers/feedback.py:146 app/views/handlers/feedback.py:149
+msgid "Select an option"
+msgstr "Ootwale a walins"
+
+#: app/views/handlers/feedback.py:158 app/views/handlers/feedback.py:159
+msgid "Page design and structure"
+msgstr "Page ettle an structur"
+
+#: app/views/handlers/feedback.py:162 app/views/handlers/feedback.py:165
+msgid "General feedback about this service"
+msgstr "Genèral feedbak aboot this sarvice"
+
+#: app/views/handlers/feedback.py:180 app/views/handlers/feedback.py:190
+msgid "Enter your feedback"
+msgstr "Pit in yer feedbak"
+
+#: app/views/handlers/feedback.py:181
+msgid "Do not include confidential information, such as your contact details"
+msgstr "Dinnae tak in parteeklars, tha like o yer contact details"
+
+#: app/views/handlers/individual_response.py:136
+msgid "Person {list_item_position}"
+msgstr "Bodie{list_item_position}"
+
+#: app/views/handlers/individual_response.py:242
+msgid "Cannot answer questions for others in your household"
+msgstr "Cannae mak repone fur speirins anent ithers in yer hoosehaud"
+
+#: app/views/handlers/individual_response.py:308
+msgid "How would you like <em>{person_name}</em> to receive a separate census?"
+msgstr "Hoo wud ye lake<em>{person_name}</em>tae get anither heid-coont?"
+
+#: app/views/handlers/individual_response.py:331
+msgid "Text message"
+msgstr "Text message"
+
+#: app/views/handlers/individual_response.py:333
+msgid "We will need their mobile number for this"
+msgstr "We'll need thair mobil phone nummer fur this"
+
+#: app/views/handlers/individual_response.py:341
+msgid "Post"
+msgstr "Poast"
+
+#: app/views/handlers/individual_response.py:343
+msgid "We can only send this to an unnamed resident at the registered household address"
+msgstr "We can onlie sen this tae an unnamed resydent at tha registered hoosehaud address"
+
+#: app/views/handlers/individual_response.py:352
+msgid "It is no longer possible to receive an access code by post."
+msgstr "Yer nae langer able tae get an ingang code in tha poast."
+
+#: app/views/handlers/individual_response.py:354
+msgid "Select how to send access code."
+msgstr "Ootwale hoo tae sen ingang code."
+
+#: app/views/handlers/individual_response.py:357
+msgid "For someone to complete a separate census, we need to send them an individual access code."
+msgstr "Fur a bodie tae fill oot anither heid-coont, we hae tae sen thaim a sing'l ingang code."
+
+#: app/views/handlers/individual_response.py:403
+msgid "Send individual access code"
+msgstr "Sen sing'l ingang code"
+
+#: app/views/handlers/individual_response.py:434
+msgid "How would you like to answer <em>{person_name_possessive}</em> questions?"
+msgstr "Hoo wud ye lake tae mak repone fur<em>{person_name_possessive}</em> speirins?"
+
+#: app/views/handlers/individual_response.py:449
+msgid "I would like to request a separate census for them to complete"
+msgstr "A wud lake tae ax fur anither heid-coont fur thaim tae fill oot"
+
+#: app/views/handlers/individual_response.py:455
+msgid "I will ask them to answer their own questions"
+msgstr "A wull ax thaim tae mak repone fur thair ain speirins"
+
+#: app/views/handlers/individual_response.py:459
+msgid "They will need the household access code from the letter we sent you"
+msgstr "The'll need tha hoosehaud ingang code frae tha letter we sent til ye"
+
+#: app/views/handlers/individual_response.py:465
+msgid "I will answer for {person_name}"
+msgstr "A wull mak repone fur {person_name}"
+
+#: app/views/handlers/individual_response.py:507
+msgid "How to answer questions"
+msgstr "Hoo tae answer speirins"
+
+#: app/views/handlers/individual_response.py:572
+msgid "Do you want to send an individual access code for {person_name} by post?"
+msgstr "Dae ye want us tae sen a sing'l ingang code fur{person_name} in tha poast?"
+
+#: app/views/handlers/individual_response.py:580
+msgid "A letter with an individual access code will be sent to your registered household address"
+msgstr "A letter wi a sing'l ingang code wull be sent tae yer offeecial hoosehaud address"
+
+#: app/views/handlers/individual_response.py:587
+msgid "The letter will be addressed to <strong>Individual Resident</strong> instead of the name provided"
+msgstr "Tha letter wull be made oot tae <strong>Sing'l Resydent</strong>insteid o tha name gien tae us"
+
+#: app/views/handlers/individual_response.py:600
+msgid "Yes, send the access code by post"
+msgstr "Aye, sen tha ingang code in tha poast"
+
+#: app/views/handlers/individual_response.py:606
+msgid "No, send it another way"
+msgstr "Naw, sen it oan anither wye"
+
+#: app/views/handlers/individual_response.py:639
+msgid "Confirm address"
+msgstr "Mak siccar address"
+
+#: app/views/handlers/individual_response.py:694
+#: app/views/handlers/individual_response.py:732
+msgid "Separate Census"
+msgstr "Anither Heid-coont"
+
+#: app/views/handlers/individual_response.py:698
+msgid "Who do you need to request a separate census for?"
+msgstr "Wha's tha bodie ye need tae ax fur anither heid-coont fur?"
+
+#: app/views/handlers/individual_response.py:756
+msgid "What is <em>{person_name_possessive}</em> mobile number?"
+msgstr "Whut bes <em>{person_name_possessive}</em> mobil phone nummer?"
+
+#: app/views/handlers/individual_response.py:768
+msgid "UK mobile number"
+msgstr "UK mobil phone nummer"
+
+#: app/views/handlers/individual_response.py:769
+msgid "This will not be stored and only used once to send the access code"
+msgstr "This'll no be hained an onlie uised tha yinst tae sen oan tha ingang code"
+
+#: app/views/handlers/individual_response.py:802
+msgid "Mobile number"
+msgstr "Mobil phone nummer"
+
+#: app/views/handlers/individual_response.py:848
+msgid "Is this mobile number correct?"
+msgstr "Is this mobil phone nummer richt eneuch?"
+
+#: app/views/handlers/individual_response.py:857
+msgid "Yes, send the text"
+msgstr "Aye, sen tha text"
+
+#: app/views/handlers/individual_response.py:861
+msgid "No, I need to change it"
+msgstr "Naw, A maun cheynge it"
+
+#: app/views/handlers/individual_response.py:895
+msgid "Confirm mobile number"
+msgstr "Mak siccar mobil phone nummer"
+
+#: app/views/handlers/thank_you.py:22 templates/census-thank-you.html:24
+msgid "Thank you for completing the census"
+msgstr "We'r ableeged tae ye fur fillin oot tha heid-coont"
+
+#: templates/census-thank-you.html:9 templates/confirmation-email.html:8
+msgid "There is a problem with this page"
+msgstr "Thair's a pall wi this page"
+
+#: templates/census-thank-you.html:22
+msgid "Thank you for completing your census"
+msgstr "We'r ableeged tae ye fur fillin oot yer heid-coont"
+
+#: templates/census-thank-you.html:26
+msgid "Thank you for completing the survey"
+msgstr "We'r ableeged tae ye fur fillin oot tha scance"
+
+#: templates/census-thank-you.html:32
+msgid "Your individual census has been submitted for <strong>{display_address}</strong>"
+msgstr "Yer sing'l heid-coont haes bin pit in fur <strong>{display_address}</strong>"
+
+#: templates/census-thank-you.html:34
+msgid "Your census has been submitted for the household at <strong>{display_address}</strong>"
+msgstr "Yer heid-coont haes bin pit in fur tha hoosehaud at<strong>{display_address}</strong>"
+
+#: templates/census-thank-you.html:36
+msgid "Your census has been submitted for the accommodation at <strong>{display_address}</strong>"
+msgstr "Yer heid-coont haes bin pit in fur tha dwellin-place at<strong>{display_address}</strong>"
+
+#: templates/census-thank-you.html:37
+msgid "Anyone staying at this accommodation for at least 6 months needs to fill in their own individual census, including staff. Your Census Officer will provide you with census forms for your residents."
+msgstr "Oniebodie bidiin at this dwellin-place fur tha feck o 6 monds needs tae fill oot thair ain sing'l heid-coont, takkin in warkers. Yer Heid-coont Offycer wull gie ye heid-coont foarms fur yer resydents."
+
+#: templates/census-thank-you.html:49
+msgid "Your personal information is protected by law and will be kept confidential"
+msgstr "Yer ain parteeklars bes pertectit bae tha laa an wull be hained hiddlie"
+
+#: templates/census-thank-you.html:55
+msgid "Get confirmation email"
+msgstr "Get homologatin email"
+
+#: templates/census-thank-you.html:56
+msgid "If you would like to be sent confirmation that you have completed your census, enter your email address"
+msgstr "Gin ye wud lake tae be sent homologation 'at ye haed fillt oot yer heid-coont, pit in yer email address"
+
+#: templates/confirmation-email-sent.html:3
+msgid "Confirmation email sent"
+msgstr "Homologation emil sent"
+
+#: templates/confirmation-email-sent.html:16
+msgid "A confirmation email has been sent to {email}"
+msgstr "An homologation email haes bin sent til {email}"
+
+#: templates/confirmation-email-sent.html:25
+msgid "The email will be sent from <em>census.2021@notifications.service.gov.uk</em>"
+msgstr "Tha email wull be sent frae<em>census.2021@notifications.service.gov.uk</em>"
+
+#: templates/confirmation-email-sent.html:29
+msgid "Didn't receive an email?"
+msgstr "Ye didnae get an email?"
+
+#: templates/confirmation-email-sent.html:30
+msgid "It can take a few minutes for the email to arrive. If it doesn't arrive, check your junk mail, or you can <a href='{send_confirmation_email_url}' id='send-another-email'>send another confirmation email</a>."
+msgstr "It can tak a wheen o minits fur tha email tae lann. Gif it disnae cum yer lenth, rin yer ee owre yer prugh mail, or ye can <a href='{send_confirmation_email_url}' id='send-another-email'>sen anither homologation email</a>."
+
+#: templates/confirmation-email.html:12
+msgid "Send another confirmation email"
+msgstr "Sen anither homologation email"
+
+#: templates/confirmation.html:12
 msgid "Yes, I confirm these are correct"
 msgstr "Aye, A warrant the'r richt"
 
-#: templates/confirmation.html:41
+#: templates/confirmation.html:32
 msgid "Submitting"
 msgstr "Pittin in"
 
-#: templates/introduction.html:15
+#: templates/feedback-sent.html:6
+msgid "Feedback sent"
+msgstr "Feedbak sent"
+
+#: templates/feedback-sent.html:19
+msgid "Thank you for your feedback"
+msgstr "We'r ableeged tae ye fur yer feedbak"
+
+#: templates/feedback-sent.html:20
+msgid "Your comments will help us make improvements to our surveys. We are not able to reply to comments, but we appreciate your feedback"
+msgstr "Yer repones wull gie us a haun tae mak better oor scances. We'r no able tae speak bak til yer repones, but we'r hairt-gled o yer feedbak"
+
+#: templates/feedback-sent.html:28
+msgid "Done"
+msgstr "Daen"
+
+#: templates/feedback.html:15
+msgid "Back"
+msgstr "Bak"
+
+#: templates/feedback.html:28
+#, python-format
+msgid "There is a problem with your feedback"
+msgid_plural "There are %(num)s problems with your feedback"
+msgstr[0] "Thair's bes a palls wi yer feedbak"
+msgstr[1] "Thair's %(num)s palls wi yer feedbak"
+
+#: templates/feedback.html:41
+msgid "Send feedback"
+msgstr "Sen feedbak"
+
+#: templates/hub.html:40
+msgid "If you can’t answer someone else’s questions"
+msgstr "Gin ye cannae mak repone fur anither bodie's speirins"
+
+#: templates/interstitial.html:23 templates/partials/question.html:25
+msgid "If you can’t answer questions for this person"
+msgstr "Gin ye cannae mak repones tae speirins fur this bodie"
+
+#: templates/interstitial.html:32 templates/layouts/_questionnaire.html:26
+msgid "Save and continue"
+msgstr "Hain an conteenye"
+
+#: templates/introduction.html:10
+msgid "Introduction"
+msgstr "Stairt-aff"
+
+#: templates/introduction.html:17
 #, python-format
 msgid "You are completing this for <span>%(ru_name)s</span> (%(trading_as_name)s)"
-msgstr "Ye'r throchin this fur <span>%(ru_name)s</span>(%(trading_as_name)s)"
+msgstr "Ye'r fillin this oot fur <span>%(ru_name)s</span>(%(trading_as_name)s)"
 
-#: templates/introduction.html:19
+#: templates/introduction.html:21
 #, python-format
 msgid "You are completing this for <span>%(ru_name)s</span>"
-msgstr "Ye'r throchin this fur <span>%(ru_name)s</span>"
+msgstr "Ye'r fillin this oot fur <span>%(ru_name)s</span>"
 
-#: templates/introduction.html:23
+#: templates/introduction.html:25
 #, python-format
 msgid "If the company details or structure have changed contact us on %(telephone_number)s or email %(email_address)s"
-msgstr "Gin tha rinnins anent tha consarn ur steidin haes cheynged awn wi iz oan %(telephone_number)s ur l-poast %(email_address)s"
+msgstr "Gin tha rinnins anent tha consarn or structur haes cheynged get tha houl o us oan %(telephone_number)s or email %(email_address)s"
 
-#: templates/introduction.html:38
+#: templates/introduction.html:40
 msgid "Your response is legally required"
 msgstr "Ye'r gart mak repone bae tha laa"
+
+#: templates/list-action.html:9
+msgid "Cancel and return to the previous page"
+msgstr "Cancel an ga' bak til tha page afore"
 
 #: templates/multiple_survey.html:4 templates/multiple_survey.html:7
 msgid "Information"
@@ -286,24 +789,18 @@ msgstr "Wittins"
 
 #: templates/multiple_survey.html:16
 msgid "Unfortunately you can only complete one survey at a time"
-msgstr "Misfortunatly ye'll can throch nae mair nor tha yin scance at tha yin time"
+msgstr "Misfortunatly ye can fill oot nae mair nor tha yin scance at tha yin time"
 
 #: templates/multiple_survey.html:17
 msgid "Close this window to continue with your current survey"
-msgstr "Steek this wundae furtae haud wi tha scance ye'r daein thenoo"
+msgstr "Shut this wundae furtae conteenye tha scance ye'r daein thenoo"
 
-#: templates/question.html:16
+#: templates/partials/answers/address.html:55 templates/question.html:10
 #, python-format
-msgid "This page has an error"
-msgid_plural "This page has %(num)s errors"
-msgstr[0] "This blaud haes a mislearin"
-msgstr[1] "This blaud haes %(num)s mislearins"
-
-#: templates/question.html:22
-msgid "This <strong>must be corrected</strong> to continue"
-msgid_plural "These <strong>must be corrected</strong> to continue"
-msgstr[0] "This <strong>maun be richtent</strong> furtae haud"
-msgstr[1] "Thae-yins <strong>maun be richtent</strong> furtae haud"
+msgid "There is a problem with your answer"
+msgid_plural "There are %(num)s problems with your answer"
+msgstr[0] "Thair bes a pall wi yer repone"
+msgstr[1] "Thair bes%(num)s problems wi yer repone"
 
 #: templates/signed-out.html:3
 msgid "Signed out"
@@ -315,239 +812,389 @@ msgstr "Yer repones tae tha scance is hained. Noo ye'r wised oot"
 
 #: templates/signed-out.html:9
 msgid "Return to your account"
-msgstr "Beck-cum tae yer accoont"
+msgstr "Ga'bak tae yer accoont"
 
-#: templates/summary.html:6
-msgid "Summary"
-msgstr "Shoart wittins"
-
-#: templates/summary.html:11
-msgid "Check your answers and submit"
-msgstr "Leuk owre yer repones an inpit thaim"
-
-#: templates/summary.html:18
-msgid "Check your answers before submitting"
-msgstr "Leuk ower yer repones afore pittin in"
-
-#: templates/summary.html:27
-msgid "Check your answers before continuing to the next section"
-msgstr "Leuk ower yer repones afore ye haud til tha follaein shaidin"
-
-#: templates/summary.html:36
+#: templates/summary.html:28
 msgid "Please review your answers and confirm these are correct"
 msgstr "Ableeged gin ye'd scance yer repones an uphaud the'r richt"
 
-#: templates/summary.html:65
-msgid "You will have the opportunity to view and print a copy of your answers after submitting this survey"
-msgstr "Ye'll hae tha inlat o leukkin owre an prentin a scrow o yer repones eftèr pittin in this scance"
-
-#: templates/thank-you.html:3
-msgid "We've received your answers"
-msgstr "We hae gat yer repones"
-
-#: templates/thank-you.html:7
-msgid "Thank you for submitting your census"
-msgstr "We'r ableeged tae ye fur pittin in yer heid-coont foarm"
+#: templates/thank-you.html:4
+msgid "We’ve received your answers"
+msgstr "We hae got yer repones"
 
 #: templates/thank-you.html:9
-msgid "We have received your answers and you do not need to do anything else."
-msgstr "We hae gat yer repones an ye daenae hae tae dae ocht mair."
+msgid "Submission successful"
+msgstr "Ye hae cum speed wi pittin in"
 
-#: templates/view-submission.html:7
-msgid "Submission"
-msgstr "Pittin in"
+#: templates/thank-you.html:21
+msgid "Your answers were submitted for <span>{ru_name}</span> ({trading_as_name}) on {submitted_date_time}"
+msgstr "Yer repones wus pit in fur <span>{ru_name}</span>({trading_as_name}) oan {submitted_date_time}"
 
-#: templates/view-submission.html:10
-msgid "Submitted answers"
-msgstr "Inpit repones"
+#: templates/thank-you.html:26
+msgid "Your answers were submitted for <span>{ru_name}</span> on {submitted_date_time}"
+msgstr "Yer repones wus pit in fur <span>{ru_name}</span> oan {submitted_date_time}"
 
-#: templates/view-submission.html:19
-#, python-format
-msgid "Your answers were submitted for <span>%(ru_name)s</span> (%(trading_as_name)s) on %(submitted_time)s"
-msgstr "Yer repones wus pit in fur <span>%(ru_name)s</span>(%(trading_as_name)s) oan %(submitted_time)s"
+#: templates/thank-you.html:32
+msgid "Transaction ID: <b>{transaction_id}</b>"
+msgstr "Transact ID: <b>{transaction_id}</b>"
 
-#: templates/view-submission.html:24
-#, python-format
-msgid "Your answers were submitted for <span>%(ru_name)s</span> on %(submitted_time)s"
-msgstr "Yer repones wus pit in fur <span>%(ru_name)s</span> oan %(submitted_time)s"
+#: templates/thank-you.html:35
+msgid "Your answers will be processed in the next few weeks."
+msgstr "We'r fur throch-pittin yer repones in tha cummin twa-thrie aidays."
 
-#: templates/view-submission.html:29
-msgid "Transaction ID"
-msgstr "Trokin ID"
+#: templates/thank-you.html:36
+msgid "We may contact you to query your answers via phone or secure message."
+msgstr "We micht awn wi ye furtae spier anent yer repones bae wye o tha langbl'r ur siccar wurd."
 
-#: templates/view-submission.html:36
-msgid "Print this page"
-msgstr "Prent this blaud"
-
-#: templates/errors/403.html:3
-msgid "Authorisation refused"
-msgstr "Warrandice pit bak"
-
-#: templates/errors/403.html:3 templates/errors/404.html:3
-#: templates/errors/500.html:3
-msgid "Office for National Statistics"
-msgstr "Offys fur Kintrie Nummerin"
-
-#: templates/errors/403.html:6
-msgid "Sorry, there is a problem"
-msgstr "We'r hairt-sair, thar's a pall"
+#: templates/thank-you.html:37
+msgid "For more information on how we use this data."
+msgstr "Fur mair rinnins anent whut wye we uise this wittins."
 
 #: templates/errors/403.html:7
-msgid "To access this page you need to <a href='#'>enter your unique access code.</a>"
-msgstr "Furtae ingang this blaud ye may <a href='#'>inpit yer yinsum ingang code.</a>"
+msgid "You may need to update your browser to a newer version."
+msgstr "Ye micht hae tae update yer browser tae a newer soart o yin."
 
-#: templates/errors/404.html:3 templates/errors/404.html:13
+#: templates/errors/403.html:8
+msgid "If the problem still occurs, try using a different browser or device."
+msgstr "Gin tha problem cums aboot agane, try uisin anither browser or yoke."
+
+#: templates/errors/403.html:9
+msgid "For further help, please <a href='{url}'>contact us</a>."
+msgstr "Fur mair help, plaise <a href='{url}'>get tha houl o us</a>."
+
+#: templates/errors/404.html:3 templates/errors/404.html:6
 msgid "Page not found"
-msgstr "Blaud no fun"
+msgstr "Page no fun"
 
-#: templates/errors/404.html:14
+#: templates/errors/404.html:7
 msgid "If you entered a web address, check it is correct."
-msgstr "Gin ye inpit a wabsteid bakkin, mine an mak siccar it's richt."
+msgstr "Gin ye inpit a wabsteid address, mine an mak siccar it's richt."
 
-#: templates/errors/404.html:15
+#: templates/errors/404.html:8
 msgid "If you pasted the web address, check you copied the whole address."
-msgstr "Gin ye battert tha wabsteid bakkin, mine an mak siccar ye taen a scrow o tha hail bakkin."
+msgstr "Gin ye battert tha wabsteid address, mine an mak siccar ye taen a copy o tha hale address."
 
-#: templates/errors/404.html:16
+#: templates/errors/404.html:9
 msgid "If the web address is correct or you selected a link or button, <a href='{url}'>contact us</a> for more help."
-msgstr "Gin tha wabsteid bakkin is richt ur ye ootwaled a cleek ur button, <a href='{url}'>awn wi iz</a> fur mair o a heeze."
+msgstr "Gin tha wabsteid address is richt or ye ootwaled a cleek or button, <a href='{url}'>get tha houl o us</a> fur mair help."
 
 #: templates/errors/500.html:3
 msgid "An error has occurred"
 msgstr "Thar wus a mistak"
 
-#: templates/errors/500.html:13
+#: templates/errors/500.html:6
 msgid "Sorry, there is a problem with this service"
-msgstr "We'r hairt-sair - thar's a pall wi this fennin, but"
+msgstr "We'r hairt-sair - thar's a pall wi this sarvice, but"
 
-#: templates/errors/500.html:14
+#: templates/errors/500.html:7
 msgid "Try again later."
-msgstr "Ettle at it agane eftèrhin."
+msgstr "Ettle at it agane, efter."
 
-#: templates/errors/500.html:15
+#: templates/errors/500.html:8
 msgid "If you have started a survey, your answers have been saved."
 msgstr "Gin ye hae stairtit a scance, yer repones is hained."
 
-#: templates/errors/500.html:16
+#: templates/errors/500.html:9
 msgid "<a href='{url}'>Contact us</a> if you need to speak to someone about your survey."
-msgstr "<a href='{url}'>Awn wi iz</a> gin ye maun taak tae a bodie anent yer scance."
+msgstr "<a href='{url}'>Get tha houl o us</a> gin ye maun taak tae a bodie anent yer scance."
+
+#: templates/errors/no-cookie.html:3
+msgid "Page is not available"
+msgstr "Tha page isnae appen tae"
+
+#: templates/errors/no-cookie.html:6
+msgid "Sorry there is a problem"
+msgstr "We'r hairt-sair thar's a pall"
+
+#: templates/errors/no-cookie.html:7
+msgid "To access this page you need to <a href='{url}'>enter your 16-character access code</a>."
+msgstr "Furtae ingang this page ye maun<a href='{url}'>pit in yer 16-chairacter ingang code</a>."
+
+#: templates/errors/session-expired.html:3
+msgid "Session timed out"
+msgstr "Session timed oot"
 
 #: templates/errors/session-expired.html:6
-msgid "Session expired"
-msgstr "Tack wared oot"
+msgid "Your session has timed out due to inactivity"
+msgstr "Yer session haes timed oot as thair wus naethin daein"
 
-#: templates/errors/session-expired.html:10
-msgid "Your session has expired"
-msgstr "Yer tack haes wared oot"
+#: templates/errors/session-expired.html:7
+msgid "To help protect your information we have timed you out"
+msgstr "Tae help bield yer wittins we hae timed ye oot"
 
-#: templates/errors/session-expired.html:18
-msgid "To help protect your information we have signed you out"
-msgstr "Furtae gie a heeze wi fennin yer wittins we hae wised ye oot"
+#: templates/errors/session-expired.html:8
+msgid "You will need to <a href='{url}'>enter your 16-character access code</a> again to continue your census."
+msgstr "Ye maun<a href='{url}'>pit in yer 16-chairacter ingang code</a>agane tae conteenye wi yer heid-coont."
 
-#: templates/errors/session-expired.html:26
-#, python-format
-msgid "We have saved your progress and you will need to <a href=\"%(account_service_link)s\">enter your unique code</a> to access the survey again."
-msgstr "We hae hained yer oncum an ye may <a href=\"%(account_service_link)s\">pit in yer yinsum code</a> furtae ingang tha scance agane."
+#: templates/errors/submission-complete.html:3
+msgid "Submission Complete"
+msgstr "Inpit hale frae en tae yin"
 
-#: templates/layouts/_base.html:33
-msgid "We use cookies to improve your experience of census.gov.uk"
-msgstr "We uise cookies furtae fordèr yer pruivin o census.gov.uk"
+#: templates/errors/submission-complete.html:6
+msgid "This page is no longer available"
+msgstr "This page bes nae langer appen tae"
 
-#: templates/layouts/_questionnaire.html:12
+#: templates/errors/submission-complete.html:7
+msgid "Your census has been submitted"
+msgstr "Yer heid-coont haes bin pit in"
+
+#: templates/errors/submission-failed.html:9
+msgid "You can try to <a href='{url}'>submit your census again</a>"
+msgstr "Ye can try tae<a href='{url}'>pit in yer feedbak agane</a>"
+
+#: templates/errors/submission-failed.html:10
+msgid "If this problem keeps happening, please <a href='{url}'>contact us</a> for help."
+msgstr "Gin this gies ye mair bother, plaise <a href='{url}'> get tha houl o us</a>fur a pull oot."
+
+#: templates/individual_response/confirmation-post.html:15
+msgid "A letter has been sent to Individual Resident at {display_address}"
+msgstr "A letter haes bin sent tae Sing'l Resydent at{display_address}"
+
+#: templates/individual_response/confirmation-post.html:17
+msgid "The letter with an individual access code should arrive soon for them to complete their own census"
+msgstr "Tha letter wi a sing'l ingang code shud land shane eneuch fur thaim til fill oot thair ain heid-coont"
+
+#: templates/individual_response/confirmation-text-message.html:15
+msgid "We have sent a text to {mobile_number}"
+msgstr "We hae sent a text tae{mobile_number}"
+
+#: templates/individual_response/confirmation-text-message.html:17
+msgid "The text message with an individual access code should arrive soon for them to complete their own census"
+msgstr "Tha text message wi a sing'l ingang code shud land shane eneuch fur thaim tae fill oot thair ain heid-coont"
+
+#: templates/individual_response/confirmation-text-message.html:26
+msgid "The text will be sent from <em>Census2021</em>"
+msgstr "Tha text wull be sent frae<em>Heid-coont 20an21</em>"
+
+#: templates/individual_response/interstitial.html:8
+msgid "If you can't answer questions for others in your household"
+msgstr "Gin ye cannae mak repone fur speirins anent ithers in yer hoosehaud"
+
+#: templates/individual_response/interstitial.html:9
+msgid "You can ask the people you live with to answer their own questions by sharing the household access code with them."
+msgstr "Ye can ax tha fowk wha leeve wi ye tae mak repone fur thair ain speirins by giein thaim tha hoosehaud ingang code."
+
+#: templates/individual_response/interstitial.html:10
+msgid "If this is not possible, you can request a separate census for them to complete."
+msgstr "Gin this cannae cum aboot, ye can ax fur anither heid-coont fur thaim tae fill oot."
+
+#: templates/individual_response/interstitial.html:13
+msgid "Request separate census"
+msgstr "Ax fur anither heid-coont"
+
+#: templates/individual_response/question.html:9
+msgid "To request a census in a different format or for further help, please <a href='{contact_us_url}'>contact us</a>"
+msgstr "Tae ax fur a heid-coont in anither lay-oot, or fur mair help, plaise<a href='{contact_us_url}'>get tha houl o us</a>"
+
+#: templates/layouts/_base.html:18
 msgid "Previous"
 msgstr "Yin afore"
 
-#: templates/layouts/_questionnaire.html:27
-msgid "Save and continue"
-msgstr "Hain an haud til't"
+#: templates/layouts/_base.html:61
+msgid "Tell us whether you accept cookies"
+msgstr "Tell us gin ye accept cookies"
 
-#: templates/layouts/_questionnaire.html:38
-msgid "Can't complete this question?"
-msgstr "Cannae throch this spierin?"
+#: templates/layouts/_base.html:62
+msgid "We use <a href='{cookie_settings_url}'>cookies to collect information</a> about how you use census.gov.uk. We use this information to make the website work as well as possible and improve our services."
+msgstr "We uise<a href='{cookie_settings_url}'>cookies tae gether wittins </a>aboot hoo ye uise census.gov.uk We uise these wittins tae mak tha wabsteid wark as weel as able an better oor sarvice."
 
-#: templates/layouts/_questionnaire.html:39
+#: templates/layouts/_base.html:63
+msgid "You’ve accepted all cookies. You can <a href='{cookie_settings_url}'>change your cookie preferences</a> at any time."
+msgstr "Ye hae acceptit aa tha cookies. Ye can <a href='{cookie_settings_url}'> cheynge yer cookie preferences</a>onietim ye lake."
+
+#: templates/layouts/_base.html:64
+msgid "Accept all cookies"
+msgstr "Accept aa cookies"
+
+#: templates/layouts/_base.html:65
+msgid "Set cookie preferences"
+msgstr "Set cookie preferences"
+
+#: templates/layouts/_base.html:66
+#: templates/partials/introduction/preview.html:30
+#: templates/partials/summary/collapsible-summary.html:14
+msgid "Hide"
+msgstr "Hiddle"
+
+#: templates/layouts/_questionnaire.html:37
 msgid "Choose another section and return to this later"
 msgstr "Ootwale anither shaidin an bak-cum tae this eftèr"
-
-#: templates/layouts/configs/_feedback.html:3
-msgid "Give us feedback and help us improve this service"
-msgstr ""
-
-#: templates/layouts/configs/_feedback.html:12
-msgid "Tell us what you think of this service by emailing"
-msgstr ""
-
-#: templates/layouts/configs/_feedback.html:13
-msgid "If you need help with your census, get in touch with our contact centre."
-msgstr ""
-
-#: templates/layouts/configs/_feedback.html:14
-msgid "Census 2021 feedback: "
-msgstr ""
-
-#: templates/layouts/configs/_feedback.html:15
-msgid "This email is for feedback on the census rehearsal, which will help us to improve Census 2021.\n"
-"If you need help with your census, visit https://www.census.gov.uk/contact-us."
-msgstr ""
-
-#: templates/layouts/configs/_footer.html:34
-msgid "Contact us"
-msgstr "Awn wi iz"
-
-#: templates/layouts/configs/_footer.html:39
-msgid "Help"
-msgstr "Heeze"
-
-#: templates/layouts/configs/_footer.html:48
-msgid "Cookies"
-msgstr "Cookies"
-
-#: templates/layouts/configs/_footer.html:52 templates/static/privacy.html:9
-msgid "Privacy and data protection"
-msgstr "Hiddlins an gien taxt hainin"
-
-#: templates/layouts/configs/_footer.html:57
-msgid "Accessibility"
-msgstr "Aise o ingang"
 
 #: templates/layouts/configs/_save-sign-out-button.html:5
 msgid "Save and sign out"
 msgstr "Hain an wise oot"
 
-#: templates/layouts/configs/_save-sign-out-button.html:18
-msgid "Sign out"
-msgstr "Wise oot"
-
-#: templates/layouts/configs/_save-sign-out-button.html:32
+#: templates/layouts/configs/_save-sign-out-button.html:7
 msgid "Save and complete later"
 msgstr "Hain an throch eftèr"
 
-#: templates/partials/answer-guidance.html:13
-#: templates/partials/question-definition.html:14
+#: templates/layouts/configs/_save-sign-out-button.html:25
+msgid "Exit"
+msgstr "Gang oot"
+
+#: templates/macros/helpers.html:29
+msgid "Interviewer note:"
+msgstr "Interviewer note:"
+
+#: templates/partials/answer-guidance.html:18
+#: templates/partials/definition.html:18
+#: templates/partials/individual-response-guidance.html:13
 msgid "Hide this"
 msgstr "Hiddle this"
 
-#: templates/partials/question.html:38
-msgid "Selecting this will clear your answer"
-msgstr "Ootwalin this wull red yer repone"
+#: templates/partials/email-form.html:25
+msgid "Email address"
+msgstr "L-poast bakkin"
 
-#: templates/partials/question.html:39
+#: templates/partials/email-form.html:26
+msgid "This will not be stored and only used once to send your confirmation"
+msgstr "This'll no be kept an onlie uised tha yinst tae sen yer confirmation"
+
+#: templates/partials/email-form.html:39
+msgid "Send confirmation"
+msgstr "Sen confirmation"
+
+#: templates/partials/feedback-call-to-action.html:6
+msgid "What do you think about this service?"
+msgstr "What dae ye think aboot this sarvice?"
+
+#: templates/partials/feedback-call-to-action.html:7
+msgid "Your comments will help us make improvements"
+msgstr "Yer repones wull help us tae mak improvements"
+
+#: templates/partials/feedback-call-to-action.html:9
+msgid "Give feedback"
+msgstr "Gie feedbak"
+
+#: templates/partials/individual-response-guidance.html:24
+msgid "You can <em>share your household access code</em> with the people you live with so they can complete their own sections."
+msgstr "Ye can <em> gie oot yer hoosehaud ingang code</em>wi tha fowk wha leeve wi ye sae they can fill oot thair ain lay- oots."
+
+#: templates/partials/individual-response-guidance.html:25
+msgid "If this is not possible, there are <a href={url}>other ways each person can complete their own census.</a>"
+msgstr "Gin this cannae cum aboot, thair bes <a href={url}>ither wyes ilka bodie can fill oot thair ain heid-coont.</a>"
+
+#: templates/partials/last_viewed_question_guidance.html:7
+msgid "This is the last viewed question in this section"
+msgstr "This bes tha last leukit speirin in this lay-oot"
+
+#: templates/partials/last_viewed_question_guidance.html:10
+msgid "You can also <a id='section-start-link' href='{url}'>go back to the start of the section</a>"
+msgstr "Forbye, ye can<a id='section-start-link' href='{url}'>ga'bak til tha stairt o tha lay-oot</a>"
+
+#: templates/partials/question.html:60
+msgid "Selecting this will clear your answer"
+msgstr "Ootwalin this wull redd yer repone"
+
+#: templates/partials/question.html:61
 msgid "cleared"
 msgstr "redd"
 
-#: templates/partials/question.html:42
+#: templates/partials/question.html:64
 msgid "Selecting this will deselect any selected options"
 msgstr "Ootwalin this wull tak oot onie ootwaled walins"
 
-#: templates/partials/question.html:43 templates/partials/question.html:51
+#: templates/partials/question.html:65 templates/partials/question.html:73
 msgid "deselected"
 msgstr "taen oot"
 
-#: templates/partials/question.html:47
+#: templates/partials/question.html:69
 msgid "Or"
-msgstr "Ur"
+msgstr "Or"
 
-#: templates/partials/answers/checkbox.html:7
+#: templates/partials/answers/address.html:10
+msgid "Address line 1"
+msgstr "Address line yin"
+
+#: templates/partials/answers/address.html:15
+msgid "Address line 2"
+msgstr "Address line twa"
+
+#: templates/partials/answers/address.html:19
+msgid "Town or city"
+msgstr "Toon or citie"
+
+#: templates/partials/answers/address.html:23
+msgid "Postcode"
+msgstr "Poastcode"
+
+#: templates/partials/answers/address.html:29
+msgid "Search for an address"
+msgstr "Hunt fur an address"
+
+#: templates/partials/answers/address.html:30
+msgid "Manually enter address"
+msgstr "Pit in address by haun"
+
+#: templates/partials/answers/address.html:36
+msgid "Enter address or postcode and select from results"
+msgstr "Pit in address or poastcode an ootwale frae tha affcums"
+
+#: templates/partials/answers/address.html:41
+msgid "Use up and down keys to navigate suggestions once you’ve typed more than two characters. Use the enter key to select a suggestion. Touch device users, explore by touch or with swipe gestures."
+msgstr "Uise up an doon keys tae airt suggestions yinst ye hae typed mair nor twa chairacters. Uise tha enter key tae ootwale a suggestion. Touch yoke uisers, range by touch or wi a swipe ection."
+
+#: templates/partials/answers/address.html:42
+msgid "You have selected"
+msgstr "Ye hae ootwaled"
+
+#: templates/partials/answers/address.html:43
+msgid "Enter 3 or more characters for suggestions."
+msgstr "Pit in thrie or mair chairacters fur suggestions."
+
+#: templates/partials/answers/address.html:44
+msgid "There is one suggestion available."
+msgstr "There bes yin suggestion appen tae."
+
+#: templates/partials/answers/address.html:45
+msgid "There are {n} suggestions available."
+msgstr "There bes {n} suggestions appen tae."
+
+#: templates/partials/answers/address.html:46
+msgid "Results have been limited to 10 suggestions. Type more characters to improve your search"
+msgstr "Aff-cums hae bin restricktit tae 10 suggestions. Teep mair chairacters tae forrit yer hunt"
+
+#: templates/partials/answers/address.html:47
+msgid "There are {n} for {x}"
+msgstr "Thair bes {n} fur{x}"
+
+#: templates/partials/answers/address.html:48
+msgid "{n} addresses"
+msgstr "{n} addresses"
+
+#: templates/partials/answers/address.html:49
+msgid "Enter more of the address to improve results"
+msgstr "Pit in mair o tha address tae forrit aff-cums"
+
+#: templates/partials/answers/address.html:50
+msgid "Select an address"
+msgstr "Ootwale an address"
+
+#: templates/partials/answers/address.html:51
+msgid "No results found. Try entering a different part of the address"
+msgstr "Nae aff-cums fun. Try pittin in anither pairt o tha address"
+
+#: templates/partials/answers/address.html:52
+msgid "{n} results found. Enter more of the address to improve results"
+msgstr "{n} aff-cums fun. Pit in mair o tha address tae forrit aff-cums"
+
+#: templates/partials/answers/address.html:53
+msgid "Enter more of the address to get results"
+msgstr "Pit in mair o tha address tae get aff-cums"
+
+#: templates/partials/answers/address.html:57
+msgid "Select or manually enter an address"
+msgstr "Ootwale or pit in bae haun an address"
+
+#: templates/partials/answers/address.html:58
+msgid "Sorry, there was a problem loading addresses"
+msgstr "Thair wus a pall laidin addresses"
+
+#: templates/partials/answers/address.html:59
+msgid "Enter address manually"
+msgstr "Pit in address bae haun"
+
+#: templates/partials/answers/checkbox.html:13
 msgid "Select all that apply"
 msgstr "Ootwale aa tha yins 'at effeirs"
 
@@ -561,33 +1208,62 @@ msgstr "Mond"
 
 #: templates/partials/answers/date.html:53
 msgid "Year"
-msgstr "Twalmond"
+msgstr "Yeir"
 
-#: templates/partials/answers/textarea.html:14
+#: templates/partials/answers/radio.html:14
+msgid "Clear selection"
+msgstr "Redd oot onie walins"
+
+#: templates/partials/answers/textarea.html:16
+#: templates/partials/answers/textfield.html:28
 msgid "You have {x} character remaining"
-msgstr "Ye hae {x} teep owre"
+msgstr "Ye hae {x} mair chairacter"
 
-#: templates/partials/answers/textarea.html:15
+#: templates/partials/answers/textarea.html:17
+#: templates/partials/answers/textfield.html:29
 msgid "You have {x} characters remaining"
-msgstr "Ye hae {x} teeps owre"
+msgstr "Ye hae {x} mair chairacters"
+
+#: templates/partials/answers/textfield.html:26
+msgid "{x} character too many"
+msgstr "{x} chairacter ower monie"
+
+#: templates/partials/answers/textfield.html:27
+msgid "{x} characters too many"
+msgstr "{x} chairacters ower monie"
+
+#: templates/partials/answers/textfield.html:35
+msgid "Use up and down keys to navigate suggestions once you've typed more than two characters. Use the enter key to select a suggestion. Touch device users, explore by touch or with swipe gestures."
+msgstr "Uise up an doon keys tae airt suggestions yinst ye hae teept mair nor twa chairacters. Uise tha enter key tae ootwale a suggestion. Touch yoke uisers, range by touch or wi a swipe ection."
+
+#: templates/partials/answers/textfield.html:36
+msgid "Continue entering to improve suggestions"
+msgstr "Conteenye pittin in tae forrit suggestions"
+
+#: templates/partials/answers/textfield.html:37
+msgid "Suggestions"
+msgstr "Suggestions"
+
+#: templates/partials/answers/textfield.html:38
+msgid "No results found"
+msgstr "Fun nae aff-cums"
+
+#: templates/partials/answers/textfield.html:39
+msgid "Continue entering to get suggestions"
+msgstr "Conteenye pittin in tae get suggestions"
 
 #: templates/partials/introduction/preview.html:29
 #: templates/partials/summary/collapsible-summary.html:13
 msgid "Show"
-msgstr "Kythe"
-
-#: templates/partials/introduction/preview.html:30
-#: templates/partials/summary/collapsible-summary.html:14
-msgid "Hide"
-msgstr "Hiddle"
+msgstr "Show"
 
 #: templates/partials/introduction/preview.html:48
-#: templates/partials/summary/collapsible-summary.html:41
+#: templates/partials/summary/collapsible-summary.html:57
 msgid "Show all"
-msgstr "Kythe aa"
+msgstr "Show aa"
 
 #: templates/partials/introduction/preview.html:49
-#: templates/partials/summary/collapsible-summary.html:42
+#: templates/partials/summary/collapsible-summary.html:58
 msgid "Hide all"
 msgstr "Hiddle aa"
 
@@ -595,531 +1271,31 @@ msgstr "Hiddle aa"
 msgid "Start survey"
 msgstr "Stairt tha scance"
 
-#: templates/partials/summary/collapsible-summary.html:27
-#: templates/partials/summary/summary.html:9
+#: templates/partials/summary/collapsible-summary.html:35
+#: templates/partials/summary/summary.html:18
 msgid "No answer provided"
 msgstr "Nae repone gien"
 
-#: templates/partials/summary/collapsible-summary.html:27
-#: templates/partials/summary/list-summary.html:8
-#: templates/partials/summary/summary.html:9
+#: templates/partials/summary/collapsible-summary.html:36
+#: templates/partials/summary/list-summary.html:10
+#: templates/partials/summary/summary.html:19
 msgid "Change"
 msgstr "Cheynge"
 
-#: templates/partials/summary/collapsible-summary.html:27
-#: templates/partials/summary/summary.html:9
+#: templates/partials/summary/collapsible-summary.html:37
+#: templates/partials/summary/summary.html:20
 msgid "Change your answer for:"
 msgstr "Cheynge yer repone fur:"
 
-#: templates/partials/summary/list-summary.html:9
+#: templates/partials/summary/list-summary.html:11
 msgid "Change details for {item_name}"
 msgstr "Cheynge rinnins fur {item_name}"
 
-#: templates/partials/summary/list-summary.html:10
+#: templates/partials/summary/list-summary.html:12
 msgid "Remove"
 msgstr "Redd"
 
-#: templates/partials/summary/list-summary.html:11
+#: templates/partials/summary/list-summary.html:13
 msgid "Remove {item_name}"
 msgstr "Redd {item_name}"
-
-#: templates/static/accessibility.html:19
-msgid "Accessibility statement"
-msgstr ""
-
-#: templates/static/accessibility.html:21
-msgid "This census is run by the Office for National Statistics. We want as many people as possible to be able to do the census online. For example, that means you should be able to:"
-msgstr ""
-
-#: templates/static/accessibility.html:24
-msgid "change colours, contrast levels and fonts"
-msgstr ""
-
-#: templates/static/accessibility.html:25
-#, python-format
-msgid "zoom in up to 300%% without the text spilling off the screen"
-msgstr ""
-
-#: templates/static/accessibility.html:26
-msgid "navigate most of the questionnaire using just a keyboard"
-msgstr ""
-
-#: templates/static/accessibility.html:27
-msgid "navigate most of the questionnaire using speech recognition software"
-msgstr ""
-
-#: templates/static/accessibility.html:28
-msgid "listen to most of the questionnaire using a screen reader (including the most recent versions of JAWS, NVDA and VoiceOver)"
-msgstr ""
-
-#: templates/static/accessibility.html:31
-msgid "We’ve used simple language as much as possible."
-msgstr ""
-
-#: templates/static/accessibility.html:33
-msgid "<a href='{url}'>AbilityNet</a> has advice on making your device easier to use if you have a disability."
-msgstr ""
-
-#: templates/static/accessibility.html:35
-msgid "How accessible is this questionnaire?"
-msgstr ""
-
-#: templates/static/accessibility.html:37
-msgid "We know that the following parts of this questionnaire are not fully accessible:"
-msgstr ""
-
-#: templates/static/accessibility.html:40
-msgid "you cannot modify the line height or spacing of text"
-msgstr ""
-
-#: templates/static/accessibility.html:41
-msgid "the online system for getting a new census code has not been fully tested so parts of it may not be accessible to all users"
-msgstr ""
-
-#: templates/static/accessibility.html:42
-msgid "the Web chat tool may not be fully accessible"
-msgstr ""
-
-#: templates/static/accessibility.html:43
-msgid "some page titles may not accurately reflect the content on the page for audio users"
-msgstr ""
-
-#: templates/static/accessibility.html:46
-msgid "What to do if you need guidance"
-msgstr ""
-
-#: templates/static/accessibility.html:48
-msgid "Our <a href='{url}'>guidance leaflets about the census</a> are available:"
-msgstr ""
-
-#: templates/static/accessibility.html:51
-msgid "in Braille"
-msgstr ""
-
-#: templates/static/accessibility.html:52
-msgid "in British Sign Language (BSL)"
-msgstr ""
-
-#: templates/static/accessibility.html:53
-msgid "as an easy read version (which uses pictures to explain the census)"
-msgstr ""
-
-#: templates/static/accessibility.html:54
-msgid "as a Welsh audio"
-msgstr ""
-
-#: templates/static/accessibility.html:55
-msgid "as large print in English or large print in Welsh"
-msgstr ""
-
-#: templates/static/accessibility.html:58
-msgid "Reporting accessibility problems"
-msgstr ""
-
-#: templates/static/accessibility.html:60
-msgid "We’re always looking to improve the accessibility of this service. If you find any problems that are not listed on this page or think we’re not meeting accessibility requirements, you can <a href='{url}'>contact us</a>."
-msgstr ""
-
-#: templates/static/accessibility.html:62
-msgid "Enforcement procedure"
-msgstr ""
-
-#: templates/static/accessibility.html:64
-msgid "The Equality and Human Rights Commission (EHRC) is responsible for enforcing the Public Sector Bodies (Website and Mobile Applications) (No. 2) Accessibility Regulations 2018 (the ‘accessibility regulations’). If you’re not happy with how we respond to your complaint, contact the:"
-msgstr ""
-
-#: templates/static/accessibility.html:67
-msgid "<a href='{url}'>Equality Advisory and Support Service (EASS)</a> if you live in England or Wales"
-msgstr ""
-
-#: templates/static/accessibility.html:68
-msgid "<a href='{url}'>Equalities Commission for Northern Ireland (ECNI)</a> if you live in Northern Ireland"
-msgstr ""
-
-#: templates/static/accessibility.html:71
-msgid "Technical information about this questionnaire’s accessibility"
-msgstr ""
-
-#: templates/static/accessibility.html:73
-msgid "The Office for National Statistics is committed to making its website accessible, in accordance with the Public Sector Bodies (Website and Mobile Applications) (No. 2) Accessibility Regulations 2018."
-msgstr ""
-
-#: templates/static/accessibility.html:75
-msgid "This service is partially compliant with the <a href='{url}'>Web Content Accessibility Guidelines version 2.1</a> AA standard, due to the non-compliances listed."
-msgstr ""
-
-#: templates/static/accessibility.html:77
-msgid "Non-accessible content"
-msgstr ""
-
-#: templates/static/accessibility.html:79
-msgid "The content listed is non-accessible for the following reasons. We are planning to fix the following issues for Census 2021."
-msgstr ""
-
-#: templates/static/accessibility.html:81
-msgid "Non-compliance with the accessibility regulations"
-msgstr ""
-
-#: templates/static/accessibility.html:83
-msgid "Non-descriptive form elements. On the ‘Check your answers’ summary page there is an option to “change” items, but the link does not describe where it goes to. Fails on WCAG 2.1 A number 1.3.1."
-msgstr ""
-
-#: templates/static/accessibility.html:85
-msgid "Error messages are too generic. If the text in a field is incorrect or in the wrong format, the answer validation page says the answer is incorrect without explaining what you need to do. Fails on WCAG 2.1 A number 3.3.1."
-msgstr ""
-
-#: templates/static/accessibility.html:87
-msgid "Form label issue. On the ‘What is your name?’ page, middle name is optional but this is not clear to the user. Fails on WCAG 2.1 A number 3.3.2."
-msgstr ""
-
-#: templates/static/accessibility.html:89
-msgid "Form label issue. When selecting the appropriate relationship, it is possible to ‘Save and continue’ without selecting an option. Fails on WCAG 2.1 A number 2.4.6."
-msgstr ""
-
-#: templates/static/accessibility.html:91
-msgid "On the ‘Is this address correct?’ page, the title may not accurately reflect the content on the page for audio users. The ‘Submit survey’ page does not have a page title. Fails on WCAG 2.1 A number 2.4.2."
-msgstr ""
-
-#: templates/static/accessibility.html:93
-msgid "Timeout issue. Users are not informed of a time limit and service times out without warning. During the validation process there is no return link on the session timeout page. Fails on WCAG 2.1 A number 2.2.1 and AAA number 2.2.6."
-msgstr ""
-
-#: templates/static/accessibility.html:95
-msgid "The ‘Hide this’ button text on accordions such as ‘What does “usually live” mean?’ is non-descriptive for JAWS users as the text above it is read back to users. Fails on WCAG 2.1 AA number 2.4.6."
-msgstr ""
-
-#: templates/static/accessibility.html:97
-msgid "Screen readers may not let users know when an accordion is expanded or collapsed. Fails on WCAG 2.1 A number 2.4.4."
-msgstr ""
-
-#: templates/static/accessibility.html:99
-msgid "Non-descriptive headings. On the relationships page, the heading does not accurately describe the content for screen readers. Fails on WCAG 2.1 A number 2.4.6."
-msgstr ""
-
-#: templates/static/accessibility.html:101
-msgid "Some links are not descriptive enough for screen reader users. Fails on WCAG 2.1 AAA number 2.4.9."
-msgstr ""
-
-#: templates/static/accessibility.html:103
-msgid "Some headings do not follow a logical hierarchical structure. Fails on WCAG AAA 2.1 number 2.4.10."
-msgstr ""
-
-#: templates/static/accessibility.html:105
-msgid "Some text is highlighted, such as addresses and names that a user has confirmed. Highlighting is not accessible for some users. This does not conform to Government Digital Service (GDS) guidelines."
-msgstr ""
-
-#: templates/static/accessibility.html:107
-msgid "Some radio inputs on the relationships page do not conform to GDS guidelines. When selected, three different elements on the page are updated."
-msgstr ""
-
-#: templates/static/accessibility.html:109
-msgid "On ‘Who lives here?’ there is a ‘Previous’ link on the page that does not conform with GDS guidelines. The text used should read as ‘Back’."
-msgstr ""
-
-#: templates/static/accessibility.html:111
-msgid "Error messages do not result in a change to the page title to reflect that an error has been made. This does not conform to GDS guidelines."
-msgstr ""
-
-#: templates/static/accessibility.html:113
-msgid "How we tested this questionnaire"
-msgstr ""
-
-#: templates/static/accessibility.html:115
-msgid "Over the last few years we have tested the full questionnaire, including:"
-msgstr ""
-
-#: templates/static/accessibility.html:118
-msgid "<a href='{url}'>Digital Accessibility Centre (DAC)</a> carrying out a professional, technical audit"
-msgstr ""
-
-#: templates/static/accessibility.html:119
-msgid "user testing with the public on different devices, different locations, in their homes with various assistive technologies including free and paid versions"
-msgstr ""
-
-#: templates/static/accessibility.html:120
-msgid "testing with charities, such as Scope and RNIB in their labs"
-msgstr ""
-
-#: templates/static/accessibility.html:121
-msgid "using job centres and libraries for pop-up testing"
-msgstr ""
-
-#: templates/static/accessibility.html:122
-msgid "covering a wide range of ages, additional needs and disabilities"
-msgstr ""
-
-#: templates/static/accessibility.html:123
-msgid "making sure the offline journey and non-digital products were considered in the end-to-end journey"
-msgstr ""
-
-#: templates/static/accessibility.html:124
-msgid "changing designs based on feedback from user testing, such as letter structure and the summary of sections and progress through questionnaire"
-msgstr ""
-
-#: templates/static/accessibility.html:127
-msgid "Digital Accessibility Centre testing"
-msgstr ""
-
-#: templates/static/accessibility.html:129
-msgid "Parts of this questionnaire were last tested on 3 September 2019 by the Digital Accessibility Centre (DAC)."
-msgstr ""
-
-#: templates/static/accessibility.html:132
-msgid "<a href='{url}' download>DAC Report - September 2019</a>"
-msgstr ""
-
-#: templates/static/accessibility.html:134
-msgid "You can read the last full accessibility test report from 28 June 2019."
-msgstr ""
-
-#: templates/static/accessibility.html:136
-msgid "<a href='{url}' download>DAC Report - June 2019</a>"
-msgstr ""
-
-#: templates/static/accessibility.html:138
-msgid "What we’re doing to improve accessibility"
-msgstr ""
-
-#: templates/static/accessibility.html:140
-msgid "We are continuing to work with various charities and local deaf communities to understand their needs for the census."
-msgstr ""
-
-#: templates/static/accessibility.html:142
-msgid "We are looking at designs to see if it is possible to have British Sign Language on every page. This is challenging as we have been unable to find another service that does this, but we continue to investigate."
-msgstr ""
-
-#: templates/static/accessibility.html:144
-msgid "We will act on feedback from the 2019 Rehearsal in October."
-msgstr ""
-
-#: templates/static/accessibility.html:146
-msgid "This statement was prepared on 17 September. It was last updated on 17 September."
-msgstr ""
-
-#: templates/static/privacy.html:4
-msgid "ONS Business Surveys"
-msgstr "ONS Hannlin Scances"
-
-#: templates/static/privacy.html:10
-msgid "The information you provide when you fill in your census rehearsal questionnaire is protected by law."
-msgstr "Tha wittins ye gie whanivver ye fïll in yer heid-coont preein spierins is fendit wi tha laa."
-
-#: templates/static/privacy.html:11
-msgid "Here we detail why we need your information. We also describe all the steps that we take to make sure your information and your privacy are safe."
-msgstr "Here we'r giein tha bak an forrits o why we maun hae yer wittins. Forbye, we'r giein aa oot aa tha wyes we see tae mak shuir yer wittins an yer hiddlins is siccar."
-
-#: templates/static/privacy.html:14
-msgid "How and why we use your information"
-msgstr "Whut wye an fur why we uise yer wittins"
-
-#: templates/static/privacy.html:16
-msgid "We collect information from your questionnaire under our statutory objective to promote and safeguard the production of official statistics that serve the public good. This means that any personal data we collect will only ever be used to produce statistics or undertake statistical research. People will not be identified within those statistics or research."
-msgstr "We gaither wittins frae yer spierin foarm unnèr oor ettlin laid doon bae tha laa tae fordèr an hain tha ootcum o offeecial nummerin 'at warks fur tha guid o resydentèrs. Owre tha haid o this, onie gien taxt anent yer ainsel 'at we gaither wull jist be uised fur naethin mair nor risin nummerin ur tae tak oan hann nummerin screengin. Fowk wullnae be fun oot athin thae nummerins ur screengin."
-
-#: templates/static/privacy.html:18
-msgid "Every 10 years, the census gathers vital information that helps the government and local authorities plan services like health services, roads and libraries."
-msgstr "Ilka 10 twalmonds, tha heid-coont gaithers necessar wittins 'at gies tha governmin an locyal owerances a heeze wi mintin fennin tha like o guidin fennin adae wi poust, gates and bibliothecks."
-
-#: templates/static/privacy.html:20
-msgid "By running a rehearsal for Census 2021, we can test our processes, systems and services and make sure everything goes smoothly for the real thing. The personal data you provide on your questionnaire will also be used to undertake research and produce statistics that serve the public good, both by the Office for National Statistics (ONS) and accredited researchers from other organisations."
-msgstr "Wi rinnin a preein fur Heid-Coont 20an21, we'll can pruive oor throch-pittins, gates and fennin an mak siccar aathin rins richt an gleg whanivver it's daen iver sae. Forbye, tha gien taxt anent yer ainsel 'at ye gie oan yer spierin foarm wull be uised tae tak oan hann screengin an rise nummerin 'at warks fur tha guid o resydentèrs, bae baith tha Offys fur Kintrie Nummerin (ONS) an homologatit bodies o skeel frae ither curns."
-
-#: templates/static/privacy.html:22
-msgid "We may occasionally record information about a property or an individual, in the interests of safeguarding the wellbeing of both those being interviewed and interviewers, as well as to assist people in the completion of their questionnaires. We’ll hold the minimum amount of personal data needed to meet these purposes."
-msgstr "Betimes we micht tak a scrow o wittins anent a haudin ur a bodie thairsel, tha wye we'll can hain tha guid o baith tha yins pittin spierins an thaim 'at's giein spierin repones, forbye giein fowk a heeze wi throchin thair spierin foarms. We'll haud tha wee'est smitch o gien taxt anent a bodie's sel we maun hae tae shuit thir ettlins."
-
-#: templates/static/privacy.html:24
-msgid "For online completion, we’ll collect information about how people fill in their questionnaires online to provide us with knowledge of how to improve our online services."
-msgstr "Fur throchin owre tha wab, we'll ingaither wittins anent tha wye fowk fïlls in thair spierin foarms ower tha wab, furtae aise kennin o whut wye tae fordèr oor fennin owre tha wab."
-
-#: templates/static/privacy.html:26
-msgid "If you provide feedback by email we will ensure your email address is deleted promptly after the feedback has been received. We will never share your details with anyone else. The feedback you give us will be used for research purposes only."
-msgstr ""
-
-#: templates/static/privacy.html:29
-msgid "Who can access the information?"
-msgstr "Wha cud ingang tha wittins?"
-
-#: templates/static/privacy.html:31
-msgid "During the rehearsal we’ll employ third-party providers to assist us with parts of the operation. These third parties work under our instruction."
-msgstr "Throch tha preein we'll tak oan ootbye consarns tae gie iz a heeze wi pairts o tha traffeckin. Thir ootbye consarns daes thair darg unnèr oor airtin."
-
-#: templates/static/privacy.html:32
-msgid "We treat the information we hold with respect, keeping it secure and confidential. Data may be made available to approved researchers where there is a clear public value and it’s safe and lawful to do so. More information on <a href='{policies_url}'>how we allow access to data for research</a> is available. We also publish a full list of all the <a href='{researchers_url}'>approved researchers</a> who we’ve granted access to."
-msgstr "We guide tha wittins we haud wi mense, haudin it siccar an hiddlie. Gien taxt cud be pit tae tha han o homologatit bodies o skeel whar thar's a straucht-forrit guid fur resydentèrs an it's siccar an no agin tha laa tae dae't. Mair wittins anent <a href='{policies_url}'>whut wye we lat ingang til gien taxt fur screengin</a> is pit tae yer han. Forbye, we ootset a fu leet o aa tha <a href='{researchers_url}'>homologatit bodies o skeel</a> 'at we hae lat ingang it."
-
-#: templates/static/privacy.html:35
-msgid "How long are personal data kept?"
-msgstr "Hoo lang wud gien taxt anent a bodie's sel be hauden?"
-
-#: templates/static/privacy.html:37
-msgid "Data protection law requires that personal data are kept for no longer than is needed to fulfil the purposes for which they were originally collected."
-msgstr "Tha laa anent tha hainin o gien taxt gars fowk haud gien taxt anent a bodie's sel fur nae langer nor whut's necessar tae shuit tha ettlins the' wur ingaithert fur at tha furst."
-
-#: templates/static/privacy.html:39
-msgid "The law allows that information held for statistical purposes only, such as information from your questionnaire, may be kept for longer periods. We’ll only continue to hold personal data where they are still used to produce statistics. Data used by approved researchers will be held within our <a href='{url}'>Secure Research Service</a>. Any personal data that we do not need, such as names and addresses, will be removed from the data at the earliest opportunity. The data will undergo regular reviews and will be deleted when they are no longer required."
-msgstr "Tha laa gies lave 'at wittins hauden fur nummerin ettlins alane, tha like o wittins frae yer spierin foarm, micht be hauden fur langer tacks. We'll jist haud tae hingin oan tae gien taxt anent a bodie's sel whar the'r bein uised yit fur tae rise nummerin. Gien taxt uised wi homologatit bodies o skeel wull be hauden inbye oor <a href='{url}'>Siccar Screengin Fennin</a>. Onie gien taxt anent a bodie's sel we dinnae be tae hae, tha like o whut the' cry fowk an thair bakkins, wull be taen oot o tha pose o gien taxt at tha furst inlat. We'r fur haein reglar scances o tha gien taxt pose an blorryin it oot whan we dinnae be tae hae it onie mair."
-
-#: templates/static/privacy.html:41
-msgid "Safeguarding data, such as information about a property or an individual, will be held for the duration of the rehearsal. Most of the information will be deleted at the end of the rehearsal. In some instances, data will be held for longer periods, where keeping them continues to serve safeguarding purposes."
-msgstr "Hainin gien taxt, tha like o wittins anent a haudin ur a bodie's sel, wull be hauden fur tha tack o tha preein. Maist o tha wittins wull be blorried oot at the enn o tha preein. In a feck o tha wyes o't, gien taxt wull be hauden fur langer tacks, whar haudin oan til thaim hauds tae shuitin tha hainin ettlins."
-
-#: templates/static/privacy.html:43
-msgid "Metrics containing information about how people fill in their questionnaires will be held in an identifiable form only until the necessary statistical matching has taken place. After this point the data will be de-identified and used for the purposes of improving our services."
-msgstr "Metrics haudin wittins anent whut wye fowk fïlls in thair spierin foarms wull be hauden in a lay-oot whar a bodie cud be fun oot jist tae tha necessar marrowin fur nummerin is daen. Syne tha gien taxt wull be redd o onie mairks o tha bodie's sel an uised tae mint at fordèrin oor fennin."
-
-#: templates/static/privacy.html:46
-msgid "How the law protects your information"
-msgstr "Whut wye tha laa fens yer wittins"
-
-#: templates/static/privacy.html:48
-msgid "The <a href='{data_protection_url}'>General Data Protection Regulation</a> and the <a href='{data_protection_act_url}'>Data Protection Act 2018</a> determine how, when and why any organisation can process your personal data. Personal data is any information that can identify a living individual. These laws exist to make sure your data are managed safely and used responsibly. They also give you certain rights about your data and create a responsibility on the ONS, as a user of personal data, to provide you with certain information."
-msgstr "Tha <a href='{data_protection_url}'> Oweraa Gien Taxt Hainin Disponin</a> an tha <a href='{data_protection_act_url}'>Gien Taxt Hainin Ect 20an18</a> desarns hoo, whaniver an fur why onie curn cud throch-pit wittins anent yer ainsel. Gien taxt anent yer ainsel bes onie wittins 'at cud mairk oot a parteeklar leevin bodie. Thir laas is tae tha fore furtae mak siccar yer gien taxt is guidit siccarly an uised stievely. Forbye, the' gie ye sindèrie richts adae wi yer gien taxt an pit an ontak oan tha ONS, seein it uises gien taxt anent a bodie's sel, tae gie ye parteeklar wittins."
-
-#: templates/static/privacy.html:50
-msgid "The ONS is a statutory body, meaning it was created by legislation, specifically the <a href='{url}'>Statistics and Registration Service Act 2007</a>. Our objective is to promote and safeguard the production and publication of official statistics that serve the public good. All our collection and use of data comes from powers that can be found in that Act or other UK legislation."
-msgstr "Tha ONS bes a laa-stellit curn, mintin it wus foondit wi govermin laa, namely tha <a href='{url}'>Nummerin an Registratin Fennin Ect 20an07</a>. We'r ettlin at fordèrin an hainin tha risin an ootsettin o offeecial nummerin 'at fens tha guid o resydentèrs. Aa tha ingaitherin an uise o gien taxt 'at we dae cums frae pooers ye'll can fyn in thon Ect ur ither CK laas."
-
-#: templates/static/privacy.html:52
-msgid "The census rehearsal questionnaire has been assessed as compatible with the <a href='{url}'>Human Rights Act 1998</a>, specifically Article 8 (right to respect for a private and family life) and Article 9 (freedom of thought, conscience and religion) of the convention rights."
-msgstr "Tha heid-coont preein spierin foarm has bin wechtit as answerin tha <a href='{url}'>Boadie-Kynn Richts Ect 19an98</a>, siccarly Airticle 8 (richt tae wicelike hannlin o hiddlie an faimlie leevin) an Airticle 9 (scowth fur thocht, conscience an releegion) o tha convenerie richts."
-
-#: templates/static/privacy.html:55
-msgid "Legal basis for processing your data"
-msgstr "Foonds in laa fur throch-pittin yer gien taxt"
-
-#: templates/static/privacy.html:57
-msgid "Data protection legislation requires that all processing of personal data is undertaken under one or more conditions."
-msgstr "Laas anent gien taxt hainin threaps 'at aa throch-pittin o gien taxt adae wi a bodie's sel is daen unnèr yin ur mair wyes o't."
-
-#: templates/static/privacy.html:59
-msgid "For the census rehearsal, we’ll process information from your questionnaire, information about a property or an individual and information about how people fill in their questionnaires under the following condition:"
-msgstr "Fur tha heid-coont preein, we'r fur throch-pittin wittins frae yer spierin foarm, wittins anent a haudin ur a bodie's sel an wittins anent whut wye fowk f ïlls in thair spierin foarm unnèr tha follaein set:"
-
-#: templates/static/privacy.html:62
-msgid "processing is necessary for the performance of a task carried out in the public interest or in the exercise of official authority vested in the controller."
-msgstr "throch-pittin's a maun-dae fur tha implymentin o a darg cairried oot fur tha guid o resydentèrs ur in tha hannlin o offeecial owerance vestit in tha owersman."
-
-#: templates/static/privacy.html:65
-msgid "Under data protection legislation, an additional condition is required for the processing of special category personal data. These data include information about your racial or ethnic origin, political opinions, religious or philosophical beliefs, trade union membership, sex life or sexual orientation. They also include genetic and biometric data."
-msgstr "Unnèr gien taxt hainin laas, we'r gart hae an eikit set fur tha throch-pittin o by-ordnar soarts o wittins adae wi a bodie's sel. This gien taxt taks in wittins anent tha kine o ye ur tha kin curn ye wur raired in, thochts adae wi pairtie, releegious ur warlview trowin, memmership o wark unions, sex daeins ur sex airtin. Forbye, the' tak in genetic ur biometric gien taxt."
-
-#: templates/static/privacy.html:67
-msgid "For the rehearsal, we’ll process special category personal data on race, ethnicity, religion, philosophical beliefs and sexual orientation. nformation from your questionnaire is processed under the following two conditions:"
-msgstr "Fur tha preein, we'r fur throch-pittin by-ordnar soarts o gien taxt adae wi a bodie's sel anent tha kine o thaim, tha kin curn the' wur raired in, warlview trowin an sex airtin. Wittins frae yer spierin foarm is pit throu-hans unnèr tha follaein twa wyes o't:"
-
-#: templates/static/privacy.html:70
-msgid "processing is necessary for archiving in the public interest, scientific or historical research purposes or statistical purposes based on UK law."
-msgstr "throch-pittin's necessar fur pittin wittins by fur tha guid o resydentèrs, fur ettlins adae wi screengin intil seeince ur historie ur ettlins adae wi nummerin foondit oan CK laas."
-
-#: templates/static/privacy.html:71 templates/static/privacy.html:77
-msgid "processing is necessary for reasons of substantial public interest."
-msgstr "throch-pittin's necessar acause o tha stieve guid o resydentèrs."
-
-#: templates/static/privacy.html:74
-msgid "We’ll process special category data on information about a property or an individual under the following condition:"
-msgstr "We'r fur throch-pittin by-ordnar soarts o gien taxt oan wittins anent haudins ur a bodie's sel unnèr tha follaein wye o't:"
-
-#: templates/static/privacy.html:80
-msgid "We’ll ensure the principle of data minimisation and have measures in place to delete or de-identify personal data where appropriate."
-msgstr "We'r fur makkin siccar o tha weel-guidit gate o inlaikin gien taxt an hae mizhures stellit tae blorry ur mak unkent gien taxt anent a bodie's sel whar it's effeirin."
-
-#: templates/static/privacy.html:82
-msgid "The census rehearsal gives us invaluable information about the systems and processes required for Census 2021. It’ll help us complete one of our main functions in delivering Census 2021, which will subsequently provide numerous benefits for the wider society."
-msgstr "Tha heid-coont preein gies iz wittins o unco warth anent tha gates an throch-pittins we maun hae fur Heid-Coont 20an21. It wull gie iz a heeze in throchin yin o oor foremaist dargs in pittin Heid-Coont 20an21 throu-hans, an resydentèrs oweraa wull ken tha muckle guid o't eftèrhin."
-
-#: templates/static/privacy.html:84
-msgid "There’s substantial public interest in the collection of safeguarding data to ensure the safety of both interviewers and respondents. We’re required to ensure the safety of our staff and the public."
-msgstr "Thar's stieve guid fur resydentèrs in tha ingaitherin o hainin gien taxt furtae mak siccar o tha safétie o baith yins pittin spierins an yins makkin repone. We'r gart mak siccar o tha safétie o oor darg-bann an resydentèrs."
-
-#: templates/static/privacy.html:87
-msgid "Your rights"
-msgstr "Yer richts"
-
-#: templates/static/privacy.html:89
-msgid "As a data subject (someone whose personal data we hold), you have rights available to you under data protection law. If you wish to exercise any of these rights, please contact our data protection officer. However, please be aware that we may not be required to comply if the data are being held for statistical purposes only. Compliance requirements are set out in the Data Protection Act 2018."
-msgstr "Sin ye'r a spaik o tha gien taxt (a bodie whase gien taxt anent yer ainsel we haud), ye hae richts pit tae yer han unnèr tha laas o gien taxt hainin. Gin ye wud consate tae implyment onie o thae richts, we'd be ableeged gin ye'd awn wi oor gien taxt hainin offyser. Still an withal, but, wud ye ivver tak tent 'at we micht no be tae compluther gin tha gien taxt is hauden fur nummerin ettlins alane. Stannèrts fur complutherin bes laid doon wi tha Gien Taxt Hainin Ect 20an18."
-
-#: templates/static/privacy.html:91
-msgid "You have the right to request from any controller that holds your personal data access to the information they hold about you. You can ask them to amend any wrong or inaccurate information they hold about you. You have the right to object to your personal data being processed."
-msgstr "Ye hae tha richt tae spier o onie owersman 'at hauds tha gien taxt adae wi yer ainsel fur ingang til tha wittins the' haud anent ye. Ye'll can ax thaim tae cheynge onie wrang ur gley wittins the' haud anent yersel. Ye hae tha richt tae reclaim agin tha throch-pittin o tha gien taxt adae wi yer ainsel."
-
-#: templates/static/privacy.html:93
-msgid "You have the right, in some circumstances, to ask for any controller to:"
-msgstr "Ye hae tha richt, in a wheen o wyes o't, tae ax fur onie owersman tae:"
-
-#: templates/static/privacy.html:96
-msgid "erase any personal data they may hold about you"
-msgstr "blorry onie gien taxt adae wi yer ainsel the' micht haud anent ye"
-
-#: templates/static/privacy.html:97
-msgid "stop processing your personal data"
-msgstr "quat throch-pittin tha gien taxt anent yer ainsel"
-
-#: templates/static/privacy.html:98
-msgid "pass any information they hold about you to another controller"
-msgstr "rax onie wittins the' haud adae wi ye til anither owersman"
-
-#: templates/static/privacy.html:101
-msgid "You can get further information on the rights available to you and the circumstances under which you can exercise them from the <a href='{url}'>Information Commissioner’s Office</a>."
-msgstr "Ye'll can hae mair wittins anent tha richts 'at's pit tae yer han an whut haes tae be forrit fur ye tae implyment thaim frae tha <a href='{url}'>Wittins Bailzie's Offys</a>."
-
-#: templates/static/privacy.html:104
-msgid "The data controller"
-msgstr "Tha gien taxt owersman"
-
-#: templates/static/privacy.html:106
-msgid "The controller is the person or organisation that decides which personal data will be processed and for what purpose. For the census rehearsal, the ONS is the controller and makes those decisions."
-msgstr "Tha owersman wud be tha bodie ur curn 'at desarns whut gien taxt adae wi a bodie's sel wull be throch-pit an fur whut ettlin. Fur tha preein heid-coont, tha ONS wud be tha owersman an cum til thae desarns."
-
-#: templates/static/privacy.html:108
-msgid "You can contact us by:"
-msgstr "Ye'll can awn wi iz bae:"
-
-#: templates/static/privacy.html:110
-#, python-format
-msgid "Telephone: %(telephone_number)s"
-msgstr "Langbl'r: %(telephone_number)s"
-
-#: templates/static/privacy.html:112
-#, python-format
-msgid "Email: %(email_address)s"
-msgstr "L-poast bakkin: %(email_address)s"
-
-#: templates/static/privacy.html:114 templates/static/privacy.html:134
-#: templates/static/privacy.html:155
-msgid "Post:"
-msgstr "Póast:"
-
-#: templates/static/privacy.html:124
-msgid "How to contact the data protection officer"
-msgstr "Whut wye tae awn wi tha gien taxt hainin offyser"
-
-#: templates/static/privacy.html:126
-msgid "Our data protection officer is the person charged with providing us with advice and guidance on the ways we can best protect the information we collect and use. They are involved in all the major decisions we make in relation to personal data. If you have any queries or concerns regarding our use of your data, or wish to exercise any of your rights."
-msgstr "Oor gien taxt hainin offyser is tha bodie wi tha ontak o giein iz wyce an airtin anent tha wyes we'll can gleg hain tha wittins we ingaither an uise. The' hae thair pairt in aa tha foremaist desarns we cum til effeirin til gien taxt adae wi a bodie's sel. Gin ye hae onie spierins ur fashes tae dae wi oor uise o yer gien taxt, ur ye'r leukkin tae implyment onie o yer richts."
-
-#: templates/static/privacy.html:128
-msgid "You can contact the data protection officer by:"
-msgstr "Ye'll can own wi tha gien taxt hainin offyser wi:"
-
-#: templates/static/privacy.html:130 templates/static/privacy.html:151
-msgid "Telephone: {telephone_number}"
-msgstr "Langbl'r: {telephone_number}"
-
-#: templates/static/privacy.html:132 templates/static/privacy.html:153
-msgid "Email: {email_address}"
-msgstr "L-poast bakkin: {email_address}"
-
-#: templates/static/privacy.html:145
-msgid "The Information Commissioner’s Office"
-msgstr "Tha Wittins Bailzie's Offys"
-
-#: templates/static/privacy.html:147
-msgid "The Information Commissioner’s Office (ICO) is the independent organisation tasked with regulating data protection in the UK. The ICO can give you <a href='{url}'>extra information about data protection</a> and your rights and will deal with any complaints you may have about our use of your information."
-msgstr "Tha Wittins Bailzie's Offys (ICO) wud be tha scowth curn wi tha hannlin o gien taxt hainin in tha CK. Tha ICO cud gie ye <a href='{url}'>mair wittins anent gien taxt hainin</a> an yer richts an wud be fur pittin throu-hanns onie pleens ye micht hae anent oor uise o yer wittins."
-
-#: templates/static/privacy.html:149
-msgid "You can contact the ICO by:"
-msgstr "Ye'll can awn wi tha WBO bae:"
 
