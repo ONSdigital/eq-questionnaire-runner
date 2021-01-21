@@ -1020,7 +1020,7 @@ msgstr "Abair linn an nglacann tú fianáin"
 
 #: templates/layouts/_base.html:62
 msgid "We use <a href='{cookie_settings_url}'>cookies to collect information</a> about how you use census.gov.uk. We use this information to make the website work as well as possible and improve our services."
-msgstr "Úsáidimid <a href='{cookie_settings_url}'>fianáin le heolas a bhailiú</a>faoin úsáid a bhaineann tú as census.gov.uk. Úsáidimid an t-eolas seo le go n-oibreoidh an suíomh gréasáin chomh maith agus is féidir agus lenár seirbhísí a fheabhsú."
+msgstr "Úsáidimid <a href='{cookie_settings_url}'>fianáin le heolas a bhailiú</a> faoin úsáid a bhaineann tú as census.gov.uk. Úsáidimid an t-eolas seo le go n-oibreoidh an suíomh gréasáin chomh maith agus is féidir agus lenár seirbhísí a fheabhsú."
 
 #: templates/layouts/_base.html:63
 msgid "You’ve accepted all cookies. You can <a href='{cookie_settings_url}'>change your cookie preferences</a> at any time."
