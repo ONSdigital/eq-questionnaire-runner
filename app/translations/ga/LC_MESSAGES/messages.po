@@ -327,7 +327,7 @@ msgstr "Ár keithscéal, bhí fadhb leis an r-phost dearbhaithe a sheoladh"
 
 #: app/routes/errors.py:190
 msgid "You can try to <a href='{retry_url}'>send the email again</a>."
-msgstr "Is féidir triail a bhaint as <a href='{retry_url}'> an r-phost a sheoladh arís</a>."
+msgstr "Is féidir triail a bhaint as <a href='{retry_url}'>an r-phost a sheoladh arís</a>."
 
 #: app/routes/errors.py:211 templates/errors/403.html:3
 #: templates/errors/403.html:6 templates/errors/submission-failed.html:5
