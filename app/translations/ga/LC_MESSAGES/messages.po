@@ -1092,7 +1092,7 @@ msgstr "Tabhair aiseolas"
 
 #: templates/partials/individual-response-guidance.html:24
 msgid "You can <em>share your household access code</em> with the people you live with so they can complete their own sections."
-msgstr "Tig leat <em>do chód rochtana teaghlaigh a roinnt</em>leis na daoine a gcónaíonn tú leo sa dóigh go dtig leo a míreanna féin a chomhlánú."
+msgstr "Tig leat <em>do chód rochtana teaghlaigh a roinnt</em> leis na daoine a gcónaíonn tú leo sa dóigh go dtig leo a míreanna féin a chomhlánú."
 
 #: templates/partials/individual-response-guidance.html:25
 msgid "If this is not possible, there are <a href={url}>other ways each person can complete their own census.</a>"
