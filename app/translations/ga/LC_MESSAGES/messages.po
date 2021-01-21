@@ -860,7 +860,7 @@ msgstr "Cuireadh do fhreagraí isteach do <span>{ru_name}</span> ar {submitted_d
 
 #: templates/thank-you.html:32
 msgid "Transaction ID: <b>{transaction_id}</b>"
-msgstr "ID Idirbheart:<b>{transaction_id}</b>"
+msgstr "ID Idirbheart: <b>{transaction_id}</b>"
 
 #: templates/thank-you.html:35
 msgid "Your answers will be processed in the next few weeks."
