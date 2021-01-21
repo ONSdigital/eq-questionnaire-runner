@@ -315,7 +315,7 @@ msgstr "Ár leithscéal, bhí fadhb leis an chód rochtana a sheoladh"
 
 #: app/routes/errors.py:167
 msgid "You can try to <a href='{retry_url}'>request a new access code again</a>."
-msgstr "Is féidir triail a bhaint as <a href='{retry_url}'> cód úr rochtana a iarraidh arís</a>."
+msgstr "Is féidir triail a bhaint as <a href='{retry_url}'>cód úr rochtana a iarraidh arís</a>."
 
 #: app/routes/errors.py:170 app/routes/errors.py:193 app/routes/errors.py:215
 msgid "If this problem keeps happening, please <a href='{contact_us_url}'>contact us</a> for help."
