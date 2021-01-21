@@ -920,7 +920,7 @@ msgstr "Má thosaigh tú ar shuirbhé, sábháladh do fhreagraí."
 
 #: templates/errors/500.html:9
 msgid "<a href='{url}'>Contact us</a> if you need to speak to someone about your survey."
-msgstr "<a href='{url}'> Déan teagmháil linn </a> más gá duit labhairt le duine éigin faoi do shuirbhé."
+msgstr "<a href='{url}'>Déan teagmháil linn</a> más gá duit labhairt le duine éigin faoi do shuirbhé."
 
 #: templates/errors/no-cookie.html:3
 msgid "Page is not available"
