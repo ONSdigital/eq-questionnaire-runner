@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: eq-census-nisra\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2020-12-04 07:21+0000\n"
-"PO-Revision-Date: 2021-01-20 13:53\n"
+"PO-Revision-Date: 2021-01-21 10:17\n"
 "Last-Translator: \n"
 "Language-Team: Irish\n"
 "MIME-Version: 1.0\n"
@@ -629,7 +629,7 @@ msgstr "Cén uimhir ghuthán póca atá ag <em>{person_name_possessive}</em>?"
 
 #: app/views/handlers/individual_response.py:768
 msgid "UK mobile number"
-msgstr "Uk uimhir fón póca"
+msgstr "UK uimhir fón póca"
 
 #: app/views/handlers/individual_response.py:769
 msgid "This will not be stored and only used once to send the access code"
