@@ -156,7 +156,7 @@ class TestCreateApp(unittest.TestCase):  # pylint: disable=too-many-public-metho
                 "frame-src https://www.googletagmanager.com", csp_policy_parts
             )
             self.assertIn(
-                f"connect-src 'self' {cdn_url} {address_lookup_api_url}",
+                f"connect-src 'self' https://www.google-analytics.com {cdn_url} {address_lookup_api_url}",
                 csp_policy_parts,
             )
 

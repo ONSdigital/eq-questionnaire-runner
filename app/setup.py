@@ -59,7 +59,7 @@ CSP_POLICY = {
         "https://fonts.googleapis.com",
         "'unsafe-inline'",
     ],
-    "connect-src": ["'self'"],
+    "connect-src": ["'self'", "https://www.google-analytics.com"],
     "frame-src": ["https://www.googletagmanager.com"],
     "img-src": [
         "'self'",
