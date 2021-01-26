@@ -8,10 +8,6 @@ metadata:
     app.kubernetes.io/instance: {{ .Release.Name }}
     app.kubernetes.io/managed-by: {{ .Release.Service }}
 spec:
-  securityContext:
-    capabilities:
-      drop:
-        - NET_RAW
   replicas: {{ .Values.autoscaler.minReplicas }}
   strategy:
     type: RollingUpdate
@@ -54,6 +50,10 @@ spec:
             - name: secrets
               mountPath: "/secrets"
               readOnly: true
+          securityContext:
+            capabilities:
+              drop:
+                - NET_RAW
           env:
             - name: EQ_STORAGE_BACKEND
               value: "datastore"
