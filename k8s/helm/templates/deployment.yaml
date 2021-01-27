@@ -50,6 +50,9 @@ spec:
             - name: secrets
               mountPath: "/secrets"
               readOnly: true
+          securityContext:
+            runAsUser: 9000
+            allowPrivilegeEscalation: false
           env:
             - name: EQ_STORAGE_BACKEND
               value: "datastore"
