@@ -23,4 +23,5 @@ RUN pipenv install --deploy --system
 RUN make load-schemas
 RUN make build
 
+USER 9000
 CMD ["sh", "run_app.sh"]
