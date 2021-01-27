@@ -23,5 +23,8 @@ RUN pipenv install --deploy --system
 RUN make load-schemas
 RUN make build
 
-USER 9000
+# Create a non-root user to run the process under
+RUN useradd -r -u 9000  appuser
+RUN chown -R appuser:appuser .
+USER appuser
 CMD ["sh", "run_app.sh"]
