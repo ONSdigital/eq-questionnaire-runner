@@ -50,6 +50,10 @@ spec:
             - name: secrets
               mountPath: "/secrets"
               readOnly: true
+          securityContext:
+            capabilities:
+              drop:
+                - NET_RAW
           env:
             - name: EQ_STORAGE_BACKEND
               value: "datastore"
