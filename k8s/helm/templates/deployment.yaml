@@ -56,6 +56,9 @@ spec:
           securityContext:
             runAsUser: 9000
             allowPrivilegeEscalation: false
+            capabilities:
+              drop:
+                - NET_RAW
           env:
             - name: EQ_STORAGE_BACKEND
               value: "datastore"
