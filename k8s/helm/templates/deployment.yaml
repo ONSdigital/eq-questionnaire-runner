@@ -26,7 +26,9 @@ spec:
     spec:
       securityContext:
         runAsUser: 1000
+        runAsGroup: 1000
         fsGroup: 1000
+        runAsNonRoot: true
       volumes:
       - name: keys
         secret:
@@ -55,6 +57,8 @@ spec:
               readOnly: true
           securityContext:
             runAsUser: 9000
+            runAsGroup: 1000
+            runAsNonRoot: true
             allowPrivilegeEscalation: false
           env:
             - name: EQ_STORAGE_BACKEND
