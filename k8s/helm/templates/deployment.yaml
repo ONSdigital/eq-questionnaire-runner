@@ -60,6 +60,9 @@ spec:
             runAsGroup: 1000
             runAsNonRoot: true
             allowPrivilegeEscalation: false
+            capabilities:
+              drop:
+                - NET_RAW
           env:
             - name: EQ_STORAGE_BACKEND
               value: "datastore"
