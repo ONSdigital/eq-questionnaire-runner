@@ -25,10 +25,10 @@ spec:
         app.kubernetes.io/instance: {{ .Release.Name }}
     spec:
       securityContext:
-        runAsUser: 1000
-        runAsGroup: 1000
         fsGroup: 1000
+        runAsGroup: 1000
         runAsNonRoot: true
+        runAsUser: 1000
       volumes:
       - name: keys
         secret:
@@ -56,13 +56,13 @@ spec:
               mountPath: "/secrets"
               readOnly: true
           securityContext:
-            runAsUser: 9000
-            runAsGroup: 1000
-            runAsNonRoot: true
             allowPrivilegeEscalation: false
             capabilities:
               drop:
                 - NET_RAW
+            runAsGroup: 1000
+            runAsNonRoot: true
+            runAsUser: 9000
           env:
             - name: EQ_STORAGE_BACKEND
               value: "datastore"
