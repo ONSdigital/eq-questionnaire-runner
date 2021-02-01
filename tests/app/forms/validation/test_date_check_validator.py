@@ -1,5 +1,5 @@
 import unittest
-from unittest.mock import MagicMock, Mock
+from unittest.mock import Mock
 
 from wtforms.validators import StopValidation
 
@@ -24,11 +24,9 @@ class TestDateCheckValidator(unittest.TestCase):
     def test_date_type_validator_missing_day(self):
         validator = DateCheck()
 
-        mock_form = MagicMock()
+        mock_form = Mock()
         mock_form.data = "2016-12-"
         mock_form.year.data = "2016"
-        mock_form.month.data = "12"
-        mock_form.day.data = ""
 
         mock_field = Mock()
 
@@ -40,11 +38,9 @@ class TestDateCheckValidator(unittest.TestCase):
     def test_date_type_validator_missing_month(self):
         validator = DateCheck()
 
-        mock_form = MagicMock()
+        mock_form = Mock()
         mock_form.data = "2016--03"
         mock_form.year.data = "2016"
-        mock_form.month.data = ""
-        mock_form.day.data = "03"
 
         mock_field = Mock()
 
@@ -56,7 +52,7 @@ class TestDateCheckValidator(unittest.TestCase):
     def test_date_type_validator_missing_year(self):
         validator = DateCheck()
 
-        mock_form = MagicMock()
+        mock_form = Mock()
         mock_form.data = "-12-03"
 
         mock_field = Mock()
@@ -69,11 +65,9 @@ class TestDateCheckValidator(unittest.TestCase):
     def test_date_type_validator_invalid_day(self):
         validator = DateCheck()
 
-        mock_form = MagicMock()
+        mock_form = Mock()
         mock_form.data = "2016-12-40"
         mock_form.year.data = "2016"
-        mock_form.year.month = "12"
-        mock_form.year.day = "40"
 
         mock_field = Mock()
 
@@ -85,11 +79,9 @@ class TestDateCheckValidator(unittest.TestCase):
     def test_date_type_validator_invalid_month(self):
         validator = DateCheck()
 
-        mock_form = MagicMock()
+        mock_form = Mock()
         mock_form.data = "2016-13-20"
         mock_form.year.data = "2016"
-        mock_form.year.month = "13"
-        mock_form.year.day = "20"
 
         mock_field = Mock()
 
@@ -101,7 +93,7 @@ class TestDateCheckValidator(unittest.TestCase):
     def test_date_type_validator_invalid_year(self):
         validator = DateCheck()
 
-        mock_form = MagicMock()
+        mock_form = Mock()
         mock_form.data = "20000-12-20"
         mock_form.year.data = "20000"
 
@@ -115,7 +107,7 @@ class TestDateCheckValidator(unittest.TestCase):
     def test_date_type_validator_invalid_year_digits(self):
         validator = DateCheck()
 
-        mock_form = MagicMock()
+        mock_form = Mock()
         mock_form.data = "2-12-20"
         mock_form.year.data = "2"
 
@@ -129,10 +121,8 @@ class TestDateCheckValidator(unittest.TestCase):
     def test_date_type_validator_invalid_month_digits(self):
         validator = DateCheck()
 
-        mock_form = MagicMock()
+        mock_form = Mock()
         mock_form.data = "2020--2-20"
-        mock_form.year.data = "2020"
-        mock_form.month.data = "-2"
 
         mock_field = Mock()
 
@@ -144,11 +134,9 @@ class TestDateCheckValidator(unittest.TestCase):
     def test_date_type_validator_invalid_day_digits(self):
         validator = DateCheck()
 
-        mock_form = MagicMock()
+        mock_form = Mock()
         mock_form.data = "2020-12--2"
         mock_form.year.data = "2020"
-        mock_form.month.data = "12"
-        mock_form.day.data = "-2"
 
         mock_field = Mock()
 
@@ -162,11 +150,9 @@ class TestDateCheckValidator(unittest.TestCase):
         validator = DateCheck()
 
         # 2015 was not a leap year
-        mock_form = MagicMock()
+        mock_form = Mock()
         mock_form.data = "2015-02-29"
         mock_form.year.data = "2015"
-        mock_form.month.data = "02"
-        mock_form.day.data = "29"
 
         mock_field = Mock()
 
@@ -180,11 +166,9 @@ class TestDateCheckValidator(unittest.TestCase):
         validator = DateCheck()
 
         # 2016 WAS a leap year
-        mock_form = MagicMock()
+        mock_form = Mock()
         mock_form.data = "2016-02-29"
         mock_form.year.data = "2016"
-        mock_form.month.data = "02"
-        mock_form.day.data = "29"
 
         mock_field = Mock()
         validator(mock_form, mock_field)
@@ -193,29 +177,23 @@ class TestDateCheckValidator(unittest.TestCase):
     def test_date_type_validator_valid_dates():
         validator = DateCheck()
 
-        mock_form = MagicMock()
+        mock_form = Mock()
         mock_form.data = "2016-01-29"
         mock_form.year.data = "2016"
-        mock_form.month.data = "01"
-        mock_form.day.data = "29"
 
         mock_field = Mock()
         validator(mock_form, mock_field)
 
-        mock_form = MagicMock()
+        mock_form = Mock()
         mock_form.data = "2016-12-01"
         mock_form.year.data = "2016"
-        mock_form.month.data = "12"
-        mock_form.day.data = "01"
 
         mock_field = Mock()
         validator(mock_form, mock_field)
 
-        mock_form = MagicMock()
+        mock_form = Mock()
         mock_form.data = "2016-03-03"
         mock_form.year.data = "2016"
-        mock_form.month.data = "03"
-        mock_form.day.data = "03"
 
         mock_field = Mock()
         validator(mock_form, mock_field)
