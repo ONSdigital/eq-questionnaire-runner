@@ -225,6 +225,14 @@ class DateCheck:
 
         if not form.data or not re.match(r"\d{4}$", str(form.year.data)):
             raise validators.StopValidation(self.message)
+        if re.match(r"^\d{4}-", str(form.data)) and not re.match(
+            r"\d{1,2}", str(form.month.data)
+        ):
+            raise validators.StopValidation(self.message)
+        if re.match(r"^\d{4}-\d{1,2}-", str(form.data)) and not re.match(
+            r"\d{1,2}", str(form.day.data)
+        ):
+            raise validators.StopValidation(self.message)
 
         try:
             substrings = form.data.split("-")
