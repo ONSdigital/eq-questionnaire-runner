@@ -118,6 +118,33 @@ class TestDateCheckValidator(unittest.TestCase):
 
         self.assertEqual(error_messages["INVALID_DATE"], str(ite.exception))
 
+    def test_date_type_validator_invalid_month_digits(self):
+        validator = DateCheck()
+
+        mock_form = Mock()
+        mock_form.data = "2020--2-20"
+
+        mock_field = Mock()
+
+        with self.assertRaises(StopValidation) as ite:
+            validator(mock_form, mock_field)
+
+        self.assertEqual(error_messages["INVALID_DATE"], str(ite.exception))
+
+    def test_date_type_validator_invalid_day_digits(self):
+        validator = DateCheck()
+
+        mock_form = Mock()
+        mock_form.data = "2020-12--2"
+        mock_form.year.data = "2020"
+
+        mock_field = Mock()
+
+        with self.assertRaises(StopValidation) as ite:
+            validator(mock_form, mock_field)
+
+        self.assertEqual(error_messages["INVALID_DATE"], str(ite.exception))
+
     def test_date_type_validator_invalid_leap_year(self):
 
         validator = DateCheck()
