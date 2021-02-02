@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: eq-census-nisra\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2020-12-04 07:21+0000\n"
-"PO-Revision-Date: 2021-01-21 10:17\n"
+"POT-Creation-Date: 2021-02-01 10:53+0000\n"
+"PO-Revision-Date: 2021-02-02 10:53\n"
 "Last-Translator: \n"
 "Language-Team: Irish\n"
 "MIME-Version: 1.0\n"
@@ -18,7 +18,7 @@ msgstr ""
 "X-Crowdin-File-ID: 24\n"
 "Language: ga_IE\n"
 
-#: app/forms/validators.py:338 app/jinja_filters.py:86
+#: app/forms/validators.py:338 app/jinja_filters.py:94
 #, python-format
 msgid "%(num)s year"
 msgid_plural "%(num)s years"
@@ -28,7 +28,7 @@ msgstr[2] "%(num)s bliain"
 msgstr[3] "%(num)s blianta"
 msgstr[4] "%(num)s blianta"
 
-#: app/forms/validators.py:342 app/jinja_filters.py:94
+#: app/forms/validators.py:342 app/jinja_filters.py:102
 #, python-format
 msgid "%(num)s month"
 msgid_plural "%(num)s months"
@@ -38,12 +38,12 @@ msgstr[2] "%(num)s mí"
 msgstr[3] "%(num)s míonna"
 msgstr[4] "%(num)s míonna"
 
-#: app/jinja_filters.py:137
+#: app/jinja_filters.py:145
 #, python-format
 msgid "%(date)s at %(time)s"
 msgstr "%(date)s ag %(time)s"
 
-#: app/jinja_filters.py:148
+#: app/jinja_filters.py:156
 #, python-format
 msgid "%(from_date)s to %(to_date)s"
 msgstr "%(from_date)s go %(to_date)s"
@@ -72,7 +72,7 @@ msgstr "Roghnaigh freagra amháin ar a laghad <span class=\"u-vh\">ar ‘%(quest
 msgid "Enter a date"
 msgstr "Iontráil dáta"
 
-#: app/forms/error_messages.py:23 templates/partials/answers/address.html:56
+#: app/forms/error_messages.py:23 templates/partials/answers/address.html:57
 msgid "Enter an address"
 msgstr "Iontráil seoladh"
 
@@ -86,7 +86,7 @@ msgstr "Iontráil seoladh r-phoist"
 
 #: app/forms/error_messages.py:26
 msgid "Enter a UK mobile number"
-msgstr "Iontráil uimhir fón póca de chuid na RA"
+msgstr "Iontráil uimhir fón póca de chuid na UK"
 
 #: app/forms/error_messages.py:27
 #, python-format
@@ -169,7 +169,7 @@ msgstr "Iontráil fad ama bailí"
 
 #: app/forms/error_messages.py:58
 msgid "Enter a UK mobile number in a valid format, for example, 07700 900345 or +44 7700 900345"
-msgstr "Iontráil uimhir fón póca de chuid na RA i bhformáid bhailí, mar shampla, 07700 900345 nó +44 7700 900345"
+msgstr "Iontráil uimhir fón póca de chuid na UK i bhformáid bhailí, mar shampla, 07700 900345 nó +44 7700 900345"
 
 #: app/forms/error_messages.py:61
 #, python-format
@@ -214,7 +214,7 @@ msgid "Office for National Statistics logo"
 msgstr "Lógó Oifig an Staidrimh Náisiúnta"
 
 #: app/helpers/template_helpers.py:30 app/helpers/template_helpers.py:39
-#: app/helpers/template_helpers.py:149 templates/signed-out.html:3
+#: app/helpers/template_helpers.py:151 templates/signed-out.html:3
 msgid "Census 2021"
 msgstr "Daonáireamh 2021"
 
@@ -227,42 +227,46 @@ msgid "The following links open in a new tab"
 msgstr "Osclaíonn na naisc seo a leanas i dtáb úr"
 
 #: app/helpers/template_helpers.py:52
+msgid "Crown copyright and database rights 2021 NIMA MOU577.501."
+msgstr "Cóiopcheart na Corónach agus cearta bhunachar sonraí 2021 NIMA MOU577.501."
+
+#: app/helpers/template_helpers.py:56
 msgid "Crown copyright and database rights 2020 OS 100019153."
 msgstr "Cóiopcheart na Corónach agus cearta bhunachar sonraí 2020 OS 100019153."
 
-#: app/helpers/template_helpers.py:55
+#: app/helpers/template_helpers.py:57
 msgid "Use of address data is subject to the"
 msgstr "Tá úsáid sonraí seolta faoi réir"
 
-#: app/helpers/template_helpers.py:56
+#: app/helpers/template_helpers.py:58
 msgid "terms and conditions"
 msgstr "téarmaí agus coinníollacha"
 
-#: app/helpers/template_helpers.py:64
+#: app/helpers/template_helpers.py:66
 msgid "Help"
 msgstr "Cuidiú"
 
-#: app/helpers/template_helpers.py:69
+#: app/helpers/template_helpers.py:71
 msgid "Contact us"
 msgstr "Déan teagmháil linn"
 
-#: app/helpers/template_helpers.py:80
+#: app/helpers/template_helpers.py:82
 msgid "Cookies"
 msgstr "Fianáin"
 
-#: app/helpers/template_helpers.py:85
+#: app/helpers/template_helpers.py:87
 msgid "Accessibility statement"
 msgstr "Ráiteas inrochtaineachta"
 
-#: app/helpers/template_helpers.py:90
+#: app/helpers/template_helpers.py:92
 msgid "Privacy and data protection"
 msgstr "Príobháideacht agus cosaint sonraí"
 
-#: app/helpers/template_helpers.py:95
+#: app/helpers/template_helpers.py:97
 msgid "Terms and conditions"
 msgstr "Téarmaí agus coinníollacha"
 
-#: app/helpers/template_helpers.py:105
+#: app/helpers/template_helpers.py:107
 msgid "Make sure you <a href='{sign_out_url}'>leave this page</a> or close your browser if using a shared device"
 msgstr "Bí cinnte go bhfágann tú <a href='{sign_out_url}'>an leathanach seo</a> nó druid do bhrabhsálaí má tá tú ag úsáid gléas comhroinnte"
 
@@ -407,7 +411,7 @@ msgstr "Roghnaigh mír eile le líonadh isteach"
 #: templates/individual_response/confirmation-post.html:21
 #: templates/individual_response/confirmation-text-message.html:31
 #: templates/individual_response/question.html:5 templates/interstitial.html:8
-#: templates/sectionsummary.html:11 templates/sectionsummary.html:54
+#: templates/sectionsummary.html:11 templates/sectionsummary.html:48
 msgid "Continue"
 msgstr "Lean ar aghaidh"
 
@@ -428,12 +432,12 @@ msgstr "Cuir isteach na freagraí"
 msgid "Please submit this survey to complete it"
 msgstr "Cuir isteach an suirbhé seo lena chríochnú le do thoil"
 
-#: app/views/handlers/confirmation_email.py:48
+#: app/views/handlers/confirmation_email.py:52
 msgid "Confirmation email"
 msgstr "R-phost dearbhaithe"
 
-#: app/views/handlers/confirmation_email.py:62
-#: app/views/handlers/feedback.py:62 app/views/handlers/question.py:149
+#: app/views/handlers/confirmation_email.py:66
+#: app/views/handlers/feedback.py:62 app/views/handlers/question.py:150
 msgid "Error: {page_title}"
 msgstr "Earráid: {page_title}"
 
@@ -745,7 +749,7 @@ msgstr "Is cuidiú iad do thuairimí lenár suirbhéanna a fheabhsú. Ní thig l
 
 #: templates/feedback-sent.html:28
 msgid "Done"
-msgstr "Arna dhéanamh"
+msgstr "Déanta"
 
 #: templates/feedback.html:15
 msgid "Back"
@@ -769,11 +773,11 @@ msgstr "Cuir aiseolas ar ais"
 msgid "If you can’t answer someone else’s questions"
 msgstr "Mura dtig leat ceisteanna duine éigin eile a fhreagairt"
 
-#: templates/interstitial.html:23 templates/partials/question.html:25
+#: templates/interstitial.html:23 templates/partials/question.html:27
 msgid "If you can’t answer questions for this person"
 msgstr "Mura dtig leat ceisteanna a fhreagairt don duine seo"
 
-#: templates/interstitial.html:32 templates/layouts/_questionnaire.html:26
+#: templates/interstitial.html:32 templates/layouts/_questionnaire.html:27
 msgid "Save and continue"
 msgstr "Sábháil agus lean ar aghaidh"
 
@@ -816,7 +820,7 @@ msgstr "Ar an drochuair, ní féidir leat ach suirbhé amháin a líonadh isteac
 msgid "Close this window to continue with your current survey"
 msgstr "Druid an fhuinneog le leanstan ar aghaidh le do shuirbhé reatha"
 
-#: templates/partials/answers/address.html:55 templates/question.html:10
+#: templates/partials/answers/address.html:56 templates/question.html:10
 #, python-format
 msgid "There is a problem with your answer"
 msgid_plural "There are %(num)s problems with your answer"
@@ -888,7 +892,7 @@ msgstr "Má tá tuilleadh cuidithe de dhíth ort, déan <a href='{url}'>teagmhá
 
 #: templates/errors/404.html:3 templates/errors/404.html:6
 msgid "Page not found"
-msgstr "Níl teacht ar bith ar an leathanach"
+msgstr "Níl teacht ar an leathanach"
 
 #: templates/errors/404.html:7
 msgid "If you entered a web address, check it is correct."
@@ -1040,7 +1044,7 @@ msgstr "Socraigh roghanna fianán"
 msgid "Hide"
 msgstr "Cuir i bhfolach"
 
-#: templates/layouts/_questionnaire.html:37
+#: templates/layouts/_questionnaire.html:38
 msgid "Choose another section and return to this later"
 msgstr "Roghnaigh mír eile agus tar ar ais go dtí an ceann seo níos moille"
 
@@ -1060,9 +1064,9 @@ msgstr "Scoir"
 msgid "Interviewer note:"
 msgstr "Nóta agallóra:"
 
-#: templates/partials/answer-guidance.html:18
-#: templates/partials/definition.html:18
-#: templates/partials/individual-response-guidance.html:13
+#: templates/partials/answer-guidance.html:19
+#: templates/partials/definition.html:19
+#: templates/partials/individual-response-guidance.html:14
 msgid "Hide this"
 msgstr "Cuir é seo i bhfolach"
 
@@ -1090,11 +1094,11 @@ msgstr "Is cuidiú iad do thuairimí le go dtig linn feabhsúcháin a dhéanamh"
 msgid "Give feedback"
 msgstr "Tabhair aiseolas"
 
-#: templates/partials/individual-response-guidance.html:24
+#: templates/partials/individual-response-guidance.html:25
 msgid "You can <em>share your household access code</em> with the people you live with so they can complete their own sections."
 msgstr "Tig leat <em>do chód rochtana teaghlaigh a roinnt</em> leis na daoine a gcónaíonn tú leo sa dóigh go dtig leo a míreanna féin a chomhlánú."
 
-#: templates/partials/individual-response-guidance.html:25
+#: templates/partials/individual-response-guidance.html:26
 msgid "If this is not possible, there are <a href={url}>other ways each person can complete their own census.</a>"
 msgstr "Mura féidir é seo tá <a href={url}>dóigheanna eile ann a dtig le gach duine a ndaonáireamh féin a chomhlánú.</a>"
 
@@ -1106,23 +1110,23 @@ msgstr "Is í seo an cheist bhreathnaithe dheireanach sa mhír seo"
 msgid "You can also <a id='section-start-link' href='{url}'>go back to the start of the section</a>"
 msgstr "Is féidir fosta <a id='section-start-link' href='{url}'>dul ar ais chuig tús na míre</a>"
 
-#: templates/partials/question.html:60
+#: templates/partials/question.html:62
 msgid "Selecting this will clear your answer"
 msgstr "Má roghnaíonn tú seo scriosfaidh sé seo do fhreagra"
 
-#: templates/partials/question.html:61
+#: templates/partials/question.html:63
 msgid "cleared"
 msgstr "scriosta"
 
-#: templates/partials/question.html:64
+#: templates/partials/question.html:66
 msgid "Selecting this will deselect any selected options"
 msgstr "Má roghnaíonn tú seo díroghnóidh tú rogha ar bith roghnaithe"
 
-#: templates/partials/question.html:65 templates/partials/question.html:73
+#: templates/partials/question.html:67 templates/partials/question.html:75
 msgid "deselected"
 msgstr "díroghnaithe"
 
-#: templates/partials/question.html:69
+#: templates/partials/question.html:71
 msgid "Or"
 msgstr "Nó"
 
@@ -1154,73 +1158,73 @@ msgstr "Iontráil seoladh de láimh"
 msgid "Enter address or postcode and select from results"
 msgstr "Iontráil seoladh nó postchód agus roghnaigh ó na torthaí"
 
-#: templates/partials/answers/address.html:41
+#: templates/partials/answers/address.html:42
 msgid "Use up and down keys to navigate suggestions once you’ve typed more than two characters. Use the enter key to select a suggestion. Touch device users, explore by touch or with swipe gestures."
 msgstr "Úsáid eochracha suas agus anuas le breathnú ar mholtaí i ndiaidh níos mó ná dhá charachtar a chlóscríobh. Úsáid an eochair iontrála le moladh a roghnú. Tig le húsáideoirí gléas tadhaill fiosrú le tadhall nó le svaidhpeáil."
 
-#: templates/partials/answers/address.html:42
+#: templates/partials/answers/address.html:43
 msgid "You have selected"
 msgstr "Roghnaigh tú"
 
-#: templates/partials/answers/address.html:43
+#: templates/partials/answers/address.html:44
 msgid "Enter 3 or more characters for suggestions."
 msgstr "Iontráil 3 charachtar nó níos mó faoi choinne moltaí."
 
-#: templates/partials/answers/address.html:44
+#: templates/partials/answers/address.html:45
 msgid "There is one suggestion available."
 msgstr "Tá moladh amháin ar fáil."
 
-#: templates/partials/answers/address.html:45
+#: templates/partials/answers/address.html:46
 msgid "There are {n} suggestions available."
 msgstr "Tá {n} moladh ar fáil."
 
-#: templates/partials/answers/address.html:46
+#: templates/partials/answers/address.html:47
 msgid "Results have been limited to 10 suggestions. Type more characters to improve your search"
 msgstr "Tá torthaí teoranta go dtí 10 moladh. Clóscríobh níos mó carachtar le do chuardach a fheabhsú"
 
-#: templates/partials/answers/address.html:47
+#: templates/partials/answers/address.html:48
 msgid "There are {n} for {x}"
 msgstr "Tá {n} faoi choinne {x} ann"
 
-#: templates/partials/answers/address.html:48
+#: templates/partials/answers/address.html:49
 msgid "{n} addresses"
 msgstr "{n} seoladh"
 
-#: templates/partials/answers/address.html:49
+#: templates/partials/answers/address.html:50
 msgid "Enter more of the address to improve results"
 msgstr "Iontráil níos mó den seoladh le torthaí a fheabhsú"
 
-#: templates/partials/answers/address.html:50
+#: templates/partials/answers/address.html:51
 msgid "Select an address"
 msgstr "Roghnaigh seoladh"
 
-#: templates/partials/answers/address.html:51
+#: templates/partials/answers/address.html:52
 msgid "No results found. Try entering a different part of the address"
 msgstr "Ní bhfuarthas torthaí. Triail cuid eile den seoladh a iontráil"
 
-#: templates/partials/answers/address.html:52
+#: templates/partials/answers/address.html:53
 msgid "{n} results found. Enter more of the address to improve results"
 msgstr "{n} toradh faighte. Iontráil níos mó den seoladh le torthaí a fheabhsú"
 
-#: templates/partials/answers/address.html:53
+#: templates/partials/answers/address.html:54
 msgid "Enter more of the address to get results"
 msgstr "Iontráil níos mó den seoladh le torthaí a fháil"
 
-#: templates/partials/answers/address.html:57
+#: templates/partials/answers/address.html:58
 msgid "Select or manually enter an address"
 msgstr "Roghnaigh nó iontráil seoladh de láimh"
 
-#: templates/partials/answers/address.html:58
+#: templates/partials/answers/address.html:59
 msgid "Sorry, there was a problem loading addresses"
 msgstr "Ár leithscéal, bhí fadhb ann le seoltaí a lódáil"
 
-#: templates/partials/answers/address.html:59
+#: templates/partials/answers/address.html:60
 msgid "Enter address manually"
 msgstr "Iontráil seoladh de láimh"
 
 #: templates/partials/answers/checkbox.html:13
 msgid "Select all that apply"
-msgstr "Roghnaigh na cinn uilig lena mbaineann siad"
+msgstr "Roghnaigh na cinn uilig atá bainteach"
 
 #: templates/partials/answers/date.html:23
 msgid "Day"
@@ -1301,7 +1305,7 @@ msgid "No answer provided"
 msgstr "Níor tugadh freagra ar bith"
 
 #: templates/partials/summary/collapsible-summary.html:36
-#: templates/partials/summary/list-summary.html:10
+#: templates/partials/summary/list-summary.html:8
 #: templates/partials/summary/summary.html:19
 msgid "Change"
 msgstr "Athraigh"
@@ -1311,14 +1315,15 @@ msgstr "Athraigh"
 msgid "Change your answer for:"
 msgstr "Athraigh do fhreagra do:"
 
-#: templates/partials/summary/list-summary.html:11
+#: templates/partials/summary/list-summary.html:9
 msgid "Change details for {item_name}"
 msgstr "Athraigh na sonraí do {item_name}"
 
-#: templates/partials/summary/list-summary.html:12
+#: templates/partials/summary/list-summary.html:10
 msgid "Remove"
 msgstr "Bain"
 
-#: templates/partials/summary/list-summary.html:13
+#: templates/partials/summary/list-summary.html:11
 msgid "Remove {item_name}"
 msgstr "Bain {item_name}"
+
