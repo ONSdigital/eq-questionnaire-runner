@@ -1,7 +1,9 @@
 from unittest import TestCase, mock
-from unittest.mock import Mock, patch
+from unittest.mock import MagicMock, Mock, patch
 
+from google.api_core.exceptions import DeadlineExceeded, ServiceUnavailable
 from google.cloud.tasks_v2 import CreateTaskRequest
+from google.cloud.tasks_v2.types.task import Task
 
 from app.cloud_tasks import CloudTaskPublisher
 from app.cloud_tasks.exceptions import CloudTaskCreationFailed
@@ -47,14 +49,30 @@ class TestCloudTaskPublisher(TestCase):
                 }
             )
 
-    def test_create_task_raises_exception(self):
+    def test_create_task_raises_exception_on_non_transient_error(self):
         queue_name = "test"
         function_name = "test"
         body = bytes("test", "utf-8")
 
-        self.cloud_task_publisher._create = Mock(side_effect=Exception)
+        mock_create_task = MagicMock()
+        mock_create_task.side_effect = DeadlineExceeded("test")
+        self.cloud_task_publisher._client.create_task = mock_create_task
 
         with self.assertRaises(CloudTaskCreationFailed):
             self.cloud_task_publisher.create_task(
                 body=body, queue_name=queue_name, function_name=function_name
             )
+
+    def test_create_task_transient_error_retries(self):
+        queue_name = "test"
+        function_name = "test"
+        body = bytes("test", "utf-8")
+
+        mock_create_task = MagicMock()
+        mock_create_task.side_effect = [ServiceUnavailable("test"), Task()]
+        self.cloud_task_publisher._client.create_task = mock_create_task
+        self.cloud_task_publisher.create_task(
+            body=body, queue_name=queue_name, function_name=function_name
+        )
+
+        self.assertEqual(mock_create_task.call_count, 2)
