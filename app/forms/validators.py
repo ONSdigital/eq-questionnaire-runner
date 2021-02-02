@@ -222,7 +222,7 @@ class DateCheck:
         self.message = message or error_messages["INVALID_DATE"]
 
     def __call__(self, form, field):
-        if not form.data or not hasattr(form, "year"):
+        if not form.data:
             raise validators.StopValidation(self.message)
 
         try:
