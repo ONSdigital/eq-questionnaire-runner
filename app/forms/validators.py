@@ -222,17 +222,15 @@ class DateCheck:
         self.message = message or error_messages["INVALID_DATE"]
 
     def __call__(self, form, field):
-
-        if not form.data or not re.match(r"\d{4}$", str(form.year.data)):
+        if not form.data:
             raise validators.StopValidation(self.message)
 
         try:
-            substrings = form.data.split("-")
-            if len(substrings) == 3:
+            if hasattr(form, "day"):
                 datetime.strptime(form.data, "%Y-%m-%d")
-            if len(substrings) == 2:
+            elif hasattr(form, "month"):
                 datetime.strptime(form.data, "%Y-%m")
-            if len(substrings) == 1:
+            else:
                 datetime.strptime(form.data, "%Y")
         except ValueError:
             raise validators.StopValidation(self.message)
