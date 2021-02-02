@@ -10,13 +10,10 @@ logger = get_logger(__name__)
 
 
 class CloudTaskPublisher:
-    def __init__(self, queue_name: str):
+    def __init__(self):
         self._client = CloudTasksClient()
-        _, self._project_id = auth.default()
 
-        self._parent = self._client.queue_path(
-            self._project_id, "europe-west2", queue_name
-        )
+        _, self._project_id = auth.default()
 
     def _get_task(self, body: bytes, function_name: str):
         service_account_email = (
@@ -40,18 +37,21 @@ class CloudTaskPublisher:
         )
 
     @Retry()
-    def _create_task_with_retry(self, body: bytes, function_name: str) -> Task:
+    def _create_task_with_retry(
+        self, body: bytes, function_name: str, parent: str
+    ) -> Task:
         task = self._client.create_task(
-            parent=self._parent,
+            parent=parent,
             task=self._get_task(body=body, function_name=function_name),
         )
         return task
 
-    def create_task(self, body: bytes, function_name: str) -> Task:
+    def create_task(self, body: bytes, queue_name: str, function_name: str) -> Task:
         logger.info("creating cloud task")
 
+        parent = self._client.queue_path(self._project_id, "europe-west2", queue_name)
         try:
-            task = self._create_task_with_retry(body, function_name)
+            task = self._create_task_with_retry(body, function_name, parent)
             logger.info("task created successfully")  # pragma: no cover
             return task
         except Exception as exc:
@@ -63,9 +63,10 @@ class CloudTaskPublisher:
 
 class LogCloudTaskPublisher:
     @staticmethod
-    def create_task(body: bytes, function_name: str) -> None:
+    def create_task(body: bytes, queue_name: str, function_name: str) -> None:
         logger.info(
             "creating cloud task",
             body=body,
+            queue_name=queue_name,
             function_name=function_name,
         )

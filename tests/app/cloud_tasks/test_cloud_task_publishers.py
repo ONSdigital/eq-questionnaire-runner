@@ -17,9 +17,10 @@ class TestCloudTaskPublisher(TestCase):
             "google.auth._default._get_explicit_environ_credentials",
             return_value=(Mock(), self.PROJECT_ID),
         ):
-            self.cloud_task_publisher = CloudTaskPublisher("test")
+            self.cloud_task_publisher = CloudTaskPublisher()
 
     def test_create_task(self):
+        queue_name = "test"
         function_name = "test"
         body = bytes("test", "utf-8")
 
@@ -33,7 +34,7 @@ class TestCloudTaskPublisher(TestCase):
                 body=body, function_name=function_name
             )
             self.cloud_task_publisher.create_task(
-                body=body, function_name=function_name
+                body=body, queue_name=queue_name, function_name=function_name
             )
 
             # Establish that the underlying gRPC stub method was called.
@@ -49,6 +50,7 @@ class TestCloudTaskPublisher(TestCase):
             )
 
     def test_create_task_raises_exception_on_non_transient_error(self):
+        queue_name = "test"
         function_name = "test"
         body = bytes("test", "utf-8")
 
@@ -58,16 +60,19 @@ class TestCloudTaskPublisher(TestCase):
 
         with self.assertRaises(CloudTaskCreationFailed):
             self.cloud_task_publisher.create_task(
-                body=body, function_name=function_name
+                body=body, queue_name=queue_name, function_name=function_name
             )
 
     def test_create_task_transient_error_retries(self):
+        queue_name = "test"
         function_name = "test"
         body = bytes("test", "utf-8")
 
         mock_create_task = MagicMock()
         mock_create_task.side_effect = [ServiceUnavailable("test"), Task()]
         self.cloud_task_publisher._client.create_task = mock_create_task
-        self.cloud_task_publisher.create_task(body=body, function_name=function_name)
+        self.cloud_task_publisher.create_task(
+            body=body, queue_name=queue_name, function_name=function_name
+        )
 
         self.assertEqual(mock_create_task.call_count, 2)

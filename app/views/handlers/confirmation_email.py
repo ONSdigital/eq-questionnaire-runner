@@ -10,7 +10,10 @@ from app.data_models import FulfilmentRequest, SessionData, SessionStore
 from app.forms.email_form import EmailForm
 from app.helpers import url_safe_serializer
 from app.questionnaire import QuestionnaireSchema
-from app.settings import EQ_SUBMISSION_CONFIRMATION_CLOUD_FUNCTION_NAME
+from app.settings import (
+    EQ_SUBMISSION_CONFIRMATION_CLOUD_FUNCTION_NAME,
+    EQ_SUBMISSION_CONFIRMATION_QUEUE,
+)
 from app.views.contexts.email_form_context import build_confirmation_email_form_context
 
 
@@ -71,6 +74,7 @@ class ConfirmationEmail:
         try:
             return current_app.eq["cloud_tasks"].create_task(
                 body=fulfilment_request.message,
+                queue_name=EQ_SUBMISSION_CONFIRMATION_QUEUE,
                 function_name=EQ_SUBMISSION_CONFIRMATION_CLOUD_FUNCTION_NAME,
             )
         except CloudTaskCreationFailed as exc:
