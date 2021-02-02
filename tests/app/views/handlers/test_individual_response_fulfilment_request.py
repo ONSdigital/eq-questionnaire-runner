@@ -48,7 +48,7 @@ def test_postal_fulfilment_request_message():
 
     expected_sms_payload = {
         "fulfilmentRequest": {
-            "fulfilmentCode": "P_UAC_UACIP1",
+            "fulfilmentCode": "P_UAC_UACIPA1",
             "contact": {},
         }
     }
@@ -95,9 +95,9 @@ def test_fulfilment_code_for_sms(region_code, expected_fulfilment_code):
 @pytest.mark.parametrize(
     "region_code, expected_fulfilment_code",
     [
-        (GB_ENG_REGION_CODE, "P_UAC_UACIP1"),
-        (GB_WLS_REGION_CODE, "P_UAC_UACIP2B"),
-        (GB_NIR_REGION_CODE, "P_UAC_UACIP4"),
+        (GB_ENG_REGION_CODE, "P_UAC_UACIPA1"),
+        (GB_WLS_REGION_CODE, "P_UAC_UACIPA2B"),
+        (GB_NIR_REGION_CODE, "P_UAC_UACIPA4"),
     ],
 )
 def test_fulfilment_code_for_postal(region_code, expected_fulfilment_code):

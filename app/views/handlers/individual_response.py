@@ -946,9 +946,9 @@ class IndividualResponseFulfilmentRequest(FulfilmentRequest):
                 GB_NIR_REGION_CODE: "UACITA4",
             },
             "postal": {
-                GB_ENG_REGION_CODE: "P_UAC_UACIP1",
-                GB_WLS_REGION_CODE: "P_UAC_UACIP2B",
-                GB_NIR_REGION_CODE: "P_UAC_UACIP4",
+                GB_ENG_REGION_CODE: "P_UAC_UACIPA1",
+                GB_WLS_REGION_CODE: "P_UAC_UACIPA2B",
+                GB_NIR_REGION_CODE: "P_UAC_UACIPA4",
             },
         }
         region_code = self._metadata["region_code"]
