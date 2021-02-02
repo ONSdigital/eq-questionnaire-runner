@@ -1,4 +1,4 @@
-from unittest.mock import MagicMock, Mock, patch
+from unittest.mock import MagicMock
 
 from app import settings
 from app.cloud_tasks.exceptions import CloudTaskCreationFailed

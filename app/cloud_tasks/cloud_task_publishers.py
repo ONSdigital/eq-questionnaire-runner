@@ -1,4 +1,5 @@
 from google import auth
+from google.api_core.retry import Retry
 from google.cloud.tasks_v2 import CloudTasksClient, HttpMethod
 from google.cloud.tasks_v2.types.task import Task
 from structlog import get_logger
@@ -35,25 +36,29 @@ class CloudTaskPublisher:
             }
         )
 
-    def create_task(self, body: bytes, queue_name: str, function_name: str) -> None:
+    @Retry()
+    def _create_task_with_retry(
+        self, body: bytes, function_name: str, parent: str
+    ) -> Task:
+        task = self._client.create_task(
+            parent=parent,
+            task=self._get_task(body=body, function_name=function_name),
+        )
+        return task
+
+    def create_task(self, body: bytes, queue_name: str, function_name: str) -> Task:
+        logger.info("creating cloud task")
+
+        parent = self._client.queue_path(self._project_id, "europe-west2", queue_name)
         try:
-            logger.info("creating cloud task")
-
-            self._parent = self._client.queue_path(
-                self._project_id, "europe-west2", queue_name
-            )
-
-            self._client.create_task(
-                parent=self._parent,
-                task=self._get_task(body=body, function_name=function_name),
-            )
-
+            task = self._create_task_with_retry(body, function_name, parent)
             logger.info("task created successfully")  # pragma: no cover
-        except Exception as ex:  # pylint:disable=broad-except
+            return task
+        except Exception as exc:
             logger.exception(
                 "task creation failed",
             )
-            raise CloudTaskCreationFailed(ex) from ex
+            raise CloudTaskCreationFailed from exc
 
 
 class LogCloudTaskPublisher:
