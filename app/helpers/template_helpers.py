@@ -50,8 +50,10 @@ def get_footer_context(language_code, static_content_urls, sign_out_url, theme):
         "newTabWarning": lazy_gettext("The following links open in a new tab"),
         "copyrightDeclaration": {
             "copyright": lazy_gettext(
-                "Crown copyright and database rights 2020 OS 100019153."
-            ),
+                "Crown copyright and database rights 2021 NIMA MOU577.501."
+            )
+            if theme == "census-nisra"
+            else lazy_gettext("Crown copyright and database rights 2020 OS 100019153."),
             "text": lazy_gettext("Use of address data is subject to the"),
             "link": lazy_gettext("terms and conditions"),
             "url": static_content_urls["terms_and_conditions"],
