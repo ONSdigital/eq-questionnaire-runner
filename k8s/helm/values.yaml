@@ -68,3 +68,5 @@ confirmationEmailLimit: 10
 feedbackLimit: 10
 
 submissionConfirmationBackend: "cloud-tasks"
+
+targetNodePool: "main-node-pool"
