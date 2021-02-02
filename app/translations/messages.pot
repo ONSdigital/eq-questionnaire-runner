@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2021-01-04 15:50+0000\n"
+"POT-Creation-Date: 2021-02-01 10:53+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -208,7 +208,7 @@ msgid "Office for National Statistics logo"
 msgstr ""
 
 #: app/helpers/template_helpers.py:30 app/helpers/template_helpers.py:39
-#: app/helpers/template_helpers.py:149 templates/signed-out.html:3
+#: app/helpers/template_helpers.py:151 templates/signed-out.html:3
 msgid "Census 2021"
 msgstr ""
 
@@ -221,42 +221,46 @@ msgid "The following links open in a new tab"
 msgstr ""
 
 #: app/helpers/template_helpers.py:52
-msgid "Crown copyright and database rights 2020 OS 100019153."
-msgstr ""
-
-#: app/helpers/template_helpers.py:55
-msgid "Use of address data is subject to the"
+msgid "Crown copyright and database rights 2021 NIMA MOU577.501."
 msgstr ""
 
 #: app/helpers/template_helpers.py:56
+msgid "Crown copyright and database rights 2020 OS 100019153."
+msgstr ""
+
+#: app/helpers/template_helpers.py:57
+msgid "Use of address data is subject to the"
+msgstr ""
+
+#: app/helpers/template_helpers.py:58
 msgid "terms and conditions"
 msgstr ""
 
-#: app/helpers/template_helpers.py:64
+#: app/helpers/template_helpers.py:66
 msgid "Help"
 msgstr ""
 
-#: app/helpers/template_helpers.py:69
+#: app/helpers/template_helpers.py:71
 msgid "Contact us"
 msgstr ""
 
-#: app/helpers/template_helpers.py:80
+#: app/helpers/template_helpers.py:82
 msgid "Cookies"
 msgstr ""
 
-#: app/helpers/template_helpers.py:85
+#: app/helpers/template_helpers.py:87
 msgid "Accessibility statement"
 msgstr ""
 
-#: app/helpers/template_helpers.py:90
+#: app/helpers/template_helpers.py:92
 msgid "Privacy and data protection"
 msgstr ""
 
-#: app/helpers/template_helpers.py:95
+#: app/helpers/template_helpers.py:97
 msgid "Terms and conditions"
 msgstr ""
 
-#: app/helpers/template_helpers.py:105
+#: app/helpers/template_helpers.py:107
 msgid ""
 "Make sure you <a href='{sign_out_url}'>leave this page</a> or close your "
 "browser if using a shared device"
@@ -421,11 +425,11 @@ msgstr ""
 msgid "Please submit this survey to complete it"
 msgstr ""
 
-#: app/views/handlers/confirmation_email.py:48
+#: app/views/handlers/confirmation_email.py:52
 msgid "Confirmation email"
 msgstr ""
 
-#: app/views/handlers/confirmation_email.py:62
+#: app/views/handlers/confirmation_email.py:66
 #: app/views/handlers/feedback.py:62 app/views/handlers/question.py:150
 msgid "Error: {page_title}"
 msgstr ""
