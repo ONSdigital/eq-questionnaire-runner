@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: eq-census-nisra\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2020-12-04 07:21+0000\n"
-"PO-Revision-Date: 2021-01-21 14:43\n"
+"POT-Creation-Date: 2021-02-01 10:53+0000\n"
+"PO-Revision-Date: 2021-02-02 12:33\n"
 "Last-Translator: \n"
 "Language-Team: Ulster Scots\n"
 "MIME-Version: 1.0\n"
@@ -18,26 +18,26 @@ msgstr ""
 "X-Crowdin-File-ID: 24\n"
 "Language: sco_ulster\n"
 
-#: app/forms/validators.py:338 app/jinja_filters.py:86
+#: app/forms/validators.py:338 app/jinja_filters.py:94
 #, python-format
 msgid "%(num)s year"
 msgid_plural "%(num)s years"
 msgstr[0] "%(num)s yeir"
 msgstr[1] "%(num)s yeirs"
 
-#: app/forms/validators.py:342 app/jinja_filters.py:94
+#: app/forms/validators.py:342 app/jinja_filters.py:102
 #, python-format
 msgid "%(num)s month"
 msgid_plural "%(num)s months"
 msgstr[0] "%(num)s mond"
 msgstr[1] "%(num)s monds"
 
-#: app/jinja_filters.py:137
+#: app/jinja_filters.py:145
 #, python-format
 msgid "%(date)s at %(time)s"
 msgstr "%(date)s at %(time)s"
 
-#: app/jinja_filters.py:148
+#: app/jinja_filters.py:156
 #, python-format
 msgid "%(from_date)s to %(to_date)s"
 msgstr "%(from_date)s tae %(to_date)s"
@@ -66,7 +66,7 @@ msgstr "Ootwale a repone <span class=\"u-vh\">tae ‘%(question_title)s’</span
 msgid "Enter a date"
 msgstr "Pit in a date"
 
-#: app/forms/error_messages.py:23 templates/partials/answers/address.html:56
+#: app/forms/error_messages.py:23 templates/partials/answers/address.html:57
 msgid "Enter an address"
 msgstr "Pit in a bakkin"
 
@@ -205,7 +205,7 @@ msgid "Office for National Statistics logo"
 msgstr "Offys fur Kintrie Nummerin"
 
 #: app/helpers/template_helpers.py:30 app/helpers/template_helpers.py:39
-#: app/helpers/template_helpers.py:149 templates/signed-out.html:3
+#: app/helpers/template_helpers.py:151 templates/signed-out.html:3
 msgid "Census 2021"
 msgstr "Heid-coont 20an21"
 
@@ -218,42 +218,46 @@ msgid "The following links open in a new tab"
 msgstr "Tha follaein cleeks apen in a new tab"
 
 #: app/helpers/template_helpers.py:52
+msgid "Crown copyright and database rights 2021 NIMA MOU577.501."
+msgstr "Croon copyricht an database richts 20an21 NIMA MOU577.501."
+
+#: app/helpers/template_helpers.py:56
 msgid "Crown copyright and database rights 2020 OS 100019153."
 msgstr "Croon copyricht an database richts 20an20 OS 1000191153."
 
-#: app/helpers/template_helpers.py:55
+#: app/helpers/template_helpers.py:57
 msgid "Use of address data is subject to the"
 msgstr "Uise o address data is subjeck tae tha"
 
-#: app/helpers/template_helpers.py:56
+#: app/helpers/template_helpers.py:58
 msgid "terms and conditions"
 msgstr "terms an condeetions"
 
-#: app/helpers/template_helpers.py:64
+#: app/helpers/template_helpers.py:66
 msgid "Help"
 msgstr "Help"
 
-#: app/helpers/template_helpers.py:69
+#: app/helpers/template_helpers.py:71
 msgid "Contact us"
 msgstr "Get tha houl o us"
 
-#: app/helpers/template_helpers.py:80
+#: app/helpers/template_helpers.py:82
 msgid "Cookies"
 msgstr "Cookies"
 
-#: app/helpers/template_helpers.py:85
+#: app/helpers/template_helpers.py:87
 msgid "Accessibility statement"
 msgstr "Ingangin statement"
 
-#: app/helpers/template_helpers.py:90
+#: app/helpers/template_helpers.py:92
 msgid "Privacy and data protection"
 msgstr "Hiddlins an gien taxt hainin"
 
-#: app/helpers/template_helpers.py:95
+#: app/helpers/template_helpers.py:97
 msgid "Terms and conditions"
 msgstr "Terms an condeetions"
 
-#: app/helpers/template_helpers.py:105
+#: app/helpers/template_helpers.py:107
 msgid "Make sure you <a href='{sign_out_url}'>leave this page</a> or close your browser if using a shared device"
 msgstr "Mak shair ye <a href='{sign_out_url}'>lea this page</a> or shut yer browser gin ye'r oan a yoke wi anither bodie"
 
@@ -389,7 +393,7 @@ msgstr "Ootwale anither lay-oot furtae get redd up"
 #: templates/individual_response/confirmation-post.html:21
 #: templates/individual_response/confirmation-text-message.html:31
 #: templates/individual_response/question.html:5 templates/interstitial.html:8
-#: templates/sectionsummary.html:11 templates/sectionsummary.html:54
+#: templates/sectionsummary.html:11 templates/sectionsummary.html:48
 msgid "Continue"
 msgstr "Conteenye"
 
@@ -410,14 +414,14 @@ msgstr "Pit in repones"
 msgid "Please submit this survey to complete it"
 msgstr "Ableeged gin ye'd pit in this scance furtae throch it"
 
-#: app/views/handlers/confirmation_email.py:48
+#: app/views/handlers/confirmation_email.py:52
 msgid "Confirmation email"
 msgstr "Homologatin email"
 
-#: app/views/handlers/confirmation_email.py:62
-#: app/views/handlers/feedback.py:62 app/views/handlers/question.py:149
+#: app/views/handlers/confirmation_email.py:66
+#: app/views/handlers/feedback.py:62 app/views/handlers/question.py:150
 msgid "Error: {page_title}"
-msgstr "Mistak{page_title}"
+msgstr "Mistak {page_title}"
 
 #: app/views/handlers/feedback.py:28
 msgid "Feedback"
@@ -683,7 +687,7 @@ msgstr "Gin ye wud lake tae be sent homologation 'at ye haed fillt oot yer heid-
 
 #: templates/confirmation-email-sent.html:3
 msgid "Confirmation email sent"
-msgstr "Homologation emil sent"
+msgstr "Homologation email sent"
 
 #: templates/confirmation-email-sent.html:16
 msgid "A confirmation email has been sent to {email}"
@@ -748,11 +752,11 @@ msgstr "Sen feedbak"
 msgid "If you can’t answer someone else’s questions"
 msgstr "Gin ye cannae mak repone fur anither bodie's speirins"
 
-#: templates/interstitial.html:23 templates/partials/question.html:25
+#: templates/interstitial.html:23 templates/partials/question.html:27
 msgid "If you can’t answer questions for this person"
 msgstr "Gin ye cannae mak repones tae speirins fur this bodie"
 
-#: templates/interstitial.html:32 templates/layouts/_questionnaire.html:26
+#: templates/interstitial.html:32 templates/layouts/_questionnaire.html:27
 msgid "Save and continue"
 msgstr "Hain an conteenye"
 
@@ -795,7 +799,7 @@ msgstr "Misfortunatly ye can fill oot nae mair nor tha yin scance at tha yin tim
 msgid "Close this window to continue with your current survey"
 msgstr "Shut this wundae furtae conteenye tha scance ye'r daein thenoo"
 
-#: templates/partials/answers/address.html:55 templates/question.html:10
+#: templates/partials/answers/address.html:56 templates/question.html:10
 #, python-format
 msgid "There is a problem with your answer"
 msgid_plural "There are %(num)s problems with your answer"
@@ -840,7 +844,7 @@ msgstr "Transact ID: <b>{transaction_id}</b>"
 
 #: templates/thank-you.html:35
 msgid "Your answers will be processed in the next few weeks."
-msgstr "We'r fur throch-pittin yer repones in tha cummin twa-thrie aidays."
+msgstr "We'r fur throch-pittin yer repones in tha cummin twa-thrie sennicht."
 
 #: templates/thank-you.html:36
 msgid "We may contact you to query your answers via phone or secure message."
@@ -1016,7 +1020,7 @@ msgstr "Set cookie preferences"
 msgid "Hide"
 msgstr "Hiddle"
 
-#: templates/layouts/_questionnaire.html:37
+#: templates/layouts/_questionnaire.html:38
 msgid "Choose another section and return to this later"
 msgstr "Ootwale anither shaidin an bak-cum tae this eftèr"
 
@@ -1036,15 +1040,15 @@ msgstr "Gang oot"
 msgid "Interviewer note:"
 msgstr "Interviewer note:"
 
-#: templates/partials/answer-guidance.html:18
-#: templates/partials/definition.html:18
-#: templates/partials/individual-response-guidance.html:13
+#: templates/partials/answer-guidance.html:19
+#: templates/partials/definition.html:19
+#: templates/partials/individual-response-guidance.html:14
 msgid "Hide this"
 msgstr "Hiddle this"
 
 #: templates/partials/email-form.html:25
 msgid "Email address"
-msgstr "L-poast bakkin"
+msgstr "Email address"
 
 #: templates/partials/email-form.html:26
 msgid "This will not be stored and only used once to send your confirmation"
@@ -1066,11 +1070,11 @@ msgstr "Yer repones wull help us tae mak improvements"
 msgid "Give feedback"
 msgstr "Gie feedbak"
 
-#: templates/partials/individual-response-guidance.html:24
+#: templates/partials/individual-response-guidance.html:25
 msgid "You can <em>share your household access code</em> with the people you live with so they can complete their own sections."
 msgstr "Ye can <em>gie oot yer hoosehaud ingang code</em> wi tha fowk wha leeve wi ye sae they can fill oot thair ain lay- oots."
 
-#: templates/partials/individual-response-guidance.html:25
+#: templates/partials/individual-response-guidance.html:26
 msgid "If this is not possible, there are <a href={url}>other ways each person can complete their own census.</a>"
 msgstr "Gin this cannae cum aboot, thair bes <a href={url}>ither wyes ilka bodie can fill oot thair ain heid-coont.</a>"
 
@@ -1082,23 +1086,23 @@ msgstr "This bes tha last leukit speirin in this lay-oot"
 msgid "You can also <a id='section-start-link' href='{url}'>go back to the start of the section</a>"
 msgstr "Forbye, ye can <a id='section-start-link' href='{url}'>ga'bak til tha stairt o tha lay-oot</a>"
 
-#: templates/partials/question.html:60
+#: templates/partials/question.html:62
 msgid "Selecting this will clear your answer"
 msgstr "Ootwalin this wull redd yer repone"
 
-#: templates/partials/question.html:61
+#: templates/partials/question.html:63
 msgid "cleared"
 msgstr "redd"
 
-#: templates/partials/question.html:64
+#: templates/partials/question.html:66
 msgid "Selecting this will deselect any selected options"
 msgstr "Ootwalin this wull tak oot onie ootwaled walins"
 
-#: templates/partials/question.html:65 templates/partials/question.html:73
+#: templates/partials/question.html:67 templates/partials/question.html:75
 msgid "deselected"
 msgstr "taen oot"
 
-#: templates/partials/question.html:69
+#: templates/partials/question.html:71
 msgid "Or"
 msgstr "Or"
 
@@ -1130,67 +1134,67 @@ msgstr "Pit in address by haun"
 msgid "Enter address or postcode and select from results"
 msgstr "Pit in address or poastcode an ootwale frae tha affcums"
 
-#: templates/partials/answers/address.html:41
+#: templates/partials/answers/address.html:42
 msgid "Use up and down keys to navigate suggestions once you’ve typed more than two characters. Use the enter key to select a suggestion. Touch device users, explore by touch or with swipe gestures."
 msgstr "Uise up an doon keys tae airt suggestions yinst ye hae typed mair nor twa chairacters. Uise tha enter key tae ootwale a suggestion. Touch yoke uisers, range by touch or wi a swipe ection."
 
-#: templates/partials/answers/address.html:42
+#: templates/partials/answers/address.html:43
 msgid "You have selected"
 msgstr "Ye hae ootwaled"
 
-#: templates/partials/answers/address.html:43
+#: templates/partials/answers/address.html:44
 msgid "Enter 3 or more characters for suggestions."
 msgstr "Pit in thrie or mair chairacters fur suggestions."
 
-#: templates/partials/answers/address.html:44
+#: templates/partials/answers/address.html:45
 msgid "There is one suggestion available."
 msgstr "There bes yin suggestion appen tae."
 
-#: templates/partials/answers/address.html:45
+#: templates/partials/answers/address.html:46
 msgid "There are {n} suggestions available."
 msgstr "There bes {n} suggestions appen tae."
 
-#: templates/partials/answers/address.html:46
+#: templates/partials/answers/address.html:47
 msgid "Results have been limited to 10 suggestions. Type more characters to improve your search"
 msgstr "Aff-cums hae bin restricktit tae 10 suggestions. Teep mair chairacters tae forrit yer hunt"
 
-#: templates/partials/answers/address.html:47
+#: templates/partials/answers/address.html:48
 msgid "There are {n} for {x}"
 msgstr "Thair bes {n} fur{x}"
 
-#: templates/partials/answers/address.html:48
+#: templates/partials/answers/address.html:49
 msgid "{n} addresses"
 msgstr "{n} addresses"
 
-#: templates/partials/answers/address.html:49
+#: templates/partials/answers/address.html:50
 msgid "Enter more of the address to improve results"
 msgstr "Pit in mair o tha address tae forrit aff-cums"
 
-#: templates/partials/answers/address.html:50
+#: templates/partials/answers/address.html:51
 msgid "Select an address"
 msgstr "Ootwale an address"
 
-#: templates/partials/answers/address.html:51
+#: templates/partials/answers/address.html:52
 msgid "No results found. Try entering a different part of the address"
 msgstr "Nae aff-cums fun. Try pittin in anither pairt o tha address"
 
-#: templates/partials/answers/address.html:52
+#: templates/partials/answers/address.html:53
 msgid "{n} results found. Enter more of the address to improve results"
 msgstr "{n} aff-cums fun. Pit in mair o tha address tae forrit aff-cums"
 
-#: templates/partials/answers/address.html:53
+#: templates/partials/answers/address.html:54
 msgid "Enter more of the address to get results"
 msgstr "Pit in mair o tha address tae get aff-cums"
 
-#: templates/partials/answers/address.html:57
+#: templates/partials/answers/address.html:58
 msgid "Select or manually enter an address"
 msgstr "Ootwale or pit in bae haun an address"
 
-#: templates/partials/answers/address.html:58
+#: templates/partials/answers/address.html:59
 msgid "Sorry, there was a problem loading addresses"
 msgstr "Thair wus a pall laidin addresses"
 
-#: templates/partials/answers/address.html:59
+#: templates/partials/answers/address.html:60
 msgid "Enter address manually"
 msgstr "Pit in address bae haun"
 
@@ -1277,7 +1281,7 @@ msgid "No answer provided"
 msgstr "Nae repone gien"
 
 #: templates/partials/summary/collapsible-summary.html:36
-#: templates/partials/summary/list-summary.html:10
+#: templates/partials/summary/list-summary.html:8
 #: templates/partials/summary/summary.html:19
 msgid "Change"
 msgstr "Cheynge"
@@ -1287,15 +1291,15 @@ msgstr "Cheynge"
 msgid "Change your answer for:"
 msgstr "Cheynge yer repone fur:"
 
-#: templates/partials/summary/list-summary.html:11
+#: templates/partials/summary/list-summary.html:9
 msgid "Change details for {item_name}"
 msgstr "Cheynge rinnins fur {item_name}"
 
-#: templates/partials/summary/list-summary.html:12
+#: templates/partials/summary/list-summary.html:10
 msgid "Remove"
 msgstr "Redd"
 
-#: templates/partials/summary/list-summary.html:13
+#: templates/partials/summary/list-summary.html:11
 msgid "Remove {item_name}"
 msgstr "Redd {item_name}"
 
