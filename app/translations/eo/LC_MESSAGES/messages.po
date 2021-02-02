@@ -421,7 +421,7 @@ msgstr "Homologatin email"
 #: app/views/handlers/confirmation_email.py:66
 #: app/views/handlers/feedback.py:62 app/views/handlers/question.py:150
 msgid "Error: {page_title}"
-msgstr "Mistak {page_title}"
+msgstr "Mistak: {page_title}"
 
 #: app/views/handlers/feedback.py:28
 msgid "Feedback"
