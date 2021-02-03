@@ -37,6 +37,9 @@ service:
 ingress:
   enabled: true
 
+cloudArmor:
+  policyName: ""
+
 resources:
   requests:
     cpu: ""

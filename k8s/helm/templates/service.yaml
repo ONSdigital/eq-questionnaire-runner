@@ -8,6 +8,9 @@ metadata:
     app.kubernetes.io/instance: {{ .Release.Name }}
     app.kubernetes.io/managed-by: {{ .Release.Service }}
   annotations:
+    {{- if .Values.cloudArmor.policyName }}
+    cloud.google.com/backend-config: '{"ports": {"80":"runner-backend-config"}}'
+    {{- end }}
     cloud.google.com/neg: '{"ingress": true}'
 spec:
   type: {{ .Values.service.type }}
