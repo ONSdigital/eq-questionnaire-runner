@@ -56,7 +56,7 @@ rollingUpdate:
   maxSurge: ""
 
 cdn:
-  url: "https://cdn.eq.census-gcp.onsdigital.uk"
+  url: "https://cdn.ons.gov.uk"
   assets_path: "/design-system"
 
 addressLookupApi:
