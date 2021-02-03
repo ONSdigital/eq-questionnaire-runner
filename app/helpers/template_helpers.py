@@ -44,42 +44,35 @@ def get_page_header_context(language, theme):
 
 
 def get_footer_context(language_code, static_content_urls, sign_out_url, theme):
-    if theme == "census-nisra":
-        items_list = [
-            {
-                "text": lazy_gettext("Help"),
-                "url": static_content_urls["help"],
-                "target": "_blank",
-            },
-            {
-                "text": lazy_gettext("Contact us"),
-                "url": static_content_urls["contact_us"],
-                "target": "_blank",
-            },
-        ]
-    else:
-        items_list = [
-            {
-                "text": lazy_gettext("Help"),
-                "url": static_content_urls["help"],
-                "target": "_blank",
-            },
-            {
-                "text": lazy_gettext("Contact us"),
-                "url": static_content_urls["contact_us"],
-                "target": "_blank",
-            },
-            {
-                "text": lazy_gettext("Languages"),
-                "url": static_content_urls["languages"],
-                "target": "_blank",
-            },
-            {
-                "text": lazy_gettext("BSL and audio videos"),
-                "url": static_content_urls["bsl_and_audio_videos"],
-                "target": "_blank",
-            },
-        ]
+
+    items_list = [
+        {
+            "text": lazy_gettext("Help"),
+            "url": static_content_urls["help"],
+            "target": "_blank",
+        },
+        {
+            "text": lazy_gettext("Contact us"),
+            "url": static_content_urls["contact_us"],
+            "target": "_blank",
+        },
+    ]
+    if theme != "census-nisra":
+        items_list.extend(
+            [
+                {
+                    "text": lazy_gettext("Languages"),
+                    "url": static_content_urls["languages"],
+                    "target": "_blank",
+                },
+                {
+                    "text": lazy_gettext("BSL and audio videos"),
+                    "url": static_content_urls["bsl_and_audio_videos"],
+                    "target": "_blank",
+                },
+            ]
+        )
+
     default_context = {
         "lang": language_code,
         "crest": True,
@@ -250,11 +243,7 @@ def get_static_content_urls(language_code: str, base_url: str, schema_theme: str
         )
 
     elif schema_theme == "census-nisra":
-        help_path = (
-            "help/help-with-the-questions/online-questions-help/"
-            if schema_theme == "census-nisra"
-            else "help/how-to-answer-questions/online-questions-help/"
-        )
+        help_path = "help/how-to-answer-questions/online-questions-help/"
         cookies_path = "cookies/"
         accessibility_statement_path = "accessibility-statement/"
         privacy_and_data_protection_path = "privacy-and-data-protection/"
@@ -262,11 +251,7 @@ def get_static_content_urls(language_code: str, base_url: str, schema_theme: str
         contact_us = "contact-us/"
 
     else:
-        help_path = (
-            "help/help-with-the-questions/online-questions-help/"
-            if schema_theme == "census-nisra"
-            else "help/how-to-answer-questions/online-questions-help/"
-        )
+        help_path = "help/help-with-the-questions/online-questions-help/"
         cookies_path = "cookies/"
         accessibility_statement_path = "accessibility-statement/"
         privacy_and_data_protection_path = "privacy-and-data-protection/"
