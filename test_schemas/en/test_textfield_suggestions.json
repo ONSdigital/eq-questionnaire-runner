@@ -37,7 +37,7 @@
                                         "label": "Country",
                                         "mandatory": false,
                                         "suggestions": {
-                                            "url": "https://cdn.eq.census-gcp.onsdigital.uk/eq-lookup-suggestions-data/v5.3.0/gb/en/countries-of-birth.json",
+                                            "url": "https://cdn.census.gov.uk/eq-lookup-suggestions-data/v5.3.0/gb/en/countries-of-birth.json",
                                             "allow_multiple": false
                                         },
                                         "type": "TextField"
@@ -58,7 +58,7 @@
                                         "label": "Passports",
                                         "mandatory": false,
                                         "suggestions": {
-                                            "url": "https://cdn.eq.census-gcp.onsdigital.uk/eq-lookup-suggestions-data/v5.3.0/gb/en/passport-countries.json",
+                                            "url": "https://cdn.census.gov.uk/eq-lookup-suggestions-data/v5.3.0/gb/en/passport-countries.json",
                                             "allow_multiple": true
                                         },
                                         "type": "TextField"
