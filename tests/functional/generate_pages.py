@@ -115,7 +115,7 @@ ANSWER_LABEL_GETTER = Template(
 
 ANSWER_ERROR_GETTER = Template(
     r"""  ${answerName}ErrorItem() {
-    return `[data-qa=error-body] div.panel__body > ul`;
+    return `[data-qa=error-body] div.panel__body > ol`;
   }
 
 """

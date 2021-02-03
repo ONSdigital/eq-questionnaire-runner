@@ -22,7 +22,7 @@ describe("Email confirmation", () => {
       $(ThankYouPage.submit()).click();
       expect(browser.getUrl()).to.contain(ThankYouPage.pageName);
       expect($(ThankYouPage.errorPanel()).isExisting()).to.be.true;
-      expect($(ThankYouPage.errorPanel()).getText()).to.contain("1. Enter an email address");
+      expect($(ThankYouPage.errorPanel()).getText()).to.contain("Enter an email address");
     });
 
     it("When I submit the form without providing a correctly formatted email address, Then I get an error message", () => {
@@ -30,7 +30,7 @@ describe("Email confirmation", () => {
       $(ThankYouPage.submit()).click();
       expect(browser.getUrl()).to.contain(ThankYouPage.pageName);
       expect($(ThankYouPage.errorPanel()).isExisting()).to.be.true;
-      expect($(ThankYouPage.errorPanel()).getText()).to.contain("1. Enter an email address in a valid format, for example name@example.com");
+      expect($(ThankYouPage.errorPanel()).getText()).to.contain("Enter an email address in a valid format, for example name@example.com");
     });
 
     it("When I submit the form with a valid email address, Then I go to the email confirmation sent page", () => {
@@ -45,7 +45,7 @@ describe("Email confirmation", () => {
       $(ConfirmationEmailPage.submit()).click();
       expect(browser.getUrl()).to.contain("confirmation-email/send");
       expect($(ConfirmationEmailPage.errorPanel()).isExisting()).to.be.true;
-      expect($(ConfirmationEmailPage.errorPanel()).getText()).to.equal("1. Enter an email address");
+      expect($(ConfirmationEmailPage.errorPanel()).getText()).to.equal("Enter an email address");
     });
 
     it("when I submit the form without providing a correctly formatted email address, Then I get an error message", () => {
@@ -53,7 +53,7 @@ describe("Email confirmation", () => {
       $(ConfirmationEmailPage.submit()).click();
       expect(browser.getUrl()).to.contain("confirmation-email/send");
       expect($(ConfirmationEmailPage.errorPanel()).isExisting()).to.be.true;
-      expect($(ConfirmationEmailPage.errorPanel()).getText()).to.equal("1. Enter an email address in a valid format, for example name@example.com");
+      expect($(ConfirmationEmailPage.errorPanel()).getText()).to.equal("Enter an email address in a valid format, for example name@example.com");
     });
 
     it("When I submit the form with a valid email, Then I go to the email confirmation page", () => {

@@ -26,9 +26,9 @@ describe("Feedback", () => {
       $(FeedbackPage.submit()).click();
       expect(browser.getUrl()).to.contain(FeedbackPage.pageName);
       expect($(FeedbackPage.errorPanel()).isExisting()).to.be.true;
-      expect($(FeedbackPage.errorPanel()).getText()).to.contain("There are 2 problems with your feedback");
-      expect($(FeedbackPage.errorPanel()).getText()).to.contain("1. Select what your feedback is about");
-      expect($(FeedbackPage.errorPanel()).getText()).to.contain("2. Enter your feedback");
+      expect($(FeedbackPage.errorPanel()).getText()).to.contain(
+        "There are 2 problems with your feedback\nSelect what your feedback is about\nEnter your feedback"
+      );
     });
 
     it("When I enter valid feedback, Then I can submit the feedback page and get confirmation that the feedback has been sent", () => {

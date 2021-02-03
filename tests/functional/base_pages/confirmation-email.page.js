@@ -18,7 +18,7 @@ class ConfirmationEmailSentPage extends QuestionPage {
   }
 
   errorPanel() {
-    return `[data-qa=error-body] div.panel__body > ul`;
+    return `[data-qa=error-body] div.panel__body > ol`;
   }
 
   feedback() {
