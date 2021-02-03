@@ -243,7 +243,7 @@ def get_static_content_urls(language_code: str, base_url: str, schema_theme: str
         )
 
     elif schema_theme == "census-nisra":
-        help_path = "help/how-to-answer-questions/online-questions-help/"
+        help_path = "help/help-with-the-questions/online-questions-help/"
         cookies_path = "cookies/"
         accessibility_statement_path = "accessibility-statement/"
         privacy_and_data_protection_path = "privacy-and-data-protection/"
@@ -251,7 +251,7 @@ def get_static_content_urls(language_code: str, base_url: str, schema_theme: str
         contact_us = "contact-us/"
 
     else:
-        help_path = "help/help-with-the-questions/online-questions-help/"
+        help_path = "help/how-to-answer-questions/online-questions-help/"
         cookies_path = "cookies/"
         accessibility_statement_path = "accessibility-statement/"
         privacy_and_data_protection_path = "privacy-and-data-protection/"
