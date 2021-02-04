@@ -230,6 +230,7 @@ def get_census_base_url(schema_theme: str, language_code: str) -> str:
 
 @lru_cache(maxsize=None)
 def get_static_content_urls(language_code: str, base_url: str, schema_theme: str):
+    is_nisra_theme = schema_theme == "census-nisra"
     if language_code == "cy":
         help_path = "help/sut-i-ateb-y-cwestiynau/help-y-cwestiynau-ar-lein/"
         cookies_path = "cwcis/"
@@ -241,17 +242,12 @@ def get_static_content_urls(language_code: str, base_url: str, schema_theme: str
         bsl_and_audio_videos = (
             "help/ieithoedd-a-hygyrchedd/hygyrchedd/fideos-hygyrch-gyda-bsl/"
         )
-
-    elif schema_theme == "census-nisra":
-        help_path = "help/help-with-the-questions/online-questions-help/"
-        cookies_path = "cookies/"
-        accessibility_statement_path = "accessibility-statement/"
-        privacy_and_data_protection_path = "privacy-and-data-protection/"
-        terms_and_conditions_path = "terms-and-conditions/"
-        contact_us = "contact-us/"
-
     else:
-        help_path = "help/how-to-answer-questions/online-questions-help/"
+        help_path = (
+            "help/help-with-the-questions/online-questions-help/"
+            if is_nisra_theme
+            else "help/how-to-answer-questions/online-questions-help/"
+        )
         cookies_path = "cookies/"
         accessibility_statement_path = "accessibility-statement/"
         privacy_and_data_protection_path = "privacy-and-data-protection/"
@@ -269,7 +265,7 @@ def get_static_content_urls(language_code: str, base_url: str, schema_theme: str
         "terms_and_conditions": f"{base_url}{terms_and_conditions_path}",
         "contact_us": f"{base_url}{contact_us}",
     }
-    if schema_theme != "census-nisra":
+    if not is_nisra_theme:
         item_list["languages"] = f"{base_url}{languages}"
         item_list["bsl_and_audio_videos"] = f"{base_url}{bsl_and_audio_videos}"
 
