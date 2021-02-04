@@ -207,7 +207,7 @@ def render_template(template: str, **kwargs: Mapping) -> str:
     )
 
 
-def get_google_tag_manager_context() -> dict:
+def get_google_tag_manager_context() -> Mapping:
     cookie = request.cookies.get("ons_cookie_policy")
     if cookie and "'usage':true" in cookie:
         return {
