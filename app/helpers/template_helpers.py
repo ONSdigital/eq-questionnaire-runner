@@ -15,7 +15,7 @@ DEFAULT_THEME = "census"
 
 
 @lru_cache(maxsize=None)
-def get_page_header_context(language: str, theme: str) -> dict:
+def get_page_header_context(language: str, theme: str) -> Mapping:
     default_context = {
         "logo": "ons-logo-pos-" + language,
         "logoAlt": lazy_gettext("Office for National Statistics logo"),
