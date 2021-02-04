@@ -160,7 +160,7 @@ def _map_theme(theme: str) -> str:
     return "census"
 
 
-def render_template(template: str, **kwargs: dict) -> str:
+def render_template(template: str, **kwargs: Mapping) -> str:
     template = f"{template.lower()}.html"
     theme = cookie_session.get("theme", DEFAULT_THEME)
     survey_title = lazy_gettext("Census 2021")
