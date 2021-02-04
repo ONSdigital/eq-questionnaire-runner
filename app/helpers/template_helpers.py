@@ -228,7 +228,7 @@ def get_census_base_url(schema_theme: str, language_code: str) -> str:
 
 
 @lru_cache(maxsize=None)
-def get_static_content_urls(language_code: str, base_url: str, schema_theme: str) -> dict:
+def get_static_content_urls(language_code: str, base_url: str, schema_theme: str) -> Mapping:
     is_nisra_theme = schema_theme == "census-nisra"
     if language_code == "cy":
         help_path = "help/sut-i-ateb-y-cwestiynau/help-y-cwestiynau-ar-lein/"
