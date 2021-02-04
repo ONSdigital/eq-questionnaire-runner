@@ -43,7 +43,7 @@ def get_page_header_context(language: str, theme: str) -> Mapping:
     return context.get(theme)
 
 
-def get_footer_context(language_code: str, static_content_urls: dict, sign_out_url: str, theme: str) -> dict:
+def get_footer_context(language_code: str, static_content_urls: Mapping, sign_out_url: str, theme: str) -> Mapping:
 
     items_list = [
         {
