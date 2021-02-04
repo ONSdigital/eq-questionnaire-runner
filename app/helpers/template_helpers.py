@@ -256,7 +256,7 @@ def get_static_content_urls(language_code: str, base_url: str, schema_theme: str
         bsl_and_audio_videos = (
             "help/languages-and-accessibility/accessibility/accessible-videos-with-bsl/"
         )
-    item_list = {
+    urls = {
         "help": f"{base_url}{help_path}",
         "cookies": f"{base_url}{cookies_path}",
         "accessibility_statement": f"{base_url}{accessibility_statement_path}",
@@ -265,10 +265,10 @@ def get_static_content_urls(language_code: str, base_url: str, schema_theme: str
         "contact_us": f"{base_url}{contact_us}",
     }
     if not is_nisra_theme:
-        item_list["languages"] = f"{base_url}{languages}"
-        item_list["bsl_and_audio_videos"] = f"{base_url}{bsl_and_audio_videos}"
+        urls["languages"] = f"{base_url}{languages}"
+        urls["bsl_and_audio_videos"] = f"{base_url}{bsl_and_audio_videos}"
 
-    return item_list
+    return urls
 
 
 def safe_content(content: str) -> str:
