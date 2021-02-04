@@ -15,7 +15,7 @@ DEFAULT_THEME = "census"
 
 
 @lru_cache(maxsize=None)
-def get_page_header_context(language, theme):
+def get_page_header_context(language: str, theme: str) -> dict:
     default_context = {
         "logo": "ons-logo-pos-" + language,
         "logoAlt": lazy_gettext("Office for National Statistics logo"),
@@ -43,7 +43,7 @@ def get_page_header_context(language, theme):
     return context.get(theme)
 
 
-def get_footer_context(language_code, static_content_urls, sign_out_url, theme):
+def get_footer_context(language_code: str, static_content_urls: dict, sign_out_url: str, theme: str) -> dict:
 
     items_list = [
         {
@@ -146,11 +146,10 @@ def get_footer_context(language_code, static_content_urls, sign_out_url, theme):
             },
         },
     }
-
     return context.get(theme)
 
 
-def _map_theme(theme):
+def _map_theme(theme: str) -> str:
     """Maps a survey schema theme to a design system theme
 
     :param theme: A schema defined theme
@@ -161,7 +160,7 @@ def _map_theme(theme):
     return "census"
 
 
-def render_template(template, **kwargs):
+def render_template(template: str, **kwargs: dict) -> str:
     template = f"{template.lower()}.html"
     theme = cookie_session.get("theme", DEFAULT_THEME)
     survey_title = lazy_gettext("Census 2021")
@@ -208,7 +207,7 @@ def render_template(template, **kwargs):
     )
 
 
-def get_google_tag_manager_context():
+def get_google_tag_manager_context() -> dict:
     cookie = request.cookies.get("ons_cookie_policy")
     if cookie and "'usage':true" in cookie:
         return {
@@ -229,7 +228,7 @@ def get_census_base_url(schema_theme: str, language_code: str) -> str:
 
 
 @lru_cache(maxsize=None)
-def get_static_content_urls(language_code: str, base_url: str, schema_theme: str):
+def get_static_content_urls(language_code: str, base_url: str, schema_theme: str) -> dict:
     is_nisra_theme = schema_theme == "census-nisra"
     if language_code == "cy":
         help_path = "help/sut-i-ateb-y-cwestiynau/help-y-cwestiynau-ar-lein/"
@@ -272,7 +271,7 @@ def get_static_content_urls(language_code: str, base_url: str, schema_theme: str
     return item_list
 
 
-def safe_content(content):
+def safe_content(content: str) -> str:
     """Make content safe.
 
     Replaces variable with ellipsis and strips any HTML tags.
@@ -288,7 +287,7 @@ def safe_content(content):
     return content
 
 
-def get_data_layer(schema_theme):
+def get_data_layer(schema_theme: str) -> list:
     if schema_theme == "census-nisra":
         return [{"nisra": True}]
 
