@@ -50,8 +50,6 @@ CSP_POLICY = {
     "script-src": [
         "'self'",
         "https://www.googletagmanager.com",
-        "'unsafe-inline'",
-        "'unsafe-eval'",
     ],
     "style-src": [
         "'self'",
