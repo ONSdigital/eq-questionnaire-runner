@@ -1,6 +1,6 @@
 import re
 from functools import lru_cache
-from typing import List, Mapping
+from typing import Any, Dict, List, Mapping, Optional
 
 from flask import current_app
 from flask import render_template as flask_render_template
@@ -16,7 +16,7 @@ DEFAULT_THEME = "census"
 
 
 @lru_cache(maxsize=None)
-def get_page_header_context(language: str, theme: str) -> Mapping:
+def get_page_header_context(language: str, theme: str) -> Dict[str, Any]:
     default_context = {
         "logo": "ons-logo-pos-" + language,
         "logoAlt": lazy_gettext("Office for National Statistics logo"),
@@ -41,10 +41,12 @@ def get_page_header_context(language: str, theme: str) -> Mapping:
             "customHeaderLogo": "nisra",
         },
     }
-    return context.get(theme)
+    return context.get(theme, {})
 
 
-def get_footer_context(language_code: str, static_content_urls: Mapping, sign_out_url: str, theme: str) -> Mapping:
+def get_footer_context(
+    language_code: str, static_content_urls: Mapping, sign_out_url: str, theme: str
+) -> Optional[Dict[str, Any]]:
 
     items_list = [
         {
@@ -198,7 +200,7 @@ def render_template(template: str, **kwargs: Mapping) -> str:
         language_code=get_locale().language,
         survey_title=survey_title,
         cdn_url=cdn_url,
-        csp_nonce=request.csp_nonce,
+        csp_nonce=request.csp_nonce,  # type: ignore
         address_lookup_api_url=current_app.config["ADDRESS_LOOKUP_API_URL"],
         data_layer=get_data_layer(theme),
         include_csrf_token=include_csrf_token,
@@ -229,7 +231,9 @@ def get_census_base_url(schema_theme: str, language_code: str) -> str:
 
 
 @lru_cache(maxsize=None)
-def get_static_content_urls(language_code: str, base_url: str, schema_theme: str) -> Mapping:
+def get_static_content_urls(
+    language_code: str, base_url: str, schema_theme: str
+) -> Mapping:
     is_nisra_theme = schema_theme == "census-nisra"
     if language_code == "cy":
         help_path = "help/sut-i-ateb-y-cwestiynau/help-y-cwestiynau-ar-lein/"
