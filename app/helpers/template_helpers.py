@@ -1,5 +1,6 @@
 import re
 from functools import lru_cache
+from typing import List, Mapping
 
 from flask import current_app
 from flask import render_template as flask_render_template
