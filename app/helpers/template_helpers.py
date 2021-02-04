@@ -287,7 +287,7 @@ def safe_content(content: str) -> str:
     return content
 
 
-def get_data_layer(schema_theme: str) -> list:
+def get_data_layer(schema_theme: str) -> List:
     if schema_theme == "census-nisra":
         return [{"nisra": True}]
 
