@@ -1,5 +1,6 @@
 {% extends "layout/_template.njk" %}
 {% from "components/cookies-banner/_macro.njk" import onsCookiesBanner %}
+{% from "components/skip-to-content/_macro.njk" import onsSkipToContent %}
 
 {% set form = {
   "attributes": {
@@ -103,6 +104,16 @@
     </noscript>
     <!-- End Google Tag Manager (noscript) -->
   {% endif %}
+{% endblock %}
+
+
+{% block skipLink %}
+  {{
+    onsSkipToContent({
+      "url": "#main-content",
+      "text": _("Skip to main content")
+    })
+  }}
 {% endblock %}
 
 
