@@ -1,5 +1,6 @@
 import re
 from functools import lru_cache
+from typing import Any, Dict, List, Mapping, Optional
 
 from flask import current_app
 from flask import render_template as flask_render_template
@@ -15,7 +16,7 @@ DEFAULT_THEME = "census"
 
 
 @lru_cache(maxsize=None)
-def get_page_header_context(language, theme):
+def get_page_header_context(language: str, theme: str) -> Dict[str, Any]:
     default_context = {
         "logo": "ons-logo-pos-" + language,
         "logoAlt": lazy_gettext("Office for National Statistics logo"),
@@ -40,10 +41,41 @@ def get_page_header_context(language, theme):
             "customHeaderLogo": "nisra",
         },
     }
-    return context.get(theme)
+    return context.get(theme, {})
 
 
-def get_footer_context(language_code, static_content_urls, sign_out_url, theme):
+def get_footer_context(
+    language_code: str, static_content_urls: Mapping, sign_out_url: str, theme: str
+) -> Optional[Dict[str, Any]]:
+
+    items_list = [
+        {
+            "text": lazy_gettext("Help"),
+            "url": static_content_urls["help"],
+            "target": "_blank",
+        },
+        {
+            "text": lazy_gettext("Contact us"),
+            "url": static_content_urls["contact_us"],
+            "target": "_blank",
+        },
+    ]
+    if theme != "census-nisra":
+        items_list.extend(
+            [
+                {
+                    "text": lazy_gettext("Languages"),
+                    "url": static_content_urls["languages"],
+                    "target": "_blank",
+                },
+                {
+                    "text": lazy_gettext("BSL and audio videos"),
+                    "url": static_content_urls["bsl_and_audio_videos"],
+                    "target": "_blank",
+                },
+            ]
+        )
+
     default_context = {
         "lang": language_code,
         "crest": True,
@@ -60,20 +92,7 @@ def get_footer_context(language_code, static_content_urls, sign_out_url, theme):
             "target": "_blank",
         },
         "rows": [
-            {
-                "itemsList": [
-                    {
-                        "text": lazy_gettext("Help"),
-                        "url": static_content_urls["help"],
-                        "target": "_blank",
-                    },
-                    {
-                        "text": lazy_gettext("Contact us"),
-                        "url": static_content_urls["contact_us"],
-                        "target": "_blank",
-                    },
-                ]
-            },
+            {"itemsList": items_list},
         ],
         "legal": [
             {
@@ -130,11 +149,10 @@ def get_footer_context(language_code, static_content_urls, sign_out_url, theme):
             },
         },
     }
-
     return context.get(theme)
 
 
-def _map_theme(theme):
+def _map_theme(theme: str) -> str:
     """Maps a survey schema theme to a design system theme
 
     :param theme: A schema defined theme
@@ -145,7 +163,7 @@ def _map_theme(theme):
     return "census"
 
 
-def render_template(template, **kwargs):
+def render_template(template: str, **kwargs: Mapping) -> str:
     template = f"{template.lower()}.html"
     theme = cookie_session.get("theme", DEFAULT_THEME)
     survey_title = lazy_gettext("Census 2021")
@@ -182,7 +200,7 @@ def render_template(template, **kwargs):
         language_code=get_locale().language,
         survey_title=survey_title,
         cdn_url=cdn_url,
-        csp_nonce=request.csp_nonce,
+        csp_nonce=request.csp_nonce,  # type: ignore
         address_lookup_api_url=current_app.config["ADDRESS_LOOKUP_API_URL"],
         data_layer=get_data_layer(theme),
         include_csrf_token=include_csrf_token,
@@ -192,7 +210,7 @@ def render_template(template, **kwargs):
     )
 
 
-def get_google_tag_manager_context():
+def get_google_tag_manager_context() -> Mapping:
     cookie = request.cookies.get("ons_cookie_policy")
     if cookie and "'usage':true" in cookie:
         return {
@@ -213,28 +231,37 @@ def get_census_base_url(schema_theme: str, language_code: str) -> str:
 
 
 @lru_cache(maxsize=None)
-def get_static_content_urls(language_code: str, base_url: str, schema_theme: str):
+def get_static_content_urls(
+    language_code: str, base_url: str, schema_theme: str
+) -> Mapping:
+    is_nisra_theme = schema_theme == "census-nisra"
     if language_code == "cy":
         help_path = "help/sut-i-ateb-y-cwestiynau/help-y-cwestiynau-ar-lein/"
         cookies_path = "cwcis/"
-        accessibility_statement_path = "hygyrchedd/"
+        accessibility_statement_path = "datganiad-hygyrchedd/"
         privacy_and_data_protection_path = "preifatrwydd-a-diogelu-data/"
         terms_and_conditions_path = "telerau-ac-amodau/"
         contact_us = "cysylltu-a-ni/"
-
+        languages = "help/ieithoedd-a-hygyrchedd/ieithoedd/"
+        bsl_and_audio_videos = (
+            "help/ieithoedd-a-hygyrchedd/hygyrchedd/fideos-hygyrch-gyda-bsl/"
+        )
     else:
         help_path = (
             "help/help-with-the-questions/online-questions-help/"
-            if schema_theme == "census-nisra"
+            if is_nisra_theme
             else "help/how-to-answer-questions/online-questions-help/"
         )
         cookies_path = "cookies/"
-        accessibility_statement_path = "accessibility/"
+        accessibility_statement_path = "accessibility-statement/"
         privacy_and_data_protection_path = "privacy-and-data-protection/"
         terms_and_conditions_path = "terms-and-conditions/"
         contact_us = "contact-us/"
-
-    return {
+        languages = "help/languages-and-accessibility/languages/"
+        bsl_and_audio_videos = (
+            "help/languages-and-accessibility/accessibility/accessible-videos-with-bsl/"
+        )
+    urls = {
         "help": f"{base_url}{help_path}",
         "cookies": f"{base_url}{cookies_path}",
         "accessibility_statement": f"{base_url}{accessibility_statement_path}",
@@ -242,9 +269,14 @@ def get_static_content_urls(language_code: str, base_url: str, schema_theme: str
         "terms_and_conditions": f"{base_url}{terms_and_conditions_path}",
         "contact_us": f"{base_url}{contact_us}",
     }
+    if not is_nisra_theme:
+        urls["languages"] = f"{base_url}{languages}"
+        urls["bsl_and_audio_videos"] = f"{base_url}{bsl_and_audio_videos}"
+
+    return urls
 
 
-def safe_content(content):
+def safe_content(content: str) -> str:
     """Make content safe.
 
     Replaces variable with ellipsis and strips any HTML tags.
@@ -260,7 +292,7 @@ def safe_content(content):
     return content
 
 
-def get_data_layer(schema_theme):
+def get_data_layer(schema_theme: str) -> List:
     if schema_theme == "census-nisra":
         return [{"nisra": True}]
 
