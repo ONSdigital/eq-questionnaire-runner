@@ -32,7 +32,7 @@ def get_page_header_context(language: str, theme: str) -> Dict[str, Any]:
         },
         "census-nisra": {
             "logo": "nisra-logo-en",
-            "mobileLogo": "nisra-logo-en",
+            "mobileLogo": "nisra-logo-en-mobile",
             "logoAlt": lazy_gettext(
                 "Northern Ireland Statistics and Research Agency logo"
             ),
