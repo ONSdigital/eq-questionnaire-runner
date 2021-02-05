@@ -14,7 +14,7 @@ def test_get_footer_context_nisra_theme(app):
             "newTabWarning": "The following links open in a new tab",
             "copyrightDeclaration": {
                 "copyright": "Crown copyright and database rights 2021 NIMA MOU577.501.",
-                "text": "Use of address data is subject to the terms and conditions",
+                "text": "Use of address data is subject to the terms and conditions.",
             },
             "rows": [
                 {
