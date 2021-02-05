@@ -69,6 +69,8 @@ CSP_POLICY = {
         "https://ssl.gstatic.com",
         "https://www.gstatic.com",
     ],
+    "object-src": ["'none'"],
+    "base-uri": ["'none'"],
 }
 
 compress = Compress()
@@ -239,7 +241,7 @@ def setup_jinja_env(application):
 def _add_cdn_url_to_csp_policy(cdn_url) -> Dict:
     csp_policy = deepcopy(CSP_POLICY)
     for directive in csp_policy:
-        if directive != "frame-src":
+        if directive not in ["frame-src", "object-src", "base-uri"]:
             csp_policy[directive].append(cdn_url)
     return csp_policy
 

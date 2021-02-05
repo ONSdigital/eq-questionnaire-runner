@@ -159,6 +159,14 @@ class TestCreateApp(unittest.TestCase):  # pylint: disable=too-many-public-metho
                 f"connect-src 'self' https://www.google-analytics.com {cdn_url} {address_lookup_api_url}",
                 csp_policy_parts,
             )
+            self.assertIn(
+                f"object-src 'none'",
+                csp_policy_parts,
+            )
+            self.assertIn(
+                f"base-uri 'none'",
+                csp_policy_parts,
+            )
 
     # Indirectly covered by higher level integration
     # tests, keeping to highlight that create_app is where
