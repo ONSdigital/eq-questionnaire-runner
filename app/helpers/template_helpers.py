@@ -86,10 +86,9 @@ def get_footer_context(
             )
             if theme == "census-nisra"
             else lazy_gettext("Crown copyright and database rights 2020 OS 100019153."),
-            "text": lazy_gettext("Use of address data is subject to the"),
-            "link": lazy_gettext("terms and conditions"),
-            "url": static_content_urls["terms_and_conditions"],
-            "target": "_blank",
+            "text": lazy_gettext(
+                "Use of address data is subject to the terms and conditions."
+            ),
         },
         "rows": [
             {"itemsList": items_list},
