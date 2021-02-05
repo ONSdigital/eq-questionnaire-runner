@@ -50,6 +50,8 @@ CSP_POLICY = {
     "script-src": [
         "'self'",
         "https://www.googletagmanager.com",
+        "https://www.google-analytics.com",
+        "https://ssl.google-analytics.com",
     ],
     "style-src": [
         "'self'",
