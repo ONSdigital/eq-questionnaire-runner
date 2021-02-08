@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: eq-census-nisra\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2021-02-05 08:09+0000\n"
-"PO-Revision-Date: 2021-02-08 08:08\n"
+"PO-Revision-Date: 2021-02-08 11:11\n"
 "Last-Translator: \n"
 "Language-Team: Irish\n"
 "MIME-Version: 1.0\n"
@@ -252,7 +252,7 @@ msgstr "Cóiopcheart na Corónach agus cearta bhunachar sonraí 2020 OS 10001915
 
 #: app/helpers/template_helpers.py:89
 msgid "Use of address data is subject to the terms and conditions."
-msgstr ""
+msgstr "Tá úsáid sonraí seolta faoi réir téarmaí agus coinníollacha."
 
 #: app/helpers/template_helpers.py:100
 msgid "Cookies"
