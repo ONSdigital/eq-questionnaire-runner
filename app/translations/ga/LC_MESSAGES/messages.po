@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: eq-census-nisra\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2021-02-01 10:53+0000\n"
-"PO-Revision-Date: 2021-02-02 10:53\n"
+"POT-Creation-Date: 2021-02-05 08:09+0000\n"
+"PO-Revision-Date: 2021-02-08 08:08\n"
 "Last-Translator: \n"
 "Language-Team: Irish\n"
 "MIME-Version: 1.0\n"
@@ -18,7 +18,7 @@ msgstr ""
 "X-Crowdin-File-ID: 24\n"
 "Language: ga_IE\n"
 
-#: app/forms/validators.py:338 app/jinja_filters.py:94
+#: app/forms/validators.py:336 app/jinja_filters.py:94
 #, python-format
 msgid "%(num)s year"
 msgid_plural "%(num)s years"
@@ -28,7 +28,7 @@ msgstr[2] "%(num)s bliain"
 msgstr[3] "%(num)s blianta"
 msgstr[4] "%(num)s blianta"
 
-#: app/forms/validators.py:342 app/jinja_filters.py:102
+#: app/forms/validators.py:340 app/jinja_filters.py:102
 #, python-format
 msgid "%(num)s month"
 msgid_plural "%(num)s months"
@@ -195,7 +195,7 @@ msgstr "Iontráil dáta roimh %(max)s"
 msgid "Remove an answer"
 msgstr "Bain freagra"
 
-#: app/forms/validators.py:349
+#: app/forms/validators.py:347
 #, python-format
 msgid "%(num)s day"
 msgid_plural "%(num)s days"
@@ -209,64 +209,68 @@ msgstr[4] "%(num)s laethanta"
 msgid "Not a valid choice"
 msgstr "Ní rogha bhailí í seo"
 
-#: app/helpers/template_helpers.py:21
+#: app/helpers/template_helpers.py:22
 msgid "Office for National Statistics logo"
 msgstr "Lógó Oifig an Staidrimh Náisiúnta"
 
-#: app/helpers/template_helpers.py:30 app/helpers/template_helpers.py:39
-#: app/helpers/template_helpers.py:151 templates/signed-out.html:3
+#: app/helpers/template_helpers.py:31 app/helpers/template_helpers.py:40
+#: app/helpers/template_helpers.py:168 templates/signed-out.html:3
 msgid "Census 2021"
 msgstr "Daonáireamh 2021"
 
-#: app/helpers/template_helpers.py:35
+#: app/helpers/template_helpers.py:36
 msgid "Northern Ireland Statistics and Research Agency logo"
 msgstr "Lógó na Gníomhaireachta um Staidreamh agus Thaighde Thuaisceart Éireann"
 
-#: app/helpers/template_helpers.py:50
-msgid "The following links open in a new tab"
-msgstr "Osclaíonn na naisc seo a leanas i dtáb úr"
-
-#: app/helpers/template_helpers.py:52
-msgid "Crown copyright and database rights 2021 NIMA MOU577.501."
-msgstr "Cóiopcheart na Corónach agus cearta bhunachar sonraí 2021 NIMA MOU577.501."
-
-#: app/helpers/template_helpers.py:56
-msgid "Crown copyright and database rights 2020 OS 100019153."
-msgstr "Cóiopcheart na Corónach agus cearta bhunachar sonraí 2020 OS 100019153."
-
-#: app/helpers/template_helpers.py:57
-msgid "Use of address data is subject to the"
-msgstr "Tá úsáid sonraí seolta faoi réir"
-
-#: app/helpers/template_helpers.py:58
-msgid "terms and conditions"
-msgstr "téarmaí agus coinníollacha"
-
-#: app/helpers/template_helpers.py:66
+#: app/helpers/template_helpers.py:53
 msgid "Help"
 msgstr "Cuidiú"
 
-#: app/helpers/template_helpers.py:71
+#: app/helpers/template_helpers.py:58
 msgid "Contact us"
 msgstr "Déan teagmháil linn"
 
+#: app/helpers/template_helpers.py:67
+msgid "Languages"
+msgstr "Teangacha"
+
+#: app/helpers/template_helpers.py:72
+msgid "BSL and audio videos"
+msgstr ""
+
 #: app/helpers/template_helpers.py:82
+msgid "The following links open in a new tab"
+msgstr "Osclaíonn na naisc seo a leanas i dtáb úr"
+
+#: app/helpers/template_helpers.py:84
+msgid "Crown copyright and database rights 2021 NIMA MOU577.501."
+msgstr "Cóiopcheart na Corónach agus cearta bhunachar sonraí 2021 NIMA MOU577.501."
+
+#: app/helpers/template_helpers.py:88
+msgid "Crown copyright and database rights 2020 OS 100019153."
+msgstr "Cóiopcheart na Corónach agus cearta bhunachar sonraí 2020 OS 100019153."
+
+#: app/helpers/template_helpers.py:89
+msgid "Use of address data is subject to the terms and conditions."
+msgstr ""
+
+#: app/helpers/template_helpers.py:100
 msgid "Cookies"
 msgstr "Fianáin"
 
-#: app/helpers/template_helpers.py:87
+#: app/helpers/template_helpers.py:105
 msgid "Accessibility statement"
 msgstr "Ráiteas inrochtaineachta"
 
-#: app/helpers/template_helpers.py:92
+#: app/helpers/template_helpers.py:110
 msgid "Privacy and data protection"
 msgstr "Príobháideacht agus cosaint sonraí"
 
-#: app/helpers/template_helpers.py:97
+#: app/helpers/template_helpers.py:115
 msgid "Terms and conditions"
 msgstr "Téarmaí agus coinníollacha"
 
-#: app/helpers/template_helpers.py:107
+#: app/helpers/template_helpers.py:125
 msgid "Make sure you <a href='{sign_out_url}'>leave this page</a> or close your browser if using a shared device"
 msgstr "Bí cinnte go bhfágann tú <a href='{sign_out_url}'>an leathanach seo</a> nó druid do bhrabhsálaí má tá tú ag úsáid gléas comhroinnte"
 
@@ -1014,35 +1018,39 @@ msgstr "Iarr daonáireamh ar leith"
 msgid "To request a census in a different format or for further help, please <a href='{contact_us_url}'>contact us</a>"
 msgstr "Le daonáireamh i bhformáid eile nó tuilleadh cuidithe a iarraidh, déan <a href='{contact_us_url}'>teagmháil linn</a>"
 
-#: templates/layouts/_base.html:18
+#: templates/layouts/_base.html:19
 msgid "Previous"
 msgstr "Roimhe"
 
-#: templates/layouts/_base.html:61
+#: templates/layouts/_base.html:62
 msgid "Tell us whether you accept cookies"
 msgstr "Abair linn an nglacann tú fianáin"
 
-#: templates/layouts/_base.html:62
+#: templates/layouts/_base.html:63
 msgid "We use <a href='{cookie_settings_url}'>cookies to collect information</a> about how you use census.gov.uk. We use this information to make the website work as well as possible and improve our services."
 msgstr "Úsáidimid <a href='{cookie_settings_url}'>fianáin le heolas a bhailiú</a> faoin úsáid a bhaineann tú as census.gov.uk. Úsáidimid an t-eolas seo le go n-oibreoidh an suíomh gréasáin chomh maith agus is féidir agus lenár seirbhísí a fheabhsú."
 
-#: templates/layouts/_base.html:63
+#: templates/layouts/_base.html:64
 msgid "You’ve accepted all cookies. You can <a href='{cookie_settings_url}'>change your cookie preferences</a> at any time."
 msgstr "Ghlac tú le gach fianán. Is féidir <a href='{cookie_settings_url}'>do roghanna fianán a athrú</a> am ar bith."
 
-#: templates/layouts/_base.html:64
+#: templates/layouts/_base.html:65
 msgid "Accept all cookies"
 msgstr "Glac gach fianán"
 
-#: templates/layouts/_base.html:65
+#: templates/layouts/_base.html:66
 msgid "Set cookie preferences"
 msgstr "Socraigh roghanna fianán"
 
-#: templates/layouts/_base.html:66
+#: templates/layouts/_base.html:67
 #: templates/partials/introduction/preview.html:30
 #: templates/partials/summary/collapsible-summary.html:14
 msgid "Hide"
 msgstr "Cuir i bhfolach"
+
+#: templates/layouts/_base.html:114
+msgid "Skip to main content"
+msgstr "Gabh go díreach chuig an phríomhábhar"
 
 #: templates/layouts/_questionnaire.html:38
 msgid "Choose another section and return to this later"
