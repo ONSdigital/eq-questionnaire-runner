@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: eq-census\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2021-02-05 08:09+0000\n"
-"PO-Revision-Date: 2021-02-05 13:20\n"
+"PO-Revision-Date: 2021-02-08 09:50\n"
 "Last-Translator: \n"
 "Language-Team: Welsh\n"
 "MIME-Version: 1.0\n"
@@ -255,7 +255,7 @@ msgstr "Hawlfraint y goron a hawliau cronfa ddata 2020 OS 100019153."
 
 #: app/helpers/template_helpers.py:89
 msgid "Use of address data is subject to the terms and conditions."
-msgstr ""
+msgstr "Mae defnyddio data cyfeiriadau yn ddarostyngedig i’r telerau ac amodau."
 
 #: app/helpers/template_helpers.py:100
 msgid "Cookies"
