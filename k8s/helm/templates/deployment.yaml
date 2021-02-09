@@ -24,6 +24,13 @@ spec:
         app.kubernetes.io/name: {{ .Chart.Name }}
         app.kubernetes.io/instance: {{ .Release.Name }}
     spec:
+      nodeSelector:
+        node-pool-name: {{ .Values.targetNodePool }}
+      tolerations:
+        - key: "node-pool-name"
+          operator: "Equal"
+          value: {{ .Values.targetNodePool }}
+          effect: "NoExecute"
       securityContext:
         fsGroup: 1000
         runAsGroup: 1000
