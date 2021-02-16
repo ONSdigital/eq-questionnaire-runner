@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: eq-census\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2021-02-05 08:09+0000\n"
-"PO-Revision-Date: 2021-02-08 09:50\n"
+"PO-Revision-Date: 2021-02-15 16:07\n"
 "Last-Translator: \n"
 "Language-Team: Welsh\n"
 "MIME-Version: 1.0\n"
@@ -598,7 +598,7 @@ msgstr "Bydd angen cod mynediad y cartref ar yr unigolyn o’r llythyr y gwnaeth
 
 #: app/views/handlers/individual_response.py:465
 msgid "I will answer for {person_name}"
-msgstr "Byddaf yn ateb ar ran{person_name}"
+msgstr "Byddaf yn ateb ar ran {person_name}"
 
 #: app/views/handlers/individual_response.py:507
 msgid "How to answer questions"
@@ -987,7 +987,7 @@ msgstr "Os bydd y broblem hon yn parhau, <a href='{url}'>cysylltwch â ni </a>i 
 
 #: templates/individual_response/confirmation-post.html:15
 msgid "A letter has been sent to Individual Resident at {display_address}"
-msgstr "Mae llythyr wedi cael ei anfon at Ymatebwr Unigol yn {display_address}"
+msgstr "Mae llythyr wedi cael ei anfon at Breswylydd Unigol yn {display_address}"
 
 #: templates/individual_response/confirmation-post.html:17
 msgid "The letter with an individual access code should arrive soon for them to complete their own census"
