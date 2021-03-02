@@ -75,3 +75,26 @@ There are defaults for both DATAFLOW_TEMPLATE_VERSION and EXPIRATION_TIME_OFFSET
 
 - `DATAFLOW_TEMPLATE_VERSION` is the template version on GCP you want to use
 - `EXPIRATION_TIME_OFFSET_IN_SECONDS` is the offset in seconds expired sessions will be purged from (i.e 3600 would delete all sessions more than an hour old)
+
+
+## Pause cloud task queue
+
+A cloud task queue can be paused by using the `pause_cloud_task_queue.yaml` task. This can be done via Concourse using the following command:
+
+```sh
+PROJECT_ID=<project_id> \
+QUEUE_NAME=<queue_name> \
+fly -t <target-concourse> execute \
+  --config ci/pause_cloud_task_queue.yaml
+```
+
+## Resume cloud task queue
+
+A cloud task queue can be resumed by using the `resume_cloud_task_queue.yaml` task. This can be done via Concourse using the following command:
+
+```sh
+PROJECT_ID=<project_id> \
+QUEUE_NAME=<queue_name> \
+fly -t <target-concourse> execute \
+  --config ci/resume_cloud_task_queue.yaml
+```
