@@ -4,6 +4,7 @@ from wtforms.validators import Email, InputRequired
 
 from app.forms import error_messages
 from app.forms.questionnaire_form import map_subfield_errors
+from app.forms.validators import EmailTldCheck
 
 
 class EmailForm(FlaskForm):
@@ -11,6 +12,7 @@ class EmailForm(FlaskForm):
         validators=[
             InputRequired(error_messages["MANDATORY_EMAIL"]),
             Email(error_messages["INVALID_EMAIL_FORMAT"]),
+            EmailTldCheck(error_messages["INVALID_EMAIL_FORMAT"]),
         ],
     )
 
