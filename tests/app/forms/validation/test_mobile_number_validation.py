@@ -23,6 +23,7 @@ class TestPhoneNumberValidator(unittest.TestCase):
         assert sanitise_mobile_number("+440447700900999") == "0447700900999"
         assert sanitise_mobile_number(" 09[8./{}756gf}/{h]fgh") == "98756gfhfgh"
         assert sanitise_mobile_number("7700900222") == "7700900222"
+        assert sanitise_mobile_number("07700900222") == "7700900222"
 
     def test_string_number_too_long(self):
         validator = MobileNumberCheck()
@@ -60,7 +61,7 @@ class TestPhoneNumberValidator(unittest.TestCase):
 
         self.assertEqual(error_messages["INVALID_MOBILE_NUMBER"], str(ite.exception))
 
-    def test_number_not_starting_with_7_raises_validation_error(self):
+    def test_sanitised_string_not_starting_with_7_invalid(self):
         validator = MobileNumberCheck()
 
         mock_form = Mock()
