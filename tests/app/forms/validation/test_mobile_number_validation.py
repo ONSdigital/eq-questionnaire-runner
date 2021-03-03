@@ -61,7 +61,7 @@ class TestPhoneNumberValidator(unittest.TestCase):
 
         self.assertEqual(error_messages["INVALID_MOBILE_NUMBER"], str(ite.exception))
 
-    def test_sanitised_string_not_starting_with_7_invalid(self):
+    def test_prefix_service_type_invalid(self):
         validator = MobileNumberCheck()
 
         mock_form = Mock()
