@@ -72,6 +72,15 @@ def test_individual_case_id_not_present_when_case_type_spg():
     assert "individualCaseId" not in json_message["payload"]["fulfilmentRequest"]
 
 
+@freeze_time(datetime.utcnow().isoformat())
+def test_individual_case_id_not_present_when_case_type_ce():
+    metadata = {"region_code": "GB-ENG", "case_id": str(uuid4()), "case_type": "CE"}
+    fulfilment_request = IndividualResponseFulfilmentRequest(metadata)
+
+    json_message = json.loads(fulfilment_request.message)
+    assert "individualCaseId" not in json_message["payload"]["fulfilmentRequest"]
+
+
 @pytest.mark.parametrize(
     "region_code, expected_fulfilment_code",
     [

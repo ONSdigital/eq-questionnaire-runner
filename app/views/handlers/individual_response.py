@@ -927,7 +927,7 @@ class IndividualResponseFulfilmentRequest(FulfilmentRequest):
     def _get_individual_case_id_mapping(self) -> Mapping:
         return (
             {}
-            if self._metadata.get("case_type") == "SPG"
+            if self._metadata.get("case_type") in ["SPG", "CE"]
             else {"individualCaseId": str(uuid4())}
         )
 
