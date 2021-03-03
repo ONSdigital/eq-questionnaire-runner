@@ -4,12 +4,12 @@ from unittest.mock import Mock
 from wtforms.validators import ValidationError
 
 from app.forms import error_messages
-from app.forms.validators import EmailTldCheck
+from app.forms.validators import EmailTLDCheck
 
 
-class TestEmailTldValidator(unittest.TestCase):
+class TestEmailTLDValidator(unittest.TestCase):
     def test_tld_single_character(self):
-        validator = EmailTldCheck()
+        validator = EmailTLDCheck()
 
         mock_form = Mock()
         mock_field = Mock()
@@ -21,7 +21,7 @@ class TestEmailTldValidator(unittest.TestCase):
         self.assertEqual(error_messages["INVALID_EMAIL_FORMAT"], str(ite.exception))
 
     def test_tld_non_alpha_character(self):
-        validator = EmailTldCheck()
+        validator = EmailTLDCheck()
 
         mock_form = Mock()
         mock_field = Mock()
@@ -33,7 +33,7 @@ class TestEmailTldValidator(unittest.TestCase):
         self.assertEqual(error_messages["INVALID_EMAIL_FORMAT"], str(ite.exception))
 
     def test_tld_invalid_unicode(self):
-        validator = EmailTldCheck()
+        validator = EmailTLDCheck()
 
         mock_form = Mock()
         mock_field = Mock()

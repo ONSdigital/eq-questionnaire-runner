@@ -445,7 +445,7 @@ class MobileNumberCheck:
             raise validators.ValidationError(self.message)
 
 
-class EmailTldCheck:
+class EmailTLDCheck:
     def __init__(self, message=None):
         self.message = message or error_messages["INVALID_EMAIL_FORMAT"]
 
