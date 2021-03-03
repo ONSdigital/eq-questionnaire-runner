@@ -59,6 +59,18 @@ class TestPhoneNumberValidator(unittest.TestCase):
 
         self.assertEqual(error_messages["INVALID_MOBILE_NUMBER"], str(ite.exception))
 
+    def test_number_starts_with_non_7(self):
+        validator = MobileNumberCheck()
+
+        mock_form = Mock()
+        mock_field = Mock()
+        mock_field.data = "06700900222"
+
+        with self.assertRaises(ValidationError) as ite:
+            validator(mock_form, mock_field)
+
+        self.assertEqual(error_messages["INVALID_MOBILE_NUMBER"], str(ite.exception))
+
     def test_non_utf8_string_invalid(self):
         validator = MobileNumberCheck()
 
