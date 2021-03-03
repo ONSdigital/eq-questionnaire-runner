@@ -441,7 +441,7 @@ class MobileNumberCheck:
     def __call__(self, form, field):
         data = sanitise_mobile_number(field.data)
 
-        if len(data) != 10 or not re.match("^[0-9]+$", data):
+        if len(data) != 10 or not re.match("^7[0-9]+$", data):
             raise validators.ValidationError(self.message)
 
 
