@@ -22,6 +22,7 @@ class TestPhoneNumberValidator(unittest.TestCase):
         assert sanitise_mobile_number("(07700) {900888}") == "7700900888"
         assert sanitise_mobile_number("+440447700900999") == "0447700900999"
         assert sanitise_mobile_number(" 09[8./{}756gf}/{h]fgh") == "98756gfhfgh"
+        assert sanitise_mobile_number("7700900222") == "7700900222"
 
     def test_string_number_too_long(self):
         validator = MobileNumberCheck()
