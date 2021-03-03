@@ -11,8 +11,8 @@ class EmailForm(FlaskForm):
     email = StringField(
         validators=[
             InputRequired(error_messages["MANDATORY_EMAIL"]),
-            Email(error_messages["INVALID_EMAIL_FORMAT"]),
             EmailTLDCheck(error_messages["INVALID_EMAIL_FORMAT"]),
+            Email(error_messages["INVALID_EMAIL_FORMAT"]),
         ],
     )
 

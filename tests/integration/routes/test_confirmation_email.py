@@ -171,6 +171,21 @@ class TestEmailConfirmation(IntegrationTestCase):
             "Enter an email address in a valid format, for example name@example.com"
         )
 
+    def test_thank_you_email_invalid_and_invalid_tld(self):
+        # Given I launch and complete the test_confirmation_email questionnaire
+        self._launch_and_complete_questionnaire()
+
+        # When I enter an invalid email with an invalid TLD and submit
+        self.post({"email": "a@@a.a"})
+
+        # Then I get a single error message on the thank you page
+        self.assertInUrl("thank-you")
+        self.assertInBody("There is a problem with this page")
+        self.assertInBody(
+            "Enter an email address in a valid format, for example name@example.com"
+        )
+        self.assertNotInBody('data-qa="error-link-2"')
+
     def test_confirmation_email_page_accessible_after_email_sent_from_thank_you(self):
         # Given I launch and complete the test_confirmation_email questionnaire
         self._launch_and_complete_questionnaire()

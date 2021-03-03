@@ -1,7 +1,7 @@
 import unittest
 from unittest.mock import Mock
 
-from wtforms.validators import ValidationError
+from wtforms.validators import StopValidation
 
 from app.forms import error_messages
 from app.forms.validators import EmailTLDCheck
@@ -15,7 +15,7 @@ class TestEmailTLDValidator(unittest.TestCase):
         mock_field = Mock()
         mock_field.data = "a@a.a"
 
-        with self.assertRaises(ValidationError) as ite:
+        with self.assertRaises(StopValidation) as ite:
             validator(mock_form, mock_field)
 
         self.assertEqual(error_messages["INVALID_EMAIL_FORMAT"], str(ite.exception))
@@ -27,7 +27,7 @@ class TestEmailTLDValidator(unittest.TestCase):
         mock_field = Mock()
         mock_field.data = "a@a.a9"
 
-        with self.assertRaises(ValidationError) as ite:
+        with self.assertRaises(StopValidation) as ite:
             validator(mock_form, mock_field)
 
         self.assertEqual(error_messages["INVALID_EMAIL_FORMAT"], str(ite.exception))
@@ -39,7 +39,7 @@ class TestEmailTLDValidator(unittest.TestCase):
         mock_field = Mock()
         mock_field.data = "a@a.\x94"
 
-        with self.assertRaises(ValidationError) as ite:
+        with self.assertRaises(StopValidation) as ite:
             validator(mock_form, mock_field)
 
         self.assertEqual(error_messages["INVALID_EMAIL_FORMAT"], str(ite.exception))

@@ -455,7 +455,7 @@ class EmailTLDCheck:
             try:
                 hostname = hostname.encode("idna").decode("ascii")
             except UnicodeError:
-                raise validators.ValidationError(self.message)
+                raise validators.StopValidation(self.message)
             parts = hostname.split(".")
             if len(parts) > 1 and not tld_part_regex.match(parts[-1]):
-                raise validators.ValidationError(self.message)
+                raise validators.StopValidation(self.message)
