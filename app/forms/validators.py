@@ -17,6 +17,11 @@ from app.questionnaire.rules import convert_to_datetime
 
 logger = get_logger()
 
+tld_part_regex = re.compile(
+    r"^([a-z]{2,63}|xn--([a-z0-9]+-)*[a-z0-9]+)$", re.IGNORECASE
+)
+email_regex = re.compile(r"^.+@([^.@][^@\s]+)$")
+
 
 class NumberCheck:
     def __init__(self, message=None):
@@ -436,5 +441,21 @@ class MobileNumberCheck:
     def __call__(self, form, field):
         data = sanitise_mobile_number(field.data)
 
-        if len(data) != 10 or not re.match("^[0-9]+$", data):
+        if len(data) != 10 or not re.match("^7[0-9]+$", data):
             raise validators.ValidationError(self.message)
+
+
+class EmailTLDCheck:
+    def __init__(self, message=None):
+        self.message = message or error_messages["INVALID_EMAIL_FORMAT"]
+
+    def __call__(self, form, field):
+        if match := email_regex.match(field.data):
+            hostname = match.group(1)
+            try:
+                hostname = hostname.encode("idna").decode("ascii")
+            except UnicodeError:
+                raise validators.StopValidation(self.message)
+            parts = hostname.split(".")
+            if len(parts) > 1 and not tld_part_regex.match(parts[-1]):
+                raise validators.StopValidation(self.message)

@@ -22,6 +22,8 @@ class TestPhoneNumberValidator(unittest.TestCase):
         assert sanitise_mobile_number("(07700) {900888}") == "7700900888"
         assert sanitise_mobile_number("+440447700900999") == "0447700900999"
         assert sanitise_mobile_number(" 09[8./{}756gf}/{h]fgh") == "98756gfhfgh"
+        assert sanitise_mobile_number("7700900222") == "7700900222"
+        assert sanitise_mobile_number("07700900222") == "7700900222"
 
     def test_string_number_too_long(self):
         validator = MobileNumberCheck()
@@ -53,6 +55,18 @@ class TestPhoneNumberValidator(unittest.TestCase):
         mock_form = Mock()
         mock_field = Mock()
         mock_field.data = "07700e90033"
+
+        with self.assertRaises(ValidationError) as ite:
+            validator(mock_form, mock_field)
+
+        self.assertEqual(error_messages["INVALID_MOBILE_NUMBER"], str(ite.exception))
+
+    def test_prefix_service_type_invalid(self):
+        validator = MobileNumberCheck()
+
+        mock_form = Mock()
+        mock_field = Mock()
+        mock_field.data = "06700900222"
 
         with self.assertRaises(ValidationError) as ite:
             validator(mock_form, mock_field)
