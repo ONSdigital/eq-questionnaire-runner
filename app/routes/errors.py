@@ -55,6 +55,12 @@ def _render_error_page(status_code, template=None, **kwargs):
     )
 
 
+@errors_blueprint.app_errorhandler(400)
+def bad_request(exception=None):
+    log_exception(exception, 400)
+    return _render_error_page(400, template="500")
+
+
 @errors_blueprint.app_errorhandler(401)
 @errors_blueprint.app_errorhandler(CSRFError)
 @errors_blueprint.app_errorhandler(NoTokenException)

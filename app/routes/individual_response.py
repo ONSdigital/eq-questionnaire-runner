@@ -1,7 +1,9 @@
 from flask import Blueprint, g, redirect, request, url_for
 from flask_babel import lazy_gettext
 from flask_login import current_user, login_required
+from itsdangerous import BadSignature
 from structlog import get_logger
+from werkzeug.exceptions import BadRequest
 
 from app.authentication.no_questionnaire_state_exception import (
     NoQuestionnaireStateException,
@@ -248,7 +250,12 @@ def individual_response_text_message_confirmation(schema, questionnaire_store):
     if request.method == "POST":
         return redirect(url_for("questionnaire.get_questionnaire"))
 
-    mobile_number = url_safe_serializer().loads(request.args.get("mobile_number"))
+    if not (request_mobile_number := request.args.get("mobile_number")):
+        raise BadRequest
+    try:
+        mobile_number = url_safe_serializer().loads(request_mobile_number)
+    except BadSignature:
+        raise BadRequest
 
     return render_template(
         template="individual_response/confirmation-text-message",

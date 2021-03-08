@@ -15,6 +15,29 @@ class TestEmailConfirmation(IntegrationTestCase):
         self.post({"answer_id": "Yes"})
         self.post()
 
+    def test_bad_signature_confirmation_email_sent(self):
+        # Given I launch and complete the test_confirmation_email questionnaire
+        self._launch_and_complete_questionnaire()
+        self.post({"email": "email@example.com"})
+
+        # When I try to view the sent page with an incorrect email hash
+        self.get("/submitted/confirmation-email/sent?email=bad-signature")
+
+        # Then a Bad Request error is returned
+        self.assertBadRequest()
+        self.assertEqualPageTitle("An error has occurred - Census 2021")
+
+    def test_missing_email_param_confirmation_email_sent(self):
+        # Given I launch and complete the test_confirmation_email questionnaire
+        self._launch_and_complete_questionnaire()
+        self.post({"email": "email@example.com"})
+
+        # When I try to view the sent page with no email param
+        self.get("/submitted/confirmation-email/sent")
+
+        # Then a Bad Request error is returned
+        self.assertBadRequest()
+
     def test_thank_you_page_get_not_allowed(self):
         # Given I launch the test_confirmation_email questionnaire
         self.launchSurvey("test_confirmation_email")
@@ -358,6 +381,6 @@ class TestEmailConfirmation(IntegrationTestCase):
         self.post({"email": "new-email@new-example.com"})
         self.get(f"/submitted/confirmation-email/sent?{query_params}")
 
-        # Then a 500 error is returned
-        self.assertStatusCode(500)
+        # Then a Bad Request error is returned
+        self.assertBadRequest()
         self.assertEqualPageTitle("An error has occurred - Census 2021")

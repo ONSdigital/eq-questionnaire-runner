@@ -6,7 +6,8 @@ from uuid import uuid4
 from flask import current_app, redirect
 from flask.helpers import url_for
 from flask_babel import lazy_gettext
-from werkzeug.exceptions import NotFound
+from itsdangerous import BadSignature
+from werkzeug.exceptions import BadRequest, NotFound
 
 from app.data_models import CompletionStatus, FulfilmentRequest
 from app.forms.questionnaire_form import generate_form
@@ -825,9 +826,13 @@ class IndividualResponseTextConfirmHandler(IndividualResponseHandler):
         form_data,
         list_item_id,
     ):
-        self.mobile_number = url_safe_serializer().loads(
-            request_args.get("mobile_number")
-        )
+        if not (request_mobile_number := request_args.get("mobile_number")):
+            raise BadRequest
+
+        try:
+            self.mobile_number = url_safe_serializer().loads(request_mobile_number)
+        except BadSignature:
+            raise BadRequest
 
         super().__init__(
             schema,

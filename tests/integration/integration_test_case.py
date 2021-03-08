@@ -311,6 +311,9 @@ class IntegrationTestCase(unittest.TestCase):  # pylint: disable=too-many-public
     def assertStatusOK(self):
         self.assertStatusCode(200)
 
+    def assertBadRequest(self):
+        self.assertStatusCode(400)
+
     def assertStatusUnauthorised(self):
         self.assertStatusCode(401)
 
