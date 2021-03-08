@@ -178,7 +178,7 @@ class TestIndividualResponseErrorStatus(IndividualResponseTestCase):
         self.get(
             f"individual-response/{person_id}/text/confirm-number?journey=hub&mobile_number=bad-signature"
         )
-        # Then a Bad Request error is returned
+        # Then a BadRequest error is returned
         self.assertBadRequest()
         self.assertEqualPageTitle("An error has occurred - Census 2021")
 
@@ -195,7 +195,7 @@ class TestIndividualResponseErrorStatus(IndividualResponseTestCase):
         person_id = self.last_url.split("/")[2]
         self.get(f"individual-response/{person_id}/text/confirm-number?journey=hub")
 
-        # Then a Bad Request error is returned
+        # Then a BadRequest error is returned
         self.assertBadRequest()
         self.assertEqualPageTitle("An error has occurred - Census 2021")
 
@@ -214,7 +214,7 @@ class TestIndividualResponseErrorStatus(IndividualResponseTestCase):
             f"individual-response/text/confirmation?journey=hub&mobile_number=bad-signature"
         )
 
-        # Then a Bad Request error is returned
+        # Then a BadRequest error is returned
         self.assertBadRequest()
         self.assertEqualPageTitle("An error has occurred - Census 2021")
 
@@ -231,7 +231,7 @@ class TestIndividualResponseErrorStatus(IndividualResponseTestCase):
         # When I try to view the confirmation page with no mobile number param
         self.get(f"individual-response/text/confirmation?journey=hub")
 
-        # Then a Bad Request error is returned
+        # Then a BadRequest error is returned
         self.assertBadRequest()
         self.assertEqualPageTitle("An error has occurred - Census 2021")
 

@@ -23,7 +23,7 @@ class TestEmailConfirmation(IntegrationTestCase):
         # When I try to view the sent page with an incorrect email hash
         self.get("/submitted/confirmation-email/sent?email=bad-signature")
 
-        # Then a Bad Request error is returned
+        # Then a BadRequest error is returned
         self.assertBadRequest()
         self.assertEqualPageTitle("An error has occurred - Census 2021")
 
@@ -35,7 +35,7 @@ class TestEmailConfirmation(IntegrationTestCase):
         # When I try to view the sent page with no email param
         self.get("/submitted/confirmation-email/sent")
 
-        # Then a Bad Request error is returned
+        # Then a BadRequest error is returned
         self.assertBadRequest()
 
     def test_thank_you_page_get_not_allowed(self):
@@ -381,6 +381,6 @@ class TestEmailConfirmation(IntegrationTestCase):
         self.post({"email": "new-email@new-example.com"})
         self.get(f"/submitted/confirmation-email/sent?{query_params}")
 
-        # Then a Bad Request error is returned
+        # Then a BadRequest error is returned
         self.assertBadRequest()
         self.assertEqualPageTitle("An error has occurred - Census 2021")
