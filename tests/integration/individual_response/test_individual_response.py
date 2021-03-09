@@ -164,6 +164,77 @@ class TestIndividualResponseOnHubDisabled(IndividualResponseTestCase):
 
 
 class TestIndividualResponseErrorStatus(IndividualResponseTestCase):
+    def test_ir_raises_400_confirm_number_bad_signature(self):
+        # Given I request an individual response by mobile phone
+        self._add_household_no_primary()
+        self.post()
+        self.get(self.individual_response_link)
+        self.get(self.individual_response_start_link)
+        self.post({"individual-response-how-answer": "Text message"})
+        self.post({"individual-response-enter-number-answer": "07970000000"})
+
+        # When I try to view the confirm number page with an incorrect mobile number hash
+        person_id = self.last_url.split("/")[2]
+        self.get(
+            f"individual-response/{person_id}/text/confirm-number?journey=hub&mobile_number=bad-signature"
+        )
+        # Then a BadRequest error is returned
+        self.assertBadRequest()
+        self.assertEqualPageTitle("An error has occurred - Census 2021")
+
+    def test_ir_raises_400_confirm_number_missing_mobile_param(self):
+        # Given I request an individual response by mobile phone
+        self._add_household_no_primary()
+        self.post()
+        self.get(self.individual_response_link)
+        self.get(self.individual_response_start_link)
+        self.post({"individual-response-how-answer": "Text message"})
+        self.post({"individual-response-enter-number-answer": "07970000000"})
+
+        # When I try to view the confirm number page with no mobile number param
+        person_id = self.last_url.split("/")[2]
+        self.get(f"individual-response/{person_id}/text/confirm-number?journey=hub")
+
+        # Then a BadRequest error is returned
+        self.assertBadRequest()
+        self.assertEqualPageTitle("An error has occurred - Census 2021")
+
+    def test_ir_raises_400_confirmation_bad_signature(self):
+        # Given I request an individual response by mobile phone
+        self._add_household_no_primary()
+        self.post()
+        self.get(self.individual_response_link)
+        self.get(self.individual_response_start_link)
+        self.post({"individual-response-how-answer": "Text message"})
+        self.post({"individual-response-enter-number-answer": "07970000000"})
+        self.post({"individual-response-text-confirm-answer": "Yes, send the text"})
+
+        # When I try to view the confirmation page with an incorrect mobile number hash
+        self.get(
+            f"individual-response/text/confirmation?journey=hub&mobile_number=bad-signature"
+        )
+
+        # Then a BadRequest error is returned
+        self.assertBadRequest()
+        self.assertEqualPageTitle("An error has occurred - Census 2021")
+
+    def test_ir_raises_400_confirmation_missing_mobile_param(self):
+        # Given I request an individual response by mobile phone
+        self._add_household_no_primary()
+        self.post()
+        self.get(self.individual_response_link)
+        self.get(self.individual_response_start_link)
+        self.post({"individual-response-how-answer": "Text message"})
+        self.post({"individual-response-enter-number-answer": "07970000000"})
+        self.post({"individual-response-text-confirm-answer": "Yes, send the text"})
+
+        # When I try to view the confirmation page with no mobile number param
+        self.get(f"individual-response/text/confirmation?journey=hub")
+
+        # Then a BadRequest error is returned
+        self.assertBadRequest()
+        self.assertEqualPageTitle("An error has occurred - Census 2021")
+
     def test_ir_raises_401_without_session(self):
         # Given the hub is enabled
         # And I add a household member

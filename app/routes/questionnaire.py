@@ -3,8 +3,9 @@ from flask import Blueprint, g, jsonify, redirect, request
 from flask import session as cookie_session
 from flask import url_for
 from flask_login import current_user, login_required
+from itsdangerous import BadSignature
 from structlog import get_logger
-from werkzeug.exceptions import NotFound
+from werkzeug.exceptions import BadRequest, NotFound
 
 from app.authentication.no_questionnaire_state_exception import (
     NoQuestionnaireStateException,
@@ -346,7 +347,10 @@ def get_confirmation_email_sent(session_store, schema):
     if not session_store.session_data.confirmation_email_count:
         raise NotFound
 
-    email = url_safe_serializer().loads(request.args.get("email"))
+    try:
+        email = url_safe_serializer().loads(request.args["email"])
+    except BadSignature:
+        raise BadRequest
 
     show_send_another_email_guidance = not ConfirmationEmail.is_limit_reached(
         session_store.session_data

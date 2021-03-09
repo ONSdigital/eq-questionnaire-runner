@@ -6,6 +6,7 @@ from flask_login import current_user
 from flask_wtf.csrf import CSRFError
 from sdc.crypto.exceptions import InvalidTokenException
 from structlog import get_logger
+from werkzeug.exceptions import BadRequestKeyError
 
 from app.authentication.no_questionnaire_state_exception import (
     NoQuestionnaireStateException,
@@ -53,6 +54,13 @@ def _render_error_page(status_code, template=None, **kwargs):
         render_template(template=f"errors/{template}", **kwargs),
         status_code,
     )
+
+
+@errors_blueprint.app_errorhandler(400)
+@errors_blueprint.app_errorhandler(BadRequestKeyError)
+def bad_request(exception=None):
+    log_exception(exception, 400)
+    return _render_error_page(400, template="500")
 
 
 @errors_blueprint.app_errorhandler(401)
