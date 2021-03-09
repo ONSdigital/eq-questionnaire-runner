@@ -53,9 +53,7 @@ class CloudTaskPublisher:
         parent = self._client.queue_path(self._project_id, "europe-west2", queue_name)
         try:
             task = self._create_task_with_retry(body, function_name, parent)
-            logger.info(
-                "task created successfully", transactionId=transactionId
-            )  # pragma: no cover
+            logger.info("task created successfully", transactionId=transactionId)
             return task
         except Exception as exc:
             logger.exception("task creation failed", transactionId=transactionId)
