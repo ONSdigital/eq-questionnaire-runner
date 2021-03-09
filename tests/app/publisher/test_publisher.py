@@ -1,5 +1,6 @@
 from unittest import TestCase, mock
 from unittest.mock import Mock, patch, sentinel
+from uuid import uuid4
 
 from google.pubsub_v1.types.pubsub import PubsubMessage
 
@@ -41,6 +42,8 @@ class TestPubSub(TestCase):
     def test_resolving_message_raises_exception_on_error(self):
         with self.assertRaises(PublicationFailed) as ex:
             # Try resolve the future with an invalid credentials
-            self.publisher.publish(self.topic_id, b"test-message")
+            self.publisher.publish(
+                self.topic_id, b"test-message", transactionId=str(uuid4())
+            )
 
         assert "403 The request is missing a valid API key." in str(ex.exception)
