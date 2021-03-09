@@ -347,11 +347,8 @@ def get_confirmation_email_sent(session_store, schema):
     if not session_store.session_data.confirmation_email_count:
         raise NotFound
 
-    if not (request_email := request.args.get("email")):
-        raise BadRequest
-
     try:
-        email = url_safe_serializer().loads(request_email)
+        email = url_safe_serializer().loads(request.args["email"])
     except BadSignature:
         raise BadRequest
 

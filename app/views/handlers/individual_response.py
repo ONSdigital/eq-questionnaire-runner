@@ -826,11 +826,10 @@ class IndividualResponseTextConfirmHandler(IndividualResponseHandler):
         form_data,
         list_item_id,
     ):
-        if not (request_mobile_number := request_args.get("mobile_number")):
-            raise BadRequest
-
         try:
-            self.mobile_number = url_safe_serializer().loads(request_mobile_number)
+            self.mobile_number = url_safe_serializer().loads(
+                request_args["mobile_number"]
+            )
         except BadSignature:
             raise BadRequest
 

@@ -250,10 +250,8 @@ def individual_response_text_message_confirmation(schema, questionnaire_store):
     if request.method == "POST":
         return redirect(url_for("questionnaire.get_questionnaire"))
 
-    if not (request_mobile_number := request.args.get("mobile_number")):
-        raise BadRequest
     try:
-        mobile_number = url_safe_serializer().loads(request_mobile_number)
+        mobile_number = url_safe_serializer().loads(request.args["mobile_number"])
     except BadSignature:
         raise BadRequest
 
