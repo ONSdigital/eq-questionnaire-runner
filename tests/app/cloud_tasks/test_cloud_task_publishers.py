@@ -15,7 +15,7 @@ class TestCloudTaskPublisher(TestCase):
     queue_name = "test"
     function_name = "test"
     body = bytes("test", "utf-8")
-    transactionId=str(uuid4())
+    transactionId = str(uuid4())
 
     def setUp(self) -> None:
         with patch(
@@ -35,7 +35,10 @@ class TestCloudTaskPublisher(TestCase):
                 body=self.body, function_name=self.function_name
             )
             self.cloud_task_publisher.create_task(
-                body=self.body, queue_name=self.queue_name, function_name=self.function_name, transactionId=self.transactionId
+                body=self.body,
+                queue_name=self.queue_name,
+                function_name=self.function_name,
+                transactionId=self.transactionId,
             )
 
             # Establish that the underlying gRPC stub method was called.
@@ -57,7 +60,10 @@ class TestCloudTaskPublisher(TestCase):
 
         with self.assertRaises(CloudTaskCreationFailed):
             self.cloud_task_publisher.create_task(
-                body=self.body, queue_name=self.queue_name, function_name=self.function_name, transactionId=self.transactionId
+                body=self.body,
+                queue_name=self.queue_name,
+                function_name=self.function_name,
+                transactionId=self.transactionId,
             )
 
     def test_create_task_transient_error_retries(self):
@@ -65,7 +71,10 @@ class TestCloudTaskPublisher(TestCase):
         mock_create_task.side_effect = [ServiceUnavailable("test"), Task()]
         self.cloud_task_publisher._client.create_task = mock_create_task
         self.cloud_task_publisher.create_task(
-            body=self.body, queue_name=self.queue_name, function_name=self.function_name, transactionId=self.transactionId
+            body=self.body,
+            queue_name=self.queue_name,
+            function_name=self.function_name,
+            transactionId=self.transactionId,
         )
 
         self.assertEqual(mock_create_task.call_count, 2)
