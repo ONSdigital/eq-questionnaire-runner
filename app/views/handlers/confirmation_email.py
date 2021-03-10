@@ -76,7 +76,7 @@ class ConfirmationEmail:
                 body=fulfilment_request.message,
                 queue_name=EQ_SUBMISSION_CONFIRMATION_QUEUE,
                 function_name=EQ_SUBMISSION_CONFIRMATION_CLOUD_FUNCTION_NAME,
-                transactionId=fulfilment_request.transactionId,
+                fulfilment_request_transaction_id=fulfilment_request.transaction_id,
             )
         except CloudTaskCreationFailed as exc:
             raise ConfirmationEmailFulfilmentRequestPublicationFailed from exc

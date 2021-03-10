@@ -206,7 +206,7 @@ class IndividualResponseHandler:
             return current_app.eq["publisher"].publish(
                 topic_id,
                 message=fulfilment_request.message,
-                transactionId=fulfilment_request.transactionId,
+                fulfilment_request_transaction_id=fulfilment_request.transaction_id,
             )
         except PublicationFailed:
             raise IndividualResponseFulfilmentRequestPublicationFailed

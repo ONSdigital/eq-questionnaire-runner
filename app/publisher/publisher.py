@@ -12,7 +12,7 @@ logger = get_logger(__name__)
 
 class Publisher(ABC):
     @abstractmethod
-    def publish(self, topic_id, message, transactionId):
+    def publish(self, topic_id, message, fulfilment_request_transaction_id):
         pass  # pragma: no cover
 
 
@@ -27,7 +27,7 @@ class PubSubPublisher(Publisher):
         response: Future = self._client.publish(topic_path, message)
         return response
 
-    def publish(self, topic_id, message: bytes, transactionId: str):
+    def publish(self, topic_id, message: bytes, fulfilment_request_transaction_id: str):
         response = self._publish(topic_id, message)
         try:
             # Resolve the future
@@ -36,7 +36,7 @@ class PubSubPublisher(Publisher):
                 "message published successfully",
                 topic_id=topic_id,
                 message_id=message_id,
-                transactionId=transactionId,
+                fulfilment_request_transaction_id=fulfilment_request_transaction_id,
             )
         except Exception as ex:  # pylint:disable=broad-except
             logger.exception(
@@ -47,10 +47,10 @@ class PubSubPublisher(Publisher):
 
 
 class LogPublisher(Publisher):
-    def publish(self, topic_id, message: bytes, transactionId: str):
+    def publish(self, topic_id, message: bytes, fulfilment_request_transaction_id: str):
         logger.info(
             "publishing message",
             topic_id=topic_id,
             message=message,
-            transactionId=transactionId,
+            fulfilment_request_transaction_id=fulfilment_request_transaction_id,
         )

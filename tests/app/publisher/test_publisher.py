@@ -43,7 +43,9 @@ class TestPubSub(TestCase):
         with self.assertRaises(PublicationFailed) as ex:
             # Try resolve the future with an invalid credentials
             self.publisher.publish(
-                self.topic_id, b"test-message", transactionId=str(uuid4())
+                self.topic_id,
+                b"test-message",
+                fulfilment_request_transaction_id=str(uuid4()),
             )
 
         assert "403 The request is missing a valid API key." in str(ex.exception)

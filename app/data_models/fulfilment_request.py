@@ -14,7 +14,7 @@ class FulfilmentRequest(ABC):
         pass  # pragma: no cover
 
     @cached_property
-    def transactionId(self) -> str:
+    def transaction_id(self) -> str:
         return str(uuid4())
 
     @property
@@ -25,7 +25,7 @@ class FulfilmentRequest(ABC):
                 "source": "QUESTIONNAIRE_RUNNER",
                 "channel": "EQ",
                 "dateTime": datetime.now(tz=tzutc()).isoformat(),
-                "transactionId": self.transactionId,
+                "transactionId": self.transaction_id,
             },
             "payload": self._payload(),
         }

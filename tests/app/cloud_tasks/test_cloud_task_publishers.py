@@ -1,3 +1,4 @@
+from app.data_models import fulfilment_request
 from unittest import TestCase, mock
 from unittest.mock import MagicMock, Mock, patch
 from uuid import uuid4
@@ -15,7 +16,7 @@ class TestCloudTaskPublisher(TestCase):
     queue_name = "test"
     function_name = "test"
     body = bytes("test", "utf-8")
-    transactionId = str(uuid4())
+    transaction_id = str(uuid4())
 
     def setUp(self) -> None:
         with patch(
@@ -38,7 +39,7 @@ class TestCloudTaskPublisher(TestCase):
                 body=self.body,
                 queue_name=self.queue_name,
                 function_name=self.function_name,
-                transactionId=self.transactionId,
+                fulfilment_request_transaction_id=self.transaction_id,
             )
 
             # Establish that the underlying gRPC stub method was called.
@@ -63,7 +64,7 @@ class TestCloudTaskPublisher(TestCase):
                 body=self.body,
                 queue_name=self.queue_name,
                 function_name=self.function_name,
-                transactionId=self.transactionId,
+                fulfilment_request_transaction_id=self.transaction_id,
             )
 
     def test_create_task_transient_error_retries(self):
@@ -74,7 +75,7 @@ class TestCloudTaskPublisher(TestCase):
             body=self.body,
             queue_name=self.queue_name,
             function_name=self.function_name,
-            transactionId=self.transactionId,
+            fulfilment_request_transaction_id=self.transaction_id,
         )
 
         self.assertEqual(mock_create_task.call_count, 2)
