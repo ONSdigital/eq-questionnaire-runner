@@ -295,6 +295,8 @@ def get_thank_you(schema, session_store):
                     email=confirmation_email.get_url_safe_serialized_email(),
                 )
             )
+        else:
+            logger.exception('email validation failed', error_message=confirmation_email.form.errors)
 
     show_feedback_call_to_action = Feedback.is_enabled(
         schema
