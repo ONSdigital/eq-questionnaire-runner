@@ -134,6 +134,17 @@ class TestEmailConfirmation(IntegrationTestCase):
         self.assertInUrl("confirmation-email/sent")
         self.assertInBody("A confirmation email has been sent")
 
+    def test_thank_you_page_confirmation_email_white_space(self):
+        # Given I launch and complete the test_confirmation_email questionnaire
+        self._launch_and_complete_questionnaire()
+
+        # When I enter a valid email which has leading and trailing whitespace
+        self.post({"email": " email@example.com "})
+
+        # Then I get confirmation that the email has been sent
+        self.assertInUrl("confirmation-email/sent")
+        self.assertInBody("A confirmation email has been sent to email@example.com")
+
     def test_thank_you_page_confirmation_email_show_warning(self):
         # Given I launch and complete the test_confirmation_email questionnaire
         self._launch_and_complete_questionnaire()
@@ -261,6 +272,19 @@ class TestEmailConfirmation(IntegrationTestCase):
         # When I go to the confirmation email page and submit with a valid email
         self.get("/submitted/confirmation-email/send/")
         self.post({"email": "email@example.com"})
+
+        # Then I get confirmation that the email has been sent
+        self.assertInUrl("confirmation-email/sent")
+        self.assertInBody("A confirmation email has been sent to email@example.com")
+
+    def test_confirmation_email_page_white_space(self):
+        # Given I launch and complete the test_confirmation_email questionnaire and submit with a valid email from the thank you page
+        self._launch_and_complete_questionnaire()
+        self.post({"email": "email@example.com"})
+
+        # When I go to the confirmation email page and submit with a valid email which has leading and trailing whitespace
+        self.get("/submitted/confirmation-email/send/")
+        self.post({"email": " email@example.com "})
 
         # Then I get confirmation that the email has been sent
         self.assertInUrl("confirmation-email/sent")

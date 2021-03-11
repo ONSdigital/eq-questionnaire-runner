@@ -14,6 +14,7 @@ class EmailForm(FlaskForm):
             EmailTLDCheck(error_messages["INVALID_EMAIL_FORMAT"]),
             Email(error_messages["INVALID_EMAIL_FORMAT"]),
         ],
+        filters=[lambda x: x.strip() if x else None],
     )
 
     def map_errors(self):
