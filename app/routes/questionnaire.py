@@ -296,7 +296,9 @@ def get_thank_you(schema, session_store):
                 )
             )
         else:
-            logger.info('email validation error', error_message=confirmation_email.form.errors)
+            logger.info(
+                "email validation error", error_message=confirmation_email.form.errors
+            )
 
     show_feedback_call_to_action = Feedback.is_enabled(
         schema
