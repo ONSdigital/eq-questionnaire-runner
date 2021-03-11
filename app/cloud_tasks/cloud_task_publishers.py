@@ -46,27 +46,42 @@ class CloudTaskPublisher:
         )
         return task
 
-    def create_task(self, body: bytes, queue_name: str, function_name: str) -> Task:
-        logger.info("creating cloud task")
+    def create_task(
+        self,
+        body: bytes,
+        queue_name: str,
+        function_name: str,
+        fulfilment_request_transaction_id: str,
+    ) -> Task:
 
         parent = self._client.queue_path(self._project_id, "europe-west2", queue_name)
         try:
             task = self._create_task_with_retry(body, function_name, parent)
-            logger.info("task created successfully")  # pragma: no cover
+            logger.info(
+                "task created successfully",
+                fulfilment_request_transaction_id=fulfilment_request_transaction_id,
+            )
             return task
         except Exception as exc:
             logger.exception(
                 "task creation failed",
+                fulfilment_request_transaction_id=fulfilment_request_transaction_id,
             )
             raise CloudTaskCreationFailed from exc
 
 
 class LogCloudTaskPublisher:
     @staticmethod
-    def create_task(body: bytes, queue_name: str, function_name: str) -> None:
+    def create_task(
+        body: bytes,
+        queue_name: str,
+        function_name: str,
+        fulfilment_request_transaction_id: str,
+    ) -> None:
         logger.info(
             "creating cloud task",
             body=body,
             queue_name=queue_name,
             function_name=function_name,
+            fulfilment_request_transaction_id=fulfilment_request_transaction_id,
         )
