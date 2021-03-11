@@ -335,6 +335,10 @@ def send_confirmation_email(session_store, schema):
                 email=confirmation_email.get_url_safe_serialized_email(),
             )
         )
+    else:
+        logger.info(
+            "email validation error", error_message=confirmation_email.form.errors
+        )
 
     return render_template(
         template="confirmation-email",
