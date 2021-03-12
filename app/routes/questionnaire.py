@@ -1,5 +1,5 @@
 import flask_babel
-from flask import Blueprint, g, jsonify, redirect, request
+from flask import Blueprint, g, redirect, request
 from flask import session as cookie_session
 from flask import url_for
 from flask_login import current_user, login_required
