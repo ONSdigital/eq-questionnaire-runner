@@ -327,18 +327,19 @@ def send_confirmation_email(session_store, schema):
     except ConfirmationEmailLimitReached:
         return redirect(url_for(".get_thank_you"))
 
-    if request.method == "POST" and confirmation_email.form.validate():
-        confirmation_email.handle_post()
-        return redirect(
-            url_for(
-                ".get_confirmation_email_sent",
-                email=confirmation_email.get_url_safe_serialized_email(),
+    if request.method == "POST":
+        if confirmation_email.form.validate():
+            confirmation_email.handle_post()
+            return redirect(
+                url_for(
+                    ".get_confirmation_email_sent",
+                    email=confirmation_email.get_url_safe_serialized_email(),
+                )
             )
-        )
-    else:
-        logger.info(
-            "email validation error", error_message=confirmation_email.form.errors
-        )
+        else:
+            logger.info(
+                "email validation error", error_message=confirmation_email.form.errors
+            )
 
     return render_template(
         template="confirmation-email",
