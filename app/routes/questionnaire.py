@@ -410,7 +410,6 @@ def get_feedback_sent(session_store):
 
 
 def _render_page(template, context, previous_location_url, schema, page_title):
-
     session_timeout = get_session_timeout_in_seconds(schema)
 
     return render_template(
