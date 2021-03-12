@@ -297,7 +297,8 @@ def get_thank_you(schema, session_store):
             )
 
         logger.info(
-            "email validation error", error_message=str(confirmation_email.form.errors["email"][0])
+            "email validation error",
+            error_message=str(confirmation_email.form.errors["email"][0]),
         )
 
     show_feedback_call_to_action = Feedback.is_enabled(
@@ -338,7 +339,8 @@ def send_confirmation_email(session_store, schema):
             )
 
         logger.info(
-            "email validation error", error_message=str(confirmation_email.form.errors["email"][0])
+            "email validation error",
+            error_message=str(confirmation_email.form.errors["email"][0]),
         )
 
     return render_template(
