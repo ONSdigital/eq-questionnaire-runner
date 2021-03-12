@@ -410,8 +410,6 @@ def get_feedback_sent(session_store):
 
 
 def _render_page(template, context, previous_location_url, schema, page_title):
-    if request_wants_json():
-        return jsonify(context)
 
     session_timeout = get_session_timeout_in_seconds(schema)
 
@@ -422,12 +420,4 @@ def _render_page(template, context, previous_location_url, schema, page_title):
         session_timeout=session_timeout,
         legal_basis=schema.json.get("legal_basis"),
         page_title=page_title,
-    )
-
-
-def request_wants_json():
-    best = request.accept_mimetypes.best_match(["application/json", "text/html"])
-    return (
-        best == "application/json"
-        and request.accept_mimetypes[best] > request.accept_mimetypes["text/html"]
     )
