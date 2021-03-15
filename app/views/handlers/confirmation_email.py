@@ -4,6 +4,8 @@ from typing import Mapping, Optional
 
 from flask import current_app
 from flask_babel import gettext, lazy_gettext
+from itsdangerous import BadSignature
+from werkzeug.exceptions import BadRequest
 
 from app.cloud_tasks.exceptions import CloudTaskCreationFailed
 from app.data_models import FulfilmentRequest, SessionData, SessionStore
@@ -35,6 +37,7 @@ class ConfirmationEmail:
         session_store: SessionStore,
         schema: QuestionnaireSchema,
         page_title: Optional[str] = None,
+        serialised_email: Optional[str] = None,
     ):
 
         if not self.is_enabled(schema):
@@ -46,6 +49,7 @@ class ConfirmationEmail:
         self._session_store = session_store
         self._schema = schema
         self._page_title = page_title
+        self._serialised_email = serialised_email
 
     @property
     def page_title(self):
@@ -53,6 +57,12 @@ class ConfirmationEmail:
 
     @cached_property
     def form(self):
+        if self._serialised_email:
+            try:
+                email = url_safe_serializer().loads(self._serialised_email)
+            except BadSignature:
+                raise BadRequest
+            return EmailForm(email=email)
         return EmailForm()
 
     def get_context(self):
