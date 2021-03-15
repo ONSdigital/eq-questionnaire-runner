@@ -8,11 +8,11 @@ from tests.integration.integration_test_case import IntegrationTestCase
 SIGN_OUT_URL_PATH = "/sign-out"
 SIGNED_OUT_URL_PATH = "/signed-out"
 ACCOUNT_SERVICE_LOG_OUT_URL = "http://localhost/logout"
-LOG_OUT_URL_PATH = "/logout"
+ACCOUNT_SERVICE_LOG_OUT_URL_PATH = "/logout"
 
 
 class TestSaveAndSignOut(IntegrationTestCase):
-    # Test the behaviour when using a Hub/No Hub
+    # Test the behaviour when using Hub/No Hub
 
     def test_no_session_cookie_redirects_to_census_home_page(self):
         for schema in ["test_textfield", "test_hub_and_spoke"]:
@@ -34,7 +34,7 @@ class TestSaveAndSignOut(IntegrationTestCase):
                     schema, account_service_log_out_url=ACCOUNT_SERVICE_LOG_OUT_URL
                 )
                 self.get(SIGN_OUT_URL_PATH)
-                self.assertInUrl(LOG_OUT_URL_PATH)
+                self.assertInUrl(ACCOUNT_SERVICE_LOG_OUT_URL_PATH)
 
 
 class TestExitPostSubmissionTestCase(IntegrationTestCase):
@@ -59,7 +59,7 @@ class TestExitPostSubmissionWithFinalSummaryDefaultTheme(
             account_service_log_out_url=ACCOUNT_SERVICE_LOG_OUT_URL,
         )
         self.get(SIGN_OUT_URL_PATH)
-        self.assertInUrl(LOG_OUT_URL_PATH)
+        self.assertInUrl(ACCOUNT_SERVICE_LOG_OUT_URL_PATH)
 
 
 class TestExitPostSubmissionWithFinalSummaryCensusTheme(TestExitPostSubmissionTestCase):
@@ -98,7 +98,7 @@ class TestExitPostSubmissionWithFinalSummaryCensusTheme(TestExitPostSubmissionTe
         self.assertInRedirect(CENSUS_NIR_BASE_URL)
 
 
-class TestExitPostSubmissionWitHubDefaultTheme(IntegrationTestCase):
+class TestExitPostSubmissionWithHubDefaultTheme(IntegrationTestCase):
     def _launch_and_submit_questionnaire(self, schema, **kwargs):
         self.launchSurvey(schema, **kwargs)
         self.post({"household-relationships-answer": "No"})
@@ -118,10 +118,10 @@ class TestExitPostSubmissionWitHubDefaultTheme(IntegrationTestCase):
             account_service_log_out_url=ACCOUNT_SERVICE_LOG_OUT_URL,
         )
         self.get(SIGN_OUT_URL_PATH)
-        self.assertInUrl(LOG_OUT_URL_PATH)
+        self.assertInUrl(ACCOUNT_SERVICE_LOG_OUT_URL_PATH)
 
 
-class TestExitPostSubmissionWitHubCensusTheme(TestExitPostSubmissionTestCase):
+class TestExitPostSubmissionWithHubCensusTheme(TestExitPostSubmissionTestCase):
     def test_no_account_service_log_out_url_redirects_to_census_home_page(self):
         self._launch_and_submit_questionnaire(schema="test_thank_you_census_household")
         self.get(SIGN_OUT_URL_PATH, follow_redirects=False)
