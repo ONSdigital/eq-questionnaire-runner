@@ -288,6 +288,11 @@ def get_thank_you(schema, session_store):
                 )
             )
 
+        logger.info(
+            "email validation error",
+            error_message=str(confirmation_email.form.errors["email"][0]),
+        )
+
     show_feedback_call_to_action = Feedback.is_enabled(
         schema
     ) and not Feedback.is_limit_reached(session_store.session_data)
@@ -315,13 +320,19 @@ def send_confirmation_email(session_store, schema):
     except ConfirmationEmailLimitReached:
         return redirect(url_for(".get_thank_you"))
 
-    if request.method == "POST" and confirmation_email.form.validate():
-        confirmation_email.handle_post()
-        return redirect(
-            url_for(
-                ".get_confirmation_email_sent",
-                email=confirmation_email.get_url_safe_serialized_email(),
+    if request.method == "POST":
+        if confirmation_email.form.validate():
+            confirmation_email.handle_post()
+            return redirect(
+                url_for(
+                    ".get_confirmation_email_sent",
+                    email=confirmation_email.get_url_safe_serialized_email(),
+                )
             )
+
+        logger.info(
+            "email validation error",
+            error_message=str(confirmation_email.form.errors["email"][0]),
         )
 
     return render_template(
