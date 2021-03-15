@@ -64,7 +64,7 @@ class TestEmailConfirmation(IntegrationTestCase):
         self.assertBadRequest()
 
     def test_confirm_email_with_confirmation_email_not_set(self):
-        # Given I launch and complete the test_confirmation_email questionnaire
+        # Given I launch the test_thank_you_census_individual questionnaire, which doesn't have email confirmation set in the schema
         self.launchSurvey("test_thank_you_census_individual")
         self.post()
         self.post()
