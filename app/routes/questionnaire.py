@@ -1,7 +1,5 @@
 import flask_babel
-from flask import Blueprint, g, redirect, request
-from flask import session as cookie_session
-from flask import url_for
+from flask import Blueprint, g, redirect, request, url_for
 from flask_login import current_user, login_required
 from itsdangerous import BadSignature
 from structlog import get_logger
@@ -15,7 +13,7 @@ from app.helpers import url_safe_serializer
 from app.helpers.language_helper import handle_language
 from app.helpers.schema_helpers import with_schema
 from app.helpers.session_helpers import with_questionnaire_store, with_session_store
-from app.helpers.template_helpers import get_census_base_url, render_template
+from app.helpers.template_helpers import render_template
 from app.questionnaire.location import InvalidLocationException
 from app.questionnaire.router import Router
 from app.utilities.schema import load_schema_from_session_data
@@ -187,7 +185,7 @@ def block(schema, questionnaire_store, block_id, list_name=None, list_item_id=No
 
     if "action[clear_radios]" in request.form:
         block_handler.clear_radio_answers()
-        return redirect(request.url)
+        return redirect(block_handler.current_location.url())
 
     if request.method == "GET" or (
         hasattr(block_handler, "form") and not block_handler.form.validate()
@@ -205,12 +203,6 @@ def block(schema, questionnaire_store, block_id, list_name=None, list_item_id=No
             schema, questionnaire_store, block_handler.router.full_routing_path()
         )
         submission_handler.submit_questionnaire()
-
-        language_code = get_session_store().session_data.language_code
-        if "census" in cookie_session["theme"]:
-            log_out_url = get_census_base_url(cookie_session["theme"], language_code)
-            cookie_session["account_service_log_out_url"] = log_out_url
-
         return redirect(url_for("post_submission.get_thank_you"))
 
     block_handler.handle_post()
