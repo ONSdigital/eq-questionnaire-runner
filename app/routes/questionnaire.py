@@ -25,6 +25,7 @@ from app.views.handlers.confirm_email import ConfirmEmail
 from app.views.handlers.confirmation_email import (
     ConfirmationEmail,
     ConfirmationEmailLimitReached,
+    ConfirmationEmailNotEnabled,
 )
 from app.views.handlers.feedback import Feedback, FeedbackNotEnabled
 from app.views.handlers.section import SectionHandler
@@ -289,7 +290,6 @@ def get_thank_you(schema, session_store):
             return redirect(url_for(".get_thank_you"))
 
         if confirmation_email.form.validate():
-            confirmation_email.handle_post()
             return redirect(
                 url_for(
                     ".confirm_confirmation_email",
@@ -324,7 +324,6 @@ def send_confirmation_email(session_store, schema):
         return redirect(url_for(".get_thank_you"))
 
     if request.method == "POST" and confirmation_email.form.validate():
-        confirmation_email.handle_post()
         return redirect(
             url_for(
                 ".confirm_confirmation_email",
@@ -344,11 +343,15 @@ def send_confirmation_email(session_store, schema):
 @with_schema
 @with_session_store
 def confirm_confirmation_email(session_store, schema):
-    confirm_email = ConfirmEmail(
-        schema, session_store, request.args["email"], form_data=request.form
-    )
+    try:
+        confirm_email = ConfirmEmail(
+            schema, session_store, request.args["email"], form_data=request.form
+        )
+    except (ConfirmationEmailLimitReached, ConfirmationEmailNotEnabled):
+        return redirect(url_for(".get_thank_you"))
 
     if request.method == "POST" and confirm_email.form.validate():
+        confirm_email.handle_post()
         next_location_url = confirm_email.get_next_location_url()
         return redirect(next_location_url)
 

@@ -15,7 +15,7 @@
   {% endif %}
 
   <h1 class="question__title u-fs-xxl" data-qa="confirm-email-title">{{ content.question.title }}</h1>
-  <legend class="fieldset__legend">{{ content.question.label}}</legend>
+  <p class="checkboxes_label">{{ content.question.label}}</p>
   {%- for answer in question.answers -%}
     {% set question_title = answer.title %}
     {% include 'partials/answer.html' %}

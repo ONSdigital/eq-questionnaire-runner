@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2021-03-15 11:31+0000\n"
+"POT-Creation-Date: 2021-03-15 15:05+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -429,21 +429,30 @@ msgstr ""
 msgid "Please submit this survey to complete it"
 msgstr ""
 
-#: app/views/handlers/confirm_email.py:15
+#: app/views/handlers/confirm_email.py:31
 msgid "Yes, send the confirmation email"
 msgstr ""
 
-#: app/views/handlers/confirm_email.py:63
-#: app/views/handlers/confirmation_email.py:76
+#: app/views/handlers/confirm_email.py:60
+msgid "Confirm your email address"
+msgstr ""
+
+#: app/views/handlers/confirm_email.py:78
+msgid "Is this email address correct?"
+msgstr ""
+
+#: app/views/handlers/confirm_email.py:91
+#: app/views/handlers/confirm_email.py:92
+msgid "No, I need to correct it"
+msgstr ""
+
+#: app/views/handlers/confirm_email.py:112
+#: app/views/handlers/confirmation_email.py:66
 #: app/views/handlers/feedback.py:62 app/views/handlers/question.py:150
 msgid "Error: {page_title}"
 msgstr ""
 
-#: app/views/handlers/confirm_email.py:71
-msgid "Is this email address correct?"
-msgstr ""
-
-#: app/views/handlers/confirmation_email.py:56
+#: app/views/handlers/confirmation_email.py:46
 msgid "Confirmation email"
 msgstr ""
 
