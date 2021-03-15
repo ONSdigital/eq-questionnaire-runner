@@ -130,16 +130,20 @@ def get_sign_out():
     """
     Signs the user out of eQ and redirects to the log out url.
     """
-    log_out_url = None
-    if "census" in (theme := cookie_session.get("theme", DEFAULT_THEME)):
-        if not cookie_session or cookie_session.get("submitted") is True:
-            session_store = get_session_store() if cookie_session else None
-            language_code = (
-                session_store.session_data.language_code if session_store else None
-            )
-            log_out_url = get_census_base_url(theme, language_code)
+    if not cookie_session:
+        log_out_url = get_census_base_url(None, None)
 
-    if not log_out_url:
+    elif (
+        "census" in (theme := cookie_session.get("theme", DEFAULT_THEME))
+        and cookie_session.get("submitted") is True
+    ):
+        session_store = get_session_store()
+        language_code = (
+            session_store.session_data.language_code if session_store else None
+        )
+        log_out_url = get_census_base_url(theme, language_code)
+
+    else:
         log_out_url = cookie_session.get(
             "account_service_log_out_url", url_for(".get_signed_out")
         )
