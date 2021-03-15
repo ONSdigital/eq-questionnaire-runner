@@ -12,7 +12,7 @@ from app.helpers import url_safe_serializer
 from app.questionnaire.questionnaire_schema import QuestionnaireSchema
 from app.views.contexts.confirm_email_form_context import build_confirm_email_context
 
-CONFIRM_EMAIL_YES_VALUE = lazy_gettext("Yes")
+CONFIRM_EMAIL_YES_VALUE = lazy_gettext("Yes, send the confirmation email")
 
 
 class ConfirmEmail:
@@ -80,7 +80,10 @@ class ConfirmEmail:
                             "label": CONFIRM_EMAIL_YES_VALUE,
                             "value": CONFIRM_EMAIL_YES_VALUE,
                         },
-                        {"label": "No", "value": "No"},
+                        {
+                            "label": "No, I need to correct it",
+                            "value": "No, I need to correct it",
+                        },
                     ],
                 },
             ],
