@@ -39,6 +39,7 @@ class IntegrationTestCase(unittest.TestCase):  # pylint: disable=too-many-public
         self.last_url = None
         self.last_response = None
         self.last_csrf_token = None
+        self.redirect_url = None
 
         # Perform setup steps
         self._set_up_app()
@@ -113,6 +114,7 @@ class IntegrationTestCase(unittest.TestCase):  # pylint: disable=too-many-public
         )
 
         self._client = self._application.test_client()
+        self.session = self._client.session_transaction()
 
     def tearDown(self):
         self._ds.stop()
@@ -220,6 +222,7 @@ class IntegrationTestCase(unittest.TestCase):  # pylint: disable=too-many-public
 
     def _cache_response(self, environ, response):
         self.last_csrf_token = self._extract_csrf_token(response.get_data(True))
+        self.redirect_url = response.headers.get("Location")
         self.last_response = response
         self.last_url = environ["PATH_INFO"]
         if environ["QUERY_STRING"]:
@@ -353,6 +356,12 @@ class IntegrationTestCase(unittest.TestCase):  # pylint: disable=too-many-public
             self.assertRegex(text=self.last_url, expected_regex=regex)
         else:
             self.fail("last_url is invalid")
+
+    def assertInRedirect(self, content):
+        if self.redirect_url:
+            self.assertIn(content, self.redirect_url)
+        else:
+            self.fail("no redirect found")
 
 
 def decode_flask_cookie(cookie):

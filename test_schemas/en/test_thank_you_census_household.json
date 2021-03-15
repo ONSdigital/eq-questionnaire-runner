@@ -24,6 +24,10 @@
             "type": "string"
         }
     ],
+    "hub": {
+        "enabled": true,
+        "required_completed_sections": ["household-section"]
+    },
     "sections": [
         {
             "id": "household-section",
@@ -55,10 +59,6 @@
                                 "title": "Are you aware this is an census household test schema?",
                                 "type": "General"
                             }
-                        },
-                        {
-                            "type": "Summary",
-                            "id": "summary"
                         }
                     ],
                     "id": "household-group"
