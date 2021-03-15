@@ -11,7 +11,9 @@ from flask_babel import get_locale, lazy_gettext
 
 from app.helpers.language_helper import get_languages_context
 
-CENSUS_BASE_URL = "https://census.gov.uk/"
+CENSUS_EN_BASE_URL = "https://census.gov.uk/"
+CENSUS_CY_BASE_URL = "https://cyfrifiad.gov.uk/"
+CENSUS_NIR_BASE_URL = f"{CENSUS_EN_BASE_URL}ni/"
 DEFAULT_THEME = "census"
 
 
@@ -174,7 +176,7 @@ def render_template(template: str, **kwargs: Mapping) -> str:
     base_url = get_census_base_url(theme, language_code)
     include_csrf_token = request.url_rule and "POST" in request.url_rule.methods
     account_service_url = cookie_session.get(
-        "account_service_url", f"{CENSUS_BASE_URL}en/start"
+        "account_service_url", f"{CENSUS_EN_BASE_URL}en/start"
     )
     sign_out_url = url_for("session.get_sign_out")
     static_content_urls = get_static_content_urls(language_code, base_url, theme)
@@ -221,12 +223,12 @@ def get_google_tag_manager_context() -> Mapping:
 
 def get_census_base_url(schema_theme: str, language_code: str) -> str:
     if language_code == "cy":
-        return "https://cyfrifiad.gov.uk/"
+        return CENSUS_CY_BASE_URL
 
     if schema_theme == "census-nisra":
-        return f"{CENSUS_BASE_URL}ni/"
+        return CENSUS_NIR_BASE_URL
 
-    return CENSUS_BASE_URL
+    return CENSUS_EN_BASE_URL
 
 
 @lru_cache(maxsize=None)
