@@ -187,14 +187,7 @@ def block(schema, questionnaire_store, block_id, list_name=None, list_item_id=No
 
     if "action[clear_radios]" in request.form:
         block_handler.clear_radio_answers()
-        return redirect(
-            url_for(
-                "questionnaire.block",
-                block_id=block_id,
-                list_name=list_name,
-                list_item_id=list_item_id,
-            )
-        )
+        return redirect(block_handler.current_location.url())
 
     if request.method == "GET" or (
         hasattr(block_handler, "form") and not block_handler.form.validate()
