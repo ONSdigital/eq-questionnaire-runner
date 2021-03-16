@@ -76,6 +76,19 @@ class TestEmailConfirmation(IntegrationTestCase):
         self.assertInUrl("/submitted/thank-you/")
         self.assertNotInBody("Is this email address correct?")
 
+    def test_confirmation_email_send_with_confirmation_email_not_set(self):
+        # Given I launch the test_thank_you_census_individual questionnaire, which doesn't have email confirmation set in the schema
+        self.launchSurvey("test_thank_you_census_individual")
+        self.post()
+        self.post()
+
+        # When I try to view the confirmation email send page
+        self.get("/submitted/confirmation-email/send")
+
+        # Then I get routed to the thank you page
+        self.assertInUrl("/submitted/thank-you/")
+        self.assertNotInBody("Is this email address correct?")
+
     def test_bad_signature_confirmation_email_send(self):
         # Given I launch and complete the test_confirmation_email questionnaire
         self._launch_and_complete_questionnaire()

@@ -317,7 +317,7 @@ def send_confirmation_email(session_store, schema):
         confirmation_email = ConfirmationEmail(
             session_store, schema, serialised_email=request.args.get("email")
         )
-    except ConfirmationEmailLimitReached:
+    except (ConfirmationEmailLimitReached, ConfirmationEmailNotEnabled):
         return redirect(url_for(".get_thank_you"))
 
     if request.method == "POST":
@@ -361,7 +361,6 @@ def confirm_confirmation_email(session_store, schema):
     return render_template(
         template="confirm-email",
         content=confirm_email.get_context(),
-        hide_sign_out_button=True,
         page_title=confirm_email.get_page_title(),
     )
 
