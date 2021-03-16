@@ -96,11 +96,15 @@ class ConfirmEmail:
             ],
         }
 
+    @cached_property
+    def is_email_correct(self):
+        return self._form_data.get("confirm-email") == CONFIRM_EMAIL_YES_VALUE
+
     def get_context(self):
         return build_confirm_email_context(self.question_schema, self.form)
 
     def get_next_location_url(self):
-        if self._form_data.get("confirm-email") == CONFIRM_EMAIL_YES_VALUE:
+        if self.is_email_correct:
             return url_for(
                 ".get_confirmation_email_sent",
                 email=self._serialized_email,
@@ -113,9 +117,10 @@ class ConfirmEmail:
         return self.page_title
 
     def handle_post(self):
-        self._publish_fulfilment_request()
-        self._session_store.session_data.confirmation_email_count += 1
-        self._session_store.save()
+        if self.is_email_correct:
+            self._publish_fulfilment_request()
+            self._session_store.session_data.confirmation_email_count += 1
+            self._session_store.save()
 
     def _publish_fulfilment_request(self):
         fulfilment_request = ConfirmationEmailFulfilmentRequest(
