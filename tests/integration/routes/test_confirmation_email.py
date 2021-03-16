@@ -162,7 +162,7 @@ class TestEmailConfirmation(IntegrationTestCase):
 
         # Then I get an error on the confirm email page
         self.assertEqualPageTitle("Error: Confirm your email address - Census 2021")
-        self.assertInBody("There is a problem with this page")
+        self.assertInBody("There is a problem with your answer")
         self.assertInBody("Select an answer")
 
     def test_confirm_email_no(self):

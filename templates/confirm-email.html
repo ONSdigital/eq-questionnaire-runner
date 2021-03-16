@@ -10,7 +10,7 @@
 {% block main %}
   {% set form = content.form %}
   {% if form.mapped_errors %}
-    {% set error_title = _("There is a problem with this page") %}
+    {% set error_title = _("There is a problem with your answer") %}
     {% include 'partials/error-panel.html' %}
   {% endif %}
 
