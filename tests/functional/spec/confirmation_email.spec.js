@@ -84,7 +84,7 @@ describe("Email confirmation", () => {
     before(() => {
       browser.openQuestionnaire("test_confirmation_email.json");
     });
-    it("When I enter an email and answering 'No' on the confirm email page, Then I go the confirmation send page with the email pre-filled", () => {
+    it("When I enter an email and answer 'No' on the confirm email page, Then I go the confirmation send page with the email pre-filled", () => {
       $(SchemaConfirmationPage.submit()).click();
       $(SummaryPage.submit()).click();
       $(ThankYouPage.email()).setValue("name@example.com");
