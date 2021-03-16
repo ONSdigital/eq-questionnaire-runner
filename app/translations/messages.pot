@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2021-03-15 15:05+0000\n"
+"POT-Creation-Date: 2021-03-16 09:02+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -203,68 +203,68 @@ msgstr[1] ""
 msgid "Not a valid choice"
 msgstr ""
 
-#: app/helpers/template_helpers.py:22
+#: app/helpers/template_helpers.py:24
 msgid "Office for National Statistics logo"
 msgstr ""
 
-#: app/helpers/template_helpers.py:31 app/helpers/template_helpers.py:40
-#: app/helpers/template_helpers.py:168 templates/signed-out.html:3
+#: app/helpers/template_helpers.py:33 app/helpers/template_helpers.py:42
+#: app/helpers/template_helpers.py:170 templates/signed-out.html:3
 msgid "Census 2021"
 msgstr ""
 
-#: app/helpers/template_helpers.py:36
+#: app/helpers/template_helpers.py:38
 msgid "Northern Ireland Statistics and Research Agency logo"
 msgstr ""
 
-#: app/helpers/template_helpers.py:53
+#: app/helpers/template_helpers.py:55
 msgid "Help"
 msgstr ""
 
-#: app/helpers/template_helpers.py:58
+#: app/helpers/template_helpers.py:60
 msgid "Contact us"
 msgstr ""
 
-#: app/helpers/template_helpers.py:67
+#: app/helpers/template_helpers.py:69
 msgid "Languages"
 msgstr ""
 
-#: app/helpers/template_helpers.py:72
+#: app/helpers/template_helpers.py:74
 msgid "BSL and audio videos"
 msgstr ""
 
-#: app/helpers/template_helpers.py:82
+#: app/helpers/template_helpers.py:84
 msgid "The following links open in a new tab"
 msgstr ""
 
-#: app/helpers/template_helpers.py:84
+#: app/helpers/template_helpers.py:86
 msgid "Crown copyright and database rights 2021 NIMA MOU577.501."
 msgstr ""
 
-#: app/helpers/template_helpers.py:88
+#: app/helpers/template_helpers.py:90
 msgid "Crown copyright and database rights 2020 OS 100019153."
 msgstr ""
 
-#: app/helpers/template_helpers.py:89
+#: app/helpers/template_helpers.py:91
 msgid "Use of address data is subject to the terms and conditions."
 msgstr ""
 
-#: app/helpers/template_helpers.py:100
+#: app/helpers/template_helpers.py:102
 msgid "Cookies"
 msgstr ""
 
-#: app/helpers/template_helpers.py:105
+#: app/helpers/template_helpers.py:107
 msgid "Accessibility statement"
 msgstr ""
 
-#: app/helpers/template_helpers.py:110
+#: app/helpers/template_helpers.py:112
 msgid "Privacy and data protection"
 msgstr ""
 
-#: app/helpers/template_helpers.py:115
+#: app/helpers/template_helpers.py:117
 msgid "Terms and conditions"
 msgstr ""
 
-#: app/helpers/template_helpers.py:125
+#: app/helpers/template_helpers.py:127
 msgid ""
 "Make sure you <a href='{sign_out_url}'>leave this page</a> or close your "
 "browser if using a shared device"
@@ -443,7 +443,8 @@ msgstr ""
 
 #: app/views/handlers/confirm_email.py:91
 #: app/views/handlers/confirm_email.py:92
-msgid "No, I need to correct it"
+#: app/views/handlers/individual_response.py:867
+msgid "No, I need to change it"
 msgstr ""
 
 #: app/views/handlers/confirm_email.py:112
@@ -672,10 +673,6 @@ msgstr ""
 
 #: app/views/handlers/individual_response.py:863
 msgid "Yes, send the text"
-msgstr ""
-
-#: app/views/handlers/individual_response.py:867
-msgid "No, I need to change it"
 msgstr ""
 
 #: app/views/handlers/individual_response.py:901

@@ -76,7 +76,7 @@ class ConfirmEmail:
             "type": "General",
             "id": "confirm-email",
             "title": lazy_gettext("Is this email address correct?"),
-            "label": self._email,
+            "description": self._email,
             "answers": [
                 {
                     "type": "Radio",
@@ -88,8 +88,8 @@ class ConfirmEmail:
                             "value": CONFIRM_EMAIL_YES_VALUE,
                         },
                         {
-                            "label": lazy_gettext("No, I need to correct it"),
-                            "value": lazy_gettext("No, I need to correct it"),
+                            "label": lazy_gettext("No, I need to change it"),
+                            "value": lazy_gettext("No, I need to change it"),
                         },
                     ],
                 },

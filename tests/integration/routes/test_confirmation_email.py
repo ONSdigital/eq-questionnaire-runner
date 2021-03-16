@@ -171,7 +171,7 @@ class TestEmailConfirmation(IntegrationTestCase):
 
         # When I enter a valid email but answer no on the confirm email page
         self.post({"email": "email@example.com"})
-        self.post({"confirm-email": "No, I need to correct it"})
+        self.post({"confirm-email": "No, I need to change it"})
 
         # Then I get redirect to the confirmation email send page with the email pre-filled
         self.assertInUrl("/submitted/confirmation-email/send")
