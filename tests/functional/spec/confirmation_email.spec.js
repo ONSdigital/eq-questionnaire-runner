@@ -48,7 +48,7 @@ describe("Email confirmation", () => {
       expect($(ConfirmEmailPage.errorPanel()).getText()).to.contain("Select an answer");
     });
 
-    it("When I answering 'Yes' and submit the confirm email page, Then I go to email sent page", () => {
+    it("When I answer 'Yes' and submit the confirm email page, Then I go to email sent page", () => {
       $(ConfirmEmailPage.yes()).click();
       $(ConfirmEmailPage.submit()).click();
       expect(browser.getUrl()).to.contain("confirmation-email/sent");
