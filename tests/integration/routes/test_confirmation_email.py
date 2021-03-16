@@ -87,7 +87,7 @@ class TestEmailConfirmation(IntegrationTestCase):
 
         # Then I get routed to the thank you page
         self.assertInUrl("/submitted/thank-you/")
-        self.assertNotInBody("Is this email address correct?")
+        self.assertNotInBody("Send a confirmation email")
 
     def test_bad_signature_confirmation_email_send(self):
         # Given I launch and complete the test_confirmation_email questionnaire
