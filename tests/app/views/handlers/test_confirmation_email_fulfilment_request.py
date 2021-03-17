@@ -7,7 +7,7 @@ from freezegun import freeze_time
 
 from app.data_models.session_data import SessionData
 from app.questionnaire import QuestionnaireSchema
-from app.views.handlers.confirmation_email import ConfirmationEmailFulfilmentRequest
+from app.views.handlers.confirm_email import ConfirmationEmailFulfilmentRequest
 
 time_to_freeze = datetime.now(tzutc()).replace(second=0, microsecond=0)
 

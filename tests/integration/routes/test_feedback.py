@@ -290,6 +290,7 @@ class TestFeedback(IntegrationTestCase):
 
         # When I submit the email confirmation form
         self.post({"email": "email@example.com"})
+        self.post({"confirm-email": "Yes, send the confirmation email"})
 
         # Then I should see the feedback call to action
         self.assertInBody("What do you think about this service?")

@@ -19,9 +19,11 @@ from app.questionnaire.router import Router
 from app.utilities.schema import load_schema_from_session_data
 from app.views.contexts.hub_context import HubContext
 from app.views.handlers.block_factory import get_block_handler
+from app.views.handlers.confirm_email import ConfirmEmail
 from app.views.handlers.confirmation_email import (
     ConfirmationEmail,
     ConfirmationEmailLimitReached,
+    ConfirmationEmailNotEnabled,
 )
 from app.views.handlers.feedback import Feedback, FeedbackNotEnabled
 from app.views.handlers.section import SectionHandler
@@ -280,10 +282,9 @@ def get_thank_you(schema, session_store):
             return redirect(url_for(".get_thank_you"))
 
         if confirmation_email.form.validate():
-            confirmation_email.handle_post()
             return redirect(
                 url_for(
-                    ".get_confirmation_email_sent",
+                    ".confirm_confirmation_email",
                     email=confirmation_email.get_url_safe_serialized_email(),
                 )
             )
@@ -312,20 +313,18 @@ def get_thank_you(schema, session_store):
 @with_schema
 @with_session_store
 def send_confirmation_email(session_store, schema):
-    if not session_store.session_data.confirmation_email_count:
-        raise NotFound
-
     try:
-        confirmation_email = ConfirmationEmail(session_store, schema)
-    except ConfirmationEmailLimitReached:
+        confirmation_email = ConfirmationEmail(
+            session_store, schema, serialised_email=request.args.get("email")
+        )
+    except (ConfirmationEmailLimitReached, ConfirmationEmailNotEnabled):
         return redirect(url_for(".get_thank_you"))
 
     if request.method == "POST":
         if confirmation_email.form.validate():
-            confirmation_email.handle_post()
             return redirect(
                 url_for(
-                    ".get_confirmation_email_sent",
+                    ".confirm_confirmation_email",
                     email=confirmation_email.get_url_safe_serialized_email(),
                 )
             )
@@ -340,6 +339,29 @@ def send_confirmation_email(session_store, schema):
         content=confirmation_email.get_context(),
         hide_sign_out_button=True,
         page_title=confirmation_email.get_page_title(),
+    )
+
+
+@post_submission_blueprint.route("confirmation-email/confirm", methods=["GET", "POST"])
+@with_schema
+@with_session_store
+def confirm_confirmation_email(session_store, schema):
+    try:
+        confirm_email = ConfirmEmail(
+            schema, session_store, request.args["email"], form_data=request.form
+        )
+    except (ConfirmationEmailLimitReached, ConfirmationEmailNotEnabled):
+        return redirect(url_for(".get_thank_you"))
+
+    if request.method == "POST" and confirm_email.form.validate():
+        confirm_email.handle_post()
+        next_location_url = confirm_email.get_next_location_url()
+        return redirect(next_location_url)
+
+    return render_template(
+        template="confirm-email",
+        content=confirm_email.get_context(),
+        page_title=confirm_email.get_page_title(),
     )
 
 

@@ -19,6 +19,7 @@ class TestEmailConfirmation(IntegrationTestCase):
         # Given I launch and complete the test_confirmation_email questionnaire
         self._launch_and_complete_questionnaire()
         self.post({"email": "email@example.com"})
+        self.post({"confirm-email": "Yes, send the confirmation email"})
 
         # When I try to view the sent page with an incorrect email hash
         self.get("/submitted/confirmation-email/sent?email=bad-signature")
@@ -31,12 +32,73 @@ class TestEmailConfirmation(IntegrationTestCase):
         # Given I launch and complete the test_confirmation_email questionnaire
         self._launch_and_complete_questionnaire()
         self.post({"email": "email@example.com"})
+        self.post({"confirm-email": "Yes, send the confirmation email"})
 
         # When I try to view the sent page with no email param
         self.get("/submitted/confirmation-email/sent")
 
         # Then a BadRequest error is returned
         self.assertBadRequest()
+
+    def test_bad_signature_confirm_email(self):
+        # Given I launch and complete the test_confirmation_email questionnaire
+        self._launch_and_complete_questionnaire()
+        self.post({"email": "email@example.com"})
+
+        # When I try to view the confirm email page with an incorrect email hash
+        self.get("/submitted/confirmation-email/confirm?email=bad-signature")
+
+        # Then a BadRequest error is returned
+        self.assertBadRequest()
+        self.assertEqualPageTitle("An error has occurred - Census 2021")
+
+    def test_missing_email_param_confirm_email(self):
+        # Given I launch and complete the test_confirmation_email questionnaire
+        self._launch_and_complete_questionnaire()
+        self.post({"email": "email@example.com"})
+
+        # When I try to view the confirm email page with no email param
+        self.get("/submitted/confirmation-email/confirm")
+
+        # Then a BadRequest error is returned
+        self.assertBadRequest()
+
+    def test_confirm_email_with_confirmation_email_not_set(self):
+        # Given I launch the test_thank_you_census_individual questionnaire, which doesn't have email confirmation set in the schema
+        self.launchSurvey("test_thank_you_census_individual")
+        self.post()
+        self.post()
+
+        # When I try to view the confirm email page
+        self.get("/submitted/confirmation-email/confirm?email=email-hash")
+
+        # Then I get routed to the thank you page
+        self.assertInUrl("/submitted/thank-you/")
+        self.assertNotInBody("Is this email address correct?")
+
+    def test_confirmation_email_send_with_confirmation_email_not_set(self):
+        # Given I launch the test_thank_you_census_individual questionnaire, which doesn't have email confirmation set in the schema
+        self.launchSurvey("test_thank_you_census_individual")
+        self.post()
+        self.post()
+
+        # When I try to view the confirmation email send page
+        self.get("/submitted/confirmation-email/send")
+
+        # Then I get routed to the thank you page
+        self.assertInUrl("/submitted/thank-you/")
+        self.assertNotInBody("Send a confirmation email")
+
+    def test_bad_signature_confirmation_email_send(self):
+        # Given I launch and complete the test_confirmation_email questionnaire
+        self._launch_and_complete_questionnaire()
+
+        # When I try to view the confirm email page with an incorrect email hash
+        self.get("/submitted/confirmation-email/send?email=bad-signature")
+
+        # Then a BadRequest error is returned
+        self.assertBadRequest()
+        self.assertEqualPageTitle("An error has occurred - Census 2021")
 
     def test_thank_you_page_get_not_allowed(self):
         # Given I launch the test_confirmation_email questionnaire
@@ -64,26 +126,6 @@ class TestEmailConfirmation(IntegrationTestCase):
 
         # When I try to view the confirmation email sent page without sending an email
         self.get("/submitted/confirmation-email/sent")
-
-        # Then I get shown a 404 error
-        self.assertStatusNotFound()
-
-    def test_confirmation_email_page_get_not_allowed(self):
-        # Given I launch and complete the test_confirmation_email questionnaire
-        self._launch_and_complete_questionnaire()
-
-        # When I try to view the confirmation email page without sending an email from the thank you page first
-        self.get("/submitted/confirmation-email/send")
-
-        # Then I get shown a 404 error
-        self.assertStatusNotFound()
-
-    def test_confirmation_email_page_post_not_allowed(self):
-        # Given I launch and complete the test_confirmation_email questionnaire
-        self._launch_and_complete_questionnaire()
-
-        # When I try to POST to the confirmation email page without sending an email from the thank you page first
-        self.post(url="/submitted/confirmation-email/send/")
 
         # Then I get shown a 404 error
         self.assertStatusNotFound()
@@ -123,16 +165,64 @@ class TestEmailConfirmation(IntegrationTestCase):
         self.assertInUrl("/submitted/thank-you/")
         self.assertNotInBody("Get confirmation email")
 
-    def test_thank_you_page_confirmation_email(self):
+    def test_confirm_email_missing_answer(self):
         # Given I launch and complete the test_confirmation_email questionnaire
         self._launch_and_complete_questionnaire()
 
-        # When I enter a valid email and submit
+        # When I enter a valid email but don't provide an answer on the confirm email page
         self.post({"email": "email@example.com"})
+        self.post()
+
+        # Then I get an error on the confirm email page
+        self.assertEqualPageTitle("Error: Confirm your email address - Census 2021")
+        self.assertInBody("There is a problem with your answer")
+        self.assertInBody("Select an answer")
+
+    def test_confirm_email_no(self):
+        # Given I launch and complete the test_confirmation_email questionnaire
+        self._launch_and_complete_questionnaire()
+
+        # When I enter a valid email but answer no on the confirm email page
+        self.post({"email": "email@example.com"})
+        self.post({"confirm-email": "No, I need to change it"})
+
+        # Then I get redirect to the confirmation email send page with the email pre-filled
+        self.assertInUrl("/submitted/confirmation-email/send")
+        self.assertInBody("Send a confirmation email")
+        self.assertInBody("email@example.com")
+
+    def test_confirm_email_yes(self):
+        # Given I launch and complete the test_confirmation_email questionnaire
+        self._launch_and_complete_questionnaire()
+
+        # When I enter a valid email submit and answer yes on the confirm email page
+        self.post({"email": "email@example.com"})
+        self.post({"confirm-email": "Yes, send the confirmation email"})
 
         # Then I get confirmation that the email has been sent
         self.assertInUrl("confirmation-email/sent")
-        self.assertInBody("A confirmation email has been sent")
+        self.assertInBody(
+            'Make sure you <a href="/sign-out">leave this page</a> or close your browser if using a shared device'
+        )
+
+    def test_confirm_email_confirmation_email_limit_reached(
+        self,
+    ):
+        # Given I launch and complete the test_confirmation_email questionnaire and reach the email confirmation limit
+        self._launch_and_complete_questionnaire()
+        self.post({"email": "email@example.com"})
+        self.last_url
+        self.post({"confirm-email": "Yes, send the confirmation email"})
+        self.get("/submitted/confirmation-email/send/")
+        self.post({"email": "email@example.com"})
+        confirm_email_url = self.last_url
+        self.post({"confirm-email": "Yes, send the confirmation email"})
+
+        # When I try to access the confirm email page
+        self.get(confirm_email_url)
+
+        # Then I get routed to the thank you page
+        self.assertInUrl("/submitted/thank-you/")
 
     def test_thank_you_page_confirmation_email_white_space(self):
         # Given I launch and complete the test_confirmation_email questionnaire
@@ -140,23 +230,11 @@ class TestEmailConfirmation(IntegrationTestCase):
 
         # When I enter a valid email which has leading and trailing whitespace
         self.post({"email": " email@example.com "})
+        self.post({"confirm-email": "Yes, send the confirmation email"})
 
         # Then I get confirmation that the email has been sent
         self.assertInUrl("confirmation-email/sent")
         self.assertInBody("A confirmation email has been sent to email@example.com")
-
-    def test_thank_you_page_confirmation_email_show_warning(self):
-        # Given I launch and complete the test_confirmation_email questionnaire
-        self._launch_and_complete_questionnaire()
-
-        # When I enter a valid email and submit
-        self.post({"email": "email@example.com"})
-
-        # Then I get a sign out warning
-        self.assertInUrl("confirmation-email/sent")
-        self.assertInBody(
-            'Make sure you <a href="/sign-out">leave this page</a> or close your browser if using a shared device'
-        )
 
     def test_thank_you_missing_email(self):
         # Given I launch and complete the test_confirmation_email questionnaire
@@ -220,18 +298,6 @@ class TestEmailConfirmation(IntegrationTestCase):
         )
         self.assertNotInBody('data-qa="error-link-2"')
 
-    def test_confirmation_email_page_accessible_after_email_sent_from_thank_you(self):
-        # Given I launch and complete the test_confirmation_email questionnaire
-        self._launch_and_complete_questionnaire()
-
-        # When I enter a valid email and submit
-        self.post({"email": "email@example.com"})
-
-        # Then I can access the email confirmation page
-        self.get("/submitted/confirmation-email/send")
-        self.assertInBody("Send another confirmation email")
-        self.assertEqualPageTitle("Confirmation email - Census 2021")
-
     def test_confirmation_email_page_missing_email(self):
         # Given I launch and complete the test_confirmation_email questionnaire and submit with a valid email from the thank you page
         self._launch_and_complete_questionnaire()
@@ -268,10 +334,12 @@ class TestEmailConfirmation(IntegrationTestCase):
         # Given I launch and complete the test_confirmation_email questionnaire and submit with a valid email from the thank you page
         self._launch_and_complete_questionnaire()
         self.post({"email": "email@example.com"})
+        self.post({"confirm-email": "Yes, send the confirmation email"})
 
         # When I go to the confirmation email page and submit with a valid email
         self.get("/submitted/confirmation-email/send/")
         self.post({"email": "email@example.com"})
+        self.post({"confirm-email": "Yes, send the confirmation email"})
 
         # Then I get confirmation that the email has been sent
         self.assertInUrl("confirmation-email/sent")
@@ -281,10 +349,12 @@ class TestEmailConfirmation(IntegrationTestCase):
         # Given I launch and complete the test_confirmation_email questionnaire and submit with a valid email from the thank you page
         self._launch_and_complete_questionnaire()
         self.post({"email": "email@example.com"})
+        self.post({"confirm-email": "Yes, send the confirmation email"})
 
         # When I go to the confirmation email page and submit with a valid email which has leading and trailing whitespace
         self.get("/submitted/confirmation-email/send/")
         self.post({"email": " email@example.com "})
+        self.post({"confirm-email": "Yes, send the confirmation email"})
 
         # Then I get confirmation that the email has been sent
         self.assertInUrl("confirmation-email/sent")
@@ -296,10 +366,12 @@ class TestEmailConfirmation(IntegrationTestCase):
         # Given I launch and complete the test_confirmation_email questionnaire and submit with a valid email from the thank you page
         self._launch_and_complete_questionnaire()
         self.post({"email": "email@example.com"})
+        self.post({"confirm-email": "Yes, send the confirmation email"})
 
         # When I reach the limit of the number of confirmation emails able to be sent
         self.get("/submitted/thank-you/")
         self.post({"email": "email@example.com"})
+        self.post({"confirm-email": "Yes, send the confirmation email"})
 
         # Then I no longer see the option to send a confirmation email
         self.get("/submitted/thank-you/")
@@ -312,10 +384,12 @@ class TestEmailConfirmation(IntegrationTestCase):
         # Given I launch and complete the test_confirmation_email questionnaire and submit with a valid email from the thank you page
         self._launch_and_complete_questionnaire()
         self.post({"email": "email@example.com"})
+        self.post({"confirm-email": "Yes, send the confirmation email"})
 
         # When I reach the limit of the number of confirmation emails able to be sent
         self.get("/submitted/confirmation-email/send/")
         self.post({"email": "email@example.com"})
+        self.post({"confirm-email": "Yes, send the confirmation email"})
 
         # Then I no longer see the option to send another confirmation email
         self.assertInUrl("confirmation-email/sent")
@@ -327,8 +401,10 @@ class TestEmailConfirmation(IntegrationTestCase):
         # Given I launch and complete the test_confirmation_email questionnaire and have reached the email limit
         self._launch_and_complete_questionnaire()
         self.post({"email": "email@example.com"})
+        self.post({"confirm-email": "Yes, send the confirmation email"})
         self.get("/submitted/confirmation-email/send/")
         self.post({"email": "email@example.com"})
+        self.post({"confirm-email": "Yes, send the confirmation email"})
 
         # When I try to access the send another email page
         self.get("/submitted/confirmation-email/send/")
@@ -343,6 +419,7 @@ class TestEmailConfirmation(IntegrationTestCase):
         # Given I launch and complete the test_confirmation_email questionnaire and have reached the email limit
         self._launch_and_complete_questionnaire()
         self.post({"email": "email@example.com"})
+        self.post({"confirm-email": "Yes, send the confirmation email"})
         self.assertInUrl("confirmation-email/sent")
 
         # Load the thank you page with the email form
@@ -363,6 +440,7 @@ class TestEmailConfirmation(IntegrationTestCase):
         # Given I launch and complete the test_confirmation_email questionnaire and have reached the email limit
         self._launch_and_complete_questionnaire()
         self.post({"email": "email@example.com"})
+        self.post({"confirm-email": "Yes, send the confirmation email"})
         self.assertInUrl("confirmation-email/sent")
 
         # Load the send another email page with the email form
@@ -386,6 +464,7 @@ class TestEmailConfirmation(IntegrationTestCase):
 
         # When the email fulfilment request fails to publish
         self.post({"email": "email@example.com"})
+        self.post({"confirm-email": "Yes, send the confirmation email"})
 
         # Then an error page is shown
         self.assertEqualPageTitle(
@@ -397,12 +476,14 @@ class TestEmailConfirmation(IntegrationTestCase):
         # Given I request a confirmation to my email address
         self._launch_and_complete_questionnaire()
         self.post({"email": "email@example.com"})
+        self.post({"confirm-email": "Yes, send the confirmation email"})
 
         # When I use the email hash in a different session
         query_params = self.last_url.split("?")[-1]
         self.exit()
         self._launch_and_complete_questionnaire()
         self.post({"email": "new-email@new-example.com"})
+        self.post({"confirm-email": "Yes, send the confirmation email"})
         self.get(f"/submitted/confirmation-email/sent?{query_params}")
 
         # Then a BadRequest error is returned
