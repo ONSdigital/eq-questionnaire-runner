@@ -3,10 +3,13 @@ from datetime import datetime
 import simplejson as json
 from dateutil.tz import tzutc
 from redis.exceptions import ConnectionError as RedisConnectionError
+from structlog import get_logger
 
 from app.storage.errors import ItemAlreadyExistsError
-
 from .storage import StorageHandler, StorageModel
+
+
+logger = get_logger()
 
 
 class Redis(StorageHandler):
@@ -33,6 +36,7 @@ class Redis(StorageHandler):
                 name=key_value, value=value, ex=expires_in, nx=not overwrite
             )
         except RedisConnectionError:
+            logger.info("retrying redis set command")
             record_created = self.client.set(
                 name=key_value, value=value, ex=expires_in, nx=not overwrite
             )
@@ -45,6 +49,7 @@ class Redis(StorageHandler):
         try:
             item = self.client.get(key_value)
         except RedisConnectionError:
+            logger.info("retrying redis get command")
             item = self.client.get(key_value)
 
         if item:
@@ -60,4 +65,5 @@ class Redis(StorageHandler):
         try:
             return self.client.delete(key_value)
         except RedisConnectionError:
+            logger.info("retrying redis delete command")
             return self.client.delete(key_value)
