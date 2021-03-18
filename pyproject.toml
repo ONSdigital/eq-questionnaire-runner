@@ -1,6 +1,2 @@
 [tool.black]
 target_version = ['py37']
-
-[tool.pytest.ini_options]
-addopts = "-ra -v"
-filterwarnings = "ignore::DeprecationWarning"
