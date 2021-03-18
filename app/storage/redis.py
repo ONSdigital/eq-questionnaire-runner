@@ -13,9 +13,9 @@ logger = get_logger()
 
 
 class Redis(StorageHandler):
-    @property
-    def command_failed_log_message(self):
-        return "retrying redis command"
+    @staticmethod
+    def log_retry(command):
+        logger.info("retrying redis command", command=command)
 
     def put(self, model, overwrite=True):
         storage_model = StorageModel(model_type=type(model))
@@ -40,7 +40,7 @@ class Redis(StorageHandler):
                 name=key_value, value=value, ex=expires_in, nx=not overwrite
             )
         except RedisConnectionError:
-            logger.info(self.command_failed_log_message, command="set")
+            self.log_retry("set")
             record_created = self.client.set(
                 name=key_value, value=value, ex=expires_in, nx=not overwrite
             )
@@ -53,7 +53,7 @@ class Redis(StorageHandler):
         try:
             item = self.client.get(key_value)
         except RedisConnectionError:
-            logger.info(self.command_failed_log_message, command="get")
+            self.log_retry("get")
             item = self.client.get(key_value)
 
         if item:
@@ -69,5 +69,5 @@ class Redis(StorageHandler):
         try:
             return self.client.delete(key_value)
         except RedisConnectionError:
-            logger.info(self.command_failed_log_message, command="delete")
+            self.log_retry("delete")
             return self.client.delete(key_value)
