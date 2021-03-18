@@ -5,6 +5,7 @@ from unittest import mock
 
 import fakeredis
 from dateutil.tz import tzutc
+from redis.exceptions import ConnectionError as RedisConnectionError
 
 from app.data_models.app_models import EQSession, UsedJtiClaim
 from app.storage.errors import ItemAlreadyExistsError
@@ -18,7 +19,6 @@ EXPIRES_AT = datetime.now(tz=tzutc()).replace(microsecond=0) + timedelta(minutes
 class TestRedis(AppContextTestCase):
     def setUp(self):
         super().setUp()
-
         self.mock_client = fakeredis.FakeStrictRedis()
 
         self.redis = Redis(self.mock_client)
@@ -159,3 +159,57 @@ class TestRedis(AppContextTestCase):
         # Then
         expires_in = self.mock_client.ttl(eq_session.eq_session_id)
         assert expires_in == -1
+
+
+class TestRedisConnectionErrors(AppContextTestCase):
+    def setUp(self):
+        super().setUp()
+        self.mock_client = fakeredis.FakeStrictRedis()
+        self.redis = Redis(self.mock_client)
+
+    def test_put_handles_connection_error_once(self):
+        # Given
+        used_at = datetime.now()
+        expires_at = used_at + timedelta(seconds=60)
+        jti = UsedJtiClaim(str(uuid.uuid4()), expires_at)
+
+        self.redis.client.set = mock.Mock(
+            side_effect=[RedisConnectionError, RedisConnectionError]
+        )
+
+        # When
+        with self.assertRaises(RedisConnectionError):
+            self.redis.put(jti, overwrite=False)
+
+        # Then
+        assert self.redis.client.set.call_count == 2
+
+    def test_get_handles_connection_error_once(self):
+        # Given
+        self.redis.client.get = mock.Mock(
+            side_effect=[RedisConnectionError, RedisConnectionError]
+        )
+
+        # When
+        with self.assertRaises(RedisConnectionError):
+            self.redis.get(EQSession, "test")
+
+        # Then
+        assert self.redis.client.get.call_count == 2
+
+    def test_delete_handles_connection_error_once(self):
+        # Given
+        used_at = datetime.now()
+        expires_at = used_at + timedelta(seconds=60)
+        jti = UsedJtiClaim(str(uuid.uuid4()), expires_at)
+
+        self.redis.client.delete = mock.Mock(
+            side_effect=[RedisConnectionError, RedisConnectionError]
+        )
+
+        # When
+        with self.assertRaises(RedisConnectionError):
+            self.redis.delete(jti)
+
+        # Then
+        assert self.redis.client.delete.call_count == 2

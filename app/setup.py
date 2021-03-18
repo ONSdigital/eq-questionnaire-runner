@@ -305,6 +305,7 @@ def setup_redis(application):
     redis_client = redis.Redis(
         host=application.config["EQ_REDIS_HOST"],
         port=application.config["EQ_REDIS_PORT"],
+        retry_on_timeout=True,
     )
 
     application.eq["ephemeral_storage"] = Redis(redis_client)
