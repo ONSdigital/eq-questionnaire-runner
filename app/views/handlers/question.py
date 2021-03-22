@@ -206,13 +206,12 @@ class Question(BlockHandler):
 
     def clear_radio_answers(self):
         answer_ids_to_remove = []
-        list_item_id = self.current_location.list_item_id
         for answer in self.rendered_block["question"]["answers"]:
             if answer["type"] == "Radio":
                 answer_ids_to_remove.append(answer["id"])
 
         if answer_ids_to_remove:
             self.questionnaire_store_updater.remove_answers(
-                answer_ids_to_remove, list_item_id
+                answer_ids_to_remove, self.current_location.list_item_id
             )
             self.questionnaire_store_updater.save()
