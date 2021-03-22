@@ -93,11 +93,7 @@ class QuestionnaireStoreUpdater:
     def _get_relationships_in_answer_store(self, relationship_answer_id: str):
         return self._answer_store.get_answer(relationship_answer_id).value
 
-    def remove_answers(self, answer_ids: List):
-        for answer_id in answer_ids:
-            self._answer_store.remove_answer(answer_id)
-
-    def remove_answers_with_list_item_id(self, answer_ids: List, list_item_id: str):
+    def remove_answers(self, answer_ids: List, list_item_id: str = None):
         for answer_id in answer_ids:
             self._answer_store.remove_answer(answer_id, list_item_id)
 
