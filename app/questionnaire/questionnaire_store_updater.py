@@ -97,6 +97,10 @@ class QuestionnaireStoreUpdater:
         for answer_id in answer_ids:
             self._answer_store.remove_answer(answer_id)
 
+    def remove_answers_with_list_item_id(self, answer_ids: List, list_item_id: str):
+        for answer_id in answer_ids:
+            self._answer_store.remove_answer(answer_id, list_item_id)
+
     def add_primary_person(self, list_name):
         self.remove_completed_relationship_locations_for_list_name(list_name)
 
