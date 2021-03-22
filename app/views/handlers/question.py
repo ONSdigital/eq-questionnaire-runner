@@ -212,5 +212,7 @@ class Question(BlockHandler):
                 answer_ids_to_remove.append(answer["id"])
 
         if answer_ids_to_remove:
-            self.questionnaire_store_updater.remove_answers_with_list_item_id(answer_ids_to_remove, list_item_id)
+            self.questionnaire_store_updater.remove_answers_with_list_item_id(
+                answer_ids_to_remove, list_item_id
+            )
             self.questionnaire_store_updater.save()
