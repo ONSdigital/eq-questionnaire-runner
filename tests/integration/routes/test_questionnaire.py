@@ -2,7 +2,22 @@ from tests.integration.integration_test_case import IntegrationTestCase
 
 
 class TestQuestionnaire(IntegrationTestCase):
-    def test_head_request_on_optional_date(self):
+    def test_head_request_on_root_url(self):
+        self.launchSurvey("test_hub_and_spoke")
+        self.head("/questionnaire/")
+        self.assertStatusOK()
+
+    def test_head_request_on_section_url(self):
+        self.launchSurvey("test_hub_and_spoke")
+        self.head("/questionnaire/sections/employment-section")
+        self.assertStatusCode(302)
+
+    def test_head_request_on_block_url(self):
+        self.launchSurvey("test_textfield")
+        self.head("/questionnaire/name-block")
+        self.assertStatusOK()
+
+    def test_head_request_on_block_with_optional_date_answer(self):
         self.launchSurvey("test_dates")
         self.post(
             {
@@ -28,4 +43,4 @@ class TestQuestionnaire(IntegrationTestCase):
             }
         )
         self.head("/questionnaire/date-non-mandatory-block/")
-        self.assertStatusCode(200)
+        self.assertStatusOK()

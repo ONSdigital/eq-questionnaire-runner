@@ -254,7 +254,7 @@ def relationships(
             return redirect(block_handler.get_last_location_url())
         return redirect(block_handler.get_first_location_url())
 
-    if request.method == "GET" or (
+    if request.method != "POST" or (
         hasattr(block_handler, "form") and not block_handler.form.validate()
     ):
         return _render_page(
