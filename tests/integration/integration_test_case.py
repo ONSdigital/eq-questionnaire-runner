@@ -203,6 +203,16 @@ class IntegrationTestCase(unittest.TestCase):  # pylint: disable=too-many-public
 
         self._cache_response(environ, response)
 
+    def head(self, url, **kwargs):
+        """
+        Send a HEAD request to the specified URL.
+
+        :param url: the URL to send a HEAD request to
+        """
+        environ, response = self._client.head(url, as_tuple=True, **kwargs)
+
+        self._cache_response(environ, response)
+
     def sign_out(self):
         selected = self.getHtmlSoup().find("a", {"name": "btn-save-sign-out"})
         return self.get(selected["href"])

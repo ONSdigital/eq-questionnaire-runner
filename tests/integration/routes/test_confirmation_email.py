@@ -489,3 +489,23 @@ class TestEmailConfirmation(IntegrationTestCase):
         # Then a BadRequest error is returned
         self.assertBadRequest()
         self.assertEqualPageTitle("An error has occurred - Census 2021")
+
+    def test_head_request_on_email_confirmation(self):
+        self._launch_and_complete_questionnaire()
+        self.post({"email": "email@example.com"})
+        self.head(self.last_url)
+        self.assertStatusOK()
+
+    def test_head_request_on_email_send(self):
+        self._launch_and_complete_questionnaire()
+        self.post({"email": "email@example.com"})
+        self.post({"confirm-email": "No, I need to change it"})
+        self.head(self.last_url)
+        self.assertStatusOK()
+
+    def test_head_request_on_email_sent(self):
+        self._launch_and_complete_questionnaire()
+        self.post({"email": "email@example.com"})
+        self.post({"confirm-email": "Yes, send the confirmation email"})
+        self.head(self.last_url)
+        self.assertStatusOK()

@@ -55,3 +55,10 @@ class TestThankYou(IntegrationTestCase):
         # Ensure translation is now in Welsh
         self.assertInBody("English")
         self.assertNotInBody("Cymraeg")
+
+    def test_head_request_on_thank_you(self):
+        self.launchSurvey("test_confirmation_email")
+        self.post()
+        self.post()
+        self.head("/submitted/thank-you")
+        self.assertStatusOK()
