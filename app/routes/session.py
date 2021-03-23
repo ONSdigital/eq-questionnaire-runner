@@ -120,7 +120,9 @@ def validate_jti(decrypted_token):
 
 @session_blueprint.route("/session-expired", methods=["GET"])
 def get_session_expired():
-    logout_user()
+    # Check for GET as we don't want to log out for HEAD requests
+    if request.method == "GET":
+        logout_user()
 
     return render_template("errors/session-expired")
 
@@ -150,7 +152,10 @@ def get_sign_out():
             "account_service_log_out_url", url_for(".get_signed_out")
         )
 
-    logout_user()
+    # Check for GET as we don't want to log out for HEAD requests
+    if request.method == "GET":
+        logout_user()
+
     return redirect(log_out_url)
 
 

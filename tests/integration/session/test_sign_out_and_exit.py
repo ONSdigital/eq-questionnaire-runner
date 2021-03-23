@@ -36,6 +36,13 @@ class TestSaveAndSignOut(IntegrationTestCase):
                 self.get(SIGN_OUT_URL_PATH)
                 self.assertInUrl(ACCOUNT_SERVICE_LOG_OUT_URL_PATH)
 
+    def test_head_request_doesnt_sign_out(self):
+        self.launchSurvey("test_textfield")
+        self.head(SIGN_OUT_URL_PATH)
+        self.assertStatusCode(302)
+        self.get("/questionnaire/name-block")
+        self.assertStatusOK()
+
 
 class TestExitPostSubmissionTestCase(IntegrationTestCase):
     def _launch_and_submit_questionnaire(self, schema, **kwargs):
