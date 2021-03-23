@@ -1,24 +1,46 @@
-import simplejson as json
-from mock import Mock
-
-from app.data_models import QuestionnaireStore
 from tests.integration.integration_test_case import IntegrationTestCase
 
 
 class TestQuestionnaire(IntegrationTestCase):
-    def setUp(self):
-        super().setUp()
-        self._application_context = self._application.app_context()
-        self._application_context.push()
+    def test_head_request_on_root_url(self):
+        self.launchSurvey("test_hub_and_spoke")
+        self.head("/questionnaire/")
+        self.assertStatusOK()
 
-        storage = Mock()
-        data = {"METADATA": "test", "ANSWERS": [], "PROGRESS": []}
-        storage.get_user_data = Mock(
-            return_value=(json.dumps(data), QuestionnaireStore.LATEST_VERSION)
+    def test_head_request_on_section_url(self):
+        self.launchSurvey("test_hub_and_spoke")
+        self.head("/questionnaire/sections/employment-section")
+        self.assertStatusCode(302)
+
+    def test_head_request_on_block_url(self):
+        self.launchSurvey("test_textfield")
+        self.head("/questionnaire/name-block")
+        self.assertStatusOK()
+
+    def test_head_request_on_block_with_optional_date_answer(self):
+        self.launchSurvey("test_dates")
+        self.post(
+            {
+                "date-range-from-answer-day": "1",
+                "date-range-from-answer-month": "1",
+                "date-range-from-answer-year": "1900",
+                "date-range-to-answer-day": "1",
+                "date-range-to-answer-month": "1",
+                "date-range-to-answer-year": "1901",
+            }
         )
-
-        self.question_store = QuestionnaireStore(storage)
-        self.mock_context = {"block": {"question": {"title": "Testing title"}}}
-
-    def tearDown(self):
-        self._application_context.pop()
+        self.post(
+            {
+                "month-year-answer-month": "1",
+                "month-year-answer-year": "1900",
+            }
+        )
+        self.post(
+            {
+                "single-date-answer-day": "1",
+                "single-date-answer-month": "1",
+                "single-date-answer-year": "1900",
+            }
+        )
+        self.head("/questionnaire/date-non-mandatory-block/")
+        self.assertStatusOK()

@@ -75,9 +75,7 @@ class TestLoginWithGetRequest(IntegrationTestCase):
         token = self.token_generator.create_token("test_checkbox")
 
         # When
-        self._client.head(
-            "/session?token=" + token, as_tuple=True, follow_redirects=True
-        )
+        self.head("/session?token=" + token)
         self.get(url=f"/session?token={token}")
 
         # Then
@@ -170,7 +168,7 @@ class TestLoginWithGetRequest(IntegrationTestCase):
         return response(404)
 
 
-class TestLoginWIthPostRequest(IntegrationTestCase):
+class TestLoginWithPostRequest(IntegrationTestCase):
     def test_login_with_no_token_should_be_unauthorized(self):
         # Given
         token = ""
@@ -226,9 +224,7 @@ class TestLoginWIthPostRequest(IntegrationTestCase):
         token = self.token_generator.create_token("test_checkbox")
 
         # When
-        self._client.head(
-            "/session?token=" + token, as_tuple=True, follow_redirects=True
-        )
+        self.head("/session?token=" + token)
         self.post(url=f"/session?token={token}")
 
         # Then

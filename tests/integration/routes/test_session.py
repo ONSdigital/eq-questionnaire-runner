@@ -20,3 +20,11 @@ class TestSession(IntegrationTestCase):
     def test_session_jti_token_expired(self):
         self.launchSurvey(exp=time.time() - float(60))
         self.assertStatusUnauthorised()
+
+    def test_head_request_on_session_expired(self):
+        self.head("/session-expired")
+        self.assertStatusOK()
+
+    def test_head_request_on_session_signed_out(self):
+        self.head("/signed-out")
+        self.assertStatusOK()
