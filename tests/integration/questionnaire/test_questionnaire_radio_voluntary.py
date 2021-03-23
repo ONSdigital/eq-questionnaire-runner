@@ -21,9 +21,9 @@ class TestQuestionnaireRepeatingSectionRadioVoluntary(IntegrationTestCase):
     def test_radio_voluntary_in_repeating_section(self):
         self.launchSurvey("test_repeating_section_with_radio_voluntary")
         self.post()
-        self.post({"you-live-here": "Yes"})
+        self.post({"anyone-lives-here": "Yes"})
         self.post({"first-name": "James", "last-name": "May"})
-        self.post({"anyone-else": "No"})
+        self.post({"anyone-lives-here": "No"})
         self.post()
         self.post({"radio-voluntary-true-answer": "Coffee"})
         self.previous()
