@@ -212,13 +212,12 @@ def render_template(template: str, **kwargs: Mapping) -> str:
 
 
 def get_google_tag_manager_context() -> Mapping:
-    if (
-        current_app.config["EQ_GOOGLE_TAG_MANAGER_ID"]
-        and current_app.config["EQ_GOOGLE_TAG_MANAGER_AUTH"]
+    if google_tag_manager_id := current_app.config["EQ_GOOGLE_TAG_MANAGER_ID"] and (
+        google_tag_manager_auth := current_app.config["EQ_GOOGLE_TAG_MANAGER_AUTH"]
     ):
         return {
-            "google_tag_manager_id": current_app.config["EQ_GOOGLE_TAG_MANAGER_ID"],
-            "google_tag_manager_auth": current_app.config["EQ_GOOGLE_TAG_MANAGER_AUTH"],
+            "google_tag_manager_id": google_tag_manager_id,
+            "google_tag_manager_auth": google_tag_manager_auth,
         }
     return {}
 
