@@ -18,7 +18,7 @@ class TestQuestionnaireRepeatingSectionRadioVoluntary(IntegrationTestCase):
 
     BASE_URL = "/questionnaire/"
 
-    def test_radio_voluntary_in_repeating_section(self):
+    def test_clear_radios(self):
         self.launchSurvey("test_repeating_section_with_radio_voluntary")
         self.post()
         self.post({"anyone-lives-here": "Yes"})
@@ -26,10 +26,13 @@ class TestQuestionnaireRepeatingSectionRadioVoluntary(IntegrationTestCase):
         self.post({"anyone-lives-here": "No"})
         self.post()
         self.post({"radio-voluntary-answer": "Coffee"})
+
         self.assertInUrl("personal-details-section")
         self.assertInBody("Coffee")
+
         self.previous()
         self.post(action="clear_radios")
         self.post()
+
         self.assertInUrl("personal-details-section")
         self.assertNotInBody("Coffee")
