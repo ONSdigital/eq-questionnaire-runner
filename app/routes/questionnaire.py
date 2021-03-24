@@ -146,7 +146,7 @@ def get_section(schema, questionnaire_store, section_id, list_item_id=None):
     except InvalidLocationException:
         raise NotFound
 
-    if request.method == "GET":
+    if request.method != "POST":
         if section_handler.can_display_summary():
             section_context = section_handler.context()
             return _render_page(
@@ -189,7 +189,7 @@ def block(schema, questionnaire_store, block_id, list_name=None, list_item_id=No
         block_handler.clear_radio_answers()
         return redirect(block_handler.current_location.url())
 
-    if request.method == "GET" or (
+    if request.method != "POST" or (
         hasattr(block_handler, "form") and not block_handler.form.validate()
     ):
         return _render_page(
@@ -254,7 +254,7 @@ def relationships(
             return redirect(block_handler.get_last_location_url())
         return redirect(block_handler.get_first_location_url())
 
-    if request.method == "GET" or (
+    if request.method != "POST" or (
         hasattr(block_handler, "form") and not block_handler.form.validate()
     ):
         return _render_page(
