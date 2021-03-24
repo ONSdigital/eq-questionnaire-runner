@@ -19,7 +19,7 @@ class TestQuestionnaireRepeatingSectionRadioVoluntary(IntegrationTestCase):
     BASE_URL = "/questionnaire/"
 
     def test_clear_radios(self):
-        self.launchSurvey("test_repeating_section_with_radio_voluntary")
+        self.launchSurvey("test_radio_voluntary_with_repeating_sections")
         self.post()
         self.post({"anyone-lives-here": "Yes"})
         self.post({"first-name": "James", "last-name": "May"})
