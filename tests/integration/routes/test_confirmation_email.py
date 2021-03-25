@@ -509,3 +509,23 @@ class TestEmailConfirmation(IntegrationTestCase):
         self.post({"confirm-email": "Yes, send the confirmation email"})
         self.head(self.last_url)
         self.assertStatusOK()
+
+    def test_options_request_on_email_confirmation(self):
+        self._launch_and_complete_questionnaire()
+        self.post({"email": "email@example.com"})
+        self.options(self.last_url)
+        self.assertStatusOK()
+
+    def test_options_request_on_email_send(self):
+        self._launch_and_complete_questionnaire()
+        self.post({"email": "email@example.com"})
+        self.post({"confirm-email": "No, I need to change it"})
+        self.options(self.last_url)
+        self.assertStatusOK()
+
+    def test_options_request_on_email_sent(self):
+        self._launch_and_complete_questionnaire()
+        self.post({"email": "email@example.com"})
+        self.post({"confirm-email": "Yes, send the confirmation email"})
+        self.options(self.last_url)
+        self.assertStatusOK()
