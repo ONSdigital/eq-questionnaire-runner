@@ -93,7 +93,7 @@
       }
 
       var cookie_usage_regex = /^(.*)?\s*'usage':true\s*[^;]+(.*)?$/;
-      if (document.cookie.match(cookie_usage_regex)) {
+      if (document.ons_cookie_policy.match(cookie_usage_regex)) {
           loadGTM();
       }
     </script>
