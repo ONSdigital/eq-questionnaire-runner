@@ -93,9 +93,9 @@ class QuestionnaireStoreUpdater:
     def _get_relationships_in_answer_store(self, relationship_answer_id: str):
         return self._answer_store.get_answer(relationship_answer_id).value
 
-    def remove_answers(self, answer_ids: List):
+    def remove_answers(self, answer_ids: List, list_item_id: str = None):
         for answer_id in answer_ids:
-            self._answer_store.remove_answer(answer_id)
+            self._answer_store.remove_answer(answer_id, list_item_id)
 
     def add_primary_person(self, list_name):
         self.remove_completed_relationship_locations_for_list_name(list_name)
