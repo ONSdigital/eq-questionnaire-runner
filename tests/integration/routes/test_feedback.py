@@ -383,3 +383,8 @@ class TestFeedback(IntegrationTestCase):
         )
         self.head("/submitted/feedback/sent")
         self.assertStatusOK()
+
+    def _launch_and_complete_questionnaire(self):
+        self.launchSurvey("test_feedback")
+        self.post({"answer_id": "Yes"})
+        self.post()
