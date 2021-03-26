@@ -45,6 +45,9 @@ post_submission_blueprint = Blueprint(
 @questionnaire_blueprint.before_request
 @login_required
 def before_questionnaire_request():
+    if request.method == "OPTIONS":
+        return None
+
     metadata = get_metadata(current_user)
     if not metadata:
         raise NoQuestionnaireStateException(401)
@@ -69,6 +72,9 @@ def before_questionnaire_request():
 @post_submission_blueprint.before_request
 @login_required
 def before_post_submission_request():
+    if request.method == "OPTIONS":
+        return None
+
     session_store = get_session_store()
     session_data = session_store.session_data
     if not session_data.submitted_time:

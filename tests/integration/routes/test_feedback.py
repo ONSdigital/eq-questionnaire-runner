@@ -383,25 +383,3 @@ class TestFeedback(IntegrationTestCase):
         )
         self.head("/submitted/feedback/sent")
         self.assertStatusOK()
-
-    def test_options_request_on_feedback(self):
-        self._launch_and_complete_questionnaire()
-        self.options("/submitted/feedback/send")
-        self.assertStatusOK()
-
-    def test_options_request_on_feedback_sent(self):
-        self._launch_and_complete_questionnaire()
-        self.get("/submitted/feedback/send")
-        self.post(
-            {
-                "feedback-type": "General feedback about this service",
-                "feedback-text": "Some feedback",
-            }
-        )
-        self.options("/submitted/feedback/sent")
-        self.assertStatusOK()
-
-    def _launch_and_complete_questionnaire(self):
-        self.launchSurvey("test_feedback")
-        self.post({"answer_id": "Yes"})
-        self.post()

@@ -136,13 +136,3 @@ class TestQuestionnaireRelationships(QuestionnaireTestCase):
             f"/questionnaire/relationships/people/{first_list_item_id}/to/{second_list_item_id}"
         )
         self.assertStatusOK()
-
-    def test_options_request_on_relationships_url(self):
-        self.launchSurvey("test_relationships")
-        first_list_item_id = self.add_person("Marie", "Doe")
-        second_list_item_id = self.add_person("John", "Doe")
-        self.post({"anyone-else": "No"})
-        self.options(
-            f"/questionnaire/relationships/people/{first_list_item_id}/to/{second_list_item_id}"
-        )
-        self.assertStatusOK()
