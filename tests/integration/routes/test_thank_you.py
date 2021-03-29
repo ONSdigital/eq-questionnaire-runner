@@ -63,7 +63,7 @@ class TestThankYou(IntegrationTestCase):
         self.head("/submitted/thank-you")
         self.assertStatusOK()
 
-    def test_options_request_on_post_submission_exits_before_request_early(self):
+    def test_options_request_post_submission_before_request(self):
         self.launchSurvey("test_confirmation_email")
         self.post()
         self.post()

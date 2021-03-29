@@ -45,7 +45,7 @@ class TestQuestionnaire(IntegrationTestCase):
         self.head("/questionnaire/date-non-mandatory-block/")
         self.assertStatusOK()
 
-    def test_options_request_exits_before_request_early(self):
+    def test_options_request_before_request(self):
         self.launchSurvey("test_hub_and_spoke")
         with self.assertLogs() as logs:
             self.options("/questionnaire/")

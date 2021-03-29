@@ -1290,3 +1290,21 @@ class TestIndividualResponsePostAddressConfirmHandler(IndividualResponseTestCase
 
         # Then I should be redirect to the how page
         self.assertInUrl(f"/individual-response/{list_item_id}/how")
+
+    def test_options_request_before_request(self):
+        # Given I add a number of non primary household members
+        self._add_household_multiple_members_no_primary()
+
+        # When I try to post to the address confirmation page after the postal deadline
+        self.get(self.individual_response_link)
+        self.get(self.individual_response_start_link)
+        list_item_id = self.get_who_choice(0)["list_item_id"]
+
+        with self.assertLogs() as logs:
+            self.options(
+                url=f"/individual-response/{list_item_id}/post/confirm-address"
+            )
+            self.assertStatusOK()
+
+        for output in logs.output:
+            self.assertNotIn("individual-response request", output)

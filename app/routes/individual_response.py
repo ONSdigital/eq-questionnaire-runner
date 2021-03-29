@@ -36,6 +36,9 @@ individual_response_blueprint = Blueprint(
 @login_required
 @individual_response_blueprint.before_request
 def before_individual_response_request():
+    if request.method == "OPTIONS":
+        return None
+
     metadata = get_metadata(current_user)
     if not metadata:
         raise NoQuestionnaireStateException(401)
