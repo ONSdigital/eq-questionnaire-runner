@@ -68,9 +68,9 @@ class TestThankYou(IntegrationTestCase):
         self.post()
         self.post()
 
-        with self.assertLogs() as cm:
+        with self.assertLogs() as logs:
             self.options("/submitted/thank-you")
             self.assertStatusOK()
 
-        for output in cm.output:
+        for output in logs.output:
             self.assertNotIn("questionnaire request", output)
