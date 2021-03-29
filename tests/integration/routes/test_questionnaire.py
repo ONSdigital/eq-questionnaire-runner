@@ -47,9 +47,9 @@ class TestQuestionnaire(IntegrationTestCase):
 
     def test_options_request_exits_before_request_early(self):
         self.launchSurvey("test_hub_and_spoke")
-        with self.assertLogs() as cm:
+        with self.assertLogs() as logs:
             self.options("/questionnaire/")
             self.assertStatusOK()
 
-        for output in cm.output:
+        for output in logs.output:
             self.assertNotIn("questionnaire request", output)
