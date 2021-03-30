@@ -25,8 +25,8 @@ class TestApplicationVariables(IntegrationTestCase):
         self.assertInHead("gtm.start")
         self.assertInHead("dataLayer = []")
         self.assertInBody("https://www.googletagmanager.com")
-        self.assertInBody(settings.EQ_GOOGLE_TAG_MANAGER_AUTH)
-        self.assertInBody(settings.EQ_GOOGLE_TAG_MANAGER_ID)
+        self.assertInHead(settings.EQ_GOOGLE_TAG_MANAGER_AUTH)
+        self.assertInHead(settings.EQ_GOOGLE_TAG_MANAGER_ID)
 
     def test_google_analytics_data_layer_is_set_to_nisra_false(self):
         self.launchSurvey("test_thank_you_census_individual")
