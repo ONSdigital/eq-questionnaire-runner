@@ -213,6 +213,16 @@ class IntegrationTestCase(unittest.TestCase):  # pylint: disable=too-many-public
 
         self._cache_response(environ, response)
 
+    def options(self, url, **kwargs):
+        """
+        Send an OPTIONS request to the specified URL.
+
+        :param url: the URL to send an OPTION request to
+        """
+        environ, response = self._client.options(url, as_tuple=True, **kwargs)
+
+        self._cache_response(environ, response)
+
     def sign_out(self):
         selected = self.getHtmlSoup().find("a", {"name": "btn-save-sign-out"})
         return self.get(selected["href"])

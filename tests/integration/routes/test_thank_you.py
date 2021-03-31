@@ -62,3 +62,15 @@ class TestThankYou(IntegrationTestCase):
         self.post()
         self.head("/submitted/thank-you")
         self.assertStatusOK()
+
+    def test_options_request_post_submission_before_request(self):
+        self.launchSurvey("test_confirmation_email")
+        self.post()
+        self.post()
+
+        with self.assertLogs() as logs:
+            self.options("/submitted/thank-you")
+            self.assertStatusOK()
+
+        for output in logs.output:
+            self.assertNotIn("questionnaire request", output)
