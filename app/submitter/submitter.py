@@ -1,7 +1,7 @@
 from uuid import uuid4
 
 import simplejson as json
-from google.cloud import storage
+from google.cloud import storage  # type: ignore
 from pika import BasicProperties, BlockingConnection, URLParameters
 from pika.exceptions import AMQPError
 from structlog import get_logger
