@@ -14,7 +14,7 @@ class QuestionnaireState:
 
 
 class EQSession:
-    def __init__(self, eq_session_id, user_id, expires_at, session_data=None):
+    def __init__(self, eq_session_id, user_id, expires_at, session_data):
         self.eq_session_id = eq_session_id
         self.user_id = user_id
         self.session_data = session_data

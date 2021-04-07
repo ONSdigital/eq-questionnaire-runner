@@ -86,7 +86,7 @@ def load_user():
     """
     session_store = get_session_store()
 
-    if session_store and session_store.user_id and _is_session_valid(session_store):
+    if session_store and _is_session_valid(session_store):
         logger.debug("session exists")
 
         user_id = session_store.user_id

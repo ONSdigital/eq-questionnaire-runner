@@ -46,7 +46,7 @@ def get_session_store() -> Union[SessionStore, None]:
             cookie_session[USER_IK], pepper, cookie_session[EQ_SESSION_ID]
         )
 
-    return store
+    return store if store.session_data else None
 
 
 def get_session_timeout_in_seconds(schema: QuestionnaireSchema) -> int:
