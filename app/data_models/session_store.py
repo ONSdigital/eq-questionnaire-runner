@@ -50,6 +50,7 @@ class SessionStore:
             eq_session_id=self.eq_session_id,
             user_id=self.user_id,
             expires_at=expires_at,
+            session_data=None,
         )
 
         return self
@@ -83,30 +84,27 @@ class SessionStore:
         logger.debug(
             "finding eq_session_id in database", eq_session_id=self.eq_session_id
         )
-
         self._eq_session = current_app.eq["storage"].get(EQSession, self.eq_session_id)
 
         if self._eq_session:
-
             self.user_id = self._eq_session.user_id
 
-            if self._eq_session.session_data:
-                encrypted_session_data = self._eq_session.session_data
-                session_data = StorageEncryption(
-                    self.user_id, self.user_ik, self.pepper
-                ).decrypt_data(encrypted_session_data)
+            encrypted_session_data = self._eq_session.session_data
+            session_data = StorageEncryption(
+                self.user_id, self.user_ik, self.pepper
+            ).decrypt_data(encrypted_session_data)
 
-                session_data = session_data.decode()
-                # for backwards compatibility
-                # session data used to be base64 encoded before encryption
-                try:
-                    session_data = base64url_decode(session_data).decode()
-                except ValueError:
-                    pass
+            session_data = session_data.decode()
+            # for backwards compatibility
+            # session data used to be base64 encoded before encryption
+            try:
+                session_data = base64url_decode(session_data).decode()
+            except ValueError:
+                pass
 
-                self.session_data = json.loads(
-                    session_data, object_hook=lambda d: SessionData(**d)
-                )
+            self.session_data = json.loads(
+                session_data, object_hook=lambda d: SessionData(**d)
+            )
 
             logger.debug(
                 "found matching eq_session for eq_session_id in database",

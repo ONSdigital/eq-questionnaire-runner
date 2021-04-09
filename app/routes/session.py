@@ -141,9 +141,7 @@ def get_sign_out():
     ):
         session_store = get_session_store()
         language_code = (
-            session_store.session_data.language_code
-            if session_store and session_store.session_data
-            else None
+            session_store.session_data.language_code if session_store else None
         )
         log_out_url = get_census_base_url(theme, language_code)
 
