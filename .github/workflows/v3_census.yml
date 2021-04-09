@@ -18,5 +18,5 @@ jobs:
         - name: Push to Docker Hub
           run: |
             echo ${{ secrets.DOCKER_PASSWORD }} | docker login -u ${{ secrets.DOCKER_USERNAME }} --password-stdin
-            echo "Pushing with tag [v3-census]"
+            echo "Pushing with tag [v3-census-latest]"
             docker push onsdigital/eq-questionnaire-runner:v3-census-latest
