@@ -3,7 +3,7 @@ name: PR
 on:
   pull_request:
     branches:
-      - "master"
+      - "v3-census"
       - "branch-v*"
 
 jobs:
