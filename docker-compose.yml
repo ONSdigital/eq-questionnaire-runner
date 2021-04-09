@@ -13,7 +13,7 @@ services:
       - eq-env
 
   eq-questionnaire-runner:
-    image: onsdigital/eq-questionnaire-runner:v3-census
+    image: onsdigital/eq-questionnaire-runner:v3-census-latest
     build: ./
     env_file:
       - .development.env
