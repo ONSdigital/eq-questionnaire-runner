@@ -14,7 +14,6 @@ pylint-quotes = "*"
 "beautifulsoup4" = "*"
 httmock = "*"
 "flake8" = "*"
-"flake8-blind-except" = "*"
 "flake8-debugger" = "*"
 "flake8-mock" = "*"
 "flake8-print" = "*"
@@ -67,7 +66,7 @@ google-cloud-pubsub = "*"
 google-cloud-tasks = "*"
 
 [requires]
-python_version = "3.8"
+python_version = "3.9"
 
 [pipenv]
 allow_prereleases = false
