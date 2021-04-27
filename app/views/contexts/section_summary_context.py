@@ -178,14 +178,14 @@ class SectionSummaryContext(Context):
         add_link = self._add_link(summary, list_collector_block)
 
         if len(current_list) == 1 and current_list.primary_person:
-            primary_person_block = self._schema.get_list_collector_for_list(
-                self.section, for_list=summary["for_list"], primary=True
-            )
 
-            primary_person_edit_block_id = primary_person_block["add_or_edit_block"][
-                "id"
-            ]
-            edit_block_id = primary_person_block["add_or_edit_block"]["id"]
+            if primary_person_block := self._schema.get_list_collector_for_list(
+                self.section, for_list=summary["for_list"], primary=True
+            ):
+                primary_person_edit_block_id = primary_person_block[
+                    "add_or_edit_block"
+                ]["id"]
+                edit_block_id = primary_person_block["add_or_edit_block"]["id"]
 
         rendered_summary = self._placeholder_renderer.render(
             summary, self.current_location.list_item_id
@@ -234,4 +234,6 @@ class SectionSummaryContext(Context):
             )
 
     def _get_safe_page_title(self, title):
-        return safe_content(self._schema.get_single_string_value(title))
+        return (
+            safe_content(self._schema.get_single_string_value(title)) if title else ""
+        )
