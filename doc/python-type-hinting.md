@@ -7,7 +7,7 @@ As a team we have committed to adding type hints throughout the Python code. Thi
 Specify types for variables initialised with `None`:
 
 ```python
-description: str = None
+description: Optional[str] = None
 ```
 
 Specify types for empty collections:
