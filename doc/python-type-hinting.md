@@ -71,7 +71,7 @@ from __future__ import annotations
 
 class TestClass:
 
-  def test(self, var: list[TestClass]) -> None:
+  def test(self, var: Sequence[TestClass]) -> None:
 ```
 
 This import is not necessary in Python 3.10.
