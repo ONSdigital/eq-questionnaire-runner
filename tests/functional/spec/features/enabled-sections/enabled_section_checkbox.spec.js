@@ -35,7 +35,7 @@ describe("Feature: Section Enabled Based On Checkbox Answers", () => {
     $(sectionOne.section1ExclusiveNeither()).click();
     $(sectionOne.submit()).click();
 
-    expect(browser.getUrl()).to.contain("summary");
+    expect(browser.getUrl()).to.contain(summary.url());
     expect($(summary.section2Question()).isExisting()).to.be.false;
     expect($(summary.section3Question()).isExisting()).to.be.false;
   });

@@ -21,6 +21,10 @@
             "type": "string"
         }
     ],
+    "questionnaire_flow": {
+        "type": "Linear",
+        "options": { "include_summary": false }
+    },
     "sections": [
         {
             "id": "introduction-section",
@@ -166,28 +170,6 @@
                             }
                         }
                     ]
-                },
-                {
-                    "blocks": [
-                        {
-                            "id": "confirmation",
-                            "type": "Confirmation",
-                            "content": {
-                                "title": "You are now ready to submit this survey",
-                                "contents": [
-                                    {
-                                        "title": "Submission",
-                                        "list": [
-                                            "You will not be able to access or change your answers on submitting the questionnaire",
-                                            "If you wish to review your answers please select the relevant completed sections"
-                                        ]
-                                    }
-                                ]
-                            }
-                        }
-                    ],
-                    "id": "ready-to-submit",
-                    "title": "Submit answers"
                 }
             ]
         }

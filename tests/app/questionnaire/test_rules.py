@@ -17,7 +17,9 @@ from tests.app.app_context_test_case import AppContextTestCase
 
 
 def get_schema():
-    schema = QuestionnaireSchema({})
+    schema = QuestionnaireSchema(
+        {"questionnaire_flow": {"type": "Linear", "options": {"include_summary": True}}}
+    )
     return schema
 
 

@@ -21,6 +21,10 @@
             "type": "string"
         }
     ],
+    "questionnaire_flow": {
+        "type": "Linear",
+        "options": { "include_summary": true }
+    },
     "sections": [
         {
             "id": "default-section",
@@ -233,7 +237,7 @@
                             "routing_rules": [
                                 {
                                     "goto": {
-                                        "block": "summary"
+                                        "section": "End"
                                     }
                                 }
                             ]
@@ -249,10 +253,6 @@
                                     }
                                 ]
                             }
-                        },
-                        {
-                            "type": "Summary",
-                            "id": "summary"
                         }
                     ],
                     "id": "group"

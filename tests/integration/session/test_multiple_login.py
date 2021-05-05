@@ -3,8 +3,10 @@ from datetime import datetime
 
 from tests.integration.integration_test_case import IntegrationTestCase
 
-
 # pylint: disable=arguments-differ
+from tests.integration.questionnaire import SUBMIT_URL_PATH
+
+
 class MultipleClientTestCase(IntegrationTestCase):
     def setUp(self):
         super().setUp()
@@ -87,7 +89,7 @@ class TestMultipleLogin(MultipleClientTestCase):
         # user B gets taken straight to summary as survey is complete
         self.launchSurvey(self.client_b, "test_textfield")
         last_url_b = self.cache[self.client_b]["last_url"]
-        self.assertIn("/questionnaire/summary", last_url_b)
+        self.assertIn(SUBMIT_URL_PATH, last_url_b)
 
         # user B manually navigates to answer and can view the value that user A entered
         self.get(self.client_b, "/questionnaire/name-block")

@@ -23,7 +23,7 @@ class TestQuestionnairePageTitles(IntegrationTestCase):
         self.post(action="start_questionnaire")
         self.post({"breakfast-answer": ""})
         # Then
-        self.assertEqualPageTitle("Submit answers - Census 2021")
+        self.assertEqualPageTitle("Submit your questionnaire - Census 2021")
 
     def test_should_have_question_in_page_title_when_loading_summary(self):
         # Given

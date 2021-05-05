@@ -1,5 +1,5 @@
 import DessertPage from "../../../generated_pages/summary/dessert.page.js";
-import DessertConfirmationPage from "../../../generated_pages/summary/dessert-confirmation.page.js";
+import DessertConfirmationPage from "../../../generated_pages/summary/dessert-confirmation.page";
 import NumbersPage from "../../../generated_pages/summary/numbers.page.js";
 import RadioPage from "../../../generated_pages/summary/radio.page.js";
 import SummaryPage from "../../../generated_pages/summary/summary.page.js";
@@ -57,6 +57,7 @@ describe("Summary Screen", () => {
 
   it("Given a number value of zero is entered when on the summary screen then formatted 0 should be displayed", () => {
     $(RadioPage.submit()).click();
+    $(DessertPage.answer()).setValue("Cake");
     $(DessertPage.submit()).click();
     $(DessertConfirmationPage.yes()).click();
     $(DessertConfirmationPage.submit()).click();
@@ -67,6 +68,7 @@ describe("Summary Screen", () => {
 
   it("Given no value is entered when on the summary screen then the correct response should be displayed", () => {
     $(RadioPage.submit()).click();
+    $(DessertPage.answer()).setValue("Cake");
     $(DessertPage.submit()).click();
     $(DessertConfirmationPage.yes()).click();
     $(DessertConfirmationPage.submit()).click();

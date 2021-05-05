@@ -3,7 +3,7 @@ import TestMinMax from "../generated_pages/numbers/test-min-max-block.page.js";
 import SummaryPage from "../generated_pages/numbers/summary.page";
 import IntroductionPage from "../generated_pages/introduction/introduction.page";
 import IntroInterstitialPage from "../generated_pages/introduction/general-business-information-completed.page";
-import IntroConfirmationPage from "../generated_pages/introduction/confirmation.page";
+import IntroConfirmationPage from "../base_pages/confirmation.page";
 import IntroThankYouPagePage from "../base_pages/thank-you.page";
 import { getRandomString } from "../jwt_helper";
 

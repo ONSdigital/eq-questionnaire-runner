@@ -1,5 +1,5 @@
 import sectionOne from "../../../generated_pages/section_enabled_radio/section-1-block.page";
-import summary from "../../../generated_pages/section_enabled_radio//summary.page";
+import summary from "../../../generated_pages/section_enabled_radio/summary.page";
 
 describe("Feature: Section Enabled Based On Radio Answers", () => {
   beforeEach("Open survey", () => {
@@ -17,7 +17,7 @@ describe("Feature: Section Enabled Based On Radio Answers", () => {
     $(sectionOne.noDisableSection2()).click();
     $(sectionOne.submit()).click();
 
-    expect(browser.getUrl()).to.contain("summary");
+    expect(browser.getUrl()).to.contain(summary.url());
     expect($(summary.section2Question()).isExisting()).to.be.false;
   });
 
@@ -35,7 +35,7 @@ describe("Feature: Section Enabled Based On Radio Answers", () => {
 
       $(sectionOne.noDisableSection2()).click();
       $(sectionOne.submit()).click();
-      expect(browser.getUrl()).to.contain("summary");
+      expect(browser.getUrl()).to.contain(summary.url());
     });
   });
 });

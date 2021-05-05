@@ -20,6 +20,10 @@
     "hub": {
         "enabled": true
     },
+    "questionnaire_flow": {
+        "type": "Hub",
+        "options": {}
+    },
     "submission": {
         "button": "Submission button",
         "guidance": "Submission guidance",

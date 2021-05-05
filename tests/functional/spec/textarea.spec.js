@@ -1,5 +1,5 @@
 import TextareaBlock from "../generated_pages/textarea/textarea-block.page.js";
-import TextareaSummary from "../generated_pages/textarea/textarea-summary.page.js";
+import TextareaSummary from "../generated_pages/textarea/summary.page.js";
 
 describe("Textarea", () => {
   const textareaSchema = "test_textarea.json";

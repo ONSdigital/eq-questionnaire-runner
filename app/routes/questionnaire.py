@@ -1,23 +1,30 @@
+from __future__ import annotations
+
+from typing import Union
+
 import flask_babel
 from flask import Blueprint, g, redirect, request, url_for
 from flask_login import current_user, login_required
 from itsdangerous import BadSignature
 from structlog import get_logger
+from werkzeug import Response
 from werkzeug.exceptions import BadRequest, NotFound
 
 from app.authentication.no_questionnaire_state_exception import (
     NoQuestionnaireStateException,
 )
+from app.data_models import QuestionnaireStore
 from app.globals import get_metadata, get_session_store, get_session_timeout_in_seconds
 from app.helpers import url_safe_serializer
 from app.helpers.language_helper import handle_language
 from app.helpers.schema_helpers import with_schema
 from app.helpers.session_helpers import with_questionnaire_store, with_session_store
 from app.helpers.template_helpers import render_template
+from app.questionnaire import QuestionnaireSchema
 from app.questionnaire.location import InvalidLocationException
 from app.questionnaire.router import Router
 from app.utilities.schema import load_schema_from_session_data
-from app.views.contexts.hub_context import HubContext
+from app.views.contexts import HubContext
 from app.views.handlers.block_factory import get_block_handler
 from app.views.handlers.confirm_email import ConfirmEmail
 from app.views.handlers.confirmation_email import (
@@ -28,9 +35,9 @@ from app.views.handlers.confirmation_email import (
 from app.views.handlers.feedback import Feedback, FeedbackNotEnabled
 from app.views.handlers.section import SectionHandler
 from app.views.handlers.submission import SubmissionHandler
+from app.views.handlers.submit import SubmitHandler
 from app.views.handlers.thank_you import ThankYou
 
-END_BLOCKS = "Summary", "Confirmation"
 logger = get_logger()
 
 questionnaire_blueprint = Blueprint(
@@ -104,34 +111,68 @@ def get_questionnaire(schema, questionnaire_store):
     )
 
     if not router.can_access_hub():
-        redirect_location_url = router.get_first_incomplete_location_in_survey_url()
+        redirect_location_url = (
+            router.get_first_incomplete_location_in_questionnaire_url()
+        )
         return redirect(redirect_location_url)
 
     if request.method == "POST":
-        if router.is_survey_complete():
+        if router.is_questionnaire_complete:
             submission_handler = SubmissionHandler(
                 schema, questionnaire_store, router.full_routing_path()
             )
             submission_handler.submit_questionnaire()
             return redirect(url_for("post_submission.get_thank_you"))
-        return redirect(router.get_first_incomplete_location_in_survey_url())
+        return redirect(router.get_first_incomplete_location_in_questionnaire_url())
 
-    language_code = get_session_store().session_data.language_code
-
-    hub = HubContext(
-        language=language_code,
+    hub_context = HubContext(
+        language=flask_babel.get_locale().language,
         schema=schema,
         answer_store=questionnaire_store.answer_store,
         list_store=questionnaire_store.list_store,
         progress_store=questionnaire_store.progress_store,
         metadata=questionnaire_store.metadata,
     )
-
-    hub_context = hub.get_context(
-        router.is_survey_complete(), router.enabled_section_ids
+    context = hub_context(
+        survey_complete=router.is_questionnaire_complete,
+        enabled_section_ids=router.enabled_section_ids,
+    )
+    return render_template(
+        "hub",
+        content=context,
+        page_title=context["title"],
     )
 
-    return render_template("hub", content=hub_context, page_title=hub_context["title"])
+
+@questionnaire_blueprint.route("submit/", methods=["GET", "POST"])
+@with_questionnaire_store
+@with_schema
+def submit(
+    schema: QuestionnaireSchema, questionnaire_store: QuestionnaireStore
+) -> Union[Response, str]:
+    try:
+        submit_handler = SubmitHandler(
+            schema, questionnaire_store, flask_babel.get_locale().language
+        )
+    except InvalidLocationException:
+        raise NotFound
+
+    if not submit_handler.router.is_questionnaire_complete:
+        return redirect(
+            submit_handler.router.get_first_incomplete_location_in_questionnaire_url()
+        )
+
+    if request.method == "POST":
+        submit_handler.handle_post()
+        return redirect(url_for("post_submission.get_thank_you"))
+
+    context = submit_handler.get_context()
+    return render_template(
+        submit_handler.template,
+        content=context,
+        page_title=context["title"],
+        previous_location_url=submit_handler.get_previous_location_url(),
+    )
 
 
 @questionnaire_blueprint.route("sections/<section_id>/", methods=["GET", "POST"])
@@ -154,7 +195,7 @@ def get_section(schema, questionnaire_store, section_id, list_item_id=None):
 
     if request.method != "POST":
         if section_handler.can_display_summary():
-            section_context = section_handler.context()
+            section_context = section_handler.get_context()
             return _render_page(
                 template="SectionSummary",
                 context=section_context,
@@ -206,15 +247,7 @@ def block(schema, questionnaire_store, block_id, list_name=None, list_item_id=No
             page_title=block_handler.page_title,
         )
 
-    if block_handler.block["type"] in END_BLOCKS:
-        submission_handler = SubmissionHandler(
-            schema, questionnaire_store, block_handler.router.full_routing_path()
-        )
-        submission_handler.submit_questionnaire()
-        return redirect(url_for("post_submission.get_thank_you"))
-
     block_handler.handle_post()
-
     next_location_url = block_handler.get_next_location_url()
     return redirect(next_location_url)
 

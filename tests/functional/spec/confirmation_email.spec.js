@@ -1,4 +1,4 @@
-import SchemaConfirmationPage from "../generated_pages/confirmation_email/schema-confirmation.page";
+import SchemaConfirmationPage from "../base_pages/confirmation.page.js";
 import SummaryPage from "../generated_pages/confirmation_email/summary.page";
 
 import ThankYouPage from "../base_pages/thank-you.page";

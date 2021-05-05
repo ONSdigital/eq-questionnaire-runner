@@ -21,6 +21,10 @@
             "type": "string"
         }
     ],
+    "questionnaire_flow": {
+        "type": "Linear",
+        "options": { "include_summary": true }
+    },
     "submission": {
         "button": "Submission button",
         "guidance": "Submission guidance",
@@ -45,16 +49,12 @@
                                     {
                                         "id": "dessert",
                                         "label": "What is your favourite dessert?",
-                                        "mandatory": false,
+                                        "mandatory": true,
                                         "q_code": "30",
                                         "type": "TextField"
                                     }
                                 ]
                             }
-                        },
-                        {
-                            "type": "Summary",
-                            "id": "summary"
                         }
                     ],
                     "id": "dessert-group",

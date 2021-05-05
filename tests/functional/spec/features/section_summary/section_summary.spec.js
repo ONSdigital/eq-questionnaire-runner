@@ -56,14 +56,14 @@ describe("Section Summary", () => {
       $(NumberOfPeoplePage.answer()).setValue(3);
       $(NumberOfPeoplePage.submit()).click();
       $(HouseholdCountSectionSummaryPage.submit()).click();
-      expect(browser.getUrl()).to.contain("/questionnaire/summary/");
+      expect(browser.getUrl()).to.contain(QuestionnaireSummaryPage.url());
     });
 
     it("When I select edit from Final Summary and don't change an answer, Then I should be taken to the Final Summary", () => {
       $(QuestionnaireSummaryPage.summaryShowAllButton()).click();
       $(QuestionnaireSummaryPage.insuranceAddressAnswerEdit()).click();
       $(InsuranceAddressPage.submit()).click();
-      expect(browser.getUrl()).to.contain("/questionnaire/summary/");
+      expect(browser.getUrl()).to.contain(QuestionnaireSummaryPage.url());
     });
 
     it("When I select edit from Final Summary and change an answer that doesn't affect completeness, Then I should be taken to the Final Summary", () => {
@@ -71,7 +71,7 @@ describe("Section Summary", () => {
       $(QuestionnaireSummaryPage.insuranceAddressAnswerEdit()).click();
       $(InsuranceAddressPage.answer()).setValue("Test Address");
       $(InsuranceAddressPage.submit()).click();
-      expect(browser.getUrl()).to.contain("/questionnaire/summary/");
+      expect(browser.getUrl()).to.contain(QuestionnaireSummaryPage.url());
     });
 
     it("When I select edit from Final Summary and change an answer that affects completeness, Then I should be stepped through the section", () => {

@@ -22,6 +22,10 @@
             "type": "string"
         }
     ],
+    "questionnaire_flow": {
+        "type": "Linear",
+        "options": { "include_summary": true }
+    },
     "submission": {
         "feedback": true
     },
@@ -56,10 +60,6 @@
                                 "title": "Are you aware you can send feedback with this schema?",
                                 "type": "General"
                             }
-                        },
-                        {
-                            "type": "Summary",
-                            "id": "summary"
                         }
                     ],
                     "id": "schema-feedback-group"

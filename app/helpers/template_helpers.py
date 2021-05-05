@@ -1,6 +1,6 @@
 import re
 from functools import lru_cache
-from typing import Any, Dict, List, Mapping, Optional
+from typing import Any, Dict, List, Mapping, Optional, Union
 
 from flask import current_app
 from flask import render_template as flask_render_template
@@ -164,7 +164,7 @@ def _map_theme(theme: str) -> str:
     return "census"
 
 
-def render_template(template: str, **kwargs: Mapping) -> str:
+def render_template(template: str, **kwargs: Union[Mapping, bool, str]) -> str:
     template = f"{template.lower()}.html"
     theme = cookie_session.get("theme", DEFAULT_THEME)
     survey_title = lazy_gettext("Census 2021")

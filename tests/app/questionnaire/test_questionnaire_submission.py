@@ -3,8 +3,7 @@ from unittest.mock import Mock
 from tests.integration.integration_test_case import IntegrationTestCase
 from tests.integration.questionnaire import HUB_URL_PATH, THANK_YOU_URL_PATH
 
-FINAL_SUMMARY_PATH = "/questionnaire/summary/"
-FINAL_CONFIRMATION_PATH = "/questionnaire/confirmation/"
+SUBMIT_URL_PATH = "/questionnaire/submit"
 
 
 class SubmissionTestCase(IntegrationTestCase):
@@ -50,7 +49,7 @@ class TestQuestionnaireSubmissionFinalConfirmation(SubmissionTestCase):
         self.assertEqualPageTitle("Sorry, there is a problem - Census 2021")
 
         self.get(self.retry_url)
-        self.assertInUrl(FINAL_CONFIRMATION_PATH)
+        self.assertInUrl(SUBMIT_URL_PATH)
 
 
 class TestQuestionnaireSubmissionHub(SubmissionTestCase):
@@ -103,7 +102,7 @@ class TestQuestionnaireSubmissionFinalSummary(SubmissionTestCase):
 
         # Answer questions and submit survey
         self.post()
-        self.post()
+        self.post({"dessert-answer": "Cake"})
         self.post({"dessert-confirmation-answer": "Yes"})
         self.post()
         self.post()
@@ -124,7 +123,7 @@ class TestQuestionnaireSubmissionFinalSummary(SubmissionTestCase):
         # Given I launch and answer a questionnaire, When I submit but the submissions fails
         self.launchSurvey("test_summary")
         self.post()
-        self.post()
+        self.post({"dessert-answer": "Cake"})
         self.post({"dessert-confirmation-answer": "Yes"})
         self.post()
         self.post()
@@ -134,4 +133,4 @@ class TestQuestionnaireSubmissionFinalSummary(SubmissionTestCase):
         self.assertEqualPageTitle("Sorry, there is a problem - Census 2021")
 
         self.get(self.retry_url)
-        self.assertInUrl(FINAL_SUMMARY_PATH)
+        self.assertInUrl(SUBMIT_URL_PATH)

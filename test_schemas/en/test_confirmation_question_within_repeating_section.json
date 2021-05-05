@@ -29,6 +29,10 @@
             "optional": true
         }
     ],
+    "questionnaire_flow": {
+        "type": "Linear",
+        "options": { "include_summary": true }
+    },
     "sections": [
         {
             "id": "section",
@@ -436,25 +440,6 @@
                             "type": "Question"
                         }
                     ]
-                }
-            ]
-        },
-        {
-            "id": "confirmation-section",
-            "title": "Confirmation",
-            "groups": [
-                {
-                    "blocks": [
-                        {
-                            "id": "confirmation-block",
-                            "type": "Confirmation",
-                            "content": {
-                                "title": "You are now ready to submit this survey"
-                            }
-                        }
-                    ],
-                    "id": "confirmation-group",
-                    "title": "Confirmation"
                 }
             ]
         }

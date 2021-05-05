@@ -5,6 +5,10 @@ class ThankYouPage extends QuestionPage {
     super("thank-you");
   }
 
+  url() {
+    return `/submitted/${this.pageName}`;
+  }
+
   guidance() {
     return '[data-qa="guidance"]';
   }

@@ -1,4 +1,5 @@
 from tests.integration.integration_test_case import IntegrationTestCase
+from tests.integration.questionnaire import SUBMIT_URL_PATH
 
 HTML_CONTENT = '"><b>some html</b>'
 ESCAPED_CONTENT = "&#34;&gt;&lt;b&gt;some html&lt;/b&gt;"
@@ -103,7 +104,7 @@ class TestQuestionnaireHtmlEscaping(IntegrationTestCase):
         )
         self.post({})
         self.post({})
-        self.assertInUrl("/summary")
+        self.assertInUrl(SUBMIT_URL_PATH)
         self.assertInBody("&lt;p&gt;7 Evelyn Street&lt;/p&gt;")
 
     def test_list_collector(self):

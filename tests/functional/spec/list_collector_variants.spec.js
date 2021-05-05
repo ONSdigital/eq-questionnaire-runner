@@ -4,7 +4,8 @@ import ListCollectorPage from "../generated_pages/list_collector_variants/list-c
 import ListCollectorAddPage from "../generated_pages/list_collector_variants/list-collector-add.page.js";
 import ListCollectorEditPage from "../generated_pages/list_collector_variants/list-collector-edit.page.js";
 import ListCollectorRemovePage from "../generated_pages/list_collector_variants/list-collector-remove.page.js";
-import ConfirmationPage from "../generated_pages/list_collector_variants/confirmation.page.js";
+import ConfirmationPage from "../base_pages/confirmation.page.js";
+import ThankYouPage from "../base_pages/thank-you.page.js";
 
 describe("List Collector With Variants", () => {
   describe("Given that a person lives in house", () => {
@@ -44,7 +45,7 @@ describe("List Collector With Variants", () => {
     it("The questionnaire shows the confirmation page when no more people to add", () => {
       $(ListCollectorPage.anyoneElseNo()).click();
       $(ListCollectorPage.submit()).click();
-      expect(browser.getUrl()).to.contain(ConfirmationPage.pageName);
+      expect(browser.getUrl()).to.contain(ConfirmationPage.url());
     });
 
     it("The questionnaire allows submission", () => {
@@ -90,12 +91,12 @@ describe("List Collector With Variants", () => {
     it("The questionnaire shows the confirmation page when no more people to add", () => {
       $(ListCollectorPage.anyoneElseNo()).click();
       $(ListCollectorPage.submit()).click();
-      expect(browser.getUrl()).to.contain(ConfirmationPage.pageName);
+      expect(browser.getUrl()).to.contain(ConfirmationPage.url());
     });
 
     it("The questionnaire allows submission", () => {
       $(ConfirmationPage.submit()).click();
-      expect(browser.getUrl()).to.contain("thank-you");
+      expect(browser.getUrl()).to.contain(ThankYouPage.url());
     });
   });
 });

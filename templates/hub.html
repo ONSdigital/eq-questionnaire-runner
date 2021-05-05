@@ -17,20 +17,23 @@
         {% endcall %}
     {% endif %}
 
-    {{ onsSummary({
-      "hub": true,
-      "classes": "u-mt-m",
-      "summaries": [
-        {
-          "groups": [
-            {
-              "headers":["Name of section or person", "Section progress", "Access section"],
-              "rows": content.rows
-            }
-          ]
-        }
-      ]
-    }) }}
+    {% if content.rows %}
+      {{ onsSummary({
+        "hub": true,
+        "classes": "u-mt-m",
+        "summaries": [
+          {
+            "groups": [
+              {
+                "headers":["Name of section or person", "Section progress", "Access section"],
+                "rows": content.rows
+              }
+            ]
+          }
+        ]
+      }) }}
+    {% endif %}
+
     {% if content.guidance %}
       <div class="u-mt-l">
         <p class="u-mb-no" data-qa="guidance">{{ content.guidance }}</p>

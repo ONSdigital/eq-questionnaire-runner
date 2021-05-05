@@ -24,6 +24,10 @@
             "type": "string"
         }
     ],
+    "questionnaire_flow": {
+        "type": "Linear",
+        "options": { "include_summary": true }
+    },
     "submission": {
         "confirmation_email": true
     },
@@ -58,10 +62,6 @@
                                 "title": "Are you aware you can send a confirmation email for this schema?",
                                 "type": "General"
                             }
-                        },
-                        {
-                            "type": "Summary",
-                            "id": "summary"
                         }
                     ],
                     "id": "schema-confirmation-group"

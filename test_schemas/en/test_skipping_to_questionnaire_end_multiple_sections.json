@@ -1,0 +1,150 @@
+{
+    "language": "en",
+    "schema_version": "0.0.1",
+    "data_version": "0.0.3",
+    "survey_id": "137",
+    "theme": "default",
+    "title": "Test Skipping To Section End",
+    "mime_type": "application/json/ons/eq",
+    "navigation": {
+        "visible": true
+    },
+    "metadata": [
+        {
+            "name": "user_id",
+            "type": "string"
+        },
+        {
+            "name": "period_id",
+            "type": "string"
+        },
+        {
+            "name": "ru_name",
+            "type": "string"
+        }
+    ],
+    "questionnaire_flow": {
+        "type": "Linear",
+        "options": { "include_summary": true }
+    },
+    "sections": [
+        {
+            "id": "test-skipping-section",
+            "title": "Section 1",
+            "groups": [
+                {
+                    "blocks": [
+                        {
+                            "id": "test-skipping-forced",
+                            "question": {
+                                "title": "Would you like to complete section 2?",
+                                "answers": [
+                                    {
+                                        "id": "test-skipping-answer",
+                                        "mandatory": false,
+                                        "options": [
+                                            {
+                                                "label": "Yes",
+                                                "value": "Yes"
+                                            },
+                                            {
+                                                "label": "No",
+                                                "value": "No"
+                                            }
+                                        ],
+                                        "type": "Radio"
+                                    }
+                                ],
+                                "id": "test-skipping-question",
+                                "type": "General"
+                            },
+                            "type": "Question",
+                            "routing_rules": [
+                                {
+                                    "goto": {
+                                        "section": "End",
+                                        "when": [
+                                            {
+                                                "id": "test-skipping-answer",
+                                                "condition": "equals",
+                                                "value": "No"
+                                            }
+                                        ]
+                                    }
+                                },
+                                {
+                                    "goto": {
+                                        "group": "test-skipping-group-2",
+                                        "when": [
+                                            {
+                                                "id": "test-skipping-answer",
+                                                "condition": "equals",
+                                                "value": "Yes"
+                                            }
+                                        ]
+                                    }
+                                },
+                                {
+                                    "goto": {
+                                        "section": "End"
+                                    }
+                                }
+                            ]
+                        }
+                    ],
+                    "id": "test-skipping-group",
+                    "title": "Section 1"
+                }
+            ]
+        },
+        {
+            "id": "test-skipping-section-2",
+            "title": "Section 2",
+            "enabled": [
+                {
+                    "when": [
+                        {
+                            "id": "test-skipping-answer",
+                            "condition": "equals",
+                            "value": "Yes"
+                        }
+                    ]
+                }
+            ],
+            "groups": [
+                {
+                    "blocks": [
+                        {
+                            "id": "test-skipping-optional",
+                            "type": "Question",
+                            "question": {
+                                "answers": [
+                                    {
+                                        "id": "test-skipping-optional-answer",
+                                        "mandatory": true,
+                                        "options": [
+                                            {
+                                                "label": "I am a completionist",
+                                                "value": "I am a completionist"
+                                            },
+                                            {
+                                                "label": "Other",
+                                                "value": "Other"
+                                            }
+                                        ],
+                                        "type": "Radio"
+                                    }
+                                ],
+                                "id": "test-skipping-optional-question",
+                                "title": "Why did you choose to complete this section?",
+                                "type": "General"
+                            }
+                        }
+                    ],
+                    "id": "test-skipping-group-2",
+                    "title": "Section 2"
+                }
+            ]
+        }
+    ]
+}

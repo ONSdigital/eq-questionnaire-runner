@@ -21,6 +21,10 @@
             "type": "string"
         }
     ],
+    "questionnaire_flow": {
+        "type": "Linear",
+        "options": { "include_summary": true }
+    },
     "sections": [
         {
             "id": "mutually-exclusive-checkbox-section",
@@ -142,10 +146,6 @@
                                     }
                                 }
                             }
-                        },
-                        {
-                            "type": "Summary",
-                            "id": "summary"
                         }
                     ]
                 }

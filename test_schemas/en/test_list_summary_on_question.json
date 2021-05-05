@@ -21,6 +21,10 @@
             "type": "string"
         }
     ],
+    "questionnaire_flow": {
+        "type": "Linear",
+        "options": { "include_summary": true }
+    },
     "sections": [
         {
             "id": "section",
@@ -368,22 +372,6 @@
                             }
                         }
                     ]
-                }
-            ]
-        },
-        {
-            "id": "submit-answers",
-            "title": "Submit answers",
-            "groups": [
-                {
-                    "blocks": [
-                        {
-                            "type": "Summary",
-                            "id": "summary"
-                        }
-                    ],
-                    "id": "confirmation-group",
-                    "title": "Submit answers"
                 }
             ]
         }

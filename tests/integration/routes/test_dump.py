@@ -271,7 +271,7 @@ class TestDumpRoute(IntegrationTestCase):
             {
                 "section_id": "default-section",
                 "list_item_id": None,
-                "routing_path": ["radio-mandatory", "summary"],
+                "routing_path": ["radio-mandatory"],
             }
         ]
 
@@ -299,7 +299,7 @@ class TestDumpRoute(IntegrationTestCase):
             {
                 "section_id": "default-section",
                 "list_item_id": None,
-                "routing_path": ["radio-mandatory", "summary"],
+                "routing_path": ["radio-mandatory"],
             }
         ]
         assert actual == expected

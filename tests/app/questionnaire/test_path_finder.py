@@ -36,9 +36,7 @@ class TestPathFinder(AppContextTestCase):
         section_id = schema.get_section_id_for_block_id("name-block")
         routing_path = path_finder.routing_path(section_id=section_id)
 
-        assumed_routing_path = RoutingPath(
-            ["name-block", "summary"], section_id="default-section"
-        )
+        assumed_routing_path = RoutingPath(["name-block"], section_id="default-section")
 
         self.assertEqual(routing_path, assumed_routing_path)
 
@@ -77,7 +75,7 @@ class TestPathFinder(AppContextTestCase):
         schema = load_schema_from_name("test_routing_number_equals")
         section_id = schema.get_section_id_for_block_id("number-question")
         expected_path = RoutingPath(
-            ["number-question", "correct-answer", "summary"],
+            ["number-question", "correct-answer"],
             section_id="default-section",
         )
 
@@ -107,7 +105,7 @@ class TestPathFinder(AppContextTestCase):
         schema = load_schema_from_name("test_routing_number_equals")
         section_id = schema.get_section_id_for_block_id("number-question")
         expected_path = RoutingPath(
-            ["number-question", "correct-answer", "summary"],
+            ["number-question", "correct-answer"],
             section_id="default-section",
         )
 
@@ -139,7 +137,7 @@ class TestPathFinder(AppContextTestCase):
             ]
         )
         expected_routing_path = RoutingPath(
-            ["introduction", "general-business-information-completed", "confirmation"],
+            ["introduction", "general-business-information-completed"],
             section_id="introduction-section",
         )
 
@@ -154,7 +152,7 @@ class TestPathFinder(AppContextTestCase):
         schema = load_schema_from_name("test_summary")
         section_id = schema.get_section_id_for_block_id("dessert")
         expected_path = RoutingPath(
-            ["radio", "dessert", "dessert-confirmation", "numbers", "summary"],
+            ["radio", "dessert", "dessert-confirmation", "numbers"],
             section_id="default-section",
         )
 
@@ -219,12 +217,7 @@ class TestPathFinder(AppContextTestCase):
         schema = load_schema_from_name("test_checkbox")
         section_id = schema.get_section_id_for_block_id("mandatory-checkbox")
         expected_path = RoutingPath(
-            [
-                "mandatory-checkbox",
-                "non-mandatory-checkbox",
-                "single-checkbox",
-                "summary",
-            ],
+            ["mandatory-checkbox", "non-mandatory-checkbox", "single-checkbox"],
             section_id="default-section",
         )
 
@@ -259,7 +252,7 @@ class TestPathFinder(AppContextTestCase):
         schema = load_schema_from_name("test_metadata_routing")
         section_id = schema.get_section_id_for_block_id("block1")
         expected_path = RoutingPath(
-            ["block1", "block2", "block3", "summary"], section_id="default-section"
+            ["block1", "block2", "block3"], section_id="default-section"
         )
 
         progress_store = ProgressStore(
@@ -308,7 +301,7 @@ class TestPathFinder(AppContextTestCase):
 
         # Then
         expected_routing_path = RoutingPath(
-            ["do-you-want-to-skip", "a-non-skipped-block", "summary"],
+            ["do-you-want-to-skip", "a-non-skipped-block"],
             section_id="default-section",
         )
 
@@ -345,7 +338,7 @@ class TestPathFinder(AppContextTestCase):
 
         # Then
         expected_routing_path = RoutingPath(
-            ["do-you-want-to-skip", "last-group-block", "summary"],
+            ["do-you-want-to-skip"],
             section_id="default-section",
         )
 
@@ -382,7 +375,7 @@ class TestPathFinder(AppContextTestCase):
 
         # Then
         expected_routing_path = RoutingPath(
-            ["do-you-want-to-skip", "should-skip", "last-group-block", "summary"],
+            ["do-you-want-to-skip", "should-skip"],
             section_id="default-section",
         )
 
@@ -405,21 +398,14 @@ class TestPathFinder(AppContextTestCase):
         )
 
         # Then
-        expected_route = [
-            {
-                "block_id": "do-you-want-to-skip-block",
-                "group_id": "do-you-want-to-skip-group",
-            },
-            {"block_id": "summary", "group_id": "should-skip-group"},
-        ]
-
-        section_id = schema.get_section_id_for_block_id("summary")
-        pytest.xfail(
-            reason="Known bug when skipping last group due to summary bundled into it"
+        expected_route = RoutingPath(
+            section_id="default-section",
+            block_ids=["do-you-want-to-skip"],
         )
 
         self.assertEqual(
-            path_finder.routing_path(section_id=section_id), expected_route
+            expected_route,
+            path_finder.routing_path(section_id="default-section"),
         )
 
     def test_build_path_with_group_routing(self):

@@ -1,8 +1,12 @@
 import QuestionPage from "./question.page";
 
-class ThankYouPage extends QuestionPage {
+class SummmaryPage extends QuestionPage {
   constructor() {
-    super("summary");
+    super("submit");
+  }
+
+  summary() {
+    return `.summary`;
   }
 
   summaryRowState(sectionId) {
@@ -10,4 +14,4 @@ class ThankYouPage extends QuestionPage {
   }
 }
 
-export default new ThankYouPage();
+export default new SummmaryPage();

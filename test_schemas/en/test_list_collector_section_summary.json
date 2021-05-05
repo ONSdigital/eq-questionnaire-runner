@@ -25,6 +25,10 @@
             "type": "string"
         }
     ],
+    "questionnaire_flow": {
+        "type": "Linear",
+        "options": { "include_summary": false }
+    },
     "individual_response": {
         "for_list": "people",
         "individual_section_id": "section"
@@ -497,25 +501,6 @@
                                         }
                                     ]
                                 }
-                            }
-                        }
-                    ]
-                }
-            ]
-        },
-        {
-            "id": "confirmation-section",
-            "title": "Confirmation",
-            "groups": [
-                {
-                    "id": "confirmation-group",
-                    "title": "Confirmation",
-                    "blocks": [
-                        {
-                            "id": "summary",
-                            "type": "Confirmation",
-                            "content": {
-                                "title": "Thank you for your answers, please submit your answers."
                             }
                         }
                     ]

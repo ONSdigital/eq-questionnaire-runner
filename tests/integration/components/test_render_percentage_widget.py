@@ -1,4 +1,5 @@
 from tests.integration.integration_test_case import IntegrationTestCase
+from tests.integration.questionnaire import SUBMIT_URL_PATH
 
 
 class TestRenderPercentageWidget(IntegrationTestCase):
@@ -32,7 +33,7 @@ class TestRenderPercentageWidget(IntegrationTestCase):
     def test_entering_valid_percentage_redirects_to_summary(self):
         self.post({"answer": "50"})
         self.assertStatusOK()
-        self.assertInUrl("summary")
+        self.assertInUrl(SUBMIT_URL_PATH)
 
     def test_description_label_is_rendered(self):
         self.assertInBody("Enter percentage of growth")

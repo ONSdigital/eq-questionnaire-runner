@@ -24,6 +24,10 @@
             "type": "string"
         }
     ],
+    "questionnaire_flow": {
+        "type": "Linear",
+        "options": { "include_summary": true }
+    },
     "sections": [
         {
             "id": "percent-input-section",
@@ -52,22 +56,6 @@
                         }
                     ],
                     "id": "group"
-                }
-            ]
-        },
-        {
-            "id": "summary-section",
-            "title": "Summary",
-            "groups": [
-                {
-                    "blocks": [
-                        {
-                            "type": "Summary",
-                            "id": "summary"
-                        }
-                    ],
-                    "id": "summary-group",
-                    "title": "Summary"
                 }
             ]
         }

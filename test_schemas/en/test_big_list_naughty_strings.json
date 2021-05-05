@@ -14,6 +14,10 @@
             "type": "string"
         }
     ],
+    "questionnaire_flow": {
+        "type": "Linear",
+        "options": { "include_summary": true }
+    },
     "sections": [
         {
             "id": "default-section",
@@ -3580,10 +3584,6 @@
                                 "id": "question"
                             },
                             "id": "textarea-block"
-                        },
-                        {
-                            "type": "Summary",
-                            "id": "textarea-summary"
                         }
                     ],
                     "id": "textarea-group"

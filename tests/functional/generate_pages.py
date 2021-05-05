@@ -407,12 +407,47 @@ def process_calculated_summary(answers, page_spec):
         page_spec.write(CALCULATED_SUMMARY_LABEL_GETTER.substitute(answer_context))
 
 
-def process_final_summary(schema_data, page_spec, collapsible, section_summary=False):
-    for section in schema_data["sections"]:
-        write_summary_spec(collapsible, page_spec, section, section_summary)
+def process_final_summary(
+    schema_data, require_path, dir_out, spec_file, collapsible, section_summary=False
+):
+    logger.debug("Processing questionnaire flow")
 
-    if collapsible:
-        page_spec.write(COLLAPSIBLE_SUMMARY_GETTER)
+    page_filename = f"summary.page.js"
+    page_path = os.path.join(dir_out, page_filename)
+
+    logger.info("creating %s...", page_path)
+
+    with open(page_path, "w") as page_spec:
+        page_name = "FinalSummary"
+        base_page = "QuestionPage"
+        base_page_file = "question.page"
+
+        block_context = build_and_get_base_page_context(
+            page_dir=dir_out.split("/")[-1],
+            page_spec=page_spec,
+            base_page=base_page,
+            base_page_file=base_page_file,
+            page_name=page_name,
+            page_filename=page_filename,
+            page_id="submit",
+            relative_require=require_path,
+        )
+
+        for section in schema_data["sections"]:
+            write_summary_spec(
+                page_spec,
+                section,
+                collapsible=collapsible,
+                section_summary=section_summary,
+            )
+
+        if collapsible:
+            page_spec.write(COLLAPSIBLE_SUMMARY_GETTER)
+
+        page_spec.write(FOOTER.substitute(block_context))
+
+        if spec_file:
+            append_spec_page_import(block_context, spec_file)
 
 
 def process_definition(context, page_spec):
@@ -421,7 +456,7 @@ def process_definition(context, page_spec):
     page_spec.write(DEFINITION_BUTTON_GETTER.safe_substitute(context))
 
 
-def write_summary_spec(collapsible, page_spec, section, section_summary):
+def write_summary_spec(page_spec, section, collapsible, section_summary):
     list_summaries = [
         summary_element
         for summary_element in section.get("summary", {}).get("items", [])
@@ -571,6 +606,33 @@ def find_kv(block, key, values):
     return False
 
 
+def build_and_get_base_page_context(
+    page_dir,
+    page_spec,
+    base_page,
+    base_page_file,
+    page_name,
+    page_filename,
+    page_id,
+    relative_require,
+):
+    context = {
+        "pageName": page_name,
+        "basePage": base_page,
+        "basePageFile": base_page_file,
+        "pageDir": page_dir,
+        "pageFile": page_filename,
+        "page_id": page_id,
+        "block_name": camel_case(generate_pascal_case_from_id(page_id)),
+        "relativeRequirePath": relative_require,
+    }
+    page_spec.write(HEADER.substitute(context))
+    page_spec.write(CLASS_NAME.substitute(context))
+    page_spec.write(CONSTRUCTOR.substitute(context))
+
+    return context
+
+
 def process_block(
     block, dir_out, schema_data, spec_file, relative_require="..", page_filename=None
 ):
@@ -629,25 +691,18 @@ def process_block(
             base_page = "IntroductionPageBase"
             base_page_file = "introduction.page"
 
-        block_context = {
-            "pageName": page_name,
-            "basePage": base_page,
-            "basePageFile": base_page_file,
-            "pageDir": dir_out.split("/")[-1],
-            "pageFile": page_filename,
-            "page_id": block["id"],
-            "block_name": camel_case(generate_pascal_case_from_id(block["id"])),
-            "relativeRequirePath": relative_require,
-        }
-        page_spec.write(HEADER.substitute(block_context))
-        page_spec.write(CLASS_NAME.substitute(block_context))
-        page_spec.write(CONSTRUCTOR.substitute(block_context))
-        if block["type"] == "Summary":
-            collapsible = block.get("collapsible", False)
-            process_final_summary(
-                schema_data, page_spec, collapsible, section_summary=False
-            )
-        elif block["type"] == "CalculatedSummary":
+        block_context = build_and_get_base_page_context(
+            page_dir=dir_out.split("/")[-1],
+            page_spec=page_spec,
+            base_page=base_page,
+            base_page_file=base_page_file,
+            page_name=page_name,
+            page_filename=page_filename,
+            page_id=block["id"],
+            relative_require=relative_require,
+        )
+
+        if block["type"] == "CalculatedSummary":
             process_calculated_summary(
                 block["calculation"]["answers_to_calculate"], page_spec
             )
@@ -709,6 +764,8 @@ def process_schema(in_schema, out_dir, spec_file, require_path=".."):
     except IndexError:
         os.mkdir(out_dir)
 
+    process_questionnaire_flow(data, require_path, out_dir, spec_file)
+
     for section in data["sections"]:
         if "summary" in section:
             process_section_summary(
@@ -717,6 +774,23 @@ def process_schema(in_schema, out_dir, spec_file, require_path=".."):
         for group in section["groups"]:
             for block in group["blocks"]:
                 process_block(block, out_dir, data, spec_file, require_path)
+
+
+def process_questionnaire_flow(schema_data, require_path, dir_out, spec_file):
+    questionnaire_flow = schema_data["questionnaire_flow"]
+    options = questionnaire_flow.get("options", {})
+
+    logger.debug("Processing questionnaire flow")
+    if questionnaire_flow["type"] == "Linear" and options["include_summary"] is True:
+        collapsible = questionnaire_flow.get("options", {}).get("collapsible", False)
+        process_final_summary(
+            schema_data,
+            require_path,
+            dir_out,
+            spec_file,
+            collapsible,
+            section_summary=False,
+        )
 
 
 def process_section_summary(
@@ -749,7 +823,7 @@ def process_section_summary(
         page_spec.write(CLASS_NAME.substitute(section_context))
         page_spec.write(CONSTRUCTOR.substitute(section_context))
         page_spec.write(SECTION_SUMMARY_PAGE_URL)
-        write_summary_spec(False, page_spec, section, True)
+        write_summary_spec(page_spec, section, collapsible=False, section_summary=True)
         page_spec.write(FOOTER.substitute(section_context))
 
         if spec_file:

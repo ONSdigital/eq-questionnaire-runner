@@ -1,4 +1,5 @@
 from tests.integration.integration_test_case import IntegrationTestCase
+from tests.integration.questionnaire import SUBMIT_URL_PATH, THANK_YOU_URL_PATH
 
 
 class TestQuestionnairePreviousLink(IntegrationTestCase):
@@ -9,7 +10,7 @@ class TestQuestionnairePreviousLink(IntegrationTestCase):
         # Then previous link does not appear
         self.assertNotInBody("Previous")
 
-    def test_previous_link_doesnt_appear_on_page_following_introduction(self):
+    def test_previous_link_appears_on_the_final_confirmation_submit_page(self):
         # Given
         self.launchSurvey("test_final_confirmation")
 
@@ -17,8 +18,20 @@ class TestQuestionnairePreviousLink(IntegrationTestCase):
         self.post(action="start_questionnaire")
         self.assertInBody("Previous")
         self.post({"breakfast-answer": "Bacon"})
-        self.assertNotInUrl("thank-you")
-        self.assertNotInBody("Previous")
+        self.assertInUrl(SUBMIT_URL_PATH)
+        self.assertInBody("Previous")
+
+    def test_previous_link_appears_on_the_final_summary_submit_page(self):
+        # Given
+        self.launchSurvey("test_summary")
+
+        # When we proceed through the questionnaire
+        self.post()
+        self.post({"dessert-answer": "Cake"})
+        self.post({"dessert-confirmation-answer": "Yes"})
+        self.post()
+        self.assertInUrl(SUBMIT_URL_PATH)
+        self.assertInBody("Previous")
 
     def test_previous_link_doesnt_appear_on_thank_you(self):
         # Given
@@ -28,7 +41,7 @@ class TestQuestionnairePreviousLink(IntegrationTestCase):
         self.post(action="start_questionnaire")
         self.post({"breakfast-answer": "Eggs"})
         self.post()
-        self.assertInUrl("thank-you")
+        self.assertInUrl(THANK_YOU_URL_PATH)
         self.assertNotInUrl("Previous")
 
     def test_previous_link_appears_on_questions_preceded_by_another_question(self):

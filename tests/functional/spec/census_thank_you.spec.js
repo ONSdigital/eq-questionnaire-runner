@@ -1,4 +1,4 @@
-import HouseholdConfirmationPage from "../generated_pages/thank_you_census_household/household-confirmation.page";
+import HouseholdConfirmationPage from "../base_pages/confirmation.page.js";
 import HubPage from "../base_pages/hub.page";
 
 import ThankYouPage from "../base_pages/thank-you.page";

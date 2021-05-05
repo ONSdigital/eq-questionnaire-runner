@@ -2,6 +2,7 @@ from tests.integration.integration_test_case import IntegrationTestCase
 
 HUB_URL_PATH = "/questionnaire/"
 THANK_YOU_URL_PATH = "/submitted/thank-you/"
+SUBMIT_URL_PATH = "/questionnaire/submit/"
 
 
 class QuestionnaireTestCase(IntegrationTestCase):
