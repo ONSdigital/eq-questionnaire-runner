@@ -38,15 +38,17 @@ Specify at least the top-level type parameters for all generic types:
 def get_objects_matching(ids: Sequence[str]) -> dict[int, dict]
 ```
 
-## Optional 
+## Optional arguments
 
-When something is a single type and is optional use `Optional`:
+When `Optional` is used for function arguments, it means that the argument can have the value `None`, not that the argument is optional. 
+
+For arguments that can be a single type or `None`, use `Optional`:
 
 ```python
 def test(self, var: Optional[int]) -> None:
 ```
 
-When something can be multiple types and is optional use `Union` with `None`:
+For arguments that can be one of multiple types or `None`, use `Union` with `None`:
 
 ```python
 def test(self, var: Union[None, int, str]) -> None:
