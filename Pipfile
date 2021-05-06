@@ -30,6 +30,10 @@ pytest-sugar = "*"
 responses = "==0.12.0"
 
 [packages]
+opentelemetry-exporter-google-cloud = "==0.18b0"
+opentelemetry-instrumentation-flask = "==0.17b0"
+opentelemetry-instrumentation-requests = "==0.17b0"
+opentelemetry-instrumentation-grpc = "==0.17b0"
 colorama = "*"
 flask = "*"
 flask-babel = "*"
@@ -69,4 +73,4 @@ google-cloud-tasks = "*"
 python_version = "3.9"
 
 [pipenv]
-allow_prereleases = false
+allow_prereleases = true

@@ -8,6 +8,12 @@ import simplejson as json
 from structlog import get_logger
 from werkzeug.exceptions import NotFound
 
+import opentelemetry.instrumentation.requests
+from opentelemetry import trace
+from opentelemetry.exporter.cloud_trace import CloudTraceSpanExporter
+from opentelemetry.sdk.trace import TracerProvider
+from opentelemetry.sdk.trace.export import BatchExportSpanProcessor
+
 from app.questionnaire.questionnaire_schema import (
     DEFAULT_LANGUAGE_CODE,
     QuestionnaireSchema,
@@ -28,7 +34,6 @@ LANGUAGES_MAP = {
     "census_individual_gb_nir": [["en"], ["en", "ga"], ["en", "eo"]],
     "census_communal_establishment_gb_wls": [["en", "cy"]],
 }
-
 
 @lru_cache(maxsize=None)
 def get_schema_list(language_code: str = DEFAULT_LANGUAGE_CODE) -> List:
@@ -175,6 +180,7 @@ def load_schema_from_url(survey_url, language_code):
 
     constructed_survey_url = "{}?language={}".format(survey_url, language_code)
 
+    opentelemetry.instrumentation.requests.RequestsInstrumentor().instrument()
     req = requests.get(constructed_survey_url)
     schema_response = req.content.decode()
 

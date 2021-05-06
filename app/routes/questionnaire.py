@@ -5,6 +5,11 @@ from itsdangerous import BadSignature
 from structlog import get_logger
 from werkzeug.exceptions import BadRequest, NotFound
 
+from opentelemetry import trace
+from opentelemetry.exporter.cloud_trace import CloudTraceSpanExporter
+from opentelemetry.sdk.trace import TracerProvider
+from opentelemetry.sdk.trace.export import BatchExportSpanProcessor
+
 from app.authentication.no_questionnaire_state_exception import (
     NoQuestionnaireStateException,
 )
@@ -40,6 +45,14 @@ questionnaire_blueprint = Blueprint(
 post_submission_blueprint = Blueprint(
     name="post_submission", import_name=__name__, url_prefix="/submitted/"
 )
+
+tracer_provider = TracerProvider()
+cloud_trace_exporter = CloudTraceSpanExporter()
+tracer_provider.add_span_processor(
+    BatchExportSpanProcessor(cloud_trace_exporter)
+)
+trace.set_tracer_provider(tracer_provider)
+tracer = trace.get_tracer(__name__)
 
 
 @questionnaire_blueprint.before_request

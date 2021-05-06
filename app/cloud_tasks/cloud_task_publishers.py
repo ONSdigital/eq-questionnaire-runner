@@ -4,9 +4,22 @@ from google.cloud.tasks_v2 import CloudTasksClient, HttpMethod
 from google.cloud.tasks_v2.types.task import Task
 from structlog import get_logger
 
+from opentelemetry import trace
+from opentelemetry.exporter.cloud_trace import CloudTraceSpanExporter
+from opentelemetry.sdk.trace import TracerProvider
+from opentelemetry.sdk.trace.export import BatchExportSpanProcessor
+
 from .exceptions import CloudTaskCreationFailed
 
 logger = get_logger(__name__)
+
+tracer_provider = TracerProvider()
+cloud_trace_exporter = CloudTraceSpanExporter()
+tracer_provider.add_span_processor(
+    BatchExportSpanProcessor(cloud_trace_exporter)
+)
+trace.set_tracer_provider(tracer_provider)
+tracer = trace.get_tracer(__name__)
 
 
 class CloudTaskPublisher:
@@ -44,6 +57,7 @@ class CloudTaskPublisher:
             parent=parent,
             task=self._get_task(body=body, function_name=function_name),
         )
+
         return task
 
     def create_task(
@@ -78,10 +92,12 @@ class LogCloudTaskPublisher:
         function_name: str,
         fulfilment_request_transaction_id: str,
     ) -> None:
-        logger.info(
-            "creating cloud task",
-            body=body,
-            queue_name=queue_name,
-            function_name=function_name,
-            fulfilment_request_transaction_id=fulfilment_request_transaction_id,
-        )
+        with tracer.start_as_current_span("cloud task") as current_span:
+            logger.info(
+                "creating cloud task",
+                body=body,
+                queue_name=queue_name,
+                function_name=function_name,
+                fulfilment_request_transaction_id=fulfilment_request_transaction_id,
+            )
+            current_span.add_event(name="create task")

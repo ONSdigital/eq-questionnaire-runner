@@ -6,6 +6,8 @@ import boto3
 import redis
 import simplejson as json
 import yaml
+import grpc
+
 from botocore.config import Config
 from flask import Flask
 from flask import request as flask_request
@@ -18,6 +20,14 @@ from google.cloud import datastore
 from htmlmin.main import minify
 from sdc.crypto.key_store import KeyStore, validate_required_keys
 from structlog import get_logger
+
+from opentelemetry import trace
+from opentelemetry.exporter.cloud_trace import CloudTraceSpanExporter
+from opentelemetry.sdk.trace import TracerProvider
+from opentelemetry.sdk.trace.export import BatchExportSpanProcessor
+from opentelemetry.instrumentation.flask import FlaskInstrumentor
+from opentelemetry.instrumentation.grpc import GrpcInstrumentorClient
+
 
 from app import settings
 from app.authentication.authenticator import login_manager
@@ -38,6 +48,31 @@ from app.submitter import (
     RabbitMQSubmitter,
 )
 from app.utilities.schema import cache_questionnaire_schemas
+
+from opentelemetry import metrics
+from opentelemetry.exporter.cloud_monitoring import (
+    CloudMonitoringMetricsExporter,
+)
+from opentelemetry.sdk.metrics import MeterProvider
+metrics.set_meter_provider(MeterProvider())
+meter = metrics.get_meter(__name__)
+metrics.get_meter_provider().start_pipeline(
+    meter, CloudMonitoringMetricsExporter(), 5
+)
+
+from opentelemetry.instrumentation.grpc import GrpcInstrumentorClient, client_interceptor
+from opentelemetry.sdk.trace import TracerProvider
+from opentelemetry.sdk.trace.export import (
+    ConsoleSpanExporter,
+    SimpleExportSpanProcessor,
+)
+
+trace.set_tracer_provider(TracerProvider())
+trace.get_tracer_provider().add_span_processor(
+    SimpleExportSpanProcessor(ConsoleSpanExporter())
+)
+
+GrpcInstrumentorClient().instrument()
 
 CACHE_HEADERS = {
     "Cache-Control": "no-cache, no-store, must-revalidate",
@@ -93,6 +128,7 @@ def create_app(  # noqa: C901  pylint: disable=too-complex, too-many-statements
     setting_overrides=None,
 ):
     application = Flask(__name__, template_folder="../templates")
+    FlaskInstrumentor().instrument_app(application)
     application.config.from_object(settings)
     if setting_overrides:
         application.config.update(setting_overrides)
