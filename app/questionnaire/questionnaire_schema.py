@@ -1,7 +1,7 @@
 from collections import abc, defaultdict
 from copy import deepcopy
 from functools import cached_property
-from typing import Any, Iterable, Iterator, Mapping, Optional, Union
+from typing import Any, Generator, Iterable, Mapping, Optional, Union
 
 from flask_babel import force_locale
 from werkzeug.datastructures import ImmutableDict
@@ -211,7 +211,9 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
         return section_ids
 
     @staticmethod
-    def get_blocks_for_section(section: Mapping) -> Iterator[ImmutableDict]:
+    def get_blocks_for_section(
+        section: Mapping,
+    ) -> Generator[ImmutableDict, None, None]:
         return (block for group in section["groups"] for block in group["blocks"])
 
     @classmethod
@@ -419,7 +421,7 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
     @staticmethod
     def get_list_collectors_for_list(
         section: Mapping, for_list: str, primary: bool = False
-    ) -> Iterator[ImmutableDict]:
+    ) -> Generator[ImmutableDict, None, None]:
         collector_type = "PrimaryPersonListCollector" if primary else "ListCollector"
 
         return (
