@@ -10,7 +10,7 @@ class QuestionnaireSummaryContext(Context):
     def __call__(self, collapsible=True, answers_are_editable=True):
         groups = list(self._build_all_groups())
 
-        submission_schema = self._schema.get_submission()
+        submission_schema = self._schema.get_submission() or {}
 
         title = submission_schema.get("title") or lazy_gettext(
             "Check your answers and submit"
