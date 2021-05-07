@@ -90,7 +90,7 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
         return {section["id"]: section for section in self.json.get("sections", [])}
 
     def _get_groups_by_id(self) -> dict[str, ImmutableDict]:
-        groups_by_id = {}
+        groups_by_id: dict[str, ImmutableDict] = {}
 
         for section in self._sections_by_id.values():
             for group in section["groups"]:
@@ -101,7 +101,7 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
         return groups_by_id
 
     def _get_blocks_by_id(self) -> dict[str, ImmutableDict]:
-        blocks = {}
+        blocks: dict[str, ImmutableDict] = {}
 
         for group in self._groups_by_id.values():
             for block in group["blocks"]:
@@ -445,7 +445,7 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
 
     @classmethod
     def get_answer_ids_for_question(cls, question: Mapping) -> list[str]:
-        answer_ids = []
+        answer_ids: list[str] = []
 
         for answer in question.get("answers", []):
             answer_ids.append(answer["id"])
@@ -520,7 +520,7 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
 
     @staticmethod
     def get_all_questions_for_block(block: Mapping) -> list[ImmutableDict]:
-        all_questions = []
+        all_questions: list[ImmutableDict] = []
         if block:
             if block.get("question"):
                 all_questions.append(block["question"])
