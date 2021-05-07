@@ -42,19 +42,20 @@ class PathFinder:
             current_location.section_id
         )
 
-        for group in section["groups"]:
-            if "skip_conditions" in group:
-                if evaluate_skip_conditions(
-                    group["skip_conditions"],
-                    self.schema,
-                    self.metadata,
-                    self.answer_store,
-                    self.list_store,
-                    current_location=current_location,
-                ):
-                    continue
+        if section:
+            for group in section["groups"]:
+                if "skip_conditions" in group:
+                    if evaluate_skip_conditions(
+                        group["skip_conditions"],
+                        self.schema,
+                        self.metadata,
+                        self.answer_store,
+                        self.list_store,
+                        current_location=current_location,
+                    ):
+                        continue
 
-            blocks.extend(group["blocks"])
+                blocks.extend(group["blocks"])
 
         if blocks:
             routing_path_block_ids = self._build_routing_path_block_ids(
