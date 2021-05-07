@@ -50,15 +50,18 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
 
     @cached_property
     def survey(self) -> Optional[str]:
-        return self.json.get("survey")
+        survey: Optional[str] = self.json.get("survey")
+        return survey
 
     @cached_property
     def form_type(self) -> Optional[str]:
-        return self.json.get("form_type")
+        form_type: Optional[str] = self.json.get("form_type")
+        return form_type
 
     @cached_property
     def region_code(self) -> Optional[str]:
-        return self.json.get("region_code")
+        region_code: Optional[str] = self.json.get("region_code")
+        return region_code
 
     @cached_property
     def parent_id_map(self) -> Any:
@@ -159,7 +162,8 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
         return answers_by_id
 
     def get_hub(self) -> Optional[ImmutableDict]:
-        return self.json.get("hub")
+        hub_schema: Optional[ImmutableDict] = self.json.get("hub")
+        return hub_schema
 
     def is_hub_enabled(self) -> Optional[bool]:
         if hub := self.get_hub():
@@ -187,7 +191,8 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
             return section_ids
 
     def get_submission(self) -> Optional[ImmutableDict]:
-        return self.json.get("submission")
+        submission_schema: Optional[ImmutableDict] = self.json.get("submission")
+        return submission_schema
 
     def _section_ids_associated_to_list_name(self, list_name: str) -> list[str]:
         section_ids: list[str] = []
@@ -220,21 +225,29 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
             ):
                 return block
 
-    def get_remove_block_id_for_list(self, list_name: str) -> str:
+    def get_remove_block_id_for_list(self, list_name: str) -> Optional[str]:
         for block in self.get_blocks():
             if block["type"] == "ListCollector" and block["for_list"] == list_name:
-                return block["remove_block"]["id"]
+                remove_block_id: str = block["remove_block"]["id"]
+                return remove_block_id
 
     def get_individual_response_list(self) -> Optional[str]:
-        return self.json.get("individual_response", {}).get("for_list")
+        list_name: Optional[str] = self.json.get("individual_response", {}).get(
+            "for_list"
+        )
+        return list_name
 
     def get_individual_response_show_on_hub(self) -> bool:
-        return self.json.get("individual_response", {}).get("show_on_hub", True)
+        show_on_hub: bool = self.json.get("individual_response", {}).get(
+            "show_on_hub", True
+        )
+        return show_on_hub
 
     def get_individual_response_individual_section_id(self) -> Optional[str]:
-        return self._questionnaire_json.get("individual_response", {}).get(
-            "individual_section_id"
-        )
+        section_id: Optional[str] = self._questionnaire_json.get(
+            "individual_response", {}
+        ).get("individual_section_id")
+        return section_id
 
     def get_title_for_section(self, section_id: str) -> Optional[str]:
         if section := self.get_section(section_id):
@@ -294,7 +307,8 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
 
     def get_section_id_for_block_id(self, block_id: str) -> Optional[str]:
         if section := self.get_section_for_block_id(block_id):
-            return section["id"]
+            section_id: str = section["id"]
+            return section_id
 
     def get_groups(self) -> Iterable[ImmutableDict]:
         return self._groups_by_id.values()
@@ -308,17 +322,19 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
     def get_last_block_id_for_section(self, section_id: str) -> Optional[str]:
         section = self.get_section(section_id)
         if section:
-            return section["groups"][-1]["blocks"][-1]["id"]
+            block_id: str = section["groups"][-1]["blocks"][-1]["id"]
+            return block_id
 
     def get_first_block_id_for_group(self, group_id: str) -> Optional[str]:
         group = self.get_group(group_id)
         if group:
-            return group["blocks"][0]["id"]
+            block_id: str = group["blocks"][0]["id"]
+            return block_id
 
     def get_first_block_id_for_section(self, section_id: str) -> Optional[str]:
         section = self.get_section(section_id)
         if section:
-            group_id = section["groups"][0]["id"]
+            group_id: str = section["groups"][0]["id"]
             return self.get_first_block_id_for_group(group_id)
 
     def get_blocks(self) -> Iterable[ImmutableDict]:
@@ -380,7 +396,10 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
             "PrimaryPersonListCollector": "add_or_edit_block",
         }
         if list_collector := self.get_block(list_collector_id):
-            return list_collector[add_block_map[list_collector["type"]]]
+            add_block: ImmutableDict = list_collector[
+                add_block_map[list_collector["type"]]
+            ]
+            return add_block
 
     def get_answer_ids_for_list_items(
         self, list_collector_id: str
@@ -487,9 +506,15 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
         """
         if isinstance(schema_object, str):
             return schema_object
+
         if "text_plural" in schema_object:
-            return schema_object["text_plural"]["forms"]["other"]
-        return schema_object["text"]
+            plural_placeholder_string: str = schema_object["text_plural"]["forms"][
+                "other"
+            ]
+            return plural_placeholder_string
+
+        placeholder_string: str = schema_object["text"]
+        return placeholder_string
 
     @staticmethod
     def get_all_questions_for_block(block: Mapping) -> list[ImmutableDict]:
