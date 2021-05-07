@@ -4,7 +4,7 @@
 
 Using Python 3.9.4, investigate which JSON serialization library is most appropriate.
 
-Candidates
+### Candidates
 - simplejson 3.17.2 (currently used)
 - orjson 3.5.2
 - python-rapidjson 3.5.2
@@ -14,9 +14,7 @@ Candidates
 
 Using the test suite as a measure of success, migration to orjson and python-rapidjson was possible and were more performant than simplejson.
 
-However the lack of support for Decimal serialization in both could lead to accuracy issues as we would have to use Float, which is a binary fraction approximation.
-
-Although a very close approximation it isn't exact, and although tests didn't break and I am fairly confident it will work with our current implementation (addition in calculated summary) it could lead to future issues if greater accuracy is required or division/rounding is introduced.
+However the lack of support for Decimal serialization in both could lead to accuracy issues as we would have to use Float, which is a binary fraction approximation. Although a very close approximation it isn't exact. Even though tests didn't break and it seems to work with our current requirements (addition in calculated summary) it could lead to future issues if greater accuracy is required or division/rounding is introduced.
 
 With that in mind it seems sensible to continue to use simplejson which does support Decimal serialization.
 
@@ -25,7 +23,7 @@ With that in mind it seems sensible to continue to use simplejson which does sup
 
 ### Orjson changes required
 
-- As Load (file-like object) replaced with
+- load (file-like object) replaced with
 
 ```
     with open(schema_path, "rb") as f:
@@ -38,7 +36,7 @@ With that in mind it seems sensible to continue to use simplejson which does sup
 
 - Decimals cast to float on serialization.
 
-- Tests with list_item_id=None updated (simplejson removes them)
+- tests with list_item_id=None updated (simplejson removes them)
 
 
 ### python-rapidjson
