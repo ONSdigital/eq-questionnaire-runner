@@ -21,7 +21,7 @@ With that in mind it seems sensible to continue to use simplejson which does sup
 
 ## Additional information
 
-### Orjson changes required
+### orjson changes required
 
 - load (file-like object) replaced with
 
