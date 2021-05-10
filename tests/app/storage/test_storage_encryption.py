@@ -1,6 +1,6 @@
 from unittest import TestCase
 
-import simplejson as json
+import rapidjson as json
 
 from app.storage.storage_encryption import StorageEncryption
 

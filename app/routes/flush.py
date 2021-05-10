@@ -1,4 +1,4 @@
-import simplejson as json
+import rapidjson as json
 from flask import Blueprint, Response, current_app, request, session
 from sdc.crypto.decrypter import decrypt
 from sdc.crypto.encrypter import encrypt
@@ -10,6 +10,7 @@ from app.keys import KEY_PURPOSE_AUTHENTICATION, KEY_PURPOSE_SUBMISSION
 from app.questionnaire.router import Router
 from app.submitter.converter import convert_answers
 from app.submitter.submission_failed import SubmissionFailedException
+from app.utilities.for_json import for_json
 from app.utilities.schema import load_schema_from_metadata
 
 flush_blueprint = Blueprint("flush", __name__)
@@ -66,7 +67,7 @@ def _submit_data(user):
             convert_answers(
                 schema, questionnaire_store, full_routing_path, flushed=True
             ),
-            for_json=True,
+            default=for_json,
         )
 
         encrypted_message = encrypt(

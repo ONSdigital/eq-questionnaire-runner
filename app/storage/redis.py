@@ -1,6 +1,6 @@
 from datetime import datetime
 
-import simplejson as json
+import rapidjson as json
 from dateutil.tz import tzutc
 from redis.exceptions import ConnectionError as RedisConnectionError
 from structlog import get_logger

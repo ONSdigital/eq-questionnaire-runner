@@ -3,8 +3,8 @@ from glob import glob
 from pathlib import Path
 from typing import List, Mapping, Optional
 
+import rapidjson as json
 import requests
-import simplejson as json
 from structlog import get_logger
 from werkzeug.exceptions import NotFound
 
@@ -163,7 +163,7 @@ def _load_schema_file(schema_name, language_code):
     )
 
     with open(schema_path, encoding="utf8") as json_file:
-        return json.load(json_file, use_decimal=True)
+        return json.load(json_file, number_mode=json.NM_DECIMAL)
 
 
 @lru_cache(maxsize=None)

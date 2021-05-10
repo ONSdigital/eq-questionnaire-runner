@@ -63,7 +63,7 @@ email-validator = "*"
 itsdangerous = "*"
 google-cloud-pubsub = "*"
 google-cloud-tasks = "*"
-simplejson = "*"
+rapidjson = "*"
 
 [requires]
 python_version = "3.9"

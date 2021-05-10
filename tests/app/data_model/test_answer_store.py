@@ -1,8 +1,9 @@
 # pylint: disable=redefined-outer-name
 import pytest
-import simplejson as json
+import rapidjson as json
 
 from app.data_models.answer_store import Answer, AnswerStore
+from app.utilities.for_json import for_json
 
 
 @pytest.fixture()
@@ -202,7 +203,7 @@ def test_list_serialisation(store_to_serialize):
 
 
 def test_serialize_and_deserialize(basic_answer_store):
-    json_serialized = json.dumps(basic_answer_store.serialize(), for_json=True)
+    json_serialized = json.dumps(basic_answer_store.serialize(), default=for_json)
     deserialized = AnswerStore(json.loads(json_serialized))
 
     assert deserialized == basic_answer_store

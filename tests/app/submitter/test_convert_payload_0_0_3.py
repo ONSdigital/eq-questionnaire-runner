@@ -1,4 +1,4 @@
-import simplejson as json
+import rapidjson as json
 
 from app.data_models.answer import Answer
 from app.data_models.answer_store import AnswerStore
@@ -6,6 +6,7 @@ from app.data_models.list_store import ListStore
 from app.questionnaire.questionnaire_schema import QuestionnaireSchema
 from app.questionnaire.routing_path import RoutingPath
 from app.submitter.converter import convert_answers
+from app.utilities.for_json import for_json
 from app.utilities.schema import load_schema_from_name
 from tests.app.submitter.schema import make_schema
 
@@ -390,7 +391,7 @@ def test_primary_person_list_item_conversion(fake_questionnaire_store):
 
     output = convert_answers(schema, fake_questionnaire_store, routing_path)
 
-    data_dict = json.loads(json.dumps(output["data"]["answers"], for_json=True))
+    data_dict = json.loads(json.dumps(output["data"]["answers"], default=for_json))
 
     assert sorted(answer_objects, key=lambda x: x["answer_id"]) == sorted(
         data_dict, key=lambda x: x["answer_id"]
@@ -430,7 +431,7 @@ def test_list_item_conversion(fake_questionnaire_store):
 
     del answer_objects[-1]
 
-    data_dict = json.loads(json.dumps(output["data"]["answers"], for_json=True))
+    data_dict = json.loads(json.dumps(output["data"]["answers"], default=for_json))
 
     assert sorted(answer_objects, key=lambda x: x["answer_id"]) == sorted(
         data_dict, key=lambda x: x["answer_id"]
@@ -465,7 +466,7 @@ def test_list_item_conversion_empty_list(fake_questionnaire_store):
     del answer_objects[0]
     del answer_objects[-1]
 
-    data_dict = json.loads(json.dumps(output["data"]["answers"], for_json=True))
+    data_dict = json.loads(json.dumps(output["data"]["answers"], default=for_json))
 
     assert sorted(answer_objects, key=lambda x: x["answer_id"]) == sorted(
         data_dict, key=lambda x: x["answer_id"]
@@ -489,7 +490,7 @@ def test_default_answers_not_present_when_not_answered(fake_questionnaire_store)
     ]
 
     output = convert_answers(schema, fake_questionnaire_store, routing_path)
-    data = json.loads(json.dumps(output["data"]["answers"], for_json=True))
+    data = json.loads(json.dumps(output["data"]["answers"], default=for_json))
 
     answer_ids = {answer["answer_id"] for answer in data}
     assert "answer-one" not in answer_ids
@@ -530,7 +531,7 @@ def test_list_structure_in_payload_is_as_expected(fake_questionnaire_store):
 
     output = convert_answers(schema, fake_questionnaire_store, routing_path)
 
-    data_dict = json.loads(json.dumps(output["data"]["lists"], for_json=True))
+    data_dict = json.loads(json.dumps(output["data"]["lists"], default=for_json))
 
     assert data_dict[0]["name"] == "people"
     assert "xJlKBy" in data_dict[0]["items"]
@@ -568,7 +569,7 @@ def test_primary_person_not_in_payload_when_not_answered(fake_questionnaire_stor
 
     output = convert_answers(schema, fake_questionnaire_store, routing_path)
 
-    data_dict = json.loads(json.dumps(output["data"]["lists"], for_json=True))
+    data_dict = json.loads(json.dumps(output["data"]["lists"], default=for_json))
 
     assert "primary_person" not in data_dict[0]
 
@@ -627,7 +628,7 @@ def test_relationships_in_payload(fake_questionnaire_store):
     schema = load_schema_from_name("test_relationships")
 
     output = convert_answers(schema, fake_questionnaire_store, routing_path)
-    data = json.loads(json.dumps(output["data"]["answers"], for_json=True))
+    data = json.loads(json.dumps(output["data"]["answers"], default=for_json))
     answers = {answer["answer_id"]: answer for answer in data}
 
     expected_relationships_answer = [
@@ -686,7 +687,7 @@ def test_no_relationships_in_payload(fake_questionnaire_store):
     schema = load_schema_from_name("test_relationships_unrelated")
 
     output = convert_answers(schema, fake_questionnaire_store, routing_path)
-    data = json.loads(json.dumps(output["data"]["answers"], for_json=True))
+    data = json.loads(json.dumps(output["data"]["answers"], default=for_json))
     answers = {answer["answer_id"]: answer for answer in data}
 
     assert "relationship-answer" not in answers
@@ -762,7 +763,7 @@ def test_unrelated_block_answers_in_payload(fake_questionnaire_store):
     schema = load_schema_from_name("test_relationships_unrelated")
 
     output = convert_answers(schema, fake_questionnaire_store, routing_path)
-    data = json.loads(json.dumps(output["data"]["answers"], for_json=True))
+    data = json.loads(json.dumps(output["data"]["answers"], default=for_json))
     answers = {
         (answer["answer_id"], answer.get("list_item_id")): answer for answer in data
     }
@@ -855,7 +856,7 @@ def test_unrelated_block_answers_not_on_path_not_in_payload(fake_questionnaire_s
     schema = load_schema_from_name("test_relationships_unrelated")
 
     output = convert_answers(schema, fake_questionnaire_store, routing_path)
-    data = json.loads(json.dumps(output["data"]["answers"], for_json=True))
+    data = json.loads(json.dumps(output["data"]["answers"], default=for_json))
     answers = {
         (answer["answer_id"], answer.get("list_item_id")): answer for answer in data
     }
@@ -938,7 +939,7 @@ def test_relationship_answers_not_on_path_in_payload(fake_questionnaire_store):
     schema = load_schema_from_name("test_relationships_unrelated")
 
     output = convert_answers(schema, fake_questionnaire_store, routing_path)
-    data = json.loads(json.dumps(output["data"]["answers"], for_json=True))
+    data = json.loads(json.dumps(output["data"]["answers"], default=for_json))
     answers = {
         (answer["answer_id"], answer.get("list_item_id")): answer for answer in data
     }

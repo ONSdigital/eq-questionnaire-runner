@@ -1,7 +1,7 @@
 from unittest import TestCase
 from unittest.mock import MagicMock
 
-import simplejson as json
+import rapidjson as json
 
 from app.data_models import QuestionnaireStore
 from app.data_models.answer_store import AnswerStore
@@ -153,7 +153,7 @@ class TestQuestionnaireStore(TestCase):
         store.progress_store = ProgressStore(expected["PROGRESS"])
 
         # When / Then
-        self.assertRaises(TypeError, store.save)
+        self.assertRaises(AttributeError, store.save)
 
     def test_questionnaire_store_deletes(self):
         # Given

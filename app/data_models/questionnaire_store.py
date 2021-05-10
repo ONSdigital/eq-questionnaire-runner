@@ -1,10 +1,11 @@
 from types import MappingProxyType
 
-import simplejson as json
+import rapidjson as json
 
 from app.data_models.answer_store import AnswerStore
 from app.data_models.list_store import ListStore
 from app.data_models.progress_store import ProgressStore
+from app.utilities.for_json import for_json
 
 
 class QuestionnaireStore:
@@ -43,7 +44,7 @@ class QuestionnaireStore:
         return self
 
     def _deserialize(self, data):
-        json_data = json.loads(data, use_decimal=True)
+        json_data = json.loads(data, number_mode=json.NM_DECIMAL)
         self.progress_store = ProgressStore(json_data.get("PROGRESS"))
         self.set_metadata(json_data.get("METADATA", {}))
         self.answer_store = AnswerStore(json_data.get("ANSWERS"))
@@ -58,7 +59,7 @@ class QuestionnaireStore:
             "PROGRESS": self.progress_store.serialize(),
             "RESPONSE_METADATA": self.response_metadata,
         }
-        return json.dumps(data, for_json=True)
+        return json.dumps(data, default=for_json, number_mode=json.NM_DECIMAL)
 
     def delete(self):
         self._storage.delete()

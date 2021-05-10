@@ -300,11 +300,10 @@ class TestGCSFeedbackSubmitter(TestCase):
         assert blob.metadata["region_code"] == "GB-ENG"
 
         blob_contents = blob.upload_from_string.call_args[0][0]
-
         assert (
             blob_contents
-            == b'{"feedback-type": "Feedback type", "feedback-text": "Feedback text", '
-            b'"feedback_count": 1, "feedback_submission_date": "2021-03-23", '
-            b'"form_type": "H", "language_code": "cy", "region_code": "GB-ENG", "tx_id": "12345"}'
+            == b'{"feedback-type":"Feedback type","feedback-text":"Feedback text","feedback_count":1,'
+            b'"feedback_submission_date":"2021-03-23","form_type":"H",'
+            b'"language_code":"cy","region_code":"GB-ENG","tx_id":"12345"}'
         )
         assert feedback_upload is True

@@ -3,7 +3,7 @@ import logging
 import os
 import sys
 
-from simplejson import dumps
+from rapidjson import dumps
 from structlog import configure
 from structlog.dev import ConsoleRenderer
 from structlog.processors import JSONRenderer, TimeStamper, format_exc_info

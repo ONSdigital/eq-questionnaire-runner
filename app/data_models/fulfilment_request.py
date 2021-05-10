@@ -4,7 +4,7 @@ from functools import cached_property
 from typing import Mapping
 from uuid import uuid4
 
-import simplejson as json
+import rapidjson as json
 from dateutil.tz import tzutc
 
 
