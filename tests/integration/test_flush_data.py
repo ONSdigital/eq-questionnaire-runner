@@ -103,7 +103,6 @@ class TestFlushData(IntegrationTestCase):
         self.encrypt_instance.assert_called_once()  # pylint: disable=no-member
         args = self.encrypt_instance.call_args[0]  # pylint: disable=no-member
 
-        print(args[0])
         self.assertTrue('"flushed":true' in args[0])
 
     @staticmethod
