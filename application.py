@@ -41,7 +41,9 @@ def configure_logging():
         return event_dict
 
     # setup file logging
-    renderer_processor = ConsoleRenderer() if debug else JSONRenderer(serializer=json.dumps)
+    renderer_processor = (
+        ConsoleRenderer() if debug else JSONRenderer(serializer=json.dumps)
+    )
     processors = [
         add_log_level,
         TimeStamper(key="created", fmt="iso"),
