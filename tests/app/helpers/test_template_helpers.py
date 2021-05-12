@@ -126,6 +126,47 @@ def test_get_footer_urls_census_cy():
     assert expected == result
 
 
+def test_get_page_header_context_business():
+    expected = {
+        "logo": "ons-logo-pos-en",
+        "logoAlt": "Office for National Statistics logo",
+    }
+    context_helper = context_helper_factory("business", "en", "https://ons.gov.uk")
+    result = context_helper.page_header_context
+    assert result == expected
+
+
+def test_get_page_header_context_census():
+    expected = {
+        "census": {
+            "logo": "ons-logo-pos-en",
+            "logoAlt": "Office for National Statistics logo",
+            "titleLogo": "census-logo-en",
+            "titleLogoAlt": "Census 2021",
+        }
+    }
+    context_helper = context_helper_factory("census", "en", "https://census.gov.uk")
+    result = context_helper.page_header_context
+    assert result == expected
+
+
+def test_get_page_header_context_census_nisra():
+    expected = {
+        "logo": "nisra-logo-en",
+        "mobileLogo": "nisra-logo-en-mobile",
+        "logoAlt": "Northern Ireland Statistics and Research Agency logo",
+        "titleLogo": "census-logo-en",
+        "titleLogoAlt": "Census 2021",
+        "customHeaderLogo": "nisra",
+    }
+
+    context_helper = context_helper_factory(
+        "census-nisra", "en", "https://census.gov.uk"
+    )
+    result = context_helper.page_header_context
+    assert result == expected
+
+
 def test_get_data_layer_nisra_theme():
     expected = [{"nisra": True}]
     result = get_data_layer("census-nisra")
