@@ -37,7 +37,7 @@ class Block:
     def get_question(
         block_schema, answer_store, list_store, metadata, schema, location
     ):
-        """ Taking question variants into account, return the question which was displayed to the user """
+        """Taking question variants into account, return the question which was displayed to the user"""
         list_item_id = location.list_item_id
         for variant in block_schema.get("question_variants", []):
             display_variant = evaluate_when_rules(
