@@ -58,7 +58,9 @@ VALIDATORS = {
 
 class StripWhitespaceMixin:
     @pre_load()
-    def strip_whitespace(self, items, **kwargs):  # pylint: disable=no-self-use
+    def strip_whitespace(
+        self, items, **kwargs
+    ):  # pylint: disable=no-self-use, unused-argument
         for key, value in items.items():
             if isinstance(value, str):
                 items[key] = value.strip()
