@@ -33,7 +33,8 @@ class BlockHandler:
         self._request_args = request_args or {}
         self._form_data = form_data
 
-        self.block = self._schema.get_block(current_location.block_id)
+        if self._current_location.block_id:
+            self.block = self._schema.get_block(self._current_location.block_id)
         self._routing_path = self._get_routing_path()
         self.page_title = None
         self._return_to = request_args.get("return_to")

@@ -8,14 +8,14 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2021-03-16 12:13+0000\n"
+"POT-Creation-Date: 2021-05-07 13:56+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Generated-By: Babel 2.9.0\n"
+"Generated-By: Babel 2.9.1\n"
 
 #: app/forms/validators.py:341 app/jinja_filters.py:94
 #, python-format
@@ -340,11 +340,11 @@ msgstr ""
 msgid "You can try to <a href='{retry_url}'>submit your feedback again</a>."
 msgstr ""
 
-#: app/routes/individual_response.py:167
+#: app/routes/individual_response.py:170
 msgid "An individual access code has been sent by post"
 msgstr ""
 
-#: app/routes/individual_response.py:262
+#: app/routes/individual_response.py:265
 msgid "An individual access code has been sent by text"
 msgstr ""
 
@@ -429,25 +429,25 @@ msgstr ""
 msgid "Please submit this survey to complete it"
 msgstr ""
 
-#: app/views/handlers/confirm_email.py:31
+#: app/views/handlers/confirm_email.py:32
 msgid "Yes, send the confirmation email"
 msgstr ""
 
-#: app/views/handlers/confirm_email.py:60
+#: app/views/handlers/confirm_email.py:61
 msgid "Confirm your email address"
 msgstr ""
 
-#: app/views/handlers/confirm_email.py:78
+#: app/views/handlers/confirm_email.py:79
 msgid "Is this email address correct?"
 msgstr ""
 
-#: app/views/handlers/confirm_email.py:91
 #: app/views/handlers/confirm_email.py:92
+#: app/views/handlers/confirm_email.py:93
 #: app/views/handlers/individual_response.py:867
 msgid "No, I need to change it"
 msgstr ""
 
-#: app/views/handlers/confirm_email.py:116
+#: app/views/handlers/confirm_email.py:117
 #: app/views/handlers/confirmation_email.py:66
 #: app/views/handlers/feedback.py:62 app/views/handlers/question.py:150
 msgid "Error: {page_title}"
@@ -1111,7 +1111,7 @@ msgstr ""
 msgid "Hide"
 msgstr ""
 
-#: templates/layouts/_base.html:115
+#: templates/layouts/_base.html:122
 msgid "Skip to main content"
 msgstr ""
 

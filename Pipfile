@@ -34,7 +34,6 @@ colorama = "*"
 flask = "*"
 flask-babel = "*"
 flask-login = "*"
-"flask-themes2" = "*"
 flask-wtf = "*"
 gevent = {version = "*",platform_python_implementation = "=='CPython'"}
 google-cloud-datastore = "*"
@@ -64,6 +63,7 @@ email-validator = "*"
 itsdangerous = "*"
 google-cloud-pubsub = "*"
 google-cloud-tasks = "*"
+simplejson = "*"
 
 [requires]
 python_version = "3.9"
