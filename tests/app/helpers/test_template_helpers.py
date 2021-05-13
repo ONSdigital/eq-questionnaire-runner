@@ -153,11 +153,11 @@ def test_get_page_header_context_census():
 def test_get_page_header_context_census_nisra():
     expected = {
         "logo": "nisra-logo-en",
-        "mobileLogo": "nisra-logo-en-mobile",
         "logoAlt": "Northern Ireland Statistics and Research Agency logo",
         "titleLogo": "census-logo-en",
         "titleLogoAlt": "Census 2021",
         "customHeaderLogo": "nisra",
+        "mobileLogo": "nisra-logo-en-mobile",
     }
 
     context_helper = context_helper_factory(
