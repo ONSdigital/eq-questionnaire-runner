@@ -317,11 +317,11 @@ def safe_content(content: str) -> str:
     return content
 
 
-def get_data_layer(schema_theme: str) -> List:
-    if schema_theme == "census-nisra":
+def get_data_layer(theme: str) -> List:
+    if theme == "census-nisra":
         return [{"nisra": True}]
 
-    if schema_theme == "census":
+    if theme == "census":
         return [{"nisra": False}]
 
     return []
