@@ -56,8 +56,6 @@ class IntegrationTestCase(unittest.TestCase):  # pylint: disable=too-many-public
         self._redis = patch("app.setup.redis.Redis", fakeredis.FakeStrictRedis)
         self._redis.start()
 
-
-
         configure_logging()
 
         setting_overrides = {
