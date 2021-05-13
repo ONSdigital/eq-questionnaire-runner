@@ -167,16 +167,20 @@ class CensusNISRAContextHelper(ContextHelper):
 
         context = {
             **default_context,
+            "copyrightDeclaration": {
+                "copyright": lazy_gettext(
+                    "Crown copyright and database rights 2021 NIMA MOU577.501."
+                ),
+                "text": lazy_gettext(
+                    "Use of address data is subject to the terms and conditions."
+                ),
+            },
             "lang": "en",
             "poweredBy": {
                 "logo": "nisra-logo-black-en",
                 "alt": "NISRA - Northern Ireland Statistics and Research Agency",
             },
         }
-
-        context["copyrightDeclaration"]["copyright"] = lazy_gettext(
-            "Crown copyright and database rights 2021 NIMA MOU577.501."
-        )
 
         return context
 
