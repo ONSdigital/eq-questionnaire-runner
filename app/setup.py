@@ -26,8 +26,16 @@ from app.authentication.user_id_generator import UserIDGenerator
 from app.cloud_tasks import CloudTaskPublisher, LogCloudTaskPublisher
 from app.globals import get_session_store
 from app.helpers import get_span_and_trace
+from app.jinja_filters import blueprint as filter_blueprint
 from app.keys import KEY_PURPOSE_SUBMISSION
 from app.publisher import LogPublisher, PubSubPublisher
+from app.routes.dump import dump_blueprint
+from app.routes.errors import errors_blueprint
+from app.routes.flush import flush_blueprint
+from app.routes.individual_response import individual_response_blueprint
+from app.routes.questionnaire import post_submission_blueprint, questionnaire_blueprint
+from app.routes.schema import schema_blueprint
+from app.routes.session import session_blueprint
 from app.secrets import SecretStore, validate_required_secrets
 from app.storage import Datastore, Dynamodb, Redis
 from app.submitter import (
@@ -386,56 +394,36 @@ def setup_feedback(application):
         raise Exception("Unknown EQ_FEEDBACK_BACKEND")
 
 
-# pylint: disable=import-outside-toplevel
 def add_blueprints(application):
     csrf = CSRFProtect(application)
-
-    # import and register the main application blueprint
-    from app.routes.questionnaire import questionnaire_blueprint
 
     application.register_blueprint(questionnaire_blueprint)
     questionnaire_blueprint.config = application.config.copy()
 
-    from app.routes.questionnaire import post_submission_blueprint
-
     application.register_blueprint(post_submission_blueprint)
     post_submission_blueprint.config = application.config.copy()
-
-    from app.routes.session import session_blueprint
 
     csrf.exempt(session_blueprint)
     application.register_blueprint(session_blueprint)
     session_blueprint.config = application.config.copy()
 
-    from app.routes.flush import flush_blueprint
-
     csrf.exempt(flush_blueprint)
     application.register_blueprint(flush_blueprint)
     flush_blueprint.config = application.config.copy()
 
-    from app.routes.dump import dump_blueprint
-
     application.register_blueprint(dump_blueprint)
     dump_blueprint.config = application.config.copy()
-
-    from app.routes.errors import errors_blueprint
 
     application.register_blueprint(errors_blueprint)
     errors_blueprint.config = application.config.copy()
 
-    from app.jinja_filters import blueprint as filter_blueprint
-
     application.register_blueprint(filter_blueprint)
-
-    from app.routes.schema import schema_blueprint
 
     application.register_blueprint(schema_blueprint)
     schema_blueprint.config = application.config.copy()
 
-    from app.routes.individual_response import individual_response_blueprint
-
     application.register_blueprint(individual_response_blueprint)
-    individual_response_blueprint = application.config.copy()
+    individual_response_blueprint.config = application.config.copy()
 
 
 def setup_secure_cookies(application):
