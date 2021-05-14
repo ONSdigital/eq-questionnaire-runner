@@ -15,7 +15,6 @@ from app.keys import KEY_PURPOSE_AUTHENTICATION, KEY_PURPOSE_SUBMISSION
 from app.setup import create_app
 from app.utilities.simplejson import loads_json
 from application import configure_logging
-
 from tests.app.app_context_test_case import MockDatastore
 from tests.integration.create_token import TokenGenerator
 
