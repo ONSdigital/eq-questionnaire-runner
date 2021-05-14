@@ -7,6 +7,7 @@ from freezegun import freeze_time
 
 from app.forms.validators import sanitise_mobile_number
 from app.helpers.uuid_helper import is_valid_uuid
+from app.utilities.simplejson import loads_json
 from app.views.handlers.individual_response import (
     GB_ENG_REGION_CODE,
     GB_NIR_REGION_CODE,
@@ -24,7 +25,7 @@ def test_sms_fulfilment_request_payload():
         metadata, DUMMY_MOBILE_NUMBER
     )
 
-    sms_json_message = json.loads(fulfilment_request.message)
+    sms_json_message = loads_json(fulfilment_request.message)
     payload = sms_json_message["payload"]
     validate_uuids_in_payload(payload)
 
@@ -42,7 +43,7 @@ def test_postal_fulfilment_request_message():
     metadata = {"region_code": "GB-ENG", "case_id": str(uuid4())}
     fulfilment_request = IndividualResponseFulfilmentRequest(metadata)
 
-    postal_json_message = json.loads(fulfilment_request.message)
+    postal_json_message = loads_json(fulfilment_request.message)
     payload = postal_json_message["payload"]
     validate_uuids_in_payload(payload)
 
@@ -68,7 +69,7 @@ def test_individual_case_id_not_present_when_case_type_spg():
     metadata = {"region_code": "GB-ENG", "case_id": str(uuid4()), "case_type": "SPG"}
     fulfilment_request = IndividualResponseFulfilmentRequest(metadata)
 
-    json_message = json.loads(fulfilment_request.message)
+    json_message = loads_json(fulfilment_request.message)
     assert "individualCaseId" not in json_message["payload"]["fulfilmentRequest"]
 
 
@@ -77,7 +78,7 @@ def test_individual_case_id_not_present_when_case_type_ce():
     metadata = {"region_code": "GB-ENG", "case_id": str(uuid4()), "case_type": "CE"}
     fulfilment_request = IndividualResponseFulfilmentRequest(metadata)
 
-    json_message = json.loads(fulfilment_request.message)
+    json_message = loads_json(fulfilment_request.message)
     assert "individualCaseId" not in json_message["payload"]["fulfilmentRequest"]
 
 
@@ -94,7 +95,7 @@ def test_fulfilment_code_for_sms(region_code, expected_fulfilment_code):
     fulfilment_request = IndividualResponseFulfilmentRequest(
         metadata, DUMMY_MOBILE_NUMBER
     )
-    json_message = json.loads(fulfilment_request.message)
+    json_message = loads_json(fulfilment_request.message)
     assert (
         json_message["payload"]["fulfilmentRequest"]["fulfilmentCode"]
         == expected_fulfilment_code
@@ -112,7 +113,7 @@ def test_fulfilment_code_for_sms(region_code, expected_fulfilment_code):
 def test_fulfilment_code_for_postal(region_code, expected_fulfilment_code):
     metadata = {"region_code": region_code, "case_id": str(uuid4()), "case_type": "SPG"}
     fulfilment_request = IndividualResponseFulfilmentRequest(metadata)
-    json_message = json.loads(fulfilment_request.message)
+    json_message = loads_json(fulfilment_request.message)
 
     assert (
         json_message["payload"]["fulfilmentRequest"]["fulfilmentCode"]

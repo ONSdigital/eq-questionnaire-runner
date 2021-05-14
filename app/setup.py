@@ -4,7 +4,6 @@ from uuid import uuid4
 
 import boto3
 import redis
-import simplejson as json
 import yaml
 from botocore.config import Config
 from flask import Flask
@@ -38,6 +37,7 @@ from app.submitter import (
     RabbitMQSubmitter,
 )
 from app.utilities.schema import cache_questionnaire_schemas
+from app.utilities.simplejson import dumps_json
 
 CACHE_HEADERS = {
     "Cache-Control": "no-cache, no-store, must-revalidate",
@@ -469,7 +469,7 @@ def add_safe_health_check(application):
     @application.route("/status")
     def safe_health_check():  # pylint: disable=unused-variable
         data = {"status": "OK", "version": application.config["EQ_APPLICATION_VERSION"]}
-        return json.dumps(data)
+        return dumps_json(data)
 
 
 def get_minimized_asset(filename):

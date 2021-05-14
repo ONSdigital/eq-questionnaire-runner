@@ -1,6 +1,7 @@
 import json
 from datetime import datetime
 
+from app.utilities.simplejson import loads_json
 from tests.integration.integration_test_case import IntegrationTestCase
 
 
@@ -30,7 +31,7 @@ class MultipleClientTestCase(IntegrationTestCase):
         self.assertEqual(cache["last_response"].status_code, 200)
 
         # And the JSON response contains the data I submitted
-        dump_submission = json.loads(cache.get("last_response").get_data(True))
+        dump_submission = loads_json(cache.get("last_response").get_data(True))
         return dump_submission
 
     def post(self, client, post_data=None, url=None, action=None, **kwargs):

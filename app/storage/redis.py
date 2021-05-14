@@ -1,11 +1,11 @@
 from datetime import datetime
 
-import simplejson as json
 from dateutil.tz import tzutc
 from redis.exceptions import ConnectionError as RedisConnectionError
 from structlog import get_logger
 
 from app.storage.errors import ItemAlreadyExistsError
+from app.utilities.simplejson import dumps_json, loads_json
 
 from .storage import StorageHandler, StorageModel
 
@@ -26,7 +26,7 @@ class Redis(StorageHandler):
             # Don't store a value if the only key that is not the key_field is the expiry_field
             value = ""
         else:
-            value = json.dumps(serialized_item)
+            value = dumps_json(serialized_item)
 
         key_value = getattr(model, storage_model.key_field)
 
@@ -57,7 +57,7 @@ class Redis(StorageHandler):
             item = self.client.get(key_value)
 
         if item:
-            item_dict = json.loads(item.decode("utf-8"))
+            item_dict = loads_json(item.decode("utf-8"))
             item_dict[storage_model.key_field] = key_value
 
             return storage_model.deserialize(item_dict)

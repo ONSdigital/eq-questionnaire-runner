@@ -1,10 +1,10 @@
 import hashlib
 
-import simplejson as json
 from jwcrypto import jwe, jwk
 from jwcrypto.common import base64url_encode
 from structlog import get_logger
 
+from app.utilities.simplejson import dumps_json
 from app.utilities.strings import to_bytes, to_str
 
 logger = get_logger()
@@ -37,7 +37,7 @@ class StorageEncryption:
 
     def encrypt_data(self, data):
         if isinstance(data, dict):
-            data = json.dumps(data, for_json=True)
+            data = dumps_json(data)
 
         protected_header = {"alg": "dir", "enc": "A256GCM", "kid": "1,1"}
 

@@ -1,5 +1,6 @@
 import json
 
+from app.utilities.simplejson import loads_json
 from tests.integration.integration_test_case import IntegrationTestCase
 
 
@@ -60,7 +61,7 @@ class TestQuestionnaireCsrf(IntegrationTestCase):
         # Then
         self.assertStatusCode(401)
         self.get("/dump/debug")
-        answers = json.loads(self.getResponseData())
+        answers = loads_json(self.getResponseData())
         self.assertEqual("Muesli", answers["ANSWERS"][0]["value"])
 
     def test_given_valid_answer_when_answer_with_invalid_csrf_token_then_answer_not_saved(
@@ -82,7 +83,7 @@ class TestQuestionnaireCsrf(IntegrationTestCase):
         # Then
         self.assertStatusCode(401)
         self.get("/dump/debug")
-        answers = json.loads(self.getResponseData())
+        answers = loads_json(self.getResponseData())
         self.assertEqual(2, len(answers["ANSWERS"]))
 
     def test_given_csrf_attack_when_refresh_then_on_question(self):
@@ -98,7 +99,7 @@ class TestQuestionnaireCsrf(IntegrationTestCase):
         # Then
         self.assertEqual(self.last_response.status_code, 200)
         self.get("/dump/debug")
-        answers = json.loads(self.getResponseData())
+        answers = loads_json(self.getResponseData())
         self.assertEqual(0, len(answers["ANSWERS"]))
 
     def test_given_csrf_attack_when_submit_new_answers_then_answers_saved(self):
@@ -115,5 +116,5 @@ class TestQuestionnaireCsrf(IntegrationTestCase):
         # Then
         self.assertStatusOK()
         self.get("/dump/debug")
-        answers = json.loads(self.getResponseData())
+        answers = loads_json(self.getResponseData())
         self.assertEqual("Pancakes", answers["ANSWERS"][0]["value"])

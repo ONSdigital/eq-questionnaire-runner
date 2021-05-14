@@ -1,6 +1,5 @@
 from datetime import datetime
 
-import simplejson as json
 from flask import current_app
 from flask import session as cookie_session
 from sdc.crypto.encrypter import encrypt
@@ -9,6 +8,7 @@ from app.globals import get_session_store
 from app.keys import KEY_PURPOSE_SUBMISSION
 from app.submitter.converter import convert_answers
 from app.submitter.submission_failed import SubmissionFailedException
+from app.utilities.simplejson import dumps_json
 
 
 class SubmissionHandler:
@@ -22,7 +22,7 @@ class SubmissionHandler:
     def submit_questionnaire(self):
 
         payload = self.get_payload()
-        message = json.dumps(payload, for_json=True)
+        message = dumps_json(payload)
 
         encrypted_message = encrypt(
             message, current_app.eq["key_store"], KEY_PURPOSE_SUBMISSION
