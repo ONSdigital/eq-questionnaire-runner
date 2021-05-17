@@ -4,7 +4,7 @@ from unittest.mock import MagicMock
 from app.data_models import QuestionnaireStore
 from app.data_models.answer_store import AnswerStore
 from app.data_models.progress_store import CompletionStatus, ProgressStore
-from app.utilities.simplejson import dumps_json, loads_json
+from app.utilities.json import json_dumps, json_loads
 
 
 def get_basic_input():
@@ -58,10 +58,10 @@ class TestQuestionnaireStore(TestCase):
         self.output_data = ""
         self.output_version = None
 
-    def test_questionnaire_store_loads_json(self):
+    def test_questionnaire_store_json_loads(self):
         # Given
         expected = get_basic_input()
-        self.input_data = dumps_json(expected)
+        self.input_data = json_dumps(expected)
         # When
         store = QuestionnaireStore(self.storage)
         # Then
@@ -88,7 +88,7 @@ class TestQuestionnaireStore(TestCase):
         expected[
             "NOT_A_LEGAL_TOP_LEVEL_KEY"
         ] = "woop_woop_thats_the_sound_of_the_police"
-        self.input_data = dumps_json(expected)
+        self.input_data = json_dumps(expected)
         # When
         store = QuestionnaireStore(self.storage)
         # Then
@@ -113,7 +113,7 @@ class TestQuestionnaireStore(TestCase):
         # Given
         expected = get_basic_input()
         del expected["PROGRESS"]
-        self.input_data = dumps_json(expected)
+        self.input_data = json_dumps(expected)
         # When
         store = QuestionnaireStore(self.storage)
         # Then
@@ -135,7 +135,7 @@ class TestQuestionnaireStore(TestCase):
         store.save()  # See setUp - populates self.output_data
 
         # Then
-        self.assertEqual(expected, loads_json(self.output_data))
+        self.assertEqual(expected, json_loads(self.output_data))
 
     def test_questionnaire_store_errors_on_invalid_object(self):
         # Given

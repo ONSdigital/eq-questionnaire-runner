@@ -9,7 +9,7 @@ from app.data_models.app_models import EQSession
 from app.data_models.session_data import SessionData
 from app.data_models.session_store import SessionStore
 from app.storage import storage_encryption
-from app.utilities.simplejson import dumps_json
+from app.utilities.json import json_dumps
 from tests.app.app_context_test_case import AppContextTestCase
 
 
@@ -255,7 +255,7 @@ class TestSessionStoreEncoding(AppContextTestCase):
         self.assertEqual(session_store.session_data.tx_id, self.session_data.tx_id)
 
     def _save_session(self, session_id, user_id, data, legacy=False):
-        raw_data = dumps_json(vars(data))
+        raw_data = json_dumps(vars(data))
         protected_header = {"alg": "dir", "enc": "A256GCM", "kid": "1,1"}
 
         if legacy:

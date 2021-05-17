@@ -6,7 +6,7 @@ from uuid import uuid4
 
 from dateutil.tz import tzutc
 
-from app.utilities.simplejson import dumps_json
+from app.utilities.json import json_dumps
 
 
 class FulfilmentRequest(ABC):
@@ -30,4 +30,4 @@ class FulfilmentRequest(ABC):
             },
             "payload": self._payload(),
         }
-        return dumps_json(message).encode("utf-8")
+        return json_dumps(message).encode("utf-8")

@@ -9,7 +9,7 @@ from structlog.processors import JSONRenderer, TimeStamper, format_exc_info
 from structlog.stdlib import LoggerFactory, add_log_level
 from structlog.threadlocal import wrap_dict
 
-from app.utilities.simplejson import dumps_json
+from app.utilities.json import json_dumps
 
 
 def configure_logging():
@@ -43,7 +43,7 @@ def configure_logging():
 
     # setup file logging
     renderer_processor = (
-        ConsoleRenderer() if debug else JSONRenderer(serializer=dumps_json)
+        ConsoleRenderer() if debug else JSONRenderer(serializer=json_dumps)
     )
     processors = [
         add_log_level,

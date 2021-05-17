@@ -9,8 +9,8 @@ from app.keys import KEY_PURPOSE_AUTHENTICATION, KEY_PURPOSE_SUBMISSION
 from app.questionnaire.router import Router
 from app.submitter.converter import convert_answers
 from app.submitter.submission_failed import SubmissionFailedException
+from app.utilities.json import json_dumps
 from app.utilities.schema import load_schema_from_metadata
-from app.utilities.simplejson import dumps_json
 
 flush_blueprint = Blueprint("flush", __name__)
 
@@ -62,7 +62,7 @@ def _submit_data(user):
         router = Router(schema, answer_store, list_store, progress_store, metadata)
         full_routing_path = router.full_routing_path()
 
-        message = dumps_json(
+        message = json_dumps(
             convert_answers(
                 schema, questionnaire_store, full_routing_path, flushed=True
             )

@@ -44,8 +44,8 @@ from app.submitter import (
     LogSubmitter,
     RabbitMQSubmitter,
 )
+from app.utilities.json import json_dumps
 from app.utilities.schema import cache_questionnaire_schemas
-from app.utilities.simplejson import dumps_json
 
 CACHE_HEADERS = {
     "Cache-Control": "no-cache, no-store, must-revalidate",
@@ -457,7 +457,7 @@ def add_safe_health_check(application):
     @application.route("/status")
     def safe_health_check():  # pylint: disable=unused-variable
         data = {"status": "OK", "version": application.config["EQ_APPLICATION_VERSION"]}
-        return dumps_json(data)
+        return json_dumps(data)
 
 
 def get_minimized_asset(filename):

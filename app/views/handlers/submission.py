@@ -8,7 +8,7 @@ from app.globals import get_session_store
 from app.keys import KEY_PURPOSE_SUBMISSION
 from app.submitter.converter import convert_answers
 from app.submitter.submission_failed import SubmissionFailedException
-from app.utilities.simplejson import dumps_json
+from app.utilities.json import json_dumps
 
 
 class SubmissionHandler:
@@ -22,7 +22,7 @@ class SubmissionHandler:
     def submit_questionnaire(self):
 
         payload = self.get_payload()
-        message = dumps_json(payload)
+        message = json_dumps(payload)
 
         encrypted_message = encrypt(
             message, current_app.eq["key_store"], KEY_PURPOSE_SUBMISSION

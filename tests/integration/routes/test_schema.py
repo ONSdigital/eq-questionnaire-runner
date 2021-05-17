@@ -1,6 +1,6 @@
 import json
 
-from app.utilities.simplejson import loads_json
+from app.utilities.json import json_loads
 from tests.integration.integration_test_case import IntegrationTestCase
 
 
@@ -8,7 +8,7 @@ class TestSchema(IntegrationTestCase):
     def test_get_schema_json(self):
         self.get("/schemas/test_textfield")
         response = self.getResponseData()
-        parsed_json = loads_json(response)
+        parsed_json = json_loads(response)
 
         self.assertIn("title", parsed_json)
         self.assertEqual(parsed_json["title"], "Other input fields")
@@ -20,7 +20,7 @@ class TestSchema(IntegrationTestCase):
     def test_list_schemas(self):
         self.get("/schemas")
         response = self.getResponseData()
-        parsed_json = loads_json(response)
+        parsed_json = json_loads(response)
 
         self.assertIsInstance(parsed_json, list)
         self.assertIsInstance(parsed_json[0], str)

@@ -1,6 +1,6 @@
 import json
 
-from app.utilities.simplejson import loads_json
+from app.utilities.json import json_loads
 from tests.integration.integration_test_case import IntegrationTestCase
 
 
@@ -73,7 +73,7 @@ class TestDumpSubmission(IntegrationTestCase):
         self.assertStatusOK()
 
         # And the JSON response contains the data I submitted
-        actual = loads_json(self.getResponseData())
+        actual = json_loads(self.getResponseData())
         # tx_id and submitted_at are dynamic; so copy them over
         expected = {
             "submission": {
@@ -115,7 +115,7 @@ class TestDumpSubmission(IntegrationTestCase):
         self.assertStatusOK()
 
         # And the JSON response contains the data I submitted
-        actual = loads_json(self.getResponseData())
+        actual = json_loads(self.getResponseData())
 
         # tx_id and submitted_at are dynamic; so copy them over
         expected = {
@@ -165,7 +165,7 @@ class TestDumpSubmission(IntegrationTestCase):
         self.assertStatusOK()
 
         # And the JSON response contains the data I submitted
-        actual = loads_json(self.getResponseData())
+        actual = json_loads(self.getResponseData())
 
         # tx_id and submitted_at are dynamic; so copy them over
         expected = {
@@ -266,7 +266,7 @@ class TestDumpRoute(IntegrationTestCase):
         self.assertStatusOK()
 
         # And the JSON response contains the data I submitted
-        actual = loads_json(self.getResponseData())
+        actual = json_loads(self.getResponseData())
         # tx_id and submitted_at are dynamic; so copy them over
         expected = [
             {
@@ -293,7 +293,7 @@ class TestDumpRoute(IntegrationTestCase):
         self.assertStatusOK()
 
         # And the JSON response contains the data I submitted
-        actual = loads_json(self.getResponseData())
+        actual = json_loads(self.getResponseData())
 
         # tx_id and submitted_at are dynamic; so copy them over
         expected = [

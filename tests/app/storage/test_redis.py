@@ -11,7 +11,7 @@ from app.data_models.app_models import EQSession, UsedJtiClaim
 from app.storage.errors import ItemAlreadyExistsError
 from app.storage.redis import Redis
 from app.storage.storage import StorageModel
-from app.utilities.simplejson import loads_json
+from app.utilities.json import json_loads
 from tests.app.app_context_test_case import AppContextTestCase
 
 EXPIRES_AT = datetime.now(tz=tzutc()).replace(microsecond=0) + timedelta(minutes=1)
@@ -123,7 +123,7 @@ class TestRedis(AppContextTestCase):
 
         storage_model = StorageModel(model_type=EQSession)
 
-        assert storage_model.key_field not in loads_json(stored_data)
+        assert storage_model.key_field not in json_loads(stored_data)
 
     def test_get_redis_expiry_when_expiry_set(self):
         # Given

@@ -11,7 +11,7 @@ from app.questionnaire.questionnaire_schema import (
     DEFAULT_LANGUAGE_CODE,
     QuestionnaireSchema,
 )
-from app.utilities.simplejson import load_json, loads_json
+from app.utilities.json import json_load, json_loads
 
 logger = get_logger()
 
@@ -163,7 +163,7 @@ def _load_schema_file(schema_name, language_code):
     )
 
     with open(schema_path, encoding="utf8") as json_file:
-        return load_json(json_file)
+        return json_load(json_file)
 
 
 @lru_cache(maxsize=None)
@@ -182,7 +182,7 @@ def load_schema_from_url(survey_url, language_code):
         logger.error("no schema exists", survey_url=constructed_survey_url)
         raise NotFound
 
-    return QuestionnaireSchema(loads_json(schema_response), language_code)
+    return QuestionnaireSchema(json_loads(schema_response), language_code)
 
 
 def cache_questionnaire_schemas():
