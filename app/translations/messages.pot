@@ -8,14 +8,14 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2021-05-07 13:56+0100\n"
+"POT-Creation-Date: 2021-05-17 14:48+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Generated-By: Babel 2.9.1\n"
+"Generated-By: Babel 2.9.0\n"
 
 #: app/forms/validators.py:341 app/jinja_filters.py:94
 #, python-format
@@ -348,63 +348,63 @@ msgstr ""
 msgid "An individual access code has been sent by text"
 msgstr ""
 
-#: app/views/contexts/hub_context.py:15
+#: app/views/contexts/hub_context.py:14
 msgid "Completed"
 msgstr ""
 
-#: app/views/contexts/hub_context.py:17
+#: app/views/contexts/hub_context.py:16
 msgid "View answers"
 msgstr ""
 
-#: app/views/contexts/hub_context.py:18
+#: app/views/contexts/hub_context.py:17
 msgid "View answers for {section_name}"
 msgstr ""
 
-#: app/views/contexts/hub_context.py:22
+#: app/views/contexts/hub_context.py:21
 msgid "Partially completed"
 msgstr ""
 
-#: app/views/contexts/hub_context.py:24
+#: app/views/contexts/hub_context.py:23
 msgid "Continue with section"
 msgstr ""
 
-#: app/views/contexts/hub_context.py:25
+#: app/views/contexts/hub_context.py:24
 msgid "Continue with {section_name} section"
 msgstr ""
 
-#: app/views/contexts/hub_context.py:29
+#: app/views/contexts/hub_context.py:28
 msgid "Not started"
 msgstr ""
 
-#: app/views/contexts/hub_context.py:31
+#: app/views/contexts/hub_context.py:30
 msgid "Start section"
 msgstr ""
 
-#: app/views/contexts/hub_context.py:32
+#: app/views/contexts/hub_context.py:31
 msgid "Start {section_name} section"
 msgstr ""
 
-#: app/views/contexts/hub_context.py:36
+#: app/views/contexts/hub_context.py:35
 msgid "Separate census requested"
 msgstr ""
 
-#: app/views/contexts/hub_context.py:38 app/views/contexts/hub_context.py:39
+#: app/views/contexts/hub_context.py:37 app/views/contexts/hub_context.py:38
 msgid "Change or resend"
 msgstr ""
 
-#: app/views/contexts/hub_context.py:49 app/views/contexts/hub_context.py:50
+#: app/views/contexts/hub_context.py:48 app/views/contexts/hub_context.py:49
 msgid "Submit survey"
 msgstr ""
 
-#: app/views/contexts/hub_context.py:54
+#: app/views/contexts/hub_context.py:53
 msgid "You must submit this survey to complete it"
 msgstr ""
 
-#: app/views/contexts/hub_context.py:61
+#: app/views/contexts/hub_context.py:60
 msgid "Choose another section to complete"
 msgstr ""
 
-#: app/views/contexts/hub_context.py:62 templates/confirm-email.html:26
+#: app/views/contexts/hub_context.py:61 templates/confirm-email.html:26
 #: templates/individual_response/confirmation-post.html:21
 #: templates/individual_response/confirmation-text-message.html:31
 #: templates/individual_response/question.html:5 templates/interstitial.html:8
@@ -416,16 +416,15 @@ msgstr ""
 msgid " (You)"
 msgstr ""
 
-#: app/views/contexts/questionnaire_summary_context.py:15
+#: app/views/contexts/submit_context.py:19
 msgid "Check your answers and submit"
 msgstr ""
 
-#: app/views/contexts/questionnaire_summary_context.py:18
-#: templates/confirmation.html:6 templates/confirmation.html:28
+#: app/views/contexts/submit_context.py:22 templates/summary.html:30
 msgid "Submit answers"
 msgstr ""
 
-#: app/views/contexts/questionnaire_summary_context.py:21
+#: app/views/contexts/submit_context.py:25
 msgid "Please submit this survey to complete it"
 msgstr ""
 
@@ -773,14 +772,6 @@ msgstr ""
 msgid "Send a confirmation email"
 msgstr ""
 
-#: templates/confirmation.html:12
-msgid "Yes, I confirm these are correct"
-msgstr ""
-
-#: templates/confirmation.html:33
-msgid "Submitting"
-msgstr ""
-
 #: templates/feedback-sent.html:6
 msgid "Feedback sent"
 msgstr ""
@@ -814,7 +805,7 @@ msgstr[1] ""
 msgid "Send feedback"
 msgstr ""
 
-#: templates/hub.html:40
+#: templates/hub.html:43
 msgid "If you can’t answer someone else’s questions"
 msgstr ""
 
@@ -879,7 +870,15 @@ msgstr ""
 msgid "Return to your account"
 msgstr ""
 
-#: templates/summary.html:28
+#: templates/summary.html:14
+msgid "Yes, I confirm these are correct"
+msgstr ""
+
+#: templates/summary.html:35
+msgid "Submitting"
+msgstr ""
+
+#: templates/summary.html:62
 msgid "Please review your answers and confirm these are correct"
 msgstr ""
 
