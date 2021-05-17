@@ -5,6 +5,72 @@ from app.helpers.template_helpers import (
 )
 
 
+def test_footer_context_census_theme(app):
+    with app.app_context():
+        expected = {
+            "lang": "en",
+            "crest": True,
+            "newTabWarning": "The following links open in a new tab",
+            "copyrightDeclaration": {
+                "copyright": "Crown copyright and database rights 2021 NIMA MOU577.501.",
+                "text": "Use of address data is subject to the terms and conditions.",
+            },
+            "rows": [
+                {
+                    "itemsList": [
+                        {
+                            "text": "Help",
+                            "url": "https://census.gov.uk/ni/help/help-with-the-questions/online-questions-help/",
+                            "target": "_blank",
+                        },
+                        {
+                            "text": "Contact us",
+                            "url": "https://census.gov.uk/ni/contact-us/",
+                            "target": "_blank",
+                        },
+                    ]
+                }
+            ],
+            "legal": [
+                {
+                    "itemsList": [
+                        {
+                            "text": "Cookies",
+                            "url": "https://census.gov.uk/ni/cookies/",
+                            "target": "_blank",
+                        },
+                        {
+                            "text": "Accessibility statement",
+                            "url": "https://census.gov.uk/ni/accessibility-statement/",
+                            "target": "_blank",
+                        },
+                        {
+                            "text": "Privacy and data protection",
+                            "url": "https://census.gov.uk/ni/privacy-and-data-protection/",
+                            "target": "_blank",
+                        },
+                        {
+                            "text": "Terms and conditions",
+                            "url": "https://census.gov.uk/ni/terms-and-conditions/",
+                            "target": "_blank",
+                        },
+                    ]
+                }
+            ],
+            "poweredBy": {
+                "logo": "nisra-logo-black-en",
+                "alt": "NISRA - Northern Ireland Statistics and Research Agency",
+            },
+        }
+
+        context_helper = context_helper_factory(
+            "census-nisra", "en", "https://census.gov.uk/ni/"
+        )
+
+        result = context_helper.footer_context()
+        assert expected == result
+
+
 def test_footer_context_nisra_theme(app):
     with app.app_context():
         expected = {
@@ -71,7 +137,7 @@ def test_footer_context_nisra_theme(app):
         assert expected == result
 
 
-def test_get_footer_urls_nisra_theme():
+def test_get_static_content_urls_census_nisra():
     base_url = "https://census.gov.uk/ni/"
     context_helper = context_helper_factory("census-nisra", "en", base_url)
 
@@ -87,7 +153,7 @@ def test_get_footer_urls_nisra_theme():
     assert expected == context_helper.static_content_urls
 
 
-def test_get_footer_urls_census_en():
+def test_get_static_content_urls_census_en():
     base_url = "https://census.gov.uk/"
     context_helper = context_helper_factory("census", "en", base_url)
 
@@ -107,7 +173,7 @@ def test_get_footer_urls_census_en():
     assert expected == result
 
 
-def test_get_footer_urls_census_cy():
+def test_get_static_content_urls_census_cy():
     base_url = "https://cyfrifiad.gov.uk/"
     context_helper = context_helper_factory("census", "cy", base_url)
 
