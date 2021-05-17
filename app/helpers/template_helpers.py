@@ -85,8 +85,8 @@ class ContextOptions:
     title_logo_alt: Optional[str] = None
     header_logo: Optional[str] = None
     mobile_logo: Optional[str] = None
-    powered_by_logo: str = None
-    powered_by_logo_alt: str = None
+    powered_by_logo: Optional[str] = None
+    powered_by_logo_alt: Optional[str] = None
     lang: str = "en"
     crest: bool = True
     rows: Optional[Iterable[Mapping]] = None
@@ -146,6 +146,7 @@ class ContextHelper:
                 "text": context_options.copyright_text,
             },
         }
+
         if context_options.rows:
             context["rows"] = [{"itemsList": context_options.rows}]
         if context_options.legal:
