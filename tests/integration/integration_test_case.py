@@ -13,6 +13,7 @@ from sdc.crypto.key_store import KeyStore
 
 from app.keys import KEY_PURPOSE_AUTHENTICATION, KEY_PURPOSE_SUBMISSION
 from app.setup import create_app
+from application import configure_logging
 from tests.app.app_context_test_case import MockDatastore
 from tests.integration.create_token import TokenGenerator
 
@@ -54,10 +55,6 @@ class IntegrationTestCase(unittest.TestCase):  # pylint: disable=too-many-public
 
         self._redis = patch("app.setup.redis.Redis", fakeredis.FakeStrictRedis)
         self._redis.start()
-
-        from application import (  # pylint: disable=import-outside-toplevel
-            configure_logging,
-        )
 
         configure_logging()
 
