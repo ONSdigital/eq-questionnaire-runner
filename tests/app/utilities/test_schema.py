@@ -45,11 +45,6 @@ def test_get_schema_name_from_census_params_invalid_form_type():
 @pytest.mark.parametrize(
     "schema_name, launch_language, expected",
     [
-        ("census_individual_gb_wls", "en", ["en", "cy"]),
-        ("census_individual_gb_wls", "cy", ["en", "cy"]),
-        ("census_individual_gb_nir", "en", ["en"]),
-        ("census_individual_gb_nir", "ga", ["en", "ga"]),
-        ("census_individual_gb_nir", "eo", ["en", "eo"]),
         ("invalid_schema_name", "en", ["en"]),
         ("test_language", "invalid_language", ["en"]),
         ("test_language", None, ["en"]),

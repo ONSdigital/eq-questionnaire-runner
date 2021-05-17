@@ -13,8 +13,6 @@ from marshmallow import (
 )
 from structlog import get_logger
 
-from app.utilities.schema import get_schema_name_from_census_params
-
 logger = get_logger()
 
 
@@ -130,10 +128,6 @@ class RunnerMetadataSchema(Schema, StripWhitespaceMixin):
         if data.get("schema_name"):
             logger.info(
                 "Using schema_name claim to specify schema, overriding survey, form_type and region_code"
-            )
-        else:
-            data["schema_name"] = get_schema_name_from_census_params(
-                data.get("survey"), data.get("form_type"), data.get("region_code")
             )
         return data
 

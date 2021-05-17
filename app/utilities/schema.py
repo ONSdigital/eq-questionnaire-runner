@@ -19,15 +19,7 @@ SCHEMA_DIR = "schemas"
 TEST_SCHEMA_DIR = "test_schemas"
 LANGUAGE_CODES = ("en", "cy", "ga", "eo")
 
-LANGUAGES_MAP = {
-    "test_language": [["en", "cy"], ["en", "ga"]],
-    "ccs_household_gb_wls": [["en", "cy"]],
-    "census_household_gb_wls": [["en", "cy"]],
-    "census_individual_gb_wls": [["en", "cy"]],
-    "census_household_gb_nir": [["en"], ["en", "ga"], ["en", "eo"]],
-    "census_individual_gb_nir": [["en"], ["en", "ga"], ["en", "eo"]],
-    "census_communal_establishment_gb_wls": [["en", "cy"]],
-}
+LANGUAGES_MAP = {"test_language": [["en", "cy"], ["en", "ga"]]}
 
 
 @lru_cache(maxsize=None)
@@ -92,39 +84,11 @@ def _load_schema_from_name(schema_name, language_code):
     return QuestionnaireSchema(schema_json, language_code)
 
 
-def transform_form_type(form_type):
-    census_form_types = {
-        "H": "household",
-        "I": "individual",
-        "C": "communal_establishment",
-    }
+def load_schema_from_params(eq_id, form_type, language_code=None):
+    language_code = language_code or DEFAULT_LANGUAGE_CODE
+    schema_json = _load_schema_file("{}_{}".format(eq_id, form_type), language_code)
 
-    return census_form_types[form_type]
-
-
-def transform_region_code(region_code_input):
-    return region_code_input.lower().replace("-", "_")
-
-
-def transform_survey(survey_input):
-    return survey_input.lower()
-
-
-def get_schema_name_from_census_params(survey, form_type, region_code):
-    try:
-        form_type_transformed = transform_form_type(form_type)
-    except KeyError:
-        raise ValueError(
-            "Invalid form_type parameter was specified. Must be one of `H`, `I`, `C`"
-        )
-
-    region_code_transformed = transform_region_code(region_code)
-    survey_transformed = transform_survey(survey)
-
-    schema_name = (
-        f"{survey_transformed}_{form_type_transformed}_{region_code_transformed}"
-    )
-    return schema_name
+    return QuestionnaireSchema(schema_json, language_code)
 
 
 def _load_schema_file(schema_name, language_code):
