@@ -124,7 +124,7 @@ class ContextHelper:
         return context
 
     @staticmethod
-    def _footer_warning(sign_out_url: str) -> Union[str, None]:
+    def _footer_warning(sign_out_url: Optional[str]) -> Union[str, None]:
         if request.blueprint == "post_submission":
             return lazy_gettext(
                 "Make sure you <a href='{sign_out_url}'>leave this page</a> or close your browser if using a shared device"
