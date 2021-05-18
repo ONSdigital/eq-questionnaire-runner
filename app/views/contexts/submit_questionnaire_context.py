@@ -35,21 +35,21 @@ class SubmitQuestionnaireContext(Context):
             "submit_button": submit_button,
         }
         if include_summary:
-            context.update(self._get_summary_context(collapsible, answers_are_editable))
+            context["summary"] = self._get_summary_context(
+                collapsible, answers_are_editable
+            )
 
         return context
 
     def _get_summary_context(
         self, collapsible: bool, answers_are_editable: bool
-    ) -> dict[str, dict]:
+    ) -> dict[str, Union[list, bool, str]]:
         groups = list(self._build_all_groups())
         return {
-            "summary": {
-                "groups": groups,
-                "answers_are_editable": answers_are_editable,
-                "collapsible": collapsible,
-                "summary_type": "Summary",
-            }
+            "groups": groups,
+            "answers_are_editable": answers_are_editable,
+            "collapsible": collapsible,
+            "summary_type": "Summary",
         }
 
     def _build_all_groups(self) -> Generator[dict, None, None]:
