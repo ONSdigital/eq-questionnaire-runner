@@ -8,7 +8,7 @@ from .context import Context
 from .section_summary_context import SectionSummaryContext
 
 
-class SubmitContext(Context):
+class SubmitQuestionnaireContext(Context):
     def __call__(
         self, answers_are_editable: bool = True
     ) -> dict[str, Union[str, dict]]:

@@ -7,11 +7,11 @@ from app.data_models import QuestionnaireStore
 from app.questionnaire import QuestionnaireSchema
 from app.questionnaire.location import InvalidLocationException
 from app.questionnaire.router import Router
-from app.views.contexts import SubmitContext
+from app.views.contexts import SubmitQuestionnaireContext
 from app.views.handlers.submission import SubmissionHandler
 
 
-class SubmitHandler:
+class SubmitQuestionnaireHandler:
     def __init__(
         self,
         schema: QuestionnaireSchema,
@@ -38,7 +38,7 @@ class SubmitHandler:
         )
 
     def get_context(self) -> dict[str, Union[str, dict]]:
-        submit_context = SubmitContext(
+        submit_questionnaire_context = SubmitQuestionnaireContext(
             language=self._language,
             schema=self._schema,
             answer_store=self._questionnaire_store.answer_store,
@@ -46,7 +46,7 @@ class SubmitHandler:
             progress_store=self._questionnaire_store.progress_store,
             metadata=self._questionnaire_store.metadata,
         )
-        return submit_context()
+        return submit_questionnaire_context()
 
     def get_previous_location_url(self) -> str:
         return self.router.get_last_location_in_questionnaire().url()

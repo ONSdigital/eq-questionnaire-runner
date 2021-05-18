@@ -4,7 +4,7 @@ from app.data_models.answer_store import AnswerStore
 from app.data_models.list_store import ListStore
 from app.data_models.progress_store import ProgressStore
 from app.utilities.schema import load_schema_from_name
-from app.views.contexts import SubmitContext
+from app.views.contexts import SubmitQuestionnaireContext
 from tests.app.app_context_test_case import AppContextTestCase
 
 
@@ -63,7 +63,7 @@ class TestStandardSummaryContext(AppContextTestCase):
                 submission_content = schema.get_submission()
                 self.assertIsNone(submission_content)
 
-                submit_context = SubmitContext(
+                submit_questionnaire_context = SubmitQuestionnaireContext(
                     self.language,
                     schema,
                     self.answer_store,
@@ -72,7 +72,7 @@ class TestStandardSummaryContext(AppContextTestCase):
                     self.metadata,
                 )
 
-                context = submit_context()
+                context = submit_questionnaire_context()
 
                 self.assertEqual(context["title"], "Check your answers and submit")
                 self.assertEqual(
@@ -88,7 +88,7 @@ class TestSubmitContextWithSummary(TestStandardSummaryContext):
         self.schema = load_schema_from_name("test_summary")
 
     def test_build_summary_rendering_context(self):
-        submit_context = SubmitContext(
+        submit_questionnaire_context = SubmitQuestionnaireContext(
             self.language,
             self.schema,
             self.answer_store,
@@ -97,13 +97,13 @@ class TestSubmitContextWithSummary(TestStandardSummaryContext):
             self.metadata,
         )
 
-        context = submit_context()
+        context = submit_questionnaire_context()
         self.check_summary_rendering_context(context)
 
     def test_submit_context_with_custom_submission_content(self):
         self.schema = load_schema_from_name("test_summary_with_submission_text")
 
-        submit_context = SubmitContext(
+        submit_questionnaire_context = SubmitQuestionnaireContext(
             self.language,
             self.schema,
             self.answer_store,
@@ -112,7 +112,7 @@ class TestSubmitContextWithSummary(TestStandardSummaryContext):
             self.metadata,
         )
 
-        context = submit_context()
+        context = submit_questionnaire_context()
 
         self.assertEqual(context["title"], "Submission title")
         self.assertEqual(context["guidance"], "Submission guidance")
@@ -131,7 +131,7 @@ class TestSubmitContextWithoutSummary(TestStandardSummaryContext):
     def test_submit_context_with_custom_submission_content(self):
         self.schema = load_schema_from_name("test_final_confirmation")
 
-        submit_context = SubmitContext(
+        submit_questionnaire_context = SubmitQuestionnaireContext(
             self.language,
             self.schema,
             self.answer_store,
@@ -140,7 +140,7 @@ class TestSubmitContextWithoutSummary(TestStandardSummaryContext):
             self.metadata,
         )
 
-        context = submit_context()
+        context = submit_questionnaire_context()
 
         self.assertEqual(context["title"], "Submit your questionnaire")
         self.assertEqual(
@@ -153,7 +153,7 @@ class TestSubmitContextWithoutSummary(TestStandardSummaryContext):
         self.assertEqual(context["submit_button"], "Submit")
 
     def test_summary_rendering_context_not_built(self):
-        submit_context = SubmitContext(
+        submit_questionnaire_context = SubmitQuestionnaireContext(
             self.language,
             self.schema,
             self.answer_store,
@@ -162,6 +162,6 @@ class TestSubmitContextWithoutSummary(TestStandardSummaryContext):
             self.metadata,
         )
 
-        context = submit_context()
+        context = submit_questionnaire_context()
 
         self.assertNotIn("summary", context)

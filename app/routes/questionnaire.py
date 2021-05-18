@@ -35,7 +35,7 @@ from app.views.handlers.confirmation_email import (
 from app.views.handlers.feedback import Feedback, FeedbackNotEnabled
 from app.views.handlers.section import SectionHandler
 from app.views.handlers.submission import SubmissionHandler
-from app.views.handlers.submit import SubmitHandler
+from app.views.handlers.submit_questionnaire import SubmitQuestionnaireHandler
 from app.views.handlers.thank_you import ThankYou
 
 logger = get_logger()
@@ -151,27 +151,27 @@ def submit_questionnaire(
     schema: QuestionnaireSchema, questionnaire_store: QuestionnaireStore
 ) -> Union[Response, str]:
     try:
-        submit_handler = SubmitHandler(
+        submit_questionnaire_handler = SubmitQuestionnaireHandler(
             schema, questionnaire_store, flask_babel.get_locale().language
         )
     except InvalidLocationException:
         raise NotFound
 
-    if not submit_handler.router.is_questionnaire_complete:
+    if not submit_questionnaire_handler.router.is_questionnaire_complete:
         return redirect(
-            submit_handler.router.get_first_incomplete_location_in_questionnaire_url()
+            submit_questionnaire_handler.router.get_first_incomplete_location_in_questionnaire_url()
         )
 
     if request.method == "POST":
-        submit_handler.handle_post()
+        submit_questionnaire_handler.handle_post()
         return redirect(url_for("post_submission.get_thank_you"))
 
-    context = submit_handler.get_context()
+    context = submit_questionnaire_handler.get_context()
     return render_template(
-        submit_handler.template,
+        submit_questionnaire_handler.template,
         content=context,
         page_title=context["title"],
-        previous_location_url=submit_handler.get_previous_location_url(),
+        previous_location_url=submit_questionnaire_handler.get_previous_location_url(),
     )
 
 
