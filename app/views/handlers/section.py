@@ -44,7 +44,7 @@ class SectionHandler:
         return section_summary_context()
 
     def get_next_location_url(self):
-        return self._router.get_next_location_url_for_questionnaire_flow()
+        return self._router.get_next_location_url_for_end_of_section()
 
     def get_previous_location_url(self):
         return self._router.get_last_location_in_section(self._routing_path).url()

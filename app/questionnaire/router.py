@@ -93,7 +93,7 @@ class Router:
         if self._schema.show_summary_on_completion_for_section(location.section_id):
             return self._get_section_url(location)
 
-        return self.get_next_location_url_for_questionnaire_flow()
+        return self.get_next_location_url_for_end_of_section()
 
     def get_previous_location_url(self, location, routing_path):
         """
@@ -132,9 +132,9 @@ class Router:
             )
             return self.get_section_resume_url(section_routing_path)
 
-        return self.get_next_location_url_for_questionnaire_flow()
+        return self.get_next_location_url_for_end_of_section()
 
-    def get_next_location_url_for_questionnaire_flow(self) -> str:
+    def get_next_location_url_for_end_of_section(self) -> str:
         if self._schema.is_questionnaire_flow_hub and self.can_access_hub():
             return url_for("questionnaire.get_questionnaire")
 
