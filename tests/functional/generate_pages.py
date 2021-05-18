@@ -7,6 +7,8 @@ import os
 import re
 from string import Template
 
+from app.utilities.json import json_loads
+
 logger = logging.getLogger(__name__)
 logging.basicConfig(level=logging.INFO)
 
@@ -754,7 +756,7 @@ def _has_definitions_in_block_contents(block_contents):
 def process_schema(in_schema, out_dir, spec_file, require_path=".."):
 
     try:
-        data = json.loads(open(in_schema).read())
+        data = json_loads(open(in_schema).read())
     except Exception as ex:
         logger.error("error reading %s", in_schema)
         return

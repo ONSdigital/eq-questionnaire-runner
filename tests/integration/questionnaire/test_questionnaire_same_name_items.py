@@ -1,5 +1,7 @@
 import json
 
+from app.utilities.json import json_loads
+
 from . import QuestionnaireTestCase
 
 
@@ -14,7 +16,7 @@ class TestQuestionnaireSameNameItems(QuestionnaireTestCase):
 
         self.get("/dump/debug")
 
-        actual = json.loads(self.getResponseData())
+        actual = json_loads(self.getResponseData())
 
         item_id_a = actual["LISTS"][0]["items"][0]
         item_id_b = actual["LISTS"][0]["items"][1]
@@ -38,7 +40,7 @@ class TestQuestionnaireSameNameItems(QuestionnaireTestCase):
 
         self.get("/dump/debug")
 
-        actual = json.loads(self.getResponseData())
+        actual = json_loads(self.getResponseData())
 
         assert "same_name_items" not in actual["LISTS"][0]
 
@@ -56,7 +58,7 @@ class TestQuestionnaireSameNameItems(QuestionnaireTestCase):
 
         self.get("/dump/debug")
 
-        actual = json.loads(self.getResponseData())
+        actual = json_loads(self.getResponseData())
 
         assert "same_name_items" not in actual["LISTS"][0]
 
@@ -76,7 +78,7 @@ class TestQuestionnaireSameNameItems(QuestionnaireTestCase):
 
         self.get("/dump/debug")
 
-        actual = json.loads(self.getResponseData())
+        actual = json_loads(self.getResponseData())
 
         assert "same_name_items" not in actual["LISTS"][0]
 
@@ -96,7 +98,7 @@ class TestQuestionnaireSameNameItems(QuestionnaireTestCase):
 
         self.get("/dump/debug")
 
-        actual = json.loads(self.getResponseData())
+        actual = json_loads(self.getResponseData())
 
         item_id_a = actual["LISTS"][0]["items"][0]
         item_id_b = actual["LISTS"][0]["items"][1]
