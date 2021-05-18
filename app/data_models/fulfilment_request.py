@@ -4,8 +4,9 @@ from functools import cached_property
 from typing import Mapping
 from uuid import uuid4
 
-import simplejson as json
 from dateutil.tz import tzutc
+
+from app.utilities.json import json_dumps
 
 
 class FulfilmentRequest(ABC):
@@ -29,4 +30,4 @@ class FulfilmentRequest(ABC):
             },
             "payload": self._payload(),
         }
-        return json.dumps(message).encode("utf-8")
+        return json_dumps(message).encode("utf-8")

@@ -4,7 +4,6 @@ from pathlib import Path
 from typing import List, Mapping, Optional
 
 import requests
-import simplejson as json
 from structlog import get_logger
 from werkzeug.exceptions import NotFound
 
@@ -12,6 +11,7 @@ from app.questionnaire.questionnaire_schema import (
     DEFAULT_LANGUAGE_CODE,
     QuestionnaireSchema,
 )
+from app.utilities.json import json_load, json_loads
 
 logger = get_logger()
 
@@ -163,7 +163,7 @@ def _load_schema_file(schema_name, language_code):
     )
 
     with open(schema_path, encoding="utf8") as json_file:
-        return json.load(json_file, use_decimal=True)
+        return json_load(json_file)
 
 
 @lru_cache(maxsize=None)
@@ -182,7 +182,7 @@ def load_schema_from_url(survey_url, language_code):
         logger.error("no schema exists", survey_url=constructed_survey_url)
         raise NotFound
 
-    return QuestionnaireSchema(json.loads(schema_response), language_code)
+    return QuestionnaireSchema(json_loads(schema_response), language_code)
 
 
 def cache_questionnaire_schemas():

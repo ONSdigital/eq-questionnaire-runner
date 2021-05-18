@@ -7,6 +7,7 @@ from freezegun import freeze_time
 
 from app.data_models.session_data import SessionData
 from app.questionnaire import QuestionnaireSchema
+from app.utilities.json import json_loads
 from app.views.handlers.confirm_email import ConfirmationEmailFulfilmentRequest
 
 time_to_freeze = datetime.now(tzutc()).replace(second=0, microsecond=0)
@@ -50,7 +51,7 @@ def test_confirmation_email_fulfilment_request_message(session_data, schema):
         email_address, session_data, schema
     )
 
-    confirmation_email_json_message = json.loads(fulfilment_request.message)
+    confirmation_email_json_message = json_loads(fulfilment_request.message)
 
     expected_payload = {
         "email_address": "name@example.com",
