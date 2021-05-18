@@ -18,14 +18,14 @@ class SubmitQuestionnaireHandler:
         questionnaire_store: QuestionnaireStore,
         language: str,
     ):
-        self._schema = schema
-        self._questionnaire_store = questionnaire_store
-        self._language = language
-
-        if not self._schema.is_questionnaire_flow_linear:
+        if not schema.is_questionnaire_flow_linear:
             raise InvalidLocationException(
                 "Submit page not enabled or questionnaire is not complete"
             )
+
+        self._schema = schema
+        self._questionnaire_store = questionnaire_store
+        self._language = language
 
     @cached_property
     def router(self) -> Router:
