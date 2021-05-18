@@ -1,4 +1,3 @@
-import simplejson as json
 from flask import current_app
 from jwcrypto.common import base64url_decode
 from structlog import get_logger
@@ -6,6 +5,7 @@ from structlog import get_logger
 from app.data_models.app_models import EQSession
 from app.data_models.session_data import SessionData
 from app.storage.storage_encryption import StorageEncryption
+from app.utilities.json import json_loads
 
 logger = get_logger()
 
@@ -102,7 +102,7 @@ class SessionStore:
             except ValueError:
                 pass
 
-            self.session_data = json.loads(
+            self.session_data = json_loads(
                 session_data, object_hook=lambda d: SessionData(**d)
             )
 

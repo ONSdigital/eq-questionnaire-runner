@@ -13,6 +13,7 @@ from sdc.crypto.key_store import KeyStore
 
 from app.keys import KEY_PURPOSE_AUTHENTICATION, KEY_PURPOSE_SUBMISSION
 from app.setup import create_app
+from app.utilities.json import json_loads
 from application import configure_logging
 from tests.app.app_context_test_case import MockDatastore
 from tests.integration.create_token import TokenGenerator
@@ -135,7 +136,7 @@ class IntegrationTestCase(unittest.TestCase):  # pylint: disable=too-many-public
         self.assertStatusOK()
 
         # And the JSON response contains the data I submitted
-        dump_answers = json.loads(self.getResponseData())
+        dump_answers = json_loads(self.getResponseData())
         return dump_answers
 
     def dumpSubmission(self):
@@ -146,13 +147,13 @@ class IntegrationTestCase(unittest.TestCase):  # pylint: disable=too-many-public
         self.assertStatusOK()
 
         # And the JSON response contains the data I submitted
-        dump_submission = json.loads(self.getResponseData())
+        dump_submission = json_loads(self.getResponseData())
         return dump_submission
 
     def dump_debug(self):
         self.get("/dump/debug")
         self.assertStatusOK()
-        return json.loads(self.getResponseData())
+        return json_loads(self.getResponseData())
 
     def get(self, url, follow_redirects=True, **kwargs):
         """
@@ -266,7 +267,7 @@ class IntegrationTestCase(unittest.TestCase):  # pylint: disable=too-many-public
         cookie = self.last_response.headers["Set-Cookie"]
         cookie_session = cookie.split("session=.")[1].split(";")[0]
         decoded_cookie_session = decode_flask_cookie(cookie_session)
-        return json.loads(decoded_cookie_session)
+        return json_loads(decoded_cookie_session)
 
     def getHtmlSoup(self):
         """
