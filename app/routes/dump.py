@@ -1,6 +1,5 @@
 from functools import wraps
 
-import simplejson as json
 from flask import Blueprint, g
 from flask_login import current_user, login_required
 
@@ -8,6 +7,7 @@ from app.authentication.roles import role_required
 from app.globals import get_questionnaire_store, get_session_store
 from app.helpers.session_helpers import with_questionnaire_store
 from app.questionnaire.router import Router
+from app.utilities.json import json_dumps
 from app.utilities.schema import load_schema_from_session_data
 from app.views.handlers.submission import SubmissionHandler
 
@@ -58,7 +58,7 @@ def dump_routing(schema, questionnaire_store):
         for routing_path in router.full_routing_path()
     ]
 
-    return json.dumps(response, for_json=True), 200
+    return json_dumps(response), 200
 
 
 @dump_blueprint.route("/dump/submission", methods=["GET"])
@@ -83,4 +83,4 @@ def dump_submission(schema, questionnaire_store):
     submission_handler = SubmissionHandler(schema, questionnaire_store, routing_path)
 
     response = {"submission": submission_handler.get_payload()}
-    return json.dumps(response, for_json=True), 200
+    return json_dumps(response), 200

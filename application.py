@@ -3,12 +3,13 @@ import logging
 import os
 import sys
 
-from simplejson import dumps
 from structlog import configure
 from structlog.dev import ConsoleRenderer
 from structlog.processors import JSONRenderer, TimeStamper, format_exc_info
 from structlog.stdlib import LoggerFactory, add_log_level
 from structlog.threadlocal import wrap_dict
+
+from app.utilities.json import json_dumps
 
 
 def configure_logging():
@@ -41,7 +42,9 @@ def configure_logging():
         return event_dict
 
     # setup file logging
-    renderer_processor = ConsoleRenderer() if debug else JSONRenderer(serializer=dumps)
+    renderer_processor = (
+        ConsoleRenderer() if debug else JSONRenderer(serializer=json_dumps)
+    )
     processors = [
         add_log_level,
         TimeStamper(key="created", fmt="iso"),

@@ -1,10 +1,11 @@
 from uuid import uuid4
 
-import simplejson as json
 from google.cloud import storage  # type: ignore
 from pika import BasicProperties, BlockingConnection, URLParameters
 from pika.exceptions import AMQPError
 from structlog import get_logger
+
+from app.utilities.json import json_dumps
 
 logger = get_logger()
 
@@ -156,7 +157,7 @@ class GCSFeedbackSubmitter:
         blob = self.bucket.blob(str(uuid4()))
         blob.metadata = metadata
         blob.upload_from_string(
-            json.dumps(payload).encode("utf8"), content_type="application/json"
+            json_dumps(payload).encode("utf8"), content_type="application/json"
         )
 
         return True
