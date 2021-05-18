@@ -793,3 +793,46 @@ class TestRouter(AppContextTestCase):  # pylint: disable=too-many-public-methods
         ]
 
         self.assertEqual(routing_path, expected_path)
+
+    def test_get_last_location_in_questionnaire_returns_last_block_on_path(self):
+        schema = load_schema_from_name(
+            "test_skipping_to_questionnaire_end_multiple_sections"
+        )
+        answer_store = AnswerStore(
+            [
+                {"answer_id": "test-skipping-answer", "value": "No"},
+                {
+                    "answer_id": "test-skipping-optional-answer",
+                    "value": "I am a completionist",
+                },
+            ]
+        )
+        section_id = "test-skipping-section"
+        last_block_on_path = "test-skipping-forced"
+        last_completed_block = "test-skipping-optional"
+        progress_store = ProgressStore(
+            [
+                {
+                    "section_id": section_id,
+                    "block_ids": [last_block_on_path, last_completed_block],
+                    "status": CompletionStatus.COMPLETED,
+                }
+            ]
+        )
+
+        router = Router(
+            schema, answer_store, self.list_store, progress_store, self.metadata
+        )
+
+        expected_location = Location(
+            section_id=section_id,
+            block_id=last_block_on_path,
+            list_item_id=None,
+        )
+
+        last_completed_block_in_progress_store = progress_store.get_completed_block_ids(
+            section_id=section_id, list_item_id=None
+        )[-1]
+
+        self.assertEqual(last_completed_block, last_completed_block_in_progress_store)
+        self.assertEqual(expected_location, router.get_last_location_in_questionnaire())

@@ -279,14 +279,13 @@ class Router:
         )
 
     def get_last_location_in_questionnaire(self) -> Location:
-        section_id, list_item_id = self._get_last_complete_section_key()
-        last_complete_block = self._progress_store.get_completed_block_ids(
-            section_id=section_id, list_item_id=list_item_id
-        )[-1]
+        routing_path = self.routing_path(
+            *self._get_last_complete_section_key()
+        )
         return Location(
-            section_id=section_id,
-            block_id=last_complete_block,
-            list_item_id=list_item_id,
+            section_id=routing_path.section_id,
+            block_id=routing_path[-1],
+            list_item_id=routing_path.list_item_id,
         )
 
     @staticmethod
