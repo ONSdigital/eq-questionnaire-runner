@@ -1,5 +1,5 @@
 import re
-from dataclasses import dataclass
+from dataclasses import dataclass, asdict
 from functools import cached_property, lru_cache
 from typing import Any, Dict, Iterable, List, Mapping, Optional, Union
 
@@ -94,9 +94,68 @@ class ContextOptions:
     footer_warning: Optional[str] = None
 
 
+@dataclass
+class Context:
+    """The context used to render a flask template."""
+
+    account_service_url: str
+    account_service_log_out_url: str
+    contact_us_url: str
+    cookie_settings_url: str
+    page_header: Mapping
+    footer: Mapping
+    languages: Mapping
+    theme: str
+    language_code: str
+    schema_theme: str
+    survey_title: str
+    cdn_url: str
+    csp_nonce: str
+    address_lookup_api_url: str
+    data_layer: Iterable
+    include_csrf_token: bool
+    sign_out_url: str
+    google_tag_manager_id: str
+    google_tag_manager_auth: str
+
+
 class ContextHelper:
     def __init__(self, base_url: str):
         self._base_url = base_url
+
+    def context(self) -> str:
+        theme = cookie_session.get("theme", current_app.config["SURVEY_TYPE"])
+        sign_out_url = url_for("session.get_sign_out")
+
+        return Context(
+            account_service_url=cookie_session.get(
+                "account_service_url", f"{CENSUS_EN_BASE_URL}en/start"
+            ),
+            account_service_log_out_url=cookie_session.get(
+                "account_service_log_out_url"
+            ),
+            contact_us_url=self.static_content_urls["contact_us"],
+            cookie_settings_url=current_app.config["COOKIE_SETTINGS_URL"],
+            page_header=self.page_header_context,
+            footer=self.footer_context(
+                sign_out_url,
+            ),
+            languages=get_languages_context(),
+            theme=_map_theme(theme),
+            language_code=get_locale().language,
+            schema_theme=theme,
+            survey_title=lazy_gettext("Census 2021"),
+            cdn_url=f'{current_app.config["CDN_URL"]}{current_app.config["CDN_ASSETS_PATH"]}',
+            csp_nonce=request.csp_nonce,
+            address_lookup_api_url=current_app.config["ADDRESS_LOOKUP_API_URL"],
+            data_layer=get_data_layer(theme),
+            include_csrf_token=request.url_rule and "POST" in request.url_rule.methods,
+            sign_out_url=url_for("session.get_sign_out"),
+            google_tag_manager_id=current_app.config.get("EQ_GOOGLE_TAG_MANAGER_ID"),
+            google_tag_manager_auth=current_app.config.get(
+                "EQ_GOOGLE_TAG_MANAGER_AUTH"
+            ),
+        )
 
     @cached_property
     def static_content_urls(self):
@@ -314,55 +373,13 @@ def render_template(template: str, **kwargs: Mapping) -> str:
     language = get_locale().language
     theme = cookie_session.get("theme", current_app.config["SURVEY_TYPE"])
     base_url = get_base_url(theme, language)
-    context_helper = context_helper_factory(theme, language, base_url)
-    survey_title = lazy_gettext("Census 2021")
-    page_header_context = context_helper.page_header_context
-    page_header_context.update({"title": survey_title})
-    google_tag_manager_context = get_google_tag_manager_context()
-    cdn_url = f'{current_app.config["CDN_URL"]}{current_app.config["CDN_ASSETS_PATH"]}'
-    include_csrf_token = request.url_rule and "POST" in request.url_rule.methods
-    account_service_url = cookie_session.get(
-        "account_service_url", f"{CENSUS_EN_BASE_URL}en/start"
-    )
-    sign_out_url = url_for("session.get_sign_out")
-    footer_context = context_helper.footer_context(
-        sign_out_url,
-    )
-
+    context = context_helper_factory(theme, language, base_url).context()
     template = f"{template.lower()}.html"
     return flask_render_template(
         template,
-        account_service_url=account_service_url,
-        account_service_log_out_url=cookie_session.get("account_service_log_out_url"),
-        contact_us_url=context_helper.static_content_urls["contact_us"],
-        cookie_settings_url=current_app.config["COOKIE_SETTINGS_URL"],
-        page_header=page_header_context,
-        footer=footer_context,
-        theme=_map_theme(theme),
-        languages=get_languages_context(),
-        schema_theme=theme,
-        language_code=get_locale().language,
-        survey_title=survey_title,
-        cdn_url=cdn_url,
-        csp_nonce=request.csp_nonce,  # type: ignore
-        address_lookup_api_url=current_app.config["ADDRESS_LOOKUP_API_URL"],
-        data_layer=get_data_layer(theme),
-        include_csrf_token=include_csrf_token,
-        sign_out_url=sign_out_url,
-        **google_tag_manager_context,
+        **asdict(context),
         **kwargs,
     )
-
-
-def get_google_tag_manager_context() -> Mapping:
-    if (google_tag_manager_id := current_app.config["EQ_GOOGLE_TAG_MANAGER_ID"]) and (
-        google_tag_manager_auth := current_app.config["EQ_GOOGLE_TAG_MANAGER_AUTH"]
-    ):
-        return {
-            "google_tag_manager_id": google_tag_manager_id,
-            "google_tag_manager_auth": google_tag_manager_auth,
-        }
-    return {}
 
 
 def get_base_url(schema_theme: str, language_code: str) -> str:
