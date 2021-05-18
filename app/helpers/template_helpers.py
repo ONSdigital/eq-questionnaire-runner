@@ -89,8 +89,8 @@ class ContextOptions:
     powered_by_logo_alt: Optional[str] = None
     lang: str = "en"
     crest: bool = True
-    rows: Optional[Iterable[Mapping]] = None
-    legal: Optional[Iterable[Mapping]] = None
+    footer_links: Optional[Iterable[Mapping]] = None
+    footer_legal_links: Optional[Iterable[Mapping]] = None
     footer_warning: Optional[str] = None
 
 
@@ -147,10 +147,10 @@ class ContextHelper:
             },
         }
 
-        if context_options.rows:
-            context["rows"] = [{"itemsList": context_options.rows}]
-        if context_options.legal:
-            context["legal"] = [{"itemsList": context_options.legal}]
+        if context_options.footer_links:
+            context["rows"] = [{"itemsList": context_options.footer_links}]
+        if context_options.footer_legal_links:
+            context["legal"] = [{"itemsList": context_options.footer_legal_links}]
         if context_options.footer_warning:
             context["footerWarning"] = context_options.footer_warning
         if context_options.powered_by_logo or context_options.powered_by_logo_alt:
@@ -212,7 +212,7 @@ class CensusNISRAContextHelper(ContextHelper):
         }
 
     @cached_property
-    def legal_items(self):
+    def legal_links(self):
         return [
             {
                 "text": lazy_gettext("Cookies"),
@@ -261,15 +261,15 @@ class CensusNISRAContextHelper(ContextHelper):
                     "Use of address data is subject to the terms and conditions."
                 ),
                 footer_warning=self._footer_warning(sign_out_url),
-                rows=self.footer_items,
-                legal=self.legal_items,
+                footer_links=self.footer_links,
+                footer_legal_links=self.legal_links,
                 powered_by_logo="nisra-logo-black-en",
                 powered_by_logo_alt="NISRA - Northern Ireland Statistics and Research Agency",
             )
         )
 
     @cached_property
-    def footer_items(self) -> List[Dict[str, Any]]:
+    def footer_links(self) -> List[Dict[str, Any]]:
         return [
             {
                 "text": lazy_gettext("Help"),
