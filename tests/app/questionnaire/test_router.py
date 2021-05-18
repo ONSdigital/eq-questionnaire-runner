@@ -208,7 +208,7 @@ class TestRouter(AppContextTestCase):  # pylint: disable=too-many-public-methods
         routing_path = RoutingPath(["name-block"], section_id="default-section")
         next_location = router.get_next_location_url(current_location, routing_path)
 
-        self.assertEqual(url_for("questionnaire.submit"), next_location)
+        self.assertEqual(url_for("questionnaire.submit_questionnaire"), next_location)
 
     def test_return_to_final_summary_next_location_url_questionnaire_complete(self):
         schema = load_schema_from_name("test_textfield")
@@ -232,7 +232,7 @@ class TestRouter(AppContextTestCase):  # pylint: disable=too-many-public-methods
             current_location, routing_path, return_to="final-summary"
         )
 
-        self.assertEqual(url_for("questionnaire.submit"), next_location)
+        self.assertEqual(url_for("questionnaire.submit_questionnaire"), next_location)
 
     def test_return_to_final_summary_next_location_url_questionnaire_incomplete(self):
         schema = load_schema_from_name(
@@ -374,7 +374,7 @@ class TestRouter(AppContextTestCase):  # pylint: disable=too-many-public-methods
         )
         next_location = router.get_next_location_url(current_location, routing_path)
 
-        self.assertEqual(url_for("questionnaire.submit"), next_location)
+        self.assertEqual(url_for("questionnaire.submit_questionnaire"), next_location)
 
     def test_previous_location_url_on_question_page(self):
         schema = load_schema_from_name("test_checkbox")

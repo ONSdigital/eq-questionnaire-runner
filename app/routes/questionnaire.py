@@ -147,7 +147,7 @@ def get_questionnaire(schema, questionnaire_store):
 @questionnaire_blueprint.route("submit/", methods=["GET", "POST"])
 @with_questionnaire_store
 @with_schema
-def submit(
+def submit_questionnaire(
     schema: QuestionnaireSchema, questionnaire_store: QuestionnaireStore
 ) -> Union[Response, str]:
     try:

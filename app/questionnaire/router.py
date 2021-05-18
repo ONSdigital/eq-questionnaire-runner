@@ -78,7 +78,7 @@ class Router:
                 return self._get_section_url(location)
 
             if return_to == "final-summary" and self.is_questionnaire_complete:
-                return url_for("questionnaire.submit")
+                return url_for("questionnaire.submit_questionnaire")
 
             if is_last_block_in_section:
                 return self._get_next_location_url_for_last_block_in_section(location)
@@ -139,7 +139,7 @@ class Router:
             return url_for("questionnaire.get_questionnaire")
 
         if self._schema.is_questionnaire_flow_linear and self.is_questionnaire_complete:
-            return url_for("questionnaire.submit")
+            return url_for("questionnaire.submit_questionnaire")
 
         return self.get_first_incomplete_location_in_questionnaire_url()
 
