@@ -7,7 +7,7 @@ class SchemaLoaderTest(AppContextTestCase):
         self.assertIsNotNone(load_schema_from_name("test_checkbox"))
 
     def test_load_schema_from_params(self):
-        self.assertIsNotNone(load_schema_from_params("test", "business", "en"))
+        self.assertIsNotNone(load_schema_from_params("test", "introduction", "en"))
 
     def test_load_schema_with_different_schema_name(self):
         self.assertIsNotNone(load_schema_from_name("test_dates"))
