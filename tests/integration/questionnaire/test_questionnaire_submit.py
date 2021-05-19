@@ -5,7 +5,7 @@ from tests.integration.questionnaire import SUBMIT_URL_PATH, THANK_YOU_URL_PATH
 class TestQuestionnaireSubmit(IntegrationTestCase):
     def _launch_and_complete_questionnaire(self, schema):
         self.launchSurvey(schema)
-        self.post({"test-skipping-answer": "No"})
+        self.post({"test-routing-answer": "No"})
 
     def test_submit_page_not_accessible_when_hub_enabled(self):
         # Given I launch a hub questionnaire
@@ -37,24 +37,24 @@ class TestQuestionnaireSubmit(IntegrationTestCase):
     def test_submit_page_not_available_after_invalidating_section(self):
         # Given I launch and complete the questionnaire
         for schema in [
-            "test_skipping_to_questionnaire_end_single_section",
-            "test_skipping_to_questionnaire_end_multiple_sections",
+            "test_routing_to_questionnaire_end_single_section",
+            "test_routing_to_questionnaire_end_multiple_sections",
         ]:
             with self.subTest(schema=schema):
                 self.launchSurvey(schema)
-                self.post({"test-skipping-answer": "No"})
+                self.post({"test-routing-answer": "No"})
                 self.assertInUrl(SUBMIT_URL_PATH)
 
                 # When I invalidate a block and try access the submit page
                 self.get(
-                    "questionnaire/test-skipping-forced/?return_to=final-summary#test-skipping-answer"
+                    "questionnaire/test-routing-forced/?return_to=final-summary#test-routing-answer"
                 )
-                self.post({"test-skipping-answer": "Yes"})
+                self.post({"test-routing-answer": "Yes"})
 
                 self.get(SUBMIT_URL_PATH)
 
                 # Then I am redirected to the first incomplete question
-                self.assertInUrl("/test-skipping-optional")
+                self.assertInUrl("/test-routing-optional")
 
 
 class TestQuestionnaireSubmitWithSummary(IntegrationTestCase):
@@ -62,8 +62,8 @@ class TestQuestionnaireSubmitWithSummary(IntegrationTestCase):
         self,
     ):
         # Given a partially completed questionnaire
-        self.launchSurvey("test_skipping_to_questionnaire_end_single_section")
-        self.post({"test-skipping-answer": "Yes"})
+        self.launchSurvey("test_routing_to_questionnaire_end_single_section")
+        self.post({"test-routing-answer": "Yes"})
 
         # When I make a GET or POST request to the submit page
         for method in [self.get, self.post]:
@@ -71,15 +71,15 @@ class TestQuestionnaireSubmitWithSummary(IntegrationTestCase):
                 method(url=SUBMIT_URL_PATH)
 
                 # Then I am redirected to the first incomplete question
-                self.assertInUrl("/test-skipping-optional")
+                self.assertInUrl("/test-routing-optional")
 
     def test_final_summary_shown_at_end_of_questionnaire(self):
         # Given I launch a questionnaire
-        self.launchSurvey("test_skipping_to_questionnaire_end_multiple_sections")
+        self.launchSurvey("test_routing_to_questionnaire_end_multiple_sections")
 
         # When I complete the questionnaire
-        self.post({"test-skipping-answer": "Yes"})
-        self.post({"test-skipping-optional-answer": "I am a completionist"})
+        self.post({"test-routing-answer": "Yes"})
+        self.post({"test-routing-optional-answer": "I am a completionist"})
 
         # Then I am presented with the final summary which I am able to submit
         self.assertInUrl(SUBMIT_URL_PATH)

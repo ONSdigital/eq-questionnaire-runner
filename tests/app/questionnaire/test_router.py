@@ -236,18 +236,18 @@ class TestRouter(AppContextTestCase):  # pylint: disable=too-many-public-methods
 
     def test_return_to_final_summary_next_location_url_questionnaire_incomplete(self):
         schema = load_schema_from_name(
-            "test_skipping_to_questionnaire_end_multiple_sections"
+            "test_routing_to_questionnaire_end_multiple_sections"
         )
         answer_store = AnswerStore(
-            [{"answer_id": "test-skipping-answer", "value": "Yes"}]
+            [{"answer_id": "test-routing-answer", "value": "Yes"}]
         )
         progress_store = ProgressStore(
             [
                 {
-                    "section_id": "test-skipping-section",
+                    "section_id": "test-routing-section",
                     "list_item_id": None,
                     "status": CompletionStatus.COMPLETED,
-                    "block_ids": ["test-skipping-forced"],
+                    "block_ids": ["test-routing-forced"],
                 }
             ]
         )
@@ -256,17 +256,17 @@ class TestRouter(AppContextTestCase):  # pylint: disable=too-many-public-methods
             schema, answer_store, self.list_store, progress_store, self.metadata
         )
         current_location = Location(
-            section_id="test-skipping-section", block_id="test-skipping-forced"
+            section_id="test-routing-section", block_id="test-routing-forced"
         )
         routing_path = RoutingPath(
-            ["test-skipping-forced"], section_id="test-skipping-section"
+            ["test-routing-forced"], section_id="test-routing-section"
         )
         next_location = router.get_next_location_url(
             current_location, routing_path, return_to="final-summary"
         )
         expected_location = Location(
-            section_id="test-skipping-section-2",
-            block_id="test-skipping-optional",
+            section_id="test-routing-section-2",
+            block_id="test-routing-optional",
             list_item_id=None,
         )
 
@@ -796,20 +796,20 @@ class TestRouter(AppContextTestCase):  # pylint: disable=too-many-public-methods
 
     def test_get_last_location_in_questionnaire_returns_last_block_on_path(self):
         schema = load_schema_from_name(
-            "test_skipping_to_questionnaire_end_multiple_sections"
+            "test_routing_to_questionnaire_end_multiple_sections"
         )
         answer_store = AnswerStore(
             [
-                {"answer_id": "test-skipping-answer", "value": "No"},
+                {"answer_id": "test-routing-answer", "value": "No"},
                 {
-                    "answer_id": "test-skipping-optional-answer",
+                    "answer_id": "test-routing-optional-answer",
                     "value": "I am a completionist",
                 },
             ]
         )
-        section_id = "test-skipping-section"
-        last_block_on_path = "test-skipping-forced"
-        last_completed_block = "test-skipping-optional"
+        section_id = "test-routing-section"
+        last_block_on_path = "test-routing-forced"
+        last_completed_block = "test-routing-optional"
         progress_store = ProgressStore(
             [
                 {
