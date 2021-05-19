@@ -6,11 +6,14 @@ from marshmallow import (
     Schema,
     ValidationError,
     fields,
+    post_load,
     pre_load,
     validate,
     validates_schema,
 )
 from structlog import get_logger
+
+from app.utilities.schema import get_schema_name_from_params
 
 logger = get_logger()
 
@@ -94,19 +97,18 @@ class RunnerMetadataSchema(Schema, StripWhitespaceMixin):
     survey = VALIDATORS["string"](
         required=False, validate=validate.OneOf(("CENSUS", "CCS")), missing="CENSUS"
     )  # type:ignore
-    form_type = VALIDATORS["string"](
-        required=False, validate=validate.OneOf(("H", "I", "C"))
-    )  # type:ignore
     region_code = VALIDATORS["string"](
         required=False, validate=RegionCode()
     )  # type:ignore
 
+    # The following two parameters are for business schemas
+    form_type = VALIDATORS["string"](required=False)  # type:ignore
+    eq_id = VALIDATORS["string"](required=False)  # type:ignore
+
     @validates_schema
     def validate_schema_name(self, data, **kwargs):
         # pylint: disable=no-self-use, unused-argument
-        """Temporary function for census to validate the census schema parameters
-        This can be removed after census.
-        """
+        """Function to validate the business schema parameters"""
         individual_schema_claims = (
             data.get("eq_id"),
             data.get("form_type"),
@@ -116,6 +118,20 @@ class RunnerMetadataSchema(Schema, StripWhitespaceMixin):
                 raise ValidationError(
                     "Either 'schema_name' or 'eq_id' and 'form_type' must be defined"
                 )
+
+    @post_load
+    def convert_schema_name(self, data, **kwargs):
+        # pylint: disable=no-self-use, unused-argument
+        """Function to transform parameters into a business schema"""
+        if data.get("schema_name"):
+            logger.info(
+                "Using schema_name claim to specify schema, overriding eq_id and form_type"
+            )
+        else:
+            data["schema_name"] = get_schema_name_from_params(
+                data.get("eq_id"), data.get("form_type")
+            )
+        return data
 
 
 def validate_questionnaire_claims(claims, questionnaire_specific_metadata):

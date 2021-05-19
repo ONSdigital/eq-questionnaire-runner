@@ -12,6 +12,7 @@ from app.utilities.schema import (
     cache_questionnaire_schemas,
     get_allowed_languages,
     get_schema_list,
+    get_schema_name_from_params,
     get_schema_path_map,
     load_schema_from_metadata,
     load_schema_from_name,
@@ -19,6 +20,10 @@ from app.utilities.schema import (
 )
 
 TEST_SCHEMA_URL = "http://test.domain/schema.json"
+
+
+def test_valid_schema_names_from_params():
+    assert get_schema_name_from_params("mbs", "0253") == "mbs_0253"
 
 
 @pytest.mark.parametrize(

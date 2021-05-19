@@ -142,3 +142,9 @@ def test_deserialisation_iso_8601_dates(fake_metadata_runner):
     claims = validate_questionnaire_claims(fake_metadata_runner, field_specification)
 
     assert isinstance(claims["birthday"], str)
+
+
+def test_business_params_without_schema_name(fake_business_metadata_runner):
+    claims = validate_runner_claims(fake_business_metadata_runner)
+
+    assert claims["schema_name"] == "mbs_0253"
