@@ -191,9 +191,7 @@ class TestRabbitMQSubmitter(TestCase):
             "app.submitter.submitter.BlockingConnection", return_value=connection
         ):
             # When
-            self.submitter.send_message(
-                message={}, tx_id="12345"
-            )
+            self.submitter.send_message(message={}, tx_id="12345")
 
             # Then
             call_args = channel.basic_publish.call_args
