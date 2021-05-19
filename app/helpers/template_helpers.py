@@ -317,22 +317,6 @@ def get_base_url(schema_theme: str, language_code: str) -> str:
     return CENSUS_EN_BASE_URL
 
 
-def safe_content(content: str) -> str:
-    """Make content safe.
-
-    Replaces variable with ellipsis and strips any HTML tags.
-
-    :param (str) content: Input string.
-    :returns (str): Modified string.
-    """
-    if content is not None:
-        # Replace piping with ellipsis
-        content = re.sub(r"{.*?}", "…", content)
-        # Strip HTML Tags
-        content = re.sub(r"</?[^>]+>", "", content)
-    return content
-
-
 def get_data_layer(theme: str) -> List:
     if theme == "census-nisra":
         return [{"nisra": True}]
