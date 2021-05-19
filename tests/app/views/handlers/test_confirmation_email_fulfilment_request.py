@@ -28,7 +28,6 @@ def session_data():
         ru_ref=None,
         submitted_time=datetime.now(tzutc()).isoformat(),
         response_id="321",
-        questionnaire_id="987",
         case_id="789",
     )
 
@@ -59,7 +58,6 @@ def test_confirmation_email_fulfilment_request_message(session_data, schema):
         "form_type": schema.form_type,
         "language_code": session_data.language_code,
         "region_code": schema.region_code,
-        "questionnaire_id": session_data.questionnaire_id,
         "tx_id": session_data.tx_id,
     }
 

@@ -36,7 +36,6 @@ def convert_answers(schema, questionnaire_store, routing_path, flushed=False):
         },
         'started_at': '2016-03-06T15:28:05Z',
         'submitted_at': '2016-03-07T15:28:05Z',
-        'questionnaire_id': '1234567890000000',
         'launch_language_code': 'en',
         'channel': 'RH',
         'metadata': {
@@ -75,7 +74,6 @@ def convert_answers(schema, questionnaire_store, routing_path, flushed=False):
         "submitted_at": submitted_at.isoformat(),
         "collection": _build_collection(metadata),
         "metadata": _build_metadata(metadata),
-        "questionnaire_id": metadata["questionnaire_id"],
         "launch_language_code": metadata.get("language_code", DEFAULT_LANGUAGE_CODE),
     }
 

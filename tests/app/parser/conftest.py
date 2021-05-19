@@ -13,7 +13,6 @@ def fake_metadata_runner():
         "schema_name": "2_a",
         "ru_ref": "2016-04-04",
         "collection_exercise_sid": "test-sid",
-        "questionnaire_id": "0123456789000000",
         "response_id": str(uuid.uuid4()),
         "account_service_url": "https://ras.ons.gov.uk",
     }
