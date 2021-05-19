@@ -26,6 +26,7 @@
             "type": "string"
         }
     ],
+    "eq_id": "test",
     "sections": [
         {
             "id": "default-section",

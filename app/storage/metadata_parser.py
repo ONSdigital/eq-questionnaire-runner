@@ -108,14 +108,13 @@ class RunnerMetadataSchema(Schema, StripWhitespaceMixin):
         This can be removed after census.
         """
         individual_schema_claims = (
-            data.get("survey"),
+            data.get("eq_id"),
             data.get("form_type"),
-            data.get("region_code"),
         )
         if not data.get("schema_name"):
             if not all(individual_schema_claims):
                 raise ValidationError(
-                    "Either 'schema_name' or 'survey' and 'form_type' and 'region_code' must be defined"
+                    "Either 'schema_name' or 'eq_id' and 'form_type' must be defined"
                 )
 
 
