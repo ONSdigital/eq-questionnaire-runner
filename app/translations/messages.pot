@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2021-05-17 14:59+0100\n"
+"POT-Creation-Date: 2021-05-19 18:48+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -416,15 +416,15 @@ msgstr ""
 msgid " (You)"
 msgstr ""
 
-#: app/views/contexts/submit_context.py:19
+#: app/views/contexts/submit_questionnaire_context.py:19
 msgid "Check your answers and submit"
 msgstr ""
 
-#: app/views/contexts/submit_context.py:22 templates/summary.html:30
+#: app/views/contexts/submit_questionnaire_context.py:22
 msgid "Submit answers"
 msgstr ""
 
-#: app/views/contexts/submit_context.py:25
+#: app/views/contexts/submit_questionnaire_context.py:25
 msgid "Please submit this survey to complete it"
 msgstr ""
 
@@ -682,6 +682,18 @@ msgstr ""
 msgid "Thank you for completing the census"
 msgstr ""
 
+#: templates/_submit.html:31
+msgid "If you can’t answer someone else’s questions"
+msgstr ""
+
+#: templates/calculatedsummary.html:13
+msgid "Please review your answers and confirm these are correct"
+msgstr ""
+
+#: templates/calculatedsummary.html:26
+msgid "Yes, I confirm these are correct"
+msgstr ""
+
 #: templates/census-thank-you.html:9 templates/confirmation-email.html:8
 msgid "There is a problem with this page"
 msgstr ""
@@ -805,8 +817,8 @@ msgstr[1] ""
 msgid "Send feedback"
 msgstr ""
 
-#: templates/hub.html:43
-msgid "If you can’t answer someone else’s questions"
+#: templates/final-summary.html:18
+msgid "Submitting"
 msgstr ""
 
 #: templates/interstitial.html:23 templates/partials/question.html:27
@@ -868,18 +880,6 @@ msgstr ""
 
 #: templates/signed-out.html:9
 msgid "Return to your account"
-msgstr ""
-
-#: templates/summary.html:14
-msgid "Yes, I confirm these are correct"
-msgstr ""
-
-#: templates/summary.html:35
-msgid "Submitting"
-msgstr ""
-
-#: templates/summary.html:62
-msgid "Please review your answers and confirm these are correct"
 msgstr ""
 
 #: templates/thank-you.html:4
