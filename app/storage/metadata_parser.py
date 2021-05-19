@@ -119,18 +119,6 @@ class RunnerMetadataSchema(Schema, StripWhitespaceMixin):
                     "Either 'schema_name' or 'survey' and 'form_type' and 'region_code' must be defined"
                 )
 
-    @post_load
-    def convert_schema_name(self, data, **kwargs):
-        # pylint: disable=no-self-use, unused-argument
-        """Temporary function for census to transform parameters into a census schema
-        This can be removed after census.
-        """
-        if data.get("schema_name"):
-            logger.info(
-                "Using schema_name claim to specify schema, overriding survey, form_type and region_code"
-            )
-        return data
-
 
 def validate_questionnaire_claims(claims, questionnaire_specific_metadata):
     """ Validate any survey specific claims required for a questionnaire"""
