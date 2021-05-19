@@ -783,8 +783,10 @@ def process_questionnaire_flow(schema_data, require_path, dir_out, spec_file):
     options = questionnaire_flow.get("options", {})
 
     logger.debug("Processing questionnaire flow")
-    if questionnaire_flow["type"] == "Linear" and options["include_summary"] is True:
-        collapsible = questionnaire_flow.get("options", {}).get("collapsible", False)
+    if questionnaire_flow["type"] == "Linear" and (
+        summary_options := options.get("summary")
+    ):
+        collapsible = summary_options["collapsible"]
         process_final_summary(
             schema_data,
             require_path,

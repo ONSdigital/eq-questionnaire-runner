@@ -53,8 +53,7 @@ class SubmitQuestionnaireHandler:
 
     @property
     def template(self) -> str:
-        include_summary = self._schema.questionnaire_flow_options["include_summary"]
-        return "summary" if include_summary else "confirmation"
+        return "summary" if self._schema.get_summary_options() else "confirmation"
 
     def handle_post(self) -> None:
         submission_handler = SubmissionHandler(

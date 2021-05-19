@@ -12,8 +12,8 @@ class SubmitQuestionnaireContext(Context):
     def __call__(
         self, answers_are_editable: bool = True
     ) -> dict[str, Union[str, dict]]:
-        include_summary = self._schema.questionnaire_flow_options["include_summary"]
-        collapsible = self._schema.questionnaire_flow_options.get("collapsible", False)
+        summary_options = self._schema.get_summary_options()
+        collapsible = summary_options.get("collapsible", False)
         submission_schema: Mapping = self._schema.get_submission() or {}
 
         title = submission_schema.get("title") or lazy_gettext(
@@ -34,7 +34,7 @@ class SubmitQuestionnaireContext(Context):
             "warning": warning,
             "submit_button": submit_button,
         }
-        if include_summary:
+        if summary_options:
             context["summary"] = self._get_summary_context(
                 collapsible, answers_are_editable
             )

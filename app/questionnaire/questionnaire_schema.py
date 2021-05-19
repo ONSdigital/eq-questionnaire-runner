@@ -182,6 +182,9 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
     def get_section_ids_required_for_hub(self) -> list[str]:
         return self.questionnaire_flow_options.get("required_completed_sections", [])
 
+    def get_summary_options(self) -> ImmutableDict[str, Any]:
+        return self.questionnaire_flow_options.get("summary", {})
+
     def get_sections(self) -> Iterable[ImmutableDict]:
         return self._sections_by_id.values()
 

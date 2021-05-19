@@ -26,7 +26,7 @@
     ],
     "questionnaire_flow": {
         "type": "Linear",
-        "options": { "include_summary": false }
+        "options": {}
     },
     "submission": {
         "button": "Submit",
