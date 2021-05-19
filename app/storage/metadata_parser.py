@@ -6,7 +6,6 @@ from marshmallow import (
     Schema,
     ValidationError,
     fields,
-    post_load,
     pre_load,
     validate,
     validates_schema,
