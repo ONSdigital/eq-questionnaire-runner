@@ -1,4 +1,3 @@
-import re
 from dataclasses import asdict, dataclass, field
 from functools import cached_property
 from typing import Any, Dict, Iterable, List, Mapping, Optional, Union
