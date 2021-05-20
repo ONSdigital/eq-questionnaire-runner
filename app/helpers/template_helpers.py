@@ -180,7 +180,7 @@ class ContextHelper:
 
 
 @dataclass
-class CymruContextOptions(ContextOptions):
+class ContextOptionsCymraeg(ContextOptions):
     footer_links: Iterable[Link] = field(
         default_factory=lambda: [
             Link(
@@ -215,7 +215,7 @@ class CensusContextOptions(ContextOptions):
 
 
 @dataclass
-class CensusCymruContextOptions(CymruContextOptions):
+class CensusContextOptionsCymraeg(ContextOptionsCymraeg):
     title_logo: str = "census-logo-cy"
     title_logo_alt: str = lazy_gettext("Census 2021")
 
@@ -272,9 +272,9 @@ def generate_context(
     context_options = {
         "business": ContextOptions,
         "health": ContextOptions,
-        "social": ContextOptions if language == "en" else CymruContextOptions,
+        "social": ContextOptions if language == "en" else ContextOptionsCymraeg,
         "census": (
-            CensusContextOptions if language == "en" else CensusCymruContextOptions
+            CensusContextOptions if language == "en" else CensusContextOptionsCymraeg
         ),
         "default": ContextOptions,
         "census-nisra": CensusNISRAContextOptions,
