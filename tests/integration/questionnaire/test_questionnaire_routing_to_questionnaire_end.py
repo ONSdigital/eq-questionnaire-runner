@@ -5,7 +5,7 @@ from tests.integration.questionnaire import SUBMIT_URL_PATH
 class TestRoutingToQuestionnaireEndBase(IntegrationTestCase):
     def _launch_and_complete_questionnaire(self, schema):
         self.launchSurvey(schema)
-        self.post({"test-routing-answer": "No"})
+        self.post({"test-answer": "No"})
 
 
 class TestRoutingToQuestionnaireEndSingleSection(TestRoutingToQuestionnaireEndBase):
@@ -44,14 +44,12 @@ class TestRoutingToQuestionnaireEndMultipleSections(TestRoutingToQuestionnaireEn
         self.assertInUrl(SUBMIT_URL_PATH)
 
         # When I change my answer in section 1
-        self.get(
-            "questionnaire/test-routing-forced/?return_to=final-summary#test-routing-answer"
-        )
-        self.post({"test-routing-answer": "Yes"})
+        self.get("questionnaire/test-forced/?return_to=final-summary#test-answer")
+        self.post({"test-answer": "Yes"})
 
         # Then I am able to complete section 2 and view the answers on the submit page
-        self.assertInUrl("/test-routing-optional")
-        self.post({"test-routing-optional-answer": "I am a completionist"})
+        self.assertInUrl("/test-optional")
+        self.post({"test-optional-answer": "I am a completionist"})
         self.assertInUrl(SUBMIT_URL_PATH)
 
         self.assertInBody("Section 1")

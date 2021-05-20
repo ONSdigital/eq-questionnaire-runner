@@ -238,16 +238,14 @@ class TestRouter(AppContextTestCase):  # pylint: disable=too-many-public-methods
         schema = load_schema_from_name(
             "test_routing_to_questionnaire_end_multiple_sections"
         )
-        answer_store = AnswerStore(
-            [{"answer_id": "test-routing-answer", "value": "Yes"}]
-        )
+        answer_store = AnswerStore([{"answer_id": "test-answer", "value": "Yes"}])
         progress_store = ProgressStore(
             [
                 {
-                    "section_id": "test-routing-section",
+                    "section_id": "test-section",
                     "list_item_id": None,
                     "status": CompletionStatus.COMPLETED,
-                    "block_ids": ["test-routing-forced"],
+                    "block_ids": ["test-forced"],
                 }
             ]
         )
@@ -255,18 +253,14 @@ class TestRouter(AppContextTestCase):  # pylint: disable=too-many-public-methods
         router = Router(
             schema, answer_store, self.list_store, progress_store, self.metadata
         )
-        current_location = Location(
-            section_id="test-routing-section", block_id="test-routing-forced"
-        )
-        routing_path = RoutingPath(
-            ["test-routing-forced"], section_id="test-routing-section"
-        )
+        current_location = Location(section_id="test-section", block_id="test-forced")
+        routing_path = RoutingPath(["test-forced"], section_id="test-section")
         next_location = router.get_next_location_url(
             current_location, routing_path, return_to="final-summary"
         )
         expected_location = Location(
-            section_id="test-routing-section-2",
-            block_id="test-routing-optional",
+            section_id="test-section-2",
+            block_id="test-optional",
             list_item_id=None,
         )
 
@@ -800,16 +794,16 @@ class TestRouter(AppContextTestCase):  # pylint: disable=too-many-public-methods
         )
         answer_store = AnswerStore(
             [
-                {"answer_id": "test-routing-answer", "value": "No"},
+                {"answer_id": "test-answer", "value": "No"},
                 {
-                    "answer_id": "test-routing-optional-answer",
+                    "answer_id": "test-optional-answer",
                     "value": "I am a completionist",
                 },
             ]
         )
-        section_id = "test-routing-section"
-        last_block_on_path = "test-routing-forced"
-        last_completed_block = "test-routing-optional"
+        section_id = "test-section"
+        last_block_on_path = "test-forced"
+        last_completed_block = "test-optional"
         progress_store = ProgressStore(
             [
                 {

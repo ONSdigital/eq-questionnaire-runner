@@ -33,19 +33,19 @@
     },
     "sections": [
         {
-            "id": "test-routing-section",
+            "id": "test-section",
             "title": "Section 1",
             "summary": { "show_on_completion": true },
             "groups": [
                 {
                     "blocks": [
                         {
-                            "id": "test-routing-forced",
+                            "id": "test-forced",
                             "question": {
                                 "title": "Were you forced to complete section 1?",
                                 "answers": [
                                     {
-                                        "id": "test-routing-answer",
+                                        "id": "test-answer",
                                         "mandatory": true,
                                         "options": [
                                             {
@@ -60,17 +60,17 @@
                                         "type": "Radio"
                                     }
                                 ],
-                                "id": "test-routing-question",
+                                "id": "test-question",
                                 "type": "General"
                             },
                             "type": "Question",
                             "routing_rules": [
                                 {
                                     "goto": {
-                                        "block": "test-routing-optional",
+                                        "block": "test-optional",
                                         "when": [
                                             {
-                                                "id": "test-routing-answer",
+                                                "id": "test-answer",
                                                 "condition": "equals",
                                                 "value": "Yes"
                                             }
@@ -85,12 +85,12 @@
                             ]
                         },
                         {
-                            "id": "test-routing-optional",
+                            "id": "test-optional",
                             "type": "Question",
                             "question": {
                                 "answers": [
                                     {
-                                        "id": "test-routing-optional-answer",
+                                        "id": "test-optional-answer",
                                         "mandatory": true,
                                         "options": [
                                             {
@@ -105,30 +105,30 @@
                                         "type": "Checkbox"
                                     }
                                 ],
-                                "id": "test-routing-optional-question",
+                                "id": "test-optional-question",
                                 "title": "What would incentivise you to complete this section?",
                                 "type": "General"
                             }
                         }
                     ],
-                    "id": "test-routing-group",
+                    "id": "test-group",
                     "title": "Section 1"
                 }
             ]
         },
         {
-            "id": "test-routing-section-2",
+            "id": "test-section-2",
             "title": "Section 2",
             "summary": { "show_on_completion": true },
             "groups": [
                 {
                     "blocks": [
                         {
-                            "id": "test-routing-forced-2",
+                            "id": "test-forced-2",
                             "question": {
                                 "answers": [
                                     {
-                                        "id": "test-routing-answer-2",
+                                        "id": "test-answer-2",
                                         "mandatory": true,
                                         "options": [
                                             {
@@ -143,7 +143,7 @@
                                         "type": "Radio"
                                     }
                                 ],
-                                "id": "test-routing-question-2",
+                                "id": "test-question-2",
                                 "title": "Were you forced to complete section 2?",
                                 "type": "General"
                             },
@@ -151,10 +151,10 @@
                             "routing_rules": [
                                 {
                                     "goto": {
-                                        "block": "test-routing-optional-2",
+                                        "block": "test-optional-2",
                                         "when": [
                                             {
-                                                "id": "test-routing-answer-2",
+                                                "id": "test-answer-2",
                                                 "condition": "equals",
                                                 "value": "Yes"
                                             }
@@ -169,12 +169,12 @@
                             ]
                         },
                         {
-                            "id": "test-routing-optional-2",
+                            "id": "test-optional-2",
                             "type": "Question",
                             "question": {
                                 "answers": [
                                     {
-                                        "id": "test-routing-optional-answer-2",
+                                        "id": "test-optional-answer-2",
                                         "mandatory": true,
                                         "options": [
                                             {
@@ -189,13 +189,13 @@
                                         "type": "Checkbox"
                                     }
                                 ],
-                                "id": "test-routing-optional-question-2",
+                                "id": "test-optional-question-2",
                                 "title": "What would incentivise you to complete this section?",
                                 "type": "General"
                             }
                         }
                     ],
-                    "id": "test-routing-group-2",
+                    "id": "test-group-2",
                     "title": "Section 2"
                 }
             ]

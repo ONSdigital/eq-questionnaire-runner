@@ -4,7 +4,7 @@
     "data_version": "0.0.3",
     "survey_id": "137",
     "theme": "default",
-    "title": "Test Routing To Questionnaire End",
+    "title": "Test Routing To Questionnaire End (Multiple Sections)",
     "mime_type": "application/json/ons/eq",
     "navigation": {
         "visible": true
@@ -33,18 +33,18 @@
     },
     "sections": [
         {
-            "id": "test-routing-section",
+            "id": "test-section",
             "title": "Section 1",
             "groups": [
                 {
                     "blocks": [
                         {
-                            "id": "test-routing-forced",
+                            "id": "test-forced",
                             "question": {
                                 "title": "Would you like to complete section 2?",
                                 "answers": [
                                     {
-                                        "id": "test-routing-answer",
+                                        "id": "test-answer",
                                         "mandatory": false,
                                         "options": [
                                             {
@@ -59,7 +59,7 @@
                                         "type": "Radio"
                                     }
                                 ],
-                                "id": "test-routing-question",
+                                "id": "test-question",
                                 "type": "General"
                             },
                             "type": "Question",
@@ -69,7 +69,7 @@
                                         "section": "End",
                                         "when": [
                                             {
-                                                "id": "test-routing-answer",
+                                                "id": "test-answer",
                                                 "condition": "equals",
                                                 "value": "No"
                                             }
@@ -78,10 +78,10 @@
                                 },
                                 {
                                     "goto": {
-                                        "group": "test-routing-group-2",
+                                        "group": "test-group-2",
                                         "when": [
                                             {
-                                                "id": "test-routing-answer",
+                                                "id": "test-answer",
                                                 "condition": "equals",
                                                 "value": "Yes"
                                             }
@@ -96,19 +96,19 @@
                             ]
                         }
                     ],
-                    "id": "test-routing-group",
+                    "id": "test-group",
                     "title": "Section 1"
                 }
             ]
         },
         {
-            "id": "test-routing-section-2",
+            "id": "test-section-2",
             "title": "Section 2",
             "enabled": [
                 {
                     "when": [
                         {
-                            "id": "test-routing-answer",
+                            "id": "test-answer",
                             "condition": "equals",
                             "value": "Yes"
                         }
@@ -119,12 +119,12 @@
                 {
                     "blocks": [
                         {
-                            "id": "test-routing-optional",
+                            "id": "test-optional",
                             "type": "Question",
                             "question": {
                                 "answers": [
                                     {
-                                        "id": "test-routing-optional-answer",
+                                        "id": "test-optional-answer",
                                         "mandatory": true,
                                         "options": [
                                             {
@@ -139,13 +139,13 @@
                                         "type": "Radio"
                                     }
                                 ],
-                                "id": "test-routing-optional-question",
+                                "id": "test-optional-question",
                                 "title": "Why did you choose to complete this section?",
                                 "type": "General"
                             }
                         }
                     ],
-                    "id": "test-routing-group-2",
+                    "id": "test-group-2",
                     "title": "Section 2"
                 }
             ]
