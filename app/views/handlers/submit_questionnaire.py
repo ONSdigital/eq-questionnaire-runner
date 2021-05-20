@@ -19,9 +19,7 @@ class SubmitQuestionnaireHandler:
         language: str,
     ):
         if not schema.is_questionnaire_flow_linear:
-            raise InvalidLocationException(
-                "Submit page not enabled or questionnaire is not complete"
-            )
+            raise InvalidLocationException("Submit page not enabled")
 
         self._schema = schema
         self._questionnaire_store = questionnaire_store
