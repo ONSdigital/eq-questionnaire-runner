@@ -76,9 +76,6 @@ class RunnerMetadataSchema(Schema, StripWhitespaceMixin):
         validate=validate.Length(min=1)
     )  # type:ignore
     tx_id = VALIDATORS["uuid"]()  # type:ignore
-    questionnaire_id = VALIDATORS["string"](
-        validate=validate.Length(min=1)
-    )  # type:ignore
     response_id = VALIDATORS["string"](validate=validate.Length(min=1))  # type:ignore
 
     account_service_url = VALIDATORS["url"](required=False)  # type:ignore

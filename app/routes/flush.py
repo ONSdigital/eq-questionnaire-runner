@@ -75,7 +75,6 @@ def _submit_data(user):
         sent = current_app.eq["submitter"].send_message(
             encrypted_message,
             tx_id=metadata.get("tx_id"),
-            questionnaire_id=metadata.get("questionnaire_id"),
             case_id=metadata.get("case_id"),
         )
 

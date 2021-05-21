@@ -12,12 +12,11 @@ logger = get_logger()
 
 class LogSubmitter:
     @staticmethod
-    def send_message(message, tx_id, questionnaire_id, case_id=None):
+    def send_message(message, tx_id, case_id=None):
         logger.info("sending message")
         logger.info(
             "message payload",
             message=message,
-            questionnaire_id=questionnaire_id,
             case_id=case_id,
             tx_id=tx_id,
         )
@@ -30,12 +29,12 @@ class GCSSubmitter:
         client = storage.Client()
         self.bucket = client.get_bucket(bucket_name)
 
-    def send_message(self, message, tx_id, questionnaire_id, case_id=None):
+    def send_message(self, message, tx_id, case_id=None):
         logger.info("sending message")
 
         blob = self.bucket.blob(tx_id)
 
-        blob.metadata = {"tx_id": tx_id, "questionnaire_id": questionnaire_id}
+        blob.metadata = {"tx_id": tx_id}
 
         if case_id:
             blob.metadata["case_id"] = case_id
@@ -101,12 +100,11 @@ class RabbitMQSubmitter:
         except AMQPError as e:
             logger.error("unable to close connection", exc_info=e, category="rabbitmq")
 
-    def send_message(self, message, tx_id, questionnaire_id, case_id=None):
+    def send_message(self, message, tx_id, case_id=None):
         """
         Sends a message to rabbit mq and returns a true or false depending on if it was successful
         :param message: The message to send to the rabbit mq queue
         :param tx_id: Transaction ID used to trace a transaction through the whole system.
-        :param questionnaire_id: Questionnaire ID used to identify the questionnaire.
         :param case_id: ID used to identify a single instance of a survey collection for a respondent
         :return: a boolean value indicating if it was successful
         """
@@ -122,7 +120,6 @@ class RabbitMQSubmitter:
             properties = BasicProperties(headers={}, delivery_mode=2)
 
             properties.headers["tx_id"] = tx_id
-            properties.headers["questionnaire_id"] = questionnaire_id
 
             if case_id:
                 properties.headers["case_id"] = case_id

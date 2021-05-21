@@ -153,7 +153,6 @@ class ConfirmationEmailFulfilmentRequest(FulfilmentRequest):
                 "form_type": self.schema.form_type,
                 "language_code": self.session_data.language_code,
                 "region_code": self.schema.region_code,
-                "questionnaire_id": self.session_data.questionnaire_id,
                 "tx_id": self.session_data.tx_id,
             }
         }

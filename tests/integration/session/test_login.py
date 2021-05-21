@@ -144,16 +144,6 @@ class TestLoginWithGetRequest(IntegrationTestCase):
         # Then
         self.assertStatusOK()
 
-    def test_login_without_questionnaire_id_in_token_is_unauthorised(self):
-        # Given
-        token = self.token_generator.create_token_without_questionnaire_id(
-            "textfield_test"
-        )
-        self.get(url=f"/session?token={token}")
-
-        # Then
-        self.assertStatusForbidden()
-
     @staticmethod
     @urlmatch(netloc=r"eq-survey-register", path=r"\/my-test-schema")
     def survey_url_mock(_url, _request):
@@ -292,16 +282,6 @@ class TestLoginWithPostRequest(IntegrationTestCase):
 
         # Then
         self.assertStatusOK()
-
-    def test_login_without_questionnaire_id_in_token_is_unauthorised(self):
-        # Given
-        token = self.token_generator.create_token_without_questionnaire_id(
-            "textfield_test"
-        )
-        self.post(url=f"/session?token={token}")
-
-        # Then
-        self.assertStatusForbidden()
 
     @staticmethod
     @urlmatch(netloc=r"eq-survey-register", path=r"\/my-test-schema")
