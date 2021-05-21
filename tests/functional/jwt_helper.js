@@ -97,7 +97,6 @@ export function generateToken(
     case_id: uuid(),
     ru_ref: "12346789012A",
     response_id: responseId,
-    questionnaire_id: questionnaireId,
     ru_name: "Apple",
     trad_as: "Apple",
     schema_name: `${schemaParts[1]}_${schemaParts[2]}`,
