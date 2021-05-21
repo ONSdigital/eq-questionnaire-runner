@@ -12,7 +12,6 @@ PAYLOAD = {
     "collection_exercise_sid": "789",
     "ru_ref": "123456789012A",
     "response_id": "1234567890123456",
-    "questionnaire_id": "0123456789000000",
     "ru_name": "Integration Testing",
     "ref_p_start_date": "2016-04-01",
     "ref_p_end_date": "2016-04-30",
@@ -64,12 +63,6 @@ class TokenGenerator:
     def create_token_without_case_id(self, schema_name, **extra_payload):
         payload_vars = self._get_payload_with_params(schema_name, None, **extra_payload)
         del payload_vars["case_id"]
-
-        return self.generate_token(payload_vars)
-
-    def create_token_without_questionnaire_id(self, schema_name, **extra_payload):
-        payload_vars = self._get_payload_with_params(schema_name, None, **extra_payload)
-        del payload_vars["questionnaire_id"]
 
         return self.generate_token(payload_vars)
 

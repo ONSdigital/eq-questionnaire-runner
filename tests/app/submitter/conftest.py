@@ -51,7 +51,6 @@ def fake_metadata():
             "region_code": "GB-ENG",
             "channel": "RH",
             "display_address": "68 Abingdon Road, Goathill",
-            "questionnaire_id": "0123456789000000",
             "case_ref": "1000000000000001",
             "jti": str(uuid.uuid4()),
         },

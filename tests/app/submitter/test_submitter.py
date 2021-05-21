@@ -27,7 +27,6 @@ class TestRabbitMQSubmitter(TestCase):
             published = self.submitter.send_message(
                 message={},
                 tx_id="123",
-                questionnaire_id="0123456789000000",
                 case_id="456",
             )
 
@@ -40,7 +39,6 @@ class TestRabbitMQSubmitter(TestCase):
             published = self.submitter.send_message(
                 message={},
                 tx_id="123",
-                questionnaire_id="0123456789000000",
                 case_id="456",
             )
 
@@ -61,7 +59,6 @@ class TestRabbitMQSubmitter(TestCase):
             published = self.submitter.send_message(
                 message={},
                 tx_id="12345",
-                questionnaire_id="0123456789000000",
                 case_id="456",
             )
 
@@ -100,7 +97,6 @@ class TestRabbitMQSubmitter(TestCase):
             published = submitter.send_message(
                 message={},
                 tx_id="12345",
-                questionnaire_id="0123456789000000",
                 case_id="456",
             )
 
@@ -136,7 +132,6 @@ class TestRabbitMQSubmitter(TestCase):
             published = self.submitter.send_message(
                 message={},
                 tx_id="123",
-                questionnaire_id="0123456789000000",
                 case_id="456",
             )
 
@@ -159,7 +154,6 @@ class TestRabbitMQSubmitter(TestCase):
             published = self.submitter.send_message(
                 message={},
                 tx_id="123",
-                questionnaire_id="0123456789000000",
                 case_id="456",
             )
 
@@ -178,7 +172,6 @@ class TestRabbitMQSubmitter(TestCase):
             self.submitter.send_message(
                 message={},
                 tx_id="12345",
-                questionnaire_id="0123456789000000",
                 case_id="98765",
             )
 
@@ -187,7 +180,6 @@ class TestRabbitMQSubmitter(TestCase):
             properties = call_args[1]["properties"]
             headers = properties.headers
             self.assertEqual(headers["tx_id"], "12345")
-            self.assertEqual(headers["questionnaire_id"], "0123456789000000")
             self.assertEqual(headers["case_id"], "98765")
 
     def test_when_message_sent_then_case_id_not_in_header_if_missing(self):
@@ -199,16 +191,13 @@ class TestRabbitMQSubmitter(TestCase):
             "app.submitter.submitter.BlockingConnection", return_value=connection
         ):
             # When
-            self.submitter.send_message(
-                message={}, tx_id="12345", questionnaire_id="0123456789000000"
-            )
+            self.submitter.send_message(message={}, tx_id="12345")
 
             # Then
             call_args = channel.basic_publish.call_args
             properties = call_args[1]["properties"]
             headers = properties.headers
             self.assertEqual(headers["tx_id"], "12345")
-            self.assertEqual(headers["questionnaire_id"], "0123456789000000")
 
 
 class TestGCSSubmitter(TestCase):
@@ -222,7 +211,6 @@ class TestGCSSubmitter(TestCase):
             published = submitter.send_message(
                 message={"test_data"},
                 tx_id="123",
-                questionnaire_id="0123456789000000",
                 case_id="456",
             )
 
@@ -249,7 +237,6 @@ class TestGCSSubmitter(TestCase):
             submitter.send_message(
                 message={"test_data"},
                 tx_id="123",
-                questionnaire_id="0123456789000000",
                 case_id="456",
             )
 
@@ -259,7 +246,6 @@ class TestGCSSubmitter(TestCase):
 
             assert blob.metadata == {
                 "tx_id": "123",
-                "questionnaire_id": "0123456789000000",
                 "case_id": "456",
             }
 
