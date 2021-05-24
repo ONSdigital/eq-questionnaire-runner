@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2021-05-19 18:48+0100\n"
+"POT-Creation-Date: 2021-05-24 09:45+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -340,11 +340,11 @@ msgstr ""
 msgid "You can try to <a href='{retry_url}'>submit your feedback again</a>."
 msgstr ""
 
-#: app/routes/individual_response.py:170
+#: app/routes/individual_response.py:169
 msgid "An individual access code has been sent by post"
 msgstr ""
 
-#: app/routes/individual_response.py:265
+#: app/routes/individual_response.py:264
 msgid "An individual access code has been sent by text"
 msgstr ""
 
@@ -682,10 +682,6 @@ msgstr ""
 msgid "Thank you for completing the census"
 msgstr ""
 
-#: templates/_submit.html:31
-msgid "If you can’t answer someone else’s questions"
-msgstr ""
-
 #: templates/calculatedsummary.html:13
 msgid "Please review your answers and confirm these are correct"
 msgstr ""
@@ -817,10 +813,6 @@ msgstr[1] ""
 msgid "Send feedback"
 msgstr ""
 
-#: templates/final-summary.html:18
-msgid "Submitting"
-msgstr ""
-
 #: templates/interstitial.html:23 templates/partials/question.html:27
 msgid "If you can’t answer questions for this person"
 msgstr ""
@@ -880,6 +872,10 @@ msgstr ""
 
 #: templates/signed-out.html:9
 msgid "Return to your account"
+msgstr ""
+
+#: templates/submit-with-summary.html:18
+msgid "Submitting"
 msgstr ""
 
 #: templates/thank-you.html:4
@@ -1116,6 +1112,10 @@ msgstr ""
 
 #: templates/layouts/_questionnaire.html:38
 msgid "Choose another section and return to this later"
+msgstr ""
+
+#: templates/layouts/_submit.html:31
+msgid "If you can’t answer someone else’s questions"
 msgstr ""
 
 #: templates/layouts/configs/_save-sign-out-button.html:5
