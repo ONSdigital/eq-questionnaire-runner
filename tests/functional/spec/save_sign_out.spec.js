@@ -3,7 +3,7 @@ import TestMinMax from "../generated_pages/numbers/test-min-max-block.page.js";
 import SummaryPage from "../generated_pages/numbers/summary.page";
 import IntroductionPage from "../generated_pages/introduction/introduction.page";
 import IntroInterstitialPage from "../generated_pages/introduction/general-business-information-completed.page";
-import IntroConfirmationPage from "../base_pages/confirmation.page";
+import SubmitPage from "../base_pages/submit.page";
 import IntroThankYouPagePage from "../base_pages/thank-you.page";
 import { getRandomString } from "../jwt_helper";
 
@@ -46,8 +46,8 @@ describe("SaveSignOut", () => {
     expect($(IntroInterstitialPage.saveSignOut()).getText()).to.contain("Save and sign out");
     $(IntroInterstitialPage.submit()).click();
 
-    expect($(IntroConfirmationPage.saveSignOut()).getText()).to.contain("Save and sign out");
-    $(IntroConfirmationPage.submit()).click();
+    expect($(SubmitPage.saveSignOut()).getText()).to.contain("Save and sign out");
+    $(SubmitPage.submit()).click();
 
     expect($(IntroThankYouPagePage.exitButton()).isExisting()).to.be.false;
   });
@@ -61,8 +61,8 @@ describe("SaveSignOut", () => {
     expect($(IntroInterstitialPage.saveSignOut()).getText()).to.contain("Save and complete later");
     $(IntroInterstitialPage.submit()).click();
 
-    expect($(IntroConfirmationPage.saveSignOut()).getText()).to.contain("Save and complete later");
-    $(IntroConfirmationPage.submit()).click();
+    expect($(SubmitPage.saveSignOut()).getText()).to.contain("Save and complete later");
+    $(SubmitPage.submit()).click();
 
     expect($(IntroductionPage.exitButton()).isExisting()).to.be.false;
   });

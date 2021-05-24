@@ -1,4 +1,4 @@
-import SchemaConfirmationPage from "../base_pages/confirmation.page.js";
+import SubmitPage from "../base_pages/submit.page.js";
 import SummaryPage from "../generated_pages/confirmation_email/summary.page";
 
 import ThankYouPage from "../base_pages/thank-you.page";
@@ -13,7 +13,7 @@ describe("Email confirmation", () => {
     });
 
     it("When I complete the survey and am on the thank you page, Then there is option to enter an email address", () => {
-      $(SchemaConfirmationPage.submit()).click();
+      $(SubmitPage.submit()).click();
       $(SummaryPage.submit()).click();
       expect(browser.getUrl()).to.contain(ThankYouPage.pageName);
       expect($(ThankYouPage.email()).isExisting()).to.be.true;
@@ -85,7 +85,7 @@ describe("Email confirmation", () => {
       browser.openQuestionnaire("test_confirmation_email.json");
     });
     it("When I enter an email and answer 'No' on the confirm email page, Then I go the confirmation send page with the email pre-filled", () => {
-      $(SchemaConfirmationPage.submit()).click();
+      $(SubmitPage.submit()).click();
       $(SummaryPage.submit()).click();
       $(ThankYouPage.email()).setValue("name@example.com");
       $(ThankYouPage.submit()).click();
@@ -103,7 +103,7 @@ describe("Email confirmation", () => {
       browser.openQuestionnaire("test_confirmation_email.json");
     });
     it("When I view the email confirmation page, Then I should not see the feedback call to action", () => {
-      $(SchemaConfirmationPage.submit()).click();
+      $(SubmitPage.submit()).click();
       $(SummaryPage.submit()).click();
       $(ThankYouPage.email()).setValue("name@example.com");
       $(ThankYouPage.submit()).click();

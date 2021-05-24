@@ -18,7 +18,7 @@ import SectionSummaryListCollectorRemovePage from "../generated_pages/list_colle
 import VisitorListCollectorPage from "../generated_pages/list_collector_section_summary/visitor-list-collector.page.js";
 import VisitorListCollectorAddPage from "../generated_pages/list_collector_section_summary/visitor-list-collector-add.page.js";
 import PeopleListSectionSummaryPage from "../generated_pages/list_collector_section_summary/section-summary.page.js";
-import ConfirmationPage from "../base_pages/confirmation.page.js";
+import SubmitPage from "../base_pages/submit.page.js";
 
 describe("List Collector", () => {
   describe("Given a normal journey through the list collector without variants", () => {
@@ -164,7 +164,7 @@ describe("List Collector", () => {
 
     it("The questionnaire allows submission", () => {
       $(SummaryPage.submit()).click();
-      $(ConfirmationPage.submit()).click();
+      $(SubmitPage.submit()).click();
       expect(browser.getUrl()).to.contain("thank-you");
     });
   });

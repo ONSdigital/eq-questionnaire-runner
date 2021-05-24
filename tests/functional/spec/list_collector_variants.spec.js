@@ -4,7 +4,7 @@ import ListCollectorPage from "../generated_pages/list_collector_variants/list-c
 import ListCollectorAddPage from "../generated_pages/list_collector_variants/list-collector-add.page.js";
 import ListCollectorEditPage from "../generated_pages/list_collector_variants/list-collector-edit.page.js";
 import ListCollectorRemovePage from "../generated_pages/list_collector_variants/list-collector-remove.page.js";
-import ConfirmationPage from "../base_pages/confirmation.page.js";
+import SubmitPage from "../base_pages/submit.page.js";
 import ThankYouPage from "../base_pages/thank-you.page.js";
 
 describe("List Collector With Variants", () => {
@@ -45,11 +45,11 @@ describe("List Collector With Variants", () => {
     it("The questionnaire shows the confirmation page when no more people to add", () => {
       $(ListCollectorPage.anyoneElseNo()).click();
       $(ListCollectorPage.submit()).click();
-      expect(browser.getUrl()).to.contain(ConfirmationPage.url());
+      expect(browser.getUrl()).to.contain(SubmitPage.url());
     });
 
     it("The questionnaire allows submission", () => {
-      $(ConfirmationPage.submit()).click();
+      $(SubmitPage.submit()).click();
       expect(browser.getUrl()).to.contain("thank-you");
     });
   });
@@ -91,11 +91,11 @@ describe("List Collector With Variants", () => {
     it("The questionnaire shows the confirmation page when no more people to add", () => {
       $(ListCollectorPage.anyoneElseNo()).click();
       $(ListCollectorPage.submit()).click();
-      expect(browser.getUrl()).to.contain(ConfirmationPage.url());
+      expect(browser.getUrl()).to.contain(SubmitPage.url());
     });
 
     it("The questionnaire allows submission", () => {
-      $(ConfirmationPage.submit()).click();
+      $(SubmitPage.submit()).click();
       expect(browser.getUrl()).to.contain(ThankYouPage.url());
     });
   });

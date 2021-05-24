@@ -1,6 +1,6 @@
-import QuestionPage from "./question.page";
+import BasePage from "./base.page";
 
-class CalculatedSummaryPage extends QuestionPage {
+class CalculatedSummaryPage extends BasePage {
   calculatedSummaryTitle() {
     return '[data-qa="calculated-summary-title"]';
   }
