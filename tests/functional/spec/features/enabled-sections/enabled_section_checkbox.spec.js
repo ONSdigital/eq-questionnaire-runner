@@ -1,6 +1,6 @@
 import sectionOne from "../../../generated_pages/section_enabled_checkbox/section-1-block.page";
 import sectionTwo from "../../../generated_pages/section_enabled_checkbox/section-2-block.page";
-import summary from "../../../generated_pages/section_enabled_checkbox/submit.page";
+import SubmitPage from "../../../generated_pages/section_enabled_checkbox/submit.page";
 
 describe("Feature: Section Enabled Based On Checkbox Answers", () => {
   beforeEach("Open survey", () => {
@@ -35,8 +35,8 @@ describe("Feature: Section Enabled Based On Checkbox Answers", () => {
     $(sectionOne.section1ExclusiveNeither()).click();
     $(sectionOne.submit()).click();
 
-    expect(browser.getUrl()).to.contain(summary.url());
-    expect($(summary.section2Question()).isExisting()).to.be.false;
-    expect($(summary.section3Question()).isExisting()).to.be.false;
+    expect(browser.getUrl()).to.contain(SubmitPage.url());
+    expect($(SubmitPage.section2Question()).isExisting()).to.be.false;
+    expect($(SubmitPage.section3Question()).isExisting()).to.be.false;
   });
 });

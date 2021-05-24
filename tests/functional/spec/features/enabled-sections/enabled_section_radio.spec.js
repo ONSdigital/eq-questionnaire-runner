@@ -1,5 +1,5 @@
 import sectionOne from "../../../generated_pages/section_enabled_radio/section-1-block.page";
-import summary from "../../../generated_pages/section_enabled_radio/submit.page";
+import SubmitPage from "../../../generated_pages/section_enabled_radio/submit.page";
 
 describe("Feature: Section Enabled Based On Radio Answers", () => {
   beforeEach("Open survey", () => {
@@ -17,8 +17,8 @@ describe("Feature: Section Enabled Based On Radio Answers", () => {
     $(sectionOne.noDisableSection2()).click();
     $(sectionOne.submit()).click();
 
-    expect(browser.getUrl()).to.contain(summary.url());
-    expect($(summary.section2Question()).isExisting()).to.be.false;
+    expect(browser.getUrl()).to.contain(SubmitPage.url());
+    expect($(SubmitPage.section2Question()).isExisting()).to.be.false;
   });
 
   describe("Given that section 2 is enabled", () => {
@@ -35,7 +35,7 @@ describe("Feature: Section Enabled Based On Radio Answers", () => {
 
       $(sectionOne.noDisableSection2()).click();
       $(sectionOne.submit()).click();
-      expect(browser.getUrl()).to.contain(summary.url());
+      expect(browser.getUrl()).to.contain(SubmitPage.url());
     });
   });
 });
