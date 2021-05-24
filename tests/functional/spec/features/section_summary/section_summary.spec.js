@@ -103,13 +103,13 @@ describe("Section Summary", () => {
       $(InsuranceTypePage.both()).click();
       $(InsuranceTypePage.submit()).click();
       $(InsuranceAddressPage.submit()).click();
-      expect($(PropertyDetailsSummaryPage.questionText()).getText()).to.contain("Property Details Section");
+      expect($(PropertyDetailsSummaryPage.heading()).getText()).to.contain("Property Details Section");
     });
     it("When there is a title set in the sections summary, it is used for the section summary title", () => {
       $(PropertyDetailsSummaryPage.submit()).click();
       $(HouseType.semiDetached()).click();
       $(HouseType.submit()).click();
-      expect($(HouseholdDetailsSummaryPage.questionText()).getText()).to.contain("Household Summary - Semi-detached");
+      expect($(HouseholdDetailsSummaryPage.heading()).getText()).to.contain("Household Summary - Semi-detached");
     });
   });
 });

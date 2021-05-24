@@ -808,8 +808,8 @@ def process_section_summary(
 
         section_context = {
             "pageName": generate_pascal_case_from_id(section_id),
-            "basePage": "QuestionPage",
-            "basePageFile": "question.page",
+            "basePage": "SubmitBasePage",
+            "basePageFile": "submit.page.js",
             "pageDir": dir_out.split("/")[-1],
             "pageFile": page_filename,
             "page_id": section_id,
