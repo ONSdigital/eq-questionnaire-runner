@@ -1,6 +1,6 @@
-import BreakfastPage from "../generated_pages/submit_page/breakfast.page.js";
-import { SubmitPage } from "../base_pages/submit.page";
-import { IntroductionPage } from "../base_pages/introduction.page";
+import BreakfastPage from "../../../generated_pages/submit_page/breakfast.page.js";
+import { SubmitPage } from "../../../base_pages/submit.page";
+import { IntroductionPage } from "../../../base_pages/introduction.page";
 
 describe("Given I launch a linear flow questionnaire without summary", () => {
   beforeEach("Load the survey", () => {

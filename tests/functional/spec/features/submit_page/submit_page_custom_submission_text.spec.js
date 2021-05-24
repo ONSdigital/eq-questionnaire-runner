@@ -6,7 +6,7 @@ describe("Summary Screen", () => {
     browser.openQuestionnaire("test_summary_with_submission_text.json");
   });
 
-  it("Given a survey has been completed, when submission content has been set in the schema, then the correct content should be displayed", () => {
+  it("Given a survey with summary has been completed, when submission content has been set in the schema, then the correct content should be displayed", () => {
     $(DessertBlockPage.dessert()).setValue("Crème Brûlée");
     $(DessertBlockPage.submit()).click();
     expect($(SubmitPage.heading()).getText()).to.contain("Submission title");

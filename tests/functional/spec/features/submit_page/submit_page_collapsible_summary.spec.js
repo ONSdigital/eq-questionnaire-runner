@@ -8,7 +8,7 @@ import PropertyDetailsSummaryPage from "../../../generated_pages/section_summary
 import SubmitPage from "../../../generated_pages/section_summary/submit.page.js";
 
 describe("Collapsible Summary", () => {
-  describe("Given I start a Test Section Summary survey and complete to Final Summary", () => {
+  describe("Given I complete a questionnaire with summary enabled", () => {
     beforeEach(() => {
       browser.openQuestionnaire("test_section_summary.json");
       $(InsuranceTypePage.both()).click();
@@ -22,7 +22,7 @@ describe("Collapsible Summary", () => {
       $(HouseholdCountSectionSummaryPage.submit()).click();
     });
 
-    it("When I am on the Final Summary, Then the group titles should be displayed", () => {
+    it("When I am on the submit page, Then the group titles should be displayed", () => {
       expect($(SubmitPage.collapsibleSummary()).getText()).to.contain("Property Details");
       expect($(SubmitPage.collapsibleSummary()).getText()).to.contain("House Details");
     });

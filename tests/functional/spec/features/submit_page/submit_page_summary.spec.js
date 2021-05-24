@@ -4,12 +4,12 @@ import NumbersPage from "../../../generated_pages/summary/numbers.page.js";
 import RadioPage from "../../../generated_pages/summary/radio.page.js";
 import SubmitPage from "../../../generated_pages/summary/submit.page.js";
 
-describe("Summary Screen", () => {
+describe("Submit Page with Summary", () => {
   beforeEach("Load the survey", () => {
     browser.openQuestionnaire("test_summary.json");
   });
 
-  it("Given a survey has been completed when a summary page is displayed then it should contain all answers", () => {
+  it("Given a survey with a summary has been completed when the submit page is displayed, then it should contain a summary of all answers", () => {
     completeAllQuestions();
 
     expect($(SubmitPage.radioAnswer()).getText()).to.contain("Bacon");
@@ -21,14 +21,14 @@ describe("Summary Screen", () => {
     expect($(SubmitPage.numbersDecimalAnswer()).getText()).to.contain("123,456.78");
   });
 
-  it("Given a survey has been completed when a summary page is displayed then I should be able to submit the answers", () => {
+  it("Given a survey with a summary has been completed when the submit page is displayed then I should be able to submit the answers", () => {
     completeAllQuestions();
 
     $(SubmitPage.submit()).click();
     expect(browser.getUrl()).to.contain("thank-you");
   });
 
-  it("Given a survey has been completed when a summary page edit link is clicked then it should return to that question", () => {
+  it("Given a survey with a summary has been completed when a summary page edit link is clicked then it should return to that question", () => {
     completeAllQuestions();
 
     $(SubmitPage.radioAnswerEdit()).click();
@@ -36,7 +36,7 @@ describe("Summary Screen", () => {
     expect($(RadioPage.bacon()).isSelected()).to.be.true;
   });
 
-  it("Given a survey has been completed when a summary page edit link is clicked then it should return to that question then back to summary", () => {
+  it("Given a survey with a summary has been completed when a summary page edit link is clicked then it should return to that question then back to summary", () => {
     completeAllQuestions();
 
     $(SubmitPage.radioAnswerEdit()).click();
@@ -45,7 +45,7 @@ describe("Summary Screen", () => {
     expect($(SubmitPage.radioAnswer()).getText()).to.contain("Sausage");
   });
 
-  it("Given the edit link is used when a question is updated then the summary screen should show the new answer", () => {
+  it("Given the edit link is used when a question is updated then the submit page summary should show the new answer", () => {
     completeAllQuestions();
 
     $(SubmitPage.numbersUnitAnswerEdit()).click();
@@ -55,7 +55,7 @@ describe("Summary Screen", () => {
     expect($(SubmitPage.numbersUnitAnswer()).getText()).to.contain("654,321 km²");
   });
 
-  it("Given a number value of zero is entered when on the summary screen then formatted 0 should be displayed", () => {
+  it("Given a number value of zero is entered when on the submit page then formatted 0 should be displayed on the summary", () => {
     $(RadioPage.submit()).click();
     $(DessertPage.answer()).setValue("Cake");
     $(DessertPage.submit()).click();
@@ -66,7 +66,7 @@ describe("Summary Screen", () => {
     expect($(SubmitPage.numbersCurrencyAnswer()).getText()).to.contain("£0.00");
   });
 
-  it("Given no value is entered when on the summary screen then the correct response should be displayed", () => {
+  it("Given no value is entered when on the submit page summary then the correct response should be displayed", () => {
     $(RadioPage.submit()).click();
     $(DessertPage.answer()).setValue("Cake");
     $(DessertPage.submit()).click();
@@ -76,7 +76,7 @@ describe("Summary Screen", () => {
     expect($(SubmitPage.numbersCurrencyAnswer()).getText()).to.contain("No answer provided");
   });
 
-  it("Given a survey has been completed, when submission content has not been set in the schema, then the default content should be displayed", () => {
+  it("Given a survey with a summary has been completed, when submission content has not been set in the schema, then the default content should be displayed", () => {
     completeAllQuestions();
 
     expect($(SubmitPage.heading()).getText()).to.contain("Check your answers and submit");
