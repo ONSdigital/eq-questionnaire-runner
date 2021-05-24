@@ -29,7 +29,6 @@ class SubmissionHandler:
         )
         submitted = current_app.eq["submitter"].send_message(
             encrypted_message,
-            questionnaire_id=self._metadata.get("questionnaire_id"),
             case_id=self._metadata.get("case_id"),
             tx_id=self._metadata.get("tx_id"),
         )

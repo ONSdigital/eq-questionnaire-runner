@@ -88,13 +88,6 @@ def get_schema_name_from_params(eq_id, form_type):
     return f"{eq_id}_{form_type}"
 
 
-def load_schema_from_params(eq_id, form_type, language_code=None):
-    language_code = language_code or DEFAULT_LANGUAGE_CODE
-    schema_json = _load_schema_file("{}_{}".format(eq_id, form_type), language_code)
-
-    return QuestionnaireSchema(schema_json, language_code)
-
-
 def _load_schema_file(schema_name, language_code):
     """
     Load a schema, optionally for a specified language.

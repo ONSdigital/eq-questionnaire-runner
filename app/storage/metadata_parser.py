@@ -74,9 +74,6 @@ class RunnerMetadataSchema(Schema, StripWhitespaceMixin):
         validate=validate.Length(min=1)
     )  # type:ignore
     tx_id = VALIDATORS["uuid"]()  # type:ignore
-    questionnaire_id = VALIDATORS["string"](
-        validate=validate.Length(min=1)
-    )  # type:ignore
     response_id = VALIDATORS["string"](validate=validate.Length(min=1))  # type:ignore
 
     account_service_url = VALIDATORS["url"](required=False)  # type:ignore
@@ -109,12 +106,12 @@ class RunnerMetadataSchema(Schema, StripWhitespaceMixin):
     def validate_schema_name(self, data, **kwargs):
         # pylint: disable=no-self-use, unused-argument
         """Function to validate the business schema parameters"""
-        individual_schema_claims = (
-            data.get("eq_id"),
-            data.get("form_type"),
-        )
         if not data.get("schema_name"):
-            if not all(individual_schema_claims):
+            business_schema_claims = (
+                data.get("eq_id"),
+                data.get("form_type"),
+            )
+            if not all(business_schema_claims):
                 raise ValidationError(
                     "Either 'schema_name' or 'eq_id' and 'form_type' must be defined"
                 )
