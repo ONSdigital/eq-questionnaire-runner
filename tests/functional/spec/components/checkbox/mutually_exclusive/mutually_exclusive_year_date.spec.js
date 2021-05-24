@@ -1,5 +1,5 @@
 import YearDatePage from "../../../../generated_pages/mutually_exclusive/mutually-exclusive-year-date.page";
-import SummaryPage from "../../../../generated_pages/mutually_exclusive/mutually-exclusive-year-date-section-summary.page";
+import SubmitPage from "../../../../generated_pages/mutually_exclusive/mutually-exclusive-year-date-section-summary.page";
 
 describe("Component: Mutually Exclusive Year Date With Single Checkbox Override", () => {
   beforeEach(() => {
@@ -22,8 +22,8 @@ describe("Component: Mutually Exclusive Year Date With Single Checkbox Override"
 
       $(YearDatePage.submit()).click();
 
-      expect($(SummaryPage.yearDateExclusiveAnswer()).getText()).to.have.string("I prefer not to say");
-      expect($(SummaryPage.yearDateExclusiveAnswer()).getText()).to.not.have.string("2018");
+      expect($(SubmitPage.yearDateExclusiveAnswer()).getText()).to.have.string("I prefer not to say");
+      expect($(SubmitPage.yearDateExclusiveAnswer()).getText()).to.not.have.string("2018");
     });
   });
 
@@ -42,8 +42,8 @@ describe("Component: Mutually Exclusive Year Date With Single Checkbox Override"
 
       $(YearDatePage.submit()).click();
 
-      expect($(SummaryPage.yearDateAnswer()).getText()).to.have.string("2018");
-      expect($(SummaryPage.yearDateAnswer()).getText()).to.not.have.string("I prefer not to say");
+      expect($(SubmitPage.yearDateAnswer()).getText()).to.have.string("2018");
+      expect($(SubmitPage.yearDateAnswer()).getText()).to.not.have.string("I prefer not to say");
     });
   });
 
@@ -61,8 +61,8 @@ describe("Component: Mutually Exclusive Year Date With Single Checkbox Override"
 
       $(YearDatePage.submit()).click();
 
-      expect($(SummaryPage.yearDateAnswer()).getText()).to.have.string("2018");
-      expect($(SummaryPage.yearDateAnswer()).getText()).to.not.have.string("I prefer not to say");
+      expect($(SubmitPage.yearDateAnswer()).getText()).to.have.string("2018");
+      expect($(SubmitPage.yearDateAnswer()).getText()).to.not.have.string("I prefer not to say");
     });
   });
 
@@ -78,8 +78,8 @@ describe("Component: Mutually Exclusive Year Date With Single Checkbox Override"
       // Then
       $(YearDatePage.submit()).click();
 
-      expect($(SummaryPage.yearDateExclusiveAnswer()).getText()).to.have.string("I prefer not to say");
-      expect($(SummaryPage.yearDateExclusiveAnswer()).getText()).to.not.have.string("2018");
+      expect($(SubmitPage.yearDateExclusiveAnswer()).getText()).to.have.string("I prefer not to say");
+      expect($(SubmitPage.yearDateExclusiveAnswer()).getText()).to.not.have.string("2018");
     });
   });
 
@@ -93,7 +93,7 @@ describe("Component: Mutually Exclusive Year Date With Single Checkbox Override"
       $(YearDatePage.submit()).click();
 
       // Then
-      expect($(SummaryPage.yearDateAnswer()).getText()).to.contain("No answer provided");
+      expect($(SubmitPage.yearDateAnswer()).getText()).to.contain("No answer provided");
     });
   });
 });

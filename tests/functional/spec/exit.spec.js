@@ -1,5 +1,5 @@
 import CensusThankYouPage from "../base_pages/census-thank-you.page.js";
-import SubmitPage from "../base_pages/submit.page.js";
+import { SubmitPage } from "../base_pages/submit.page.js";
 import HubPage from "../base_pages/hub.page";
 
 const CENSUS_EN_BASE_URL = "https://census.gov.uk/";

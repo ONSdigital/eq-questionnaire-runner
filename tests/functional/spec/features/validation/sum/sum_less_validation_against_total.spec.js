@@ -1,6 +1,6 @@
 import TotalAnswerPage from "../../../../generated_pages/sum_less_validation_against_total/total-block.page";
 import BreakdownAnswerPage from "../../../../generated_pages/sum_less_validation_against_total/breakdown-block.page";
-import SummaryPage from "../../../../generated_pages/sum_less_validation_against_total/summary.page";
+import SubmitPage from "../../../../generated_pages/sum_less_validation_against_total/submit.page";
 
 describe("Feature: Sum of grouped answers validation (less than) against total", () => {
   beforeEach(() => {
@@ -16,7 +16,7 @@ describe("Feature: Sum of grouped answers validation (less than) against total",
       $(BreakdownAnswerPage.breakdown3()).setValue("2");
       $(BreakdownAnswerPage.breakdown4()).setValue("2");
       $(BreakdownAnswerPage.submit()).click();
-      expect(browser.getUrl()).to.contain(SummaryPage.pageName);
+      expect(browser.getUrl()).to.contain(SubmitPage.pageName);
     });
   });
 
@@ -29,7 +29,7 @@ describe("Feature: Sum of grouped answers validation (less than) against total",
       $(BreakdownAnswerPage.breakdown3()).setValue("");
       $(BreakdownAnswerPage.breakdown4()).setValue("");
       $(BreakdownAnswerPage.submit()).click();
-      expect(browser.getUrl()).to.contain(SummaryPage.pageName);
+      expect(browser.getUrl()).to.contain(SubmitPage.pageName);
     });
   });
 

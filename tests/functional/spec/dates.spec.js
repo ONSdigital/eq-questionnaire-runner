@@ -3,7 +3,7 @@ import DateMonthYearPage from "../generated_pages/dates/date-month-year-block.pa
 import DateSinglePage from "../generated_pages/dates/date-single-block.page";
 import DateNonMandatoryPage from "../generated_pages/dates/date-non-mandatory-block.page";
 import DateYearDatePage from "../generated_pages/dates/date-year-date-block.page";
-import SummaryPage from "../generated_pages/dates/summary.page";
+import SubmitPage from "../generated_pages/dates/submit.page";
 
 describe("Date checks", () => {
   beforeEach("Load the survey", () => {
@@ -39,14 +39,14 @@ describe("Date checks", () => {
 
     $(DateYearDatePage.submit()).click();
 
-    expect(browser.getUrl()).to.contain(SummaryPage.pageName);
+    expect(browser.getUrl()).to.contain(SubmitPage.pageName);
 
     // Then the summary screen shows the dates entered formatted
-    expect($(SummaryPage.dateRangeFromAnswer()).getText()).to.contain("1 January 1901 to 3 May 2017");
-    expect($(SummaryPage.monthYearAnswer()).getText()).to.contain("April 2018");
-    expect($(SummaryPage.singleDateAnswer()).getText()).to.contain("4 January 1999");
-    expect($(SummaryPage.nonMandatoryDateAnswer()).getText()).to.contain("No answer provided");
-    expect($(SummaryPage.yearDateAnswer()).getText()).to.contain("2005");
+    expect($(SubmitPage.dateRangeFromAnswer()).getText()).to.contain("1 January 1901 to 3 May 2017");
+    expect($(SubmitPage.monthYearAnswer()).getText()).to.contain("April 2018");
+    expect($(SubmitPage.singleDateAnswer()).getText()).to.contain("4 January 1999");
+    expect($(SubmitPage.nonMandatoryDateAnswer()).getText()).to.contain("No answer provided");
+    expect($(SubmitPage.yearDateAnswer()).getText()).to.contain("2005");
   });
 
   it("Given the test_dates survey is selected when the from date is greater than the to date then an error message is shown", () => {

@@ -1,6 +1,6 @@
 import BasePage from "./base.page";
 
-class SubmitPage extends BasePage {
+class SubmitBasePage extends BasePage {
   url() {
     return `/questionnaire/${this.pageName}`;
   }
@@ -18,4 +18,5 @@ class SubmitPage extends BasePage {
   }
 }
 
-export default new SubmitPage("submit");
+export default SubmitBasePage;
+export const SubmitPage = new SubmitBasePage("submit");

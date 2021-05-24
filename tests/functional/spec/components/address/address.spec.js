@@ -1,7 +1,7 @@
 import AddressConfirmation from "../../../generated_pages/address/address-confirmation.page";
 import AddressMandatory from "../../../generated_pages/address/address-block-mandatory.page";
 import AddressOptional from "../../../generated_pages/address/address-block-optional.page";
-import Summary from "../../../generated_pages/address/summary.page";
+import Summary from "../../../generated_pages/address/submit.page";
 
 describe("Address Answer Type", () => {
   beforeEach("Launch survey", () => {

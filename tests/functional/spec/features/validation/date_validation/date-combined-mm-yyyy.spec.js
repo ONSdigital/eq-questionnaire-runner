@@ -1,5 +1,5 @@
 import DateRangePage from "../../../../generated_pages/date_validation_mm_yyyy_combined/date-range-block.page";
-import SummaryPage from "../../../../generated_pages/date_validation_mm_yyyy_combined/summary.page";
+import SubmitPage from "../../../../generated_pages/date_validation_mm_yyyy_combined/submit.page";
 
 describe("Feature: Combined question level and single validation for MM-YYYY dates", () => {
   before(() => {
@@ -79,14 +79,14 @@ describe("Feature: Combined question level and single validation for MM-YYYY dat
         $(DateRangePage.dateRangeToMonth()).setValue(3);
         $(DateRangePage.dateRangeToYear()).setValue(2017);
         $(DateRangePage.submit()).click();
-        expect($(SummaryPage.dateRangeFrom()).getText()).to.contain("January 2017 to March 2017");
+        expect($(SubmitPage.dateRangeFrom()).getText()).to.contain("January 2017 to March 2017");
 
         // Max range
-        $(SummaryPage.dateRangeFromEdit()).click();
+        $(SubmitPage.dateRangeFromEdit()).click();
         $(DateRangePage.dateRangeToMonth()).setValue(4);
         $(DateRangePage.dateRangeToYear()).setValue(2017);
         $(DateRangePage.submit()).click();
-        expect($(SummaryPage.dateRangeFrom()).getText()).to.contain("January 2017 to April 2017");
+        expect($(SubmitPage.dateRangeFrom()).getText()).to.contain("January 2017 to April 2017");
       });
     });
   });

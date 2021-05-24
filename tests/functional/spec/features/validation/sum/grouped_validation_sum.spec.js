@@ -1,6 +1,6 @@
 import TotalAnswerPage from "../../../../generated_pages/sum_multi_validation_against_total/total-block.page";
 import BreakdownAnswerPage from "../../../../generated_pages/sum_multi_validation_against_total/breakdown-block.page";
-import SummaryPage from "../../../../generated_pages/sum_multi_validation_against_total/summary.page";
+import SubmitPage from "../../../../generated_pages/sum_multi_validation_against_total/submit.page";
 
 describe("Feature: Sum of grouped answers validation against total (Multi Rule Equals)", () => {
   beforeEach(() => {
@@ -12,23 +12,23 @@ describe("Feature: Sum of grouped answers validation against total (Multi Rule E
       $(TotalAnswerPage.total()).setValue("10");
       $(TotalAnswerPage.submit()).click();
       $(BreakdownAnswerPage.submit()).click();
-      expect(browser.getUrl()).to.contain(SummaryPage.pageName);
+      expect(browser.getUrl()).to.contain(SubmitPage.pageName);
 
-      $(SummaryPage.previous()).click();
+      $(SubmitPage.previous()).click();
       $(BreakdownAnswerPage.breakdown1()).setValue("0");
       $(BreakdownAnswerPage.breakdown2()).setValue("0");
       $(BreakdownAnswerPage.breakdown3()).setValue("0");
       $(BreakdownAnswerPage.breakdown4()).setValue("0");
       $(BreakdownAnswerPage.submit()).click();
-      expect(browser.getUrl()).to.contain(SummaryPage.pageName);
+      expect(browser.getUrl()).to.contain(SubmitPage.pageName);
 
-      $(SummaryPage.previous()).click();
+      $(SubmitPage.previous()).click();
       $(BreakdownAnswerPage.breakdown1()).setValue("1");
       $(BreakdownAnswerPage.breakdown2()).setValue("2");
       $(BreakdownAnswerPage.breakdown3()).setValue("3");
       $(BreakdownAnswerPage.breakdown4()).setValue("4");
       $(BreakdownAnswerPage.submit()).click();
-      expect(browser.getUrl()).to.contain(SummaryPage.pageName);
+      expect(browser.getUrl()).to.contain(SubmitPage.pageName);
     });
   });
 

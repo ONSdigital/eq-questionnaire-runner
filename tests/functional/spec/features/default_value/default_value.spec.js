@@ -1,6 +1,6 @@
 import QuestionPageOne from "../../../generated_pages/default/number-question-one.page.js";
 import QuestionPageTwo from "../../../generated_pages/default/number-question-two.page.js";
-import Summary from "../../../generated_pages/default/summary.page.js";
+import Summary from "../../../generated_pages/default/submit.page.js";
 import QuestionPageOneSkip from "../../../generated_pages/default_with_skip/number-question-one.page.js";
 import QuestionPageThreeSkip from "../../../generated_pages/default_with_skip/number-question-three.page.js";
 

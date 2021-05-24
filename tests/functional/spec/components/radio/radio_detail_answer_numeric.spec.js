@@ -1,5 +1,5 @@
 import RadioNumericDetailPage from "../../../generated_pages/radio_detail_answer_numeric/radio-numeric-detail.page";
-import SummaryPage from "../../../generated_pages/radio_detail_answer_numeric/summary.page";
+import SubmitPage from "../../../generated_pages/radio_detail_answer_numeric/submit.page";
 
 describe('Radio with a numeric "detail_answer" option', () => {
   beforeEach(() => {
@@ -16,7 +16,7 @@ describe('Radio with a numeric "detail_answer" option', () => {
     expect($(RadioNumericDetailPage.otherDetail()).isDisplayed()).to.be.true;
     $(RadioNumericDetailPage.submit()).click();
     // Then
-    expect($(SummaryPage.radioAnswerNumericDetail()).getText()).to.contain("Other");
+    expect($(SubmitPage.radioAnswerNumericDetail()).getText()).to.contain("Other");
   });
 
   it("Given a numeric detail answer, When the user provides text, Then that text should be displayed on the summary screen", () => {
@@ -24,7 +24,7 @@ describe('Radio with a numeric "detail_answer" option', () => {
     $(RadioNumericDetailPage.otherDetail()).setValue("15");
     $(RadioNumericDetailPage.submit()).click();
     // Then
-    expect($(SummaryPage.radioAnswerNumericDetail()).getText()).to.contain("15");
+    expect($(SubmitPage.radioAnswerNumericDetail()).getText()).to.contain("15");
   });
 
   it("Given a numeric detail answer, When the user provides text, An error should be displayed", () => {
@@ -69,6 +69,6 @@ describe('Radio with a numeric "detail_answer" option', () => {
     $(RadioNumericDetailPage.otherDetail()).setValue("0");
     $(RadioNumericDetailPage.submit()).click();
     // Then
-    expect($(SummaryPage.radioAnswerNumericDetail()).getText()).to.contain("0");
+    expect($(SubmitPage.radioAnswerNumericDetail()).getText()).to.contain("0");
   });
 });

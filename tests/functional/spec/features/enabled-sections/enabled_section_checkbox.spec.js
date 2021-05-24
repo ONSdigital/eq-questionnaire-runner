@@ -1,6 +1,6 @@
 import sectionOne from "../../../generated_pages/section_enabled_checkbox/section-1-block.page";
 import sectionTwo from "../../../generated_pages/section_enabled_checkbox/section-2-block.page";
-import summary from "../../../generated_pages/section_enabled_checkbox/summary.page";
+import summary from "../../../generated_pages/section_enabled_checkbox/submit.page";
 
 describe("Feature: Section Enabled Based On Checkbox Answers", () => {
   beforeEach("Open survey", () => {

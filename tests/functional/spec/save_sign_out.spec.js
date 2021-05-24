@@ -1,9 +1,8 @@
 import SetMinMax from "../generated_pages/numbers/set-min-max-block.page.js";
 import TestMinMax from "../generated_pages/numbers/test-min-max-block.page.js";
-import SummaryPage from "../generated_pages/numbers/summary.page";
+import SubmitPage from "../generated_pages/numbers/submit.page";
 import IntroductionPage from "../generated_pages/introduction/introduction.page";
 import IntroInterstitialPage from "../generated_pages/introduction/general-business-information-completed.page";
-import SubmitPage from "../base_pages/submit.page";
 import IntroThankYouPagePage from "../base_pages/thank-you.page";
 import { getRandomString } from "../jwt_helper";
 
@@ -33,7 +32,7 @@ describe("SaveSignOut", () => {
     $(TestMinMax.testPercent()).setValue("100");
     $(TestMinMax.submit()).click();
 
-    $(SummaryPage.submit()).click();
+    $(SubmitPage.submit()).click();
     expect(browser.getUrl()).to.contain("thank-you");
   });
 

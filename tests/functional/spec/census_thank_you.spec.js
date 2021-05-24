@@ -1,4 +1,4 @@
-import SubmitPage from "../base_pages/submit.page.js";
+import { SubmitPage } from "../base_pages/submit.page.js";
 import HubPage from "../base_pages/hub.page";
 
 import ThankYouPage from "../base_pages/thank-you.page";

@@ -1,5 +1,5 @@
 import DateRangePage from "../../../../generated_pages/date_validation_yyyy_combined/date-range-block.page";
-import SummaryPage from "../../../../generated_pages/date_validation_yyyy_combined/summary.page";
+import SubmitPage from "../../../../generated_pages/date_validation_yyyy_combined/submit.page";
 
 describe("Feature: Combined question level and single validation for MM-YYYY dates", () => {
   before(() => {
@@ -35,13 +35,13 @@ describe("Feature: Combined question level and single validation for MM-YYYY dat
         // Min range
         $(DateRangePage.dateRangeToYear()).setValue(2018);
         $(DateRangePage.submit()).click();
-        expect($(SummaryPage.dateRangeFrom()).getText()).to.contain("2016 to 2018");
+        expect($(SubmitPage.dateRangeFrom()).getText()).to.contain("2016 to 2018");
 
         // Max range
-        $(SummaryPage.dateRangeFromEdit()).click();
+        $(SubmitPage.dateRangeFromEdit()).click();
         $(DateRangePage.dateRangeToYear()).setValue(2019);
         $(DateRangePage.submit()).click();
-        expect($(SummaryPage.dateRangeFrom()).getText()).to.contain("2016 to 2019");
+        expect($(SubmitPage.dateRangeFrom()).getText()).to.contain("2016 to 2019");
       });
     });
   });

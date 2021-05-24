@@ -5,7 +5,7 @@ import InsuranceAddressPage from "../../../generated_pages/section_summary/insur
 import InsuranceTypePage from "../../../generated_pages/section_summary/insurance-type.page.js";
 import NumberOfPeoplePage from "../../../generated_pages/section_summary/number-of-people.page.js";
 import PropertyDetailsSummaryPage from "../../../generated_pages/section_summary/property-details-section-summary.page.js";
-import QuestionnaireSummaryPage from "../../../generated_pages/section_summary/summary.page.js";
+import SubmitPage from "../../../generated_pages/section_summary/submit.page.js";
 
 describe("Collapsible Summary", () => {
   describe("Given I start a Test Section Summary survey and complete to Final Summary", () => {
@@ -23,8 +23,8 @@ describe("Collapsible Summary", () => {
     });
 
     it("When I am on the Final Summary, Then the group titles should be displayed", () => {
-      expect($(QuestionnaireSummaryPage.collapsibleSummary()).getText()).to.contain("Property Details");
-      expect($(QuestionnaireSummaryPage.collapsibleSummary()).getText()).to.contain("House Details");
+      expect($(SubmitPage.collapsibleSummary()).getText()).to.contain("Property Details");
+      expect($(SubmitPage.collapsibleSummary()).getText()).to.contain("House Details");
     });
   });
 });

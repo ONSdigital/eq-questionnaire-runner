@@ -6,7 +6,7 @@ import InsuranceAddressPage from "../../../generated_pages/section_summary/insur
 import InsuranceTypePage from "../../../generated_pages/section_summary/insurance-type.page.js";
 import NumberOfPeoplePage from "../../../generated_pages/section_summary/number-of-people.page.js";
 import PropertyDetailsSummaryPage from "../../../generated_pages/section_summary/property-details-section-summary.page.js";
-import QuestionnaireSummaryPage from "../../../generated_pages/section_summary/summary.page.js";
+import SubmitPage from "../../../generated_pages/section_summary/submit.page.js";
 
 describe("Section Summary", () => {
   describe("Given I start a Test Section Summary survey and complete to Section Summary", () => {
@@ -56,27 +56,27 @@ describe("Section Summary", () => {
       $(NumberOfPeoplePage.answer()).setValue(3);
       $(NumberOfPeoplePage.submit()).click();
       $(HouseholdCountSectionSummaryPage.submit()).click();
-      expect(browser.getUrl()).to.contain(QuestionnaireSummaryPage.url());
+      expect(browser.getUrl()).to.contain(SubmitPage.url());
     });
 
     it("When I select edit from Final Summary and don't change an answer, Then I should be taken to the Final Summary", () => {
-      $(QuestionnaireSummaryPage.summaryShowAllButton()).click();
-      $(QuestionnaireSummaryPage.insuranceAddressAnswerEdit()).click();
+      $(SubmitPage.summaryShowAllButton()).click();
+      $(SubmitPage.insuranceAddressAnswerEdit()).click();
       $(InsuranceAddressPage.submit()).click();
-      expect(browser.getUrl()).to.contain(QuestionnaireSummaryPage.url());
+      expect(browser.getUrl()).to.contain(SubmitPage.url());
     });
 
     it("When I select edit from Final Summary and change an answer that doesn't affect completeness, Then I should be taken to the Final Summary", () => {
-      $(QuestionnaireSummaryPage.summaryShowAllButton()).click();
-      $(QuestionnaireSummaryPage.insuranceAddressAnswerEdit()).click();
+      $(SubmitPage.summaryShowAllButton()).click();
+      $(SubmitPage.insuranceAddressAnswerEdit()).click();
       $(InsuranceAddressPage.answer()).setValue("Test Address");
       $(InsuranceAddressPage.submit()).click();
-      expect(browser.getUrl()).to.contain(QuestionnaireSummaryPage.url());
+      expect(browser.getUrl()).to.contain(SubmitPage.url());
     });
 
     it("When I select edit from Final Summary and change an answer that affects completeness, Then I should be stepped through the section", () => {
-      $(QuestionnaireSummaryPage.summaryShowAllButton()).click();
-      $(QuestionnaireSummaryPage.insuranceTypeAnswerEdit()).click();
+      $(SubmitPage.summaryShowAllButton()).click();
+      $(SubmitPage.insuranceTypeAnswerEdit()).click();
       $(InsuranceTypePage.contents()).click();
       $(InsuranceTypePage.submit()).click();
       expect(browser.getUrl()).to.contain(InsuranceAddressPage.pageName);
@@ -85,14 +85,14 @@ describe("Section Summary", () => {
     });
 
     it("When I change an answer, Then the final summary should display the updated value", () => {
-      $(QuestionnaireSummaryPage.summaryShowAllButton()).click();
-      expect($(QuestionnaireSummaryPage.insuranceAddressAnswer()).getText()).to.contain("No answer provided");
-      $(QuestionnaireSummaryPage.insuranceAddressAnswerEdit()).click();
+      $(SubmitPage.summaryShowAllButton()).click();
+      expect($(SubmitPage.insuranceAddressAnswer()).getText()).to.contain("No answer provided");
+      $(SubmitPage.insuranceAddressAnswerEdit()).click();
       expect(browser.getUrl()).to.contain(InsuranceAddressPage.pageName);
       $(InsuranceAddressPage.answer()).setValue("Test Address");
       $(InsuranceAddressPage.submit()).click();
-      $(QuestionnaireSummaryPage.summaryShowAllButton()).click();
-      expect($(QuestionnaireSummaryPage.insuranceAddressAnswer()).getText()).to.contain("Test Address");
+      $(SubmitPage.summaryShowAllButton()).click();
+      expect($(SubmitPage.insuranceAddressAnswer()).getText()).to.contain("Test Address");
     });
   });
   describe("Given I start the Test Section Summary questionnaire", () => {

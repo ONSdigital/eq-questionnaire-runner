@@ -2,7 +2,7 @@ import SetLengthUnitsBlockPage from "../../generated_pages/unit_patterns/set-len
 import SetDurationUnitsBlockPage from "../../generated_pages/unit_patterns/set-duration-units-block.page.js";
 import SetAreaUnitsBlockPage from "../../generated_pages/unit_patterns/set-area-units-block.page.js";
 import SetVolumeUnitsBlockPage from "../../generated_pages/unit_patterns/set-volume-units-block.page.js";
-import SummaryPage from "../../generated_pages/unit_patterns/summary.page.js";
+import SubmitPage from "../../generated_pages/unit_patterns/submit.page.js";
 
 describe("Units", () => {
   it("Given we do not set a language code and run the questionnaire, when we enter values for durations, they should be displayed on the summary with their units.", () => {
@@ -15,8 +15,8 @@ describe("Units", () => {
     $(SetDurationUnitsBlockPage.submit()).click();
     $(SetAreaUnitsBlockPage.submit()).click();
     $(SetVolumeUnitsBlockPage.submit()).click();
-    expect($(SummaryPage.durationHour()).getText()).to.equal("6 hours");
-    expect($(SummaryPage.durationYear()).getText()).to.equal("20 years");
+    expect($(SubmitPage.durationHour()).getText()).to.equal("6 hours");
+    expect($(SubmitPage.durationYear()).getText()).to.equal("20 years");
   });
 
   it("Given we set a language code for welsh and run the questionnaire, when we enter values for durations, they should be displayed on the summary with their units.", () => {
@@ -29,7 +29,7 @@ describe("Units", () => {
     $(SetDurationUnitsBlockPage.submit()).click();
     $(SetAreaUnitsBlockPage.submit()).click();
     $(SetVolumeUnitsBlockPage.submit()).click();
-    expect($(SummaryPage.durationHour()).getText()).to.equal("6 awr");
-    expect($(SummaryPage.durationYear()).getText()).to.equal("20 mlynedd");
+    expect($(SubmitPage.durationHour()).getText()).to.equal("6 awr");
+    expect($(SubmitPage.durationYear()).getText()).to.equal("20 mlynedd");
   });
 });

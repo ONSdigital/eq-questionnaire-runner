@@ -12,7 +12,7 @@ import CurrencyTotalPlaybackPageSkippedFourth from "../../generated_pages/calcul
 import UnitTotalPlaybackPage from "../../generated_pages/calculated_summary/unit-total-playback.page.js";
 import PercentageTotalPlaybackPage from "../../generated_pages/calculated_summary/percentage-total-playback.page.js";
 import NumberTotalPlaybackPage from "../../generated_pages/calculated_summary/number-total-playback.page.js";
-import SummaryPage from "../../generated_pages/calculated_summary/summary.page.js";
+import SubmitPage from "../../generated_pages/calculated_summary/submit.page";
 import ThankYouPage from "../../base_pages/thank-you.page.js";
 
 describe("Feature: Calculated Summary", () => {
@@ -194,8 +194,8 @@ describe("Feature: Calculated Summary", () => {
 
     it("Given I confirm the total, When I get to the summary, Then I can complete the survey", () => {
       $(NumberTotalPlaybackPage.submit()).click();
-      expect(browser.getUrl()).to.contain(SummaryPage.pageName);
-      $(SummaryPage.submit()).click();
+      expect(browser.getUrl()).to.contain(SubmitPage.pageName);
+      $(SubmitPage.submit()).click();
       expect(browser.getUrl()).to.contain(ThankYouPage.pageName);
     });
   });

@@ -1,12 +1,11 @@
 import BreakfastPage from "../generated_pages/submit_page/breakfast.page.js";
-import SubmitPage from "../base_pages/submit.page";
-import IntroductionPage from "../base_pages/introduction.page";
-const introductionPage = new IntroductionPage("introduction");
+import { SubmitPage } from "../base_pages/submit.page";
+import { IntroductionPage } from "../base_pages/introduction.page";
 
 describe("Given I launch a linear flow questionnaire without summary", () => {
   beforeEach("Load the survey", () => {
     browser.openQuestionnaire("test_submit_page.json");
-    $(introductionPage.getStarted()).click();
+    $(IntroductionPage.getStarted()).click();
   });
 
   it("When I complete the questionnaire, then I should be taken to the submit page without a summary", () => {

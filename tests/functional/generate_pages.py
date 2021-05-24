@@ -412,24 +412,18 @@ def process_calculated_summary(answers, page_spec):
 def process_final_summary(
     schema_data, require_path, dir_out, spec_file, collapsible, section_summary=False
 ):
-    logger.debug("Processing questionnaire flow")
-
-    page_filename = f"summary.page.js"
+    page_filename = f"submit.page.js"
     page_path = os.path.join(dir_out, page_filename)
 
     logger.info("creating %s...", page_path)
 
     with open(page_path, "w") as page_spec:
-        page_name = "FinalSummary"
-        base_page = "QuestionPage"
-        base_page_file = "question.page"
-
         block_context = build_and_get_base_page_context(
             page_dir=dir_out.split("/")[-1],
             page_spec=page_spec,
-            base_page=base_page,
-            base_page_file=base_page_file,
-            page_name=page_name,
+            base_page="SubmitBasePage",
+            base_page_file=page_filename,
+            page_name="Submit",
             page_filename=page_filename,
             page_id="submit",
             relative_require=require_path,
@@ -782,10 +776,10 @@ def process_questionnaire_flow(schema_data, require_path, dir_out, spec_file):
     questionnaire_flow = schema_data["questionnaire_flow"]
     options = questionnaire_flow.get("options", {})
 
-    logger.debug("Processing questionnaire flow")
     if questionnaire_flow["type"] == "Linear" and (
         summary_options := options.get("summary")
     ):
+        logger.debug("Processing questionnaire flow summary")
         collapsible = summary_options["collapsible"]
         process_final_summary(
             schema_data,

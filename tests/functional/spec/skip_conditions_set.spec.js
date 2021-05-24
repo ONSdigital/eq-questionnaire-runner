@@ -1,6 +1,6 @@
 import FoodPage from "../generated_pages/skip_condition_set/food-block.page";
 import DrinkPage from "../generated_pages/skip_condition_set/drink-block.page";
-import SummaryPage from "../generated_pages/skip_condition_set/summary.page";
+import SubmitPage from "../generated_pages/skip_condition_set/submit.page";
 
 describe("Skip Conditions - Set", () => {
   beforeEach("Load the survey", () => {
@@ -10,7 +10,7 @@ describe("Skip Conditions - Set", () => {
   it("Given I complete the first page, Then I should see the summary page", () => {
     $(FoodPage.bacon()).click();
     $(FoodPage.submit()).click();
-    expect(browser.getUrl()).to.contain(SummaryPage.pageName);
+    expect(browser.getUrl()).to.contain(SubmitPage.pageName);
   });
 
   it("Given I do not complete the first page, Then I should see the drink page", () => {

@@ -1,7 +1,7 @@
 import MandatoryCheckboxPage from "../generated_pages/checkbox/mandatory-checkbox.page";
 import NonMandatoryCheckboxPage from "../generated_pages/checkbox/non-mandatory-checkbox.page";
 import singleCheckboxPage from "../generated_pages/checkbox/single-checkbox.page";
-import SummaryPage from "../generated_pages/checkbox/summary.page";
+import SubmitPage from "../generated_pages/checkbox/submit.page";
 
 describe('Checkbox with "other" option', () => {
   beforeEach("Load the survey", () => {
@@ -67,7 +67,7 @@ describe('Checkbox with "other" option', () => {
     $(NonMandatoryCheckboxPage.submit()).click();
     $(singleCheckboxPage.submit()).click();
     // Then
-    expect($(SummaryPage.nonMandatoryCheckboxAnswer()).getText()).to.contain("No answer provided");
+    expect($(SubmitPage.nonMandatoryCheckboxAnswer()).getText()).to.contain("No answer provided");
   });
 
   it('Given a non-mandatory checkbox answer, when the user selects Other but does not supply a value, then "Other" should be displayed on the summary screen', () => {
@@ -79,7 +79,7 @@ describe('Checkbox with "other" option', () => {
     $(NonMandatoryCheckboxPage.submit()).click();
     $(singleCheckboxPage.submit()).click();
     // Then
-    expect($(SummaryPage.nonMandatoryCheckboxAnswer()).getText()).to.contain("Other");
+    expect($(SubmitPage.nonMandatoryCheckboxAnswer()).getText()).to.contain("Other");
   });
 
   it("Given a non-mandatory checkbox answer, when the user selects Other and supplies a value, then the supplied value should be displayed on the summary screen", () => {
@@ -92,7 +92,7 @@ describe('Checkbox with "other" option', () => {
     $(NonMandatoryCheckboxPage.submit()).click();
     $(singleCheckboxPage.submit()).click();
     // Then
-    expect($(SummaryPage.nonMandatoryCheckboxAnswer()).getText()).to.contain("The other value");
+    expect($(SubmitPage.nonMandatoryCheckboxAnswer()).getText()).to.contain("The other value");
   });
 
   it("Given that there is an escaped character in an answer label, when the user selects the answer, then the label should be displayed on the summary screen", () => {
@@ -104,7 +104,7 @@ describe('Checkbox with "other" option', () => {
     $(NonMandatoryCheckboxPage.submit()).click();
     $(singleCheckboxPage.submit()).click();
     // Then
-    expect($(SummaryPage.mandatoryCheckboxAnswer()).getText()).to.contain("Ham & Cheese");
+    expect($(SubmitPage.mandatoryCheckboxAnswer()).getText()).to.contain("Ham & Cheese");
   });
 
   it("Given I have previously added text in other textfield and saved, when I uncheck other options and select a different checkbox as answer, then the text entered in other field must be wiped.", () => {
@@ -129,7 +129,7 @@ describe('Checkbox with "other" option', () => {
     $(NonMandatoryCheckboxPage.submit()).click();
     // Then
 
-    const listLength = $$(`${SummaryPage.mandatoryCheckboxAnswer()} li`).length;
+    const listLength = $$(`${SubmitPage.mandatoryCheckboxAnswer()} li`).length;
 
     // Then
     expect(listLength).to.equal(0);
@@ -143,7 +143,7 @@ describe('Checkbox with "other" option', () => {
     $(NonMandatoryCheckboxPage.submit()).click();
     $(singleCheckboxPage.submit()).click();
 
-    const listLength = $$(`${SummaryPage.mandatoryCheckboxAnswer()} li`).length;
+    const listLength = $$(`${SubmitPage.mandatoryCheckboxAnswer()} li`).length;
 
     // Then
     expect(listLength).to.equal(2);

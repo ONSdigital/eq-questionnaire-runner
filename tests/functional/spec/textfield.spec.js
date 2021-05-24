@@ -1,5 +1,5 @@
 import TextFieldPage from "../generated_pages/textfield/name-block.page.js";
-import SummaryPage from "../generated_pages/textfield/summary.page.js";
+import SubmitPage from "../generated_pages/textfield/submit.page.js";
 
 describe("Textfield", () => {
   it("Given a textfield option, a user should be able to click the label of the textfield to focus", () => {
@@ -12,9 +12,9 @@ describe("Textfield", () => {
     browser.openQuestionnaire("test_textfield.json");
     $(TextFieldPage.name()).setValue("'Twenty><&Five'");
     $(TextFieldPage.submit()).click();
-    expect(browser.getUrl()).to.contain(SummaryPage.pageName);
-    expect($(SummaryPage.nameAnswer()).getText()).to.contain("Twenty><&Five'");
-    $(SummaryPage.nameAnswerEdit()).click();
+    expect(browser.getUrl()).to.contain(SubmitPage.pageName);
+    expect($(SubmitPage.nameAnswer()).getText()).to.contain("Twenty><&Five'");
+    $(SubmitPage.nameAnswerEdit()).click();
     $(TextFieldPage.name()).getValue();
   });
 

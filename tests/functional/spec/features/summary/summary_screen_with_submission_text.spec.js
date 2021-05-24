@@ -1,5 +1,5 @@
 import DessertBlockPage from "../../../generated_pages/summary_with_submission_text/dessert-block.page.js";
-import SummaryPage from "../../../generated_pages/summary_with_submission_text/summary.page.js";
+import SubmitPage from "../../../generated_pages/summary_with_submission_text/submit.page.js";
 
 describe("Summary Screen", () => {
   beforeEach("Load the survey", () => {
@@ -9,9 +9,9 @@ describe("Summary Screen", () => {
   it("Given a survey has been completed, when submission content has been set in the schema, then the correct content should be displayed", () => {
     $(DessertBlockPage.dessert()).setValue("Crème Brûlée");
     $(DessertBlockPage.submit()).click();
-    expect($(SummaryPage.questionText()).getText()).to.contain("Submission title");
-    expect($(SummaryPage.warning()).getText()).to.contain("Submission warning");
-    expect($(SummaryPage.guidance()).getText()).to.contain("Submission guidance");
-    expect($(SummaryPage.submit()).getText()).to.contain("Submission button");
+    expect($(SubmitPage.heading()).getText()).to.contain("Submission title");
+    expect($(SubmitPage.warning()).getText()).to.contain("Submission warning");
+    expect($(SubmitPage.guidance()).getText()).to.contain("Submission guidance");
+    expect($(SubmitPage.submit()).getText()).to.contain("Submission button");
   });
 });

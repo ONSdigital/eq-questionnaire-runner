@@ -1,5 +1,5 @@
 import sectionOne from "../../../generated_pages/section_enabled_radio/section-1-block.page";
-import summary from "../../../generated_pages/section_enabled_radio/summary.page";
+import summary from "../../../generated_pages/section_enabled_radio/submit.page";
 
 describe("Feature: Section Enabled Based On Radio Answers", () => {
   beforeEach("Open survey", () => {

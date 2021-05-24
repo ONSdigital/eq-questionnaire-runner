@@ -1,5 +1,5 @@
 import SchemaFeedbackPage from "../generated_pages/feedback/feedback.page";
-import SummaryPage from "../generated_pages/feedback/summary.page";
+import SubmitPage from "../generated_pages/feedback/submit.page";
 
 import FeedbackPage from "../base_pages/feedback.page";
 import FeedbackSentPage from "../base_pages/feedback-sent.page";
@@ -10,7 +10,7 @@ describe("Feedback", () => {
     before(() => {
       browser.openQuestionnaire("test_feedback.json");
       $(SchemaFeedbackPage.submit()).click();
-      $(SummaryPage.submit()).click();
+      $(SubmitPage.submit()).click();
     });
 
     it("When I view the thank you page, Then I can see the feedback call to action", () => {

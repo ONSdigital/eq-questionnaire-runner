@@ -1,6 +1,6 @@
 import NumberOfEmployeesTotalBlockPage from "../../generated_pages/confirmation_question/number-of-employees-total-block.page.js";
 import ConfirmZeroEmployeesBlockPage from "../../generated_pages/confirmation_question/confirm-zero-employees-block.page.js";
-import SummaryPage from "../../generated_pages/confirmation_question/summary.page.js";
+import SubmitPage from "../../generated_pages/confirmation_question/submit.page.js";
 
 describe("Feature: Confirmation Question", () => {
   describe("Given I have a completed the confirmation question", () => {
@@ -13,9 +13,9 @@ describe("Feature: Confirmation Question", () => {
       $(NumberOfEmployeesTotalBlockPage.submit()).click();
       $(ConfirmZeroEmployeesBlockPage.yesThisIsCorrect()).click();
       $(ConfirmZeroEmployeesBlockPage.submit()).click();
-      expect(browser.getUrl()).to.contain(SummaryPage.pageName);
-      expect($(SummaryPage.numberOfEmployeesTotal()).getText()).to.contain("0");
-      expect($$(SummaryPage.confirmZeroEmployeesAnswer())).to.be.empty;
+      expect(browser.getUrl()).to.contain(SubmitPage.pageName);
+      expect($(SubmitPage.numberOfEmployeesTotal()).getText()).to.contain("0");
+      expect($$(SubmitPage.confirmZeroEmployeesAnswer())).to.be.empty;
     });
   });
 

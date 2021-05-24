@@ -1,6 +1,6 @@
 import SuggestionsPage from "../generated_pages/textfield_suggestions/country-block.page.js";
 import MultipleSuggestionsPage from "../generated_pages/textfield_suggestions/multiple-country-block.page.js";
-import SummaryPage from "../generated_pages/textfield_suggestions/summary.page.js";
+import SubmitPage from "../generated_pages/textfield_suggestions/submit.page.js";
 
 describe("Suggestions", () => {
   it("Given I open a textfield with a suggestions url, when I have entered text, then it will show suggestions", () => {
@@ -33,6 +33,6 @@ describe("Suggestions", () => {
     expect($$(".js-autosuggest-listbox li").length).to.not.equal(0);
     suggestionsOption.click();
     $(MultipleSuggestionsPage.submit()).click();
-    expect(browser.getUrl()).to.contain(SummaryPage.url());
+    expect(browser.getUrl()).to.contain(SubmitPage.url());
   });
 });
