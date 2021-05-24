@@ -51,7 +51,7 @@ class Router:
         return location.block_id in self._get_allowable_path(routing_path)
 
     def can_access_hub(self):
-        return self._schema.is_questionnaire_flow_hub and all(
+        return self._schema.is_flow_hub and all(
             self._progress_store.is_section_complete(section_id)
             for section_id in self._schema.get_section_ids_required_for_hub()
             if section_id in self.enabled_section_ids
@@ -135,10 +135,10 @@ class Router:
         return self.get_next_location_url_for_end_of_section()
 
     def get_next_location_url_for_end_of_section(self) -> str:
-        if self._schema.is_questionnaire_flow_hub and self.can_access_hub():
+        if self._schema.is_flow_hub and self.can_access_hub():
             return url_for("questionnaire.get_questionnaire")
 
-        if self._schema.is_questionnaire_flow_linear and self.is_questionnaire_complete:
+        if self._schema.is_flow_linear and self.is_questionnaire_complete:
             return url_for("questionnaire.submit_questionnaire")
 
         return self.get_first_incomplete_location_in_questionnaire_url()

@@ -162,28 +162,28 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
         return answers_by_id
 
     @cached_property
-    def _questionnaire_flow(self) -> ImmutableDict[str, Any]:
+    def _flow(self) -> ImmutableDict[str, Any]:
         questionnaire_flow: ImmutableDict = self.json["questionnaire_flow"]
         return questionnaire_flow
 
     @cached_property
-    def questionnaire_flow_options(self) -> ImmutableDict[str, Any]:
-        options: ImmutableDict[str, Any] = self._questionnaire_flow["options"]
+    def flow_options(self) -> ImmutableDict[str, Any]:
+        options: ImmutableDict[str, Any] = self._flow["options"]
         return options
 
     @cached_property
-    def is_questionnaire_flow_hub(self) -> bool:
-        return bool(self._questionnaire_flow["type"] == "Hub")
+    def is_flow_hub(self) -> bool:
+        return bool(self._flow["type"] == "Hub")
 
     @cached_property
-    def is_questionnaire_flow_linear(self) -> bool:
-        return bool(self._questionnaire_flow["type"] == "Linear")
+    def is_flow_linear(self) -> bool:
+        return bool(self._flow["type"] == "Linear")
 
     def get_section_ids_required_for_hub(self) -> list[str]:
-        return self.questionnaire_flow_options.get("required_completed_sections", [])
+        return self.flow_options.get("required_completed_sections", [])
 
     def get_summary_options(self) -> ImmutableDict[str, Any]:
-        return self.questionnaire_flow_options.get("summary", {})
+        return self.flow_options.get("summary", {})
 
     def get_sections(self) -> Iterable[ImmutableDict]:
         return self._sections_by_id.values()
