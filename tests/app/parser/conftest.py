@@ -15,6 +15,7 @@ def fake_metadata_runner():
         "collection_exercise_sid": "test-sid",
         "response_id": str(uuid.uuid4()),
         "account_service_url": "https://ras.ons.gov.uk",
+        "case_id": str(uuid.uuid4()),
     }
 
 
