@@ -539,28 +539,83 @@ class TestRouterPreviousLocation(TestRouterBaseTestCase):
         self.assertEqual(expected_location_url, previous_location_url)
 
 
-class TestRouterPreviousLocationHubFlow(TestRouterBaseTestCase):
-    def test_url_on_first_block_in_section(self):
-        self.schema = load_schema_from_name("test_hub_and_spoke")
-
-        current_location = Location(
-            section_id="employment-section", block_id="employment-status"
+class TestRouterPreviousLocationLinearFlow(TestRouterBaseTestCase):
+    def test_no_url_on_first_block_single_section(self):
+        self.schema = load_schema_from_name("test_checkbox")
+        self.progress_store = ProgressStore(
+            [
+                {
+                    "section_id": "default-section",
+                    "list_item_id": None,
+                    "status": CompletionStatus.IN_PROGRESS,
+                    "block_ids": ["mandatory-checkbox"],
+                }
+            ]
+        )
+        routing_path = RoutingPath(
+            ["mandatory-checkbox", "non-mandatory-checkbox", "single-checkbox"],
+            section_id="default-section",
         )
 
-        routing_path = RoutingPath(
-            ["employment-status", "employment-type"], section_id="employment-section"
+        current_location = Location(
+            section_id="default-section", block_id="mandatory-checkbox"
         )
         previous_location_url = self.router.get_previous_location_url(
             current_location, routing_path
         )
 
-        self.assertEqual(
-            url_for("questionnaire.get_questionnaire"), previous_location_url
+        self.assertIsNone(previous_location_url)
+
+    def test_no_url_on_first_block_second_section(self):
+        self.schema = load_schema_from_name("test_section_summary")
+        self.progress_store = ProgressStore(
+            [
+                {
+                    "section_id": "property-details-section",
+                    "list_item_id": None,
+                    "status": CompletionStatus.COMPLETED,
+                    "block_ids": [
+                        "insurance-type",
+                        "insurance-address",
+                        "address-duration",
+                    ],
+                }
+            ]
         )
 
+        current_location = Location(
+            section_id="house-details-section", block_id="house-type"
+        )
+        routing_path = RoutingPath(["house-type"], section_id="house-details-section")
+        previous_location_url = self.router.get_previous_location_url(
+            current_location, routing_path
+        )
 
-class TestRouterLastLocation(TestRouterBaseTestCase):
-    def test_last_block_on_path(self):
+        self.assertIsNone(previous_location_url)
+
+    def test_url_on_submit_page(self):
+        self.schema = load_schema_from_name("test_checkbox")
+        self.progress_store = ProgressStore(
+            [
+                {
+                    "section_id": "default-section",
+                    "block_ids": [
+                        "mandatory-checkbox",
+                        "non-mandatory-checkbox",
+                        "single-checkbox",
+                    ],
+                    "status": CompletionStatus.COMPLETED,
+                }
+            ]
+        )
+        previous_location_url = self.router.get_last_location_in_questionnaire()
+        expected_location = Location(
+            section_id="default-section", block_id="single-checkbox", list_item_id=None
+        )
+
+        self.assertEqual(expected_location, previous_location_url)
+
+    def test_url_on_submit_page_last_block_not_on_path(self):
         self.schema = load_schema_from_name(
             "test_routing_to_questionnaire_end_multiple_sections"
         )
@@ -603,6 +658,26 @@ class TestRouterLastLocation(TestRouterBaseTestCase):
         )
         self.assertEqual(
             expected_location, self.router.get_last_location_in_questionnaire()
+        )
+
+
+class TestRouterPreviousLocationHubFlow(TestRouterBaseTestCase):
+    def test_url_on_first_block(self):
+        self.schema = load_schema_from_name("test_hub_and_spoke")
+
+        current_location = Location(
+            section_id="employment-section", block_id="employment-status"
+        )
+
+        routing_path = RoutingPath(
+            ["employment-status", "employment-type"], section_id="employment-section"
+        )
+        previous_location_url = self.router.get_previous_location_url(
+            current_location, routing_path
+        )
+
+        self.assertEqual(
+            url_for("questionnaire.get_questionnaire"), previous_location_url
         )
 
 
