@@ -15,7 +15,6 @@ def fake_session_data():
         survey_url=None,
         ru_ref="ru_ref",
         response_id="response_id",
-        questionnaire_id="questionnaire_id",
         case_id="case_id",
         period_str=None,
         ru_name=None,

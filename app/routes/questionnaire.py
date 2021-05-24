@@ -63,7 +63,6 @@ def before_questionnaire_request():
         tx_id=metadata["tx_id"],
         schema_name=metadata["schema_name"],
         ce_id=metadata["collection_exercise_sid"],
-        questionnaire_id=metadata["questionnaire_id"],
     )
 
     logger.info(
