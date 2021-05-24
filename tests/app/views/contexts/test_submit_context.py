@@ -123,14 +123,12 @@ class TestSubmitContextWithSummary(TestStandardSummaryContext):
 class TestSubmitContextWithoutSummary(TestStandardSummaryContext):
     def setUp(self):
         super().setUp()
-        self.schema = load_schema_from_name("test_final_confirmation")
+        self.schema = load_schema_from_name("test_submit_page")
         self.answer_store = AnswerStore()
         self.list_store = ListStore()
         self.progress_store = ProgressStore()
 
     def test_submit_context_with_custom_submission_content(self):
-        self.schema = load_schema_from_name("test_final_confirmation")
-
         submit_questionnaire_context = SubmitQuestionnaireContext(
             self.language,
             self.schema,

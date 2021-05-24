@@ -18,10 +18,10 @@ class SubmissionTestCase(IntegrationTestCase):
         submitter.send_message = Mock(return_value=False)
 
 
-class TestQuestionnaireSubmissionFinalConfirmation(SubmissionTestCase):
+class TestQuestionnaireSubmission(SubmissionTestCase):
     def _launch_and_submit_questionnaire(self):
         # Launch questionnaire
-        self.launchSurvey("test_final_confirmation")
+        self.launchSurvey("test_submit_page")
 
         # Answer questions and submit survey
         self.post(action="start_questionnaire")
@@ -95,7 +95,7 @@ class TestQuestionnaireSubmissionHub(SubmissionTestCase):
         self.assertInUrl(HUB_URL_PATH)
 
 
-class TestQuestionnaireSubmissionFinalSummary(SubmissionTestCase):
+class TestQuestionnaireSubmissionWithSummary(SubmissionTestCase):
     def _launch_and_submit_questionnaire(self):
         # Launch questionnaire
         self.launchSurvey("test_summary")

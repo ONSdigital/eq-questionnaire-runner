@@ -4,9 +4,9 @@
     "schema_version": "0.0.1",
     "data_version": "0.0.3",
     "survey_id": "0",
-    "title": "Final confirmation to submit",
+    "title": "Submit without summary",
     "theme": "default",
-    "description": "A questionnaire to demo final confirmation to submit.",
+    "description": "A questionnaire to demo submit without summary.",
     "navigation": {
         "visible": true
     },

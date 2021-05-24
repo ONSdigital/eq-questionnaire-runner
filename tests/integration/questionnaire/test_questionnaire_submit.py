@@ -21,7 +21,7 @@ class TestQuestionnaireSubmit(IntegrationTestCase):
 
     def test_invalid_block_once_questionnaire_complete_raises_404(self):
         # Given I launch questionnaire
-        self.launchSurvey("test_final_confirmation")
+        self.launchSurvey("test_submit_page")
 
         # When I proceed through the questionnaire
         self.post(action="start_questionnaire")
@@ -57,6 +57,42 @@ class TestQuestionnaireSubmit(IntegrationTestCase):
                 self.assertInUrl("/test-optional")
 
 
+class TestQuestionnaireSubmitWithoutSummary(IntegrationTestCase):
+    def test_accessing_submit_page_redirects_to_first_incomplete_question_when_questionnaire_incomplete(
+        self,
+    ):
+        # Given a partially completed questionnaire
+        self.launchSurvey("test_submit_page")
+        self.post(action="start_questionnaire")
+        self.assertInBody("What is your favourite breakfast food")
+
+        # When I make a GET or POST request to the submit page
+        for method in [self.get, self.post]:
+            with self.subTest(method=method):
+                method(url=SUBMIT_URL_PATH)
+
+                # Then I am redirected to the first incomplete question
+                self.assertInUrl("/breakfast")
+
+    def test_is_displayed(self):
+        # Given I launch a questionnaire
+        self.launchSurvey("test_submit_page")
+
+        # When I complete the questionnaire
+        self.post(action="start_questionnaire")
+        self.assertInBody("What is your favourite breakfast food")
+        self.post({"breakfast-answer": "Bacon"})
+
+        # Then I am presented with a submit page which I am able to submit
+        self.assertInUrl(SUBMIT_URL_PATH)
+        self.assertNotInBody("What is your favourite breakfast food")
+        self.assertInBody("Thank you for your answers, submit this to complete it")
+        self.assertInBody("Submit")
+
+        self.post()
+        self.assertInUrl(THANK_YOU_URL_PATH)
+
+
 class TestQuestionnaireSubmitWithSummary(IntegrationTestCase):
     def test_accessing_submit_page_redirects_to_first_incomplete_question_when_questionnaire_incomplete(
         self,
@@ -73,7 +109,7 @@ class TestQuestionnaireSubmitWithSummary(IntegrationTestCase):
                 # Then I am redirected to the first incomplete question
                 self.assertInUrl("/test-optional")
 
-    def test_final_summary_shown_at_end_of_questionnaire(self):
+    def test_is_displayed(self):
         # Given I launch a questionnaire
         self.launchSurvey("test_routing_to_questionnaire_end_multiple_sections")
 
@@ -81,49 +117,13 @@ class TestQuestionnaireSubmitWithSummary(IntegrationTestCase):
         self.post({"test-answer": "Yes"})
         self.post({"test-optional-answer": "I am a completionist"})
 
-        # Then I am presented with the final summary which I am able to submit
+        # Then I am presented with the questionnaire summary which I am able to submit
         self.assertInUrl(SUBMIT_URL_PATH)
         self.assertInBody("Section 1")
         self.assertInBody("Section 2")
         self.assertInBody("Would you like to complete section 2?")
         self.assertInBody("Why did you choose to complete this section?")
         self.assertInBody("Submit answers")
-
-        self.post()
-        self.assertInUrl(THANK_YOU_URL_PATH)
-
-
-class TestQuestionnaireSubmitWithoutSummary(IntegrationTestCase):
-    def test_accessing_submit_page_redirects_to_first_incomplete_question_when_questionnaire_incomplete(
-        self,
-    ):
-        # Given a partially completed questionnaire
-        self.launchSurvey("test_final_confirmation")
-        self.post(action="start_questionnaire")
-        self.assertInBody("What is your favourite breakfast food")
-
-        # When I make a GET or POST request to the submit page
-        for method in [self.get, self.post]:
-            with self.subTest(method=method):
-                method(url=SUBMIT_URL_PATH)
-
-                # Then I am redirected to the first incomplete question
-                self.assertInUrl("/breakfast")
-
-    def test_final_confirmation_asked_at_end_of_questionnaire(self):
-        # Given I launch a questionnaire
-        self.launchSurvey("test_final_confirmation")
-
-        # When I complete the questionnaire
-        self.post(action="start_questionnaire")
-        self.assertInBody("What is your favourite breakfast food")
-        self.post({"breakfast-answer": "Bacon"})
-
-        # Then I am presented with a confirmation page which I am able to submit
-        self.assertInUrl(SUBMIT_URL_PATH)
-        self.assertNotInBody("What is your favourite breakfast food")
-        self.assertInBody("Thank you for your answers, submit this to complete it")
-        self.assertInBody("Submit")
 
         self.post()
         self.assertInUrl(THANK_YOU_URL_PATH)
