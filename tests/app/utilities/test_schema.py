@@ -12,7 +12,7 @@ from app.utilities.schema import (
     cache_questionnaire_schemas,
     get_allowed_languages,
     get_schema_list,
-    get_schema_name_from_census_params,
+    get_schema_name_from_params,
     get_schema_path_map,
     load_schema_from_metadata,
     load_schema_from_name,
@@ -22,34 +22,13 @@ from app.utilities.schema import (
 TEST_SCHEMA_URL = "http://test.domain/schema.json"
 
 
-def test_valid_schema_names_from_census_params():
-    assert (
-        get_schema_name_from_census_params("census", "I", "GB-WLS")
-        == "census_individual_gb_wls"
-    )
-    assert (
-        get_schema_name_from_census_params("census", "H", "GB-WLS")
-        == "census_household_gb_wls"
-    )
-    assert (
-        get_schema_name_from_census_params("census", "C", "GB-WLS")
-        == "census_communal_establishment_gb_wls"
-    )
-
-
-def test_get_schema_name_from_census_params_invalid_form_type():
-    with pytest.raises(ValueError):
-        get_schema_name_from_census_params("census", "bad", "GB-WLS")
+def test_valid_schema_names_from_params():
+    assert get_schema_name_from_params("mbs", "0253") == "mbs_0253"
 
 
 @pytest.mark.parametrize(
     "schema_name, launch_language, expected",
     [
-        ("census_individual_gb_wls", "en", ["en", "cy"]),
-        ("census_individual_gb_wls", "cy", ["en", "cy"]),
-        ("census_individual_gb_nir", "en", ["en"]),
-        ("census_individual_gb_nir", "ga", ["en", "ga"]),
-        ("census_individual_gb_nir", "eo", ["en", "eo"]),
         ("invalid_schema_name", "en", ["en"]),
         ("test_language", "invalid_language", ["en"]),
         ("test_language", None, ["en"]),

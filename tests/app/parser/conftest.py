@@ -20,13 +20,12 @@ def fake_metadata_runner():
 
 
 @pytest.fixture
-def fake_census_metadata_runner(fake_metadata_runner):
-    """Generate a set of claims required for runner using census parameters instead of schema_name"""
+def fake_business_metadata_runner(fake_metadata_runner):
+    """Generate a set of claims required for runner using business parameters instead of schema_name"""
     del fake_metadata_runner["schema_name"]
 
-    fake_metadata_runner["survey"] = "CENSUS"
-    fake_metadata_runner["form_type"] = "I"
-    fake_metadata_runner["region_code"] = "GB-ENG"
+    fake_metadata_runner["eq_id"] = "mbs"
+    fake_metadata_runner["form_type"] = "0253"
 
     return fake_metadata_runner
 
