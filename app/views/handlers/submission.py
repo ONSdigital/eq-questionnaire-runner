@@ -29,7 +29,7 @@ class SubmissionHandler:
         )
         submitted = current_app.eq["submitter"].send_message(
             encrypted_message,
-            case_id=self._metadata.get("case_id"),
+            case_id=self._metadata["case_id"],
             tx_id=self._metadata.get("tx_id"),
         )
 

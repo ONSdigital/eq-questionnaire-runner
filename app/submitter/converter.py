@@ -65,6 +65,7 @@ def convert_answers(schema, questionnaire_store, routing_path, flushed=False):
     submitted_at = datetime.utcnow()
 
     payload = {
+        "case_id": metadata["case_id"],
         "tx_id": metadata["tx_id"],
         "type": "uk.gov.ons.edc.eq:surveyresponse",
         "version": schema.json["data_version"],
@@ -87,8 +88,6 @@ def convert_answers(schema, questionnaire_store, routing_path, flushed=False):
         payload["region_code"] = metadata["region_code"]
     if response_metadata.get("started_at"):
         payload["started_at"] = response_metadata["started_at"]
-    if metadata.get("case_id"):
-        payload["case_id"] = metadata["case_id"]
     if metadata.get("case_ref"):
         payload["case_ref"] = metadata["case_ref"]
 
