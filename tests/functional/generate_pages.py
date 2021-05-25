@@ -186,12 +186,6 @@ SUMMARY_TITLE_GETTER = Template(
 """
 )
 
-SUMMARY_SHOW_ALL_BUTTON = Template(
-    r"""  summaryShowAllButton() { return `.js-collapsible-all`; }
-
-"""
-)
-
 SUMMARY_QUESTION_GETTER = Template(
     r"""  ${questionName}() { return `[data-qa=${questionId}]`; }
 
@@ -500,9 +494,6 @@ def write_summary_spec(page_spec, section, collapsible, section_summary):
                     )
 
                 page_spec.write(SUMMARY_QUESTION_GETTER.substitute(question_context))
-
-            if section_summary:
-                page_spec.write(SUMMARY_SHOW_ALL_BUTTON.substitute())
 
         if not collapsible:
             group_context = {
