@@ -118,9 +118,6 @@ class ContextHelper:
         if self.context_options.mobile_logo:
             context["mobileLogo"] = self.context_options.mobile_logo
 
-        if "census" in self._theme:
-            return {"census": context}
-
         return context
 
     @cached_property
@@ -272,9 +269,9 @@ def generate_context(
     context_options = {
         "business": ContextOptions,
         "health": ContextOptions,
-        "social": ContextOptions if language == "en" else ContextOptionsCymraeg,
+        "social": ContextOptionsCymraeg if language != "en" else ContextOptions,
         "census": (
-            CensusContextOptions if language == "en" else CensusContextOptionsCymraeg
+            CensusContextOptionsCymraeg if language != "en" else CensusContextOptions
         ),
         "default": ContextOptions,
         "census-nisra": CensusNISRAContextOptions,

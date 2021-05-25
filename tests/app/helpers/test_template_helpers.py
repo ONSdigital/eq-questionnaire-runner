@@ -90,12 +90,10 @@ def test_get_page_header_context_business(app):
 def test_get_page_header_context_census(app):
     with app.app_context():
         expected = {
-            "census": {
-                "logo": "ons-logo-pos-en",
-                "logoAlt": "Office for National Statistics logo",
-                "titleLogo": "census-logo-en",
-                "titleLogoAlt": "Census 2021",
-            }
+            "logo": "ons-logo-pos-en",
+            "logoAlt": "Office for National Statistics logo",
+            "titleLogo": "census-logo-en",
+            "titleLogoAlt": "Census 2021",
         }
         result = generate_context(
             "census",
@@ -108,14 +106,12 @@ def test_get_page_header_context_census(app):
 def test_get_page_header_context_census_nisra(app):
     with app.app_context():
         expected = {
-            "census": {
-                "logo": "nisra-logo-en",
-                "logoAlt": "Northern Ireland Statistics and Research Agency logo",
-                "titleLogo": "census-logo-en",
-                "titleLogoAlt": "Census 2021",
-                "customHeaderLogo": "nisra",
-                "mobileLogo": "nisra-logo-en-mobile",
-            }
+            "logo": "nisra-logo-en",
+            "logoAlt": "Northern Ireland Statistics and Research Agency logo",
+            "titleLogo": "census-logo-en",
+            "titleLogoAlt": "Census 2021",
+            "customHeaderLogo": "nisra",
+            "mobileLogo": "nisra-logo-en-mobile",
         }
 
         result = generate_context(
