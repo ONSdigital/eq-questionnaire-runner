@@ -13,7 +13,7 @@ from marshmallow import (
 )
 from structlog import get_logger
 
-from app.utilities.schema import get_schema_name_from_census_params
+from app.utilities.schema import get_schema_name_from_params
 
 logger = get_logger()
 
@@ -96,43 +96,39 @@ class RunnerMetadataSchema(Schema, StripWhitespaceMixin):
     survey = VALIDATORS["string"](
         required=False, validate=validate.OneOf(("CENSUS", "CCS")), missing="CENSUS"
     )  # type:ignore
-    form_type = VALIDATORS["string"](
-        required=False, validate=validate.OneOf(("H", "I", "C"))
-    )  # type:ignore
     region_code = VALIDATORS["string"](
         required=False, validate=RegionCode()
     )  # type:ignore
 
+    # The following two parameters are for business schemas
+    form_type = VALIDATORS["string"](required=False)  # type:ignore
+    eq_id = VALIDATORS["string"](required=False)  # type:ignore
+
     @validates_schema
     def validate_schema_name(self, data, **kwargs):
         # pylint: disable=no-self-use, unused-argument
-        """Temporary function for census to validate the census schema parameters
-        This can be removed after census.
-        """
-        individual_schema_claims = (
-            data.get("survey"),
-            data.get("form_type"),
-            data.get("region_code"),
-        )
+        """Function to validate the business schema parameters"""
         if not data.get("schema_name"):
-            if not all(individual_schema_claims):
+            business_schema_claims = (
+                data.get("eq_id"),
+                data.get("form_type"),
+            )
+            if not all(business_schema_claims):
                 raise ValidationError(
-                    "Either 'schema_name' or 'survey' and 'form_type' and 'region_code' must be defined"
+                    "Either 'schema_name' or 'eq_id' and 'form_type' must be defined"
                 )
 
     @post_load
     def convert_schema_name(self, data, **kwargs):
         # pylint: disable=no-self-use, unused-argument
-        """Temporary function for census to transform parameters into a census schema
-        This can be removed after census.
-        """
+        """Function to transform parameters into a business schema"""
         if data.get("schema_name"):
             logger.info(
-                "Using schema_name claim to specify schema, overriding survey, form_type and region_code"
+                "Using schema_name claim to specify schema, overriding eq_id and form_type"
             )
         else:
-            data["schema_name"] = get_schema_name_from_census_params(
-                data.get("survey"), data.get("form_type"), data.get("region_code")
+            data["schema_name"] = get_schema_name_from_params(
+                data.get("eq_id"), data.get("form_type")
             )
         return data
 
