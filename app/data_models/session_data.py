@@ -10,7 +10,7 @@ class SessionData:
         ru_name,
         ru_ref,
         response_id,
-        case_id=None,
+        case_id,
         case_ref=None,
         account_service_url=None,
         account_service_log_out_url=None,

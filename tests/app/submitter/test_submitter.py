@@ -182,23 +182,6 @@ class TestRabbitMQSubmitter(TestCase):
             self.assertEqual(headers["tx_id"], "12345")
             self.assertEqual(headers["case_id"], "98765")
 
-    def test_when_message_sent_then_case_id_not_in_header_if_missing(self):
-        # Given
-        channel = Mock()
-        connection = Mock()
-        connection.channel.side_effect = Mock(return_value=channel)
-        with patch(
-            "app.submitter.submitter.BlockingConnection", return_value=connection
-        ):
-            # When
-            self.submitter.send_message(message={}, tx_id="12345")
-
-            # Then
-            call_args = channel.basic_publish.call_args
-            properties = call_args[1]["properties"]
-            headers = properties.headers
-            self.assertEqual(headers["tx_id"], "12345")
-
 
 class TestGCSSubmitter(TestCase):
     @staticmethod

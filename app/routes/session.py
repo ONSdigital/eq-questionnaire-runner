@@ -75,11 +75,13 @@ def login():
     schema_name = claims["schema_name"]
     tx_id = claims["tx_id"]
     ru_ref = claims["ru_ref"]
+    case_id = claims["case_id"]
 
     logger.bind(
         schema_name=schema_name,
         tx_id=tx_id,
         ru_ref=ru_ref,
+        case_id=case_id,
     )
     logger.info("decrypted token and parsed metadata")
 
