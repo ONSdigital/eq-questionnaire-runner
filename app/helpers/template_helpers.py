@@ -37,6 +37,7 @@ class ContextOptions:
     copyright_text: Optional[str] = lazy_gettext(
         "Use of address data is subject to the terms and conditions."
     )
+    account_service_url: Optional[str] = None
     title_logo: Optional[str] = None
     title_logo_alt: Optional[str] = None
     header_logo: Optional[str] = None
@@ -209,12 +210,14 @@ class ContextOptionsCymraeg(ContextOptions):
 class CensusContextOptions(ContextOptions):
     title_logo: str = "census-logo-en"
     title_logo_alt: str = lazy_gettext("Census 2021")
+    account_service_url = f"{CENSUS_EN_BASE_URL}/en/start"
 
 
 @dataclass
 class CensusContextOptionsCymraeg(ContextOptionsCymraeg):
     title_logo: str = "census-logo-cy"
     title_logo_alt: str = lazy_gettext("Census 2021")
+    account_service_url = f"{CENSUS_CY_BASE_URL}/en/start"
 
 
 @dataclass
@@ -259,6 +262,7 @@ class CensusNISRAContextOptions(CensusContextOptions):
     )
     powered_by_logo: str = "nisra-logo-black-en"
     powered_by_logo_alt: str = "NISRA - Northern Ireland Statistics and Research Agency"
+    account_service_url = CENSUS_NIR_BASE_URL
 
 
 def generate_context(
@@ -269,9 +273,9 @@ def generate_context(
     context_options = {
         "business": ContextOptions,
         "health": ContextOptions,
-        "social": ContextOptionsCymraeg if language != "en" else ContextOptions,
+        "social": ContextOptionsCymraeg if language == "cy" else ContextOptions,
         "census": (
-            CensusContextOptionsCymraeg if language != "en" else CensusContextOptions
+            CensusContextOptionsCymraeg if language == "cy" else CensusContextOptions
         ),
         "default": ContextOptions,
         "census-nisra": CensusNISRAContextOptions,
