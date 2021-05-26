@@ -280,11 +280,7 @@ class Router:
 
     def get_last_location_in_questionnaire(self) -> Location:
         routing_path = self.routing_path(*self._get_last_complete_section_key())
-        return Location(
-            section_id=routing_path.section_id,
-            block_id=routing_path[-1],
-            list_item_id=routing_path.list_item_id,
-        )
+        return self.get_last_location_in_section(routing_path)
 
     @staticmethod
     def _get_section_url(location):
