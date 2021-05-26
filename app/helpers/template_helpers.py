@@ -94,7 +94,7 @@ class ContextHelper:
             "page_header": self.page_header_context,
             "footer": self.footer_context,
             "languages": get_languages_context(self._language),
-            "theme": self._map_theme(self._theme),
+            "theme": self.context_options.design_system_theme,
             "language_code": self._language,
             "schema_theme": self._theme,
             "survey_title": self.context_options.survey_title,
@@ -169,17 +169,6 @@ class ContextHelper:
             return lazy_gettext(
                 "Make sure you <a href='{sign_out_url}'>leave this page</a> or close your browser if using a shared device"
             ).format(sign_out_url=self._sign_out_url)
-
-    @staticmethod
-    def _map_theme(theme: str) -> str:
-        """Maps a survey schema theme to a design system theme
-
-        :param theme: A schema defined theme
-        :returns: A design system theme
-        """
-        if theme and theme not in ["census", "census-nisra"]:
-            return "main"
-        return "census"
 
 
 @dataclass
