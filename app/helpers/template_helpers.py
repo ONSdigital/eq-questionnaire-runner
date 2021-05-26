@@ -48,6 +48,7 @@ class ContextOptions:
     crest: bool = True
     footer_links: Optional[Iterable[Link]] = None
     footer_legal_links: Optional[Iterable[Link]] = None
+    survey_title: Optional[str] = lazy_gettext("Census 2021")
 
 
 class ContextHelper:
@@ -92,7 +93,7 @@ class ContextHelper:
             "theme": self._map_theme(self._theme),
             "language_code": get_locale().language,
             "schema_theme": self._theme,
-            "survey_title": lazy_gettext("Census 2021"),
+            "survey_title": self.context_options.survey_title,
             "cdn_url": self._cdn_url,
             "address_lookup_api_url": self._address_lookup_api,
             "data_layer": get_data_layer(self._theme),
