@@ -1,9 +1,9 @@
-import DessertBlockPage from "../../../generated_pages/summary_with_submission_text/dessert-block.page.js";
-import SubmitPage from "../../../generated_pages/summary_with_submission_text/submit.page.js";
+import DessertBlockPage from "../../../generated_pages/submit_with_summary_custom_submission_text/dessert-block.page.js";
+import SubmitPage from "../../../generated_pages/submit_with_summary_custom_submission_text/submit.page.js";
 
 describe("Summary Screen", () => {
   beforeEach("Load the survey", () => {
-    browser.openQuestionnaire("test_summary_with_submission_text.json");
+    browser.openQuestionnaire("test_submit_with_summary_custom_submission_text.json");
   });
 
   it("Given a survey with summary has been completed, when submission content has been set in the schema, then the correct content should be displayed", () => {

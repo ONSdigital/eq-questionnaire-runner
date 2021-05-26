@@ -149,7 +149,7 @@ class TestPathFinder(AppContextTestCase):
         self.assertEqual(routing_path, expected_routing_path)
 
     def test_routing_path(self):
-        schema = load_schema_from_name("test_summary")
+        schema = load_schema_from_name("test_submit_with_summary")
         section_id = schema.get_section_id_for_block_id("dessert")
         expected_path = RoutingPath(
             ["radio", "dessert", "dessert-confirmation", "numbers"],

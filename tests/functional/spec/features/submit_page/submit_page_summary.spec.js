@@ -1,12 +1,12 @@
-import DessertPage from "../../../generated_pages/summary/dessert.page.js";
-import DessertConfirmationPage from "../../../generated_pages/summary/dessert-confirmation.page";
-import NumbersPage from "../../../generated_pages/summary/numbers.page.js";
-import RadioPage from "../../../generated_pages/summary/radio.page.js";
-import SubmitPage from "../../../generated_pages/summary/submit.page.js";
+import DessertPage from "../../../generated_pages/submit_with_summary/dessert.page.js";
+import DessertConfirmationPage from "../../../generated_pages/submit_with_summary/dessert-confirmation.page";
+import NumbersPage from "../../../generated_pages/submit_with_summary/numbers.page.js";
+import RadioPage from "../../../generated_pages/submit_with_summary/radio.page.js";
+import SubmitPage from "../../../generated_pages/submit_with_summary/submit.page.js";
 
 describe("Submit Page with Summary", () => {
   beforeEach("Load the survey", () => {
-    browser.openQuestionnaire("test_summary.json");
+    browser.openQuestionnaire("test_submit_with_summary.json");
   });
 
   it("Given a survey with a summary has been completed when the submit page is displayed, then it should contain a summary of all answers", () => {

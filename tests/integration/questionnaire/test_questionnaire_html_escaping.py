@@ -123,7 +123,7 @@ class TestQuestionnaireHtmlEscaping(IntegrationTestCase):
         assert expected_remove_aria_label in self.getResponseData()
 
     def test_summary(self):
-        self.launchSurvey("test_summary")
+        self.launchSurvey("test_submit_with_summary")
         self.post({"radio-answer": "Bacon"})
         self.post({"dessert-answer": HTML_CONTENT})
         self.post({"dessert-confirmation-answer": "Yes"})
@@ -137,7 +137,7 @@ class TestQuestionnaireHtmlEscaping(IntegrationTestCase):
         assert expected_change_aria_label in self.getResponseData()
 
     def test_radio_mandatory_error_with_placeholders(self):
-        self.launchSurvey("test_summary")
+        self.launchSurvey("test_submit_with_summary")
         self.post({"radio-answer": "Bacon"})
         self.post({"dessert-answer": HTML_CONTENT})
         self.post()

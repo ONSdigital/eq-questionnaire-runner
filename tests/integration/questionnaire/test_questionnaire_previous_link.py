@@ -5,14 +5,14 @@ from tests.integration.questionnaire import SUBMIT_URL_PATH, THANK_YOU_URL_PATH
 class TestQuestionnairePreviousLink(IntegrationTestCase):
     def test_previous_link_doesnt_appear_on_introduction(self):
         # Given
-        self.launchSurvey("test_submit_page")
+        self.launchSurvey("test_submit_with_custom_submission_text")
         # When we open the introduction
         # Then previous link does not appear
         self.assertNotInBody("Previous")
 
     def test_previous_link_appears_on_the_submit_page(self):
         # Given
-        self.launchSurvey("test_submit_page")
+        self.launchSurvey("test_submit_with_custom_submission_text")
 
         # When we proceed through the questionnaire
         self.post(action="start_questionnaire")
@@ -23,7 +23,7 @@ class TestQuestionnairePreviousLink(IntegrationTestCase):
 
     def test_previous_link_appears_on_the_submit_page_with_summary(self):
         # Given
-        self.launchSurvey("test_summary")
+        self.launchSurvey("test_submit_with_summary")
 
         # When we proceed through the questionnaire
         self.post()
@@ -35,7 +35,7 @@ class TestQuestionnairePreviousLink(IntegrationTestCase):
 
     def test_previous_link_doesnt_appear_on_thank_you(self):
         # Given
-        self.launchSurvey("test_submit_page")
+        self.launchSurvey("test_submit_with_custom_submission_text")
 
         # When ee proceed through the questionnaire
         self.post(action="start_questionnaire")

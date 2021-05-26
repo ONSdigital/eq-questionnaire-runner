@@ -21,7 +21,7 @@ class TestQuestionnaireSubmit(IntegrationTestCase):
 
     def test_invalid_block_once_questionnaire_complete_raises_404(self):
         # Given I launch questionnaire
-        self.launchSurvey("test_submit_page")
+        self.launchSurvey("test_submit_with_custom_submission_text")
 
         # When I proceed through the questionnaire
         self.post(action="start_questionnaire")
@@ -62,7 +62,7 @@ class TestQuestionnaireSubmitWithoutSummary(IntegrationTestCase):
         self,
     ):
         # Given a partially completed questionnaire
-        self.launchSurvey("test_submit_page")
+        self.launchSurvey("test_submit_with_custom_submission_text")
         self.post(action="start_questionnaire")
         self.assertInBody("What is your favourite breakfast food")
 
@@ -76,7 +76,7 @@ class TestQuestionnaireSubmitWithoutSummary(IntegrationTestCase):
 
     def test_is_displayed(self):
         # Given I launch a questionnaire
-        self.launchSurvey("test_submit_page")
+        self.launchSurvey("test_submit_with_custom_submission_text")
 
         # When I complete the questionnaire
         self.post(action="start_questionnaire")

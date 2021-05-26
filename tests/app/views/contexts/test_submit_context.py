@@ -47,7 +47,7 @@ class TestSubmitContext(SubmitContextTestCase):
         self.assertEqual(context["submit_button"], "Submit answers")
 
     def test_custom_submission_content(self):
-        self.schema = load_schema_from_name("test_submit_page")
+        self.schema = load_schema_from_name("test_submit_with_custom_submission_text")
         submit_questionnaire_context = SubmitQuestionnaireContext(
             self.language,
             self.schema,
@@ -70,7 +70,7 @@ class TestSubmitContext(SubmitContextTestCase):
         self.assertEqual(context["submit_button"], "Submit")
 
     def test_summary_context_not_built_when_no_summary(self):
-        self.schema = load_schema_from_name("test_submit_page")
+        self.schema = load_schema_from_name("test_submit_with_custom_submission_text")
         submit_questionnaire_context = SubmitQuestionnaireContext(
             self.language,
             self.schema,
@@ -87,7 +87,7 @@ class TestSubmitContext(SubmitContextTestCase):
 
 class TestSubmitContextWithSummary(SubmitContextTestCase, TestSummaryContextHelper):
     def test_context(self):
-        self.schema = load_schema_from_name("test_summary")
+        self.schema = load_schema_from_name("test_submit_with_summary")
         submit_questionnaire_context = SubmitQuestionnaireContext(
             self.language,
             self.schema,
