@@ -50,6 +50,7 @@ class ContextOptions:
     footer_legal_links: Optional[Iterable[Link]] = None
     survey_title: Optional[str] = lazy_gettext("Census 2021")
     data_layer: Optional[Iterable[Mapping]] = field(default_factory=list)
+    design_system_theme: Optional[str] = "main"
 
 
 class ContextHelper:
@@ -213,6 +214,7 @@ class CensusContextOptions(ContextOptions):
     title_logo: str = "census-logo-en"
     title_logo_alt: str = lazy_gettext("Census 2021")
     account_service_url = f"{CENSUS_EN_BASE_URL}/en/start"
+    design_system_theme = "census"
 
     def __post_init__(self) -> None:
         self.data_layer = [{"nisra": False}]
@@ -223,6 +225,7 @@ class CensusContextOptionsCymraeg(ContextOptionsCymraeg):
     title_logo: str = "census-logo-cy"
     title_logo_alt: str = lazy_gettext("Census 2021")
     account_service_url = f"{CENSUS_CY_BASE_URL}/en/start"
+    design_system_theme = "census"
 
     def __post_init__(self) -> None:
         self.data_layer = [{"nisra": False}]
