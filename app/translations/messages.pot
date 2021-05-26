@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2021-05-24 09:45+0100\n"
+"POT-Creation-Date: 2021-05-26 19:58+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -682,11 +682,11 @@ msgstr ""
 msgid "Thank you for completing the census"
 msgstr ""
 
-#: templates/calculatedsummary.html:13
+#: templates/calculatedsummary.html:14
 msgid "Please review your answers and confirm these are correct"
 msgstr ""
 
-#: templates/calculatedsummary.html:26
+#: templates/calculatedsummary.html:25
 msgid "Yes, I confirm these are correct"
 msgstr ""
 
@@ -872,10 +872,6 @@ msgstr ""
 
 #: templates/signed-out.html:9
 msgid "Return to your account"
-msgstr ""
-
-#: templates/submit-with-summary.html:18
-msgid "Submitting"
 msgstr ""
 
 #: templates/thank-you.html:4
