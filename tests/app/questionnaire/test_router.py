@@ -13,7 +13,7 @@ from app.utilities.schema import load_schema_from_name
 from tests.app.app_context_test_case import AppContextTestCase
 
 
-class TestRouterBaseTestCase(AppContextTestCase):
+class RouterTestCase(AppContextTestCase):
     schema = None
     answer_store = AnswerStore()
     list_store = ListStore()
@@ -31,7 +31,7 @@ class TestRouterBaseTestCase(AppContextTestCase):
         )
 
 
-class TestRouterBase(TestRouterBaseTestCase):
+class TestRouter(RouterTestCase):
     def test_enabled_section_ids(self):
         self.schema = load_schema_from_name("test_section_enabled_checkbox")
         self.progress_store = ProgressStore(
@@ -114,7 +114,7 @@ class TestRouterBase(TestRouterBaseTestCase):
         self.assertEqual(expected_path, routing_path)
 
 
-class TestRouterPathCompletion(TestRouterBaseTestCase):
+class TestRouterPathCompletion(RouterTestCase):
     def test_is_complete(self):
         self.schema = load_schema_from_name("test_textfield")
         self.progress_store = ProgressStore(
@@ -142,7 +142,7 @@ class TestRouterPathCompletion(TestRouterBaseTestCase):
         self.assertFalse(is_path_complete)
 
 
-class TestRouterQuestionnaireCompletion(TestRouterBaseTestCase):
+class TestRouterQuestionnaireCompletion(RouterTestCase):
     def test_is_complete(self):
         self.schema = load_schema_from_name("test_textfield")
         self.progress_store = ProgressStore(
@@ -162,33 +162,6 @@ class TestRouterQuestionnaireCompletion(TestRouterBaseTestCase):
 
     def test_is_not_complete(self):
         self.schema = load_schema_from_name("test_textfield")
-
-        is_questionnaire_complete = self.router.is_questionnaire_complete
-
-        self.assertFalse(is_questionnaire_complete)
-
-    def test_is_not_complete_with_repeating_sections(self):
-        self.schema = load_schema_from_name(
-            "test_repeating_sections_with_hub_and_spoke"
-        )
-        self.progress_store = ProgressStore(
-            [
-                {
-                    "section_id": "default-section",
-                    "status": CompletionStatus.COMPLETED,
-                    "block_ids": ["mandatory-checkbox", "non-mandatory-checkbox"],
-                }
-            ]
-        )
-        self.list_store = ListStore(
-            [
-                {
-                    "items": ["abc123", "123abc"],
-                    "name": "people",
-                    "primary_person": "abc123",
-                }
-            ]
-        )
 
         is_questionnaire_complete = self.router.is_questionnaire_complete
 
@@ -226,8 +199,35 @@ class TestRouterQuestionnaireCompletion(TestRouterBaseTestCase):
 
         self.assertTrue(is_questionnaire_complete)
 
+    def test_is_not_complete_with_repeating_sections(self):
+        self.schema = load_schema_from_name(
+            "test_repeating_sections_with_hub_and_spoke"
+        )
+        self.progress_store = ProgressStore(
+            [
+                {
+                    "section_id": "default-section",
+                    "status": CompletionStatus.COMPLETED,
+                    "block_ids": ["mandatory-checkbox", "non-mandatory-checkbox"],
+                }
+            ]
+        )
+        self.list_store = ListStore(
+            [
+                {
+                    "items": ["abc123", "123abc"],
+                    "name": "people",
+                    "primary_person": "abc123",
+                }
+            ]
+        )
 
-class TestRouterLocationAccessibility(TestRouterBaseTestCase):
+        is_questionnaire_complete = self.router.is_questionnaire_complete
+
+        self.assertFalse(is_questionnaire_complete)
+
+
+class TestRouterLocationValidity(RouterTestCase):
     def test_can_access(self):
         self.schema = load_schema_from_name("test_textfield")
 
@@ -309,8 +309,8 @@ class TestRouterLocationAccessibility(TestRouterBaseTestCase):
         self.assertFalse(can_access_location)
 
 
-class TestRouterNextLocation(TestRouterBaseTestCase):
-    def test_section_in_progress(self):
+class TestRouterNextLocation(RouterTestCase):
+    def test_within_section(self):
         self.schema = load_schema_from_name("test_checkbox")
         self.progress_store = ProgressStore(
             [
@@ -367,31 +367,6 @@ class TestRouterNextLocation(TestRouterBaseTestCase):
             "/questionnaire/sections/property-details-section/", next_location
         )
 
-    def test_get_first_incomplete_location_url_section_in_progress(
-        self,
-    ):
-        self.schema = Mock()
-        self.schema.get_block.return_value = {"type": "Question"}
-        self.progress_store = ProgressStore(
-            [
-                {
-                    "section_id": "section-1",
-                    "list_item_id": None,
-                    "status": CompletionStatus.IN_PROGRESS,
-                    "block_ids": ["block-1"],
-                }
-            ]
-        )
-        current_location = Location(section_id="section-1", block_id="block-1")
-        routing_path = RoutingPath(
-            ["block-1", "block-2", "block-1"], section_id="section-1"
-        )
-        next_location = self.router.get_next_location_url(
-            current_location, routing_path
-        )
-
-        self.assertIn("questionnaire/block-2/", next_location)
-
     def test_section_summary_on_completion_true(self):
         self.schema = load_schema_from_name("test_show_section_summary_on_completion")
         self.progress_store = ProgressStore(
@@ -440,7 +415,7 @@ class TestRouterNextLocation(TestRouterBaseTestCase):
         self.assertEqual(expected_location_url, next_location)
 
 
-class TestRouterNextLocationLinearFlow(TestRouterBaseTestCase):
+class TestRouterNextLocationLinearFlow(RouterTestCase):
     def test_redirects_to_submit_page_when_questionnaire_complete(
         self,
     ):
@@ -464,7 +439,7 @@ class TestRouterNextLocationLinearFlow(TestRouterBaseTestCase):
 
         self.assertEqual(url_for("questionnaire.submit_questionnaire"), next_location)
 
-    def test_return_to_final_summary_questionnaire_complete(self):
+    def test_return_to_final_summary_questionnaire_is_complete(self):
         self.schema = load_schema_from_name(
             "test_routing_to_questionnaire_end_single_section"
         )
@@ -487,7 +462,7 @@ class TestRouterNextLocationLinearFlow(TestRouterBaseTestCase):
 
         self.assertEqual(url_for("questionnaire.submit_questionnaire"), next_location)
 
-    def test_return_to_final_summary_questionnaire_incomplete(self):
+    def test_return_to_final_summary_questionnaire_is_not_complete(self):
         self.schema = load_schema_from_name(
             "test_routing_to_questionnaire_end_multiple_sections"
         )
@@ -517,8 +492,8 @@ class TestRouterNextLocationLinearFlow(TestRouterBaseTestCase):
         self.assertEqual(expected_location.url(), next_location)
 
 
-class TestRouterPreviousLocation(TestRouterBaseTestCase):
-    def test_url_on_question_page(self):
+class TestRouterPreviousLocation(RouterTestCase):
+    def test_within_section(self):
         self.schema = load_schema_from_name("test_checkbox")
 
         current_location = Location(
@@ -539,8 +514,8 @@ class TestRouterPreviousLocation(TestRouterBaseTestCase):
         self.assertEqual(expected_location_url, previous_location_url)
 
 
-class TestRouterPreviousLocationLinearFlow(TestRouterBaseTestCase):
-    def test_no_url_on_first_block_single_section(self):
+class TestRouterPreviousLocationLinearFlow(RouterTestCase):
+    def test_is_none_on_first_block_single_section(self):
         self.schema = load_schema_from_name("test_checkbox")
         self.progress_store = ProgressStore(
             [
@@ -566,7 +541,7 @@ class TestRouterPreviousLocationLinearFlow(TestRouterBaseTestCase):
 
         self.assertIsNone(previous_location_url)
 
-    def test_no_url_on_first_block_second_section(self):
+    def test_is_none_on_first_block_second_section(self):
         self.schema = load_schema_from_name("test_section_summary")
         self.progress_store = ProgressStore(
             [
@@ -593,7 +568,29 @@ class TestRouterPreviousLocationLinearFlow(TestRouterBaseTestCase):
 
         self.assertIsNone(previous_location_url)
 
-    def test_url_on_submit_page(self):
+
+class TestRouterPreviousLocationHubFlow(RouterTestCase):
+    def test_is_not_none_on_first_block_in_section(self):
+        self.schema = load_schema_from_name("test_hub_and_spoke")
+
+        current_location = Location(
+            section_id="employment-section", block_id="employment-status"
+        )
+
+        routing_path = RoutingPath(
+            ["employment-status", "employment-type"], section_id="employment-section"
+        )
+        previous_location_url = self.router.get_previous_location_url(
+            current_location, routing_path
+        )
+
+        self.assertEqual(
+            url_for("questionnaire.get_questionnaire"), previous_location_url
+        )
+
+
+class TestRouterLastLocationLinearFlow(RouterTestCase):
+    def test_block_on_path(self):
         self.schema = load_schema_from_name("test_checkbox")
         self.progress_store = ProgressStore(
             [
@@ -615,7 +612,7 @@ class TestRouterPreviousLocationLinearFlow(TestRouterBaseTestCase):
 
         self.assertEqual(expected_location, previous_location_url)
 
-    def test_url_on_submit_page_last_block_not_on_path(self):
+    def test_last_block_not_on_path(self):
         self.schema = load_schema_from_name(
             "test_routing_to_questionnaire_end_multiple_sections"
         )
@@ -661,28 +658,8 @@ class TestRouterPreviousLocationLinearFlow(TestRouterBaseTestCase):
         )
 
 
-class TestRouterPreviousLocationHubFlow(TestRouterBaseTestCase):
-    def test_url_on_first_block(self):
-        self.schema = load_schema_from_name("test_hub_and_spoke")
-
-        current_location = Location(
-            section_id="employment-section", block_id="employment-status"
-        )
-
-        routing_path = RoutingPath(
-            ["employment-status", "employment-type"], section_id="employment-section"
-        )
-        previous_location_url = self.router.get_previous_location_url(
-            current_location, routing_path
-        )
-
-        self.assertEqual(
-            url_for("questionnaire.get_questionnaire"), previous_location_url
-        )
-
-
-class TestRouterSectionResume(TestRouterBaseTestCase):
-    def test_section_complete_returns_url_for_first_incomplete_location(self):
+class TestRouterSectionResume(RouterTestCase):
+    def test_section_in_progress_returns_url_for_first_incomplete_location(self):
         self.schema = load_schema_from_name("test_section_summary")
 
         self.progress_store = ProgressStore(
@@ -690,7 +667,7 @@ class TestRouterSectionResume(TestRouterBaseTestCase):
                 {
                     "section_id": "property-details-section",
                     "list_item_id": None,
-                    "status": CompletionStatus.COMPLETED,
+                    "status": CompletionStatus.IN_PROGRESS,
                     "block_ids": ["insurance-type"],
                 }
             ]
@@ -709,7 +686,7 @@ class TestRouterSectionResume(TestRouterBaseTestCase):
             "questionnaire/insurance-address/?resume=True", section_resume_url
         )
 
-    def test_section_incomplete_returns_url_for_first_location(
+    def test_section_complete_returns_url_for_first_location(
         self,
     ):
         self.schema = load_schema_from_name("test_hub_complete_sections")
@@ -733,32 +710,5 @@ class TestRouterSectionResume(TestRouterBaseTestCase):
 
         self.assertIn(
             "questionnaire/employment-status/",
-            section_resume_url,
-        )
-
-    def test_section_in_progress_returns_url_for_first_incomplete_location(
-        self,
-    ):
-        self.schema = load_schema_from_name("test_hub_complete_sections")
-        self.progress_store = ProgressStore(
-            [
-                {
-                    "section_id": "employment-section",
-                    "block_ids": ["employment-status"],
-                    "status": CompletionStatus.IN_PROGRESS,
-                }
-            ],
-        )
-
-        routing_path = RoutingPath(
-            ["employment-status", "employment-type"], section_id="employment-section"
-        )
-
-        section_resume_url = self.router.get_section_resume_url(
-            routing_path=routing_path
-        )
-
-        self.assertIn(
-            "questionnaire/employment-type/?resume=True",
             section_resume_url,
         )
