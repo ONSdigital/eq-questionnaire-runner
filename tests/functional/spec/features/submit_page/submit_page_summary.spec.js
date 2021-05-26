@@ -5,11 +5,11 @@ import RadioPage from "../../../generated_pages/submit_with_summary/radio.page.j
 import SubmitPage from "../../../generated_pages/submit_with_summary/submit.page.js";
 
 describe("Submit Page with Summary", () => {
-  beforeEach("Load the survey", () => {
+  beforeEach("Load the questionnaire", () => {
     browser.openQuestionnaire("test_submit_with_summary.json");
   });
 
-  it("Given a survey with a summary has been completed when the submit page is displayed, then it should contain a summary of all answers", () => {
+  it("Given a questionnaire with a summary has been completed when the submit page is displayed, then it should contain a summary of all answers", () => {
     completeAllQuestions();
 
     expect($(SubmitPage.radioAnswer()).getText()).to.contain("Bacon");
@@ -21,14 +21,14 @@ describe("Submit Page with Summary", () => {
     expect($(SubmitPage.numbersDecimalAnswer()).getText()).to.contain("123,456.78");
   });
 
-  it("Given a survey with a summary has been completed when the submit page is displayed then I should be able to submit the answers", () => {
+  it("Given a questionnaire with a summary has been completed when the submit page is displayed then I should be able to submit the answers", () => {
     completeAllQuestions();
 
     $(SubmitPage.submit()).click();
     expect(browser.getUrl()).to.contain("thank-you");
   });
 
-  it("Given a survey with a summary has been completed when a summary page edit link is clicked then it should return to that question", () => {
+  it("Given a questionnaire with a summary has been completed when a summary page edit link is clicked then it should return to that question", () => {
     completeAllQuestions();
 
     $(SubmitPage.radioAnswerEdit()).click();
@@ -36,7 +36,7 @@ describe("Submit Page with Summary", () => {
     expect($(RadioPage.bacon()).isSelected()).to.be.true;
   });
 
-  it("Given a survey with a summary has been completed when a summary page edit link is clicked then it should return to that question then back to summary", () => {
+  it("Given a questionnaire with a summary has been completed when a summary page edit link is clicked then it should return to that question then back to summary", () => {
     completeAllQuestions();
 
     $(SubmitPage.radioAnswerEdit()).click();
@@ -76,7 +76,7 @@ describe("Submit Page with Summary", () => {
     expect($(SubmitPage.numbersCurrencyAnswer()).getText()).to.contain("No answer provided");
   });
 
-  it("Given a survey with a summary has been completed, when submission content has not been set in the schema, then the default content should be displayed", () => {
+  it("Given a questionnaire with a summary has been completed, when submission content has not been set in the schema, then the default content should be displayed", () => {
     completeAllQuestions();
 
     expect($(SubmitPage.heading()).getText()).to.contain("Check your answers and submit");

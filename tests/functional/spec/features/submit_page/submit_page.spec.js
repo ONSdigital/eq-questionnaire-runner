@@ -3,7 +3,7 @@ import { SubmitPage } from "../../../base_pages/submit.page";
 import { IntroductionPage } from "../../../base_pages/introduction.page";
 
 describe("Given I launch a linear flow questionnaire without summary", () => {
-  beforeEach("Load the survey", () => {
+  beforeEach("Load the questionnaire", () => {
     browser.openQuestionnaire("test_submit_with_custom_submission_text.json");
     $(IntroductionPage.getStarted()).click();
   });
