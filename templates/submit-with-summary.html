@@ -5,19 +5,3 @@
     {% include 'partials/summary/summary.html' %}
   </div>
 {%  endblock summary %}
-
-{% block submit_button %}
-  <p class="u-mt-m">
-    {{
-      onsButton({
-        "text": content.submit_button,
-        "submitType": 'timer',
-        "classes": "btn--loader js-btn-submit",
-        "attributes": {
-          "data-qa": "btn-submit",
-          "data-loading-msg": _("Submitting") + "&hellip;"
-        }
-      })
-    }}
-  </p>
-{% endblock submit_button %}
