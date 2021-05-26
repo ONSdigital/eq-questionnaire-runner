@@ -49,6 +49,7 @@ class ContextOptions:
     footer_links: Optional[Iterable[Link]] = None
     footer_legal_links: Optional[Iterable[Link]] = None
     survey_title: Optional[str] = lazy_gettext("Census 2021")
+    data_layer: Optional[Iterable[Mapping]] = field(default_factory=list)
 
 
 class ContextHelper:
@@ -96,7 +97,7 @@ class ContextHelper:
             "survey_title": self.context_options.survey_title,
             "cdn_url": self._cdn_url,
             "address_lookup_api_url": self._address_lookup_api,
-            "data_layer": get_data_layer(self._theme),
+            "data_layer": self.context_options.data_layer,
             "include_csrf_token": (
                 request.url_rule and "POST" in request.url_rule.methods
             ),
@@ -104,7 +105,7 @@ class ContextHelper:
             "google_tag_manager_auth": self._google_tag_manager_auth,
         }
 
-    @cached_property
+    @property
     def page_header_context(self) -> Dict[str, Any]:
         context = {
             "logo": f"{self.context_options.page_header_logo}",
@@ -122,7 +123,7 @@ class ContextHelper:
 
         return context
 
-    @cached_property
+    @property
     def footer_context(self):
         context = {
             "lang": self.context_options.lang,
@@ -213,12 +214,18 @@ class CensusContextOptions(ContextOptions):
     title_logo_alt: str = lazy_gettext("Census 2021")
     account_service_url = f"{CENSUS_EN_BASE_URL}/en/start"
 
+    def __post_init__(self) -> None:
+        self.data_layer = [{"nisra": False}]
+
 
 @dataclass
 class CensusContextOptionsCymraeg(ContextOptionsCymraeg):
     title_logo: str = "census-logo-cy"
     title_logo_alt: str = lazy_gettext("Census 2021")
     account_service_url = f"{CENSUS_CY_BASE_URL}/en/start"
+
+    def __post_init__(self) -> None:
+        self.data_layer = [{"nisra": False}]
 
 
 @dataclass
@@ -264,6 +271,9 @@ class CensusNISRAContextOptions(CensusContextOptions):
     powered_by_logo: str = "nisra-logo-black-en"
     powered_by_logo_alt: str = "NISRA - Northern Ireland Statistics and Research Agency"
     account_service_url = CENSUS_NIR_BASE_URL
+
+    def __post_init__(self) -> None:
+        self.data_layer = [{"nisra": True}]
 
 
 def generate_context(
@@ -316,13 +326,3 @@ def get_base_url(schema_theme: str, language_code: str) -> str:
         return CENSUS_NIR_BASE_URL
 
     return CENSUS_EN_BASE_URL
-
-
-def get_data_layer(theme: str) -> List:
-    if theme == "census-nisra":
-        return [{"nisra": True}]
-
-    if theme == "census":
-        return [{"nisra": False}]
-
-    return []

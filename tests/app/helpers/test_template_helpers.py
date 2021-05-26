@@ -2,7 +2,6 @@ from app.helpers.template_helpers import (
     Link,
     generate_context,
     get_base_url,
-    get_data_layer,
 )
 
 
@@ -120,13 +119,6 @@ def test_get_page_header_context_census_nisra(app):
             "en",
         )["page_header"]
     assert result == expected
-
-
-def test_get_data_layer_nisra_theme():
-    expected = [{"nisra": True}]
-    result = get_data_layer("census-nisra")
-
-    assert expected == result
 
 
 def test_get_base_url():
