@@ -153,7 +153,7 @@ class Router:
 
         return self.get_first_location_in_section(routing_path).url()
 
-    @cached_property
+    @property
     def is_questionnaire_complete(self) -> bool:
         first_incomplete_section_key = self._get_first_incomplete_section_key()
         return not first_incomplete_section_key
