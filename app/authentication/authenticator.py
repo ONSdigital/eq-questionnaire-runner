@@ -121,7 +121,7 @@ def _create_session_data_from_metadata(metadata):
         ru_name=metadata.get("ru_name"),
         ru_ref=metadata.get("ru_ref"),
         response_id=metadata.get("response_id"),
-        case_id=metadata.get("case_id"),
+        case_id=metadata["case_id"],
         case_ref=metadata.get("case_ref"),
         trad_as=metadata.get("trad_as"),
         account_service_url=metadata.get("account_service_url"),

@@ -12,7 +12,7 @@ logger = get_logger()
 
 class LogSubmitter:
     @staticmethod
-    def send_message(message, tx_id, case_id=None):
+    def send_message(message, tx_id, case_id):
         logger.info("sending message")
         logger.info(
             "message payload",
@@ -29,16 +29,11 @@ class GCSSubmitter:
         client = storage.Client()
         self.bucket = client.get_bucket(bucket_name)
 
-    def send_message(self, message, tx_id, case_id=None):
+    def send_message(self, message, tx_id, case_id):
         logger.info("sending message")
 
         blob = self.bucket.blob(tx_id)
-
-        blob.metadata = {"tx_id": tx_id}
-
-        if case_id:
-            blob.metadata["case_id"] = case_id
-
+        blob.metadata = {"tx_id": tx_id, "case_id": case_id}
         blob.upload_from_string(str(message).encode("utf8"))
 
         return True
@@ -100,7 +95,7 @@ class RabbitMQSubmitter:
         except AMQPError as e:
             logger.error("unable to close connection", exc_info=e, category="rabbitmq")
 
-    def send_message(self, message, tx_id, case_id=None):
+    def send_message(self, message, tx_id, case_id):
         """
         Sends a message to rabbit mq and returns a true or false depending on if it was successful
         :param message: The message to send to the rabbit mq queue
@@ -120,9 +115,7 @@ class RabbitMQSubmitter:
             properties = BasicProperties(headers={}, delivery_mode=2)
 
             properties.headers["tx_id"] = tx_id
-
-            if case_id:
-                properties.headers["case_id"] = case_id
+            properties.headers["case_id"] = case_id
 
             published = channel.basic_publish(
                 exchange="",
