@@ -1,4 +1,4 @@
-from app.helpers.template_helpers import Link, generate_context, get_base_url
+from app.helpers.template_helpers import generate_context, get_base_url
 
 
 def test_footer_context_census_nisra_theme(app):
@@ -14,42 +14,42 @@ def test_footer_context_census_nisra_theme(app):
             "rows": [
                 {
                     "itemsList": [
-                        Link(
-                            text="Help",
-                            url="https://census.gov.uk/ni/help/help-with-the-questions/online-questions-help/",
-                            target="_blank",
-                        ),
-                        Link(
-                            text="Contact us",
-                            url="https://census.gov.uk/ni/contact-us/",
-                            target="_blank",
-                        ),
+                        {
+                            "text": "Help",
+                            "url": "https://census.gov.uk/ni/help/help-with-the-questions/online-questions-help/",
+                            "target": "_blank",
+                        },
+                        {
+                            "text": "Contact us",
+                            "url": "https://census.gov.uk/ni/contact-us/",
+                            "target": "_blank",
+                        },
                     ]
                 }
             ],
             "legal": [
                 {
                     "itemsList": [
-                        Link(
-                            text="Cookies",
-                            url="https://census.gov.uk/ni/cookies/",
-                            target="_blank",
-                        ),
-                        Link(
-                            text="Accessibility statement",
-                            url="https://census.gov.uk/ni/accessibility-statement/",
-                            target="_blank",
-                        ),
-                        Link(
-                            text="Privacy and data protection",
-                            url="https://census.gov.uk/ni/privacy-and-data-protection/",
-                            target="_blank",
-                        ),
-                        Link(
-                            text="Terms and conditions",
-                            url="https://census.gov.uk/ni/terms-and-conditions/",
-                            target="_blank",
-                        ),
+                        {
+                            "text": "Cookies",
+                            "url": "https://census.gov.uk/ni/cookies/",
+                            "target": "_blank",
+                        },
+                        {
+                            "text": "Accessibility statement",
+                            "url": "https://census.gov.uk/ni/accessibility-statement/",
+                            "target": "_blank",
+                        },
+                        {
+                            "text": "Privacy and data protection",
+                            "url": "https://census.gov.uk/ni/privacy-and-data-protection/",
+                            "target": "_blank",
+                        },
+                        {
+                            "text": "Terms and conditions",
+                            "url": "https://census.gov.uk/ni/terms-and-conditions/",
+                            "target": "_blank",
+                        },
                     ]
                 }
             ],

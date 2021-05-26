@@ -143,13 +143,13 @@ class ContextHelper:
 
         if self.context_options.footer_links:
             for footer_link in self.context_options.footer_links:
-                footer_link.url = self._base_url + footer_link.url
+                footer_link["url"] = self._base_url + footer_link["url"]
             context["rows"] = [{"itemsList": self.context_options.footer_links}]
 
         if self.context_options.footer_legal_links:
             for footer_legal_link in self.context_options.footer_legal_links:
-                url = footer_legal_link.url
-                footer_legal_link.url = self._base_url + url
+                url = footer_legal_link["url"]
+                footer_legal_link["url"] = self._base_url + url
             context["legal"] = [{"itemsList": self.context_options.footer_legal_links}]
 
         if (
@@ -184,29 +184,33 @@ class ContextHelper:
 
 @dataclass
 class ContextOptionsCymraeg(ContextOptions):
-    footer_links: Iterable[Link] = field(
+    footer_links: Iterable[Mapping] = field(
         default_factory=lambda: [
             Link(
                 lazy_gettext("Help"),
                 "help/sut-i-ateb-y-cwestiynau/help-y-cwestiynau-ar-lein/",
-            ),
-            Link(lazy_gettext("Contact us"), "cysylltu-a-ni/"),
-            Link(lazy_gettext("Languages"), "help/ieithoedd-a-hygyrchedd/ieithoedd/"),
+            ).__dict__,
+            Link(lazy_gettext("Contact us"), "cysylltu-a-ni/").__dict__,
+            Link(
+                lazy_gettext("Languages"), "help/ieithoedd-a-hygyrchedd/ieithoedd/"
+            ).__dict__,
             Link(
                 lazy_gettext("BSL and audio videos"),
                 "help/ieithoedd-a-hygyrchedd/hygyrchedd/fideos-hygyrch-gyda-bsl/",
-            ),
+            ).__dict__,
         ]
     )
-    footer_legal_links: Iterable[Link] = field(
+    footer_legal_links: Iterable[Mapping] = field(
         default_factory=lambda: [
-            Link(lazy_gettext("Cookies"), "cwcis/"),
-            Link(lazy_gettext("Accessibility Statement"), "datganiad-hygyrchedd/"),
+            Link(lazy_gettext("Cookies"), "cwcis/").__dict__,
+            Link(
+                lazy_gettext("Accessibility Statement"), "datganiad-hygyrchedd/"
+            ).__dict__,
             Link(
                 lazy_gettext("Privacy and data protection"),
                 "preifatrwydd-a-diogelu-data/",
-            ),
-            Link(lazy_gettext("Terms and conditions"), "telerau-ac-amodau/"),
+            ).__dict__,
+            Link(lazy_gettext("Terms and conditions"), "telerau-ac-amodau/").__dict__,
         ]
     )
 
@@ -252,25 +256,25 @@ class CensusNISRAContextOptions(CensusContextOptions):
             Link(
                 lazy_gettext("Help"),
                 "help/help-with-the-questions/online-questions-help/",
-            ),
-            Link(lazy_gettext("Contact us"), "contact-us/"),
+            ).__dict__,
+            Link(lazy_gettext("Contact us"), "contact-us/").__dict__,
         ]
     )
-    footer_legal_links: Iterable[Link] = field(
+    footer_legal_links: Iterable[Mapping] = field(
         default_factory=lambda: [
-            Link(lazy_gettext("Cookies"), "cookies/"),
+            Link(lazy_gettext("Cookies"), "cookies/").__dict__,
             Link(
                 lazy_gettext("Accessibility statement"),
                 "accessibility-statement/",
-            ),
+            ).__dict__,
             Link(
                 lazy_gettext("Privacy and data protection"),
                 "privacy-and-data-protection/",
-            ),
+            ).__dict__,
             Link(
                 lazy_gettext("Terms and conditions"),
                 "terms-and-conditions/",
-            ),
+            ).__dict__,
         ]
     )
     powered_by_logo: str = "nisra-logo-black-en"
