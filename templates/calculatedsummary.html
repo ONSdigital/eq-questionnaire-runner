@@ -1,24 +1,23 @@
-{% extends 'layouts/_submit.html' %}
+{% extends 'layouts/_questionnaire.html' %}
+{% from "components/button/_macro.njk" import onsButton %}
+{% from "components/panel/_macro.njk" import onsPanel %}
 
-{% block page_title %}
+{% set save_on_signout = true %}
+
+{% block form_content %}
   <h1 data-qa="calculated-summary-title">{{content.summary.title}}</h1>
-{% endblock page_title %}
 
-{% block post_title_panel %}
   {% call onsPanel({
-        "type": "success",
-        "classes": "print__hidden u-mb-l"
-      })
-    %}
+      "type": "success",
+      "classes": "print__hidden u-mb-l"
+    }) %}
     <p>{{ _("Please review your answers and confirm these are correct") }}.</p>
   {% endcall %}
-{% endblock post_title_panel %}
 
-{% block summary %}
   <div class="u-mb-m">
     {% include 'partials/summary/summary.html' %}
   </div>
-{%  endblock summary %}
+{% endblock -%}
 
 {% block submit_button %}
   {{
