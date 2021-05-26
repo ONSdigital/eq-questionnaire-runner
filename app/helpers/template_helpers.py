@@ -1,6 +1,6 @@
 from dataclasses import asdict, dataclass, field
 from functools import cached_property
-from typing import Any, Dict, Iterable, List, Mapping, Optional, Union
+from typing import Any, Dict, Iterable, Mapping, Optional, Union
 
 from flask import current_app
 from flask import render_template as flask_render_template
@@ -58,11 +58,13 @@ class ContextHelper:
         self,
         theme: str,
         base_url: str,
+        language: str,
         context_options: ContextOptions = ContextOptions(),
     ):
-        self._base_url = base_url
-        self.context_options = context_options or ContextOptions()
         self._theme = theme
+        self._base_url = base_url
+        self._language = language
+        self.context_options = context_options or ContextOptions()
         self._sign_out_url = url_for("session.get_sign_out")
         self._account_service_url = cookie_session.get(
             "account_service_url", f"{self._base_url}en/start"
@@ -91,9 +93,9 @@ class ContextHelper:
             "cookie_settings_url": self._cookie_settings_url,
             "page_header": self.page_header_context,
             "footer": self.footer_context,
-            "languages": get_languages_context(),
+            "languages": get_languages_context(self._language),
             "theme": self._map_theme(self._theme),
-            "language_code": get_locale().language,
+            "language_code": self._language,
             "schema_theme": self._theme,
             "survey_title": self.context_options.survey_title,
             "cdn_url": self._cdn_url,
@@ -298,6 +300,7 @@ def generate_context(
     return ContextHelper(
         theme,
         base_url,
+        language,
         context_options[theme](),
     ).context
 

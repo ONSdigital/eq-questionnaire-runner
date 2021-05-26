@@ -1,7 +1,7 @@
+from typing import Any
 from urllib.parse import urlencode
 
 from flask import g, request
-from flask_babel import get_locale
 
 from app.globals import get_session_store
 from app.questionnaire.questionnaire_schema import DEFAULT_LANGUAGE_CODE
@@ -34,22 +34,22 @@ def handle_language():
             session_store.save()
 
 
-def get_languages_context():
+def get_languages_context(current_language: str) -> dict[str, Any]:
     context = []
     allowed_languages = g.get("allowed_languages")
     if allowed_languages and len(allowed_languages) > 1:
         for language in allowed_languages:
-            context.append(_get_language_context(language))
+            context.append(_get_language_context(language, current_language))
         return {"languages": context}
     return None
 
 
-def _get_language_context(language_code):
+def _get_language_context(language_code: str, current_language: str) -> dict[str, Any]:
     return {
         "ISOCode": language_code,
         "url": _get_query_string_with_language(language_code),
         "text": LANGUAGE_TEXT.get(language_code),
-        "current": language_code == get_locale().language,
+        "current": language_code == current_language,
     }
 
 

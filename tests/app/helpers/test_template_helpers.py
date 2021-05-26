@@ -1,8 +1,4 @@
-from app.helpers.template_helpers import (
-    Link,
-    generate_context,
-    get_base_url,
-)
+from app.helpers.template_helpers import Link, generate_context, get_base_url
 
 
 def test_footer_context_census_nisra_theme(app):
