@@ -46,10 +46,10 @@ class ContextOptions:
     powered_by_logo_alt: Optional[str] = None
     lang: str = "en"
     crest: bool = True
-    footer_links: Optional[Iterable[Link]] = None
-    footer_legal_links: Optional[Iterable[Link]] = None
+    footer_links: Optional[Iterable[Mapping]] = None
+    footer_legal_links: Optional[Iterable[Mapping]] = None
     survey_title: Optional[str] = lazy_gettext("Census 2021")
-    data_layer: Optional[Iterable[Mapping]] = field(default_factory=list)
+    data_layer: Iterable[Union[Mapping]] = field(default_factory=list)
     design_system_theme: Optional[str] = "main"
 
 
@@ -267,7 +267,7 @@ class CensusNISRAContextOptions(CensusContextOptions):
     copyright_text: str = lazy_gettext(
         "Use of address data is subject to the terms and conditions."
     )
-    footer_links: Iterable[Link] = field(
+    footer_links: Iterable[Mapping] = field(
         default_factory=lambda: [
             Link(
                 lazy_gettext("Help"),

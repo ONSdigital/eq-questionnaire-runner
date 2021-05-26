@@ -34,7 +34,7 @@ def handle_language():
             session_store.save()
 
 
-def get_languages_context(current_language: str) -> Union[dict[str, Any]]:
+def get_languages_context(current_language: str) -> Union[dict[str, Any], None]:
     context = []
     allowed_languages = g.get("allowed_languages")
     if allowed_languages and len(allowed_languages) > 1:
