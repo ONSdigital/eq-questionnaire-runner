@@ -1,5 +1,3 @@
-from pytest import xfail
-
 from tests.integration.integration_test_case import IntegrationTestCase
 
 
@@ -163,13 +161,6 @@ class TestQuestionnaireLanguage(IntegrationTestCase):
         self.post()
         self.assertInBody("Mae problem gyda'ch ateb")
         self.assertInBody("Rhowch ateb")
-
-    def test_contact_us_link(self):
-        # load a welsh survey
-        self.launchSurvey("test_language", language_code="cy")
-        # Get redirected to a 404
-        self.get("/not-a-page")
-        self.assertInBody("https://cyfrifiad.gov.uk/cysylltu-a-ni/")
 
     def test_language_switch_hub_submission(self):
         # load an English survey

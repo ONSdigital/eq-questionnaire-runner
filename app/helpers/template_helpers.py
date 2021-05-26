@@ -183,7 +183,53 @@ class ContextHelper:
 
 
 @dataclass
-class ContextOptionsCymraeg(ContextOptions):
+class CensusContextOptions(ContextOptions):
+    title_logo: str = "census-logo-en"
+    title_logo_alt: str = lazy_gettext("Census 2021")
+    account_service_url = f"{CENSUS_EN_BASE_URL}/en/start"
+    design_system_theme = "census"
+    footer_links: Iterable[Mapping] = field(
+        default_factory=lambda: [
+            Link(
+                lazy_gettext("Help"),
+                "help/help-with-the-questions/online-questions-help/",
+            ).__dict__,
+            Link(lazy_gettext("Contact us"), "contact-us/").__dict__,
+            Link(
+                lazy_gettext("Languages"), "help/languages-and-accessibility/languages/"
+            ).__dict__,
+            Link(
+                lazy_gettext("BSL and audio videos"),
+                "help/languages-and-accessibility/accessibility/accessible-videos-with-bsl/",
+            ).__dict__,
+        ]
+    )
+    footer_legal_links: Iterable[Mapping] = field(
+        default_factory=lambda: [
+            Link(lazy_gettext("Cookies"), "cookies/").__dict__,
+            Link(
+                lazy_gettext("Accessibility statement"), "accessibility-statement/"
+            ).__dict__,
+            Link(
+                lazy_gettext("Privacy and data protection"),
+                "privacy-and-data-protection/",
+            ).__dict__,
+            Link(
+                lazy_gettext("Terms and conditions"), "terms-and-conditions/"
+            ).__dict__,
+        ]
+    )
+
+    def __post_init__(self) -> None:
+        self.data_layer = [{"nisra": False}]
+
+
+@dataclass
+class CensusContextOptionsCymraeg(CensusContextOptions):
+    title_logo: str = "census-logo-cy"
+    title_logo_alt: str = lazy_gettext("Census 2021")
+    account_service_url = f"{CENSUS_CY_BASE_URL}/en/start"
+    design_system_theme = "census"
     footer_links: Iterable[Mapping] = field(
         default_factory=lambda: [
             Link(
@@ -213,25 +259,6 @@ class ContextOptionsCymraeg(ContextOptions):
             Link(lazy_gettext("Terms and conditions"), "telerau-ac-amodau/").__dict__,
         ]
     )
-
-
-@dataclass
-class CensusContextOptions(ContextOptions):
-    title_logo: str = "census-logo-en"
-    title_logo_alt: str = lazy_gettext("Census 2021")
-    account_service_url = f"{CENSUS_EN_BASE_URL}/en/start"
-    design_system_theme = "census"
-
-    def __post_init__(self) -> None:
-        self.data_layer = [{"nisra": False}]
-
-
-@dataclass
-class CensusContextOptionsCymraeg(ContextOptionsCymraeg):
-    title_logo: str = "census-logo-cy"
-    title_logo_alt: str = lazy_gettext("Census 2021")
-    account_service_url = f"{CENSUS_CY_BASE_URL}/en/start"
-    design_system_theme = "census"
 
     def __post_init__(self) -> None:
         self.data_layer = [{"nisra": False}]
@@ -293,7 +320,7 @@ def generate_context(
     context_options = {
         "business": ContextOptions,
         "health": ContextOptions,
-        "social": ContextOptionsCymraeg if language == "cy" else ContextOptions,
+        "social": ContextOptions,
         "census": (
             CensusContextOptionsCymraeg if language == "cy" else CensusContextOptions
         ),
