@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2021-05-19 12:36+0100\n"
+"POT-Creation-Date: 2021-05-26 11:49+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -203,79 +203,84 @@ msgstr[1] ""
 msgid "Not a valid choice"
 msgstr ""
 
-#: app/helpers/template_helpers.py:31
+#: app/helpers/template_helpers.py:30
 msgid "ons-logo-pos-en"
 msgstr ""
 
-#: app/helpers/template_helpers.py:32
+#: app/helpers/template_helpers.py:31
 msgid "Office for National Statistics logo"
 msgstr ""
 
-#: app/helpers/template_helpers.py:35
+#: app/helpers/template_helpers.py:34
 msgid "Crown copyright and database rights 2020 OS 100019153."
 msgstr ""
 
-#: app/helpers/template_helpers.py:38 app/helpers/template_helpers.py:235
+#: app/helpers/template_helpers.py:37 app/helpers/template_helpers.py:267
 msgid "Use of address data is subject to the terms and conditions."
 msgstr ""
 
-#: app/helpers/template_helpers.py:95 app/helpers/template_helpers.py:215
-#: app/helpers/template_helpers.py:221 templates/signed-out.html:3
+#: app/helpers/template_helpers.py:51 app/helpers/template_helpers.py:177
+#: app/helpers/template_helpers.py:219 templates/signed-out.html:3
 msgid "Census 2021"
 msgstr ""
 
-#: app/helpers/template_helpers.py:132
+#: app/helpers/template_helpers.py:134
 msgid "The following links open in a new tab"
 msgstr ""
 
-#: app/helpers/template_helpers.py:167
+#: app/helpers/template_helpers.py:169
 msgid ""
 "Make sure you <a href='{sign_out_url}'>leave this page</a> or close your "
 "browser if using a shared device"
 msgstr ""
 
-#: app/helpers/template_helpers.py:188 app/helpers/template_helpers.py:241
+#: app/helpers/template_helpers.py:183 app/helpers/template_helpers.py:225
+#: app/helpers/template_helpers.py:273
 msgid "Help"
 msgstr ""
 
-#: app/helpers/template_helpers.py:191 app/helpers/template_helpers.py:244
+#: app/helpers/template_helpers.py:186 app/helpers/template_helpers.py:228
+#: app/helpers/template_helpers.py:276
 msgid "Contact us"
 msgstr ""
 
-#: app/helpers/template_helpers.py:192
+#: app/helpers/template_helpers.py:188 app/helpers/template_helpers.py:230
 msgid "Languages"
 msgstr ""
 
-#: app/helpers/template_helpers.py:194
+#: app/helpers/template_helpers.py:191 app/helpers/template_helpers.py:233
 msgid "BSL and audio videos"
 msgstr ""
 
-#: app/helpers/template_helpers.py:201 app/helpers/template_helpers.py:249
+#: app/helpers/template_helpers.py:198 app/helpers/template_helpers.py:240
+#: app/helpers/template_helpers.py:281
 msgid "Cookies"
 msgstr ""
 
-#: app/helpers/template_helpers.py:202
-msgid "Accessibility Statement"
+#: app/helpers/template_helpers.py:200 app/helpers/template_helpers.py:283
+msgid "Accessibility statement"
 msgstr ""
 
-#: app/helpers/template_helpers.py:204 app/helpers/template_helpers.py:255
+#: app/helpers/template_helpers.py:203 app/helpers/template_helpers.py:245
+#: app/helpers/template_helpers.py:287
 msgid "Privacy and data protection"
 msgstr ""
 
-#: app/helpers/template_helpers.py:207 app/helpers/template_helpers.py:259
+#: app/helpers/template_helpers.py:207 app/helpers/template_helpers.py:248
+#: app/helpers/template_helpers.py:291
 msgid "Terms and conditions"
 msgstr ""
 
-#: app/helpers/template_helpers.py:227
+#: app/helpers/template_helpers.py:242
+msgid "Accessibility Statement"
+msgstr ""
+
+#: app/helpers/template_helpers.py:259
 msgid "Northern Ireland Statistics and Research Agency logo"
 msgstr ""
 
-#: app/helpers/template_helpers.py:232
+#: app/helpers/template_helpers.py:264
 msgid "Crown copyright and database rights 2021 NIMA MOU577.501."
-msgstr ""
-
-#: app/helpers/template_helpers.py:251
-msgid "Accessibility statement"
 msgstr ""
 
 #: app/questionnaire/placeholder_transforms.py:92
@@ -348,11 +353,11 @@ msgstr ""
 msgid "You can try to <a href='{retry_url}'>submit your feedback again</a>."
 msgstr ""
 
-#: app/routes/individual_response.py:170
+#: app/routes/individual_response.py:169
 msgid "An individual access code has been sent by post"
 msgstr ""
 
-#: app/routes/individual_response.py:265
+#: app/routes/individual_response.py:264
 msgid "An individual access code has been sent by text"
 msgstr ""
 
