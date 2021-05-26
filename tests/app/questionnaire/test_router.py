@@ -340,6 +340,32 @@ class TestRouterNextLocation(RouterTestCase):
 
         self.assertEqual(expected_location, next_location)
 
+    def test_last_block_in_section_but_section_is_not_complete_when_routing_backwards(
+        self,
+    ):
+        self.schema = Mock()
+        self.schema.get_block.return_value = {"type": "Question"}
+        self.progress_store = ProgressStore(
+            [
+                {
+                    "section_id": "section-1",
+                    "list_item_id": None,
+                    "status": CompletionStatus.IN_PROGRESS,
+                    "block_ids": ["block-1"],
+                }
+            ]
+        )
+        current_location = Location(section_id="section-1", block_id="block-1")
+        # Simulates routing backwards. Last block in section does not mean section is complete.
+        routing_path = RoutingPath(
+            ["block-1", "block-2", "block-1"], section_id="section-1"
+        )
+        next_location = self.router.get_next_location_url(
+            current_location, routing_path
+        )
+
+        self.assertIn("questionnaire/block-2/", next_location)
+
     def test_return_to_section_summary(self):
         self.schema = load_schema_from_name("test_section_summary")
         self.progress_store = ProgressStore(

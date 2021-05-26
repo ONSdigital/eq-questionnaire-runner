@@ -1,4 +1,3 @@
-from functools import cached_property
 from typing import Optional, Tuple
 
 from flask import url_for
