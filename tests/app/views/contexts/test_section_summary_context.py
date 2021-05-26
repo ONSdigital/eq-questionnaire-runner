@@ -10,17 +10,21 @@ from app.questionnaire.questionnaire_schema import DEFAULT_LANGUAGE_CODE
 from app.questionnaire.routing_path import RoutingPath
 from app.utilities.schema import load_schema_from_name
 from app.views.contexts import SectionSummaryContext
-from tests.app.views.contexts.test_submit_context import TestStandardSummaryContext
+from tests.app.views.contexts.test_summary_context_helper import (
+    TestSummaryContextHelper,
+)
 
 
-class TestSectionSummaryContext(TestStandardSummaryContext):
+class TestSectionSummaryContext(TestSummaryContextHelper):
     def setUp(self):
         super().setUp()
+        self.block_type = "SectionSummary"
         self.schema = load_schema_from_name("test_section_summary")
+        self.language = "en"
+        self.metadata = {}
         self.answer_store = AnswerStore()
         self.list_store = ListStore()
         self.progress_store = ProgressStore()
-        self.block_type = "SectionSummary"
 
     def test_build_summary_rendering_context(self):
         section_summary_context = SectionSummaryContext(
@@ -36,7 +40,7 @@ class TestSectionSummaryContext(TestStandardSummaryContext):
 
         single_section_context = section_summary_context()
 
-        self.check_summary_rendering_context(single_section_context)
+        self.check_summary_context(single_section_context)
 
     def test_build_view_context_for_section_summary(self):
 
@@ -56,7 +60,7 @@ class TestSectionSummaryContext(TestStandardSummaryContext):
         context = summary_context()
 
         self.check_context(context)
-        self.check_summary_rendering_context(context)
+        self.check_summary_context(context)
         self.assertEqual(len(context["summary"]), 6)
         self.assertTrue("title" in context["summary"])
 

@@ -6,102 +6,27 @@ from app.data_models.progress_store import ProgressStore
 from app.utilities.schema import load_schema_from_name
 from app.views.contexts import SubmitQuestionnaireContext
 from tests.app.app_context_test_case import AppContextTestCase
+from tests.app.views.contexts.test_summary_context_helper import (
+    TestSummaryContextHelper,
+)
 
 
-class TestStandardSummaryContext(AppContextTestCase):
+class SubmitContextTestCase(AppContextTestCase):
     def setUp(self):
         super().setUp()
-        self.metadata = {
-            "return_by": "2016-10-10",
-            "ref_p_start_date": "2016-10-10",
-            "ref_p_end_date": "2016-10-10",
-            "ru_ref": "def123",
-            "response_id": "abc123",
-            "ru_name": "Mr Cloggs",
-            "trad_as": "Samsung",
-            "tx_id": "12345678-1234-5678-1234-567812345678",
-            "period_str": "201610",
-            "employment_date": "2016-10-10",
-            "collection_exercise_sid": "789",
-            "schema_name": "0000_1",
-        }
         self.language = "en"
+        self.metadata = {}
         self.answer_store = AnswerStore()
         self.list_store = ListStore()
         self.progress_store = ProgressStore()
 
-    def check_context(self, context):
-        self.assertEqual(len(context), 1)
-        self.assertTrue("summary" in context, "Key value summary missing from context")
 
-        summary_context = context["summary"]
-        for key_value in ("groups", "answers_are_editable", "summary_type"):
-            self.assertTrue(
-                key_value in summary_context,
-                f"Key value {key_value} missing from context['summary']",
-            )
-
-    def check_summary_rendering_context(self, summary_rendering_context):
-        for group in summary_rendering_context["summary"]["groups"]:
-            self.assertTrue("id" in group)
-            self.assertTrue("blocks" in group)
-            for block in group["blocks"]:
-                self.assertTrue("question" in block)
-                self.assertTrue("title" in block["question"])
-                self.assertTrue("answers" in block["question"])
-                for answer in block["question"]["answers"]:
-                    self.assertTrue("id" in answer)
-                    self.assertTrue("value" in answer)
-                    self.assertTrue("type" in answer)
-
+class TestSubmitContext(SubmitContextTestCase):
     @patch("app.jinja_filters.flask_babel.get_locale", Mock(return_value="en_GB"))
-    def test_submit_context_with_default_submission_content(self):
-        schemas = ["test_summary", "test_instructions"]
-        for schema in schemas:
-            with self.subTest(schema=schema):
-                schema = load_schema_from_name(schema)
-                submission_content = schema.get_submission()
-                self.assertIsNone(submission_content)
-
-                submit_questionnaire_context = SubmitQuestionnaireContext(
-                    self.language,
-                    schema,
-                    self.answer_store,
-                    self.list_store,
-                    self.progress_store,
-                    self.metadata,
-                )
-
-                context = submit_questionnaire_context()
-
-                self.assertEqual(context["title"], "Check your answers and submit")
-                self.assertEqual(
-                    context["guidance"], "Please submit this survey to complete it"
-                )
-                self.assertIsNone(context["warning"])
-                self.assertEqual(context["submit_button"], "Submit answers")
-
-
-class TestSubmitContextWithSummary(TestStandardSummaryContext):
-    def setUp(self):
-        super().setUp()
-        self.schema = load_schema_from_name("test_summary")
-
-    def test_build_summary_rendering_context(self):
-        submit_questionnaire_context = SubmitQuestionnaireContext(
-            self.language,
-            self.schema,
-            self.answer_store,
-            self.list_store,
-            self.progress_store,
-            self.metadata,
-        )
-
-        context = submit_questionnaire_context()
-        self.check_summary_rendering_context(context)
-
-    def test_submit_context_with_custom_submission_content(self):
-        self.schema = load_schema_from_name("test_summary_with_submission_text")
+    def test_default_submission_content(self):
+        self.schema = load_schema_from_name("test_instructions")
+        submission_content = self.schema.get_submission()
+        self.assertIsNone(submission_content)
 
         submit_questionnaire_context = SubmitQuestionnaireContext(
             self.language,
@@ -114,21 +39,15 @@ class TestSubmitContextWithSummary(TestStandardSummaryContext):
 
         context = submit_questionnaire_context()
 
-        self.assertEqual(context["title"], "Submission title")
-        self.assertEqual(context["guidance"], "Submission guidance")
-        self.assertEqual(context["warning"], "Submission warning")
-        self.assertEqual(context["submit_button"], "Submission button")
+        self.assertEqual(context["title"], "Check your answers and submit")
+        self.assertEqual(
+            context["guidance"], "Please submit this survey to complete it"
+        )
+        self.assertIsNone(context["warning"])
+        self.assertEqual(context["submit_button"], "Submit answers")
 
-
-class TestSubmitContextWithoutSummary(TestStandardSummaryContext):
-    def setUp(self):
-        super().setUp()
+    def test_custom_submission_content(self):
         self.schema = load_schema_from_name("test_submit_page")
-        self.answer_store = AnswerStore()
-        self.list_store = ListStore()
-        self.progress_store = ProgressStore()
-
-    def test_submit_context_with_custom_submission_content(self):
         submit_questionnaire_context = SubmitQuestionnaireContext(
             self.language,
             self.schema,
@@ -150,7 +69,8 @@ class TestSubmitContextWithoutSummary(TestStandardSummaryContext):
         )
         self.assertEqual(context["submit_button"], "Submit")
 
-    def test_summary_rendering_context_not_built(self):
+    def test_summary_context_not_built_when_no_summary(self):
+        self.schema = load_schema_from_name("test_submit_page")
         submit_questionnaire_context = SubmitQuestionnaireContext(
             self.language,
             self.schema,
@@ -163,3 +83,19 @@ class TestSubmitContextWithoutSummary(TestStandardSummaryContext):
         context = submit_questionnaire_context()
 
         self.assertNotIn("summary", context)
+
+
+class TestSubmitContextWithSummary(SubmitContextTestCase, TestSummaryContextHelper):
+    def test_context(self):
+        self.schema = load_schema_from_name("test_summary")
+        submit_questionnaire_context = SubmitQuestionnaireContext(
+            self.language,
+            self.schema,
+            self.answer_store,
+            self.list_store,
+            self.progress_store,
+            self.metadata,
+        )
+
+        context = submit_questionnaire_context()
+        self.check_summary_context(context)

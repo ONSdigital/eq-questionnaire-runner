@@ -11,10 +11,12 @@ from app.questionnaire.routing_path import RoutingPath
 from app.utilities.schema import load_schema_from_name
 from app.views.contexts import SectionSummaryContext
 from app.views.contexts.calculated_summary_context import CalculatedSummaryContext
-from tests.app.views.contexts.test_submit_context import TestStandardSummaryContext
+from tests.app.views.contexts.test_summary_context_helper import (
+    TestSummaryContextHelper,
+)
 
 
-class TestCalculatedSummaryContext(TestStandardSummaryContext):
+class TestCalculatedSummaryContext(TestSummaryContextHelper):
     def setUp(self):
         super().setUp()
         self.schema = load_schema_from_name("test_calculated_summary")
@@ -33,10 +35,12 @@ class TestCalculatedSummaryContext(TestStandardSummaryContext):
             {"value": 11, "answer_id": "sixth-percent-answer"},
             {"value": 12, "answer_id": "sixth-number-answer"},
         ]
+        self.block_type = "CalculatedSummary"
+        self.language = "en"
+        self.metadata = {}
         self.answer_store = AnswerStore(answers)
         self.list_store = ListStore()
         self.progress_store = ProgressStore()
-        self.block_type = "CalculatedSummary"
 
     @patch("app.jinja_filters.flask_babel.get_locale", Mock(return_value="en_GB"))
     def test_build_view_context_for_currency_calculated_summary_no_skip(self):
@@ -58,7 +62,7 @@ class TestCalculatedSummaryContext(TestStandardSummaryContext):
         )
 
         self.check_context(context)
-        self.check_summary_rendering_context(context)
+        self.check_summary_context(context)
         self.assertEqual(len(context["summary"]), 6)
         context_summary = context["summary"]
         self.assertTrue("title" in context_summary)
@@ -101,7 +105,7 @@ class TestCalculatedSummaryContext(TestStandardSummaryContext):
         )
 
         self.check_context(context)
-        self.check_summary_rendering_context(context)
+        self.check_summary_context(context)
         self.assertEqual(len(context["summary"]), 6)
         context_summary = context["summary"]
         self.assertTrue("title" in context_summary)
@@ -140,7 +144,7 @@ class TestCalculatedSummaryContext(TestStandardSummaryContext):
         )
 
         self.check_context(context)
-        self.check_summary_rendering_context(context)
+        self.check_summary_context(context)
         self.assertEqual(len(context["summary"]), 6)
         context_summary = context["summary"]
         self.assertTrue("title" in context_summary)
@@ -177,7 +181,7 @@ class TestCalculatedSummaryContext(TestStandardSummaryContext):
         )
 
         self.check_context(context)
-        self.check_summary_rendering_context(context)
+        self.check_summary_context(context)
         self.assertEqual(len(context["summary"]), 6)
         context_summary = context["summary"]
         self.assertTrue("title" in context_summary)
@@ -215,7 +219,7 @@ class TestCalculatedSummaryContext(TestStandardSummaryContext):
         )
 
         self.check_context(context)
-        self.check_summary_rendering_context(context)
+        self.check_summary_context(context)
         self.assertEqual(len(context["summary"]), 6)
         context_summary = context["summary"]
         self.assertTrue("title" in context_summary)
