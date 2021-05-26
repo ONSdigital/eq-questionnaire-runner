@@ -326,6 +326,8 @@ def generate_context(
 
 
 def render_template(template: str, **kwargs: Mapping) -> str:
+    # The fallback to assigning SURVEY_TYPE to theme is only being added until
+    # business feedback on the differentiation between theme and SURVEY_TYPE.
     theme = cookie_session.get("theme", current_app.config["SURVEY_TYPE"])
     language = get_locale().language
     base_url = get_base_url("theme", language)
