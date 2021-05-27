@@ -1,4 +1,4 @@
 #!/usr/bin/env bash
-tag=introduce-questionnaire-flow
+tag=v2.0.0
 docker pull onsdigital/eq-questionnaire-validator:$tag
 docker run -d -p 5001:5000 "onsdigital/eq-questionnaire-validator:$tag"
