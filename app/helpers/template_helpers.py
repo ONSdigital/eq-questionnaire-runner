@@ -11,10 +11,7 @@ from flask_babel import get_locale, lazy_gettext
 from flask_babel.speaklater import LazyString
 
 from app.helpers.language_helper import get_languages_context
-
-CENSUS_EN_BASE_URL = "https://census.gov.uk"
-CENSUS_CY_BASE_URL = "https://cyfrifiad.gov.uk"
-CENSUS_NIR_BASE_URL = f"{CENSUS_EN_BASE_URL}/ni"
+from app.settings import CENSUS_CY_BASE_URL, CENSUS_EN_BASE_URL, CENSUS_NIR_BASE_URL
 
 
 @dataclass
@@ -380,13 +377,3 @@ def render_template(template: str, **kwargs: Mapping) -> Text:
         **context,
         **kwargs,
     )
-
-
-def get_base_url(schema_theme: str, language_code: str) -> str:
-    if language_code == "cy":
-        return CENSUS_CY_BASE_URL
-
-    if schema_theme == "census-nisra":
-        return CENSUS_NIR_BASE_URL
-
-    return CENSUS_EN_BASE_URL

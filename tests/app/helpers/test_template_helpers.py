@@ -1,4 +1,4 @@
-from app.helpers.template_helpers import generate_context, get_base_url
+from app.helpers.template_helpers import generate_context
 
 
 def test_footer_context_census_theme(app):
@@ -184,38 +184,3 @@ def test_get_page_header_context_census_nisra(app):
             include_csrf_token=True,
         )["page_header"]
     assert result == expected
-
-
-def test_get_base_url():
-    expected = "https://census.gov.uk"
-    result = get_base_url(schema_theme="census", language_code="en")
-
-    assert expected == result
-
-
-def test_get_base_url_nisra_theme():
-    expected = "https://census.gov.uk/ni"
-    result = get_base_url(schema_theme="census-nisra", language_code="en")
-
-    assert expected == result
-
-
-def test_get_base_url_welsh():
-    expected = "https://cyfrifiad.gov.uk"
-    result = get_base_url(schema_theme="census", language_code="cy")
-
-    assert expected == result
-
-
-def test_get_base_url_welsh_is_priority_over_nisra():
-    expected = "https://cyfrifiad.gov.uk"
-    result = get_base_url(schema_theme="census-nisra", language_code="cy")
-
-    assert expected == result
-
-
-def test_get_base_url_ga():
-    expected = "https://census.gov.uk"
-    result = get_base_url(schema_theme="census", language_code="ga")
-
-    assert expected == result
