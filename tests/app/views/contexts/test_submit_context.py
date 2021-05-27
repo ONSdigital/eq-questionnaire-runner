@@ -6,9 +6,7 @@ from app.data_models.progress_store import ProgressStore
 from app.utilities.schema import load_schema_from_name
 from app.views.contexts import SubmitQuestionnaireContext
 from tests.app.app_context_test_case import AppContextTestCase
-from tests.app.views.contexts.test_summary_context_helper import (
-    TestSummaryContextHelper,
-)
+from tests.app.views.contexts import SummaryContextTestCase
 
 
 class SubmitContextTestCase(AppContextTestCase):
@@ -85,7 +83,7 @@ class TestSubmitContext(SubmitContextTestCase):
         self.assertNotIn("summary", context)
 
 
-class TestSubmitContextWithSummary(SubmitContextTestCase, TestSummaryContextHelper):
+class TestSubmitContextWithSummary(SubmitContextTestCase, SummaryContextTestCase):
     def test_context(self):
         self.schema = load_schema_from_name("test_submit_with_summary")
         submit_questionnaire_context = SubmitQuestionnaireContext(
@@ -98,4 +96,4 @@ class TestSubmitContextWithSummary(SubmitContextTestCase, TestSummaryContextHelp
         )
 
         context = submit_questionnaire_context()
-        self.check_summary_context(context)
+        self.assert_summary_context(context)

@@ -11,12 +11,10 @@ from app.questionnaire.routing_path import RoutingPath
 from app.utilities.schema import load_schema_from_name
 from app.views.contexts import SectionSummaryContext
 from app.views.contexts.calculated_summary_context import CalculatedSummaryContext
-from tests.app.views.contexts.test_summary_context_helper import (
-    TestSummaryContextHelper,
-)
+from tests.app.views.contexts import SummaryContextTestCase
 
 
-class TestCalculatedSummaryContext(TestSummaryContextHelper):
+class TestCalculatedSummaryContext(SummaryContextTestCase):
     def setUp(self):
         super().setUp()
         self.schema = load_schema_from_name("test_calculated_summary")
@@ -61,8 +59,8 @@ class TestCalculatedSummaryContext(TestSummaryContextHelper):
             current_location
         )
 
-        self.check_context(context)
-        self.check_summary_context(context)
+        self.assertTrue("summary" in context, "Key value summary missing from context")
+        self.assert_summary_context(context)
         self.assertEqual(len(context["summary"]), 6)
         context_summary = context["summary"]
         self.assertTrue("title" in context_summary)
@@ -104,8 +102,8 @@ class TestCalculatedSummaryContext(TestSummaryContextHelper):
             current_location
         )
 
-        self.check_context(context)
-        self.check_summary_context(context)
+        self.assertIn("summary", context)
+        self.assert_summary_context(context)
         self.assertEqual(len(context["summary"]), 6)
         context_summary = context["summary"]
         self.assertTrue("title" in context_summary)
@@ -143,8 +141,8 @@ class TestCalculatedSummaryContext(TestSummaryContextHelper):
             current_location
         )
 
-        self.check_context(context)
-        self.check_summary_context(context)
+        self.assertIn("summary", context)
+        self.assert_summary_context(context)
         self.assertEqual(len(context["summary"]), 6)
         context_summary = context["summary"]
         self.assertTrue("title" in context_summary)
@@ -180,8 +178,8 @@ class TestCalculatedSummaryContext(TestSummaryContextHelper):
             current_location
         )
 
-        self.check_context(context)
-        self.check_summary_context(context)
+        self.assertIn("summary", context)
+        self.assert_summary_context(context)
         self.assertEqual(len(context["summary"]), 6)
         context_summary = context["summary"]
         self.assertTrue("title" in context_summary)
@@ -218,8 +216,8 @@ class TestCalculatedSummaryContext(TestSummaryContextHelper):
             current_location
         )
 
-        self.check_context(context)
-        self.check_summary_context(context)
+        self.assertIn("summary", context)
+        self.assert_summary_context(context)
         self.assertEqual(len(context["summary"]), 6)
         context_summary = context["summary"]
         self.assertTrue("title" in context_summary)

@@ -10,12 +10,10 @@ from app.questionnaire.questionnaire_schema import DEFAULT_LANGUAGE_CODE
 from app.questionnaire.routing_path import RoutingPath
 from app.utilities.schema import load_schema_from_name
 from app.views.contexts import SectionSummaryContext
-from tests.app.views.contexts.test_summary_context_helper import (
-    TestSummaryContextHelper,
-)
+from tests.app.views.contexts import SummaryContextTestCase
 
 
-class TestSectionSummaryContext(TestSummaryContextHelper):
+class TestSectionSummaryContext(SummaryContextTestCase):
     def setUp(self):
         super().setUp()
         self.block_type = "SectionSummary"
@@ -59,8 +57,8 @@ class TestSectionSummaryContext(TestSummaryContextHelper):
         )
         context = summary_context()
 
-        self.check_context(context)
-        self.check_summary_context(context)
+        self.assertIn("summary", context)
+        self.assert_summary_context(context)
         self.assertEqual(len(context["summary"]), 6)
         self.assertTrue("title" in context["summary"])
 
@@ -133,8 +131,8 @@ class TestSectionSummaryContext(TestSummaryContextHelper):
             self.language,
             self.schema,
             self.answer_store,
-            self.progress_store,
             self.list_store,
+            self.progress_store,
             self.metadata,
             routing_path=MagicMock(),
             current_location=Location(section_id="property-details-section"),
