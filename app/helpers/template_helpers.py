@@ -1,5 +1,5 @@
 from dataclasses import asdict, dataclass, field
-from functools import cached_property
+from functools import cached_property, lru_cache
 from typing import Any, Iterable, Mapping, MutableMapping, Optional, Text, Union
 
 from flask import current_app
@@ -12,9 +12,9 @@ from flask_babel.speaklater import LazyString
 
 from app.helpers.language_helper import get_languages_context
 
-CENSUS_EN_BASE_URL = "https://census.gov.uk/"
-CENSUS_CY_BASE_URL = "https://cyfrifiad.gov.uk/"
-CENSUS_NIR_BASE_URL = f"{CENSUS_EN_BASE_URL}ni/"
+CENSUS_EN_BASE_URL = "https://census.gov.uk"
+CENSUS_CY_BASE_URL = "https://cyfrifiad.gov.uk"
+CENSUS_NIR_BASE_URL = f"{CENSUS_EN_BASE_URL}/ni"
 
 
 @dataclass
@@ -24,7 +24,7 @@ class Link:
     target: Optional[str] = "_blank"
 
 
-@dataclass
+@dataclass(frozen=True)
 class ContextOptions:
     """Valid options for defining context."""
 
@@ -50,8 +50,8 @@ class ContextOptions:
     footer_links: Optional[Iterable[MutableMapping]] = None
     footer_legal_links: Optional[Iterable[Mapping]] = None
     survey_title: Optional[LazyString] = lazy_gettext("Census 2021")
-    data_layer: Iterable[Union[Mapping]] = field(default_factory=list)
     design_system_theme: Optional[str] = "main"
+    data_layer: Iterable[Union[Mapping]] = field(default_factory=list, compare=False)
 
 
 class ContextHelper:
@@ -65,7 +65,7 @@ class ContextHelper:
         self._theme = theme
         self._base_url = base_url
         self._language = language
-        self.context_options = context_options or ContextOptions()
+        self.context_options = context_options
         self._sign_out_url = url_for("session.get_sign_out")
         self._account_service_url = cookie_session.get(
             "account_service_url", f"{self._base_url}en/start"
@@ -83,14 +83,14 @@ class ContextHelper:
             "EQ_GOOGLE_TAG_MANAGER_AUTH"
         )
 
-    @property
+    @cached_property
     def context(self) -> dict[str, Any]:
         return {
             "account_service_url": self._account_service_url,
             "account_service_log_out_url": self._account_service_log_out_url,
-            "contact_us_url": asdict(
-                Link("Contact us", f"{self._base_url}contact-us/")
-            ),
+            "contact_us_url": Link(
+                "Contact us", f"{self._base_url}contact-us/"
+            ).__dict__,
             "cookie_settings_url": self._cookie_settings_url,
             "page_header": self.page_header_context,
             "footer": self.footer_context,
@@ -143,14 +143,9 @@ class ContextHelper:
             context["footerWarning"] = self._footer_warning
 
         if self.context_options.footer_links:
-            for footer_link in self.context_options.footer_links:
-                footer_link["url"] = self._base_url + footer_link["url"]
             context["rows"] = [{"itemsList": self.context_options.footer_links}]
 
         if self.context_options.footer_legal_links:
-            for footer_legal_link in self.context_options.footer_legal_links:
-                url = footer_legal_link["url"]
-                footer_legal_link["url"] = self._base_url + url
             context["legal"] = [{"itemsList": self.context_options.footer_legal_links}]
 
         if (
@@ -164,7 +159,7 @@ class ContextHelper:
 
         return context
 
-    @cached_property
+    @property
     def _footer_warning(self) -> Union[str, None]:
         if request.blueprint == "post_submission":
             return lazy_gettext(
@@ -172,8 +167,10 @@ class ContextHelper:
             ).format(sign_out_url=self._sign_out_url)
 
 
-@dataclass
-class CensusContextOptions(ContextOptions):
+@dataclass(frozen=True)
+class CensusContextOptions(
+    ContextOptions,
+):
     title_logo: str = "census-logo-en"
     title_logo_alt: LazyString = lazy_gettext("Census 2021")
     account_service_url = f"{CENSUS_EN_BASE_URL}/en/start"
@@ -182,40 +179,49 @@ class CensusContextOptions(ContextOptions):
         default_factory=lambda: [
             Link(
                 lazy_gettext("Help"),
-                "help/help-with-the-questions/online-questions-help/",
+                f"{CENSUS_EN_BASE_URL}/help/help-with-the-questions/online-questions-help/",
             ).__dict__,
-            Link(lazy_gettext("Contact us"), "contact-us/").__dict__,
             Link(
-                lazy_gettext("Languages"), "help/languages-and-accessibility/languages/"
+                lazy_gettext("Contact us"), f"{CENSUS_EN_BASE_URL}/contact-us/"
+            ).__dict__,
+            Link(
+                lazy_gettext("Languages"),
+                f"{CENSUS_EN_BASE_URL}/help/languages-and-accessibility/languages/",
             ).__dict__,
             Link(
                 lazy_gettext("BSL and audio videos"),
-                "help/languages-and-accessibility/accessibility/accessible-videos-with-bsl/",
+                f"{CENSUS_EN_BASE_URL}/help/languages-and-accessibility/accessibility/accessible-videos-with-bsl/",
             ).__dict__,
-        ]
+        ],
+        compare=False,
     )
     footer_legal_links: Iterable[Mapping] = field(
         default_factory=lambda: [
-            Link(lazy_gettext("Cookies"), "cookies/").__dict__,
+            Link(lazy_gettext("Cookies"), f"{CENSUS_EN_BASE_URL}/cookies/").__dict__,
             Link(
-                lazy_gettext("Accessibility statement"), "accessibility-statement/"
+                lazy_gettext("Accessibility statement"),
+                f"{CENSUS_EN_BASE_URL}/accessibility-statement/",
             ).__dict__,
             Link(
                 lazy_gettext("Privacy and data protection"),
-                "privacy-and-data-protection/",
+                f"{CENSUS_EN_BASE_URL}/privacy-and-data-protection/",
             ).__dict__,
             Link(
-                lazy_gettext("Terms and conditions"), "terms-and-conditions/"
+                lazy_gettext("Terms and conditions"),
+                f"{CENSUS_EN_BASE_URL}/terms-and-conditions/",
             ).__dict__,
-        ]
+        ],
+        compare=False,
+    )
+    data_layer: Iterable[Mapping] = field(
+        default_factory=lambda: [{"nisra": False}], compare=False
     )
 
-    def __post_init__(self) -> None:
-        self.data_layer = [{"nisra": False}]
 
-
-@dataclass
-class CensusContextOptionsCymraeg(CensusContextOptions):
+@dataclass(frozen=True)
+class CensusContextOptionsCymraeg(
+    CensusContextOptions,
+):
     title_logo: str = "census-logo-cy"
     title_logo_alt: str = lazy_gettext("Census 2021")
     account_service_url = f"{CENSUS_CY_BASE_URL}/en/start"
@@ -224,38 +230,51 @@ class CensusContextOptionsCymraeg(CensusContextOptions):
         default_factory=lambda: [
             Link(
                 lazy_gettext("Help"),
-                "help/sut-i-ateb-y-cwestiynau/help-y-cwestiynau-ar-lein/",
+                f"{CENSUS_CY_BASE_URL}/help/sut-i-ateb-y-cwestiynau/help-y-cwestiynau-ar-lein/",
             ).__dict__,
-            Link(lazy_gettext("Contact us"), "cysylltu-a-ni/").__dict__,
             Link(
-                lazy_gettext("Languages"), "help/ieithoedd-a-hygyrchedd/ieithoedd/"
+                lazy_gettext("Contact us"), f"{CENSUS_CY_BASE_URL}/cysylltu-a-ni/"
+            ).__dict__,
+            Link(
+                lazy_gettext("Languages"),
+                f"{CENSUS_CY_BASE_URL}/help/ieithoedd-a-hygyrchedd/ieithoedd/",
             ).__dict__,
             Link(
                 lazy_gettext("BSL and audio videos"),
-                "help/ieithoedd-a-hygyrchedd/hygyrchedd/fideos-hygyrch-gyda-bsl/",
+                f"{CENSUS_CY_BASE_URL}/help/ieithoedd-a-hygyrchedd/hygyrchedd/fideos-hygyrch-gyda-bsl/",
             ).__dict__,
-        ]
+        ],
+        compare=False,
+        hash=False,
     )
     footer_legal_links: Iterable[Mapping] = field(
         default_factory=lambda: [
-            Link(lazy_gettext("Cookies"), "cwcis/").__dict__,
+            Link(lazy_gettext("Cookies"), f"{CENSUS_CY_BASE_URL}/cwcis/").__dict__,
             Link(
-                lazy_gettext("Accessibility Statement"), "datganiad-hygyrchedd/"
+                lazy_gettext("Accessibility Statement"),
+                f"{CENSUS_CY_BASE_URL}/datganiad-hygyrchedd/",
             ).__dict__,
             Link(
                 lazy_gettext("Privacy and data protection"),
-                "preifatrwydd-a-diogelu-data/",
+                f"{CENSUS_CY_BASE_URL}/preifatrwydd-a-diogelu-data/",
             ).__dict__,
-            Link(lazy_gettext("Terms and conditions"), "telerau-ac-amodau/").__dict__,
-        ]
+            Link(
+                lazy_gettext("Terms and conditions"),
+                f"{CENSUS_CY_BASE_URL}/telerau-ac-amodau/",
+            ).__dict__,
+        ],
+        compare=False,
+        hash=False,
+    )
+    data_layer: Iterable[Mapping] = field(
+        default_factory=lambda: [{"nisra": False}], compare=False
     )
 
-    def __post_init__(self) -> None:
-        self.data_layer = [{"nisra": False}]
 
-
-@dataclass
-class CensusNISRAContextOptions(CensusContextOptions):
+@dataclass(frozen=True)
+class CensusNISRAContextOptions(
+    CensusContextOptions,
+):
     page_header_logo: str = "nisra-logo-en"
     page_header_logo_alt: str = lazy_gettext(
         "Northern Ireland Statistics and Research Agency logo"
@@ -272,34 +291,40 @@ class CensusNISRAContextOptions(CensusContextOptions):
         default_factory=lambda: [
             Link(
                 lazy_gettext("Help"),
-                "help/help-with-the-questions/online-questions-help/",
+                f"{CENSUS_NIR_BASE_URL}/help/help-with-the-questions/online-questions-help/",
             ).__dict__,
-            Link(lazy_gettext("Contact us"), "contact-us/").__dict__,
-        ]
+            Link(
+                lazy_gettext("Contact us"), f"{CENSUS_NIR_BASE_URL}/contact-us/"
+            ).__dict__,
+        ],
+        compare=False,
+        hash=False,
     )
     footer_legal_links: Iterable[Mapping] = field(
         default_factory=lambda: [
-            Link(lazy_gettext("Cookies"), "cookies/").__dict__,
+            Link(lazy_gettext("Cookies"), f"{CENSUS_NIR_BASE_URL}/cookies/").__dict__,
             Link(
                 lazy_gettext("Accessibility statement"),
-                "accessibility-statement/",
+                f"{CENSUS_NIR_BASE_URL}/accessibility-statement/",
             ).__dict__,
             Link(
                 lazy_gettext("Privacy and data protection"),
-                "privacy-and-data-protection/",
+                f"{CENSUS_NIR_BASE_URL}/privacy-and-data-protection/",
             ).__dict__,
             Link(
                 lazy_gettext("Terms and conditions"),
-                "terms-and-conditions/",
+                f"{CENSUS_NIR_BASE_URL}/terms-and-conditions/",
             ).__dict__,
-        ]
+        ],
+        compare=False,
+        hash=False,
     )
     powered_by_logo: str = "nisra-logo-black-en"
     powered_by_logo_alt: str = "NISRA - Northern Ireland Statistics and Research Agency"
     account_service_url = CENSUS_NIR_BASE_URL
-
-    def __post_init__(self) -> None:
-        self.data_layer = [{"nisra": True}]
+    data_layer: Iterable[Mapping] = field(
+        default_factory=lambda: [{"nisra": True}], compare=False
+    )
 
 
 def generate_context(
@@ -307,7 +332,17 @@ def generate_context(
     base_url: str,
     language: str,
 ) -> dict[str, Any]:
-    context_options = {
+    return ContextHelper(
+        theme,
+        base_url,
+        language,
+        _context_options(theme, language),
+    ).context
+
+
+@lru_cache
+def _context_options(theme: str, language: str) -> ContextOptions:
+    context_options_mapping = {
         "business": ContextOptions,
         "health": ContextOptions,
         "social": ContextOptions,
@@ -317,13 +352,7 @@ def generate_context(
         "default": ContextOptions,
         "census-nisra": CensusNISRAContextOptions,
     }
-
-    return ContextHelper(
-        theme,
-        base_url,
-        language,
-        context_options[theme](),
-    ).context
+    return context_options_mapping[theme]()
 
 
 def render_template(template: str, **kwargs: Mapping) -> Text:
