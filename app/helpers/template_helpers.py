@@ -1,4 +1,4 @@
-from dataclasses import asdict, dataclass, field
+from dataclasses import dataclass, field
 from functools import cached_property, lru_cache
 from typing import Any, Iterable, Mapping, MutableMapping, Optional, Text, Union
 
@@ -24,7 +24,7 @@ class Link:
     target: Optional[str] = "_blank"
 
 
-@dataclass(frozen=True)
+@dataclass
 class ContextOptions:
     """Valid options for defining context."""
 
@@ -38,6 +38,7 @@ class ContextOptions:
     copyright_text: Optional[LazyString] = lazy_gettext(
         "Use of address data is subject to the terms and conditions."
     )
+    base_url: str = CENSUS_EN_BASE_URL
     account_service_url: Optional[str] = None
     title_logo: Optional[str] = None
     title_logo_alt: Optional[str] = None
@@ -58,17 +59,19 @@ class ContextHelper:
     def __init__(
         self,
         theme: str,
-        base_url: str,
         language: str,
+        is_post_submission: bool,
+        include_csrf_token: bool,
         context_options: ContextOptions = ContextOptions(),
     ) -> None:
         self._theme = theme
-        self._base_url = base_url
         self._language = language
+        self._is_post_submission = is_post_submission
+        self._include_csrf_token = include_csrf_token
         self.context_options = context_options
         self._sign_out_url = url_for("session.get_sign_out")
         self._account_service_url = cookie_session.get(
-            "account_service_url", f"{self._base_url}en/start"
+            "account_service_url", f"{self.context_options.base_url}en/start"
         )
         self._account_service_log_out_url = cookie_session.get(
             "account_service_log_out_url"
@@ -83,13 +86,13 @@ class ContextHelper:
             "EQ_GOOGLE_TAG_MANAGER_AUTH"
         )
 
-    @cached_property
+    @property
     def context(self) -> dict[str, Any]:
         return {
             "account_service_url": self._account_service_url,
             "account_service_log_out_url": self._account_service_log_out_url,
             "contact_us_url": Link(
-                "Contact us", f"{self._base_url}contact-us/"
+                "Contact us", f"{self.context_options.base_url}/contact-us/"
             ).__dict__,
             "cookie_settings_url": self._cookie_settings_url,
             "page_header": self.page_header_context,
@@ -159,21 +162,22 @@ class ContextHelper:
 
         return context
 
-    @property
+    @cached_property
     def _footer_warning(self) -> Union[str, None]:
-        if request.blueprint == "post_submission":
+        if self._is_post_submission:
             return lazy_gettext(
                 "Make sure you <a href='{sign_out_url}'>leave this page</a> or close your browser if using a shared device"
             ).format(sign_out_url=self._sign_out_url)
 
 
-@dataclass(frozen=True)
+@dataclass
 class CensusContextOptions(
     ContextOptions,
 ):
     title_logo: str = "census-logo-en"
     title_logo_alt: LazyString = lazy_gettext("Census 2021")
-    account_service_url = f"{CENSUS_EN_BASE_URL}/en/start"
+    base_url: str = CENSUS_EN_BASE_URL
+    account_service_url = f"{base_url}/en/start"
     design_system_theme = "census"
     footer_links: Iterable[MutableMapping] = field(
         default_factory=lambda: [
@@ -218,12 +222,13 @@ class CensusContextOptions(
     )
 
 
-@dataclass(frozen=True)
+@dataclass
 class CensusContextOptionsCymraeg(
     CensusContextOptions,
 ):
     title_logo: str = "census-logo-cy"
     title_logo_alt: str = lazy_gettext("Census 2021")
+    base_url: str = CENSUS_CY_BASE_URL
     account_service_url = f"{CENSUS_CY_BASE_URL}/en/start"
     design_system_theme = "census"
     footer_links: Iterable[MutableMapping] = field(
@@ -271,10 +276,11 @@ class CensusContextOptionsCymraeg(
     )
 
 
-@dataclass(frozen=True)
+@dataclass
 class CensusNISRAContextOptions(
     CensusContextOptions,
 ):
+    base_url: str = CENSUS_NIR_BASE_URL
     page_header_logo: str = "nisra-logo-en"
     page_header_logo_alt: str = lazy_gettext(
         "Northern Ireland Statistics and Research Agency logo"
@@ -327,20 +333,22 @@ class CensusNISRAContextOptions(
     )
 
 
+@lru_cache
 def generate_context(
     theme: str,
-    base_url: str,
     language: str,
+    is_post_submission: bool,
+    include_csrf_token: bool,
 ) -> dict[str, Any]:
     return ContextHelper(
         theme,
-        base_url,
         language,
+        is_post_submission,
+        include_csrf_token,
         _context_options(theme, language),
     ).context
 
 
-@lru_cache
 def _context_options(theme: str, language: str) -> ContextOptions:
     context_options_mapping = {
         "business": ContextOptions,
@@ -360,13 +368,11 @@ def render_template(template: str, **kwargs: Mapping) -> Text:
     # business feedback on the differentiation between theme and SURVEY_TYPE.
     theme = cookie_session.get("theme", current_app.config["SURVEY_TYPE"])
     language = get_locale().language
-    base_url = get_base_url(theme, language)
+    is_post_submission = request.blueprint == "post_submission"
+    include_csrf_token = request.url_rule and "post" in request.url_rule.methods
 
-    context = generate_context(
-        theme,
-        base_url,
-        language,
-    )
+    context = generate_context(theme, language, is_post_submission, include_csrf_token)
+
     template = f"{template.lower()}.html"
     return flask_render_template(
         template,
