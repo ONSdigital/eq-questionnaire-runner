@@ -1,6 +1,6 @@
 from dataclasses import asdict, dataclass, field
-from functools import cached_property, lru_cache
-from typing import Any, Dict, Iterable, Mapping, Optional, Union
+from functools import cached_property
+from typing import Any, Iterable, Mapping, MutableMapping, Optional, Text, Union
 
 from flask import current_app
 from flask import render_template as flask_render_template
@@ -47,7 +47,7 @@ class ContextOptions:
     powered_by_logo_alt: Optional[str] = None
     lang: str = "en"
     crest: bool = True
-    footer_links: Optional[Iterable[Mapping]] = None
+    footer_links: Optional[Iterable[MutableMapping]] = None
     footer_legal_links: Optional[Iterable[Mapping]] = None
     survey_title: Optional[LazyString] = lazy_gettext("Census 2021")
     data_layer: Iterable[Union[Mapping]] = field(default_factory=list)
@@ -61,7 +61,7 @@ class ContextHelper:
         base_url: str,
         language: str,
         context_options: ContextOptions = ContextOptions(),
-    ):
+    ) -> None:
         self._theme = theme
         self._base_url = base_url
         self._language = language
@@ -84,7 +84,7 @@ class ContextHelper:
         )
 
     @property
-    def context(self) -> Dict[str, Any]:
+    def context(self) -> dict[str, Any]:
         return {
             "account_service_url": self._account_service_url,
             "account_service_log_out_url": self._account_service_log_out_url,
@@ -178,7 +178,7 @@ class CensusContextOptions(ContextOptions):
     title_logo_alt: LazyString = lazy_gettext("Census 2021")
     account_service_url = f"{CENSUS_EN_BASE_URL}/en/start"
     design_system_theme = "census"
-    footer_links: Iterable[Mapping] = field(
+    footer_links: Iterable[MutableMapping] = field(
         default_factory=lambda: [
             Link(
                 lazy_gettext("Help"),
@@ -220,7 +220,7 @@ class CensusContextOptionsCymraeg(CensusContextOptions):
     title_logo_alt: str = lazy_gettext("Census 2021")
     account_service_url = f"{CENSUS_CY_BASE_URL}/en/start"
     design_system_theme = "census"
-    footer_links: Iterable[Mapping] = field(
+    footer_links: Iterable[MutableMapping] = field(
         default_factory=lambda: [
             Link(
                 lazy_gettext("Help"),
@@ -268,7 +268,7 @@ class CensusNISRAContextOptions(CensusContextOptions):
     copyright_text: str = lazy_gettext(
         "Use of address data is subject to the terms and conditions."
     )
-    footer_links: Iterable[Mapping] = field(
+    footer_links: Iterable[MutableMapping] = field(
         default_factory=lambda: [
             Link(
                 lazy_gettext("Help"),
@@ -302,12 +302,11 @@ class CensusNISRAContextOptions(CensusContextOptions):
         self.data_layer = [{"nisra": True}]
 
 
-@lru_cache
 def generate_context(
     theme: str,
     base_url: str,
     language: str,
-) -> Dict[str, Any]:
+) -> dict[str, Any]:
     context_options = {
         "business": ContextOptions,
         "health": ContextOptions,
@@ -327,12 +326,12 @@ def generate_context(
     ).context
 
 
-def render_template(template: str, **kwargs: Mapping) -> str:
+def render_template(template: str, **kwargs: Mapping) -> Text:
     # The fallback to assigning SURVEY_TYPE to theme is only being added until
     # business feedback on the differentiation between theme and SURVEY_TYPE.
     theme = cookie_session.get("theme", current_app.config["SURVEY_TYPE"])
     language = get_locale().language
-    base_url = get_base_url("theme", language)
+    base_url = get_base_url(theme, language)
 
     context = generate_context(
         theme,
