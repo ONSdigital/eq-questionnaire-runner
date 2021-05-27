@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2021-05-26 19:58+0100\n"
+"POT-Creation-Date: 2021-05-27 11:11+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -813,6 +813,10 @@ msgstr[1] ""
 msgid "Send feedback"
 msgstr ""
 
+#: templates/hub.html:7
+msgid "If you can’t answer someone else’s questions"
+msgstr ""
+
 #: templates/interstitial.html:23 templates/partials/question.html:27
 msgid "If you can’t answer questions for this person"
 msgstr ""
@@ -1108,10 +1112,6 @@ msgstr ""
 
 #: templates/layouts/_questionnaire.html:38
 msgid "Choose another section and return to this later"
-msgstr ""
-
-#: templates/layouts/_submit.html:31
-msgid "If you can’t answer someone else’s questions"
 msgstr ""
 
 #: templates/layouts/configs/_save-sign-out-button.html:5

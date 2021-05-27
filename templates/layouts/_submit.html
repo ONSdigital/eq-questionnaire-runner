@@ -27,10 +27,8 @@
     </div>
   {% endif %}
 
-  {% if content.individual_response_url %}
-    {% set title = _("If you can’t answer someone else’s questions") %}
-    {% include 'partials/individual-response-guidance.html' %}
-  {% endif %}
+  {% block pre_submit_button_content %}
+  {% endblock pre_submit_button_content %}
 
   {% block submit_button %}
     {{
