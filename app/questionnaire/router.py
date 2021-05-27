@@ -31,6 +31,28 @@ class Router:
             if self._is_section_enabled(section=section)
         ]
 
+    @property
+    def is_questionnaire_complete(self) -> bool:
+        first_incomplete_section_key = self._get_first_incomplete_section_key()
+        return not first_incomplete_section_key
+
+    def get_first_incomplete_location_in_questionnaire_url(self) -> str:
+        first_incomplete_section_key = self._get_first_incomplete_section_key()
+
+        if first_incomplete_section_key:
+            section_id, list_item_id = first_incomplete_section_key
+
+            section_routing_path = self._path_finder.routing_path(
+                section_id=section_id, list_item_id=list_item_id
+            )
+            return self.get_section_resume_url(section_routing_path)
+
+        return self.get_next_location_url_for_end_of_section()
+
+    def get_last_location_in_questionnaire_url(self) -> str:
+        routing_path = self.routing_path(*self._get_last_complete_section_key())
+        return self.get_last_location_in_section(routing_path).url()
+
     def is_list_item_in_list_store(self, list_item_id, list_name):
         return list_item_id in self._list_store[list_name]
 
@@ -120,19 +142,6 @@ class Router:
 
         return None
 
-    def get_first_incomplete_location_in_questionnaire_url(self) -> str:
-        first_incomplete_section_key = self._get_first_incomplete_section_key()
-
-        if first_incomplete_section_key:
-            section_id, list_item_id = first_incomplete_section_key
-
-            section_routing_path = self._path_finder.routing_path(
-                section_id=section_id, list_item_id=list_item_id
-            )
-            return self.get_section_resume_url(section_routing_path)
-
-        return self.get_next_location_url_for_end_of_section()
-
     def get_next_location_url_for_end_of_section(self) -> str:
         if self._schema.is_flow_hub and self.can_access_hub():
             return url_for("questionnaire.get_questionnaire")
@@ -151,11 +160,6 @@ class Router:
                 return location.url(resume=True)
 
         return self.get_first_location_in_section(routing_path).url()
-
-    @property
-    def is_questionnaire_complete(self) -> bool:
-        first_incomplete_section_key = self._get_first_incomplete_section_key()
-        return not first_incomplete_section_key
 
     def is_path_complete(self, routing_path):
         return not bool(self._get_first_incomplete_location_in_section(routing_path))
@@ -276,10 +280,6 @@ class Router:
             list_name=routing_path.list_name,
             list_item_id=routing_path.list_item_id,
         )
-
-    def get_last_location_in_questionnaire(self) -> Location:
-        routing_path = self.routing_path(*self._get_last_complete_section_key())
-        return self.get_last_location_in_section(routing_path)
 
     @staticmethod
     def _get_section_url(location):

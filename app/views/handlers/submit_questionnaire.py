@@ -47,7 +47,7 @@ class SubmitQuestionnaireHandler:
         return submit_questionnaire_context()
 
     def get_previous_location_url(self) -> str:
-        return self.router.get_last_location_in_questionnaire().url()
+        return self.router.get_last_location_in_questionnaire_url()
 
     @property
     def template(self) -> str:
