@@ -71,7 +71,8 @@ describe("Last viewed question guidance", () => {
     it("When the respondent selects a section which is complete , then last question guidance is not shown on the summary or any link clicked from the summary", () => {
       $(ALevelsPage.yes()).click();
       $(ALevelsPage.submit()).click();
-      expect($(EducationSectionSummaryPage.lastViewedQuestionGuidance()).isExisting()).to.be.false;
+      expect(browser.getUrl()).to.contain(EducationSectionSummaryPage.url());
+      expect($(ALevelsPage.lastViewedQuestionGuidance()).isExisting()).to.be.false;
       $(EducationSectionSummaryPage.submit()).click();
       $(HubPage.summaryRowLink("education-section")).click();
       expect(browser.getUrl()).to.contain(EducationSectionSummaryPage.url());

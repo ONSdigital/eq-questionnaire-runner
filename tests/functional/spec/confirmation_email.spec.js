@@ -1,5 +1,4 @@
-import SchemaConfirmationPage from "../generated_pages/confirmation_email/schema-confirmation.page";
-import SummaryPage from "../generated_pages/confirmation_email/summary.page";
+import SubmitPage from "../generated_pages/confirmation_email/submit.page";
 
 import ThankYouPage from "../base_pages/thank-you.page";
 import ConfirmationEmailPage from "../base_pages/confirmation-email.page";
@@ -13,8 +12,8 @@ describe("Email confirmation", () => {
     });
 
     it("When I complete the survey and am on the thank you page, Then there is option to enter an email address", () => {
-      $(SchemaConfirmationPage.submit()).click();
-      $(SummaryPage.submit()).click();
+      $(SubmitPage.submit()).click();
+      $(SubmitPage.submit()).click();
       expect(browser.getUrl()).to.contain(ThankYouPage.pageName);
       expect($(ThankYouPage.email()).isExisting()).to.be.true;
     });
@@ -85,8 +84,8 @@ describe("Email confirmation", () => {
       browser.openQuestionnaire("test_confirmation_email.json");
     });
     it("When I enter an email and answer 'No' on the confirm email page, Then I go the confirmation send page with the email pre-filled", () => {
-      $(SchemaConfirmationPage.submit()).click();
-      $(SummaryPage.submit()).click();
+      $(SubmitPage.submit()).click();
+      $(SubmitPage.submit()).click();
       $(ThankYouPage.email()).setValue("name@example.com");
       $(ThankYouPage.submit()).click();
       $(ConfirmEmailPage.no()).click();
@@ -103,8 +102,8 @@ describe("Email confirmation", () => {
       browser.openQuestionnaire("test_confirmation_email.json");
     });
     it("When I view the email confirmation page, Then I should not see the feedback call to action", () => {
-      $(SchemaConfirmationPage.submit()).click();
-      $(SummaryPage.submit()).click();
+      $(SubmitPage.submit()).click();
+      $(SubmitPage.submit()).click();
       $(ThankYouPage.email()).setValue("name@example.com");
       $(ThankYouPage.submit()).click();
       expect($(ConfirmationEmailSentPage.feedbackLink()).isExisting()).to.equal(false);

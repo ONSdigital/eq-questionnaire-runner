@@ -3,8 +3,7 @@ from unittest.mock import Mock
 from tests.integration.integration_test_case import IntegrationTestCase
 from tests.integration.questionnaire import HUB_URL_PATH, THANK_YOU_URL_PATH
 
-FINAL_SUMMARY_PATH = "/questionnaire/summary/"
-FINAL_CONFIRMATION_PATH = "/questionnaire/confirmation/"
+SUBMIT_URL_PATH = "/questionnaire/submit"
 
 
 class SubmissionTestCase(IntegrationTestCase):
@@ -19,10 +18,10 @@ class SubmissionTestCase(IntegrationTestCase):
         submitter.send_message = Mock(return_value=False)
 
 
-class TestQuestionnaireSubmissionFinalConfirmation(SubmissionTestCase):
+class TestQuestionnaireSubmission(SubmissionTestCase):
     def _launch_and_submit_questionnaire(self):
         # Launch questionnaire
-        self.launchSurvey("test_final_confirmation")
+        self.launchSurvey("test_submit_with_custom_submission_text")
 
         # Answer questions and submit survey
         self.post(action="start_questionnaire")
@@ -50,7 +49,7 @@ class TestQuestionnaireSubmissionFinalConfirmation(SubmissionTestCase):
         self.assertEqualPageTitle("Sorry, there is a problem - Census 2021")
 
         self.get(self.retry_url)
-        self.assertInUrl(FINAL_CONFIRMATION_PATH)
+        self.assertInUrl(SUBMIT_URL_PATH)
 
 
 class TestQuestionnaireSubmissionHub(SubmissionTestCase):
@@ -96,14 +95,14 @@ class TestQuestionnaireSubmissionHub(SubmissionTestCase):
         self.assertInUrl(HUB_URL_PATH)
 
 
-class TestQuestionnaireSubmissionFinalSummary(SubmissionTestCase):
+class TestQuestionnaireSubmissionWithSummary(SubmissionTestCase):
     def _launch_and_submit_questionnaire(self):
         # Launch questionnaire
-        self.launchSurvey("test_summary")
+        self.launchSurvey("test_submit_with_summary")
 
         # Answer questions and submit survey
         self.post()
-        self.post()
+        self.post({"dessert-answer": "Cake"})
         self.post({"dessert-confirmation-answer": "Yes"})
         self.post()
         self.post()
@@ -122,9 +121,9 @@ class TestQuestionnaireSubmissionFinalSummary(SubmissionTestCase):
         self._mock_submission_failure()
 
         # Given I launch and answer a questionnaire, When I submit but the submissions fails
-        self.launchSurvey("test_summary")
+        self.launchSurvey("test_submit_with_summary")
         self.post()
-        self.post()
+        self.post({"dessert-answer": "Cake"})
         self.post({"dessert-confirmation-answer": "Yes"})
         self.post()
         self.post()
@@ -134,4 +133,4 @@ class TestQuestionnaireSubmissionFinalSummary(SubmissionTestCase):
         self.assertEqualPageTitle("Sorry, there is a problem - Census 2021")
 
         self.get(self.retry_url)
-        self.assertInUrl(FINAL_SUMMARY_PATH)
+        self.assertInUrl(SUBMIT_URL_PATH)

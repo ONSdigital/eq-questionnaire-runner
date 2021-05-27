@@ -1,6 +1,6 @@
 import QuestionPageOne from "../../../generated_pages/default/number-question-one.page.js";
 import QuestionPageTwo from "../../../generated_pages/default/number-question-two.page.js";
-import Summary from "../../../generated_pages/default/summary.page.js";
+import SubmitPage from "../../../generated_pages/default/submit.page.js";
 import QuestionPageOneSkip from "../../../generated_pages/default_with_skip/number-question-one.page.js";
 import QuestionPageThreeSkip from "../../../generated_pages/default_with_skip/number-question-three.page.js";
 
@@ -11,8 +11,8 @@ describe("Feature: Default Value", () => {
     expect(browser.getUrl()).to.contain(QuestionPageTwo.pageName);
     $(QuestionPageTwo.two()).setValue(123);
     $(QuestionPageTwo.submit()).click();
-    expect(browser.getUrl()).to.contain(Summary.pageName);
-    expect($(Summary.answerOne()).getText()).to.contain("No answer provided");
+    expect(browser.getUrl()).to.contain(SubmitPage.pageName);
+    expect($(SubmitPage.answerOne()).getText()).to.contain("No answer provided");
   });
 
   it("Given I have not answered a question containing a default value, When I return to the question, Then no value should be displayed", () => {
@@ -21,8 +21,8 @@ describe("Feature: Default Value", () => {
     expect(browser.getUrl()).to.contain(QuestionPageTwo.pageName);
     $(QuestionPageTwo.two()).setValue(123);
     $(QuestionPageTwo.submit()).click();
-    expect(browser.getUrl()).to.contain(Summary.pageName);
-    $(Summary.previous()).click();
+    expect(browser.getUrl()).to.contain(SubmitPage.pageName);
+    $(SubmitPage.previous()).click();
     expect(browser.getUrl()).to.contain(QuestionPageTwo.pageName);
     $(QuestionPageTwo.previous()).click();
     expect(browser.getUrl()).to.contain(QuestionPageOne.pageName);

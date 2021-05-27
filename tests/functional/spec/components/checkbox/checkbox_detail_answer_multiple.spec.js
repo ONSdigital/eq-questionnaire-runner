@@ -1,5 +1,5 @@
 import MandatoryCheckboxPage from "../../../generated_pages/checkbox_detail_answer_multiple/mandatory-checkbox.page";
-import SummaryPage from "../../../generated_pages/checkbox_detail_answer_multiple/summary.page";
+import SubmitPage from "../../../generated_pages/checkbox_detail_answer_multiple/submit.page";
 
 describe('Checkbox with multiple "detail_answer" options', () => {
   const checkboxSchema = "test_checkbox_detail_answer_multiple.json";
@@ -37,7 +37,7 @@ describe('Checkbox with multiple "detail_answer" options', () => {
     // When
     $(MandatoryCheckboxPage.yourChoiceDetail()).setValue("Bacon");
     $(MandatoryCheckboxPage.submit()).click();
-    expect(browser.getUrl()).to.contain(SummaryPage.pageName);
+    expect(browser.getUrl()).to.contain(SubmitPage.pageName);
   });
 
   it("Given a non-mandatory detail answer, When the user does not provide any text, Then just the option value should be displayed on the summary screen", () => {
@@ -48,7 +48,7 @@ describe('Checkbox with multiple "detail_answer" options', () => {
     expect($(MandatoryCheckboxPage.cheeseDetail()).isDisplayed()).to.be.true;
     $(MandatoryCheckboxPage.submit()).click();
     // Then
-    expect($(SummaryPage.mandatoryCheckboxAnswer()).getText()).to.equal("Cheese");
+    expect($(SubmitPage.mandatoryCheckboxAnswer()).getText()).to.equal("Cheese");
   });
 
   it("Given multiple detail answers, When the user provides text for all, Then that text should be displayed on the summary screen", () => {
@@ -61,7 +61,7 @@ describe('Checkbox with multiple "detail_answer" options', () => {
     $(MandatoryCheckboxPage.yourChoiceDetail()).setValue("Bacon");
     $(MandatoryCheckboxPage.submit()).click();
     // Then
-    expect($(SummaryPage.mandatoryCheckboxAnswer()).getText()).to.equal("Cheese\nMozzarella\nYour choice\nBacon");
+    expect($(SubmitPage.mandatoryCheckboxAnswer()).getText()).to.equal("Cheese\nMozzarella\nYour choice\nBacon");
   });
 
   it("Given multiple detail answers, When the user provides text for just one, Then that text should be displayed on the summary screen", () => {
@@ -72,7 +72,7 @@ describe('Checkbox with multiple "detail_answer" options', () => {
     $(MandatoryCheckboxPage.yourChoiceDetail()).setValue("Bacon");
     $(MandatoryCheckboxPage.submit()).click();
     // Then
-    expect($(SummaryPage.mandatoryCheckboxAnswer()).getText()).to.equal("Your choice\nBacon");
+    expect($(SubmitPage.mandatoryCheckboxAnswer()).getText()).to.equal("Your choice\nBacon");
   });
 
   it("Given I have previously added text in a detail answer and saved, When I uncheck the detail answer option and select a different checkbox, Then the text entered in the detail answer field should be empty.", () => {
@@ -82,11 +82,11 @@ describe('Checkbox with multiple "detail_answer" options', () => {
     $(MandatoryCheckboxPage.cheese()).click();
     $(MandatoryCheckboxPage.cheeseDetail()).setValue("Mozzarella");
     $(MandatoryCheckboxPage.submit()).click();
-    $(SummaryPage.previous()).click();
+    $(SubmitPage.previous()).click();
     $(MandatoryCheckboxPage.cheese()).click();
     $(MandatoryCheckboxPage.ham()).click();
     $(MandatoryCheckboxPage.submit()).click();
-    $(SummaryPage.previous()).click();
+    $(SubmitPage.previous()).click();
     // Then
     $(MandatoryCheckboxPage.cheese()).click();
     expect($(MandatoryCheckboxPage.cheeseDetail()).getValue()).to.equal("");

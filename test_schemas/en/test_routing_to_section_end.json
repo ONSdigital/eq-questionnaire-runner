@@ -4,7 +4,7 @@
     "data_version": "0.0.3",
     "survey_id": "137",
     "theme": "default",
-    "title": "Test Skipping To End",
+    "title": "Test Routing To Section End",
     "mime_type": "application/json/ons/eq",
     "navigation": {
         "visible": true
@@ -23,21 +23,29 @@
             "type": "string"
         }
     ],
+    "questionnaire_flow": {
+        "type": "Linear",
+        "options": {
+            "summary": {
+                "collapsible": false
+            }
+        }
+    },
     "sections": [
         {
-            "id": "test-skipping-section",
+            "id": "test-section",
             "title": "Section 1",
             "summary": { "show_on_completion": true },
             "groups": [
                 {
                     "blocks": [
                         {
-                            "id": "test-skipping-forced",
+                            "id": "test-forced",
                             "question": {
                                 "title": "Were you forced to complete section 1?",
                                 "answers": [
                                     {
-                                        "id": "test-skipping-answer",
+                                        "id": "test-answer",
                                         "mandatory": true,
                                         "options": [
                                             {
@@ -52,17 +60,17 @@
                                         "type": "Radio"
                                     }
                                 ],
-                                "id": "test-skipping-question",
+                                "id": "test-question",
                                 "type": "General"
                             },
                             "type": "Question",
                             "routing_rules": [
                                 {
                                     "goto": {
-                                        "block": "test-skipping-optional",
+                                        "block": "test-optional",
                                         "when": [
                                             {
-                                                "id": "test-skipping-answer",
+                                                "id": "test-answer",
                                                 "condition": "equals",
                                                 "value": "Yes"
                                             }
@@ -77,12 +85,12 @@
                             ]
                         },
                         {
-                            "id": "test-skipping-optional",
+                            "id": "test-optional",
                             "type": "Question",
                             "question": {
                                 "answers": [
                                     {
-                                        "id": "test-skipping-optional-answer",
+                                        "id": "test-optional-answer",
                                         "mandatory": true,
                                         "options": [
                                             {
@@ -97,30 +105,30 @@
                                         "type": "Checkbox"
                                     }
                                 ],
-                                "id": "test-skipping-optional-question",
+                                "id": "test-optional-question",
                                 "title": "What would incentivise you to complete this section?",
                                 "type": "General"
                             }
                         }
                     ],
-                    "id": "test-skipping-group",
+                    "id": "test-group",
                     "title": "Section 1"
                 }
             ]
         },
         {
-            "id": "test-skipping-section-2",
+            "id": "test-section-2",
             "title": "Section 2",
             "summary": { "show_on_completion": true },
             "groups": [
                 {
                     "blocks": [
                         {
-                            "id": "test-skipping-forced-2",
+                            "id": "test-forced-2",
                             "question": {
                                 "answers": [
                                     {
-                                        "id": "test-skipping-answer-2",
+                                        "id": "test-answer-2",
                                         "mandatory": true,
                                         "options": [
                                             {
@@ -135,7 +143,7 @@
                                         "type": "Radio"
                                     }
                                 ],
-                                "id": "test-skipping-question-2",
+                                "id": "test-question-2",
                                 "title": "Were you forced to complete section 2?",
                                 "type": "General"
                             },
@@ -143,10 +151,10 @@
                             "routing_rules": [
                                 {
                                     "goto": {
-                                        "block": "test-skipping-optional-2",
+                                        "block": "test-optional-2",
                                         "when": [
                                             {
-                                                "id": "test-skipping-answer-2",
+                                                "id": "test-answer-2",
                                                 "condition": "equals",
                                                 "value": "Yes"
                                             }
@@ -161,12 +169,12 @@
                             ]
                         },
                         {
-                            "id": "test-skipping-optional-2",
+                            "id": "test-optional-2",
                             "type": "Question",
                             "question": {
                                 "answers": [
                                     {
-                                        "id": "test-skipping-optional-answer-2",
+                                        "id": "test-optional-answer-2",
                                         "mandatory": true,
                                         "options": [
                                             {
@@ -181,30 +189,14 @@
                                         "type": "Checkbox"
                                     }
                                 ],
-                                "id": "test-skipping-optional-question-2",
+                                "id": "test-optional-question-2",
                                 "title": "What would incentivise you to complete this section?",
                                 "type": "General"
                             }
                         }
                     ],
-                    "id": "test-skipping-group-2",
+                    "id": "test-group-2",
                     "title": "Section 2"
-                }
-            ]
-        },
-        {
-            "id": "summary-section",
-            "title": "Summary",
-            "groups": [
-                {
-                    "blocks": [
-                        {
-                            "type": "Summary",
-                            "id": "summary"
-                        }
-                    ],
-                    "id": "summary-group",
-                    "title": "Summary"
                 }
             ]
         }

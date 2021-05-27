@@ -1,5 +1,5 @@
 import DateRangePage from "../../../../generated_pages/date_validation_range/date-range-block.page";
-import SummaryPage from "../../../../generated_pages/date_validation_range/summary.page";
+import SubmitPage from "../../../../generated_pages/date_validation_range/submit.page";
 
 describe("Feature: Question level validation for date ranges", () => {
   beforeEach(() => {
@@ -45,7 +45,7 @@ describe("Feature: Question level validation for date ranges", () => {
         $(DateRangePage.dateRangeTomonth()).setValue(2);
         $(DateRangePage.dateRangeToyear()).setValue(2018);
         $(DateRangePage.submit()).click();
-        expect(browser.getUrl()).to.contain(SummaryPage.pageName);
+        expect(browser.getUrl()).to.contain(SubmitPage.pageName);
       });
     });
   });
@@ -89,7 +89,7 @@ describe("Feature: Question level validation for date ranges", () => {
         $(DateRangePage.dateRangeTomonth()).setValue(2);
         $(DateRangePage.dateRangeToyear()).setValue(2018);
         $(DateRangePage.submit()).click();
-        expect(browser.getUrl()).to.contain(SummaryPage.pageName);
+        expect(browser.getUrl()).to.contain(SubmitPage.pageName);
       });
     });
   });

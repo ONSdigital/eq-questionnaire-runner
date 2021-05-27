@@ -1,4 +1,5 @@
 from tests.integration.integration_test_case import IntegrationTestCase
+from tests.integration.questionnaire import SUBMIT_URL_PATH
 
 
 class TestResume(IntegrationTestCase):
@@ -15,7 +16,7 @@ class TestResume(IntegrationTestCase):
         self.launchSurvey("test_textfield")
 
         # Check we are on the second page
-        self.assertEqual("/questionnaire/summary/", self.last_url)
+        self.assertEqual(SUBMIT_URL_PATH, self.last_url)
 
     def test_sign_out_on_section_summary(self):
         # If a user completes a section and signs out on the section summary,

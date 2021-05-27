@@ -161,23 +161,32 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
 
         return answers_by_id
 
-    def get_hub(self) -> Optional[ImmutableDict]:
-        hub_schema: Optional[ImmutableDict] = self.json.get("hub")
-        return hub_schema
+    @cached_property
+    def _flow(self) -> ImmutableDict[str, Any]:
+        questionnaire_flow: ImmutableDict = self.json["questionnaire_flow"]
+        return questionnaire_flow
 
-    def is_hub_enabled(self) -> Optional[bool]:
-        if hub := self.get_hub():
-            return hub.get("enabled")
+    @cached_property
+    def flow_options(self) -> ImmutableDict[str, Any]:
+        options: ImmutableDict[str, Any] = self._flow["options"]
+        return options
+
+    @cached_property
+    def is_flow_hub(self) -> bool:
+        return bool(self._flow["type"] == "Hub")
+
+    @cached_property
+    def is_flow_linear(self) -> bool:
+        return bool(self._flow["type"] == "Linear")
 
     def get_section_ids_required_for_hub(self) -> list[str]:
-        if hub := self.get_hub():
-            return hub.get("required_completed_sections", [])
+        return self.flow_options.get("required_completed_sections", [])
+
+    def get_summary_options(self) -> ImmutableDict[str, Any]:
+        return self.flow_options.get("summary", {})
 
     def get_sections(self) -> Iterable[ImmutableDict]:
         return self._sections_by_id.values()
-
-    def get_section_ids(self) -> list[str]:
-        return list(self._sections_by_id.keys())
 
     def get_section(self, section_id: str) -> Optional[ImmutableDict]:
         return self._sections_by_id.get(section_id)
@@ -320,12 +329,6 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
 
     def get_group_for_block_id(self, block_id: str) -> Optional[ImmutableDict]:
         return self._group_for_block(block_id)
-
-    def get_last_block_id_for_section(self, section_id: str) -> Optional[str]:
-        section = self.get_section(section_id)
-        if section:
-            block_id: str = section["groups"][-1]["blocks"][-1]["id"]
-            return block_id
 
     def get_first_block_id_for_group(self, group_id: str) -> Optional[str]:
         group = self.get_group(group_id)

@@ -29,6 +29,14 @@
             "optional": true
         }
     ],
+    "questionnaire_flow": {
+        "type": "Linear",
+        "options": {
+            "summary": {
+                "collapsible": false
+            }
+        }
+    },
     "sections": [
         {
             "id": "default-section",
@@ -145,7 +153,7 @@
                                 },
                                 {
                                     "goto": {
-                                        "group": "summary-group"
+                                        "section": "End"
                                     }
                                 }
                             ]
@@ -199,22 +207,6 @@
                             }
                         }
                     ]
-                }
-            ]
-        },
-        {
-            "id": "summary-section",
-            "title": "Summary",
-            "groups": [
-                {
-                    "blocks": [
-                        {
-                            "id": "summary",
-                            "type": "Summary"
-                        }
-                    ],
-                    "id": "summary-group",
-                    "title": "Summary"
                 }
             ]
         }

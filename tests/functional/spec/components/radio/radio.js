@@ -1,20 +1,20 @@
 import RadioMandatoryPage from "../../../generated_pages/radio_mandatory/radio-mandatory.page";
-import RadioMandatorySummary from "../../../generated_pages/radio_mandatory/summary.page";
+import RadioMandatorySummary from "../../../generated_pages/radio_mandatory/submit.page";
 
 import RadioMandatoryOptionalDetailAnswerPage from "../../../generated_pages/radio_mandatory_with_detail_answer_optional/radio-mandatory.page";
-import RadioMandatoryOptionDetailAnswerSummary from "../../../generated_pages/radio_mandatory_with_detail_answer_optional/summary.page";
+import RadioMandatoryOptionDetailAnswerSummary from "../../../generated_pages/radio_mandatory_with_detail_answer_optional/submit.page";
 
 import RadioMandatoryDetailAnswerOverriddenPage from "../../../generated_pages/radio_mandatory_with_detail_answer_mandatory_with_overridden_error/radio-mandatory.page";
 
 import RadioMandatoryOverriddenPage from "../../../generated_pages/radio_mandatory_with_overridden_error/radio-mandatory.page";
 
 import RadioNonMandatoryPage from "../../../generated_pages/radio_optional/radio-non-mandatory.page";
-import RadioNonMandatorySummary from "../../../generated_pages/radio_optional/summary.page";
+import RadioNonMandatorySummary from "../../../generated_pages/radio_optional/submit.page";
 
 import RadioNonMandatoryDetailAnswerOverriddenPage from "../../../generated_pages/radio_optional_with_detail_answer_mandatory_with_overridden_error/radio-non-mandatory.page";
 
 import RadioNonMandatoryDetailAnswerPage from "../../../generated_pages/radio_optional_with_detail_answer_mandatory/radio-non-mandatory.page";
-import RadioNonMandatoryDetailAnswerSummary from "../../../generated_pages/radio_optional_with_detail_answer_mandatory/summary.page";
+import RadioNonMandatoryDetailAnswerSummary from "../../../generated_pages/radio_optional_with_detail_answer_mandatory/submit.page";
 
 describe("Component: Radio", () => {
   describe("Given I start a Mandatory Radio survey", () => {

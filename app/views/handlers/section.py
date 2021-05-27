@@ -1,5 +1,3 @@
-from flask import url_for
-
 from app.questionnaire.location import InvalidLocationException, Location
 from app.questionnaire.router import Router
 from app.views.contexts import SectionSummaryContext
@@ -32,7 +30,7 @@ class SectionHandler:
             section_id=self._section_id, list_item_id=self._list_item_id
         )
 
-    def context(self):
+    def get_context(self):
         section_summary_context = SectionSummaryContext(
             self._language,
             self._schema,
@@ -46,9 +44,7 @@ class SectionHandler:
         return section_summary_context()
 
     def get_next_location_url(self):
-        if self._schema.is_hub_enabled():
-            return url_for(".get_questionnaire")
-        return self._router.get_first_incomplete_location_in_survey_url()
+        return self._router.get_next_location_url_for_end_of_section()
 
     def get_previous_location_url(self):
         return self._router.get_last_location_in_section(self._routing_path).url()

@@ -1,4 +1,5 @@
 from tests.integration.integration_test_case import IntegrationTestCase
+from tests.integration.questionnaire import SUBMIT_URL_PATH, THANK_YOU_URL_PATH
 
 
 class TestQuestionnaireQuestionGuidance(IntegrationTestCase):
@@ -84,8 +85,8 @@ class TestQuestionnaireQuestionGuidance(IntegrationTestCase):
 
         # When we continue we go to the summary page
         self.post()
-        self.assertInUrl("summary")
+        self.assertInUrl(SUBMIT_URL_PATH)
 
         # And Submit my answers
         self.post()
-        self.assertInUrl("thank-you")
+        self.assertInUrl(THANK_YOU_URL_PATH)

@@ -23,6 +23,14 @@
             "type": "string"
         }
     ],
+    "questionnaire_flow": {
+        "type": "Linear",
+        "options": {
+            "summary": {
+                "collapsible": false
+            }
+        }
+    },
     "sections": [
         {
             "id": "communal-establishment-section",
@@ -54,10 +62,6 @@
                                 "title": "Are you aware this is an census communal establishment test schema?",
                                 "type": "General"
                             }
-                        },
-                        {
-                            "type": "Summary",
-                            "id": "summary"
                         }
                     ],
                     "id": "communal-establishment-group"

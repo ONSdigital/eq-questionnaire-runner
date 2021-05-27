@@ -1,7 +1,7 @@
 import AddressConfirmation from "../../../generated_pages/address/address-confirmation.page";
 import AddressMandatory from "../../../generated_pages/address/address-block-mandatory.page";
 import AddressOptional from "../../../generated_pages/address/address-block-optional.page";
-import Summary from "../../../generated_pages/address/summary.page";
+import SubmitPage from "../../../generated_pages/address/submit.page";
 
 describe("Address Answer Type", () => {
   beforeEach("Launch survey", () => {
@@ -18,9 +18,9 @@ describe("Address Answer Type", () => {
       $(AddressMandatory.submit()).click();
       $(AddressOptional.submit()).click();
       $(AddressConfirmation.submit()).click();
-      expect(browser.getUrl()).to.contain(Summary.pageName);
-      expect($(Summary.addressMandatory()).getText()).to.equal("Evelyn Street\nApt 7\nBarry\nCF63 4JG");
-      expect($(Summary.addressMandatory()).getHTML()).to.contain("Evelyn Street<br>Apt 7<br>Barry<br>CF63 4JG");
+      expect(browser.getUrl()).to.contain(SubmitPage.pageName);
+      expect($(SubmitPage.addressMandatory()).getText()).to.equal("Evelyn Street\nApt 7\nBarry\nCF63 4JG");
+      expect($(SubmitPage.addressMandatory()).getHTML()).to.contain("Evelyn Street<br>Apt 7<br>Barry<br>CF63 4JG");
     });
   });
 
@@ -31,8 +31,8 @@ describe("Address Answer Type", () => {
       $(AddressMandatory.submit()).click();
       $(AddressOptional.submit()).click();
       $(AddressConfirmation.submit()).click();
-      expect(browser.getUrl()).to.contain(Summary.pageName);
-      expect($(Summary.addressMandatory()).getText()).to.equal("Evelyn Street");
+      expect(browser.getUrl()).to.contain(SubmitPage.pageName);
+      expect($(SubmitPage.addressMandatory()).getText()).to.equal("Evelyn Street");
     });
   });
 
@@ -51,7 +51,7 @@ describe("Address Answer Type", () => {
 
       $(AddressOptional.submit()).click();
       $(AddressConfirmation.submit()).click();
-      expect($(Summary.addressOptional()).getText()).to.equal("No answer provided");
+      expect($(SubmitPage.addressOptional()).getText()).to.equal("No answer provided");
     });
   });
 

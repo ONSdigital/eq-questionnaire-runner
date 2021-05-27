@@ -21,6 +21,14 @@
             "type": "string"
         }
     ],
+    "questionnaire_flow": {
+        "type": "Linear",
+        "options": {
+            "summary": {
+                "collapsible": true
+            }
+        }
+    },
     "sections": [
         {
             "id": "mutually-exclusive-checkbox-section",
@@ -557,23 +565,6 @@
                                     }
                                 ]
                             }
-                        }
-                    ]
-                }
-            ]
-        },
-        {
-            "id": "summary-section",
-            "title": "Summary",
-            "groups": [
-                {
-                    "id": "summary-group",
-                    "title": "Summary",
-                    "blocks": [
-                        {
-                            "id": "summary",
-                            "type": "Summary",
-                            "collapsible": true
                         }
                     ]
                 }

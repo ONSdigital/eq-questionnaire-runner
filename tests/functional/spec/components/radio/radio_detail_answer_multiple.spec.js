@@ -1,5 +1,5 @@
 import MandatoryRadioPage from "../../../generated_pages/radio_detail_answer_multiple/radio-mandatory.page";
-import SummaryPage from "../../../generated_pages/radio_detail_answer_multiple/summary.page";
+import SubmitPage from "../../../generated_pages/radio_detail_answer_multiple/submit.page";
 
 describe('Radio with multiple "detail_answer" options', () => {
   const radioSchema = "test_radio_detail_answer_multiple.json";
@@ -33,7 +33,7 @@ describe('Radio with multiple "detail_answer" options', () => {
     // When
     $(MandatoryRadioPage.favouriteNotListedDetail()).setValue("Bacon");
     $(MandatoryRadioPage.submit()).click();
-    expect(browser.getUrl()).to.contain(SummaryPage.pageName);
+    expect(browser.getUrl()).to.contain(SubmitPage.pageName);
   });
 
   it("Given a non-mandatory detail answer, When the user does not provide any text, Then just the option value should be displayed on the summary screen", () => {
@@ -44,7 +44,7 @@ describe('Radio with multiple "detail_answer" options', () => {
     expect($(MandatoryRadioPage.eggsDetail()).isDisplayed()).to.be.true;
     $(MandatoryRadioPage.submit()).click();
     // Then
-    expect($(SummaryPage.radioMandatoryAnswer()).getText()).to.equal("Eggs");
+    expect($(SubmitPage.radioMandatoryAnswer()).getText()).to.equal("Eggs");
   });
 
   it("Given a detail answer, When the user provides text, Then that text should be displayed on the summary screen", () => {
@@ -55,7 +55,7 @@ describe('Radio with multiple "detail_answer" options', () => {
     $(MandatoryRadioPage.eggsDetail()).setValue("Scrambled");
     $(MandatoryRadioPage.submit()).click();
     // Then
-    expect($(SummaryPage.radioMandatoryAnswer()).getText()).to.equal("Eggs\nScrambled");
+    expect($(SubmitPage.radioMandatoryAnswer()).getText()).to.equal("Eggs\nScrambled");
   });
 
   it("Given I have previously added text in a detail answer and saved, When I select a different radio and save, Then the text entered in the detail answer field should be empty.", () => {
@@ -65,10 +65,10 @@ describe('Radio with multiple "detail_answer" options', () => {
     $(MandatoryRadioPage.favouriteNotListed()).click();
     $(MandatoryRadioPage.favouriteNotListedDetail()).setValue("Bacon");
     $(MandatoryRadioPage.submit()).click();
-    $(SummaryPage.previous()).click();
+    $(SubmitPage.previous()).click();
     $(MandatoryRadioPage.eggs()).click();
     $(MandatoryRadioPage.submit()).click();
-    $(SummaryPage.previous()).click();
+    $(SubmitPage.previous()).click();
     // Then
     $(MandatoryRadioPage.favouriteNotListed()).click();
     expect($(MandatoryRadioPage.favouriteNotListedDetail()).getValue()).to.equal("");

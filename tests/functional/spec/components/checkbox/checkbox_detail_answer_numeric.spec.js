@@ -1,5 +1,5 @@
 import CheckboxNumericDetailPage from "../../../generated_pages/checkbox_detail_answer_numeric/checkbox-numeric-detail.page";
-import SummaryPage from "../../../generated_pages/checkbox_detail_answer_numeric/summary.page";
+import SubmitPage from "../../../generated_pages/checkbox_detail_answer_numeric/submit.page";
 
 describe('Checkbox with a numeric "detail_answer" option', () => {
   beforeEach(() => {
@@ -16,7 +16,7 @@ describe('Checkbox with a numeric "detail_answer" option', () => {
     expect($(CheckboxNumericDetailPage.otherDetail()).isDisplayed()).to.be.true;
     $(CheckboxNumericDetailPage.submit()).click();
     // Then
-    expect($(SummaryPage.checkboxNumericDetailAnswer()).getText()).to.contain("Other");
+    expect($(SubmitPage.checkboxNumericDetailAnswer()).getText()).to.contain("Other");
   });
 
   it("Given a numeric detail answer, When the user provides text, Then that text should be displayed on the summary screen", () => {
@@ -24,7 +24,7 @@ describe('Checkbox with a numeric "detail_answer" option', () => {
     $(CheckboxNumericDetailPage.otherDetail()).setValue("15");
     $(CheckboxNumericDetailPage.submit()).click();
     // Then
-    expect($(SummaryPage.checkboxNumericDetailAnswer()).getText()).to.contain("15");
+    expect($(SubmitPage.checkboxNumericDetailAnswer()).getText()).to.contain("15");
   });
 
   it("Given a numeric detail answer, When the user provides text, An error should be displayed", () => {
@@ -70,6 +70,6 @@ describe('Checkbox with a numeric "detail_answer" option', () => {
     $(CheckboxNumericDetailPage.otherDetail()).setValue("0");
     $(CheckboxNumericDetailPage.submit()).click();
     // Then
-    expect($(SummaryPage.checkboxNumericDetailAnswer()).getText()).to.contain("0");
+    expect($(SubmitPage.checkboxNumericDetailAnswer()).getText()).to.contain("0");
   });
 });

@@ -1,10 +1,6 @@
-import QuestionPage from "./question.page";
+import BasePage from "./base.page";
 
-class ConfirmEmailPage extends QuestionPage {
-  constructor() {
-    super("confirm-email");
-  }
-
+class ConfirmEmailPage extends BasePage {
   questionTitle() {
     return '[data-qa="confirm-email-title"]';
   }
@@ -17,12 +13,8 @@ class ConfirmEmailPage extends QuestionPage {
     return "#confirm-email-1";
   }
 
-  submit() {
-    return '[data-qa="btn-submit"]';
-  }
-
   errorPanel() {
     return `[data-qa=error-body] div.panel__body > ol`;
   }
 }
-export default new ConfirmEmailPage();
+export default new ConfirmEmailPage("confirm-email");

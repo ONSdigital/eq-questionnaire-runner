@@ -4,28 +4,28 @@ from tests.integration.integration_test_case import IntegrationTestCase
 class TestQuestionnairePageTitles(IntegrationTestCase):
     def test_introduction_has_introduction_in_page_title(self):
         # Given, When
-        self.launchSurvey("test_final_confirmation")
+        self.launchSurvey("test_submit_with_custom_submission_text")
         # Then
         self.assertEqualPageTitle("Introduction - Census 2021")
 
     def test_should_have_question_in_page_title_when_loading_questionnaire(self):
         # Given
-        self.launchSurvey("test_final_confirmation")
+        self.launchSurvey("test_submit_with_custom_submission_text")
         # When
         self.post(action="start_questionnaire")
         # Then
         self.assertEqualPageTitle("What is your favourite breakfast food - Census 2021")
 
-    def test_should_have_question_in_page_title_when_loading_confirmation(self):
+    def test_should_have_question_in_page_title_on_submit_page(self):
         # Given
-        self.launchSurvey("test_final_confirmation")
+        self.launchSurvey("test_submit_with_custom_submission_text")
         # When
         self.post(action="start_questionnaire")
         self.post({"breakfast-answer": ""})
         # Then
-        self.assertEqualPageTitle("Submit answers - Census 2021")
+        self.assertEqualPageTitle("Submit your questionnaire - Census 2021")
 
-    def test_should_have_question_in_page_title_when_loading_summary(self):
+    def test_should_have_question_in_page_title_on_submit_page_with_summary(self):
         # Given
         self.launchSurvey("test_percentage")
         # When
@@ -33,9 +33,9 @@ class TestQuestionnairePageTitles(IntegrationTestCase):
         # Then
         self.assertEqualPageTitle("Check your answers and submit - Census 2021")
 
-    def test_should_have_survey_in_page_title_when_thank_you(self):
+    def test_should_have_survey_in_page_title_on_thank_you(self):
         # Given
-        self.launchSurvey("test_final_confirmation")
+        self.launchSurvey("test_submit_with_custom_submission_text")
         self.post(action="start_questionnaire")
         self.post({"breakfast-answer": ""})
         # When submit
@@ -45,13 +45,13 @@ class TestQuestionnairePageTitles(IntegrationTestCase):
 
     def test_session_timed_out_page_title(self):
         # Given
-        self.launchSurvey("test_final_confirmation")
+        self.launchSurvey("test_submit_with_custom_submission_text")
         # When
         self.get("/session-expired")
         # Then
         self.assertEqualPageTitle("Session timed out - Census 2021")
 
-    def test_should_have_content_title_in_page_title_when_interstitial(self):
+    def test_should_have_content_title_in_page_title_on_interstitial(self):
         # Given
         self.launchSurvey("test_interstitial_page")
         self.post(action="start_questionnaire")
@@ -67,7 +67,7 @@ class TestQuestionnairePageTitles(IntegrationTestCase):
         # Then
         self.assertEqualPageTitle("This is a title with emphasis - Census 2021")
 
-    def test_should_have_question_title_in_page_title_when_question(self):
+    def test_should_have_question_title_in_page_title_on_question(self):
         # Given
         self.launchSurvey("test_checkbox")
         # When

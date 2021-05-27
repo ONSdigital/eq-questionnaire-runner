@@ -1,20 +1,12 @@
-import QuestionPage from "./question.page";
+import BasePage from "./base.page";
 
-class ConfirmationEmailSentPage extends QuestionPage {
-  constructor() {
-    super("email-confirmation");
-  }
-
+class ConfirmationEmailSentPage extends BasePage {
   title() {
     return '[data-qa="title"]';
   }
 
   email() {
     return "#email";
-  }
-
-  submit() {
-    return '[data-qa="btn-submit"]';
   }
 
   errorPanel() {
@@ -24,9 +16,5 @@ class ConfirmationEmailSentPage extends QuestionPage {
   feedback() {
     return ".feedback";
   }
-
-  feedbackLink() {
-    return ".feedback a";
-  }
 }
-export default new ConfirmationEmailSentPage();
+export default new ConfirmationEmailSentPage("email-confirmation");

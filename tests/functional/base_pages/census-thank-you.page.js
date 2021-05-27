@@ -1,14 +1,6 @@
-import QuestionPage from "./question.page";
+import BasePage from "./base.page";
 
-class CensusThankYouPage extends QuestionPage {
-  constructor() {
-    super("thank-you");
-  }
-
-  guidance() {
-    return '[data-qa="guidance"]';
-  }
-
+class CensusThankYouPage extends BasePage {
   title() {
     return '[data-qa="title"]';
   }
@@ -26,4 +18,4 @@ class CensusThankYouPage extends QuestionPage {
   }
 }
 
-export default new CensusThankYouPage();
+export default new CensusThankYouPage("thank-you");

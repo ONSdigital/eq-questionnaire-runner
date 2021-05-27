@@ -5,10 +5,10 @@ import InsuranceAddressPage from "../../../generated_pages/section_summary/insur
 import InsuranceTypePage from "../../../generated_pages/section_summary/insurance-type.page.js";
 import NumberOfPeoplePage from "../../../generated_pages/section_summary/number-of-people.page.js";
 import PropertyDetailsSummaryPage from "../../../generated_pages/section_summary/property-details-section-summary.page.js";
-import QuestionnaireSummaryPage from "../../../generated_pages/section_summary/summary.page.js";
+import SubmitPage from "../../../generated_pages/section_summary/submit.page.js";
 
 describe("Collapsible Summary", () => {
-  describe("Given I start a Test Section Summary survey and complete to Final Summary", () => {
+  describe("Given I complete a questionnaire with collapsible summary enabled", () => {
     beforeEach(() => {
       browser.openQuestionnaire("test_section_summary.json");
       $(InsuranceTypePage.both()).click();
@@ -22,9 +22,21 @@ describe("Collapsible Summary", () => {
       $(HouseholdCountSectionSummaryPage.submit()).click();
     });
 
-    it("When I am on the Final Summary, Then the group titles should be displayed", () => {
-      expect($(QuestionnaireSummaryPage.collapsibleSummary()).getText()).to.contain("Property Details");
-      expect($(QuestionnaireSummaryPage.collapsibleSummary()).getText()).to.contain("House Details");
+    it("When I am on the submit page, Then a collapsed summary should be displayed with the group title and questions should not be displayed", () => {
+      expect($(SubmitPage.collapsibleSummary()).isDisplayed()).to.be.true;
+
+      expect($(SubmitPage.collapsibleSummary()).getText()).to.contain("Property Details");
+      expect($(SubmitPage.collapsibleSummary()).getText()).to.contain("House Details");
+
+      expect($(SubmitPage.insuranceAddressQuestion()).isDisplayed()).to.be.false;
+      expect($(SubmitPage.numberOfPeopleQuestion()).isDisplayed()).to.be.false;
+    });
+
+    it("When I click the Show all button, Then the summary should be expanded and questions should be displayed", () => {
+      $(SubmitPage.summaryShowAllButton()).click();
+
+      expect($(SubmitPage.insuranceAddressQuestion()).isDisplayed()).to.be.true;
+      expect($(SubmitPage.numberOfPeopleQuestion()).isDisplayed()).to.be.true;
     });
   });
 });

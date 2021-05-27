@@ -17,8 +17,9 @@
             "type": "string"
         }
     ],
-    "hub": {
-        "enabled": true
+    "questionnaire_flow": {
+        "type": "Hub",
+        "options": {}
     },
     "submission": {
         "button": "T\u00e9acs aighneachta",

@@ -1,6 +1,6 @@
 import SetMinMax from "../generated_pages/numbers/set-min-max-block.page.js";
 import TestMinMax from "../generated_pages/numbers/test-min-max-block.page.js";
-import SummaryPage from "../generated_pages/numbers/summary.page";
+import SubmitPage from "../generated_pages/numbers/submit.page";
 
 describe("NumericRange", () => {
   const numberSchema = "test_numbers.json";
@@ -23,7 +23,7 @@ describe("NumericRange", () => {
     $(TestMinMax.testMax()).setValue("456");
     $(TestMinMax.testPercent()).setValue("100");
     $(TestMinMax.submit()).click();
-    expect(browser.getUrl()).to.contain(SummaryPage.pageName);
+    expect(browser.getUrl()).to.contain(SubmitPage.pageName);
   });
 
   it("Given values outside of the allowed range then the correct error messages are displayed", () => {
