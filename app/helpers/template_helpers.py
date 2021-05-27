@@ -1,5 +1,5 @@
 from dataclasses import asdict, dataclass, field
-from functools import cached_property
+from functools import cached_property, lru_cache
 from typing import Any, Dict, Iterable, Mapping, Optional, Union
 
 from flask import current_app
@@ -8,6 +8,7 @@ from flask import request
 from flask import session as cookie_session
 from flask import url_for
 from flask_babel import get_locale, lazy_gettext
+from flask_babel.speaklater import LazyString
 
 from app.helpers.language_helper import get_languages_context
 
@@ -18,7 +19,7 @@ CENSUS_NIR_BASE_URL = f"{CENSUS_EN_BASE_URL}ni/"
 
 @dataclass
 class Link:
-    text: str
+    text: Union[str, LazyString]
     url: str
     target: Optional[str] = "_blank"
 
@@ -27,14 +28,14 @@ class Link:
 class ContextOptions:
     """Valid options for defining context."""
 
-    page_header_logo: Optional[str] = lazy_gettext("ons-logo-pos-en")
-    page_header_logo_alt: Optional[str] = lazy_gettext(
+    page_header_logo: Optional[str] = "ons-logo-pos-en"
+    page_header_logo_alt: Optional[LazyString] = lazy_gettext(
         "Office for National Statistics logo"
     )
-    copyright_declaration: Optional[str] = lazy_gettext(
+    copyright_declaration: Optional[LazyString] = lazy_gettext(
         "Crown copyright and database rights 2020 OS 100019153."
     )
-    copyright_text: Optional[str] = lazy_gettext(
+    copyright_text: Optional[LazyString] = lazy_gettext(
         "Use of address data is subject to the terms and conditions."
     )
     account_service_url: Optional[str] = None
@@ -48,7 +49,7 @@ class ContextOptions:
     crest: bool = True
     footer_links: Optional[Iterable[Mapping]] = None
     footer_legal_links: Optional[Iterable[Mapping]] = None
-    survey_title: Optional[str] = lazy_gettext("Census 2021")
+    survey_title: Optional[LazyString] = lazy_gettext("Census 2021")
     data_layer: Iterable[Union[Mapping]] = field(default_factory=list)
     design_system_theme: Optional[str] = "main"
 
@@ -109,7 +110,7 @@ class ContextHelper:
         }
 
     @property
-    def page_header_context(self) -> Dict[str, Any]:
+    def page_header_context(self) -> dict[str, Any]:
         context = {
             "logo": f"{self.context_options.page_header_logo}",
             "logoAlt": f"{self.context_options.page_header_logo_alt}",
@@ -174,7 +175,7 @@ class ContextHelper:
 @dataclass
 class CensusContextOptions(ContextOptions):
     title_logo: str = "census-logo-en"
-    title_logo_alt: str = lazy_gettext("Census 2021")
+    title_logo_alt: LazyString = lazy_gettext("Census 2021")
     account_service_url = f"{CENSUS_EN_BASE_URL}/en/start"
     design_system_theme = "census"
     footer_links: Iterable[Mapping] = field(
@@ -301,6 +302,7 @@ class CensusNISRAContextOptions(CensusContextOptions):
         self.data_layer = [{"nisra": True}]
 
 
+@lru_cache
 def generate_context(
     theme: str,
     base_url: str,
