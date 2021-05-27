@@ -631,7 +631,7 @@ class TestRouterLastLocationLinearFlow(RouterTestCase):
                 }
             ]
         )
-        previous_location_url = self.router.get_last_location_in_questionnaire_url()
+        last_location_url = self.router.get_last_location_in_questionnaire_url()
         expected_location = Location(
             section_id="default-section", block_id="single-checkbox", list_item_id=None
         )
