@@ -38,7 +38,7 @@ class TestSectionSummaryContext(SummaryContextTestCase):
 
         single_section_context = section_summary_context()
 
-        self.check_summary_context(single_section_context)
+        self.assert_summary_context(single_section_context)
 
     def test_build_view_context_for_section_summary(self):
 
