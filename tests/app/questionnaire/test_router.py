@@ -632,11 +632,11 @@ class TestRouterLastLocationLinearFlow(RouterTestCase):
             ]
         )
         last_location_url = self.router.get_last_location_in_questionnaire_url()
-        expected_location = Location(
+        expected_location_url = Location(
             section_id="default-section", block_id="single-checkbox", list_item_id=None
-        )
+        ).url()
 
-        self.assertEqual(expected_location, previous_location_url)
+        self.assertEqual(expected_location_url, last_location_url)
 
     def test_last_block_not_on_path(self):
         self.schema = load_schema_from_name(
@@ -664,11 +664,11 @@ class TestRouterLastLocationLinearFlow(RouterTestCase):
             ]
         )
 
-        expected_location = Location(
+        expected_location_url = Location(
             section_id=section_id,
             block_id=last_block_on_path,
             list_item_id=None,
-        )
+        ).url()
 
         last_completed_block_in_progress_store = (
             self.progress_store.get_completed_block_ids(
@@ -676,12 +676,12 @@ class TestRouterLastLocationLinearFlow(RouterTestCase):
             )[-1]
         )
 
+        last_location_url = self.router.get_last_location_in_questionnaire_url()
+
         self.assertEqual(
             completed_block_not_on_path, last_completed_block_in_progress_store
         )
-        self.assertEqual(
-            expected_location, self.router.get_last_location_in_questionnaire_url()
-        )
+        self.assertEqual(expected_location_url, last_location_url)
 
 
 class TestRouterSectionResume(RouterTestCase):
