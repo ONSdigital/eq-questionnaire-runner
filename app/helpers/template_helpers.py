@@ -330,7 +330,6 @@ class CensusNISRAContextOptions(
     )
 
 
-@lru_cache
 def generate_context(
     theme: str,
     language: str,
