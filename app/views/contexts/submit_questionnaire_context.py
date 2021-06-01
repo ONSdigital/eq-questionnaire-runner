@@ -1,4 +1,4 @@
-from typing import Generator, Mapping, Union
+from typing import Mapping, Union
 
 from flask_babel import lazy_gettext
 
@@ -40,6 +40,17 @@ class SubmitQuestionnaireContext(Context):
             )
 
         return context
+
+    def _get_summary_context(
+        self, collapsible: bool, answers_are_editable: bool
+    ) -> dict[str, Union[list, bool, str]]:
+        groups = list(self._build_all_groups())
+        return {
+            "groups": groups,
+            "answers_are_editable": answers_are_editable,
+            "collapsible": collapsible,
+            "summary_type": "Summary",
+        }
 
     def _build_all_groups(self):
         """NB: Does not support repeating sections"""

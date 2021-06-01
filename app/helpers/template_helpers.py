@@ -359,13 +359,13 @@ def _context_options(theme: str, language: str) -> ContextOptions:
     return context_options_mapping[theme]()
 
 
-def render_template(template: str, **kwargs: Mapping) -> Text:
+def render_template(template: str, **kwargs: Union[str, Mapping]) -> Text:
     # The fallback to assigning SURVEY_TYPE to theme is only being added until
     # business feedback on the differentiation between theme and SURVEY_TYPE.
     theme = cookie_session.get("theme", current_app.config["SURVEY_TYPE"])
     language = get_locale().language
     is_post_submission = request.blueprint == "post_submission"
-    include_csrf_token = request.url_rule and "post" in request.url_rule.methods
+    include_csrf_token = bool(request.url_rule and "post" in request.url_rule.methods)
 
     context = generate_context(theme, language, is_post_submission, include_csrf_token)
 
