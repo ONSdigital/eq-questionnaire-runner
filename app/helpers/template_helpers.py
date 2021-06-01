@@ -1,5 +1,5 @@
 from dataclasses import dataclass, field
-from functools import cached_property
+from functools import cached_property, lru_cache
 from typing import Any, Iterable, Mapping, MutableMapping, Optional, Text, Union
 
 from flask import current_app
@@ -330,6 +330,7 @@ class CensusNISRAContextOptions(
     )
 
 
+@lru_cache
 def generate_context(
     theme: str,
     language: str,
@@ -365,7 +366,7 @@ def render_template(template: str, **kwargs: Union[str, Mapping]) -> Text:
     theme = cookie_session.get("theme", current_app.config["SURVEY_TYPE"])
     language = get_locale().language
     is_post_submission = request.blueprint == "post_submission"
-    include_csrf_token = bool(request.url_rule and "post" in request.url_rule.methods)
+    include_csrf_token = bool(request.url_rule and "POST" in request.url_rule.methods)
 
     context = generate_context(theme, language, is_post_submission, include_csrf_token)
 
