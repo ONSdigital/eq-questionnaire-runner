@@ -20,6 +20,14 @@
             "type": "string"
         }
     ],
+    "questionnaire_flow": {
+        "type": "Linear",
+        "options": {
+            "summary": {
+                "collapsible": false
+            }
+        }
+    },
     "sections": [
         {
             "id": "single-answer-section",
@@ -92,7 +100,7 @@
                                 },
                                 {
                                     "goto": {
-                                        "block": "summary"
+                                        "section": "End"
                                     }
                                 }
                             ]
@@ -132,10 +140,6 @@
                                     }
                                 ]
                             }
-                        },
-                        {
-                            "type": "Summary",
-                            "id": "summary"
                         }
                     ],
                     "id": "conditional-routing-within-group",

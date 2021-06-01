@@ -1,5 +1,5 @@
 from dataclasses import dataclass, field
-from functools import cached_property, lru_cache
+from functools import cached_property
 from typing import Any, Iterable, Mapping, MutableMapping, Optional, Text, Union
 
 from flask import current_app

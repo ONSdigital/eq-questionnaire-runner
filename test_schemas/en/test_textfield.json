@@ -26,6 +26,14 @@
             "type": "string"
         }
     ],
+    "questionnaire_flow": {
+        "type": "Linear",
+        "options": {
+            "summary": {
+                "collapsible": false
+            }
+        }
+    },
     "sections": [
         {
             "id": "default-section",
@@ -51,10 +59,6 @@
                                 "type": "General"
                             },
                             "routing_rules": []
-                        },
-                        {
-                            "type": "Summary",
-                            "id": "summary"
                         }
                     ],
                     "id": "group"

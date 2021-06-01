@@ -1,8 +1,8 @@
 import DropdownMandatoryPage from "../../../generated_pages/dropdown_mandatory/dropdown-mandatory.page";
-import DropdownMandatorySummary from "../../../generated_pages/dropdown_mandatory/summary.page";
+import DropdownMandatorySummary from "../../../generated_pages/dropdown_mandatory/submit.page";
 import DropdownMandatoryOverriddenPage from "../../../generated_pages/dropdown_mandatory_with_overridden_error/dropdown-mandatory-with-overridden-error.page";
 import DropdownOptionalPage from "../../../generated_pages/dropdown_optional/dropdown-optional.page";
-import DropdownOptionalSummary from "../../../generated_pages/dropdown_optional/summary.page";
+import DropdownOptionalSummary from "../../../generated_pages/dropdown_optional/submit.page";
 
 describe("Component: Dropdown", () => {
   // Mandatory

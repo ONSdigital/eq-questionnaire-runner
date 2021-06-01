@@ -21,6 +21,14 @@
             "type": "string"
         }
     ],
+    "questionnaire_flow": {
+        "type": "Linear",
+        "options": {
+            "summary": {
+                "collapsible": false
+            }
+        }
+    },
     "sections": [
         {
             "id": "default-section",
@@ -89,7 +97,7 @@
                                     {
                                         "id": "dessert-answer",
                                         "label": "Dessert",
-                                        "mandatory": false,
+                                        "mandatory": true,
                                         "type": "TextField"
                                     }
                                 ]
@@ -175,15 +183,6 @@
                     ],
                     "id": "numbers-group",
                     "title": "Numbers"
-                },
-                {
-                    "blocks": [
-                        {
-                            "type": "Summary",
-                            "id": "summary"
-                        }
-                    ],
-                    "id": "summary-group"
                 }
             ]
         }

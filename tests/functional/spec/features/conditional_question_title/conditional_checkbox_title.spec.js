@@ -1,7 +1,7 @@
 import CheckBoxPage from "../../../generated_pages/titles_radio_and_checkbox/checkbox-block.page";
 import NameEntryPage from "../../../generated_pages/titles_radio_and_checkbox/preamble-block.page";
 import RadioButtonsPage from "../../../generated_pages/titles_radio_and_checkbox/radio-block.page";
-import SummaryPage from "../../../generated_pages/titles_radio_and_checkbox/summary.page";
+import SubmitPage from "../../../generated_pages/titles_radio_and_checkbox/submit.page";
 
 describe("Feature: Conditional checkbox and radio question titles", () => {
   beforeEach(() => {
@@ -39,8 +39,8 @@ describe("Feature: Conditional checkbox and radio question titles", () => {
       expect($(RadioButtonsPage.questionText()).getText()).to.contain("Is Mary the boss?");
       $(RadioButtonsPage.radioMaybe()).click();
       $(RadioButtonsPage.submit()).click();
-      expect($(SummaryPage.nameAnswer()).getText()).to.contain("Mary");
-      expect($(SummaryPage.checkboxQuestion()).getText()).to.contain("Did Mary make changes to this business?");
+      expect($(SubmitPage.nameAnswer()).getText()).to.contain("Mary");
+      expect($(SubmitPage.checkboxQuestion()).getText()).to.contain("Did Mary make changes to this business?");
     });
   });
 });

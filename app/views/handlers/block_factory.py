@@ -10,7 +10,6 @@ from app.views.handlers.primary_person_list_collector import PrimaryPersonListCo
 from app.views.handlers.primary_person_question import PrimaryPersonQuestion
 from app.views.handlers.question import Question
 from app.views.handlers.relationships import RelationshipCollector, UnrelatedQuestion
-from app.views.handlers.summary import Summary
 
 BLOCK_MAPPINGS = {
     "Question": Question,
@@ -26,8 +25,6 @@ BLOCK_MAPPINGS = {
     "UnrelatedQuestion": UnrelatedQuestion,
     "Introduction": Content,
     "Interstitial": Content,
-    "Confirmation": Content,
-    "Summary": Summary,
     "CalculatedSummary": CalculatedSummary,
 }
 

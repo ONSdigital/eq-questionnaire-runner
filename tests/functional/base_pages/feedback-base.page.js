@@ -9,14 +9,6 @@ class FeedbackBasePage extends BasePage {
   url() {
     return `/submitted/feedback/${this.pageName}`;
   }
-
-  previous() {
-    return 'a[id="top-previous"]';
-  }
-
-  submit() {
-    return '[data-qa="btn-submit"]';
-  }
 }
 
 export default FeedbackBasePage;

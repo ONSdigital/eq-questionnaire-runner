@@ -1,10 +1,6 @@
 import FeedbackBasePage from "./feedback-base.page.js";
 
 class FeedbackPage extends FeedbackBasePage {
-  constructor() {
-    super("send");
-  }
-
   feedbackTitle() {
     return '[data-qa="feedback-title"]';
   }
@@ -21,4 +17,4 @@ class FeedbackPage extends FeedbackBasePage {
     return '[data-qa="error-body"]';
   }
 }
-export default new FeedbackPage();
+export default new FeedbackPage("send");

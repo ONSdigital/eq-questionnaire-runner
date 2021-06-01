@@ -21,6 +21,14 @@
             "type": "string"
         }
     ],
+    "questionnaire_flow": {
+        "type": "Linear",
+        "options": {
+            "summary": {
+                "collapsible": false
+            }
+        }
+    },
     "sections": [
         {
             "id": "variant-proxy-section",
@@ -530,21 +538,6 @@
                                     ]
                                 }
                             ]
-                        }
-                    ]
-                }
-            ]
-        },
-        {
-            "id": "summary-section",
-            "groups": [
-                {
-                    "id": "summary-group",
-                    "title": "Final summary",
-                    "blocks": [
-                        {
-                            "id": "all-summary",
-                            "type": "Summary"
                         }
                     ]
                 }

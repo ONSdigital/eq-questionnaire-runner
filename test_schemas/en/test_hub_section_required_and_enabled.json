@@ -21,9 +21,9 @@
             "type": "string"
         }
     ],
-    "hub": {
-        "enabled": true,
-        "required_completed_sections": ["household-section", "relationships-section"]
+    "questionnaire_flow": {
+        "type": "Hub",
+        "options": { "required_completed_sections": ["household-section", "relationships-section"] }
     },
     "sections": [
         {

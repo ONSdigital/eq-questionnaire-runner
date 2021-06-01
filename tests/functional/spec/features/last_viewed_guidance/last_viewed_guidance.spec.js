@@ -1,5 +1,5 @@
 import { getRandomString } from "../../../jwt_helper";
-import AddressConfirmationPage from "../../../generated_pages/last_viewed_question_guidance/address-confirmation.page.js";
+import AddressConfirmationPage from "../../../generated_pages/last_viewed_question_guidance/address-confirmation.page";
 import HouseholdInterstitialPage from "../../../generated_pages/last_viewed_question_guidance/household-interstitial.page.js";
 import PrimaryPersonListCollectorPage from "../../../generated_pages/last_viewed_question_guidance/primary-person-list-collector.page.js";
 

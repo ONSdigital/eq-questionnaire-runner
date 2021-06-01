@@ -1,4 +1,5 @@
 from tests.integration.integration_test_case import IntegrationTestCase
+from tests.integration.questionnaire import SUBMIT_URL_PATH
 
 HTML_CONTENT = '"><b>some html</b>'
 ESCAPED_CONTENT = "&#34;&gt;&lt;b&gt;some html&lt;/b&gt;"
@@ -103,7 +104,7 @@ class TestQuestionnaireHtmlEscaping(IntegrationTestCase):
         )
         self.post({})
         self.post({})
-        self.assertInUrl("/summary")
+        self.assertInUrl(SUBMIT_URL_PATH)
         self.assertInBody("&lt;p&gt;7 Evelyn Street&lt;/p&gt;")
 
     def test_list_collector(self):
@@ -122,7 +123,7 @@ class TestQuestionnaireHtmlEscaping(IntegrationTestCase):
         assert expected_remove_aria_label in self.getResponseData()
 
     def test_summary(self):
-        self.launchSurvey("test_summary")
+        self.launchSurvey("test_submit_with_summary")
         self.post({"radio-answer": "Bacon"})
         self.post({"dessert-answer": HTML_CONTENT})
         self.post({"dessert-confirmation-answer": "Yes"})
@@ -136,7 +137,7 @@ class TestQuestionnaireHtmlEscaping(IntegrationTestCase):
         assert expected_change_aria_label in self.getResponseData()
 
     def test_radio_mandatory_error_with_placeholders(self):
-        self.launchSurvey("test_summary")
+        self.launchSurvey("test_submit_with_summary")
         self.post({"radio-answer": "Bacon"})
         self.post({"dessert-answer": HTML_CONTENT})
         self.post()

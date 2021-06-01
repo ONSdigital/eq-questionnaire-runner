@@ -357,63 +357,63 @@ msgstr ""
 msgid "An individual access code has been sent by text"
 msgstr ""
 
-#: app/views/contexts/hub_context.py:15
+#: app/views/contexts/hub_context.py:14
 msgid "Completed"
 msgstr ""
 
-#: app/views/contexts/hub_context.py:17
+#: app/views/contexts/hub_context.py:16
 msgid "View answers"
 msgstr ""
 
-#: app/views/contexts/hub_context.py:18
+#: app/views/contexts/hub_context.py:17
 msgid "View answers for {section_name}"
 msgstr ""
 
-#: app/views/contexts/hub_context.py:22
+#: app/views/contexts/hub_context.py:21
 msgid "Partially completed"
 msgstr ""
 
-#: app/views/contexts/hub_context.py:24
+#: app/views/contexts/hub_context.py:23
 msgid "Continue with section"
 msgstr ""
 
-#: app/views/contexts/hub_context.py:25
+#: app/views/contexts/hub_context.py:24
 msgid "Continue with {section_name} section"
 msgstr ""
 
-#: app/views/contexts/hub_context.py:29
+#: app/views/contexts/hub_context.py:28
 msgid "Not started"
 msgstr ""
 
-#: app/views/contexts/hub_context.py:31
+#: app/views/contexts/hub_context.py:30
 msgid "Start section"
 msgstr ""
 
-#: app/views/contexts/hub_context.py:32
+#: app/views/contexts/hub_context.py:31
 msgid "Start {section_name} section"
 msgstr ""
 
-#: app/views/contexts/hub_context.py:36
+#: app/views/contexts/hub_context.py:35
 msgid "Separate census requested"
 msgstr ""
 
-#: app/views/contexts/hub_context.py:38 app/views/contexts/hub_context.py:39
+#: app/views/contexts/hub_context.py:37 app/views/contexts/hub_context.py:38
 msgid "Change or resend"
 msgstr ""
 
-#: app/views/contexts/hub_context.py:49 app/views/contexts/hub_context.py:50
+#: app/views/contexts/hub_context.py:48 app/views/contexts/hub_context.py:49
 msgid "Submit survey"
 msgstr ""
 
-#: app/views/contexts/hub_context.py:54
+#: app/views/contexts/hub_context.py:53
 msgid "You must submit this survey to complete it"
 msgstr ""
 
-#: app/views/contexts/hub_context.py:61
+#: app/views/contexts/hub_context.py:60
 msgid "Choose another section to complete"
 msgstr ""
 
-#: app/views/contexts/hub_context.py:62 templates/confirm-email.html:26
+#: app/views/contexts/hub_context.py:61 templates/confirm-email.html:26
 #: templates/individual_response/confirmation-post.html:21
 #: templates/individual_response/confirmation-text-message.html:31
 #: templates/individual_response/question.html:5 templates/interstitial.html:8
@@ -425,16 +425,15 @@ msgstr ""
 msgid " (You)"
 msgstr ""
 
-#: app/views/contexts/questionnaire_summary_context.py:15
+#: app/views/contexts/submit_questionnaire_context.py:19
 msgid "Check your answers and submit"
 msgstr ""
 
-#: app/views/contexts/questionnaire_summary_context.py:18
-#: templates/confirmation.html:6 templates/confirmation.html:28
+#: app/views/contexts/submit_questionnaire_context.py:22
 msgid "Submit answers"
 msgstr ""
 
-#: app/views/contexts/questionnaire_summary_context.py:21
+#: app/views/contexts/submit_questionnaire_context.py:25
 msgid "Please submit this survey to complete it"
 msgstr ""
 
@@ -692,6 +691,14 @@ msgstr ""
 msgid "Thank you for completing the census"
 msgstr ""
 
+#: templates/calculatedsummary.html:14
+msgid "Please review your answers and confirm these are correct"
+msgstr ""
+
+#: templates/calculatedsummary.html:25
+msgid "Yes, I confirm these are correct"
+msgstr ""
+
 #: templates/census-thank-you.html:9 templates/confirmation-email.html:8
 msgid "There is a problem with this page"
 msgstr ""
@@ -782,14 +789,6 @@ msgstr ""
 msgid "Send a confirmation email"
 msgstr ""
 
-#: templates/confirmation.html:12
-msgid "Yes, I confirm these are correct"
-msgstr ""
-
-#: templates/confirmation.html:33
-msgid "Submitting"
-msgstr ""
-
 #: templates/feedback-sent.html:6
 msgid "Feedback sent"
 msgstr ""
@@ -823,7 +822,7 @@ msgstr[1] ""
 msgid "Send feedback"
 msgstr ""
 
-#: templates/hub.html:40
+#: templates/hub.html:7
 msgid "If you can’t answer someone else’s questions"
 msgstr ""
 
@@ -886,10 +885,6 @@ msgstr ""
 
 #: templates/signed-out.html:9
 msgid "Return to your account"
-msgstr ""
-
-#: templates/summary.html:28
-msgid "Please review your answers and confirm these are correct"
 msgstr ""
 
 #: templates/thank-you.html:4

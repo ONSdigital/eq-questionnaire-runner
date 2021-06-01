@@ -4,7 +4,7 @@ import ToppingInterstitialSetPage from "../../../generated_pages/routing_checkbo
 import OptionalMutuallyExclusivePage from "../../../generated_pages/routing_checkbox_set_not_set/optional-mutually-exclusive.page.js";
 import CheeseInterstitialNotSetPage from "../../../generated_pages/routing_checkbox_set_not_set/cheese-interstitial-not-set.page.js";
 import CheeseInterstitialSetPage from "../../../generated_pages/routing_checkbox_set_not_set/cheese-interstitial-set.page.js";
-import SummaryPage from "../../../generated_pages/routing_checkbox_set_not_set/summary.page.js";
+import SubmitPage from "../../../generated_pages/routing_checkbox_set_not_set/submit.page.js";
 
 describe("Test routing using not set and set conditions on checkboxes", () => {
   beforeEach(() => {
@@ -26,7 +26,7 @@ describe("Test routing using not set and set conditions on checkboxes", () => {
 
     $(CheeseInterstitialSetPage.submit()).click();
 
-    expect(browser.getUrl()).to.contain(SummaryPage.pageName);
+    expect(browser.getUrl()).to.contain(SubmitPage.pageName);
   });
 
   it("Given a user does not set a topping and does not set a cheese, they should see an interstitial for each saying that they were not set", () => {
@@ -42,6 +42,6 @@ describe("Test routing using not set and set conditions on checkboxes", () => {
 
     $(CheeseInterstitialNotSetPage.submit()).click();
 
-    expect(browser.getUrl()).to.contain(SummaryPage.pageName);
+    expect(browser.getUrl()).to.contain(SubmitPage.pageName);
   });
 });

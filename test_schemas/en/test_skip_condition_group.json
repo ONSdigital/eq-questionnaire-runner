@@ -20,6 +20,14 @@
             "type": "string"
         }
     ],
+    "questionnaire_flow": {
+        "type": "Linear",
+        "options": {
+            "summary": {
+                "collapsible": false
+            }
+        }
+    },
     "sections": [
         {
             "id": "default-section",
@@ -93,34 +101,6 @@
                                     }
                                 ]
                             }
-                        }
-                    ]
-                },
-                {
-                    "id": "last-group",
-                    "title": "This group is required as a skipped group can’t be the last group",
-                    "blocks": [
-                        {
-                            "type": "Question",
-                            "id": "last-group-block",
-                            "routing_rules": [],
-                            "question": {
-                                "id": "last-group-question",
-                                "title": "This group is required as a skipped group can’t be the last group",
-                                "type": "General",
-                                "answers": [
-                                    {
-                                        "id": "last-group-answer",
-                                        "label": "This group is required as a skipped group can’t be the last group",
-                                        "mandatory": true,
-                                        "type": "TextField"
-                                    }
-                                ]
-                            }
-                        },
-                        {
-                            "type": "Summary",
-                            "id": "summary"
                         }
                     ]
                 }

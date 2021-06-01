@@ -53,7 +53,7 @@ describe("Feature: Repeating Section Summaries", () => {
       });
 
       it("the title set in the repeating block is used for the section summary title", () => {
-        expect($(PersonalSummaryPage.questionText()).getText()).to.contain("Mark Twain");
+        expect($(PersonalSummaryPage.heading()).getText()).to.contain("Mark Twain");
       });
 
       it("renders their name as part of the question title on the section summary", () => {

@@ -1,6 +1,6 @@
 import BasePage from "./base.page";
 
-class IntroductionPage extends BasePage {
+class IntroductionBasePage extends BasePage {
   myAccountLink() {
     return "#my-account";
   }
@@ -38,4 +38,5 @@ class IntroductionPage extends BasePage {
   }
 }
 
-export default IntroductionPage;
+export default IntroductionBasePage;
+export const IntroductionPage = new IntroductionBasePage("introduction");

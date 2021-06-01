@@ -1,5 +1,6 @@
 from app.utilities.json import json_load
 from tests.integration.integration_test_case import IntegrationTestCase
+from tests.integration.questionnaire import SUBMIT_URL_PATH, THANK_YOU_URL_PATH
 
 with open("tests/fixtures/blns.json") as blns:
     NAUGHTY_STRINGS = json_load(blns)
@@ -13,7 +14,7 @@ class TestTextArea(IntegrationTestCase):
         self.assertInBody("No answer provided")
 
         self.post()
-        self.assertInUrl("thank-you")
+        self.assertInUrl(THANK_YOU_URL_PATH)
 
     def test_too_many_characters(self):
         self.launchSurvey("test_textarea")
@@ -30,7 +31,7 @@ class TestTextArea(IntegrationTestCase):
         self.assertInBody("Less than 20 chars")
 
         self.post()
-        self.assertInUrl("thank-you")
+        self.assertInUrl(THANK_YOU_URL_PATH)
 
     def test_big_list_of_naughty_strings(self):
         self.launchSurvey("test_big_list_naughty_strings")
@@ -40,5 +41,5 @@ class TestTextArea(IntegrationTestCase):
             key = "answer{}".format(counter)
             answers[key] = value
         self.post(answers)
-        self.assertInUrl("summary")
+        self.assertInUrl(SUBMIT_URL_PATH)
         self.assertEqual(200, self.last_response.status_code)

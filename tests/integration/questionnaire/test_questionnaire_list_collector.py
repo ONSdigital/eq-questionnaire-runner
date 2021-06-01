@@ -1,4 +1,4 @@
-from . import QuestionnaireTestCase
+from . import SUBMIT_URL_PATH, QuestionnaireTestCase
 
 
 class TestQuestionnaireListCollector(QuestionnaireTestCase):
@@ -166,7 +166,7 @@ class TestQuestionnaireListCollector(QuestionnaireTestCase):
 
         self.post()
 
-        self.assertInUrl("confirmation")
+        self.assertInUrl(SUBMIT_URL_PATH)
 
     def test_list_summary_on_question(self):
         self.launchSurvey("test_list_summary_on_question")

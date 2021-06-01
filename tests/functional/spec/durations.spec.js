@@ -1,5 +1,5 @@
 import DurationPage from "../generated_pages/durations/duration-block.page.js";
-import SummaryPage from "../generated_pages/durations/summary.page.js";
+import SubmitPage from "../generated_pages/durations/submit.page.js";
 
 describe("Durations", () => {
   beforeEach("Load the survey", () => {
@@ -15,9 +15,9 @@ describe("Durations", () => {
     $(DurationPage.mandatoryMonthMonths()).setValue(1);
     $(DurationPage.submit()).click();
 
-    expect(browser.getUrl()).to.contain(SummaryPage.pageName);
-    expect($(SummaryPage.yearMonthAnswer()).getText()).to.equal("1 year 2 months");
-    $(SummaryPage.submit()).click();
+    expect(browser.getUrl()).to.contain(SubmitPage.pageName);
+    expect($(SubmitPage.yearMonthAnswer()).getText()).to.equal("1 year 2 months");
+    $(SubmitPage.submit()).click();
   });
 
   it("Given the test_durations survey is selected when one of the units is 0 it is excluded from the summary", () => {
@@ -29,9 +29,9 @@ describe("Durations", () => {
     $(DurationPage.mandatoryMonthMonths()).setValue(1);
     $(DurationPage.submit()).click();
 
-    expect(browser.getUrl()).to.contain(SummaryPage.pageName);
-    expect($(SummaryPage.yearMonthAnswer()).getText()).to.equal("2 months");
-    $(SummaryPage.submit()).click();
+    expect(browser.getUrl()).to.contain(SubmitPage.pageName);
+    expect($(SubmitPage.yearMonthAnswer()).getText()).to.equal("2 months");
+    $(SubmitPage.submit()).click();
   });
 
   it("Given the test_durations survey is selected when no duration is entered the summary shows no answer provided", () => {
@@ -41,9 +41,9 @@ describe("Durations", () => {
     $(DurationPage.mandatoryMonthMonths()).setValue(1);
     $(DurationPage.submit()).click();
 
-    expect(browser.getUrl()).to.contain(SummaryPage.pageName);
-    expect($(SummaryPage.yearMonthAnswer()).getText()).to.equal("No answer provided");
-    $(SummaryPage.submit()).click();
+    expect(browser.getUrl()).to.contain(SubmitPage.pageName);
+    expect($(SubmitPage.yearMonthAnswer()).getText()).to.equal("No answer provided");
+    $(SubmitPage.submit()).click();
   });
 
   it("Given the test_durations survey is selected when one of the units is missing an error is shown", () => {

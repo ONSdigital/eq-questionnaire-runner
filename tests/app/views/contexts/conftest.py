@@ -144,7 +144,9 @@ def form():
 
 @pytest.fixture
 def schema():
-    return MagicMock(QuestionnaireSchema({}))
+    return MagicMock(
+        QuestionnaireSchema({"questionnaire_flow": {"type": "Hub", "options": {}}})
+    )
 
 
 @pytest.fixture

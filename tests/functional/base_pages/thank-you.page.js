@@ -1,12 +1,8 @@
-import QuestionPage from "./question.page";
+import BasePage from "./base.page";
 
-class ThankYouPage extends QuestionPage {
-  constructor() {
-    super("thank-you");
-  }
-
-  guidance() {
-    return '[data-qa="guidance"]';
+class ThankYouPage extends BasePage {
+  url() {
+    return `/submitted/${this.pageName}`;
   }
 
   title() {
@@ -21,10 +17,6 @@ class ThankYouPage extends QuestionPage {
     return "#email";
   }
 
-  submit() {
-    return '[data-qa="btn-submit"]';
-  }
-
   errorPanel() {
     return '[data-qa="error-body"]';
   }
@@ -32,9 +24,5 @@ class ThankYouPage extends QuestionPage {
   feedback() {
     return ".feedback";
   }
-
-  feedbackLink() {
-    return ".feedback__link";
-  }
 }
-export default new ThankYouPage();
+export default new ThankYouPage("thank-you");

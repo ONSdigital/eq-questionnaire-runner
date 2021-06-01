@@ -4,7 +4,7 @@ import ListCollectorEditPage from "../generated_pages/list_collector_primary_per
 import PrimaryPersonListCollectorPage from "../generated_pages/list_collector_primary_person/primary-person-list-collector.page.js";
 import PrimaryPersonListCollectorAddPage from "../generated_pages/list_collector_primary_person/primary-person-list-collector-add.page.js";
 import SectionSummaryPage from "../generated_pages/list_collector/section-summary.page.js";
-import ConfirmationPage from "../generated_pages/list_collector/confirmation.page.js";
+import { SubmitPage } from "../base_pages/submit.page.js";
 import ThankYouPage from "../base_pages/thank-you.page.js";
 import AnyoneUsuallyLiveAtPage from "../generated_pages/list_collector_primary_person/anyone-usually-live-at.page.js";
 
@@ -90,12 +90,12 @@ describe("Primary Person List Collector Survey", () => {
 
     it("When the user attempts to submit, then they are shown the confirmation page", () => {
       $(SectionSummaryPage.submit()).click();
-      expect($("body").getText()).to.contain("Thank you for your answers, do you wish to submit");
+      expect($(SubmitPage.guidance()).getText()).to.contain("Thank you for your answers, do you wish to submit");
     });
 
     it("When the user submits, then they are allowed to submit the survey", () => {
-      $(ConfirmationPage.submit()).click();
-      expect($(ThankYouPage.questionText()).getText()).to.contain("Submission successful");
+      $(SubmitPage.submit()).click();
+      expect($(ThankYouPage.heading()).getText()).to.contain("Submission successful");
     });
   });
 

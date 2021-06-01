@@ -9,235 +9,12 @@ from app.questionnaire.location import Location
 from app.questionnaire.questionnaire_schema import DEFAULT_LANGUAGE_CODE
 from app.questionnaire.routing_path import RoutingPath
 from app.utilities.schema import load_schema_from_name
-from app.views.contexts import QuestionnaireSummaryContext, SectionSummaryContext
+from app.views.contexts import SectionSummaryContext
 from app.views.contexts.calculated_summary_context import CalculatedSummaryContext
-from tests.app.app_context_test_case import AppContextTestCase
+from tests.app.views.contexts import SummaryContextTestCase
 
 
-class TestStandardSummaryContext(AppContextTestCase):
-    def setUp(self):
-        super().setUp()
-        self.metadata = {
-            "return_by": "2016-10-10",
-            "ref_p_start_date": "2016-10-10",
-            "ref_p_end_date": "2016-10-10",
-            "ru_ref": "def123",
-            "response_id": "abc123",
-            "ru_name": "Mr Cloggs",
-            "trad_as": "Samsung",
-            "tx_id": "12345678-1234-5678-1234-567812345678",
-            "period_str": "201610",
-            "employment_date": "2016-10-10",
-            "collection_exercise_sid": "789",
-            "schema_name": "0000_1",
-        }
-        self.language = "en"
-
-    def check_context(self, context):
-        self.assertEqual(len(context), 1)
-        self.assertTrue(
-            "summary" in context, "Key value {} missing from context".format("summary")
-        )
-
-        summary_context = context["summary"]
-        for key_value in ("groups", "answers_are_editable", "summary_type"):
-            self.assertTrue(
-                key_value in summary_context,
-                "Key value {} missing from context['summary']".format(key_value),
-            )
-
-    def check_summary_rendering_context(self, summary_rendering_context):
-        for group in summary_rendering_context["summary"]["groups"]:
-            self.assertTrue("id" in group)
-            self.assertTrue("blocks" in group)
-            for block in group["blocks"]:
-                self.assertTrue("question" in block)
-                self.assertTrue("title" in block["question"])
-                self.assertTrue("answers" in block["question"])
-                for answer in block["question"]["answers"]:
-                    self.assertTrue("id" in answer)
-                    self.assertTrue("value" in answer)
-                    self.assertTrue("type" in answer)
-
-
-class TestSummaryContext(TestStandardSummaryContext):
-    def setUp(self):
-        super().setUp()
-        self.schema = load_schema_from_name("test_summary")
-        self.answer_store = AnswerStore()
-        self.list_store = ListStore()
-        self.progress_store = ProgressStore()
-        self.block_type = "Summary"
-        self.rendered_block = {
-            "parent_id": "summary-group",
-            "id": "summary",
-            "type": "Summary",
-            "collapsible": True,
-        }
-        self.current_location = Location(
-            section_id="default-section", block_id="summary"
-        )
-
-    def test_build_summary_rendering_context(self):
-        questionnaire_summary_context = QuestionnaireSummaryContext(
-            self.language,
-            self.schema,
-            self.answer_store,
-            self.list_store,
-            self.progress_store,
-            self.metadata,
-        )
-
-        summary_groups = questionnaire_summary_context()
-        self.check_summary_rendering_context(summary_groups)
-
-    def test_summary_context_with_custom_submission_content(self):
-        self.schema = load_schema_from_name("test_summary_with_submission_text")
-
-        questionnaire_summary_context = QuestionnaireSummaryContext(
-            self.language,
-            self.schema,
-            self.answer_store,
-            self.list_store,
-            self.progress_store,
-            self.metadata,
-        )
-
-        summary_groups = questionnaire_summary_context()
-
-        self.assertEqual(summary_groups["title"], "Submission title")
-        self.assertEqual(summary_groups["guidance"], "Submission guidance")
-        self.assertEqual(summary_groups["warning"], "Submission warning")
-        self.assertEqual(summary_groups["submit_button"], "Submission button")
-
-
-class TestSectionSummaryContext(TestStandardSummaryContext):
-    def setUp(self):
-        super().setUp()
-        self.schema = load_schema_from_name("test_section_summary")
-        self.answer_store = AnswerStore()
-        self.list_store = ListStore()
-        self.progress_store = ProgressStore()
-        self.block_type = "SectionSummary"
-
-    def test_build_summary_rendering_context(self):
-        section_summary_context = SectionSummaryContext(
-            self.language,
-            self.schema,
-            self.answer_store,
-            self.progress_store,
-            self.list_store,
-            self.metadata,
-            current_location=Location(section_id="property-details-section"),
-            routing_path=MagicMock(),
-        )
-
-        single_section_context = section_summary_context()
-
-        self.check_summary_rendering_context(single_section_context)
-
-    def test_build_view_context_for_section_summary(self):
-
-        summary_context = SectionSummaryContext(
-            self.language,
-            self.schema,
-            self.answer_store,
-            self.progress_store,
-            self.list_store,
-            self.metadata,
-            current_location=Location(
-                section_id="property-details-section",
-                block_id="property-details-summary",
-            ),
-            routing_path=MagicMock(),
-        )
-        context = summary_context()
-
-        self.check_context(context)
-        self.check_summary_rendering_context(context)
-        self.assertEqual(len(context["summary"]), 6)
-        self.assertTrue("title" in context["summary"])
-
-    def test_custom_section_summary_title(self):
-        answers = [{"answer_id": "house-type-answer", "value": "Semi-detached"}]
-        summary_context = SectionSummaryContext(
-            self.language,
-            self.schema,
-            AnswerStore(answers),
-            self.list_store,
-            self.progress_store,
-            self.metadata,
-            current_location=Location(section_id="house-details-section"),
-            routing_path=MagicMock(),
-        )
-        context = summary_context()
-        self.assertEqual(
-            "Household Summary - Semi-detached", context["summary"]["title"]
-        )
-
-    def test_custom_section_summary_page_title(self):
-        summary_context = SectionSummaryContext(
-            self.language,
-            self.schema,
-            AnswerStore([]),
-            self.list_store,
-            self.progress_store,
-            self.metadata,
-            current_location=Location(section_id="property-details-section"),
-            routing_path=MagicMock(),
-        )
-        context = summary_context()
-        self.assertEqual(
-            "Custom section summary title", context["summary"]["page_title"]
-        )
-
-    def test_section_summary_page_title_placeholder_text_replaced(self):
-
-        answers = [{"answer_id": "house-type-answer", "value": "Semi-detached"}]
-        summary_context = SectionSummaryContext(
-            self.language,
-            self.schema,
-            AnswerStore(answers),
-            self.progress_store,
-            self.list_store,
-            self.metadata,
-            current_location=Location(section_id="house-details-section"),
-            routing_path=MagicMock(),
-        )
-        context = summary_context()
-        self.assertEqual(context["summary"]["page_title"], "Household Summary - …")
-
-    def test_section_summary_page_title_placeholder_text_plural_replaced(self):
-        answers = [{"answer_id": "number-of-people-answer", "value": 3}]
-        summary_context = SectionSummaryContext(
-            self.language,
-            self.schema,
-            AnswerStore(answers),
-            self.list_store,
-            self.progress_store,
-            self.metadata,
-            current_location=Location(section_id="household-count-section"),
-            routing_path=MagicMock(),
-        )
-        context = summary_context()
-        self.assertEqual(context["summary"]["page_title"], "… people live here")
-
-    def test_section_summary_title_is_section_title(self):
-        summary_context = SectionSummaryContext(
-            self.language,
-            self.schema,
-            self.answer_store,
-            self.progress_store,
-            self.list_store,
-            self.metadata,
-            routing_path=MagicMock(),
-            current_location=Location(section_id="property-details-section"),
-        )
-        context = summary_context()
-        self.assertEqual(context["summary"]["title"], "Property Details Section")
-
-
-class TestCalculatedSummaryContext(TestStandardSummaryContext):
+class TestCalculatedSummaryContext(SummaryContextTestCase):
     def setUp(self):
         super().setUp()
         self.schema = load_schema_from_name("test_calculated_summary")
@@ -256,10 +33,12 @@ class TestCalculatedSummaryContext(TestStandardSummaryContext):
             {"value": 11, "answer_id": "sixth-percent-answer"},
             {"value": 12, "answer_id": "sixth-number-answer"},
         ]
+        self.block_type = "CalculatedSummary"
+        self.language = "en"
+        self.metadata = {}
         self.answer_store = AnswerStore(answers)
         self.list_store = ListStore()
         self.progress_store = ProgressStore()
-        self.block_type = "CalculatedSummary"
 
     @patch("app.jinja_filters.flask_babel.get_locale", Mock(return_value="en_GB"))
     def test_build_view_context_for_currency_calculated_summary_no_skip(self):
@@ -280,8 +59,8 @@ class TestCalculatedSummaryContext(TestStandardSummaryContext):
             current_location
         )
 
-        self.check_context(context)
-        self.check_summary_rendering_context(context)
+        self.assertTrue("summary" in context, "Key value summary missing from context")
+        self.assert_summary_context(context)
         self.assertEqual(len(context["summary"]), 6)
         context_summary = context["summary"]
         self.assertTrue("title" in context_summary)
@@ -323,8 +102,8 @@ class TestCalculatedSummaryContext(TestStandardSummaryContext):
             current_location
         )
 
-        self.check_context(context)
-        self.check_summary_rendering_context(context)
+        self.assertIn("summary", context)
+        self.assert_summary_context(context)
         self.assertEqual(len(context["summary"]), 6)
         context_summary = context["summary"]
         self.assertTrue("title" in context_summary)
@@ -362,8 +141,8 @@ class TestCalculatedSummaryContext(TestStandardSummaryContext):
             current_location
         )
 
-        self.check_context(context)
-        self.check_summary_rendering_context(context)
+        self.assertIn("summary", context)
+        self.assert_summary_context(context)
         self.assertEqual(len(context["summary"]), 6)
         context_summary = context["summary"]
         self.assertTrue("title" in context_summary)
@@ -399,8 +178,8 @@ class TestCalculatedSummaryContext(TestStandardSummaryContext):
             current_location
         )
 
-        self.check_context(context)
-        self.check_summary_rendering_context(context)
+        self.assertIn("summary", context)
+        self.assert_summary_context(context)
         self.assertEqual(len(context["summary"]), 6)
         context_summary = context["summary"]
         self.assertTrue("title" in context_summary)
@@ -437,8 +216,8 @@ class TestCalculatedSummaryContext(TestStandardSummaryContext):
             current_location
         )
 
-        self.check_context(context)
-        self.check_summary_rendering_context(context)
+        self.assertIn("summary", context)
+        self.assert_summary_context(context)
         self.assertEqual(len(context["summary"]), 6)
         context_summary = context["summary"]
         self.assertTrue("title" in context_summary)

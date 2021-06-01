@@ -2,6 +2,7 @@ import json
 
 from app.utilities.json import json_loads
 from tests.integration.integration_test_case import IntegrationTestCase
+from tests.integration.questionnaire import SUBMIT_URL_PATH
 
 
 class TestQuestionnaireEndpoints(IntegrationTestCase):
@@ -105,7 +106,7 @@ class TestQuestionnaireEndpoints(IntegrationTestCase):
         self.post()
 
         # When we try to access the submitted questionnaire
-        self.get(url=f"{self.BASE_URL}/summary")
+        self.get(url=SUBMIT_URL_PATH)
 
         # Then we get the unauthorised page
         self.assertStatusUnauthorised()

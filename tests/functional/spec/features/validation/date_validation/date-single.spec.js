@@ -1,6 +1,6 @@
 import DatePage from "../../../../generated_pages/date_validation_single/date-block.page";
 import DatePeriodPage from "../../../../generated_pages/date_validation_single/date-range-block.page";
-import SummaryPage from "../../../../generated_pages/date_validation_single/summary.page";
+import SubmitPage from "../../../../generated_pages/date_validation_single/submit.page";
 
 describe("Feature: Validation for single date periods", () => {
   beforeEach(() => {
@@ -64,7 +64,7 @@ describe("Feature: Validation for single date periods", () => {
       $(DatePeriodPage.dateRangeTomonth()).setValue(2);
       $(DatePeriodPage.dateRangeToyear()).setValue(2018);
       $(DatePeriodPage.submit()).click();
-      expect(browser.getUrl()).to.contain(SummaryPage.pageName);
+      expect(browser.getUrl()).to.contain(SubmitPage.pageName);
     });
   });
 

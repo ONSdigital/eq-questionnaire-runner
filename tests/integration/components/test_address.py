@@ -1,4 +1,5 @@
 from tests.integration.integration_test_case import IntegrationTestCase
+from tests.integration.questionnaire import SUBMIT_URL_PATH
 
 
 class TestAddressFields(IntegrationTestCase):
@@ -38,7 +39,7 @@ class TestAddressFields(IntegrationTestCase):
         )
         self.post({})
         self.post({})
-        self.assertInUrl("/summary")
+        self.assertInUrl(SUBMIT_URL_PATH)
 
         # When
         self.get("questionnaire/address-block-mandatory/")
@@ -88,7 +89,7 @@ class TestLookupAddressFields(IntegrationTestCase):
             }
         )
         self.post({})
-        self.assertInUrl("/summary")
+        self.assertInUrl(SUBMIT_URL_PATH)
 
         # When
         self.get("questionnaire/address-block-mandatory/")

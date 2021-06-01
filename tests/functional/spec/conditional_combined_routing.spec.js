@@ -1,7 +1,7 @@
 import ConditionalCombinedRoutingPage from "../generated_pages/conditional_combined_routing/conditional-routing-block.page";
 import ResponseAny from "../generated_pages/conditional_combined_routing/response-any.page";
 import ResponseNotAny from "../generated_pages/conditional_combined_routing/response-not-any.page";
-import ResponseSummaryPage from "../generated_pages/conditional_combined_routing/summary.page";
+import SubmitPage from "../generated_pages/conditional_combined_routing/submit.page";
 
 describe("Conditional combined routing.", () => {
   beforeEach(() => {
@@ -34,11 +34,11 @@ describe("Conditional combined routing.", () => {
     expect(browser.getUrl()).to.contain(ResponseNotAny.pageName);
   });
 
-  it('Given a list of radio options, when I choose the option "No, I don\'t drink any hot drinks" then I should be routed to the summary page', () => {
+  it('Given a list of radio options, when I choose the option "No, I don\'t drink any hot drinks" then I should be routed to the submit page', () => {
     // When
     $(ConditionalCombinedRoutingPage.noIDonTDrinkAnyHotDrinks()).click();
     $(ConditionalCombinedRoutingPage.submit()).click();
     // Then
-    expect(browser.getUrl()).to.contain(ResponseSummaryPage.pageName);
+    expect(browser.getUrl()).to.contain(SubmitPage.pageName);
   });
 });
