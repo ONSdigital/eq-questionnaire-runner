@@ -329,7 +329,6 @@ class CensusNISRAContextOptions(
     )
 
 
-@lru_cache
 def generate_context(
     theme: str,
     language: str,
@@ -345,6 +344,7 @@ def generate_context(
     ).context
 
 
+@lru_cache
 def _context_options(theme: str, language: str) -> ContextOptions:
     context_options_mapping = {
         "business": ContextOptions,
