@@ -43,7 +43,6 @@ class ContextOptions:
     mobile_logo: Optional[str] = None
     powered_by_logo: Optional[str] = None
     powered_by_logo_alt: Optional[str] = None
-    lang: str = "en"
     crest: bool = True
     footer_links: Optional[Iterable[MutableMapping]] = None
     footer_legal_links: Optional[Iterable[Mapping]] = None
@@ -130,7 +129,7 @@ class ContextHelper:
     @property
     def footer_context(self):
         context = {
-            "lang": self.context_options.lang,
+            "lang": self._language,
             "crest": self.context_options.crest,
             "newTabWarning": lazy_gettext("The following links open in a new tab"),
             "copyrightDeclaration": {

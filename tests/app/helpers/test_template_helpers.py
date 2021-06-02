@@ -67,7 +67,7 @@ def test_footer_context_census_theme(app):
 
         result = generate_context(
             "census",
-            "https://census.gov.uk/",
+            "en",
             is_post_submission=False,
             include_csrf_token=True,
         )["footer"]
@@ -147,7 +147,7 @@ def test_get_page_header_context_business(app):
             "logoAlt": "Office for National Statistics logo",
         }
         result = generate_context(
-            "business", "test", is_post_submission=False, include_csrf_token=True
+            "business", "en", is_post_submission=False, include_csrf_token=True
         )["page_header"]
     assert result == expected
 
@@ -161,7 +161,7 @@ def test_get_page_header_context_census(app):
             "titleLogoAlt": "Census 2021",
         }
         result = generate_context(
-            "census", "test", is_post_submission=False, include_csrf_token=True
+            "census", "en", is_post_submission=False, include_csrf_token=True
         )["page_header"]
     assert result == expected
 
@@ -179,7 +179,7 @@ def test_get_page_header_context_census_nisra(app):
 
         result = generate_context(
             "census-nisra",
-            "test",
+            "en",
             is_post_submission=False,
             include_csrf_token=True,
         )["page_header"]
