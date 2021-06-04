@@ -159,7 +159,7 @@ class ContextHelper:
         return context
 
     @cached_property
-    def _footer_warning(self) -> Union[str, None]:
+    def _footer_warning(self) -> Optional[str]:
         if self._is_post_submission:
             return lazy_gettext(
                 "Make sure you <a href='{sign_out_url}'>leave this page</a> or close your browser if using a shared device"
