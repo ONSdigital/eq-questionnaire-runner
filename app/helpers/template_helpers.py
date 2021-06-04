@@ -88,7 +88,8 @@ class ContextHelper:
             "account_service_url": self._account_service_url,
             "account_service_log_out_url": self._account_service_log_out_url,
             "contact_us_url": Link(
-                "Contact us", f"{self.context_options.base_url}/contact-us/"
+                lazy_gettext("Contact us"),
+                f"{self.context_options.base_url}/contact-us/",
             ).__dict__,
             "cookie_settings_url": self._cookie_settings_url,
             "page_header": self.page_header_context,
