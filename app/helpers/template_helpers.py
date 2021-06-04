@@ -16,7 +16,7 @@ from app.settings import CENSUS_CY_BASE_URL, CENSUS_EN_BASE_URL, CENSUS_NIR_BASE
 
 @dataclass
 class Link:
-    text: Union[str, LazyString]
+    text: Union[LazyString]
     url: str
     target: Optional[str] = "_blank"
 
