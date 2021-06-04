@@ -44,7 +44,7 @@ def get_languages_context(current_language: str) -> Union[dict[str, Any], None]:
     return None
 
 
-def _get_language_context(language_code: str, current_language: str) -> dict[str, Any]:
+def _get_language_context(language_code: str, current_language: str) -> dict[str, Union[str, bool]]:
     return {
         "ISOCode": language_code,
         "url": _get_query_string_with_language(language_code),
