@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2021-05-27 12:52+0100\n"
+"POT-Creation-Date: 2021-06-07 07:37+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -203,79 +203,79 @@ msgstr[1] ""
 msgid "Not a valid choice"
 msgstr ""
 
-#: app/helpers/template_helpers.py:32
+#: app/helpers/template_helpers.py:29
 msgid "Office for National Statistics logo"
 msgstr ""
 
-#: app/helpers/template_helpers.py:35
+#: app/helpers/template_helpers.py:32
 msgid "Crown copyright and database rights 2020 OS 100019153."
 msgstr ""
 
-#: app/helpers/template_helpers.py:38 app/helpers/template_helpers.py:293
+#: app/helpers/template_helpers.py:35 app/helpers/template_helpers.py:290
 msgid "Use of address data is subject to the terms and conditions."
 msgstr ""
 
-#: app/helpers/template_helpers.py:53 app/helpers/template_helpers.py:178
-#: app/helpers/template_helpers.py:230 templates/signed-out.html:3
+#: app/helpers/template_helpers.py:49 app/helpers/template_helpers.py:175
+#: app/helpers/template_helpers.py:227 templates/signed-out.html:3
 msgid "Census 2021"
 msgstr ""
 
-#: app/helpers/template_helpers.py:138
+#: app/helpers/template_helpers.py:91 app/helpers/template_helpers.py:186
+#: app/helpers/template_helpers.py:238 app/helpers/template_helpers.py:300
+msgid "Contact us"
+msgstr ""
+
+#: app/helpers/template_helpers.py:135
 msgid "The following links open in a new tab"
 msgstr ""
 
-#: app/helpers/template_helpers.py:168
+#: app/helpers/template_helpers.py:165
 msgid ""
 "Make sure you <a href='{sign_out_url}'>leave this page</a> or close your "
 "browser if using a shared device"
 msgstr ""
 
-#: app/helpers/template_helpers.py:185 app/helpers/template_helpers.py:237
-#: app/helpers/template_helpers.py:299
+#: app/helpers/template_helpers.py:182 app/helpers/template_helpers.py:234
+#: app/helpers/template_helpers.py:296
 msgid "Help"
 msgstr ""
 
 #: app/helpers/template_helpers.py:189 app/helpers/template_helpers.py:241
-#: app/helpers/template_helpers.py:303
-msgid "Contact us"
-msgstr ""
-
-#: app/helpers/template_helpers.py:192 app/helpers/template_helpers.py:244
 msgid "Languages"
 msgstr ""
 
-#: app/helpers/template_helpers.py:196 app/helpers/template_helpers.py:248
+#: app/helpers/template_helpers.py:193 app/helpers/template_helpers.py:245
 msgid "BSL and audio videos"
 msgstr ""
 
-#: app/helpers/template_helpers.py:204 app/helpers/template_helpers.py:257
-#: app/helpers/template_helpers.py:311
+#: app/helpers/template_helpers.py:201 app/helpers/template_helpers.py:254
+#: app/helpers/template_helpers.py:308
 msgid "Cookies"
 msgstr ""
 
-#: app/helpers/template_helpers.py:206 app/helpers/template_helpers.py:313
+#: app/helpers/template_helpers.py:203 app/helpers/template_helpers.py:310
 msgid "Accessibility statement"
 msgstr ""
 
-#: app/helpers/template_helpers.py:210 app/helpers/template_helpers.py:263
-#: app/helpers/template_helpers.py:317
+#: app/helpers/template_helpers.py:207 app/helpers/template_helpers.py:260
+#: app/helpers/template_helpers.py:314
 msgid "Privacy and data protection"
 msgstr ""
 
-#: app/helpers/template_helpers.py:214 app/helpers/template_helpers.py:267
-#: app/helpers/template_helpers.py:321
+#: app/helpers/template_helpers.py:211 app/helpers/template_helpers.py:264
+#: app/helpers/template_helpers.py:318
 msgid "Terms and conditions"
 msgstr ""
 
-#: app/helpers/template_helpers.py:259
+#: app/helpers/template_helpers.py:256
 msgid "Accessibility Statement"
 msgstr ""
 
-#: app/helpers/template_helpers.py:285
+#: app/helpers/template_helpers.py:282
 msgid "Northern Ireland Statistics and Research Agency logo"
 msgstr ""
 
-#: app/helpers/template_helpers.py:290
+#: app/helpers/template_helpers.py:287
 msgid "Crown copyright and database rights 2021 NIMA MOU577.501."
 msgstr ""
 
