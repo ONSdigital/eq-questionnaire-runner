@@ -22,7 +22,7 @@ class Link:
 
 
 @dataclass
-class ContextOptions:
+class SurveyConfig:
     """Valid options for defining context."""
 
     page_header_logo: Optional[str] = "ons-logo-pos-en"
@@ -58,7 +58,7 @@ class ContextHelper:
         language: str,
         is_post_submission: bool,
         include_csrf_token: bool,
-        context_options: ContextOptions = ContextOptions(),
+        context_options: SurveyConfig = SurveyConfig(),
     ) -> None:
         self._theme = theme
         self._language = language
@@ -166,8 +166,8 @@ class ContextHelper:
 
 
 @dataclass
-class CensusContextOptions(
-    ContextOptions,
+class CensusSurveyConfig(
+    SurveyConfig,
 ):
     title_logo: str = "census-logo-en"
     title_logo_alt: LazyString = lazy_gettext("Census 2021")
@@ -219,8 +219,8 @@ class CensusContextOptions(
 
 
 @dataclass
-class CymraegCensusContextOptions(
-    CensusContextOptions,
+class CymraegCensusSurveyConfig(
+    CensusSurveyConfig,
 ):
     title_logo: str = "census-logo-cy"
     base_url: str = CENSUS_CY_BASE_URL
@@ -271,8 +271,8 @@ class CymraegCensusContextOptions(
 
 
 @dataclass
-class CensusNISRAContextOptions(
-    CensusContextOptions,
+class CensusNISRASurveyConfig(
+    CensusSurveyConfig,
 ):
     base_url: str = CENSUS_NIR_BASE_URL
     page_header_logo: str = "nisra-logo-en"
@@ -343,16 +343,16 @@ def generate_context(
 
 
 @lru_cache
-def context_options(theme: str, language: str) -> ContextOptions:
+def context_options(theme: str, language: str) -> SurveyConfig:
     context_options_mapping = {
-        "business": ContextOptions,
-        "health": ContextOptions,
-        "social": ContextOptions,
+        "business": SurveyConfig,
+        "health": SurveyConfig,
+        "social": SurveyConfig,
         "census": (
-            CymraegCensusContextOptions if language == "cy" else CensusContextOptions
+            CymraegCensusSurveyConfig if language == "cy" else CensusSurveyConfig
         ),
-        "default": ContextOptions,
-        "census-nisra": CensusNISRAContextOptions,
+        "default": SurveyConfig,
+        "census-nisra": CensusNISRASurveyConfig,
     }
     return context_options_mapping[theme]()
 
