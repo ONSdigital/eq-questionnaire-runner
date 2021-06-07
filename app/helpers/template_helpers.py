@@ -67,7 +67,7 @@ class ContextHelper:
         self.context_options = context_options
         self._sign_out_url = url_for("session.get_sign_out")
         self._account_service_url = cookie_session.get(
-            "account_service_url", f"{self.context_options.base_url}en/start"
+            "account_service_url", self.context_options.account_service_url
         )
         self._account_service_log_out_url = cookie_session.get(
             "account_service_log_out_url"
@@ -102,9 +102,7 @@ class ContextHelper:
             "cdn_url": self._cdn_url,
             "address_lookup_api_url": self._address_lookup_api,
             "data_layer": self.context_options.data_layer,
-            "include_csrf_token": (
-                request.url_rule and "POST" in request.url_rule.methods
-            ),
+            "include_csrf_token": self._include_csrf_token,
             "google_tag_manager_id": self._google_tag_manager_id,
             "google_tag_manager_auth": self._google_tag_manager_auth,
         }
@@ -221,7 +219,7 @@ class CensusContextOptions(
 
 
 @dataclass
-class CensusContextOptionsCymraeg(
+class CymraegCensusContextOptions(
     CensusContextOptions,
 ):
     title_logo: str = "census-logo-cy"
@@ -351,7 +349,7 @@ def _context_options(theme: str, language: str) -> ContextOptions:
         "health": ContextOptions,
         "social": ContextOptions,
         "census": (
-            CensusContextOptionsCymraeg if language == "cy" else CensusContextOptions
+            CymraegCensusContextOptions if language == "cy" else CensusContextOptions
         ),
         "default": ContextOptions,
         "census-nisra": CensusNISRAContextOptions,
