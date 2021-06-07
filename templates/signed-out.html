@@ -1,6 +1,11 @@
 {% extends 'layouts/_base.html' %}
 
-{% set page_title = _("Signed out") ~ " - " ~ _("Census 2021") %}
+{% if survey_title %}
+  {% set page_title = _("Signed out") ~ " - " ~ survey_title %}
+{% else %}
+  {% set page_title = _("Signed out") %}
+{% endif %}
+
 
 {% block main %}
   <h1>{{ _("Your survey answers have been saved. You are now signed out") }}.</h1>
