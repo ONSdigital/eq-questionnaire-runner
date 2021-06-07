@@ -46,7 +46,7 @@ class ContextOptions:
     crest: bool = True
     footer_links: Optional[Iterable[MutableMapping]] = None
     footer_legal_links: Optional[Iterable[Mapping]] = None
-    survey_title: Optional[LazyString] = lazy_gettext("Census 2021")
+    survey_title: Optional[LazyString] = None
     design_system_theme: Optional[str] = "main"
     data_layer: Iterable[Union[Mapping]] = field(default_factory=list, compare=False)
 
@@ -217,6 +217,7 @@ class CensusContextOptions(
     data_layer: Iterable[Mapping] = field(
         default_factory=lambda: [{"nisra": False}], compare=False
     )
+    survey_title = lazy_gettext("Census 2021")
 
 
 @dataclass
@@ -224,10 +225,8 @@ class CensusContextOptionsCymraeg(
     CensusContextOptions,
 ):
     title_logo: str = "census-logo-cy"
-    title_logo_alt: str = lazy_gettext("Census 2021")
     base_url: str = CENSUS_CY_BASE_URL
     account_service_url = f"{CENSUS_CY_BASE_URL}/en/start"
-    design_system_theme = "census"
     footer_links: Iterable[MutableMapping] = field(
         default_factory=lambda: [
             Link(
