@@ -7,6 +7,7 @@ from tests.integration.integration_test_case import IntegrationTestCase
 class TestTimeout(IntegrationTestCase):
     def setUp(self):
         settings.EQ_SESSION_TIMEOUT_SECONDS = 4
+        settings.SURVEY_TYPE = "default"
         super().setUp()
 
     def tearDown(self):
