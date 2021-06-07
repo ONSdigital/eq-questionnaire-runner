@@ -180,7 +180,7 @@ class CensusContextOptions(
         default_factory=lambda: [
             Link(
                 lazy_gettext("Help"),
-                f"{CENSUS_EN_BASE_URL}/help/help-with-the-questions/online-questions-help/",
+                f"{CENSUS_EN_BASE_URL}/help/how-to-answer-questions/online-questions-help/",
             ).__dict__,
             Link(
                 lazy_gettext("Contact us"), f"{CENSUS_EN_BASE_URL}/contact-us/"
@@ -360,7 +360,7 @@ def _context_options(theme: str, language: str) -> ContextOptions:
     return context_options_mapping[theme]()
 
 
-def render_template(template: str, **kwargs: Union[str, Mapping]) -> Text:
+def render_template(template: str, **kwargs: Union[str, Mapping]) -> str:
     # The fallback to assigning SURVEY_TYPE to theme is only being added until
     # business feedback on the differentiation between theme and SURVEY_TYPE.
     theme = cookie_session.get("theme", current_app.config["SURVEY_TYPE"])

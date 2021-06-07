@@ -16,7 +16,7 @@ def test_footer_context_census_theme(app):
                     "itemsList": [
                         {
                             "text": "Help",
-                            "url": "https://census.gov.uk/help/help-with-the-questions/online-questions-help/",
+                            "url": "https://census.gov.uk/help/how-to-answer-questions/online-questions-help/",
                             "target": "_blank",
                         },
                         {
