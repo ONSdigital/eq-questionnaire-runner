@@ -338,12 +338,12 @@ def generate_context(
         language,
         is_post_submission,
         include_csrf_token,
-        _context_options(theme, language),
+        context_options(theme, language),
     ).context
 
 
 @lru_cache
-def _context_options(theme: str, language: str) -> ContextOptions:
+def context_options(theme: str, language: str) -> ContextOptions:
     context_options_mapping = {
         "business": ContextOptions,
         "health": ContextOptions,

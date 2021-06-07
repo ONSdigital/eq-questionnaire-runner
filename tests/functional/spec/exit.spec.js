@@ -1,6 +1,6 @@
 import CensusThankYouPage from "../base_pages/census-thank-you.page.js";
-import { SubmitPage } from "../base_pages/submit.page.js";
 import HubPage from "../base_pages/hub.page";
+import { SubmitPage } from "../base_pages/submit.page.js";
 
 const CENSUS_EN_BASE_URL = "https://census.gov.uk/";
 
@@ -9,7 +9,7 @@ describe("Post submission exit", () => {
     browser.openQuestionnaire("test_thank_you_census_household.json");
   });
 
-  it("Given I click the exit button from the thank you page which has no session cookie, When I am redirected, Then I should see the census homepage", () => {
+  it("Given I click the exit button from the thank you page which has no session cookie, When I am redirected, Then I should be redirected to the correct log out url", () => {
     $(SubmitPage.submit()).click();
     $(HubPage.submit()).click();
     browser.deleteAllCookies();
@@ -17,7 +17,7 @@ describe("Post submission exit", () => {
     expect(browser.getUrl()).to.equal(CENSUS_EN_BASE_URL);
   });
 
-  it("Given I click the exit button from the thank you page, When I am redirected, Then I should see the census homepage", () => {
+  it("Given I click the exit button from the thank you page, When I am redirected, Then I should be redirected to the correct log out url", () => {
     $(SubmitPage.submit()).click();
     $(HubPage.submit()).click();
     $(CensusThankYouPage.exit()).click();

@@ -10,7 +10,7 @@ ACCOUNT_SERVICE_LOG_OUT_URL_PATH = "/logout"
 class TestSaveAndSignOut(IntegrationTestCase):
     # Test the behaviour when using Hub/No Hub
 
-    def test_no_session_cookie_redirects_to_census_home_page(self):
+    def test_no_session_cookie_redirects_to_correct_location(self):
         for schema in ["test_textfield", "test_hub_and_spoke"]:
             with self.subTest(schema=schema):
                 self.get(SIGN_OUT_URL_PATH, follow_redirects=False)

@@ -1,7 +1,7 @@
 from datetime import datetime
 
 from dateutil.tz import tzutc
-from flask import Blueprint, g, redirect, request
+from flask import Blueprint, current_app, g, redirect, request
 from flask import session as cookie_session
 from flask import url_for
 from flask_login import logout_user
@@ -130,7 +130,7 @@ def get_sign_out():
     Signs the user out of eQ and redirects to the log out url.
     """
     log_out_url = (
-        get_base_url(None, None)
+        get_base_url(current_app.config["SURVEY_TYPE"], None)
         if not cookie_session
         else cookie_session.get(
             "account_service_log_out_url", url_for(".get_signed_out")
