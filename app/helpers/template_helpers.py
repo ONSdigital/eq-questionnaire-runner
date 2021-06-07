@@ -1,6 +1,6 @@
 from dataclasses import dataclass, field
 from functools import cached_property, lru_cache
-from typing import Any, Iterable, Mapping, MutableMapping, Optional, Text, Union
+from typing import Any, Iterable, Mapping, MutableMapping, Optional, Union
 
 from flask import current_app
 from flask import render_template as flask_render_template

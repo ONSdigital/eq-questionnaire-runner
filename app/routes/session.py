@@ -1,7 +1,7 @@
 from datetime import datetime
 
 from dateutil.tz import tzutc
-from flask import Blueprint, current_app, g, redirect, request
+from flask import Blueprint, g, redirect, request
 from flask import session as cookie_session
 from flask import url_for
 from flask_login import logout_user
@@ -12,7 +12,7 @@ from werkzeug.exceptions import Unauthorized
 
 from app.authentication.authenticator import decrypt_token, store_session
 from app.authentication.jti_claim_storage import JtiTokenUsed, use_jti_claim
-from app.globals import get_session_store, get_session_timeout_in_seconds
+from app.globals import get_session_timeout_in_seconds
 from app.helpers import get_base_url
 from app.helpers.template_helpers import render_template
 from app.storage.metadata_parser import (

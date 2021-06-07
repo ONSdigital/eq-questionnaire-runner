@@ -1,4 +1,4 @@
-from typing import Any, Union
+from typing import Optional, Union
 from urllib.parse import urlencode
 
 from flask import g, request
@@ -34,7 +34,7 @@ def handle_language():
             session_store.save()
 
 
-def get_languages_context(current_language: str) -> Union[dict[str, Any], None]:
+def get_languages_context(current_language: str) -> Optional[dict[str, list[dict]]]:
     context = []
     allowed_languages = g.get("allowed_languages")
     if allowed_languages and len(allowed_languages) > 1:
