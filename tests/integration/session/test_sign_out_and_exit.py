@@ -1,6 +1,4 @@
-from app.helpers.template_helpers import (
-    CENSUS_EN_BASE_URL,
-)
+from app.helpers.template_helpers import CENSUS_EN_BASE_URL
 from tests.integration.integration_test_case import IntegrationTestCase
 
 SIGN_OUT_URL_PATH = "/sign-out"

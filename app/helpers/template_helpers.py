@@ -174,8 +174,8 @@ class CensusContextOptions(
     title_logo: str = "census-logo-en"
     title_logo_alt: LazyString = lazy_gettext("Census 2021")
     base_url: str = CENSUS_EN_BASE_URL
-    account_service_url = f"{base_url}/en/start"
-    design_system_theme = "census"
+    account_service_url: str = f"{base_url}/en/start"
+    design_system_theme: str = "census"
     footer_links: Iterable[MutableMapping] = field(
         default_factory=lambda: [
             Link(
@@ -217,7 +217,7 @@ class CensusContextOptions(
     data_layer: Iterable[Mapping] = field(
         default_factory=lambda: [{"nisra": False}], compare=False
     )
-    survey_title = lazy_gettext("Census 2021")
+    survey_title: LazyString = lazy_gettext("Census 2021")
 
 
 @dataclass
@@ -226,7 +226,7 @@ class CensusContextOptionsCymraeg(
 ):
     title_logo: str = "census-logo-cy"
     base_url: str = CENSUS_CY_BASE_URL
-    account_service_url = f"{CENSUS_CY_BASE_URL}/en/start"
+    account_service_url: str = f"{CENSUS_CY_BASE_URL}/en/start"
     footer_links: Iterable[MutableMapping] = field(
         default_factory=lambda: [
             Link(
@@ -283,10 +283,10 @@ class CensusNISRAContextOptions(
     )
     header_logo: str = "nisra"
     mobile_logo: str = "nisra-logo-en-mobile"
-    copyright_declaration: str = lazy_gettext(
+    copyright_declaration: LazyString = lazy_gettext(
         "Crown copyright and database rights 2021 NIMA MOU577.501."
     )
-    copyright_text: str = lazy_gettext(
+    copyright_text: LazyString = lazy_gettext(
         "Use of address data is subject to the terms and conditions."
     )
     footer_links: Iterable[MutableMapping] = field(
