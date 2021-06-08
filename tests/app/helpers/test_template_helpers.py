@@ -1,4 +1,13 @@
-from app.helpers.template_helpers import ContextHelper, get_survey_config
+import pytest
+
+from app.helpers.template_helpers import (
+    CensusNISRASurveyConfig,
+    CensusSurveyConfig,
+    ContextHelper,
+    CymraegCensusSurveyConfig,
+    SurveyConfig,
+    get_survey_config,
+)
 
 
 def test_footer_context_census_theme(app):
@@ -65,10 +74,7 @@ def test_footer_context_census_theme(app):
             ],
         }
 
-        survey_config = get_survey_config(
-            theme="census",
-            language="en",
-        )
+        survey_config = CensusSurveyConfig()
 
         result = ContextHelper(
             language="en",
@@ -138,10 +144,7 @@ def test_footer_context_census_nisra_theme(app):
             },
         }
 
-        survey_config = get_survey_config(
-            theme="census-nisra",
-            language="en",
-        )
+        survey_config = CensusNISRASurveyConfig()
 
         result = ContextHelper(
             language="en",
@@ -160,10 +163,7 @@ def test_get_page_header_context_business(app):
     }
 
     with app.app_context():
-        survey_config = get_survey_config(
-            theme="business",
-            language="en",
-        )
+        survey_config = SurveyConfig()
 
         result = ContextHelper(
             language="en",
@@ -184,10 +184,7 @@ def test_get_page_header_context_census(app):
     }
 
     with app.app_context():
-        survey_config = get_survey_config(
-            theme="census",
-            language="en",
-        )
+        survey_config = CensusSurveyConfig()
 
         result = ContextHelper(
             language="en",
@@ -210,10 +207,7 @@ def test_get_page_header_context_census_nisra(app):
     }
 
     with app.app_context():
-        survey_config = get_survey_config(
-            theme="census-nisra",
-            language="en",
-        )
+        survey_config = CensusNISRASurveyConfig()
 
         result = ContextHelper(
             language="en",
@@ -221,4 +215,28 @@ def test_get_page_header_context_census_nisra(app):
             include_csrf_token=True,
             survey_config=survey_config,
         ).context["page_header"]
+
     assert result == expected
+
+
+@pytest.mark.parametrize(
+    "theme,language,expected",
+    [
+        ("default", "en", SurveyConfig),
+        ("default", "cy", SurveyConfig),
+        ("business", "en", SurveyConfig),
+        ("business", "cy", SurveyConfig),
+        ("health", "en", SurveyConfig),
+        ("health", "cy", SurveyConfig),
+        ("social", "en", SurveyConfig),
+        ("social", "cy", SurveyConfig),
+        ("census", "en", CensusSurveyConfig),
+        ("census", "cy", CymraegCensusSurveyConfig),
+        ("census-nisra", "en", CensusNISRASurveyConfig),
+        ("census-nisra", "cy", CensusNISRASurveyConfig),
+    ],
+)
+def test_get_survey_config(app, theme, language, expected):
+    with app.app_context():
+        result = get_survey_config(theme=theme, language=language)
+    assert isinstance(result, expected)

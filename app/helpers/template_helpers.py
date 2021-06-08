@@ -108,7 +108,7 @@ class ContextHelper:
         }
 
     @property
-    def page_header_context(self) -> dict[str, Any]:
+    def page_header_context(self) -> dict[str, str]:
         context = {
             "logo": f"{self.survey_config.page_header_logo}",
             "logoAlt": f"{self.survey_config.page_header_logo_alt}",
@@ -126,7 +126,7 @@ class ContextHelper:
         return context
 
     @property
-    def footer_context(self):
+    def footer_context(self) -> dict[str, Any]:
         context = {
             "lang": self._language,
             "crest": self.survey_config.crest,
@@ -157,9 +157,11 @@ class ContextHelper:
     @cached_property
     def _footer_warning(self) -> Optional[str]:
         if self._is_post_submission:
-            return lazy_gettext(
+            footer_warning: str = lazy_gettext(
                 "Make sure you <a href='{sign_out_url}'>leave this page</a> or close your browser if using a shared device"
             ).format(sign_out_url=self._sign_out_url)
+
+            return footer_warning
 
 
 @dataclass
@@ -341,18 +343,17 @@ def survey_config_mapping(theme: str, language: str) -> SurveyConfig:
 def get_survey_config(
     theme: Optional[str] = None, language: Optional[str] = None
 ) -> SurveyConfig:
+    # The fallback to assigning SURVEY_TYPE to theme is only being added until
+    # business feedback on the differentiation between theme and SURVEY_TYPE.
     if not language:
         language = get_locale().language
     if not theme:
         theme = cookie_session.get("theme", current_app.config["SURVEY_TYPE"])
-    survey_config = survey_config_mapping(theme, language)
 
-    return survey_config
+    return survey_config_mapping(theme, language)
 
 
 def render_template(template: str, **kwargs: Union[str, Mapping]) -> str:
-    # The fallback to assigning SURVEY_TYPE to theme is only being added until
-    # business feedback on the differentiation between theme and SURVEY_TYPE.
     language = get_locale().language
     survey_config = get_survey_config(language=language)
     is_post_submission = request.blueprint == "post_submission"
