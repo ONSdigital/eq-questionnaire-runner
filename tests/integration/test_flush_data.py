@@ -105,6 +105,16 @@ class TestFlushData(IntegrationTestCase):
 
         self.assertTrue('"flushed": true' in args[0])
 
+    def test_flush_sets_submission_language_code(self):
+
+        self.post(
+            url="/flush?token="
+            + self.token_generator.generate_token(self.get_payload())
+        )
+        args = self.encrypt_instance.call_args[0]  # pylint: disable=no-member
+
+        self.assertTrue('"submission_language_code": "-9"' in args[0])
+
     @staticmethod
     def get_payload():
         return {
