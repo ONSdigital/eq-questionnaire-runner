@@ -247,7 +247,7 @@ class CymraegCensusSurveyConfig(
         default_factory=lambda: [
             Link(lazy_gettext("Cookies"), f"{CENSUS_CY_BASE_URL}/cwcis/").__dict__,
             Link(
-                lazy_gettext("Accessibility Statement"),
+                lazy_gettext("Accessibility statement"),
                 f"{CENSUS_CY_BASE_URL}/datganiad-hygyrchedd/",
             ).__dict__,
             Link(
