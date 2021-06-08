@@ -1,7 +1,7 @@
 from datetime import datetime
 
 from dateutil.tz import tzutc
-from flask import Blueprint, current_app, g, redirect, request
+from flask import Blueprint, g, redirect, request
 from flask import session as cookie_session
 from flask import url_for
 from flask_login import logout_user
@@ -13,8 +13,7 @@ from werkzeug.exceptions import Unauthorized
 from app.authentication.authenticator import decrypt_token, store_session
 from app.authentication.jti_claim_storage import JtiTokenUsed, use_jti_claim
 from app.globals import get_session_timeout_in_seconds
-from app.helpers import get_base_url
-from app.helpers.template_helpers import render_template
+from app.helpers.template_helpers import get_survey_config, render_template
 from app.storage.metadata_parser import (
     validate_questionnaire_claims,
     validate_runner_claims,
@@ -130,7 +129,7 @@ def get_sign_out():
     Signs the user out of eQ and redirects to the log out url.
     """
     log_out_url = (
-        get_base_url(current_app.config["SURVEY_TYPE"], None)
+        get_survey_config().base_url
         if not cookie_session
         else cookie_session.get(
             "account_service_log_out_url", url_for(".get_signed_out")

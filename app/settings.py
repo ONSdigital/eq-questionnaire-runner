@@ -139,8 +139,3 @@ ADDRESS_LOOKUP_API_AUTH_TOKEN_LEEWAY_IN_SECONDS = int(
 )
 
 SURVEY_TYPE = os.getenv("SURVEY_TYPE", "census")
-
-
-CENSUS_EN_BASE_URL = "https://census.gov.uk"
-CENSUS_CY_BASE_URL = "https://cyfrifiad.gov.uk"
-CENSUS_NIR_BASE_URL = f"{CENSUS_EN_BASE_URL}/ni"

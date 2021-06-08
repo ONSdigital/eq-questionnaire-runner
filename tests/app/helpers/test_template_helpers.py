@@ -1,4 +1,4 @@
-from app.helpers.template_helpers import generate_context
+from app.helpers.template_helpers import ContextHelper, get_survey_config
 
 
 def test_footer_context_census_theme(app):
@@ -65,14 +65,19 @@ def test_footer_context_census_theme(app):
             ],
         }
 
-        result = generate_context(
-            "census",
-            "en",
+        survey_config = get_survey_config(
+            theme="census",
+            language="en",
+        )
+
+        result = ContextHelper(
+            language="en",
             is_post_submission=False,
             include_csrf_token=True,
-        )["footer"]
+            survey_config=survey_config,
+        ).context["footer"]
 
-    assert expected == result
+    assert result == expected
 
 
 def test_footer_context_census_nisra_theme(app):
@@ -133,54 +138,87 @@ def test_footer_context_census_nisra_theme(app):
             },
         }
 
-        result = generate_context(
-            "census-nisra", "en", is_post_submission=False, include_csrf_token=True
-        )["footer"]
+        survey_config = get_survey_config(
+            theme="census-nisra",
+            language="en",
+        )
 
-    assert expected == result
+        result = ContextHelper(
+            language="en",
+            is_post_submission=False,
+            include_csrf_token=True,
+            survey_config=survey_config,
+        ).context["footer"]
+
+    assert result == expected
 
 
 def test_get_page_header_context_business(app):
+    expected = {
+        "logo": "ons-logo-pos-en",
+        "logoAlt": "Office for National Statistics logo",
+    }
+
     with app.app_context():
-        expected = {
-            "logo": "ons-logo-pos-en",
-            "logoAlt": "Office for National Statistics logo",
-        }
-        result = generate_context(
-            "business", "en", is_post_submission=False, include_csrf_token=True
-        )["page_header"]
+        survey_config = get_survey_config(
+            theme="business",
+            language="en",
+        )
+
+        result = ContextHelper(
+            language="en",
+            is_post_submission=False,
+            include_csrf_token=True,
+            survey_config=survey_config,
+        ).context["page_header"]
+
     assert result == expected
 
 
 def test_get_page_header_context_census(app):
+    expected = {
+        "logo": "ons-logo-pos-en",
+        "logoAlt": "Office for National Statistics logo",
+        "titleLogo": "census-logo-en",
+        "titleLogoAlt": "Census 2021",
+    }
+
     with app.app_context():
-        expected = {
-            "logo": "ons-logo-pos-en",
-            "logoAlt": "Office for National Statistics logo",
-            "titleLogo": "census-logo-en",
-            "titleLogoAlt": "Census 2021",
-        }
-        result = generate_context(
-            "census", "en", is_post_submission=False, include_csrf_token=True
-        )["page_header"]
+        survey_config = get_survey_config(
+            theme="census",
+            language="en",
+        )
+
+        result = ContextHelper(
+            language="en",
+            is_post_submission=False,
+            include_csrf_token=True,
+            survey_config=survey_config,
+        ).context["page_header"]
+
     assert result == expected
 
 
 def test_get_page_header_context_census_nisra(app):
-    with app.app_context():
-        expected = {
-            "logo": "nisra-logo-en",
-            "logoAlt": "Northern Ireland Statistics and Research Agency logo",
-            "titleLogo": "census-logo-en",
-            "titleLogoAlt": "Census 2021",
-            "customHeaderLogo": "nisra",
-            "mobileLogo": "nisra-logo-en-mobile",
-        }
+    expected = {
+        "logo": "nisra-logo-en",
+        "logoAlt": "Northern Ireland Statistics and Research Agency logo",
+        "titleLogo": "census-logo-en",
+        "titleLogoAlt": "Census 2021",
+        "customHeaderLogo": "nisra",
+        "mobileLogo": "nisra-logo-en-mobile",
+    }
 
-        result = generate_context(
-            "census-nisra",
-            "en",
+    with app.app_context():
+        survey_config = get_survey_config(
+            theme="census-nisra",
+            language="en",
+        )
+
+        result = ContextHelper(
+            language="en",
             is_post_submission=False,
             include_csrf_token=True,
-        )["page_header"]
+            survey_config=survey_config,
+        ).context["page_header"]
     assert result == expected

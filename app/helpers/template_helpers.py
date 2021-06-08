@@ -11,7 +11,10 @@ from flask_babel import get_locale, lazy_gettext
 from flask_babel.speaklater import LazyString
 
 from app.helpers.language_helper import get_languages_context
-from app.settings import CENSUS_CY_BASE_URL, CENSUS_EN_BASE_URL, CENSUS_NIR_BASE_URL
+
+CENSUS_EN_BASE_URL = "https://census.gov.uk"
+CENSUS_CY_BASE_URL = "https://cyfrifiad.gov.uk"
+CENSUS_NIR_BASE_URL = f"{CENSUS_EN_BASE_URL}/ni"
 
 
 @dataclass
@@ -23,7 +26,7 @@ class Link:
 
 @dataclass
 class SurveyConfig:
-    """Valid options for defining context."""
+    """Valid options for defining survey-based configuration."""
 
     page_header_logo: Optional[str] = "ons-logo-pos-en"
     page_header_logo_alt: Optional[LazyString] = lazy_gettext(
@@ -54,20 +57,18 @@ class SurveyConfig:
 class ContextHelper:
     def __init__(
         self,
-        theme: str,
         language: str,
         is_post_submission: bool,
         include_csrf_token: bool,
-        context_options: SurveyConfig = SurveyConfig(),
+        survey_config: SurveyConfig = SurveyConfig(),
     ) -> None:
-        self._theme = theme
         self._language = language
         self._is_post_submission = is_post_submission
         self._include_csrf_token = include_csrf_token
-        self.context_options = context_options
+        self.survey_config = survey_config
         self._sign_out_url = url_for("session.get_sign_out")
         self._account_service_url = cookie_session.get(
-            "account_service_url", self.context_options.account_service_url
+            "account_service_url", self.survey_config.account_service_url
         )
         self._account_service_log_out_url = cookie_session.get(
             "account_service_log_out_url"
@@ -89,19 +90,18 @@ class ContextHelper:
             "account_service_log_out_url": self._account_service_log_out_url,
             "contact_us_url": Link(
                 lazy_gettext("Contact us"),
-                f"{self.context_options.base_url}/contact-us/",
+                f"{self.survey_config.base_url}/contact-us/",
             ).__dict__,
             "cookie_settings_url": self._cookie_settings_url,
             "page_header": self.page_header_context,
             "footer": self.footer_context,
             "languages": get_languages_context(self._language),
-            "theme": self.context_options.design_system_theme,
+            "theme": self.survey_config.design_system_theme,
             "language_code": self._language,
-            "schema_theme": self._theme,
-            "survey_title": self.context_options.survey_title,
+            "survey_title": self.survey_config.survey_title,
             "cdn_url": self._cdn_url,
             "address_lookup_api_url": self._address_lookup_api,
-            "data_layer": self.context_options.data_layer,
+            "data_layer": self.survey_config.data_layer,
             "include_csrf_token": self._include_csrf_token,
             "google_tag_manager_id": self._google_tag_manager_id,
             "google_tag_manager_auth": self._google_tag_manager_auth,
@@ -110,18 +110,18 @@ class ContextHelper:
     @property
     def page_header_context(self) -> dict[str, Any]:
         context = {
-            "logo": f"{self.context_options.page_header_logo}",
-            "logoAlt": f"{self.context_options.page_header_logo_alt}",
+            "logo": f"{self.survey_config.page_header_logo}",
+            "logoAlt": f"{self.survey_config.page_header_logo_alt}",
         }
 
-        if self.context_options.title_logo:
-            context["titleLogo"] = f"{self.context_options.title_logo}"
-        if self.context_options.title_logo_alt:
-            context["titleLogoAlt"] = f"{self.context_options.title_logo_alt}"
-        if self.context_options.header_logo:
-            context["customHeaderLogo"] = self.context_options.header_logo
-        if self.context_options.mobile_logo:
-            context["mobileLogo"] = self.context_options.mobile_logo
+        if self.survey_config.title_logo:
+            context["titleLogo"] = f"{self.survey_config.title_logo}"
+        if self.survey_config.title_logo_alt:
+            context["titleLogoAlt"] = f"{self.survey_config.title_logo_alt}"
+        if self.survey_config.header_logo:
+            context["customHeaderLogo"] = self.survey_config.header_logo
+        if self.survey_config.mobile_logo:
+            context["mobileLogo"] = self.survey_config.mobile_logo
 
         return context
 
@@ -129,30 +129,27 @@ class ContextHelper:
     def footer_context(self):
         context = {
             "lang": self._language,
-            "crest": self.context_options.crest,
+            "crest": self.survey_config.crest,
             "newTabWarning": lazy_gettext("The following links open in a new tab"),
             "copyrightDeclaration": {
-                "copyright": self.context_options.copyright_declaration,
-                "text": self.context_options.copyright_text,
+                "copyright": self.survey_config.copyright_declaration,
+                "text": self.survey_config.copyright_text,
             },
         }
 
         if self._footer_warning:
             context["footerWarning"] = self._footer_warning
 
-        if self.context_options.footer_links:
-            context["rows"] = [{"itemsList": self.context_options.footer_links}]
+        if self.survey_config.footer_links:
+            context["rows"] = [{"itemsList": self.survey_config.footer_links}]
 
-        if self.context_options.footer_legal_links:
-            context["legal"] = [{"itemsList": self.context_options.footer_legal_links}]
+        if self.survey_config.footer_legal_links:
+            context["legal"] = [{"itemsList": self.survey_config.footer_legal_links}]
 
-        if (
-            self.context_options.powered_by_logo
-            or self.context_options.powered_by_logo_alt
-        ):
+        if self.survey_config.powered_by_logo or self.survey_config.powered_by_logo_alt:
             context["poweredBy"] = {
-                "logo": self.context_options.powered_by_logo,
-                "alt": self.context_options.powered_by_logo_alt,
+                "logo": self.survey_config.powered_by_logo,
+                "alt": self.survey_config.powered_by_logo_alt,
             }
 
         return context
@@ -327,24 +324,9 @@ class CensusNISRASurveyConfig(
     )
 
 
-def generate_context(
-    theme: str,
-    language: str,
-    is_post_submission: bool,
-    include_csrf_token: bool,
-) -> dict[str, Any]:
-    return ContextHelper(
-        theme,
-        language,
-        is_post_submission,
-        include_csrf_token,
-        context_options(theme, language),
-    ).context
-
-
 @lru_cache
-def context_options(theme: str, language: str) -> SurveyConfig:
-    context_options_mapping = {
+def survey_config_mapping(theme: str, language: str) -> SurveyConfig:
+    return {
         "business": SurveyConfig,
         "health": SurveyConfig,
         "social": SurveyConfig,
@@ -353,19 +335,32 @@ def context_options(theme: str, language: str) -> SurveyConfig:
         ),
         "default": SurveyConfig,
         "census-nisra": CensusNISRASurveyConfig,
-    }
-    return context_options_mapping[theme]()
+    }[theme]()
+
+
+def get_survey_config(
+    theme: Optional[str] = None, language: Optional[str] = None
+) -> SurveyConfig:
+    if not language:
+        language = get_locale().language
+    if not theme:
+        theme = cookie_session.get("theme", current_app.config["SURVEY_TYPE"])
+    survey_config = survey_config_mapping(theme, language)
+
+    return survey_config
 
 
 def render_template(template: str, **kwargs: Union[str, Mapping]) -> str:
     # The fallback to assigning SURVEY_TYPE to theme is only being added until
     # business feedback on the differentiation between theme and SURVEY_TYPE.
-    theme = cookie_session.get("theme", current_app.config["SURVEY_TYPE"])
     language = get_locale().language
+    survey_config = get_survey_config(language=language)
     is_post_submission = request.blueprint == "post_submission"
     include_csrf_token = bool(request.url_rule and "POST" in request.url_rule.methods)
 
-    context = generate_context(theme, language, is_post_submission, include_csrf_token)
+    context = ContextHelper(
+        language, is_post_submission, include_csrf_token, survey_config
+    ).context
 
     template = f"{template.lower()}.html"
     return flask_render_template(
