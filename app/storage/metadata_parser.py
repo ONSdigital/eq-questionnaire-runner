@@ -134,7 +134,7 @@ class RunnerMetadataSchema(Schema, StripWhitespaceMixin):
 
 
 def validate_questionnaire_claims(claims, questionnaire_specific_metadata):
-    """Validate any survey specific claims required for a questionnaire"""
+    """ Validate any survey specific claims required for a questionnaire"""
     dynamic_fields = {}
 
     for metadata_field in questionnaire_specific_metadata:

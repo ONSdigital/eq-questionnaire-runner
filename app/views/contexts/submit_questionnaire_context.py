@@ -53,7 +53,7 @@ class SubmitQuestionnaireContext(Context):
         }
 
     def _build_all_groups(self) -> Generator[dict, None, None]:
-        """ NB: Does not support repeating sections"""
+        """ NB: Does not support repeating sections """
 
         for section_id in self._router.enabled_section_ids:
             location = Location(section_id=section_id)
