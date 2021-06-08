@@ -446,7 +446,7 @@ def test_other_config_visibility(
 
 
 @patch("app.jinja_filters.flask_babel.get_locale", Mock(return_value="en_GB"))
-def test_single_calculated_summary_question():
+def test_calculated_summary_question():
     rows = map_summary_item_config(
         group={
             "blocks": [
