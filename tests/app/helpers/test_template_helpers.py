@@ -230,6 +230,8 @@ def test_get_page_header_context_census_nisra(app):
         ("health", "cy", SurveyConfig),
         ("social", "en", SurveyConfig),
         ("social", "cy", SurveyConfig),
+        ("northernireland", "en", SurveyConfig),
+        ("northernireland", "cy", SurveyConfig),
         ("census", "en", CensusSurveyConfig),
         ("census", "cy", CymraegCensusSurveyConfig),
         ("census-nisra", "en", CensusNISRASurveyConfig),

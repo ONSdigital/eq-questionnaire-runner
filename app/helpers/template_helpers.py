@@ -329,13 +329,14 @@ class CensusNISRASurveyConfig(
 @lru_cache
 def survey_config_mapping(theme: str, language: str) -> SurveyConfig:
     return {
+        "default": SurveyConfig,
         "business": SurveyConfig,
         "health": SurveyConfig,
         "social": SurveyConfig,
+        "northernireland": SurveyConfig,
         "census": (
             CymraegCensusSurveyConfig if language == "cy" else CensusSurveyConfig
         ),
-        "default": SurveyConfig,
         "census-nisra": CensusNISRASurveyConfig,
     }[theme]()
 
