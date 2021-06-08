@@ -19,7 +19,7 @@ CENSUS_NIR_BASE_URL = f"{CENSUS_EN_BASE_URL}/ni"
 
 @dataclass
 class Link:
-    text: Union[LazyString]
+    text: LazyString
     url: str
     target: Optional[str] = "_blank"
 
