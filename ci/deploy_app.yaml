@@ -2,8 +2,8 @@ platform: linux
 image_resource:
   type: docker-image
   source:
-    repository: ((image_registry))/eq-app-deploy-image
-    tag: ((deploy_image_version))
+    repository: gcr.io/google.com/cloudsdktool/cloud-sdk
+    tag: latest
 inputs:
   - name: eq-questionnaire-runner
 params:
@@ -27,12 +27,14 @@ params:
   MAX_REPLICAS:
   TARGET_CPU_UTILIZATION_PERCENTAGE:
   CDN_URL:
-  WEB_SERVER_TYPE:
+  WEB_SERVER_TYPE: 'gunicorn-threads'
   WEB_SERVER_WORKERS:
   WEB_SERVER_THREADS:
   WEB_SERVER_UWSGI_ASYNC_CORES:
-  DATASTORE_USE_GRPC:
+  DATASTORE_USE_GRPC: 'True'
   CLOUD_ARMOR_POLICY_NAME:
+  MIN_INSTANCES:
+  MAX_INSTANCES:
 run:
   path: bash
   args:
@@ -45,7 +47,5 @@ run:
 
       gcloud auth activate-service-account --key-file "${GOOGLE_APPLICATION_CREDENTIALS}"
 
-      gcloud container clusters get-credentials survey-runner --region "${REGION}" --project "${PROJECT_ID}"
-
       cd eq-questionnaire-runner
-      ./k8s/deploy_app.sh
+      ./ci/deploy_app.sh
