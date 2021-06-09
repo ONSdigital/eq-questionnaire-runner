@@ -10,6 +10,25 @@ describe("Date checks", () => {
     browser.openQuestionnaire("test_dates.json");
   });
 
+  it("Given an answer label is provided for a date question when the question page is loaded then the label should be displayed ", () => {
+    expect($(DateRangePage.legend()).getText()).to.contain("Period from");
+  });
+
+  it("Given an answer label is not provided for a date question when the question page is loaded then the question title should be used as a label but not displayed ", () => {
+    $(DateRangePage.dateRangeFromday()).setValue(1);
+    $(DateRangePage.dateRangeFrommonth()).setValue(1);
+    $(DateRangePage.dateRangeFromyear()).setValue(1901);
+
+    $(DateRangePage.dateRangeToday()).setValue(3);
+    $(DateRangePage.dateRangeTomonth()).setValue(5);
+    $(DateRangePage.dateRangeToyear()).setValue(2017);
+
+    $(DateRangePage.submit()).click();
+
+    expect($(DateMonthYearPage.legend()).getText()).to.contain("Date with month and year");
+    expect($(DateMonthYearPage.legend()).isDisplayed()).to.be.true;
+  });
+
   it("Given the test_dates survey is selected when dates are entered then the summary screen shows the dates entered formatted", () => {
     // When dates are entered
     $(DateRangePage.dateRangeFromday()).setValue(1);
