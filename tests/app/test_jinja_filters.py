@@ -446,7 +446,7 @@ def test_other_config_visibility(
 
 
 @patch("app.jinja_filters.flask_babel.get_locale", Mock(return_value="en_GB"))
-def test_calculated_summary_question():
+def test_calculated_summary_total_is_not_duplicated():
     rows = map_summary_item_config(
         group={
             "blocks": [
@@ -500,3 +500,6 @@ def test_calculated_summary_question():
         },
     )
     assert len(rows) == 3
+    assert rows[0].rowTitle == "First Number Question Title"
+    assert rows[1].rowTitle == "Second Number Question Title"
+    assert rows[2].rowTitle == "Grand total of previous values"
