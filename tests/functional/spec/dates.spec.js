@@ -26,7 +26,6 @@ describe("Date checks", () => {
     $(DateRangePage.submit()).click();
 
     expect($(DateMonthYearPage.legend()).getText()).to.contain("Date with month and year");
-    expect($(DateMonthYearPage.legend()).isDisplayed()).to.be.true;
   });
 
   it("Given the test_dates survey is selected when dates are entered then the summary screen shows the dates entered formatted", () => {
