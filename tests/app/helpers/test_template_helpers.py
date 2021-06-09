@@ -1,12 +1,12 @@
-from flask import Flask
 import pytest
+from flask import Flask
 
 from app.helpers.template_helpers import (
     CensusNISRASurveyConfig,
     CensusSurveyConfig,
     ContextHelper,
-    WelshCensusSurveyConfig,
     SurveyConfig,
+    WelshCensusSurveyConfig,
     get_survey_config,
 )
 
