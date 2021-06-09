@@ -12,6 +12,7 @@ from flask_babel.speaklater import LazyString
 
 from app.helpers.language_helper import get_languages_context
 
+DEFAULT_EN_BASE_URL = "https://ons.gov.uk"
 CENSUS_EN_BASE_URL = "https://census.gov.uk"
 CENSUS_CY_BASE_URL = "https://cyfrifiad.gov.uk"
 CENSUS_NIR_BASE_URL = f"{CENSUS_EN_BASE_URL}/ni"
@@ -38,7 +39,7 @@ class SurveyConfig:
     copyright_text: Optional[LazyString] = lazy_gettext(
         "Use of address data is subject to the terms and conditions."
     )
-    base_url: str = CENSUS_EN_BASE_URL
+    base_url: str = DEFAULT_EN_BASE_URL
     account_service_url: Optional[str] = None
     title_logo: Optional[str] = None
     title_logo_alt: Optional[str] = None
@@ -218,7 +219,7 @@ class CensusSurveyConfig(
 
 
 @dataclass
-class CymraegCensusSurveyConfig(
+class WelshCensusSurveyConfig(
     CensusSurveyConfig,
 ):
     title_logo: str = "census-logo-cy"
@@ -320,7 +321,7 @@ class CensusNISRASurveyConfig(
     )
     powered_by_logo: str = "nisra-logo-black-en"
     powered_by_logo_alt: str = "NISRA - Northern Ireland Statistics and Research Agency"
-    account_service_url = CENSUS_NIR_BASE_URL
+    account_service_url: str = CENSUS_NIR_BASE_URL
     data_layer: Iterable[Mapping] = field(
         default_factory=lambda: [{"nisra": True}], compare=False
     )
@@ -334,9 +335,7 @@ def survey_config_mapping(theme: str, language: str) -> SurveyConfig:
         "health": SurveyConfig,
         "social": SurveyConfig,
         "northernireland": SurveyConfig,
-        "census": (
-            CymraegCensusSurveyConfig if language == "cy" else CensusSurveyConfig
-        ),
+        "census": (WelshCensusSurveyConfig if language == "cy" else CensusSurveyConfig),
         "census-nisra": CensusNISRASurveyConfig,
     }[theme]()
 

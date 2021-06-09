@@ -1,16 +1,17 @@
+from flask import Flask
 import pytest
 
 from app.helpers.template_helpers import (
     CensusNISRASurveyConfig,
     CensusSurveyConfig,
     ContextHelper,
-    CymraegCensusSurveyConfig,
+    WelshCensusSurveyConfig,
     SurveyConfig,
     get_survey_config,
 )
 
 
-def test_footer_context_census_theme(app):
+def test_footer_context_census_theme(app: Flask):
     with app.app_context():
         expected = {
             "lang": "en",
@@ -86,7 +87,7 @@ def test_footer_context_census_theme(app):
     assert result == expected
 
 
-def test_footer_context_census_nisra_theme(app):
+def test_footer_context_census_nisra_theme(app: Flask):
     with app.app_context():
         expected = {
             "lang": "en",
@@ -156,7 +157,7 @@ def test_footer_context_census_nisra_theme(app):
     assert result == expected
 
 
-def test_get_page_header_context_business(app):
+def test_get_page_header_context_business(app: Flask):
     expected = {
         "logo": "ons-logo-pos-en",
         "logoAlt": "Office for National Statistics logo",
@@ -175,7 +176,7 @@ def test_get_page_header_context_business(app):
     assert result == expected
 
 
-def test_get_page_header_context_census(app):
+def test_get_page_header_context_census(app: Flask):
     expected = {
         "logo": "ons-logo-pos-en",
         "logoAlt": "Office for National Statistics logo",
@@ -196,7 +197,7 @@ def test_get_page_header_context_census(app):
     assert result == expected
 
 
-def test_get_page_header_context_census_nisra(app):
+def test_get_page_header_context_census_nisra(app: Flask):
     expected = {
         "logo": "nisra-logo-en",
         "logoAlt": "Northern Ireland Statistics and Research Agency logo",
@@ -220,6 +221,80 @@ def test_get_page_header_context_census_nisra(app):
 
 
 @pytest.mark.parametrize(
+    "survey_config,expected",
+    [
+        (
+            SurveyConfig(),
+            {
+                "url": "https://ons.gov.uk/contact-us/",
+                "text": "Contact us",
+                "target": "_blank",
+            },
+        ),
+        (
+            CensusSurveyConfig(),
+            {
+                "url": "https://census.gov.uk/contact-us/",
+                "text": "Contact us",
+                "target": "_blank",
+            },
+        ),
+        (
+            WelshCensusSurveyConfig(),
+            {
+                "url": "https://cyfrifiad.gov.uk/contact-us/",
+                "text": "Contact us",
+                "target": "_blank",
+            },
+        ),
+        (
+            CensusNISRASurveyConfig(),
+            {
+                "url": "https://census.gov.uk/ni/contact-us/",
+                "text": "Contact us",
+                "target": "_blank",
+            },
+        ),
+    ],
+)
+def test_contact_us_url_context(
+    app: Flask, survey_config: SurveyConfig, expected: dict[str, str]
+):
+    with app.app_context():
+        result = ContextHelper(
+            language="en",
+            is_post_submission=False,
+            include_csrf_token=True,
+            survey_config=survey_config,
+        ).context["contact_us_url"]
+
+    assert result == expected
+
+
+@pytest.mark.parametrize(
+    "survey_config,expected",
+    [
+        (SurveyConfig(), None),
+        (CensusSurveyConfig(), "https://census.gov.uk/en/start"),
+        (WelshCensusSurveyConfig(), "https://cyfrifiad.gov.uk/en/start"),
+        (CensusNISRASurveyConfig(), "https://census.gov.uk/ni"),
+    ],
+)
+def test_account_service_url_context(
+    app: Flask, survey_config: SurveyConfig, expected: str
+):
+    with app.app_context():
+        result = ContextHelper(
+            language="en",
+            is_post_submission=False,
+            include_csrf_token=True,
+            survey_config=survey_config,
+        ).context["account_service_url"]
+
+    assert result == expected
+
+
+@pytest.mark.parametrize(
     "theme,language,expected",
     [
         ("default", "en", SurveyConfig),
@@ -233,12 +308,14 @@ def test_get_page_header_context_census_nisra(app):
         ("northernireland", "en", SurveyConfig),
         ("northernireland", "cy", SurveyConfig),
         ("census", "en", CensusSurveyConfig),
-        ("census", "cy", CymraegCensusSurveyConfig),
+        ("census", "cy", WelshCensusSurveyConfig),
         ("census-nisra", "en", CensusNISRASurveyConfig),
         ("census-nisra", "cy", CensusNISRASurveyConfig),
     ],
 )
-def test_get_survey_config(app, theme, language, expected):
+def test_get_survey_config(
+    app: Flask, theme: str, language: str, expected: SurveyConfig
+):
     with app.app_context():
         result = get_survey_config(theme=theme, language=language)
     assert isinstance(result, expected)
