@@ -401,16 +401,6 @@ class SummaryAction:
             "data-ga-action": "Edit click",
         }
 
-    def __eq__(self, other):
-        if isinstance(other, SummaryAction):
-            return (
-                self.text == other.text
-                and self.ariaLabel == other.ariaLabel
-                and self.attributes == other.attributes
-            )
-
-        return False
-
 
 class SummaryRowItemValue:
     def __init__(self, text, other=None):
@@ -420,10 +410,7 @@ class SummaryRowItemValue:
             self.other = other
 
     def __eq__(self, other):
-        if isinstance(other, SummaryRowItemValue):
-            return self.text == other.text
-
-        return False
+        return self.text == other.text
 
 
 class SummaryRowItem:
@@ -514,15 +501,12 @@ class SummaryRowItem:
             ]
 
     def __eq__(self, other):
-        if isinstance(other, SummaryRowItem):
-            return (
-                self.rowTitle == other.rowTitle
-                and self.rowTitleAttributes == other.rowTitleAttributes
-                and self.attributes == other.attributes
-                and self.valueList == other.valueList
-            )
-
-        return False
+        return (
+            self.rowTitle == other.rowTitle
+            and self.rowTitleAttributes == other.rowTitleAttributes
+            and self.attributes == other.attributes
+            and self.valueList == other.valueList
+        )
 
 
 class SummaryRow:
@@ -560,10 +544,7 @@ class SummaryRow:
             )
 
     def __eq__(self, other):
-        if isinstance(other, SummaryRow):
-            return self.rowItems == other.rowItems and self.rowTitle == other.rowTitle
-
-        return False
+        return self.rowItems == other.rowItems and self.rowTitle == other.rowTitle
 
 
 @blueprint.app_template_filter()
