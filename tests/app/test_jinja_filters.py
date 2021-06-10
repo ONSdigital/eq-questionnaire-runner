@@ -448,59 +448,7 @@ def test_other_config_visibility(
 
 @patch("app.jinja_filters.flask_babel.get_locale", Mock(return_value="en_GB"))
 def test_calculated_summary_config():
-    expected = map_summary_item_config(
-        group={
-            "blocks": [
-                {
-                    "id": "first-number-block",
-                    "link": "/questionnaire/first-number-block/?return_to=final-summary",
-                    "question": {
-                        "id": "first-number-question",
-                        "type": "General",
-                        "title": "First Number Question Title",
-                        "answers": [
-                            {
-                                "id": "first-number-answer",
-                                "label": "First answer label",
-                                "value": 1,
-                                "type": "currency",
-                                "currency": "GBP",
-                            }
-                        ],
-                    },
-                },
-                {
-                    "id": "second-number-block",
-                    "link": "/questionnaire/second-number-block/?return_to=final-summary",
-                    "question": {
-                        "id": "second-number-question",
-                        "type": "General",
-                        "title": "Second Number Question Title",
-                        "answers": [
-                            {
-                                "id": "second-number-answer",
-                                "label": "Second answer label",
-                                "value": 1,
-                                "type": "currency",
-                                "currency": "GBP",
-                            }
-                        ],
-                    },
-                },
-            ],
-        },
-        summary_type="CalculatedSummary",
-        answers_are_editable=True,
-        no_answer_provided="No answer Provided",
-        edit_link_text="Change",
-        edit_link_aria_label="Change your answer for",
-        calculated_question={
-            "title": "Grand total of previous values",
-            "id": "calculated-summary-question",
-            "answers": [{"id": "calculated-summary-answer", "value": "£2.00"}],
-        },
-    )
-    result = [
+    expected = [
         SummaryRow(
             block={
                 "id": "first-number-block",
@@ -594,4 +542,57 @@ def test_calculated_summary_config():
         ),
     ]
 
-    assert result == expected
+    result = map_summary_item_config(
+        group={
+            "blocks": [
+                {
+                    "id": "first-number-block",
+                    "link": "/questionnaire/first-number-block/?return_to=final-summary",
+                    "question": {
+                        "id": "first-number-question",
+                        "type": "General",
+                        "title": "First Number Question Title",
+                        "answers": [
+                            {
+                                "id": "first-number-answer",
+                                "label": "First answer label",
+                                "value": 1,
+                                "type": "currency",
+                                "currency": "GBP",
+                            }
+                        ],
+                    },
+                },
+                {
+                    "id": "second-number-block",
+                    "link": "/questionnaire/second-number-block/?return_to=final-summary",
+                    "question": {
+                        "id": "second-number-question",
+                        "type": "General",
+                        "title": "Second Number Question Title",
+                        "answers": [
+                            {
+                                "id": "second-number-answer",
+                                "label": "Second answer label",
+                                "value": 1,
+                                "type": "currency",
+                                "currency": "GBP",
+                            }
+                        ],
+                    },
+                },
+            ],
+        },
+        summary_type="CalculatedSummary",
+        answers_are_editable=True,
+        no_answer_provided="No answer Provided",
+        edit_link_text="Change",
+        edit_link_aria_label="Change your answer for",
+        calculated_question={
+            "title": "Grand total of previous values",
+            "id": "calculated-summary-question",
+            "answers": [{"id": "calculated-summary-answer", "value": "£2.00"}],
+        },
+    )
+
+    assert expected == result
