@@ -12,7 +12,7 @@ class TestSession(IntegrationTestCase):
         self.redirect_url = None
 
         # Perform setup steps
-        self._set_up_app(settings_overrides={"SURVEY_TYPE": "default"})
+        self._set_up_app(setting_overrides={"SURVEY_TYPE": "default"})
 
     def test_session_expired(self):
         self.get("/session-expired")
@@ -68,7 +68,7 @@ class TestCensusSession(IntegrationTestCase):
         self.redirect_url = None
 
         # Perform setup steps
-        self._set_up_app(settings_overrides={"SURVEY_TYPE": "census"})
+        self._set_up_app(setting_overrides={"SURVEY_TYPE": "census"})
 
     def test_session_signed_out_no_cookie_session_census_config(self):
 

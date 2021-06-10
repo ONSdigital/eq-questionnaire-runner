@@ -49,7 +49,7 @@ class IntegrationTestCase(unittest.TestCase):  # pylint: disable=too-many-public
     def test_app(self):
         return self._application
 
-    def _set_up_app(self, settings_overrides=None):
+    def _set_up_app(self, setting_overrides=None):
         self._ds = patch("app.setup.datastore.Client", MockDatastore)
         self._ds.start()
 
@@ -63,8 +63,8 @@ class IntegrationTestCase(unittest.TestCase):  # pylint: disable=too-many-public
             "EQ_SUBMISSION_CONFIRMATION_BACKEND": "log",
         }
 
-        if settings_overrides:
-            overrides = overrides | settings_overrides
+        if setting_overrides:
+            overrides = overrides | setting_overrides
 
         with patch(
             "google.auth._default._get_explicit_environ_credentials",

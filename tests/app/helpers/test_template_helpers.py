@@ -1,5 +1,5 @@
 import pytest
-from flask import Flask
+from flask import Flask, current_app
 
 from app.helpers.template_helpers import (
     CensusNISRASurveyConfig,
@@ -9,6 +9,7 @@ from app.helpers.template_helpers import (
     WelshCensusSurveyConfig,
     get_survey_config,
 )
+from app.setup import create_app
 
 
 def test_footer_context_census_theme(app: Flask):
@@ -319,3 +320,29 @@ def test_get_survey_config(
     with app.app_context():
         result = get_survey_config(theme=theme, language=language)
     assert isinstance(result, expected)
+
+
+def test_context_set_from_app_config(app):
+    with app.app_context():
+        current_app.config["COOKIE_SETTINGS_URL"] = "test-cookie-settings-url"
+        current_app.config["CDN_URL"] = "test-cdn-url"
+        current_app.config["CDN_ASSETS_PATH"] = "/test-assets-path"
+        current_app.config["ADDRESS_LOOKUP_API_URL"] = "test-address-lookup-api-url"
+        current_app.config["EQ_GOOGLE_TAG_MANAGER_ID"] = "test-google-tag-manager-id"
+        current_app.config[
+            "EQ_GOOGLE_TAG_MANAGER_AUTH"
+        ] = "test-google-tag-manager-auth"
+        survey_config = SurveyConfig()
+
+        context = ContextHelper(
+            language="en",
+            is_post_submission=False,
+            include_csrf_token=True,
+            survey_config=survey_config,
+        ).context
+
+    assert context["cookie_settings_url"] == "test-cookie-settings-url"
+    assert context["cdn_url"] == "test-cdn-url/test-assets-path"
+    assert context["address_lookup_api_url"] == "test-address-lookup-api-url"
+    assert context["google_tag_manager_id"] == "test-google-tag-manager-id"
+    assert context["google_tag_manager_auth"] == "test-google-tag-manager-auth"
