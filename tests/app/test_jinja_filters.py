@@ -1,8 +1,8 @@
 # coding: utf-8
 from unittest.mock import MagicMock, patch
-import simplejson as json
 
 import pytest
+import simplejson as json
 from jinja2 import Undefined
 from mock import Mock
 
