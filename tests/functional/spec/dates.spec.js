@@ -12,7 +12,7 @@ describe("Date checks", () => {
 
   it("Given an answer label is provided for a date question when the question page is loaded then the label should be displayed ", () => {
     expect($(DateRangePage.legend()).getText()).to.contain("Period from");
-    expect($(DateMonthYearPage.legend()).getAttribute('class')).not.to.contain("u-vh");
+    expect($(DateMonthYearPage.legend()).getAttribute("class")).not.to.contain("u-vh");
   });
 
   it("Given an answer label is not provided for a date question when the question page is loaded then the question title should be used as a label but not displayed ", () => {
@@ -27,7 +27,7 @@ describe("Date checks", () => {
     $(DateRangePage.submit()).click();
 
     expect($(DateMonthYearPage.legend()).getText()).to.contain("Date with month and year");
-    expect($(DateMonthYearPage.legend()).getAttribute('class')).to.contain("u-vh");
+    expect($(DateMonthYearPage.legend()).getAttribute("class")).to.contain("u-vh");
   });
 
   it("Given the test_dates survey is selected when dates are entered then the summary screen shows the dates entered formatted", () => {
