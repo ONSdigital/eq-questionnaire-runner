@@ -410,7 +410,9 @@ class SummaryRowItemValue:
             self.other = other
 
     def __eq__(self, other):
-        return self.text == other.text
+        return (
+            isinstance(other, SummaryRowItemValue) and self.__dict__ == other.__dict__
+        )
 
 
 class SummaryRowItem:
@@ -502,7 +504,8 @@ class SummaryRowItem:
 
     def __eq__(self, other):
         return (
-            self.rowTitle == other.rowTitle
+            isinstance(other, SummaryRowItem)
+            and self.rowTitle == other.rowTitle
             and self.rowTitleAttributes == other.rowTitleAttributes
             and self.attributes == other.attributes
             and self.valueList == other.valueList
@@ -544,7 +547,12 @@ class SummaryRow:
             )
 
     def __eq__(self, other):
-        return self.rowItems == other.rowItems and self.rowTitle == other.rowTitle
+        return (
+            isinstance(other, SummaryRow)
+            and self.rowItems == other.rowItems
+            and self.rowTitle == other.rowTitle
+            and self.__dict__ == other.__dict__
+        )
 
 
 @blueprint.app_template_filter()
