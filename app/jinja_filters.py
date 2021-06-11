@@ -409,11 +409,6 @@ class SummaryRowItemValue:
         if other or other == 0:
             self.other = other
 
-    def __eq__(self, other):
-        return (
-            isinstance(other, SummaryRowItemValue) and self.__dict__ == other.__dict__
-        )
-
 
 class SummaryRowItem:
     def __init__(  # noqa: C901, R0912 pylint: disable=too-complex, too-many-branches
@@ -502,15 +497,6 @@ class SummaryRowItem:
                 )
             ]
 
-    def __eq__(self, other):
-        return (
-            isinstance(other, SummaryRowItem)
-            and self.rowTitle == other.rowTitle
-            and self.rowTitleAttributes == other.rowTitleAttributes
-            and self.attributes == other.attributes
-            and self.valueList == other.valueList
-        )
-
 
 class SummaryRow:
     def __init__(
@@ -545,9 +531,6 @@ class SummaryRow:
                     summary_type,
                 )
             )
-
-    def __eq__(self, other):
-        return isinstance(other, SummaryRow) and self.__dict__ == other.__dict__
 
 
 @blueprint.app_template_filter()

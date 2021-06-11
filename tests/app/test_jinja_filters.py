@@ -1,5 +1,6 @@
 # coding: utf-8
 from unittest.mock import MagicMock, patch
+import simplejson as json
 
 import pytest
 from jinja2 import Undefined
@@ -595,4 +596,8 @@ def test_calculated_summary_config():
         },
     )
 
-    assert expected == result
+    assert to_dict(expected) == to_dict(result)
+
+
+def to_dict(obj):
+    return json.loads(json.dumps(obj, default=lambda o: o.__dict__))
