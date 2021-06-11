@@ -547,12 +547,7 @@ class SummaryRow:
             )
 
     def __eq__(self, other):
-        return (
-            isinstance(other, SummaryRow)
-            and self.rowItems == other.rowItems
-            and self.rowTitle == other.rowTitle
-            and self.__dict__ == other.__dict__
-        )
+        return isinstance(other, SummaryRow) and self.__dict__ == other.__dict__
 
 
 @blueprint.app_template_filter()
