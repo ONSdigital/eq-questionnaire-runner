@@ -103,6 +103,17 @@ def test_footer_warning_in_context_census_theme(app: Flask):
     assert result == expected
 
 
+def test_footer_warning_not_in_context_census_theme(app: Flask):
+    with app.app_context():
+        with pytest.raises(KeyError):
+            _ = ContextHelper(
+                language="en",
+                is_post_submission=False,
+                include_csrf_token=True,
+                survey_config=CensusSurveyConfig(),
+            ).context["footer"]["footerWarning"]
+
+
 def test_footer_context_census_nisra_theme(app: Flask):
     with app.app_context():
         expected = {
@@ -376,7 +387,7 @@ def test_context_set_from_app_config(app):
         ("census-nisra", "en", "census"),
     ],
 )
-def test_correct_theme_in_config(app: Flask, theme: str, language: str, expected: str):
+def test_correct_theme_in_context(app: Flask, theme: str, language: str, expected: str):
     with app.app_context():
         survey_config = get_survey_config(theme=theme, language=language)
         result = ContextHelper(
@@ -401,7 +412,7 @@ def test_correct_theme_in_config(app: Flask, theme: str, language: str, expected
         ("census-nisra", "en", "Census 2021"),
     ],
 )
-def test_correct_survey_title_in_config(
+def test_correct_survey_title_in_context(
     app: Flask, theme: str, language: str, expected: str
 ):
     with app.app_context():
@@ -428,7 +439,7 @@ def test_correct_survey_title_in_config(
         ("census-nisra", "en", [{"nisra": True}]),
     ],
 )
-def test_correct_data_layer_in_config(
+def test_correct_data_layer_in_context(
     app: Flask, theme: str, language: str, expected: str
 ):
     with app.app_context():
@@ -443,17 +454,22 @@ def test_correct_data_layer_in_config(
     assert result == expected
 
 
-def test_include_csrf_token_false(app: Flask):
-    expected = False
-
+@pytest.mark.parametrize(
+    "include_csrf_token",
+    [
+        (False),
+        (True),
+    ],
+)
+def test_include_csrf_token(app: Flask, include_csrf_token: bool):
     with app.app_context():
         survey_config = SurveyConfig()
 
         result = ContextHelper(
             language="en",
             is_post_submission=False,
-            include_csrf_token=False,
+            include_csrf_token=include_csrf_token,
             survey_config=survey_config,
         ).context["include_csrf_token"]
 
-    assert result == expected
+    assert result == include_csrf_token
