@@ -9,7 +9,6 @@ from app.helpers.template_helpers import (
     WelshCensusSurveyConfig,
     get_survey_config,
 )
-from app.setup import create_app
 
 
 def test_footer_context_census_theme(app: Flask):
@@ -84,6 +83,22 @@ def test_footer_context_census_theme(app: Flask):
             include_csrf_token=True,
             survey_config=survey_config,
         ).context["footer"]
+
+    assert result == expected
+
+
+def test_footer_warning_in_context_census_theme(app: Flask):
+    with app.app_context():
+        expected = "Make sure you <a href='/sign-out'>leave this page</a> or close your browser if using a shared device"
+
+        survey_config = CensusSurveyConfig()
+
+        result = ContextHelper(
+            language="en",
+            is_post_submission=True,
+            include_csrf_token=True,
+            survey_config=survey_config,
+        ).context["footer"]["footerWarning"]
 
     assert result == expected
 
@@ -346,3 +361,99 @@ def test_context_set_from_app_config(app):
     assert context["address_lookup_api_url"] == "test-address-lookup-api-url"
     assert context["google_tag_manager_id"] == "test-google-tag-manager-id"
     assert context["google_tag_manager_auth"] == "test-google-tag-manager-auth"
+
+
+@pytest.mark.parametrize(
+    "theme,language,expected",
+    [
+        ("default", "en", "main"),
+        ("business", "en", "main"),
+        ("health", "en", "main"),
+        ("social", "en", "main"),
+        ("northernireland", "en", "main"),
+        ("census", "en", "census"),
+        ("census", "cy", "census"),
+        ("census-nisra", "en", "census"),
+    ],
+)
+def test_correct_theme_in_config(app: Flask, theme: str, language: str, expected: str):
+    with app.app_context():
+        survey_config = get_survey_config(theme=theme, language=language)
+        result = ContextHelper(
+            language="en",
+            is_post_submission=False,
+            include_csrf_token=True,
+            survey_config=survey_config,
+        ).context["theme"]
+    assert result == expected
+
+
+@pytest.mark.parametrize(
+    "theme,language,expected",
+    [
+        ("default", "en", None),
+        ("business", "en", None),
+        ("health", "en", None),
+        ("social", "en", None),
+        ("northernireland", "en", None),
+        ("census", "en", "Census 2021"),
+        ("census", "cy", "Census 2021"),
+        ("census-nisra", "en", "Census 2021"),
+    ],
+)
+def test_correct_survey_title_in_config(
+    app: Flask, theme: str, language: str, expected: str
+):
+    with app.app_context():
+        survey_config = get_survey_config(theme=theme, language=language)
+        result = ContextHelper(
+            language="en",
+            is_post_submission=False,
+            include_csrf_token=True,
+            survey_config=survey_config,
+        ).context["survey_title"]
+    assert result == expected
+
+
+@pytest.mark.parametrize(
+    "theme,language,expected",
+    [
+        ("default", "en", []),
+        ("business", "en", []),
+        ("health", "en", []),
+        ("social", "en", []),
+        ("northernireland", "en", []),
+        ("census", "en", [{"nisra": False}]),
+        ("census", "cy", [{"nisra": False}]),
+        ("census-nisra", "en", [{"nisra": True}]),
+    ],
+)
+def test_correct_data_layer_in_config(
+    app: Flask, theme: str, language: str, expected: str
+):
+    with app.app_context():
+        survey_config = get_survey_config(theme=theme, language=language)
+
+        result = ContextHelper(
+            language="en",
+            is_post_submission=False,
+            include_csrf_token=True,
+            survey_config=survey_config,
+        ).context["data_layer"]
+    assert result == expected
+
+
+def test_include_csrf_token_false(app: Flask):
+    expected = False
+
+    with app.app_context():
+        survey_config = SurveyConfig()
+
+        result = ContextHelper(
+            language="en",
+            is_post_submission=False,
+            include_csrf_token=False,
+            survey_config=survey_config,
+        ).context["include_csrf_token"]
+
+    assert result == expected
