@@ -5,13 +5,13 @@ from typing import MutableMapping, Optional, Union
 from structlog import get_logger
 
 from app.data_models import QuestionnaireStore
-from app.helpers.template_helpers import safe_content
 from app.questionnaire.location import InvalidLocationException, Location
 from app.questionnaire.placeholder_renderer import PlaceholderRenderer
 from app.questionnaire.questionnaire_schema import QuestionnaireSchema
 from app.questionnaire.questionnaire_store_updater import QuestionnaireStoreUpdater
 from app.questionnaire.relationship_location import RelationshipLocation
 from app.questionnaire.router import Router
+from app.utilities import safe_content
 
 logger = get_logger()
 

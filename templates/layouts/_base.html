@@ -27,7 +27,11 @@
   } %}
 {% endif %}
 
-{% set full_page_title = page_title ~ " - " ~ survey_title %}
+{% if survey_title %}
+  {% set full_page_title = page_title ~ " - " ~ survey_title %}
+{% else %}
+  {% set full_page_title = page_title %}
+{% endif %}
 
 {% set pageConfig = {
   "title": full_page_title,

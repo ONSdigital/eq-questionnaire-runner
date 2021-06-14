@@ -1,20 +1,20 @@
-import PrimaryPersonPage from "../../../generated_pages/repeating_sections_with_hub_and_spoke/primary-person-list-collector.page";
-import PrimaryPersonAddPage from "../../../generated_pages/repeating_sections_with_hub_and_spoke/primary-person-list-collector-add.page";
-import FirstListCollectorPage from "../../../generated_pages/repeating_sections_with_hub_and_spoke/list-collector.page";
+import ConfirmDateOfBirthPage from "../../../generated_pages/repeating_sections_with_hub_and_spoke/confirm-dob.page";
+import DateOfBirthPage from "../../../generated_pages/repeating_sections_with_hub_and_spoke/date-of-birth.page";
 import FirstListCollectorAddPage from "../../../generated_pages/repeating_sections_with_hub_and_spoke/list-collector-add.page";
+import FirstListCollectorPage from "../../../generated_pages/repeating_sections_with_hub_and_spoke/list-collector.page";
+import HubPage from "../../../base_pages/hub.page.js";
+import PersonalDetailsSummaryPage from "../../../generated_pages/repeating_sections_with_hub_and_spoke/personal-details-section-summary.page";
+import PrimaryPersonAddPage from "../../../generated_pages/repeating_sections_with_hub_and_spoke/primary-person-list-collector-add.page";
+import PrimaryPersonPage from "../../../generated_pages/repeating_sections_with_hub_and_spoke/primary-person-list-collector.page";
+import ProxyPage from "../../../generated_pages/repeating_sections_with_hub_and_spoke/proxy.page";
+import SecondListCollectorAddPage from "../../../generated_pages/repeating_sections_with_hub_and_spoke/another-list-collector-block-add.page";
 import SecondListCollectorInterstitialPage from "../../../generated_pages/repeating_sections_with_hub_and_spoke/next-interstitial.page";
 import SecondListCollectorPage from "../../../generated_pages/repeating_sections_with_hub_and_spoke/another-list-collector-block.page";
-import SecondListCollectorAddPage from "../../../generated_pages/repeating_sections_with_hub_and_spoke/another-list-collector-block-add.page";
-import VisitorsListCollectorPage from "../../../generated_pages/repeating_sections_with_hub_and_spoke/visitors-block.page";
-import VisitorsListCollectorAddPage from "../../../generated_pages/repeating_sections_with_hub_and_spoke/visitors-block-add.page";
-import VisitorsListCollectorRemovePage from "../../../generated_pages/repeating_sections_with_hub_and_spoke/visitors-block-remove.page";
-import VisitorsDateOfBirthPage from "../../../generated_pages/repeating_sections_with_hub_and_spoke/visitors-date-of-birth.page";
-import ProxyPage from "../../../generated_pages/repeating_sections_with_hub_and_spoke/proxy.page";
-import DateOfBirthPage from "../../../generated_pages/repeating_sections_with_hub_and_spoke/date-of-birth.page";
-import ConfirmDateOfBirthPage from "../../../generated_pages/repeating_sections_with_hub_and_spoke/confirm-dob.page";
 import SexPage from "../../../generated_pages/repeating_sections_with_hub_and_spoke/sex.page";
-import PersonalDetailsSummaryPage from "../../../generated_pages/repeating_sections_with_hub_and_spoke/personal-details-section-summary.page";
-import HubPage from "../../../base_pages/hub.page.js";
+import VisitorsDateOfBirthPage from "../../../generated_pages/repeating_sections_with_hub_and_spoke/visitors-date-of-birth.page";
+import VisitorsListCollectorAddPage from "../../../generated_pages/repeating_sections_with_hub_and_spoke/visitors-block-add.page";
+import VisitorsListCollectorPage from "../../../generated_pages/repeating_sections_with_hub_and_spoke/visitors-block.page";
+import VisitorsListCollectorRemovePage from "../../../generated_pages/repeating_sections_with_hub_and_spoke/visitors-block-remove.page";
 
 describe("Feature: Repeating Sections with Hub and Spoke", () => {
   describe("Given the user has added some members to the household and is on the Hub", () => {
@@ -145,7 +145,7 @@ describe("Feature: Repeating Sections with Hub and Spoke", () => {
 
     it("When the user views the summary for a repeating section, Then the page title is shown", () => {
       $(HubPage.summaryRowLink("personal-details-section-2")).click();
-      expect(browser.getTitle()).to.equal("… - Census 2021");
+      expect(browser.getTitle()).to.equal("…");
     });
 
     it("When the user adds 2 visitors to the household then a section for each visitor should be display on the hub", () => {
