@@ -543,26 +543,23 @@ def map_summary_item_config(
     edit_link_aria_label,
     calculated_question,
 ):
-    rows = []
-
-    for block in group["blocks"]:
-        rows.append(
-            SummaryRow(
-                block,
-                block["question"],
-                summary_type,
-                answers_are_editable,
-                no_answer_provided,
-                edit_link_text,
-                edit_link_aria_label,
-            )
+    rows = [
+        SummaryRow(
+            block,
+            block["question"],
+            summary_type,
+            answers_are_editable,
+            no_answer_provided,
+            edit_link_text,
+            edit_link_aria_label,
         )
-        if summary_type == "CalculatedSummary":
-            rows.append(
-                SummaryRow(
-                    block, calculated_question, summary_type, False, None, None, None
-                )
-            )
+        for block in group["blocks"]
+    ]
+
+    if summary_type == "CalculatedSummary":
+        rows.append(
+            SummaryRow(None, calculated_question, summary_type, False, None, None, None)
+        )
 
     return rows
 
