@@ -1,27 +1,27 @@
 import CensusThankYouPage from "../base_pages/census-thank-you.page.js";
-import { SubmitPage } from "../base_pages/submit.page.js";
 import HubPage from "../base_pages/hub.page";
+import { SubmitPage } from "../base_pages/submit.page.js";
 
-const CENSUS_EN_BASE_URL = "https://census.gov.uk/";
+const BASE_URL = "https://census.gov.uk/";
 
 describe("Post submission exit", () => {
   beforeEach("Load the survey", () => {
     browser.openQuestionnaire("test_thank_you_census_household.json");
   });
 
-  it("Given I click the exit button from the thank you page which has no session cookie, When I am redirected, Then I should see the census homepage", () => {
+  it("Given I click the exit button from the thank you page which has no session cookie, When I am redirected, Then I should be redirected to the correct log out url", () => {
     $(SubmitPage.submit()).click();
     $(HubPage.submit()).click();
     browser.deleteAllCookies();
     $(CensusThankYouPage.exit()).click();
-    expect(browser.getUrl()).to.equal(CENSUS_EN_BASE_URL);
+    expect(browser.getUrl()).to.equal(BASE_URL);
   });
 
-  it("Given I click the exit button from the thank you page, When I am redirected, Then I should see the census homepage", () => {
+  it("Given I click the exit button from the thank you page, When I am redirected, Then I should be redirected to the correct log out url", () => {
     $(SubmitPage.submit()).click();
     $(HubPage.submit()).click();
     $(CensusThankYouPage.exit()).click();
-    expect(browser.getUrl()).to.equal(CENSUS_EN_BASE_URL);
+    expect(browser.getUrl()).to.equal("http://localhost:5000/signed-out");
   });
 
   it("Given I have clicked the exit button, When I navigate back, Then I am taken to the session timed out page", () => {

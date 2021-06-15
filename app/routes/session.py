@@ -12,12 +12,8 @@ from werkzeug.exceptions import Unauthorized
 
 from app.authentication.authenticator import decrypt_token, store_session
 from app.authentication.jti_claim_storage import JtiTokenUsed, use_jti_claim
-from app.globals import get_session_store, get_session_timeout_in_seconds
-from app.helpers.template_helpers import (
-    DEFAULT_THEME,
-    get_census_base_url,
-    render_template,
-)
+from app.globals import get_session_timeout_in_seconds
+from app.helpers.template_helpers import get_survey_config, render_template
 from app.storage.metadata_parser import (
     validate_questionnaire_claims,
     validate_runner_claims,
@@ -132,23 +128,11 @@ def get_sign_out():
     """
     Signs the user out of eQ and redirects to the log out url.
     """
-    if not cookie_session:
-        log_out_url = get_census_base_url(None, None)
-
-    elif (
-        "census" in (theme := cookie_session.get("theme", DEFAULT_THEME))
-        and cookie_session.get("submitted") is True
-    ):
-        session_store = get_session_store()
-        language_code = (
-            session_store.session_data.language_code if session_store else None
-        )
-        log_out_url = get_census_base_url(theme, language_code)
-
-    else:
-        log_out_url = cookie_session.get(
-            "account_service_log_out_url", url_for(".get_signed_out")
-        )
+    log_out_url = (
+        cookie_session.get("account_service_log_out_url", url_for(".get_signed_out"))
+        if cookie_session
+        else get_survey_config().base_url
+    )
 
     # Check for GET as we don't want to log out for HEAD requests
     if request.method == "GET":
