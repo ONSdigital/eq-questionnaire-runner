@@ -133,7 +133,7 @@
                                                 {
                                                     "transform": "first_non_empty_item",
                                                     "arguments": {
-                                                        "items":  [
+                                                        "items": [
                                                             {
                                                                 "source": "metadata",
                                                                 "identifier": "trade_as"
