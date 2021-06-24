@@ -227,7 +227,7 @@
                                                             {
                                                                 "source": "answers",
                                                                 "identifier": "last-name"
-                                                            }
+                                                             }
                                                         ]
                                                     },
                                                     "transform": "concatenate_list"
@@ -269,11 +269,11 @@
                                                                     {
                                                                         "source": "answers",
                                                                         "identifier": "last-name",
-                                                                        "list_item_selector": {
+                                                                    "list_item_selector": {
                                                                             "source": "location",
                                                                             "id": "to_list_item_id"
-                                                                        }
                                                                     }
+                                                                     }
                                                                 ],
                                                                 "delimiter": " "
                                                             }
@@ -308,11 +308,11 @@
                                                                             {
                                                                                 "source": "answers",
                                                                                 "identifier": "last-name",
-                                                                                "list_item_selector": {
+                                                                            "list_item_selector": {
                                                                                     "source": "location",
                                                                                     "id": "to_list_item_id"
-                                                                                }
                                                                             }
+                                                                             }
                                                                         ],
                                                                         "delimiter": " "
                                                                     }
@@ -346,11 +346,11 @@
                                                                                     {
                                                                                         "source": "answers",
                                                                                         "identifier": "last-name",
-                                                                                        "list_item_selector": {
+                                                                                    "list_item_selector": {
                                                                                             "source": "location",
                                                                                             "id": "to_list_item_id"
-                                                                                        }
                                                                                     }
+                                                                                     }
                                                                                 ],
                                                                                 "delimiter": " "
                                                                             }
@@ -380,11 +380,11 @@
                                                                                     {
                                                                                         "source": "answers",
                                                                                         "identifier": "last-name",
-                                                                                        "list_item_selector": {
+                                                                                    "list_item_selector": {
                                                                                             "source": "location",
                                                                                             "id": "to_list_item_id"
-                                                                                        }
                                                                                     }
+                                                                                     }
                                                                                 ],
                                                                                 "delimiter": " "
                                                                             }
@@ -418,11 +418,11 @@
                                                                                     {
                                                                                         "source": "answers",
                                                                                         "identifier": "last-name",
-                                                                                        "list_item_selector": {
+                                                                                    "list_item_selector": {
                                                                                             "source": "location",
                                                                                             "id": "to_list_item_id"
-                                                                                        }
                                                                                     }
+                                                                                     }
                                                                                 ],
                                                                                 "delimiter": " "
                                                                             }
@@ -452,11 +452,11 @@
                                                                                     {
                                                                                         "source": "answers",
                                                                                         "identifier": "last-name",
-                                                                                        "list_item_selector": {
+                                                                                    "list_item_selector": {
                                                                                             "source": "location",
                                                                                             "id": "to_list_item_id"
-                                                                                        }
                                                                                     }
+                                                                                     }
                                                                                 ],
                                                                                 "delimiter": " "
                                                                             }
@@ -490,11 +490,11 @@
                                                                                     {
                                                                                         "source": "answers",
                                                                                         "identifier": "last-name",
-                                                                                        "list_item_selector": {
+                                                                                    "list_item_selector": {
                                                                                             "source": "location",
                                                                                             "id": "to_list_item_id"
-                                                                                        }
                                                                                     }
+                                                                                     }
                                                                                 ],
                                                                                 "delimiter": " "
                                                                             }
@@ -524,11 +524,11 @@
                                                                                     {
                                                                                         "source": "answers",
                                                                                         "identifier": "last-name",
-                                                                                        "list_item_selector": {
+                                                                                    "list_item_selector": {
                                                                                             "source": "location",
                                                                                             "id": "to_list_item_id"
-                                                                                        }
                                                                                     }
+                                                                                     }
                                                                                 ],
                                                                                 "delimiter": " "
                                                                             }
@@ -562,11 +562,11 @@
                                                                                     {
                                                                                         "source": "answers",
                                                                                         "identifier": "last-name",
-                                                                                        "list_item_selector": {
+                                                                                    "list_item_selector": {
                                                                                             "source": "location",
                                                                                             "id": "to_list_item_id"
-                                                                                        }
                                                                                     }
+                                                                                     }
                                                                                 ],
                                                                                 "delimiter": " "
                                                                             }
@@ -596,11 +596,11 @@
                                                                                     {
                                                                                         "source": "answers",
                                                                                         "identifier": "last-name",
-                                                                                        "list_item_selector": {
+                                                                                    "list_item_selector": {
                                                                                             "source": "location",
                                                                                             "id": "to_list_item_id"
-                                                                                        }
                                                                                     }
+                                                                                     }
                                                                                 ],
                                                                                 "delimiter": " "
                                                                             }
@@ -651,11 +651,11 @@
                                                                     {
                                                                         "source": "answers",
                                                                         "identifier": "last-name",
-                                                                        "list_item_selector": {
+                                                                    "list_item_selector": {
                                                                             "source": "location",
                                                                             "id": "list_item_id"
-                                                                        }
                                                                     }
+                                                                     }
                                                                 ],
                                                                 "delimiter": " "
                                                             }
@@ -680,11 +680,11 @@
                                                                     {
                                                                         "source": "answers",
                                                                         "identifier": "last-name",
-                                                                        "list_item_selector": {
+                                                                    "list_item_selector": {
                                                                             "source": "location",
                                                                             "id": "to_list_item_id"
-                                                                        }
                                                                     }
+                                                                     }
                                                                 ],
                                                                 "delimiter": " "
                                                             }
@@ -719,11 +719,11 @@
                                                                             {
                                                                                 "source": "answers",
                                                                                 "identifier": "last-name",
-                                                                                "list_item_selector": {
+                                                                            "list_item_selector": {
                                                                                     "source": "location",
                                                                                     "id": "list_item_id"
-                                                                                }
                                                                             }
+                                                                             }
                                                                         ],
                                                                         "delimiter": " "
                                                                     }
@@ -756,11 +756,11 @@
                                                                             {
                                                                                 "source": "answers",
                                                                                 "identifier": "last-name",
-                                                                                "list_item_selector": {
+                                                                            "list_item_selector": {
                                                                                     "source": "location",
                                                                                     "id": "to_list_item_id"
-                                                                                }
                                                                             }
+                                                                             }
                                                                         ],
                                                                         "delimiter": " "
                                                                     }
@@ -794,11 +794,11 @@
                                                                                     {
                                                                                         "source": "answers",
                                                                                         "identifier": "last-name",
-                                                                                        "list_item_selector": {
+                                                                                    "list_item_selector": {
                                                                                             "source": "location",
                                                                                             "id": "list_item_id"
-                                                                                        }
                                                                                     }
+                                                                                     }
                                                                                 ],
                                                                                 "delimiter": " "
                                                                             }
@@ -823,11 +823,11 @@
                                                                                     {
                                                                                         "source": "answers",
                                                                                         "identifier": "last-name",
-                                                                                        "list_item_selector": {
+                                                                                    "list_item_selector": {
                                                                                             "source": "location",
                                                                                             "id": "to_list_item_id"
-                                                                                        }
                                                                                     }
+                                                                                     }
                                                                                 ],
                                                                                 "delimiter": " "
                                                                             }
@@ -857,11 +857,11 @@
                                                                                     {
                                                                                         "source": "answers",
                                                                                         "identifier": "last-name",
-                                                                                        "list_item_selector": {
+                                                                                    "list_item_selector": {
                                                                                             "source": "location",
                                                                                             "id": "list_item_id"
-                                                                                        }
                                                                                     }
+                                                                                     }
                                                                                 ],
                                                                                 "delimiter": " "
                                                                             }
@@ -894,11 +894,11 @@
                                                                                     {
                                                                                         "source": "answers",
                                                                                         "identifier": "last-name",
-                                                                                        "list_item_selector": {
+                                                                                    "list_item_selector": {
                                                                                             "source": "location",
                                                                                             "id": "to_list_item_id"
-                                                                                        }
                                                                                     }
+                                                                                     }
                                                                                 ],
                                                                                 "delimiter": " "
                                                                             }
@@ -932,11 +932,11 @@
                                                                                     {
                                                                                         "source": "answers",
                                                                                         "identifier": "last-name",
-                                                                                        "list_item_selector": {
+                                                                                    "list_item_selector": {
                                                                                             "source": "location",
                                                                                             "id": "list_item_id"
-                                                                                        }
                                                                                     }
+                                                                                     }
                                                                                 ],
                                                                                 "delimiter": " "
                                                                             }
@@ -961,11 +961,11 @@
                                                                                     {
                                                                                         "source": "answers",
                                                                                         "identifier": "last-name",
-                                                                                        "list_item_selector": {
+                                                                                    "list_item_selector": {
                                                                                             "source": "location",
                                                                                             "id": "to_list_item_id"
-                                                                                        }
                                                                                     }
+                                                                                     }
                                                                                 ],
                                                                                 "delimiter": " "
                                                                             }
@@ -995,11 +995,11 @@
                                                                                     {
                                                                                         "source": "answers",
                                                                                         "identifier": "last-name",
-                                                                                        "list_item_selector": {
+                                                                                    "list_item_selector": {
                                                                                             "source": "location",
                                                                                             "id": "list_item_id"
-                                                                                        }
                                                                                     }
+                                                                                     }
                                                                                 ],
                                                                                 "delimiter": " "
                                                                             }
@@ -1032,11 +1032,11 @@
                                                                                     {
                                                                                         "source": "answers",
                                                                                         "identifier": "last-name",
-                                                                                        "list_item_selector": {
+                                                                                    "list_item_selector": {
                                                                                             "source": "location",
                                                                                             "id": "to_list_item_id"
-                                                                                        }
                                                                                     }
+                                                                                     }
                                                                                 ],
                                                                                 "delimiter": " "
                                                                             }
@@ -1070,11 +1070,11 @@
                                                                                     {
                                                                                         "source": "answers",
                                                                                         "identifier": "last-name",
-                                                                                        "list_item_selector": {
+                                                                                    "list_item_selector": {
                                                                                             "source": "location",
                                                                                             "id": "list_item_id"
-                                                                                        }
                                                                                     }
+                                                                                     }
                                                                                 ],
                                                                                 "delimiter": " "
                                                                             }
@@ -1099,11 +1099,11 @@
                                                                                     {
                                                                                         "source": "answers",
                                                                                         "identifier": "last-name",
-                                                                                        "list_item_selector": {
+                                                                                    "list_item_selector": {
                                                                                             "source": "location",
                                                                                             "id": "to_list_item_id"
-                                                                                        }
                                                                                     }
+                                                                                     }
                                                                                 ],
                                                                                 "delimiter": " "
                                                                             }
@@ -1133,11 +1133,11 @@
                                                                                     {
                                                                                         "source": "answers",
                                                                                         "identifier": "last-name",
-                                                                                        "list_item_selector": {
+                                                                                    "list_item_selector": {
                                                                                             "source": "location",
                                                                                             "id": "list_item_id"
-                                                                                        }
                                                                                     }
+                                                                                     }
                                                                                 ],
                                                                                 "delimiter": " "
                                                                             }
@@ -1170,11 +1170,11 @@
                                                                                     {
                                                                                         "source": "answers",
                                                                                         "identifier": "last-name",
-                                                                                        "list_item_selector": {
+                                                                                    "list_item_selector": {
                                                                                             "source": "location",
                                                                                             "id": "to_list_item_id"
-                                                                                        }
                                                                                     }
+                                                                                     }
                                                                                 ],
                                                                                 "delimiter": " "
                                                                             }
@@ -1208,11 +1208,11 @@
                                                                                     {
                                                                                         "source": "answers",
                                                                                         "identifier": "last-name",
-                                                                                        "list_item_selector": {
+                                                                                    "list_item_selector": {
                                                                                             "source": "location",
                                                                                             "id": "list_item_id"
-                                                                                        }
                                                                                     }
+                                                                                     }
                                                                                 ],
                                                                                 "delimiter": " "
                                                                             }
@@ -1237,11 +1237,11 @@
                                                                                     {
                                                                                         "source": "answers",
                                                                                         "identifier": "last-name",
-                                                                                        "list_item_selector": {
+                                                                                    "list_item_selector": {
                                                                                             "source": "location",
                                                                                             "id": "to_list_item_id"
-                                                                                        }
                                                                                     }
+                                                                                     }
                                                                                 ],
                                                                                 "delimiter": " "
                                                                             }
@@ -1271,11 +1271,11 @@
                                                                                     {
                                                                                         "source": "answers",
                                                                                         "identifier": "last-name",
-                                                                                        "list_item_selector": {
+                                                                                    "list_item_selector": {
                                                                                             "source": "location",
                                                                                             "id": "list_item_id"
-                                                                                        }
                                                                                     }
+                                                                                     }
                                                                                 ],
                                                                                 "delimiter": " "
                                                                             }
@@ -1297,23 +1297,23 @@
                                                                             "transform": "concatenate_list",
                                                                             "arguments": {
                                                                                 "list_to_concatenate": [
-                                                                                    {
-                                                                                        "source": "answers",
-                                                                                        "identifier": "first-name",
-                                                                                        "list_item_selector": {
-                                                                                            "source": "location",
-                                                                                            "id": "to_list_item_id"
-                                                                                        }
-                                                                                    },
-                                                                                    {
-                                                                                        "source": "answers",
-                                                                                        "identifier": "last-name",
-                                                                                        "list_item_selector": {
-                                                                                            "source": "location",
-                                                                                            "id": "to_list_item_id"
-                                                                                        }
-                                                                                    }
-                                                                                ],
+                                                        {
+                                                            "source": "answers",
+                                                            "identifier": "first-name",
+                                                            "list_item_selector": {
+                                                                "source": "location",
+                                                                "id": "to_list_item_id"
+                                                            }
+                                                        },
+                                                        {
+                                                            "source": "answers",
+                                                            "identifier": "last-name",
+                                                        "list_item_selector": {
+                                                                "source": "location",
+                                                                "id": "to_list_item_id"
+                                                        }
+                                                         }
+                                                    ],
                                                                                 "delimiter": " "
                                                                             }
                                                                         }
