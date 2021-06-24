@@ -45,7 +45,7 @@ class PlaceholderParser:
         if value_source["source"] == "answers":
             return self._resolve_answer_value(value_source)
         if value_source["source"] == "metadata":
-            return self._resolve_metadata_value(value_source["identifier"])
+            return self._metadata.get(value_source["identifier"])
         if value_source["source"] == "list":
             id_selector = value_source.get("id_selector")
             list_model: ListModel = self._list_store[value_source["identifier"]]
@@ -70,13 +70,6 @@ class PlaceholderParser:
             if "selector" in value_source
             else answer
         )
-
-    def _resolve_metadata_value(self, identifier):
-        if isinstance(identifier, (list, tuple)):
-            return [
-                self._metadata.get(each_identifier) for each_identifier in identifier
-            ]
-        return self._metadata.get(identifier)
 
     def _parse_placeholder(self, placeholder: Mapping) -> Mapping:
         try:
