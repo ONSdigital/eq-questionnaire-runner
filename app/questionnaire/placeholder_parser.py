@@ -62,14 +62,6 @@ class PlaceholderParser:
 
     def _resolve_answer_value(self, value_source):
         list_item_id = self._get_list_item_id_from_value_source(value_source)
-
-        if isinstance(value_source["identifier"], (list, tuple)):
-            return [
-                self._answer_store.get_escaped_answer_value(
-                    each_identifier, list_item_id
-                )
-                for each_identifier in value_source["identifier"]
-            ]
         answer = self._answer_store.get_escaped_answer_value(
             value_source["identifier"], list_item_id
         )
@@ -98,7 +90,11 @@ class PlaceholderParser:
         for transform in transform_list:
             transform_args: Dict[str, Union[None, str, List[str]]] = {}
             for arg_key, arg_value in transform["arguments"].items():
-                if not isinstance(arg_value, dict):
+                if isinstance(arg_value, list):
+                    transform_args[arg_key] = [
+                        self._resolve_value_source(arg_item) for arg_item in arg_value
+                    ]
+                elif not isinstance(arg_value, dict):
                     transform_args[arg_key] = arg_value
                 elif "value" in arg_value:
                     transform_args[arg_key] = arg_value["value"]

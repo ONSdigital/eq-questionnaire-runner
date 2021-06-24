@@ -74,10 +74,16 @@
                                                 {
                                                     "transform": "concatenate_list",
                                                     "arguments": {
-                                                        "list_to_concatenate": {
-                                                            "source": "answers",
-                                                            "identifier": ["first-name-answer", "last-name-answer"]
-                                                        },
+                                                        "list_to_concatenate": [
+                                                            {
+                                                                "source": "answers",
+                                                                "identifier": "first-name-answer"
+                                                            },
+                                                            {
+                                                                "source": "answers",
+                                                                "identifier": "last-name-answer"
+                                                            }
+                                                        ],
                                                         "delimiter": " "
                                                     }
                                                 }
@@ -156,10 +162,16 @@
                                                         {
                                                             "transform": "concatenate_list",
                                                             "arguments": {
-                                                                "list_to_concatenate": {
-                                                                    "source": "answers",
-                                                                    "identifier": ["first-name-answer", "last-name-answer"]
-                                                                },
+                                                                "list_to_concatenate": [
+                                                                    {
+                                                                        "source": "answers",
+                                                                        "identifier": "first-name-answer"
+                                                                    },
+                                                                    {
+                                                                        "source": "answers",
+                                                                        "identifier": "last-name-answer"
+                                                                    }
+                                                                ],
                                                                 "delimiter": " "
                                                             }
                                                         }
@@ -275,10 +287,16 @@
                                                         {
                                                             "transform": "concatenate_list",
                                                             "arguments": {
-                                                                "list_to_concatenate": {
-                                                                    "source": "answers",
-                                                                    "identifier": ["first-name-answer", "last-name-answer"]
-                                                                },
+                                                                "list_to_concatenate": [
+                                                                    {
+                                                                        "source": "answers",
+                                                                        "identifier": "first-name-answer"
+                                                                    },
+                                                                    {
+                                                                        "source": "answers",
+                                                                        "identifier": "last-name-answer"
+                                                                    }
+                                                                ],
                                                                 "delimiter": " "
                                                             }
                                                         }
@@ -330,10 +348,16 @@
                                                         {
                                                             "transform": "concatenate_list",
                                                             "arguments": {
-                                                                "list_to_concatenate": {
-                                                                    "source": "answers",
-                                                                    "identifier": ["first-name-answer", "last-name-answer"]
-                                                                },
+                                                                "list_to_concatenate": [
+                                                                    {
+                                                                        "source": "answers",
+                                                                        "identifier": "first-name-answer"
+                                                                    },
+                                                                    {
+                                                                        "source": "answers",
+                                                                        "identifier": "last-name-answer"
+                                                                    }
+                                                                ],
                                                                 "delimiter": " "
                                                             }
                                                         }
