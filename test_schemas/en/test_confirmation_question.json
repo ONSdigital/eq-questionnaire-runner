@@ -72,7 +72,7 @@
                                                         "items": [
                                                             {
                                                                 "source": "metadata",
-                                                                "identifier": "trade_as"
+                                                                "identifier": "trad_as"
                                                             },
                                                             {
                                                                 "source": "metadata",
@@ -136,7 +136,7 @@
                                                         "items": [
                                                             {
                                                                 "source": "metadata",
-                                                                "identifier": "trade_as"
+                                                                "identifier": "trad_as"
                                                             },
                                                             {
                                                                 "source": "metadata",
