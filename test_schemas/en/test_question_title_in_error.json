@@ -102,10 +102,12 @@
                                                 {
                                                     "arguments": {
                                                         "delimiter": ", ",
-                                                        "list_to_concatenate": {
-                                                            "identifier": "mandatory-checkbox-answer",
-                                                            "source": "answers"
-                                                        }
+                                                        "list_to_concatenate": [
+                                                            {
+                                                                "identifier": "mandatory-checkbox-answer",
+                                                                "source": "answers"
+                                                            }
+                                                        ]
                                                     },
                                                     "transform": "concatenate_list"
                                                 }

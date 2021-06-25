@@ -82,11 +82,10 @@ class PlaceholderParser:
 
         for transform in transform_list:
             transform_args: Dict[str, Union[None, str, List[str]]] = {}
+
             for arg_key, arg_value in transform["arguments"].items():
                 if isinstance(arg_value, list):
-                    transform_args[arg_key] = [
-                        self._resolve_value_source(arg_item) for arg_item in arg_value
-                    ]
+                    transform_args[arg_key] = self._resolve_value_source_list(arg_value)
                 elif not isinstance(arg_value, dict):
                     transform_args[arg_key] = arg_value
                 elif "value" in arg_value:
@@ -101,6 +100,16 @@ class PlaceholderParser:
             )
 
         return transformed_value
+
+    def _resolve_value_source_list(self, value_source_list: list[Dict]) -> list[str]:
+        answers: list[str] = []
+        for value_source in value_source_list:
+            answer = self._resolve_value_source(value_source)
+            if isinstance(answer, list):
+                answers.extend(answer)
+            else:
+                answers.append(answer)
+        return answers
 
     def _get_list_item_id_from_value_source(self, value_source):
         list_item_selector = value_source.get("list_item_selector")
