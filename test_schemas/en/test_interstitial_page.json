@@ -56,8 +56,7 @@
                                 "id": "favourite-breakfast-question",
                                 "title": "What is your favourite breakfast food",
                                 "type": "General"
-                            },
-                            "routing_rules": []
+                            }
                         },
                         {
                             "id": "breakfast-interstitial",
@@ -87,8 +86,7 @@
                                 "id": "favourite-lunch-question",
                                 "title": "Title",
                                 "type": "General"
-                            },
-                            "routing_rules": []
+                            }
                         }
                     ],
                     "id": "favourite-foods",

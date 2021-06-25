@@ -94,7 +94,6 @@
                         {
                             "type": "Question",
                             "id": "group1-block",
-                            "routing_rules": [],
                             "question": {
                                 "id": "group1-question",
                                 "title": "Did you want Group 1?",
@@ -118,7 +117,6 @@
                         {
                             "type": "Question",
                             "id": "group2-block",
-                            "routing_rules": [],
                             "question": {
                                 "id": "group2-question",
                                 "title": "Did you want Group 2?",

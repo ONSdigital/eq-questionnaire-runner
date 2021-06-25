@@ -30,7 +30,6 @@
                     "blocks": [
                         {
                             "type": "Question",
-                            "routing_rules": [],
                             "question": {
                                 "answers": [
                                     {

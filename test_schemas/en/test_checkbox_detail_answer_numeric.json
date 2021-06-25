@@ -88,8 +88,7 @@
                                 "id": "checkbox-question-numeric-detail",
                                 "title": "How many pizza toppings would you like?",
                                 "type": "General"
-                            },
-                            "routing_rules": []
+                            }
                         }
                     ],
                     "id": "checkboxes"
