@@ -55,8 +55,7 @@
                                 "id": "question",
                                 "title": "Title",
                                 "type": "General"
-                            },
-                            "routing_rules": []
+                            }
                         }
                     ],
                     "id": "group"

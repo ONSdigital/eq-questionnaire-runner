@@ -89,8 +89,7 @@
                                 "id": "topping-checkbox-question",
                                 "title": "What extra toppings would you like?",
                                 "type": "General"
-                            },
-                            "routing_rules": []
+                            }
                         },
                         {
                             "id": "topping-interstitial-set",

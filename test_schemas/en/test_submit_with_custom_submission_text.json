@@ -61,8 +61,7 @@
                                 "id": "breakfast-question",
                                 "title": "What is your favourite breakfast food",
                                 "type": "General"
-                            },
-                            "routing_rules": []
+                            }
                         }
                     ],
                     "id": "final-confirmation",
