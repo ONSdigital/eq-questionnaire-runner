@@ -81,19 +81,22 @@ class PlaceholderParser:
         transformed_value = None
 
         for transform in transform_list:
-            transform_args: Dict[str, Union[None, str, List[str]]] = {}
+            transform_args: Dict[
+                str, Union[None, str, list[Union[str, int, float]]]
+            ] = {}
 
             for arg_key, arg_value in transform["arguments"].items():
                 if isinstance(arg_value, list):
                     transform_args[arg_key] = self._resolve_value_source_list(arg_value)
-                elif not isinstance(arg_value, dict):
-                    transform_args[arg_key] = arg_value
-                elif "value" in arg_value:
-                    transform_args[arg_key] = arg_value["value"]
-                elif arg_value["source"] == "previous_transform":
-                    transform_args[arg_key] = transformed_value
+                elif isinstance(arg_value, dict):
+                    if "value" in arg_value:
+                        transform_args[arg_key] = arg_value["value"]
+                    elif arg_value["source"] == "previous_transform":
+                        transform_args[arg_key] = transformed_value
+                    else:
+                        transform_args[arg_key] = self._resolve_value_source(arg_value)
                 else:
-                    transform_args[arg_key] = self._resolve_value_source(arg_value)
+                    transform_args[arg_key] = arg_value
 
             transformed_value = getattr(self._transformer, transform["transform"])(
                 **transform_args
@@ -101,15 +104,17 @@ class PlaceholderParser:
 
         return transformed_value
 
-    def _resolve_value_source_list(self, value_source_list: list[Dict]) -> list[str]:
-        answers: list[str] = []
+    def _resolve_value_source_list(
+        self, value_source_list: list[Dict]
+    ) -> list[Union[str, int, float]]:
+        values: list[Union[str, int, float]] = []
         for value_source in value_source_list:
-            answer = self._resolve_value_source(value_source)
-            if isinstance(answer, list):
-                answers.extend(answer)
+            value = self._resolve_value_source(value_source)
+            if isinstance(value, list):
+                values.extend(value)
             else:
-                answers.append(answer)
-        return answers
+                values.append(value)
+        return values
 
     def _get_list_item_id_from_value_source(self, value_source):
         list_item_selector = value_source.get("list_item_selector")

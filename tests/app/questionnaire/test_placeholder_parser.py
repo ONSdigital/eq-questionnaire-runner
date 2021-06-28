@@ -279,6 +279,38 @@ def test_multiple_metadata_list_transform_placeholder():
     assert placeholders["dates"] == "2019-02-11 2019-10-11"
 
 
+def test_checkbox_transform_placeholder():
+    placeholder_list = [
+        {
+            "placeholder": "toppings",
+            "transforms": [
+                {
+                    "transform": "concatenate_list",
+                    "arguments": {
+                        "list_to_concatenate": [
+                            {"source": "answers", "identifier": "checkbox-answer"}
+                        ],
+                        "delimiter": ", ",
+                    },
+                }
+            ],
+        }
+    ]
+
+    parser = PlaceholderParser(
+        language="en",
+        answer_store=AnswerStore(
+            [
+                {"answer_id": "checkbox-answer", "value": ["Ham", "Cheese"]},
+            ]
+        ),
+    )
+
+    placeholders = parser(placeholder_list)
+
+    assert placeholders["toppings"] == "Ham, Cheese"
+
+
 def test_mixed_transform_placeholder():
     placeholder_list = [
         {
