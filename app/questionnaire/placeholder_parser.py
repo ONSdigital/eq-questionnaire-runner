@@ -1,3 +1,4 @@
+from decimal import Decimal
 from typing import Dict, List, Mapping, Sequence, Union
 
 from app.data_models.answer_store import AnswerStore
@@ -82,7 +83,7 @@ class PlaceholderParser:
 
         for transform in transform_list:
             transform_args: Dict[
-                str, Union[None, str, List[Union[str, int, float]]]
+                str, Union[None, str, int, Decimal, dict, list[str]]
             ] = {}
 
             for arg_key, arg_value in transform["arguments"].items():
@@ -104,10 +105,8 @@ class PlaceholderParser:
 
         return transformed_value
 
-    def _resolve_value_source_list(
-        self, value_source_list: List[Dict]
-    ) -> List[Union[str, int, float]]:
-        values: List[Union[str, int, float]] = []
+    def _resolve_value_source_list(self, value_source_list: List[Dict]) -> list[str]:
+        values: list[str] = []
         for value_source in value_source_list:
             value = self._resolve_value_source(value_source)
             if isinstance(value, list):
