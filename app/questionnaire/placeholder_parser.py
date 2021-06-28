@@ -82,7 +82,7 @@ class PlaceholderParser:
 
         for transform in transform_list:
             transform_args: Dict[
-                str, Union[None, str, list[Union[str, int, float]]]
+                str, Union[None, str, List[Union[str, int, float]]]
             ] = {}
 
             for arg_key, arg_value in transform["arguments"].items():
@@ -105,9 +105,9 @@ class PlaceholderParser:
         return transformed_value
 
     def _resolve_value_source_list(
-        self, value_source_list: list[Dict]
-    ) -> list[Union[str, int, float]]:
-        values: list[Union[str, int, float]] = []
+        self, value_source_list: List[Dict]
+    ) -> List[Union[str, int, float]]:
+        values: List[Union[str, int, float]] = []
         for value_source in value_source_list:
             value = self._resolve_value_source(value_source)
             if isinstance(value, list):
