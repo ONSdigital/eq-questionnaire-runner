@@ -105,7 +105,7 @@ class PlaceholderParser:
 
         return transformed_value
 
-    def _resolve_value_source_list(self, value_source_list: List[Dict]) -> list[str]:
+    def _resolve_value_source_list(self, value_source_list: list[dict]) -> list[str]:
         values: list[str] = []
         for value_source in value_source_list:
             value = self._resolve_value_source(value_source)
