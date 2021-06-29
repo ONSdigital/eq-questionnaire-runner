@@ -1,5 +1,5 @@
 from decimal import Decimal
-from typing import Dict, List, Mapping, Sequence, Union
+from typing import Dict, Mapping, Sequence, Union
 
 from app.data_models.answer_store import AnswerStore
 from app.data_models.list_store import ListModel
