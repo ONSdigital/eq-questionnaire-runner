@@ -1,13 +1,13 @@
+import AccomodationDetailsSummaryBlockPage from "../../../generated_pages/hub_and_spoke/accommodation-section-summary.page.js";
+import AnyoneRelated from "../../../generated_pages/hub_and_spoke/anyone-related.page.js";
+import DoesAnyoneLiveHere from "../../../generated_pages/hub_and_spoke/does-anyone-live-here.page.js";
 import EmploymentStatusBlockPage from "../../../generated_pages/hub_and_spoke/employment-status.page.js";
 import EmploymentTypeBlockPage from "../../../generated_pages/hub_and_spoke/employment-type.page.js";
 import HouseholdSummary from "../../../generated_pages/hub_and_spoke/household-section-summary.page.js";
 import HowManyPeopleLiveHere from "../../../generated_pages/hub_and_spoke/how-many-people-live-here.page.js";
-import ProxyPage from "../../../generated_pages/hub_and_spoke/proxy.page.js";
-import AccomodationDetailsSummaryBlockPage from "../../../generated_pages/hub_and_spoke/accommodation-section-summary.page.js";
-import DoesAnyoneLiveHere from "../../../generated_pages/hub_and_spoke/does-anyone-live-here.page.js";
-import AnyoneRelated from "../../../generated_pages/hub_and_spoke/anyone-related.page.js";
-import RelationshipsSummary from "../../../generated_pages/hub_and_spoke/relationships-section-summary.page.js";
 import HubPage from "../../../base_pages/hub.page.js";
+import ProxyPage from "../../../generated_pages/hub_and_spoke/proxy.page.js";
+import RelationshipsSummary from "../../../generated_pages/hub_and_spoke/relationships-section-summary.page.js";
 
 describe("Feature: Hub and Spoke", () => {
   const hubAndSpokeSchema = "test_hub_and_spoke.json";
@@ -45,7 +45,7 @@ describe("Feature: Hub and Spoke", () => {
 
     it("When a user views the Hub, Then the page title should be Choose another section to complete", () => {
       const pageTitle = browser.getTitle();
-      expect(pageTitle).to.equal("Choose another section to complete - Census 2021");
+      expect(pageTitle).to.equal("Choose another section to complete");
     });
   });
 

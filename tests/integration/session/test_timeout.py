@@ -7,6 +7,7 @@ from tests.integration.integration_test_case import IntegrationTestCase
 class TestTimeout(IntegrationTestCase):
     def setUp(self):
         settings.EQ_SESSION_TIMEOUT_SECONDS = 4
+        settings.SURVEY_TYPE = "default"
         super().setUp()
 
     def tearDown(self):
@@ -29,7 +30,7 @@ class TestTimeout(IntegrationTestCase):
         self.get("/session")
         self.assertStatusUnauthorised()
         self.assertInBody("Sorry there is a problem")
-        self.assertEqualPageTitle("Page is not available - Census 2021")
+        self.assertEqualPageTitle("Page is not available")
 
     def test_schema_defined_timeout_cant_be_higher_than_server(self):
         self.launchSurvey("test_timeout")
@@ -37,7 +38,7 @@ class TestTimeout(IntegrationTestCase):
         self.get(self.last_url)
         self.assertStatusUnauthorised()
         self.assertInBody("To help protect your information we have timed you out")
-        self.assertEqualPageTitle("Session timed out - Census 2021")
+        self.assertEqualPageTitle("Session timed out")
 
     def test_submission_complete_timeout(self):
         self.launchSurvey("test_timeout")
@@ -47,4 +48,4 @@ class TestTimeout(IntegrationTestCase):
         self.get(self.last_url)
         self.assertStatusUnauthorised()
         self.assertInBody("This page is no longer available")
-        self.assertEqualPageTitle("Submission Complete - Census 2021")
+        self.assertEqualPageTitle("Submission Complete")

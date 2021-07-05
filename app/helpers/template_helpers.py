@@ -1,6 +1,6 @@
-import re
-from functools import lru_cache
-from typing import Any, Dict, List, Mapping, Optional, Union
+from dataclasses import dataclass, field
+from functools import cached_property, lru_cache
+from typing import Any, Iterable, Mapping, MutableMapping, Optional, Union
 
 from flask import current_app
 from flask import render_template as flask_render_template
@@ -8,297 +8,365 @@ from flask import request
 from flask import session as cookie_session
 from flask import url_for
 from flask_babel import get_locale, lazy_gettext
+from flask_babel.speaklater import LazyString
 
 from app.helpers.language_helper import get_languages_context
 
-CENSUS_EN_BASE_URL = "https://census.gov.uk/"
-CENSUS_CY_BASE_URL = "https://cyfrifiad.gov.uk/"
-CENSUS_NIR_BASE_URL = f"{CENSUS_EN_BASE_URL}ni/"
-DEFAULT_THEME = "census"
+DEFAULT_EN_BASE_URL = "https://ons.gov.uk"
+CENSUS_EN_BASE_URL = "https://census.gov.uk"
+CENSUS_CY_BASE_URL = "https://cyfrifiad.gov.uk"
+CENSUS_NIR_BASE_URL = f"{CENSUS_EN_BASE_URL}/ni"
 
 
-@lru_cache(maxsize=None)
-def get_page_header_context(language: str, theme: str) -> Dict[str, Any]:
-    default_context = {
-        "logo": "ons-logo-pos-" + language,
-        "logoAlt": lazy_gettext("Office for National Statistics logo"),
-    }
-    context = {
-        "default": default_context,
-        "social": default_context,
-        "northernireland": default_context,
-        "census": {
-            **default_context,
-            "titleLogo": f"census-logo-{language}",
-            "titleLogoAlt": lazy_gettext("Census 2021"),
-        },
-        "census-nisra": {
-            "logo": "nisra-logo-en",
-            "mobileLogo": "nisra-logo-en-mobile",
-            "logoAlt": lazy_gettext(
-                "Northern Ireland Statistics and Research Agency logo"
-            ),
-            "titleLogo": "census-logo-en",
-            "titleLogoAlt": lazy_gettext("Census 2021"),
-            "customHeaderLogo": "nisra",
-        },
-    }
-    return context.get(theme, {})
+@dataclass
+class Link:
+    text: LazyString
+    url: str
+    target: Optional[str] = "_blank"
 
 
-def get_footer_context(
-    language_code: str, static_content_urls: Mapping, sign_out_url: str, theme: str
-) -> Optional[Dict[str, Any]]:
+@dataclass
+class SurveyConfig:
+    """Valid options for defining survey-based configuration."""
 
-    items_list = [
-        {
-            "text": lazy_gettext("Help"),
-            "url": static_content_urls["help"],
-            "target": "_blank",
-        },
-        {
-            "text": lazy_gettext("Contact us"),
-            "url": static_content_urls["contact_us"],
-            "target": "_blank",
-        },
-    ]
-    if theme != "census-nisra":
-        items_list.extend(
-            [
-                {
-                    "text": lazy_gettext("Languages"),
-                    "url": static_content_urls["languages"],
-                    "target": "_blank",
-                },
-                {
-                    "text": lazy_gettext("BSL and audio videos"),
-                    "url": static_content_urls["bsl_and_audio_videos"],
-                    "target": "_blank",
-                },
-            ]
+    page_header_logo: Optional[str] = "ons-logo-pos-en"
+    page_header_logo_alt: Optional[LazyString] = lazy_gettext(
+        "Office for National Statistics logo"
+    )
+    copyright_declaration: Optional[LazyString] = lazy_gettext(
+        "Crown copyright and database rights 2020 OS 100019153."
+    )
+    copyright_text: Optional[LazyString] = lazy_gettext(
+        "Use of address data is subject to the terms and conditions."
+    )
+    base_url: str = DEFAULT_EN_BASE_URL
+    account_service_url: Optional[str] = None
+    title_logo: Optional[str] = None
+    title_logo_alt: Optional[str] = None
+    header_logo: Optional[str] = None
+    mobile_logo: Optional[str] = None
+    powered_by_logo: Optional[str] = None
+    powered_by_logo_alt: Optional[str] = None
+    crest: bool = True
+    footer_links: Optional[Iterable[MutableMapping]] = None
+    footer_legal_links: Optional[Iterable[Mapping]] = None
+    survey_title: Optional[LazyString] = None
+    design_system_theme: Optional[str] = "main"
+    data_layer: Iterable[Union[Mapping]] = field(default_factory=list, compare=False)
+
+
+class ContextHelper:
+    def __init__(
+        self,
+        language: str,
+        is_post_submission: bool,
+        include_csrf_token: bool,
+        survey_config: SurveyConfig = SurveyConfig(),
+    ) -> None:
+        self._language = language
+        self._is_post_submission = is_post_submission
+        self._include_csrf_token = include_csrf_token
+        self.survey_config = survey_config
+        self._sign_out_url = url_for("session.get_sign_out")
+        self._account_service_url = cookie_session.get(
+            "account_service_url", self.survey_config.account_service_url
+        )
+        self._account_service_log_out_url = cookie_session.get(
+            "account_service_log_out_url"
+        )
+        self._cookie_settings_url = current_app.config["COOKIE_SETTINGS_URL"]
+        self._cdn_url = (
+            f'{current_app.config["CDN_URL"]}{current_app.config["CDN_ASSETS_PATH"]}'
+        )
+        self._address_lookup_api = current_app.config["ADDRESS_LOOKUP_API_URL"]
+        self._google_tag_manager_id = current_app.config.get("EQ_GOOGLE_TAG_MANAGER_ID")
+        self._google_tag_manager_auth = current_app.config.get(
+            "EQ_GOOGLE_TAG_MANAGER_AUTH"
         )
 
-    default_context = {
-        "lang": language_code,
-        "crest": True,
-        "newTabWarning": lazy_gettext("The following links open in a new tab"),
-        "copyrightDeclaration": {
-            "copyright": lazy_gettext(
-                "Crown copyright and database rights 2021 NIMA MOU577.501."
-            )
-            if theme == "census-nisra"
-            else lazy_gettext("Crown copyright and database rights 2020 OS 100019153."),
-            "text": lazy_gettext(
-                "Use of address data is subject to the terms and conditions."
-            ),
-        },
-        "rows": [
-            {"itemsList": items_list},
-        ],
-        "legal": [
-            {
-                "itemsList": [
-                    {
-                        "text": lazy_gettext("Cookies"),
-                        "url": static_content_urls["cookies"],
-                        "target": "_blank",
-                    },
-                    {
-                        "text": lazy_gettext("Accessibility statement"),
-                        "url": static_content_urls["accessibility_statement"],
-                        "target": "_blank",
-                    },
-                    {
-                        "text": lazy_gettext("Privacy and data protection"),
-                        "url": static_content_urls["privacy_and_data_protection"],
-                        "target": "_blank",
-                    },
-                    {
-                        "text": lazy_gettext("Terms and conditions"),
-                        "url": static_content_urls["terms_and_conditions"],
-                        "target": "_blank",
-                    },
-                ],
+    @property
+    def context(self) -> dict[str, Any]:
+        return {
+            "account_service_url": self._account_service_url,
+            "account_service_log_out_url": self._account_service_log_out_url,
+            "contact_us_url": Link(
+                lazy_gettext("Contact us"),
+                f"{self.survey_config.base_url}/contact-us/",
+            ).__dict__,
+            "cookie_settings_url": self._cookie_settings_url,
+            "page_header": self.page_header_context,
+            "footer": self.footer_context,
+            "languages": get_languages_context(self._language),
+            "theme": self.survey_config.design_system_theme,
+            "language_code": self._language,
+            "survey_title": self.survey_config.survey_title,
+            "cdn_url": self._cdn_url,
+            "address_lookup_api_url": self._address_lookup_api,
+            "data_layer": self.survey_config.data_layer,
+            "include_csrf_token": self._include_csrf_token,
+            "google_tag_manager_id": self._google_tag_manager_id,
+            "google_tag_manager_auth": self._google_tag_manager_auth,
+        }
+
+    @property
+    def page_header_context(self) -> dict[str, str]:
+        context = {
+            "logo": f"{self.survey_config.page_header_logo}",
+            "logoAlt": f"{self.survey_config.page_header_logo_alt}",
+        }
+
+        if self.survey_config.title_logo:
+            context["titleLogo"] = f"{self.survey_config.title_logo}"
+        if self.survey_config.title_logo_alt:
+            context["titleLogoAlt"] = f"{self.survey_config.title_logo_alt}"
+        if self.survey_config.header_logo:
+            context["customHeaderLogo"] = self.survey_config.header_logo
+        if self.survey_config.mobile_logo:
+            context["mobileLogo"] = self.survey_config.mobile_logo
+
+        return context
+
+    @property
+    def footer_context(self) -> dict[str, Any]:
+        context = {
+            "lang": self._language,
+            "crest": self.survey_config.crest,
+            "newTabWarning": lazy_gettext("The following links open in a new tab"),
+            "copyrightDeclaration": {
+                "copyright": self.survey_config.copyright_declaration,
+                "text": self.survey_config.copyright_text,
             },
+        }
+
+        if self._footer_warning:
+            context["footerWarning"] = self._footer_warning
+
+        if self.survey_config.footer_links:
+            context["rows"] = [{"itemsList": self.survey_config.footer_links}]
+
+        if self.survey_config.footer_legal_links:
+            context["legal"] = [{"itemsList": self.survey_config.footer_legal_links}]
+
+        if self.survey_config.powered_by_logo or self.survey_config.powered_by_logo_alt:
+            context["poweredBy"] = {
+                "logo": self.survey_config.powered_by_logo,
+                "alt": self.survey_config.powered_by_logo_alt,
+            }
+
+        return context
+
+    @cached_property
+    def _footer_warning(self) -> Optional[str]:
+        if self._is_post_submission:
+            footer_warning: str = lazy_gettext(
+                "Make sure you <a href='{sign_out_url}'>leave this page</a> or close your browser if using a shared device"
+            ).format(sign_out_url=self._sign_out_url)
+
+            return footer_warning
+
+
+@dataclass
+class CensusSurveyConfig(
+    SurveyConfig,
+):
+    title_logo: str = "census-logo-en"
+    title_logo_alt: LazyString = lazy_gettext("Census 2021")
+    base_url: str = CENSUS_EN_BASE_URL
+    account_service_url: str = f"{base_url}/en/start"
+    design_system_theme: str = "census"
+    footer_links: Iterable[MutableMapping] = field(
+        default_factory=lambda: [
+            Link(
+                lazy_gettext("Help"),
+                f"{CENSUS_EN_BASE_URL}/help/how-to-answer-questions/online-questions-help/",
+            ).__dict__,
+            Link(
+                lazy_gettext("Contact us"), f"{CENSUS_EN_BASE_URL}/contact-us/"
+            ).__dict__,
+            Link(
+                lazy_gettext("Languages"),
+                f"{CENSUS_EN_BASE_URL}/help/languages-and-accessibility/languages/",
+            ).__dict__,
+            Link(
+                lazy_gettext("BSL and audio videos"),
+                f"{CENSUS_EN_BASE_URL}/help/languages-and-accessibility/accessibility/accessible-videos-with-bsl/",
+            ).__dict__,
         ],
-    }
-
-    if request.blueprint == "post_submission":
-        default_context["footerWarning"] = lazy_gettext(
-            "Make sure you <a href='{sign_out_url}'>leave this page</a> or close your browser if using a shared device"
-        ).format(sign_out_url=sign_out_url)
-
-    context = {
-        "default": {
-            **default_context,
-        },
-        "social": {
-            **default_context,
-        },
-        "northernireland": {
-            **default_context,
-        },
-        "census": {
-            **default_context,
-        },
-        "census-nisra": {
-            **default_context,
-            "lang": "en",
-            "poweredBy": {
-                "logo": "nisra-logo-black-en",
-                "alt": "NISRA - Northern Ireland Statistics and Research Agency",
-            },
-        },
-    }
-    return context.get(theme)
+        compare=False,
+    )
+    footer_legal_links: Iterable[Mapping] = field(
+        default_factory=lambda: [
+            Link(lazy_gettext("Cookies"), f"{CENSUS_EN_BASE_URL}/cookies/").__dict__,
+            Link(
+                lazy_gettext("Accessibility statement"),
+                f"{CENSUS_EN_BASE_URL}/accessibility-statement/",
+            ).__dict__,
+            Link(
+                lazy_gettext("Privacy and data protection"),
+                f"{CENSUS_EN_BASE_URL}/privacy-and-data-protection/",
+            ).__dict__,
+            Link(
+                lazy_gettext("Terms and conditions"),
+                f"{CENSUS_EN_BASE_URL}/terms-and-conditions/",
+            ).__dict__,
+        ],
+        compare=False,
+    )
+    data_layer: Iterable[Mapping] = field(
+        default_factory=lambda: [{"nisra": False}], compare=False
+    )
+    survey_title: LazyString = lazy_gettext("Census 2021")
 
 
-def _map_theme(theme: str) -> str:
-    """Maps a survey schema theme to a design system theme
+@dataclass
+class WelshCensusSurveyConfig(
+    CensusSurveyConfig,
+):
+    title_logo: str = "census-logo-cy"
+    base_url: str = CENSUS_CY_BASE_URL
+    account_service_url: str = f"{CENSUS_CY_BASE_URL}/en/start"
+    footer_links: Iterable[MutableMapping] = field(
+        default_factory=lambda: [
+            Link(
+                lazy_gettext("Help"),
+                f"{CENSUS_CY_BASE_URL}/help/sut-i-ateb-y-cwestiynau/help-y-cwestiynau-ar-lein/",
+            ).__dict__,
+            Link(
+                lazy_gettext("Contact us"), f"{CENSUS_CY_BASE_URL}/cysylltu-a-ni/"
+            ).__dict__,
+            Link(
+                lazy_gettext("Languages"),
+                f"{CENSUS_CY_BASE_URL}/help/ieithoedd-a-hygyrchedd/ieithoedd/",
+            ).__dict__,
+            Link(
+                lazy_gettext("BSL and audio videos"),
+                f"{CENSUS_CY_BASE_URL}/help/ieithoedd-a-hygyrchedd/hygyrchedd/fideos-hygyrch-gyda-bsl/",
+            ).__dict__,
+        ],
+        compare=False,
+        hash=False,
+    )
+    footer_legal_links: Iterable[Mapping] = field(
+        default_factory=lambda: [
+            Link(lazy_gettext("Cookies"), f"{CENSUS_CY_BASE_URL}/cwcis/").__dict__,
+            Link(
+                lazy_gettext("Accessibility statement"),
+                f"{CENSUS_CY_BASE_URL}/datganiad-hygyrchedd/",
+            ).__dict__,
+            Link(
+                lazy_gettext("Privacy and data protection"),
+                f"{CENSUS_CY_BASE_URL}/preifatrwydd-a-diogelu-data/",
+            ).__dict__,
+            Link(
+                lazy_gettext("Terms and conditions"),
+                f"{CENSUS_CY_BASE_URL}/telerau-ac-amodau/",
+            ).__dict__,
+        ],
+        compare=False,
+        hash=False,
+    )
+    data_layer: Iterable[Mapping] = field(
+        default_factory=lambda: [{"nisra": False}], compare=False
+    )
 
-    :param theme: A schema defined theme
-    :returns: A design system theme
-    """
-    if theme and theme not in ["census", "census-nisra"]:
-        return "main"
-    return "census"
+
+@dataclass
+class CensusNISRASurveyConfig(
+    CensusSurveyConfig,
+):
+    base_url: str = CENSUS_NIR_BASE_URL
+    page_header_logo: str = "nisra-logo-en"
+    page_header_logo_alt: str = lazy_gettext(
+        "Northern Ireland Statistics and Research Agency logo"
+    )
+    header_logo: str = "nisra"
+    mobile_logo: str = "nisra-logo-en-mobile"
+    copyright_declaration: LazyString = lazy_gettext(
+        "Crown copyright and database rights 2021 NIMA MOU577.501."
+    )
+    copyright_text: LazyString = lazy_gettext(
+        "Use of address data is subject to the terms and conditions."
+    )
+    footer_links: Iterable[MutableMapping] = field(
+        default_factory=lambda: [
+            Link(
+                lazy_gettext("Help"),
+                f"{CENSUS_NIR_BASE_URL}/help/help-with-the-questions/online-questions-help/",
+            ).__dict__,
+            Link(
+                lazy_gettext("Contact us"), f"{CENSUS_NIR_BASE_URL}/contact-us/"
+            ).__dict__,
+        ],
+        compare=False,
+        hash=False,
+    )
+    footer_legal_links: Iterable[Mapping] = field(
+        default_factory=lambda: [
+            Link(lazy_gettext("Cookies"), f"{CENSUS_NIR_BASE_URL}/cookies/").__dict__,
+            Link(
+                lazy_gettext("Accessibility statement"),
+                f"{CENSUS_NIR_BASE_URL}/accessibility-statement/",
+            ).__dict__,
+            Link(
+                lazy_gettext("Privacy and data protection"),
+                f"{CENSUS_NIR_BASE_URL}/privacy-and-data-protection/",
+            ).__dict__,
+            Link(
+                lazy_gettext("Terms and conditions"),
+                f"{CENSUS_NIR_BASE_URL}/terms-and-conditions/",
+            ).__dict__,
+        ],
+        compare=False,
+        hash=False,
+    )
+    powered_by_logo: str = "nisra-logo-black-en"
+    powered_by_logo_alt: str = "NISRA - Northern Ireland Statistics and Research Agency"
+    account_service_url: str = CENSUS_NIR_BASE_URL
+    data_layer: Iterable[Mapping] = field(
+        default_factory=lambda: [{"nisra": True}], compare=False
+    )
 
 
-def render_template(template: str, **kwargs: Union[Mapping, bool, str]) -> str:
+@lru_cache
+def survey_config_mapping(theme: str, language: str) -> SurveyConfig:
+    return {
+        "default": SurveyConfig,
+        "business": SurveyConfig,
+        "health": SurveyConfig,
+        "social": SurveyConfig,
+        "northernireland": SurveyConfig,
+        "census": (WelshCensusSurveyConfig if language == "cy" else CensusSurveyConfig),
+        "census-nisra": CensusNISRASurveyConfig,
+    }[theme]()
+
+
+def get_survey_config(
+    theme: Optional[str] = None, language: Optional[str] = None
+) -> SurveyConfig:
+    # The fallback to assigning SURVEY_TYPE to theme is only being added until
+    # business feedback on the differentiation between theme and SURVEY_TYPE.
+    if not language:
+        language = get_locale().language
+    if not theme:
+        theme = cookie_session.get("theme", current_app.config["SURVEY_TYPE"])
+
+    return survey_config_mapping(theme, language)
+
+
+def render_template(template: str, **kwargs: Union[str, Mapping]) -> str:
+    language = get_locale().language
+    survey_config = get_survey_config(language=language)
+    is_post_submission = request.blueprint == "post_submission"
+    include_csrf_token = bool(request.url_rule and "POST" in request.url_rule.methods)
+
+    context = ContextHelper(
+        language, is_post_submission, include_csrf_token, survey_config
+    ).context
+
     template = f"{template.lower()}.html"
-    theme = cookie_session.get("theme", DEFAULT_THEME)
-    survey_title = lazy_gettext("Census 2021")
-    language_code = get_locale().language
-    page_header_context = get_page_header_context(language_code, theme)
-    page_header_context.update({"title": survey_title})
-    google_tag_manager_context = get_google_tag_manager_context()
-    cdn_url = f'{current_app.config["CDN_URL"]}{current_app.config["CDN_ASSETS_PATH"]}'
-    base_url = get_census_base_url(theme, language_code)
-    include_csrf_token = request.url_rule and "POST" in request.url_rule.methods
-    account_service_url = cookie_session.get(
-        "account_service_url", f"{CENSUS_EN_BASE_URL}en/start"
-    )
-    sign_out_url = url_for("session.get_sign_out")
-    static_content_urls = get_static_content_urls(language_code, base_url, theme)
-    footer_context = get_footer_context(
-        language_code,
-        static_content_urls,
-        sign_out_url,
-        theme,
-    )
-
     return flask_render_template(
         template,
-        account_service_url=account_service_url,
-        account_service_log_out_url=cookie_session.get("account_service_log_out_url"),
-        contact_us_url=static_content_urls["contact_us"],
-        cookie_settings_url=current_app.config["COOKIE_SETTINGS_URL"],
-        page_header=page_header_context,
-        footer=footer_context,
-        theme=_map_theme(theme),
-        languages=get_languages_context(),
-        schema_theme=theme,
-        language_code=get_locale().language,
-        survey_title=survey_title,
-        cdn_url=cdn_url,
         csp_nonce=request.csp_nonce,  # type: ignore
-        address_lookup_api_url=current_app.config["ADDRESS_LOOKUP_API_URL"],
-        data_layer=get_data_layer(theme),
-        include_csrf_token=include_csrf_token,
-        sign_out_url=sign_out_url,
-        **google_tag_manager_context,
+        **context,
         **kwargs,
     )
-
-
-def get_google_tag_manager_context() -> Mapping:
-    if (google_tag_manager_id := current_app.config["EQ_GOOGLE_TAG_MANAGER_ID"]) and (
-        google_tag_manager_auth := current_app.config["EQ_GOOGLE_TAG_MANAGER_AUTH"]
-    ):
-        return {
-            "google_tag_manager_id": google_tag_manager_id,
-            "google_tag_manager_auth": google_tag_manager_auth,
-        }
-    return {}
-
-
-def get_census_base_url(schema_theme: str, language_code: str) -> str:
-    if language_code == "cy":
-        return CENSUS_CY_BASE_URL
-
-    if schema_theme == "census-nisra":
-        return CENSUS_NIR_BASE_URL
-
-    return CENSUS_EN_BASE_URL
-
-
-@lru_cache(maxsize=None)
-def get_static_content_urls(
-    language_code: str, base_url: str, schema_theme: str
-) -> Mapping:
-    is_nisra_theme = schema_theme == "census-nisra"
-    if language_code == "cy":
-        help_path = "help/sut-i-ateb-y-cwestiynau/help-y-cwestiynau-ar-lein/"
-        cookies_path = "cwcis/"
-        accessibility_statement_path = "datganiad-hygyrchedd/"
-        privacy_and_data_protection_path = "preifatrwydd-a-diogelu-data/"
-        terms_and_conditions_path = "telerau-ac-amodau/"
-        contact_us = "cysylltu-a-ni/"
-        languages = "help/ieithoedd-a-hygyrchedd/ieithoedd/"
-        bsl_and_audio_videos = (
-            "help/ieithoedd-a-hygyrchedd/hygyrchedd/fideos-hygyrch-gyda-bsl/"
-        )
-    else:
-        help_path = (
-            "help/help-with-the-questions/online-questions-help/"
-            if is_nisra_theme
-            else "help/how-to-answer-questions/online-questions-help/"
-        )
-        cookies_path = "cookies/"
-        accessibility_statement_path = "accessibility-statement/"
-        privacy_and_data_protection_path = "privacy-and-data-protection/"
-        terms_and_conditions_path = "terms-and-conditions/"
-        contact_us = "contact-us/"
-        languages = "help/languages-and-accessibility/languages/"
-        bsl_and_audio_videos = (
-            "help/languages-and-accessibility/accessibility/accessible-videos-with-bsl/"
-        )
-    urls = {
-        "help": f"{base_url}{help_path}",
-        "cookies": f"{base_url}{cookies_path}",
-        "accessibility_statement": f"{base_url}{accessibility_statement_path}",
-        "privacy_and_data_protection": f"{base_url}{privacy_and_data_protection_path}",
-        "terms_and_conditions": f"{base_url}{terms_and_conditions_path}",
-        "contact_us": f"{base_url}{contact_us}",
-    }
-    if not is_nisra_theme:
-        urls["languages"] = f"{base_url}{languages}"
-        urls["bsl_and_audio_videos"] = f"{base_url}{bsl_and_audio_videos}"
-
-    return urls
-
-
-def safe_content(content: str) -> str:
-    """Make content safe.
-
-    Replaces variable with ellipsis and strips any HTML tags.
-
-    :param (str) content: Input string.
-    :returns (str): Modified string.
-    """
-    if content is not None:
-        # Replace piping with ellipsis
-        content = re.sub(r"{.*?}", "…", content)
-        # Strip HTML Tags
-        content = re.sub(r"</?[^>]+>", "", content)
-    return content
-
-
-def get_data_layer(schema_theme: str) -> List:
-    if schema_theme == "census-nisra":
-        return [{"nisra": True}]
-
-    if schema_theme == "census":
-        return [{"nisra": False}]
-
-    return []

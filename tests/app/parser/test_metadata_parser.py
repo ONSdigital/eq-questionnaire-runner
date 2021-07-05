@@ -135,7 +135,7 @@ def test_minimum_length_on_runner_metadata(fake_metadata_runner):
 
 
 def test_deserialisation_iso_8601_dates(fake_metadata_runner):
-    """ Runner cannot currently handle date objects in metadata"""
+    """Runner cannot currently handle date objects in metadata"""
     field_specification = [{"name": "birthday", "type": "date"}]
 
     fake_metadata_runner["birthday"] = "2019-11-1"

@@ -61,8 +61,7 @@
                                 "id": "favourite-team-question",
                                 "title": "Who is your favourite team?",
                                 "type": "General"
-                            },
-                            "routing_rules": []
+                            }
                         },
                         {
                             "type": "Question",
@@ -93,8 +92,7 @@
                                     ]
                                 },
                                 "type": "General"
-                            },
-                            "routing_rules": []
+                            }
                         },
                         {
                             "id": "final-interstitial-block",

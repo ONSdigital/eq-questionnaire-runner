@@ -69,7 +69,6 @@
                                 "answers": [
                                     {
                                         "id": "month-year-answer",
-                                        "label": "Date",
                                         "mandatory": true,
                                         "q_code": "11",
                                         "type": "MonthYearDate"

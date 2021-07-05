@@ -2,11 +2,13 @@
 from unittest.mock import MagicMock, patch
 
 import pytest
+import simplejson as json
 from jinja2 import Undefined
 from mock import Mock
 
 from app.jinja_filters import (
     OtherConfig,
+    SummaryRow,
     format_datetime,
     format_duration,
     format_number,
@@ -18,6 +20,7 @@ from app.jinja_filters import (
     get_formatted_currency,
     get_width_class_for_number,
     map_list_collector_config,
+    map_summary_item_config,
     strip_tags,
 )
 from tests.app.app_context_test_case import AppContextTestCase
@@ -442,3 +445,159 @@ def test_other_config_visibility(
 
     other = OtherConfig(Mock(), answer_schema_textfield)
     assert other.open is expected_visibility
+
+
+@patch("app.jinja_filters.flask_babel.get_locale", Mock(return_value="en_GB"))
+def test_calculated_summary_config():
+    expected = [
+        SummaryRow(
+            block={
+                "id": "first-number-block",
+                "link": "/questionnaire/first-number-block/?return_to=final-summary",
+                "question": {
+                    "id": "first-number-question",
+                    "type": "General",
+                    "title": "First Number Question Title",
+                    "answers": [
+                        {
+                            "id": "first-number-answer",
+                            "label": "First answer label",
+                            "value": 1,
+                            "type": "currency",
+                            "currency": "GBP",
+                        }
+                    ],
+                },
+            },
+            question={
+                "id": "first-number-question",
+                "type": "General",
+                "title": "First Number Question Title",
+                "answers": [
+                    {
+                        "id": "first-number-answer",
+                        "label": "First answer label",
+                        "value": 1,
+                        "type": "currency",
+                        "currency": "GBP",
+                    }
+                ],
+            },
+            summary_type="CalculatedSummary",
+            answers_are_editable=True,
+            no_answer_provided="No answer Provided",
+            edit_link_text="Change",
+            edit_link_aria_label="Change your answer for",
+        ),
+        SummaryRow(
+            block={
+                "id": "second-number-block",
+                "link": "/questionnaire/second-number-block/?return_to=final-summary",
+                "question": {
+                    "id": "second-number-question",
+                    "type": "General",
+                    "title": "Second Number Question Title",
+                    "answers": [
+                        {
+                            "id": "second-number-answer",
+                            "label": "Second answer label",
+                            "value": 1,
+                            "type": "currency",
+                            "currency": "GBP",
+                        }
+                    ],
+                },
+            },
+            question={
+                "id": "second-number-question",
+                "type": "General",
+                "title": "Second Number Question Title",
+                "answers": [
+                    {
+                        "id": "second-number-answer",
+                        "label": "Second answer label",
+                        "value": 1,
+                        "type": "currency",
+                        "currency": "GBP",
+                    }
+                ],
+            },
+            summary_type="CalculatedSummary",
+            answers_are_editable=True,
+            no_answer_provided="No answer Provided",
+            edit_link_text="Change",
+            edit_link_aria_label="Change your answer for",
+        ),
+        SummaryRow(
+            block=None,
+            question={
+                "title": "Grand total of previous values",
+                "id": "calculated-summary-question",
+                "answers": [{"id": "calculated-summary-answer", "value": "£2.00"}],
+            },
+            summary_type="CalculatedSummary",
+            answers_are_editable=False,
+            no_answer_provided=None,
+            edit_link_text=None,
+            edit_link_aria_label=None,
+        ),
+    ]
+
+    result = map_summary_item_config(
+        group={
+            "blocks": [
+                {
+                    "id": "first-number-block",
+                    "link": "/questionnaire/first-number-block/?return_to=final-summary",
+                    "question": {
+                        "id": "first-number-question",
+                        "type": "General",
+                        "title": "First Number Question Title",
+                        "answers": [
+                            {
+                                "id": "first-number-answer",
+                                "label": "First answer label",
+                                "value": 1,
+                                "type": "currency",
+                                "currency": "GBP",
+                            }
+                        ],
+                    },
+                },
+                {
+                    "id": "second-number-block",
+                    "link": "/questionnaire/second-number-block/?return_to=final-summary",
+                    "question": {
+                        "id": "second-number-question",
+                        "type": "General",
+                        "title": "Second Number Question Title",
+                        "answers": [
+                            {
+                                "id": "second-number-answer",
+                                "label": "Second answer label",
+                                "value": 1,
+                                "type": "currency",
+                                "currency": "GBP",
+                            }
+                        ],
+                    },
+                },
+            ],
+        },
+        summary_type="CalculatedSummary",
+        answers_are_editable=True,
+        no_answer_provided="No answer Provided",
+        edit_link_text="Change",
+        edit_link_aria_label="Change your answer for",
+        calculated_question={
+            "title": "Grand total of previous values",
+            "id": "calculated-summary-question",
+            "answers": [{"id": "calculated-summary-answer", "value": "£2.00"}],
+        },
+    )
+
+    assert to_dict(expected) == to_dict(result)
+
+
+def to_dict(obj):
+    return json.loads(json.dumps(obj, default=lambda o: o.__dict__))
