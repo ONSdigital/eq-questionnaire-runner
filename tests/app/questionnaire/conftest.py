@@ -594,13 +594,16 @@ def section_with_custom_summary():
                                             {
                                                 "arguments": {
                                                     "delimiter": " ",
-                                                    "list_to_concatenate": {
-                                                        "identifier": [
-                                                            "first-name",
-                                                            "last-name",
-                                                        ],
-                                                        "source": "answers",
-                                                    },
+                                                    "list_to_concatenate": [
+                                                        {
+                                                            "source": "answers",
+                                                            "identifier": "first-name",
+                                                        },
+                                                        {
+                                                            "source": "answers",
+                                                            "identifier": "last-name",
+                                                        },
+                                                    ],
                                                 },
                                                 "transform": "concatenate_list",
                                             }
