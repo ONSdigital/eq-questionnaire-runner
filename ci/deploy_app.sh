@@ -52,7 +52,7 @@ gcloud beta run deploy eq-questionnaire-runner \
     --set-env-vars WEB_SERVER_UWSGI_ASYNC_CORES="${WEB_SERVER_UWSGI_ASYNC_CORES}" \
     --set-env-vars DATASTORE_USE_GRPC="${DATASTORE_USE_GRPC}" \
     --set-env-vars HTTP_KEEP_ALIVE="650" \
-    --set-env-vars EQ_GCS_SUBMISSION_BUCKET_ID="${PROJECT_ID}-survey-runner-submission" \
+    --set-env-vars EQ_GCS_SUBMISSION_BUCKET_ID="${PROJECT_ID}-submission" \
     --set-env-vars EQ_GCS_FEEDBACK_BUCKET_ID="${PROJECT_ID}-feedback" \
     --set-env-vars EQ_GOOGLE_TAG_MANAGER_ID="" \
     --set-env-vars EQ_GOOGLE_TAG_MANAGER_AUTH="" \
