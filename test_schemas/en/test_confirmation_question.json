@@ -69,10 +69,16 @@
                                                 {
                                                     "transform": "first_non_empty_item",
                                                     "arguments": {
-                                                        "items": {
-                                                            "source": "metadata",
-                                                            "identifier": ["trad_as", "ru_name"]
-                                                        }
+                                                        "items": [
+                                                            {
+                                                                "source": "metadata",
+                                                                "identifier": "trad_as"
+                                                            },
+                                                            {
+                                                                "source": "metadata",
+                                                                "identifier": "ru_name"
+                                                            }
+                                                        ]
                                                     }
                                                 }
                                             ]
@@ -127,10 +133,16 @@
                                                 {
                                                     "transform": "first_non_empty_item",
                                                     "arguments": {
-                                                        "items": {
-                                                            "source": "metadata",
-                                                            "identifier": ["trad_as", "ru_name"]
-                                                        }
+                                                        "items": [
+                                                            {
+                                                                "source": "metadata",
+                                                                "identifier": "trad_as"
+                                                            },
+                                                            {
+                                                                "source": "metadata",
+                                                                "identifier": "ru_name"
+                                                            }
+                                                        ]
                                                     }
                                                 }
                                             ]
