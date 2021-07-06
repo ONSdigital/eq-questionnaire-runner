@@ -143,10 +143,16 @@
                                                 {
                                                     "transform": "concatenate_list",
                                                     "arguments": {
-                                                        "list_to_concatenate": {
-                                                            "source": "answers",
-                                                            "identifier": ["first-text", "second-text"]
-                                                        },
+                                                        "list_to_concatenate": [
+                                                            {
+                                                                "source": "answers",
+                                                                "identifier": "first-text"
+                                                            },
+                                                            {
+                                                                "source": "answers",
+                                                                "identifier": "second-text"
+                                                            }
+                                                        ],
                                                         "delimiter": " "
                                                     }
                                                 }
@@ -178,19 +184,40 @@
                                                                 {
                                                                     "transform": "concatenate_list",
                                                                     "arguments": {
-                                                                        "list_to_concatenate": {
-                                                                            "source": "answers",
-                                                                            "identifier": [
-                                                                                "building",
-                                                                                "address-line-1",
-                                                                                "address-line-2",
-                                                                                "address-line-3",
-                                                                                "town-city",
-                                                                                "county",
-                                                                                "postcode",
-                                                                                "country"
-                                                                            ]
-                                                                        },
+                                                                        "list_to_concatenate": [
+                                                                            {
+                                                                                "source": "answers",
+                                                                                "identifier": "building"
+                                                                            },
+                                                                            {
+                                                                                "source": "answers",
+                                                                                "identifier": "address-line-1"
+                                                                            },
+                                                                            {
+                                                                                "source": "answers",
+                                                                                "identifier": "address-line-2"
+                                                                            },
+                                                                            {
+                                                                                "source": "answers",
+                                                                                "identifier": "address-line-3"
+                                                                            },
+                                                                            {
+                                                                                "source": "answers",
+                                                                                "identifier": "town-city"
+                                                                            },
+                                                                            {
+                                                                                "source": "answers",
+                                                                                "identifier": "county"
+                                                                            },
+                                                                            {
+                                                                                "source": "answers",
+                                                                                "identifier": "postcode"
+                                                                            },
+                                                                            {
+                                                                                "source": "answers",
+                                                                                "identifier": "country"
+                                                                            }
+                                                                        ],
                                                                         "delimiter": ", "
                                                                     }
                                                                 }
