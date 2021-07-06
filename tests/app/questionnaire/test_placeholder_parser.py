@@ -94,10 +94,10 @@ def test_multiple_answer_transform_placeholder():
                 {
                     "transform": "concatenate_list",
                     "arguments": {
-                        "list_to_concatenate": {
-                            "source": "answers",
-                            "identifier": ["first-name", "last-name"],
-                        },
+                        "list_to_concatenate": [
+                            {"source": "answers", "identifier": "first-name"},
+                            {"source": "answers", "identifier": "last-name"},
+                        ],
                         "delimiter": " ",
                     },
                 }
@@ -118,6 +118,34 @@ def test_multiple_answer_transform_placeholder():
     placeholders = parser(placeholder_list)
 
     assert placeholders["persons_name"] == "Joe Bloggs"
+
+
+def test_first_non_empty_item_transform_placeholder():
+    placeholder_list = [
+        {
+            "placeholder": "company_name",
+            "transforms": [
+                {
+                    "transform": "first_non_empty_item",
+                    "arguments": {
+                        "items": [
+                            {"source": "metadata", "identifier": "trad_as"},
+                            {"source": "metadata", "identifier": "ru_name"},
+                        ]
+                    },
+                }
+            ],
+        }
+    ]
+
+    parser = PlaceholderParser(
+        language="en",
+        metadata={"ru_name": "ru_name"},
+    )
+
+    placeholders = parser(placeholder_list)
+
+    assert placeholders["company_name"] == "ru_name"
 
 
 def test_format_list_answer_transform_placeholder():
@@ -231,10 +259,10 @@ def test_multiple_metadata_list_transform_placeholder():
                 {
                     "transform": "concatenate_list",
                     "arguments": {
-                        "list_to_concatenate": {
-                            "source": "metadata",
-                            "identifier": ["ref_p_start_date", "ref_p_end_date"],
-                        },
+                        "list_to_concatenate": [
+                            {"source": "metadata", "identifier": "ref_p_start_date"},
+                            {"source": "metadata", "identifier": "ref_p_end_date"},
+                        ],
                         "delimiter": " ",
                     },
                 }
@@ -249,6 +277,38 @@ def test_multiple_metadata_list_transform_placeholder():
     placeholders = parser(placeholder_list)
 
     assert placeholders["dates"] == "2019-02-11 2019-10-11"
+
+
+def test_checkbox_transform_placeholder():
+    placeholder_list = [
+        {
+            "placeholder": "toppings",
+            "transforms": [
+                {
+                    "transform": "concatenate_list",
+                    "arguments": {
+                        "list_to_concatenate": [
+                            {"source": "answers", "identifier": "checkbox-answer"}
+                        ],
+                        "delimiter": ", ",
+                    },
+                }
+            ],
+        }
+    ]
+
+    parser = PlaceholderParser(
+        language="en",
+        answer_store=AnswerStore(
+            [
+                {"answer_id": "checkbox-answer", "value": ["Ham", "Cheese"]},
+            ]
+        ),
+    )
+
+    placeholders = parser(placeholder_list)
+
+    assert placeholders["toppings"] == "Ham, Cheese"
 
 
 def test_mixed_transform_placeholder():
@@ -366,10 +426,10 @@ def test_chain_transform_placeholder():
                 {
                     "transform": "concatenate_list",
                     "arguments": {
-                        "list_to_concatenate": {
-                            "source": "answers",
-                            "identifier": ["first-name", "last-name"],
-                        },
+                        "list_to_concatenate": [
+                            {"source": "answers", "identifier": "first-name"},
+                            {"source": "answers", "identifier": "last-name"},
+                        ],
                         "delimiter": " ",
                     },
                 },
