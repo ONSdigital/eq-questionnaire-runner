@@ -219,10 +219,16 @@
                                                 {
                                                     "arguments": {
                                                         "delimiter": " ",
-                                                        "list_to_concatenate": {
-                                                            "identifier": ["first-name", "last-name"],
-                                                            "source": "answers"
-                                                        }
+                                                        "list_to_concatenate": [
+                                                            {
+                                                                "source": "answers",
+                                                                "identifier": "first-name"
+                                                            },
+                                                            {
+                                                                "source": "answers",
+                                                                "identifier": "last-name"
+                                                            }
+                                                        ]
                                                     },
                                                     "transform": "concatenate_list"
                                                 }
@@ -251,14 +257,24 @@
                                                         {
                                                             "transform": "concatenate_list",
                                                             "arguments": {
-                                                                "list_to_concatenate": {
-                                                                    "source": "answers",
-                                                                    "identifier": ["first-name", "last-name"],
-                                                                    "list_item_selector": {
-                                                                        "source": "location",
-                                                                        "id": "to_list_item_id"
+                                                                "list_to_concatenate": [
+                                                                    {
+                                                                        "source": "answers",
+                                                                        "identifier": "first-name",
+                                                                        "list_item_selector": {
+                                                                            "source": "location",
+                                                                            "id": "to_list_item_id"
+                                                                        }
+                                                                    },
+                                                                    {
+                                                                        "source": "answers",
+                                                                        "identifier": "last-name",
+                                                                        "list_item_selector": {
+                                                                            "source": "location",
+                                                                            "id": "to_list_item_id"
+                                                                        }
                                                                     }
-                                                                },
+                                                                ],
                                                                 "delimiter": " "
                                                             }
                                                         }
@@ -280,14 +296,24 @@
                                                                 {
                                                                     "transform": "concatenate_list",
                                                                     "arguments": {
-                                                                        "list_to_concatenate": {
-                                                                            "source": "answers",
-                                                                            "identifier": ["first-name", "last-name"],
-                                                                            "list_item_selector": {
-                                                                                "source": "location",
-                                                                                "id": "to_list_item_id"
+                                                                        "list_to_concatenate": [
+                                                                            {
+                                                                                "source": "answers",
+                                                                                "identifier": "first-name",
+                                                                                "list_item_selector": {
+                                                                                    "source": "location",
+                                                                                    "id": "to_list_item_id"
+                                                                                }
+                                                                            },
+                                                                            {
+                                                                                "source": "answers",
+                                                                                "identifier": "last-name",
+                                                                                "list_item_selector": {
+                                                                                    "source": "location",
+                                                                                    "id": "to_list_item_id"
+                                                                                }
                                                                             }
-                                                                        },
+                                                                        ],
                                                                         "delimiter": " "
                                                                     }
                                                                 }
@@ -308,14 +334,24 @@
                                                                         {
                                                                             "transform": "concatenate_list",
                                                                             "arguments": {
-                                                                                "list_to_concatenate": {
-                                                                                    "source": "answers",
-                                                                                    "identifier": ["first-name", "last-name"],
-                                                                                    "list_item_selector": {
-                                                                                        "source": "location",
-                                                                                        "id": "to_list_item_id"
+                                                                                "list_to_concatenate": [
+                                                                                    {
+                                                                                        "source": "answers",
+                                                                                        "identifier": "first-name",
+                                                                                        "list_item_selector": {
+                                                                                            "source": "location",
+                                                                                            "id": "to_list_item_id"
+                                                                                        }
+                                                                                    },
+                                                                                    {
+                                                                                        "source": "answers",
+                                                                                        "identifier": "last-name",
+                                                                                        "list_item_selector": {
+                                                                                            "source": "location",
+                                                                                            "id": "to_list_item_id"
+                                                                                        }
                                                                                     }
-                                                                                },
+                                                                                ],
                                                                                 "delimiter": " "
                                                                             }
                                                                         }
@@ -332,14 +368,24 @@
                                                                         {
                                                                             "transform": "concatenate_list",
                                                                             "arguments": {
-                                                                                "list_to_concatenate": {
-                                                                                    "source": "answers",
-                                                                                    "identifier": ["first-name", "last-name"],
-                                                                                    "list_item_selector": {
-                                                                                        "source": "location",
-                                                                                        "id": "to_list_item_id"
+                                                                                "list_to_concatenate": [
+                                                                                    {
+                                                                                        "source": "answers",
+                                                                                        "identifier": "first-name",
+                                                                                        "list_item_selector": {
+                                                                                            "source": "location",
+                                                                                            "id": "to_list_item_id"
+                                                                                        }
+                                                                                    },
+                                                                                    {
+                                                                                        "source": "answers",
+                                                                                        "identifier": "last-name",
+                                                                                        "list_item_selector": {
+                                                                                            "source": "location",
+                                                                                            "id": "to_list_item_id"
+                                                                                        }
                                                                                     }
-                                                                                },
+                                                                                ],
                                                                                 "delimiter": " "
                                                                             }
                                                                         }
@@ -360,14 +406,24 @@
                                                                         {
                                                                             "transform": "concatenate_list",
                                                                             "arguments": {
-                                                                                "list_to_concatenate": {
-                                                                                    "source": "answers",
-                                                                                    "identifier": ["first-name", "last-name"],
-                                                                                    "list_item_selector": {
-                                                                                        "source": "location",
-                                                                                        "id": "to_list_item_id"
+                                                                                "list_to_concatenate": [
+                                                                                    {
+                                                                                        "source": "answers",
+                                                                                        "identifier": "first-name",
+                                                                                        "list_item_selector": {
+                                                                                            "source": "location",
+                                                                                            "id": "to_list_item_id"
+                                                                                        }
+                                                                                    },
+                                                                                    {
+                                                                                        "source": "answers",
+                                                                                        "identifier": "last-name",
+                                                                                        "list_item_selector": {
+                                                                                            "source": "location",
+                                                                                            "id": "to_list_item_id"
+                                                                                        }
                                                                                     }
-                                                                                },
+                                                                                ],
                                                                                 "delimiter": " "
                                                                             }
                                                                         }
@@ -384,14 +440,24 @@
                                                                         {
                                                                             "transform": "concatenate_list",
                                                                             "arguments": {
-                                                                                "list_to_concatenate": {
-                                                                                    "source": "answers",
-                                                                                    "identifier": ["first-name", "last-name"],
-                                                                                    "list_item_selector": {
-                                                                                        "source": "location",
-                                                                                        "id": "to_list_item_id"
+                                                                                "list_to_concatenate": [
+                                                                                    {
+                                                                                        "source": "answers",
+                                                                                        "identifier": "first-name",
+                                                                                        "list_item_selector": {
+                                                                                            "source": "location",
+                                                                                            "id": "to_list_item_id"
+                                                                                        }
+                                                                                    },
+                                                                                    {
+                                                                                        "source": "answers",
+                                                                                        "identifier": "last-name",
+                                                                                        "list_item_selector": {
+                                                                                            "source": "location",
+                                                                                            "id": "to_list_item_id"
+                                                                                        }
                                                                                     }
-                                                                                },
+                                                                                ],
                                                                                 "delimiter": " "
                                                                             }
                                                                         }
@@ -412,14 +478,24 @@
                                                                         {
                                                                             "transform": "concatenate_list",
                                                                             "arguments": {
-                                                                                "list_to_concatenate": {
-                                                                                    "source": "answers",
-                                                                                    "identifier": ["first-name", "last-name"],
-                                                                                    "list_item_selector": {
-                                                                                        "source": "location",
-                                                                                        "id": "to_list_item_id"
+                                                                                "list_to_concatenate": [
+                                                                                    {
+                                                                                        "source": "answers",
+                                                                                        "identifier": "first-name",
+                                                                                        "list_item_selector": {
+                                                                                            "source": "location",
+                                                                                            "id": "to_list_item_id"
+                                                                                        }
+                                                                                    },
+                                                                                    {
+                                                                                        "source": "answers",
+                                                                                        "identifier": "last-name",
+                                                                                        "list_item_selector": {
+                                                                                            "source": "location",
+                                                                                            "id": "to_list_item_id"
+                                                                                        }
                                                                                     }
-                                                                                },
+                                                                                ],
                                                                                 "delimiter": " "
                                                                             }
                                                                         }
@@ -436,14 +512,24 @@
                                                                         {
                                                                             "transform": "concatenate_list",
                                                                             "arguments": {
-                                                                                "list_to_concatenate": {
-                                                                                    "source": "answers",
-                                                                                    "identifier": ["first-name", "last-name"],
-                                                                                    "list_item_selector": {
-                                                                                        "source": "location",
-                                                                                        "id": "to_list_item_id"
+                                                                                "list_to_concatenate": [
+                                                                                    {
+                                                                                        "source": "answers",
+                                                                                        "identifier": "first-name",
+                                                                                        "list_item_selector": {
+                                                                                            "source": "location",
+                                                                                            "id": "to_list_item_id"
+                                                                                        }
+                                                                                    },
+                                                                                    {
+                                                                                        "source": "answers",
+                                                                                        "identifier": "last-name",
+                                                                                        "list_item_selector": {
+                                                                                            "source": "location",
+                                                                                            "id": "to_list_item_id"
+                                                                                        }
                                                                                     }
-                                                                                },
+                                                                                ],
                                                                                 "delimiter": " "
                                                                             }
                                                                         }
@@ -464,14 +550,24 @@
                                                                         {
                                                                             "transform": "concatenate_list",
                                                                             "arguments": {
-                                                                                "list_to_concatenate": {
-                                                                                    "source": "answers",
-                                                                                    "identifier": ["first-name", "last-name"],
-                                                                                    "list_item_selector": {
-                                                                                        "source": "location",
-                                                                                        "id": "to_list_item_id"
+                                                                                "list_to_concatenate": [
+                                                                                    {
+                                                                                        "source": "answers",
+                                                                                        "identifier": "first-name",
+                                                                                        "list_item_selector": {
+                                                                                            "source": "location",
+                                                                                            "id": "to_list_item_id"
+                                                                                        }
+                                                                                    },
+                                                                                    {
+                                                                                        "source": "answers",
+                                                                                        "identifier": "last-name",
+                                                                                        "list_item_selector": {
+                                                                                            "source": "location",
+                                                                                            "id": "to_list_item_id"
+                                                                                        }
                                                                                     }
-                                                                                },
+                                                                                ],
                                                                                 "delimiter": " "
                                                                             }
                                                                         }
@@ -488,14 +584,24 @@
                                                                         {
                                                                             "transform": "concatenate_list",
                                                                             "arguments": {
-                                                                                "list_to_concatenate": {
-                                                                                    "source": "answers",
-                                                                                    "identifier": ["first-name", "last-name"],
-                                                                                    "list_item_selector": {
-                                                                                        "source": "location",
-                                                                                        "id": "to_list_item_id"
+                                                                                "list_to_concatenate": [
+                                                                                    {
+                                                                                        "source": "answers",
+                                                                                        "identifier": "first-name",
+                                                                                        "list_item_selector": {
+                                                                                            "source": "location",
+                                                                                            "id": "to_list_item_id"
+                                                                                        }
+                                                                                    },
+                                                                                    {
+                                                                                        "source": "answers",
+                                                                                        "identifier": "last-name",
+                                                                                        "list_item_selector": {
+                                                                                            "source": "location",
+                                                                                            "id": "to_list_item_id"
+                                                                                        }
                                                                                     }
-                                                                                },
+                                                                                ],
                                                                                 "delimiter": " "
                                                                             }
                                                                         }
@@ -533,14 +639,24 @@
                                                         {
                                                             "transform": "concatenate_list",
                                                             "arguments": {
-                                                                "list_to_concatenate": {
-                                                                    "source": "answers",
-                                                                    "identifier": ["first-name", "last-name"],
-                                                                    "list_item_selector": {
-                                                                        "source": "location",
-                                                                        "id": "list_item_id"
+                                                                "list_to_concatenate": [
+                                                                    {
+                                                                        "source": "answers",
+                                                                        "identifier": "first-name",
+                                                                        "list_item_selector": {
+                                                                            "source": "location",
+                                                                            "id": "list_item_id"
+                                                                        }
+                                                                    },
+                                                                    {
+                                                                        "source": "answers",
+                                                                        "identifier": "last-name",
+                                                                        "list_item_selector": {
+                                                                            "source": "location",
+                                                                            "id": "list_item_id"
+                                                                        }
                                                                     }
-                                                                },
+                                                                ],
                                                                 "delimiter": " "
                                                             }
                                                         }
@@ -552,14 +668,24 @@
                                                         {
                                                             "transform": "concatenate_list",
                                                             "arguments": {
-                                                                "list_to_concatenate": {
-                                                                    "source": "answers",
-                                                                    "identifier": ["first-name", "last-name"],
-                                                                    "list_item_selector": {
-                                                                        "source": "location",
-                                                                        "id": "to_list_item_id"
+                                                                "list_to_concatenate": [
+                                                                    {
+                                                                        "source": "answers",
+                                                                        "identifier": "first-name",
+                                                                        "list_item_selector": {
+                                                                            "source": "location",
+                                                                            "id": "to_list_item_id"
+                                                                        }
+                                                                    },
+                                                                    {
+                                                                        "source": "answers",
+                                                                        "identifier": "last-name",
+                                                                        "list_item_selector": {
+                                                                            "source": "location",
+                                                                            "id": "to_list_item_id"
+                                                                        }
                                                                     }
-                                                                },
+                                                                ],
                                                                 "delimiter": " "
                                                             }
                                                         }
@@ -581,14 +707,24 @@
                                                                 {
                                                                     "transform": "concatenate_list",
                                                                     "arguments": {
-                                                                        "list_to_concatenate": {
-                                                                            "source": "answers",
-                                                                            "identifier": ["first-name", "last-name"],
-                                                                            "list_item_selector": {
-                                                                                "source": "location",
-                                                                                "id": "list_item_id"
+                                                                        "list_to_concatenate": [
+                                                                            {
+                                                                                "source": "answers",
+                                                                                "identifier": "first-name",
+                                                                                "list_item_selector": {
+                                                                                    "source": "location",
+                                                                                    "id": "list_item_id"
+                                                                                }
+                                                                            },
+                                                                            {
+                                                                                "source": "answers",
+                                                                                "identifier": "last-name",
+                                                                                "list_item_selector": {
+                                                                                    "source": "location",
+                                                                                    "id": "list_item_id"
+                                                                                }
                                                                             }
-                                                                        },
+                                                                        ],
                                                                         "delimiter": " "
                                                                     }
                                                                 },
@@ -608,14 +744,24 @@
                                                                 {
                                                                     "transform": "concatenate_list",
                                                                     "arguments": {
-                                                                        "list_to_concatenate": {
-                                                                            "source": "answers",
-                                                                            "identifier": ["first-name", "last-name"],
-                                                                            "list_item_selector": {
-                                                                                "source": "location",
-                                                                                "id": "to_list_item_id"
+                                                                        "list_to_concatenate": [
+                                                                            {
+                                                                                "source": "answers",
+                                                                                "identifier": "first-name",
+                                                                                "list_item_selector": {
+                                                                                    "source": "location",
+                                                                                    "id": "to_list_item_id"
+                                                                                }
+                                                                            },
+                                                                            {
+                                                                                "source": "answers",
+                                                                                "identifier": "last-name",
+                                                                                "list_item_selector": {
+                                                                                    "source": "location",
+                                                                                    "id": "to_list_item_id"
+                                                                                }
                                                                             }
-                                                                        },
+                                                                        ],
                                                                         "delimiter": " "
                                                                     }
                                                                 }
@@ -636,14 +782,24 @@
                                                                         {
                                                                             "transform": "concatenate_list",
                                                                             "arguments": {
-                                                                                "list_to_concatenate": {
-                                                                                    "source": "answers",
-                                                                                    "identifier": ["first-name", "last-name"],
-                                                                                    "list_item_selector": {
-                                                                                        "source": "location",
-                                                                                        "id": "list_item_id"
+                                                                                "list_to_concatenate": [
+                                                                                    {
+                                                                                        "source": "answers",
+                                                                                        "identifier": "first-name",
+                                                                                        "list_item_selector": {
+                                                                                            "source": "location",
+                                                                                            "id": "list_item_id"
+                                                                                        }
+                                                                                    },
+                                                                                    {
+                                                                                        "source": "answers",
+                                                                                        "identifier": "last-name",
+                                                                                        "list_item_selector": {
+                                                                                            "source": "location",
+                                                                                            "id": "list_item_id"
+                                                                                        }
                                                                                     }
-                                                                                },
+                                                                                ],
                                                                                 "delimiter": " "
                                                                             }
                                                                         }
@@ -655,14 +811,24 @@
                                                                         {
                                                                             "transform": "concatenate_list",
                                                                             "arguments": {
-                                                                                "list_to_concatenate": {
-                                                                                    "source": "answers",
-                                                                                    "identifier": ["first-name", "last-name"],
-                                                                                    "list_item_selector": {
-                                                                                        "source": "location",
-                                                                                        "id": "to_list_item_id"
+                                                                                "list_to_concatenate": [
+                                                                                    {
+                                                                                        "source": "answers",
+                                                                                        "identifier": "first-name",
+                                                                                        "list_item_selector": {
+                                                                                            "source": "location",
+                                                                                            "id": "to_list_item_id"
+                                                                                        }
+                                                                                    },
+                                                                                    {
+                                                                                        "source": "answers",
+                                                                                        "identifier": "last-name",
+                                                                                        "list_item_selector": {
+                                                                                            "source": "location",
+                                                                                            "id": "to_list_item_id"
+                                                                                        }
                                                                                     }
-                                                                                },
+                                                                                ],
                                                                                 "delimiter": " "
                                                                             }
                                                                         }
@@ -679,14 +845,24 @@
                                                                         {
                                                                             "transform": "concatenate_list",
                                                                             "arguments": {
-                                                                                "list_to_concatenate": {
-                                                                                    "source": "answers",
-                                                                                    "identifier": ["first-name", "last-name"],
-                                                                                    "list_item_selector": {
-                                                                                        "source": "location",
-                                                                                        "id": "list_item_id"
+                                                                                "list_to_concatenate": [
+                                                                                    {
+                                                                                        "source": "answers",
+                                                                                        "identifier": "first-name",
+                                                                                        "list_item_selector": {
+                                                                                            "source": "location",
+                                                                                            "id": "list_item_id"
+                                                                                        }
+                                                                                    },
+                                                                                    {
+                                                                                        "source": "answers",
+                                                                                        "identifier": "last-name",
+                                                                                        "list_item_selector": {
+                                                                                            "source": "location",
+                                                                                            "id": "list_item_id"
+                                                                                        }
                                                                                     }
-                                                                                },
+                                                                                ],
                                                                                 "delimiter": " "
                                                                             }
                                                                         },
@@ -706,14 +882,24 @@
                                                                         {
                                                                             "transform": "concatenate_list",
                                                                             "arguments": {
-                                                                                "list_to_concatenate": {
-                                                                                    "source": "answers",
-                                                                                    "identifier": ["first-name", "last-name"],
-                                                                                    "list_item_selector": {
-                                                                                        "source": "location",
-                                                                                        "id": "to_list_item_id"
+                                                                                "list_to_concatenate": [
+                                                                                    {
+                                                                                        "source": "answers",
+                                                                                        "identifier": "first-name",
+                                                                                        "list_item_selector": {
+                                                                                            "source": "location",
+                                                                                            "id": "to_list_item_id"
+                                                                                        }
+                                                                                    },
+                                                                                    {
+                                                                                        "source": "answers",
+                                                                                        "identifier": "last-name",
+                                                                                        "list_item_selector": {
+                                                                                            "source": "location",
+                                                                                            "id": "to_list_item_id"
+                                                                                        }
                                                                                     }
-                                                                                },
+                                                                                ],
                                                                                 "delimiter": " "
                                                                             }
                                                                         }
@@ -734,14 +920,24 @@
                                                                         {
                                                                             "transform": "concatenate_list",
                                                                             "arguments": {
-                                                                                "list_to_concatenate": {
-                                                                                    "source": "answers",
-                                                                                    "identifier": ["first-name", "last-name"],
-                                                                                    "list_item_selector": {
-                                                                                        "source": "location",
-                                                                                        "id": "list_item_id"
+                                                                                "list_to_concatenate": [
+                                                                                    {
+                                                                                        "source": "answers",
+                                                                                        "identifier": "first-name",
+                                                                                        "list_item_selector": {
+                                                                                            "source": "location",
+                                                                                            "id": "list_item_id"
+                                                                                        }
+                                                                                    },
+                                                                                    {
+                                                                                        "source": "answers",
+                                                                                        "identifier": "last-name",
+                                                                                        "list_item_selector": {
+                                                                                            "source": "location",
+                                                                                            "id": "list_item_id"
+                                                                                        }
                                                                                     }
-                                                                                },
+                                                                                ],
                                                                                 "delimiter": " "
                                                                             }
                                                                         }
@@ -753,14 +949,24 @@
                                                                         {
                                                                             "transform": "concatenate_list",
                                                                             "arguments": {
-                                                                                "list_to_concatenate": {
-                                                                                    "source": "answers",
-                                                                                    "identifier": ["first-name", "last-name"],
-                                                                                    "list_item_selector": {
-                                                                                        "source": "location",
-                                                                                        "id": "to_list_item_id"
+                                                                                "list_to_concatenate": [
+                                                                                    {
+                                                                                        "source": "answers",
+                                                                                        "identifier": "first-name",
+                                                                                        "list_item_selector": {
+                                                                                            "source": "location",
+                                                                                            "id": "to_list_item_id"
+                                                                                        }
+                                                                                    },
+                                                                                    {
+                                                                                        "source": "answers",
+                                                                                        "identifier": "last-name",
+                                                                                        "list_item_selector": {
+                                                                                            "source": "location",
+                                                                                            "id": "to_list_item_id"
+                                                                                        }
                                                                                     }
-                                                                                },
+                                                                                ],
                                                                                 "delimiter": " "
                                                                             }
                                                                         }
@@ -777,14 +983,24 @@
                                                                         {
                                                                             "transform": "concatenate_list",
                                                                             "arguments": {
-                                                                                "list_to_concatenate": {
-                                                                                    "source": "answers",
-                                                                                    "identifier": ["first-name", "last-name"],
-                                                                                    "list_item_selector": {
-                                                                                        "source": "location",
-                                                                                        "id": "list_item_id"
+                                                                                "list_to_concatenate": [
+                                                                                    {
+                                                                                        "source": "answers",
+                                                                                        "identifier": "first-name",
+                                                                                        "list_item_selector": {
+                                                                                            "source": "location",
+                                                                                            "id": "list_item_id"
+                                                                                        }
+                                                                                    },
+                                                                                    {
+                                                                                        "source": "answers",
+                                                                                        "identifier": "last-name",
+                                                                                        "list_item_selector": {
+                                                                                            "source": "location",
+                                                                                            "id": "list_item_id"
+                                                                                        }
                                                                                     }
-                                                                                },
+                                                                                ],
                                                                                 "delimiter": " "
                                                                             }
                                                                         },
@@ -804,14 +1020,24 @@
                                                                         {
                                                                             "transform": "concatenate_list",
                                                                             "arguments": {
-                                                                                "list_to_concatenate": {
-                                                                                    "source": "answers",
-                                                                                    "identifier": ["first-name", "last-name"],
-                                                                                    "list_item_selector": {
-                                                                                        "source": "location",
-                                                                                        "id": "to_list_item_id"
+                                                                                "list_to_concatenate": [
+                                                                                    {
+                                                                                        "source": "answers",
+                                                                                        "identifier": "first-name",
+                                                                                        "list_item_selector": {
+                                                                                            "source": "location",
+                                                                                            "id": "to_list_item_id"
+                                                                                        }
+                                                                                    },
+                                                                                    {
+                                                                                        "source": "answers",
+                                                                                        "identifier": "last-name",
+                                                                                        "list_item_selector": {
+                                                                                            "source": "location",
+                                                                                            "id": "to_list_item_id"
+                                                                                        }
                                                                                     }
-                                                                                },
+                                                                                ],
                                                                                 "delimiter": " "
                                                                             }
                                                                         }
@@ -832,14 +1058,24 @@
                                                                         {
                                                                             "transform": "concatenate_list",
                                                                             "arguments": {
-                                                                                "list_to_concatenate": {
-                                                                                    "source": "answers",
-                                                                                    "identifier": ["first-name", "last-name"],
-                                                                                    "list_item_selector": {
-                                                                                        "source": "location",
-                                                                                        "id": "list_item_id"
+                                                                                "list_to_concatenate": [
+                                                                                    {
+                                                                                        "source": "answers",
+                                                                                        "identifier": "first-name",
+                                                                                        "list_item_selector": {
+                                                                                            "source": "location",
+                                                                                            "id": "list_item_id"
+                                                                                        }
+                                                                                    },
+                                                                                    {
+                                                                                        "source": "answers",
+                                                                                        "identifier": "last-name",
+                                                                                        "list_item_selector": {
+                                                                                            "source": "location",
+                                                                                            "id": "list_item_id"
+                                                                                        }
                                                                                     }
-                                                                                },
+                                                                                ],
                                                                                 "delimiter": " "
                                                                             }
                                                                         }
@@ -851,14 +1087,24 @@
                                                                         {
                                                                             "transform": "concatenate_list",
                                                                             "arguments": {
-                                                                                "list_to_concatenate": {
-                                                                                    "source": "answers",
-                                                                                    "identifier": ["first-name", "last-name"],
-                                                                                    "list_item_selector": {
-                                                                                        "source": "location",
-                                                                                        "id": "to_list_item_id"
+                                                                                "list_to_concatenate": [
+                                                                                    {
+                                                                                        "source": "answers",
+                                                                                        "identifier": "first-name",
+                                                                                        "list_item_selector": {
+                                                                                            "source": "location",
+                                                                                            "id": "to_list_item_id"
+                                                                                        }
+                                                                                    },
+                                                                                    {
+                                                                                        "source": "answers",
+                                                                                        "identifier": "last-name",
+                                                                                        "list_item_selector": {
+                                                                                            "source": "location",
+                                                                                            "id": "to_list_item_id"
+                                                                                        }
                                                                                     }
-                                                                                },
+                                                                                ],
                                                                                 "delimiter": " "
                                                                             }
                                                                         }
@@ -875,14 +1121,24 @@
                                                                         {
                                                                             "transform": "concatenate_list",
                                                                             "arguments": {
-                                                                                "list_to_concatenate": {
-                                                                                    "source": "answers",
-                                                                                    "identifier": ["first-name", "last-name"],
-                                                                                    "list_item_selector": {
-                                                                                        "source": "location",
-                                                                                        "id": "list_item_id"
+                                                                                "list_to_concatenate": [
+                                                                                    {
+                                                                                        "source": "answers",
+                                                                                        "identifier": "first-name",
+                                                                                        "list_item_selector": {
+                                                                                            "source": "location",
+                                                                                            "id": "list_item_id"
+                                                                                        }
+                                                                                    },
+                                                                                    {
+                                                                                        "source": "answers",
+                                                                                        "identifier": "last-name",
+                                                                                        "list_item_selector": {
+                                                                                            "source": "location",
+                                                                                            "id": "list_item_id"
+                                                                                        }
                                                                                     }
-                                                                                },
+                                                                                ],
                                                                                 "delimiter": " "
                                                                             }
                                                                         },
@@ -902,14 +1158,24 @@
                                                                         {
                                                                             "transform": "concatenate_list",
                                                                             "arguments": {
-                                                                                "list_to_concatenate": {
-                                                                                    "source": "answers",
-                                                                                    "identifier": ["first-name", "last-name"],
-                                                                                    "list_item_selector": {
-                                                                                        "source": "location",
-                                                                                        "id": "to_list_item_id"
+                                                                                "list_to_concatenate": [
+                                                                                    {
+                                                                                        "source": "answers",
+                                                                                        "identifier": "first-name",
+                                                                                        "list_item_selector": {
+                                                                                            "source": "location",
+                                                                                            "id": "to_list_item_id"
+                                                                                        }
+                                                                                    },
+                                                                                    {
+                                                                                        "source": "answers",
+                                                                                        "identifier": "last-name",
+                                                                                        "list_item_selector": {
+                                                                                            "source": "location",
+                                                                                            "id": "to_list_item_id"
+                                                                                        }
                                                                                     }
-                                                                                },
+                                                                                ],
                                                                                 "delimiter": " "
                                                                             }
                                                                         }
@@ -930,14 +1196,24 @@
                                                                         {
                                                                             "transform": "concatenate_list",
                                                                             "arguments": {
-                                                                                "list_to_concatenate": {
-                                                                                    "source": "answers",
-                                                                                    "identifier": ["first-name", "last-name"],
-                                                                                    "list_item_selector": {
-                                                                                        "source": "location",
-                                                                                        "id": "list_item_id"
+                                                                                "list_to_concatenate": [
+                                                                                    {
+                                                                                        "source": "answers",
+                                                                                        "identifier": "first-name",
+                                                                                        "list_item_selector": {
+                                                                                            "source": "location",
+                                                                                            "id": "list_item_id"
+                                                                                        }
+                                                                                    },
+                                                                                    {
+                                                                                        "source": "answers",
+                                                                                        "identifier": "last-name",
+                                                                                        "list_item_selector": {
+                                                                                            "source": "location",
+                                                                                            "id": "list_item_id"
+                                                                                        }
                                                                                     }
-                                                                                },
+                                                                                ],
                                                                                 "delimiter": " "
                                                                             }
                                                                         }
@@ -949,14 +1225,24 @@
                                                                         {
                                                                             "transform": "concatenate_list",
                                                                             "arguments": {
-                                                                                "list_to_concatenate": {
-                                                                                    "source": "answers",
-                                                                                    "identifier": ["first-name", "last-name"],
-                                                                                    "list_item_selector": {
-                                                                                        "source": "location",
-                                                                                        "id": "to_list_item_id"
+                                                                                "list_to_concatenate": [
+                                                                                    {
+                                                                                        "source": "answers",
+                                                                                        "identifier": "first-name",
+                                                                                        "list_item_selector": {
+                                                                                            "source": "location",
+                                                                                            "id": "to_list_item_id"
+                                                                                        }
+                                                                                    },
+                                                                                    {
+                                                                                        "source": "answers",
+                                                                                        "identifier": "last-name",
+                                                                                        "list_item_selector": {
+                                                                                            "source": "location",
+                                                                                            "id": "to_list_item_id"
+                                                                                        }
                                                                                     }
-                                                                                },
+                                                                                ],
                                                                                 "delimiter": " "
                                                                             }
                                                                         }
@@ -973,14 +1259,24 @@
                                                                         {
                                                                             "transform": "concatenate_list",
                                                                             "arguments": {
-                                                                                "list_to_concatenate": {
-                                                                                    "source": "answers",
-                                                                                    "identifier": ["first-name", "last-name"],
-                                                                                    "list_item_selector": {
-                                                                                        "source": "location",
-                                                                                        "id": "list_item_id"
+                                                                                "list_to_concatenate": [
+                                                                                    {
+                                                                                        "source": "answers",
+                                                                                        "identifier": "first-name",
+                                                                                        "list_item_selector": {
+                                                                                            "source": "location",
+                                                                                            "id": "list_item_id"
+                                                                                        }
+                                                                                    },
+                                                                                    {
+                                                                                        "source": "answers",
+                                                                                        "identifier": "last-name",
+                                                                                        "list_item_selector": {
+                                                                                            "source": "location",
+                                                                                            "id": "list_item_id"
+                                                                                        }
                                                                                     }
-                                                                                },
+                                                                                ],
                                                                                 "delimiter": " "
                                                                             }
                                                                         },
@@ -1000,14 +1296,24 @@
                                                                         {
                                                                             "transform": "concatenate_list",
                                                                             "arguments": {
-                                                                                "list_to_concatenate": {
-                                                                                    "source": "answers",
-                                                                                    "identifier": ["first-name", "last-name"],
-                                                                                    "list_item_selector": {
-                                                                                        "source": "location",
-                                                                                        "id": "to_list_item_id"
+                                                                                "list_to_concatenate": [
+                                                                                    {
+                                                                                        "source": "answers",
+                                                                                        "identifier": "first-name",
+                                                                                        "list_item_selector": {
+                                                                                            "source": "location",
+                                                                                            "id": "to_list_item_id"
+                                                                                        }
+                                                                                    },
+                                                                                    {
+                                                                                        "source": "answers",
+                                                                                        "identifier": "last-name",
+                                                                                        "list_item_selector": {
+                                                                                            "source": "location",
+                                                                                            "id": "to_list_item_id"
+                                                                                        }
                                                                                     }
-                                                                                },
+                                                                                ],
                                                                                 "delimiter": " "
                                                                             }
                                                                         }
