@@ -4,6 +4,7 @@ set -exo pipefail
 REGION="${REGION:=europe-west2}"
 CPU="${CPU:=4}"
 MEMORY="${MEMORY:=4G}"
+CONCURRENCY="${CONCURRENCY:=80}"
 CDN_URL="${CDN_URL:=https://cdn.census.gov.uk}"
 NEW_RELIC_APP_NAME="${NEW_RELIC_APP_NAME:=}"
 NEW_RELIC_LICENSE_KEY="${NEW_RELIC_LICENSE_KEY:=}"
@@ -46,7 +47,7 @@ EQ_SUBMISSION_CONFIRMATION_BACKEND="${EQ_SUBMISSION_CONFIRMATION_BACKEND:=cloud-
 
 
 gcloud beta run deploy eq-questionnaire-runner \
-    --project="${PROJECT_ID}" --region="${REGION}" --concurrency=49 --min-instances="${MIN_INSTANCES}" --max-instances="${MAX_INSTANCES}" \
+    --project="${PROJECT_ID}" --region="${REGION}" --concurrency="${CONCURRENCY}" --min-instances="${MIN_INSTANCES}" --max-instances="${MAX_INSTANCES}" \
     --port=5000 --cpu="${CPU}" --memory="${MEMORY}" \
     --image="${DOCKER_REGISTRY}/eq-questionnaire-runner:${IMAGE_TAG}" --platform=managed --allow-unauthenticated \
     --set-secrets EQ_REDIS_HOST="redis-host:latest" \
