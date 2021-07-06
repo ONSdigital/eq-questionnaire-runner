@@ -1,11 +1,12 @@
+from flask.app import Flask
 from pytest import fixture
 
 from app.setup import create_app
 
 
 @fixture
-def app():
+def app() -> Flask:
     setting_overrides = {"LOGIN_DISABLED": True}
-    the_app = create_app(setting_overrides=setting_overrides)
+    _app = create_app(setting_overrides=setting_overrides)
 
-    return the_app
+    return _app

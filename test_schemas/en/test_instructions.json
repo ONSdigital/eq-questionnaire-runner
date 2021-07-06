@@ -70,8 +70,7 @@
                                 "id": "favourite-lunch-question",
                                 "title": "Title",
                                 "type": "General"
-                            },
-                            "routing_rules": []
+                            }
                         }
                     ],
                     "id": "favourite-foods",

@@ -1,4 +1,3 @@
-import json
 import os
 import re
 import unittest
@@ -50,7 +49,7 @@ class IntegrationTestCase(unittest.TestCase):  # pylint: disable=too-many-public
     def test_app(self):
         return self._application
 
-    def _set_up_app(self):
+    def _set_up_app(self, setting_overrides=None):
         self._ds = patch("app.setup.datastore.Client", MockDatastore)
         self._ds.start()
 
@@ -59,16 +58,19 @@ class IntegrationTestCase(unittest.TestCase):  # pylint: disable=too-many-public
 
         configure_logging()
 
-        setting_overrides = {
+        overrides = {
             "EQ_ENABLE_HTML_MINIFY": False,
             "EQ_SUBMISSION_CONFIRMATION_BACKEND": "log",
         }
+
+        if setting_overrides:
+            overrides = overrides | setting_overrides
 
         with patch(
             "google.auth._default._get_explicit_environ_credentials",
             return_value=(Mock(), "test-project-id"),
         ):
-            self._application = create_app(setting_overrides)
+            self._application = create_app(overrides)
 
         self._key_store = KeyStore(
             {
@@ -268,6 +270,12 @@ class IntegrationTestCase(unittest.TestCase):  # pylint: disable=too-many-public
         cookie_session = cookie.split("session=.")[1].split(";")[0]
         decoded_cookie_session = decode_flask_cookie(cookie_session)
         return json_loads(decoded_cookie_session)
+
+    def deleteCookie(self):
+        """
+        Deletes the test client cookie
+        """
+        self._client.delete_cookie("localhost", "session")
 
     def getHtmlSoup(self):
         """

@@ -1,4 +1,3 @@
-import json
 from datetime import datetime
 
 from app.utilities.json import json_loads

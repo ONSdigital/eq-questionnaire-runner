@@ -1,4 +1,4 @@
-from datetime import datetime, timezone
+from datetime import datetime
 from unittest.mock import MagicMock
 
 from freezegun import freeze_time

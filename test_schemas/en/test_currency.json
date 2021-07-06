@@ -102,8 +102,7 @@
                                 "id": "question",
                                 "title": "Currency Input Test",
                                 "type": "General"
-                            },
-                            "routing_rules": []
+                            }
                         }
                     ],
                     "id": "group"

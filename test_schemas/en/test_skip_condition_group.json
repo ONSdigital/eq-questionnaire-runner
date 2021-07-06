@@ -39,7 +39,6 @@
                         {
                             "type": "Question",
                             "id": "do-you-want-to-skip",
-                            "routing_rules": [],
                             "question": {
                                 "id": "do-you-want-to-skip-question",
                                 "title": "Do you want to skip?",
@@ -87,7 +86,6 @@
                         {
                             "type": "Question",
                             "id": "should-skip",
-                            "routing_rules": [],
                             "question": {
                                 "id": "should-skip-question",
                                 "title": "Do you want to skip?",

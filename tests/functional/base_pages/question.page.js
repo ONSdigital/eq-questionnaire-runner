@@ -22,6 +22,10 @@ class QuestionPage extends BasePage {
     return ".js-inpagelink";
   }
 
+  legend() {
+    return "legend";
+  }
+
   errorHeader() {
     return '[data-qa="error-header"]';
   }

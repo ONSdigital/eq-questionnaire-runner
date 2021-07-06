@@ -1,10 +1,8 @@
-from pytest import xfail
-
 from tests.integration.integration_test_case import IntegrationTestCase
 
 
 class TestQuestionnaireLanguage(IntegrationTestCase):
-    """ Tests that the language selection from tokens works """
+    """Tests that the language selection from tokens works"""
 
     def test_load_cy_survey(self):
         # When: load a cy survey
@@ -160,16 +158,9 @@ class TestQuestionnaireLanguage(IntegrationTestCase):
         self.launchSurvey("test_language", language_code="cy")
         # Submit and check the error message is in Welsh
         self.post()
-        xfail("Error strings have been updated, waiting for translations to be done")
-        self.assertInBody("Mae 1 gwall ar y dudalen hon")
-        self.assertInBody("Nodwch ateb i barhau")
-
-    def test_contact_us_link(self):
-        # load a welsh survey
-        self.launchSurvey("test_language", language_code="cy")
-        # Get redirected to a 404
-        self.get("/not-a-page")
-        self.assertInBody("https://cyfrifiad.gov.uk/cysylltu-a-ni/")
+        self.post()
+        self.assertInBody("Mae problem gyda'ch ateb")
+        self.assertInBody("Rhowch ateb")
 
     def test_language_switch_hub_submission(self):
         # load an English survey

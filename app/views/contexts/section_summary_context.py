@@ -4,10 +4,10 @@ from typing import Mapping
 from flask import url_for
 
 from app.data_models import AnswerStore, ListStore, ProgressStore
-from app.helpers.template_helpers import safe_content
 from app.questionnaire import QuestionnaireSchema
 from app.questionnaire.location import Location
 from app.questionnaire.routing_path import RoutingPath
+from app.utilities import safe_content
 
 from .context import Context
 from .list_context import ListContext
