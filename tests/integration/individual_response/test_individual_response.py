@@ -180,7 +180,7 @@ class TestIndividualResponseErrorStatus(IndividualResponseTestCase):
         )
         # Then a BadRequest error is returned
         self.assertBadRequest()
-        self.assertEqualPageTitle("An error has occurred - Census 2021")
+        self.assertEqualPageTitle("An error has occurred - Test Individual Response")
 
     def test_ir_raises_400_confirm_number_missing_mobile_param(self):
         # Given I request an individual response by mobile phone
@@ -197,7 +197,7 @@ class TestIndividualResponseErrorStatus(IndividualResponseTestCase):
 
         # Then a BadRequest error is returned
         self.assertBadRequest()
-        self.assertEqualPageTitle("An error has occurred - Census 2021")
+        self.assertEqualPageTitle("An error has occurred - Test Individual Response")
 
     def test_ir_raises_400_confirmation_bad_signature(self):
         # Given I request an individual response by mobile phone
@@ -216,7 +216,7 @@ class TestIndividualResponseErrorStatus(IndividualResponseTestCase):
 
         # Then a BadRequest error is returned
         self.assertBadRequest()
-        self.assertEqualPageTitle("An error has occurred - Census 2021")
+        self.assertEqualPageTitle("An error has occurred - Test Individual Response")
 
     def test_ir_raises_400_confirmation_missing_mobile_param(self):
         # Given I request an individual response by mobile phone
@@ -233,7 +233,7 @@ class TestIndividualResponseErrorStatus(IndividualResponseTestCase):
 
         # Then a BadRequest error is returned
         self.assertBadRequest()
-        self.assertEqualPageTitle("An error has occurred - Census 2021")
+        self.assertEqualPageTitle("An error has occurred - Test Individual Response")
 
     def test_ir_raises_401_without_session(self):
         # Given the hub is enabled
@@ -386,7 +386,7 @@ class TestIndividualResponseErrorStatus(IndividualResponseTestCase):
         self._request_individual_response_by_text()
         self.assertStatusCode(500)
         self.assertEqualPageTitle(
-            "Sorry, there was a problem sending the access code - Census 2021"
+            "Sorry, there was a problem sending the access code - Test Individual Response"
         )
         self.assertInSelector(self.last_url, "p[data-qa=retry]")
 
@@ -397,7 +397,7 @@ class TestIndividualResponseErrorStatus(IndividualResponseTestCase):
         # Given I add a household member
         self._request_individual_response_by_post()
         self.assertEqualPageTitle(
-            "Sorry, there was a problem sending the access code - Census 2021"
+            "Sorry, there was a problem sending the access code - Test Individual Response"
         )
         self.assertInSelector(self.last_url, "p[data-qa=retry]")
 
@@ -413,7 +413,7 @@ class TestIndividualResponseIndividualSection(IndividualResponseTestCase):
 
         # I should see the correct page title
         self.assertEqualPageTitle(
-            "Cannot answer questions for others in your household: Person 1 - Census 2021"
+            "Cannot answer questions for others in your household: Person 1 - Test Individual Response"
         )
 
     def test_ir_guidance_not_displayed_when_primary(self):
