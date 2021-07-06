@@ -13,6 +13,7 @@ from flask_babel.speaklater import LazyString
 from app.helpers.language_helper import get_languages_context
 
 DEFAULT_EN_BASE_URL = "https://ons.gov.uk"
+BUSINESS_BASE_URL = "https://surveys.ons.gov.uk"
 CENSUS_EN_BASE_URL = "https://census.gov.uk"
 CENSUS_CY_BASE_URL = "https://cyfrifiad.gov.uk"
 CENSUS_NIR_BASE_URL = f"{CENSUS_EN_BASE_URL}/ni"
@@ -327,11 +328,19 @@ class CensusNISRASurveyConfig(
     )
 
 
+@dataclass
+class BusinessSurveyConfig(
+    SurveyConfig,
+):
+    base_url: str = BUSINESS_BASE_URL
+    account_service_url: str = f"{BUSINESS_BASE_URL}/surveys/todo"
+
+
 @lru_cache
 def survey_config_mapping(theme: str, language: str) -> SurveyConfig:
     return {
-        "default": SurveyConfig,
-        "business": SurveyConfig,
+        "default": BusinessSurveyConfig,
+        "business": BusinessSurveyConfig,
         "health": SurveyConfig,
         "social": SurveyConfig,
         "northernireland": SurveyConfig,
