@@ -337,15 +337,11 @@ class BusinessSurveyConfig(
 
     footer_links: Iterable[MutableMapping] = field(
         default_factory=lambda: [
-            Link(
-                lazy_gettext("What we do"), f"{DEFAULT_EN_BASE_URL}/aboutus/whatwedo/"
-            ).__dict__,
-            Link(
-                lazy_gettext("Contact us"), f"{BUSINESS_BASE_URL}/contact-us/"
-            ).__dict__,
+            Link(lazy_gettext("What we do"), "#").__dict__,
+            Link(lazy_gettext("Contact us"), "#").__dict__,
             Link(
                 lazy_gettext("Accessibility"),
-                f"{DEFAULT_EN_BASE_URL}/help/accessibility/",
+                "#",
             ).__dict__,
         ],
         compare=False,
@@ -354,10 +350,10 @@ class BusinessSurveyConfig(
 
     footer_legal_links: Iterable[Mapping] = field(
         default_factory=lambda: [
-            Link(lazy_gettext("Cookies"), f"{BUSINESS_BASE_URL}/cookies/").__dict__,
+            Link(lazy_gettext("Cookies"), "#").__dict__,
             Link(
                 lazy_gettext("Privacy and data protection"),
-                f"{BUSINESS_BASE_URL}/privacy-and-data-protection/",
+                "#",
             ).__dict__,
         ],
         compare=False,
