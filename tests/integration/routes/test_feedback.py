@@ -200,7 +200,7 @@ class TestFeedback(IntegrationTestCase):
         self.assertInUrl(self.SEND_FEEDBACK_URL)
         self.assertInBody("There is a problem with your feedback")
         self.assertInBody("Select what your feedback is about")
-        self.assertEqualPageTitle("Error: Feedback - Census 2021")
+        self.assertEqualPageTitle("Error: Feedback - Feedback test schema")
 
     def test_feedback_text_missing(self):
         # Given I launch and complete the test_feedback questionnaire
@@ -214,7 +214,7 @@ class TestFeedback(IntegrationTestCase):
         self.assertInUrl(self.SEND_FEEDBACK_URL)
         self.assertInBody("There is a problem with your feedback")
         self.assertInBody("Enter your feedback")
-        self.assertEqualPageTitle("Error: Feedback - Census 2021")
+        self.assertEqualPageTitle("Error: Feedback - Feedback test schema")
 
     def test_feedback_question_category_missing(self):
         # Given I launch and complete the test_feedback questionnaire
@@ -230,7 +230,7 @@ class TestFeedback(IntegrationTestCase):
         self.assertInUrl(self.SEND_FEEDBACK_URL)
         self.assertInBody("There is a problem with your feedback")
         self.assertInBody("Select an option")
-        self.assertEqualPageTitle("Error: Feedback - Census 2021")
+        self.assertEqualPageTitle("Error: Feedback - Feedback test schema")
 
     def test_feedback_type_and_text_missing(self):
         # Given I launch and complete the test_feedback questionnaire
@@ -245,7 +245,7 @@ class TestFeedback(IntegrationTestCase):
         self.assertInBody("There are 2 problems with your feedback")
         self.assertInBody("Select what your feedback is about")
         self.assertInBody("Enter your feedback")
-        self.assertEqualPageTitle("Error: Feedback - Census 2021")
+        self.assertEqualPageTitle("Error: Feedback - Feedback test schema")
 
     def test_feedback_page_previous(self):
         # Given I launch and complete the test_feedback questionnaire
@@ -358,7 +358,7 @@ class TestFeedback(IntegrationTestCase):
 
         # Then I should see an error page
         self.assertStatusCode(500)
-        self.assertEqualPageTitle("Sorry, there is a problem - Census 2021")
+        self.assertEqualPageTitle("Sorry, there is a problem - Feedback test schema")
         self.assertInBody("submit your feedback again")
 
         retry_url = (

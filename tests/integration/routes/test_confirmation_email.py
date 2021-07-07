@@ -26,7 +26,9 @@ class TestEmailConfirmation(IntegrationTestCase):
 
         # Then a BadRequest error is returned
         self.assertBadRequest()
-        self.assertEqualPageTitle("An error has occurred - Census 2021")
+        self.assertEqualPageTitle(
+            "An error has occurred - Confirmation email test schema"
+        )
 
     def test_missing_email_param_confirmation_email_sent(self):
         # Given I launch and complete the test_confirmation_email questionnaire
@@ -50,7 +52,9 @@ class TestEmailConfirmation(IntegrationTestCase):
 
         # Then a BadRequest error is returned
         self.assertBadRequest()
-        self.assertEqualPageTitle("An error has occurred - Census 2021")
+        self.assertEqualPageTitle(
+            "An error has occurred - Confirmation email test schema"
+        )
 
     def test_missing_email_param_confirm_email(self):
         # Given I launch and complete the test_confirmation_email questionnaire
@@ -98,7 +102,9 @@ class TestEmailConfirmation(IntegrationTestCase):
 
         # Then a BadRequest error is returned
         self.assertBadRequest()
-        self.assertEqualPageTitle("An error has occurred - Census 2021")
+        self.assertEqualPageTitle(
+            "An error has occurred - Confirmation email test schema"
+        )
 
     def test_thank_you_page_get_not_allowed(self):
         # Given I launch the test_confirmation_email questionnaire
@@ -137,7 +143,9 @@ class TestEmailConfirmation(IntegrationTestCase):
         # When I am on the thank you page, Then there is an confirmation email form
         self.assertInUrl("/submitted/thank-you/")
         self.assertInBody("Get confirmation email")
-        self.assertEqualPageTitle("Thank you for completing the census - Census 2021")
+        self.assertEqualPageTitle(
+            "Thank you for completing the census - Confirmation email test schema"
+        )
 
     def test_census_themed_schema_with_confirmation_email_not_set(self):
         # Given I launch the test_thank_you_census_individual questionnaire, which doesn't have email confirmation set in the schema
@@ -174,7 +182,9 @@ class TestEmailConfirmation(IntegrationTestCase):
         self.post()
 
         # Then I get an error on the confirm email page
-        self.assertEqualPageTitle("Error: Confirm your email address - Census 2021")
+        self.assertEqualPageTitle(
+            "Error: Confirm your email address - Confirmation email test schema"
+        )
         self.assertInBody("There is a problem with your answer")
         self.assertInBody("Select an answer")
 
@@ -248,7 +258,7 @@ class TestEmailConfirmation(IntegrationTestCase):
         self.assertInBody("There is a problem with this page")
         self.assertInBody("Enter an email address")
         self.assertEqualPageTitle(
-            "Error: Thank you for completing the census - Census 2021"
+            "Error: Thank you for completing the census - Confirmation email test schema"
         )
 
     def test_thank_you_incorrect_email_format(self):
@@ -266,7 +276,7 @@ class TestEmailConfirmation(IntegrationTestCase):
         )
 
         self.assertEqualPageTitle(
-            "Error: Thank you for completing the census - Census 2021"
+            "Error: Thank you for completing the census - Confirmation email test schema"
         )
 
     def test_thank_you_email_invalid_tld(self):
@@ -311,7 +321,9 @@ class TestEmailConfirmation(IntegrationTestCase):
         self.assertInUrl("/submitted/confirmation-email/send/")
         self.assertInBody("There is a problem with this page")
         self.assertInBody("Enter an email address")
-        self.assertEqualPageTitle("Error: Confirmation email - Census 2021")
+        self.assertEqualPageTitle(
+            "Error: Confirmation email - Confirmation email test schema"
+        )
 
     def test_confirmation_email_page_incorrect_email_format(self):
         # Given I launch and complete the test_confirmation_email questionnaire and submit with a valid email from the thank you page
@@ -328,7 +340,9 @@ class TestEmailConfirmation(IntegrationTestCase):
         self.assertInBody(
             "Enter an email address in a valid format, for example name@example.com"
         )
-        self.assertEqualPageTitle("Error: Confirmation email - Census 2021")
+        self.assertEqualPageTitle(
+            "Error: Confirmation email - Confirmation email test schema"
+        )
 
     def test_confirmation_email_page(self):
         # Given I launch and complete the test_confirmation_email questionnaire and submit with a valid email from the thank you page
@@ -468,7 +482,7 @@ class TestEmailConfirmation(IntegrationTestCase):
 
         # Then an error page is shown
         self.assertEqualPageTitle(
-            "Sorry, there was a problem sending the confirmation email - Census 2021"
+            "Sorry, there was a problem sending the confirmation email - Confirmation email test schema"
         )
         self.assertInSelector(self.last_url, "p[data-qa=retry]")
 
@@ -488,7 +502,9 @@ class TestEmailConfirmation(IntegrationTestCase):
 
         # Then a BadRequest error is returned
         self.assertBadRequest()
-        self.assertEqualPageTitle("An error has occurred - Census 2021")
+        self.assertEqualPageTitle(
+            "An error has occurred - Confirmation email test schema"
+        )
 
     def test_head_request_on_email_confirmation(self):
         self._launch_and_complete_questionnaire()
