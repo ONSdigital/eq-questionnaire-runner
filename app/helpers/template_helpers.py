@@ -333,7 +333,7 @@ class BusinessSurveyConfig(
     SurveyConfig,
 ):
     base_url: str = BUSINESS_BASE_URL
-    account_service_url: str = f"{BUSINESS_BASE_URL}/surveys/todo/"
+    account_service_url: str = f"{BUSINESS_BASE_URL}/surveys/todo"
 
     footer_links: Iterable[MutableMapping] = field(
         default_factory=lambda: [
