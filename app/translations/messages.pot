@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2021-06-08 15:59+0100\n"
+"POT-Creation-Date: 2021-07-07 08:33+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -203,76 +203,85 @@ msgstr[1] ""
 msgid "Not a valid choice"
 msgstr ""
 
-#: app/helpers/template_helpers.py:32
+#: app/helpers/template_helpers.py:34
 msgid "Office for National Statistics logo"
 msgstr ""
 
-#: app/helpers/template_helpers.py:35
+#: app/helpers/template_helpers.py:37
 msgid "Crown copyright and database rights 2020 OS 100019153."
 msgstr ""
 
-#: app/helpers/template_helpers.py:38 app/helpers/template_helpers.py:286
+#: app/helpers/template_helpers.py:40 app/helpers/template_helpers.py:288
 msgid "Use of address data is subject to the terms and conditions."
 msgstr ""
 
-#: app/helpers/template_helpers.py:92 app/helpers/template_helpers.py:183
-#: app/helpers/template_helpers.py:234 app/helpers/template_helpers.py:296
+#: app/helpers/template_helpers.py:94 app/helpers/template_helpers.py:185
+#: app/helpers/template_helpers.py:236 app/helpers/template_helpers.py:298
+#: app/helpers/template_helpers.py:344
 msgid "Contact us"
 msgstr ""
 
-#: app/helpers/template_helpers.py:133
+#: app/helpers/template_helpers.py:135
 msgid "The following links open in a new tab"
 msgstr ""
 
-#: app/helpers/template_helpers.py:160
+#: app/helpers/template_helpers.py:162
 msgid ""
 "Make sure you <a href='{sign_out_url}'>leave this page</a> or close your "
 "browser if using a shared device"
 msgstr ""
 
-#: app/helpers/template_helpers.py:172 app/helpers/template_helpers.py:217
+#: app/helpers/template_helpers.py:174 app/helpers/template_helpers.py:219
 msgid "Census 2021"
 msgstr ""
 
-#: app/helpers/template_helpers.py:179 app/helpers/template_helpers.py:230
-#: app/helpers/template_helpers.py:292
+#: app/helpers/template_helpers.py:181 app/helpers/template_helpers.py:232
+#: app/helpers/template_helpers.py:294
 msgid "Help"
 msgstr ""
 
-#: app/helpers/template_helpers.py:186 app/helpers/template_helpers.py:237
+#: app/helpers/template_helpers.py:188 app/helpers/template_helpers.py:239
 msgid "Languages"
 msgstr ""
 
-#: app/helpers/template_helpers.py:190 app/helpers/template_helpers.py:241
+#: app/helpers/template_helpers.py:192 app/helpers/template_helpers.py:243
 msgid "BSL and audio videos"
 msgstr ""
 
-#: app/helpers/template_helpers.py:198 app/helpers/template_helpers.py:250
-#: app/helpers/template_helpers.py:304
+#: app/helpers/template_helpers.py:200 app/helpers/template_helpers.py:252
+#: app/helpers/template_helpers.py:306 app/helpers/template_helpers.py:356
 msgid "Cookies"
 msgstr ""
 
-#: app/helpers/template_helpers.py:200 app/helpers/template_helpers.py:252
-#: app/helpers/template_helpers.py:306
+#: app/helpers/template_helpers.py:202 app/helpers/template_helpers.py:254
+#: app/helpers/template_helpers.py:308
 msgid "Accessibility statement"
 msgstr ""
 
-#: app/helpers/template_helpers.py:204 app/helpers/template_helpers.py:256
-#: app/helpers/template_helpers.py:310
+#: app/helpers/template_helpers.py:206 app/helpers/template_helpers.py:258
+#: app/helpers/template_helpers.py:312 app/helpers/template_helpers.py:358
 msgid "Privacy and data protection"
 msgstr ""
 
-#: app/helpers/template_helpers.py:208 app/helpers/template_helpers.py:260
-#: app/helpers/template_helpers.py:314
+#: app/helpers/template_helpers.py:210 app/helpers/template_helpers.py:262
+#: app/helpers/template_helpers.py:316
 msgid "Terms and conditions"
 msgstr ""
 
-#: app/helpers/template_helpers.py:278
+#: app/helpers/template_helpers.py:280
 msgid "Northern Ireland Statistics and Research Agency logo"
 msgstr ""
 
-#: app/helpers/template_helpers.py:283
+#: app/helpers/template_helpers.py:285
 msgid "Crown copyright and database rights 2021 NIMA MOU577.501."
+msgstr ""
+
+#: app/helpers/template_helpers.py:341
+msgid "What we do"
+msgstr ""
+
+#: app/helpers/template_helpers.py:347
+msgid "Accessibility"
 msgstr ""
 
 #: app/questionnaire/placeholder_transforms.py:92
@@ -1308,15 +1317,15 @@ msgstr ""
 msgid "Select all that apply"
 msgstr ""
 
-#: templates/partials/answers/date.html:23
+#: templates/partials/answers/date.html:30
 msgid "Day"
 msgstr ""
 
-#: templates/partials/answers/date.html:38
+#: templates/partials/answers/date.html:45
 msgid "Month"
 msgstr ""
 
-#: templates/partials/answers/date.html:53
+#: templates/partials/answers/date.html:60
 msgid "Year"
 msgstr ""
 
