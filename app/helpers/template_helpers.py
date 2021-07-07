@@ -333,19 +333,19 @@ class BusinessSurveyConfig(
     SurveyConfig,
 ):
     base_url: str = BUSINESS_BASE_URL
-    account_service_url: str = f"{BUSINESS_BASE_URL}/surveys/todo"
+    account_service_url: str = f"{BUSINESS_BASE_URL}/surveys/todo/"
 
     footer_links: Iterable[MutableMapping] = field(
         default_factory=lambda: [
             Link(
-                lazy_gettext("What we do"), f"{DEFAULT_EN_BASE_URL}/aboutus/whatwedo"
+                lazy_gettext("What we do"), f"{DEFAULT_EN_BASE_URL}/aboutus/whatwedo/"
             ).__dict__,
             Link(
                 lazy_gettext("Contact us"), f"{BUSINESS_BASE_URL}/contact-us/"
             ).__dict__,
             Link(
                 lazy_gettext("Accessibility"),
-                f"{DEFAULT_EN_BASE_URL}/help/accessibility",
+                f"{DEFAULT_EN_BASE_URL}/help/accessibility/",
             ).__dict__,
         ],
         compare=False,
