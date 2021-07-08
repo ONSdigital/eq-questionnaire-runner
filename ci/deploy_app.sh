@@ -20,8 +20,6 @@ DATASTORE_USE_GRPC="${DATASTORE_USE_GRPC:=True}"
 MIN_INSTANCES="${MIN_INSTANCES:=1}"
 MAX_INSTANCES="${MAX_INSTANCES:=1}"
 EQ_NEW_RELIC_ENABLED="${EQ_NEW_RELIC_ENABLED:=False}"
-EQ_SECRETS_FILE="${EQ_SECRETS_FILE:=/secrets/secrets.yml}"
-EQ_KEYS_FILE="${EQ_KEYS_FILE:=/keys/keys.yml}"
 EQ_STORAGE_BACKEND="${EQ_STORAGE_BACKEND:=datastore}"
 EQ_ENABLE_SECURE_SESSION_COOKIE="${EQ_ENABLE_SECURE_SESSION_COOKIE:=True}"
 EQ_RABBITMQ_ENABLED="${EQ_RABBITMQ_ENABLED:=False}"
@@ -56,8 +54,8 @@ gcloud beta run deploy eq-questionnaire-runner \
     --set-secrets "/secrets/secrets.yml"="secrets:latest" \
     --set-env-vars EQ_STORAGE_BACKEND="${EQ_STORAGE_BACKEND}" \
     --set-env-vars EQ_ENABLE_SECURE_SESSION_COOKIE="${EQ_ENABLE_SECURE_SESSION_COOKIE}" \
-    --set-env-vars EQ_SECRETS_FILE="${EQ_SECRETS_FILE}" \
-    --set-env-vars EQ_KEYS_FILE="${EQ_KEYS_FILE}" \
+    --set-env-vars EQ_SECRETS_FILE="/secrets/secrets.yml" \
+    --set-env-vars EQ_KEYS_FILE="/keys/keys.yml" \
     --set-env-vars EQ_RABBITMQ_ENABLED="${EQ_RABBITMQ_ENABLED}" \
     --set-env-vars EQ_ENABLE_HTML_MINIFY="${EQ_ENABLE_HTML_MINIFY}" \
     --set-env-vars EQ_RABBITMQ_HOST="${EQ_RABBITMQ_HOST}" \
