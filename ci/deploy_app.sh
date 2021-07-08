@@ -52,6 +52,8 @@ gcloud beta run deploy eq-questionnaire-runner \
     --project="${PROJECT_ID}" --region="${REGION}" --concurrency="${CONCURRENCY}" --min-instances="${MIN_INSTANCES}" --max-instances="${MAX_INSTANCES}" \
     --port=5000 --cpu="${CPU}" --memory="${MEMORY}" \
     --image="${DOCKER_REGISTRY}/eq-questionnaire-runner:${IMAGE_TAG}" --platform=managed --allow-unauthenticated \
+    --vpc-connector="redis-vpc" \
+    --service-account="cloud-run@${PROJECT_ID}.iam.gserviceaccount.com" \
     --set-secrets EQ_REDIS_HOST="redis-host:latest" \
     --set-secrets EQ_REDIS_PORT="redis-port:latest" \
     --set-secrets "/keys/keys.yml"="keys:latest" \
@@ -94,6 +96,4 @@ gcloud beta run deploy eq-questionnaire-runner \
     --set-env-vars NEW_RELIC_LICENSE_KEY="${NEW_RELIC_LICENSE_KEY}" \
     --set-env-vars NEW_RELIC_APP_NAME="${NEW_RELIC_APP_NAME}" \
     --set-env-vars CONFIRMATION_EMAIL_LIMIT="${CONFIRMATION_EMAIL_LIMIT}" \
-    --set-env-vars EQ_SUBMISSION_CONFIRMATION_BACKEND="${EQ_SUBMISSION_CONFIRMATION_BACKEND}" \
-    --vpc-connector="redis-vpc" \
-    --service-account="cloud-run@${PROJECT_ID}.iam.gserviceaccount.com"
+    --set-env-vars EQ_SUBMISSION_CONFIRMATION_BACKEND="${EQ_SUBMISSION_CONFIRMATION_BACKEND}"
