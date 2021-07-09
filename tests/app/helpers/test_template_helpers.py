@@ -205,6 +205,7 @@ def test_get_page_header_context_business(app: Flask):
 
 def test_get_page_header_context_census(app: Flask):
     expected = {
+        "title": "Census 2021",
         "logo": "ons-logo-pos-en",
         "logoAlt": "Office for National Statistics logo",
         "titleLogo": "census-logo-en",
@@ -226,6 +227,7 @@ def test_get_page_header_context_census(app: Flask):
 
 def test_get_page_header_context_census_nisra(app: Flask):
     expected = {
+        "title": "Census 2021",
         "logo": "nisra-logo-en",
         "logoAlt": "Northern Ireland Statistics and Research Agency logo",
         "titleLogo": "census-logo-en",
@@ -347,6 +349,7 @@ def test_account_service_url_context(
         ("census", "cy", WelshCensusSurveyConfig),
         ("census-nisra", "en", CensusNISRASurveyConfig),
         ("census-nisra", "cy", CensusNISRASurveyConfig),
+        (None, None, CensusSurveyConfig),
     ],
 )
 def test_get_survey_config(

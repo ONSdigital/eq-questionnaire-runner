@@ -30,10 +30,13 @@ class ContextHelper:
         self._language = language
         self._is_post_submission = is_post_submission
         self._include_csrf_token = include_csrf_token
-        self.survey_config = survey_config
+        self._survey_config = survey_config
+        self._survey_title = cookie_session.get(
+            "survey_title", self._survey_config.survey_title
+        )
         self._sign_out_url = url_for("session.get_sign_out")
         self._account_service_url = cookie_session.get(
-            "account_service_url", self.survey_config.account_service_url
+            "account_service_url", self._survey_config.account_service_url
         )
         self._account_service_log_out_url = cookie_session.get(
             "account_service_log_out_url"
@@ -55,18 +58,18 @@ class ContextHelper:
             "account_service_log_out_url": self._account_service_log_out_url,
             "contact_us_url": Link(
                 lazy_gettext("Contact us"),
-                f"{self.survey_config.base_url}/contact-us/",
+                f"{self._survey_config.base_url}/contact-us/",
             ).__dict__,
             "cookie_settings_url": self._cookie_settings_url,
             "page_header": self.page_header_context,
             "footer": self.footer_context,
             "languages": get_languages_context(self._language),
-            "theme": self.survey_config.design_system_theme,
+            "theme": self._survey_config.design_system_theme,
             "language_code": self._language,
-            "survey_title": self.survey_config.survey_title,
+            "survey_title": self._survey_title,
             "cdn_url": self._cdn_url,
             "address_lookup_api_url": self._address_lookup_api,
-            "data_layer": self.survey_config.data_layer,
+            "data_layer": self._survey_config.data_layer,
             "include_csrf_token": self._include_csrf_token,
             "google_tag_manager_id": self._google_tag_manager_id,
             "google_tag_manager_auth": self._google_tag_manager_auth,
@@ -75,18 +78,20 @@ class ContextHelper:
     @property
     def page_header_context(self) -> dict[str, str]:
         context = {
-            "logo": f"{self.survey_config.page_header_logo}",
-            "logoAlt": f"{self.survey_config.page_header_logo_alt}",
+            "logo": f"{self._survey_config.page_header_logo}",
+            "logoAlt": f"{self._survey_config.page_header_logo_alt}",
         }
 
-        if self.survey_config.title_logo:
-            context["titleLogo"] = f"{self.survey_config.title_logo}"
-        if self.survey_config.title_logo_alt:
-            context["titleLogoAlt"] = f"{self.survey_config.title_logo_alt}"
-        if self.survey_config.header_logo:
-            context["customHeaderLogo"] = self.survey_config.header_logo
-        if self.survey_config.mobile_logo:
-            context["mobileLogo"] = self.survey_config.mobile_logo
+        if self._survey_title:
+            context["title"] = self._survey_title
+        if self._survey_config.title_logo:
+            context["titleLogo"] = f"{self._survey_config.title_logo}"
+        if self._survey_config.title_logo_alt:
+            context["titleLogoAlt"] = f"{self._survey_config.title_logo_alt}"
+        if self._survey_config.header_logo:
+            context["customHeaderLogo"] = self._survey_config.header_logo
+        if self._survey_config.mobile_logo:
+            context["mobileLogo"] = self._survey_config.mobile_logo
 
         return context
 
@@ -94,27 +99,30 @@ class ContextHelper:
     def footer_context(self) -> dict[str, Any]:
         context = {
             "lang": self._language,
-            "crest": self.survey_config.crest,
+            "crest": self._survey_config.crest,
             "newTabWarning": lazy_gettext("The following links open in a new tab"),
             "copyrightDeclaration": {
-                "copyright": self.survey_config.copyright_declaration,
-                "text": self.survey_config.copyright_text,
+                "copyright": self._survey_config.copyright_declaration,
+                "text": self._survey_config.copyright_text,
             },
         }
 
         if self._footer_warning:
             context["footerWarning"] = self._footer_warning
 
-        if self.survey_config.footer_links:
-            context["rows"] = [{"itemsList": self.survey_config.footer_links}]
+        if self._survey_config.footer_links:
+            context["rows"] = [{"itemsList": self._survey_config.footer_links}]
 
-        if self.survey_config.footer_legal_links:
-            context["legal"] = [{"itemsList": self.survey_config.footer_legal_links}]
+        if self._survey_config.footer_legal_links:
+            context["legal"] = [{"itemsList": self._survey_config.footer_legal_links}]
 
-        if self.survey_config.powered_by_logo or self.survey_config.powered_by_logo_alt:
+        if (
+            self._survey_config.powered_by_logo
+            or self._survey_config.powered_by_logo_alt
+        ):
             context["poweredBy"] = {
-                "logo": self.survey_config.powered_by_logo,
-                "alt": self.survey_config.powered_by_logo_alt,
+                "logo": self._survey_config.powered_by_logo,
+                "alt": self._survey_config.powered_by_logo_alt,
             }
 
         return context
