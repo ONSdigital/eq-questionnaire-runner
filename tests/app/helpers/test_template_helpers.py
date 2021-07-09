@@ -349,7 +349,7 @@ def test_account_service_url_context(
         ("census", "cy", WelshCensusSurveyConfig),
         ("census-nisra", "en", CensusNISRASurveyConfig),
         ("census-nisra", "cy", CensusNISRASurveyConfig),
-        (None, None, CensusSurveyConfig),
+        (None, None, BusinessSurveyConfig),
     ],
 )
 def test_get_survey_config(
