@@ -307,56 +307,26 @@ def test_get_relationship_collectors_by_list_name_no_collectors(
     assert not collectors
 
 
-def test_get_list_item_id_for_answer_id_without_list_item_id(
-    section_with_repeating_list,
-):
-    schema = QuestionnaireSchema(section_with_repeating_list)
-
-    expected_list_item_id = None
-
-    list_item_id = schema.get_list_item_id_for_answer_id(
-        answer_id="answer1", list_item_id=expected_list_item_id
-    )
-
-    assert list_item_id == expected_list_item_id
-
-
-def test_get_list_item_id_for_answer_id_without_repeat_or_list_collector(
+def test_answer_should_not_have_list_item_id_without_repeat_or_list_collector(
     question_schema,
 ):
     schema = QuestionnaireSchema(question_schema)
 
-    list_item_id = schema.get_list_item_id_for_answer_id(
-        answer_id="answer1", list_item_id="abc123"
-    )
-
-    assert list_item_id is None
+    assert schema.answer_should_have_list_item_id(answer_id="answer1") is False
 
 
-def test_get_answer_within_repeat_with_list_item_id(section_with_repeating_list):
+def test_answer_should_have_list_item_id_within_repeat(section_with_repeating_list):
     schema = QuestionnaireSchema(section_with_repeating_list)
 
-    expected_list_item_id = "abc123"
-
-    list_item_id = schema.get_list_item_id_for_answer_id(
-        answer_id="proxy-answer", list_item_id=expected_list_item_id
-    )
-
-    assert list_item_id == expected_list_item_id
+    assert schema.answer_should_have_list_item_id(answer_id="proxy-answer") is True
 
 
-def test_get_answer_within_list_collector_with_list_item_id(
+def test_answer_should_have_list_item_id_within_list_collector(
     list_collector_variant_schema,
 ):
     schema = QuestionnaireSchema(list_collector_variant_schema)
 
-    expected_list_item_id = "abc123"
-
-    list_item_id = schema.get_list_item_id_for_answer_id(
-        answer_id="answer1", list_item_id=expected_list_item_id
-    )
-
-    assert list_item_id == expected_list_item_id
+    assert schema.answer_should_have_list_item_id(answer_id="answer1") is True
 
 
 def test_get_list_collector_for_list(list_collector_variant_schema):

@@ -1,3 +1,5 @@
+from unittest.mock import Mock
+
 from app.data_models.answer_store import AnswerStore
 from app.data_models.list_store import ListStore
 from app.questionnaire.placeholder_parser import PlaceholderParser
@@ -546,7 +548,7 @@ def test_placeholder_resolves_same_name_items():
     assert placeholders["answer"] == ["abc123", "fgh789"]
 
 
-def test_placeholder_resolves_name_is_duplicate_chain():
+def test_placeholder_resolves_name_is_duplicate_chain(mock_schema):
     list_store = ListStore(
         [
             {
@@ -630,8 +632,11 @@ def test_placeholder_resolves_name_is_duplicate_chain():
         }
     ]
 
+    mock_schema.answer_should_have_list_item_id = Mock(return_value=True)
+
     parser = PlaceholderParser(
         language="en",
+        schema=mock_schema,
         list_store=list_store,
         answer_store=answer_store,
         list_item_id="abc123",
@@ -643,6 +648,7 @@ def test_placeholder_resolves_name_is_duplicate_chain():
 
     parser = PlaceholderParser(
         language="en",
+        schema=mock_schema,
         list_store=list_store,
         answer_store=answer_store,
         list_item_id="cde456",
@@ -653,7 +659,7 @@ def test_placeholder_resolves_name_is_duplicate_chain():
     assert placeholders["persons_name"] == "Marie Smith"
 
 
-def test_placeholder_resolves_list_has_items_chain():
+def test_placeholder_resolves_list_has_items_chain(mock_schema):
     list_store = ListStore(
         [
             {
@@ -733,8 +739,11 @@ def test_placeholder_resolves_list_has_items_chain():
         }
     ]
 
+    mock_schema.answer_should_have_list_item_id = Mock(return_value=True)
+
     parser = PlaceholderParser(
         language="en",
+        schema=mock_schema,
         list_store=list_store,
         answer_store=answer_store,
         list_item_id="abc123",
@@ -746,6 +755,7 @@ def test_placeholder_resolves_list_has_items_chain():
 
     parser = PlaceholderParser(
         language="en",
+        schema=mock_schema,
         list_store=list_store,
         answer_store=answer_store,
         list_item_id="cde456",

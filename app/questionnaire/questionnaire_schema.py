@@ -366,17 +366,14 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
         if block := self.get_block_for_answer_id(answer_id):
             return self.is_block_in_repeating_section(block_id=block["id"])
 
-    def get_list_item_id_for_answer_id(
-        self, answer_id: str, list_item_id: Optional[str]
-    ) -> Optional[str]:
-        if (
-            list_item_id
-            and not self.is_answer_in_list_collector_block(answer_id)
-            and not self.is_answer_in_repeating_section(answer_id)
-        ):
-            return None
-
-        return list_item_id
+    def answer_should_have_list_item_id(
+        self,
+        answer_id: str,
+    ) -> bool:
+        return bool(
+            self.is_answer_in_list_collector_block(answer_id)
+            or self.is_answer_in_repeating_section(answer_id)
+        )
 
     def get_answers_by_answer_id(self, answer_id: str) -> Optional[list[ImmutableDict]]:
         """Return answers matching answer id, including all matching answers inside

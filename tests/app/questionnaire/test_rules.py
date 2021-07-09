@@ -820,7 +820,7 @@ class TestRules(AppContextTestCase):  # pylint: disable=too-many-public-methods
         )
 
         schema = Mock(get_schema())
-        schema.get_list_item_id_for_answer_id = Mock(return_value=list_item_id)
+        schema.answer_should_have_list_item_id = Mock(return_value=True)
 
         self.assertTrue(
             evaluate_when_rules(
@@ -848,7 +848,7 @@ class TestRules(AppContextTestCase):  # pylint: disable=too-many-public-methods
         )
 
         schema = Mock(get_schema())
-        schema.get_list_item_id_for_answer_id = Mock(return_value="123abc")
+        schema.answer_should_have_list_item_id = Mock(return_value=False)
 
         self.assertFalse(
             evaluate_when_rules(
