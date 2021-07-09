@@ -1,15 +1,14 @@
 import pytest
 from flask import Flask, current_app
 
-from app.helpers.template_helpers import (
+from app.helpers.template_config import (
     BusinessSurveyConfig,
     CensusNISRASurveyConfig,
     CensusSurveyConfig,
-    ContextHelper,
     SurveyConfig,
     WelshCensusSurveyConfig,
-    get_survey_config,
 )
+from app.helpers.template_helpers import ContextHelper, get_survey_config
 
 
 def test_footer_context_census_theme(app: Flask):
