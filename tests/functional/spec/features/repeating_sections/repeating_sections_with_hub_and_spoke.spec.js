@@ -145,7 +145,7 @@ describe("Feature: Repeating Sections with Hub and Spoke", () => {
 
     it("When the user views the summary for a repeating section, Then the page title is shown", () => {
       $(HubPage.summaryRowLink("personal-details-section-2")).click();
-      expect(browser.getTitle()).to.equal("…");
+      expect(browser.getTitle()).to.equal("… - Hub & Spoke");
     });
 
     it("When the user adds 2 visitors to the household then a section for each visitor should be display on the hub", () => {

@@ -45,7 +45,7 @@ describe("Feature: Hub and Spoke", () => {
 
     it("When a user views the Hub, Then the page title should be Choose another section to complete", () => {
       const pageTitle = browser.getTitle();
-      expect(pageTitle).to.equal("Choose another section to complete");
+      expect(pageTitle).to.equal("Choose another section to complete - Hub & Spoke");
     });
   });
 

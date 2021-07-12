@@ -38,7 +38,7 @@ class TestTimeout(IntegrationTestCase):
         self.get(self.last_url)
         self.assertStatusUnauthorised()
         self.assertInBody("To help protect your information we have timed you out")
-        self.assertEqualPageTitle("Session timed out")
+        self.assertEqualPageTitle("Session timed out - Timeout test")
 
     def test_submission_complete_timeout(self):
         self.launchSurvey("test_timeout")
@@ -48,4 +48,4 @@ class TestTimeout(IntegrationTestCase):
         self.get(self.last_url)
         self.assertStatusUnauthorised()
         self.assertInBody("This page is no longer available")
-        self.assertEqualPageTitle("Submission Complete")
+        self.assertEqualPageTitle("Submission Complete - Timeout test")
