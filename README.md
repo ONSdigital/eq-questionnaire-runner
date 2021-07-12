@@ -250,7 +250,7 @@ The following environment variables are optional:
 | EQ_NEW_RELIC_ENABLED               | False   | Enable New Relic monitoring                                                       |
 | NEW_RELIC_LICENSE_KEY              |         | New Relic license key                                                             |
 | NEW_RELIC_APP_NAME                 |         | Display name for the application in New Relic                                     |
-| WEB_SERVER_TYPE                    | gunicorn-async | Web server type used to run the application. This also determines the worker class which can be async/threaded
+| WEB_SERVER_TYPE                    | gunicorn-threads | Web server type used to run the application. This also determines the worker class which can be async/threaded
 | WEB_SERVER_WORKERS                 | 7        | The number of worker processes
 | WEB_SERVER_THREADS                 | 10       | The number of worker threads per worker
 | WEB_SERVER_UWSGI_ASYNC_CORES       | 10       | The number of cores to initialise when using "uwsgi-async" web server worker type
