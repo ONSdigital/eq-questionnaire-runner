@@ -1,10 +1,10 @@
 # Deploying with [Concourse](https://concourse-ci.org/)
 
-To deploy this application with Concourse, you must have a Kubernetes cluster already provisioned and be logged in to a Concourse instance that has access to the cluster.
+To deploy this application with Concourse, you must be logged in to a Concourse instance that has access to the project.
 
 ## Deploying credentials
 
-Before deploying the app you need to create credentials on Kubernetes. This can be done via Concourse using the following task commands:
+Before deploying the app you need to create credentials. This can be done via Concourse using the following task commands:
 
 ```sh
 REGION=<cluster_region> \
@@ -27,9 +27,7 @@ In addition to the environment variables specified in [Deploying the app](../REA
 To deploy the app to the cluster via Concourse, use the following task command, specifying the `image_registry` and the `deploy_image_version` variables:
 ```sh
 fly -t <target-concourse> execute \
-  --config ci/deploy_app.yaml \
-  -v image_registry=<docker-registry> \
-  -v deploy_image_version=<image-tag>
+  --config ci/deploy_app.yaml
 ```
 
 ## Backing up questionnaire state

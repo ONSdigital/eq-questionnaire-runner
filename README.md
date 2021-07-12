@@ -211,33 +211,18 @@ To run the tests against a remote deployment you will need to specify the enviro
 
 For deploying with Concourse see the [CI README](./ci/README.md).
 
-### Deployment with [Helm](https://helm.sh/)
-
-To deploy this application with helm, you must have a kubernetes cluster already running and be logged into the cluster.
-
-Log in to the cluster using:
-
-```
-gcloud container clusters get-credentials survey-runner --region <region> --project <gcp_project_id>
-```
-
-You need to have Helm installed locally
-
-1. Install Helm: <https://helm.sh/docs/intro/install/>. For Homebrew (macOS), install using: `brew install helm`
-
-
 ### Deploying credentials
 
-Before deploying the app to a cluster you need to create the application credentials on Kubernetes. Run the following command to provision the credentials:
+Before deploying the app to GCP you need to create the application credentials. Run the following command to provision the credentials:
 
 ```
-EQ_KEYS_FILE=PATH_TO_KEYS_FILE EQ_SECRETS_FILE=PATH_TO_SECRETS_FILE ./k8s/deploy_credentials.sh
+PROJECT_ID=PROJECT_ID EQ_KEYS_FILE=PATH_TO_KEYS_FILE EQ_SECRETS_FILE=PATH_TO_SECRETS_FILE ./ci/deploy_credentials.sh
 ```
 
 For example:
 
 ```
-EQ_KEYS_FILE=dev-keys.yml EQ_SECRETS_FILE=dev-secrets.yml ./k8s/deploy_credentials.sh
+PROJECT_ID=eq-test EQ_KEYS_FILE=dev-keys.yml EQ_SECRETS_FILE=dev-secrets.yml ./ci/deploy_credentials.sh
 ```
 
 ### Deploying the app
@@ -249,17 +234,17 @@ The following environment variables must be set when deploying the app.
 | SUBMISSION_BUCKET_NAME                    | The name of the bucket that submissions will be stored in                            |
 | DOCKER_REGISTRY                           | The FQDN of the target Docker registry                                               |
 | IMAGE_TAG                                 |                                                                                      |
-| REQUESTED_CPU_PER_POD                     | No. of CPUs to request per Pod                                                       |
-| MIN_REPLICAS                              | Minimum no. of replicated Pods                                                       |
-| MAX_REPLICAS                              | Maximum no. of replicated Pods                                                       |
 
 The following environment variables are optional:
 
 | Variable Name                      | Default | Description                                                                       |
 |------------------------------------| --------|-----------------------------------------------------------------------------------|
-| ROLLING_UPDATE_MAX_UNAVAILABLE     | 25%     | The maximum number of Pods that can be unavailable during the update process     |
-| ROLLING_UPDATE_MAX_SURGE           | 25%     | The maximum number of Pods that can be created over the desired number of Pods   |
-| TARGET_CPU_UTILIZATION_PERCENTAGE  |         | The average CPU utilization usage before auto scaling applies                    |
+| REGION                             |         |                                                                                   |
+| CONCURRENCY                        |         |                                                                                   |
+| MIN_INSTANCES                      |         |                                                                                   |
+| MAX_INSTANCES                      |         |                                                                                   |
+| CPU                                |         |                                                                                   |
+| MEMORY                             |         |                                                                                   |
 | GOOGLE_TAG_MANAGER_ID              |         |                                                                                   |
 | GOOGLE_TAG_MANAGER_AUTH            |         |                                                                                   |                                                                              |
 | EQ_NEW_RELIC_ENABLED               | False   | Enable New Relic monitoring                                                       |
@@ -274,10 +259,10 @@ The following environment variables are optional:
 
 
 
-To deploy the app to the cluster, run the following command:
+To deploy the app, run the following command:
 
 ```
-./k8s/deploy_app.sh
+./ci/deploy_app.sh
 ```
 ---
 

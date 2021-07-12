@@ -17,7 +17,7 @@ HTTP_KEEP_ALIVE="${HTTP_KEEP_ALIVE:=650}"
 
 EQ_KEYS_FILE="/keys/keys.yml"
 EQ_SECRETS_FILE="/secrets/secrets.yml"
-EQ_DATASTORE_USE_GRPC="${EQ_DATASTORE_USE_GRPC:=True}"
+DATASTORE_USE_GRPC="${DATASTORE_USE_GRPC:=True}"
 EQ_STORAGE_BACKEND="${EQ_STORAGE_BACKEND:=datastore}"
 EQ_ENABLE_SECURE_SESSION_COOKIE="${EQ_ENABLE_SECURE_SESSION_COOKIE:=True}"
 EQ_RABBITMQ_ENABLED="${EQ_RABBITMQ_ENABLED:=False}"
@@ -69,7 +69,7 @@ gcloud beta run deploy eq-questionnaire-runner \
     --set-secrets "${EQ_SECRETS_FILE}"="secrets:latest" \
     --set-env-vars EQ_KEYS_FILE="${EQ_KEYS_FILE}" \
     --set-env-vars EQ_SECRETS_FILE="${EQ_SECRETS_FILE}" \
-    --set-env-vars EQ_DATASTORE_USE_GRPC="${DATASTORE_USE_GRPC}" \
+    --set-env-vars DATASTORE_USE_GRPC="${DATASTORE_USE_GRPC}" \
     --set-env-vars EQ_STORAGE_BACKEND="${EQ_STORAGE_BACKEND}" \
     --set-env-vars EQ_ENABLE_SECURE_SESSION_COOKIE="${EQ_ENABLE_SECURE_SESSION_COOKIE}" \
     --set-env-vars EQ_RABBITMQ_ENABLED="${EQ_RABBITMQ_ENABLED}" \
