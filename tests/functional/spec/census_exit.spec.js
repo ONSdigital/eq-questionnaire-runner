@@ -2,8 +2,6 @@ import CensusThankYouPage from "../base_pages/census-thank-you.page.js";
 import HubPage from "../base_pages/hub.page";
 import { SubmitPage } from "../base_pages/submit.page.js";
 
-const BASE_URL = "https://census.gov.uk/";
-
 describe("Post submission exit", () => {
   beforeEach("Load the survey", () => {
     browser.openQuestionnaire("test_thank_you_census_household.json");
@@ -14,7 +12,7 @@ describe("Post submission exit", () => {
     $(HubPage.submit()).click();
     browser.deleteAllCookies();
     $(CensusThankYouPage.exit()).click();
-    expect(browser.getUrl()).to.equal(BASE_URL);
+    expect(browser.getUrl()).to.equal("https://surveys.ons.gov.uk/sign-in/");
   });
 
   it("Given I click the exit button from the thank you page, When I am redirected, Then I should be redirected to the correct log out url", () => {
