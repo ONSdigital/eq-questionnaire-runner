@@ -3,18 +3,18 @@ from typing import Iterable, Mapping, MutableMapping
 
 from flask_babel import lazy_gettext
 
-from app.helpers.template_config.link import Link
-from app.helpers.template_config.survey_config import SurveyConfig
+from app.survey_config.link import Link
+from app.survey_config.survey_config import SurveyConfig
 
-BUSINESS_BASE_URL = "https://surveys.ons.gov.uk"
+BASE_URL = "https://surveys.ons.gov.uk"
 
 
 @dataclass
 class BusinessSurveyConfig(
     SurveyConfig,
 ):
-    base_url: str = BUSINESS_BASE_URL
-    account_service_url: str = f"{BUSINESS_BASE_URL}/surveys/todo"
+    base_url: str = BASE_URL
+    account_service_url: str = f"{BASE_URL}/surveys/todo"
 
     footer_links: Iterable[MutableMapping] = field(
         default_factory=lambda: [

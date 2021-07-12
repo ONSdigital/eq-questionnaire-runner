@@ -9,7 +9,7 @@ from flask import url_for
 from flask_babel import get_locale, lazy_gettext
 
 from app.helpers.language_helper import get_languages_context
-from app.helpers.template_config import (
+from app.survey_config import (
     BusinessSurveyConfig,
     CensusNISRASurveyConfig,
     CensusSurveyConfig,
