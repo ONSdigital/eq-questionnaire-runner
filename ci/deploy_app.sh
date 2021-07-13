@@ -58,15 +58,15 @@ gcloud beta run deploy eq-questionnaire-runner \
     --image="${DOCKER_REGISTRY}/eq-questionnaire-runner:${IMAGE_TAG}" --platform=managed --allow-unauthenticated \
     --vpc-connector="redis-vpc" \
     --service-account="cloud-run@${PROJECT_ID}.iam.gserviceaccount.com" \
+    --set-secrets EQ_REDIS_HOST="redis-host:latest" \
+    --set-secrets EQ_REDIS_PORT="redis-port:latest" \
+    --set-secrets "${EQ_KEYS_FILE}"="keys:latest" \
+    --set-secrets "${EQ_SECRETS_FILE}"="secrets:latest" \
     --set-env-vars WEB_SERVER_TYPE="${WEB_SERVER_TYPE}" \
     --set-env-vars WEB_SERVER_WORKERS="${WEB_SERVER_WORKERS}" \
     --set-env-vars WEB_SERVER_THREADS="${WEB_SERVER_THREADS}" \
     --set-env-vars WEB_SERVER_UWSGI_ASYNC_CORES="${WEB_SERVER_UWSGI_ASYNC_CORES}" \
     --set-env-vars HTTP_KEEP_ALIVE="${HTTP_KEEP_ALIVE}" \
-    --set-secrets EQ_REDIS_HOST="redis-host:latest" \
-    --set-secrets EQ_REDIS_PORT="redis-port:latest" \
-    --set-secrets "${EQ_KEYS_FILE}"="keys:latest" \
-    --set-secrets "${EQ_SECRETS_FILE}"="secrets:latest" \
     --set-env-vars EQ_KEYS_FILE="${EQ_KEYS_FILE}" \
     --set-env-vars EQ_SECRETS_FILE="${EQ_SECRETS_FILE}" \
     --set-env-vars DATASTORE_USE_GRPC="${DATASTORE_USE_GRPC}" \
