@@ -211,6 +211,17 @@ To run the tests against a remote deployment you will need to specify the enviro
 
 For deploying with Concourse see the [CI README](./ci/README.md).
 
+### Deployment with [gcloud](https://cloud.google.com/sdk/gcloud)
+
+To deploy this application with gcloud, you must be logged in using `gcloud auth login` and `gcloud auth application-default login`.
+
+Make sure required [environmental variables](./README.md#environment-variables) are set.
+
+Then call the following command with environment variables set:
+```sh
+./ci/deploy_app.sh
+```
+
 ### Deploying credentials
 
 Before deploying the app to GCP you need to create the application credentials. Run the following command to provision the credentials:
