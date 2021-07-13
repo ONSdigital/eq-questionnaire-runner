@@ -215,7 +215,7 @@ For deploying with Concourse see the [CI README](./ci/README.md).
 
 To deploy this application with gcloud, you must be logged in using `gcloud auth login` and `gcloud auth application-default login`.
 
-Make sure required [environmental variables](./README.md#environment-variables) are set.
+Make sure required [environmental variables](./README.md#deploying-the-app) are set.
 
 Then call the following command with environment variables set:
 ```sh
