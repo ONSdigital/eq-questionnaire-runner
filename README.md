@@ -318,7 +318,8 @@ The following env variables can be used
 | EQ_SECRETS_FILE                           | secrets.yml           | The location of the secrets file                                                              |
 | EQ_KEYS_FILE                              | keys.yml              | The location of the keys file                                                                 |
 | EQ_SUBMISSION_BACKEND                     |                       | Which submission backed to use ( gcs, rabbitmq, log )                                         |
-| EQ_GCS_SUBMISSION_BUCKET_ID               |                       | The Bucket id in Google cloud platform to store the submissions in                            |
+| SUBMISSION_BUCKET_NAME                    |                       | The Bucket id in Google cloud platform to store the submissions in                            |
+| FEEDBACK_BUCKET_NAME                      |                       | The Bucket id in Google cloud platform to store the feedback in                               |
 | EQ_RABBITMQ_HOST                          |                       |                                                                                               |
 | EQ_RABBITMQ_HOST_SECONDARY                |                       |                                                                                               |
 | EQ_RABBITMQ_PORT                          | 5672                  |                                                                                               |
