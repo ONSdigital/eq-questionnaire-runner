@@ -365,7 +365,11 @@ def render_template(template: str, **kwargs: Union[str, Mapping]) -> str:
     language = get_locale().language
     survey_config = get_survey_config(language=language)
     is_post_submission = request.blueprint == "post_submission"
-    include_csrf_token = bool(request.url_rule and "POST" in request.url_rule.methods)
+    include_csrf_token = bool(
+        request.url_rule
+        and request.url_rule.methods
+        and "POST" in request.url_rule.methods
+    )
 
     context = ContextHelper(
         language, is_post_submission, include_csrf_token, survey_config

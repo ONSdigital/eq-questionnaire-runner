@@ -18,11 +18,9 @@ class MultipleClientTestCase(IntegrationTestCase):
         self.get(client, "/session?token=" + token)
 
     def get(self, client, url, **kwargs):
-        environ, response = client.get(
-            url, as_tuple=True, follow_redirects=True, **kwargs
-        )
+        response = client.get(url, follow_redirects=True, **kwargs)
 
-        self._cache_response(client, environ, response)
+        self._cache_response(client, response)
 
     def dumpSubmission(self, client):
         cache = self.cache[client]
@@ -51,13 +49,12 @@ class MultipleClientTestCase(IntegrationTestCase):
         if action:
             _post_data.update({"action[{action}]".format(action=action): ""})
 
-        environ, response = client.post(
-            url, data=_post_data, as_tuple=True, follow_redirects=True, **kwargs
-        )
+        response = client.post(url, data=_post_data, follow_redirects=True, **kwargs)
 
-        self._cache_response(client, environ, response)
+        self._cache_response(client, response)
 
-    def _cache_response(self, client, environ, response):
+    def _cache_response(self, client, response):
+        environ = response.request.environ
         cache = self.cache[client]
 
         cache["last_csrf_token"] = self._extract_csrf_token(response.get_data(True))

@@ -5,7 +5,7 @@ from typing import Mapping
 from flask import current_app, url_for
 from flask_babel import gettext, lazy_gettext
 from itsdangerous import BadSignature
-from jinja2 import escape
+from markupsafe import escape
 from werkzeug.exceptions import BadRequest
 
 from app.cloud_tasks.exceptions import CloudTaskCreationFailed
