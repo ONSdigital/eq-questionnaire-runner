@@ -1,6 +1,22 @@
 #!/usr/bin/env bash
 set -exo pipefail
 
+if [[ -z "$PROJECT_ID" ]]; then
+  echo "PROJECT_ID not provided"
+  exit 1
+fi
+
+if [[ -z "$DOCKER_REGISTRY" ]]; then
+  echo "DOCKER_REGISTRY not provided"
+  exit 1
+fi
+
+if [[ -z "$IMAGE_TAG" ]]; then
+  echo "IMAGE_TAG not provided"
+  exit 1
+fi
+
+
 REGION="${REGION:=europe-west2}"
 
 CONCURRENCY="${CONCURRENCY:=80}"
