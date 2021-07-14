@@ -24,7 +24,7 @@ In addition to the environment variables specified in [Deploying the app](../REA
 | REGION                                    | What region to authenticate against                                                  |
 | PROJECT_ID                                | The ID of the GCP target project                                                     |
 
-To deploy the app to the via Concourse, use the following task command, specifying the `image_registry` and the `deploy_image_version` variables:
+To deploy the app to the via Concourse, use the following task command:
 ```sh
 fly -t <target-concourse> execute \
   --config ci/deploy_app.yaml
