@@ -1,284 +1,284 @@
 {
-   "mime_type":"application/json/ons/eq",
-   "language":"en",
-   "schema_version":"0.0.1",
-   "data_version":"0.0.3",
-   "survey_id":"0",
-   "title":"Placeholder Test",
-   "theme":"default",
-   "description":"A questionnaire to test placeholders",
-   "navigation":{
-      "visible":true
-   },
-   "metadata":[
-      {
-         "name":"user_id",
-         "type":"string"
-      },
-      {
-         "name":"period_id",
-         "type":"string"
-      },
-      {
-         "name":"ru_name",
-         "type":"string"
-      },
-      {
-         "name":"ru_ref",
-         "type":"string"
-      },
-      {
-         "name":"trad_as",
-         "type":"string",
-         "optional":true
-      }
-   ],
-   "questionnaire_flow":{
-      "type":"Linear",
-      "options":{
-         "summary":{
-            "collapsible":false
-         }
-      }
-   },
-   "sections":[
-      {
-         "id":"retail-turnover-section",
-         "title":"Retail Turnover Input",
-         "groups":[
-            {
-               "id":"retail-turnover-group",
-               "blocks":[
-                  {
-                     "id":"introduction",
-                     "type":"Introduction",
-                     "primary_content":[
+    "mime_type": "application/json/ons/eq",
+    "language": "en",
+    "schema_version": "0.0.1",
+    "data_version": "0.0.3",
+    "survey_id": "0",
+    "title": "Placeholder Test",
+    "theme": "default",
+    "description": "A questionnaire to test placeholders",
+    "navigation": {
+        "visible": true
+    },
+    "metadata": [
+        {
+            "name": "user_id",
+            "type": "string"
+        },
+        {
+            "name": "period_id",
+            "type": "string"
+        },
+        {
+            "name": "ru_name",
+            "type": "string"
+        },
+        {
+            "name": "ru_ref",
+            "type": "string"
+        },
+        {
+            "name": "trad_as",
+            "type": "string",
+            "optional": true
+        }
+    ],
+    "questionnaire_flow": {
+        "type": "Linear",
+        "options": {
+            "summary": {
+                "collapsible": false
+            }
+        }
+    },
+    "sections": [
+        {
+            "id": "retail-turnover-section",
+            "title": "Retail Turnover Input",
+            "groups": [
+                {
+                    "id": "retail-turnover-group",
+                    "blocks": [
                         {
-                           "id":"use-of-information",
-                           "title":{
-                              "text":"You are completing this for {company_name}",
-                              "placeholders":[
-                                 {
-                                    "placeholder":"company_name",
-                                    "transforms":[
-                                       {
-                                          "transform":"first_non_empty_item",
-                                          "arguments":{
-                                             "items":[
+                            "id": "introduction",
+                            "type": "Introduction",
+                            "primary_content": [
+                                {
+                                    "id": "use-of-information",
+                                    "title": {
+                                        "text": "You are completing this for {company_name}",
+                                        "placeholders": [
+                                            {
+                                                "placeholder": "company_name",
+                                                "transforms": [
+                                                    {
+                                                        "transform": "first_non_empty_item",
+                                                        "arguments": {
+                                                            "items": [
+                                                                {
+                                                                    "source": "metadata",
+                                                                    "identifier": "trad_as"
+                                                                },
+                                                                {
+                                                                    "source": "metadata",
+                                                                    "identifier": "ru_name"
+                                                                }
+                                                            ]
+                                                        }
+                                                    }
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "contents": [
+                                        {
+                                            "description": {
+                                                "text": "If the company details or structure have changed contact us on {telephone_number_link} or email {email_link}",
+                                                "placeholders": [
+                                                    {
+                                                        "placeholder": "telephone_number_link",
+                                                        "transforms": [
+                                                            {
+                                                                "transform": "telephone_number_link",
+                                                                "arguments": {
+                                                                    "telephone_number": "0300 1234 931"
+                                                                }
+                                                            }
+                                                        ]
+                                                    },
+                                                    {
+                                                        "placeholder": "email_link",
+                                                        "transforms": [
+                                                            {
+                                                                "transform": "email_link",
+                                                                "arguments": {
+                                                                    "email_address": "surveys@ons.gov.uk",
+                                                                    "email_subject": "Change of details reference",
+                                                                    "email_subject_append": {
+                                                                        "identifier": "ru_ref",
+                                                                        "source": "metadata"
+                                                                    }
+                                                                }
+                                                            }
+                                                        ]
+                                                    }
+                                                ]
+                                            }
+                                        }
+                                    ]
+                                }
+                            ]
+                        },
+                        {
+                            "type": "Question",
+                            "id": "total-retail-turnover-block",
+                            "question": {
+                                "id": "total-retail-turnover-question",
+                                "title": "Please enter the total retail turnover",
+                                "type": "General",
+                                "answers": [
+                                    {
+                                        "id": "total-retail-turnover-answer",
+                                        "label": "Total Retail Turnover",
+                                        "mandatory": true,
+                                        "type": "Currency",
+                                        "currency": "GBP",
+                                        "decimal_places": 2
+                                    }
+                                ]
+                            }
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "percent-input-section",
+            "title": "Reporting Confirmation",
+            "groups": [
+                {
+                    "blocks": [
+                        {
+                            "type": "Question",
+                            "id": "report-period",
+                            "question": {
+                                "type": "General",
+                                "id": "total-retail-turnover-confirmation-question",
+                                "title": "Please enter the value of internet sales",
+                                "description": [
+                                    {
+                                        "text": "Of the <em>{total_turnover}</em> total retail turnover, what was the value of internet sales?",
+                                        "placeholders": [
+                                            {
+                                                "placeholder": "total_turnover",
+                                                "transforms": [
+                                                    {
+                                                        "transform": "format_currency",
+                                                        "arguments": {
+                                                            "number": {
+                                                                "source": "answers",
+                                                                "identifier": "total-retail-turnover-answer"
+                                                            }
+                                                        }
+                                                    }
+                                                ]
+                                            }
+                                        ]
+                                    }
+                                ],
+                                "answers": [
+                                    {
+                                        "id": "total-retail-turnover-internet-sales-answer",
+                                        "label": "Value of Internet Sales",
+                                        "mandatory": true,
+                                        "type": "Currency",
+                                        "currency": "GBP",
+                                        "decimal_places": 2
+                                    }
+                                ]
+                            }
+                        }
+                    ],
+                    "id": "retail-confirmation-group"
+                }
+            ]
+        },
+        {
+            "id": "total-items",
+            "title": "Total Amount of Items",
+            "groups": [
+                {
+                    "id": "total-items-group",
+                    "blocks": [
+                        {
+                            "type": "Question",
+                            "id": "total-items-block",
+                            "question": {
+                                "id": "total-items-question",
+                                "title": "Please enter the number of items",
+                                "type": "General",
+                                "answers": [
+                                    {
+                                        "id": "total-items-answer",
+                                        "label": "Number of Items",
+                                        "mandatory": false,
+                                        "type": "Number",
+                                        "default": 0
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "id": "add-item",
+                            "question": {
+                                "answers": [
+                                    {
+                                        "id": "add-item-answer",
+                                        "mandatory": false,
+                                        "options": [
+                                            {
+                                                "label": "Yes",
+                                                "value": "Yes"
+                                            },
+                                            {
+                                                "label": "No",
+                                                "value": "No"
+                                            }
+                                        ],
+                                        "type": "Radio"
+                                    }
+                                ],
+                                "id": "add-item-question",
+                                "title": {
+                                    "placeholders": [
+                                        {
+                                            "placeholder": "item",
+                                            "transforms": [
                                                 {
-                                                   "source":"metadata",
-                                                   "identifier":"trad_as"
+                                                    "transform": "add",
+                                                    "arguments": {
+                                                        "lhs": {
+                                                            "source": "answers",
+                                                            "identifier": "total-items-answer"
+                                                        },
+                                                        "rhs": {
+                                                            "value": 1
+                                                        }
+                                                    }
                                                 },
                                                 {
-                                                   "source":"metadata",
-                                                   "identifier":"ru_name"
+                                                    "arguments": {
+                                                        "number_to_format": {
+                                                            "source": "previous_transform"
+                                                        },
+                                                        "determiner": {
+                                                            "value": "a_or_an"
+                                                        }
+                                                    },
+                                                    "transform": "format_ordinal"
                                                 }
-                                             ]
-                                          }
-                                       }
-                                    ]
-                                 }
-                              ]
-                           },
-                           "contents":[
-                              {
-                                 "description":{
-                                    "text":"If the company details or structure have changed contact us on {telephone_number_link} or email {email_link}",
-                                    "placeholders":[
-                                       {
-                                          "placeholder":"telephone_number_link",
-                                          "transforms":[
-                                             {
-                                                "transform":"telephone_number_link",
-                                                "arguments":{
-                                                   "telephone_number":"0300 1234 931"
-                                                }
-                                             }
-                                          ]
-                                       },
-                                       {
-                                          "placeholder":"email_link",
-                                          "transforms":[
-                                             {
-                                                "transform":"email_link",
-                                                "arguments":{
-                                                   "email_address":"surveys@ons.gov.uk",
-                                                   "email_subject":"Change of details reference",
-                                                   "email_subject_append":{
-                                                      "identifier":"ru_ref",
-                                                      "source":"metadata"
-                                                   }
-                                                }
-                                             }
-                                          ]
-                                       }
-                                    ]
-                                 }
-                              }
-                           ]
+                                            ]
+                                        }
+                                    ],
+                                    "text": "Do you want to add <em>{item}</em> item?"
+                                },
+                                "type": "General"
+                            },
+                            "type": "Question"
                         }
-                     ]
-                  },
-                  {
-                     "type":"Question",
-                     "id":"total-retail-turnover-block",
-                     "question":{
-                        "id":"total-retail-turnover-question",
-                        "title":"Please enter the total retail turnover",
-                        "type":"General",
-                        "answers":[
-                           {
-                              "id":"total-retail-turnover-answer",
-                              "label":"Total Retail Turnover",
-                              "mandatory":true,
-                              "type":"Currency",
-                              "currency":"GBP",
-                              "decimal_places":2
-                           }
-                        ]
-                     }
-                  }
-               ]
-            }
-         ]
-      },
-      {
-         "id":"percent-input-section",
-         "title":"Reporting Confirmation",
-         "groups":[
-            {
-               "blocks":[
-                  {
-                     "type":"Question",
-                     "id":"report-period",
-                     "question":{
-                        "type":"General",
-                        "id":"total-retail-turnover-confirmation-question",
-                        "title":"Please enter the value of internet sales",
-                        "description":[
-                           {
-                              "text":"Of the <em>{total_turnover}</em> total retail turnover, what was the value of internet sales?",
-                              "placeholders":[
-                                 {
-                                    "placeholder":"total_turnover",
-                                    "transforms":[
-                                       {
-                                          "transform":"format_currency",
-                                          "arguments":{
-                                             "number":{
-                                                "source":"answers",
-                                                "identifier":"total-retail-turnover-answer"
-                                             }
-                                          }
-                                       }
-                                    ]
-                                 }
-                              ]
-                           }
-                        ],
-                        "answers":[
-                           {
-                              "id":"total-retail-turnover-internet-sales-answer",
-                              "label":"Value of Internet Sales",
-                              "mandatory":true,
-                              "type":"Currency",
-                              "currency":"GBP",
-                              "decimal_places":2
-                           }
-                        ]
-                     }
-                  }
-               ],
-               "id":"retail-confirmation-group"
-            }
-         ]
-      },
-      {
-         "id":"total-items",
-         "title":"Total Amount of Items",
-         "groups":[
-            {
-               "id":"total-items-group",
-               "blocks":[
-                  {
-                     "type":"Question",
-                     "id":"total-items-block",
-                     "question":{
-                        "id":"total-items-question",
-                        "title":"Please enter the number of items",
-                        "type":"General",
-                        "answers":[
-                           {
-                              "id":"total-items-answer",
-                              "label":"Number of Items",
-                              "mandatory":false,
-                              "type":"Number",
-                              "default":0
-                           }
-                        ]
-                     }
-                  },
-                  {
-                     "id":"add-item",
-                     "question":{
-                        "answers":[
-                           {
-                              "id":"add-item-answer",
-                              "mandatory":false,
-                              "options":[
-                                 {
-                                    "label":"Yes",
-                                    "value":"Yes"
-                                 },
-                                 {
-                                    "label":"No",
-                                    "value":"No"
-                                 }
-                              ],
-                              "type":"Radio"
-                           }
-                        ],
-                        "id":"add-item-question",
-                        "title":{
-                           "placeholders":[
-                              {
-                                 "placeholder":"item",
-                                 "transforms":[
-                                    {
-                                       "transform":"add",
-                                       "arguments":{
-                                          "lhs":{
-                                             "source":"answers",
-                                             "identifier":"total-items-answer"
-                                          },
-                                          "rhs":{
-                                             "value":1
-                                          }
-                                       }
-                                    },
-                                    {
-                                       "arguments":{
-                                          "number_to_format":{
-                                             "source":"previous_transform"
-                                          },
-                                          "determiner":{
-                                             "value":"a_or_an"
-                                          }
-                                       },
-                                       "transform":"format_ordinal"
-                                    }
-                                 ]
-                              }
-                           ],
-                           "text":"Do you want to add <em>{item}</em> item?"
-                        },
-                        "type":"General"
-                     },
-                     "type":"Question"
-                  }
-               ]
-            }
-         ]
-      }
-   ]
+                    ]
+                }
+            ]
+        }
+    ]
 }
