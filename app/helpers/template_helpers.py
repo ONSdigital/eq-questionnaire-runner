@@ -28,8 +28,7 @@ class Link:
 @dataclass
 class SurveyConfig:
     """Valid options for defining survey-based configuration."""
-
-    page_header_logo: Optional[str] = "ons-logo-pos-en"
+    page_header_logo: Optional[str] = "ons-logo-en"
     page_header_logo_alt: Optional[LazyString] = lazy_gettext(
         "Office for National Statistics logo"
     )
