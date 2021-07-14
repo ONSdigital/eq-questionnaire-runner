@@ -9,22 +9,6 @@
   {%- endfor -%}
 {%- endmacro -%}
 
-{%- macro telephone_number(tel="0300 1234 931", aria_describedby=None, class=None) -%}
-  {% set attr = {
-    "aria-describedby": aria_describedby,
-    "class": class
-  } %}
-<a href="tel:{{tel.replace(' ', '')}}"{{attr|xmlattr}}>{{tel}}</a>
-{%- endmacro -%}
-
-{%- macro email_address(email="surveys@ons.gov.uk", aria_describedby=None, subject=None, class=None) -%}
-  {% set attr = {
-    "aria-describedby": aria_describedby,
-    "class": class
-  } %}
-<a href="mailto:{{email}}{% if subject %}?subject={{ subject|urlencode }}{% endif %}" {{attr|xmlattr}}>{{email}}</a>
-{%- endmacro -%}
-
 {%- macro interviewer_note(title=None) -%}
 <mark class="instruction">{{_("Interviewer note:")}}</mark>{{ title }}
 {%- endmacro -%}

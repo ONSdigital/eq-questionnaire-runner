@@ -1,4 +1,5 @@
 from datetime import datetime
+from urllib.parse import quote
 
 from babel.dates import format_datetime
 from babel.numbers import format_currency, format_decimal
@@ -59,6 +60,27 @@ class PlaceholderTransforms:
     def concatenate_list(self, list_to_concatenate, delimiter):
         filtered_list = self.remove_empty_from_list(list_to_concatenate)
         return delimiter.join(filtered_list)
+
+    def telephone_number_link(self, telephone_number: str) -> str:
+        href = f"tel:{telephone_number.replace(' ', '')}"
+        return self._create_hyperlink(href, telephone_number)
+
+    def email_link(
+        self,
+        email_address: str,
+        email_subject: str = None,
+        email_subject_append: str = None,
+    ) -> str:
+        href = f"mailto:{email_address}"
+        if email_subject:
+            email_subject = (
+                f"{email_subject} {email_subject_append}"
+                if email_subject_append
+                else email_subject
+            )
+            href = f"{href}?subject={quote(email_subject)}"
+
+        return self._create_hyperlink(href, email_address)
 
     def format_possessive(self, string_to_format):
         if string_to_format and self.language == "en":
@@ -200,3 +222,7 @@ class PlaceholderTransforms:
             if include_middle_names and middle_names
             else f"{first_name} {last_name}"
         )
+
+    @staticmethod
+    def _create_hyperlink(href: str, link_text: str) -> str:
+        return f'<a href="{href}">{link_text}</a>'
