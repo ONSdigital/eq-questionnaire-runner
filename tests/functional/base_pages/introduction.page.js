@@ -32,10 +32,6 @@ class IntroductionBasePage extends BasePage {
   introDescription() {
     return "#use-of-information p";
   }
-
-  introTitleDescription() {
-    return '[data-qa="details-changed-title"]';
-  }
 }
 
 export default IntroductionBasePage;
