@@ -188,7 +188,7 @@ class TestCreateApp(unittest.TestCase):  # pylint: disable=too-many-public-metho
     def test_adds_gcs_submitter_to_the_application(self):
         # Given
         self._setting_overrides["EQ_SUBMISSION_BACKEND"] = "gcs"
-        self._setting_overrides["SUBMISSION_BUCKET_NAME"] = "123"
+        self._setting_overrides["EQ_SUBMISSION_BUCKET_NAME"] = "123"
 
         # When
         with patch("google.cloud.storage.Client"):
@@ -206,7 +206,7 @@ class TestCreateApp(unittest.TestCase):  # pylint: disable=too-many-public-metho
             create_app(self._setting_overrides)
 
         # Then
-        assert "Setting SUBMISSION_BUCKET_NAME Missing" in str(ex.exception)
+        assert "Setting EQ_SUBMISSION_BUCKET_NAME Missing" in str(ex.exception)
 
     def test_adds_rabbit_submitter_to_the_application(self):
         # Given
@@ -354,7 +354,7 @@ class TestCreateApp(unittest.TestCase):  # pylint: disable=too-many-public-metho
     def test_adds_gcs_feedback_to_the_application(self):
         # Given
         self._setting_overrides["EQ_FEEDBACK_BACKEND"] = "gcs"
-        self._setting_overrides["FEEDBACK_BUCKET_NAME"] = "123456"
+        self._setting_overrides["EQ_FEEDBACK_BUCKET_NAME"] = "123456"
 
         # When
         with patch("google.cloud.storage.Client"):
@@ -372,7 +372,7 @@ class TestCreateApp(unittest.TestCase):  # pylint: disable=too-many-public-metho
             create_app(self._setting_overrides)
 
         # Then
-        assert "Setting FEEDBACK_BUCKET_NAME Missing" in str(ex.exception)
+        assert "Setting EQ_FEEDBACK_BUCKET_NAME Missing" in str(ex.exception)
 
     def test_defaults_to_gzip_compression(self):
         application = create_app(self._setting_overrides)

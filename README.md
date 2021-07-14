@@ -246,7 +246,7 @@ The following environment variables must be set when deploying the app.
 
 | Variable Name                             | Description                                                                          |
 |-------------------------------------------|--------------------------------------------------------------------------------------|
-| SUBMISSION_BUCKET_NAME                    | The name of the bucket that submissions will be stored in                            |
+| EQ_SUBMISSION_BUCKET_NAME                 | The name of the bucket that submissions will be stored in                            |
 | DOCKER_REGISTRY                           | The FQDN of the target Docker registry                                               |
 | IMAGE_TAG                                 |                                                                                      |
 
@@ -318,8 +318,8 @@ The following env variables can be used
 | EQ_SECRETS_FILE                           | secrets.yml           | The location of the secrets file                                                              |
 | EQ_KEYS_FILE                              | keys.yml              | The location of the keys file                                                                 |
 | EQ_SUBMISSION_BACKEND                     |                       | Which submission backed to use ( gcs, rabbitmq, log )                                         |
-| SUBMISSION_BUCKET_NAME                    |                       | The Bucket id in Google cloud platform to store the submissions in                            |
-| FEEDBACK_BUCKET_NAME                      |                       | The Bucket id in Google cloud platform to store the feedback in                               |
+| EQ_SUBMISSION_BUCKET_NAME                 |                       | The Bucket id in Google cloud platform to store the submissions in                            |
+| EQ_FEEDBACK_BUCKET_NAME                   |                       | The Bucket id in Google cloud platform to store the feedback in                               |
 | EQ_RABBITMQ_HOST                          |                       |                                                                                               |
 | EQ_RABBITMQ_HOST_SECONDARY                |                       |                                                                                               |
 | EQ_RABBITMQ_PORT                          | 5672                  |                                                                                               |
