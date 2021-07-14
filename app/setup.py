@@ -321,12 +321,12 @@ def setup_redis(application):
 
 def setup_submitter(application):
     if application.config["EQ_SUBMISSION_BACKEND"] == "gcs":
-        bucket_id = application.config.get("EQ_SUBMISSION_BUCKET_NAME")
+        bucket_name = application.config.get("EQ_SUBMISSION_BUCKET_NAME")
 
-        if not bucket_id:
+        if not bucket_name:
             raise Exception("Setting EQ_SUBMISSION_BUCKET_NAME Missing")
 
-        application.eq["submitter"] = GCSSubmitter(bucket_name=bucket_id)
+        application.eq["submitter"] = GCSSubmitter(bucket_name=bucket_name)
 
     elif application.config["EQ_SUBMISSION_BACKEND"] == "rabbitmq":
         host = application.config.get("EQ_RABBITMQ_HOST")
@@ -379,13 +379,13 @@ def setup_publisher(application):
 
 def setup_feedback(application):
     if application.config["EQ_FEEDBACK_BACKEND"] == "gcs":
-        bucket_id = application.config.get("EQ_FEEDBACK_BUCKET_NAME")
+        bucket_name = application.config.get("EQ_FEEDBACK_BUCKET_NAME")
 
-        if not bucket_id:
+        if not bucket_name:
             raise Exception("Setting EQ_FEEDBACK_BUCKET_NAME Missing")
 
         application.eq["feedback_submitter"] = GCSFeedbackSubmitter(
-            bucket_name=bucket_id
+            bucket_name=bucket_name
         )
 
     elif application.config["EQ_FEEDBACK_BACKEND"] == "log":
