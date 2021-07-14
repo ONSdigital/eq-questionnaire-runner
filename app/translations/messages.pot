@@ -225,6 +225,19 @@ msgid "The following links open in a new tab"
 msgstr ""
 
 #: app/helpers/template_helpers.py:169
+
+#: app/helpers/template_helpers.py:60 app/survey_config/business_config.py:22
+#: app/survey_config/census_config.py:30 app/survey_config/census_config.py:79
+#: app/survey_config/census_config.py:139
+msgid "Contact us"
+msgstr ""
+
+#: app/helpers/template_helpers.py:103
+msgid "The following links open in a new tab"
+msgstr ""
+
+#: app/helpers/template_helpers.py:133
+
 msgid ""
 "Make sure you <a href='{sign_out_url}'>leave this page</a> or close your "
 "browser if using a shared device"
@@ -276,6 +289,7 @@ msgid "Crown copyright and database rights 2021 NIMA MOU577.501."
 msgstr ""
 
 #: app/questionnaire/placeholder_transforms.py:114
+
 msgid "{number_of_years} year"
 msgid_plural "{number_of_years} years"
 msgstr[0] ""
@@ -351,6 +365,73 @@ msgstr ""
 
 #: app/routes/individual_response.py:264
 msgid "An individual access code has been sent by text"
+msgstr ""
+
+#: app/survey_config/business_config.py:21
+msgid "What we do"
+msgstr ""
+
+#: app/survey_config/business_config.py:24
+msgid "Accessibility"
+msgstr ""
+
+#: app/survey_config/business_config.py:34
+#: app/survey_config/census_config.py:44 app/survey_config/census_config.py:94
+#: app/survey_config/census_config.py:146
+msgid "Cookies"
+msgstr ""
+
+#: app/survey_config/business_config.py:36
+#: app/survey_config/census_config.py:50 app/survey_config/census_config.py:100
+#: app/survey_config/census_config.py:152
+msgid "Privacy and data protection"
+msgstr ""
+
+#: app/survey_config/census_config.py:20 app/survey_config/census_config.py:63
+msgid "Census 2021"
+msgstr ""
+
+#: app/survey_config/census_config.py:27 app/survey_config/census_config.py:76
+#: app/survey_config/census_config.py:136
+msgid "Help"
+msgstr ""
+
+#: app/survey_config/census_config.py:32 app/survey_config/census_config.py:81
+msgid "Languages"
+msgstr ""
+
+#: app/survey_config/census_config.py:36 app/survey_config/census_config.py:85
+msgid "BSL and audio videos"
+msgstr ""
+
+#: app/survey_config/census_config.py:46 app/survey_config/census_config.py:96
+#: app/survey_config/census_config.py:148
+msgid "Accessibility statement"
+msgstr ""
+
+#: app/survey_config/census_config.py:54 app/survey_config/census_config.py:104
+#: app/survey_config/census_config.py:156
+msgid "Terms and conditions"
+msgstr ""
+
+#: app/survey_config/census_config.py:122
+msgid "Northern Ireland Statistics and Research Agency logo"
+msgstr ""
+
+#: app/survey_config/census_config.py:127
+msgid "Crown copyright and database rights 2021 NIMA MOU577.501."
+msgstr ""
+
+#: app/survey_config/census_config.py:130 app/survey_config/survey_config.py:21
+msgid "Use of address data is subject to the terms and conditions."
+msgstr ""
+
+#: app/survey_config/survey_config.py:15
+msgid "Office for National Statistics logo"
+msgstr ""
+
+#: app/survey_config/survey_config.py:18
+msgid "Crown copyright and database rights 2020 OS 100019153."
 msgstr ""
 
 #: app/views/contexts/hub_context.py:14
