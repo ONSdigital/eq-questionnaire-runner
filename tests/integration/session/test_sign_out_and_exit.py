@@ -1,4 +1,4 @@
-from app.helpers.template_helpers import CENSUS_EN_BASE_URL
+from app.survey_config.business_config import BASE_URL
 from tests.integration.integration_test_case import IntegrationTestCase
 
 SIGN_OUT_URL_PATH = "/sign-out"
@@ -14,7 +14,7 @@ class TestSaveAndSignOut(IntegrationTestCase):
         for schema in ["test_textfield", "test_hub_and_spoke"]:
             with self.subTest(schema=schema):
                 self.get(SIGN_OUT_URL_PATH, follow_redirects=False)
-                self.assertInRedirect(CENSUS_EN_BASE_URL)
+                self.assertInRedirect(BASE_URL)
 
     def test_no_account_service_log_out_url_redirects_to_signed_out_page(self):
         for schema in ["test_textfield", "test_hub_and_spoke"]:
