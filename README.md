@@ -317,7 +317,7 @@ The following env variables can be used
 | EQ_ENABLE_LIVE_RELOAD                     | False                 | Enable livereload of browser when scripts, styles or templates are updated                    |
 | EQ_SECRETS_FILE                           | secrets.yml           | The location of the secrets file                                                              |
 | EQ_KEYS_FILE                              | keys.yml              | The location of the keys file                                                                 |
-| EQ_SUBMISSION_BACKEND                     |                       | Which submission backed to use ( gcs, rabbitmq, log )                                         |
+| EQ_SUBMISSION_BACKEND                     |                       | Which submission backend to use ( gcs, rabbitmq, log )                                         |
 | EQ_SUBMISSION_BUCKET_NAME                 |                       | The Bucket id in Google cloud platform to store the submissions in                            |
 | EQ_FEEDBACK_BUCKET_NAME                   |                       | The Bucket id in Google cloud platform to store the feedback in                               |
 | EQ_RABBITMQ_HOST                          |                       |                                                                                               |
