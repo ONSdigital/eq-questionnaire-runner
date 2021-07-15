@@ -215,11 +215,7 @@ For deploying with Concourse see the [CI README](./ci/README.md).
 
 To deploy this application with gcloud, you must be logged in using `gcloud auth login` and `gcloud auth application-default login`.
 
-In addition to the environment variables specified in [Deploying the app](./README.md#deploying-the-app), when deploying with gcloud the following must also be set.
-
-| Variable Name                             | Description                                                                          |
-|-------------------------------------------|--------------------------------------------------------------------------------------|
-| PROJECT_ID                                | The ID of the GCP target project                                                     |
+When deploying with gcloud the environment variables specified in [Deploying the app](./README.md#deploying-the-app) must be set.
 
 Then call the following command with environment variables set:
 ```sh
@@ -246,7 +242,7 @@ The following environment variables must be set when deploying the app.
 
 | Variable Name                             | Description                                                                          |
 |-------------------------------------------|--------------------------------------------------------------------------------------|
-| EQ_SUBMISSION_BUCKET_NAME                 | The name of the bucket that submissions will be stored in                            |
+| PROJECT_ID                                | The ID of the GCP target project                                                     |
 | DOCKER_REGISTRY                           | The FQDN of the target Docker registry                                               |
 | IMAGE_TAG                                 |                                                                                      |
 

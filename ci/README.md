@@ -7,7 +7,6 @@ To deploy this application with Concourse, you must be logged in to a Concourse 
 Before deploying the app you need to create credentials. This can be done via Concourse using the following task commands:
 
 ```sh
-REGION=<cluster_region> \
 PROJECT_ID=<project_id> \
 EQ_KEYS_FILE=<path_to_keys_file> \
 EQ_SECRETS_FILE=<path_to_secrets_file> \
@@ -17,12 +16,7 @@ fly -t <target-concourse> execute \
 
 ## Deploying the app
 
-In addition to the environment variables specified in [Deploying the app](../README.md#deploying-the-app), when deploying with Concourse the following must also be set.
-
-| Variable Name                             | Description                                                                          |
-|-------------------------------------------|--------------------------------------------------------------------------------------|
-| REGION                                    | What region to authenticate against                                                  |
-| PROJECT_ID                                | The ID of the GCP target project                                                     |
+When deploying with Concourse the environment variables specified in [Deploying the app](../README.md#deploying-the-app) must be set.
 
 To deploy the app via Concourse, use the following task command:
 ```sh
