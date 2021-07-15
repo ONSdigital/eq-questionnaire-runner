@@ -9,7 +9,6 @@
 {{
   onsButton({
     "text": _("Continue"),
-    "submitType": 'link',
     "classes": "btn--loader js-btn-submit",
     "attributes": {
       "data-qa": "btn-submit"
@@ -47,7 +46,7 @@
     {{
         onsButton({
             "text": continue_button_text | default(_("Continue")),
-            "submitType": 'link',
+            "submitType": 'timer',
             "classes": "u-mt-xl",
             "attributes": {
                 "data-qa": "btn-submit"
