@@ -22,10 +22,12 @@ def get_questionnaire_store(user_id: str, user_ik: str) -> QuestionnaireStore:
     # Sets up a single QuestionnaireStore instance per request.
     store = g.get("_questionnaire_store")
     if store is None:
-        pepper = current_app.eq["secret_store"].get_secret_by_name(
+        secret_store = current_app.eq["secret_store"]  # type: ignore
+        pepper = secret_store.get_secret_by_name(
             "EQ_SERVER_SIDE_STORAGE_ENCRYPTION_USER_PEPPER"
         )
         storage = EncryptedQuestionnaireStorage(user_id, user_ik, pepper)
+        # pylint: disable=assigning-non-slot
         store = g._questionnaire_store = QuestionnaireStore(storage)
 
     return store
@@ -39,9 +41,11 @@ def get_session_store() -> Union[SessionStore, None]:
     store = g.get("_session_store")
 
     if store is None:
-        pepper = current_app.eq["secret_store"].get_secret_by_name(
+        secret_store = current_app.eq["secret_store"]  # type: ignore
+        pepper = secret_store.get_secret_by_name(
             "EQ_SERVER_SIDE_STORAGE_ENCRYPTION_USER_PEPPER"
         )
+        # pylint: disable=assigning-non-slot
         store = g._session_store = SessionStore(
             cookie_session[USER_IK], pepper, cookie_session[EQ_SESSION_ID]
         )
@@ -68,7 +72,8 @@ def get_session_timeout_in_seconds(schema: QuestionnaireSchema) -> int:
 def create_session_store(
     eq_session_id: str, user_id: str, user_ik: str, session_data: str
 ) -> None:
-    pepper = current_app.eq["secret_store"].get_secret_by_name(
+    secret_store = current_app.eq["secret_store"]  # type: ignore
+    pepper = secret_store.get_secret_by_name(
         "EQ_SERVER_SIDE_STORAGE_ENCRYPTION_USER_PEPPER"
     )
     session_timeout_in_seconds = get_session_timeout_in_seconds(g.schema)
@@ -76,7 +81,7 @@ def create_session_store(
         seconds=session_timeout_in_seconds
     )
 
-    # pylint: disable=W0212
+    # pylint: disable=protected-access, assigning-non-slot
     g._session_store = (
         SessionStore(user_ik, pepper)
         .create(eq_session_id, user_id, session_data, expires_at)
