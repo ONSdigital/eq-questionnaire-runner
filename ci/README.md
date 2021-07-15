@@ -1,6 +1,6 @@
 # Deploying with [Concourse](https://concourse-ci.org/)
 
-To deploy this application with Concourse, you must be logged in to a Concourse instance that has access to the project.
+To deploy this application with Concourse, you must be logged in to a Concourse instance that has access to the GCP project.
 
 ## Deploying credentials
 
