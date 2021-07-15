@@ -3,7 +3,7 @@ image_resource:
   type: docker-image
   source:
     repository: gcr.io/google.com/cloudsdktool/cloud-sdk
-    tag: latest
+    tag: slim
 inputs:
   - name: eq-questionnaire-runner
 params:
