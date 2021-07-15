@@ -19,25 +19,25 @@ class TestStorageEncryption(TestCase):
             StorageEncryption("1", None, "pepper")
 
     def test_generate_key(self):
-        key1 = StorageEncryption("user1", "user_ik_1", "pepper").key._key["k"]
-        key2 = StorageEncryption("user1", "user_ik_1", "pepper").key._key["k"]
-        key3 = StorageEncryption("user2", "user_ik_2", "pepper").key._key["k"]
+        key1 = StorageEncryption("user1", "user_ik_1", "pepper").key["k"]
+        key2 = StorageEncryption("user1", "user_ik_1", "pepper").key["k"]
+        key3 = StorageEncryption("user2", "user_ik_2", "pepper").key["k"]
         self.assertEqual(key1, key2)
         self.assertNotEqual(key1, key3)
         self.assertNotEqual(key2, key3)
 
     def test_generate_key_different_user_ids(self):
-        key1 = StorageEncryption("user1", "user_ik_1", "pepper").key._key["k"]
-        key2 = StorageEncryption("user1", "user_ik_1", "pepper").key._key["k"]
-        key3 = StorageEncryption("user2", "user_ik_1", "pepper").key._key["k"]
+        key1 = StorageEncryption("user1", "user_ik_1", "pepper").key["k"]
+        key2 = StorageEncryption("user1", "user_ik_1", "pepper").key["k"]
+        key3 = StorageEncryption("user2", "user_ik_1", "pepper").key["k"]
         self.assertEqual(key1, key2)
         self.assertNotEqual(key1, key3)
         self.assertNotEqual(key2, key3)
 
     def test_generate_key_different_user_iks(self):
-        key1 = StorageEncryption("user1", "user_ik_1", "pepper").key._key["k"]
-        key2 = StorageEncryption("user1", "user_ik_1", "pepper").key._key["k"]
-        key3 = StorageEncryption("user1", "user_ik_2", "pepper").key._key["k"]
+        key1 = StorageEncryption("user1", "user_ik_1", "pepper").key["k"]
+        key2 = StorageEncryption("user1", "user_ik_1", "pepper").key["k"]
+        key3 = StorageEncryption("user1", "user_ik_2", "pepper").key["k"]
         self.assertEqual(key1, key2)
         self.assertNotEqual(key1, key3)
         self.assertNotEqual(key2, key3)
