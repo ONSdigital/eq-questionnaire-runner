@@ -1,4 +1,0 @@
-apiVersion: v2
-description: A Helm chart for deploying Questionnaire Runner to Kubernetes
-name: runner
-version: 1.0.0
