@@ -186,7 +186,7 @@ def test_footer_context_census_nisra_theme(app: Flask):
 
 def test_get_page_header_context_business(app: Flask):
     expected = {
-        "logo": "ons-logo-pos-en",
+        "logo": "ons-logo-en",
         "logoAlt": "Office for National Statistics logo",
     }
 
@@ -206,7 +206,7 @@ def test_get_page_header_context_business(app: Flask):
 def test_get_page_header_context_census(app: Flask):
     expected = {
         "title": "Census 2021",
-        "logo": "ons-logo-pos-en",
+        "logo": "ons-logo-en",
         "logoAlt": "Office for National Statistics logo",
         "titleLogo": "census-logo-en",
         "titleLogoAlt": "Census 2021",

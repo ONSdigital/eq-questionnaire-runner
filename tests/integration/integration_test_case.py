@@ -222,7 +222,7 @@ class IntegrationTestCase(unittest.TestCase):  # pylint: disable=too-many-public
         self._cache_response(response)
 
     def sign_out(self):
-        selected = self.getHtmlSoup().find("a", {"name": "btn-save-sign-out"})
+        selected = self.getHtmlSoup().find("a", {"data-qa": "btn-save-sign-out"})
         return self.get(selected["href"])
 
     def exit(self):
@@ -230,7 +230,7 @@ class IntegrationTestCase(unittest.TestCase):  # pylint: disable=too-many-public
         GETs the sign-out url from the exit button. Does not follow the external
         redirect.
         """
-        url = self.getHtmlSoup().find("a", {"name": "btn-exit"})["href"]
+        url = self.getHtmlSoup().find("a", {"data-qa": "btn-exit"})["href"]
         self.get(url, follow_redirects=False)
 
     def previous(self):
