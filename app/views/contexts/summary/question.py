@@ -1,4 +1,4 @@
-from jinja2 import escape
+from markupsafe import escape
 
 from app.views.contexts.summary.answer import Answer
 

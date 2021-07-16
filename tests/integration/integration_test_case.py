@@ -168,11 +168,9 @@ class IntegrationTestCase(unittest.TestCase):  # pylint: disable=too-many-public
 
         :param url: the URL to GET
         """
-        environ, response = self._client.get(
-            url, as_tuple=True, follow_redirects=follow_redirects, **kwargs
-        )
+        response = self._client.get(url, follow_redirects=follow_redirects, **kwargs)
 
-        self._cache_response(environ, response)
+        self._cache_response(response)
 
     def post(self, post_data=None, url=None, action=None, **kwargs):
         """
@@ -197,11 +195,11 @@ class IntegrationTestCase(unittest.TestCase):  # pylint: disable=too-many-public
         if action:
             _post_data.update({f"action[{action}]": ""})
 
-        environ, response = self._client.post(
-            url, data=_post_data, as_tuple=True, follow_redirects=True, **kwargs
+        response = self._client.post(
+            url, data=_post_data, follow_redirects=True, **kwargs
         )
 
-        self._cache_response(environ, response)
+        self._cache_response(response)
 
     def head(self, url, **kwargs):
         """
@@ -209,9 +207,9 @@ class IntegrationTestCase(unittest.TestCase):  # pylint: disable=too-many-public
 
         :param url: the URL to send a HEAD request to
         """
-        environ, response = self._client.head(url, as_tuple=True, **kwargs)
+        response = self._client.head(url, **kwargs)
 
-        self._cache_response(environ, response)
+        self._cache_response(response)
 
     def options(self, url, **kwargs):
         """
@@ -219,12 +217,12 @@ class IntegrationTestCase(unittest.TestCase):  # pylint: disable=too-many-public
 
         :param url: the URL to send an OPTION request to
         """
-        environ, response = self._client.options(url, as_tuple=True, **kwargs)
+        response = self._client.options(url, **kwargs)
 
-        self._cache_response(environ, response)
+        self._cache_response(response)
 
     def sign_out(self):
-        selected = self.getHtmlSoup().find("a", {"name": "btn-save-sign-out"})
+        selected = self.getHtmlSoup().find("a", {"data-qa": "btn-save-sign-out"})
         return self.get(selected["href"])
 
     def exit(self):
@@ -232,7 +230,7 @@ class IntegrationTestCase(unittest.TestCase):  # pylint: disable=too-many-public
         GETs the sign-out url from the exit button. Does not follow the external
         redirect.
         """
-        url = self.getHtmlSoup().find("a", {"name": "btn-exit"})["href"]
+        url = self.getHtmlSoup().find("a", {"data-qa": "btn-exit"})["href"]
         self.get(url, follow_redirects=False)
 
     def previous(self):
@@ -240,7 +238,8 @@ class IntegrationTestCase(unittest.TestCase):  # pylint: disable=too-many-public
         selected = self.getHtmlSoup().select(selector)
         return self.get(selected[0].get("href"))
 
-    def _cache_response(self, environ, response):
+    def _cache_response(self, response):
+        environ = response.request.environ
         self.last_csrf_token = self._extract_csrf_token(response.get_data(True))
         self.redirect_url = response.headers.get("Location")
         self.last_response = response

@@ -197,7 +197,7 @@ class TestCreateApp(unittest.TestCase):  # pylint: disable=too-many-public-metho
         # Then
         assert isinstance(application.eq["submitter"], GCSSubmitter)
 
-    def test_gcs_submitter_bucket_id_not_set_raises_exception(self):
+    def test_gcs_submitter_bucket_name_not_set_raises_exception(self):
         # Given
         self._setting_overrides["EQ_SUBMISSION_BACKEND"] = "gcs"
 
@@ -363,7 +363,7 @@ class TestCreateApp(unittest.TestCase):  # pylint: disable=too-many-public-metho
         # Then
         assert isinstance(application.eq["feedback_submitter"], GCSFeedbackSubmitter)
 
-    def test_gcs_feedback_bucket_id_not_set_raises_exception(self):
+    def test_gcs_feedback_bucket_name_not_set_raises_exception(self):
         # Given
         self._setting_overrides["EQ_FEEDBACK_BACKEND"] = "gcs"
 

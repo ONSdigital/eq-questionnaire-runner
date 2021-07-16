@@ -211,33 +211,29 @@ To run the tests against a remote deployment you will need to specify the enviro
 
 For deploying with Concourse see the [CI README](./ci/README.md).
 
-### Deployment with [Helm](https://helm.sh/)
+### Deployment with [gcloud](https://cloud.google.com/sdk/gcloud)
 
-To deploy this application with helm, you must have a kubernetes cluster already running and be logged into the cluster.
+To deploy this application with gcloud, you must be logged in using `gcloud auth login` and `gcloud auth application-default login`.
 
-Log in to the cluster using:
+When deploying with gcloud the environment variables specified in [Deploying the app](./README.md#deploying-the-app) must be set.
 
+Then call the following command with environment variables set:
+```sh
+./ci/deploy_app.sh
 ```
-gcloud container clusters get-credentials survey-runner --region <region> --project <gcp_project_id>
-```
-
-You need to have Helm installed locally
-
-1. Install Helm: <https://helm.sh/docs/intro/install/>. For Homebrew (macOS), install using: `brew install helm`
-
 
 ### Deploying credentials
 
-Before deploying the app to a cluster you need to create the application credentials on Kubernetes. Run the following command to provision the credentials:
+Before deploying the app to GCP you need to create the application credentials. Run the following command to provision the credentials:
 
 ```
-EQ_KEYS_FILE=PATH_TO_KEYS_FILE EQ_SECRETS_FILE=PATH_TO_SECRETS_FILE ./k8s/deploy_credentials.sh
+PROJECT_ID=PROJECT_ID EQ_KEYS_FILE=PATH_TO_KEYS_FILE EQ_SECRETS_FILE=PATH_TO_SECRETS_FILE ./ci/deploy_credentials.sh
 ```
 
 For example:
 
 ```
-EQ_KEYS_FILE=dev-keys.yml EQ_SECRETS_FILE=dev-secrets.yml ./k8s/deploy_credentials.sh
+PROJECT_ID=eq-test EQ_KEYS_FILE=dev-keys.yml EQ_SECRETS_FILE=dev-secrets.yml ./ci/deploy_credentials.sh
 ```
 
 ### Deploying the app
@@ -246,26 +242,26 @@ The following environment variables must be set when deploying the app.
 
 | Variable Name                             | Description                                                                          |
 |-------------------------------------------|--------------------------------------------------------------------------------------|
-| SUBMISSION_BUCKET_NAME                    | The name of the bucket that submissions will be stored in                            |
+| PROJECT_ID                                | The ID of the GCP target project                                                     |
 | DOCKER_REGISTRY                           | The FQDN of the target Docker registry                                               |
 | IMAGE_TAG                                 |                                                                                      |
-| REQUESTED_CPU_PER_POD                     | No. of CPUs to request per Pod                                                       |
-| MIN_REPLICAS                              | Minimum no. of replicated Pods                                                       |
-| MAX_REPLICAS                              | Maximum no. of replicated Pods                                                       |
 
 The following environment variables are optional:
 
 | Variable Name                      | Default | Description                                                                       |
 |------------------------------------| --------|-----------------------------------------------------------------------------------|
-| ROLLING_UPDATE_MAX_UNAVAILABLE     | 25%     | The maximum number of Pods that can be unavailable during the update process     |
-| ROLLING_UPDATE_MAX_SURGE           | 25%     | The maximum number of Pods that can be created over the desired number of Pods   |
-| TARGET_CPU_UTILIZATION_PERCENTAGE  |         | The average CPU utilization usage before auto scaling applies                    |
-| GOOGLE_TAG_MANAGER_ID              |         |                                                                                   |
-| GOOGLE_TAG_MANAGER_AUTH            |         |                                                                                   |                                                                              |
+| REGION                             | europe-west2 | The region that will be used for your Cloud Run service                      |
+| CONCURRENCY                        | 80      | The maximum number of requests that can be processed simultaneously by a given container instance |
+| MIN_INSTANCES                      | 1       | The minimum number of container instances that can be used for your Cloud Run service |
+| MAX_INSTANCES                      | 1       | The maximum number of container instances that can be used for your Cloud Run service |
+| CPU                                | 4       | The number of CPUs to allocate for each Cloud Run container instance              |
+| MEMORY                             | 4G      | The amount of memory to allocate for each Cloud Run container instance            |
+| GOOGLE_TAG_MANAGER_ID              |         | The Google Tag Manger ID - Specifies the GTM account                              |
+| GOOGLE_TAG_MANAGER_AUTH            |         | The Google Tag Manger Auth - Ties the GTM container with the whole environment    |
 | EQ_NEW_RELIC_ENABLED               | False   | Enable New Relic monitoring                                                       |
 | NEW_RELIC_LICENSE_KEY              |         | New Relic license key                                                             |
 | NEW_RELIC_APP_NAME                 |         | Display name for the application in New Relic                                     |
-| WEB_SERVER_TYPE                    | gunicorn-async | Web server type used to run the application. This also determines the worker class which can be async/threaded
+| WEB_SERVER_TYPE                    | gunicorn-threads | Web server type used to run the application. This also determines the worker class which can be async/threaded
 | WEB_SERVER_WORKERS                 | 7        | The number of worker processes
 | WEB_SERVER_THREADS                 | 10       | The number of worker threads per worker
 | WEB_SERVER_UWSGI_ASYNC_CORES       | 10       | The number of cores to initialise when using "uwsgi-async" web server worker type
@@ -274,10 +270,10 @@ The following environment variables are optional:
 
 
 
-To deploy the app to the cluster, run the following command:
+To deploy the app, run the following command:
 
 ```
-./k8s/deploy_app.sh
+./ci/deploy_app.sh
 ```
 ---
 
@@ -307,7 +303,7 @@ The following env variables can be used
 | EQ_SESSION_TIMEOUT_SECONDS                | 2700 (45 mins)        | The duration of the flask session                                                             |
 | EQ_PROFILING                              | False                 | Enables or disables profiling (True/False) Default False/Disabled                             |
 | EQ_GOOGLE_TAG_MANAGER_ID                  |                       | The Google Tag Manger ID - Specifies the GTM account                                          |
-| EQ_GOOGLE_TAG_MANAGER_AUTH                |                       | The Google Tag Manger Auth - Ties the GTM container with the whole enviroment                 |
+| EQ_GOOGLE_TAG_MANAGER_AUTH                |                       | The Google Tag Manger Auth - Ties the GTM container with the whole environment                |
 | EQ_ENABLE_HTML_MINIFY                     | True                  | Enable minification of html                                                                   |
 | EQ_ENABLE_SECURE_SESSION_COOKIE           | True                  | Set secure session cookies                                                                    |
 | EQ_MAX_HTTP_POST_CONTENT_LENGTH           | 65536                 | The maximum http post content length that the system wil accept                               |
@@ -317,8 +313,9 @@ The following env variables can be used
 | EQ_ENABLE_LIVE_RELOAD                     | False                 | Enable livereload of browser when scripts, styles or templates are updated                    |
 | EQ_SECRETS_FILE                           | secrets.yml           | The location of the secrets file                                                              |
 | EQ_KEYS_FILE                              | keys.yml              | The location of the keys file                                                                 |
-| EQ_SUBMISSION_BACKEND                     |                       | Which submission backed to use ( gcs, rabbitmq, log )                                         |
-| EQ_GCS_SUBMISSION_BUCKET_ID               |                       | The Bucket id in Google cloud platform to store the submissions in                            |
+| EQ_SUBMISSION_BACKEND                     |                       | Which submission backend to use ( gcs, rabbitmq, log )                                        |
+| EQ_GCS_SUBMISSION_BUCKET_ID               |                       | The bucket name in GCP to store the submissions in                                            |
+| EQ_GCS_FEEDBACK_BUCKET_ID                 |                       | The bucket name in GCP to store the feedback in                                               |
 | EQ_RABBITMQ_HOST                          |                       |                                                                                               |
 | EQ_RABBITMQ_HOST_SECONDARY                |                       |                                                                                               |
 | EQ_RABBITMQ_PORT                          | 5672                  |                                                                                               |

@@ -6,7 +6,8 @@ import flask
 import flask_babel
 from babel import numbers, units
 from flask import current_app
-from jinja2 import Markup, escape, evalcontextfilter
+from jinja2 import pass_eval_context
+from markupsafe import Markup, escape
 
 from app.questionnaire.rules import convert_to_datetime
 from app.settings import MAX_NUMBER
@@ -133,7 +134,7 @@ def get_format_date(value):
     return result
 
 
-@evalcontextfilter
+@pass_eval_context  # type: ignore
 @blueprint.app_template_filter()
 def format_datetime(context, value):
     london_date_time = datetime.strptime(value, "%Y-%m-%dT%H:%M:%S.%f")
@@ -172,13 +173,13 @@ def get_currency_symbol_processor():
     return dict(get_currency_symbol=get_currency_symbol)
 
 
-@blueprint.app_template_filter()
+@blueprint.app_template_filter()  # type: ignore
 def setAttribute(dictionary, key, value):
     dictionary[key] = value
     return dictionary
 
 
-@blueprint.app_template_filter()
+@blueprint.app_template_filter()  # type: ignore
 def setAttributes(dictionary, attributes):
     for key in attributes:
         dictionary[key] = attributes[key]
@@ -331,7 +332,7 @@ class OtherConfig:
                 self.classes = get_width_class_for_number(detail_answer_schema)
 
 
-@blueprint.app_template_filter()
+@blueprint.app_template_filter()  # type: ignore
 def map_checkbox_config(form, answer):
     options = form["fields"][answer["id"]]
 
@@ -343,7 +344,7 @@ def map_checkbox_config_processor():
     return dict(map_checkbox_config=map_checkbox_config)
 
 
-@blueprint.app_template_filter()
+@blueprint.app_template_filter()  # type: ignore
 def map_radio_config(form, answer):
     options = form["fields"][answer["id"]]
 
@@ -355,7 +356,7 @@ def map_radio_config_processor():
     return dict(map_radio_config=map_radio_config)
 
 
-@blueprint.app_template_filter()
+@blueprint.app_template_filter()  # type: ignore
 def map_relationships_config(form, answer):
     options = form["fields"][answer["id"]]
 
@@ -533,7 +534,7 @@ class SummaryRow:
             )
 
 
-@blueprint.app_template_filter()
+@blueprint.app_template_filter()  # type: ignore
 def map_summary_item_config(
     group,
     summary_type,
@@ -569,7 +570,7 @@ def map_summary_item_config_processor():
     return dict(map_summary_item_config=map_summary_item_config)
 
 
-@blueprint.app_template_filter()
+@blueprint.app_template_filter()  # type: ignore
 def map_list_collector_config(
     list_items,
     icon,
