@@ -188,10 +188,21 @@ def setAttributes(dictionary, attributes):
 
 @blueprint.app_template_filter()
 def should_wrap_with_fieldset(question):
-    answers = question["answers"]
+    # Logic for when to wrap with a fieldset comes from
+    # https://ons-design-system.netlify.app/patterns/question/
+    if question["type"] == "DateRange":
+        return False
 
-    if len(answers) > 1 and not any(
-        answer["type"] in {"Date", "MonthYearDate", "Duration"} for answer in answers
+    answers = question["answers"]
+    if (
+        question["type"] == "MutuallyExclusive"
+        or len(answers) > 1
+        or (
+            len(answers) == 1
+            and answers[0]["type"]
+            in ["Radio", "Date", "MonthYearDate", "Duration", "Address", "Relationship"]
+            and "label" not in answers[0]
+        )
     ):
         return True
 
