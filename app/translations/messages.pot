@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2021-07-12 13:37+0100\n"
+"POT-Creation-Date: 2021-07-16 11:06+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,26 +17,26 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 2.9.1\n"
 
-#: app/forms/validators.py:341 app/jinja_filters.py:94
+#: app/forms/validators.py:341 app/jinja_filters.py:95
 #, python-format
 msgid "%(num)s year"
 msgid_plural "%(num)s years"
 msgstr[0] ""
 msgstr[1] ""
 
-#: app/forms/validators.py:345 app/jinja_filters.py:102
+#: app/forms/validators.py:345 app/jinja_filters.py:103
 #, python-format
 msgid "%(num)s month"
 msgid_plural "%(num)s months"
 msgstr[0] ""
 msgstr[1] ""
 
-#: app/jinja_filters.py:145
+#: app/jinja_filters.py:146
 #, python-format
 msgid "%(date)s at %(time)s"
 msgstr ""
 
-#: app/jinja_filters.py:156
+#: app/jinja_filters.py:157
 #, python-format
 msgid "%(from_date)s to %(to_date)s"
 msgstr ""
@@ -219,19 +219,19 @@ msgid ""
 "browser if using a shared device"
 msgstr ""
 
-#: app/questionnaire/placeholder_transforms.py:92
+#: app/questionnaire/placeholder_transforms.py:114
 msgid "{number_of_years} year"
 msgid_plural "{number_of_years} years"
 msgstr[0] ""
 msgstr[1] ""
 
-#: app/questionnaire/placeholder_transforms.py:98
+#: app/questionnaire/placeholder_transforms.py:120
 msgid "{number_of_months} month"
 msgid_plural "{number_of_months} months"
 msgstr[0] ""
 msgstr[1] ""
 
-#: app/questionnaire/placeholder_transforms.py:103
+#: app/questionnaire/placeholder_transforms.py:125
 msgid "{number_of_days} day"
 msgid_plural "{number_of_days} days"
 msgstr[0] ""
@@ -845,24 +845,7 @@ msgstr ""
 msgid "Introduction"
 msgstr ""
 
-#: templates/introduction.html:17
-#, python-format
-msgid "You are completing this for <span>%(ru_name)s</span> (%(trading_as_name)s)"
-msgstr ""
-
-#: templates/introduction.html:21
-#, python-format
-msgid "You are completing this for <span>%(ru_name)s</span>"
-msgstr ""
-
-#: templates/introduction.html:25
-#, python-format
-msgid ""
-"If the company details or structure have changed contact us on "
-"%(telephone_number)s or email %(email_address)s"
-msgstr ""
-
-#: templates/introduction.html:40
+#: templates/introduction.html:22
 msgid "Your response is legally required"
 msgstr ""
 
@@ -1142,7 +1125,7 @@ msgstr ""
 msgid "Exit"
 msgstr ""
 
-#: templates/macros/helpers.html:29
+#: templates/macros/helpers.html:13
 msgid "Interviewer note:"
 msgstr ""
 

@@ -19,6 +19,15 @@
         {
             "name": "ru_name",
             "type": "string"
+        },
+        {
+            "name": "ru_ref",
+            "type": "string"
+        },
+        {
+            "name": "trad_as",
+            "type": "string",
+            "optional": true
         }
     ],
     "questionnaire_flow": {
@@ -38,6 +47,70 @@
                             "id": "introduction",
                             "type": "Introduction",
                             "primary_content": [
+                                {
+                                    "id": "business-details",
+                                    "title": {
+                                        "text": "You are completing this for {company_name}",
+                                        "placeholders": [
+                                            {
+                                                "placeholder": "company_name",
+                                                "transforms": [
+                                                    {
+                                                        "transform": "first_non_empty_item",
+                                                        "arguments": {
+                                                            "items": [
+                                                                {
+                                                                    "source": "metadata",
+                                                                    "identifier": "trad_as"
+                                                                },
+                                                                {
+                                                                    "source": "metadata",
+                                                                    "identifier": "ru_name"
+                                                                }
+                                                            ]
+                                                        }
+                                                    }
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "contents": [
+                                        {
+                                            "description": {
+                                                "text": "If the company details or structure have changed contact us on {telephone_number_link} or email {email_link}",
+                                                "placeholders": [
+                                                    {
+                                                        "placeholder": "telephone_number_link",
+                                                        "transforms": [
+                                                            {
+                                                                "transform": "telephone_number_link",
+                                                                "arguments": {
+                                                                    "telephone_number": "0300 1234 931"
+                                                                }
+                                                            }
+                                                        ]
+                                                    },
+                                                    {
+                                                        "placeholder": "email_link",
+                                                        "transforms": [
+                                                            {
+                                                                "transform": "email_link",
+                                                                "arguments": {
+                                                                    "email_address": "surveys@ons.gov.uk",
+                                                                    "email_subject": "Change of details reference",
+                                                                    "email_subject_append": {
+                                                                        "identifier": "ru_ref",
+                                                                        "source": "metadata"
+                                                                    }
+                                                                }
+                                                            }
+                                                        ]
+                                                    }
+                                                ]
+                                            }
+                                        }
+                                    ]
+                                },
                                 {
                                     "id": "use-of-information",
                                     "title": "What you need to do next",
