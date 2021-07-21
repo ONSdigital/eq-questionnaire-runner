@@ -1,5 +1,6 @@
 {
     "mime_type": "application/json/ons/eq",
+    "language": "en",
     "schema_version": "0.0.1",
     "data_version": "0.0.3",
     "survey_id": "001",
@@ -20,6 +21,14 @@
             "type": "string"
         }
     ],
+    "questionnaire_flow": {
+        "type": "Linear",
+        "options": {
+            "summary": {
+                "collapsible": false
+            }
+        }
+    },
     "sections": [
         {
             "id": "default-section",
@@ -33,15 +42,13 @@
                                 "answers": [
                                     {
                                         "id": "comparison-date-answer",
-                                        "label": "",
                                         "mandatory": true,
                                         "q_code": "11",
                                         "type": "Date"
                                     }
                                 ],
-                                "description": "",
                                 "id": "comparison-date-question",
-                                "title": "",
+                                "title": "Title",
                                 "type": "General",
                                 "guidance": {
                                     "contents": [
@@ -73,7 +80,6 @@
                                         "type": "Date"
                                     }
                                 ],
-                                "description": "",
                                 "id": "date-questions",
                                 "title": {
                                     "text": "Enter {date} or offset by one day, month or year in either direction",
@@ -235,7 +241,7 @@
                             "routing_rules": [
                                 {
                                     "goto": {
-                                        "block": "summary"
+                                        "section": "End"
                                     }
                                 }
                             ]
@@ -251,14 +257,9 @@
                                     }
                                 ]
                             }
-                        },
-                        {
-                            "type": "Summary",
-                            "id": "summary"
                         }
                     ],
-                    "id": "group",
-                    "title": ""
+                    "id": "group"
                 }
             ]
         }

@@ -1,5 +1,6 @@
 {
     "mime_type": "application/json/ons/eq",
+    "language": "en",
     "schema_version": "0.0.1",
     "data_version": "0.0.3",
     "survey_id": "0",
@@ -25,6 +26,10 @@
             "type": "string"
         }
     ],
+    "questionnaire_flow": {
+        "type": "Linear",
+        "options": {}
+    },
     "sections": [
         {
             "id": "default-section",
@@ -48,12 +53,10 @@
                                         "type": "TextField"
                                     }
                                 ],
-                                "description": "",
                                 "id": "favourite-breakfast-question",
                                 "title": "What is your favourite breakfast food",
                                 "type": "General"
-                            },
-                            "routing_rules": []
+                            }
                         },
                         {
                             "id": "breakfast-interstitial",
@@ -80,18 +83,9 @@
                                         "type": "TextField"
                                     }
                                 ],
-                                "description": "",
                                 "id": "favourite-lunch-question",
-                                "title": "",
+                                "title": "Title",
                                 "type": "General"
-                            },
-                            "routing_rules": []
-                        },
-                        {
-                            "type": "Confirmation",
-                            "id": "confirmation",
-                            "content": {
-                                "title": "Thank you for your answers, do you wish to submit"
                             }
                         }
                     ],

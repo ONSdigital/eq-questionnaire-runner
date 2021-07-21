@@ -1,0 +1,27 @@
+{% extends 'layouts/_base.html' %}
+{% from 'components/button/_macro.njk' import onsButton %}
+{% from 'components/panel/_macro.njk' import onsPanel %}
+
+{% set save_on_signout = true %}
+
+{% block main %}
+    {% call onsPanel({
+        "type": "success",
+        "classes": "u-mb-m",
+        "icon": "check",
+        "iconSize": "l"
+        }) %}
+    <h1 id="question-title"class="question__title u-mb-xs u-fs-l js-piping">
+        {{ _("A letter has been sent to Individual Resident at {display_address}").format(display_address=display_address) }}
+    </h1>
+    <p>{{ _("The letter with an individual access code should arrive soon for them to complete their own census") }}</p>
+    {% endcall %}
+    {{
+        onsButton({
+            "text": _("Continue"),
+            "submitType": 'timer',
+            "classes": 'u-mb-m u-mt-l',
+            "attributes": {'data-qa': 'btn-submit'}
+        })
+    }}
+{% endblock %}

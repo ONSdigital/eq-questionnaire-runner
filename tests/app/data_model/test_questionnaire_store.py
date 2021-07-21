@@ -1,11 +1,10 @@
 from unittest import TestCase
 from unittest.mock import MagicMock
 
-import simplejson as json
-
-from app.data_model.answer_store import AnswerStore
-from app.data_model.progress_store import ProgressStore, CompletionStatus
-from app.data_model.questionnaire_store import QuestionnaireStore
+from app.data_models import QuestionnaireStore
+from app.data_models.answer_store import AnswerStore
+from app.data_models.progress_store import CompletionStatus, ProgressStore
+from app.utilities.json import json_dumps, json_loads
 
 
 def get_basic_input():
@@ -21,7 +20,7 @@ def get_basic_input():
                 "block_ids": ["a-test-block"],
             }
         ],
-        "COLLECTION_METADATA": {"test-meta": "test"},
+        "RESPONSE_METADATA": {"test-meta": "test"},
     }
 
 
@@ -37,7 +36,7 @@ def get_input_answers_dict():
                 "block_ids": ["a-test-block"],
             }
         ],
-        "COLLECTION_METADATA": {"test-meta": "test"},
+        "RESPONSE_METADATA": {"test-meta": "test"},
     }
 
 
@@ -59,15 +58,15 @@ class TestQuestionnaireStore(TestCase):
         self.output_data = ""
         self.output_version = None
 
-    def test_questionnaire_store_loads_json(self):
+    def test_questionnaire_store_json_loads(self):
         # Given
         expected = get_basic_input()
-        self.input_data = json.dumps(expected)
+        self.input_data = json_dumps(expected)
         # When
         store = QuestionnaireStore(self.storage)
         # Then
         self.assertEqual(store.metadata.copy(), expected["METADATA"])
-        self.assertEqual(store.collection_metadata, expected["COLLECTION_METADATA"])
+        self.assertEqual(store.response_metadata, expected["RESPONSE_METADATA"])
         self.assertEqual(store.answer_store, AnswerStore(expected["ANSWERS"]))
 
         expected_completed_block_ids = expected["PROGRESS"][0]["block_ids"][0]
@@ -89,12 +88,12 @@ class TestQuestionnaireStore(TestCase):
         expected[
             "NOT_A_LEGAL_TOP_LEVEL_KEY"
         ] = "woop_woop_thats_the_sound_of_the_police"
-        self.input_data = json.dumps(expected)
+        self.input_data = json_dumps(expected)
         # When
         store = QuestionnaireStore(self.storage)
         # Then
         self.assertEqual(store.metadata.copy(), expected["METADATA"])
-        self.assertEqual(store.collection_metadata, expected["COLLECTION_METADATA"])
+        self.assertEqual(store.response_metadata, expected["RESPONSE_METADATA"])
         self.assertEqual(store.answer_store, AnswerStore(expected["ANSWERS"]))
 
         expected_completed_block_ids = expected["PROGRESS"][0]["block_ids"][0]
@@ -114,14 +113,14 @@ class TestQuestionnaireStore(TestCase):
         # Given
         expected = get_basic_input()
         del expected["PROGRESS"]
-        self.input_data = json.dumps(expected)
+        self.input_data = json_dumps(expected)
         # When
         store = QuestionnaireStore(self.storage)
         # Then
         self.assertEqual(store.metadata.copy(), expected["METADATA"])
-        self.assertEqual(store.collection_metadata, expected["COLLECTION_METADATA"])
+        self.assertEqual(store.response_metadata, expected["RESPONSE_METADATA"])
         self.assertEqual(store.answer_store, AnswerStore(expected["ANSWERS"]))
-        self.assertEqual(store.progress_store.serialise(), [])
+        self.assertEqual(store.progress_store.serialize(), [])
 
     def test_questionnaire_store_updates_storage(self):
         # Given
@@ -129,14 +128,14 @@ class TestQuestionnaireStore(TestCase):
         store = QuestionnaireStore(self.storage)
         store.set_metadata(expected["METADATA"])
         store.answer_store = AnswerStore(expected["ANSWERS"])
-        store.collection_metadata = expected["COLLECTION_METADATA"]
+        store.response_metadata = expected["RESPONSE_METADATA"]
         store.progress_store = ProgressStore(expected["PROGRESS"])
 
         # When
         store.save()  # See setUp - populates self.output_data
 
         # Then
-        self.assertEqual(expected, json.loads(self.output_data))
+        self.assertEqual(expected, json_loads(self.output_data))
 
     def test_questionnaire_store_errors_on_invalid_object(self):
         # Given
@@ -148,7 +147,7 @@ class TestQuestionnaireStore(TestCase):
         expected = get_basic_input()
         store = QuestionnaireStore(self.storage)
         store.set_metadata(non_serializable_metadata)
-        store.collection_metadata = expected["COLLECTION_METADATA"]
+        store.response_metadata = expected["RESPONSE_METADATA"]
         store.answer_store = AnswerStore(expected["ANSWERS"])
         store.progress_store = ProgressStore(expected["PROGRESS"])
 
@@ -160,7 +159,7 @@ class TestQuestionnaireStore(TestCase):
         expected = get_basic_input()
         store = QuestionnaireStore(self.storage)
         store.set_metadata(expected["METADATA"])
-        store.collection_metadata = expected["COLLECTION_METADATA"]
+        store.response_metadata = expected["RESPONSE_METADATA"]
         store.answer_store = AnswerStore(expected["ANSWERS"])
         store.progress_store = ProgressStore(expected["PROGRESS"])
 
@@ -171,7 +170,7 @@ class TestQuestionnaireStore(TestCase):
         self.assertNotIn("a-test-section", store.progress_store)
         self.assertEqual(store.metadata.copy(), {})
         self.assertEqual(len(store.answer_store), 0)
-        self.assertEqual(store.collection_metadata, {})
+        self.assertEqual(store.response_metadata, {})
 
     def test_questionnaire_store_raises_when_writing_to_metadata(self):
         store = QuestionnaireStore(self.storage)

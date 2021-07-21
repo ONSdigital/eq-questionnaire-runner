@@ -1,13 +1,19 @@
 {% from "components/question/_macro.njk" import onsQuestion %}
 {% from "components/fieldset/_macro.njk" import onsFieldset %}
+{% from "components/panel/_macro.njk" import onsPanel %}
+{% from "components/error/_macro.njk" import onsError %}
+
+{% from 'macros/helpers.html' import format_paragraphs %}
+{% from 'macros/helpers.html' import interviewer_note %}
 
 {% set form = content.form %}
 
-{% set question_title = question.title %}
-{% set question_description = format_paragraphs(question.description) if question.description else None %}
-{% set question_instruction = format_paragraphs(question.instruction) if question.instruction else None %}
-{% set question_guidance = "" %}
-{% set question_definition = "" %}
+{% set title= interviewer_note(question.title) if block.interviewer_only else question.title %}
+{% set question_title= question.title %}
+{% set question_description = format_paragraphs(question.description) %}
+{% set question_instruction = format_paragraphs(question.instruction) %}
+{% set question_error = form.question_errors[question.id] %}
+
 {% set should_wrap_with_fieldset = should_wrap_with_fieldset(question) %}
 
 {%- set question_definition -%}
@@ -16,12 +22,29 @@
   {%- endif -%}
 {%- endset -%}
 
+{% set individual_response_guidance %}
+   {%- if show_individual_response_guidance == True -%}
+      {% set title = _("If you can’t answer questions for this person") %}
+      {% include 'partials/individual-response-guidance.html' %}
+   {%- endif -%}
+{% endset %}
+
+{% set question_warning %}
+  {%- if question.warning -%}
+    {% call onsPanel({
+      "id": "question-warning-" ~ question.id,
+      "type": "warn"
+    }) %}
+      <p>{{question.warning}}</p>
+    {% endcall %}
+  {% endif %}
+{% endset %}
+
 {% set question_guidance %}
   {%- if question.guidance -%}
     {% set contents = question.guidance.contents %}
-    {% from "components/panel/_macro.njk" import onsPanel %}
     {% call onsPanel({
-      "id": "question-guidance-" + question.id,
+      "id": "question-guidance-" ~ question.id,
       "classes": "u-mb-m"
     }) %}
       {% set contents = question.guidance.contents %}
@@ -75,20 +98,37 @@
 
 {% call onsQuestion({
   "id": question.id,
-  "title": question_title,
+  "title": title,
   "description": question_description,
   "instruction": question_instruction
 }) %}
   {%- if content.list -%}
     {% set list = content.list %}
-    {% include 'partials/summary/list-summary.html' %}
+    <div class="u-mb-m">
+       {% include 'partials/summary/list-summary.html' %}
+    </div>
   {% endif %}
+  {{ question_warning }}
+  {{ individual_response_guidance }}
   {{ question_definition }}
   {{ question_guidance }}
 
-  {% if invalid %}
-    {% include 'partials/questions/errors.html' %}
+  {% if question_error %}
+    {% set config = {
+      "text": question_error,
+      "id": question.id ~ '-error',
+      "attributes": {
+        "data-ga": "question-error",
+        "data-ga-category": "Question error",
+        "data-ga-action": question.type,
+        "data-ga-label": question.id
+      }
+    }%}
+    {% call onsError(config) %}
+      {{ question_answers }}
+    {% endcall %}
   {% else %}
     {{ question_answers }}
   {% endif %}
+
 {% endcall %}

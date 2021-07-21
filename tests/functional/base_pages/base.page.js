@@ -1,13 +1,33 @@
-class BasePage {
-
+export default class BasePage {
   constructor(pageName) {
     this.pageName = pageName;
   }
 
-  isOpen() {
-    return browser.getUrl().should.eventually.contain(this.pageName);
+  previous() {
+    return 'a[id="top-previous"]';
   }
 
-}
+  heading() {
+    return "h1";
+  }
 
-module.exports = BasePage;
+  warning() {
+    return '[data-qa="warning"]';
+  }
+
+  guidance() {
+    return '[data-qa="guidance"]';
+  }
+
+  submit() {
+    return '[data-qa="btn-submit"]';
+  }
+
+  saveSignOut() {
+    return '[data-qa="btn-save-sign-out"]';
+  }
+
+  switchLanguage(languageCode) {
+    return `a[href="?language_code=${languageCode}"]`;
+  }
+}

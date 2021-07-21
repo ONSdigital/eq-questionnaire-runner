@@ -1,13 +1,17 @@
 import contextlib
+from datetime import datetime
 
 import mock
 from google.api_core import exceptions
 from google.cloud import datastore as google_datastore
 
+from app.data_models.app_models import (
+    EQSession,
+    QuestionnaireState,
+    QuestionnaireStateSchema,
+)
+from app.storage.datastore import Datastore
 from tests.app.app_context_test_case import AppContextTestCase
-
-from app.data_model.app_models import QuestionnaireState, QuestionnaireStateSchema
-from app.storage.datastore import DatastoreStorage
 
 
 class TestDatastore(AppContextTestCase):
@@ -16,7 +20,7 @@ class TestDatastore(AppContextTestCase):
 
         self.mock_client = mock.Mock()
         self.mock_client.transaction.return_value = contextlib.suppress()
-        self.ds = DatastoreStorage(self.mock_client)
+        self.ds = Datastore(self.mock_client)
 
     def test_get_by_key(self):
         model = QuestionnaireState("someuser", "data", 1)
@@ -26,7 +30,7 @@ class TestDatastore(AppContextTestCase):
         m_entity.update(model_data)
         self.mock_client.get.return_value = m_entity
 
-        returned_model = self.ds.get_by_key(QuestionnaireState, "someuser")
+        returned_model = self.ds.get(QuestionnaireState, "someuser")
 
         self.assertEqual(model.user_id, returned_model.user_id)
         self.assertEqual(model.state_data, returned_model.state_data)
@@ -34,7 +38,7 @@ class TestDatastore(AppContextTestCase):
 
     def test_get_not_found(self):
         self.mock_client.get.return_value = None
-        returned_model = self.ds.get_by_key(QuestionnaireState, "someuser")
+        returned_model = self.ds.get(QuestionnaireState, "someuser")
         self.assertFalse(returned_model)
 
     def test_put(self):
@@ -56,6 +60,22 @@ class TestDatastore(AppContextTestCase):
 
         self.assertEqual(
             exception.exception.args[0], "Unique key checking not supported"
+        )
+
+    @mock.patch("app.storage.datastore.Entity")
+    def test_put_exclude_indexes(self, mock_entity):
+        model = QuestionnaireState("someuser", "data", 1)
+        self.ds.put(model)
+        put_call_args = mock_entity.call_args.kwargs
+        self.assertIn("exclude_from_indexes", put_call_args)
+        self.assertEqual(len(put_call_args["exclude_from_indexes"]), 5)
+
+    @mock.patch("app.storage.datastore.Entity")
+    def test_put_with_index(self, mock_entity):
+        model = EQSession("session-id", "user-id", datetime.now(), "session-data")
+        self.ds.put(model)
+        self.assertNotIn(
+            "expires_at", mock_entity.call_args.kwargs["exclude_from_indexes"]
         )
 
     def test_delete(self):

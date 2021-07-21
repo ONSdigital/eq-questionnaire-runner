@@ -1,15 +1,12 @@
 {
     "mime_type": "application/json/ons/eq",
+    "language": "en",
     "schema_version": "0.0.1",
     "survey_id": "139",
     "theme": "default",
     "title": "Confirmation Question Test",
     "data_version": "0.0.3",
     "description": "Confirmation Question Test",
-    "view_submitted_response": {
-        "enabled": true,
-        "duration": 900
-    },
     "navigation": {
         "visible": true
     },
@@ -32,6 +29,14 @@
             "optional": true
         }
     ],
+    "questionnaire_flow": {
+        "type": "Linear",
+        "options": {
+            "summary": {
+                "collapsible": false
+            }
+        }
+    },
     "sections": [
         {
             "id": "default-section",
@@ -64,10 +69,16 @@
                                                 {
                                                     "transform": "first_non_empty_item",
                                                     "arguments": {
-                                                        "items": {
-                                                            "source": "metadata",
-                                                            "identifier": ["trad_as", "ru_name"]
-                                                        }
+                                                        "items": [
+                                                            {
+                                                                "source": "metadata",
+                                                                "identifier": "trad_as"
+                                                            },
+                                                            {
+                                                                "source": "metadata",
+                                                                "identifier": "ru_name"
+                                                            }
+                                                        ]
                                                     }
                                                 }
                                             ]
@@ -122,10 +133,16 @@
                                                 {
                                                     "transform": "first_non_empty_item",
                                                     "arguments": {
-                                                        "items": {
-                                                            "source": "metadata",
-                                                            "identifier": ["trad_as", "ru_name"]
-                                                        }
+                                                        "items": [
+                                                            {
+                                                                "source": "metadata",
+                                                                "identifier": "trad_as"
+                                                            },
+                                                            {
+                                                                "source": "metadata",
+                                                                "identifier": "ru_name"
+                                                            }
+                                                        ]
                                                     }
                                                 }
                                             ]
@@ -148,7 +165,7 @@
                                 },
                                 {
                                     "goto": {
-                                        "group": "summary-group"
+                                        "section": "End"
                                     }
                                 }
                             ]
@@ -202,22 +219,6 @@
                             }
                         }
                     ]
-                }
-            ]
-        },
-        {
-            "id": "summary-section",
-            "title": "Summary",
-            "groups": [
-                {
-                    "blocks": [
-                        {
-                            "id": "summary",
-                            "type": "Summary"
-                        }
-                    ],
-                    "id": "summary-group",
-                    "title": "Summary"
                 }
             ]
         }

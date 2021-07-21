@@ -2,25 +2,6 @@ from tests.integration.integration_test_case import IntegrationTestCase
 
 
 class TestThankYou(IntegrationTestCase):
-    example_payload = {
-        "user_id": "integration-test",
-        "period_str": "April 2016",
-        "period_id": "201604",
-        "collection_exercise_sid": "789",
-        "questionnaire_id": "0123456789000000",
-        "ru_ref": "123456789012A",
-        "response_id": "1234567890123456",
-        "ru_name": "Integration Testing",
-        "ref_p_start_date": "2016-04-01",
-        "ref_p_end_date": "2016-04-30",
-        "return_by": "2016-05-06",
-        "employment_date": "1983-06-02",
-        "region_code": "GB-ENG",
-        "language_code": "en",
-        "roles": [],
-        "account_service_url": "http://upstream.url",
-    }
-
     def test_thank_you_page_no_sign_out(self):
         self.launchSurvey("test_currency")
 
@@ -43,7 +24,7 @@ class TestThankYou(IntegrationTestCase):
 
     def test_can_switch_language_on_thank_you_page(self):
         self.launchSurvey("test_language")
-
+        self.post()
         # We fill in our answers
         self.post({"first-name": "Kevin", "last-name": "Bacon"})
         self.post(
@@ -53,6 +34,8 @@ class TestThankYou(IntegrationTestCase):
                 "date-of-birth-answer-year": 1999,
             }
         )
+        self.post({"number-of-people-answer": 0})
+        self.post({"confirm-count": "Yes"})
 
         # Submit answers
         self.post()
@@ -72,3 +55,22 @@ class TestThankYou(IntegrationTestCase):
         # Ensure translation is now in Welsh
         self.assertInBody("English")
         self.assertNotInBody("Cymraeg")
+
+    def test_head_request_on_thank_you(self):
+        self.launchSurvey("test_confirmation_email")
+        self.post()
+        self.post()
+        self.head("/submitted/thank-you")
+        self.assertStatusOK()
+
+    def test_options_request_post_submission_before_request(self):
+        self.launchSurvey("test_confirmation_email")
+        self.post()
+        self.post()
+
+        with self.assertLogs() as logs:
+            self.options("/submitted/thank-you")
+            self.assertStatusOK()
+
+        for output in logs.output:
+            self.assertNotIn("questionnaire request", output)

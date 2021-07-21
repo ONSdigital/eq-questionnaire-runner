@@ -1,13 +1,6 @@
 {% extends 'layouts/_base.html' %}
 
-{% set page_title = _("An error has occurred") + " - " + _("Office for National Statistics") %}
-
-{% set contact_us_url = "https://census.gov.uk/contact-us/" %}
-{% if schema_theme == "census-nisra" %}
-  {% set contact_us_url = "https://census.gov.uk/ni/contact-us/" %}
-{% elif language_code == "cy" %}
-  {% set contact_us_url = "https://cyfrifiad.gov.uk/cysylltu-a-ni/" %}
-{% endif %}
+{% set page_title = _("An error has occurred") %}
 
 {% block main %}
 <h1>{{ _("Sorry, there is a problem with this service") }}</h1>

@@ -1,10 +1,12 @@
 from wtforms import Form
 
-from app.forms.fields.integer_field_with_separator import IntegerFieldWithSeparator
+from app.forms.fields import IntegerFieldWithSeparator
 
 
 class DurationForm(Form):
-    def validate(self):
+    def validate(self, extra_validators=None):
+        super(DurationForm, self).validate(extra_validators)
+
         if all(not field.raw_data[0] for field in self._fields.values()):
             if self.mandatory:
                 self._set_error("MANDATORY_DURATION")

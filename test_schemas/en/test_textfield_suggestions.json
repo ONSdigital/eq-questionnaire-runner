@@ -1,5 +1,6 @@
 {
     "mime_type": "application/json/ons/eq",
+    "language": "en",
     "schema_version": "0.0.1",
     "data_version": "0.0.3",
     "survey_id": "001",
@@ -20,6 +21,14 @@
             "type": "string"
         }
     ],
+    "questionnaire_flow": {
+        "type": "Linear",
+        "options": {
+            "summary": {
+                "collapsible": false
+            }
+        }
+    },
     "sections": [
         {
             "id": "default-section",
@@ -33,26 +42,43 @@
                                 "answers": [
                                     {
                                         "id": "country-answer",
-                                        "label": "What is your country of birth?",
+                                        "label": "Country",
                                         "mandatory": false,
-                                        "suggestions_url": "https://cdn.eq.census-gcp.onsdigital.uk/data/v1.0.0/countries-of-birth.json",
+                                        "suggestions": {
+                                            "url": "https://cdn.census.gov.uk/eq-lookup-suggestions-data/v5.3.0/gb/en/countries-of-birth.json",
+                                            "allow_multiple": false
+                                        },
                                         "type": "TextField"
                                     }
                                 ],
-                                "description": "",
                                 "id": "country-of-birth-question",
-                                "title": "",
+                                "title": "What is your country of birth?",
                                 "type": "General"
-                            },
-                            "routing_rules": []
+                            }
                         },
                         {
-                            "type": "Summary",
-                            "id": "summary"
+                            "type": "Question",
+                            "id": "multiple-country-block",
+                            "question": {
+                                "answers": [
+                                    {
+                                        "id": "multiple-country-answer",
+                                        "label": "Passports",
+                                        "mandatory": false,
+                                        "suggestions": {
+                                            "url": "https://cdn.census.gov.uk/eq-lookup-suggestions-data/v5.3.0/gb/en/passport-countries.json",
+                                            "allow_multiple": true
+                                        },
+                                        "type": "TextField"
+                                    }
+                                ],
+                                "id": "multiple-country-question",
+                                "title": "What passports do you hold?",
+                                "type": "General"
+                            }
                         }
                     ],
-                    "id": "group",
-                    "title": ""
+                    "id": "group"
                 }
             ]
         }

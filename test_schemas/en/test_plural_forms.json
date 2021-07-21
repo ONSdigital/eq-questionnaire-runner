@@ -1,5 +1,6 @@
 {
     "mime_type": "application/json/ons/eq",
+    "language": "en",
     "schema_version": "0.0.1",
     "data_version": "0.0.3",
     "survey_id": "0",
@@ -20,6 +21,14 @@
             "type": "string"
         }
     ],
+    "questionnaire_flow": {
+        "type": "Linear",
+        "options": {
+            "summary": {
+                "collapsible": false
+            }
+        }
+    },
     "sections": [
         {
             "id": "plural-section",
@@ -47,9 +56,8 @@
                                         }
                                     }
                                 ],
-                                "description": "",
                                 "id": "number-of-people-question",
-                                "title": "",
+                                "title": "Title",
                                 "type": "General"
                             }
                         },
@@ -120,22 +128,6 @@
                             }
                         }
                     ]
-                }
-            ]
-        },
-        {
-            "id": "submit-answers",
-            "title": "Submit answers",
-            "groups": [
-                {
-                    "blocks": [
-                        {
-                            "type": "Summary",
-                            "id": "summary"
-                        }
-                    ],
-                    "id": "confirmation-group",
-                    "title": "Submit answers"
                 }
             ]
         }

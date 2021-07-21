@@ -1,5 +1,6 @@
 {
     "mime_type": "application/json/ons/eq",
+    "language": "en",
     "schema_version": "0.0.1",
     "data_version": "0.0.3",
     "survey_id": "0",
@@ -20,6 +21,14 @@
             "type": "string"
         }
     ],
+    "questionnaire_flow": {
+        "type": "Linear",
+        "options": {
+            "summary": {
+                "collapsible": false
+            }
+        }
+    },
     "sections": [
         {
             "id": "section-1",
@@ -34,7 +43,7 @@
                                 "answers": [
                                     {
                                         "id": "section-1-answer",
-                                        "label": "",
+                                        "label": "label 1",
                                         "mandatory": false,
                                         "options": [
                                             {
@@ -61,7 +70,7 @@
                                     }
                                 ],
                                 "mandatory": false,
-                                "description": "This is section 1.",
+                                "description": ["This is section 1."],
                                 "id": "section-1-question",
                                 "title": "Which sections do you want to enable?",
                                 "type": "MutuallyExclusive"
@@ -97,12 +106,12 @@
                                 "answers": [
                                     {
                                         "id": "section-2-answer",
-                                        "label": "",
+                                        "label": "label 2",
                                         "mandatory": false,
                                         "type": "Number"
                                     }
                                 ],
-                                "description": "This is section 2.",
+                                "description": ["This is section 2."],
                                 "id": "section-2-question",
                                 "title": "Which section is this?",
                                 "type": "General"
@@ -138,12 +147,12 @@
                                 "answers": [
                                     {
                                         "id": "section-3-answer",
-                                        "label": "",
+                                        "label": "label 3",
                                         "mandatory": false,
                                         "type": "Number"
                                     }
                                 ],
-                                "description": "This is section 3.",
+                                "description": ["This is section 3."],
                                 "id": "section-3-question",
                                 "title": "Which section is this?",
                                 "type": "General"
@@ -152,22 +161,6 @@
                     ],
                     "id": "section-3-group",
                     "title": "Section 3"
-                }
-            ]
-        },
-        {
-            "id": "summary-section",
-            "title": "Summary",
-            "groups": [
-                {
-                    "blocks": [
-                        {
-                            "type": "Summary",
-                            "id": "summary"
-                        }
-                    ],
-                    "id": "summary-group",
-                    "title": "Summary"
                 }
             ]
         }

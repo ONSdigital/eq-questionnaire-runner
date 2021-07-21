@@ -1,7 +1,7 @@
 from flask import url_for
 
+from app.views.contexts import ListContext
 from app.views.handlers.question import Question
-from app.views.contexts.list_collector_context import ListCollectorContext
 
 
 class ListCollector(Question):
@@ -21,7 +21,8 @@ class ListCollector(Question):
         return super().get_next_location_url()
 
     def get_context(self):
-        list_context = ListCollectorContext(
+        question_context = super().get_context()
+        list_context = ListContext(
             self._language,
             self._schema,
             self._questionnaire_store.answer_store,
@@ -29,16 +30,23 @@ class ListCollector(Question):
             self._questionnaire_store.progress_store,
             self._questionnaire_store.metadata,
         )
-        return list_context.build_list_collector_context(self.rendered_block, self.form)
+
+        return {
+            **question_context,
+            **list_context(
+                self.rendered_block["summary"],
+                for_list=self.rendered_block["for_list"],
+                edit_block_id=self.rendered_block["edit_block"]["id"],
+                remove_block_id=self.rendered_block["remove_block"]["id"],
+            ),
+        }
 
     def handle_post(self):
-        if (
-            self.form.data[self.rendered_block["add_answer"]["id"]]
-            == self.rendered_block["add_answer"]["value"]
-        ):
-            self._is_adding = True
-            self.questionnaire_store_updater.update_answers(self.form)
+        answer_action = self._get_answer_action()
 
+        if answer_action and answer_action["type"] == "RedirectToListAddBlock":
+            self._is_adding = True
+            self.questionnaire_store_updater.update_answers(self.form.data)
             self.questionnaire_store_updater.save()
         else:
             return super().handle_post()

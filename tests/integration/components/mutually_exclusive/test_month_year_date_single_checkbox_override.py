@@ -1,8 +1,6 @@
 from tests.integration.components.mutually_exclusive.schema_urls import (
     MUTUALLY_EXCLUSIVE_MONTH_YEAR_DATE,
 )
-
-
 from tests.integration.integration_test_case import IntegrationTestCase
 
 
@@ -27,7 +25,7 @@ class TestMonthYearDateSingleCheckboxOverride(IntegrationTestCase):
         )
 
         # Then
-        self.assertInUrl("section-summary")
+        self.assertInUrl("/sections/mutually-exclusive-month-year-date-section/")
         self.assertInBody("October 2018")
 
     def test_exclusive_answer(self):
@@ -41,7 +39,7 @@ class TestMonthYearDateSingleCheckboxOverride(IntegrationTestCase):
         )
 
         # Then
-        self.assertInUrl("section-summary")
+        self.assertInUrl("/sections/mutually-exclusive-month-year-date-section/")
         self.assertInBody("I prefer not to say")
 
     def test_optional_exclusive_question(self):
@@ -49,7 +47,7 @@ class TestMonthYearDateSingleCheckboxOverride(IntegrationTestCase):
         self.post()
 
         # Then
-        self.assertInUrl("section-summary")
+        self.assertInUrl("/sections/mutually-exclusive-month-year-date-section/")
         self.assertInBody("No answer provided")
 
     def test_invalid_exclusive_answers(self):
@@ -63,4 +61,4 @@ class TestMonthYearDateSingleCheckboxOverride(IntegrationTestCase):
         )
 
         # Then
-        self.assertInBody("Remove an answer to continue.")
+        self.assertInBody("Remove an answer")

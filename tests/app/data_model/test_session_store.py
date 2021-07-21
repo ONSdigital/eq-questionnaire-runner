@@ -4,12 +4,13 @@ from datetime import datetime, timedelta
 from flask import current_app
 from jwcrypto import jwe
 from jwcrypto.common import base64url_encode
-from tests.app.app_context_test_case import AppContextTestCase
 
-from app.data_model.app_models import EQSession
-from app.data_model.session_data import SessionData
-from app.data_model.session_store import SessionStore
+from app.data_models.app_models import EQSession
+from app.data_models.session_data import SessionData
+from app.data_models.session_store import SessionStore
 from app.storage import storage_encryption
+from app.utilities.json import json_dumps
+from tests.app.app_context_test_case import AppContextTestCase
 
 
 class SessionStoreTest(AppContextTestCase):
@@ -17,16 +18,16 @@ class SessionStoreTest(AppContextTestCase):
         super().setUp()
         self._app.permanent_session_lifetime = timedelta(seconds=1)
         self.session_store = SessionStore("user_ik", "pepper")
-        self.expires_at = datetime.utcnow() + timedelta(seconds=1)
+        self.expires_at = datetime.utcnow() + timedelta(seconds=3)
         self.session_data = SessionData(
             tx_id="tx_id",
             schema_name="some_schema_name",
             period_str="period_str",
             language_code=None,
+            launch_language_code=None,
             survey_url=None,
             ru_name="ru_name",
             ru_ref="ru_ref",
-            questionnaire_id="questionnaire_id",
             response_id="response_id",
             case_id="case_id",
         )
@@ -48,7 +49,10 @@ class SessionStoreTest(AppContextTestCase):
     def test_save(self):
         with self._app.test_request_context():
             self.session_store.create(
-                "eq_session_id", "test", self.session_data, self.expires_at
+                eq_session_id="eq_session_id",
+                user_id="test",
+                session_data=self.session_data,
+                expires_at=self.expires_at,
             ).save()
             session_store = SessionStore("user_ik", "pepper", "eq_session_id")
             self.assertEqual(session_store.session_data.tx_id, "tx_id")
@@ -56,27 +60,22 @@ class SessionStoreTest(AppContextTestCase):
     def test_delete(self):
         with self._app.test_request_context():
             self.session_store.create(
-                "eq_session_id", "test", self.session_data, self.expires_at
+                eq_session_id="eq_session_id",
+                user_id="test",
+                session_data=self.session_data,
+                expires_at=self.expires_at,
             ).save()
             self.assertEqual("test", self.session_store.user_id)
-            self.session_store.delete()
-            self.assertEqual(self.session_store.user_id, None)
-
-    def test_create_save_delete_with_no_expiry(self):
-        with self._app.test_request_context():
-            self.session_store.create("eq_session_id", "test", self.session_data).save()
-            self.assertEqual("eq_session_id", self.session_store.eq_session_id)
-            self.assertEqual("test", self.session_store.user_id)
-            self.assertEqual(self.session_data, self.session_store.session_data)
-            self.assertIsNone(self.session_store.expiration_time)
-
             self.session_store.delete()
             self.assertEqual(self.session_store.user_id, None)
 
     def test_add_data_to_session(self):
         with self._app.test_request_context():
             self.session_store.create(
-                "eq_session_id", "test", self.session_data, self.expires_at
+                eq_session_id="eq_session_id",
+                user_id="test",
+                session_data=self.session_data,
+                expires_at=self.expires_at,
             ).save()
             current_time = datetime.utcnow().isoformat()
             self.session_store.session_data.submitted_time = current_time
@@ -100,11 +99,11 @@ class SessionStoreTest(AppContextTestCase):
             schema_name="some_schema_name",
             period_str="period_str",
             language_code=None,
+            launch_language_code=None,
             survey_url=None,
             ru_name="ru_name",
             ru_ref="ru_ref",
             response_id="response_id",
-            questionnaire_id="questionnaire_id",
             case_id="case_id",
         )
 
@@ -112,7 +111,10 @@ class SessionStoreTest(AppContextTestCase):
 
         with self._app.test_request_context():
             self.session_store.create(
-                "eq_session_id", "test", session_data, self.expires_at
+                eq_session_id="eq_session_id",
+                user_id="test",
+                session_data=self.session_data,
+                expires_at=self.expires_at,
             ).save()
 
             session_store = SessionStore("user_ik", "pepper", "eq_session_id")
@@ -125,11 +127,11 @@ class SessionStoreTest(AppContextTestCase):
             schema_name="some_schema_name",
             period_str="period_str",
             language_code=None,
+            launch_language_code=None,
             survey_url=None,
             ru_name="ru_name",
             ru_ref="ru_ref",
             response_id="response_id",
-            questionnaire_id="questionnaire_id",
             case_id="case_id",
         )
 
@@ -138,7 +140,10 @@ class SessionStoreTest(AppContextTestCase):
 
         with self._app.test_request_context():
             self.session_store.create(
-                "eq_session_id", "test", session_data, self.expires_at
+                eq_session_id="eq_session_id",
+                user_id="test",
+                session_data=session_data,
+                expires_at=self.expires_at,
             ).save()
 
             session_store = SessionStore("user_ik", "pepper", "eq_session_id")
@@ -154,17 +159,20 @@ class SessionStoreTest(AppContextTestCase):
             schema_name="some_schema_name",
             period_str="period_str",
             language_code=None,
+            launch_language_code=None,
             survey_url=None,
             ru_name="ru_name",
             ru_ref="ru_ref",
             response_id="response_id",
-            questionnaire_id="questionnaire_id",
             trad_as="trading_as",
             case_id="case_id",
         )
         with self._app.test_request_context():
             self.session_store.create(
-                "eq_session_id", "test", session_data, self.expires_at
+                eq_session_id="eq_session_id",
+                user_id="test",
+                session_data=session_data,
+                expires_at=self.expires_at,
             ).save()
 
             session_store = SessionStore("user_ik", "pepper", "eq_session_id")
@@ -177,16 +185,19 @@ class SessionStoreTest(AppContextTestCase):
             schema_name="some_schema_name",
             period_str="period_str",
             language_code=None,
+            launch_language_code=None,
             survey_url=None,
             ru_name="ru_name",
             ru_ref="ru_ref",
             response_id="response_id",
-            questionnaire_id="questionnaire_id",
             case_id="case_id",
         )
         with self._app.test_request_context():
             self.session_store.create(
-                "eq_session_id", "test", session_data, self.expires_at
+                eq_session_id="eq_session_id",
+                user_id="test",
+                session_data=session_data,
+                expires_at=self.expires_at,
             ).save()
 
             session_store = SessionStore("user_ik", "pepper", "eq_session_id")
@@ -205,15 +216,16 @@ class TestSessionStoreEncoding(AppContextTestCase):
         self.user_ik = "user_ik"
         self.pepper = "pepper"
         self.session_id = "session_id"
+        self.expires_at = datetime.utcnow() + timedelta(seconds=3)
         self.session_data = SessionData(
             tx_id="tx_id",
             schema_name="some_schema_name",
             period_str="period_str",
             language_code=None,
+            launch_language_code=None,
             survey_url=None,
             ru_name="ru_name",
             response_id="response_id",
-            questionnaire_id="questionnaire_id",
             ru_ref="ru_ref",
             trad_as="trading_as_name",
             case_id="case_id",
@@ -237,7 +249,7 @@ class TestSessionStoreEncoding(AppContextTestCase):
         self.assertEqual(session_store.session_data.tx_id, self.session_data.tx_id)
 
     def _save_session(self, session_id, user_id, data, legacy=False):
-        raw_data = json.dumps(vars(data))
+        raw_data = json_dumps(vars(data))
         protected_header = {"alg": "dir", "enc": "A256GCM", "kid": "1,1"}
 
         if legacy:
@@ -250,6 +262,9 @@ class TestSessionStoreEncoding(AppContextTestCase):
         )
 
         session_model = EQSession(
-            session_id, user_id, jwe_token.serialize(compact=True)
+            eq_session_id=session_id,
+            user_id=user_id,
+            session_data=jwe_token.serialize(compact=True),
+            expires_at=self.expires_at,
         )
         current_app.eq["storage"].put(session_model)

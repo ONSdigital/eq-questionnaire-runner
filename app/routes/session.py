@@ -1,7 +1,8 @@
 from datetime import datetime
 
 from dateutil.tz import tzutc
-from flask import Blueprint, redirect, request, g, session as cookie_session
+from flask import Blueprint, g, redirect, request
+from flask import session as cookie_session
 from flask import url_for
 from flask_login import logout_user
 from marshmallow import ValidationError
@@ -9,10 +10,10 @@ from sdc.crypto.exceptions import InvalidTokenException
 from structlog import get_logger
 from werkzeug.exceptions import Unauthorized
 
-from app.authentication.authenticator import store_session, decrypt_token
+from app.authentication.authenticator import decrypt_token, store_session
 from app.authentication.jti_claim_storage import JtiTokenUsed, use_jti_claim
 from app.globals import get_session_timeout_in_seconds
-from app.helpers.template_helper import render_template
+from app.helpers.template_helpers import get_survey_config, render_template
 from app.storage.metadata_parser import (
     validate_questionnaire_claims,
     validate_runner_claims,
@@ -70,13 +71,13 @@ def login():
     schema_name = claims["schema_name"]
     tx_id = claims["tx_id"]
     ru_ref = claims["ru_ref"]
-    questionnaire_id = claims["questionnaire_id"]
+    case_id = claims["case_id"]
 
     logger.bind(
         schema_name=schema_name,
         tx_id=tx_id,
         ru_ref=ru_ref,
-        questionnaire_id=questionnaire_id,
+        case_id=case_id,
     )
     logger.info("decrypted token and parsed metadata")
 
@@ -98,13 +99,16 @@ def login():
 
 
 def validate_jti(decrypted_token):
-    expires = datetime.utcfromtimestamp(decrypted_token["exp"]).replace(tzinfo=tzutc())
-    if expires < datetime.now(tz=tzutc()):
+    expires_at = datetime.utcfromtimestamp(decrypted_token["exp"]).replace(
+        tzinfo=tzutc()
+    )
+    jwt_expired = expires_at < datetime.now(tz=tzutc())
+    if jwt_expired:
         raise Unauthorized
 
     jti_claim = decrypted_token.get("jti")
     try:
-        use_jti_claim(jti_claim, expires)
+        use_jti_claim(jti_claim, expires_at)
     except JtiTokenUsed as e:
         raise Unauthorized from e
     except (TypeError, ValueError) as e:
@@ -113,21 +117,31 @@ def validate_jti(decrypted_token):
 
 @session_blueprint.route("/session-expired", methods=["GET"])
 def get_session_expired():
-    logout_user()
+    # Check for GET as we don't want to log out for HEAD requests
+    if request.method == "GET":
+        logout_user()
 
     return render_template("errors/session-expired")
 
 
-@session_blueprint.route("/signed-out", methods=["GET"])
+@session_blueprint.route("/sign-out", methods=["GET"])
 def get_sign_out():
     """
-    Signs the user first out of eq, then the account service by hitting the account services'
-    logout url.
+    Signs the user out of eQ and redirects to the log out url.
     """
-    logout_user()
+    log_out_url = (
+        cookie_session.get("account_service_log_out_url", url_for(".get_signed_out"))
+        if cookie_session
+        else get_survey_config().base_url
+    )
 
-    account_service_log_out_url = cookie_session.get("account_service_log_out_url")
-    if account_service_log_out_url:
-        return redirect(account_service_log_out_url)
+    # Check for GET as we don't want to log out for HEAD requests
+    if request.method == "GET":
+        logout_user()
 
+    return redirect(log_out_url)
+
+
+@session_blueprint.route("/signed-out", methods=["GET"])
+def get_signed_out():
     return render_template(template="signed-out")

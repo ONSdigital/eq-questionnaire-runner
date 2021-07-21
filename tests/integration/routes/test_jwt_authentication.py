@@ -1,18 +1,18 @@
 import logging
+import random
+import string
 import time
 import unittest
 import uuid
-import random
-import string
 
-from sdc.crypto.key_store import KeyStore
 from sdc.crypto.encrypter import encrypt
+from sdc.crypto.key_store import KeyStore
 
 from app.keys import KEY_PURPOSE_AUTHENTICATION
 from tests.app.app_context_test_case import AppContextTestCase
 from tests.app.authentication import (
-    TEST_DO_NOT_USE_UPSTREAM_PRIVATE_KEY,
     TEST_DO_NOT_USE_SR_PUBLIC_KEY,
+    TEST_DO_NOT_USE_UPSTREAM_PRIVATE_KEY,
 )
 from tests.integration.integration_test_case import (
     EQ_USER_AUTHENTICATION_RRM_PRIVATE_KEY_KID,
@@ -78,7 +78,6 @@ class FlaskClientAuthenticationTestCase(AppContextTestCase):
             "period_id": "12",
             "schema_name": "test_default",
             "collection_exercise_sid": "sid",
-            "questionnaire_id": "0123456789000000",
             "ref_p_start_date": "2016-01-01",
             "ref_p_end_date": "2016-09-01",
             "ru_ref": "1234",

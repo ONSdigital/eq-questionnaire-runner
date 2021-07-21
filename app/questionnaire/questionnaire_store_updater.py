@@ -1,18 +1,15 @@
 from itertools import combinations
+from typing import Dict, Iterable, List, Optional, Tuple, Union
 
-from typing import Iterable, List, Optional, Tuple, Union
-
-from app.data_model.answer_store import Answer
-from app.data_model.relationship_store import Relationship, RelationshipStore
-from app.data_model.progress_store import CompletionStatus
+from app.data_models.answer_store import Answer
+from app.data_models.progress_store import CompletionStatus
 from app.questionnaire.location import Location
 
 
 class QuestionnaireStoreUpdater:
-    """ Component responsible for any actions that need to happen as a result of updating the questionnaire_store
-    """
+    """Component responsible for any actions that need to happen as a result of updating the questionnaire_store"""
 
-    EMPTY_ANSWER_VALUES: Tuple = (None, [], "")
+    EMPTY_ANSWER_VALUES: Tuple = (None, [], "", {})
 
     def __init__(self, current_location, schema, questionnaire_store, current_question):
         self._current_location = current_location
@@ -36,31 +33,13 @@ class QuestionnaireStoreUpdater:
             return True
         return False
 
-    def update_answers(self, form):
-        self._update_questionnaire_store_with_form_data(form.data)
-
-    def update_relationship_answer(self, form_data, list_item_id, to_list_item_id):
-        relationship_answer_id = self._schema.get_relationship_answer_id_for_block(
-            self._current_location.block_id
-        )
-        answer = self._answer_store.get_answer(relationship_answer_id)
-        self._create_relationship_store_and_update_answer(
-            relationship_answer_id, answer, form_data, list_item_id, to_list_item_id
-        )
-
-    def _create_relationship_store_and_update_answer(
-        self, relationship_answer_id, answer, form_data, list_item_id, to_list_item_id
+    def update_relationships_answer(
+        self,
+        relationship_store,
+        relationships_answer_id,
     ):
-        try:
-            relationship_store = RelationshipStore(answer.value)
-        except AttributeError:
-            relationship_store = RelationshipStore()
-
-        relationship_answer = form_data.get(relationship_answer_id)
-        relationship = Relationship(list_item_id, to_list_item_id, relationship_answer)
-        relationship_store.add_or_update(relationship)
         self._answer_store.add_or_update(
-            Answer(relationship_answer_id, relationship_store.serialise())
+            Answer(relationships_answer_id, relationship_store.serialize())
         )
 
     def remove_completed_relationship_locations_for_list_name(
@@ -83,11 +62,11 @@ class QuestionnaireStoreUpdater:
         if not relationship_collectors:
             return None
 
-        list_items = self._list_store.get(list_name).items
+        list_items = self._list_store[list_name]
 
         for collector in relationship_collectors:
 
-            relationship_answer_id = self._schema.get_relationship_answer_id_for_block(
+            relationship_answer_id = self._schema.get_first_answer_id_for_block(
                 collector["id"]
             )
             relationship_answers = self._get_relationships_in_answer_store(
@@ -114,9 +93,9 @@ class QuestionnaireStoreUpdater:
     def _get_relationships_in_answer_store(self, relationship_answer_id: str):
         return self._answer_store.get_answer(relationship_answer_id).value
 
-    def remove_answers(self, answer_ids: List):
+    def remove_answers(self, answer_ids: List, list_item_id: str = None):
         for answer_id in answer_ids:
-            self._answer_store.remove_answer(answer_id)
+            self._answer_store.remove_answer(answer_id, list_item_id)
 
     def add_primary_person(self, list_name):
         self.remove_completed_relationship_locations_for_list_name(list_name)
@@ -124,16 +103,19 @@ class QuestionnaireStoreUpdater:
         if self._list_store[list_name].primary_person:
             return self._list_store[list_name].primary_person
 
+        # If a primary person was initially answered negatively, then changed to positive,
+        # the location must be removed from the progress store.
+        self.remove_completed_location(self._current_location)
+
         return self._list_store.add_list_item(list_name, primary_person=True)
 
-    def add_list_item_and_answers(self, form, list_name):
+    def add_list_item(self, list_name):
         new_list_item_id = self._list_store.add_list_item(list_name)
-        self._current_location.list_item_id = new_list_item_id
-        self.update_answers(form)
         self.remove_completed_relationship_locations_for_list_name(list_name)
+        return new_list_item_id
 
     def remove_primary_person(self, list_name: str):
-        """ Remove the primary person and all of their answers.
+        """Remove the primary person and all of their answers.
         Any context for the primary person will be removed
         """
         list_item_id = self._list_store[list_name].primary_person
@@ -141,7 +123,7 @@ class QuestionnaireStoreUpdater:
             self.remove_list_item_and_answers(list_name, list_item_id)
 
     def remove_list_item_and_answers(self, list_name: str, list_item_id: str):
-        """ Remove answers from the answer store and update the list store to remove it.
+        """Remove answers from the answer store and update the list store to remove it.
         Any related relationship answers are re-evaluated for completeness.
         """
         self._list_store.delete_list_item(list_name, list_item_id)
@@ -160,18 +142,43 @@ class QuestionnaireStoreUpdater:
     def get_relationship_answers_for_list_name(
         self, list_name: str
     ) -> Union[List[Answer], None]:
-        assosciated_relationship_collectors = self._get_relationship_collectors_by_list_name(
-            list_name
+        associated_relationship_collectors = (
+            self._get_relationship_collectors_by_list_name(list_name)
         )
-        if not assosciated_relationship_collectors:
+        if not associated_relationship_collectors:
             return None
 
         relationship_answer_ids = [
-            self._schema.get_relationship_answer_id_for_block(block["id"])
-            for block in assosciated_relationship_collectors
+            self._schema.get_first_answer_id_for_block(block["id"])
+            for block in associated_relationship_collectors
         ]
 
         return self._answer_store.get_answers_by_answer_id(relationship_answer_ids)
+
+    def update_same_name_items(
+        self, list_name: str, same_name_answer_ids: Optional[List[str]]
+    ):
+        if not same_name_answer_ids:
+            return
+
+        same_name_items = set()
+        people_names: Dict[str, list] = {}
+
+        list_model = self._questionnaire_store.list_store[list_name]
+
+        for current_list_item_id in list_model:
+            answers = self._questionnaire_store.answer_store.get_answers_by_answer_id(
+                answer_ids=same_name_answer_ids, list_item_id=current_list_item_id
+            )
+            current_names = [answer.value.casefold() for answer in answers if answer]
+            current_list_item_name = " ".join(current_names)
+
+            if matching_list_item_id := people_names.get(current_list_item_name):
+                same_name_items |= {current_list_item_id, matching_list_item_id}
+            else:
+                people_names[current_list_item_name] = current_list_item_id
+
+        list_model.same_name_items = list(same_name_items)
 
     def remove_relationship_answers_for_list_item_id(
         self, list_item_id: str, answers: List
@@ -208,7 +215,8 @@ class QuestionnaireStoreUpdater:
             section_ids=section_ids,
         )
 
-    def _update_questionnaire_store_with_form_data(self, form_data):
+    def update_answers(self, form_data, list_item_id=None):
+        list_item_id = list_item_id or self._current_location.list_item_id
         answer_ids_for_question = self._schema.get_answer_ids_for_question(
             self._current_question
         )
@@ -216,15 +224,23 @@ class QuestionnaireStoreUpdater:
         for answer_id, answer_value in form_data.items():
 
             if answer_id in answer_ids_for_question:
-                if answer_value not in self.EMPTY_ANSWER_VALUES:
+                answer_value_to_store = (
+                    {
+                        key: value
+                        for key, value in answer_value.items()
+                        if value not in self.EMPTY_ANSWER_VALUES
+                    }
+                    if isinstance(answer_value, dict)
+                    else answer_value
+                )
+
+                if answer_value_to_store in self.EMPTY_ANSWER_VALUES:
+                    self._answer_store.remove_answer(answer_id, list_item_id)
+                else:
                     answer = Answer(
                         answer_id=answer_id,
-                        list_item_id=self._current_location.list_item_id,
-                        value=answer_value,
+                        list_item_id=list_item_id,
+                        value=answer_value_to_store,
                     )
 
                     self._answer_store.add_or_update(answer)
-                else:
-                    self._answer_store.remove_answer(
-                        answer_id, self._current_location.list_item_id
-                    )

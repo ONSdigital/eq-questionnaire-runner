@@ -1,23 +1,21 @@
 {% extends 'layouts/_base.html' %}
-{% import 'macros/helpers.html' as helpers %}
 {% from "components/button/_macro.njk" import onsButton %}
 {% from "components/cookies-banner/_macro.njk" import onsCookiesBanner %}
 
 {% set block = content.block %}
 {% set form = content.form %}
+{% set last_viewed_question_guidance = content.last_viewed_question_guidance %}
 
 {% block main %}
   <button type="submit" class="u-d-no" hidden></button>
-  {% if previous_location_url %}
-    <div class="u-mb-s">
-      <a {{ helpers.track('click', 'Navigation', 'Previous link click', position )}} href="{{ previous_location_url }}" id="top-previous">{{ _("Previous") }}</a>
-    </div>
-  {% endif %}
 
   {% block form_errors %}{% endblock %}
 
   {% block form_content %}
-      <div class="group" id="{{current_location.group_id}}">
+      <div class="group">
+        {% if last_viewed_question_guidance %}
+          {% include 'partials/last_viewed_question_guidance.html' %}
+        {% endif %}
         {% include 'partials/block.html' %}
       </div>
   {% endblock %}
@@ -25,6 +23,7 @@
   {% block submit_button %}
       {{
           onsButton({
+              "submitType": "timer",
               "text": continue_button_text | default(_("Save and continue")),
               "classes": "u-mt-xl",
               "attributes": {
@@ -34,10 +33,9 @@
       }}
   {% endblock %}
 
-  {% block cancel_and_return %}
+  {% block after_submit_button_content %}
     {% if content.return_to_hub_url %}
-      <p class="u-mt-xl">{{ _("Can't complete this question?") }}<br>
-      <a href="{{ content.return_to_hub_url }}">{{ _("Choose another section and return to this later") }}</a></p>
+      <p class="u-mt-xl"><a href="{{ content.return_to_hub_url }}" data-ga-action="Choose another section click">{{ _("Choose another section and return to this later") }}</a></p>
     {% endif %}
   {% endblock %}
 

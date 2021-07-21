@@ -2,48 +2,13 @@
   {% with dataHandle = data %}{% include path %}{% endwith %}
 {% endmacro %}
 
-{%- macro track(event, category, action, label) -%}
-  {% set attr = {
-    "data-ga": event,
-    "data-ga-category": category,
-    "data-ga-action": action,
-    "data-ga-label": label,
-  } %}
-  {{attr|xmlattr}}
+{%- macro format_paragraphs(paragraphs) -%}
+  {%- for paragraph in paragraphs -%}
+    <p>{{paragraph}}</p>
+  {%- else -%}
+  {%- endfor -%}
 {%- endmacro -%}
 
-{%- macro telephone_number(tel="0300 1234 931", aria_describedby=None, class=None) -%}
-  {% set attr = {
-    "aria-describedby": aria_describedby,
-    "class": class
-  } %}
-<a href="tel:{{tel.replace(' ', '')}}"{{attr|xmlattr}}>{{tel}}</a>
-{%- endmacro -%}
-
-{%- macro email_address(email="surveys@ons.gov.uk", aria_describedby=None, subject=None, class=None) -%}
-  {% set attr = {
-    "aria-describedby": aria_describedby,
-    "class": class
-  } %}
-<a href="mailto:{{email}}{% if subject %}?subject={{ subject|urlencode }}{% endif %}" {{attr|xmlattr}}>{{email}}</a>
-{%- endmacro -%}
-
-{%- macro save_signout_button(button_text) -%}
-  {% set attr = {
-      "class": "btn btn--ghost print__hidden js-btn-save",
-      "data-qa": "btn-save-sign-out",
-      "name": "action[save_sign_out]",
-    } %}
-  {% set analytics = track('click', 'Navigation', 'Save and sign out click') %}
-  <button type="submit" {{attr|xmlattr}} {{analytics}}>{{ button_text }}</button>
-{%- endmacro -%}
-
-{%- macro signout_button(button_text) -%}
-  {% set attr = {
-      "class": "btn btn--ghost print__hidden",
-      "data-qa": "btn-sign-out",
-      "name": "action[sign_out]",
-    } %}
-  {% set analytics = track('click', 'Navigation', 'Sign out click') %}
-  <button type="submit" {{attr|xmlattr}} {{analytics}}>{{ button_text }}</button>
+{%- macro interviewer_note(title=None) -%}
+<mark class="instruction">{{_("Interviewer note:")}}</mark>{{ title }}
 {%- endmacro -%}

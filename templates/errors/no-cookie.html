@@ -1,0 +1,8 @@
+{% extends 'layouts/_base.html' %}
+
+{% set page_title = _("Page is not available") %}
+
+{% block main %}
+  <h1>{{ _("Sorry there is a problem") }}</h1>
+  <p>{{ _("To access this page you need to <a href='{url}'>enter your 16-character access code</a>.").format(url = account_service_url) }}</p>
+{% endblock %}

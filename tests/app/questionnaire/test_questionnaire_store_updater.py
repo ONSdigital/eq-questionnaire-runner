@@ -1,25 +1,28 @@
 import unittest
 
-from mock import MagicMock
-from mock import patch
+from mock import MagicMock, patch
+from werkzeug.datastructures import MultiDict
 
-from app.data_model.answer_store import AnswerStore
-from app.data_model.progress_store import ProgressStore
-from app.data_model.list_store import ListStore
-from app.data_model.questionnaire_store import QuestionnaireStore
-from app.forms.questionnaire_form import QuestionnaireForm
-from app.questionnaire.questionnaire_store_updater import QuestionnaireStoreUpdater
+from app.data_models import QuestionnaireStore
+from app.data_models.answer_store import AnswerStore
+from app.data_models.list_store import ListStore
+from app.data_models.progress_store import ProgressStore
 from app.questionnaire.location import Location
 from app.questionnaire.questionnaire_schema import QuestionnaireSchema
+from app.questionnaire.questionnaire_store_updater import QuestionnaireStoreUpdater
 
 
 def fake_list_store():
-    serialised = [
-        {"name": "people", "primary_person": "abcdef", "items": ["abcdef", "xyzabc"]},
+    serialized = [
+        {
+            "name": "people",
+            "primary_person": "abcdef",
+            "items": ["abcdef", "ghijkl", "xyzabc"],
+        },
         {"name": "pets", "items": ["tuvwxy"]},
     ]
 
-    return ListStore.deserialise(serialised)
+    return ListStore.deserialize(serialized)
 
 
 class TestQuestionnaireStoreUpdater(unittest.TestCase):
@@ -49,7 +52,7 @@ class TestQuestionnaireStoreUpdater(unittest.TestCase):
 
         self.schema.get_answer_ids_for_question.return_value = [answer_id]
 
-        form = MagicMock(spec=QuestionnaireForm, data={answer_id: answer_value})
+        form_data = {answer_id: answer_value}
 
         self.current_question = self.schema.get_block(self.location.block_id)[
             "question"
@@ -57,7 +60,7 @@ class TestQuestionnaireStoreUpdater(unittest.TestCase):
         self.questionnaire_store_updater = QuestionnaireStoreUpdater(
             self.location, self.schema, self.questionnaire_store, self.current_question
         )
-        self.questionnaire_store_updater.update_answers(form)
+        self.questionnaire_store_updater.update_answers(form_data)
 
         assert self.answer_store.add_or_update.call_count == 1
 
@@ -82,13 +85,13 @@ class TestQuestionnaireStoreUpdater(unittest.TestCase):
 
         self.schema.get_answer_ids_for_question.return_value = [answer_id]
 
-        form = MagicMock(spec=QuestionnaireForm, data={answer_id: answer_value})
+        form_data = MultiDict({answer_id: answer_value})
 
         self.current_question = self.schema.get_block(location.block_id)["question"]
         self.questionnaire_store_updater = QuestionnaireStoreUpdater(
             location, self.schema, self.questionnaire_store, self.current_question
         )
-        self.questionnaire_store_updater.update_answers(form)
+        self.questionnaire_store_updater.update_answers(form_data)
 
         assert self.answer_store.add_or_update.call_count == 1
 
@@ -99,8 +102,8 @@ class TestQuestionnaireStoreUpdater(unittest.TestCase):
             "value": answer_value,
         }
 
-        form = MagicMock(spec=QuestionnaireForm, data={answer_id: ""})
-        self.questionnaire_store_updater.update_answers(form)
+        form_data = MultiDict({answer_id: ""})
+        self.questionnaire_store_updater.update_answers(form_data)
 
         assert self.answer_store.remove_answer.call_count == 1
         answer_key = self.answer_store.remove_answer.call_args[0]
@@ -114,9 +117,7 @@ class TestQuestionnaireStoreUpdater(unittest.TestCase):
         self.schema.get_answers_by_answer_id.return_value = [{"default": default_value}]
 
         # No answer given so will use schema defined default
-        form_data = {answer_id: None}
-
-        form = MagicMock(spec=QuestionnaireForm, data=form_data)
+        form_data = MultiDict({answer_id: None})
 
         self.current_question = {
             "answers": [{"id": "answer", "default": default_value}]
@@ -124,7 +125,7 @@ class TestQuestionnaireStoreUpdater(unittest.TestCase):
         self.questionnaire_store_updater = QuestionnaireStoreUpdater(
             self.location, self.schema, self.questionnaire_store, self.current_question
         )
-        self.questionnaire_store_updater.update_answers(form)
+        self.questionnaire_store_updater.update_answers(form_data)
 
         assert self.answer_store.add_or_update.call_count == 0
 
@@ -145,8 +146,6 @@ class TestQuestionnaireStoreUpdater(unittest.TestCase):
             radio_answer_id: None,
         }
 
-        form = MagicMock(spec=QuestionnaireForm, data=form_data)
-
         self.current_question = {
             "answers": [
                 {"id": "string-answer"},
@@ -157,7 +156,7 @@ class TestQuestionnaireStoreUpdater(unittest.TestCase):
         self.questionnaire_store_updater = QuestionnaireStoreUpdater(
             self.location, self.schema, self.questionnaire_store, self.current_question
         )
-        self.questionnaire_store_updater.update_answers(form)
+        self.questionnaire_store_updater.update_answers(form_data)
 
         assert self.answer_store.add_or_update.call_count == 0
 
@@ -251,7 +250,7 @@ class TestQuestionnaireStoreUpdater(unittest.TestCase):
                 "test-relationship-collector"
             )
 
-        completed = self.progress_store.serialise()
+        completed = self.progress_store.serialize()
         self.assertEqual(len(completed), 0)
 
     def test_remove_completed_relationship_locations_for_list_name_no_locations(self):
@@ -259,7 +258,7 @@ class TestQuestionnaireStoreUpdater(unittest.TestCase):
             "section",
             Location(section_id="section", block_id="test-relationship-collector"),
         )
-        initial_progress_store = self.progress_store.serialise()
+        initial_progress_store = self.progress_store.serialize()
         list_store = fake_list_store()
         questionnaire_store = MagicMock(
             spec=QuestionnaireStore,
@@ -279,7 +278,7 @@ class TestQuestionnaireStoreUpdater(unittest.TestCase):
                 "test-relationship-collector"
             )
 
-        self.assertEqual(self.progress_store.serialise(), initial_progress_store)
+        self.assertEqual(self.progress_store.serialize(), initial_progress_store)
 
     def test_update_relationship_question_completeness_no_relationship_collectors(self):
         list_store = fake_list_store()
@@ -302,3 +301,49 @@ class TestQuestionnaireStoreUpdater(unittest.TestCase):
                     "test-relationship-collector"
                 )
             )
+
+    def test_update_same_name_items(self):
+        answer_store = AnswerStore(
+            existing_answers=[
+                {"answer_id": "first-name", "value": "Joe", "list_item_id": "abcdef"},
+                {
+                    "answer_id": "middle-name",
+                    "value": "Brian",
+                    "list_item_id": "abcdef",
+                },
+                {"answer_id": "last-name", "value": "Bloggs", "list_item_id": "abcdef"},
+                {"answer_id": "first-name", "value": "Joe", "list_item_id": "ghijkl"},
+                {
+                    "answer_id": "middle-name",
+                    "value": "Roger",
+                    "list_item_id": "ghijkl",
+                },
+                {"answer_id": "last-name", "value": "Bloggs", "list_item_id": "ghijkl"},
+                {
+                    "answer_id": "first-name",
+                    "value": "Martha",
+                    "list_item_id": "xyzabc",
+                },
+                {"answer_id": "last-name", "value": "Bloggs", "list_item_id": "xyzabc"},
+            ]
+        )
+        list_store = fake_list_store()
+
+        questionnaire_store = MagicMock(
+            spec=QuestionnaireStore,
+            completed_blocks=[],
+            answer_store=answer_store,
+            list_store=list_store,
+            progress_store=ProgressStore(),
+        )
+
+        questionnaire_store_updater = QuestionnaireStoreUpdater(
+            self.location, self.schema, questionnaire_store, self.current_question
+        )
+
+        questionnaire_store_updater.update_same_name_items(
+            "people", ["first-name", "last-name"]
+        )
+
+        assert "abcdef" in list_store["people"].same_name_items
+        assert "ghijkl" in list_store["people"].same_name_items

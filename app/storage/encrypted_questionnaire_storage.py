@@ -2,8 +2,8 @@ import snappy
 from flask import current_app
 from structlog import get_logger
 
-from app.data_model.app_models import QuestionnaireState
-from app.data_model.questionnaire_store import QuestionnaireStore
+from app.data_models import QuestionnaireStore
+from app.data_models.app_models import QuestionnaireState
 from app.storage.storage_encryption import StorageEncryption
 
 logger = get_logger()
@@ -11,9 +11,6 @@ logger = get_logger()
 
 class EncryptedQuestionnaireStorage:
     def __init__(self, user_id, user_ik, pepper):
-        if user_id is None:
-            raise ValueError("User id must be set")
-
         self._user_id = user_id
         self.encrypter = StorageEncryption(user_id, user_ik, pepper)
 
@@ -45,7 +42,7 @@ class EncryptedQuestionnaireStorage:
 
     def _find_questionnaire_state(self):
         logger.debug("getting questionnaire data", user_id=self._user_id)
-        return current_app.eq["storage"].get_by_key(QuestionnaireState, self._user_id)
+        return current_app.eq["storage"].get(QuestionnaireState, self._user_id)
 
     def _get_snappy_compressed_data(self, data):
         decrypted_data = self.encrypter.decrypt_data(data)

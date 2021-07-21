@@ -1,0 +1,6 @@
+---
+engines:
+  jmd:
+    enabled: true
+    exclude_paths:
+      - tests/functional/wdio.conf.js

@@ -1,4 +1,6 @@
-from wtforms import StringField, Form, validators
+from unittest.mock import MagicMock
+
+from wtforms import Form, StringField, validators
 
 from app.forms.field_handlers.string_handler import StringHandler
 
@@ -11,7 +13,7 @@ def test_string_field():
         "guidance": "<p>Please enter your job title in the space provided.</p>",
         "type": "TextField",
     }
-    string_handler = StringHandler(textfield_json)
+    string_handler = StringHandler(textfield_json, disable_validation=True)
 
     class TestForm(Form):
         test_field = string_handler.get_field()
@@ -24,7 +26,7 @@ def test_string_field():
 
 
 def test_get_length_validator():
-    string_handler = StringHandler({})
+    string_handler = StringHandler({}, error_messages=MagicMock())
 
     validator = string_handler.get_length_validator
 
@@ -47,7 +49,7 @@ def test_get_length_validator_with_message_override():
 def test_get_length_validator_with_max_length_override():
     answer = {"max_length": 30}
 
-    string_handler = StringHandler(answer)
+    string_handler = StringHandler(answer, error_messages=MagicMock())
     validator = string_handler.get_length_validator
 
     assert validator.max == 30

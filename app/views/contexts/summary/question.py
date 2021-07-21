@@ -1,4 +1,4 @@
-from jinja2 import escape
+from markupsafe import escape
 
 from app.views.contexts.summary.answer import Answer
 
@@ -10,7 +10,7 @@ class Question:
         self.type = question_schema["type"]
         self.schema = schema
         self.answer_schemas = iter(question_schema["answers"])
-
+        self.summary = question_schema.get("summary")
         self.title = (
             question_schema.get("title") or question_schema["answers"][0]["label"]
         )
@@ -18,17 +18,21 @@ class Question:
         self.answers = self._build_answers(answer_store, question_schema)
 
     def _get_answer(self, answer_store, answer_id):
-        answer = answer_store.get_answer(answer_id, self.list_item_id)
-        if answer:
-            if isinstance(answer.value, str):
-                return escape(answer.value)
-            return answer.value
-
-        return None
+        return answer_store.get_escaped_answer_value(answer_id, self.list_item_id)
 
     def _build_answers(self, answer_store, question_schema):
-        summary_answers = []
 
+        if self.summary:
+            return [
+                {
+                    "id": f"{self.id}-concatenated-answer",
+                    "value": self._concatenate_answers(
+                        answer_store, self.summary["concatenation_type"]
+                    ),
+                }
+            ]
+
+        summary_answers = []
         for answer_schema in self.answer_schemas:
             answer_value = self._get_answer(answer_store, answer_schema["id"])
             answer = self._build_answer(
@@ -43,8 +47,28 @@ class Question:
             if exclusive_option:
                 return summary_answers[-1:]
             return summary_answers[:-1]
-
         return summary_answers
+
+    def _concatenate_answers(self, answer_store, concatenation_type):
+
+        answer_separators = {"Newline": "<br>", "Space": " "}
+        answer_separator = answer_separators.get(concatenation_type, " ")
+
+        answer_values = [
+            self._get_answer(answer_store, answer_schema["id"])
+            for answer_schema in self.answer_schemas
+        ]
+
+        values_to_concatenate = []
+        for answer_value in answer_values:
+            if not answer_value:
+                continue
+
+            values_to_concatenate.extend(
+                answer_value if isinstance(answer_value, list) else [answer_value]
+            )
+
+        return answer_separator.join(str(value) for value in values_to_concatenate)
 
     def _build_answer(
         self, answer_store, question_schema, answer_schema, answer_value=None
@@ -73,7 +97,7 @@ class Question:
     def _build_checkbox_answers(self, answer, answer_schema, answer_store):
         multiple_answers = []
         for option in answer_schema["options"]:
-            if option["value"] in answer:
+            if escape(option["value"]) in answer:
                 detail_answer_value = self._get_detail_answer_value(
                     option, answer_store
                 )
@@ -94,7 +118,7 @@ class Question:
 
     def _build_radio_answer(self, answer, answer_schema, answer_store):
         for option in answer_schema["options"]:
-            if answer == option["value"]:
+            if answer == escape(option["value"]):
                 detail_answer_value = self._get_detail_answer_value(
                     option, answer_store
                 )

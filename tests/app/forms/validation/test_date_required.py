@@ -1,8 +1,9 @@
 import unittest
 from unittest.mock import Mock
+
 from wtforms.validators import StopValidation
 
-from app.forms.error_messages import error_messages
+from app.forms import error_messages
 from app.forms.validators import DateRequired
 
 

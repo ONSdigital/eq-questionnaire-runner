@@ -1,5 +1,6 @@
 {
     "mime_type": "application/json/ons/eq",
+    "language": "en",
     "schema_version": "0.0.1",
     "data_version": "0.0.3",
     "survey_id": "023",
@@ -20,6 +21,14 @@
             "type": "string"
         }
     ],
+    "questionnaire_flow": {
+        "type": "Linear",
+        "options": {
+            "summary": {
+                "collapsible": false
+            }
+        }
+    },
     "sections": [
         {
             "id": "default-section",
@@ -27,7 +36,6 @@
             "groups": [
                 {
                     "id": "dates",
-                    "title": "",
                     "blocks": [
                         {
                             "type": "Question",
@@ -49,7 +57,6 @@
                                         "type": "Date"
                                     }
                                 ],
-                                "description": "",
                                 "id": "date-range-question",
                                 "title": "Date range",
                                 "type": "DateRange"
@@ -62,13 +69,11 @@
                                 "answers": [
                                     {
                                         "id": "month-year-answer",
-                                        "label": "Date",
                                         "mandatory": true,
                                         "q_code": "11",
                                         "type": "MonthYearDate"
                                     }
                                 ],
-                                "description": "",
                                 "id": "month-year-question",
                                 "title": "Date with month and year",
                                 "type": "General"
@@ -87,7 +92,6 @@
                                         "type": "Date"
                                     }
                                 ],
-                                "description": "",
                                 "id": "single-date-question",
                                 "title": "Single date type",
                                 "type": "General"
@@ -106,7 +110,6 @@
                                         "type": "Date"
                                     }
                                 ],
-                                "description": "",
                                 "id": "non-mandatory-date-question",
                                 "title": "Non Mandatory",
                                 "type": "General"
@@ -125,15 +128,10 @@
                                         "type": "YearDate"
                                     }
                                 ],
-                                "description": "",
                                 "id": "year-date-question",
                                 "title": "Year (YYYY)",
                                 "type": "General"
                             }
-                        },
-                        {
-                            "type": "Summary",
-                            "id": "summary"
                         }
                     ]
                 }

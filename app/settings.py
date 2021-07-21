@@ -1,4 +1,5 @@
 import os
+from datetime import datetime
 
 from structlog import get_logger
 
@@ -33,11 +34,20 @@ def read_file(file_name):
 def get_env_or_fail(key):
     value = os.getenv(key)
     if value is None:
-        raise Exception("Setting '{}' Missing".format(key))
+        raise Exception(f"Setting '{key}' Missing")
 
     return value
 
 
+def utcoffset_or_fail(date_value, key):
+    if date_value.utcoffset() is None:
+        raise Exception(f"'{key}' datetime offset missing")
+    return date_value
+
+
+DATASTORE_USE_GRPC = parse_mode(os.getenv("DATASTORE_USE_GRPC", "True"))
+CDN_URL = os.getenv("CDN_URL", "https://cdn.ons.gov.uk")
+CDN_ASSETS_PATH = os.getenv("CDN_ASSETS_PATH", "/sdc/design-system")
 EQ_MINIMIZE_ASSETS = parse_mode(os.getenv("EQ_MINIMIZE_ASSETS", "True"))
 # max request payload size in bytes
 MAX_CONTENT_LENGTH = int(os.getenv("EQ_MAX_HTTP_POST_CONTENT_LENGTH", "65536"))
@@ -46,6 +56,26 @@ EQ_ENABLE_LIVE_RELOAD = parse_mode(os.getenv("EQ_ENABLE_LIVE_RELOAD", "False"))
 
 EQ_SECRETS_FILE = os.getenv("EQ_SECRETS_FILE", "secrets.yml")
 EQ_KEYS_FILE = os.getenv("EQ_KEYS_FILE", "keys.yml")
+
+EQ_PUBLISHER_BACKEND = os.getenv("EQ_PUBLISHER_BACKEND")
+EQ_FULFILMENT_TOPIC_ID = os.getenv("EQ_FULFILMENT_TOPIC_ID", "eq-fulfilment-topic")
+EQ_SUBMISSION_CONFIRMATION_QUEUE = os.getenv(
+    "EQ_SUBMISSION_CONFIRMATION_QUEUE", "eq-submission-confirmation"
+)
+EQ_SUBMISSION_CONFIRMATION_CLOUD_FUNCTION_NAME = os.getenv(
+    "EQ_SUBMISSION_CONFIRMATION_CLOUD_FUNCTION_NAME",
+    "eq-submission-confirmation-consumer",
+)
+EQ_SUBMISSION_CONFIRMATION_BACKEND = os.getenv("EQ_SUBMISSION_CONFIRMATION_BACKEND")
+EQ_INDIVIDUAL_RESPONSE_LIMIT = int(os.getenv("EQ_INDIVIDUAL_RESPONSE_LIMIT", "1"))
+EQ_INDIVIDUAL_RESPONSE_POSTAL_DEADLINE = utcoffset_or_fail(
+    datetime.fromisoformat(get_env_or_fail("EQ_INDIVIDUAL_RESPONSE_POSTAL_DEADLINE")),
+    "EQ_INDIVIDUAL_RESPONSE_POSTAL_DEADLINE",
+)
+
+EQ_FEEDBACK_LIMIT = int(os.getenv("EQ_FEEDBACK_LIMIT", "10"))
+EQ_FEEDBACK_BACKEND = os.getenv("EQ_FEEDBACK_BACKEND")
+EQ_GCS_FEEDBACK_BUCKET_ID = os.getenv("EQ_GCS_FEEDBACK_BUCKET_ID")
 
 EQ_SUBMISSION_BACKEND = os.getenv("EQ_SUBMISSION_BACKEND")
 EQ_GCS_SUBMISSION_BUCKET_ID = os.getenv("EQ_GCS_SUBMISSION_BUCKET_ID")
@@ -59,7 +89,6 @@ EQ_SESSION_TIMEOUT_SECONDS = int(os.getenv("EQ_SESSION_TIMEOUT_SECONDS", str(45 
 
 EQ_GOOGLE_TAG_MANAGER_ID = os.getenv("EQ_GOOGLE_TAG_MANAGER_ID")
 EQ_GOOGLE_TAG_MANAGER_AUTH = os.getenv("EQ_GOOGLE_TAG_MANAGER_AUTH")
-EQ_GOOGLE_TAG_MANAGER_PREVIEW = os.getenv("EQ_GOOGLE_TAG_MANAGER_PREVIEW")
 
 EQ_NEW_RELIC_ENABLED = parse_mode(os.getenv("EQ_NEW_RELIC_ENABLED", "False"))
 EQ_APPLICATION_VERSION_PATH = ".application-version"
@@ -70,15 +99,11 @@ EQ_SERVER_SIDE_STORAGE_USER_ID_ITERATIONS = ensure_min(
 )
 
 EQ_STORAGE_BACKEND = os.getenv("EQ_STORAGE_BACKEND", "datastore")
-EQ_DATASTORE_EMULATOR_CREDENTIALS = parse_mode(
-    os.getenv("EQ_DATASTORE_EMULATOR_CREDENTIALS", "False")
-)
 EQ_DYNAMODB_ENDPOINT = os.getenv("EQ_DYNAMODB_ENDPOINT")
 EQ_DYNAMODB_MAX_RETRIES = int(os.getenv("EQ_DYNAMODB_MAX_RETRIES", "5"))
 EQ_DYNAMODB_MAX_POOL_CONNECTIONS = int(
     os.getenv("EQ_DYNAMODB_MAX_POOL_CONNECTIONS", "30")
 )
-EQ_SUBMITTED_RESPONSES_TABLE_NAME = get_env_or_fail("EQ_SUBMITTED_RESPONSES_TABLE_NAME")
 EQ_QUESTIONNAIRE_STATE_TABLE_NAME = get_env_or_fail("EQ_QUESTIONNAIRE_STATE_TABLE_NAME")
 EQ_SESSION_TABLE_NAME = get_env_or_fail("EQ_SESSION_TABLE_NAME")
 EQ_USED_JTI_CLAIM_TABLE_NAME = get_env_or_fail("EQ_USED_JTI_CLAIM_TABLE_NAME")
@@ -86,11 +111,6 @@ EQ_USED_JTI_CLAIM_TABLE_NAME = get_env_or_fail("EQ_USED_JTI_CLAIM_TABLE_NAME")
 EQ_REDIS_HOST = get_env_or_fail("EQ_REDIS_HOST")
 EQ_REDIS_PORT = get_env_or_fail("EQ_REDIS_PORT")
 
-EQ_DEV_MODE = parse_mode(os.getenv("EQ_DEV_MODE", "False"))
-EQ_ENABLE_CACHE = parse_mode(os.getenv("EQ_ENABLE_CACHE", "True"))
-EQ_ENABLE_FLASK_DEBUG_TOOLBAR = parse_mode(
-    os.getenv("EQ_ENABLE_FLASK_DEBUG_TOOLBAR", "False")
-)
 EQ_ENABLE_SECURE_SESSION_COOKIE = parse_mode(
     os.getenv("EQ_ENABLE_SECURE_SESSION_COOKIE", "True")
 )
@@ -107,3 +127,15 @@ EQ_LIST_ITEM_ID_LENGTH = 6
 MAX_NUMBER = 9999999999
 
 COOKIE_SETTINGS_URL = os.getenv("COOKIE_SETTINGS_URL")
+
+CONFIRMATION_EMAIL_LIMIT = int(os.getenv("CONFIRMATION_EMAIL_LIMIT", "10"))
+
+ADDRESS_LOOKUP_API_URL = os.getenv("ADDRESS_LOOKUP_API_URL")
+ADDRESS_LOOKUP_API_AUTH_ENABLED = parse_mode(
+    os.getenv("ADDRESS_LOOKUP_API_AUTH_ENABLED", "False")
+)
+ADDRESS_LOOKUP_API_AUTH_TOKEN_LEEWAY_IN_SECONDS = int(
+    os.getenv("ADDRESS_LOOKUP_API_AUTH_TOKEN_LEEWAY_IN_SECONDS", "300")
+)
+
+SURVEY_TYPE = os.getenv("SURVEY_TYPE", "business")

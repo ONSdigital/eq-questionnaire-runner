@@ -1,13 +1,19 @@
-{% from "components/details/_macro.njk" import onsDetails %}
+{% from "components/collapsible/_macro.njk" import onsCollapsible %}
 
-{% call onsDetails({
+{% call onsCollapsible({
+  "id": "answer-guidance-" ~ answer.id,
   "classes": "u-mt-s",
   "title": _(answer_guidance.schema_item.show_guidance),
-  "summaryAttributes": {
+  "titleTag": "h2",
+  "headingAttributes": {
     "data-ga": "click",
     "data-ga-category": "Answer guidance",
     "data-ga-action": "Open panel",
-    "data-ga-label": _(answer_guidance.schema_item.show_guidance)
+    "data-ga-label": _(answer_guidance.schema_item.show_guidance),
+    "data-qa": "answer-guidance-" ~ answer.id ~ "-title"
+  },
+  "contentAttributes": {
+    "data-qa": "answer-guidance-" ~ answer.id ~ "-content"
   },
   "button": {
     "close": _("Hide this"),
@@ -16,7 +22,8 @@
       "data-ga": "click",
       "data-ga-category": "Answer guidance",
       "data-ga-action": "Close panel",
-      "data-ga-label": _(answer_guidance.schema_item.show_guidance)
+      "data-ga-label": _(answer_guidance.schema_item.show_guidance),
+      "data-qa": "answer-guidance-" ~ answer.id ~ "-button"
     }
   }
 }) %}

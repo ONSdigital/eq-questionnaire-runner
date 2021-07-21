@@ -1,5 +1,6 @@
 {
     "mime_type": "application/json/ons/eq",
+    "language": "en",
     "schema_version": "0.0.1",
     "data_version": "0.0.3",
     "survey_id": "001",
@@ -21,13 +22,20 @@
             "type": "string"
         }
     ],
+    "questionnaire_flow": {
+        "type": "Linear",
+        "options": {
+            "summary": {
+                "collapsible": false
+            }
+        }
+    },
     "sections": [
         {
             "id": "default-section",
             "groups": [
                 {
                     "id": "route-group",
-                    "title": "",
                     "blocks": [
                         {
                             "type": "Question",
@@ -41,7 +49,6 @@
                                         "type": "Number"
                                     }
                                 ],
-                                "description": "",
                                 "id": "route-comparison-1-question",
                                 "title": "Enter your first number",
                                 "type": "General"
@@ -59,7 +66,6 @@
                                         "type": "Number"
                                     }
                                 ],
-                                "description": "",
                                 "id": "route-comparison-2-question",
                                 "title": "Enter a higher number to skip the next interstitial",
                                 "type": "General"
@@ -110,16 +116,6 @@
                                     }
                                 ]
                             }
-                        }
-                    ]
-                },
-                {
-                    "id": "summary-group",
-                    "title": "",
-                    "blocks": [
-                        {
-                            "type": "Summary",
-                            "id": "summary"
                         }
                     ]
                 }

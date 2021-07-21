@@ -1,9 +1,10 @@
 # pylint: disable=redefined-outer-name
 import pytest
 
-from app.data_model.progress_store import CompletionStatus
+from app.data_models.progress_store import CompletionStatus
 from app.questionnaire.router import Router
-from app.views.contexts.hub_context import HubContext
+from app.utilities.schema import load_schema_from_name
+from app.views.contexts import HubContext
 
 
 @pytest.fixture
@@ -15,19 +16,22 @@ def test_get_not_started_row_for_section(
     schema, progress_store, answer_store, list_store
 ):
     expected = {
-        "title": "Breakfast",
         "rowItems": [
             {
+                "rowTitle": "Breakfast",
+                "rowTitleAttributes": {"data-qa": "hub-row-section-1-title"},
+                "attributes": {"data-qa": "hub-row-section-1-state"},
                 "valueList": [{"text": "Not started"}],
                 "actions": [
                     {
                         "text": "Start section",
                         "ariaLabel": "Start Breakfast section",
                         "url": "http://some/url",
+                        "attributes": {"data-qa": "hub-row-section-1-link"},
                     }
                 ],
             }
-        ],
+        ]
     }
 
     hub = HubContext(
@@ -43,6 +47,7 @@ def test_get_not_started_row_for_section(
         section_name="Breakfast",
         section_status=CompletionStatus.NOT_STARTED,
         section_url="http://some/url",
+        row_id="section-1",
     )
 
     assert expected == actual
@@ -52,20 +57,23 @@ def test_get_completed_row_for_section(
     schema, progress_store, answer_store, list_store
 ):
     expected = {
-        "title": "Breakfast",
         "rowItems": [
             {
-                "icon": "check-green",
+                "rowTitle": "Breakfast",
+                "rowTitleAttributes": {"data-qa": "hub-row-section-1-title"},
+                "attributes": {"data-qa": "hub-row-section-1-state"},
+                "icon": "check",
                 "valueList": [{"text": "Completed"}],
                 "actions": [
                     {
                         "text": "View answers",
                         "ariaLabel": "View answers for Breakfast",
                         "url": "http://some/url",
+                        "attributes": {"data-qa": "hub-row-section-1-link"},
                     }
                 ],
             }
-        ],
+        ]
     }
 
     hub = HubContext(
@@ -81,14 +89,16 @@ def test_get_completed_row_for_section(
         section_name="Breakfast",
         section_status=CompletionStatus.COMPLETED,
         section_url="http://some/url",
+        row_id="section-1",
     )
 
     assert expected == actual
 
 
-def test_get_context(schema, progress_store, answer_store, list_store, router):
+def test_get_context(progress_store, answer_store, list_store, router):
+    schema = load_schema_from_name("test_hub_and_spoke")
     hub = HubContext(
-        language=None,
+        language="en",
         progress_store=progress_store,
         list_store=list_store,
         schema=schema,
@@ -97,12 +107,91 @@ def test_get_context(schema, progress_store, answer_store, list_store, router):
     )
 
     expected_context = {
-        "title": "Choose another section to complete",
-        "description": "You must complete all sections in order to submit this survey",
+        "individual_response_enabled": False,
+        "individual_response_url": None,
+        "guidance": None,
         "rows": [],
         "submit_button": "Continue",
+        "title": "Choose another section to complete",
+        "warning": None,
     }
 
-    assert expected_context == hub.get_context(
+    assert expected_context == hub(
         survey_complete=False, enabled_section_ids=router.enabled_section_ids
+    )
+
+
+def test_get_context_custom_content_incomplete(
+    progress_store, answer_store, list_store, router
+):
+    schema = load_schema_from_name("test_hub_and_spoke_custom_content")
+    hub_context = HubContext(
+        language="en",
+        progress_store=progress_store,
+        list_store=list_store,
+        schema=schema,
+        answer_store=answer_store,
+        metadata={},
+    )
+
+    expected_context = {
+        "individual_response_enabled": False,
+        "individual_response_url": None,
+        "rows": [],
+        "guidance": None,
+        "submit_button": "Continue",
+        "title": "Choose another section to complete",
+        "warning": None,
+    }
+
+    assert expected_context == hub_context(
+        survey_complete=False, enabled_section_ids=router.enabled_section_ids
+    )
+
+
+def test_get_context_custom_content_complete(
+    progress_store, answer_store, list_store, router
+):
+    schema = load_schema_from_name("test_hub_and_spoke_custom_content")
+    hub_context = HubContext(
+        language="en",
+        progress_store=progress_store,
+        list_store=list_store,
+        schema=schema,
+        answer_store=answer_store,
+        metadata={},
+    )
+
+    expected_context = {
+        "individual_response_enabled": False,
+        "individual_response_url": None,
+        "guidance": "Submission guidance",
+        "rows": [],
+        "submit_button": "Submission button",
+        "title": "Submission title",
+        "warning": "Submission warning",
+    }
+
+    assert expected_context == hub_context(
+        survey_complete=True, enabled_section_ids=router.enabled_section_ids
+    )
+
+
+def test_get_context_no_list_items_survey_incomplete_individual_response_disabled(
+    progress_store, answer_store, list_store, router
+):
+    schema = load_schema_from_name("test_individual_response")
+    hub_context = HubContext(
+        language="en",
+        progress_store=progress_store,
+        list_store=list_store,
+        schema=schema,
+        answer_store=answer_store,
+        metadata={},
+    )
+
+    assert not (
+        hub_context(
+            survey_complete=False, enabled_section_ids=router.enabled_section_ids
+        )["individual_response_enabled"]
     )

@@ -1,46 +1,38 @@
-const BasePage = require('./base.page');
+import BasePage from "./base.page";
 
-class IntroductionPage extends BasePage {
-
-  constructor(pageName) {
-    super(pageName);
-  }
-
+class IntroductionBasePage extends BasePage {
   myAccountLink() {
-    return '#my-account';
+    return "#my-account";
   }
 
-  signOut() {
-    return '[data-qa="btn-sign-out"]';
+  exitButton() {
+    return '[data-qa="btn-exit"]';
   }
 
   getStarted() {
-    return '.qa-btn-get-started';
+    return ".qa-btn-get-started";
   }
 
   useOfInformation() {
-    return '#use-of-information';
+    return "#use-of-information";
   }
 
   useOfData() {
-    return '#how-we-use-your-data';
+    return "#how-we-use-your-data";
   }
 
   legalResponse() {
-      return '[data-qa="legal-response"]';
+    return '[data-qa="legal-response"]';
   }
 
   legalBasis() {
-      return '[data-qa="legal-basis"]';
+    return '[data-qa="legal-basis"]';
   }
 
   introDescription() {
-    return '#use-of-information p';
-  }
-
-  introTitleDescription() {
-    return '[data-qa="details-changed-title"]';
+    return "#use-of-information p";
   }
 }
 
-module.exports = IntroductionPage;
+export default IntroductionBasePage;
+export const IntroductionPage = new IntroductionBasePage("introduction");

@@ -1,5 +1,6 @@
 {
     "mime_type": "application/json/ons/eq",
+    "language": "en",
     "schema_version": "0.0.1",
     "data_version": "0.0.3",
     "survey_id": "0",
@@ -20,8 +21,9 @@
             "type": "string"
         }
     ],
-    "hub": {
-        "enabled": true
+    "questionnaire_flow": {
+        "type": "Hub",
+        "options": {}
     },
     "sections": [
         {
@@ -36,10 +38,6 @@
                             "id": "primary-person-list-collector",
                             "type": "PrimaryPersonListCollector",
                             "for_list": "people",
-                            "add_or_edit_answer": {
-                                "id": "you-live-here",
-                                "value": "Yes"
-                            },
                             "add_or_edit_block": {
                                 "id": "add-or-edit-primary-person",
                                 "type": "PrimaryPersonListAddOrEditQuestion",
@@ -75,7 +73,10 @@
                                         "options": [
                                             {
                                                 "label": "Yes",
-                                                "value": "Yes"
+                                                "value": "Yes",
+                                                "action": {
+                                                    "type": "RedirectToListAddBlock"
+                                                }
                                             },
                                             {
                                                 "label": "No",
@@ -90,14 +91,6 @@
                             "id": "list-collector",
                             "type": "ListCollector",
                             "for_list": "people",
-                            "add_answer": {
-                                "id": "anyone-else",
-                                "value": "Yes"
-                            },
-                            "remove_answer": {
-                                "id": "remove-confirmation",
-                                "value": "Yes"
-                            },
                             "question": {
                                 "id": "confirmation-question",
                                 "type": "General",
@@ -110,7 +103,10 @@
                                         "options": [
                                             {
                                                 "label": "Yes",
-                                                "value": "Yes"
+                                                "value": "Yes",
+                                                "action": {
+                                                    "type": "RedirectToListAddBlock"
+                                                }
                                             },
                                             {
                                                 "label": "No",
@@ -181,7 +177,10 @@
                                             "options": [
                                                 {
                                                     "label": "Yes",
-                                                    "value": "Yes"
+                                                    "value": "Yes",
+                                                    "action": {
+                                                        "type": "RemoveListItemAndAnswers"
+                                                    }
                                                 },
                                                 {
                                                     "label": "No",
@@ -203,10 +202,16 @@
                                                 {
                                                     "arguments": {
                                                         "delimiter": " ",
-                                                        "list_to_concatenate": {
-                                                            "identifier": ["first-name", "last-name"],
-                                                            "source": "answers"
-                                                        }
+                                                        "list_to_concatenate": [
+                                                            {
+                                                                "source": "answers",
+                                                                "identifier": "first-name"
+                                                            },
+                                                            {
+                                                                "source": "answers",
+                                                                "identifier": "last-name"
+                                                            }
+                                                        ]
                                                     },
                                                     "transform": "concatenate_list"
                                                 }
@@ -238,14 +243,6 @@
                             "id": "another-list-collector-block",
                             "type": "ListCollector",
                             "for_list": "people",
-                            "add_answer": {
-                                "id": "another-anyone-else",
-                                "value": "Yes"
-                            },
-                            "remove_answer": {
-                                "id": "another-remove-confirmation",
-                                "value": "Yes"
-                            },
                             "question": {
                                 "id": "another-confirmation-question",
                                 "type": "General",
@@ -258,7 +255,10 @@
                                         "options": [
                                             {
                                                 "label": "Yes",
-                                                "value": "Yes"
+                                                "value": "Yes",
+                                                "action": {
+                                                    "type": "RedirectToListAddBlock"
+                                                }
                                             },
                                             {
                                                 "label": "No",
@@ -329,7 +329,10 @@
                                             "options": [
                                                 {
                                                     "label": "Yes",
-                                                    "value": "Yes"
+                                                    "value": "Yes",
+                                                    "action": {
+                                                        "type": "RemoveListItemAndAnswers"
+                                                    }
                                                 },
                                                 {
                                                     "label": "No",
@@ -351,10 +354,16 @@
                                                 {
                                                     "arguments": {
                                                         "delimiter": " ",
-                                                        "list_to_concatenate": {
-                                                            "identifier": ["first-name", "last-name"],
-                                                            "source": "answers"
-                                                        }
+                                                        "list_to_concatenate": [
+                                                            {
+                                                                "source": "answers",
+                                                                "identifier": "first-name"
+                                                            },
+                                                            {
+                                                                "source": "answers",
+                                                                "identifier": "last-name"
+                                                            }
+                                                        ]
                                                     },
                                                     "transform": "concatenate_list"
                                                 }
@@ -374,14 +383,6 @@
                             "id": "visitors-block",
                             "type": "ListCollector",
                             "for_list": "visitor",
-                            "add_answer": {
-                                "id": "visitors-anyone-else",
-                                "value": "Yes"
-                            },
-                            "remove_answer": {
-                                "id": "visitors-remove-confirmation",
-                                "value": "Yes"
-                            },
                             "question": {
                                 "id": "visitors-confirmation-question",
                                 "type": "General",
@@ -394,7 +395,10 @@
                                         "options": [
                                             {
                                                 "label": "Yes",
-                                                "value": "Yes"
+                                                "value": "Yes",
+                                                "action": {
+                                                    "type": "RedirectToListAddBlock"
+                                                }
                                             },
                                             {
                                                 "label": "No",
@@ -465,7 +469,10 @@
                                             "options": [
                                                 {
                                                     "label": "Yes",
-                                                    "value": "Yes"
+                                                    "value": "Yes",
+                                                    "action": {
+                                                        "type": "RemoveListItemAndAnswers"
+                                                    }
                                                 },
                                                 {
                                                     "label": "No",
@@ -487,10 +494,16 @@
                                                 {
                                                     "arguments": {
                                                         "delimiter": " ",
-                                                        "list_to_concatenate": {
-                                                            "identifier": ["first-name", "last-name"],
-                                                            "source": "answers"
-                                                        }
+                                                        "list_to_concatenate": [
+                                                            {
+                                                                "source": "answers",
+                                                                "identifier": "first-name"
+                                                            },
+                                                            {
+                                                                "source": "answers",
+                                                                "identifier": "last-name"
+                                                            }
+                                                        ]
                                                     },
                                                     "transform": "concatenate_list"
                                                 }
@@ -507,6 +520,9 @@
         {
             "id": "personal-details-section",
             "title": "Personal Details",
+            "summary": {
+                "show_on_completion": true
+            },
             "repeat": {
                 "for_list": "people",
                 "title": {
@@ -518,10 +534,16 @@
                                 {
                                     "transform": "concatenate_list",
                                     "arguments": {
-                                        "list_to_concatenate": {
-                                            "source": "answers",
-                                            "identifier": ["first-name", "last-name"]
-                                        },
+                                        "list_to_concatenate": [
+                                            {
+                                                "source": "answers",
+                                                "identifier": "first-name"
+                                            },
+                                            {
+                                                "source": "answers",
+                                                "identifier": "last-name"
+                                            }
+                                        ],
                                         "delimiter": " "
                                     }
                                 }
@@ -636,10 +658,16 @@
                                                         {
                                                             "arguments": {
                                                                 "delimiter": " ",
-                                                                "list_to_concatenate": {
-                                                                    "identifier": ["first-name", "last-name"],
-                                                                    "source": "answers"
-                                                                }
+                                                                "list_to_concatenate": [
+                                                                    {
+                                                                        "source": "answers",
+                                                                        "identifier": "first-name"
+                                                                    },
+                                                                    {
+                                                                        "source": "answers",
+                                                                        "identifier": "last-name"
+                                                                    }
+                                                                ]
                                                             },
                                                             "transform": "concatenate_list"
                                                         },
@@ -761,10 +789,16 @@
                                                                         {
                                                                             "arguments": {
                                                                                 "delimiter": " ",
-                                                                                "list_to_concatenate": {
-                                                                                    "identifier": ["first-name", "last-name"],
-                                                                                    "source": "answers"
-                                                                                }
+                                                                                "list_to_concatenate": [
+                                                                                    {
+                                                                                        "source": "answers",
+                                                                                        "identifier": "first-name"
+                                                                                    },
+                                                                                    {
+                                                                                        "source": "answers",
+                                                                                        "identifier": "last-name"
+                                                                                    }
+                                                                                ]
                                                                             },
                                                                             "transform": "concatenate_list"
                                                                         }
@@ -809,10 +843,16 @@
                                                         {
                                                             "arguments": {
                                                                 "delimiter": " ",
-                                                                "list_to_concatenate": {
-                                                                    "identifier": ["first-name", "last-name"],
-                                                                    "source": "answers"
-                                                                }
+                                                                "list_to_concatenate": [
+                                                                    {
+                                                                        "source": "answers",
+                                                                        "identifier": "first-name"
+                                                                    },
+                                                                    {
+                                                                        "source": "answers",
+                                                                        "identifier": "last-name"
+                                                                    }
+                                                                ]
                                                             },
                                                             "transform": "concatenate_list"
                                                         }
@@ -968,10 +1008,16 @@
                                                         {
                                                             "arguments": {
                                                                 "delimiter": " ",
-                                                                "list_to_concatenate": {
-                                                                    "identifier": ["first-name", "last-name"],
-                                                                    "source": "answers"
-                                                                }
+                                                                "list_to_concatenate": [
+                                                                    {
+                                                                        "source": "answers",
+                                                                        "identifier": "first-name"
+                                                                    },
+                                                                    {
+                                                                        "source": "answers",
+                                                                        "identifier": "last-name"
+                                                                    }
+                                                                ]
                                                             },
                                                             "transform": "concatenate_list"
                                                         },
@@ -1067,10 +1113,16 @@
                                                         {
                                                             "arguments": {
                                                                 "delimiter": " ",
-                                                                "list_to_concatenate": {
-                                                                    "identifier": ["first-name", "last-name"],
-                                                                    "source": "answers"
-                                                                }
+                                                                "list_to_concatenate": [
+                                                                    {
+                                                                        "source": "answers",
+                                                                        "identifier": "first-name"
+                                                                    },
+                                                                    {
+                                                                        "source": "answers",
+                                                                        "identifier": "last-name"
+                                                                    }
+                                                                ]
                                                             },
                                                             "transform": "concatenate_list"
                                                         },
@@ -1099,10 +1151,6 @@
                                 }
                             ],
                             "type": "Question"
-                        },
-                        {
-                            "id": "personal-summary",
-                            "type": "SectionSummary"
                         }
                     ]
                 }
@@ -1122,10 +1170,16 @@
                                 {
                                     "transform": "concatenate_list",
                                     "arguments": {
-                                        "list_to_concatenate": {
-                                            "source": "answers",
-                                            "identifier": ["first-name", "last-name"]
-                                        },
+                                        "list_to_concatenate": [
+                                            {
+                                                "source": "answers",
+                                                "identifier": "first-name"
+                                            },
+                                            {
+                                                "source": "answers",
+                                                "identifier": "last-name"
+                                            }
+                                        ],
                                         "delimiter": " "
                                     }
                                 }
@@ -1175,10 +1229,16 @@
                                                 {
                                                     "arguments": {
                                                         "delimiter": " ",
-                                                        "list_to_concatenate": {
-                                                            "identifier": ["first-name", "last-name"],
-                                                            "source": "answers"
-                                                        }
+                                                        "list_to_concatenate": [
+                                                            {
+                                                                "source": "answers",
+                                                                "identifier": "first-name"
+                                                            },
+                                                            {
+                                                                "source": "answers",
+                                                                "identifier": "last-name"
+                                                            }
+                                                        ]
                                                     },
                                                     "transform": "concatenate_list"
                                                 },

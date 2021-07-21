@@ -1,26 +1,28 @@
-const QuestionPage = require('./question.page');
+import BasePage from "./base.page";
 
-class ThankYouPage extends QuestionPage {
-
-  constructor() {
-    super('thank-you');
+class ThankYouPage extends BasePage {
+  url() {
+    return `/submitted/${this.pageName}`;
   }
 
-  submissionSuccessfulTitle() {
-    return '[data-qa="submission-successful-title"]';
+  title() {
+    return '[data-qa="title"]';
   }
 
-  viewSubmitted() {
-    return '[data-qa="view-submission"]';
+  exitButton() {
+    return '[data-qa="btn-exit"]';
   }
 
-  viewSubmissionExpired() {
-    return '[data-qa="view-submission-expired"]';
+  email() {
+    return "#email";
   }
 
-  signOut() {
-    return '[data-qa="btn-sign-out"]';
+  errorPanel() {
+    return '[data-qa="error-body"]';
   }
 
+  feedback() {
+    return ".feedback";
+  }
 }
-module.exports = new ThankYouPage();
+export default new ThankYouPage("thank-you");

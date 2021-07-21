@@ -20,10 +20,11 @@
 {% if errors | length > 0 %}
   {% set error = {
     "text": errors[0],
+    "id": answer.id ~ '-error',
     "attributes": {
       "data-ga": "error",
       "data-ga-category": "Error",
-      "data-ga-action": errors[0],
+      "data-ga-action": answer.type,
       "data-ga-label": question.id
     }
   } %}

@@ -1,5 +1,6 @@
 {
     "mime_type": "application/json/ons/eq",
+    "language": "en",
     "schema_version": "0.0.1",
     "data_version": "0.0.3",
     "survey_id": "0",
@@ -19,6 +20,14 @@
             "type": "string"
         }
     ],
+    "questionnaire_flow": {
+        "type": "Linear",
+        "options": {
+            "summary": {
+                "collapsible": false
+            }
+        }
+    },
     "sections": [
         {
             "id": "default-section",
@@ -31,7 +40,6 @@
                             "type": "Question",
                             "id": "which-group-block",
                             "question": {
-                                "description": "",
                                 "id": "which-group-question",
                                 "title": "Select Group",
                                 "type": "General",
@@ -86,9 +94,7 @@
                         {
                             "type": "Question",
                             "id": "group1-block",
-                            "routing_rules": [],
                             "question": {
-                                "description": "",
                                 "id": "group1-question",
                                 "title": "Did you want Group 1?",
                                 "type": "General",
@@ -111,9 +117,7 @@
                         {
                             "type": "Question",
                             "id": "group2-block",
-                            "routing_rules": [],
                             "question": {
-                                "description": "",
                                 "id": "group2-question",
                                 "title": "Did you want Group 2?",
                                 "type": "General",
@@ -128,16 +132,6 @@
                             }
                         }
                     ]
-                },
-                {
-                    "blocks": [
-                        {
-                            "type": "Summary",
-                            "id": "summary"
-                        }
-                    ],
-                    "id": "summary-group",
-                    "title": "Summary"
                 }
             ]
         }

@@ -1,5 +1,6 @@
 {
     "mime_type": "application/json/ons/eq",
+    "language": "en",
     "schema_version": "0.0.1",
     "data_version": "0.0.3",
     "survey_id": "0",
@@ -20,6 +21,14 @@
             "type": "string"
         }
     ],
+    "questionnaire_flow": {
+        "type": "Linear",
+        "options": {
+            "summary": {
+                "collapsible": false
+            }
+        }
+    },
     "sections": [
         {
             "id": "variant-proxy-section",
@@ -32,21 +41,18 @@
                             "type": "Question",
                             "id": "name-block",
                             "question": {
-                                "description": "",
                                 "id": "name-question",
                                 "title": "Who is this questionnaire about?",
                                 "type": "General",
                                 "answers": [
                                     {
                                         "id": "first-name-answer",
-                                        "description": "",
                                         "label": "First Name",
                                         "mandatory": true,
                                         "type": "TextField"
                                     },
                                     {
                                         "id": "last-name-answer",
-                                        "description": "",
                                         "label": "Last Name",
                                         "mandatory": false,
                                         "type": "TextField"
@@ -68,10 +74,16 @@
                                                 {
                                                     "transform": "concatenate_list",
                                                     "arguments": {
-                                                        "list_to_concatenate": {
-                                                            "source": "answers",
-                                                            "identifier": ["first-name-answer", "last-name-answer"]
-                                                        },
+                                                        "list_to_concatenate": [
+                                                            {
+                                                                "source": "answers",
+                                                                "identifier": "first-name-answer"
+                                                            },
+                                                            {
+                                                                "source": "answers",
+                                                                "identifier": "last-name-answer"
+                                                            }
+                                                        ],
                                                         "delimiter": " "
                                                     }
                                                 }
@@ -105,6 +117,7 @@
         },
         {
             "id": "basic-question-variant-section",
+            "summary": { "show_on_completion": true },
             "groups": [
                 {
                     "id": "basic-question-variant-group",
@@ -149,10 +162,16 @@
                                                         {
                                                             "transform": "concatenate_list",
                                                             "arguments": {
-                                                                "list_to_concatenate": {
-                                                                    "source": "answers",
-                                                                    "identifier": ["first-name-answer", "last-name-answer"]
-                                                                },
+                                                                "list_to_concatenate": [
+                                                                    {
+                                                                        "source": "answers",
+                                                                        "identifier": "first-name-answer"
+                                                                    },
+                                                                    {
+                                                                        "source": "answers",
+                                                                        "identifier": "last-name-answer"
+                                                                    }
+                                                                ],
                                                                 "delimiter": " "
                                                             }
                                                         }
@@ -268,10 +287,16 @@
                                                         {
                                                             "transform": "concatenate_list",
                                                             "arguments": {
-                                                                "list_to_concatenate": {
-                                                                    "source": "answers",
-                                                                    "identifier": ["first-name-answer", "last-name-answer"]
-                                                                },
+                                                                "list_to_concatenate": [
+                                                                    {
+                                                                        "source": "answers",
+                                                                        "identifier": "first-name-answer"
+                                                                    },
+                                                                    {
+                                                                        "source": "answers",
+                                                                        "identifier": "last-name-answer"
+                                                                    }
+                                                                ],
                                                                 "delimiter": " "
                                                             }
                                                         }
@@ -323,10 +348,16 @@
                                                         {
                                                             "transform": "concatenate_list",
                                                             "arguments": {
-                                                                "list_to_concatenate": {
-                                                                    "source": "answers",
-                                                                    "identifier": ["first-name-answer", "last-name-answer"]
-                                                                },
+                                                                "list_to_concatenate": [
+                                                                    {
+                                                                        "source": "answers",
+                                                                        "identifier": "first-name-answer"
+                                                                    },
+                                                                    {
+                                                                        "source": "answers",
+                                                                        "identifier": "last-name-answer"
+                                                                    }
+                                                                ],
                                                                 "delimiter": " "
                                                             }
                                                         }
@@ -381,14 +412,10 @@
                                 },
                                 {
                                     "goto": {
-                                        "block": "basic-variants-summary"
+                                        "section": "End"
                                     }
                                 }
                             ]
-                        },
-                        {
-                            "id": "basic-variants-summary",
-                            "type": "SectionSummary"
                         }
                     ]
                 }
@@ -396,6 +423,7 @@
         },
         {
             "id": "currency-section",
+            "summary": { "show_on_completion": true },
             "groups": [
                 {
                     "id": "currency-group",
@@ -534,25 +562,6 @@
                                     ]
                                 }
                             ]
-                        },
-                        {
-                            "type": "SectionSummary",
-                            "id": "currency-section-summary"
-                        }
-                    ]
-                }
-            ]
-        },
-        {
-            "id": "summary-section",
-            "groups": [
-                {
-                    "id": "summary-group",
-                    "title": "Final summary",
-                    "blocks": [
-                        {
-                            "id": "all-summary",
-                            "type": "Summary"
                         }
                     ]
                 }

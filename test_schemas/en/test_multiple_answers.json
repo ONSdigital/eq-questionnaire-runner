@@ -1,5 +1,6 @@
 {
     "mime_type": "application/json/ons/eq",
+    "language": "en",
     "schema_version": "0.0.1",
     "data_version": "0.0.3",
     "survey_id": "023",
@@ -21,6 +22,14 @@
             "type": "string"
         }
     ],
+    "questionnaire_flow": {
+        "type": "Linear",
+        "options": {
+            "summary": {
+                "collapsible": false
+            }
+        }
+    },
     "sections": [
         {
             "id": "default-section",
@@ -47,19 +56,13 @@
                                         "type": "TextField"
                                     }
                                 ],
-                                "description": "",
                                 "id": "personal-details-question",
                                 "title": "Tell me about yourself",
                                 "type": "General"
                             }
-                        },
-                        {
-                            "type": "Summary",
-                            "id": "summary"
                         }
                     ],
-                    "id": "multiple-questions-group",
-                    "title": ""
+                    "id": "multiple-questions-group"
                 }
             ]
         }

@@ -1,10 +1,10 @@
 {
     "mime_type": "application/json/ons/eq",
+    "language": "en",
     "schema_version": "0.0.1",
     "data_version": "0.0.3",
     "survey_id": "023",
     "title": "Test Conditional Routing",
-    "description": "",
     "theme": "default",
     "metadata": [
         {
@@ -20,6 +20,14 @@
             "type": "string"
         }
     ],
+    "questionnaire_flow": {
+        "type": "Linear",
+        "options": {
+            "summary": {
+                "collapsible": false
+            }
+        }
+    },
     "sections": [
         {
             "id": "single-answer-section",
@@ -32,7 +40,6 @@
                             "question": {
                                 "id": "conditional-routing-question",
                                 "title": "Do you drink coffee?",
-                                "description": "",
                                 "type": "General",
                                 "answers": [
                                     {
@@ -93,7 +100,7 @@
                                 },
                                 {
                                     "goto": {
-                                        "block": "summary"
+                                        "section": "End"
                                     }
                                 }
                             ]
@@ -104,7 +111,6 @@
                             "question": {
                                 "id": "response-any-question",
                                 "title": "How many cups of coffee do you drink a day?",
-                                "description": "",
                                 "type": "General",
                                 "answers": [
                                     {
@@ -123,7 +129,6 @@
                             "question": {
                                 "id": "response-not-any-question",
                                 "title": "How many cups of tea do you drink a day?",
-                                "description": "",
                                 "type": "General",
                                 "answers": [
                                     {
@@ -135,10 +140,6 @@
                                     }
                                 ]
                             }
-                        },
-                        {
-                            "type": "Summary",
-                            "id": "summary"
                         }
                     ],
                     "id": "conditional-routing-within-group",

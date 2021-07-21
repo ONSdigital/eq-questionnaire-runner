@@ -2,12 +2,11 @@
 from werkzeug.datastructures import MultiDict
 from wtforms import Form
 
-from app.data_model.answer import Answer
-from app.data_model.answer_store import AnswerStore
+from app.data_models.answer import Answer
+from app.data_models.answer_store import AnswerStore
+from app.forms import error_messages
 from app.forms.field_handlers.number_handler import NumberHandler
-from app.forms.fields.decimal_field_with_separator import DecimalFieldWithSeparator
-from app.forms.fields.integer_field_with_separator import IntegerFieldWithSeparator
-from app.forms.error_messages import error_messages
+from app.forms.fields import DecimalFieldWithSeparator, IntegerFieldWithSeparator
 from app.settings import MAX_NUMBER
 
 
@@ -197,7 +196,7 @@ def test_zero_max(app):
         "id": "test-range",
         "type": "Currency",
     }
-    error_message = error_messages["NUMBER_TOO_LARGE"] % dict(max=maximum)
+    error_message = error_messages["NUMBER_TOO_LARGE"] % {"max": maximum}
 
     test_form_class = get_test_form_class(answer_schema, messages=error_messages)
     form = test_form_class(MultiDict({"test_field": "1"}))
@@ -216,7 +215,7 @@ def test_zero_min(app):
         "id": "test-range",
         "type": "Currency",
     }
-    error_message = error_messages["NUMBER_TOO_SMALL"] % dict(min=minimum)
+    error_message = error_messages["NUMBER_TOO_SMALL"] % {"min": minimum}
 
     test_form_class = get_test_form_class(answer_schema, messages=error_messages)
     form = test_form_class(MultiDict({"test_field": "-1"}))

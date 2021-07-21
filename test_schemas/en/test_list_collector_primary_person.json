@@ -1,5 +1,6 @@
 {
     "mime_type": "application/json/ons/eq",
+    "language": "en",
     "schema_version": "0.0.1",
     "data_version": "0.0.3",
     "survey_id": "0",
@@ -20,9 +21,32 @@
             "type": "string"
         }
     ],
+    "questionnaire_flow": {
+        "type": "Linear",
+        "options": {}
+    },
+    "submission": {
+        "button": "Submit answers",
+        "guidance": "Thank you for your answers, do you wish to submit",
+        "title": "Submit answers",
+        "warning": "You cannot view your answers after submission"
+    },
     "sections": [
         {
             "id": "section",
+            "title": "Household members",
+            "summary": {
+                "show_on_completion": true,
+                "items": [
+                    {
+                        "type": "List",
+                        "for_list": "people",
+                        "title": "Household members",
+                        "add_link_text": "Add someone to this household",
+                        "empty_list_text": "There are no householders"
+                    }
+                ]
+            },
             "groups": [
                 {
                     "id": "group",
@@ -32,10 +56,6 @@
                             "id": "primary-person-list-collector",
                             "type": "PrimaryPersonListCollector",
                             "for_list": "people",
-                            "add_or_edit_answer": {
-                                "id": "you-live-here",
-                                "value": "Yes"
-                            },
                             "add_or_edit_block": {
                                 "id": "add-or-edit-primary-person",
                                 "type": "PrimaryPersonListAddOrEditQuestion",
@@ -71,7 +91,10 @@
                                         "options": [
                                             {
                                                 "label": "Yes",
-                                                "value": "Yes"
+                                                "value": "Yes",
+                                                "action": {
+                                                    "type": "RedirectToListAddBlock"
+                                                }
                                             },
                                             {
                                                 "label": "No",
@@ -96,7 +119,7 @@
                                                         "block_id": "add-person",
                                                         "list_name": "people"
                                                     },
-                                                    "type": "RedirectToListAddQuestion"
+                                                    "type": "RedirectToListAddBlock"
                                                 },
                                                 "label": "Yes",
                                                 "value": "Yes"
@@ -111,18 +134,23 @@
                                     }
                                 ],
                                 "id": "anyone-usually-live-at-question",
-                                "title": "Does anyone usually live at your address?",
+                                "title": "Does anyone else live at your address?",
                                 "type": "General"
                             },
                             "routing_rules": [
                                 {
                                     "goto": {
-                                        "block": "group-summary",
+                                        "section": "End",
                                         "when": [
                                             {
                                                 "condition": "equals",
                                                 "id": "anyone-usually-live-at-answer",
                                                 "value": "No"
+                                            },
+                                            {
+                                                "condition": "less than",
+                                                "list": "people",
+                                                "value": 1
                                             }
                                         ]
                                     }
@@ -144,21 +172,12 @@
                                     ]
                                 }
                             ],
-                            "type": "Question",
-                            "show_on_section_summary": false
+                            "type": "Question"
                         },
                         {
                             "id": "list-collector",
                             "type": "ListCollector",
                             "for_list": "people",
-                            "add_answer": {
-                                "id": "anyone-else",
-                                "value": "Yes"
-                            },
-                            "remove_answer": {
-                                "id": "remove-confirmation",
-                                "value": "Yes"
-                            },
                             "question": {
                                 "id": "confirmation-question",
                                 "type": "General",
@@ -171,7 +190,10 @@
                                         "options": [
                                             {
                                                 "label": "Yes",
-                                                "value": "Yes"
+                                                "value": "Yes",
+                                                "action": {
+                                                    "type": "RedirectToListAddBlock"
+                                                }
                                             },
                                             {
                                                 "label": "No",
@@ -260,7 +282,10 @@
                                             "options": [
                                                 {
                                                     "label": "Yes",
-                                                    "value": "Yes"
+                                                    "value": "Yes",
+                                                    "action": {
+                                                        "type": "RemoveListItemAndAnswers"
+                                                    }
                                                 },
                                                 {
                                                     "label": "No",
@@ -272,8 +297,6 @@
                                 }
                             },
                             "summary": {
-                                "add_link_text": "Add someone to this household",
-                                "empty_list_text": "There are no householders",
                                 "title": "Household members",
                                 "item_title": {
                                     "text": "{person_name}",
@@ -284,10 +307,16 @@
                                                 {
                                                     "arguments": {
                                                         "delimiter": " ",
-                                                        "list_to_concatenate": {
-                                                            "identifier": ["first-name", "last-name"],
-                                                            "source": "answers"
-                                                        }
+                                                        "list_to_concatenate": [
+                                                            {
+                                                                "source": "answers",
+                                                                "identifier": "first-name"
+                                                            },
+                                                            {
+                                                                "source": "answers",
+                                                                "identifier": "last-name"
+                                                            }
+                                                        ]
                                                     },
                                                     "transform": "concatenate_list"
                                                 }
@@ -296,32 +325,8 @@
                                     ]
                                 }
                             }
-                        },
-                        {
-                            "id": "group-summary",
-                            "title": "Primary Person List Collector Summary",
-                            "type": "ListCollectorSummary"
                         }
                     ]
-                }
-            ]
-        },
-        {
-            "id": "submit-answers",
-            "title": "Submit answers",
-            "groups": [
-                {
-                    "blocks": [
-                        {
-                            "type": "Confirmation",
-                            "id": "confirmation",
-                            "content": {
-                                "title": "Thank you for your answers, do you wish to submit"
-                            }
-                        }
-                    ],
-                    "id": "confirmation-group",
-                    "title": "Submit answers"
                 }
             ]
         }

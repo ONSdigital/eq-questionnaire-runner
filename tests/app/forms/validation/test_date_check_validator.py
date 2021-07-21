@@ -1,8 +1,9 @@
 import unittest
 from unittest.mock import Mock
+
 from wtforms.validators import StopValidation
 
-from app.forms.error_messages import error_messages
+from app.forms import error_messages
 from app.forms.validators import DateCheck
 
 
@@ -109,6 +110,33 @@ class TestDateCheckValidator(unittest.TestCase):
         mock_form = Mock()
         mock_form.data = "2-12-20"
         mock_form.year.data = "2"
+
+        mock_field = Mock()
+
+        with self.assertRaises(StopValidation) as ite:
+            validator(mock_form, mock_field)
+
+        self.assertEqual(error_messages["INVALID_DATE"], str(ite.exception))
+
+    def test_date_type_validator_invalid_month_digits(self):
+        validator = DateCheck()
+
+        mock_form = Mock()
+        mock_form.data = "2020--2-20"
+
+        mock_field = Mock()
+
+        with self.assertRaises(StopValidation) as ite:
+            validator(mock_form, mock_field)
+
+        self.assertEqual(error_messages["INVALID_DATE"], str(ite.exception))
+
+    def test_date_type_validator_invalid_day_digits(self):
+        validator = DateCheck()
+
+        mock_form = Mock()
+        mock_form.data = "2020-12--2"
+        mock_form.year.data = "2020"
 
         mock_field = Mock()
 

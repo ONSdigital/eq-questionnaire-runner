@@ -1,21 +1,22 @@
-from google.cloud import storage
-from pika import BasicProperties
-from pika import BlockingConnection
-from pika import URLParameters
+from uuid import uuid4
+
+from google.cloud import storage  # type: ignore
+from pika import BasicProperties, BlockingConnection, URLParameters
 from pika.exceptions import AMQPError
 from structlog import get_logger
+
+from app.utilities.json import json_dumps
 
 logger = get_logger()
 
 
 class LogSubmitter:
     @staticmethod
-    def send_message(message, tx_id, questionnaire_id, case_id=None):
+    def send_message(message, tx_id, case_id):
         logger.info("sending message")
         logger.info(
             "message payload",
             message=message,
-            questionnaire_id=questionnaire_id,
             case_id=case_id,
             tx_id=tx_id,
         )
@@ -28,16 +29,11 @@ class GCSSubmitter:
         client = storage.Client()
         self.bucket = client.get_bucket(bucket_name)
 
-    def send_message(self, message, tx_id, questionnaire_id, case_id=None):
+    def send_message(self, message, tx_id, case_id):
         logger.info("sending message")
 
         blob = self.bucket.blob(tx_id)
-
-        blob.metadata = {"tx_id": tx_id, "questionnaire_id": questionnaire_id}
-
-        if case_id:
-            blob.metadata["case_id"] = case_id
-
+        blob.metadata = {"tx_id": tx_id, "case_id": case_id}
         blob.upload_from_string(str(message).encode("utf8"))
 
         return True
@@ -50,8 +46,10 @@ class RabbitMQSubmitter:
             self.rabbitmq_url = "amqp://{username}:{password}@{host}:{port}/%2F".format(
                 username=username, password=password, host=host, port=port
             )
-            self.rabbitmq_secondary_url = "amqp://{username}:{password}@{host}:{port}/%2F".format(
-                username=username, password=password, host=secondary_host, port=port
+            self.rabbitmq_secondary_url = (
+                "amqp://{username}:{password}@{host}:{port}/%2F".format(
+                    username=username, password=password, host=secondary_host, port=port
+                )
             )
         else:
             self.rabbitmq_url = "amqp://{host}:{port}/%2F".format(host=host, port=port)
@@ -97,12 +95,11 @@ class RabbitMQSubmitter:
         except AMQPError as e:
             logger.error("unable to close connection", exc_info=e, category="rabbitmq")
 
-    def send_message(self, message, tx_id, questionnaire_id, case_id=None):
+    def send_message(self, message, tx_id, case_id):
         """
         Sends a message to rabbit mq and returns a true or false depending on if it was successful
         :param message: The message to send to the rabbit mq queue
         :param tx_id: Transaction ID used to trace a transaction through the whole system.
-        :param questionnaire_id: Questionnaire ID used to identify the questionnaire.
         :param case_id: ID used to identify a single instance of a survey collection for a respondent
         :return: a boolean value indicating if it was successful
         """
@@ -118,10 +115,7 @@ class RabbitMQSubmitter:
             properties = BasicProperties(headers={}, delivery_mode=2)
 
             properties.headers["tx_id"] = tx_id
-            properties.headers["questionnaire_id"] = questionnaire_id
-
-            if case_id:
-                properties.headers["case_id"] = case_id
+            properties.headers["case_id"] = case_id
 
             published = channel.basic_publish(
                 exchange="",
@@ -141,3 +135,32 @@ class RabbitMQSubmitter:
         finally:
             if connection:
                 self._disconnect(connection)
+
+
+class GCSFeedbackSubmitter:
+    def __init__(self, bucket_name):
+        client = storage.Client()
+        self.bucket = client.get_bucket(bucket_name)
+
+    def upload(self, metadata, payload):
+        payload.update(metadata)
+        blob = self.bucket.blob(str(uuid4()))
+        blob.metadata = metadata
+        blob.upload_from_string(
+            json_dumps(payload).encode("utf8"), content_type="application/json"
+        )
+
+        return True
+
+
+class LogFeedbackSubmitter:
+    @staticmethod
+    def upload(metadata, payload):
+        logger.info("uploading feedback")
+        logger.info(
+            "feedback message",
+            metadata=metadata,
+            payload=payload,
+        )
+
+        return True

@@ -1,9 +1,10 @@
 import unittest
 from unittest.mock import Mock, patch
+
 from wtforms.validators import StopValidation, ValidationError
 
-from app.forms.error_messages import error_messages
-from app.forms.validators import NumberCheck, DecimalPlaces
+from app.forms import error_messages
+from app.forms.validators import DecimalPlaces, NumberCheck
 
 
 # pylint: disable=no-member
@@ -71,7 +72,7 @@ class TestNumberValidator(unittest.TestCase):
         with self.assertRaises(ValidationError) as ite:
             validator(mock_form, mock_field)
 
-        error_message = error_messages["INVALID_DECIMAL"] % dict(max=2)
+        error_message = error_messages["INVALID_DECIMAL"] % {"max": 2}
         self.assertEqual(error_message, str(ite.exception))
 
     def test_space_invalid(self):

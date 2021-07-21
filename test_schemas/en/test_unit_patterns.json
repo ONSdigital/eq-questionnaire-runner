@@ -1,5 +1,6 @@
 {
     "mime_type": "application/json/ons/eq",
+    "language": "en",
     "schema_version": "0.0.1",
     "data_version": "0.0.3",
     "survey_id": "999",
@@ -20,6 +21,14 @@
             "type": "string"
         }
     ],
+    "questionnaire_flow": {
+        "type": "Linear",
+        "options": {
+            "summary": {
+                "collapsible": false
+            }
+        }
+    },
     "sections": [
         {
             "id": "default-section",
@@ -33,7 +42,6 @@
                                 "answers": [
                                     {
                                         "id": "centimetres",
-                                        "description": "",
                                         "label": "Centimetres",
                                         "mandatory": false,
                                         "type": "Unit",
@@ -45,7 +53,6 @@
                                     },
                                     {
                                         "id": "metres",
-                                        "description": "",
                                         "label": "Metres",
                                         "mandatory": false,
                                         "type": "Unit",
@@ -57,7 +64,6 @@
                                     },
                                     {
                                         "id": "kilometres",
-                                        "description": "",
                                         "label": "Kilometres",
                                         "mandatory": false,
                                         "type": "Unit",
@@ -69,7 +75,6 @@
                                     },
                                     {
                                         "id": "miles",
-                                        "description": "",
                                         "label": "Miles",
                                         "mandatory": false,
                                         "type": "Unit",
@@ -80,7 +85,6 @@
                                         }
                                     }
                                 ],
-                                "description": "",
                                 "id": "set-length-units-question",
                                 "title": "Length Units",
                                 "type": "General"
@@ -93,7 +97,6 @@
                                 "answers": [
                                     {
                                         "id": "duration-hour",
-                                        "description": "",
                                         "label": "Hour",
                                         "mandatory": false,
                                         "type": "Unit",
@@ -105,7 +108,6 @@
                                     },
                                     {
                                         "id": "duration-year",
-                                        "description": "",
                                         "label": "Years",
                                         "mandatory": false,
                                         "type": "Unit",
@@ -116,7 +118,6 @@
                                         }
                                     }
                                 ],
-                                "description": "",
                                 "id": "set-duration-units-question",
                                 "title": "Duration Units",
                                 "type": "General"
@@ -129,7 +130,6 @@
                                 "answers": [
                                     {
                                         "id": "square-centimetres",
-                                        "description": "",
                                         "label": "Centimetres Square",
                                         "mandatory": false,
                                         "type": "Unit",
@@ -138,7 +138,6 @@
                                     },
                                     {
                                         "id": "square-metres",
-                                        "description": "",
                                         "label": "Metres Square",
                                         "mandatory": false,
                                         "type": "Unit",
@@ -147,7 +146,6 @@
                                     },
                                     {
                                         "id": "square-kilometres",
-                                        "description": "",
                                         "label": "Kilometres Square",
                                         "mandatory": false,
                                         "type": "Unit",
@@ -156,7 +154,6 @@
                                     },
                                     {
                                         "id": "square-miles",
-                                        "description": "",
                                         "label": "Miles Square",
                                         "mandatory": false,
                                         "type": "Unit",
@@ -165,7 +162,6 @@
                                     },
                                     {
                                         "id": "acres",
-                                        "description": "",
                                         "label": "Acres",
                                         "mandatory": false,
                                         "type": "Unit",
@@ -174,7 +170,6 @@
                                     },
                                     {
                                         "id": "hectares",
-                                        "description": "",
                                         "label": "Hectares",
                                         "mandatory": false,
                                         "type": "Unit",
@@ -182,7 +177,6 @@
                                         "unit_length": "short"
                                     }
                                 ],
-                                "description": "",
                                 "id": "set-area-unit-questions",
                                 "title": "Area Units",
                                 "type": "General"
@@ -195,7 +189,6 @@
                                 "answers": [
                                     {
                                         "id": "cubic-centimetres",
-                                        "description": "",
                                         "label": "Cubic Centimetres",
                                         "mandatory": false,
                                         "type": "Unit",
@@ -204,7 +197,6 @@
                                     },
                                     {
                                         "id": "cubic-metres",
-                                        "description": "",
                                         "label": "Cubic Metres",
                                         "mandatory": false,
                                         "type": "Unit",
@@ -213,7 +205,6 @@
                                     },
                                     {
                                         "id": "litres",
-                                        "description": "",
                                         "label": "Litres",
                                         "mandatory": false,
                                         "type": "Unit",
@@ -222,7 +213,6 @@
                                     },
                                     {
                                         "id": "hectolitres",
-                                        "description": "",
                                         "label": "Hectolitres",
                                         "mandatory": false,
                                         "type": "Unit",
@@ -231,7 +221,6 @@
                                     },
                                     {
                                         "id": "megalitres",
-                                        "description": "",
                                         "label": "Megalitres",
                                         "mandatory": false,
                                         "type": "Unit",
@@ -239,25 +228,13 @@
                                         "unit_length": "short"
                                     }
                                 ],
-                                "description": "",
                                 "id": "set-volume-unit-questions",
                                 "title": "Volume Units",
                                 "type": "General"
                             }
                         }
                     ],
-                    "id": "test",
-                    "title": ""
-                },
-                {
-                    "blocks": [
-                        {
-                            "type": "Summary",
-                            "id": "summary"
-                        }
-                    ],
-                    "id": "summary-group",
-                    "title": "Summary"
+                    "id": "test"
                 }
             ]
         }

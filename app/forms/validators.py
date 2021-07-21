@@ -1,28 +1,31 @@
+import re
 from datetime import datetime
 from decimal import Decimal, InvalidOperation
 
-import re
 import flask_babel
-from flask_babel import ngettext
 from babel import numbers
 from dateutil.relativedelta import relativedelta
+from flask_babel import ngettext
 from structlog import get_logger
 from wtforms import validators
 from wtforms.compat import string_types
 
+from app.forms import error_messages
 from app.jinja_filters import format_number, get_formatted_currency
 from app.questionnaire.rules import convert_to_datetime
-from app.forms.error_messages import error_messages
+from app.utilities import safe_content
 
 logger = get_logger()
+
+tld_part_regex = re.compile(
+    r"^([a-z]{2,63}|xn--([a-z0-9]+-)*[a-z0-9]+)$", re.IGNORECASE
+)
+email_regex = re.compile(r"^.+@([^.@][^@\s]+)$")
 
 
 class NumberCheck:
     def __init__(self, message=None):
-        if message:
-            self.message = message
-        else:
-            self.message = error_messages["INVALID_NUMBER"]
+        self.message = message or error_messages["INVALID_NUMBER"]
 
     def __call__(self, form, field):
         try:
@@ -94,7 +97,7 @@ class NumberRange:
         self.maximum = maximum
         self.minimum_exclusive = minimum_exclusive
         self.maximum_exclusive = maximum_exclusive
-        self.messages = messages or error_messages
+        self.messages = {**error_messages, **(messages or {})}
         self.currency = currency
 
     def __call__(self, form, field):
@@ -149,7 +152,7 @@ class DecimalPlaces:
 
     def __init__(self, max_decimals=0, messages=None):
         self.max_decimals = max_decimals
-        self.messages = messages or error_messages
+        self.messages = {**error_messages, **(messages or {})}
 
     def __call__(self, form, field):
         data = (
@@ -224,17 +227,15 @@ class DateCheck:
         self.message = message or error_messages["INVALID_DATE"]
 
     def __call__(self, form, field):
-
-        if not form.data or not re.match(r"\d{4}$", str(form.year.data)):
+        if not form.data:
             raise validators.StopValidation(self.message)
 
         try:
-            substrings = form.data.split("-")
-            if len(substrings) == 3:
+            if hasattr(form, "day"):
                 datetime.strptime(form.data, "%Y-%m-%d")
-            if len(substrings) == 2:
+            elif hasattr(form, "month"):
                 datetime.strptime(form.data, "%Y-%m")
-            if len(substrings) == 1:
+            else:
                 datetime.strptime(form.data, "%Y")
         except ValueError:
             raise validators.StopValidation(self.message)
@@ -248,7 +249,7 @@ class SingleDatePeriodCheck:
         minimum_date=None,
         maximum_date=None,
     ):
-        self.messages = messages or error_messages
+        self.messages = {**error_messages, **(messages or {})}
         self.minimum_date = minimum_date
         self.maximum_date = maximum_date
         self.date_format = date_format
@@ -285,7 +286,7 @@ class SingleDatePeriodCheck:
 
 class DateRangeCheck:
     def __init__(self, messages=None, period_min=None, period_max=None):
-        self.messages = messages or error_messages
+        self.messages = {**error_messages, **(messages or {})}
         self.period_min = period_min
         self.period_max = period_max
 
@@ -360,7 +361,7 @@ class DateRangeCheck:
 
 class SumCheck:
     def __init__(self, messages=None, currency=None):
-        self.messages = messages or error_messages
+        self.messages = {**error_messages, **(messages or {})}
         self.currency = currency
 
     def __call__(self, form, conditions, total, target_total):
@@ -405,13 +406,56 @@ def format_playback_value(value, currency=None):
     return format_number(value)
 
 
-class MutuallyExclusiveCheck:
-    def __init__(self, messages=None):
-        self.messages = messages or error_messages
+def format_message_with_title(error_message, question_title):
+    return error_message % {"question_title": safe_content(question_title)}
 
-    def __call__(self, answer_values, is_mandatory):
+
+class MutuallyExclusiveCheck:
+    def __init__(self, question_title, messages=None):
+        self.messages = {**error_messages, **(messages or {})}
+        self.question_title = question_title
+
+    def __call__(self, answer_values, is_mandatory, is_only_checkboxes):
         total_answered = sum(1 for value in answer_values if value)
         if total_answered > 1:
             raise validators.ValidationError(self.messages["MUTUALLY_EXCLUSIVE"])
         if is_mandatory and total_answered < 1:
-            raise validators.ValidationError(self.messages["MANDATORY_QUESTION"])
+            message = format_message_with_title(
+                self.messages["MANDATORY_CHECKBOX"]
+                if is_only_checkboxes
+                else self.messages["MANDATORY_QUESTION"],
+                self.question_title,
+            )
+            raise validators.ValidationError(message)
+
+
+def sanitise_mobile_number(data):
+    data = re.sub(r"[\s.,\t\-{}\[\]()/]", "", data)
+    return re.sub(r"^(0{1,2}44|\+44|0)", "", data)
+
+
+class MobileNumberCheck:
+    def __init__(self, message=None):
+        self.message = message or error_messages["INVALID_MOBILE_NUMBER"]
+
+    def __call__(self, form, field):
+        data = sanitise_mobile_number(field.data)
+
+        if len(data) != 10 or not re.match("^7[0-9]+$", data):
+            raise validators.ValidationError(self.message)
+
+
+class EmailTLDCheck:
+    def __init__(self, message=None):
+        self.message = message or error_messages["INVALID_EMAIL_FORMAT"]
+
+    def __call__(self, form, field):
+        if match := email_regex.match(field.data):
+            hostname = match.group(1)
+            try:
+                hostname = hostname.encode("idna").decode("ascii")
+            except UnicodeError:
+                raise validators.StopValidation(self.message)
+            parts = hostname.split(".")
+            if len(parts) > 1 and not tld_part_regex.match(parts[-1]):
+                raise validators.StopValidation(self.message)

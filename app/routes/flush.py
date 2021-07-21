@@ -1,15 +1,15 @@
-import simplejson as json
-from flask import Blueprint, Response, request, session, current_app
+from flask import Blueprint, Response, current_app, request, session
 from sdc.crypto.decrypter import decrypt
 from sdc.crypto.encrypter import encrypt
 from structlog import get_logger
 
 from app.authentication.user import User
-from app.globals import get_answer_store, get_questionnaire_store, get_metadata
+from app.globals import get_answer_store, get_metadata, get_questionnaire_store
 from app.keys import KEY_PURPOSE_AUTHENTICATION, KEY_PURPOSE_SUBMISSION
 from app.questionnaire.router import Router
 from app.submitter.converter import convert_answers
 from app.submitter.submission_failed import SubmissionFailedException
+from app.utilities.json import json_dumps
 from app.utilities.schema import load_schema_from_metadata
 
 flush_blueprint = Blueprint("flush", __name__)
@@ -62,11 +62,10 @@ def _submit_data(user):
         router = Router(schema, answer_store, list_store, progress_store, metadata)
         full_routing_path = router.full_routing_path()
 
-        message = json.dumps(
+        message = json_dumps(
             convert_answers(
                 schema, questionnaire_store, full_routing_path, flushed=True
-            ),
-            for_json=True,
+            )
         )
 
         encrypted_message = encrypt(
@@ -76,8 +75,7 @@ def _submit_data(user):
         sent = current_app.eq["submitter"].send_message(
             encrypted_message,
             tx_id=metadata.get("tx_id"),
-            questionnaire_id=metadata.get("questionnaire_id"),
-            case_id=metadata.get("case_id"),
+            case_id=metadata["case_id"],
         )
 
         if not sent:

@@ -1,50 +1,20 @@
 from botocore.exceptions import ClientError
-from flask import current_app
 
-from app.data_model import app_models
 from app.storage.errors import ItemAlreadyExistsError
 
-
-TABLE_CONFIG = {
-    app_models.SubmittedResponse: {
-        "key_field": "tx_id",
-        "table_name_key": "EQ_SUBMITTED_RESPONSES_TABLE_NAME",
-        "schema": app_models.SubmittedResponseSchema,
-    },
-    app_models.QuestionnaireState: {
-        "key_field": "user_id",
-        "table_name_key": "EQ_QUESTIONNAIRE_STATE_TABLE_NAME",
-        "schema": app_models.QuestionnaireStateSchema,
-    },
-    app_models.EQSession: {
-        "key_field": "eq_session_id",
-        "table_name_key": "EQ_SESSION_TABLE_NAME",
-        "schema": app_models.EQSessionSchema,
-    },
-    app_models.UsedJtiClaim: {
-        "key_field": "jti_claim",
-        "table_name_key": "EQ_USED_JTI_CLAIM_TABLE_NAME",
-        "schema": app_models.UsedJtiClaimSchema,
-    },
-}
+from .storage import StorageHandler, StorageModel
 
 
-class DynamodbStorage:
-    def __init__(self, dynamodb):
-        self.dynamodb = dynamodb
-
+class Dynamodb(StorageHandler):
     def put(self, model, overwrite=True):
-        config = TABLE_CONFIG[type(model)]
-        schema = config["schema"]()
-        table = self.get_table(config)
-        key_field = config["key_field"]
+        storage_model = StorageModel(model_type=type(model))
+        table = self.client.Table(storage_model.table_name)
 
-        item = schema.dump(model)
-        put_kwargs = {"Item": item}
+        put_kwargs = {"Item": storage_model.serialize(model)}
         if not overwrite:
             put_kwargs[
                 "ConditionExpression"
-            ] = "attribute_not_exists({key_field})".format(key_field=key_field)
+            ] = f"attribute_not_exists({storage_model.key_field})"
 
         try:
             response = table.put_item(**put_kwargs)["ResponseMetadata"][
@@ -57,28 +27,23 @@ class DynamodbStorage:
 
             raise  # pragma: no cover
 
-    def get_by_key(self, model_type, key_value):
-        config = TABLE_CONFIG[model_type]
-        schema = config["schema"]()
-        table = self.get_table(config)
-        key = {config["key_field"]: key_value}
+    def get(self, model_type, key_value):
+        storage_model = StorageModel(model_type=model_type)
+        table = self.client.Table(storage_model.table_name)
+        key = {storage_model.key_field: key_value}
 
         response = table.get_item(Key=key, ConsistentRead=True)
-        item = response.get("Item", None)
+        serialized_item = response.get("Item")
 
-        if item:
-            return schema.load(item)
+        if serialized_item:
+            return storage_model.deserialize(serialized_item)
 
     def delete(self, model):
-        config = TABLE_CONFIG[type(model)]
-        table = self.get_table(config)
-        key_field = config["key_field"]
-        key = {key_field: getattr(model, key_field)}
+        storage_model = StorageModel(model_type=type(model))
+        table = self.client.Table(storage_model.table_name)
+        key_value = getattr(model, storage_model.key_field)
+        key = {storage_model.key_field: key_value}
 
         response = table.delete_item(Key=key)
-        item = response.get("Item", None)
+        item = response.get("Item")
         return item
-
-    def get_table(self, config):
-        table_name = current_app.config[config["table_name_key"]]
-        return self.dynamodb.Table(table_name)

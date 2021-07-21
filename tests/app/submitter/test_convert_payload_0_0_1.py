@@ -1,5 +1,5 @@
-from app.data_model.answer_store import AnswerStore
-from app.data_model.answer import Answer
+from app.data_models.answer import Answer
+from app.data_models.answer_store import AnswerStore
 from app.questionnaire.questionnaire_schema import QuestionnaireSchema
 from app.questionnaire.routing_path import RoutingPath
 from app.submitter.convert_payload_0_0_1 import convert_answers_to_payload_0_0_1
@@ -233,7 +233,7 @@ def test_converter_checkboxes_with_q_codes_and_other_value(fake_questionnaire_st
 
 
 def test_converter_checkboxes_with_q_codes_and_empty_other_value(
-    fake_questionnaire_store
+    fake_questionnaire_store,
 ):
     routing_path = RoutingPath(["crisps"], section_id="food")
 
@@ -291,7 +291,7 @@ def test_converter_checkboxes_with_q_codes_and_empty_other_value(
 
 
 def test_converter_checkboxes_with_missing_q_codes_uses_answer_q_code(
-    fake_questionnaire_store
+    fake_questionnaire_store,
 ):
     routing_path = RoutingPath(["crisps"], section_id="food")
 

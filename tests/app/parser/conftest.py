@@ -1,41 +1,38 @@
 # pylint: disable=redefined-outer-name
-
 import uuid
+
 import pytest
 
 
 @pytest.fixture
 def fake_metadata_runner():
-    """ Generate the set of claims required for runner to function
-    """
+    """Generate the set of claims required for runner to function"""
     return {
         "tx_id": str(uuid.uuid4()),
         "jti": str(uuid.uuid4()),
         "schema_name": "2_a",
         "ru_ref": "2016-04-04",
         "collection_exercise_sid": "test-sid",
-        "questionnaire_id": "0123456789000000",
         "response_id": str(uuid.uuid4()),
         "account_service_url": "https://ras.ons.gov.uk",
+        "case_id": str(uuid.uuid4()),
     }
 
 
 @pytest.fixture
-def fake_census_metadata_runner(fake_metadata_runner):
-    """ Generate a set of claims required for runner using census parameters instead of schema_name
-    """
+def fake_business_metadata_runner(fake_metadata_runner):
+    """Generate a set of claims required for runner using business parameters instead of schema_name"""
     del fake_metadata_runner["schema_name"]
 
-    fake_metadata_runner["survey"] = "CENSUS"
-    fake_metadata_runner["case_type"] = "HI"
-    fake_metadata_runner["region_code"] = "GB-ENG"
+    fake_metadata_runner["eq_id"] = "mbs"
+    fake_metadata_runner["form_type"] = "0253"
 
     return fake_metadata_runner
 
 
 @pytest.fixture
 def fake_metadata_full(fake_metadata_runner):
-    """ Generate a fake set of claims
+    """Generate a fake set of claims
     These claims should represent all claims known to runner, including common questionnaire
     level claims.
     """

@@ -1,11 +1,12 @@
 import unittest
 from unittest.mock import Mock, patch
+
 from wtforms.validators import ValidationError
 
-from app.jinja_filters import format_number
-from app.forms.error_messages import error_messages
+from app.data_models.answer_store import Answer, AnswerStore
+from app.forms import error_messages
 from app.forms.validators import NumberRange
-from app.data_model.answer_store import Answer, AnswerStore
+from app.jinja_filters import format_number
 
 
 # pylint: disable=no-member
@@ -40,7 +41,7 @@ class TestNumberRangeValidator(unittest.TestCase):
             validator(mock_form, mock_field)
 
         self.assertEqual(
-            error_messages["NUMBER_TOO_SMALL"] % dict(min=0), str(ite.exception)
+            error_messages["NUMBER_TOO_SMALL"] % {"min": 0}, str(ite.exception)
         )
 
     def test_too_big_when_max_set_is_invalid(self):
@@ -54,7 +55,7 @@ class TestNumberRangeValidator(unittest.TestCase):
             validator(mock_form, mock_field)
 
         self.assertEqual(
-            error_messages["NUMBER_TOO_LARGE"] % dict(max=format_number(9999999999)),
+            error_messages["NUMBER_TOO_LARGE"] % {"max": format_number(9999999999)},
             str(ite.exception),
         )
 

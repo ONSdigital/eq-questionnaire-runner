@@ -13,12 +13,11 @@ class TestJtiClaimStorage(AppContextTestCase):
     def test_should_use_token(self):
         # Given
         jti_token = str(uuid4())
-        expires = datetime.now(tz=tzutc()) + timedelta(seconds=60)
+        expires_at = datetime.now(tz=tzutc()) + timedelta(seconds=60)
 
         # When
-
-        with patch("app.storage.redis.RedisStorage.put_jti") as add:
-            use_jti_claim(jti_token, expires)
+        with patch("app.storage.redis.Redis.put") as add:
+            use_jti_claim(jti_token, expires_at)
 
             # Then
             self.assertEqual(add.call_count, 1)
@@ -26,24 +25,23 @@ class TestJtiClaimStorage(AppContextTestCase):
     def test_should_return_raise_value_error(self):
         # Given
         token = None
-        expires = datetime.now(tz=tzutc()) + timedelta(seconds=60)
+        expires_at = datetime.now(tz=tzutc()) + timedelta(seconds=60)
 
         # When
         with self.assertRaises(ValueError):
-            use_jti_claim(token, expires)
+            use_jti_claim(token, expires_at)
 
     def test_should_raise_jti_token_used_when_token_already_exists(self):
         # Given
         jti_token = str(uuid4())
-        expires = datetime.now(tz=tzutc()) + timedelta(seconds=60)
+        expires_at = datetime.now(tz=tzutc()) + timedelta(seconds=60)
 
         # When
         with self.assertRaises(JtiTokenUsed) as err:
             with patch(
-                "app.storage.redis.RedisStorage.put_jti",
-                side_effect=[ItemAlreadyExistsError()],
+                "app.storage.redis.Redis.put", side_effect=[ItemAlreadyExistsError()]
             ):
-                use_jti_claim(jti_token, expires)
+                use_jti_claim(jti_token, expires_at)
 
         # Then
         self.assertEqual(err.exception.jti_claim, jti_token)
@@ -53,7 +51,7 @@ class TestJtiClaimStorage(AppContextTestCase):
 
     def test_should_raise_type_error_invalid_uuid(self):
         jti_token = "jti_token"
-        expires = datetime.now(tz=tzutc()) + timedelta(seconds=60)
+        expires_at = datetime.now(tz=tzutc()) + timedelta(seconds=60)
 
         with self.assertRaises(TypeError):
-            use_jti_claim(jti_token, expires)
+            use_jti_claim(jti_token, expires_at)

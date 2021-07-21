@@ -1,12 +1,16 @@
 {% from "components/checkboxes/_macro.njk" import onsCheckboxes %}
 
-{{ onsCheckboxes({
-  "id": answer["id"],
+{% set config = {
   "legend": question_title,
+  "id": answer.id,
   "legendClasses": "u-vh",
-  "checkboxesLabel": '' if answer.label == '' else answer.label or _("Select all that apply"),
   "checkboxes": map_checkbox_config(form, answer),
   "mutuallyExclusive": mutuallyExclusive,
   "error": error
-}) }}
+} %}
 
+{% if answer.label != None and answer.options|length > 1 %}
+  {% set config = config | setAttribute("checkboxesLabel", answer.label or _("Select all that apply")) %}
+{% endif %}
+
+{{ onsCheckboxes(config) }}

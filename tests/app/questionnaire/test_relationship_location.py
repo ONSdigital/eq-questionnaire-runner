@@ -1,5 +1,4 @@
 from app.questionnaire.relationship_location import RelationshipLocation
-
 from tests.app.app_context_test_case import AppContextTestCase
 
 
@@ -10,12 +9,13 @@ class TestRelationshipLocation(AppContextTestCase):
             block_id="relationships",
             list_item_id="id1",
             to_list_item_id="id2",
+            list_name="household",
         )
         location_url = location.url()
 
         self.assertEqual(
             location_url,
-            "http://test.localdomain/questionnaire/relationships/id1/to/id2/",
+            "http://test.localdomain/questionnaire/relationships/household/id1/to/id2/",
         )
 
     def test_create_location_from_dict(self):
@@ -24,6 +24,7 @@ class TestRelationshipLocation(AppContextTestCase):
             "block_id": "relationships",
             "list_item_id": "id1",
             "to_list_item_id": "id2",
+            "list_name": "household",
         }
 
         location = RelationshipLocation(**location_dict)
@@ -39,6 +40,7 @@ class TestRelationshipLocation(AppContextTestCase):
             block_id="relationships",
             list_item_id="id1",
             to_list_item_id="id2",
+            list_name="household",
         )
         json = location.for_json()
 
@@ -49,5 +51,6 @@ class TestRelationshipLocation(AppContextTestCase):
                 "block_id": "relationships",
                 "list_item_id": "id1",
                 "to_list_item_id": "id2",
+                "list_name": "household",
             },
         )

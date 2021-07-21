@@ -1,9 +1,8 @@
 # pylint: disable=redefined-outer-name
-import simplejson as json
-
 import pytest
 
-from app.data_model.answer_store import Answer, AnswerStore
+from app.data_models.answer_store import Answer, AnswerStore
+from app.utilities.json import json_dumps, json_loads
 
 
 @pytest.fixture()
@@ -28,6 +27,12 @@ def basic_answer_store():
 
     answer_store.add_or_update(Answer(answer_id="answer3", value=30))
     answer_store.add_or_update(Answer(answer_id="another-answer3", value=35))
+
+    answer_store.add_or_update(Answer(answer_id="answer4", value="<p>abc123</p>"))
+    answer_store.add_or_update(Answer(answer_id="answer5", value=["<p>abc123</p>", 1]))
+    answer_store.add_or_update(
+        Answer(answer_id="answer6", value={"item1": "<p>abc123</p>", "item2": 1})
+    )
 
     answer_store.add_or_update(Answer(answer_id="to-escape", value="'Twenty Five'"))
     return answer_store
@@ -64,7 +69,7 @@ def relationship_answer_store():
 
 
 @pytest.fixture()
-def store_to_serialise():
+def store_to_serialize():
     answer_store = AnswerStore()
 
     answer_store.add_or_update(
@@ -159,9 +164,15 @@ def test_remove_all_answers(basic_answer_store):
     assert not basic_answer_store
 
 
-def test_remove_answer(basic_answer_store):
+def test_remove_answer_with_list_item_id(basic_answer_store):
     len_before_remove = len(basic_answer_store)
     basic_answer_store.remove_answer("answer1", "abc123")
+    assert len(basic_answer_store) == len_before_remove - 1
+
+
+def test_remove_answer_without_list_item_id(basic_answer_store):
+    len_before_remove = len(basic_answer_store)
+    basic_answer_store.remove_answer("answer3")
     assert len(basic_answer_store) == len_before_remove - 1
 
 
@@ -176,10 +187,10 @@ def test_remove_all_answers_for_list_item_id_doesnt_exist(relationship_answer_st
     assert len(relationship_answer_store) == len_before
 
 
-def test_list_serialisation(store_to_serialise):
-    serialised_store = list(store_to_serialise)
+def test_list_serialisation(store_to_serialize):
+    serialized_store = list(store_to_serialize)
 
-    assert serialised_store == [
+    assert serialized_store == [
         Answer.from_dict(
             {"answer_id": "answer1", "value": 10, "list_item_id": "abc123"}
         ),
@@ -190,13 +201,28 @@ def test_list_serialisation(store_to_serialise):
     ]
 
 
-def test_serialise_and_deserialise(basic_answer_store):
-    json_serialised = json.dumps(basic_answer_store.serialise(), for_json=True)
-    deserialised = AnswerStore(json.loads(json_serialised))
+def test_serialize_and_deserialize(basic_answer_store):
+    json_serialized = json_dumps(basic_answer_store.serialize())
+    deserialized = AnswerStore(json_loads(json_serialized))
 
-    assert deserialised == basic_answer_store
+    assert deserialized == basic_answer_store
 
 
 def test_bad_answer_type(basic_answer_store):
     with pytest.raises(TypeError):
         basic_answer_store.add_or_update({"answer_id": "test", "value": 20})
+
+
+def test_escaped_answer_value_method(basic_answer_store):
+    assert (
+        basic_answer_store.get_escaped_answer_value("answer4")
+        == "&lt;p&gt;abc123&lt;/p&gt;"
+    )
+    assert basic_answer_store.get_escaped_answer_value("answer5") == [
+        "&lt;p&gt;abc123&lt;/p&gt;",
+        1,
+    ]
+    assert basic_answer_store.get_escaped_answer_value("answer6") == {
+        "item1": "&lt;p&gt;abc123&lt;/p&gt;",
+        "item2": 1,
+    }

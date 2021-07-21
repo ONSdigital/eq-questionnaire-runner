@@ -3,15 +3,16 @@ from uuid import uuid4
 
 from blinker import ANY
 from dateutil.tz import tzutc
-from flask import session as cookie_session, current_app
+from flask import current_app
+from flask import session as cookie_session
 from flask_login import LoginManager, user_logged_out
 from sdc.crypto.decrypter import decrypt
 from structlog import get_logger
 
 from app.authentication.no_token_exception import NoTokenException
 from app.authentication.user import User
-from app.data_model.session_data import SessionData
-from app.globals import get_questionnaire_store, get_session_store, create_session_store
+from app.data_models.session_data import SessionData
+from app.globals import create_session_store, get_questionnaire_store, get_session_store
 from app.keys import KEY_PURPOSE_AUTHENTICATION
 from app.settings import EQ_SESSION_ID, USER_IK
 
@@ -85,7 +86,7 @@ def load_user():
     """
     session_store = get_session_store()
 
-    if session_store and session_store.user_id and _is_session_valid(session_store):
+    if session_store and _is_session_valid(session_store):
         logger.debug("session exists")
 
         user_id = session_store.user_id
@@ -115,12 +116,12 @@ def _create_session_data_from_metadata(metadata):
         schema_name=metadata.get("schema_name"),
         period_str=metadata.get("period_str"),
         language_code=metadata.get("language_code"),
+        launch_language_code=metadata.get("language_code"),
         survey_url=metadata.get("survey_url"),
         ru_name=metadata.get("ru_name"),
         ru_ref=metadata.get("ru_ref"),
         response_id=metadata.get("response_id"),
-        questionnaire_id=metadata.get("questionnaire_id"),
-        case_id=metadata.get("case_id"),
+        case_id=metadata["case_id"],
         case_ref=metadata.get("case_ref"),
         trad_as=metadata.get("trad_as"),
         account_service_url=metadata.get("account_service_url"),

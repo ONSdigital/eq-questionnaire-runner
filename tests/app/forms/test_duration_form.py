@@ -1,5 +1,5 @@
+from app.forms import error_messages
 from app.forms.duration_form import get_duration_form
-from app.forms.error_messages import error_messages
 from tests.app.app_context_test_case import AppContextTestCase
 
 
@@ -10,8 +10,8 @@ class TestDurationForm(AppContextTestCase):
             "units": ["years", "months"],
             "validation": {
                 "messages": {
-                    "INVALID_DURATION": "The duration entered is not valid.  Please correct your answer.",
-                    "MANDATORY_DURATION": "Please provide a duration to continue.",
+                    "INVALID_DURATION": "The duration entered is not valid.  Please correct your answer",
+                    "MANDATORY_DURATION": "Please provide a duration to continue",
                 }
             },
         }
@@ -45,55 +45,43 @@ class TestDurationForm(AppContextTestCase):
         self._test_validation(False, "5", "4", True)
         self._test_validation(True, "5", "4", True)
         self._test_validation(False, "", "", True)
-        self._test_validation(
-            True, "", "", False, error="Enter a duration to continue."
-        )
-        self._test_validation(False, "5", "", False, error="Enter a valid duration.")
-        self._test_validation(True, "5", "", False, error="Enter a valid duration.")
-        self._test_validation(False, "", "4", False, error="Enter a valid duration.")
-        self._test_validation(True, "", "4", False, error="Enter a valid duration.")
-        self._test_validation(
-            False, "5", "word", False, error="Enter a valid duration."
-        )
-        self._test_validation(True, "5", "word", False, error="Enter a valid duration.")
-        self._test_validation(False, "5", "12", False, error="Enter a valid duration.")
-        self._test_validation(True, "5", "12", False, error="Enter a valid duration.")
-        self._test_validation(False, "5", "-1", False, error="Enter a valid duration.")
-        self._test_validation(True, "5", "-1", False, error="Enter a valid duration.")
-        self._test_validation(False, "-1", "4", False, error="Enter a valid duration.")
-        self._test_validation(True, "-1", "4", False, error="Enter a valid duration.")
+        self._test_validation(True, "", "", False, error="Enter a duration")
+        self._test_validation(False, "5", "", False, error="Enter a valid duration")
+        self._test_validation(True, "5", "", False, error="Enter a valid duration")
+        self._test_validation(False, "", "4", False, error="Enter a valid duration")
+        self._test_validation(True, "", "4", False, error="Enter a valid duration")
+        self._test_validation(False, "5", "word", False, error="Enter a valid duration")
+        self._test_validation(True, "5", "word", False, error="Enter a valid duration")
+        self._test_validation(False, "5", "12", False, error="Enter a valid duration")
+        self._test_validation(True, "5", "12", False, error="Enter a valid duration")
+        self._test_validation(False, "5", "-1", False, error="Enter a valid duration")
+        self._test_validation(True, "5", "-1", False, error="Enter a valid duration")
+        self._test_validation(False, "-1", "4", False, error="Enter a valid duration")
+        self._test_validation(True, "-1", "4", False, error="Enter a valid duration")
 
     def test_year_validation(self):
         self._test_validation(False, "5", None, True)
         self._test_validation(True, "5", None, True)
         self._test_validation(False, "", None, True)
+        self._test_validation(True, "", None, False, error="Enter a duration")
         self._test_validation(
-            True, "", None, False, error="Enter a duration to continue."
+            False, "word", None, False, error="Enter a valid duration"
         )
-        self._test_validation(
-            False, "word", None, False, error="Enter a valid duration."
-        )
-        self._test_validation(
-            True, "word", None, False, error="Enter a valid duration."
-        )
-        self._test_validation(False, "-1", None, False, error="Enter a valid duration.")
-        self._test_validation(True, "-1", None, False, error="Enter a valid duration.")
+        self._test_validation(True, "word", None, False, error="Enter a valid duration")
+        self._test_validation(False, "-1", None, False, error="Enter a valid duration")
+        self._test_validation(True, "-1", None, False, error="Enter a valid duration")
 
     def test_month_validation(self):
         self._test_validation(False, None, "5", True)
         self._test_validation(True, None, "5", True)
         self._test_validation(False, None, "", True)
+        self._test_validation(True, None, "", False, error="Enter a duration")
         self._test_validation(
-            True, None, "", False, error="Enter a duration to continue."
+            False, None, "word", False, error="Enter a valid duration"
         )
-        self._test_validation(
-            False, None, "word", False, error="Enter a valid duration."
-        )
-        self._test_validation(
-            True, None, "word", False, error="Enter a valid duration."
-        )
-        self._test_validation(False, None, "-1", False, error="Enter a valid duration.")
-        self._test_validation(True, None, "-1", False, error="Enter a valid duration.")
+        self._test_validation(True, None, "word", False, error="Enter a valid duration")
+        self._test_validation(False, None, "-1", False, error="Enter a valid duration")
+        self._test_validation(True, None, "-1", False, error="Enter a valid duration")
         self._test_validation(False, None, "12", True)
         self._test_validation(True, None, "12", True)
 

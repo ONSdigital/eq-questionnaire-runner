@@ -1,0 +1,61 @@
+{
+    "mime_type": "application/json/ons/eq",
+    "language": "en",
+    "schema_version": "0.0.1",
+    "data_version": "0.0.3",
+    "survey_id": "001",
+    "title": "Test mobile number",
+    "theme": "default",
+    "description": "A questionnaire to test a mobile number",
+    "metadata": [
+        {
+            "name": "user_id",
+            "type": "string"
+        },
+        {
+            "name": "period_id",
+            "type": "string"
+        },
+        {
+            "name": "ru_name",
+            "type": "string"
+        }
+    ],
+    "questionnaire_flow": {
+        "type": "Linear",
+        "options": {
+            "summary": {
+                "collapsible": false
+            }
+        }
+    },
+    "sections": [
+        {
+            "id": "default-section",
+            "groups": [
+                {
+                    "blocks": [
+                        {
+                            "type": "Question",
+                            "id": "mobile-number-block",
+                            "question": {
+                                "answers": [
+                                    {
+                                        "id": "mobile-number-answer",
+                                        "label": "UK mobile Number",
+                                        "mandatory": true,
+                                        "type": "MobileNumber"
+                                    }
+                                ],
+                                "id": "mobile-number-question",
+                                "title": "What is your mobile number?",
+                                "type": "General"
+                            }
+                        }
+                    ],
+                    "id": "group"
+                }
+            ]
+        }
+    ]
+}

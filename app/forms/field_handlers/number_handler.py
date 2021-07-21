@@ -1,14 +1,13 @@
+from functools import cached_property
 from typing import Union
 
-from werkzeug.utils import cached_property
-from wtforms import IntegerField, DecimalField
+from wtforms import DecimalField, IntegerField
 
-from app.data_model.answer_store import AnswerStore
-from app.forms.fields.decimal_field_with_separator import DecimalFieldWithSeparator
-from app.forms.fields.integer_field_with_separator import IntegerFieldWithSeparator
+from app.data_models.answer_store import AnswerStore
 from app.forms.field_handlers.field_handler import FieldHandler
-from app.forms.validators import NumberCheck, NumberRange, DecimalPlaces
-from app.questionnaire.location import Location
+from app.forms.fields import DecimalFieldWithSeparator, IntegerFieldWithSeparator
+from app.forms.validators import DecimalPlaces, NumberCheck, NumberRange
+from app.questionnaire import Location
 from app.settings import MAX_NUMBER
 
 
@@ -23,6 +22,7 @@ class NumberHandler(FieldHandler):
         metadata: dict = None,
         location: Location = None,
         disable_validation: bool = False,
+        question_title: str = None,
     ):
         super().__init__(
             answer_schema,
@@ -31,6 +31,7 @@ class NumberHandler(FieldHandler):
             metadata,
             location,
             disable_validation,
+            question_title,
         )
         self.references = self.get_field_references()
 
@@ -73,12 +74,9 @@ class NumberHandler(FieldHandler):
 
     def _get_number_field_validators(self):
         answer_errors = self.error_messages.copy()
-        schema_validation_messages = self.answer_schema.get("validation", {}).get(
-            "messages", {}
-        )
 
-        for error_key, error_message in schema_validation_messages.items():
-            answer_errors[error_key] = error_message
+        for error_key in self.validation_messages.keys():
+            answer_errors[error_key] = self.get_validation_message(error_key)
 
         return [
             NumberCheck(answer_errors["INVALID_NUMBER"]),

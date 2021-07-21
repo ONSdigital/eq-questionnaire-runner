@@ -1,27 +1,9 @@
 {% extends 'layouts/_base.html' %}
-{% from "components/panel/_macro.njk" import onsPanel %}
 
-{% import 'macros/helpers.html' as helpers %}
-
-{% set survey_title = _("Session expired") %}
+{% set page_title = _("Session timed out") %}
 
 {% block main %}
-  <div class="u-mb-s" data-qa="session-expired-error">
-    <h1 {{helpers.track('visible', 'Timeout', 'Timeout expired')}}>{{ _("Your session has expired") }}</h1>
-  </div>
-
-  {% call onsPanel({
-    "type": "success",
-    "spacious": true,
-    "classes": "u-mb-s"
-  }) %}
-    <p>{{ _("To help protect your information we have signed you out") }}.</p>
-    {% if account_service_url %}
-      <p>{{ _('We have saved your progress and you will need to <a href="%(account_service_link)s">enter your unique code</a> to access the survey again.', account_service_link=account_service_url) }}</p>
-    {% endif %}
-    {% if using_edge %}
-      <p>If you have been timed out unexpectedly on more than one occasion, please try using a different browser. If you’re still having problems completing the census, <a href="https://census.gov.uk/contact-us/">contact us</a>.</p>
-    {% endif %}
-  {% endcall %}
-
+  <h1>{{ _("Your session has timed out due to inactivity") }}</h1>
+  <p>{{ _("To help protect your information we have timed you out") }}.</p>
+  <p>{{ _("You will need to <a href='{url}'>enter your 16-character access code</a> again to continue your census.").format(url = account_service_url) }}</p>
 {% endblock %}

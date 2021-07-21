@@ -1,4 +1,4 @@
-from app.data_model.relationship_store import Relationship, RelationshipStore
+from app.data_models.relationship_store import Relationship, RelationshipStore
 
 relationships = [
     {
@@ -17,7 +17,7 @@ relationships = [
 def test_serialisation():
     relationship_store = RelationshipStore(relationships)
 
-    assert relationship_store.serialise() == relationships
+    assert relationship_store.serialize() == relationships
 
 
 def test_deserialisation():
@@ -74,6 +74,24 @@ def test_get_relationship_that_doesnt_exist():
         list_item_id="123456", to_list_item_id="yyyyyy"
     )
     assert not relationship
+
+
+def test_remove_relationship():
+    relationship_store = RelationshipStore(relationships)
+    relationship_store.remove_relationship(
+        list_item_id="123456", to_list_item_id="789101"
+    )
+    assert relationship_store.is_dirty
+    assert len(relationship_store) == 1
+
+
+def test_remove_relationship_that_doesnt_exist():
+    relationship_store = RelationshipStore(relationships)
+    relationship_store.remove_relationship(
+        list_item_id="123456", to_list_item_id="yyyyyy"
+    )
+    assert not relationship_store.is_dirty
+    assert len(relationship_store) == 2
 
 
 def test_remove_id_in_multiple_relationships():

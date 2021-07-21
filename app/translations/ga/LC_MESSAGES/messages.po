@@ -2,22 +2,23 @@ msgid ""
 msgstr ""
 "Project-Id-Version: eq-census-nisra\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2019-10-03 14:12+0100\n"
-"PO-Revision-Date: 2019-10-03 14:30\n"
-"Last-Translator: ONS_Census\n"
+"POT-Creation-Date: 2021-03-16 12:13+0000\n"
+"PO-Revision-Date: 2021-03-16 15:48\n"
+"Last-Translator: \n"
 "Language-Team: Irish\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Generated-By: Babel 2.7.0\n"
+"Generated-By: Babel 2.9.0\n"
 "Plural-Forms: nplurals=5; plural=(n==1 ? 0 : n==2 ? 1 : n<7 ? 2 : n<11 ? 3 : 4);\n"
-"X-Generator: crowdin.com\n"
 "X-Crowdin-Project: eq-census-nisra\n"
+"X-Crowdin-Project-ID: 360567\n"
 "X-Crowdin-Language: ga-IE\n"
 "X-Crowdin-File: messages.pot\n"
+"X-Crowdin-File-ID: 24\n"
 "Language: ga_IE\n"
 
-#: app/jinja_filters.py:79 app/validation/validators.py:340
+#: app/forms/validators.py:341 app/jinja_filters.py:94
 #, python-format
 msgid "%(num)s year"
 msgid_plural "%(num)s years"
@@ -27,7 +28,7 @@ msgstr[2] "%(num)s bliain"
 msgstr[3] "%(num)s blianta"
 msgstr[4] "%(num)s blianta"
 
-#: app/jinja_filters.py:87 app/validation/validators.py:344
+#: app/forms/validators.py:345 app/jinja_filters.py:102
 #, python-format
 msgid "%(num)s month"
 msgid_plural "%(num)s months"
@@ -37,157 +38,164 @@ msgstr[2] "%(num)s mí"
 msgstr[3] "%(num)s míonna"
 msgstr[4] "%(num)s míonna"
 
-#: app/jinja_filters.py:130
+#: app/jinja_filters.py:145
 #, python-format
 msgid "%(date)s at %(time)s"
 msgstr "%(date)s ag %(time)s"
 
-#: app/jinja_filters.py:141
+#: app/jinja_filters.py:156
 #, python-format
 msgid "%(from_date)s to %(to_date)s"
 msgstr "%(from_date)s go %(to_date)s"
 
-#: app/forms/custom_fields.py:130
-msgid "Not a valid choice"
-msgstr "Ní rogha bhailí í seo"
+#: app/forms/error_messages.py:11 app/forms/error_messages.py:12
+#: app/forms/error_messages.py:13 app/forms/error_messages.py:14
+msgid "Enter an answer"
+msgstr "Iontráil freagra"
 
-#: app/forms/fields.py:231
+#: app/forms/error_messages.py:15
+#, python-format
+msgid "Select an answer <span class=\"u-vh\">to ‘%(question_title)s’</span>"
+msgstr "Roghnaigh freagra <span class=\"u-vh\">ar ‘%(question_title)s’</span>"
+
+#: app/forms/error_messages.py:18
+#: app/forms/field_handlers/dropdown_handler.py:11
 msgid "Select an answer"
 msgstr "Roghnaigh freagra"
 
-#: app/helpers/template_helper.py:19
-msgid "Office for National Statistics logo"
-msgstr "Lógó Oifig an Staidrimh Náisiúnta"
-
-#: app/helpers/template_helper.py:28 app/helpers/template_helper.py:36
-msgid "Census 2021"
-msgstr "Daonáireamh 2021"
-
-#: app/helpers/template_helper.py:32
-msgid "Northern Ireland Statistics and Research Agency logo"
-msgstr "Lógó na Gníomhaireachta um Staidreamh agus Thaighde Thuaisceart Éireann"
-
-#: app/validation/error_messages.py:7 app/validation/error_messages.py:8
-#: app/validation/error_messages.py:9 app/validation/error_messages.py:10
-msgid "Enter an answer to continue."
-msgstr "Cuir freagra isteach le leanstan ar aghaidh."
-
-#: app/validation/error_messages.py:11 app/validation/error_messages.py:12
-msgid "Select an answer to continue."
-msgstr "Roghnaigh freagra le leanstan ar aghaidh."
-
-#: app/validation/error_messages.py:13
-msgid "Select all that apply to continue."
-msgstr "Roghnaigh na cinn uilig lena mbaineann siad le leanstan ar aghaidh."
-
-#: app/validation/error_messages.py:14
-msgid "Enter a date to continue."
-msgstr "Cuir dáta isteach le leanstan ar aghaidh."
-
-#: app/validation/error_messages.py:15
-msgid "Enter a duration to continue."
-msgstr "Cuir fad an ama isteach le leanstan ar aghaidh."
-
-#: app/validation/error_messages.py:16
+#: app/forms/error_messages.py:19
 #, python-format
-msgid "Enter an answer more than or equal to %(min)s."
-msgstr "Cuir freagra isteach atá níos mó ná nó cothrom le %(min)s."
+msgid "Select at least one answer <span class=\"u-vh\">to ‘%(question_title)s’</span>"
+msgstr "Roghnaigh freagra amháin ar a laghad <span class=\"u-vh\">ar ‘%(question_title)s’</span>"
 
-#: app/validation/error_messages.py:17
+#: app/forms/error_messages.py:22
+msgid "Enter a date"
+msgstr "Iontráil dáta"
+
+#: app/forms/error_messages.py:23 templates/partials/answers/address.html:57
+msgid "Enter an address"
+msgstr "Iontráil seoladh"
+
+#: app/forms/error_messages.py:24
+msgid "Enter a duration"
+msgstr "Iontráil fad ama"
+
+#: app/forms/error_messages.py:25
+msgid "Enter an email address"
+msgstr "Iontráil seoladh r-phoist"
+
+#: app/forms/error_messages.py:26
+msgid "Enter a UK mobile number"
+msgstr "Iontráil uimhir fón póca de chuid na UK"
+
+#: app/forms/error_messages.py:27
 #, python-format
-msgid "Enter an answer less than or equal to %(max)s."
-msgstr "Cuir freagra isteach atá níos lú ná nó cothrom le %(max)s."
+msgid "Enter an answer more than or equal to %(min)s"
+msgstr "Iontráil freagra atá níos mó ná nó cothrom le %(min)s"
 
-#: app/validation/error_messages.py:18
+#: app/forms/error_messages.py:28
 #, python-format
-msgid "Enter an answer more than %(min)s."
-msgstr "Cuir freagra isteach atá níos mó ná %(min)s."
+msgid "Enter an answer less than or equal to %(max)s"
+msgstr "Iontráil freagra atá níos lú ná nó cothrom le %(max)s"
 
-#: app/validation/error_messages.py:19
+#: app/forms/error_messages.py:29
 #, python-format
-msgid "Enter an answer less than %(max)s."
-msgstr "Cuir freagra isteach atá níos lú ná %(max)s."
+msgid "Enter an answer more than %(min)s"
+msgstr "Iontráil freagra atá níos mó ná %(min)s"
 
-#: app/validation/error_messages.py:20
+#: app/forms/error_messages.py:30
+#, python-format
+msgid "Enter an answer less than %(max)s"
+msgstr "Iontráil freagra atá níos lú ná %(max)s"
+
+#: app/forms/error_messages.py:31
 #, python-format
 msgid "Enter answers that add up to %(total)s"
 msgstr "Cuir freagraí isteach a shuimíonn go %(total)s ar fad"
 
-#: app/validation/error_messages.py:21
+#: app/forms/error_messages.py:32
 #, python-format
 msgid "Enter answers that add up to or are less than %(total)s"
 msgstr "Cuir freagraí isteach a shuimíonn go nó atá níos lú ná %(total)s"
 
-#: app/validation/error_messages.py:24
+#: app/forms/error_messages.py:35
 #, python-format
 msgid "Enter answers that add up to less than %(total)s"
 msgstr "Cuir freagraí isteach a shuimíonn go níos lú ná %(total)s"
 
-#: app/validation/error_messages.py:27
+#: app/forms/error_messages.py:38
 #, python-format
 msgid "Enter answers that add up to greater than %(total)s"
 msgstr "Cuir freagraí isteach a shuimíonn go níos mó ná %(total)s"
 
-#: app/validation/error_messages.py:30
+#: app/forms/error_messages.py:41
 #, python-format
 msgid "Enter answers that add up to or are greater than %(total)s"
 msgstr "Cuir freagraí isteach a shuimíonn go nó atá níos mó ná %(total)s"
 
-#: app/validation/error_messages.py:33
-msgid "Enter a number."
-msgstr "Cuir uimhir isteach."
+#: app/forms/error_messages.py:44
+msgid "Enter an email address in a valid format, for example name@example.com"
+msgstr "Iontráil seoladh r-phoist i bhformáid chuí, mar shampla ainm@sampla.com"
 
-#: app/validation/error_messages.py:34
-msgid "Enter a whole number."
-msgstr "Cuir slánuimhir isteach."
+#: app/forms/error_messages.py:47
+msgid "Enter a number"
+msgstr "Cuir uimhir isteach"
 
-#: app/validation/error_messages.py:35
+#: app/forms/error_messages.py:48
+msgid "Enter a whole number"
+msgstr "Cuir slánuimhir isteach"
+
+#: app/forms/error_messages.py:49
 #, python-format
-msgid "Enter a number rounded to %(max)d decimal places."
-msgstr "Cuir uimhir isteach atá slánaithe go %(max)d ionad deachúlach."
+msgid "Enter a number rounded to %(max)d decimal places"
+msgstr "Iontráil uimhir atá slánaithe go %(max)d ionad deachúlach"
 
-#: app/validation/error_messages.py:38
+#: app/forms/error_messages.py:50
 #, python-format
-msgid "Your answer is too long, it has to be less than %(max)d characters."
-msgstr "Tá do fhreagra rófhada, caithfidh sé bheith níos lú ná %(max)d carachtar."
+msgid "You have entered too many characters. Enter up to %(max)d characters"
+msgstr "Tá barraíocht carachtar iontráilte agat. Iontráil suas go dtí %(max)d carachtar"
 
-#: app/validation/error_messages.py:41
-msgid "Enter a valid date."
-msgstr "Cuir isteach dáta bailí."
+#: app/forms/error_messages.py:53
+msgid "Enter a valid date"
+msgstr "Cuir isteach dáta bailí"
 
-#: app/validation/error_messages.py:42
-msgid "Enter a 'period to' date later than the 'period from' date."
-msgstr "Cuir isteach 'tréimhse go' dáta níos moille ná an 'tréimhse ó' dáta."
+#: app/forms/error_messages.py:54
+msgid "Enter a 'period to' date later than the 'period from' date"
+msgstr "Iontráil dáta 'tréimhse go' atá níos moille ná an dáta 'tréimhse ó'"
 
-#: app/validation/error_messages.py:45
-msgid "Enter a valid duration."
-msgstr "Cuir isteach fad ama bailí."
+#: app/forms/error_messages.py:57
+msgid "Enter a valid duration"
+msgstr "Iontráil fad ama bailí"
 
-#: app/validation/error_messages.py:46
+#: app/forms/error_messages.py:58
+msgid "Enter a UK mobile number in a valid format, for example, 07700 900345 or +44 7700 900345"
+msgstr "Iontráil uimhir fón póca de chuid na UK i bhformáid bhailí, mar shampla, 07700 900345 nó +44 7700 900345"
+
+#: app/forms/error_messages.py:61
 #, python-format
-msgid "Enter a reporting period greater than or equal to %(min)s."
-msgstr "Cuir isteach tréimhse tuairiscithe níos mó ná nó cothrom le %(min)s."
+msgid "Enter a reporting period greater than or equal to %(min)s"
+msgstr "Iontráil tréimhse tuairiscithe níos mó ná nó cothrom le %(min)s"
 
-#: app/validation/error_messages.py:49
+#: app/forms/error_messages.py:64
 #, python-format
-msgid "Enter a reporting period less than or equal to %(max)s."
-msgstr "Cuir isteach tréimhse tuairiscithe níos lú ná nó cothrom le %(max)s."
+msgid "Enter a reporting period less than or equal to %(max)s"
+msgstr "Iontráil tréimhse tuairiscithe níos lú ná nó cothrom le %(max)s"
 
-#: app/validation/error_messages.py:52
+#: app/forms/error_messages.py:67
 #, python-format
-msgid "Enter a date after %(min)s."
-msgstr "Cuir isteach dáta i ndiaidh %(min)s."
+msgid "Enter a date after %(min)s"
+msgstr "Iontráil dáta i ndiaidh %(min)s"
 
-#: app/validation/error_messages.py:53
+#: app/forms/error_messages.py:68
 #, python-format
-msgid "Enter a date before %(max)s."
-msgstr "Cuir isteach dáta roimh %(max)s."
+msgid "Enter a date before %(max)s"
+msgstr "Iontráil dáta roimh %(max)s"
 
-#: app/validation/error_messages.py:54
-msgid "Remove an answer to continue."
-msgstr "Bain freagra le leanstan ar aghaidh."
+#: app/forms/error_messages.py:69
+msgid "Remove an answer"
+msgstr "Bain freagra"
 
-#: app/validation/validators.py:351
+#: app/forms/validators.py:352
 #, python-format
 msgid "%(num)s day"
 msgid_plural "%(num)s days"
@@ -197,97 +205,638 @@ msgstr[2] "%(num)s lá"
 msgstr[3] "%(num)s laethanta"
 msgstr[4] "%(num)s laethanta"
 
-#: app/views/contexts/hub_context.py:15 app/views/contexts/hub_context.py:17
-msgid "Submit survey"
-msgstr "Cuir an suirbhé isteach"
+#: app/forms/fields/select_field_with_detail_answer.py:35
+msgid "Not a valid choice"
+msgstr "Ní rogha bhailí í seo"
 
-#: app/views/contexts/hub_context.py:16 templates/summary.html:17
-msgid "Please submit this survey to complete it"
-msgstr "Cuir isteach an suirbhé seo lena chríochnú le do thoil"
+#: app/helpers/template_helpers.py:24
+msgid "Office for National Statistics logo"
+msgstr "Lógó Oifig an Staidrimh Náisiúnta"
 
-#: app/views/contexts/hub_context.py:20
-msgid "Choose another section to complete"
-msgstr "Roghnaigh mír eile le líonadh isteach"
+#: app/helpers/template_helpers.py:33 app/helpers/template_helpers.py:42
+#: app/helpers/template_helpers.py:170 templates/signed-out.html:3
+msgid "Census 2021"
+msgstr "Daonáireamh 2021"
 
-#: app/views/contexts/hub_context.py:21
-msgid "You must complete all sections in order to submit this survey"
-msgstr "Caithfidh tú na míreanna uilig a líonadh isteach leis an suirbhé a chur isteach"
+#: app/helpers/template_helpers.py:38
+msgid "Northern Ireland Statistics and Research Agency logo"
+msgstr "Lógó na Gníomhaireachta um Staidreamh agus Thaighde Thuaisceart Éireann"
 
-#: app/views/contexts/hub_context.py:24 templates/confirmation.html:12
-#: templates/interstitial.html:5
-msgid "Continue"
-msgstr "Lean ar aghaidh"
+#: app/helpers/template_helpers.py:55
+msgid "Help"
+msgstr "Cuidiú"
 
-#: app/views/contexts/hub_context.py:30
+#: app/helpers/template_helpers.py:60
+msgid "Contact us"
+msgstr "Déan teagmháil linn"
+
+#: app/helpers/template_helpers.py:69
+msgid "Languages"
+msgstr "Teangacha"
+
+#: app/helpers/template_helpers.py:74
+msgid "BSL and audio videos"
+msgstr ""
+
+#: app/helpers/template_helpers.py:84
+msgid "The following links open in a new tab"
+msgstr "Osclaíonn na naisc seo a leanas i dtáb úr"
+
+#: app/helpers/template_helpers.py:86
+msgid "Crown copyright and database rights 2021 NIMA MOU577.501."
+msgstr "Cóiopcheart na Corónach agus cearta bhunachar sonraí 2021 NIMA MOU577.501."
+
+#: app/helpers/template_helpers.py:90
+msgid "Crown copyright and database rights 2020 OS 100019153."
+msgstr "Cóiopcheart na Corónach agus cearta bhunachar sonraí 2020 OS 100019153."
+
+#: app/helpers/template_helpers.py:91
+msgid "Use of address data is subject to the terms and conditions."
+msgstr "Tá úsáid sonraí seolta faoi réir téarmaí agus coinníollacha."
+
+#: app/helpers/template_helpers.py:102
+msgid "Cookies"
+msgstr "Fianáin"
+
+#: app/helpers/template_helpers.py:107
+msgid "Accessibility statement"
+msgstr "Ráiteas inrochtaineachta"
+
+#: app/helpers/template_helpers.py:112
+msgid "Privacy and data protection"
+msgstr "Príobháideacht agus cosaint sonraí"
+
+#: app/helpers/template_helpers.py:117
+msgid "Terms and conditions"
+msgstr "Téarmaí agus coinníollacha"
+
+#: app/helpers/template_helpers.py:127
+msgid "Make sure you <a href='{sign_out_url}'>leave this page</a> or close your browser if using a shared device"
+msgstr "Bí cinnte go bhfágann tú <a href='{sign_out_url}'>an leathanach seo</a> nó druid do bhrabhsálaí má tá tú ag úsáid gléas comhroinnte"
+
+#: app/questionnaire/placeholder_transforms.py:92
+msgid "{number_of_years} year"
+msgid_plural "{number_of_years} years"
+msgstr[0] "{number_of_years} bliain"
+msgstr[1] "{number_of_years} blianta"
+msgstr[2] "{number_of_years} blianta"
+msgstr[3] "{number_of_years} blianta"
+msgstr[4] "{number_of_years} blianta"
+
+#: app/questionnaire/placeholder_transforms.py:98
+msgid "{number_of_months} month"
+msgid_plural "{number_of_months} months"
+msgstr[0] "{number_of_months} mhí"
+msgstr[1] "{number_of_months} míonna"
+msgstr[2] "{number_of_months} míonna"
+msgstr[3] "{number_of_months} míonna"
+msgstr[4] "{number_of_months} míonna"
+
+#: app/questionnaire/placeholder_transforms.py:103
+msgid "{number_of_days} day"
+msgid_plural "{number_of_days} days"
+msgstr[0] "{number_of_days} lá"
+msgstr[1] "{number_of_days} lá"
+msgstr[2] "{number_of_days} lá"
+msgstr[3] "{number_of_days} lá"
+msgstr[4] "{number_of_days} lá"
+
+#: app/routes/errors.py:115
+msgid "You have reached the maximum number of individual access codes"
+msgstr "Tá an líon uasta cóid rochtana duine aonair bainte amach agat"
+
+#: app/routes/errors.py:118
+msgid "If you need more individual access codes, please <a href='{contact_us_url}'>contact us</a>."
+msgstr "Má bhíonn tuilleadh cóid rochtana duine aonair de dhíth ort, déan <a href='{contact_us_url}'>teagmháil linn</a>."
+
+#: app/routes/errors.py:134
+msgid "You have reached the maximum number of times for submitting feedback"
+msgstr "Tá an líon uasta uaireanta le haiseolas a chur isteach bainte amach agat"
+
+#: app/routes/errors.py:137
+msgid "If you need to give more feedback, please <a href='{contact_us_url}'>contact us</a>."
+msgstr "Más gá duit níos mó aiseolais a thabhairt, déan <a href='{contact_us_url}'>teagmháil linn</a>."
+
+#: app/routes/errors.py:169
+msgid "Sorry, there was a problem sending the access code"
+msgstr "Ár leithscéal, bhí fadhb leis an chód rochtana a sheoladh"
+
+#: app/routes/errors.py:175
+msgid "You can try to <a href='{retry_url}'>request a new access code again</a>."
+msgstr "Is féidir triail a bhaint as <a href='{retry_url}'>cód úr rochtana a iarraidh arís</a>."
+
+#: app/routes/errors.py:178 app/routes/errors.py:201 app/routes/errors.py:223
+msgid "If this problem keeps happening, please <a href='{contact_us_url}'>contact us</a> for help."
+msgstr "Má leantar den fhadhb, déan <a href='{contact_us_url}'>teagmháil linn</a> le cuidiú a iarraidh."
+
+#: app/routes/errors.py:197
+msgid "Sorry, there was a problem sending the confirmation email"
+msgstr "Ár keithscéal, bhí fadhb leis an r-phost dearbhaithe a sheoladh"
+
+#: app/routes/errors.py:198
+msgid "You can try to <a href='{retry_url}'>send the email again</a>."
+msgstr "Is féidir triail a bhaint as <a href='{retry_url}'>an r-phost a sheoladh arís</a>."
+
+#: app/routes/errors.py:219 templates/errors/403.html:3
+#: templates/errors/403.html:6 templates/errors/submission-failed.html:5
+#: templates/errors/submission-failed.html:8
+msgid "Sorry, there is a problem"
+msgstr "Tá brón orm, tá fadhb ann"
+
+#: app/routes/errors.py:220
+msgid "You can try to <a href='{retry_url}'>submit your feedback again</a>."
+msgstr "Is féidir triail a bhaint as <a href='{retry_url}'>d'aiseolas a chur isteach arís</a>."
+
+#: app/routes/individual_response.py:167
+msgid "An individual access code has been sent by post"
+msgstr "Cuireadh cód rochtana duine aonair sa phost"
+
+#: app/routes/individual_response.py:262
+msgid "An individual access code has been sent by text"
+msgstr "Cuireadh cód rochtana duine aonair de théacs"
+
+#: app/views/contexts/hub_context.py:15
 msgid "Completed"
 msgstr "Déanta"
 
-#: app/views/contexts/hub_context.py:32
+#: app/views/contexts/hub_context.py:17
 msgid "View answers"
 msgstr "Amharc ar na freagraí"
 
-#: app/views/contexts/hub_context.py:33
+#: app/views/contexts/hub_context.py:18
 msgid "View answers for {section_name}"
 msgstr "Amharc ar na freagraí do {section_name}"
 
-#: app/views/contexts/hub_context.py:37
+#: app/views/contexts/hub_context.py:22
 msgid "Partially completed"
 msgstr "Cuid de déanta"
 
-#: app/views/contexts/hub_context.py:39
+#: app/views/contexts/hub_context.py:24
 msgid "Continue with section"
 msgstr "Lean ar aghaidh leis an mhír"
 
-#: app/views/contexts/hub_context.py:40
+#: app/views/contexts/hub_context.py:25
 msgid "Continue with {section_name} section"
 msgstr "Lean ar aghaidh leis an mhír {section_name}"
 
-#: app/views/contexts/hub_context.py:44
+#: app/views/contexts/hub_context.py:29
 msgid "Not started"
 msgstr "Níl sé tosaithe go fóill"
 
-#: app/views/contexts/hub_context.py:46
+#: app/views/contexts/hub_context.py:31
 msgid "Start section"
 msgstr "Tosaigh an mhír"
 
-#: app/views/contexts/hub_context.py:47
+#: app/views/contexts/hub_context.py:32
 msgid "Start {section_name} section"
 msgstr "Tosaigh an mhír {section_name}"
 
-#: app/views/contexts/list_collector.py:33
+#: app/views/contexts/hub_context.py:36
+msgid "Separate census requested"
+msgstr "Daonáireamh ar leith iarrtha"
+
+#: app/views/contexts/hub_context.py:38 app/views/contexts/hub_context.py:39
+msgid "Change or resend"
+msgstr "Athraigh nó athsheol"
+
+#: app/views/contexts/hub_context.py:49 app/views/contexts/hub_context.py:50
+msgid "Submit survey"
+msgstr "Cuir an suirbhé isteach"
+
+#: app/views/contexts/hub_context.py:54
+msgid "You must submit this survey to complete it"
+msgstr "Caithfidh tú an suirbhé seo a chur isteach lena chomhlánú"
+
+#: app/views/contexts/hub_context.py:61
+msgid "Choose another section to complete"
+msgstr "Roghnaigh mír eile le líonadh isteach"
+
+#: app/views/contexts/hub_context.py:62 templates/confirm-email.html:26
+#: templates/individual_response/confirmation-post.html:21
+#: templates/individual_response/confirmation-text-message.html:31
+#: templates/individual_response/question.html:5 templates/interstitial.html:8
+#: templates/sectionsummary.html:11 templates/sectionsummary.html:48
+msgid "Continue"
+msgstr "Lean ar aghaidh"
+
+#: app/views/contexts/list_context.py:104
 msgid " (You)"
 msgstr " (Tusa)"
 
-#: templates/confirmation.html:6 templates/confirmation.html:37
+#: app/views/contexts/questionnaire_summary_context.py:15
+msgid "Check your answers and submit"
+msgstr "Déan seiceáil ar do fhreagraí agus cuir isteach iad"
+
+#: app/views/contexts/questionnaire_summary_context.py:18
+#: templates/confirmation.html:6 templates/confirmation.html:28
 msgid "Submit answers"
 msgstr "Cuir isteach na freagraí"
 
-#: templates/confirmation.html:22
+#: app/views/contexts/questionnaire_summary_context.py:21
+msgid "Please submit this survey to complete it"
+msgstr "Cuir isteach an suirbhé seo lena chríochnú le do thoil"
+
+#: app/views/handlers/confirm_email.py:31
+msgid "Yes, send the confirmation email"
+msgstr "Tá, seol an r-phost deimhnithe"
+
+#: app/views/handlers/confirm_email.py:60
+msgid "Confirm your email address"
+msgstr "Dearbhaigh r-post seoladh"
+
+#: app/views/handlers/confirm_email.py:78
+msgid "Is this email address correct?"
+msgstr "An bhfuil an seoladh r-phoist seo ceart?"
+
+#: app/views/handlers/confirm_email.py:91
+#: app/views/handlers/confirm_email.py:92
+#: app/views/handlers/individual_response.py:867
+msgid "No, I need to change it"
+msgstr "Níl, caithfidh mé í a athrú"
+
+#: app/views/handlers/confirm_email.py:116
+#: app/views/handlers/confirmation_email.py:66
+#: app/views/handlers/feedback.py:62 app/views/handlers/question.py:150
+msgid "Error: {page_title}"
+msgstr "Earráid: {page_title}"
+
+#: app/views/handlers/confirmation_email.py:46
+msgid "Confirmation email"
+msgstr "R-phost dearbhaithe"
+
+#: app/views/handlers/feedback.py:28
+msgid "Feedback"
+msgstr "Aiseolas"
+
+#: app/views/handlers/feedback.py:94 app/views/handlers/feedback.py:100
+#: app/views/handlers/feedback.py:108
+msgid "General"
+msgstr "Ginearálta"
+
+#: app/views/handlers/feedback.py:95
+msgid "This establishment"
+msgstr "An t-áitreabh seo"
+
+#: app/views/handlers/feedback.py:96 app/views/handlers/feedback.py:109
+msgid "People who live here"
+msgstr "Daoine a chónaíonn anseo"
+
+#: app/views/handlers/feedback.py:97 app/views/handlers/feedback.py:110
+msgid "Visitors"
+msgstr "Cuairteoirí"
+
+#: app/views/handlers/feedback.py:101
+msgid "Accommodation"
+msgstr "Cóiríocht"
+
+#: app/views/handlers/feedback.py:102 app/views/handlers/feedback.py:112
+msgid "Personal details"
+msgstr "Sonraí pearsanta"
+
+#: app/views/handlers/feedback.py:103 app/views/handlers/feedback.py:113
+msgid "Health"
+msgstr "Sláinte"
+
+#: app/views/handlers/feedback.py:104 app/views/handlers/feedback.py:114
+msgid "Qualifications"
+msgstr "Cáilíochtaí"
+
+#: app/views/handlers/feedback.py:105 app/views/handlers/feedback.py:115
+msgid "Employment"
+msgstr "Fostaíocht"
+
+#: app/views/handlers/feedback.py:111
+msgid "Household and accommodation"
+msgstr "Teaghlach agus cóiríocht"
+
+#: app/views/handlers/feedback.py:127
+msgid "Give feedback about this service"
+msgstr "Tabhair aiseolas faoin tseirbhís seo"
+
+#: app/views/handlers/feedback.py:128 app/views/handlers/feedback.py:172
+msgid "Select what your feedback is about"
+msgstr "Roghnaigh ábhar d'aiseolais"
+
+#: app/views/handlers/feedback.py:136 app/views/handlers/feedback.py:137
+msgid "The census questions"
+msgstr "Na ceisteanna daonáirimh"
+
+#: app/views/handlers/feedback.py:138
+msgid "For example, questions not clear, answer options not relevant"
+msgstr "Mar shampla, ceisteanna nach bhfuil soiléir, roghanna freagra nach bhuil ábhartha"
+
+#: app/views/handlers/feedback.py:145
+msgid "Question topic"
+msgstr "Ábhar ceiste"
+
+#: app/views/handlers/feedback.py:146 app/views/handlers/feedback.py:149
+msgid "Select an option"
+msgstr "Déan rogha"
+
+#: app/views/handlers/feedback.py:158 app/views/handlers/feedback.py:159
+msgid "Page design and structure"
+msgstr "Dearadh agus struchtúr leathanaigh"
+
+#: app/views/handlers/feedback.py:162 app/views/handlers/feedback.py:165
+msgid "General feedback about this service"
+msgstr "Aiseolas ginearálta faoin tseirbhís seo"
+
+#: app/views/handlers/feedback.py:180 app/views/handlers/feedback.py:190
+msgid "Enter your feedback"
+msgstr "Iontráil d'aiseolas"
+
+#: app/views/handlers/feedback.py:181
+msgid "Do not include confidential information, such as your contact details"
+msgstr "Ná cuimsigh eolas rúnda, ar nós do shonraí teagmhála"
+
+#: app/views/handlers/individual_response.py:137
+msgid "Person {list_item_position}"
+msgstr "{list_item_position} Duine"
+
+#: app/views/handlers/individual_response.py:245
+msgid "Cannot answer questions for others in your household"
+msgstr "Ní thig liom ceisteanna a fhreagairt do dhaoine eile i do theaghlach"
+
+#: app/views/handlers/individual_response.py:311
+msgid "How would you like <em>{person_name}</em> to receive a separate census?"
+msgstr "Cén dóigh ar ar mhaith leat go bhfaigheadh <em>{person_name}</em> daonáireamh ar leith?"
+
+#: app/views/handlers/individual_response.py:334
+msgid "Text message"
+msgstr "Teachtaireacht téacs"
+
+#: app/views/handlers/individual_response.py:336
+msgid "We will need their mobile number for this"
+msgstr "Beidh a n-uimhir guthán póca de dhíth orainn chuige seo"
+
+#: app/views/handlers/individual_response.py:344
+msgid "Post"
+msgstr "Post"
+
+#: app/views/handlers/individual_response.py:346
+msgid "We can only send this to an unnamed resident at the registered household address"
+msgstr "Ní thig linn é seo a chur ach chuig cónaitheoir neamhainmnithe ag an seoladh cláraithe tí"
+
+#: app/views/handlers/individual_response.py:355
+msgid "It is no longer possible to receive an access code by post."
+msgstr "Ní féidir cód rochtana a fháil sa phost a thuilleadh."
+
+#: app/views/handlers/individual_response.py:357
+msgid "Select how to send access code."
+msgstr "Roghnaigh dóigh le cód rochtana a chur."
+
+#: app/views/handlers/individual_response.py:360
+msgid "For someone to complete a separate census, we need to send them an individual access code."
+msgstr "Sa dóigh go dtig le duine daonáireamh ar leith a chomhlánú, is gá dúinn cód rochtana ar leith a chur chucu."
+
+#: app/views/handlers/individual_response.py:406
+msgid "Send individual access code"
+msgstr "Cuir cód rochtana ar leith"
+
+#: app/views/handlers/individual_response.py:437
+msgid "How would you like to answer <em>{person_name_possessive}</em> questions?"
+msgstr "Cén dóigh ar mhaith leat ceisteanna <em>{person_name_possessive}</em> a fhreagairt?"
+
+#: app/views/handlers/individual_response.py:452
+msgid "I would like to request a separate census for them to complete"
+msgstr "Ba mhaith liom daonáireamh ar leith a iarraidh le go gcomhlánóidh siad é"
+
+#: app/views/handlers/individual_response.py:458
+msgid "I will ask them to answer their own questions"
+msgstr "Iarrfaidh mé orthu a gceisteanna féin a fhreagairt"
+
+#: app/views/handlers/individual_response.py:462
+msgid "They will need the household access code from the letter we sent you"
+msgstr "Beidh an cód rochtana teaghlaigh de dhíth orthu ón litir a chuir muid chugat"
+
+#: app/views/handlers/individual_response.py:468
+msgid "I will answer for {person_name}"
+msgstr "Freagróidh mé ar son {person_name}"
+
+#: app/views/handlers/individual_response.py:510
+msgid "How to answer questions"
+msgstr "An dóigh le ceisteanna a fhreagairt"
+
+#: app/views/handlers/individual_response.py:575
+msgid "Do you want to send an individual access code for {person_name} by post?"
+msgstr "An mian leat cód rochtana ar leith do {person_name} a chur sa phost?"
+
+#: app/views/handlers/individual_response.py:583
+msgid "A letter with an individual access code will be sent to your registered household address"
+msgstr "Cuirfear litir ina mbeidh cód rochtana ar leith chuig do sheoladh teaghlaigh cláraithe"
+
+#: app/views/handlers/individual_response.py:590
+msgid "The letter will be addressed to <strong>Individual Resident</strong> instead of the name provided"
+msgstr "Chuig <strong>Individual Resident Cónaitheoir ar Leith</strong> a chuirfear an litir seachas an t-ainm a cuireadh ar fáil"
+
+#: app/views/handlers/individual_response.py:603
+msgid "Yes, send the access code by post"
+msgstr "Is ea, cuir an cód rochtana sa phost"
+
+#: app/views/handlers/individual_response.py:609
+msgid "No, send it another way"
+msgstr "Ní hea, cuir ar dhóigh eile é"
+
+#: app/views/handlers/individual_response.py:642
+msgid "Confirm address"
+msgstr "Dearbhaigh seoladh"
+
+#: app/views/handlers/individual_response.py:697
+#: app/views/handlers/individual_response.py:735
+msgid "Separate Census"
+msgstr "Daonáireamh ar Leith"
+
+#: app/views/handlers/individual_response.py:701
+msgid "Who do you need to request a separate census for?"
+msgstr "Cé dó a bhfuil tú ag iarraidh daonáireamh ar leith>?"
+
+#: app/views/handlers/individual_response.py:759
+msgid "What is <em>{person_name_possessive}</em> mobile number?"
+msgstr "Cén uimhir ghuthán póca atá ag <em>{person_name_possessive}</em>?"
+
+#: app/views/handlers/individual_response.py:771
+msgid "UK mobile number"
+msgstr "UK uimhir fón póca"
+
+#: app/views/handlers/individual_response.py:772
+msgid "This will not be stored and only used once to send the access code"
+msgstr "Ní stórálfar é seo agus ní úsáidfear ach uair amháin é leis an chód rochtana a sheoladh"
+
+#: app/views/handlers/individual_response.py:805
+msgid "Mobile number"
+msgstr "Uimhir fón póca"
+
+#: app/views/handlers/individual_response.py:854
+msgid "Is this mobile number correct?"
+msgstr "An bhfuil an uimhir ghuthán póca seo ceart?"
+
+#: app/views/handlers/individual_response.py:863
+msgid "Yes, send the text"
+msgstr "Tá, cuir an téacs"
+
+#: app/views/handlers/individual_response.py:901
+msgid "Confirm mobile number"
+msgstr "Dearbhaigh uimhir ghuthán póca"
+
+#: app/views/handlers/thank_you.py:22 templates/census-thank-you.html:24
+msgid "Thank you for completing the census"
+msgstr "Go raibh maith agat as an daonáireamh a chur i gcrích"
+
+#: templates/census-thank-you.html:9 templates/confirmation-email.html:8
+msgid "There is a problem with this page"
+msgstr "Tá fadhb leis an leathanach seo"
+
+#: templates/census-thank-you.html:22
+msgid "Thank you for completing your census"
+msgstr "Go raibh maith agat as do dhaonáireamh a chur i gcrích"
+
+#: templates/census-thank-you.html:26
+msgid "Thank you for completing the survey"
+msgstr "Go raibh maith agat as an suirbhé a chur i gcrích"
+
+#: templates/census-thank-you.html:32
+msgid "Your individual census has been submitted for <strong>{display_address}</strong>"
+msgstr "Cuireadh isteach do dhaonáireamh ar leith do <strong>{display_address}</strong>"
+
+#: templates/census-thank-you.html:34
+msgid "Your census has been submitted for the household at <strong>{display_address}</strong>"
+msgstr "Cuireadh isteach do dhaonáireamh don teaghlach ag <strong>{display_address}</strong>"
+
+#: templates/census-thank-you.html:36
+msgid "Your census has been submitted for the accommodation at <strong>{display_address}</strong>"
+msgstr "Cuireadh isteach do dhaonáireamh don chóiríocht ag <strong>{display_address}</strong>"
+
+#: templates/census-thank-you.html:37
+msgid "Anyone staying at this accommodation for at least 6 months needs to fill in their own individual census, including staff. Your Census Officer will provide you with census forms for your residents."
+msgstr "Duine ar bith atá ag fanacht ag an chóiríocht seo ar feadh 6 mhí ar a laghad, caithfidh siad a ndaonáireamh féin a líonadh isteach, baill foirne san áireamh. Tabharfaidh d'Oifigeach Daonáirimh na foirmeacha daonáirimh do do chónaitheoirí duit."
+
+#: templates/census-thank-you.html:49
+msgid "Your personal information is protected by law and will be kept confidential"
+msgstr "Tá cosaint dlí ar d'eolas pearsanta agus coinneofar é faoi rún"
+
+#: templates/census-thank-you.html:55
+msgid "Get confirmation email"
+msgstr "Faigh r-phost dearbhaithe"
+
+#: templates/census-thank-you.html:56
+msgid "If you would like to be sent confirmation that you have completed your census, enter your email address"
+msgstr "Más mian leat go seolfar dearbhú chugat go bhfuil do dhaonáireamh comhlánaithe agat, iontráil do sheoladh r-phoist"
+
+#: templates/confirm-email.html:13 templates/partials/answers/address.html:56
+#: templates/question.html:10
+#, python-format
+msgid "There is a problem with your answer"
+msgid_plural "There are %(num)s problems with your answer"
+msgstr[0] "Tá fadhb le do fhreagra"
+msgstr[1] "Tá %(num)s fadhb le do fhreagra"
+msgstr[2] "Tá %(num)s fadhb le do fhreagra"
+msgstr[3] "Tá %(num)s fadhb le do fhreagra"
+msgstr[4] "Tá %(num)s fadhb le do fhreagra"
+
+#: templates/confirmation-email-sent.html:3
+msgid "Confirmation email sent"
+msgstr "R-phost dearbhaithe seolta"
+
+#: templates/confirmation-email-sent.html:16
+msgid "A confirmation email has been sent to {email}"
+msgstr "Seoladh r-phost dearbhaithe chuig {email}"
+
+#: templates/confirmation-email-sent.html:25
+msgid "The email will be sent from <em>census.2021@notifications.service.gov.uk</em>"
+msgstr "Seolfar an r-phost ó <em>census.2021@notifications.service.gov.uk</em>"
+
+#: templates/confirmation-email-sent.html:29
+msgid "Didn't receive an email?"
+msgstr "Ní bhfuair tú r-phost?"
+
+#: templates/confirmation-email-sent.html:30
+msgid "It can take a few minutes for the email to arrive. If it doesn't arrive, check your junk mail, or you can <a href='{send_confirmation_email_url}' id='send-another-email'>send another confirmation email</a>."
+msgstr "Glacann sé cúpla bomaite ar an r-phost teacht chugat. Mura dtagann sé, seiceáil do dhramhphost, nó tig leat <a href='{send_confirmation_email_url}' id='send-another-email'>r-phost dearbhaithe eile a sheoladh</a>."
+
+#: templates/confirmation-email.html:12
+msgid "Send a confirmation email"
+msgstr "Seol r-phost deimhnithe"
+
+#: templates/confirmation.html:12
 msgid "Yes, I confirm these are correct"
 msgstr "Tá, dearbhaím go bhfuil siad ceart"
 
-#: templates/confirmation.html:41
+#: templates/confirmation.html:33
 msgid "Submitting"
 msgstr "Ag cur isteach"
 
-#: templates/introduction.html:15
+#: templates/feedback-sent.html:6
+msgid "Feedback sent"
+msgstr "Aiseolas seolta"
+
+#: templates/feedback-sent.html:19
+msgid "Thank you for your feedback"
+msgstr "Go raibh maith agat as d'aiseolas"
+
+#: templates/feedback-sent.html:20
+msgid "Your comments will help us make improvements to our surveys. We are not able to reply to comments, but we appreciate your feedback"
+msgstr "Is cuidiú iad do thuairimí lenár suirbhéanna a fheabhsú. Ní thig linn do thuairimí a fhreagairt, ach is mór againn d'aiseolas"
+
+#: templates/feedback-sent.html:28
+msgid "Done"
+msgstr "Déanta"
+
+#: templates/feedback.html:15
+msgid "Back"
+msgstr "Ar ais"
+
+#: templates/feedback.html:28
+#, python-format
+msgid "There is a problem with your feedback"
+msgid_plural "There are %(num)s problems with your feedback"
+msgstr[0] "Tá fadhb le d'aiseolas"
+msgstr[1] "Tá %(num)s fadhb le d'aiseolas"
+msgstr[2] "Tá %(num)s fhadhb le d'aiseolas"
+msgstr[3] "Tá %(num)s fadhb le d'aiseolas"
+msgstr[4] "Tá %(num)s fadhb le d'aiseolas"
+
+#: templates/feedback.html:41
+msgid "Send feedback"
+msgstr "Cuir aiseolas ar ais"
+
+#: templates/hub.html:40
+msgid "If you can’t answer someone else’s questions"
+msgstr "Mura dtig leat ceisteanna duine éigin eile a fhreagairt"
+
+#: templates/interstitial.html:23 templates/partials/question.html:27
+msgid "If you can’t answer questions for this person"
+msgstr "Mura dtig leat ceisteanna a fhreagairt don duine seo"
+
+#: templates/interstitial.html:32 templates/layouts/_questionnaire.html:27
+msgid "Save and continue"
+msgstr "Sábháil agus lean ar aghaidh"
+
+#: templates/introduction.html:10
+msgid "Introduction"
+msgstr "Réamhrá"
+
+#: templates/introduction.html:17
 #, python-format
 msgid "You are completing this for <span>%(ru_name)s</span> (%(trading_as_name)s)"
 msgstr "Tá tú ag líonadh seo isteach do for <span>%(ru_name)s</span> (%(trading_as_name)s)"
 
-#: templates/introduction.html:19
+#: templates/introduction.html:21
 #, python-format
 msgid "You are completing this for <span>%(ru_name)s</span>"
 msgstr "Tá tú ag líonadh isteach seo do <span>%(ru_name)s</span>"
 
-#: templates/introduction.html:23
+#: templates/introduction.html:25
 #, python-format
 msgid "If the company details or structure have changed contact us on %(telephone_number)s or email %(email_address)s"
 msgstr "Má tá sonraí an chomhlachta nó an struchtúir athraithe déan teagmháil linn ar %(telephone_number)s ar ríomhphost ag %(email_address)s"
 
-#: templates/introduction.html:38
+#: templates/introduction.html:40
 msgid "Your response is legally required"
 msgstr "Tá do fhreagra de dhíth go dlíthiúil"
+
+#: templates/list-action.html:9
+msgid "Cancel and return to the previous page"
+msgstr "Cuir ar ceal agus gabh ar ais chuig an leathanach roimhe"
 
 #: templates/multiple_survey.html:4 templates/multiple_survey.html:7
 msgid "Information"
@@ -301,25 +850,6 @@ msgstr "Ar an drochuair, ní féidir leat ach suirbhé amháin a líonadh isteac
 msgid "Close this window to continue with your current survey"
 msgstr "Druid an fhuinneog le leanstan ar aghaidh le do shuirbhé reatha"
 
-#: templates/question.html:16
-#, python-format
-msgid "This page has an error"
-msgid_plural "This page has %(num)s errors"
-msgstr[0] "Tá earráid ar an leathanach seo"
-msgstr[1] "Tá %(num)s earráid ar an leathanach seo"
-msgstr[2] "Tá %(num)s earráid ar an leathanach seo"
-msgstr[3] "Tá %(num)s earráid ar an leathanach seo"
-msgstr[4] "Tá %(num)s earráid ar an leathanach seo"
-
-#: templates/question.html:22
-msgid "This <strong>must be corrected</strong> to continue"
-msgid_plural "These <strong>must be corrected</strong> to continue"
-msgstr[0] "Caithfear <strong>seo a cheartú</strong>le leanstan ar aghaidh"
-msgstr[1] "Caithfear <strong>seo a cheartú</strong>le leanstan ar aghaidh"
-msgstr[2] "Caithfear <strong>seo a cheartú</strong>le leanstan ar aghaidh"
-msgstr[3] "Caithfear <strong>seo a cheartú</strong>le leanstan ar aghaidh"
-msgstr[4] "Caithfear<strong>seo a cheartú</strong>le leanstan ar aghaidh"
-
 #: templates/signed-out.html:3
 msgid "Signed out"
 msgstr "Sínithe amach"
@@ -332,239 +862,393 @@ msgstr "Sábháladh do fhreagraí don suirbhé. Tá tú sínithe amach anois"
 msgid "Return to your account"
 msgstr "Gabh ar ais chuig do chuntas"
 
-#: templates/summary.html:6
-msgid "Summary"
-msgstr "Achoimre"
-
-#: templates/summary.html:11
-msgid "Check your answers and submit"
-msgstr "Déan seiceáil ar do fhreagraí agus cuir isteach iad"
-
-#: templates/summary.html:18
-msgid "Check your answers before submitting"
-msgstr "Seiceáil do fhreagraí sula gcuireann tú isteach iad"
-
-#: templates/summary.html:27
-msgid "Check your answers before continuing to the next section"
-msgstr "Seiceáil do fhreagraí roimh leanstan ar aghaidh chuig an chéad rannóg eile"
-
-#: templates/summary.html:36
+#: templates/summary.html:28
 msgid "Please review your answers and confirm these are correct"
 msgstr "Déan athbhreithniú ar do fhreagraí le do thoil agus dearbhaigh go bhfuil siad seo ceart"
 
-#: templates/summary.html:65
-msgid "You will have the opportunity to view and print a copy of your answers after submitting this survey"
-msgstr "Beidh deis agat amharc ar do fhreagraí agus cóip díobh a phriontáil i ndiaidh duit an suirbhé seo a chur isteach"
-
-#: templates/thank-you.html:3
-msgid "We've received your answers"
+#: templates/thank-you.html:4
+msgid "We’ve received your answers"
 msgstr "Fuair muid do fhreagraí"
 
-#: templates/thank-you.html:7
-msgid "Thank you for submitting your census"
-msgstr "Go raibh maith agat as d'fhoirm daonáirimh a chur isteach"
-
 #: templates/thank-you.html:9
-msgid "We have received your answers and you do not need to do anything else."
-msgstr "Tá do chuid freagraí faighte againn agus ní gá duit rud ar bith eile a dhéanamh."
+msgid "Submission successful"
+msgstr "D'éirigh le d'aighneacht"
 
-#: templates/view-submission.html:7
-msgid "Submission"
-msgstr "Aighneacht"
+#: templates/thank-you.html:21
+msgid "Your answers were submitted for <span>{ru_name}</span> ({trading_as_name}) on {submitted_date_time}"
+msgstr "Cuireadh do fhreagraí isteach do <span>{ru_name}</span> ({trading_as_name}) ar {submitted_date_time}"
 
-#: templates/view-submission.html:10
-msgid "Submitted answers"
-msgstr "Freagraí curtha isteach"
+#: templates/thank-you.html:26
+msgid "Your answers were submitted for <span>{ru_name}</span> on {submitted_date_time}"
+msgstr "Cuireadh do fhreagraí isteach do <span>{ru_name}</span> ar {submitted_date_time}"
 
-#: templates/view-submission.html:19
-#, python-format
-msgid "Your answers were submitted for <span>%(ru_name)s</span> (%(trading_as_name)s) on %(submitted_time)s"
-msgstr "Cuireadh do fhreagraí isteach do <span>%(ru_name)s</span>(%(trading_as_name)s) ar %(submitted_time)s"
+#: templates/thank-you.html:32
+msgid "Transaction ID: <b>{transaction_id}</b>"
+msgstr "ID Idirbheart: <b>{transaction_id}</b>"
 
-#: templates/view-submission.html:24
-#, python-format
-msgid "Your answers were submitted for <span>%(ru_name)s</span> on %(submitted_time)s"
-msgstr "Cuireadh do fhreagraí isteach do <span>%(ru_name)s</span> ar %(submitted_time)s"
+#: templates/thank-you.html:35
+msgid "Your answers will be processed in the next few weeks."
+msgstr "Próiseálfar do fhreagraí sa chúpla seachtain atá romhainn."
 
-#: templates/view-submission.html:29
-msgid "Transaction ID"
-msgstr "Aitheantas idirbhirt"
+#: templates/thank-you.html:36
+msgid "We may contact you to query your answers via phone or secure message."
+msgstr "D'fhéadfadh muid teagmháil a dhéanamh leat ar an ghuthán nó trí theachtaireacht a chur chugat."
 
-#: templates/view-submission.html:36
-msgid "Print this page"
-msgstr "Priontáil an leathanach seo"
-
-#: templates/errors/403.html:3
-msgid "Authorisation refused"
-msgstr "Údarú diúltaithe"
-
-#: templates/errors/403.html:3 templates/errors/404.html:3
-#: templates/errors/500.html:3
-msgid "Office for National Statistics"
-msgstr "Oifig an Staidrimh Náisiúnta"
-
-#: templates/errors/403.html:6
-msgid "Sorry, there is a problem"
-msgstr "Tá brón orm, tá fadhb ann"
+#: templates/thank-you.html:37
+msgid "For more information on how we use this data."
+msgstr "Tuilleadh eolais ar an bhealach a úsáideann muid na sonraí seo."
 
 #: templates/errors/403.html:7
-msgid "To access this page you need to <a href='#'>enter your unique access code.</a>"
-msgstr "Le rochtain bheith agat ar an leathanach seo caithfidh tú <a href='#'> do chód rochtana uathúil a chur isteach.</a>"
+msgid "You may need to update your browser to a newer version."
+msgstr "D'fhéadfadh sé gur ghá duit leagan níos úire de do bhrabhsálaí a shuiteáil."
 
-#: templates/errors/404.html:3 templates/errors/404.html:13
+#: templates/errors/403.html:8
+msgid "If the problem still occurs, try using a different browser or device."
+msgstr "Má tá an fhadhb ann ar fad, bain triail as brabhsálaí nó gléas eile."
+
+#: templates/errors/403.html:9
+msgid "For further help, please <a href='{url}'>contact us</a>."
+msgstr "Má tá tuilleadh cuidithe de dhíth ort, déan <a href='{url}'>teagmháil linn</a>."
+
+#: templates/errors/404.html:3 templates/errors/404.html:6
 msgid "Page not found"
-msgstr "Níl teacht ar bith ar an leathanach"
+msgstr "Níl teacht ar an leathanach"
 
-#: templates/errors/404.html:14
+#: templates/errors/404.html:7
 msgid "If you entered a web address, check it is correct."
 msgstr "Má chuir tú seoladh idirlín isteach, déan seiceáil go bhfuil sé ceart."
 
-#: templates/errors/404.html:15
+#: templates/errors/404.html:8
 msgid "If you pasted the web address, check you copied the whole address."
 msgstr "Má ghreamaigh tú an seoladh idirlín isteach, déan seiceáil gur chópáil tú an seoladh iomlán isteach."
 
-#: templates/errors/404.html:16
+#: templates/errors/404.html:9
 msgid "If the web address is correct or you selected a link or button, <a href='{url}'>contact us</a> for more help."
-msgstr "Má tá an seoladh idirlín ceart nó má roghnaigh tú nasc nó cnaipe, <a href='{url}'> déan teagmháil linn </a> do thuilleadh cuidithe."
+msgstr "Má tá an seoladh idirlín ceart nó má roghnaigh tú nasc nó cnaipe, <a href='{url}'>déan teagmháil linn</a> do thuilleadh cuidithe."
 
 #: templates/errors/500.html:3
 msgid "An error has occurred"
 msgstr "Tharla earráid"
 
-#: templates/errors/500.html:13
+#: templates/errors/500.html:6
 msgid "Sorry, there is a problem with this service"
 msgstr "Tá brón orm, tá fadhb ann leis an tseirbhís seo"
 
-#: templates/errors/500.html:14
+#: templates/errors/500.html:7
 msgid "Try again later."
 msgstr "Bain triail as arís níos moille."
 
-#: templates/errors/500.html:15
+#: templates/errors/500.html:8
 msgid "If you have started a survey, your answers have been saved."
 msgstr "Má thosaigh tú ar shuirbhé, sábháladh do fhreagraí."
 
-#: templates/errors/500.html:16
+#: templates/errors/500.html:9
 msgid "<a href='{url}'>Contact us</a> if you need to speak to someone about your survey."
-msgstr "<a href='{url}'> Déan teagmháil linn </a> más gá duit labhairt le duine éigin faoi do shuirbhé."
+msgstr "<a href='{url}'>Déan teagmháil linn</a> más gá duit labhairt le duine éigin faoi do shuirbhé."
+
+#: templates/errors/no-cookie.html:3
+msgid "Page is not available"
+msgstr "Níl an leathanach seo ar fáil"
+
+#: templates/errors/no-cookie.html:6
+msgid "Sorry there is a problem"
+msgstr "Tá brón orm, tá fadhb ann"
+
+#: templates/errors/no-cookie.html:7
+msgid "To access this page you need to <a href='{url}'>enter your 16-character access code</a>."
+msgstr "Leis an leathanach seo rochtain, is gá duit <a href='{url}'>do chód rochtana 16 charachtar a iontráil</a>."
+
+#: templates/errors/session-expired.html:3
+msgid "Session timed out"
+msgstr "Deireadh leis an seisiún"
 
 #: templates/errors/session-expired.html:6
-msgid "Session expired"
-msgstr "Tá an seisiún caite"
+msgid "Your session has timed out due to inactivity"
+msgstr "Tá deireadh le do sheisiún mar gheall ar neamhghníomhaíocht"
 
-#: templates/errors/session-expired.html:10
-msgid "Your session has expired"
-msgstr "Tá do sheisiún caite"
+#: templates/errors/session-expired.html:7
+msgid "To help protect your information we have timed you out"
+msgstr "Le cuidiú linn d'fhaisnéis a chosaint, cuireadh deireadh le do sheisiún"
 
-#: templates/errors/session-expired.html:18
-msgid "To help protect your information we have signed you out"
-msgstr "Le do chuid eolais a chosaint bhí muid do do shíniú amach"
+#: templates/errors/session-expired.html:8
+msgid "You will need to <a href='{url}'>enter your 16-character access code</a> again to continue your census."
+msgstr "Is gá duit <a href='{url}'>do chód rochtana 16 charachtar a iontráil</a> arís le leanúint de do dhaonáireamh."
 
-#: templates/errors/session-expired.html:26
-#, python-format
-msgid "We have saved your progress and you will need to <a href=\"%(account_service_link)s\">enter your unique code</a> to access the survey again."
-msgstr "Táimid i ndiaidh do dhul chun cinn a shábháil agus beidh ort <a href=\"%(account_service_link)s\"> do chód uathúil a iontráil </a> chun teacht ar an suirbhé arís."
+#: templates/errors/submission-complete.html:3
+msgid "Submission Complete"
+msgstr "Ceistneoir curtha i gcrích"
 
-#: templates/layouts/_base.html:33
-msgid "We use cookies to improve your experience of census.gov.uk"
-msgstr "Bainimid úsáid as fianáin chun do thaithí ar census.gov.uk a fheabhsú"
+#: templates/errors/submission-complete.html:6
+msgid "This page is no longer available"
+msgstr "Níl an leathanach seo ar fáil níos mó"
 
-#: templates/layouts/_questionnaire.html:12
+#: templates/errors/submission-complete.html:7
+msgid "Your census has been submitted"
+msgstr "Tá do dhaonáireamh curtha isteach agat"
+
+#: templates/errors/submission-failed.html:9
+msgid "You can try to <a href='{url}'>submit your census again</a>"
+msgstr "Is féidir triail a bhaint as <a href='{url}'>do dhaonáireamh a chur isteach arís</a>"
+
+#: templates/errors/submission-failed.html:10
+msgid "If this problem keeps happening, please <a href='{url}'>contact us</a> for help."
+msgstr "Má leantar den fhadhb seo, déan <a href='{url}'>teagmháil linn</a> le cuidiú a iarraidh."
+
+#: templates/individual_response/confirmation-post.html:15
+msgid "A letter has been sent to Individual Resident at {display_address}"
+msgstr "Cuireadh litir chuig Cónaitheoir Aonair ag {display_address}"
+
+#: templates/individual_response/confirmation-post.html:17
+msgid "The letter with an individual access code should arrive soon for them to complete their own census"
+msgstr "Ba chóir go dtiocfadh an litir ina bhfuil cód rochtana duine aonair dóibh gan mhoill le go dtig leo a ndaonáireamh féin a chomhlánú"
+
+#: templates/individual_response/confirmation-text-message.html:15
+msgid "We have sent a text to {mobile_number}"
+msgstr "Tá téacs seolta againn chuig {mobile_number}"
+
+#: templates/individual_response/confirmation-text-message.html:17
+msgid "The text message with an individual access code should arrive soon for them to complete their own census"
+msgstr "Ba chóir go dtiocfadh an téacstheachtaireacht ina bhfuil cód rochtana duine aonair dóibh gan mhoill le go dtig leo a ndaonáireamh féin a chomhlánú"
+
+#: templates/individual_response/confirmation-text-message.html:26
+msgid "The text will be sent from <em>Census2021</em>"
+msgstr "Seolfar an téacs ó <em>Census2021</em>"
+
+#: templates/individual_response/interstitial.html:8
+msgid "If you can't answer questions for others in your household"
+msgstr "Mura dtig leat ceisteanna a fhreagairt do dhaoine eile i do theaghlach"
+
+#: templates/individual_response/interstitial.html:9
+msgid "You can ask the people you live with to answer their own questions by sharing the household access code with them."
+msgstr "Is féidir a iarraidh ar na daoine lena gcónaíonn tú a gceisteanna féin a fhreagairt ach an cód rochtana teaghlaigh a roinnt leo."
+
+#: templates/individual_response/interstitial.html:10
+msgid "If this is not possible, you can request a separate census for them to complete."
+msgstr "Mura bhfuil sé seo indéanta, is féidir daonáireamh ar leith a iarraidh a thig leo a chomhlánú."
+
+#: templates/individual_response/interstitial.html:13
+msgid "Request separate census"
+msgstr "Iarr daonáireamh ar leith"
+
+#: templates/individual_response/question.html:9
+msgid "To request a census in a different format or for further help, please <a href='{contact_us_url}'>contact us</a>"
+msgstr "Le daonáireamh i bhformáid eile nó tuilleadh cuidithe a iarraidh, déan <a href='{contact_us_url}'>teagmháil linn</a>"
+
+#: templates/layouts/_base.html:19
 msgid "Previous"
 msgstr "Roimhe"
 
-#: templates/layouts/_questionnaire.html:27
-msgid "Save and continue"
-msgstr "Sábháil agus lean ar aghaidh"
+#: templates/layouts/_base.html:62
+msgid "Tell us whether you accept cookies"
+msgstr "Abair linn an nglacann tú fianáin"
+
+#: templates/layouts/_base.html:63
+msgid "We use <a href='{cookie_settings_url}'>cookies to collect information</a> about how you use census.gov.uk. We use this information to make the website work as well as possible and improve our services."
+msgstr "Úsáidimid <a href='{cookie_settings_url}'>fianáin le heolas a bhailiú</a> faoin úsáid a bhaineann tú as census.gov.uk. Úsáidimid an t-eolas seo le go n-oibreoidh an suíomh gréasáin chomh maith agus is féidir agus lenár seirbhísí a fheabhsú."
+
+#: templates/layouts/_base.html:64
+msgid "You’ve accepted all cookies. You can <a href='{cookie_settings_url}'>change your cookie preferences</a> at any time."
+msgstr "Ghlac tú le gach fianán. Is féidir <a href='{cookie_settings_url}'>do roghanna fianán a athrú</a> am ar bith."
+
+#: templates/layouts/_base.html:65
+msgid "Accept all cookies"
+msgstr "Glac gach fianán"
+
+#: templates/layouts/_base.html:66
+msgid "Set cookie preferences"
+msgstr "Socraigh roghanna fianán"
+
+#: templates/layouts/_base.html:67
+#: templates/partials/introduction/preview.html:30
+#: templates/partials/summary/collapsible-summary.html:14
+msgid "Hide"
+msgstr "Cuir i bhfolach"
+
+#: templates/layouts/_base.html:115
+msgid "Skip to main content"
+msgstr "Gabh go díreach chuig an phríomhábhar"
 
 #: templates/layouts/_questionnaire.html:38
-msgid "Can't complete this question?"
-msgstr "Nach féidir leat an cheist seo a fhreagairt?"
-
-#: templates/layouts/_questionnaire.html:39
 msgid "Choose another section and return to this later"
 msgstr "Roghnaigh mír eile agus tar ar ais go dtí an ceann seo níos moille"
-
-#: templates/layouts/configs/_feedback.html:3
-msgid "Give us feedback and help us improve this service"
-msgstr ""
-
-#: templates/layouts/configs/_feedback.html:12
-msgid "Tell us what you think of this service by emailing"
-msgstr ""
-
-#: templates/layouts/configs/_feedback.html:13
-msgid "If you need help with your census, get in touch with our contact centre."
-msgstr ""
-
-#: templates/layouts/configs/_feedback.html:14
-msgid "Census 2021 feedback: "
-msgstr ""
-
-#: templates/layouts/configs/_feedback.html:15
-msgid "This email is for feedback on the census rehearsal, which will help us to improve Census 2021.\n"
-"If you need help with your census, visit https://www.census.gov.uk/contact-us."
-msgstr ""
-
-#: templates/layouts/configs/_footer.html:34
-msgid "Contact us"
-msgstr "Déan teagmháil linn"
-
-#: templates/layouts/configs/_footer.html:39
-msgid "Help"
-msgstr "Cuidiú"
-
-#: templates/layouts/configs/_footer.html:48
-msgid "Cookies"
-msgstr "Fianáin"
-
-#: templates/layouts/configs/_footer.html:52 templates/static/privacy.html:9
-msgid "Privacy and data protection"
-msgstr "Príobháideacht agus cosaint sonraí"
-
-#: templates/layouts/configs/_footer.html:57
-msgid "Accessibility"
-msgstr "Rochtain"
 
 #: templates/layouts/configs/_save-sign-out-button.html:5
 msgid "Save and sign out"
 msgstr "Sábháil agus sínigh amach"
 
-#: templates/layouts/configs/_save-sign-out-button.html:18
-msgid "Sign out"
-msgstr "Sínigh amach"
-
-#: templates/layouts/configs/_save-sign-out-button.html:32
+#: templates/layouts/configs/_save-sign-out-button.html:7
 msgid "Save and complete later"
 msgstr "Sábháil agus críochnaigh níos moille"
 
-#: templates/partials/answer-guidance.html:13
-#: templates/partials/question-definition.html:14
+#: templates/layouts/configs/_save-sign-out-button.html:25
+msgid "Exit"
+msgstr "Scoir"
+
+#: templates/macros/helpers.html:29
+msgid "Interviewer note:"
+msgstr "Nóta agallóra:"
+
+#: templates/partials/answer-guidance.html:19
+#: templates/partials/definition.html:19
+#: templates/partials/individual-response-guidance.html:14
 msgid "Hide this"
 msgstr "Cuir é seo i bhfolach"
 
-#: templates/partials/question.html:38
+#: templates/partials/email-form.html:25
+msgid "Email address"
+msgstr "Seoladh ríomhphoist"
+
+#: templates/partials/email-form.html:26
+msgid "This will not be stored and only used once to send your confirmation"
+msgstr "Ní stórálfar é seo agus ní úsáidfear ach uair amháin é le do dhearbhú a sheoladh"
+
+#: templates/partials/email-form.html:39
+msgid "Send confirmation"
+msgstr "Seol dearbhú"
+
+#: templates/partials/feedback-call-to-action.html:6
+msgid "What do you think about this service?"
+msgstr "Cad é do bharúil den tseirbhís seo?"
+
+#: templates/partials/feedback-call-to-action.html:7
+msgid "Your comments will help us make improvements"
+msgstr "Is cuidiú iad do thuairimí le go dtig linn feabhsúcháin a dhéanamh"
+
+#: templates/partials/feedback-call-to-action.html:9
+msgid "Give feedback"
+msgstr "Tabhair aiseolas"
+
+#: templates/partials/individual-response-guidance.html:25
+msgid "You can <em>share your household access code</em> with the people you live with so they can complete their own sections."
+msgstr "Tig leat <em>do chód rochtana teaghlaigh a roinnt</em> leis na daoine a gcónaíonn tú leo sa dóigh go dtig leo a míreanna féin a chomhlánú."
+
+#: templates/partials/individual-response-guidance.html:26
+msgid "If this is not possible, there are <a href={url}>other ways each person can complete their own census.</a>"
+msgstr "Mura féidir é seo tá <a href={url}>dóigheanna eile ann a dtig le gach duine a ndaonáireamh féin a chomhlánú.</a>"
+
+#: templates/partials/last_viewed_question_guidance.html:7
+msgid "This is the last viewed question in this section"
+msgstr "Is í seo an cheist bhreathnaithe dheireanach sa mhír seo"
+
+#: templates/partials/last_viewed_question_guidance.html:10
+msgid "You can also <a id='section-start-link' href='{url}'>go back to the start of the section</a>"
+msgstr "Is féidir fosta <a id='section-start-link' href='{url}'>dul ar ais chuig tús na míre</a>"
+
+#: templates/partials/question.html:62
 msgid "Selecting this will clear your answer"
 msgstr "Má roghnaíonn tú seo scriosfaidh sé seo do fhreagra"
 
-#: templates/partials/question.html:39
+#: templates/partials/question.html:63
 msgid "cleared"
 msgstr "scriosta"
 
-#: templates/partials/question.html:42
+#: templates/partials/question.html:66
 msgid "Selecting this will deselect any selected options"
 msgstr "Má roghnaíonn tú seo díroghnóidh tú rogha ar bith roghnaithe"
 
-#: templates/partials/question.html:43 templates/partials/question.html:51
+#: templates/partials/question.html:67 templates/partials/question.html:75
 msgid "deselected"
 msgstr "díroghnaithe"
 
-#: templates/partials/question.html:47
+#: templates/partials/question.html:71
 msgid "Or"
 msgstr "Nó"
 
-#: templates/partials/answers/checkbox.html:7
+#: templates/partials/answers/address.html:10
+msgid "Address line 1"
+msgstr "Líne an tseolta 1"
+
+#: templates/partials/answers/address.html:15
+msgid "Address line 2"
+msgstr "Líne an tseolta 2"
+
+#: templates/partials/answers/address.html:19
+msgid "Town or city"
+msgstr "Baile nó cathair"
+
+#: templates/partials/answers/address.html:23
+msgid "Postcode"
+msgstr "Cód Poist"
+
+#: templates/partials/answers/address.html:29
+msgid "Search for an address"
+msgstr "Cuardaigh seoladh"
+
+#: templates/partials/answers/address.html:30
+msgid "Manually enter address"
+msgstr "Iontráil seoladh de láimh"
+
+#: templates/partials/answers/address.html:36
+msgid "Enter address or postcode and select from results"
+msgstr "Iontráil seoladh nó postchód agus roghnaigh ó na torthaí"
+
+#: templates/partials/answers/address.html:42
+msgid "Use up and down keys to navigate suggestions once you’ve typed more than two characters. Use the enter key to select a suggestion. Touch device users, explore by touch or with swipe gestures."
+msgstr "Úsáid eochracha suas agus anuas le breathnú ar mholtaí i ndiaidh níos mó ná dhá charachtar a chlóscríobh. Úsáid an eochair iontrála le moladh a roghnú. Tig le húsáideoirí gléas tadhaill fiosrú le tadhall nó le svaidhpeáil."
+
+#: templates/partials/answers/address.html:43
+msgid "You have selected"
+msgstr "Roghnaigh tú"
+
+#: templates/partials/answers/address.html:44
+msgid "Enter 3 or more characters for suggestions."
+msgstr "Iontráil 3 charachtar nó níos mó faoi choinne moltaí."
+
+#: templates/partials/answers/address.html:45
+msgid "There is one suggestion available."
+msgstr "Tá moladh amháin ar fáil."
+
+#: templates/partials/answers/address.html:46
+msgid "There are {n} suggestions available."
+msgstr "Tá {n} moladh ar fáil."
+
+#: templates/partials/answers/address.html:47
+msgid "Results have been limited to 10 suggestions. Type more characters to improve your search"
+msgstr "Tá torthaí teoranta go dtí 10 moladh. Clóscríobh níos mó carachtar le do chuardach a fheabhsú"
+
+#: templates/partials/answers/address.html:48
+msgid "There are {n} for {x}"
+msgstr "Tá {n} faoi choinne {x} ann"
+
+#: templates/partials/answers/address.html:49
+msgid "{n} addresses"
+msgstr "{n} seoladh"
+
+#: templates/partials/answers/address.html:50
+msgid "Enter more of the address to improve results"
+msgstr "Iontráil níos mó den seoladh le torthaí a fheabhsú"
+
+#: templates/partials/answers/address.html:51
+msgid "Select an address"
+msgstr "Roghnaigh seoladh"
+
+#: templates/partials/answers/address.html:52
+msgid "No results found. Try entering a different part of the address"
+msgstr "Ní bhfuarthas torthaí. Triail cuid eile den seoladh a iontráil"
+
+#: templates/partials/answers/address.html:53
+msgid "{n} results found. Enter more of the address to improve results"
+msgstr "{n} toradh faighte. Iontráil níos mó den seoladh le torthaí a fheabhsú"
+
+#: templates/partials/answers/address.html:54
+msgid "Enter more of the address to get results"
+msgstr "Iontráil níos mó den seoladh le torthaí a fháil"
+
+#: templates/partials/answers/address.html:58
+msgid "Select or manually enter an address"
+msgstr "Roghnaigh nó iontráil seoladh de láimh"
+
+#: templates/partials/answers/address.html:59
+msgid "Sorry, there was a problem loading addresses"
+msgstr "Ár leithscéal, bhí fadhb ann le seoltaí a lódáil"
+
+#: templates/partials/answers/address.html:60
+msgid "Enter address manually"
+msgstr "Iontráil seoladh de láimh"
+
+#: templates/partials/answers/checkbox.html:13
 msgid "Select all that apply"
-msgstr "Roghnaigh na cinn uilig lena mbaineann siad"
+msgstr "Roghnaigh na cinn uilig atá bainteach"
 
 #: templates/partials/answers/date.html:23
 msgid "Day"
@@ -578,31 +1262,60 @@ msgstr "Mí"
 msgid "Year"
 msgstr "Bliain"
 
-#: templates/partials/answers/textarea.html:14
+#: templates/partials/answers/radio.html:14
+msgid "Clear selection"
+msgstr "Glan an rogha"
+
+#: templates/partials/answers/textarea.html:16
+#: templates/partials/answers/textfield.html:28
 msgid "You have {x} character remaining"
 msgstr "Tá {x} carachtar fágtha agat"
 
-#: templates/partials/answers/textarea.html:15
+#: templates/partials/answers/textarea.html:17
+#: templates/partials/answers/textfield.html:29
 msgid "You have {x} characters remaining"
 msgstr "Tá {x} carachtar fágtha agat"
+
+#: templates/partials/answers/textfield.html:26
+msgid "{x} character too many"
+msgstr "{x} carachtar de bharraíocht"
+
+#: templates/partials/answers/textfield.html:27
+msgid "{x} characters too many"
+msgstr "{x} carachtar de bharraíocht"
+
+#: templates/partials/answers/textfield.html:35
+msgid "Use up and down keys to navigate suggestions once you've typed more than two characters. Use the enter key to select a suggestion. Touch device users, explore by touch or with swipe gestures."
+msgstr "Úsáid eochracha suas agus anuas le breathnú ar mholtaí i ndiaidh níos mó ná dhá charachtar a chlóscríobh. Úsáid an eochair iontrála le moladh a roghnú. Tig le húsáideoirí gléas tadhaill fiosrú le tadhall nó le svaidhpeáil."
+
+#: templates/partials/answers/textfield.html:36
+msgid "Continue entering to improve suggestions"
+msgstr "Lean den iontráil le moltaí a fheabhsú"
+
+#: templates/partials/answers/textfield.html:37
+msgid "Suggestions"
+msgstr "Moltaí"
+
+#: templates/partials/answers/textfield.html:38
+msgid "No results found"
+msgstr "Ní bhfuarthas torthaí"
+
+#: templates/partials/answers/textfield.html:39
+msgid "Continue entering to get suggestions"
+msgstr "Lean den iontráil le moltaí a fháil"
 
 #: templates/partials/introduction/preview.html:29
 #: templates/partials/summary/collapsible-summary.html:13
 msgid "Show"
 msgstr "Taispeáin"
 
-#: templates/partials/introduction/preview.html:30
-#: templates/partials/summary/collapsible-summary.html:14
-msgid "Hide"
-msgstr "Cuir i bhfolach"
-
 #: templates/partials/introduction/preview.html:48
-#: templates/partials/summary/collapsible-summary.html:41
+#: templates/partials/summary/collapsible-summary.html:57
 msgid "Show all"
 msgstr "Taispeáin iad go léir"
 
 #: templates/partials/introduction/preview.html:49
-#: templates/partials/summary/collapsible-summary.html:42
+#: templates/partials/summary/collapsible-summary.html:58
 msgid "Hide all"
 msgstr "Cuir iad go léir i bhfolach"
 
@@ -610,19 +1323,19 @@ msgstr "Cuir iad go léir i bhfolach"
 msgid "Start survey"
 msgstr "Tosaigh an suirbhé"
 
-#: templates/partials/summary/collapsible-summary.html:27
-#: templates/partials/summary/summary.html:9
+#: templates/partials/summary/collapsible-summary.html:35
+#: templates/partials/summary/summary.html:18
 msgid "No answer provided"
 msgstr "Níor tugadh freagra ar bith"
 
-#: templates/partials/summary/collapsible-summary.html:27
+#: templates/partials/summary/collapsible-summary.html:36
 #: templates/partials/summary/list-summary.html:8
-#: templates/partials/summary/summary.html:9
+#: templates/partials/summary/summary.html:19
 msgid "Change"
 msgstr "Athraigh"
 
-#: templates/partials/summary/collapsible-summary.html:27
-#: templates/partials/summary/summary.html:9
+#: templates/partials/summary/collapsible-summary.html:37
+#: templates/partials/summary/summary.html:20
 msgid "Change your answer for:"
 msgstr "Athraigh do fhreagra do:"
 
@@ -637,504 +1350,4 @@ msgstr "Bain"
 #: templates/partials/summary/list-summary.html:11
 msgid "Remove {item_name}"
 msgstr "Bain {item_name}"
-
-#: templates/static/accessibility.html:19
-msgid "Accessibility statement"
-msgstr ""
-
-#: templates/static/accessibility.html:21
-msgid "This census is run by the Office for National Statistics. We want as many people as possible to be able to do the census online. For example, that means you should be able to:"
-msgstr ""
-
-#: templates/static/accessibility.html:24
-msgid "change colours, contrast levels and fonts"
-msgstr ""
-
-#: templates/static/accessibility.html:25
-#, python-format
-msgid "zoom in up to 300%% without the text spilling off the screen"
-msgstr ""
-
-#: templates/static/accessibility.html:26
-msgid "navigate most of the questionnaire using just a keyboard"
-msgstr ""
-
-#: templates/static/accessibility.html:27
-msgid "navigate most of the questionnaire using speech recognition software"
-msgstr ""
-
-#: templates/static/accessibility.html:28
-msgid "listen to most of the questionnaire using a screen reader (including the most recent versions of JAWS, NVDA and VoiceOver)"
-msgstr ""
-
-#: templates/static/accessibility.html:31
-msgid "We’ve used simple language as much as possible."
-msgstr ""
-
-#: templates/static/accessibility.html:33
-msgid "<a href='{url}'>AbilityNet</a> has advice on making your device easier to use if you have a disability."
-msgstr ""
-
-#: templates/static/accessibility.html:35
-msgid "How accessible is this questionnaire?"
-msgstr ""
-
-#: templates/static/accessibility.html:37
-msgid "We know that the following parts of this questionnaire are not fully accessible:"
-msgstr ""
-
-#: templates/static/accessibility.html:40
-msgid "you cannot modify the line height or spacing of text"
-msgstr ""
-
-#: templates/static/accessibility.html:41
-msgid "the online system for getting a new census code has not been fully tested so parts of it may not be accessible to all users"
-msgstr ""
-
-#: templates/static/accessibility.html:42
-msgid "the Web chat tool may not be fully accessible"
-msgstr ""
-
-#: templates/static/accessibility.html:43
-msgid "some page titles may not accurately reflect the content on the page for audio users"
-msgstr ""
-
-#: templates/static/accessibility.html:46
-msgid "What to do if you need guidance"
-msgstr ""
-
-#: templates/static/accessibility.html:48
-msgid "Our <a href='{url}'>guidance leaflets about the census</a> are available:"
-msgstr ""
-
-#: templates/static/accessibility.html:51
-msgid "in Braille"
-msgstr ""
-
-#: templates/static/accessibility.html:52
-msgid "in British Sign Language (BSL)"
-msgstr ""
-
-#: templates/static/accessibility.html:53
-msgid "as an easy read version (which uses pictures to explain the census)"
-msgstr ""
-
-#: templates/static/accessibility.html:54
-msgid "as a Welsh audio"
-msgstr ""
-
-#: templates/static/accessibility.html:55
-msgid "as large print in English or large print in Welsh"
-msgstr ""
-
-#: templates/static/accessibility.html:58
-msgid "Reporting accessibility problems"
-msgstr ""
-
-#: templates/static/accessibility.html:60
-msgid "We’re always looking to improve the accessibility of this service. If you find any problems that are not listed on this page or think we’re not meeting accessibility requirements, you can <a href='{url}'>contact us</a>."
-msgstr ""
-
-#: templates/static/accessibility.html:62
-msgid "Enforcement procedure"
-msgstr ""
-
-#: templates/static/accessibility.html:64
-msgid "The Equality and Human Rights Commission (EHRC) is responsible for enforcing the Public Sector Bodies (Website and Mobile Applications) (No. 2) Accessibility Regulations 2018 (the ‘accessibility regulations’). If you’re not happy with how we respond to your complaint, contact the:"
-msgstr ""
-
-#: templates/static/accessibility.html:67
-msgid "<a href='{url}'>Equality Advisory and Support Service (EASS)</a> if you live in England or Wales"
-msgstr ""
-
-#: templates/static/accessibility.html:68
-msgid "<a href='{url}'>Equalities Commission for Northern Ireland (ECNI)</a> if you live in Northern Ireland"
-msgstr ""
-
-#: templates/static/accessibility.html:71
-msgid "Technical information about this questionnaire’s accessibility"
-msgstr ""
-
-#: templates/static/accessibility.html:73
-msgid "The Office for National Statistics is committed to making its website accessible, in accordance with the Public Sector Bodies (Website and Mobile Applications) (No. 2) Accessibility Regulations 2018."
-msgstr ""
-
-#: templates/static/accessibility.html:75
-msgid "This service is partially compliant with the <a href='{url}'>Web Content Accessibility Guidelines version 2.1</a> AA standard, due to the non-compliances listed."
-msgstr ""
-
-#: templates/static/accessibility.html:77
-msgid "Non-accessible content"
-msgstr ""
-
-#: templates/static/accessibility.html:79
-msgid "The content listed is non-accessible for the following reasons. We are planning to fix the following issues for Census 2021."
-msgstr ""
-
-#: templates/static/accessibility.html:81
-msgid "Non-compliance with the accessibility regulations"
-msgstr ""
-
-#: templates/static/accessibility.html:83
-msgid "Non-descriptive form elements. On the ‘Check your answers’ summary page there is an option to “change” items, but the link does not describe where it goes to. Fails on WCAG 2.1 A number 1.3.1."
-msgstr ""
-
-#: templates/static/accessibility.html:85
-msgid "Error messages are too generic. If the text in a field is incorrect or in the wrong format, the answer validation page says the answer is incorrect without explaining what you need to do. Fails on WCAG 2.1 A number 3.3.1."
-msgstr ""
-
-#: templates/static/accessibility.html:87
-msgid "Form label issue. On the ‘What is your name?’ page, middle name is optional but this is not clear to the user. Fails on WCAG 2.1 A number 3.3.2."
-msgstr ""
-
-#: templates/static/accessibility.html:89
-msgid "Form label issue. When selecting the appropriate relationship, it is possible to ‘Save and continue’ without selecting an option. Fails on WCAG 2.1 A number 2.4.6."
-msgstr ""
-
-#: templates/static/accessibility.html:91
-msgid "On the ‘Is this address correct?’ page, the title may not accurately reflect the content on the page for audio users. The ‘Submit survey’ page does not have a page title. Fails on WCAG 2.1 A number 2.4.2."
-msgstr ""
-
-#: templates/static/accessibility.html:93
-msgid "Timeout issue. Users are not informed of a time limit and service times out without warning. During the validation process there is no return link on the session timeout page. Fails on WCAG 2.1 A number 2.2.1 and AAA number 2.2.6."
-msgstr ""
-
-#: templates/static/accessibility.html:95
-msgid "The ‘Hide this’ button text on accordions such as ‘What does “usually live” mean?’ is non-descriptive for JAWS users as the text above it is read back to users. Fails on WCAG 2.1 AA number 2.4.6."
-msgstr ""
-
-#: templates/static/accessibility.html:97
-msgid "Screen readers may not let users know when an accordion is expanded or collapsed. Fails on WCAG 2.1 A number 2.4.4."
-msgstr ""
-
-#: templates/static/accessibility.html:99
-msgid "Non-descriptive headings. On the relationships page, the heading does not accurately describe the content for screen readers. Fails on WCAG 2.1 A number 2.4.6."
-msgstr ""
-
-#: templates/static/accessibility.html:101
-msgid "Some links are not descriptive enough for screen reader users. Fails on WCAG 2.1 AAA number 2.4.9."
-msgstr ""
-
-#: templates/static/accessibility.html:103
-msgid "Some headings do not follow a logical hierarchical structure. Fails on WCAG AAA 2.1 number 2.4.10."
-msgstr ""
-
-#: templates/static/accessibility.html:105
-msgid "Some text is highlighted, such as addresses and names that a user has confirmed. Highlighting is not accessible for some users. This does not conform to Government Digital Service (GDS) guidelines."
-msgstr ""
-
-#: templates/static/accessibility.html:107
-msgid "Some radio inputs on the relationships page do not conform to GDS guidelines. When selected, three different elements on the page are updated."
-msgstr ""
-
-#: templates/static/accessibility.html:109
-msgid "On ‘Who lives here?’ there is a ‘Previous’ link on the page that does not conform with GDS guidelines. The text used should read as ‘Back’."
-msgstr ""
-
-#: templates/static/accessibility.html:111
-msgid "Error messages do not result in a change to the page title to reflect that an error has been made. This does not conform to GDS guidelines."
-msgstr ""
-
-#: templates/static/accessibility.html:113
-msgid "How we tested this questionnaire"
-msgstr ""
-
-#: templates/static/accessibility.html:115
-msgid "Over the last few years we have tested the full questionnaire, including:"
-msgstr ""
-
-#: templates/static/accessibility.html:118
-msgid "<a href='{url}'>Digital Accessibility Centre (DAC)</a> carrying out a professional, technical audit"
-msgstr ""
-
-#: templates/static/accessibility.html:119
-msgid "user testing with the public on different devices, different locations, in their homes with various assistive technologies including free and paid versions"
-msgstr ""
-
-#: templates/static/accessibility.html:120
-msgid "testing with charities, such as Scope and RNIB in their labs"
-msgstr ""
-
-#: templates/static/accessibility.html:121
-msgid "using job centres and libraries for pop-up testing"
-msgstr ""
-
-#: templates/static/accessibility.html:122
-msgid "covering a wide range of ages, additional needs and disabilities"
-msgstr ""
-
-#: templates/static/accessibility.html:123
-msgid "making sure the offline journey and non-digital products were considered in the end-to-end journey"
-msgstr ""
-
-#: templates/static/accessibility.html:124
-msgid "changing designs based on feedback from user testing, such as letter structure and the summary of sections and progress through questionnaire"
-msgstr ""
-
-#: templates/static/accessibility.html:127
-msgid "Digital Accessibility Centre testing"
-msgstr ""
-
-#: templates/static/accessibility.html:129
-msgid "Parts of this questionnaire were last tested on 3 September 2019 by the Digital Accessibility Centre (DAC)."
-msgstr ""
-
-#: templates/static/accessibility.html:132
-msgid "<a href='{url}' download>DAC Report - September 2019</a>"
-msgstr ""
-
-#: templates/static/accessibility.html:134
-msgid "You can read the last full accessibility test report from 28 June 2019."
-msgstr ""
-
-#: templates/static/accessibility.html:136
-msgid "<a href='{url}' download>DAC Report - June 2019</a>"
-msgstr ""
-
-#: templates/static/accessibility.html:138
-msgid "What we’re doing to improve accessibility"
-msgstr ""
-
-#: templates/static/accessibility.html:140
-msgid "We are continuing to work with various charities and local deaf communities to understand their needs for the census."
-msgstr ""
-
-#: templates/static/accessibility.html:142
-msgid "We are looking at designs to see if it is possible to have British Sign Language on every page. This is challenging as we have been unable to find another service that does this, but we continue to investigate."
-msgstr ""
-
-#: templates/static/accessibility.html:144
-msgid "We will act on feedback from the 2019 Rehearsal in October."
-msgstr ""
-
-#: templates/static/accessibility.html:146
-msgid "This statement was prepared on 17 September. It was last updated on 17 September."
-msgstr ""
-
-#: templates/static/privacy.html:4
-msgid "ONS Business Surveys"
-msgstr "Suirbhéanna Gnó ONS"
-
-#: templates/static/privacy.html:10
-msgid "The information you provide when you fill in your census rehearsal questionnaire is protected by law."
-msgstr "Beidh an t-eolas a thabharfaidh tú dúinn nuair a líonfaidh tú an réamhchleachtadh de cheistiúchán daonáirimh isteach á chosaint ag an dlí."
-
-#: templates/static/privacy.html:11
-msgid "Here we detail why we need your information. We also describe all the steps that we take to make sure your information and your privacy are safe."
-msgstr "Cuireann muid in iúl anseo an fáth a bhfuil d'eolas de dhíth orainn. Déanann muid cur síos ar na céimeanna uilig a ghlacann muid le cinntiú go mbeidh d'eolas agus do phríobháideacht slán sábháilte."
-
-#: templates/static/privacy.html:14
-msgid "How and why we use your information"
-msgstr "Seo an dóigh agus na fáthanna a n-úsáideann muid d'eolas"
-
-#: templates/static/privacy.html:16
-msgid "We collect information from your questionnaire under our statutory objective to promote and safeguard the production of official statistics that serve the public good. This means that any personal data we collect will only ever be used to produce statistics or undertake statistical research. People will not be identified within those statistics or research."
-msgstr "Bailíonn muid eolas ó do cheistiúchán de réir ár gcuspóra reachtúil le staidreamh oifigiúil ar mhaithe leis an ghnáthphobal a dhéanamh go forásach agus go slán sábháilte. Ciallaíonn sé seo nach n-úsáidfear cibé eolas a bhaileoidh muid ach le staidreamh nó le taighde staidrimh a dhéanamh. Ní aithneofar daoine taobh istigh den staidreamh nó den taighde sin."
-
-#: templates/static/privacy.html:18
-msgid "Every 10 years, the census gathers vital information that helps the government and local authorities plan services like health services, roads and libraries."
-msgstr "Gach 10 mbliana, bailíonn an daonáireamh eolas barrthábhachtach a chuidíonn leis an rialtas agus leis na húdaráis áitiúla seirbhísí amhail seirbhísí sláinte, na bóithre agus na leabharlanna, a phleanáil."
-
-#: templates/static/privacy.html:20
-msgid "By running a rehearsal for Census 2021, we can test our processes, systems and services and make sure everything goes smoothly for the real thing. The personal data you provide on your questionnaire will also be used to undertake research and produce statistics that serve the public good, both by the Office for National Statistics (ONS) and accredited researchers from other organisations."
-msgstr "Trí chleachtadh a reáchtáil do Dhaonáireamh 2021, is féidir linn ár bpróisis, ár gcórais agus ár seirbhísí a thástáil agus a chinntiú go dtéann gach rud go réidh don rud fíor. Úsáidfear na sonraí pearsanta a sholáthróidh tú ar do cheistneoir freisin chun taighde a dhéanamh agus staitisticí a chumadh a fhreastalóidh ar leas an phobail, ag an Oifig Náisiúnta Staidrimh (ONS) agus ag taighdeoirí creidiúnaithe ó eagraíochtaí eile."
-
-#: templates/static/privacy.html:22
-msgid "We may occasionally record information about a property or an individual, in the interests of safeguarding the wellbeing of both those being interviewed and interviewers, as well as to assist people in the completion of their questionnaires. We’ll hold the minimum amount of personal data needed to meet these purposes."
-msgstr "Ó am go ham, d'fhéadfadh muid eolas a chlárú faoi réadmhaoin no faoi dhuine, ar mhaithe le leas na ndaoine sin a chuirfear faoi agallamh agus na n-agallaithe, chomh maith le cuidiú le daoine a gceistiúcháin a líonadh isteach. Coinneoidh muid an t-íosmhéid sonraí pearsanta a bheidh de dhíth leis na cuspóirí sin a chomhlíonadh."
-
-#: templates/static/privacy.html:24
-msgid "For online completion, we’ll collect information about how people fill in their questionnaires online to provide us with knowledge of how to improve our online services."
-msgstr "Don cheistiúchán a líonfar ar líne, baileoidh muid eolas ar an dóigh a líonfaidh daoine a gceistiúcháin ar líne le eolas a thabhairt dúinn ar an bhealach lenár seirbhísí ar líne a fheabhsú."
-
-#: templates/static/privacy.html:26
-msgid "If you provide feedback by email we will ensure your email address is deleted promptly after the feedback has been received. We will never share your details with anyone else. The feedback you give us will be used for research purposes only."
-msgstr ""
-
-#: templates/static/privacy.html:29
-msgid "Who can access the information?"
-msgstr "Cé ar féidir leo rochtain bheith acu ar an eolas?"
-
-#: templates/static/privacy.html:31
-msgid "During the rehearsal we’ll employ third-party providers to assist us with parts of the operation. These third parties work under our instruction."
-msgstr "I rith an réamhchleachtaidh, fostóidh muid soláthraithe tríú páirtí chun cuidiú linn le cuid den oibríocht. Beidh na tríú páirtithe ag obair faoinár dtreoir."
-
-#: templates/static/privacy.html:32
-msgid "We treat the information we hold with respect, keeping it secure and confidential. Data may be made available to approved researchers where there is a clear public value and it’s safe and lawful to do so. More information on <a href='{policies_url}'>how we allow access to data for research</a> is available. We also publish a full list of all the <a href='{researchers_url}'>approved researchers</a> who we’ve granted access to."
-msgstr "Caithfidh muid leis an eolas atá againn le meas, ag coinneáil slán agus rúnda í. D'fhéadfaí sonraí a chur ar fáil do thaighdeoirí faofa áit a bhfuil luach poiblí soiléir agus go bhfuil sé sábháilte agus dleathach é sin a dhéanamh. Tá tuilleadh eolais ar fáil ar <a href='{policies_url}'>ar an bhealach a cheadaíonn muid rochtain ar shonraí taighde</a>. Foilsíonn muid liosta iomlán freisin de na taighdeoirí faofa <a href='{researchers_url}'> </a> a bhfuil rochtain againn orthu."
-
-#: templates/static/privacy.html:35
-msgid "How long are personal data kept?"
-msgstr "Cá fhad a choinneofar na sonraí pearsanta?"
-
-#: templates/static/privacy.html:37
-msgid "Data protection law requires that personal data are kept for no longer than is needed to fulfil the purposes for which they were originally collected."
-msgstr "Tá dualgas faoin dlí um chosaint sonraí nach gcoinneofar sonraí pearsanta gan níos faide ná an tréimhse a bheidh de dhíth leis na cuspóirí dar bailíodh ar dtús iad a chomhlíonadh."
-
-#: templates/static/privacy.html:39
-msgid "The law allows that information held for statistical purposes only, such as information from your questionnaire, may be kept for longer periods. We’ll only continue to hold personal data where they are still used to produce statistics. Data used by approved researchers will be held within our <a href='{url}'>Secure Research Service</a>. Any personal data that we do not need, such as names and addresses, will be removed from the data at the earliest opportunity. The data will undergo regular reviews and will be deleted when they are no longer required."
-msgstr "Ceadaíonn an dlí go bhféadfar eolas a choinnítear chun críocha staitistiúla amháin, amhail eolas ó do cheistneoir, a choinneáil ar feadh tréimhsí níos faide. Ní leanfaidh muid orainn ag coimeád sonraí pearsanta ach amháin nuair a úsáidtear iad chun staitisticí a tháirgeadh. Tionólfar sonraí a úsáideann taighdeoirí faofa laistigh dár <a href='{url}'> Seirbhís Taighde Slán </a>. Bainfear aon sonraí pearsanta nach gá dúinn, amhail ainmneacha agus seoltaí, as na sonraí a luaithe is féidir. Déanfar athbhreithnithe rialta ar na sonraí agus scriosfar iad nuair nach mbeidh gá leo a thuilleadh."
-
-#: templates/static/privacy.html:41
-msgid "Safeguarding data, such as information about a property or an individual, will be held for the duration of the rehearsal. Most of the information will be deleted at the end of the rehearsal. In some instances, data will be held for longer periods, where keeping them continues to serve safeguarding purposes."
-msgstr "Coinneofar sonraí sábháilteachta, amhail eolas faoi réadmhaoin nó faoi dhuine éigin, ar feadh fad an réamhchleachtaidh. Scriosfar an chuid is mó den eolas ag deireadh an réamhchleachtaidh. I roinnt cásanna, coinneofar sonraí ar feadh tréimhsí níos faide, más féidir linn iad a úsáid do chuspóirí sábháilteachta agus sinne a gcoinneáil."
-
-#: templates/static/privacy.html:43
-msgid "Metrics containing information about how people fill in their questionnaires will be held in an identifiable form only until the necessary statistical matching has taken place. After this point the data will be de-identified and used for the purposes of improving our services."
-msgstr "Coinneofar meadarachtaí ina bhfuil eolas ar an dóigh a líonann daoine a gceistiúcháin isteach i bhfoirm inaitheanta go dtí go ndéanfar an mheaitseáil staitisticiúil riachtanach. Ina dhiaidh seo, dí-aithneofar na sonraí agus úsáidfear iad lenár seirbhísí a fheabhsú."
-
-#: templates/static/privacy.html:46
-msgid "How the law protects your information"
-msgstr "An dóigh a gcosnaíonn an dlí d'eolas"
-
-#: templates/static/privacy.html:48
-msgid "The <a href='{data_protection_url}'>General Data Protection Regulation</a> and the <a href='{data_protection_act_url}'>Data Protection Act 2018</a> determine how, when and why any organisation can process your personal data. Personal data is any information that can identify a living individual. These laws exist to make sure your data are managed safely and used responsibly. They also give you certain rights about your data and create a responsibility on the ONS, as a user of personal data, to provide you with certain information."
-msgstr "Socraíonn an <a href='{data_protection_url}'> an Rialachán Ginearálta um Chosaint Sonraí </a> agus an <a href='{data_protection_act_url}'> an tAcht um Chosaint Sonraí 2018 </a> cad é mar, cén uair agus cén fáth ar féidir le heagraíocht ar bith do shonraí pearsanta a phróiseáil. Is éard is sonraí pearsanta ann aon eolas a fhéadann duine beo a aithint. Tá na dlíthe seo ann lena chinntiú go ndéantar do shonraí a bhainistiú go sábháilte agus a úsáid go freagrach. Tugann siad cearta áirithe duit freisin maidir le do shonraí agus cruthaíonn siad freagracht ar ONS, mar úsáideoir sonraí pearsanta, chun eolas áirithe a sholáthar duit."
-
-#: templates/static/privacy.html:50
-msgid "The ONS is a statutory body, meaning it was created by legislation, specifically the <a href='{url}'>Statistics and Registration Service Act 2007</a>. Our objective is to promote and safeguard the production and publication of official statistics that serve the public good. All our collection and use of data comes from powers that can be found in that Act or other UK legislation."
-msgstr "Is comhlacht reachtúil é an Oifig Náisiúnta Staidrimh (ONS), rud a chiallaíonn gur cruthaíodh é le reachtaíocht, go háirithe an<a href='{url}'>tAcht um Sheirbhísí Staitisticí agus Clárúcháin 2007</a>. Is é ár gcuspóir táirgeadh agus foilsiú staitisticí oifigiúla a chur chun cinn agus a chosaint a chuireann leas an phobail chun cinn. Tagann gach bailiú agus úsáid sonraí ó chumhachtaí atá san Acht sin nó i reachtaíocht eile sa Ríocht Aontaithe."
-
-#: templates/static/privacy.html:52
-msgid "The census rehearsal questionnaire has been assessed as compatible with the <a href='{url}'>Human Rights Act 1998</a>, specifically Article 8 (right to respect for a private and family life) and Article 9 (freedom of thought, conscience and religion) of the convention rights."
-msgstr "Rinneadh measúnú ar cheistneoir an daonáirimh a bheith comhoiriúnach leis an <a href='{url}'>Acht um Chearta an Duine, 1998</a>, go háirithe Alt 8 (ceart meas ar shaol príobháideach agus teaghlaigh) agus Alt 9 (saoirse smaoinimh, coinsiasa agus reiligiúin) ar chearta na coinbhinsiún."
-
-#: templates/static/privacy.html:55
-msgid "Legal basis for processing your data"
-msgstr "An bunús dlíthiúil le do shonraí a phróiseáil"
-
-#: templates/static/privacy.html:57
-msgid "Data protection legislation requires that all processing of personal data is undertaken under one or more conditions."
-msgstr "De réir na reachtaíochta um chosaint sonraí, caithfear próiseáil sonraí pearsanta a dhéanamh faoi cheann amháin nó níos mó coinníollacha."
-
-#: templates/static/privacy.html:59
-msgid "For the census rehearsal, we’ll process information from your questionnaire, information about a property or an individual and information about how people fill in their questionnaires under the following condition:"
-msgstr "Do réamhchleachtadh an daonáirimh, próiseálfaidh muid eolas ó do cheistiúchán faoi réadmhaoin nó faoi dhuine agus eolas ar an dóigh a líonann daoine a gceistiúcháin isteach faoin choinníoll seo a leanas:"
-
-#: templates/static/privacy.html:62
-msgid "processing is necessary for the performance of a task carried out in the public interest or in the exercise of official authority vested in the controller."
-msgstr "tá próiseáil riachtanach d'fheidhmiú taisc a dhéantar ar mhaithe leis an ghnáthphobal nó san údarás oifigiúil a thiteann leis an rialaitheoir."
-
-#: templates/static/privacy.html:65
-msgid "Under data protection legislation, an additional condition is required for the processing of special category personal data. These data include information about your racial or ethnic origin, political opinions, religious or philosophical beliefs, trade union membership, sex life or sexual orientation. They also include genetic and biometric data."
-msgstr "Faoin reachtaíocht um chosaint sonraí, tá coinníoll breise de dhíth le catagóir speisialta de shonraí pearsanta a phróiseáil. I measc na sonraí tá eolas ar do bhunús ciníoch nó eitneach, ar do chreideamh reiligiúnach nó fealsúnachta, ar do bhallraíocht de cheardchumann, do shaol gnéis nó do chlaonadh gnéis. Ina measc tá sonraí géiniteacha agus bithmhéadracha chomh maith."
-
-#: templates/static/privacy.html:67
-msgid "For the rehearsal, we’ll process special category personal data on race, ethnicity, religion, philosophical beliefs and sexual orientation. nformation from your questionnaire is processed under the following two conditions:"
-msgstr "Don réamhchleachtadh seo, phróiseálfaidh muid sonraí pearsanta de chatagóirí speisialta ar chine, eitneacht, reiligiún, creideamh fealsúnachta agus claonadh gnéis. Próiseáiltear eolas ar do cheistiúchán faoin dá choinníoll seo a leanas:"
-
-#: templates/static/privacy.html:70
-msgid "processing is necessary for archiving in the public interest, scientific or historical research purposes or statistical purposes based on UK law."
-msgstr "tá próiseáil eolais i gcartlanna riachtanach ar mhaithe leis an ghnáthphobal, le cuspóirí taighde nó stairiúla nó le cuspóirí staitisticiúla bunaithe ar dhlíthe na UK."
-
-#: templates/static/privacy.html:71 templates/static/privacy.html:77
-msgid "processing is necessary for reasons of substantial public interest."
-msgstr "tá próiseáil riachtanach ar mhaithe le fáthanna de shuim mhór phoiblí."
-
-#: templates/static/privacy.html:74
-msgid "We’ll process special category data on information about a property or an individual under the following condition:"
-msgstr "Próiseálann muid sonraí de chatagóirí speisialta ar eolas faoi réadmhaoin nó ar dhuine faoin choinníoll seo a leanas:"
-
-#: templates/static/privacy.html:80
-msgid "We’ll ensure the principle of data minimisation and have measures in place to delete or de-identify personal data where appropriate."
-msgstr "Cinnteoidh muid prionsabal an laghdaithe ar shonraí agus beidh bearta i bhfeidhm againn le sonraí pearsanta a scriosadh nó a dhí-aithint nuair is cuí é."
-
-#: templates/static/privacy.html:82
-msgid "The census rehearsal gives us invaluable information about the systems and processes required for Census 2021. It’ll help us complete one of our main functions in delivering Census 2021, which will subsequently provide numerous benefits for the wider society."
-msgstr "Tugann an réamhchleachtadh daonáirimh eolas fíorúsáideach dúinn ar na córais agus ar na próisis a bheidh de dhíth don Dhaonáireamh 2021. Cuideoidh sé linn ceann dár bpríomfheidhmeanna a chomhlíonadh le Daonáireamh 2021 a dhéanamh, a rachaidh chun leasa go mór don gnáthphobal i gcoitinne."
-
-#: templates/static/privacy.html:84
-msgid "There’s substantial public interest in the collection of safeguarding data to ensure the safety of both interviewers and respondents. We’re required to ensure the safety of our staff and the public."
-msgstr "Tá suim an-mhór ag an ghnáthphobal i mbailiú sonraí cosanta le sábháilteacht agallaithe agus freagróirí a chinntiú. Tá ceangal dlí orainn sábháilteacht ár bhfoirne agus an ghnáthphobail a chinntiú."
-
-#: templates/static/privacy.html:87
-msgid "Your rights"
-msgstr "Do chearta"
-
-#: templates/static/privacy.html:89
-msgid "As a data subject (someone whose personal data we hold), you have rights available to you under data protection law. If you wish to exercise any of these rights, please contact our data protection officer. However, please be aware that we may not be required to comply if the data are being held for statistical purposes only. Compliance requirements are set out in the Data Protection Act 2018."
-msgstr "Mar dhamhna sonraí (duine a bhfuil a s(h)onraí againn orthu), tá cearta agat de réir an dlí um chosaint sonraí. Más mian leat ceann ar bith de na cearta seo a fheidhmiú, déan teagmháil lenár n-oifigeach um chosaint sonraí le do thoil. Bí ar an eolas áfach nach bhféadfadh dualgas dlí bheith orainn cloí leis dá mbeadh na sonraí á gcoinneáil againn do chuspóirí staitisticiúla amháin. Tá na riachtanais chomhlíonta leagtha amach san Acht um Chosaint Sonraí 2018."
-
-#: templates/static/privacy.html:91
-msgid "You have the right to request from any controller that holds your personal data access to the information they hold about you. You can ask them to amend any wrong or inaccurate information they hold about you. You have the right to object to your personal data being processed."
-msgstr "Tá an ceart agat iarraidh ar rialaitheoir ar bith a bhfuil do shonraí pearsa aige rochtain bheith agat ar an eolas atá acu fút. Is féidir leat iarraidh orthu eolas mícheart nó míchruinn atá acu fút a athrú. Tá an ceart agat cur i gcoinne próiseáil do shonraí pearsanta."
-
-#: templates/static/privacy.html:93
-msgid "You have the right, in some circumstances, to ask for any controller to:"
-msgstr "Tá an ceart agat, i dtosca áirithe, iarraidh ar rialaitheoir ar bith:"
-
-#: templates/static/privacy.html:96
-msgid "erase any personal data they may hold about you"
-msgstr "sonra pearsanta ar bith a d'fhéadfadh bheith acu fút a scrios"
-
-#: templates/static/privacy.html:97
-msgid "stop processing your personal data"
-msgstr "stop a chur le próiseáil do shonraí pearsanta"
-
-#: templates/static/privacy.html:98
-msgid "pass any information they hold about you to another controller"
-msgstr "eolas ar bith atá acu fút a thabhairt do rialaitheoir eile"
-
-#: templates/static/privacy.html:101
-msgid "You can get further information on the rights available to you and the circumstances under which you can exercise them from the <a href='{url}'>Information Commissioner’s Office</a>."
-msgstr "Is féidir leat tuilleadh eolais a fháil maidir leis na cearta atá ar fáil duit agus na cúinsí faoinar féidir leat iad a fheidhmiú ó <a href='{url}'>Oifig an Choimisinéara Eolais</a>."
-
-#: templates/static/privacy.html:104
-msgid "The data controller"
-msgstr "An rialaitheoir sonraí"
-
-#: templates/static/privacy.html:106
-msgid "The controller is the person or organisation that decides which personal data will be processed and for what purpose. For the census rehearsal, the ONS is the controller and makes those decisions."
-msgstr "Is rialaitheoir é nó í an duine nó an eagraíocht a chinneann ar na sonraí pearsanta a bheidh le próiseáil agus ar na cuspóirí dá bpróiseáil. Don réamhchleachtadh daonáirimh, is é an ONS an rialaitheoir a dhéanann na cinntí sin."
-
-#: templates/static/privacy.html:108
-msgid "You can contact us by:"
-msgstr "Is féidir leat teagmháil a dhéanamh linn trí:"
-
-#: templates/static/privacy.html:110
-#, python-format
-msgid "Telephone: %(telephone_number)s"
-msgstr "Guthán: %(telephone_number)s"
-
-#: templates/static/privacy.html:112
-#, python-format
-msgid "Email: %(email_address)s"
-msgstr "Ríomhphost: %(email_address)s"
-
-#: templates/static/privacy.html:114 templates/static/privacy.html:134
-#: templates/static/privacy.html:155
-msgid "Post:"
-msgstr "Post:"
-
-#: templates/static/privacy.html:124
-msgid "How to contact the data protection officer"
-msgstr "An dóigh chun teagmháil a dhéanamh leis an oifigeach um chosaint sonraí"
-
-#: templates/static/privacy.html:126
-msgid "Our data protection officer is the person charged with providing us with advice and guidance on the ways we can best protect the information we collect and use. They are involved in all the major decisions we make in relation to personal data. If you have any queries or concerns regarding our use of your data, or wish to exercise any of your rights."
-msgstr "Is é/í an t-oifigeach um chosaint sonraí an duine atá freagrach as comhairle agus treoir a thabhairt dúinn ar na dóigheanna is fearr ar féidir linn an chosaint a chur ar an eolas a bhailíonn agus úsáideann muid. Tá baint acu leis na príomhchinntí go léir a dhéanann muid maidir le sonraí pearsanta. Má bhíonn ceist nó buairt ar bith agat maidir leis na dóigheanna a n-úsaideann muid do shonraí, nó más mian leat ceann ar bith de do chearta a fheidhmiú."
-
-#: templates/static/privacy.html:128
-msgid "You can contact the data protection officer by:"
-msgstr "Is féidir leat teagmháil a dhéanamh leis an oifigeach um chosaint sonraí trí:"
-
-#: templates/static/privacy.html:130 templates/static/privacy.html:151
-msgid "Telephone: {telephone_number}"
-msgstr "Guthán: {telephone_number}"
-
-#: templates/static/privacy.html:132 templates/static/privacy.html:153
-msgid "Email: {email_address}"
-msgstr "Ríomhphost: {email_address}"
-
-#: templates/static/privacy.html:145
-msgid "The Information Commissioner’s Office"
-msgstr "Oifig an Choimisinéara Eolais"
-
-#: templates/static/privacy.html:147
-msgid "The Information Commissioner’s Office (ICO) is the independent organisation tasked with regulating data protection in the UK. The ICO can give you <a href='{url}'>extra information about data protection</a> and your rights and will deal with any complaints you may have about our use of your information."
-msgstr "Is í Oifig an Choimisinéara Eolais (ICO) an eagraíocht neamhspleách a bhfuil sé de chúram uirthi cosaint sonraí a rialáil sa Ríocht Aontaithe. Is féidir leis an ICO<a href='{url}'>eolas breise a thabhairt duit faoi chosaint sonraí</a> agus do chearta agus déileálfaidh sé le haon ghearáin a d'fhéadfadh a bheith agat maidir lenár n-úsáid."
-
-#: templates/static/privacy.html:149
-msgid "You can contact the ICO by:"
-msgstr "Is féidir leat teagmháil a dhéanamh leis an ICO trí:"
 

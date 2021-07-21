@@ -2,7 +2,7 @@ from functools import wraps
 
 from flask_login import current_user
 
-from app.globals import get_questionnaire_store
+from app.globals import get_questionnaire_store, get_session_store
 
 
 def with_questionnaire_store(function):
@@ -17,5 +17,18 @@ def with_questionnaire_store(function):
             current_user.user_id, current_user.user_ik
         )
         return function(questionnaire_store, *args, **kwargs)
+
+    return wrapped_function
+
+
+def with_session_store(function):
+    """Adds the `session_store` as an argument.
+    Use on flask request handlers or methods called by flask request handlers.
+    """
+
+    @wraps(function)
+    def wrapped_function(*args, **kwargs):
+        session_store = get_session_store()
+        return function(session_store, *args, **kwargs)
 
     return wrapped_function

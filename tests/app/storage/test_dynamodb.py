@@ -2,9 +2,10 @@ import boto3
 from flask import current_app
 from moto import mock_dynamodb2
 
-from app.data_model.app_models import QuestionnaireState
-from app.storage.dynamodb import TABLE_CONFIG, DynamodbStorage
+from app.data_models.app_models import QuestionnaireState
+from app.storage.dynamodb import Dynamodb
 from app.storage.errors import ItemAlreadyExistsError
+from app.storage.storage import StorageModel
 from tests.app.app_context_test_case import AppContextTestCase
 
 
@@ -16,9 +17,9 @@ class TestDynamo(AppContextTestCase):
         super().setUp()
 
         client = boto3.resource("dynamodb", endpoint_url=None)
-        self.ddb = DynamodbStorage(client)
+        self.ddb = Dynamodb(client)
 
-        for config in TABLE_CONFIG.values():
+        for config in StorageModel.TABLE_CONFIG.values():
             table_name = current_app.config[config["table_name_key"]]
             if table_name:
                 client.create_table(  # pylint: disable=no-member
@@ -60,7 +61,7 @@ class TestDynamo(AppContextTestCase):
         self._assert_item(None)
 
     def _assert_item(self, version):
-        item = self.ddb.get_by_key(QuestionnaireState, "someuser")
+        item = self.ddb.get(QuestionnaireState, "someuser")
         actual_version = item.version if item else None
         self.assertEqual(actual_version, version)
 

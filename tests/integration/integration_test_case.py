@@ -1,8 +1,8 @@
-import json
 import os
 import re
 import unittest
 import zlib
+from unittest.mock import Mock
 
 import fakeredis
 from bs4 import BeautifulSoup
@@ -12,6 +12,8 @@ from sdc.crypto.key_store import KeyStore
 
 from app.keys import KEY_PURPOSE_AUTHENTICATION, KEY_PURPOSE_SUBMISSION
 from app.setup import create_app
+from app.utilities.json import json_loads
+from application import configure_logging
 from tests.app.app_context_test_case import MockDatastore
 from tests.integration.create_token import TokenGenerator
 
@@ -38,26 +40,37 @@ class IntegrationTestCase(unittest.TestCase):  # pylint: disable=too-many-public
         self.last_url = None
         self.last_response = None
         self.last_csrf_token = None
+        self.redirect_url = None
 
         # Perform setup steps
         self._set_up_app()
 
-    def _set_up_app(self):
+    @property
+    def test_app(self):
+        return self._application
+
+    def _set_up_app(self, setting_overrides=None):
         self._ds = patch("app.setup.datastore.Client", MockDatastore)
         self._ds.start()
 
         self._redis = patch("app.setup.redis.Redis", fakeredis.FakeStrictRedis)
         self._redis.start()
 
-        from application import (  # pylint: disable=import-outside-toplevel
-            configure_logging,
-        )
-
         configure_logging()
 
-        setting_overrides = {"EQ_ENABLE_HTML_MINIFY": False}
+        overrides = {
+            "EQ_ENABLE_HTML_MINIFY": False,
+            "EQ_SUBMISSION_CONFIRMATION_BACKEND": "log",
+        }
 
-        self._application = create_app(setting_overrides)
+        if setting_overrides:
+            overrides = overrides | setting_overrides
+
+        with patch(
+            "google.auth._default._get_explicit_environ_credentials",
+            return_value=(Mock(), "test-project-id"),
+        ):
+            self._application = create_app(overrides)
 
         self._key_store = KeyStore(
             {
@@ -101,6 +114,7 @@ class IntegrationTestCase(unittest.TestCase):  # pylint: disable=too-many-public
         )
 
         self._client = self._application.test_client()
+        self.session = self._client.session_transaction()
 
     def tearDown(self):
         self._ds.stop()
@@ -124,7 +138,7 @@ class IntegrationTestCase(unittest.TestCase):  # pylint: disable=too-many-public
         self.assertStatusOK()
 
         # And the JSON response contains the data I submitted
-        dump_answers = json.loads(self.getResponseData())
+        dump_answers = json_loads(self.getResponseData())
         return dump_answers
 
     def dumpSubmission(self):
@@ -135,15 +149,15 @@ class IntegrationTestCase(unittest.TestCase):  # pylint: disable=too-many-public
         self.assertStatusOK()
 
         # And the JSON response contains the data I submitted
-        dump_submission = json.loads(self.getResponseData())
+        dump_submission = json_loads(self.getResponseData())
         return dump_submission
 
     def dump_debug(self):
         self.get("/dump/debug")
         self.assertStatusOK()
-        return json.loads(self.getResponseData())
+        return json_loads(self.getResponseData())
 
-    def get(self, url, **kwargs):
+    def get(self, url, follow_redirects=True, **kwargs):
         """
         GETs the specified URL, following any redirects.
 
@@ -154,11 +168,9 @@ class IntegrationTestCase(unittest.TestCase):  # pylint: disable=too-many-public
 
         :param url: the URL to GET
         """
-        environ, response = self._client.get(
-            url, as_tuple=True, follow_redirects=True, **kwargs
-        )
+        response = self._client.get(url, follow_redirects=follow_redirects, **kwargs)
 
-        self._cache_response(environ, response)
+        self._cache_response(response)
 
     def post(self, post_data=None, url=None, action=None, **kwargs):
         """
@@ -183,19 +195,53 @@ class IntegrationTestCase(unittest.TestCase):  # pylint: disable=too-many-public
         if action:
             _post_data.update({f"action[{action}]": ""})
 
-        environ, response = self._client.post(
-            url, data=_post_data, as_tuple=True, follow_redirects=True, **kwargs
+        response = self._client.post(
+            url, data=_post_data, follow_redirects=True, **kwargs
         )
 
-        self._cache_response(environ, response)
+        self._cache_response(response)
+
+    def head(self, url, **kwargs):
+        """
+        Send a HEAD request to the specified URL.
+
+        :param url: the URL to send a HEAD request to
+        """
+        response = self._client.head(url, **kwargs)
+
+        self._cache_response(response)
+
+    def options(self, url, **kwargs):
+        """
+        Send an OPTIONS request to the specified URL.
+
+        :param url: the URL to send an OPTION request to
+        """
+        response = self._client.options(url, **kwargs)
+
+        self._cache_response(response)
+
+    def sign_out(self):
+        selected = self.getHtmlSoup().find("a", {"data-qa": "btn-save-sign-out"})
+        return self.get(selected["href"])
+
+    def exit(self):
+        """
+        GETs the sign-out url from the exit button. Does not follow the external
+        redirect.
+        """
+        url = self.getHtmlSoup().find("a", {"data-qa": "btn-exit"})["href"]
+        self.get(url, follow_redirects=False)
 
     def previous(self):
         selector = "#top-previous"
         selected = self.getHtmlSoup().select(selector)
         return self.get(selected[0].get("href"))
 
-    def _cache_response(self, environ, response):
+    def _cache_response(self, response):
+        environ = response.request.environ
         self.last_csrf_token = self._extract_csrf_token(response.get_data(True))
+        self.redirect_url = response.headers.get("Location")
         self.last_response = response
         self.last_url = environ["PATH_INFO"]
         if environ["QUERY_STRING"]:
@@ -217,12 +263,18 @@ class IntegrationTestCase(unittest.TestCase):  # pylint: disable=too-many-public
 
     def getCookie(self):
         """
-            Returns the last received response cookie session
+        Returns the last received response cookie session
         """
         cookie = self.last_response.headers["Set-Cookie"]
         cookie_session = cookie.split("session=.")[1].split(";")[0]
         decoded_cookie_session = decode_flask_cookie(cookie_session)
-        return json.loads(decoded_cookie_session)
+        return json_loads(decoded_cookie_session)
+
+    def deleteCookie(self):
+        """
+        Deletes the test client cookie
+        """
+        self._client.delete_cookie("localhost", "session")
 
     def getHtmlSoup(self):
         """
@@ -255,8 +307,8 @@ class IntegrationTestCase(unittest.TestCase):  # pylint: disable=too-many-public
         # intentionally not using assertIn to avoid duplicating the output message
         self.assertTrue(content in str(data), msg=message)
 
-    def assertInSelectorCSS(self, content, *selectors):
-        data = self.getHtmlSoup().find(*selectors)
+    def assertInSelectorCSS(self, content, *selectors, **kwargs):
+        data = self.getHtmlSoup().find(*selectors, **kwargs)
         message = "\n{} not in \n{}".format(content, data)
 
         # intentionally not using assertIn to avoid duplicating the output message
@@ -287,6 +339,9 @@ class IntegrationTestCase(unittest.TestCase):  # pylint: disable=too-many-public
     def assertStatusOK(self):
         self.assertStatusCode(200)
 
+    def assertBadRequest(self):
+        self.assertStatusCode(400)
+
     def assertStatusUnauthorised(self):
         self.assertStatusCode(401)
 
@@ -295,6 +350,7 @@ class IntegrationTestCase(unittest.TestCase):  # pylint: disable=too-many-public
 
     def assertStatusNotFound(self):
         self.assertStatusCode(404)
+        self.assertInBody("Page not found")
 
     def assertStatusCode(self, status_code):
         if self.last_response is not None:
@@ -325,6 +381,12 @@ class IntegrationTestCase(unittest.TestCase):  # pylint: disable=too-many-public
             self.assertRegex(text=self.last_url, expected_regex=regex)
         else:
             self.fail("last_url is invalid")
+
+    def assertInRedirect(self, content):
+        if self.redirect_url:
+            self.assertIn(content, self.redirect_url)
+        else:
+            self.fail("no redirect found")
 
 
 def decode_flask_cookie(cookie):

@@ -1,7 +1,7 @@
 from flask import current_app
 
-from app.data_model.app_models import QuestionnaireState
-from app.data_model.questionnaire_store import QuestionnaireStore
+from app.data_models import QuestionnaireStore
+from app.data_models.app_models import QuestionnaireState
 from app.storage.encrypted_questionnaire_storage import EncryptedQuestionnaireStorage
 from app.storage.storage_encryption import StorageEncryption
 from tests.app.app_context_test_case import AppContextTestCase

@@ -1,5 +1,6 @@
 {
     "mime_type": "application/json/ons/eq",
+    "language": "en",
     "schema_version": "0.0.1",
     "data_version": "0.0.3",
     "survey_id": "0",
@@ -20,6 +21,14 @@
             "type": "string"
         }
     ],
+    "questionnaire_flow": {
+        "type": "Linear",
+        "options": {
+            "summary": {
+                "collapsible": false
+            }
+        }
+    },
     "sections": [
         {
             "id": "default-section",
@@ -33,7 +42,6 @@
                                 "answers": [
                                     {
                                         "id": "mandatory-checkbox-answer",
-                                        "label": "",
                                         "mandatory": true,
                                         "options": [
                                             {
@@ -85,12 +93,10 @@
                                         }
                                     }
                                 ],
-                                "description": "",
                                 "id": "mandatory-checkbox-question",
                                 "title": "Which pizza toppings would you like?",
                                 "type": "General"
-                            },
-                            "routing_rules": []
+                            }
                         },
                         {
                             "type": "ConfirmationQuestion",
@@ -116,25 +122,27 @@
                                 ],
                                 "id": "confirm-answers-question",
                                 "title": "You selected the following toppings. Is this correct?",
-                                "description": {
-                                    "text": "{toppings}",
-                                    "placeholders": [
-                                        {
-                                            "placeholder": "toppings",
-                                            "transforms": [
-                                                {
-                                                    "transform": "format_list",
-                                                    "arguments": {
-                                                        "list_to_format": {
-                                                            "source": "answers",
-                                                            "identifier": "mandatory-checkbox-answer"
+                                "description": [
+                                    {
+                                        "text": "{toppings}",
+                                        "placeholders": [
+                                            {
+                                                "placeholder": "toppings",
+                                                "transforms": [
+                                                    {
+                                                        "transform": "format_list",
+                                                        "arguments": {
+                                                            "list_to_format": {
+                                                                "source": "answers",
+                                                                "identifier": "mandatory-checkbox-answer"
+                                                            }
                                                         }
                                                     }
-                                                }
-                                            ]
-                                        }
-                                    ]
-                                }
+                                                ]
+                                            }
+                                        ]
+                                    }
+                                ]
                             },
                             "routing_rules": [
                                 {
@@ -151,18 +159,13 @@
                                 },
                                 {
                                     "goto": {
-                                        "block": "summary"
+                                        "section": "End"
                                     }
                                 }
                             ]
-                        },
-                        {
-                            "type": "Summary",
-                            "id": "summary"
                         }
                     ],
-                    "id": "checkboxes",
-                    "title": ""
+                    "id": "checkboxes"
                 }
             ]
         }

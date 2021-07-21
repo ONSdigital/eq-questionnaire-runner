@@ -6,13 +6,17 @@
   "id": answer.id,
   "name": input.name,
   "label": {
+    "id": answer.id ~ "-label",
     "text": answer.label,
     "description": answer.description
   },
   "value": input._value() | e,
-  "maxlength": answer.max_length | default(input.maxlength, true),
-  "charCountSingular": _("You have {x} character remaining"),
-  "charCountPlural": _("You have {x} characters remaining"),
+  "charCheckLimit": {
+    "limit": answer.max_length | default(input.maxlength, true),
+    "charCountSingular": _("You have {x} character remaining"),
+    "charCountPlural": _("You have {x} characters remaining")
+  },
+  "rows": answer.rows,
   "legend": question_title,
   "legendClasses": "u-vh",
   "mutuallyExclusive": mutuallyExclusive,

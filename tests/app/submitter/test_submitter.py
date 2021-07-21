@@ -1,10 +1,10 @@
 import uuid
 from unittest import TestCase
 
-from mock import patch, Mock, call
+from mock import Mock, call, patch
 from pika.exceptions import AMQPError
 
-from app.submitter.submitter import RabbitMQSubmitter, GCSSubmitter
+from app.submitter import GCSFeedbackSubmitter, GCSSubmitter, RabbitMQSubmitter
 
 
 class TestRabbitMQSubmitter(TestCase):
@@ -27,7 +27,6 @@ class TestRabbitMQSubmitter(TestCase):
             published = self.submitter.send_message(
                 message={},
                 tx_id="123",
-                questionnaire_id="0123456789000000",
                 case_id="456",
             )
 
@@ -40,7 +39,6 @@ class TestRabbitMQSubmitter(TestCase):
             published = self.submitter.send_message(
                 message={},
                 tx_id="123",
-                questionnaire_id="0123456789000000",
                 case_id="456",
             )
 
@@ -61,7 +59,6 @@ class TestRabbitMQSubmitter(TestCase):
             published = self.submitter.send_message(
                 message={},
                 tx_id="12345",
-                questionnaire_id="0123456789000000",
                 case_id="456",
             )
 
@@ -100,7 +97,6 @@ class TestRabbitMQSubmitter(TestCase):
             published = submitter.send_message(
                 message={},
                 tx_id="12345",
-                questionnaire_id="0123456789000000",
                 case_id="456",
             )
 
@@ -136,7 +132,6 @@ class TestRabbitMQSubmitter(TestCase):
             published = self.submitter.send_message(
                 message={},
                 tx_id="123",
-                questionnaire_id="0123456789000000",
                 case_id="456",
             )
 
@@ -159,7 +154,6 @@ class TestRabbitMQSubmitter(TestCase):
             published = self.submitter.send_message(
                 message={},
                 tx_id="123",
-                questionnaire_id="0123456789000000",
                 case_id="456",
             )
 
@@ -178,7 +172,6 @@ class TestRabbitMQSubmitter(TestCase):
             self.submitter.send_message(
                 message={},
                 tx_id="12345",
-                questionnaire_id="0123456789000000",
                 case_id="98765",
             )
 
@@ -187,28 +180,7 @@ class TestRabbitMQSubmitter(TestCase):
             properties = call_args[1]["properties"]
             headers = properties.headers
             self.assertEqual(headers["tx_id"], "12345")
-            self.assertEqual(headers["questionnaire_id"], "0123456789000000")
             self.assertEqual(headers["case_id"], "98765")
-
-    def test_when_message_sent_then_case_id_not_in_header_if_missing(self):
-        # Given
-        channel = Mock()
-        connection = Mock()
-        connection.channel.side_effect = Mock(return_value=channel)
-        with patch(
-            "app.submitter.submitter.BlockingConnection", return_value=connection
-        ):
-            # When
-            self.submitter.send_message(
-                message={}, tx_id="12345", questionnaire_id="0123456789000000"
-            )
-
-            # Then
-            call_args = channel.basic_publish.call_args
-            properties = call_args[1]["properties"]
-            headers = properties.headers
-            self.assertEqual(headers["tx_id"], "12345")
-            self.assertEqual(headers["questionnaire_id"], "0123456789000000")
 
 
 class TestGCSSubmitter(TestCase):
@@ -222,7 +194,6 @@ class TestGCSSubmitter(TestCase):
             published = submitter.send_message(
                 message={"test_data"},
                 tx_id="123",
-                questionnaire_id="0123456789000000",
                 case_id="456",
             )
 
@@ -249,7 +220,6 @@ class TestGCSSubmitter(TestCase):
             submitter.send_message(
                 message={"test_data"},
                 tx_id="123",
-                questionnaire_id="0123456789000000",
                 case_id="456",
             )
 
@@ -259,6 +229,51 @@ class TestGCSSubmitter(TestCase):
 
             assert blob.metadata == {
                 "tx_id": "123",
-                "questionnaire_id": "0123456789000000",
                 "case_id": "456",
             }
+
+
+class TestGCSFeedbackSubmitter(TestCase):
+    @staticmethod
+    @patch("app.submitter.submitter.storage.Client")
+    def test_upload_feedback(client):
+        # Given
+        feedback = GCSFeedbackSubmitter(bucket_name="feedback")
+
+        metadata = {
+            "feedback_count": 1,
+            "feedback_submission_date": "2021-03-23",
+            "form_type": "H",
+            "language_code": "cy",
+            "region_code": "GB-ENG",
+            "tx_id": "12345",
+        }
+
+        payload = {
+            "feedback-type": "Feedback type",
+            "feedback-text": "Feedback text",
+        }
+
+        # When
+        feedback_upload = feedback.upload(metadata, payload)
+
+        # Then
+        bucket = client.return_value.get_bucket.return_value
+        blob = bucket.blob.return_value
+
+        assert blob.metadata["feedback_count"] == 1
+        assert blob.metadata["feedback_submission_date"] == "2021-03-23"
+        assert blob.metadata["form_type"] == "H"
+        assert blob.metadata["language_code"] == "cy"
+        assert blob.metadata["tx_id"] == "12345"
+        assert blob.metadata["region_code"] == "GB-ENG"
+
+        blob_contents = blob.upload_from_string.call_args[0][0]
+
+        assert (
+            blob_contents
+            == b'{"feedback-type": "Feedback type", "feedback-text": "Feedback text", '
+            b'"feedback_count": 1, "feedback_submission_date": "2021-03-23", '
+            b'"form_type": "H", "language_code": "cy", "region_code": "GB-ENG", "tx_id": "12345"}'
+        )
+        assert feedback_upload is True

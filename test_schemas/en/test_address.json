@@ -1,0 +1,115 @@
+{
+    "mime_type": "application/json/ons/eq",
+    "language": "en",
+    "schema_version": "0.0.1",
+    "data_version": "0.0.3",
+    "survey_id": "0",
+    "title": "Test Address Answer Type",
+    "theme": "default",
+    "description": "A questionnaire to test Address answer type",
+    "metadata": [
+        {
+            "name": "user_id",
+            "type": "string"
+        },
+        {
+            "name": "period_id",
+            "type": "string"
+        },
+        {
+            "name": "ru_name",
+            "type": "string"
+        }
+    ],
+    "questionnaire_flow": {
+        "type": "Linear",
+        "options": {
+            "summary": {
+                "collapsible": false
+            }
+        }
+    },
+    "sections": [
+        {
+            "id": "section",
+            "groups": [
+                {
+                    "id": "group",
+                    "title": "List",
+                    "blocks": [
+                        {
+                            "type": "Question",
+                            "id": "address-block-mandatory",
+                            "question": {
+                                "type": "General",
+                                "id": "address-question-mandatory",
+                                "title": "What is your current address?",
+                                "answers": [
+                                    {
+                                        "id": "address-mandatory",
+                                        "mandatory": true,
+                                        "type": "Address"
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "type": "Question",
+                            "id": "address-block-optional",
+                            "question": {
+                                "type": "General",
+                                "id": "address-question-optional",
+                                "title": "What was your address one year ago?",
+                                "answers": [
+                                    {
+                                        "id": "address-optional",
+                                        "mandatory": false,
+                                        "type": "Address"
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "type": "Question",
+                            "id": "address-confirmation",
+                            "question": {
+                                "type": "General",
+                                "id": "address-confirmation-question",
+                                "title": {
+                                    "placeholders": [
+                                        {
+                                            "placeholder": "household_address_line1",
+                                            "value": {
+                                                "identifier": "address-mandatory",
+                                                "source": "answers",
+                                                "selector": "line1"
+                                            }
+                                        }
+                                    ],
+                                    "text": "Please confirm the first line of your address is {household_address_line1}"
+                                },
+                                "answers": [
+                                    {
+                                        "type": "Radio",
+                                        "id": "address-confirmation-answer",
+                                        "mandatory": false,
+                                        "options": [
+                                            {
+                                                "label": "Yes",
+                                                "value": "Yes"
+                                            },
+                                            {
+                                                "label": "No",
+                                                "value": "No"
+                                            }
+                                        ]
+                                    }
+                                ]
+                            }
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}

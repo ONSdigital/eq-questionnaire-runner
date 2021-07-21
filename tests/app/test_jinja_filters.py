@@ -1,21 +1,27 @@
 # coding: utf-8
-from unittest.mock import patch, MagicMock
+from unittest.mock import MagicMock, patch
 
+import pytest
+import simplejson as json
 from jinja2 import Undefined
 from mock import Mock
 
 from app.jinja_filters import (
-    get_currency_symbol,
-    format_percentage,
+    OtherConfig,
+    SummaryRow,
     format_datetime,
-    format_unit,
-    format_number,
-    format_unit_input_label,
     format_duration,
+    format_number,
+    format_percentage,
+    format_unit,
+    format_unit_input_label,
+    get_currency_symbol,
+    get_formatted_address,
     get_formatted_currency,
     get_width_class_for_number,
     map_list_collector_config,
-    RadioConfig,
+    map_summary_item_config,
+    strip_tags,
 )
 from tests.app.app_context_test_case import AppContextTestCase
 
@@ -24,6 +30,17 @@ class TestJinjaFilters(AppContextTestCase):  # pylint: disable=too-many-public-m
     def setUp(self):
         self.autoescape_context = Mock(autoescape=True)
         super(TestJinjaFilters, self).setUp()
+
+    def test_strip_tags(self):
+        self.assertEqual(strip_tags("Hello <b>world</b>"), "Hello world")
+        self.assertEqual(
+            strip_tags("Hello &lt;i&gt;world&lt;/i&gt;"),
+            "Hello &lt;i&gt;world&lt;/i&gt;",
+        )
+        self.assertEqual(
+            strip_tags("Hello <b>&lt;i&gt;world&lt;/i&gt;</b>"),
+            "Hello &lt;i&gt;world&lt;/i&gt;",
+        )
 
     @patch("app.jinja_filters.flask_babel.get_locale", Mock(return_value="en_GB"))
     def test_get_currency_symbol(self):
@@ -189,44 +206,80 @@ class TestJinjaFilters(AppContextTestCase):  # pylint: disable=too-many-public-m
         answer = {"maximum": {"value": 123456789012345678901}}
         self.assertIsNone(get_width_class_for_number(answer))
 
-    @staticmethod
-    def test_radio_class_visible_attribute():
-        answer = {
-            "type": "Radio",
-            "id": "radio-answer-numeric-detail",
-            "mandatory": False,
-            "options": [
-                {
-                    "label": "Other",
-                    "value": "Other",
-                    "detail_answer": {
-                        "mandatory": False,
-                        "id": "other-answer",
-                        "label": "Please enter a number of items",
-                        "type": "Number",
-                        "parent_id": "radio-question-numeric-detail",
-                        "visible": True,
-                    },
-                }
-            ],
-            "parent_id": "radio-question-numeric-detail",
-        }
 
-        option = Mock()
-        option.detail_answer_id = "other-answer"
-        radio = RadioConfig(option=option, index=0, form=MagicMock(), answer=answer)
+@pytest.fixture
+def answer_schema_dropdown():
+    return {
+        "type": "Dropdown",
+        "id": "mandatory-checkbox-with-mandatory-dropdown-detail-answer",
+        "mandatory": True,
+        "label": "Please specify heat level",
+        "placeholder": "Select heat level",
+        "options": [
+            {"label": "Mild", "value": "Mild"},
+            {"label": "Medium", "value": "Medium"},
+            {"label": "Hot", "value": "Hot"},
+        ],
+    }
 
-        assert radio.other.open is True
+
+@pytest.fixture
+def answer_schema_number():
+    return {
+        "mandatory": False,
+        "id": "other-answer",
+        "label": "Please enter a number of items",
+        "type": "Number",
+        "parent_id": "checkbox-question-numeric-detail",
+    }
+
+
+@pytest.fixture
+def answer_schema_textfield():
+    return {
+        "mandatory": False,
+        "id": "other-answer",
+        "label": "Please specify",
+        "type": "TextField",
+        "parent_id": "checkbox-question-textfield-detail",
+    }
 
 
 def test_map_list_collector_config_no_actions():
-    list_items = [{"item_title": "Mark Bloggs"}, {"item_title": "Joe Bloggs"}]
+    list_items = [
+        {"item_title": "Mark Bloggs", "list_item_id": "one"},
+        {"item_title": "Joe Bloggs", "list_item_id": "two"},
+    ]
 
     output = map_list_collector_config(list_items, "icon")
 
     expected = [
-        {"rowItems": [{"actions": [], "icon": "icon"}], "title": "Mark Bloggs"},
-        {"rowItems": [{"actions": [], "icon": "icon"}], "title": "Joe Bloggs"},
+        {
+            "rowItems": [
+                {
+                    "actions": [],
+                    "icon": "icon",
+                    "rowTitle": "Mark Bloggs",
+                    "rowTitleAttributes": {
+                        "data-qa": "list-item-1-label",
+                        "data-list-item-id": "one",
+                    },
+                }
+            ]
+        },
+        {
+            "rowItems": [
+                {
+                    "actions": [],
+                    "icon": "icon",
+                    "rowTitle": "Joe Bloggs",
+                    "rowTitleAttributes": {
+                        "data-qa": "list-item-2-label",
+                        "data-list-item-id": "two",
+                    },
+                }
+            ]
+        },
     ]
 
     assert output == expected
@@ -239,12 +292,14 @@ def test_map_list_collector_config():
             "edit_link": "/primary/change",
             "primary_person": True,
             "item_title": "Mark Bloggs (You)",
+            "list_item_id": "primary",
         },
         {
             "remove_link": "/nonprimary/remove",
             "edit_link": "/nonprimary/change",
             "primary_person": False,
             "item_title": "Joe Bloggs",
+            "list_item_id": "nonprimary",
         },
     ]
 
@@ -264,15 +319,19 @@ def test_map_list_collector_config():
                     "actions": [
                         {
                             "ariaLabel": "edit_link_aria_label",
-                            "attributes": {"data-qa": "change-item-link"},
+                            "attributes": {"data-qa": "list-item-change-1-link"},
                             "text": "edit_link_text",
                             "url": "/primary/change",
                         }
                     ],
                     "icon": "icon",
+                    "rowTitle": "Mark Bloggs (You)",
+                    "rowTitleAttributes": {
+                        "data-qa": "list-item-1-label",
+                        "data-list-item-id": "primary",
+                    },
                 }
-            ],
-            "title": "Mark Bloggs (You)",
+            ]
         },
         {
             "rowItems": [
@@ -280,22 +339,265 @@ def test_map_list_collector_config():
                     "actions": [
                         {
                             "ariaLabel": "edit_link_aria_label",
-                            "attributes": {"data-qa": "change-item-link"},
+                            "attributes": {"data-qa": "list-item-change-2-link"},
                             "text": "edit_link_text",
                             "url": "/nonprimary/change",
                         },
                         {
                             "ariaLabel": "remove_link_aria_label",
-                            "attributes": {"data-qa": "remove-item-link"},
+                            "attributes": {"data-qa": "list-item-remove-2-link"},
                             "text": "remove_link_text",
                             "url": "/nonprimary/remove",
                         },
                     ],
                     "icon": "icon",
+                    "rowTitle": "Joe Bloggs",
+                    "rowTitleAttributes": {
+                        "data-qa": "list-item-2-label",
+                        "data-list-item-id": "nonprimary",
+                    },
                 }
-            ],
-            "title": "Joe Bloggs",
+            ]
         },
     ]
 
     assert output == expected
+
+
+def test_format_address_fields():
+    address_fields = {
+        "line": "7 Evelyn Street",
+        "town": "Barry",
+        "postcode": "CF63 4JG",
+    }
+
+    assert (
+        get_formatted_address(address_fields) == "7 Evelyn Street<br>Barry<br>CF63 4JG"
+    )
+
+
+def test_format_address_fields_with_uprn():
+    address_fields = {
+        "line": "7 Evelyn Street",
+        "town": "Barry",
+        "postcode": "CF63 4JG",
+        "uprn": "64037876",
+    }
+
+    assert (
+        get_formatted_address(address_fields) == "7 Evelyn Street<br>Barry<br>CF63 4JG"
+    )
+
+
+@pytest.mark.parametrize(
+    "max_value, expected_width",
+    [
+        (None, 10),
+        (1, 1),
+        (123123123123, 20),
+    ],
+)
+def test_other_config_numeric_input_class(
+    answer_schema_number, max_value, expected_width
+):
+    if max_value:
+        answer_schema_number["maximum"] = {"value": max_value}
+
+    other = OtherConfig(Mock(), answer_schema_number)
+    assert other.classes == f"input--w-{expected_width}"
+
+
+def test_other_config_non_dropdown_input_type(answer_schema_textfield):
+    other = OtherConfig(Mock(), answer_schema_textfield)
+    assert other.otherType == "input"
+
+
+def test_other_config_dropdown_input_type(answer_schema_dropdown):
+    other = OtherConfig(MagicMock(), answer_schema_dropdown)
+    assert other.otherType == "select"
+
+
+def test_other_config_dropdown_has_options_attribute(answer_schema_dropdown):
+    other = OtherConfig(MagicMock(), answer_schema_dropdown)
+    assert hasattr(other, "options")
+    assert not hasattr(other, "value")
+
+
+def test_other_config_non_dropdown_has_value_attribute(answer_schema_textfield):
+    other = OtherConfig(MagicMock(), answer_schema_textfield)
+    assert hasattr(other, "value")
+    assert not hasattr(other, "options")
+
+
+@pytest.mark.parametrize(
+    "is_visible, expected_visibility",
+    [
+        (True, True),
+        (False, False),
+        (None, False),
+    ],
+)
+def test_other_config_visibility(
+    answer_schema_textfield, is_visible, expected_visibility
+):
+    if is_visible is not None:
+        answer_schema_textfield["visible"] = is_visible
+
+    other = OtherConfig(Mock(), answer_schema_textfield)
+    assert other.open is expected_visibility
+
+
+@patch("app.jinja_filters.flask_babel.get_locale", Mock(return_value="en_GB"))
+def test_calculated_summary_config():
+    expected = [
+        SummaryRow(
+            block={
+                "id": "first-number-block",
+                "link": "/questionnaire/first-number-block/?return_to=final-summary",
+                "question": {
+                    "id": "first-number-question",
+                    "type": "General",
+                    "title": "First Number Question Title",
+                    "answers": [
+                        {
+                            "id": "first-number-answer",
+                            "label": "First answer label",
+                            "value": 1,
+                            "type": "currency",
+                            "currency": "GBP",
+                        }
+                    ],
+                },
+            },
+            question={
+                "id": "first-number-question",
+                "type": "General",
+                "title": "First Number Question Title",
+                "answers": [
+                    {
+                        "id": "first-number-answer",
+                        "label": "First answer label",
+                        "value": 1,
+                        "type": "currency",
+                        "currency": "GBP",
+                    }
+                ],
+            },
+            summary_type="CalculatedSummary",
+            answers_are_editable=True,
+            no_answer_provided="No answer Provided",
+            edit_link_text="Change",
+            edit_link_aria_label="Change your answer for",
+        ),
+        SummaryRow(
+            block={
+                "id": "second-number-block",
+                "link": "/questionnaire/second-number-block/?return_to=final-summary",
+                "question": {
+                    "id": "second-number-question",
+                    "type": "General",
+                    "title": "Second Number Question Title",
+                    "answers": [
+                        {
+                            "id": "second-number-answer",
+                            "label": "Second answer label",
+                            "value": 1,
+                            "type": "currency",
+                            "currency": "GBP",
+                        }
+                    ],
+                },
+            },
+            question={
+                "id": "second-number-question",
+                "type": "General",
+                "title": "Second Number Question Title",
+                "answers": [
+                    {
+                        "id": "second-number-answer",
+                        "label": "Second answer label",
+                        "value": 1,
+                        "type": "currency",
+                        "currency": "GBP",
+                    }
+                ],
+            },
+            summary_type="CalculatedSummary",
+            answers_are_editable=True,
+            no_answer_provided="No answer Provided",
+            edit_link_text="Change",
+            edit_link_aria_label="Change your answer for",
+        ),
+        SummaryRow(
+            block=None,
+            question={
+                "title": "Grand total of previous values",
+                "id": "calculated-summary-question",
+                "answers": [{"id": "calculated-summary-answer", "value": "£2.00"}],
+            },
+            summary_type="CalculatedSummary",
+            answers_are_editable=False,
+            no_answer_provided=None,
+            edit_link_text=None,
+            edit_link_aria_label=None,
+        ),
+    ]
+
+    result = map_summary_item_config(
+        group={
+            "blocks": [
+                {
+                    "id": "first-number-block",
+                    "link": "/questionnaire/first-number-block/?return_to=final-summary",
+                    "question": {
+                        "id": "first-number-question",
+                        "type": "General",
+                        "title": "First Number Question Title",
+                        "answers": [
+                            {
+                                "id": "first-number-answer",
+                                "label": "First answer label",
+                                "value": 1,
+                                "type": "currency",
+                                "currency": "GBP",
+                            }
+                        ],
+                    },
+                },
+                {
+                    "id": "second-number-block",
+                    "link": "/questionnaire/second-number-block/?return_to=final-summary",
+                    "question": {
+                        "id": "second-number-question",
+                        "type": "General",
+                        "title": "Second Number Question Title",
+                        "answers": [
+                            {
+                                "id": "second-number-answer",
+                                "label": "Second answer label",
+                                "value": 1,
+                                "type": "currency",
+                                "currency": "GBP",
+                            }
+                        ],
+                    },
+                },
+            ],
+        },
+        summary_type="CalculatedSummary",
+        answers_are_editable=True,
+        no_answer_provided="No answer Provided",
+        edit_link_text="Change",
+        edit_link_aria_label="Change your answer for",
+        calculated_question={
+            "title": "Grand total of previous values",
+            "id": "calculated-summary-question",
+            "answers": [{"id": "calculated-summary-answer", "value": "£2.00"}],
+        },
+    )
+
+    assert to_dict(expected) == to_dict(result)
+
+
+def to_dict(obj):
+    return json.loads(json.dumps(obj, default=lambda o: o.__dict__))

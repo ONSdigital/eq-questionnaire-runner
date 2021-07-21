@@ -1,7 +1,7 @@
 from unittest.mock import Mock, patch
 
-from app.data_model.answer_store import AnswerStore
-from app.data_model.list_store import ListStore
+from app.data_models.answer_store import AnswerStore
+from app.data_models.list_store import ListStore
 from app.questionnaire.placeholder_renderer import (
     PlaceholderRenderer,
     find_pointers_containing,
@@ -34,13 +34,16 @@ class TestPlaceholderRenderer(AppContextTestCase):
                                             {
                                                 "arguments": {
                                                     "delimiter": " ",
-                                                    "list_to_concatenate": {
-                                                        "identifier": [
-                                                            "first-name",
-                                                            "last-name",
-                                                        ],
-                                                        "source": "answers",
-                                                    },
+                                                    "list_to_concatenate": [
+                                                        {
+                                                            "source": "answers",
+                                                            "identifier": "first-name",
+                                                        },
+                                                        {
+                                                            "source": "answers",
+                                                            "identifier": "last-name",
+                                                        },
+                                                    ],
                                                 },
                                                 "transform": "concatenate_list",
                                             },

@@ -1,0 +1,77 @@
+{
+    "mime_type": "application/json/ons/eq",
+    "language": "en",
+    "schema_version": "0.0.1",
+    "data_version": "0.0.3",
+    "survey_id": "0",
+    "title": "Radio Optional with Optional Detail Answer",
+    "theme": "default",
+    "metadata": [
+        {
+            "name": "user_id",
+            "type": "string"
+        },
+        {
+            "name": "period_id",
+            "type": "string"
+        },
+        {
+            "name": "ru_name",
+            "type": "string"
+        }
+    ],
+    "questionnaire_flow": {
+        "type": "Linear",
+        "options": {
+            "summary": {
+                "collapsible": false
+            }
+        }
+    },
+    "sections": [
+        {
+            "id": "default-section",
+            "groups": [
+                {
+                    "id": "radio",
+                    "title": "Radio Optional with Optional Detail Answer",
+                    "blocks": [
+                        {
+                            "type": "Question",
+                            "id": "radio-non-mandatory",
+                            "question": {
+                                "type": "General",
+                                "id": "radio-non-mandatory-question",
+                                "title": "What do you prefer for breakfast?",
+                                "answers": [
+                                    {
+                                        "type": "Radio",
+                                        "id": "radio-non-mandatory-answer",
+                                        "mandatory": false,
+                                        "options": [
+                                            {
+                                                "label": "Toast",
+                                                "value": "Toast"
+                                            },
+                                            {
+                                                "label": "Other",
+                                                "description": "This is optional.",
+                                                "value": "Other",
+                                                "detail_answer": {
+                                                    "mandatory": false,
+                                                    "id": "other-answer-non-mandatory",
+                                                    "label": "Please specify other",
+                                                    "type": "TextField"
+                                                }
+                                            }
+                                        ]
+                                    }
+                                ]
+                            }
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}

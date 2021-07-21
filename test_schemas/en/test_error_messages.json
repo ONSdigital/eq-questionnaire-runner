@@ -1,5 +1,6 @@
 {
     "mime_type": "application/json/ons/eq",
+    "language": "en",
     "schema_version": "0.0.1",
     "data_version": "0.0.3",
     "survey_id": "023",
@@ -20,6 +21,14 @@
             "type": "string"
         }
     ],
+    "questionnaire_flow": {
+        "type": "Linear",
+        "options": {
+            "summary": {
+                "collapsible": false
+            }
+        }
+    },
     "sections": [
         {
             "id": "default-section",
@@ -33,14 +42,12 @@
                                 "answers": [
                                     {
                                         "id": "test-number",
-                                        "description": "",
                                         "label": "Number Test",
                                         "mandatory": false,
                                         "type": "Number"
                                     },
                                     {
                                         "id": "test-percent",
-                                        "description": "",
                                         "label": "Percent Test (0 to 100)",
                                         "mandatory": false,
                                         "type": "Percentage",
@@ -50,7 +57,6 @@
                                     },
                                     {
                                         "id": "test-currency",
-                                        "description": "",
                                         "label": "Currency test to 2 decimal places",
                                         "mandatory": false,
                                         "type": "Currency",
@@ -58,25 +64,13 @@
                                         "decimal_places": 2
                                     }
                                 ],
-                                "description": "",
                                 "id": "test-min-max-range-question",
                                 "title": "Please enter test values (none mandatory)",
                                 "type": "General"
                             }
                         }
                     ],
-                    "id": "test",
-                    "title": ""
-                },
-                {
-                    "blocks": [
-                        {
-                            "type": "Summary",
-                            "id": "summary"
-                        }
-                    ],
-                    "id": "summary-group",
-                    "title": "Summary"
+                    "id": "test"
                 }
             ]
         }

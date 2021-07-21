@@ -1,15 +1,14 @@
 # pylint: disable=unused-argument
 from datetime import datetime
 
-from mock import patch
-
 import pytest
 from dateutil.relativedelta import relativedelta
+from mock import patch
 from wtforms import Form
 
-from app.data_model.answer import Answer
-from app.data_model.answer_store import AnswerStore
-from app.forms.field_handlers.date_handler import DateHandler
+from app.data_models.answer import Answer
+from app.data_models.answer_store import AnswerStore
+from app.forms.field_handlers import DateHandler
 from app.forms.fields import date_field
 from app.questionnaire.location import Location
 from app.questionnaire.questionnaire_schema import QuestionnaireSchema
@@ -96,7 +95,7 @@ def test_get_referenced_offset_value_for_now_value(app):
     minimum_date = handler.transform_date_by_offset(minimum_date, {"days": 10})
 
     assert datetime.date(minimum_date) == (
-        datetime.now().date() + relativedelta(days=10)
+        datetime.utcnow().date() + relativedelta(days=10)
     )
 
 

@@ -1,5 +1,6 @@
 {
     "mime_type": "application/json/ons/eq",
+    "language": "en",
     "schema_version": "0.0.1",
     "data_version": "0.0.3",
     "survey_id": "0",
@@ -20,10 +21,30 @@
             "type": "string"
         }
     ],
+    "questionnaire_flow": {
+        "type": "Linear",
+        "options": {
+            "summary": {
+                "collapsible": false
+            }
+        }
+    },
     "sections": [
         {
             "id": "section",
             "title": "Who Lives Here",
+            "summary": {
+                "show_on_completion": true,
+                "items": [
+                    {
+                        "type": "List",
+                        "for_list": "people",
+                        "title": "Household members",
+                        "add_link_text": "Add someone to this household",
+                        "empty_list_text": "There are no householders"
+                    }
+                ]
+            },
             "groups": [
                 {
                     "id": "group",
@@ -33,14 +54,6 @@
                             "id": "list-collector",
                             "type": "ListCollector",
                             "for_list": "people",
-                            "add_answer": {
-                                "id": "anyone-else",
-                                "value": "Yes"
-                            },
-                            "remove_answer": {
-                                "id": "remove-confirmation",
-                                "value": "Yes"
-                            },
                             "question": {
                                 "id": "confirmation-question",
                                 "type": "General",
@@ -53,7 +66,10 @@
                                         "options": [
                                             {
                                                 "label": "Yes",
-                                                "value": "Yes"
+                                                "value": "Yes",
+                                                "action": {
+                                                    "type": "RedirectToListAddBlock"
+                                                }
                                             },
                                             {
                                                 "label": "No",
@@ -124,7 +140,10 @@
                                             "options": [
                                                 {
                                                     "label": "Yes",
-                                                    "value": "Yes"
+                                                    "value": "Yes",
+                                                    "action": {
+                                                        "type": "RemoveListItemAndAnswers"
+                                                    }
                                                 },
                                                 {
                                                     "label": "No",
@@ -136,8 +155,6 @@
                                 }
                             },
                             "summary": {
-                                "add_link_text": "Add someone to this household",
-                                "empty_list_text": "There are no householders",
                                 "title": "Household members",
                                 "item_title": {
                                     "text": "{person_name}",
@@ -148,10 +165,16 @@
                                                 {
                                                     "arguments": {
                                                         "delimiter": " ",
-                                                        "list_to_concatenate": {
-                                                            "identifier": ["first-name", "last-name"],
-                                                            "source": "answers"
-                                                        }
+                                                        "list_to_concatenate": [
+                                                            {
+                                                                "source": "answers",
+                                                                "identifier": "first-name"
+                                                            },
+                                                            {
+                                                                "source": "answers",
+                                                                "identifier": "last-name"
+                                                            }
+                                                        ]
                                                     },
                                                     "transform": "concatenate_list"
                                                 }
@@ -183,14 +206,6 @@
                             "id": "another-list-collector-block",
                             "type": "ListCollector",
                             "for_list": "people",
-                            "add_answer": {
-                                "id": "another-anyone-else",
-                                "value": "Yes"
-                            },
-                            "remove_answer": {
-                                "id": "another-remove-confirmation",
-                                "value": "Yes"
-                            },
                             "question": {
                                 "id": "another-confirmation-question",
                                 "type": "General",
@@ -203,7 +218,10 @@
                                         "options": [
                                             {
                                                 "label": "Yes",
-                                                "value": "Yes"
+                                                "value": "Yes",
+                                                "action": {
+                                                    "type": "RedirectToListAddBlock"
+                                                }
                                             },
                                             {
                                                 "label": "No",
@@ -274,7 +292,10 @@
                                             "options": [
                                                 {
                                                     "label": "Yes",
-                                                    "value": "Yes"
+                                                    "value": "Yes",
+                                                    "action": {
+                                                        "type": "RemoveListItemAndAnswers"
+                                                    }
                                                 },
                                                 {
                                                     "label": "No",
@@ -286,8 +307,6 @@
                                 }
                             },
                             "summary": {
-                                "add_link_text": "Add someone to this household",
-                                "empty_list_text": "There are no householders",
                                 "title": "Household members",
                                 "item_title": {
                                     "text": "{person_name}",
@@ -298,10 +317,16 @@
                                                 {
                                                     "arguments": {
                                                         "delimiter": " ",
-                                                        "list_to_concatenate": {
-                                                            "identifier": ["first-name", "last-name"],
-                                                            "source": "answers"
-                                                        }
+                                                        "list_to_concatenate": [
+                                                            {
+                                                                "source": "answers",
+                                                                "identifier": "first-name"
+                                                            },
+                                                            {
+                                                                "source": "answers",
+                                                                "identifier": "last-name"
+                                                            }
+                                                        ]
                                                     },
                                                     "transform": "concatenate_list"
                                                 }
@@ -309,8 +334,7 @@
                                         }
                                     ]
                                 }
-                            },
-                            "show_on_section_summary": false
+                            }
                         },
                         {
                             "type": "Question",
@@ -349,10 +373,16 @@
                                                     {
                                                         "arguments": {
                                                             "delimiter": " ",
-                                                            "list_to_concatenate": {
-                                                                "identifier": ["first-name", "last-name"],
-                                                                "source": "answers"
-                                                            }
+                                                            "list_to_concatenate": [
+                                                                {
+                                                                    "source": "answers",
+                                                                    "identifier": "first-name"
+                                                                },
+                                                                {
+                                                                    "source": "answers",
+                                                                    "identifier": "last-name"
+                                                                }
+                                                            ]
                                                         },
                                                         "transform": "concatenate_list"
                                                     }
@@ -362,31 +392,8 @@
                                     }
                                 }
                             }
-                        },
-                        {
-                            "id": "group-summary",
-                            "type": "SectionSummary"
                         }
                     ]
-                }
-            ]
-        },
-        {
-            "id": "submit-answers",
-            "title": "Submit answers",
-            "groups": [
-                {
-                    "blocks": [
-                        {
-                            "type": "Confirmation",
-                            "id": "confirmation",
-                            "content": {
-                                "title": "Thank you for your answers, do you wish to submit"
-                            }
-                        }
-                    ],
-                    "id": "confirmation-group",
-                    "title": "Submit answers"
                 }
             ]
         }

@@ -118,6 +118,73 @@ class TestPlaceholderParser(unittest.TestCase):
             == "Milk, Eggs, Flour, Water"
         )
 
+    def test_add(self):
+        assert self.transforms.add(1, 2) == 3
+
+    def test_format_ordinal_with_determiner(self):
+        assert self.transforms.format_ordinal(1, "a_or_an") == "a 1st"
+        assert self.transforms.format_ordinal(2, "a_or_an") == "a 2nd"
+        assert self.transforms.format_ordinal(3, "a_or_an") == "a 3rd"
+        assert self.transforms.format_ordinal(4, "a_or_an") == "a 4th"
+        assert self.transforms.format_ordinal(8, "a_or_an") == "an 8th"
+        assert self.transforms.format_ordinal(11, "a_or_an") == "an 11th"
+        assert self.transforms.format_ordinal(12, "a_or_an") == "a 12th"
+        assert self.transforms.format_ordinal(13, "a_or_an") == "a 13th"
+        assert self.transforms.format_ordinal(18, "a_or_an") == "an 18th"
+        assert self.transforms.format_ordinal(21, "a_or_an") == "a 21st"
+        assert self.transforms.format_ordinal(22, "a_or_an") == "a 22nd"
+        assert self.transforms.format_ordinal(23, "a_or_an") == "a 23rd"
+        assert self.transforms.format_ordinal(111, "a_or_an") == "a 111th"
+        assert self.transforms.format_ordinal(112, "a_or_an") == "a 112th"
+        assert self.transforms.format_ordinal(113, "a_or_an") == "a 113th"
+
+    def test_format_ordinal_without_determiner(self):
+        assert self.transforms.format_ordinal(1) == "1st"
+        assert self.transforms.format_ordinal(2) == "2nd"
+        assert self.transforms.format_ordinal(3) == "3rd"
+        assert self.transforms.format_ordinal(4) == "4th"
+        assert self.transforms.format_ordinal(21) == "21st"
+
+    @staticmethod
+    def test_format_ordinal_with_determiner_ulster_scots():
+        ulster_scots_transforms = PlaceholderTransforms(language="eo")
+        assert ulster_scots_transforms.format_ordinal(1, "a_or_an") == "a 1st"
+        assert ulster_scots_transforms.format_ordinal(2, "a_or_an") == "a 2nd"
+        assert ulster_scots_transforms.format_ordinal(3, "a_or_an") == "a 3rd"
+        assert ulster_scots_transforms.format_ordinal(4, "a_or_an") == "a 4th"
+        assert ulster_scots_transforms.format_ordinal(8, "a_or_an") == "an 8th"
+        assert ulster_scots_transforms.format_ordinal(11, "a_or_an") == "an 11th"
+
+    @staticmethod
+    def test_format_ordinal_without_determiner_ulster_scots():
+        ulster_scots_transforms = PlaceholderTransforms(language="eo")
+        assert ulster_scots_transforms.format_ordinal(1) == "1st"
+        assert ulster_scots_transforms.format_ordinal(2) == "2nd"
+        assert ulster_scots_transforms.format_ordinal(3) == "3rd"
+        assert ulster_scots_transforms.format_ordinal(4) == "4th"
+        assert ulster_scots_transforms.format_ordinal(21) == "21st"
+
+    @staticmethod
+    def test_format_ordinal_gaelic():
+        gaelic_transforms = PlaceholderTransforms(language="ga")
+        assert gaelic_transforms.format_ordinal(1) == "1ú"
+        assert gaelic_transforms.format_ordinal(2) == "2ú"
+        assert gaelic_transforms.format_ordinal(5) == "5ú"
+        assert gaelic_transforms.format_ordinal(7) == "7ú"
+        assert gaelic_transforms.format_ordinal(21) == "21ú"
+
+    @staticmethod
+    def test_format_ordinal_welsh():
+        welsh_transforms = PlaceholderTransforms(language="cy")
+        assert welsh_transforms.format_ordinal(1) == "1af"
+        assert welsh_transforms.format_ordinal(2) == "2il"
+        assert welsh_transforms.format_ordinal(3) == "3ydd"
+        assert welsh_transforms.format_ordinal(7) == "7fed"
+        assert welsh_transforms.format_ordinal(13) == "13eg"
+        assert welsh_transforms.format_ordinal(18) == "18fed"
+        assert welsh_transforms.format_ordinal(21) == "21ain"
+        assert welsh_transforms.format_ordinal(40) == "40ain"
+
     def test_remove_empty_from_list(self):
         list_to_filter = [None, 0, False, "", "String"]
 
@@ -136,3 +203,56 @@ class TestPlaceholderParser(unittest.TestCase):
         list_to_filter = [None, None]
 
         assert self.transforms.first_non_empty_item(list_to_filter) == ""
+
+    def test_contains(self):
+        list_to_check = ["abc123", "fgh789"]
+
+        assert self.transforms.contains(list_to_check, "abc123")
+        assert not self.transforms.contains(list_to_check, "def456")
+
+    def test_list_has_items(self):
+        assert self.transforms.list_has_items(["abc123", "fgh789"])
+        assert not self.transforms.list_has_items([])
+
+    def test_format_name(self):
+        assert self.transforms.format_name("Joe", None, "Bloggs") == "Joe Bloggs"
+        assert (
+            self.transforms.format_name(
+                "Joe", None, "Bloggs", include_middle_names=True
+            )
+            == "Joe Bloggs"
+        )
+        assert self.transforms.format_name("Joe", "Michael", "Bloggs") == "Joe Bloggs"
+        assert (
+            self.transforms.format_name(
+                "Joe", "Michael", "Bloggs", include_middle_names=True
+            )
+            == "Joe Michael Bloggs"
+        )
+
+    def test_email_link(self):
+
+        assert (
+            self.transforms.email_link("test@email.com")
+            == '<a href="mailto:test@email.com">test@email.com</a>'
+        )
+
+    def test_email_link_with_subject(self):
+
+        assert (
+            self.transforms.email_link("test@email.com", "test subject")
+            == '<a href="mailto:test@email.com?subject=test%20subject">test@email.com</a>'
+        )
+
+    def test_email_link_with_subject_and_reference(self):
+        assert (
+            self.transforms.email_link("test@email.com", "test subject", "12345")
+            == '<a href="mailto:test@email.com?subject=test%20subject%2012345">test@email.com</a>'
+        )
+
+    def test_telephone_number_link(self):
+
+        assert (
+            self.transforms.telephone_number_link("012345 67890")
+            == '<a href="tel:01234567890">012345 67890</a>'
+        )

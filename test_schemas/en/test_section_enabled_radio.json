@@ -1,5 +1,6 @@
 {
     "mime_type": "application/json/ons/eq",
+    "language": "en",
     "schema_version": "0.0.1",
     "data_version": "0.0.3",
     "survey_id": "0",
@@ -20,6 +21,14 @@
             "type": "string"
         }
     ],
+    "questionnaire_flow": {
+        "type": "Linear",
+        "options": {
+            "summary": {
+                "collapsible": false
+            }
+        }
+    },
     "sections": [
         {
             "id": "section-1",
@@ -34,7 +43,7 @@
                                 "answers": [
                                     {
                                         "id": "section-1-answer",
-                                        "label": "",
+                                        "label": "Section 1",
                                         "mandatory": false,
                                         "options": [
                                             {
@@ -49,7 +58,7 @@
                                         "type": "Radio"
                                     }
                                 ],
-                                "description": "This is section 1.",
+                                "description": ["This is section 1."],
                                 "id": "section-1-question",
                                 "title": "Do you want to enable section 2?",
                                 "type": "General"
@@ -85,12 +94,12 @@
                                 "answers": [
                                     {
                                         "id": "section-2-answer",
-                                        "label": "",
+                                        "label": "Section 2",
                                         "mandatory": false,
                                         "type": "Number"
                                     }
                                 ],
-                                "description": "This is section 2.",
+                                "description": ["This is section 2."],
                                 "id": "section-2-question",
                                 "title": "Which section is this?",
                                 "type": "General"
@@ -99,22 +108,6 @@
                     ],
                     "id": "section-2-group",
                     "title": "Section 2"
-                }
-            ]
-        },
-        {
-            "id": "summary-section",
-            "title": "Summary",
-            "groups": [
-                {
-                    "blocks": [
-                        {
-                            "type": "Summary",
-                            "id": "summary"
-                        }
-                    ],
-                    "id": "summary-group",
-                    "title": "Summary"
                 }
             ]
         }

@@ -1,43 +1,54 @@
-const BasePage = require('./base.page');
+import BasePage from "./base.page";
 
 class QuestionPage extends BasePage {
-
   constructor(pageName) {
     super(pageName);
     this.questions = [];
   }
 
-  url() { return "/questionnaire/" + this.pageName; }
+  url() {
+    return `/questionnaire/${this.pageName}`;
+  }
 
-  myAccountLink() { return '#my-account'; }
+  questionText() {
+    return this.heading();
+  }
 
-  summaryQuestionText() { return '.summary__item-title'; }
+  alert() {
+    return '[data-qa="error-body"]';
+  }
 
-  questionText() { return 'h1'; }
+  error() {
+    return ".js-inpagelink";
+  }
 
-  alert() { return '[data-qa="error-body"]';  }
+  legend() {
+    return "legend";
+  }
 
-  error() { return '.js-inpagelink'; }
+  errorHeader() {
+    return '[data-qa="error-header"]';
+  }
 
-  errorHeader() { return '#main-content > div.panel.panel--error.u-mb-s > div.panel__header > div'; }
+  errorNumber(number = 1) {
+    return `[data-qa="error-link-${number}"]`;
+  }
 
-  errorNumber(number = 1) { return '[data-qa="error-body"] ul > li:nth-child(' + number + ') > a'; }
+  cancelAndReturn() {
+    return 'a[id="cancel-and-return"]';
+  }
 
-  previous() { return 'a[id="top-previous"]'; }
+  individualResponseGuidance() {
+    return '[data-qa="individual-response-url"]';
+  }
 
-  cancelAndReturn() { return 'a[id="cancel-and-return"]'; }
+  lastViewedQuestionGuidance() {
+    return "#last-viewed-question-guidance";
+  }
 
-  displayedName() { return '[data-qa="block-title"]'; }
-
-  displayedDescription() { return '[data-qa="block-description"]'; }
-
-  submit() { return '[data-qa="btn-submit"]'; }
-
-  saveSignOut() { return '[data-qa="btn-save-sign-out"]'; }
-
-  switchLanguage(language_code) { return 'a[href="?language_code=' + language_code + '"]'; }
-
-  returnToHubLink() { return 'a[href="/questionnaire/"]'; }
+  lastViewedQuestionGuidanceLink() {
+    return "#section-start-link";
+  }
 }
 
-module.exports = QuestionPage;
+export default QuestionPage;

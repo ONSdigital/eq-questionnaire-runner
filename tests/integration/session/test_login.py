@@ -1,10 +1,12 @@
 import time
 
-from httmock import urlmatch, HTTMock, response
+from httmock import HTTMock, response, urlmatch
 
-from app.utilities.schema import SCHEMA_PATH_MAP
+from app.utilities.schema import get_schema_path_map
 from tests.integration.create_token import PAYLOAD
 from tests.integration.integration_test_case import IntegrationTestCase
+
+SCHEMA_PATH_MAP = get_schema_path_map(include_test_schemas=True)
 
 
 class TestLoginWithGetRequest(IntegrationTestCase):
@@ -73,9 +75,7 @@ class TestLoginWithGetRequest(IntegrationTestCase):
         token = self.token_generator.create_token("test_checkbox")
 
         # When
-        self._client.head(
-            "/session?token=" + token, as_tuple=True, follow_redirects=True
-        )
+        self.head("/session?token=" + token)
         self.get(url=f"/session?token={token}")
 
         # Then
@@ -136,24 +136,6 @@ class TestLoginWithGetRequest(IntegrationTestCase):
         # Then
         self.assertStatusNotFound()
 
-    def test_login_without_case_id_in_token_is_authorised(self):
-        # Given
-        token = self.token_generator.create_token_without_case_id("test_textfield")
-        self.get(url=f"/session?token={token}")
-
-        # Then
-        self.assertStatusOK()
-
-    def test_login_without_questionnaire_id_in_token_is_unauthorised(self):
-        # Given
-        token = self.token_generator.create_token_without_questionnaire_id(
-            "textfield_test"
-        )
-        self.get(url=f"/session?token={token}")
-
-        # Then
-        self.assertStatusForbidden()
-
     @staticmethod
     @urlmatch(netloc=r"eq-survey-register", path=r"\/my-test-schema")
     def survey_url_mock(_url, _request):
@@ -168,7 +150,7 @@ class TestLoginWithGetRequest(IntegrationTestCase):
         return response(404)
 
 
-class TestLoginWIthPostRequest(IntegrationTestCase):
+class TestLoginWithPostRequest(IntegrationTestCase):
     def test_login_with_no_token_should_be_unauthorized(self):
         # Given
         token = ""
@@ -224,9 +206,7 @@ class TestLoginWIthPostRequest(IntegrationTestCase):
         token = self.token_generator.create_token("test_checkbox")
 
         # When
-        self._client.head(
-            "/session?token=" + token, as_tuple=True, follow_redirects=True
-        )
+        self.head("/session?token=" + token)
         self.post(url=f"/session?token={token}")
 
         # Then
@@ -287,19 +267,9 @@ class TestLoginWIthPostRequest(IntegrationTestCase):
         # Then
         self.assertStatusNotFound()
 
-    def test_login_without_case_id_in_token_is_authorised(self):
+    def test_login_without_case_id_in_token_is_unauthorised(self):
         # Given
         token = self.token_generator.create_token_without_case_id("test_textfield")
-        self.post(url=f"/session?token={token}")
-
-        # Then
-        self.assertStatusOK()
-
-    def test_login_without_questionnaire_id_in_token_is_unauthorised(self):
-        # Given
-        token = self.token_generator.create_token_without_questionnaire_id(
-            "textfield_test"
-        )
         self.post(url=f"/session?token={token}")
 
         # Then

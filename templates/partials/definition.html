@@ -1,0 +1,32 @@
+{% from "components/collapsible/_macro.njk" import onsCollapsible %}
+
+{% call onsCollapsible({
+  "id": definition_id,
+  "title": definition.title,
+  "titleTag": "h2",
+  "classes": "u-mb-s",
+  "headingAttributes": {
+    "data-ga": "click",
+    "data-ga-category": category,
+    "data-ga-action": "Open panel",
+    "data-ga-label": definition.title,
+    "data-qa": definition_id ~ "-title"
+  },
+  "contentAttributes": {
+  "data-qa": definition_id ~ "-content"
+  },
+  "button": {
+    "close": _("Hide this"),
+    "contextSuffix": "content",
+    "attributes": {
+      "data-ga": "click",
+      "data-ga-category": category,
+      "data-ga-action": "Close panel",
+      "data-ga-label": definition.title,
+      "data-qa": definition_id ~ "-button"
+    }
+  }
+}) %}
+  {% set contents = definition.contents %}
+  {% include 'partials/contents.html' %}
+{% endcall %}

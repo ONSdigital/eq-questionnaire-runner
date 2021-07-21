@@ -14,6 +14,14 @@
             "type": "string"
         }
     ],
+    "questionnaire_flow": {
+        "type": "Linear",
+        "options": {
+            "summary": {
+                "collapsible": false
+            }
+        }
+    },
     "sections": [
         {
             "id": "default-section",
@@ -22,7 +30,6 @@
                     "blocks": [
                         {
                             "type": "Question",
-                            "routing_rules": [],
                             "question": {
                                 "answers": [
                                     {
@@ -3576,18 +3583,12 @@
                                     }
                                 ],
                                 "type": "General",
-                                "title": "",
-                                "description": "",
+                                "title": "Title",
                                 "id": "question"
                             },
                             "id": "textarea-block"
-                        },
-                        {
-                            "type": "Summary",
-                            "id": "textarea-summary"
                         }
                     ],
-                    "title": "",
                     "id": "textarea-group"
                 }
             ]
@@ -3597,6 +3598,7 @@
     "description": "A questionnaire to test textareas.",
     "data_version": "0.0.3",
     "theme": "default",
+    "language": "en",
     "schema_version": "0.0.1",
     "survey_id": "0"
 }

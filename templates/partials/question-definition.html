@@ -1,27 +1,7 @@
-{% from "components/details/_macro.njk" import onsDetails %}
+{% from "components/collapsible/_macro.njk" import onsCollapsible %}
 
 {% for definition in question.definitions %}
-  {% call onsDetails({
-      "title": definition.title,
-      "classes": "u-mb-s",
-      "summaryAttributes": {
-        "data-ga": "click",
-        "data-ga-category": "Question definition",
-        "data-ga-action": "Open panel",
-        "data-ga-label": definition.title
-      },
-      "button": {
-        "close": _("Hide this"),
-        "contextSuffix": "content",
-        "attributes": {
-          "data-ga": "click",
-          "data-ga-category": "Question definition",
-          "data-ga-action": "Close panel",
-          "data-ga-label": definition.title
-        }
-      }
-  }) %}
-    {% set contents = definition.contents %}
-    {% include 'partials/contents.html' %}
-  {% endcall %}
+  {% set definition_id = "question-definition-" ~ loop.index %}
+  {% set category = 'Question definition' %}
+  {%- include 'partials/definition.html' -%}
 {% endfor %}

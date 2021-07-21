@@ -1,15 +1,24 @@
 import unittest
-from uuid import UUID
 from contextlib import contextmanager
-from mock import patch
+from unittest import mock
+from unittest.mock import Mock
+from uuid import UUID
 
 from flask import Flask, request
 from flask_babel import Babel
+from mock import patch
 
-from app.setup import create_app, EmulatorCredentials
-from app.storage.datastore import DatastoreStorage
-from app.storage.dynamodb import DynamodbStorage
-from app.submitter.submitter import LogSubmitter, RabbitMQSubmitter, GCSSubmitter
+from app.cloud_tasks import CloudTaskPublisher
+from app.publisher import LogPublisher, PubSubPublisher
+from app.setup import create_app
+from app.storage.datastore import Datastore
+from app.storage.dynamodb import Dynamodb
+from app.submitter.submitter import (
+    GCSFeedbackSubmitter,
+    GCSSubmitter,
+    LogSubmitter,
+    RabbitMQSubmitter,
+)
 
 
 class TestCreateApp(unittest.TestCase):  # pylint: disable=too-many-public-methods
@@ -18,7 +27,7 @@ class TestCreateApp(unittest.TestCase):  # pylint: disable=too-many-public-metho
 
     @contextmanager
     def override_settings(self):
-        """ Required because although the settings are overriden on the application
+        """Required because although the settings are overriden on the application
         by passing _setting_overrides in, there are many funtions which use the
         imported settings object - this does not get the overrides merged in. This
         helper does that.
@@ -62,9 +71,7 @@ class TestCreateApp(unittest.TestCase):  # pylint: disable=too-many-public-metho
 
     def test_adds_logging_of_request_ids(self):
         with patch("app.setup.logger") as logger:
-            self._setting_overrides.update(
-                {"EQ_DEV_MODE": True, "EQ_APPLICATION_VERSION": False}
-            )
+            self._setting_overrides.update({"EQ_APPLICATION_VERSION": False})
             application = create_app(self._setting_overrides)
 
             application.test_client().get("/")
@@ -74,9 +81,7 @@ class TestCreateApp(unittest.TestCase):  # pylint: disable=too-many-public-metho
 
     def test_adds_logging_of_span_and_trace(self):
         with patch("app.setup.logger") as logger:
-            self._setting_overrides.update(
-                {"EQ_DEV_MODE": True, "EQ_APPLICATION_VERSION": False}
-            )
+            self._setting_overrides.update({"EQ_APPLICATION_VERSION": False})
             application = create_app(self._setting_overrides)
 
             x_cloud_headers = {
@@ -112,29 +117,54 @@ class TestCreateApp(unittest.TestCase):  # pylint: disable=too-many-public-metho
             self.assertEqual("1; mode=block", headers["X-Xss-Protection"])
             self.assertEqual("nosniff", headers["X-Content-Type-Options"])
 
+    def test_csp_policy_headers(self):
+        cdn_url = "https://cdn.test.domain"
+        address_lookup_api_url = "https://ai.test.domain"
+        self._setting_overrides = {
+            "EQ_ENABLE_LIVE_RELOAD": False,
+            "CDN_URL": cdn_url,
+            "ADDRESS_LOOKUP_API_URL": address_lookup_api_url,
+        }
+
+        with create_app(self._setting_overrides).test_client() as client:
+            headers = client.get(
+                "/",
+                headers={
+                    "X-Forwarded-Proto": "https"
+                },  # set protocal so that talisman sets HSTS headers
+            ).headers
+
             csp_policy_parts = headers["Content-Security-Policy"].split("; ")
-            self.assertIn("default-src 'self' https://cdn.ons.gov.uk", csp_policy_parts)
+            self.assertIn(f"default-src 'self' {cdn_url}", csp_policy_parts)
             self.assertIn(
-                f"script-src 'self' https://cdn.ons.gov.uk https://www.googletagmanager.com 'unsafe-inline' 'unsafe-eval' 'nonce-{request.csp_nonce}'",
+                f"script-src 'self' https://www.googletagmanager.com https://www.google-analytics.com https://ssl.google-analytics.com 'unsafe-inline' {cdn_url} 'nonce-{request.csp_nonce}'",
                 csp_policy_parts,
             )
             self.assertIn(
-                "style-src 'self' https://cdn.ons.gov.uk https://tagmanager.google.com https://fonts.googleapis.com 'unsafe-inline'",
+                f"style-src 'self' https://tagmanager.google.com https://fonts.googleapis.com 'unsafe-inline' {cdn_url}",
                 csp_policy_parts,
             )
             self.assertIn(
-                "img-src 'self' data: https://cdn.ons.gov.uk https://www.google-analytics.com https://ssl.gstatic.com https://www.gstatic.com",
+                f"img-src 'self' data: https://www.google-analytics.com https://ssl.gstatic.com https://www.gstatic.com {cdn_url}",
                 csp_policy_parts,
             )
             self.assertIn(
-                "font-src 'self' data: https://cdn.ons.gov.uk https://fonts.gstatic.com",
+                f"font-src 'self' data: https://fonts.gstatic.com {cdn_url}",
                 csp_policy_parts,
             )
             self.assertIn(
                 "frame-src https://www.googletagmanager.com", csp_policy_parts
             )
             self.assertIn(
-                "connect-src 'self' https://cdn.ons.gov.uk https://cdn.eq.census-gcp.onsdigital.uk",
+                f"connect-src 'self' https://www.google-analytics.com {cdn_url} {address_lookup_api_url}",
+                csp_policy_parts,
+            )
+            self.assertIn(
+                f"object-src 'none'",
+                csp_policy_parts,
+            )
+            self.assertIn(
+                f"base-uri 'none'",
                 csp_policy_parts,
             )
 
@@ -167,11 +197,11 @@ class TestCreateApp(unittest.TestCase):  # pylint: disable=too-many-public-metho
         # Then
         assert isinstance(application.eq["submitter"], GCSSubmitter)
 
-    def test_gcs_submitter_bucket_id_not_set_raises_exception(self):
+    def test_gcs_submitter_bucket_name_not_set_raises_exception(self):
         # Given
         self._setting_overrides["EQ_SUBMISSION_BACKEND"] = "gcs"
 
-        # WHEN
+        # When
         with self.assertRaises(Exception) as ex:
             create_app(self._setting_overrides)
 
@@ -222,13 +252,72 @@ class TestCreateApp(unittest.TestCase):  # pylint: disable=too-many-public-metho
         # Then
         assert isinstance(application.eq["submitter"], LogSubmitter)
 
-    def test_emulator_credentials(self):
-        creds = EmulatorCredentials()
+    def test_eq_publisher_backend_not_set(self):
+        # Given
+        self._setting_overrides["EQ_PUBLISHER_BACKEND"] = ""
 
-        self.assertTrue(creds.valid)
+        # When
+        with self.assertRaises(Exception) as ex:
+            create_app(self._setting_overrides)
 
-        with self.assertRaises(RuntimeError):
-            creds.refresh(None)
+        # Then
+        assert "Unknown EQ_PUBLISHER_BACKEND" in str(ex.exception)
+
+    def test_adds_pub_sub_to_the_application(self):
+        # Given
+        self._setting_overrides["EQ_PUBLISHER_BACKEND"] = "pubsub"
+        self._setting_overrides["EQ_FULFILMENT_TOPIC_ID"] = "123"
+
+        # When
+        with patch(
+            "app.publisher.publisher.google.auth._default._get_explicit_environ_credentials",
+            return_value=(Mock(), "test-project-id"),
+        ):
+            application = create_app(self._setting_overrides)
+
+        # Then
+        assert isinstance(application.eq["publisher"], PubSubPublisher)
+
+    def test_defaults_to_adding_the_log_publisher_to_the_application(self):
+        # When
+        application = create_app(self._setting_overrides)
+
+        # Then
+        assert isinstance(application.eq["publisher"], LogPublisher)
+
+    def test_adds_cloud_task_publisher_to_the_application(self):
+        self._setting_overrides["EQ_SUBMISSION_CONFIRMATION_BACKEND"] = "cloud-tasks"
+        self._setting_overrides[
+            "EQ_SUBMISSION_CONFIRMATION_CLOUD_FUNCTION_NAME"
+        ] = "test"
+
+        # When
+        with patch(
+            "google.auth._default._get_explicit_environ_credentials",
+            return_value=(Mock(), "test-project-id"),
+        ):
+            application = create_app(self._setting_overrides)
+
+        # Then
+        assert isinstance(application.eq["cloud_tasks"], CloudTaskPublisher)
+
+    def test_submission_backend_not_set_raises_exception(self):
+        # Given
+        self._setting_overrides["EQ_SUBMISSION_CONFIRMATION_BACKEND"] = ""
+        self._setting_overrides[
+            "EQ_SUBMISSION_CONFIRMATION_CLOUD_FUNCTION_NAME"
+        ] = "test"
+
+        # When
+        with patch(
+            "google.auth._default._get_explicit_environ_credentials",
+            return_value=(Mock(), "test-project-id"),
+        ):
+            with self.assertRaises(Exception) as ex:
+                create_app(self._setting_overrides)
+
+        # Then
+        assert "Unknown EQ_SUBMISSION_CONFIRMATION_BACKEND" in str(ex.exception)
 
     def test_setup_datastore(self):
         self._setting_overrides["EQ_STORAGE_BACKEND"] = "datastore"
@@ -236,17 +325,66 @@ class TestCreateApp(unittest.TestCase):  # pylint: disable=too-many-public-metho
         with patch("google.cloud.datastore.Client"):
             application = create_app(self._setting_overrides)
 
-        self.assertIsInstance(application.eq["storage"], DatastoreStorage)
+        self.assertIsInstance(application.eq["storage"], Datastore)
 
     def test_setup_dynamodb(self):
         self._setting_overrides["EQ_STORAGE_BACKEND"] = "dynamodb"
 
         application = create_app(self._setting_overrides)
 
-        self.assertIsInstance(application.eq["storage"], DynamodbStorage)
+        self.assertIsInstance(application.eq["storage"], Dynamodb)
 
     def test_invalid_storage(self):
         self._setting_overrides["EQ_STORAGE_BACKEND"] = "invalid"
 
         with self.assertRaises(Exception):
             create_app(self._setting_overrides)
+
+    def test_eq_feedback_backend_not_set(self):
+        # Given
+        self._setting_overrides["EQ_FEEDBACK_BACKEND"] = ""
+
+        # When
+        with self.assertRaises(Exception) as ex:
+            create_app(self._setting_overrides)
+
+        # Then
+        assert "Unknown EQ_FEEDBACK_BACKEND" in str(ex.exception)
+
+    def test_adds_gcs_feedback_to_the_application(self):
+        # Given
+        self._setting_overrides["EQ_FEEDBACK_BACKEND"] = "gcs"
+        self._setting_overrides["EQ_GCS_FEEDBACK_BUCKET_ID"] = "123456"
+
+        # When
+        with patch("google.cloud.storage.Client"):
+            application = create_app(self._setting_overrides)
+
+        # Then
+        assert isinstance(application.eq["feedback_submitter"], GCSFeedbackSubmitter)
+
+    def test_gcs_feedback_bucket_name_not_set_raises_exception(self):
+        # Given
+        self._setting_overrides["EQ_FEEDBACK_BACKEND"] = "gcs"
+
+        # When
+        with self.assertRaises(Exception) as ex:
+            create_app(self._setting_overrides)
+
+        # Then
+        assert "Setting EQ_GCS_FEEDBACK_BUCKET_ID Missing" in str(ex.exception)
+
+    def test_defaults_to_gzip_compression(self):
+        application = create_app(self._setting_overrides)
+        assert application.config["COMPRESS_ALGORITHM"] == ["gzip", "br", "deflate"]
+
+    @mock.patch("yaml.safe_load")
+    @mock.patch("app.secrets.REQUIRED_SECRETS", [])
+    def test_conditional_expected_secret(self, mock_safe_load):
+        mock_safe_load.return_value = {"secrets": {}}
+        self._setting_overrides["ADDRESS_LOOKUP_API_AUTH_ENABLED"] = True
+        with self.assertRaises(Exception) as ex:
+            create_app(self._setting_overrides)
+        assert "Missing Secret [ADDRESS_LOOKUP_API_AUTH_TOKEN_SECRET]" in str(
+            ex.exception
+        )

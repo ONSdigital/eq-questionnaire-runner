@@ -1,5 +1,6 @@
 {
     "mime_type": "application/json/ons/eq",
+    "language": "en",
     "schema_version": "0.0.1",
     "data_version": "0.0.3",
     "survey_id": "0",
@@ -25,6 +26,14 @@
             "type": "string"
         }
     ],
+    "questionnaire_flow": {
+        "type": "Linear",
+        "options": {
+            "summary": {
+                "collapsible": false
+            }
+        }
+    },
     "sections": [
         {
             "id": "default-section",
@@ -39,29 +48,25 @@
                                     {
                                         "id": "answer",
                                         "label": "Enter your comments",
+                                        "rows": 3,
                                         "mandatory": false,
                                         "q_code": "0",
                                         "type": "TextArea",
                                         "max_length": 20,
                                         "validation": {
                                             "messages": {
-                                                "MAX_LENGTH_EXCEEDED": "Your answer has to be less than %(max)d characters long"
+                                                "MAX_LENGTH_EXCEEDED": "You have entered too many characters. Enter up to %(max)d characters"
                                             }
                                         }
                                     }
                                 ],
                                 "id": "question",
-                                "title": "",
+                                "title": "Title",
                                 "type": "General"
                             }
-                        },
-                        {
-                            "type": "Summary",
-                            "id": "textarea-summary"
                         }
                     ],
-                    "id": "textarea-group",
-                    "title": ""
+                    "id": "textarea-group"
                 }
             ]
         }

@@ -1,5 +1,6 @@
 import sys
 from unittest import TestCase
+
 from mock import patch
 from werkzeug.exceptions import Forbidden
 
@@ -222,7 +223,7 @@ class TestRoleRequired(TestCase):
             wrapped_func(arg1="y", arg2="z")
 
     def test_role_required_unauthenticated_wrapped_with_positional_and_keyword_arguments(
-        self
+        self,
     ):
         # Given I am not authenticated
         self.mock_get_metadata.return_value = {"roles": ["flusher", "other", "dumper"]}

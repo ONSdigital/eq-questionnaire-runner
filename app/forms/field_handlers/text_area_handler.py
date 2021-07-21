@@ -1,12 +1,14 @@
-from werkzeug.utils import cached_property
+from functools import cached_property
+
 from wtforms import validators
 
-from app.forms.fields.max_text_area_field import MaxTextAreaField
 from app.forms.field_handlers.field_handler import FieldHandler
+from app.forms.fields import MaxTextAreaField
 
 
 class TextAreaHandler(FieldHandler):
     MAX_LENGTH = 2000
+    DEFAULT_ROWS = 8
     MANDATORY_MESSAGE_KEY = "MANDATORY_TEXTAREA"
 
     @cached_property
@@ -31,5 +33,6 @@ class TextAreaHandler(FieldHandler):
             label=self.label,
             description=self.guidance,
             validators=self.validators,
+            rows=self.answer_schema.get("rows", self.DEFAULT_ROWS),
             maxlength=self.max_length,
         )

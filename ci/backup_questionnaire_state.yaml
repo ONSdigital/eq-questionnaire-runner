@@ -1,0 +1,34 @@
+platform: linux
+image_resource:
+  type: docker-image
+  source:
+    repository: gcr.io/google.com/cloudsdktool/cloud-sdk
+    tag: alpine
+params:
+  SERVICE_ACCOUNT_JSON: ((gcp.service_account_json))
+  PROJECT_ID:
+  BUCKET_NAME:
+outputs:
+  - name: backup-questionnaire-state-output
+run:
+  path: bash
+  args:
+    - -exc
+    - |
+      export GOOGLE_APPLICATION_CREDENTIALS=~/gcloud-service-key.json
+      cat >$GOOGLE_APPLICATION_CREDENTIALS <<EOL
+      $SERVICE_ACCOUNT_JSON
+      EOL
+
+      gcloud auth activate-service-account --key-file $GOOGLE_APPLICATION_CREDENTIALS
+      gcloud config set project "${PROJECT_ID}"
+
+      EXPORT_OPERATION=$(gcloud datastore export --kinds="questionnaire-state" gs://"${BUCKET_NAME}" --format="value(name.scope())")
+      EXPORT_STATE=$(gcloud datastore operations describe "$EXPORT_OPERATION" --format="value(metadata.common.state.scope())")
+      TOTAL_ENTITIES_EXPORTED=$(gcloud datastore operations describe "$EXPORT_OPERATION" --format="value(metadata.progressEntities.workCompleted.scope())")
+
+      if [[ "$EXPORT_STATE" == "SUCCESSFUL" ]]; then
+        echo "Questionnaire State Backup Successful - ${TOTAL_ENTITIES_EXPORTED:-0} entities exported" > "backup-questionnaire-state-output/notification-message"
+      else
+        exit 1
+      fi

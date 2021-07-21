@@ -1,5 +1,6 @@
 {
     "mime_type": "application/json/ons/eq",
+    "language": "en",
     "schema_version": "0.0.1",
     "data_version": "0.0.3",
     "survey_id": "0",
@@ -20,9 +21,9 @@
             "type": "string"
         }
     ],
-    "hub": {
-        "enabled": true,
-        "required_completed_sections": ["employment-section"]
+    "questionnaire_flow": {
+        "type": "Hub",
+        "options": { "required_completed_sections": ["employment-section"] }
     },
     "sections": [
         {
@@ -154,6 +155,7 @@
         {
             "id": "accommodation-section",
             "title": "Accommodation",
+            "summary": { "show_on_completion": true },
             "groups": [
                 {
                     "blocks": [
@@ -183,14 +185,9 @@
                                 "type": "General"
                             },
                             "type": "Question"
-                        },
-                        {
-                            "id": "accommodation-details-summary",
-                            "type": "SectionSummary"
                         }
                     ],
-                    "id": "checkboxes",
-                    "title": ""
+                    "id": "checkboxes"
                 }
             ]
         }

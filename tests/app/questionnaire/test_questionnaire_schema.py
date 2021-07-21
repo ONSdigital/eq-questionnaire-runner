@@ -1,5 +1,45 @@
+from collections import abc
+
+import pytest
+from werkzeug.datastructures import ImmutableDict
+
 from app.questionnaire.questionnaire_schema import QuestionnaireSchema
-from app.questionnaire.questionnaire_schema import _get_values_for_key
+
+
+def assert_all_dict_values_are_hashable(data):
+    for value in data.values():
+        if isinstance(value, ImmutableDict):
+            return assert_all_dict_values_are_hashable(value)
+        if isinstance(value, tuple):
+            return tuple(assert_all_dict_values_are_hashable(v) for v in value)
+
+        assert isinstance(value, abc.Hashable)
+
+
+def test_schema_json_is_immutable_and_hashable(question_schema):
+    schema = QuestionnaireSchema(question_schema)
+    json = schema.json
+    with pytest.raises(TypeError) as e:
+        json["sections"] = []
+
+    assert str(e.value) == "'ImmutableDict' objects are immutable"
+    assert_all_dict_values_are_hashable(json)
+
+
+def test_schema_attributes_returns_hashable_values(question_schema):
+    schema = QuestionnaireSchema(question_schema)
+    for section in schema.get_sections():
+        assert_all_dict_values_are_hashable(section)
+
+
+def test_error_messages_are_immutable():
+    schema = QuestionnaireSchema({})
+    assert isinstance(schema.error_messages, ImmutableDict)
+
+
+def test_parent_id_map_is_immutable():
+    schema = QuestionnaireSchema({})
+    assert isinstance(schema.parent_id_map, ImmutableDict)
 
 
 def test_get_sections(single_question_schema):
@@ -11,6 +51,34 @@ def test_get_section(single_question_schema):
     schema = QuestionnaireSchema(single_question_schema)
     section = schema.get_section("section1")
     assert section["title"] == "Section 1"
+
+
+def test_get_summary_for_section(section_with_custom_summary):
+    schema = QuestionnaireSchema(section_with_custom_summary)
+    section_summary = schema.get_summary_for_section("section")
+
+    expected_keys = {
+        "type",
+        "for_list",
+        "title",
+        "add_link_text",
+        "empty_list_text",
+        "item_title",
+    }
+
+    assert len(section_summary["items"]) == 1
+    assert set(section_summary["items"][0].keys()) == expected_keys
+
+
+def test_get_summary_for_section_does_not_exist(section_with_custom_summary):
+    del section_with_custom_summary["sections"][0]["summary"]
+    schema = QuestionnaireSchema(section_with_custom_summary)
+    assert not schema.get_summary_for_section("section")
+
+
+def test_get_show_on_completion_for_section(section_with_custom_summary):
+    schema = QuestionnaireSchema(section_with_custom_summary)
+    assert schema.show_summary_on_completion_for_section(section_id="section") is True
 
 
 def test_get_blocks(single_question_schema):
@@ -51,12 +119,6 @@ def test_get_questions_with_variants(question_variant_schema):
     assert len(questions) == 2
     assert questions[0]["title"] == "Question 1, Yes"
     assert questions[1]["title"] == "Question 1, No"
-
-
-def test_get_answer_ids(single_question_schema):
-    schema = QuestionnaireSchema(single_question_schema)
-    answers = schema.get_answer_ids()
-    assert len(answers) == 1
 
 
 def test_get_answers_by_answer_id_with_variants(question_variant_schema):
@@ -187,6 +249,20 @@ def test_get_all_questions_for_block_empty():
     assert not all_questions
 
 
+def test_get_answer_ids_for_block_no_variants(single_question_schema):
+    schema = QuestionnaireSchema(single_question_schema)
+    answer_ids = schema.get_answer_ids_for_block("block1")
+    assert len(answer_ids) == 1
+    assert answer_ids[0] == "answer1"
+
+
+def test_get_answer_ids_for_block_with_variants(question_variant_schema):
+    schema = QuestionnaireSchema(question_variant_schema)
+    answer_ids = schema.get_answer_ids_for_block("block1")
+    assert len(answer_ids) == 1
+    assert answer_ids[0] == "answer1"
+
+
 def test_get_default_answer_no_answer_in_answer_store(question_variant_schema):
     schema = QuestionnaireSchema(question_variant_schema)
     assert schema.get_default_answer("test") is None
@@ -223,7 +299,7 @@ def test_get_relationship_collectors_by_list_name(mock_relationship_collector_sc
 
 
 def test_get_relationship_collectors_by_list_name_no_collectors(
-    mock_relationship_collector_schema
+    mock_relationship_collector_schema,
 ):
     schema = QuestionnaireSchema(mock_relationship_collector_schema)
     collectors = schema.get_relationship_collectors_by_list_name("not-a-list")
@@ -232,7 +308,7 @@ def test_get_relationship_collectors_by_list_name_no_collectors(
 
 
 def test_get_list_item_id_for_answer_id_without_list_item_id(
-    section_with_repeating_list
+    section_with_repeating_list,
 ):
     schema = QuestionnaireSchema(section_with_repeating_list)
 
@@ -246,7 +322,7 @@ def test_get_list_item_id_for_answer_id_without_list_item_id(
 
 
 def test_get_list_item_id_for_answer_id_without_repeat_or_list_collector(
-    question_schema
+    question_schema,
 ):
     schema = QuestionnaireSchema(question_schema)
 
@@ -270,7 +346,7 @@ def test_get_answer_within_repeat_with_list_item_id(section_with_repeating_list)
 
 
 def test_get_answer_within_list_collector_with_list_item_id(
-    list_collector_variant_schema
+    list_collector_variant_schema,
 ):
     schema = QuestionnaireSchema(list_collector_variant_schema)
 
@@ -283,18 +359,62 @@ def test_get_answer_within_list_collector_with_list_item_id(
     assert list_item_id == expected_list_item_id
 
 
-def test_get_values_for_key_ignores_variants():
-    block = {"question_variants": [{"when": "test"}]}
-    result = list(_get_values_for_key(block, "when", {"question_variants"}))
-    assert result == []
+def test_get_list_collector_for_list(list_collector_variant_schema):
+    schema = QuestionnaireSchema(list_collector_variant_schema)
+    section = schema.get_section("section")
 
+    result = QuestionnaireSchema.get_list_collector_for_list(section, for_list="people")
 
-def test_get_values_for_key_ignores_multiple_keys():
-    block = {
-        "question_variants": [{"when": "test"}],
-        "content_variants": [{"when": "test"}],
-    }
-    result = list(
-        _get_values_for_key(block, "when", {"question_variants", "content_variants"})
+    assert result["id"] == "block1"
+
+    filtered_result = QuestionnaireSchema.get_list_collector_for_list(
+        section, for_list="people"
     )
-    assert result == []
+
+    assert filtered_result == result
+
+    no_result = QuestionnaireSchema.get_list_collector_for_list(
+        section, for_list="not-valid"
+    )
+
+    assert no_result is None
+
+
+def test_has_address_lookup_answer():
+    question = {
+        "type": "General",
+        "id": "address-question",
+        "title": "What is your current address?",
+        "answers": [
+            {
+                "id": "address-answer",
+                "mandatory": True,
+                "type": "Address",
+                "lookup_options": {
+                    "address_type": "Residential",
+                    "region_code": "GB-ENG",
+                },
+            }
+        ],
+    }
+
+    has_lookup_answer = QuestionnaireSchema.has_address_lookup_answer(question)
+    assert has_lookup_answer
+
+
+def test_doesnt_have_address_lookup_answer():
+    question = {
+        "type": "General",
+        "id": "address-question",
+        "title": "What is your current address?",
+        "answers": [
+            {
+                "id": "address-answer",
+                "mandatory": True,
+                "type": "Address",
+            }
+        ],
+    }
+
+    has_lookup_answer = QuestionnaireSchema.has_address_lookup_answer(question)
+    assert not has_lookup_answer

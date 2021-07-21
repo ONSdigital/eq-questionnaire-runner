@@ -1,10 +1,8 @@
-from copy import deepcopy
+from jsonpointer import resolve_pointer, set_pointer
 
-from jsonpointer import set_pointer, resolve_pointer
-
-from app.data_model.answer_store import AnswerStore
+from app.data_models.answer_store import AnswerStore
+from app.questionnaire import QuestionnaireSchema
 from app.questionnaire.placeholder_parser import PlaceholderParser
-
 from app.questionnaire.plural_forms import get_plural_form_key
 from app.questionnaire.schema_utils import find_pointers_containing
 
@@ -43,7 +41,7 @@ class PlaceholderRenderer:
         if source == "answers":
             return self._answer_store.get_answer(source_id).value
         if source == "list":
-            return len(self._list_store[source_id].items)
+            return len(self._list_store[source_id])
         return self._metadata[source_id]
 
     def render_placeholder(self, placeholder_data, list_item_id):
@@ -56,6 +54,8 @@ class PlaceholderRenderer:
             location=self._location,
             list_store=self._list_store,
         )
+
+        placeholder_data = QuestionnaireSchema.get_mutable_deepcopy(placeholder_data)
 
         if "text_plural" in placeholder_data:
             plural_schema = placeholder_data["text_plural"]
@@ -75,11 +75,11 @@ class PlaceholderRenderer:
         """
         Transform the current schema json to a fully rendered dictionary
         """
-        rendered_data = deepcopy(dict_to_render)
-        pointers = find_pointers_containing(rendered_data, "placeholders")
+        dict_to_render = QuestionnaireSchema.get_mutable_deepcopy(dict_to_render)
+        pointers = find_pointers_containing(dict_to_render, "placeholders")
 
         for pointer in pointers:
-            rendered_text = self.render_pointer(rendered_data, pointer, list_item_id)
-            set_pointer(rendered_data, pointer, rendered_text)
+            rendered_text = self.render_pointer(dict_to_render, pointer, list_item_id)
+            set_pointer(dict_to_render, pointer, rendered_text)
 
-        return rendered_data
+        return dict_to_render

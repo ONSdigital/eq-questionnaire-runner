@@ -1,8 +1,8 @@
 from typing import List, Mapping, Optional
 
-from app.data_model.answer_store import AnswerStore
-from app.data_model.list_store import ListStore
-from app.data_model.progress_store import ProgressStore
+from app.data_models.answer_store import AnswerStore
+from app.data_models.list_store import ListStore
+from app.data_models.progress_store import ProgressStore
 from app.questionnaire.location import Location
 from app.questionnaire.questionnaire_schema import QuestionnaireSchema
 from app.questionnaire.routing_path import RoutingPath
@@ -42,19 +42,20 @@ class PathFinder:
             current_location.section_id
         )
 
-        for group in section["groups"]:
-            if "skip_conditions" in group:
-                if evaluate_skip_conditions(
-                    group["skip_conditions"],
-                    self.schema,
-                    self.metadata,
-                    self.answer_store,
-                    self.list_store,
-                    current_location=current_location,
-                ):
-                    continue
+        if section:
+            for group in section["groups"]:
+                if "skip_conditions" in group:
+                    if evaluate_skip_conditions(
+                        group["skip_conditions"],
+                        self.schema,
+                        self.metadata,
+                        self.answer_store,
+                        self.list_store,
+                        current_location=current_location,
+                    ):
+                        continue
 
-            blocks.extend(group["blocks"])
+                blocks.extend(group["blocks"])
 
         if blocks:
             routing_path_block_ids = self._build_routing_path_block_ids(
@@ -145,6 +146,9 @@ class PathFinder:
             )
 
             if should_goto:
+                if rule["goto"].get("section") == "End":
+                    return None
+
                 next_block_id = self._get_next_block_id(rule)
                 next_block_index = PathFinder._block_index_for_block_id(
                     blocks, next_block_id

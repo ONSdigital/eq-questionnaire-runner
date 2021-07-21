@@ -1,10 +1,10 @@
 import hashlib
 
-import simplejson as json
 from jwcrypto import jwe, jwk
 from jwcrypto.common import base64url_encode
 from structlog import get_logger
 
+from app.utilities.json import json_dumps
 from app.utilities.strings import to_bytes, to_str
 
 logger = get_logger()
@@ -12,12 +12,12 @@ logger = get_logger()
 
 class StorageEncryption:
     def __init__(self, user_id, user_ik, pepper):
-        if user_id is None:
-            raise ValueError("User id must be set")
-        if user_ik is None:
-            raise ValueError("User ik must be set")
-        if pepper is None:
-            raise ValueError("Pepper must be set")
+        if not user_id:
+            raise ValueError("user_id not provided")
+        if not user_ik:
+            raise ValueError("user_ik not provided")
+        if not pepper:
+            raise ValueError("pepper not provided")
 
         self.key = self._generate_key(user_id, user_ik, pepper)
 
@@ -37,7 +37,7 @@ class StorageEncryption:
 
     def encrypt_data(self, data):
         if isinstance(data, dict):
-            data = json.dumps(data, for_json=True)
+            data = json_dumps(data)
 
         protected_header = {"alg": "dir", "enc": "A256GCM", "kid": "1,1"}
 

@@ -21,12 +21,15 @@ function display_result {
 flake8 --max-complexity 10 --count
 display_result $? 1 "Flake 8 code style check"
 
-pylint --reports=n --output-format=colorized --rcfile=.pylintrc -j 0 ./app ./tests ./scripts
+pylint --reports=n --output-format=colorized --rcfile=.pylintrc -j 0 **/*.py *.py
 # pylint bit encodes the exit code to allow you to figure out which category has failed.
 # https://docs.pylint.org/en/1.6.0/run.html#exit-codes
 # We want to fail on all errors so don't check for specific bits in the output; but if we did in future, see:
 # http://stackoverflow.com/questions/6626351/how-to-extract-bits-from-return-code-number-in-bash
 display_result $? 1 "Pylint linting check"
+
+isort --check .
+display_result $? 1 "isort linting check"
 
 ./scripts/run_mypy.sh
 display_result $? 1 "Mypy type check"

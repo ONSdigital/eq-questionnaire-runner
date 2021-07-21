@@ -1,5 +1,6 @@
 {
     "mime_type": "application/json/ons/eq",
+    "language": "en",
     "schema_version": "0.0.2",
     "data_version": "0.0.3",
     "survey_id": "0",
@@ -20,6 +21,14 @@
             "type": "string"
         }
     ],
+    "questionnaire_flow": {
+        "type": "Linear",
+        "options": {
+            "summary": {
+                "collapsible": false
+            }
+        }
+    },
     "sections": [
         {
             "id": "default-section",
@@ -33,7 +42,6 @@
                                 "answers": [
                                     {
                                         "id": "topping-checkbox-answer",
-                                        "label": "",
                                         "mandatory": false,
                                         "options": [
                                             {
@@ -78,12 +86,10 @@
                                         }
                                     }
                                 ],
-                                "description": "",
                                 "id": "topping-checkbox-question",
                                 "title": "What extra toppings would you like?",
                                 "type": "General"
-                            },
-                            "routing_rules": []
+                            }
                         },
                         {
                             "id": "topping-interstitial-set",
@@ -202,14 +208,9 @@
                                     ]
                                 }
                             ]
-                        },
-                        {
-                            "type": "Summary",
-                            "id": "summary"
                         }
                     ],
-                    "id": "checkboxes",
-                    "title": ""
+                    "id": "checkboxes"
                 }
             ]
         }

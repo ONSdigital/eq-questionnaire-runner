@@ -1,5 +1,6 @@
 {
     "mime_type": "application/json/ons/eq",
+    "language": "en",
     "schema_version": "0.0.1",
     "data_version": "0.0.3",
     "survey_id": "0",
@@ -25,6 +26,14 @@
             "type": "string"
         }
     ],
+    "questionnaire_flow": {
+        "type": "Linear",
+        "options": {
+            "summary": {
+                "collapsible": false
+            }
+        }
+    },
     "sections": [
         {
             "id": "default-section",
@@ -38,7 +47,6 @@
                                 "answers": [
                                     {
                                         "id": "mandatory-checkbox-answer",
-                                        "label": "",
                                         "mandatory": true,
                                         "options": [
                                             {
@@ -47,8 +55,8 @@
                                                 "q_code": "0"
                                             },
                                             {
-                                                "label": "Cheese",
-                                                "value": "Cheese",
+                                                "label": "Ham & Cheese",
+                                                "value": "Ham & Cheese",
                                                 "q_code": "1"
                                             },
                                             {
@@ -84,18 +92,13 @@
                                                 }
                                             }
                                         ],
-                                        "type": "Checkbox",
-                                        "validation": {
-                                            "messages": {}
-                                        }
+                                        "type": "Checkbox"
                                     }
                                 ],
-                                "description": "",
                                 "id": "mandatory-checkbox-question",
                                 "title": "Which pizza toppings would you like?",
                                 "type": "General"
-                            },
-                            "routing_rules": []
+                            }
                         },
                         {
                             "type": "Question",
@@ -104,6 +107,7 @@
                                 "answers": [
                                     {
                                         "id": "non-mandatory-checkbox-answer",
+                                        "label": "Select any answers that apply",
                                         "mandatory": false,
                                         "options": [
                                             {
@@ -143,26 +147,38 @@
                                             }
                                         ],
                                         "q_code": "20",
-                                        "type": "Checkbox",
-                                        "validation": {
-                                            "messages": {}
-                                        }
+                                        "type": "Checkbox"
                                     }
                                 ],
-                                "description": "",
                                 "id": "non-mandatory-checkbox-question",
                                 "title": "What extra toppings would you like?",
                                 "type": "General"
-                            },
-                            "routing_rules": []
+                            }
                         },
                         {
-                            "type": "Summary",
-                            "id": "summary"
+                            "type": "Question",
+                            "id": "single-checkbox",
+                            "question": {
+                                "answers": [
+                                    {
+                                        "id": "single-checkbox-answer",
+                                        "mandatory": false,
+                                        "options": [
+                                            {
+                                                "label": "Estimate",
+                                                "value": "Estimate"
+                                            }
+                                        ],
+                                        "type": "Checkbox"
+                                    }
+                                ],
+                                "id": "single-checkbox-question",
+                                "title": "Is this an estimate?",
+                                "type": "General"
+                            }
                         }
                     ],
-                    "id": "checkboxes",
-                    "title": ""
+                    "id": "checkboxes"
                 }
             ]
         }

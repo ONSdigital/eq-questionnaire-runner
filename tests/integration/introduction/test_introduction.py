@@ -1,4 +1,5 @@
 from datetime import datetime
+
 from tests.integration.integration_test_case import IntegrationTestCase
 
 
@@ -52,7 +53,7 @@ class TestIntroduction(IntegrationTestCase):
         self.post(action="start_questionnaire")
 
         # When start survey button is pressed,
-        # Then started_at should be set in collection_metadata (and payload)
+        # Then started_at should be set in response_metadata (and payload)
         actual = self.dumpSubmission()["submission"]
 
         started_at_datetime = datetime.strptime(
@@ -76,3 +77,10 @@ class TestIntroduction(IntegrationTestCase):
         # When on the introduction page
         # Then legal_basis should be displayed
         self.assertInBody("Your response is legally required")
+
+    def test_contact_links(self):
+        self.launchSurvey("test_introduction")
+        self.assertInBody(
+            'If the company details or structure have changed contact us on <a href="tel:03001234931">0300 1234 931</a> '
+            'or email <a href="mailto:surveys@ons.gov.uk?subject=Change%20of%20details%20reference%20123456789012A">surveys@ons.gov.uk</a>'
+        )

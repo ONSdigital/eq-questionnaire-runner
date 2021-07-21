@@ -1,7 +1,6 @@
 from flask import url_for
 
 from app.views.handlers.question import Question
-from app.views.contexts.question import build_question_context
 
 
 class PrimaryPersonListCollector(Question):
@@ -22,26 +21,25 @@ class PrimaryPersonListCollector(Question):
 
         return super().get_next_location_url()
 
-    def get_context(self):
-        return build_question_context(self.rendered_block, self.form)
-
     def handle_post(self):
         list_name = self.rendered_block["for_list"]
+        answer_action = self._get_answer_action()
 
-        if (
-            self.form.data[self.rendered_block["add_or_edit_answer"]["id"]]
-            == self.rendered_block["add_or_edit_answer"]["value"]
-        ):
+        if answer_action and answer_action["type"] == "RedirectToListAddBlock":
             self._is_adding = True
-            self.questionnaire_store_updater.update_answers(self.form)
-            self._primary_person_id = self.questionnaire_store_updater.add_primary_person(
-                list_name
+            self.questionnaire_store_updater.update_answers(self.form.data)
+            self._primary_person_id = (
+                self.questionnaire_store_updater.add_primary_person(list_name)
             )
+
             self.evaluate_and_update_section_status_on_list_change(list_name)
             self.questionnaire_store_updater.save()
         else:
             self.questionnaire_store_updater.remove_primary_person(list_name)
 
+            self.questionnaire_store_updater.update_same_name_items(
+                list_name, self.rendered_block.get("same_name_answer_ids")
+            )
             # This method could determine the current section's status incorrectly, as
             # the call to update the answer store takes place in
             # `super().handle_post()`. The section status will eventually get

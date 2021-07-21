@@ -2,8 +2,8 @@ from unittest import TestCase
 
 from mock import Mock
 
-from app.views.handlers.block_factory import get_block_handler
 from app.questionnaire.location import InvalidLocationException
+from app.views.handlers.block_factory import get_block_handler
 
 
 class TestBlockFactory(TestCase):
@@ -15,6 +15,7 @@ class TestBlockFactory(TestCase):
                 schema=schema,
                 block_id="invalid-block-id",
                 list_item_id=None,
+                list_name="",
                 questionnaire_store=None,
                 language=None,
             )
@@ -29,6 +30,7 @@ class TestBlockFactory(TestCase):
                 schema=schema,
                 block_id="some-block",
                 list_item_id=None,
+                list_name="",
                 questionnaire_store=None,
                 language=None,
             )
@@ -43,6 +45,7 @@ class TestBlockFactory(TestCase):
                 schema=schema,
                 block_id="some-block",
                 list_item_id=None,
+                list_name="",
                 questionnaire_store=None,
                 language=None,
             )

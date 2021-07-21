@@ -2,56 +2,56 @@ from unittest.mock import patch
 
 import pytest
 
-from app.data_model.list_store import ListStore, ListModel
+from app.data_models.list_store import ListModel, ListStore
 
 
 def test_list_serialisation():
-    new_list = ListStore()
+    store = ListStore()
 
-    first_id = new_list.add_list_item("people")
-    second_id = new_list.add_list_item("people", primary_person=True)
-    additional_list_id = new_list.add_list_item("pets")
+    first_id = store.add_list_item("people")
+    second_id = store.add_list_item("people", primary_person=True)
+    additional_list_id = store.add_list_item("pets")
 
-    serialised = new_list.serialise()
+    serialized = store.serialize()
 
-    assert serialised == [
+    assert serialized == [
         {"name": "people", "primary_person": second_id, "items": [second_id, first_id]},
         {"name": "pets", "items": [additional_list_id]},
     ]
 
 
 def test_deserialisation():
-    new_list = ListStore()
+    store = ListStore()
     # pylint: disable=protected-access
-    first_id = new_list._generate_identifier()
-    second_id = new_list._generate_identifier()
-    additional_id = new_list._generate_identifier()
+    first_id = store._generate_identifier()
+    second_id = store._generate_identifier()
+    additional_id = store._generate_identifier()
 
-    serialised = [
+    serialized = [
         {"name": "people", "primary_person": second_id, "items": [first_id, second_id]},
         {"name": "pets", "items": [additional_id]},
     ]
 
-    deserialised = ListStore.deserialise(serialised)
+    deserialized = ListStore.deserialize(serialized)
 
-    assert deserialised["people"].items == [first_id, second_id]
-    assert deserialised["people"].primary_person == second_id
-    assert deserialised["pets"].items == [additional_id]
+    assert deserialized["people"].items == [first_id, second_id]
+    assert deserialized["people"].primary_person == second_id
+    assert deserialized["pets"].items == [additional_id]
 
 
 def test_unique_id_generation():
     """
     Ensure that every id generated is unique per questionnaire.
     """
-    # Mock the app.data_model.list_store.random_string method to return duplicates.
+    # Mock the app.data_models.list_store.random_string method to return duplicates.
     with patch(
-        "app.data_model.list_store.random_string",
+        "app.data_models.list_store.random_string",
         side_effect=["first", "first", "second"],
     ):
-        list_store = ListStore()
+        store = ListStore()
         # pylint: disable=protected-access
-        list_store._lists["test"] = ListModel(name="test", items=["first"])
-        result = list_store._generate_identifier()
+        store._lists["test"] = ListModel(name="test", items=["first"])
+        result = store._generate_identifier()
 
     assert result == "second"
 
@@ -59,6 +59,31 @@ def test_unique_id_generation():
 def test_get_item():
     store = ListStore()
     assert store["not_a_list"] == ListModel("not_a_list")
+
+
+def test_list_item_position():
+    store = ListStore()
+
+    first_id = store.add_list_item("people")
+    second_id = store.add_list_item("people")
+
+    assert store.list_item_position("people", first_id) == 1
+    assert store.list_item_position("people", second_id) == 2
+
+    with pytest.raises(ValueError):
+        assert store.list_item_position("people", "not-an-id")
+
+
+def test_list_item_positions_update_after_deletion():
+    store = ListStore()
+
+    first_id = store.add_list_item("people")
+    second_id = store.add_list_item("people")
+
+    assert store.list_item_position("people", first_id) == 1
+
+    store.delete_list_item("people", first_id)
+    assert store.list_item_position("people", second_id) == 1
 
 
 def test_delete_list_item_id():
@@ -75,18 +100,31 @@ def test_delete_list_item_id_does_not_raise():
         store.delete_list_item("people", "123456")
     except ValueError:
         # Not necessary, but keeps it explicit.
-        pytest.fail("Deleting a non-existant list item raised an error")
+        pytest.fail("Deleting a non-existent list item raised an error")
 
 
-def test_list_representation_equal():
-    assert ListModel(["123", "123"]) != "123"
+def test_list_representation_equality():
+    assert ListModel("list", ["1", "2"]) == ListModel("list", ["1", "2"])
+    assert ListModel("list", ["1", "2"]) != ListModel("list", ["1"])
 
-    assert ListModel(["1", "2"]) == ListModel(["1", "2"])
+    assert ListModel("list", ["1"], primary_person="1") == ListModel(
+        "list", ["1"], primary_person="1"
+    )
+    assert ListModel("list", ["1"], primary_person="1") != ListModel(
+        "list", ["1"], primary_person="2"
+    )
+
+    assert ListModel("list", ["1"]) != ["1"]
+
+
+def test_list_model_get_item():
+    assert ListModel("list", ["1", "2"])[0] == "1"
+    assert ListModel("list", ["1", "2"])[-1] == "2"
 
 
 def test_repr():
     test_list = ListModel("people", ["primaryperson"], primary_person="primaryperson")
-    serialised = [
+    serialized = [
         {
             "name": "people",
             "primary_person": "primaryperson",
@@ -94,8 +132,24 @@ def test_repr():
         }
     ]
 
-    list_store = ListStore.deserialise(serialised)
+    list_store = ListStore.deserialize(serialized)
 
     assert "primary_person=primaryperson" in repr(test_list)
     assert "items=['primaryperson']" in repr(test_list)
     assert "primaryperson" in repr(list_store)
+
+
+def test_first():
+    test_list = ListModel("people", ["abcde", "12345"])
+    assert test_list.first == "abcde"
+
+
+def test_first_raises_index_error_when_list_is_empty():
+    new_list = ListModel("people", [])
+
+    with pytest.raises(IndexError) as error:
+        new_list.first  # pylint: disable=pointless-statement
+
+    assert "unable to access first item in list, list 'people' is empty" in str(
+        error.value
+    )

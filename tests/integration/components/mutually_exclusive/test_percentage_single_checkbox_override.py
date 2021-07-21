@@ -20,7 +20,7 @@ class TestPercentageSingleCheckboxOverride(IntegrationTestCase):
         self.post({"percentage-answer": "99"})
 
         # Then
-        self.assertInUrl("section-summary")
+        self.assertInUrl("/sections/mutually-exclusive-percentage-section/")
         self.assertInBody("99%")
 
     def test_exclusive_answer(self):
@@ -33,7 +33,7 @@ class TestPercentageSingleCheckboxOverride(IntegrationTestCase):
         )
 
         # Then
-        self.assertInUrl("section-summary")
+        self.assertInUrl("/sections/mutually-exclusive-percentage-section/")
         self.assertInBody("I prefer not to say")
 
     def test_optional_exclusive_question(self):
@@ -41,7 +41,7 @@ class TestPercentageSingleCheckboxOverride(IntegrationTestCase):
         self.post({"percentage-answer": ""})
 
         # Then
-        self.assertInUrl("section-summary")
+        self.assertInUrl("/sections/mutually-exclusive-percentage-section/")
         self.assertInBody("No answer provided")
 
     def test_invalid_exclusive_answers(self):
@@ -54,4 +54,4 @@ class TestPercentageSingleCheckboxOverride(IntegrationTestCase):
         )
 
         # Then
-        self.assertInBody("Remove an answer to continue.")
+        self.assertInBody("Remove an answer")

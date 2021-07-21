@@ -1,14 +1,17 @@
+from copy import deepcopy
+
 from app.jinja_filters import (
-    get_formatted_currency,
     format_number,
-    format_unit,
     format_percentage,
+    format_unit,
+    get_formatted_currency,
 )
 from app.questionnaire.location import Location
 from app.questionnaire.questionnaire_schema import QuestionnaireSchema
 from app.questionnaire.schema_utils import (
     choose_question_to_display,
     get_answer_ids_in_block,
+    transform_variants,
 )
 from app.views.contexts.context import Context
 from app.views.contexts.summary.group import Group
@@ -30,6 +33,7 @@ class CalculatedSummaryContext(Context):
                 self._schema,
                 location,
                 self._language,
+                return_to="final-summary",
             ).serialize()
             for group in section["groups"]
         ]
@@ -94,22 +98,25 @@ class CalculatedSummaryContext(Context):
         """
         Evaluates questions in a block and removes any questions not containing a relevant answer
         """
-        block_question = choose_question_to_display(
+        transformed_block = transform_variants(
             block,
             self._schema,
+            self._metadata,
             self._answer_store,
             self._list_store,
-            self._metadata,
             current_location=current_location,
         )
-
-        reduced_block = block.copy()
+        transformed_block = deepcopy(transformed_block)
+        transformed_block = QuestionnaireSchema.get_mutable_deepcopy(transformed_block)
+        block_question = transformed_block["question"]
 
         matching_answers = []
         for answer_id in answer_ids_to_keep:
             matching_answers.extend(self._schema.get_answers_by_answer_id(answer_id))
 
-        questions_to_keep = [answer["parent_id"] for answer in matching_answers]
+        questions_to_keep = [
+            self._schema.parent_id_map[answer["id"]] for answer in matching_answers
+        ]
 
         if block_question["id"] in questions_to_keep:
             answers_to_keep = [
@@ -119,7 +126,7 @@ class CalculatedSummaryContext(Context):
             ]
             block_question["answers"] = answers_to_keep
 
-        return reduced_block
+        return transformed_block
 
     def _get_formatted_total(self, groups, current_location):
         calculated_total = 0

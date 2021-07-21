@@ -10,7 +10,6 @@ class TestErrors(IntegrationTestCase):
         "period_str": "April 2016",
         "period_id": "201604",
         "collection_exercise_sid": "789",
-        "questionnaire_id": "0123456789000000",
         "ru_ref": "123456789012A",
         "response_id": "1234567890123456",
         "ru_name": "Integration Testing",
@@ -38,19 +37,13 @@ class TestErrors(IntegrationTestCase):
             self.get("/hfjdskahfjdkashfsa")
             self.assertStatusNotFound()
 
-    def test_errors_500(self):
-        # Given
-        self.launchSurvey("test_percentage")
+    def test_errors_405(self):
+        # Given / When
+        self.get("/flush")
 
-        # When / Then
-        # Patch out a class in post to raise an exception so that the application error handler
-        # gets called
-        with patch(
-            "app.routes.questionnaire.get_block_handler",
-            side_effect=Exception("You broked it"),
-        ):
-            self.post({"answer": "5000000"})
-            self.assertStatusCode(500)
+        # Then
+        self.assertStatusCode(405)  # 405 is returned as the status code
+        self.assertInBody("Page not found")  # 404 page template is used
 
     def test_errors_500_with_payload(self):
         # Given
@@ -80,7 +73,7 @@ class TestErrors(IntegrationTestCase):
             ):
                 # Another exception occurs during exception handling
                 with patch(
-                    "app.routes.errors.log_error",
+                    "app.routes.errors.log_exception",
                     side_effect=Exception("You broked it again"),
                 ):
                     self.post({"answer": "5000000"})

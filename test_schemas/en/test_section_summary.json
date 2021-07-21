@@ -1,15 +1,12 @@
 {
     "mime_type": "application/json/ons/eq",
+    "language": "en",
     "schema_version": "0.0.1",
     "data_version": "0.0.3",
     "survey_id": "999",
     "title": "Section Summary",
     "description": "A questionnaire to test section summaries",
     "theme": "default",
-    "view_submitted_response": {
-        "enabled": true,
-        "duration": 9000
-    },
     "navigation": {
         "visible": true
     },
@@ -27,10 +24,22 @@
             "type": "string"
         }
     ],
+    "questionnaire_flow": {
+        "type": "Linear",
+        "options": {
+            "summary": {
+                "collapsible": true
+            }
+        }
+    },
     "sections": [
         {
             "id": "property-details-section",
             "title": "Property Details Section",
+            "summary": {
+                "page_title": "Custom section summary title",
+                "show_on_completion": true
+            },
             "groups": [
                 {
                     "id": "property-details",
@@ -47,7 +56,6 @@
                                     {
                                         "id": "insurance-type-answer",
                                         "type": "Radio",
-                                        "label": "",
                                         "mandatory": false,
                                         "options": [
                                             {
@@ -78,7 +86,6 @@
                                     {
                                         "id": "insurance-address-answer",
                                         "type": "TextArea",
-                                        "label": "",
                                         "mandatory": false
                                     }
                                 ]
@@ -128,22 +135,27 @@
                             ]
                         }
                     ]
-                },
-                {
-                    "id": "property-details-summary-group",
-                    "title": "Property Details Summary",
-                    "blocks": [
-                        {
-                            "id": "property-details-summary",
-                            "type": "SectionSummary"
-                        }
-                    ]
                 }
             ]
         },
         {
             "id": "house-details-section",
             "title": "House Details Section",
+            "summary": {
+                "show_on_completion": true,
+                "title": {
+                    "text": "Household Summary - {house_type_answer}",
+                    "placeholders": [
+                        {
+                            "placeholder": "house_type_answer",
+                            "value": {
+                                "source": "answers",
+                                "identifier": "house-type-answer"
+                            }
+                        }
+                    ]
+                }
+            },
             "groups": [
                 {
                     "id": "house-details",
@@ -160,7 +172,6 @@
                                     {
                                         "id": "house-type-answer",
                                         "type": "Radio",
-                                        "label": "",
                                         "mandatory": false,
                                         "options": [
                                             {
@@ -181,31 +192,57 @@
                             }
                         }
                     ]
-                },
-                {
-                    "id": "household-details-summary-group",
-                    "title": "Household Details Summary",
-                    "blocks": [
-                        {
-                            "id": "household-details-summary",
-                            "type": "SectionSummary"
-                        }
-                    ]
                 }
             ]
         },
         {
-            "id": "summary-section",
-            "title": "Summary",
+            "id": "household-count-section",
+            "title": "Household member count",
+            "summary": {
+                "show_on_completion": true,
+                "title": {
+                    "text_plural": {
+                        "forms": {
+                            "one": "{number_of_people} person lives here",
+                            "other": "{number_of_people} people live here"
+                        },
+                        "count": {
+                            "source": "answers",
+                            "identifier": "number-of-people-answer"
+                        }
+                    },
+                    "placeholders": [
+                        {
+                            "placeholder": "number_of_people",
+                            "value": {
+                                "source": "answers",
+                                "identifier": "number-of-people-answer"
+                            }
+                        }
+                    ]
+                }
+            },
             "groups": [
                 {
-                    "id": "summary-group",
-                    "title": "Summary",
+                    "id": "number-of-people-group",
+                    "title": "Number of people",
                     "blocks": [
                         {
-                            "id": "summary",
-                            "type": "Summary",
-                            "collapsible": true
+                            "type": "Question",
+                            "id": "number-of-people",
+                            "question": {
+                                "answers": [
+                                    {
+                                        "id": "number-of-people-answer",
+                                        "label": "Number of people",
+                                        "mandatory": true,
+                                        "type": "Number"
+                                    }
+                                ],
+                                "id": "number-of-people-question",
+                                "title": "Title",
+                                "type": "General"
+                            }
                         }
                     ]
                 }
