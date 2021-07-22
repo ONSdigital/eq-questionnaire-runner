@@ -47,7 +47,7 @@ class TestSubmissionPayload(AppContextTestCase):
                     submission_handler.get_payload()["submission_language_code"] == "cy"
                 )
 
-    def test_submit_questionnaire_store_delete_called(self):
+    def test_questionnaire_store_delete_called(self):
         questionnaire_store = self.questionnaire_store_mock()
         self.questionnaire_store_delete_mock(questionnaire_store)
 
