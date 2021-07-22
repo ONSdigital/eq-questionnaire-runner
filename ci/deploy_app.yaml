@@ -6,6 +6,7 @@ image_resource:
     tag: slim
 inputs:
   - name: eq-questionnaire-runner
+  - name: eq-questionnaire-runner-release
 params:
   SERVICE_ACCOUNT_JSON: ((gcp.service_account_json))
   PROJECT_ID:
@@ -68,6 +69,12 @@ run:
       EOL
 
       gcloud auth activate-service-account --key-file "${GOOGLE_APPLICATION_CREDENTIALS}"
+
+      cd eq-questionnaire-runner-release
+      tar -xzf source.tar.gz -C ../extracted-eq-questionnaire-runner --strip-components=1
+      cp tag ../extracted-eq-questionnaire-runner/.application-version
+      echo "Exposing release tag from eq-questionnaire-runner-release resource"
+      cat ../extracted-eq-questionnaire-runner/.application-version
 
       cd eq-questionnaire-runner
       ./ci/deploy_app.sh
