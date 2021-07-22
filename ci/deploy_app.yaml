@@ -72,7 +72,7 @@ run:
 
       cd eq-questionnaire-runner-release
       ls -ltra
-      cat teg
+      cat tag
       cat version
       cat commit_sha
       # tar -xzf source.tar.gz -C ../extracted-eq-questionnaire-runner --strip-components=1
