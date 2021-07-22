@@ -72,10 +72,14 @@ run:
 
       cd eq-questionnaire-runner-release
       ls -ltra
+      cat teg
+      cat version
+      cat commit_sha
       # tar -xzf source.tar.gz -C ../extracted-eq-questionnaire-runner --strip-components=1
       # cp tag ../extracted-eq-questionnaire-runner/.application-version
       # echo "Exposing release tag from eq-questionnaire-runner-release resource"
       # cat ../extracted-eq-questionnaire-runner/.application-version
 
-      cd eq-questionnaire-runner
+      cd ../eq-questionnaire-runner
+      ls -ltra
       ./ci/deploy_app.sh
