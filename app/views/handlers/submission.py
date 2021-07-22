@@ -1,4 +1,5 @@
 from datetime import datetime
+from typing import Mapping
 
 from flask import current_app
 from flask import session as cookie_session
@@ -39,7 +40,10 @@ class SubmissionHandler:
         cookie_session["submitted"] = True
 
         self._store_submitted_time_and_display_address_in_session()
-        self._questionnaire_store.delete()
+        submission_schema: Mapping = self._schema.get_submission() or {}
+
+        if not submission_schema.get("view_submitted_response"):
+            self._questionnaire_store.delete()
 
     def get_payload(self):
         payload = convert_answers(
