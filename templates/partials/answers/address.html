@@ -25,16 +25,16 @@
     },
     "uprn": {
       "value": address_form.uprn._value() | e
-    },
-    "searchButton": _("Search for an address"),
-    "manualButton": _("Manually enter address")
+    }
 } %}
 
 {% if answer.lookup_options and address_lookup_api_url %}
-  {% set config = config | setAttribute("autosuggest", {
+  {% set config = config | setAttributes({
     "label": {
-        "text": _("Enter address or postcode and select from results")
+      "text": _("Enter address or postcode and select from results")
     },
+    "searchButton": _("Search for an address"),
+    "manualLinkText": _("Manually enter address"),
     "isEditable": true,
     "mandatory": answer.mandatory,
     "APIDomain": address_lookup_api_url,
@@ -64,6 +64,8 @@
         "addressType": answer.lookup_options.address_type | lower
     }
   }) %}
+{% else %}
+  {% set config = config | setAttribute("manualEntry", "true") %}
 {% endif %}
 
 {{ onsAddressInput(config) }}
