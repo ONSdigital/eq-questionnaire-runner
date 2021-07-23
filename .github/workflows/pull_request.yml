@@ -169,11 +169,7 @@ jobs:
           echo "Pushing to DockerHub with tag $TAG"
           docker push onsdigital/eq-questionnaire-runner:$TAG
       - name: Push to GCR
-        env:
-          DOCKER_BUILDKIT: 1
-          GCLOUD_SERVICE_JSON: ${{ secrets.GCLOUD_SERVICE_KEY }}
-          PROJECT_ID: ${{ secrets.GCLOUD_PROJECT_ID }}
         run: |
-          echo $GCLOUD_SERVICE_JSON | docker login -u _json_key --password-stdin https://eu.gcr.io
+          echo ${{ secrets.GCLOUD_SERVICE_KEY }} | docker login -u _json_key --password-stdin https://eu.gcr.io
           echo "Pushing to GCR with tag $TAG"
           docker push eu.gcr.io/${{ secrets.GCLOUD_PROJECT_ID }}/eq-questionnaire-runner:$TAG
