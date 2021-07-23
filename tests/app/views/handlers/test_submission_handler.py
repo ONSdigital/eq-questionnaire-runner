@@ -32,44 +32,46 @@ class TestSubmissionPayload(AppContextTestCase):
             "eq_session_id", "user_id", self.session_data, self.expires_at
         )
 
+    @patch("app.views.handlers.submission.convert_answers", Mock(return_value={}))
     def test_submission_language_code_in_payload(self):
         with patch(
             "app.views.handlers.submission.get_session_store",
             return_value=self.session_store,
         ):
-            with patch(
-                "app.views.handlers.submission.convert_answers", return_value={}
-            ):
-                submission_handler = SubmissionHandler(
-                    QuestionnaireSchema({}), self.questionnaire_store_mock(), {}
-                )
-                assert (
-                    submission_handler.get_payload()["submission_language_code"] == "cy"
-                )
 
+            submission_handler = SubmissionHandler(
+                QuestionnaireSchema({}), self.questionnaire_store_mock(), {}
+            )
+            assert submission_handler.get_payload()["submission_language_code"] == "cy"
+
+    @patch(
+        "app.views.handlers.submission.SubmissionHandler.get_payload",
+        Mock(return_value={}),
+    )
     def test_questionnaire_store_delete_called(self):
         questionnaire_store = self.questionnaire_store_mock()
-        self.questionnaire_store_delete_mock(questionnaire_store)
+        questionnaire_store.delete = Mock()
 
         with self.app_request_context():
             with patch(
                 "app.views.handlers.submission.get_session_store",
                 return_value=self.session_store,
             ):
-                with patch(
-                    "app.views.handlers.submission.SubmissionHandler.get_payload",
-                    return_value={},
-                ):
-                    submission_handler = SubmissionHandler(
-                        QuestionnaireSchema({}), questionnaire_store, {}
-                    )
-                    submission_handler.submit_questionnaire()
 
-                    assert questionnaire_store.delete.called
+                submission_handler = SubmissionHandler(
+                    QuestionnaireSchema({}), questionnaire_store, full_routing_path=[]
+                )
+                submission_handler.submit_questionnaire()
 
+                assert questionnaire_store.delete.called
+
+    @patch(
+        "app.views.handlers.submission.SubmissionHandler.get_payload",
+        Mock(return_value={}),
+    )
     def test_view_submitted_response_true_questionnaire_store_delete_not_called(self):
         questionnaire_store = self.questionnaire_store_mock()
-        self.questionnaire_store_delete_mock(questionnaire_store)
+        questionnaire_store.delete = Mock()
 
         with self.app_request_context():
 
@@ -77,20 +79,17 @@ class TestSubmissionPayload(AppContextTestCase):
                 "app.views.handlers.submission.get_session_store",
                 return_value=self.session_store,
             ):
-                with patch(
-                    "app.views.handlers.submission.SubmissionHandler.get_payload",
-                    return_value={},
-                ):
-                    submission_handler = SubmissionHandler(
-                        QuestionnaireSchema(
-                            {"submission": {"view_submitted_response": "True"}}
-                        ),
-                        questionnaire_store,
-                        {},
-                    )
-                    submission_handler.submit_questionnaire()
 
-                    assert not questionnaire_store.delete.called
+                submission_handler = SubmissionHandler(
+                    QuestionnaireSchema(
+                        {"submission": {"view_submitted_response": "True"}}
+                    ),
+                    questionnaire_store,
+                    full_routing_path=[],
+                )
+                submission_handler.submit_questionnaire()
+
+                assert not questionnaire_store.delete.called
 
     @staticmethod
     def questionnaire_store_mock():
@@ -99,7 +98,3 @@ class TestSubmissionPayload(AppContextTestCase):
         questionnaire_store = QuestionnaireStore(storage)
         questionnaire_store.metadata = {"tx_id": "tx_id", "case_id": "case_id"}
         return questionnaire_store
-
-    @staticmethod
-    def questionnaire_store_delete_mock(questionnaire_store):
-        questionnaire_store.delete = Mock()
