@@ -113,9 +113,8 @@ class ValueSourceResolver:
             return len(list_model)
 
         if source == "location" and identifier == "list_item_id":
-            # :TODO: Resolve value from location object to be consistent with location id_selector in answer sources.
-            # This has been kept as is to keep placeholder parser functioning.
-            # This is a side-effect of not having a location object for routes such as individual response.
+            # This does not use the location object because
+            # routes such as individual response does not have the concept of location.
             return self.list_item_id
 
     def resolve(self, value_source: Union[list, dict]) -> ValueSourceTypes:
