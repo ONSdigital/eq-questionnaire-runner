@@ -22,21 +22,30 @@ class ValueSourceResolver:
     routing_path_block_ids: Optional[list] = None
     use_default_answer: bool = False
 
-    def _get_list_item_id_from_value_source(self, value_source: dict) -> Optional[str]:
-        if not (list_item_selector := value_source.get("list_item_selector")):
-            return None
+    def _resolve_list_item_id_for_value_source(
+        self, value_source: dict
+    ) -> Optional[str]:
+        list_item_id: Optional[str] = None
 
-        value: Optional[str] = None
-        if list_item_selector["source"] == "location":
-            value = getattr(self.location, list_item_selector["id"])
+        if list_item_selector := value_source.get("list_item_selector"):
+            if list_item_selector["source"] == "location":
+                list_item_id = getattr(self.location, list_item_selector["id"])
 
-        elif list_item_selector["source"] == "list":
-            value = getattr(
-                self.list_store[list_item_selector["id"]],
-                list_item_selector["id_selector"],
-            )
+            elif list_item_selector["source"] == "list":
+                list_item_id = getattr(
+                    self.list_store[list_item_selector["id"]],
+                    list_item_selector["id_selector"],
+                )
 
-        return value
+        if list_item_id:
+            return list_item_id
+
+        return (
+            self.list_item_id
+            if self.list_item_id
+            and self.schema.answer_should_have_list_item_id(value_source["identifier"])
+            else None
+        )
 
     def _is_answer_on_path(self, answer_id: str) -> bool:
         if self.routing_path_block_ids:
@@ -60,15 +69,8 @@ class ValueSourceResolver:
             return answer.value
 
     def _resolve_answer_value(self, value_source: dict) -> ValueSourceTypes:
-        list_item_id = self._get_list_item_id_from_value_source(value_source)
+        list_item_id = self._resolve_list_item_id_for_value_source(value_source)
         answer_id = value_source["identifier"]
-        if not list_item_id:
-            list_item_id = (
-                self.list_item_id
-                if self.list_item_id
-                and self.schema.answer_should_have_list_item_id(answer_id)
-                else None
-            )
 
         answer_value = self._get_answer_value(
             answer_id=answer_id, list_item_id=list_item_id
@@ -85,7 +87,7 @@ class ValueSourceResolver:
 
     def _resolve_value_source_list(
         self, value_source_list: list[dict]
-    ) -> ValueSourceTypes:
+    ) -> Optional[ValueSourceTypes]:
         values = []
         for value_source in value_source_list:
             value = self._resolve_value_source_dict(value_source)
