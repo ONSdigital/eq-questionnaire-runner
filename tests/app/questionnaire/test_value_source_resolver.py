@@ -122,19 +122,9 @@ def test_answer_source_with_list_item_id_no_list_item_selector():
     assert value_source_resolver.resolve(answer_source) == "Yes"
 
 
-def test_answer_source_with_list_item_id_but_answer_not_in_list_collector_or_repeat():
+def test_list_item_id_ignored_if_answer_not_in_list_collector_or_repeat():
     schema = get_mock_schema()
     schema.answer_should_have_list_item_id = Mock(return_value=False)
-
-    value_source_resolver = get_value_source_resolver(
-        schema=schema,
-        answer_store=AnswerStore(
-            [{"answer_id": "some-answer", "list_item_id": "item-1", "value": "Yes"}]
-        ),
-        list_item_id="item-1",
-    )
-
-    assert value_source_resolver.resolve(answer_source) is None
 
     value_source_resolver = get_value_source_resolver(
         schema=schema,
