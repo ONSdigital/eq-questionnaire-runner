@@ -181,17 +181,24 @@ def test_answer_source_with_list_item_selector_list_first_item():
 @pytest.mark.parametrize("is_inside_repeat", [True, False])
 def test_answer_source_with_routing_path_block_ids(is_answer_on_path, is_inside_repeat):
     schema = get_mock_schema()
-    schema.get_block_for_answer_id = Mock(return_value={"id": f"some-block"})
+    schema.get_block_for_answer_id = Mock(return_value={"id": f"block-on-path"})
 
     location = Location(section_id="test-section", block_id="test-block")
-    id_prefix = "some" if is_answer_on_path else "some-other"
-    answer = Answer(answer_id=f"{id_prefix}-answer", value="Yes")
+
+    if is_answer_on_path:
+        answer_id = "answer-on-path"
+        block_id = "block-on-path"
+    else:
+        answer_id = "answer-not-on-path"
+        block_id = "block-not-on-path"
+
+    answer = Answer(answer_id=answer_id, value="Yes")
 
     if is_inside_repeat:
         location.list_item_id = answer.list_item_id = "item-1"
         schema.should_answer_have_list_item_id = Mock(return_value=True)
     else:
-        schema.should_answer_have_list_item_id = Mock(return_value=True)
+        location.list_item_id = answer.list_item_id = None
 
     value_source_resolver = get_value_source_resolver(
         schema=schema,
@@ -199,11 +206,16 @@ def test_answer_source_with_routing_path_block_ids(is_answer_on_path, is_inside_
         list_store=ListStore([{"name": "some-list", "items": get_list_items(3)}]),
         location=location,
         list_item_id=location.list_item_id,
-        routing_path_block_ids=[f"{id_prefix}-block"],
+        routing_path_block_ids=[block_id],
     )
 
     expected_result = "Yes" if is_answer_on_path else None
-    assert value_source_resolver.resolve(answer_source) == expected_result
+    assert (
+        value_source_resolver.resolve(
+            {"source": "answers", "identifier": "answer-on-path"}
+        )
+        == expected_result
+    )
 
 
 @pytest.mark.parametrize("use_default_answer", [True, False])
