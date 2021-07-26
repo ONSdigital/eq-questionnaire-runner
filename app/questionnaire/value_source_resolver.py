@@ -85,17 +85,17 @@ class ValueSourceResolver:
 
     def _resolve_value_source_list(
         self, value_source_list: list[dict]
-    ) -> Optional[ValueSourceTypes]:
+    ) -> ValueSourceTypes:
         values = []
         for value_source in value_source_list:
-            value = self._resolve(value_source)
+            value = self._resolve_value_source_dict(value_source)
             if isinstance(value, list):
                 values.extend(value)
             else:
                 values.append(value)
         return values
 
-    def _resolve(self, value_source: dict) -> ValueSourceTypes:
+    def _resolve_value_source_dict(self, value_source: dict) -> ValueSourceTypes:
         source = value_source["source"]
         identifier = value_source.get("identifier")
 
@@ -121,4 +121,4 @@ class ValueSourceResolver:
         if isinstance(value_source, list):
             return self._resolve_value_source_list(value_source)
 
-        return self._resolve(value_source)
+        return self._resolve_value_source_dict(value_source)
