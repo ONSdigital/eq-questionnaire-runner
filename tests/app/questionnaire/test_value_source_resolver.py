@@ -71,7 +71,7 @@ def get_value_source_resolver(
 ):
     if not schema:
         schema = get_mock_schema()
-        schema.answer_should_have_list_item_id = Mock(return_value=bool(list_item_id))
+        schema.should_answer_have_list_item_id = Mock(return_value=bool(list_item_id))
 
     if not use_default_answer:
         schema.get_default_answer = Mock(return_value=None)
@@ -124,7 +124,7 @@ def test_answer_source_with_list_item_id_no_list_item_selector():
 
 def test_list_item_id_ignored_if_answer_not_in_list_collector_or_repeat():
     schema = get_mock_schema()
-    schema.answer_should_have_list_item_id = Mock(return_value=False)
+    schema.should_answer_have_list_item_id = Mock(return_value=False)
 
     value_source_resolver = get_value_source_resolver(
         schema=schema,
@@ -189,9 +189,9 @@ def test_answer_source_with_routing_path_block_ids(is_answer_on_path, is_inside_
 
     if is_inside_repeat:
         location.list_item_id = answer.list_item_id = "item-1"
-        schema.answer_should_have_list_item_id = Mock(return_value=True)
+        schema.should_answer_have_list_item_id = Mock(return_value=True)
     else:
-        schema.answer_should_have_list_item_id = Mock(return_value=True)
+        schema.should_answer_have_list_item_id = Mock(return_value=True)
 
     value_source_resolver = get_value_source_resolver(
         schema=schema,

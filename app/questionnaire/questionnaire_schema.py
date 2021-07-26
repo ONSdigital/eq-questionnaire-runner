@@ -366,7 +366,7 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
         if block := self.get_block_for_answer_id(answer_id):
             return self.is_block_in_repeating_section(block_id=block["id"])
 
-    def answer_should_have_list_item_id(
+    def should_answer_have_list_item_id(
         self,
         answer_id: str,
     ) -> bool:

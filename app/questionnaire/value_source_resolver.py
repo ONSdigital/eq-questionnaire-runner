@@ -43,7 +43,7 @@ class ValueSourceResolver:
         return (
             self.list_item_id
             if self.list_item_id
-            and self.schema.answer_should_have_list_item_id(value_source["identifier"])
+            and self.schema.should_answer_have_list_item_id(value_source["identifier"])
             else None
         )
 
