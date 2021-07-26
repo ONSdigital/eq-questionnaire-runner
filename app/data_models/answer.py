@@ -1,13 +1,16 @@
 from __future__ import annotations
 
 from dataclasses import asdict, dataclass, field
+from decimal import Decimal
 from typing import Optional, Union
+
+AnswerValueTypes = Union[str, int, Decimal, dict, list[str]]
 
 
 @dataclass
 class Answer:
     answer_id: str
-    value: Union[str, int, float, list, dict]
+    value: AnswerValueTypes
     list_item_id: Optional[str] = field(default=None)
 
     @classmethod

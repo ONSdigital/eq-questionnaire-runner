@@ -1,13 +1,14 @@
 from dataclasses import dataclass
+from decimal import Decimal
 from typing import Optional, Union
 
-from app.data_models import AnswerStore, ListStore
-from app.data_models.list_store import ListModel
+from app.data_models.answer import AnswerValueTypes
+from app.data_models.answer_store import AnswerStore
+from app.data_models.list_store import ListModel, ListStore
 from app.questionnaire import Location, QuestionnaireSchema
 from app.questionnaire.relationship_location import RelationshipLocation
 
-answer_value_types = Union[str, int, float, list, dict, None]
-value_source_types = Union[str, int, float, list, None]
+ValueSourceTypes = Union[None, str, int, Decimal, list]
 
 
 @dataclass
@@ -46,7 +47,7 @@ class ValueSourceResolver:
 
     def _get_answer_value(
         self, answer_id: str, list_item_id: Optional[str]
-    ) -> answer_value_types:
+    ) -> Optional[AnswerValueTypes]:
         if not self._is_answer_on_path(answer_id):
             return None
 
@@ -58,7 +59,7 @@ class ValueSourceResolver:
         ):
             return answer.value
 
-    def _resolve_answer_value(self, value_source: dict) -> value_source_types:
+    def _resolve_answer_value(self, value_source: dict) -> ValueSourceTypes:
         list_item_id = self._get_list_item_id_from_value_source(value_source)
         answer_id = value_source["identifier"]
         if not list_item_id:
@@ -84,8 +85,8 @@ class ValueSourceResolver:
 
     def _resolve_value_source_list(
         self, value_source_list: list[dict]
-    ) -> list[Union[str, int, float, None]]:
-        values: list[Union[str, int, float, None]] = []
+    ) -> Optional[ValueSourceTypes]:
+        values = []
         for value_source in value_source_list:
             value = self._resolve(value_source)
             if isinstance(value, list):
@@ -94,7 +95,7 @@ class ValueSourceResolver:
                 values.append(value)
         return values
 
-    def _resolve(self, value_source: dict) -> value_source_types:
+    def _resolve(self, value_source: dict) -> ValueSourceTypes:
         source = value_source["source"]
         identifier = value_source.get("identifier")
 
@@ -117,7 +118,7 @@ class ValueSourceResolver:
             # This is a side-effect of not having a location object for routes such as individual response.
             return self.list_item_id
 
-    def resolve(self, value_source: Union[list, dict]) -> value_source_types:
+    def resolve(self, value_source: Union[list, dict]) -> ValueSourceTypes:
         if isinstance(value_source, list):
             return self._resolve_value_source_list(value_source)
 
