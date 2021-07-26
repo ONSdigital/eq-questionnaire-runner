@@ -228,7 +228,6 @@ def test_answer_source_default_answer(use_default_answer):
 
     value_source_resolver = get_value_source_resolver(
         schema=schema,
-        answer_store=AnswerStore([{"answer_id": f"some-other-answer", "value": "No"}]),
         use_default_answer=use_default_answer,
     )
 
