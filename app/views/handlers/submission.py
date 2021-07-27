@@ -1,6 +1,7 @@
 from datetime import datetime
 from typing import Mapping
 
+from dateutil.tz import tzutc
 from flask import current_app
 from flask import session as cookie_session
 from sdc.crypto.encrypter import encrypt
@@ -42,7 +43,10 @@ class SubmissionHandler:
         self._store_submitted_time_and_display_address_in_session()
         submission_schema: Mapping = self._schema.get_submission() or {}
 
-        if not submission_schema.get("view_submitted_response"):
+        if submission_schema.get("view_submitted_response"):
+            self._questionnaire_store.submitted_at = datetime.now(tz=tzutc())
+            self._questionnaire_store.save()
+        else:
             self._questionnaire_store.delete()
 
     def get_payload(self):

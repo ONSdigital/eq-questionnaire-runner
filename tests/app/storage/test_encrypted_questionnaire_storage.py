@@ -1,4 +1,8 @@
+from datetime import datetime
+
+from dateutil.tz import tzutc
 from flask import current_app
+from freezegun import freeze_time
 
 from app.data_models import QuestionnaireStore
 from app.data_models.app_models import QuestionnaireState
@@ -37,7 +41,19 @@ class TestEncryptedQuestionnaireStorage(AppContextTestCase):
         encrypted.save(data)
         # check we can decrypt the data
         self.assertEqual(
-            ("test", QuestionnaireStore.LATEST_VERSION), encrypted.get_user_data()
+            ("test", QuestionnaireStore.LATEST_VERSION, None), encrypted.get_user_data()
+        )
+
+    @freeze_time(datetime.now(tzutc()).replace(second=0, microsecond=0))
+    def test_store_and_get_submitted_at(self):
+        user_id = "1"
+        user_ik = "2"
+        encrypted = EncryptedQuestionnaireStorage(user_id, user_ik, "pepper")
+        data = "test"
+        encrypted.save(data, datetime.now(tz=tzutc()))
+        self.assertEqual(
+            ("test", QuestionnaireStore.LATEST_VERSION, datetime.now(tz=tzutc())),
+            encrypted.get_user_data(),
         )
 
     def test_store(self):
@@ -51,16 +67,18 @@ class TestEncryptedQuestionnaireStorage(AppContextTestCase):
         data = "test"
         self.storage.save(data)
         self.assertEqual(
-            (data, QuestionnaireStore.LATEST_VERSION), self.storage.get_user_data()
+            (data, QuestionnaireStore.LATEST_VERSION, None),
+            self.storage.get_user_data(),
         )
 
     def test_delete(self):
         data = "test"
         self.storage.save(data)
         self.assertEqual(
-            (data, QuestionnaireStore.LATEST_VERSION), self.storage.get_user_data()
+            (data, QuestionnaireStore.LATEST_VERSION, None),
+            self.storage.get_user_data(),
         )
         self.storage.delete()
         self.assertEqual(
-            (None, None), self.storage.get_user_data()
+            (None, None, None), self.storage.get_user_data()
         )  # pylint: disable=protected-access

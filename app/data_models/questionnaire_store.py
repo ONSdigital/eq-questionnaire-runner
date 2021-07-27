@@ -22,7 +22,8 @@ class QuestionnaireStore:
         self.answer_store = AnswerStore()
         self.progress_store = ProgressStore()
 
-        raw_data, version = self._storage.get_user_data()
+        raw_data, version, submitted_at = self._storage.get_user_data()
+        self.submitted_at = submitted_at
         if raw_data:
             self._deserialize(raw_data)
         if version is not None:
@@ -68,4 +69,4 @@ class QuestionnaireStore:
 
     def save(self):
         data = self.serialize()
-        self._storage.save(data=data)
+        self._storage.save(data=data, submitted_at=self.submitted_at)

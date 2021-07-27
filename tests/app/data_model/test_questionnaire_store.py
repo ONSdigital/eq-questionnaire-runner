@@ -44,10 +44,11 @@ class TestQuestionnaireStore(TestCase):
     def setUp(self):
         def get_user_data():
             """Fake get_user_data implementation for storage"""
-            return self.input_data, 1
+            return self.input_data, 1, None
 
-        def set_output_data(data):
+        def set_output_data(data, submitted_at):
             self.output_data = data
+            self.submitted_at = submitted_at
 
         # Storage class mocking
         self.storage = MagicMock()
@@ -56,6 +57,7 @@ class TestQuestionnaireStore(TestCase):
 
         self.input_data = "{}"
         self.output_data = ""
+        self.submitted_at = None
         self.output_version = None
 
     def test_questionnaire_store_json_loads(self):
