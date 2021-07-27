@@ -392,60 +392,6 @@ def test_location_source():
     )
 
 
-def test_list_of_sources():
-    value_source_resolver = get_value_source_resolver(
-        answer_store=AnswerStore(
-            [
-                {
-                    "answer_id": "first-name",
-                    "list_item_id": "item-1",
-                    "value": "John",
-                },
-                {
-                    "answer_id": "second-name",
-                    "list_item_id": "item-1",
-                    "value": "Doe",
-                },
-            ]
-        ),
-        list_item_id="item-1",
-    )
-    list_of_sources = [
-        {"source": "answers", "identifier": "first-name"},
-        {"source": "answers", "identifier": "second-name"},
-    ]
-    assert value_source_resolver.resolve(list_of_sources) == ["John", "Doe"]
-
-
-def test_list_of_sources_with_list_values_are_flattened():
-    value_source_resolver = get_value_source_resolver(
-        answer_store=AnswerStore(
-            [
-                {
-                    "answer_id": "primary-hobby",
-                    "list_item_id": "item-1",
-                    "value": "Cricket",
-                },
-                {
-                    "answer_id": "other-hobbies",
-                    "list_item_id": "item-1",
-                    "value": ["Football", "Basketball"],
-                },
-            ]
-        ),
-        list_item_id="item-1",
-    )
-    list_of_sources = [
-        {"source": "answers", "identifier": "primary-hobby"},
-        {"source": "answers", "identifier": "other-hobbies"},
-    ]
-    assert value_source_resolver.resolve(list_of_sources) == [
-        "Cricket",
-        "Football",
-        "Basketball",
-    ]
-
-
 @pytest.mark.parametrize(
     "answer_value, escaped_value",
     [

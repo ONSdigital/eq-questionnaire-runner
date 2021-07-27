@@ -4,7 +4,10 @@ from app.data_models.answer import AnswerValueTypes
 from app.data_models.answer_store import AnswerStore
 from app.questionnaire import QuestionnaireSchema
 from app.questionnaire.placeholder_transforms import PlaceholderTransforms
-from app.questionnaire.value_source_resolver import ValueSourceResolver
+from app.questionnaire.value_source_resolver import (
+    ValueSourceResolver,
+    ValueSourceTypes,
+)
 
 
 class PlaceholderParser:
@@ -58,6 +61,18 @@ class PlaceholderParser:
         except KeyError:
             return self._value_source_resolver.resolve(placeholder["value"])
 
+    def _resolve_value_source_list(
+        self, value_source_list: list[dict]
+    ) -> Optional[ValueSourceTypes]:
+        values = []
+        for value_source in value_source_list:
+            value = self._value_source_resolver.resolve(value_source)
+            if isinstance(value, list):
+                values.extend(value)
+            else:
+                values.append(value)
+        return values
+
     def _parse_transforms(self, transform_list: Sequence[Mapping]):
         transformed_value = None
 
@@ -66,7 +81,7 @@ class PlaceholderParser:
 
             for arg_key, arg_value in transform["arguments"].items():
                 if isinstance(arg_value, list):
-                    transformed_value = self._value_source_resolver.resolve(arg_value)
+                    transformed_value = self._resolve_value_source_list(arg_value)
                 elif isinstance(arg_value, dict):
                     if "value" in arg_value:
                         transformed_value = arg_value["value"]
