@@ -312,21 +312,21 @@ def test_answer_should_not_have_list_item_id_without_repeat_or_list_collector(
 ):
     schema = QuestionnaireSchema(question_schema)
 
-    assert schema.should_answer_have_list_item_id(answer_id="answer1") is False
+    assert schema.is_repeating_answer(answer_id="answer1") is False
 
 
-def test_should_answer_have_list_item_id_within_repeat(section_with_repeating_list):
+def test_is_repeating_answer_within_repeat(section_with_repeating_list):
     schema = QuestionnaireSchema(section_with_repeating_list)
 
-    assert schema.should_answer_have_list_item_id(answer_id="proxy-answer") is True
+    assert schema.is_repeating_answer(answer_id="proxy-answer") is True
 
 
-def test_should_answer_have_list_item_id_within_list_collector(
+def test_is_repeating_answer_within_list_collector(
     list_collector_variant_schema,
 ):
     schema = QuestionnaireSchema(list_collector_variant_schema)
 
-    assert schema.should_answer_have_list_item_id(answer_id="answer1") is True
+    assert schema.is_repeating_answer(answer_id="answer1") is True
 
 
 def test_get_list_collector_for_list(list_collector_variant_schema):
