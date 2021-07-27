@@ -2,10 +2,12 @@ from typing import Any, Dict, Mapping, Optional, Sequence
 
 from app.data_models.answer import AnswerValueTypes
 from app.data_models.answer_store import AnswerStore
-from app.libs.utils import escape_value
 from app.questionnaire import QuestionnaireSchema
 from app.questionnaire.placeholder_transforms import PlaceholderTransforms
-from app.questionnaire.value_source_resolver import ValueSourceResolver
+from app.questionnaire.value_source_resolver import (
+    ValueSourceResolver,
+    ValueSourceTypes,
+)
 
 
 class PlaceholderParser:
@@ -41,6 +43,7 @@ class PlaceholderParser:
             schema=self._schema,
             location=self._location,
             list_item_id=self._list_item_id,
+            escape_answer_value=True,
         )
 
     def __call__(self, placeholder_list: Sequence[Mapping]) -> Mapping:
@@ -56,8 +59,19 @@ class PlaceholderParser:
         try:
             return self._parse_transforms(placeholder["transforms"])
         except KeyError:
-            resolved_value = self._value_source_resolver.resolve(placeholder["value"])
-            return escape_value(resolved_value)
+            return self._value_source_resolver.resolve(placeholder["value"])
+
+    def _resolve_value_source_list(
+        self, value_source_list: list[dict]
+    ) -> Optional[ValueSourceTypes]:
+        values = []
+        for value_source in value_source_list:
+            value = self._value_source_resolver.resolve(value_source)
+            if isinstance(value, list):
+                values.extend(value)
+            else:
+                values.append(value)
+        return values
 
     def _parse_transforms(self, transform_list: Sequence[Mapping]):
         transformed_value = None
@@ -67,7 +81,7 @@ class PlaceholderParser:
 
             for arg_key, arg_value in transform["arguments"].items():
                 if isinstance(arg_value, list):
-                    transformed_value = self._value_source_resolver.resolve(arg_value)
+                    transformed_value = self._resolve_value_source_list(arg_value)
                 elif isinstance(arg_value, dict):
                     if "value" in arg_value:
                         transformed_value = arg_value["value"]
@@ -80,7 +94,7 @@ class PlaceholderParser:
                 else:
                     transformed_value = arg_value
 
-                transform_args[arg_key] = escape_value(transformed_value)
+                transform_args[arg_key] = transformed_value
 
             transformed_value = getattr(self._transformer, transform["transform"])(
                 **transform_args

@@ -1,4 +1,4 @@
-from typing import Union
+from typing import Optional, Union
 
 from markupsafe import Markup, escape
 
@@ -14,7 +14,9 @@ def convert_tx_id(tx_id: str) -> str:
     return (tx_id[:4] + "-" + tx_id[4:])[:19]
 
 
-def escape_value(value: AnswerValueTypes) -> Union[None, Markup, AnswerValueTypes]:
+def escape_value(
+    value: Optional[AnswerValueTypes],
+) -> Union[None, Markup, AnswerValueTypes]:
     if isinstance(value, list):
         return [
             escape(item) if item and isinstance(item, str) else item for item in value
