@@ -2,13 +2,16 @@ from dataclasses import dataclass
 from decimal import Decimal
 from typing import Optional, Union
 
+from markupsafe import Markup
+
 from app.data_models.answer import AnswerValueTypes
 from app.data_models.answer_store import AnswerStore
 from app.data_models.list_store import ListModel, ListStore
+from app.libs.utils import escape_value
 from app.questionnaire import Location, QuestionnaireSchema
 from app.questionnaire.relationship_location import RelationshipLocation
 
-ValueSourceTypes = Union[None, str, int, Decimal, list]
+ValueSourceTypes = Union[None, str, int, Decimal, list[str]]
 
 
 @dataclass
@@ -21,6 +24,7 @@ class ValueSourceResolver:
     list_item_id: Optional[str]
     routing_path_block_ids: Optional[list] = None
     use_default_answer: bool = False
+    escape_answer_value: bool = False
 
     def _resolve_list_item_id_for_value_source(
         self, value_source: dict
@@ -68,7 +72,9 @@ class ValueSourceResolver:
         ):
             return answer.value
 
-    def _resolve_answer_value(self, value_source: dict) -> ValueSourceTypes:
+    def _resolve_answer_value(
+        self, value_source: dict
+    ) -> Union[Markup, ValueSourceTypes]:
         list_item_id = self._resolve_list_item_id_for_value_source(value_source)
         answer_id = value_source["identifier"]
 
@@ -77,11 +83,14 @@ class ValueSourceResolver:
         )
 
         if isinstance(answer_value, dict):
-            return (
+            answer_value = (
                 answer_value.get(value_source["selector"])
                 if "selector" in value_source
                 else None
             )
+
+        if answer_value is not None and self.escape_answer_value:
+            return escape_value(answer_value)  # type: ignore
 
         return answer_value
 

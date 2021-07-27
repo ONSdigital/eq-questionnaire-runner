@@ -2,7 +2,6 @@ from typing import Any, Dict, Mapping, Optional, Sequence
 
 from app.data_models.answer import AnswerValueTypes
 from app.data_models.answer_store import AnswerStore
-from app.libs.utils import escape_value
 from app.questionnaire import QuestionnaireSchema
 from app.questionnaire.placeholder_transforms import PlaceholderTransforms
 from app.questionnaire.value_source_resolver import ValueSourceResolver
@@ -41,6 +40,7 @@ class PlaceholderParser:
             schema=self._schema,
             location=self._location,
             list_item_id=self._list_item_id,
+            escape_answer_value=True,
         )
 
     def __call__(self, placeholder_list: Sequence[Mapping]) -> Mapping:
@@ -56,8 +56,7 @@ class PlaceholderParser:
         try:
             return self._parse_transforms(placeholder["transforms"])
         except KeyError:
-            resolved_value = self._value_source_resolver.resolve(placeholder["value"])
-            return escape_value(resolved_value)
+            return self._value_source_resolver.resolve(placeholder["value"])
 
     def _parse_transforms(self, transform_list: Sequence[Mapping]):
         transformed_value = None
@@ -80,7 +79,7 @@ class PlaceholderParser:
                 else:
                     transformed_value = arg_value
 
-                transform_args[arg_key] = escape_value(transformed_value)
+                transform_args[arg_key] = transformed_value
 
             transformed_value = getattr(self._transformer, transform["transform"])(
                 **transform_args

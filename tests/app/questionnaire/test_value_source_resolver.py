@@ -8,6 +8,7 @@ from app.data_models.answer import Answer
 from app.questionnaire import Location, QuestionnaireSchema
 from app.questionnaire.relationship_location import RelationshipLocation
 from app.questionnaire.value_source_resolver import ValueSourceResolver
+from tests.app.libs.test_utils import ESCAPED_CONTENT, HTML_CONTENT
 
 
 def get_list_items(num: int):
@@ -39,6 +40,7 @@ def get_value_source_resolver(
     list_item_id: Optional[str] = None,
     routing_path_block_ids: Optional[list] = None,
     use_default_answer=False,
+    escape_answer_value=False,
 ):
     if not schema:
         schema = get_mock_schema()
@@ -56,6 +58,7 @@ def get_value_source_resolver(
         list_item_id=list_item_id,
         routing_path_block_ids=routing_path_block_ids,
         use_default_answer=use_default_answer,
+        escape_answer_value=escape_answer_value,
     )
 
 
@@ -441,3 +444,32 @@ def test_list_of_sources_with_list_values_are_flattened():
         "Football",
         "Basketball",
     ]
+
+
+@pytest.mark.parametrize(
+    "answer_value, escaped_value",
+    [
+        (HTML_CONTENT, ESCAPED_CONTENT),
+        ([HTML_CONTENT, 1, HTML_CONTENT], [ESCAPED_CONTENT, 1, ESCAPED_CONTENT]),
+        (1, 1),
+        (None, None),
+    ],
+)
+def test_answer_value_can_be_escaped(answer_value, escaped_value):
+    value_source_resolver = get_value_source_resolver(
+        answer_store=AnswerStore(
+            [
+                {
+                    "answer_id": "some-answer",
+                    "value": answer_value,
+                }
+            ]
+        ),
+        escape_answer_value=True,
+    )
+    assert (
+        value_source_resolver.resolve(
+            {"source": "answers", "identifier": "some-answer"}
+        )
+        == escaped_value
+    )

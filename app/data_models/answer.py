@@ -4,7 +4,7 @@ from dataclasses import asdict, dataclass, field
 from decimal import Decimal
 from typing import Optional, Union
 
-AnswerValueTypes = Union[str, int, Decimal, dict, list[str]]
+AnswerValueTypes = Union[str, int, Decimal, dict[str, Union[int, str]], list[str]]
 
 
 @dataclass
