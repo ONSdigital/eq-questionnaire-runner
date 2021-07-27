@@ -9,35 +9,6 @@ from app.questionnaire import Location, QuestionnaireSchema
 from app.questionnaire.relationship_location import RelationshipLocation
 from app.questionnaire.value_source_resolver import ValueSourceResolver
 
-answer_source = {"source": "answers", "identifier": "some-answer"}
-answer_source_dict_answer_selector = {
-    **answer_source,
-    "selector": "years",
-}
-answer_source_list_item_selector_location = {
-    **answer_source,
-    "list_item_selector": {"source": "location", "id": "list_item_id"},
-}
-answer_source_list_item_selector_list_first_item = {
-    **answer_source,
-    "list_item_selector": {"source": "list", "id": "some-list", "id_selector": "first"},
-}
-
-metadata_source = {"source": "metadata", "identifier": "some-metadata"}
-
-list_source = {"source": "list", "identifier": "some-list"}
-list_source_id_selector_first = {**list_source, "id_selector": "first"}
-list_source_id_selector_primary_person = {
-    **list_source,
-    "id_selector": "primary_person",
-}
-list_source_id_selector_same_name_items = {
-    **list_source,
-    "id_selector": "same_name_items",
-}
-
-location_source = {"source": "location", "identifier": "list_item_id"}
-
 
 def get_list_items(num: int):
     return [f"item-{i}" for i in range(1, num + 1)]
@@ -93,7 +64,12 @@ def test_answer_source():
         answer_store=AnswerStore([{"answer_id": "some-answer", "value": "Yes"}]),
     )
 
-    assert value_source_resolver.resolve(answer_source) == "Yes"
+    assert (
+        value_source_resolver.resolve(
+            {"source": "answers", "identifier": "some-answer"}
+        )
+        == "Yes"
+    )
 
 
 def test_answer_source_with_dict_answer_selector():
@@ -108,7 +84,16 @@ def test_answer_source_with_dict_answer_selector():
         ),
     )
 
-    assert value_source_resolver.resolve(answer_source_dict_answer_selector) == 1
+    assert (
+        value_source_resolver.resolve(
+            {
+                "source": "answers",
+                "identifier": "some-answer",
+                "selector": "years",
+            }
+        )
+        == 1
+    )
 
 
 def test_answer_source_with_list_item_id_no_list_item_selector():
@@ -119,7 +104,12 @@ def test_answer_source_with_list_item_id_no_list_item_selector():
         list_item_id="item-1",
     )
 
-    assert value_source_resolver.resolve(answer_source) == "Yes"
+    assert (
+        value_source_resolver.resolve(
+            {"source": "answers", "identifier": "some-answer"}
+        )
+        == "Yes"
+    )
 
 
 def test_list_item_id_ignored_if_answer_not_in_list_collector_or_repeat():
@@ -132,7 +122,12 @@ def test_list_item_id_ignored_if_answer_not_in_list_collector_or_repeat():
         list_item_id="item-1",
     )
 
-    assert value_source_resolver.resolve(answer_source) == "Yes"
+    assert (
+        value_source_resolver.resolve(
+            {"source": "answers", "identifier": "some-answer"}
+        )
+        == "Yes"
+    )
 
 
 def test_answer_source_with_list_item_selector_location():
@@ -152,7 +147,13 @@ def test_answer_source_with_list_item_selector_location():
     )
 
     assert (
-        value_source_resolver.resolve(answer_source_list_item_selector_location)
+        value_source_resolver.resolve(
+            {
+                "source": "answers",
+                "identifier": "some-answer",
+                "list_item_selector": {"source": "location", "id": "list_item_id"},
+            }
+        )
         == "Yes"
     )
 
@@ -172,7 +173,17 @@ def test_answer_source_with_list_item_selector_list_first_item():
     )
 
     assert (
-        value_source_resolver.resolve(answer_source_list_item_selector_list_first_item)
+        value_source_resolver.resolve(
+            {
+                "source": "answers",
+                "identifier": "some-answer",
+                "list_item_selector": {
+                    "source": "list",
+                    "id": "some-list",
+                    "id_selector": "first",
+                },
+            }
+        )
         == "Yes"
     )
 
@@ -234,7 +245,12 @@ def test_answer_source_default_answer(use_default_answer):
     )
 
     expected_result = "Yes" if use_default_answer else None
-    assert value_source_resolver.resolve(answer_source) == expected_result
+    assert (
+        value_source_resolver.resolve(
+            {"source": "answers", "identifier": "some-answer"}
+        )
+        == expected_result
+    )
 
 
 @pytest.mark.parametrize(
@@ -261,7 +277,10 @@ def test_list_source(list_count):
         ),
     )
 
-    assert value_source_resolver.resolve(list_source) == list_count
+    assert (
+        value_source_resolver.resolve({"source": "list", "identifier": "some-list"})
+        == list_count
+    )
 
 
 def test_list_source_with_id_selector_first():
@@ -269,7 +288,12 @@ def test_list_source_with_id_selector_first():
         list_store=ListStore([{"name": "some-list", "items": get_list_items(3)}]),
     )
 
-    assert value_source_resolver.resolve(list_source_id_selector_first) == "item-1"
+    assert (
+        value_source_resolver.resolve(
+            {"source": "list", "identifier": "some-list", "id_selector": "first"}
+        )
+        == "item-1"
+    )
 
 
 def test_list_source_with_id_selector_same_name_items():
@@ -285,9 +309,16 @@ def test_list_source_with_id_selector_same_name_items():
         ),
     )
 
-    assert value_source_resolver.resolve(
-        list_source_id_selector_same_name_items
-    ) == get_list_items(3)
+    assert (
+        value_source_resolver.resolve(
+            {
+                "source": "list",
+                "identifier": "some-list",
+                "id_selector": "same_name_items",
+            }
+        )
+        == get_list_items(3)
+    )
 
 
 @pytest.mark.parametrize(
@@ -308,14 +339,25 @@ def test_list_source_id_selector_primary_person(primary_person_list_item_id):
     )
 
     assert (
-        value_source_resolver.resolve(list_source_id_selector_primary_person)
+        value_source_resolver.resolve(
+            {
+                "source": "list",
+                "identifier": "some-list",
+                "id_selector": "primary_person",
+            }
+        )
         == primary_person_list_item_id
     )
 
 
 def test_location_source():
     value_source_resolver = get_value_source_resolver(list_item_id="item-1")
-    assert value_source_resolver.resolve(location_source) == "item-1"
+    assert (
+        value_source_resolver.resolve(
+            {"source": "location", "identifier": "list_item_id"}
+        )
+        == "item-1"
+    )
 
 
 def test_list_of_sources():
