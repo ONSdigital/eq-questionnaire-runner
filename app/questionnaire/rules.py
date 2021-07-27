@@ -341,9 +341,7 @@ def evaluate_when_rules(
 
 def get_answer_for_answer_id(answer_id, answer_store, schema, list_item_id):
     list_item_id = (
-        list_item_id
-        if list_item_id and schema.answer_should_have_list_item_id(answer_id)
-        else None
+        list_item_id if list_item_id and schema.is_repeating_answer(answer_id) else None
     )
 
     answer = answer_store.get_answer(

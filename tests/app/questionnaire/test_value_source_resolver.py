@@ -9,35 +9,6 @@ from app.questionnaire import Location, QuestionnaireSchema
 from app.questionnaire.relationship_location import RelationshipLocation
 from app.questionnaire.value_source_resolver import ValueSourceResolver
 
-answer_source = {"source": "answers", "identifier": "some-answer"}
-answer_source_dict_answer_selector = {
-    **answer_source,
-    "selector": "years",
-}
-answer_source_list_item_selector_location = {
-    **answer_source,
-    "list_item_selector": {"source": "location", "id": "list_item_id"},
-}
-answer_source_list_item_selector_list_first_item = {
-    **answer_source,
-    "list_item_selector": {"source": "list", "id": "some-list", "id_selector": "first"},
-}
-
-metadata_source = {"source": "metadata", "identifier": "some-metadata"}
-
-list_source = {"source": "list", "identifier": "some-list"}
-list_source_id_selector_first = {**list_source, "id_selector": "first"}
-list_source_id_selector_primary_person = {
-    **list_source,
-    "id_selector": "primary_person",
-}
-list_source_id_selector_same_name_items = {
-    **list_source,
-    "id_selector": "same_name_items",
-}
-
-location_source = {"source": "location", "identifier": "list_item_id"}
-
 
 def get_list_items(num: int):
     return [f"item-{i}" for i in range(1, num + 1)]
@@ -71,7 +42,7 @@ def get_value_source_resolver(
 ):
     if not schema:
         schema = get_mock_schema()
-        schema.answer_should_have_list_item_id = Mock(return_value=bool(list_item_id))
+        schema.is_repeating_answer = Mock(return_value=bool(list_item_id))
 
     if not use_default_answer:
         schema.get_default_answer = Mock(return_value=None)
@@ -93,7 +64,12 @@ def test_answer_source():
         answer_store=AnswerStore([{"answer_id": "some-answer", "value": "Yes"}]),
     )
 
-    assert value_source_resolver.resolve(answer_source) == "Yes"
+    assert (
+        value_source_resolver.resolve(
+            {"source": "answers", "identifier": "some-answer"}
+        )
+        == "Yes"
+    )
 
 
 def test_answer_source_with_dict_answer_selector():
@@ -108,7 +84,16 @@ def test_answer_source_with_dict_answer_selector():
         ),
     )
 
-    assert value_source_resolver.resolve(answer_source_dict_answer_selector) == 1
+    assert (
+        value_source_resolver.resolve(
+            {
+                "source": "answers",
+                "identifier": "some-answer",
+                "selector": "years",
+            }
+        )
+        == 1
+    )
 
 
 def test_answer_source_with_list_item_id_no_list_item_selector():
@@ -119,22 +104,17 @@ def test_answer_source_with_list_item_id_no_list_item_selector():
         list_item_id="item-1",
     )
 
-    assert value_source_resolver.resolve(answer_source) == "Yes"
-
-
-def test_answer_source_with_list_item_id_but_answer_not_in_list_collector_or_repeat():
-    schema = get_mock_schema()
-    schema.answer_should_have_list_item_id = Mock(return_value=False)
-
-    value_source_resolver = get_value_source_resolver(
-        schema=schema,
-        answer_store=AnswerStore(
-            [{"answer_id": "some-answer", "list_item_id": "item-1", "value": "Yes"}]
-        ),
-        list_item_id="item-1",
+    assert (
+        value_source_resolver.resolve(
+            {"source": "answers", "identifier": "some-answer"}
+        )
+        == "Yes"
     )
 
-    assert value_source_resolver.resolve(answer_source) is None
+
+def test_list_item_id_ignored_if_answer_not_in_list_collector_or_repeat():
+    schema = get_mock_schema()
+    schema.is_repeating_answer = Mock(return_value=False)
 
     value_source_resolver = get_value_source_resolver(
         schema=schema,
@@ -142,7 +122,12 @@ def test_answer_source_with_list_item_id_but_answer_not_in_list_collector_or_rep
         list_item_id="item-1",
     )
 
-    assert value_source_resolver.resolve(answer_source) == "Yes"
+    assert (
+        value_source_resolver.resolve(
+            {"source": "answers", "identifier": "some-answer"}
+        )
+        == "Yes"
+    )
 
 
 def test_answer_source_with_list_item_selector_location():
@@ -162,7 +147,13 @@ def test_answer_source_with_list_item_selector_location():
     )
 
     assert (
-        value_source_resolver.resolve(answer_source_list_item_selector_location)
+        value_source_resolver.resolve(
+            {
+                "source": "answers",
+                "identifier": "some-answer",
+                "list_item_selector": {"source": "location", "id": "list_item_id"},
+            }
+        )
         == "Yes"
     )
 
@@ -182,26 +173,37 @@ def test_answer_source_with_list_item_selector_list_first_item():
     )
 
     assert (
-        value_source_resolver.resolve(answer_source_list_item_selector_list_first_item)
+        value_source_resolver.resolve(
+            {
+                "source": "answers",
+                "identifier": "some-answer",
+                "list_item_selector": {
+                    "source": "list",
+                    "id": "some-list",
+                    "id_selector": "first",
+                },
+            }
+        )
         == "Yes"
     )
 
 
 @pytest.mark.parametrize("is_answer_on_path", [True, False])
-@pytest.mark.parametrize("is_inside_repeat", [True, False])
-def test_answer_source_with_routing_path_block_ids(is_answer_on_path, is_inside_repeat):
+def test_answer_source_with_routing_path_block_ids_outside_repeat(is_answer_on_path):
     schema = get_mock_schema()
-    schema.get_block_for_answer_id = Mock(return_value={"id": f"some-block"})
 
     location = Location(section_id="test-section", block_id="test-block")
-    id_prefix = "some" if is_answer_on_path else "some-other"
-    answer = Answer(answer_id=f"{id_prefix}-answer", value="Yes")
 
-    if is_inside_repeat:
-        location.list_item_id = answer.list_item_id = "item-1"
-        schema.answer_should_have_list_item_id = Mock(return_value=True)
+    if is_answer_on_path:
+        schema.get_block_for_answer_id = Mock(return_value={"id": f"block-on-path"})
+        answer_id = "answer-on-path"
+        expected_result = "Yes"
     else:
-        schema.answer_should_have_list_item_id = Mock(return_value=True)
+        schema.get_block_for_answer_id = Mock(return_value={"id": f"block-not-on-path"})
+        answer_id = "answer-not-on-path"
+        expected_result = None
+
+    answer = Answer(answer_id=answer_id, value="Yes")
 
     value_source_resolver = get_value_source_resolver(
         schema=schema,
@@ -209,11 +211,51 @@ def test_answer_source_with_routing_path_block_ids(is_answer_on_path, is_inside_
         list_store=ListStore([{"name": "some-list", "items": get_list_items(3)}]),
         location=location,
         list_item_id=location.list_item_id,
-        routing_path_block_ids=[f"{id_prefix}-block"],
+        routing_path_block_ids=["block-on-path"],
     )
 
-    expected_result = "Yes" if is_answer_on_path else None
-    assert value_source_resolver.resolve(answer_source) == expected_result
+    assert (
+        value_source_resolver.resolve(
+            {"source": "answers", "identifier": "answer-on-path"}
+        )
+        == expected_result
+    )
+
+
+@pytest.mark.parametrize("is_answer_on_path", [True, False])
+def test_answer_source_with_routing_path_block_ids_inside_repeat(is_answer_on_path):
+    schema = get_mock_schema()
+    schema.is_repeating_answer = Mock(return_value=True)
+    location = Location(
+        section_id="test-section", block_id="test-block", list_item_id="item-1"
+    )
+
+    if is_answer_on_path:
+        schema.get_block_for_answer_id = Mock(return_value={"id": f"block-on-path"})
+        answer_id = "answer-on-path"
+        expected_result = "Yes"
+    else:
+        schema.get_block_for_answer_id = Mock(return_value={"id": f"block-not-on-path"})
+        answer_id = "answer-not-on-path"
+        expected_result = None
+
+    answer = Answer(answer_id=answer_id, list_item_id="item-1", value="Yes")
+
+    value_source_resolver = get_value_source_resolver(
+        schema=schema,
+        answer_store=AnswerStore([answer.to_dict()]),
+        list_store=ListStore([{"name": "some-list", "items": get_list_items(3)}]),
+        location=location,
+        list_item_id=location.list_item_id,
+        routing_path_block_ids=["block-on-path"],
+    )
+
+    assert (
+        value_source_resolver.resolve(
+            {"source": "answers", "identifier": "answer-on-path"}
+        )
+        == expected_result
+    )
 
 
 @pytest.mark.parametrize("use_default_answer", [True, False])
@@ -228,12 +270,16 @@ def test_answer_source_default_answer(use_default_answer):
 
     value_source_resolver = get_value_source_resolver(
         schema=schema,
-        answer_store=AnswerStore([{"answer_id": f"some-other-answer", "value": "No"}]),
         use_default_answer=use_default_answer,
     )
 
     expected_result = "Yes" if use_default_answer else None
-    assert value_source_resolver.resolve(answer_source) == expected_result
+    assert (
+        value_source_resolver.resolve(
+            {"source": "answers", "identifier": "some-answer"}
+        )
+        == expected_result
+    )
 
 
 @pytest.mark.parametrize(
@@ -260,7 +306,10 @@ def test_list_source(list_count):
         ),
     )
 
-    assert value_source_resolver.resolve(list_source) == list_count
+    assert (
+        value_source_resolver.resolve({"source": "list", "identifier": "some-list"})
+        == list_count
+    )
 
 
 def test_list_source_with_id_selector_first():
@@ -268,7 +317,12 @@ def test_list_source_with_id_selector_first():
         list_store=ListStore([{"name": "some-list", "items": get_list_items(3)}]),
     )
 
-    assert value_source_resolver.resolve(list_source_id_selector_first) == "item-1"
+    assert (
+        value_source_resolver.resolve(
+            {"source": "list", "identifier": "some-list", "id_selector": "first"}
+        )
+        == "item-1"
+    )
 
 
 def test_list_source_with_id_selector_same_name_items():
@@ -284,9 +338,16 @@ def test_list_source_with_id_selector_same_name_items():
         ),
     )
 
-    assert value_source_resolver.resolve(
-        list_source_id_selector_same_name_items
-    ) == get_list_items(3)
+    assert (
+        value_source_resolver.resolve(
+            {
+                "source": "list",
+                "identifier": "some-list",
+                "id_selector": "same_name_items",
+            }
+        )
+        == get_list_items(3)
+    )
 
 
 @pytest.mark.parametrize(
@@ -307,14 +368,25 @@ def test_list_source_id_selector_primary_person(primary_person_list_item_id):
     )
 
     assert (
-        value_source_resolver.resolve(list_source_id_selector_primary_person)
+        value_source_resolver.resolve(
+            {
+                "source": "list",
+                "identifier": "some-list",
+                "id_selector": "primary_person",
+            }
+        )
         == primary_person_list_item_id
     )
 
 
 def test_location_source():
     value_source_resolver = get_value_source_resolver(list_item_id="item-1")
-    assert value_source_resolver.resolve(location_source) == "item-1"
+    assert (
+        value_source_resolver.resolve(
+            {"source": "location", "identifier": "list_item_id"}
+        )
+        == "item-1"
+    )
 
 
 def test_list_of_sources():

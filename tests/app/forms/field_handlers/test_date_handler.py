@@ -133,7 +133,7 @@ def test_get_referenced_offset_value_for_answer_id(app):
     "app.utilities.schema.load_schema_from_name", return_value=QuestionnaireSchema({})
 )
 @patch(
-    "app.questionnaire.questionnaire_schema.QuestionnaireSchema.answer_should_have_list_item_id",
+    "app.questionnaire.questionnaire_schema.QuestionnaireSchema.is_repeating_answer",
     return_value=True,
 )
 def test_get_referenced_offset_value_with_list_item_id(app, schema_mock):

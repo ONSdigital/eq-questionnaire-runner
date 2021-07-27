@@ -1,6 +1,6 @@
-from decimal import Decimal
-from typing import Dict, Mapping, Sequence, Union
+from typing import Any, Dict, Mapping, Optional, Sequence
 
+from app.data_models.answer import AnswerValueTypes
 from app.data_models.answer_store import AnswerStore
 from app.libs.utils import escape_value
 from app.questionnaire import QuestionnaireSchema
@@ -52,7 +52,7 @@ class PlaceholderParser:
                 ] = self._parse_placeholder(placeholder)
         return self._placeholder_map
 
-    def _parse_placeholder(self, placeholder: Mapping) -> Mapping:
+    def _parse_placeholder(self, placeholder: Mapping) -> Any:
         try:
             return self._parse_transforms(placeholder["transforms"])
         except KeyError:
@@ -63,9 +63,7 @@ class PlaceholderParser:
         transformed_value = None
 
         for transform in transform_list:
-            transform_args: Dict[
-                str, Union[None, str, int, Decimal, dict, list[str]]
-            ] = {}
+            transform_args: Dict[str, Optional[AnswerValueTypes]] = {}
 
             for arg_key, arg_value in transform["arguments"].items():
                 if isinstance(arg_value, list):
