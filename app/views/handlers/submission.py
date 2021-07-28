@@ -22,7 +22,6 @@ class SubmissionHandler:
         self._metadata = questionnaire_store.metadata
 
     def submit_questionnaire(self):
-
         payload = self.get_payload()
         message = json_dumps(payload)
 

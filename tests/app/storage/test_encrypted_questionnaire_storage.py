@@ -16,7 +16,7 @@ def _save_state_data(user_id, data, state_version=QuestionnaireStore.LATEST_VERS
 
     state_data = encryption.encrypt_data(data)
 
-    questionnaire_state = QuestionnaireState(user_id, state_data, state_version)
+    questionnaire_state = QuestionnaireState(user_id, state_data, state_version, None)
     current_app.eq["storage"].put(questionnaire_state)
 
 

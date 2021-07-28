@@ -49,7 +49,7 @@ class TestSubmissionPayload(AppContextTestCase):
         "app.views.handlers.submission.SubmissionHandler.get_payload",
         Mock(return_value={}),
     )
-    def test_questionnaire_store_delete_called(self):
+    def test_submit_questionnaire_store_delete_called(self):
         questionnaire_store = self.questionnaire_store_mock()
         questionnaire_store.delete = Mock()
 
@@ -66,46 +66,23 @@ class TestSubmissionPayload(AppContextTestCase):
 
                 assert questionnaire_store.delete.called
 
-    @patch(
-        "app.views.handlers.submission.SubmissionHandler.get_payload",
-        Mock(return_value={}),
-    )
-    def test_view_submitted_response_true_questionnaire_store_delete_not_called(self):
-        questionnaire_store = self.questionnaire_store_mock()
-        questionnaire_store.delete = Mock()
-
-        with self.app_request_context():
-
-            with patch(
-                "app.views.handlers.submission.get_session_store",
-                return_value=self.session_store,
-            ):
-
-                submission_handler = SubmissionHandler(
-                    QuestionnaireSchema(
-                        {"submission": {"view_submitted_response": "True"}}
-                    ),
-                    questionnaire_store,
-                    full_routing_path=[],
-                )
-                submission_handler.submit_questionnaire()
-
-                assert not questionnaire_store.delete.called
-
     @freeze_time(datetime.now(tzutc()).replace(second=0, microsecond=0))
     @patch(
         "app.views.handlers.submission.SubmissionHandler.get_payload",
         Mock(return_value={}),
     )
-    def test_view_submitted_response_true_submitted_at_set_save_called(self):
+    def test_submit_view_submitted_response_true_submitted_at_set(self):
         questionnaire_store = self.questionnaire_store_mock()
+        questionnaire_store.delete = Mock()
         questionnaire_store.save = Mock()
 
         with self.app_request_context():
+
             with patch(
                 "app.views.handlers.submission.get_session_store",
                 return_value=self.session_store,
             ):
+
                 submission_handler = SubmissionHandler(
                     QuestionnaireSchema(
                         {"submission": {"view_submitted_response": "True"}}
@@ -115,8 +92,9 @@ class TestSubmissionPayload(AppContextTestCase):
                 )
                 submission_handler.submit_questionnaire()
 
-            assert questionnaire_store.submitted_at == datetime.now(tz=tzutc())
-            assert questionnaire_store.save.called
+                assert questionnaire_store.submitted_at == datetime.now(tz=tzutc())
+                assert questionnaire_store.save.called
+                assert not questionnaire_store.delete.called
 
     @staticmethod
     def questionnaire_store_mock():

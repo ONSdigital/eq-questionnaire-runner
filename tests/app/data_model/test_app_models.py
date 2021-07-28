@@ -11,7 +11,9 @@ NOW = datetime.datetime.now(tz=tzutc()).replace(microsecond=0)
 
 class TestAppModels(AppContextTestCase):
     def test_questionnaire_state(self):
-        new_model = self._test_model(QuestionnaireState("someuser", "somedata", 1))
+        new_model = self._test_model(
+            QuestionnaireState("someuser", "somedata", 1, None)
+        )
 
         self.assertGreaterEqual(new_model.created_at, NOW)
         self.assertGreaterEqual(new_model.updated_at, NOW)

@@ -22,8 +22,8 @@ class QuestionnaireStore:
         self.answer_store = AnswerStore()
         self.progress_store = ProgressStore()
 
-        raw_data, version, submitted_at = self._storage.get_user_data()
-        self.submitted_at = submitted_at
+        raw_data, version, self.submitted_at = self._storage.get_user_data()
+
         if raw_data:
             self._deserialize(raw_data)
         if version is not None:
