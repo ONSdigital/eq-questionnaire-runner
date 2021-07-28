@@ -24,19 +24,19 @@ login_manager = LoginManager()
 
 
 @login_manager.user_loader
-def user_loader(user_id: Any) -> Union[Any, None]:
+def user_loader(user_id: str) -> Union[str, None]:
     logger.debug("loading user", user_id=user_id)
     return load_user()
 
 
 @login_manager.request_loader
-def request_load_user(request: Any) -> Union[Any, None]:  # pylint: disable=unused-argument
+def request_load_user(request: Any) -> Optional[User]:  # pylint: disable=unused-argument
     logger.debug("load user")
     return load_user()
 
 
 @user_logged_out.connect_via(ANY)
-def when_user_logged_out(sender_app: Any, user: Any) -> None:  # pylint: disable=unused-argument
+def when_user_logged_out(sender_app: Any, user: str) -> None:  # pylint: disable=unused-argument
     logger.debug("log out user")
     session_store = get_session_store()
     if session_store:
@@ -106,7 +106,7 @@ def load_user() -> Optional[User]:
     return None
 
 
-def _create_session_data_from_metadata(metadata: Any) -> SessionData:
+def _create_session_data_from_metadata(metadata: dict) -> SessionData:
     """
     Creates a SessionData object from metadata
     :param metadata: metadata parsed from jwt token
@@ -130,7 +130,7 @@ def _create_session_data_from_metadata(metadata: Any) -> SessionData:
     )
 
 
-def store_session(metadata: Any) -> Any:
+def store_session(metadata: dict) -> None:
     """
     Store new session and metadata
     :param metadata: metadata parsed from jwt token
@@ -159,7 +159,7 @@ def store_session(metadata: Any) -> Any:
     logger.info("user authenticated")
 
 
-def decrypt_token(encrypted_token: Any) -> Any:
+def decrypt_token(encrypted_token: str) -> Any:
     if not encrypted_token:
         raise NoTokenException("Please provide a token")
 
