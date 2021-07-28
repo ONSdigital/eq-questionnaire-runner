@@ -1,6 +1,7 @@
 from datetime import datetime
-from typing import Iterable, Union
+from typing import Iterable, Optional, Sequence, Union
 
+from app.questionnaire.routing.helpers import ValueTypes
 from app.questionnaire.routing.operations import (
     evaluate_all_in,
     evaluate_and,
@@ -37,14 +38,32 @@ class Operator:
         self.name = name
         self._operation = OPERATIONS[self.name]
         self._short_circuit = self.name in {Operator.AND, Operator.OR}
+        self._ensure_operands_not_none = self.name in {
+            Operator.GREATER_THAN,
+            Operator.GREATER_THAN_OR_EQUAL,
+            Operator.LESS_THAN,
+            Operator.LESS_THAN_OR_EQUAL,
+            Operator.ALL_IN,
+            Operator.ANY_IN,
+        }
 
-    def evaluate(self, operands: Iterable) -> Union[bool, datetime, None]:
-        value: Union[bool, datetime, None] = (
+    def evaluate(self, operands: Iterable) -> Union[bool, Optional[datetime]]:
+        if (
+            self._ensure_operands_not_none
+            and self._operands_not_none(*operands) is False
+        ):
+            return False
+
+        value: Union[bool, Optional[datetime]] = (
             self._operation(operands)
             if self._short_circuit
             else self._operation(*operands)
         )
         return value
+
+    @staticmethod
+    def _operands_not_none(*operands: Union[Sequence, ValueTypes]) -> bool:
+        return all(operand is not None for operand in operands)
 
 
 OPERATIONS = {

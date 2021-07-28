@@ -1,8 +1,9 @@
 from datetime import datetime
+from decimal import Decimal
 from functools import wraps
 from typing import Any, Callable, Union
 
-ValueTypes = Union[bool, str, int, float, None, datetime]
+ValueTypes = Union[bool, str, int, float, Decimal, None, datetime]
 
 
 def _casefold(value: Union[list, ValueTypes]) -> Union[list, ValueTypes]:

@@ -1,14 +1,14 @@
 from datetime import datetime
-from typing import Iterable, Optional, Sequence, Union
+from decimal import Decimal
+from typing import Iterable, Optional, Sequence, TypeVar, Union
 
 from dateutil.relativedelta import relativedelta
 
 from app.questionnaire.routing.helpers import ValueTypes, casefold, datetime_as_midnight
 from app.questionnaire.rules import convert_to_datetime
 
-
-def _are_non_none_operands(*operands: Union[Sequence, ValueTypes]) -> bool:
-    return all(operand is not None for operand in operands)
+ComparisonValue = TypeVar("ComparisonValue", str, int, float, Decimal, datetime)
+NonArrayPrimitiveTypes = Union[str, int, float, Decimal, None]
 
 
 @casefold
@@ -21,20 +21,20 @@ def evaluate_not_equal(lhs: ValueTypes, rhs: ValueTypes) -> bool:
     return lhs != rhs
 
 
-def evaluate_greater_than(lhs: ValueTypes, rhs: ValueTypes) -> bool:
-    return _are_non_none_operands(lhs, rhs) and lhs > rhs  # type: ignore
+def evaluate_greater_than(lhs: ComparisonValue, rhs: ComparisonValue) -> bool:
+    return lhs > rhs
 
 
-def evaluate_greater_than_or_equal(lhs: ValueTypes, rhs: ValueTypes) -> bool:
-    return _are_non_none_operands(lhs, rhs) and lhs >= rhs  # type: ignore
+def evaluate_greater_than_or_equal(lhs: ComparisonValue, rhs: ComparisonValue) -> bool:
+    return lhs >= rhs
 
 
-def evaluate_less_than(lhs: ValueTypes, rhs: ValueTypes) -> bool:
-    return _are_non_none_operands(lhs, rhs) and lhs < rhs  # type: ignore
+def evaluate_less_than(lhs: ComparisonValue, rhs: ComparisonValue) -> bool:
+    return lhs < rhs
 
 
-def evaluate_less_than_or_equal(lhs: ValueTypes, rhs: ValueTypes) -> bool:
-    return _are_non_none_operands(lhs, rhs) and lhs <= rhs  # type: ignore
+def evaluate_less_than_or_equal(lhs: ComparisonValue, rhs: ComparisonValue) -> bool:
+    return lhs <= rhs
 
 
 def evaluate_not(value: bool) -> bool:
@@ -50,18 +50,18 @@ def evaluate_or(values: Iterable[bool]) -> bool:
 
 
 @casefold
-def evaluate_in(lhs: Union[str, int, float, None], rhs: Sequence) -> bool:
-    return _are_non_none_operands(rhs) and lhs in rhs
+def evaluate_in(lhs: NonArrayPrimitiveTypes, rhs: Sequence) -> bool:
+    return rhs is not None and lhs in rhs
 
 
 @casefold
 def evaluate_all_in(lhs: Sequence, rhs: Sequence) -> bool:
-    return _are_non_none_operands(lhs, rhs) and all(x in rhs for x in lhs)
+    return all(x in rhs for x in lhs)
 
 
 @casefold
 def evaluate_any_in(lhs: Sequence, rhs: Sequence) -> bool:
-    return _are_non_none_operands(lhs, rhs) and any(x in rhs for x in lhs)
+    return any(x in rhs for x in lhs)
 
 
 def resolve_datetime_from_string(
