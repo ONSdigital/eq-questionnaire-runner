@@ -11,7 +11,7 @@ logger = get_logger()
 
 
 class UserIDGenerator:
-    def __init__(self, iterations, user_id_salt, user_ik_salt):
+    def __init__(self, iterations: int, user_id_salt: str, user_ik_salt: str) -> None:
         if user_id_salt is None:
             raise ValueError("user_id_salt is required")
         if user_ik_salt is None:
@@ -21,17 +21,17 @@ class UserIDGenerator:
         self._user_id_salt = user_id_salt
         self._user_ik_salt = user_ik_salt
 
-    def generate_id(self, response_id):
+    def generate_id(self, response_id: str) -> str:
         salt = to_bytes(self._user_id_salt)
         user_id = self._generate(response_id, salt)
         return to_str(user_id)
 
-    def generate_ik(self, response_id):
+    def generate_ik(self, response_id: str) -> str:
         salt = to_bytes(self._user_ik_salt)
         user_ik = self._generate(response_id, salt)
         return to_str(user_ik)
 
-    def _generate(self, key_material, salt):
+    def _generate(self, key_material: str, salt: bytes) -> bytes:
         kdf = PBKDF2HMAC(
             algorithm=hashes.SHA256(),
             length=32,
