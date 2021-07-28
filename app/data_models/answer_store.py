@@ -2,8 +2,7 @@ from __future__ import annotations
 
 from typing import Dict, List, Optional
 
-from app.data_models.answer import Answer
-from app.libs.utils import escape_value
+from app.data_models.answer import Answer, escape_answer_value
 
 
 class AnswerStore:
@@ -138,6 +137,6 @@ class AnswerStore:
 
     def get_escaped_answer_value(self, answer_id, list_item_id=None):
         if answer := self.get_answer(answer_id, list_item_id):
-            return escape_value(answer.value)
+            return escape_answer_value(answer.value)
 
         return None

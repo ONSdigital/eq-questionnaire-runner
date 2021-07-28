@@ -2,16 +2,17 @@ from dataclasses import dataclass
 from decimal import Decimal
 from typing import Optional, Union
 
-from markupsafe import Markup
-
-from app.data_models.answer import AnswerValueTypes
+from app.data_models.answer import (
+    AnswerValueEscapedTypes,
+    AnswerValueTypes,
+    escape_answer_value,
+)
 from app.data_models.answer_store import AnswerStore
 from app.data_models.list_store import ListModel, ListStore
-from app.libs.utils import escape_value
 from app.questionnaire import Location, QuestionnaireSchema
 from app.questionnaire.relationship_location import RelationshipLocation
 
-ValueSourceTypes = Union[None, str, int, Decimal, list[str]]
+ValueSourceTypes = Union[None, str, int, Decimal, list]
 
 
 @dataclass
@@ -74,7 +75,7 @@ class ValueSourceResolver:
 
     def _resolve_answer_value(
         self, value_source: dict
-    ) -> Union[Markup, ValueSourceTypes]:
+    ) -> Union[AnswerValueEscapedTypes, ValueSourceTypes]:
         list_item_id = self._resolve_list_item_id_for_value_source(value_source)
         answer_id = value_source["identifier"]
 
@@ -90,11 +91,13 @@ class ValueSourceResolver:
             )
 
         if answer_value is not None and self.escape_answer_value:
-            return escape_value(answer_value)  # type: ignore
+            return escape_answer_value(answer_value)
 
         return answer_value
 
-    def resolve(self, value_source: dict) -> ValueSourceTypes:
+    def resolve(
+        self, value_source: dict
+    ) -> Union[AnswerValueEscapedTypes, ValueSourceTypes]:
         source = value_source["source"]
         identifier = value_source.get("identifier")
 
