@@ -8,7 +8,7 @@ from app.data_models.answer import Answer
 from app.questionnaire import Location, QuestionnaireSchema
 from app.questionnaire.relationship_location import RelationshipLocation
 from app.questionnaire.value_source_resolver import ValueSourceResolver
-from tests.app.libs.test_utils import ESCAPED_CONTENT, HTML_CONTENT
+from tests.app.data_model.test_answer import ESCAPED_CONTENT, HTML_CONTENT
 
 
 def get_list_items(num: int):
@@ -396,7 +396,7 @@ def test_location_source():
     "answer_value, escaped_value",
     [
         (HTML_CONTENT, ESCAPED_CONTENT),
-        ([HTML_CONTENT, 1, HTML_CONTENT], [ESCAPED_CONTENT, 1, ESCAPED_CONTENT]),
+        ([HTML_CONTENT, "some value"], [ESCAPED_CONTENT, "some value"]),
         (1, 1),
         (None, None),
     ],
@@ -418,4 +418,24 @@ def test_answer_value_can_be_escaped(answer_value, escaped_value):
             {"source": "answers", "identifier": "some-answer"}
         )
         == escaped_value
+    )
+
+
+def test_answer_value_with_selector_can_be_escaped():
+    value_source_resolver = get_value_source_resolver(
+        answer_store=AnswerStore(
+            [
+                {
+                    "answer_id": "some-answer",
+                    "value": {"key_1": HTML_CONTENT, "key_2": 1},
+                }
+            ]
+        ),
+        escape_answer_value=True,
+    )
+    assert (
+        value_source_resolver.resolve(
+            {"source": "answers", "identifier": "some-answer", "selector": "key_1"}
+        )
+        == ESCAPED_CONTENT
     )

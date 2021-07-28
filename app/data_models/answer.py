@@ -47,22 +47,22 @@ class Answer:
 
 @overload
 def escape_answer_value(value: ListAnswer) -> ListAnswerEscaped:
-    ...
+    ...  # pragma: no cover
 
 
 @overload
 def escape_answer_value(value: DictAnswer) -> DictAnswerEscaped:
-    ...
+    ...  # pragma: no cover
 
 
 @overload
 def escape_answer_value(value: str) -> Markup:
-    ...
+    ...  # pragma: no cover
 
 
 @overload
 def escape_answer_value(value: Union[None, int, Decimal]) -> Union[None, int, Decimal]:
-    ...
+    ...  # pragma: no cover
 
 
 def escape_answer_value(
