@@ -11,19 +11,22 @@ from app.questionnaire import Location, QuestionnaireSchema
 from app.questionnaire.relationship_location import RelationshipLocation
 from app.questionnaire.routing.operator import Operator
 from app.questionnaire.routing.when_rule_evaluator import WhenRuleEvaluator
-from tests.app.questionnaire.test_value_source_resolver import (
-    answer_source,
-    answer_source_dict_answer_selector,
-    answer_source_list_item_selector_list_first_item,
-    answer_source_list_item_selector_location,
-    get_list_items,
-    list_source,
-    list_source_id_selector_first,
-    list_source_id_selector_primary_person,
-    list_source_id_selector_same_name_items,
-    location_source,
-    metadata_source,
-)
+from tests.app.questionnaire.test_value_source_resolver import get_list_items
+
+answer_source = {"source": "answers", "identifier": "some-answer"}
+metadata_source = {"source": "metadata", "identifier": "some-metadata"}
+list_source = {"source": "list", "identifier": "some-list"}
+list_source_id_selector_first = {
+    "source": "list",
+    "identifier": "some-list",
+    "id_selector": "first",
+}
+list_source_id_selector_same_name_items = {
+    "source": "list",
+    "identifier": "some-list",
+    "id_selector": "same_name_items",
+}
+location_source = {"source": "location", "identifier": "list_item_id"}
 
 now = datetime.utcnow()
 now_as_yyyy_mm_dd = now.strftime("%Y-%m-%d")
@@ -305,7 +308,7 @@ def get_when_rule_evaluator(
 
 @pytest.mark.parametrize(
     "operator, operands, answer_value, expected_result",
-    get_test_data_for_source(answer_source),
+    get_test_data_for_source({"source": "answers", "identifier": "some-answer"}),
 )
 def test_answer_source(operator, operands, answer_value, expected_result):
     when_rule_evaluator = get_when_rule_evaluator(
@@ -318,7 +321,13 @@ def test_answer_source(operator, operands, answer_value, expected_result):
 
 @pytest.mark.parametrize(
     "operator, operands, answer_value, expected_result",
-    get_test_data_for_source(answer_source_list_item_selector_location),
+    get_test_data_for_source(
+        {
+            "source": "answers",
+            "identifier": "some-answer",
+            "list_item_selector": {"source": "location", "id": "list_item_id"},
+        }
+    ),
 )
 def test_answer_source_with_list_item_selector_location(
     operator, operands, answer_value, expected_result
@@ -344,7 +353,17 @@ def test_answer_source_with_list_item_selector_location(
 
 @pytest.mark.parametrize(
     "operator, operands, answer_value, expected_result",
-    get_test_data_for_source(answer_source_list_item_selector_list_first_item),
+    get_test_data_for_source(
+        {
+            "source": "answers",
+            "identifier": "some-answer",
+            "list_item_selector": {
+                "source": "list",
+                "id": "some-list",
+                "id_selector": "first",
+            },
+        }
+    ),
 )
 def test_answer_source_with_list_item_selector_list_first_item(
     operator, operands, answer_value, expected_result
@@ -369,7 +388,11 @@ def test_answer_source_with_list_item_selector_list_first_item(
 @pytest.mark.parametrize(
     "operator, operands, answer_value, expected_result",
     get_test_data_comparison_operators_numeric_value_for_source(
-        answer_source_dict_answer_selector
+        {
+            "source": "answers",
+            "identifier": "some-answer",
+            "selector": "years",
+        }
     ),
 )
 def test_answer_source_with_dict_answer_selector(
@@ -392,7 +415,7 @@ def test_answer_source_with_dict_answer_selector(
 
 @pytest.mark.parametrize(
     "operator, operands, metadata_value, expected_result",
-    get_test_data_for_source(metadata_source),
+    get_test_data_for_source({"source": "metadata", "identifier": "some-metadata"}),
 )
 def test_metadata_source(operator, operands, metadata_value, expected_result):
     when_rule_evaluator = get_when_rule_evaluator(
@@ -405,7 +428,9 @@ def test_metadata_source(operator, operands, metadata_value, expected_result):
 
 @pytest.mark.parametrize(
     "operator, operands, list_count, expected_result",
-    get_test_data_comparison_operators_numeric_value_for_source(list_source),
+    get_test_data_comparison_operators_numeric_value_for_source(
+        {"source": "list", "identifier": "some-list"}
+    ),
 )
 def test_list_source(operator, operands, list_count, expected_result):
     when_rule_evaluator = get_when_rule_evaluator(
@@ -420,7 +445,9 @@ def test_list_source(operator, operands, list_count, expected_result):
 
 @pytest.mark.parametrize(
     "operator, operands, expected_result",
-    get_test_data_with_string_values_for_source(list_source_id_selector_first),
+    get_test_data_with_string_values_for_source(
+        {"source": "list", "identifier": "some-list", "id_selector": "first"}
+    ),
 )
 def test_list_source_with_id_selector_first(operator, operands, expected_result):
     when_rule_evaluator = get_when_rule_evaluator(
@@ -508,8 +535,12 @@ def test_list_source_id_selector_primary_person(
     when_rule_evaluator = get_when_rule_evaluator(
         rule={
             Operator.EQUAL: [
-                list_source_id_selector_primary_person,
-                location_source,
+                {
+                    "source": "list",
+                    "identifier": "some-list",
+                    "id_selector": "primary_person",
+                },
+                {"source": "location", "identifier": "list_item_id"},
             ]
         },
         list_store=ListStore(
@@ -529,7 +560,9 @@ def test_list_source_id_selector_primary_person(
 
 @pytest.mark.parametrize(
     "operator, operands, expected_result",
-    get_test_data_with_string_values_for_source(location_source),
+    get_test_data_with_string_values_for_source(
+        {"source": "location", "identifier": "list_item_id"}
+    ),
 )
 def test_current_location_source(operator, operands, expected_result):
     when_rule_evaluator = get_when_rule_evaluator(
@@ -674,7 +707,7 @@ def test_logic_and_or(operator, operands, expected_result):
 
 @pytest.mark.parametrize(
     "operator, operands, answer_value, expected_result",
-    get_test_data_for_source(answer_source),
+    get_test_data_for_source({"source": "answers", "identifier": "some-answer"}),
 )
 def test_logic_not(operator, operands, answer_value, expected_result):
     when_rule_evaluator = get_when_rule_evaluator(
@@ -870,8 +903,12 @@ def test_array_operator_rule_with_nonetype_operands(operator_name, operands):
 @pytest.mark.parametrize(
     "rule, expected_result",
     [
-        *get_test_data_for_date_value_for_source(answer_source),
-        *get_test_data_for_date_value_for_source(metadata_source),
+        *get_test_data_for_date_value_for_source(
+            {"source": "answers", "identifier": "some-answer"}
+        ),
+        *get_test_data_for_date_value_for_source(
+            {"source": "metadata", "identifier": "some-metadata"}
+        ),
     ],
 )
 def test_date_value(rule, expected_result):
@@ -962,7 +999,7 @@ def test_answer_with_routing_path_block_ids(is_answer_on_path, is_inside_repeat)
 
 @pytest.mark.parametrize(
     "operator, operands, answer_value, expected_result",
-    get_test_data_for_source(answer_source),
+    get_test_data_for_source({"source": "answers", "identifier": "some-answer"}),
 )
 def test_answer_source_default_answer_used_when_no_answer(
     operator, operands, answer_value, expected_result
