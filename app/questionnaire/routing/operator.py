@@ -1,7 +1,7 @@
-from typing import Iterable
+from datetime import datetime
+from typing import Iterable, Union
 
 from app.questionnaire.routing.operations import (
-    answer_types,
     evaluate_all_in,
     evaluate_and,
     evaluate_any_in,
@@ -38,8 +38,8 @@ class Operator:
         self._operation = OPERATIONS[self.name]
         self._short_circuit = self.name in {Operator.AND, Operator.OR}
 
-    def evaluate(self, operands: Iterable) -> answer_types:
-        value: answer_types = (
+    def evaluate(self, operands: Iterable) -> Union[bool, datetime, None]:
+        value: Union[bool, datetime, None] = (
             self._operation(operands)
             if self._short_circuit
             else self._operation(*operands)

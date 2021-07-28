@@ -1,19 +1,18 @@
 from datetime import datetime
 from functools import wraps
-from typing import Any, Callable
+from typing import Any, Callable, Union
 
-from app.questionnaire.value_source_resolver import answer_value_types
+ValueTypes = Union[bool, str, int, float, None, datetime]
 
 
-def _casefold(value: answer_value_types) -> answer_value_types:
-    try:
-        return (
-            [_casefold(v) for v in value]
-            if isinstance(value, (list, tuple))
-            else value.casefold()  # type: ignore
-        )
-    except AttributeError:
-        return value
+def _casefold(value: Union[list, ValueTypes]) -> Union[list, ValueTypes]:
+    if isinstance(value, str):
+        return value.casefold()
+
+    if isinstance(value, list):
+        return [_casefold(v) for v in value]
+
+    return value
 
 
 def casefold(func: Callable) -> Any:

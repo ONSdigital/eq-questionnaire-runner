@@ -3,13 +3,11 @@ from datetime import datetime
 from typing import Optional, Union
 
 from app.data_models import AnswerStore, ListStore
+from app.data_models.answer import AnswerValueTypes
 from app.questionnaire import Location, QuestionnaireSchema
 from app.questionnaire.relationship_location import RelationshipLocation
 from app.questionnaire.routing.operator import Operator
-from app.questionnaire.value_source_resolver import (
-    ValueSourceResolver,
-    answer_value_types,
-)
+from app.questionnaire.value_source_resolver import ValueSourceResolver
 
 
 @dataclass
@@ -38,9 +36,7 @@ class WhenRuleEvaluator:
     def _is_date_offset(rule: dict) -> bool:
         return any(x in rule for x in {"days", "months", "years"})
 
-    def _evaluate(
-        self, rule: answer_value_types
-    ) -> Union[bool, datetime, answer_value_types]:
+    def _evaluate(self, rule: AnswerValueTypes) -> Union[bool, datetime, None]:
         if not isinstance(rule, dict) or self._is_date_offset(rule):
             return rule
 
@@ -58,5 +54,5 @@ class WhenRuleEvaluator:
         operands = (self._evaluate(operand) for operand in operands)
         return operator.evaluate(operands)
 
-    def evaluate(self) -> Union[bool, datetime, answer_value_types]:
+    def evaluate(self) -> Union[bool, datetime, AnswerValueTypes]:
         return self._evaluate(self.rule)
