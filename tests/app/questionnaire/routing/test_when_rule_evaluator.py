@@ -1056,13 +1056,19 @@ def test_answer_source_default_answer_used_when_no_answer(
     assert when_rule_evaluator.evaluate() is expected_result
 
 
-def test_raises_exception_when_bad_operands():
+def test_raises_exception_when_bad_operand_type():
     with pytest.raises(TypeError):
         when_rule_evaluator = get_when_rule_evaluator(
             rule={Operator.EQUAL: {1, 1}},
-            answer_store=AnswerStore(
-                [{"answer_id": f"some-other-answer", "value": "No"}]
-            ),
+        )
+
+        when_rule_evaluator.evaluate()
+
+
+def test_raises_exception_when_bad_operand_value():
+    with pytest.raises(NotImplementedError):
+        when_rule_evaluator = get_when_rule_evaluator(
+            rule={Operator.EQUAL: [{"sources": []}]},
         )
 
         when_rule_evaluator.evaluate()

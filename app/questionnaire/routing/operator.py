@@ -1,5 +1,5 @@
 from datetime import datetime
-from typing import Generator, Optional, Sequence, Union
+from typing import Callable, Generator, Iterable, Optional, Sequence, Union
 
 from app.questionnaire.routing.helpers import ValueTypes
 from app.questionnaire.routing.operations import (
@@ -47,7 +47,9 @@ class Operator:
             Operator.ANY_IN,
         }
 
-    def evaluate(self, operands: Generator) -> Union[bool, Optional[datetime]]:
+    def evaluate(
+        self, operands: Union[Generator, Iterable]
+    ) -> Union[bool, Optional[datetime]]:
         if self._ensure_operands_not_none:
             operands = list(operands)
             if self._operands_not_none(*operands) is False:
@@ -65,7 +67,7 @@ class Operator:
         return all(operand is not None for operand in operands)
 
 
-OPERATIONS = {
+OPERATIONS: dict[str, Callable] = {
     Operator.NOT: evaluate_not,
     Operator.AND: evaluate_and,
     Operator.OR: evaluate_or,
