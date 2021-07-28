@@ -292,7 +292,7 @@ def get_when_rule_evaluator(
 ):
     if not schema:
         schema = get_mock_schema()
-        schema.answer_should_have_list_item_id = Mock(return_value=True)
+        schema.is_repeating_answer = Mock(return_value=True)
         schema.get_default_answer = Mock(return_value=None)
 
     return WhenRuleEvaluator(
@@ -929,7 +929,7 @@ def test_date_value(rule, expected_result):
 
 
 @pytest.mark.parametrize(
-    "answer_should_have_list_item_id, list_item_id_for_answer, expected_result",
+    "is_repeating_answer, list_item_id_for_answer, expected_result",
     [
         (True, None, False),
         (True, "item-2", False),
@@ -940,14 +940,12 @@ def test_date_value(rule, expected_result):
     ],
 )
 def test_rule_uses_list_item_id_when_evaluating_answer_value(
-    answer_should_have_list_item_id, list_item_id_for_answer, expected_result
+    is_repeating_answer, list_item_id_for_answer, expected_result
 ):
     schema = get_mock_schema()
 
     # We are fetching an answer that is outside of a repeat or one not in a list collector.
-    schema.answer_should_have_list_item_id = Mock(
-        return_value=answer_should_have_list_item_id
-    )
+    schema.is_repeating_answer = Mock(return_value=is_repeating_answer)
 
     when_rule_evaluator = get_when_rule_evaluator(
         rule={Operator.EQUAL: [answer_source, "Yes"]},
@@ -970,31 +968,71 @@ def test_rule_uses_list_item_id_when_evaluating_answer_value(
 
 
 @pytest.mark.parametrize("is_answer_on_path", [True, False])
-@pytest.mark.parametrize("is_inside_repeat", [True, False])
-def test_answer_with_routing_path_block_ids(is_answer_on_path, is_inside_repeat):
+def test_answer_source_with_routing_path_block_ids_outside_repeat(is_answer_on_path):
     schema = get_mock_schema()
-    schema.get_block_for_answer_id = Mock(return_value={"id": f"some-block"})
 
     location = Location(section_id="test-section", block_id="test-block")
-    id_prefix = "some" if is_answer_on_path else "some-other"
-    answer = Answer(answer_id=f"{id_prefix}-answer", value="Yes")
 
-    if is_inside_repeat:
-        location.list_item_id = answer.list_item_id = "item-1"
-        schema.answer_should_have_list_item_id = Mock(return_value=True)
+    if is_answer_on_path:
+        schema.get_block_for_answer_id = Mock(return_value={"id": f"block-on-path"})
+        answer_id = "answer-on-path"
+        expected_result = True
     else:
-        schema.answer_should_have_list_item_id = Mock(return_value=False)
+        schema.get_block_for_answer_id = Mock(return_value={"id": f"block-not-on-path"})
+        answer_id = "answer-not-on-path"
+        expected_result = False
+
+    answer = Answer(answer_id=answer_id, value="Yes")
 
     when_rule_evaluator = get_when_rule_evaluator(
-        rule={Operator.EQUAL: ["Yes", answer_source]},
+        rule={
+            Operator.EQUAL: [
+                "Yes",
+                {"source": "answers", "identifier": "answer-on-path"},
+            ]
+        },
         schema=schema,
         answer_store=AnswerStore([answer.to_dict()]),
         location=location,
-        routing_path_block_ids=[f"{id_prefix}-block"],
+        routing_path_block_ids=["block-on-path"],
     )
 
-    expected_result = True if is_answer_on_path else False
-    assert when_rule_evaluator.evaluate() is expected_result
+    assert when_rule_evaluator.evaluate() == expected_result
+
+
+@pytest.mark.parametrize("is_answer_on_path", [True, False])
+def test_answer_source_with_routing_path_block_ids_inside_repeat(is_answer_on_path):
+    schema = get_mock_schema()
+    schema.is_repeating_answer = Mock(return_value=True)
+    location = Location(
+        section_id="test-section", block_id="test-block", list_item_id="item-1"
+    )
+
+    if is_answer_on_path:
+        schema.get_block_for_answer_id = Mock(return_value={"id": f"block-on-path"})
+        answer_id = "answer-on-path"
+        expected_result = True
+    else:
+        schema.get_block_for_answer_id = Mock(return_value={"id": f"block-not-on-path"})
+        answer_id = "answer-not-on-path"
+        expected_result = False
+
+    answer = Answer(answer_id=answer_id, list_item_id="item-1", value="Yes")
+
+    when_rule_evaluator = get_when_rule_evaluator(
+        rule={
+            Operator.EQUAL: [
+                "Yes",
+                {"source": "answers", "identifier": "answer-on-path"},
+            ]
+        },
+        schema=schema,
+        answer_store=AnswerStore([answer.to_dict()]),
+        location=location,
+        routing_path_block_ids=["block-on-path"],
+    )
+
+    assert when_rule_evaluator.evaluate() == expected_result
 
 
 @pytest.mark.parametrize(
