@@ -4,11 +4,7 @@ from typing import Optional, Union
 
 from markupsafe import Markup
 
-from app.data_models.answer import (
-    AnswerValueEscapedTypes,
-    AnswerValueTypes,
-    escape_answer_value,
-)
+from app.data_models.answer import AnswerValueTypes, escape_answer_value
 from app.data_models.answer_store import AnswerStore
 from app.data_models.list_store import ListModel, ListStore
 from app.questionnaire import Location, QuestionnaireSchema
