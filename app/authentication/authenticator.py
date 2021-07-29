@@ -1,10 +1,10 @@
 from datetime import datetime, timedelta
-from typing import Any, Optional, Type
+from typing import Any, Optional
 from uuid import uuid4
 
 from blinker import ANY
 from dateutil.tz import tzutc
-from flask import current_app, request, Flask
+from flask import Flask, Request, current_app
 from flask import session as cookie_session
 from flask_login import LoginManager, user_logged_out
 from sdc.crypto.decrypter import decrypt
@@ -31,7 +31,7 @@ def user_loader(user_id: str) -> Optional[str]:
 
 @login_manager.request_loader
 def request_load_user(
-    request: Any,
+    request: Request,
 ) -> Optional[User]:  # pylint: disable=unused-argument
     logger.debug("load user")
     return load_user()
