@@ -1,6 +1,6 @@
 from datetime import datetime, timedelta
+from typing import Any, Optional, Union
 from uuid import uuid4
-from typing import Optional, Union, Any
 
 from blinker import ANY
 from dateutil.tz import tzutc
@@ -30,13 +30,17 @@ def user_loader(user_id: str) -> Union[str, None]:
 
 
 @login_manager.request_loader
-def request_load_user(request: Any) -> Optional[User]:  # pylint: disable=unused-argument
+def request_load_user(
+    request: Any,
+) -> Optional[User]:  # pylint: disable=unused-argument
     logger.debug("load user")
     return load_user()
 
 
 @user_logged_out.connect_via(ANY)
-def when_user_logged_out(sender_app: Any, user: str) -> None:  # pylint: disable=unused-argument
+def when_user_logged_out(
+    sender_app: Any, user: str
+) -> None:  # pylint: disable=unused-argument
     logger.debug("log out user")
     session_store = get_session_store()
     if session_store:
@@ -139,7 +143,7 @@ def store_session(metadata: dict) -> None:
     cookie_session.clear()
 
     # get the hashed user id for eq
-    id_generator = current_app.eq["id_generator"] # type: ignore
+    id_generator = current_app.eq["id_generator"]  # type: ignore
     user_id = id_generator.generate_id(metadata["response_id"])
     user_ik = id_generator.generate_ik(metadata["response_id"])
 
@@ -166,7 +170,7 @@ def decrypt_token(encrypted_token: str) -> Any:
     logger.debug("decrypting token")
     decrypted_token = decrypt(
         token=encrypted_token,
-        key_store=current_app.eq["key_store"], # type: ignore
+        key_store=current_app.eq["key_store"],  # type: ignore
         key_purpose=KEY_PURPOSE_AUTHENTICATION,
         leeway=current_app.config["EQ_JWT_LEEWAY_IN_SECONDS"],
     )

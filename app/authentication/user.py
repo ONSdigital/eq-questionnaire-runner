@@ -1,5 +1,6 @@
+from typing import Any, Optional
+
 from flask_login import UserMixin
-from typing import Optional, Any
 
 
 class User(UserMixin):

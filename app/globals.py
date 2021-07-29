@@ -85,8 +85,8 @@ def create_session_store(
     # pylint: disable=protected-access, assigning-non-slot
     g._session_store = (
         SessionStore(user_ik, pepper)
-            .create(eq_session_id, user_id, session_data, expires_at)
-            .save()
+        .create(eq_session_id, user_id, session_data, expires_at)
+        .save()
     )
 
 
