@@ -1,10 +1,10 @@
 from datetime import datetime, timedelta
-from typing import Any, Optional, Union
+from typing import Any, Optional, Type
 from uuid import uuid4
 
 from blinker import ANY
 from dateutil.tz import tzutc
-from flask import current_app
+from flask import current_app, request, Flask
 from flask import session as cookie_session
 from flask_login import LoginManager, user_logged_out
 from sdc.crypto.decrypter import decrypt
@@ -24,7 +24,7 @@ login_manager = LoginManager()
 
 
 @login_manager.user_loader
-def user_loader(user_id: str) -> Union[str, None]:
+def user_loader(user_id: str) -> Optional[str]:
     logger.debug("loading user", user_id=user_id)
     return load_user()
 
@@ -39,7 +39,7 @@ def request_load_user(
 
 @user_logged_out.connect_via(ANY)
 def when_user_logged_out(
-    sender_app: Any, user: str
+    sender_app: Flask, user: str
 ) -> None:  # pylint: disable=unused-argument
     logger.debug("log out user")
     session_store = get_session_store()
@@ -163,12 +163,12 @@ def store_session(metadata: dict) -> None:
     logger.info("user authenticated")
 
 
-def decrypt_token(encrypted_token: str) -> Any:
+def decrypt_token(encrypted_token: str) -> dict[str, Any]:
     if not encrypted_token:
         raise NoTokenException("Please provide a token")
 
     logger.debug("decrypting token")
-    decrypted_token = decrypt(
+    decrypted_token: dict[str, Any] = decrypt(
         token=encrypted_token,
         key_store=current_app.eq["key_store"],  # type: ignore
         key_purpose=KEY_PURPOSE_AUTHENTICATION,

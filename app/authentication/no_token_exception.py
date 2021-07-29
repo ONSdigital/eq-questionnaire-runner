@@ -7,4 +7,4 @@ class NoTokenException(Exception):
         self.value = value
 
     def __str__(self) -> str:
-        return self.value  # type: ignore
+        return str(self.value)
