@@ -12,23 +12,15 @@ now_as_yyyy_mm_dd = now.strftime("%Y-%m-%d")
 now_as_yyyy_mm = now.strftime("%Y-%m")
 now_as_yyyy = now.strftime("%Y")
 
-test_data_equals_operation_numeric_and_date_matching_values = [
+equals_operations = [
     [(0.5, 0.5), True],
     [(1.0, 1), True],
     [(3, 3), True],
     [(now, now), True],
-]
-
-test_data_equals_operation_numeric_and_date = [
-    *test_data_equals_operation_numeric_and_date_matching_values,
     [(0.5, 0.7), False],
     [(1.0, 3), False],
     [(3, 7), False],
     [(now, datetime.utcnow()), False],
-]
-
-equals_operations = [
-    *test_data_equals_operation_numeric_and_date,
     [("Yes", "Yes"), True],
     [("CaseInsensitive", "caseInsensitive"), True],
     [(None, None), True],
@@ -36,17 +28,6 @@ equals_operations = [
     [("Yes", "No"), False],
     [(None, 1), False],
     [(True, False), False],
-]
-
-test_data_greater_than_less_than_operations = [
-    [(0.7, 0.5), True],
-    [(2, 1.0), True],
-    [(7, 3), True],
-    [(datetime.utcnow(), now), True],
-    [(0.5, 0.7), False],
-    [(1.0, 2), False],
-    [(3, 7), False],
-    [(now, datetime.utcnow()), False],
 ]
 
 
@@ -68,9 +49,21 @@ def test_operation_not_equal(operands, expected_result):
     assert operator.evaluate(operands) is not expected_result
 
 
+greater_than_and_less_than_operations = [
+    [(0.7, 0.5), True],
+    [(2, 1.0), True],
+    [(7, 3), True],
+    [(datetime.utcnow(), now), True],
+    [(0.5, 0.7), False],
+    [(1.0, 2), False],
+    [(3, 7), False],
+    [(now, datetime.utcnow()), False],
+]
+
+
 @pytest.mark.parametrize(
     "operands, expected_result",
-    test_data_greater_than_less_than_operations,
+    greater_than_and_less_than_operations,
 )
 def test_operation_greater_than(operands, expected_result):
     operator = Operator(Operator.GREATER_THAN)
@@ -79,19 +72,7 @@ def test_operation_greater_than(operands, expected_result):
 
 @pytest.mark.parametrize(
     "operands, expected_result",
-    [
-        *test_data_greater_than_less_than_operations,
-        *test_data_equals_operation_numeric_and_date_matching_values,
-    ],
-)
-def test_operation_greater_than_or_equal(operands, expected_result):
-    operator = Operator(Operator.GREATER_THAN_OR_EQUAL)
-    assert operator.evaluate(operands) is expected_result
-
-
-@pytest.mark.parametrize(
-    "operands, expected_result",
-    test_data_greater_than_less_than_operations,
+    greater_than_and_less_than_operations,
 )
 def test_operation_less_than(operands, expected_result):
     operator = Operator(Operator.LESS_THAN)
@@ -99,19 +80,46 @@ def test_operation_less_than(operands, expected_result):
 
 
 @pytest.mark.parametrize(
-    "operands, expected_result", test_data_greater_than_less_than_operations
+    "operands, expected_result",
+    [
+        [(0.7, 0.5), False],
+        [(2, 1.0), False],
+        [(7, 3), False],
+        [(datetime.utcnow(), now), False],
+        [(0.5, 0.7), True],
+        [(1.0, 2), True],
+        [(3, 7), True],
+        [(now, datetime.utcnow()), True],
+        [(0.5, 0.5), True],
+        [(1.0, 1), True],
+        [(3, 3), True],
+        [(now, now), True],
+    ],
 )
-def test_operation_less_than_or_equal_operands_equal(operands, expected_result):
+def test_operation_less_than_or_equal(operands, expected_result):
     operator = Operator(Operator.LESS_THAN_OR_EQUAL)
-    assert operator.evaluate(operands) is not expected_result
+    assert operator.evaluate(operands) is expected_result
 
 
 @pytest.mark.parametrize(
     "operands, expected_result",
-    test_data_equals_operation_numeric_and_date_matching_values,
+    [
+        [(0.7, 0.5), True],
+        [(2, 1.0), True],
+        [(7, 3), True],
+        [(datetime.utcnow(), now), True],
+        [(0.5, 0.7), False],
+        [(1.0, 2), False],
+        [(3, 7), False],
+        [(now, datetime.utcnow()), False],
+        [(0.5, 0.5), True],
+        [(1.0, 1), True],
+        [(3, 3), True],
+        [(now, now), True],
+    ],
 )
-def test_operation_less_than_or_equal_operands_not_equal(operands, expected_result):
-    operator = Operator(Operator.LESS_THAN_OR_EQUAL)
+def test_operation_greater_than_or_equal(operands, expected_result):
+    operator = Operator(Operator.GREATER_THAN_OR_EQUAL)
     assert operator.evaluate(operands) is expected_result
 
 
@@ -217,11 +225,11 @@ def test_operation_any_in(operands, expected_result):
         {"days": -1},
         {"months": -1},
         {"years": -1},
-        {"days": -1, "months": -1, "years": -1},
+        {"days": -1, "months": 1, "years": -1},
         {"days": 1},
         {"months": 1},
         {"years": 1},
-        {"days": 1, "months": 1, "years": 1},
+        {"days": 1, "months": -1, "years": 1},
     ],
 )
 def test_operation_date(date_string: str, offset):
