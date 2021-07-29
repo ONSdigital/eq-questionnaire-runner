@@ -65,7 +65,7 @@
     }
   }) %}
 {% else %}
-  {% set config = config | setAttribute("manualEntry", "true") %}
+  {% set config = config | setAttribute("manualEntry", true) %}
 {% endif %}
 
 {{ onsAddressInput(config) }}
