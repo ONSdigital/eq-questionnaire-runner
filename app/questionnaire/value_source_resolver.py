@@ -73,7 +73,7 @@ class ValueSourceResolver:
             else None
         )
 
-    def _resolve_answer_value(
+    def _resolve_answer_value_source(
         self, value_source: dict
     ) -> Union[AnswerValueEscapedTypes, ValueSourceTypes]:
         list_item_id = self._resolve_list_item_id_for_value_source(value_source)
@@ -102,7 +102,7 @@ class ValueSourceResolver:
         identifier = value_source.get("identifier")
 
         if source == "answers":
-            return self._resolve_answer_value(value_source)
+            return self._resolve_answer_value_source(value_source)
         if source == "metadata":
             return self.metadata.get(identifier)
         if source == "list":
