@@ -1,7 +1,10 @@
 # pylint: disable=redefined-outer-name
+from unittest.mock import Mock
+
 import pytest
 
 from app.data_models.answer_store import AnswerStore
+from app.questionnaire import QuestionnaireSchema
 from app.questionnaire.location import Location
 from app.questionnaire.placeholder_parser import PlaceholderParser
 
@@ -682,3 +685,18 @@ def section_with_repeating_list():
             }
         ]
     }
+
+
+@pytest.fixture
+def mock_schema():
+    schema = Mock(
+        QuestionnaireSchema(
+            {
+                "questionnaire_flow": {
+                    "type": "Linear",
+                    "options": {"summary": {"collapsible": False}},
+                }
+            }
+        )
+    )
+    return schema
