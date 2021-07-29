@@ -1,6 +1,6 @@
 from dataclasses import dataclass
 from datetime import datetime
-from typing import Generator, Optional, TypedDict, Union
+from typing import Generator, Optional, Union
 
 from app.data_models import AnswerStore, ListStore
 from app.questionnaire import Location, QuestionnaireSchema
@@ -9,10 +9,6 @@ from app.questionnaire.routing.operator import OPERATIONS, Operator
 from app.questionnaire.value_source_resolver import (
     ValueSourceResolver,
     ValueSourceTypes,
-)
-
-DateOffset = TypedDict(
-    "DateOffset", {"years": int, "months": int, "days": int}, total=False
 )
 
 
@@ -38,10 +34,6 @@ class WhenRuleEvaluator:
             use_default_answer=True,
         )
 
-    @staticmethod
-    def _is_date_offset(rule: DateOffset) -> bool:
-        return any(x in rule for x in {"days", "months", "years"})
-
     def _evaluate(self, rule: dict[str, list]) -> Union[bool, Optional[datetime]]:
         operator = Operator(next(iter(rule)))
         operands = rule[operator.name]
@@ -58,13 +50,12 @@ class WhenRuleEvaluator:
         self, operands: list[ValueSourceTypes]
     ) -> Generator[Union[bool, Optional[datetime], ValueSourceTypes], None, None]:
         for operand in operands:
-            if isinstance(operand, dict) and not self._is_date_offset(operand):
-                if "source" in operand:
-                    yield self.value_source_resolver.resolve(operand)
-                elif any(operator in operand for operator in OPERATIONS):
-                    yield self._evaluate(operand)
-                else:
-                    raise NotImplementedError("Got an unsupported operand")
+            if isinstance(operand, dict) and "source" in operand:
+                yield self.value_source_resolver.resolve(operand)
+            elif isinstance(operand, dict) and any(
+                operator in operand for operator in OPERATIONS
+            ):
+                yield self._evaluate(operand)
             else:
                 yield operand
 

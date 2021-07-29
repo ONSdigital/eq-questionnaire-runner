@@ -963,12 +963,3 @@ def test_raises_exception_when_bad_operand_type():
         )
 
         when_rule_evaluator.evaluate()
-
-
-def test_raises_exception_when_bad_operand_value():
-    with pytest.raises(NotImplementedError):
-        when_rule_evaluator = get_when_rule_evaluator(
-            rule={Operator.EQUAL: [{"sources": []}]},
-        )
-
-        when_rule_evaluator.evaluate()
