@@ -43,7 +43,7 @@ class PlaceholderParser:
             schema=self._schema,
             location=self._location,
             list_item_id=self._list_item_id,
-            escape_answer_value=True,
+            escape_answer_values=True,
         )
 
     def __call__(self, placeholder_list: Sequence[Mapping]) -> Mapping:

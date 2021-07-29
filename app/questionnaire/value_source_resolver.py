@@ -25,7 +25,7 @@ class ValueSourceResolver:
     list_item_id: Optional[str]
     routing_path_block_ids: Optional[list] = None
     use_default_answer: bool = False
-    escape_answer_value: bool = False
+    escape_answer_values: bool = False
 
     def _is_answer_on_path(self, answer_id: str) -> bool:
         if self.routing_path_block_ids:
@@ -90,7 +90,7 @@ class ValueSourceResolver:
                 else None
             )
 
-        if answer_value is not None and self.escape_answer_value:
+        if answer_value is not None and self.escape_answer_values:
             return escape_answer_value(answer_value)
 
         return answer_value
