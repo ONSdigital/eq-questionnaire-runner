@@ -97,26 +97,31 @@ class ValueSourceResolver:
 
         return answer_value
 
+    def _resolve_list_value_source(self, value_source: dict) -> Union[int, str, list]:
+        identifier = value_source["identifier"]
+        list_model: ListModel = self.list_store[identifier]
+
+        if id_selector := value_source.get("id_selector"):
+            value: Union[str, list] = getattr(list_model, id_selector)
+            return value
+
+        return len(list_model)
+
     def resolve(
         self, value_source: dict
     ) -> Union[ValueSourceEscapedTypes, ValueSourceTypes]:
         source = value_source["source"]
-        identifier = value_source.get("identifier")
 
         if source == "answers":
             return self._resolve_answer_value_source(value_source)
-        if source == "metadata":
-            return self.metadata.get(identifier)
+
         if source == "list":
-            list_model: ListModel = self.list_store[identifier]
+            return self._resolve_list_value_source(value_source)
 
-            if id_selector := value_source.get("id_selector"):
-                value: Union[str, list] = getattr(list_model, id_selector)
-                return value
+        if source == "metadata":
+            return self.metadata.get(value_source.get("identifier"))
 
-            return len(list_model)
-
-        if source == "location" and identifier == "list_item_id":
+        if source == "location" and value_source.get("identifier") == "list_item_id":
             # This does not use the location object because
             # routes such as individual response does not have the concept of location.
             return self.list_item_id
