@@ -1,6 +1,5 @@
-from typing import Any, Dict, Mapping, Optional, Sequence
+from typing import Any, Mapping, Optional, Sequence
 
-from app.data_models.answer import AnswerValueTypes
 from app.data_models.answer_store import AnswerStore
 from app.questionnaire import QuestionnaireSchema
 from app.questionnaire.placeholder_transforms import PlaceholderTransforms
@@ -65,7 +64,7 @@ class PlaceholderParser:
         transformed_value = None
 
         for transform in transform_list:
-            transform_args: Dict[str, Optional[AnswerValueTypes]] = {}
+            transform_args: dict[str, Any] = {}
 
             for arg_key, arg_value in transform["arguments"].items():
                 if isinstance(arg_value, list):
