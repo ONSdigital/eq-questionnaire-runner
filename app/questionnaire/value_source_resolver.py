@@ -2,6 +2,8 @@ from dataclasses import dataclass
 from decimal import Decimal
 from typing import Optional, Union
 
+from markupsafe import Markup
+
 from app.data_models.answer import (
     AnswerValueEscapedTypes,
     AnswerValueTypes,
@@ -13,6 +15,10 @@ from app.questionnaire import Location, QuestionnaireSchema
 from app.questionnaire.relationship_location import RelationshipLocation
 
 ValueSourceTypes = Union[None, str, int, Decimal, list]
+ValueSourceEscapedTypes = Union[
+    Markup,
+    list[Markup],
+]
 
 
 @dataclass
@@ -75,7 +81,7 @@ class ValueSourceResolver:
 
     def _resolve_answer_value_source(
         self, value_source: dict
-    ) -> Union[AnswerValueEscapedTypes, ValueSourceTypes]:
+    ) -> Union[ValueSourceEscapedTypes, ValueSourceTypes]:
         list_item_id = self._resolve_list_item_id_for_value_source(value_source)
         answer_id = value_source["identifier"]
 
@@ -97,7 +103,7 @@ class ValueSourceResolver:
 
     def resolve(
         self, value_source: dict
-    ) -> Union[AnswerValueEscapedTypes, ValueSourceTypes]:
+    ) -> Union[ValueSourceEscapedTypes, ValueSourceTypes]:
         source = value_source["source"]
         identifier = value_source.get("identifier")
 
