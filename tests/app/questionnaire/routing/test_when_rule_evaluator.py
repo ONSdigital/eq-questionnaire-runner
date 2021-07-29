@@ -13,256 +13,8 @@ from app.questionnaire.routing.operator import Operator
 from app.questionnaire.routing.when_rule_evaluator import WhenRuleEvaluator
 from tests.app.questionnaire.test_value_source_resolver import get_list_items
 
-answer_source = {"source": "answers", "identifier": "some-answer"}
-metadata_source = {"source": "metadata", "identifier": "some-metadata"}
-list_source = {"source": "list", "identifier": "some-list"}
-list_source_id_selector_first = {
-    "source": "list",
-    "identifier": "some-list",
-    "id_selector": "first",
-}
-list_source_id_selector_same_name_items = {
-    "source": "list",
-    "identifier": "some-list",
-    "id_selector": "same_name_items",
-}
-location_source = {"source": "location", "identifier": "list_item_id"}
-
 now = datetime.utcnow()
 now_as_yyyy_mm_dd = now.strftime("%Y-%m-%d")
-
-
-def get_test_data_for_source(source: dict):
-    """
-    operator, operands, resolved_value, expected_result
-    """
-    return [
-        (Operator.EQUAL, [source, "Maybe"], "Maybe", True),
-        (Operator.EQUAL, ["Maybe", source], "Maybe", True),
-        (Operator.NOT_EQUAL, [source, "Maybe"], "Yes", True),
-        (Operator.NOT_EQUAL, ["Maybe", source], "Yes", True),
-        (Operator.GREATER_THAN, [2, source], 1, True),
-        (Operator.GREATER_THAN, [source, 1], 2, True),
-        (Operator.GREATER_THAN_OR_EQUAL, [1, source], 1, True),
-        (Operator.GREATER_THAN_OR_EQUAL, [source, 1], 1, True),
-        (Operator.LESS_THAN, [1, source], 2, True),
-        (Operator.LESS_THAN, [source, 2], 1, True),
-        (Operator.LESS_THAN_OR_EQUAL, [1, source], 1, True),
-        (Operator.LESS_THAN_OR_EQUAL, [source, 1], 1, True),
-        (Operator.IN, [source, ["Maybe"]], "Maybe", True),
-        (Operator.IN, ["Maybe", source], ["Maybe"], True),
-        (Operator.ANY_IN, [source, ["Maybe"]], ["Yes", "Maybe"], True),
-        (Operator.ANY_IN, [["Maybe"], source], ["Yes", "Maybe"], True),
-        (Operator.ALL_IN, [source, ["Maybe"]], ["Maybe"], True),
-        (Operator.ALL_IN, [["Maybe"], source], ["Maybe"], True),
-        # Test inverse
-        (Operator.EQUAL, [source, "Maybe"], "Yes", False),
-        (Operator.EQUAL, ["Maybe", source], "Yes", False),
-        (Operator.NOT_EQUAL, [source, "Maybe"], "Maybe", False),
-        (Operator.NOT_EQUAL, ["Maybe", source], "Maybe", False),
-        (Operator.GREATER_THAN, [1, source], 2, False),
-        (Operator.GREATER_THAN, [source, 2], 1, False),
-        (Operator.GREATER_THAN_OR_EQUAL, [1, source], 2, False),
-        (Operator.GREATER_THAN_OR_EQUAL, [source, 1], 0, False),
-        (Operator.LESS_THAN, [2, source], 1, False),
-        (Operator.LESS_THAN, [source, 1], 2, False),
-        (Operator.LESS_THAN_OR_EQUAL, [1, source], 0, False),
-        (Operator.LESS_THAN_OR_EQUAL, [source, 1], 2, False),
-        (Operator.IN, [source, ["Maybe"]], "Yes", False),
-        (Operator.IN, ["Maybe", source], ["Yes"], False),
-        (Operator.ANY_IN, [source, ["Maybe"]], ["Yes", "No"], False),
-        (Operator.ANY_IN, [["Maybe"], source], ["Yes", "No"], False),
-        (Operator.ALL_IN, [source, ["Maybe"]], ["Yes", "No"], False),
-        (Operator.ALL_IN, [["Maybe"], source], ["Yes"], False),
-    ]
-
-
-def get_test_data_with_string_values_for_source(source: dict):
-    """
-    operator, operands, expected_result
-    """
-    return [
-        (Operator.EQUAL, [source, "item-1"], True),
-        (Operator.EQUAL, ["item-1", source], True),
-        (Operator.NOT_EQUAL, [source, "item-2"], True),
-        (Operator.NOT_EQUAL, ["item-2", source], True),
-        (Operator.IN, [source, ["item-1"]], True),
-        # Test inverse
-        (Operator.EQUAL, [source, "item-2"], False),
-        (Operator.EQUAL, ["item-2", source], False),
-        (Operator.NOT_EQUAL, [source, "item-1"], False),
-        (Operator.NOT_EQUAL, ["item-1", source], False),
-        (Operator.IN, [source, ["item-2"]], False),
-    ]
-
-
-def get_test_data_comparison_operators_numeric_value_for_source(source):
-    """
-    operator, operands, resolved_value, expected_result
-    """
-    return [
-        (Operator.EQUAL, [source, 1], 1, True),
-        (Operator.EQUAL, [1, source], 1, True),
-        (Operator.NOT_EQUAL, [source, 1], 2, True),
-        (Operator.NOT_EQUAL, [1, source], 2, True),
-        (Operator.GREATER_THAN, [2, source], 1, True),
-        (Operator.GREATER_THAN, [source, 1], 2, True),
-        (Operator.GREATER_THAN_OR_EQUAL, [1, source], 1, True),
-        (Operator.GREATER_THAN_OR_EQUAL, [source, 1], 1, True),
-        (Operator.LESS_THAN, [1, source], 2, True),
-        (Operator.LESS_THAN, [source, 2], 1, True),
-        (Operator.LESS_THAN_OR_EQUAL, [1, source], 1, True),
-        (Operator.LESS_THAN_OR_EQUAL, [source, 1], 1, True),
-        # Test inverse
-        (Operator.EQUAL, [source, 1], 2, False),
-        (Operator.EQUAL, [1, source], 2, False),
-        (Operator.NOT_EQUAL, [source, 1], 1, False),
-        (Operator.NOT_EQUAL, [1, source], 1, False),
-        (Operator.GREATER_THAN, [1, source], 2, False),
-        (Operator.GREATER_THAN, [source, 2], 1, False),
-        (Operator.GREATER_THAN_OR_EQUAL, [1, source], 2, False),
-        (Operator.GREATER_THAN_OR_EQUAL, [source, 1], 0, False),
-        (Operator.LESS_THAN, [2, source], 1, False),
-        (Operator.LESS_THAN, [source, 1], 2, False),
-        (Operator.LESS_THAN_OR_EQUAL, [1, source], 0, False),
-        (Operator.LESS_THAN_OR_EQUAL, [source, 1], 2, False),
-    ]
-
-
-def get_test_data_for_date_value_for_source(source):
-    """
-    rule, expected_result
-    """
-    return [
-        (
-            {
-                Operator.EQUAL: [
-                    {Operator.DATE: [source]},
-                    {Operator.DATE: [now_as_yyyy_mm_dd]},
-                ]
-            },
-            True,
-        ),
-        (
-            {
-                Operator.NOT_EQUAL: [
-                    {Operator.DATE: [source, {"days": -1}]},
-                    {Operator.DATE: [now_as_yyyy_mm_dd]},
-                ]
-            },
-            True,
-        ),
-        (
-            {
-                Operator.LESS_THAN: [
-                    {Operator.DATE: [source, {"days": -1}]},
-                    {Operator.DATE: ["now"]},
-                ]
-            },
-            True,
-        ),
-        (
-            {
-                Operator.LESS_THAN_OR_EQUAL: [
-                    {Operator.DATE: [source, {"days": -1}]},
-                    {Operator.DATE: ["now", {"days": -1}]},
-                ]
-            },
-            True,
-        ),
-        (
-            {
-                Operator.GREATER_THAN: [
-                    {Operator.DATE: [source]},
-                    {Operator.DATE: ["now", {"months": -1}]},
-                ]
-            },
-            True,
-        ),
-        (
-            {
-                Operator.GREATER_THAN_OR_EQUAL: [
-                    {Operator.DATE: [source, {"months": -1}]},
-                    {Operator.DATE: ["now", {"months": -1}]},
-                ]
-            },
-            True,
-        ),
-        # Test inverse
-        (
-            {
-                Operator.EQUAL: [
-                    {Operator.DATE: [source, {"days": -1}]},
-                    {Operator.DATE: [now_as_yyyy_mm_dd]},
-                ]
-            },
-            False,
-        ),
-        (
-            {
-                Operator.NOT_EQUAL: [
-                    {Operator.DATE: [source]},
-                    {Operator.DATE: [now_as_yyyy_mm_dd]},
-                ]
-            },
-            False,
-        ),
-        (
-            {
-                Operator.LESS_THAN: [
-                    {Operator.DATE: [source, {"days": 1}]},
-                    {Operator.DATE: ["now"]},
-                ]
-            },
-            False,
-        ),
-        (
-            {
-                Operator.GREATER_THAN: [
-                    {Operator.DATE: [source, {"months": -1}]},
-                    {Operator.DATE: ["now"]},
-                ]
-            },
-            False,
-        ),
-        (
-            {
-                Operator.EQUAL: [
-                    {Operator.DATE: [source]},
-                    {Operator.DATE: [None]},
-                ]
-            },
-            False,
-        ),
-    ]
-
-
-test_data_mixed_value_sources = (
-    # operator, operands
-    {Operator.EQUAL: [{"source": "answers", "identifier": "answer-1"}, "Yes, I do"]},
-    {Operator.NOT_EQUAL: [{"source": "list", "identifier": "some-list"}, 0]},
-    {
-        Operator.GREATER_THAN_OR_EQUAL: [
-            {
-                "source": "answers",
-                "identifier": "answer-2",
-                "list_item_selector": {
-                    "source": "location",
-                    "id": "list_item_id",
-                },
-            },
-            9,
-        ]
-    },
-    {
-        Operator.IN: [
-            {"source": "metadata", "identifier": "region_code"},
-            ["GB-ENG", "GB-WLS"],
-        ]
-    },
-    {Operator.EQUAL: [list_source_id_selector_first, location_source]},
-    {Operator.ANY_IN: [list_source_id_selector_same_name_items, ["item-1"]]},
-)
 
 
 def get_mock_schema():
@@ -307,12 +59,50 @@ def get_when_rule_evaluator(
 
 
 @pytest.mark.parametrize(
-    "operator, operands, answer_value, expected_result",
-    get_test_data_for_source({"source": "answers", "identifier": "some-answer"}),
+    "rule, expected_result",
+    [
+        ({Operator.NOT: [False]}, True),
+        ({Operator.AND: [True, True]}, True),
+        ({Operator.OR: [True, False]}, True),
+        ({Operator.EQUAL: ["Yes", "Yes"]}, True),
+        ({Operator.NOT_EQUAL: ["Yes", "No"]}, True),
+        ({Operator.GREATER_THAN: [3, 1]}, True),
+        ({Operator.GREATER_THAN_OR_EQUAL: [1, 1]}, True),
+        ({Operator.LESS_THAN: [0.5, 1]}, True),
+        ({Operator.LESS_THAN_OR_EQUAL: [0.5, 0.5]}, True),
+        ({Operator.IN: ["Yes", ["Yes"]]}, True),
+        ({Operator.ANY_IN: [["Yes"], ["Yes", "No"]]}, True),
+        ({Operator.ALL_IN: [["Yes", "No"], ["Yes", "No"]]}, True),
+        # Test inverse
+        ({Operator.NOT: [True]}, False),
+        ({Operator.AND: [True, False]}, False),
+        ({Operator.OR: [False, False]}, False),
+        ({Operator.EQUAL: ["Yes", "No"]}, False),
+        ({Operator.NOT_EQUAL: ["Yes", "Yes"]}, False),
+        ({Operator.GREATER_THAN: [1, 3]}, False),
+        ({Operator.GREATER_THAN_OR_EQUAL: [0.5, 1]}, False),
+        ({Operator.LESS_THAN: [1, 0.5]}, False),
+        ({Operator.LESS_THAN_OR_EQUAL: [1, 0.5]}, False),
+        ({Operator.IN: ["No", ["Yes"]]}, False),
+        ({Operator.ANY_IN: [["Maybe"], ["Yes", "No"]]}, False),
+        ({Operator.ALL_IN: [["Yes", "Maybe"], ["Yes", "No"]]}, False),
+    ],
 )
-def test_answer_source(operator, operands, answer_value, expected_result):
+def test_all_boolean_operators_as_rule(rule, expected_result):
     when_rule_evaluator = get_when_rule_evaluator(
-        rule={operator: operands},
+        rule=rule,
+    )
+
+    assert when_rule_evaluator.evaluate() is expected_result
+
+
+@pytest.mark.parametrize(
+    "answer_value, expected_result",
+    [(3, True), (7, False)],
+)
+def test_answer_source(answer_value, expected_result):
+    when_rule_evaluator = get_when_rule_evaluator(
+        rule={Operator.EQUAL: [{"source": "answers", "identifier": "some-answer"}, 3]},
         answer_store=AnswerStore([{"answer_id": "some-answer", "value": answer_value}]),
     )
 
@@ -320,20 +110,21 @@ def test_answer_source(operator, operands, answer_value, expected_result):
 
 
 @pytest.mark.parametrize(
-    "operator, operands, answer_value, expected_result",
-    get_test_data_for_source(
-        {
-            "source": "answers",
-            "identifier": "some-answer",
-            "list_item_selector": {"source": "location", "id": "list_item_id"},
-        }
-    ),
+    "answer_value, expected_result",
+    [(3, True), (7, False)],
 )
-def test_answer_source_with_list_item_selector_location(
-    operator, operands, answer_value, expected_result
-):
+def test_answer_source_with_list_item_selector_location(answer_value, expected_result):
     when_rule_evaluator = get_when_rule_evaluator(
-        rule={operator: operands},
+        rule={
+            Operator.EQUAL: [
+                {
+                    "source": "answers",
+                    "identifier": "some-answer",
+                    "list_item_selector": {"source": "location", "id": "list_item_id"},
+                },
+                3,
+            ]
+        },
         answer_store=AnswerStore(
             [
                 {
@@ -352,24 +143,27 @@ def test_answer_source_with_list_item_selector_location(
 
 
 @pytest.mark.parametrize(
-    "operator, operands, answer_value, expected_result",
-    get_test_data_for_source(
-        {
-            "source": "answers",
-            "identifier": "some-answer",
-            "list_item_selector": {
-                "source": "list",
-                "id": "some-list",
-                "id_selector": "first",
-            },
-        }
-    ),
+    "answer_value, expected_result",
+    [(3, True), (7, False)],
 )
 def test_answer_source_with_list_item_selector_list_first_item(
-    operator, operands, answer_value, expected_result
+    answer_value, expected_result
 ):
     when_rule_evaluator = get_when_rule_evaluator(
-        rule={operator: operands},
+        rule={
+            Operator.EQUAL: [
+                {
+                    "source": "answers",
+                    "identifier": "some-answer",
+                    "list_item_selector": {
+                        "source": "list",
+                        "id": "some-list",
+                        "id_selector": "first",
+                    },
+                },
+                3,
+            ]
+        },
         answer_store=AnswerStore(
             [
                 {
@@ -386,20 +180,21 @@ def test_answer_source_with_list_item_selector_list_first_item(
 
 
 @pytest.mark.parametrize(
-    "operator, operands, answer_value, expected_result",
-    get_test_data_comparison_operators_numeric_value_for_source(
-        {
-            "source": "answers",
-            "identifier": "some-answer",
-            "selector": "years",
-        }
-    ),
+    "answer_value, expected_result",
+    [(3, True), (7, False)],
 )
-def test_answer_source_with_dict_answer_selector(
-    operator, operands, answer_value, expected_result
-):
+def test_answer_source_with_dict_answer_selector(answer_value, expected_result):
     when_rule_evaluator = get_when_rule_evaluator(
-        rule={operator: operands},
+        rule={
+            Operator.EQUAL: [
+                {
+                    "source": "answers",
+                    "identifier": "some-answer",
+                    "selector": "years",
+                },
+                3,
+            ]
+        },
         answer_store=AnswerStore(
             [
                 {
@@ -414,12 +209,14 @@ def test_answer_source_with_dict_answer_selector(
 
 
 @pytest.mark.parametrize(
-    "operator, operands, metadata_value, expected_result",
-    get_test_data_for_source({"source": "metadata", "identifier": "some-metadata"}),
+    "metadata_value, expected_result",
+    [(3, True), (7, False)],
 )
-def test_metadata_source(operator, operands, metadata_value, expected_result):
+def test_metadata_source(metadata_value, expected_result):
     when_rule_evaluator = get_when_rule_evaluator(
-        rule={operator: operands},
+        rule={
+            Operator.EQUAL: [{"source": "metadata", "identifier": "some-metadata"}, 3]
+        },
         metadata={"some-metadata": metadata_value},
     )
 
@@ -427,14 +224,12 @@ def test_metadata_source(operator, operands, metadata_value, expected_result):
 
 
 @pytest.mark.parametrize(
-    "operator, operands, list_count, expected_result",
-    get_test_data_comparison_operators_numeric_value_for_source(
-        {"source": "list", "identifier": "some-list"}
-    ),
+    "list_count, expected_result",
+    [(3, True), (7, False)],
 )
-def test_list_source(operator, operands, list_count, expected_result):
+def test_list_source(list_count, expected_result):
     when_rule_evaluator = get_when_rule_evaluator(
-        rule={operator: operands},
+        rule={Operator.EQUAL: [{"source": "list", "identifier": "some-list"}, 3]},
         list_store=ListStore(
             [{"name": "some-list", "items": get_list_items(list_count)}]
         ),
@@ -444,14 +239,17 @@ def test_list_source(operator, operands, list_count, expected_result):
 
 
 @pytest.mark.parametrize(
-    "operator, operands, expected_result",
-    get_test_data_with_string_values_for_source(
-        {"source": "list", "identifier": "some-list", "id_selector": "first"}
-    ),
+    "list_item_id, expected_result",
+    [("item-1", True), ("item-2", False)],
 )
-def test_list_source_with_id_selector_first(operator, operands, expected_result):
+def test_list_source_with_id_selector_first(list_item_id, expected_result):
     when_rule_evaluator = get_when_rule_evaluator(
-        rule={operator: operands},
+        rule={
+            Operator.EQUAL: [
+                {"source": "list", "identifier": "some-list", "id_selector": "first"},
+                list_item_id,
+            ]
+        },
         list_store=ListStore([{"name": "some-list", "items": get_list_items(1)}]),
     )
 
@@ -459,50 +257,21 @@ def test_list_source_with_id_selector_first(operator, operands, expected_result)
 
 
 @pytest.mark.parametrize(
-    "operator, operands, expected_result",
-    [
-        (Operator.IN, ["item-2", list_source_id_selector_same_name_items], True),
-        (
-            Operator.ANY_IN,
-            [list_source_id_selector_same_name_items, ["item-3", "item-5"]],
-            True,
-        ),
-        (Operator.ANY_IN, [["item-1"], list_source_id_selector_same_name_items], True),
-        (
-            Operator.ALL_IN,
-            [list_source_id_selector_same_name_items, ["item-1", "item-2", "item-3"]],
-            True,
-        ),
-        (
-            Operator.ALL_IN,
-            [["item-1", "item-2", "item-3"], list_source_id_selector_same_name_items],
-            True,
-        ),
-        # Test inverse
-        (Operator.IN, ["item-5", list_source_id_selector_same_name_items], False),
-        (
-            Operator.ANY_IN,
-            [list_source_id_selector_same_name_items, ["item-4", "item-5"]],
-            False,
-        ),
-        (Operator.ANY_IN, [["item-5"], list_source_id_selector_same_name_items], False),
-        (
-            Operator.ALL_IN,
-            [list_source_id_selector_same_name_items, ["item-1", "item-2", "item-5"]],
-            False,
-        ),
-        (
-            Operator.ALL_IN,
-            [["item-1", "item-2", "item-5"], list_source_id_selector_same_name_items],
-            False,
-        ),
-    ],
+    "list_item_id, expected_result",
+    [("item-1", True), ("item-2", True), ("item-3", True), ("item-4", False)],
 )
-def test_list_source_with_id_selector_same_name_items(
-    operator, operands, expected_result
-):
+def test_list_source_with_id_selector_same_name_items(list_item_id, expected_result):
     when_rule_evaluator = get_when_rule_evaluator(
-        rule={operator: operands},
+        rule={
+            Operator.IN: [
+                list_item_id,
+                {
+                    "source": "list",
+                    "identifier": "some-list",
+                    "id_selector": "same_name_items",
+                },
+            ]
+        },
         list_store=ListStore(
             [
                 {
@@ -559,16 +328,19 @@ def test_list_source_id_selector_primary_person(
 
 
 @pytest.mark.parametrize(
-    "operator, operands, expected_result",
-    get_test_data_with_string_values_for_source(
-        {"source": "location", "identifier": "list_item_id"}
-    ),
+    "list_item_id, expected_result",
+    [("item-1", True), ("item-2", False)],
 )
-def test_current_location_source(operator, operands, expected_result):
+def test_current_location_source(list_item_id, expected_result):
     when_rule_evaluator = get_when_rule_evaluator(
-        rule={operator: operands},
+        rule={
+            Operator.EQUAL: [
+                {"source": "location", "identifier": "list_item_id"},
+                "item-1",
+            ]
+        },
         location=Location(
-            section_id="some-section", block_id="some-block", list_item_id="item-1"
+            section_id="some-section", block_id="some-block", list_item_id=list_item_id
         ),
     )
 
@@ -581,11 +353,16 @@ def test_current_location_source(operator, operands, expected_result):
         (
             Operator.AND,
             [
-                *test_data_mixed_value_sources,
                 {
-                    Operator.ANY_IN: [
-                        list_source_id_selector_same_name_items,
-                        ["item-1"],
+                    Operator.EQUAL: [
+                        {"source": "answers", "identifier": "answer-1"},
+                        "Yes, I do",
+                    ]
+                },
+                {
+                    Operator.IN: [
+                        {"source": "metadata", "identifier": "region_code"},
+                        ["GB-ENG", "GB-WLS"],
                     ]
                 },
             ],
@@ -595,24 +372,60 @@ def test_current_location_source(operator, operands, expected_result):
         (
             Operator.AND,
             [
-                *test_data_mixed_value_sources,
                 {
-                    Operator.ANY_IN: [
-                        list_source_id_selector_same_name_items,
-                        ["item-5"],
+                    Operator.EQUAL: [
+                        {"source": "answers", "identifier": "answer-1"},
+                        "Yes, I do",
+                    ]
+                },
+                {
+                    Operator.IN: [
+                        {"source": "metadata", "identifier": "region_code"},
+                        ["GB-NIR"],
                     ]
                 },
             ],
             False,
         ),
+    ],
+)
+def test_logic_and(operator, operands, expected_result):
+    when_rule_evaluator = get_when_rule_evaluator(
+        rule={operator: operands},
+        answer_store=AnswerStore(
+            [
+                {
+                    "answer_id": "answer-1",
+                    "list_item_id": "item-1",
+                    "value": "Yes, I do",
+                }
+            ]
+        ),
+        metadata={"region_code": "GB-ENG"},
+        location=Location(
+            section_id="some-section", block_id="some-block", list_item_id="item-1"
+        ),
+    )
+
+    assert when_rule_evaluator.evaluate() is expected_result
+
+
+@pytest.mark.parametrize(
+    "operator, operands, expected_result",
+    [
         (
             Operator.OR,
             [
-                *test_data_mixed_value_sources,
                 {
-                    Operator.ALL_IN: [
-                        list_source_id_selector_same_name_items,
-                        ["item-1"],
+                    Operator.IN: [
+                        {"source": "metadata", "identifier": "region_code"},
+                        ["GB-NIR"],
+                    ]
+                },
+                {
+                    Operator.EQUAL: [
+                        {"source": "answers", "identifier": "answer-1"},
+                        "Yes, I do",
                     ]
                 },
             ],
@@ -623,46 +436,15 @@ def test_current_location_source(operator, operands, expected_result):
             Operator.OR,
             [
                 {
-                    Operator.EQUAL: [
-                        {"source": "answers", "identifier": "answer-1"},
-                        "No",
-                    ]
-                },
-                {
-                    Operator.NOT_EQUAL: [
-                        {"source": "list", "identifier": "some-list"},
-                        5,
-                    ]
-                },
-                {
-                    Operator.GREATER_THAN_OR_EQUAL: [
-                        {
-                            "source": "answers",
-                            "identifier": "answer-2",
-                            "list_item_selector": {
-                                "source": "location",
-                                "id": "list_item_id",
-                            },
-                        },
-                        15,
-                    ]
-                },
-                {
                     Operator.IN: [
                         {"source": "metadata", "identifier": "region_code"},
                         ["GB-NIR"],
                     ]
                 },
                 {
-                    Operator.NOT_EQUAL: [
-                        list_source_id_selector_first,
-                        location_source,
-                    ]
-                },
-                {
-                    Operator.ANY_IN: [
-                        list_source_id_selector_same_name_items,
-                        ["item-5"],
+                    Operator.EQUAL: [
+                        {"source": "answers", "identifier": "answer-1"},
+                        "No, I do not",
                     ]
                 },
             ],
@@ -670,7 +452,7 @@ def test_current_location_source(operator, operands, expected_result):
         ),
     ],
 )
-def test_logic_and_or(operator, operands, expected_result):
+def test_logic_or(operator, operands, expected_result):
     when_rule_evaluator = get_when_rule_evaluator(
         rule={operator: operands},
         answer_store=AnswerStore(
@@ -679,24 +461,10 @@ def test_logic_and_or(operator, operands, expected_result):
                     "answer_id": "answer-1",
                     "list_item_id": "item-1",
                     "value": "Yes, I do",
-                },
-                {
-                    "answer_id": "answer-2",
-                    "list_item_id": "item-1",
-                    "value": 10,
-                },
+                }
             ]
         ),
-        metadata={"region_code": "GB-ENG", "language_code": "en"},
-        list_store=ListStore(
-            [
-                {
-                    "name": "some-list",
-                    "items": get_list_items(5),
-                    "same_name_items": get_list_items(3),
-                }
-            ],
-        ),
+        metadata={"region_code": "GB-ENG"},
         location=Location(
             section_id="some-section", block_id="some-block", list_item_id="item-1"
         ),
@@ -706,16 +474,24 @@ def test_logic_and_or(operator, operands, expected_result):
 
 
 @pytest.mark.parametrize(
-    "operator, operands, answer_value, expected_result",
-    get_test_data_for_source({"source": "answers", "identifier": "some-answer"}),
+    "answer_value, expected_result", [("No", True), ("Yes", False)]
 )
-def test_logic_not(operator, operands, answer_value, expected_result):
+def test_logic_not(answer_value, expected_result):
     when_rule_evaluator = get_when_rule_evaluator(
-        rule={Operator.NOT: [{operator: operands}]},
+        rule={
+            Operator.NOT: [
+                {
+                    Operator.EQUAL: [
+                        {"source": "answers", "identifier": "some-answer"},
+                        "Yes",
+                    ]
+                }
+            ]
+        },
         answer_store=AnswerStore([{"answer_id": "some-answer", "value": answer_value}]),
     )
 
-    assert when_rule_evaluator.evaluate() is not expected_result
+    assert when_rule_evaluator.evaluate() is expected_result
 
 
 @pytest.mark.parametrize(
@@ -745,7 +521,12 @@ def test_logic_not(operator, operands, answer_value, expected_result):
                 },
                 {
                     Operator.OR: [
-                        {Operator.EQUAL: [list_source, 0]},
+                        {
+                            Operator.EQUAL: [
+                                {"source": "list", "identifier": "some-list"},
+                                0,
+                            ]
+                        },
                         {
                             Operator.AND: [
                                 {
@@ -763,8 +544,16 @@ def test_logic_not(operator, operands, answer_value, expected_result):
                                 },
                                 {
                                     Operator.IN: [
-                                        list_source_id_selector_first,
-                                        list_source_id_selector_same_name_items,
+                                        {
+                                            "source": "list",
+                                            "identifier": "some-list",
+                                            "id_selector": "first",
+                                        },
+                                        {
+                                            "source": "list",
+                                            "identifier": "some-list",
+                                            "id_selector": "same_name_items",
+                                        },
                                     ]
                                 },
                             ]
@@ -785,7 +574,12 @@ def test_logic_not(operator, operands, answer_value, expected_result):
                 },
                 {
                     Operator.OR: [
-                        {Operator.EQUAL: [list_source, 0]},
+                        {
+                            Operator.EQUAL: [
+                                {"source": "list", "identifier": "some-list"},
+                                0,
+                            ]
+                        },
                         {
                             Operator.AND: [
                                 {
@@ -803,8 +597,16 @@ def test_logic_not(operator, operands, answer_value, expected_result):
                                 },
                                 {
                                     Operator.IN: [
-                                        list_source_id_selector_first,
-                                        list_source_id_selector_same_name_items,
+                                        {
+                                            "source": "list",
+                                            "identifier": "some-list",
+                                            "id_selector": "first",
+                                        },
+                                        {
+                                            "source": "list",
+                                            "identifier": "some-list",
+                                            "id_selector": "same_name_items",
+                                        },
                                     ]
                                 },
                             ]
@@ -857,9 +659,9 @@ def test_nested_rules(operator, operands, expected_result):
         [None, 10],
         [10, None],
         [None, None],
-        # Value for value sources does not exist
-        [10, answer_source],
-        [10, metadata_source],
+        # Value for these Value Sources does not exist
+        [10, {"source": "answers", "identifier": "some-answer"}],
+        [10, {"source": "metadata", "identifier": "some-metadata"}],
     ],
 )
 @pytest.mark.parametrize(
@@ -885,8 +687,8 @@ def test_comparison_operator_rule_with_nonetype_operands(operator_name, operands
         [["Yes"], None],
         [None, None],
         # Value for value sources does not exist
-        [["Yes"], answer_source],
-        [["Yes"], metadata_source],
+        [["Yes"], {"source": "answers", "identifier": "some-answer"}],
+        [["Yes"], {"source": "metadata", "identifier": "some-metadata"}],
     ],
 )
 @pytest.mark.parametrize(
@@ -903,11 +705,105 @@ def test_array_operator_rule_with_nonetype_operands(operator_name, operands):
 @pytest.mark.parametrize(
     "rule, expected_result",
     [
-        *get_test_data_for_date_value_for_source(
-            {"source": "answers", "identifier": "some-answer"}
+        (
+            {
+                Operator.EQUAL: [
+                    {Operator.DATE: [now_as_yyyy_mm_dd]},
+                    {Operator.DATE: [now_as_yyyy_mm_dd]},
+                ]
+            },
+            True,
         ),
-        *get_test_data_for_date_value_for_source(
-            {"source": "metadata", "identifier": "some-metadata"}
+        (
+            {
+                Operator.NOT_EQUAL: [
+                    {Operator.DATE: [now_as_yyyy_mm_dd, {"days": -1}]},
+                    {Operator.DATE: [now_as_yyyy_mm_dd]},
+                ]
+            },
+            True,
+        ),
+        (
+            {
+                Operator.LESS_THAN: [
+                    {Operator.DATE: [now_as_yyyy_mm_dd, {"days": -1}]},
+                    {Operator.DATE: ["now"]},
+                ]
+            },
+            True,
+        ),
+        (
+            {
+                Operator.LESS_THAN_OR_EQUAL: [
+                    {Operator.DATE: [now_as_yyyy_mm_dd, {"days": -1}]},
+                    {Operator.DATE: ["now", {"days": -1}]},
+                ]
+            },
+            True,
+        ),
+        (
+            {
+                Operator.GREATER_THAN: [
+                    {Operator.DATE: [now_as_yyyy_mm_dd]},
+                    {Operator.DATE: ["now", {"months": -1}]},
+                ]
+            },
+            True,
+        ),
+        (
+            {
+                Operator.GREATER_THAN_OR_EQUAL: [
+                    {Operator.DATE: [now_as_yyyy_mm_dd, {"months": -1}]},
+                    {Operator.DATE: ["now", {"months": -1}]},
+                ]
+            },
+            True,
+        ),
+        # Test inverse
+        (
+            {
+                Operator.EQUAL: [
+                    {Operator.DATE: [now_as_yyyy_mm_dd, {"days": -1}]},
+                    {Operator.DATE: [now_as_yyyy_mm_dd]},
+                ]
+            },
+            False,
+        ),
+        (
+            {
+                Operator.NOT_EQUAL: [
+                    {Operator.DATE: [now_as_yyyy_mm_dd]},
+                    {Operator.DATE: [now_as_yyyy_mm_dd]},
+                ]
+            },
+            False,
+        ),
+        (
+            {
+                Operator.LESS_THAN: [
+                    {Operator.DATE: [now_as_yyyy_mm_dd, {"days": 1}]},
+                    {Operator.DATE: ["now"]},
+                ]
+            },
+            False,
+        ),
+        (
+            {
+                Operator.GREATER_THAN: [
+                    {Operator.DATE: [now_as_yyyy_mm_dd, {"months": -1}]},
+                    {Operator.DATE: ["now"]},
+                ]
+            },
+            False,
+        ),
+        (
+            {
+                Operator.EQUAL: [
+                    {Operator.DATE: [now_as_yyyy_mm_dd]},
+                    {Operator.DATE: [None]},
+                ]
+            },
+            False,
         ),
     ],
 )
@@ -948,7 +844,9 @@ def test_rule_uses_list_item_id_when_evaluating_answer_value(
     schema.is_repeating_answer = Mock(return_value=is_repeating_answer)
 
     when_rule_evaluator = get_when_rule_evaluator(
-        rule={Operator.EQUAL: [answer_source, "Yes"]},
+        rule={
+            Operator.EQUAL: [{"source": "answers", "identifier": "some-answer"}, "Yes"]
+        },
         schema=schema,
         answer_store=AnswerStore(
             [
@@ -1035,22 +933,24 @@ def test_answer_source_with_routing_path_block_ids_inside_repeat(is_answer_on_pa
     assert when_rule_evaluator.evaluate() == expected_result
 
 
-@pytest.mark.parametrize(
-    "operator, operands, answer_value, expected_result",
-    get_test_data_for_source({"source": "answers", "identifier": "some-answer"}),
-)
+@pytest.mark.parametrize("comparison_value, expected_result", [(3, True), (7, False)])
 def test_answer_source_default_answer_used_when_no_answer(
-    operator, operands, answer_value, expected_result
+    comparison_value, expected_result
 ):
     schema = get_mock_schema()
     schema.get_default_answer = Mock(
-        return_value=Answer(answer_id="some-answer", value=answer_value)
+        return_value=Answer(answer_id="answer-that-does-not-exist", value=3)
     )
 
     when_rule_evaluator = get_when_rule_evaluator(
-        rule={operator: operands},
+        rule={
+            Operator.EQUAL: [
+                {"source": "answers", "identifier": "answer-that-does-not-exist"},
+                comparison_value,
+            ]
+        },
         schema=schema,
-        answer_store=AnswerStore([{"answer_id": f"some-other-answer", "value": "No"}]),
+        answer_store=AnswerStore([{"answer_id": f"some-answer", "value": "No"}]),
     )
 
     assert when_rule_evaluator.evaluate() is expected_result
