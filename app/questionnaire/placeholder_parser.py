@@ -61,18 +61,6 @@ class PlaceholderParser:
         except KeyError:
             return self._value_source_resolver.resolve(placeholder["value"])
 
-    def _resolve_value_source_list(
-        self, value_source_list: list[dict]
-    ) -> Optional[ValueSourceTypes]:
-        values = []
-        for value_source in value_source_list:
-            value = self._value_source_resolver.resolve(value_source)
-            if isinstance(value, list):
-                values.extend(value)
-            else:
-                values.append(value)
-        return values
-
     def _parse_transforms(self, transform_list: Sequence[Mapping]):
         transformed_value = None
 
@@ -101,3 +89,15 @@ class PlaceholderParser:
             )
 
         return transformed_value
+
+    def _resolve_value_source_list(
+        self, value_source_list: list[dict]
+    ) -> Optional[ValueSourceTypes]:
+        values = []
+        for value_source in value_source_list:
+            value = self._value_source_resolver.resolve(value_source)
+            if isinstance(value, list):
+                values.extend(value)
+            else:
+                values.append(value)
+        return values
