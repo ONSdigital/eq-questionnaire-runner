@@ -2,17 +2,19 @@ from dataclasses import dataclass
 from decimal import Decimal
 from typing import Optional, Union
 
-from app.data_models.answer import (
-    AnswerValueEscapedTypes,
-    AnswerValueTypes,
-    escape_answer_value,
-)
+from markupsafe import Markup
+
+from app.data_models.answer import AnswerValueTypes, escape_answer_value
 from app.data_models.answer_store import AnswerStore
 from app.data_models.list_store import ListModel, ListStore
 from app.questionnaire import Location, QuestionnaireSchema
 from app.questionnaire.relationship_location import RelationshipLocation
 
 ValueSourceTypes = Union[None, str, int, Decimal, list]
+ValueSourceEscapedTypes = Union[
+    Markup,
+    list[Markup],
+]
 
 
 @dataclass
@@ -25,7 +27,7 @@ class ValueSourceResolver:
     list_item_id: Optional[str]
     routing_path_block_ids: Optional[list] = None
     use_default_answer: bool = False
-    escape_answer_value: bool = False
+    escape_answer_values: bool = False
 
     def _is_answer_on_path(self, answer_id: str) -> bool:
         if self.routing_path_block_ids:
@@ -73,9 +75,9 @@ class ValueSourceResolver:
             else None
         )
 
-    def _resolve_answer_value(
+    def _resolve_answer_value_source(
         self, value_source: dict
-    ) -> Union[AnswerValueEscapedTypes, ValueSourceTypes]:
+    ) -> Union[ValueSourceEscapedTypes, ValueSourceTypes]:
         list_item_id = self._resolve_list_item_id_for_value_source(value_source)
         answer_id = value_source["identifier"]
 
@@ -90,31 +92,36 @@ class ValueSourceResolver:
                 else None
             )
 
-        if answer_value is not None and self.escape_answer_value:
+        if answer_value is not None and self.escape_answer_values:
             return escape_answer_value(answer_value)
 
         return answer_value
 
+    def _resolve_list_value_source(self, value_source: dict) -> Union[int, str, list]:
+        identifier = value_source["identifier"]
+        list_model: ListModel = self.list_store[identifier]
+
+        if id_selector := value_source.get("id_selector"):
+            value: Union[str, list] = getattr(list_model, id_selector)
+            return value
+
+        return len(list_model)
+
     def resolve(
         self, value_source: dict
-    ) -> Union[AnswerValueEscapedTypes, ValueSourceTypes]:
+    ) -> Union[ValueSourceEscapedTypes, ValueSourceTypes]:
         source = value_source["source"]
-        identifier = value_source.get("identifier")
 
         if source == "answers":
-            return self._resolve_answer_value(value_source)
-        if source == "metadata":
-            return self.metadata.get(identifier)
+            return self._resolve_answer_value_source(value_source)
+
         if source == "list":
-            list_model: ListModel = self.list_store[identifier]
+            return self._resolve_list_value_source(value_source)
 
-            if id_selector := value_source.get("id_selector"):
-                value: Union[str, list] = getattr(list_model, id_selector)
-                return value
+        if source == "metadata":
+            return self.metadata.get(value_source.get("identifier"))
 
-            return len(list_model)
-
-        if source == "location" and identifier == "list_item_id":
+        if source == "location" and value_source.get("identifier") == "list_item_id":
             # This does not use the location object because
             # routes such as individual response does not have the concept of location.
             return self.list_item_id

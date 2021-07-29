@@ -1,6 +1,5 @@
-from typing import Any, Dict, Mapping, Optional, Sequence
+from typing import Any, Mapping, Optional, Sequence
 
-from app.data_models.answer import AnswerValueTypes
 from app.data_models.answer_store import AnswerStore
 from app.questionnaire import QuestionnaireSchema
 from app.questionnaire.placeholder_transforms import PlaceholderTransforms
@@ -43,7 +42,7 @@ class PlaceholderParser:
             schema=self._schema,
             location=self._location,
             list_item_id=self._list_item_id,
-            escape_answer_value=True,
+            escape_answer_values=True,
         )
 
     def __call__(self, placeholder_list: Sequence[Mapping]) -> Mapping:
@@ -61,23 +60,11 @@ class PlaceholderParser:
         except KeyError:
             return self._value_source_resolver.resolve(placeholder["value"])
 
-    def _resolve_value_source_list(
-        self, value_source_list: list[dict]
-    ) -> Optional[ValueSourceTypes]:
-        values = []
-        for value_source in value_source_list:
-            value = self._value_source_resolver.resolve(value_source)
-            if isinstance(value, list):
-                values.extend(value)
-            else:
-                values.append(value)
-        return values
-
     def _parse_transforms(self, transform_list: Sequence[Mapping]):
         transformed_value = None
 
         for transform in transform_list:
-            transform_args: Dict[str, Optional[AnswerValueTypes]] = {}
+            transform_args: dict[str, Any] = {}
 
             for arg_key, arg_value in transform["arguments"].items():
                 if isinstance(arg_value, list):
@@ -101,3 +88,15 @@ class PlaceholderParser:
             )
 
         return transformed_value
+
+    def _resolve_value_source_list(
+        self, value_source_list: list[dict]
+    ) -> Optional[ValueSourceTypes]:
+        values = []
+        for value_source in value_source_list:
+            value = self._value_source_resolver.resolve(value_source)
+            if isinstance(value, list):
+                values.extend(value)
+            else:
+                values.append(value)
+        return values

@@ -40,7 +40,7 @@ def get_value_source_resolver(
     list_item_id: Optional[str] = None,
     routing_path_block_ids: Optional[list] = None,
     use_default_answer=False,
-    escape_answer_value=False,
+    escape_answer_values=False,
 ):
     if not schema:
         schema = get_mock_schema()
@@ -58,7 +58,7 @@ def get_value_source_resolver(
         list_item_id=list_item_id,
         routing_path_block_ids=routing_path_block_ids,
         use_default_answer=use_default_answer,
-        escape_answer_value=escape_answer_value,
+        escape_answer_values=escape_answer_values,
     )
 
 
@@ -411,7 +411,7 @@ def test_answer_value_can_be_escaped(answer_value, escaped_value):
                 }
             ]
         ),
-        escape_answer_value=True,
+        escape_answer_values=True,
     )
     assert (
         value_source_resolver.resolve(
@@ -431,7 +431,7 @@ def test_answer_value_with_selector_can_be_escaped():
                 }
             ]
         ),
-        escape_answer_value=True,
+        escape_answer_values=True,
     )
     assert (
         value_source_resolver.resolve(
