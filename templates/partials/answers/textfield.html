@@ -34,7 +34,7 @@
     "ariaNResults": "There are {n} suggestions available.",
     "ariaLimitedResults": "Results have been limited to 10 suggestions. Type more characters to improve your search.",
     "autosuggestData": answer.suggestions.url,
-    "allowMultiple": "true" if answer.suggestions.allow_multiple else "false"
+    "allowMultiple": true if answer.suggestions.allow_multiple else false
   }) %}
   {{ onsAutosuggest(config) }}
 {% else %}
