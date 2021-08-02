@@ -16,18 +16,19 @@ equals_operations = [
     [(0.5, 0.5), True],
     [(1.0, 1), True],
     [(3, 3), True],
-    [(now, now), True],
-    [(0.5, 0.7), False],
-    [(1.0, 3), False],
-    [(3, 7), False],
-    [(now, datetime.utcnow()), False],
     [("Yes", "Yes"), True],
     [("CaseInsensitive", "caseInsensitive"), True],
     [(None, None), True],
     [(True, True), True],
+    [(now, now), True],
+    # Test inverse
+    [(0.5, 0.7), False],
+    [(1.0, 3), False],
+    [(3, 7), False],
     [("Yes", "No"), False],
     [(None, 1), False],
     [(True, False), False],
+    [(now, datetime.utcnow()), False],
 ]
 
 
@@ -54,6 +55,7 @@ greater_than_and_less_than_operations = [
     [(2, 1.0), True],
     [(7, 3), True],
     [(datetime.utcnow(), now), True],
+    # --- Test inverse ---
     [(0.5, 0.7), False],
     [(1.0, 2), False],
     [(3, 7), False],
@@ -82,18 +84,19 @@ def test_operation_less_than(operands, expected_result):
 @pytest.mark.parametrize(
     "operands, expected_result",
     [
-        [(0.7, 0.5), False],
-        [(2, 1.0), False],
-        [(7, 3), False],
-        [(datetime.utcnow(), now), False],
         [(0.5, 0.7), True],
         [(1.0, 2), True],
         [(3, 7), True],
-        [(now, datetime.utcnow()), True],
         [(0.5, 0.5), True],
         [(1.0, 1), True],
         [(3, 3), True],
         [(now, now), True],
+        [(now, datetime.utcnow()), True],
+        # --- Test inverse ---
+        [(0.7, 0.5), False],
+        [(2, 1.0), False],
+        [(7, 3), False],
+        [(datetime.utcnow(), now), False],
     ],
 )
 def test_operation_less_than_or_equal(operands, expected_result):
@@ -107,15 +110,16 @@ def test_operation_less_than_or_equal(operands, expected_result):
         [(0.7, 0.5), True],
         [(2, 1.0), True],
         [(7, 3), True],
-        [(datetime.utcnow(), now), True],
-        [(0.5, 0.7), False],
-        [(1.0, 2), False],
-        [(3, 7), False],
-        [(now, datetime.utcnow()), False],
         [(0.5, 0.5), True],
         [(1.0, 1), True],
         [(3, 3), True],
         [(now, now), True],
+        [(datetime.utcnow(), now), True],
+        # --- Test inverse
+        [(0.5, 0.7), False],
+        [(1.0, 2), False],
+        [(3, 7), False],
+        [(now, datetime.utcnow()), False],
     ],
 )
 def test_operation_greater_than_or_equal(operands, expected_result):
