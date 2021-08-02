@@ -40,7 +40,7 @@ class WhenRuleEvaluator:
 
         if not isinstance(operands, list):
             raise TypeError(
-                f"The rule is invalid. Got a non list type for operands - {type(operands)}"
+                f"The rule is invalid, operands should be of type list and not {type(operands)}"
             )
 
         resolved_operands = self.get_resolved_operands(operands)
