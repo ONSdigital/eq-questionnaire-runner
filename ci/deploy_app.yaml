@@ -6,7 +6,8 @@ image_resource:
     tag: slim
 inputs:
   - name: eq-questionnaire-runner
-  - name: image_tag
+  - name: image-tag
+    optional: true
 params:
   SERVICE_ACCOUNT_JSON: ((gcp.service_account_json))
   PROJECT_ID:
@@ -68,6 +69,9 @@ run:
       $SERVICE_ACCOUNT_JSON
       EOL
       gcloud auth activate-service-account --key-file "${GOOGLE_APPLICATION_CREDENTIALS}"
-      export IMAGE_TAG=`cat ./image-tag/tag`
+      FILE=./image-tag/tag
+      if [[ -f "${FILE}" ]]; then
+        export IMAGE_TAG=`cat "$FILE"`
+      fi
       cd eq-questionnaire-runner
       ./ci/deploy_app.sh
