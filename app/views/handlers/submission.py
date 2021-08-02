@@ -47,7 +47,7 @@ class SubmissionHandler:
         submission_schema: Mapping = self._schema.get_submission() or {}
 
         if submission_schema.get("view_submitted_response"):
-            self._questionnaire_store.submitted_at = self.submitted_at.timestamp()
+            self._questionnaire_store.submitted_at = self.submitted_at
             self._questionnaire_store.save()
         else:
             self._questionnaire_store.delete()
