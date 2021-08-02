@@ -1,20 +1,9 @@
-import unittest
+from app.helpers.uuid_helper import is_valid_uuid
+from app.libs.utils import convert_tx_id
 
-from app.libs.utils import ObjectFromDict
 
+def test_convert_tx_id():
+    tx_id_to_convert = "bc26d5ef-8475-4710-ac82-753a0a150708"
 
-class ObjectFromDictTest(unittest.TestCase):
-    def test_simple_object(self):
-        simple_dict = {
-            "property_one": "string",
-            "property_two": 2,
-            "property_three": [],
-        }
-
-        obj = ObjectFromDict(simple_dict)
-
-        # pylint: disable=maybe-no-member
-        # Object is dynamically built and properties dynamically assigned
-        self.assertEqual(obj.property_one, "string")
-        self.assertEqual(obj.property_two, 2)
-        self.assertEqual(len(obj.property_three), 0)
+    assert is_valid_uuid(tx_id_to_convert)
+    assert "bc26-d5ef-8475-4710" == convert_tx_id(tx_id_to_convert)
