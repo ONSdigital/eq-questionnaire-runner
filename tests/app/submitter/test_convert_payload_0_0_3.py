@@ -1,3 +1,6 @@
+from datetime import datetime
+from functools import cache
+
 from app.data_models.answer import Answer
 from app.data_models.answer_store import AnswerStore
 from app.data_models.list_store import ListStore
@@ -7,6 +10,11 @@ from app.submitter.converter import convert_answers
 from app.utilities.json import json_dumps, json_loads
 from app.utilities.schema import load_schema_from_name
 from tests.app.submitter.schema import make_schema
+
+
+@cache
+def submitted_at():
+    return datetime.utcnow().isoformat()
 
 
 def test_convert_answers_to_payload_0_0_3(fake_questionnaire_store):
@@ -61,7 +69,10 @@ def test_convert_answers_to_payload_0_0_3(fake_questionnaire_store):
 
     # When
     answer_object = convert_answers(
-        QuestionnaireSchema(questionnaire), fake_questionnaire_store, full_routing_path
+        QuestionnaireSchema(questionnaire),
+        fake_questionnaire_store,
+        full_routing_path,
+        submitted_at(),
     )
 
     # Then
@@ -100,7 +111,10 @@ def test_convert_payload_0_0_3_multiple_answers(fake_questionnaire_store):
 
     # When
     answer_object = convert_answers(
-        QuestionnaireSchema(questionnaire), fake_questionnaire_store, full_routing_path
+        QuestionnaireSchema(questionnaire),
+        fake_questionnaire_store,
+        full_routing_path,
+        submitted_at(),
     )
     # Then
     assert len(answer_object["data"]["answers"]) == 1
@@ -133,7 +147,10 @@ def test_radio_answer(fake_questionnaire_store):
     )
 
     answer_object = convert_answers(
-        QuestionnaireSchema(questionnaire), fake_questionnaire_store, full_routing_path
+        QuestionnaireSchema(questionnaire),
+        fake_questionnaire_store,
+        full_routing_path,
+        submitted_at(),
     )
 
     assert len(answer_object["data"]["answers"]) == 1
@@ -157,7 +174,10 @@ def test_number_answer(fake_questionnaire_store):
     )
 
     answer_object = convert_answers(
-        QuestionnaireSchema(questionnaire), fake_questionnaire_store, full_routing_path
+        QuestionnaireSchema(questionnaire),
+        fake_questionnaire_store,
+        full_routing_path,
+        submitted_at(),
     )
 
     assert len(answer_object["data"]["answers"]) == 1
@@ -181,7 +201,10 @@ def test_percentage_answer(fake_questionnaire_store):
     )
 
     answer_object = convert_answers(
-        QuestionnaireSchema(questionnaire), fake_questionnaire_store, full_routing_path
+        QuestionnaireSchema(questionnaire),
+        fake_questionnaire_store,
+        full_routing_path,
+        submitted_at(),
     )
 
     assert len(answer_object["data"]["answers"]) == 1
@@ -207,7 +230,10 @@ def test_textarea_answer(fake_questionnaire_store):
     )
 
     answer_object = convert_answers(
-        QuestionnaireSchema(questionnaire), fake_questionnaire_store, full_routing_path
+        QuestionnaireSchema(questionnaire),
+        fake_questionnaire_store,
+        full_routing_path,
+        submitted_at(),
     )
 
     assert len(answer_object["data"]["answers"]) == 1
@@ -231,7 +257,10 @@ def test_currency_answer(fake_questionnaire_store):
     )
 
     answer_object = convert_answers(
-        QuestionnaireSchema(questionnaire), fake_questionnaire_store, full_routing_path
+        QuestionnaireSchema(questionnaire),
+        fake_questionnaire_store,
+        full_routing_path,
+        submitted_at(),
     )
 
     assert len(answer_object["data"]["answers"]) == 1
@@ -265,7 +294,10 @@ def test_dropdown_answer(fake_questionnaire_store):
     )
 
     answer_object = convert_answers(
-        QuestionnaireSchema(questionnaire), fake_questionnaire_store, full_routing_path
+        QuestionnaireSchema(questionnaire),
+        fake_questionnaire_store,
+        full_routing_path,
+        submitted_at(),
     )
 
     # Then
@@ -295,7 +327,10 @@ def test_date_answer(fake_questionnaire_store):
     )
 
     answer_object = convert_answers(
-        QuestionnaireSchema(questionnaire), fake_questionnaire_store, full_routing_path
+        QuestionnaireSchema(questionnaire),
+        fake_questionnaire_store,
+        full_routing_path,
+        submitted_at(),
     )
 
     assert len(answer_object["data"]["answers"]) == 1
@@ -325,7 +360,10 @@ def test_month_year_date_answer(fake_questionnaire_store):
     )
 
     answer_object = convert_answers(
-        QuestionnaireSchema(questionnaire), fake_questionnaire_store, full_routing_path
+        QuestionnaireSchema(questionnaire),
+        fake_questionnaire_store,
+        full_routing_path,
+        submitted_at(),
     )
 
     assert len(answer_object["data"]["answers"]) == 1
@@ -347,7 +385,10 @@ def test_unit_answer(fake_questionnaire_store):
     )
 
     answer_object = convert_answers(
-        QuestionnaireSchema(questionnaire), fake_questionnaire_store, full_routing_path
+        QuestionnaireSchema(questionnaire),
+        fake_questionnaire_store,
+        full_routing_path,
+        submitted_at(),
     )
 
     assert len(answer_object["data"]["answers"]) == 1
@@ -387,7 +428,9 @@ def test_primary_person_list_item_conversion(fake_questionnaire_store):
 
     schema = load_schema_from_name("test_list_collector_primary_person")
 
-    output = convert_answers(schema, fake_questionnaire_store, routing_path)
+    output = convert_answers(
+        schema, fake_questionnaire_store, routing_path, submitted_at()
+    )
 
     data_dict = json_loads(json_dumps(output["data"]["answers"]))
 
@@ -425,7 +468,9 @@ def test_list_item_conversion(fake_questionnaire_store):
 
     schema = load_schema_from_name("test_list_collector")
 
-    output = convert_answers(schema, fake_questionnaire_store, routing_path)
+    output = convert_answers(
+        schema, fake_questionnaire_store, routing_path, submitted_at()
+    )
 
     del answer_objects[-1]
 
@@ -458,7 +503,9 @@ def test_list_item_conversion_empty_list(fake_questionnaire_store):
 
     schema = load_schema_from_name("test_list_collector")
 
-    output = convert_answers(schema, fake_questionnaire_store, routing_path)
+    output = convert_answers(
+        schema, fake_questionnaire_store, routing_path, submitted_at()
+    )
 
     # Answers not on the routing path
     del answer_objects[0]
@@ -487,7 +534,9 @@ def test_default_answers_not_present_when_not_answered(fake_questionnaire_store)
         )
     ]
 
-    output = convert_answers(schema, fake_questionnaire_store, routing_path)
+    output = convert_answers(
+        schema, fake_questionnaire_store, routing_path, submitted_at()
+    )
     data = json_loads(json_dumps(output["data"]["answers"]))
 
     answer_ids = {answer["answer_id"] for answer in data}
@@ -527,7 +576,9 @@ def test_list_structure_in_payload_is_as_expected(fake_questionnaire_store):
 
     schema = load_schema_from_name("test_list_collector_primary_person")
 
-    output = convert_answers(schema, fake_questionnaire_store, routing_path)
+    output = convert_answers(
+        schema, fake_questionnaire_store, routing_path, submitted_at()
+    )
 
     data_dict = json_loads(json_dumps(output["data"]["lists"]))
 
@@ -565,7 +616,9 @@ def test_primary_person_not_in_payload_when_not_answered(fake_questionnaire_stor
 
     schema = load_schema_from_name("test_list_collector")
 
-    output = convert_answers(schema, fake_questionnaire_store, routing_path)
+    output = convert_answers(
+        schema, fake_questionnaire_store, routing_path, submitted_at()
+    )
 
     data_dict = json_loads(json_dumps(output["data"]["lists"]))
 
@@ -625,7 +678,9 @@ def test_relationships_in_payload(fake_questionnaire_store):
 
     schema = load_schema_from_name("test_relationships")
 
-    output = convert_answers(schema, fake_questionnaire_store, routing_path)
+    output = convert_answers(
+        schema, fake_questionnaire_store, routing_path, submitted_at()
+    )
     data = json_loads(json_dumps(output["data"]["answers"]))
     answers = {answer["answer_id"]: answer for answer in data}
 
@@ -684,7 +739,9 @@ def test_no_relationships_in_payload(fake_questionnaire_store):
 
     schema = load_schema_from_name("test_relationships_unrelated")
 
-    output = convert_answers(schema, fake_questionnaire_store, routing_path)
+    output = convert_answers(
+        schema, fake_questionnaire_store, routing_path, submitted_at()
+    )
     data = json_loads(json_dumps(output["data"]["answers"]))
     answers = {answer["answer_id"]: answer for answer in data}
 
@@ -760,7 +817,9 @@ def test_unrelated_block_answers_in_payload(fake_questionnaire_store):
 
     schema = load_schema_from_name("test_relationships_unrelated")
 
-    output = convert_answers(schema, fake_questionnaire_store, routing_path)
+    output = convert_answers(
+        schema, fake_questionnaire_store, routing_path, submitted_at()
+    )
     data = json_loads(json_dumps(output["data"]["answers"]))
     answers = {
         (answer["answer_id"], answer.get("list_item_id")): answer for answer in data
@@ -853,7 +912,9 @@ def test_unrelated_block_answers_not_on_path_not_in_payload(fake_questionnaire_s
 
     schema = load_schema_from_name("test_relationships_unrelated")
 
-    output = convert_answers(schema, fake_questionnaire_store, routing_path)
+    output = convert_answers(
+        schema, fake_questionnaire_store, routing_path, submitted_at()
+    )
     data = json_loads(json_dumps(output["data"]["answers"]))
     answers = {
         (answer["answer_id"], answer.get("list_item_id")): answer for answer in data
@@ -936,7 +997,9 @@ def test_relationship_answers_not_on_path_in_payload(fake_questionnaire_store):
 
     schema = load_schema_from_name("test_relationships_unrelated")
 
-    output = convert_answers(schema, fake_questionnaire_store, routing_path)
+    output = convert_answers(
+        schema, fake_questionnaire_store, routing_path, submitted_at()
+    )
     data = json_loads(json_dumps(output["data"]["answers"]))
     answers = {
         (answer["answer_id"], answer.get("list_item_id")): answer for answer in data

@@ -1,5 +1,3 @@
-from datetime import datetime
-
 from structlog import get_logger
 
 from app.questionnaire.questionnaire_schema import DEFAULT_LANGUAGE_CODE
@@ -18,7 +16,9 @@ class DataVersionError(Exception):
         return "Data version {} not supported".format(self.version)
 
 
-def convert_answers(schema, questionnaire_store, routing_path, flushed=False):
+def convert_answers(
+    schema, questionnaire_store, routing_path, submitted_at, flushed=False
+):
     """
     Create the JSON answer format for down stream processing in the following format:
     ```
@@ -52,6 +52,7 @@ def convert_answers(schema, questionnaire_store, routing_path, flushed=False):
         schema: QuestionnaireSchema instance with populated schema json
         questionnaire_store: EncryptedQuestionnaireStorage instance for accessing current questionnaire data
         routing_path: The full routing path followed by the user when answering the questionnaire
+        submitted_at: The iso date/time that the questionnaire is submitted
         flushed: True when system submits the users answers, False when submitted by user.
     Returns:
         Data payload
@@ -62,7 +63,6 @@ def convert_answers(schema, questionnaire_store, routing_path, flushed=False):
     list_store = questionnaire_store.list_store
 
     survey_id = schema.json["survey_id"]
-    submitted_at = datetime.utcnow()
 
     payload = {
         "case_id": metadata["case_id"],
@@ -72,7 +72,7 @@ def convert_answers(schema, questionnaire_store, routing_path, flushed=False):
         "origin": "uk.gov.ons.edc.eq",
         "survey_id": survey_id,
         "flushed": flushed,
-        "submitted_at": submitted_at.isoformat(),
+        "submitted_at": submitted_at,
         "collection": _build_collection(metadata),
         "metadata": _build_metadata(metadata),
         "launch_language_code": metadata.get("language_code", DEFAULT_LANGUAGE_CODE),

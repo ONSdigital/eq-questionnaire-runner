@@ -1,7 +1,7 @@
 from datetime import datetime
+from functools import cached_property
 from typing import Mapping
 
-from dateutil.tz import tzutc
 from flask import current_app
 from flask import session as cookie_session
 from sdc.crypto.encrypter import encrypt
@@ -20,6 +20,10 @@ class SubmissionHandler:
         self._full_routing_path = full_routing_path
         self._session_store = get_session_store()
         self._metadata = questionnaire_store.metadata
+
+    @cached_property
+    def submitted_at(self):
+        return datetime.utcnow()
 
     def submit_questionnaire(self):
         payload = self.get_payload()
@@ -43,14 +47,17 @@ class SubmissionHandler:
         submission_schema: Mapping = self._schema.get_submission() or {}
 
         if submission_schema.get("view_submitted_response"):
-            self._questionnaire_store.submitted_at = datetime.now(tz=tzutc())
+            self._questionnaire_store.submitted_at = self.submitted_at.timestamp()
             self._questionnaire_store.save()
         else:
             self._questionnaire_store.delete()
 
     def get_payload(self):
         payload = convert_answers(
-            self._schema, self._questionnaire_store, self._full_routing_path
+            self._schema,
+            self._questionnaire_store,
+            self._full_routing_path,
+            self.submitted_at.isoformat(),
         )
         payload[
             "submission_language_code"
@@ -60,5 +67,5 @@ class SubmissionHandler:
     def _store_submitted_time_and_display_address_in_session(self):
         session_data = self._session_store.session_data
         session_data.display_address = self._metadata.get("display_address")
-        session_data.submitted_time = datetime.utcnow().isoformat()
+        session_data.submitted_time = self.submitted_at.isoformat()
         self._session_store.save()
