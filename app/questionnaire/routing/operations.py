@@ -7,7 +7,7 @@ from dateutil.relativedelta import relativedelta
 from app.questionnaire.routing.helpers import ValueTypes, casefold, datetime_as_midnight
 from app.questionnaire.rules import convert_to_datetime
 
-ComparisonValue = TypeVar("ComparisonValue", str, int, float, Decimal, datetime)
+ComparableValue = TypeVar("ComparableValue", str, int, float, Decimal, datetime)
 NonArrayPrimitiveTypes = Union[str, int, float, Decimal, None]
 
 
@@ -21,19 +21,19 @@ def evaluate_not_equal(lhs: ValueTypes, rhs: ValueTypes) -> bool:
     return lhs != rhs
 
 
-def evaluate_greater_than(lhs: ComparisonValue, rhs: ComparisonValue) -> bool:
+def evaluate_greater_than(lhs: ComparableValue, rhs: ComparableValue) -> bool:
     return lhs > rhs
 
 
-def evaluate_greater_than_or_equal(lhs: ComparisonValue, rhs: ComparisonValue) -> bool:
+def evaluate_greater_than_or_equal(lhs: ComparableValue, rhs: ComparableValue) -> bool:
     return lhs >= rhs
 
 
-def evaluate_less_than(lhs: ComparisonValue, rhs: ComparisonValue) -> bool:
+def evaluate_less_than(lhs: ComparableValue, rhs: ComparableValue) -> bool:
     return lhs < rhs
 
 
-def evaluate_less_than_or_equal(lhs: ComparisonValue, rhs: ComparisonValue) -> bool:
+def evaluate_less_than_or_equal(lhs: ComparableValue, rhs: ComparableValue) -> bool:
     return lhs <= rhs
 
 
