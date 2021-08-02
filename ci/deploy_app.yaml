@@ -68,6 +68,6 @@ run:
       $SERVICE_ACCOUNT_JSON
       EOL
       gcloud auth activate-service-account --key-file "${GOOGLE_APPLICATION_CREDENTIALS}"
-      export IMAGE_TAG=`cat ./image_tag/tag`
+      export IMAGE_TAG=`cat ./image-tag/tag`
       cd eq-questionnaire-runner
       ./ci/deploy_app.sh
