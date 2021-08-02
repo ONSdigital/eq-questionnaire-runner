@@ -92,7 +92,7 @@ class TestSubmissionPayload(AppContextTestCase):
                 )
                 submission_handler.submit_questionnaire()
 
-                assert questionnaire_store.submitted_at == datetime.utcnow().timestamp()
+                assert questionnaire_store.submitted_at == datetime.utcnow()
                 assert questionnaire_store.save.called
                 assert not questionnaire_store.delete.called
 
