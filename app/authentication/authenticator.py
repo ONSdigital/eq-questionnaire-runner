@@ -1,5 +1,5 @@
 from datetime import datetime, timedelta
-from typing import Any, Optional, Union
+from typing import Any, Mapping, Optional, Union
 from uuid import uuid4
 
 from blinker import ANY
@@ -110,7 +110,9 @@ def load_user() -> Optional[User]:
     return None
 
 
-def _create_session_data_from_metadata(metadata: dict) -> SessionData:
+def _create_session_data_from_metadata(
+    metadata: Mapping[str, Union[str, int, list]]
+) -> SessionData:
     """
     Creates a SessionData object from metadata
     :param metadata: metadata parsed from jwt token
@@ -134,7 +136,7 @@ def _create_session_data_from_metadata(metadata: dict) -> SessionData:
     )
 
 
-def store_session(metadata: dict) -> None:
+def store_session(metadata: Mapping[str, Union[str, int, list]]) -> None:
     """
     Store new session and metadata
     :param metadata: metadata parsed from jwt token
