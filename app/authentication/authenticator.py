@@ -1,5 +1,5 @@
 from datetime import datetime, timedelta
-from typing import Any, Mapping, Optional, Union
+from typing import Mapping, Optional, Union
 from uuid import uuid4
 
 from blinker import ANY
@@ -170,7 +170,7 @@ def decrypt_token(encrypted_token: str) -> dict[str, Union[str, list, int]]:
         raise NoTokenException("Please provide a token")
 
     logger.debug("decrypting token")
-    decrypted_token: dict[str, Any] = decrypt(
+    decrypted_token: dict[str, Union[str, list, int]] = decrypt(
         token=encrypted_token,
         key_store=current_app.eq["key_store"],  # type: ignore
         key_purpose=KEY_PURPOSE_AUTHENTICATION,
