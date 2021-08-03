@@ -52,7 +52,7 @@ class Operator:
     ) -> Union[bool, Optional[datetime]]:
         if self._ensure_operands_not_none:
             operands = list(operands)
-            if self._operands_not_none(*operands) is False:
+            if self._any_operands_none(*operands):
                 return False
 
         value: Union[bool, Optional[datetime]] = (
@@ -63,8 +63,8 @@ class Operator:
         return value
 
     @staticmethod
-    def _operands_not_none(*operands: Union[Sequence, ValueTypes]) -> bool:
-        return all(operand is not None for operand in operands)
+    def _any_operands_none(*operands: Union[Sequence, ValueTypes]) -> bool:
+        return any(operand is None for operand in operands)
 
 
 OPERATIONS: dict[str, Callable] = {
