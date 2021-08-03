@@ -1,9 +1,10 @@
 from datetime import datetime, timedelta
+from typing import Mapping, Optional, Union
 from uuid import uuid4
 
 from blinker import ANY
 from dateutil.tz import tzutc
-from flask import current_app
+from flask import Flask, Request, current_app
 from flask import session as cookie_session
 from flask_login import LoginManager, user_logged_out
 from sdc.crypto.decrypter import decrypt
@@ -12,6 +13,7 @@ from structlog import get_logger
 from app.authentication.no_token_exception import NoTokenException
 from app.authentication.user import User
 from app.data_models.session_data import SessionData
+from app.data_models.session_store import SessionStore
 from app.globals import create_session_store, get_questionnaire_store, get_session_store
 from app.keys import KEY_PURPOSE_AUTHENTICATION
 from app.settings import EQ_SESSION_ID, USER_IK
@@ -22,19 +24,23 @@ login_manager = LoginManager()
 
 
 @login_manager.user_loader
-def user_loader(user_id):
+def user_loader(user_id: str) -> Optional[str]:
     logger.debug("loading user", user_id=user_id)
     return load_user()
 
 
 @login_manager.request_loader
-def request_load_user(request):  # pylint: disable=unused-argument
+def request_load_user(
+    request: Request,
+) -> Optional[User]:  # pylint: disable=unused-argument
     logger.debug("load user")
     return load_user()
 
 
 @user_logged_out.connect_via(ANY)
-def when_user_logged_out(sender_app, user):  # pylint: disable=unused-argument
+def when_user_logged_out(
+    sender_app: Flask, user: str
+) -> None:  # pylint: disable=unused-argument
     logger.debug("log out user")
     session_store = get_session_store()
     if session_store:
@@ -42,7 +48,7 @@ def when_user_logged_out(sender_app, user):  # pylint: disable=unused-argument
     cookie_session.pop(USER_IK, None)
 
 
-def _extend_session_expiry(session_store):
+def _extend_session_expiry(session_store: SessionStore) -> None:
     """
     Extends the expiration time of the session
     :param session_store:
@@ -64,22 +70,20 @@ def _extend_session_expiry(session_store):
             logger.debug("session expiry extended")
 
 
-def _is_session_valid(session_store):
+def _is_session_valid(session_store: SessionStore) -> bool:
     """
     Checks that the user's session has not expired
     :param session_store:
     :return: True if the session is valid else False
     """
 
-    if session_store.expiration_time and session_store.expiration_time < datetime.now(
-        tz=tzutc()
-    ):
-        return False
-
-    return True
+    return (
+        not session_store.expiration_time
+        or session_store.expiration_time >= datetime.now(tz=tzutc())
+    )
 
 
-def load_user():
+def load_user() -> Optional[User]:
     """
     Checks for the present of the JWT in the users sessions
     :return: A user object if a JWT token is available in the session
@@ -106,12 +110,15 @@ def load_user():
     return None
 
 
-def _create_session_data_from_metadata(metadata):
+def _create_session_data_from_metadata(
+    metadata: Mapping[str, Union[str, int, list]]
+) -> SessionData:
     """
     Creates a SessionData object from metadata
     :param metadata: metadata parsed from jwt token
     """
-    session_data = SessionData(
+
+    return SessionData(
         tx_id=metadata.get("tx_id"),
         schema_name=metadata.get("schema_name"),
         period_str=metadata.get("period_str"),
@@ -127,20 +134,18 @@ def _create_session_data_from_metadata(metadata):
         account_service_url=metadata.get("account_service_url"),
         account_service_log_out_url=metadata.get("account_service_log_out_url"),
     )
-    return session_data
 
 
-def store_session(metadata):
+def store_session(metadata: Mapping[str, Union[str, int, list]]) -> None:
     """
     Store new session and metadata
     :param metadata: metadata parsed from jwt token
     """
-
     # also clear the secure cookie data
     cookie_session.clear()
 
     # get the hashed user id for eq
-    id_generator = current_app.eq["id_generator"]
+    id_generator = current_app.eq["id_generator"]  # type: ignore
     user_id = id_generator.generate_id(metadata["response_id"])
     user_ik = id_generator.generate_ik(metadata["response_id"])
 
@@ -160,14 +165,14 @@ def store_session(metadata):
     logger.info("user authenticated")
 
 
-def decrypt_token(encrypted_token):
+def decrypt_token(encrypted_token: str) -> dict[str, Union[str, list, int]]:
     if not encrypted_token:
         raise NoTokenException("Please provide a token")
 
     logger.debug("decrypting token")
-    decrypted_token = decrypt(
+    decrypted_token: dict[str, Union[str, list, int]] = decrypt(
         token=encrypted_token,
-        key_store=current_app.eq["key_store"],
+        key_store=current_app.eq["key_store"],  # type: ignore
         key_purpose=KEY_PURPOSE_AUTHENTICATION,
         leeway=current_app.config["EQ_JWT_LEEWAY_IN_SECONDS"],
     )
