@@ -1,4 +1,4 @@
-from datetime import datetime
+from datetime import datetime, timezone
 from functools import cache
 
 from app.data_models.answer import Answer
@@ -16,7 +16,7 @@ def create_answer(answer_id, value):
 
 @cache
 def submitted_at():
-    return datetime.utcnow().isoformat()
+    return datetime.now(timezone.utc).isoformat()
 
 
 def test_convert_answers_to_payload_0_0_1_with_key_error(fake_questionnaire_store):

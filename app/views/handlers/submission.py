@@ -1,4 +1,4 @@
-from datetime import datetime
+from datetime import datetime, timezone
 from functools import cached_property
 from typing import Mapping
 
@@ -23,7 +23,7 @@ class SubmissionHandler:
 
     @cached_property
     def submitted_at(self):
-        return datetime.utcnow()
+        return datetime.now(timezone.utc)
 
     def submit_questionnaire(self):
         payload = self.get_payload()

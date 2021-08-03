@@ -1,4 +1,4 @@
-from datetime import datetime
+from datetime import datetime, timezone
 
 from flask import Blueprint, Response, current_app, request, session
 from sdc.crypto.decrypter import decrypt
@@ -58,7 +58,7 @@ def _submit_data(user):
         metadata = questionnaire_store.metadata
         progress_store = questionnaire_store.progress_store
         list_store = questionnaire_store.list_store
-        submitted_at = datetime.utcnow().isoformat()
+        submitted_at = datetime.now(timezone.utc).isoformat()
         schema = load_schema_from_metadata(metadata)
 
         router = Router(schema, answer_store, list_store, progress_store, metadata)

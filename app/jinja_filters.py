@@ -137,8 +137,9 @@ def get_format_date(value):
 @pass_eval_context  # type: ignore
 @blueprint.app_template_filter()
 def format_datetime(context, value):
-    london_date_time = datetime.strptime(value, "%Y-%m-%dT%H:%M:%S.%f")
+    london_date_time = datetime.fromisoformat(value)
     london_date = london_date_time.date()
+    # flask babel on formatting will automatically convert into the user’s timezone
     formatted_date = flask_babel.format_date(london_date, format="d MMMM yyyy")
     formatted_time = flask_babel.format_time(london_date_time, format="HH:mm")
 

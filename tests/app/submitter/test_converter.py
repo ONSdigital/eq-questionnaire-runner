@@ -1,4 +1,4 @@
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 from functools import cache
 
 import dateutil.parser
@@ -10,7 +10,7 @@ from app.submitter.converter import DataVersionError, convert_answers
 
 @cache
 def submitted_at():
-    return datetime.utcnow().isoformat()
+    return datetime.now(timezone.utc).isoformat()
 
 
 def test_convert_answers_flushed_flag_default_is_false(

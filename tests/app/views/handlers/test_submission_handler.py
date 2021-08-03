@@ -1,4 +1,4 @@
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 from unittest.mock import Mock
 
 from dateutil.tz import tzutc
@@ -66,7 +66,7 @@ class TestSubmissionPayload(AppContextTestCase):
 
                 assert questionnaire_store.delete.called
 
-    @freeze_time(datetime.utcnow().replace(second=0, microsecond=0))
+    @freeze_time(datetime.now(timezone.utc).replace(second=0, microsecond=0))
     @patch(
         "app.views.handlers.submission.SubmissionHandler.get_payload",
         Mock(return_value={}),
@@ -92,7 +92,7 @@ class TestSubmissionPayload(AppContextTestCase):
                 )
                 submission_handler.submit_questionnaire()
 
-                assert questionnaire_store.submitted_at == datetime.utcnow()
+                assert questionnaire_store.submitted_at == datetime.now(timezone.utc)
                 assert questionnaire_store.save.called
                 assert not questionnaire_store.delete.called
 
