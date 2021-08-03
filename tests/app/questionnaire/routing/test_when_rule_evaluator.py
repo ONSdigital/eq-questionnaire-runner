@@ -61,6 +61,7 @@ def get_when_rule_evaluator(
 @pytest.mark.parametrize(
     "rule, expected_result",
     [
+        # Test True
         ({Operator.NOT: [False]}, True),
         ({Operator.AND: [True, True]}, True),
         ({Operator.OR: [True, False]}, True),
@@ -73,7 +74,7 @@ def get_when_rule_evaluator(
         ({Operator.IN: ["Yes", ["Yes"]]}, True),
         ({Operator.ANY_IN: [["Yes"], ["Yes", "No"]]}, True),
         ({Operator.ALL_IN: [["Yes", "No"], ["Yes", "No"]]}, True),
-        # Test inverse
+        # Test False
         ({Operator.NOT: [True]}, False),
         ({Operator.AND: [True, False]}, False),
         ({Operator.OR: [False, False]}, False),
@@ -350,6 +351,7 @@ def test_current_location_source(list_item_id, expected_result):
 @pytest.mark.parametrize(
     "operator, operands, expected_result",
     [
+        # Test True
         (
             Operator.AND,
             [
@@ -368,7 +370,7 @@ def test_current_location_source(list_item_id, expected_result):
             ],
             True,
         ),
-        # Test inverse
+        # Test False
         (
             Operator.AND,
             [
@@ -413,6 +415,7 @@ def test_logic_and(operator, operands, expected_result):
 @pytest.mark.parametrize(
     "operator, operands, expected_result",
     [
+        # Test True
         (
             Operator.OR,
             [
@@ -431,7 +434,7 @@ def test_logic_and(operator, operands, expected_result):
             ],
             True,
         ),
-        # Test inverse
+        # Test False
         (
             Operator.OR,
             [
@@ -705,6 +708,7 @@ def test_array_operator_rule_with_nonetype_operands(operator_name, operands):
 @pytest.mark.parametrize(
     "rule, expected_result",
     [
+        # Test True
         (
             {
                 Operator.EQUAL: [
@@ -759,7 +763,7 @@ def test_array_operator_rule_with_nonetype_operands(operator_name, operands):
             },
             True,
         ),
-        # Test inverse
+        # Test False
         (
             {
                 Operator.EQUAL: [
@@ -827,10 +831,12 @@ def test_date_value(rule, expected_result):
 @pytest.mark.parametrize(
     "is_repeating_answer, list_item_id_for_answer, expected_result",
     [
-        (True, None, False),
-        (True, "item-2", False),
+        # Test True
         (True, "item-1", True),
         (False, None, True),
+        # Test False
+        (True, None, False),
+        (True, "item-2", False),
         (False, "item-2", False),
         (False, "item-1", False),
     ],

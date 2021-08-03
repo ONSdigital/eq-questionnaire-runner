@@ -15,6 +15,7 @@ now_as_yyyy = now.strftime("%Y")
 next_week = datetime.utcnow() + relativedelta(weeks=1)
 
 equals_operations = [
+    # Test True
     [(0.5, 0.5), True],
     [(1.0, 1), True],
     [(3, 3), True],
@@ -23,7 +24,7 @@ equals_operations = [
     [(None, None), True],
     [(True, True), True],
     [(now, now), True],
-    # Test inverse
+    # Test False
     [(0.5, 0.7), False],
     [(1.0, 3), False],
     [(3, 7), False],
@@ -53,11 +54,12 @@ def test_operation_not_equal(operands, expected_result):
 
 
 greater_than_and_less_than_operations = [
+    # Test True
     [(0.7, 0.5), True],
     [(2, 1.0), True],
     [(7, 3), True],
     [(next_week, now), True],
-    # --- Test inverse ---
+    # Test False
     [(0.5, 0.7), False],
     [(1.0, 2), False],
     [(3, 7), False],
@@ -86,6 +88,7 @@ def test_operation_less_than(operands, expected_result):
 @pytest.mark.parametrize(
     "operands, expected_result",
     [
+        # Test True
         [(0.5, 0.7), True],
         [(1.0, 2), True],
         [(3, 7), True],
@@ -94,7 +97,7 @@ def test_operation_less_than(operands, expected_result):
         [(3, 3), True],
         [(now, now), True],
         [(now, next_week), True],
-        # --- Test inverse ---
+        # Test False
         [(0.7, 0.5), False],
         [(2, 1.0), False],
         [(7, 3), False],
@@ -109,6 +112,7 @@ def test_operation_less_than_or_equal(operands, expected_result):
 @pytest.mark.parametrize(
     "operands, expected_result",
     [
+        # Test True
         [(0.7, 0.5), True],
         [(2, 1.0), True],
         [(7, 3), True],
@@ -117,7 +121,7 @@ def test_operation_less_than_or_equal(operands, expected_result):
         [(3, 3), True],
         [(now, now), True],
         [(next_week, now), True],
-        # --- Test inverse
+        # Test False
         [(0.5, 0.7), False],
         [(1.0, 2), False],
         [(3, 7), False],
@@ -138,9 +142,11 @@ def test_operation_not(operand, expected_result):
 @pytest.mark.parametrize(
     "operands, expected_result",
     [
+        # Test True
         [(True, True), True],
         [(True, True, True, True), True],
         [(True, False), False],
+        # Test False
         [(False, True, True, True), False],
     ],
 )
@@ -152,10 +158,13 @@ def test_operation_and(operands, expected_result):
 @pytest.mark.parametrize(
     "operands, expected_result",
     [
+        # Test True
         [(True, True), True],
         [(True, True, True, True), True],
         [(True, False), True],
         [(False, False, False, True), True],
+        # Test False
+        [(False, False), False],
     ],
 )
 def test_operation_or(operands, expected_result):
@@ -166,11 +175,13 @@ def test_operation_or(operands, expected_result):
 @pytest.mark.parametrize(
     "operands, expected_result",
     [
+        # Test True
         [("Yes", ["Yes", "No"]), True],
         [("CaseInsensitive", ["caseInsensitive", "Other"]), True],
         [(0.5, [0.5, 1]), True],
         [(1, [1, 3]), True],
         [(None, [None, 1]), True],
+        # Test False
         [("Yes", ["Nope", "No"]), False],
         [(0.5, [0.3, 1]), False],
         [(1, [1.5, 3]), False],
@@ -185,11 +196,13 @@ def test_operation_in(operands, expected_result):
 @pytest.mark.parametrize(
     "operands, expected_result",
     [
+        # Test True
         [(["Yes", "No"], ["Yes", "No", "Okay"]), True],
         [(["CaseInsensitive", "other"], ["caseInsensitive", "Other"]), True],
         [([0.5], [0.5, 1]), True],
         [([1, 3, 5], [5, 3, 1, 7]), True],
         [([None, 1], [1, None, 3]), True],
+        # Test False
         [(["Yes", "No"], ["Nope", "No"]), False],
         [([0.5, 1], [0.3, 1]), False],
         [([1, 1.5, 3, 5], [1.5, 3, 5, 7]), False],
@@ -204,11 +217,13 @@ def test_operation_all_in(operands, expected_result):
 @pytest.mark.parametrize(
     "operands, expected_result",
     [
+        # Test True
         [(["Yes", "No"], ["Yes", "No", "Okay"]), True],
         [(["CaseInsensitive", "other"], ["No", "Other"]), True],
         [([0.5], [0.5, 1]), True],
         [([0, 3, 10], [5, 3, 1, 7]), True],
         [([None, 10], [1, None, 3]), True],
+        # Test False
         [(["Yes", "Okay"], ["Nope", "No"]), False],
         [([0.5, 3], [0.3, 1]), False],
         [([1, 10, 100, 500], [1.5, 3, 5, 7]), False],
