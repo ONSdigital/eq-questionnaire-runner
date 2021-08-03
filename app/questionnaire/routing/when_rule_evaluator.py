@@ -14,7 +14,6 @@ from app.questionnaire.value_source_resolver import (
 
 @dataclass
 class WhenRuleEvaluator:
-    rule: dict
     schema: QuestionnaireSchema
     answer_store: AnswerStore
     list_store: ListStore
@@ -59,5 +58,5 @@ class WhenRuleEvaluator:
             else:
                 yield operand
 
-    def evaluate(self) -> Union[bool, Optional[datetime]]:
-        return self._evaluate(self.rule)
+    def evaluate(self, rule: dict[str, list]) -> Union[bool, Optional[datetime]]:
+        return self._evaluate(rule)

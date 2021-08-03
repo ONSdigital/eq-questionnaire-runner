@@ -20,19 +20,19 @@ from app.questionnaire.routing.operations import (
 
 
 class Operator:
-    NOT = "not"
-    AND = "and"
-    OR = "or"
-    EQUAL = "=="
-    NOT_EQUAL = "!="
-    GREATER_THAN = ">"
-    LESS_THAN = "<"
-    GREATER_THAN_OR_EQUAL = ">="
-    LESS_THAN_OR_EQUAL = "<="
-    IN = "in"
-    ALL_IN = "all-in"
-    ANY_IN = "any-in"
-    DATE = "date"
+    NOT: str = "not"
+    AND: str = "and"
+    OR: str = "or"
+    EQUAL: str = "=="
+    NOT_EQUAL: str = "!="
+    GREATER_THAN: str = ">"
+    LESS_THAN: str = "<"
+    GREATER_THAN_OR_EQUAL: str = ">="
+    LESS_THAN_OR_EQUAL: str = "<="
+    IN: str = "in"
+    ALL_IN: str = "all-in"
+    ANY_IN: str = "any-in"
+    DATE: str = "date"
 
     def __init__(self, name: str) -> None:
         self.name = name
