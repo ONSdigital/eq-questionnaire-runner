@@ -10,6 +10,7 @@ from structlog import get_logger
 from app.authentication.user import User
 from app.data_models import QuestionnaireStore
 from app.data_models.answer_store import AnswerStore
+from app.data_models.session_data import SessionData
 from app.data_models.session_store import SessionStore
 from app.questionnaire import QuestionnaireSchema
 from app.settings import EQ_SESSION_ID, USER_IK
@@ -70,7 +71,7 @@ def get_session_timeout_in_seconds(schema: QuestionnaireSchema) -> int:
 
 
 def create_session_store(
-    eq_session_id: str, user_id: str, user_ik: str, session_data: str
+    eq_session_id: str, user_id: str, user_ik: str, session_data: SessionData
 ) -> None:
     secret_store = current_app.eq["secret_store"]  # type: ignore
     pepper = secret_store.get_secret_by_name(
