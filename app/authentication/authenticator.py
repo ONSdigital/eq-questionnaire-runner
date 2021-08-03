@@ -1,5 +1,5 @@
 from datetime import datetime, timedelta
-from typing import Any, Optional
+from typing import Any, Optional, Union
 from uuid import uuid4
 
 from blinker import ANY
@@ -163,7 +163,7 @@ def store_session(metadata: dict) -> None:
     logger.info("user authenticated")
 
 
-def decrypt_token(encrypted_token: str) -> dict[str, Any]:
+def decrypt_token(encrypted_token: str) -> dict[str, Union[str, list, int]]:
     if not encrypted_token:
         raise NoTokenException("Please provide a token")
 
