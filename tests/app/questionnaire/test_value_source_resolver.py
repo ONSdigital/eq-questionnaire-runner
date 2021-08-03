@@ -192,7 +192,7 @@ def test_answer_source_with_list_item_selector_list_first_item():
 
 
 @pytest.mark.parametrize("is_answer_on_path", [True, False])
-def test_answer_source_with_routing_path_block_ids_outside_repeat(is_answer_on_path):
+def test_answer_source_with_answer_not_on_path_non_repeating_section(is_answer_on_path):
     schema = get_mock_schema()
 
     location = Location(section_id="test-section", block_id="test-block")
@@ -226,7 +226,7 @@ def test_answer_source_with_routing_path_block_ids_outside_repeat(is_answer_on_p
 
 
 @pytest.mark.parametrize("is_answer_on_path", [True, False])
-def test_answer_source_with_routing_path_block_ids_inside_repeat(is_answer_on_path):
+def test_answer_source_with_answer_not_on_path_repeating_section(is_answer_on_path):
     schema = get_mock_schema()
     schema.is_repeating_answer = Mock(return_value=True)
     location = Location(

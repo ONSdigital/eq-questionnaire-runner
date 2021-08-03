@@ -89,7 +89,7 @@ def get_when_rule_evaluator(
         ({Operator.ALL_IN: [["Yes", "Maybe"], ["Yes", "No"]]}, False),
     ],
 )
-def test_all_boolean_operators_as_rule(rule, expected_result):
+def test_boolean_operators_as_rule(rule, expected_result):
     when_rule_evaluator = get_when_rule_evaluator(
         rule=rule,
     )
@@ -872,7 +872,7 @@ def test_rule_uses_list_item_id_when_evaluating_answer_value(
 
 
 @pytest.mark.parametrize("is_answer_on_path", [True, False])
-def test_answer_source_with_routing_path_block_ids_outside_repeat(is_answer_on_path):
+def test_answer_source_with_answer_not_on_path_non_repeating_section(is_answer_on_path):
     schema = get_mock_schema()
 
     location = Location(section_id="test-section", block_id="test-block")
@@ -905,7 +905,7 @@ def test_answer_source_with_routing_path_block_ids_outside_repeat(is_answer_on_p
 
 
 @pytest.mark.parametrize("is_answer_on_path", [True, False])
-def test_answer_source_with_routing_path_block_ids_inside_repeat(is_answer_on_path):
+def test_answer_source_with_answer_not_on_path_repeating_section(is_answer_on_path):
     schema = get_mock_schema()
     schema.is_repeating_answer = Mock(return_value=True)
     location = Location(
