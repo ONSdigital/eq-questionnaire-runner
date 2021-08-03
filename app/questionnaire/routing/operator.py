@@ -37,7 +37,6 @@ class Operator:
     def __init__(self, name: str) -> None:
         self.name = name
         self._operation = OPERATIONS[self.name]
-        self._short_circuit = self.name in {Operator.AND, Operator.OR}
         self._ensure_operands_not_none = self.name in {
             Operator.GREATER_THAN,
             Operator.GREATER_THAN_OR_EQUAL,
@@ -57,7 +56,7 @@ class Operator:
 
         value: Union[bool, Optional[datetime]] = (
             self._operation(operands)
-            if self._short_circuit
+            if self.name in {Operator.AND, Operator.OR}
             else self._operation(*operands)
         )
         return value
