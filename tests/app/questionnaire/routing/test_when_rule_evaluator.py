@@ -463,60 +463,7 @@ def test_current_location_source(list_item_id, expected_result):
                 },
             ],
             True,
-        ),
-        (
-            Operator.OR,
-            [
-                {
-                    Operator.NOT_EQUAL: [
-                        {"source": "answers", "identifier": "answer-1"},
-                        "Yes, I do",
-                    ]
-                },
-                {
-                    Operator.OR: [
-                        {
-                            Operator.EQUAL: [
-                                {"source": "list", "identifier": "some-list"},
-                                0,
-                            ]
-                        },
-                        {
-                            Operator.AND: [
-                                {
-                                    Operator.NOT: [
-                                        {
-                                            Operator.IN: [
-                                                {
-                                                    "source": "metadata",
-                                                    "identifier": "region_code",
-                                                },
-                                                ["GB-ENG", "GB-WLS"],
-                                            ]
-                                        }
-                                    ]
-                                },
-                                {
-                                    Operator.IN: [
-                                        {
-                                            "source": "list",
-                                            "identifier": "some-list",
-                                            "id_selector": "first",
-                                        },
-                                        {
-                                            "source": "list",
-                                            "identifier": "some-list",
-                                            "id_selector": "same_name_items",
-                                        },
-                                    ]
-                                },
-                            ]
-                        },
-                    ]
-                },
-            ],
-            True,
-        ),
+        )
     ],
 )
 def test_nested_rules(operator, operands, expected_result):
