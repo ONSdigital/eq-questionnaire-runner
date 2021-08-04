@@ -677,38 +677,15 @@ def test_date_value(rule, expected_result):
     )
 
 
-@pytest.mark.parametrize(
-    "is_repeating_answer, list_item_id_for_answer, expected_result",
-    [
-        # Test True
-        (True, "item-1", True),
-        (False, None, True),
-        # Test False
-        (True, None, False),
-        (True, "item-2", False),
-        (False, "item-2", False),
-        (False, "item-1", False),
-    ],
-)
-def test_rule_uses_list_item_id_when_evaluating_answer_value(
-    is_repeating_answer, list_item_id_for_answer, expected_result
-):
+def test_rule_access_answer_outside_of_repeating_section():
     schema = get_mock_schema()
 
-    # We are fetching an answer that is outside of a repeat or one not in a list collector.
-    schema.is_repeating_answer = Mock(return_value=is_repeating_answer)
+    schema.is_repeating_answer = Mock(return_value=False)
+    answer_store = AnswerStore([{"answer_id": "some-answer", "value": "Yes"}])
 
     when_rule_evaluator = get_when_rule_evaluator(
         schema=schema,
-        answer_store=AnswerStore(
-            [
-                {
-                    "answer_id": "some-answer",
-                    "list_item_id": list_item_id_for_answer,
-                    "value": "Yes",
-                }
-            ]
-        ),
+        answer_store=answer_store,
         location=Location(
             section_id="some-section", block_id="some-block", list_item_id="item-1"
         ),
@@ -723,7 +700,7 @@ def test_rule_uses_list_item_id_when_evaluating_answer_value(
                 ]
             }
         )
-        is expected_result
+        is True
     )
 
 
