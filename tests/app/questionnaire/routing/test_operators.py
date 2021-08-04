@@ -1,18 +1,17 @@
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 
 import pytest
 from dateutil.relativedelta import relativedelta
 
-from app.questionnaire.routing.helpers import datetime_as_midnight
 from app.questionnaire.routing.operator import Operator
 from app.questionnaire.rules import convert_to_datetime
 
-now = datetime.utcnow()
-now_as_yyyy_mm_dd = now.strftime("%Y-%m-%d")
-now_as_yyyy_mm = now.strftime("%Y-%m")
-now_as_yyyy = now.strftime("%Y")
+current_date = datetime.now(timezone.utc)
+current_date_as_yyyy_mm_dd = current_date.strftime("%Y-%m-%d")
+current_date_as_yyyy_mm = current_date.strftime("%Y-%m")
+current_date_as_yyyy = current_date.strftime("%Y")
 
-next_week = datetime.utcnow() + relativedelta(weeks=1)
+next_week = current_date + relativedelta(weeks=1)
 
 equals_operations = [
     # Test True
@@ -23,7 +22,7 @@ equals_operations = [
     [("CaseInsensitive", "caseInsensitive"), True],
     [(None, None), True],
     [(True, True), True],
-    [(now, now), True],
+    [(current_date, current_date), True],
     # Test False
     [(0.5, 0.7), False],
     [(1.0, 3), False],
@@ -31,7 +30,7 @@ equals_operations = [
     [("Yes", "No"), False],
     [(None, 1), False],
     [(True, False), False],
-    [(now, next_week), False],
+    [(current_date, next_week), False],
 ]
 
 
@@ -58,12 +57,13 @@ greater_than_and_less_than_operations = [
     [(0.7, 0.5), True],
     [(2, 1.0), True],
     [(7, 3), True],
-    [(next_week, now), True],
+    [(next_week, current_date), True],
+    [(next_week, current_date), True],
     # Test False
     [(0.5, 0.7), False],
     [(1.0, 2), False],
     [(3, 7), False],
-    [(now, next_week), False],
+    [(current_date, next_week), False],
 ]
 
 
@@ -95,13 +95,13 @@ def test_operation_less_than(operands, expected_result):
         [(0.5, 0.5), True],
         [(1.0, 1), True],
         [(3, 3), True],
-        [(now, now), True],
-        [(now, next_week), True],
+        [(current_date, current_date), True],
+        [(current_date, next_week), True],
         # Test False
         [(0.7, 0.5), False],
         [(2, 1.0), False],
         [(7, 3), False],
-        [(next_week, now), False],
+        [(next_week, current_date), False],
     ],
 )
 def test_operation_less_than_or_equal(operands, expected_result):
@@ -119,13 +119,13 @@ def test_operation_less_than_or_equal(operands, expected_result):
         [(0.5, 0.5), True],
         [(1.0, 1), True],
         [(3, 3), True],
-        [(now, now), True],
-        [(next_week, now), True],
+        [(current_date, current_date), True],
+        [(next_week, current_date), True],
         # Test False
         [(0.5, 0.7), False],
         [(1.0, 2), False],
         [(3, 7), False],
-        [(now, next_week), False],
+        [(current_date, next_week), False],
     ],
 )
 def test_operation_greater_than_or_equal(operands, expected_result):
@@ -237,7 +237,7 @@ def test_operation_any_in(operands, expected_result):
 
 @pytest.mark.parametrize(
     "date_string",
-    [None, now_as_yyyy_mm_dd, now_as_yyyy_mm, now_as_yyyy],
+    [None, current_date_as_yyyy_mm_dd, current_date_as_yyyy_mm, current_date_as_yyyy],
 )
 @pytest.mark.parametrize(
     "offset",
@@ -259,13 +259,11 @@ def test_operation_date(date_string: str, offset):
 
     offset = offset or {}
     expected_result = (
-        datetime_as_midnight(
-            convert_to_datetime(date_string)
-            + relativedelta(
-                days=offset.get("days", 0),
-                months=offset.get("months", 0),
-                years=offset.get("years", 0),
-            )
+        convert_to_datetime(date_string).date()
+        + relativedelta(
+            days=offset.get("days", 0),
+            months=offset.get("months", 0),
+            years=offset.get("years", 0),
         )
         if date_string
         else None

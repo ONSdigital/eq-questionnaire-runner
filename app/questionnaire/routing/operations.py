@@ -1,13 +1,13 @@
-from datetime import datetime
+from datetime import date, datetime, timezone
 from decimal import Decimal
 from typing import Iterable, Optional, Sequence, TypeVar, Union
 
 from dateutil.relativedelta import relativedelta
 
-from app.questionnaire.routing.helpers import ValueTypes, casefold, datetime_as_midnight
+from app.questionnaire.routing.helpers import ValueTypes, casefold
 from app.questionnaire.rules import convert_to_datetime
 
-ComparableValue = TypeVar("ComparableValue", str, int, float, Decimal, datetime)
+ComparableValue = TypeVar("ComparableValue", str, int, float, Decimal, date)
 NonArrayPrimitiveTypes = Union[str, int, float, Decimal, None]
 
 
@@ -68,20 +68,21 @@ def evaluate_any_in(lhs: Sequence, rhs: Sequence) -> bool:
     return any(x in rhs for x in lhs)
 
 
-def resolve_datetime_from_string(
+def resolve_date_from_string(
     date_string: Optional[str], offset: Optional[dict[str, int]] = None
-) -> Optional[datetime]:
-    value = (
-        datetime_as_midnight(datetime.utcnow())
+) -> Optional[date]:
+    datetime_value = (
+        datetime.now(timezone.utc)
         if date_string == "now"
         else convert_to_datetime(date_string)
     )
+    value_as_date = datetime_value.date() if datetime_value else None
 
-    if offset and value:
-        value += relativedelta(
+    if offset and value_as_date:
+        value_as_date += relativedelta(
             days=offset.get("days", 0),
             months=offset.get("months", 0),
             years=offset.get("years", 0),
         )
 
-    return value
+    return value_as_date

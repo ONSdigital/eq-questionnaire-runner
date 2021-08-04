@@ -1,5 +1,5 @@
 from dataclasses import dataclass
-from datetime import datetime
+from datetime import date
 from typing import Generator, Optional, Union
 
 from app.data_models import AnswerStore, ListStore
@@ -33,7 +33,7 @@ class WhenRuleEvaluator:
             use_default_answer=True,
         )
 
-    def _evaluate(self, rule: dict[str, list]) -> Union[bool, Optional[datetime]]:
+    def _evaluate(self, rule: dict[str, list]) -> Union[bool, Optional[date]]:
         operator = Operator(next(iter(rule)))
         operands = rule[operator.name]
 
@@ -47,7 +47,7 @@ class WhenRuleEvaluator:
 
     def get_resolved_operands(
         self, operands: list[ValueSourceTypes]
-    ) -> Generator[Union[bool, Optional[datetime], ValueSourceTypes], None, None]:
+    ) -> Generator[Union[bool, Optional[date], ValueSourceTypes], None, None]:
         for operand in operands:
             if isinstance(operand, dict) and "source" in operand:
                 yield self.value_source_resolver.resolve(operand)
@@ -58,5 +58,5 @@ class WhenRuleEvaluator:
             else:
                 yield operand
 
-    def evaluate(self, rule: dict[str, list]) -> Union[bool, Optional[datetime]]:
+    def evaluate(self, rule: dict[str, list]) -> Union[bool, Optional[date]]:
         return self._evaluate(rule)

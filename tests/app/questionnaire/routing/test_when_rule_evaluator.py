@@ -1,4 +1,4 @@
-from datetime import datetime
+from datetime import datetime, timezone
 from typing import Optional, Union
 from unittest.mock import Mock
 
@@ -13,8 +13,8 @@ from app.questionnaire.routing.operator import Operator
 from app.questionnaire.routing.when_rule_evaluator import WhenRuleEvaluator
 from tests.app.questionnaire.test_value_source_resolver import get_list_items
 
-now = datetime.utcnow()
-now_as_yyyy_mm_dd = now.strftime("%Y-%m-%d")
+current_date = datetime.now(timezone.utc).date()
+current_date_as_yyyy_mm_dd = current_date.strftime("%Y-%m-%d")
 
 
 def get_mock_schema():
@@ -549,7 +549,7 @@ def test_array_operator_rule_with_nonetype_operands(operator_name, operands):
     )
 
 
-@freeze_time(now)
+@freeze_time(current_date)
 @pytest.mark.parametrize(
     "rule, expected_result",
     [
@@ -557,8 +557,8 @@ def test_array_operator_rule_with_nonetype_operands(operator_name, operands):
         (
             {
                 Operator.EQUAL: [
-                    {Operator.DATE: [now_as_yyyy_mm_dd]},
-                    {Operator.DATE: [now_as_yyyy_mm_dd]},
+                    {Operator.DATE: [current_date_as_yyyy_mm_dd]},
+                    {Operator.DATE: [current_date_as_yyyy_mm_dd]},
                 ]
             },
             True,
@@ -566,8 +566,8 @@ def test_array_operator_rule_with_nonetype_operands(operator_name, operands):
         (
             {
                 Operator.NOT_EQUAL: [
-                    {Operator.DATE: [now_as_yyyy_mm_dd, {"days": -1}]},
-                    {Operator.DATE: [now_as_yyyy_mm_dd]},
+                    {Operator.DATE: [current_date_as_yyyy_mm_dd, {"days": -1}]},
+                    {Operator.DATE: [current_date_as_yyyy_mm_dd]},
                 ]
             },
             True,
@@ -575,7 +575,7 @@ def test_array_operator_rule_with_nonetype_operands(operator_name, operands):
         (
             {
                 Operator.LESS_THAN: [
-                    {Operator.DATE: [now_as_yyyy_mm_dd, {"days": -1}]},
+                    {Operator.DATE: [current_date_as_yyyy_mm_dd, {"days": -1}]},
                     {Operator.DATE: ["now"]},
                 ]
             },
@@ -584,7 +584,7 @@ def test_array_operator_rule_with_nonetype_operands(operator_name, operands):
         (
             {
                 Operator.LESS_THAN_OR_EQUAL: [
-                    {Operator.DATE: [now_as_yyyy_mm_dd, {"days": -1}]},
+                    {Operator.DATE: [current_date_as_yyyy_mm_dd, {"days": -1}]},
                     {Operator.DATE: ["now", {"days": -1}]},
                 ]
             },
@@ -593,7 +593,7 @@ def test_array_operator_rule_with_nonetype_operands(operator_name, operands):
         (
             {
                 Operator.GREATER_THAN: [
-                    {Operator.DATE: [now_as_yyyy_mm_dd]},
+                    {Operator.DATE: [current_date_as_yyyy_mm_dd]},
                     {Operator.DATE: ["now", {"months": -1}]},
                 ]
             },
@@ -602,7 +602,7 @@ def test_array_operator_rule_with_nonetype_operands(operator_name, operands):
         (
             {
                 Operator.GREATER_THAN_OR_EQUAL: [
-                    {Operator.DATE: [now_as_yyyy_mm_dd, {"months": -1}]},
+                    {Operator.DATE: [current_date_as_yyyy_mm_dd, {"months": -1}]},
                     {Operator.DATE: ["now", {"months": -1}]},
                 ]
             },
@@ -612,8 +612,8 @@ def test_array_operator_rule_with_nonetype_operands(operator_name, operands):
         (
             {
                 Operator.EQUAL: [
-                    {Operator.DATE: [now_as_yyyy_mm_dd, {"days": -1}]},
-                    {Operator.DATE: [now_as_yyyy_mm_dd]},
+                    {Operator.DATE: [current_date_as_yyyy_mm_dd, {"days": -1}]},
+                    {Operator.DATE: [current_date_as_yyyy_mm_dd]},
                 ]
             },
             False,
@@ -621,8 +621,8 @@ def test_array_operator_rule_with_nonetype_operands(operator_name, operands):
         (
             {
                 Operator.NOT_EQUAL: [
-                    {Operator.DATE: [now_as_yyyy_mm_dd]},
-                    {Operator.DATE: [now_as_yyyy_mm_dd]},
+                    {Operator.DATE: [current_date_as_yyyy_mm_dd]},
+                    {Operator.DATE: [current_date_as_yyyy_mm_dd]},
                 ]
             },
             False,
@@ -630,7 +630,7 @@ def test_array_operator_rule_with_nonetype_operands(operator_name, operands):
         (
             {
                 Operator.LESS_THAN: [
-                    {Operator.DATE: [now_as_yyyy_mm_dd, {"days": 1}]},
+                    {Operator.DATE: [current_date_as_yyyy_mm_dd, {"days": 1}]},
                     {Operator.DATE: ["now"]},
                 ]
             },
@@ -639,7 +639,7 @@ def test_array_operator_rule_with_nonetype_operands(operator_name, operands):
         (
             {
                 Operator.GREATER_THAN: [
-                    {Operator.DATE: [now_as_yyyy_mm_dd, {"months": -1}]},
+                    {Operator.DATE: [current_date_as_yyyy_mm_dd, {"months": -1}]},
                     {Operator.DATE: ["now"]},
                 ]
             },
@@ -648,7 +648,7 @@ def test_array_operator_rule_with_nonetype_operands(operator_name, operands):
         (
             {
                 Operator.EQUAL: [
-                    {Operator.DATE: [now_as_yyyy_mm_dd]},
+                    {Operator.DATE: [current_date_as_yyyy_mm_dd]},
                     {Operator.DATE: [None]},
                 ]
             },
@@ -662,11 +662,11 @@ def test_date_value(rule, expected_result):
             [
                 {
                     "answer_id": "some-answer",
-                    "value": now_as_yyyy_mm_dd,
+                    "value": current_date_as_yyyy_mm_dd,
                 }
             ]
         ),
-        metadata={"some-metadata": now_as_yyyy_mm_dd},
+        metadata={"some-metadata": current_date_as_yyyy_mm_dd},
     )
 
     assert (
