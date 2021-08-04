@@ -49,23 +49,6 @@ class TestSubmissionPayload(AppContextTestCase):
         "app.views.handlers.submission.SubmissionHandler.get_payload",
         Mock(return_value={}),
     )
-    def test_submit_questionnaire_store_delete_called(self):
-        questionnaire_store = self.questionnaire_store_mock()
-        questionnaire_store.delete = Mock()
-
-        with self.app_request_context():
-            with patch(
-                "app.views.handlers.submission.get_session_store",
-                return_value=self.session_store,
-            ):
-
-                submission_handler = SubmissionHandler(
-                    QuestionnaireSchema({}), questionnaire_store, full_routing_path=[]
-                )
-                submission_handler.submit_questionnaire()
-
-                assert questionnaire_store.delete.called
-
     @freeze_time(datetime.now(timezone.utc).replace(second=0, microsecond=0))
     @patch(
         "app.views.handlers.submission.SubmissionHandler.get_payload",

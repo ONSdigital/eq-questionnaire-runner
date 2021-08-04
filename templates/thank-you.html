@@ -21,11 +21,11 @@
         {{ _("Your answers were submitted for <span>{ru_name}</span> ({trading_as_name}) on {submitted_date_time}").format(
           ru_name = content.ru_name,
           trading_as_name = content.trad_as,
-          submitted_date_time=content.submitted_time|format_datetime) }}
+          submitted_date_time=content.submitted_at|format_datetime) }}
       {% else %}
         {{ _("Your answers were submitted for <span>{ru_name}</span> on {submitted_date_time}").format(
           ru_name = content.ru_name,
-          submitted_date_time=content.submitted_time|format_datetime) }}
+          submitted_date_time=content.submitted_at|format_datetime) }}
       {% endif %}
     </p>
 

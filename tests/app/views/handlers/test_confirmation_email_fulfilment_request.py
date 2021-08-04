@@ -26,7 +26,7 @@ def session_data():
         survey_url=None,
         ru_name=None,
         ru_ref=None,
-        submitted_time=datetime.now(tzutc()).isoformat(),
+        submitted_at=datetime.now(tzutc()).isoformat(),
         response_id="321",
         case_id="789",
     )

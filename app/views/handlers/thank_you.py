@@ -1,3 +1,4 @@
+from datetime import datetime
 from functools import cached_property
 
 from flask import session as cookie_session
@@ -21,9 +22,15 @@ class ThankYou:
     CENSUS_THANK_YOU_TEMPLATE = "census-thank-you"
     PAGE_TITLE = gettext("Thank you for completing the census")
 
-    def __init__(self, schema: QuestionnaireSchema, session_store: SessionStore):
+    def __init__(
+        self,
+        schema: QuestionnaireSchema,
+        session_store: SessionStore,
+        submitted_at: datetime,
+    ):
         self._session_store: SessionStore = session_store
         self._schema: QuestionnaireSchema = schema
+        self._submitted_at = submitted_at
 
         self._is_census_theme = cookie_session.get("theme") in [
             "census",
@@ -44,7 +51,9 @@ class ThankYou:
 
     def get_context(self):
         if not self._is_census_theme:
-            return build_default_thank_you_context(self._session_store.session_data)
+            return build_default_thank_you_context(
+                self._session_store.session_data, self._submitted_at
+            )
 
         confirmation_email_form = (
             self.confirmation_email.form if self.confirmation_email else None

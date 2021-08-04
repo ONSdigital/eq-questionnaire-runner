@@ -73,20 +73,6 @@ class TestQuestionnaireEndpoints(IntegrationTestCase):
         # Then we are shown a 404 page
         self.assertStatusNotFound()
 
-    def test_data_is_deleted_on_submission(self):
-        # Given we submit a survey
-        self.launchSurvey("test_percentage", roles=["dumper"])
-        self.post({"answer": "99"})
-        self.post()
-
-        # When we start the survey again
-        self.launchSurvey("test_percentage", roles=["dumper"])
-
-        # Then no answers should have persisted
-        self.get("/dump/debug")
-        answers = json_loads(self.getResponseData())
-        self.assertEqual(0, len(answers["ANSWERS"]))
-
     def test_when_on_thank_you_get_thank_you_returns_thank_you(self):
         # Given we complete the test_percentage survey and are on the thank you page
         self.launchSurvey("test_percentage", roles=["dumper"])
@@ -98,18 +84,6 @@ class TestQuestionnaireEndpoints(IntegrationTestCase):
 
         # Then we get the thank-you page
         self.assertInUrl("submitted/thank-you")
-
-    def test_questionnaire_not_accessible_once_submitted(self):
-        # Given we have submitted the test_percentage survey
-        self.launchSurvey("test_percentage", roles=["dumper"])
-        self.post({"answer": "99"})
-        self.post()
-
-        # When we try to access the submitted questionnaire
-        self.get(url=SUBMIT_URL_PATH)
-
-        # Then we get the unauthorised page
-        self.assertStatusUnauthorised()
 
     def test_when_no_session_thank_you_returns_unauthorised(self):
         # When we try to request the thank-you page with no session

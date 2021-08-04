@@ -77,12 +77,14 @@ class SessionStoreTest(AppContextTestCase):
                 session_data=self.session_data,
                 expires_at=self.expires_at,
             ).save()
-            current_time = datetime.utcnow().isoformat()
-            self.session_store.session_data.submitted_time = current_time
+            display_address = "68 Abingdon Road, Goathill"
+            self.session_store.session_data.display_address = display_address
             self.session_store.save()
 
             session_store = SessionStore("user_ik", "pepper", "eq_session_id")
-            self.assertEqual(session_store.session_data.submitted_time, current_time)
+            self.assertEqual(
+                session_store.session_data.display_address, display_address
+            )
 
     def test_should_not_delete_when_no_session(self):
         with self.app_request_context("/status") as context:

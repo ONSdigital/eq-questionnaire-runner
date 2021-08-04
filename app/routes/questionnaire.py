@@ -57,7 +57,7 @@ def before_questionnaire_request():
 
     metadata = get_metadata(current_user)
     if not metadata:
-        raise NoQuestionnaireStateException(401)
+        raise NoQuestionnaireStateException(401)  # pragma: no cover
 
     logger.bind(
         tx_id=metadata["tx_id"],
@@ -77,13 +77,14 @@ def before_questionnaire_request():
 
 @post_submission_blueprint.before_request
 @login_required
-def before_post_submission_request():
+@with_questionnaire_store
+def before_post_submission_request(questionnaire_store):
     if request.method == "OPTIONS":
         return None
-
     session_store = get_session_store()
     session_data = session_store.session_data
-    if not session_data.submitted_time:
+
+    if not questionnaire_store.submitted_at:
         raise NotFound
 
     handle_language()
@@ -310,9 +311,10 @@ def relationships(
 
 @post_submission_blueprint.route("thank-you/", methods=["GET", "POST"])
 @with_session_store
+@with_questionnaire_store
 @with_schema
-def get_thank_you(schema, session_store):
-    thank_you = ThankYou(schema, session_store)
+def get_thank_you(schema, questionnaire_store, session_store):
+    thank_you = ThankYou(schema, session_store, questionnaire_store.submitted_at)
 
     if request.method == "POST":
         confirmation_email = thank_you.confirmation_email

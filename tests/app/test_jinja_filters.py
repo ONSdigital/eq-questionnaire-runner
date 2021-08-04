@@ -1,4 +1,5 @@
 # coding: utf-8
+from datetime import datetime, timezone
 from unittest.mock import MagicMock, patch
 
 import pytest
@@ -65,8 +66,8 @@ class TestJinjaFilters(AppContextTestCase):  # pylint: disable=too-many-public-m
         self.assertEqual(format_number(Undefined()), "")
 
     def test_format_date_time_in_bst(self):
-        # Given a date after DST started
-        date_time = "2018-03-29T11:59:13.528680"
+        # Given a date after BST started
+        date_time = datetime(2018, 3, 29, 11, 59, 0)
 
         # When
         with self.app_request_context("/"):
@@ -79,7 +80,7 @@ class TestJinjaFilters(AppContextTestCase):  # pylint: disable=too-many-public-m
 
     def test_format_date_time_in_gmt(self):
         # Given
-        date_time = "2018-10-28T11:59:13.528680"
+        date_time = datetime(2018, 10, 28, 11, 59, 0)
 
         # When
         with self.app_request_context("/"):

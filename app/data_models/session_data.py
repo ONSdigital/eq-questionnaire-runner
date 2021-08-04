@@ -14,7 +14,6 @@ class SessionData:
         case_ref=None,
         account_service_url=None,
         account_service_log_out_url=None,
-        submitted_time=None,
         trad_as=None,
         display_address=None,
         confirmation_email_count=0,
@@ -30,7 +29,6 @@ class SessionData:
         self.ru_name = ru_name
         self.ru_ref = ru_ref
         self.response_id = response_id
-        self.submitted_time = submitted_time
         self.case_id = case_id
         self.case_ref = case_ref
         self.trad_as = trad_as
