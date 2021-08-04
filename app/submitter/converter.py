@@ -52,7 +52,7 @@ def convert_answers(
         schema: QuestionnaireSchema instance with populated schema json
         questionnaire_store: EncryptedQuestionnaireStorage instance for accessing current questionnaire data
         routing_path: The full routing path followed by the user when answering the questionnaire
-        submitted_at: The iso date/time that the questionnaire is submitted
+        submitted_at: The date and time in ISO 8601 of the submission
         flushed: True when system submits the users answers, False when submitted by user.
     Returns:
         Data payload

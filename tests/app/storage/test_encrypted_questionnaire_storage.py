@@ -33,24 +33,23 @@ class TestEncryptedQuestionnaireStorage(AppContextTestCase):
         with self.assertRaises(ValueError):
             EncryptedQuestionnaireStorage("1", None, "pepper")
 
-    def test_store_and_get(self):
-        user_id = "1"
-        user_ik = "2"
-        encrypted = EncryptedQuestionnaireStorage(user_id, user_ik, "pepper")
-        data = "test"
-        encrypted.save(data)
+    def test_store_and_get_without_submitted_at(self):
+        encrypted = EncryptedQuestionnaireStorage(
+            user_id="1", user_ik="2", pepper="pepper"
+        )
+        encrypted.save(data="test")
         # check we can decrypt the data
         self.assertEqual(
             ("test", QuestionnaireStore.LATEST_VERSION, None), encrypted.get_user_data()
         )
 
     @freeze_time(datetime.now(tzutc()).replace(second=0, microsecond=0))
-    def test_store_and_get_submitted_at(self):
-        user_id = "1"
-        user_ik = "2"
-        encrypted = EncryptedQuestionnaireStorage(user_id, user_ik, "pepper")
-        data = "test"
-        encrypted.save(data, datetime.now(tz=tzutc()))
+    def test_store_and_get_with_submitted_at(self):
+
+        encrypted = EncryptedQuestionnaireStorage(
+            user_id="1", user_ik="2", pepper="pepper"
+        )
+        encrypted.save(data="test", submitted_at=datetime.now(tz=tzutc()))
         self.assertEqual(
             ("test", QuestionnaireStore.LATEST_VERSION, datetime.now(tz=tzutc())),
             encrypted.get_user_data(),

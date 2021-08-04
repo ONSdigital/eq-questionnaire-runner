@@ -136,7 +136,7 @@ def get_format_date(value):
 @pass_eval_context  # type: ignore
 @blueprint.app_template_filter()
 def format_datetime(context, date_time):
-    # flask babel on formatting will automatically convert into the user’s timezone
+    # flask babel on formatting will automatically convert based on the time zone specified in setup.py
     formatted_date = flask_babel.format_date(date_time, format="d MMMM yyyy")
     formatted_time = flask_babel.format_time(date_time, format="HH:mm")
 

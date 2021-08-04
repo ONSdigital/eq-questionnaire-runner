@@ -14,7 +14,12 @@ from app.authentication.no_questionnaire_state_exception import (
     NoQuestionnaireStateException,
 )
 from app.data_models import QuestionnaireStore
-from app.globals import get_metadata, get_session_store, get_session_timeout_in_seconds
+from app.globals import (
+    get_metadata,
+    get_questionnaire_store,
+    get_session_store,
+    get_session_timeout_in_seconds,
+)
 from app.helpers import url_safe_serializer
 from app.helpers.language_helper import handle_language
 from app.helpers.schema_helpers import with_schema
@@ -51,7 +56,11 @@ post_submission_blueprint = Blueprint(
 
 @questionnaire_blueprint.before_request
 @login_required
-def before_questionnaire_request():
+@with_questionnaire_store
+def before_questionnaire_request(questionnaire_store):
+    if questionnaire_store.submitted_at:
+        return redirect(url_for("post_submission.get_thank_you"))
+
     if request.method == "OPTIONS":
         return None
 
@@ -77,17 +86,20 @@ def before_questionnaire_request():
 
 @post_submission_blueprint.before_request
 @login_required
-@with_questionnaire_store
-def before_post_submission_request(questionnaire_store):
+def before_post_submission_request():
     if request.method == "OPTIONS":
         return None
-    session_store = get_session_store()
-    session_data = session_store.session_data
 
+    questionnaire_store = get_questionnaire_store(
+        current_user.user_id, current_user.user_ik
+    )
     if not questionnaire_store.submitted_at:
         raise NotFound
 
     handle_language()
+
+    session_store = get_session_store()
+    session_data = session_store.session_data
 
     g.schema = load_schema_from_session_data(session_data)
 
@@ -310,10 +322,10 @@ def relationships(
 
 
 @post_submission_blueprint.route("thank-you/", methods=["GET", "POST"])
-@with_session_store
 @with_questionnaire_store
+@with_session_store
 @with_schema
-def get_thank_you(schema, questionnaire_store, session_store):
+def get_thank_you(schema, session_store, questionnaire_store):
     thank_you = ThankYou(schema, session_store, questionnaire_store.submitted_at)
 
     if request.method == "POST":

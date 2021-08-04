@@ -6,6 +6,7 @@ import pytest
 import simplejson as json
 from jinja2 import Undefined
 from mock import Mock
+from pytz import timezone
 
 from app.jinja_filters import (
     OtherConfig,
@@ -89,6 +90,20 @@ class TestJinjaFilters(AppContextTestCase):  # pylint: disable=too-many-public-m
         # Then
         self.assertEqual(
             format_value, "<span class='date'>28 October 2018 at 11:59</span>"
+        )
+
+    def test_format_date_using_london_timezone(self):
+        # Given a London timezone
+        london_timezone = timezone("Europe/London")
+        loc_dt = london_timezone.localize(datetime(2021, 8, 3, 00, 15, 0))
+
+        # When
+        with self.app_request_context("/"):
+            format_value = format_datetime(self.autoescape_context, loc_dt)
+
+        # Then
+        self.assertEqual(
+            format_value, "<span class='date'>3 August 2021 at 00:15</span>"
         )
 
     def test_format_percentage(self):
