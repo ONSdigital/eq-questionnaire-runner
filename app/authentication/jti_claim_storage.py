@@ -1,4 +1,4 @@
-from datetime import timedelta
+from datetime import datetime, timedelta
 
 from flask import current_app
 from structlog import get_logger
@@ -11,17 +11,17 @@ logger = get_logger()
 
 
 class JtiTokenUsed(Exception):
-    def __init__(self, jti_claim):
+    def __init__(self, jti_claim: str) -> None:
         super().__init__()
         self.jti_claim = jti_claim
 
-    def __str__(self, *args, **kwargs):
+    def __str__(self, *args: str, **kwargs: str) -> str:
         return "jti claim '{jti_claim}' has already been used".format(
             jti_claim=self.jti_claim
         )
 
 
-def use_jti_claim(jti_claim, expires_at):
+def use_jti_claim(jti_claim: str, expires_at: datetime) -> None:
     """
     Use a jti claim
     :param jti_claim: jti claim to mark as used.
@@ -41,7 +41,7 @@ def use_jti_claim(jti_claim, expires_at):
         expires_at += timedelta(seconds=60)
 
         jti = UsedJtiClaim(jti_claim, expires_at)
-        current_app.eq["ephemeral_storage"].put(jti, overwrite=False)
+        current_app.eq["ephemeral_storage"].put(jti, overwrite=False)  # type: ignore
     except ItemAlreadyExistsError as e:
         logger.error("jti claim has already been used", jti_claim=jti_claim)
         raise JtiTokenUsed(jti_claim) from e
