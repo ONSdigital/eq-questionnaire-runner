@@ -51,6 +51,10 @@ def evaluate_or(values: Iterable[bool]) -> bool:
 
 @casefold
 def evaluate_in(lhs: NonArrayPrimitiveTypes, rhs: Sequence) -> bool:
+    """
+    The NoneType check for rhs is done inline because this supports operations such as `None in [None, "Yes"]`
+    which is the short form of `value == None or value == "Yes"`.
+    """
     return rhs is not None and lhs in rhs
 
 
