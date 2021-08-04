@@ -677,7 +677,7 @@ def test_date_value(rule, expected_result):
     )
 
 
-def test_rule_access_answer_outside_of_repeating_section():
+def test_answer_source_outside_of_repeating_section():
     schema = get_mock_schema()
 
     schema.is_repeating_answer = Mock(return_value=False)
@@ -705,7 +705,7 @@ def test_rule_access_answer_outside_of_repeating_section():
 
 
 @pytest.mark.parametrize("is_answer_on_path", [True, False])
-def test_answer_source_with_answer_not_on_path_non_repeating_section(is_answer_on_path):
+def test_answer_source_not_on_path_non_repeating_section(is_answer_on_path):
     schema = get_mock_schema()
 
     location = Location(section_id="test-section", block_id="test-block")
@@ -742,7 +742,7 @@ def test_answer_source_with_answer_not_on_path_non_repeating_section(is_answer_o
 
 
 @pytest.mark.parametrize("is_answer_on_path", [True, False])
-def test_answer_source_with_answer_not_on_path_repeating_section(is_answer_on_path):
+def test_answer_source_not_on_path_repeating_section(is_answer_on_path):
     schema = get_mock_schema()
     schema.is_repeating_answer = Mock(return_value=True)
     location = Location(
