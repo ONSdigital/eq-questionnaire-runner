@@ -194,7 +194,7 @@ def should_wrap_with_fieldset(question):
         return False
 
     answers = question["answers"]
-    if (
+    return (
         question["type"] == "MutuallyExclusive"
         or len(answers) > 1
         or (
@@ -203,10 +203,7 @@ def should_wrap_with_fieldset(question):
             in ["Radio", "Date", "MonthYearDate", "Duration", "Address", "Relationship"]
             and "label" not in answers[0]
         )
-    ):
-        return True
-
-    return False
+    )
 
 
 @blueprint.app_context_processor
