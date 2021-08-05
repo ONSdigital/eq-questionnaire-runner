@@ -82,9 +82,9 @@ class TestJinjaFilters(AppContextTestCase):  # pylint: disable=too-many-public-m
     def test_format_date_time_in_gmt(self):
         # Given
         test_data = {
-            datetime(2018, 10, 28, 00, 15, 0, tz=timezone.utc): "28 October 2018 at 01:15",
+            datetime(2018, 10, 28, 00, 15, 0, tzinfo=timezone.utc): "28 October 2018 at 01:15",
             # Clocks go back on 29th Oct 2018
-            datetime(2018, 10, 29, 00, 15, 0, tz=timezone.utc): "29 October 2018 at 00:15",
+            datetime(2018, 10, 29, 00, 15, 0, tzinfo=timezone.utc): "29 October 2018 at 00:15",
         }
         for date_time, expected_value in test_data.items():
             with self.subTest(
