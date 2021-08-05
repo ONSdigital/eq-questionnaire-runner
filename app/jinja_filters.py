@@ -198,8 +198,7 @@ def should_wrap_with_fieldset(question):
         question["type"] == "MutuallyExclusive"
         or len(answers) > 1
         or (
-            len(answers) == 1
-            and answers[0]["type"]
+            answers[0]["type"]
             in ["Radio", "Date", "MonthYearDate", "Duration", "Address", "Relationship"]
             and "label" not in answers[0]
         )
