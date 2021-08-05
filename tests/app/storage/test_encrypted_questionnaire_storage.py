@@ -43,15 +43,15 @@ class TestEncryptedQuestionnaireStorage(AppContextTestCase):
             ("test", QuestionnaireStore.LATEST_VERSION, None), encrypted.get_user_data()
         )
 
-    @freeze_time(datetime.now(tzutc()).replace(second=0, microsecond=0))
     def test_store_and_get_with_submitted_at(self):
-
+		now = datetime.now(timezone.utc)
         encrypted = EncryptedQuestionnaireStorage(
             user_id="1", user_ik="2", pepper="pepper"
         )
-        encrypted.save(data="test", submitted_at=datetime.now(tz=tzutc()))
+        encrypted.save(data="test", submitted_at=now)
+        
         self.assertEqual(
-            ("test", QuestionnaireStore.LATEST_VERSION, datetime.now(tz=tzutc())),
+            ("test", QuestionnaireStore.LATEST_VERSION, now),
             encrypted.get_user_data(),
         )
 
