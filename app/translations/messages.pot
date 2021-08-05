@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2021-07-29 12:39+0100\n"
+"POT-Creation-Date: 2021-08-05 08:48+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -67,7 +67,7 @@ msgstr ""
 msgid "Enter a date"
 msgstr ""
 
-#: app/forms/error_messages.py:23 templates/partials/answers/address.html:57
+#: app/forms/error_messages.py:23 templates/partials/answers/address.html:56
 msgid "Enter an address"
 msgstr ""
 
@@ -521,7 +521,7 @@ msgstr ""
 msgid "Give feedback about this service"
 msgstr ""
 
-#: app/views/handlers/feedback.py:128 app/views/handlers/feedback.py:172
+#: app/views/handlers/feedback.py:133 app/views/handlers/feedback.py:172
 msgid "Select what your feedback is about"
 msgstr ""
 
@@ -759,7 +759,7 @@ msgid ""
 "census, enter your email address"
 msgstr ""
 
-#: templates/confirm-email.html:13 templates/partials/answers/address.html:56
+#: templates/confirm-email.html:13 templates/partials/answers/address.html:55
 #: templates/question.html:10
 #, python-format
 msgid "There is a problem with your answer"
@@ -825,7 +825,7 @@ msgid_plural "There are %(num)s problems with your feedback"
 msgstr[0] ""
 msgstr[1] ""
 
-#: templates/feedback.html:41
+#: templates/feedback.html:39
 msgid "Send feedback"
 msgstr ""
 
@@ -833,7 +833,7 @@ msgstr ""
 msgid "If you can’t answer someone else’s questions"
 msgstr ""
 
-#: templates/interstitial.html:23 templates/partials/question.html:27
+#: templates/interstitial.html:23 templates/partials/question.html:25
 msgid "If you can’t answer questions for this person"
 msgstr ""
 
@@ -1181,120 +1181,120 @@ msgid ""
 " of the section</a>"
 msgstr ""
 
-#: templates/partials/question.html:62
+#: templates/partials/question.html:60
 msgid "Selecting this will clear your answer"
 msgstr ""
 
-#: templates/partials/question.html:63
+#: templates/partials/question.html:61
 msgid "cleared"
 msgstr ""
 
-#: templates/partials/question.html:66
+#: templates/partials/question.html:64
 msgid "Selecting this will deselect any selected options"
 msgstr ""
 
-#: templates/partials/question.html:67 templates/partials/question.html:75
+#: templates/partials/question.html:65 templates/partials/question.html:73
 msgid "deselected"
 msgstr ""
 
-#: templates/partials/question.html:71
+#: templates/partials/question.html:69
 msgid "Or"
 msgstr ""
 
-#: templates/partials/answers/address.html:10
+#: templates/partials/answers/address.html:9
 msgid "Address line 1"
 msgstr ""
 
-#: templates/partials/answers/address.html:15
+#: templates/partials/answers/address.html:14
 msgid "Address line 2"
 msgstr ""
 
-#: templates/partials/answers/address.html:19
+#: templates/partials/answers/address.html:18
 msgid "Town or city"
 msgstr ""
 
-#: templates/partials/answers/address.html:23
+#: templates/partials/answers/address.html:22
 msgid "Postcode"
 msgstr ""
 
-#: templates/partials/answers/address.html:34
+#: templates/partials/answers/address.html:33
 msgid "Enter address or postcode and select from results"
 msgstr ""
 
-#: templates/partials/answers/address.html:36
+#: templates/partials/answers/address.html:35
 msgid "Search for an address"
 msgstr ""
 
-#: templates/partials/answers/address.html:37
+#: templates/partials/answers/address.html:36
 msgid "Manually enter address"
 msgstr ""
 
-#: templates/partials/answers/address.html:42
+#: templates/partials/answers/address.html:41
 msgid ""
 "Use up and down keys to navigate suggestions once you’ve typed more than "
 "two characters. Use the enter key to select a suggestion. Touch device "
 "users, explore by touch or with swipe gestures."
 msgstr ""
 
-#: templates/partials/answers/address.html:43
+#: templates/partials/answers/address.html:42
 msgid "You have selected"
 msgstr ""
 
-#: templates/partials/answers/address.html:44
+#: templates/partials/answers/address.html:43
 msgid "Enter 3 or more characters for suggestions."
 msgstr ""
 
-#: templates/partials/answers/address.html:45
+#: templates/partials/answers/address.html:44
 msgid "There is one suggestion available."
 msgstr ""
 
-#: templates/partials/answers/address.html:46
+#: templates/partials/answers/address.html:45
 msgid "There are {n} suggestions available."
 msgstr ""
 
-#: templates/partials/answers/address.html:47
+#: templates/partials/answers/address.html:46
 msgid ""
 "Results have been limited to 10 suggestions. Type more characters to "
 "improve your search"
 msgstr ""
 
-#: templates/partials/answers/address.html:48
+#: templates/partials/answers/address.html:47
 msgid "There are {n} for {x}"
 msgstr ""
 
-#: templates/partials/answers/address.html:49
+#: templates/partials/answers/address.html:48
 msgid "{n} addresses"
 msgstr ""
 
-#: templates/partials/answers/address.html:50
+#: templates/partials/answers/address.html:49
 msgid "Enter more of the address to improve results"
 msgstr ""
 
-#: templates/partials/answers/address.html:51
+#: templates/partials/answers/address.html:50
 msgid "Select an address"
 msgstr ""
 
-#: templates/partials/answers/address.html:52
+#: templates/partials/answers/address.html:51
 msgid "No results found. Try entering a different part of the address"
 msgstr ""
 
-#: templates/partials/answers/address.html:53
+#: templates/partials/answers/address.html:52
 msgid "{n} results found. Enter more of the address to improve results"
 msgstr ""
 
-#: templates/partials/answers/address.html:54
+#: templates/partials/answers/address.html:53
 msgid "Enter more of the address to get results"
 msgstr ""
 
-#: templates/partials/answers/address.html:58
+#: templates/partials/answers/address.html:57
 msgid "Select or manually enter an address"
 msgstr ""
 
-#: templates/partials/answers/address.html:59
+#: templates/partials/answers/address.html:58
 msgid "Sorry, there was a problem loading addresses"
 msgstr ""
 
-#: templates/partials/answers/address.html:60
+#: templates/partials/answers/address.html:59
 msgid "Enter address manually"
 msgstr ""
 
@@ -1302,60 +1302,60 @@ msgstr ""
 msgid "Select all that apply"
 msgstr ""
 
-#: templates/partials/answers/date.html:30
+#: templates/partials/answers/date.html:23
 msgid "Day"
 msgstr ""
 
-#: templates/partials/answers/date.html:45
+#: templates/partials/answers/date.html:38
 msgid "Month"
 msgstr ""
 
-#: templates/partials/answers/date.html:60
+#: templates/partials/answers/date.html:53
 msgid "Year"
 msgstr ""
 
-#: templates/partials/answers/radio.html:14
+#: templates/partials/answers/radio.html:15
 msgid "Clear selection"
 msgstr ""
 
 #: templates/partials/answers/textarea.html:16
-#: templates/partials/answers/textfield.html:46
+#: templates/partials/answers/textfield.html:45
 msgid "You have {x} character remaining"
 msgstr ""
 
 #: templates/partials/answers/textarea.html:17
-#: templates/partials/answers/textfield.html:47
+#: templates/partials/answers/textfield.html:46
 msgid "You have {x} characters remaining"
 msgstr ""
 
-#: templates/partials/answers/textfield.html:26
+#: templates/partials/answers/textfield.html:25
 msgid ""
 "Use up and down keys to navigate suggestions once you've typed more than "
 "two characters. Use the enter key to select a suggestion. Touch device "
 "users, explore by touch or with swipe gestures."
 msgstr ""
 
-#: templates/partials/answers/textfield.html:27
+#: templates/partials/answers/textfield.html:26
 msgid "Continue entering to improve suggestions"
 msgstr ""
 
-#: templates/partials/answers/textfield.html:28
+#: templates/partials/answers/textfield.html:27
 msgid "Suggestions"
 msgstr ""
 
-#: templates/partials/answers/textfield.html:29
+#: templates/partials/answers/textfield.html:28
 msgid "No results found"
 msgstr ""
 
-#: templates/partials/answers/textfield.html:30
+#: templates/partials/answers/textfield.html:29
 msgid "Continue entering to get suggestions"
 msgstr ""
 
-#: templates/partials/answers/textfield.html:44
+#: templates/partials/answers/textfield.html:43
 msgid "{x} character too many"
 msgstr ""
 
-#: templates/partials/answers/textfield.html:45
+#: templates/partials/answers/textfield.html:44
 msgid "{x} characters too many"
 msgstr ""
 

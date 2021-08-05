@@ -21,6 +21,7 @@ from app.jinja_filters import (
     get_width_class_for_number,
     map_list_collector_config,
     map_summary_item_config,
+    should_wrap_with_fieldset,
     strip_tags,
 )
 from tests.app.app_context_test_case import AppContextTestCase
@@ -205,6 +206,48 @@ class TestJinjaFilters(AppContextTestCase):  # pylint: disable=too-many-public-m
     def test_get_width_class_for_number_large_number(self):
         answer = {"maximum": {"value": 123456789012345678901}}
         self.assertIsNone(get_width_class_for_number(answer))
+
+    def test_should_wrap_with_fieldset_daterange(self):
+        question = {"type": "DateRange"}
+        self.assertFalse(should_wrap_with_fieldset(question))
+
+    def test_should_wrap_with_fieldset_mutually_exclusive(self):
+        question = {"type": "MutuallyExclusive", "answers": []}
+        self.assertTrue(should_wrap_with_fieldset(question))
+
+    def test_should_wrap_with_fieldset_multiple_answers(self):
+        question = {
+            "type": "General",
+            "answers": [{"type": "TextField"}, {"type": "TextField"}],
+        }
+        self.assertTrue(should_wrap_with_fieldset(question))
+
+    def test_should_wrap_with_fieldset_single_answer(self):
+        for answer_type in [
+            "Radio",
+            "Date",
+            "MonthYearDate",
+            "Duration",
+            "Address",
+            "Relationship",
+        ]:
+            question = {"type": "General", "answers": [{"type": answer_type}]}
+            self.assertTrue(should_wrap_with_fieldset(question))
+
+    def test_should_wrap_with_fieldset_single_answer_with_label(self):
+        for answer_type in [
+            "Radio",
+            "Date",
+            "MonthYearDate",
+            "Duration",
+            "Address",
+            "Relationship",
+        ]:
+            question = {
+                "type": "General",
+                "answers": [{"type": answer_type, "label": "Label"}],
+            }
+            self.assertFalse(should_wrap_with_fieldset(question))
 
 
 @pytest.fixture
