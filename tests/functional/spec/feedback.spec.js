@@ -33,8 +33,8 @@ describe("Feedback", () => {
 
     it("When I enter valid feedback, Then I can submit the feedback page and get confirmation that the feedback has been sent", () => {
       browser.url(FeedbackPage.url());
-      $(FeedbackPage.feedbackType()).click();
-      $(FeedbackPage.feedbackText()).setValue("The census questions");
+      $(FeedbackPage.feedbackTypeGeneralFeedback()).click();
+      $(FeedbackPage.feedbackText()).setValue("Well done!");
       $(FeedbackPage.submit()).click();
       expect(browser.getUrl()).to.contain(FeedbackSentPage.pageName);
       expect($(FeedbackSentPage.feedbackThankYouText()).getText()).to.contain("Thank you for your feedback");
@@ -42,8 +42,8 @@ describe("Feedback", () => {
 
     it("When I click the done button on the feedback sent page, Then I am taken to the thank you page", () => {
       browser.url(FeedbackPage.url());
-      $(FeedbackPage.feedbackType()).click();
-      $(FeedbackPage.feedbackText()).setValue("The census questions");
+      $(FeedbackPage.feedbackTypeGeneralFeedback()).click();
+      $(FeedbackPage.feedbackText()).setValue("Well done!");
       $(FeedbackPage.submit()).click();
       $(FeedbackSentPage.doneButton()).click();
       expect(browser.getUrl()).to.contain("thank-you");
