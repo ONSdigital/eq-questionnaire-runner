@@ -8,7 +8,7 @@ from app.submitter.convert_payload_0_0_1 import convert_answers_to_payload_0_0_1
 from app.submitter.converter import convert_answers
 from tests.app.submitter.schema import make_schema
 
-SUBMITTED_AT = datetime.now(timezone.utc).isoformat()
+SUBMITTED_AT = datetime.now(timezone.utc)
 
 
 def create_answer(answer_id, value):

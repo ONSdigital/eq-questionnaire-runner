@@ -5,7 +5,7 @@ from marshmallow import Schema, fields, post_load, pre_dump
 
 
 class QuestionnaireState:
-    def __init__(self, user_id, state_data, version, submitted_at):
+    def __init__(self, user_id, state_data, version, submitted_at=None):
         self.user_id = user_id
         self.state_data = state_data
         self.version = version
@@ -63,8 +63,7 @@ class QuestionnaireStateSchema(Schema, DateTimeSchemaMixin):
     def make_model(self, data, **kwargs):
         created_at = data.pop("created_at", None)
         updated_at = data.pop("updated_at", None)
-        submitted_at = data.pop("submitted_at", None)
-        model = QuestionnaireState(**data, submitted_at=submitted_at)
+        model = QuestionnaireState(**data)
         model.created_at = created_at
         model.updated_at = updated_at
         return model

@@ -28,7 +28,7 @@ class TestSubmissionPayload(AppContextTestCase):
             ru_ref="ru_ref",
             case_id="0123456789000000",
         )
-        self.expires_at = datetime.now(tzutc()) + timedelta(seconds=5)
+        self.expires_at = datetime.now(timezone.utc) + timedelta(seconds=5)
         self.session_store = SessionStore("user_ik", "pepper", "eq_session_id").create(
             "eq_session_id", "user_id", self.session_data, self.expires_at
         )

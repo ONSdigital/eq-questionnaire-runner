@@ -51,7 +51,7 @@ class SubmissionHandler:
             self._schema,
             self._questionnaire_store,
             self._full_routing_path,
-            self.submitted_at.isoformat(),
+            self.submitted_at,
         )
         payload[
             "submission_language_code"

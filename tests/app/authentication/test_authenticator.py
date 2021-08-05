@@ -1,6 +1,5 @@
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 
-from dateutil.tz import tzutc
 from flask import session as cookie_session
 from mock import patch
 
@@ -27,7 +26,7 @@ class TestAuthenticator(AppContextTestCase):  # pylint: disable=too-many-public-
             case_id="case_id",
         )
         self.session_store = SessionStore("user_ik", "pepper", "eq_session_id")
-        self.expires_at = datetime.now(tzutc()) + timedelta(seconds=5)
+        self.expires_at = datetime.now(timezone.utc) + timedelta(seconds=5)
 
     def test_check_session_with_user_id_in_session(self):
         with self.app_request_context("/status"):
@@ -108,7 +107,7 @@ class TestAuthenticator(AppContextTestCase):  # pylint: disable=too-many-public-
                     "eq_session_id",
                     "user_id",
                     self.session_data,
-                    expires_at=datetime.now(tzutc()),
+                    expires_at=datetime.now(timezone.utc),
                 )
                 cookie_session[USER_IK] = "user_ik"
 

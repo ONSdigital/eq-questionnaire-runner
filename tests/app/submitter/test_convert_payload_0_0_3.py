@@ -10,7 +10,7 @@ from app.utilities.json import json_dumps, json_loads
 from app.utilities.schema import load_schema_from_name
 from tests.app.submitter.schema import make_schema
 
-SUBMITTED_AT = datetime.now(timezone.utc).isoformat()
+SUBMITTED_AT = datetime.now(timezone.utc)
 
 
 def test_convert_answers_to_payload_0_0_3(fake_questionnaire_store):

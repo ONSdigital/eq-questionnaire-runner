@@ -23,7 +23,7 @@ class TestDatastore(AppContextTestCase):
         self.ds = Datastore(self.mock_client)
 
     def test_get_by_key(self):
-        model = QuestionnaireState("someuser", "data", 1, None)
+        model = QuestionnaireState("someuser", "data", 1)
         model_data = QuestionnaireStateSchema().dump(model)
 
         m_entity = google_datastore.Entity()
@@ -42,7 +42,7 @@ class TestDatastore(AppContextTestCase):
         self.assertFalse(returned_model)
 
     def test_put(self):
-        model = QuestionnaireState("someuser", "data", 1, None)
+        model = QuestionnaireState("someuser", "data", 1)
 
         self.ds.put(model, True)
 
@@ -53,7 +53,7 @@ class TestDatastore(AppContextTestCase):
         self.assertEqual(model.version, put_data["version"])
 
     def test_put_without_overwrite(self):
-        model = QuestionnaireState("someuser", "data", 1, None)
+        model = QuestionnaireState("someuser", "data", 1)
 
         with self.assertRaises(NotImplementedError) as exception:
             self.ds.put(model, False)
@@ -64,7 +64,7 @@ class TestDatastore(AppContextTestCase):
 
     @mock.patch("app.storage.datastore.Entity")
     def test_put_exclude_indexes(self, mock_entity):
-        model = QuestionnaireState("someuser", "data", 1, None)
+        model = QuestionnaireState("someuser", "data", 1)
         self.ds.put(model)
         put_call_args = mock_entity.call_args.kwargs
         self.assertIn("exclude_from_indexes", put_call_args)
@@ -79,7 +79,7 @@ class TestDatastore(AppContextTestCase):
         )
 
     def test_delete(self):
-        model = QuestionnaireState("someuser", "data", 1, None)
+        model = QuestionnaireState("someuser", "data", 1)
         self.ds.delete(model)
 
         self.assertEqual(self.mock_client.key.call_args[0][1], model.user_id)
@@ -89,7 +89,7 @@ class TestDatastore(AppContextTestCase):
         self.mock_client.delete.assert_called_once_with(m_key)
 
     def test_retry(self):
-        model = QuestionnaireState("someuser", "data", 1, None)
+        model = QuestionnaireState("someuser", "data", 1)
 
         self.mock_client.put = mock.Mock(
             side_effect=[exceptions.InternalServerError("error"), mock.DEFAULT]

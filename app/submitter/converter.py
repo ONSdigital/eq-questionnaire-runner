@@ -52,7 +52,7 @@ def convert_answers(
         schema: QuestionnaireSchema instance with populated schema json
         questionnaire_store: EncryptedQuestionnaireStorage instance for accessing current questionnaire data
         routing_path: The full routing path followed by the user when answering the questionnaire
-        submitted_at: The date and time in ISO 8601 of the submission
+        submitted_at: The date and time of submission
         flushed: True when system submits the users answers, False when submitted by user.
     Returns:
         Data payload
@@ -72,7 +72,7 @@ def convert_answers(
         "origin": "uk.gov.ons.edc.eq",
         "survey_id": survey_id,
         "flushed": flushed,
-        "submitted_at": submitted_at,
+        "submitted_at": submitted_at.isoformat(),
         "collection": _build_collection(metadata),
         "metadata": _build_metadata(metadata),
         "launch_language_code": metadata.get("language_code", DEFAULT_LANGUAGE_CODE),

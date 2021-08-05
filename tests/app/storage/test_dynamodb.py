@@ -56,7 +56,7 @@ class TestDynamo(AppContextTestCase):
     def test_delete(self):
         self._put_item(1)
         self._assert_item(1)
-        model = QuestionnaireState("someuser", "data", 1, None)
+        model = QuestionnaireState("someuser", "data", 1)
         self.ddb.delete(model)
         self._assert_item(None)
 
@@ -66,5 +66,5 @@ class TestDynamo(AppContextTestCase):
         self.assertEqual(actual_version, version)
 
     def _put_item(self, version, overwrite=True):
-        model = QuestionnaireState("someuser", "data", version, None)
+        model = QuestionnaireState("someuser", "data", version)
         self.ddb.put(model, overwrite)

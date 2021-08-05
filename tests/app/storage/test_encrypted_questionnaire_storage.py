@@ -1,8 +1,6 @@
-from datetime import datetime
+from datetime import datetime, timezone
 
-from dateutil.tz import tzutc
 from flask import current_app
-from freezegun import freeze_time
 
 from app.data_models import QuestionnaireStore
 from app.data_models.app_models import QuestionnaireState
@@ -44,12 +42,12 @@ class TestEncryptedQuestionnaireStorage(AppContextTestCase):
         )
 
     def test_store_and_get_with_submitted_at(self):
-		now = datetime.now(timezone.utc)
+        now = datetime.now(timezone.utc)
         encrypted = EncryptedQuestionnaireStorage(
             user_id="1", user_ik="2", pepper="pepper"
         )
         encrypted.save(data="test", submitted_at=now)
-        
+
         self.assertEqual(
             ("test", QuestionnaireStore.LATEST_VERSION, now),
             encrypted.get_user_data(),

@@ -6,7 +6,7 @@ import pytest
 from app.questionnaire.questionnaire_schema import QuestionnaireSchema
 from app.submitter.converter import DataVersionError, convert_answers
 
-SUBMITTED_AT = datetime.now(timezone.utc).isoformat()
+SUBMITTED_AT = datetime.now(timezone.utc)
 
 
 def test_convert_answers_flushed_flag_default_is_false(
@@ -97,7 +97,7 @@ def test_submitted_at_should_be_set_in_payload(
         fake_questionnaire_schema, fake_questionnaire_store, {}, SUBMITTED_AT
     )
 
-    assert SUBMITTED_AT == answer_object["submitted_at"]
+    assert SUBMITTED_AT.isoformat() == answer_object["submitted_at"]
 
 
 def test_case_id_should_be_set_in_payload(

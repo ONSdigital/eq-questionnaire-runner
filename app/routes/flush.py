@@ -58,7 +58,7 @@ def _submit_data(user):
         metadata = questionnaire_store.metadata
         progress_store = questionnaire_store.progress_store
         list_store = questionnaire_store.list_store
-        submitted_at = datetime.now(timezone.utc).isoformat()
+        submitted_at = datetime.now(timezone.utc)
         schema = load_schema_from_metadata(metadata)
 
         router = Router(schema, answer_store, list_store, progress_store, metadata)
