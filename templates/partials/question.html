@@ -14,8 +14,6 @@
 {% set question_instruction = format_paragraphs(question.instruction) %}
 {% set question_error = form.question_errors[question.id] %}
 
-{% set should_wrap_with_fieldset = should_wrap_with_fieldset(question) %}
-
 {%- set question_definition -%}
   {%- if question.definitions -%}
     {%- include 'partials/question-definition.html' -%}
@@ -82,17 +80,7 @@
         {% include 'partials/answer.html' %}
       {%- endfor -%}
     {%- endset -%}
-
-    {%- if should_wrap_with_fieldset -%}
-      {%- call onsFieldset({
-        "legend": question_title,
-        "legendClasses": "u-vh"
-      }) -%}
-        {{ answers }}
-      {%- endcall -%}
-    {%- else -%}
-      {{ answers }}
-    {%- endif -%}
+    {{ answers }}
   {%- endif -%}
 {% endset %}
 
@@ -100,7 +88,8 @@
   "id": question.id,
   "title": title,
   "description": question_description,
-  "instruction": question_instruction
+  "instruction": question_instruction,
+  "legendIsQuestionTitle": should_wrap_with_fieldset(question)
 }) %}
   {%- if content.list -%}
     {% set list = content.list %}

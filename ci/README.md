@@ -17,6 +17,7 @@ fly -t <target-concourse> execute \
 ## Deploying the app
 
 When deploying with Concourse the environment variables specified in [Deploying the app](../README.md#deploying-the-app) must be set.
+IMAGE_TAG can be passed as an environment variable or as a file input located at `./image-tag/tag`.
 
 To deploy the app via Concourse, use the following task command:
 ```sh

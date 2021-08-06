@@ -125,12 +125,12 @@ class Feedback:
             "type": "General",
             "id": "feedback",
             "title": lazy_gettext("Give feedback about this service"),
-            "label": lazy_gettext("Select what your feedback is about"),
             "answers": [
                 {
                     "type": "Radio",
                     "id": "feedback-type",
                     "mandatory": True,
+                    "label": lazy_gettext("Select what your feedback is about"),
                     "options": [
                         {
                             "label": lazy_gettext("The census questions"),
