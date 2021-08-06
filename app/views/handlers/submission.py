@@ -1,5 +1,5 @@
-from datetime import datetime
-from typing import Mapping
+from datetime import datetime, timezone
+from functools import cached_property
 
 from flask import current_app
 from flask import session as cookie_session
@@ -20,8 +20,11 @@ class SubmissionHandler:
         self._session_store = get_session_store()
         self._metadata = questionnaire_store.metadata
 
-    def submit_questionnaire(self):
+    @cached_property
+    def submitted_at(self):
+        return datetime.now(timezone.utc)
 
+    def submit_questionnaire(self):
         payload = self.get_payload()
         message = json_dumps(payload)
 
@@ -39,23 +42,23 @@ class SubmissionHandler:
 
         cookie_session["submitted"] = True
 
-        self._store_submitted_time_and_display_address_in_session()
-        submission_schema: Mapping = self._schema.get_submission() or {}
-
-        if not submission_schema.get("view_submitted_response"):
-            self._questionnaire_store.delete()
+        self._store_display_address_in_session()
+        self._questionnaire_store.submitted_at = self.submitted_at
+        self._questionnaire_store.save()
 
     def get_payload(self):
         payload = convert_answers(
-            self._schema, self._questionnaire_store, self._full_routing_path
+            self._schema,
+            self._questionnaire_store,
+            self._full_routing_path,
+            self.submitted_at,
         )
         payload[
             "submission_language_code"
         ] = self._session_store.session_data.language_code
         return payload
 
-    def _store_submitted_time_and_display_address_in_session(self):
+    def _store_display_address_in_session(self):
         session_data = self._session_store.session_data
         session_data.display_address = self._metadata.get("display_address")
-        session_data.submitted_time = datetime.utcnow().isoformat()
         self._session_store.save()

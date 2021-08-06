@@ -5,12 +5,13 @@ from marshmallow import Schema, fields, post_load, pre_dump
 
 
 class QuestionnaireState:
-    def __init__(self, user_id, state_data, version):
+    def __init__(self, user_id, state_data, version, submitted_at=None):
         self.user_id = user_id
         self.state_data = state_data
         self.version = version
         self.created_at = datetime.now(tz=tzutc())
         self.updated_at = datetime.now(tz=tzutc())
+        self.submitted_at = submitted_at
 
 
 class EQSession:
@@ -56,6 +57,7 @@ class QuestionnaireStateSchema(Schema, DateTimeSchemaMixin):
     user_id = fields.Str()
     state_data = fields.Str()
     version = fields.Integer()
+    submitted_at = fields.DateTime(allow_none=True)
 
     @post_load
     def make_model(self, data, **kwargs):

@@ -1,3 +1,5 @@
+from datetime import datetime, timezone
+
 from flask import current_app
 
 from app.data_models import QuestionnaireStore
@@ -12,7 +14,7 @@ def _save_state_data(user_id, data, state_version=QuestionnaireStore.LATEST_VERS
 
     state_data = encryption.encrypt_data(data)
 
-    questionnaire_state = QuestionnaireState(user_id, state_data, state_version)
+    questionnaire_state = QuestionnaireState(user_id, state_data, state_version, None)
     current_app.eq["storage"].put(questionnaire_state)
 
 
@@ -29,15 +31,26 @@ class TestEncryptedQuestionnaireStorage(AppContextTestCase):
         with self.assertRaises(ValueError):
             EncryptedQuestionnaireStorage("1", None, "pepper")
 
-    def test_store_and_get(self):
-        user_id = "1"
-        user_ik = "2"
-        encrypted = EncryptedQuestionnaireStorage(user_id, user_ik, "pepper")
-        data = "test"
-        encrypted.save(data)
+    def test_store_and_get_without_submitted_at(self):
+        encrypted = EncryptedQuestionnaireStorage(
+            user_id="1", user_ik="2", pepper="pepper"
+        )
+        encrypted.save(data="test")
         # check we can decrypt the data
         self.assertEqual(
-            ("test", QuestionnaireStore.LATEST_VERSION), encrypted.get_user_data()
+            ("test", QuestionnaireStore.LATEST_VERSION, None), encrypted.get_user_data()
+        )
+
+    def test_store_and_get_with_submitted_at(self):
+        now = datetime.now(timezone.utc)
+        encrypted = EncryptedQuestionnaireStorage(
+            user_id="1", user_ik="2", pepper="pepper"
+        )
+        encrypted.save(data="test", submitted_at=now)
+
+        self.assertEqual(
+            ("test", QuestionnaireStore.LATEST_VERSION, now),
+            encrypted.get_user_data(),
         )
 
     def test_store(self):
@@ -51,16 +64,18 @@ class TestEncryptedQuestionnaireStorage(AppContextTestCase):
         data = "test"
         self.storage.save(data)
         self.assertEqual(
-            (data, QuestionnaireStore.LATEST_VERSION), self.storage.get_user_data()
+            (data, QuestionnaireStore.LATEST_VERSION, None),
+            self.storage.get_user_data(),
         )
 
     def test_delete(self):
         data = "test"
         self.storage.save(data)
         self.assertEqual(
-            (data, QuestionnaireStore.LATEST_VERSION), self.storage.get_user_data()
+            (data, QuestionnaireStore.LATEST_VERSION, None),
+            self.storage.get_user_data(),
         )
         self.storage.delete()
         self.assertEqual(
-            (None, None), self.storage.get_user_data()
+            (None, None, None), self.storage.get_user_data()
         )  # pylint: disable=protected-access

@@ -1,4 +1,5 @@
 # coding: utf-8
+from datetime import datetime, timezone
 from unittest.mock import MagicMock, patch
 
 import pytest
@@ -66,8 +67,8 @@ class TestJinjaFilters(AppContextTestCase):  # pylint: disable=too-many-public-m
         self.assertEqual(format_number(Undefined()), "")
 
     def test_format_date_time_in_bst(self):
-        # Given a date after DST started
-        date_time = "2018-03-29T11:59:13.528680"
+        # Given a date after BST started
+        date_time = datetime(2018, 3, 29, 23, 59, 0, tzinfo=timezone.utc)
 
         # When
         with self.app_request_context("/"):
@@ -75,21 +76,34 @@ class TestJinjaFilters(AppContextTestCase):  # pylint: disable=too-many-public-m
 
         # Then
         self.assertEqual(
-            format_value, "<span class='date'>29 March 2018 at 12:59</span>"
+            format_value, "<span class='date'>30 March 2018 at 00:59</span>"
         )
 
     def test_format_date_time_in_gmt(self):
         # Given
-        date_time = "2018-10-28T11:59:13.528680"
+        test_data = {
+            datetime(
+                2018, 10, 28, 00, 15, 0, tzinfo=timezone.utc
+            ): "28 October 2018 at 01:15",
+            # Clocks go back on 29th Oct 2018
+            datetime(
+                2018, 10, 29, 00, 15, 0, tzinfo=timezone.utc
+            ): "29 October 2018 at 00:15",
+        }
+        for date_time, expected_value in test_data.items():
+            with self.subTest(
+                date_time=date_time,
+                expected_value=expected_value,
+            ):
+                date_time = date_time.replace(tzinfo=timezone.utc)
+                # When
+                with self.app_request_context("/"):
+                    format_value = format_datetime(self.autoescape_context, date_time)
 
-        # When
-        with self.app_request_context("/"):
-            format_value = format_datetime(self.autoescape_context, date_time)
-
-        # Then
-        self.assertEqual(
-            format_value, "<span class='date'>28 October 2018 at 11:59</span>"
-        )
+                # Then
+                self.assertEqual(
+                    format_value, f"<span class='date'>{expected_value}</span>"
+                )
 
     def test_format_percentage(self):
         self.assertEqual(format_percentage("100"), "100%")

@@ -1,5 +1,7 @@
 from datetime import datetime
 
+import pytest
+
 from app.utilities.json import json_loads
 from tests.integration.integration_test_case import IntegrationTestCase
 
@@ -73,6 +75,7 @@ class TestMultipleLogin(MultipleClientTestCase):
 
         self.cache = {self.client_a: {}, self.client_b: {}}
 
+    @pytest.mark.xfail
     def test_multiple_users_same_survey(self):
         """Tests that multiple sessions can be created which work on the same
         survey

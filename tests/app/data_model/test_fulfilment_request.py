@@ -1,5 +1,5 @@
 import json
-from datetime import datetime
+from datetime import datetime, timezone
 from typing import Mapping
 
 from dateutil.tz import tzutc
@@ -9,7 +9,7 @@ from app.data_models import FulfilmentRequest
 from app.helpers.uuid_helper import is_valid_uuid
 from app.utilities.json import json_loads
 
-time_to_freeze = datetime.now(tzutc()).replace(second=0, microsecond=0)
+time_to_freeze = datetime.now(timezone.utc).replace(second=0, microsecond=0)
 
 
 class TestFulfilmentRequest(FulfilmentRequest):

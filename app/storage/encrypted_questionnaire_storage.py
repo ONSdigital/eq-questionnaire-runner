@@ -14,11 +14,14 @@ class EncryptedQuestionnaireStorage:
         self._user_id = user_id
         self.encrypter = StorageEncryption(user_id, user_ik, pepper)
 
-    def save(self, data):
+    def save(self, data, submitted_at=None):
         compressed_data = snappy.compress(data)
         encrypted_data = self.encrypter.encrypt_data(compressed_data)
         questionnaire_state = QuestionnaireState(
-            self._user_id, encrypted_data, QuestionnaireStore.LATEST_VERSION
+            self._user_id,
+            encrypted_data,
+            QuestionnaireStore.LATEST_VERSION,
+            submitted_at,
         )
 
         current_app.eq["storage"].put(questionnaire_state)
@@ -27,12 +30,13 @@ class EncryptedQuestionnaireStorage:
         questionnaire_state = self._find_questionnaire_state()
         if questionnaire_state and questionnaire_state.state_data:
             version = questionnaire_state.version
+            submitted_at = questionnaire_state.submitted_at
             decrypted_data = self._get_snappy_compressed_data(
                 questionnaire_state.state_data
             )
-            return decrypted_data, version
+            return decrypted_data, version, submitted_at
 
-        return None, None
+        return None, None, None
 
     def delete(self):
         logger.debug("deleting users data", user_id=self._user_id)

@@ -1,3 +1,4 @@
+from datetime import datetime
 from typing import Mapping
 
 from flask import url_for
@@ -7,10 +8,11 @@ from app.libs.utils import convert_tx_id
 from app.views.contexts.email_form_context import build_email_form_context
 
 
-def build_default_thank_you_context(session_data: SessionData) -> Mapping:
-
+def build_default_thank_you_context(
+    session_data: SessionData, submitted_at: datetime
+) -> Mapping:
     context = {
-        "submitted_time": session_data.submitted_time,
+        "submitted_at": submitted_at,
         "tx_id": convert_tx_id(session_data.tx_id),
         "ru_ref": session_data.ru_ref,
         "trad_as": session_data.trad_as,

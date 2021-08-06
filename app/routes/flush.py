@@ -1,3 +1,5 @@
+from datetime import datetime, timezone
+
 from flask import Blueprint, Response, current_app, request, session
 from sdc.crypto.decrypter import decrypt
 from sdc.crypto.encrypter import encrypt
@@ -56,7 +58,7 @@ def _submit_data(user):
         metadata = questionnaire_store.metadata
         progress_store = questionnaire_store.progress_store
         list_store = questionnaire_store.list_store
-
+        submitted_at = datetime.now(timezone.utc)
         schema = load_schema_from_metadata(metadata)
 
         router = Router(schema, answer_store, list_store, progress_store, metadata)
@@ -64,7 +66,11 @@ def _submit_data(user):
 
         message = json_dumps(
             convert_answers(
-                schema, questionnaire_store, full_routing_path, flushed=True
+                schema,
+                questionnaire_store,
+                full_routing_path,
+                submitted_at,
+                flushed=True,
             )
         )
 

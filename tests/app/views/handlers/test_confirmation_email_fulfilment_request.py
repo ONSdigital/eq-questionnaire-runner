@@ -1,8 +1,7 @@
 import json
-from datetime import datetime
+from datetime import datetime, timezone
 
 import pytest
-from dateutil.tz import tzutc
 from freezegun import freeze_time
 
 from app.data_models.session_data import SessionData
@@ -10,7 +9,7 @@ from app.questionnaire import QuestionnaireSchema
 from app.utilities.json import json_loads
 from app.views.handlers.confirm_email import ConfirmationEmailFulfilmentRequest
 
-time_to_freeze = datetime.now(tzutc()).replace(second=0, microsecond=0)
+time_to_freeze = datetime.now(timezone.utc).replace(second=0, microsecond=0)
 
 
 @pytest.fixture()
@@ -26,7 +25,7 @@ def session_data():
         survey_url=None,
         ru_name=None,
         ru_ref=None,
-        submitted_time=datetime.now(tzutc()).isoformat(),
+        submitted_at=datetime.now(timezone.utc).isoformat(),
         response_id="321",
         case_id="789",
     )

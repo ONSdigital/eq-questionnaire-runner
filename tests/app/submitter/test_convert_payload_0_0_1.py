@@ -1,3 +1,5 @@
+from datetime import datetime, timezone
+
 from app.data_models.answer import Answer
 from app.data_models.answer_store import AnswerStore
 from app.questionnaire.questionnaire_schema import QuestionnaireSchema
@@ -5,6 +7,8 @@ from app.questionnaire.routing_path import RoutingPath
 from app.submitter.convert_payload_0_0_1 import convert_answers_to_payload_0_0_1
 from app.submitter.converter import convert_answers
 from tests.app.submitter.schema import make_schema
+
+SUBMITTED_AT = datetime.now(timezone.utc)
 
 
 def create_answer(answer_id, value):
@@ -56,7 +60,10 @@ def test_answer_with_zero(fake_questionnaire_store):
     routing_path = RoutingPath(["block-1"], section_id="section-1")
 
     answer_object = convert_answers(
-        QuestionnaireSchema(questionnaire), fake_questionnaire_store, routing_path
+        QuestionnaireSchema(questionnaire),
+        fake_questionnaire_store,
+        routing_path,
+        SUBMITTED_AT,
     )
 
     assert answer_object["data"]["003"] == "0"
@@ -77,7 +84,10 @@ def test_answer_with_float(fake_questionnaire_store):
     routing_path = RoutingPath(["block-1"], section_id="section-1")
 
     answer_object = convert_answers(
-        QuestionnaireSchema(questionnaire), fake_questionnaire_store, routing_path
+        QuestionnaireSchema(questionnaire),
+        fake_questionnaire_store,
+        routing_path,
+        SUBMITTED_AT,
     )
 
     # Check the converter correctly
@@ -99,7 +109,10 @@ def test_answer_with_string(fake_questionnaire_store):
     routing_path = RoutingPath(["block-1"], section_id="section-1")
 
     answer_object = convert_answers(
-        QuestionnaireSchema(questionnaire), fake_questionnaire_store, routing_path
+        QuestionnaireSchema(questionnaire),
+        fake_questionnaire_store,
+        routing_path,
+        SUBMITTED_AT,
     )
 
     # Check the converter correctly
@@ -118,7 +131,10 @@ def test_answer_without_qcode(fake_questionnaire_store):
     routing_path = RoutingPath(["block-1"], section_id="section-1")
 
     answer_object = convert_answers(
-        QuestionnaireSchema(questionnaire), fake_questionnaire_store, routing_path
+        QuestionnaireSchema(questionnaire),
+        fake_questionnaire_store,
+        routing_path,
+        SUBMITTED_AT,
     )
 
     assert not answer_object["data"]
@@ -167,7 +183,10 @@ def test_converter_checkboxes_with_q_codes(fake_questionnaire_store):
 
     # When
     answer_object = convert_answers(
-        QuestionnaireSchema(questionnaire), fake_questionnaire_store, routing_path
+        QuestionnaireSchema(questionnaire),
+        fake_questionnaire_store,
+        routing_path,
+        SUBMITTED_AT,
     )
 
     # Then
@@ -223,7 +242,10 @@ def test_converter_checkboxes_with_q_codes_and_other_value(fake_questionnaire_st
 
     # When
     answer_object = convert_answers(
-        QuestionnaireSchema(questionnaire), fake_questionnaire_store, routing_path
+        QuestionnaireSchema(questionnaire),
+        fake_questionnaire_store,
+        routing_path,
+        SUBMITTED_AT,
     )
 
     # Then
@@ -281,7 +303,10 @@ def test_converter_checkboxes_with_q_codes_and_empty_other_value(
 
     # When
     answer_object = convert_answers(
-        QuestionnaireSchema(questionnaire), fake_questionnaire_store, routing_path
+        QuestionnaireSchema(questionnaire),
+        fake_questionnaire_store,
+        routing_path,
+        SUBMITTED_AT,
     )
 
     # Then
@@ -337,7 +362,10 @@ def test_converter_checkboxes_with_missing_q_codes_uses_answer_q_code(
 
     # When
     answer_object = convert_answers(
-        QuestionnaireSchema(questionnaire), fake_questionnaire_store, routing_path
+        QuestionnaireSchema(questionnaire),
+        fake_questionnaire_store,
+        routing_path,
+        SUBMITTED_AT,
     )
 
     # Then
@@ -373,7 +401,10 @@ def test_converter_q_codes_for_empty_strings(fake_questionnaire_store):
 
     # When
     answer_object = convert_answers(
-        QuestionnaireSchema(questionnaire), fake_questionnaire_store, routing_path
+        QuestionnaireSchema(questionnaire),
+        fake_questionnaire_store,
+        routing_path,
+        SUBMITTED_AT,
     )
 
     # Then
@@ -407,7 +438,10 @@ def test_radio_answer(fake_questionnaire_store):
 
     # When
     answer_object = convert_answers(
-        QuestionnaireSchema(questionnaire), fake_questionnaire_store, routing_path
+        QuestionnaireSchema(questionnaire),
+        fake_questionnaire_store,
+        routing_path,
+        SUBMITTED_AT,
     )
 
     # Then
@@ -432,7 +466,10 @@ def test_number_answer(fake_questionnaire_store):
 
     # When
     answer_object = convert_answers(
-        QuestionnaireSchema(questionnaire), fake_questionnaire_store, routing_path
+        QuestionnaireSchema(questionnaire),
+        fake_questionnaire_store,
+        routing_path,
+        SUBMITTED_AT,
     )
 
     # Then
@@ -457,7 +494,10 @@ def test_percentage_answer(fake_questionnaire_store):
 
     # When
     answer_object = convert_answers(
-        QuestionnaireSchema(questionnaire), fake_questionnaire_store, routing_path
+        QuestionnaireSchema(questionnaire),
+        fake_questionnaire_store,
+        routing_path,
+        SUBMITTED_AT,
     )
 
     # Then
@@ -482,7 +522,10 @@ def test_textarea_answer(fake_questionnaire_store):
 
     # When
     answer_object = convert_answers(
-        QuestionnaireSchema(questionnaire), fake_questionnaire_store, routing_path
+        QuestionnaireSchema(questionnaire),
+        fake_questionnaire_store,
+        routing_path,
+        SUBMITTED_AT,
     )
 
     # Then
@@ -507,7 +550,10 @@ def test_currency_answer(fake_questionnaire_store):
 
     # When
     answer_object = convert_answers(
-        QuestionnaireSchema(questionnaire), fake_questionnaire_store, routing_path
+        QuestionnaireSchema(questionnaire),
+        fake_questionnaire_store,
+        routing_path,
+        SUBMITTED_AT,
     )
 
     # Then
@@ -543,7 +589,10 @@ def test_dropdown_answer(fake_questionnaire_store):
 
     # When
     answer_object = convert_answers(
-        QuestionnaireSchema(questionnaire), fake_questionnaire_store, routing_path
+        QuestionnaireSchema(questionnaire),
+        fake_questionnaire_store,
+        routing_path,
+        SUBMITTED_AT,
     )
 
     # Then
@@ -575,7 +624,10 @@ def test_date_answer(fake_questionnaire_store):
 
     # When
     answer_object = convert_answers(
-        QuestionnaireSchema(questionnaire), fake_questionnaire_store, routing_path
+        QuestionnaireSchema(questionnaire),
+        fake_questionnaire_store,
+        routing_path,
+        SUBMITTED_AT,
     )
 
     # Then
@@ -601,7 +653,10 @@ def test_unit_answer(fake_questionnaire_store):
 
     # When
     answer_object = convert_answers(
-        QuestionnaireSchema(questionnaire), fake_questionnaire_store, routing_path
+        QuestionnaireSchema(questionnaire),
+        fake_questionnaire_store,
+        routing_path,
+        SUBMITTED_AT,
     )
 
     # Then
