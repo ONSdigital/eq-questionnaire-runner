@@ -30,9 +30,7 @@
   {% endif %}
 
   <h1 class="question__title u-fs-xxl" data-qa="feedback-title">{{ content.question.title }}</h1>
-  <legend class="fieldset__legend">{{ content.question.label}}</legend>
   {%- for answer in question.answers -%}
-    {% set question_title = answer.title %}
     {% include 'partials/answer.html' %}
   {%- endfor -%}
 

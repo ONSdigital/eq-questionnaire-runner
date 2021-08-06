@@ -1,10 +1,8 @@
 {% from "components/duration/_macro.njk" import onsDuration %}
 
 {% set config = {
-  "legend": question_title,
   "id": answer.id,
-  "legendClasses": "u-vh",
-  "label": answer.label,
+  "dontWrap": not answer.label,
   "mutuallyExclusive": mutuallyExclusive,
   "error": error
 } %}
@@ -28,6 +26,12 @@
     "value": months.data if months.data is not none else '',
     "label": _(months.label.text)
   }) %}
+{% endif %}
+
+{% if years and months %}
+  {%- set config = config | setAttribute("legend", answer.label) -%}
+{% else %}
+  {%- set config = config | setAttribute("label", answer.label) -%}
 {% endif %}
 
 {{ onsDuration(config) }}

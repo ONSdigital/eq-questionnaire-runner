@@ -4,8 +4,7 @@
 
 {% set config = {
     "id": answer.id,
-    "legend": question.title,
-    "legendClasses": "u-vh",
+    "dontWrap": true,
     "line1": {
         "label": _("Address line 1"),
         "value": address_form.line1._value() | e,

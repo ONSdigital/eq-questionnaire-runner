@@ -4,18 +4,11 @@
 {%- set month_field = form.fields[answer['id']]['month'] -%}
 {%- set year_field = form.fields[answer['id']]['year'] -%}
 
-{% if answer.label %}
-  {% set legend = answer.label %}
-{% else %}
-  {% set legend = question_title %}
-  {% set legendClasses = "u-vh" %}
-{% endif %}
-
 {%- set config = {
   "id": answer.id,
+  "legend": answer.label,
+  "dontWrap": not answer.label,
   "description": answer.description,
-  "legend": legend,
-  "legendClasses": legendClasses,
   "attributes": {
     "data-qa": "widget-date"
   },
