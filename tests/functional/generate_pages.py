@@ -107,6 +107,14 @@ QUESTION_ERROR_PANEL = Template(
 """
 )
 
+ANSWER_LEGEND_GETTER = Template(
+    r"""  ${answerName}Legend() {
+    return `#${answerId} > legend`;
+  }
+
+"""
+)
+
 ANSWER_LABEL_GETTER = Template(
     r"""  ${answerName}Label() {
     return `[for=${answerId}]`;
@@ -288,6 +296,25 @@ def get_all_questions(block):
     return all_questions
 
 
+def process_answer_legend(answer_name, answer, page_spec):
+    single_duration_answer = answer["type"] == "Duration" and len(answer["units"]) == 1
+    single_checkbox_answer = (
+        answer["type"] == "Checkbox" and len(answer["options"]) == 1
+    )
+    if (
+        single_duration_answer
+        or single_checkbox_answer
+        or (
+            answer["type"]
+            not in {"Duration", "Date", "MonthYearDate", "Checkbox", "Radio"}
+        )
+    ):
+        return
+
+    context = {"answerName": answer_name, "answerId": answer["id"]}
+    page_spec.write(ANSWER_LEGEND_GETTER.substitute(context))
+
+
 def process_options(answer_id, options, page_spec, base_prefix):
     for index, option in enumerate(options):
         if option["value"][0].isalpha():
@@ -322,10 +349,12 @@ def process_answer(answer, page_spec, long_names, page_name):
     if not answer_name.replace("Answer", "").isdigit():
         answer_name = answer_name.replace("Answer", "")
 
-    prefix = camel_case(answer_name) if answer_name and long_names else ""
-
     if answer_name is None or answer_name == "":
         answer_name = "answer"
+
+    process_answer_legend(camel_case(answer_name), answer, page_spec)
+
+    prefix = camel_case(answer_name) if answer_name and long_names else ""
 
     if answer["type"] in ("Radio", "Checkbox"):
         process_options(answer["id"], answer["options"], page_spec, prefix)
