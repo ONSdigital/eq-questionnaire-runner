@@ -41,6 +41,11 @@ from app.views.handlers.feedback import Feedback, FeedbackNotEnabled
 from app.views.handlers.section import SectionHandler
 from app.views.handlers.submission import SubmissionHandler
 from app.views.handlers.submit_questionnaire import SubmitQuestionnaireHandler
+from app.views.handlers.submitted_response import (
+    SubmittedResponse,
+    SubmittedResponseExpired,
+    SubmittedResponseNotEnabled,
+)
 from app.views.handlers.thank_you import ThankYou
 
 logger = get_logger()
@@ -66,7 +71,7 @@ def before_questionnaire_request(questionnaire_store):
 
     metadata = get_metadata(current_user)
     if not metadata:
-        raise NoQuestionnaireStateException(401)  # pragma: no cover
+        raise NoQuestionnaireStateException(401)
 
     logger.bind(
         tx_id=metadata["tx_id"],
@@ -90,9 +95,14 @@ def before_post_submission_request():
     if request.method == "OPTIONS":
         return None
 
+    metadata = get_metadata(current_user)
+    if not metadata:
+        raise NoQuestionnaireStateException(401)
+
     questionnaire_store = get_questionnaire_store(
         current_user.user_id, current_user.user_ik
     )
+
     if not questionnaire_store.submitted_at:
         raise NotFound
 
@@ -358,6 +368,30 @@ def get_thank_you(schema, session_store, questionnaire_store):
         },
         survey_id=schema.json["survey_id"],
         page_title=thank_you.get_page_title(),
+    )
+
+
+@post_submission_blueprint.route("view-response/", methods=["GET"])
+@with_session_store
+@with_questionnaire_store
+@with_schema
+def get_view_response(schema, questionnaire_store, session_store):
+    try:
+        submitted_response = SubmittedResponse(
+            schema,
+            questionnaire_store,
+            session_store.session_data,
+            flask_babel.get_locale().language,
+        )
+
+    except (SubmittedResponseNotEnabled, SubmittedResponseExpired):
+        raise NotFound
+
+    return render_template(
+        template="submitted-response",
+        content=submitted_response.get_context(),
+        survey_id=schema.json["survey_id"],
+        page_title=submitted_response.get_page_title(),
     )
 
 

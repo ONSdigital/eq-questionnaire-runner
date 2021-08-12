@@ -4,9 +4,9 @@
     "schema_version": "0.0.1",
     "data_version": "0.0.3",
     "survey_id": "0",
-    "title": "Other input fields",
+    "title": "Test View Submitted Response",
     "theme": "default",
-    "description": "Test a Summary page with submission content set",
+    "description": "A questionnaire to test the use of view submitted response",
     "metadata": [
         {
             "name": "user_id",
@@ -30,39 +30,34 @@
         }
     },
     "submission": {
-        "button": "Submission button",
-        "guidance": "Submission guidance",
-        "title": "Submission title",
-        "warning": "Submission warning"
+        "view_response": true
     },
     "sections": [
         {
-            "id": "default-section",
-            "title": "test",
+            "id": "name-section",
             "groups": [
                 {
                     "blocks": [
                         {
                             "type": "Question",
-                            "id": "dessert-block",
+                            "id": "name",
                             "question": {
-                                "id": "test-dessert-question",
-                                "title": "What is your favourite dessert?",
-                                "type": "General",
                                 "answers": [
                                     {
-                                        "id": "dessert",
-                                        "label": "What is your favourite dessert?",
-                                        "mandatory": true,
-                                        "q_code": "30",
+                                        "id": "name-answer",
+                                        "max_length": 20,
+                                        "mandatory": false,
                                         "type": "TextField"
                                     }
-                                ]
+                                ],
+                                "id": "name-question",
+                                "title": "What is your name?",
+                                "type": "General"
                             }
                         }
                     ],
-                    "id": "dessert-group",
-                    "title": "Dessert"
+                    "id": "name-group",
+                    "title": "Name"
                 }
             ]
         }

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2021-08-05 08:48+0100\n"
+"POT-Creation-Date: 2021-08-12 15:16+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,26 +17,26 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 2.9.1\n"
 
-#: app/forms/validators.py:341 app/jinja_filters.py:95
+#: app/forms/validators.py:341 app/jinja_filters.py:94
 #, python-format
 msgid "%(num)s year"
 msgid_plural "%(num)s years"
 msgstr[0] ""
 msgstr[1] ""
 
-#: app/forms/validators.py:345 app/jinja_filters.py:103
+#: app/forms/validators.py:345 app/jinja_filters.py:102
 #, python-format
 msgid "%(num)s month"
 msgid_plural "%(num)s months"
 msgstr[0] ""
 msgstr[1] ""
 
-#: app/jinja_filters.py:146
+#: app/jinja_filters.py:144
 #, python-format
 msgid "%(date)s at %(time)s"
 msgstr ""
 
-#: app/jinja_filters.py:157
+#: app/jinja_filters.py:155
 #, python-format
 msgid "%(from_date)s to %(to_date)s"
 msgstr ""
@@ -432,15 +432,15 @@ msgstr ""
 msgid " (You)"
 msgstr ""
 
-#: app/views/contexts/submit_questionnaire_context.py:19
+#: app/views/contexts/submit_questionnaire_context.py:14
 msgid "Check your answers and submit"
 msgstr ""
 
-#: app/views/contexts/submit_questionnaire_context.py:22
+#: app/views/contexts/submit_questionnaire_context.py:17
 msgid "Submit answers"
 msgstr ""
 
-#: app/views/contexts/submit_questionnaire_context.py:25
+#: app/views/contexts/submit_questionnaire_context.py:20
 msgid "Please submit this survey to complete it"
 msgstr ""
 
@@ -694,7 +694,7 @@ msgstr ""
 msgid "Confirm mobile number"
 msgstr ""
 
-#: app/views/handlers/thank_you.py:22 templates/census-thank-you.html:24
+#: app/views/handlers/thank_you.py:23 templates/census-thank-you.html:24
 msgid "Thank you for completing the census"
 msgstr ""
 
@@ -814,7 +814,7 @@ msgstr ""
 msgid "Done"
 msgstr ""
 
-#: templates/feedback.html:15
+#: templates/feedback.html:15 templates/submitted-response.html:16
 msgid "Back"
 msgstr ""
 
@@ -875,6 +875,22 @@ msgstr ""
 
 #: templates/signed-out.html:9
 msgid "Return to your account"
+msgstr ""
+
+#: templates/submitted-response.html:31
+msgid "Your answers were submitted for <span>{ru_name}</span> ({trading_as_name})"
+msgstr ""
+
+#: templates/submitted-response.html:35
+msgid "Your answers were submitted for <span>{ru_name}</span>"
+msgstr ""
+
+#: templates/submitted-response.html:40
+msgid "<b>Submitted on:</b>  {submitted_at}"
+msgstr ""
+
+#: templates/submitted-response.html:41
+msgid "<b>Submission reference:</b> {transaction_id}"
 msgstr ""
 
 #: templates/thank-you.html:4
@@ -1006,7 +1022,7 @@ msgid "This page is no longer available"
 msgstr ""
 
 #: templates/errors/submission-complete.html:7
-msgid "Your census has been submitted"
+msgid "Your questionnaire has been submitted"
 msgstr ""
 
 #: templates/errors/submission-failed.html:9
