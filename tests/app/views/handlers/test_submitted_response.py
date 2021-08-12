@@ -31,7 +31,7 @@ class TestSubmittedResponse(AppContextTestCase):
             case_id="0123456789000000",
         )
 
-    def test_submittrr_1(self):
+    def test_enabled(self):
         submitted_at_date_time = datetime.now(timezone.utc)
         questionnaire_store = self.questionnaire_store_mock()
         questionnaire_store.submitted_at = submitted_at_date_time
@@ -62,7 +62,7 @@ class TestSubmittedResponse(AppContextTestCase):
             == "What is your name?"
         )
 
-    def test_submittrr_2(self):
+    def test_expired(self):
         questionnaire_store = self.questionnaire_store_mock()
         questionnaire_store.submitted_at = datetime(
             2021, 8, 12, 10, 30, 0, tzinfo=timezone.utc
@@ -72,7 +72,7 @@ class TestSubmittedResponse(AppContextTestCase):
         with self.assertRaises(SubmittedResponseExpired):
             SubmittedResponse(schema, questionnaire_store, self.session_data, "en")
 
-    def test_submittrr(self):
+    def test_not_enabled(self):
         questionnaire_store = self.questionnaire_store_mock()
 
         with self.assertRaises(SubmittedResponseNotEnabled):

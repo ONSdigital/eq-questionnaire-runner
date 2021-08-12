@@ -19,7 +19,7 @@ class TestSubmissionResponse(IntegrationTestCase):
         # When I try to ge the view-submission page
         self.get("/submitted/view-response")
 
-        self.assertEqualPageTitle("Submitted Response - Test Submitted Response")
+        self.assertEqualPageTitle("Submitted Response - Test View Submitted Response")
 
     def test_not_enabled(self):
         # Given I launch a questionnaire that does not have view-submitted-response enabled

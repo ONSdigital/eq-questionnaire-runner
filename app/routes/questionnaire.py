@@ -375,7 +375,7 @@ def get_thank_you(schema, session_store, questionnaire_store):
 @with_session_store
 @with_questionnaire_store
 @with_schema
-def get_view_response(schema, questionnaire_store, session_store):
+def get_submitted_response(schema, questionnaire_store, session_store):
     try:
         submitted_response = SubmittedResponse(
             schema,
