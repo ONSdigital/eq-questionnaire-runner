@@ -45,6 +45,7 @@
                                 "answers": [
                                     {
                                         "id": "name-answer",
+                                        "label": "Full name",
                                         "max_length": 20,
                                         "mandatory": false,
                                         "type": "TextField"
