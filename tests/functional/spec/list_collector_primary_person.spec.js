@@ -95,7 +95,7 @@ describe("Primary Person List Collector Survey", () => {
 
     it("When the user submits, then they are allowed to submit the survey", () => {
       $(SubmitPage.submit()).click();
-      expect($(ThankYouPage.heading()).getText()).to.contain("Submission successful");
+      expect($(ThankYouPage.heading()).getText()).to.contain("Thank you for submitting the Test PrimaryPersonListCollector");
     });
   });
 

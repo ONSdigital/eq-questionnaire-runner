@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2021-08-05 08:48+0100\n"
+"POT-Creation-Date: 2021-08-12 12:45+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,26 +17,26 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 2.9.1\n"
 
-#: app/forms/validators.py:341 app/jinja_filters.py:95
+#: app/forms/validators.py:341 app/jinja_filters.py:94
 #, python-format
 msgid "%(num)s year"
 msgid_plural "%(num)s years"
 msgstr[0] ""
 msgstr[1] ""
 
-#: app/forms/validators.py:345 app/jinja_filters.py:103
+#: app/forms/validators.py:345 app/jinja_filters.py:102
 #, python-format
 msgid "%(num)s month"
 msgid_plural "%(num)s months"
 msgstr[0] ""
 msgstr[1] ""
 
-#: app/jinja_filters.py:146
+#: app/jinja_filters.py:144
 #, python-format
 msgid "%(date)s at %(time)s"
 msgstr ""
 
-#: app/jinja_filters.py:157
+#: app/jinja_filters.py:155
 #, python-format
 msgid "%(from_date)s to %(to_date)s"
 msgstr ""
@@ -203,17 +203,17 @@ msgstr[1] ""
 msgid "Not a valid choice"
 msgstr ""
 
-#: app/helpers/template_helpers.py:60 app/survey_config/business_config.py:22
+#: app/helpers/template_helpers.py:63 app/survey_config/business_config.py:22
 #: app/survey_config/census_config.py:30 app/survey_config/census_config.py:79
 #: app/survey_config/census_config.py:139
 msgid "Contact us"
 msgstr ""
 
-#: app/helpers/template_helpers.py:103
+#: app/helpers/template_helpers.py:107
 msgid "The following links open in a new tab"
 msgstr ""
 
-#: app/helpers/template_helpers.py:133
+#: app/helpers/template_helpers.py:137
 msgid ""
 "Make sure you <a href='{sign_out_url}'>leave this page</a> or close your "
 "browser if using a shared device"
@@ -694,7 +694,7 @@ msgstr ""
 msgid "Confirm mobile number"
 msgstr ""
 
-#: app/views/handlers/thank_you.py:22 templates/census-thank-you.html:24
+#: app/views/handlers/thank_you.py:23 templates/census-thank-you.html:24
 msgid "Thank you for completing the census"
 msgstr ""
 
@@ -877,39 +877,45 @@ msgstr ""
 msgid "Return to your account"
 msgstr ""
 
-#: templates/thank-you.html:4
+#: templates/thank-you.html:5
 msgid "We’ve received your answers"
 msgstr ""
 
-#: templates/thank-you.html:9
-msgid "Submission successful"
+#: templates/thank-you.html:18
+msgid "Thank you for submitting the {survey_title}"
 msgstr ""
 
-#: templates/thank-you.html:21
+#: templates/thank-you.html:22
+msgid "Your answers have been submitted"
+msgstr ""
+
+#: templates/thank-you.html:24
 msgid ""
-"Your answers were submitted for <span>{ru_name}</span> "
-"({trading_as_name}) on {submitted_date_time}"
+"Your answers have been submitted for <span>{ru_name}</span> "
+"({trading_as_name})"
 msgstr ""
 
-#: templates/thank-you.html:26
-msgid ""
-"Your answers were submitted for <span>{ru_name}</span> on "
-"{submitted_date_time}"
+#: templates/thank-you.html:28
+msgid "Your answers have been submitted for <span>{ru_name}</span>"
 msgstr ""
 
-#: templates/thank-you.html:32
-msgid "Transaction ID: <b>{transaction_id}</b>"
+#: templates/thank-you.html:39 templates/thank-you.html:55
+msgid "Submitted on:"
 msgstr ""
 
-#: templates/thank-you.html:35
+#: templates/thank-you.html:63
+msgid "Submission reference:"
+msgstr ""
+
+#: templates/thank-you.html:76
 msgid "Your answers will be processed in the next few weeks."
 msgstr ""
 
-#: templates/thank-you.html:36
+#: templates/thank-you.html:77
 msgid "We may contact you to query your answers via phone or secure message."
 msgstr ""
 
-#: templates/thank-you.html:37
+#: templates/thank-you.html:78
 msgid "For more information on how we use this data."
 msgstr ""
 
