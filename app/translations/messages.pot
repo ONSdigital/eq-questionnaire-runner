@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2021-08-12 12:45+0100\n"
+"POT-Creation-Date: 2021-08-13 13:04+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -881,41 +881,41 @@ msgstr ""
 msgid "We’ve received your answers"
 msgstr ""
 
-#: templates/thank-you.html:18
+#: templates/thank-you.html:10
+msgid "Submission reference:"
+msgstr ""
+
+#: templates/thank-you.html:38
 msgid "Thank you for submitting the {survey_title}"
 msgstr ""
 
-#: templates/thank-you.html:22
+#: templates/thank-you.html:42
 msgid "Your answers have been submitted"
 msgstr ""
 
-#: templates/thank-you.html:24
+#: templates/thank-you.html:44
 msgid ""
 "Your answers have been submitted for <span>{ru_name}</span> "
 "({trading_as_name})"
 msgstr ""
 
-#: templates/thank-you.html:28
+#: templates/thank-you.html:48
 msgid "Your answers have been submitted for <span>{ru_name}</span>"
 msgstr ""
 
-#: templates/thank-you.html:39 templates/thank-you.html:55
+#: templates/thank-you.html:58
 msgid "Submitted on:"
 msgstr ""
 
-#: templates/thank-you.html:63
-msgid "Submission reference:"
-msgstr ""
-
-#: templates/thank-you.html:76
+#: templates/thank-you.html:71
 msgid "Your answers will be processed in the next few weeks."
 msgstr ""
 
-#: templates/thank-you.html:77
+#: templates/thank-you.html:72
 msgid "We may contact you to query your answers via phone or secure message."
 msgstr ""
 
-#: templates/thank-you.html:78
+#: templates/thank-you.html:73
 msgid "For more information on how we use this data."
 msgstr ""
 
