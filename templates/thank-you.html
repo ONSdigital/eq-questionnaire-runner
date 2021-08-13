@@ -4,26 +4,29 @@
 
 {% set page_title = _("We’ve received your answers") %}
 {% set hide_sign_out_button = content.hide_sign_out_button %}
-{% if survey_type != "social" %}
-  {% set submission_reference =
-    {
-      "term": _("Submission reference:"),
-      "descriptions": [
-        {
-        "description": "{transaction_id}".format(transaction_id=content.tx_id)
-        }
-      ]
-    }
-  %}
-{% else %}
-  {% set submission_reference = '' %}
-{% endif %}
+{% set submission_reference =
+  {
+    "term": _("Submission reference:"),
+    "descriptions": [
+      {
+      "description": "{transaction_id}".format(transaction_id=content.tx_id)
+      }
+    ]
+  }
+%}
 
-{% if survey_type == "social" %}
-  {% set description_column = 7 %}
-{% else %}
-  {% set description_column = 6 %}
-{% endif %}
+{% set submitted_on =
+  {
+    "term": _("Submitted on:"),
+    "descriptions": [
+      {
+      "description": "{submitted_date_time}".format(submitted_date_time=content.submitted_at|format_datetime)
+      }
+    ]
+  }
+%}
+
+{% set itemsList = [submitted_on, submission_reference] %}
 
 {% block main %}
 
@@ -40,6 +43,7 @@
     <p data-qa="guidance">
       {% if survey_type == "social" %}
         {{ _("Your answers have been submitted") }}
+        {% set itemsList = [submitted_on] %}
       {% elif content.trad_as %}
         {{ _("Your answers have been submitted for <span>{ru_name}</span> ({trading_as_name})").format(
           ru_name = content.ru_name,
@@ -52,18 +56,8 @@
       {{ onsMetadata({
         "termCol": 5,
         "data-qa": "metadata",
-        "descriptionCol": description_column,
-        "itemsList": [
-          {
-            "term": _("Submitted on:"),
-            "descriptions": [
-              {
-              "description": "{submitted_date_time}".format(submitted_date_time=content.submitted_at|format_datetime)
-              }
-            ]
-          },
-          submission_reference,
-          ],
+        "descriptionCol": 7,
+        "itemsList": itemsList,
         })
       }}
   {% endcall %}
