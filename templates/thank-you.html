@@ -4,6 +4,26 @@
 
 {% set page_title = _("We’ve received your answers") %}
 {% set hide_sign_out_button = content.hide_sign_out_button %}
+{% if survey_type != "social" %}
+  {% set submission_reference =
+    {
+      "term": _("Submission reference:"),
+      "descriptions": [
+        {
+        "description": "{transaction_id}".format(transaction_id=content.tx_id)
+        }
+      ]
+    }
+  %}
+{% else %}
+  {% set submission_reference = '' %}
+{% endif %}
+
+{% if survey_type == "social" %}
+  {% set description_column = 7 %}
+{% else %}
+  {% set description_column = 6 %}
+{% endif %}
 
 {% block main %}
 
@@ -29,11 +49,10 @@
           ru_name = content.ru_name) }}
       {% endif %}
     </p>
-    {% if survey_type == "social" %}
       {{ onsMetadata({
-        "termCol": 3,
+        "termCol": 5,
         "data-qa": "metadata",
-        "descriptionCol": "8",
+        "descriptionCol": description_column,
         "itemsList": [
           {
             "term": _("Submitted on:"),
@@ -43,34 +62,10 @@
               }
             ]
           },
+          submission_reference,
           ],
         })
       }}
-    {% else %}
-      {{ onsMetadata({
-        "termCol": 5,
-        "descriptionCol": "6",
-        "itemsList": [
-          {
-            "term": _("Submitted on:"),
-            "descriptions": [
-              {
-              "description": "{submitted_date_time}".format(submitted_date_time=content.submitted_at|format_datetime)
-              }
-            ]
-          },
-          {
-            "term": _("Submission reference:"),
-            "descriptions": [
-              {
-              "description": "{transaction_id}".format(transaction_id=content.tx_id)
-              }
-            ]
-          },
-        ],
-        })
-      }}
-    {% endif %}
   {% endcall %}
 
   <p class="u-mb-s">{{ _("Your answers will be processed in the next few weeks.") }}
