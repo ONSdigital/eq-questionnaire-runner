@@ -7,7 +7,7 @@ describe("Submitted Response", () => {
     browser.openQuestionnaire("test_view_submitted_response.json");
   });
 
-  it("Given a survey has view submitted response enabled and has been completed when on the view response page then the summary is displayed correctly", () => {
+  it("Given a questionnaire has view submitted response enabled and has been completed when on the view response page then the summary is displayed correctly", () => {
     $(NameBlockPage.answer()).setValue("John Smith");
     $(NameBlockPage.submit()).click();
     $(SubmitPage.submit()).click();
