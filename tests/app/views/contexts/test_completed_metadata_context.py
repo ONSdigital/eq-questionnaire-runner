@@ -59,7 +59,9 @@ def test_context_includes_ru_name_if_available(fake_session_data, app: Flask):
         assert context["ru_name"] == "some name"
 
 
-def test_context_does_not_include_period_str_and_ru_name_by_default(fake_session_data, app: Flask):
+def test_context_does_not_include_period_str_and_ru_name_by_default(
+    fake_session_data, app: Flask
+):
     with app.app_context():
         context = build_default_thank_you_context(
             fake_session_data, submitted_at(), survey_type()
