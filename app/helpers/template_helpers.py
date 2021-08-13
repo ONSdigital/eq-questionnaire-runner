@@ -190,5 +190,5 @@ def render_template(template: str, **kwargs: Union[str, Mapping]) -> str:
     )
 
 
-def get_survey_type():
+def get_survey_type() -> str:
     return cookie_session.get("theme", current_app.config["SURVEY_TYPE"])
