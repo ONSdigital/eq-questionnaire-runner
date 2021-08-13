@@ -4,29 +4,6 @@
 
 {% set page_title = _("We’ve received your answers") %}
 {% set hide_sign_out_button = content.hide_sign_out_button %}
-{% set submission_reference =
-  {
-    "term": _("Submission reference:"),
-    "descriptions": [
-      {
-      "description": "{transaction_id}".format(transaction_id=content.tx_id)
-      }
-    ]
-  }
-%}
-
-{% set submitted_on =
-  {
-    "term": _("Submitted on:"),
-    "descriptions": [
-      {
-      "description": "{submitted_date_time}".format(submitted_date_time=content.submitted_at|format_datetime)
-      }
-    ]
-  }
-%}
-
-{% set itemsList = [submitted_on, submission_reference] %}
 
 {% block main %}
 
@@ -41,23 +18,13 @@
     <h1 data-qa="title">{{ _("Thank you for submitting the {survey_title}").format(
       survey_title = survey_title)}}</h1>
     <p data-qa="guidance">
-      {% if survey_type == "social" %}
-        {{ _("Your answers have been submitted") }}
-        {% set itemsList = [submitted_on] %}
-      {% elif content.trad_as %}
-        {{ _("Your answers have been submitted for <span>{ru_name}</span> ({trading_as_name})").format(
-          ru_name = content.ru_name,
-          trading_as_name = content.trad_as) }}
-      {% else %}
-        {{ _("Your answers have been submitted for <span>{ru_name}</span>").format(
-          ru_name = content.ru_name) }}
-      {% endif %}
+      {{ content.submission_text }}
     </p>
       {{ onsMetadata({
         "termCol": 5,
         "data-qa": "metadata",
         "descriptionCol": 7,
-        "itemsList": itemsList,
+        "itemsList": content.items_list,
         })
       }}
   {% endcall %}
