@@ -34,9 +34,6 @@ class ContextHelper:
         self._survey_title = cookie_session.get(
             "survey_title", self._survey_config.survey_title
         )
-        self._survey_type = cookie_session.get(
-            "theme", current_app.config["SURVEY_TYPE"]
-        )
         self._sign_out_url = url_for("session.get_sign_out")
         self._account_service_url = cookie_session.get(
             "account_service_url", self._survey_config.account_service_url
@@ -68,7 +65,6 @@ class ContextHelper:
             "footer": self.footer_context,
             "languages": get_languages_context(self._language),
             "theme": self._survey_config.design_system_theme,
-            "survey_type": self._survey_type,
             "language_code": self._language,
             "survey_title": self._survey_title,
             "cdn_url": self._cdn_url,
@@ -162,7 +158,7 @@ def get_survey_config(
     if not language:
         language = get_locale().language
     if not theme:
-        theme = cookie_session.get("theme", current_app.config["SURVEY_TYPE"])
+        theme = get_survey_type()
 
     return survey_config_mapping(theme, language)
 
