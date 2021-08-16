@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2021-08-13 18:58+0100\n"
+"POT-Creation-Date: 2021-08-16 09:31+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -448,16 +448,16 @@ msgstr ""
 msgid "Your answers have been submitted for "
 msgstr ""
 
-#: app/views/contexts/thank_you_context.py:16
+#: app/views/contexts/thank_you_context.py:17
 msgid "Submitted on:"
 msgstr ""
 
-#: app/views/contexts/thank_you_context.py:17
+#: app/views/contexts/thank_you_context.py:23
 msgid "Submission reference:"
 msgstr ""
 
-#: app/views/contexts/thank_you_context.py:19
-msgid "Your answers have been submitted"
+#: app/views/contexts/thank_you_context.py:27
+msgid "Your answers have been submitted."
 msgstr ""
 
 #: app/views/handlers/confirm_email.py:32
@@ -710,7 +710,7 @@ msgstr ""
 msgid "Confirm mobile number"
 msgstr ""
 
-#: app/views/handlers/thank_you.py:23 templates/census-thank-you.html:24
+#: app/views/handlers/thank_you.py:24 templates/census-thank-you.html:24
 msgid "Thank you for completing the census"
 msgstr ""
 
@@ -898,7 +898,7 @@ msgid "We’ve received your answers"
 msgstr ""
 
 #: templates/thank-you.html:18
-msgid "Thank you for submitting the {survey_title}"
+msgid "Thank you for completing the {survey_title}"
 msgstr ""
 
 #: templates/thank-you.html:32

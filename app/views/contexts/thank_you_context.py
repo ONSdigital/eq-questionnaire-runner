@@ -24,15 +24,15 @@ def build_default_thank_you_context(
         "descriptions": [{"description": convert_tx_id(session_data.tx_id)}],
     }
     if survey_type == "social":
-        submission_text = lazy_gettext("Your answers have been submitted")
+        submission_text = lazy_gettext("Your answers have been submitted.")
         items_list = [submitted_on]
     elif session_data.trad_as and session_data.ru_name:
         submission_text = (
-            f"{text}<span>{session_data.ru_name}</span> ({session_data.trad_as})"
+            f"{text}<span>{session_data.ru_name}</span> ({session_data.trad_as})."
         )
         items_list = [submitted_on, submission_reference]
     else:
-        submission_text = f"{text}<span>{session_data.ru_name}</span>"
+        submission_text = f"{text}<span>{session_data.ru_name}</span>."
         items_list = [submitted_on, submission_reference]
     context = {
         "submitted_at": submitted_at,
