@@ -1,8 +1,8 @@
 import NameBlockPage from "../../../generated_pages/view_submitted_response/name.page.js";
 import SubmitPage from "../../../generated_pages/view_submitted_response/submit.page.js";
-import SummaryResponsePage from "../../../base_pages/submitted-response.page.js";
+import ViewSubmittedResponsePage from "../../../generated_pages/view_submitted_response/view-submitted-response.page.js";
 
-describe("Submitted Response", () => {
+describe("View Submitted Response", () => {
   beforeEach("Load the survey", () => {
     browser.openQuestionnaire("test_view_submitted_response.json");
   });
@@ -13,10 +13,9 @@ describe("Submitted Response", () => {
     $(SubmitPage.submit()).click();
     browser.url("/submitted/view-response");
 
-    expect(browser.getUrl()).to.contain(SummaryResponsePage.url());
-    expect($(SummaryResponsePage.heading()).getText()).to.equal("Your answers were submitted for Apple");
-    expect($(SummaryResponsePage.summary()).isExisting()).to.be.true;
-    expect($(SummaryResponsePage.summaryRowState("name-question")).getText()).to.equal("What is your name?");
-    expect($(SummaryResponsePage.summaryRowState("name-answer")).getText()).to.equal("John Smith");
+    expect($(ViewSubmittedResponsePage.heading()).getText()).to.equal("Your answers were submitted for Apple");
+    expect($(ViewSubmittedResponsePage.nameGroupTitle()).getText()).to.equal("Name");
+    expect($(ViewSubmittedResponsePage.nameQuestion()).getText()).to.equal("What is your name?");
+    expect($(ViewSubmittedResponsePage.nameAnswer()).getText()).to.equal("John Smith");
   });
 });

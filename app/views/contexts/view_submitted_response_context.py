@@ -2,17 +2,15 @@ from datetime import datetime
 from typing import Union
 
 from app.data_models import QuestionnaireStore
-from app.data_models.session_data import SessionData
 from app.libs.utils import convert_tx_id
 from app.questionnaire.questionnaire_schema import QuestionnaireSchema
 from app.views.contexts.summary_context import SummaryContext
 
 
-def build_submitted_response_context(
+def build_view_submitted_response_context(
     language: str,
     schema: QuestionnaireSchema,
     questionnaire_store: QuestionnaireStore,
-    session_data: SessionData,
 ) -> dict[str, Union[str, datetime, dict]]:
 
     summary_context = SummaryContext(
@@ -25,11 +23,13 @@ def build_submitted_response_context(
     )
     context = {
         "submitted_at": questionnaire_store.submitted_at,
-        "tx_id": convert_tx_id(session_data.tx_id),
-        "trad_as": session_data.trad_as,
-        "summary": summary_context(answers_are_editable=False),
+        "tx_id": convert_tx_id(questionnaire_store.metadata["tx_id"]),
+        "ru_name": questionnaire_store.metadata["ru_name"],
+        "summary": summary_context(
+            answers_are_editable=False, summary_type="view_submitted_response"
+        ),
         "hide_sign_out_button": True,
     }
-    if session_data.ru_name:
-        context["ru_name"] = session_data.ru_name
+    if questionnaire_store.metadata.get("trad_as"):
+        context["trad_as"] = questionnaire_store.metadata["trad_as"]
     return context

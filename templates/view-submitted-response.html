@@ -23,19 +23,17 @@
 }%}
 
 {% block main %}
-  {% block page_title %}
-    <h1 class="u-mt-m">
-      {% if content.trad_as %}
-        {{ _("Your answers were submitted for <span>{ru_name}</span> ({trading_as_name})").format(
-          ru_name = content.ru_name,
-          trading_as_name = content.trad_as) }}
+  <h1 class="u-mt-m">
+    {% if content.trad_as %}
+      {{ _("Your answers were submitted for <span>{ru_name}</span> ({trading_as_name})").format(
+        ru_name = content.ru_name,
+        trading_as_name = content.trad_as) }}
       {% else %}
         {{ _("Your answers were submitted for <span>{ru_name}</span>").format(
           ru_name = content.ru_name) }}
       {% endif %}</h1>
-  {% endblock page_title %}
 
-  <p>{{ _("<b>Submitted on:</b>  {submitted_at}").format(submitted_at=content.submitted_at | format_datetime)}}</p>
+  <p>{{ _("<b>Submitted on:</b> {submitted_at}").format(submitted_at=content.submitted_at | format_datetime)}}</p>
   <p>{{ _("<b>Submission reference:</b> {transaction_id}").format(transaction_id=content.tx_id)}}</p>
   <br/>
   {% block summary %}

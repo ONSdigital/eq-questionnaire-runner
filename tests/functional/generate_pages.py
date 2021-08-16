@@ -440,6 +440,36 @@ def process_final_summary(
             append_spec_page_import(block_context, spec_file)
 
 
+def process_view_submitted_response(schema_data, require_path, dir_out, spec_file):
+    page_filename = f"view-submitted-response.page.js"
+    page_path = os.path.join(dir_out, page_filename)
+
+    logger.info("creating %s...", page_path)
+
+    with open(page_path, "w") as page_spec:
+        block_context = build_and_get_base_page_context(
+            page_dir=dir_out.split("/")[-1],
+            page_spec=page_spec,
+            base_page="BasePage",
+            base_page_file="base.page.js",
+            page_name="ViewSubmittedResponse",
+            page_filename=page_filename,
+            page_id="view-submitted-response",
+            relative_require=require_path,
+        )
+
+        for section in schema_data["sections"]:
+            write_view_submitted_response_spec(
+                page_spec,
+                section,
+            )
+
+        page_spec.write(FOOTER.substitute(block_context))
+
+        if spec_file:
+            append_spec_page_import(block_context, spec_file)
+
+
 def process_definition(context, page_spec):
     page_spec.write(DEFINITION_TITLE_GETTER.safe_substitute(context))
     page_spec.write(DEFINITION_CONTENT_GETTER.safe_substitute(context))
@@ -447,11 +477,7 @@ def process_definition(context, page_spec):
 
 
 def write_summary_spec(page_spec, section, collapsible, section_summary):
-    list_summaries = [
-        summary_element
-        for summary_element in section.get("summary", {}).get("items", [])
-        if summary_element["type"] == "List"
-    ]
+    list_summaries = get_list_summaries(section)
     for list_block in list_summaries:
         list_context = {"list_name": list_block["for_list"]}
         page_spec.write(LIST_SECTION_SUMMARY_ADD_LINK_GETTER.substitute(list_context))
@@ -496,11 +522,54 @@ def write_summary_spec(page_spec, section, collapsible, section_summary):
                 page_spec.write(SUMMARY_QUESTION_GETTER.substitute(question_context))
 
         if not collapsible:
-            group_context = {
-                "group_id_camel": camel_case(generate_pascal_case_from_id(group["id"])),
-                "group_id": group["id"],
-            }
-            page_spec.write(SUMMARY_TITLE_GETTER.substitute(group_context))
+            write_group_title(group, page_spec)
+
+
+def write_group_title(group, page_spec):
+    group_context = {
+        "group_id_camel": camel_case(generate_pascal_case_from_id(group["id"])),
+        "group_id": group["id"],
+    }
+    page_spec.write(SUMMARY_TITLE_GETTER.substitute(group_context))
+
+
+def write_view_submitted_response_spec(page_spec, section):
+    list_summaries = get_list_summaries(section)
+    for list_block in list_summaries:
+        list_context = {"list_name": list_block["for_list"]}
+        page_spec.write(LIST_SECTION_SUMMARY_LABEL_GETTER.substitute(list_context))
+
+    for group in section["groups"]:
+        for block in group["blocks"]:
+            for question in get_all_questions(block):
+                question_context = {
+                    "questionId": question["id"],
+                    "questionName": camel_case(
+                        generate_pascal_case_from_id(question["id"])
+                    ),
+                }
+                for answer in question.get("answers", []):
+                    answer_name = generate_pascal_case_from_id(answer["id"])
+
+                    answer_context = {
+                        "answerName": camel_case(answer_name),
+                        "answerId": answer["id"],
+                    }
+
+                    page_spec.write(SUMMARY_ANSWER_GETTER.substitute(answer_context))
+
+                page_spec.write(SUMMARY_QUESTION_GETTER.substitute(question_context))
+
+        write_group_title(group, page_spec)
+
+
+def get_list_summaries(section):
+    list_summaries = [
+        summary_element
+        for summary_element in section.get("summary", {}).get("items", [])
+        if summary_element["type"] == "List"
+    ]
+    return list_summaries
 
 
 def long_names_required(question, num_questions):
@@ -752,6 +821,9 @@ def process_schema(in_schema, out_dir, spec_file, require_path=".."):
         os.mkdir(out_dir)
 
     process_questionnaire_flow(data, require_path, out_dir, spec_file)
+
+    if data.get("submission", {}).get("view_response"):
+        process_view_submitted_response(data, require_path, out_dir, spec_file)
 
     for section in data["sections"]:
         if "summary" in section:

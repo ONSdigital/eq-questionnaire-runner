@@ -18,7 +18,9 @@ class TestSubmissionResponse(IntegrationTestCase):
         self.get("/submitted/view-response")
 
         # Then the page is displayed correctly
-        self.assertEqualPageTitle("Submitted Response - Test View Submitted Response")
+        self.assertEqualPageTitle(
+            "View Submitted Response - Test View Submitted Response"
+        )
         self.assertInBody(
             "Your answers were submitted for <span>Integration Testing</span>"
         )
@@ -40,11 +42,10 @@ class TestSubmissionResponse(IntegrationTestCase):
         self.assertStatusNotFound()
 
     def test_expired(self):
-        settings.SUBMITTED_RESPONSE_EXPIRATION_IN_SECONDS = 1
+        settings.VIEW_SUBMITTED_RESPONSE_EXPIRATION_IN_SECONDS = 0
         super().setUp()
         # Given I launch and complete a questionnaire that has view-submitted-response enabled but has expired
         self._launch_and_complete_questionnaire()
-        time.sleep(2)
 
         # When I try to get the view-response page
         self.get("/submitted/view-response")

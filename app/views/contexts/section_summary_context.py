@@ -1,5 +1,5 @@
 from functools import cached_property
-from typing import Mapping
+from typing import Mapping, Optional
 
 from flask import url_for
 
@@ -25,7 +25,7 @@ class SectionSummaryContext(Context):
         metadata: Mapping,
         routing_path: RoutingPath,
         current_location: Location,
-        return_to: str = "section-summary",
+        return_to: Optional[str] = "section-summary",
     ):
         super().__init__(
             language,

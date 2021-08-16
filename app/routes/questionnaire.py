@@ -41,12 +41,12 @@ from app.views.handlers.feedback import Feedback, FeedbackNotEnabled
 from app.views.handlers.section import SectionHandler
 from app.views.handlers.submission import SubmissionHandler
 from app.views.handlers.submit_questionnaire import SubmitQuestionnaireHandler
-from app.views.handlers.submitted_response import (
-    SubmittedResponse,
-    SubmittedResponseExpired,
-    SubmittedResponseNotEnabled,
-)
 from app.views.handlers.thank_you import ThankYou
+from app.views.handlers.view_submitted_response import (
+    ViewSubmittedResponse,
+    ViewSubmittedResponseExpired,
+    ViewSubmittedResponseNotEnabled,
+)
 
 logger = get_logger()
 
@@ -372,26 +372,23 @@ def get_thank_you(schema, session_store, questionnaire_store):
 
 
 @post_submission_blueprint.route("view-response/", methods=["GET"])
-@with_session_store
 @with_questionnaire_store
 @with_schema
-def get_submitted_response(schema, questionnaire_store, session_store):
+def get_view_submitted_response(schema, questionnaire_store):
     try:
-        submitted_response = SubmittedResponse(
+        view_submitted_response = ViewSubmittedResponse(
             schema,
             questionnaire_store,
-            session_store.session_data,
             flask_babel.get_locale().language,
         )
 
-    except (SubmittedResponseNotEnabled, SubmittedResponseExpired):
+    except (ViewSubmittedResponseNotEnabled, ViewSubmittedResponseExpired):
         raise NotFound
 
     return render_template(
-        template="submitted-response",
-        content=submitted_response.get_context(),
-        survey_id=schema.json["survey_id"],
-        page_title=submitted_response.get_page_title(),
+        template="view-submitted-response",
+        content=view_submitted_response.get_context(),
+        page_title=view_submitted_response.get_page_title(),
     )
 
 
