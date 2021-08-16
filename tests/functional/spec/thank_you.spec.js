@@ -13,7 +13,7 @@ describe("Thank You Social", () => {
       $(SubmitPage.submit()).click();
       $(HubPage.submit()).click();
       expect(browser.getUrl()).to.contain(ThankYouPage.pageName);
-      expect($(ThankYouPage.title()).getHTML()).to.contain("Thank you for submitting the Test Social Survey");
+      expect($(ThankYouPage.title()).getHTML()).to.contain("Thank you for completing the Test Social Survey");
       expect($(ThankYouPage.guidance()).getHTML()).to.contain("Your answers have been submitted");
       expect($(ThankYouPage.metadata()).getHTML()).to.contain("Submitted on:");
       expect($(ThankYouPage.metadata()).getHTML()).to.not.contain("Submission reference:");
@@ -32,7 +32,7 @@ describe("Thank You Business", () => {
       $(SubmitPage.submit()).click();
       $(HubPage.submit()).click();
       expect(browser.getUrl()).to.contain(ThankYouPage.pageName);
-      expect($(ThankYouPage.title()).getHTML()).to.contain("Thank you for submitting the Question Title Test");
+      expect($(ThankYouPage.title()).getHTML()).to.contain("Thank you for completing the Question Title Test");
       expect($(ThankYouPage.guidance()).getHTML()).to.contain("Your answers have been submitted for");
       expect($(ThankYouPage.metadata()).getHTML()).to.contain("Submitted on:");
       expect($(ThankYouPage.metadata()).getHTML()).to.contain("Submission reference:");
