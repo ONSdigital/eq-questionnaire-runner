@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2021-08-12 15:16+0100\n"
+"POT-Creation-Date: 2021-08-16 16:09+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -698,6 +698,10 @@ msgstr ""
 msgid "Thank you for completing the census"
 msgstr ""
 
+#: app/views/handlers/view_submitted_response.py:53
+msgid "View Submitted Response"
+msgstr ""
+
 #: templates/calculatedsummary.html:14
 msgid "Please review your answers and confirm these are correct"
 msgstr ""
@@ -814,7 +818,7 @@ msgstr ""
 msgid "Done"
 msgstr ""
 
-#: templates/feedback.html:15 templates/submitted-response.html:16
+#: templates/feedback.html:15 templates/view-submitted-response.html:15
 msgid "Back"
 msgstr ""
 
@@ -877,22 +881,6 @@ msgstr ""
 msgid "Return to your account"
 msgstr ""
 
-#: templates/submitted-response.html:31
-msgid "Your answers were submitted for <span>{ru_name}</span> ({trading_as_name})"
-msgstr ""
-
-#: templates/submitted-response.html:35
-msgid "Your answers were submitted for <span>{ru_name}</span>"
-msgstr ""
-
-#: templates/submitted-response.html:40
-msgid "<b>Submitted on:</b>  {submitted_at}"
-msgstr ""
-
-#: templates/submitted-response.html:41
-msgid "<b>Submission reference:</b> {transaction_id}"
-msgstr ""
-
 #: templates/thank-you.html:4
 msgid "We’ve received your answers"
 msgstr ""
@@ -927,6 +915,22 @@ msgstr ""
 
 #: templates/thank-you.html:37
 msgid "For more information on how we use this data."
+msgstr ""
+
+#: templates/view-submitted-response.html:28
+msgid "Your answers were submitted for <span>{ru_name}</span> ({trading_as_name})"
+msgstr ""
+
+#: templates/view-submitted-response.html:32
+msgid "Your answers were submitted for <span>{ru_name}</span>"
+msgstr ""
+
+#: templates/view-submitted-response.html:36
+msgid "<b>Submitted on:</b> {submitted_at}"
+msgstr ""
+
+#: templates/view-submitted-response.html:37
+msgid "<b>Submission reference:</b> {transaction_id}"
 msgstr ""
 
 #: templates/errors/403.html:7
