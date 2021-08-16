@@ -21,7 +21,7 @@ class SummaryContext(Context):
             "summary_type": "Summary",
         }
 
-    def _build_all_groups(self, summary_type) -> Generator[dict, None, None]:
+    def _build_all_groups(self, summary_type: str) -> Generator[dict, None, None]:
         """ NB: Does not support repeating sections """
 
         for section_id in self._router.enabled_section_ids:
