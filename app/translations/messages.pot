@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2021-08-16 09:31+0100\n"
+"POT-Creation-Date: 2021-08-16 14:11+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -203,17 +203,17 @@ msgstr[1] ""
 msgid "Not a valid choice"
 msgstr ""
 
-#: app/helpers/template_helpers.py:63 app/survey_config/business_config.py:22
+#: app/helpers/template_helpers.py:60 app/survey_config/business_config.py:22
 #: app/survey_config/census_config.py:30 app/survey_config/census_config.py:79
 #: app/survey_config/census_config.py:139
 msgid "Contact us"
 msgstr ""
 
-#: app/helpers/template_helpers.py:107
+#: app/helpers/template_helpers.py:103
 msgid "The following links open in a new tab"
 msgstr ""
 
-#: app/helpers/template_helpers.py:137
+#: app/helpers/template_helpers.py:133
 msgid ""
 "Make sure you <a href='{sign_out_url}'>leave this page</a> or close your "
 "browser if using a shared device"
@@ -432,6 +432,14 @@ msgstr ""
 msgid " (You)"
 msgstr ""
 
+#: app/views/contexts/submission_metadata_context.py:12
+msgid "Submitted on:"
+msgstr ""
+
+#: app/views/contexts/submission_metadata_context.py:18
+msgid "Submission reference:"
+msgstr ""
+
 #: app/views/contexts/submit_questionnaire_context.py:19
 msgid "Check your answers and submit"
 msgstr ""
@@ -444,20 +452,18 @@ msgstr ""
 msgid "Please submit this survey to complete it"
 msgstr ""
 
-#: app/views/contexts/thank_you_context.py:15
-msgid "Your answers have been submitted for "
-msgstr ""
-
-#: app/views/contexts/thank_you_context.py:17
-msgid "Submitted on:"
-msgstr ""
-
-#: app/views/contexts/thank_you_context.py:23
-msgid "Submission reference:"
-msgstr ""
-
-#: app/views/contexts/thank_you_context.py:27
+#: app/views/contexts/thank_you_context.py:19
 msgid "Your answers have been submitted."
+msgstr ""
+
+#: app/views/contexts/thank_you_context.py:21
+msgid ""
+"Your answers have been submitted for <span>{company_name}</span> "
+"({trading_name})."
+msgstr ""
+
+#: app/views/contexts/thank_you_context.py:25
+msgid "Your answers have been submitted for <span>{company_name}</span>."
 msgstr ""
 
 #: app/views/handlers/confirm_email.py:32
