@@ -35,7 +35,7 @@ def test_social_survey_context(fake_session_data, app: Flask):
         )
 
         assert context["submission_text"] == "Your answers have been submitted."
-        assert len(context["metadata"]) == 4
+        assert len(context["metadata"]["itemsList"]) == 1
 
 
 def test_default_survey_context(fake_session_data, app: Flask):
@@ -49,7 +49,7 @@ def test_default_survey_context(fake_session_data, app: Flask):
             context["submission_text"]
             == "Your answers have been submitted for <span>ESSENTIAL ENTERPRISE LTD</span>."
         )
-        assert len(context["metadata"]) == 4
+        assert len(context["metadata"]["itemsList"]) == 2
 
 
 def test_default_survey_context_with_trad_as(fake_session_data, app: Flask):
@@ -64,3 +64,4 @@ def test_default_survey_context_with_trad_as(fake_session_data, app: Flask):
             context["submission_text"]
             == "Your answers have been submitted for <span>ESSENTIAL ENTERPRISE LTD</span> (123)."
         )
+        assert len(context["metadata"]["itemsList"]) == 2
