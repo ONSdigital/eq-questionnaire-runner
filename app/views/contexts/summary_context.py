@@ -42,5 +42,7 @@ class SummaryContext(Context):
             if section.get("summary", {}).get("items"):
                 break
 
-            for group in section_summary_context()["summary"]["groups"]:
+            for group in section_summary_context(return_to=return_to)["summary"][
+                "groups"
+            ]:
                 yield group
