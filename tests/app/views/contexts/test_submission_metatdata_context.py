@@ -32,6 +32,5 @@ def test_metadata_survey_type_default(app: Flask):
         assert len(metadata) == 2
         assert (
             str(metadata)
-            == "[{'term': l'Submitted on:', 'descriptions': [{'description': '17 August 2021 11:10'}]}, {'term': l'Submission reference:', 'descriptions': [{"
-            "'description': '6b6f-90e6-6c27-4c76'}]}] "
+            == "[{'term': l'Submitted on:', 'descriptions': [{'description': '17 August 2021 11:10'}]}, {'term': l'Submission reference:', 'descriptions': [{'description': '6b6f-90e6-6c27-4c76'}]}]"
         )

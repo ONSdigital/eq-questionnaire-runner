@@ -4,7 +4,7 @@ import CheckboxPage from "../generated_pages/title/single-title-block.page";
 import ThankYouPage from "../base_pages/thank-you.page";
 
 describe("Thank You Social", () => {
-  describe("Given I launch a social theme schema", () => {
+  describe("Given I launch a social themed questionnaire", () => {
     beforeEach(() => {
       browser.openQuestionnaire("test_theme_social.json");
     });
@@ -21,8 +21,8 @@ describe("Thank You Social", () => {
   });
 });
 
-describe("Thank You Business", () => {
-  describe("Given I launch a business theme schema", () => {
+describe("Thank You Default", () => {
+  describe("Given I launch a default themed questionnaire", () => {
     beforeEach(() => {
       browser.openQuestionnaire("test_title.json");
     });

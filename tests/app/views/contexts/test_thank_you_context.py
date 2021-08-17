@@ -27,7 +27,7 @@ def fake_session_data():
     )
 
 
-def test_context_correct_if_survey_type_social(fake_session_data, app: Flask):
+def test_social_survey_context(fake_session_data, app: Flask):
     with app.app_context():
 
         context = build_thank_you_context(
@@ -38,7 +38,7 @@ def test_context_correct_if_survey_type_social(fake_session_data, app: Flask):
         assert len(context["metadata_items"]) == 1
 
 
-def test_context_correct_if_survey_type_default(fake_session_data, app: Flask):
+def test_default_survey_context(fake_session_data, app: Flask):
     with app.app_context():
         fake_session_data.ru_name = "ESSENTIAL ENTERPRISE LTD"
         context = build_thank_you_context(
@@ -52,9 +52,7 @@ def test_context_correct_if_survey_type_default(fake_session_data, app: Flask):
         assert len(context["metadata_items"]) == 2
 
 
-def test_context_correct_if_survey_type_default_and_trad_as_present(
-    fake_session_data, app: Flask
-):
+def test_default_survey_context_with_trad_as(fake_session_data, app: Flask):
     with app.app_context():
         fake_session_data.ru_name = "ESSENTIAL ENTERPRISE LTD"
         fake_session_data.trad_as = "123"
