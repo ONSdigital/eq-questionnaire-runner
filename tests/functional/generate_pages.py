@@ -155,18 +155,6 @@ ANSWER_UNIT_TYPE_GETTER = Template(
 """
 )
 
-SECTION_SUMMARY_ANSWER_GETTER = Template(
-    r"""  ${answerName}() { return `[data-qa="${answerId}"]`; }
-
-"""
-)
-
-SECTION_SUMMARY_ANSWER_EDIT_GETTER = Template(
-    r"""  ${answerName}Edit() { return `[data-qa="${answerId}-edit"]`; }
-
-"""
-)
-
 SUMMARY_ANSWER_GETTER = Template(
     r"""  ${answerName}() { return `[data-qa="${answerId}"]`; }
 
@@ -515,10 +503,10 @@ def write_summary_spec(page_spec, section, collapsible, summary_type="final"):
                     }
                     if summary_type == "section":
                         page_spec.write(
-                            SECTION_SUMMARY_ANSWER_GETTER.substitute(answer_context)
+                            SUMMARY_ANSWER_GETTER.substitute(answer_context)
                         )
                         page_spec.write(
-                            SECTION_SUMMARY_ANSWER_EDIT_GETTER.substitute(
+                            SUMMARY_ANSWER_EDIT_GETTER.substitute(
                                 answer_context
                             )
                         )
