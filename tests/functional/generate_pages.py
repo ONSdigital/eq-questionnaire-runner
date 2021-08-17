@@ -428,7 +428,6 @@ def process_final_summary(
                 page_spec,
                 section,
                 collapsible=collapsible,
-                section_summary=section_summary,
             )
 
         if collapsible:
@@ -459,9 +458,11 @@ def process_view_submitted_response(schema_data, require_path, dir_out, spec_fil
         )
 
         for section in schema_data["sections"]:
-            write_view_submitted_response_spec(
+            write_summary_spec(
                 page_spec,
                 section,
+                collapsible=False,
+                summary_type="view_submitted_response",
             )
 
         page_spec.write(FOOTER.substitute(block_context))
@@ -476,15 +477,24 @@ def process_definition(context, page_spec):
     page_spec.write(DEFINITION_BUTTON_GETTER.safe_substitute(context))
 
 
-def write_summary_spec(page_spec, section, collapsible, section_summary):
-    list_summaries = get_list_summaries(section)
+def write_summary_spec(page_spec, section, collapsible, summary_type="final"):
+    list_summaries = [
+        summary_element
+        for summary_element in section.get("summary", {}).get("items", [])
+        if summary_element["type"] == "List"
+    ]
     for list_block in list_summaries:
         list_context = {"list_name": list_block["for_list"]}
-        page_spec.write(LIST_SECTION_SUMMARY_ADD_LINK_GETTER.substitute(list_context))
-        page_spec.write(LIST_SECTION_SUMMARY_EDIT_LINK_GETTER.substitute(list_context))
-        page_spec.write(
-            LIST_SECTION_SUMMARY_REMOVE_LINK_GETTER.substitute(list_context)
-        )
+        if summary_type != "view_submitted_response":
+            page_spec.write(
+                LIST_SECTION_SUMMARY_ADD_LINK_GETTER.substitute(list_context)
+            )
+            page_spec.write(
+                LIST_SECTION_SUMMARY_EDIT_LINK_GETTER.substitute(list_context)
+            )
+            page_spec.write(
+                LIST_SECTION_SUMMARY_REMOVE_LINK_GETTER.substitute(list_context)
+            )
         page_spec.write(LIST_SECTION_SUMMARY_LABEL_GETTER.substitute(list_context))
 
     for group in section["groups"]:
@@ -503,7 +513,7 @@ def write_summary_spec(page_spec, section, collapsible, section_summary):
                         "answerName": camel_case(answer_name),
                         "answerId": answer["id"],
                     }
-                    if section_summary:
+                    if summary_type == "section":
                         page_spec.write(
                             SECTION_SUMMARY_ANSWER_GETTER.substitute(answer_context)
                         )
@@ -515,61 +525,19 @@ def write_summary_spec(page_spec, section, collapsible, section_summary):
 
                     page_spec.write(SUMMARY_ANSWER_GETTER.substitute(answer_context))
 
-                    page_spec.write(
-                        SUMMARY_ANSWER_EDIT_GETTER.substitute(answer_context)
-                    )
+                    if summary_type != "view_submitted_response":
+                        page_spec.write(
+                            SUMMARY_ANSWER_EDIT_GETTER.substitute(answer_context)
+                        )
 
                 page_spec.write(SUMMARY_QUESTION_GETTER.substitute(question_context))
 
         if not collapsible:
-            write_group_title(group, page_spec)
-
-
-def write_group_title(group, page_spec):
-    group_context = {
-        "group_id_camel": camel_case(generate_pascal_case_from_id(group["id"])),
-        "group_id": group["id"],
-    }
-    page_spec.write(SUMMARY_TITLE_GETTER.substitute(group_context))
-
-
-def write_view_submitted_response_spec(page_spec, section):
-    list_summaries = get_list_summaries(section)
-    for list_block in list_summaries:
-        list_context = {"list_name": list_block["for_list"]}
-        page_spec.write(LIST_SECTION_SUMMARY_LABEL_GETTER.substitute(list_context))
-
-    for group in section["groups"]:
-        for block in group["blocks"]:
-            for question in get_all_questions(block):
-                question_context = {
-                    "questionId": question["id"],
-                    "questionName": camel_case(
-                        generate_pascal_case_from_id(question["id"])
-                    ),
-                }
-                for answer in question.get("answers", []):
-                    answer_name = generate_pascal_case_from_id(answer["id"])
-
-                    answer_context = {
-                        "answerName": camel_case(answer_name),
-                        "answerId": answer["id"],
-                    }
-
-                    page_spec.write(SUMMARY_ANSWER_GETTER.substitute(answer_context))
-
-                page_spec.write(SUMMARY_QUESTION_GETTER.substitute(question_context))
-
-        write_group_title(group, page_spec)
-
-
-def get_list_summaries(section):
-    list_summaries = [
-        summary_element
-        for summary_element in section.get("summary", {}).get("items", [])
-        if summary_element["type"] == "List"
-    ]
-    return list_summaries
+            group_context = {
+                "group_id_camel": camel_case(generate_pascal_case_from_id(group["id"])),
+                "group_id": group["id"],
+            }
+            page_spec.write(SUMMARY_TITLE_GETTER.substitute(group_context))
 
 
 def long_names_required(question, num_questions):
@@ -884,7 +852,9 @@ def process_section_summary(
         page_spec.write(CLASS_NAME.substitute(section_context))
         page_spec.write(CONSTRUCTOR.substitute(section_context))
         page_spec.write(SECTION_SUMMARY_PAGE_URL)
-        write_summary_spec(page_spec, section, collapsible=False, section_summary=True)
+        write_summary_spec(
+            page_spec, section, collapsible=False, summary_type="section"
+        )
         page_spec.write(FOOTER.substitute(section_context))
 
         if spec_file:

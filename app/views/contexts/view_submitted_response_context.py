@@ -25,9 +25,7 @@ def build_view_submitted_response_context(
         "submitted_at": questionnaire_store.submitted_at,
         "tx_id": convert_tx_id(questionnaire_store.metadata["tx_id"]),
         "ru_name": questionnaire_store.metadata["ru_name"],
-        "summary": summary_context(
-            answers_are_editable=False, summary_type="view_submitted_response"
-        ),
+        "summary": summary_context(),
         "hide_sign_out_button": True,
     }
     if questionnaire_store.metadata.get("trad_as"):

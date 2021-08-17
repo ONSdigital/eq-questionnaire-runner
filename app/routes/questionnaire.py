@@ -61,17 +61,20 @@ post_submission_blueprint = Blueprint(
 
 @questionnaire_blueprint.before_request
 @login_required
-@with_questionnaire_store
-def before_questionnaire_request(questionnaire_store):
-    if questionnaire_store.submitted_at:
-        return redirect(url_for("post_submission.get_thank_you"))
-
+def before_questionnaire_request():
     if request.method == "OPTIONS":
         return None
 
     metadata = get_metadata(current_user)
     if not metadata:
         raise NoQuestionnaireStateException(401)
+
+    questionnaire_store = get_questionnaire_store(
+        current_user.user_id, current_user.user_ik
+    )
+
+    if questionnaire_store.submitted_at:
+        return redirect(url_for("post_submission.get_thank_you"))
 
     logger.bind(
         tx_id=metadata["tx_id"],

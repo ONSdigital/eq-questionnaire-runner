@@ -40,6 +40,8 @@ class SubmitQuestionnaireContext(Context):
                 progress_store=self._progress_store,
                 metadata=self._metadata,
             )
-            context["summary"] = summary_context(answers_are_editable=True)
+            context["summary"] = summary_context(
+                answers_are_editable=True, return_to="final-summary"
+            )
 
         return context

@@ -4,7 +4,7 @@ from app import settings
 from tests.integration.integration_test_case import IntegrationTestCase
 
 
-class TestSubmissionResponse(IntegrationTestCase):
+class TestViewSubmissionResponse(IntegrationTestCase):
     def _launch_and_complete_questionnaire(self):
         self.launchSurvey("test_view_submitted_response")
         self.post({"name-answer": "John Smith"})

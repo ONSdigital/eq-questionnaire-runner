@@ -1,4 +1,4 @@
-from typing import Generator, Mapping, Union
+from typing import Generator, Mapping, Optional, Union
 
 from app.questionnaire.location import Location
 
@@ -8,10 +8,10 @@ from .section_summary_context import SectionSummaryContext
 
 class SummaryContext(Context):
     def __call__(
-        self, answers_are_editable: bool = True, summary_type: str = "final"
+        self, answers_are_editable: bool = False, return_to: Optional[str] = None
     ) -> dict[str, Union[str, list, bool]]:
 
-        groups = list(self._build_all_groups(summary_type))
+        groups = list(self._build_all_groups(return_to))
         summary_options = self._schema.get_summary_options()
         collapsible = summary_options.get("collapsible", False)
         return {
@@ -21,7 +21,9 @@ class SummaryContext(Context):
             "summary_type": "Summary",
         }
 
-    def _build_all_groups(self, summary_type: str) -> Generator[dict, None, None]:
+    def _build_all_groups(
+        self, return_to: Optional[str]
+    ) -> Generator[dict, None, None]:
         """ NB: Does not support repeating sections """
 
         for section_id in self._router.enabled_section_ids:
@@ -34,7 +36,7 @@ class SummaryContext(Context):
                 progress_store=self._progress_store,
                 metadata=self._metadata,
                 current_location=location,
-                return_to="final-summary" if summary_type == "final" else None,
+                return_to=return_to,
                 routing_path=self._router.routing_path(section_id),
             )
             section: Mapping = self._schema.get_section(section_id) or {}
