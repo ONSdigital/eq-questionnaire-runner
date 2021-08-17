@@ -1,4 +1,3 @@
-# pylint: disable=redefined-outer-name
 from datetime import datetime, timezone
 from functools import cache
 
@@ -6,7 +5,7 @@ import pytest
 from flask import Flask
 
 from app.data_models.session_data import SessionData
-from app.views.contexts.thank_you_context import build_default_thank_you_context
+from app.views.contexts.thank_you_context import build_thank_you_context
 
 
 @cache
@@ -43,7 +42,7 @@ def fake_session_data():
 def test_context_correct_if_survey_type_social(fake_session_data, app: Flask):
     with app.app_context():
 
-        context = build_default_thank_you_context(
+        context = build_thank_you_context(
             fake_session_data, submitted_at(), survey_type_social()
         )
 
@@ -54,7 +53,7 @@ def test_context_correct_if_survey_type_social(fake_session_data, app: Flask):
 def test_context_correct_if_survey_type_default(fake_session_data, app: Flask):
     with app.app_context():
         fake_session_data.ru_name = "ESSENTIAL ENTERPRISE LTD"
-        context = build_default_thank_you_context(
+        context = build_thank_you_context(
             fake_session_data, submitted_at(), survey_type_default()
         )
 
@@ -71,7 +70,7 @@ def test_context_correct_if_survey_type_default_and_trad_as_present(
     with app.app_context():
         fake_session_data.ru_name = "ESSENTIAL ENTERPRISE LTD"
         fake_session_data.trad_as = "123"
-        context = build_default_thank_you_context(
+        context = build_thank_you_context(
             fake_session_data, submitted_at(), survey_type_default()
         )
 

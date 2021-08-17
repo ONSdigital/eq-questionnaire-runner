@@ -11,7 +11,7 @@ from app.views.contexts.submission_metadata_context import (
 )
 
 
-def build_default_thank_you_context(
+def build_thank_you_context(
     session_data: SessionData, submitted_at: datetime, survey_type: str
 ) -> Mapping:
 
