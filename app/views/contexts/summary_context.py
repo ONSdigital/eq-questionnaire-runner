@@ -36,7 +36,6 @@ class SummaryContext(Context):
                 progress_store=self._progress_store,
                 metadata=self._metadata,
                 current_location=location,
-                return_to=return_to,
                 routing_path=self._router.routing_path(section_id),
             )
             section: Mapping = self._schema.get_section(section_id) or {}

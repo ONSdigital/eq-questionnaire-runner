@@ -1,5 +1,5 @@
 from functools import cached_property
-from typing import Mapping, Optional
+from typing import Mapping
 
 from flask import url_for
 
@@ -25,7 +25,6 @@ class SectionSummaryContext(Context):
         metadata: Mapping,
         routing_path: RoutingPath,
         current_location: Location,
-        return_to: Optional[str] = "section-summary",
     ):
         super().__init__(
             language,
@@ -37,7 +36,6 @@ class SectionSummaryContext(Context):
         )
         self.routing_path = routing_path
         self.current_location = current_location
-        self.return_to = return_to
 
     def __call__(
         self,
@@ -133,7 +131,7 @@ class SectionSummaryContext(Context):
                     self._schema,
                     self.current_location,
                     self._language,
-                    self.return_to,
+                    "section-summary",
                 ).serialize()
                 for group in self.section["groups"]
             ],
