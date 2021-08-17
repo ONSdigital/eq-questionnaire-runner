@@ -428,7 +428,7 @@ def process_final_summary(
 
 
 def process_view_submitted_response(schema_data, require_path, dir_out, spec_file):
-    page_filename = f"view-submitted-response.page.js"
+    page_filename = "view-submitted-response.page.js"
     page_path = os.path.join(dir_out, page_filename)
 
     logger.info("creating %s...", page_path)

@@ -3,11 +3,11 @@ import SubmitPage from "../../../generated_pages/view_submitted_response/submit.
 import ViewSubmittedResponsePage from "../../../generated_pages/view_submitted_response/view-submitted-response.page.js";
 
 describe("View Submitted Response", () => {
-  beforeEach("Load the survey", () => {
+  beforeEach("Load the questionnaire", () => {
     browser.openQuestionnaire("test_view_submitted_response.json");
   });
 
-  it("Given a questionnaire has view submitted response enabled and has been completed when on the view response page then the summary is displayed correctly", () => {
+  it("Given a questionnaire has view submitted response enabled and has been completed, when on the view response page, then the summary is displayed correctly", () => {
     $(NameBlockPage.answer()).setValue("John Smith");
     $(NameBlockPage.submit()).click();
     $(SubmitPage.submit()).click();
