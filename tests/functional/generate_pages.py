@@ -506,9 +506,7 @@ def write_summary_spec(page_spec, section, collapsible, summary_type="final"):
                             SUMMARY_ANSWER_GETTER.substitute(answer_context)
                         )
                         page_spec.write(
-                            SUMMARY_ANSWER_EDIT_GETTER.substitute(
-                                answer_context
-                            )
+                            SUMMARY_ANSWER_EDIT_GETTER.substitute(answer_context)
                         )
 
                     page_spec.write(SUMMARY_ANSWER_GETTER.substitute(answer_context))
