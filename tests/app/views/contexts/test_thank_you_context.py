@@ -7,20 +7,9 @@ from flask import Flask
 from app.data_models.session_data import SessionData
 from app.views.contexts.thank_you_context import build_thank_you_context
 
-
-@cache
-def submitted_at():
-    return datetime.now(timezone.utc)
-
-
-@cache
-def survey_type_default():
-    return "default"
-
-
-@cache
-def survey_type_social():
-    return "social"
+SURVEY_TYPE_DEFAULT = "default"
+SURVEY_TYPE_SOCIAL = "social"
+SUBMITTED_AT = datetime.now(timezone.utc)
 
 
 @pytest.fixture
@@ -43,7 +32,7 @@ def test_context_correct_if_survey_type_social(fake_session_data, app: Flask):
     with app.app_context():
 
         context = build_thank_you_context(
-            fake_session_data, submitted_at(), survey_type_social()
+            fake_session_data, SUBMITTED_AT, SURVEY_TYPE_SOCIAL
         )
 
         assert context["submission_text"] == "Your answers have been submitted."
@@ -54,7 +43,7 @@ def test_context_correct_if_survey_type_default(fake_session_data, app: Flask):
     with app.app_context():
         fake_session_data.ru_name = "ESSENTIAL ENTERPRISE LTD"
         context = build_thank_you_context(
-            fake_session_data, submitted_at(), survey_type_default()
+            fake_session_data, SUBMITTED_AT, SURVEY_TYPE_DEFAULT
         )
 
         assert (
@@ -71,7 +60,7 @@ def test_context_correct_if_survey_type_default_and_trad_as_present(
         fake_session_data.ru_name = "ESSENTIAL ENTERPRISE LTD"
         fake_session_data.trad_as = "123"
         context = build_thank_you_context(
-            fake_session_data, submitted_at(), survey_type_default()
+            fake_session_data, SUBMITTED_AT, SURVEY_TYPE_DEFAULT
         )
 
         assert (
