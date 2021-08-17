@@ -12,11 +12,9 @@ def build_submission_metadata_context(
         "term": lazy_gettext("Submitted on:"),
         "descriptions": [
             {
-                "description": lazy_gettext(
-                    "{date} at {time}".format(
-                        date=format_datetime(submitted_at, format="dd LLLL yyyy"),
-                        time=format_datetime(submitted_at, format="HH:mm"),
-                    )
+                "description": lazy_gettext("{date} at {time}").format(
+                    date=format_datetime(submitted_at, format="dd LLLL yyyy"),
+                    time=format_datetime(submitted_at, format="HH:mm"),
                 )
             }
         ],
