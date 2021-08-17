@@ -57,8 +57,32 @@
                             }
                         }
                     ],
-                    "id": "name-group",
-                    "title": "Name"
+                    "id": "personal-details-group",
+                    "title": "Personal Details"
+                },
+                {
+                    "blocks": [
+                        {
+                            "type": "Question",
+                            "id": "address",
+                            "question": {
+                                "answers": [
+                                    {
+                                        "id": "address-answer",
+                                        "label": "Postcode",
+                                        "max_length": 20,
+                                        "mandatory": false,
+                                        "type": "TextField"
+                                    }
+                                ],
+                                "id": "address-question",
+                                "title": "What is your address?",
+                                "type": "General"
+                            }
+                        }
+                    ],
+                    "id": "address-details-group",
+                    "title": "Address Details"
                 }
             ]
         }

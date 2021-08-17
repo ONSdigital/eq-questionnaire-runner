@@ -8,6 +8,7 @@ class TestViewSubmissionResponse(IntegrationTestCase):
     def _launch_and_complete_questionnaire(self):
         self.launchSurvey("test_view_submitted_response")
         self.post({"name-answer": "John Smith"})
+        self.post({"address-answer": "NP10 8XG"})
         self.post()
 
     def test_enabled(self):
@@ -28,6 +29,8 @@ class TestViewSubmissionResponse(IntegrationTestCase):
         self.assertInBody("Submission reference:")
         self.assertInBody("What is your name?")
         self.assertInBody("John Smith")
+        self.assertInBody("What is your address?")
+        self.assertInBody("NP10 8XG")
 
     def test_not_enabled(self):
         # Given I launch and complete a questionnaire that does not have view-submitted-response enabled
