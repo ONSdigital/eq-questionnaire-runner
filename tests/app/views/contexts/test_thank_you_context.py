@@ -1,5 +1,4 @@
 from datetime import datetime, timezone
-from functools import cache
 
 import pytest
 from flask import Flask
