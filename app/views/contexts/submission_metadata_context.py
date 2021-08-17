@@ -7,7 +7,7 @@ from app.libs.utils import convert_tx_id
 
 def build_submission_metadata_context(
     survey_type: str, submitted_at: datetime, tx_id: str
-) -> list:
+) -> dict:
     submitted_on = {
         "term": lazy_gettext("Submitted on:"),
         "descriptions": [
@@ -28,5 +28,15 @@ def build_submission_metadata_context(
         ],
     }
     if survey_type == "social":
-        return [submitted_on]
-    return [submitted_on, submission_reference]
+        return {
+            "data-qa": "metadata",
+            "termCol": 3,
+            "descriptionCol": 9,
+            "itemsList": [submitted_on],
+        }
+    return {
+        "data-qa": "metadata",
+        "termCol": 5,
+        "descriptionCol": 7,
+        "itemsList": [submitted_on, submission_reference],
+    }

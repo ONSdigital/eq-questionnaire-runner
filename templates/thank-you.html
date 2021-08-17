@@ -19,13 +19,7 @@
     <p data-qa="guidance">
       {{ content.submission_text }}
     </p>
-      {{ onsMetadata({
-        "termCol": 5,
-        "data-qa": "metadata",
-        "descriptionCol": 7,
-        "itemsList": content.metadata_items,
-        })
-      }}
+      {{ onsMetadata(content.metadata)}}
   {% endcall %}
 
   <p class="u-mb-s">{{ _("Your answers will be processed in the next few weeks.") }}

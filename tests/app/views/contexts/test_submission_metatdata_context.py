@@ -17,8 +17,11 @@ def test_metadata_survey_type_social(app: Flask):
         metadata = build_submission_metadata_context(
             SURVEY_TYPE_SOCIAL, SUBMITTED_AT, TX_ID
         )
-        assert len(metadata) == 1
-        assert metadata[0] == {
+        assert len(metadata["itemsList"]) == 1
+        assert metadata["data-qa"] == "metadata"
+        assert metadata["termCol"] == 3
+        assert metadata["descriptionCol"] == 9
+        assert metadata["itemsList"][0] == {
             "descriptions": [{"description": "17 August 2021 at 11:10"}],
             "term": "Submitted on:",
         }
@@ -29,12 +32,15 @@ def test_metadata_survey_type_default(app: Flask):
         metadata = build_submission_metadata_context(
             SURVEY_TYPE_DEFAULT, SUBMITTED_AT, TX_ID
         )
-        assert len(metadata) == 2
-        assert metadata[0] == {
+        assert metadata["data-qa"] == "metadata"
+        assert len(metadata["itemsList"]) == 2
+        assert metadata["termCol"] == 5
+        assert metadata["descriptionCol"] == 7
+        assert metadata["itemsList"][0] == {
             "descriptions": [{"description": "17 August 2021 at 11:10"}],
             "term": "Submitted on:",
         }
-        assert metadata[1] == {
+        assert metadata["itemsList"][1] == {
             "descriptions": [{"description": "6B6F - 90E6 - 6C27 - 4C76"}],
             "term": "Submission reference:",
         }
