@@ -18,10 +18,10 @@ def test_metadata_survey_type_social(app: Flask):
             SURVEY_TYPE_SOCIAL, SUBMITTED_AT, TX_ID
         )
         assert len(metadata) == 1
-        assert (
-            str(metadata)
-            == "[{'term': l'Submitted on:', 'descriptions': [{'description': '17 August 2021 11:10'}]}]"
-        )
+        assert metadata[0] == {
+            "descriptions": [{"description": "17 August 2021 11:10"}],
+            "term": "Submitted on:",
+        }
 
 
 def test_metadata_survey_type_default(app: Flask):
