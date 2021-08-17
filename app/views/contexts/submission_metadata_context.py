@@ -11,12 +11,21 @@ def build_submission_metadata_context(
     submitted_on = {
         "term": lazy_gettext("Submitted on:"),
         "descriptions": [
-            {"description": format_datetime(submitted_at, format="dd LLLL yyyy HH:mm")}
+            {
+                "description": lazy_gettext(
+                    "{date} at {time}".format(
+                        date=format_datetime(submitted_at, format="dd LLLL yyyy"),
+                        time=format_datetime(submitted_at, format="HH:mm"),
+                    )
+                )
+            }
         ],
     }
     submission_reference = {
         "term": lazy_gettext("Submission reference:"),
-        "descriptions": [{"description": convert_tx_id(tx_id)}],
+        "descriptions": [
+            {"description": " - ".join(convert_tx_id(tx_id).upper().split("-"))}
+        ],
     }
     if survey_type == "social":
         return [submitted_on]

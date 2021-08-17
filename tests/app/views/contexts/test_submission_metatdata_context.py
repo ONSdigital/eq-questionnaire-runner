@@ -19,7 +19,7 @@ def test_metadata_survey_type_social(app: Flask):
         )
         assert len(metadata) == 1
         assert metadata[0] == {
-            "descriptions": [{"description": "17 August 2021 11:10"}],
+            "descriptions": [{"description": "17 August 2021 at 11:10"}],
             "term": "Submitted on:",
         }
 
@@ -31,10 +31,10 @@ def test_metadata_survey_type_default(app: Flask):
         )
         assert len(metadata) == 2
         assert metadata[0] == {
-            "descriptions": [{"description": "17 August 2021 11:10"}],
+            "descriptions": [{"description": "17 August 2021 at 11:10"}],
             "term": "Submitted on:",
         }
         assert metadata[1] == {
-            "descriptions": [{"description": "6b6f-90e6-6c27-4c76"}],
+            "descriptions": [{"description": "6B6F - 90E6 - 6C27 - 4C76"}],
             "term": "Submission reference:",
         }

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2021-08-16 14:11+0100\n"
+"POT-Creation-Date: 2021-08-17 15:07+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -437,6 +437,10 @@ msgid "Submitted on:"
 msgstr ""
 
 #: app/views/contexts/submission_metadata_context.py:18
+msgid "{date} at {time}"
+msgstr ""
+
+#: app/views/contexts/submission_metadata_context.py:25
 msgid "Submission reference:"
 msgstr ""
 
@@ -903,19 +907,19 @@ msgstr ""
 msgid "We’ve received your answers"
 msgstr ""
 
-#: templates/thank-you.html:18
+#: templates/thank-you.html:17
 msgid "Thank you for completing the {survey_title}"
 msgstr ""
 
-#: templates/thank-you.html:32
+#: templates/thank-you.html:31
 msgid "Your answers will be processed in the next few weeks."
 msgstr ""
 
-#: templates/thank-you.html:33
+#: templates/thank-you.html:32
 msgid "We may contact you to query your answers via phone or secure message."
 msgstr ""
 
-#: templates/thank-you.html:34
+#: templates/thank-you.html:33
 msgid "For more information on how we use this data."
 msgstr ""
 
