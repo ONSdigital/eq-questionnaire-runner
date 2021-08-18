@@ -349,12 +349,11 @@ def process_answer(answer, page_spec, long_names, page_name):
     if not answer_name.replace("Answer", "").isdigit():
         answer_name = answer_name.replace("Answer", "")
 
+    prefix = camel_case(answer_name) if answer_name and long_names else ""
     if answer_name is None or answer_name == "":
         answer_name = "answer"
 
     process_answer_legend(camel_case(answer_name), answer, page_spec)
-
-    prefix = camel_case(answer_name) if answer_name and long_names else ""
 
     if answer["type"] in ("Radio", "Checkbox"):
         process_options(answer["id"], answer["options"], page_spec, prefix)
