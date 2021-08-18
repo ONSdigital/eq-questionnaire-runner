@@ -4,4 +4,4 @@ def convert_tx_id(tx_id: str) -> str:
     :param tx_id: tx_id to be converted
     :return: String in the form of xxxx-xxxx-xxxx-xxxx
     """
-    return " - ".join(((tx_id[:4] + "-" + tx_id[4:])[:19]).split("-")).upper()
+    return ((tx_id[:4] + "-" + tx_id[4:])[:19]).replace("-", " - ").upper()
