@@ -158,7 +158,7 @@ def get_survey_config(
     if not language:
         language = get_locale().language
     if not theme:
-        theme = cookie_session.get("theme", current_app.config["SURVEY_TYPE"])
+        theme = get_survey_type()
 
     return survey_config_mapping(theme, language)
 
@@ -184,3 +184,7 @@ def render_template(template: str, **kwargs: Union[str, Mapping]) -> str:
         **context,
         **kwargs,
     )
+
+
+def get_survey_type() -> str:
+    return cookie_session.get("theme", current_app.config["SURVEY_TYPE"])

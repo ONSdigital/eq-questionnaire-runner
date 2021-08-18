@@ -5,10 +5,11 @@ from flask import session as cookie_session
 from flask_babel import gettext
 
 from app.data_models.session_store import SessionStore
+from app.helpers.template_helpers import get_survey_type
 from app.questionnaire import QuestionnaireSchema
 from app.views.contexts.thank_you_context import (
     build_census_thank_you_context,
-    build_default_thank_you_context,
+    build_thank_you_context,
 )
 from app.views.handlers.confirmation_email import (
     ConfirmationEmail,
@@ -51,8 +52,8 @@ class ThankYou:
 
     def get_context(self):
         if not self._is_census_theme:
-            return build_default_thank_you_context(
-                self._session_store.session_data, self._submitted_at
+            return build_thank_you_context(
+                self._session_store.session_data, self._submitted_at, get_survey_type()
             )
 
         confirmation_email_form = (

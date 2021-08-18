@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2021-08-05 08:48+0100\n"
+"POT-Creation-Date: 2021-08-17 15:07+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,26 +17,26 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 2.9.1\n"
 
-#: app/forms/validators.py:341 app/jinja_filters.py:95
+#: app/forms/validators.py:341 app/jinja_filters.py:94
 #, python-format
 msgid "%(num)s year"
 msgid_plural "%(num)s years"
 msgstr[0] ""
 msgstr[1] ""
 
-#: app/forms/validators.py:345 app/jinja_filters.py:103
+#: app/forms/validators.py:345 app/jinja_filters.py:102
 #, python-format
 msgid "%(num)s month"
 msgid_plural "%(num)s months"
 msgstr[0] ""
 msgstr[1] ""
 
-#: app/jinja_filters.py:146
+#: app/jinja_filters.py:144
 #, python-format
 msgid "%(date)s at %(time)s"
 msgstr ""
 
-#: app/jinja_filters.py:157
+#: app/jinja_filters.py:155
 #, python-format
 msgid "%(from_date)s to %(to_date)s"
 msgstr ""
@@ -432,6 +432,18 @@ msgstr ""
 msgid " (You)"
 msgstr ""
 
+#: app/views/contexts/submission_metadata_context.py:12
+msgid "Submitted on:"
+msgstr ""
+
+#: app/views/contexts/submission_metadata_context.py:18
+msgid "{date} at {time}"
+msgstr ""
+
+#: app/views/contexts/submission_metadata_context.py:25
+msgid "Submission reference:"
+msgstr ""
+
 #: app/views/contexts/submit_questionnaire_context.py:19
 msgid "Check your answers and submit"
 msgstr ""
@@ -442,6 +454,20 @@ msgstr ""
 
 #: app/views/contexts/submit_questionnaire_context.py:25
 msgid "Please submit this survey to complete it"
+msgstr ""
+
+#: app/views/contexts/thank_you_context.py:19
+msgid "Your answers have been submitted."
+msgstr ""
+
+#: app/views/contexts/thank_you_context.py:21
+msgid ""
+"Your answers have been submitted for <span>{company_name}</span> "
+"({trading_name})."
+msgstr ""
+
+#: app/views/contexts/thank_you_context.py:25
+msgid "Your answers have been submitted for <span>{company_name}</span>."
 msgstr ""
 
 #: app/views/handlers/confirm_email.py:32
@@ -694,7 +720,7 @@ msgstr ""
 msgid "Confirm mobile number"
 msgstr ""
 
-#: app/views/handlers/thank_you.py:22 templates/census-thank-you.html:24
+#: app/views/handlers/thank_you.py:24 templates/census-thank-you.html:24
 msgid "Thank you for completing the census"
 msgstr ""
 
@@ -877,39 +903,23 @@ msgstr ""
 msgid "Return to your account"
 msgstr ""
 
-#: templates/thank-you.html:4
+#: templates/thank-you.html:5
 msgid "We’ve received your answers"
 msgstr ""
 
-#: templates/thank-you.html:9
-msgid "Submission successful"
+#: templates/thank-you.html:17
+msgid "Thank you for completing the {survey_title}"
 msgstr ""
 
-#: templates/thank-you.html:21
-msgid ""
-"Your answers were submitted for <span>{ru_name}</span> "
-"({trading_as_name}) on {submitted_date_time}"
-msgstr ""
-
-#: templates/thank-you.html:26
-msgid ""
-"Your answers were submitted for <span>{ru_name}</span> on "
-"{submitted_date_time}"
-msgstr ""
-
-#: templates/thank-you.html:32
-msgid "Transaction ID: <b>{transaction_id}</b>"
-msgstr ""
-
-#: templates/thank-you.html:35
+#: templates/thank-you.html:31
 msgid "Your answers will be processed in the next few weeks."
 msgstr ""
 
-#: templates/thank-you.html:36
+#: templates/thank-you.html:32
 msgid "We may contact you to query your answers via phone or secure message."
 msgstr ""
 
-#: templates/thank-you.html:37
+#: templates/thank-you.html:33
 msgid "For more information on how we use this data."
 msgstr ""
 
