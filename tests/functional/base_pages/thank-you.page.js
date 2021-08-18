@@ -9,6 +9,10 @@ class ThankYouPage extends BasePage {
     return '[data-qa="title"]';
   }
 
+  metadata() {
+    return ".metadata";
+  }
+
   exitButton() {
     return '[data-qa="btn-exit"]';
   }
