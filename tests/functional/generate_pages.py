@@ -413,9 +413,7 @@ def process_final_summary(
 
         for section in schema_data["sections"]:
             write_summary_spec(
-                page_spec,
-                section,
-                collapsible=collapsible,
+                page_spec, section, collapsible=collapsible, answers_are_editable=True
             )
 
         if collapsible:
@@ -450,7 +448,6 @@ def process_view_submitted_response(schema_data, require_path, dir_out, spec_fil
                 page_spec,
                 section,
                 collapsible=False,
-                summary_type="view_submitted_response",
             )
 
         page_spec.write(FOOTER.substitute(block_context))
@@ -465,7 +462,7 @@ def process_definition(context, page_spec):
     page_spec.write(DEFINITION_BUTTON_GETTER.safe_substitute(context))
 
 
-def write_summary_spec(page_spec, section, collapsible, summary_type="final"):
+def write_summary_spec(page_spec, section, collapsible, answers_are_editable=False):
     list_summaries = [
         summary_element
         for summary_element in section.get("summary", {}).get("items", [])
@@ -473,7 +470,7 @@ def write_summary_spec(page_spec, section, collapsible, summary_type="final"):
     ]
     for list_block in list_summaries:
         list_context = {"list_name": list_block["for_list"]}
-        if summary_type != "view_submitted_response":
+        if answers_are_editable:
             page_spec.write(
                 LIST_SECTION_SUMMARY_ADD_LINK_GETTER.substitute(list_context)
             )
@@ -504,7 +501,7 @@ def write_summary_spec(page_spec, section, collapsible, summary_type="final"):
 
                     page_spec.write(SUMMARY_ANSWER_GETTER.substitute(answer_context))
 
-                    if summary_type != "view_submitted_response":
+                    if answers_are_editable:
                         page_spec.write(
                             SUMMARY_ANSWER_EDIT_GETTER.substitute(answer_context)
                         )
@@ -832,7 +829,10 @@ def process_section_summary(
         page_spec.write(CONSTRUCTOR.substitute(section_context))
         page_spec.write(SECTION_SUMMARY_PAGE_URL)
         write_summary_spec(
-            page_spec, section, collapsible=False, summary_type="section"
+            page_spec,
+            section,
+            collapsible=False,
+            answers_are_editable=True,
         )
         page_spec.write(FOOTER.substitute(section_context))
 
