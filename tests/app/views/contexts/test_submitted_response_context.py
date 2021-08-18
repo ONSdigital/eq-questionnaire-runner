@@ -36,7 +36,7 @@ class TestViewSubmittedResponseContext(AppContextTestCase):
         )
 
         assert context["submitted_at"] == submitted_at_date_time
-        assert context["tx_id"] == "1234-56789"
+        assert context["tx_id"] == "1234 - 56789"
         assert context["summary"]["answers_are_editable"] == False
         assert context["summary"]["collapsible"] == False
         assert (
