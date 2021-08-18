@@ -22,7 +22,6 @@ class TestQuestionnaireInterstitial(IntegrationTestCase):
         self.assertInUrl(SUBMIT_URL_PATH)
         self.post()
         self.assertInUrl(THANK_YOU_URL_PATH)
-        self.assertInBody("Submission successful")
 
     def test_interstitial_definition(self):
         self.launchSurvey("test_interstitial_definition")

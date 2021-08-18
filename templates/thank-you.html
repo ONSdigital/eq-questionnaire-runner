@@ -1,35 +1,25 @@
 {% extends 'layouts/_base.html' %}
 {% from 'components/panel/_macro.njk' import onsPanel %}
+{% from "components/metadata/_macro.njk" import onsMetadata %}
 
 {% set page_title = _("We’ve received your answers") %}
 {% set hide_sign_out_button = content.hide_sign_out_button %}
 
 {% block main %}
 
-  <h1 data-qa="title">{{ _("Submission successful") }}</h1>
-
   {% call onsPanel({
-    "spacious": true,
     "type": "success",
     "icon": "check",
     "iconSize": "xl",
-    "classes": "u-mb-s"
+    "classes": "u-mb-m"
     })
   %}
+    <h1 data-qa="title">{{ _("Thank you for completing the {survey_title}").format(
+      survey_title = survey_title)}}</h1>
     <p data-qa="guidance">
-      {% if content.trad_as %}
-        {{ _("Your answers were submitted for <span>{ru_name}</span> ({trading_as_name}) on {submitted_date_time}").format(
-          ru_name = content.ru_name,
-          trading_as_name = content.trad_as,
-          submitted_date_time=content.submitted_at|format_datetime) }}
-      {% else %}
-        {{ _("Your answers were submitted for <span>{ru_name}</span> on {submitted_date_time}").format(
-          ru_name = content.ru_name,
-          submitted_date_time=content.submitted_at|format_datetime) }}
-      {% endif %}
+      {{ content.submission_text }}
     </p>
-
-    <p>{{ _("Transaction ID: <b>{transaction_id}</b>").format(transaction_id=content.tx_id)}}</p>
+      {{ onsMetadata(content.metadata)}}
   {% endcall %}
 
   <p class="u-mb-s">{{ _("Your answers will be processed in the next few weeks.") }}
