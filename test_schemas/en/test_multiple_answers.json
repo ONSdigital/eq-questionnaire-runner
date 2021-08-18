@@ -40,7 +40,7 @@
                             "type": "Question",
                             "id": "about-you-block",
                             "question": {
-                                "id": "name-question",
+                                "id": "about-you-question",
                                 "title": "About You",
                                 "type": "General",
                                 "answers": [
@@ -181,7 +181,7 @@
                             "type": "Question",
                             "id": "age-block",
                             "question": {
-                                "id": "name-question",
+                                "id": "age-question",
                                 "title": "How old are you?",
                                 "type": "General",
                                 "answers": [
