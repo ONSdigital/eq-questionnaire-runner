@@ -33,8 +33,7 @@
         "button": "Submission button",
         "guidance": "Submission guidance",
         "title": "Submission title",
-        "warning": "Submission warning",
-        "view_submitted_response": true
+        "warning": "Submission warning"
     },
     "sections": [
         {

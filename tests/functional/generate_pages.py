@@ -155,18 +155,6 @@ ANSWER_UNIT_TYPE_GETTER = Template(
 """
 )
 
-SECTION_SUMMARY_ANSWER_GETTER = Template(
-    r"""  ${answerName}() { return `[data-qa="${answerId}"]`; }
-
-"""
-)
-
-SECTION_SUMMARY_ANSWER_EDIT_GETTER = Template(
-    r"""  ${answerName}Edit() { return `[data-qa="${answerId}-edit"]`; }
-
-"""
-)
-
 SUMMARY_ANSWER_GETTER = Template(
     r"""  ${answerName}() { return `[data-qa="${answerId}"]`; }
 
@@ -425,14 +413,42 @@ def process_final_summary(
 
         for section in schema_data["sections"]:
             write_summary_spec(
-                page_spec,
-                section,
-                collapsible=collapsible,
-                section_summary=section_summary,
+                page_spec, section, collapsible=collapsible, answers_are_editable=True
             )
 
         if collapsible:
             page_spec.write(COLLAPSIBLE_SUMMARY_GETTER)
+
+        page_spec.write(FOOTER.substitute(block_context))
+
+        if spec_file:
+            append_spec_page_import(block_context, spec_file)
+
+
+def process_view_submitted_response(schema_data, require_path, dir_out, spec_file):
+    page_filename = "view-submitted-response.page.js"
+    page_path = os.path.join(dir_out, page_filename)
+
+    logger.info("creating %s...", page_path)
+
+    with open(page_path, "w") as page_spec:
+        block_context = build_and_get_base_page_context(
+            page_dir=dir_out.split("/")[-1],
+            page_spec=page_spec,
+            base_page="BasePage",
+            base_page_file="base.page.js",
+            page_name="ViewSubmittedResponse",
+            page_filename=page_filename,
+            page_id="view-submitted-response",
+            relative_require=require_path,
+        )
+
+        for section in schema_data["sections"]:
+            write_summary_spec(
+                page_spec,
+                section,
+                collapsible=False,
+            )
 
         page_spec.write(FOOTER.substitute(block_context))
 
@@ -446,7 +462,7 @@ def process_definition(context, page_spec):
     page_spec.write(DEFINITION_BUTTON_GETTER.safe_substitute(context))
 
 
-def write_summary_spec(page_spec, section, collapsible, section_summary):
+def write_summary_spec(page_spec, section, collapsible, answers_are_editable=False):
     list_summaries = [
         summary_element
         for summary_element in section.get("summary", {}).get("items", [])
@@ -454,11 +470,16 @@ def write_summary_spec(page_spec, section, collapsible, section_summary):
     ]
     for list_block in list_summaries:
         list_context = {"list_name": list_block["for_list"]}
-        page_spec.write(LIST_SECTION_SUMMARY_ADD_LINK_GETTER.substitute(list_context))
-        page_spec.write(LIST_SECTION_SUMMARY_EDIT_LINK_GETTER.substitute(list_context))
-        page_spec.write(
-            LIST_SECTION_SUMMARY_REMOVE_LINK_GETTER.substitute(list_context)
-        )
+        if answers_are_editable:
+            page_spec.write(
+                LIST_SECTION_SUMMARY_ADD_LINK_GETTER.substitute(list_context)
+            )
+            page_spec.write(
+                LIST_SECTION_SUMMARY_EDIT_LINK_GETTER.substitute(list_context)
+            )
+            page_spec.write(
+                LIST_SECTION_SUMMARY_REMOVE_LINK_GETTER.substitute(list_context)
+            )
         page_spec.write(LIST_SECTION_SUMMARY_LABEL_GETTER.substitute(list_context))
 
     for group in section["groups"]:
@@ -477,21 +498,13 @@ def write_summary_spec(page_spec, section, collapsible, section_summary):
                         "answerName": camel_case(answer_name),
                         "answerId": answer["id"],
                     }
-                    if section_summary:
-                        page_spec.write(
-                            SECTION_SUMMARY_ANSWER_GETTER.substitute(answer_context)
-                        )
-                        page_spec.write(
-                            SECTION_SUMMARY_ANSWER_EDIT_GETTER.substitute(
-                                answer_context
-                            )
-                        )
 
                     page_spec.write(SUMMARY_ANSWER_GETTER.substitute(answer_context))
 
-                    page_spec.write(
-                        SUMMARY_ANSWER_EDIT_GETTER.substitute(answer_context)
-                    )
+                    if answers_are_editable:
+                        page_spec.write(
+                            SUMMARY_ANSWER_EDIT_GETTER.substitute(answer_context)
+                        )
 
                 page_spec.write(SUMMARY_QUESTION_GETTER.substitute(question_context))
 
@@ -753,6 +766,9 @@ def process_schema(in_schema, out_dir, spec_file, require_path=".."):
 
     process_questionnaire_flow(data, require_path, out_dir, spec_file)
 
+    if data.get("submission", {}).get("view_response"):
+        process_view_submitted_response(data, require_path, out_dir, spec_file)
+
     for section in data["sections"]:
         if "summary" in section:
             process_section_summary(
@@ -812,7 +828,12 @@ def process_section_summary(
         page_spec.write(CLASS_NAME.substitute(section_context))
         page_spec.write(CONSTRUCTOR.substitute(section_context))
         page_spec.write(SECTION_SUMMARY_PAGE_URL)
-        write_summary_spec(page_spec, section, collapsible=False, section_summary=True)
+        write_summary_spec(
+            page_spec,
+            section,
+            collapsible=False,
+            answers_are_editable=True,
+        )
         page_spec.write(FOOTER.substitute(section_context))
 
         if spec_file:
