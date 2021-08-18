@@ -501,13 +501,6 @@ def write_summary_spec(page_spec, section, collapsible, summary_type="final"):
                         "answerName": camel_case(answer_name),
                         "answerId": answer["id"],
                     }
-                    if summary_type == "section":
-                        page_spec.write(
-                            SUMMARY_ANSWER_GETTER.substitute(answer_context)
-                        )
-                        page_spec.write(
-                            SUMMARY_ANSWER_EDIT_GETTER.substitute(answer_context)
-                        )
 
                     page_spec.write(SUMMARY_ANSWER_GETTER.substitute(answer_context))
 
