@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2021-08-17 15:07+0100\n"
+"POT-Creation-Date: 2021-08-18 09:26+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -436,23 +436,23 @@ msgstr ""
 msgid "Submitted on:"
 msgstr ""
 
-#: app/views/contexts/submission_metadata_context.py:18
+#: app/views/contexts/submission_metadata_context.py:15
 msgid "{date} at {time}"
 msgstr ""
 
-#: app/views/contexts/submission_metadata_context.py:25
+#: app/views/contexts/submission_metadata_context.py:23
 msgid "Submission reference:"
 msgstr ""
 
-#: app/views/contexts/submit_questionnaire_context.py:19
+#: app/views/contexts/submit_questionnaire_context.py:14
 msgid "Check your answers and submit"
 msgstr ""
 
-#: app/views/contexts/submit_questionnaire_context.py:22
+#: app/views/contexts/submit_questionnaire_context.py:17
 msgid "Submit answers"
 msgstr ""
 
-#: app/views/contexts/submit_questionnaire_context.py:25
+#: app/views/contexts/submit_questionnaire_context.py:20
 msgid "Please submit this survey to complete it"
 msgstr ""
 
@@ -724,6 +724,10 @@ msgstr ""
 msgid "Thank you for completing the census"
 msgstr ""
 
+#: app/views/handlers/view_submitted_response.py:53
+msgid "View Submitted Response"
+msgstr ""
+
 #: templates/calculatedsummary.html:14
 msgid "Please review your answers and confirm these are correct"
 msgstr ""
@@ -840,7 +844,7 @@ msgstr ""
 msgid "Done"
 msgstr ""
 
-#: templates/feedback.html:15
+#: templates/feedback.html:15 templates/view-submitted-response.html:15
 msgid "Back"
 msgstr ""
 
@@ -911,16 +915,32 @@ msgstr ""
 msgid "Thank you for completing the {survey_title}"
 msgstr ""
 
-#: templates/thank-you.html:31
+#: templates/thank-you.html:25
 msgid "Your answers will be processed in the next few weeks."
 msgstr ""
 
-#: templates/thank-you.html:32
+#: templates/thank-you.html:26
 msgid "We may contact you to query your answers via phone or secure message."
 msgstr ""
 
-#: templates/thank-you.html:33
+#: templates/thank-you.html:27
 msgid "For more information on how we use this data."
+msgstr ""
+
+#: templates/view-submitted-response.html:28
+msgid "Your answers were submitted for <span>{ru_name}</span> ({trading_as_name})"
+msgstr ""
+
+#: templates/view-submitted-response.html:32
+msgid "Your answers were submitted for <span>{ru_name}</span>"
+msgstr ""
+
+#: templates/view-submitted-response.html:36
+msgid "<b>Submitted on:</b> {submitted_at}"
+msgstr ""
+
+#: templates/view-submitted-response.html:37
+msgid "<b>Submission reference:</b> {transaction_id}"
 msgstr ""
 
 #: templates/errors/403.html:7
@@ -1016,7 +1036,7 @@ msgid "This page is no longer available"
 msgstr ""
 
 #: templates/errors/submission-complete.html:7
-msgid "Your census has been submitted"
+msgid "Your questionnaire has been submitted"
 msgstr ""
 
 #: templates/errors/submission-failed.html:9
