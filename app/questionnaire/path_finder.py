@@ -213,7 +213,7 @@ def should_goto_new(
         location,
         routing_path_block_ids,
     )
-    if when_rule := rule.get("when", None):
+    if when_rule := rule.get("when"):
         operator = list(when_rule.keys())[0]
         return when_rule_evaluator.evaluate(
             rule={operator: [when_rule[operator][1], when_rule[operator][0]]}
