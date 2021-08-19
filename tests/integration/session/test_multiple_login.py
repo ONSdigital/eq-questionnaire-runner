@@ -100,7 +100,7 @@ class TestMultipleLogin(MultipleClientTestCase):
         self.post(self.client_a)
         self.post(self.client_a)
 
-        # user B tries to submit value, but gets redirected to thank you
+        # user B tries to submit an answer, but gets redirected to the thank you page
         self.post(self.client_b, {"name-answer": "bar baz"})
         last_url_b = self.cache[self.client_b]["last_url"]
         self.assertIn(THANK_YOU_URL_PATH, last_url_b)
