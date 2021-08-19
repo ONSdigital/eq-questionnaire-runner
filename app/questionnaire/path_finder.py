@@ -7,11 +7,7 @@ from app.questionnaire.location import Location
 from app.questionnaire.questionnaire_schema import QuestionnaireSchema
 from app.questionnaire.routing.when_rule_evaluator import WhenRuleEvaluator
 from app.questionnaire.routing_path import RoutingPath
-from app.questionnaire.rules import (
-    evaluate_goto,
-    evaluate_skip_conditions,
-    is_goto_rule,
-)
+from app.questionnaire.rules import evaluate_goto, evaluate_skip_conditions
 
 
 class PathFinder:
@@ -143,10 +139,11 @@ class PathFinder:
             location=this_location,
             routing_path_block_ids=routing_path_block_ids,
         )
-        if any("goto" in rule for rule in routing_rules):
-            for rule in filter(is_goto_rule, routing_rules):
+        for rule in routing_rules:
+            if "goto" in rule:
+                rule = rule["goto"]
                 should_goto = evaluate_goto(
-                    rule["goto"],
+                    rule,
                     self.schema,
                     self.metadata,
                     self.answer_store,
@@ -154,45 +151,32 @@ class PathFinder:
                     current_location=this_location,
                     routing_path_block_ids=routing_path_block_ids,
                 )
+            else:
+                should_goto = should_goto_new(rule, when_rule_evaluator)
 
-                if should_goto:
-                    if rule["goto"].get("section") == "End":
-                        return None
+            if should_goto:
+                if rule.get("section") == "End":
+                    return None
 
-                    next_block_id = self._get_next_block_id(rule)
-                    next_block_index = PathFinder._block_index_for_block_id(
-                        blocks, next_block_id
-                    )
-                    next_precedes_current = (
-                        next_block_index is not None and next_block_index < block_index
-                    )
-
-                    if next_precedes_current:
-                        self._remove_rule_answers(rule["goto"], this_location)
-                        routing_path_block_ids.append(next_block_id)
-                        return None
-
-                    return next_block_index
-        else:
-            for rule in routing_rules:
-                should_goto = should_goto_new(
-                    rule,
-                    when_rule_evaluator,
+                next_block_id = self._get_next_block_id(rule)
+                next_block_index = PathFinder._block_index_for_block_id(
+                    blocks, next_block_id
                 )
-                if should_goto:
-                    if rule.get("section") == "End":
-                        return None
-                    next_block_id = rule["block"]
-                    next_block_index = PathFinder._block_index_for_block_id(
-                        blocks, next_block_id
-                    )
+                next_precedes_current = (
+                    next_block_index is not None and next_block_index < block_index
+                )
 
-                    return next_block_index
+                if next_precedes_current:
+                    self._remove_rule_answers(rule, this_location)
+                    routing_path_block_ids.append(next_block_id)
+                    return None
+
+                return next_block_index
 
     def _get_next_block_id(self, rule):
-        if "group" in rule["goto"]:
-            return self.schema.get_first_block_id_for_group(rule["goto"]["group"])
-        return rule["goto"]["block"]
+        if "group" in rule:
+            return self.schema.get_first_block_id_for_group(rule["group"])
+        return rule["block"]
 
     def _remove_rule_answers(self, goto_rule, this_location):
         # We're jumping backwards, so need to delete all answers from which
