@@ -33,11 +33,11 @@ class WhenRuleEvaluator:
             use_default_answer=True,
         )
 
-    def _evaluate(self, rule: dict[str, list]) -> Union[bool, Optional[date]]:
+    def _evaluate(self, rule: dict[str, Union[list, tuple]]) -> Union[bool, Optional[date]]:
         operator = Operator(next(iter(rule)))
         operands = rule[operator.name]
 
-        if not isinstance(operands, list):
+        if not isinstance(operands, list) and not isinstance(operands, tuple):
             raise TypeError(
                 f"The rule is invalid, operands should be of type list and not {type(operands)}"
             )
@@ -58,5 +58,5 @@ class WhenRuleEvaluator:
             else:
                 yield operand
 
-    def evaluate(self, rule: dict[str, list]) -> Union[bool, Optional[date]]:
+    def evaluate(self, rule: dict[str, Union[list, tuple]]) -> Union[bool, Optional[date]]:
         return self._evaluate(rule)
