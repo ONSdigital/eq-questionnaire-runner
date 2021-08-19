@@ -48,7 +48,7 @@ class WhenRuleEvaluator:
         return operator.evaluate(resolved_operands)
 
     def get_resolved_operands(
-        self, operands: list[ValueSourceTypes]
+        self, operands: Union[list[ValueSourceTypes], tuple]
     ) -> Generator[Union[bool, Optional[date], ValueSourceTypes], None, None]:
         for operand in operands:
             if isinstance(operand, dict) and "source" in operand:
