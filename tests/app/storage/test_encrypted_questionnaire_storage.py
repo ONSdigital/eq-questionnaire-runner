@@ -42,7 +42,7 @@ class TestEncryptedQuestionnaireStorage(AppContextTestCase):
         )
 
     def test_store_and_get_with_submitted_at(self):
-        now = datetime.now(timezone.utc)
+        now = datetime.now(timezone.utc).replace(microsecond=0)
         encrypted = EncryptedQuestionnaireStorage(
             user_id="1", user_ik="2", pepper="pepper"
         )
