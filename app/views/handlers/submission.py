@@ -22,7 +22,7 @@ class SubmissionHandler:
 
     @cached_property
     def submitted_at(self):
-        return datetime.now(timezone.utc)
+        return datetime.now(timezone.utc).replace(microsecond=0)
 
     def submit_questionnaire(self):
         payload = self.get_payload()
