@@ -5,6 +5,7 @@ from app.data_models.list_store import ListStore
 from app.data_models.progress_store import ProgressStore
 from app.questionnaire.location import Location
 from app.questionnaire.questionnaire_schema import QuestionnaireSchema
+from app.questionnaire.routing.when_rule_evaluator import WhenRuleEvaluator
 from app.questionnaire.routing_path import RoutingPath
 from app.questionnaire.rules import (
     evaluate_goto,
@@ -134,35 +135,56 @@ class PathFinder:
     def _evaluate_routing_rules(
         self, this_location, blocks, routing_rules, block_index, routing_path_block_ids
     ):
-        for rule in filter(is_goto_rule, routing_rules):
-            should_goto = evaluate_goto(
-                rule["goto"],
-                self.schema,
-                self.metadata,
-                self.answer_store,
-                self.list_store,
-                current_location=this_location,
-                routing_path_block_ids=routing_path_block_ids,
-            )
-
-            if should_goto:
-                if rule["goto"].get("section") == "End":
-                    return None
-
-                next_block_id = self._get_next_block_id(rule)
-                next_block_index = PathFinder._block_index_for_block_id(
-                    blocks, next_block_id
-                )
-                next_precedes_current = (
-                    next_block_index is not None and next_block_index < block_index
+        if any("goto" in rule for rule in routing_rules):
+            for rule in filter(is_goto_rule, routing_rules):
+                should_goto = evaluate_goto(
+                    rule["goto"],
+                    self.schema,
+                    self.metadata,
+                    self.answer_store,
+                    self.list_store,
+                    current_location=this_location,
+                    routing_path_block_ids=routing_path_block_ids,
                 )
 
-                if next_precedes_current:
-                    self._remove_rule_answers(rule["goto"], this_location)
-                    routing_path_block_ids.append(next_block_id)
-                    return None
+                if should_goto:
+                    if rule["goto"].get("section") == "End":
+                        return None
 
-                return next_block_index
+                    next_block_id = self._get_next_block_id(rule)
+                    next_block_index = PathFinder._block_index_for_block_id(
+                        blocks, next_block_id
+                    )
+                    next_precedes_current = (
+                        next_block_index is not None and next_block_index < block_index
+                    )
+
+                    if next_precedes_current:
+                        self._remove_rule_answers(rule["goto"], this_location)
+                        routing_path_block_ids.append(next_block_id)
+                        return None
+
+                    return next_block_index
+        else:
+            for rule in routing_rules:
+                should_goto = should_goto_new(
+                    rule,
+                    self.schema,
+                    self.answer_store,
+                    self.list_store,
+                    self.metadata,
+                    this_location,
+                    routing_path_block_ids,
+                )
+                if should_goto:
+                    if rule.get("section") == "End":
+                        return None
+                    next_block_id = rule["block"]
+                    next_block_index = PathFinder._block_index_for_block_id(
+                        blocks, next_block_id
+                    )
+
+                    return next_block_index
 
     def _get_next_block_id(self, rule):
         if "group" in rule["goto"]:
@@ -178,3 +200,23 @@ class PathFinder:
                     self.answer_store.remove_answer(condition["id"])
 
         self.progress_store.remove_completed_location(location=this_location)
+
+
+def should_goto_new(
+    rule, schema, answer_store, list_store, metadata, location, routing_path_block_ids
+):
+    when_rule_evaluator = WhenRuleEvaluator(
+        schema,
+        answer_store,
+        list_store,
+        metadata,
+        location,
+        routing_path_block_ids,
+    )
+    if when_rule := rule.get("when", None):
+        operator = list(when_rule.keys())[0]
+        return when_rule_evaluator.evaluate(
+            rule={operator: [when_rule[operator][1], when_rule[operator][0]]}
+        )
+
+    return True
