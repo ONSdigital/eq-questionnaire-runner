@@ -55,7 +55,7 @@ describe("Multiple Answers", () => {
       expect($(SubmitPage.ageEstimateAnswer()).getText()).to.equal("This age is an estimate");
     });
 
-    it("When I click 'Change' an answer, Then I should be taken to the correct page and be able to edit my answer", () => {
+    it("When I click 'Change' an answer, Then I should be taken to the correct page and the answer input should be focused", () => {
       $(SubmitPage.currencyAnswerEdit()).click();
       expect(browser.getUrl()).to.contain(AboutYou.url());
       expect(browser.getUrl()).to.contain(AboutYou.currency());
@@ -69,6 +69,8 @@ describe("Multiple Answers", () => {
     });
 
     it("When I am on the question page, Then all answers should have a label/legend", () => {
+      // Checkbox legend is not asserted as it is currently rendering as a label. This will be fixed when `instruction` is added to Checkbox answers
+
       expect($(AboutYou.dateLegend()).getText()).to.equal("What is your date of birth?");
       expect($(AboutYou.monthYearDateLegend()).getText()).to.equal("When would you like the car by?");
       expect($(AboutYou.radioLegend()).getText()).to.equal("Would you like the sports package?");
