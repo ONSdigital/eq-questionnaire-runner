@@ -33,7 +33,9 @@ class WhenRuleEvaluator:
             use_default_answer=True,
         )
 
-    def _evaluate(self, rule: dict[str, Union[list, tuple]]) -> Union[bool, Optional[date]]:
+    def _evaluate(
+        self, rule: dict[str, Union[list, tuple]]
+    ) -> Union[bool, Optional[date]]:
         operator = Operator(next(iter(rule)))
         operands = rule[operator.name]
 
@@ -58,5 +60,7 @@ class WhenRuleEvaluator:
             else:
                 yield operand
 
-    def evaluate(self, rule: dict[str, Union[list, tuple]]) -> Union[bool, Optional[date]]:
+    def evaluate(
+        self, rule: dict[str, Union[list, tuple]]
+    ) -> Union[bool, Optional[date]]:
         return self._evaluate(rule)
