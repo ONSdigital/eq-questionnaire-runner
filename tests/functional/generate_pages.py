@@ -125,7 +125,7 @@ ANSWER_LABEL_GETTER = Template(
 
 ANSWER_ERROR_GETTER = Template(
     r"""  ${answerName}ErrorItem() {
-    return `[data-qa=error-body] div.panel__body > ol`;
+    return `#${answerId}-error .panel__body .panel__error`;
   }
 
 """
@@ -284,7 +284,7 @@ def get_all_questions(block):
     return all_questions
 
 
-def process_answer_legend(answer_name, answer, page_spec):
+def process_answer_legend(answer_context, answer, page_spec):
     single_duration_answer = answer["type"] == "Duration" and len(answer["units"]) == 1
     single_checkbox_answer = (
         answer["type"] == "Checkbox" and len(answer["options"]) == 1
@@ -299,8 +299,7 @@ def process_answer_legend(answer_name, answer, page_spec):
     ):
         return
 
-    context = {"answerName": answer_name, "answerId": answer["id"]}
-    page_spec.write(ANSWER_LEGEND_GETTER.substitute(context))
+    page_spec.write(ANSWER_LEGEND_GETTER.substitute(answer_context))
 
 
 def process_options(answer_id, options, page_spec, base_prefix):
@@ -341,7 +340,12 @@ def process_answer(answer, page_spec, long_names, page_name):
     if answer_name is None or answer_name == "":
         answer_name = "answer"
 
-    process_answer_legend(camel_case(answer_name), answer, page_spec)
+    answer_context = {
+        "answerName": camel_case(answer_name),
+        "answerId": answer["id"],
+    }
+    process_answer_legend(answer_context, answer, page_spec)
+    page_spec.write(ANSWER_ERROR_GETTER.substitute(answer_context))
 
     if answer["type"] in ("Radio", "Checkbox"):
         process_options(answer["id"], answer["options"], page_spec, prefix)
@@ -372,21 +376,15 @@ def process_answer(answer, page_spec, long_names, page_name):
         "Unit",
         "Dropdown",
     }:
-        answer_context = {
-            "answerName": camel_case(answer_name),
-            "answerId": answer["id"],
-        }
-
         page_spec.write(ANSWER_GETTER.substitute(answer_context))
         page_spec.write(ANSWER_LABEL_GETTER.substitute(answer_context))
         page_spec.write(ANSWER_LABEL_DESCRIPTION_GETTER.substitute(answer_context))
-        page_spec.write(ANSWER_ERROR_GETTER.substitute(answer_context))
 
         if answer["type"] == "Unit":
             page_spec.write(ANSWER_UNIT_TYPE_GETTER.substitute(answer_context))
 
     else:
-        raise Exception("Answer type {} not configured".format(answer["type"]))
+        raise NotImplementedError(f"Answer type {answer['type']} not configured")
 
 
 def process_question(question, page_spec, num_questions, page_name):
