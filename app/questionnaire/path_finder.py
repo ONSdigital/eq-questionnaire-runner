@@ -135,6 +135,14 @@ class PathFinder:
     def _evaluate_routing_rules(
         self, this_location, blocks, routing_rules, block_index, routing_path_block_ids
     ):
+        when_rule_evaluator = WhenRuleEvaluator(
+            self.schema,
+            self.answer_store,
+            self.list_store,
+            self.metadata,
+            location=this_location,
+            routing_path_block_ids=routing_path_block_ids,
+        )
         if any("goto" in rule for rule in routing_rules):
             for rule in filter(is_goto_rule, routing_rules):
                 should_goto = evaluate_goto(
@@ -169,12 +177,7 @@ class PathFinder:
             for rule in routing_rules:
                 should_goto = should_goto_new(
                     rule,
-                    self.schema,
-                    self.answer_store,
-                    self.list_store,
-                    self.metadata,
-                    this_location,
-                    routing_path_block_ids,
+                    when_rule_evaluator,
                 )
                 if should_goto:
                     if rule.get("section") == "End":
@@ -202,17 +205,7 @@ class PathFinder:
         self.progress_store.remove_completed_location(location=this_location)
 
 
-def should_goto_new(
-    rule, schema, answer_store, list_store, metadata, location, routing_path_block_ids
-):
-    when_rule_evaluator = WhenRuleEvaluator(
-        schema,
-        answer_store,
-        list_store,
-        metadata,
-        location,
-        routing_path_block_ids,
-    )
+def should_goto_new(rule, when_rule_evaluator):
     if when_rule := rule.get("when"):
         return when_rule_evaluator.evaluate(when_rule)
 
