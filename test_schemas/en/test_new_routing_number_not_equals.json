@@ -65,9 +65,7 @@
                                     }
                                 },
                                 {
-                                    "goto": {
-                                        "block": "incorrect-answer"
-                                    }
+                                    "block": "incorrect-answer"
                                 }
                             ]
                         },
