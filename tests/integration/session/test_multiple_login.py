@@ -6,7 +6,7 @@ from app.utilities.json import json_loads
 from tests.integration.integration_test_case import IntegrationTestCase
 
 # pylint: disable=arguments-differ
-from tests.integration.questionnaire import SUBMIT_URL_PATH
+from tests.integration.questionnaire import SUBMIT_URL_PATH, THANK_YOU_URL_PATH
 
 
 class MultipleClientTestCase(IntegrationTestCase):
@@ -75,7 +75,6 @@ class TestMultipleLogin(MultipleClientTestCase):
 
         self.cache = {self.client_a: {}, self.client_b: {}}
 
-    @pytest.mark.xfail
     def test_multiple_users_same_survey(self):
         """Tests that multiple sessions can be created which work on the same
         survey
@@ -101,10 +100,10 @@ class TestMultipleLogin(MultipleClientTestCase):
         self.post(self.client_a)
         self.post(self.client_a)
 
-        # user B tries to submit value
+        # user B tries to submit value, but gets redirected to thank you
         self.post(self.client_b, {"name-answer": "bar baz"})
-        last_response_b = self.cache[self.client_b]["last_response"]
-        self.assertEqual(last_response_b.status_code, 401)
+        last_url_b = self.cache[self.client_b]["last_url"]
+        self.assertIn(THANK_YOU_URL_PATH, last_url_b)
 
     def test_concurrent_users_same_survey_different_languages(self):
         """Tests that multiple sessions can be created which work on the same
