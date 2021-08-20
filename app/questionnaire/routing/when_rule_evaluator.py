@@ -58,7 +58,5 @@ class WhenRuleEvaluator:
             else:
                 yield operand
 
-    def evaluate(
-        self, rule: dict[str, Union[list, tuple]]
-    ) -> Union[bool, Optional[date]]:
+    def evaluate(self, rule: dict[str, Sequence]) -> Union[bool, Optional[date]]:
         return self._evaluate(rule)
