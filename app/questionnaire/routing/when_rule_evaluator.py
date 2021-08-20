@@ -1,6 +1,6 @@
 from dataclasses import dataclass
 from datetime import date
-from typing import Generator, Optional, Union
+from typing import Generator, Optional, Sequence, Union
 
 from app.data_models import AnswerStore, ListStore
 from app.questionnaire import Location, QuestionnaireSchema
