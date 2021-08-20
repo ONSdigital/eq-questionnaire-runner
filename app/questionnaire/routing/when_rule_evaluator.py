@@ -33,9 +33,7 @@ class WhenRuleEvaluator:
             use_default_answer=True,
         )
 
-    def _evaluate(
-        self, rule: dict[str, Union[list, tuple]]
-    ) -> Union[bool, Optional[date]]:
+    def _evaluate(self, rule: dict[str, Sequence]) -> Union[bool, Optional[date]]:
         operator = Operator(next(iter(rule)))
         operands = rule[operator.name]
 
