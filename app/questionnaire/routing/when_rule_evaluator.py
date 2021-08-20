@@ -1,6 +1,6 @@
 from dataclasses import dataclass
 from datetime import date
-from typing import Generator, Optional, Union
+from typing import Generator, Optional, Sequence, Union
 
 from app.data_models import AnswerStore, ListStore
 from app.questionnaire import Location, QuestionnaireSchema
@@ -33,20 +33,20 @@ class WhenRuleEvaluator:
             use_default_answer=True,
         )
 
-    def _evaluate(self, rule: dict[str, list]) -> Union[bool, Optional[date]]:
+    def _evaluate(self, rule: dict[str, Sequence]) -> Union[bool, Optional[date]]:
         operator = Operator(next(iter(rule)))
         operands = rule[operator.name]
 
-        if not isinstance(operands, list):
+        if not isinstance(operands, Sequence):
             raise TypeError(
-                f"The rule is invalid, operands should be of type list and not {type(operands)}"
+                f"The rule is invalid, operands should be of type Sequence and not {type(operands)}"
             )
 
         resolved_operands = self.get_resolved_operands(operands)
         return operator.evaluate(resolved_operands)
 
     def get_resolved_operands(
-        self, operands: list[ValueSourceTypes]
+        self, operands: Sequence[ValueSourceTypes]
     ) -> Generator[Union[bool, Optional[date], ValueSourceTypes], None, None]:
         for operand in operands:
             if isinstance(operand, dict) and "source" in operand:
@@ -58,5 +58,5 @@ class WhenRuleEvaluator:
             else:
                 yield operand
 
-    def evaluate(self, rule: dict[str, list]) -> Union[bool, Optional[date]]:
+    def evaluate(self, rule: dict[str, Sequence]) -> Union[bool, Optional[date]]:
         return self._evaluate(rule)

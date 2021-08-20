@@ -5,12 +5,9 @@ from app.data_models.list_store import ListStore
 from app.data_models.progress_store import ProgressStore
 from app.questionnaire.location import Location
 from app.questionnaire.questionnaire_schema import QuestionnaireSchema
+from app.questionnaire.routing.when_rule_evaluator import WhenRuleEvaluator
 from app.questionnaire.routing_path import RoutingPath
-from app.questionnaire.rules import (
-    evaluate_goto,
-    evaluate_skip_conditions,
-    is_goto_rule,
-)
+from app.questionnaire.rules import evaluate_goto, evaluate_skip_conditions
 
 
 class PathFinder:
@@ -134,19 +131,31 @@ class PathFinder:
     def _evaluate_routing_rules(
         self, this_location, blocks, routing_rules, block_index, routing_path_block_ids
     ):
-        for rule in filter(is_goto_rule, routing_rules):
-            should_goto = evaluate_goto(
-                rule["goto"],
-                self.schema,
-                self.metadata,
-                self.answer_store,
-                self.list_store,
-                current_location=this_location,
-                routing_path_block_ids=routing_path_block_ids,
-            )
+        when_rule_evaluator = WhenRuleEvaluator(
+            self.schema,
+            self.answer_store,
+            self.list_store,
+            self.metadata,
+            location=this_location,
+            routing_path_block_ids=routing_path_block_ids,
+        )
+        for rule in routing_rules:
+            if "goto" in rule:
+                rule = rule["goto"]
+                should_goto = evaluate_goto(
+                    rule,
+                    self.schema,
+                    self.metadata,
+                    self.answer_store,
+                    self.list_store,
+                    current_location=this_location,
+                    routing_path_block_ids=routing_path_block_ids,
+                )
+            else:
+                should_goto = should_goto_new(rule, when_rule_evaluator)
 
             if should_goto:
-                if rule["goto"].get("section") == "End":
+                if rule.get("section") == "End":
                     return None
 
                 next_block_id = self._get_next_block_id(rule)
@@ -158,16 +167,16 @@ class PathFinder:
                 )
 
                 if next_precedes_current:
-                    self._remove_rule_answers(rule["goto"], this_location)
+                    self._remove_rule_answers(rule, this_location)
                     routing_path_block_ids.append(next_block_id)
                     return None
 
                 return next_block_index
 
     def _get_next_block_id(self, rule):
-        if "group" in rule["goto"]:
-            return self.schema.get_first_block_id_for_group(rule["goto"]["group"])
-        return rule["goto"]["block"]
+        if "group" in rule:
+            return self.schema.get_first_block_id_for_group(rule["group"])
+        return rule["block"]
 
     def _remove_rule_answers(self, goto_rule, this_location):
         # We're jumping backwards, so need to delete all answers from which
@@ -178,3 +187,10 @@ class PathFinder:
                     self.answer_store.remove_answer(condition["id"])
 
         self.progress_store.remove_completed_location(location=this_location)
+
+
+def should_goto_new(rule, when_rule_evaluator):
+    if when_rule := rule.get("when"):
+        return when_rule_evaluator.evaluate(when_rule)
+
+    return True
