@@ -132,6 +132,7 @@
                                     {
                                         "id": "single-checkbox-answer",
                                         "mandatory": false,
+                                        "label": "Confirmation",
                                         "options": [
                                             {
                                                 "label": "This age is an estimate",
