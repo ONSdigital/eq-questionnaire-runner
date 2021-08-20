@@ -44,7 +44,7 @@
                                         "id": "answer",
                                         "mandatory": true,
                                         "type": "Number",
-                                        "label": "123"
+                                        "label": "Enter 123"
                                     }
                                 ],
                                 "id": "question",
