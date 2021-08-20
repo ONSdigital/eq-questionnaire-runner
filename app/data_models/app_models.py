@@ -1,6 +1,5 @@
 from datetime import datetime, timezone
 
-from dateutil.tz import tzutc
 from marshmallow import Schema, fields, post_load, pre_dump
 
 
@@ -35,7 +34,7 @@ class Timestamp(fields.Field):
     def _serialize(self, value, attr, obj, **kwargs):
         if value:
             # Timezone aware datetime to timestamp
-            return int(value.replace(tzinfo=tzutc()).strftime("%s"))
+            return int(datetime.timestamp(value))
 
     def _deserialize(self, value, attr, data, **kwargs):
         if value:
