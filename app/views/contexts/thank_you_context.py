@@ -1,5 +1,5 @@
 from datetime import datetime
-from typing import Mapping
+from typing import Mapping, Optional
 
 from flask import url_for
 from flask_babel import lazy_gettext
@@ -12,7 +12,10 @@ from app.views.contexts.submission_metadata_context import (
 
 
 def build_thank_you_context(
-    session_data: SessionData, submitted_at: datetime, survey_type: str
+    session_data: SessionData,
+    submitted_at: datetime,
+    survey_type: str,
+    guidance_content: Optional[dict] = None,
 ) -> Mapping:
 
     if survey_type == "social":
@@ -32,6 +35,7 @@ def build_thank_you_context(
         "hide_sign_out_button": True,
         "submission_text": submission_text,
         "metadata": metadata,
+        "guidance": guidance_content,
     }
 
 
