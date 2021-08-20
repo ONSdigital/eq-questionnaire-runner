@@ -37,9 +37,9 @@ class WhenRuleEvaluator:
         operator = Operator(next(iter(rule)))
         operands = rule[operator.name]
 
-        if not isinstance(operands, list) and not isinstance(operands, tuple):
+        if not isinstance(operands, Sequence):
             raise TypeError(
-                f"The rule is invalid, operands should be of type list and not {type(operands)}"
+                f"The rule is invalid, operands should be of type Sequence and not {type(operands)}"
             )
 
         resolved_operands = self.get_resolved_operands(operands)
