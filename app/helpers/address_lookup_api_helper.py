@@ -17,7 +17,9 @@ def get_address_lookup_api_auth_token():
         )
         session_timeout = current_app.config["EQ_SESSION_TIMEOUT_SECONDS"]
         leeway = current_app.config["ADDRESS_LOOKUP_API_AUTH_TOKEN_LEEWAY_IN_SECONDS"]
-        expiry_time = int(datetime.now(timezone.utc).timestamp()) + session_timeout + leeway
+        expiry_time = (
+            int(datetime.now(timezone.utc).timestamp()) + session_timeout + leeway
+        )
 
         token = jwt.JWT(
             header={"alg": "HS256"},

@@ -1,10 +1,9 @@
 import json
 import uuid
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 from unittest import mock
 
 import fakeredis
-from dateutil.tz import tzutc
 from redis.exceptions import ConnectionError as RedisConnectionError
 
 from app.data_models.app_models import EQSession, UsedJtiClaim
@@ -14,7 +13,7 @@ from app.storage.storage import StorageModel
 from app.utilities.json import json_loads
 from tests.app.app_context_test_case import AppContextTestCase
 
-EXPIRES_AT = datetime.now(tz=tzutc()).replace(microsecond=0) + timedelta(minutes=1)
+EXPIRES_AT = datetime.now(tz=timezone.utc).replace(microsecond=0) + timedelta(minutes=1)
 
 
 class TestRedis(AppContextTestCase):
