@@ -1,4 +1,4 @@
-from datetime import datetime
+from datetime import datetime, timezone
 from functools import cached_property
 
 from dateutil.relativedelta import relativedelta
@@ -71,7 +71,7 @@ class DateHandler(FieldHandler):
         value = self.get_schema_value(self.answer_schema[key])
 
         if value == "now":
-            value = datetime.utcnow().strftime("%Y-%m-%d")
+            value = datetime.now(timezone.utc).strftime("%Y-%m-%d")
 
         return convert_to_datetime(value)
 

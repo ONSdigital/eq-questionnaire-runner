@@ -1,4 +1,4 @@
-from datetime import datetime
+from datetime import datetime, timezone
 from functools import cached_property
 from typing import MutableMapping, Optional, Union
 
@@ -120,7 +120,7 @@ class BlockHandler:
     def _set_started_at_metadata(self):
         response_metadata = self._questionnaire_store.response_metadata
         if not response_metadata.get("started_at"):
-            started_at = datetime.utcnow().isoformat()
+            started_at = datetime.now(timezone.utc).replace(tzinfo=None).isoformat()
             logger.info("Survey started", started_at=started_at)
             response_metadata["started_at"] = started_at
 
