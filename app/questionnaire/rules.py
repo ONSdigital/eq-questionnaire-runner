@@ -146,7 +146,7 @@ def convert_to_datetime(value: Optional[str]) -> Optional[datetime]:
     else:
         date_format = "%Y-%m"
 
-    return datetime.strptime(value, date_format)
+    return datetime.strptime(value, date_format).replace(tzinfo=timezone.utc)
 
 
 def evaluate_goto(

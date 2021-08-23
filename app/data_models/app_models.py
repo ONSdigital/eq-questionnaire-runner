@@ -39,7 +39,9 @@ class Timestamp(fields.Field):
     def _deserialize(self, value, attr, data, **kwargs):
         if value:
             # Timestamp to timezone aware datetime
-            return datetime.utcfromtimestamp(value).replace(tzinfo=timezone.utc)
+            return datetime.fromtimestamp(value, tz=timezone.utc).replace(
+                tzinfo=timezone.utc
+            )
 
 
 class DateTimeSchemaMixin:

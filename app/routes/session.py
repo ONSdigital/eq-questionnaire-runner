@@ -98,9 +98,9 @@ def login():
 
 
 def validate_jti(decrypted_token):
-    expires_at = datetime.utcfromtimestamp(decrypted_token["exp"]).replace(
-        tzinfo=timezone.utc
-    )
+    expires_at = datetime.fromtimestamp(
+        decrypted_token["exp"], tz=timezone.utc
+    ).replace(tzinfo=timezone.utc)
     jwt_expired = expires_at < datetime.now(tz=timezone.utc)
     if jwt_expired:
         raise Unauthorized

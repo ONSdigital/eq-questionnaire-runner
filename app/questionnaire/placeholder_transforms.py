@@ -25,7 +25,9 @@ class PlaceholderTransforms:
         return format_currency(number, currency, locale=self.locale)
 
     def format_date(self, date_to_format, date_format):
-        date_to_format = datetime.strptime(date_to_format, self.input_date_format)
+        date_to_format = datetime.strptime(
+            date_to_format, self.input_date_format
+        ).replace(tzinfo=timezone.utc)
         return format_datetime(date_to_format, date_format, locale=self.locale)
 
     @staticmethod
