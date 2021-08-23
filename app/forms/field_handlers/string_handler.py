@@ -1,4 +1,5 @@
 from functools import cached_property
+from typing import Any
 
 from wtforms import StringField, validators
 
@@ -10,7 +11,7 @@ class StringHandler(FieldHandler):
     MANDATORY_MESSAGE_KEY = "MANDATORY_TEXTFIELD"
 
     @cached_property
-    def validators(self):
+    def validators(self) -> list:
         validate_with = super().validators
 
         if not self.disable_validation:
@@ -19,13 +20,13 @@ class StringHandler(FieldHandler):
         return validate_with
 
     @cached_property
-    def get_length_validator(self):
+    def get_length_validator(self) -> Any:
         length_message = self.get_validation_message("MAX_LENGTH_EXCEEDED")
 
         return validators.length(-1, self.max_length, message=length_message)
 
     @cached_property
-    def max_length(self):
+    def max_length(self) -> Any:
         return self.answer_schema.get("max_length", self.MAX_LENGTH)
 
     def get_field(self) -> StringField:

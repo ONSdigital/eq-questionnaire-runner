@@ -1,3 +1,5 @@
+from typing import Any, Sequence, Union
+
 from app.forms.field_handlers.field_handler import FieldHandler
 from app.forms.fields import (
     MultipleSelectFieldWithDetailAnswer,
@@ -9,7 +11,7 @@ class SelectHandler(FieldHandler):
     MANDATORY_MESSAGE_KEY = "MANDATORY_RADIO"
 
     @staticmethod
-    def coerce_str_unless_none(value):
+    def coerce_str_unless_none(value: Union[str, None]) -> Union[str, None]:
         """
         Coerces a value using str() unless that value is None
         :param value: Any value that can be coerced using str() or None
@@ -18,7 +20,7 @@ class SelectHandler(FieldHandler):
         return str(value) if value is not None else None
 
     @staticmethod
-    def build_choices_with_detail_answer_ids(options: dict):
+    def build_choices_with_detail_answer_ids(options: dict) -> Sequence[Any]:
         choices = []
         for option in options:
             detail_answer_id = (

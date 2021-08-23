@@ -36,11 +36,11 @@ class NumberHandler(FieldHandler):
         self.references = self.get_field_references()
 
     @cached_property
-    def max_decimals(self):
+    def max_decimals(self) -> int:
         return self.answer_schema.get("decimal_places", 0)
 
     @cached_property
-    def validators(self):
+    def validators(self) -> list:
         validate_with = []
         if self.disable_validation is False:
             validate_with = super().validators + self._get_number_field_validators()
@@ -56,7 +56,7 @@ class NumberHandler(FieldHandler):
             label=self.label, validators=self.validators, description=self.guidance
         )
 
-    def get_field_references(self):
+    def get_field_references(self) -> dict:
         schema_minimum = self.answer_schema.get("minimum", {})
         schema_maximum = self.answer_schema.get("maximum", {})
 
@@ -72,7 +72,7 @@ class NumberHandler(FieldHandler):
             "maximum": maximum,
         }
 
-    def _get_number_field_validators(self):
+    def _get_number_field_validators(self) -> list:
         answer_errors = self.error_messages.copy()
 
         for error_key in self.validation_messages.keys():

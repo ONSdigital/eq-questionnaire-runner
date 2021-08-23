@@ -1,4 +1,5 @@
 from functools import cached_property
+from typing import Any, List
 
 from wtforms import StringField
 
@@ -10,7 +11,7 @@ class MobileNumberHandler(FieldHandler):
     MANDATORY_MESSAGE_KEY = "MANDATORY_MOBILE_NUMBER"
 
     @cached_property
-    def validators(self):
+    def validators(self) -> List[Any]:
         validate_with = super().validators
 
         if not self.disable_validation:
