@@ -37,3 +37,13 @@ class TestRoutingToSectionEnd(IntegrationTestCase):
 
         # Then I am redirected to the first incomplete question in the section
         self.assertInUrl("/test-optional")
+
+    def test_section_summary_available_after_completing_section_new_routing_engine(
+        self,
+    ):
+        # Given I launch questionnaire and have completed a section
+        self.launchSurvey("test_new_routing_number_equals")
+        self.post({"answer": "123"})
+        self.post()
+        self.assertInBody("Check your answers and submit")
+        self.assertInUrl("/submit")

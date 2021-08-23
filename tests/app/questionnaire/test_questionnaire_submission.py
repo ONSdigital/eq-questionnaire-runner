@@ -34,7 +34,7 @@ class TestQuestionnaireSubmission(SubmissionTestCase):
 
         # Then I should see the thank you page
         self.assertInBody(
-            "Your answers were submitted for <span>Integration Testing</span>"
+            "Your answers have been submitted for <span>Integration Testing</span>"
         )
         self.assertInUrl(THANK_YOU_URL_PATH)
 
@@ -77,7 +77,7 @@ class TestQuestionnaireSubmissionHub(SubmissionTestCase):
 
         # Then I should see the thank you page
         self.assertInBody(
-            "Your answers were submitted for <span>Integration Testing</span>"
+            "Your answers have been submitted for <span>Integration Testing</span>"
         )
         self.assertEqualUrl(THANK_YOU_URL_PATH)
 
@@ -113,7 +113,7 @@ class TestQuestionnaireSubmissionWithSummary(SubmissionTestCase):
 
         # Then I should see the thank you page
         self.assertInBody(
-            "Your answers were submitted for <span>Integration Testing</span>"
+            "Your answers have been submitted for <span>Integration Testing</span>"
         )
         self.assertInUrl(THANK_YOU_URL_PATH)
 

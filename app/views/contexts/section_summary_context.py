@@ -1,5 +1,5 @@
 from functools import cached_property
-from typing import Mapping
+from typing import Mapping, Optional
 
 from flask import url_for
 
@@ -25,7 +25,6 @@ class SectionSummaryContext(Context):
         metadata: Mapping,
         routing_path: RoutingPath,
         current_location: Location,
-        return_to: str = "section-summary",
     ):
         super().__init__(
             language,
@@ -37,12 +36,9 @@ class SectionSummaryContext(Context):
         )
         self.routing_path = routing_path
         self.current_location = current_location
-        self.return_to = return_to
 
-    def __call__(
-        self,
-    ) -> Mapping:
-        summary = self._build_summary()
+    def __call__(self, return_to: Optional[str] = "section-summary") -> Mapping:
+        summary = self._build_summary(return_to)
         title_for_location = self._title_for_location()
         title = (
             self._placeholder_renderer.render_placeholder(
@@ -101,7 +97,7 @@ class SectionSummaryContext(Context):
 
         return page_title
 
-    def _build_summary(self):
+    def _build_summary(self, return_to: Optional[str]):
         """
         Build a summary context for a particular location.
 
@@ -133,7 +129,7 @@ class SectionSummaryContext(Context):
                     self._schema,
                     self.current_location,
                     self._language,
-                    self.return_to,
+                    return_to,
                 ).serialize()
                 for group in self.section["groups"]
             ],
