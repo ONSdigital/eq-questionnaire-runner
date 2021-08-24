@@ -36,7 +36,7 @@ class FieldHandler(ABC):
         )
 
     @cached_property
-    def validators(self) -> list:
+    def validators(self) -> list[validators.Optional]:
         if not self.disable_validation:
             return [self.get_mandatory_validator()]
         return []

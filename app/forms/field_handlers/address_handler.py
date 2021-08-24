@@ -12,7 +12,7 @@ class AddressHandler(FieldHandler):
     MANDATORY_MESSAGE_KEY = "MANDATORY_ADDRESS"
 
     @cached_property
-    def validators(self) -> list:
+    def validators(self) -> list[InputRequired]:
         validate_with: list = []
 
         if self.answer_schema["mandatory"]:

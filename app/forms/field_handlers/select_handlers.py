@@ -1,4 +1,4 @@
-from typing import Any, Sequence, Union
+from typing import Any, Optional, Sequence
 
 from app.forms.field_handlers.field_handler import FieldHandler
 from app.forms.fields import (
@@ -11,7 +11,7 @@ class SelectHandler(FieldHandler):
     MANDATORY_MESSAGE_KEY = "MANDATORY_RADIO"
 
     @staticmethod
-    def coerce_str_unless_none(value: Union[str, None]) -> Union[str, None]:
+    def coerce_str_unless_none(value: Optional[str]) -> Optional[str]:
         """
         Coerces a value using str() unless that value is None
         :param value: Any value that can be coerced using str() or None

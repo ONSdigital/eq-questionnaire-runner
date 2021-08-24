@@ -6,7 +6,12 @@ from wtforms import DecimalField, IntegerField
 from app.data_models.answer_store import AnswerStore
 from app.forms.field_handlers.field_handler import FieldHandler
 from app.forms.fields import DecimalFieldWithSeparator, IntegerFieldWithSeparator
-from app.forms.validators import DecimalPlaces, NumberCheck, NumberRange
+from app.forms.validators import (
+    DecimalPlaces,
+    NumberCheck,
+    NumberRange,
+    ResponseRequired,
+)
 from app.questionnaire import Location
 from app.settings import MAX_NUMBER
 
@@ -40,7 +45,9 @@ class NumberHandler(FieldHandler):
         return self.answer_schema.get("decimal_places", 0)
 
     @cached_property
-    def validators(self) -> list:
+    def validators(
+        self,
+    ) -> list[Union[ResponseRequired, NumberCheck, NumberRange, DecimalPlaces]]:
         validate_with = []
         if self.disable_validation is False:
             validate_with = super().validators + self._get_number_field_validators()

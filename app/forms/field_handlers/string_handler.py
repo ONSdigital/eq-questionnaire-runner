@@ -1,5 +1,5 @@
 from functools import cached_property
-from typing import Any
+from typing import Any, Union
 
 from wtforms import StringField, validators
 
@@ -11,7 +11,7 @@ class StringHandler(FieldHandler):
     MANDATORY_MESSAGE_KEY = "MANDATORY_TEXTFIELD"
 
     @cached_property
-    def validators(self) -> list:
+    def validators(self) -> list[Union[validators.Optional, validators.Length]]:
         validate_with = super().validators
 
         if not self.disable_validation:
