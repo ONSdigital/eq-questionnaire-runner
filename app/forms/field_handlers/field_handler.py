@@ -1,4 +1,4 @@
-from abc import ABC, abstractmethod
+from abc import ABC
 from functools import cached_property
 from typing import Any, Optional, Union
 
@@ -81,6 +81,5 @@ class FieldHandler(ABC):
                 )
         return schema_element["value"]
 
-    @abstractmethod
     def get_field(self) -> Field:
         pass  # pragma: no cover

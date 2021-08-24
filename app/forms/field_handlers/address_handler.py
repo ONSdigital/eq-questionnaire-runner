@@ -1,5 +1,4 @@
 from functools import cached_property
-from typing import List
 
 from wtforms import FormField
 from wtforms.validators import InputRequired
@@ -13,8 +12,8 @@ class AddressHandler(FieldHandler):
     MANDATORY_MESSAGE_KEY = "MANDATORY_ADDRESS"
 
     @cached_property
-    def validators(self) -> List:
-        validate_with: List = []
+    def validators(self) -> list:
+        validate_with: list = []
 
         if self.answer_schema["mandatory"]:
             validate_with = [
