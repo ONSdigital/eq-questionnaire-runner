@@ -255,7 +255,7 @@ class QuestionnaireForm(FlaskForm):
 
     @staticmethod
     def _get_offset_value(period_object):
-        now = datetime.now(tz=timezone(timedelta(hours=1)))
+        now = datetime.now(tz=timezone.utc)
         delta = relativedelta(
             years=period_object.get("years", 0),
             months=period_object.get("months", 0),
