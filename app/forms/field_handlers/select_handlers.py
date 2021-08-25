@@ -1,4 +1,4 @@
-from typing import Any, Optional, Sequence
+from typing import Optional
 
 from app.forms.field_handlers.field_handler import FieldHandler
 from app.forms.fields import (
@@ -20,7 +20,9 @@ class SelectHandler(FieldHandler):
         return str(value) if value is not None else None
 
     @staticmethod
-    def build_choices_with_detail_answer_ids(options: dict) -> Sequence[Any]:
+    def build_choices_with_detail_answer_ids(
+        options: dict,
+    ) -> list[tuple[str, str, str]]:
         choices = []
         for option in options:
             detail_answer_id = (

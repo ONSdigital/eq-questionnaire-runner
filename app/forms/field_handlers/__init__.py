@@ -1,5 +1,3 @@
-from typing import Any
-
 from werkzeug.datastructures import ImmutableDict
 
 from app.data_models.answer_store import AnswerStore
@@ -37,7 +35,7 @@ FIELD_HANDLER_MAPPINGS = {
 
 
 def get_field_handler(
-    answer: Any,
+    answer: dict,
     error_messages: ImmutableDict,
     answer_store: AnswerStore,
     metadata: dict = None,
@@ -45,7 +43,7 @@ def get_field_handler(
     disable_validation: bool = False,
     question_title: str = None,
 ) -> FieldHandler:
-    return FIELD_HANDLER_MAPPINGS[answer.get("type")](
+    return FIELD_HANDLER_MAPPINGS[answer["type"]](
         answer,
         error_messages=error_messages,
         answer_store=answer_store,

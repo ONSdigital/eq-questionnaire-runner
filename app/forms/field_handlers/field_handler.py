@@ -42,19 +42,19 @@ class FieldHandler(ABC):
         return []
 
     @cached_property
-    def label(self) -> Optional[Any]:
+    def label(self) -> Union[str, None]:
         return self.answer_schema.get("label")
 
     @cached_property
     def guidance(self) -> str:
         return self.answer_schema.get("guidance", "")
 
-    def get_validation_message(self, message_key: str) -> Union[str, Any]:
+    def get_validation_message(self, message_key: str) -> Union[str, None]:
         return self.validation_messages.get(message_key) or self.error_messages.get(
             message_key
         )
 
-    def get_mandatory_validator(self) -> Union[ResponseRequired, Any]:
+    def get_mandatory_validator(self) -> Union[ResponseRequired, Optional[Any]]:
         if self.answer_schema["mandatory"] is True:
             mandatory_message = self.get_validation_message(self.MANDATORY_MESSAGE_KEY)
 
@@ -63,10 +63,9 @@ class FieldHandler(ABC):
                     mandatory_message, self.question_title
                 )
             )
-
         return validators.Optional()
 
-    def get_schema_value(self, schema_element: dict) -> Optional[Any]:
+    def get_schema_value(self, schema_element: dict) -> Optional[str]:
         if isinstance(schema_element["value"], dict):
             if schema_element["value"]["source"] == "metadata":
                 identifier = schema_element["value"].get("identifier")
@@ -79,7 +78,8 @@ class FieldHandler(ABC):
                 return get_answer_value(
                     answer_id, self.answer_store, schema, list_item_id=list_item_id
                 )
-        return schema_element["value"]
+        schema_element_value: str = schema_element["value"]
+        return schema_element_value
 
     def get_field(self) -> Field:
         pass  # pragma: no cover

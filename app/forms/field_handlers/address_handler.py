@@ -13,7 +13,7 @@ class AddressHandler(FieldHandler):
 
     @cached_property
     def validators(self) -> list[InputRequired]:
-        validate_with: list = []
+        validate_with: list[InputRequired] = []
 
         if self.answer_schema["mandatory"]:
             validate_with = [

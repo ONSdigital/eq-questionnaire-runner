@@ -1,5 +1,3 @@
-from typing import Any, Sequence
-
 from flask_babel import lazy_gettext
 from wtforms import SelectField
 
@@ -13,7 +11,7 @@ class DropdownHandler(FieldHandler):
     def _get_placeholder_text(self) -> str:
         return self.answer_schema.get("placeholder", self.DEFAULT_PLACEHOLDER)
 
-    def build_choices(self, options: list) -> Sequence[Any]:
+    def build_choices(self, options: list) -> list:
         choices = [("", self._get_placeholder_text())]
         for option in options:
             choices.append((option["value"], option["label"]))

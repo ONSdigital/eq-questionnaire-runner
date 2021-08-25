@@ -1,6 +1,6 @@
 from datetime import datetime
 from functools import cached_property
-from typing import Any, Optional, Union
+from typing import Optional, Union
 
 from dateutil.relativedelta import relativedelta
 
@@ -75,7 +75,7 @@ class DateHandler(FieldHandler):
 
         :return: date value
         """
-        value = self.get_schema_value(self.answer_schema[key])
+        value: Optional[str] = self.get_schema_value(self.answer_schema[key])
 
         if value == "now":
             value = datetime.utcnow().strftime("%Y-%m-%d")
@@ -83,7 +83,9 @@ class DateHandler(FieldHandler):
         return convert_to_datetime(value)
 
     @staticmethod
-    def transform_date_by_offset(date_to_offset: Any, offset: dict) -> Any:
+    def transform_date_by_offset(
+        date_to_offset: Optional[datetime], offset: dict
+    ) -> Optional[datetime]:
         """
         Adds/subtracts offset from a date and returns
         the new offset value
@@ -92,15 +94,16 @@ class DateHandler(FieldHandler):
         :param offset: The object which contains the offset.
         :return: date value
         """
-        date_to_offset += relativedelta(
-            years=offset.get("years", 0),
-            months=offset.get("months", 0),
-            days=offset.get("days", 0),
-        )
+        if date_to_offset:
+            date_to_offset += relativedelta(
+                years=offset.get("years", 0),
+                months=offset.get("months", 0),
+                days=offset.get("days", 0),
+            )
 
         return date_to_offset
 
-    def get_date_value(self, key: str) -> Optional[datetime]:
+    def get_date_value(self, key: str) -> Union[datetime, None]:
         """
         Gets attributes within a minimum or maximum of a date field and validates that the entered date
         is valid.
