@@ -24,7 +24,7 @@ class TestRedis(AppContextTestCase):
         self.redis = Redis(self.mock_client)
 
     def test_put_jti_stores_empty_value(self):
-        used_at = datetime.now()
+        used_at = datetime.now(tz=timezone.utc)
         expires_at = used_at + timedelta(seconds=60)
 
         jti = UsedJtiClaim(str(uuid.uuid4()), expires_at)
@@ -36,7 +36,7 @@ class TestRedis(AppContextTestCase):
         self.assertEqual(b"", stored_data)
 
     def test_duplicate_put_jti_fails(self):
-        used_at = datetime.now()
+        used_at = datetime.now(tz=timezone.utc)
         expires_at = used_at + timedelta(seconds=60)
 
         jti = UsedJtiClaim(str(uuid.uuid4()), expires_at)
@@ -169,7 +169,7 @@ class TestRedisConnectionErrors(AppContextTestCase):
 
     def test_put_handles_connection_error_once(self):
         # Given
-        used_at = datetime.now()
+        used_at = datetime.now(tz=timezone.utc)
         expires_at = used_at + timedelta(seconds=60)
         jti = UsedJtiClaim(str(uuid.uuid4()), expires_at)
 
@@ -199,7 +199,7 @@ class TestRedisConnectionErrors(AppContextTestCase):
 
     def test_delete_handles_connection_error_once(self):
         # Given
-        used_at = datetime.now()
+        used_at = datetime.now(tz=timezone.utc)
         expires_at = used_at + timedelta(seconds=60)
         jti = UsedJtiClaim(str(uuid.uuid4()), expires_at)
 

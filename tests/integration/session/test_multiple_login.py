@@ -1,4 +1,4 @@
-from datetime import datetime
+from datetime import datetime, timezone
 
 import pytest
 
@@ -184,6 +184,6 @@ class TestCollectionMetadataStorage(MultipleClientTestCase):
 
         started_at_datetime = datetime.strptime(
             a_submission["started_at"], "%Y-%m-%dT%H:%M:%S.%f"
-        )
+        ).replace(tzinfo=timezone.utc)
 
         self.assertIsNotNone(started_at_datetime)
