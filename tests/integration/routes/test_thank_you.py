@@ -74,3 +74,20 @@ class TestThankYou(IntegrationTestCase):
 
         for output in logs.output:
             self.assertNotIn("questionnaire request", output)
+
+    def test_default_guidance(self):
+        self.launchSurvey("test_textfield")
+        self.post({"name-answer": "Adam"})
+        self.post()
+
+        self.assertInUrl("thank-you")
+        self.assertInBody("Your answers will be processed in the next few weeks.")
+
+    def test_custom_guidance(self):
+        self.launchSurvey("test_thank_you")
+        self.post({"answer": "Yes"})
+        self.post()
+
+        self.assertInUrl("thank-you")
+        self.assertInBody("This survey was important.")
+        self.assertInBody('<a href="">Important link</a>')

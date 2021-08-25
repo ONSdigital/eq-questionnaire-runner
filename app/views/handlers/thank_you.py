@@ -52,8 +52,14 @@ class ThankYou:
 
     def get_context(self):
         if not self._is_census_theme:
+            guidance_content = self._schema.json.get("post_submission", {}).get(
+                "guidance"
+            )
             return build_thank_you_context(
-                self._session_store.session_data, self._submitted_at, get_survey_type()
+                self._session_store.session_data,
+                self._submitted_at,
+                get_survey_type(),
+                guidance_content,
             )
 
         confirmation_email_form = (
