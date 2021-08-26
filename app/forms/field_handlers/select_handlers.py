@@ -1,4 +1,4 @@
-from typing import Optional
+from typing import Optional, Union
 
 from app.forms.field_handlers.field_handler import FieldHandler
 from app.forms.fields import (
@@ -21,7 +21,7 @@ class SelectHandler(FieldHandler):
 
     @staticmethod
     def build_choices_with_detail_answer_ids(
-        options: dict,
+        options: list[dict],
     ) -> list[tuple[str, str, str]]:
         choices = []
         for option in options:
