@@ -10,6 +10,8 @@ from app.views.contexts.view_submitted_response_context import (
 )
 from tests.app.app_context_test_case import AppContextTestCase
 
+SCHEMA = load_schema_from_name("test_view_submitted_response", "en")
+
 
 class TestViewSubmittedResponseContext(AppContextTestCase):
     def test_build_view_submitted_response_context(self):
@@ -29,10 +31,9 @@ class TestViewSubmittedResponseContext(AppContextTestCase):
                 Answer("address-answer", "NP10 8XG", None).to_dict(),
             ]
         )
-        schema = load_schema_from_name("test_view_submitted_response", "en")
 
         context = build_view_submitted_response_context(
-            "en", schema, questionnaire_store
+            "en", SCHEMA, questionnaire_store
         )
 
         assert context["submitted_at"] == submitted_at_date_time
@@ -80,10 +81,9 @@ class TestViewSubmittedResponseContext(AppContextTestCase):
                 Answer("address-answer", "NP10 8XG", None).to_dict(),
             ]
         )
-        schema = load_schema_from_name("test_view_submitted_response", "en")
 
         context = build_view_submitted_response_context(
-            "en", schema, questionnaire_store
+            "en", SCHEMA, questionnaire_store
         )
 
         assert context["view_answers"] is False
