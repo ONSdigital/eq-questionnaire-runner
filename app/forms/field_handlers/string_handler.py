@@ -6,7 +6,7 @@ from wtforms.validators import Length
 
 from app.forms.field_handlers.field_handler import FieldHandler
 
-StringValidators = list[Union[validators.Optional, validators.Length]]
+StringValidatorTypes = list[Union[validators.Optional, validators.Length]]
 
 
 class StringHandler(FieldHandler):
@@ -14,8 +14,8 @@ class StringHandler(FieldHandler):
     MANDATORY_MESSAGE_KEY = "MANDATORY_TEXTFIELD"
 
     @cached_property
-    def validators(self) -> StringValidators:
-        validate_with: StringValidators = super().validators
+    def validators(self) -> StringValidatorTypes:
+        validate_with: StringValidatorTypes = super().validators
 
         if not self.disable_validation:
             validate_with.append(self.get_length_validator)

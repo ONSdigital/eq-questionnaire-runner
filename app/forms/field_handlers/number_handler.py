@@ -16,7 +16,7 @@ from app.forms.validators import (
 from app.questionnaire import Location
 from app.settings import MAX_NUMBER
 
-NumberValidators = list[
+NumberValidatorTypes = list[
     Union[ResponseRequired, NumberCheck, NumberRange, DecimalPlaces]
 ]
 
@@ -52,8 +52,8 @@ class NumberHandler(FieldHandler):
     @cached_property
     def validators(
         self,
-    ) -> NumberValidators:
-        validate_with: NumberValidators = []
+    ) -> NumberValidatorTypes:
+        validate_with: NumberValidatorTypes = []
         if self.disable_validation is False:
             validate_with = super().validators + self._get_number_field_validators()
         return validate_with

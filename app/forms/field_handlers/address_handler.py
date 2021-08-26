@@ -7,15 +7,15 @@ from app.forms.address_form import get_address_form
 from app.forms.field_handlers.field_handler import FieldHandler
 from app.forms.validators import format_message_with_title
 
-AddressValidators = list[InputRequired]
+AddressValidatorTypes = list[InputRequired]
 
 
 class AddressHandler(FieldHandler):
     MANDATORY_MESSAGE_KEY = "MANDATORY_ADDRESS"
 
     @cached_property
-    def validators(self) -> AddressValidators:
-        validate_with: AddressValidators = []
+    def validators(self) -> AddressValidatorTypes:
+        validate_with: AddressValidatorTypes = []
 
         if self.answer_schema["mandatory"]:
             validate_with = [

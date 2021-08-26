@@ -15,7 +15,7 @@ from app.forms.validators import (
 )
 from app.questionnaire.rules import convert_to_datetime
 
-DateValidators = list[
+DateValidatorTypes = list[
     Union[OptionalForm, DateRequired, DateCheck, SingleDatePeriodCheck]
 ]
 
@@ -26,9 +26,9 @@ class DateHandler(FieldHandler):
     DISPLAY_FORMAT = "d MMMM yyyy"
 
     @cached_property
-    def validators(self) -> DateValidators:
+    def validators(self) -> DateValidatorTypes:
 
-        validate_with: DateValidators = [OptionalForm()]
+        validate_with: DateValidatorTypes = [OptionalForm()]
 
         if self.answer_schema["mandatory"] is True:
             validate_with = [

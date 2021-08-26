@@ -7,7 +7,7 @@ from wtforms.validators import Length
 from app.forms.field_handlers.field_handler import FieldHandler
 from app.forms.fields import MaxTextAreaField
 
-TextAreaValidators = list[Union[validators.Optional, validators.Length]]
+TextAreaValidatorTypes = list[Union[validators.Optional, validators.Length]]
 
 
 class TextAreaHandler(FieldHandler):
@@ -16,8 +16,8 @@ class TextAreaHandler(FieldHandler):
     MANDATORY_MESSAGE_KEY = "MANDATORY_TEXTAREA"
 
     @cached_property
-    def validators(self) -> TextAreaValidators:
-        validate_with: TextAreaValidators = super().validators
+    def validators(self) -> TextAreaValidatorTypes:
+        validate_with: TextAreaValidatorTypes = super().validators
         if self.disable_validation is False:
             validate_with.append(self.get_length_validator())
         return validate_with
