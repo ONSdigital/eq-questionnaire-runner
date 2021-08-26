@@ -9,6 +9,18 @@ class ThankYouPage extends BasePage {
     return '[data-qa="title"]';
   }
 
+  viewAnswersTitle() {
+    return '[data-qa="view-answers-title"]';
+  }
+
+  viewAnswersLink() {
+    return 'a[id="view-answers-link"]';
+  }
+
+  viewSubmittedWarning() {
+    return '[id="view-submitted-warning"]';
+  }
+
   metadata() {
     return ".metadata";
   }

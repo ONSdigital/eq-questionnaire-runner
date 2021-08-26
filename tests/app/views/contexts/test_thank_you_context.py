@@ -1,9 +1,10 @@
-from datetime import datetime, timezone
+from datetime import datetime, timedelta, timezone
 
 import pytest
 from flask import Flask
 
 from app.data_models.session_data import SessionData
+from app.utilities.schema import load_schema_from_name
 from app.views.contexts.thank_you_context import build_thank_you_context
 
 SURVEY_TYPE_DEFAULT = "default"
@@ -29,9 +30,10 @@ def fake_session_data():
 
 def test_social_survey_context(fake_session_data, app: Flask):
     with app.app_context():
+        schema = load_schema_from_name("test_view_submitted_response", "en")
 
         context = build_thank_you_context(
-            fake_session_data, SUBMITTED_AT, SURVEY_TYPE_SOCIAL
+            fake_session_data, SUBMITTED_AT, SURVEY_TYPE_SOCIAL, schema
         )
 
         assert context["submission_text"] == "Your answers have been submitted."
@@ -40,9 +42,10 @@ def test_social_survey_context(fake_session_data, app: Flask):
 
 def test_default_survey_context(fake_session_data, app: Flask):
     with app.app_context():
+        schema = load_schema_from_name("test_view_submitted_response", "en")
         fake_session_data.ru_name = "ESSENTIAL ENTERPRISE LTD"
         context = build_thank_you_context(
-            fake_session_data, SUBMITTED_AT, SURVEY_TYPE_DEFAULT
+            fake_session_data, SUBMITTED_AT, SURVEY_TYPE_DEFAULT, schema
         )
 
         assert (
@@ -52,12 +55,69 @@ def test_default_survey_context(fake_session_data, app: Flask):
         assert len(context["metadata"]["itemsList"]) == 2
 
 
+def test_view_response_enabled_is_true_when_set_in_schema(
+    fake_session_data, app: Flask
+):
+    with app.app_context():
+        schema = load_schema_from_name("test_view_submitted_response", "en")
+
+        context = build_thank_you_context(
+            fake_session_data, SUBMITTED_AT, SURVEY_TYPE_DEFAULT, schema
+        )
+
+        assert context["view_response_enabled"] is True
+
+
+def test_view_response_enabled_is_false_when_not_set_in_schema(
+    fake_session_data, app: Flask
+):
+    with app.app_context():
+        schema = load_schema_from_name("test_title", "en")
+
+        context = build_thank_you_context(
+            fake_session_data, SUBMITTED_AT, SURVEY_TYPE_DEFAULT, schema
+        )
+
+        assert context["view_response_enabled"] is not True
+
+
+def test_view_answers_is_true_when_submitted_at_less_than_45_mins(
+    fake_session_data, app: Flask
+):
+    with app.app_context():
+        schema = load_schema_from_name("test_view_submitted_response", "en")
+
+        context = build_thank_you_context(
+            fake_session_data, SUBMITTED_AT, SURVEY_TYPE_DEFAULT, schema
+        )
+
+        assert context["view_answers"] is True
+        assert context["view_submitted_url"] == "/submitted/view-response/"
+
+
+def test_view_answers_is_false_when_submitted_at_greater_than_45_mins(
+    fake_session_data, app: Flask
+):
+    submitted_at = SUBMITTED_AT - timedelta(minutes=46)
+
+    with app.app_context():
+        schema = load_schema_from_name("test_view_submitted_response", "en")
+
+        context = build_thank_you_context(
+            fake_session_data, submitted_at, SURVEY_TYPE_DEFAULT, schema
+        )
+
+        assert context["view_answers"] is False
+        assert context["view_submitted_url"] is None
+
+
 def test_default_survey_context_with_trad_as(fake_session_data, app: Flask):
     with app.app_context():
+        schema = load_schema_from_name("test_view_submitted_response", "en")
         fake_session_data.ru_name = "ESSENTIAL ENTERPRISE LTD"
         fake_session_data.trad_as = "123"
         context = build_thank_you_context(
-            fake_session_data, SUBMITTED_AT, SURVEY_TYPE_DEFAULT
+            fake_session_data, SUBMITTED_AT, SURVEY_TYPE_DEFAULT, schema
         )
 
         assert (
@@ -69,9 +129,14 @@ def test_default_survey_context_with_trad_as(fake_session_data, app: Flask):
 
 def test_custom_guidance(fake_session_data, app: Flask):
     with app.app_context():
+        schema = load_schema_from_name("test_view_submitted_response", "en")
         custom_guidance = {"contents": [{"description": "Custom guidance"}]}
         context = build_thank_you_context(
-            fake_session_data, SUBMITTED_AT, SURVEY_TYPE_DEFAULT, custom_guidance
+            fake_session_data,
+            SUBMITTED_AT,
+            SURVEY_TYPE_DEFAULT,
+            schema,
+            custom_guidance,
         )
 
         assert context["guidance"] == custom_guidance

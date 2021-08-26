@@ -1,6 +1,8 @@
 from datetime import datetime
 from typing import Union
 
+from dateutil.tz import tzutc
+
 from app.data_models import QuestionnaireStore
 from app.libs.utils import convert_tx_id
 from app.questionnaire.questionnaire_schema import QuestionnaireSchema
@@ -12,6 +14,15 @@ def build_view_submitted_response_context(
     schema: QuestionnaireSchema,
     questionnaire_store: QuestionnaireStore,
 ) -> dict[str, Union[str, datetime, dict]]:
+
+    view_answers = (
+        int(
+            (
+                datetime.now(tz=tzutc()) - questionnaire_store.submitted_at
+            ).total_seconds()
+        )
+        < 2700
+    )
 
     summary_context = SummaryContext(
         language=language,
@@ -27,6 +38,7 @@ def build_view_submitted_response_context(
         "ru_name": questionnaire_store.metadata["ru_name"],
         "summary": summary_context(),
         "hide_sign_out_button": True,
+        "view_answers": view_answers,
     }
     if questionnaire_store.metadata.get("trad_as"):
         context["trad_as"] = questionnaire_store.metadata["trad_as"]

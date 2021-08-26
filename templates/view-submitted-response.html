@@ -36,10 +36,20 @@
   <p>{{ _("<b>Submitted on:</b> {submitted_at}").format(submitted_at=content.submitted_at | format_datetime)}}</p>
   <p>{{ _("<b>Submission reference:</b> {transaction_id}").format(transaction_id=content.tx_id)}}</p>
   <br/>
-  {% block summary %}
-  <div class="u-mb-m">
-    {% include 'partials/summary/summary.html' %}
-  </div>
-  {% endblock summary %}
+
+  {% if content.view_answers == true %}
+    {% block summary %}
+      <div class="u-mb-m">
+        {% include 'partials/summary/summary.html' %}
+      </div>
+    {% endblock summary %}
+  {% elif content.view_answers == false %}
+    {% call onsPanel({
+      "id": "view-submmited-guidance",
+      "classes": "u-mb-m"
+    }) %}
+      {{ _("For security, you can no longer view your answers") }}
+    {% endcall %}
+  {% endif %}
 
 {% endblock %}

@@ -33,6 +33,9 @@
             ]
         }
     },
+    "submission": {
+        "view_response": true
+    },
     "questionnaire_flow": {
         "type": "Linear",
         "options": {

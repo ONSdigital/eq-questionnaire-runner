@@ -59,6 +59,7 @@ class ThankYou:
                 self._session_store.session_data,
                 self._submitted_at,
                 get_survey_type(),
+                self._schema,
                 guidance_content,
             )
 
