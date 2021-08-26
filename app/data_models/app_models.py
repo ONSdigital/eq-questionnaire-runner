@@ -35,7 +35,7 @@ class Timestamp(fields.Field):
     def _serialize(self, value, attr, obj, **kwargs):
         if value:
             # Timezone aware datetime to timestamp
-            return int(value.replace(tzinfo=tzutc()).strftime("%s"))
+            return int(value.replace(tzinfo=timezone.utc).timestamp())
 
     def _deserialize(self, value, attr, data, **kwargs):
         if value:
