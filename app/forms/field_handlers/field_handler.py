@@ -42,7 +42,7 @@ class FieldHandler(ABC):
         return []
 
     @cached_property
-    def label(self) -> Union[str, None]:
+    def label(self) -> Optional[str]:
         return self.answer_schema.get("label")
 
     @cached_property
