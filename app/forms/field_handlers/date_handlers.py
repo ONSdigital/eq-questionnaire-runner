@@ -103,7 +103,7 @@ class DateHandler(FieldHandler):
 
         return date_to_offset
 
-    def get_date_value(self, key: str) -> Union[datetime, None]:
+    def get_date_value(self, key: str) -> Optional[datetime]:
         """
         Gets attributes within a minimum or maximum of a date field and validates that the entered date
         is valid.
