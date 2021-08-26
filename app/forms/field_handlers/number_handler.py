@@ -79,7 +79,9 @@ class NumberHandler(FieldHandler):
             "maximum": maximum,
         }
 
-    def _get_number_field_validators(self) -> list:
+    def _get_number_field_validators(
+        self,
+    ) -> list[Union[NumberCheck, NumberRange, DecimalPlaces]]:
         answer_errors = self.error_messages.copy()
 
         for error_key in self.validation_messages.keys():
