@@ -4,18 +4,11 @@ from typing import Any, Optional, Union
 
 from wtforms import Field, validators
 
-from app.data_models.answer import (
-    AnswerValueEscapedTypes,
-    AnswerValueTypes,
-    Decimal,
-    DictAnswer,
-    ListAnswer,
-)
+from app.data_models.answer import AnswerValueTypes
 from app.data_models.answer_store import AnswerStore
 from app.forms.validators import ResponseRequired, format_message_with_title
 from app.questionnaire import Location
 from app.questionnaire.rules import get_answer_value
-from app.questionnaire.value_source_resolver import ValueSourceTypes
 from app.utilities.schema import load_schema_from_metadata
 
 
