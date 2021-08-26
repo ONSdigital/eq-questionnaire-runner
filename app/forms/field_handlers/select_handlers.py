@@ -1,4 +1,4 @@
-from typing import Optional, Union
+from typing import Optional
 
 from app.forms.field_handlers.field_handler import FieldHandler
 from app.forms.fields import (
