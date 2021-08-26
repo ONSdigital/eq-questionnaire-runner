@@ -1,4 +1,4 @@
-from datetime import datetime
+from datetime import datetime, timezone
 
 from app.data_models.answer_store import Answer, AnswerStore
 from app.data_models.list_store import ListStore
@@ -22,7 +22,7 @@ class TestDateRules(AppContextTestCase):
             "date_comparison": {"value": "now"},
         }
 
-        answer_value = datetime.utcnow().strftime("%Y-%m-%d")
+        answer_value = datetime.now(tz=timezone.utc).strftime("%Y-%m-%d")
         result = evaluate_date_rule(when, None, get_schema_mock(), None, answer_value)
         self.assertTrue(result)
 
