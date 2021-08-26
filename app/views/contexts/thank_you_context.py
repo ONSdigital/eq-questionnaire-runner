@@ -21,7 +21,7 @@ def build_thank_you_context(
     guidance_content: Optional[dict] = None,
 ) -> Mapping:
 
-    submission_schema: Mapping = schema.get_submission() or {}
+    submission_schema: Mapping = schema.get_post_submission() or {}
     view_answers = int((datetime.now(tz=tzutc()) - submitted_at).total_seconds()) < 2700
     view_submitted_url = (
         url_for("post_submission.get_view_submitted_response") if view_answers else None
