@@ -1,14 +1,24 @@
 from functools import cached_property
-from typing import Union
+from typing import Optional, Union
 
 from wtforms import DecimalField, IntegerField
 
+from app.data_models.answer import AnswerValueTypes
 from app.data_models.answer_store import AnswerStore
 from app.forms.field_handlers.field_handler import FieldHandler
 from app.forms.fields import DecimalFieldWithSeparator, IntegerFieldWithSeparator
-from app.forms.validators import DecimalPlaces, NumberCheck, NumberRange
+from app.forms.validators import (
+    DecimalPlaces,
+    NumberCheck,
+    NumberRange,
+    ResponseRequired,
+)
 from app.questionnaire import Location
 from app.settings import MAX_NUMBER
+
+NumberValidatorTypes = list[
+    Union[ResponseRequired, NumberCheck, NumberRange, DecimalPlaces]
+]
 
 
 class NumberHandler(FieldHandler):
@@ -36,12 +46,14 @@ class NumberHandler(FieldHandler):
         self.references = self.get_field_references()
 
     @cached_property
-    def max_decimals(self):
+    def max_decimals(self) -> int:
         return self.answer_schema.get("decimal_places", 0)
 
     @cached_property
-    def validators(self):
-        validate_with = []
+    def validators(
+        self,
+    ) -> NumberValidatorTypes:
+        validate_with: NumberValidatorTypes = []
         if self.disable_validation is False:
             validate_with = super().validators + self._get_number_field_validators()
         return validate_with
@@ -56,7 +68,9 @@ class NumberHandler(FieldHandler):
             label=self.label, validators=self.validators, description=self.guidance
         )
 
-    def get_field_references(self):
+    def get_field_references(
+        self,
+    ) -> dict[str, Union[bool, Optional[AnswerValueTypes]]]:
         schema_minimum = self.answer_schema.get("minimum", {})
         schema_maximum = self.answer_schema.get("maximum", {})
 
@@ -72,7 +86,9 @@ class NumberHandler(FieldHandler):
             "maximum": maximum,
         }
 
-    def _get_number_field_validators(self):
+    def _get_number_field_validators(
+        self,
+    ) -> list[Union[NumberCheck, NumberRange, DecimalPlaces]]:
         answer_errors = self.error_messages.copy()
 
         for error_key in self.validation_messages.keys():
