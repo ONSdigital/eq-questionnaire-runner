@@ -29,7 +29,7 @@
             }
         }
     },
-    "submission": {
+    "post_submission": {
         "feedback": true,
         "confirmation_email": true
     },

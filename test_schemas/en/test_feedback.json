@@ -30,7 +30,7 @@
             }
         }
     },
-    "submission": {
+    "post_submission": {
         "feedback": true
     },
     "sections": [

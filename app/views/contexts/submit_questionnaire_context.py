@@ -9,7 +9,7 @@ from .summary_context import SummaryContext
 class SubmitQuestionnaireContext(Context):
     def __call__(self) -> dict[str, Union[str, dict]]:
 
-        submission_schema: Mapping = self._schema.get_submission() or {}
+        submission_schema: Mapping = self._schema.get_submission()
 
         title = submission_schema.get("title") or lazy_gettext(
             "Check your answers and submit"
