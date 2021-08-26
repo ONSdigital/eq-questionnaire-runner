@@ -29,7 +29,7 @@
             }
         }
     },
-    "submission": {
+    "post_submission": {
         "view_response": true
     },
     "sections": [
