@@ -84,7 +84,7 @@ class DateHandler(FieldHandler):
 
     @staticmethod
     def transform_date_by_offset(
-        date_to_offset: Optional[datetime], offset: dict
+        date_to_offset: Optional[datetime], offset: dict[str, int]
     ) -> Optional[datetime]:
         """
         Adds/subtracts offset from a date and returns
