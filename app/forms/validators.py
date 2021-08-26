@@ -1,5 +1,5 @@
 import re
-from datetime import datetime
+from datetime import datetime, timezone
 from decimal import Decimal, InvalidOperation
 
 import flask_babel
@@ -232,11 +232,11 @@ class DateCheck:
 
         try:
             if hasattr(form, "day"):
-                datetime.strptime(form.data, "%Y-%m-%d")
+                datetime.strptime(form.data, "%Y-%m-%d").replace(tzinfo=timezone.utc)
             elif hasattr(form, "month"):
-                datetime.strptime(form.data, "%Y-%m")
+                datetime.strptime(form.data, "%Y-%m").replace(tzinfo=timezone.utc)
             else:
-                datetime.strptime(form.data, "%Y")
+                datetime.strptime(form.data, "%Y").replace(tzinfo=timezone.utc)
         except ValueError:
             raise validators.StopValidation(self.message)
 

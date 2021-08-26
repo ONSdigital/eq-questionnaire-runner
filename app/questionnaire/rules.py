@@ -1,9 +1,11 @@
 import logging
 import re
-from datetime import datetime
+from datetime import datetime, timezone
 from typing import Optional
 
 from dateutil.relativedelta import relativedelta
+
+from app.data_models.answer import AnswerValueTypes
 
 MAX_REPEATS = 25
 
@@ -114,7 +116,7 @@ def get_date_match_value(date_comparison, answer_store, schema, metadata):
 
     if "value" in date_comparison:
         if date_comparison["value"] == "now":
-            match_value = datetime.utcnow().strftime("%Y-%m-%d")
+            match_value = datetime.now(timezone.utc).strftime("%Y-%m-%d")
         else:
             match_value = date_comparison["value"]
     elif "id" in date_comparison:
@@ -146,7 +148,7 @@ def convert_to_datetime(value: Optional[str]) -> Optional[datetime]:
     else:
         date_format = "%Y-%m"
 
-    return datetime.strptime(value, date_format)
+    return datetime.strptime(value, date_format).replace(tzinfo=timezone.utc)
 
 
 def evaluate_goto(
@@ -353,7 +355,7 @@ def get_answer_for_answer_id(answer_id, answer_store, schema, list_item_id):
 
 def get_answer_value(
     answer_id, answer_store, schema, list_item_id=None, routing_path_block_ids=None
-):
+) -> Optional[AnswerValueTypes]:
     answer = get_answer_for_answer_id(answer_id, answer_store, schema, list_item_id)
 
     if not answer:

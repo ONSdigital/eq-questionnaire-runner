@@ -1,6 +1,6 @@
 import itertools
 import logging
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 from decimal import Decimal
 
 from dateutil.relativedelta import relativedelta
@@ -255,7 +255,7 @@ class QuestionnaireForm(FlaskForm):
 
     @staticmethod
     def _get_offset_value(period_object):
-        now = datetime.now()
+        now = datetime.now(tz=timezone.utc)
         delta = relativedelta(
             years=period_object.get("years", 0),
             months=period_object.get("months", 0),
