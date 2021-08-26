@@ -1,12 +1,10 @@
-import datetime
-
-from dateutil.tz import tzutc
+from datetime import datetime, timezone
 
 from app.data_models.app_models import EQSession, QuestionnaireState, UsedJtiClaim
 from app.storage.storage import StorageModel
 from tests.app.app_context_test_case import AppContextTestCase
 
-NOW = datetime.datetime.now(tz=tzutc()).replace(microsecond=0)
+NOW = datetime.now(tz=timezone.utc).replace(microsecond=0)
 
 
 class TestAppModels(AppContextTestCase):

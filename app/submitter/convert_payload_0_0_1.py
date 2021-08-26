@@ -1,5 +1,5 @@
 from collections import OrderedDict
-from datetime import datetime
+from datetime import datetime, timezone
 
 from app.questionnaire.location import Location
 from app.questionnaire.schema_utils import choose_question_to_display
@@ -68,10 +68,18 @@ def convert_answers_to_payload_0_0_1(
 
 def _format_downstream_answer(answer_type, answer_value, answer_data):
     if answer_type == "Date":
-        return datetime.strptime(answer_value, "%Y-%m-%d").strftime("%d/%m/%Y")
+        return (
+            datetime.strptime(answer_value, "%Y-%m-%d")
+            .replace(tzinfo=timezone.utc)
+            .strftime("%d/%m/%Y")
+        )
 
     if answer_type == "MonthYearDate":
-        return datetime.strptime(answer_value, "%Y-%m").strftime("%m/%Y")
+        return (
+            datetime.strptime(answer_value, "%Y-%m")
+            .replace(tzinfo=timezone.utc)
+            .strftime("%m/%Y")
+        )
 
     return answer_data
 

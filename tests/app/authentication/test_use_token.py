@@ -1,7 +1,6 @@
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 from uuid import uuid4
 
-from dateutil.tz import tzutc
 from mock import patch
 
 from app.authentication.jti_claim_storage import JtiTokenUsed, use_jti_claim
@@ -13,7 +12,7 @@ class TestJtiClaimStorage(AppContextTestCase):
     def test_should_use_token(self):
         # Given
         jti_token = str(uuid4())
-        expires_at = datetime.now(tz=tzutc()) + timedelta(seconds=60)
+        expires_at = datetime.now(tz=timezone.utc) + timedelta(seconds=60)
 
         # When
         with patch("app.storage.redis.Redis.put") as add:
@@ -25,7 +24,7 @@ class TestJtiClaimStorage(AppContextTestCase):
     def test_should_return_raise_value_error(self):
         # Given
         token = None
-        expires_at = datetime.now(tz=tzutc()) + timedelta(seconds=60)
+        expires_at = datetime.now(tz=timezone.utc) + timedelta(seconds=60)
 
         # When
         with self.assertRaises(ValueError):
@@ -34,7 +33,7 @@ class TestJtiClaimStorage(AppContextTestCase):
     def test_should_raise_jti_token_used_when_token_already_exists(self):
         # Given
         jti_token = str(uuid4())
-        expires_at = datetime.now(tz=tzutc()) + timedelta(seconds=60)
+        expires_at = datetime.now(tz=timezone.utc) + timedelta(seconds=60)
 
         # When
         with self.assertRaises(JtiTokenUsed) as err:
@@ -51,7 +50,7 @@ class TestJtiClaimStorage(AppContextTestCase):
 
     def test_should_raise_type_error_invalid_uuid(self):
         jti_token = "jti_token"
-        expires_at = datetime.now(tz=tzutc()) + timedelta(seconds=60)
+        expires_at = datetime.now(tz=timezone.utc) + timedelta(seconds=60)
 
         with self.assertRaises(TypeError):
             use_jti_claim(jti_token, expires_at)

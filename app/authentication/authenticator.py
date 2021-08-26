@@ -1,9 +1,8 @@
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 from typing import Mapping, Optional, Union
 from uuid import uuid4
 
 from blinker import ANY
-from dateutil.tz import tzutc
 from flask import Flask, Request, current_app
 from flask import session as cookie_session
 from flask_login import LoginManager, user_logged_out
@@ -55,7 +54,7 @@ def _extend_session_expiry(session_store: SessionStore) -> None:
     """
     session_timeout = cookie_session.get("expires_in")
     if session_timeout:
-        new_expiration_time = datetime.now(tz=tzutc()) + timedelta(
+        new_expiration_time = datetime.now(tz=timezone.utc) + timedelta(
             seconds=session_timeout
         )
 
@@ -79,7 +78,7 @@ def _is_session_valid(session_store: SessionStore) -> bool:
 
     return (
         not session_store.expiration_time
-        or session_store.expiration_time >= datetime.now(tz=tzutc())
+        or session_store.expiration_time >= datetime.now(tz=timezone.utc)
     )
 
 
