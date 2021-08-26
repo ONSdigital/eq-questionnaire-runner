@@ -1,5 +1,5 @@
 import json
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 
 from flask import current_app
 from jwcrypto import jwe
@@ -18,7 +18,7 @@ class SessionStoreTest(AppContextTestCase):
         super().setUp()
         self._app.permanent_session_lifetime = timedelta(seconds=1)
         self.session_store = SessionStore("user_ik", "pepper")
-        self.expires_at = datetime.utcnow() + timedelta(seconds=3)
+        self.expires_at = datetime.now(tz=timezone.utc) + timedelta(seconds=3)
         self.session_data = SessionData(
             tx_id="tx_id",
             schema_name="some_schema_name",
@@ -218,7 +218,7 @@ class TestSessionStoreEncoding(AppContextTestCase):
         self.user_ik = "user_ik"
         self.pepper = "pepper"
         self.session_id = "session_id"
-        self.expires_at = datetime.utcnow() + timedelta(seconds=3)
+        self.expires_at = datetime.now(tz=timezone.utc) + timedelta(seconds=3)
         self.session_data = SessionData(
             tx_id="tx_id",
             schema_name="some_schema_name",

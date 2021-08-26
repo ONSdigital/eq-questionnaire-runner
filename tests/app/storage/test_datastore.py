@@ -1,5 +1,5 @@
 import contextlib
-from datetime import datetime
+from datetime import datetime, timezone
 
 import mock
 from google.api_core import exceptions
@@ -72,7 +72,9 @@ class TestDatastore(AppContextTestCase):
 
     @mock.patch("app.storage.datastore.Entity")
     def test_put_with_index(self, mock_entity):
-        model = EQSession("session-id", "user-id", datetime.now(), "session-data")
+        model = EQSession(
+            "session-id", "user-id", datetime.now(tz=timezone.utc), "session-data"
+        )
         self.ds.put(model)
         self.assertNotIn(
             "expires_at", mock_entity.call_args.kwargs["exclude_from_indexes"]

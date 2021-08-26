@@ -1,4 +1,4 @@
-from datetime import datetime
+from datetime import datetime, timezone
 
 from tests.integration.integration_test_case import IntegrationTestCase
 
@@ -57,8 +57,8 @@ class TestIntroduction(IntegrationTestCase):
         actual = self.dumpSubmission()["submission"]
 
         started_at_datetime = datetime.strptime(
-            actual["started_at"], "%Y-%m-%dT%H:%M:%S.%f"
-        )
+            actual["started_at"], "%Y-%m-%dT%H:%M:%S.%f%z"
+        ).replace(tzinfo=timezone.utc)
 
         self.assertIsNotNone(started_at_datetime)
 

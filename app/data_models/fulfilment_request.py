@@ -1,10 +1,8 @@
 from abc import ABC, abstractmethod
-from datetime import datetime
+from datetime import datetime, timezone
 from functools import cached_property
 from typing import Mapping
 from uuid import uuid4
-
-from dateutil.tz import tzutc
 
 from app.utilities.json import json_dumps
 
@@ -25,7 +23,7 @@ class FulfilmentRequest(ABC):
                 "type": "FULFILMENT_REQUESTED",
                 "source": "QUESTIONNAIRE_RUNNER",
                 "channel": "EQ",
-                "dateTime": datetime.now(tz=tzutc()).isoformat(),
+                "dateTime": datetime.now(tz=timezone.utc).isoformat(),
                 "transactionId": self.transaction_id,
             },
             "payload": self._payload(),
