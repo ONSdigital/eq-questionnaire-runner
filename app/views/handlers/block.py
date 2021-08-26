@@ -120,7 +120,7 @@ class BlockHandler:
     def _set_started_at_metadata(self):
         response_metadata = self._questionnaire_store.response_metadata
         if not response_metadata.get("started_at"):
-            started_at = datetime.now(timezone.utc).replace(tzinfo=None).isoformat()
+            started_at = datetime.now(timezone.utc).isoformat()
             logger.info("Survey started", started_at=started_at)
             response_metadata["started_at"] = started_at
 
