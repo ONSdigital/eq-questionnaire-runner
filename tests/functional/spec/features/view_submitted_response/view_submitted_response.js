@@ -15,8 +15,9 @@ describe("View Submitted Response", () => {
     $(AddressBlockPage.submit()).click();
     $(SubmitPage.submit()).click();
     browser.url("/submitted/view-response");
-
-    expect($(ViewSubmittedResponsePage.heading()).getText()).to.equal("Your answers were submitted for Apple");
+    expect($(ViewSubmittedResponsePage.metadataTerm(1)).getText()).to.equal("Submitted on:");
+    expect($(ViewSubmittedResponsePage.metadataTerm(2)).getText()).to.equal("Submission reference:");
+    expect($(ViewSubmittedResponsePage.heading()).getText()).to.equal("Answers submitted for Apple.");
     expect($(ViewSubmittedResponsePage.personalDetailsGroupTitle()).getText()).to.equal("Personal Details");
     expect($(ViewSubmittedResponsePage.nameQuestion()).getText()).to.equal("What is your name?");
     expect($(ViewSubmittedResponsePage.nameAnswer()).getText()).to.equal("John Smith");

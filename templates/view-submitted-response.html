@@ -2,6 +2,7 @@
 
 {% from "components/panel/_macro.njk" import onsPanel %}
 {% from "components/button/_macro.njk" import onsButton %}
+{% from "components/metadata/_macro.njk" import onsMetadata %}
 
 {% set hide_sign_out_button = content.hide_sign_out_button %}
 {% set sign_out_url = content.sign_out_url %}
@@ -24,18 +25,9 @@
 
 {% block main %}
   <h1 class="u-mt-m">
-    {% if content.trad_as %}
-      {{ _("Your answers were submitted for <span>{ru_name}</span> ({trading_as_name})").format(
-        ru_name = content.ru_name,
-        trading_as_name = content.trad_as) }}
-      {% else %}
-        {{ _("Your answers were submitted for <span>{ru_name}</span>").format(
-          ru_name = content.ru_name) }}
-      {% endif %}</h1>
-
-  <p>{{ _("<b>Submitted on:</b> {submitted_at}").format(submitted_at=content.submitted_at | format_datetime)}}</p>
-  <p>{{ _("<b>Submission reference:</b> {transaction_id}").format(transaction_id=content.tx_id)}}</p>
-  <br/>
+    {{ content.submitted_text}}
+  </h1>
+  {{ onsMetadata(content.metadata)}}
   {% block summary %}
   <div class="u-mb-m">
     {% include 'partials/summary/summary.html' %}

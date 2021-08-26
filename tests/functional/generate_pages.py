@@ -435,11 +435,11 @@ def process_view_submitted_response(schema_data, require_path, dir_out, spec_fil
         block_context = build_and_get_base_page_context(
             page_dir=dir_out.split("/")[-1],
             page_spec=page_spec,
-            base_page="BasePage",
-            base_page_file="base.page.js",
+            base_page="ViewSubmittedResponseBasePage",
+            base_page_file="view_submitted_response_base.page",
             page_name="ViewSubmittedResponse",
             page_filename=page_filename,
-            page_id="view-submitted-response",
+            page_id="view-response",
             relative_require=require_path,
         )
 
