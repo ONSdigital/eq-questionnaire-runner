@@ -65,3 +65,13 @@ def test_default_survey_context_with_trad_as(fake_session_data, app: Flask):
             == "Your answers have been submitted for <span>ESSENTIAL ENTERPRISE LTD</span> (123)."
         )
         assert len(context["metadata"]["itemsList"]) == 2
+
+
+def test_custom_guidance(fake_session_data, app: Flask):
+    with app.app_context():
+        custom_guidance = {"contents": [{"description": "Custom guidance"}]}
+        context = build_thank_you_context(
+            fake_session_data, SUBMITTED_AT, SURVEY_TYPE_DEFAULT, custom_guidance
+        )
+
+        assert context["guidance"] == custom_guidance
