@@ -6,6 +6,7 @@ from freezegun import freeze_time
 from app import settings
 from app.publisher.exceptions import PublicationFailed
 from tests.integration.integration_test_case import IntegrationTestCase
+from tests.integration.questionnaire import THANK_YOU_URL_PATH
 
 
 @freeze_time("2020-11-25T11:59:00")
@@ -649,6 +650,25 @@ class TestIndividualResponseNavigation(IndividualResponseTestCase):
         # Then I should not see the individual response guidance
         self.assertInBody("Submit survey")
         self.assertNotInBody("If you can’t answer someone else’s questions")
+
+    def test_ir_after_submission(self):
+        # Given I complete the questionnaire and submit
+        self._add_primary_and_household()
+        self.post()
+        self.post()
+        self.post()
+        self.post({"proxy-answer": "Yes, I am"})
+        self.post()
+        self.post()
+        self.post()
+        self.post({"proxy-answer": "Yes, I am"})
+        self.post()
+
+        # When I try to get the individual-response response page
+        self.get("/individual-response/")
+
+        # Then I get re-directed to the thank you page
+        self.assertEqual(THANK_YOU_URL_PATH, self.last_url)
 
 
 class TestIndividualResponseWho(IndividualResponseTestCase):
