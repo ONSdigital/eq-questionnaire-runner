@@ -44,7 +44,7 @@ class HubContext(Context):
         rows = self._get_rows(enabled_section_ids)
 
         if survey_complete:
-            submission_schema: Mapping = self._schema.get_submission() or {}
+            submission_schema: Mapping = self._schema.get_submission()
             title = submission_schema.get("title") or lazy_gettext("Submit survey")
             submit_button = submission_schema.get("button") or lazy_gettext(
                 "Submit survey"

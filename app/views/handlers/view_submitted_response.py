@@ -30,7 +30,7 @@ class ViewSubmittedResponse:
         self._questionnaire_store = questionnaire_store
         self._language = language
 
-        submission_schema: Mapping = self._schema.get_submission() or {}
+        submission_schema: Mapping = self._schema.get_post_submission()
 
         if not submission_schema.get("view_response"):
             raise ViewSubmittedResponseNotEnabled
