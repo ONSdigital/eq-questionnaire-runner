@@ -1,9 +1,13 @@
 from functools import cached_property
+from typing import Union
 
 from wtforms import validators
+from wtforms.validators import Length
 
 from app.forms.field_handlers.field_handler import FieldHandler
 from app.forms.fields import MaxTextAreaField
+
+TextAreaValidatorTypes = list[Union[validators.Optional, validators.Length]]
 
 
 class TextAreaHandler(FieldHandler):
@@ -12,18 +16,18 @@ class TextAreaHandler(FieldHandler):
     MANDATORY_MESSAGE_KEY = "MANDATORY_TEXTAREA"
 
     @cached_property
-    def validators(self):
-        validate_with = super().validators
+    def validators(self) -> TextAreaValidatorTypes:
+        validate_with: TextAreaValidatorTypes = super().validators
         if self.disable_validation is False:
             validate_with.append(self.get_length_validator())
         return validate_with
 
     @cached_property
-    def max_length(self):
-        max_length = self.answer_schema.get("max_length", 0)
+    def max_length(self) -> int:
+        max_length: int = self.answer_schema.get("max_length", 0)
         return max_length if max_length > 0 else self.MAX_LENGTH
 
-    def get_length_validator(self):
+    def get_length_validator(self) -> Length:
         length_message = self.get_validation_message("MAX_LENGTH_EXCEEDED")
 
         return validators.length(-1, self.max_length, message=length_message)

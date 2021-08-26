@@ -1,8 +1,10 @@
-from abc import ABC, abstractmethod
+from abc import ABC
 from functools import cached_property
+from typing import Any, Optional, Union
 
 from wtforms import Field, validators
 
+from app.data_models.answer import AnswerValueTypes
 from app.data_models.answer_store import AnswerStore
 from app.forms.validators import ResponseRequired, format_message_with_title
 from app.questionnaire import Location
@@ -35,25 +37,25 @@ class FieldHandler(ABC):
         )
 
     @cached_property
-    def validators(self):
+    def validators(self) -> list[validators.Optional]:
         if not self.disable_validation:
             return [self.get_mandatory_validator()]
         return []
 
     @cached_property
-    def label(self):
+    def label(self) -> Optional[str]:
         return self.answer_schema.get("label")
 
     @cached_property
-    def guidance(self):
+    def guidance(self) -> str:
         return self.answer_schema.get("guidance", "")
 
-    def get_validation_message(self, message_key):
+    def get_validation_message(self, message_key: str) -> Optional[str]:
         return self.validation_messages.get(message_key) or self.error_messages.get(
             message_key
         )
 
-    def get_mandatory_validator(self):
+    def get_mandatory_validator(self) -> Union[ResponseRequired, Optional[Any]]:
         if self.answer_schema["mandatory"] is True:
             mandatory_message = self.get_validation_message(self.MANDATORY_MESSAGE_KEY)
 
@@ -62,10 +64,9 @@ class FieldHandler(ABC):
                     mandatory_message, self.question_title
                 )
             )
-
         return validators.Optional()
 
-    def get_schema_value(self, schema_element):
+    def get_schema_value(self, schema_element: dict) -> Optional[AnswerValueTypes]:
         if isinstance(schema_element["value"], dict):
             if schema_element["value"]["source"] == "metadata":
                 identifier = schema_element["value"].get("identifier")
@@ -78,8 +79,8 @@ class FieldHandler(ABC):
                 return get_answer_value(
                     answer_id, self.answer_store, schema, list_item_id=list_item_id
                 )
-        return schema_element["value"]
+        schema_element_value: str = schema_element["value"]
+        return schema_element_value
 
-    @abstractmethod
     def get_field(self) -> Field:
         pass  # pragma: no cover
