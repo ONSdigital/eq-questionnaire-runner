@@ -1,6 +1,5 @@
-from datetime import datetime
+from datetime import datetime, timezone
 
-from dateutil.tz import tzutc
 from flask import Blueprint, g, redirect, request
 from flask import session as cookie_session
 from flask import url_for
@@ -99,10 +98,8 @@ def login():
 
 
 def validate_jti(decrypted_token):
-    expires_at = datetime.utcfromtimestamp(decrypted_token["exp"]).replace(
-        tzinfo=tzutc()
-    )
-    jwt_expired = expires_at < datetime.now(tz=tzutc())
+    expires_at = datetime.fromtimestamp(decrypted_token["exp"], tz=timezone.utc)
+    jwt_expired = expires_at < datetime.now(tz=timezone.utc)
     if jwt_expired:
         raise Unauthorized
 
