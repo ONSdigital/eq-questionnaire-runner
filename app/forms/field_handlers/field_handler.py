@@ -49,7 +49,7 @@ class FieldHandler(ABC):
     def guidance(self) -> str:
         return self.answer_schema.get("guidance", "")
 
-    def get_validation_message(self, message_key: str) -> Union[str, None]:
+    def get_validation_message(self, message_key: str) -> Optional[str]:
         return self.validation_messages.get(message_key) or self.error_messages.get(
             message_key
         )
