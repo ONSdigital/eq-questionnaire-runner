@@ -200,7 +200,7 @@ class Feedback:
 
     @staticmethod
     def is_enabled(schema: QuestionnaireSchema) -> bool:
-        if submission_schema := schema.get_submission():
+        if submission_schema := schema.get_post_submission():
             return submission_schema.get("feedback", False)
         return False
 
