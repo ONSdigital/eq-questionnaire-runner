@@ -5,6 +5,8 @@ from typing import Optional, Union
 
 from dateutil.relativedelta import relativedelta
 
+from app.data_models.answer import AnswerValueTypes
+
 MAX_REPEATS = 25
 
 logger = logging.getLogger(__name__)
@@ -353,7 +355,7 @@ def get_answer_for_answer_id(answer_id, answer_store, schema, list_item_id):
 
 def get_answer_value(
     answer_id, answer_store, schema, list_item_id=None, routing_path_block_ids=None
-) -> Union[str, None]:
+) -> Optional[AnswerValueTypes]:
     answer = get_answer_for_answer_id(answer_id, answer_store, schema, list_item_id)
 
     if not answer:

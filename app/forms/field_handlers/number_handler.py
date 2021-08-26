@@ -1,8 +1,9 @@
 from functools import cached_property
-from typing import Union
+from typing import Optional, Union
 
 from wtforms import DecimalField, IntegerField
 
+from app.data_models.answer import AnswerValueTypes
 from app.data_models.answer_store import AnswerStore
 from app.forms.field_handlers.field_handler import FieldHandler
 from app.forms.fields import DecimalFieldWithSeparator, IntegerFieldWithSeparator
@@ -14,6 +15,10 @@ from app.forms.validators import (
 )
 from app.questionnaire import Location
 from app.settings import MAX_NUMBER
+
+NumberValidators = list[
+    Union[ResponseRequired, NumberCheck, NumberRange, DecimalPlaces]
+]
 
 
 class NumberHandler(FieldHandler):
@@ -47,8 +52,8 @@ class NumberHandler(FieldHandler):
     @cached_property
     def validators(
         self,
-    ) -> list[Union[ResponseRequired, NumberCheck, NumberRange, DecimalPlaces]]:
-        validate_with = []
+    ) -> NumberValidators:
+        validate_with: NumberValidators = []
         if self.disable_validation is False:
             validate_with = super().validators + self._get_number_field_validators()
         return validate_with
@@ -63,7 +68,9 @@ class NumberHandler(FieldHandler):
             label=self.label, validators=self.validators, description=self.guidance
         )
 
-    def get_field_references(self) -> dict:
+    def get_field_references(
+        self,
+    ) -> dict[str, Union[bool, Optional[AnswerValueTypes]]]:
         schema_minimum = self.answer_schema.get("minimum", {})
         schema_maximum = self.answer_schema.get("maximum", {})
 

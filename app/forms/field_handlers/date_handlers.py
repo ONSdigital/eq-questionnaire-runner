@@ -75,12 +75,12 @@ class DateHandler(FieldHandler):
 
         :return: date value
         """
-        value: Optional[str] = self.get_schema_value(self.answer_schema[key])
+        value = self.get_schema_value(self.answer_schema[key])
 
         if value == "now":
             value = datetime.utcnow().strftime("%Y-%m-%d")
 
-        return convert_to_datetime(value)
+        return convert_to_datetime(value) if isinstance(value, str) else None
 
     @staticmethod
     def transform_date_by_offset(
