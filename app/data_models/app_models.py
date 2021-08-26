@@ -1,6 +1,5 @@
 from datetime import datetime, timezone
 
-from dateutil.tz import tzutc
 from marshmallow import Schema, fields, post_load, pre_dump
 
 
