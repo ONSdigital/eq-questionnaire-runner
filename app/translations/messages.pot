@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2021-08-26 14:36+0100\n"
+"POT-Creation-Date: 2021-08-26 16:05+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -941,7 +941,7 @@ msgstr ""
 msgid "For security your answers will only be available to view for 45 minutes"
 msgstr ""
 
-#: templates/thank-you.html:50 templates/view-submitted-response.html:51
+#: templates/thank-you.html:50
 msgid "For security, you can no longer view your answers"
 msgstr ""
 
@@ -959,6 +959,10 @@ msgstr ""
 
 #: templates/view-submitted-response.html:37
 msgid "<b>Submission reference:</b> {transaction_id}"
+msgstr ""
+
+#: templates/view-submitted-response.html:51
+msgid "For security, you can no longer view or get a copy of your answers"
 msgstr ""
 
 #: templates/errors/403.html:7
