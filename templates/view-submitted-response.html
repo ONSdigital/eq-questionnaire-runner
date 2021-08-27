@@ -37,7 +37,7 @@
   <p>{{ _("<b>Submission reference:</b> {transaction_id}").format(transaction_id=content.tx_id)}}</p>
   <br/>
 
-  {% if content.view_submitted_response.expired == false %}
+  {% if not content.view_submitted_response.expired %}
     {% block summary %}
       <div class="u-mb-m">
         {% include 'partials/summary/summary.html' %}

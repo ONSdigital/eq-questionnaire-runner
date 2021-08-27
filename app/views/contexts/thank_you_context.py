@@ -22,12 +22,14 @@ def build_thank_you_context(
 ) -> Mapping:
 
     post_submission_schema: Mapping = schema.get_post_submission()
-    view_submitted_response_expired = get_view_submitted_response_expired(submitted_at)
-    view_submitted_response_url = (
-        url_for("post_submission.get_view_submitted_response")
-        if not view_submitted_response_expired
-        else None
-    )
+    view_submitted_response = {}
+
+    if post_submission_schema.get("view_response"):
+        view_submitted_response = {
+            "enabled": True,
+            "expired": get_view_submitted_response_expired(submitted_at),
+            "url": url_for("post_submission.get_view_submitted_response"),
+        }
 
     if survey_type == "social":
         submission_text = lazy_gettext("Your answers have been submitted.")
@@ -47,11 +49,7 @@ def build_thank_you_context(
         "submission_text": submission_text,
         "metadata": metadata,
         "guidance": guidance_content,
-        "view_submitted_response": {
-            "enabled": post_submission_schema.get("view_response", False),
-            "expired": view_submitted_response_expired,
-            "url": view_submitted_response_url,
-        },
+        "view_submitted_response": view_submitted_response,
     }
 
 
