@@ -1,12 +1,12 @@
-from datetime import datetime, timezone
+from datetime import datetime
 from typing import Mapping, Optional
 
 from flask import url_for
 from flask_babel import lazy_gettext
 
 from app.data_models.session_data import SessionData
+from app.globals import get_view_submitted_response_expired
 from app.questionnaire import QuestionnaireSchema
-from app.settings import VIEW_SUBMITTED_RESPONSE_EXPIRATION_IN_SECONDS
 from app.views.contexts.email_form_context import build_email_form_context
 from app.views.contexts.submission_metadata_context import (
     build_submission_metadata_context,
@@ -22,9 +22,7 @@ def build_thank_you_context(
 ) -> Mapping:
 
     post_submission_schema: Mapping = schema.get_post_submission()
-    view_submitted_response_expired = (
-        datetime.now(timezone.utc) - submitted_at
-    ).total_seconds() > VIEW_SUBMITTED_RESPONSE_EXPIRATION_IN_SECONDS
+    view_submitted_response_expired = get_view_submitted_response_expired(submitted_at)
     view_submitted_response_url = (
         url_for("post_submission.get_view_submitted_response")
         if not view_submitted_response_expired

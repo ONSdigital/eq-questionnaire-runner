@@ -1,10 +1,10 @@
-from datetime import datetime, timezone
+from datetime import datetime
 from typing import Union
 
 from app.data_models import QuestionnaireStore
+from app.globals import get_view_submitted_response_expired
 from app.libs.utils import convert_tx_id
 from app.questionnaire.questionnaire_schema import QuestionnaireSchema
-from app.settings import VIEW_SUBMITTED_RESPONSE_EXPIRATION_IN_SECONDS
 from app.views.contexts.summary_context import SummaryContext
 
 
@@ -14,9 +14,9 @@ def build_view_submitted_response_context(
     questionnaire_store: QuestionnaireStore,
 ) -> dict[str, Union[str, datetime, dict]]:
 
-    view_submitted_response_expired = (
-        datetime.now(timezone.utc) - questionnaire_store.submitted_at
-    ).total_seconds() > VIEW_SUBMITTED_RESPONSE_EXPIRATION_IN_SECONDS
+    view_submitted_response_expired = get_view_submitted_response_expired(
+        questionnaire_store.submitted_at
+    )
 
     summary_context = SummaryContext(
         language=language,
