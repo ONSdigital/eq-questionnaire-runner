@@ -1,12 +1,12 @@
-from datetime import datetime
+from datetime import datetime, timezone
 from typing import Mapping, Optional
 
-from dateutil.tz import tzutc
 from flask import url_for
 from flask_babel import lazy_gettext
 
 from app.data_models.session_data import SessionData
 from app.questionnaire import QuestionnaireSchema
+from app.settings import VIEW_SUBMITTED_RESPONSE_EXPIRATION_IN_SECONDS
 from app.views.contexts.email_form_context import build_email_form_context
 from app.views.contexts.submission_metadata_context import (
     build_submission_metadata_context,
@@ -21,10 +21,14 @@ def build_thank_you_context(
     guidance_content: Optional[dict] = None,
 ) -> Mapping:
 
-    submission_schema: Mapping = schema.get_post_submission() or {}
-    view_answers = int((datetime.now(tz=tzutc()) - submitted_at).total_seconds()) < 2700
-    view_submitted_url = (
-        url_for("post_submission.get_view_submitted_response") if view_answers else None
+    post_submission_schema: Mapping = schema.get_post_submission()
+    view_submitted_response_expired = (
+        datetime.now(timezone.utc) - submitted_at
+    ).total_seconds() > VIEW_SUBMITTED_RESPONSE_EXPIRATION_IN_SECONDS
+    view_submitted_response_url = (
+        url_for("post_submission.get_view_submitted_response")
+        if not view_submitted_response_expired
+        else None
     )
 
     if survey_type == "social":
@@ -45,9 +49,11 @@ def build_thank_you_context(
         "submission_text": submission_text,
         "metadata": metadata,
         "guidance": guidance_content,
-        "view_response_enabled": submission_schema.get("view_response"),
-        "view_submitted_url": view_submitted_url,
-        "view_answers": view_answers,
+        "view_submitted_response_enabled": post_submission_schema.get(
+            "view_response", False
+        ),
+        "view_submitted_response_url": view_submitted_response_url,
+        "view_submitted_response_expired": view_submitted_response_expired,
     }
 
 

@@ -1,11 +1,10 @@
-from datetime import datetime
+from datetime import datetime, timezone
 from typing import Union
-
-from dateutil.tz import tzutc
 
 from app.data_models import QuestionnaireStore
 from app.libs.utils import convert_tx_id
 from app.questionnaire.questionnaire_schema import QuestionnaireSchema
+from app.settings import VIEW_SUBMITTED_RESPONSE_EXPIRATION_IN_SECONDS
 from app.views.contexts.summary_context import SummaryContext
 
 
@@ -15,14 +14,9 @@ def build_view_submitted_response_context(
     questionnaire_store: QuestionnaireStore,
 ) -> dict[str, Union[str, datetime, dict]]:
 
-    view_answers = (
-        int(
-            (
-                datetime.now(tz=tzutc()) - questionnaire_store.submitted_at
-            ).total_seconds()
-        )
-        < 2700
-    )
+    view_submitted_response_expired = (
+        datetime.now(timezone.utc) - questionnaire_store.submitted_at
+    ).total_seconds() > VIEW_SUBMITTED_RESPONSE_EXPIRATION_IN_SECONDS
 
     summary_context = SummaryContext(
         language=language,
@@ -38,7 +32,7 @@ def build_view_submitted_response_context(
         "ru_name": questionnaire_store.metadata["ru_name"],
         "summary": summary_context(),
         "hide_sign_out_button": True,
-        "view_answers": view_answers,
+        "view_submitted_response_expired": view_submitted_response_expired,
     }
     if questionnaire_store.metadata.get("trad_as"):
         context["trad_as"] = questionnaire_store.metadata["trad_as"]

@@ -37,13 +37,13 @@
   <p>{{ _("<b>Submission reference:</b> {transaction_id}").format(transaction_id=content.tx_id)}}</p>
   <br/>
 
-  {% if content.view_answers == true %}
+  {% if content.view_submitted_response_expired == false %}
     {% block summary %}
       <div class="u-mb-m">
         {% include 'partials/summary/summary.html' %}
       </div>
     {% endblock summary %}
-  {% elif content.view_answers == false %}
+  {% else %}
     {% call onsPanel({
       "id": "view-submmited-guidance",
       "classes": "u-mb-m"

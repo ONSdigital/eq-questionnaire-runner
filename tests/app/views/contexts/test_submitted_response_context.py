@@ -37,7 +37,7 @@ class TestViewSubmittedResponseContext(AppContextTestCase):
         )
 
         assert context["submitted_at"] == submitted_at_date_time
-        assert context["view_answers"] is True
+        assert context["view_submitted_response_expired"] is False
         assert context["tx_id"] == "1234 - 56789"
         assert context["summary"]["answers_are_editable"] == False
         assert context["summary"]["collapsible"] == False
@@ -62,7 +62,9 @@ class TestViewSubmittedResponseContext(AppContextTestCase):
             == "What is your address?"
         )
 
-    def test_view_answers_is_false_when_submitted_at_greater_than_45_mins(self):
+    def test_view_submitted_response_expired_is_true_when_submitted_at_greater_than_the_expiration_time(
+        self,
+    ):
         storage = Mock()
         storage.get_user_data = Mock(return_value=("{}", 1, None))
         questionnaire_store = QuestionnaireStore(storage)
@@ -70,20 +72,10 @@ class TestViewSubmittedResponseContext(AppContextTestCase):
         questionnaire_store.submitted_at = submitted_at_date_time - timedelta(
             minutes=46
         )
-        questionnaire_store.metadata = {
-            "tx_id": "123456789",
-            "ru_name": "Apple",
-            "trad_as": "Apple",
-        }
-        questionnaire_store.answer_store = AnswerStore(
-            [
-                Answer("name-answer", "John Smith", None).to_dict(),
-                Answer("address-answer", "NP10 8XG", None).to_dict(),
-            ]
-        )
+        questionnaire_store.metadata = {"tx_id": "123456789", "ru_name": "Apple"}
 
         context = build_view_submitted_response_context(
             "en", SCHEMA, questionnaire_store
         )
 
-        assert context["view_answers"] is False
+        assert context["view_submitted_response_expired"] is True
