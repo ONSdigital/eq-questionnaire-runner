@@ -32,7 +32,9 @@ def build_view_submitted_response_context(
         "ru_name": questionnaire_store.metadata["ru_name"],
         "summary": summary_context(),
         "hide_sign_out_button": True,
-        "view_submitted_response_expired": view_submitted_response_expired,
+        "view_submitted_response": {
+            "expired": view_submitted_response_expired,
+        },
     }
     if questionnaire_store.metadata.get("trad_as"):
         context["trad_as"] = questionnaire_store.metadata["trad_as"]

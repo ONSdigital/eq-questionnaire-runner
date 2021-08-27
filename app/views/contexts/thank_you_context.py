@@ -47,11 +47,11 @@ def build_thank_you_context(
         "submission_text": submission_text,
         "metadata": metadata,
         "guidance": guidance_content,
-        "view_submitted_response_enabled": post_submission_schema.get(
-            "view_response", False
-        ),
-        "view_submitted_response_url": view_submitted_response_url,
-        "view_submitted_response_expired": view_submitted_response_expired,
+        "view_submitted_response": {
+            "enabled": post_submission_schema.get("view_response", False),
+            "expired": view_submitted_response_expired,
+            "url": view_submitted_response_url,
+        },
     }
 
 

@@ -37,7 +37,7 @@ class TestViewSubmittedResponseContext(AppContextTestCase):
         )
 
         assert context["submitted_at"] == submitted_at_date_time
-        assert context["view_submitted_response_expired"] is False
+        assert context["view_submitted_response"]["expired"] is False
         assert context["tx_id"] == "1234 - 56789"
         assert context["summary"]["answers_are_editable"] == False
         assert context["summary"]["collapsible"] == False
@@ -77,4 +77,4 @@ class TestViewSubmittedResponseContext(AppContextTestCase):
             "en", SCHEMA, questionnaire_store
         )
 
-        assert context["view_submitted_response_expired"] is True
+        assert context["view_submitted_response"]["expired"] is True

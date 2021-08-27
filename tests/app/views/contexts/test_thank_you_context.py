@@ -62,7 +62,7 @@ def test_view_submitted_response_enabled_is_true_when_set_in_schema(
             fake_session_data, SUBMITTED_AT, SURVEY_TYPE_DEFAULT, SCHEMA
         )
 
-        assert context["view_submitted_response_enabled"] is True
+        assert context["view_submitted_response"]["enabled"] is True
 
 
 def test_view_submitted_response_enabled_is_false_when_not_set_in_schema(
@@ -75,7 +75,7 @@ def test_view_submitted_response_enabled_is_false_when_not_set_in_schema(
             fake_session_data, SUBMITTED_AT, SURVEY_TYPE_DEFAULT, schema
         )
 
-        assert context["view_submitted_response_enabled"] is False
+        assert context["view_submitted_response"]["enabled"] is False
 
 
 def test_view_submitted_response_expired_is_false_when_submitted_at_less_than_expiry_time(
@@ -86,8 +86,8 @@ def test_view_submitted_response_expired_is_false_when_submitted_at_less_than_ex
             fake_session_data, SUBMITTED_AT, SURVEY_TYPE_DEFAULT, SCHEMA
         )
 
-        assert context["view_submitted_response_expired"] is False
-        assert context["view_submitted_response_url"] == "/submitted/view-response/"
+        assert context["view_submitted_response"]["expired"] is False
+        assert context["view_submitted_response"]["url"] == "/submitted/view-response/"
 
 
 def test_view_submitted_response_expired_is_true_when_submitted_at_less_than_expiry_time(
@@ -101,8 +101,8 @@ def test_view_submitted_response_expired_is_true_when_submitted_at_less_than_exp
             fake_session_data, submitted_at, SURVEY_TYPE_DEFAULT, SCHEMA
         )
 
-        assert context["view_submitted_response_expired"] is True
-        assert context["view_submitted_response_url"] is None
+        assert context["view_submitted_response"]["expired"] is True
+        assert context["view_submitted_response"]["url"] is None
 
 
 def test_default_survey_context_with_trad_as(fake_session_data, app: Flask):
