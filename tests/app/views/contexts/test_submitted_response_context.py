@@ -68,8 +68,7 @@ class TestViewSubmittedResponseContext(AppContextTestCase):
         storage = Mock()
         storage.get_user_data = Mock(return_value=("{}", 1, None))
         questionnaire_store = QuestionnaireStore(storage)
-        submitted_at_date_time = datetime.now(timezone.utc)
-        questionnaire_store.submitted_at = submitted_at_date_time - timedelta(
+        questionnaire_store.submitted_at = datetime.now(timezone.utc) - timedelta(
             minutes=46
         )
         questionnaire_store.metadata = {"tx_id": "123456789", "ru_name": "Apple"}
