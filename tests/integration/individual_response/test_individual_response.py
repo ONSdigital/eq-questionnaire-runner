@@ -663,6 +663,7 @@ class TestIndividualResponseNavigation(IndividualResponseTestCase):
         self.post()
         self.post({"proxy-answer": "Yes, I am"})
         self.post()
+        self.assertEqual(THANK_YOU_URL_PATH, self.last_url)
 
         # When I try to get the individual-response response page
         self.get("/individual-response/")

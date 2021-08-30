@@ -39,4 +39,4 @@ class TestResume(IntegrationTestCase):
         self.launchSurvey("test_textfield")
 
         # Then I should resume on the thank you page
-        self.assertEqual(THANK_YOU_URL_PATH, self.last_url)
+        self.assertInUrl(THANK_YOU_URL_PATH)
