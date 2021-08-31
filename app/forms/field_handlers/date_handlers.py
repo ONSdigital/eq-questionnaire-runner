@@ -1,5 +1,6 @@
 from datetime import datetime, timezone
 from functools import cached_property
+from typing import Optional, Union
 
 from dateutil.relativedelta import relativedelta
 
@@ -14,6 +15,10 @@ from app.forms.validators import (
 )
 from app.questionnaire.rules import convert_to_datetime
 
+DateValidatorTypes = list[
+    Union[OptionalForm, DateRequired, DateCheck, SingleDatePeriodCheck]
+]
+
 
 class DateHandler(FieldHandler):
     MANDATORY_MESSAGE_KEY = "MANDATORY_DATE"
@@ -21,8 +26,9 @@ class DateHandler(FieldHandler):
     DISPLAY_FORMAT = "d MMMM yyyy"
 
     @cached_property
-    def validators(self):
-        validate_with = [OptionalForm()]
+    def validators(self) -> DateValidatorTypes:
+
+        validate_with: DateValidatorTypes = [OptionalForm()]
 
         if self.answer_schema["mandatory"] is True:
             validate_with = [
@@ -45,13 +51,14 @@ class DateHandler(FieldHandler):
         if minimum_date or maximum_date:
             min_max_validator = self.get_min_max_validator(minimum_date, maximum_date)
             validate_with.append(min_max_validator)
-
         return validate_with
 
     def get_field(self) -> DateField:
         return DateField(self.validators, label=self.label, description=self.guidance)
 
-    def get_min_max_validator(self, minimum_date, maximum_date):
+    def get_min_max_validator(
+        self, minimum_date: Optional[datetime], maximum_date: Optional[datetime]
+    ) -> SingleDatePeriodCheck:
         messages = self.answer_schema.get("validation", {}).get("messages")
 
         return SingleDatePeriodCheck(
@@ -61,7 +68,7 @@ class DateHandler(FieldHandler):
             maximum_date=maximum_date,
         )
 
-    def get_referenced_date(self, key):
+    def get_referenced_date(self, key: str) -> Optional[datetime]:
         """
         Gets value of the referenced date type, whether it is a value,
         id of an answer or a meta date.
@@ -73,10 +80,12 @@ class DateHandler(FieldHandler):
         if value == "now":
             value = datetime.now(timezone.utc).strftime("%Y-%m-%d")
 
-        return convert_to_datetime(value)
+        return convert_to_datetime(value) if isinstance(value, str) else None
 
     @staticmethod
-    def transform_date_by_offset(date_to_offset, offset):
+    def transform_date_by_offset(
+        date_to_offset: Optional[datetime], offset: dict[str, int]
+    ) -> Optional[datetime]:
         """
         Adds/subtracts offset from a date and returns
         the new offset value
@@ -85,15 +94,16 @@ class DateHandler(FieldHandler):
         :param offset: The object which contains the offset.
         :return: date value
         """
-        date_to_offset += relativedelta(
-            years=offset.get("years", 0),
-            months=offset.get("months", 0),
-            days=offset.get("days", 0),
-        )
+        if date_to_offset:
+            date_to_offset += relativedelta(
+                years=offset.get("years", 0),
+                months=offset.get("months", 0),
+                days=offset.get("days", 0),
+            )
 
         return date_to_offset
 
-    def get_date_value(self, key):
+    def get_date_value(self, key: str) -> Optional[datetime]:
         """
         Gets attributes within a minimum or maximum of a date field and validates that the entered date
         is valid.
@@ -121,7 +131,9 @@ class MonthYearDateHandler(DateHandler):
             self.validators, label=self.label, description=self.guidance
         )
 
-    def get_min_max_validator(self, minimum_date, maximum_date):
+    def get_min_max_validator(
+        self, minimum_date: Optional[datetime], maximum_date: Optional[datetime]
+    ) -> SingleDatePeriodCheck:
         messages = self.answer_schema.get("validation", {}).get("messages")
 
         minimum_date = (
@@ -148,7 +160,9 @@ class YearDateHandler(DateHandler):
             self.validators, label=self.label, description=self.guidance
         )
 
-    def get_min_max_validator(self, minimum_date, maximum_date):
+    def get_min_max_validator(
+        self, minimum_date: Optional[datetime], maximum_date: Optional[datetime]
+    ) -> SingleDatePeriodCheck:
         messages = self.answer_schema.get("validation", {}).get("messages")
 
         minimum_date = (
