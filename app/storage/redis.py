@@ -1,6 +1,5 @@
-from datetime import datetime
+from datetime import datetime, timezone
 
-from dateutil.tz import tzutc
 from redis.exceptions import ConnectionError as RedisConnectionError
 from structlog import get_logger
 
@@ -33,7 +32,7 @@ class Redis(StorageHandler):
         expires_in = None
         if storage_model.expiry_field:
             expiry_at = getattr(model, storage_model.expiry_field)
-            expires_in = expiry_at - datetime.now(tz=tzutc())
+            expires_in = expiry_at - datetime.now(tz=timezone.utc)
 
         try:
             record_created = self.client.set(

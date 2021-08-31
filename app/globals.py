@@ -1,8 +1,7 @@
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 from types import MappingProxyType
 from typing import Union
 
-from dateutil.tz import tzutc
 from flask import current_app, g
 from flask import session as cookie_session
 from structlog import get_logger
@@ -78,7 +77,7 @@ def create_session_store(
         "EQ_SERVER_SIDE_STORAGE_ENCRYPTION_USER_PEPPER"
     )
     session_timeout_in_seconds = get_session_timeout_in_seconds(g.schema)
-    expires_at = datetime.now(tz=tzutc()) + timedelta(
+    expires_at = datetime.now(tz=timezone.utc) + timedelta(
         seconds=session_timeout_in_seconds
     )
 

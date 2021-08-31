@@ -1,6 +1,5 @@
-from datetime import datetime
+from datetime import datetime, timezone
 
-from dateutil.tz import tzutc
 from marshmallow import Schema, fields, post_load, pre_dump
 
 
@@ -9,8 +8,8 @@ class QuestionnaireState:
         self.user_id = user_id
         self.state_data = state_data
         self.version = version
-        self.created_at = datetime.now(tz=tzutc())
-        self.updated_at = datetime.now(tz=tzutc())
+        self.created_at = datetime.now(tz=timezone.utc)
+        self.updated_at = datetime.now(tz=timezone.utc)
         self.submitted_at = submitted_at
 
 
@@ -19,15 +18,15 @@ class EQSession:
         self.eq_session_id = eq_session_id
         self.user_id = user_id
         self.session_data = session_data
-        self.created_at = datetime.now(tz=tzutc())
-        self.updated_at = datetime.now(tz=tzutc())
-        self.expires_at = expires_at.replace(tzinfo=tzutc())
+        self.created_at = datetime.now(tz=timezone.utc)
+        self.updated_at = datetime.now(tz=timezone.utc)
+        self.expires_at = expires_at.replace(tzinfo=timezone.utc)
 
 
 class UsedJtiClaim:
     def __init__(self, jti_claim, expires_at):
         self.jti_claim = jti_claim
-        self.expires_at = expires_at.replace(tzinfo=tzutc())
+        self.expires_at = expires_at.replace(tzinfo=timezone.utc)
 
 
 # pylint: disable=no-self-use
@@ -35,12 +34,12 @@ class Timestamp(fields.Field):
     def _serialize(self, value, attr, obj, **kwargs):
         if value:
             # Timezone aware datetime to timestamp
-            return int(value.replace(tzinfo=tzutc()).strftime("%s"))
+            return int(value.replace(tzinfo=timezone.utc).timestamp())
 
     def _deserialize(self, value, attr, data, **kwargs):
         if value:
             # Timestamp to timezone aware datetime
-            return datetime.utcfromtimestamp(value).replace(tzinfo=tzutc())
+            return datetime.fromtimestamp(value, tz=timezone.utc)
 
 
 class DateTimeSchemaMixin:
@@ -49,7 +48,7 @@ class DateTimeSchemaMixin:
 
     @pre_dump
     def set_date(self, data, **kwargs):
-        data.updated_at = datetime.now(tz=tzutc())
+        data.updated_at = datetime.now(tz=timezone.utc)
         return data
 
 

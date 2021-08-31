@@ -199,9 +199,13 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
             self._list_name_to_section_map[list_name] = section_ids
             return section_ids
 
-    def get_submission(self) -> Optional[ImmutableDict]:
-        submission_schema: Optional[ImmutableDict] = self.json.get("submission")
-        return submission_schema
+    def get_submission(self) -> ImmutableDict:
+        schema: ImmutableDict = self.json.get("submission", ImmutableDict({}))
+        return schema
+
+    def get_post_submission(self) -> ImmutableDict:
+        schema: ImmutableDict = self.json.get("post_submission", ImmutableDict({}))
+        return schema
 
     def _section_ids_associated_to_list_name(self, list_name: str) -> list[str]:
         section_ids: list[str] = []
