@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2021-08-18 09:26+0100\n"
+"POT-Creation-Date: 2021-08-20 15:24+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -470,6 +470,18 @@ msgstr ""
 msgid "Your answers have been submitted for <span>{company_name}</span>."
 msgstr ""
 
+#: app/views/contexts/view_submitted_response_context.py:33
+msgid "Answers submitted."
+msgstr ""
+
+#: app/views/contexts/view_submitted_response_context.py:35
+msgid "Answers submitted for <span>{ru_name}</span> ({trad_as})."
+msgstr ""
+
+#: app/views/contexts/view_submitted_response_context.py:39
+msgid "Answers submitted for <span>{ru_name}</span>."
+msgstr ""
+
 #: app/views/handlers/confirm_email.py:32
 msgid "Yes, send the confirmation email"
 msgstr ""
@@ -724,7 +736,7 @@ msgstr ""
 msgid "Thank you for completing the census"
 msgstr ""
 
-#: app/views/handlers/view_submitted_response.py:53
+#: app/views/handlers/view_submitted_response.py:54
 msgid "View Submitted Response"
 msgstr ""
 
@@ -844,7 +856,7 @@ msgstr ""
 msgid "Done"
 msgstr ""
 
-#: templates/feedback.html:15 templates/view-submitted-response.html:15
+#: templates/feedback.html:15 templates/view-submitted-response.html:17
 msgid "Back"
 msgstr ""
 
@@ -925,22 +937,6 @@ msgstr ""
 
 #: templates/thank-you.html:27
 msgid "For more information on how we use this data."
-msgstr ""
-
-#: templates/view-submitted-response.html:28
-msgid "Your answers were submitted for <span>{ru_name}</span> ({trading_as_name})"
-msgstr ""
-
-#: templates/view-submitted-response.html:32
-msgid "Your answers were submitted for <span>{ru_name}</span>"
-msgstr ""
-
-#: templates/view-submitted-response.html:36
-msgid "<b>Submitted on:</b> {submitted_at}"
-msgstr ""
-
-#: templates/view-submitted-response.html:37
-msgid "<b>Submission reference:</b> {transaction_id}"
 msgstr ""
 
 #: templates/errors/403.html:7
