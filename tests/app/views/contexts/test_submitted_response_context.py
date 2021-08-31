@@ -82,48 +82,6 @@ def test_build_view_submitted_response_context_submitted_text_with_trad_as(app: 
         )
 
 
-def test_build_view_submitted_response_context_metadata(app: Flask):
-    with app.app_context():
-        questionnaire_store = fake_questionnaire_store()
-        context = build_view_submitted_response_context(
-            "en", SCHEMA, questionnaire_store, "default"
-        )
-
-        metadata = context["metadata"]
-        assert len(metadata["itemsList"]) == 2
-        assert metadata["data-qa"] == "metadata"
-        assert metadata["termCol"] == 5
-        assert metadata["descriptionCol"] == 7
-
-        assert metadata["itemsList"][0] == {
-            "descriptions": [{"description": format_submitted_on_description()}],
-            "term": "Submitted on:",
-        }
-        assert metadata["itemsList"][1] == {
-            "descriptions": [{"description": "1234 - 56789"}],
-            "term": "Submission reference:",
-        }
-
-
-def test_build_view_submitted_response_context_metadata_social(app: Flask):
-    with app.app_context():
-        questionnaire_store = fake_questionnaire_store()
-        context = build_view_submitted_response_context(
-            "en", SCHEMA, questionnaire_store, "social"
-        )
-
-        metadata = context["metadata"]
-        assert len(metadata["itemsList"]) == 1
-        assert metadata["data-qa"] == "metadata"
-        assert metadata["termCol"] == 3
-        assert metadata["descriptionCol"] == 9
-
-        assert metadata["itemsList"][0] == {
-            "descriptions": [{"description": format_submitted_on_description()}],
-            "term": "Submitted on:",
-        }
-
-
 def fake_questionnaire_store():
     storage = Mock()
     storage.get_user_data = Mock(return_value=("{}", 1, None))
