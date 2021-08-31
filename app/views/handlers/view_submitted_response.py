@@ -5,6 +5,7 @@ from flask import current_app
 from flask_babel import lazy_gettext
 
 from app.data_models import QuestionnaireStore
+from app.helpers.template_helpers import get_survey_type
 from app.questionnaire import QuestionnaireSchema
 from app.views.contexts.view_submitted_response_context import (
     build_view_submitted_response_context,
@@ -44,7 +45,7 @@ class ViewSubmittedResponse:
 
     def get_context(self) -> dict[str, Union[str, datetime, dict]]:
         return build_view_submitted_response_context(
-            self._language, self._schema, self._questionnaire_store
+            self._language, self._schema, self._questionnaire_store, get_survey_type()
         )
 
     @staticmethod

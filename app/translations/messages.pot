@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2021-08-26 16:05+0100\n"
+"POT-Creation-Date: 2021-08-31 11:22+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -52,7 +52,7 @@ msgid "Select an answer <span class=\"u-vh\">to ‘%(question_title)s’</span>"
 msgstr ""
 
 #: app/forms/error_messages.py:18
-#: app/forms/field_handlers/dropdown_handler.py:11
+#: app/forms/field_handlers/dropdown_handler.py:9
 msgid "Select an answer"
 msgstr ""
 
@@ -219,19 +219,19 @@ msgid ""
 "browser if using a shared device"
 msgstr ""
 
-#: app/questionnaire/placeholder_transforms.py:114
+#: app/questionnaire/placeholder_transforms.py:115
 msgid "{number_of_years} year"
 msgid_plural "{number_of_years} years"
 msgstr[0] ""
 msgstr[1] ""
 
-#: app/questionnaire/placeholder_transforms.py:120
+#: app/questionnaire/placeholder_transforms.py:121
 msgid "{number_of_months} month"
 msgid_plural "{number_of_months} months"
 msgstr[0] ""
 msgstr[1] ""
 
-#: app/questionnaire/placeholder_transforms.py:125
+#: app/questionnaire/placeholder_transforms.py:126
 msgid "{number_of_days} day"
 msgid_plural "{number_of_days} days"
 msgstr[0] ""
@@ -456,18 +456,30 @@ msgstr ""
 msgid "Please submit this survey to complete it"
 msgstr ""
 
-#: app/views/contexts/thank_you_context.py:31
+#: app/views/contexts/thank_you_context.py:35
 msgid "Your answers have been submitted."
 msgstr ""
 
-#: app/views/contexts/thank_you_context.py:33
+#: app/views/contexts/thank_you_context.py:37
 msgid ""
 "Your answers have been submitted for <span>{company_name}</span> "
 "({trading_name})."
 msgstr ""
 
-#: app/views/contexts/thank_you_context.py:37
+#: app/views/contexts/thank_you_context.py:41
 msgid "Your answers have been submitted for <span>{company_name}</span>."
+msgstr ""
+
+#: app/views/contexts/view_submitted_response_context.py:36
+msgid "Answers submitted."
+msgstr ""
+
+#: app/views/contexts/view_submitted_response_context.py:38
+msgid "Answers submitted for <span>{ru_name}</span> ({trad_as})."
+msgstr ""
+
+#: app/views/contexts/view_submitted_response_context.py:42
+msgid "Answers submitted for <span>{ru_name}</span>."
 msgstr ""
 
 #: app/views/handlers/confirm_email.py:32
@@ -724,7 +736,7 @@ msgstr ""
 msgid "Thank you for completing the census"
 msgstr ""
 
-#: app/views/handlers/view_submitted_response.py:52
+#: app/views/handlers/view_submitted_response.py:53
 msgid "View Submitted Response"
 msgstr ""
 
@@ -844,7 +856,7 @@ msgstr ""
 msgid "Done"
 msgstr ""
 
-#: templates/feedback.html:15 templates/view-submitted-response.html:15
+#: templates/feedback.html:15 templates/view-submitted-response.html:16
 msgid "Back"
 msgstr ""
 
@@ -945,23 +957,7 @@ msgstr ""
 msgid "For security, you can no longer view your answers"
 msgstr ""
 
-#: templates/view-submitted-response.html:28
-msgid "Your answers were submitted for <span>{ru_name}</span> ({trading_as_name})"
-msgstr ""
-
-#: templates/view-submitted-response.html:32
-msgid "Your answers were submitted for <span>{ru_name}</span>"
-msgstr ""
-
-#: templates/view-submitted-response.html:36
-msgid "<b>Submitted on:</b> {submitted_at}"
-msgstr ""
-
-#: templates/view-submitted-response.html:37
-msgid "<b>Submission reference:</b> {transaction_id}"
-msgstr ""
-
-#: templates/view-submitted-response.html:51
+#: templates/view-submitted-response.html:42
 msgid "For security, you can no longer view or get a copy of your answers"
 msgstr ""
 
