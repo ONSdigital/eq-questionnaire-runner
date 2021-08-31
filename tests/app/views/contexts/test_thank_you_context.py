@@ -65,7 +65,7 @@ def test_view_submitted_response_enabled_is_true_when_set_in_schema(
         assert context["view_submitted_response"]["enabled"] is True
 
 
-def test_view_submitted_response_is_empty_when_not_enabled_in_schema(
+def test_view_submitted_response_enabled_is_false_when_not_enabled_in_schema(
     fake_session_data, app: Flask
 ):
     with app.app_context():
@@ -75,7 +75,7 @@ def test_view_submitted_response_is_empty_when_not_enabled_in_schema(
             fake_session_data, SUBMITTED_AT, SURVEY_TYPE_DEFAULT, schema
         )
 
-        assert context["view_submitted_response"] == {}
+        assert context["view_submitted_response"]["enabled"] is False
 
 
 def test_view_submitted_response_expired_is_false_when_submitted_at_less_than_expiry_time(

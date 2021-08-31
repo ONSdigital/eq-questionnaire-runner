@@ -21,16 +21,6 @@ def build_thank_you_context(
     guidance_content: Optional[dict] = None,
 ) -> Mapping:
 
-    post_submission_schema: Mapping = schema.get_post_submission()
-    view_submitted_response = {}
-
-    if post_submission_schema.get("view_response"):
-        view_submitted_response = {
-            "enabled": True,
-            "expired": get_view_submitted_response_expired(submitted_at),
-            "url": url_for("post_submission.get_view_submitted_response"),
-        }
-
     if survey_type == "social":
         submission_text = lazy_gettext("Your answers have been submitted.")
     elif session_data.trad_as and session_data.ru_name:
@@ -49,8 +39,23 @@ def build_thank_you_context(
         "submission_text": submission_text,
         "metadata": metadata,
         "guidance": guidance_content,
-        "view_submitted_response": view_submitted_response,
+        "view_submitted_response": build_view_submitted_response(schema, submitted_at),
     }
+
+
+def build_view_submitted_response(schema, submitted_at):
+    schema: Mapping = schema.get_post_submission()
+    enabled = schema.get("view_response", False)
+    view_submitted_response = {"enabled": enabled}
+
+    if enabled:
+        expired = get_view_submitted_response_expired(submitted_at)
+        view_submitted_response["expired"] = expired
+        if not expired:
+            view_submitted_response["url"] = url_for(
+                "post_submission.get_view_submitted_response"
+            )
+    return view_submitted_response
 
 
 def build_census_thank_you_context(
