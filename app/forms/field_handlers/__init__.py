@@ -1,7 +1,13 @@
+from werkzeug.datastructures import ImmutableDict
+
+from app.data_models.answer_store import AnswerStore
+from app.questionnaire.location import Location
+
 from .address_handler import AddressHandler
 from .date_handlers import DateHandler, MonthYearDateHandler, YearDateHandler
 from .dropdown_handler import DropdownHandler
 from .duration_handler import DurationHandler
+from .field_handler import FieldHandler
 from .mobile_number_handler import MobileNumberHandler
 from .number_handler import NumberHandler
 from .select_handlers import SelectHandler, SelectMultipleHandler
@@ -29,15 +35,15 @@ FIELD_HANDLER_MAPPINGS = {
 
 
 def get_field_handler(
-    answer,
-    error_messages,
-    answer_store,
-    metadata=None,
-    location=None,
-    disable_validation=False,
-    question_title=None,
-):
-    return FIELD_HANDLER_MAPPINGS[answer.get("type")](
+    answer: dict,
+    error_messages: ImmutableDict,
+    answer_store: AnswerStore,
+    metadata: dict = None,
+    location: Location = None,
+    disable_validation: bool = False,
+    question_title: str = None,
+) -> FieldHandler:
+    return FIELD_HANDLER_MAPPINGS[answer["type"]](
         answer,
         error_messages=error_messages,
         answer_store=answer_store,

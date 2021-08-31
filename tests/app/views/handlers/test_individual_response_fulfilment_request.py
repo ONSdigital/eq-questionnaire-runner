@@ -1,5 +1,5 @@
 import json
-from datetime import datetime
+from datetime import datetime, timezone
 from uuid import uuid4
 
 import pytest
@@ -18,7 +18,7 @@ from app.views.handlers.individual_response import (
 DUMMY_MOBILE_NUMBER = "07700900258"
 
 
-@freeze_time(datetime.utcnow().isoformat())
+@freeze_time(datetime.now(tz=timezone.utc).isoformat())
 def test_sms_fulfilment_request_payload():
     metadata = {"region_code": "GB-ENG", "case_id": str(uuid4())}
     fulfilment_request = IndividualResponseFulfilmentRequest(
@@ -38,7 +38,7 @@ def test_sms_fulfilment_request_payload():
     assert sms_json_message["payload"] == expected_sms_payload
 
 
-@freeze_time(datetime.utcnow().isoformat())
+@freeze_time(datetime.now(tz=timezone.utc).isoformat())
 def test_postal_fulfilment_request_message():
     metadata = {"region_code": "GB-ENG", "case_id": str(uuid4())}
     fulfilment_request = IndividualResponseFulfilmentRequest(metadata)
@@ -64,7 +64,7 @@ def validate_uuids_in_payload(payload):
     assert is_valid_uuid(case_id, version=4) is True
 
 
-@freeze_time(datetime.utcnow().isoformat())
+@freeze_time(datetime.now(tz=timezone.utc).isoformat())
 def test_individual_case_id_not_present_when_case_type_spg():
     metadata = {"region_code": "GB-ENG", "case_id": str(uuid4()), "case_type": "SPG"}
     fulfilment_request = IndividualResponseFulfilmentRequest(metadata)
@@ -73,7 +73,7 @@ def test_individual_case_id_not_present_when_case_type_spg():
     assert "individualCaseId" not in json_message["payload"]["fulfilmentRequest"]
 
 
-@freeze_time(datetime.utcnow().isoformat())
+@freeze_time(datetime.now(tz=timezone.utc).isoformat())
 def test_individual_case_id_not_present_when_case_type_ce():
     metadata = {"region_code": "GB-ENG", "case_id": str(uuid4()), "case_type": "CE"}
     fulfilment_request = IndividualResponseFulfilmentRequest(metadata)

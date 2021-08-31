@@ -24,7 +24,7 @@ class TestSubmitContext(SubmitContextTestCase):
     def test_default_submission_content(self):
         self.schema = load_schema_from_name("test_instructions")
         submission_content = self.schema.get_submission()
-        self.assertIsNone(submission_content)
+        self.assertEqual(submission_content, {})
 
         submit_questionnaire_context = SubmitQuestionnaireContext(
             self.language,

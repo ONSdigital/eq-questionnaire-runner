@@ -1,4 +1,4 @@
-from datetime import datetime
+from datetime import datetime, timezone
 
 from app.views.handlers.feedback import FeedbackMetadata, FeedbackPayload
 
@@ -32,7 +32,7 @@ def test_feedback_metadata():
 
     expected_metadata = {
         "feedback_count": 1,
-        "feedback_submission_date": datetime.utcnow().strftime("%Y-%m-%d"),
+        "feedback_submission_date": datetime.now(tz=timezone.utc).strftime("%Y-%m-%d"),
         "form_type": "H",
         "language_code": "cy",
         "region_code": "GB-ENG",

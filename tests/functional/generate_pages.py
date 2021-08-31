@@ -792,7 +792,7 @@ def process_schema(in_schema, out_dir, spec_file, require_path=".."):
 
     process_questionnaire_flow(data, require_path, out_dir, spec_file)
 
-    if data.get("submission", {}).get("view_response"):
+    if data.get("post_submission", {}).get("view_response"):
         process_view_submitted_response(data, require_path, out_dir, spec_file)
 
     for section in data["sections"]:

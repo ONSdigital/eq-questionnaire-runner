@@ -31,7 +31,7 @@
             }
         }
     },
-    "submission": {
+    "post_submission": {
         "confirmation_email": true
     },
     "sections": [

@@ -1,8 +1,6 @@
-import json
 from datetime import datetime, timezone
 from typing import Mapping
 
-from dateutil.tz import tzutc
 from freezegun import freeze_time
 
 from app.data_models import FulfilmentRequest
@@ -32,7 +30,7 @@ def test_fulfilment_request_message():
             "type": "FULFILMENT_REQUESTED",
             "source": "QUESTIONNAIRE_RUNNER",
             "channel": "EQ",
-            "dateTime": datetime.now(tz=tzutc()).isoformat(),
+            "dateTime": datetime.now(tz=timezone.utc).isoformat(),
         },
         "payload": {},
     }

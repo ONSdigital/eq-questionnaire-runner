@@ -1,17 +1,20 @@
 from functools import cached_property
+from typing import Union
 
 from wtforms import StringField
 
 from app.forms.field_handlers.field_handler import FieldHandler
-from app.forms.validators import MobileNumberCheck
+from app.forms.validators import MobileNumberCheck, ResponseRequired
+
+MobileNumberValidatorTypes = list[Union[ResponseRequired, MobileNumberCheck]]
 
 
 class MobileNumberHandler(FieldHandler):
     MANDATORY_MESSAGE_KEY = "MANDATORY_MOBILE_NUMBER"
 
     @cached_property
-    def validators(self):
-        validate_with = super().validators
+    def validators(self) -> MobileNumberValidatorTypes:
+        validate_with: MobileNumberValidatorTypes = super().validators
 
         if not self.disable_validation:
             validate_with.append(MobileNumberCheck())

@@ -1,5 +1,5 @@
 import json
-from datetime import datetime
+from datetime import datetime, timezone
 
 from freezegun import freeze_time
 from jwcrypto import jwt
@@ -16,7 +16,7 @@ class TestAddressLookupApiAuthToken(AppContextTestCase):
         super().setUp()
         self.test_app.config["ADDRESS_LOOKUP_API_AUTH_ENABLED"] = True
 
-    time_to_freeze = datetime.utcnow().replace(second=0, microsecond=0)
+    time_to_freeze = datetime.now(timezone.utc).replace(second=0, microsecond=0)
 
     @freeze_time(time_to_freeze)
     def test_get_address_lookup_api_auth_token(self):
@@ -28,7 +28,9 @@ class TestAddressLookupApiAuthToken(AppContextTestCase):
             leeway = self.test_app.config[
                 "ADDRESS_LOOKUP_API_AUTH_TOKEN_LEEWAY_IN_SECONDS"
             ]
-            expiry_time = int(datetime.utcnow().timestamp()) + session_timeout + leeway
+            expiry_time = (
+                int(datetime.now(timezone.utc).timestamp()) + session_timeout + leeway
+            )
 
             token = get_address_lookup_api_auth_token()
             key = get_jwk_from_secret(secret)

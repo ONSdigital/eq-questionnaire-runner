@@ -1,10 +1,9 @@
-from datetime import datetime
+from datetime import datetime, timezone
 from urllib.parse import quote
 
 from babel.dates import format_datetime
 from babel.numbers import format_currency, format_decimal
 from dateutil.relativedelta import relativedelta
-from dateutil.tz import tzutc
 from flask_babel import ngettext
 
 from app.settings import DEFAULT_LOCALE
@@ -26,7 +25,9 @@ class PlaceholderTransforms:
         return format_currency(number, currency, locale=self.locale)
 
     def format_date(self, date_to_format, date_format):
-        date_to_format = datetime.strptime(date_to_format, self.input_date_format)
+        date_to_format = datetime.strptime(
+            date_to_format, self.input_date_format
+        ).replace(tzinfo=timezone.utc)
         return format_datetime(date_to_format, date_format, locale=self.locale)
 
     @staticmethod
@@ -137,16 +138,16 @@ class PlaceholderTransforms:
         or 'now'. Note that in the shorthand YYYY-MM format, day_of_month is assumed to be 1.
         """
         if date == "now":
-            return datetime.now(tz=tzutc())
+            return datetime.now(tz=timezone.utc)
 
         try:
             return datetime.strptime(
                 date, PlaceholderTransforms.input_date_format
-            ).replace(tzinfo=tzutc())
+            ).replace(tzinfo=timezone.utc)
         except ValueError:
             return datetime.strptime(
                 date, PlaceholderTransforms.input_date_format_month_year_only
-            ).replace(tzinfo=tzutc())
+            ).replace(tzinfo=timezone.utc)
 
     @staticmethod
     def add(lhs, rhs):
