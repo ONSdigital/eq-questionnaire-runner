@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2021-08-31 11:22+0100\n"
+"POT-Creation-Date: 2021-09-01 08:44+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -456,17 +456,17 @@ msgstr ""
 msgid "Please submit this survey to complete it"
 msgstr ""
 
-#: app/views/contexts/thank_you_context.py:35
+#: app/views/contexts/thank_you_context.py:25
 msgid "Your answers have been submitted."
 msgstr ""
 
-#: app/views/contexts/thank_you_context.py:37
+#: app/views/contexts/thank_you_context.py:27
 msgid ""
 "Your answers have been submitted for <span>{company_name}</span> "
 "({trading_name})."
 msgstr ""
 
-#: app/views/contexts/thank_you_context.py:41
+#: app/views/contexts/thank_you_context.py:31
 msgid "Your answers have been submitted for <span>{company_name}</span>."
 msgstr ""
 
@@ -946,7 +946,7 @@ msgstr ""
 #: templates/thank-you.html:38
 msgid ""
 "You can <a href='{url}' id='view-answers-link'>save or print your "
-"answers</a> for your records"
+"answers</a> for your records."
 msgstr ""
 
 #: templates/thank-you.html:43

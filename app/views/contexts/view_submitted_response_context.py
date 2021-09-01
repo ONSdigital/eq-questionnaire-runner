@@ -4,7 +4,7 @@ from typing import Union
 from flask_babel import lazy_gettext
 
 from app.data_models import QuestionnaireStore
-from app.globals import get_view_submitted_response_expired
+from app.globals import is_view_submitted_response_expired
 from app.questionnaire.questionnaire_schema import QuestionnaireSchema
 from app.views.contexts.submission_metadata_context import (
     build_submission_metadata_context,
@@ -19,7 +19,7 @@ def build_view_submitted_response_context(
     survey_type: str,
 ) -> dict[str, Union[str, datetime, dict]]:
 
-    view_submitted_response_expired = get_view_submitted_response_expired(
+    view_submitted_response_expired = is_view_submitted_response_expired(
         questionnaire_store.submitted_at
     )
 
