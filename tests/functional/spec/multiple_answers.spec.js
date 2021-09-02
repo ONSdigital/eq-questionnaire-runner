@@ -69,7 +69,6 @@ describe("Multiple Answers", () => {
     });
 
     it("When I am on the question page, Then all answers should have a label/legend", () => {
-
       expect($(AboutYou.dateLegend()).getText()).to.equal("What is your date of birth?");
       expect($(AboutYou.monthYearDateLegend()).getText()).to.equal("When would you like the car by?");
       expect($(AboutYou.radioLegend()).getText()).to.equal("Would you like the sports package?");
