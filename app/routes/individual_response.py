@@ -8,7 +8,7 @@ from werkzeug.exceptions import BadRequest
 from app.authentication.no_questionnaire_state_exception import (
     NoQuestionnaireStateException,
 )
-from app.globals import get_metadata, get_session_store
+from app.globals import get_metadata, get_questionnaire_store, get_session_store
 from app.helpers import url_safe_serializer
 from app.helpers.language_helper import handle_language
 from app.helpers.schema_helpers import with_schema
@@ -42,6 +42,13 @@ def before_individual_response_request():
     metadata = get_metadata(current_user)
     if not metadata:
         raise NoQuestionnaireStateException(401)
+
+    questionnaire_store = get_questionnaire_store(
+        current_user.user_id, current_user.user_ik
+    )
+
+    if questionnaire_store.submitted_at:
+        return redirect(url_for("post_submission.get_thank_you"))
 
     logger.bind(
         tx_id=metadata["tx_id"],
