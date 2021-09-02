@@ -1,32 +1,42 @@
 from tests.integration.integration_test_case import IntegrationTestCase
-from tests.integration.questionnaire import SUBMIT_URL_PATH
+from tests.integration.questionnaire import SUBMIT_URL_PATH, THANK_YOU_URL_PATH
 
 
 class TestResume(IntegrationTestCase):
     def test_navigating_backwards(self):
-        # If a user completes a block, then goes back and signs out, on re-authentication
-        # they should resume on the first incomplete location
+        # Given I submit the first page
         self.launchSurvey("test_textfield")
         self.post({"name-answer": "Joe Bloggs"})
 
-        # Go back to the first page
+        # When I go back to the first page, sign out and then resume
         self.get("/questionnaire/name-block")
-
         self.get("/sign-out")
         self.launchSurvey("test_textfield")
 
-        # Check we are on the second page
+        # Then I should resume on the first incomplete location
         self.assertEqual(SUBMIT_URL_PATH, self.last_url)
 
     def test_sign_out_on_section_summary(self):
-        # If a user completes a section and signs out on the section summary,
-        # on re-authentication they should resume at the start of the next section
+        # Given I complete the first section
         self.launchSurvey("test_section_summary", display_address="test address")
         self.post({"insurance-type-answer": "Both"})
         self.post({"insurance-address-answer": "Address"})
 
+        # When I sign out and then resume
         self.get("/sign-out")
         self.launchSurvey("test_section_summary", display_address="test address")
 
-        # Check we are at the start of the next section
+        # Then I should resume on the start of the next section
         self.assertInUrl("/questionnaire/house-type/")
+
+    def test_after_submission(self):
+        # Given I complete the questionnaire and submit
+        self.launchSurvey("test_textfield")
+        self.post({"name-answer": "Joe Bloggs"})
+        self.post()
+
+        # When I resume
+        self.launchSurvey("test_textfield")
+
+        # Then I should resume on the thank you page
+        self.assertInUrl(THANK_YOU_URL_PATH)
