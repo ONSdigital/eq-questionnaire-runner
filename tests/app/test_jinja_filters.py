@@ -244,6 +244,7 @@ class TestJinjaFilters(AppContextTestCase):  # pylint: disable=too-many-public-m
             "Duration",
             "Address",
             "Relationship",
+            "Checkbox"
         ]:
             question = {"type": "General", "answers": [{"type": answer_type}]}
             self.assertTrue(should_wrap_with_fieldset(question))
@@ -256,6 +257,7 @@ class TestJinjaFilters(AppContextTestCase):  # pylint: disable=too-many-public-m
             "Duration",
             "Address",
             "Relationship",
+            "Checkbox"
         ]:
             question = {
                 "type": "General",

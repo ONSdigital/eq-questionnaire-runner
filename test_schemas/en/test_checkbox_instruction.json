@@ -73,7 +73,7 @@
                                     {
                                         "id": "no-label-checkbox-answer",
                                         "mandatory": false,
-                                        "label": null,
+                                        "instruction": null,
                                         "options": [
                                             {
                                                 "label": "Rugby",
@@ -104,7 +104,7 @@
                                     {
                                         "id": "custom-label-checkbox-answer",
                                         "mandatory": false,
-                                        "label": "Select your answer",
+                                        "instruction": "Select your answer",
                                         "options": [
                                             {
                                                 "label": "Monday",

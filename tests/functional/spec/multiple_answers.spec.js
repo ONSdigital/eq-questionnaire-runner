@@ -69,13 +69,12 @@ describe("Multiple Answers", () => {
     });
 
     it("When I am on the question page, Then all answers should have a label/legend", () => {
-      // Checkbox legend is not asserted as it is currently rendering as a label. This will be fixed when `instruction` is added to Checkbox answers
 
       expect($(AboutYou.dateLegend()).getText()).to.equal("What is your date of birth?");
       expect($(AboutYou.monthYearDateLegend()).getText()).to.equal("When would you like the car by?");
       expect($(AboutYou.radioLegend()).getText()).to.equal("Would you like the sports package?");
       expect($(AboutYou.durationLegend()).getText()).to.equal("How long have you had your licence?");
-
+      expect($(AboutYou.checkboxLegend()).getText()).to.equal("Car Brand");
       expect($(AboutYou.textfieldLabel()).getText()).to.equal("Your name");
       expect($(AboutYou.currencyLabel()).getText()).to.equal("What is your budget?");
       expect($(AboutYou.dropdownLabel()).getText()).to.equal("Select a colour");

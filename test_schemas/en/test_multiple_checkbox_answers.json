@@ -1,0 +1,93 @@
+{
+    "mime_type": "application/json/ons/eq",
+    "language": "en",
+    "schema_version": "0.0.1",
+    "data_version": "0.0.3",
+    "survey_id": "0",
+    "title": "Other input fields",
+    "theme": "default",
+    "description": "A questionnaire to demo multiple checkbox answers.",
+    "metadata": [
+        {
+            "name": "user_id",
+            "type": "string"
+        },
+        {
+            "name": "period_id",
+            "type": "string"
+        },
+        {
+            "name": "ru_name",
+            "type": "string"
+        }
+    ],
+    "questionnaire_flow": {
+        "type": "Linear",
+        "options": {
+            "summary": {
+                "collapsible": false
+            }
+        }
+    },
+    "sections": [
+        {
+            "id": "default-section",
+            "groups": [
+                {
+                    "blocks": [
+                        {
+                            "type": "Question",
+                            "id": "checkbox",
+                            "question": {
+                                "answers": [
+                                    {
+                                        "id": "first-checkbox-answer",
+                                        "mandatory": false,
+                                        "instruction": "Select your favourite topping",
+                                        "label": "Topping",
+                                        "options": [
+                                            {
+                                                "label": "Pepperoni",
+                                                "value": "Pepperoni"
+                                            },
+                                            {
+                                                "label": "Ham & Cheese",
+                                                "value": "Ham & Cheese"
+                                            },
+                                            {
+                                                "label": "Ham",
+                                                "value": "Ham"
+                                            }
+                                        ],
+                                        "type": "Checkbox"
+                                    },
+                                    {
+                                        "id": "second-checkbox-answer",
+                                        "mandatory": false,
+                                        "instruction": "Select your favourite base",
+                                        "label": "Base",
+                                        "options": [
+                                            {
+                                                "label": "Tomato",
+                                                "value": "Tomato"
+                                            },
+                                            {
+                                                "label": "Barbeque",
+                                                "value": "Barbeque"
+                                            }
+                                        ],
+                                        "type": "Checkbox"
+                                    }
+                                ],
+                                "id": "mandatory-checkbox-question",
+                                "title": "Which pizza would you like?",
+                                "type": "General"
+                            }
+                        }
+                    ],
+                    "id": "checkboxes"
+                }
+            ]
+        }
+    ]
+}

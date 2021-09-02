@@ -1,19 +1,19 @@
-import DefaultLabelPage from "../../../generated_pages/checkbox_label/default-label-checkbox.page";
-import NoLabelPage from "../../../generated_pages/checkbox_label/no-label-checkbox.page";
+import DefaultLabelPage from "../../../generated_pages/checkbox_instruction/default-label-checkbox.page";
+import NoLabelPage from "../../../generated_pages/checkbox_instruction/no-label-checkbox.page";
 
 describe("Given the checkbox label variants questionnaire,", () => {
   beforeEach(() => {
-    browser.openQuestionnaire("test_checkbox_label.json");
+    browser.openQuestionnaire("test_checkbox_instruction.json");
   });
-  it("Given a label has not been set in the schema for a checkbox answer, When the checkbox answer is displayed, Then the default label should be visible", () => {
+  it("Given an instruction has not been set in the schema for a checkbox answer, When the checkbox answer is displayed, Then the default instruction should be visible", () => {
     expect($("body").getText()).to.have.string("Select all that apply");
   });
-  it("Given a label has been set to null in the schema for a checkbox answer, When the checkbox answer is displayed, Then the label should not be visible", () => {
+  it("Given an instruction has been set to null in the schema for a checkbox answer, When the checkbox answer is displayed, Then the instruction should not be visible", () => {
     $(DefaultLabelPage.red()).click();
     $(DefaultLabelPage.submit()).click();
     expect($("body").getText()).to.not.have.string("Select all that apply");
   });
-  it("Given a custom label has been set in the schema for a checkbox answer, When the checkbox answer is displayed, Then the custom label should be visible", () => {
+  it("Given a custom instruction has been set in the schema for a checkbox answer, When the checkbox answer is displayed, Then the custom instruction should be visible", () => {
     $(DefaultLabelPage.red()).click();
     $(DefaultLabelPage.submit()).click();
     $(NoLabelPage.rugby()).click();

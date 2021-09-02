@@ -197,7 +197,7 @@ def should_wrap_with_fieldset(question):
         or len(answers) > 1
         or (
             answers[0]["type"]
-            in ["Radio", "Date", "MonthYearDate", "Duration", "Address", "Relationship"]
+            in ["Radio", "Date", "MonthYearDate", "Duration", "Address", "Relationship", "Checkbox"]
             and "label" not in answers[0]
         )
     )
