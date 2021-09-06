@@ -54,6 +54,7 @@ class ThankYou:
         if not self._is_census_theme:
             guidance_content = self._schema.get_post_submission().get("guidance")
             return build_thank_you_context(
+                self._schema,
                 self._session_store.session_data,
                 self._submitted_at,
                 get_survey_type(),

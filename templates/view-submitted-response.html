@@ -28,10 +28,18 @@
     {{ content.submitted_text}}
   </h1>
   {{ onsMetadata(content.metadata)}}
-  {% block summary %}
-  <div class="u-mb-m">
-    {% include 'partials/summary/summary.html' %}
-  </div>
-  {% endblock summary %}
-
+  {% if not content.view_submitted_response.expired %}
+    {% block summary %}
+      <div class="u-mb-m">
+        {% include 'partials/summary/summary.html' %}
+      </div>
+    {% endblock summary %}
+  {% else %}
+    {% call onsPanel({
+      "id": "view-submmited-guidance",
+      "classes": "u-mb-m"
+     }) %}
+    {{ _("For security, you can no longer view or get a copy of your answers") }}
+    {% endcall %}
+  {% endif %}
 {% endblock %}

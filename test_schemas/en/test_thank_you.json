@@ -31,7 +31,8 @@
                     "description": "<a href=''>Important link</a>"
                 }
             ]
-        }
+        },
+        "view_response": true
     },
     "questionnaire_flow": {
         "type": "Linear",
