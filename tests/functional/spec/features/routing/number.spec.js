@@ -46,7 +46,7 @@ describe("Feature: Routing on a Number", () => {
   });
 
   describe("Greater Than", () => {
-    describe("Given I start number routing greater then survey", () => {
+    describe("Given I start number routing greater than survey", () => {
       before(() => {
         browser.openQuestionnaire("test_new_routing_number_greater_than.json");
       });
@@ -74,7 +74,7 @@ describe("Feature: Routing on a Number", () => {
   });
 
   describe("Less Than", () => {
-    describe("Given I start number routing less then survey", () => {
+    describe("Given I start number routing less than survey", () => {
       before(() => {
         browser.openQuestionnaire("test_new_routing_number_less_than.json");
       });
@@ -102,7 +102,7 @@ describe("Feature: Routing on a Number", () => {
   });
 
   describe("Greater Than or Equal", () => {
-    describe("Given I start number routing greater then or equal survey", () => {
+    describe("Given I start number routing greater than or equal survey", () => {
       before(() => {
         browser.openQuestionnaire("test_new_routing_number_greater_than_or_equal.json");
       });
@@ -156,7 +156,7 @@ describe("Feature: Routing on a Number", () => {
   });
 
   describe("Less Than or Equal", () => {
-    describe("Given I start number routing less then or equal survey", () => {
+    describe("Given I start number routing less than or equal survey", () => {
       before(() => {
         browser.openQuestionnaire("test_new_routing_number_less_than_or_equal.json");
       });
