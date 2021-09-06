@@ -23,7 +23,7 @@ class ValueSourceResolver:
     list_store: ListStore
     metadata: dict
     schema: QuestionnaireSchema
-    location: Union[Location, RelationshipLocation]
+    location: Union[Optional[Location], RelationshipLocation]
     list_item_id: Optional[str]
     routing_path_block_ids: Optional[list] = None
     use_default_answer: bool = False
