@@ -4,9 +4,9 @@
     "schema_version": "0.0.1",
     "data_version": "0.0.3",
     "survey_id": "0",
-    "title": "Test checkbox answer label",
+    "title": "Test checkbox answer instruction",
     "theme": "default",
-    "description": "A questionnaire to test checkbox answer label.",
+    "description": "A questionnaire to test checkbox answer instruction.",
     "metadata": [
         {
             "name": "user_id",
@@ -37,11 +37,11 @@
                     "blocks": [
                         {
                             "type": "Question",
-                            "id": "default-label-checkbox",
+                            "id": "default-instruction-checkbox",
                             "question": {
                                 "answers": [
                                     {
-                                        "id": "default-label-checkbox-answer",
+                                        "id": "default-instruction-checkbox-answer",
                                         "mandatory": false,
                                         "options": [
                                             {
@@ -60,18 +60,18 @@
                                         "type": "Checkbox"
                                     }
                                 ],
-                                "id": "default-label-checkbox-question",
+                                "id": "default-instruction-checkbox-question",
                                 "title": "What is your favourite colour?",
                                 "type": "General"
                             }
                         },
                         {
                             "type": "Question",
-                            "id": "no-label-checkbox",
+                            "id": "no-instruction-checkbox",
                             "question": {
                                 "answers": [
                                     {
-                                        "id": "no-label-checkbox-answer",
+                                        "id": "no-instruction-checkbox-answer",
                                         "mandatory": false,
                                         "instruction": null,
                                         "options": [
@@ -91,18 +91,18 @@
                                         "type": "Checkbox"
                                     }
                                 ],
-                                "id": "no-label-checkbox-question",
+                                "id": "no-instruction-checkbox-question",
                                 "title": "What is your favourite sport?",
                                 "type": "General"
                             }
                         },
                         {
                             "type": "Question",
-                            "id": "custom-label-checkbox",
+                            "id": "custom-instruction-checkbox",
                             "question": {
                                 "answers": [
                                     {
-                                        "id": "custom-label-checkbox-answer",
+                                        "id": "custom-instruction-checkbox-answer",
                                         "mandatory": false,
                                         "instruction": "Select your answer",
                                         "options": [
@@ -122,7 +122,39 @@
                                         "type": "Checkbox"
                                     }
                                 ],
-                                "id": "custom-label-checkbox-question",
+                                "id": "custom-instruction-checkbox-question",
+                                "title": "What is your favorite day of the week?",
+                                "type": "General"
+                            }
+                        },
+                        {
+                            "type": "Question",
+                            "id": "instruction-and-label-checkbox",
+                            "question": {
+                                "answers": [
+                                    {
+                                        "id": "instruction-and-label-checkbox-answer",
+                                        "mandatory": false,
+                                        "instruction": "Select your answer",
+                                        "label": "Days of the Week",
+                                        "options": [
+                                            {
+                                                "label": "Monday",
+                                                "value": "Monday"
+                                            },
+                                            {
+                                                "label": "Saturday",
+                                                "value": "Saturday"
+                                            },
+                                            {
+                                                "label": "Sunday",
+                                                "value": "Sunday"
+                                            }
+                                        ],
+                                        "type": "Checkbox"
+                                    }
+                                ],
+                                "id": "instruction-and-label-question",
                                 "title": "What is your favorite day of the week?",
                                 "type": "General"
                             }
