@@ -73,7 +73,7 @@ describe("Multiple Answers", () => {
       expect($(AboutYou.monthYearDateLegend()).getText()).to.equal("When would you like the car by?");
       expect($(AboutYou.radioLegend()).getText()).to.equal("Would you like the sports package?");
       expect($(AboutYou.durationLegend()).getText()).to.equal("How long have you had your licence?");
-      expect($(AboutYou.checkboxLegend()).getText()).to.equal("Car Brand");
+      expect($(AboutYou.checkboxLegend()).getText()).to.equal("What are your favourite car brands?");
       expect($(AboutYou.textfieldLabel()).getText()).to.equal("Your name");
       expect($(AboutYou.currencyLabel()).getText()).to.equal("What is your budget?");
       expect($(AboutYou.dropdownLabel()).getText()).to.equal("Select a colour");
