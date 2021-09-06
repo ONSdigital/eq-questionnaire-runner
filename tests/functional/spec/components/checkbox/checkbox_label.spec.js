@@ -1,7 +1,6 @@
 import DefaultInstructionPage from "../../../generated_pages/checkbox_instruction/default-instruction-checkbox.page";
 import NoInstructionPage from "../../../generated_pages/checkbox_instruction/no-instruction-checkbox.page";
 import customInstructionPage from "../../../generated_pages/checkbox_instruction/custom-instruction-checkbox.page";
-import InstructionAndLabelPage from "../../../generated_pages/checkbox_instruction/instruction-and-label-checkbox.page";
 
 describe("Given the checkbox label variants questionnaire,", () => {
   beforeEach(() => {
