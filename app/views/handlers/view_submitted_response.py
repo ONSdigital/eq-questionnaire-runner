@@ -44,10 +44,9 @@ class ViewSubmittedResponse:
             raise ViewSubmittedResponseExpired
 
     def get_context(self) -> dict[str, Union[str, datetime, dict]]:
-        context = build_view_submitted_response_context(
+        return build_view_submitted_response_context(
             self._language, self._schema, self._questionnaire_store, get_survey_type()
         )
-        return context
 
     @staticmethod
     def get_page_title() -> str:
