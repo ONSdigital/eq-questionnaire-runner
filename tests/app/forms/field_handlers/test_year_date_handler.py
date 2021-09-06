@@ -4,7 +4,7 @@ from app.forms.field_handlers import YearDateHandler
 from app.forms.fields import YearDateField
 
 
-def test_get_field():
+def test_get_field(mock_schema):
     date_json = {
         "guidance": "",
         "id": "month-year-answer",
@@ -19,7 +19,7 @@ def test_get_field():
         },
     }
 
-    handler = YearDateHandler(date_json)
+    handler = YearDateHandler(date_json, mock_schema)
 
     class TestForm(Form):
         test_field = handler.get_field()

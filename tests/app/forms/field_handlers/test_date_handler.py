@@ -16,7 +16,7 @@ from app.questionnaire.rules import convert_to_datetime
 from app.utilities.schema import load_schema_from_name
 
 
-def test_date_field_created_with_guidance():
+def test_date_field_created_with_guidance(mock_schema):
     date_json = {
         "guidance": "Please enter a date",
         "id": "period-to",
@@ -31,7 +31,7 @@ def test_date_field_created_with_guidance():
         },
     }
 
-    handler = DateHandler(date_json)
+    handler = DateHandler(date_json, mock_schema)
 
     class TestForm(Form):
         test_field = handler.get_field()
@@ -48,7 +48,7 @@ def test_generate_date_form_validates_single_date_period(app):
     test_metadata = {"ref_p_start_date": "2017-02-20"}
     handler = DateHandler(
         schema.get_answers_by_answer_id("date-range-from")[0],
-        schema.error_messages,
+        schema,
         metadata=test_metadata,
     )
     form = date_field.get_form_class(handler.validators)
@@ -69,7 +69,7 @@ def test_generate_date_form_validates_single_date_period_with_bespoke_message(ap
         "maximum": {"value": "2017-06-11", "offset_by": {"days": 20}},
         "validation": {"messages": {"SINGLE_DATE_PERIOD_TOO_LATE": "Test Message"}},
     }
-    handler = DateHandler(answer, error_messages)
+    handler = DateHandler(answer, schema, error_messages)
     form = date_field.get_form_class(handler.validators)
 
     assert hasattr(form, "day")
@@ -77,20 +77,20 @@ def test_generate_date_form_validates_single_date_period_with_bespoke_message(ap
     assert hasattr(form, "year")
 
 
-def test_get_referenced_offset_value_for_value(app):
+def test_get_referenced_offset_value_for_value(app, mock_schema):
     answer = {"minimum": {"value": "2017-06-11"}}
 
-    handler = DateHandler(answer)
+    handler = DateHandler(answer, mock_schema)
     minimum_date = handler.get_date_value("minimum")
     minimum_date = handler.transform_date_by_offset(minimum_date, {"days": 10})
 
     assert minimum_date == convert_to_datetime("2017-06-21")
 
 
-def test_get_referenced_offset_value_for_now_value(app):
+def test_get_referenced_offset_value_for_now_value(app, mock_schema):
     answer = {"minimum": {"value": "now"}}
 
-    handler = DateHandler(answer)
+    handler = DateHandler(answer, mock_schema)
     minimum_date = handler.get_date_value("minimum")
     minimum_date = handler.transform_date_by_offset(minimum_date, {"days": 10})
 
@@ -99,11 +99,11 @@ def test_get_referenced_offset_value_for_now_value(app):
     )
 
 
-def test_get_referenced_offset_value_for_meta(app):
+def test_get_referenced_offset_value_for_meta(app, mock_schema):
     test_metadata = {"date": "2018-02-20"}
     answer = {"minimum": {"value": {"identifier": "date", "source": "metadata"}}}
 
-    handler = DateHandler(answer, metadata=test_metadata)
+    handler = DateHandler(answer, mock_schema, metadata=test_metadata)
     minimum_date = handler.get_date_value("minimum")
     minimum_date = handler.transform_date_by_offset(minimum_date, {"days": -10})
 
@@ -113,7 +113,7 @@ def test_get_referenced_offset_value_for_meta(app):
 @patch(
     "app.utilities.schema.load_schema_from_name", return_value=QuestionnaireSchema({})
 )
-def test_get_referenced_offset_value_for_answer_id(app):
+def test_get_referenced_offset_value_for_answer_id(app, mock_schema):
     answer_store = AnswerStore()
 
     test_answer_id = Answer(answer_id="date", value="2018-03-20")
@@ -121,7 +121,7 @@ def test_get_referenced_offset_value_for_answer_id(app):
 
     answer = {"maximum": {"value": {"identifier": "date", "source": "answers"}}}
 
-    handler = DateHandler(answer, answer_store=answer_store)
+    handler = DateHandler(answer, mock_schema, answer_store=answer_store)
     maximum_date = handler.get_date_value("maximum")
     maximum_date = handler.transform_date_by_offset(maximum_date, {"months": 1})
 
@@ -136,7 +136,7 @@ def test_get_referenced_offset_value_for_answer_id(app):
     "app.questionnaire.questionnaire_schema.QuestionnaireSchema.is_repeating_answer",
     return_value=True,
 )
-def test_get_referenced_offset_value_with_list_item_id(app, schema_mock):
+def test_get_referenced_offset_value_with_list_item_id(app, mock_schema):
     list_item_id = "abcde"
     answer_store = AnswerStore()
 
@@ -155,16 +155,18 @@ def test_get_referenced_offset_value_with_list_item_id(app, schema_mock):
         }
     }
 
-    handler = DateHandler(answer, answer_store=answer_store, location=location)
+    handler = DateHandler(
+        answer, mock_schema, answer_store=answer_store, location=location
+    )
     maximum_date = handler.get_date_value("maximum")
 
     assert maximum_date == convert_to_datetime("2018-04-20")
 
 
-def test_get_referenced_offset_value_with_no_offset(app):
+def test_get_referenced_offset_value_with_no_offset(app, mock_schema):
     answer = {"minimum": {"value": "2017-06-11"}}
 
-    handler = DateHandler(answer)
+    handler = DateHandler(answer, mock_schema)
     minimum_date = handler.get_date_value("minimum")
     minimum_date = handler.transform_date_by_offset(minimum_date, {})
 
@@ -174,7 +176,7 @@ def test_get_referenced_offset_value_with_no_offset(app):
 @patch(
     "app.utilities.schema.load_schema_from_name", return_value=QuestionnaireSchema({})
 )
-def test_minimum_and_maximum_offset_dates(app):
+def test_minimum_and_maximum_offset_dates(app, mock_schema):
     test_metadata = {"date": "2018-02-20"}
     store = AnswerStore()
 
@@ -194,7 +196,9 @@ def test_minimum_and_maximum_offset_dates(app):
         },
     }
 
-    handler = DateHandler(answer, answer_store=store, metadata=test_metadata)
+    handler = DateHandler(
+        answer, mock_schema, answer_store=store, metadata=test_metadata
+    )
     minimum_date = handler.get_date_value("minimum")
     maximum_date = handler.get_date_value("maximum")
 
@@ -202,7 +206,7 @@ def test_minimum_and_maximum_offset_dates(app):
     assert maximum_date == convert_to_datetime("2019-03-20")
 
 
-def test_greater_minimum_date_than_maximum_date(app):
+def test_greater_minimum_date_than_maximum_date(app, mock_schema):
     answer = {
         "id": "date_answer",
         "type": "Date",
@@ -210,7 +214,7 @@ def test_greater_minimum_date_than_maximum_date(app):
         "maximum": {"value": "2018-01-15", "offset_by": {"days": 10}},
     }
 
-    handler = DateHandler(answer)
+    handler = DateHandler(answer, mock_schema)
 
     with pytest.raises(Exception) as ite:
         handler.get_date_value("minimum")
@@ -221,7 +225,7 @@ def test_greater_minimum_date_than_maximum_date(app):
         )
 
 
-def test_validate_mandatory_date(app):
+def test_validate_mandatory_date(app, mock_schema):
     schema = load_schema_from_name("test_date_validation_single")
     error_messages = schema.error_messages
     answer = {
@@ -233,7 +237,7 @@ def test_validate_mandatory_date(app):
         "validation": {"messages": {"MANDATORY_DATE": "Test Mandatory Date Message"}},
     }
 
-    handler = DateHandler(answer, error_messages)
+    handler = DateHandler(answer, mock_schema, error_messages)
     validator = handler.get_mandatory_validator()
 
     assert validator.message == "Test Mandatory Date Message"

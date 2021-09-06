@@ -76,7 +76,6 @@ class DateHandler(FieldHandler):
         :return: date value
         """
         value = self.get_schema_value(self.answer_schema[key])
-
         if value == "now":
             value = datetime.now(timezone.utc).strftime("%Y-%m-%d")
 
@@ -111,7 +110,6 @@ class DateHandler(FieldHandler):
         :return: attributes
         """
         date_value = None
-
         if key in self.answer_schema:
             date_value = self.get_referenced_date(key)
 

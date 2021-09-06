@@ -49,6 +49,7 @@ class Feedback:
             schema=self._schema,
             question_schema=self.question_schema,
             answer_store=None,
+            list_store=None,
             metadata=None,
             data=None,
             form_data=self._form_data,

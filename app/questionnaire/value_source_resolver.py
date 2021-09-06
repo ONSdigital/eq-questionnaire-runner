@@ -23,7 +23,7 @@ class ValueSourceResolver:
     list_store: ListStore
     metadata: dict
     schema: QuestionnaireSchema
-    location: Union[Location, RelationshipLocation]
+    location: Union[Optional[Location], RelationshipLocation]
     list_item_id: Optional[str]
     routing_path_block_ids: Optional[list] = None
     use_default_answer: bool = False
@@ -114,7 +114,6 @@ class ValueSourceResolver:
 
         if source == "answers":
             return self._resolve_answer_value_source(value_source)
-
         if source == "list":
             return self._resolve_list_value_source(value_source)
 

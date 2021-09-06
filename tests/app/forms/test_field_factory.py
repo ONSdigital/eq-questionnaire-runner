@@ -1,11 +1,28 @@
+from unittest.mock import Mock
+
 from app.data_models.answer_store import AnswerStore
+from app.data_models.list_store import ListStore
 from app.forms import error_messages
 from app.forms.field_handlers import get_field_handler
+from app.questionnaire import QuestionnaireSchema
 from tests.app.app_context_test_case import AppContextTestCase
 
 
 class TestFieldFactory(AppContextTestCase):
     def test_invalid_field_type_raises_on_invalid(self):
+
+        schema = Mock(
+            QuestionnaireSchema(
+                {
+                    "questionnaire_flow": {
+                        "type": "Linear",
+                        "options": {"summary": {"collapsible": False}},
+                    }
+                }
+            )
+        )
+        schema.error_messages = error_messages
+
         metadata = {
             "user_id": "789473423",
             "schema_name": "0000",
@@ -26,5 +43,9 @@ class TestFieldFactory(AppContextTestCase):
         # When / Then
         with self.assertRaises(KeyError):
             get_field_handler(
-                {"type": invalid_field_type}, error_messages, AnswerStore(), metadata
+                {"type": invalid_field_type},
+                schema,
+                AnswerStore(),
+                ListStore(),
+                metadata,
             )

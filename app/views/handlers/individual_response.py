@@ -188,6 +188,7 @@ class IndividualResponseHandler:
             schema=self._schema,
             question_schema=self.rendered_block["question"],
             answer_store=None,
+            list_store=None,
             metadata=self._questionnaire_store.metadata,
             data=self._answers,
             form_data=self._form_data,

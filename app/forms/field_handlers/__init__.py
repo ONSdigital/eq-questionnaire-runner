@@ -1,7 +1,6 @@
-from werkzeug.datastructures import ImmutableDict
-
 from app.data_models.answer_store import AnswerStore
-from app.questionnaire.location import Location
+from app.data_models.list_store import ListStore
+from app.questionnaire import Location, QuestionnaireSchema
 
 from .address_handler import AddressHandler
 from .date_handlers import DateHandler, MonthYearDateHandler, YearDateHandler
@@ -36,8 +35,9 @@ FIELD_HANDLER_MAPPINGS = {
 
 def get_field_handler(
     answer: dict,
-    error_messages: ImmutableDict,
+    schema: QuestionnaireSchema,
     answer_store: AnswerStore,
+    list_store: ListStore,
     metadata: dict = None,
     location: Location = None,
     disable_validation: bool = False,
@@ -45,8 +45,9 @@ def get_field_handler(
 ) -> FieldHandler:
     return FIELD_HANDLER_MAPPINGS[answer["type"]](
         answer,
-        error_messages=error_messages,
+        schema=schema,
         answer_store=answer_store,
+        list_store=list_store,
         metadata=metadata,
         location=location,
         disable_validation=disable_validation,

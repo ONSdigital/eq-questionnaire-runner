@@ -1,10 +1,10 @@
 from functools import cached_property
-from typing import Optional, Union
+from typing import Union
 
 from wtforms import DecimalField, IntegerField
 
-from app.data_models.answer import AnswerValueTypes
 from app.data_models.answer_store import AnswerStore
+from app.data_models.list_store import ListStore
 from app.forms.field_handlers.field_handler import FieldHandler
 from app.forms.fields import DecimalFieldWithSeparator, IntegerFieldWithSeparator
 from app.forms.validators import (
@@ -13,7 +13,11 @@ from app.forms.validators import (
     NumberRange,
     ResponseRequired,
 )
-from app.questionnaire import Location
+from app.questionnaire import Location, QuestionnaireSchema
+from app.questionnaire.value_source_resolver import (
+    ValueSourceEscapedTypes,
+    ValueSourceTypes,
+)
 from app.settings import MAX_NUMBER
 
 NumberValidatorTypes = list[
@@ -27,8 +31,9 @@ class NumberHandler(FieldHandler):
     def __init__(
         self,
         answer_schema: dict,
-        error_messages: dict = None,
+        schema: QuestionnaireSchema,
         answer_store: AnswerStore = None,
+        list_store: ListStore = None,
         metadata: dict = None,
         location: Location = None,
         disable_validation: bool = False,
@@ -36,8 +41,9 @@ class NumberHandler(FieldHandler):
     ):
         super().__init__(
             answer_schema,
-            error_messages,
+            schema,
             answer_store,
+            list_store,
             metadata,
             location,
             disable_validation,
@@ -70,7 +76,7 @@ class NumberHandler(FieldHandler):
 
     def get_field_references(
         self,
-    ) -> dict[str, Union[bool, Optional[AnswerValueTypes]]]:
+    ) -> dict[str, Union[bool, Union[ValueSourceEscapedTypes, ValueSourceTypes]]]:
         schema_minimum = self.answer_schema.get("minimum", {})
         schema_maximum = self.answer_schema.get("maximum", {})
 

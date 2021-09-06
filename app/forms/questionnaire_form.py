@@ -16,11 +16,19 @@ logger = logging.getLogger(__name__)
 
 class QuestionnaireForm(FlaskForm):
     def __init__(
-        self, schema, question_schema, answer_store, metadata, location, **kwargs
+        self,
+        schema,
+        question_schema,
+        answer_store,
+        list_store,
+        metadata,
+        location,
+        **kwargs,
     ):
         self.schema = schema
         self.question = question_schema
         self.answer_store = answer_store
+        self.list_store = list_store
         self.metadata = metadata
         self.location = location
         self.question_errors = {}
@@ -226,7 +234,12 @@ class QuestionnaireForm(FlaskForm):
 
     def _get_period_range_for_single_date(self, date_from, date_to):
         handler = DateHandler(
-            date_from, {}, self.answer_store, self.metadata, location=self.location
+            date_from,
+            self.schema,
+            self.answer_store,
+            self.list_store,
+            self.metadata,
+            location=self.location,
         )
         from_min_period_date = handler.get_date_value("minimum")
         from_max_period_date = handler.get_date_value("maximum")
@@ -328,7 +341,9 @@ def _option_value_in_data(answer, option, data):
     return option["value"] in dict(data_to_inspect).get(answer["id"], [])
 
 
-def get_answer_fields(question, data, error_messages, answer_store, metadata, location):
+def get_answer_fields(
+    question, data, schema, answer_store, list_store, metadata, location
+):
     answer_fields = {}
     question_title = question.get("title")
     for answer in question.get("answers", []):
@@ -336,20 +351,22 @@ def get_answer_fields(question, data, error_messages, answer_store, metadata, lo
             if "detail_answer" in option:
                 disable_validation = not _option_value_in_data(answer, option, data)
                 detail_answer = option["detail_answer"]
+
                 answer_fields[option["detail_answer"]["id"]] = get_field_handler(
                     detail_answer,
-                    error_messages,
+                    schema,
                     answer_store,
+                    list_store,
                     metadata,
                     location,
                     disable_validation=disable_validation,
                     question_title=question_title,
                 ).get_field()
-
         answer_fields[answer["id"]] = get_field_handler(
             answer,
-            error_messages,
+            schema,
             answer_store,
+            list_store,
             metadata,
             location,
             question_title=question_title,
@@ -409,6 +426,7 @@ def generate_form(
     schema,
     question_schema,
     answer_store,
+    list_store,
     metadata,
     location=None,
     data=None,
@@ -419,12 +437,12 @@ def generate_form(
 
     if form_data:
         form_data = _clear_detail_answer_field(form_data, question_schema)
-
     answer_fields = get_answer_fields(
         question_schema,
         form_data if form_data is not None else data,
-        schema.error_messages,
+        schema,
         answer_store,
+        list_store,
         metadata,
         location,
     )
@@ -436,6 +454,7 @@ def generate_form(
         schema,
         question_schema,
         answer_store,
+        list_store,
         metadata,
         location,
         data=data,

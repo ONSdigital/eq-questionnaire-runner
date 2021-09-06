@@ -4,12 +4,15 @@ from typing import Any, Optional, Union
 
 from wtforms import Field, validators
 
-from app.data_models.answer import AnswerValueTypes
 from app.data_models.answer_store import AnswerStore
+from app.data_models.list_store import ListStore
 from app.forms.validators import ResponseRequired, format_message_with_title
-from app.questionnaire import Location
-from app.questionnaire.rules import get_answer_value
-from app.utilities.schema import load_schema_from_metadata
+from app.questionnaire import Location, QuestionnaireSchema
+from app.questionnaire.value_source_resolver import (
+    ValueSourceEscapedTypes,
+    ValueSourceResolver,
+    ValueSourceTypes,
+)
 
 
 class FieldHandler(ABC):
@@ -18,22 +21,37 @@ class FieldHandler(ABC):
     def __init__(
         self,
         answer_schema: dict,
-        error_messages: dict = None,
+        schema: QuestionnaireSchema,
         answer_store: AnswerStore = None,
+        list_store: ListStore = None,
         metadata: dict = None,
         location: Location = None,
         disable_validation: bool = False,
         question_title: str = None,
     ):
+        self.schema = schema
         self.answer_schema = answer_schema
-        self.error_messages = error_messages or {}
+        self.error_messages = schema.error_messages or {}
         self.answer_store = answer_store or AnswerStore()
+        self.list_store = list_store or ListStore()
         self.metadata = metadata or {}
         self.location = location
         self.disable_validation = disable_validation
         self.question_title = str(question_title)
+
         self.validation_messages = self.answer_schema.get("validation", {}).get(
             "messages", {}
+        )
+        list_item_id = location.list_item_id if location else None
+
+        self.value_source_resolver = ValueSourceResolver(
+            answer_store=self.answer_store,
+            list_store=self.list_store,
+            metadata=self.metadata,
+            schema=self.schema,
+            location=self.location,
+            list_item_id=list_item_id,
+            escape_answer_values=True,
         )
 
     @cached_property
@@ -66,20 +84,14 @@ class FieldHandler(ABC):
             )
         return validators.Optional()
 
-    def get_schema_value(self, schema_element: dict) -> Optional[AnswerValueTypes]:
+    def get_schema_value(
+        self, schema_element: dict
+    ) -> Union[ValueSourceEscapedTypes, ValueSourceTypes]:
         if isinstance(schema_element["value"], dict):
-            if schema_element["value"]["source"] == "metadata":
-                identifier = schema_element["value"].get("identifier")
-                return self.metadata.get(identifier)
-            if schema_element["value"]["source"] == "answers":
-                schema = load_schema_from_metadata(self.metadata)
-                answer_id = schema_element["value"].get("identifier")
-                list_item_id = self.location.list_item_id if self.location else None
-
-                return get_answer_value(
-                    answer_id, self.answer_store, schema, list_item_id=list_item_id
-                )
-        schema_element_value: str = schema_element["value"]
+            return self.value_source_resolver.resolve(schema_element["value"])
+        schema_element_value: Union[
+            ValueSourceEscapedTypes, ValueSourceTypes
+        ] = schema_element["value"]
         return schema_element_value
 
     def get_field(self) -> Field:

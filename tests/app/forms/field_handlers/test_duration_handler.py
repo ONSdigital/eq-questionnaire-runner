@@ -1,9 +1,10 @@
 from wtforms import Form, FormField
 
+from app.forms import error_messages
 from app.forms.field_handlers.duration_handler import DurationHandler
 
 
-def test_get_field():
+def test_get_field(mock_schema):
     date_json = {
         "guidance": "",
         "id": "year-month-answer",
@@ -12,8 +13,8 @@ def test_get_field():
         "type": "Duration",
         "units": ["years", "months"],
     }
-
-    handler = DurationHandler(date_json)
+    mock_schema.error_messages = error_messages
+    handler = DurationHandler(date_json, mock_schema)
 
     class TestForm(Form):
         test_field = handler.get_field()
