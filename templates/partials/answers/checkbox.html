@@ -2,8 +2,8 @@
 
 {% set config = {
   "legend": answer.label,
+  "dontWrap": not answer.label,
   "id": answer.id,
-  "legendClasses": "u-vh",
   "checkboxes": map_checkbox_config(form, answer),
   "mutuallyExclusive": mutuallyExclusive,
   "error": error

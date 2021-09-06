@@ -43,7 +43,7 @@
                                 "answers": [
                                     {
                                         "id": "section-1-answer",
-                                        "instruction": "label 1",
+                                        "label": "label 1",
                                         "mandatory": false,
                                         "options": [
                                             {

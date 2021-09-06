@@ -43,7 +43,7 @@
                                 "answers": [
                                     {
                                         "id": "checkbox-answer",
-                                        "instruction": "Did this business make major changes in the following areas?",
+                                        "label": "Did this business make major changes in the following areas?",
                                         "mandatory": true,
                                         "options": [
                                             {
