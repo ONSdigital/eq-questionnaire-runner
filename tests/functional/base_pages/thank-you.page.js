@@ -10,15 +10,15 @@ class ThankYouPage extends BasePage {
   }
 
   viewAnswersTitle() {
-    return '[data-qa="view-answers-title"]';
+    return '[data-qa="view-submitted-response-title"]';
   }
 
   viewAnswersLink() {
-    return 'a[id="view-answers-link"]';
+    return 'a[id="view-submitted-response-link"]';
   }
 
   viewSubmittedWarning() {
-    return '[id="view-submitted-warning"]';
+    return '[id="view-submitted-response-warning"]';
   }
 
   metadata() {
