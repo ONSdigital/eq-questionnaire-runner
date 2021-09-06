@@ -58,7 +58,6 @@ greater_than_and_less_than_operations = [
     [(2, 1.0), True],
     [(7, 3), True],
     [(next_week, current_date), True],
-    [(next_week, current_date), True],
     # Test False
     [(0.5, 0.7), False],
     [(1.0, 2), False],
@@ -66,6 +65,9 @@ greater_than_and_less_than_operations = [
     [(current_date, next_week), False],
 ]
 
+greater_than_and_less_than_operations_equals_test = [
+    [(1, 1), False],
+]
 
 @pytest.mark.parametrize(
     "operands, expected_result",
@@ -75,6 +77,21 @@ def test_operation_greater_than(operands, expected_result):
     operator = Operator(Operator.GREATER_THAN)
     assert operator.evaluate(operands) is expected_result
 
+@pytest.mark.parametrize(
+    "operands, expected_result",
+    greater_than_and_less_than_operations_equals_test,
+)
+def test_operation_greater_than(operands, expected_result):
+    operator = Operator(Operator.GREATER_THAN)
+    assert operator.evaluate(operands) is expected_result
+
+@pytest.mark.parametrize(
+    "operands, expected_result",
+    greater_than_and_less_than_operations_equals_test,
+)
+def test_operation_greater_than(operands, expected_result):
+    operator = Operator(Operator.LESS_THAN)
+    assert operator.evaluate(operands) is expected_result
 
 @pytest.mark.parametrize(
     "operands, expected_result",
