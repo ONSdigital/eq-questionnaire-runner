@@ -60,7 +60,7 @@
                                         "id": "checkbox-answer",
                                         "type": "Checkbox",
                                         "mandatory": true,
-                                        "label": "Car Brand",
+                                        "label": "What are your favourite car brands?",
                                         "instruction": "Select your favourite car brands",
                                         "options": [
                                             {
