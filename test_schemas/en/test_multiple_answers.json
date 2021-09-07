@@ -60,7 +60,8 @@
                                         "id": "checkbox-answer",
                                         "type": "Checkbox",
                                         "mandatory": true,
-                                        "label": "Select your favourite car brands",
+                                        "label": "What are your favourite car brands?",
+                                        "instruction": "Select your favourite car brands",
                                         "options": [
                                             {
                                                 "label": "BMW",
@@ -195,7 +196,7 @@
                                         "id": "age-estimate-answer",
                                         "type": "Checkbox",
                                         "mandatory": true,
-                                        "label": "Estimate",
+                                        "instruction": "Estimate",
                                         "options": [
                                             {
                                                 "label": "This age is an estimate",

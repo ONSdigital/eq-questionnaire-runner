@@ -1,23 +1,34 @@
-import DefaultLabelPage from "../../../generated_pages/checkbox_label/default-label-checkbox.page";
-import NoLabelPage from "../../../generated_pages/checkbox_label/no-label-checkbox.page";
+import DefaultInstructionPage from "../../../generated_pages/checkbox_instruction/default-instruction-checkbox.page";
+import NoInstructionPage from "../../../generated_pages/checkbox_instruction/no-instruction-checkbox.page";
+import CustomInstructionPage from "../../../generated_pages/checkbox_instruction/custom-instruction-checkbox.page";
 
 describe("Given the checkbox label variants questionnaire,", () => {
   beforeEach(() => {
-    browser.openQuestionnaire("test_checkbox_label.json");
+    browser.openQuestionnaire("test_checkbox_instruction.json");
   });
-  it("Given a label has not been set in the schema for a checkbox answer, When the checkbox answer is displayed, Then the default label should be visible", () => {
+  it("Given an instruction has not been set in the schema for a checkbox answer, When the checkbox answer is displayed, Then the default instruction should be visible", () => {
     expect($("body").getText()).to.have.string("Select all that apply");
   });
-  it("Given a label has been set to null in the schema for a checkbox answer, When the checkbox answer is displayed, Then the label should not be visible", () => {
-    $(DefaultLabelPage.red()).click();
-    $(DefaultLabelPage.submit()).click();
+  it("Given an instruction has been set to null in the schema for a checkbox answer, When the checkbox answer is displayed, Then the instruction should not be visible", () => {
+    $(DefaultInstructionPage.red()).click();
+    $(DefaultInstructionPage.submit()).click();
     expect($("body").getText()).to.not.have.string("Select all that apply");
   });
-  it("Given a custom label has been set in the schema for a checkbox answer, When the checkbox answer is displayed, Then the custom label should be visible", () => {
-    $(DefaultLabelPage.red()).click();
-    $(DefaultLabelPage.submit()).click();
-    $(NoLabelPage.rugby()).click();
-    $(NoLabelPage.submit()).click();
+  it("Given a custom instruction has been set in the schema for a checkbox answer, When the checkbox answer is displayed, Then the custom instruction should be visible", () => {
+    $(DefaultInstructionPage.red()).click();
+    $(DefaultInstructionPage.submit()).click();
+    $(NoInstructionPage.rugby()).click();
+    $(NoInstructionPage.submit()).click();
+    expect($("body").getText()).to.have.string("Select your answer");
+  });
+  it("Given a label and custom instruction have been set in the schema for a checkbox answer, When the checkbox answer is displayed, Then both the custom instruction and label should be visible", () => {
+    $(DefaultInstructionPage.red()).click();
+    $(DefaultInstructionPage.submit()).click();
+    $(NoInstructionPage.rugby()).click();
+    $(NoInstructionPage.submit()).click();
+    $(CustomInstructionPage.monday()).click();
+    $(CustomInstructionPage.submit()).click();
+    expect($("body").getText()).to.have.string("Days of the Week");
     expect($("body").getText()).to.have.string("Select your answer");
   });
 });
