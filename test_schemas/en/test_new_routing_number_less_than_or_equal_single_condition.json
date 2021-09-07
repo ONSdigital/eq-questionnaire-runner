@@ -4,9 +4,9 @@
     "schema_version": "0.0.1",
     "data_version": "0.0.3",
     "survey_id": "001",
-    "title": "Test Routing Number Less Than or Equal",
+    "title": "Test Routing Number Less Than Or Equal To",
     "theme": "default",
-    "description": "A test survey for routing based on a number less than or equal",
+    "description": "A test survey for routing based on a number less than or equal to",
     "metadata": [
         {
             "name": "user_id",
