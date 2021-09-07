@@ -107,7 +107,7 @@
                                 "answers": [
                                     {
                                         "id": "non-mandatory-checkbox-answer",
-                                        "label": "Select any answers that apply",
+                                        "instruction": "Select any answers that apply",
                                         "mandatory": false,
                                         "options": [
                                             {

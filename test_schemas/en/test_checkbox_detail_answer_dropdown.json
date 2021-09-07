@@ -54,7 +54,7 @@
                                     {
                                         "type": "Checkbox",
                                         "id": "optional-checkbox-with-dropdown-detail-answer",
-                                        "label": "Select your favourite toppings",
+                                        "instruction": "Select your favourite toppings",
                                         "mandatory": false,
                                         "options": [
                                             {
