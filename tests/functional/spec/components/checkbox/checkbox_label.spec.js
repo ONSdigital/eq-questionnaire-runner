@@ -1,6 +1,6 @@
 import DefaultInstructionPage from "../../../generated_pages/checkbox_instruction/default-instruction-checkbox.page";
 import NoInstructionPage from "../../../generated_pages/checkbox_instruction/no-instruction-checkbox.page";
-import customInstructionPage from "../../../generated_pages/checkbox_instruction/custom-instruction-checkbox.page";
+import CustomInstructionPage from "../../../generated_pages/checkbox_instruction/custom-instruction-checkbox.page";
 
 describe("Given the checkbox label variants questionnaire,", () => {
   beforeEach(() => {
@@ -21,13 +21,13 @@ describe("Given the checkbox label variants questionnaire,", () => {
     $(NoInstructionPage.submit()).click();
     expect($("body").getText()).to.have.string("Select your answer");
   });
-  it("Given a custom label and instruction have been set in the schema for a checkbox answer, When the checkbox answer is displayed, Then both the custom instruction and label should be visible", () => {
+  it("Given a label and custom instruction have been set in the schema for a checkbox answer, When the checkbox answer is displayed, Then both the custom instruction and label should be visible", () => {
     $(DefaultInstructionPage.red()).click();
     $(DefaultInstructionPage.submit()).click();
     $(NoInstructionPage.rugby()).click();
     $(NoInstructionPage.submit()).click();
-    $(customInstructionPage.monday()).click();
-    $(customInstructionPage.submit()).click();
+    $(CustomInstructionPage.monday()).click();
+    $(CustomInstructionPage.submit()).click();
     expect($("body").getText()).to.have.string("Days of the Week");
     expect($("body").getText()).to.have.string("Select your answer");
   });
