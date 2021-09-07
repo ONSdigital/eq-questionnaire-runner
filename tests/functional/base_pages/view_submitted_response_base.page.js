@@ -12,6 +12,10 @@ class ViewSubmittedResponseBasePage extends BasePage {
   metadataValue(number = 1) {
     return `.metadata > dd:nth-of-type(${number})`;
   }
+
+  printButton() {
+    return '[data-qa="btn-print"]';
+  }
 }
 
 export default ViewSubmittedResponseBasePage;
