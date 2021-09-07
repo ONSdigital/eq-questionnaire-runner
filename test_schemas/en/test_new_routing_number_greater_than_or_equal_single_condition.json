@@ -4,9 +4,9 @@
     "schema_version": "0.0.1",
     "data_version": "0.0.3",
     "survey_id": "001",
-    "title": "Test Routing Number Greater Than Or Equal To",
+    "title": "Test Routing Number Greater Than or Equal",
     "theme": "default",
-    "description": "A test survey for routing based on a number greater than or equal to",
+    "description": "A test survey for routing based on a number greater than or equal",
     "metadata": [
         {
             "name": "user_id",
@@ -44,28 +44,30 @@
                                         "id": "answer",
                                         "mandatory": true,
                                         "type": "Number",
-                                        "label": "Enter a number greater than or equal to 123"
+                                        "label": "123 or greater"
                                     }
                                 ],
                                 "id": "question",
-                                "title": "Enter a number greater than or equal to 123",
+                                "title": "Enter the number greater than or equal to 123",
                                 "type": "General"
                             },
                             "routing_rules": [
                                 {
-                                    "block": "correct-answer",
-                                    "when": {
-                                        ">=": [
+                                    "goto": {
+                                        "block": "correct-answer",
+                                        "when": [
                                             {
-                                                "source": "answers",
-                                                "identifier": "answer"
-                                            },
-                                            123
+                                                "id": "answer",
+                                                "condition": "greater than or equal to",
+                                                "value": 123
+                                            }
                                         ]
                                     }
                                 },
                                 {
-                                    "block": "incorrect-answer"
+                                    "goto": {
+                                        "block": "incorrect-answer"
+                                    }
                                 }
                             ]
                         },
@@ -73,11 +75,11 @@
                             "type": "Interstitial",
                             "id": "incorrect-answer",
                             "content": {
-                                "title": "You did not enter a number greater than or equal to 123",
+                                "title": "Incorrect answer",
                                 "contents": [
                                     {
                                         "description": {
-                                            "text": "You were asked to enter a number greater than or equal to <em>123</em> but you actually entered <em>{answer}</em>.",
+                                            "text": "You were asked to enter a number greater than or equal to <em>123</em> but you entered <em>{answer}</em>.",
                                             "placeholders": [
                                                 {
                                                     "placeholder": "answer",
@@ -93,7 +95,9 @@
                             },
                             "routing_rules": [
                                 {
-                                    "section": "End"
+                                    "goto": {
+                                        "section": "End"
+                                    }
                                 }
                             ]
                         },
@@ -101,7 +105,7 @@
                             "type": "Interstitial",
                             "id": "correct-answer",
                             "content": {
-                                "title": "Correct",
+                                "title": "Correct answer",
                                 "contents": [
                                     {
                                         "description": {

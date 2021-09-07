@@ -57,16 +57,16 @@ describe("Feature: Routing on a Number", () => {
         expect(browser.getUrl()).to.contain(CorrectAnswerPage.pageName);
       });
 
-      it("When I enter a smaller number, Then I should be routed to the incorrect page", () => {
+      it("When I enter a number equal to 123, Then I should be routed to the incorrect page", () => {
         $(CorrectAnswerPage.previous()).click();
-        $(NumberQuestionPage.answer()).setValue(2);
+        $(NumberQuestionPage.answer()).setValue(123);
         $(NumberQuestionPage.submit()).click();
         expect(browser.getUrl()).to.contain(IncorrectAnswerPage.pageName);
       });
 
-      it("When I enter an equal number, Then I should be routed to the incorrect page", () => {
+      it("When I enter a smaller number, Then I should be routed to the incorrect page", () => {
         $(IncorrectAnswerPage.previous()).click();
-        $(NumberQuestionPage.answer()).setValue(123);
+        $(NumberQuestionPage.answer()).setValue(2);
         $(NumberQuestionPage.submit()).click();
         expect(browser.getUrl()).to.contain(IncorrectAnswerPage.pageName);
       });
@@ -85,16 +85,16 @@ describe("Feature: Routing on a Number", () => {
         expect(browser.getUrl()).to.contain(CorrectAnswerPage.pageName);
       });
 
-      it("When I enter a greater number, Then I should be routed to the incorrect page", () => {
+      it("When I enter a number equal to 123, Then I should be routed to the incorrect page", () => {
         $(CorrectAnswerPage.previous()).click();
-        $(NumberQuestionPage.answer()).setValue(765);
+        $(NumberQuestionPage.answer()).setValue(123);
         $(NumberQuestionPage.submit()).click();
         expect(browser.getUrl()).to.contain(IncorrectAnswerPage.pageName);
       });
 
-      it("When I enter an equal number, Then I should be routed to the incorrect page", () => {
+      it("When I enter a greater number, Then I should be routed to the incorrect page", () => {
         $(IncorrectAnswerPage.previous()).click();
-        $(NumberQuestionPage.answer()).setValue(123);
+        $(NumberQuestionPage.answer()).setValue(765);
         $(NumberQuestionPage.submit()).click();
         expect(browser.getUrl()).to.contain(IncorrectAnswerPage.pageName);
       });
@@ -102,35 +102,9 @@ describe("Feature: Routing on a Number", () => {
   });
 
   describe("Greater Than or Equal", () => {
-    describe("Given I start number routing greater than or equal survey", () => {
-      before(() => {
-        browser.openQuestionnaire("test_new_routing_number_greater_than_or_equal.json");
-      });
-
-      it("When I enter a greater number, Then I should be routed to the correct page", () => {
-        $(NumberQuestionPage.answer()).setValue(555);
-        $(NumberQuestionPage.submit()).click();
-        expect(browser.getUrl()).to.contain(CorrectAnswerPage.pageName);
-      });
-
-      it("When I enter an equal number, Then I should be routed to the correct page", () => {
-        $(CorrectAnswerPage.previous()).click();
-        $(NumberQuestionPage.answer()).setValue(123);
-        $(NumberQuestionPage.submit()).click();
-        expect(browser.getUrl()).to.contain(CorrectAnswerPage.pageName);
-      });
-
-      it("When I enter a smaller number, Then I should be routed to the incorrect page", () => {
-        $(CorrectAnswerPage.previous()).click();
-        $(NumberQuestionPage.answer()).setValue(2);
-        $(NumberQuestionPage.submit()).click();
-        expect(browser.getUrl()).to.contain(IncorrectAnswerPage.pageName);
-      });
-    });
-
     describe("Given I have number routing with a greater than or equal to single condition", () => {
       before(() => {
-        browser.openQuestionnaire("test_routing_number_greater_than_or_equal_single_condition.json");
+        browser.openQuestionnaire("test_new_routing_number_greater_than_or_equal_single_condition.json");
       });
 
       it("When I enter a number larger than 123, Then I should be routed to the correct page", () => {
@@ -156,35 +130,9 @@ describe("Feature: Routing on a Number", () => {
   });
 
   describe("Less Than or Equal", () => {
-    describe("Given I start number routing less than or equal survey", () => {
-      before(() => {
-        browser.openQuestionnaire("test_new_routing_number_less_than_or_equal.json");
-      });
-
-      it("When I enter a less number, Then I should be routed to the correct page", () => {
-        $(NumberQuestionPage.answer()).setValue(23);
-        $(NumberQuestionPage.submit()).click();
-        expect(browser.getUrl()).to.contain(CorrectAnswerPage.pageName);
-      });
-
-      it("When I enter an equal number, Then I should be routed to the correct page", () => {
-        $(CorrectAnswerPage.previous()).click();
-        $(NumberQuestionPage.answer()).setValue(123);
-        $(NumberQuestionPage.submit()).click();
-        expect(browser.getUrl()).to.contain(CorrectAnswerPage.pageName);
-      });
-
-      it("When I enter a greater number, Then I should be routed to the incorrect page", () => {
-        $(CorrectAnswerPage.previous()).click();
-        $(NumberQuestionPage.answer()).setValue(546);
-        $(NumberQuestionPage.submit()).click();
-        expect(browser.getUrl()).to.contain(IncorrectAnswerPage.pageName);
-      });
-    });
-
     describe("Given I have number routing with a less than or equal to single condition", () => {
       before(() => {
-        browser.openQuestionnaire("test_routing_number_less_than_or_equal_single_condition.json");
+        browser.openQuestionnaire("test_new_routing_number_less_than_or_equal_single_condition.json");
       });
 
       it("When I enter a number less than 123, Then I should be routed to the correct page", () => {
