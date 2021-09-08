@@ -104,7 +104,7 @@ describe("Feature: Routing on a Number", () => {
   describe("Greater Than or Equal", () => {
     describe("Given I have number routing with a greater than or equal to single condition", () => {
       before(() => {
-        browser.openQuestionnaire("test_new_routing_number_greater_than_or_equal_single_condition.json");
+        browser.openQuestionnaire("test_new_routing_number_greater_than_or_equal.json");
       });
 
       it("When I enter a number larger than 123, Then I should be routed to the correct page", () => {
@@ -132,7 +132,7 @@ describe("Feature: Routing on a Number", () => {
   describe("Less Than or Equal", () => {
     describe("Given I have number routing with a less than or equal to single condition", () => {
       before(() => {
-        browser.openQuestionnaire("test_new_routing_number_less_than_or_equal_single_condition.json");
+        browser.openQuestionnaire("test_new_routing_number_less_than_or_equal.json");
       });
 
       it("When I enter a number less than 123, Then I should be routed to the correct page", () => {
