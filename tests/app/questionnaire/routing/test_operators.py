@@ -67,6 +67,7 @@ greater_than_and_less_than_operations = [
 
 greater_than_and_less_than_operations_equals_test = [
     [(1, 1), False],
+    [(current_date, current_date), False],
 ]
 
 
