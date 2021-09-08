@@ -44,7 +44,7 @@ class FieldHandler(ABC):
         )
 
     @cached_property
-    def value_source_resolver(self):
+    def value_source_resolver(self) -> ValueSourceResolver:
         list_item_id = self.location.list_item_id if self.location else None
         return ValueSourceResolver(
             answer_store=self.answer_store,
