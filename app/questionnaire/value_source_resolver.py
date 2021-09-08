@@ -8,6 +8,7 @@ from app.data_models.answer import AnswerValueTypes, escape_answer_value
 from app.data_models.answer_store import AnswerStore
 from app.data_models.list_store import ListModel, ListStore
 from app.questionnaire import Location, QuestionnaireSchema
+from app.questionnaire.location import InvalidLocationException
 from app.questionnaire.relationship_location import RelationshipLocation
 
 ValueSourceTypes = Union[None, str, int, Decimal, list]
@@ -23,7 +24,7 @@ class ValueSourceResolver:
     list_store: ListStore
     metadata: dict
     schema: QuestionnaireSchema
-    location: Union[Optional[Location], RelationshipLocation]
+    location: Union[None, Location, RelationshipLocation]
     list_item_id: Optional[str]
     routing_path_block_ids: Optional[list] = None
     use_default_answer: bool = False
@@ -57,6 +58,11 @@ class ValueSourceResolver:
 
         if list_item_selector := value_source.get("list_item_selector"):
             if list_item_selector["source"] == "location":
+                if not self.location:
+                    raise InvalidLocationException(
+                        "list_item_selector source location used without location"
+                    )
+
                 list_item_id = getattr(self.location, list_item_selector["id"])
 
             elif list_item_selector["source"] == "list":
@@ -115,7 +121,7 @@ class ValueSourceResolver:
         if source == "answers":
             return self._resolve_answer_value_source(value_source)
 
-        if source == "list":
+        if source == "list" and self.list_store:
             return self._resolve_list_value_source(value_source)
 
         if source == "metadata":

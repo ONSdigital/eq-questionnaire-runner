@@ -42,9 +42,11 @@ class FieldHandler(ABC):
         self.validation_messages = self.answer_schema.get("validation", {}).get(
             "messages", {}
         )
-        list_item_id = location.list_item_id if location else None
 
-        self.value_source_resolver = ValueSourceResolver(
+    @cached_property
+    def value_source_resolver(self):
+        list_item_id = self.location.list_item_id if self.location else None
+        return ValueSourceResolver(
             answer_store=self.answer_store,
             list_store=self.list_store,
             metadata=self.metadata,
