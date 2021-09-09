@@ -291,7 +291,7 @@
                                 "answers": [
                                     {
                                         "id": "checkbox-answer",
-                                        "label": "Select an answer",
+                                        "instruction": "Select an answer",
                                         "type": "Checkbox",
                                         "mandatory": false,
                                         "options": [
