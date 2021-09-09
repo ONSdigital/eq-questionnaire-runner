@@ -342,7 +342,7 @@ def _option_value_in_data(answer, option, data):
 
 
 def get_answer_fields(
-    question, data, schema, list_store, answer_store, metadata, location
+    question, data, schema, answer_store, list_store, metadata, location
 ):
     answer_fields = {}
     question_title = question.get("title")
@@ -355,8 +355,8 @@ def get_answer_fields(
                 answer_fields[option["detail_answer"]["id"]] = get_field_handler(
                     detail_answer,
                     schema,
-                    list_store,
                     answer_store,
+                    list_store,
                     metadata,
                     location,
                     disable_validation=disable_validation,
@@ -365,8 +365,8 @@ def get_answer_fields(
         answer_fields[answer["id"]] = get_field_handler(
             answer,
             schema,
-            list_store,
             answer_store,
+            list_store,
             metadata,
             location,
             question_title=question_title,
@@ -425,8 +425,8 @@ def _clear_detail_answer_field(form_data, question_schema):
 def generate_form(
     schema,
     question_schema,
-    list_store,
     answer_store,
+    list_store,
     metadata,
     location=None,
     data=None,
@@ -441,8 +441,8 @@ def generate_form(
         question_schema,
         form_data if form_data is not None else data,
         schema,
-        list_store,
         answer_store,
+        list_store,
         metadata,
         location,
     )
@@ -453,8 +453,8 @@ def generate_form(
     return DynamicForm(
         schema,
         question_schema,
-        list_store,
         answer_store,
+        list_store,
         metadata,
         location,
         data=data,

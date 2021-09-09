@@ -862,8 +862,8 @@ class TestQuestionnaireForm(
             form = generate_form(
                 schema,
                 question_schema,
-                ListStore(),
                 answer_store,
+                ListStore(),
                 metadata=metadata,
                 form_data=form_data,
             )

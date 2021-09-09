@@ -1,5 +1,6 @@
 from wtforms import Form
 
+from app.data_models.answer_store import AnswerStore
 from app.data_models.list_store import ListStore
 from app.forms.field_handlers import MonthYearDateHandler
 from app.forms.fields import MonthYearDateField
@@ -20,7 +21,7 @@ def test_month_year_date_field_created_with_guidance(mock_schema):
         },
     }
 
-    handler = MonthYearDateHandler(date_json, mock_schema, ListStore())
+    handler = MonthYearDateHandler(date_json, mock_schema, AnswerStore(), ListStore())
 
     class TestForm(Form):
         test_field = handler.get_field()

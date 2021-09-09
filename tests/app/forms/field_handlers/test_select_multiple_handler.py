@@ -1,5 +1,6 @@
 from wtforms import Form
 
+from app.data_models.answer_store import AnswerStore
 from app.data_models.list_store import ListStore
 from app.forms.field_handlers import SelectMultipleHandler
 from app.forms.fields import MultipleSelectFieldWithDetailAnswer
@@ -23,7 +24,9 @@ def test_get_field(mock_schema):
         "type": "Checkbox",
     }
 
-    handler = SelectMultipleHandler(checkbox_json, mock_schema, ListStore())
+    handler = SelectMultipleHandler(
+        checkbox_json, mock_schema, AnswerStore(), ListStore()
+    )
 
     class TestForm(Form):
         test_field = handler.get_field()

@@ -13,7 +13,7 @@ from app.settings import MAX_NUMBER
 
 def get_test_form_class(answer_schema, mock_schema, messages={}):
     mock_schema.error_messages = messages
-    handler = NumberHandler(answer_schema, mock_schema, ListStore())
+    handler = NumberHandler(answer_schema, mock_schema, AnswerStore(), ListStore())
 
     class TestForm(Form):
         test_field = handler.get_field()
@@ -332,7 +332,7 @@ def test_default_range(mock_schema):
         "id": "test-range",
         "type": "Currency",
     }
-    handler = NumberHandler(answer, mock_schema, ListStore())
+    handler = NumberHandler(answer, mock_schema, AnswerStore(), ListStore())
     field_references = handler.get_field_references()
 
     assert field_references["maximum"] == MAX_NUMBER
@@ -359,8 +359,8 @@ def test_get_schema_value_answer_store(mock_schema):
     number_handler = NumberHandler(
         answer_schema,
         mock_schema,
+        answer_store,
         ListStore(),
-        answer_store=answer_store,
         metadata=mock_metadata,
     )
 

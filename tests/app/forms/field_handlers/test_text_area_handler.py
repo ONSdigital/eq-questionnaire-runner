@@ -21,7 +21,9 @@ def test_get_field(mock_schema):
         },
     }
 
-    text_area_handler = TextAreaHandler(textarea_json, mock_schema, ListStore())
+    text_area_handler = TextAreaHandler(
+        textarea_json, mock_schema, AnswerStore(), ListStore()
+    )
 
     class TestForm(Form):
         test_field = text_area_handler.get_field()
@@ -63,8 +65,8 @@ def test_get_length_validator_with_message_override(mock_schema):
     text_area_handler = TextAreaHandler(
         answer,
         mock_schema,
-        ListStore(),
         AnswerStore(),
+        ListStore(),
         {},
     )
 
@@ -77,7 +79,7 @@ def test_get_length_validator_with_max_length_override(mock_schema):
     answer = {"max_length": 30}
     mock_schema.error_messages = {"MAX_LENGTH_EXCEEDED": "%(max)d characters"}
     text_area_handler = TextAreaHandler(
-        answer, mock_schema, ListStore(), AnswerStore(), {}
+        answer, mock_schema, AnswerStore(), ListStore(), {}
     )
     validator = text_area_handler.get_length_validator()
 
@@ -93,7 +95,7 @@ def test_get_text_area_rows_with_default(mock_schema):
     }
 
     text_area_handler = TextAreaHandler(
-        answer, mock_schema, ListStore(), disable_validation=True
+        answer, mock_schema, AnswerStore(), ListStore(), disable_validation=True
     )
 
     class TestForm(Form):
@@ -114,7 +116,7 @@ def test_get_text_area_rows(mock_schema):
     }
 
     text_area_handler = TextAreaHandler(
-        answer, mock_schema, ListStore(), disable_validation=True
+        answer, mock_schema, AnswerStore(), ListStore(), disable_validation=True
     )
 
     class TestForm(Form):

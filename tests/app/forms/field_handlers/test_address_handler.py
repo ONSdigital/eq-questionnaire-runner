@@ -2,6 +2,7 @@ from werkzeug.datastructures import MultiDict
 from wtforms import Form, FormField
 from wtforms.validators import InputRequired
 
+from app.data_models.answer_store import AnswerStore
 from app.data_models.list_store import ListStore
 from app.forms import error_messages
 from app.forms.field_handlers import AddressHandler
@@ -9,7 +10,9 @@ from app.forms.field_handlers import AddressHandler
 
 def get_test_form_class(answer_schema, mock_schema):
     mock_schema.error_messages = error_messages
-    address_handler = AddressHandler(answer_schema, mock_schema, ListStore())
+    address_handler = AddressHandler(
+        answer_schema, mock_schema, AnswerStore(), ListStore()
+    )
 
     class TestForm(Form):
         test_field = address_handler.get_field()
@@ -19,7 +22,9 @@ def get_test_form_class(answer_schema, mock_schema):
 
 def test_address_fields(mock_schema):
     answer_json = {"id": "address", "mandatory": True, "type": "Address"}
-    address_handler = AddressHandler(answer_json, mock_schema, ListStore())
+    address_handler = AddressHandler(
+        answer_json, mock_schema, AnswerStore(), ListStore()
+    )
 
     class TestForm(Form):
         test_field = address_handler.get_field()
@@ -35,7 +40,9 @@ def test_address_fields(mock_schema):
 def test_address_mandatory_line1_validator(mock_schema):
     answer_json = {"id": "address", "mandatory": True, "type": "Address"}
     mock_schema.error_messages = error_messages
-    address_handler = AddressHandler(answer_json, mock_schema, ListStore())
+    address_handler = AddressHandler(
+        answer_json, mock_schema, AnswerStore(), ListStore()
+    )
 
     validator = address_handler.validators
 
@@ -74,7 +81,9 @@ def test_address_validator_with_message_override(mock_schema):
             }
         },
     }
-    address_handler = AddressHandler(answer_json, mock_schema, ListStore())
+    address_handler = AddressHandler(
+        answer_json, mock_schema, AnswerStore(), ListStore()
+    )
 
     validator = address_handler.validators
 

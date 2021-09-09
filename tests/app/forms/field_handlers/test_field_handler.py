@@ -10,7 +10,7 @@ def test_get_mandatory_validator_optional(mock_schema):
     answer = {"mandatory": False}
 
     text_area_handler = StringHandler(
-        answer, mock_schema, ListStore(), AnswerStore(), {}
+        answer, mock_schema, AnswerStore(), ListStore(), {}
     )
     validate_with = text_area_handler.get_mandatory_validator()
 
@@ -51,8 +51,8 @@ def test_get_mandatory_validator_mandatory_with_error(mock_schema):
     text_area_handler = StringHandler(
         answer,
         mock_schema,
-        ListStore(),
         AnswerStore(),
+        ListStore(),
         {},
     )
     validate_with = text_area_handler.get_mandatory_validator()
@@ -76,8 +76,8 @@ def test_get_mandatory_validator_mandatory_with_question_in_error(mock_schema):
     text_area_handler = StringHandler(
         answer,
         mock_schema,
-        ListStore(),
         AnswerStore(),
+        ListStore(),
         metadata={},
         question_title="To be or not to be?",
     )

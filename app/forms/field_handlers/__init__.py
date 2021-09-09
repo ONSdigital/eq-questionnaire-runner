@@ -36,8 +36,8 @@ FIELD_HANDLER_MAPPINGS = {
 def get_field_handler(
     answer: dict,
     schema: QuestionnaireSchema,
-    list_store: ListStore,
     answer_store: AnswerStore,
+    list_store: ListStore,
     metadata: dict = None,
     location: Location = None,
     disable_validation: bool = False,
@@ -46,8 +46,8 @@ def get_field_handler(
     return FIELD_HANDLER_MAPPINGS[answer["type"]](
         answer,
         schema=schema,
-        list_store=list_store,
         answer_store=answer_store,
+        list_store=list_store,
         metadata=metadata,
         location=location,
         disable_validation=disable_validation,
