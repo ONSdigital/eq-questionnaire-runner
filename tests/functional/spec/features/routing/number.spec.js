@@ -36,7 +36,7 @@ describe("Feature: Routing on a Number", () => {
         expect(browser.getUrl()).to.contain(CorrectAnswerPage.pageName);
       });
 
-      it("When I enter the 123, Then I should be routed to the incorrect page", () => {
+      it("When I enter 123, Then I should be routed to the incorrect page", () => {
         $(CorrectAnswerPage.previous()).click();
         $(NumberQuestionPage.answer()).setValue(123);
         $(NumberQuestionPage.submit()).click();
