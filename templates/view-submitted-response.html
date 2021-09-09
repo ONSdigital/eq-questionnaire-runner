@@ -29,8 +29,19 @@
   </h1>
   {{ onsMetadata(content.metadata)}}
   {% if not content.view_submitted_response.expired %}
+    {{
+      onsButton({
+        "type": 'button',
+        "text": 'Print answers',
+        "buttonStyle": "print",
+        "classes": "btn--small",
+        "attributes": {
+          "data-qa": "btn-print"
+        }
+      })
+    }}
     {% block summary %}
-      <div class="u-mb-m">
+      <div class="u-mt-l u-mb-l">
         {% include 'partials/summary/summary.html' %}
       </div>
     {% endblock summary %}
