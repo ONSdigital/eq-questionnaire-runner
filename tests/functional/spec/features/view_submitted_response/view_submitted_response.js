@@ -15,6 +15,7 @@ describe("View Submitted Response", () => {
     $(AddressBlockPage.submit()).click();
     $(SubmitPage.submit()).click();
     browser.url("/submitted/view-response");
+    expect($(ViewSubmittedResponsePage.printButton()).isDisplayed()).to.be.true;
     expect($(ViewSubmittedResponsePage.heading()).getText()).to.equal("Answers submitted for Apple.");
     expect($(ViewSubmittedResponsePage.metadataTerm(1)).getText()).to.equal("Submitted on:");
     expect($(ViewSubmittedResponsePage.metadataTerm(2)).getText()).to.equal("Submission reference:");
