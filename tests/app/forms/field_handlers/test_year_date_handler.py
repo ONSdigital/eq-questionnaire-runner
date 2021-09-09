@@ -21,7 +21,7 @@ def test_get_field(mock_schema):
         },
     }
 
-    handler = YearDateHandler(date_json, mock_schema, AnswerStore(), ListStore())
+    handler = YearDateHandler(date_json, mock_schema, AnswerStore(), ListStore(), {})
 
     class TestForm(Form):
         test_field = handler.get_field()

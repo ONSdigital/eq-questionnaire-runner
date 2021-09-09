@@ -24,7 +24,7 @@ def dropdown_answer_schema():
 
 def test_build_choices_without_placeholder(dropdown_answer_schema, mock_schema):
     handler = DropdownHandler(
-        dropdown_answer_schema, mock_schema, AnswerStore(), ListStore()
+        dropdown_answer_schema, mock_schema, AnswerStore(), ListStore(), {}
     )
 
     expected_choices = [("", "Select an answer")] + [
@@ -38,7 +38,7 @@ def test_build_choices_without_placeholder(dropdown_answer_schema, mock_schema):
 def test_build_choices_with_placeholder(dropdown_answer_schema, mock_schema):
     dropdown_answer_schema["placeholder"] = "Select an option"
     handler = DropdownHandler(
-        dropdown_answer_schema, mock_schema, AnswerStore(), ListStore()
+        dropdown_answer_schema, mock_schema, AnswerStore(), ListStore(), {}
     )
 
     expected_choices = [("", "Select an option")] + [
@@ -51,7 +51,7 @@ def test_build_choices_with_placeholder(dropdown_answer_schema, mock_schema):
 
 def test_get_field(dropdown_answer_schema, mock_schema):
     handler = DropdownHandler(
-        dropdown_answer_schema, mock_schema, AnswerStore(), ListStore()
+        dropdown_answer_schema, mock_schema, AnswerStore(), ListStore(), {}
     )
 
     expected_choices = [("", "Select an answer")] + [

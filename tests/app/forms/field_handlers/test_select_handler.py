@@ -40,7 +40,7 @@ def test_get_field(mock_schema):
         "validation": {"messages": {"MANDATORY_RADIO": "This answer is required"}},
     }
 
-    handler = SelectHandler(radio_json, mock_schema, AnswerStore(), ListStore())
+    handler = SelectHandler(radio_json, mock_schema, AnswerStore(), ListStore(), {})
 
     class TestForm(Form):
         test_field = handler.get_field()

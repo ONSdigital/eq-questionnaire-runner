@@ -22,7 +22,7 @@ def test_get_field(mock_schema):
     }
 
     text_area_handler = TextAreaHandler(
-        textarea_json, mock_schema, AnswerStore(), ListStore()
+        textarea_json, mock_schema, AnswerStore(), ListStore(), {}
     )
 
     class TestForm(Form):
@@ -95,7 +95,7 @@ def test_get_text_area_rows_with_default(mock_schema):
     }
 
     text_area_handler = TextAreaHandler(
-        answer, mock_schema, AnswerStore(), ListStore(), disable_validation=True
+        answer, mock_schema, AnswerStore(), ListStore(), {}, disable_validation=True
     )
 
     class TestForm(Form):
@@ -116,7 +116,7 @@ def test_get_text_area_rows(mock_schema):
     }
 
     text_area_handler = TextAreaHandler(
-        answer, mock_schema, AnswerStore(), ListStore(), disable_validation=True
+        answer, mock_schema, AnswerStore(), ListStore(), {}, disable_validation=True
     )
 
     class TestForm(Form):

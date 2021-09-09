@@ -21,7 +21,9 @@ def test_month_year_date_field_created_with_guidance(mock_schema):
         },
     }
 
-    handler = MonthYearDateHandler(date_json, mock_schema, AnswerStore(), ListStore())
+    handler = MonthYearDateHandler(
+        date_json, mock_schema, AnswerStore(), ListStore(), {}
+    )
 
     class TestForm(Form):
         test_field = handler.get_field()

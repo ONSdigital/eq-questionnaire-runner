@@ -25,7 +25,7 @@ def test_get_field(mock_schema):
     }
 
     handler = SelectMultipleHandler(
-        checkbox_json, mock_schema, AnswerStore(), ListStore()
+        checkbox_json, mock_schema, AnswerStore(), ListStore(), {}
     )
 
     class TestForm(Form):

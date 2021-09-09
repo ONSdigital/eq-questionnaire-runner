@@ -25,8 +25,8 @@ def test_get_mandatory_validator_mandatory(mock_schema):
     text_area_handler = StringHandler(
         answer,
         mock_schema,
-        ListStore(),
         AnswerStore(),
+        ListStore(),
         {},
     )
     validate_with = text_area_handler.get_mandatory_validator()

@@ -16,7 +16,7 @@ def test_get_field(mock_schema):
         "units": ["years", "months"],
     }
     mock_schema.error_messages = error_messages
-    handler = DurationHandler(date_json, mock_schema, AnswerStore(), ListStore())
+    handler = DurationHandler(date_json, mock_schema, AnswerStore(), ListStore(), {})
 
     class TestForm(Form):
         test_field = handler.get_field()

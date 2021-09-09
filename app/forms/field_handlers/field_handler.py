@@ -24,7 +24,7 @@ class FieldHandler(ABC):
         schema: QuestionnaireSchema,
         answer_store: AnswerStore,
         list_store: ListStore,
-        metadata: dict = None,
+        metadata: dict,
         location: Location = None,
         disable_validation: bool = False,
         question_title: str = None,

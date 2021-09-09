@@ -14,7 +14,12 @@ def test_phone_number_handler(mock_schema):
         "type": "PhoneNumber",
     }
     mobile_number_handler = MobileNumberHandler(
-        answer_schema, mock_schema, AnswerStore(), ListStore(), disable_validation=False
+        answer_schema,
+        mock_schema,
+        AnswerStore(),
+        ListStore(),
+        {},
+        disable_validation=False,
     )
 
     class TestForm(Form):
