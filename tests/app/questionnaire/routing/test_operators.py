@@ -65,7 +65,7 @@ greater_than_and_less_than_operations = [
     [(current_date, next_week), False],
 ]
 
-greater_than_and_less_than_operations_equals_test = [
+greater_than_and_less_than_operations_equals = [
     [(1, 1), False],
     [(current_date, current_date), False],
 ]
