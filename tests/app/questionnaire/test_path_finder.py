@@ -72,7 +72,7 @@ class TestPathFinder(AppContextTestCase):
         self.assertNotIn("introduction", routing_path)
 
     def test_routing_path_with_conditional_path(self):
-        schema = load_schema_from_name("test_routing_number_equals")
+        schema = load_schema_from_name("test_new_routing_number_equals")
         section_id = schema.get_section_id_for_block_id("number-question")
         expected_path = RoutingPath(
             ["number-question", "correct-answer"],
@@ -98,29 +98,6 @@ class TestPathFinder(AppContextTestCase):
 
         routing_path = path_finder.routing_path(section_id=section_id)
 
-        self.assertEqual(routing_path, expected_path)
-
-    def test_routing_basic_and_conditional_path(self):
-        # Given
-        schema = load_schema_from_name("test_routing_number_equals")
-        section_id = schema.get_section_id_for_block_id("number-question")
-        expected_path = RoutingPath(
-            ["number-question", "correct-answer"],
-            section_id="default-section",
-        )
-
-        answer_1 = Answer(answer_id="answer", value=123)
-
-        answer_store = AnswerStore()
-        answer_store.add_or_update(answer_1)
-
-        # When
-        path_finder = PathFinder(
-            schema, answer_store, self.list_store, self.progress_store, self.metadata
-        )
-        routing_path = path_finder.routing_path(section_id=section_id)
-
-        # Then
         self.assertEqual(routing_path, expected_path)
 
     def test_new_routing_basic_and_conditional_path(self):
