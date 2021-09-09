@@ -10,7 +10,7 @@ import DateLessThanQuestionPage from "../../../generated_pages/new_routing_date_
 import DateLessThanOrEqualsQuestionPage from "../../../generated_pages/new_routing_date_less_than_or_equals/date-question.page";
 
 const today = new Date();
-const dayToday = today.getDate(); // yesterday
+const dayToday = today.getDate();
 const monthToday = today.getMonth() + 1; // January is 0!
 const yearToday = today.getFullYear();
 
@@ -98,10 +98,9 @@ describe("Feature: Routing on a Date", () => {
         browser.openQuestionnaire("test_new_routing_date_not_equals.json");
       });
 
-      it("When I enter a different date to 28/02/2018, Then I should be routed to the correct page", () => {
-        $(DateNotEqualsQuestionPage.day()).setValue(27);
-        $(DateNotEqualsQuestionPage.month()).setValue(2);
-        $(DateNotEqualsQuestionPage.year()).setValue(2018);
+      it("When I enter a different date to February 2018, Then I should be routed to the correct page", () => {
+        $(DateNotEqualsQuestionPage.Month()).setValue(3);
+        $(DateNotEqualsQuestionPage.Year()).setValue(2018);
         $(DateNotEqualsQuestionPage.submit()).click();
 
         const expectedUrl = browser.getUrl();
@@ -109,10 +108,9 @@ describe("Feature: Routing on a Date", () => {
         expect(expectedUrl).to.contain(CorrectAnswerPage.pageName);
       });
 
-      it("When I enter 28/02/2018, Then I should be routed to the incorrect page", () => {
-        $(DateNotEqualsQuestionPage.day()).setValue(28);
-        $(DateNotEqualsQuestionPage.month()).setValue(2);
-        $(DateNotEqualsQuestionPage.year()).setValue(2018);
+      it("When I enter February 2018, Then I should be routed to the incorrect page", () => {
+        $(DateNotEqualsQuestionPage.Month()).setValue(2);
+        $(DateNotEqualsQuestionPage.Year()).setValue(2018);
         $(DateNotEqualsQuestionPage.submit()).click();
 
         const expectedUrl = browser.getUrl();
@@ -169,10 +167,8 @@ describe("Feature: Routing on a Date", () => {
         browser.openQuestionnaire("test_new_routing_date_greater_than_or_equals.json");
       });
 
-      it("When I enter a date greater than the 1st March 2017, Then I should be routed to the correct page", () => {
-        $(DateGreaterThanOrEqualsQuestionPage.day()).setValue(2);
-        $(DateGreaterThanOrEqualsQuestionPage.month()).setValue(4);
-        $(DateGreaterThanOrEqualsQuestionPage.year()).setValue(2017);
+      it("When I enter a date greater than 2017, Then I should be routed to the correct page", () => {
+        $(DateGreaterThanOrEqualsQuestionPage.Year()).setValue(2018);
         $(DateGreaterThanOrEqualsQuestionPage.submit()).click();
 
         const expectedUrl = browser.getUrl();
@@ -180,10 +176,8 @@ describe("Feature: Routing on a Date", () => {
         expect(expectedUrl).to.contain(CorrectAnswerPage.pageName);
       });
 
-      it("When I enter the 1st March 2017, Then I should be routed to the correct page", () => {
-        $(DateGreaterThanOrEqualsQuestionPage.day()).setValue(1);
-        $(DateGreaterThanOrEqualsQuestionPage.month()).setValue(3);
-        $(DateGreaterThanOrEqualsQuestionPage.year()).setValue(2017);
+      it("When I enter 2017, Then I should be routed to the correct page", () => {
+        $(DateGreaterThanOrEqualsQuestionPage.Year()).setValue(2017);
         $(DateGreaterThanOrEqualsQuestionPage.submit()).click();
 
         const expectedUrl = browser.getUrl();
@@ -191,10 +185,8 @@ describe("Feature: Routing on a Date", () => {
         expect(expectedUrl).to.contain(CorrectAnswerPage.pageName);
       });
 
-      it("When I enter a date less than the 1st March 2017, Then I should be routed to the incorrect page", () => {
-        $(DateGreaterThanOrEqualsQuestionPage.day()).setValue(28);
-        $(DateGreaterThanOrEqualsQuestionPage.month()).setValue(2);
-        $(DateGreaterThanOrEqualsQuestionPage.year()).setValue(2017);
+      it("When I enter a date less than March 2017, Then I should be routed to the incorrect page", () => {
+        $(DateGreaterThanOrEqualsQuestionPage.Year()).setValue(2016);
         $(DateGreaterThanOrEqualsQuestionPage.submit()).click();
 
         const expectedUrl = browser.getUrl();

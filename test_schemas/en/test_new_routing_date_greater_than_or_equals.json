@@ -47,30 +47,11 @@
                                     {
                                         "id": "single-date-answer",
                                         "mandatory": true,
-                                        "type": "Date"
+                                        "type": "YearDate"
                                     }
                                 ],
                                 "id": "date-questions",
-                                "title": {
-                                    "text": "Enter a date greater than or equals Return date: {date}",
-                                    "placeholders": [
-                                        {
-                                            "placeholder": "date",
-                                            "transforms": [
-                                                {
-                                                    "transform": "format_date",
-                                                    "arguments": {
-                                                        "date_to_format": {
-                                                            "source": "metadata",
-                                                            "identifier": "return_by"
-                                                        },
-                                                        "date_format": "d MMMM yyyy"
-                                                    }
-                                                }
-                                            ]
-                                        }
-                                    ]
-                                },
+                                "title": "Enter a year greater than or equals to 2018",
                                 "type": "General"
                             },
                             "routing_rules": [
@@ -82,7 +63,7 @@
                                                 "date": [{ "source": "answers", "identifier": "single-date-answer" }]
                                             },
                                             {
-                                                "date": [{ "source": "metadata", "identifier": "return_by" }]
+                                                "date": ["2018"]
                                             }
                                         ]
                                     }

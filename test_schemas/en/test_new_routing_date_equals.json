@@ -107,90 +107,76 @@
                                 {
                                     "block": "correct-answer",
                                     "when": {
-                                        "==": [
+                                        "or": [
                                             {
-                                                "date": [{ "source": "answers", "identifier": "single-date-answer" }]
-                                            },
-                                            {
+                                                "==": [
+                                                    {
+                                                        "date": [{ "source": "answers", "identifier": "single-date-answer" }]
+                                                    },
+                                                    {
                                                 "date": [{ "source": "answers", "identifier": "comparison-date-answer" }, { "days": -1 }]
-                                            }
-                                        ]
-                                    }
-                                },
-                                {
-                                    "block": "correct-answer",
-                                    "when": {
-                                        "==": [
-                                            {
-                                                "date": [{ "source": "answers", "identifier": "single-date-answer" }]
+                                                    }
+                                                ]
                                             },
                                             {
-                                                "date": [{ "source": "answers", "identifier": "comparison-date-answer" }]
-                                            }
-                                        ]
-                                    }
-                                },
-                                {
-                                    "block": "correct-answer",
-                                    "when": {
-                                        "==": [
-                                            {
-                                                "date": [{ "source": "answers", "identifier": "single-date-answer" }]
+                                                "==": [
+                                                    {
+                                                        "date": [{ "source": "answers", "identifier": "single-date-answer" }]
+                                                    },
+                                                    {
+                                                        "date": [{ "source": "answers", "identifier": "comparison-date-answer" }]
+                                                    }
+                                                ]
                                             },
                                             {
-                                                "date": [{ "source": "answers", "identifier": "comparison-date-answer" }, { "days": 1 }]
-                                            }
-                                        ]
-                                    }
-                                },
-                                {
-                                    "block": "correct-answer",
-                                    "when": {
-                                        "==": [
-                                            {
-                                                "date": [{ "source": "answers", "identifier": "single-date-answer" }]
+                                                "==": [
+                                                    {
+                                                        "date": [{ "source": "answers", "identifier": "single-date-answer" }]
+                                                    },
+                                                    {
+                                                        "date": [{ "source": "answers", "identifier": "comparison-date-answer" }, { "days": 1 }]
+                                                    }
+                                                ]
                                             },
                                             {
-                                                "date": [{ "source": "answers", "identifier": "comparison-date-answer" }, { "months": -1 }]
-                                            }
-                                        ]
-                                    }
-                                },
-                                {
-                                    "block": "correct-answer",
-                                    "when": {
-                                        "==": [
-                                            {
-                                                "date": [{ "source": "answers", "identifier": "single-date-answer" }]
+                                                "==": [
+                                                    {
+                                                        "date": [{ "source": "answers", "identifier": "single-date-answer" }]
+                                                    },
+                                                    {
+                                                        "date": [{ "source": "answers", "identifier": "comparison-date-answer" }, { "months": -1 }]
+                                                    }
+                                                ]
                                             },
                                             {
-                                                "date": [{ "source": "answers", "identifier": "comparison-date-answer" }, { "months": 1 }]
-                                            }
-                                        ]
-                                    }
-                                },
-                                {
-                                    "block": "correct-answer",
-                                    "when": {
-                                        "==": [
-                                            {
-                                                "date": [{ "source": "answers", "identifier": "single-date-answer" }]
+                                                "==": [
+                                                    {
+                                                        "date": [{ "source": "answers", "identifier": "single-date-answer" }]
+                                                    },
+                                                    {
+                                                        "date": [{ "source": "answers", "identifier": "comparison-date-answer" }, { "months": 1 }]
+                                                    }
+                                                ]
                                             },
                                             {
-                                                "date": [{ "source": "answers", "identifier": "comparison-date-answer" }, { "years": -1 }]
-                                            }
-                                        ]
-                                    }
-                                },
-                                {
-                                    "block": "correct-answer",
-                                    "when": {
-                                        "==": [
-                                            {
-                                                "date": [{ "source": "answers", "identifier": "single-date-answer" }]
+                                                "==": [
+                                                    {
+                                                        "date": [{ "source": "answers", "identifier": "single-date-answer" }]
+                                                    },
+                                                    {
+                                                        "date": [{ "source": "answers", "identifier": "comparison-date-answer" }, { "years": -1 }]
+                                                    }
+                                                ]
                                             },
                                             {
-                                                "date": [{ "source": "answers", "identifier": "comparison-date-answer" }, { "years": 1 }]
+                                                "==": [
+                                                    {
+                                                        "date": [{ "source": "answers", "identifier": "single-date-answer" }]
+                                                    },
+                                                    {
+                                                        "date": [{ "source": "answers", "identifier": "comparison-date-answer" }, { "years": 1 }]
+                                                    }
+                                                ]
                                             }
                                         ]
                                     }
