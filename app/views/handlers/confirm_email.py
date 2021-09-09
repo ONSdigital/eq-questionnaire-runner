@@ -9,7 +9,12 @@ from markupsafe import escape
 from werkzeug.exceptions import BadRequest
 
 from app.cloud_tasks.exceptions import CloudTaskCreationFailed
-from app.data_models import FulfilmentRequest, SessionData, SessionStore
+from app.data_models import (
+    FulfilmentRequest,
+    QuestionnaireStore,
+    SessionData,
+    SessionStore,
+)
 from app.forms.questionnaire_form import generate_form
 from app.helpers import url_safe_serializer
 from app.questionnaire import QuestionnaireSchema
@@ -35,6 +40,7 @@ CONFIRM_EMAIL_YES_VALUE = lazy_gettext("Yes, send the confirmation email")
 class ConfirmEmail:
     def __init__(
         self,
+        questionnaire_store: QuestionnaireStore,
         schema: QuestionnaireSchema,
         session_store: SessionStore,
         serialized_email,
@@ -54,6 +60,7 @@ class ConfirmEmail:
         except BadSignature:
             raise BadRequest
 
+        self._questionnaire_store = questionnaire_store
         self._schema = schema
         self._session_store = session_store
         self._form_data = form_data
@@ -65,9 +72,9 @@ class ConfirmEmail:
         return generate_form(
             schema=self._schema,
             question_schema=self.question_schema,
-            answer_store=None,
-            list_store=None,
-            metadata=None,
+            answer_store=self._questionnaire_store.answer_store,
+            list_store=self._questionnaire_store.list_store,
+            metadata=self._questionnaire_store.metadata,
             data=None,
             form_data=self._form_data,
         )

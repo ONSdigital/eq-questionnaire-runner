@@ -32,9 +32,9 @@ class FieldHandler(ABC):
         self.schema = schema
         self.answer_schema = answer_schema
         self.error_messages = schema.error_messages or {}
-        self.answer_store = answer_store or AnswerStore()
-        self.list_store = list_store or ListStore()
-        self.metadata = metadata or {}
+        self.answer_store = answer_store
+        self.list_store = list_store
+        self.metadata = metadata
         self.location = location
         self.disable_validation = disable_validation
         self.question_title = str(question_title)

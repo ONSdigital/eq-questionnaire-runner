@@ -236,8 +236,8 @@ class QuestionnaireForm(FlaskForm):
         handler = DateHandler(
             date_from,
             self.schema,
-            self.list_store,
             self.answer_store,
+            self.list_store,
             self.metadata,
             location=self.location,
         )
