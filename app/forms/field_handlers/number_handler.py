@@ -42,8 +42,8 @@ class NumberHandler(FieldHandler):
         super().__init__(
             answer_schema,
             schema,
-            list_store,
             answer_store,
+            list_store,
             metadata,
             location,
             disable_validation,
