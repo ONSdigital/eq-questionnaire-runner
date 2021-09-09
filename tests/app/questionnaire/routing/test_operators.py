@@ -82,7 +82,7 @@ def test_operation_greater_than(operands, expected_result):
 
 @pytest.mark.parametrize(
     "operands, expected_result",
-    greater_than_and_less_than_operations_equals_test,
+    greater_than_and_less_than_operations_equals,
 )
 def test_operation_greater_than_same_number(operands, expected_result):
     operator = Operator(Operator.GREATER_THAN)
@@ -100,7 +100,7 @@ def test_operation_less_than(operands, expected_result):
 
 @pytest.mark.parametrize(
     "operands, expected_result",
-    greater_than_and_less_than_operations_equals_test,
+    greater_than_and_less_than_operations_equals,
 )
 def test_operation_less_than_same_number(operands, expected_result):
     operator = Operator(Operator.LESS_THAN)
