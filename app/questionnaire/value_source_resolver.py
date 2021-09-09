@@ -121,7 +121,7 @@ class ValueSourceResolver:
         if source == "answers":
             return self._resolve_answer_value_source(value_source)
 
-        if source == "list" and self.list_store:
+        if source == "list":
             return self._resolve_list_value_source(value_source)
 
         if source == "metadata":

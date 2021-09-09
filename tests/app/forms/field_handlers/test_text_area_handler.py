@@ -1,6 +1,7 @@
 from wtforms import Form
 
 from app.data_models.answer_store import AnswerStore
+from app.data_models.list_store import ListStore
 from app.forms.field_handlers import TextAreaHandler
 from app.forms.fields import MaxTextAreaField
 
@@ -20,7 +21,7 @@ def test_get_field(mock_schema):
         },
     }
 
-    text_area_handler = TextAreaHandler(textarea_json, mock_schema)
+    text_area_handler = TextAreaHandler(textarea_json, mock_schema, ListStore())
 
     class TestForm(Form):
         test_field = text_area_handler.get_field()
@@ -39,6 +40,7 @@ def test_get_length_validator(mock_schema):
     text_area_handler = TextAreaHandler(
         {},
         mock_schema,
+        ListStore(),
         AnswerStore(),
         {},
     )
@@ -61,6 +63,7 @@ def test_get_length_validator_with_message_override(mock_schema):
     text_area_handler = TextAreaHandler(
         answer,
         mock_schema,
+        ListStore(),
         AnswerStore(),
         {},
     )
@@ -73,7 +76,9 @@ def test_get_length_validator_with_message_override(mock_schema):
 def test_get_length_validator_with_max_length_override(mock_schema):
     answer = {"max_length": 30}
     mock_schema.error_messages = {"MAX_LENGTH_EXCEEDED": "%(max)d characters"}
-    text_area_handler = TextAreaHandler(answer, mock_schema, AnswerStore(), {})
+    text_area_handler = TextAreaHandler(
+        answer, mock_schema, ListStore(), AnswerStore(), {}
+    )
     validator = text_area_handler.get_length_validator()
 
     assert validator.max == 30
@@ -87,7 +92,9 @@ def test_get_text_area_rows_with_default(mock_schema):
         "type": "TextArea",
     }
 
-    text_area_handler = TextAreaHandler(answer, mock_schema, disable_validation=True)
+    text_area_handler = TextAreaHandler(
+        answer, mock_schema, ListStore(), disable_validation=True
+    )
 
     class TestForm(Form):
         test_field = text_area_handler.get_field()
@@ -106,7 +113,9 @@ def test_get_text_area_rows(mock_schema):
         "type": "TextArea",
     }
 
-    text_area_handler = TextAreaHandler(answer, mock_schema, disable_validation=True)
+    text_area_handler = TextAreaHandler(
+        answer, mock_schema, ListStore(), disable_validation=True
+    )
 
     class TestForm(Form):
         test_field = text_area_handler.get_field()

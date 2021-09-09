@@ -4,6 +4,7 @@ from wtforms import Form
 
 from app.data_models.answer import Answer
 from app.data_models.answer_store import AnswerStore
+from app.data_models.list_store import ListStore
 from app.forms import error_messages
 from app.forms.field_handlers.number_handler import NumberHandler
 from app.forms.fields import DecimalFieldWithSeparator, IntegerFieldWithSeparator
@@ -12,7 +13,7 @@ from app.settings import MAX_NUMBER
 
 def get_test_form_class(answer_schema, mock_schema, messages={}):
     mock_schema.error_messages = messages
-    handler = NumberHandler(answer_schema, mock_schema)
+    handler = NumberHandler(answer_schema, mock_schema, ListStore())
 
     class TestForm(Form):
         test_field = handler.get_field()
@@ -331,7 +332,7 @@ def test_default_range(mock_schema):
         "id": "test-range",
         "type": "Currency",
     }
-    handler = NumberHandler(answer, mock_schema)
+    handler = NumberHandler(answer, mock_schema, ListStore())
     field_references = handler.get_field_references()
 
     assert field_references["maximum"] == MAX_NUMBER
@@ -356,7 +357,11 @@ def test_get_schema_value_answer_store(mock_schema):
     answer_store.add_or_update(Answer(answer_id="set-minimum", value=1))
 
     number_handler = NumberHandler(
-        answer_schema, mock_schema, answer_store=answer_store, metadata=mock_metadata
+        answer_schema,
+        mock_schema,
+        ListStore(),
+        answer_store=answer_store,
+        metadata=mock_metadata,
     )
 
     maximum = number_handler.get_schema_value(answer_schema["maximum"])

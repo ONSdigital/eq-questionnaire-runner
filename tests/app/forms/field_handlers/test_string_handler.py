@@ -2,6 +2,7 @@ from unittest.mock import MagicMock
 
 from wtforms import Form, StringField, validators
 
+from app.data_models.list_store import ListStore
 from app.forms.field_handlers.string_handler import StringHandler
 
 
@@ -13,7 +14,9 @@ def test_string_field(mock_schema):
         "guidance": "<p>Please enter your job title in the space provided.</p>",
         "type": "TextField",
     }
-    string_handler = StringHandler(textfield_json, mock_schema, disable_validation=True)
+    string_handler = StringHandler(
+        textfield_json, mock_schema, ListStore(), disable_validation=True
+    )
 
     class TestForm(Form):
         test_field = string_handler.get_field()
@@ -26,7 +29,7 @@ def test_string_field(mock_schema):
 
 
 def test_get_length_validator(mock_schema):
-    string_handler = StringHandler({}, mock_schema)
+    string_handler = StringHandler({}, mock_schema, ListStore())
 
     validator = string_handler.get_length_validator
 
@@ -40,7 +43,7 @@ def test_get_length_validator_with_message_override(mock_schema):
     mock_schema.error_messages = {
         "MAX_LENGTH_EXCEEDED": "This is the default max length message"
     }
-    string_handler = StringHandler(answer, mock_schema)
+    string_handler = StringHandler(answer, mock_schema, ListStore())
 
     validator = string_handler.get_length_validator
 
@@ -50,7 +53,7 @@ def test_get_length_validator_with_message_override(mock_schema):
 def test_get_length_validator_with_max_length_override(mock_schema):
     answer = {"max_length": 30}
 
-    string_handler = StringHandler(answer, mock_schema)
+    string_handler = StringHandler(answer, mock_schema, ListStore())
     validator = string_handler.get_length_validator
 
     assert validator.max == 30

@@ -816,9 +816,9 @@ class TestQuestionnaireForm(
 
     def test_invalid_date_range_and_single_date_periods(self):
         with self.app_request_context():
-            store = AnswerStore()
+            answer_store = AnswerStore()
             test_answer_id = Answer(answer_id="date", value="2017-03-20")
-            store.add_or_update(test_answer_id)
+            answer_store.add_or_update(test_answer_id)
 
             schema = load_schema_from_name("test_date_validation_range")
 
@@ -862,8 +862,8 @@ class TestQuestionnaireForm(
             form = generate_form(
                 schema,
                 question_schema,
-                store,
                 ListStore(),
+                answer_store,
                 metadata=metadata,
                 form_data=form_data,
             )
