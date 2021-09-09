@@ -97,7 +97,6 @@ class AWSReverseProxied:
         return self.app(environ, start_response)
 
 
-# pylint: disable=W1514
 def create_app(  # noqa: C901  pylint: disable=too-complex, too-many-statements
     setting_overrides=None,
 ):

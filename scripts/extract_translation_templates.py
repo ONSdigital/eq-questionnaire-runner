@@ -13,7 +13,6 @@ logger = logging.getLogger(__name__)
 coloredlogs.install(level="DEBUG", logger=logger, fmt="%(message)s")
 
 
-# pylint: disable=W1514
 def get_template_content(filename, ignore_context=False):
     line_beginnings_to_ignore = ['"POT-Creation-Date']
 

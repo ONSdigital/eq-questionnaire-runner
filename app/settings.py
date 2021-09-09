@@ -17,7 +17,6 @@ def parse_mode(string):
     return string.upper() != "FALSE"
 
 
-# pylint: disable=W1514
 def read_file(file_name):
     if file_name and os.path.isfile(file_name):
         logger.debug("reading from file", filename=file_name)
