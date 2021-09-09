@@ -82,7 +82,7 @@
                                                 "date": [{ "source": "answers", "identifier": "single-date-answer" }]
                                             },
                                             {
-                                                "date": [{ "source": "metadata", "identifier": "return_by" }, { "date_format": "d MMMM yyyy" }]
+                                                "date": [{ "source": "metadata", "identifier": "return_by" }]
                                             }
                                         ]
                                     }
