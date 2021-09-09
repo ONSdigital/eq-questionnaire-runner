@@ -114,7 +114,7 @@
                                                         "date": [{ "source": "answers", "identifier": "single-date-answer" }]
                                                     },
                                                     {
-                                                "date": [{ "source": "answers", "identifier": "comparison-date-answer" }, { "days": -1 }]
+                                                        "date": [{ "source": "answers", "identifier": "comparison-date-answer" }, { "days": -1 }]
                                                     }
                                                 ]
                                             },
