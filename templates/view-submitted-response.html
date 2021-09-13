@@ -32,11 +32,22 @@
     {{
       onsButton({
         "type": 'button',
-        "text": 'Print answers',
+        "text": _('Print answers'),
         "buttonStyle": "print",
-        "classes": "btn--small",
+        "classes": "btn--small ons-btn-group__btn",
         "attributes": {
           "data-qa": "btn-print"
+        }
+      })
+    }}
+    {{
+      onsButton({
+        "type": 'button',
+        "text": _('Download pdf'),
+        "classes": "btn--small btn-group__btn",
+        "url": content.pdf_url,
+        "attributes": {
+          "data-qa": "btn-pdf"
         }
       })
     }}

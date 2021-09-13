@@ -5,6 +5,7 @@ from typing import Union
 import flask_babel
 from flask import Blueprint, g, redirect, request, url_for
 from flask_login import current_user, login_required
+from flask_weasyprint import HTML, render_pdf, CSS
 from itsdangerous import BadSignature
 from structlog import get_logger
 from werkzeug import Response
@@ -391,8 +392,38 @@ def get_view_submitted_response(schema, questionnaire_store):
     return render_template(
         template="view-submitted-response",
         content=view_submitted_response.get_context(),
-        page_title=view_submitted_response.get_page_title(),
+        page_title=view_submitted_response.get_page_title()
     )
+
+
+@post_submission_blueprint.route('download-pdf', methods=['GET'])
+@with_questionnaire_store
+@with_schema
+def download_pdf(schema, questionnaire_store):
+    filename = 'download.pdf'
+
+    view_submitted_response = ViewSubmittedResponse(
+        schema,
+        questionnaire_store,
+        flask_babel.get_locale().language,
+    )
+
+    html = render_template(
+        template="view-submitted-response",
+        content=view_submitted_response.get_context(),
+        page_title=view_submitted_response.get_page_title()
+    )
+
+    css = """
+        .header__main {
+            background: none !important;
+        }
+        .header__title {
+            color: black !important;
+        }
+    """
+
+    return render_pdf(html=HTML(string=html), stylesheets=[CSS(string=css), ], download_filename=filename)
 
 
 @post_submission_blueprint.route("confirmation-email/send", methods=["GET", "POST"])

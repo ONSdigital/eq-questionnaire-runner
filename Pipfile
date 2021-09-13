@@ -71,6 +71,7 @@ google-cloud-pubsub = "*"
 google-cloud-tasks = "*"
 simplejson = "*"
 markupsafe = "*"
+flask-weasyprint = "*"
 
 [requires]
 python_version = "3.9"
