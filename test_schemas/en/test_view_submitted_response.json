@@ -5,7 +5,7 @@
     "data_version": "0.0.3",
     "survey_id": "0",
     "title": "Test View Submitted Response",
-    "theme": "default",
+    "theme": "business",
     "description": "A questionnaire to test the use of view submitted response",
     "metadata": [
         {

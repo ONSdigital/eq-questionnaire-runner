@@ -1,6 +1,7 @@
 from datetime import datetime
 from typing import Mapping, Union
 
+from flask import url_for
 from flask_babel import lazy_gettext
 
 from app.data_models import QuestionnaireStore
@@ -47,6 +48,7 @@ def build_view_submitted_response_context(
         "metadata": metadata,
         "response_metadata": response_metadata,
         "submitted_text": submitted_text,
+        "pdf_url": url_for("post_submission.download_pdf")
     }
 
     if not view_submitted_response_expired:
