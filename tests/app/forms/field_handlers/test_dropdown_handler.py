@@ -1,8 +1,6 @@
 from pytest import fixture
 from wtforms import Form, SelectField
 
-from app.data_models.answer_store import AnswerStore
-from app.data_models.list_store import ListStore
 from app.forms.field_handlers.dropdown_handler import DropdownHandler
 
 
@@ -22,10 +20,10 @@ def dropdown_answer_schema():
     }
 
 
-def test_build_choices_without_placeholder(dropdown_answer_schema, mock_schema):
-    handler = DropdownHandler(
-        dropdown_answer_schema, mock_schema, AnswerStore(), ListStore(), {}
-    )
+def test_build_choices_without_placeholder(
+    dropdown_answer_schema, value_source_resolver
+):
+    handler = DropdownHandler(dropdown_answer_schema, value_source_resolver)
 
     expected_choices = [("", "Select an answer")] + [
         (option["label"], option["value"])
@@ -35,11 +33,9 @@ def test_build_choices_without_placeholder(dropdown_answer_schema, mock_schema):
     assert handler.build_choices(dropdown_answer_schema["options"]) == expected_choices
 
 
-def test_build_choices_with_placeholder(dropdown_answer_schema, mock_schema):
+def test_build_choices_with_placeholder(dropdown_answer_schema, value_source_resolver):
     dropdown_answer_schema["placeholder"] = "Select an option"
-    handler = DropdownHandler(
-        dropdown_answer_schema, mock_schema, AnswerStore(), ListStore(), {}
-    )
+    handler = DropdownHandler(dropdown_answer_schema, value_source_resolver)
 
     expected_choices = [("", "Select an option")] + [
         (option["label"], option["value"])
@@ -49,10 +45,8 @@ def test_build_choices_with_placeholder(dropdown_answer_schema, mock_schema):
     assert handler.build_choices(dropdown_answer_schema["options"]) == expected_choices
 
 
-def test_get_field(dropdown_answer_schema, mock_schema):
-    handler = DropdownHandler(
-        dropdown_answer_schema, mock_schema, AnswerStore(), ListStore(), {}
-    )
+def test_get_field(dropdown_answer_schema, value_source_resolver):
+    handler = DropdownHandler(dropdown_answer_schema, value_source_resolver)
 
     expected_choices = [("", "Select an answer")] + [
         (option["label"], option["value"])

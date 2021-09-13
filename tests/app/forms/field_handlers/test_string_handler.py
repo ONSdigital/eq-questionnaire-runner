@@ -1,13 +1,9 @@
-from unittest.mock import MagicMock
-
 from wtforms import Form, StringField, validators
 
-from app.data_models.answer_store import AnswerStore
-from app.data_models.list_store import ListStore
 from app.forms.field_handlers.string_handler import StringHandler
 
 
-def test_string_field(mock_schema):
+def test_string_field(value_source_resolver):
     textfield_json = {
         "id": "job-title-answer",
         "label": "Job title",
@@ -17,10 +13,7 @@ def test_string_field(mock_schema):
     }
     string_handler = StringHandler(
         textfield_json,
-        mock_schema,
-        AnswerStore(),
-        ListStore(),
-        {},
+        value_source_resolver,
         disable_validation=True,
     )
 
@@ -34,32 +27,30 @@ def test_string_field(mock_schema):
     assert form.test_field.description == textfield_json["guidance"]
 
 
-def test_get_length_validator(mock_schema):
-    string_handler = StringHandler({}, mock_schema, AnswerStore(), ListStore(), {})
+def test_get_length_validator(value_source_resolver):
+    string_handler = StringHandler({}, value_source_resolver)
 
     validator = string_handler.get_length_validator
 
     assert isinstance(validator, validators.Length)
 
 
-def test_get_length_validator_with_message_override(mock_schema):
+def test_get_length_validator_with_message_override(value_source_resolver):
     answer = {
         "validation": {"messages": {"MAX_LENGTH_EXCEEDED": "The message is too long!"}}
     }
-    mock_schema.error_messages = {
-        "MAX_LENGTH_EXCEEDED": "This is the default max length message"
-    }
-    string_handler = StringHandler(answer, mock_schema, AnswerStore(), ListStore(), {})
+
+    string_handler = StringHandler(answer, value_source_resolver)
 
     validator = string_handler.get_length_validator
 
     assert validator.message == "The message is too long!"
 
 
-def test_get_length_validator_with_max_length_override(mock_schema):
+def test_get_length_validator_with_max_length_override(value_source_resolver):
     answer = {"max_length": 30}
 
-    string_handler = StringHandler(answer, mock_schema, AnswerStore(), ListStore(), {})
+    string_handler = StringHandler(answer, value_source_resolver)
     validator = string_handler.get_length_validator
 
     assert validator.max == 30

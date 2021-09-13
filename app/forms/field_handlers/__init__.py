@@ -1,6 +1,4 @@
-from app.data_models.answer_store import AnswerStore
-from app.data_models.list_store import ListStore
-from app.questionnaire import Location, QuestionnaireSchema
+from app.questionnaire.value_source_resolver import ValueSourceResolver
 
 from .address_handler import AddressHandler
 from .date_handlers import DateHandler, MonthYearDateHandler, YearDateHandler
@@ -35,21 +33,13 @@ FIELD_HANDLER_MAPPINGS = {
 
 def get_field_handler(
     answer: dict,
-    schema: QuestionnaireSchema,
-    answer_store: AnswerStore,
-    list_store: ListStore,
-    metadata: dict,
-    location: Location = None,
+    value_source_resolver: ValueSourceResolver,
     disable_validation: bool = False,
     question_title: str = None,
 ) -> FieldHandler:
     return FIELD_HANDLER_MAPPINGS[answer["type"]](
         answer,
-        schema=schema,
-        answer_store=answer_store,
-        list_store=list_store,
-        metadata=metadata,
-        location=location,
+        value_source_resolver,
         disable_validation=disable_validation,
         question_title=question_title,
     )

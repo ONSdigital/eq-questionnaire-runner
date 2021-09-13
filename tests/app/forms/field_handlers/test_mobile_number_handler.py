@@ -1,11 +1,9 @@
 from wtforms import Form, StringField
 
-from app.data_models.answer_store import AnswerStore
-from app.data_models.list_store import ListStore
 from app.forms.field_handlers.mobile_number_handler import MobileNumberHandler
 
 
-def test_phone_number_handler(mock_schema):
+def test_phone_number_handler(value_source_resolver):
     answer_schema = {
         "id": "phone-number-answer",
         "label": "Phone Number",
@@ -15,10 +13,7 @@ def test_phone_number_handler(mock_schema):
     }
     mobile_number_handler = MobileNumberHandler(
         answer_schema,
-        mock_schema,
-        AnswerStore(),
-        ListStore(),
-        {},
+        value_source_resolver,
         disable_validation=False,
     )
 

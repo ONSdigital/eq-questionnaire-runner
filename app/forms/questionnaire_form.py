@@ -10,6 +10,7 @@ from wtforms import validators
 
 from app.forms.field_handlers import DateHandler, get_field_handler
 from app.forms.validators import DateRangeCheck, MutuallyExclusiveCheck, SumCheck
+from app.questionnaire.value_source_resolver import ValueSourceResolver
 
 logger = logging.getLogger(__name__)
 
@@ -233,13 +234,20 @@ class QuestionnaireForm(FlaskForm):
         return True
 
     def _get_period_range_for_single_date(self, date_from, date_to):
-        handler = DateHandler(
-            date_from,
-            self.schema,
-            self.answer_store,
-            self.list_store,
-            self.metadata,
+
+        list_item_id = self.location.list_item_id if self.location else None
+        value_source_resolver = ValueSourceResolver(
+            answer_store=self.answer_store,
+            list_store=self.list_store,
+            metadata=self.metadata,
+            schema=self.schema,
             location=self.location,
+            list_item_id=list_item_id,
+            escape_answer_values=False,
+        )
+
+        handler = DateHandler(
+            date_from, value_source_resolver, self.schema.error_messages
         )
         from_min_period_date = handler.get_date_value("minimum")
         from_max_period_date = handler.get_date_value("maximum")
@@ -344,6 +352,17 @@ def _option_value_in_data(answer, option, data):
 def get_answer_fields(
     question, data, schema, answer_store, list_store, metadata, location
 ):
+    list_item_id = location.list_item_id if location else None
+    value_source_resolver = ValueSourceResolver(
+        answer_store=answer_store,
+        list_store=list_store,
+        metadata=metadata,
+        schema=schema,
+        location=location,
+        list_item_id=list_item_id,
+        escape_answer_values=False,
+    )
+
     answer_fields = {}
     question_title = question.get("title")
     for answer in question.get("answers", []):
@@ -354,21 +373,13 @@ def get_answer_fields(
 
                 answer_fields[option["detail_answer"]["id"]] = get_field_handler(
                     detail_answer,
-                    schema,
-                    answer_store,
-                    list_store,
-                    metadata,
-                    location,
+                    value_source_resolver,
                     disable_validation=disable_validation,
                     question_title=question_title,
                 ).get_field()
         answer_fields[answer["id"]] = get_field_handler(
             answer,
-            schema,
-            answer_store,
-            list_store,
-            metadata,
-            location,
+            value_source_resolver,
             question_title=question_title,
         ).get_field()
 

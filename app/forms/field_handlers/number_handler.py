@@ -3,8 +3,6 @@ from typing import Union
 
 from wtforms import DecimalField, IntegerField
 
-from app.data_models.answer_store import AnswerStore
-from app.data_models.list_store import ListStore
 from app.forms.field_handlers.field_handler import FieldHandler
 from app.forms.fields import DecimalFieldWithSeparator, IntegerFieldWithSeparator
 from app.forms.validators import (
@@ -13,9 +11,9 @@ from app.forms.validators import (
     NumberRange,
     ResponseRequired,
 )
-from app.questionnaire import Location, QuestionnaireSchema
 from app.questionnaire.value_source_resolver import (
     ValueSourceEscapedTypes,
+    ValueSourceResolver,
     ValueSourceTypes,
 )
 from app.settings import MAX_NUMBER
@@ -31,21 +29,13 @@ class NumberHandler(FieldHandler):
     def __init__(
         self,
         answer_schema: dict,
-        schema: QuestionnaireSchema,
-        answer_store: AnswerStore,
-        list_store: ListStore,
-        metadata: dict,
-        location: Location = None,
+        value_source_resolver: ValueSourceResolver,
         disable_validation: bool = False,
         question_title: str = None,
     ):
         super().__init__(
             answer_schema,
-            schema,
-            answer_store,
-            list_store,
-            metadata,
-            location,
+            value_source_resolver,
             disable_validation,
             question_title,
         )
@@ -95,7 +85,7 @@ class NumberHandler(FieldHandler):
     def _get_number_field_validators(
         self,
     ) -> list[Union[NumberCheck, NumberRange, DecimalPlaces]]:
-        answer_errors = self.error_messages.copy()
+        answer_errors = self.value_source_resolver.schema.error_messages.copy()
 
         for error_key in self.validation_messages.keys():
             answer_errors[error_key] = self.get_validation_message(error_key)

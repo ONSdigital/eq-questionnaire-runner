@@ -1,12 +1,10 @@
 from wtforms import Form
 
-from app.data_models.answer_store import AnswerStore
-from app.data_models.list_store import ListStore
 from app.forms.field_handlers import TextAreaHandler
 from app.forms.fields import MaxTextAreaField
 
 
-def test_get_field(mock_schema):
+def test_get_field(value_source_resolver):
     textarea_json = {
         "guidance": "",
         "id": "answer",
@@ -21,9 +19,7 @@ def test_get_field(mock_schema):
         },
     }
 
-    text_area_handler = TextAreaHandler(
-        textarea_json, mock_schema, AnswerStore(), ListStore(), {}
-    )
+    text_area_handler = TextAreaHandler(textarea_json, value_source_resolver)
 
     class TestForm(Form):
         test_field = text_area_handler.get_field()
@@ -35,23 +31,18 @@ def test_get_field(mock_schema):
     assert form.test_field.description == textarea_json["guidance"]
 
 
-def test_get_length_validator(mock_schema):
-    mock_schema.error_messages = {
+def test_get_length_validator(value_source_resolver):
+    error_messages = {
         "MAX_LENGTH_EXCEEDED": "This is the default max length of %(max)d message"
     }
-    text_area_handler = TextAreaHandler(
-        {},
-        mock_schema,
-        ListStore(),
-        AnswerStore(),
-        {},
-    )
+    value_source_resolver.schema.error_messages = error_messages
+    text_area_handler = TextAreaHandler({}, value_source_resolver)
     validator = text_area_handler.get_length_validator()
 
     assert validator.message == "This is the default max length of %(max)d message"
 
 
-def test_get_length_validator_with_message_override(mock_schema):
+def test_get_length_validator_with_message_override(value_source_resolver):
     answer = {
         "validation": {
             "messages": {
@@ -59,34 +50,26 @@ def test_get_length_validator_with_message_override(mock_schema):
             }
         }
     }
-    mock_schema.error_messages = {
+    value_source_resolver.error_messages = {
         "MAX_LENGTH_EXCEEDED": "This is the default max length message"
     }
-    text_area_handler = TextAreaHandler(
-        answer,
-        mock_schema,
-        AnswerStore(),
-        ListStore(),
-        {},
-    )
+    text_area_handler = TextAreaHandler(answer, value_source_resolver)
 
     validator = text_area_handler.get_length_validator()
 
     assert validator.message == "A message with characters %(max)d placeholder"
 
 
-def test_get_length_validator_with_max_length_override(mock_schema):
+def test_get_length_validator_with_max_length_override(value_source_resolver):
     answer = {"max_length": 30}
-    mock_schema.error_messages = {"MAX_LENGTH_EXCEEDED": "%(max)d characters"}
-    text_area_handler = TextAreaHandler(
-        answer, mock_schema, AnswerStore(), ListStore(), {}
-    )
+    value_source_resolver.error_messages = {"MAX_LENGTH_EXCEEDED": "%(max)d characters"}
+    text_area_handler = TextAreaHandler(answer, value_source_resolver)
     validator = text_area_handler.get_length_validator()
 
     assert validator.max == 30
 
 
-def test_get_text_area_rows_with_default(mock_schema):
+def test_get_text_area_rows_with_default(value_source_resolver):
     answer = {
         "id": "answer",
         "label": "Enter your comments",
@@ -95,7 +78,7 @@ def test_get_text_area_rows_with_default(mock_schema):
     }
 
     text_area_handler = TextAreaHandler(
-        answer, mock_schema, AnswerStore(), ListStore(), {}, disable_validation=True
+        answer, value_source_resolver, disable_validation=True
     )
 
     class TestForm(Form):
@@ -106,7 +89,7 @@ def test_get_text_area_rows_with_default(mock_schema):
     assert form.test_field.rows == 8
 
 
-def test_get_text_area_rows(mock_schema):
+def test_get_text_area_rows(value_source_resolver):
     answer = {
         "id": "answer",
         "rows": 3,
@@ -116,7 +99,7 @@ def test_get_text_area_rows(mock_schema):
     }
 
     text_area_handler = TextAreaHandler(
-        answer, mock_schema, AnswerStore(), ListStore(), {}, disable_validation=True
+        answer, value_source_resolver, disable_validation=True
     )
 
     class TestForm(Form):
