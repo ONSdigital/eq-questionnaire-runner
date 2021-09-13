@@ -247,7 +247,7 @@ class QuestionnaireForm(FlaskForm):
         )
 
         handler = DateHandler(
-            date_from, value_source_resolver, self.schema.error_messages
+            date_from, value_source_resolver
         )
         from_min_period_date = handler.get_date_value("minimum")
         from_max_period_date = handler.get_date_value("maximum")
