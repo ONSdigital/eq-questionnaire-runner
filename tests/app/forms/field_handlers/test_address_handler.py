@@ -2,11 +2,14 @@ from werkzeug.datastructures import MultiDict
 from wtforms import Form, FormField
 from wtforms.validators import InputRequired
 
+from app.forms import error_messages
 from app.forms.field_handlers import AddressHandler
 
 
-def get_test_form_class(answer_schema, value_source_resolver):
-    address_handler = AddressHandler(answer_schema, value_source_resolver)
+def get_test_form_class(answer_schema, value_source_resolver, messages=None):
+    address_handler = AddressHandler(
+        answer_schema, value_source_resolver, error_messages=messages
+    )
 
     class TestForm(Form):
         test_field = address_handler.get_field()
@@ -31,7 +34,9 @@ def test_address_fields(value_source_resolver):
 
 def test_address_mandatory_line1_validator(value_source_resolver):
     answer_json = {"id": "address", "mandatory": True, "type": "Address"}
-    address_handler = AddressHandler(answer_json, value_source_resolver)
+    address_handler = AddressHandler(
+        answer_json, value_source_resolver, error_messages=error_messages
+    )
 
     validator = address_handler.validators
 
@@ -52,7 +57,9 @@ def test_no_validation_when_address_not_mandatory(value_source_resolver):
 def test_mandatory_validation_when_address_line_1_missing(value_source_resolver):
     answer_json = {"id": "address", "mandatory": True, "type": "Address"}
 
-    test_form_class = get_test_form_class(answer_json, value_source_resolver)
+    test_form_class = get_test_form_class(
+        answer_json, value_source_resolver, messages=error_messages
+    )
     form = test_form_class(MultiDict({"test_field": "1"}), value_source_resolver)
     form.validate()
 

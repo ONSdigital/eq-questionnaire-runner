@@ -10,8 +10,10 @@ from app.forms.fields import DecimalFieldWithSeparator, IntegerFieldWithSeparato
 from app.settings import MAX_NUMBER
 
 
-def get_test_form_class(answer_schema, value_source_resolver):
-    handler = NumberHandler(answer_schema, value_source_resolver)
+def get_test_form_class(answer_schema, value_source_resolver, messages=None):
+    handler = NumberHandler(
+        answer_schema, value_source_resolver, error_messages=messages
+    )
 
     class TestForm(Form):
         test_field = handler.get_field()
@@ -197,9 +199,9 @@ def test_zero_max(app, value_source_resolver):
         "type": "Currency",
     }
     error_message = error_messages["NUMBER_TOO_LARGE"] % {"max": maximum}
-    value_source_resolver.schema.error_message = error_message
-
-    test_form_class = get_test_form_class(answer_schema, value_source_resolver)
+    test_form_class = get_test_form_class(
+        answer_schema, value_source_resolver, messages=error_messages
+    )
     form = test_form_class(MultiDict({"test_field": "1"}))
     form.validate()
 
@@ -217,9 +219,9 @@ def test_zero_min(app, value_source_resolver):
         "type": "Currency",
     }
     error_message = error_messages["NUMBER_TOO_SMALL"] % {"min": minimum}
-    value_source_resolver.schema.error_message = error_message
-
-    test_form_class = get_test_form_class(answer_schema, value_source_resolver)
+    test_form_class = get_test_form_class(
+        answer_schema, value_source_resolver, error_messages
+    )
     form = test_form_class(MultiDict({"test_field": "-1"}))
     form.validate()
 

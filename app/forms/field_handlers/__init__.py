@@ -1,3 +1,5 @@
+from werkzeug.datastructures import ImmutableDict
+
 from app.questionnaire.value_source_resolver import ValueSourceResolver
 
 from .address_handler import AddressHandler
@@ -34,12 +36,14 @@ FIELD_HANDLER_MAPPINGS = {
 def get_field_handler(
     answer: dict,
     value_source_resolver: ValueSourceResolver,
+    error_messages: ImmutableDict,
     disable_validation: bool = False,
     question_title: str = None,
 ) -> FieldHandler:
     return FIELD_HANDLER_MAPPINGS[answer["type"]](
         answer,
         value_source_resolver,
+        error_messages=error_messages,
         disable_validation=disable_validation,
         question_title=question_title,
     )

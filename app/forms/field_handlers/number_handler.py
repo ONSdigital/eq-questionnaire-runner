@@ -30,12 +30,14 @@ class NumberHandler(FieldHandler):
         self,
         answer_schema: dict,
         value_source_resolver: ValueSourceResolver,
+        error_messages: dict = None,
         disable_validation: bool = False,
         question_title: str = None,
     ):
         super().__init__(
             answer_schema,
             value_source_resolver,
+            error_messages,
             disable_validation,
             question_title,
         )

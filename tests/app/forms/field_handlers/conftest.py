@@ -2,7 +2,6 @@ import pytest
 
 from app.data_models.answer_store import AnswerStore
 from app.data_models.list_store import ListStore
-from app.forms import error_messages
 from app.questionnaire import QuestionnaireSchema
 from app.questionnaire.value_source_resolver import ValueSourceResolver
 
@@ -17,7 +16,6 @@ def value_source_resolver():
             }
         }
     )
-    schema.error_message = error_messages
     value_source_resolver = ValueSourceResolver(
         answer_store=AnswerStore(),
         list_store=ListStore(),

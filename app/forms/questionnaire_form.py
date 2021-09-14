@@ -372,12 +372,14 @@ def get_answer_fields(
                 answer_fields[option["detail_answer"]["id"]] = get_field_handler(
                     detail_answer,
                     value_source_resolver,
+                    schema.error_messages,
                     disable_validation=disable_validation,
                     question_title=question_title,
                 ).get_field()
         answer_fields[answer["id"]] = get_field_handler(
             answer,
             value_source_resolver,
+            schema.error_messages,
             question_title=question_title,
         ).get_field()
 

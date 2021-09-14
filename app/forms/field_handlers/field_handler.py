@@ -19,11 +19,12 @@ class FieldHandler(ABC):
         self,
         answer_schema: dict,
         value_source_resolver: ValueSourceResolver,
+        error_messages: dict = None,
         disable_validation: bool = False,
         question_title: str = None,
     ):
         self.value_source_resolver = value_source_resolver
-        self.error_messages = self.value_source_resolver.schema.error_messages or {}
+        self.error_messages = error_messages or {}
         self.answer_schema = answer_schema
         self.disable_validation = disable_validation
         self.question_title = str(question_title)

@@ -32,7 +32,6 @@ class TestFieldFactory(AppContextTestCase):
             "case_id": "1234567890",
             "case_ref": "1000000000000001",
         }
-        schema.error_message = error_messages
 
         value_source_resolver = ValueSourceResolver(
             answer_store=AnswerStore(),
@@ -48,4 +47,6 @@ class TestFieldFactory(AppContextTestCase):
         invalid_field_type = "Football"
         # When / Then
         with self.assertRaises(KeyError):
-            get_field_handler({"type": invalid_field_type}, value_source_resolver)
+            get_field_handler(
+                {"type": invalid_field_type}, value_source_resolver, error_messages
+            )

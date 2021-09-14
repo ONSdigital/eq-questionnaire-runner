@@ -35,8 +35,7 @@ def test_get_length_validator(value_source_resolver):
     error_messages = {
         "MAX_LENGTH_EXCEEDED": "This is the default max length of %(max)d message"
     }
-    value_source_resolver.schema.error_messages = error_messages
-    text_area_handler = TextAreaHandler({}, value_source_resolver)
+    text_area_handler = TextAreaHandler({}, value_source_resolver, error_messages)
     validator = text_area_handler.get_length_validator()
 
     assert validator.message == "This is the default max length of %(max)d message"
@@ -50,10 +49,8 @@ def test_get_length_validator_with_message_override(value_source_resolver):
             }
         }
     }
-    value_source_resolver.error_messages = {
-        "MAX_LENGTH_EXCEEDED": "This is the default max length message"
-    }
-    text_area_handler = TextAreaHandler(answer, value_source_resolver)
+    error_messages = {"MAX_LENGTH_EXCEEDED": "This is the default max length message"}
+    text_area_handler = TextAreaHandler(answer, value_source_resolver, error_messages)
 
     validator = text_area_handler.get_length_validator()
 
@@ -62,8 +59,8 @@ def test_get_length_validator_with_message_override(value_source_resolver):
 
 def test_get_length_validator_with_max_length_override(value_source_resolver):
     answer = {"max_length": 30}
-    value_source_resolver.error_messages = {"MAX_LENGTH_EXCEEDED": "%(max)d characters"}
-    text_area_handler = TextAreaHandler(answer, value_source_resolver)
+    error_messages = {"MAX_LENGTH_EXCEEDED": "%(max)d characters"}
+    text_area_handler = TextAreaHandler(answer, value_source_resolver, error_messages)
     validator = text_area_handler.get_length_validator()
 
     assert validator.max == 30
