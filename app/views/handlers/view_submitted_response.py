@@ -1,7 +1,6 @@
-from datetime import datetime, timedelta, timezone
+from datetime import datetime
 from typing import Mapping, Union
 
-from flask import current_app
 from flask_babel import lazy_gettext
 
 from app.data_models import QuestionnaireStore
@@ -13,10 +12,6 @@ from app.views.contexts.view_submitted_response_context import (
 
 
 class ViewSubmittedResponseNotEnabled(Exception):
-    pass
-
-
-class ViewSubmittedResponseExpired(Exception):
     pass
 
 
@@ -35,13 +30,6 @@ class ViewSubmittedResponse:
 
         if not submission_schema.get("view_response"):
             raise ViewSubmittedResponseNotEnabled
-
-        expiration_time = self._questionnaire_store.submitted_at + timedelta(
-            seconds=current_app.config["VIEW_SUBMITTED_RESPONSE_EXPIRATION_IN_SECONDS"]
-        )
-
-        if datetime.now(timezone.utc) >= expiration_time:
-            raise ViewSubmittedResponseExpired
 
     def get_context(self) -> dict[str, Union[str, datetime, dict]]:
         return build_view_submitted_response_context(

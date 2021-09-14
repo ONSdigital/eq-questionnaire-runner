@@ -44,7 +44,6 @@ from app.views.handlers.submit_questionnaire import SubmitQuestionnaireHandler
 from app.views.handlers.thank_you import ThankYou
 from app.views.handlers.view_submitted_response import (
     ViewSubmittedResponse,
-    ViewSubmittedResponseExpired,
     ViewSubmittedResponseNotEnabled,
 )
 
@@ -385,7 +384,7 @@ def get_view_submitted_response(schema, questionnaire_store):
             flask_babel.get_locale().language,
         )
 
-    except (ViewSubmittedResponseNotEnabled, ViewSubmittedResponseExpired):
+    except (ViewSubmittedResponseNotEnabled):
         raise NotFound
 
     return render_template(
