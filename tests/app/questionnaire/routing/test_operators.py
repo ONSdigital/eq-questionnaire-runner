@@ -1,4 +1,4 @@
-from datetime import datetime, timedelta, timezone
+from datetime import datetime, timezone
 
 import pytest
 from dateutil.relativedelta import relativedelta
@@ -330,3 +330,15 @@ def test_nonetype_operands_for_comparison_operators(operator_name, operands):
 def test_nonetype_operands_for_array_operators(operator_name, operands):
     operator = Operator(operator_name)
     assert operator.evaluate(operands) is False
+
+
+@pytest.mark.parametrize(
+    "operands, expected_result",
+    [
+        ([("tuple element 1", "tuple element 2")], 2),
+        ([["list element 1", "list element 2"]], 2),
+    ],
+)
+def test_operation_count(operands, expected_result):
+    operator = Operator(Operator.COUNT)
+    assert operator.evaluate(operands) is expected_result
