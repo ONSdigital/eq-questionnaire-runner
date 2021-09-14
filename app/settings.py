@@ -17,7 +17,6 @@ def parse_mode(string):
     return string.upper() != "FALSE"
 
 
-# pylint: disable=W1514
 def read_file(file_name):
     if file_name and os.path.isfile(file_name):
         logger.debug("reading from file", filename=file_name)
@@ -140,7 +139,7 @@ ADDRESS_LOOKUP_API_AUTH_TOKEN_LEEWAY_IN_SECONDS = int(
 )
 
 VIEW_SUBMITTED_RESPONSE_EXPIRATION_IN_SECONDS = int(
-    os.getenv("VIEW_SUBMITTED_RESPONSE_EXPIRATION_IN_SECONDS", "10")
+    os.getenv("VIEW_SUBMITTED_RESPONSE_EXPIRATION_IN_SECONDS", "2700")
 )
 
 SURVEY_TYPE = os.getenv("SURVEY_TYPE", "business")
