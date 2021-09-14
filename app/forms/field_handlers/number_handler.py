@@ -66,7 +66,7 @@ class NumberHandler(FieldHandler):
 
     def get_field_references(
         self,
-    ) -> dict[str, Union[bool, Union[ValueSourceEscapedTypes, ValueSourceTypes]]]:
+    ) -> dict[str, Union[bool, ValueSourceEscapedTypes, ValueSourceTypes]]:
         schema_minimum = self.answer_schema.get("minimum", {})
         schema_maximum = self.answer_schema.get("maximum", {})
 
@@ -85,7 +85,7 @@ class NumberHandler(FieldHandler):
     def _get_number_field_validators(
         self,
     ) -> list[Union[NumberCheck, NumberRange, DecimalPlaces]]:
-        answer_errors = self.value_source_resolver.schema.error_messages.copy()
+        answer_errors = self.error_messages.copy()
 
         for error_key in self.validation_messages.keys():
             answer_errors[error_key] = self.get_validation_message(error_key)
