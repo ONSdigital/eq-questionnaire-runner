@@ -384,7 +384,7 @@ def get_view_submitted_response(schema, questionnaire_store):
             flask_babel.get_locale().language,
         )
 
-    except (ViewSubmittedResponseNotEnabled):
+    except ViewSubmittedResponseNotEnabled:
         raise NotFound
 
     return render_template(
