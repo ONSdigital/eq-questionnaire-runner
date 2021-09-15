@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2021-09-06 08:17+0100\n"
+"POT-Creation-Date: 2021-09-15 13:40+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -470,15 +470,15 @@ msgstr ""
 msgid "Your answers have been submitted for <span>{company_name}</span>."
 msgstr ""
 
-#: app/views/contexts/view_submitted_response_context.py:36
+#: app/views/contexts/view_submitted_response_context.py:37
 msgid "Answers submitted."
 msgstr ""
 
-#: app/views/contexts/view_submitted_response_context.py:38
+#: app/views/contexts/view_submitted_response_context.py:39
 msgid "Answers submitted for <span>{ru_name}</span> ({trad_as})."
 msgstr ""
 
-#: app/views/contexts/view_submitted_response_context.py:42
+#: app/views/contexts/view_submitted_response_context.py:43
 msgid "Answers submitted for <span>{ru_name}</span>."
 msgstr ""
 
@@ -957,7 +957,15 @@ msgstr ""
 msgid "For security, you can no longer view your answers"
 msgstr ""
 
-#: templates/view-submitted-response.html:42
+#: templates/view-submitted-response.html:35
+msgid "Print answers"
+msgstr ""
+
+#: templates/view-submitted-response.html:46
+msgid "Download pdf"
+msgstr ""
+
+#: templates/view-submitted-response.html:64
 msgid "For security, you can no longer view or get a copy of your answers"
 msgstr ""
 
