@@ -23,9 +23,9 @@ class FieldHandler(ABC):
         disable_validation: bool = False,
         question_title: str = None,
     ):
+        self.answer_schema = answer_schema
         self.value_source_resolver = value_source_resolver
         self.error_messages = error_messages or {}
-        self.answer_schema = answer_schema
         self.disable_validation = disable_validation
         self.question_title = str(question_title)
 

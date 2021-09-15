@@ -149,11 +149,15 @@ def test_get_referenced_offset_value_with_list_item_id(app, value_source_resolve
     value_source_resolver.answer_store = answer_store
     value_source_resolver.location = location
     value_source_resolver.list_item_id = list_item_id
-    answer = {"maximum": {"value": {"identifier": "date", "source": "answers"}}}
+    answer = {
+        "maximum": {
+            "value": {"identifier": "date", "source": "answers"},
+            "offset_by": {"months": 1},
+        }
+    }
 
     handler = DateHandler(answer, value_source_resolver)
     maximum_date = handler.get_date_value("maximum")
-    maximum_date = handler.transform_date_by_offset(maximum_date, {"months": 1})
 
     assert maximum_date == convert_to_datetime("2018-04-20")
 
