@@ -5,6 +5,7 @@ from mock import patch
 from werkzeug.datastructures import MultiDict
 
 from app.data_models.answer_store import Answer, AnswerStore
+from app.data_models.list_store import ListStore
 from app.forms import error_messages
 from app.forms.questionnaire_form import generate_form
 from app.forms.validators import (
@@ -35,7 +36,9 @@ class TestQuestionnaireForm(
 
             question_schema = schema.get_block("name-block").get("question")
 
-            form = generate_form(schema, question_schema, AnswerStore(), metadata=None)
+            form = generate_form(
+                schema, question_schema, AnswerStore(), ListStore(), metadata=None
+            )
 
             for answer_id in schema.get_answer_ids_for_block("name-block"):
                 self.assertTrue(hasattr(form, answer_id))
@@ -66,6 +69,7 @@ class TestQuestionnaireForm(
                 schema,
                 question_schema,
                 AnswerStore(),
+                ListStore(),
                 metadata=None,
                 form_data=form_data,
             )
@@ -98,6 +102,7 @@ class TestQuestionnaireForm(
                 schema,
                 question_schema,
                 AnswerStore(),
+                ListStore(),
                 metadata=None,
                 form_data=form_data,
             )
@@ -136,6 +141,7 @@ class TestQuestionnaireForm(
                 schema,
                 question_schema,
                 AnswerStore(),
+                ListStore(),
                 metadata=None,
                 form_data=form_data,
             )
@@ -174,6 +180,7 @@ class TestQuestionnaireForm(
                 schema,
                 question_schema,
                 AnswerStore(),
+                ListStore(),
                 metadata=None,
                 form_data=form_data,
             )
@@ -213,6 +220,7 @@ class TestQuestionnaireForm(
                 schema,
                 question_schema,
                 AnswerStore(),
+                ListStore(),
                 metadata=None,
                 form_data=form_data,
             )
@@ -251,6 +259,7 @@ class TestQuestionnaireForm(
                 schema,
                 question_schema,
                 AnswerStore(),
+                ListStore(),
                 metadata=None,
                 form_data=form_data,
             )
@@ -286,7 +295,12 @@ class TestQuestionnaireForm(
                 "date-range-to": "2017-03-14",
             }
             form = generate_form(
-                schema, question_schema, AnswerStore(), metadata, form_data=form_data
+                schema,
+                question_schema,
+                AnswerStore(),
+                ListStore(),
+                metadata,
+                form_data=form_data,
             )
 
             form.validate()
@@ -331,7 +345,12 @@ class TestQuestionnaireForm(
                 "date-range-to": "2017-01-10",
             }
             form = generate_form(
-                schema, question_schema, AnswerStore(), metadata, form_data=form_data
+                schema,
+                question_schema,
+                AnswerStore(),
+                ListStore(),
+                metadata,
+                form_data=form_data,
             )
 
             form.validate()
@@ -369,7 +388,12 @@ class TestQuestionnaireForm(
                 "date-range-to": "2017-02-21",
             }
             form = generate_form(
-                schema, question_schema, AnswerStore(), metadata, form_data=form_data
+                schema,
+                question_schema,
+                AnswerStore(),
+                ListStore(),
+                metadata,
+                form_data=form_data,
             )
 
             form.validate()
@@ -405,7 +429,12 @@ class TestQuestionnaireForm(
                 "date-range-to": "2017-06",
             }
             form = generate_form(
-                schema, question_schema, AnswerStore(), metadata, form_data=form_data
+                schema,
+                question_schema,
+                AnswerStore(),
+                ListStore(),
+                metadata,
+                form_data=form_data,
             )
 
             form.validate()
@@ -448,7 +477,12 @@ class TestQuestionnaireForm(
                 "date-range-to": "2017-02",
             }
             form = generate_form(
-                schema, question_schema, AnswerStore(), metadata, form_data=form_data
+                schema,
+                question_schema,
+                AnswerStore(),
+                ListStore(),
+                metadata,
+                form_data=form_data,
             )
 
             form.validate()
@@ -484,7 +518,12 @@ class TestQuestionnaireForm(
                 "date-range-to": "2017-05",
             }
             form = generate_form(
-                schema, question_schema, AnswerStore(), metadata, form_data=form_data
+                schema,
+                question_schema,
+                AnswerStore(),
+                ListStore(),
+                metadata,
+                form_data=form_data,
             )
 
             form.validate()
@@ -515,7 +554,12 @@ class TestQuestionnaireForm(
                 "date-range-to": "2021",
             }
             form = generate_form(
-                schema, question_schema, AnswerStore(), metadata, form_data=form_data
+                schema,
+                question_schema,
+                AnswerStore(),
+                ListStore(),
+                metadata,
+                form_data=form_data,
             )
 
             form.validate()
@@ -551,7 +595,12 @@ class TestQuestionnaireForm(
                 "date-range-to": "2017",
             }
             form = generate_form(
-                schema, question_schema, AnswerStore(), metadata, form_data=form_data
+                schema,
+                question_schema,
+                AnswerStore(),
+                ListStore(),
+                metadata,
+                form_data=form_data,
             )
 
             form.validate()
@@ -582,7 +631,12 @@ class TestQuestionnaireForm(
                 "date-range-to": "2020",
             }
             form = generate_form(
-                schema, question_schema, AnswerStore(), metadata, form_data=form_data
+                schema,
+                question_schema,
+                AnswerStore(),
+                ListStore(),
+                metadata,
+                form_data=form_data,
             )
 
             form.validate()
@@ -632,6 +686,7 @@ class TestQuestionnaireForm(
                 schema,
                 question_schema,
                 AnswerStore(),
+                ListStore(),
                 metadata=None,
                 form_data=form_data,
             )
@@ -686,6 +741,7 @@ class TestQuestionnaireForm(
                 schema,
                 question_schema,
                 AnswerStore(),
+                ListStore(),
                 metadata=None,
                 form_data=form_data,
             )
@@ -742,6 +798,7 @@ class TestQuestionnaireForm(
                 schema,
                 question_schema,
                 AnswerStore(),
+                ListStore(),
                 metadata=None,
                 form_data=form_data,
             )
@@ -759,9 +816,9 @@ class TestQuestionnaireForm(
 
     def test_invalid_date_range_and_single_date_periods(self):
         with self.app_request_context():
-            store = AnswerStore()
+            answer_store = AnswerStore()
             test_answer_id = Answer(answer_id="date", value="2017-03-20")
-            store.add_or_update(test_answer_id)
+            answer_store.add_or_update(test_answer_id)
 
             schema = load_schema_from_name("test_date_validation_range")
 
@@ -803,7 +860,12 @@ class TestQuestionnaireForm(
             metadata = {"schema_name": "test_date_validation_range"}
 
             form = generate_form(
-                schema, question_schema, store, metadata=metadata, form_data=form_data
+                schema,
+                question_schema,
+                answer_store,
+                ListStore(),
+                metadata=metadata,
+                form_data=form_data,
             )
 
             with self.assertRaises(Exception) as ite:
@@ -843,7 +905,12 @@ class TestQuestionnaireForm(
             form_data = MultiDict({"breakdown-1": "3", "breakdown-2": "5"})
 
             form = generate_form(
-                schema, question_schema, store, metadata=None, form_data=form_data
+                schema,
+                question_schema,
+                store,
+                ListStore(),
+                metadata=None,
+                form_data=form_data,
             )
 
             with self.assertRaises(Exception) as ite:
@@ -877,7 +944,12 @@ class TestQuestionnaireForm(
             form_data = MultiDict({"breakdown-1": "3", "breakdown-2": "5"})
 
             form = generate_form(
-                schema, question_schema, store, metadata=None, form_data=form_data
+                schema,
+                question_schema,
+                store,
+                ListStore(),
+                metadata=None,
+                form_data=form_data,
             )
 
             with patch(
@@ -918,7 +990,12 @@ class TestQuestionnaireForm(
                 "breakdown-4": None,
             }
             form = generate_form(
-                schema, question_schema, store, metadata=None, form_data=form_data
+                schema,
+                question_schema,
+                store,
+                ListStore(),
+                metadata=None,
+                form_data=form_data,
             )
 
             form.validate()
@@ -958,7 +1035,12 @@ class TestQuestionnaireForm(
                 "breakdown-4": Decimal("1"),
             }
             form = generate_form(
-                schema, question_schema, store, metadata=None, form_data=form_data
+                schema,
+                question_schema,
+                store,
+                ListStore(),
+                metadata=None,
+                form_data=form_data,
             )
 
             form.validate()
@@ -993,7 +1075,12 @@ class TestQuestionnaireForm(
                 "breakdown-4": None,
             }
             form = generate_form(
-                schema, question_schema, store, metadata=None, form_data=form_data
+                schema,
+                question_schema,
+                store,
+                ListStore(),
+                metadata=None,
+                form_data=form_data,
             )
 
             form.validate()
@@ -1006,7 +1093,7 @@ class TestQuestionnaireForm(
 
     def test_multi_calculation(self):
         store = AnswerStore()
-
+        list_store = ListStore()
         answer_total = Answer(answer_id="total-answer", value=10)
 
         store.add_or_update(answer_total)
@@ -1027,7 +1114,12 @@ class TestQuestionnaireForm(
 
             # With no answers question validation should pass
             form = generate_form(
-                schema, question_schema, store, metadata=None, form_data=form_data
+                schema,
+                question_schema,
+                store,
+                list_store,
+                metadata=None,
+                form_data=form_data,
             )
             form.validate()
 
@@ -1037,7 +1129,12 @@ class TestQuestionnaireForm(
             form_data["breakdown-1"] = "10"
 
             form = generate_form(
-                schema, question_schema, store, metadata=None, form_data=form_data
+                schema,
+                question_schema,
+                store,
+                list_store,
+                metadata=None,
+                form_data=form_data,
             )
             form.validate()
 
@@ -1047,7 +1144,12 @@ class TestQuestionnaireForm(
             form_data["breakdown-1"] = "1"
 
             form = generate_form(
-                schema, question_schema, store, metadata=None, form_data=form_data
+                schema,
+                question_schema,
+                store,
+                list_store,
+                metadata=None,
+                form_data=form_data,
             )
             form.validate()
 
@@ -1079,7 +1181,12 @@ class TestQuestionnaireForm(
                 "app.questionnaire.path_finder.evaluate_goto", return_value=False
             ):
                 form = generate_form(
-                    schema, question_schema, store, metadata={}, form_data=form_data
+                    schema,
+                    question_schema,
+                    store,
+                    ListStore(),
+                    metadata={},
+                    form_data=form_data,
                 )
 
             form.validate()
@@ -1091,7 +1198,9 @@ class TestQuestionnaireForm(
 
             question_schema = schema.get_block("set-min-max-block").get("question")
 
-            form = generate_form(schema, question_schema, AnswerStore(), metadata=None)
+            form = generate_form(
+                schema, question_schema, AnswerStore(), ListStore(), metadata=None
+            )
 
             form.validate()
             mapped_errors = form.map_errors()
@@ -1110,7 +1219,9 @@ class TestQuestionnaireForm(
 
             question_schema = schema.get_block("date-block").get("question")
 
-            form = generate_form(schema, question_schema, AnswerStore(), metadata=None)
+            form = generate_form(
+                schema, question_schema, AnswerStore(), ListStore(), metadata=None
+            )
 
             form.validate()
             mapped_errors = form.map_errors()
@@ -1142,6 +1253,7 @@ class TestQuestionnaireForm(
                 schema,
                 question_schema,
                 AnswerStore(),
+                ListStore(),
                 metadata=None,
                 form_data=MultiDict({"mandatory-checkbox-answer": "Your choice"}),
             )
@@ -1154,6 +1266,7 @@ class TestQuestionnaireForm(
                 schema,
                 question_schema,
                 AnswerStore(),
+                ListStore(),
                 metadata=None,
                 data={"mandatory-checkbox-answer": "Ham"},
             )
@@ -1173,6 +1286,7 @@ class TestQuestionnaireForm(
                 schema,
                 question_schema,
                 AnswerStore(),
+                ListStore(),
                 metadata=None,
                 form_data=MultiDict({"radio-mandatory-answer": "Other"}),
             )
@@ -1205,6 +1319,7 @@ class TestQuestionnaireForm(
                 schema,
                 question_schema,
                 AnswerStore(),
+                ListStore(),
                 metadata=None,
                 form_data=MultiDict({"set-minimum": "-1"}),
             )
@@ -1227,6 +1342,7 @@ class TestQuestionnaireForm(
                 schema,
                 question_schema,
                 AnswerStore(),
+                ListStore(),
                 metadata=None,
                 form_data=MultiDict(),
             )
@@ -1261,6 +1377,7 @@ class TestQuestionnaireForm(
                 schema,
                 rendered_schema,
                 answer_store,
+                ListStore(),
                 metadata=None,
                 form_data=MultiDict(),
             )
@@ -1293,6 +1410,7 @@ class TestQuestionnaireForm(
                 schema,
                 question_schema,
                 AnswerStore(),
+                ListStore(),
                 metadata=None,
                 form_data=form_data,
             )
@@ -1308,7 +1426,9 @@ class TestQuestionnaireForm(
             schema = load_schema_from_name("test_date_range")
             question_schema = schema.get_block("date-block").get("question")
 
-            form = generate_form(schema, question_schema, AnswerStore(), metadata=None)
+            form = generate_form(
+                schema, question_schema, AnswerStore(), ListStore(), metadata=None
+            )
 
             self.assertTrue(hasattr(form, "date-range-from-answer"))
             self.assertTrue(hasattr(form, "date-range-to-answer"))
@@ -1339,6 +1459,7 @@ class TestQuestionnaireForm(
                 schema,
                 question_schema,
                 AnswerStore(),
+                ListStore(),
                 metadata=None,
                 form_data=form_data,
             )
@@ -1374,6 +1495,7 @@ class TestQuestionnaireForm(
                 schema,
                 question_schema,
                 AnswerStore(),
+                ListStore(),
                 metadata=None,
                 form_data=form_data,
             )
@@ -1400,6 +1522,7 @@ class TestQuestionnaireForm(
                 schema,
                 question_schema,
                 AnswerStore(),
+                ListStore(),
                 metadata=None,
                 form_data=form_data,
             )
