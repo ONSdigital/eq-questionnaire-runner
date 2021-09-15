@@ -187,7 +187,8 @@ class IndividualResponseHandler:
         return generate_form(
             schema=self._schema,
             question_schema=self.rendered_block["question"],
-            answer_store=None,
+            answer_store=self._questionnaire_store.answer_store,
+            list_store=self._questionnaire_store.list_store,
             metadata=self._questionnaire_store.metadata,
             data=self._answers,
             form_data=self._form_data,
