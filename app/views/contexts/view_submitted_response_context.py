@@ -1,8 +1,8 @@
 from datetime import datetime
 from typing import Union
 
-from flask_babel import lazy_gettext
 from flask import url_for
+from flask_babel import lazy_gettext
 
 from app.data_models import QuestionnaireStore
 from app.globals import is_view_submitted_response_expired
@@ -57,6 +57,6 @@ def build_view_submitted_response_context(
         "metadata": metadata,
         "submitted_text": submitted_text,
         "summary": summary_context(),
-        "pdf_url": url_for("post_submission.download_pdf")
+        "pdf_url": url_for("post_submission.download_pdf"),
     }
     return context
