@@ -28,6 +28,6 @@ describe("Post submission exit", () => {
     $(CensusThankYouPage.exit()).click();
     browser.back();
     expect(browser.getUrl()).to.contain("submitted/thank-you");
-    expect($("body").getHTML()).to.contain("This page is no longer available");
+    expect($("body").getHTML()).to.contain("Your session has timed out due to inactivity");
   });
 });
