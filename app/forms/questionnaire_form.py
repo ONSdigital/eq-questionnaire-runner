@@ -28,8 +28,8 @@ class QuestionnaireForm(FlaskForm):
     ):
         self.schema = schema
         self.question = question_schema
-        self.list_store = list_store
         self.answer_store = answer_store
+        self.list_store = list_store
         self.metadata = metadata
         self.location = location
         self.question_errors = {}
