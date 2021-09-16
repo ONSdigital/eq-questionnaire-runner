@@ -7,7 +7,7 @@ from flask_babel import format_datetime
 from app.data_models import QuestionnaireStore
 from app.data_models.answer import Answer
 from app.data_models.answer_store import AnswerStore
-from app.globals import VIEW_SUBMITTED_RESPONSE_EXPIRATION_IN_SECONDS
+from app.settings import VIEW_SUBMITTED_RESPONSE_EXPIRATION_IN_SECONDS
 from app.utilities.schema import load_schema_from_name
 from app.views.contexts.view_submitted_response_context import (
     build_view_submitted_response_context,
@@ -97,6 +97,7 @@ def test_view_submitted_response_expired(
         )
 
         assert context["view_submitted_response"]["expired"] is True
+        assert "summary" not in context
 
 
 def fake_questionnaire_store():

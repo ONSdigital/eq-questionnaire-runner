@@ -29,6 +29,7 @@ class TestViewSubmissionResponse(IntegrationTestCase):
         self.assertInBody("John Smith")
         self.assertInBody("What is your address?")
         self.assertInBody("NP10 8XG")
+        self.assertIsNotNone(self.get_print_button())
 
     def test_not_enabled(self):
         # Given I launch and complete a questionnaire that does not have view-submitted-response enabled
@@ -51,5 +52,22 @@ class TestViewSubmissionResponse(IntegrationTestCase):
         # When I try to get the view-response page
         self.get("/submitted/view-response")
 
-        # Then I get shown a 404 error
-        self.assertStatusNotFound()
+        # Then the page is displayed correctly
+        self.assertEqualPageTitle(
+            "View Submitted Response - Test View Submitted Response"
+        )
+        self.assertInBody("Answers submitted for <span>Integration Testing</span>.")
+        self.assertInBody("Submitted on:")
+        self.assertInBody("Submission reference:")
+        self.assertInBody(
+            "For security, you can no longer view or get a copy of your answers"
+        )
+
+        self.assertNotInBody("What is your name?")
+        self.assertNotInBody("John Smith")
+        self.assertNotInBody("What is your address?")
+        self.assertNotInBody("NP10 8XG")
+        self.assertIsNone(self.get_print_button())
+
+    def get_print_button(self):
+        return self.getHtmlSoup().find("button", {"data-qa": "btn-print"})

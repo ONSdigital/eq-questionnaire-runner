@@ -12,11 +12,7 @@ from app.data_models.answer_store import AnswerStore
 from app.data_models.session_data import SessionData
 from app.data_models.session_store import SessionStore
 from app.questionnaire import QuestionnaireSchema
-from app.settings import (
-    EQ_SESSION_ID,
-    USER_IK,
-    VIEW_SUBMITTED_RESPONSE_EXPIRATION_IN_SECONDS,
-)
+from app.settings import EQ_SESSION_ID, USER_IK
 from app.storage.encrypted_questionnaire_storage import EncryptedQuestionnaireStorage
 
 logger = get_logger()
@@ -110,4 +106,6 @@ def get_answer_store(user: User) -> AnswerStore:
 def is_view_submitted_response_expired(submitted_at: datetime) -> bool:
     return (
         datetime.now(timezone.utc) - submitted_at
-    ).total_seconds() > VIEW_SUBMITTED_RESPONSE_EXPIRATION_IN_SECONDS
+    ).total_seconds() > current_app.config[
+        "VIEW_SUBMITTED_RESPONSE_EXPIRATION_IN_SECONDS"
+    ]
