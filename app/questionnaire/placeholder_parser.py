@@ -1,5 +1,4 @@
-from decimal import Decimal
-from typing import Any, Mapping, Optional, Sequence, Union
+from typing import Any, Mapping, Optional, Sequence
 
 from werkzeug.datastructures import ImmutableDict
 
@@ -30,11 +29,11 @@ class PlaceholderParser:
         location: Location = None,
     ):
 
-        self._schema = schema
         self._answer_store = answer_store
-        self._metadata = metadata
-        self._list_item_id = list_item_id
         self._list_store = list_store
+        self._metadata = metadata
+        self._schema = schema
+        self._list_item_id = list_item_id
         self._location = location
         self._transformer = PlaceholderTransforms(language)
         self._placeholder_map: dict[str, Any] = {}
@@ -98,7 +97,7 @@ class PlaceholderParser:
     def _resolve_value_source_list(
         self, value_source_list: list[dict]
     ) -> Optional[ValueSourceTypes]:
-        values: list[Union[None, str, int, Decimal]] = []
+        values: list[ValueSourceTypes] = []
         for value_source in value_source_list:
             value = self._value_source_resolver.resolve(value_source)
             if isinstance(value, list):
