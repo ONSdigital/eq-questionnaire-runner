@@ -161,11 +161,11 @@ class IndividualResponseHandler:
     def placeholder_renderer(self):
         return PlaceholderRenderer(
             language=self._language,
-            schema=self._schema,
             answer_store=self._questionnaire_store.answer_store,
-            metadata=self._questionnaire_store.metadata,
-            location=None,
             list_store=self._questionnaire_store.list_store,
+            metadata=self._questionnaire_store.metadata,
+            schema=self._schema,
+            location=None,
         )
 
     @cached_property

@@ -1,7 +1,12 @@
-from jsonpointer import resolve_pointer, set_pointer
+from typing import Any, Optional
 
+from jsonpointer import resolve_pointer, set_pointer
+from werkzeug.datastructures import ImmutableDict
+
+from app.data_models.answer import AnswerValueTypes
 from app.data_models.answer_store import AnswerStore
-from app.questionnaire import QuestionnaireSchema
+from app.data_models.list_store import ListStore
+from app.questionnaire import Location, QuestionnaireSchema
 from app.questionnaire.placeholder_parser import PlaceholderParser
 from app.questionnaire.plural_forms import get_plural_form_key
 from app.questionnaire.schema_utils import find_pointers_containing
@@ -15,44 +20,56 @@ class PlaceholderRenderer:
 
     def __init__(
         self,
-        language,
-        schema,
-        answer_store=None,
-        list_store=None,
-        metadata=None,
-        location=None,
+        language: str,
+        answer_store: AnswerStore,
+        list_store: ListStore,
+        metadata: ImmutableDict,
+        schema: QuestionnaireSchema,
+        location: Location = None,
     ):
         self._language = language
-        self._schema = schema
-        self._answer_store = answer_store or AnswerStore()
+        self._answer_store = answer_store
         self._list_store = list_store
         self._metadata = metadata
+        self._schema = schema
         self._location = location
 
-    def render_pointer(self, dict_to_render, pointer_to_render, list_item_id):
+    def render_pointer(
+        self,
+        dict_to_render: dict[str, Any],
+        pointer_to_render: str,
+        list_item_id: Optional[str],
+    ) -> dict:
         pointer_data = resolve_pointer(dict_to_render, pointer_to_render)
 
         return self.render_placeholder(pointer_data, list_item_id)
 
-    def get_plural_count(self, schema_partial):
+    def get_plural_count(
+        self, schema_partial: dict[str, Any]
+    ) -> Optional[AnswerValueTypes]:
         source = schema_partial["source"]
         source_id = schema_partial["identifier"]
 
         if source == "answers":
-            return self._answer_store.get_answer(source_id).value
+            answer = self._answer_store.get_answer(source_id)
+            return answer.value if answer else None
         if source == "list":
             return len(self._list_store[source_id])
-        return self._metadata[source_id]
 
-    def render_placeholder(self, placeholder_data, list_item_id):
+        metadata_source_id: str = self._metadata[source_id]
+        return metadata_source_id
+
+    def render_placeholder(
+        self, placeholder_data: dict[str, Any], list_item_id: Optional[str]
+    ) -> dict[str, Any]:
         placeholder_parser = PlaceholderParser(
             language=self._language,
-            schema=self._schema,
             answer_store=self._answer_store,
+            list_store=self._list_store,
             metadata=self._metadata,
+            schema=self._schema,
             list_item_id=list_item_id,
             location=self._location,
-            list_store=self._list_store,
         )
 
         placeholder_data = QuestionnaireSchema.get_mutable_deepcopy(placeholder_data)
@@ -68,10 +85,14 @@ class PlaceholderRenderer:
             raise ValueError("No placeholder found to render")
 
         transformed_values = placeholder_parser(placeholder_data["placeholders"])
+        formatted_placeholder_data: dict[str, Any] = placeholder_data["text"].format(
+            **transformed_values
+        )
+        return formatted_placeholder_data
 
-        return placeholder_data["text"].format(**transformed_values)
-
-    def render(self, dict_to_render, list_item_id):
+    def render(
+        self, dict_to_render: dict[str, Any], list_item_id: Optional[str]
+    ) -> dict[str, Any]:
         """
         Transform the current schema json to a fully rendered dictionary
         """

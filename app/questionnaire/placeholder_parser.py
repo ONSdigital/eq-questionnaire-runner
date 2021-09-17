@@ -1,7 +1,11 @@
-from typing import Any, Mapping, Optional, Sequence
+from decimal import Decimal
+from typing import Any, Mapping, Optional, Sequence, Union
+
+from werkzeug.datastructures import ImmutableDict
 
 from app.data_models.answer_store import AnswerStore
-from app.questionnaire import QuestionnaireSchema
+from app.data_models.list_store import ListStore
+from app.questionnaire import Location, QuestionnaireSchema
 from app.questionnaire.placeholder_transforms import PlaceholderTransforms
 from app.questionnaire.value_source_resolver import (
     ValueSourceResolver,
@@ -17,23 +21,23 @@ class PlaceholderParser:
 
     def __init__(
         self,
-        language,
-        schema=None,
-        answer_store=None,
-        metadata=None,
-        list_item_id=None,
-        location=None,
-        list_store=None,
+        language: str,
+        answer_store: AnswerStore,
+        list_store: ListStore,
+        metadata: ImmutableDict,
+        schema: QuestionnaireSchema,
+        list_item_id: Optional[str] = None,
+        location: Location = None,
     ):
 
         self._schema = schema
-        self._answer_store = answer_store or AnswerStore()
+        self._answer_store = answer_store
         self._metadata = metadata
         self._list_item_id = list_item_id
         self._list_store = list_store
         self._location = location
         self._transformer = PlaceholderTransforms(language)
-        self._placeholder_map = {}
+        self._placeholder_map: dict[str, Any] = {}
 
         self._value_source_resolver = ValueSourceResolver(
             answer_store=self._answer_store,
@@ -60,7 +64,9 @@ class PlaceholderParser:
         except KeyError:
             return self._value_source_resolver.resolve(placeholder["value"])
 
-    def _parse_transforms(self, transform_list: Sequence[Mapping]):
+    def _parse_transforms(
+        self, transform_list: Sequence[Mapping]
+    ) -> Optional[ValueSourceTypes]:
         transformed_value = None
 
         for transform in transform_list:
@@ -92,7 +98,7 @@ class PlaceholderParser:
     def _resolve_value_source_list(
         self, value_source_list: list[dict]
     ) -> Optional[ValueSourceTypes]:
-        values = []
+        values: list[Union[None, str, int, Decimal]] = []
         for value_source in value_source_list:
             value = self._value_source_resolver.resolve(value_source)
             if isinstance(value, list):

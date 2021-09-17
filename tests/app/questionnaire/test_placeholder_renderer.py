@@ -120,6 +120,8 @@ class TestPlaceholderRenderer(AppContextTestCase):
                     {"answer_id": "date-of-birth-answer", "value": "1991-01-01"},
                 ]
             ),
+            list_store=ListStore(),
+            metadata={},
         )
 
         rendered = renderer.render_pointer(
@@ -154,6 +156,8 @@ class TestPlaceholderRenderer(AppContextTestCase):
                     {"answer_id": "date-of-birth-answer", "value": "1986-01-01"},
                 ]
             ),
+            list_store=ListStore(),
+            metadata={},
         )
 
         rendered_schema = renderer.render(json_to_render, list_item_id=None)
@@ -187,6 +191,8 @@ class TestPlaceholderRenderer(AppContextTestCase):
                     {"answer_id": "date-of-birth-answer", "value": "1986-01-01"},
                 ]
             ),
+            list_store=ListStore(),
+            metadata={},
         )
 
         rendered_schema = renderer.render(json_to_render, list_item_id=None)
@@ -195,13 +201,25 @@ class TestPlaceholderRenderer(AppContextTestCase):
         assert rendered_label == "Alfred Aho age is 33 years. Is this correct?"
 
     def test_errors_on_invalid_pointer(self):
-        renderer = PlaceholderRenderer(language="en", schema=Mock())
+        renderer = PlaceholderRenderer(
+            language="en",
+            answer_store=AnswerStore(),
+            list_store=ListStore(),
+            metadata={},
+            schema=Mock(),
+        )
 
         with self.assertRaises(ValueError):
             renderer.render_pointer(self.question_json, "/title", list_item_id=None)
 
     def test_errors_on_invalid_json(self):
-        renderer = PlaceholderRenderer(language="en", schema=Mock())
+        renderer = PlaceholderRenderer(
+            language="en",
+            answer_store=AnswerStore(),
+            list_store=ListStore(),
+            metadata={},
+            schema=Mock(),
+        )
 
         with self.assertRaises(ValueError):
             dict_to_render = {"invalid": {"no": "placeholders", "in": "this"}}
@@ -211,7 +229,11 @@ class TestPlaceholderRenderer(AppContextTestCase):
 def test_renders_text_plural_from_answers():
     answer_store = AnswerStore([{"answer_id": "number-of-people", "value": 1}])
     renderer = PlaceholderRenderer(
-        language="en", answer_store=answer_store, schema=Mock()
+        language="en",
+        answer_store=answer_store,
+        list_store=ListStore(),
+        metadata={},
+        schema=Mock(),
     )
 
     rendered_text = renderer.render_placeholder(
@@ -237,7 +259,13 @@ def test_renders_text_plural_from_answers():
 
 
 def test_renders_text_plural_from_list():
-    renderer = PlaceholderRenderer(language="en", list_store=ListStore(), schema=Mock())
+    renderer = PlaceholderRenderer(
+        language="en",
+        answer_store=AnswerStore(),
+        list_store=ListStore(),
+        metadata={},
+        schema=Mock(),
+    )
 
     rendered_text = renderer.render_placeholder(
         {
@@ -263,7 +291,13 @@ def test_renders_text_plural_from_list():
 
 def test_renders_text_plural_from_metadata():
     metadata = {"some_value": 100}
-    renderer = PlaceholderRenderer(language="en", metadata=metadata, schema=Mock())
+    renderer = PlaceholderRenderer(
+        language="en",
+        answer_store=AnswerStore(),
+        list_store=ListStore(),
+        metadata=metadata,
+        schema=Mock(),
+    )
 
     rendered_text = renderer.render_placeholder(
         {
