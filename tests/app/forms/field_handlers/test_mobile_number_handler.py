@@ -3,7 +3,7 @@ from wtforms import Form, StringField
 from app.forms.field_handlers.mobile_number_handler import MobileNumberHandler
 
 
-def test_phone_number_handler():
+def test_phone_number_handler(value_source_resolver):
     answer_schema = {
         "id": "phone-number-answer",
         "label": "Phone Number",
@@ -11,7 +11,11 @@ def test_phone_number_handler():
         "mandatory": False,
         "type": "PhoneNumber",
     }
-    mobile_number_handler = MobileNumberHandler(answer_schema, disable_validation=False)
+    mobile_number_handler = MobileNumberHandler(
+        answer_schema,
+        value_source_resolver,
+        disable_validation=False,
+    )
 
     class TestForm(Form):
         test_field = mobile_number_handler.get_field()

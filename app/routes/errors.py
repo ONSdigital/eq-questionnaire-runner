@@ -71,8 +71,6 @@ def unauthorized(exception=None):
     log_exception(exception, 401)
     if EQ_SESSION_ID not in cookie_session:
         return _render_error_page(401, "no-cookie")
-    if cookie_session.get("submitted", False):
-        return _render_error_page(401, "submission-complete")
     return _render_error_page(401, "session-expired")
 
 
