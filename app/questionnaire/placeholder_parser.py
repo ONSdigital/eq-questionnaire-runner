@@ -36,7 +36,7 @@ class PlaceholderParser:
         self._list_item_id = list_item_id
         self._location = location
         self._transformer = PlaceholderTransforms(language)
-        self._placeholder_map: dict[str, Any] = {}
+        self._placeholder_map: dict[str, str] = {}
 
         self._value_source_resolver = ValueSourceResolver(
             answer_store=self._answer_store,
