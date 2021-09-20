@@ -6,6 +6,7 @@ import pytest
 from app.data_models import AnswerStore, ListStore
 from app.data_models.answer import Answer
 from app.questionnaire import Location, QuestionnaireSchema
+from app.questionnaire.location import InvalidLocationException
 from app.questionnaire.relationship_location import RelationshipLocation
 from app.questionnaire.value_source_resolver import ValueSourceResolver
 from tests.app.data_model.test_answer import ESCAPED_CONTENT, HTML_CONTENT
@@ -159,6 +160,29 @@ def test_answer_source_with_list_item_selector_location():
         )
         == "Yes"
     )
+
+
+def test_answer_source_with_list_item_selector_location_none():
+    value_source_resolver = get_value_source_resolver(
+        answer_store=AnswerStore(
+            [
+                {
+                    "answer_id": "some-answer",
+                    "list_item_id": "item-1",
+                    "value": "Yes",
+                }
+            ]
+        ),
+        location=None,
+    )
+    with pytest.raises(InvalidLocationException):
+        value_source_resolver.resolve(
+            {
+                "source": "answers",
+                "identifier": "some-answer",
+                "list_item_selector": {"source": "location", "id": "list_item_id"},
+            }
+        )
 
 
 def test_answer_source_with_list_item_selector_list_first_item():

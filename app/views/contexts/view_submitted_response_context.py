@@ -24,15 +24,6 @@ def build_view_submitted_response_context(
         questionnaire_store.submitted_at
     )
 
-    summary_context = SummaryContext(
-        language=language,
-        schema=schema,
-        answer_store=questionnaire_store.answer_store,
-        list_store=questionnaire_store.list_store,
-        progress_store=questionnaire_store.progress_store,
-        metadata=questionnaire_store.metadata,
-    )
-
     if survey_type == "social":
         submitted_text = lazy_gettext("Answers submitted.")
     elif trad_as := questionnaire_store.metadata.get("trad_as"):
@@ -56,7 +47,17 @@ def build_view_submitted_response_context(
         },
         "metadata": metadata,
         "submitted_text": submitted_text,
-        "summary": summary_context(),
         "pdf_url": url_for("post_submission.download_pdf"),
     }
+
+    if not view_submitted_response_expired:
+        summary_context = SummaryContext(
+            language=language,
+            schema=schema,
+            answer_store=questionnaire_store.answer_store,
+            list_store=questionnaire_store.list_store,
+            progress_store=questionnaire_store.progress_store,
+            metadata=questionnaire_store.metadata,
+        )
+        context["summary"] = summary_context()
     return context

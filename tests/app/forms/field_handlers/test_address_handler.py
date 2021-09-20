@@ -6,8 +6,10 @@ from app.forms import error_messages
 from app.forms.field_handlers import AddressHandler
 
 
-def get_test_form_class(answer_schema, messages=None):
-    address_handler = AddressHandler(answer_schema, error_messages=messages)
+def get_test_form_class(answer_schema, value_source_resolver, messages=None):
+    address_handler = AddressHandler(
+        answer_schema, value_source_resolver, error_messages=messages
+    )
 
     class TestForm(Form):
         test_field = address_handler.get_field()
@@ -15,9 +17,9 @@ def get_test_form_class(answer_schema, messages=None):
     return TestForm
 
 
-def test_address_fields():
+def test_address_fields(value_source_resolver):
     answer_json = {"id": "address", "mandatory": True, "type": "Address"}
-    address_handler = AddressHandler(answer_json)
+    address_handler = AddressHandler(answer_json, value_source_resolver)
 
     class TestForm(Form):
         test_field = address_handler.get_field()
@@ -30,9 +32,11 @@ def test_address_fields():
     assert all(field in form.test_field.data for field in address_fields)
 
 
-def test_address_mandatory_line1_validator():
+def test_address_mandatory_line1_validator(value_source_resolver):
     answer_json = {"id": "address", "mandatory": True, "type": "Address"}
-    address_handler = AddressHandler(answer_json, error_messages=error_messages)
+    address_handler = AddressHandler(
+        answer_json, value_source_resolver, error_messages=error_messages
+    )
 
     validator = address_handler.validators
 
@@ -40,27 +44,29 @@ def test_address_mandatory_line1_validator():
     assert validator[0].message == "Enter an address"
 
 
-def test_no_validation_when_address_not_mandatory():
+def test_no_validation_when_address_not_mandatory(value_source_resolver):
     answer_json = {"id": "address", "mandatory": False, "type": "Address"}
 
-    test_form_class = get_test_form_class(answer_json, messages=error_messages)
-    form = test_form_class(MultiDict({"test_field": "1"}))
+    test_form_class = get_test_form_class(answer_json, value_source_resolver)
+    form = test_form_class(MultiDict({"test_field": "1"}), value_source_resolver)
     form.validate()
 
     assert not form.errors
 
 
-def test_mandatory_validation_when_address_line_1_missing():
+def test_mandatory_validation_when_address_line_1_missing(value_source_resolver):
     answer_json = {"id": "address", "mandatory": True, "type": "Address"}
 
-    test_form_class = get_test_form_class(answer_json, messages=error_messages)
-    form = test_form_class(MultiDict({"test_field": "1"}))
+    test_form_class = get_test_form_class(
+        answer_json, value_source_resolver, messages=error_messages
+    )
+    form = test_form_class(MultiDict({"test_field": "1"}), value_source_resolver)
     form.validate()
 
     assert form.errors["test_field"]["line1"][0] == "Enter an address"
 
 
-def test_address_validator_with_message_override():
+def test_address_validator_with_message_override(value_source_resolver):
     answer_json = {
         "id": "address",
         "mandatory": True,
@@ -71,7 +77,7 @@ def test_address_validator_with_message_override():
             }
         },
     }
-    address_handler = AddressHandler(answer_json, error_messages=error_messages)
+    address_handler = AddressHandler(answer_json, value_source_resolver)
 
     validator = address_handler.validators
 

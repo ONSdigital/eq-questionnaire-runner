@@ -47,5 +47,5 @@ class TestTimeout(IntegrationTestCase):
         time.sleep(4)
         self.get(self.last_url)
         self.assertStatusUnauthorised()
-        self.assertInBody("This page is no longer available")
-        self.assertEqualPageTitle("Submission Complete - Timeout test")
+        self.assertInBody("Your session has timed out due to inactivity")
+        self.assertEqualPageTitle("Session timed out - Timeout test")

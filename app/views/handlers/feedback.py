@@ -5,6 +5,7 @@ from typing import Mapping
 from flask import current_app
 from flask_babel import gettext, lazy_gettext
 
+from app.data_models import QuestionnaireStore
 from app.data_models.session_data import SessionData
 from app.data_models.session_store import SessionStore
 from app.forms.questionnaire_form import generate_form
@@ -29,6 +30,7 @@ class Feedback:
 
     def __init__(
         self,
+        questionnaire_store: QuestionnaireStore,
         schema: QuestionnaireSchema,
         session_store: SessionStore,
         form_data: Mapping,
@@ -39,6 +41,7 @@ class Feedback:
         if self.is_limit_reached(session_store.session_data):
             raise FeedbackLimitReached
 
+        self._questionnaire_store = questionnaire_store
         self._schema = schema
         self._session_store = session_store
         self._form_data = form_data
@@ -48,8 +51,9 @@ class Feedback:
         return generate_form(
             schema=self._schema,
             question_schema=self.question_schema,
-            answer_store=None,
-            metadata=None,
+            answer_store=self._questionnaire_store.answer_store,
+            list_store=self._questionnaire_store.list_store,
+            metadata=self._questionnaire_store.metadata,
             data=None,
             form_data=self._form_data,
         )
