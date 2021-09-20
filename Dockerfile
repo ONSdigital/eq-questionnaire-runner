@@ -4,6 +4,8 @@ EXPOSE 5000
 
 RUN apt update && apt install -y curl unzip libsnappy-dev build-essential jq
 
+RUN apt update && apt install wkhtmltopdf
+
 COPY . /runner
 WORKDIR /runner
 
