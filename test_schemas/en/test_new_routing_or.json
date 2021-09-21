@@ -47,7 +47,7 @@
                                         "label": "Enter 123"
                                     }
                                 ],
-                                "id": "question",
+                                "id": "question-1",
                                 "title": "Enter the number 123",
                                 "type": "General"
                             }
@@ -64,7 +64,7 @@
                                         "label": "Enter 321"
                                     }
                                 ],
-                                "id": "question",
+                                "id": "question-2",
                                 "title": "Enter the number 321",
                                 "type": "General"
                             },
