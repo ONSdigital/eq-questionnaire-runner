@@ -27,12 +27,12 @@ describe("Feature: Routing - Not Operator", () => {
       });
 
       it("When I enter both answers incorrectly, Then I should be routed to the incorrect page", () => {
-          $(FirstNumberQuestionPage.answer1()).setValue(123);
-          $(FirstNumberQuestionPage.submit()).click();
-          $(SecondNumberQuestionPage.answer2()).setValue(321);
-          $(SecondNumberQuestionPage.submit()).click();
-          expect(browser.getUrl()).to.contain(IncorrectAnswerPage.pageName);
-        });
+        $(FirstNumberQuestionPage.answer1()).setValue(123);
+        $(FirstNumberQuestionPage.submit()).click();
+        $(SecondNumberQuestionPage.answer2()).setValue(321);
+        $(SecondNumberQuestionPage.submit()).click();
+        expect(browser.getUrl()).to.contain(IncorrectAnswerPage.pageName);
+      });
     });
   });
 });
