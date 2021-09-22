@@ -1,6 +1,6 @@
-import CountryCheckboxPage from "../../../generated_pages/new_routing_checkbox_contains_all/country-checkbox.page";
-import CountryInterstitialPage from "../../../generated_pages/new_routing_checkbox_contains_all/country-interstitial-india-malta.page";
-import SubmitPage from "../../../generated_pages/new_routing_checkbox_contains_all/submit.page";
+import CountryCheckboxPage from "../../../generated_pages/new_routing_checkbox_contains_any/country-checkbox.page";
+import CountryInterstitialPage from "../../../generated_pages/new_routing_checkbox_contains_any/country-interstitial-india-malta.page";
+import SubmitPage from "../../../generated_pages/new_routing_checkbox_contains_any/submit.page";
 
 describe("Feature: Routing - Any-In Operator", () => {
   describe("Equals", () => {
