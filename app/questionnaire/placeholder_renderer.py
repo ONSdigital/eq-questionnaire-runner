@@ -39,13 +39,13 @@ class PlaceholderRenderer:
         dict_to_render: dict[str, Any],
         pointer_to_render: str,
         list_item_id: Optional[str],
-    ) -> dict:
+    ) -> str:
         pointer_data = resolve_pointer(dict_to_render, pointer_to_render)
 
         return self.render_placeholder(pointer_data, list_item_id)
 
     def get_plural_count(
-        self, schema_partial: dict[str, Any]
+        self, schema_partial: dict[str, str]
     ) -> Optional[AnswerValueTypes]:
         source = schema_partial["source"]
         source_id = schema_partial["identifier"]
@@ -60,8 +60,10 @@ class PlaceholderRenderer:
         return metadata_source_id
 
     def render_placeholder(
-        self, placeholder_data: dict[str, Any], list_item_id: Optional[str]
-    ) -> dict[str, Any]:
+        self,
+        placeholder_data: dict[str, Any],
+        list_item_id: Optional[str],
+    ) -> str:
         placeholder_parser = PlaceholderParser(
             language=self._language,
             answer_store=self._answer_store,
@@ -75,19 +77,21 @@ class PlaceholderRenderer:
         placeholder_data = QuestionnaireSchema.get_mutable_deepcopy(placeholder_data)
 
         if "text_plural" in placeholder_data:
-            plural_schema = placeholder_data["text_plural"]
+            plural_schema: dict[str, dict] = placeholder_data["text_plural"]
             count = self.get_plural_count(plural_schema["count"])
 
             plural_form_key = get_plural_form_key(count, self._language)
-            placeholder_data["text"] = plural_schema["forms"][plural_form_key]
+            plural_forms: dict[str, str] = plural_schema["forms"]
+            placeholder_data["text"] = plural_forms[plural_form_key]
 
         if "text" not in placeholder_data and "placeholders" not in placeholder_data:
             raise ValueError("No placeholder found to render")
 
         transformed_values = placeholder_parser(placeholder_data["placeholders"])
-        formatted_placeholder_data: dict[str, Any] = placeholder_data["text"].format(
+        formatted_placeholder_data: str = placeholder_data["text"].format(
             **transformed_values
         )
+
         return formatted_placeholder_data
 
     def render(

@@ -220,7 +220,7 @@ class TestPlaceholderRenderer(AppContextTestCase):
             metadata={},
             schema=Mock(),
         )
-
+        renderer._answer_store = AnswerStore()
         with self.assertRaises(ValueError):
             dict_to_render = {"invalid": {"no": "placeholders", "in": "this"}}
             renderer.render_pointer(dict_to_render, "/invalid", list_item_id=None)

@@ -1,4 +1,4 @@
-from typing import Any, Mapping, Optional, Sequence
+from typing import Any, Mapping, Optional, Sequence, Union
 
 from werkzeug.datastructures import ImmutableDict
 
@@ -7,6 +7,7 @@ from app.data_models.list_store import ListStore
 from app.questionnaire import Location, QuestionnaireSchema
 from app.questionnaire.placeholder_transforms import PlaceholderTransforms
 from app.questionnaire.value_source_resolver import (
+    ValueSourceEscapedTypes,
     ValueSourceResolver,
     ValueSourceTypes,
 )
@@ -36,7 +37,9 @@ class PlaceholderParser:
         self._list_item_id = list_item_id
         self._location = location
         self._transformer = PlaceholderTransforms(language)
-        self._placeholder_map: dict[str, str] = {}
+        self._placeholder_map: dict[
+            str, Union[ValueSourceEscapedTypes, ValueSourceTypes, None]
+        ] = {}
 
         self._value_source_resolver = ValueSourceResolver(
             answer_store=self._answer_store,
@@ -57,7 +60,9 @@ class PlaceholderParser:
                 ] = self._parse_placeholder(placeholder)
         return self._placeholder_map
 
-    def _parse_placeholder(self, placeholder: Mapping) -> Any:
+    def _parse_placeholder(
+        self, placeholder: Mapping
+    ) -> Union[ValueSourceEscapedTypes, ValueSourceTypes, None]:
         try:
             return self._parse_transforms(placeholder["transforms"])
         except KeyError:

@@ -1,4 +1,6 @@
 from datetime import datetime, timezone
+from decimal import Decimal
+from typing import Sequence, Union
 from urllib.parse import quote
 
 from babel.dates import format_datetime
@@ -26,17 +28,17 @@ class PlaceholderTransforms:
         return formatted_currency
 
     def format_date(self, date_to_format: str, date_format: str) -> str:
-        date_to_format_strptime: datetime = datetime.strptime(
+        date_as_datetime = datetime.strptime(
             date_to_format, self.input_date_format
         ).replace(tzinfo=timezone.utc)
 
         formatted_datetime: str = format_datetime(
-            date_to_format_strptime, date_format, locale=self.locale
+            date_as_datetime, date_format, locale=self.locale
         )
         return formatted_datetime
 
     @staticmethod
-    def format_list(list_to_format: list[str]) -> str:
+    def format_list(list_to_format: Sequence[str]) -> str:
         formatted_list = "<ul>"
         for item in list_to_format:
             formatted_list += f"<li>{item}</li>"
@@ -45,7 +47,7 @@ class PlaceholderTransforms:
         return formatted_list
 
     @staticmethod
-    def remove_empty_from_list(list_to_filter: list[str]) -> list[str]:
+    def remove_empty_from_list(list_to_filter: Sequence[str]) -> list[str]:
 
         """
         :param list_to_filter: anything that is iterable
@@ -103,7 +105,7 @@ class PlaceholderTransforms:
 
         return string_to_format
 
-    def format_number(self, number: int) -> str:
+    def format_number(self, number: Union[int, Decimal, str]) -> str:
         if number or number == 0:
             formatted_decimal: str = format_decimal(number, locale=self.locale)
             return formatted_decimal
@@ -157,7 +159,7 @@ class PlaceholderTransforms:
             ).replace(tzinfo=timezone.utc)
 
     @staticmethod
-    def add(lhs: int, rhs: int) -> int:
+    def add(lhs: Union[int, Decimal], rhs: Union[int, Decimal]) -> Union[int, Decimal]:
         return lhs + rhs
 
     def format_ordinal(self, number_to_format: int, determiner: str = None) -> str:
