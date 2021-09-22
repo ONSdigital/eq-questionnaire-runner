@@ -47,6 +47,7 @@
                                         "id": "country-checkbox-answer",
                                         "mandatory": false,
                                         "type": "Checkbox",
+                                        "instruction": "Do not select India",
                                         "options": [
                                             {
                                                 "label": "India",

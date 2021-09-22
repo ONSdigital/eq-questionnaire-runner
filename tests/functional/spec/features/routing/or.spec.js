@@ -26,7 +26,7 @@ describe("Feature: Routing - OR Operator", () => {
         expect(browser.getUrl()).to.contain(CorrectAnswerPage.pageName);
       });
 
-      it("When I enter 555 and 444, Then I should be routed to the incorrect page", () => {
+      it("When I do not enter 123 or 321, Then I should be routed to the incorrect page", () => {
         $(FirstNumberQuestionPage.answer1()).setValue(555);
         $(FirstNumberQuestionPage.submit()).click();
         $(SecondNumberQuestionPage.answer2()).setValue(444);
