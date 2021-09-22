@@ -1,4 +1,5 @@
-from typing import Any, Mapping, Optional, Sequence, Union
+from decimal import Decimal
+from typing import Any, Mapping, Sequence, Union
 
 from werkzeug.datastructures import ImmutableDict
 
@@ -26,7 +27,7 @@ class PlaceholderParser:
         list_store: ListStore,
         metadata: ImmutableDict,
         schema: QuestionnaireSchema,
-        list_item_id: Optional[str] = None,
+        list_item_id: Union[str, None] = None,
         location: Location = None,
     ):
 
@@ -70,8 +71,16 @@ class PlaceholderParser:
 
     def _parse_transforms(
         self, transform_list: Sequence[Mapping]
-    ) -> Optional[ValueSourceTypes]:
-        transformed_value = None
+    ) -> Union[ValueSourceTypes, None]:
+        transformed_value: Union[
+            list[ValueSourceTypes],
+            ValueSourceEscapedTypes,
+            ValueSourceTypes,
+            None,
+            str,
+            int,
+            Decimal,
+        ] = None
 
         for transform in transform_list:
             transform_args: dict[str, Any] = {}
@@ -101,7 +110,7 @@ class PlaceholderParser:
 
     def _resolve_value_source_list(
         self, value_source_list: list[dict]
-    ) -> Optional[ValueSourceTypes]:
+    ) -> list[ValueSourceTypes]:
         values: list[ValueSourceTypes] = []
         for value_source in value_source_list:
             value = self._value_source_resolver.resolve(value_source)
