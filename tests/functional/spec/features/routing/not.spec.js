@@ -10,13 +10,13 @@ describe("Feature: Routing - Not Operator", () => {
       });
 
       it("When I do not select India, Then I should be routed to the interstitial page", () => {
-        $(CountryCheckboxPage.India()).click();
+        $(CountryCheckboxPage.india()).click();
         $(CountryCheckboxPage.submit()).click();
         expect(browser.getUrl()).to.contain(CountryInterstitialPage.pageName);
       });
 
       it("When I do select India, Then I should be routed to the submit page", () => {
-        $(CountryCheckboxPage.India()).click();
+        $(CountryCheckboxPage.india()).click();
         $(CountryCheckboxPage.submit()).click();
         expect(browser.getUrl()).to.contain(SubmitPage.pageName);
       });
