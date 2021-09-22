@@ -4,9 +4,9 @@
     "schema_version": "0.0.2",
     "data_version": "0.0.3",
     "survey_id": "0",
-    "title": "Test Routing Checkbox Contains 'All'",
+    "title": "Test Routing Checkbox Contains All",
     "theme": "default",
-    "description": "A test survey for routing based on 'all-in' condition",
+    "description": "A test survey for routing based on all-in condition",
     "metadata": [
         {
             "name": "user_id",
@@ -82,9 +82,7 @@
                                     }
                                 },
                                 {
-                                    "goto": {
-                                        "section": "End"
-                                    }
+                                    "section": "End"
                                 }
                             ]
                         },
