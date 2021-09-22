@@ -1,0 +1,109 @@
+{
+    "mime_type": "application/json/ons/eq",
+    "language": "en",
+    "schema_version": "0.0.2",
+    "data_version": "0.0.3",
+    "survey_id": "0",
+    "title": "Test Routing Checkbox Contains 'All'",
+    "theme": "default",
+    "description": "A test survey for routing based on 'all-in' condition",
+    "metadata": [
+        {
+            "name": "user_id",
+            "type": "string"
+        },
+        {
+            "name": "period_id",
+            "type": "string"
+        },
+        {
+            "name": "ru_name",
+            "type": "string"
+        }
+    ],
+    "questionnaire_flow": {
+        "type": "Linear",
+        "options": {
+            "summary": {
+                "collapsible": false
+            }
+        }
+    },
+    "sections": [
+        {
+            "id": "default-section",
+            "groups": [
+                {
+                    "blocks": [
+                        {
+                            "type": "Question",
+                            "id": "country-checkbox",
+                            "question": {
+                                "id": "country-checkbox-question",
+                                "title": "Have you visited any of the following countries?",
+                                "type": "General",
+                                "answers": [
+                                    {
+                                        "id": "country-checkbox-answer",
+                                        "mandatory": false,
+                                        "type": "Checkbox",
+                                        "options": [
+                                            {
+                                                "label": "India",
+                                                "value": "India"
+                                            },
+                                            {
+                                                "label": "Azerbaijan",
+                                                "value": "Azerbaijan"
+                                            },
+                                            {
+                                                "label": "Liechtenstein",
+                                                "value": "Liechtenstein"
+                                            },
+                                            {
+                                                "label": "Malta",
+                                                "value": "Malta"
+                                            }
+                                        ]
+                                    }
+                                ]
+                            },
+                            "routing_rules": [
+                                {
+                                    "block": "country-interstitial-india-malta",
+                                    "when": {
+                                        "all-in": [
+                                            ["India", "Malta"],
+                                            {
+                                                "source": "answers",
+                                                "identifier": "country-checkbox-answer"
+                                            }
+                                        ]
+                                    }
+                                },
+                                {
+                                    "goto": {
+                                        "section": "End"
+                                    }
+                                }
+                            ]
+                        },
+                        {
+                            "id": "country-interstitial-india-malta",
+                            "type": "Interstitial",
+                            "content": {
+                                "title": "Condition: Contains India and Malta",
+                                "contents": [
+                                    {
+                                        "description": "You chose India and Malta."
+                                    }
+                                ]
+                            }
+                        }
+                    ],
+                    "id": "checkboxes"
+                }
+            ]
+        }
+    ]
+}

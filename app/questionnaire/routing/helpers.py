@@ -10,7 +10,7 @@ def _casefold(value: Union[list, ValueTypes]) -> Union[list, ValueTypes]:
     if isinstance(value, str):
         return value.casefold()
 
-    if isinstance(value, list):
+    if isinstance(value, (list, tuple)):
         return [_casefold(v) for v in value]
 
     return value
