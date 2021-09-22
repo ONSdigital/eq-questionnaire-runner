@@ -6,7 +6,7 @@
     "survey_id": "001",
     "title": "Test Routing And",
     "theme": "default",
-    "description": "A test survey for routing based on the and operator",
+    "description": "A test survey for routing based on the AND operator",
     "metadata": [
         {
             "name": "user_id",

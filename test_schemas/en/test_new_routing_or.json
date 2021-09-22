@@ -6,7 +6,7 @@
     "survey_id": "001",
     "title": "Test Routing Or",
     "theme": "default",
-    "description": "A test survey for routing based on the or operator",
+    "description": "A test survey for routing based on the OR operator",
     "metadata": [
         {
             "name": "user_id",

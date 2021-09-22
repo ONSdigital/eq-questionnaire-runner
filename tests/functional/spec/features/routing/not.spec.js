@@ -1,7 +1,6 @@
-import FirstNumberQuestionPage from "../../../generated_pages/new_routing_not/number-question-1.page";
-import SecondNumberQuestionPage from "../../../generated_pages/new_routing_not/number-question-2.page";
-import CorrectAnswerPage from "../../../generated_pages/new_routing_not/correct-answer.page";
-import IncorrectAnswerPage from "../../../generated_pages/new_routing_not/incorrect-answer.page";
+import CountryCheckboxPage from "../../../generated_pages/new_routing_not/country-checkbox.page";
+import CountryInterstitialPage from "../../../generated_pages/new_routing_not/country-interstitial-india.page";
+import SubmitPage from "../../../generated_pages/new_routing_not/submit.page";
 
 describe("Feature: Routing - Not Operator", () => {
   describe("Equals", () => {
@@ -10,28 +9,16 @@ describe("Feature: Routing - Not Operator", () => {
         browser.openQuestionnaire("test_new_routing_not.json");
       });
 
-      it("When I enter both answers correctly, Then I should be routed to the correct page", () => {
-        $(FirstNumberQuestionPage.answer1()).setValue(1);
-        $(FirstNumberQuestionPage.submit()).click();
-        $(SecondNumberQuestionPage.answer2()).setValue(2);
-        $(SecondNumberQuestionPage.submit()).click();
-        expect(browser.getUrl()).to.contain(CorrectAnswerPage.pageName);
+      it("When I do not select India, Then I should be routed to the interstitial page", () => {
+        $(CountryCheckboxPage.India()).setValue(1);
+        $(CountryCheckboxPage.submit()).click();
+        expect(browser.getUrl()).to.contain(CountryInterstitialPage.pageName);
       });
 
-      it("When I enter one of the answers incorrectly, Then I should be routed to the correct page", () => {
-        $(FirstNumberQuestionPage.answer1()).setValue(555);
-        $(FirstNumberQuestionPage.submit()).click();
-        $(SecondNumberQuestionPage.answer2()).setValue(321);
-        $(SecondNumberQuestionPage.submit()).click();
-        expect(browser.getUrl()).to.contain(CorrectAnswerPage.pageName);
-      });
-
-      it("When I enter both answers incorrectly, Then I should be routed to the incorrect page", () => {
-        $(FirstNumberQuestionPage.answer1()).setValue(123);
-        $(FirstNumberQuestionPage.submit()).click();
-        $(SecondNumberQuestionPage.answer2()).setValue(321);
-        $(SecondNumberQuestionPage.submit()).click();
-        expect(browser.getUrl()).to.contain(IncorrectAnswerPage.pageName);
+      it("When I do select India, Then I should be routed to the submit page", () => {
+        $(CountryCheckboxPage.India()).setValue(1);
+        $(CountryCheckboxPage.submit()).click();
+        expect(browser.getUrl()).to.contain(SubmitPage.pageName);
       });
     });
   });

@@ -6,7 +6,7 @@
     "survey_id": "001",
     "title": "Test Routing Not",
     "theme": "default",
-    "description": "A test survey for routing based on the not operator",
+    "description": "A test survey for routing based on the NOT operator",
     "metadata": [
         {
             "name": "user_id",
@@ -37,61 +37,48 @@
                     "blocks": [
                         {
                             "type": "Question",
-                            "id": "number-question-1",
+                            "id": "country-checkbox",
                             "question": {
+                                "id": "country-checkbox-question",
+                                "title": "Have you visited any of the following countries?",
+                                "type": "General",
                                 "answers": [
                                     {
-                                        "id": "answer-1",
-                                        "mandatory": true,
-                                        "type": "Number",
-                                        "label": "Do not enter 123"
+                                        "id": "country-checkbox-answer",
+                                        "mandatory": false,
+                                        "type": "Checkbox",
+                                        "options": [
+                                            {
+                                                "label": "India",
+                                                "value": "India"
+                                            },
+                                            {
+                                                "label": "Azerbaijan",
+                                                "value": "Azerbaijan"
+                                            },
+                                            {
+                                                "label": "Liechtenstein",
+                                                "value": "Liechtenstein"
+                                            },
+                                            {
+                                                "label": "Malta",
+                                                "value": "Malta"
+                                            }
+                                        ]
                                     }
-                                ],
-                                "id": "question-1",
-                                "title": "Do not enter the number 123",
-                                "type": "General"
-                            }
-                        },
-                        {
-                            "type": "Question",
-                            "id": "number-question-2",
-                            "question": {
-                                "answers": [
-                                    {
-                                        "id": "answer-2",
-                                        "mandatory": true,
-                                        "type": "Number",
-                                        "label": "Do not enter 321"
-                                    }
-                                ],
-                                "id": "question-2",
-                                "title": "Do not enter the number 321",
-                                "type": "General"
+                                ]
                             },
                             "routing_rules": [
                                 {
-                                    "block": "correct-answer",
+                                    "block": "country-interstitial-india",
                                     "when": {
                                         "not": [
                                             {
-                                                "and": [
+                                                "in": [
+                                                    "India",
                                                     {
-                                                        "==": [
-                                                            {
-                                                                "source": "answers",
-                                                                "identifier": "answer-1"
-                                                            },
-                                                            123
-                                                        ]
-                                                    },
-                                                    {
-                                                        "==": [
-                                                            {
-                                                                "source": "answers",
-                                                                "identifier": "answer-2"
-                                                            },
-                                                            321
-                                                        ]
+                                                        "source": "answers",
+                                                        "identifier": "country-checkbox-answer"
                                                     }
                                                 ]
                                             }
@@ -99,77 +86,24 @@
                                     }
                                 },
                                 {
-                                    "block": "incorrect-answer"
-                                }
-                            ]
-                        },
-                        {
-                            "type": "Interstitial",
-                            "id": "incorrect-answer",
-                            "content": {
-                                "title": "You entered the incorrect numbers",
-                                "contents": [
-                                    {
-                                        "description": {
-                                            "text": "You were asked not to enter <em>123</em> and <em>321</em> but you entered <em>{answer-1}</em> and <em>{answer-2}</em>.",
-                                            "placeholders": [
-                                                {
-                                                    "placeholder": "answer-1",
-                                                    "value": {
-                                                        "source": "answers",
-                                                        "identifier": "answer-1"
-                                                    }
-                                                },
-                                                {
-                                                    "placeholder": "answer-2",
-                                                    "value": {
-                                                        "source": "answers",
-                                                        "identifier": "answer-2"
-                                                    }
-                                                }
-                                            ]
-                                        }
-                                    }
-                                ]
-                            },
-                            "routing_rules": [
-                                {
                                     "section": "End"
                                 }
                             ]
                         },
                         {
+                            "id": "country-interstitial-india",
                             "type": "Interstitial",
-                            "id": "correct-answer",
                             "content": {
-                                "title": "Correct",
+                                "title": "Condition: Does not contain India",
                                 "contents": [
                                     {
-                                        "description": {
-                                            "text": "You were asked not to enter <em>123</em> and <em>321</em> and you entered <em>{answer-1}</em> and <em>{answer-2}</em>.",
-                                            "placeholders": [
-                                                {
-                                                    "placeholder": "answer-1",
-                                                    "value": {
-                                                        "source": "answers",
-                                                        "identifier": "answer-1"
-                                                    }
-                                                },
-                                                {
-                                                    "placeholder": "answer-2",
-                                                    "value": {
-                                                        "source": "answers",
-                                                        "identifier": "answer-2"
-                                                    }
-                                                }
-                                            ]
-                                        }
+                                        "description": "You did not chose India."
                                     }
                                 ]
                             }
                         }
                     ],
-                    "id": "group"
+                    "id": "checkboxes"
                 }
             ]
         }
