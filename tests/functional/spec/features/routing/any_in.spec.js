@@ -9,7 +9,7 @@ describe("Feature: Routing - ANY-IN Operator", () => {
         browser.openQuestionnaire("test_new_routing_checkbox_contains_any.json");
       });
 
-      it("When I do select India and Malta, Then I should be routed to the interstitial page", () => {
+      it("When I do select India and Malta, Then I should be routed to the correct answer interstitial page", () => {
         $(CountryCheckboxPage.india()).click();
         $(CountryCheckboxPage.malta()).click();
         $(CountryCheckboxPage.submit()).click();
