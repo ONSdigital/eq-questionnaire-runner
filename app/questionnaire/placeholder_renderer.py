@@ -1,4 +1,4 @@
-from typing import Any, Mapping, Optional
+from typing import Any, Mapping, MutableMapping, Optional
 
 from jsonpointer import resolve_pointer, set_pointer
 from werkzeug.datastructures import ImmutableDict
@@ -36,7 +36,7 @@ class PlaceholderRenderer:
 
     def render_pointer(
         self,
-        dict_to_render: dict[str, Any],
+        dict_to_render: Mapping[str, Any],
         pointer_to_render: str,
         list_item_id: Optional[str],
     ) -> str:
@@ -45,7 +45,7 @@ class PlaceholderRenderer:
         return self.render_placeholder(pointer_data, list_item_id)
 
     def get_plural_count(
-        self, schema_partial: dict[str, str]
+        self, schema_partial: Mapping[str, str]
     ) -> Optional[AnswerValueTypes]:
         source = schema_partial["source"]
         source_id = schema_partial["identifier"]
@@ -61,7 +61,7 @@ class PlaceholderRenderer:
 
     def render_placeholder(
         self,
-        placeholder_data: dict[str, Any],
+        placeholder_data: MutableMapping[str, Any],
         list_item_id: Optional[str],
     ) -> str:
         placeholder_parser = PlaceholderParser(
@@ -95,8 +95,8 @@ class PlaceholderRenderer:
         return formatted_placeholder_data
 
     def render(
-        self, dict_to_render: dict[str, Any], list_item_id: Optional[str]
-    ) -> dict[str, Any]:
+        self, dict_to_render: Mapping[str, Any], list_item_id: Optional[str]
+    ) -> Mapping[str, Any]:
         """
         Transform the current schema json to a fully rendered dictionary
         """

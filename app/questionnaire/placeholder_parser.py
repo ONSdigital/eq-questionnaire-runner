@@ -75,33 +75,30 @@ class PlaceholderParser:
 
     def _parse_transforms(
         self, transform_list: Sequence[Mapping]
-    ) -> Optional[ValueSourceTypes]:
-        transformed_value: Union[
-            list[ValueSourceTypes],
-            ValueSourceEscapedTypes,
-            ValueSourceTypes,
-            TransformedValueTypes,
-        ] = None
+    ) -> TransformedValueTypes:
+        transformed_value: TransformedValueTypes = None
 
         for transform in transform_list:
             transform_args: MutableMapping[str, Any] = {}
 
             for arg_key, arg_value in transform["arguments"].items():
+                resolved_value: Union[
+                    ValueSourceEscapedTypes, ValueSourceTypes, TransformedValueTypes
+                ]
+
                 if isinstance(arg_value, list):
-                    transformed_value = self._resolve_value_source_list(arg_value)
+                    resolved_value = self._resolve_value_source_list(arg_value)
                 elif isinstance(arg_value, dict):
                     if "value" in arg_value:
-                        transformed_value = arg_value["value"]
+                        resolved_value = arg_value["value"]
                     elif arg_value["source"] == "previous_transform":
-                        transformed_value = transformed_value
+                        resolved_value = transformed_value
                     else:
-                        transformed_value = self._value_source_resolver.resolve(
-                            arg_value
-                        )
+                        resolved_value = self._value_source_resolver.resolve(arg_value)
                 else:
-                    transformed_value = arg_value
+                    resolved_value = arg_value
 
-                transform_args[arg_key] = transformed_value
+                transform_args[arg_key] = resolved_value
 
             transformed_value = getattr(self._transformer, transform["transform"])(
                 **transform_args

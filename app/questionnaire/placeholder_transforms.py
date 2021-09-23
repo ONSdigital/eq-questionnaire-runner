@@ -205,7 +205,7 @@ class PlaceholderTransforms:
                 19: "eg",
             }.get(number_to_format, "fed")
 
-    def first_non_empty_item(self, items: list[str]) -> str:
+    def first_non_empty_item(self, items: Sequence[str]) -> str:
         """
         :param items: anything that is iterable
         :return: first non empty value
@@ -220,11 +220,11 @@ class PlaceholderTransforms:
         return ""
 
     @staticmethod
-    def contains(list_to_check: list[str], value: str) -> bool:
+    def contains(list_to_check: Sequence[str], value: str) -> bool:
         return value in list_to_check
 
     @staticmethod
-    def list_has_items(list_to_check: list[str]) -> bool:
+    def list_has_items(list_to_check: Sequence[str]) -> bool:
         return len(list_to_check) > 0
 
     @staticmethod
