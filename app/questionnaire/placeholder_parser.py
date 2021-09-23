@@ -1,5 +1,5 @@
 from decimal import Decimal
-from typing import Any, Mapping, Optional, Sequence, Union
+from typing import Any, Mapping, MutableMapping, Optional, Sequence, Union
 
 from werkzeug.datastructures import ImmutableDict
 
@@ -40,7 +40,7 @@ class PlaceholderParser:
         self._list_item_id = list_item_id
         self._location = location
         self._transformer = PlaceholderTransforms(language)
-        self._placeholder_map: dict[
+        self._placeholder_map: MutableMapping[
             str, Union[ValueSourceEscapedTypes, ValueSourceTypes, None]
         ] = {}
 
@@ -56,7 +56,7 @@ class PlaceholderParser:
 
     def __call__(
         self, placeholder_list: Sequence[Mapping]
-    ) -> dict[str, Union[ValueSourceEscapedTypes, ValueSourceTypes]]:
+    ) -> MutableMapping[str, Union[ValueSourceEscapedTypes, ValueSourceTypes]]:
         placeholder_list = QuestionnaireSchema.get_mutable_deepcopy(placeholder_list)
         for placeholder in placeholder_list:
             if placeholder["placeholder"] not in self._placeholder_map:
@@ -84,7 +84,7 @@ class PlaceholderParser:
         ] = None
 
         for transform in transform_list:
-            transform_args: dict[str, Any] = {}
+            transform_args: MutableMapping[str, Any] = {}
 
             for arg_key, arg_value in transform["arguments"].items():
                 if isinstance(arg_value, list):
