@@ -52,7 +52,9 @@ class PlaceholderParser:
             escape_answer_values=True,
         )
 
-    def __call__(self, placeholder_list: Sequence[Mapping]) -> Mapping:
+    def __call__(
+        self, placeholder_list: Sequence[Mapping]
+    ) -> dict[str, Union[ValueSourceEscapedTypes, ValueSourceTypes, None]]:
         placeholder_list = QuestionnaireSchema.get_mutable_deepcopy(placeholder_list)
         for placeholder in placeholder_list:
             if placeholder["placeholder"] not in self._placeholder_map:
