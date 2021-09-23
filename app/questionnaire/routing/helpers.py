@@ -1,7 +1,7 @@
 from datetime import datetime
 from decimal import Decimal
 from functools import wraps
-from typing import Any, Callable, Union
+from typing import Any, Callable, Sequence, Union
 
 ValueTypes = Union[bool, str, int, float, Decimal, None, datetime]
 
@@ -10,7 +10,7 @@ def _casefold(value: Union[list, ValueTypes]) -> Union[list, ValueTypes]:
     if isinstance(value, str):
         return value.casefold()
 
-    if isinstance(value, list):
+    if isinstance(value, Sequence):
         return [_casefold(v) for v in value]
 
     return value
