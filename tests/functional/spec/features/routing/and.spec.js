@@ -34,7 +34,7 @@ describe("Feature: Routing - And Operator", () => {
         expect(browser.getUrl()).to.contain(IncorrectAnswerPage.pageName);
       });
 
-      it("When I answer both questions incorrectly with 123 and 321, Then I should be routed to the incorrect page", () => {
+      it("When I answer both questions incorrectly with 555 and 444, Then I should be routed to the incorrect page", () => {
         $(FirstNumberQuestionPage.answer1()).setValue(555);
         $(FirstNumberQuestionPage.submit()).click();
         $(SecondNumberQuestionPage.answer2()).setValue(444);
