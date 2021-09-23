@@ -10,7 +10,7 @@ describe("Feature: Routing - OR Operator", () => {
         browser.openQuestionnaire("test_new_routing_or.json");
       });
 
-      it("When I enter 123 and 321, Then I should be routed to the correct page", () => {
+      it("When I enter both answers correctly with 123 and 321, Then I should be routed to the correct page", () => {
         $(FirstNumberQuestionPage.answer1()).setValue(123);
         $(FirstNumberQuestionPage.submit()).click();
         $(SecondNumberQuestionPage.answer2()).setValue(321);
@@ -18,7 +18,7 @@ describe("Feature: Routing - OR Operator", () => {
         expect(browser.getUrl()).to.contain(CorrectAnswerPage.pageName);
       });
 
-      it("When I enter 555 and 321, Then I should be routed to the correct page", () => {
+      it("When I only enter the second answer correctly with 555 and 321, Then I should be routed to the correct page", () => {
         $(FirstNumberQuestionPage.answer1()).setValue(555);
         $(FirstNumberQuestionPage.submit()).click();
         $(SecondNumberQuestionPage.answer2()).setValue(321);
@@ -26,7 +26,7 @@ describe("Feature: Routing - OR Operator", () => {
         expect(browser.getUrl()).to.contain(CorrectAnswerPage.pageName);
       });
 
-      it("When I enter 123 and 555, Then I should be routed to the correct page", () => {
+      it("When I only enter the first answer correctly with 123 and 555, Then I should be routed to the correct page", () => {
         $(FirstNumberQuestionPage.answer1()).setValue(123);
         $(FirstNumberQuestionPage.submit()).click();
         $(SecondNumberQuestionPage.answer2()).setValue(555);
@@ -34,7 +34,7 @@ describe("Feature: Routing - OR Operator", () => {
         expect(browser.getUrl()).to.contain(CorrectAnswerPage.pageName);
       });
 
-      it("When I do not enter 123 or 321, Then I should be routed to the incorrect page", () => {
+      it("When I answer both questions incorrectly with 123 and 321, Then I should be routed to the incorrect page", () => {
         $(FirstNumberQuestionPage.answer1()).setValue(555);
         $(FirstNumberQuestionPage.submit()).click();
         $(SecondNumberQuestionPage.answer2()).setValue(444);
