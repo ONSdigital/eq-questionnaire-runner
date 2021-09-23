@@ -1,6 +1,6 @@
 import CountryCheckboxPage from "../../../generated_pages/new_routing_checkbox_contains_all/country-checkbox.page";
-import CountryInterstitialPage from "../../../generated_pages/new_routing_checkbox_contains_all/country-interstitial-india-malta.page";
-import CountryInterstitialOtherPage from "../../../generated_pages/new_routing_checkbox_contains_all/country-interstitial-other.page";
+import CountryInterstitialPage from "../../../generated_pages/new_routing_checkbox_contains_all/country-interstitial-india-and-malta.page";
+import CountryInterstitialOtherPage from "../../../generated_pages/new_routing_checkbox_contains_all/country-interstitial-not-india-and-malta.page";
 
 describe("Feature: Routing - ALL-IN Operator", () => {
   describe("Equals", () => {
@@ -15,13 +15,13 @@ describe("Feature: Routing - ALL-IN Operator", () => {
         $(CountryCheckboxPage.submit()).click();
         expect(browser.getUrl()).to.contain(CountryInterstitialPage.pageName);
       });
-      it("When I do select India only, Then I should be routed to the submit page", () => {
+      it("When I do select India only, Then I should be routed to the correct answer interstitial page", () => {
         $(CountryCheckboxPage.india()).click();
         $(CountryCheckboxPage.submit()).click();
         expect(browser.getUrl()).to.contain(CountryInterstitialOtherPage.pageName);
       });
 
-      it("When I do not select India or Malta, Then I should be routed to the submit page", () => {
+      it("When I do not select India or Malta, Then I should be routed to the incorrect answer interstitial page", () => {
         $(CountryCheckboxPage.liechtenstein()).click();
         $(CountryCheckboxPage.submit()).click();
         expect(browser.getUrl()).to.contain(CountryInterstitialOtherPage.pageName);

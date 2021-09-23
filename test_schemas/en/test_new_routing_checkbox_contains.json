@@ -1,12 +1,12 @@
 {
     "mime_type": "application/json/ons/eq",
     "language": "en",
-    "schema_version": "0.0.2",
+    "schema_version": "0.0.1",
     "data_version": "0.0.3",
-    "survey_id": "0",
-    "title": "Test Routing Checkbox Contains IN",
+    "survey_id": "001",
+    "title": "Test Routing Not",
     "theme": "default",
-    "description": "A test survey for routing based on IN condition",
+    "description": "A test survey for routing based on the NOT operator",
     "metadata": [
         {
             "name": "user_id",
@@ -42,12 +42,19 @@
                                 "id": "country-checkbox-question",
                                 "title": "Have you visited any of the following countries?",
                                 "type": "General",
-                                "description": ["Select India to go to the interstital page"],
+                                "guidance": {
+                                    "contents": [
+                                        {
+                                            "description": "Choose India here to route to the “correct” page otherwise you will be routed to the “incorrect” page"
+                                        }
+                                    ]
+                                },
                                 "answers": [
                                     {
                                         "id": "country-checkbox-answer",
                                         "mandatory": false,
                                         "type": "Checkbox",
+                                        "instruction": "Select India",
                                         "options": [
                                             {
                                                 "label": "India",
@@ -83,7 +90,24 @@
                                     }
                                 },
                                 {
-                                    "block": "country-interstitial-other"
+                                    "block": "country-interstitial-not-india"
+                                }
+                            ]
+                        },
+                        {
+                            "id": "country-interstitial-not-india",
+                            "type": "Interstitial",
+                            "content": {
+                                "title": "Condition: Does Not Contain India",
+                                "contents": [
+                                    {
+                                        "description": "You did not chose India."
+                                    }
+                                ]
+                            },
+                            "routing_rules": [
+                                {
+                                    "section": "End"
                                 }
                             ]
                         },
@@ -91,25 +115,18 @@
                             "id": "country-interstitial-india",
                             "type": "Interstitial",
                             "content": {
-                                "title": "Condition: Contains India",
+                                "title": "Condition: Contained India",
                                 "contents": [
                                     {
                                         "description": "You chose India."
                                     }
                                 ]
-                            }
-                        },
-                        {
-                            "id": "country-interstitial-other",
-                            "type": "Interstitial",
-                            "content": {
-                                "title": "Condition: Doesn’t Contain India",
-                                "contents": [
-                                    {
-                                        "description": "You didn’t choose India."
-                                    }
-                                ]
-                            }
+                            },
+                            "routing_rules": [
+                                {
+                                    "section": "End"
+                                }
+                            ]
                         }
                     ],
                     "id": "checkboxes"

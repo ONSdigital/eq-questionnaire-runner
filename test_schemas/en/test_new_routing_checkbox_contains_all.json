@@ -1,12 +1,12 @@
 {
     "mime_type": "application/json/ons/eq",
     "language": "en",
-    "schema_version": "0.0.2",
+    "schema_version": "0.0.1",
     "data_version": "0.0.3",
-    "survey_id": "0",
-    "title": "Test Routing Checkbox Contains ALL",
+    "survey_id": "001",
+    "title": "Test Routing Not",
     "theme": "default",
-    "description": "A test survey for routing based on ALL-IN condition",
+    "description": "A test survey for routing based on the NOT operator",
     "metadata": [
         {
             "name": "user_id",
@@ -42,12 +42,19 @@
                                 "id": "country-checkbox-question",
                                 "title": "Have you visited any of the following countries?",
                                 "type": "General",
-                                "description": ["Select India and Malta to go to the interstital page"],
+                                "guidance": {
+                                    "contents": [
+                                        {
+                                            "description": "Choose India and Malta here to route to the “correct” page otherwise you will be routed to the “incorrect” page"
+                                        }
+                                    ]
+                                },
                                 "answers": [
                                     {
                                         "id": "country-checkbox-answer",
                                         "mandatory": false,
                                         "type": "Checkbox",
+                                        "instruction": "Select India and Malta",
                                         "options": [
                                             {
                                                 "label": "India",
@@ -71,7 +78,7 @@
                             },
                             "routing_rules": [
                                 {
-                                    "block": "country-interstitial-india-malta",
+                                    "block": "country-interstitial-india-and-malta",
                                     "when": {
                                         "all-in": [
                                             ["India", "Malta"],
@@ -83,33 +90,43 @@
                                     }
                                 },
                                 {
-                                    "block": "country-interstitial-other"
+                                    "block": "country-interstitial-not-india-and-malta"
                                 }
                             ]
                         },
                         {
-                            "id": "country-interstitial-india-malta",
+                            "id": "country-interstitial-not-india-and-malta",
                             "type": "Interstitial",
                             "content": {
-                                "title": "Condition: Contains India and Malta",
+                                "title": "Condition: Does Not Contain India And Malta",
+                                "contents": [
+                                    {
+                                        "description": "You did not chose India and Malta."
+                                    }
+                                ]
+                            },
+                            "routing_rules": [
+                                {
+                                    "section": "End"
+                                }
+                            ]
+                        },
+                        {
+                            "id": "country-interstitial-india-and-malta",
+                            "type": "Interstitial",
+                            "content": {
+                                "title": "Condition: Contained India And Malta",
                                 "contents": [
                                     {
                                         "description": "You chose India and Malta."
                                     }
                                 ]
-                            }
-                        },
-                        {
-                            "id": "country-interstitial-other",
-                            "type": "Interstitial",
-                            "content": {
-                                "title": "Condition: Doesn’t Contain India and Malta",
-                                "contents": [
-                                    {
-                                        "description": "You didn’t choose India and Malta."
-                                    }
-                                ]
-                            }
+                            },
+                            "routing_rules": [
+                                {
+                                    "section": "End"
+                                }
+                            ]
                         }
                     ],
                     "id": "checkboxes"
