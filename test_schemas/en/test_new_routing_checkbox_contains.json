@@ -83,7 +83,7 @@
                                     }
                                 },
                                 {
-                                    "section": "End"
+                                    "block": "country-interstitial-other"
                                 }
                             ]
                         },
@@ -95,6 +95,18 @@
                                 "contents": [
                                     {
                                         "description": "You chose India."
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "id": "country-interstitial-other",
+                            "type": "Interstitial",
+                            "content": {
+                                "title": "Condition: Doesn’t Contain India",
+                                "contents": [
+                                    {
+                                        "description": "You didn’t choose India."
                                     }
                                 ]
                             }

@@ -1,6 +1,6 @@
 import CountryCheckboxPage from "../../../generated_pages/new_routing_checkbox_contains_any/country-checkbox.page";
 import CountryInterstitialPage from "../../../generated_pages/new_routing_checkbox_contains_any/country-interstitial-india-malta.page";
-import SubmitPage from "../../../generated_pages/new_routing_checkbox_contains_any/submit.page";
+import CountryInterstitialOtherPage from "../../../generated_pages/new_routing_checkbox_contains_any/country-interstitial-other.page";
 
 describe("Feature: Routing - ANY-IN Operator", () => {
   describe("Equals", () => {
@@ -24,7 +24,7 @@ describe("Feature: Routing - ANY-IN Operator", () => {
       it("When I do not select India or Malta, Then I should be routed to the submit page", () => {
         $(CountryCheckboxPage.liechtenstein()).click();
         $(CountryCheckboxPage.submit()).click();
-        expect(browser.getUrl()).to.contain(SubmitPage.pageName);
+        expect(browser.getUrl()).to.contain(CountryInterstitialOtherPage.pageName);
       });
     });
   });

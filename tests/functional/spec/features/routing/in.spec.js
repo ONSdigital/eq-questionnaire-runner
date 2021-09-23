@@ -1,6 +1,6 @@
 import CountryCheckboxPage from "../../../generated_pages/new_routing_checkbox_contains/country-checkbox.page";
 import CountryInterstitialPage from "../../../generated_pages/new_routing_checkbox_contains/country-interstitial-india.page";
-import SubmitPage from "../../../generated_pages/new_routing_checkbox_contains/submit.page";
+import CountryInterstitialOtherPage from "../../../generated_pages/new_routing_checkbox_contains/country-interstitial-other.page";
 
 describe("Feature: Routing - IN Operator", () => {
   describe("Equals", () => {
@@ -18,7 +18,7 @@ describe("Feature: Routing - IN Operator", () => {
       it("When I do not select India, Then I should be routed to the submit page", () => {
         $(CountryCheckboxPage.liechtenstein()).click();
         $(CountryCheckboxPage.submit()).click();
-        expect(browser.getUrl()).to.contain(SubmitPage.pageName);
+        expect(browser.getUrl()).to.contain(CountryInterstitialOtherPage.pageName);
       });
     });
   });

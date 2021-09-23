@@ -83,7 +83,7 @@
                                     }
                                 },
                                 {
-                                    "section": "End"
+                                    "block": "country-interstitial-other"
                                 }
                             ]
                         },
@@ -91,10 +91,22 @@
                             "id": "country-interstitial-india-malta",
                             "type": "Interstitial",
                             "content": {
-                                "title": "Condition: Contains India and (or) Malta",
+                                "title": "Condition: Contains India and (Or) Malta",
                                 "contents": [
                                     {
                                         "description": "You chose India or Malta (or both)."
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "id": "country-interstitial-other",
+                            "type": "Interstitial",
+                            "content": {
+                                "title": "Condition: Doesn’t Contain India or Malta (Or Both)",
+                                "contents": [
+                                    {
+                                        "description": "You didn’t choose India or Malta (or both)."
                                     }
                                 ]
                             }
