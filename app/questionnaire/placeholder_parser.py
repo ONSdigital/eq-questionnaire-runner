@@ -67,7 +67,7 @@ class PlaceholderParser:
 
     def _parse_placeholder(
         self, placeholder: Mapping
-    ) -> Union[ValueSourceEscapedTypes, ValueSourceTypes]:
+    ) -> Union[ValueSourceEscapedTypes, ValueSourceTypes, TransformedValueTypes]:
         try:
             return self._parse_transforms(placeholder["transforms"])
         except KeyError:
