@@ -39,6 +39,13 @@
                             "type": "Question",
                             "id": "number-question-1",
                             "question": {
+                                "guidance": {
+                                    "contents": [
+                                        {
+                                            "description": "Enter 123 here OR 321 on the next question to route to the “correct” page otherwise you will be routed to the “incorrect” page"
+                                        }
+                                    ]
+                                },
                                 "answers": [
                                     {
                                         "id": "answer-1",
@@ -56,13 +63,6 @@
                             "type": "Question",
                             "id": "number-question-2",
                             "question": {
-                                "guidance": {
-                                    "contents": [
-                                        {
-                                            "description": "Enter 123 here OR 321 on the next question to route to the “correct” page otherwise you will be routed to the “incorrect” page"
-                                        }
-                                    ]
-                                },
                                 "answers": [
                                     {
                                         "id": "answer-2",
