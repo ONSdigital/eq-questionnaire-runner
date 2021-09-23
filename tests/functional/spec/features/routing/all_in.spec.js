@@ -2,9 +2,9 @@ import CountryCheckboxPage from "../../../generated_pages/new_routing_checkbox_c
 import CountryInterstitialPage from "../../../generated_pages/new_routing_checkbox_contains_all/country-interstitial-india-malta.page";
 import SubmitPage from "../../../generated_pages/new_routing_checkbox_contains_all/submit.page";
 
-describe("Feature: Routing - All-In Operator", () => {
+describe("Feature: Routing - ALL-IN Operator", () => {
   describe("Equals", () => {
-    describe("Given I start the all-in operator routing survey", () => {
+    describe("Given I start the ALL-IN operator routing survey", () => {
       beforeEach(() => {
         browser.openQuestionnaire("test_new_routing_checkbox_contains_all.json");
       });

@@ -2,9 +2,9 @@ import CountryCheckboxPage from "../../../generated_pages/new_routing_checkbox_c
 import CountryInterstitialPage from "../../../generated_pages/new_routing_checkbox_contains/country-interstitial-india.page";
 import SubmitPage from "../../../generated_pages/new_routing_checkbox_contains/submit.page";
 
-describe("Feature: Routing - In Operator", () => {
+describe("Feature: Routing - IN Operator", () => {
   describe("Equals", () => {
-    describe("Given I start the in operator routing survey", () => {
+    describe("Given I start the IN operator routing survey", () => {
       beforeEach(() => {
         browser.openQuestionnaire("test_new_routing_checkbox_contains.json");
       });

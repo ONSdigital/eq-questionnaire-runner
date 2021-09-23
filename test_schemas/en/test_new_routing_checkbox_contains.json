@@ -4,9 +4,9 @@
     "schema_version": "0.0.2",
     "data_version": "0.0.3",
     "survey_id": "0",
-    "title": "Test Routing Checkbox Contains In",
+    "title": "Test Routing Checkbox Contains IN",
     "theme": "default",
-    "description": "A test survey for routing based on in condition",
+    "description": "A test survey for routing based on IN condition",
     "metadata": [
         {
             "name": "user_id",
@@ -42,6 +42,7 @@
                                 "id": "country-checkbox-question",
                                 "title": "Have you visited any of the following countries?",
                                 "type": "General",
+                                "description": ["Select India to go to the interstital page"],
                                 "answers": [
                                     {
                                         "id": "country-checkbox-answer",
