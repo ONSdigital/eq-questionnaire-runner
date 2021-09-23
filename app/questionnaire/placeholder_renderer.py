@@ -1,4 +1,4 @@
-from typing import Any, Union
+from typing import Any, Mapping, Optional
 
 from jsonpointer import resolve_pointer, set_pointer
 from werkzeug.datastructures import ImmutableDict
@@ -38,7 +38,7 @@ class PlaceholderRenderer:
         self,
         dict_to_render: dict[str, Any],
         pointer_to_render: str,
-        list_item_id: Union[str, None],
+        list_item_id: Optional[str],
     ) -> str:
         pointer_data = resolve_pointer(dict_to_render, pointer_to_render)
 
@@ -46,7 +46,7 @@ class PlaceholderRenderer:
 
     def get_plural_count(
         self, schema_partial: dict[str, str]
-    ) -> Union[AnswerValueTypes, None]:
+    ) -> Optional[AnswerValueTypes]:
         source = schema_partial["source"]
         source_id = schema_partial["identifier"]
 
@@ -62,7 +62,7 @@ class PlaceholderRenderer:
     def render_placeholder(
         self,
         placeholder_data: dict[str, Any],
-        list_item_id: Union[str, None],
+        list_item_id: Optional[str],
     ) -> str:
         placeholder_parser = PlaceholderParser(
             language=self._language,
@@ -77,11 +77,11 @@ class PlaceholderRenderer:
         placeholder_data = QuestionnaireSchema.get_mutable_deepcopy(placeholder_data)
 
         if "text_plural" in placeholder_data:
-            plural_schema: dict[str, dict] = placeholder_data["text_plural"]
+            plural_schema: Mapping[str, dict] = placeholder_data["text_plural"]
             count = self.get_plural_count(plural_schema["count"])
 
             plural_form_key = get_plural_form_key(count, self._language)
-            plural_forms: dict[str, str] = plural_schema["forms"]
+            plural_forms: Mapping[str, str] = plural_schema["forms"]
             placeholder_data["text"] = plural_forms[plural_form_key]
 
         if "text" not in placeholder_data and "placeholders" not in placeholder_data:
@@ -95,7 +95,7 @@ class PlaceholderRenderer:
         return formatted_placeholder_data
 
     def render(
-        self, dict_to_render: dict[str, Any], list_item_id: Union[str, None]
+        self, dict_to_render: dict[str, Any], list_item_id: Optional[str]
     ) -> dict[str, Any]:
         """
         Transform the current schema json to a fully rendered dictionary

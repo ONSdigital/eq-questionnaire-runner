@@ -1,5 +1,5 @@
 from decimal import Decimal
-from typing import Any, Mapping, Sequence, Union
+from typing import Any, Mapping, Optional, Sequence, Union
 
 from werkzeug.datastructures import ImmutableDict
 
@@ -12,6 +12,8 @@ from app.questionnaire.value_source_resolver import (
     ValueSourceResolver,
     ValueSourceTypes,
 )
+
+TransformedValueTypes = Union[None, str, int, Decimal, bool]
 
 
 class PlaceholderParser:
@@ -27,7 +29,7 @@ class PlaceholderParser:
         list_store: ListStore,
         metadata: ImmutableDict,
         schema: QuestionnaireSchema,
-        list_item_id: Union[str, None] = None,
+        list_item_id: Optional[str] = None,
         location: Location = None,
     ):
 
@@ -54,7 +56,7 @@ class PlaceholderParser:
 
     def __call__(
         self, placeholder_list: Sequence[Mapping]
-    ) -> dict[str, Union[ValueSourceEscapedTypes, ValueSourceTypes, None]]:
+    ) -> dict[str, Union[ValueSourceEscapedTypes, ValueSourceTypes]]:
         placeholder_list = QuestionnaireSchema.get_mutable_deepcopy(placeholder_list)
         for placeholder in placeholder_list:
             if placeholder["placeholder"] not in self._placeholder_map:
@@ -65,7 +67,7 @@ class PlaceholderParser:
 
     def _parse_placeholder(
         self, placeholder: Mapping
-    ) -> Union[ValueSourceEscapedTypes, ValueSourceTypes, None]:
+    ) -> Union[ValueSourceEscapedTypes, ValueSourceTypes]:
         try:
             return self._parse_transforms(placeholder["transforms"])
         except KeyError:
@@ -73,15 +75,12 @@ class PlaceholderParser:
 
     def _parse_transforms(
         self, transform_list: Sequence[Mapping]
-    ) -> Union[ValueSourceTypes, None]:
+    ) -> Optional[ValueSourceTypes]:
         transformed_value: Union[
             list[ValueSourceTypes],
             ValueSourceEscapedTypes,
             ValueSourceTypes,
-            None,
-            str,
-            int,
-            Decimal,
+            TransformedValueTypes,
         ] = None
 
         for transform in transform_list:

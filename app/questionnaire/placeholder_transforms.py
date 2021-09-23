@@ -66,7 +66,9 @@ class PlaceholderTransforms:
         """
         return [item for item in list_to_filter if item or item is False or item == 0]
 
-    def concatenate_list(self, list_to_concatenate: list[str], delimiter: str) -> str:
+    def concatenate_list(
+        self, list_to_concatenate: Sequence[str], delimiter: str
+    ) -> str:
         filtered_list = self.remove_empty_from_list(list_to_concatenate)
         return delimiter.join(filtered_list)
 
