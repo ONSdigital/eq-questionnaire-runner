@@ -113,28 +113,6 @@ def test_answer_source(answer_value, expected_result):
 
 @pytest.mark.parametrize(
     "answer_value, expected_result",
-    [(["India", "Malta"], True), (["india", "malta"], True)],
-)
-def test_answer_source_tuple(answer_value, expected_result):
-    when_rule_evaluator = get_when_rule_evaluator(
-        answer_store=AnswerStore([{"answer_id": "some-answer", "value": answer_value}]),
-    )
-
-    assert (
-        when_rule_evaluator.evaluate(
-            rule={
-                Operator.ANY_IN: [
-                    {"source": "answers", "identifier": "some-answer"},
-                    ("India", "Malta"),
-                ]
-            }
-        )
-        is expected_result
-    )
-
-
-@pytest.mark.parametrize(
-    "answer_value, expected_result",
     [(3, True), (7, False)],
 )
 def test_answer_source_with_list_item_selector_location(answer_value, expected_result):

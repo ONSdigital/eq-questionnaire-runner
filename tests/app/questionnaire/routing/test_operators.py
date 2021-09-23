@@ -229,6 +229,7 @@ def test_operation_in(operands, expected_result):
         [([0.5, 1], [0.3, 1]), False],
         [([1, 1.5, 3, 5], [1.5, 3, 5, 7]), False],
         [([None, "No"], ["Yes", "No"]), False],
+        [(["Yes", "No"], ("Yes", "No")), True],
     ],
 )
 def test_operation_all_in(operands, expected_result):
