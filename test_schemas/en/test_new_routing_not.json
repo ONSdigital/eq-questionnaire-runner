@@ -71,7 +71,7 @@
                             },
                             "routing_rules": [
                                 {
-                                    "block": "country-interstitial-india",
+                                    "block": "country-interstitial-not-india",
                                     "when": {
                                         "not": [
                                             {
@@ -87,18 +87,30 @@
                                     }
                                 },
                                 {
-                                    "section": "End"
+                                    "block": "country-interstitial-india"
                                 }
                             ]
                         },
                         {
-                            "id": "country-interstitial-india",
+                            "id": "country-interstitial-not-india",
                             "type": "Interstitial",
                             "content": {
                                 "title": "Condition: Does not contain India",
                                 "contents": [
                                     {
                                         "description": "You did not chose India."
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "id": "country-interstitial-india",
+                            "type": "Interstitial",
+                            "content": {
+                                "title": "Condition: Contained India",
+                                "contents": [
+                                    {
+                                        "description": "You chose India."
                                     }
                                 ]
                             }
