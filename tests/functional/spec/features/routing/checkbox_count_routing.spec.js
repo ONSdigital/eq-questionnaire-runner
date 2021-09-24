@@ -2,7 +2,7 @@ import ToppingCheckboxPage from "../../../generated_pages/new_routing_checkbox_c
 import CorrectAnswerPage from "../../../generated_pages/new_routing_checkbox_count/correct-answer.page";
 import IncorrectAnswerPage from "../../../generated_pages/new_routing_checkbox_count/incorrect-answer.page";
 
-describe("Test routing using number of checkboxes checked", () => {
+describe("Test routing using count of checkboxes checked", () => {
   beforeEach(() => {
     browser.openQuestionnaire("test_new_routing_checkbox_count.json");
   });
