@@ -263,10 +263,9 @@ class TestPlaceholderParser(unittest.TestCase):
     def list_item_count(self):
 
         assert (
-            self.transforms.list_item_count(["Alice Aardvark", "Bob Berty Brown", "Dave Dixon Davies"])
+            self.transforms.list_item_count(
+                ["Alice Aardvark", "Bob Berty Brown", "Dave Dixon Davies"]
+            )
             == 3
         )
-        assert (
-            self.transforms.list_item_count([])
-            == 0
-        )
+        assert self.transforms.list_item_count([]) == 0
