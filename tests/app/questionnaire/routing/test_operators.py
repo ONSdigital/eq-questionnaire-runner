@@ -224,6 +224,7 @@ def test_operation_in(operands, expected_result):
         [([0.5], [0.5, 1]), True],
         [([1, 3, 5], [5, 3, 1, 7]), True],
         [([None, 1], [1, None, 3]), True],
+        [(["Yes", "No"], ("Yes", "No")), True],
         # Test False
         [(["Yes", "No"], ["Nope", "No"]), False],
         [([0.5, 1], [0.3, 1]), False],
