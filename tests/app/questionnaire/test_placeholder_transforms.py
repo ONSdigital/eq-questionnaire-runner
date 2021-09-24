@@ -41,7 +41,7 @@ class TestPlaceholderParser(unittest.TestCase):
         )
 
         assert expected_result == format_value
-        assert none_value == ""
+        assert none_value == "<ul></ul>"
 
     def test_format_possessive(self):
         assert self.transforms.format_possessive("Alice Aardvark") == "Alice Aardvark’s"
