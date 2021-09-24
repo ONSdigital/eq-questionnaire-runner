@@ -30,7 +30,7 @@ class TestPlaceholderParser(unittest.TestCase):
         names = ["Alice Aardvark", "Bob Berty Brown", "Dave Dixon Davies"]
 
         format_value = self.transforms.format_list(names)
-        none_value = self.transforms.format_list([])
+        none_value = self.transforms.format_list(None)
 
         expected_result = (
             "<ul>"
@@ -41,7 +41,7 @@ class TestPlaceholderParser(unittest.TestCase):
         )
 
         assert expected_result == format_value
-        assert none_value == "<ul></ul>"
+        assert none_value == ""
 
     def test_format_possessive(self):
         assert self.transforms.format_possessive("Alice Aardvark") == "Alice Aardvark’s"
@@ -268,4 +268,4 @@ class TestPlaceholderParser(unittest.TestCase):
             )
             == 3
         )
-        assert self.transforms.list_item_count([]) == 0
+        assert self.transforms.list_item_count(None) == 0
