@@ -32,12 +32,15 @@ class PlaceholderTransforms:
 
     @staticmethod
     def format_list(list_to_format):
-        formatted_list = "<ul>"
-        for item in list_to_format:
-            formatted_list += f"<li>{item}</li>"
-        formatted_list += "</ul>"
+        if list_to_format is not None:
+            formatted_list = "<ul>"
+            for item in list_to_format:
+                formatted_list += f"<li>{item}</li>"
+            formatted_list += "</ul>"
 
-        return formatted_list
+            return formatted_list
+        else:
+            return ""
 
     @staticmethod
     def remove_empty_from_list(list_to_filter):
@@ -227,3 +230,10 @@ class PlaceholderTransforms:
     @staticmethod
     def _create_hyperlink(href: str, link_text: str) -> str:
         return f'<a href="{href}">{link_text}</a>'
+
+    @staticmethod
+    def list_item_count(list_to_count) -> int:
+        if list_to_count is not None:
+            return len(list_to_count)
+        else:
+            return 0

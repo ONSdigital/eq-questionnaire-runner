@@ -30,6 +30,7 @@ class TestPlaceholderParser(unittest.TestCase):
         names = ["Alice Aardvark", "Bob Berty Brown", "Dave Dixon Davies"]
 
         format_value = self.transforms.format_list(names)
+        none_value = self.transforms.format_list([])
 
         expected_result = (
             "<ul>"
@@ -40,6 +41,7 @@ class TestPlaceholderParser(unittest.TestCase):
         )
 
         assert expected_result == format_value
+        assert none_value == ""
 
     def test_format_possessive(self):
         assert self.transforms.format_possessive("Alice Aardvark") == "Alice Aardvark’s"
@@ -245,6 +247,7 @@ class TestPlaceholderParser(unittest.TestCase):
         )
 
     def test_email_link_with_subject_and_reference(self):
+
         assert (
             self.transforms.email_link("test@email.com", "test subject", "12345")
             == '<a href="mailto:test@email.com?subject=test%20subject%2012345">test@email.com</a>'
@@ -255,4 +258,15 @@ class TestPlaceholderParser(unittest.TestCase):
         assert (
             self.transforms.telephone_number_link("012345 67890")
             == '<a href="tel:01234567890">012345 67890</a>'
+        )
+
+    def list_item_count(self):
+
+        assert (
+            self.transforms.list_item_count(["Alice Aardvark", "Bob Berty Brown", "Dave Dixon Davies"])
+            == 3
+        )
+        assert (
+            self.transforms.list_item_count([])
+            == 0
         )

@@ -103,15 +103,15 @@
                                 "contents": [
                                     {
                                         "description": {
-                                            "text": "You were asked to select <em>2</em> toppings but you actually selected <em>{answer}</em>.",
+                                            "text": "You were asked to select <em>2</em> toppings but you actually selected <em>{answer_count}</em>.",
                                             "placeholders": [
                                                 {
-                                                    "placeholder": "answer",
+                                                    "placeholder": "answer_count",
                                                     "transforms": [
                                                         {
-                                                            "transform": "format_list",
+                                                            "transform": "list_item_count",
                                                             "arguments": {
-                                                                "list_to_format": {
+                                                                "list_to_count": {
                                                                     "source": "answers",
                                                                     "identifier": "topping-checkbox-answer"
                                                                 }
@@ -138,14 +138,21 @@
                                 "contents": [
                                     {
                                         "description": {
-                                            "text": "You were asked to select <em>2</em> toppings and you selected <em>{answer}</em>.",
+                                            "text": "You were asked to select <em>2</em> toppings and you selected <em>{answer_count}</em>.",
                                             "placeholders": [
                                                 {
-                                                    "placeholder": "answer",
-                                                    "value": {
-                                                        "source": "answers",
-                                                        "identifier": "topping-checkbox-answer"
-                                                    }
+                                                    "placeholder": "answer_count",
+                                                    "transforms": [
+                                                        {
+                                                            "transform": "list_item_count",
+                                                            "arguments": {
+                                                                "list_to_count": {
+                                                                    "source": "answers",
+                                                                    "identifier": "topping-checkbox-answer"
+                                                                }
+                                                            }
+                                                        }
+                                                    ]
                                                 }
                                             ]
                                         }
