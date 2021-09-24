@@ -260,7 +260,7 @@ class TestPlaceholderParser(unittest.TestCase):
             == '<a href="tel:01234567890">012345 67890</a>'
         )
 
-    def list_item_count(self):
+    def test_list_item_count(self):
 
         assert (
             self.transforms.list_item_count(
