@@ -1,4 +1,5 @@
-from datetime import datetime, timezone
+from datetime import datetime, timedelta, timezone
+from typing import Optional
 from urllib.parse import quote
 
 from babel.dates import format_datetime
@@ -7,6 +8,17 @@ from dateutil.relativedelta import relativedelta
 from flask_babel import ngettext
 
 from app.settings import DEFAULT_LOCALE
+
+
+DAYS = {
+    "monday": 0,
+    "tuesday": 1,
+    "wednesday": 2,
+    "thursday": 3,
+    "friday": 4,
+    "saturday": 5,
+    "sunday": 6,
+}
 
 
 class PlaceholderTransforms:
@@ -127,6 +139,43 @@ class PlaceholderTransforms:
             "{number_of_days} day", "{number_of_days} days", time.days
         )
         return day_string.format(number_of_days=time.days)
+
+    @staticmethod
+    def generate_date_range(
+        reference_date: str,
+        number_of_weeks_prior: int,
+        days_in_range: int,
+        first_day_of_week: Optional[str] = "monday",
+    ):
+        """Generate a start and end date for a date range given a reference date,
+        weeks prior and number of days in range.
+
+        :param reference_date: The date to reference the date range from, can be YYY&-MM-DD, YY-MM or 'now'.
+        :type reference_date: datetime
+        :param number_of_weeks_prior: Number of weeks prior to the refence date to start the date range.
+        :type number_of_weeks_prior: int
+        :param days_in_range: Number of days in the range, including the resolved start date.
+        :type days_in_range: int
+        :param first_day_of_week: Which day of the week should be considered the first (default 'monday').
+            This is the day of the week which is selected as the start of the range.
+        :type first_day_of_week: str
+        :return: The start and end datetime objects of the range.
+        :rtype: Tuple[datetime, datetime]
+        """
+        reference_date = PlaceholderTransforms.parse_date(reference_date)
+        first_day_of_week = DAYS[first_day_of_week]
+
+        first_day_of_last_partial_week = reference_date - timedelta(
+            days=reference_date.weekday() + first_day_of_week
+        )
+        first_day_of_prior_full_week = first_day_of_last_partial_week - timedelta(
+            days=number_of_weeks_prior * 7
+        )
+        last_day_of_range = first_day_of_prior_full_week + timedelta(
+            days=days_in_range - 1
+        )
+
+        return (first_day_of_prior_full_week, last_day_of_range)
 
     @staticmethod
     def parse_date(date):

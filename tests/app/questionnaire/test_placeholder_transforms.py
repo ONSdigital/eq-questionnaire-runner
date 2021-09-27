@@ -1,3 +1,4 @@
+from datetime import datetime, timezone
 import unittest
 
 from app.questionnaire.placeholder_transforms import PlaceholderTransforms
@@ -256,3 +257,38 @@ class TestPlaceholderParser(unittest.TestCase):
             self.transforms.telephone_number_link("012345 67890")
             == '<a href="tel:01234567890">012345 67890</a>'
         )
+
+    def generate_date_range_base(self, params):
+        with self.subTest():
+            for i, (
+                ref_date,
+                weeks_prior,
+                day_range,
+                first_day_of_week,
+                expected,
+            ) in enumerate(params):
+                self.assertEqual(
+                    PlaceholderTransforms.generate_date_range(
+                        ref_date, weeks_prior, day_range, first_day_of_week
+                    ),
+                    (
+                        PlaceholderTransforms.parse_date(expected[0]),
+                        PlaceholderTransforms.parse_date(expected[1]),
+                    ),
+                    f"FAIL: Item {i}",
+                )
+
+    def test_generate_date_range_all_weekdays_generate_ok(self):
+        params = [
+            ("2021-09-26", 1, 7, "monday", ("2021-9-13", "2021-9-19")),
+            ("2021-09-27", 1, 7, "monday", ("2021-9-20", "2021-9-26")),
+            ("2021-09-28", 1, 7, "monday", ("2021-9-20", "2021-9-26")),
+            ("2021-09-29", 1, 7, "monday", ("2021-9-20", "2021-9-26")),
+            ("2021-09-30", 1, 7, "monday", ("2021-9-20", "2021-9-26")),
+            ("2021-10-01", 1, 7, "monday", ("2021-9-20", "2021-9-26")),
+            ("2021-10-02", 1, 7, "monday", ("2021-9-20", "2021-9-26")),
+            ("2021-10-03", 1, 7, "monday", ("2021-9-20", "2021-9-26")),
+            ("2021-10-04", 1, 7, "monday", ("2021-9-27", "2021-10-03")),
+        ]
+
+        self.generate_date_range_base(params)
