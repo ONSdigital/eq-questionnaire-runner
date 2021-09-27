@@ -143,18 +143,18 @@ class PlaceholderTransforms:
     @staticmethod
     def generate_date_range(
         reference_date: str,
-        number_of_weeks_prior: int,
+        offset_full_weeks: int,
         days_in_range: int,
-        first_day_of_week: Optional[str] = "monday",
+        first_day_of_week: str = "monday",
     ):
         """Generate a start and end date for a date range given a reference date,
         weeks prior and number of days in range.
 
         :param reference_date: The date to reference the date range from, can be YYY&-MM-DD, YY-MM or 'now'.
         :type reference_date: datetime
-        :param number_of_weeks_prior: Number of weeks prior to the refence date to start the date range.
-        :type number_of_weeks_prior: int
-        :param days_in_range: Number of days in the range, including the resolved start date.
+        :param offset_full_weeks: Number of full weeks to offset from the reference date to start the date range.
+        :type offset_full_weeks: int
+        :param days_in_range: Number of days in the range, including the start date, must be a positive integer.
         :type days_in_range: int
         :param first_day_of_week: Which day of the week should be considered the first (default 'monday').
             This is the day of the week which is selected as the start of the range.
@@ -163,19 +163,25 @@ class PlaceholderTransforms:
         :rtype: Tuple[datetime, datetime]
         """
         reference_date = PlaceholderTransforms.parse_date(reference_date)
-        first_day_of_week = DAYS[first_day_of_week]
+        try:
+            first_day_of_week = DAYS[first_day_of_week.lower()]
+        except KeyError as err:
+            raise KeyError(f"'{first_day_of_week}' is not a valid weekday") from err
+
+        if days_in_range < 1:
+            raise ValueError("'days_in_range' must be a positive integer")
 
         first_day_of_last_partial_week = reference_date - timedelta(
-            days=reference_date.weekday() + first_day_of_week
+            days=(reference_date.weekday() - first_day_of_week) % 7
         )
-        first_day_of_prior_full_week = first_day_of_last_partial_week - timedelta(
-            days=number_of_weeks_prior * 7
+        first_day_of_prior_full_week = first_day_of_last_partial_week + timedelta(
+            days=offset_full_weeks * 7
         )
         last_day_of_range = first_day_of_prior_full_week + timedelta(
             days=days_in_range - 1
         )
 
-        return (first_day_of_prior_full_week, last_day_of_range)
+        return tuple(sorted([first_day_of_prior_full_week, last_day_of_range]))
 
     @staticmethod
     def parse_date(date):

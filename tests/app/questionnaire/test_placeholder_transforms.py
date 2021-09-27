@@ -258,7 +258,18 @@ class TestPlaceholderParser(unittest.TestCase):
             == '<a href="tel:01234567890">012345 67890</a>'
         )
 
-    def generate_date_range_base(self, params):
+    def generate_date_range(self, params):
+        """
+        2021-09-26 Sunday
+        2021-09-27 Monday
+        2021-09-28 Tuesday
+        2021-09-29 Wednesday
+        2021-09-30 Thursday
+        2021-10-01 Friday
+        2021-10-02 Saturday
+        2021-10-03 Sunday
+        2021-10-04 Monday
+        """
         with self.subTest():
             for i, (
                 ref_date,
@@ -267,28 +278,87 @@ class TestPlaceholderParser(unittest.TestCase):
                 first_day_of_week,
                 expected,
             ) in enumerate(params):
-                self.assertEqual(
-                    PlaceholderTransforms.generate_date_range(
-                        ref_date, weeks_prior, day_range, first_day_of_week
-                    ),
-                    (
-                        PlaceholderTransforms.parse_date(expected[0]),
-                        PlaceholderTransforms.parse_date(expected[1]),
-                    ),
-                    f"FAIL: Item {i}",
+                expected = (
+                    PlaceholderTransforms.parse_date(expected[0]),
+                    PlaceholderTransforms.parse_date(expected[1]),
                 )
+                actual = PlaceholderTransforms.generate_date_range(
+                    ref_date, weeks_prior, day_range, first_day_of_week
+                )
+                self.assertEqual(expected, actual, f"FAIL: Item {i}")
 
-    def test_generate_date_range_all_weekdays_generate_ok(self):
+    def test_generate_date_range_all_weekdays(self):
         params = [
-            ("2021-09-26", 1, 7, "monday", ("2021-9-13", "2021-9-19")),
-            ("2021-09-27", 1, 7, "monday", ("2021-9-20", "2021-9-26")),
-            ("2021-09-28", 1, 7, "monday", ("2021-9-20", "2021-9-26")),
-            ("2021-09-29", 1, 7, "monday", ("2021-9-20", "2021-9-26")),
-            ("2021-09-30", 1, 7, "monday", ("2021-9-20", "2021-9-26")),
-            ("2021-10-01", 1, 7, "monday", ("2021-9-20", "2021-9-26")),
-            ("2021-10-02", 1, 7, "monday", ("2021-9-20", "2021-9-26")),
-            ("2021-10-03", 1, 7, "monday", ("2021-9-20", "2021-9-26")),
-            ("2021-10-04", 1, 7, "monday", ("2021-9-27", "2021-10-03")),
+            ("2021-09-26", -1, 7, "monday", ("2021-09-13", "2021-09-19")),
+            ("2021-09-27", -1, 7, "monday", ("2021-09-20", "2021-09-26")),
+            ("2021-09-28", -1, 7, "monday", ("2021-09-20", "2021-09-26")),
+            ("2021-09-29", -1, 7, "monday", ("2021-09-20", "2021-09-26")),
+            ("2021-09-30", -1, 7, "monday", ("2021-09-20", "2021-09-26")),
+            ("2021-10-01", -1, 7, "monday", ("2021-09-20", "2021-09-26")),
+            ("2021-10-02", -1, 7, "monday", ("2021-09-20", "2021-09-26")),
+            ("2021-10-03", -1, 7, "monday", ("2021-09-20", "2021-09-26")),
+            ("2021-10-04", -1, 7, "monday", ("2021-09-27", "2021-10-03")),
         ]
 
-        self.generate_date_range_base(params)
+        self.generate_date_range(params)
+
+    def test_generate_date_range_all_weekdays_equal_to_first_day_of_week(self):
+
+        params = [
+            ("2021-09-27", -1, 7, "monday", ("2021-09-20", "2021-09-26")),
+            ("2021-09-28", -1, 7, "tuesday", ("2021-09-21", "2021-09-27")),
+            ("2021-09-29", -1, 7, "wednesday", ("2021-09-22", "2021-09-28")),
+            ("2021-09-30", -1, 7, "thursday", ("2021-09-23", "2021-09-29")),
+            ("2021-10-01", -1, 7, "friday", ("2021-09-24", "2021-09-30")),
+            ("2021-10-02", -1, 7, "saturday", ("2021-09-25", "2021-10-01")),
+            ("2021-10-03", -1, 7, "sunday", ("2021-09-26", "2021-10-02")),
+        ]
+
+        self.generate_date_range(params)
+
+    def test_generate_date_range_all_weekdays_equal_to_last_day_of_week(self):
+        params = [
+            ("2021-09-26", -1, 7, "monday", ("2021-09-13", "2021-09-19")),
+            ("2021-09-27", -1, 7, "tuesday", ("2021-09-14", "2021-09-20")),
+            ("2021-09-28", -1, 7, "wednesday", ("2021-09-15", "2021-09-21")),
+            ("2021-09-29", -1, 7, "thursday", ("2021-09-16", "2021-09-22")),
+            ("2021-09-30", -1, 7, "friday", ("2021-09-17", "2021-09-23")),
+            ("2021-10-01", -1, 7, "saturday", ("2021-09-18", "2021-09-24")),
+            ("2021-10-02", -1, 7, "sunday", ("2021-09-19", "2021-09-25")),
+        ]
+
+        self.generate_date_range(params)
+
+    def test_generate_date_range_all_weekdays_varying_weeks_offset(self):
+        params = [
+            ("2021-09-27", 0, 7, "monday", ("2021-09-27", "2021-10-03")),
+            ("2021-09-27", -1, 7, "monday", ("2021-09-20", "2021-09-26")),
+            ("2021-09-27", -2, 7, "monday", ("2021-09-13", "2021-09-19")),
+            ("2021-09-27", -4, 7, "monday", ("2021-08-30", "2021-09-05")),
+            ("2021-09-27", -52, 7, "monday", ("2020-09-28", "2020-10-04")),
+            ("2021-09-27", 1, 7, "monday", ("2021-10-04", "2021-10-10")),
+            ("2021-09-27", 2, 7, "monday", ("2021-10-11", "2021-10-17")),
+            ("2021-09-27", 4, 7, "monday", ("2021-10-25", "2021-10-31")),
+            ("2021-09-27", 52, 7, "monday", ("2022-09-26", "2022-10-02")),
+        ]
+
+        self.generate_date_range(params)
+
+    def test_generate_date_range_all_weekdays_varying_range(self):
+        params = [
+            ("2021-09-27", 0, 1, "monday", ("2021-09-27", "2021-09-27")),
+            ("2021-09-27", 0, 2, "tuesday", ("2021-09-21", "2021-09-22")),
+            ("2021-09-27", -1, 14, "monday", ("2021-09-20", "2021-10-03")),
+            ("2021-09-27", -52, 365, "monday", ("2020-09-28", "2021-09-27")),
+            ("2021-09-27", 1, 12, "monday", ("2021-10-04", "2021-10-15")),
+        ]
+
+        self.generate_date_range(params)
+
+    def test_generate_date_range_raises_ValueError(self):
+        with self.assertRaises(ValueError):
+            PlaceholderTransforms.generate_date_range("2021-09-27", 0, -7)
+
+    def test_generate_date_range_raises_KeyError(self):
+        with self.assertRaises(KeyError):
+            PlaceholderTransforms.generate_date_range("2021-09-27", 0, -7, "randomday")
