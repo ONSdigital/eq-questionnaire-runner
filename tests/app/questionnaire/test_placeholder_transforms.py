@@ -361,4 +361,4 @@ class TestPlaceholderParser(unittest.TestCase):
 
     def test_generate_date_range_raises_KeyError(self):
         with self.assertRaises(KeyError):
-            PlaceholderTransforms.generate_date_range("2021-09-27", 0, -7, "randomday")
+            PlaceholderTransforms.generate_date_range("2021-09-27", 0, 7, "randomday")
