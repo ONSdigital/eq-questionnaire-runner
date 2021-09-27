@@ -7,61 +7,64 @@ from app.questionnaire.schema_utils import choose_question_to_display
 
 # pylint: disable=too-many-locals
 def convert_answers_to_payload_0_0_1(
-    metadata, answer_store, list_store, schema, routing_path
+    metadata, answer_store, list_store, schema, full_routing_path
 ):
     """
     Convert answers into the data format below
+    Answers for list items are not currently supported
     'data': {
           '001': '01-01-2016',
           '002': '30-03-2016'
         }
     :param metadata: questionnaire metadata
     :param answer_store: questionnaire answers
+    :param list_store: list store
     :param schema: QuestionnaireSchema class with popuated schema json
-    :param routing_path: the path followed in the questionnaire
+    :param full_routing_path: the path followed in the questionnaire
     :return: data in a formatted form
     """
     data = OrderedDict()
-    for block_id in routing_path:
-        answer_ids = schema.get_answer_ids_for_block(block_id)
-        answers_in_block = answer_store.get_answers_by_answer_id(
-            answer_ids, routing_path.list_item_id
-        )
-
-        for answer_in_block in answers_in_block:
-            answer_schema = None
-
-            block = schema.get_block_for_answer_id(answer_in_block.answer_id)
-            current_location = Location(
-                block_id=block_id,
-                section_id=routing_path.section_id,
-                list_item_id=routing_path.list_item_id,
+    for routing_path in full_routing_path:
+        for block_id in routing_path:
+            answer_ids = schema.get_answer_ids_for_block(block_id)
+            answers_in_block = answer_store.get_answers_by_answer_id(
+                answer_ids, routing_path.list_item_id
             )
-            question = choose_question_to_display(
-                block,
-                schema,
-                metadata,
-                answer_store,
-                list_store,
-                current_location=current_location,
-            )
-            for answer in question["answers"]:
-                if answer["id"] == answer_in_block.answer_id:
-                    answer_schema = answer
 
-            value = answer_in_block.value
+            for answer_in_block in answers_in_block:
+                answer_schema = None
 
-            if answer_schema is not None and value is not None:
-                if answer_schema["type"] == "Checkbox":
-                    data.update(
-                        _get_checkbox_answer_data(answer_store, answer_schema, value)
-                    )
-                elif "q_code" in answer_schema:
-                    answer_data = _encode_value(value)
-                    if answer_data is not None:
-                        data[answer_schema["q_code"]] = _format_downstream_answer(
-                            answer_schema["type"], answer_in_block.value, answer_data
+                block = schema.get_block_for_answer_id(answer_in_block.answer_id)
+                current_location = Location(
+                    block_id=block_id,
+                    section_id=routing_path.section_id,
+                    list_item_id=routing_path.list_item_id,
+                )
+                question = choose_question_to_display(
+                    block,
+                    schema,
+                    metadata,
+                    answer_store,
+                    list_store,
+                    current_location=current_location,
+                )
+                for answer in question["answers"]:
+                    if answer["id"] == answer_in_block.answer_id:
+                        answer_schema = answer
+
+                value = answer_in_block.value
+
+                if answer_schema is not None and value is not None:
+                    if answer_schema["type"] == "Checkbox":
+                        data.update(
+                            _get_checkbox_answer_data(answer_store, answer_schema, value)
                         )
+                    elif "q_code" in answer_schema:
+                        answer_data = _encode_value(value)
+                        if answer_data is not None:
+                            data[answer_schema["q_code"]] = _format_downstream_answer(
+                                answer_schema["type"], answer_in_block.value, answer_data
+                            )
 
     return data
 
