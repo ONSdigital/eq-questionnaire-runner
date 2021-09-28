@@ -35,7 +35,9 @@ def test_convert_answers_to_payload_0_0_1_with_key_error(fake_questionnaire_stor
 
     questionnaire = make_schema("0.0.1", "section-1", "group-1", "block-1", question)
 
-    full_routing_path = [RoutingPath(["block-1"], section_id="section-1", list_item_id=None)]
+    full_routing_path = [
+        RoutingPath(["block-1"], section_id="section-1", list_item_id=None)
+    ]
     answer_object = convert_answers_to_payload_0_0_1(
         fake_questionnaire_store.metadata,
         fake_questionnaire_store.answer_store,
@@ -57,7 +59,9 @@ def test_answer_with_zero(fake_questionnaire_store):
 
     questionnaire = make_schema("0.0.1", "section-1", "group-1", "block-1", question)
 
-    full_routing_path = [RoutingPath(["block-1"], section_id="section-1", list_item_id=None)]
+    full_routing_path = [
+        RoutingPath(["block-1"], section_id="section-1", list_item_id=None)
+    ]
 
     answer_object = convert_answers(
         QuestionnaireSchema(questionnaire),
@@ -81,7 +85,9 @@ def test_answer_with_float(fake_questionnaire_store):
 
     questionnaire = make_schema("0.0.1", "section-1", "group-1", "block-1", question)
 
-    full_routing_path = [RoutingPath(["block-1"], section_id="section-1", list_item_id=None)]
+    full_routing_path = [
+        RoutingPath(["block-1"], section_id="section-1", list_item_id=None)
+    ]
 
     answer_object = convert_answers(
         QuestionnaireSchema(questionnaire),
@@ -106,7 +112,9 @@ def test_answer_with_string(fake_questionnaire_store):
 
     questionnaire = make_schema("0.0.1", "section-1", "group-1", "block-1", question)
 
-    full_routing_path = [RoutingPath(["block-1"], section_id="section-1", list_item_id=None)]
+    full_routing_path = [
+        RoutingPath(["block-1"], section_id="section-1", list_item_id=None)
+    ]
 
     answer_object = convert_answers(
         QuestionnaireSchema(questionnaire),
@@ -128,7 +136,9 @@ def test_answer_without_qcode(fake_questionnaire_store):
 
     questionnaire = make_schema("0.0.1", "section-1", "group-1", "block-1", question)
 
-    full_routing_path = [RoutingPath(["block-1"], section_id="section-1", list_item_id=None)]
+    full_routing_path = [
+        RoutingPath(["block-1"], section_id="section-1", list_item_id=None)
+    ]
 
     answer_object = convert_answers(
         QuestionnaireSchema(questionnaire),
@@ -413,7 +423,9 @@ def test_converter_q_codes_for_empty_strings(fake_questionnaire_store):
 
 
 def test_radio_answer(fake_questionnaire_store):
-    full_routing_path = [RoutingPath(["radio-block"], section_id="section-1", list_item_id=None)]
+    full_routing_path = [
+        RoutingPath(["radio-block"], section_id="section-1", list_item_id=None)
+    ]
     fake_questionnaire_store.answer_store = AnswerStore(
         [Answer("radio-answer", "Coffee").to_dict()]
     )
@@ -450,7 +462,9 @@ def test_radio_answer(fake_questionnaire_store):
 
 
 def test_number_answer(fake_questionnaire_store):
-    full_routing_path = [RoutingPath(["number-block"], section_id="section-1", list_item_id=None)]
+    full_routing_path = [
+        RoutingPath(["number-block"], section_id="section-1", list_item_id=None)
+    ]
     fake_questionnaire_store.answer_store = AnswerStore(
         [Answer("number-answer", 0.9999).to_dict()]
     )
@@ -478,7 +492,9 @@ def test_number_answer(fake_questionnaire_store):
 
 
 def test_percentage_answer(fake_questionnaire_store):
-    full_routing_path = [RoutingPath(["percentage-block"], section_id="section-1", list_item_id=None)]
+    full_routing_path = [
+        RoutingPath(["percentage-block"], section_id="section-1", list_item_id=None)
+    ]
     fake_questionnaire_store.answer_store = AnswerStore(
         [Answer("percentage-answer", 100).to_dict()]
     )
@@ -506,7 +522,9 @@ def test_percentage_answer(fake_questionnaire_store):
 
 
 def test_textarea_answer(fake_questionnaire_store):
-    full_routing_path = [RoutingPath(["textarea-block"], section_id="section-1", list_item_id=None)]
+    full_routing_path = [
+        RoutingPath(["textarea-block"], section_id="section-1", list_item_id=None)
+    ]
     fake_questionnaire_store.answer_store = AnswerStore(
         [Answer("textarea-answer", "example text.").to_dict()]
     )
@@ -534,7 +552,9 @@ def test_textarea_answer(fake_questionnaire_store):
 
 
 def test_currency_answer(fake_questionnaire_store):
-    full_routing_path = [RoutingPath(["currency-block"], section_id="section-1", list_item_id=None)]
+    full_routing_path = [
+        RoutingPath(["currency-block"], section_id="section-1", list_item_id=None)
+    ]
     fake_questionnaire_store.answer_store = AnswerStore(
         [Answer("currency-answer", 99.99).to_dict()]
     )
@@ -562,7 +582,9 @@ def test_currency_answer(fake_questionnaire_store):
 
 
 def test_dropdown_answer(fake_questionnaire_store):
-    full_routing_path = [RoutingPath(["dropdown-block"], section_id="section-1", list_item_id=None)]
+    full_routing_path = [
+        RoutingPath(["dropdown-block"], section_id="section-1", list_item_id=None)
+    ]
     fake_questionnaire_store.answer_store = AnswerStore(
         [Answer("dropdown-answer", "Liverpool").to_dict()]
     )
@@ -601,7 +623,9 @@ def test_dropdown_answer(fake_questionnaire_store):
 
 
 def test_date_answer(fake_questionnaire_store):
-    full_routing_path = [RoutingPath(["date-block"], section_id="section-1", list_item_id=None)]
+    full_routing_path = [
+        RoutingPath(["date-block"], section_id="section-1", list_item_id=None)
+    ]
 
     fake_questionnaire_store.answer_store = AnswerStore(
         [
@@ -637,7 +661,9 @@ def test_date_answer(fake_questionnaire_store):
 
 
 def test_unit_answer(fake_questionnaire_store):
-    full_routing_path = [RoutingPath(["unit-block"], section_id="section-1", list_item_id=None)]
+    full_routing_path = [
+        RoutingPath(["unit-block"], section_id="section-1", list_item_id=None)
+    ]
     fake_questionnaire_store.answer_store = AnswerStore(
         [Answer("unit-answer", 10).to_dict()]
     )

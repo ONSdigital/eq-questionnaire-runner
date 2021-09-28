@@ -57,13 +57,17 @@ def convert_answers_to_payload_0_0_1(
                 if answer_schema is not None and value is not None:
                     if answer_schema["type"] == "Checkbox":
                         data.update(
-                            _get_checkbox_answer_data(answer_store, answer_schema, value)
+                            _get_checkbox_answer_data(
+                                answer_store, answer_schema, value
+                            )
                         )
                     elif "q_code" in answer_schema:
                         answer_data = _encode_value(value)
                         if answer_data is not None:
                             data[answer_schema["q_code"]] = _format_downstream_answer(
-                                answer_schema["type"], answer_in_block.value, answer_data
+                                answer_schema["type"],
+                                answer_in_block.value,
+                                answer_data,
                             )
 
     return data
