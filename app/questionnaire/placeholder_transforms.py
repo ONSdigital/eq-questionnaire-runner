@@ -1,5 +1,4 @@
 from datetime import datetime, timedelta, timezone
-from typing import Optional
 from urllib.parse import quote
 
 from babel.dates import format_datetime
@@ -36,7 +35,7 @@ class PlaceholderTransforms:
     def format_currency(self, number=None, currency="GBP"):
         return format_currency(number, currency, locale=self.locale)
 
-    def format_date(self, date_to_format, date_format):
+    def format_date(self, date_to_format: str, date_format: str) -> str:
         date_to_format = datetime.strptime(
             date_to_format, self.input_date_format
         ).replace(tzinfo=timezone.utc)
@@ -146,7 +145,7 @@ class PlaceholderTransforms:
         offset_full_weeks: int,
         days_in_range: int,
         first_day_of_week: str = "monday",
-    ):
+    ) -> tuple[datetime, datetime]:
         """Generate a start and end date for a date range given a reference date,
         weeks prior and number of days in range.
 
@@ -182,6 +181,34 @@ class PlaceholderTransforms:
         )
 
         return tuple(sorted([first_day_of_prior_full_week, last_day_of_range]))
+
+    @staticmethod
+    def format_date_range_pair(date_pair: tuple[datetime, datetime]) -> str:
+        """Format a pair of dates as a string, clarifying differences in month or year.
+
+        E.g.
+            Monday 1 to Sunday 8 September 2021
+            Monday 29 September to Sunday 6 October 2021
+            Monday 29 December 2021 to Sunday 6 January 2022
+
+        :param date_pair: Pair of datetime objects representing a date range.
+        :type date_pair: tuple[datetime, datetime]
+        :return: String containing the date range as text.
+        :rtype: str
+        """
+        date1, date2 = date_pair
+        date1_format = "%A %d".replace(" 0", "")
+        date2_format = "%A %d %B %Y"
+
+        if date1.year != date2.year:
+            date1_format += " %B %Y"
+        elif date1.month != date2.month:
+            date1_format += " %B"
+
+        date1_formatted = date1.strftime(date1_format)
+        date2_formatted = date2.strftime(date2_format)
+
+        return f"{date1_formatted} to {date2_formatted}"
 
     @staticmethod
     def parse_date(date):

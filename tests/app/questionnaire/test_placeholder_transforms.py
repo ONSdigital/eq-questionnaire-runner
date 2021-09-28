@@ -259,28 +259,17 @@ class TestPlaceholderParser(unittest.TestCase):
         )
 
     def generate_date_range(self, params):
-        """
-        2021-09-26 Sunday
-        2021-09-27 Monday
-        2021-09-28 Tuesday
-        2021-09-29 Wednesday
-        2021-09-30 Thursday
-        2021-10-01 Friday
-        2021-10-02 Saturday
-        2021-10-03 Sunday
-        2021-10-04 Monday
-        """
         with self.subTest():
             for i, (
                 ref_date,
                 weeks_prior,
                 day_range,
                 first_day_of_week,
-                expected,
+                (date_from, date_to),
             ) in enumerate(params):
                 expected = (
-                    PlaceholderTransforms.parse_date(expected[0]),
-                    PlaceholderTransforms.parse_date(expected[1]),
+                    PlaceholderTransforms.parse_date(date_from),
+                    PlaceholderTransforms.parse_date(date_to),
                 )
                 actual = PlaceholderTransforms.generate_date_range(
                     ref_date, weeks_prior, day_range, first_day_of_week
@@ -355,10 +344,46 @@ class TestPlaceholderParser(unittest.TestCase):
 
         self.generate_date_range(params)
 
-    def test_generate_date_range_raises_ValueError(self):
+    def test_generate_date_range_negative_range_raises_ValueError(self):
         with self.assertRaises(ValueError):
             PlaceholderTransforms.generate_date_range("2021-09-27", 0, -7)
 
-    def test_generate_date_range_raises_KeyError(self):
+    def test_generate_date_range_bad_day_name_raises_KeyError(self):
         with self.assertRaises(KeyError):
             PlaceholderTransforms.generate_date_range("2021-09-27", 0, 7, "randomday")
+
+    def format_date_range_pair(self, params):
+        with self.subTest():
+            for i, (
+                (date_from, date_to),
+                expected,
+            ) in enumerate(params):
+                actual = PlaceholderTransforms.format_date_range_pair(
+                    (
+                        PlaceholderTransforms.parse_date(date_from),
+                        PlaceholderTransforms.parse_date(date_to),
+                    )
+                )
+                self.assertEqual(expected, actual, f"FAIL: Item {i}")
+
+    def test_format_date_range_pair(self):
+        params = [
+            (
+                ("2021-09-15", "2021-09-21"),
+                "Wednesday 15 to Tuesday 21 September 2021",
+            ),
+            (
+                ("2021-09-15", "2021-10-15"),
+                "Wednesday 15 September to Friday 15 October 2021",
+            ),
+            (
+                ("2021-09-15", "2022-09-15"),
+                "Wednesday 15 September 2021 to Thursday 15 September 2022",
+            ),
+            (
+                ("2021-09-15", "2022-10-15"),
+                "Wednesday 15 September 2021 to Saturday 15 October 2022",
+            ),
+        ]
+
+        self.format_date_range_pair(params)
