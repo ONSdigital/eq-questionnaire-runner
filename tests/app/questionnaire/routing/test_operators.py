@@ -339,7 +339,7 @@ def test_nonetype_operands_for_array_operators(operator_name, operands):
         ([("tuple element 1", "tuple element 2")], 2),
         ([["list element 1", "list element 2"]], 2),
         ([[]], 0),
-        ([None], 0),```
+        ([None], 0),
     ],
 )
 def test_operation_count(operands, expected_result):
