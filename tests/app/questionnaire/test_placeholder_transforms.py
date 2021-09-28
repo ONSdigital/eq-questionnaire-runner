@@ -272,4 +272,4 @@ class TestPlaceholderParser(unittest.TestCase):
             )
             == 3
         )
-        assert self.transforms.list_item_count(None) == 0
+        assert self.transforms.list_item_count(None) == None
