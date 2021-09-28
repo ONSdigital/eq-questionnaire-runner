@@ -1369,7 +1369,11 @@ class TestQuestionnaireForm(
             )
 
             renderer = PlaceholderRenderer(
-                language="en", schema=schema, answer_store=answer_store
+                language="en",
+                answer_store=answer_store,
+                list_store=ListStore(),
+                metadata={},
+                schema=schema,
             )
             rendered_schema = renderer.render(question_schema, None)
 

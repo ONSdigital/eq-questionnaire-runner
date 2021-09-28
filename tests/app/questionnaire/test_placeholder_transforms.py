@@ -1,4 +1,5 @@
 import unittest
+from decimal import Decimal
 
 from app.questionnaire.placeholder_transforms import PlaceholderTransforms
 
@@ -120,8 +121,11 @@ class TestPlaceholderParser(unittest.TestCase):
             == "Milk, Eggs, Flour, Water"
         )
 
-    def test_add(self):
-        assert self.transforms.add(1, 2) == 3
+    def test_add_int(self):
+        assert self.transforms.add(int(1), int(2)) == int(3)
+
+    def test_add_decimal(self):
+        assert self.transforms.add(Decimal("1.11"), Decimal("2.22")) == Decimal("3.33")
 
     def test_format_ordinal_with_determiner(self):
         assert self.transforms.format_ordinal(1, "a_or_an") == "a 1st"

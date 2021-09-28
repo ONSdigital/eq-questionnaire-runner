@@ -23,7 +23,13 @@ def test_metadata_placeholder():
     ]
 
     period_str = "Aug 2018"
-    parser = PlaceholderParser(language="en", metadata={"period_str": period_str})
+    parser = PlaceholderParser(
+        language="en",
+        answer_store=AnswerStore(),
+        list_store=ListStore(),
+        metadata={"period_str": period_str},
+        schema=QuestionnaireSchema({}),
+    )
 
     placeholders = parser(placeholder_list)
     assert period_str == placeholders["period"]
@@ -54,7 +60,11 @@ def test_previous_answer_transform_placeholder():
     )
 
     parser = PlaceholderParser(
-        language="en", schema=QuestionnaireSchema({}), answer_store=answer_store
+        language="en",
+        answer_store=answer_store,
+        list_store=ListStore(),
+        metadata={},
+        schema=QuestionnaireSchema({}),
     )
     placeholders = parser(placeholder_list)
 
@@ -81,7 +91,11 @@ def test_metadata_transform_placeholder():
     ]
 
     parser = PlaceholderParser(
-        language="en", metadata={"ref_p_start_date": "2019-02-11"}
+        language="en",
+        answer_store=AnswerStore(),
+        list_store=ListStore(),
+        metadata={"ref_p_start_date": "2019-02-11"},
+        schema=QuestionnaireSchema({}),
     )
     placeholders = parser(placeholder_list)
 
@@ -115,6 +129,9 @@ def test_multiple_answer_transform_placeholder():
                 {"answer_id": "last-name", "value": "Bloggs"},
             ]
         ),
+        list_store=ListStore(),
+        metadata={},
+        schema=QuestionnaireSchema({}),
     )
 
     placeholders = parser(placeholder_list)
@@ -142,7 +159,10 @@ def test_first_non_empty_item_transform_placeholder():
 
     parser = PlaceholderParser(
         language="en",
+        answer_store=AnswerStore(),
+        list_store=ListStore(),
         metadata={"ru_name": "ru_name"},
+        schema=QuestionnaireSchema({}),
     )
 
     placeholders = parser(placeholder_list)
@@ -173,6 +193,9 @@ def test_format_list_answer_transform_placeholder():
         answer_store=AnswerStore(
             [{"answer_id": "checkbox-answer", "value": ["Ham", "Cheese"]}]
         ),
+        list_store=ListStore(),
+        metadata={},
+        schema=QuestionnaireSchema({}),
     )
 
     placeholders = parser(placeholder_list)
@@ -208,6 +231,9 @@ def test_placeholder_parser_escapes_answers():
                 }
             ]
         ),
+        list_store=ListStore(),
+        metadata={},
+        schema=QuestionnaireSchema({}),
     )
 
     placeholders = parser(placeholder_list)
@@ -245,7 +271,11 @@ def test_multiple_metadata_transform_placeholder():
     ]
 
     parser = PlaceholderParser(
-        language="en", metadata={"ref_p_start_date": "2019-02-11"}
+        language="en",
+        answer_store=AnswerStore(),
+        list_store=ListStore(),
+        metadata={"ref_p_start_date": "2019-02-11"},
+        schema=QuestionnaireSchema({}),
     )
 
     placeholders = parser(placeholder_list)
@@ -274,7 +304,10 @@ def test_multiple_metadata_list_transform_placeholder():
 
     parser = PlaceholderParser(
         language="en",
+        answer_store=AnswerStore(),
+        list_store=ListStore(),
         metadata={"ref_p_start_date": "2019-02-11", "ref_p_end_date": "2019-10-11"},
+        schema=QuestionnaireSchema({}),
     )
     placeholders = parser(placeholder_list)
 
@@ -306,6 +339,9 @@ def test_checkbox_transform_placeholder():
                 {"answer_id": "checkbox-answer", "value": ["Ham", "Cheese"]},
             ]
         ),
+        list_store=ListStore(),
+        metadata={},
+        schema=QuestionnaireSchema({}),
     )
 
     placeholders = parser(placeholder_list)
@@ -340,7 +376,9 @@ def test_mixed_transform_placeholder():
         answer_store=AnswerStore(
             [{"answer_id": "date-of-birth-answer", "value": "1999-01-01"}]
         ),
+        list_store=ListStore(),
         metadata={"second-date": "2019-02-02"},
+        schema=QuestionnaireSchema({}),
     )
     placeholders = parser(placeholder_list)
 
@@ -371,6 +409,9 @@ def test_mixed_transform_placeholder_value():
         answer_store=AnswerStore(
             [{"answer_id": "date-of-birth-answer", "value": "1999-01-01"}]
         ),
+        list_store=ListStore(),
+        metadata={},
+        schema=QuestionnaireSchema({}),
     )
     placeholders = parser(placeholder_list)
 
@@ -389,7 +430,13 @@ def test_list_source_count():
     list_store.add_list_item("people")
     list_store.add_list_item("people")
 
-    parser = PlaceholderParser(language="en", list_store=list_store)
+    parser = PlaceholderParser(
+        language="en",
+        answer_store=AnswerStore(),
+        list_store=list_store,
+        metadata={},
+        schema=QuestionnaireSchema({}),
+    )
     placeholders = parser(placeholder_list)
 
     assert placeholders["number_of_people"] == 2
@@ -414,7 +461,13 @@ def test_list_source_count_in_transform():
     list_store = ListStore()
     list_store.add_list_item("people")
 
-    parser = PlaceholderParser(language="en", list_store=list_store)
+    parser = PlaceholderParser(
+        language="en",
+        answer_store=AnswerStore(),
+        list_store=list_store,
+        metadata={},
+        schema=QuestionnaireSchema({}),
+    )
     placeholders = parser(placeholder_list)
 
     assert placeholders["number_of_people"] == 2
@@ -451,6 +504,9 @@ def test_chain_transform_placeholder():
                 {"answer_id": "last-name", "value": "Bloggs"},
             ]
         ),
+        list_store=ListStore(),
+        metadata={},
+        schema=QuestionnaireSchema({}),
     )
 
     placeholders = parser(placeholder_list)
@@ -486,7 +542,11 @@ def test_placeholder_resolves_answer_value_based_on_first_item_in_list():
     )
 
     parser = PlaceholderParser(
-        language="en", list_store=list_store, answer_store=answer_store
+        language="en",
+        answer_store=answer_store,
+        list_store=list_store,
+        metadata={},
+        schema=QuestionnaireSchema({}),
     )
 
     placeholders = parser(placeholder_list)
@@ -508,7 +568,11 @@ def test_placeholder_resolves_list_item_value_based_on_first_item_in_list():
     list_store = ListStore([{"items": ["item-1", "item-2"], "name": "people"}])
 
     parser = PlaceholderParser(
-        language="en", list_store=list_store, answer_store=AnswerStore()
+        language="en",
+        answer_store=AnswerStore(),
+        list_store=list_store,
+        metadata={},
+        schema=QuestionnaireSchema({}),
     )
 
     placeholders = parser(placeholder_list)
@@ -539,7 +603,10 @@ def test_placeholder_resolves_same_name_items():
 
     parser = PlaceholderParser(
         language="en",
+        answer_store=AnswerStore(),
         list_store=list_store,
+        metadata={},
+        schema=QuestionnaireSchema({}),
         list_item_id="abc123",
     )
 
@@ -636,9 +703,10 @@ def test_placeholder_resolves_name_is_duplicate_chain(mock_schema):
 
     parser = PlaceholderParser(
         language="en",
-        schema=mock_schema,
-        list_store=list_store,
         answer_store=answer_store,
+        list_store=list_store,
+        metadata={},
+        schema=mock_schema,
         list_item_id="abc123",
     )
 
@@ -648,9 +716,10 @@ def test_placeholder_resolves_name_is_duplicate_chain(mock_schema):
 
     parser = PlaceholderParser(
         language="en",
-        schema=mock_schema,
-        list_store=list_store,
         answer_store=answer_store,
+        list_store=list_store,
+        metadata={},
+        schema=mock_schema,
         list_item_id="cde456",
     )
 
@@ -743,9 +812,10 @@ def test_placeholder_resolves_list_has_items_chain(mock_schema):
 
     parser = PlaceholderParser(
         language="en",
-        schema=mock_schema,
-        list_store=list_store,
         answer_store=answer_store,
+        list_store=list_store,
+        metadata={},
+        schema=mock_schema,
         list_item_id="abc123",
     )
 
@@ -755,9 +825,10 @@ def test_placeholder_resolves_list_has_items_chain(mock_schema):
 
     parser = PlaceholderParser(
         language="en",
-        schema=mock_schema,
-        list_store=list_store,
         answer_store=answer_store,
+        list_store=list_store,
+        metadata={},
+        schema=mock_schema,
         list_item_id="cde456",
     )
 

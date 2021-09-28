@@ -30,10 +30,10 @@ class Group:
         )
         self.placeholder_renderer = PlaceholderRenderer(
             language=language,
-            schema=schema,
             answer_store=answer_store,
-            metadata=metadata,
             list_store=list_store,
+            metadata=metadata,
+            schema=schema,
         )
 
     @staticmethod

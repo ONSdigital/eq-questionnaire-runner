@@ -2,6 +2,7 @@ from functools import cached_property
 from typing import Mapping, Optional
 
 from flask import url_for
+from werkzeug.datastructures import ImmutableDict
 
 from app.data_models import AnswerStore, ListStore, ProgressStore
 from app.questionnaire import QuestionnaireSchema
@@ -22,7 +23,7 @@ class SectionSummaryContext(Context):
         answer_store: AnswerStore,
         list_store: ListStore,
         progress_store: ProgressStore,
-        metadata: Mapping,
+        metadata: ImmutableDict,
         routing_path: RoutingPath,
         current_location: Location,
     ):
