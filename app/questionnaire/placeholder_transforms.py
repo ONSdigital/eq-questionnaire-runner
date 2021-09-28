@@ -37,10 +37,8 @@ class PlaceholderTransforms:
             for item in list_to_format:
                 formatted_list += f"<li>{item}</li>"
             formatted_list += "</ul>"
-
             return formatted_list
-        else:
-            return ""
+        return ""
 
     @staticmethod
     def remove_empty_from_list(list_to_filter):
