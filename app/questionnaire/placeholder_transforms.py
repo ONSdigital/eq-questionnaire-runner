@@ -1,4 +1,6 @@
 from datetime import datetime, timezone
+from decimal import Decimal
+from typing import Sequence, Union
 from urllib.parse import quote
 
 from babel.dates import format_datetime
@@ -14,24 +16,29 @@ class PlaceholderTransforms:
     A class to group the transforms that can be used within placeholders
     """
 
-    def __init__(self, language):
+    def __init__(self, language: str):
         self.language = language
         self.locale = DEFAULT_LOCALE if language in ["en", "eo"] else language
 
     input_date_format = "%Y-%m-%d"
     input_date_format_month_year_only = "%Y-%m"
 
-    def format_currency(self, number=None, currency="GBP"):
-        return format_currency(number, currency, locale=self.locale)
+    def format_currency(self, number: int = None, currency: str = "GBP") -> str:
+        formatted_currency: str = format_currency(number, currency, locale=self.locale)
+        return formatted_currency
 
-    def format_date(self, date_to_format, date_format):
-        date_to_format = datetime.strptime(
+    def format_date(self, date_to_format: str, date_format: str) -> str:
+        date_as_datetime = datetime.strptime(
             date_to_format, self.input_date_format
         ).replace(tzinfo=timezone.utc)
-        return format_datetime(date_to_format, date_format, locale=self.locale)
+
+        formatted_datetime: str = format_datetime(
+            date_as_datetime, date_format, locale=self.locale
+        )
+        return formatted_datetime
 
     @staticmethod
-    def format_list(list_to_format):
+    def format_list(list_to_format: Sequence[str]) -> str:
         formatted_list = "<ul>"
         for item in list_to_format:
             formatted_list += f"<li>{item}</li>"
@@ -40,7 +47,8 @@ class PlaceholderTransforms:
         return formatted_list
 
     @staticmethod
-    def remove_empty_from_list(list_to_filter):
+    def remove_empty_from_list(list_to_filter: Sequence[str]) -> list[str]:
+
         """
         :param list_to_filter: anything that is iterable
         :return: a list with no empty values
@@ -58,7 +66,9 @@ class PlaceholderTransforms:
         """
         return [item for item in list_to_filter if item or item is False or item == 0]
 
-    def concatenate_list(self, list_to_concatenate, delimiter):
+    def concatenate_list(
+        self, list_to_concatenate: Sequence[str], delimiter: str
+    ) -> str:
         filtered_list = self.remove_empty_from_list(list_to_concatenate)
         return delimiter.join(filtered_list)
 
@@ -83,7 +93,7 @@ class PlaceholderTransforms:
 
         return self._create_hyperlink(href, email_address)
 
-    def format_possessive(self, string_to_format):
+    def format_possessive(self, string_to_format: str) -> str:
         if string_to_format and self.language == "en":
             lowered_string = string_to_format.lower()
 
@@ -97,14 +107,15 @@ class PlaceholderTransforms:
 
         return string_to_format
 
-    def format_number(self, number):
+    def format_number(self, number: Union[int, Decimal, str]) -> str:
         if number or number == 0:
-            return format_decimal(number, locale=self.locale)
+            formatted_decimal: str = format_decimal(number, locale=self.locale)
+            return formatted_decimal
 
         return ""
 
     @staticmethod
-    def calculate_date_difference(first_date, second_date):
+    def calculate_date_difference(first_date: str, second_date: str) -> str:
 
         time = relativedelta(
             PlaceholderTransforms.parse_date(second_date),
@@ -112,24 +123,24 @@ class PlaceholderTransforms:
         )
 
         if time.years:
-            year_string = ngettext(
+            year_string: str = ngettext(
                 "{number_of_years} year", "{number_of_years} years", time.years
             )
             return year_string.format(number_of_years=time.years)
 
         if time.months:
-            month_string = ngettext(
+            month_string: str = ngettext(
                 "{number_of_months} month", "{number_of_months} months", time.months
             )
             return month_string.format(number_of_months=time.months)
 
-        day_string = ngettext(
+        day_string: str = ngettext(
             "{number_of_days} day", "{number_of_days} days", time.days
         )
         return day_string.format(number_of_days=time.days)
 
     @staticmethod
-    def parse_date(date):
+    def parse_date(date: str) -> datetime:
         """
         :param date: string representing a date
         :return: datetime of that date
@@ -150,10 +161,10 @@ class PlaceholderTransforms:
             ).replace(tzinfo=timezone.utc)
 
     @staticmethod
-    def add(lhs, rhs):
+    def add(lhs: Union[int, Decimal], rhs: Union[int, Decimal]) -> Union[int, Decimal]:
         return lhs + rhs
 
-    def format_ordinal(self, number_to_format, determiner=None):
+    def format_ordinal(self, number_to_format: int, determiner: str = None) -> str:
 
         indicator = self.get_ordinal_indicator(number_to_format)
 
@@ -167,7 +178,7 @@ class PlaceholderTransforms:
 
         return f"{number_to_format}{indicator}"
 
-    def get_ordinal_indicator(self, number_to_format):
+    def get_ordinal_indicator(self, number_to_format: int) -> str:
         if self.language in ["en", "eo"]:
             if 11 <= number_to_format % 100 <= 13:
                 return "th"
@@ -194,7 +205,7 @@ class PlaceholderTransforms:
                 19: "eg",
             }.get(number_to_format, "fed")
 
-    def first_non_empty_item(self, items):
+    def first_non_empty_item(self, items: Sequence[str]) -> str:
         """
         :param items: anything that is iterable
         :return: first non empty value
@@ -209,15 +220,20 @@ class PlaceholderTransforms:
         return ""
 
     @staticmethod
-    def contains(list_to_check, value):
+    def contains(list_to_check: Sequence[str], value: str) -> bool:
         return value in list_to_check
 
     @staticmethod
-    def list_has_items(list_to_check):
+    def list_has_items(list_to_check: Sequence[str]) -> bool:
         return len(list_to_check) > 0
 
     @staticmethod
-    def format_name(first_name, middle_names, last_name, include_middle_names=False):
+    def format_name(
+        first_name: str,
+        middle_names: str,
+        last_name: str,
+        include_middle_names: bool = False,
+    ) -> str:
         return (
             f"{first_name} {middle_names} {last_name}"
             if include_middle_names and middle_names

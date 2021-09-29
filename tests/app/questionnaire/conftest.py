@@ -4,6 +4,7 @@ from unittest.mock import Mock
 import pytest
 
 from app.data_models.answer_store import AnswerStore
+from app.data_models.list_store import ListStore
 from app.questionnaire import QuestionnaireSchema
 from app.questionnaire.location import Location
 from app.questionnaire.placeholder_parser import PlaceholderParser
@@ -30,17 +31,24 @@ def location():
 
 
 @pytest.fixture
-def parser(answer_store, location):
+def parser(answer_store, location, mock_schema):
     return PlaceholderParser(
-        language="en", answer_store=answer_store, location=location
+        language="en",
+        answer_store=answer_store,
+        list_store=ListStore(),
+        metadata={},
+        schema=mock_schema,
+        location=location,
     )
 
 
 @pytest.fixture
-def parser_with_list_item_id(answer_store, location):
+def parser_with_list_item_id(answer_store, list_store, location):
     return PlaceholderParser(
         language="en",
         answer_store=answer_store,
+        list_store=list_store,
+        metadata={},
         location=location,
         list_item_id="test-list-item-id",
     )

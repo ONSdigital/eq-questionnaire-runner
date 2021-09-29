@@ -62,11 +62,11 @@ class BlockHandler:
     def placeholder_renderer(self):
         return PlaceholderRenderer(
             self._language,
-            schema=self._schema,
             answer_store=self._questionnaire_store.answer_store,
-            metadata=self._questionnaire_store.metadata,
-            location=self._current_location,
             list_store=self._questionnaire_store.list_store,
+            metadata=self._questionnaire_store.metadata,
+            schema=self._schema,
+            location=self._current_location,
         )
 
     @cached_property
