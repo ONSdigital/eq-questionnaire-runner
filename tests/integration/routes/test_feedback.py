@@ -264,7 +264,7 @@ class TestFeedback(IntegrationTestCase):
 
         # Then I should see the feedback call to action
         self.assertInBody("What do you think about this service?")
-        self.assertInSelectorCSS("/submitted/feedback/send", class_="feedback__link")
+        self.assertInSelectorCSS("/submitted/feedback/send", class_="ons-feedback__link")
 
     def test_feedback_submission(self):
         # Given I submit the email confirmation form

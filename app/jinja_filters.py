@@ -218,7 +218,7 @@ def should_wrap_with_fieldset_processor():
 
 @blueprint.app_template_filter()
 def get_width_class_for_number(answer):
-    allowable_widths = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 20]
+    allowable_widths = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 15, 20, 30, 40, 50]
 
     min_value = answer.get("minimum", {}).get("value", 0)
     max_value = answer.get("maximum", {}).get("value", MAX_NUMBER)
@@ -232,7 +232,7 @@ def get_width_class_for_number(answer):
 
     for allowable_width in allowable_widths:
         if width <= allowable_width:
-            return f"input--w-{allowable_width}"
+            return allowable_width
 
 
 @blueprint.app_context_processor

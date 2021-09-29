@@ -125,13 +125,13 @@ class TestQuestionnaireHub(IntegrationTestCase):
         # Go back to hub
         self.post({"visitors-anyone-else": "No"})
 
-        table_title_selector = ".summary__item-title"
+        table_title_selector = ".ons-summary__item-title"
         self.assertInSelector("John Doe", table_title_selector)
         self.assertInSelector("Anna Doe", table_title_selector)
         self.assertInSelector("Joe Public", table_title_selector)
 
         section_urls = self.getHtmlSoup().find_all(
-            "a", class_="summary__button", href=True
+            "a", class_="ons-summary__button", href=True
         )
 
         # Go to first section
