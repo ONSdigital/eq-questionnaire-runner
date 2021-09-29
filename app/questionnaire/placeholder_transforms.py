@@ -8,7 +8,6 @@ from flask_babel import ngettext
 
 from app.settings import DEFAULT_LOCALE
 
-
 DAYS = {
     "monday": 0,
     "tuesday": 1,
@@ -161,7 +160,7 @@ class PlaceholderTransforms:
         :return: The start and end datetime objects of the range.
         :rtype: Tuple[datetime, datetime]
         """
-        reference_date = PlaceholderTransforms.parse_date(reference_date)
+        reference_datetime = PlaceholderTransforms.parse_date(reference_date)
         try:
             first_day_of_week = DAYS[first_day_of_week.lower()]
         except KeyError as err:
@@ -170,8 +169,8 @@ class PlaceholderTransforms:
         if days_in_range < 1:
             raise ValueError("'days_in_range' must be a positive integer")
 
-        first_day_of_last_partial_week = reference_date - timedelta(
-            days=(reference_date.weekday() - first_day_of_week) % 7
+        first_day_of_last_partial_week = reference_datetime - timedelta(
+            days=(reference_datetime.weekday() - first_day_of_week) % 7
         )
         first_day_of_prior_full_week = first_day_of_last_partial_week + timedelta(
             days=offset_full_weeks * 7
@@ -183,7 +182,7 @@ class PlaceholderTransforms:
         return tuple(sorted([first_day_of_prior_full_week, last_day_of_range]))
 
     @staticmethod
-    def format_date_range_pair(date_pair: tuple[datetime, datetime]) -> str:
+    def format_date_range_pair(date1: str, date2: str) -> str:
         """Format a pair of dates as a string, clarifying differences in month or year.
 
         E.g.
@@ -191,22 +190,24 @@ class PlaceholderTransforms:
             Monday 29 September to Sunday 6 October 2021
             Monday 29 December 2021 to Sunday 6 January 2022
 
-        :param date_pair: Pair of datetime objects representing a date range.
-        :type date_pair: tuple[datetime, datetime]
+        :param date_pair: Pair of str objects representing a date range.
+        :type date_pair: tuple[str, str]
         :return: String containing the date range as text.
         :rtype: str
         """
-        date1, date2 = date_pair
+        date1_obj, date2_obj = list(
+            map(PlaceholderTransforms.parse_date, (date1, date2))
+        )
         date1_format = "%A %d".replace(" 0", "")
         date2_format = "%A %d %B %Y"
 
-        if date1.year != date2.year:
+        if date1_obj.year != date2_obj.year:
             date1_format += " %B %Y"
-        elif date1.month != date2.month:
+        elif date1_obj.month != date2_obj.month:
             date1_format += " %B"
 
-        date1_formatted = date1.strftime(date1_format)
-        date2_formatted = date2.strftime(date2_format)
+        date1_formatted = date1_obj.strftime(date1_format)
+        date2_formatted = date2_obj.strftime(date2_format)
 
         return f"{date1_formatted} to {date2_formatted}"
 

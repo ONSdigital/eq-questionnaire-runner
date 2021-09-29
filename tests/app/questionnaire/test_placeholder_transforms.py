@@ -1,4 +1,3 @@
-from datetime import datetime, timezone
 import unittest
 
 from app.questionnaire.placeholder_transforms import PlaceholderTransforms
@@ -359,10 +358,7 @@ class TestPlaceholderParser(unittest.TestCase):
                 expected,
             ) in enumerate(params):
                 actual = PlaceholderTransforms.format_date_range_pair(
-                    (
-                        PlaceholderTransforms.parse_date(date_from),
-                        PlaceholderTransforms.parse_date(date_to),
-                    )
+                    date_from, date_to
                 )
                 self.assertEqual(expected, actual, f"FAIL: Item {i}")
 
