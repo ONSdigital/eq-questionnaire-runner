@@ -51,7 +51,7 @@ def get_currency_symbol(currency="GBP"):
 
 @blueprint.app_template_filter()
 def format_percentage(value):
-    return "{}%".format(value)
+    return f"{value}%"
 
 
 def format_unit(unit, value, length="short"):
@@ -108,7 +108,7 @@ def get_format_multilined_string(value):
     escaped_value = escape(value)
     new_line_regex = r"(?:\r\n|\r|\n)+"
     value_with_line_break_tag = re.sub(new_line_regex, "<br>", escaped_value)
-    return "{}".format(value_with_line_break_tag)
+    return f"{value_with_line_break_tag}"
 
 
 def get_format_date(value):
@@ -126,11 +126,10 @@ def get_format_date(value):
         date_format = "yyyy"
 
     date_to_format = convert_to_datetime(value).date()
-    result = "<span class='date'>{date}</span>".format(
-        date=flask_babel.format_date(date_to_format, format=date_format)
-    )
 
-    return result
+    date = flask_babel.format_date(date_to_format, format=date_format)
+
+    return f"<span class='date'>{date}</span>"
 
 
 @pass_eval_context  # type: ignore
@@ -140,11 +139,12 @@ def format_datetime(context, date_time):
     formatted_date = flask_babel.format_date(date_time, format="d MMMM yyyy")
     formatted_time = flask_babel.format_time(date_time, format="HH:mm")
 
-    result = "<span class='date'>{date}</span>".format(
-        date=flask_babel.gettext(
-            "%(date)s at %(time)s", date=formatted_date, time=formatted_time
-        )
+    date = flask_babel.gettext(
+        "%(date)s at %(time)s", date=formatted_date, time=formatted_time
     )
+
+    result = f"<span class='date'>{date}</span>"
+
     return mark_safe(context, result)
 
 
