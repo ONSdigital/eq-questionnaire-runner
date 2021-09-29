@@ -290,6 +290,21 @@ class TestPlaceholderParser(unittest.TestCase):
 
         self.generate_date_range(params)
 
+    def test_generate_date_range_all_weekdays_first_day_midweek(self):
+        params = [
+            ("2021-09-22", -1, 7, "thursday", ("2021-09-09", "2021-09-15")),
+            ("2021-09-23", -1, 7, "thursday", ("2021-09-16", "2021-09-22")),
+            ("2021-09-24", -1, 7, "thursday", ("2021-09-16", "2021-09-22")),
+            ("2021-09-25", -1, 7, "thursday", ("2021-09-16", "2021-09-22")),
+            ("2021-09-26", -1, 7, "thursday", ("2021-09-16", "2021-09-22")),
+            ("2021-09-27", -1, 7, "thursday", ("2021-09-16", "2021-09-22")),
+            ("2021-09-28", -1, 7, "thursday", ("2021-09-16", "2021-09-22")),
+            ("2021-09-29", -1, 7, "thursday", ("2021-09-16", "2021-09-22")),
+            ("2021-09-30", -1, 7, "thursday", ("2021-09-23", "2021-09-29")),
+        ]
+
+        self.generate_date_range(params)
+
     def test_generate_date_range_all_weekdays_equal_to_first_day_of_week(self):
 
         params = [
@@ -337,6 +352,7 @@ class TestPlaceholderParser(unittest.TestCase):
             ("2021-09-27", 0, 1, "monday", ("2021-09-27", "2021-09-27")),
             ("2021-09-27", 0, 2, "tuesday", ("2021-09-21", "2021-09-22")),
             ("2021-09-27", -1, 14, "monday", ("2021-09-20", "2021-10-03")),
+            ("2021-09-27", -1, 14, "friday", ("2021-09-17", "2021-09-30")),
             ("2021-09-27", -52, 365, "monday", ("2020-09-28", "2021-09-27")),
             ("2021-09-27", 1, 12, "monday", ("2021-10-04", "2021-10-15")),
         ]
