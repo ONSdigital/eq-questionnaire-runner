@@ -182,7 +182,7 @@ class PlaceholderTransforms:
         return tuple(sorted([first_day_of_prior_full_week, last_day_of_range]))
 
     @staticmethod
-    def format_date_range_pair(date1: str, date2: str) -> str:
+    def format_date_range_pair(date_range_pair: tuple[str, str]) -> str:
         """Format a pair of dates as a string, clarifying differences in month or year.
 
         E.g.
@@ -196,7 +196,7 @@ class PlaceholderTransforms:
         :rtype: str
         """
         date1_obj, date2_obj = list(
-            map(PlaceholderTransforms.parse_date, (date1, date2))
+            map(PlaceholderTransforms.parse_date, date_range_pair)
         )
         date1_format = "%A %d".replace(" 0", "")
         date2_format = "%A %d %B %Y"

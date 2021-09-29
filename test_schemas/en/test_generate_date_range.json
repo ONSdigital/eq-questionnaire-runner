@@ -1,0 +1,149 @@
+{
+    "mime_type": "application/json/ons/eq",
+    "language": "en",
+    "schema_version": "0.0.1",
+    "data_version": "0.0.3",
+    "survey_id": "001",
+    "title": "Other input fields",
+    "theme": "default",
+    "description": "A questionnaire to test generate_date_range and format_date_range_pair",
+    "metadata": [
+        {
+            "name": "user_id",
+            "type": "string"
+        },
+        {
+            "name": "period_id",
+            "type": "string"
+        },
+        {
+            "name": "ru_name",
+            "type": "string"
+        }
+    ],
+    "questionnaire_flow": {
+        "type": "Linear",
+        "options": {
+            "summary": {
+                "collapsible": false
+            }
+        }
+    },
+    "sections": [
+        {
+            "id": "date-section",
+            "title": "Date Input",
+            "groups": [
+                {
+                    "id": "date-group",
+                    "blocks": [
+                        {
+                            "type": "Question",
+                            "id": "date-question",
+                            "question": {
+                                "id": "primary-date-question",
+                                "title": "Please enter a reference date to generate a date range",
+                                "type": "General",
+                                "answers": [
+                                    {
+                                        "id": "reference-date",
+                                        "label": "Reference Date",
+                                        "mandatory": true,
+                                        "type": "Date"
+                                    },
+                                    {
+                                        "id": "offset-full-weeks",
+                                        "label": "How many full weeks should be offset?",
+                                        "mandatory": true,
+                                        "type": "Number"
+                                    },
+                                    {
+                                        "id": "days-in-range",
+                                        "label": "How many days are in the entire range?",
+                                        "mandatory": true,
+                                        "type": "Number",
+                                        "minimum": 1
+                                    },
+                                    {
+                                        "id": "first-day-of-week",
+                                        "label": "Which day should the first day of the week?",
+                                        "mandatory": true,
+                                        "type": "TextField"
+                                    }
+                                ]
+                            }
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "age-input-section",
+            "title": "Age Input",
+            "groups": [
+                {
+                    "id": "dob-input-group",
+                    "blocks": [
+                        {
+                            "type": "Question",
+                            "id": "dob-question-block",
+                            "question": {
+                                "id": "dob-question",
+                                "title": {
+                                    "text": "Did you work between {formatted_date_range}?",
+                                    "placeholders": [
+                                        {
+                                            "placeholder": "formatted_date_range",
+                                            "transforms": [
+                                                {
+                                                    "transform": "generate_date_range",
+                                                    "arguments": {
+                                                        "reference_date": {
+                                                            "source": "answers",
+                                                            "identifier": "reference-date"
+                                                        },
+                                                        "offset_full_weeks": {
+                                                            "source": "answers",
+                                                            "identifier": "offset-full-weeks"
+                                                        },
+                                                        "days_in_range": {
+                                                            "source": "answers",
+                                                            "identifier": "days-in-range"
+                                                        },
+                                                        "first_day_of_week": {
+                                                            "source": "answers",
+                                                            "identifier": "first-day-of-week"
+                                                        }
+                                                    }
+                                                },
+                                                {
+                                                    "arguments": {
+                                                        "date_range_pair": {
+                                                            "source": "previous_transform"
+                                                        }
+                                                    },
+                                                    "transform": "format_date_range_pair"
+                                                }
+                                            ]
+                                        }
+                                    ]
+                                },
+                                "type": "General",
+                                "answers": [
+                                    {
+                                        "id": "date-of-birth-answer",
+                                        "description": "Days worked",
+                                        "label": "Days you worked",
+                                        "mandatory": true,
+                                        "type": "Number",
+                                        "minimum": 0
+                                    }
+                                ]
+                            }
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}
