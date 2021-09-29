@@ -8,7 +8,7 @@
    {% call onsPanel({
      "spacious": true,
      "type": "success",
-     "classes": "u-mb-s",
+     "classes": "ons-u-mb-s",
      "icon": "check",
      "iconSize": "xl"
      })
@@ -18,7 +18,7 @@
 
   {% call onsPanel({
       "type": "bare",
-      "classes": "u-mb-s",
+      "classes": "ons-u-mb-s",
       "icon": "lock"
       })
   %}
@@ -27,7 +27,7 @@
 
   {% if content.show_send_another_email_guidance %}
     <p><strong>{{ _("Didn't receive an email?")  }}</strong></p>
-    <p class="u-mb-l">{{ _("It can take a few minutes for the email to arrive. If it doesn't arrive, check your junk mail, or you can <a href='{send_confirmation_email_url}' id='send-another-email'>send another confirmation email</a>.").format(send_confirmation_email_url = content.send_confirmation_email_url)}}</p>
+    <p class="ons-u-mb-l">{{ _("It can take a few minutes for the email to arrive. If it doesn't arrive, check your junk mail, or you can <a href='{send_confirmation_email_url}' id='send-another-email'>send another confirmation email</a>.").format(send_confirmation_email_url = content.send_confirmation_email_url)}}</p>
   {% endif %}
 
   {% if content.show_feedback_call_to_action %}

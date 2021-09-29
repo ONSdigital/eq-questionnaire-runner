@@ -25,7 +25,7 @@
           onsButton({
               "submitType": "timer",
               "text": continue_button_text | default(_("Save and continue")),
-              "classes": "u-mt-xl",
+              "classes": "ons-u-mt-xl",
               "attributes": {
                   "data-qa": "btn-submit"
               }
@@ -35,7 +35,7 @@
 
   {% block after_submit_button_content %}
     {% if content.return_to_hub_url %}
-      <p class="u-mt-xl"><a href="{{ content.return_to_hub_url }}" data-ga-action="Choose another section click">{{ _("Choose another section and return to this later") }}</a></p>
+      <p class="ons-u-mt-xl"><a href="{{ content.return_to_hub_url }}" data-ga-action="Choose another section click">{{ _("Choose another section and return to this later") }}</a></p>
     {% endif %}
   {% endblock %}
 
