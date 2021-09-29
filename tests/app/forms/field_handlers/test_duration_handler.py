@@ -1,5 +1,6 @@
 from wtforms import Form, FormField
 
+from app.forms import error_messages
 from app.forms.field_handlers.duration_handler import DurationHandler
 
 
@@ -12,7 +13,7 @@ def test_get_field(value_source_resolver):
         "type": "Duration",
         "units": ["years", "months"],
     }
-    handler = DurationHandler(date_json, value_source_resolver)
+    handler = DurationHandler(date_json, value_source_resolver, error_messages)
 
     class TestForm(Form):
         test_field = handler.get_field()
