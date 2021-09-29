@@ -218,7 +218,9 @@ class TestJinjaFilters(AppContextTestCase):  # pylint: disable=too-many-public-m
         self.assertEqual(get_width_class_for_number(answer), 8)
 
     def test_get_width_class_for_number_large_number(self):
-        answer = {"maximum": {"value": 123456789012345678901123456789012345678901234567890}}
+        answer = {
+            "maximum": {"value": 123456789012345678901123456789012345678901234567890}
+        }
         self.assertIsNone(get_width_class_for_number(answer))
 
     def test_should_wrap_with_fieldset_daterange(self):

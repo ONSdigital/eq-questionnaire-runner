@@ -51,7 +51,7 @@ run-validator:
 link-development-env:
 	ln -sf .development.env .env
 
-run:
+run: build link-development-env
 	pipenv run flask run
 
 run-gunicorn-async: link-development-env
