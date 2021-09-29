@@ -1,5 +1,6 @@
 from wtforms import Form, StringField, validators
 
+from app.forms import error_messages
 from app.forms.field_handlers.string_handler import StringHandler
 
 
@@ -14,6 +15,7 @@ def test_string_field(value_source_resolver):
     string_handler = StringHandler(
         textfield_json,
         value_source_resolver,
+        error_messages,
         disable_validation=True,
     )
 
@@ -28,7 +30,7 @@ def test_string_field(value_source_resolver):
 
 
 def test_get_length_validator(value_source_resolver):
-    string_handler = StringHandler({}, value_source_resolver)
+    string_handler = StringHandler({}, value_source_resolver, error_messages)
 
     validator = string_handler.get_length_validator
 
@@ -40,7 +42,7 @@ def test_get_length_validator_with_message_override(value_source_resolver):
         "validation": {"messages": {"MAX_LENGTH_EXCEEDED": "The message is too long!"}}
     }
 
-    string_handler = StringHandler(answer, value_source_resolver)
+    string_handler = StringHandler(answer, value_source_resolver, error_messages)
 
     validator = string_handler.get_length_validator
 
@@ -50,7 +52,7 @@ def test_get_length_validator_with_message_override(value_source_resolver):
 def test_get_length_validator_with_max_length_override(value_source_resolver):
     answer = {"max_length": 30}
 
-    string_handler = StringHandler(answer, value_source_resolver)
+    string_handler = StringHandler(answer, value_source_resolver, error_messages)
     validator = string_handler.get_length_validator
 
     assert validator.max == 30

@@ -1,5 +1,6 @@
 from wtforms import Form
 
+from app.forms import error_messages
 from app.forms.field_handlers import TextAreaHandler
 from app.forms.fields import MaxTextAreaField
 
@@ -19,7 +20,9 @@ def test_get_field(value_source_resolver):
         },
     }
 
-    text_area_handler = TextAreaHandler(textarea_json, value_source_resolver)
+    text_area_handler = TextAreaHandler(
+        textarea_json, value_source_resolver, error_messages
+    )
 
     class TestForm(Form):
         test_field = text_area_handler.get_field()
@@ -75,7 +78,7 @@ def test_get_text_area_rows_with_default(value_source_resolver):
     }
 
     text_area_handler = TextAreaHandler(
-        answer, value_source_resolver, disable_validation=True
+        answer, value_source_resolver, error_messages, disable_validation=True
     )
 
     class TestForm(Form):
@@ -96,7 +99,7 @@ def test_get_text_area_rows(value_source_resolver):
     }
 
     text_area_handler = TextAreaHandler(
-        answer, value_source_resolver, disable_validation=True
+        answer, value_source_resolver, error_messages, disable_validation=True
     )
 
     class TestForm(Form):

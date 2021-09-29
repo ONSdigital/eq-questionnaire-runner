@@ -35,7 +35,7 @@ def get_formatted_address(address_fields):
     return "<br>".join(address_field for address_field in address_fields.values())
 
 
-def get_formatted_currency(value, currency="GBP"):
+def get_formatted_currency(value, currency="GBP") -> str:
     if value or value == 0:
         return numbers.format_currency(
             number=value, currency=currency, locale=flask_babel.get_locale()

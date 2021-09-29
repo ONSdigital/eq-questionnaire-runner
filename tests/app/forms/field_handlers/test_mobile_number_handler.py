@@ -1,5 +1,6 @@
 from wtforms import Form, StringField
 
+from app.forms import error_messages
 from app.forms.field_handlers.mobile_number_handler import MobileNumberHandler
 
 
@@ -14,6 +15,7 @@ def test_phone_number_handler(value_source_resolver):
     mobile_number_handler = MobileNumberHandler(
         answer_schema,
         value_source_resolver,
+        error_messages,
         disable_validation=False,
     )
 

@@ -1,5 +1,6 @@
 from wtforms import Form
 
+from app.forms import error_messages
 from app.forms.field_handlers import SelectMultipleHandler
 from app.forms.fields import MultipleSelectFieldWithDetailAnswer
 
@@ -22,7 +23,9 @@ def test_get_field(value_source_resolver):
         "type": "Checkbox",
     }
 
-    handler = SelectMultipleHandler(checkbox_json, value_source_resolver)
+    handler = SelectMultipleHandler(
+        checkbox_json, value_source_resolver, error_messages
+    )
 
     class TestForm(Form):
         test_field = handler.get_field()
