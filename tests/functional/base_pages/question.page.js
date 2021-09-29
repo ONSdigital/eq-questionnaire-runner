@@ -19,7 +19,7 @@ class QuestionPage extends BasePage {
   }
 
   error() {
-    return ".js-inpagelink";
+    return ".ons-js-inpagelink";
   }
 
   legend() {

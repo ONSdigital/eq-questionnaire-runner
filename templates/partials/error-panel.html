@@ -12,7 +12,7 @@
   <ol class="list" data-qa="error-list">
     {% for error_id, error in form.mapped_errors %}
     <li class="list__item">
-      <a class="js-inpagelink" data-qa="error-link-{{ loop.index }}" href="#{{error_id}}">{{ error }}</a>
+      <a class="ons-js-inpagelink" data-qa="error-link-{{ loop.index }}" href="#{{error_id}}">{{ error }}</a>
     </li>
     {% endfor %}
   </ol>

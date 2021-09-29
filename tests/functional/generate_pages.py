@@ -242,7 +242,7 @@ RELATIONSHIP_PLAYBACK_GETTER = r"""  playback() { return `[class*="relationships
 
 """
 
-CLEAR_SELECTION_BUTTON_GETTER = r"""  clearSelectionButton() { return `.js-clear-btn`; }
+CLEAR_SELECTION_BUTTON_GETTER = r"""  clearSelectionButton() { return `.ons-js-clear-btn`; }
 
 """
 
