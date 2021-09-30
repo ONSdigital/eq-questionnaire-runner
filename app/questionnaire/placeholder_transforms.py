@@ -1,6 +1,6 @@
 from datetime import datetime, timezone
 from decimal import Decimal
-from typing import Sequence, Union, Optional, Sized
+from typing import Optional, Sequence, Sized, Union
 from urllib.parse import quote
 
 from babel.dates import format_datetime
