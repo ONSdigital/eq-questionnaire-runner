@@ -39,13 +39,11 @@ class PlaceholderTransforms:
 
     @staticmethod
     def format_list(list_to_format: Sequence[str]) -> str:
-        if list_to_format is not None:
-            formatted_list = "<ul>"
-            for item in list_to_format:
-                formatted_list += f"<li>{item}</li>"
-            formatted_list += "</ul>"
-            return formatted_list
-        return ""
+        formatted_list = "<ul>"
+        for item in list_to_format:
+            formatted_list += f"<li>{item}</li>"
+        formatted_list += "</ul>"
+        return formatted_list
 
     @staticmethod
     def remove_empty_from_list(list_to_filter: Sequence[str]) -> list[str]:
