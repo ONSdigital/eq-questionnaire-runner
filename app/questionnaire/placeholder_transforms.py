@@ -182,7 +182,7 @@ class PlaceholderTransforms:
         return tuple(sorted([first_day_of_prior_full_week, last_day_of_range]))
 
     @staticmethod
-    def format_date_range(date_range_pair: tuple[str, str]) -> str:
+    def format_date_range_pair(date_range: tuple[datetime, datetime]) -> str:
         """Format a pair of dates as a string, clarifying differences in month or year.
 
         E.g.
@@ -190,24 +190,24 @@ class PlaceholderTransforms:
             Monday 29 September to Sunday 6 October 2021
             Monday 29 December 2021 to Sunday 6 January 2022
 
-        :param date_pair: Pair of str objects representing a date range.
-        :type date_pair: tuple[str, str]
+        :param date_range: Pair of date objects representing a date range.
+        :type date_range: tuple[str, str]
         :return: String containing the date range as text.
         :rtype: str
         """
-        date1_obj, date2_obj = date_range_pair
-        date1_format = "%A %d".replace(" 0", "")
-        date2_format = "%A %d %B %Y"
+        start_date, end_date = date_range
+        start_date_format = "%A %d".replace(" 0", "")
+        end_date_format = "%A %d %B %Y"
 
-        if date1_obj.year != date2_obj.year:
-            date1_format += " %B %Y"
-        elif date1_obj.month != date2_obj.month:
-            date1_format += " %B"
+        if start_date.year != end_date.year:
+            start_date_format += " %B %Y"
+        elif start_date.month != end_date.month:
+            start_date_format += " %B"
 
-        date1_formatted = date1_obj.strftime(date1_format)
-        date2_formatted = date2_obj.strftime(date2_format)
+        start_date_formatted = start_date.strftime(start_date_format)
+        end_date_formatted = end_date.strftime(end_date_format)
 
-        return f"{date1_formatted} to {date2_formatted}"
+        return f"{start_date_formatted} to {end_date_formatted}"
 
     @staticmethod
     def parse_date(date):

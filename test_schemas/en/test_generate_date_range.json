@@ -48,6 +48,7 @@
                                     {
                                         "id": "reference-date",
                                         "label": "Reference Date",
+                                        "description": "This scenario uses 2 prior full week offset, 15 day range, first day of the week monday",
                                         "mandatory": true,
                                         "type": "Date"
                                     }
@@ -90,11 +91,11 @@
                                                 },
                                                 {
                                                     "arguments": {
-                                                        "date_range_pair": {
+                                                        "date_range": {
                                                             "source": "previous_transform"
                                                         }
                                                     },
-                                                    "transform": "format_date_range"
+                                                    "transform": "format_date_range_pair"
                                                 }
                                             ]
                                         }
@@ -105,6 +106,7 @@
                                     {
                                         "id": "date-of-birth-answer",
                                         "label": "Days worked",
+                                        "description": "This scenario uses 2 prior full week offset, 15 day range, first day of the week monday",
                                         "mandatory": true,
                                         "type": "Number"
                                     }
