@@ -22,7 +22,7 @@ class ThankYouPage extends BasePage {
   }
 
   metadata() {
-    return ".metadata";
+    return ".ons-metadata";
   }
 
   exitButton() {
