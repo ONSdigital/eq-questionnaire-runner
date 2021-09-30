@@ -209,7 +209,7 @@ LIST_SUMMARY_REMOVE_LINK_GETTER = r"""  listRemoveLink(instance) { return `[data
 
 """
 
-LIST_SUMMARY_LIST_GETTER = r"""  listSummary() { return `.list__item`; }
+LIST_SUMMARY_LIST_GETTER = r"""  listSummary() { return `.ons-list__item`; }
 
 """
 
