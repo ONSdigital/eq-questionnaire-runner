@@ -64,33 +64,35 @@
                             },
                             "routing_rules": [
                                 {
-                                    "goto": {
-                                        "block": "country-interstitial-equal-any",
-                                        "when": [
+                                    "block": "country-interstitial-equal-any",
+                                    "when": {
+                                        "in": [
                                             {
-                                                "id": "country-text-field-answer",
-                                                "condition": "equals any",
-                                                "values": ["India", "Azerbaijan"]
-                                            }
+                                                "identifier": "country-text-field-answer",
+                                                "source": "answers"
+                                            },
+                                            [
+                                                "India",
+                                                "Azerbaijan"
+                                            ]
+                                        ]
+                                    }
+
+                            },
+                                {
+                                    "block": "country-interstitial-equals",
+                                    "when": {
+                                        "==": [
+                                            {
+                                                "identifier": "country-text-field-answer",
+                                                "source": "answers"
+                                            },
+                                            "Georgia"
                                         ]
                                     }
                                 },
                                 {
-                                    "goto": {
-                                        "block": "country-interstitial-equals",
-                                        "when": [
-                                            {
-                                                "id": "country-text-field-answer",
-                                                "condition": "equals",
-                                                "value": "Georgia"
-                                            }
-                                        ]
-                                    }
-                                },
-                                {
-                                    "goto": {
-                                        "section": "End"
-                                    }
+                                    "section": "End"
                                 }
                             ]
                         },
@@ -125,3 +127,4 @@
         }
     ]
 }
+
