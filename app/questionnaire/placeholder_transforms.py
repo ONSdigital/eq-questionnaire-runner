@@ -1,6 +1,6 @@
 from datetime import datetime, timezone
 from decimal import Decimal
-from typing import Sequence, Union
+from typing import Sequence, Union, Optional, Sized
 from urllib.parse import quote
 
 from babel.dates import format_datetime
@@ -244,6 +244,6 @@ class PlaceholderTransforms:
         return f'<a href="{href}">{link_text}</a>'
 
     @staticmethod
-    def list_item_count(list_to_count: Sequence[str]) -> int:
+    def list_item_count(list_to_count: Optional[Sized]) -> int:
         if list_to_count is not None:
             return len(list_to_count or [])
