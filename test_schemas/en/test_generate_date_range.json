@@ -6,7 +6,7 @@
     "survey_id": "001",
     "title": "Other input fields",
     "theme": "default",
-    "description": "A questionnaire to test generate_date_range and format_date_range_pair",
+    "description": "A questionnaire to test generate_date_range and format_date_range",
     "metadata": [
         {
             "name": "user_id",
@@ -50,30 +50,6 @@
                                         "label": "Reference Date",
                                         "mandatory": true,
                                         "type": "Date"
-                                    },
-                                    {
-                                        "id": "offset-full-weeks",
-                                        "label": "How many full weeks should be offset?",
-                                        "description": "Negative integers for past weeks, 0 for the same week as the reference date, positive for future weeks",
-                                        "mandatory": true,
-                                        "type": "Number",
-                                        "minumum": {
-                                            "value": -1000
-                                        }
-                                    },
-                                    {
-                                        "id": "days-in-range",
-                                        "label": "How many days should be in the entire range, including the start date?",
-                                        "description": "e.g. '7' yields a week from Monday-Sunday",
-                                        "mandatory": true,
-                                        "type": "Number"
-                                    },
-                                    {
-                                        "id": "first-day-of-week",
-                                        "label": "Which day should be the first day of the week?",
-                                        "description": "Valid options are: monday, tuesday, wednesday, thursday, friday, saturday, sunday",
-                                        "mandatory": true,
-                                        "type": "TextField"
                                     }
                                 ]
                             }
@@ -95,7 +71,7 @@
                             "question": {
                                 "id": "days-question",
                                 "title": {
-                                    "text": "How many days did you work during the period {formatted_date_range}?",
+                                    "text": "How many days did you work between {formatted_date_range}?",
                                     "placeholders": [
                                         {
                                             "placeholder": "formatted_date_range",
@@ -107,18 +83,9 @@
                                                             "source": "answers",
                                                             "identifier": "reference-date"
                                                         },
-                                                        "offset_full_weeks": {
-                                                            "source": "answers",
-                                                            "identifier": "offset-full-weeks"
-                                                        },
-                                                        "days_in_range": {
-                                                            "source": "answers",
-                                                            "identifier": "days-in-range"
-                                                        },
-                                                        "first_day_of_week": {
-                                                            "source": "answers",
-                                                            "identifier": "first-day-of-week"
-                                                        }
+                                                        "offset_full_weeks": -2,
+                                                        "days_in_range": 15,
+                                                        "first_day_of_week": "monday"
                                                     }
                                                 },
                                                 {
@@ -127,7 +94,7 @@
                                                             "source": "previous_transform"
                                                         }
                                                     },
-                                                    "transform": "format_date_range_pair"
+                                                    "transform": "format_date_range"
                                                 }
                                             ]
                                         }
@@ -136,7 +103,8 @@
                                 "type": "General",
                                 "answers": [
                                     {
-                                        "id": "days-worked-answer",
+                                        "id": "date-of-birth-answer",
+                                        "label": "Days worked",
                                         "mandatory": true,
                                         "type": "Number"
                                     }

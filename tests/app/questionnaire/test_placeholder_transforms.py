@@ -367,18 +367,18 @@ class TestPlaceholderParser(unittest.TestCase):
         with self.assertRaises(KeyError):
             PlaceholderTransforms.generate_date_range("2021-09-27", 0, 7, "randomday")
 
-    def format_date_range_pair(self, params):
+    def format_date_range(self, params):
         with self.subTest():
             for i, (
-                (date_from, date_to),
+                date_range,
                 expected,
             ) in enumerate(params):
-                actual = PlaceholderTransforms.format_date_range_pair(
-                    date_from, date_to
+                actual = PlaceholderTransforms.format_date_range(
+                    list(map(PlaceholderTransforms.parse_date, date_range))
                 )
                 self.assertEqual(expected, actual, f"FAIL: Item {i}")
 
-    def test_format_date_range_pair(self):
+    def test_format_date_range(self):
         params = [
             (
                 ("2021-09-15", "2021-09-21"),
@@ -398,4 +398,4 @@ class TestPlaceholderParser(unittest.TestCase):
             ),
         ]
 
-        self.format_date_range_pair(params)
+        self.format_date_range(params)

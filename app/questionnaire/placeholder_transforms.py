@@ -173,7 +173,7 @@ class PlaceholderTransforms:
             days=(reference_datetime.weekday() - first_day_of_week) % 7
         )
         first_day_of_prior_full_week = first_day_of_last_partial_week + timedelta(
-            days=int(offset_full_weeks) * 7
+            days=offset_full_weeks * 7
         )
         last_day_of_range = first_day_of_prior_full_week + timedelta(
             days=days_in_range - 1
@@ -182,7 +182,7 @@ class PlaceholderTransforms:
         return tuple(sorted([first_day_of_prior_full_week, last_day_of_range]))
 
     @staticmethod
-    def format_date_range_pair(date_range_pair: tuple[str, str]) -> str:
+    def format_date_range(date_range_pair: tuple[str, str]) -> str:
         """Format a pair of dates as a string, clarifying differences in month or year.
 
         E.g.
