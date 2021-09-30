@@ -246,4 +246,5 @@ class PlaceholderTransforms:
     @staticmethod
     def list_item_count(list_to_count: Sequence[str]) -> int:
         if list_to_count is not None:
-            return len(list_to_count) if list_to_count else 0
+            return len(list_to_count or [])
+
