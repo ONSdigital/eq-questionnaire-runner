@@ -9,25 +9,22 @@ import DateGreaterThanOrEqualsQuestionPage from "../../../generated_pages/new_ro
 import DateLessThanQuestionPage from "../../../generated_pages/new_routing_date_less_than/date-question.page";
 import DateLessThanOrEqualsQuestionPage from "../../../generated_pages/new_routing_date_less_than_or_equals/date-question.page";
 
-
 const today = new Date();
 const dayToday = today.getDate();
 const monthToday = today.getMonth() + 1; // January is 0!
 const yearToday = today.getFullYear();
 
 const yesterday = new Date();
-yesterday.setDate(today.getDate() - 1);;
+yesterday.setDate(today.getDate() - 1);
 const dayYesterday = yesterday.getDate();
 const monthYesterday = yesterday.getMonth() + 1;
 const yearYesterday = yesterday.getFullYear();
 
 const tomorrow = new Date();
-tomorrow.setDate(today.getDate() + 1);;
+tomorrow.setDate(today.getDate() + 1);
 const dayTomorrow = tomorrow.getDate();
 const monthTomorrow = tomorrow.getMonth() + 1;
 const yearTomorrow = tomorrow.getFullYear();
-
-
 
 describe("Feature: Routing on a Date", () => {
   describe("Equals", () => {
