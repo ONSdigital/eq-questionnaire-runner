@@ -19,7 +19,7 @@ def convert_answers_to_payload_0_0_1(
     :param metadata: questionnaire metadata
     :param answer_store: questionnaire answers
     :param list_store: list store
-    :param schema: QuestionnaireSchema class with popuated schema json
+    :param schema: QuestionnaireSchema class with populated schema json
     :param full_routing_path: the path followed in the questionnaire
     :return: data in a formatted form
     """
