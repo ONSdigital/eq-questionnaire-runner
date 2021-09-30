@@ -1,5 +1,6 @@
 from wtforms import validators
 
+from app.forms import error_messages
 from app.forms.field_handlers.string_handler import StringHandler
 from app.forms.validators import ResponseRequired
 
@@ -7,7 +8,7 @@ from app.forms.validators import ResponseRequired
 def test_get_mandatory_validator_optional(value_source_resolver):
     answer = {"mandatory": False}
 
-    text_area_handler = StringHandler(answer, value_source_resolver)
+    text_area_handler = StringHandler(answer, value_source_resolver, error_messages)
     validate_with = text_area_handler.get_mandatory_validator()
 
     assert isinstance(validate_with, validators.Optional)
@@ -37,7 +38,7 @@ def test_get_mandatory_validator_mandatory_with_error(value_source_resolver):
         },
     }
 
-    text_area_handler = StringHandler(answer, value_source_resolver)
+    text_area_handler = StringHandler(answer, value_source_resolver, error_messages)
     validate_with = text_area_handler.get_mandatory_validator()
 
     assert isinstance(validate_with, ResponseRequired)

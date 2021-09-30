@@ -8,6 +8,7 @@ from flask_wtf import FlaskForm
 from werkzeug.datastructures import ImmutableMultiDict, MultiDict
 from wtforms import validators
 
+from app.forms import error_messages
 from app.forms.field_handlers import DateHandler, get_field_handler
 from app.forms.validators import DateRangeCheck, MutuallyExclusiveCheck, SumCheck
 from app.questionnaire.value_source_resolver import ValueSourceResolver
@@ -246,7 +247,7 @@ class QuestionnaireForm(FlaskForm):
             escape_answer_values=False,
         )
 
-        handler = DateHandler(date_from, value_source_resolver)
+        handler = DateHandler(date_from, value_source_resolver, error_messages)
         from_min_period_date = handler.get_date_value("minimum")
         from_max_period_date = handler.get_date_value("maximum")
 

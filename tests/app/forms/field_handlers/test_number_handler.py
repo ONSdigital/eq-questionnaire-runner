@@ -10,7 +10,7 @@ from app.forms.fields import DecimalFieldWithSeparator, IntegerFieldWithSeparato
 from app.settings import MAX_NUMBER
 
 
-def get_test_form_class(answer_schema, value_source_resolver, messages=None):
+def get_test_form_class(answer_schema, value_source_resolver, messages=error_messages):
     handler = NumberHandler(
         answer_schema, value_source_resolver, error_messages=messages
     )
@@ -32,7 +32,9 @@ def test_integer_field(value_source_resolver):
         "validation": {"messages": {"INVALID_NUMBER": "Please enter your age."}},
     }
 
-    form_class = get_test_form_class(answer_schema, value_source_resolver)
+    form_class = get_test_form_class(
+        answer_schema, value_source_resolver, error_messages
+    )
     form = form_class()
 
     assert isinstance(form.test_field, IntegerFieldWithSeparator)
@@ -55,7 +57,9 @@ def test_decimal_field(value_source_resolver):
         },
     }
 
-    form_class = get_test_form_class(answer_schema, value_source_resolver)
+    form_class = get_test_form_class(
+        answer_schema, value_source_resolver, error_messages
+    )
     form = form_class()
 
     assert isinstance(form.test_field, DecimalFieldWithSeparator)
@@ -77,7 +81,9 @@ def test_currency_field(value_source_resolver):
         },
     }
 
-    form_class = get_test_form_class(answer_schema, value_source_resolver)
+    form_class = get_test_form_class(
+        answer_schema, value_source_resolver, error_messages
+    )
     form = form_class()
 
     assert isinstance(form.test_field, IntegerFieldWithSeparator)
@@ -103,7 +109,9 @@ def test_percentage_field(value_source_resolver):
         },
     }
 
-    form_class = get_test_form_class(answer_schema, value_source_resolver)
+    form_class = get_test_form_class(
+        answer_schema, value_source_resolver, error_messages
+    )
     form = form_class()
 
     assert isinstance(form.test_field, IntegerFieldWithSeparator)
@@ -126,7 +134,9 @@ def test_manual_min(app, value_source_resolver):
         "type": "Currency",
     }
 
-    test_form_class = get_test_form_class(answer_schema, value_source_resolver)
+    test_form_class = get_test_form_class(
+        answer_schema, value_source_resolver, error_messages
+    )
     form = test_form_class(MultiDict({"test_field": "9"}))
 
     form.validate()
@@ -330,7 +340,7 @@ def test_default_range(value_source_resolver):
         "id": "test-range",
         "type": "Currency",
     }
-    handler = NumberHandler(answer, value_source_resolver)
+    handler = NumberHandler(answer, value_source_resolver, error_messages)
     field_references = handler.get_field_references()
 
     assert field_references["maximum"] == MAX_NUMBER
@@ -357,10 +367,7 @@ def test_get_schema_value_answer_store(value_source_resolver):
     answer_store.add_or_update(Answer(answer_id="set-maximum", value=10))
     answer_store.add_or_update(Answer(answer_id="set-minimum", value=1))
     value_source_resolver.answer_store = answer_store
-    number_handler = NumberHandler(
-        answer_schema,
-        value_source_resolver,
-    )
+    number_handler = NumberHandler(answer_schema, value_source_resolver, error_messages)
 
     maximum = number_handler.get_schema_value(answer_schema["maximum"])
     minimum = number_handler.get_schema_value(answer_schema["minimum"])
