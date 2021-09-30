@@ -167,7 +167,8 @@
                                     {
                                         "id": "answer-3",
                                         "mandatory": false,
-                                        "type": "Number"
+                                        "type": "Number",
+                                        "label": "Number of slices"
                                     }
                                 ],
                                 "id": "question-3",
@@ -208,7 +209,7 @@
                             "id": "unanswered-or-not-say-question-3",
                             "type": "Interstitial",
                             "content": {
-                                "title": "You did not answer the question or chose \"1 slice\""
+                                "title": "You did not answer the question or chose 1 slice"
                             }
                         }
                     ],

@@ -76,13 +76,13 @@ describe("Test routing question answered/unanswered", () => {
 
     it("When I do not answer the question or answer `1` and submit, Then I should see a page saying I did not answer the question or that I chose `1`", () => {
       $(QuestionThree.submit()).click();
-      expect($(QuestionThreeUnansweredOrAnswerOne.heading()).getText()).to.contain('You did not answer the question or chose "1 slice"');
+      expect($(QuestionThreeUnansweredOrAnswerOne.heading()).getText()).to.contain("You did not answer the question or chose 1 slice");
       expect(browser.getUrl()).to.contain(QuestionThreeUnansweredOrAnswerOne.pageName);
 
       $(QuestionThreeUnansweredOrAnswerOne.previous()).click();
       $(QuestionThree.answer3()).setValue("1");
       $(QuestionThree.submit()).click();
-      expect($(QuestionThreeUnansweredOrAnswerOne.heading()).getText()).to.contain('You did not answer the question or chose "1 slice"');
+      expect($(QuestionThreeUnansweredOrAnswerOne.heading()).getText()).to.contain("You did not answer the question or chose 1 slice");
       expect(browser.getUrl()).to.contain(QuestionThreeUnansweredOrAnswerOne.pageName);
     });
 
