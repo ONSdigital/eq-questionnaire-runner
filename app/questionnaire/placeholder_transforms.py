@@ -138,8 +138,8 @@ class PlaceholderTransforms:
         )
         return day_string.format(number_of_days=time.days)
 
-    @staticmethod
     def generate_date_range(
+        self,
         reference_date: str,
         offset_full_weeks: int,
         days_in_range: int,
@@ -178,11 +178,17 @@ class PlaceholderTransforms:
         last_day_of_range = first_day_of_prior_full_week + timedelta(
             days=days_in_range - 1
         )
-
-        return tuple(sorted([first_day_of_prior_full_week, last_day_of_range]))
+        return tuple(
+            sorted(
+                [
+                    first_day_of_prior_full_week.strftime(self.input_date_format),
+                    last_day_of_range.strftime(self.input_date_format),
+                ]
+            )
+        )
 
     @staticmethod
-    def format_date_range_pair(date_range: tuple[datetime, datetime]) -> str:
+    def format_date_range_pair(date_range: tuple[str, str]) -> str:
         """Format a pair of dates as a string, clarifying differences in month or year.
 
         E.g.
@@ -190,12 +196,12 @@ class PlaceholderTransforms:
             Monday 29 September to Sunday 6 October 2021
             Monday 29 December 2021 to Sunday 6 January 2022
 
-        :param date_range: Pair of date objects representing a date range.
+        :param date_range: Pair of date strings representing a date range.
         :type date_range: tuple[str, str]
         :return: String containing the date range as text.
         :rtype: str
         """
-        start_date, end_date = date_range
+        start_date, end_date = list(map(PlaceholderTransforms.parse_date, date_range))
         start_date_format = "%A %d".replace(" 0", "")
         end_date_format = "%A %d %B %Y"
 

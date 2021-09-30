@@ -266,11 +266,8 @@ class TestPlaceholderParser(unittest.TestCase):
                 first_day_of_week,
                 (date_from, date_to),
             ) in enumerate(params):
-                expected = (
-                    PlaceholderTransforms.parse_date(date_from),
-                    PlaceholderTransforms.parse_date(date_to),
-                )
-                actual = PlaceholderTransforms.generate_date_range(
+                expected = (date_from, date_to)
+                actual = self.transforms.generate_date_range(
                     ref_date, weeks_prior, day_range, first_day_of_week
                 )
                 self.assertEqual(expected, actual, f"FAIL: Item {i}")
@@ -361,11 +358,11 @@ class TestPlaceholderParser(unittest.TestCase):
 
     def test_generate_date_range_negative_range_raises_ValueError(self):
         with self.assertRaises(ValueError):
-            PlaceholderTransforms.generate_date_range("2021-09-27", 0, -7)
+            self.transforms.generate_date_range("2021-09-27", 0, -7)
 
     def test_generate_date_range_bad_day_name_raises_KeyError(self):
         with self.assertRaises(KeyError):
-            PlaceholderTransforms.generate_date_range("2021-09-27", 0, 7, "randomday")
+            self.transforms.generate_date_range("2021-09-27", 0, 7, "randomday")
 
     def format_date_range(self, params):
         with self.subTest():
@@ -373,9 +370,7 @@ class TestPlaceholderParser(unittest.TestCase):
                 date_range,
                 expected,
             ) in enumerate(params):
-                actual = PlaceholderTransforms.format_date_range(
-                    list(map(PlaceholderTransforms.parse_date, date_range))
-                )
+                actual = PlaceholderTransforms.format_date_range_pair(date_range)
                 self.assertEqual(expected, actual, f"FAIL: Item {i}")
 
     def test_format_date_range(self):

@@ -104,10 +104,121 @@
                                 "type": "General",
                                 "answers": [
                                     {
-                                        "id": "date-of-birth-answer",
+                                        "id": "days-worked-answer",
                                         "label": "Days worked",
                                         "description": "This scenario uses 2 prior full week offset, 15 day range, first day of the week monday",
                                         "mandatory": true,
+                                        "type": "Number"
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "type": "Question",
+                            "id": "range-question-block",
+                            "question": {
+                                "id": "range-question",
+                                "title": {
+                                    "text": "This is a formatted date range with some literal dates in the same month and year: {formatted_date_range}",
+                                    "placeholders": [
+                                        {
+                                            "placeholder": "formatted_date_range",
+                                            "transforms": [
+                                                {
+                                                    "transform": "format_date_range_pair",
+                                                    "arguments": {
+                                                        "date_range": {
+                                                            "value": [
+                                                                "2019-05-01",
+                                                                "2019-05-19"
+                                                            ]
+                                                        }
+                                                    }
+                                                }
+                                            ]
+                                        }
+                                    ]
+                                },
+                                "type": "General",
+                                "answers": [
+                                    {
+                                        "id": "date-range-answer",
+                                        "label": "How many days did you work during this period?",
+                                        "mandatory": false,
+                                        "type": "Number"
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "type": "Question",
+                            "id": "range-month-question-block",
+                            "question": {
+                                "id": "range-month-question",
+                                "title": {
+                                    "text": "This is a formatted date range with some literal dates in a different month and same year: {formatted_date_range}",
+                                    "placeholders": [
+                                        {
+                                            "placeholder": "formatted_date_range",
+                                            "transforms": [
+                                                {
+                                                    "transform": "format_date_range_pair",
+                                                    "arguments": {
+                                                        "date_range": {
+                                                            "value": [
+                                                                "2019-05-01",
+                                                                "2019-06-01"
+                                                            ]
+                                                        }
+                                                    }
+                                                }
+                                            ]
+                                        }
+                                    ]
+                                },
+                                "type": "General",
+                                "answers": [
+                                    {
+                                        "id": "date-range-month-answer",
+                                        "label": "How many days did you work during this period?",
+                                        "mandatory": false,
+                                        "type": "Number"
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "type": "Question",
+                            "id": "range-year-question-block",
+                            "question": {
+                                "id": "range-year-question",
+                                "title": {
+                                    "text": "This is a formatted date range with some literal dates in a different year: {formatted_date_range}",
+                                    "placeholders": [
+                                        {
+                                            "placeholder": "formatted_date_range",
+                                            "transforms": [
+                                                {
+                                                    "transform": "format_date_range_pair",
+                                                    "arguments": {
+                                                        "date_range": {
+                                                            "value": [
+                                                                "2019-05-01",
+                                                                "2020-05-01"
+                                                            ]
+                                                        }
+                                                    }
+                                                }
+                                            ]
+                                        }
+                                    ]
+                                },
+                                "type": "General",
+                                "answers": [
+                                    {
+                                        "id": "date-range-year-answer",
+                                        "label": "How many days did you work during this period?",
+                                        "mandatory": false,
                                         "type": "Number"
                                     }
                                 ]
