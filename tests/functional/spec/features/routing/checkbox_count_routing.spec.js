@@ -13,12 +13,14 @@ describe("Test routing using count of checkboxes checked", () => {
     $(ToppingCheckboxPage.submit()).click();
 
     expect(browser.getUrl()).to.contain(CorrectAnswerPage.pageName);
+    expect($("body").getText()).to.have.string("You were asked to select 2 toppings and you selected 2.");
   });
 
   it("Given a user selects no checkboxes, When they submit, Then they should be routed to the incorrect page", () => {
     $(ToppingCheckboxPage.submit()).click();
 
     expect(browser.getUrl()).to.contain(IncorrectAnswerPage.pageName);
+    expect($("body").getText()).to.have.string("You were asked to select 2 toppings but you actually selected None.");
   });
 
   it("Given a user selects 1 checkbox, When they submit, Then they should be routed to the incorrect page", () => {
@@ -26,6 +28,7 @@ describe("Test routing using count of checkboxes checked", () => {
     $(ToppingCheckboxPage.submit()).click();
 
     expect(browser.getUrl()).to.contain(IncorrectAnswerPage.pageName);
+    expect($("body").getText()).to.have.string("You were asked to select 2 toppings but you actually selected 1.");
   });
 
   it("Given a user selects 3 checkbox, When they submit, Then they should be routed to the incorrect page", () => {
@@ -35,5 +38,6 @@ describe("Test routing using count of checkboxes checked", () => {
     $(ToppingCheckboxPage.submit()).click();
 
     expect(browser.getUrl()).to.contain(IncorrectAnswerPage.pageName);
+    expect($("body").getText()).to.have.string("You were asked to select 2 toppings but you actually selected 3.");
   });
 });
