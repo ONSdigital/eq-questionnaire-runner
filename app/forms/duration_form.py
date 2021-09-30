@@ -1,10 +1,18 @@
+from __future__ import annotations
+
+from typing import Callable, Mapping, Optional, Type
+
 from wtforms import Form
 
 from app.forms.fields import IntegerFieldWithSeparator
 
+ErrorMessageType = dict[str, str]
+
 
 class DurationForm(Form):
-    def validate(self, extra_validators=None):
+    def validate(
+        self, extra_validators: Optional[dict[str, list[Callable]]] = None
+    ) -> bool:
         super(DurationForm, self).validate(extra_validators)
 
         if all(not field.raw_data[0] for field in self._fields.values()):
@@ -30,18 +38,20 @@ class DurationForm(Form):
 
         return True
 
-    def _set_error(self, key):
+    def _set_error(self, key: str) -> None:
         list(self._fields.values())[0].errors = [self.answer_errors[key]]
 
     @property
-    def data(self):
-        data = super().data
+    def data(self) -> Optional[dict[str, Optional[str]]]:
+        data: dict[str, Optional[str]] = super().data
         if all(value is None for value in data.values()):
             return None
         return data
 
 
-def get_duration_form(answer, error_messages):
+def get_duration_form(
+    answer: Mapping, error_messages: ErrorMessageType
+) -> Type[DurationForm]:
     class CustomDurationForm(DurationForm):
         mandatory = answer["mandatory"]
         units = answer["units"]
@@ -56,7 +66,9 @@ def get_duration_form(answer, error_messages):
     return CustomDurationForm
 
 
-def _get_answer_errors(answer, error_messages):
+def _get_answer_errors(
+    answer: Mapping, error_messages: ErrorMessageType
+) -> dict[str, str]:
     answer_errors = error_messages.copy()
 
     if "validation" in answer and "messages" in answer["validation"]:

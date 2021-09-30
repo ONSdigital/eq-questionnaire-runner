@@ -1,19 +1,31 @@
+from __future__ import annotations
+
 import re
 from datetime import datetime, timezone
 from decimal import Decimal, InvalidOperation
+from typing import TYPE_CHECKING, Iterable, List, Mapping, Optional, Sequence, Union
 
 import flask_babel
 from babel import numbers
 from dateutil.relativedelta import relativedelta
 from flask_babel import ngettext
+from flask_wtf import FlaskForm
 from structlog import get_logger
-from wtforms import validators
+from wtforms import Field, StringField, validators
 from wtforms.compat import string_types
 
 from app.forms import error_messages
+from app.forms.fields import (
+    DateField,
+    DecimalFieldWithSeparator,
+    IntegerFieldWithSeparator,
+)
 from app.jinja_filters import format_number, get_formatted_currency
 from app.questionnaire.rules import convert_to_datetime
 from app.utilities import safe_content
+
+if TYPE_CHECKING:
+    from app.forms.questionnaire_form import QuestionnaireForm  # pragma: no cover
 
 logger = get_logger()
 
@@ -22,12 +34,20 @@ tld_part_regex = re.compile(
 )
 email_regex = re.compile(r"^.+@([^.@][^@\s]+)$")
 
+OptionalMessage = Optional[Mapping[str, str]]
+NumType = Union[int, Decimal]
+PeriodType = Mapping[str, int]
+
 
 class NumberCheck:
-    def __init__(self, message=None):
+    def __init__(self, message: Optional[str] = None):
         self.message = message or error_messages["INVALID_NUMBER"]
 
-    def __call__(self, form, field):
+    def __call__(
+        self,
+        form: FlaskForm,
+        field: Union[DecimalFieldWithSeparator, IntegerFieldWithSeparator],
+    ) -> None:
         try:
             Decimal(
                 field.raw_data[0].replace(
@@ -52,7 +72,7 @@ class ResponseRequired:
 
     field_flags = ("required",)
 
-    def __init__(self, message, strip_whitespace=True):
+    def __init__(self, message: str, strip_whitespace: bool = True):
         self.message = message
 
         if strip_whitespace:
@@ -60,7 +80,7 @@ class ResponseRequired:
         else:
             self.string_check = lambda s: s
 
-    def __call__(self, form, field):
+    def __call__(self, form: "QuestionnaireForm", field: Field) -> None:
         if (
             not field.raw_data
             or not field.raw_data[0]
@@ -86,57 +106,58 @@ class NumberRange:
 
     def __init__(
         self,
-        minimum=None,
-        minimum_exclusive=False,
-        maximum=None,
-        maximum_exclusive=False,
-        messages=None,
-        currency=None,
+        minimum: Optional[NumType] = None,
+        minimum_exclusive: bool = False,
+        maximum: Optional[NumType] = None,
+        maximum_exclusive: bool = False,
+        messages: OptionalMessage = None,
+        currency: Optional[str] = None,
     ):
         self.minimum = minimum
         self.maximum = maximum
         self.minimum_exclusive = minimum_exclusive
         self.maximum_exclusive = maximum_exclusive
-        self.messages = {**error_messages, **(messages or {})}
+        self.messages: Mapping[str, str] = {**error_messages, **(messages or {})}
         self.currency = currency
 
-    def __call__(self, form, field):
-        value = field.data
-        error_message = None
+    def __call__(
+        self,
+        form: "QuestionnaireForm",
+        field: Union[DecimalFieldWithSeparator, IntegerFieldWithSeparator],
+    ) -> None:
+        value: Union[int, Decimal] = field.data
         if value is not None:
-            if self.minimum is not None:
-                error_message = self.validate_minimum(value)
-            if error_message is None and self.maximum is not None:
-                error_message = self.validate_maximum(value)
-
+            error_message = self.validate_minimum(value) or self.validate_maximum(value)
             if error_message:
                 raise validators.ValidationError(error_message)
 
-    def validate_minimum(self, value):
-        if self.minimum_exclusive:
-            if value <= self.minimum:
-                return self.messages["NUMBER_TOO_SMALL_EXCLUSIVE"] % dict(
-                    min=format_playback_value(self.minimum, self.currency)
-                )
-        else:
-            if value < self.minimum:
-                return self.messages["NUMBER_TOO_SMALL"] % dict(
-                    min=format_playback_value(self.minimum, self.currency)
-                )
+    def validate_minimum(self, value: NumType) -> Optional[str]:
+        if self.minimum is None:
+            return None
+
+        if self.minimum_exclusive and value <= self.minimum:
+            return self.messages["NUMBER_TOO_SMALL_EXCLUSIVE"] % dict(
+                min=format_playback_value(self.minimum, self.currency)
+            )
+        elif value < self.minimum:
+            return self.messages["NUMBER_TOO_SMALL"] % dict(
+                min=format_playback_value(self.minimum, self.currency)
+            )
 
         return None
 
-    def validate_maximum(self, value):
-        if self.maximum_exclusive:
-            if value >= self.maximum:
-                return self.messages["NUMBER_TOO_LARGE_EXCLUSIVE"] % dict(
-                    max=format_playback_value(self.maximum, self.currency)
-                )
-        else:
-            if value > self.maximum:
-                return self.messages["NUMBER_TOO_LARGE"] % dict(
-                    max=format_playback_value(self.maximum, self.currency)
-                )
+    def validate_maximum(self, value: NumType) -> Optional[str]:
+        if self.maximum is None:
+            return None
+
+        if self.maximum_exclusive and value >= self.maximum:
+            return self.messages["NUMBER_TOO_LARGE_EXCLUSIVE"] % dict(
+                max=format_playback_value(self.maximum, self.currency)
+            )
+        elif value > self.maximum:
+            return self.messages["NUMBER_TOO_LARGE"] % dict(
+                max=format_playback_value(self.maximum, self.currency)
+            )
 
         return None
 
@@ -150,11 +171,13 @@ class DecimalPlaces:
         The maximum allowed number of decimal places.
     """
 
-    def __init__(self, max_decimals=0, messages=None):
+    def __init__(self, max_decimals: int = 0, messages: OptionalMessage = None):
         self.max_decimals = max_decimals
         self.messages = {**error_messages, **(messages or {})}
 
-    def __call__(self, form, field):
+    def __call__(
+        self, form: "QuestionnaireForm", field: DecimalFieldWithSeparator
+    ) -> None:
         data = (
             field.raw_data[0]
             .replace(numbers.get_group_symbol(flask_babel.get_locale()), "")
@@ -178,7 +201,7 @@ class OptionalForm:
 
     field_flags = ("optional",)
 
-    def __call__(self, form, field):
+    def __call__(self, form: Sequence["QuestionnaireForm"], field: Field) -> None:
         empty_form = True
 
         for formfield in form:
@@ -204,10 +227,10 @@ class OptionalForm:
 class DateRequired:
     field_flags = ("required",)
 
-    def __init__(self, message=None):
+    def __init__(self, message: Optional[str] = None):
         self.message = message or error_messages["MANDATORY_DATE"]
 
-    def __call__(self, form, field):
+    def __call__(self, form: "QuestionnaireForm", field: DateField) -> None:
         """
         Raise exception if ALL fields have not been filled out.
         Not having that field is the same as not filling it out
@@ -223,10 +246,10 @@ class DateRequired:
 
 
 class DateCheck:
-    def __init__(self, message=None):
+    def __init__(self, message: Optional[str] = None):
         self.message = message or error_messages["INVALID_DATE"]
 
-    def __call__(self, form, field):
+    def __call__(self, form: "QuestionnaireForm", field: StringField) -> None:
         if not form.data:
             raise validators.StopValidation(self.message)
 
@@ -244,58 +267,65 @@ class DateCheck:
 class SingleDatePeriodCheck:
     def __init__(
         self,
-        messages=None,
-        date_format="d MMMM yyyy",
-        minimum_date=None,
-        maximum_date=None,
+        messages: OptionalMessage = None,
+        date_format: str = "d MMMM yyyy",
+        minimum_date: Optional[datetime] = None,
+        maximum_date: Optional[datetime] = None,
     ):
         self.messages = {**error_messages, **(messages or {})}
         self.minimum_date = minimum_date
         self.maximum_date = maximum_date
         self.date_format = date_format
 
-    def __call__(self, form, field):
+    def __call__(self, form: "QuestionnaireForm", field: StringField) -> None:
         date = convert_to_datetime(form.data)
 
-        if self.minimum_date:
-            if date < self.minimum_date:
-                raise validators.ValidationError(
-                    self.messages["SINGLE_DATE_PERIOD_TOO_EARLY"]
-                    % dict(
-                        min=self._format_playback_date(
-                            self.minimum_date + relativedelta(days=-1), self.date_format
-                        )
+        if self.minimum_date and date and date < self.minimum_date:
+            raise validators.ValidationError(
+                self.messages["SINGLE_DATE_PERIOD_TOO_EARLY"]
+                % dict(
+                    min=self._format_playback_date(
+                        self.minimum_date + relativedelta(days=-1), self.date_format
                     )
                 )
+            )
 
-        if self.maximum_date:
-            if date > self.maximum_date:
-                raise validators.ValidationError(
-                    self.messages["SINGLE_DATE_PERIOD_TOO_LATE"]
-                    % dict(
-                        max=self._format_playback_date(
-                            self.maximum_date + relativedelta(days=+1), self.date_format
-                        )
+        if self.maximum_date and date and date > self.maximum_date:
+            raise validators.ValidationError(
+                self.messages["SINGLE_DATE_PERIOD_TOO_LATE"]
+                % dict(
+                    max=self._format_playback_date(
+                        self.maximum_date + relativedelta(days=+1), self.date_format
                     )
                 )
+            )
 
     @staticmethod
-    def _format_playback_date(date, date_format="d MMMM yyyy"):
-        return flask_babel.format_date(date, format=date_format)
+    def _format_playback_date(date: datetime, date_format: str = "d MMMM yyyy") -> str:
+        formatted_date: str = flask_babel.format_date(date, format=date_format)
+        return formatted_date
 
 
 class DateRangeCheck:
-    def __init__(self, messages=None, period_min=None, period_max=None):
+    def __init__(
+        self,
+        messages: OptionalMessage = None,
+        period_min: Optional[dict[str, int]] = None,
+        period_max: Optional[dict[str, int]] = None,
+    ):
         self.messages = {**error_messages, **(messages or {})}
         self.period_min = period_min
         self.period_max = period_max
 
-    def __call__(self, form, from_field, to_field):
+    def __call__(
+        self, form: "QuestionnaireForm", from_field: DateField, to_field: DateField
+    ) -> None:
         from_date = convert_to_datetime(from_field.data)
         to_date = convert_to_datetime(to_field.data)
 
-        if from_date >= to_date:
-            raise validators.ValidationError(self.messages["INVALID_DATE_RANGE"])
+        if from_date and to_date:
+            if from_date >= to_date:
+                raise validators.ValidationError(self.messages["INVALID_DATE_RANGE"])
 
         answered_range_relative = relativedelta(to_date, from_date)
 
@@ -320,7 +350,7 @@ class DateRangeCheck:
                 )
 
     @staticmethod
-    def _return_relative_delta(period_object):
+    def _return_relative_delta(period_object: PeriodType) -> relativedelta:
         return relativedelta(
             years=period_object.get("years", 0),
             months=period_object.get("months", 0),
@@ -328,14 +358,16 @@ class DateRangeCheck:
         )
 
     @staticmethod
-    def _is_first_relative_delta_largest(relativedelta1, relativedelta2):
+    def _is_first_relative_delta_largest(
+        relativedelta1: relativedelta, relativedelta2: relativedelta
+    ) -> bool:
         epoch = datetime.min  # generic epoch for comparison purposes only
         date1 = epoch + relativedelta1
         date2 = epoch + relativedelta2
         return date1 > date2
 
     @staticmethod
-    def _build_range_length_error(period_object):
+    def _build_range_length_error(period_object: PeriodType) -> str:
         error_message = ""
         if "years" in period_object:
             error_message = ngettext(
@@ -360,11 +392,19 @@ class DateRangeCheck:
 
 
 class SumCheck:
-    def __init__(self, messages=None, currency=None):
+    def __init__(
+        self, messages: OptionalMessage = None, currency: Optional[str] = None
+    ):
         self.messages = {**error_messages, **(messages or {})}
         self.currency = currency
 
-    def __call__(self, form, conditions, total, target_total):
+    def __call__(
+        self,
+        form: "QuestionnaireForm",
+        conditions: List[str],
+        total: int,
+        target_total: int,
+    ) -> None:
         if len(conditions) > 1:
             try:
                 conditions.remove("equals")
@@ -387,7 +427,7 @@ class SumCheck:
             )
 
     @staticmethod
-    def _is_valid(condition, total, target_total):
+    def _is_valid(condition: str, total: int, target_total: int) -> tuple[bool, str]:
         if condition == "equals":
             return total == target_total, "TOTAL_SUM_NOT_EQUALS"
         if condition == "less than":
@@ -400,22 +440,26 @@ class SumCheck:
             return total <= target_total, "TOTAL_SUM_NOT_LESS_THAN_OR_EQUALS"
 
 
-def format_playback_value(value, currency=None):
+def format_playback_value(
+    value: Union[int, Decimal], currency: Optional[str] = None
+) -> str:
     if currency:
         return get_formatted_currency(value, currency)
     return format_number(value)
 
 
-def format_message_with_title(error_message, question_title):
+def format_message_with_title(error_message: str, question_title: str) -> str:
     return error_message % {"question_title": safe_content(question_title)}
 
 
 class MutuallyExclusiveCheck:
-    def __init__(self, question_title, messages=None):
+    def __init__(self, question_title: str, messages: OptionalMessage = None):
         self.messages = {**error_messages, **(messages or {})}
         self.question_title = question_title
 
-    def __call__(self, answer_values, is_mandatory, is_only_checkboxes):
+    def __call__(
+        self, answer_values: Iterable, is_mandatory: bool, is_only_checkboxes: bool
+    ) -> None:
         total_answered = sum(1 for value in answer_values if value)
         if total_answered > 1:
             raise validators.ValidationError(self.messages["MUTUALLY_EXCLUSIVE"])
@@ -429,16 +473,16 @@ class MutuallyExclusiveCheck:
             raise validators.ValidationError(message)
 
 
-def sanitise_mobile_number(data):
+def sanitise_mobile_number(data: str) -> str:
     data = re.sub(r"[\s.,\t\-{}\[\]()/]", "", data)
     return re.sub(r"^(0{1,2}44|\+44|0)", "", data)
 
 
 class MobileNumberCheck:
-    def __init__(self, message=None):
+    def __init__(self, message: OptionalMessage = None):
         self.message = message or error_messages["INVALID_MOBILE_NUMBER"]
 
-    def __call__(self, form, field):
+    def __call__(self, form: "QuestionnaireForm", field: StringField) -> None:
         data = sanitise_mobile_number(field.data)
 
         if len(data) != 10 or not re.match("^7[0-9]+$", data):
@@ -446,10 +490,10 @@ class MobileNumberCheck:
 
 
 class EmailTLDCheck:
-    def __init__(self, message=None):
+    def __init__(self, message: Optional[str] = None):
         self.message = message or error_messages["INVALID_EMAIL_FORMAT"]
 
-    def __call__(self, form, field):
+    def __call__(self, form: "QuestionnaireForm", field: StringField) -> None:
         if match := email_regex.match(field.data):
             hostname = match.group(1)
             try:

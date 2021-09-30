@@ -94,3 +94,15 @@ class TestNumberRangeValidator(unittest.TestCase):
             validator(mock_form, mock_field)
         except ValidationError:
             self.fail("Valid integer raised ValidationError")
+
+    def test_number_range_for_no_min_or_max(self):
+        validator = NumberRange()
+
+        mock_form = Mock()
+        mock_field = Mock()
+        mock_field.data = 9999999999
+
+        try:
+            validator(mock_form, mock_field)
+        except ValidationError:
+            self.fail("Valid integer raised ValidationError")

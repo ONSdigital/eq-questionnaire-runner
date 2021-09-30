@@ -1,5 +1,5 @@
 from functools import cached_property
-from typing import Union
+from typing import Any, Union
 
 from wtforms import DecimalField, IntegerField
 
@@ -11,11 +11,7 @@ from app.forms.validators import (
     NumberRange,
     ResponseRequired,
 )
-from app.questionnaire.value_source_resolver import (
-    ValueSourceEscapedTypes,
-    ValueSourceResolver,
-    ValueSourceTypes,
-)
+from app.questionnaire.value_source_resolver import ValueSourceResolver
 from app.settings import MAX_NUMBER
 
 NumberValidatorTypes = list[
@@ -30,7 +26,7 @@ class NumberHandler(FieldHandler):
         self,
         answer_schema: dict,
         value_source_resolver: ValueSourceResolver,
-        error_messages: dict = None,
+        error_messages: dict[str, str],
         disable_validation: bool = False,
         question_title: str = None,
     ):
@@ -68,9 +64,13 @@ class NumberHandler(FieldHandler):
 
     def get_field_references(
         self,
-    ) -> dict[str, Union[bool, ValueSourceEscapedTypes, ValueSourceTypes]]:
-        schema_minimum = self.answer_schema.get("minimum", {})
-        schema_maximum = self.answer_schema.get("maximum", {})
+    ) -> dict[str, Any]:
+
+        schema_minimum: dict = self.answer_schema.get("minimum", {})
+        schema_maximum: dict = self.answer_schema.get("maximum", {})
+
+        min_exclusive: bool = schema_minimum.get("exclusive", False)
+        max_exclusive: bool = schema_maximum.get("exclusive", False)
 
         minimum = self.get_schema_value(schema_minimum) if schema_minimum else 0
         maximum = (
@@ -78,8 +78,8 @@ class NumberHandler(FieldHandler):
         )
 
         return {
-            "min_exclusive": schema_minimum.get("exclusive", False),
-            "max_exclusive": schema_maximum.get("exclusive", False),
+            "min_exclusive": min_exclusive,
+            "max_exclusive": max_exclusive,
             "minimum": minimum,
             "maximum": maximum,
         }
