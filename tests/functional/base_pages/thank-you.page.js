@@ -38,7 +38,7 @@ class ThankYouPage extends BasePage {
   }
 
   feedback() {
-    return ".feedback";
+    return ".ons-feedback";
   }
 }
 export default new ThankYouPage("thank-you");

@@ -14,7 +14,7 @@ class ConfirmationEmailSentPage extends BasePage {
   }
 
   feedback() {
-    return ".feedback";
+    return ".ons-feedback";
   }
 }
 export default new ConfirmationEmailSentPage("email-confirmation");
