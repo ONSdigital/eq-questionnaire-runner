@@ -11,7 +11,7 @@ def convert_answers_to_payload_0_0_1(
 ):
     """
     Convert answers into the data format below
-    Answers for list items are not currently supported
+    list_item_id bound answers are not currently supported
     'data': {
           '001': '01-01-2016',
           '002': '30-03-2016'
@@ -20,7 +20,7 @@ def convert_answers_to_payload_0_0_1(
     :param answer_store: questionnaire answers
     :param list_store: list store
     :param schema: QuestionnaireSchema class with populated schema json
-    :param full_routing_path: the path followed in the questionnaire
+    :param full_routing_path: a list of section routing paths followed in the questionnaire
     :return: data in a formatted form
     """
     data = OrderedDict()
