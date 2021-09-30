@@ -173,7 +173,7 @@ class PlaceholderTransforms:
             days=(reference_datetime.weekday() - first_day_of_week) % 7
         )
         first_day_of_prior_full_week = first_day_of_last_partial_week + timedelta(
-            days=offset_full_weeks * 7
+            days=int(offset_full_weeks) * 7
         )
         last_day_of_range = first_day_of_prior_full_week + timedelta(
             days=days_in_range - 1
@@ -195,9 +195,7 @@ class PlaceholderTransforms:
         :return: String containing the date range as text.
         :rtype: str
         """
-        date1_obj, date2_obj = list(
-            map(PlaceholderTransforms.parse_date, date_range_pair)
-        )
+        date1_obj, date2_obj = date_range_pair
         date1_format = "%A %d".replace(" 0", "")
         date2_format = "%A %d %B %Y"
 

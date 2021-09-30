@@ -54,19 +54,24 @@
                                     {
                                         "id": "offset-full-weeks",
                                         "label": "How many full weeks should be offset?",
+                                        "description": "Negative integers for past weeks, 0 for the same week as the reference date, positive for future weeks",
+                                        "mandatory": true,
+                                        "type": "Number",
+                                        "minumum": {
+                                            "value": -1000
+                                        }
+                                    },
+                                    {
+                                        "id": "days-in-range",
+                                        "label": "How many days should be in the entire range, including the start date?",
+                                        "description": "e.g. '7' yields a week from Monday-Sunday",
                                         "mandatory": true,
                                         "type": "Number"
                                     },
                                     {
-                                        "id": "days-in-range",
-                                        "label": "How many days are in the entire range?",
-                                        "mandatory": true,
-                                        "type": "Number",
-                                        "minimum": 1
-                                    },
-                                    {
                                         "id": "first-day-of-week",
-                                        "label": "Which day should the first day of the week?",
+                                        "label": "Which day should be the first day of the week?",
+                                        "description": "Valid options are: monday, tuesday, wednesday, thursday, friday, saturday, sunday",
                                         "mandatory": true,
                                         "type": "TextField"
                                     }
@@ -78,19 +83,19 @@
             ]
         },
         {
-            "id": "age-input-section",
-            "title": "Age Input",
+            "id": "days-worked-section",
+            "title": "Days Input",
             "groups": [
                 {
-                    "id": "dob-input-group",
+                    "id": "days-input-group",
                     "blocks": [
                         {
                             "type": "Question",
-                            "id": "dob-question-block",
+                            "id": "days-question-block",
                             "question": {
-                                "id": "dob-question",
+                                "id": "days-question",
                                 "title": {
-                                    "text": "Did you work between {formatted_date_range}?",
+                                    "text": "How many days did you work during the period {formatted_date_range}?",
                                     "placeholders": [
                                         {
                                             "placeholder": "formatted_date_range",
@@ -131,12 +136,9 @@
                                 "type": "General",
                                 "answers": [
                                     {
-                                        "id": "date-of-birth-answer",
-                                        "description": "Days worked",
-                                        "label": "Days you worked",
+                                        "id": "days-worked-answer",
                                         "mandatory": true,
-                                        "type": "Number",
-                                        "minimum": 0
+                                        "type": "Number"
                                     }
                                 ]
                             }
