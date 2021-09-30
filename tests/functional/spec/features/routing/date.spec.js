@@ -9,10 +9,25 @@ import DateGreaterThanOrEqualsQuestionPage from "../../../generated_pages/new_ro
 import DateLessThanQuestionPage from "../../../generated_pages/new_routing_date_less_than/date-question.page";
 import DateLessThanOrEqualsQuestionPage from "../../../generated_pages/new_routing_date_less_than_or_equals/date-question.page";
 
+
 const today = new Date();
 const dayToday = today.getDate();
 const monthToday = today.getMonth() + 1; // January is 0!
 const yearToday = today.getFullYear();
+
+const yesterday = new Date();
+yesterday.setDate(today.getDate() - 1);;
+const dayYesterday = yesterday.getDate();
+const monthYesterday = yesterday.getMonth() + 1;
+const yearYesterday = yesterday.getFullYear();
+
+const tomorrow = new Date();
+tomorrow.setDate(today.getDate() + 1);;
+const dayTomorrow = tomorrow.getDate();
+const monthTomorrow = tomorrow.getMonth() + 1;
+const yearTomorrow = tomorrow.getFullYear();
+
+
 
 describe("Feature: Routing on a Date", () => {
   describe("Equals", () => {
@@ -203,9 +218,9 @@ describe("Feature: Routing on a Date", () => {
       });
 
       it("When I enter a date less than today, Then I should be routed to the correct page", () => {
-        $(DateLessThanQuestionPage.day()).setValue(dayToday - 1);
-        $(DateLessThanQuestionPage.month()).setValue(monthToday);
-        $(DateLessThanQuestionPage.year()).setValue(yearToday);
+        $(DateLessThanQuestionPage.day()).setValue(dayYesterday);
+        $(DateLessThanQuestionPage.month()).setValue(monthYesterday);
+        $(DateLessThanQuestionPage.year()).setValue(yearYesterday);
         $(DateLessThanQuestionPage.submit()).click();
 
         const browserUrl = browser.getUrl();
@@ -225,9 +240,9 @@ describe("Feature: Routing on a Date", () => {
       });
 
       it("When I enter a date greater than today, Then I should be routed to the incorrect page", () => {
-        $(DateLessThanQuestionPage.day()).setValue(dayToday + 1);
-        $(DateLessThanQuestionPage.month()).setValue(monthToday);
-        $(DateLessThanQuestionPage.year()).setValue(yearToday);
+        $(DateLessThanQuestionPage.day()).setValue(dayTomorrow);
+        $(DateLessThanQuestionPage.month()).setValue(monthTomorrow);
+        $(DateLessThanQuestionPage.year()).setValue(yearTomorrow);
         $(DateLessThanQuestionPage.submit()).click();
 
         const browserUrl = browser.getUrl();
@@ -244,9 +259,9 @@ describe("Feature: Routing on a Date", () => {
       });
 
       it("When I enter a date less than today, Then I should be routed to the correct page", () => {
-        $(DateLessThanOrEqualsQuestionPage.day()).setValue(dayToday - 1);
-        $(DateLessThanOrEqualsQuestionPage.month()).setValue(monthToday);
-        $(DateLessThanOrEqualsQuestionPage.year()).setValue(yearToday);
+        $(DateLessThanOrEqualsQuestionPage.day()).setValue(dayYesterday);
+        $(DateLessThanOrEqualsQuestionPage.month()).setValue(monthYesterday);
+        $(DateLessThanOrEqualsQuestionPage.year()).setValue(yearYesterday);
         $(DateLessThanOrEqualsQuestionPage.submit()).click();
 
         const browserUrl = browser.getUrl();
@@ -266,9 +281,9 @@ describe("Feature: Routing on a Date", () => {
       });
 
       it("When I enter a date greater than today, Then I should be routed to the incorrect page", () => {
-        $(DateLessThanOrEqualsQuestionPage.day()).setValue(dayToday + 1);
-        $(DateLessThanOrEqualsQuestionPage.month()).setValue(monthToday);
-        $(DateLessThanOrEqualsQuestionPage.year()).setValue(yearToday);
+        $(DateLessThanOrEqualsQuestionPage.day()).setValue(dayTomorrow);
+        $(DateLessThanOrEqualsQuestionPage.month()).setValue(monthTomorrow);
+        $(DateLessThanOrEqualsQuestionPage.year()).setValue(yearTomorrow);
         $(DateLessThanOrEqualsQuestionPage.submit()).click();
 
         const browserUrl = browser.getUrl();
