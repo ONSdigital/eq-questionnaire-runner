@@ -84,7 +84,7 @@
                                                             "source": "answers",
                                                             "identifier": "reference-date"
                                                         },
-                                                        "offset_full_weeks": -2,
+                                                        "offset_full_weeks": -1,
                                                         "days_in_range": 15,
                                                         "first_day_of_week": "monday"
                                                     }
@@ -128,7 +128,10 @@
                                                     "transform": "format_date_range_pair",
                                                     "arguments": {
                                                         "date_range": {
-                                                            "value": ["2019-05-01", "2019-05-19"]
+                                                            "value": [
+                                                                "2019-05-01",
+                                                                "2019-05-19"
+                                                            ]
                                                         }
                                                     }
                                                 }
@@ -162,7 +165,10 @@
                                                     "transform": "format_date_range_pair",
                                                     "arguments": {
                                                         "date_range": {
-                                                            "value": ["2019-05-01", "2019-06-01"]
+                                                            "value": [
+                                                                "2019-05-01",
+                                                                "2019-06-01"
+                                                            ]
                                                         }
                                                     }
                                                 }
@@ -196,7 +202,10 @@
                                                     "transform": "format_date_range_pair",
                                                     "arguments": {
                                                         "date_range": {
-                                                            "value": ["2019-05-01", "2020-05-01"]
+                                                            "value": [
+                                                                "2019-05-01",
+                                                                "2020-05-01"
+                                                            ]
                                                         }
                                                     }
                                                 }
