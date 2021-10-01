@@ -189,13 +189,9 @@ class PlaceholderTransforms:
         last_day_of_range = first_day_of_prior_full_week + timedelta(
             days=days_in_range - 1
         )
-        return tuple(
-            sorted(
-                [
-                    first_day_of_prior_full_week.strftime(self.input_date_format),
-                    last_day_of_range.strftime(self.input_date_format),
-                ]
-            )
+        return (
+            first_day_of_prior_full_week.strftime(self.input_date_format),
+            last_day_of_range.strftime(self.input_date_format),
         )
 
     @staticmethod
