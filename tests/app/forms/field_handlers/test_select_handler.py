@@ -1,5 +1,6 @@
 from wtforms import Form
 
+from app.forms import error_messages
 from app.forms.field_handlers import SelectHandler
 from app.forms.fields import SelectFieldWithDetailAnswer
 
@@ -38,7 +39,7 @@ def test_get_field(value_source_resolver):
         "validation": {"messages": {"MANDATORY_RADIO": "This answer is required"}},
     }
 
-    handler = SelectHandler(radio_json, value_source_resolver)
+    handler = SelectHandler(radio_json, value_source_resolver, error_messages)
 
     class TestForm(Form):
         test_field = handler.get_field()

@@ -20,9 +20,12 @@ def parse_mode(string):
 def read_file(file_name):
     if file_name and os.path.isfile(file_name):
         logger.debug("reading from file", filename=file_name)
-        with open(file_name, "r") as file:
-            contents = file.read()
-            return contents
+        with open(
+            file_name,
+            "r",
+            encoding="UTF-8",
+        ) as file:
+            return file.read()
     else:
         logger.info(
             "Did not load file because filename supplied was None or not a file",

@@ -1,5 +1,6 @@
 from abc import ABC
-from typing import Mapping
+
+from werkzeug.datastructures import ImmutableDict
 
 from app.data_models.answer_store import AnswerStore
 from app.data_models.list_store import ListStore
@@ -17,7 +18,7 @@ class Context(ABC):
         answer_store: AnswerStore,
         list_store: ListStore,
         progress_store: ProgressStore,
-        metadata: Mapping,
+        metadata: ImmutableDict,
     ):
         self._language = language
         self._schema = schema
@@ -36,8 +37,8 @@ class Context(ABC):
 
         self._placeholder_renderer = PlaceholderRenderer(
             language=self._language,
-            schema=self._schema,
             answer_store=self._answer_store,
-            metadata=self._metadata,
             list_store=self._list_store,
+            metadata=self._metadata,
+            schema=self._schema,
         )

@@ -19,7 +19,7 @@ def get_template_content(filename, ignore_context=False):
     if ignore_context:
         line_beginnings_to_ignore += ["#:"]
 
-    with open(filename) as file:
+    with open(filename, encoding="UTF-8") as file:
         return list(
             filter(
                 lambda l: all(
