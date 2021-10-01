@@ -217,7 +217,7 @@ def should_wrap_with_fieldset_processor():
 
 
 @blueprint.app_template_filter()
-def get_width_class_for_number(answer):
+def get_width_for_number(answer):
     allowable_widths = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 15, 20, 30, 40, 50]
 
     min_value = answer.get("minimum", {}).get("value", 0)
@@ -236,8 +236,8 @@ def get_width_class_for_number(answer):
 
 
 @blueprint.app_context_processor
-def get_width_class_for_number_processor():
-    return {"get_width_class_for_number": get_width_class_for_number}
+def get_width_for_number_processor():
+    return {"get_width_for_number": get_width_for_number}
 
 
 class LabelConfig:
@@ -342,7 +342,7 @@ class OtherConfig:
             )  # pylint: disable=protected-access
 
             if answer_type == "Number":
-                self.classes = get_width_class_for_number(detail_answer_schema)
+                self.width = get_width_for_number(detail_answer_schema)
 
 
 @blueprint.app_template_filter()  # type: ignore
