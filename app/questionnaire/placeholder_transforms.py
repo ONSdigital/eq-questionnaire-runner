@@ -245,5 +245,4 @@ class PlaceholderTransforms:
 
     @staticmethod
     def list_item_count(list_to_count: Optional[Sized]) -> int:
-        if list_to_count is not None:
-            return len(list_to_count or [])
+        return len(list_to_count or [])
