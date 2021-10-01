@@ -175,7 +175,7 @@ class PlaceholderTransforms:
         try:
             first_day_of_week_idx = DAYS[first_day_of_week.lower()]
         except KeyError as err:
-            raise KeyError(f"'{first_day_of_week_idx}' is not a valid weekday") from err
+            raise KeyError(f"'{first_day_of_week}' is not a valid weekday") from err
 
         if days_in_range < 1:
             raise ValueError("'days_in_range' must be a positive integer")
