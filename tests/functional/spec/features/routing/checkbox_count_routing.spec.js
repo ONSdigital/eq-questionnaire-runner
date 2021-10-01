@@ -20,7 +20,7 @@ describe("Test routing using count of checkboxes checked", () => {
     $(ToppingCheckboxPage.submit()).click();
 
     expect(browser.getUrl()).to.contain(IncorrectAnswerPage.pageName);
-    expect($("body").getText()).to.have.string("You were asked to select 2 toppings but you actually selected None.");
+    expect($("body").getText()).to.have.string("You were asked to select 2 toppings but you actually selected 0.");
   });
 
   it("Given a user selects 1 checkbox, When they submit, Then they should be routed to the incorrect page", () => {
