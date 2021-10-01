@@ -376,8 +376,8 @@ class TestPlaceholderParser(unittest.TestCase):
     def test_format_date_range(self):
         params = [
             (
-                ("2021-09-15", "2021-09-21"),
-                "Wednesday 15 to Tuesday 21 September 2021",
+                ("2021-09-01", "2021-09-15"),
+                "Wednesday 1 to Wednesday 15 September 2021",
             ),
             (
                 ("2021-09-15", "2021-10-15"),

@@ -202,7 +202,7 @@ class PlaceholderTransforms:
         :rtype: str
         """
         start_date, end_date = list(map(PlaceholderTransforms.parse_date, date_range))
-        start_date_format = "%A %d".replace(" 0", "")
+        start_date_format = "%A %d"
         end_date_format = "%A %d %B %Y"
 
         if start_date.year != end_date.year:
@@ -210,8 +210,8 @@ class PlaceholderTransforms:
         elif start_date.month != end_date.month:
             start_date_format += " %B"
 
-        start_date_formatted = start_date.strftime(start_date_format)
-        end_date_formatted = end_date.strftime(end_date_format)
+        start_date_formatted = start_date.strftime(start_date_format).replace(" 0", " ")
+        end_date_formatted = end_date.strftime(end_date_format).replace(" 0", " ")
 
         return f"{start_date_formatted} to {end_date_formatted}"
 

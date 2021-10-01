@@ -107,7 +107,7 @@
                                         "id": "days-worked-answer",
                                         "label": "Days worked",
                                         "description": "This scenario uses 2 prior full week offset, 15 day range, first day of the week monday",
-                                        "mandatory": true,
+                                        "mandatory": false,
                                         "type": "Number"
                                     }
                                 ]
