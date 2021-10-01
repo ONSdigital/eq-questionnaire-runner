@@ -465,7 +465,7 @@ def test_other_config_numeric_input_class(
         answer_schema_number["maximum"] = {"value": max_value}
 
     other = OtherConfig(Mock(), answer_schema_number)
-    assert other.classes == expected_width
+    assert other.width == expected_width
 
 
 def test_other_config_non_dropdown_input_type(answer_schema_textfield):
