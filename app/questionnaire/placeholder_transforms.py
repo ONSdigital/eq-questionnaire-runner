@@ -155,7 +155,7 @@ class PlaceholderTransforms:
         offset_full_weeks: int,
         days_in_range: int,
         first_day_of_week: str = "monday",
-    ) -> tuple[datetime, datetime]:
+    ) -> tuple[str, str]:
         """Generate a start and end date for a date range given a reference date,
         weeks prior and number of days in range.
 
@@ -173,15 +173,15 @@ class PlaceholderTransforms:
         """
         reference_datetime = PlaceholderTransforms.parse_date(reference_date)
         try:
-            first_day_of_week = DAYS[first_day_of_week.lower()]
+            first_day_of_week_idx = DAYS[first_day_of_week.lower()]
         except KeyError as err:
-            raise KeyError(f"'{first_day_of_week}' is not a valid weekday") from err
+            raise KeyError(f"'{first_day_of_week_idx}' is not a valid weekday") from err
 
         if days_in_range < 1:
             raise ValueError("'days_in_range' must be a positive integer")
 
         first_day_of_last_partial_week = reference_datetime - timedelta(
-            days=(reference_datetime.weekday() - first_day_of_week) % 7
+            days=(reference_datetime.weekday() - first_day_of_week_idx) % 7
         )
         first_day_of_prior_full_week = first_day_of_last_partial_week + timedelta(
             days=offset_full_weeks * 7

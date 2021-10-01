@@ -22,7 +22,6 @@ describe("Date checks", () => {
   });
 
   it("Given a reference date is provided, when I get to the next page, then the placeholder contains a formatted date range", () => {
-
     $(DateQuestionPage.day()).setValue(15);
     $(DateQuestionPage.month()).setValue(9);
     $(DateQuestionPage.year()).setValue(2021);
@@ -34,7 +33,6 @@ describe("Date checks", () => {
   });
 
   it("Given a reference date is provided, when I get to the next page, then the placeholder contains a formatted date range where the range spans more than one month", () => {
-
     $(DateQuestionPage.day()).setValue(15);
     $(DateQuestionPage.month()).setValue(9);
     $(DateQuestionPage.year()).setValue(2021);
@@ -47,7 +45,6 @@ describe("Date checks", () => {
   });
 
   it("Given a reference date is provided, when I get to the next page, then the placeholder contains a formatted date range where the range spans more than one year", () => {
-
     $(DateQuestionPage.day()).setValue(15);
     $(DateQuestionPage.month()).setValue(9);
     $(DateQuestionPage.year()).setValue(2021);
