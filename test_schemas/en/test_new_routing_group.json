@@ -71,7 +71,8 @@
                                     "when": {
                                         "==": [
                                             {
-                                                "identifier": "which-group-answer","source": "answers"
+                                                "identifier": "which-group-answer",
+                                                "source": "answers"
                                             },
                                             "Group 1"
                                         ]

@@ -39,7 +39,7 @@
                     "blocks": [
                         {
                             "type": "Question",
-                            "id": "number-comparison-1",
+                            "id": "route-comparison-1",
                             "question": {
                                 "answers": [
                                     {
@@ -49,14 +49,14 @@
                                         "type": "Number"
                                     }
                                 ],
-                                "id": "number-comparison-1-question",
+                                "id": "route-comparison-1-question",
                                 "title": "Enter your first number",
                                 "type": "General"
                             }
                         },
                         {
                             "type": "Question",
-                            "id": "number-comparison-2",
+                            "id": "route-comparison-2",
                             "question": {
                                 "answers": [
                                     {
@@ -66,7 +66,7 @@
                                         "type": "Number"
                                     }
                                 ],
-                                "id": "number-comparison-2-question",
+                                "id": "route-comparison-2-question",
                                 "title": "Enter a higher number to skip the next interstitial",
                                 "type": "General"
                             },
@@ -87,38 +87,38 @@
                                     }
                                 },
                                 {
-                            "block": "incorrect-answer"
-                        }
+                                    "block": "incorrect-answer"
+                                }
                             ]
                         },
 
-                {
-                    "type": "Interstitial",
-                    "id": "incorrect-answer",
-                    "content": {
-                        "title": "Your second number was lower or equal",
-                        "contents": [
-                            {
-                                "description": "This page should be skipped if your second answer was higher than your first"
+                        {
+                            "type": "Interstitial",
+                            "id": "incorrect-answer",
+                            "content": {
+                                "title": "Your second number was lower or equal",
+                                "contents": [
+                                    {
+                                        "description": "This page should be skipped if your second answer was higher than your first"
+                                    }
+                                ]
                             }
-                        ]
-                    }
-                },
-                {
-                    "type": "Interstitial",
-                    "id": "correct-answer",
-                    "content": {
-                        "title": "Your second number was higher",
-                        "contents": [
-                            {
-                                "description": "This page should never be skipped"
+                        },
+                        {
+                            "type": "Interstitial",
+                            "id": "correct-answer",
+                            "content": {
+                                "title": "Your second number was higher",
+                                "contents": [
+                                    {
+                                        "description": "This page should never be skipped"
+                                    }
+                                ]
                             }
-                        ]
-                    }
+                        }
+                    ]
                 }
             ]
         }
     ]
-}
-]
 }

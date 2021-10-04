@@ -71,14 +71,10 @@
                                                 "identifier": "country-text-field-answer",
                                                 "source": "answers"
                                             },
-                                            [
-                                                "India",
-                                                "Azerbaijan"
-                                            ]
+                                            ["India", "Azerbaijan"]
                                         ]
                                     }
-
-                            },
+                                },
                                 {
                                     "block": "country-interstitial-equals",
                                     "when": {
@@ -127,4 +123,3 @@
         }
     ]
 }
-
