@@ -39,6 +39,13 @@
                             "type": "Question",
                             "id": "block-1",
                             "question": {
+                                "guidance": {
+                                    "contents": [
+                                        {
+                                            "description": "Select at least one option to route to the “answered” page otherwise you will be routed to the “unanswered” page"
+                                        }
+                                    ]
+                                },
                                 "answers": [
                                     {
                                         "id": "answer-1",
@@ -101,6 +108,13 @@
                             "type": "Question",
                             "id": "block-2",
                             "question": {
+                                "guidance": {
+                                    "contents": [
+                                        {
+                                            "description": "Select at least one option to route to the “answered” page otherwise you will be routed to the “unanswered” page"
+                                        }
+                                    ]
+                                },
                                 "answers": [
                                     {
                                         "id": "answer-2",
@@ -163,6 +177,13 @@
                             "type": "Question",
                             "id": "block-3",
                             "question": {
+                                "guidance": {
+                                    "contents": [
+                                        {
+                                            "description": "Enter a number greater than “0” to route to the “answered” page otherwise you will be routed to the “unanswered or answered 0” page"
+                                        }
+                                    ]
+                                },
                                 "answers": [
                                     {
                                         "id": "answer-3",
@@ -177,14 +198,14 @@
                             },
                             "routing_rules": [
                                 {
-                                    "block": "unanswered-or-not-say-question-3",
+                                    "block": "unanswered-or-zero-question-3",
                                     "when": {
                                         "in": [
                                             {
                                                 "source": "answers",
                                                 "identifier": "answer-3"
                                             },
-                                            [null, 1]
+                                            [null, 0]
                                         ]
                                     }
                                 },
@@ -197,7 +218,7 @@
                             "id": "answered-question-3",
                             "type": "Interstitial",
                             "content": {
-                                "title": "You chose more than 1 slice"
+                                "title": "You chose  at least 1 slice"
                             },
                             "routing_rules": [
                                 {
@@ -206,10 +227,10 @@
                             ]
                         },
                         {
-                            "id": "unanswered-or-not-say-question-3",
+                            "id": "unanswered-or-zero-question-3",
                             "type": "Interstitial",
                             "content": {
-                                "title": "You did not answer the question or chose 1 slice"
+                                "title": "You did not answer the question or chose 0 slices"
                             }
                         }
                     ],
