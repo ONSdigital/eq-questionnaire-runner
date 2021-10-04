@@ -50,7 +50,7 @@ def evaluate_or(values: Iterable[bool]) -> bool:
 
 
 def evaluate_count(values: Optional[Sized]) -> int:
-    return len(values) if values else 0
+    return len(values or [])
 
 
 @casefold
