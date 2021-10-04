@@ -43,7 +43,7 @@
                             "question": {
                                 "answers": [
                                     {
-                                        "id": "number-comparison-1-answer",
+                                        "id": "route-comparison-1-answer",
                                         "label": "1st Number",
                                         "mandatory": true,
                                         "type": "Number"
@@ -60,7 +60,7 @@
                             "question": {
                                 "answers": [
                                     {
-                                        "id": "number-comparison-2-answer",
+                                        "id": "route-comparison-2-answer",
                                         "label": "2nd Number",
                                         "mandatory": true,
                                         "type": "Number"
@@ -77,11 +77,11 @@
                                         ">": [
                                             {
                                                 "source": "answers",
-                                                "identifier": "number-comparison-2-answer"
+                                                "identifier": "route-comparison-2-answer"
                                             },
                                             {
                                                 "source": "answers",
-                                                "identifier": "number-comparison-1-answer"
+                                                "identifier": "route-comparison-1-answer"
                                             }
                                         ]
                                     }
