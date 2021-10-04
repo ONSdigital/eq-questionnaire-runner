@@ -35,7 +35,9 @@
         {
             "id": "test-section",
             "title": "Section 1",
-            "summary": { "show_on_completion": true },
+            "summary": {
+                "show_on_completion": true
+            },
             "groups": [
                 {
                     "blocks": [
@@ -119,7 +121,9 @@
         {
             "id": "test-section-2",
             "title": "Section 2",
-            "summary": { "show_on_completion": true },
+            "summary": {
+                "show_on_completion": true
+            },
             "groups": [
                 {
                     "blocks": [
@@ -150,21 +154,21 @@
                             "type": "Question",
                             "routing_rules": [
                                 {
-                                    "goto": {
-                                        "block": "test-optional-2",
-                                        "when": [
+                                    "block": "test-optional-2",
+                                    "when": {
+                                        "==": [
                                             {
-                                                "id": "test-answer-2",
-                                                "condition": "equals",
-                                                "value": "Yes"
-                                            }
+                                                "identifier": "test-answer-2",
+                                                "source": "answers"
+                                            },
+                                            "Yes"
                                         ]
                                     }
                                 },
                                 {
-                                    "goto": {
+
                                         "section": "End"
-                                    }
+
                                 }
                             ]
                         },
