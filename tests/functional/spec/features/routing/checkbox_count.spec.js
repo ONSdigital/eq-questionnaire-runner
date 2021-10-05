@@ -14,7 +14,6 @@ describe("Test routing using count of checkboxes checked", () => {
 
     expect(browser.getUrl()).to.contain(CorrectAnswerPage.pageName);
     expect($(CorrectAnswerPage.questionText()).getText()).to.have.string("You selected 2 toppings");
-
   });
 
   it("Given a user selects no checkboxes, When they submit, Then they should be routed to the incorrect page", () => {
