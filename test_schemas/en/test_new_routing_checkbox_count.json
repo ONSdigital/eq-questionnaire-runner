@@ -134,7 +134,7 @@
                             "type": "Interstitial",
                             "id": "correct-answer",
                             "content": {
-                                "title": "Correct",
+                                "title": "You selected 2 toppings",
                                 "contents": [
                                     {
                                         "description": {
