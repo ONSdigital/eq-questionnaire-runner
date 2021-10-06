@@ -1,6 +1,6 @@
 from datetime import datetime, timezone
 from functools import cached_property
-from typing import Optional, Union
+from typing import Any, Optional, Union
 
 from dateutil.relativedelta import relativedelta
 
@@ -75,7 +75,7 @@ class DateHandler(FieldHandler):
 
         :return: date value
         """
-        value = self.get_schema_value(self.answer_schema[key])
+        value: Any = self.get_schema_value(self.answer_schema[key])
 
         if value == "now":
             value = datetime.now(timezone.utc).strftime("%Y-%m-%d")
@@ -107,8 +107,6 @@ class DateHandler(FieldHandler):
         """
         Gets attributes within a minimum or maximum of a date field and validates that the entered date
         is valid.
-
-        :return: attributes
         """
         date_value = None
 

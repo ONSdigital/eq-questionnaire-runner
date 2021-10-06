@@ -54,6 +54,7 @@ venv
 
 # VS Code
 .vscode
+*.code-workspace
 
 .DS_Store
 

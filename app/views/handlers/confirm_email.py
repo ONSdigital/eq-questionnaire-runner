@@ -17,7 +17,7 @@ from app.data_models import (
 )
 from app.forms.questionnaire_form import generate_form
 from app.helpers import url_safe_serializer
-from app.questionnaire import QuestionnaireSchema
+from app.questionnaire import QuestionnaireSchema, QuestionSchema
 from app.settings import (
     EQ_SUBMISSION_CONFIRMATION_CLOUD_FUNCTION_NAME,
     EQ_SUBMISSION_CONFIRMATION_QUEUE,
@@ -80,7 +80,7 @@ class ConfirmEmail:
         )
 
     @cached_property
-    def question_schema(self):
+    def question_schema(self) -> QuestionSchema:
         return {
             "type": "General",
             "id": "confirm-email",
