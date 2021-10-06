@@ -1,7 +1,7 @@
 {% from "components/collapsible/_macro.njk" import onsCollapsible %}
 
 {% call onsCollapsible({
-  "classes": "u-mt-s",
+  "classes": "ons-u-mt-s",
   "title": title,
   "titleTag": "h2",
   "headingAttributes": {
@@ -21,7 +21,7 @@
     }
   }
 }) %}
-  <div class="u-mt-s">
+  <div class="ons-u-mt-s">
       <p>{{ _("You can <em>share your household access code</em> with the people you live with so they can complete their own sections.") }}</p>
       <p data-qa=individual-response-url >{{ _("If this is not possible, there are <a href={url}>other ways each person can complete their own census.</a>").format(url=content.individual_response_url)}}</p>
   </div>

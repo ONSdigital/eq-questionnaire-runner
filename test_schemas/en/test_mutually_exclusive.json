@@ -544,7 +544,7 @@
                             "question": {
                                 "id": "mutually-exclusive-textarea-question",
                                 "type": "MutuallyExclusive",
-                                "title": "Why did you leave you last job?",
+                                "title": "Why did you leave your last job?",
                                 "mandatory": false,
                                 "answers": [
                                     {
