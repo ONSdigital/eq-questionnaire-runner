@@ -55,8 +55,8 @@
                                         {
                                             "title": "The following routing should take place",
                                             "list": [
-                                                "Submit ‘India’ or ‘Azerbaijan’ using any mixture of lower or upper case: route to ‘country-interstitial-India-or-Azerbaijan’",
-                                                "Submit ‘Georgia’ using any mixture of lower or upper case: route to ‘country-interstitial-Georgia’"
+                                                "Submit ‘India’ or ‘Azerbaijan’ using any mixture of lower or upper case: route to ‘country-interstitial-india-or-azerbaijan’",
+                                                "Submit ‘Georgia’ using any mixture of lower or upper case: route to ‘country-interstitial-georgia’"
                                             ]
                                         }
                                     ]
@@ -64,7 +64,7 @@
                             },
                             "routing_rules": [
                                 {
-                                    "block": "country-interstitial-India-or-Azerbaijan",
+                                    "block": "country-interstitial-india-or-azerbaijan",
                                     "when": {
                                         "in": [
                                             {
@@ -76,7 +76,7 @@
                                     }
                                 },
                                 {
-                                    "block": "country-interstitial-Georgia",
+                                    "block": "country-interstitial-georgia",
                                     "when": {
                                         "==": [
                                             {
@@ -93,7 +93,7 @@
                             ]
                         },
                         {
-                            "id": "country-interstitial-India-or-Azerbaijan",
+                            "id": "country-interstitial-india-or-azerbaijan",
                             "type": "Interstitial",
                             "content": {
                                 "title": "Condition: Submitted India or Azerbaijan",
@@ -105,7 +105,7 @@
                             }
                         },
                         {
-                            "id": "country-interstitial-Georgia",
+                            "id": "country-interstitial-georgia",
                             "type": "Interstitial",
                             "content": {
                                 "title": "Condition: Submitted Georgia",
