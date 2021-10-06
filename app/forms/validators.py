@@ -400,10 +400,10 @@ class SumCheck:
 
     def __call__(
         self,
-        form: "QuestionnaireForm",
+        form: QuestionnaireForm,
         conditions: List[str],
-        total: int,
-        target_total: int,
+        total: Decimal,
+        target_total: Union[Decimal, int],
     ) -> None:
         if len(conditions) > 1:
             try:
@@ -427,7 +427,9 @@ class SumCheck:
             )
 
     @staticmethod
-    def _is_valid(condition: str, total: int, target_total: int) -> tuple[bool, str]:
+    def _is_valid(
+        condition: str, total: Decimal, target_total: Union[Decimal, int]
+    ) -> tuple[bool, str]:
         if condition == "equals":
             return total == target_total, "TOTAL_SUM_NOT_EQUALS"
         if condition == "less than":
