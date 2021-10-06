@@ -68,21 +68,19 @@
                             "type": "Question",
                             "routing_rules": [
                                 {
-                                    "goto": {
-                                        "block": "test-optional",
-                                        "when": [
+                                    "block": "test-optional",
+                                    "when": {
+                                        "==": [
                                             {
                                                 "id": "test-answer",
-                                                "condition": "equals",
-                                                "value": "Yes"
-                                            }
+                                                "source": "answers"
+                                            },
+                                            "Yes"
                                         ]
                                     }
                                 },
                                 {
-                                    "goto": {
-                                        "section": "End"
-                                    }
+                                    "section": "End"
                                 }
                             ]
                         },
