@@ -4,7 +4,8 @@
   "id": answer.id,
   "dontWrap": not answer.label,
   "mutuallyExclusive": mutuallyExclusive,
-  "error": error
+  "error": error,
+  "legendOrLabel": answer.label
 } %}
 
 {% set years = form.fields[answer.id].years %}
@@ -26,12 +27,6 @@
     "value": months.data if months.data is not none else '',
     "suffix": _(months.label.text)
   }) %}
-{% endif %}
-
-{% if years and months %}
-  {%- set config = config | setAttribute("legendOrLabel", answer.label) -%}
-{% else %}
-  {%- set config = config | setAttribute("label", answer.label) -%}
 {% endif %}
 
 {{ onsDuration(config) }}
