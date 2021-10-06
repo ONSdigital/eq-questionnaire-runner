@@ -21,6 +21,8 @@ LIST_COLLECTOR_CHILDREN = [
 
 RELATIONSHIP_CHILDREN = ["UnrelatedQuestion"]
 
+QuestionSchema = Mapping[str, Any]
+
 
 class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
     def __init__(
@@ -379,11 +381,12 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
             or self.is_answer_in_repeating_section(answer_id)
         )
 
-    def get_answers_by_answer_id(self, answer_id: str) -> Optional[list[ImmutableDict]]:
+    def get_answers_by_answer_id(self, answer_id: str) -> list[ImmutableDict]:
         """Return answers matching answer id, including all matching answers inside
         variants
         """
-        return self._answers_by_id.get(answer_id)
+        answers: list[ImmutableDict] = self._answers_by_id.get(answer_id, [])
+        return answers
 
     def get_default_answer(self, answer_id: str) -> Optional[Answer]:
         if answer_schemas := self.get_answers_by_answer_id(answer_id):
