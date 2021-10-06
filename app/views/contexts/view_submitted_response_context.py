@@ -39,7 +39,7 @@ def build_view_submitted_response_context(
         questionnaire_store.submitted_at,
         questionnaire_store.metadata["tx_id"],
     )
-    response_metadata = {}
+    response_metadata: dict = {}
     context = {
         "hide_sign_out_button": True,
         "view_submitted_response": {
