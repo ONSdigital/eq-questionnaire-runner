@@ -18,6 +18,7 @@ class WhenRuleEvaluator:
     answer_store: AnswerStore
     list_store: ListStore
     metadata: dict
+    response_metadata: dict
     location: Union[Location, RelationshipLocation]
     routing_path_block_ids: Optional[list] = None
 
@@ -26,6 +27,7 @@ class WhenRuleEvaluator:
             answer_store=self.answer_store,
             list_store=self.list_store,
             metadata=self.metadata,
+            response_metadata=self.response_metadata,
             schema=self.schema,
             location=self.location,
             list_item_id=self.location.list_item_id,

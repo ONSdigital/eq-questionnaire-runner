@@ -273,13 +273,18 @@ def test_renders_text_plural_from_metadata():
 
 
 def get_placeholder_render(
-    language="en", answer_store=AnswerStore(), list_store=ListStore(), metadata={}
+    language="en",
+    answer_store=AnswerStore(),
+    list_store=ListStore(),
+    metadata={},
+    response_metadata={},
 ):
     renderer = PlaceholderRenderer(
         language=language,
         answer_store=answer_store,
         list_store=list_store,
         metadata=metadata,
+        response_metadata=response_metadata,
         schema=Mock(),
     )
     return renderer

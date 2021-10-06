@@ -28,6 +28,7 @@ class PlaceholderParser:
         answer_store: AnswerStore,
         list_store: ListStore,
         metadata: ImmutableDict,
+        response_metadata: dict,
         schema: QuestionnaireSchema,
         list_item_id: Optional[str] = None,
         location: Location = None,
@@ -36,6 +37,7 @@ class PlaceholderParser:
         self._answer_store = answer_store
         self._list_store = list_store
         self._metadata = metadata
+        self._response_metadata = response_metadata
         self._schema = schema
         self._list_item_id = list_item_id
         self._location = location
@@ -52,6 +54,7 @@ class PlaceholderParser:
             location=self._location,
             list_item_id=self._list_item_id,
             escape_answer_values=True,
+            response_metadata=self._response_metadata,
         )
 
     def __call__(

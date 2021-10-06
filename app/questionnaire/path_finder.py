@@ -18,9 +18,11 @@ class PathFinder:
         list_store: ListStore,
         progress_store: ProgressStore,
         metadata: Mapping,
+        response_metadata: dict,
     ):
         self.answer_store = answer_store
         self.metadata = metadata
+        self.response_metadata = response_metadata
         self.schema = schema
         self.progress_store = progress_store
         self.list_store = list_store
@@ -136,6 +138,7 @@ class PathFinder:
             self.answer_store,
             self.list_store,
             self.metadata,
+            self.response_metadata,
             location=this_location,
             routing_path_block_ids=routing_path_block_ids,
         )

@@ -19,6 +19,7 @@ class RouterTestCase(AppContextTestCase):
     list_store = ListStore()
     progress_store = ProgressStore()
     metadata = {}
+    response_metadata = {}
 
     @cached_property
     def router(self):
@@ -28,6 +29,7 @@ class RouterTestCase(AppContextTestCase):
             self.list_store,
             self.progress_store,
             self.metadata,
+            self.response_metadata,
         )
 
 

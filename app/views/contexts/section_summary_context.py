@@ -24,6 +24,7 @@ class SectionSummaryContext(Context):
         list_store: ListStore,
         progress_store: ProgressStore,
         metadata: ImmutableDict,
+        response_metadata: dict,
         routing_path: RoutingPath,
         current_location: Location,
     ):
@@ -34,6 +35,7 @@ class SectionSummaryContext(Context):
             list_store,
             progress_store,
             metadata,
+            response_metadata,
         )
         self.routing_path = routing_path
         self.current_location = current_location
@@ -74,6 +76,7 @@ class SectionSummaryContext(Context):
             self._list_store,
             self._progress_store,
             self._metadata,
+            self._response_metadata,
         )
 
     def get_page_title(self, title_for_location: str) -> str:
@@ -127,6 +130,7 @@ class SectionSummaryContext(Context):
                     self._answer_store,
                     self._list_store,
                     self._metadata,
+                    self._response_metadata,
                     self._schema,
                     self.current_location,
                     self._language,

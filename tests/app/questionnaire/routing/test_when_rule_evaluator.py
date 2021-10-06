@@ -49,6 +49,7 @@ def get_when_rule_evaluator(
     return WhenRuleEvaluator(
         schema=schema,
         metadata=metadata or {},
+        response_metadata={},
         answer_store=answer_store,
         list_store=list_store,
         location=location,

@@ -35,6 +35,7 @@ def get_value_source_resolver(
     answer_store: AnswerStore = AnswerStore(),
     list_store: ListStore = ListStore(),
     metadata: Optional[dict] = None,
+    response_metadata: Optional[dict] = None,
     location: Union[Location, RelationshipLocation] = Location(
         section_id="test-section", block_id="test-block"
     ),
@@ -54,6 +55,7 @@ def get_value_source_resolver(
         answer_store=answer_store,
         list_store=list_store,
         metadata=metadata,
+        response_metadata=response_metadata,
         schema=schema,
         location=location,
         list_item_id=list_item_id,

@@ -23,6 +23,7 @@ class ValueSourceResolver:
     answer_store: AnswerStore
     list_store: ListStore
     metadata: dict
+    response_metadata: dict
     schema: QuestionnaireSchema
     location: Union[None, Location, RelationshipLocation]
     list_item_id: Optional[str]
@@ -131,3 +132,6 @@ class ValueSourceResolver:
             # This does not use the location object because
             # routes such as individual response does not have the concept of location.
             return self.list_item_id
+
+        if source == "response_metadata":
+            return self.response_metadata.get(value_source.get("identifier"))

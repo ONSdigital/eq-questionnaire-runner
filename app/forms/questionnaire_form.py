@@ -24,6 +24,7 @@ class QuestionnaireForm(FlaskForm):
         answer_store,
         list_store,
         metadata,
+        response_metadata,
         location,
         **kwargs,
     ):
@@ -32,6 +33,7 @@ class QuestionnaireForm(FlaskForm):
         self.answer_store = answer_store
         self.list_store = list_store
         self.metadata = metadata
+        self.response_metadata = response_metadata
         self.location = location
         self.question_errors = {}
         self.options_with_detail_answer = {}
@@ -241,6 +243,7 @@ class QuestionnaireForm(FlaskForm):
             answer_store=self.answer_store,
             list_store=self.list_store,
             metadata=self.metadata,
+            response_metadata=self.response_metadata,
             schema=self.schema,
             location=self.location,
             list_item_id=list_item_id,
@@ -349,7 +352,14 @@ def _option_value_in_data(answer, option, data):
 
 
 def get_answer_fields(
-    question, data, schema, answer_store, list_store, metadata, location
+    question,
+    data,
+    schema,
+    answer_store,
+    list_store,
+    metadata,
+    response_metadata,
+    location,
 ):
     list_item_id = location.list_item_id if location else None
     value_source_resolver = ValueSourceResolver(
@@ -360,6 +370,7 @@ def get_answer_fields(
         location=location,
         list_item_id=list_item_id,
         escape_answer_values=False,
+        response_metadata=response_metadata,
     )
 
     answer_fields = {}
@@ -440,6 +451,7 @@ def generate_form(
     answer_store,
     list_store,
     metadata,
+    response_metadata,
     location=None,
     data=None,
     form_data=None,
@@ -456,6 +468,7 @@ def generate_form(
         answer_store,
         list_store,
         metadata,
+        response_metadata,
         location,
     )
 
@@ -468,6 +481,7 @@ def generate_form(
         answer_store,
         list_store,
         metadata,
+        response_metadata,
         location,
         data=data,
         formdata=form_data,

@@ -19,6 +19,7 @@ class Context(ABC):
         list_store: ListStore,
         progress_store: ProgressStore,
         metadata: ImmutableDict,
+        response_metadata: dict,
     ):
         self._language = language
         self._schema = schema
@@ -26,6 +27,7 @@ class Context(ABC):
         self._list_store = list_store
         self._progress_store = progress_store
         self._metadata = metadata
+        self._response_metadata = response_metadata
 
         self._router = Router(
             self._schema,
@@ -33,6 +35,7 @@ class Context(ABC):
             self._list_store,
             self._progress_store,
             self._metadata,
+            self._response_metadata,
         )
 
         self._placeholder_renderer = PlaceholderRenderer(
@@ -40,5 +43,6 @@ class Context(ABC):
             answer_store=self._answer_store,
             list_store=self._list_store,
             metadata=self._metadata,
+            response_metadata=self._response_metadata,
             schema=self._schema,
         )

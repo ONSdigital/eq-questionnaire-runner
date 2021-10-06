@@ -8,12 +8,21 @@ from app.questionnaire.rules import evaluate_when_rules
 
 
 class Router:
-    def __init__(self, schema, answer_store, list_store, progress_store, metadata):
+    def __init__(
+        self,
+        schema,
+        answer_store,
+        list_store,
+        progress_store,
+        metadata,
+        response_metadata,
+    ):
         self._schema = schema
         self._answer_store = answer_store
         self._list_store = list_store
         self._progress_store = progress_store
         self._metadata = metadata
+        self._response_metadata = response_metadata
 
         self._path_finder = PathFinder(
             self._schema,
@@ -21,6 +30,7 @@ class Router:
             self._list_store,
             self._progress_store,
             self._metadata,
+            self._response_metadata,
         )
 
     @property
