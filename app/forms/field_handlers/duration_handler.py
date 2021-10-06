@@ -9,7 +9,7 @@ class DurationHandler(FieldHandler):
 
     def get_field(self) -> FormField:
         return FormField(
-            get_duration_form(self.answer_schema, self.error_messages),
+            get_duration_form(self.answer_schema, dict(self.error_messages)),
             label=self.label,
             description=self.guidance,
         )
