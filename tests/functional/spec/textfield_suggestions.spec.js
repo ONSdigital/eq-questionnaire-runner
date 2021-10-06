@@ -7,7 +7,7 @@ describe("Suggestions", () => {
     browser.openQuestionnaire("test_textfield_suggestions.json");
     $(SuggestionsPage.country()).setValue("Uni");
     $("#country-answer-listbox li").waitForDisplayed();
-    expect($$(".js-autosuggest-listbox li").length).to.not.equal(0);
+    expect($$(".ons-js-autosuggest-listbox li").length).to.not.equal(0);
   });
 });
 
@@ -30,7 +30,7 @@ describe("Suggestions", () => {
     browser.pause(500);
     browser.keys(" United");
     suggestionsList.waitForExist();
-    expect($$(".js-autosuggest-listbox li").length).to.not.equal(0);
+    expect($$(".ons-js-autosuggest-listbox li").length).to.not.equal(0);
     suggestionsOption.click();
     $(MultipleSuggestionsPage.submit()).click();
     expect(browser.getUrl()).to.contain(SubmitPage.url());

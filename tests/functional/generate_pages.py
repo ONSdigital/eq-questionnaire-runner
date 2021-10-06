@@ -1,7 +1,6 @@
 #!/usr/bin/env python
 
 import argparse
-import json
 import logging
 import os
 import re
@@ -125,7 +124,7 @@ ANSWER_LABEL_GETTER = Template(
 
 ANSWER_ERROR_GETTER = Template(
     r"""  ${answerName}ErrorItem() {
-    return `#${answerId}-error .panel__body .panel__error`;
+    return `#${answerId}-error .ons-panel__body .ons-panel__error`;
   }
 
 """
@@ -210,7 +209,7 @@ LIST_SUMMARY_REMOVE_LINK_GETTER = r"""  listRemoveLink(instance) { return `[data
 
 """
 
-LIST_SUMMARY_LIST_GETTER = r"""  listSummary() { return `.list__item`; }
+LIST_SUMMARY_LIST_GETTER = r"""  listSummary() { return `.ons-list__item`; }
 
 """
 
@@ -242,7 +241,7 @@ RELATIONSHIP_PLAYBACK_GETTER = r"""  playback() { return `[class*="relationships
 
 """
 
-CLEAR_SELECTION_BUTTON_GETTER = r"""  clearSelectionButton() { return `.js-clear-btn`; }
+CLEAR_SELECTION_BUTTON_GETTER = r"""  clearSelectionButton() { return `.ons-js-clear-btn`; }
 
 """
 

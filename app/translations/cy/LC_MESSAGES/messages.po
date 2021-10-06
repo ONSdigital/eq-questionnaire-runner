@@ -57,8 +57,8 @@ msgstr "Rhowch ateb"
 
 #: app/forms/error_messages.py:15
 #, python-format
-msgid "Select an answer <span class=\"u-vh\">to ‘%(question_title)s’</span>"
-msgstr "Dewiswch ateb <span class=\"u-vh\">i ‘%(question_title)s’</span>"
+msgid "Select an answer <span class=\"ons-u-vh\">to ‘%(question_title)s’</span>"
+msgstr "Dewiswch ateb <span class=\"ons-u-vh\">i ‘%(question_title)s’</span>"
 
 #: app/forms/error_messages.py:18
 #: app/forms/field_handlers/dropdown_handler.py:11
@@ -67,8 +67,8 @@ msgstr "Dewiswch ateb"
 
 #: app/forms/error_messages.py:19
 #, python-format
-msgid "Select at least one answer <span class=\"u-vh\">to ‘%(question_title)s’</span>"
-msgstr "Dewiswch o leiaf un ateb <span class=\"u-vh\">to ‘%(question_title)s’</span>"
+msgid "Select at least one answer <span class=\"ons-u-vh\">to ‘%(question_title)s’</span>"
+msgstr "Dewiswch o leiaf un ateb <span class=\"ons-u-vh\">to ‘%(question_title)s’</span>"
 
 #: app/forms/error_messages.py:22
 msgid "Enter a date"
