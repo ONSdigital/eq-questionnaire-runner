@@ -45,7 +45,7 @@ class TestQuestionnaireEndpoints(IntegrationTestCase):
         self.launchSurvey("test_textfield")
 
         # When
-        self.post(url=f"/questionnaire/")
+        self.post(url="/questionnaire/")
 
         # Then
         self.assertInUrl("name-block")

@@ -711,11 +711,11 @@ def test_answer_source_not_on_path_non_repeating_section(is_answer_on_path):
     location = Location(section_id="test-section", block_id="test-block")
 
     if is_answer_on_path:
-        schema.get_block_for_answer_id = Mock(return_value={"id": f"block-on-path"})
+        schema.get_block_for_answer_id = Mock(return_value={"id": "block-on-path"})
         answer_id = "answer-on-path"
         expected_result = True
     else:
-        schema.get_block_for_answer_id = Mock(return_value={"id": f"block-not-on-path"})
+        schema.get_block_for_answer_id = Mock(return_value={"id": "block-not-on-path"})
         answer_id = "answer-not-on-path"
         expected_result = False
 
@@ -750,11 +750,11 @@ def test_answer_source_not_on_path_repeating_section(is_answer_on_path):
     )
 
     if is_answer_on_path:
-        schema.get_block_for_answer_id = Mock(return_value={"id": f"block-on-path"})
+        schema.get_block_for_answer_id = Mock(return_value={"id": "block-on-path"})
         answer_id = "answer-on-path"
         expected_result = True
     else:
-        schema.get_block_for_answer_id = Mock(return_value={"id": f"block-not-on-path"})
+        schema.get_block_for_answer_id = Mock(return_value={"id": "block-not-on-path"})
         answer_id = "answer-not-on-path"
         expected_result = False
 
@@ -791,7 +791,7 @@ def test_answer_source_default_answer_used_when_no_answer(
 
     when_rule_evaluator = get_when_rule_evaluator(
         schema=schema,
-        answer_store=AnswerStore([{"answer_id": f"some-answer", "value": "No"}]),
+        answer_store=AnswerStore([{"answer_id": "some-answer", "value": "No"}]),
     )
 
     assert (

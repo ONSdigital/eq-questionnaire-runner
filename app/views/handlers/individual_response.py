@@ -133,11 +133,7 @@ class IndividualResponseHandler:
 
     def page_title(self, page_title):
         if self._list_item_id:
-            page_title += ": " + lazy_gettext(
-                "Person {list_item_position}".format(
-                    list_item_position=self._list_item_position
-                )
-            )
+            page_title += ": " + lazy_gettext(f"Person {self._list_item_position}")
         return page_title
 
     def _is_location_valid(self):

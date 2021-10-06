@@ -47,7 +47,7 @@ class DateTimeSchemaMixin:
     updated_at = fields.DateTime()
 
     @pre_dump
-    def set_date(self, data):
+    def set_date(self, data, **kwargs):
         data.updated_at = datetime.now(tz=timezone.utc)
         return data
 
@@ -59,7 +59,7 @@ class QuestionnaireStateSchema(Schema, DateTimeSchemaMixin):
     submitted_at = Timestamp(allow_none=True)
 
     @post_load
-    def make_model(self, data):
+    def make_model(self, data, **kwargs):
         created_at = data.pop("created_at", None)
         updated_at = data.pop("updated_at", None)
         model = QuestionnaireState(**data)
@@ -75,7 +75,7 @@ class EQSessionSchema(Schema, DateTimeSchemaMixin):
     expires_at = Timestamp()
 
     @post_load
-    def make_model(self, data):
+    def make_model(self, data, **kwargs):
         created_at = data.pop("created_at", None)
         updated_at = data.pop("updated_at", None)
         model = EQSession(**data)
@@ -89,5 +89,5 @@ class UsedJtiClaimSchema(Schema):
     expires_at = Timestamp()
 
     @post_load
-    def make_model(self, data):
+    def make_model(self, data, **kwargs):
         return UsedJtiClaim(**data)

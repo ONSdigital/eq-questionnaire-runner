@@ -49,7 +49,7 @@ class MultipleClientTestCase(IntegrationTestCase):
             _post_data.update({"csrf_token": last_csrf_token})
 
         if action:
-            _post_data.update({"action[{action}]".format(action=action): ""})
+            _post_data.update({f"action[{action}]": ""})
 
         response = client.post(url, data=_post_data, follow_redirects=True, **kwargs)
 

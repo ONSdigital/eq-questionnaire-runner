@@ -38,7 +38,7 @@ class TestQuestionnaireRelationshipsUnrelated(QuestionnaireTestCase):
     def test_is_not_accessible_when_invalid_list_item(self):
         self.launchSurvey("test_relationships_unrelated")
         self.get(
-            f"/questionnaire/relationships/people/invalid-id/related-to-anyone-else"
+            "/questionnaire/relationships/people/invalid-id/related-to-anyone-else"
         )
         self.assertStatusNotFound()
 

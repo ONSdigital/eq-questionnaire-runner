@@ -3,7 +3,7 @@ from . import SUBMIT_URL_PATH, QuestionnaireTestCase
 
 class TestQuestionnaireListCollector(QuestionnaireTestCase):
     def get_add_someone_link(self):
-        selector = f"[data-qa='add-item-link']"
+        selector = "[data-qa='add-item-link']"
         selected = self.getHtmlSoup().select(selector)
         return selected[0].get("href")
 

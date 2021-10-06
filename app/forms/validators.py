@@ -402,8 +402,8 @@ class SumCheck:
         self,
         form: QuestionnaireForm,
         conditions: List[str],
-        total: Decimal,
-        target_total: Union[Decimal, int],
+        total: Union[Decimal, int],
+        target_total: Union[Decimal, float],
     ) -> None:
         if len(conditions) > 1:
             try:
@@ -414,7 +414,7 @@ class SumCheck:
                     "We only support <= and >="
                 )
 
-            condition = "{} or equals".format(conditions[0])
+            condition = f"{conditions[0]} or equals"
         else:
             condition = conditions[0]
 
@@ -428,7 +428,9 @@ class SumCheck:
 
     @staticmethod
     def _is_valid(
-        condition: str, total: Decimal, target_total: Union[Decimal, int]
+        condition: str,
+        total: Union[Decimal, float],
+        target_total: Union[Decimal, float],
     ) -> tuple[bool, str]:
         if condition == "equals":
             return total == target_total, "TOTAL_SUM_NOT_EQUALS"
@@ -443,7 +445,7 @@ class SumCheck:
 
 
 def format_playback_value(
-    value: Union[int, Decimal], currency: Optional[str] = None
+    value: Union[float, Decimal], currency: Optional[str] = None
 ) -> str:
     if currency:
         return get_formatted_currency(value, currency)
