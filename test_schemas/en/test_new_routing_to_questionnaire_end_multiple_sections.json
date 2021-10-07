@@ -65,33 +65,31 @@
                             "type": "Question",
                             "routing_rules": [
                                 {
-                                    "goto": {
-                                        "section": "End",
-                                        "when": [
+                                    "when": {
+                                        "==": [
                                             {
-                                                "id": "test-answer",
-                                                "condition": "equals",
-                                                "value": "No"
-                                            }
+                                                "source": "answers",
+                                                "identifier": "test-answer"
+                                            },
+                                            "No"
+                                        ]
+                                    },
+                                    "section": "End"
+                                },
+                                {
+                                    "group": "test-group-2",
+                                    "when": {
+                                        "==": [
+                                            {
+                                                "source": "answers",
+                                                "identifier": "test-answer"
+                                            },
+                                            "Yes"
                                         ]
                                     }
                                 },
                                 {
-                                    "goto": {
-                                        "group": "test-group-2",
-                                        "when": [
-                                            {
-                                                "id": "test-answer",
-                                                "condition": "equals",
-                                                "value": "Yes"
-                                            }
-                                        ]
-                                    }
-                                },
-                                {
-                                    "goto": {
-                                        "section": "End"
-                                    }
+                                    "section": "End"
                                 }
                             ]
                         }

@@ -2,7 +2,7 @@
 
 {% call onsCollapsible({
   "id": "answer-guidance-" ~ answer.id,
-  "classes": "u-mt-s",
+  "classes": "ons-u-mt-s",
   "title": _(answer_guidance.schema_item.show_guidance),
   "titleTag": "h2",
   "headingAttributes": {
@@ -27,7 +27,7 @@
     }
   }
 }) %}
-  <div class="u-mt-s">
+  <div class="ons-u-mt-s">
     {% set content_block = answer_guidance.schema_item %}
     {% include 'partials/content-block.html' %}
   </div>

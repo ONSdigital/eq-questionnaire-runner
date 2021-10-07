@@ -2,14 +2,18 @@
 
 {% set input = form.fields[answer['id']] %}
 
+{% if answer.label %}
+  {% set label = {
+  "id": answer.id ~ "-label",
+  "text": answer.label,
+  "description": answer.description
+  } %}
+{% endif %}
+
 {{ onsTextarea({
   "id": answer.id,
   "name": input.name,
-  "label": {
-    "id": answer.id ~ "-label",
-    "text": answer.label,
-    "description": answer.description
-  },
+  "label": label,
   "value": input._value() | e,
   "charCheckLimit": {
     "limit": answer.max_length | default(input.maxlength, true),

@@ -55,8 +55,8 @@
                                         {
                                             "title": "The following routing should take place",
                                             "list": [
-                                                "Submit ‘India’ or ‘Azerbaijan’ using any mixture of lower or upper case: route to ‘country-interstitial-equal-any’",
-                                                "Submit ‘Georgia’ using any mixture of lower or upper case: route to ‘country-interstitial-equals’"
+                                                "Submit ‘India’ or ‘Azerbaijan’ using any mixture of lower or upper case: route to ‘country-interstitial-india-or-azerbaijan’",
+                                                "Submit ‘Georgia’ using any mixture of lower or upper case: route to ‘country-interstitial-georgia’"
                                             ]
                                         }
                                     ]
@@ -64,41 +64,39 @@
                             },
                             "routing_rules": [
                                 {
-                                    "goto": {
-                                        "block": "country-interstitial-equal-any",
-                                        "when": [
+                                    "block": "country-interstitial-india-or-azerbaijan",
+                                    "when": {
+                                        "in": [
                                             {
-                                                "id": "country-text-field-answer",
-                                                "condition": "equals any",
-                                                "values": ["India", "Azerbaijan"]
-                                            }
+                                                "identifier": "country-text-field-answer",
+                                                "source": "answers"
+                                            },
+                                            ["India", "Azerbaijan"]
                                         ]
                                     }
                                 },
                                 {
-                                    "goto": {
-                                        "block": "country-interstitial-equals",
-                                        "when": [
+                                    "block": "country-interstitial-georgia",
+                                    "when": {
+                                        "==": [
                                             {
-                                                "id": "country-text-field-answer",
-                                                "condition": "equals",
-                                                "value": "Georgia"
-                                            }
+                                                "identifier": "country-text-field-answer",
+                                                "source": "answers"
+                                            },
+                                            "Georgia"
                                         ]
                                     }
                                 },
                                 {
-                                    "goto": {
-                                        "section": "End"
-                                    }
+                                    "section": "End"
                                 }
                             ]
                         },
                         {
-                            "id": "country-interstitial-equal-any",
+                            "id": "country-interstitial-india-or-azerbaijan",
                             "type": "Interstitial",
                             "content": {
-                                "title": "Condition: Equals Any",
+                                "title": "Condition: Submitted India or Azerbaijan",
                                 "contents": [
                                     {
                                         "description": "You submitted India or Azerbaijan."
@@ -107,10 +105,10 @@
                             }
                         },
                         {
-                            "id": "country-interstitial-equals",
+                            "id": "country-interstitial-georgia",
                             "type": "Interstitial",
                             "content": {
-                                "title": "Condition: Equals",
+                                "title": "Condition: Submitted Georgia",
                                 "contents": [
                                     {
                                         "description": "You submitted Georgia."
