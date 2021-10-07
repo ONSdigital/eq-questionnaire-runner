@@ -7,8 +7,8 @@ from babel.dates import format_datetime
 from babel.numbers import format_currency, format_decimal
 from dateutil.relativedelta import relativedelta
 from flask_babel import ngettext
-from app.questionnaire.routing.operations import evaluate_count
 
+from app.questionnaire.routing.operations import evaluate_count
 from app.settings import DEFAULT_LOCALE
 
 
