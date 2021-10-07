@@ -19,7 +19,7 @@ from app.jinja_filters import (
     get_currency_symbol,
     get_formatted_address,
     get_formatted_currency,
-    get_width_class_for_number,
+    get_width_for_number,
     map_list_collector_config,
     map_summary_item_config,
     should_wrap_with_fieldset,
@@ -194,32 +194,34 @@ class TestJinjaFilters(AppContextTestCase):  # pylint: disable=too-many-public-m
     def test_get_formatted_currency_with_no_value(self):
         self.assertEqual(get_formatted_currency(""), "")
 
-    def test_get_width_class_for_number_no_maximum(self):
-        self.assertEqual(get_width_class_for_number({}), "input--w-10")
+    def test_get_width_for_number_no_maximum(self):
+        self.assertEqual(get_width_for_number({}), 10)
 
-    def test_get_width_class_for_number_single_digit(self):
+    def test_get_width_for_number_single_digit(self):
         answer = {"maximum": {"value": 1}}
-        self.assertEqual(get_width_class_for_number(answer), "input--w-1")
+        self.assertEqual(get_width_for_number(answer), 1)
 
-    def test_get_width_class_for_number_multiple_digits(self):
+    def test_get_width_for_number_multiple_digits(self):
         answer = {"maximum": {"value": 123456}}
-        self.assertEqual(get_width_class_for_number(answer), "input--w-6")
+        self.assertEqual(get_width_for_number(answer), 6)
 
-    def test_get_width_class_for_number_roundup(self):
+    def test_get_width_for_number_roundup(self):
         answer = {"maximum": {"value": 12345678901}}
-        self.assertEqual(get_width_class_for_number(answer), "input--w-20")
+        self.assertEqual(get_width_for_number(answer), 15)
 
-    def test_get_width_class_for_number_min_value_longer_than_maximum(self):
+    def test_get_width_for_number_min_value_longer_than_maximum(self):
         answer = {"minimum": {"value": -123456}, "maximum": {"value": 1234}}
-        self.assertEqual(get_width_class_for_number(answer), "input--w-7")
+        self.assertEqual(get_width_for_number(answer), 7)
 
-    def test_get_width_class_for_number_decimal_places(self):
+    def test_get_width_for_number_decimal_places(self):
         answer = {"decimal_places": 2, "maximum": {"value": 123456}}
-        self.assertEqual(get_width_class_for_number(answer), "input--w-8")
+        self.assertEqual(get_width_for_number(answer), 8)
 
-    def test_get_width_class_for_number_large_number(self):
-        answer = {"maximum": {"value": 123456789012345678901}}
-        self.assertIsNone(get_width_class_for_number(answer))
+    def test_get_width_for_number_large_number(self):
+        answer = {
+            "maximum": {"value": 123456789012345678901123456789012345678901234567890}
+        }
+        self.assertIsNone(get_width_for_number(answer))
 
     def test_should_wrap_with_fieldset_daterange(self):
         question = {"type": "DateRange"}
@@ -453,7 +455,7 @@ def test_format_address_fields_with_uprn():
     [
         (None, 10),
         (1, 1),
-        (123123123123, 20),
+        (123123123123, 15),
     ],
 )
 def test_other_config_numeric_input_class(
@@ -463,7 +465,7 @@ def test_other_config_numeric_input_class(
         answer_schema_number["maximum"] = {"value": max_value}
 
     other = OtherConfig(Mock(), answer_schema_number)
-    assert other.classes == f"input--w-{expected_width}"
+    assert other.width == expected_width
 
 
 def test_other_config_non_dropdown_input_type(answer_schema_textfield):

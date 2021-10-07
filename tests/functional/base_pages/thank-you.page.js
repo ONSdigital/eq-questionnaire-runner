@@ -22,7 +22,7 @@ class ThankYouPage extends BasePage {
   }
 
   metadata() {
-    return ".metadata";
+    return ".ons-metadata";
   }
 
   exitButton() {
@@ -38,7 +38,7 @@ class ThankYouPage extends BasePage {
   }
 
   feedback() {
-    return ".feedback";
+    return ".ons-feedback";
   }
 }
 export default new ThankYouPage("thank-you");

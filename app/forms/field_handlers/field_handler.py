@@ -1,6 +1,6 @@
 from abc import ABC
 from functools import cached_property
-from typing import Mapping, Optional, Union
+from typing import Any, Mapping, Optional, Union
 
 from wtforms import Field, validators
 from wtforms.validators import Optional as OptionalValidator
@@ -18,9 +18,9 @@ class FieldHandler(ABC):
 
     def __init__(
         self,
-        answer_schema: dict,
+        answer_schema: Mapping[str, Any],
         value_source_resolver: ValueSourceResolver,
-        error_messages: dict[str, str],
+        error_messages: Mapping[str, str],
         disable_validation: bool = False,
         question_title: str = None,
     ):

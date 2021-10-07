@@ -87,7 +87,7 @@ class NumberHandler(FieldHandler):
     def _get_number_field_validators(
         self,
     ) -> list[Union[NumberCheck, NumberRange, DecimalPlaces]]:
-        answer_errors = self.error_messages.copy()
+        answer_errors = dict(self.error_messages)
 
         for error_key in self.validation_messages.keys():
             answer_errors[error_key] = self.get_validation_message(error_key)
