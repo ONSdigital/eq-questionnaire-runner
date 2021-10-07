@@ -55,8 +55,8 @@ msgstr "Iontráil freagra"
 
 #: app/forms/error_messages.py:15
 #, python-format
-msgid "Select an answer <span class=\"u-vh\">to ‘%(question_title)s’</span>"
-msgstr "Roghnaigh freagra <span class=\"u-vh\">ar ‘%(question_title)s’</span>"
+msgid "Select an answer <span class=\"ons-u-vh\">to ‘%(question_title)s’</span>"
+msgstr "Roghnaigh freagra <span class=\"ons-u-vh\">ar ‘%(question_title)s’</span>"
 
 #: app/forms/error_messages.py:18
 #: app/forms/field_handlers/dropdown_handler.py:11
@@ -65,8 +65,8 @@ msgstr "Roghnaigh freagra"
 
 #: app/forms/error_messages.py:19
 #, python-format
-msgid "Select at least one answer <span class=\"u-vh\">to ‘%(question_title)s’</span>"
-msgstr "Roghnaigh freagra amháin ar a laghad <span class=\"u-vh\">ar ‘%(question_title)s’</span>"
+msgid "Select at least one answer <span class=\"ons-u-vh\">to ‘%(question_title)s’</span>"
+msgstr "Roghnaigh freagra amháin ar a laghad <span class=\"ons-u-vh\">ar ‘%(question_title)s’</span>"
 
 #: app/forms/error_messages.py:22
 msgid "Enter a date"

@@ -9,7 +9,6 @@
 {{
   onsButton({
     "text": _("Continue"),
-    "classes": "btn--loader js-btn-submit",
     "attributes": {
       "data-qa": "btn-submit"
     }
@@ -31,7 +30,7 @@
         {% set empty_list_text = summary.empty_list_text %}
         {% set list_title = summary.title %}
 
-        <div {{'class="u-mb-l"' if not loop.last }} data-qa="{{summary.list_name}}-list-summary">
+        <div {{'class="ons-u-mb-l"' if not loop.last }} data-qa="{{summary.list_name}}-list-summary">
         {% if summary.list %}
           {% set list = summary.list %}
           {% include 'partials/summary/list-summary.html' %}
@@ -47,7 +46,7 @@
         onsButton({
             "text": continue_button_text | default(_("Continue")),
             "submitType": 'timer',
-            "classes": "u-mt-xl",
+            "classes": "ons-u-mt-xl",
             "attributes": {
                 "data-qa": "btn-submit"
             }

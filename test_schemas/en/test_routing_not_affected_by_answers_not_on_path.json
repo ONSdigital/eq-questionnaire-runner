@@ -62,21 +62,19 @@
                             },
                             "routing_rules": [
                                 {
-                                    "goto": {
-                                        "block": "valid-path",
-                                        "when": [
+                                    "block": "valid-path",
+                                    "when": {
+                                        "==": [
                                             {
-                                                "id": "initial-choice-answer",
-                                                "condition": "equals",
-                                                "value": "Go here second"
-                                            }
+                                                "identifier": "initial-choice-answer",
+                                                "source": "answers"
+                                            },
+                                            "Go here second"
                                         ]
                                     }
                                 },
                                 {
-                                    "goto": {
-                                        "block": "invalid-path"
-                                    }
+                                    "block": "invalid-path"
                                 }
                             ]
                         },
@@ -110,9 +108,7 @@
                             },
                             "routing_rules": [
                                 {
-                                    "goto": {
-                                        "section": "End"
-                                    }
+                                    "section": "End"
                                 }
                             ]
                         },
@@ -134,20 +130,19 @@
                             },
                             "routing_rules": [
                                 {
-                                    "goto": {
-                                        "block": "invalid-final-interstitial",
-                                        "when": [
+                                    "block": "invalid-final-interstitial",
+                                    "when": {
+                                        "!=": [
                                             {
-                                                "id": "invalid-path-answer",
-                                                "condition": "set"
-                                            }
+                                                "identifier": "invalid-path-answer",
+                                                "source": "answers"
+                                            },
+                                            null
                                         ]
                                     }
                                 },
                                 {
-                                    "goto": {
-                                        "block": "valid-skipped-interstitial"
-                                    }
+                                    "block": "valid-skipped-interstitial"
                                 }
                             ]
                         },
@@ -176,9 +171,7 @@
                             },
                             "routing_rules": [
                                 {
-                                    "goto": {
-                                        "section": "End"
-                                    }
+                                    "section": "End"
                                 }
                             ]
                         },
@@ -190,9 +183,7 @@
                             },
                             "routing_rules": [
                                 {
-                                    "goto": {
-                                        "section": "End"
-                                    }
+                                    "section": "End"
                                 }
                             ]
                         }

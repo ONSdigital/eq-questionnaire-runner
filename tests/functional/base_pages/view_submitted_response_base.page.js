@@ -2,15 +2,15 @@ import BasePage from "./base.page";
 
 class ViewSubmittedResponseBasePage extends BasePage {
   metadata() {
-    return ".metadata";
+    return ".ons-metadata";
   }
 
   metadataTerm(number = 1) {
-    return `.metadata > dt:nth-of-type(${number})`;
+    return `.ons-metadata > dt:nth-of-type(${number})`;
   }
 
   metadataValue(number = 1) {
-    return `.metadata > dd:nth-of-type(${number})`;
+    return `.ons-metadata > dd:nth-of-type(${number})`;
   }
 
   printButton() {
