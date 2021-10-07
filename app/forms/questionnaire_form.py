@@ -39,6 +39,7 @@ class QuestionnaireForm(FlaskForm):
         answer_store: AnswerStore,
         list_store: ListStore,
         metadata: dict[str, Any],
+        response_metadata: dict[str, Any],
         location: Union[None, Location, RelationshipLocation],
         **kwargs: Union[MultiDict[str, Any], Mapping[str, Any], None],
     ):
@@ -425,6 +426,7 @@ def get_answer_fields(
     answer_store: AnswerStore,
     list_store: ListStore,
     metadata: dict[str, Any],
+    response_metadata: dict[str, Any],
     location: Union[Location, RelationshipLocation, None],
 ) -> dict[str, FieldHandler]:
     list_item_id = location.list_item_id if location else None
@@ -528,6 +530,7 @@ def generate_form(
     answer_store: AnswerStore,
     list_store: ListStore,
     metadata: dict[str, Any],
+    response_metadata: dict[str, Any],
     location: Union[None, Location, RelationshipLocation] = None,
     data: Optional[dict[str, Any]] = None,
     form_data: Optional[MultiDict[str, Any]] = None,
