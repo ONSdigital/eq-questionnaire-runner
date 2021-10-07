@@ -693,12 +693,15 @@ class TestQuestionnaireForm(
 
             metadata = {"ref_p_start_date": "2017-01-21"}
 
+            response_metadata = {}
+
             form = generate_form(
                 schema,
                 question_schema,
                 AnswerStore(),
                 ListStore(),
                 metadata,
+                response_metadata,
                 form_data=form_data,
             )
 
