@@ -8,6 +8,8 @@ from babel.numbers import format_currency, format_decimal
 from dateutil.relativedelta import relativedelta
 from flask_babel import ngettext
 
+from routing.operations import evaluate_count
+
 from app.settings import DEFAULT_LOCALE
 
 
@@ -245,4 +247,4 @@ class PlaceholderTransforms:
 
     @staticmethod
     def list_item_count(list_to_count: Optional[Sized]) -> int:
-        return len(list_to_count or [])
+        return evaluate_count(list_to_count)
