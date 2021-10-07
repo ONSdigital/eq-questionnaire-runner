@@ -72,30 +72,29 @@
                             },
                             "routing_rules": [
                                 {
-                                    "goto": {
-                                        "block": "route-comparison-4",
-                                        "when": [
+                                    "block": "correct-answer",
+                                    "when": {
+                                        ">": [
                                             {
-                                                "id": "route-comparison-2-answer",
-                                                "condition": "greater than",
-                                                "comparison": {
-                                                    "source": "answers",
-                                                    "id": "route-comparison-1-answer"
-                                                }
+                                                "source": "answers",
+                                                "identifier": "route-comparison-2-answer"
+                                            },
+                                            {
+                                                "source": "answers",
+                                                "identifier": "route-comparison-1-answer"
                                             }
                                         ]
                                     }
                                 },
                                 {
-                                    "goto": {
-                                        "block": "route-comparison-3"
-                                    }
+                                    "block": "incorrect-answer"
                                 }
                             ]
                         },
+
                         {
                             "type": "Interstitial",
-                            "id": "route-comparison-3",
+                            "id": "incorrect-answer",
                             "content": {
                                 "title": "Your second number was lower or equal",
                                 "contents": [
@@ -107,7 +106,7 @@
                         },
                         {
                             "type": "Interstitial",
-                            "id": "route-comparison-4",
+                            "id": "correct-answer",
                             "content": {
                                 "title": "Your second number was higher",
                                 "contents": [
