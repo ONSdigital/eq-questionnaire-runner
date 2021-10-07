@@ -11,7 +11,7 @@
     "type": "success",
     "icon": "check",
     "iconSize": "xl",
-    "classes": "u-mb-m"
+    "classes": "ons-u-mb-m"
     })
   %}
     <h1 data-qa="title">{{ _("Thank you for completing the {survey_title}").format(
@@ -26,16 +26,16 @@
     {% set contents = content.guidance.contents %}
     {% include 'partials/contents.html' %}
   {% else %}
-    <p class="u-mb-s">{{ _("Your answers will be processed in the next few weeks.") }}
+    <p class="ons-u-mb-s">{{ _("Your answers will be processed in the next few weeks.") }}
     {{ _("We may contact you to query your answers via phone or secure message.") }}</p>
-    <p class="u-mb-s">{{ _("For more information on how we use this data.") }}<br>
+    <p class="ons-u-mb-s">{{ _("For more information on how we use this data.") }}<br>
     <a href="https://www.ons.gov.uk/surveys">https://www.ons.gov.uk/surveys</a></p>
   {% endif %}
 
   {% if content.view_submitted_response.enabled %}
     <h1 data-qa="view-submitted-response-title">{{ _("Get a copy of your answers") }}</h1>
     {% if not content.view_submitted_response.expired %}
-      <p class="u-mb-s">{{ _("You can <a href='{url}' id='view-submitted-response-link'>save or print your answers</a> for your records.").format(url = content.view_submitted_response.url) }}</p>
+      <p class="ons-u-mb-s">{{ _("You can <a href='{url}' id='view-submitted-response-link'>save or print your answers</a> for your records.").format(url = content.view_submitted_response.url) }}</p>
       {% call onsPanel({
         "id": "view-submitted-response-warning",
         "type": "warn"
@@ -45,7 +45,7 @@
     {% else %}
       {% call onsPanel({
         "id": "view-submitted-response-guidance",
-        "classes": "u-mb-m"
+        "classes": "ons-u-mb-m"
       }) %}
         {{ _("For security, you can no longer view your answers") }}
       {% endcall %}

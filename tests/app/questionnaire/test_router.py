@@ -467,7 +467,7 @@ class TestRouterNextLocationLinearFlow(RouterTestCase):
 
     def test_return_to_final_summary_questionnaire_is_complete(self):
         self.schema = load_schema_from_name(
-            "test_routing_to_questionnaire_end_single_section"
+            "test_new_routing_to_questionnaire_end_single_section"
         )
         self.progress_store = ProgressStore(
             [
@@ -490,7 +490,7 @@ class TestRouterNextLocationLinearFlow(RouterTestCase):
 
     def test_return_to_final_summary_questionnaire_is_not_complete(self):
         self.schema = load_schema_from_name(
-            "test_routing_to_questionnaire_end_multiple_sections"
+            "test_new_routing_to_questionnaire_end_multiple_sections"
         )
         self.answer_store = AnswerStore([{"answer_id": "test-answer", "value": "Yes"}])
         self.progress_store = ProgressStore(
@@ -640,7 +640,7 @@ class TestRouterLastLocationLinearFlow(RouterTestCase):
 
     def test_last_block_not_on_path(self):
         self.schema = load_schema_from_name(
-            "test_routing_to_questionnaire_end_multiple_sections"
+            "test_new_routing_to_questionnaire_end_multiple_sections"
         )
         self.answer_store = AnswerStore(
             [

@@ -1,6 +1,6 @@
 from datetime import datetime, timezone
 from decimal import Decimal
-from typing import Sequence, Union
+from typing import Optional, Sequence, Sized, Union
 from urllib.parse import quote
 
 from babel.dates import format_datetime
@@ -8,6 +8,7 @@ from babel.numbers import format_currency, format_decimal
 from dateutil.relativedelta import relativedelta
 from flask_babel import ngettext
 
+from app.questionnaire.routing.operations import evaluate_count
 from app.settings import DEFAULT_LOCALE
 
 
@@ -43,7 +44,6 @@ class PlaceholderTransforms:
         for item in list_to_format:
             formatted_list += f"<li>{item}</li>"
         formatted_list += "</ul>"
-
         return formatted_list
 
     @staticmethod
@@ -243,3 +243,7 @@ class PlaceholderTransforms:
     @staticmethod
     def _create_hyperlink(href: str, link_text: str) -> str:
         return f'<a href="{href}">{link_text}</a>'
+
+    @staticmethod
+    def list_item_count(list_to_count: Optional[Sized]) -> int:
+        return evaluate_count(list_to_count)

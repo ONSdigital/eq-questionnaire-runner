@@ -247,6 +247,7 @@ class TestPlaceholderParser(unittest.TestCase):
         )
 
     def test_email_link_with_subject_and_reference(self):
+
         assert (
             self.transforms.email_link("test@email.com", "test subject", "12345")
             == '<a href="mailto:test@email.com?subject=test%20subject%2012345">test@email.com</a>'
@@ -257,3 +258,14 @@ class TestPlaceholderParser(unittest.TestCase):
             self.transforms.telephone_number_link("012345 67890")
             == '<a href="tel:01234567890">012345 67890</a>'
         )
+
+    def test_list_item_count(self):
+
+        assert (
+            self.transforms.list_item_count(
+                ["Alice Aardvark", "Bob Berty Brown", "Dave Dixon Davies"]
+            )
+            == 3
+        )
+        assert self.transforms.list_item_count([]) == 0
+        assert self.transforms.list_item_count(None) == 0

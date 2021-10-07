@@ -811,3 +811,35 @@ def test_raises_exception_when_bad_operand_type():
     with pytest.raises(TypeError):
         when_rule_evaluator = get_when_rule_evaluator()
         when_rule_evaluator.evaluate(rule={Operator.EQUAL: {1, 1}})
+
+
+@pytest.mark.parametrize(
+    "rule, expected_result",
+    [
+        (
+            {
+                Operator.EQUAL: [
+                    {
+                        Operator.COUNT: [
+                            {"source": "answers", "identifier": "some-answer"}
+                        ]
+                    },
+                    2,
+                ]
+            },
+            True,
+        ),
+    ],
+)
+def test_answer_source_count(rule, expected_result):
+    when_rule_evaluator = get_when_rule_evaluator(
+        answer_store=AnswerStore(
+            [
+                {
+                    "answer_id": "some-answer",
+                    "value": ["array element 1", "array element 2"],
+                }
+            ]
+        ),
+    )
+    assert when_rule_evaluator.evaluate(rule=rule) is expected_result

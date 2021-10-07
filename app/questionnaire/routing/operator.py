@@ -6,6 +6,7 @@ from app.questionnaire.routing.operations import (
     evaluate_all_in,
     evaluate_and,
     evaluate_any_in,
+    evaluate_count,
     evaluate_equal,
     evaluate_greater_than,
     evaluate_greater_than_or_equal,
@@ -32,6 +33,7 @@ class Operator:
     IN: str = "in"
     ALL_IN: str = "all-in"
     ANY_IN: str = "any-in"
+    COUNT: str = "count"
     DATE: str = "date"
 
     def __init__(self, name: str) -> None:
@@ -79,5 +81,6 @@ OPERATIONS: dict[str, Callable] = {
     Operator.IN: evaluate_in,
     Operator.ALL_IN: evaluate_all_in,
     Operator.ANY_IN: evaluate_any_in,
+    Operator.COUNT: evaluate_count,
     Operator.DATE: resolve_date_from_string,
 }

@@ -408,7 +408,7 @@ class TestPathFinder(AppContextTestCase):
 
     def test_build_path_with_group_routing(self):
         # Given i have answered the routing question
-        schema = load_schema_from_name("test_routing_group")
+        schema = load_schema_from_name("test_new_routing_group")
         section_id = schema.get_section_id_for_block_id("group2-block")
 
         answer_store = AnswerStore()

@@ -14,7 +14,7 @@
     {% include 'partials/error-panel.html' %}
   {% endif %}
 
-  <h1 class="question__title u-fs-xxl" data-qa="confirm-email-title">{{ content.question.title }}</h1>
+  <h1 class="question__title ons-u-fs-xxl" data-qa="confirm-email-title">{{ content.question.title }}</h1>
   <div class="question__description"><p>{{ content.question.description}}</p></div>
   {%- for answer in question.answers -%}
     {% set question_title = answer.title %}
@@ -25,7 +25,7 @@
     onsButton({
       "text": _("Continue"),
       "submitType": 'timer',
-      "classes": "u-mt-xl",
+      "classes": "ons-u-mt-xl",
       "attributes": {
         "data-qa": "btn-submit"
       }
