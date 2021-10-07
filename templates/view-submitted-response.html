@@ -24,7 +24,7 @@
 }%}
 
 {% block main %}
-  <h1 class="u-mt-m">
+  <h1 class="ons-u-mt-m">
     {{ content.submitted_text}}
   </h1>
   {{ onsMetadata(content.metadata)}}
@@ -34,21 +34,21 @@
         "type": 'button',
         "text": 'Print answers',
         "buttonStyle": "print",
-        "classes": "btn--small",
+        "variants": 'small',
         "attributes": {
           "data-qa": "btn-print"
         }
       })
     }}
     {% block summary %}
-      <div class="u-mt-l u-mb-l">
+      <div class="ons-u-mt-l ons-u-mb-l">
         {% include 'partials/summary/summary.html' %}
       </div>
     {% endblock summary %}
   {% else %}
     {% call onsPanel({
       "id": "view-submmited-guidance",
-      "classes": "u-mb-m"
+      "classes": "ons-u-mb-m"
      }) %}
     {{ _("For security, you can no longer view or get a copy of your answers") }}
     {% endcall %}
