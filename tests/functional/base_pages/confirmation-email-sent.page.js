@@ -10,11 +10,11 @@ class ConfirmationEmailSentPage extends BasePage {
   }
 
   feedback() {
-    return ".feedback";
+    return ".ons-feedback";
   }
 
   feedbackLink() {
-    return ".feedback__link";
+    return ".ons-feedback__link";
   }
 }
 export default new ConfirmationEmailSentPage("email-confirmation");

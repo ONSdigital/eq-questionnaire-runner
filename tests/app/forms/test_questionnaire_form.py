@@ -674,6 +674,37 @@ class TestQuestionnaireForm(
                 schema.error_messages["DATE_PERIOD_TOO_LARGE"] % {"max": "3 years"},
             )
 
+    def test_date_raises_ValueError_when_any_date_range_parts_are_falsy(self):
+        with self.app_request_context():
+            schema = load_schema_from_name("test_date_validation_combined")
+
+            question_schema = schema.get_block("date-range-block")["question"]
+
+            form_data = MultiDict(
+                {
+                    "date-range-from-day": "01",
+                    "date-range-from-month": "1",
+                    "date-range-from-year": "2017",
+                    "date-range-to-day": "14",
+                    "date-range-to-month": "3",
+                    "date-range-to-year": "2017",
+                }
+            )
+
+            metadata = {"ref_p_start_date": "2017-01-21"}
+
+            form = generate_form(
+                schema,
+                question_schema,
+                AnswerStore(),
+                ListStore(),
+                metadata,
+                form_data=form_data,
+            )
+
+            with self.assertRaises(ValueError):
+                form.validate()
+
     def test_bespoke_message_for_date_validation_range(self):
         with self.app_request_context():
             schema = load_schema_from_name("test_date_validation_range")

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2021-09-15 10:03+0100\n"
+"POT-Creation-Date: 2021-10-01 09:54+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,21 +17,21 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 2.9.1\n"
 
-#: app/forms/validators.py:341 app/jinja_filters.py:94
+#: app/forms/validators.py:373 app/jinja_filters.py:94
 #, python-format
 msgid "%(num)s year"
 msgid_plural "%(num)s years"
 msgstr[0] ""
 msgstr[1] ""
 
-#: app/forms/validators.py:345 app/jinja_filters.py:102
+#: app/forms/validators.py:377 app/jinja_filters.py:102
 #, python-format
 msgid "%(num)s month"
 msgid_plural "%(num)s months"
 msgstr[0] ""
 msgstr[1] ""
 
-#: app/jinja_filters.py:144
+#: app/jinja_filters.py:142
 #, python-format
 msgid "%(date)s at %(time)s"
 msgstr ""
@@ -48,7 +48,7 @@ msgstr ""
 
 #: app/forms/error_messages.py:15
 #, python-format
-msgid "Select an answer <span class=\"u-vh\">to ‘%(question_title)s’</span>"
+msgid "Select an answer <span class=\"ons-u-vh\">to ‘%(question_title)s’</span>"
 msgstr ""
 
 #: app/forms/error_messages.py:18
@@ -59,7 +59,7 @@ msgstr ""
 #: app/forms/error_messages.py:19
 #, python-format
 msgid ""
-"Select at least one answer <span class=\"u-vh\">to "
+"Select at least one answer <span class=\"ons-u-vh\">to "
 "‘%(question_title)s’</span>"
 msgstr ""
 
@@ -192,7 +192,7 @@ msgstr ""
 msgid "Remove an answer"
 msgstr ""
 
-#: app/forms/validators.py:352
+#: app/forms/validators.py:384
 #, python-format
 msgid "%(num)s day"
 msgid_plural "%(num)s days"
@@ -219,19 +219,19 @@ msgid ""
 "browser if using a shared device"
 msgstr ""
 
-#: app/questionnaire/placeholder_transforms.py:115
+#: app/questionnaire/placeholder_transforms.py:126
 msgid "{number_of_years} year"
 msgid_plural "{number_of_years} years"
 msgstr[0] ""
 msgstr[1] ""
 
-#: app/questionnaire/placeholder_transforms.py:121
+#: app/questionnaire/placeholder_transforms.py:132
 msgid "{number_of_months} month"
 msgid_plural "{number_of_months} months"
 msgstr[0] ""
 msgstr[1] ""
 
-#: app/questionnaire/placeholder_transforms.py:126
+#: app/questionnaire/placeholder_transforms.py:137
 msgid "{number_of_days} day"
 msgid_plural "{number_of_days} days"
 msgstr[0] ""
@@ -424,7 +424,7 @@ msgstr ""
 #: templates/individual_response/confirmation-post.html:21
 #: templates/individual_response/confirmation-text-message.html:31
 #: templates/individual_response/question.html:5 templates/interstitial.html:8
-#: templates/sectionsummary.html:11 templates/sectionsummary.html:48
+#: templates/sectionsummary.html:11 templates/sectionsummary.html:47
 msgid "Continue"
 msgstr ""
 

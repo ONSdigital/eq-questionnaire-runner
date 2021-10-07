@@ -13,11 +13,11 @@ error_messages = {
     "MANDATORY_NUMBER": lazy_gettext("Enter an answer"),
     "MANDATORY_TEXTAREA": lazy_gettext("Enter an answer"),
     "MANDATORY_RADIO": lazy_gettext(
-        'Select an answer <span class="u-vh">to ‘%(question_title)s’</span>'
+        'Select an answer <span class="ons-u-vh">to ‘%(question_title)s’</span>'
     ),
     "MANDATORY_DROPDOWN": lazy_gettext("Select an answer"),
     "MANDATORY_CHECKBOX": lazy_gettext(
-        'Select at least one answer <span class="u-vh">to ‘%(question_title)s’</span>'
+        'Select at least one answer <span class="ons-u-vh">to ‘%(question_title)s’</span>'
     ),
     "MANDATORY_DATE": lazy_gettext("Enter a date"),
     "MANDATORY_ADDRESS": lazy_gettext("Enter an address"),

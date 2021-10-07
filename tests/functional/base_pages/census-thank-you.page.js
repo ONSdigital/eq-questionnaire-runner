@@ -10,11 +10,11 @@ class CensusThankYouPage extends BasePage {
   }
 
   feedback() {
-    return ".feedback";
+    return ".ons-feedback";
   }
 
   feedbackLink() {
-    return ".feedback a";
+    return ".ons-feedback__link";
   }
 }
 

@@ -34,7 +34,7 @@ class TestCheckboxSingleCheckboxOverride(IntegrationTestCase):
 
         # Then
         self.assertInBody(
-            'Select at least one answer <span class="u-vh">to ‘What is your nationality?’</span>'
+            'Select at least one answer <span class="ons-u-vh">to ‘What is your nationality?’</span>'
         )
 
     def test_invalid_exclusive_answers(self):
