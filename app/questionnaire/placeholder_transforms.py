@@ -246,4 +246,5 @@ class PlaceholderTransforms:
 
     @staticmethod
     def list_item_count(list_to_count: Optional[Sized]) -> int:
-        return evaluate_count(list_to_count)
+        count: int = evaluate_count(list_to_count)
+        return count
