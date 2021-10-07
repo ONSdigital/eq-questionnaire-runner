@@ -20,7 +20,6 @@ def build_thank_you_context(
     survey_type: str,
     guidance_content: Optional[dict] = None,
 ) -> Mapping:
-
     if survey_type == "social":
         submission_text = lazy_gettext("Your answers have been submitted.")
     elif session_data.trad_as and session_data.ru_name:
@@ -63,7 +62,6 @@ def build_view_submitted_response_context(schema, submitted_at):
 def build_census_thank_you_context(
     session_data: SessionData, confirmation_email_form, form_type
 ) -> Mapping:
-
     context = {
         "display_address": session_data.display_address,
         "form_type": form_type,

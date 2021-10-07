@@ -3,7 +3,6 @@ from tests.integration.integration_test_case import IntegrationTestCase
 
 class TestQuestionnaireChangeAnswer(IntegrationTestCase):
     def test_change_non_mandatory_date_from_answered_to_not_answered(self):
-
         # Given the test_dates questionnaire with a non-mandatory date answered.
         self.launchSurvey("test_dates")
 

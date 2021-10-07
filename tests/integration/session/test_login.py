@@ -105,7 +105,6 @@ class TestLoginWithGetRequest(IntegrationTestCase):
         self.assertStatusForbidden()
 
     def test_login_token_with_survey_url_should_redirect_to_survey(self):
-
         survey_url = "http://eq-survey-register.url/my-test-schema"
 
         # Given
@@ -121,7 +120,6 @@ class TestLoginWithGetRequest(IntegrationTestCase):
         self.assertInUrl("/questionnaire")
 
     def test_login_token_with_incorrect_survey_url_results_in_404(self):
-
         survey_url = "http://eq-survey-register.url/my-test-schema-not-found"
 
         # Given
@@ -236,7 +234,6 @@ class TestLoginWithPostRequest(IntegrationTestCase):
         self.assertStatusForbidden()
 
     def test_login_token_with_survey_url_should_redirect_to_survey(self):
-
         survey_url = "http://eq-survey-register.url/my-test-schema"
 
         # Given
@@ -252,7 +249,6 @@ class TestLoginWithPostRequest(IntegrationTestCase):
         self.assertInUrl("/questionnaire")
 
     def test_login_token_with_incorrect_survey_url_results_in_404(self):
-
         survey_url = "http://eq-survey-register.url/my-test-schema-not-found"
 
         # Given

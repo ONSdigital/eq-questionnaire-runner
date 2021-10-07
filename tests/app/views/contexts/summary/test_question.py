@@ -79,7 +79,6 @@ class TestQuestion(AppContextTestCase):  # pylint: disable=too-many-public-metho
                 concatenation_type=concatenation_type,
                 concatenation_character=concatenation_character,
             ):
-
                 # Given
                 self.answer_store.add_or_update(
                     Answer(answer_id="address-line-1", value="Cardiff Rd")

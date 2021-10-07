@@ -2,7 +2,6 @@ from tests.integration.integration_test_case import IntegrationTestCase
 
 
 class TestQuestionnaireDetailAnswer(IntegrationTestCase):
-
     BASE_URL = "/questionnaire/"
 
     def test_detail_answer(self):

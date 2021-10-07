@@ -31,7 +31,6 @@ def fake_session_data():
 
 def test_social_survey_context(fake_session_data, app: Flask):
     with app.app_context():
-
         context = build_thank_you_context(
             SCHEMA, fake_session_data, SUBMITTED_AT, SURVEY_TYPE_SOCIAL
         )
@@ -103,7 +102,6 @@ def test_view_submitted_response_expired(fake_session_data, app: Flask):
     submitted_at = SUBMITTED_AT - timedelta(minutes=46)
 
     with app.app_context():
-
         context = build_thank_you_context(
             SCHEMA, fake_session_data, submitted_at, SURVEY_TYPE_DEFAULT
         )

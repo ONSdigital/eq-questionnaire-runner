@@ -27,7 +27,6 @@ class TestLastViewedGuidance(IntegrationTestCase):
         self._assert_last_viewed_question_guidance_not_shown()
 
     def test_not_shown_on_section_resume_first_block_in_new_section(self):
-
         # Given
         self.launchSurvey(
             "test_last_viewed_question_guidance", reponse_id=self.response_id
@@ -62,7 +61,6 @@ class TestLastViewedGuidance(IntegrationTestCase):
         self._assert_last_viewed_question_guidance_not_shown()
 
     def test_shown_on_resume_section_in_progress(self):
-
         # Given
         self.launchSurvey(
             "test_last_viewed_question_guidance", reponse_id=self.response_id
@@ -82,7 +80,6 @@ class TestLastViewedGuidance(IntegrationTestCase):
         self._assert_last_viewed_question_guidance_shown()
 
     def test_shown_on_section_in_progress_resume_primary_person_list_collector(self):
-
         # Given
         self.launchSurvey(
             "test_last_viewed_question_guidance", reponse_id=self.response_id
@@ -105,7 +102,6 @@ class TestLastViewedGuidance(IntegrationTestCase):
     def test_shown_on_section_in_progress_resume_primary_person_list_collector_add_person(
         self,
     ):
-
         # Given
         self.launchSurvey(
             "test_last_viewed_question_guidance", reponse_id=self.response_id
@@ -127,7 +123,6 @@ class TestLastViewedGuidance(IntegrationTestCase):
         self._assert_last_viewed_question_guidance_shown()
 
     def test_shown_on_section_in_progress_resume_list_collector(self):
-
         # Given
         self.launchSurvey(
             "test_last_viewed_question_guidance", reponse_id=self.response_id
@@ -150,7 +145,6 @@ class TestLastViewedGuidance(IntegrationTestCase):
         self._assert_last_viewed_question_guidance_shown()
 
     def test_shown_on_section_in_progress_resume_list_collector_add_person(self):
-
         # Given
         self.launchSurvey(
             "test_last_viewed_question_guidance", reponse_id=self.response_id

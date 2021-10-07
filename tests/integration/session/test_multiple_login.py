@@ -1,7 +1,5 @@
 from datetime import datetime, timezone
 
-import pytest
-
 from app.utilities.json import json_loads
 from tests.integration.integration_test_case import IntegrationTestCase
 

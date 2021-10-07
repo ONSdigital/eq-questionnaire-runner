@@ -38,7 +38,6 @@ def test_build_list_summary_context_no_summary_block(
 def test_build_list_summary_context(
     list_collector_block, people_answer_store, people_list_store
 ):
-
     schema = load_schema_from_name("test_list_collector_primary_person")
     expected = [
         {
