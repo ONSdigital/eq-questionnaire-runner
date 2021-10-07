@@ -67,21 +67,19 @@
                             },
                             "routing_rules": [
                                 {
-                                    "goto": {
-                                        "group": "group1",
-                                        "when": [
+                                    "group": "group1",
+                                    "when": {
+                                        "==": [
                                             {
-                                                "id": "which-group-answer",
-                                                "condition": "equals",
-                                                "value": "Group 1"
-                                            }
+                                                "identifier": "which-group-answer",
+                                                "source": "answers"
+                                            },
+                                            "Group 1"
                                         ]
                                     }
                                 },
                                 {
-                                    "goto": {
-                                        "group": "group2"
-                                    }
+                                    "group": "group2"
                                 }
                             ]
                         }

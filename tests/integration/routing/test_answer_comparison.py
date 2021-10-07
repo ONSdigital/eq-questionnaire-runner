@@ -42,7 +42,7 @@ class TestAnswerComparisonsRoutes(IntegrationTestCase):
     """
 
     def test_routes_over_interstitial(self):
-        self.launchSurvey("test_routing_answer_comparison")
+        self.launchSurvey("test_new_routing_answer_comparison")
 
         self.post(action="start_questionnaire")
 
