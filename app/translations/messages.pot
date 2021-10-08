@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2021-10-07 12:46+0100\n"
+"POT-Creation-Date: 2021-10-12 16:36+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -470,15 +470,15 @@ msgstr ""
 msgid "Your answers have been submitted for <span>{company_name}</span>"
 msgstr ""
 
-#: app/views/contexts/view_submitted_response_context.py:27
+#: app/views/contexts/view_submitted_response_context.py:28
 msgid "Answers submitted."
 msgstr ""
 
-#: app/views/contexts/view_submitted_response_context.py:29
+#: app/views/contexts/view_submitted_response_context.py:30
 msgid "Answers submitted for <span>{ru_name}</span> ({trad_as})"
 msgstr ""
 
-#: app/views/contexts/view_submitted_response_context.py:33
+#: app/views/contexts/view_submitted_response_context.py:34
 msgid "Answers submitted for <span>{ru_name}</span>"
 msgstr ""
 
@@ -490,19 +490,19 @@ msgstr ""
 msgid "Confirm your email address"
 msgstr ""
 
-#: app/views/handlers/confirm_email.py:87
+#: app/views/handlers/confirm_email.py:88
 msgid "Is this email address correct?"
 msgstr ""
 
-#: app/views/handlers/confirm_email.py:100
 #: app/views/handlers/confirm_email.py:101
-#: app/views/handlers/individual_response.py:868
+#: app/views/handlers/confirm_email.py:102
+#: app/views/handlers/individual_response.py:873
 msgid "No, I need to change it"
 msgstr ""
 
-#: app/views/handlers/confirm_email.py:125
+#: app/views/handlers/confirm_email.py:126
 #: app/views/handlers/confirmation_email.py:66
-#: app/views/handlers/feedback.py:66 app/views/handlers/question.py:153
+#: app/views/handlers/feedback.py:67 app/views/handlers/question.py:156
 msgid "Error: {page_title}"
 msgstr ""
 
@@ -514,221 +514,221 @@ msgstr ""
 msgid "Feedback"
 msgstr ""
 
-#: app/views/handlers/feedback.py:98 app/views/handlers/feedback.py:104
-#: app/views/handlers/feedback.py:112
+#: app/views/handlers/feedback.py:99 app/views/handlers/feedback.py:105
+#: app/views/handlers/feedback.py:113
 msgid "General"
 msgstr ""
 
-#: app/views/handlers/feedback.py:99
+#: app/views/handlers/feedback.py:100
 msgid "This establishment"
 msgstr ""
 
-#: app/views/handlers/feedback.py:100 app/views/handlers/feedback.py:113
+#: app/views/handlers/feedback.py:101 app/views/handlers/feedback.py:114
 msgid "People who live here"
 msgstr ""
 
-#: app/views/handlers/feedback.py:101 app/views/handlers/feedback.py:114
+#: app/views/handlers/feedback.py:102 app/views/handlers/feedback.py:115
 msgid "Visitors"
 msgstr ""
 
-#: app/views/handlers/feedback.py:105
+#: app/views/handlers/feedback.py:106
 msgid "Accommodation"
 msgstr ""
 
-#: app/views/handlers/feedback.py:106 app/views/handlers/feedback.py:116
+#: app/views/handlers/feedback.py:107 app/views/handlers/feedback.py:117
 msgid "Personal details"
 msgstr ""
 
-#: app/views/handlers/feedback.py:107 app/views/handlers/feedback.py:117
+#: app/views/handlers/feedback.py:108 app/views/handlers/feedback.py:118
 msgid "Health"
 msgstr ""
 
-#: app/views/handlers/feedback.py:108 app/views/handlers/feedback.py:118
+#: app/views/handlers/feedback.py:109 app/views/handlers/feedback.py:119
 msgid "Qualifications"
 msgstr ""
 
-#: app/views/handlers/feedback.py:109 app/views/handlers/feedback.py:119
+#: app/views/handlers/feedback.py:110 app/views/handlers/feedback.py:120
 msgid "Employment"
 msgstr ""
 
-#: app/views/handlers/feedback.py:115
+#: app/views/handlers/feedback.py:116
 msgid "Household and accommodation"
 msgstr ""
 
-#: app/views/handlers/feedback.py:131
+#: app/views/handlers/feedback.py:132
 msgid "Give feedback about this service"
 msgstr ""
 
-#: app/views/handlers/feedback.py:137 app/views/handlers/feedback.py:176
+#: app/views/handlers/feedback.py:138 app/views/handlers/feedback.py:177
 msgid "Select what your feedback is about"
 msgstr ""
 
-#: app/views/handlers/feedback.py:140 app/views/handlers/feedback.py:141
+#: app/views/handlers/feedback.py:141 app/views/handlers/feedback.py:142
 msgid "The census questions"
 msgstr ""
 
-#: app/views/handlers/feedback.py:142
+#: app/views/handlers/feedback.py:143
 msgid "For example, questions not clear, answer options not relevant"
 msgstr ""
 
-#: app/views/handlers/feedback.py:149
+#: app/views/handlers/feedback.py:150
 msgid "Question topic"
 msgstr ""
 
-#: app/views/handlers/feedback.py:150 app/views/handlers/feedback.py:153
+#: app/views/handlers/feedback.py:151 app/views/handlers/feedback.py:154
 msgid "Select an option"
 msgstr ""
 
-#: app/views/handlers/feedback.py:162 app/views/handlers/feedback.py:163
+#: app/views/handlers/feedback.py:163 app/views/handlers/feedback.py:164
 msgid "Page design and structure"
 msgstr ""
 
-#: app/views/handlers/feedback.py:166 app/views/handlers/feedback.py:169
+#: app/views/handlers/feedback.py:167 app/views/handlers/feedback.py:170
 msgid "General feedback about this service"
 msgstr ""
 
-#: app/views/handlers/feedback.py:184 app/views/handlers/feedback.py:194
+#: app/views/handlers/feedback.py:185 app/views/handlers/feedback.py:195
 msgid "Enter your feedback"
 msgstr ""
 
-#: app/views/handlers/feedback.py:185
+#: app/views/handlers/feedback.py:186
 msgid "Do not include confidential information, such as your contact details"
 msgstr ""
 
-#: app/views/handlers/individual_response.py:137
+#: app/views/handlers/individual_response.py:139
 msgid "Person {list_item_position}"
 msgstr ""
 
-#: app/views/handlers/individual_response.py:246
+#: app/views/handlers/individual_response.py:251
 msgid "Cannot answer questions for others in your household"
 msgstr ""
 
-#: app/views/handlers/individual_response.py:312
+#: app/views/handlers/individual_response.py:317
 msgid "How would you like <em>{person_name}</em> to receive a separate census?"
 msgstr ""
 
-#: app/views/handlers/individual_response.py:335
+#: app/views/handlers/individual_response.py:340
 msgid "Text message"
 msgstr ""
 
-#: app/views/handlers/individual_response.py:337
+#: app/views/handlers/individual_response.py:342
 msgid "We will need their mobile number for this"
 msgstr ""
 
-#: app/views/handlers/individual_response.py:345
+#: app/views/handlers/individual_response.py:350
 msgid "Post"
 msgstr ""
 
-#: app/views/handlers/individual_response.py:347
+#: app/views/handlers/individual_response.py:352
 msgid ""
 "We can only send this to an unnamed resident at the registered household "
 "address"
 msgstr ""
 
-#: app/views/handlers/individual_response.py:356
+#: app/views/handlers/individual_response.py:361
 msgid "It is no longer possible to receive an access code by post."
 msgstr ""
 
-#: app/views/handlers/individual_response.py:358
+#: app/views/handlers/individual_response.py:363
 msgid "Select how to send access code."
 msgstr ""
 
-#: app/views/handlers/individual_response.py:361
+#: app/views/handlers/individual_response.py:366
 msgid ""
 "For someone to complete a separate census, we need to send them an "
 "individual access code."
 msgstr ""
 
-#: app/views/handlers/individual_response.py:407
+#: app/views/handlers/individual_response.py:412
 msgid "Send individual access code"
 msgstr ""
 
-#: app/views/handlers/individual_response.py:438
+#: app/views/handlers/individual_response.py:443
 msgid "How would you like to answer <em>{person_name_possessive}</em> questions?"
 msgstr ""
 
-#: app/views/handlers/individual_response.py:453
+#: app/views/handlers/individual_response.py:458
 msgid "I would like to request a separate census for them to complete"
 msgstr ""
 
-#: app/views/handlers/individual_response.py:459
+#: app/views/handlers/individual_response.py:464
 msgid "I will ask them to answer their own questions"
 msgstr ""
 
-#: app/views/handlers/individual_response.py:463
+#: app/views/handlers/individual_response.py:468
 msgid "They will need the household access code from the letter we sent you"
 msgstr ""
 
-#: app/views/handlers/individual_response.py:469
+#: app/views/handlers/individual_response.py:474
 msgid "I will answer for {person_name}"
 msgstr ""
 
-#: app/views/handlers/individual_response.py:511
+#: app/views/handlers/individual_response.py:516
 msgid "How to answer questions"
 msgstr ""
 
-#: app/views/handlers/individual_response.py:576
+#: app/views/handlers/individual_response.py:581
 msgid "Do you want to send an individual access code for {person_name} by post?"
 msgstr ""
 
-#: app/views/handlers/individual_response.py:584
+#: app/views/handlers/individual_response.py:589
 msgid ""
 "A letter with an individual access code will be sent to your registered "
 "household address"
 msgstr ""
 
-#: app/views/handlers/individual_response.py:591
+#: app/views/handlers/individual_response.py:596
 msgid ""
 "The letter will be addressed to <strong>Individual Resident</strong> "
 "instead of the name provided"
 msgstr ""
 
-#: app/views/handlers/individual_response.py:604
+#: app/views/handlers/individual_response.py:609
 msgid "Yes, send the access code by post"
 msgstr ""
 
-#: app/views/handlers/individual_response.py:610
+#: app/views/handlers/individual_response.py:615
 msgid "No, send it another way"
 msgstr ""
 
-#: app/views/handlers/individual_response.py:643
+#: app/views/handlers/individual_response.py:648
 msgid "Confirm address"
 msgstr ""
 
-#: app/views/handlers/individual_response.py:698
-#: app/views/handlers/individual_response.py:736
+#: app/views/handlers/individual_response.py:703
+#: app/views/handlers/individual_response.py:741
 msgid "Separate Census"
 msgstr ""
 
-#: app/views/handlers/individual_response.py:702
+#: app/views/handlers/individual_response.py:707
 msgid "Who do you need to request a separate census for?"
 msgstr ""
 
-#: app/views/handlers/individual_response.py:760
+#: app/views/handlers/individual_response.py:765
 msgid "What is <em>{person_name_possessive}</em> mobile number?"
 msgstr ""
 
-#: app/views/handlers/individual_response.py:772
+#: app/views/handlers/individual_response.py:777
 msgid "UK mobile number"
 msgstr ""
 
-#: app/views/handlers/individual_response.py:773
+#: app/views/handlers/individual_response.py:778
 msgid "This will not be stored and only used once to send the access code"
 msgstr ""
 
-#: app/views/handlers/individual_response.py:806
+#: app/views/handlers/individual_response.py:811
 msgid "Mobile number"
 msgstr ""
 
-#: app/views/handlers/individual_response.py:855
+#: app/views/handlers/individual_response.py:860
 msgid "Is this mobile number correct?"
 msgstr ""
 
-#: app/views/handlers/individual_response.py:864
+#: app/views/handlers/individual_response.py:869
 msgid "Yes, send the text"
 msgstr ""
 
-#: app/views/handlers/individual_response.py:902
+#: app/views/handlers/individual_response.py:907
 msgid "Confirm mobile number"
 msgstr ""
 
@@ -736,7 +736,7 @@ msgstr ""
 msgid "Thank you for completing the census"
 msgstr ""
 
-#: app/views/handlers/view_submitted_response.py:41
+#: app/views/handlers/view_submitted_response.py:52
 msgid "View Submitted Response"
 msgstr ""
 
@@ -957,7 +957,15 @@ msgstr ""
 msgid "For security, you can no longer view your answers"
 msgstr ""
 
-#: templates/view-submitted-response.html:53
+#: templates/view-submitted-response.html:35
+msgid "Print answers"
+msgstr ""
+
+#: templates/view-submitted-response.html:46
+msgid "Save answers as PDF"
+msgstr ""
+
+#: templates/view-submitted-response.html:65
 msgid "For security, you can no longer view or get a copy of your answers"
 msgstr ""
 

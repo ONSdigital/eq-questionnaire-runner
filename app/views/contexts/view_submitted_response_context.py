@@ -1,11 +1,11 @@
 from datetime import datetime
-from typing import Mapping, Union
+from typing import Union
 
 from flask import url_for
 from flask_babel import lazy_gettext
 
 from app.data_models import QuestionnaireStore
-from app.globals import is_view_submitted_response_expired
+from app.globals import has_view_submitted_response_expired
 from app.questionnaire.questionnaire_schema import QuestionnaireSchema
 from app.views.contexts.submission_metadata_context import (
     build_submission_metadata_context,
@@ -19,7 +19,8 @@ def build_view_submitted_response_context(
     questionnaire_store: QuestionnaireStore,
     survey_type: str,
 ) -> dict[str, Union[str, datetime, dict]]:
-    view_submitted_response_expired = is_view_submitted_response_expired(
+
+    view_submitted_response_expired = has_view_submitted_response_expired(
         questionnaire_store.submitted_at
     )
 
@@ -39,16 +40,13 @@ def build_view_submitted_response_context(
         questionnaire_store.submitted_at,
         questionnaire_store.metadata["tx_id"],
     )
-    response_metadata: Mapping = {}
     context = {
         "hide_sign_out_button": True,
         "view_submitted_response": {
             "expired": view_submitted_response_expired,
         },
         "metadata": metadata,
-        "response_metadata": response_metadata,
         "submitted_text": submitted_text,
-        "pdf_url": url_for("post_submission.download_pdf")
     }
 
     if not view_submitted_response_expired:
@@ -62,4 +60,6 @@ def build_view_submitted_response_context(
             response_metadata=questionnaire_store.response_metadata,
         )
         context["summary"] = summary_context()
+        context["pdf_url"] = url_for("post_submission.get_view_submitted_response_pdf")
+
     return context

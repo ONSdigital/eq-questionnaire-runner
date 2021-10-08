@@ -209,6 +209,12 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
         schema: ImmutableDict = self.json.get("post_submission", ImmutableDict({}))
         return schema
 
+    @property
+    def is_view_submitted_response_enabled(self) -> bool:
+        schema: Mapping = self.get_post_submission()
+        is_enabled: bool = schema.get("view_response", False)
+        return is_enabled
+
     def _section_ids_associated_to_list_name(self, list_name: str) -> list[str]:
         section_ids: list[str] = []
 

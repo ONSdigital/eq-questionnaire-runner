@@ -3,7 +3,6 @@ from __future__ import annotations
 from typing import Union
 
 import flask_babel
-import pdfkit
 from flask import Blueprint, g, redirect, request, send_file, url_for
 from flask_login import current_user, login_required
 from itsdangerous import BadSignature
@@ -45,8 +44,10 @@ from app.views.handlers.submit_questionnaire import SubmitQuestionnaireHandler
 from app.views.handlers.thank_you import ThankYou
 from app.views.handlers.view_submitted_response import (
     ViewSubmittedResponse,
+    ViewSubmittedResponseExpired,
     ViewSubmittedResponseNotEnabled,
 )
+from app.views.handlers.view_submitted_response_pdf import ViewSubmittedResponsePDF
 
 logger = get_logger()
 
@@ -386,41 +387,35 @@ def get_view_submitted_response(schema, questionnaire_store):
             questionnaire_store,
             flask_babel.get_locale().language,
         )
-
     except ViewSubmittedResponseNotEnabled:
         raise NotFound
 
-    return render_template(
-        template="view-submitted-response",
-        content=view_submitted_response.get_context(),
-        page_title=view_submitted_response.get_page_title(),
-    )
+    return view_submitted_response.get_rendered_html()
 
 
 @post_submission_blueprint.route("download-pdf", methods=["GET"])
 @with_questionnaire_store
 @with_schema
-def download_pdf(schema, questionnaire_store):
+def get_view_submitted_response_pdf(
+    schema: QuestionnaireSchema, questionnaire_store: QuestionnaireStore
+):
+    try:
+        view_submitted_response_pdf = ViewSubmittedResponsePDF(
+            schema,
+            questionnaire_store,
+            flask_babel.get_locale().language,
+        )
+    except ViewSubmittedResponseNotEnabled:
+        raise NotFound
+    except ViewSubmittedResponseExpired:
+        return redirect(url_for(".get_view_submitted_response"))
 
-    metadata = get_metadata(user=current_user)
-
-    filename = "{}_{}.pdf".format(metadata.get("eq_id"), metadata.get("form_type"))
-
-    view_submitted_response = ViewSubmittedResponse(
-        schema,
-        questionnaire_store,
-        flask_babel.get_locale().language,
+    return send_file(
+        path_or_file=view_submitted_response_pdf.get_pdf(),
+        mimetype=view_submitted_response_pdf.mimetype,
+        as_attachment=True,
+        download_name=view_submitted_response_pdf.filename,
     )
-
-    html = render_template(
-        template="view-submitted-response",
-        content=view_submitted_response.get_context(),
-        page_title=view_submitted_response.get_page_title(),
-    )
-
-    pdfkit.from_string(input=html, output_path=f"app/{filename}", css="print.css")
-
-    return send_file(filename, as_attachment=True)
 
 
 @post_submission_blueprint.route("confirmation-email/send", methods=["GET", "POST"])

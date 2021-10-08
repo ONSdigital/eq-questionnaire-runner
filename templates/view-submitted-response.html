@@ -42,9 +42,10 @@
     }}
     {{
       onsButton({
-        "type": 'button',
-        "text": _('Download pdf'),
-        "classes": "btn--small btn-group__btn",
+        "buttonStyle": 'download',
+        "text": _('Save answers as PDF'),
+        "submitType": "timer",
+        "variants": 'small',
         "url": content.pdf_url,
         "attributes": {
           "data-qa": "btn-pdf"
