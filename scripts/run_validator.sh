@@ -1,4 +1,4 @@
 #!/usr/bin/env bash
-tag=allow-array-for-equality
+tag=latest
 docker pull onsdigital/eq-questionnaire-validator:$tag
 docker run -d -p 5001:5000 "onsdigital/eq-questionnaire-validator:$tag"
