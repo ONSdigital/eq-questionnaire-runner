@@ -56,7 +56,7 @@ def test_build_view_submitted_response_context_submitted_text(app: Flask):
             "en", SCHEMA, questionnaire_store, "default"
         )
 
-        assert context["submitted_text"] == "Answers submitted for <span>Apple</span>."
+        assert context["submitted_text"] == "Answers submitted for <span>Apple</span>"
 
 
 def test_build_view_submitted_response_context_submitted_text_social(app: Flask):
@@ -80,7 +80,7 @@ def test_build_view_submitted_response_context_submitted_text_with_trad_as(app: 
 
         assert (
             context["submitted_text"]
-            == "Answers submitted for <span>Apple</span> (Apple Inc)."
+            == "Answers submitted for <span>Apple</span> (Apple Inc)"
         )
 
 

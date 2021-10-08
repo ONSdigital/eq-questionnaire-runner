@@ -1,6 +1,6 @@
 from datetime import date, datetime, timezone
 from decimal import Decimal
-from typing import Iterable, Optional, Sequence, TypeVar, Union
+from typing import Iterable, Optional, Sequence, Sized, TypeVar, Union
 
 from dateutil.relativedelta import relativedelta
 
@@ -47,6 +47,10 @@ def evaluate_and(values: Iterable[bool]) -> bool:
 
 def evaluate_or(values: Iterable[bool]) -> bool:
     return any(iter(values))
+
+
+def evaluate_count(values: Optional[Sized]) -> int:
+    return len(values or [])
 
 
 @casefold
