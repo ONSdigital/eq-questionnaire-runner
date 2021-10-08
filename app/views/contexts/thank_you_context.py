@@ -25,11 +25,11 @@ def build_thank_you_context(
         submission_text = lazy_gettext("Your answers have been submitted.")
     elif session_data.trad_as and session_data.ru_name:
         submission_text = lazy_gettext(
-            "Your answers have been submitted for <span>{company_name}</span> ({trading_name})."
+            "Your answers have been submitted for <span>{company_name}</span> ({trading_name})"
         ).format(company_name=session_data.ru_name, trading_name=session_data.trad_as)
     else:
         submission_text = lazy_gettext(
-            "Your answers have been submitted for <span>{company_name}</span>."
+            "Your answers have been submitted for <span>{company_name}</span>"
         ).format(company_name=session_data.ru_name)
     metadata = build_submission_metadata_context(
         survey_type, submitted_at, session_data.tx_id
