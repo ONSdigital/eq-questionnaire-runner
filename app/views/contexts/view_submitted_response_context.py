@@ -26,11 +26,11 @@ def build_view_submitted_response_context(
         submitted_text = lazy_gettext("Answers submitted.")
     elif trad_as := questionnaire_store.metadata.get("trad_as"):
         submitted_text = lazy_gettext(
-            "Answers submitted for <span>{ru_name}</span> ({trad_as})."
+            "Answers submitted for <span>{ru_name}</span> ({trad_as})"
         ).format(ru_name=questionnaire_store.metadata["ru_name"], trad_as=trad_as)
     else:
         submitted_text = lazy_gettext(
-            "Answers submitted for <span>{ru_name}</span>."
+            "Answers submitted for <span>{ru_name}</span>"
         ).format(ru_name=questionnaire_store.metadata["ru_name"])
 
     metadata = build_submission_metadata_context(

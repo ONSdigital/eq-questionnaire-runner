@@ -20,7 +20,7 @@ class TestViewSubmissionResponse(IntegrationTestCase):
         self.assertEqualPageTitle(
             "View Submitted Response - Test View Submitted Response"
         )
-        self.assertInBody("Answers submitted for <span>Integration Testing</span>.")
+        self.assertInBody("Answers submitted for <span>Integration Testing</span>")
         self.assertInBody("Submitted on:")
         self.assertInBody("Submission reference:")
         self.assertInBody("What is your name?")
@@ -54,7 +54,7 @@ class TestViewSubmissionResponse(IntegrationTestCase):
         self.assertEqualPageTitle(
             "View Submitted Response - Test View Submitted Response"
         )
-        self.assertInBody("Answers submitted for <span>Integration Testing</span>.")
+        self.assertInBody("Answers submitted for <span>Integration Testing</span>")
         self.assertInBody("Submitted on:")
         self.assertInBody("Submission reference:")
         self.assertInBody(
