@@ -106,6 +106,7 @@ def test_metadata_transform_placeholder():
 
 
 def test_response_metadata_transform_placeholder():
+    # This test should use ISO format dates when they become supported
     placeholder_list = [
         {
             "placeholder": "start_date",
