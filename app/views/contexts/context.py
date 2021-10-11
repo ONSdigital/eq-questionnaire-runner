@@ -1,4 +1,5 @@
 from abc import ABC
+from typing import Mapping
 
 from werkzeug.datastructures import ImmutableDict
 
@@ -19,7 +20,7 @@ class Context(ABC):
         list_store: ListStore,
         progress_store: ProgressStore,
         metadata: ImmutableDict,
-        response_metadata: dict,
+        response_metadata: Mapping,
     ):
         self._language = language
         self._schema = schema

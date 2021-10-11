@@ -1,6 +1,6 @@
 from dataclasses import dataclass
 from decimal import Decimal
-from typing import Optional, Union
+from typing import Mapping, Optional, Union
 
 from markupsafe import Markup
 
@@ -23,7 +23,7 @@ class ValueSourceResolver:
     answer_store: AnswerStore
     list_store: ListStore
     metadata: dict
-    response_metadata: dict
+    response_metadata: Mapping
     schema: QuestionnaireSchema
     location: Union[None, Location, RelationshipLocation]
     list_item_id: Optional[str]

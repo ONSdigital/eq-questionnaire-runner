@@ -24,7 +24,7 @@ class PlaceholderRenderer:
         answer_store: AnswerStore,
         list_store: ListStore,
         metadata: ImmutableDict,
-        response_metadata: dict,
+        response_metadata: Mapping,
         schema: QuestionnaireSchema,
         location: Location = None,
     ):

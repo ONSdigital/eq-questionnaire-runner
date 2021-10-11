@@ -18,7 +18,7 @@ class PathFinder:
         list_store: ListStore,
         progress_store: ProgressStore,
         metadata: Mapping,
-        response_metadata: dict,
+        response_metadata: Mapping,
     ):
         self.answer_store = answer_store
         self.metadata = metadata

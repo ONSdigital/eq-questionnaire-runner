@@ -1,5 +1,5 @@
 from datetime import datetime
-from typing import Union
+from typing import Mapping, Union
 
 from flask_babel import lazy_gettext
 
@@ -39,7 +39,7 @@ def build_view_submitted_response_context(
         questionnaire_store.submitted_at,
         questionnaire_store.metadata["tx_id"],
     )
-    response_metadata: dict = {}
+    response_metadata: Mapping = {}
     context = {
         "hide_sign_out_button": True,
         "view_submitted_response": {

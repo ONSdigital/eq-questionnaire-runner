@@ -1,4 +1,4 @@
-from typing import Optional, Union
+from typing import Mapping, Optional, Union
 from unittest.mock import Mock
 
 import pytest
@@ -35,7 +35,7 @@ def get_value_source_resolver(
     answer_store: AnswerStore = AnswerStore(),
     list_store: ListStore = ListStore(),
     metadata: Optional[dict] = None,
-    response_metadata: Optional[dict] = None,
+    response_metadata: Mapping = None,
     location: Union[Location, RelationshipLocation] = Location(
         section_id="test-section", block_id="test-block"
     ),

@@ -24,7 +24,7 @@ class SectionSummaryContext(Context):
         list_store: ListStore,
         progress_store: ProgressStore,
         metadata: ImmutableDict,
-        response_metadata: dict,
+        response_metadata: Mapping,
         routing_path: RoutingPath,
         current_location: Location,
     ):

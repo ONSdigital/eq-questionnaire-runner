@@ -28,7 +28,7 @@ class PlaceholderParser:
         answer_store: AnswerStore,
         list_store: ListStore,
         metadata: ImmutableDict,
-        response_metadata: dict,
+        response_metadata: Mapping,
         schema: QuestionnaireSchema,
         list_item_id: Optional[str] = None,
         location: Location = None,
