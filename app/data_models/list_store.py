@@ -67,10 +67,10 @@ class ListModel:
     def first(self):
         try:
             return self.items[0]
-        except IndexError as first_item_missing:
+        except IndexError as e:
             raise IndexError(
                 f"unable to access first item in list, list '{self.name}' is empty"
-            ) from first_item_missing
+            ) from e
 
 
 class ListStore:
