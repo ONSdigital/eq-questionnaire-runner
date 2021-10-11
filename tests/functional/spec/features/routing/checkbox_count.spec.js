@@ -13,14 +13,14 @@ describe("Test routing using count of checkboxes checked", () => {
     $(ToppingCheckboxPage.submit()).click();
 
     expect(browser.getUrl()).to.contain(CorrectAnswerPage.pageName);
-    expect($(CorrectAnswerPage.questionText()).getText()).to.have.string("You selected 2 toppings");
+    expect($(CorrectAnswerPage.questionText()).getText()).to.have.string("You selected 2 or more toppings");
   });
 
   it("Given a user selects no checkboxes, When they submit, Then they should be routed to the incorrect page", () => {
     $(ToppingCheckboxPage.submit()).click();
 
     expect(browser.getUrl()).to.contain(IncorrectAnswerPage.pageName);
-    expect($(IncorrectAnswerPage.questionText()).getText()).to.have.string("You did not select 2 toppings");
+    expect($(IncorrectAnswerPage.questionText()).getText()).to.have.string("You did not select 2 or more toppings");
   });
 
   it("Given a user selects 1 checkbox, When they submit, Then they should be routed to the incorrect page", () => {
@@ -28,16 +28,16 @@ describe("Test routing using count of checkboxes checked", () => {
     $(ToppingCheckboxPage.submit()).click();
 
     expect(browser.getUrl()).to.contain(IncorrectAnswerPage.pageName);
-    expect($(IncorrectAnswerPage.questionText()).getText()).to.have.string("You did not select 2 toppings");
+    expect($(IncorrectAnswerPage.questionText()).getText()).to.have.string("You did not select 2 or more toppings");
   });
 
-  it("Given a user selects 3 checkbox, When they submit, Then they should be routed to the incorrect page", () => {
+  it("Given a user selects 3 checkbox, When they submit, Then they should be routed to the correct page", () => {
     $(ToppingCheckboxPage.cheese()).click();
     $(ToppingCheckboxPage.ham()).click();
     $(ToppingCheckboxPage.pineapple()).click();
     $(ToppingCheckboxPage.submit()).click();
 
-    expect(browser.getUrl()).to.contain(IncorrectAnswerPage.pageName);
-    expect($(IncorrectAnswerPage.questionText()).getText()).to.have.string("You did not select 2 toppings");
+    expect(browser.getUrl()).to.contain(CorrectAnswerPage.pageName);
+    expect($(CorrectAnswerPage.questionText()).getText()).to.have.string("You selected 2 or more toppings");
   });
 });
