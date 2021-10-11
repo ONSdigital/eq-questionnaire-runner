@@ -441,6 +441,18 @@ def test_location_source():
     )
 
 
+def test_response_metadata_source():
+    value_source_resolver = get_value_source_resolver(
+        response_metadata={"started_at": "2021-10-11T09:40:11.220038+00:00"}
+    )
+    assert (
+        value_source_resolver.resolve(
+            {"source": "response_metadata", "identifier": "started_at"}
+        )
+        == "2021-10-11T09:40:11.220038+00:00"
+    )
+
+
 @pytest.mark.parametrize(
     "answer_value, escaped_value",
     [

@@ -1,5 +1,5 @@
 from datetime import datetime, timezone
-from typing import Optional, Union
+from typing import Mapping, Optional, Union
 from unittest.mock import Mock
 
 import pytest
@@ -36,6 +36,7 @@ def get_when_rule_evaluator(
     answer_store: AnswerStore = AnswerStore(),
     list_store: ListStore = ListStore(),
     metadata: Optional[dict] = None,
+    response_metadata: Mapping = None,
     location: Union[Location, RelationshipLocation] = Location(
         section_id="test-section", block_id="test-block"
     ),
@@ -49,7 +50,7 @@ def get_when_rule_evaluator(
     return WhenRuleEvaluator(
         schema=schema,
         metadata=metadata or {},
-        response_metadata={},
+        response_metadata=response_metadata,
         answer_store=answer_store,
         list_store=list_store,
         location=location,
@@ -241,6 +242,31 @@ def test_metadata_source(metadata_value, expected_result):
                 Operator.EQUAL: [
                     {"source": "metadata", "identifier": "some-metadata"},
                     3,
+                ]
+            },
+        )
+        is expected_result
+    )
+
+
+@pytest.mark.parametrize(
+    "response_metadata_value, expected_result",
+    [
+        ("2021-10-11T09:40:11.220038+00:00", True),
+        ("2021-10-12T09:40:11.220038+00:00", False),
+    ],
+)
+def test_response_metadata_source(response_metadata_value, expected_result):
+    when_rule_evaluator = get_when_rule_evaluator(
+        response_metadata={"started_at": response_metadata_value},
+    )
+
+    assert (
+        when_rule_evaluator.evaluate(
+            rule={
+                Operator.EQUAL: [
+                    {"source": "response_metadata", "identifier": "started_at"},
+                    "2021-10-11T09:40:11.220038+00:00",
                 ]
             },
         )
