@@ -1,0 +1,15 @@
+{% extends 'layouts/_base.html' %}
+
+{% set page_title = _("title").format(title=survey_title) %}
+
+{% block main %}
+  <h1>{{ _("Sorry, you need to sign in again") }}</h1>
+  <p>{{ ("This is because you have either:") }}</p>
+  <ul>
+    <li>{{ "been inactive for 45 minutes and your session has timed out to protect your information" }}</li>
+    <li>{{ "followed a link to a service you are not signed in to" }}</li>
+    <li>{{ "followed a link to a survey that has already been submitted" }}</li>
+
+  </ul>
+  <p>{{ _("You will need to <a href='{url}'>sign back in</a> to access your account").format(url = account_service_url) }}</p>
+{% endblock %}

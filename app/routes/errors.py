@@ -70,8 +70,8 @@ def bad_request(exception=None):
 def unauthorized(exception=None):
     log_exception(exception, 401)
     if EQ_SESSION_ID not in cookie_session:
-        return _render_error_page(401, "no-cookie")
-    return _render_error_page(401, "session-expired")
+        return _render_error_page(401, template="401")
+    return _render_error_page(401, template="401")
 
 
 @errors_blueprint.app_errorhandler(InvalidTokenException)
