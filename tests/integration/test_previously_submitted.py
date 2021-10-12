@@ -13,7 +13,7 @@ class TestPreviouslySubmitted(IntegrationTestCase):
         # When I try to return to a page in the questionnaire
         self.get("/questionnaire/submit/")
 
-        # Then I should receive a 401 Unauthorised code and be redirect to the submission complete page
+        # Then I should receive a 401 unauthorised code and be redirected to the submission complete page
         self.assertStatusUnauthorised()
         self.assertEqualPageTitle("Submission Complete - Other input fields")
         self.assertInBody("This page is no longer available")
