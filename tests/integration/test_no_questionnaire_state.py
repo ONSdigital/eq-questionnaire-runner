@@ -15,21 +15,6 @@ class TestNoQuestionnaireState(IntegrationTestCase):
             # Then
             self.assertStatusUnauthorised()
 
-    def test_questionnaire_route_after_questionnaire_submitted(self):
-        # Given
-        self.launchSurvey("test_view_submitted_response")
-        self.post()
-        self.post()
-        self.post()
-
-        # When
-        with patch("app.routes.questionnaire.get_metadata", return_value=None):
-            self.get("/questionnaire/name/")
-
-            # Then
-            self.assertStatusUnauthorised()
-            self.assertInBody("Your session has timed out due to inactivity")
-
     def test_post_submission_route_before_questionnaire_submitted(self):
         # Given
         self.launchSurvey("test_view_submitted_response")
