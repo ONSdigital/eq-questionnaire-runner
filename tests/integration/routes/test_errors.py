@@ -4,7 +4,6 @@ from tests.integration.integration_test_case import IntegrationTestCase
 
 
 class TestErrors(IntegrationTestCase):
-
     example_payload = {
         "user_id": "integration-test",
         "period_str": "April 2016",

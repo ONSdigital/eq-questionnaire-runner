@@ -38,7 +38,6 @@ class TestSubmissionPayload(AppContextTestCase):
             "app.views.handlers.submission.get_session_store",
             return_value=self.session_store,
         ):
-
             submission_handler = SubmissionHandler(
                 QuestionnaireSchema({}), self.questionnaire_store_mock(), {}
             )
@@ -59,12 +58,10 @@ class TestSubmissionPayload(AppContextTestCase):
         questionnaire_store.save = Mock()
 
         with self.app_request_context():
-
             with patch(
                 "app.views.handlers.submission.get_session_store",
                 return_value=self.session_store,
             ):
-
                 submission_handler = SubmissionHandler(
                     QuestionnaireSchema(
                         {"submission": {"view_submitted_response": "True"}}

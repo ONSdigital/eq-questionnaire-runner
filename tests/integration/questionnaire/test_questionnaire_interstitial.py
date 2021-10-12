@@ -3,7 +3,6 @@ from tests.integration.questionnaire import SUBMIT_URL_PATH, THANK_YOU_URL_PATH
 
 
 class TestQuestionnaireInterstitial(IntegrationTestCase):
-
     BASE_URL = "/questionnaire/"
 
     def test_interstitial_page_button_text_is_continue(self):

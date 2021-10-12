@@ -19,11 +19,7 @@ def get_form_class(validators):
             data = super().data
 
             try:
-                return "{year:04d}-{month:02d}-{day:02d}".format(
-                    year=int(data["year"]),
-                    month=int(data["month"]),
-                    day=int(data["day"]),
-                )
+                return f'{int(data["year"]):04d}-{int(data["month"]):02d}-{int(data["day"]):02d}'
             except (TypeError, ValueError):
                 return None
 

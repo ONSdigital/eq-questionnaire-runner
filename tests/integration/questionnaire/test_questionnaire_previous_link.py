@@ -45,7 +45,6 @@ class TestQuestionnairePreviousLink(IntegrationTestCase):
         self.assertNotInUrl("Previous")
 
     def test_previous_link_appears_on_questions_preceded_by_another_question(self):
-
         # Given a survey with multiple questions
         self.launchSurvey("test_checkbox")
 
@@ -57,7 +56,6 @@ class TestQuestionnairePreviousLink(IntegrationTestCase):
         self.assertInBody("Previous")
 
     def test_previous_link_appears_on_the_first_question_preceded_by_the_hub(self):
-
         # Given a survey with a hub enabled
         self.launchSurvey("test_hub_and_spoke")
 

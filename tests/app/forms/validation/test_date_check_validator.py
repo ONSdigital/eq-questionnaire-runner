@@ -146,7 +146,6 @@ class TestDateCheckValidator(unittest.TestCase):
         self.assertEqual(error_messages["INVALID_DATE"], str(ite.exception))
 
     def test_date_type_validator_invalid_leap_year(self):
-
         validator = DateCheck()
 
         # 2015 was not a leap year

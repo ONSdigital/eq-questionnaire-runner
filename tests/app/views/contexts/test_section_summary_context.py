@@ -43,7 +43,6 @@ class TestSectionSummaryContext(SummaryContextTestCase):
         self.assert_summary_context(single_section_context)
 
     def test_build_view_context_for_section_summary(self):
-
         summary_context = SectionSummaryContext(
             self.language,
             self.schema,
@@ -101,7 +100,6 @@ class TestSectionSummaryContext(SummaryContextTestCase):
         )
 
     def test_section_summary_page_title_placeholder_text_replaced(self):
-
         answers = [{"answer_id": "house-type-answer", "value": "Semi-detached"}]
         summary_context = SectionSummaryContext(
             self.language,

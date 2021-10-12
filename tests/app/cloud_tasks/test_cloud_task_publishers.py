@@ -8,7 +8,6 @@ from google.cloud.tasks_v2.types.task import Task
 
 from app.cloud_tasks import CloudTaskPublisher
 from app.cloud_tasks.exceptions import CloudTaskCreationFailed
-from app.data_models import fulfilment_request
 
 
 class TestCloudTaskPublisher(TestCase):
@@ -30,7 +29,6 @@ class TestCloudTaskPublisher(TestCase):
         with mock.patch.object(
             type(self.cloud_task_publisher._client.transport.create_task), "__call__"
         ) as call:
-
             # Designate an appropriate return value for the call.
             call.return_value = self.cloud_task_publisher._get_task(
                 body=self.body, function_name=self.function_name

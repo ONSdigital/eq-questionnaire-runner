@@ -165,7 +165,6 @@ class HubContext(Context):
                     for list_item_index, list_item_id in enumerate(
                         self._list_store[repeating_list].items, start=1
                     ):
-
                         rows.append(
                             self._get_row_for_repeating_section(
                                 section_id, list_item_id, list_item_index

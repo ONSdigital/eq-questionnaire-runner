@@ -94,7 +94,6 @@ class TestFlushData(IntegrationTestCase):
         self.assertStatusCode(500)
 
     def test_flush_sets_flushed_flag_to_true(self):
-
         self.post(
             url="/flush?token="
             + self.token_generator.generate_token(self.get_payload())

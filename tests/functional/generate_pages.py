@@ -168,7 +168,6 @@ SUMMARY_ANSWER_GETTER = Template(
 """
 )
 
-
 SUMMARY_ANSWER_EDIT_GETTER = Template(
     r"""  ${answerName}Edit() { return `[data-qa="${answerId}-edit"]`; }
 
@@ -309,7 +308,7 @@ def process_options(answer_id, options, page_spec, base_prefix):
             prefix = f"{base_prefix}Answer"
 
         option_name = camel_case(prefix + generate_pascal_case_from_id(option["value"]))
-        option_id = "{name}-{index}".format(name=answer_id, index=index)
+        option_id = f"{answer_id}-{index}"
 
         option_context = {"answerName": option_name, "answerId": option_id}
 
@@ -328,7 +327,6 @@ def process_options(answer_id, options, page_spec, base_prefix):
 
 
 def process_answer(answer, page_spec, long_names, page_name):
-
     answer_name = generate_pascal_case_from_id(answer["id"])
     answer_name = answer_name.replace(page_name, "")
 
@@ -419,7 +417,7 @@ def process_calculated_summary(answers, page_spec):
 def process_final_summary(
     schema_data, require_path, dir_out, spec_file, collapsible, section_summary=False
 ):
-    page_filename = f"submit.page.js"
+    page_filename = "submit.page.js"
     page_path = os.path.join(dir_out, page_filename)
 
     logger.info("creating %s...", page_path)
@@ -777,7 +775,6 @@ def _has_definitions_in_block_contents(block_contents):
 
 
 def process_schema(in_schema, out_dir, spec_file, require_path=".."):
-
     try:
         data = json_loads(open(in_schema).read())
     except Exception as ex:
@@ -826,7 +823,6 @@ def process_questionnaire_flow(schema_data, require_path, dir_out, spec_file):
 def process_section_summary(
     section_id, dir_out, section, spec_file, relative_require="..", page_filename=None
 ):
-
     logger.debug("Processing section summary: %s", section_id)
 
     if not page_filename:
