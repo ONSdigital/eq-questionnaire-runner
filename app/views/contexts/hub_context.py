@@ -103,7 +103,7 @@ class HubContext(Context):
             CompletionStatus.COMPLETED,
             CompletionStatus.INDIVIDUAL_RESPONSE_REQUESTED,
         ):
-            context["rowItems"][0]["icon"] = "check"
+            context["rowItems"][0]["iconType"] = "check"
 
         return context
 
