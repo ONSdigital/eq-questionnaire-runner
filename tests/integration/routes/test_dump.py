@@ -1,5 +1,3 @@
-import json
-
 from app.utilities.json import json_loads
 from tests.integration.integration_test_case import IntegrationTestCase
 

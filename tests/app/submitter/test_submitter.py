@@ -66,8 +66,8 @@ class TestRabbitMQSubmitter(TestCase):
             self.assertTrue(published, "send_message should publish message")
             # Check we create url for primary then secondary
             url_parameters_calls = [
-                call("amqp://{}:{}/%2F".format(self.host1, self.port)),
-                call("amqp://{}:{}/%2F".format(self.host2, self.port)),
+                call(f"amqp://{self.host1}:{self.port}/%2F"),
+                call(f"amqp://{self.host2}:{self.port}/%2F"),
             ]
             url_parameters.assert_has_calls(url_parameters_calls)
             # Check we create connection twice, failing first then with self.url2
@@ -104,16 +104,8 @@ class TestRabbitMQSubmitter(TestCase):
             self.assertTrue(published, "send_message should publish message")
             # Check we create url for primary then secondary
             url_parameters_calls = [
-                call(
-                    "amqp://{}:{}@{}:{}/%2F".format(
-                        username, password, self.host1, self.port
-                    )
-                ),
-                call(
-                    "amqp://{}:{}@{}:{}/%2F".format(
-                        username, password, self.host2, self.port
-                    )
-                ),
+                call(f"amqp://{username}:{password}@{self.host1}:{self.port}/%2F"),
+                call(f"amqp://{username}:{password}@{self.host2}:{self.port}/%2F"),
             ]
             url_parameters.assert_has_calls(url_parameters_calls)
             # Check we create connection twice, failing first then with self.url2

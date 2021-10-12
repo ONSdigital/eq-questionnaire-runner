@@ -247,11 +247,11 @@ def test_answer_source_not_on_path_non_repeating_section(is_answer_on_path):
     location = Location(section_id="test-section", block_id="test-block")
 
     if is_answer_on_path:
-        schema.get_block_for_answer_id = Mock(return_value={"id": f"block-on-path"})
+        schema.get_block_for_answer_id = Mock(return_value={"id": "block-on-path"})
         answer_id = "answer-on-path"
         expected_result = "Yes"
     else:
-        schema.get_block_for_answer_id = Mock(return_value={"id": f"block-not-on-path"})
+        schema.get_block_for_answer_id = Mock(return_value={"id": "block-not-on-path"})
         answer_id = "answer-not-on-path"
         expected_result = None
 
@@ -283,11 +283,11 @@ def test_answer_source_not_on_path_repeating_section(is_answer_on_path):
     )
 
     if is_answer_on_path:
-        schema.get_block_for_answer_id = Mock(return_value={"id": f"block-on-path"})
+        schema.get_block_for_answer_id = Mock(return_value={"id": "block-on-path"})
         answer_id = "answer-on-path"
         expected_result = "Yes"
     else:
-        schema.get_block_for_answer_id = Mock(return_value={"id": f"block-not-on-path"})
+        schema.get_block_for_answer_id = Mock(return_value={"id": "block-not-on-path"})
         answer_id = "answer-not-on-path"
         expected_result = None
 

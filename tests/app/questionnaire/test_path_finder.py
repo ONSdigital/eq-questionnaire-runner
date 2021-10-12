@@ -1,7 +1,5 @@
 from unittest.mock import patch
 
-import pytest
-
 from app.data_models.answer_store import Answer, AnswerStore
 from app.data_models.list_store import ListStore
 from app.data_models.progress_store import CompletionStatus, ProgressStore

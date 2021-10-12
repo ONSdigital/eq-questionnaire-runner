@@ -43,19 +43,13 @@ class RabbitMQSubmitter:
     def __init__(self, host, secondary_host, port, queue, username=None, password=None):
         self.queue = queue
         if username and password:
-            self.rabbitmq_url = "amqp://{username}:{password}@{host}:{port}/%2F".format(
-                username=username, password=password, host=host, port=port
-            )
+            self.rabbitmq_url = f"amqp://{username}:{password}@{host}:{port}/%2F"
             self.rabbitmq_secondary_url = (
-                "amqp://{username}:{password}@{host}:{port}/%2F".format(
-                    username=username, password=password, host=secondary_host, port=port
-                )
+                f"amqp://{username}:{password}@{secondary_host}:{port}/%2F"
             )
         else:
-            self.rabbitmq_url = "amqp://{host}:{port}/%2F".format(host=host, port=port)
-            self.rabbitmq_secondary_url = "amqp://{host}:{port}/%2F".format(
-                host=secondary_host, port=port
-            )
+            self.rabbitmq_url = f"amqp://{host}:{port}/%2F"
+            self.rabbitmq_secondary_url = f"amqp://{secondary_host}:{port}/%2F"
 
     def _connect(self):
         try:

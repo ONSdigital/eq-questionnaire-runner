@@ -5,7 +5,9 @@ from app.cloud_tasks.exceptions import CloudTaskCreationFailed
 from tests.integration.integration_test_case import IntegrationTestCase
 
 
-class TestEmailConfirmation(IntegrationTestCase):
+class TestEmailConfirmation(
+    IntegrationTestCase
+):  # pylint: disable=too-few-public-methods
     def setUp(self):
         settings.CONFIRMATION_EMAIL_LIMIT = 2
         super().setUp()
@@ -221,7 +223,6 @@ class TestEmailConfirmation(IntegrationTestCase):
         # Given I launch and complete the test_confirmation_email questionnaire and reach the email confirmation limit
         self._launch_and_complete_questionnaire()
         self.post({"email": "email@example.com"})
-        self.last_url
         self.post({"confirm-email": "Yes, send the confirmation email"})
         self.get("/submitted/confirmation-email/send/")
         self.post({"email": "email@example.com"})

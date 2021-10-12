@@ -936,7 +936,6 @@ class TestRules(AppContextTestCase):  # pylint: disable=too-many-public-methods
             "app.questionnaire.rules.get_answer_for_answer_id", return_value=answer
         ):
             with patch("app.questionnaire.rules._is_answer_on_path", return_value=True):
-
                 self.assertTrue(
                     evaluate_when_rules(
                         when_rules=when["when"],
@@ -981,7 +980,6 @@ class TestRules(AppContextTestCase):  # pylint: disable=too-many-public-methods
             with patch(
                 "app.questionnaire.rules._is_answer_on_path", return_value=False
             ):
-
                 self.assertFalse(
                     evaluate_when_rules(
                         when_rules=when["when"],

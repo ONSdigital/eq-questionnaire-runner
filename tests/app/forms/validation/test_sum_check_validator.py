@@ -134,7 +134,7 @@ class TestSumCheckValidator(unittest.TestCase):
         with self.assertRaises(ValidationError) as ite:
             validator(mock_form, conditions, calculation_total, target_total)
 
-        self.assertEqual("Test {}".format(target_total), str(ite.exception))
+        self.assertEqual(f"Test {target_total}", str(ite.exception))
 
     def test_valid_multiple_conditions(self):
         validator = SumCheck()
