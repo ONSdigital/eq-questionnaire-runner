@@ -39,6 +39,7 @@ class QuestionnaireForm(FlaskForm):
         answer_store: AnswerStore,
         list_store: ListStore,
         metadata: dict[str, Any],
+        response_metadata: Mapping[str, Any],
         location: Union[None, Location, RelationshipLocation],
         **kwargs: Union[MultiDict[str, Any], Mapping[str, Any], None],
     ):
@@ -47,6 +48,7 @@ class QuestionnaireForm(FlaskForm):
         self.answer_store = answer_store
         self.list_store = list_store
         self.metadata = metadata
+        self.response_metadata = response_metadata
         self.location = location
         self.question_errors: dict[str, str] = {}
         self.options_with_detail_answer: dict = {}
@@ -289,6 +291,7 @@ class QuestionnaireForm(FlaskForm):
             answer_store=self.answer_store,
             list_store=self.list_store,
             metadata=self.metadata,
+            response_metadata=self.response_metadata,
             schema=self.schema,
             location=self.location,
             list_item_id=list_item_id,
@@ -423,6 +426,7 @@ def get_answer_fields(
     answer_store: AnswerStore,
     list_store: ListStore,
     metadata: dict[str, Any],
+    response_metadata: Mapping[str, Any],
     location: Union[Location, RelationshipLocation, None],
 ) -> dict[str, FieldHandler]:
     list_item_id = location.list_item_id if location else None
@@ -434,6 +438,7 @@ def get_answer_fields(
         location=location,
         list_item_id=list_item_id,
         escape_answer_values=False,
+        response_metadata=response_metadata,
     )
 
     answer_fields = {}
@@ -525,6 +530,7 @@ def generate_form(
     answer_store: AnswerStore,
     list_store: ListStore,
     metadata: dict[str, Any],
+    response_metadata: Mapping[str, Any],
     location: Union[None, Location, RelationshipLocation] = None,
     data: Optional[dict[str, Any]] = None,
     form_data: Optional[MultiDict[str, Any]] = None,
@@ -543,6 +549,7 @@ def generate_form(
         answer_store,
         list_store,
         metadata,
+        response_metadata,
         location,
     )
 
@@ -555,6 +562,7 @@ def generate_form(
         answer_store,
         list_store,
         metadata,
+        response_metadata,
         location,
         data=data,
         formdata=form_data,
