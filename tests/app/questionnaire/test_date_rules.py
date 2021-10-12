@@ -15,7 +15,6 @@ def get_schema_mock():
 
 class TestDateRules(AppContextTestCase):
     def test_evaluate_date_rule_equals_with_value_now(self):
-
         when = {
             "id": "date-answer",
             "condition": "equals",
@@ -31,7 +30,6 @@ class TestDateRules(AppContextTestCase):
         self.assertFalse(result)
 
     def test_evaluate_date_rule_equals_with_with_offset(self):
-
         when = {
             "id": "date-answer",
             "condition": "equals",
@@ -59,7 +57,6 @@ class TestDateRules(AppContextTestCase):
         self.assertTrue(result)
 
     def test_evaluate_date_rule_not_equals_with_value_year_month(self):
-
         when = {
             "id": "date-answer",
             "condition": "not equals",
@@ -75,7 +72,6 @@ class TestDateRules(AppContextTestCase):
         self.assertFalse(result)
 
     def test_evaluate_date_rule_less_than_meta(self):
-
         metadata = {"return_by": "2016-06-12"}
         when = {
             "id": "date-answer",
@@ -96,7 +92,6 @@ class TestDateRules(AppContextTestCase):
         self.assertFalse(result)
 
     def test_evaluate_date_rule_greater_than_with_id(self):
-
         when = {
             "id": "date-answer",
             "condition": "greater than",
@@ -132,7 +127,6 @@ class TestDateRules(AppContextTestCase):
         self.assertFalse(result)
 
     def test_do_not_go_to_next_question_for_date_answer(self):
-
         goto_rule = {
             "id": "next-question",
             "when": [

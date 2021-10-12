@@ -2,7 +2,6 @@ from tests.integration.integration_test_case import IntegrationTestCase
 
 
 class TestQuestionnaireInstructions(IntegrationTestCase):
-
     BASE_URL = "/questionnaire/"
 
     def test_interstitial_instruction(self):

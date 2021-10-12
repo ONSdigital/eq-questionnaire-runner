@@ -24,9 +24,7 @@ def find_pointers_containing(input_data, search_key, pointer=None):
                 )
     elif isinstance(input_data, (list, tuple)):
         for index, item in enumerate(input_data):
-            yield from find_pointers_containing(
-                item, search_key, "{}/{}".format(pointer, index)
-            )
+            yield from find_pointers_containing(item, search_key, f"{pointer}/{index}")
 
 
 def _choose_variant(

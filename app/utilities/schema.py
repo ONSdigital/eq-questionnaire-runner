@@ -134,7 +134,7 @@ def load_schema_from_url(survey_url, language_code):
         "loading schema from URL", survey_url=survey_url, language_code=language_code
     )
 
-    constructed_survey_url = "{}?language={}".format(survey_url, language_code)
+    constructed_survey_url = f"{survey_url}?language={language_code}"
 
     req = requests.get(constructed_survey_url)
     schema_response = req.content.decode()

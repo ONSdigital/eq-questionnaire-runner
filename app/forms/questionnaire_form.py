@@ -205,9 +205,8 @@ class QuestionnaireForm(FlaskForm):
 
         # Exception to be raised if range available is smaller than minimum range allowed
         if period_min and period_range < min_offset:
-            exception = "The schema has invalid period_limits for {}".format(
-                question_id
-            )
+            exception = f"The schema has invalid period_limits for {question_id}"
+
             raise Exception(exception)
 
     @staticmethod
@@ -216,9 +215,7 @@ class QuestionnaireForm(FlaskForm):
     ) -> None:
         # Exception to be raised if range from answers are smaller than
         # minimum or larger than maximum period_limits
-        exception = "The schema has invalid date answer limits for {}".format(
-            question_id
-        )
+        exception = f"The schema has invalid date answer limits for {question_id}"
 
         if period_range < timedelta(0):
             raise Exception(exception)
@@ -357,7 +354,7 @@ class QuestionnaireForm(FlaskForm):
         if calculation_type == "sum":
             return sum
 
-        raise Exception("Invalid calculation_type: {}".format(calculation_type))
+        raise Exception(f"Invalid calculation_type: {calculation_type}")
 
     def _get_formatted_calculation_values(
         self, answers_list: Sequence[str]
