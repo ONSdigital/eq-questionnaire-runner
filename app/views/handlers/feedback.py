@@ -54,6 +54,7 @@ class Feedback:
             answer_store=self._questionnaire_store.answer_store,
             list_store=self._questionnaire_store.list_store,
             metadata=self._questionnaire_store.metadata,
+            response_metadata=self._questionnaire_store.response_metadata,
             data=None,
             form_data=self._form_data,
         )

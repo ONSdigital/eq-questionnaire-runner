@@ -24,6 +24,7 @@ class PlaceholderRenderer:
         answer_store: AnswerStore,
         list_store: ListStore,
         metadata: ImmutableDict,
+        response_metadata: Mapping,
         schema: QuestionnaireSchema,
         location: Location = None,
     ):
@@ -31,6 +32,7 @@ class PlaceholderRenderer:
         self._answer_store = answer_store
         self._list_store = list_store
         self._metadata = metadata
+        self._response_metadata = response_metadata
         self._schema = schema
         self._location = location
 
@@ -69,6 +71,7 @@ class PlaceholderRenderer:
             answer_store=self._answer_store,
             list_store=self._list_store,
             metadata=self._metadata,
+            response_metadata=self._response_metadata,
             schema=self._schema,
             list_item_id=list_item_id,
             location=self._location,

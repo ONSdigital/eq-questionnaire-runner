@@ -14,6 +14,7 @@ class TestPathFinder(AppContextTestCase):
     list_store = ListStore()
     progress_store = ProgressStore()
     metadata = {}
+    response_metadata = {}
 
     def test_simple_path(self):
         schema = load_schema_from_name("test_textfield")
@@ -28,7 +29,12 @@ class TestPathFinder(AppContextTestCase):
             ]
         )
         path_finder = PathFinder(
-            schema, self.answer_store, self.list_store, progress_store, self.metadata
+            schema,
+            self.answer_store,
+            self.list_store,
+            progress_store,
+            self.metadata,
+            self.response_metadata,
         )
 
         section_id = schema.get_section_id_for_block_id("name-block")
@@ -48,6 +54,7 @@ class TestPathFinder(AppContextTestCase):
             self.list_store,
             self.progress_store,
             self.metadata,
+            self.response_metadata,
         )
 
         routing_path = path_finder.routing_path(section_id=current_section["id"])
@@ -62,6 +69,7 @@ class TestPathFinder(AppContextTestCase):
             self.list_store,
             self.progress_store,
             self.metadata,
+            self.response_metadata,
         )
 
         with patch("app.questionnaire.rules.evaluate_when_rules", return_value=False):
@@ -91,7 +99,12 @@ class TestPathFinder(AppContextTestCase):
             ]
         )
         path_finder = PathFinder(
-            schema, answer_store, self.list_store, progress_store, self.metadata
+            schema,
+            answer_store,
+            self.list_store,
+            progress_store,
+            self.metadata,
+            self.response_metadata,
         )
 
         routing_path = path_finder.routing_path(section_id=section_id)
@@ -114,7 +127,12 @@ class TestPathFinder(AppContextTestCase):
 
         # When
         path_finder = PathFinder(
-            schema, answer_store, self.list_store, self.progress_store, self.metadata
+            schema,
+            answer_store,
+            self.list_store,
+            self.progress_store,
+            self.metadata,
+            self.response_metadata,
         )
         routing_path = path_finder.routing_path(section_id=section_id)
 
@@ -140,7 +158,12 @@ class TestPathFinder(AppContextTestCase):
         )
 
         path_finder = PathFinder(
-            schema, self.answer_store, self.list_store, progress_store, self.metadata
+            schema,
+            self.answer_store,
+            self.list_store,
+            progress_store,
+            self.metadata,
+            self.response_metadata,
         )
         routing_path = path_finder.routing_path(section_id=section_id)
 
@@ -170,7 +193,12 @@ class TestPathFinder(AppContextTestCase):
             ]
         )
         path_finder = PathFinder(
-            schema, self.answer_store, self.list_store, progress_store, self.metadata
+            schema,
+            self.answer_store,
+            self.list_store,
+            progress_store,
+            self.metadata,
+            self.response_metadata,
         )
         routing_path = path_finder.routing_path(section_id=section_id)
 
@@ -194,7 +222,12 @@ class TestPathFinder(AppContextTestCase):
             ]
         )
         path_finder = PathFinder(
-            schema, self.answer_store, self.list_store, progress_store, self.metadata
+            schema,
+            self.answer_store,
+            self.list_store,
+            progress_store,
+            self.metadata,
+            self.response_metadata,
         )
 
         repeating_section_id = "personal-details-section"
@@ -240,7 +273,12 @@ class TestPathFinder(AppContextTestCase):
         )
 
         path_finder = PathFinder(
-            schema, answer_store, self.list_store, progress_store, self.metadata
+            schema,
+            answer_store,
+            self.list_store,
+            progress_store,
+            self.metadata,
+            self.response_metadata,
         )
         routing_path = path_finder.routing_path(section_id=section_id)
 
@@ -265,7 +303,12 @@ class TestPathFinder(AppContextTestCase):
         )
 
         path_finder = PathFinder(
-            schema, self.answer_store, self.list_store, progress_store, self.metadata
+            schema,
+            self.answer_store,
+            self.list_store,
+            progress_store,
+            self.metadata,
+            self.response_metadata,
         )
         routing_path = path_finder.routing_path(section_id=section_id)
 
@@ -293,7 +336,12 @@ class TestPathFinder(AppContextTestCase):
 
         # When
         path_finder = PathFinder(
-            schema, answer_store, self.list_store, progress_store, self.metadata
+            schema,
+            answer_store,
+            self.list_store,
+            progress_store,
+            self.metadata,
+            self.response_metadata,
         )
         routing_path = path_finder.routing_path(section_id=section_id)
 
@@ -330,7 +378,12 @@ class TestPathFinder(AppContextTestCase):
 
         # When
         path_finder = PathFinder(
-            schema, answer_store, self.list_store, progress_store, self.metadata
+            schema,
+            answer_store,
+            self.list_store,
+            progress_store,
+            self.metadata,
+            self.response_metadata,
         )
         routing_path = path_finder.routing_path(section_id=section_id)
 
@@ -367,7 +420,12 @@ class TestPathFinder(AppContextTestCase):
 
         # When
         path_finder = PathFinder(
-            schema, answer_store, self.list_store, progress_store, self.metadata
+            schema,
+            answer_store,
+            self.list_store,
+            progress_store,
+            self.metadata,
+            self.response_metadata,
         )
         routing_path = path_finder.routing_path(section_id=section_id)
 
@@ -392,7 +450,12 @@ class TestPathFinder(AppContextTestCase):
 
         # When
         path_finder = PathFinder(
-            schema, answer_store, self.list_store, self.progress_store, self.metadata
+            schema,
+            answer_store,
+            self.list_store,
+            self.progress_store,
+            self.metadata,
+            self.response_metadata,
         )
 
         # Then
@@ -418,7 +481,12 @@ class TestPathFinder(AppContextTestCase):
 
         # When i build the path
         path_finder = PathFinder(
-            schema, answer_store, self.list_store, self.progress_store, self.metadata
+            schema,
+            answer_store,
+            self.list_store,
+            self.progress_store,
+            self.metadata,
+            self.response_metadata,
         )
         path = path_finder.routing_path(section_id=section_id)
 
@@ -456,7 +524,12 @@ class TestPathFinder(AppContextTestCase):
         answer_store.add_or_update(confirm_zero_answer)
 
         path_finder = PathFinder(
-            schema, answer_store, self.list_store, progress_store, self.metadata
+            schema,
+            answer_store,
+            self.list_store,
+            progress_store,
+            self.metadata,
+            self.response_metadata,
         )
 
         self.assertEqual(

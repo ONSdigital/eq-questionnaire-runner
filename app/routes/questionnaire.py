@@ -132,6 +132,7 @@ def get_questionnaire(schema, questionnaire_store):
         questionnaire_store.list_store,
         questionnaire_store.progress_store,
         questionnaire_store.metadata,
+        questionnaire_store.response_metadata,
     )
 
     if not router.can_access_hub():
@@ -156,6 +157,7 @@ def get_questionnaire(schema, questionnaire_store):
         list_store=questionnaire_store.list_store,
         progress_store=questionnaire_store.progress_store,
         metadata=questionnaire_store.metadata,
+        response_metadata=questionnaire_store.response_metadata,
     )
     context = hub_context(
         survey_complete=router.is_questionnaire_complete,

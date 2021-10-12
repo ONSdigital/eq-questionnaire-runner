@@ -29,6 +29,7 @@ class Question(BlockHandler):
                 self._questionnaire_store.answer_store,
                 self._questionnaire_store.list_store,
                 self._questionnaire_store.metadata,
+                self._questionnaire_store.response_metadata,
                 self._current_location,
                 form_data=self._form_data,
             )
@@ -40,6 +41,7 @@ class Question(BlockHandler):
             self._questionnaire_store.answer_store,
             self._questionnaire_store.list_store,
             self._questionnaire_store.metadata,
+            self._questionnaire_store.response_metadata,
             self._current_location,
             data=answers,
         )
@@ -85,6 +87,7 @@ class Question(BlockHandler):
             self._questionnaire_store.list_store,
             self._questionnaire_store.progress_store,
             self._questionnaire_store.metadata,
+            self._questionnaire_store.response_metadata,
         )
 
     def get_next_location_url(self):

@@ -11,7 +11,13 @@ def test_build_list_collector_context(
     list_collector_block, schema, people_answer_store, people_list_store
 ):
     list_context = ListContext(
-        DEFAULT_LANGUAGE_CODE, schema, people_answer_store, people_list_store, {}, None
+        DEFAULT_LANGUAGE_CODE,
+        schema,
+        people_answer_store,
+        people_list_store,
+        None,
+        {},
+        {},
     )
 
     list_context = list_context(list_collector_block["summary"], for_list="people")
@@ -26,11 +32,16 @@ def test_build_list_summary_context_no_summary_block(
     schema, people_answer_store, people_list_store
 ):
     list_context = ListContext(
-        DEFAULT_LANGUAGE_CODE, schema, people_answer_store, people_list_store, {}, None
+        DEFAULT_LANGUAGE_CODE,
+        schema,
+        people_answer_store,
+        people_list_store,
+        None,
+        {},
+        {},
     )
 
     list_context = list_context(None, for_list="people")
-
     assert list_context == {"list": {"editable": False, "list_items": []}}
 
 
@@ -57,7 +68,13 @@ def test_build_list_summary_context(
     ]
 
     list_context = ListContext(
-        DEFAULT_LANGUAGE_CODE, schema, people_answer_store, people_list_store, {}, None
+        DEFAULT_LANGUAGE_CODE,
+        schema,
+        people_answer_store,
+        people_list_store,
+        None,
+        {},
+        {},
     )
 
     list_context = list_context(
@@ -84,6 +101,7 @@ def test_assert_primary_person_string_appended(
         schema=schema,
         answer_store=people_answer_store,
         metadata=None,
+        response_metadata={},
     )
     list_context = list_context(
         list_collector_block["summary"], list_collector_block["for_list"]
@@ -107,6 +125,7 @@ def test_for_list_item_ids(
         schema=schema,
         answer_store=people_answer_store,
         metadata=None,
+        response_metadata={},
     )
     list_context = list_context(
         list_collector_block["summary"],

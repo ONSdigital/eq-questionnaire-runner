@@ -16,6 +16,7 @@ class SectionHandler:
             questionnaire_store.list_store,
             questionnaire_store.progress_store,
             questionnaire_store.metadata,
+            questionnaire_store.response_metadata,
         )
         if not self._is_valid_location():
             raise InvalidLocationException(f"location {self._section_id} is not valid")
@@ -38,6 +39,7 @@ class SectionHandler:
             self._questionnaire_store.list_store,
             self._questionnaire_store.progress_store,
             self._questionnaire_store.metadata,
+            self._questionnaire_store.response_metadata,
             self._routing_path,
             self.current_location,
         )

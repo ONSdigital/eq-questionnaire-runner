@@ -20,6 +20,7 @@ class TestSectionSummaryContext(SummaryContextTestCase):
         self.schema = load_schema_from_name("test_section_summary")
         self.language = "en"
         self.metadata = {}
+        self.response_metadata = {}
         self.answer_store = AnswerStore()
         self.list_store = ListStore()
         self.progress_store = ProgressStore()
@@ -32,6 +33,7 @@ class TestSectionSummaryContext(SummaryContextTestCase):
             self.list_store,
             self.progress_store,
             self.metadata,
+            self.response_metadata,
             current_location=Location(section_id="property-details-section"),
             routing_path=MagicMock(),
         )
@@ -48,6 +50,7 @@ class TestSectionSummaryContext(SummaryContextTestCase):
             self.list_store,
             self.progress_store,
             self.metadata,
+            self.response_metadata,
             current_location=Location(
                 section_id="property-details-section",
                 block_id="property-details-summary",
@@ -70,6 +73,7 @@ class TestSectionSummaryContext(SummaryContextTestCase):
             self.list_store,
             self.progress_store,
             self.metadata,
+            self.response_metadata,
             current_location=Location(section_id="house-details-section"),
             routing_path=MagicMock(),
         )
@@ -86,6 +90,7 @@ class TestSectionSummaryContext(SummaryContextTestCase):
             self.list_store,
             self.progress_store,
             self.metadata,
+            self.response_metadata,
             current_location=Location(section_id="property-details-section"),
             routing_path=MagicMock(),
         )
@@ -103,6 +108,7 @@ class TestSectionSummaryContext(SummaryContextTestCase):
             self.progress_store,
             self.list_store,
             self.metadata,
+            self.response_metadata,
             current_location=Location(section_id="house-details-section"),
             routing_path=MagicMock(),
         )
@@ -118,6 +124,7 @@ class TestSectionSummaryContext(SummaryContextTestCase):
             self.list_store,
             self.progress_store,
             self.metadata,
+            self.response_metadata,
             current_location=Location(section_id="household-count-section"),
             routing_path=MagicMock(),
         )
@@ -132,6 +139,7 @@ class TestSectionSummaryContext(SummaryContextTestCase):
             self.list_store,
             self.progress_store,
             self.metadata,
+            self.response_metadata,
             routing_path=MagicMock(),
             current_location=Location(section_id="property-details-section"),
         )
@@ -155,6 +163,7 @@ def test_context_for_section_list_summary(people_answer_store):
         ),
         progress_store=ProgressStore(),
         metadata={"display_address": "70 Abingdon Road, Goathill"},
+        response_metadata={},
         current_location=Location(section_id="section"),
         routing_path=RoutingPath(
             [
@@ -239,6 +248,7 @@ def test_context_for_driving_question_summary_empty_list():
         ListStore(),
         ProgressStore(),
         {},
+        {},
         current_location=Location(section_id="section"),
         routing_path=RoutingPath(["anyone-usually-live-at"], section_id="section"),
     )
@@ -288,6 +298,7 @@ def test_context_for_driving_question_summary():
         ),
         ListStore([{"items": ["PlwgoG"], "name": "people"}]),
         ProgressStore(),
+        {},
         {},
         current_location=Location(section_id="section"),
         routing_path=RoutingPath(
@@ -348,6 +359,7 @@ def test_titles_for_repeating_section_summary(people_answer_store):
         ),
         ProgressStore(),
         {},
+        {},
         current_location=Location(
             section_id="personal-details-section",
             list_name="people",
@@ -371,6 +383,7 @@ def test_titles_for_repeating_section_summary(people_answer_store):
             ]
         ),
         ProgressStore(),
+        {},
         {},
         current_location=Location(
             block_id="personal-summary",
@@ -398,6 +411,7 @@ def test_primary_only_links_for_section_summary(people_answer_store):
         ),
         progress_store=ProgressStore(),
         metadata={"display_address": "70 Abingdon Road, Goathill"},
+        response_metadata={},
         current_location=Location(section_id="section"),
         routing_path=RoutingPath(
             [
@@ -434,6 +448,7 @@ def test_primary_links_for_section_summary(people_answer_store):
         ),
         progress_store=ProgressStore(),
         metadata={"display_address": "70 Abingdon Road, Goathill"},
+        response_metadata={},
         current_location=Location(section_id="section"),
         routing_path=RoutingPath(
             [

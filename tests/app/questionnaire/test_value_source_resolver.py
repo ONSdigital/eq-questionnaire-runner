@@ -1,4 +1,4 @@
-from typing import Optional, Union
+from typing import Mapping, Optional, Union
 from unittest.mock import Mock
 
 import pytest
@@ -35,6 +35,7 @@ def get_value_source_resolver(
     answer_store: AnswerStore = AnswerStore(),
     list_store: ListStore = ListStore(),
     metadata: Optional[dict] = None,
+    response_metadata: Mapping = None,
     location: Union[Location, RelationshipLocation] = Location(
         section_id="test-section", block_id="test-block"
     ),
@@ -54,6 +55,7 @@ def get_value_source_resolver(
         answer_store=answer_store,
         list_store=list_store,
         metadata=metadata,
+        response_metadata=response_metadata,
         schema=schema,
         location=location,
         list_item_id=list_item_id,
@@ -436,6 +438,18 @@ def test_location_source():
             {"source": "location", "identifier": "list_item_id"}
         )
         == "item-1"
+    )
+
+
+def test_response_metadata_source():
+    value_source_resolver = get_value_source_resolver(
+        response_metadata={"started_at": "2021-10-11T09:40:11.220038+00:00"}
+    )
+    assert (
+        value_source_resolver.resolve(
+            {"source": "response_metadata", "identifier": "started_at"}
+        )
+        == "2021-10-11T09:40:11.220038+00:00"
     )
 
 

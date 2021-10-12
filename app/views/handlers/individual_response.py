@@ -118,6 +118,8 @@ class IndividualResponseHandler:
 
         self._metadata = self._questionnaire_store.metadata
 
+        self._response_metadata = self._questionnaire_store.response_metadata
+
         if not self._is_location_valid():
             raise NotFound
 
@@ -164,6 +166,7 @@ class IndividualResponseHandler:
             answer_store=self._questionnaire_store.answer_store,
             list_store=self._questionnaire_store.list_store,
             metadata=self._questionnaire_store.metadata,
+            response_metadata=self._questionnaire_store.response_metadata,
             schema=self._schema,
             location=None,
         )
@@ -176,6 +179,7 @@ class IndividualResponseHandler:
             list_store=self._questionnaire_store.list_store,
             progress_store=self._questionnaire_store.progress_store,
             metadata=self._questionnaire_store.metadata,
+            response_metadata=self._questionnaire_store.response_metadata,
         )
 
     @cached_property
@@ -190,6 +194,7 @@ class IndividualResponseHandler:
             answer_store=self._questionnaire_store.answer_store,
             list_store=self._questionnaire_store.list_store,
             metadata=self._questionnaire_store.metadata,
+            response_metadata=self._questionnaire_store.response_metadata,
             data=self._answers,
             form_data=self._form_data,
         )
