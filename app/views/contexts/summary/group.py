@@ -10,6 +10,7 @@ class Group:
         answer_store,
         list_store,
         metadata,
+        response_metadata,
         schema,
         location,
         language,
@@ -33,6 +34,7 @@ class Group:
             answer_store=answer_store,
             list_store=list_store,
             metadata=metadata,
+            response_metadata=response_metadata,
             schema=schema,
         )
 

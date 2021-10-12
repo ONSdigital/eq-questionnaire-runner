@@ -33,10 +33,13 @@ class TestFieldFactory(AppContextTestCase):
             "case_ref": "1000000000000001",
         }
 
+        response_metadata = {}
+
         value_source_resolver = ValueSourceResolver(
             answer_store=AnswerStore(),
             list_store=ListStore(),
             metadata=metadata,
+            response_metadata=response_metadata,
             schema=schema,
             location=None,
             list_item_id=None,

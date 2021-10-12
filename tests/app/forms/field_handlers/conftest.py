@@ -20,6 +20,7 @@ def value_source_resolver():
         answer_store=AnswerStore(),
         list_store=ListStore(),
         metadata={},
+        response_metadata={},
         schema=schema,
         location=None,
         list_item_id=None,

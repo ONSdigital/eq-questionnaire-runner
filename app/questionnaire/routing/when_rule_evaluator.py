@@ -1,6 +1,6 @@
 from dataclasses import dataclass
 from datetime import date
-from typing import Generator, Optional, Sequence, Union
+from typing import Generator, Mapping, Optional, Sequence, Union
 
 from app.data_models import AnswerStore, ListStore
 from app.questionnaire import Location, QuestionnaireSchema
@@ -18,6 +18,7 @@ class WhenRuleEvaluator:
     answer_store: AnswerStore
     list_store: ListStore
     metadata: dict
+    response_metadata: Mapping
     location: Union[Location, RelationshipLocation]
     routing_path_block_ids: Optional[list] = None
 
@@ -26,6 +27,7 @@ class WhenRuleEvaluator:
             answer_store=self.answer_store,
             list_store=self.list_store,
             metadata=self.metadata,
+            response_metadata=self.response_metadata,
             schema=self.schema,
             location=self.location,
             list_item_id=self.location.list_item_id,

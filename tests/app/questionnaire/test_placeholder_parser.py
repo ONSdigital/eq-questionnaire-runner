@@ -28,6 +28,7 @@ def test_metadata_placeholder():
         answer_store=AnswerStore(),
         list_store=ListStore(),
         metadata={"period_str": period_str},
+        response_metadata={},
         schema=QuestionnaireSchema({}),
     )
 
@@ -64,6 +65,7 @@ def test_previous_answer_transform_placeholder():
         answer_store=answer_store,
         list_store=ListStore(),
         metadata={},
+        response_metadata={},
         schema=QuestionnaireSchema({}),
     )
     placeholders = parser(placeholder_list)
@@ -95,6 +97,40 @@ def test_metadata_transform_placeholder():
         answer_store=AnswerStore(),
         list_store=ListStore(),
         metadata={"ref_p_start_date": "2019-02-11"},
+        response_metadata={},
+        schema=QuestionnaireSchema({}),
+    )
+    placeholders = parser(placeholder_list)
+
+    assert placeholders["start_date"] == "Monday 11 February 2019"
+
+
+def test_response_metadata_transform_placeholder():
+    # This test should use ISO format dates when they become supported
+    placeholder_list = [
+        {
+            "placeholder": "start_date",
+            "transforms": [
+                {
+                    "transform": "format_date",
+                    "arguments": {
+                        "date_to_format": {
+                            "source": "response_metadata",
+                            "identifier": "started_at",
+                        },
+                        "date_format": "EEEE d MMMM yyyy",
+                    },
+                }
+            ],
+        }
+    ]
+
+    parser = PlaceholderParser(
+        language="en",
+        answer_store=AnswerStore(),
+        list_store=ListStore(),
+        metadata={"ref_p_start_date": "2019-02-11"},
+        response_metadata={"started_at": "2019-02-11"},
         schema=QuestionnaireSchema({}),
     )
     placeholders = parser(placeholder_list)
@@ -131,6 +167,7 @@ def test_multiple_answer_transform_placeholder():
         ),
         list_store=ListStore(),
         metadata={},
+        response_metadata={},
         schema=QuestionnaireSchema({}),
     )
 
@@ -162,6 +199,7 @@ def test_first_non_empty_item_transform_placeholder():
         answer_store=AnswerStore(),
         list_store=ListStore(),
         metadata={"ru_name": "ru_name"},
+        response_metadata={},
         schema=QuestionnaireSchema({}),
     )
 
@@ -195,6 +233,7 @@ def test_format_list_answer_transform_placeholder():
         ),
         list_store=ListStore(),
         metadata={},
+        response_metadata={},
         schema=QuestionnaireSchema({}),
     )
 
@@ -233,6 +272,7 @@ def test_placeholder_parser_escapes_answers():
         ),
         list_store=ListStore(),
         metadata={},
+        response_metadata={},
         schema=QuestionnaireSchema({}),
     )
 
@@ -275,6 +315,7 @@ def test_multiple_metadata_transform_placeholder():
         answer_store=AnswerStore(),
         list_store=ListStore(),
         metadata={"ref_p_start_date": "2019-02-11"},
+        response_metadata={},
         schema=QuestionnaireSchema({}),
     )
 
@@ -307,6 +348,7 @@ def test_multiple_metadata_list_transform_placeholder():
         answer_store=AnswerStore(),
         list_store=ListStore(),
         metadata={"ref_p_start_date": "2019-02-11", "ref_p_end_date": "2019-10-11"},
+        response_metadata={},
         schema=QuestionnaireSchema({}),
     )
     placeholders = parser(placeholder_list)
@@ -341,6 +383,7 @@ def test_checkbox_transform_placeholder():
         ),
         list_store=ListStore(),
         metadata={},
+        response_metadata={},
         schema=QuestionnaireSchema({}),
     )
 
@@ -378,6 +421,7 @@ def test_mixed_transform_placeholder():
         ),
         list_store=ListStore(),
         metadata={"second-date": "2019-02-02"},
+        response_metadata={},
         schema=QuestionnaireSchema({}),
     )
     placeholders = parser(placeholder_list)
@@ -411,6 +455,7 @@ def test_mixed_transform_placeholder_value():
         ),
         list_store=ListStore(),
         metadata={},
+        response_metadata={},
         schema=QuestionnaireSchema({}),
     )
     placeholders = parser(placeholder_list)
@@ -435,6 +480,7 @@ def test_list_source_count():
         answer_store=AnswerStore(),
         list_store=list_store,
         metadata={},
+        response_metadata={},
         schema=QuestionnaireSchema({}),
     )
     placeholders = parser(placeholder_list)
@@ -466,6 +512,7 @@ def test_list_source_count_in_transform():
         answer_store=AnswerStore(),
         list_store=list_store,
         metadata={},
+        response_metadata={},
         schema=QuestionnaireSchema({}),
     )
     placeholders = parser(placeholder_list)
@@ -506,6 +553,7 @@ def test_chain_transform_placeholder():
         ),
         list_store=ListStore(),
         metadata={},
+        response_metadata={},
         schema=QuestionnaireSchema({}),
     )
 
@@ -546,6 +594,7 @@ def test_placeholder_resolves_answer_value_based_on_first_item_in_list():
         answer_store=answer_store,
         list_store=list_store,
         metadata={},
+        response_metadata={},
         schema=QuestionnaireSchema({}),
     )
 
@@ -572,6 +621,7 @@ def test_placeholder_resolves_list_item_value_based_on_first_item_in_list():
         answer_store=AnswerStore(),
         list_store=list_store,
         metadata={},
+        response_metadata={},
         schema=QuestionnaireSchema({}),
     )
 
@@ -606,6 +656,7 @@ def test_placeholder_resolves_same_name_items():
         answer_store=AnswerStore(),
         list_store=list_store,
         metadata={},
+        response_metadata={},
         schema=QuestionnaireSchema({}),
         list_item_id="abc123",
     )
@@ -706,6 +757,7 @@ def test_placeholder_resolves_name_is_duplicate_chain(mock_schema):
         answer_store=answer_store,
         list_store=list_store,
         metadata={},
+        response_metadata={},
         schema=mock_schema,
         list_item_id="abc123",
     )
@@ -719,6 +771,7 @@ def test_placeholder_resolves_name_is_duplicate_chain(mock_schema):
         answer_store=answer_store,
         list_store=list_store,
         metadata={},
+        response_metadata={},
         schema=mock_schema,
         list_item_id="cde456",
     )
@@ -815,6 +868,7 @@ def test_placeholder_resolves_list_has_items_chain(mock_schema):
         answer_store=answer_store,
         list_store=list_store,
         metadata={},
+        response_metadata={},
         schema=mock_schema,
         list_item_id="abc123",
     )
@@ -828,6 +882,7 @@ def test_placeholder_resolves_list_has_items_chain(mock_schema):
         answer_store=answer_store,
         list_store=list_store,
         metadata={},
+        response_metadata={},
         schema=mock_schema,
         list_item_id="cde456",
     )

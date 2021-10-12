@@ -14,6 +14,7 @@ class SubmitContextTestCase(AppContextTestCase):
         super().setUp()
         self.language = "en"
         self.metadata = {}
+        self.response_metadata = {}
         self.answer_store = AnswerStore()
         self.list_store = ListStore()
         self.progress_store = ProgressStore()
@@ -33,6 +34,7 @@ class TestSubmitContext(SubmitContextTestCase):
             self.list_store,
             self.progress_store,
             self.metadata,
+            self.response_metadata,
         )
 
         context = submit_questionnaire_context()
@@ -53,6 +55,7 @@ class TestSubmitContext(SubmitContextTestCase):
             self.list_store,
             self.progress_store,
             self.metadata,
+            self.response_metadata,
         )
 
         context = submit_questionnaire_context()
@@ -76,6 +79,7 @@ class TestSubmitContext(SubmitContextTestCase):
             self.list_store,
             self.progress_store,
             self.metadata,
+            self.response_metadata,
         )
 
         context = submit_questionnaire_context()
@@ -93,6 +97,7 @@ class TestSubmitContextWithSummary(SubmitContextTestCase, SummaryContextTestCase
             self.list_store,
             self.progress_store,
             self.metadata,
+            self.response_metadata,
         )
 
         context = submit_questionnaire_context()
