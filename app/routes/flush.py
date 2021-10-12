@@ -56,12 +56,20 @@ def _submit_data(user):
         questionnaire_store = get_questionnaire_store(user.user_id, user.user_ik)
         answer_store = questionnaire_store.answer_store
         metadata = questionnaire_store.metadata
+        response_metadata = questionnaire_store.response_metadata
         progress_store = questionnaire_store.progress_store
         list_store = questionnaire_store.list_store
         submitted_at = datetime.now(timezone.utc)
         schema = load_schema_from_metadata(metadata)
 
-        router = Router(schema, answer_store, list_store, progress_store, metadata)
+        router = Router(
+            schema,
+            answer_store,
+            list_store,
+            progress_store,
+            metadata,
+            response_metadata,
+        )
         full_routing_path = router.full_routing_path()
 
         message = json_dumps(
