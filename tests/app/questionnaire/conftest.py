@@ -8,6 +8,7 @@ from app.data_models.list_store import ListStore
 from app.questionnaire import QuestionnaireSchema
 from app.questionnaire.location import Location
 from app.questionnaire.placeholder_parser import PlaceholderParser
+from app.questionnaire.placeholder_transforms import PlaceholderTransforms
 
 
 @pytest.fixture
@@ -709,3 +710,8 @@ def mock_schema():
         )
     )
     return schema
+
+
+@pytest.fixture
+def placeholder_transform():
+    return PlaceholderTransforms(language="en")
