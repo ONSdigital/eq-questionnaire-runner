@@ -33,6 +33,7 @@ class SubmitQuestionnaireHandler:
             list_store=self._questionnaire_store.list_store,
             progress_store=self._questionnaire_store.progress_store,
             metadata=self._questionnaire_store.metadata,
+            response_metadata=self._questionnaire_store.response_metadata,
         )
 
     def get_context(self) -> dict[str, Union[str, dict]]:
@@ -43,6 +44,7 @@ class SubmitQuestionnaireHandler:
             list_store=self._questionnaire_store.list_store,
             progress_store=self._questionnaire_store.progress_store,
             metadata=self._questionnaire_store.metadata,
+            response_metadata=self._questionnaire_store.response_metadata,
         )
         return submit_questionnaire_context()
 

@@ -9,7 +9,14 @@ from app.views.contexts import HubContext
 
 @pytest.fixture
 def router(schema, answer_store, list_store, progress_store):
-    return Router(schema, answer_store, list_store, progress_store, metadata={})
+    return Router(
+        schema,
+        answer_store,
+        list_store,
+        progress_store,
+        metadata={},
+        response_metadata={},
+    )
 
 
 def test_get_not_started_row_for_section(
@@ -41,6 +48,7 @@ def test_get_not_started_row_for_section(
         schema=schema,
         answer_store=answer_store,
         metadata={},
+        response_metadata={},
     )
 
     actual = hub.get_row_context_for_section(
@@ -83,6 +91,7 @@ def test_get_completed_row_for_section(
         schema=schema,
         answer_store=answer_store,
         metadata={},
+        response_metadata={},
     )
 
     actual = hub.get_row_context_for_section(
@@ -104,6 +113,7 @@ def test_get_context(progress_store, answer_store, list_store, router):
         schema=schema,
         answer_store=answer_store,
         metadata={},
+        response_metadata={},
     )
 
     expected_context = {
@@ -132,6 +142,7 @@ def test_get_context_custom_content_incomplete(
         schema=schema,
         answer_store=answer_store,
         metadata={},
+        response_metadata={},
     )
 
     expected_context = {
@@ -160,6 +171,7 @@ def test_get_context_custom_content_complete(
         schema=schema,
         answer_store=answer_store,
         metadata={},
+        response_metadata={},
     )
 
     expected_context = {
@@ -188,6 +200,7 @@ def test_get_context_no_list_items_survey_incomplete_individual_response_disable
         schema=schema,
         answer_store=answer_store,
         metadata={},
+        response_metadata={},
     )
 
     assert not (

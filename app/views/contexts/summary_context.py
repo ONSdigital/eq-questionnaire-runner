@@ -35,6 +35,7 @@ class SummaryContext(Context):
                 list_store=self._list_store,
                 progress_store=self._progress_store,
                 metadata=self._metadata,
+                response_metadata=self._response_metadata,
                 current_location=location,
                 routing_path=self._router.routing_path(section_id),
             )

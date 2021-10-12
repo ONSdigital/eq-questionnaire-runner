@@ -37,6 +37,7 @@ def parser(answer_store, location, mock_schema):
         answer_store=answer_store,
         list_store=ListStore(),
         metadata={},
+        response_metadata={},
         schema=mock_schema,
         location=location,
     )

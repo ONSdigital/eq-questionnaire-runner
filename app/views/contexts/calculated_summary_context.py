@@ -30,6 +30,7 @@ class CalculatedSummaryContext(Context):
                 self._answer_store,
                 self._list_store,
                 self._metadata,
+                self._response_metadata,
                 self._schema,
                 location,
                 self._language,

@@ -47,6 +47,7 @@ def dump_routing(schema, questionnaire_store):
         questionnaire_store.list_store,
         questionnaire_store.progress_store,
         questionnaire_store.metadata,
+        questionnaire_store.response_metadata,
     )
 
     response = [
@@ -73,6 +74,7 @@ def dump_submission(schema, questionnaire_store):
         questionnaire_store.list_store,
         questionnaire_store.progress_store,
         questionnaire_store.metadata,
+        questionnaire_store.response_metadata,
     )
 
     routing_path = router.full_routing_path()
