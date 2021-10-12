@@ -5,8 +5,8 @@ from app.submitter.previously_submitted_exception import PreviouslySubmittedExce
 
 class PreviouslySubmittedExceptionTest(unittest.TestCase):
     def test(self):
-        no_token = PreviouslySubmittedException("test")
-        self.assertEqual("test", str(no_token))
+        previously_submitted_exception = PreviouslySubmittedException("test")
+        self.assertEqual("test", str(previously_submitted_exception))
 
 
 if __name__ == "__main__":
