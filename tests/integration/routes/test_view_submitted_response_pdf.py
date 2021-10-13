@@ -27,7 +27,7 @@ class TestViewSubmissionResponsePDF(ViewSubmittedResponseBase):
         self.get(self.VIEW_RESPONSE_PAGE_URL)
         self.get(self.get_download_button().attrs["href"])
 
-        # Then a 404 page is returned
+        # Then a the download is successful
         self.assertStatusOK()
 
         # Check response content type is PDF
