@@ -13,7 +13,7 @@ class DataVersionError(Exception):
         self.version = version
 
     def __str__(self):
-        return "Data version {} not supported".format(self.version)
+        return f"Data version {self.version} not supported"
 
 
 def convert_answers(

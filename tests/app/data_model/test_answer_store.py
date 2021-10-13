@@ -96,7 +96,6 @@ def test_adding_new_answer(empty_answer_store):
 
 
 def test_raises_error_on_invalid_answer(empty_answer_store):
-
     with pytest.raises(TypeError) as e:
         empty_answer_store.add_or_update({"answer_id": "4", "value": 25})
 
@@ -104,7 +103,6 @@ def test_raises_error_on_invalid_answer(empty_answer_store):
 
 
 def test_updates_answer_no_list_id(basic_answer_store):
-
     store_length = len(basic_answer_store)
 
     duplicate_answer = Answer(answer_id="answer3", value=300)

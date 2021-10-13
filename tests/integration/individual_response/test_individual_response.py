@@ -212,7 +212,7 @@ class TestIndividualResponseErrorStatus(IndividualResponseTestCase):
 
         # When I try to view the confirmation page with an incorrect mobile number hash
         self.get(
-            f"individual-response/text/confirmation?journey=hub&mobile_number=bad-signature"
+            "individual-response/text/confirmation?journey=hub&mobile_number=bad-signature"
         )
 
         # Then a BadRequest error is returned
@@ -230,7 +230,7 @@ class TestIndividualResponseErrorStatus(IndividualResponseTestCase):
         self.post({"individual-response-text-confirm-answer": "Yes, send the text"})
 
         # When I try to view the confirmation page with no mobile number param
-        self.get(f"individual-response/text/confirmation?journey=hub")
+        self.get("individual-response/text/confirmation?journey=hub")
 
         # Then a BadRequest error is returned
         self.assertBadRequest()

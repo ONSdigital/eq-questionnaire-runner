@@ -45,7 +45,7 @@ class TestJtiClaimStorage(AppContextTestCase):
         # Then
         self.assertEqual(err.exception.jti_claim, jti_token)
         self.assertEqual(
-            str(err.exception), "jti claim '{}' has already been used".format(jti_token)
+            str(err.exception), f"jti claim '{jti_token}' has already been used"
         )
 
     def test_should_raise_type_error_invalid_uuid(self):

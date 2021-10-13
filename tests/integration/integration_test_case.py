@@ -302,21 +302,21 @@ class IntegrationTestCase(unittest.TestCase):  # pylint: disable=too-many-public
 
     def assertInSelector(self, content, selector):
         data = self.getHtmlSoup().select(selector)
-        message = "\n{} not in \n{}".format(content, data)
+        message = f"\n{content} not in \n{data}"
 
         # intentionally not using assertIn to avoid duplicating the output message
         self.assertTrue(content in str(data), msg=message)
 
     def assertInSelectorCSS(self, content, *selectors, **kwargs):
         data = self.getHtmlSoup().find(*selectors, **kwargs)
-        message = "\n{} not in \n{}".format(content, data)
+        message = f"\n{content} not in \n{data}"
 
         # intentionally not using assertIn to avoid duplicating the output message
         self.assertTrue(content in str(data), msg=message)
 
     def assertNotInSelector(self, content, selector):
         data = self.getHtmlSoup().select(selector)
-        message = "\n{} in \n{}".format(content, data)
+        message = f"\n{content} in \n{data}"
 
         # intentionally not using assertIn to avoid duplicating the output message
         self.assertFalse(content in str(data), msg=message)

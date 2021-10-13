@@ -37,7 +37,7 @@ class TestCreateApp(unittest.TestCase):  # pylint: disable=too-many-public-metho
 
         Returns a list of contexts."""
         patches = [
-            patch("app.setup.settings.{}".format(k), v)
+            patch(f"app.setup.settings.{k}", v)
             for k, v in self._setting_overrides.items()
         ]
         for p in patches:
@@ -160,11 +160,11 @@ class TestCreateApp(unittest.TestCase):  # pylint: disable=too-many-public-metho
                 csp_policy_parts,
             )
             self.assertIn(
-                f"object-src 'none'",
+                "object-src 'none'",
                 csp_policy_parts,
             )
             self.assertIn(
-                f"base-uri 'none'",
+                "base-uri 'none'",
                 csp_policy_parts,
             )
 

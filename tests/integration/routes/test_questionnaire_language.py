@@ -25,7 +25,7 @@ class TestQuestionnaireLanguage(IntegrationTestCase):
         self.post()
         self.assertInBody("First Name")
         # Switch the language to welsh
-        self.get("{}?language_code=cy".format(self.last_url))
+        self.get(f"{self.last_url}?language_code=cy")
         self.assertInBody("Rhowch enw")
 
     def test_switch_to_invalid_language(self):
@@ -35,7 +35,7 @@ class TestQuestionnaireLanguage(IntegrationTestCase):
         self.post()
         self.assertInBody("First Name")
         # Try and switch to an invalid language
-        self.get("{}?language_code=hi".format(self.last_url))
+        self.get(f"{self.last_url}?language_code=hi")
         self.assertInBody("First Name")
 
     def test_plural_forms_rendered_using_correct_language(self):

@@ -15,7 +15,7 @@ def get_form_class(validators):
             data = super().data
 
             try:
-                return "{year:04d}".format(year=int(data["year"]))
+                return f'{int(data["year"]):04d}'
             except (TypeError, ValueError):
                 return None
 

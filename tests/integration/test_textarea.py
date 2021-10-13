@@ -38,7 +38,7 @@ class TestTextArea(IntegrationTestCase):
 
         answers = {}
         for counter, value in enumerate(NAUGHTY_STRINGS):
-            key = "answer{}".format(counter)
+            key = f"answer{counter}"
             answers[key] = value
         self.post(answers)
         self.assertInUrl(SUBMIT_URL_PATH)

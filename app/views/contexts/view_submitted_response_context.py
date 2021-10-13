@@ -18,7 +18,6 @@ def build_view_submitted_response_context(
     questionnaire_store: QuestionnaireStore,
     survey_type: str,
 ) -> dict[str, Union[str, datetime, dict]]:
-
     view_submitted_response_expired = is_view_submitted_response_expired(
         questionnaire_store.submitted_at
     )

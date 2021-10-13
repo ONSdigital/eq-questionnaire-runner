@@ -1,11 +1,7 @@
-from datetime import datetime, timedelta, timezone
 from unittest.mock import Mock
 
 from app.data_models import QuestionnaireStore
-from app.data_models.answer import Answer
-from app.data_models.answer_store import AnswerStore
 from app.questionnaire.questionnaire_schema import QuestionnaireSchema
-from app.utilities.schema import load_schema_from_name
 from app.views.handlers.view_submitted_response import (
     ViewSubmittedResponse,
     ViewSubmittedResponseNotEnabled,

@@ -1,4 +1,3 @@
-import json
 from datetime import datetime, timedelta, timezone
 
 from flask import current_app
@@ -88,7 +87,6 @@ class SessionStoreTest(AppContextTestCase):
 
     def test_should_not_delete_when_no_session(self):
         with self.app_request_context("/status") as context:
-
             # Call clear with a valid user_id but no session in database
             self.session_store.delete()
 

@@ -1,6 +1,5 @@
-from datetime import datetime, timedelta, timezone
+from datetime import datetime, timezone
 
-import dateutil.parser
 import pytest
 
 from app.questionnaire.questionnaire_schema import QuestionnaireSchema
@@ -113,7 +112,6 @@ def test_case_id_should_be_set_in_payload(
 def test_case_ref_should_be_set_in_payload(
     fake_questionnaire_schema, fake_questionnaire_store
 ):
-
     answer_object = convert_answers(
         fake_questionnaire_schema, fake_questionnaire_store, {}, SUBMITTED_AT
     )
@@ -124,7 +122,6 @@ def test_case_ref_should_be_set_in_payload(
 def test_display_address_should_be_set_in_payload_metadata(
     fake_questionnaire_schema, fake_questionnaire_store
 ):
-
     payload = convert_answers(
         fake_questionnaire_schema, fake_questionnaire_store, {}, SUBMITTED_AT
     )
@@ -156,7 +153,6 @@ def test_converter_language_code_not_set_in_payload(
     fake_response_metadata,
     fake_metadata,
 ):
-
     fake_questionnaire_store.set_metadata(fake_metadata)
     fake_questionnaire_store.response_metadata = fake_response_metadata
 

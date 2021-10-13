@@ -5,7 +5,6 @@ from app.secrets import REQUIRED_SECRETS, validate_required_secrets
 
 class TestSecrets(TestCase):
     def test_validate_required_secrets_fails_on_missing(self):
-
         secrets = {"secrets": {}}
 
         with self.assertRaises(Exception) as exception:

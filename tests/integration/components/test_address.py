@@ -124,7 +124,7 @@ class TestLookupAddressFields(IntegrationTestCase):
         # Then
         auth_token = (
             self.getHtmlSoup()
-            .select(f"#address-mandatory-autosuggest-container")[0]
+            .select("#address-mandatory-autosuggest-container")[0]
             .get("data-authorization-token")
         )
         assert auth_token
