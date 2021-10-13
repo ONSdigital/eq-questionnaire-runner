@@ -47,7 +47,7 @@ class TestViewSubmissionResponsePDF(ViewSubmittedResponseBase):
         self.assertGreater(self.last_response.content_length, 16500)
 
     def test_download_when_submitted_response_enabled_but_expired(self):
-        settings.VIEW_SUBMITTED_RESPONSE_EXPIRATION_IN_SECONDS = 1
+        settings.VIEW_SUBMITTED_RESPONSE_EXPIRATION_IN_SECONDS = 3
         super().setUp()
 
         # Given I launch and complete a questionnaire that has view-submitted-response enabled and has expired
@@ -58,7 +58,7 @@ class TestViewSubmissionResponsePDF(ViewSubmittedResponseBase):
         download_pdf_url = self.get_download_button().attrs["href"]
 
         # Wait for submitted response to expire
-        sleep(1)
+        sleep(5)
         self.get(download_pdf_url)
 
         # Then the current page is reloaded and sensitive information should not be displayed
