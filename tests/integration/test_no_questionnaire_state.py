@@ -28,7 +28,7 @@ class TestNoQuestionnaireState(IntegrationTestCase):
 
             # Then
             self.assertStatusUnauthorised()
-            self.assertInBody("Your session has timed out due to inactivity")
+            self.assertInBody("Sorry, you need to sign in again")
 
     def test_post_submission_route_before_questionnaire_submitted(self):
         # Given
@@ -54,4 +54,4 @@ class TestNoQuestionnaireState(IntegrationTestCase):
 
             # Then
             self.assertStatusUnauthorised()
-            self.assertInBody("Your session has timed out due to inactivity")
+            self.assertInBody("Sorry, you need to sign in again")
