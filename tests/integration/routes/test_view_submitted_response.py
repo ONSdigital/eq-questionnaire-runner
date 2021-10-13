@@ -15,7 +15,7 @@ class ViewSubmittedResponseBase(IntegrationTestCase):
         return self.getHtmlSoup().find("button", {"data-qa": "btn-print"})
 
     def get_download_button(self):
-        # This is a temporary solution as additional attribute do now work at the moment.
+        # This is a temporary solution as additional attributes do not work at the moment for the download button.
         return self.getHtmlSoup().find("a", {"href": "/submitted/download-pdf"})
 
     def assert_expired_content(self):
