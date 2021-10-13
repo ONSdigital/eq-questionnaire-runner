@@ -22,7 +22,7 @@ class TestViewSubmittedResponsePDF(AppContextTestCase):
         self.storage.get_user_data = Mock(return_value=("{}", 1, submitted_at))
 
     def test_pdf_not_downloadable(self):
-        submitted_at = datetime.now(timezone.utc) - timedelta(minutes=60)
+        submitted_at = datetime.now(timezone.utc) - timedelta(minutes=46)
         self.set_submitted_at(submitted_at)
         self.questionnaire_store = QuestionnaireStore(self.storage)
 
@@ -45,4 +45,4 @@ class TestViewSubmittedResponsePDF(AppContextTestCase):
             self.schema, self.questionnaire_store, self.language
         )
 
-        self.assertEqual(pdf.filename, f"test_view_submitted_response.pdf")
+        self.assertEqual(pdf.filename, "test_view_submitted_response.pdf")
