@@ -356,9 +356,93 @@ class TestPathFinder(AppContextTestCase):
         ):
             self.assertEqual(routing_path, expected_routing_path)
 
+    def test_new_routing_path_should_skip_block(self):
+        # Given
+        schema = load_schema_from_name("test_new_skip_condition_block")
+        section_id = schema.get_section_id_for_block_id("should-skip")
+        answer_store = AnswerStore()
+        answer_store.add_or_update(
+            Answer(answer_id="do-you-want-to-skip-answer", value="Yes")
+        )
+
+        progress_store = ProgressStore(
+            [
+                {
+                    "section_id": "introduction-section",
+                    "list_item_id": None,
+                    "status": CompletionStatus.COMPLETED,
+                    "block_ids": ["do-you-want-to-skip"],
+                }
+            ]
+        )
+
+        # When
+        path_finder = PathFinder(
+            schema,
+            answer_store,
+            self.list_store,
+            progress_store,
+            self.metadata,
+            self.response_metadata,
+        )
+        routing_path = path_finder.routing_path(section_id=section_id)
+
+        # Then
+        expected_routing_path = RoutingPath(
+            ["do-you-want-to-skip", "a-non-skipped-block"],
+            section_id="default-section",
+        )
+
+        with patch(
+            "app.questionnaire.path_finder.evaluate_skip_conditions", return_value=True
+        ):
+            self.assertEqual(routing_path, expected_routing_path)
+
     def test_routing_path_should_skip_group(self):
         # Given
         schema = load_schema_from_name("test_skip_condition_group")
+
+        section_id = schema.get_section_id_for_block_id("do-you-want-to-skip")
+        answer_store = AnswerStore()
+        answer_store.add_or_update(
+            Answer(answer_id="do-you-want-to-skip-answer", value="Yes")
+        )
+        progress_store = ProgressStore(
+            [
+                {
+                    "section_id": "default-section",
+                    "list_item_id": None,
+                    "status": CompletionStatus.COMPLETED,
+                    "block_ids": ["do-you-want-to-skip"],
+                }
+            ]
+        )
+
+        # When
+        path_finder = PathFinder(
+            schema,
+            answer_store,
+            self.list_store,
+            progress_store,
+            self.metadata,
+            self.response_metadata,
+        )
+        routing_path = path_finder.routing_path(section_id=section_id)
+
+        # Then
+        expected_routing_path = RoutingPath(
+            ["do-you-want-to-skip"],
+            section_id="default-section",
+        )
+
+        with patch(
+            "app.questionnaire.path_finder.evaluate_skip_conditions", return_value=True
+        ):
+            self.assertEqual(routing_path, expected_routing_path)
+
+    def test_new_routing_path_should_skip_group(self):
+        # Given
+        schema = load_schema_from_name("test_new_skip_condition_group")
 
         section_id = schema.get_section_id_for_block_id("do-you-want-to-skip")
         answer_store = AnswerStore()

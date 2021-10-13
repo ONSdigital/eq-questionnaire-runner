@@ -44,7 +44,21 @@ class PathFinder:
         if section:
             for group in section["groups"]:
                 if "skip_conditions" in group:
-                    if evaluate_skip_conditions(
+                    if isinstance(group.get("skip_conditions"), dict):
+                        when_rule_evaluator = WhenRuleEvaluator(
+                            self.schema,
+                            self.answer_store,
+                            self.list_store,
+                            self.metadata,
+                            self.response_metadata,
+                            location=current_location,
+                            routing_path_block_ids=routing_path_block_ids,
+                        )
+                        when_rule = group.get("skip_conditions").get("when")
+                        if when_rule_evaluator.evaluate(when_rule):
+                            continue
+
+                    elif evaluate_skip_conditions(
                         group["skip_conditions"],
                         self.schema,
                         self.metadata,
@@ -80,16 +94,30 @@ class PathFinder:
 
         while block_index < len(blocks):
             block = blocks[block_index]
-
-            is_skipping = block.get("skip_conditions") and evaluate_skip_conditions(
-                block["skip_conditions"],
-                self.schema,
-                self.metadata,
-                self.answer_store,
-                self.list_store,
-                current_location=current_location,
-                routing_path_block_ids=routing_path_block_ids,
-            )
+            if isinstance(block.get("skip_conditions"), dict):
+                when_rule_evaluator = WhenRuleEvaluator(
+                    self.schema,
+                    self.answer_store,
+                    self.list_store,
+                    self.metadata,
+                    self.response_metadata,
+                    location=current_location,
+                    routing_path_block_ids=routing_path_block_ids,
+                )
+                when_rule = block["skip_conditions"].get("when")
+                is_skipping = block["skip_conditions"] and when_rule_evaluator.evaluate(
+                    when_rule
+                )
+            else:
+                is_skipping = block.get("skip_conditions") and evaluate_skip_conditions(
+                    block["skip_conditions"],
+                    self.schema,
+                    self.metadata,
+                    self.answer_store,
+                    self.list_store,
+                    current_location=current_location,
+                    routing_path_block_ids=routing_path_block_ids,
+                )
 
             if not is_skipping:
                 block_id = block["id"]
