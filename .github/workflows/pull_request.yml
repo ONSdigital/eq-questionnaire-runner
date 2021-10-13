@@ -17,7 +17,13 @@ jobs:
         with:
           python-version: ${{ env.PYTHON_VERSION }}
       - name: Install apt dependencies
-        run: sudo apt-get install libsnappy-dev libgconf-2-4 wkhtmltopdf
+        run: |
+          sudo apt-get install libsnappy-dev libgconf-2-4
+
+          # Install wkthtmltopdf with patched Qt
+          sudo apt-get install -y xfonts-base xfonts-75dpi
+          wget https://github.com/wkhtmltopdf/packaging/releases/download/0.12.6-1/wkhtmltox_0.12.6-1.bionic_amd64.deb
+          sudo dpkg -i wkhtmltox_0.12.6-1.bionic_amd64.deb
       - name: Install Pipenv
         run: pip install pipenv==2018.11.26
       - name: Cache virtualenv
@@ -59,7 +65,13 @@ jobs:
         with:
           python-version: ${{ env.PYTHON_VERSION }}
       - name: Install apt dependencies
-        run: sudo apt-get install libsnappy-dev libgconf-2-4 jq wkhtmltopdf
+        run: |
+            sudo apt-get install libsnappy-dev libgconf-2-4 jq
+
+            # Install wkthtmltopdf with patched Qt
+            sudo apt-get install -y xfonts-base xfonts-75dpi
+            wget https://github.com/wkhtmltopdf/packaging/releases/download/0.12.6-1/wkhtmltox_0.12.6-1.bionic_amd64.deb
+            sudo dpkg -i wkhtmltox_0.12.6-1.bionic_amd64.deb
       - name: Write app version
         run: printf "${{ github.event.pull_request.head.sha }}" > .application-version
       - name: Install pipenv
@@ -123,7 +135,6 @@ jobs:
       - name: Install virtual environment
         if: steps.cache-virtualenv.outputs.cache-hit != 'true'
         run: |
-          sudo apt-get install libsnappy-dev libgconf-2-4 wkhtmltopdf
           pipenv install --dev
       - name: Get yarn cache
         id: get-yarn-cache
