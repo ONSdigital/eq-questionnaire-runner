@@ -16,7 +16,6 @@ from app.authentication.no_token_exception import NoTokenException
 from app.globals import get_metadata
 from app.helpers.language_helper import handle_language
 from app.helpers.template_helpers import render_template
-from app.settings import EQ_SESSION_ID
 from app.submitter.previously_submitted_exception import PreviouslySubmittedException
 from app.submitter.submission_failed import SubmissionFailedException
 from app.views.handlers.confirm_email import (
