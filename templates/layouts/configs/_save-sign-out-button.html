@@ -9,7 +9,6 @@
         {% do pageConfig | setAttribute("signoutButton", {
             "text": button_text,
             "name": "btn-save-sign-out",
-            "classes": "js-btn-save",
             "url": "/sign-out",
             "attributes": {
                 "data-qa": "btn-save-sign-out",
@@ -17,14 +16,14 @@
                 "data-ga-category": "Navigation",
                 "data-ga-action": "Save and sign out click"
             },
-            "buttonStyle": "exit"
+            "iconType": "exit",
+            "iconPosition": "after"
         }) %}
 
     {% else %}
         {% do pageConfig | setAttribute("signoutButton", {
             "text": _("Exit"),
             "name": "btn-exit",
-            "classes": "btn--ghost",
             "url": sign_out_url,
             "attributes": {
                 "data-qa": "btn-exit",
@@ -32,7 +31,8 @@
                 "data-ga-category": "Navigation",
                 "data-ga-action": "Exit click"
             },
-            "buttonStyle": "exit"
+            "iconType": "exit",
+            "iconPosition": 'after'
         }) %}
 
     {% endif %}
