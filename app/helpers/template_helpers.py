@@ -60,6 +60,7 @@ class ContextHelper:
                 lazy_gettext("Contact us"),
                 f"{self._survey_config.base_url}/contact-us/",
             ).__dict__,
+            "thank_you_url": url_for("post_submission.get_thank_you"),
             "cookie_settings_url": self._cookie_settings_url,
             "page_header": self.page_header_context,
             "footer": self.footer_context,
