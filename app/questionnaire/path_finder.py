@@ -34,7 +34,7 @@ class PathFinder:
         Visits all the blocks in a section and returns a path given a list of answers.
         """
         blocks: List[Mapping] = []
-        routing_path_block_ids: List = []
+        routing_path_block_ids: List[str] = []
         current_location = Location(section_id=section_id, list_item_id=list_item_id)
         section = self.schema.get_section(section_id)
         list_name = self.schema.get_repeating_list_for_section(
@@ -42,18 +42,18 @@ class PathFinder:
         )
 
         if section:
+            when_rule_evaluator = WhenRuleEvaluator(
+                self.schema,
+                self.answer_store,
+                self.list_store,
+                self.metadata,
+                self.response_metadata,
+                location=current_location,
+                routing_path_block_ids=routing_path_block_ids,
+            )
             for group in section["groups"]:
                 if "skip_conditions" in group:
                     if isinstance(group.get("skip_conditions"), dict):
-                        when_rule_evaluator = WhenRuleEvaluator(
-                            self.schema,
-                            self.answer_store,
-                            self.list_store,
-                            self.metadata,
-                            self.response_metadata,
-                            location=current_location,
-                            routing_path_block_ids=routing_path_block_ids,
-                        )
                         when_rule = group.get("skip_conditions").get("when")
                         if when_rule_evaluator.evaluate(when_rule):
                             continue
@@ -105,7 +105,7 @@ class PathFinder:
                     routing_path_block_ids=routing_path_block_ids,
                 )
                 is_skipping = when_rule_evaluator.evaluate(
-                    skip_conditions["when"]
+                    block["skip_conditions"].get("when")
                 )
             else:
                 is_skipping = block.get("skip_conditions") and evaluate_skip_conditions(
