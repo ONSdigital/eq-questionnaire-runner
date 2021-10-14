@@ -55,7 +55,7 @@ class PathFinder:
                 if "skip_conditions" in group:
                     skip_conditions = group.get("skip_conditions")
                     if isinstance(skip_conditions, dict):
-                        when_rule = skip_conditions.get("when")
+                        when_rule = group["skip_conditions"].get("when")
                         if when_rule_evaluator.evaluate(when_rule):
                             continue
 
