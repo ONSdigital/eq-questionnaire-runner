@@ -13,6 +13,10 @@ from app.views.handlers.view_submitted_response import (
 
 class ViewSubmittedResponsePDF(ViewSubmittedResponse):
     mimetype = "application/pdf"
+    wkhtmltopdf_options = {
+        "quiet": "",
+        "dpi": 365,
+    }
 
     def __init__(
         self,
@@ -35,10 +39,7 @@ class ViewSubmittedResponsePDF(ViewSubmittedResponse):
             input=self.get_rendered_html(),
             output_path=None,
             css=f'{current_app.config["PRINT_STYLE_SHEET_FILE_PATH"]}/print.css',
-            options={
-                "quiet": "",
-                "dpi": 365,
-            },
+            options=self.wkhtmltopdf_options,
         )
 
         return io.BytesIO(content_as_bytes)
