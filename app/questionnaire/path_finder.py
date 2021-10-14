@@ -104,9 +104,8 @@ class PathFinder:
                     location=current_location,
                     routing_path_block_ids=routing_path_block_ids,
                 )
-                when_rule = block["skip_conditions"].get("when")
-                is_skipping = block["skip_conditions"] and when_rule_evaluator.evaluate(
-                    when_rule
+                is_skipping = when_rule_evaluator.evaluate(
+                    skip_conditions["when"]
                 )
             else:
                 is_skipping = block.get("skip_conditions") and evaluate_skip_conditions(
