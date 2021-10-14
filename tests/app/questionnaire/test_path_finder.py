@@ -389,7 +389,7 @@ class TestPathFinder(AppContextTestCase):
 
         # Then
         expected_routing_path = RoutingPath(
-            ["do-you-want-to-skip", "a-non-skipped-block"],
+            ["do-you-want-to-skip"],
             section_id="default-section",
         )
 
