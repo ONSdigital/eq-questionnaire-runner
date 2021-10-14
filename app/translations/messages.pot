@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2021-10-13 16:14+0100\n"
+"POT-Creation-Date: 2021-10-14 10:10+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -209,11 +209,11 @@ msgstr ""
 msgid "Contact us"
 msgstr ""
 
-#: app/helpers/template_helpers.py:103
+#: app/helpers/template_helpers.py:104
 msgid "The following links open in a new tab"
 msgstr ""
 
-#: app/helpers/template_helpers.py:133
+#: app/helpers/template_helpers.py:134
 msgid ""
 "Make sure you <a href='{sign_out_url}'>leave this page</a> or close your "
 "browser if using a shared device"
@@ -237,55 +237,55 @@ msgid_plural "{number_of_days} days"
 msgstr[0] ""
 msgstr[1] ""
 
-#: app/routes/errors.py:111
+#: app/routes/errors.py:119
 msgid "You have reached the maximum number of individual access codes"
 msgstr ""
 
-#: app/routes/errors.py:114
+#: app/routes/errors.py:122
 msgid ""
 "If you need more individual access codes, please <a "
 "href='{contact_us_url}'>contact us</a>."
 msgstr ""
 
-#: app/routes/errors.py:130
+#: app/routes/errors.py:138
 msgid "You have reached the maximum number of times for submitting feedback"
 msgstr ""
 
-#: app/routes/errors.py:133
+#: app/routes/errors.py:141
 msgid ""
 "If you need to give more feedback, please <a "
 "href='{contact_us_url}'>contact us</a>."
 msgstr ""
 
-#: app/routes/errors.py:165
+#: app/routes/errors.py:173
 msgid "Sorry, there was a problem sending the access code"
 msgstr ""
 
-#: app/routes/errors.py:171
+#: app/routes/errors.py:179
 msgid "You can try to <a href='{retry_url}'>request a new access code again</a>."
 msgstr ""
 
-#: app/routes/errors.py:174 app/routes/errors.py:197 app/routes/errors.py:219
+#: app/routes/errors.py:182 app/routes/errors.py:205 app/routes/errors.py:227
 msgid ""
 "If this problem keeps happening, please <a "
 "href='{contact_us_url}'>contact us</a> for help."
 msgstr ""
 
-#: app/routes/errors.py:193
+#: app/routes/errors.py:201
 msgid "Sorry, there was a problem sending the confirmation email"
 msgstr ""
 
-#: app/routes/errors.py:194
+#: app/routes/errors.py:202
 msgid "You can try to <a href='{retry_url}'>send the email again</a>."
 msgstr ""
 
-#: app/routes/errors.py:215 templates/errors/403.html:3
+#: app/routes/errors.py:223 templates/errors/403.html:3
 #: templates/errors/403.html:6 templates/errors/submission-failed.html:5
 #: templates/errors/submission-failed.html:8
 msgid "Sorry, there is a problem"
 msgstr ""
 
-#: app/routes/errors.py:216
+#: app/routes/errors.py:224
 msgid "You can try to <a href='{retry_url}'>submit your feedback again</a>."
 msgstr ""
 
@@ -987,7 +987,7 @@ msgstr ""
 msgid "followed a link to a survey that has already been submitted"
 msgstr ""
 
-#: templates/errors/401.html:14
+#: templates/errors/401.html:13
 msgid "You will need to <a href='{url}'>sign back in</a> to access your account"
 msgstr ""
 
@@ -1041,6 +1041,22 @@ msgstr ""
 msgid ""
 "<a href='{url}'>Contact us</a> if you need to speak to someone about your"
 " survey."
+msgstr ""
+
+#: templates/errors/previously-submitted.html:3
+msgid "Submission Complete"
+msgstr ""
+
+#: templates/errors/previously-submitted.html:6
+msgid "This page is no longer available"
+msgstr ""
+
+#: templates/errors/previously-submitted.html:7
+msgid "Your survey has been submitted"
+msgstr ""
+
+#: templates/errors/previously-submitted.html:8
+msgid "<a href='{url}'>Return to previous page</a>"
 msgstr ""
 
 #: templates/errors/submission-failed.html:9
