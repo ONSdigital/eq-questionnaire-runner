@@ -53,13 +53,14 @@ class PathFinder:
             )
             for group in section["groups"]:
                 if "skip_conditions" in group:
-                    if isinstance(group.get("skip_conditions"), dict):
-                        when_rule = group.get("skip_conditions").get("when")
+                    skip_conditions = group.get("skip_conditions")
+                    if isinstance(skip_conditions, dict):
+                        when_rule = skip_conditions.get("when")
                         if when_rule_evaluator.evaluate(when_rule):
                             continue
 
                     elif evaluate_skip_conditions(
-                        group["skip_conditions"],
+                        skip_conditions,
                         self.schema,
                         self.metadata,
                         self.answer_store,
@@ -94,7 +95,8 @@ class PathFinder:
 
         while block_index < len(blocks):
             block = blocks[block_index]
-            if isinstance(block.get("skip_conditions"), dict):
+            skip_conditions = block.get("skip_conditions")
+            if isinstance(skip_conditions, dict):
                 when_rule_evaluator = WhenRuleEvaluator(
                     self.schema,
                     self.answer_store,
@@ -104,12 +106,10 @@ class PathFinder:
                     location=current_location,
                     routing_path_block_ids=routing_path_block_ids,
                 )
-                is_skipping = when_rule_evaluator.evaluate(
-                    block["skip_conditions"].get("when")
-                )
+                is_skipping = when_rule_evaluator.evaluate(skip_conditions.get("when"))
             else:
-                is_skipping = block.get("skip_conditions") and evaluate_skip_conditions(
-                    block["skip_conditions"],
+                is_skipping = skip_conditions and evaluate_skip_conditions(
+                    skip_conditions,
                     self.schema,
                     self.metadata,
                     self.answer_store,
