@@ -45,10 +45,9 @@ def build_thank_you_context(
 
 
 def build_view_submitted_response_context(schema, submitted_at):
-    enabled = schema.is_view_submitted_response_enabled
-    view_submitted_response = {"enabled": enabled}
+    view_submitted_response = {"enabled": schema.is_view_submitted_response_enabled}
 
-    if enabled:
+    if schema.is_view_submitted_response_enabled:
         expired = has_view_submitted_response_expired(submitted_at)
         view_submitted_response["expired"] = expired
         if not expired:
