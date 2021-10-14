@@ -1,13 +1,11 @@
 from datetime import datetime, timedelta, timezone
-from unittest.mock import Mock
 
 import pytest
 
 from app.data_models import QuestionnaireStore
-from app.questionnaire.questionnaire_schema import QuestionnaireSchema
 from app.views.handlers.view_submitted_response import ViewSubmittedResponseExpired
 from app.views.handlers.view_submitted_response_pdf import ViewSubmittedResponsePDF
-from tests.app.views.handlers.conftest import set_storage_data
+from .conftest import set_storage_data
 
 
 def test_pdf_not_downloadable(app, storage, schema, language):
