@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2021-10-12 16:36+0100\n"
+"POT-Creation-Date: 2021-10-14 12:33+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -209,83 +209,83 @@ msgstr ""
 msgid "Contact us"
 msgstr ""
 
-#: app/helpers/template_helpers.py:103
+#: app/helpers/template_helpers.py:104
 msgid "The following links open in a new tab"
 msgstr ""
 
-#: app/helpers/template_helpers.py:133
+#: app/helpers/template_helpers.py:134
 msgid ""
 "Make sure you <a href='{sign_out_url}'>leave this page</a> or close your "
 "browser if using a shared device"
 msgstr ""
 
-#: app/questionnaire/placeholder_transforms.py:126
+#: app/questionnaire/placeholder_transforms.py:136
 msgid "{number_of_years} year"
 msgid_plural "{number_of_years} years"
 msgstr[0] ""
 msgstr[1] ""
 
-#: app/questionnaire/placeholder_transforms.py:132
+#: app/questionnaire/placeholder_transforms.py:142
 msgid "{number_of_months} month"
 msgid_plural "{number_of_months} months"
 msgstr[0] ""
 msgstr[1] ""
 
-#: app/questionnaire/placeholder_transforms.py:137
+#: app/questionnaire/placeholder_transforms.py:147
 msgid "{number_of_days} day"
 msgid_plural "{number_of_days} days"
 msgstr[0] ""
 msgstr[1] ""
 
-#: app/routes/errors.py:113
+#: app/routes/errors.py:120
 msgid "You have reached the maximum number of individual access codes"
 msgstr ""
 
-#: app/routes/errors.py:116
+#: app/routes/errors.py:123
 msgid ""
 "If you need more individual access codes, please <a "
 "href='{contact_us_url}'>contact us</a>."
 msgstr ""
 
-#: app/routes/errors.py:132
+#: app/routes/errors.py:139
 msgid "You have reached the maximum number of times for submitting feedback"
 msgstr ""
 
-#: app/routes/errors.py:135
+#: app/routes/errors.py:142
 msgid ""
 "If you need to give more feedback, please <a "
 "href='{contact_us_url}'>contact us</a>."
 msgstr ""
 
-#: app/routes/errors.py:167
+#: app/routes/errors.py:174
 msgid "Sorry, there was a problem sending the access code"
 msgstr ""
 
-#: app/routes/errors.py:173
+#: app/routes/errors.py:180
 msgid "You can try to <a href='{retry_url}'>request a new access code again</a>."
 msgstr ""
 
-#: app/routes/errors.py:176 app/routes/errors.py:199 app/routes/errors.py:221
+#: app/routes/errors.py:183 app/routes/errors.py:206 app/routes/errors.py:228
 msgid ""
 "If this problem keeps happening, please <a "
 "href='{contact_us_url}'>contact us</a> for help."
 msgstr ""
 
-#: app/routes/errors.py:195
+#: app/routes/errors.py:202
 msgid "Sorry, there was a problem sending the confirmation email"
 msgstr ""
 
-#: app/routes/errors.py:196
+#: app/routes/errors.py:203
 msgid "You can try to <a href='{retry_url}'>send the email again</a>."
 msgstr ""
 
-#: app/routes/errors.py:217 templates/errors/403.html:3
+#: app/routes/errors.py:224 templates/errors/403.html:3
 #: templates/errors/403.html:6 templates/errors/submission-failed.html:5
 #: templates/errors/submission-failed.html:8
 msgid "Sorry, there is a problem"
 msgstr ""
 
-#: app/routes/errors.py:218
+#: app/routes/errors.py:225
 msgid "You can try to <a href='{retry_url}'>submit your feedback again</a>."
 msgstr ""
 
@@ -420,11 +420,11 @@ msgstr ""
 msgid "Choose another section to complete"
 msgstr ""
 
-#: app/views/contexts/hub_context.py:61 templates/confirm-email.html:26
+#: app/views/contexts/hub_context.py:61 templates/confirm-email.html:25
 #: templates/individual_response/confirmation-post.html:21
 #: templates/individual_response/confirmation-text-message.html:31
 #: templates/individual_response/question.html:5 templates/interstitial.html:8
-#: templates/sectionsummary.html:11 templates/sectionsummary.html:47
+#: templates/sectionsummary.html:10 templates/sectionsummary.html:46
 msgid "Continue"
 msgstr ""
 
@@ -444,29 +444,29 @@ msgstr ""
 msgid "Submission reference:"
 msgstr ""
 
-#: app/views/contexts/submit_questionnaire_context.py:14
+#: app/views/contexts/submit_questionnaire_context.py:13
 msgid "Check your answers and submit"
 msgstr ""
 
-#: app/views/contexts/submit_questionnaire_context.py:17
+#: app/views/contexts/submit_questionnaire_context.py:16
 msgid "Submit answers"
 msgstr ""
 
-#: app/views/contexts/submit_questionnaire_context.py:20
+#: app/views/contexts/submit_questionnaire_context.py:19
 msgid "Please submit this survey to complete it"
 msgstr ""
 
-#: app/views/contexts/thank_you_context.py:25
+#: app/views/contexts/thank_you_context.py:24
 msgid "Your answers have been submitted."
 msgstr ""
 
-#: app/views/contexts/thank_you_context.py:27
+#: app/views/contexts/thank_you_context.py:26
 msgid ""
 "Your answers have been submitted for <span>{company_name}</span> "
 "({trading_name})"
 msgstr ""
 
-#: app/views/contexts/thank_you_context.py:31
+#: app/views/contexts/thank_you_context.py:30
 msgid "Your answers have been submitted for <span>{company_name}</span>"
 msgstr ""
 
@@ -736,7 +736,7 @@ msgstr ""
 msgid "Thank you for completing the census"
 msgstr ""
 
-#: app/views/handlers/view_submitted_response.py:52
+#: app/views/handlers/view_submitted_response.py:50
 msgid "View Submitted Response"
 msgstr ""
 
@@ -801,7 +801,7 @@ msgid ""
 "census, enter your email address"
 msgstr ""
 
-#: templates/confirm-email.html:13 templates/partials/answers/address.html:55
+#: templates/confirm-email.html:12 templates/partials/answers/address.html:55
 #: templates/question.html:10
 #, python-format
 msgid "There is a problem with your answer"
@@ -856,18 +856,18 @@ msgstr ""
 msgid "Done"
 msgstr ""
 
-#: templates/feedback.html:15 templates/view-submitted-response.html:16
+#: templates/feedback.html:14 templates/view-submitted-response.html:16
 msgid "Back"
 msgstr ""
 
-#: templates/feedback.html:28
+#: templates/feedback.html:27
 #, python-format
 msgid "There is a problem with your feedback"
 msgid_plural "There are %(num)s problems with your feedback"
 msgstr[0] ""
 msgstr[1] ""
 
-#: templates/feedback.html:39
+#: templates/feedback.html:38
 msgid "Send feedback"
 msgstr ""
 
@@ -1033,6 +1033,22 @@ msgstr ""
 msgid ""
 "To access this page you need to <a href='{url}'>enter your 16-character "
 "access code</a>."
+msgstr ""
+
+#: templates/errors/previously-submitted.html:3
+msgid "Submission Complete"
+msgstr ""
+
+#: templates/errors/previously-submitted.html:6
+msgid "This page is no longer available"
+msgstr ""
+
+#: templates/errors/previously-submitted.html:7
+msgid "Your survey has been submitted"
+msgstr ""
+
+#: templates/errors/previously-submitted.html:8
+msgid "<a href='{url}'>Return to previous page</a>"
 msgstr ""
 
 #: templates/errors/session-expired.html:3
