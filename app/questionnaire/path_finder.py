@@ -55,8 +55,9 @@ class PathFinder:
                 if "skip_conditions" in group:
                     skip_conditions = group.get("skip_conditions")
                     if isinstance(skip_conditions, dict):
-                        when_rule = group["skip_conditions"].get("when")
-                        if when_rule_evaluator.evaluate(when_rule):
+                        if should_goto_new(
+                            group["skip_conditions"], when_rule_evaluator
+                        ):
                             continue
 
                     elif evaluate_skip_conditions(
@@ -106,7 +107,7 @@ class PathFinder:
                     location=current_location,
                     routing_path_block_ids=routing_path_block_ids,
                 )
-                is_skipping = when_rule_evaluator.evaluate(skip_conditions.get("when"))
+                is_skipping = should_goto_new(skip_conditions, when_rule_evaluator)
             else:
                 is_skipping = skip_conditions and evaluate_skip_conditions(
                     skip_conditions,
