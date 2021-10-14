@@ -16,6 +16,7 @@ from app.globals import get_metadata
 from app.helpers.language_helper import handle_language
 from app.helpers.template_helpers import render_template
 from app.settings import EQ_SESSION_ID
+from app.submitter.previously_submitted_exception import PreviouslySubmittedException
 from app.submitter.submission_failed import SubmissionFailedException
 from app.views.handlers.confirm_email import (
     ConfirmationEmailFulfilmentRequestPublicationFailed,
@@ -72,6 +73,12 @@ def unauthorized(exception=None):
     if EQ_SESSION_ID not in cookie_session:
         return _render_error_page(401, "no-cookie")
     return _render_error_page(401, "session-expired")
+
+
+@errors_blueprint.app_errorhandler(PreviouslySubmittedException)
+def previously_submitted(exception=None):
+    log_exception(exception, 401)
+    return _render_error_page(401, "previously-submitted")
 
 
 @errors_blueprint.app_errorhandler(InvalidTokenException)
