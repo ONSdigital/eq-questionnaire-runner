@@ -58,10 +58,7 @@
                                                 "value": "No"
                                             }
                                         ],
-                                        "type": "Radio",
-                                        "validation": {
-                                            "messages": {}
-                                        }
+                                        "type": "Radio"
                                     }
                                 ]
                             }
@@ -92,23 +89,6 @@
                                         "Yes"
                                     ]
                                 }
-                            }
-                        },
-                        {
-                            "type": "Question",
-                            "id": "a-non-skipped-block",
-                            "question": {
-                                "id": "will-not-be-skipped-question",
-                                "title": "Always ask this question",
-                                "type": "General",
-                                "answers": [
-                                    {
-                                        "id": "will-not-be-skipped-answer",
-                                        "label": "never skipped",
-                                        "mandatory": true,
-                                        "type": "TextArea"
-                                    }
-                                ]
                             }
                         }
                     ]
