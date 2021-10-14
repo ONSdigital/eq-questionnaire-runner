@@ -46,7 +46,7 @@
                                 "answers": [
                                     {
                                         "id": "do-you-want-to-skip-answer",
-                                        "label": "Do you want to skip?",
+                                        "label": "Select yes or no",
                                         "mandatory": true,
                                         "options": [
                                             {
@@ -85,12 +85,12 @@
                             "id": "should-skip",
                             "question": {
                                 "id": "should-skip-question",
-                                "title": "Do you want to skip?",
+                                "title": "Why didn’t you skip the group?",
                                 "type": "General",
                                 "answers": [
                                     {
                                         "id": "should-skip-answer",
-                                        "label": "Why didn’t you skip the group?",
+                                        "label": "Enter your answer",
                                         "mandatory": true,
                                         "type": "TextArea"
                                     }
