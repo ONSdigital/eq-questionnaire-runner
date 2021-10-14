@@ -70,7 +70,7 @@ def test_get_completed_row_for_section(
                 "rowTitle": "Breakfast",
                 "rowTitleAttributes": {"data-qa": "hub-row-section-1-title"},
                 "attributes": {"data-qa": "hub-row-section-1-state"},
-                "icon": "check",
+                "iconType": "check",
                 "valueList": [{"text": "Completed"}],
                 "actions": [
                     {
