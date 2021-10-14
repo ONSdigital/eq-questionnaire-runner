@@ -154,7 +154,9 @@ class TestFeedbackUpload(AppContextTestCase):  # pylint: disable=too-many-public
         assert actual_payload == expected_payload
 
     def test_feedback_metadata(self):
-        feedback_metadata = FeedbackMetadata(self.feedback_count, self.form_type, "cy", "GB-ENG", self.tx_id)
+        feedback_metadata = FeedbackMetadata(
+            self.feedback_count, self.form_type, "cy", "GB-ENG", self.tx_id
+        )
 
         expected_metadata = {
             "feedback_count": self.feedback_count,
