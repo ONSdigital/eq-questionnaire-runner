@@ -10,7 +10,11 @@ from app.data_models.session_data import SessionData
 from app.data_models.session_store import SessionStore
 from app.forms.questionnaire_form import generate_form
 from app.questionnaire.questionnaire_schema import QuestionnaireSchema
+from app.submitter.converter import build_collection, build_metadata
 from app.views.contexts.feedback_form_context import build_feedback_context
+from app.views.handlers.submission import SubmissionHandler
+
+DEFAULT_LANGUAGE_CODE = "en"
 
 
 class FeedbackNotEnabled(Exception):
@@ -80,6 +84,10 @@ class Feedback:
         )
 
         feedback_message = FeedbackPayload(
+            self._questionnaire_store.metadata,
+            self._session_store,
+            self._schema,
+            session_data.feedback_count,
             self.form.data.get("feedback-text"),
             self.form.data.get("feedback-type"),
             self.form.data.get("feedback-type-question-category"),
@@ -226,17 +234,48 @@ class FeedbackMetadata:
 class FeedbackPayload:
     def __init__(
         self,
+        metadata,
+        session_store,
+        schema,
+        feedback_count,
         feedback_text,
         feedback_type,
         feedback_type_question_category=None,
     ):
+        self.metadata = metadata
+        self.session_store = session_store
+        self.schema = schema
+        self.feedback_count = feedback_count
         self.feedback_text = feedback_text
         self.feedback_type = feedback_type
         self.feedback_type_question_category = feedback_type_question_category
 
     def __call__(self) -> Mapping:
-        payload = vars(self)
+        payload = {
+            "origin": "uk.gov.ons.edc.eq",
+            "submitted_at": SubmissionHandler.submitted_at,
+            "collection": build_collection(self.metadata),
+            "metadata": build_metadata(self.metadata),
+            "survey_id": self.schema.json["survey_id"],
+            "tx_id": self.metadata["tx_id"],
+            "type": "uk.gov.ons.edc.eq:feedback",
+            "launch_language_code": self.metadata.get(
+                "language_code", DEFAULT_LANGUAGE_CODE
+            ),
+            "version": "0.0.3",
+        }
+
+        if self.metadata.get("form_type"):
+            payload["form_type"] = self.metadata["form_type"]
+
+        payload["data"] = {
+            "feedback_text": self.feedback_text,
+            "feedback_type": self.feedback_type,
+            "feedback_count": self.feedback_count,
+            "feedback_type_question_category": self.feedback_type_question_category,
+        }
+
         if not self.feedback_type_question_category:
-            del payload["feedback_type_question_category"]
+            del payload["data"]["feedback_type_question_category"]
 
         return payload

@@ -73,8 +73,8 @@ def convert_answers(
         "survey_id": survey_id,
         "flushed": flushed,
         "submitted_at": submitted_at.isoformat(),
-        "collection": _build_collection(metadata),
-        "metadata": _build_metadata(metadata),
+        "collection": build_collection(metadata),
+        "metadata": build_metadata(metadata),
         "launch_language_code": metadata.get("language_code", DEFAULT_LANGUAGE_CODE),
     }
 
@@ -109,7 +109,7 @@ def convert_answers(
     return payload
 
 
-def _build_collection(metadata):
+def build_collection(metadata):
     return {
         "exercise_sid": metadata["collection_exercise_sid"],
         "schema_name": metadata["schema_name"],
@@ -117,7 +117,7 @@ def _build_collection(metadata):
     }
 
 
-def _build_metadata(metadata):
+def build_metadata(metadata):
     downstream_metadata = {"user_id": metadata["user_id"], "ru_ref": metadata["ru_ref"]}
 
     if metadata.get("ref_p_start_date"):
