@@ -15,6 +15,10 @@ class ViewSubmittedResponsePDF(ViewSubmittedResponse):
     mimetype = "application/pdf"
     wkhtmltopdf_options = {
         "quiet": "",
+        "margin-top": "0.30in",
+        "margin-right": "0.40in",
+        "margin-bottom": "0.30in",
+        "margin-left": "0.40in",
         "dpi": 365,
     }
 
