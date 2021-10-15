@@ -305,7 +305,7 @@ class FeedbackPayload:
             "launch_language_code": self.metadata.get(
                 "language_code", DEFAULT_LANGUAGE_CODE
             ),
-            "version": "0.0.3",
+            "version": "0.0.1",
         }
 
         if self.metadata.get("form_type"):
