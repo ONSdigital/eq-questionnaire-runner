@@ -20,7 +20,7 @@ describe("SaveSignOut", () => {
 
     browser.back();
 
-    expect($("body").getHTML()).to.contain("Your session has timed out due to inactivity");
+    expect($("body").getHTML()).to.contain("Sorry, you need to sign in again");
   });
 
   it("Given I have started a questionnaire, when I return to the questionnaire, then I am returned to the page I was on and can then complete the survey", () => {
