@@ -232,6 +232,49 @@ class FeedbackMetadata:
 
 
 class FeedbackPayload:
+    """
+    Create the feedback payload object for down stream processing in the following format:
+    ```
+    {
+        "collection": {
+            "exercise_sid": "eedbdf46-adac-49f7-b4c3-2251807381c3",
+            "schema_name": "carbon_0007",
+            "period": "3003"
+        },
+        "data": {
+                "feedback_text": "Page design feedback",
+                "feedback_type": "Page design and structure",
+                "feedback_count": 7,
+        },
+        "metadata": {
+            "ref_period_end_date": "2021-03-29",
+            "ref_period_start_date": "2021-03-01",
+            "ru_ref": "11110000022H",
+            "user_id": "d98d78eb-d23a-494d-b67c-e770399de383"
+        },
+        "origin": "uk.gov.ons.edc.eq",
+        "submitted_at": "2021-10-12T10:41:23+00:00",
+        "survey_id": "001",
+        "form_type: "0007",
+        "tx_id": "5d4e1a37-ed21-440a-8c4d-3054a124a104",
+        "type": "uk.gov.ons.edc.eq:feedback",
+        "launch_language_code: "en",
+        "submission_language_code: "en",
+        "version": "0.0.1"
+    }
+    ```
+    :param metadata: Questionnaire metadata
+    :param session_store: Session store object
+    :param schema: QuestionnaireSchema class with populated schema json
+    :param feedback_count: Number of feedback submissions attempted by the user
+    :param feedback_text: Feedback text input by the user
+    :param feedback_type: Type of feedback selected by the user
+    :param feedback_type_question_category: Feedback question category selected by the user
+
+
+    :return payload: Feedback payload object
+    """
+
     def __init__(
         self,
         metadata: Mapping[str, Union[str, int, list]],
