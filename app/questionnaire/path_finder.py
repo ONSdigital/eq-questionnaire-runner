@@ -185,7 +185,7 @@ class PathFinder:
         )
 
         if isinstance(skip_conditions, dict):
-            return should_goto_new(skip_conditions, when_rule_evaluator)
+            return when_rule_evaluator.evaluate(skip_conditions["when"])
 
         for when in skip_conditions:
             condition = evaluate_when_rules(
