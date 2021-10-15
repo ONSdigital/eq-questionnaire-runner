@@ -45,7 +45,7 @@ class PathFinder:
             for group in section["groups"]:
                 if "skip_conditions" in group:
                     skip_conditions = group.get("skip_conditions")
-                    if self._evaluate_skip_conditions(
+                    if self.evaluate_skip_conditions(
                         current_location, routing_path_block_ids, skip_conditions
                     ):
                         continue
@@ -77,7 +77,7 @@ class PathFinder:
         while block_index < len(blocks):
             block = blocks[block_index]
             skip_conditions = block.get("skip_conditions")
-            is_skipping = self._evaluate_skip_conditions(
+            is_skipping = self.evaluate_skip_conditions(
                 current_location, routing_path_block_ids, skip_conditions
             )
 
