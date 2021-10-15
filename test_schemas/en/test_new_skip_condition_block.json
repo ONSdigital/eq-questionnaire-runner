@@ -33,8 +33,8 @@
             "id": "default-section",
             "groups": [
                 {
-                    "id": "do-you-want-to-skip-group",
-                    "title": "Do you want to skip the next block?",
+                    "id": "default-group",
+                    "title": "Group 1",
                     "blocks": [
                         {
                             "type": "Question",
@@ -43,7 +43,7 @@
                                 "id": "do-you-want-to-skip-question",
                                 "title": "Do you want to skip the next question?",
                                 "type": "General",
-                                "description": ["Select \"Yes\" to skip the next question and go straight to the summary"],
+                                "description": ["Select “Yes” to skip the next question and go straight to the summary"],
                                 "answers": [
                                     {
                                         "id": "do-you-want-to-skip-answer",
