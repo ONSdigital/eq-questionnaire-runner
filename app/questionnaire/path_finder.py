@@ -166,7 +166,7 @@ class PathFinder:
 
                 return next_block_index
 
-    def _evaluate_skip_conditions(
+    def evaluate_skip_conditions(
         self, this_location, routing_path_block_ids, skip_conditions
     ):
         if not skip_conditions:

@@ -452,7 +452,7 @@ class TestRules(AppContextTestCase):  # pylint: disable=too-many-public-methods
         routing_path_block_ids = []
 
         # When
-        condition = path_finder._evaluate_skip_conditions(
+        condition = path_finder.evaluate_skip_conditions(
             current_location, routing_path_block_ids, skip_conditions
         )
 
@@ -484,7 +484,7 @@ class TestRules(AppContextTestCase):  # pylint: disable=too-many-public-methods
 
         # When
         self.assertTrue(
-            path_finder._evaluate_skip_conditions(
+            path_finder.evaluate_skip_conditions(
                 current_location, routing_path_block_ids, skip_conditions
             )
         )
@@ -513,7 +513,7 @@ class TestRules(AppContextTestCase):  # pylint: disable=too-many-public-methods
         routing_path_block_ids = []
 
         # When
-        condition = path_finder._evaluate_skip_conditions(
+        condition = path_finder.evaluate_skip_conditions(
             current_location, routing_path_block_ids, skip_conditions
         )
 
@@ -544,7 +544,7 @@ class TestRules(AppContextTestCase):  # pylint: disable=too-many-public-methods
         routing_path_block_ids = []
 
         # When
-        condition = path_finder._evaluate_skip_conditions(
+        condition = path_finder.evaluate_skip_conditions(
             current_location, routing_path_block_ids, skip_conditions
         )
 
@@ -571,7 +571,7 @@ class TestRules(AppContextTestCase):  # pylint: disable=too-many-public-methods
         routing_path_block_ids = []
 
         # When
-        condition = path_finder._evaluate_skip_conditions(
+        condition = path_finder.evaluate_skip_conditions(
             current_location, routing_path_block_ids, skip_conditions
         )
 
