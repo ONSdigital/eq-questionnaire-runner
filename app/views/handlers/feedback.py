@@ -1,6 +1,6 @@
 from datetime import datetime, timezone
 from functools import cached_property
-from typing import Mapping
+from typing import Mapping, Union
 
 from flask import current_app
 from flask_babel import gettext, lazy_gettext
@@ -234,13 +234,13 @@ class FeedbackMetadata:
 class FeedbackPayload:
     def __init__(
         self,
-        metadata,
-        session_store,
-        schema,
-        feedback_count,
-        feedback_text,
-        feedback_type,
-        feedback_type_question_category=None,
+        metadata: Mapping[str, Union[str, int, list]],
+        session_store: SessionStore,
+        schema: QuestionnaireSchema,
+        feedback_count: int,
+        feedback_text: str,
+        feedback_type: str,
+        feedback_type_question_category: str = None,
     ):
         self.metadata = metadata
         self.session_store = session_store
@@ -272,10 +272,11 @@ class FeedbackPayload:
             "feedback_text": self.feedback_text,
             "feedback_type": self.feedback_type,
             "feedback_count": self.feedback_count,
-            "feedback_type_question_category": self.feedback_type_question_category,
         }
 
-        if not self.feedback_type_question_category:
-            del payload["data"]["feedback_type_question_category"]
+        if self.feedback_type_question_category:
+            payload["data"][
+                "feedback_type_question_category"
+            ] = self.feedback_type_question_category
 
         return payload
