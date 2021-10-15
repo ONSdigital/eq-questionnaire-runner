@@ -213,46 +213,6 @@ def _get_comparison_id_value(
     )
 
 
-def evaluate_skip_conditions(
-    skip_conditions,
-    schema,
-    metadata,
-    answer_store,
-    list_store,
-    current_location,
-    routing_path_block_ids=None,
-):
-    """
-    Determine whether a skip condition will be satisfied based on a given answer
-    :param skip_conditions: skip_conditions rule to evaluate
-    :param schema: survey schema
-    :param metadata: metadata for evaluating rules with metadata conditions
-    :param answer_store: store of answers to evaluate
-    :param list_store: store of lists to evaluate
-    :param current_location: the location to use when evaluating when rules
-    :param routing_path_block_ids: the routing path block ids used to evaluate if answer is on the path
-    :return: True if the when condition has been met otherwise False
-    """
-    no_skip_condition = skip_conditions is None or len(skip_conditions) == 0
-
-    if no_skip_condition:
-        return False
-
-    for when in skip_conditions:
-        condition = evaluate_when_rules(
-            when["when"],
-            schema,
-            metadata,
-            answer_store,
-            list_store,
-            current_location,
-            routing_path_block_ids=routing_path_block_ids,
-        )
-        if condition is True:
-            return True
-    return False
-
-
 def _get_when_rule_value(
     when_rule,
     answer_store,
