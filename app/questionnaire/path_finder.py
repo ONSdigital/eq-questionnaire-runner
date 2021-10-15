@@ -172,17 +172,17 @@ class PathFinder:
         if not skip_conditions:
             return False
 
-        when_rule_evaluator = WhenRuleEvaluator(
-            self.schema,
-            self.answer_store,
-            self.list_store,
-            self.metadata,
-            self.response_metadata,
-            location=this_location,
-            routing_path_block_ids=routing_path_block_ids,
-        )
-
         if isinstance(skip_conditions, dict):
+            when_rule_evaluator = WhenRuleEvaluator(
+                self.schema,
+                self.answer_store,
+                self.list_store,
+                self.metadata,
+                self.response_metadata,
+                location=this_location,
+                routing_path_block_ids=routing_path_block_ids,
+            )
+
             return when_rule_evaluator.evaluate(skip_conditions["when"])
 
         for when in skip_conditions:
