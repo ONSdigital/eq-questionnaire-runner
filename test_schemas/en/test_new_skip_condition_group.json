@@ -41,12 +41,13 @@
                             "id": "do-you-want-to-skip",
                             "question": {
                                 "id": "do-you-want-to-skip-question",
-                                "title": "Do you want to skip?",
+                                "title": "Do you want to skip the next question?",
                                 "type": "General",
+                                "description": ["Select \"Yes\" to skip the next question and go straight to the summary"],
                                 "answers": [
                                     {
                                         "id": "do-you-want-to-skip-answer",
-                                        "label": "Select yes or no",
+                                        "label": "Select an answer",
                                         "mandatory": true,
                                         "options": [
                                             {
