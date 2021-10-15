@@ -169,9 +169,7 @@ class PathFinder:
     def _evaluate_skip_conditions(
         self, this_location, routing_path_block_ids, skip_conditions
     ):
-        no_skip_condition = skip_conditions is None or len(skip_conditions) == 0
-
-        if no_skip_condition:
+        if not skip_conditions:
             return False
 
         when_rule_evaluator = WhenRuleEvaluator(
