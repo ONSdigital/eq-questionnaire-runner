@@ -24,21 +24,23 @@ class TestTimeout(IntegrationTestCase):
         time.sleep(5)
         self.get(self.last_url)
         self.assertStatusUnauthorised()
-        self.assertInBody("Your session has timed out due to inactivity")
+        self.assertInBody("Sorry, you need to sign in again")
 
     def test_alternate_401_page_is_displayed_when_no_cookie(self):
         self.get("/session")
         self.assertStatusUnauthorised()
-        self.assertInBody("Sorry there is a problem")
-        self.assertEqualPageTitle("Page is not available")
+        self.assertInBody("followed a link to a page you are not signed in to")
+        self.assertEqualPageTitle("Page is not available - ONS Business Surveys")
 
     def test_schema_defined_timeout_cant_be_higher_than_server(self):
         self.launchSurvey("test_timeout")
         time.sleep(4)
         self.get(self.last_url)
         self.assertStatusUnauthorised()
-        self.assertInBody("To help protect your information we have timed you out")
-        self.assertEqualPageTitle("Session timed out - Timeout test")
+        self.assertInBody(
+            "been inactive for 45 minutes and your session has timed out to protect your information"
+        )
+        self.assertEqualPageTitle("Page is not available - Timeout test")
 
     def test_submission_complete_timeout(self):
         self.launchSurvey("test_timeout")
@@ -47,5 +49,5 @@ class TestTimeout(IntegrationTestCase):
         time.sleep(4)
         self.get(self.last_url)
         self.assertStatusUnauthorised()
-        self.assertInBody("Your session has timed out due to inactivity")
-        self.assertEqualPageTitle("Session timed out - Timeout test")
+        self.assertInBody("Sorry, you need to sign in again")
+        self.assertEqualPageTitle("Page is not available - Timeout test")
