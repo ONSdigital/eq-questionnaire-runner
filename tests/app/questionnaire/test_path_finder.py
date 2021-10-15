@@ -351,10 +351,7 @@ class TestPathFinder(AppContextTestCase):
             section_id="default-section",
         )
 
-        with patch(
-            "app.questionnaire.path_finder.evaluate_skip_conditions", return_value=True
-        ):
-            self.assertEqual(routing_path, expected_routing_path)
+        self.assertEqual(routing_path, expected_routing_path)
 
     def test_new_routing_path_should_skip_block(self):
         # Given
@@ -393,10 +390,7 @@ class TestPathFinder(AppContextTestCase):
             section_id="default-section",
         )
 
-        with patch(
-            "app.questionnaire.path_finder.evaluate_skip_conditions", return_value=True
-        ):
-            self.assertEqual(routing_path, expected_routing_path)
+        self.assertEqual(routing_path, expected_routing_path)
 
     def test_routing_path_should_skip_group(self):
         # Given
@@ -435,10 +429,7 @@ class TestPathFinder(AppContextTestCase):
             section_id="default-section",
         )
 
-        with patch(
-            "app.questionnaire.path_finder.evaluate_skip_conditions", return_value=True
-        ):
-            self.assertEqual(routing_path, expected_routing_path)
+        self.assertEqual(routing_path, expected_routing_path)
 
     def test_new_routing_path_should_skip_group(self):
         # Given
@@ -477,10 +468,7 @@ class TestPathFinder(AppContextTestCase):
             section_id="default-section",
         )
 
-        with patch(
-            "app.questionnaire.path_finder.evaluate_skip_conditions", return_value=True
-        ):
-            self.assertEqual(routing_path, expected_routing_path)
+        self.assertEqual(routing_path, expected_routing_path)
 
     def test_routing_path_should_not_skip_group(self):
         # Given
@@ -519,10 +507,7 @@ class TestPathFinder(AppContextTestCase):
             section_id="default-section",
         )
 
-        with patch(
-            "app.questionnaire.path_finder.evaluate_skip_conditions", return_value=False
-        ):
-            self.assertEqual(routing_path, expected_routing_path)
+        self.assertEqual(routing_path, expected_routing_path)
 
     def test_get_routing_path_when_first_block_in_group_skipped(self):
         # Given
