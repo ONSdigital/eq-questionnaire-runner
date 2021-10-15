@@ -39,4 +39,4 @@ class TestNoQuestionnaireState(IntegrationTestCase):
 
             # Then
             self.assertStatusUnauthorised()
-            self.assertInBody("Your session has timed out due to inactivity")
+            self.assertInBody("Sorry, you need to sign in again")

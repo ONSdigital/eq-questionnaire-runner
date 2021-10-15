@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2021-10-12 13:32+0100\n"
+"POT-Creation-Date: 2021-10-14 10:10+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -203,7 +203,7 @@ msgstr[1] ""
 msgid "Not a valid choice"
 msgstr ""
 
-#: app/helpers/template_helpers.py:60 app/survey_config/business_config.py:22
+#: app/helpers/template_helpers.py:60 app/survey_config/business_config.py:23
 #: app/survey_config/census_config.py:30 app/survey_config/census_config.py:79
 #: app/survey_config/census_config.py:139
 msgid "Contact us"
@@ -237,55 +237,55 @@ msgid_plural "{number_of_days} days"
 msgstr[0] ""
 msgstr[1] ""
 
-#: app/routes/errors.py:120
+#: app/routes/errors.py:119
 msgid "You have reached the maximum number of individual access codes"
 msgstr ""
 
-#: app/routes/errors.py:123
+#: app/routes/errors.py:122
 msgid ""
 "If you need more individual access codes, please <a "
 "href='{contact_us_url}'>contact us</a>."
 msgstr ""
 
-#: app/routes/errors.py:139
+#: app/routes/errors.py:138
 msgid "You have reached the maximum number of times for submitting feedback"
 msgstr ""
 
-#: app/routes/errors.py:142
+#: app/routes/errors.py:141
 msgid ""
 "If you need to give more feedback, please <a "
 "href='{contact_us_url}'>contact us</a>."
 msgstr ""
 
-#: app/routes/errors.py:174
+#: app/routes/errors.py:173
 msgid "Sorry, there was a problem sending the access code"
 msgstr ""
 
-#: app/routes/errors.py:180
+#: app/routes/errors.py:179
 msgid "You can try to <a href='{retry_url}'>request a new access code again</a>."
 msgstr ""
 
-#: app/routes/errors.py:183 app/routes/errors.py:206 app/routes/errors.py:228
+#: app/routes/errors.py:182 app/routes/errors.py:205 app/routes/errors.py:227
 msgid ""
 "If this problem keeps happening, please <a "
 "href='{contact_us_url}'>contact us</a> for help."
 msgstr ""
 
-#: app/routes/errors.py:202
+#: app/routes/errors.py:201
 msgid "Sorry, there was a problem sending the confirmation email"
 msgstr ""
 
-#: app/routes/errors.py:203
+#: app/routes/errors.py:202
 msgid "You can try to <a href='{retry_url}'>send the email again</a>."
 msgstr ""
 
-#: app/routes/errors.py:224 templates/errors/403.html:3
+#: app/routes/errors.py:223 templates/errors/403.html:3
 #: templates/errors/403.html:6 templates/errors/submission-failed.html:5
 #: templates/errors/submission-failed.html:8
 msgid "Sorry, there is a problem"
 msgstr ""
 
-#: app/routes/errors.py:225
+#: app/routes/errors.py:224
 msgid "You can try to <a href='{retry_url}'>submit your feedback again</a>."
 msgstr ""
 
@@ -297,21 +297,21 @@ msgstr ""
 msgid "An individual access code has been sent by text"
 msgstr ""
 
-#: app/survey_config/business_config.py:21
+#: app/survey_config/business_config.py:22
 msgid "What we do"
 msgstr ""
 
-#: app/survey_config/business_config.py:24
+#: app/survey_config/business_config.py:25
 msgid "Accessibility"
 msgstr ""
 
-#: app/survey_config/business_config.py:34
+#: app/survey_config/business_config.py:35
 #: app/survey_config/census_config.py:44 app/survey_config/census_config.py:94
 #: app/survey_config/census_config.py:146
 msgid "Cookies"
 msgstr ""
 
-#: app/survey_config/business_config.py:36
+#: app/survey_config/business_config.py:37
 #: app/survey_config/census_config.py:50 app/survey_config/census_config.py:100
 #: app/survey_config/census_config.py:152
 msgid "Privacy and data protection"
@@ -420,11 +420,11 @@ msgstr ""
 msgid "Choose another section to complete"
 msgstr ""
 
-#: app/views/contexts/hub_context.py:61 templates/confirm-email.html:26
+#: app/views/contexts/hub_context.py:61 templates/confirm-email.html:25
 #: templates/individual_response/confirmation-post.html:21
 #: templates/individual_response/confirmation-text-message.html:31
 #: templates/individual_response/question.html:5 templates/interstitial.html:8
-#: templates/sectionsummary.html:11 templates/sectionsummary.html:47
+#: templates/sectionsummary.html:10 templates/sectionsummary.html:46
 msgid "Continue"
 msgstr ""
 
@@ -801,7 +801,7 @@ msgid ""
 "census, enter your email address"
 msgstr ""
 
-#: templates/confirm-email.html:13 templates/partials/answers/address.html:55
+#: templates/confirm-email.html:12 templates/partials/answers/address.html:55
 #: templates/question.html:10
 #, python-format
 msgid "There is a problem with your answer"
@@ -856,18 +856,18 @@ msgstr ""
 msgid "Done"
 msgstr ""
 
-#: templates/feedback.html:15 templates/view-submitted-response.html:16
+#: templates/feedback.html:14 templates/view-submitted-response.html:16
 msgid "Back"
 msgstr ""
 
-#: templates/feedback.html:28
+#: templates/feedback.html:27
 #, python-format
 msgid "There is a problem with your feedback"
 msgid_plural "There are %(num)s problems with your feedback"
 msgstr[0] ""
 msgstr[1] ""
 
-#: templates/feedback.html:39
+#: templates/feedback.html:38
 msgid "Send feedback"
 msgstr ""
 
@@ -961,6 +961,36 @@ msgstr ""
 msgid "For security, you can no longer view or get a copy of your answers"
 msgstr ""
 
+#: templates/errors/401.html:3
+msgid "Page is not available"
+msgstr ""
+
+#: templates/errors/401.html:6
+msgid "Sorry, you need to sign in again"
+msgstr ""
+
+#: templates/errors/401.html:7
+msgid "This is because you have either:"
+msgstr ""
+
+#: templates/errors/401.html:9
+msgid ""
+"been inactive for 45 minutes and your session has timed out to protect "
+"your information"
+msgstr ""
+
+#: templates/errors/401.html:10
+msgid "followed a link to a page you are not signed in to"
+msgstr ""
+
+#: templates/errors/401.html:11
+msgid "followed a link to a survey that has already been submitted"
+msgstr ""
+
+#: templates/errors/401.html:13
+msgid "You will need to <a href='{url}'>sign back in</a> to access your account"
+msgstr ""
+
 #: templates/errors/403.html:7
 msgid "You may need to update your browser to a newer version."
 msgstr ""
@@ -1013,20 +1043,6 @@ msgid ""
 " survey."
 msgstr ""
 
-#: templates/errors/no-cookie.html:3
-msgid "Page is not available"
-msgstr ""
-
-#: templates/errors/no-cookie.html:6
-msgid "Sorry there is a problem"
-msgstr ""
-
-#: templates/errors/no-cookie.html:7
-msgid ""
-"To access this page you need to <a href='{url}'>enter your 16-character "
-"access code</a>."
-msgstr ""
-
 #: templates/errors/previously-submitted.html:3
 msgid "Submission Complete"
 msgstr ""
@@ -1041,24 +1057,6 @@ msgstr ""
 
 #: templates/errors/previously-submitted.html:8
 msgid "<a href='{url}'>Return to previous page</a>"
-msgstr ""
-
-#: templates/errors/session-expired.html:3
-msgid "Session timed out"
-msgstr ""
-
-#: templates/errors/session-expired.html:6
-msgid "Your session has timed out due to inactivity"
-msgstr ""
-
-#: templates/errors/session-expired.html:7
-msgid "To help protect your information we have timed you out"
-msgstr ""
-
-#: templates/errors/session-expired.html:8
-msgid ""
-"You will need to <a href='{url}'>enter your 16-character access code</a> "
-"again to continue your census."
 msgstr ""
 
 #: templates/errors/submission-failed.html:9

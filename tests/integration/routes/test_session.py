@@ -16,7 +16,7 @@ class TestSession(IntegrationTestCase):
 
     def test_session_expired(self):
         self.get("/session-expired")
-        self.assertInBody("Your session has timed out due to inactivity")
+        self.assertInBody("Sorry, you need to sign in again")
 
     def test_session_signed_out(self):
         self.launchSurvey(account_service_log_out_url="https://localhost/logout")
