@@ -169,6 +169,11 @@ class PathFinder:
     def _evaluate_skip_conditions(
         self, this_location, routing_path_block_ids, skip_conditions
     ):
+        no_skip_condition = skip_conditions is None or len(skip_conditions) == 0
+
+        if no_skip_condition:
+            return False
+
         when_rule_evaluator = WhenRuleEvaluator(
             self.schema,
             self.answer_store,
@@ -181,11 +186,6 @@ class PathFinder:
 
         if isinstance(skip_conditions, dict):
             return should_goto_new(skip_conditions, when_rule_evaluator)
-
-        no_skip_condition = skip_conditions is None or len(skip_conditions) == 0
-
-        if no_skip_condition:
-            return False
 
         for when in skip_conditions:
             condition = evaluate_when_rules(
