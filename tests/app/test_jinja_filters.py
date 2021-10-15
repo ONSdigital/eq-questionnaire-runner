@@ -319,7 +319,7 @@ def test_map_list_collector_config_no_actions():
             "rowItems": [
                 {
                     "actions": [],
-                    "icon": "icon",
+                    "iconType": "icon",
                     "rowTitle": "Mark Bloggs",
                     "rowTitleAttributes": {
                         "data-qa": "list-item-1-label",
@@ -332,7 +332,7 @@ def test_map_list_collector_config_no_actions():
             "rowItems": [
                 {
                     "actions": [],
-                    "icon": "icon",
+                    "iconType": "icon",
                     "rowTitle": "Joe Bloggs",
                     "rowTitleAttributes": {
                         "data-qa": "list-item-2-label",
@@ -385,7 +385,7 @@ def test_map_list_collector_config():
                             "url": "/primary/change",
                         }
                     ],
-                    "icon": "icon",
+                    "iconType": "icon",
                     "rowTitle": "Mark Bloggs (You)",
                     "rowTitleAttributes": {
                         "data-qa": "list-item-1-label",
@@ -411,7 +411,7 @@ def test_map_list_collector_config():
                             "url": "/nonprimary/remove",
                         },
                     ],
-                    "icon": "icon",
+                    "iconType": "icon",
                     "rowTitle": "Joe Bloggs",
                     "rowTitleAttributes": {
                         "data-qa": "list-item-2-label",

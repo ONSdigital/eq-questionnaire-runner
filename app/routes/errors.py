@@ -1,5 +1,6 @@
+from typing import Tuple
+
 from flask import Blueprint, request
-from flask import session as cookie_session
 from flask.helpers import url_for
 from flask_babel import lazy_gettext
 from flask_login import current_user
@@ -15,7 +16,7 @@ from app.authentication.no_token_exception import NoTokenException
 from app.globals import get_metadata
 from app.helpers.language_helper import handle_language
 from app.helpers.template_helpers import render_template
-from app.settings import EQ_SESSION_ID
+from app.submitter.previously_submitted_exception import PreviouslySubmittedException
 from app.submitter.submission_failed import SubmissionFailedException
 from app.views.handlers.confirm_email import (
     ConfirmationEmailFulfilmentRequestPublicationFailed,
@@ -67,11 +68,15 @@ def bad_request(exception=None):
 @errors_blueprint.app_errorhandler(CSRFError)
 @errors_blueprint.app_errorhandler(NoTokenException)
 @errors_blueprint.app_errorhandler(NoQuestionnaireStateException)
-def unauthorized(exception=None):
+def unauthorized(exception=None) -> Tuple[str, int]:
     log_exception(exception, 401)
-    if EQ_SESSION_ID not in cookie_session:
-        return _render_error_page(401, "no-cookie")
-    return _render_error_page(401, "session-expired")
+    return _render_error_page(401, template="401")
+
+
+@errors_blueprint.app_errorhandler(PreviouslySubmittedException)
+def previously_submitted(exception=None):
+    log_exception(exception, 401)
+    return _render_error_page(401, "previously-submitted")
 
 
 @errors_blueprint.app_errorhandler(InvalidTokenException)

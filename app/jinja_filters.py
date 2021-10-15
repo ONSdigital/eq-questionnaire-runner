@@ -623,7 +623,7 @@ def map_list_collector_config(
             {
                 "rowItems": [
                     {
-                        "icon": icon,
+                        "iconType": icon,
                         "actions": actions,
                         "rowTitle": item_name,
                         "rowTitleAttributes": {

@@ -3,7 +3,9 @@ from __future__ import annotations
 from typing import Union
 
 import flask_babel
-from flask import Blueprint, g, redirect, request, url_for
+from flask import Blueprint, g, redirect, request
+from flask import session as cookie_session
+from flask import url_for
 from flask_login import current_user, login_required
 from itsdangerous import BadSignature
 from structlog import get_logger
@@ -28,6 +30,7 @@ from app.helpers.template_helpers import render_template
 from app.questionnaire import QuestionnaireSchema
 from app.questionnaire.location import InvalidLocationException
 from app.questionnaire.router import Router
+from app.submitter.previously_submitted_exception import PreviouslySubmittedException
 from app.utilities.schema import load_schema_from_session_data
 from app.views.contexts import HubContext
 from app.views.handlers.block_factory import get_block_handler
@@ -63,6 +66,11 @@ post_submission_blueprint = Blueprint(
 def before_questionnaire_request():
     if request.method == "OPTIONS":
         return None
+
+    if cookie_session.get("submitted"):
+        raise PreviouslySubmittedException(
+            "The Questionnaire has been previously submitted"
+        )
 
     metadata = get_metadata(current_user)
     if not metadata:
