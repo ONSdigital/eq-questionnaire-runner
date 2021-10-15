@@ -118,7 +118,7 @@ def get_session_expired():
     if request.method == "GET":
         logout_user()
 
-    return render_template("errors/session-expired")
+    return render_template("errors/401")
 
 
 @session_blueprint.route("/sign-out", methods=["GET"])

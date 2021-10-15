@@ -55,7 +55,7 @@ class TestQuestionnairePageTitles(IntegrationTestCase):
         # When
         self.get("/session-expired")
         # Then
-        self.assertEqualPageTitle("Session timed out - Submit without summary")
+        self.assertEqualPageTitle("Page is not available - Submit without summary")
 
     def test_should_have_content_title_in_page_title_on_interstitial(self):
         # Given
