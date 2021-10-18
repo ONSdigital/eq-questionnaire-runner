@@ -12,7 +12,6 @@ from app.forms.questionnaire_form import generate_form
 from app.questionnaire.questionnaire_schema import QuestionnaireSchema
 from app.submitter.converter import build_collection, build_metadata
 from app.views.contexts.feedback_form_context import build_feedback_context
-from app.views.handlers.submission import SubmissionHandler
 
 DEFAULT_LANGUAGE_CODE = "en"
 
@@ -85,7 +84,9 @@ class Feedback:
 
         feedback_message = FeedbackPayload(
             self._questionnaire_store.metadata,
-            self._session_store,
+            self._questionnaire_store.response_metadata["started_at"],
+            self._questionnaire_store.submitted_at,
+            session_data.case_id,
             self._schema,
             session_data.feedback_count,
             self.form.data.get("feedback-text"),
@@ -264,7 +265,9 @@ class FeedbackPayload:
     }
     ```
     :param metadata: Questionnaire metadata
-    :param session_store: Session store object
+    :param started_at: Datetime of questionnaire start
+    :param submitted_at: Datetime of questionnaire submission
+    :param case_id: Questionnaire case id
     :param schema: QuestionnaireSchema class with populated schema json
     :param feedback_count: Number of feedback submissions attempted by the user
     :param feedback_text: Feedback text input by the user
@@ -278,7 +281,9 @@ class FeedbackPayload:
     def __init__(
         self,
         metadata: Mapping[str, Union[str, int, list]],
-        session_store: SessionStore,
+        started_at: datetime,
+        submitted_at: datetime,
+        case_id: str,
         schema: QuestionnaireSchema,
         feedback_count: int,
         feedback_text: str,
@@ -286,7 +291,9 @@ class FeedbackPayload:
         feedback_type_question_category: str = None,
     ):
         self.metadata = metadata
-        self.session_store = session_store
+        self.started_at = started_at
+        self.submitted_at = submitted_at
+        self.case_id = case_id
         self.schema = schema
         self.feedback_count = feedback_count
         self.feedback_text = feedback_text
@@ -296,7 +303,9 @@ class FeedbackPayload:
     def __call__(self) -> Mapping:
         payload = {
             "origin": "uk.gov.ons.edc.eq",
-            "submitted_at": SubmissionHandler.submitted_at,
+            "case_id": self.case_id,
+            "started_at": self.started_at.isoformat(),
+            "submitted_at": self.submitted_at.isoformat(),
             "collection": build_collection(self.metadata),
             "metadata": build_metadata(self.metadata),
             "survey_id": self.schema.json["survey_id"],
@@ -308,13 +317,13 @@ class FeedbackPayload:
             "version": "0.0.1",
         }
 
-        if self.metadata.get("form_type"):
-            payload["form_type"] = self.metadata["form_type"]
+        if form_type := self.metadata.get("form_type"):
+            payload["form_type"] = form_type
 
         payload["data"] = {
             "feedback_text": self.feedback_text,
             "feedback_type": self.feedback_type,
-            "feedback_count": self.feedback_count,
+            "feedback_count": str(self.feedback_count),
         }
 
         if self.feedback_type_question_category:

@@ -32,6 +32,8 @@ class TestFeedbackUpload(AppContextTestCase):  # pylint: disable=too-many-public
         self.feedback_type = "Feedback type"
         self.feedback_text = "Feedback text"
         self.feedback_type_question_category = "Feedback type question category"
+        self.started_at = datetime.now(tz=timezone.utc)
+        self.submitted_at = datetime.now(tz=timezone.utc)
 
         self.session_data = SessionData(
             tx_id=self.tx_id,
@@ -46,7 +48,7 @@ class TestFeedbackUpload(AppContextTestCase):  # pylint: disable=too-many-public
             case_id=self.case_id,
             feedback_count=self.feedback_count,
         )
-        self.session_store = SessionStore("user_ik", "pepper", "eq_session_id")
+
         self.expires_at = datetime.now(timezone.utc) + timedelta(seconds=5)
 
         questionnaire = {"survey_id": self.survey_id, "data_version": self.data_version}
@@ -70,7 +72,9 @@ class TestFeedbackUpload(AppContextTestCase):  # pylint: disable=too-many-public
     def test_feedback_payload_with_feedback_type_question_category(self):
         feedback_payload = FeedbackPayload(
             self.metadata,
-            self.session_store,
+            self.started_at,
+            self.submitted_at,
+            self.case_id,
             self.questionnaire_schema,
             self.session_data.feedback_count,
             self.feedback_text,
@@ -87,7 +91,7 @@ class TestFeedbackUpload(AppContextTestCase):  # pylint: disable=too-many-public
                 "schema_name": self.schema_name,
             },
             "data": {
-                "feedback_count": self.feedback_count,
+                "feedback_count": str(self.feedback_count),
                 "feedback_text": self.feedback_text,
                 "feedback_type": self.feedback_type,
                 "feedback_type_question_category": self.feedback_type_question_category,
@@ -102,7 +106,9 @@ class TestFeedbackUpload(AppContextTestCase):  # pylint: disable=too-many-public
                 "user_id": self.user_id,
             },
             "origin": "uk.gov.ons.edc.eq",
-            "submitted_at": actual_payload["submitted_at"],
+            "case_id": self.case_id,
+            "started_at": self.started_at.isoformat(),
+            "submitted_at": self.submitted_at.isoformat(),
             "survey_id": self.survey_id,
             "tx_id": self.tx_id,
             "type": "uk.gov.ons.edc.eq:feedback",
@@ -114,7 +120,9 @@ class TestFeedbackUpload(AppContextTestCase):  # pylint: disable=too-many-public
     def test_feedback_payload_without_feedback_type_question_category(self):
         feedback_payload = FeedbackPayload(
             self.metadata,
-            self.session_store,
+            self.started_at,
+            self.submitted_at,
+            self.case_id,
             self.questionnaire_schema,
             self.session_data.feedback_count,
             self.feedback_text,
@@ -130,7 +138,7 @@ class TestFeedbackUpload(AppContextTestCase):  # pylint: disable=too-many-public
                 "schema_name": self.schema_name,
             },
             "data": {
-                "feedback_count": self.feedback_count,
+                "feedback_count": str(self.feedback_count),
                 "feedback_text": self.feedback_text,
                 "feedback_type": self.feedback_type,
             },
@@ -144,7 +152,9 @@ class TestFeedbackUpload(AppContextTestCase):  # pylint: disable=too-many-public
                 "user_id": self.user_id,
             },
             "origin": "uk.gov.ons.edc.eq",
-            "submitted_at": actual_payload["submitted_at"],
+            "case_id": self.case_id,
+            "started_at": self.started_at.isoformat(),
+            "submitted_at": self.submitted_at.isoformat(),
             "survey_id": self.survey_id,
             "tx_id": self.tx_id,
             "type": "uk.gov.ons.edc.eq:feedback",
