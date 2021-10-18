@@ -3,16 +3,13 @@ from unittest.mock import Mock, patch
 
 from app.data_models.answer_store import Answer, AnswerStore
 from app.data_models.list_store import ListStore
+from app.data_models.progress_store import ProgressStore
 from app.questionnaire.location import Location
+from app.questionnaire.path_finder import PathFinder
 from app.questionnaire.questionnaire_schema import QuestionnaireSchema
 from app.questionnaire.relationship_location import RelationshipLocation
 from app.questionnaire.routing_path import RoutingPath
-from app.questionnaire.rules import (
-    evaluate_goto,
-    evaluate_rule,
-    evaluate_skip_conditions,
-    evaluate_when_rules,
-)
+from app.questionnaire.rules import evaluate_goto, evaluate_rule, evaluate_when_rules
 from tests.app.app_context_test_case import AppContextTestCase
 
 
@@ -443,14 +440,20 @@ class TestRules(AppContextTestCase):  # pylint: disable=too-many-public-methods
 
         current_location = Location(section_id="some-section", block_id="some-block")
 
-        # When
-        condition = evaluate_skip_conditions(
-            skip_conditions=skip_conditions,
-            schema=get_schema(),
-            metadata={},
-            answer_store=answer_store,
+        path_finder = PathFinder(
+            get_schema(),
+            answer_store,
             list_store=ListStore(),
-            current_location=current_location,
+            metadata={},
+            progress_store=ProgressStore(),
+            response_metadata={},
+        )
+
+        routing_path_block_ids = []
+
+        # When
+        condition = path_finder.evaluate_skip_conditions(
+            current_location, routing_path_block_ids, skip_conditions
         )
 
         # Given
@@ -468,15 +471,21 @@ class TestRules(AppContextTestCase):  # pylint: disable=too-many-public-methods
 
         current_location = Location(section_id="some-section", block_id="some-block")
 
+        path_finder = PathFinder(
+            get_schema(),
+            answer_store,
+            list_store=ListStore(),
+            metadata={},
+            progress_store=ProgressStore(),
+            response_metadata={},
+        )
+
+        routing_path_block_ids = []
+
         # When
         self.assertTrue(
-            evaluate_skip_conditions(
-                skip_conditions=skip_conditions,
-                schema=get_schema(),
-                metadata={},
-                answer_store=answer_store,
-                list_store=ListStore(),
-                current_location=current_location,
+            path_finder.evaluate_skip_conditions(
+                current_location, routing_path_block_ids, skip_conditions
             )
         )
 
@@ -492,14 +501,20 @@ class TestRules(AppContextTestCase):  # pylint: disable=too-many-public-methods
 
         current_location = Location(section_id="some-section", block_id="some-block")
 
-        # When
-        condition = evaluate_skip_conditions(
-            skip_conditions=skip_conditions,
-            schema=get_schema(),
-            metadata={},
-            answer_store=answer_store,
+        path_finder = PathFinder(
+            get_schema(),
+            answer_store,
             list_store=ListStore(),
-            current_location=current_location,
+            metadata={},
+            progress_store=ProgressStore(),
+            response_metadata={},
+        )
+
+        routing_path_block_ids = []
+
+        # When
+        condition = path_finder.evaluate_skip_conditions(
+            current_location, routing_path_block_ids, skip_conditions
         )
 
         # Then
@@ -517,14 +532,20 @@ class TestRules(AppContextTestCase):  # pylint: disable=too-many-public-methods
 
         current_location = Location(section_id="some-section", block_id="some-block")
 
-        # When
-        condition = evaluate_skip_conditions(
-            skip_conditions=skip_conditions,
-            schema=get_schema(),
-            metadata={},
-            answer_store=answer_store,
+        path_finder = PathFinder(
+            get_schema(),
+            answer_store,
             list_store=ListStore(),
-            current_location=current_location,
+            metadata={},
+            progress_store=ProgressStore(),
+            response_metadata={},
+        )
+
+        routing_path_block_ids = []
+
+        # When
+        condition = path_finder.evaluate_skip_conditions(
+            current_location, routing_path_block_ids, skip_conditions
         )
 
         # Then
@@ -534,16 +555,24 @@ class TestRules(AppContextTestCase):  # pylint: disable=too-many-public-methods
         # Given
         skip_conditions = None
 
+        answer_store = AnswerStore()
+
         current_location = Location(section_id="some-section", block_id="some-block")
 
-        # When
-        condition = evaluate_skip_conditions(
-            skip_conditions=skip_conditions,
-            schema=get_schema(),
-            metadata={},
-            answer_store=AnswerStore(),
+        path_finder = PathFinder(
+            get_schema(),
+            answer_store,
             list_store=ListStore(),
-            current_location=current_location,
+            metadata={},
+            progress_store=ProgressStore(),
+            response_metadata={},
+        )
+
+        routing_path_block_ids = []
+
+        # When
+        condition = path_finder.evaluate_skip_conditions(
+            current_location, routing_path_block_ids, skip_conditions
         )
 
         # Then
