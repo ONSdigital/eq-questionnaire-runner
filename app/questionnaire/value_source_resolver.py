@@ -22,7 +22,7 @@ ValueSourceEscapedTypes = Union[
 class ValueSourceResolver:
     answer_store: AnswerStore
     list_store: ListStore
-    metadata: dict
+    metadata: Mapping
     response_metadata: Mapping
     schema: QuestionnaireSchema
     location: Union[None, Location, RelationshipLocation]
