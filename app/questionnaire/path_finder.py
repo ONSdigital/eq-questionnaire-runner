@@ -7,7 +7,7 @@ from app.questionnaire.location import Location
 from app.questionnaire.questionnaire_schema import QuestionnaireSchema
 from app.questionnaire.routing.when_rule_evaluator import WhenRuleEvaluator
 from app.questionnaire.routing_path import RoutingPath
-from app.questionnaire.rules import evaluate_goto, evaluate_skip_conditions
+from app.questionnaire.rules import evaluate_goto, evaluate_when_rules
 
 
 class PathFinder:
@@ -34,7 +34,7 @@ class PathFinder:
         Visits all the blocks in a section and returns a path given a list of answers.
         """
         blocks: List[Mapping] = []
-        routing_path_block_ids = []
+        routing_path_block_ids: List[str] = []
         current_location = Location(section_id=section_id, list_item_id=list_item_id)
         section = self.schema.get_section(section_id)
         list_name = self.schema.get_repeating_list_for_section(
@@ -44,13 +44,9 @@ class PathFinder:
         if section:
             for group in section["groups"]:
                 if "skip_conditions" in group:
-                    if evaluate_skip_conditions(
-                        group["skip_conditions"],
-                        self.schema,
-                        self.metadata,
-                        self.answer_store,
-                        self.list_store,
-                        current_location=current_location,
+                    skip_conditions = group.get("skip_conditions")
+                    if self.evaluate_skip_conditions(
+                        current_location, routing_path_block_ids, skip_conditions
                     ):
                         continue
 
@@ -80,15 +76,9 @@ class PathFinder:
 
         while block_index < len(blocks):
             block = blocks[block_index]
-
-            is_skipping = block.get("skip_conditions") and evaluate_skip_conditions(
-                block["skip_conditions"],
-                self.schema,
-                self.metadata,
-                self.answer_store,
-                self.list_store,
-                current_location=current_location,
-                routing_path_block_ids=routing_path_block_ids,
+            skip_conditions = block.get("skip_conditions")
+            is_skipping = self.evaluate_skip_conditions(
+                current_location, routing_path_block_ids, skip_conditions
             )
 
             if not is_skipping:
@@ -175,6 +165,39 @@ class PathFinder:
                     return None
 
                 return next_block_index
+
+    def evaluate_skip_conditions(
+        self, this_location, routing_path_block_ids, skip_conditions
+    ):
+        if not skip_conditions:
+            return False
+
+        if isinstance(skip_conditions, dict):
+            when_rule_evaluator = WhenRuleEvaluator(
+                self.schema,
+                self.answer_store,
+                self.list_store,
+                self.metadata,
+                self.response_metadata,
+                location=this_location,
+                routing_path_block_ids=routing_path_block_ids,
+            )
+
+            return when_rule_evaluator.evaluate(skip_conditions["when"])
+
+        for when in skip_conditions:
+            condition = evaluate_when_rules(
+                when["when"],
+                self.schema,
+                self.metadata,
+                self.answer_store,
+                self.list_store,
+                current_location=this_location,
+                routing_path_block_ids=routing_path_block_ids,
+            )
+            if condition is True:
+                return True
+        return False
 
     def _get_next_block_id(self, rule):
         if "group" in rule:
