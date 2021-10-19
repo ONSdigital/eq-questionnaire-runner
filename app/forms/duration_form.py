@@ -13,7 +13,7 @@ class DurationForm(Form):
     def validate(
         self, extra_validators: Optional[dict[str, list[Callable]]] = None
     ) -> bool:
-        super(DurationForm, self).validate(extra_validators)
+        super().validate(extra_validators)
 
         if all(not field.raw_data[0] for field in self._fields.values()):
             if self.mandatory:
@@ -52,16 +52,31 @@ class DurationForm(Form):
 def get_duration_form(
     answer: Mapping, error_messages: ErrorMessageType
 ) -> Type[DurationForm]:
-    class CustomDurationForm(DurationForm):
-        mandatory = answer["mandatory"]
-        units = answer["units"]
-        answer_errors = _get_answer_errors(answer, error_messages)
+
+    members = dict(
+        mandatory=answer["mandatory"],
+        units=answer["units"],
+        answer_errors=_get_answer_errors(answer, error_messages),
+    )
 
     if "years" in answer["units"]:
-        CustomDurationForm.years = IntegerFieldWithSeparator()
+        members.update(years=IntegerFieldWithSeparator())
 
     if "months" in answer["units"]:
-        CustomDurationForm.months = IntegerFieldWithSeparator()
+        members.update(months=IntegerFieldWithSeparator())
+
+    CustomDurationForm = type("CustomDurationForm", (DurationForm,), members)
+
+    # class CustomDurationForm(DurationForm):
+    #     mandatory = answer["mandatory"]
+    #     units = answer["units"]
+    #     answer_errors = _get_answer_errors(answer, error_messages)
+
+    # if "years" in answer["units"]:
+    #     CustomDurationForm.years = IntegerFieldWithSeparator()
+
+    # if "months" in answer["units"]:
+    #     CustomDurationForm.months = IntegerFieldWithSeparator()
 
     return CustomDurationForm
 
