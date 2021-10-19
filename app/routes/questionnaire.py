@@ -407,6 +407,15 @@ def get_view_submitted_response(schema, questionnaire_store):
 def get_view_submitted_response_pdf(
     schema: QuestionnaireSchema, questionnaire_store: QuestionnaireStore
 ) -> Response:
+    """
+    :param schema: The questionnaire schema object.
+    :type schema: QuestionnaireSchema
+    :param questionnaire_store: The questionnaire store object.
+    :type questionnaire_store: QuestionnaireStore
+    :return: A response object with the contents of a file to the client.
+    :rtype: Response
+    """
+
     try:
         view_submitted_response_pdf = ViewSubmittedResponsePDF(
             schema,
