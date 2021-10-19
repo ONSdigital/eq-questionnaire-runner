@@ -255,7 +255,7 @@ def test_get_page_header_context_census_nisra(app: Flask):
         (
             SurveyConfig(),
             {
-                "url": "https://ons.gov.uk/contact-us/",
+                "url": "None/contact-us/",
                 "text": "Contact us",
                 "target": "_blank",
             },
@@ -263,7 +263,7 @@ def test_get_page_header_context_census_nisra(app: Flask):
         (
             BusinessSurveyConfig(),
             {
-                "url": "https://surveys.ons.gov.uk/contact-us/",
+                "url": "None/contact-us/",
                 "text": "Contact us",
                 "target": "_blank",
             },
@@ -312,7 +312,7 @@ def test_contact_us_url_context(
     "survey_config,expected",
     [
         (SurveyConfig(), None),
-        (BusinessSurveyConfig(), "https://surveys.ons.gov.uk/sign-in/logout"),
+        (BusinessSurveyConfig(), "None/sign-in/logout"),
         (CensusSurveyConfig(), "https://census.gov.uk/en/start"),
         (WelshCensusSurveyConfig(), "https://cyfrifiad.gov.uk/en/start"),
         (CensusNISRASurveyConfig(), "https://census.gov.uk/ni"),
