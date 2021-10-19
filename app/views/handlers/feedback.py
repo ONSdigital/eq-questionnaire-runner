@@ -85,7 +85,6 @@ class Feedback:
         feedback_message = FeedbackPayload(
             self._questionnaire_store.metadata,
             self._questionnaire_store.response_metadata["started_at"],
-            self._questionnaire_store.submitted_at,
             session_data.case_id,
             self._schema,
             session_data.feedback_count,
@@ -269,7 +268,6 @@ class FeedbackPayload:
     ```
     :param metadata: Questionnaire metadata
     :param started_at: Datetime of questionnaire start
-    :param submitted_at: Datetime of questionnaire submission
     :param case_id: Questionnaire case id
     :param schema: QuestionnaireSchema class with populated schema json
     :param feedback_count: Number of feedback submissions attempted by the user
@@ -285,7 +283,6 @@ class FeedbackPayload:
         self,
         metadata: Mapping[str, Union[str, int, list]],
         started_at: str,
-        submitted_at: datetime,
         case_id: str,
         schema: QuestionnaireSchema,
         feedback_count: int,
@@ -295,7 +292,6 @@ class FeedbackPayload:
     ):
         self.metadata = metadata
         self.started_at = started_at
-        self.submitted_at = submitted_at
         self.case_id = case_id
         self.schema = schema
         self.feedback_count = feedback_count
@@ -308,7 +304,7 @@ class FeedbackPayload:
             "origin": "uk.gov.ons.edc.eq",
             "case_id": self.case_id,
             "started_at": self.started_at,
-            "submitted_at": self.submitted_at.isoformat(),
+            "submitted_at": datetime.now(tz=timezone.utc).isoformat(),
             "flushed": False,
             "collection": build_collection(self.metadata),
             "metadata": build_metadata(self.metadata),

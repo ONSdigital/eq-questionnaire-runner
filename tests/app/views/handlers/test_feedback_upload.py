@@ -2,6 +2,7 @@ import uuid
 from datetime import datetime, timezone
 
 import pytest
+from freezegun import freeze_time
 
 from app.data_models.session_data import SessionData
 from app.questionnaire.questionnaire_schema import QuestionnaireSchema
@@ -28,7 +29,6 @@ feedback_type = "Feedback type"
 feedback_text = "Feedback text"
 feedback_type_question_category = "Feedback type question category"
 started_at = str(datetime.now(tz=timezone.utc).isoformat())
-submitted_at = datetime.now(tz=timezone.utc)
 
 
 @pytest.fixture()
@@ -71,13 +71,13 @@ def metadata():
     }
 
 
+@freeze_time(datetime.now(tz=timezone.utc).isoformat())
 def test_feedback_payload_with_feedback_type_question_category(
     session_data, schema, metadata
 ):
     feedback_payload = FeedbackPayload(
         metadata,
         started_at,
-        submitted_at,
         case_id,
         schema,
         session_data.feedback_count,
@@ -110,7 +110,7 @@ def test_feedback_payload_with_feedback_type_question_category(
         "origin": "uk.gov.ons.edc.eq",
         "case_id": case_id,
         "started_at": started_at,
-        "submitted_at": submitted_at.isoformat(),
+        "submitted_at": datetime.now(tz=timezone.utc).isoformat(),
         "flushed": False,
         "survey_id": survey_id,
         "tx_id": tx_id,
@@ -121,13 +121,13 @@ def test_feedback_payload_with_feedback_type_question_category(
     assert expected_payload == feedback_payload()
 
 
+@freeze_time(datetime.now(tz=timezone.utc).isoformat())
 def test_feedback_payload_without_feedback_type_question_category(
     session_data, schema, metadata
 ):
     feedback_payload = FeedbackPayload(
         metadata,
         started_at,
-        submitted_at,
         case_id,
         schema,
         session_data.feedback_count,
@@ -158,7 +158,7 @@ def test_feedback_payload_without_feedback_type_question_category(
         "origin": "uk.gov.ons.edc.eq",
         "case_id": case_id,
         "started_at": started_at,
-        "submitted_at": submitted_at.isoformat(),
+        "submitted_at": datetime.now(tz=timezone.utc).isoformat(),
         "flushed": False,
         "survey_id": survey_id,
         "tx_id": tx_id,
