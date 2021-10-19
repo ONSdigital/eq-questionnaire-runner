@@ -2,8 +2,9 @@ from dataclasses import dataclass, field
 from typing import Iterable, Mapping, MutableMapping, Optional, Union
 
 from flask_babel import lazy_gettext
-from app.settings import ACCOUNT_SERVICE_BASE_URL
 from flask_babel.speaklater import LazyString
+
+from app.settings import ACCOUNT_SERVICE_BASE_URL
 
 ACCOUNT_SERVICE_BASE_URL = ACCOUNT_SERVICE_BASE_URL
 
