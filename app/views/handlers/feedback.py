@@ -75,10 +75,7 @@ class Feedback:
         session_data.feedback_count += 1
 
         feedback_metadata = FeedbackMetadata(
-            session_data.feedback_count,
-            self._schema.form_type,
-            session_data.language_code,
-            self._schema.region_code,
+            session_data.case_id,
             session_data.tx_id,
         )
 
@@ -219,12 +216,8 @@ class Feedback:
 
 
 class FeedbackMetadata:
-    def __init__(self, feedback_count, form_type, language_code, region_code, tx_id):
-        self.feedback_count = feedback_count
-        self.feedback_submission_date = datetime.now(timezone.utc).strftime("%Y-%m-%d")
-        self.form_type = form_type
-        self.language_code = language_code
-        self.region_code = region_code
+    def __init__(self, case_id, tx_id):
+        self.case_id = case_id
         self.tx_id = tx_id
 
     def __call__(self) -> Mapping:

@@ -169,17 +169,11 @@ def test_feedback_payload_without_feedback_type_question_category(
     assert expected_payload == feedback_payload()
 
 
-def test_feedback_metadata(session_data):
-    feedback_metadata = FeedbackMetadata(
-        session_data.feedback_count, form_type, "cy", "GB-ENG", tx_id
-    )
+def test_feedback_metadata():
+    feedback_metadata = FeedbackMetadata(case_id, tx_id)
 
     expected_metadata = {
-        "feedback_count": session_data.feedback_count,
-        "feedback_submission_date": datetime.now(tz=timezone.utc).strftime("%Y-%m-%d"),
-        "form_type": form_type,
-        "language_code": "cy",
-        "region_code": "GB-ENG",
+        "case_id": case_id,
         "tx_id": tx_id,
     }
 
