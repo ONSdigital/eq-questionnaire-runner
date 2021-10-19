@@ -74,11 +74,6 @@ def metadata():
 def test_feedback_payload_with_feedback_type_question_category(
     session_data, schema, metadata
 ):
-
-    session_data = session_data
-    schema = schema
-    metadata = metadata
-
     feedback_payload = FeedbackPayload(
         metadata,
         started_at,
@@ -129,11 +124,6 @@ def test_feedback_payload_with_feedback_type_question_category(
 def test_feedback_payload_without_feedback_type_question_category(
     session_data, schema, metadata
 ):
-
-    session_data = session_data
-    schema = schema
-    metadata = metadata
-
     feedback_payload = FeedbackPayload(
         metadata,
         started_at,
