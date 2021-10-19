@@ -406,7 +406,7 @@ def get_view_submitted_response(schema, questionnaire_store):
 @with_schema
 def get_view_submitted_response_pdf(
     schema: QuestionnaireSchema, questionnaire_store: QuestionnaireStore
-):
+) -> Response:
     try:
         view_submitted_response_pdf = ViewSubmittedResponsePDF(
             schema,

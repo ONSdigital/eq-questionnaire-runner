@@ -34,12 +34,12 @@ class TestViewSubmissionResponsePDF(ViewSubmittedResponseBase):
         self.assertEqual(self.last_response.content_type, "application/pdf")
 
         # Check file is set to download and not open inline
-        assert "attachment;" in self.last_response_headers["Content-Disposition"]
+        self.assertIn("attachment;", self.last_response_headers["Content-Disposition"])
 
         # Check filename is set as expected
-        assert (
-            "filename=test_view_submitted_response.pdf"
-            in self.last_response_headers["Content-Disposition"]
+        self.assertIn(
+            "filename=test_view_submitted_response.pdf",
+            self.last_response_headers["Content-Disposition"],
         )
 
         # Check content length is reasonable.
