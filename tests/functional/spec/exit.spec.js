@@ -12,7 +12,7 @@ describe("Post submission exit", () => {
     $(HubPage.submit()).click();
     browser.deleteAllCookies();
     $(CensusThankYouPage.exit()).click();
-    expect(browser.getUrl()).to.equal("https://surveys.ons.gov.uk/sign-in/");
+    expect(browser.getUrl()).to.equal("http://localhost:5000/signed-out");
   });
 
   it("Given I click the exit button from the thank you page, When I am redirected, Then I should be redirected to the correct log out url", () => {
