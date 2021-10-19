@@ -5,7 +5,7 @@ from flask import url_for
 from flask_babel import lazy_gettext
 
 from app.data_models.session_data import SessionData
-from app.globals import is_view_submitted_response_expired
+from app.globals import has_view_submitted_response_expired
 from app.questionnaire import QuestionnaireSchema
 from app.views.contexts.email_form_context import build_email_form_context
 from app.views.contexts.submission_metadata_context import (
@@ -45,12 +45,10 @@ def build_thank_you_context(
 
 
 def build_view_submitted_response_context(schema, submitted_at):
-    schema: Mapping = schema.get_post_submission()
-    enabled = schema.get("view_response", False)
-    view_submitted_response = {"enabled": enabled}
+    view_submitted_response = {"enabled": schema.is_view_submitted_response_enabled}
 
-    if enabled:
-        expired = is_view_submitted_response_expired(submitted_at)
+    if schema.is_view_submitted_response_enabled:
+        expired = has_view_submitted_response_expired(submitted_at)
         view_submitted_response["expired"] = expired
         if not expired:
             view_submitted_response["url"] = url_for(

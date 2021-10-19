@@ -240,9 +240,15 @@ class IntegrationTestCase(unittest.TestCase):  # pylint: disable=too-many-public
 
     def _cache_response(self, response):
         environ = response.request.environ
-        self.last_csrf_token = self._extract_csrf_token(response.get_data(True))
+
+        self.last_csrf_token = (
+            self._extract_csrf_token(response.get_data(True))
+            if response.mimetype == "text/html"
+            else None
+        )
         self.redirect_url = response.headers.get("Location")
         self.last_response = response
+        self.last_response_headers = dict(response.headers)
         self.last_url = environ["PATH_INFO"]
         if environ["QUERY_STRING"]:
             self.last_url += "?" + environ["QUERY_STRING"]
@@ -354,7 +360,7 @@ class IntegrationTestCase(unittest.TestCase):  # pylint: disable=too-many-public
 
     def assertStatusCode(self, status_code):
         if self.last_response is not None:
-            self.assertEqual(self.last_response.status_code, status_code)
+            self.assertEqual(status_code, self.last_response.status_code)
         else:
             self.fail("last_response is invalid")
 

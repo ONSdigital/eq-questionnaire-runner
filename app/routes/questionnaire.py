@@ -3,7 +3,7 @@ from __future__ import annotations
 from typing import Union
 
 import flask_babel
-from flask import Blueprint, g, redirect, request
+from flask import Blueprint, g, redirect, request, send_file
 from flask import session as cookie_session
 from flask import url_for
 from flask_login import current_user, login_required
@@ -47,8 +47,10 @@ from app.views.handlers.submit_questionnaire import SubmitQuestionnaireHandler
 from app.views.handlers.thank_you import ThankYou
 from app.views.handlers.view_submitted_response import (
     ViewSubmittedResponse,
+    ViewSubmittedResponseExpired,
     ViewSubmittedResponseNotEnabled,
 )
+from app.views.handlers.view_submitted_response_pdf import ViewSubmittedResponsePDF
 
 logger = get_logger()
 
@@ -393,14 +395,43 @@ def get_view_submitted_response(schema, questionnaire_store):
             questionnaire_store,
             flask_babel.get_locale().language,
         )
-
     except ViewSubmittedResponseNotEnabled:
         raise NotFound
 
-    return render_template(
-        template="view-submitted-response",
-        content=view_submitted_response.get_context(),
-        page_title=view_submitted_response.get_page_title(),
+    return view_submitted_response.get_rendered_html()
+
+
+@post_submission_blueprint.route("download-pdf", methods=["GET"])
+@with_questionnaire_store
+@with_schema
+def get_view_submitted_response_pdf(
+    schema: QuestionnaireSchema, questionnaire_store: QuestionnaireStore
+) -> Response:
+    """
+    :param schema: The questionnaire schema object.
+    :type schema: QuestionnaireSchema
+    :param questionnaire_store: The questionnaire store object.
+    :type questionnaire_store: QuestionnaireStore
+    :return: A response object with the contents of a file to the client.
+    :rtype: Response
+    """
+
+    try:
+        view_submitted_response_pdf = ViewSubmittedResponsePDF(
+            schema,
+            questionnaire_store,
+            flask_babel.get_locale().language,
+        )
+    except ViewSubmittedResponseNotEnabled:
+        raise NotFound
+    except ViewSubmittedResponseExpired:
+        return redirect(url_for(".get_view_submitted_response"))
+
+    return send_file(
+        path_or_file=view_submitted_response_pdf.get_pdf(),
+        mimetype=view_submitted_response_pdf.mimetype,
+        as_attachment=True,
+        download_name=view_submitted_response_pdf.filename,
     )
 
 

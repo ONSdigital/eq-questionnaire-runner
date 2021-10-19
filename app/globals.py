@@ -103,7 +103,7 @@ def get_answer_store(user: User) -> AnswerStore:
     return questionnaire_store.answer_store
 
 
-def is_view_submitted_response_expired(submitted_at: datetime) -> bool:
+def has_view_submitted_response_expired(submitted_at: datetime) -> bool:
     return (
         datetime.now(timezone.utc) - submitted_at
     ).total_seconds() > current_app.config[
