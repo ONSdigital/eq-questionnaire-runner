@@ -2,9 +2,10 @@ from dataclasses import dataclass, field
 from typing import Iterable, Mapping, MutableMapping, Optional, Union
 
 from flask_babel import lazy_gettext
+from app.settings import ACCOUNT_SERVICE_BASE_URL
 from flask_babel.speaklater import LazyString
 
-DEFAULT_EN_BASE_URL = "https://ons.gov.uk"
+ACCOUNT_SERVICE_BASE_URL = ACCOUNT_SERVICE_BASE_URL
 
 
 @dataclass
@@ -21,7 +22,7 @@ class SurveyConfig:
     copyright_text: Optional[LazyString] = lazy_gettext(
         "Use of address data is subject to the terms and conditions."
     )
-    base_url: str = DEFAULT_EN_BASE_URL
+    base_url: str = ACCOUNT_SERVICE_BASE_URL
     account_service_url: Optional[str] = None
     title_logo: Optional[str] = None
     title_logo_alt: Optional[str] = None

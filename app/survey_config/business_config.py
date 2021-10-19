@@ -6,15 +6,15 @@ from flask_babel import lazy_gettext
 from app.survey_config.link import Link
 from app.survey_config.survey_config import SurveyConfig
 
-BASE_URL = "https://surveys.ons.gov.uk"
+from app.settings import ACCOUNT_SERVICE_BASE_URL
 
 
 @dataclass
 class BusinessSurveyConfig(
     SurveyConfig,
 ):
-    base_url: str = BASE_URL
-    account_service_url: str = f"{BASE_URL}/sign-in/logout"
+    base_url: str = ACCOUNT_SERVICE_BASE_URL
+    account_service_url: str = f"{base_url}/sign-in/logout"
     survey_title: str = "ONS Business Surveys"
 
     footer_links: Iterable[MutableMapping] = field(
