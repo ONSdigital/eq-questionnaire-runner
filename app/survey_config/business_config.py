@@ -1,5 +1,5 @@
 from dataclasses import dataclass, field
-from typing import Iterable, Mapping, MutableMapping
+from typing import Iterable, Mapping, MutableMapping, Optional
 
 from flask_babel import lazy_gettext
 
@@ -12,7 +12,7 @@ from app.survey_config.survey_config import SurveyConfig
 class BusinessSurveyConfig(
     SurveyConfig,
 ):
-    base_url: str = ACCOUNT_SERVICE_BASE_URL
+    base_url: Optional[str] = ACCOUNT_SERVICE_BASE_URL
     account_service_url: str = f"{base_url}/sign-in/logout"
     survey_title: str = "ONS Business Surveys"
 

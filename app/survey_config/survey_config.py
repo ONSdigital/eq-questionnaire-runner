@@ -23,7 +23,7 @@ class SurveyConfig:
     copyright_text: Optional[LazyString] = lazy_gettext(
         "Use of address data is subject to the terms and conditions."
     )
-    base_url: str = ACCOUNT_SERVICE_BASE_URL
+    base_url: Optional[str] = ACCOUNT_SERVICE_BASE_URL
     account_service_url: Optional[str] = None
     title_logo: Optional[str] = None
     title_logo_alt: Optional[str] = None
