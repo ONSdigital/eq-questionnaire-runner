@@ -13,21 +13,21 @@ class TestViewSubmissionResponsePDF(ViewSubmittedResponseBase):
         self.post()
         self.post()
 
-        # When I try to download my answer
+        # When I try to download my answers
         self.get("/submitted/download-pdf")
 
         # Then a 404 page is returned
         self.assertStatusNotFound()
 
     def test_download_when_submitted_response_enabled_but_not_expired(self):
-        # Given I launch and complete a questionnaire that does not have view-submitted-response enabled
+        # Given I launch and complete a questionnaire that has view-submitted-response enabled and has not expired
         self._launch_and_complete_questionnaire()
 
-        # When I try to download my answer
+        # When I try to download my answers
         self.get(self.VIEW_RESPONSE_PAGE_URL)
         self.get(self.get_download_button().attrs["href"])
 
-        # Then a the download is successful
+        # Then the download is successful
         self.assertStatusOK()
 
         # Check response content type is PDF
@@ -53,7 +53,7 @@ class TestViewSubmissionResponsePDF(ViewSubmittedResponseBase):
         # Given I launch and complete a questionnaire that has view-submitted-response enabled and has expired
         self._launch_and_complete_questionnaire()
 
-        # When I try to download my answer from the view response page
+        # When I try to download my answers from the view response page
         self.get(self.VIEW_RESPONSE_PAGE_URL)
         download_pdf_url = self.get_download_button().attrs["href"]
 
