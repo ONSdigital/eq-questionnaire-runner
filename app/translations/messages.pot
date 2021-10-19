@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2021-10-14 10:10+0100\n"
+"POT-Creation-Date: 2021-10-18 09:39+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -237,55 +237,55 @@ msgid_plural "{number_of_days} days"
 msgstr[0] ""
 msgstr[1] ""
 
-#: app/routes/errors.py:119
+#: app/routes/errors.py:118
 msgid "You have reached the maximum number of individual access codes"
 msgstr ""
 
-#: app/routes/errors.py:122
+#: app/routes/errors.py:121
 msgid ""
 "If you need more individual access codes, please <a "
 "href='{contact_us_url}'>contact us</a>."
 msgstr ""
 
-#: app/routes/errors.py:138
+#: app/routes/errors.py:137
 msgid "You have reached the maximum number of times for submitting feedback"
 msgstr ""
 
-#: app/routes/errors.py:141
+#: app/routes/errors.py:140
 msgid ""
 "If you need to give more feedback, please <a "
 "href='{contact_us_url}'>contact us</a>."
 msgstr ""
 
-#: app/routes/errors.py:173
+#: app/routes/errors.py:172
 msgid "Sorry, there was a problem sending the access code"
 msgstr ""
 
-#: app/routes/errors.py:179
+#: app/routes/errors.py:178
 msgid "You can try to <a href='{retry_url}'>request a new access code again</a>."
 msgstr ""
 
-#: app/routes/errors.py:182 app/routes/errors.py:205 app/routes/errors.py:227
+#: app/routes/errors.py:181 app/routes/errors.py:204 app/routes/errors.py:226
 msgid ""
 "If this problem keeps happening, please <a "
 "href='{contact_us_url}'>contact us</a> for help."
 msgstr ""
 
-#: app/routes/errors.py:201
+#: app/routes/errors.py:200
 msgid "Sorry, there was a problem sending the confirmation email"
 msgstr ""
 
-#: app/routes/errors.py:202
+#: app/routes/errors.py:201
 msgid "You can try to <a href='{retry_url}'>send the email again</a>."
 msgstr ""
 
-#: app/routes/errors.py:223 templates/errors/403.html:3
+#: app/routes/errors.py:222 templates/errors/403.html:3
 #: templates/errors/403.html:6 templates/errors/submission-failed.html:5
 #: templates/errors/submission-failed.html:8
 msgid "Sorry, there is a problem"
 msgstr ""
 
-#: app/routes/errors.py:224
+#: app/routes/errors.py:223
 msgid "You can try to <a href='{retry_url}'>submit your feedback again</a>."
 msgstr ""
 
@@ -470,15 +470,15 @@ msgstr ""
 msgid "Your answers have been submitted for <span>{company_name}</span>"
 msgstr ""
 
-#: app/views/contexts/view_submitted_response_context.py:26
+#: app/views/contexts/view_submitted_response_context.py:28
 msgid "Answers submitted."
 msgstr ""
 
-#: app/views/contexts/view_submitted_response_context.py:28
+#: app/views/contexts/view_submitted_response_context.py:30
 msgid "Answers submitted for <span>{ru_name}</span> ({trad_as})"
 msgstr ""
 
-#: app/views/contexts/view_submitted_response_context.py:32
+#: app/views/contexts/view_submitted_response_context.py:34
 msgid "Answers submitted for <span>{ru_name}</span>"
 msgstr ""
 
@@ -736,7 +736,7 @@ msgstr ""
 msgid "Thank you for completing the census"
 msgstr ""
 
-#: app/views/handlers/view_submitted_response.py:41
+#: app/views/handlers/view_submitted_response.py:50
 msgid "View Submitted Response"
 msgstr ""
 
@@ -957,7 +957,15 @@ msgstr ""
 msgid "For security, you can no longer view your answers"
 msgstr ""
 
-#: templates/view-submitted-response.html:53
+#: templates/view-submitted-response.html:35
+msgid "Print answers"
+msgstr ""
+
+#: templates/view-submitted-response.html:46
+msgid "Save answers as PDF"
+msgstr ""
+
+#: templates/view-submitted-response.html:65
 msgid "For security, you can no longer view or get a copy of your answers"
 msgstr ""
 
