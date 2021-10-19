@@ -44,7 +44,6 @@ class TestQuestionnaireHtmlEscaping(IntegrationTestCase):
         ]
         for schema, answer_id in testdata:
             with self.subTest(schema=schema, answer_id=answer_id):
-                print(schema)
                 self.launchSurvey(schema)
                 self.post({answer_id: HTML_CONTENT})
 
