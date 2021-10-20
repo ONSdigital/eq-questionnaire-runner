@@ -3,7 +3,6 @@ from typing import Iterable, Mapping, MutableMapping
 
 from flask_babel import lazy_gettext
 
-from app.settings import ACCOUNT_SERVICE_BASE_URL
 from app.survey_config.link import Link
 from app.survey_config.survey_config import SurveyConfig
 
@@ -12,7 +11,6 @@ from app.survey_config.survey_config import SurveyConfig
 class BusinessSurveyConfig(
     SurveyConfig,
 ):
-    account_service_url: str = f"{ACCOUNT_SERVICE_BASE_URL}/sign-in/logout"
     survey_title: str = "ONS Business Surveys"
 
     footer_links: Iterable[MutableMapping] = field(
@@ -38,3 +36,7 @@ class BusinessSurveyConfig(
         ],
         compare=False,
     )
+
+    def __post_init__(self):
+        if not self.account_service_url:
+            self.account_service_url: str = f"{self.base_url}/sign-in/logout"

@@ -1,4 +1,4 @@
-from app.survey_config.business_config import ACCOUNT_SERVICE_BASE_URL
+from app.settings import ACCOUNT_SERVICE_BASE_URL
 from tests.integration.integration_test_case import IntegrationTestCase
 
 SIGN_OUT_URL_PATH = "/sign-out"
