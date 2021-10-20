@@ -29,6 +29,7 @@ feedback_type = "Feedback type"
 feedback_text = "Feedback text"
 feedback_type_question_category = "Feedback type question category"
 started_at = str(datetime.now(tz=timezone.utc).isoformat())
+language_code = "cy"
 
 
 @pytest.fixture()
@@ -38,7 +39,7 @@ def session_data():
         schema_name=schema_name,
         response_id=response_id,
         period_str=period_str,
-        language_code=None,
+        language_code=language_code,
         launch_language_code=None,
         survey_url=None,
         ru_name=ru_name,
@@ -80,6 +81,7 @@ def test_feedback_payload_with_feedback_type_question_category(
         started_at,
         case_id,
         schema,
+        language_code,
         session_data.feedback_count,
         feedback_text,
         feedback_type,
@@ -113,6 +115,7 @@ def test_feedback_payload_with_feedback_type_question_category(
         "submitted_at": datetime.now(tz=timezone.utc).isoformat(),
         "flushed": False,
         "survey_id": survey_id,
+        "submission_language_code": language_code,
         "tx_id": tx_id,
         "type": "uk.gov.ons.edc.eq:feedback",
         "version": data_version,
@@ -130,6 +133,7 @@ def test_feedback_payload_without_feedback_type_question_category(
         started_at,
         case_id,
         schema,
+        language_code,
         session_data.feedback_count,
         feedback_text,
         feedback_type,
@@ -161,6 +165,7 @@ def test_feedback_payload_without_feedback_type_question_category(
         "submitted_at": datetime.now(tz=timezone.utc).isoformat(),
         "flushed": False,
         "survey_id": survey_id,
+        "submission_language_code": language_code,
         "tx_id": tx_id,
         "type": "uk.gov.ons.edc.eq:feedback",
         "version": data_version,

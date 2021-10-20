@@ -85,6 +85,7 @@ class Feedback:
             session_data.case_id,
             self._schema,
             session_data.feedback_count,
+            session_data.language_code,
             self.form.data.get("feedback-text"),
             self.form.data.get("feedback-type"),
             self.form.data.get("feedback-type-question-category"),
@@ -252,6 +253,7 @@ class FeedbackPayload:
         "flushed": False,
         "survey_id": "001",
         "form_type: "0007",
+        "submission_language_code": "en",
         "tx_id": "5d4e1a37-ed21-440a-8c4d-3054a124a104",
         "type": "uk.gov.ons.edc.eq:feedback",
         "launch_language_code: "en",
@@ -263,6 +265,7 @@ class FeedbackPayload:
     :param started_at: Datetime of questionnaire start
     :param case_id: Questionnaire case id
     :param schema: QuestionnaireSchema class with populated schema json
+    :param submission_language_code: Language being used at the point of feedback submission
     :param feedback_count: Number of feedback submissions attempted by the user
     :param feedback_text: Feedback text input by the user
     :param feedback_type: Type of feedback selected by the user
@@ -278,6 +281,7 @@ class FeedbackPayload:
         started_at: str,
         case_id: str,
         schema: QuestionnaireSchema,
+        submission_language_code: str,
         feedback_count: int,
         feedback_text: str,
         feedback_type: str,
@@ -287,6 +291,7 @@ class FeedbackPayload:
         self.started_at = started_at
         self.case_id = case_id
         self.schema = schema
+        self.submission_language_code = submission_language_code
         self.feedback_count = feedback_count
         self.feedback_text = feedback_text
         self.feedback_type = feedback_type
@@ -302,6 +307,7 @@ class FeedbackPayload:
             "collection": build_collection(self.metadata),
             "metadata": build_metadata(self.metadata),
             "survey_id": self.schema.json["survey_id"],
+            "submission_language_code": self.submission_language_code,
             "tx_id": self.metadata["tx_id"],
             "type": "uk.gov.ons.edc.eq:feedback",
             "launch_language_code": self.metadata.get(
