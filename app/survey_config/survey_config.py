@@ -6,8 +6,6 @@ from flask_babel.speaklater import LazyString
 
 from app.settings import ACCOUNT_SERVICE_BASE_URL
 
-ACCOUNT_SERVICE_BASE_URL = ACCOUNT_SERVICE_BASE_URL or "https://surveys.ons.gov.uk"
-
 
 @dataclass
 class SurveyConfig:
