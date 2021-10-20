@@ -7,6 +7,7 @@ clean:
 
 load-design-system-templates:
 	./scripts/load_release.sh onsdigital/design-system $(DESIGN_SYSTEM_VERSION)
+	./scripts/load_print_styles_from_cdn.sh $(DESIGN_SYSTEM_VERSION)
 
 build: load-design-system-templates
 	make translate
