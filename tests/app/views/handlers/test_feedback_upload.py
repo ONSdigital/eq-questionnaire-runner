@@ -31,6 +31,9 @@ feedback_type_question_category = "Feedback type question category"
 started_at = str(datetime.now(tz=timezone.utc).isoformat())
 language_code = "cy"
 case_type = "I"
+channel = "H"
+case_ref = "1000000000000001"
+region_code = "GB_WLS"
 
 
 @pytest.fixture()
@@ -71,16 +74,26 @@ def metadata():
         "form_type": form_type,
         "display_address": display_address,
         "case_type": case_type,
+        "channel": channel,
+        "case_ref": case_ref,
+        "region_code": region_code,
+    }
+
+
+@pytest.fixture()
+def response_metadata():
+    return {
+        "started_at": started_at,
     }
 
 
 @freeze_time(datetime.now(tz=timezone.utc).isoformat())
 def test_feedback_payload_with_feedback_type_question_category(
-    session_data, schema, metadata
+    session_data, schema, metadata, response_metadata
 ):
     feedback_payload = FeedbackPayload(
         metadata,
-        started_at,
+        response_metadata,
         case_id,
         schema,
         language_code,
@@ -122,6 +135,9 @@ def test_feedback_payload_with_feedback_type_question_category(
         "type": "uk.gov.ons.edc.eq:feedback",
         "version": data_version,
         "case_type": case_type,
+        "channel": channel,
+        "region_code": region_code,
+        "case_ref": case_ref,
     }
 
     assert expected_payload == feedback_payload()
@@ -129,11 +145,11 @@ def test_feedback_payload_with_feedback_type_question_category(
 
 @freeze_time(datetime.now(tz=timezone.utc).isoformat())
 def test_feedback_payload_without_feedback_type_question_category(
-    session_data, schema, metadata
+    session_data, schema, metadata, response_metadata
 ):
     feedback_payload = FeedbackPayload(
         metadata,
-        started_at,
+        response_metadata,
         case_id,
         schema,
         language_code,
@@ -173,6 +189,9 @@ def test_feedback_payload_without_feedback_type_question_category(
         "type": "uk.gov.ons.edc.eq:feedback",
         "version": data_version,
         "case_type": case_type,
+        "channel": channel,
+        "region_code": region_code,
+        "case_ref": case_ref,
     }
 
     assert expected_payload == feedback_payload()

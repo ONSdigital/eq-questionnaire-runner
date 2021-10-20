@@ -78,18 +78,7 @@ def convert_answers(
         "launch_language_code": metadata.get("language_code", DEFAULT_LANGUAGE_CODE),
     }
 
-    if metadata.get("channel"):
-        payload["channel"] = metadata["channel"]
-    if metadata.get("case_type"):
-        payload["case_type"] = metadata["case_type"]
-    if metadata.get("form_type"):
-        payload["form_type"] = metadata["form_type"]
-    if metadata.get("region_code"):
-        payload["region_code"] = metadata["region_code"]
-    if response_metadata.get("started_at"):
-        payload["started_at"] = response_metadata["started_at"]
-    if metadata.get("case_ref"):
-        payload["case_ref"] = metadata["case_ref"]
+    set_optional_metadata(metadata, response_metadata, payload)
 
     if schema.json["data_version"] == "0.0.3":
         payload["data"] = {
@@ -128,3 +117,18 @@ def build_metadata(metadata):
         downstream_metadata["display_address"] = metadata["display_address"]
 
     return downstream_metadata
+
+
+def set_optional_metadata(metadata, response_metadata, payload):
+    if channel := metadata.get("channel"):
+        payload["channel"] = channel
+    if case_type := metadata.get("case_type"):
+        payload["case_type"] = case_type
+    if form_type := metadata.get("form_type"):
+        payload["form_type"] = form_type
+    if region_code := metadata.get("region_code"):
+        payload["region_code"] = region_code
+    if started_at := response_metadata.get("started_at"):
+        payload["started_at"] = started_at
+    if case_ref := metadata.get("case_ref"):
+        payload["case_ref"] = case_ref

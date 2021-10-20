@@ -10,7 +10,11 @@ from app.data_models.session_data import SessionData
 from app.data_models.session_store import SessionStore
 from app.forms.questionnaire_form import generate_form
 from app.questionnaire.questionnaire_schema import QuestionnaireSchema
-from app.submitter.converter import build_collection, build_metadata
+from app.submitter.converter import (
+    build_collection,
+    build_metadata,
+    set_optional_metadata,
+)
 from app.views.contexts.feedback_form_context import build_feedback_context
 
 DEFAULT_LANGUAGE_CODE = "en"
@@ -81,7 +85,7 @@ class Feedback:
 
         feedback_message = FeedbackPayload(
             self._questionnaire_store.metadata,
-            self._questionnaire_store.response_metadata["started_at"],
+            self._questionnaire_store.response_metadata,
             session_data.case_id,
             self._schema,
             session_data.feedback_count,
@@ -279,7 +283,7 @@ class FeedbackPayload:
     def __init__(
         self,
         metadata: Mapping[str, Union[str, int, list]],
-        started_at: str,
+        response_metadata: Mapping[str, Union[str, int, list]],
         case_id: str,
         schema: QuestionnaireSchema,
         submission_language_code: str,
@@ -289,7 +293,7 @@ class FeedbackPayload:
         feedback_type_question_category: str = None,
     ):
         self.metadata = metadata
-        self.started_at = started_at
+        self.response_metadata = response_metadata
         self.case_id = case_id
         self.schema = schema
         self.submission_language_code = submission_language_code
@@ -302,7 +306,6 @@ class FeedbackPayload:
         payload = {
             "origin": "uk.gov.ons.edc.eq",
             "case_id": self.case_id,
-            "started_at": self.started_at,
             "submitted_at": datetime.now(tz=timezone.utc).isoformat(),
             "flushed": False,
             "collection": build_collection(self.metadata),
@@ -317,11 +320,7 @@ class FeedbackPayload:
             "version": "0.0.1",
         }
 
-        if form_type := self.metadata.get("form_type"):
-            payload["form_type"] = form_type
-
-        if case_type := self.metadata.get("case_type"):
-            payload["case_type"] = case_type
+        set_optional_metadata(self.metadata, self.response_metadata, payload)
 
         payload["data"] = {
             "feedback_text": self.feedback_text,
