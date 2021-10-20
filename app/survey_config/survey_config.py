@@ -22,7 +22,7 @@ class SurveyConfig:
         "Use of address data is subject to the terms and conditions."
     )
     base_url: str = DEFAULT_EN_BASE_URL
-    account_service_url: str = None
+    account_service_url: Optional[str] = None
     account_service_surveys_path: Optional[str] = None
     title_logo: Optional[str] = None
     title_logo_alt: Optional[str] = None
