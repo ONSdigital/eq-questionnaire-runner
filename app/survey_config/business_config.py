@@ -15,6 +15,7 @@ class BusinessSurveyConfig(
 ):
     base_url: str = BASE_URL
     account_service_url: str = f"{BASE_URL}/sign-in/logout"
+    account_service_surveys_path: str = "/surveys/todo"
     survey_title: str = "ONS Business Surveys"
 
     footer_links: Iterable[MutableMapping] = field(

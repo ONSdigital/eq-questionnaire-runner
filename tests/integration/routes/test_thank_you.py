@@ -1,5 +1,7 @@
 from tests.integration.integration_test_case import IntegrationTestCase
 
+ACCOUNT_SERVICE_SURVEYS_URL = "/surveys/todo"
+
 
 class TestThankYou(IntegrationTestCase):
     def test_thank_you_page_no_sign_out(self):
@@ -91,3 +93,18 @@ class TestThankYou(IntegrationTestCase):
         self.assertInUrl("thank-you")
         self.assertInBody("This survey was important.")
         self.assertInBody('<a href="">Important link</a>')
+
+    def test_back_to_surveys_link_on_thank_you(self):
+        self.launchSurvey("test_thank_you")
+        self.post({"answer": "Yes"})
+        self.post()
+
+        self.assertInUrl("thank-you")
+        self.assertInBody("Back to surveys")
+
+    def test_back_to_surveys_url(self):
+        self.launchSurvey("test_thank_you")
+        self.post({"answer": "Yes"})
+        self.post()
+        self.get(ACCOUNT_SERVICE_SURVEYS_URL)
+        self.assertInUrl(ACCOUNT_SERVICE_SURVEYS_URL)
