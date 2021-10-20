@@ -249,7 +249,8 @@ class FeedbackPayload:
         "origin": "uk.gov.ons.edc.eq",
         "submitted_at": "2021-10-12T10:41:23+00:00",
         "started_at": "2021-10-12T10:41:23+00:00",
-        "case_id": "'c39e1246-debd-473a-894f-85c8397ba5ea'",
+        "case_id": "c39e1246-debd-473a-894f-85c8397ba5ea",
+        "case_type": "I",
         "flushed": False,
         "survey_id": "001",
         "form_type: "0007",
@@ -318,6 +319,9 @@ class FeedbackPayload:
 
         if form_type := self.metadata.get("form_type"):
             payload["form_type"] = form_type
+
+        if case_type := self.metadata.get("case_type"):
+            payload["case_type"] = case_type
 
         payload["data"] = {
             "feedback_text": self.feedback_text,

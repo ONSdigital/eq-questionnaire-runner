@@ -30,6 +30,7 @@ feedback_text = "Feedback text"
 feedback_type_question_category = "Feedback type question category"
 started_at = str(datetime.now(tz=timezone.utc).isoformat())
 language_code = "cy"
+case_type = "I"
 
 
 @pytest.fixture()
@@ -69,6 +70,7 @@ def metadata():
         "response_id": response_id,
         "form_type": form_type,
         "display_address": display_address,
+        "case_type": case_type,
     }
 
 
@@ -119,6 +121,7 @@ def test_feedback_payload_with_feedback_type_question_category(
         "tx_id": tx_id,
         "type": "uk.gov.ons.edc.eq:feedback",
         "version": data_version,
+        "case_type": case_type,
     }
 
     assert expected_payload == feedback_payload()
@@ -169,6 +172,7 @@ def test_feedback_payload_without_feedback_type_question_category(
         "tx_id": tx_id,
         "type": "uk.gov.ons.edc.eq:feedback",
         "version": data_version,
+        "case_type": case_type,
     }
 
     assert expected_payload == feedback_payload()
