@@ -7,6 +7,8 @@ from app.settings import ACCOUNT_SERVICE_BASE_URL
 from app.survey_config.link import Link
 from app.survey_config.survey_config import SurveyConfig
 
+ACCOUNT_SERVICE_BASE_URL = ACCOUNT_SERVICE_BASE_URL or "https://surveys.ons.gov.uk"
+
 
 @dataclass
 class BusinessSurveyConfig(

@@ -6,9 +6,6 @@ from tests.integration.integration_test_case import IntegrationTestCase
 
 class TestSession(IntegrationTestCase):
     def setUp(self):
-        # Empty ACCOUNT_SERVICE_BASE_URL var
-        settings.ACCOUNT_SERVICE_BASE_URL = ""
-
         # Cache for requests
         self.last_url = None
         self.last_response = None
@@ -17,7 +14,6 @@ class TestSession(IntegrationTestCase):
 
         # Perform setup steps
         self._set_up_app(setting_overrides={"SURVEY_TYPE": "default"})
-        super().setUp()
 
     def test_session_expired(self):
         self.get("/session-expired")
@@ -46,7 +42,7 @@ class TestSession(IntegrationTestCase):
         self.deleteCookie()
         self.get("/sign-out", follow_redirects=False)
 
-        self.assertInRedirect("https://census.gov.uk")
+        self.assertInRedirect("https://surveys.ons.gov.uk")
 
     def test_session_jti_token_expired(self):
         self.launchSurvey(exp=time.time() - float(60))
