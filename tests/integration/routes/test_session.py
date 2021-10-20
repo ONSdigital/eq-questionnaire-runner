@@ -42,7 +42,7 @@ class TestSession(IntegrationTestCase):
         self.deleteCookie()
         self.get("/sign-out", follow_redirects=False)
 
-        self.assertInRedirect("https://surveys.ons.gov.uk")
+        self.assertInRedirect("surveys.ons.gov.uk")
 
     def test_session_jti_token_expired(self):
         self.launchSurvey(exp=time.time() - float(60))

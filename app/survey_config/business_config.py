@@ -15,7 +15,7 @@ class BusinessSurveyConfig(
     SurveyConfig,
 ):
     base_url: Optional[str] = ACCOUNT_SERVICE_BASE_URL
-    account_service_url: str = f"{base_url}/sign-in/logout"
+    account_service_url: str = f"{ACCOUNT_SERVICE_BASE_URL}/sign-in/logout"
     survey_title: str = "ONS Business Surveys"
 
     footer_links: Iterable[MutableMapping] = field(
