@@ -1,6 +1,5 @@
 import time
 
-from app import settings
 from tests.integration.integration_test_case import IntegrationTestCase
 
 
