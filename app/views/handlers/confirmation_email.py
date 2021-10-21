@@ -50,8 +50,8 @@ class ConfirmationEmail:
         if self._serialised_email:
             try:
                 email = url_safe_serializer().loads(self._serialised_email)
-            except BadSignature:
-                raise BadRequest
+            except BadSignature as exc:
+                raise BadRequest from exc
             return EmailForm(email=email)
         return EmailForm()
 

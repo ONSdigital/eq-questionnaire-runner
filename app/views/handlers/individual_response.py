@@ -214,8 +214,8 @@ class IndividualResponseHandler:
                 message=fulfilment_request.message,
                 fulfilment_request_transaction_id=fulfilment_request.transaction_id,
             )
-        except PublicationFailed:
-            raise IndividualResponseFulfilmentRequestPublicationFailed
+        except PublicationFailed as exc:
+            raise IndividualResponseFulfilmentRequestPublicationFailed from exc
 
     def _check_individual_response_count(self):
         if (
@@ -302,6 +302,10 @@ class IndividualResponseHandler:
         self._questionnaire_store.progress_store.update_section_status(
             status, self.individual_section_id, self._list_item_id
         )
+
+    @property
+    def block_definition(self):
+        raise NotImplementedError
 
 
 class IndividualResponseHowHandler(IndividualResponseHandler):
@@ -838,8 +842,8 @@ class IndividualResponseTextConfirmHandler(IndividualResponseHandler):
             self.mobile_number = url_safe_serializer().loads(
                 request_args["mobile_number"]
             )
-        except BadSignature:
-            raise BadRequest
+        except BadSignature as exc:
+            raise BadRequest from exc
 
         super().__init__(
             schema,

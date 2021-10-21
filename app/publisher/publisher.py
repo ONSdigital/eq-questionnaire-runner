@@ -39,12 +39,12 @@ class PubSubPublisher(Publisher):
                 message_id=message_id,
                 fulfilment_request_transaction_id=fulfilment_request_transaction_id,
             )
-        except Exception as ex:  # pylint:disable=broad-except
+        except Exception as exc:  # pylint:disable=broad-except
             logger.exception(
                 "message publication failed",
                 topic_id=topic_id,
             )
-            raise PublicationFailed(ex)
+            raise PublicationFailed(exc) from exc
 
 
 class LogPublisher(Publisher):

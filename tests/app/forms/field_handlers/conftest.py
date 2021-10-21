@@ -16,7 +16,7 @@ def value_source_resolver():
             }
         }
     )
-    value_source_resolver = ValueSourceResolver(
+    resolver = ValueSourceResolver(
         answer_store=AnswerStore(),
         list_store=ListStore(),
         metadata={},
@@ -27,4 +27,20 @@ def value_source_resolver():
         escape_answer_values=False,
     )
 
-    return value_source_resolver
+    return resolver
+
+
+@pytest.fixture
+def dropdown_answer_schema():
+    return {
+        "type": "Dropdown",
+        "id": "dropdown-with-label-answer",
+        "mandatory": False,
+        "label": "Please choose an option",
+        "description": "This is an optional dropdown",
+        "options": [
+            {"label": "Liverpool", "value": "Liverpool"},
+            {"label": "Chelsea", "value": "Chelsea"},
+            {"label": "Rugby is better!", "value": "Rugby is better!"},
+        ],
+    }

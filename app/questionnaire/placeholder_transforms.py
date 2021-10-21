@@ -21,7 +21,7 @@ DAYS_OF_WEEK = {
     "SUNDAY": 6,
 }
 
-# pylint: disable=too-many-public-methods
+
 class PlaceholderTransforms:
     """
     A class to group the transforms that can be used within placeholders

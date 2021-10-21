@@ -1,24 +1,7 @@
-from pytest import fixture
 from wtforms import Form, SelectField
 
 from app.forms import error_messages
 from app.forms.field_handlers.dropdown_handler import DropdownHandler
-
-
-@fixture
-def dropdown_answer_schema():
-    return {
-        "type": "Dropdown",
-        "id": "dropdown-with-label-answer",
-        "mandatory": False,
-        "label": "Please choose an option",
-        "description": "This is an optional dropdown",
-        "options": [
-            {"label": "Liverpool", "value": "Liverpool"},
-            {"label": "Chelsea", "value": "Chelsea"},
-            {"label": "Rugby is better!", "value": "Rugby is better!"},
-        ],
-    }
 
 
 def test_build_choices_without_placeholder(

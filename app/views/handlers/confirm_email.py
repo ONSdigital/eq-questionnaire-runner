@@ -57,8 +57,8 @@ class ConfirmEmail:
 
         try:
             email = url_safe_serializer().loads(self._serialized_email)
-        except BadSignature:
-            raise BadRequest
+        except BadSignature as exc:
+            raise BadRequest from exc
 
         self._questionnaire_store = questionnaire_store
         self._schema = schema

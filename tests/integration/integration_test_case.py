@@ -27,7 +27,7 @@ KEYS_FOLDER = "./tests/jwt-test-keys"
 
 
 def get_file_contents(filename, trim=False):
-    with open(os.path.join(KEYS_FOLDER, filename), "r") as f:
+    with open(os.path.join(KEYS_FOLDER, filename), "r", encoding="utf-8") as f:
         data = f.read()
         if trim:
             data = data.rstrip("\r\n")

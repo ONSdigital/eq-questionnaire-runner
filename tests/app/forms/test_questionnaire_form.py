@@ -18,7 +18,8 @@ from app.questionnaire.placeholder_renderer import PlaceholderRenderer
 from app.utilities.schema import load_schema_from_name
 from tests.app.app_context_test_case import AppContextTestCase
 
-
+# pylint: disable=no-member
+# wtforms Form parents are not discoverable in the 2.3.3 implementation
 class TestQuestionnaireForm(
     AppContextTestCase
 ):  # noqa: C901  pylint: disable=too-many-public-methods

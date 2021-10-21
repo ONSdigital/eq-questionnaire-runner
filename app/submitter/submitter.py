@@ -118,6 +118,7 @@ class RabbitMQSubmitter:
                 mandatory=True,
                 properties=properties,
             )
+
             if published:
                 logger.info("sent message", category="rabbitmq")
             else:
