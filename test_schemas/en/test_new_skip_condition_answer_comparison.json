@@ -109,30 +109,14 @@
                             },
                             "skip_conditions": {
                                 "when": {
-                                    "or": [
+                                    ">=": [
                                         {
-                                            ">": [
-                                                {
-                                                    "identifier": "comparison-1-answer",
-                                                    "source": "answers"
-                                                },
-                                                {
-                                                    "identifier": "comparison-2-answer",
-                                                    "source": "answers"
-                                                }
-                                            ]
+                                            "identifier": "comparison-1-answer",
+                                            "source": "answers"
                                         },
                                         {
-                                            "==": [
-                                                {
-                                                    "identifier": "comparison-1-answer",
-                                                    "source": "answers"
-                                                },
-                                                {
-                                                    "identifier": "comparison-2-answer",
-                                                    "source": "answers"
-                                                }
-                                            ]
+                                            "identifier": "comparison-2-answer",
+                                            "source": "answers"
                                         }
                                     ]
                                 }
@@ -151,30 +135,14 @@
                             },
                             "skip_conditions": {
                                 "when": {
-                                    "or": [
+                                    "<=": [
                                         {
-                                            "<": [
-                                                {
-                                                    "identifier": "comparison-1-answer",
-                                                    "source": "answers"
-                                                },
-                                                {
-                                                    "source": "answers",
-                                                    "identifier": "comparison-1-answer"
-                                                }
-                                            ]
+                                            "identifier": "comparison-1-answer",
+                                            "source": "answers"
                                         },
                                         {
-                                            "==": [
-                                                {
-                                                    "identifier": "comparison-1-answer",
-                                                    "source": "answers"
-                                                },
-                                                {
-                                                    "source": "answers",
-                                                    "identifier": "comparison-2-answer"
-                                                }
-                                            ]
+                                            "source": "answers",
+                                            "identifier": "comparison-2-answer"
                                         }
                                     ]
                                 }
