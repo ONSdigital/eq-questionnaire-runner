@@ -3,8 +3,9 @@ from datetime import datetime, timedelta, timezone
 
 from freezegun import freeze_time
 
-from app import settings
 from app.utilities.json import json_loads
+from app.settings import ACCOUNT_SERVICE_BASE_URL, EQ_SESSION_TIMEOUT_SECONDS
+
 from tests.integration.integration_test_case import IntegrationTestCase
 
 TIME_TO_FREEZE = datetime(2020, 1, 1, 12, 0, 0, tzinfo=timezone.utc)
@@ -48,7 +49,7 @@ class TestSession(IntegrationTestCase):
         self.deleteCookie()
         self.get("/sign-out", follow_redirects=False)
 
-        self.assertInRedirect("ons.gov.uk")
+        self.assertInRedirect(ACCOUNT_SERVICE_BASE_URL)
 
     def test_session_jti_token_expired(self):
         self.launchSurvey(exp=time.time() - float(60))
@@ -70,7 +71,7 @@ class TestSession(IntegrationTestCase):
         response = self.getResponseData()
         parsed_json = json_loads(response)
         expected_expires_at = (
-            TIME_TO_FREEZE + timedelta(seconds=settings.EQ_SESSION_TIMEOUT_SECONDS)
+            TIME_TO_FREEZE + timedelta(seconds=EQ_SESSION_TIMEOUT_SECONDS)
         ).isoformat()
 
         self.assertIn("expires_at", parsed_json)
