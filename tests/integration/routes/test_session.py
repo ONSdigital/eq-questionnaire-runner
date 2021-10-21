@@ -1,5 +1,6 @@
 import time
 
+from app.settings import ACCOUNT_SERVICE_BASE_URL
 from tests.integration.integration_test_case import IntegrationTestCase
 
 
@@ -41,7 +42,7 @@ class TestSession(IntegrationTestCase):
         self.deleteCookie()
         self.get("/sign-out", follow_redirects=False)
 
-        self.assertInRedirect("ons.gov.uk")
+        self.assertInRedirect(ACCOUNT_SERVICE_BASE_URL)
 
     def test_session_jti_token_expired(self):
         self.launchSurvey(exp=time.time() - float(60))

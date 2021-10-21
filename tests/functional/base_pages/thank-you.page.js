@@ -40,5 +40,9 @@ class ThankYouPage extends BasePage {
   feedback() {
     return ".ons-feedback";
   }
+
+  feedbackLink() {
+    return ".ons-feedback__link";
+  }
 }
 export default new ThankYouPage("thank-you");
