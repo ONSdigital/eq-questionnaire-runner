@@ -1,11 +1,10 @@
 from datetime import datetime, timezone
 
-from freezegun import freeze_time
 import pytest
+from freezegun import freeze_time
 
 from app.data_models.session_data import SessionData
 from app.questionnaire import QuestionnaireSchema
-
 
 time_to_freeze = datetime.now(timezone.utc).replace(second=0, microsecond=0)
 

@@ -4,10 +4,10 @@ from typing import Callable, Mapping, Optional, Type
 
 from wtforms import Form
 
-
 from app.forms.fields import IntegerFieldWithSeparator
 
 ErrorMessageType = dict[str, str]
+
 
 # pylint: disable=no-member
 # wtforms Form parents are not discoverable in the 2.3.3 implementation

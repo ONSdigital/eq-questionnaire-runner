@@ -449,7 +449,8 @@ def format_playback_value(
 ) -> str:
     if currency:
         return get_formatted_currency(value, currency)
-    return format_number(value)
+    result: str = format_number(value)
+    return result
 
 
 def format_message_with_title(error_message: str, question_title: str) -> str:

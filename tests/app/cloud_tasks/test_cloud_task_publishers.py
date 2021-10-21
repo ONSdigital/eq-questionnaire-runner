@@ -9,6 +9,7 @@ from google.cloud.tasks_v2.types.task import Task
 from app.cloud_tasks import CloudTaskPublisher
 from app.cloud_tasks.exceptions import CloudTaskCreationFailed
 
+
 # pylint: disable=protected-access
 class TestCloudTaskPublisher(TestCase):
     PROJECT_ID = "test-project-id"
