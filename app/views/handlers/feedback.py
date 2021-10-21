@@ -232,7 +232,7 @@ class FeedbackMetadata:
         self.case_id = case_id
         self.tx_id = tx_id
 
-    def __call__(self) -> dict[str, str]
+    def __call__(self) -> dict[str, str]:
         return vars(self)
 
 
