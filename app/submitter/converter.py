@@ -101,7 +101,7 @@ def convert_answers(
     return payload | optional_properties
 
 
-def build_collection(metadata) -> Mapping[str, str] :
+def build_collection(metadata) -> Mapping[str, str]:
     return {
         "exercise_sid": metadata["collection_exercise_sid"],
         "schema_name": metadata["schema_name"],
