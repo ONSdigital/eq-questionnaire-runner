@@ -13,7 +13,7 @@ from app.questionnaire.questionnaire_schema import QuestionnaireSchema
 from app.submitter.converter import (
     build_collection,
     build_metadata,
-    set_optional_metadata,
+    get_optional_payload_properties,
 )
 from app.views.contexts.feedback_form_context import build_feedback_context
 
@@ -320,7 +320,9 @@ class FeedbackPayload:
             "version": "0.0.1",
         }
 
-        set_optional_metadata(self.metadata, self.response_metadata, payload)
+        optional_properties = get_optional_payload_properties(
+            self.metadata, self.response_metadata
+        )
 
         payload["data"] = {
             "feedback_text": self.feedback_text,
@@ -333,4 +335,4 @@ class FeedbackPayload:
                 "feedback_type_question_category"
             ] = self.feedback_type_question_category
 
-        return payload
+        return payload | optional_properties

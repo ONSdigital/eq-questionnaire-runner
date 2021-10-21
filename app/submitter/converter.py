@@ -78,7 +78,7 @@ def convert_answers(
         "launch_language_code": metadata.get("language_code", DEFAULT_LANGUAGE_CODE),
     }
 
-    set_optional_metadata(metadata, response_metadata, payload)
+    optional_properties = get_optional_payload_properties(metadata, response_metadata)
 
     if schema.json["data_version"] == "0.0.3":
         payload["data"] = {
@@ -95,7 +95,8 @@ def convert_answers(
         raise DataVersionError(schema.json["data_version"])
 
     logger.info("converted answer ready for submission")
-    return payload
+
+    return payload | optional_properties
 
 
 def build_collection(metadata):
@@ -119,7 +120,9 @@ def build_metadata(metadata):
     return downstream_metadata
 
 
-def set_optional_metadata(metadata, response_metadata, payload):
+def get_optional_payload_properties(metadata, response_metadata):
+    payload = {}
+
     if channel := metadata.get("channel"):
         payload["channel"] = channel
     if case_type := metadata.get("case_type"):
@@ -132,3 +135,5 @@ def set_optional_metadata(metadata, response_metadata, payload):
         payload["started_at"] = started_at
     if case_ref := metadata.get("case_ref"):
         payload["case_ref"] = case_ref
+
+    return payload
