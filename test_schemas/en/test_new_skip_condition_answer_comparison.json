@@ -81,20 +81,20 @@
                                     }
                                 ]
                             },
-                            "skip_conditions": [
-                                {
-                                    "when": [
+                            "skip_conditions": {
+                                "when": {
+                                    "!=": [
                                         {
-                                            "id": "comparison-1-answer",
-                                            "condition": "not equals",
-                                            "comparison": {
-                                                "source": "answers",
-                                                "id": "comparison-2-answer"
-                                            }
+                                            "identifier": "comparison-1-answer",
+                                            "source": "answers"
+                                        },
+                                        {
+                                            "source": "answers",
+                                            "identifier": "comparison-2-answer"
                                         }
                                     ]
                                 }
-                            ]
+                            }
                         },
                         {
                             "type": "Interstitial",
@@ -107,32 +107,20 @@
                                     }
                                 ]
                             },
-                            "skip_conditions": [
-                                {
-                                    "when": [
+                            "skip_conditions": {
+                                "when": {
+                                    ">=": [
                                         {
-                                            "id": "comparison-1-answer",
-                                            "condition": "greater than",
-                                            "comparison": {
-                                                "source": "answers",
-                                                "id": "comparison-2-answer"
-                                            }
-                                        }
-                                    ]
-                                },
-                                {
-                                    "when": [
+                                            "identifier": "comparison-1-answer",
+                                            "source": "answers"
+                                        },
                                         {
-                                            "id": "comparison-1-answer",
-                                            "condition": "equals",
-                                            "comparison": {
-                                                "source": "answers",
-                                                "id": "comparison-2-answer"
-                                            }
+                                            "identifier": "comparison-2-answer",
+                                            "source": "answers"
                                         }
                                     ]
                                 }
-                            ]
+                            }
                         },
                         {
                             "type": "Interstitial",
@@ -145,32 +133,20 @@
                                     }
                                 ]
                             },
-                            "skip_conditions": [
-                                {
-                                    "when": [
+                            "skip_conditions": {
+                                "when": {
+                                    "<=": [
                                         {
-                                            "id": "comparison-1-answer",
-                                            "condition": "less than",
-                                            "comparison": {
-                                                "source": "answers",
-                                                "id": "comparison-2-answer"
-                                            }
-                                        }
-                                    ]
-                                },
-                                {
-                                    "when": [
+                                            "identifier": "comparison-1-answer",
+                                            "source": "answers"
+                                        },
                                         {
-                                            "id": "comparison-1-answer",
-                                            "condition": "equals",
-                                            "comparison": {
-                                                "source": "answers",
-                                                "id": "comparison-2-answer"
-                                            }
+                                            "source": "answers",
+                                            "identifier": "comparison-2-answer"
                                         }
                                     ]
                                 }
-                            ]
+                            }
                         }
                     ],
                     "id": "skip-group"

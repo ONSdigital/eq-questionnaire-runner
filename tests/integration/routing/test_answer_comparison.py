@@ -8,7 +8,7 @@ class TestAnswerComparisonsSkips(IntegrationTestCase):
     """
 
     def test_skip_condition_answer_comparison(self):
-        self.launchSurvey("test_skip_condition_answer_comparison")
+        self.launchSurvey("test_new_skip_condition_answer_comparison")
 
         self.post(action="start_questionnaire")
 
