@@ -71,9 +71,12 @@ class Feedback:
     def get_context(self) -> Mapping[str, Union[str, bool, dict]]:
         return build_feedback_context(self.question_schema, self.form)
 
-    def get_page_title(self) -> Union[str, Any]:
+    def get_page_title(self) -> str:
         if self.form.errors:
-            return gettext("Error: {page_title}").format(page_title=self.PAGE_TITLE)
+            title: str = gettext("Error: {page_title}").format(
+                page_title=self.PAGE_TITLE
+            )
+            return title
         return self.PAGE_TITLE
 
     def handle_post(self) -> None:
