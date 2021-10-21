@@ -1,9 +1,9 @@
 from datetime import datetime, timezone
 
-from flask import Blueprint, g, redirect, request
+from flask import Blueprint, g, jsonify, redirect, request
 from flask import session as cookie_session
 from flask import url_for
-from flask_login import logout_user
+from flask_login import login_required, logout_user
 from marshmallow import ValidationError
 from sdc.crypto.exceptions import InvalidTokenException
 from structlog import get_logger
@@ -11,7 +11,7 @@ from werkzeug.exceptions import Unauthorized
 
 from app.authentication.authenticator import decrypt_token, store_session
 from app.authentication.jti_claim_storage import JtiTokenUsed, use_jti_claim
-from app.globals import get_session_timeout_in_seconds
+from app.globals import get_session_store, get_session_timeout_in_seconds
 from app.helpers.template_helpers import get_survey_config, render_template
 from app.utilities.metadata_parser import (
     validate_questionnaire_claims,
@@ -119,6 +119,12 @@ def get_session_expired():
         logout_user()
 
     return render_template("errors/401")
+
+
+@session_blueprint.route("/session-expiry", methods=["GET"])
+@login_required
+def get_session_expiry():
+    return jsonify(expires_at=get_session_store().expiration_time.isoformat())
 
 
 @session_blueprint.route("/sign-out", methods=["GET"])
