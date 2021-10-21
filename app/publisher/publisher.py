@@ -23,6 +23,7 @@ class PubSubPublisher(Publisher):
 
     def _publish(self, topic_id, message):
         logger.info("publishing message", topic_id=topic_id)
+        # pylint: disable=no-member
         topic_path = self._client.topic_path(self._project_id, topic_id)
         response: Future = self._client.publish(topic_path, message)
         return response

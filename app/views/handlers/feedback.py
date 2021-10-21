@@ -63,6 +63,8 @@ class Feedback:
         return build_feedback_context(self.question_schema, self.form)
 
     def get_page_title(self):
+        # pylint: disable=no-member
+        # wtforms Form parents are not discoverable in the 2.3.3 implementation
         if self.form.errors:
             return gettext("Error: {page_title}").format(page_title=self.PAGE_TITLE)
         return self.PAGE_TITLE
@@ -78,7 +80,8 @@ class Feedback:
             self._schema.region_code,
             session_data.tx_id,
         )
-
+        # pylint: disable=no-member
+        # wtforms Form parents are not discoverable in the 2.3.3 implementation
         feedback_message = FeedbackPayload(
             self.form.data.get("feedback-text"),
             self.form.data.get("feedback-type"),

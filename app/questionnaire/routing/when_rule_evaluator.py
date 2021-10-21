@@ -22,6 +22,7 @@ class WhenRuleEvaluator:
     location: Union[Location, RelationshipLocation]
     routing_path_block_ids: Optional[list] = None
 
+    # pylint: disable=attribute-defined-outside-init
     def __post_init__(self) -> None:
         self.value_source_resolver = ValueSourceResolver(
             answer_store=self.answer_store,

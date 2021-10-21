@@ -4,11 +4,13 @@ from typing import Callable, Mapping, Optional, Type
 
 from wtforms import Form
 
+
 from app.forms.fields import IntegerFieldWithSeparator
 
 ErrorMessageType = dict[str, str]
 
-
+# pylint: disable=no-member
+# wtforms Form parents are not discoverable in the 2.3.3 implementation
 class DurationForm(Form):
     def validate(
         self, extra_validators: Optional[dict[str, list[Callable]]] = None
@@ -52,31 +54,16 @@ class DurationForm(Form):
 def get_duration_form(
     answer: Mapping, error_messages: ErrorMessageType
 ) -> Type[DurationForm]:
-
-    members = dict(
-        mandatory=answer["mandatory"],
-        units=answer["units"],
-        answer_errors=_get_answer_errors(answer, error_messages),
-    )
+    class CustomDurationForm(DurationForm):
+        mandatory = answer["mandatory"]
+        units = answer["units"]
+        answer_errors = _get_answer_errors(answer, error_messages)
 
     if "years" in answer["units"]:
-        members.update(years=IntegerFieldWithSeparator())
+        CustomDurationForm.years = IntegerFieldWithSeparator()
 
     if "months" in answer["units"]:
-        members.update(months=IntegerFieldWithSeparator())
-
-    CustomDurationForm = type("CustomDurationForm", (DurationForm,), members)
-
-    # class CustomDurationForm(DurationForm):
-    #     mandatory = answer["mandatory"]
-    #     units = answer["units"]
-    #     answer_errors = _get_answer_errors(answer, error_messages)
-
-    # if "years" in answer["units"]:
-    #     CustomDurationForm.years = IntegerFieldWithSeparator()
-
-    # if "months" in answer["units"]:
-    #     CustomDurationForm.months = IntegerFieldWithSeparator()
+        CustomDurationForm.months = IntegerFieldWithSeparator()
 
     return CustomDurationForm
 
