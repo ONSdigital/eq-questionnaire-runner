@@ -3,7 +3,7 @@ import SubmitPage from "../generated_pages/feedback/submit.page";
 
 import FeedbackPage from "../base_pages/feedback.page";
 import FeedbackSentPage from "../base_pages/feedback-sent.page";
-import CensusThankYouPage from "../base_pages/census-thank-you.page";
+import ThankYouPage from "../base_pages/thank-you.page";
 
 describe("Feedback", () => {
   describe("Given I launch and complete the test feedback survey", () => {
@@ -14,9 +14,10 @@ describe("Feedback", () => {
     });
 
     it("When I view the thank you page, Then I can see the feedback call to action", () => {
-      expect(browser.getUrl()).to.contain(CensusThankYouPage.pageName);
-      expect($(CensusThankYouPage.feedback()).getText()).to.contain("What do you think about this service?");
-      expect($(CensusThankYouPage.feedbackLink()).getAttribute("href")).to.contain("/submitted/feedback/send");
+      expect(browser.getUrl()).to.contain(ThankYouPage.pageName);
+      expect($(ThankYouPage.feedback()).getText()).to.contain("What do you think about this service?");
+      expect($(ThankYouPage.feedbackLink()).getText()).to.equal("Give feedback");
+      expect($(ThankYouPage.feedbackLink()).getAttribute("href")).to.contain("/submitted/feedback/send");
     });
 
     it("When I try to submit without providing feedback, then I stay on the feedback page and get an error message", () => {
@@ -47,7 +48,7 @@ describe("Feedback", () => {
       $(FeedbackPage.submit()).click();
       $(FeedbackSentPage.doneButton()).click();
       expect(browser.getUrl()).to.contain("thank-you");
-      expect($(CensusThankYouPage.title()).getText()).to.contain("Thank you for completing the census");
+      expect($(ThankYouPage.title()).getText()).to.contain("Thank you for completing the Feedback test schema");
     });
   });
 });
