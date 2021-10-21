@@ -1,14 +1,15 @@
 from datetime import datetime, timezone
 from functools import cached_property
-from typing import Mapping, Union
+from typing import Any, Mapping, Optional, Union
 
 from flask import current_app
 from flask_babel import gettext, lazy_gettext
+from werkzeug.datastructures import MultiDict
 
 from app.data_models import QuestionnaireStore
 from app.data_models.session_data import SessionData
 from app.data_models.session_store import SessionStore
-from app.forms.questionnaire_form import generate_form
+from app.forms.questionnaire_form import QuestionnaireForm, generate_form
 from app.questionnaire.questionnaire_schema import QuestionnaireSchema
 from app.submitter.converter import (
     build_collection,
@@ -33,14 +34,14 @@ class FeedbackUploadFailed(Exception):
 
 
 class Feedback:
-    PAGE_TITLE = lazy_gettext("Feedback")
+    PAGE_TITLE: str = lazy_gettext("Feedback")
 
     def __init__(
         self,
         questionnaire_store: QuestionnaireStore,
         schema: QuestionnaireSchema,
         session_store: SessionStore,
-        form_data: Mapping,
+        form_data: Optional[MultiDict[str, Any]],
     ):
         if not self.is_enabled(schema):
             raise FeedbackNotEnabled
@@ -54,7 +55,7 @@ class Feedback:
         self._form_data = form_data
 
     @cached_property
-    def form(self):
+    def form(self) -> QuestionnaireForm:
         return generate_form(
             schema=self._schema,
             question_schema=self.question_schema,
@@ -66,15 +67,15 @@ class Feedback:
             form_data=self._form_data,
         )
 
-    def get_context(self):
+    def get_context(self) -> Mapping[str, Union[str, bool, dict]]:
         return build_feedback_context(self.question_schema, self.form)
 
-    def get_page_title(self):
+    def get_page_title(self) -> Union[str, Any]:
         if self.form.errors:
             return gettext("Error: {page_title}").format(page_title=self.PAGE_TITLE)
         return self.PAGE_TITLE
 
-    def handle_post(self):
+    def handle_post(self) -> None:
         session_data = self._session_store.session_data
         session_data.feedback_count += 1
 
@@ -97,7 +98,7 @@ class Feedback:
             ),
         )
 
-        if not current_app.eq["feedback_submitter"].upload(
+        if not current_app.eq["feedback_submitter"].upload(  # type: ignore
             feedback_metadata(), feedback_message()
         ):
             raise FeedbackUploadFailed()
@@ -105,8 +106,8 @@ class Feedback:
         self._session_store.save()
 
     @cached_property
-    def question_schema(self):
-        detail_answers_option_map = {
+    def question_schema(self) -> Mapping[str, Union[str, list]]:
+        detail_answers_option_map: Mapping[str, list] = {
             "C": [
                 lazy_gettext("General"),
                 lazy_gettext("This establishment"),
@@ -135,7 +136,7 @@ class Feedback:
 
         options = (
             {"label": value, "value": value}
-            for value in detail_answers_option_map.get(self._schema.form_type or "H")
+            for value in detail_answers_option_map.get(self._schema.form_type or "H")  # type: ignore
         )
 
         return {
@@ -213,7 +214,7 @@ class Feedback:
 
     @staticmethod
     def is_limit_reached(session_data: SessionData) -> bool:
-        return session_data.feedback_count >= current_app.config["EQ_FEEDBACK_LIMIT"]
+        return session_data.feedback_count >= current_app.config["EQ_FEEDBACK_LIMIT"]  # type: ignore
 
     @staticmethod
     def is_enabled(schema: QuestionnaireSchema) -> bool:
@@ -223,7 +224,7 @@ class Feedback:
 
 
 class FeedbackMetadata:
-    def __init__(self, case_id, tx_id):
+    def __init__(self, case_id: str, tx_id: str):
         self.case_id = case_id
         self.tx_id = tx_id
 
@@ -304,7 +305,7 @@ class FeedbackPayload:
         self.feedback_type = feedback_type
         self.feedback_type_question_category = feedback_type_question_category
 
-    def __call__(self) -> Mapping:
+    def __call__(self) -> Mapping[str, Any]:
         payload = {
             "origin": "uk.gov.ons.edc.eq",
             "case_id": self.case_id,

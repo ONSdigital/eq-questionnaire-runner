@@ -1,3 +1,5 @@
+from typing import Mapping
+
 from structlog import get_logger
 
 from app.questionnaire.questionnaire_schema import DEFAULT_LANGUAGE_CODE
@@ -99,7 +101,7 @@ def convert_answers(
     return payload | optional_properties
 
 
-def build_collection(metadata):
+def build_collection(metadata) -> Mapping[str, str] :
     return {
         "exercise_sid": metadata["collection_exercise_sid"],
         "schema_name": metadata["schema_name"],
@@ -107,7 +109,7 @@ def build_collection(metadata):
     }
 
 
-def build_metadata(metadata):
+def build_metadata(metadata) -> Mapping[str, str]:
     downstream_metadata = {"user_id": metadata["user_id"], "ru_ref": metadata["ru_ref"]}
 
     if metadata.get("ref_p_start_date"):
@@ -120,7 +122,7 @@ def build_metadata(metadata):
     return downstream_metadata
 
 
-def get_optional_payload_properties(metadata, response_metadata):
+def get_optional_payload_properties(metadata, response_metadata) -> Mapping[str, str]:
     payload = {}
 
     for key in ["channel", "case_type", "form_type", "region_code", "case_ref"]:
