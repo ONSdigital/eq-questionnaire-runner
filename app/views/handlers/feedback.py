@@ -140,7 +140,7 @@ class Feedback:
 
         options = (
             {"label": value, "value": value}
-            for value in detail_answers_option_map.get(self._schema.form_type or "H")  # type: ignore
+            for value in detail_answers_option_map[self._schema.form_type or "H"]
         )
 
         return {
