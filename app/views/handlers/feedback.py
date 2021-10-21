@@ -309,7 +309,7 @@ class FeedbackPayload:
         self.feedback_type = feedback_type
         self.feedback_type_question_category = feedback_type_question_category
 
-    def __call__(self) -> Mapping[str, Any]:
+    def __call__(self) -> dict[str, Any]:
         payload = {
             "origin": "uk.gov.ons.edc.eq",
             "case_id": self.case_id,
