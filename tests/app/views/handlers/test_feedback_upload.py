@@ -94,8 +94,8 @@ def test_feedback_payload_with_feedback_type_question_category(
     feedback_payload = FeedbackPayload(
         metadata,
         response_metadata,
-        case_id,
         schema,
+        case_id,
         language_code,
         session_data.feedback_count,
         feedback_text,
@@ -150,8 +150,8 @@ def test_feedback_payload_without_feedback_type_question_category(
     feedback_payload = FeedbackPayload(
         metadata,
         response_metadata,
-        case_id,
         schema,
+        case_id,
         language_code,
         session_data.feedback_count,
         feedback_text,

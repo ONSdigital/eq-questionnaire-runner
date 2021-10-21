@@ -86,10 +86,10 @@ class Feedback:
         feedback_message = FeedbackPayload(
             self._questionnaire_store.metadata,
             self._questionnaire_store.response_metadata,
-            session_data.case_id,
             self._schema,
-            session_data.feedback_count,
+            session_data.case_id,
             session_data.language_code,
+            session_data.feedback_count,
             self.form.data.get("feedback-text"),
             self.form.data.get("feedback-type"),
             self.form.data.get("feedback-type-question-category"),
@@ -242,7 +242,7 @@ class FeedbackPayload:
         "data": {
                 "feedback_text": "Page design feedback",
                 "feedback_type": "Page design and structure",
-                "feedback_count": 7,
+                "feedback_count": "7",
         },
         "metadata": {
             "ref_period_end_date": "2021-03-29",
@@ -284,8 +284,8 @@ class FeedbackPayload:
         self,
         metadata: Mapping[str, Union[str, int, list]],
         response_metadata: Mapping[str, Union[str, int, list]],
-        case_id: str,
         schema: QuestionnaireSchema,
+        case_id: str,
         submission_language_code: str,
         feedback_count: int,
         feedback_text: str,
