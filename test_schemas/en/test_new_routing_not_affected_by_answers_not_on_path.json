@@ -152,16 +152,17 @@
                             "content": {
                                 "title": "This page should have been skipped!"
                             },
-                            "skip_conditions": [
-                                {
-                                    "when": [
+                            "skip_conditions": {
+                                "when": {
+                                    "==": [
                                         {
-                                            "id": "invalid-path-answer",
-                                            "condition": "not set"
-                                        }
+                                            "identifier": "invalid-path-answer",
+                                            "source": "answers"
+                                        },
+                                        null
                                     ]
                                 }
-                            ]
+                            }
                         },
                         {
                             "type": "Interstitial",
