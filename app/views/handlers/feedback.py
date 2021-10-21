@@ -138,26 +138,11 @@ class Feedback:
                     "label": lazy_gettext("Select what your feedback is about"),
                     "options": [
                         {
-                            "label": lazy_gettext("The census questions"),
-                            "value": lazy_gettext("The census questions"),
+                            "label": lazy_gettext("The survey questions"),
+                            "value": lazy_gettext("The survey questions"),
                             "description": lazy_gettext(
                                 "For example, questions not clear, answer options not relevant"
                             ),
-                            "detail_answer": {
-                                "type": "Dropdown",
-                                "id": "feedback-type-question-category",
-                                "mandatory": True,
-                                "label": lazy_gettext("Question topic"),
-                                "placeholder": lazy_gettext("Select an option"),
-                                "validation": {
-                                    "messages": {
-                                        "MANDATORY_DROPDOWN": lazy_gettext(
-                                            "Select an option"
-                                        )
-                                    }
-                                },
-                                "options": options,
-                            },
                         },
                         {
                             "label": lazy_gettext("Page design and structure"),

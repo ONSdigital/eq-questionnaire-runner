@@ -76,7 +76,7 @@ class TestFeedback(IntegrationTestCase):
         # When I enter a valid feedback and submit
         self.post(
             {
-                "feedback-type": "The census questions",
+                "feedback-type": "The survey questions",
                 "feedback-type-question-category": "Visitors",
                 "feedback-text": "Feedback",
             }
@@ -223,7 +223,7 @@ class TestFeedback(IntegrationTestCase):
 
         # When I submit without selecting a feedback topic
         self.post(
-            {"feedback-type": "The census questions", "feedback-text": "Feedback"}
+            {"feedback-type": "The survey questions", "feedback-text": "Feedback"}
         )
 
         # Then I stay on the send page and am presented with an error
