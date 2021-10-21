@@ -123,17 +123,10 @@ def build_metadata(metadata):
 def get_optional_payload_properties(metadata, response_metadata):
     payload = {}
 
-    if channel := metadata.get("channel"):
-        payload["channel"] = channel
-    if case_type := metadata.get("case_type"):
-        payload["case_type"] = case_type
-    if form_type := metadata.get("form_type"):
-        payload["form_type"] = form_type
-    if region_code := metadata.get("region_code"):
-        payload["region_code"] = region_code
+    for key in ["channel", "case_type", "form_type", "region_code", "case_ref"]:
+        if value := metadata.get(key):
+            payload[key] = value
     if started_at := response_metadata.get("started_at"):
         payload["started_at"] = started_at
-    if case_ref := metadata.get("case_ref"):
-        payload["case_ref"] = case_ref
 
     return payload
