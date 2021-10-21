@@ -84,15 +84,17 @@ class Feedback:
         )
 
         feedback_message = FeedbackPayload(
-            self._questionnaire_store.metadata,
-            self._questionnaire_store.response_metadata,
-            self._schema,
-            session_data.case_id,
-            session_data.language_code,
-            session_data.feedback_count,
-            self.form.data.get("feedback-text"),
-            self.form.data.get("feedback-type"),
-            self.form.data.get("feedback-type-question-category"),
+            metadata=self._questionnaire_store.metadata,
+            response_metadata=self._questionnaire_store.response_metadata,
+            schema=self._schema,
+            case_id=session_data.case_id,
+            submission_language_code=session_data.language_code,
+            feedback_count=session_data.feedback_count,
+            feedback_text=self.form.data.get("feedback-text"),
+            feedback_type=self.form.data.get("feedback-type"),
+            feedback_type_question_category=self.form.data.get(
+                "feedback-type-question-category"
+            ),
         )
 
         if not current_app.eq["feedback_submitter"].upload(

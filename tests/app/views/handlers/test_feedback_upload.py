@@ -92,15 +92,15 @@ def test_feedback_payload_with_feedback_type_question_category(
     session_data, schema, metadata, response_metadata
 ):
     feedback_payload = FeedbackPayload(
-        metadata,
-        response_metadata,
-        schema,
-        case_id,
-        language_code,
-        session_data.feedback_count,
-        feedback_text,
-        feedback_type,
-        feedback_type_question_category,
+        metadata=metadata,
+        response_metadata=response_metadata,
+        schema=schema,
+        case_id=case_id,
+        submission_language_code=language_code,
+        feedback_count=session_data.feedback_count,
+        feedback_text=feedback_text,
+        feedback_type=feedback_type,
+        feedback_type_question_category=feedback_type_question_category,
     )
 
     expected_payload = {
@@ -148,14 +148,14 @@ def test_feedback_payload_without_feedback_type_question_category(
     session_data, schema, metadata, response_metadata
 ):
     feedback_payload = FeedbackPayload(
-        metadata,
-        response_metadata,
-        schema,
-        case_id,
-        language_code,
-        session_data.feedback_count,
-        feedback_text,
-        feedback_type,
+        metadata=metadata,
+        response_metadata=response_metadata,
+        schema=schema,
+        case_id=case_id,
+        submission_language_code=language_code,
+        feedback_count=session_data.feedback_count,
+        feedback_text=feedback_text,
+        feedback_type=feedback_type,
     )
 
     expected_payload = {
