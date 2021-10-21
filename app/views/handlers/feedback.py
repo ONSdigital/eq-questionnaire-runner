@@ -269,9 +269,9 @@ class FeedbackPayload:
     }
     ```
     :param metadata: Questionnaire metadata
-    :param started_at: Datetime of questionnaire start
-    :param case_id: Questionnaire case id
+    :param response_metadata: Response metadata
     :param schema: QuestionnaireSchema class with populated schema json
+    :param case_id: Questionnaire case id
     :param submission_language_code: Language being used at the point of feedback submission
     :param feedback_count: Number of feedback submissions attempted by the user
     :param feedback_text: Feedback text input by the user
