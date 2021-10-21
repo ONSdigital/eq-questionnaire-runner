@@ -41,10 +41,10 @@ git clone git@github.com:ONSdigital/eq-questionnaire-runner.git
 
 ### Pre-Requisites
 
-In order to run locally you'll need Node.js, snappy, pyenv, jq and Jsonnet installed
+In order to run locally you'll need Node.js, snappy, pyenv, jq and wkhtmltopdf installed
 
 ``` shell
-brew install snappy npm pyenv jsonnet jq
+brew install snappy npm pyenv jq wkhtmltopdf
 ```
 
 ### Setup
