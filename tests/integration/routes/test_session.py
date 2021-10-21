@@ -1,6 +1,13 @@
 import time
+from datetime import datetime, timedelta, timezone
 
+from freezegun import freeze_time
+
+from app import settings
+from app.utilities.json import json_loads
 from tests.integration.integration_test_case import IntegrationTestCase
+
+TIME_TO_FREEZE = datetime(2020, 1, 1, 12, 0, 0, tzinfo=timezone.utc)
 
 
 class TestSession(IntegrationTestCase):
@@ -54,6 +61,20 @@ class TestSession(IntegrationTestCase):
     def test_head_request_on_session_signed_out(self):
         self.head("/signed-out")
         self.assertStatusOK()
+
+    @freeze_time(TIME_TO_FREEZE)
+    def test_session_expiry(self):
+        self.launchSurvey()
+        self.get("/session-expiry")
+
+        response = self.getResponseData()
+        parsed_json = json_loads(response)
+        expected_expires_at = (
+            TIME_TO_FREEZE + timedelta(seconds=settings.EQ_SESSION_TIMEOUT_SECONDS)
+        ).isoformat()
+
+        self.assertIn("expires_at", parsed_json)
+        self.assertEqual(parsed_json["expires_at"], expected_expires_at)
 
 
 class TestCensusSession(IntegrationTestCase):
