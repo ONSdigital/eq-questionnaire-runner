@@ -101,10 +101,4 @@ class TestThankYou(IntegrationTestCase):
 
         self.assertInUrl("thank-you")
         self.assertInBody("Back to surveys")
-
-    def test_back_to_surveys_url(self):
-        self.launchSurvey("test_thank_you")
-        self.post({"answer": "Yes"})
-        self.post()
-        self.get(ACCOUNT_SERVICE_SURVEYS_URL)
-        self.assertInUrl(ACCOUNT_SERVICE_SURVEYS_URL)
+        self.assertInBody(ACCOUNT_SERVICE_SURVEYS_URL)
