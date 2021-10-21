@@ -10,15 +10,16 @@ from app.data_models import QuestionnaireStore
 from app.data_models.session_data import SessionData
 from app.data_models.session_store import SessionStore
 from app.forms.questionnaire_form import QuestionnaireForm, generate_form
-from app.questionnaire.questionnaire_schema import QuestionnaireSchema
+from app.questionnaire.questionnaire_schema import (
+    DEFAULT_LANGUAGE_CODE,
+    QuestionnaireSchema,
+)
 from app.submitter.converter import (
     build_collection,
     build_metadata,
     get_optional_payload_properties,
 )
 from app.views.contexts.feedback_form_context import build_feedback_context
-
-DEFAULT_LANGUAGE_CODE = "en"
 
 
 class FeedbackNotEnabled(Exception):
