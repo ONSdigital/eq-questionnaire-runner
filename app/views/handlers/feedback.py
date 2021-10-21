@@ -94,37 +94,6 @@ class Feedback:
 
     @cached_property
     def question_schema(self):
-        detail_answers_option_map = {
-            "C": [
-                lazy_gettext("General"),
-                lazy_gettext("This establishment"),
-                lazy_gettext("People who live here"),
-                lazy_gettext("Visitors"),
-            ],
-            "I": [
-                lazy_gettext("General"),
-                lazy_gettext("Accommodation"),
-                lazy_gettext("Personal details"),
-                lazy_gettext("Health"),
-                lazy_gettext("Qualifications"),
-                lazy_gettext("Employment"),
-            ],
-            "H": [
-                lazy_gettext("General"),
-                lazy_gettext("People who live here"),
-                lazy_gettext("Visitors"),
-                lazy_gettext("Household and accommodation"),
-                lazy_gettext("Personal details"),
-                lazy_gettext("Health"),
-                lazy_gettext("Qualifications"),
-                lazy_gettext("Employment"),
-            ],
-        }
-
-        options = (
-            {"label": value, "value": value}
-            for value in detail_answers_option_map.get(self._schema.form_type or "H")
-        )
 
         return {
             "type": "General",
