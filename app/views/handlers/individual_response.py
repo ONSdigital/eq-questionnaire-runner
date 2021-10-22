@@ -304,7 +304,7 @@ class IndividualResponseHandler:
         )
 
     @property
-    def block_definition(self):
+    def block_definition(self):  # pragma: no cover
         raise NotImplementedError
 
 
