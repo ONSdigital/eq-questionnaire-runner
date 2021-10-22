@@ -102,6 +102,18 @@ class TestPlaceholderParser(unittest.TestCase):
             == "1 day"
         )
         assert PlaceholderTransforms.calculate_date_difference("now", "now") == "0 days"
+        assert (
+            PlaceholderTransforms.calculate_date_difference(
+                "2021-07-29T10:53:41.511833+00:00", "2021-09-29T10:53:41.511833+00:00"
+            )
+            == "2 months"
+        )
+        assert (
+            PlaceholderTransforms.calculate_date_difference(
+                "2021-09-28", "2021-09-29T10:53:41.511833+00:00"
+            )
+            == "1 day"
+        )
         with self.assertRaises(ValueError):
             PlaceholderTransforms.calculate_date_difference("2018", "now")
 
