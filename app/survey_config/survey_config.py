@@ -23,6 +23,7 @@ class SurveyConfig:
     )
     base_url: str = ACCOUNT_SERVICE_BASE_URL
     account_service_url: Optional[str] = None
+    account_service_surveys_path: Optional[str] = None
     title_logo: Optional[str] = None
     title_logo_alt: Optional[str] = None
     header_logo: Optional[str] = None
