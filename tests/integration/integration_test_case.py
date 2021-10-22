@@ -41,6 +41,7 @@ class IntegrationTestCase(unittest.TestCase):  # pylint: disable=too-many-public
         self.last_response = None
         self.last_csrf_token = None
         self.redirect_url = None
+        self.last_response_headers = None
 
         # Perform setup steps
         self._set_up_app()

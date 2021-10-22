@@ -426,8 +426,8 @@ def get_view_submitted_response_pdf(
             questionnaire_store,
             flask_babel.get_locale().language,
         )
-    except ViewSubmittedResponseNotEnabled:
-        raise NotFound
+    except ViewSubmittedResponseNotEnabled as exc:
+        raise NotFound from exc
     except ViewSubmittedResponseExpired:
         return redirect(url_for(".get_view_submitted_response"))
 
