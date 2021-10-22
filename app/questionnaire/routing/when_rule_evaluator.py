@@ -17,7 +17,7 @@ class WhenRuleEvaluator:
     schema: QuestionnaireSchema
     answer_store: AnswerStore
     list_store: ListStore
-    metadata: dict
+    metadata: Mapping
     response_metadata: Mapping
     location: Union[Location, RelationshipLocation]
     routing_path_block_ids: Optional[list] = None

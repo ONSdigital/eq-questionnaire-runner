@@ -2,7 +2,7 @@ FROM python:3.9-slim-buster
 
 EXPOSE 5000
 
-RUN apt update && apt install -y curl unzip libsnappy-dev build-essential jq
+RUN apt update && apt install -y curl unzip libsnappy-dev build-essential jq wkhtmltopdf
 
 COPY . /runner
 WORKDIR /runner

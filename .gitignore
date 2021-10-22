@@ -99,6 +99,7 @@ tests/functional/generated_pages
 # Ignore Design-System templates
 templates/components
 templates/layout
+templates/assets/styles/print.css
 
 .mypy_cache
 

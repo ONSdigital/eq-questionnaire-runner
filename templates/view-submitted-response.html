@@ -32,11 +32,23 @@
     {{
       onsButton({
         "type": 'button',
-        "text": 'Print answers',
+        "text": _('Print answers'),
         "buttonStyle": "print",
-        "variants": 'small',
+        "variants": ['small', 'secondary'],
         "attributes": {
           "data-qa": "btn-print"
+        }
+      })
+    }}
+    {{
+      onsButton({
+        "buttonStyle": 'download',
+        "text": _('Save answers as PDF'),
+        "submitType": "timer",
+        "variants": ['small', 'secondary'],
+        "url": content.pdf_url,
+        "attributes": {
+          "data-qa": "btn-pdf"
         }
       })
     }}

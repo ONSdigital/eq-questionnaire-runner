@@ -4,9 +4,9 @@
     "schema_version": "0.0.1",
     "data_version": "0.0.3",
     "survey_id": "0",
-    "title": "Test skip condition",
+    "title": "Test not set skip condition",
     "theme": "default",
-    "description": "A questionnaire to test skip condition.",
+    "description": "A questionnaire to test skip condition not set.",
     "messages": {},
     "metadata": [
         {
@@ -44,7 +44,7 @@
                                     {
                                         "id": "food-answer",
                                         "label": "What is your favourite breakfast food",
-                                        "mandatory": true,
+                                        "mandatory": false,
                                         "options": [
                                             {
                                                 "label": "Bacon",
@@ -72,7 +72,7 @@
                                     {
                                         "id": "drink-answer",
                                         "label": "What is your favourite breakfast beverage",
-                                        "mandatory": true,
+                                        "mandatory": false,
                                         "options": [
                                             {
                                                 "label": "Tea",
@@ -89,18 +89,18 @@
                                 ],
                                 "id": "drink-section",
                                 "title": "What beverage would you like to accompany your choice of breakfast?",
-                                "type": "General",
-                                "skip_conditions": [
-                                    {
-                                        "when": [
-                                            {
-                                                "id": "food-answer",
-                                                "condition": "equals",
-                                                "value": "Eggs"
-                                            }
-                                        ]
-                                    }
-                                ]
+                                "type": "General"
+                            },
+                            "skip_conditions": {
+                                "when": {
+                                    "==": [
+                                        {
+                                            "identifier": "food-answer",
+                                            "source": "answers"
+                                        },
+                                        null
+                                    ]
+                                }
                             }
                         }
                     ],

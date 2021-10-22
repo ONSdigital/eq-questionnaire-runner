@@ -146,3 +146,12 @@ VIEW_SUBMITTED_RESPONSE_EXPIRATION_IN_SECONDS = int(
 )
 
 SURVEY_TYPE = os.getenv("SURVEY_TYPE", "business")
+
+
+ACCOUNT_SERVICE_BASE_URL = os.getenv(
+    "ACCOUNT_SERVICE_BASE_URL", "https://surveys.ons.gov.uk"
+)
+
+PRINT_STYLE_SHEET_FILE_PATH = os.getenv(
+    "PRINT_STYLE_SHEET_FILEPATH", "templates/assets/styles"
+)
