@@ -5,6 +5,7 @@ from app.cloud_tasks.exceptions import CloudTaskCreationFailed
 from tests.integration.integration_test_case import IntegrationTestCase
 
 
+# pylint: disable=too-many-public-methods
 class TestEmailConfirmation(
     IntegrationTestCase
 ):  # pylint: disable=too-few-public-methods

@@ -139,7 +139,7 @@ class NumberRange:
             return self.messages["NUMBER_TOO_SMALL_EXCLUSIVE"] % dict(
                 min=format_playback_value(self.minimum, self.currency)
             )
-        elif value < self.minimum:
+        if value < self.minimum:
             return self.messages["NUMBER_TOO_SMALL"] % dict(
                 min=format_playback_value(self.minimum, self.currency)
             )
@@ -154,7 +154,7 @@ class NumberRange:
             return self.messages["NUMBER_TOO_LARGE_EXCLUSIVE"] % dict(
                 max=format_playback_value(self.maximum, self.currency)
             )
-        elif value > self.maximum:
+        if value > self.maximum:
             return self.messages["NUMBER_TOO_LARGE"] % dict(
                 max=format_playback_value(self.maximum, self.currency)
             )

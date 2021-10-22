@@ -6,4 +6,4 @@ def test_convert_tx_id():
     tx_id_to_convert = "bc26d5ef-8475-4710-ac82-753a0a150708"
 
     assert is_valid_uuid(tx_id_to_convert)
-    assert "BC26 - D5EF - 8475 - 4710" == convert_tx_id(tx_id_to_convert)
+    assert convert_tx_id(tx_id_to_convert) == "BC26 - D5EF - 8475 - 4710"

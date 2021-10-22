@@ -13,7 +13,7 @@ class DurationForm(Form):
     def validate(
         self, extra_validators: Optional[dict[str, list[Callable]]] = None
     ) -> bool:
-        super(DurationForm, self).validate(extra_validators)
+        super().validate(extra_validators)
 
         if all(not field.raw_data[0] for field in self._fields.values()):
             if self.mandatory:
