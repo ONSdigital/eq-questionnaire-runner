@@ -69,22 +69,6 @@ class TestFeedback(IntegrationTestCase):
         self.assertInUrl(self.SENT_FEEDBACK_URL)
         self.assertInBody("Thank you for your feedback")
 
-    def test_valid_feedback_with_question_category(self):
-        # Given I launch and complete the test_feedback questionnaire
-        self._launch_and_complete_questionnaire()
-        self.get(self.SEND_FEEDBACK_URL)
-        # When I enter a valid feedback and submit
-        self.post(
-            {
-                "feedback-type": "The survey questions",
-                "feedback-type-question-category": "Visitors",
-                "feedback-text": "Feedback",
-            }
-        )
-        # Then I get the feedback sent page
-        self.assertInUrl(self.SENT_FEEDBACK_URL)
-        self.assertInBody("Thank you for your feedback")
-
     def _test_feedback_show_warning(self):
         # Given I launch and complete the test_feedback questionnaire
         self._launch_and_complete_questionnaire()
