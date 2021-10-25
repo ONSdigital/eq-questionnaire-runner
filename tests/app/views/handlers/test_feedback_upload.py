@@ -88,65 +88,7 @@ def response_metadata():
 
 
 @freeze_time(datetime.now(tz=timezone.utc).isoformat())
-def test_feedback_payload_with_feedback_type_question_category(
-    session_data, schema, metadata, response_metadata
-):
-    feedback_payload = FeedbackPayload(
-        metadata=metadata,
-        response_metadata=response_metadata,
-        schema=schema,
-        case_id=case_id,
-        submission_language_code=language_code,
-        feedback_count=session_data.feedback_count,
-        feedback_text=feedback_text,
-        feedback_type=feedback_type,
-        feedback_type_question_category=feedback_type_question_category,
-    )
-
-    expected_payload = {
-        "collection": {
-            "exercise_sid": collection_exercise_sid,
-            "period": period_id,
-            "schema_name": schema_name,
-        },
-        "data": {
-            "feedback_count": str(feedback_count),
-            "feedback_text": feedback_text,
-            "feedback_type": feedback_type,
-            "feedback_type_question_category": feedback_type_question_category,
-        },
-        "form_type": form_type,
-        "launch_language_code": "en",
-        "metadata": {
-            "display_address": display_address,
-            "ref_period_end_date": ref_p_end_date,
-            "ref_period_start_date": ref_p_start_date,
-            "ru_ref": ru_ref,
-            "user_id": user_id,
-        },
-        "origin": "uk.gov.ons.edc.eq",
-        "case_id": case_id,
-        "started_at": started_at,
-        "submitted_at": datetime.now(tz=timezone.utc).isoformat(),
-        "flushed": False,
-        "survey_id": survey_id,
-        "submission_language_code": language_code,
-        "tx_id": tx_id,
-        "type": "uk.gov.ons.edc.eq:feedback",
-        "version": data_version,
-        "case_type": case_type,
-        "channel": channel,
-        "region_code": region_code,
-        "case_ref": case_ref,
-    }
-
-    assert expected_payload == feedback_payload()
-
-
-@freeze_time(datetime.now(tz=timezone.utc).isoformat())
-def test_feedback_payload_without_feedback_type_question_category(
-    session_data, schema, metadata, response_metadata
-):
+def test_feedback_payload(session_data, schema, metadata, response_metadata):
     feedback_payload = FeedbackPayload(
         metadata=metadata,
         response_metadata=response_metadata,
