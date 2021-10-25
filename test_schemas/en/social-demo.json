@@ -1,0 +1,769 @@
+{
+    "language": "en",
+    "mime_type": "application/json/ons/eq",
+    "schema_version": "0.0.1",
+    "data_version": "0.0.3",
+    "survey_id": "zzz",
+    "form_type": "9999",
+    "legal_basis": "Notice is given under section 1 of the Statistics of Trade Act 1947.",
+    "title": "Labour Market Survey",
+    "questionnaire_flow": {
+        "type": "Hub",
+        "options": {}
+    },
+    "sections": [
+        {
+            "id": "sectioncde50b81-c020-4d66-bcaa-190eb19b33c8",
+            "title": "Household",
+            "show_on_hub": true,
+            "groups": [
+                {
+                    "id": "groupcde50b81-c020-4d66-bcaa-190eb19b33c8",
+                    "title": "Household",
+                    "blocks": [
+                        {
+                            "id": "blockc90e922d-ddc8-4278-bf71-e67743cc7aee",
+                            "type": "Question",
+                            "question": {
+                                "id": "questionc90e922d-ddc8-4278-bf71-e67743cc7aee",
+                                "title": "About your household",
+                                "type": "General",
+                                "answers": [
+                                    {
+                                        "id": "answerfccc038a-059c-439e-8945-e2c919c914a3",
+                                        "mandatory": false,
+                                        "type": "TextField",
+                                        "label": "My First or Given Name"
+                                    },
+                                    {
+                                        "id": "answer921c327e-e210-4f54-88e8-f7b01f4dba2f",
+                                        "mandatory": false,
+                                        "type": "TextField",
+                                        "label": "My Middle Name"
+                                    },
+                                    {
+                                        "id": "answer276704e9-6b84-47a6-9a1a-fb22fdefdf32",
+                                        "mandatory": false,
+                                        "type": "TextField",
+                                        "label": "My Surname"
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "id": "block8c59f3d8-ad2d-490d-b9d7-7e35c6488416",
+                            "type": "Question",
+                            "question": {
+                                "id": "question8c59f3d8-ad2d-490d-b9d7-7e35c6488416",
+                                "title": "My Sex",
+                                "type": "General",
+                                "answers": [
+                                    {
+                                        "id": "answerabf25311-c8d6-4cf7-b6cc-194ba81b67e8",
+                                        "mandatory": false,
+                                        "type": "Radio",
+                                        "options": [
+                                            {
+                                                "label": "Male",
+                                                "value": "Male"
+                                            },
+                                            {
+                                                "label": "Female",
+                                                "value": "Female"
+                                            }
+                                        ]
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "id": "blocke8aea051-0415-457f-b53c-b636ecc7b349",
+                            "type": "Question",
+                            "question": {
+                                "id": "questione8aea051-0415-457f-b53c-b636ecc7b349",
+                                "title": "What is your legal marital status?",
+                                "type": "General",
+                                "answers": [
+                                    {
+                                        "id": "answer3e9d7c8a-4dda-4f4b-ba86-5989cb8c704a",
+                                        "mandatory": false,
+                                        "type": "Radio",
+                                        "options": [
+                                            {
+                                                "label": "Never married and never legally registered in a civil partnership",
+                                                "value": "Never married and never legally registered in a civil partnership"
+                                            },
+                                            {
+                                                "label": "Married",
+                                                "value": "Married"
+                                            },
+                                            {
+                                                "label": "In a legally registered civil partnership",
+                                                "value": "In a legally registered civil partnership"
+                                            },
+                                            {
+                                                "label": "Separated but still legally married",
+                                                "value": "Separated but still legally married"
+                                            },
+                                            {
+                                                "label": "Separated but still legally in a civil partnership",
+                                                "value": "Separated but still legally in a civil partnership"
+                                            },
+                                            {
+                                                "label": "Divorced",
+                                                "value": "Divorced"
+                                            },
+                                            {
+                                                "label": "Formerly in a civil partnership which is now legally dissolved",
+                                                "value": "Formerly in a civil partnership which is now legally dissolved"
+                                            },
+                                            {
+                                                "label": "Widowed",
+                                                "value": "Widowed"
+                                            },
+                                            {
+                                                "label": "A surviving member of a legally registered civil partnership",
+                                                "value": "A surviving member of a legally registered civil partnership"
+                                            }
+                                        ]
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "id": "blockdb20fad3-8b19-458d-a931-4cb4bec49ac3",
+                            "type": "Question",
+                            "question": {
+                                "id": "questiondb20fad3-8b19-458d-a931-4cb4bec49ac3",
+                                "title": "What is your date of birth?",
+                                "type": "General",
+                                "answers": [
+                                    {
+                                        "id": "answer58c5ddd1-c972-4ae5-b2eb-c0f7bc6b6f64",
+                                        "mandatory": false,
+                                        "type": "Date",
+                                        "label": "Date of birth"
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "id": "blockd0da3023-a9dd-4148-a60c-fe77ddd337b5",
+                            "type": "Question",
+                            "question": {
+                                "id": "questiond0da3023-a9dd-4148-a60c-fe77ddd337b5",
+                                "title": "Does anyone else live at your residence who is aged 16 or over?",
+                                "type": "General",
+                                "answers": [
+                                    {
+                                        "id": "answer692de95a-42fa-47a1-88b2-1a1e3e78a098",
+                                        "mandatory": false,
+                                        "type": "Radio",
+                                        "options": [
+                                            {
+                                                "label": "Yes",
+                                                "value": "Yes",
+                                                "description": "This is the main residence of other adults, children or babies, even if they are currently away for a continuous period of up to 6 months"
+                                            },
+                                            {
+                                                "label": "No",
+                                                "value": "No",
+                                                "description": "This is not the main residence of any other adults, children or babies\t"
+                                            }
+                                        ]
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "id": "block4eda8ed7-0c84-4767-95d0-5aba6444621d",
+                            "type": "Question",
+                            "question": {
+                                "id": "question4eda8ed7-0c84-4767-95d0-5aba6444621d",
+                                "title": "Person 2",
+                                "type": "General",
+                                "answers": [
+                                    {
+                                        "id": "answerebf4379d-a44c-45cf-8a9a-5e06e7438abf",
+                                        "mandatory": false,
+                                        "type": "TextField",
+                                        "label": "First or Given Name"
+                                    },
+                                    {
+                                        "id": "answer8c088d49-e0a2-4d9c-b75f-65937a75e677",
+                                        "mandatory": false,
+                                        "type": "TextField",
+                                        "label": "Middle Name"
+                                    },
+                                    {
+                                        "id": "answer23cb64c6-e279-44bd-99e7-b537280d5605",
+                                        "mandatory": false,
+                                        "type": "TextField",
+                                        "label": "Surname"
+                                    },
+                                    {
+                                        "id": "answer4d34e92e-131b-4ba6-b014-9e1adb838645",
+                                        "mandatory": true,
+                                        "type": "Radio",
+                                        "label": "Sex",
+                                        "options": [
+                                            {
+                                                "label": "Male",
+                                                "value": "Male"
+                                            },
+                                            {
+                                                "label": "Female",
+                                                "value": "Female"
+                                            }
+                                        ]
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "id": "blockcdfcf24d-37b5-4737-83f4-691d23421537",
+                            "type": "Question",
+                            "question": {
+                                "id": "questioncdfcf24d-37b5-4737-83f4-691d23421537",
+                                "title": {
+                                    "text": "What is {answerebf4379d_a44c_45cf_8a9a_5e06e7438abf}&apos;s date of birth?",
+                                    "placeholders": [
+                                        {
+                                            "placeholder": "answerebf4379d_a44c_45cf_8a9a_5e06e7438abf",
+                                            "value": {
+                                                "source": "answers",
+                                                "identifier": "answerebf4379d-a44c-45cf-8a9a-5e06e7438abf"
+                                            }
+                                        }
+                                    ]
+                                },
+                                "type": "General",
+                                "answers": [
+                                    {
+                                        "id": "answer8949146d-ccb1-4771-ad99-14c787756ee4",
+                                        "mandatory": false,
+                                        "type": "Date",
+                                        "label": "Date of birth"
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "id": "block4563bc00-8cad-42aa-a6bc-0d899cd5f662",
+                            "type": "Question",
+                            "question": {
+                                "id": "question4563bc00-8cad-42aa-a6bc-0d899cd5f662",
+                                "title": {
+                                    "text": "What is {answerebf4379d_a44c_45cf_8a9a_5e06e7438abf} {answer23cb64c6_e279_44bd_99e7_b537280d5605}&#x2019;s legal marital status?",
+                                    "placeholders": [
+                                        {
+                                            "placeholder": "answerebf4379d_a44c_45cf_8a9a_5e06e7438abf",
+                                            "value": {
+                                                "source": "answers",
+                                                "identifier": "answerebf4379d-a44c-45cf-8a9a-5e06e7438abf"
+                                            }
+                                        },
+                                        {
+                                            "placeholder": "answer23cb64c6_e279_44bd_99e7_b537280d5605",
+                                            "value": {
+                                                "source": "answers",
+                                                "identifier": "answer23cb64c6-e279-44bd-99e7-b537280d5605"
+                                            }
+                                        }
+                                    ]
+                                },
+                                "type": "General",
+                                "answers": [
+                                    {
+                                        "id": "answer6ee3dc13-5f90-4f6b-b56e-9337d1a7de02",
+                                        "mandatory": false,
+                                        "type": "Radio",
+                                        "options": [
+                                            {
+                                                "label": "Never married and never legally registered in a civil partnership",
+                                                "value": "Never married and never legally registered in a civil partnership"
+                                            },
+                                            {
+                                                "label": "Married",
+                                                "value": "Married"
+                                            },
+                                            {
+                                                "label": "In a legally registered civil partnership",
+                                                "value": "In a legally registered civil partnership"
+                                            },
+                                            {
+                                                "label": "Separated but still legally married",
+                                                "value": "Separated but still legally married"
+                                            },
+                                            {
+                                                "label": "Separated but still legally in a civil partnership",
+                                                "value": "Separated but still legally in a civil partnership"
+                                            },
+                                            {
+                                                "label": "Divorced",
+                                                "value": "Divorced"
+                                            },
+                                            {
+                                                "label": "Formerly in a civil partnership which is now legally dissolved",
+                                                "value": "Formerly in a civil partnership which is now legally dissolved"
+                                            },
+                                            {
+                                                "label": "Widowed",
+                                                "value": "Widowed"
+                                            },
+                                            {
+                                                "label": "A surviving member of a legally registered civil partnership",
+                                                "value": "A surviving member of a legally registered civil partnership"
+                                            }
+                                        ]
+                                    }
+                                ]
+                            }
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "sectione0c26351-b87a-4a8c-9200-60232432d7ec",
+            "title": "Core working",
+            "show_on_hub": true,
+            "groups": [
+                {
+                    "id": "groupe0c26351-b87a-4a8c-9200-60232432d7ec",
+                    "title": "Core working",
+                    "blocks": [
+                        {
+                            "id": "block33169a99-49e7-42e7-85f0-f1d957a9fd5a",
+                            "type": "Question",
+                            "question": {
+                                "id": "question33169a99-49e7-42e7-85f0-f1d957a9fd5a",
+                                "title": "Did you have a paid job, either as an employee or self-employed, in the week Monday 12th July to Sunday 18th July 2021?",
+                                "type": "General",
+                                "answers": [
+                                    {
+                                        "id": "answerd097e947-ffd8-4be1-bb19-992dace4df77",
+                                        "mandatory": false,
+                                        "type": "Radio",
+                                        "options": [
+                                            {
+                                                "label": "Yes",
+                                                "value": "Yes"
+                                            },
+                                            {
+                                                "label": "No",
+                                                "value": "No"
+                                            }
+                                        ]
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "id": "block26a5eaa2-57c5-4ee8-8364-3da98a483e46",
+                            "type": "Question",
+                            "question": {
+                                "id": "question26a5eaa2-57c5-4ee8-8364-3da98a483e46",
+                                "title": "Did you have a second paid job or business?",
+                                "type": "General",
+                                "answers": [
+                                    {
+                                        "id": "answer6dcf7f90-6dac-48f6-8bc3-5e1f2fc77f22",
+                                        "mandatory": false,
+                                        "type": "Radio",
+                                        "options": [
+                                            {
+                                                "label": "Yes",
+                                                "value": "Yes"
+                                            },
+                                            {
+                                                "label": "No",
+                                                "value": "No"
+                                            }
+                                        ]
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "id": "blockb241cc5e-ee52-45c8-96d0-5bc6c6cd824c",
+                            "type": "Question",
+                            "question": {
+                                "id": "questionb241cc5e-ee52-45c8-96d0-5bc6c6cd824c",
+                                "title": "Are you an employee or self-employed?",
+                                "type": "General",
+                                "answers": [
+                                    {
+                                        "id": "answerb5495531-b705-4b75-b1b5-528abaafa42f",
+                                        "mandatory": false,
+                                        "type": "Radio",
+                                        "options": [
+                                            {
+                                                "label": "An employee",
+                                                "value": "An employee"
+                                            },
+                                            {
+                                                "label": "Self-employed",
+                                                "value": "Self-employed"
+                                            }
+                                        ]
+                                    }
+                                ]
+                            },
+                            "skip_conditions": [
+                                {
+                                    "when": [
+                                        {
+                                            "id": "answer6dcf7f90-6dac-48f6-8bc3-5e1f2fc77f22",
+                                            "condition": "equals any",
+                                            "values": [
+                                                "Yes"
+                                            ]
+                                        }
+                                    ]
+                                }
+                            ]
+                        },
+                        {
+                            "id": "block68ac9cec-13cb-412c-8978-42c5f2356608",
+                            "type": "Question",
+                            "question": {
+                                "id": "question68ac9cec-13cb-412c-8978-42c5f2356608",
+                                "title": "Is that job full-time or part-time?",
+                                "type": "General",
+                                "answers": [
+                                    {
+                                        "id": "answerd6ef698f-d541-4b07-8402-1ccc8e7a7a91",
+                                        "mandatory": false,
+                                        "type": "Radio",
+                                        "options": [
+                                            {
+                                                "label": "Full-time",
+                                                "value": "Full-time"
+                                            },
+                                            {
+                                                "label": "Part-time",
+                                                "value": "Part-time"
+                                            }
+                                        ]
+                                    }
+                                ]
+                            },
+                            "skip_conditions": [
+                                {
+                                    "when": [
+                                        {
+                                            "id": "answer6dcf7f90-6dac-48f6-8bc3-5e1f2fc77f22",
+                                            "condition": "equals any",
+                                            "values": [
+                                                "Yes"
+                                            ]
+                                        }
+                                    ]
+                                }
+                            ]
+                        },
+                        {
+                            "id": "blockcc8e114a-492b-48b0-9dc6-51cf5285358c",
+                            "type": "Question",
+                            "question": {
+                                "id": "questioncc8e114a-492b-48b0-9dc6-51cf5285358c",
+                                "title": "Many jobs or businesses have usual hours. Not including your overtime, how many hours do you usually work a week in your job or business?",
+                                "type": "General",
+                                "answers": [
+                                    {
+                                        "id": "answer36cf77b4-9d3b-4e2a-ae0a-8462cb35e76a",
+                                        "mandatory": false,
+                                        "type": "TextField",
+                                        "label": "Hours"
+                                    }
+                                ]
+                            },
+                            "skip_conditions": [
+                                {
+                                    "when": [
+                                        {
+                                            "id": "answer6dcf7f90-6dac-48f6-8bc3-5e1f2fc77f22",
+                                            "condition": "equals any",
+                                            "values": [
+                                                "Yes"
+                                            ]
+                                        }
+                                    ]
+                                }
+                            ]
+                        },
+                        {
+                            "id": "block2d96d8b4-b395-4b72-9140-2a62f5b37339",
+                            "type": "Question",
+                            "question": {
+                                "id": "question2d96d8b4-b395-4b72-9140-2a62f5b37339",
+                                "title": "In your main job, are you an employee or self-employed?",
+                                "type": "General",
+                                "answers": [
+                                    {
+                                        "id": "answer48f1927a-e815-473f-ba96-182f28158210",
+                                        "mandatory": false,
+                                        "type": "Radio",
+                                        "options": [
+                                            {
+                                                "label": "An employee",
+                                                "value": "An employee"
+                                            },
+                                            {
+                                                "label": "Self-employed",
+                                                "value": "Self-employed"
+                                            }
+                                        ]
+                                    }
+                                ]
+                            },
+                            "skip_conditions": [
+                                {
+                                    "when": [
+                                        {
+                                            "id": "answer6dcf7f90-6dac-48f6-8bc3-5e1f2fc77f22",
+                                            "condition": "equals any",
+                                            "values": [
+                                                "No"
+                                            ]
+                                        }
+                                    ]
+                                }
+                            ]
+                        },
+                        {
+                            "id": "blockd9f6ccd1-7e89-4215-af8e-2c1afcd68694",
+                            "type": "Question",
+                            "question": {
+                                "id": "questiond9f6ccd1-7e89-4215-af8e-2c1afcd68694",
+                                "title": "And is that job full-time or part-time?",
+                                "type": "General",
+                                "answers": [
+                                    {
+                                        "id": "answerb0b7515a-45d0-4feb-8270-4ed62c39ff50",
+                                        "mandatory": false,
+                                        "type": "Radio",
+                                        "options": [
+                                            {
+                                                "label": "Full-time",
+                                                "value": "Full-time"
+                                            },
+                                            {
+                                                "label": "Part-time",
+                                                "value": "Part-time"
+                                            }
+                                        ]
+                                    }
+                                ]
+                            },
+                            "skip_conditions": [
+                                {
+                                    "when": [
+                                        {
+                                            "id": "answer6dcf7f90-6dac-48f6-8bc3-5e1f2fc77f22",
+                                            "condition": "equals any",
+                                            "values": [
+                                                "No"
+                                            ]
+                                        }
+                                    ]
+                                }
+                            ]
+                        },
+                        {
+                            "id": "block43bcd37d-a88e-4033-86ce-7424d36e1799",
+                            "type": "Question",
+                            "question": {
+                                "id": "question43bcd37d-a88e-4033-86ce-7424d36e1799",
+                                "title": "In your second job, are you an employee or self-employed?",
+                                "type": "General",
+                                "answers": [
+                                    {
+                                        "id": "answer13626c79-f128-4174-be43-ddc1b353f31e",
+                                        "mandatory": false,
+                                        "type": "Radio",
+                                        "options": [
+                                            {
+                                                "label": "An employee",
+                                                "value": "An employee"
+                                            },
+                                            {
+                                                "label": "Self-employed",
+                                                "value": "Self-employed"
+                                            }
+                                        ]
+                                    }
+                                ]
+                            },
+                            "skip_conditions": [
+                                {
+                                    "when": [
+                                        {
+                                            "id": "answer6dcf7f90-6dac-48f6-8bc3-5e1f2fc77f22",
+                                            "condition": "equals any",
+                                            "values": [
+                                                "No"
+                                            ]
+                                        }
+                                    ]
+                                }
+                            ]
+                        },
+                        {
+                            "id": "blockb616a08a-0acd-4fa5-a39b-f5af8ea5e82a",
+                            "type": "Question",
+                            "question": {
+                                "id": "questionb616a08a-0acd-4fa5-a39b-f5af8ea5e82a",
+                                "title": "And is that job full-time or part-time?",
+                                "type": "General",
+                                "answers": [
+                                    {
+                                        "id": "answer7400efa8-a973-42a0-83f9-d75559fc5261",
+                                        "mandatory": false,
+                                        "type": "Radio",
+                                        "options": [
+                                            {
+                                                "label": "Full-time",
+                                                "value": "Full-time"
+                                            },
+                                            {
+                                                "label": "Part-time",
+                                                "value": "Part-time"
+                                            }
+                                        ]
+                                    }
+                                ]
+                            },
+                            "skip_conditions": [
+                                {
+                                    "when": [
+                                        {
+                                            "id": "answer6dcf7f90-6dac-48f6-8bc3-5e1f2fc77f22",
+                                            "condition": "equals any",
+                                            "values": [
+                                                "No"
+                                            ]
+                                        }
+                                    ]
+                                }
+                            ]
+                        },
+                        {
+                            "id": "blockb0913346-43d5-4d20-8bc3-7b2be27a2807",
+                            "type": "Question",
+                            "question": {
+                                "id": "questionb0913346-43d5-4d20-8bc3-7b2be27a2807",
+                                "title": "Many jobs or businesses have usual hours. Not including your overtime, how many hours do you usually work a week in your main job or business?",
+                                "type": "General",
+                                "answers": [
+                                    {
+                                        "id": "answer0ed547f0-b20c-41db-a485-66c06d027466",
+                                        "mandatory": false,
+                                        "type": "TextField",
+                                        "label": "Hours"
+                                    }
+                                ]
+                            },
+                            "skip_conditions": [
+                                {
+                                    "when": [
+                                        {
+                                            "id": "answer6dcf7f90-6dac-48f6-8bc3-5e1f2fc77f22",
+                                            "condition": "equals any",
+                                            "values": [
+                                                "No"
+                                            ]
+                                        }
+                                    ]
+                                }
+                            ]
+                        },
+                        {
+                            "id": "block62d206eb-4122-48c2-8454-1a5d65b6910e",
+                            "type": "Question",
+                            "question": {
+                                "id": "question62d206eb-4122-48c2-8454-1a5d65b6910e",
+                                "title": "Many jobs or businesses have usual hours. Not including your overtime, how many hours do you usually work a week in your second job or business?",
+                                "type": "General",
+                                "answers": [
+                                    {
+                                        "id": "answerc2143d7a-1d92-483d-b907-70394091c7d0",
+                                        "mandatory": false,
+                                        "type": "TextField",
+                                        "label": "Hours"
+                                    }
+                                ]
+                            },
+                            "skip_conditions": [
+                                {
+                                    "when": [
+                                        {
+                                            "id": "answer6dcf7f90-6dac-48f6-8bc3-5e1f2fc77f22",
+                                            "condition": "equals any",
+                                            "values": [
+                                                "No"
+                                            ]
+                                        }
+                                    ]
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "section72e7ce0d-02e8-444a-9fa4-7c91fca081bf",
+            "title": "Employment",
+            "show_on_hub": true,
+            "groups": [
+                {
+                    "id": "group72e7ce0d-02e8-444a-9fa4-7c91fca081bf",
+                    "title": "Employment",
+                    "blocks": [
+                        {
+                            "id": "blockdd43c99c-afa2-4682-8daa-902e333ce436",
+                            "type": "Question",
+                            "question": {
+                                "id": "questiondd43c99c-afa2-4682-8daa-902e333ce436",
+                                "title": "How long have you working in your current role?",
+                                "type": "General",
+                                "answers": [
+                                    {
+                                        "id": "answerf06bac42-342d-421d-8d68-07a71ea11713",
+                                        "mandatory": false,
+                                        "type": "Duration",
+                                        "label": "Years and months at role",
+                                        "units": [
+                                            "years",
+                                            "months"
+                                        ]
+                                    }
+                                ]
+                            }
+                        }
+                    ]
+                }
+            ]
+        }
+    ],
+    "theme": "default",
+    "navigation": {
+        "visible": false
+    },
+    "metadata": [
+        {
+            "name": "user_id",
+            "type": "string"
+        },
+        {
+            "name": "period_id",
+            "type": "string"
+        },
+        {
+            "name": "ru_name",
+            "type": "string"
+        }
+    ]
+}
