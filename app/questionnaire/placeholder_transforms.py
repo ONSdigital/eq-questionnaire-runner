@@ -32,8 +32,6 @@ class PlaceholderTransforms:
         self.locale = DEFAULT_LOCALE if language in ["en", "eo"] else language
 
     input_date_format = "%Y-%m-%d"
-    input_date_format_month_year_only = "%Y-%m"
-    input_date_format_iso = "%Y-%m-%dT%H:%M:%S.%f%z"
 
     def format_currency(self, number: int = None, currency: str = "GBP") -> str:
         formatted_currency: str = format_currency(number, currency, locale=self.locale)
@@ -236,19 +234,17 @@ class PlaceholderTransforms:
         if date == "now":
             return datetime.now(tz=timezone.utc)
 
-        try:
-            return datetime.strptime(
-                date, PlaceholderTransforms.input_date_format
-            ).replace(tzinfo=timezone.utc)
-        except ValueError:
+        date_formats = ["%Y-%m-%d", "%Y-%m", "%Y-%m-%dT%H:%M:%S.%f%z"]
+
+        for date_format in date_formats:
             try:
-                return datetime.strptime(
-                    date, PlaceholderTransforms.input_date_format_month_year_only
-                ).replace(tzinfo=timezone.utc)
+                return datetime.strptime(date, date_format).replace(tzinfo=timezone.utc)
             except ValueError:
-                return datetime.strptime(
-                    date, PlaceholderTransforms.input_date_format_iso
-                ).replace(tzinfo=timezone.utc)
+                continue
+        else:
+            raise ValueError(
+                f"No valid date format for date '{date}', possible formats: {date_formats}"
+            )
 
     @staticmethod
     def add(lhs: Union[int, Decimal], rhs: Union[int, Decimal]) -> Union[int, Decimal]:
