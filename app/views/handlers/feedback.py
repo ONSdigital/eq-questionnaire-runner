@@ -1,6 +1,6 @@
 from datetime import datetime, timezone
 from functools import cached_property
-from typing import Any, Dict, Mapping, Optional, Union
+from typing import Any, Mapping, Optional, Union
 
 from flask import current_app
 from flask_babel import gettext, lazy_gettext
@@ -107,7 +107,7 @@ class Feedback:
         self._session_store.save()
 
     @cached_property
-    def question_schema(self) -> Dict:
+    def question_schema(self) -> Mapping[str, Union[str, list]]:
 
         return {
             "type": "General",
