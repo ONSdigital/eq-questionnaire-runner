@@ -1,6 +1,6 @@
 from datetime import datetime, timezone
 from functools import cached_property
-from typing import Any, Mapping, Optional, Union
+from typing import Any, Dict, Mapping, Optional, Union
 
 from flask import current_app
 from flask_babel import gettext, lazy_gettext
@@ -97,9 +97,6 @@ class Feedback:
             feedback_count=session_data.feedback_count,
             feedback_text=self.form.data.get("feedback-text"),
             feedback_type=self.form.data.get("feedback-type"),
-            feedback_type_question_category=self.form.data.get(
-                "feedback-type-question-category"
-            ),
         )
 
         if not current_app.eq["feedback_submitter"].upload(  # type: ignore
@@ -110,7 +107,7 @@ class Feedback:
         self._session_store.save()
 
     @cached_property
-    def question_schema(self):
+    def question_schema(self) -> Dict:
 
         return {
             "type": "General",
@@ -235,7 +232,6 @@ class FeedbackPayload:
     :param feedback_count: Number of feedback submissions attempted by the user
     :param feedback_text: Feedback text input by the user
     :param feedback_type: Type of feedback selected by the user
-    :param feedback_type_question_category: Feedback question category selected by the user
 
 
     :return payload: Feedback payload object
@@ -251,7 +247,6 @@ class FeedbackPayload:
         feedback_count: int,
         feedback_text: str,
         feedback_type: str,
-        feedback_type_question_category: str = None,
     ):
         self.metadata = metadata
         self.response_metadata = response_metadata
@@ -289,10 +284,5 @@ class FeedbackPayload:
             "feedback_type": self.feedback_type,
             "feedback_count": str(self.feedback_count),
         }
-
-        if self.feedback_type_question_category:
-            payload["data"][
-                "feedback_type_question_category"
-            ] = self.feedback_type_question_category
 
         return payload | optional_properties

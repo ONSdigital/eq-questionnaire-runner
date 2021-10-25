@@ -86,10 +86,9 @@ def response_metadata():
         "started_at": started_at,
     }
 
+
 @freeze_time(datetime.now(tz=timezone.utc).isoformat())
-def test_feedback_payload(
-    session_data, schema, metadata, response_metadata
-):
+def test_feedback_payload(session_data, schema, metadata, response_metadata):
     feedback_payload = FeedbackPayload(
         metadata=metadata,
         response_metadata=response_metadata,
