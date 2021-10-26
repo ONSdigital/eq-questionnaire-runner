@@ -31,6 +31,7 @@ Errors = Mapping[str, Error]
 ErrorList = Sequence[tuple[str, str]]
 
 
+# pylint: disable=too-many-locals
 class QuestionnaireForm(FlaskForm):
     def __init__(
         self,

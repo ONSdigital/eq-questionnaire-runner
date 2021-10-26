@@ -327,6 +327,7 @@ def process_options(answer_id, options, page_spec, base_prefix):
             page_spec.write(ANSWER_GETTER.substitute(option_context))
 
 
+# pylint: disable=too-complex
 def process_answer(answer, page_spec, long_names, page_name):
     answer_name = generate_pascal_case_from_id(answer["id"])
     answer_name = answer_name.replace(page_name, "")
@@ -657,6 +658,7 @@ def build_and_get_base_page_context(
     return context
 
 
+# pylint: disable=too-many-branches,too-many-statements,too-many-locals,too-complex
 def process_block(
     block, dir_out, schema_data, spec_file, relative_require="..", page_filename=None
 ):

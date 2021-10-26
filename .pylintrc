@@ -73,6 +73,7 @@ disable=
     invalid-name,
     inconsistent-return-statements,
     bad-continuation,
+    duplicate-code,
 
 
 [REPORTS]
@@ -258,7 +259,7 @@ ignore-comments=yes
 ignore-docstrings=yes
 
 # Ignore imports when computing similarities.
-ignore-imports=no
+ignore-imports=yes
 
 
 [SPELLING]

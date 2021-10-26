@@ -5,7 +5,7 @@ from app.questionnaire.location import Location
 from app.questionnaire.schema_utils import choose_question_to_display
 
 
-# pylint: disable=too-many-locals
+# pylint: disable=too-many-locals,too-many-nested-blocks
 def convert_answers_to_payload_0_0_1(
     metadata, answer_store, list_store, schema, full_routing_path
 ):
