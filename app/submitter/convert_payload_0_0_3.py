@@ -4,6 +4,7 @@ from app.data_models.answer_store import AnswerStore
 from app.data_models.relationship_store import RelationshipStore
 from app.questionnaire.relationship_router import RelationshipRouter
 
+
 # pylint: disable=too-many-locals
 def convert_answers_to_payload_0_0_3(
     answer_store, list_store, schema, full_routing_path

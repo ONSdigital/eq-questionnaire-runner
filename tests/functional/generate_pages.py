@@ -1,8 +1,8 @@
 #!/usr/bin/env python
 
 import argparse
-import logging
 import json
+import logging
 import os
 import re
 from string import Template
