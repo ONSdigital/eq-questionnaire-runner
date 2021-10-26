@@ -1,3 +1,5 @@
+from typing import Mapping
+
 from structlog import get_logger
 
 from app.questionnaire.questionnaire_schema import DEFAULT_LANGUAGE_CODE
@@ -73,23 +75,12 @@ def convert_answers(
         "survey_id": survey_id,
         "flushed": flushed,
         "submitted_at": submitted_at.isoformat(),
-        "collection": _build_collection(metadata),
-        "metadata": _build_metadata(metadata),
+        "collection": build_collection(metadata),
+        "metadata": build_metadata(metadata),
         "launch_language_code": metadata.get("language_code", DEFAULT_LANGUAGE_CODE),
     }
 
-    if metadata.get("channel"):
-        payload["channel"] = metadata["channel"]
-    if metadata.get("case_type"):
-        payload["case_type"] = metadata["case_type"]
-    if metadata.get("form_type"):
-        payload["form_type"] = metadata["form_type"]
-    if metadata.get("region_code"):
-        payload["region_code"] = metadata["region_code"]
-    if response_metadata.get("started_at"):
-        payload["started_at"] = response_metadata["started_at"]
-    if metadata.get("case_ref"):
-        payload["case_ref"] = metadata["case_ref"]
+    optional_properties = get_optional_payload_properties(metadata, response_metadata)
 
     if schema.json["data_version"] == "0.0.3":
         payload["data"] = {
@@ -106,10 +97,11 @@ def convert_answers(
         raise DataVersionError(schema.json["data_version"])
 
     logger.info("converted answer ready for submission")
-    return payload
+
+    return payload | optional_properties
 
 
-def _build_collection(metadata):
+def build_collection(metadata) -> Mapping[str, str]:
     return {
         "exercise_sid": metadata["collection_exercise_sid"],
         "schema_name": metadata["schema_name"],
@@ -117,7 +109,7 @@ def _build_collection(metadata):
     }
 
 
-def _build_metadata(metadata):
+def build_metadata(metadata) -> Mapping[str, str]:
     downstream_metadata = {"user_id": metadata["user_id"], "ru_ref": metadata["ru_ref"]}
 
     if metadata.get("ref_p_start_date"):
@@ -128,3 +120,15 @@ def _build_metadata(metadata):
         downstream_metadata["display_address"] = metadata["display_address"]
 
     return downstream_metadata
+
+
+def get_optional_payload_properties(metadata, response_metadata) -> Mapping[str, str]:
+    payload = {}
+
+    for key in ["channel", "case_type", "form_type", "region_code", "case_ref"]:
+        if value := metadata.get(key):
+            payload[key] = value
+    if started_at := response_metadata.get("started_at"):
+        payload["started_at"] = started_at
+
+    return payload

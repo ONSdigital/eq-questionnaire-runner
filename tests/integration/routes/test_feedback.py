@@ -70,22 +70,6 @@ class TestFeedback(IntegrationTestCase):
         self.assertInUrl(self.SENT_FEEDBACK_URL)
         self.assertInBody("Thank you for your feedback")
 
-    def test_valid_feedback_with_question_category(self):
-        # Given I launch and complete the test_feedback questionnaire
-        self._launch_and_complete_questionnaire()
-        self.get(self.SEND_FEEDBACK_URL)
-        # When I enter a valid feedback and submit
-        self.post(
-            {
-                "feedback-type": "The census questions",
-                "feedback-type-question-category": "Visitors",
-                "feedback-text": "Feedback",
-            }
-        )
-        # Then I get the feedback sent page
-        self.assertInUrl(self.SENT_FEEDBACK_URL)
-        self.assertInBody("Thank you for your feedback")
-
     def _test_feedback_show_warning(self):
         # Given I launch and complete the test_feedback questionnaire
         self._launch_and_complete_questionnaire()
@@ -215,22 +199,6 @@ class TestFeedback(IntegrationTestCase):
         self.assertInUrl(self.SEND_FEEDBACK_URL)
         self.assertInBody("There is a problem with your feedback")
         self.assertInBody("Enter your feedback")
-        self.assertEqualPageTitle("Error: Feedback - Feedback test schema")
-
-    def test_feedback_question_category_missing(self):
-        # Given I launch and complete the test_feedback questionnaire
-        self._launch_and_complete_questionnaire()
-        self.get(self.SEND_FEEDBACK_URL)
-
-        # When I submit without selecting a feedback topic
-        self.post(
-            {"feedback-type": "The census questions", "feedback-text": "Feedback"}
-        )
-
-        # Then I stay on the send page and am presented with an error
-        self.assertInUrl(self.SEND_FEEDBACK_URL)
-        self.assertInBody("There is a problem with your feedback")
-        self.assertInBody("Select an option")
         self.assertEqualPageTitle("Error: Feedback - Feedback test schema")
 
     def test_feedback_type_and_text_missing(self):
