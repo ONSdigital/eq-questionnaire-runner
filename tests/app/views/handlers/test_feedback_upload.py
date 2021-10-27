@@ -1,101 +1,46 @@
-import uuid
 from datetime import datetime, timezone
 
-import pytest
 from freezegun import freeze_time
 
-from app.data_models.session_data import SessionData
-from app.questionnaire.questionnaire_schema import QuestionnaireSchema
 from app.views.handlers.feedback import FeedbackMetadata, FeedbackPayload
 
-tx_id = str(uuid.uuid4())
-response_id = "1234567890123456"
-period_str = "2016-01-01"
-period_id = "2016-02-01"
-ref_p_start_date = "2016-02-02"
-ref_p_end_date = "2016-03-03"
-ru_ref = "432423423423"
-ru_name = "ru_name"
-user_id = "789473423"
-schema_name = "1_0000"
-feedback_count = 1
-display_address = "68 Abingdon Road, Goathill"
-form_type = "I"
-collection_exercise_sid = "test-sid"
-case_id = "case_id"
-survey_id = "021"
-data_version = "0.0.1"
-feedback_type = "Feedback type"
-feedback_text = "Feedback text"
-feedback_type_question_category = "Feedback type question category"
-started_at = str(datetime.now(tz=timezone.utc).isoformat())
-language_code = "cy"
-case_type = "I"
-channel = "H"
-case_ref = "1000000000000001"
-region_code = "GB_WLS"
-
-
-@pytest.fixture()
-def session_data():
-    return SessionData(
-        tx_id=tx_id,
-        schema_name=schema_name,
-        response_id=response_id,
-        period_str=period_str,
-        language_code=language_code,
-        launch_language_code=None,
-        survey_url=None,
-        ru_name=ru_name,
-        ru_ref=ru_ref,
-        case_id=case_id,
-        feedback_count=feedback_count,
-    )
-
-
-@pytest.fixture()
-def schema():
-    return QuestionnaireSchema({"survey_id": survey_id, "data_version": data_version})
-
-
-@pytest.fixture()
-def metadata():
-    return {
-        "tx_id": tx_id,
-        "user_id": user_id,
-        "schema_name": schema_name,
-        "collection_exercise_sid": collection_exercise_sid,
-        "period_id": period_id,
-        "period_str": period_str,
-        "ref_p_start_date": ref_p_start_date,
-        "ref_p_end_date": ref_p_end_date,
-        "ru_ref": ru_ref,
-        "response_id": response_id,
-        "form_type": form_type,
-        "display_address": display_address,
-        "case_type": case_type,
-        "channel": channel,
-        "case_ref": case_ref,
-        "region_code": region_code,
-    }
-
-
-@pytest.fixture()
-def response_metadata():
-    return {
-        "started_at": started_at,
-    }
+from .conftest import (
+    case_id,
+    case_ref,
+    case_type,
+    channel,
+    collection_exercise_sid,
+    data_version,
+    display_address,
+    feedback_count,
+    feedback_text,
+    feedback_type,
+    form_type,
+    language_code,
+    period_id,
+    ref_p_end_date,
+    ref_p_start_date,
+    region_code,
+    ru_ref,
+    schema_name,
+    started_at,
+    survey_id,
+    tx_id,
+    user_id,
+)
 
 
 @freeze_time(datetime.now(tz=timezone.utc).isoformat())
-def test_feedback_payload(session_data, schema, metadata, response_metadata):
+def test_feedback_payload(
+    session_data_feedback, schema_feedback, metadata, response_metadata
+):
     feedback_payload = FeedbackPayload(
         metadata=metadata,
         response_metadata=response_metadata,
-        schema=schema,
+        schema=schema_feedback,
         case_id=case_id,
         submission_language_code=language_code,
-        feedback_count=session_data.feedback_count,
+        feedback_count=session_data_feedback.feedback_count,
         feedback_text=feedback_text,
         feedback_type=feedback_type,
     )

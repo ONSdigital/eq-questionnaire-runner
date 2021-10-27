@@ -4,12 +4,14 @@ from typing import Any, Mapping, Optional, Union
 
 from flask import current_app
 from flask_babel import gettext, lazy_gettext
+from sdc.crypto.encrypter import encrypt
 from werkzeug.datastructures import MultiDict
 
 from app.data_models import QuestionnaireStore
 from app.data_models.session_data import SessionData
 from app.data_models.session_store import SessionStore
 from app.forms.questionnaire_form import QuestionnaireForm, generate_form
+from app.keys import KEY_PURPOSE_SUBMISSION
 from app.questionnaire.questionnaire_schema import (
     DEFAULT_LANGUAGE_CODE,
     QuestionnaireSchema,
@@ -19,6 +21,7 @@ from app.submitter.converter import (
     build_metadata,
     get_optional_payload_properties,
 )
+from app.utilities.json import json_dumps
 from app.views.contexts.feedback_form_context import build_feedback_context
 
 
@@ -72,6 +75,8 @@ class Feedback:
         return build_feedback_context(self.question_schema, self.form)
 
     def get_page_title(self) -> str:
+        # pylint: disable=no-member
+        # wtforms Form parents are not discoverable in the 2.3.3 implementation
         if self.form.errors:
             title: str = gettext("Error: {page_title}").format(
                 page_title=self.PAGE_TITLE
@@ -87,7 +92,8 @@ class Feedback:
             session_data.case_id,
             session_data.tx_id,
         )
-
+        # pylint: disable=no-member
+        # wtforms Form parents are not discoverable in the 2.3.3 implementation
         feedback_message = FeedbackPayload(
             metadata=self._questionnaire_store.metadata,
             response_metadata=self._questionnaire_store.response_metadata,
@@ -99,8 +105,14 @@ class Feedback:
             feedback_type=self.form.data.get("feedback-type"),
         )
 
+        message = json_dumps(feedback_message())
+
+        encrypted_message = encrypt(
+            message, current_app.eq["key_store"], KEY_PURPOSE_SUBMISSION  # type: ignore
+        )
+
         if not current_app.eq["feedback_submitter"].upload(  # type: ignore
-            feedback_metadata(), feedback_message()
+            feedback_metadata(), encrypted_message
         ):
             raise FeedbackUploadFailed()
 

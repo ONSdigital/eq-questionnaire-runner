@@ -9,8 +9,13 @@ from app.forms.field_handlers.number_handler import NumberHandler
 from app.forms.fields import DecimalFieldWithSeparator, IntegerFieldWithSeparator
 from app.settings import MAX_NUMBER
 
+# pylint: disable=no-member
+# wtforms Form parents are not discoverable in the 2.3.3 implementation
 
-def get_test_form_class(answer_schema, value_source_resolver, messages=error_messages):
+
+def get_test_form_class(
+    answer_schema, value_source_resolver, messages=error_messages.copy()
+):
     handler = NumberHandler(
         answer_schema, value_source_resolver, error_messages=messages
     )

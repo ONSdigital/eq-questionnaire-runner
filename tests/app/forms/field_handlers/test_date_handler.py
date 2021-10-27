@@ -225,7 +225,6 @@ def test_greater_minimum_date_than_maximum_date(app, value_source_resolver):
 
 
 def test_validate_mandatory_date(app, value_source_resolver):
-    schema = load_schema_from_name("test_date_validation_single")
     answer = {
         "id": "date-range-from",
         "mandatory": True,

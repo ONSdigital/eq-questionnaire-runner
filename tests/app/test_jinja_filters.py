@@ -268,44 +268,6 @@ class TestJinjaFilters(AppContextTestCase):  # pylint: disable=too-many-public-m
             self.assertFalse(should_wrap_with_fieldset(question))
 
 
-@pytest.fixture
-def answer_schema_dropdown():
-    return {
-        "type": "Dropdown",
-        "id": "mandatory-checkbox-with-mandatory-dropdown-detail-answer",
-        "mandatory": True,
-        "label": "Please specify heat level",
-        "placeholder": "Select heat level",
-        "options": [
-            {"label": "Mild", "value": "Mild"},
-            {"label": "Medium", "value": "Medium"},
-            {"label": "Hot", "value": "Hot"},
-        ],
-    }
-
-
-@pytest.fixture
-def answer_schema_number():
-    return {
-        "mandatory": False,
-        "id": "other-answer",
-        "label": "Please enter a number of items",
-        "type": "Number",
-        "parent_id": "checkbox-question-numeric-detail",
-    }
-
-
-@pytest.fixture
-def answer_schema_textfield():
-    return {
-        "mandatory": False,
-        "id": "other-answer",
-        "label": "Please specify",
-        "type": "TextField",
-        "parent_id": "checkbox-question-textfield-detail",
-    }
-
-
 def test_map_list_collector_config_no_actions():
     list_items = [
         {"item_title": "Mark Bloggs", "list_item_id": "one"},

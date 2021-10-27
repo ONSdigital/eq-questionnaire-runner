@@ -20,6 +20,7 @@ class SubmitContextTestCase(AppContextTestCase):
         self.progress_store = ProgressStore()
 
 
+# pylint: disable=attribute-defined-outside-init
 class TestSubmitContext(SubmitContextTestCase):
     @patch("app.jinja_filters.flask_babel.get_locale", Mock(return_value="en_GB"))
     def test_default_submission_content(self):

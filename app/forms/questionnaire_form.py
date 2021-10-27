@@ -373,6 +373,8 @@ class QuestionnaireForm(FlaskForm):
         return result
 
     def answers_all_valid(self, answer_id_list: Sequence[str]) -> bool:
+        # pylint: disable=no-member
+        # wtforms Form parents are not discoverable in the 2.3.3 implementation
         return not set(answer_id_list) & set(self.errors)
 
     def map_errors(self) -> list[tuple[str, str]]:
@@ -385,7 +387,8 @@ class QuestionnaireForm(FlaskForm):
                     self.question_errors[self.question["id"]],
                 )
             ]
-
+        # pylint: disable=no-member
+        # wtforms Form parents are not discoverable in the 2.3.3 implementation
         for answer in self.question["answers"]:
             if answer["id"] in self.errors:
                 ordered_errors += map_subfield_errors(self.errors, answer["id"])
@@ -501,8 +504,8 @@ def map_detail_answer_errors(
     return detail_answer_errors
 
 
-def _get_error_id(id: str) -> str:
-    return f"{id}-error"
+def _get_error_id(id_: str) -> str:
+    return f"{id_}-error"
 
 
 def _clear_detail_answer_field(

@@ -25,7 +25,7 @@ display_result $? 1 "Flake 8 code style check"
 # https://docs.pylint.org/en/1.6.0/run.html#exit-codes
 # We want to fail on all errors so don't check for specific bits in the output; but if we did in future, see:
 # http://stackoverflow.com/questions/6626351/how-to-extract-bits-from-return-code-number-in-bash
-find . -type f -name "*.py" | xargs pylint --reports=n --output-format=colorized --rcfile=.pylintrc -j 0 --disable=E,W
+find . -type f -name "*.py" | xargs pylint --reports=n --output-format=colorized --rcfile=.pylintrc -j 0
 display_result $? 1 "Pylint linting check"
 
 isort --check .

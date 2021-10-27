@@ -13,6 +13,8 @@ class ListAddQuestion(ListAction):
         list_item_id = self.questionnaire_store_updater.add_list_item(
             self.parent_block["for_list"]
         )
+        # pylint: disable=no-member
+        # wtforms Form parents are not discoverable in the 2.3.3 implementation
         self.questionnaire_store_updater.update_answers(self.form.data, list_item_id)
         return super().handle_post()
 

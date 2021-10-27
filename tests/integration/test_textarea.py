@@ -2,7 +2,7 @@ from app.utilities.json import json_load
 from tests.integration.integration_test_case import IntegrationTestCase
 from tests.integration.questionnaire import SUBMIT_URL_PATH, THANK_YOU_URL_PATH
 
-with open("tests/fixtures/blns.json") as blns:
+with open("tests/fixtures/blns.json", encoding="utf-8") as blns:
     NAUGHTY_STRINGS = json_load(blns)
 
 
