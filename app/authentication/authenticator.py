@@ -30,16 +30,16 @@ def user_loader(user_id: str) -> Optional[str]:
 
 @login_manager.request_loader
 def request_load_user(
-    request: Request,
-) -> Optional[User]:  # pylint: disable=unused-argument
+    request: Request,  # pylint: disable=unused-argument
+) -> Optional[User]:
     logger.debug("load user")
     return load_user()
 
 
 @user_logged_out.connect_via(ANY)
 def when_user_logged_out(
-    sender_app: Flask, user: str
-) -> None:  # pylint: disable=unused-argument
+    sender_app: Flask, user: str  # pylint: disable=unused-argument
+) -> None:
     logger.debug("log out user")
     session_store = get_session_store()
     if session_store:

@@ -31,12 +31,12 @@ class UsedJtiClaim:
 
 # pylint: disable=no-self-use
 class Timestamp(fields.Field):
-    def _serialize(self, value, attr, obj, **kwargs):
+    def _serialize(self, value, *args, **kwargs):  # pylint: disable=unused-argument
         if value:
             # Timezone aware datetime to timestamp
             return int(value.replace(tzinfo=timezone.utc).timestamp())
 
-    def _deserialize(self, value, attr, data, **kwargs):
+    def _deserialize(self, value, *args, **kwargs):  # pylint: disable=unused-argument
         if value:
             # Timestamp to timezone aware datetime
             return datetime.fromtimestamp(value, tz=timezone.utc)
@@ -47,7 +47,7 @@ class DateTimeSchemaMixin:
     updated_at = fields.DateTime()
 
     @pre_dump
-    def set_date(self, data, **kwargs):
+    def set_date(self, data, **kwargs):  # pylint: disable=unused-argument
         data.updated_at = datetime.now(tz=timezone.utc)
         return data
 
@@ -59,7 +59,7 @@ class QuestionnaireStateSchema(Schema, DateTimeSchemaMixin):
     submitted_at = Timestamp(allow_none=True)
 
     @post_load
-    def make_model(self, data, **kwargs):
+    def make_model(self, data, **kwargs):  # pylint: disable=unused-argument
         created_at = data.pop("created_at", None)
         updated_at = data.pop("updated_at", None)
         model = QuestionnaireState(**data)
@@ -75,7 +75,7 @@ class EQSessionSchema(Schema, DateTimeSchemaMixin):
     expires_at = Timestamp()
 
     @post_load
-    def make_model(self, data, **kwargs):
+    def make_model(self, data, **kwargs):  # pylint: disable=unused-argument
         created_at = data.pop("created_at", None)
         updated_at = data.pop("updated_at", None)
         model = EQSession(**data)
@@ -89,5 +89,5 @@ class UsedJtiClaimSchema(Schema):
     expires_at = Timestamp()
 
     @post_load
-    def make_model(self, data, **kwargs):
+    def make_model(self, data, **kwargs):  # pylint: disable=unused-argument
         return UsedJtiClaim(**data)

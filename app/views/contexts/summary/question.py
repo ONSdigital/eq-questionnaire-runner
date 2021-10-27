@@ -87,7 +87,7 @@ class Question:
             "Radio": self._build_radio_answer,
         }
 
-        if answer_schema["type"] in answer_builder.keys():
+        if answer_schema["type"] in answer_builder:
             return answer_builder[answer_schema["type"]](
                 answer_value, answer_schema, answer_store
             )

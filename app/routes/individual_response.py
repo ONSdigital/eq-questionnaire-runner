@@ -63,6 +63,7 @@ def before_individual_response_request():
     handle_language()
 
     session_store = get_session_store()
+    # pylint: disable=assigning-non-slot
     g.schema = load_schema_from_session_data(session_store.session_data)
 
 
@@ -261,8 +262,8 @@ def individual_response_text_message_confirmation(schema, questionnaire_store):
 
     try:
         mobile_number = url_safe_serializer().loads(request.args["mobile_number"])
-    except BadSignature:
-        raise BadRequest
+    except BadSignature as exc:
+        raise BadRequest from exc
 
     return render_template(
         template="individual_response/confirmation-text-message",

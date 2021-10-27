@@ -2,7 +2,7 @@ import uuid
 from unittest import TestCase
 
 from mock import Mock, call, patch
-from pika.exceptions import AMQPError
+from pika.exceptions import AMQPError, NackError
 
 from app.submitter import GCSFeedbackSubmitter, GCSSubmitter, RabbitMQSubmitter
 
@@ -136,7 +136,9 @@ class TestRabbitMQSubmitter(TestCase):
     def test_when_fail_to_publish_message_then_returns_false(self):
         # Given
         channel = Mock()
-        channel.basic_publish = Mock(return_value=False)
+        channel.basic_publish = Mock(
+            side_effect=NackError("Mock exception for basic_publish")
+        )
         connection = Mock()
         connection.channel.side_effect = Mock(return_value=channel)
         with patch(

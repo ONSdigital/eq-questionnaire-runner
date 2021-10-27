@@ -44,18 +44,6 @@ def parser(answer_store, location, mock_schema):
     )
 
 
-@pytest.fixture
-def parser_with_list_item_id(answer_store, list_store, location):
-    return PlaceholderParser(
-        language="en",
-        answer_store=answer_store,
-        list_store=list_store,
-        metadata={},
-        location=location,
-        list_item_id="test-list-item-id",
-    )
-
-
 @pytest.fixture()
 def question_variant_schema():
     return {
