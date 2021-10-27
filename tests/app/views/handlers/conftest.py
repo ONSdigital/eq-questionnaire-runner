@@ -1,3 +1,4 @@
+import uuid
 from datetime import datetime, timezone
 from unittest.mock import Mock
 
@@ -9,6 +10,32 @@ from app.questionnaire import QuestionnaireSchema
 from app.setup import create_app
 
 time_to_freeze = datetime.now(timezone.utc).replace(second=0, microsecond=0)
+tx_id = str(uuid.uuid4())
+response_id = "1234567890123456"
+period_str = "2016-01-01"
+period_id = "2016-02-01"
+ref_p_start_date = "2016-02-02"
+ref_p_end_date = "2016-03-03"
+ru_ref = "432423423423"
+ru_name = "ru_name"
+user_id = "789473423"
+schema_name = "1_0000"
+feedback_count = 1
+display_address = "68 Abingdon Road, Goathill"
+form_type = "I"
+collection_exercise_sid = "test-sid"
+case_id = "case_id"
+survey_id = "021"
+data_version = "0.0.1"
+feedback_type = "Feedback type"
+feedback_text = "Feedback text"
+feedback_type_question_category = "Feedback type question category"
+started_at = str(datetime.now(tz=timezone.utc).isoformat())
+language_code = "cy"
+case_type = "I"
+channel = "H"
+case_ref = "1000000000000001"
+region_code = "GB_WLS"
 
 
 @pytest.fixture()
@@ -66,3 +93,54 @@ def storage():
 
 def set_storage_data(storage_, raw_data="{}", version=1, submitted_at=None):
     storage_.get_user_data = Mock(return_value=(raw_data, version, submitted_at))
+
+
+@pytest.fixture()
+def session_data_feedback():
+    return SessionData(
+        tx_id=tx_id,
+        schema_name=schema_name,
+        response_id=response_id,
+        period_str=period_str,
+        language_code=language_code,
+        launch_language_code=None,
+        survey_url=None,
+        ru_name=ru_name,
+        ru_ref=ru_ref,
+        case_id=case_id,
+        feedback_count=feedback_count,
+    )
+
+
+@pytest.fixture()
+def schema_feedback():
+    return QuestionnaireSchema({"survey_id": survey_id, "data_version": data_version})
+
+
+@pytest.fixture()
+def metadata():
+    return {
+        "tx_id": tx_id,
+        "user_id": user_id,
+        "schema_name": schema_name,
+        "collection_exercise_sid": collection_exercise_sid,
+        "period_id": period_id,
+        "period_str": period_str,
+        "ref_p_start_date": ref_p_start_date,
+        "ref_p_end_date": ref_p_end_date,
+        "ru_ref": ru_ref,
+        "response_id": response_id,
+        "form_type": form_type,
+        "display_address": display_address,
+        "case_type": case_type,
+        "channel": channel,
+        "case_ref": case_ref,
+        "region_code": region_code,
+    }
+
+
+@pytest.fixture()
+def response_metadata():
+    return {
+        "started_at": started_at,
+    }
