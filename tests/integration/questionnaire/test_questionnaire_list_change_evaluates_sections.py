@@ -2,11 +2,11 @@ from . import QuestionnaireTestCase
 
 
 class TestQuestionnaireListChangeEvaluatesSections(QuestionnaireTestCase):
-    def get_link(self, rowIndex, text):
-        selector = f"[data-qa='list-item-{text}-{rowIndex}-link']"
+    def get_link(self, action, position):
+        selector = f"[data-qa='list-item-{action}-{position}-link']"
         selected = self.getHtmlSoup().select(selector)
 
-        filtered = [html for html in selected if text in html.get_text()]
+        filtered = [html for html in selected if position in html.get_text()]
 
         return filtered[0].get("href")
 

@@ -15,6 +15,8 @@ class RelationshipCollector(RelationshipQuestion):
         return super().is_location_valid()
 
     def handle_post(self):
+        # pylint: disable=no-member
+        # wtforms Form parents are not discoverable in the 2.3.3 implementation
         relationship_answer = self.form.data.get(self.relationships_answer_id)
         relationship = Relationship(
             self._current_location.list_item_id,

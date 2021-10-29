@@ -54,8 +54,8 @@ class NumberCheck:
                     numbers.get_group_symbol(flask_babel.get_locale()), ""
                 )
             )
-        except (ValueError, TypeError, InvalidOperation, AttributeError):
-            raise validators.StopValidation(self.message)
+        except (ValueError, TypeError, InvalidOperation, AttributeError) as exc:
+            raise validators.StopValidation(self.message) from exc
 
         if "e" in field.raw_data[0].lower():
             raise validators.StopValidation(self.message)
@@ -260,8 +260,8 @@ class DateCheck:
                 datetime.strptime(form.data, "%Y-%m").replace(tzinfo=timezone.utc)
             else:
                 datetime.strptime(form.data, "%Y").replace(tzinfo=timezone.utc)
-        except ValueError:
-            raise validators.StopValidation(self.message)
+        except ValueError as exc:
+            raise validators.StopValidation(self.message) from exc
 
 
 class SingleDatePeriodCheck:
@@ -408,11 +408,11 @@ class SumCheck:
         if len(conditions) > 1:
             try:
                 conditions.remove("equals")
-            except ValueError:
+            except ValueError as exc:
                 raise Exception(
                     "There are multiple conditions, but equals is not one of them. "
                     "We only support <= and >="
-                )
+                ) from exc
 
             condition = f"{conditions[0]} or equals"
         else:
@@ -504,8 +504,8 @@ class EmailTLDCheck:
             hostname = match.group(1)
             try:
                 hostname = hostname.encode("idna").decode("ascii")
-            except UnicodeError:
-                raise validators.StopValidation(self.message)
+            except UnicodeError as exc:
+                raise validators.StopValidation(self.message) from exc
             parts = hostname.split(".")
             if len(parts) > 1 and not tld_part_regex.match(parts[-1]):
                 raise validators.StopValidation(self.message)

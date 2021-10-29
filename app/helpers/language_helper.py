@@ -25,6 +25,7 @@ def handle_language():
         launch_language = (
             session_store.session_data.launch_language_code or DEFAULT_LANGUAGE_CODE
         )
+        # pylint: disable=assigning-non-slot
         g.allowed_languages = get_allowed_languages(
             session_store.session_data.schema_name, launch_language
         )

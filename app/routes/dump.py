@@ -18,6 +18,7 @@ def requires_schema(func):
     @wraps(func)
     def wrapper(*args, **kwargs):
         session = get_session_store()
+        # pylint: disable=assigning-non-slot
         g.schema = load_schema_from_session_data(session.session_data)
         result = func(g.schema, *args, **kwargs)
         return result

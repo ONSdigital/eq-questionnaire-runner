@@ -98,6 +98,7 @@ def before_questionnaire_request():
     handle_language()
 
     session_store = get_session_store()
+    # pylint: disable=assigning-non-slot
     g.schema = load_schema_from_session_data(session_store.session_data)
 
 
@@ -122,7 +123,7 @@ def before_post_submission_request():
 
     session_store = get_session_store()
     session_data = session_store.session_data
-
+    # pylint: disable=assigning-non-slot
     g.schema = load_schema_from_session_data(session_data)
 
     logger.bind(tx_id=session_data.tx_id, schema_name=session_data.schema_name)
@@ -190,8 +191,8 @@ def submit_questionnaire(
         submit_questionnaire_handler = SubmitQuestionnaireHandler(
             schema, questionnaire_store, flask_babel.get_locale().language
         )
-    except InvalidLocationException:
-        raise NotFound
+    except InvalidLocationException as exc:
+        raise NotFound from exc
 
     if not submit_questionnaire_handler.router.is_questionnaire_complete:
         return redirect(
@@ -226,8 +227,8 @@ def get_section(schema, questionnaire_store, section_id, list_item_id=None):
             list_item_id=list_item_id,
             language=flask_babel.get_locale().language,
         )
-    except InvalidLocationException:
-        raise NotFound
+    except InvalidLocationException as exc:
+        raise NotFound from exc
 
     if request.method != "POST":
         if section_handler.can_display_summary():
@@ -265,8 +266,8 @@ def block(schema, questionnaire_store, block_id, list_name=None, list_item_id=No
             request_args=request.args,
             form_data=request.form,
         )
-    except InvalidLocationException:
-        raise NotFound
+    except InvalidLocationException as exc:
+        raise NotFound from exc
 
     if "action[clear_radios]" in request.form:
         block_handler.clear_radio_answers()
@@ -321,8 +322,8 @@ def relationships(
             request_args=request.args,
             form_data=request.form,
         )
-    except InvalidLocationException:
-        raise NotFound
+    except InvalidLocationException as exc:
+        raise NotFound from exc
 
     if not list_name:
         if "last" in request.args:
@@ -365,6 +366,8 @@ def get_thank_you(schema, session_store, questionnaire_store):
                 )
             )
 
+        # pylint: disable=no-member
+        # wtforms Form parents are not discoverable in the 2.3.3 implementation
         logger.info(
             "email validation error",
             error_message=str(confirmation_email.form.errors["email"][0]),
@@ -395,8 +398,9 @@ def get_view_submitted_response(schema, questionnaire_store):
             questionnaire_store,
             flask_babel.get_locale().language,
         )
-    except ViewSubmittedResponseNotEnabled:
-        raise NotFound
+
+    except ViewSubmittedResponseNotEnabled as exc:
+        raise NotFound from exc
 
     return view_submitted_response.get_rendered_html()
 
@@ -422,8 +426,8 @@ def get_view_submitted_response_pdf(
             questionnaire_store,
             flask_babel.get_locale().language,
         )
-    except ViewSubmittedResponseNotEnabled:
-        raise NotFound
+    except ViewSubmittedResponseNotEnabled as exc:
+        raise NotFound from exc
     except ViewSubmittedResponseExpired:
         return redirect(url_for(".get_view_submitted_response"))
 
@@ -455,6 +459,8 @@ def send_confirmation_email(session_store, schema):
                 )
             )
 
+        # pylint: disable=no-member
+        # wtforms Form parents are not discoverable in the 2.3.3 implementation
         logger.info(
             "email validation error",
             error_message=str(confirmation_email.form.errors["email"][0]),
@@ -505,8 +511,8 @@ def get_confirmation_email_sent(session_store, schema):
 
     try:
         email = url_safe_serializer().loads(request.args["email"])
-    except BadSignature:
-        raise BadRequest
+    except BadSignature as exc:
+        raise BadRequest from exc
 
     show_send_another_email_guidance = not ConfirmationEmail.is_limit_reached(
         session_store.session_data
@@ -539,8 +545,8 @@ def send_feedback(schema, session_store, questionnaire_store):
         feedback = Feedback(
             questionnaire_store, schema, session_store, form_data=request.form
         )
-    except FeedbackNotEnabled:
-        raise NotFound
+    except FeedbackNotEnabled as exc:
+        raise NotFound from exc
 
     if request.method == "POST" and feedback.form.validate():
         feedback.handle_post()
