@@ -234,17 +234,16 @@ class PlaceholderTransforms:
         if date == "now":
             return datetime.now(tz=timezone.utc)
 
-        date_formats = ["%Y-%m-%d", "%Y-%m", "%Y-%m-%dT%H:%M:%S.%f%z"]
+        date_formats = ["%Y-%m-%d", "%Y-%m-%dT%H:%M:%S.%f%z", "%Y-%m"]
 
         for date_format in date_formats:
             try:
                 return datetime.strptime(date, date_format).replace(tzinfo=timezone.utc)
             except ValueError:
                 continue
-        else:
-            raise ValueError(
-                f"No valid date format for date '{date}', possible formats: {date_formats}"
-            )
+        raise ValueError(
+            f"No valid date format for date '{date}', possible formats: {date_formats}"
+        )
 
     @staticmethod
     def add(lhs: Union[int, Decimal], rhs: Union[int, Decimal]) -> Union[int, Decimal]:

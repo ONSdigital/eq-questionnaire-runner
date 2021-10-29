@@ -1,4 +1,5 @@
 import unittest
+from datetime import datetime, timezone
 from decimal import Decimal
 
 import pytest
@@ -389,3 +390,17 @@ def test_date_range_bounds_bad_day_name_raises_KeyError(placeholder_transform):
 def test_format_date_range(placeholder_transform, date_range, expected):
     actual = placeholder_transform.format_date_range(date_range)
     assert actual == expected
+
+
+@pytest.mark.parametrize(
+    "date, date_format",
+    [
+        ("2021-10", "%Y-%m"),
+        ("2021-10-29", "%Y-%m-%d"),
+        ("2021-10-29T10:53:41.511833+00:00", "%Y-%m-%dT%H:%M:%S.%f%z"),
+    ],
+)
+def test_parse_date(placeholder_transform, date, date_format):
+    parsed_date = placeholder_transform.parse_date(date)
+    expected_date = datetime.strptime(date, date_format).replace(tzinfo=timezone.utc)
+    assert parsed_date == expected_date
