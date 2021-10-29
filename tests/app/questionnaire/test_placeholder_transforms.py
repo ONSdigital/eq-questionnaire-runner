@@ -115,8 +115,6 @@ class TestPlaceholderParser(unittest.TestCase):
             )
             == "1 day"
         )
-        with self.assertRaises(ValueError):
-            PlaceholderTransforms.calculate_date_difference("2018", "now")
 
     def test_concatenate_list(self):
         list_to_concatenate = ["Milk", "Eggs", "Flour", "Water"]
@@ -285,6 +283,28 @@ class TestPlaceholderParser(unittest.TestCase):
         assert self.transforms.list_item_count([]) == 0
         assert self.transforms.list_item_count(None) == 0
 
+    @staticmethod
+    def test_parse_date():
+        assert PlaceholderTransforms.parse_date("2021-10") == datetime.strptime(
+            "2021-10", "%Y-%m"
+        ).replace(tzinfo=timezone.utc)
+        assert PlaceholderTransforms.parse_date("2021-10-29") == datetime.strptime(
+            "2021-10-29", "%Y-%m-%d"
+        ).replace(tzinfo=timezone.utc)
+        assert PlaceholderTransforms.parse_date(
+            "2021-10-29T10:53:41.511833+00:00"
+        ) == datetime.strptime(
+            "2021-10-29T10:53:41.511833+00:00", "%Y-%m-%dT%H:%M:%S.%f%z"
+        ).replace(
+            tzinfo=timezone.utc
+        )
+
+    def test_parse_date_exception(self):
+        with self.assertRaises(ValueError):
+            PlaceholderTransforms.parse_date("2021--10")
+            PlaceholderTransforms.parse_date("2021-10-229")
+            PlaceholderTransforms.parse_date("2021-10-29T10:53:41.511833+00:0000")
+
 
 @pytest.mark.parametrize(
     "ref_date,weeks_prior,day_range,first_day_of_week,expected",
@@ -390,17 +410,3 @@ def test_date_range_bounds_bad_day_name_raises_KeyError(placeholder_transform):
 def test_format_date_range(placeholder_transform, date_range, expected):
     actual = placeholder_transform.format_date_range(date_range)
     assert actual == expected
-
-
-@pytest.mark.parametrize(
-    "date, date_format",
-    [
-        ("2021-10", "%Y-%m"),
-        ("2021-10-29", "%Y-%m-%d"),
-        ("2021-10-29T10:53:41.511833+00:00", "%Y-%m-%dT%H:%M:%S.%f%z"),
-    ],
-)
-def test_parse_date(placeholder_transform, date, date_format):
-    parsed_date = placeholder_transform.parse_date(date)
-    expected_date = datetime.strptime(date, date_format).replace(tzinfo=timezone.utc)
-    assert parsed_date == expected_date
