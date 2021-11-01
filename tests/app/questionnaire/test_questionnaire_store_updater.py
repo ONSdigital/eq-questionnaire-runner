@@ -33,7 +33,7 @@ class TestQuestionnaireStoreUpdater(unittest.TestCase):
         self.schema = MagicMock(spec=QuestionnaireSchema)
         self.answer_store = MagicMock(spec=AnswerStore)
         self.progress_store = MagicMock(spec=ProgressStore)
-        self.progress_store.locations = list()
+        self.progress_store.locations = []
         self.list_store = MagicMock(spec=ListStore)
         self.questionnaire_store = MagicMock(
             spec=QuestionnaireStore,

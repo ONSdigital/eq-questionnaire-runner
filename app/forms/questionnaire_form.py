@@ -31,6 +31,7 @@ Errors = Mapping[str, Error]
 ErrorList = Sequence[tuple[str, str]]
 
 
+# pylint: disable=too-many-locals
 class QuestionnaireForm(FlaskForm):
     def __init__(
         self,
@@ -63,7 +64,7 @@ class QuestionnaireForm(FlaskForm):
         Validate this form as usual and check for any form-level validation errors based on question type
         :return: boolean
         """
-        super(QuestionnaireForm, self).validate(extra_validators=extra_validators)
+        super().validate(extra_validators=extra_validators)
         valid_fields = FlaskForm.validate(self)
         valid_date_range_form = True
         valid_calculated_form = True

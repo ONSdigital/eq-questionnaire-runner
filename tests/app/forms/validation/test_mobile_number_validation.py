@@ -7,7 +7,7 @@ from app.forms import error_messages
 from app.forms.validators import MobileNumberCheck, sanitise_mobile_number
 
 
-# pylint: disable=no-member
+# pylint: disable=no-member,no-self-use
 @patch("app.jinja_filters.flask_babel.get_locale", Mock(return_value="en_GB"))
 class TestPhoneNumberValidator(unittest.TestCase):
     def test_sanitise_mobile_number(self):
