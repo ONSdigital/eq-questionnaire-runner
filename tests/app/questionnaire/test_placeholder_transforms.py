@@ -1,4 +1,5 @@
 import unittest
+from datetime import datetime, timezone
 from decimal import Decimal
 
 import pytest
@@ -103,8 +104,18 @@ class TestPlaceholderParser(unittest.TestCase):
             == "1 day"
         )
         assert PlaceholderTransforms.calculate_date_difference("now", "now") == "0 days"
-        with self.assertRaises(ValueError):
-            PlaceholderTransforms.calculate_date_difference("2018", "now")
+        assert (
+            PlaceholderTransforms.calculate_date_difference(
+                "2021-07-29T10:53:41.511833+00:00", "2021-09-29T10:53:41.511833+00:00"
+            )
+            == "2 months"
+        )
+        assert (
+            PlaceholderTransforms.calculate_date_difference(
+                "2021-09-28", "2021-09-29T10:53:41.511833+00:00"
+            )
+            == "1 day"
+        )
 
     def test_concatenate_list(self):
         list_to_concatenate = ["Milk", "Eggs", "Flour", "Water"]
@@ -272,6 +283,28 @@ class TestPlaceholderParser(unittest.TestCase):
         )
         assert self.transforms.list_item_count([]) == 0
         assert self.transforms.list_item_count(None) == 0
+
+    @staticmethod
+    def test_parse_date():
+        assert PlaceholderTransforms.parse_date("2021-10") == datetime.strptime(
+            "2021-10", "%Y-%m"
+        ).replace(tzinfo=timezone.utc)
+        assert PlaceholderTransforms.parse_date("2021-10-29") == datetime.strptime(
+            "2021-10-29", "%Y-%m-%d"
+        ).replace(tzinfo=timezone.utc)
+        assert PlaceholderTransforms.parse_date(
+            "2021-10-29T10:53:41.511833+00:00"
+        ) == datetime.strptime(
+            "2021-10-29T10:53:41.511833+00:00", "%Y-%m-%dT%H:%M:%S.%f%z"
+        ).replace(
+            tzinfo=timezone.utc
+        )
+
+    def test_parse_date_exception(self):
+        with self.assertRaises(ValueError):
+            PlaceholderTransforms.parse_date("2021--10")
+            PlaceholderTransforms.parse_date("2021-10-229")
+            PlaceholderTransforms.parse_date("2021-10-29T10:53:41.511833+00:0000")
 
 
 @pytest.mark.parametrize(
