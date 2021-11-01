@@ -7,7 +7,7 @@ import pytest
 from app.questionnaire.placeholder_transforms import PlaceholderTransforms
 
 
-# pylint: disable=too-many-public-methods
+# pylint: disable=too-many-public-methods,no-self-use
 class TestPlaceholderParser(unittest.TestCase):
     def setUp(self):
         self.transforms = PlaceholderTransforms(language="en")
