@@ -22,7 +22,12 @@ class QuestionnaireStore:
         self.answer_store = AnswerStore()
         self.progress_store = ProgressStore()
 
-        raw_data, version, self.submitted_at = self._storage.get_user_data()
+        (
+            raw_data,
+            self.collection_exercise_sid,
+            version,
+            self.submitted_at,
+        ) = self._storage.get_user_data()
 
         if raw_data:
             self._deserialize(raw_data)
@@ -69,4 +74,11 @@ class QuestionnaireStore:
 
     def save(self):
         data = self.serialize()
-        self._storage.save(data=data, submitted_at=self.submitted_at)
+        collection_exercise_sid = (
+            self.collection_exercise_sid or self._metadata["collection_exercise_sid"]
+        )
+        self._storage.save(
+            data=data,
+            collection_exercise_sid=collection_exercise_sid,
+            submitted_at=self.submitted_at,
+        )
