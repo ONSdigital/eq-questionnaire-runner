@@ -157,7 +157,7 @@ def test_answer_source_with_list_item_selector_location():
             {
                 "source": "answers",
                 "identifier": "some-answer",
-                "list_item_selector": {"source": "location", "id": "list_item_id"},
+                "list_item_selector": {"source": "location", "identifier": "list_item_id"},
             }
         )
         == "Yes"
@@ -208,8 +208,8 @@ def test_answer_source_with_list_item_selector_list_first_item():
                 "identifier": "some-answer",
                 "list_item_selector": {
                     "source": "list",
-                    "id": "some-list",
-                    "id_selector": "first",
+                    "identifier": "some-list",
+                    "selector": "first",
                 },
             }
         )
@@ -371,7 +371,7 @@ def test_list_source_with_id_selector_first():
 
     assert (
         value_source_resolver.resolve(
-            {"source": "list", "identifier": "some-list", "id_selector": "first"}
+            {"source": "list", "identifier": "some-list", "selector": "first"}
         )
         == "item-1"
     )
@@ -395,7 +395,7 @@ def test_list_source_with_id_selector_same_name_items():
             {
                 "source": "list",
                 "identifier": "some-list",
-                "id_selector": "same_name_items",
+                "selector": "same_name_items",
             }
         )
         == get_list_items(3)
@@ -424,7 +424,7 @@ def test_list_source_id_selector_primary_person(primary_person_list_item_id):
             {
                 "source": "list",
                 "identifier": "some-list",
-                "id_selector": "primary_person",
+                "selector": "primary_person",
             }
         )
         == primary_person_list_item_id

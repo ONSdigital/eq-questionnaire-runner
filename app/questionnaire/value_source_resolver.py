@@ -64,12 +64,12 @@ class ValueSourceResolver:
                         "list_item_selector source location used without location"
                     )
 
-                list_item_id = getattr(self.location, list_item_selector["id"])
+                list_item_id = getattr(self.location, list_item_selector["identifier"])
 
             elif list_item_selector["source"] == "list":
                 list_item_id = getattr(
-                    self.list_store[list_item_selector["id"]],
-                    list_item_selector["id_selector"],
+                    self.list_store[list_item_selector["identifier"]],
+                    list_item_selector["selector"],
                 )
 
         if list_item_id:
@@ -108,7 +108,7 @@ class ValueSourceResolver:
         identifier = value_source["identifier"]
         list_model: ListModel = self.list_store[identifier]
 
-        if id_selector := value_source.get("id_selector"):
+        if id_selector := value_source.get("selector"):
             value: Union[str, list] = getattr(list_model, id_selector)
             return value
 

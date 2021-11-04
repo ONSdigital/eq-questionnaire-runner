@@ -45,7 +45,7 @@ class IndividualResponseHandler:
                 "arguments": {
                     "list_to_check": {
                         "source": "list",
-                        "id_selector": "same_name_items",
+                        "selector": "same_name_items",
                         "identifier": list_name,
                     },
                     "value": {"source": "location", "identifier": "list_item_id"},
