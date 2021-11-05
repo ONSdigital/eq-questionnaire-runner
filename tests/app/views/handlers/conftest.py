@@ -23,7 +23,7 @@ schema_name = "1_0000"
 feedback_count = 1
 display_address = "68 Abingdon Road, Goathill"
 form_type = "I"
-collection_exercise_sid = "test-sid"
+collection_exercise_sid = "ce_sid"
 case_id = "case_id"
 survey_id = "021"
 data_version = "0.0.1"
@@ -91,8 +91,15 @@ def storage():
     return Mock()
 
 
-def set_storage_data(storage_, raw_data="{}", version=1, submitted_at=None):
-    storage_.get_user_data = Mock(return_value=(raw_data, version, submitted_at))
+def set_storage_data(
+    storage_,
+    raw_data="{}",
+    version=1,
+    submitted_at=None,
+):
+    storage_.get_user_data = Mock(
+        return_value=(raw_data, version, collection_exercise_sid, submitted_at)
+    )
 
 
 @pytest.fixture()

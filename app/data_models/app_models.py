@@ -4,9 +4,12 @@ from marshmallow import Schema, fields, post_load, pre_dump
 
 
 class QuestionnaireState:
-    def __init__(self, user_id, state_data, version, submitted_at=None):
+    def __init__(
+        self, user_id, state_data, collection_exercise_sid, version, submitted_at=None
+    ):
         self.user_id = user_id
         self.state_data = state_data
+        self.collection_exercise_sid = collection_exercise_sid
         self.version = version
         self.created_at = datetime.now(tz=timezone.utc)
         self.updated_at = datetime.now(tz=timezone.utc)
@@ -55,6 +58,7 @@ class DateTimeSchemaMixin:
 class QuestionnaireStateSchema(Schema, DateTimeSchemaMixin):
     user_id = fields.Str()
     state_data = fields.Str()
+    collection_exercise_sid = fields.Str()
     version = fields.Integer()
     submitted_at = Timestamp(allow_none=True)
 
