@@ -413,7 +413,7 @@
                                                                                 "identifier": "first-name",
                                                                                 "list_item_selector": {
                                                                                     "source": "location",
-                                                                                    "identifier": "to_list_item_id"
+                                                                                    "identifier": "list_item_id"
                                                                                 }
                                                                             },
                                                                             {
@@ -421,7 +421,7 @@
                                                                                 "identifier": "last-name",
                                                                                 "list_item_selector": {
                                                                                     "source": "location",
-                                                                                    "identifier": "to_list_item_id"
+                                                                                    "identifier": "list_item_id"
                                                                                 }
                                                                             }
                                                                         ],
@@ -488,7 +488,7 @@
                                                                                 "identifier": "first-name",
                                                                                 "list_item_selector": {
                                                                                     "source": "location",
-                                                                                    "identifier": "to_list_item_id"
+                                                                                    "identifier": "list_item_id"
                                                                                 }
                                                                             },
                                                                             {
@@ -774,7 +774,7 @@
                                                                                             "identifier": "first-name",
                                                                                             "list_item_selector": {
                                                                                                 "source": "location",
-                                                                                                "identifier": "to_list_item_id"
+                                                                                                "identifier": "list_item_id"
                                                                                             }
                                                                                         },
                                                                                         {
@@ -782,7 +782,7 @@
                                                                                             "identifier": "last-name",
                                                                                             "list_item_selector": {
                                                                                                 "source": "location",
-                                                                                                "identifier": "to_list_item_id"
+                                                                                                "identifier": "list_item_id"
                                                                                             }
                                                                                         }
                                                                                     ],

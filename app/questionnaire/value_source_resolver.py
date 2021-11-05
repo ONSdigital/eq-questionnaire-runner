@@ -112,7 +112,7 @@ class ValueSourceResolver:
             value: Union[str, list] = getattr(list_model, id_selector)
             return value
 
-        return len(list_model)
+        return list(list_model)
 
     def resolve(
         self, value_source: dict

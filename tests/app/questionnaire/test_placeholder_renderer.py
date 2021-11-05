@@ -235,7 +235,11 @@ def test_renders_text_plural_from_list():
             "placeholders": [
                 {
                     "placeholder": "number_of_people",
-                    "value": {"source": "list", "identifier": "household"},
+                    "value": {
+                        "source": "list",
+                        "identifier": "household",
+                        "selector": "count",
+                    },
                 }
             ],
         },

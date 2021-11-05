@@ -467,7 +467,7 @@ def test_list_source_count():
     placeholder_list = [
         {
             "placeholder": "number_of_people",
-            "value": {"source": "list", "identifier": "people"},
+            "value": {"source": "list", "identifier": "people", "selector": "count"},
         }
     ]
 
@@ -496,7 +496,11 @@ def test_list_source_count_in_transform():
                 {
                     "transform": "add",
                     "arguments": {
-                        "lhs": {"source": "list", "identifier": "people"},
+                        "lhs": {
+                            "source": "list",
+                            "identifier": "people",
+                            "selector": "count",
+                        },
                         "rhs": {"value": 1},
                     },
                 }

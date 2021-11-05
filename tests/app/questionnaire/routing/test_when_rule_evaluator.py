@@ -287,7 +287,12 @@ def test_list_source(list_count, expected_result):
 
     assert (
         when_rule_evaluator.evaluate(
-            rule={Operator.EQUAL: [{"source": "list", "identifier": "some-list"}, 3]}
+            rule={
+                Operator.EQUAL: [
+                    {"source": "list", "identifier": "some-list", "selector": "count"},
+                    3,
+                ]
+            }
         )
         is expected_result
     )
