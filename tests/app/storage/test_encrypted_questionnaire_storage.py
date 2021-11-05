@@ -1,21 +1,8 @@
 from datetime import datetime, timezone
 
-from flask import current_app
-
 from app.data_models import QuestionnaireStore
-from app.data_models.app_models import QuestionnaireState
 from app.storage.encrypted_questionnaire_storage import EncryptedQuestionnaireStorage
-from app.storage.storage_encryption import StorageEncryption
 from tests.app.app_context_test_case import AppContextTestCase
-
-
-def _save_state_data(user_id, data, state_version=QuestionnaireStore.LATEST_VERSION):
-    encryption = StorageEncryption(user_id, "mock", "mock")
-
-    state_data = encryption.encrypt_data(data)
-
-    questionnaire_state = QuestionnaireState(user_id, state_data, state_version, None)
-    current_app.eq["storage"].put(questionnaire_state)
 
 
 class TestEncryptedQuestionnaireStorage(AppContextTestCase):
@@ -35,10 +22,11 @@ class TestEncryptedQuestionnaireStorage(AppContextTestCase):
         encrypted = EncryptedQuestionnaireStorage(
             user_id="1", user_ik="2", pepper="pepper"
         )
-        encrypted.save(data="test")
+        encrypted.save(data="test", collection_exercise_sid="ce_sid")
         # check we can decrypt the data
         self.assertEqual(
-            ("test", QuestionnaireStore.LATEST_VERSION, None), encrypted.get_user_data()
+            ("test", "ce_sid", QuestionnaireStore.LATEST_VERSION, None),
+            encrypted.get_user_data(),
         )
 
     def test_store_and_get_with_submitted_at(self):
@@ -46,36 +34,36 @@ class TestEncryptedQuestionnaireStorage(AppContextTestCase):
         encrypted = EncryptedQuestionnaireStorage(
             user_id="1", user_ik="2", pepper="pepper"
         )
-        encrypted.save(data="test", submitted_at=now)
+        encrypted.save(data="test", collection_exercise_sid="ce_sid", submitted_at=now)
 
         self.assertEqual(
-            ("test", QuestionnaireStore.LATEST_VERSION, now),
+            ("test", "ce_sid", QuestionnaireStore.LATEST_VERSION, now),
             encrypted.get_user_data(),
         )
 
     def test_store(self):
         data = "test"
-        self.assertIsNone(self.storage.save(data))
+        self.assertIsNone(self.storage.save(data, "ce_sid"))
         self.assertIsNotNone(
             self.storage.get_user_data()
         )  # pylint: disable=protected-access
 
     def test_get(self):
         data = "test"
-        self.storage.save(data)
+        self.storage.save(data, "ce_sid")
         self.assertEqual(
-            (data, QuestionnaireStore.LATEST_VERSION, None),
+            (data, "ce_sid", QuestionnaireStore.LATEST_VERSION, None),
             self.storage.get_user_data(),
         )
 
     def test_delete(self):
         data = "test"
-        self.storage.save(data)
+        self.storage.save(data, "ce_sid")
         self.assertEqual(
-            (data, QuestionnaireStore.LATEST_VERSION, None),
+            (data, "ce_sid", QuestionnaireStore.LATEST_VERSION, None),
             self.storage.get_user_data(),
         )
         self.storage.delete()
         self.assertEqual(
-            (None, None, None), self.storage.get_user_data()
+            (None, None, None, None), self.storage.get_user_data()
         )  # pylint: disable=protected-access

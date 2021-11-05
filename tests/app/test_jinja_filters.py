@@ -31,7 +31,7 @@ from tests.app.app_context_test_case import AppContextTestCase
 class TestJinjaFilters(AppContextTestCase):  # pylint: disable=too-many-public-methods
     def setUp(self):
         self.autoescape_context = Mock(autoescape=True)
-        super(TestJinjaFilters, self).setUp()
+        super().setUp()
 
     def test_strip_tags(self):
         self.assertEqual(strip_tags("Hello <b>world</b>"), "Hello world")
