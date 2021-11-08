@@ -1,9 +1,10 @@
-from typing import Optional, Tuple
+from typing import Optional, Sequence, Tuple
 
 from flask import url_for
 
 from app.questionnaire.location import Location
 from app.questionnaire.path_finder import PathFinder
+from app.questionnaire.routing.when_rule_evaluator import WhenRuleEvaluator
 from app.questionnaire.rules import evaluate_when_rules
 
 
@@ -270,15 +271,31 @@ class Router:
         if "enabled" not in section:
             return True
 
-        for condition in section["enabled"]:
-            if evaluate_when_rules(
-                condition["when"],
+        enabled = section["enabled"]
+        if isinstance(enabled, Sequence):
+            for condition in enabled:
+                if evaluate_when_rules(
+                    condition["when"],
+                    self._schema,
+                    self._metadata,
+                    self._answer_store,
+                    self._list_store,
+                ):
+                    return True
+        else:
+            location = Location(section_id=section["id"])
+            when_rule_evaluator = WhenRuleEvaluator(
                 self._schema,
-                self._metadata,
                 self._answer_store,
                 self._list_store,
-            ):
-                return True
+                self._metadata,
+                self._response_metadata,
+                location=location,
+                routing_path_block_ids=None,
+            )
+
+            return when_rule_evaluator.evaluate(enabled.get("when"))
+
         return False
 
     @staticmethod

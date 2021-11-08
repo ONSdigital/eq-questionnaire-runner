@@ -102,17 +102,17 @@
         {
             "id": "test-section-2",
             "title": "Section 2",
-            "enabled": [
-                {
-                    "when": [
+            "enabled": {
+                "when": {
+                    "==": [
+                        "Yes",
                         {
-                            "id": "test-answer",
-                            "condition": "equals",
-                            "value": "Yes"
+                            "source": "answers",
+                            "identifier": "test-answer"
                         }
                     ]
                 }
-            ],
+            },
             "groups": [
                 {
                     "blocks": [
