@@ -44,10 +44,11 @@ class TestQuestionnaireStore(TestCase):
     def setUp(self):
         def get_user_data():
             """Fake get_user_data implementation for storage"""
-            return self.input_data, 1, None
+            return self.input_data, "ce_sid", 1, None
 
-        def set_output_data(data, submitted_at):
+        def set_output_data(data, collection_exercise_sid, submitted_at):
             self.output_data = data
+            self.collection_exercise_sid = collection_exercise_sid
             self.submitted_at = submitted_at
 
         # Storage class mocking
@@ -57,6 +58,7 @@ class TestQuestionnaireStore(TestCase):
 
         self.input_data = "{}"
         self.output_data = ""
+        self.collection_exercise_sid = None
         self.submitted_at = None
         self.output_version = None
 
