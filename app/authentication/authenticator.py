@@ -30,16 +30,22 @@ def user_loader(user_id: str) -> Optional[str]:
 
 @login_manager.request_loader
 def request_load_user(
-    request: Request,
-) -> Optional[User]:  # pylint: disable=unused-argument
+    request: Request,  # pylint: disable=unused-argument
+) -> Optional[User]:
     logger.debug("load user")
-    return load_user()
+    if request:
+        extend_session = not (
+            "session-expiry" in request.path and request.method == "GET"
+        )
+    else:
+        extend_session = True
+    return load_user(extend_session)
 
 
 @user_logged_out.connect_via(ANY)
 def when_user_logged_out(
-    sender_app: Flask, user: str
-) -> None:  # pylint: disable=unused-argument
+    sender_app: Flask, user: str  # pylint: disable=unused-argument
+) -> None:
     logger.debug("log out user")
     session_store = get_session_store()
     if session_store:
@@ -82,7 +88,7 @@ def _is_session_valid(session_store: SessionStore) -> bool:
     )
 
 
-def load_user() -> Optional[User]:
+def load_user(extend_session=True) -> Optional[User]:
     """
     Checks for the present of the JWT in the users sessions
     :return: A user object if a JWT token is available in the session
@@ -99,7 +105,8 @@ def load_user() -> Optional[User]:
         if session_store.session_data.tx_id:
             logger.bind(tx_id=session_store.session_data.tx_id)
 
-        _extend_session_expiry(session_store)
+        if extend_session:
+            _extend_session_expiry(session_store)
 
         return user
 
