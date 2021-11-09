@@ -94,6 +94,8 @@ def load_user(extend_session: bool = True) -> Optional[User]:
     """
     Checks for the present of the JWT in the users sessions
     :return: A user object if a JWT token is available in the session
+
+    :param extend_session: bool, whether to extend the session
     """
     session_store = get_session_store()
 
