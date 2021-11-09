@@ -19,11 +19,7 @@ class TestSession(IntegrationTestCase):
         self.redirect_url = None
 
         # Perform setup steps
-        self._set_up_app(
-            setting_overrides={
-                "SURVEY_TYPE": "default",
-            }
-        )
+        self._set_up_app(setting_overrides={"SURVEY_TYPE": "default"})
 
     def test_session_expired(self):
         self.get("/session-expired")
