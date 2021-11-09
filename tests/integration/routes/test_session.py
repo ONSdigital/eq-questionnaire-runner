@@ -3,11 +3,12 @@ from datetime import datetime, timedelta, timezone
 
 from freezegun import freeze_time
 
-from app.settings import ACCOUNT_SERVICE_BASE_URL, EQ_SESSION_TIMEOUT_SECONDS
+from app.settings import ACCOUNT_SERVICE_BASE_URL
 from app.utilities.json import json_loads
 from tests.integration.integration_test_case import IntegrationTestCase
 
 TIME_TO_FREEZE = datetime(2020, 1, 1, 12, 0, 0, tzinfo=timezone.utc)
+EQ_SESSION_TIMEOUT_SECONDS = 45 * 60
 
 
 class TestSession(IntegrationTestCase):
@@ -19,7 +20,12 @@ class TestSession(IntegrationTestCase):
         self.redirect_url = None
 
         # Perform setup steps
-        self._set_up_app(setting_overrides={"SURVEY_TYPE": "default"})
+        self._set_up_app(
+            setting_overrides={
+                "SURVEY_TYPE": "default",
+                "EQ_SESSION_TIMEOUT_SECONDS": EQ_SESSION_TIMEOUT_SECONDS,
+            }
+        )
 
     def test_session_expired(self):
         self.get("/session-expired")
