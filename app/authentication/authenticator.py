@@ -29,14 +29,12 @@ def user_loader(user_id: str) -> Optional[str]:
 
 
 @login_manager.request_loader
-def request_load_user(
-    request: Request,  # pylint: disable=unused-argument
-) -> Optional[User]:
+def request_load_user(request: Request) -> Optional[User]:
     logger.debug("load user")
 
-    if request:
+    if request.endpoint:
         extend_session = not (
-            "session-expiry" in request.path and request.method == "GET"
+            "session_expiry" in request.endpoint and request.method == "GET"
         )
     else:
         extend_session = True

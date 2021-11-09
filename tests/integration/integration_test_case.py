@@ -201,16 +201,15 @@ class IntegrationTestCase(unittest.TestCase):  # pylint: disable=too-many-public
 
         self._cache_response(response)
 
-    def patch(self, patch_data=None, url=None, action=None, **kwargs):
+    def patch(self, patch_data=None, url=None, **kwargs):
         """
         PATCHes to the specified URL with patch_data and performs a GET
         with the URL from the re-direct.
 
         Will add the last received CSRF token to the patch_data automatically.
 
-        :param url: the URL to POST to; use None to use the last received URL
-        :param patch_data: the data to POST
-        :param action: The button action to post
+        :param url: the URL to PATCH to; use None to use the last received URL
+        :param patch_data: the data to PATCH
         """
         if url is None:
             url = self.last_url
@@ -220,9 +219,6 @@ class IntegrationTestCase(unittest.TestCase):  # pylint: disable=too-many-public
         _patch_data = (patch_data.copy() or {}) if patch_data else {}
         if self.last_csrf_token is not None:
             _patch_data.update({"csrf_token": self.last_csrf_token})
-
-        if action:
-            _patch_data.update({f"action[{action}]": ""})
 
         response = self._client.patch(
             url, data=_patch_data, follow_redirects=True, **kwargs

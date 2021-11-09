@@ -66,7 +66,7 @@ class TestSession(IntegrationTestCase):
     def test_get_session_expiry_doesnt_extend_session(self):
         self.launchSurvey()
         # Advance time by 20 mins...
-        with freeze_time(TIME_TO_FREEZE + timedelta(seconds=20 * 60)):
+        with freeze_time(TIME_TO_FREEZE + timedelta(minutes=20)):
             self.get("/session-expiry")
             response = self.getResponseData()
             parsed_json = json_loads(response)
@@ -83,7 +83,7 @@ class TestSession(IntegrationTestCase):
     def test_patch_session_expiry_extends_session(self):
         self.launchSurvey()
         # Advance time by 20 mins...
-        request_time = TIME_TO_FREEZE + timedelta(seconds=20 * 60)
+        request_time = TIME_TO_FREEZE + timedelta(minutes=20)
         with freeze_time(request_time):
             self.patch(None, "/session-expiry")
             response = self.getResponseData()
