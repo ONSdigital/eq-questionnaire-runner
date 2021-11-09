@@ -3,7 +3,7 @@ from datetime import datetime, timedelta, timezone
 
 from freezegun import freeze_time
 
-from app.settings import ACCOUNT_SERVICE_BASE_URL, EQ_SESSION_TIMEOUT_SECONDS
+from app.settings import ACCOUNT_SERVICE_BASE_URL
 from app.utilities.json import json_loads
 from tests.integration.integration_test_case import IntegrationTestCase
 
@@ -19,7 +19,12 @@ class TestSession(IntegrationTestCase):
         self.redirect_url = None
 
         # Perform setup steps
-        self._set_up_app(setting_overrides={"SURVEY_TYPE": "default"})
+        self._set_up_app(
+            setting_overrides={
+                "SURVEY_TYPE": "default",
+                "EQ_SESSION_TIMEOUT_SECONDS": 5,
+            }
+        )
 
     def test_session_expired(self):
         self.get("/session-expired")
@@ -63,18 +68,27 @@ class TestSession(IntegrationTestCase):
         self.assertStatusOK()
 
     @freeze_time(TIME_TO_FREEZE)
-    def test_session_expiry(self):
+    def test_get_session_expiry(self):
         self.launchSurvey()
+        time.sleep(2)
         self.get("/session-expiry")
-
         response = self.getResponseData()
         parsed_json = json_loads(response)
-        expected_expires_at = (
-            TIME_TO_FREEZE + timedelta(seconds=EQ_SESSION_TIMEOUT_SECONDS)
-        ).isoformat()
+        expected_expires_at = (TIME_TO_FREEZE + timedelta(seconds=5)).isoformat()
 
         self.assertIn("expires_at", parsed_json)
         self.assertEqual(parsed_json["expires_at"], expected_expires_at)
+
+    def test_patch_session_expiry(self):
+        self.launchSurvey()
+        with freeze_time(TIME_TO_FREEZE + timedelta(seconds=60)):
+            self.patch(None, "/session-expiry")
+            response = self.getResponseData()
+            parsed_json = json_loads(response)
+            expected_expires_at = (TIME_TO_FREEZE + timedelta(seconds=65)).isoformat()
+
+            self.assertIn("expires_at", parsed_json)
+            self.assertEqual(parsed_json["expires_at"], expected_expires_at)
 
 
 class TestCensusSession(IntegrationTestCase):

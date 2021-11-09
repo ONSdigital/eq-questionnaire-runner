@@ -33,13 +33,15 @@ def request_load_user(
     request: Request,  # pylint: disable=unused-argument
 ) -> Optional[User]:
     logger.debug("load user")
+
     if request:
         extend_session = not (
             "session-expiry" in request.path and request.method == "GET"
         )
     else:
         extend_session = True
-    return load_user(extend_session)
+
+    return load_user(extend_session=extend_session)
 
 
 @user_logged_out.connect_via(ANY)
@@ -88,7 +90,7 @@ def _is_session_valid(session_store: SessionStore) -> bool:
     )
 
 
-def load_user(extend_session=True) -> Optional[User]:
+def load_user(extend_session: bool) -> Optional[User]:
     """
     Checks for the present of the JWT in the users sessions
     :return: A user object if a JWT token is available in the session
@@ -106,14 +108,16 @@ def load_user(extend_session=True) -> Optional[User]:
             logger.bind(tx_id=session_store.session_data.tx_id)
 
         if extend_session:
+            print("session extended")
             _extend_session_expiry(session_store)
+        else:
+            print("session not extended")
 
         return user
 
     logger.info("session does not exist")
 
     cookie_session.pop(USER_IK, None)
-    return None
 
 
 def _create_session_data_from_metadata(
