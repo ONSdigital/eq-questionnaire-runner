@@ -22,7 +22,7 @@ class TestSession(IntegrationTestCase):
         self._set_up_app(
             setting_overrides={
                 "SURVEY_TYPE": "default",
-                "EQ_SESSION_TIMEOUT_SECONDS": 5,
+                "EQ_SESSION_TIMEOUT_SECONDS": 45 * 60,
             }
         )
 
@@ -68,24 +68,35 @@ class TestSession(IntegrationTestCase):
         self.assertStatusOK()
 
     @freeze_time(TIME_TO_FREEZE)
-    def test_get_session_expiry(self):
+    def test_get_session_expiry_doesnt_extend_session(self):
         self.launchSurvey()
-        time.sleep(2)
-        self.get("/session-expiry")
-        response = self.getResponseData()
-        parsed_json = json_loads(response)
-        expected_expires_at = (TIME_TO_FREEZE + timedelta(seconds=5)).isoformat()
+        # Advance time by 20 mins...
+        with freeze_time(TIME_TO_FREEZE + timedelta(seconds=20 * 60)):
+            self.get("/session-expiry")
+            response = self.getResponseData()
+            parsed_json = json_loads(response)
+            # Check that the session expiry time is not affected by
+            # the request, and is still 45mins from the start time
+            expected_expires_at = (
+                TIME_TO_FREEZE + timedelta(seconds=45 * 60)
+            ).isoformat()
 
-        self.assertIn("expires_at", parsed_json)
-        self.assertEqual(parsed_json["expires_at"], expected_expires_at)
+            self.assertIn("expires_at", parsed_json)
+            self.assertEqual(parsed_json["expires_at"], expected_expires_at)
 
-    def test_patch_session_expiry(self):
+    @freeze_time(TIME_TO_FREEZE)
+    def test_patch_session_expiry_extends_session(self):
         self.launchSurvey()
-        with freeze_time(TIME_TO_FREEZE + timedelta(seconds=60)):
+        # Advance time by 20 mins...
+        with freeze_time(TIME_TO_FREEZE + timedelta(seconds=20 * 60)):
             self.patch(None, "/session-expiry")
             response = self.getResponseData()
             parsed_json = json_loads(response)
-            expected_expires_at = (TIME_TO_FREEZE + timedelta(seconds=65)).isoformat()
+            # Check that the session expiry time is reset by the request
+            # and is now 65 mins from the start time
+            expected_expires_at = (
+                TIME_TO_FREEZE + timedelta(seconds=65 * 60)
+            ).isoformat()
 
             self.assertIn("expires_at", parsed_json)
             self.assertEqual(parsed_json["expires_at"], expected_expires_at)
