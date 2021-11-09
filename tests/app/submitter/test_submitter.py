@@ -247,6 +247,7 @@ class TestGCSFeedbackSubmitter(TestCase):
             "feedback-type": "Feedback type",
             "feedback-text": "Feedback text",
         }
+        payload.update(metadata)
 
         # When
         feedback_upload = feedback.upload(metadata, payload)
