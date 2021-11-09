@@ -86,6 +86,7 @@ class Feedback:
     def handle_post(self) -> None:
         session_data = self._session_store.session_data
         session_data.feedback_count += 1
+
         feedback_metadata = FeedbackMetadata(
             session_data.case_id,
             session_data.tx_id,
@@ -103,15 +104,15 @@ class Feedback:
             feedback_text=self.form.data.get("feedback-text"),
             feedback_type=self.form.data.get("feedback-type"),
         )
-
         message = feedback_message()
-        message.update(feedback_metadata())
+        metadata = feedback_metadata()
+        message.update(metadata)
         encrypted_message = encrypt(
             message, current_app.eq["key_store"], KEY_PURPOSE_SUBMISSION  # type: ignore
         )
 
         if not current_app.eq["feedback_submitter"].upload(  # type: ignore
-            feedback_metadata(), encrypted_message
+            metadata, encrypted_message
         ):
             raise FeedbackUploadFailed()
 

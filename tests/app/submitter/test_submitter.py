@@ -5,6 +5,7 @@ from mock import Mock, call, patch
 from pika.exceptions import AMQPError, NackError
 
 from app.submitter import GCSFeedbackSubmitter, GCSSubmitter, RabbitMQSubmitter
+from app.utilities.json import json_dumps
 
 
 class TestRabbitMQSubmitter(TestCase):
@@ -247,10 +248,11 @@ class TestGCSFeedbackSubmitter(TestCase):
             "feedback-type": "Feedback type",
             "feedback-text": "Feedback text",
         }
+
         payload.update(metadata)
 
         # When
-        feedback_upload = feedback.upload(metadata, payload)
+        feedback_upload = feedback.upload(metadata, json_dumps(payload))
 
         # Then
         bucket = client.return_value.get_bucket.return_value
