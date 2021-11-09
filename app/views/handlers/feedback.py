@@ -21,7 +21,6 @@ from app.submitter.converter import (
     build_metadata,
     get_optional_payload_properties,
 )
-from app.utilities.json import json_dumps
 from app.views.contexts.feedback_form_context import build_feedback_context
 
 
@@ -105,7 +104,7 @@ class Feedback:
             feedback_type=self.form.data.get("feedback-type"),
         )
 
-        message = json_dumps(feedback_message())
+        message = feedback_message()
         message.update(feedback_metadata())
         encrypted_message = encrypt(
             message, current_app.eq["key_store"], KEY_PURPOSE_SUBMISSION  # type: ignore
