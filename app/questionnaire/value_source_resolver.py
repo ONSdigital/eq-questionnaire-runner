@@ -108,8 +108,8 @@ class ValueSourceResolver:
         identifier = value_source["identifier"]
         list_model: ListModel = self.list_store[identifier]
 
-        if id_selector := value_source.get("selector"):
-            value: Union[str, list] = getattr(list_model, id_selector)
+        if selector := value_source.get("selector"):
+            value: Union[str, list, int] = getattr(list_model, selector)
             return value
 
         return list(list_model)
