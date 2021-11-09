@@ -1,6 +1,6 @@
+from typing import Mapping, Optional, Union
 from uuid import uuid4
 
-from typing import Mapping, Union, Optional
 from google.cloud import storage  # type: ignore
 from pika import BasicProperties, BlockingConnection, URLParameters
 from pika.exceptions import AMQPError, NackError, UnroutableError
