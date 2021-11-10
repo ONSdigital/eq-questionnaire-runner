@@ -286,18 +286,16 @@ class Router:
 
             return when_rule_evaluator.evaluate(enabled["when"])
 
-        else:
-            for condition in enabled:
-                if evaluate_when_rules(
-                    condition["when"],
-                    self._schema,
-                    self._metadata,
-                    self._answer_store,
-                    self._list_store,
-                ):
-                    return True
-
-        return False
+        return any(
+            evaluate_when_rules(
+                condition["when"],
+                self._schema,
+                self._metadata,
+                self._answer_store,
+                self._list_store,
+            )
+            for condition in enabled
+        )
 
     @staticmethod
     def get_next_block_url(location, routing_path):
