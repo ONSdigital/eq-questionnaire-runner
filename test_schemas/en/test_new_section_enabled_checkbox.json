@@ -126,17 +126,17 @@
         {
             "id": "section-3",
             "title": "Section 3",
-            "enabled": [
-                {
-                    "when": [
+            "enabled": {
+                "when": {
+                    "in": [
+                        "Section 3",
                         {
-                            "id": "section-1-answer",
-                            "condition": "contains",
-                            "value": "Section 3"
+                            "source": "answers",
+                            "identifier": "section-1-answer"
                         }
                     ]
                 }
-            ],
+            },
             "groups": [
                 {
                     "blocks": [
