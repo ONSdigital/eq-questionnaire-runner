@@ -273,14 +273,13 @@ class Router:
 
         enabled = section["enabled"]
         if isinstance(enabled, dict):
-            location = Location(section_id=section["id"])
             when_rule_evaluator = WhenRuleEvaluator(
                 self._schema,
                 self._answer_store,
                 self._list_store,
                 self._metadata,
                 self._response_metadata,
-                location=location,
+                location=None,
                 routing_path_block_ids=None,
             )
 
