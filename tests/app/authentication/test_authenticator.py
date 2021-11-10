@@ -1,6 +1,8 @@
 from datetime import datetime, timedelta, timezone
+from collections import namedtuple
 
 from flask import session as cookie_session
+from flask.wrappers import Request
 from mock import patch
 
 from app.authentication.authenticator import load_user, request_load_user, user_loader
@@ -89,8 +91,10 @@ class TestAuthenticator(AppContextTestCase):  # pylint: disable=too-many-public-
                 )
                 cookie_session[USER_IK] = "user_ik"
 
+                request = namedtuple("request", "endpoint method")
+
                 # When
-                user = request_load_user(None)
+                user = request_load_user(request("dummy", "GET"))
 
                 # Then
                 self.assertEqual(user.user_id, "user_id")

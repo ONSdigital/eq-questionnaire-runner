@@ -32,12 +32,9 @@ def user_loader(user_id: str) -> Optional[str]:
 def request_load_user(request: Request) -> Optional[User]:
     logger.debug("load user")
 
-    if request and request.endpoint:
-        extend_session = not (
-            request.endpoint == "session.session_expiry" and request.method == "GET"
-        )
-    else:
-        extend_session = True
+    extend_session = not (
+        request.endpoint == "session.session_expiry" and request.method == "GET"
+    )
 
     return load_user(extend_session=extend_session)
 
