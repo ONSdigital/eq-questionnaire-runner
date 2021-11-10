@@ -143,7 +143,7 @@ class GCSFeedbackSubmitter:
         client = storage.Client()
         self.bucket = client.get_bucket(bucket_name)
 
-    def upload(self, metadata, payload):
+    def upload(self, metadata: Mapping[str, str], payload: str) -> bool:
         blob = self.bucket.blob(str(uuid4()))
         blob.metadata = metadata
         blob.upload_from_string(payload.encode("utf8"))
