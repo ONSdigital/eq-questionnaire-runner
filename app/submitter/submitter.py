@@ -146,7 +146,7 @@ class GCSFeedbackSubmitter:
         self.bucket = client.get_bucket(bucket_name)
 
     def upload(
-        self, metadata: Mapping[str, Union[str, int, list]], payload: dict
+        self, metadata: Mapping[str, str], payload: dict
     ) -> bool:
         payload.update(metadata)
         blob = self.bucket.blob(str(uuid4()))
