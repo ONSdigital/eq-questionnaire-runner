@@ -96,7 +96,7 @@ class RabbitMQSubmitter:
         except AMQPError as e:
             logger.error("unable to close connection", exc_info=e, category="rabbitmq")
 
-    def send_message(self, message: str, tx_id: str, case_id: str) -> Optional[bool]:
+    def send_message(self, message: str, tx_id: str, case_id: str) -> bool:
         """
         Sends a message to rabbit mq and returns a true or false depending on if it was successful
         :param message: The message to send to the rabbit mq queue
