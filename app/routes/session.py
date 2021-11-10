@@ -121,9 +121,9 @@ def get_session_expired():
     return render_template("errors/401")
 
 
-@session_blueprint.route("/session-expiry", methods=["GET"])
+@session_blueprint.route("/session-expiry", methods=["GET", "PATCH"])
 @login_required
-def get_session_expiry():
+def session_expiry():
     return jsonify(expires_at=get_session_store().expiration_time.isoformat())
 
 
