@@ -74,14 +74,14 @@ class TestExitPostSubmissionWithHubDefaultTheme(IntegrationTestCase):
 
     def test_no_account_service_log_out_url_redirects_to_signed_out_page(self):
         self._launch_and_submit_questionnaire(
-            schema="test_hub_section_required_and_enabled"
+            schema="test_new_hub_section_required_and_enabled"
         )
         self.get(SIGN_OUT_URL_PATH, follow_redirects=False)
         self.assertInUrl(SIGN_OUT_URL_PATH)
 
     def test_redirects_to_account_service_log_out_url_when_present(self):
         self._launch_and_submit_questionnaire(
-            schema="test_hub_section_required_and_enabled",
+            schema="test_new_hub_section_required_and_enabled",
             account_service_log_out_url=ACCOUNT_SERVICE_LOG_OUT_URL,
         )
         self.get(SIGN_OUT_URL_PATH)
