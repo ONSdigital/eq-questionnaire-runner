@@ -72,6 +72,10 @@ class ListModel:
                 f"unable to access first item in list, list '{self.name}' is empty"
             ) from e
 
+    @property
+    def count(self) -> int:
+        return len(self.items)
+
 
 class ListStore:
     """Storage for lists.

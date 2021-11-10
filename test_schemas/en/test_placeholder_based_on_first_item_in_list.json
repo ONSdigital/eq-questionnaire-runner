@@ -333,8 +333,8 @@
                                                                         "identifier": "favourite-drink-answer",
                                                                         "list_item_selector": {
                                                                             "source": "list",
-                                                                            "id": "people",
-                                                                            "id_selector": "first"
+                                                                            "identifier": "people",
+                                                                            "selector": "first"
                                                                         }
                                                                     }
                                                                 }
