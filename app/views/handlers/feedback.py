@@ -21,7 +21,6 @@ from app.submitter.converter import (
     build_metadata,
     get_optional_payload_properties,
 )
-from app.utilities.json import json_dumps
 from app.views.contexts.feedback_form_context import build_feedback_context
 
 
@@ -92,6 +91,7 @@ class Feedback:
             session_data.case_id,
             session_data.tx_id,
         )
+
         # pylint: disable=no-member
         # wtforms Form parents are not discoverable in the 2.3.3 implementation
         feedback_message = FeedbackPayload(
@@ -104,15 +104,15 @@ class Feedback:
             feedback_text=self.form.data.get("feedback-text"),
             feedback_type=self.form.data.get("feedback-type"),
         )
-
-        message = json_dumps(feedback_message())
-
+        message = feedback_message()
+        metadata = feedback_metadata()
+        message.update(metadata)
         encrypted_message = encrypt(
             message, current_app.eq["key_store"], KEY_PURPOSE_SUBMISSION  # type: ignore
         )
 
         if not current_app.eq["feedback_submitter"].upload(  # type: ignore
-            feedback_metadata(), encrypted_message
+            metadata, encrypted_message
         ):
             raise FeedbackUploadFailed()
 

@@ -5,8 +5,6 @@ from pika import BasicProperties, BlockingConnection, URLParameters
 from pika.exceptions import AMQPError, NackError, UnroutableError
 from structlog import get_logger
 
-from app.utilities.json import json_dumps
-
 logger = get_logger()
 
 
@@ -137,12 +135,9 @@ class GCSFeedbackSubmitter:
         self.bucket = client.get_bucket(bucket_name)
 
     def upload(self, metadata, payload):
-        payload.update(metadata)
         blob = self.bucket.blob(str(uuid4()))
         blob.metadata = metadata
-        blob.upload_from_string(
-            json_dumps(payload).encode("utf8"), content_type="application/json"
-        )
+        blob.upload_from_string(payload.encode("utf8"))
 
         return True
 
