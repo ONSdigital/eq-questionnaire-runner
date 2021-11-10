@@ -34,7 +34,7 @@ def request_load_user(request: Request) -> Optional[User]:
 
     if request.endpoint:
         extend_session = not (
-            "session_expiry" in request.endpoint and request.method == "GET"
+            request.endpoint == "session.session_expiry" and request.method == "GET"
         )
     else:
         extend_session = True
