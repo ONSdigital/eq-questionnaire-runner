@@ -1,4 +1,4 @@
-from typing import Optional, Sequence, Tuple
+from typing import Optional, Tuple
 
 from flask import url_for
 
@@ -272,17 +272,7 @@ class Router:
             return True
 
         enabled = section["enabled"]
-        if isinstance(enabled, Sequence):
-            for condition in enabled:
-                if evaluate_when_rules(
-                    condition["when"],
-                    self._schema,
-                    self._metadata,
-                    self._answer_store,
-                    self._list_store,
-                ):
-                    return True
-        else:
+        if isinstance(enabled, dict):
             location = Location(section_id=section["id"])
             when_rule_evaluator = WhenRuleEvaluator(
                 self._schema,
@@ -294,7 +284,18 @@ class Router:
                 routing_path_block_ids=None,
             )
 
-            return when_rule_evaluator.evaluate(enabled.get("when"))
+            return when_rule_evaluator.evaluate(enabled["when"])
+
+        else:
+            for condition in enabled:
+                if evaluate_when_rules(
+                    condition["when"],
+                    self._schema,
+                    self._metadata,
+                    self._answer_store,
+                    self._list_store,
+                ):
+                    return True
 
         return False
 
