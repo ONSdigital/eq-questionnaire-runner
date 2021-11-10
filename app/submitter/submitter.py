@@ -47,8 +47,8 @@ class RabbitMQSubmitter:
         secondary_host: str,
         port: int,
         queue: str,
-        username: str = None,
-        password: str = None,
+        username: Optional[str] = None,
+        password: Optional[str] = None,
     ) -> None:
         self.queue = queue
         if username and password:
