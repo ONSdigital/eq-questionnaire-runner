@@ -1,4 +1,4 @@
-from typing import Mapping, Optional, Union
+from typing import Mapping, Optional
 from uuid import uuid4
 
 from google.cloud import storage  # type: ignore
@@ -7,6 +7,8 @@ from pika.exceptions import AMQPError, NackError, UnroutableError
 from structlog import get_logger
 
 logger = get_logger()
+
+MetadataType = Mapping[str, str]
 
 
 class LogSubmitter:
@@ -143,7 +145,7 @@ class GCSFeedbackSubmitter:
         client = storage.Client()
         self.bucket = client.get_bucket(bucket_name)
 
-    def upload(self, metadata: Mapping[str, str], payload: str) -> bool:
+    def upload(self, metadata: MetadataType, payload: str) -> bool:
         blob = self.bucket.blob(str(uuid4()))
         blob.metadata = metadata
         blob.upload_from_string(payload.encode("utf8"))
@@ -153,7 +155,7 @@ class GCSFeedbackSubmitter:
 
 class LogFeedbackSubmitter:
     @staticmethod
-    def upload(metadata: Mapping[str, Union[str, int, list]], payload: dict) -> bool:
+    def upload(metadata: MetadataType, payload: dict) -> bool:
         logger.info("uploading feedback")
         logger.info(
             "feedback message",
