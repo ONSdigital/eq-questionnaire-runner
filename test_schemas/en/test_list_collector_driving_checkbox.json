@@ -467,7 +467,8 @@
                                             "placeholder": "number_of_people",
                                             "value": {
                                                 "source": "list",
-                                                "identifier": "people"
+                                                "identifier": "people",
+                                                "selector": "count"
                                             }
                                         }
                                     ]
@@ -502,7 +503,8 @@
                                                             "placeholder": "number_of_people",
                                                             "value": {
                                                                 "source": "list",
-                                                                "identifier": "people"
+                                                                "identifier": "people",
+                                                                "selector": "count"
                                                             }
                                                         }
                                                     ]
