@@ -19,7 +19,7 @@ class WhenRuleEvaluator:
     list_store: ListStore
     metadata: Mapping
     response_metadata: Mapping
-    location: Optional[Union[Location, RelationshipLocation]]
+    location: Union[None, Location, RelationshipLocation]
     routing_path_block_ids: Optional[list] = None
 
     # pylint: disable=attribute-defined-outside-init
