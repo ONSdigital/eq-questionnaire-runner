@@ -1,0 +1,168 @@
+{
+    "mime_type": "application/json/ons/eq",
+    "language": "en",
+    "schema_version": "0.0.1",
+    "data_version": "0.0.3",
+    "survey_id": "0",
+    "title": "Test Section Enabled",
+    "theme": "default",
+    "description": "A questionnaire to demo section enabled key usage with checkbox options",
+    "metadata": [
+        {
+            "name": "user_id",
+            "type": "string"
+        },
+        {
+            "name": "period_id",
+            "type": "string"
+        },
+        {
+            "name": "ru_name",
+            "type": "string"
+        }
+    ],
+    "questionnaire_flow": {
+        "type": "Linear",
+        "options": {
+            "summary": {
+                "collapsible": false
+            }
+        }
+    },
+    "sections": [
+        {
+            "id": "section-1",
+            "title": "Section 1",
+            "groups": [
+                {
+                    "blocks": [
+                        {
+                            "id": "section-1-block",
+                            "type": "Question",
+                            "question": {
+                                "answers": [
+                                    {
+                                        "id": "section-1-answer",
+                                        "label": "label 1",
+                                        "mandatory": false,
+                                        "options": [
+                                            {
+                                                "label": "Section 2",
+                                                "value": "Section 2"
+                                            },
+                                            {
+                                                "label": "Section 3",
+                                                "value": "Section 3"
+                                            }
+                                        ],
+                                        "type": "Checkbox"
+                                    },
+                                    {
+                                        "id": "section-1-answer-exclusive",
+                                        "mandatory": false,
+                                        "options": [
+                                            {
+                                                "label": "Neither",
+                                                "value": "Neither"
+                                            }
+                                        ],
+                                        "type": "Checkbox"
+                                    }
+                                ],
+                                "mandatory": false,
+                                "description": ["This is section 1."],
+                                "id": "section-1-question",
+                                "title": "Which sections do you want to enable?",
+                                "type": "MutuallyExclusive"
+                            }
+                        }
+                    ],
+                    "id": "section-1-group",
+                    "title": "Section 1"
+                }
+            ]
+        },
+        {
+            "id": "section-2",
+            "title": "Section 2",
+            "enabled": {
+                "when": {
+                    "in": [
+                        "Section 2",
+                        {
+                            "source": "answers",
+                            "identifier": "section-1-answer"
+                        }
+                    ]
+                }
+            },
+            "groups": [
+                {
+                    "blocks": [
+                        {
+                            "id": "section-2-block",
+                            "type": "Question",
+                            "question": {
+                                "answers": [
+                                    {
+                                        "id": "section-2-answer",
+                                        "label": "label 2",
+                                        "mandatory": false,
+                                        "type": "Number"
+                                    }
+                                ],
+                                "description": ["This is section 2."],
+                                "id": "section-2-question",
+                                "title": "Which section is this?",
+                                "type": "General"
+                            }
+                        }
+                    ],
+                    "id": "section-2-group",
+                    "title": "Section 2"
+                }
+            ]
+        },
+        {
+            "id": "section-3",
+            "title": "Section 3",
+            "enabled": {
+                "when": {
+                    "in": [
+                        "Section 3",
+                        {
+                            "source": "answers",
+                            "identifier": "section-1-answer"
+                        }
+                    ]
+                }
+            },
+            "groups": [
+                {
+                    "blocks": [
+                        {
+                            "id": "section-3-block",
+                            "type": "Question",
+                            "question": {
+                                "answers": [
+                                    {
+                                        "id": "section-3-answer",
+                                        "label": "label 3",
+                                        "mandatory": false,
+                                        "type": "Number"
+                                    }
+                                ],
+                                "description": ["This is section 3."],
+                                "id": "section-3-question",
+                                "title": "Which section is this?",
+                                "type": "General"
+                            }
+                        }
+                    ],
+                    "id": "section-3-group",
+                    "title": "Section 3"
+                }
+            ]
+        }
+    ]
+}
