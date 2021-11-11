@@ -155,7 +155,7 @@ class GCSFeedbackSubmitter:
 
 class LogFeedbackSubmitter:
     @staticmethod
-    def upload(metadata: MetadataType, payload: dict) -> bool:
+    def upload(metadata: MetadataType, payload: str) -> bool:
         logger.info("uploading feedback")
         logger.info(
             "feedback message",
