@@ -467,7 +467,7 @@ def test_list_source_count():
     placeholder_list = [
         {
             "placeholder": "number_of_people",
-            "value": {"source": "list", "identifier": "people"},
+            "value": {"source": "list", "identifier": "people", "selector": "count"},
         }
     ]
 
@@ -496,7 +496,11 @@ def test_list_source_count_in_transform():
                 {
                     "transform": "add",
                     "arguments": {
-                        "lhs": {"source": "list", "identifier": "people"},
+                        "lhs": {
+                            "source": "list",
+                            "identifier": "people",
+                            "selector": "count",
+                        },
                         "rhs": {"value": 1},
                     },
                 }
@@ -570,8 +574,8 @@ def test_placeholder_resolves_answer_value_based_on_first_item_in_list():
                 "identifier": "favourite-drink-answer",
                 "list_item_selector": {
                     "source": "list",
-                    "id": "people",
-                    "id_selector": "first",
+                    "identifier": "people",
+                    "selector": "first",
                 },
             },
         }
@@ -608,7 +612,7 @@ def test_placeholder_resolves_list_item_value_based_on_first_item_in_list():
             "placeholder": "first_person_list_item_id",
             "value": {
                 "source": "list",
-                "id_selector": "first",
+                "selector": "first",
                 "identifier": "people",
             },
         }
@@ -645,7 +649,7 @@ def test_placeholder_resolves_same_name_items():
             "placeholder": "answer",
             "value": {
                 "source": "list",
-                "id_selector": "same_name_items",
+                "selector": "same_name_items",
                 "identifier": "people",
             },
         },
@@ -719,7 +723,7 @@ def test_placeholder_resolves_name_is_duplicate_chain(mock_schema):
                     "arguments": {
                         "list_to_check": {
                             "source": "list",
-                            "id_selector": "same_name_items",
+                            "selector": "same_name_items",
                             "identifier": "people",
                         },
                         "value": {
@@ -834,7 +838,7 @@ def test_placeholder_resolves_list_has_items_chain(mock_schema):
                     "arguments": {
                         "list_to_check": {
                             "source": "list",
-                            "id_selector": "same_name_items",
+                            "selector": "same_name_items",
                             "identifier": "people",
                         },
                     },

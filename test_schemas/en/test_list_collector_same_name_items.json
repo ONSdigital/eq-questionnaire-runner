@@ -251,7 +251,7 @@
                                                         "arguments": {
                                                             "list_to_check": {
                                                                 "source": "list",
-                                                                "id_selector": "same_name_items",
+                                                                "selector": "same_name_items",
                                                                 "identifier": "people"
                                                             },
                                                             "value": {
@@ -346,7 +346,7 @@
                                                     "arguments": {
                                                         "list_to_check": {
                                                             "source": "list",
-                                                            "id_selector": "same_name_items",
+                                                            "selector": "same_name_items",
                                                             "identifier": "people"
                                                         }
                                                     }
