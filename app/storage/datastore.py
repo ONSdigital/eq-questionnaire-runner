@@ -1,15 +1,21 @@
+from typing import Optional, Type
+
 from google.api_core.retry import Retry
+from google.cloud import datastore
 from google.cloud.datastore import Entity
 from structlog import get_logger
 
-from .storage import StorageHandler, StorageModel
+from app.storage.storage import ModelTypes, StorageHandler, StorageModel
 
 logger = get_logger()
 
 
 class Datastore(StorageHandler):
+    def __init__(self, client: datastore.Client) -> None:
+        super().__init__(client)
+
     @Retry()
-    def put(self, model, overwrite=True):
+    def put(self, model: ModelTypes, overwrite: bool = True) -> bool:
         if not overwrite:
             raise NotImplementedError("Unique key checking not supported")
 
@@ -27,9 +33,10 @@ class Datastore(StorageHandler):
         entity.update(serialized_item)
 
         self.client.put(entity)
+        return True
 
     @Retry()
-    def get(self, model_type, key_value):
+    def get(self, model_type: Type[ModelTypes], key_value: str) -> Optional[ModelTypes]:
         storage_model = StorageModel(model_type=model_type)
         key = self.client.key(storage_model.table_name, key_value)
 
@@ -38,9 +45,9 @@ class Datastore(StorageHandler):
             return storage_model.deserialize(serialized_item)
 
     @Retry()
-    def delete(self, model):
+    def delete(self, model: ModelTypes) -> None:
         storage_model = StorageModel(model_type=type(model))
         key_value = getattr(model, storage_model.key_field)
         key = self.client.key(storage_model.table_name, key_value)
 
-        return self.client.delete(key)
+        self.client.delete(key)
