@@ -19,7 +19,7 @@ class TestDynamo(AppContextTestCase):
         client = boto3.resource("dynamodb", endpoint_url=None)
         self.ddb = Dynamodb(client)
 
-        for config in StorageModel.TABLE_CONFIG.values():
+        for config in StorageModel.TABLE_CONFIG_BY_TYPE.values():
             table_name = current_app.config[config["table_name_key"]]
             if table_name:
                 client.create_table(  # pylint: disable=no-member

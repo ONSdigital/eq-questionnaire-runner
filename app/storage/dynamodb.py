@@ -1,16 +1,22 @@
+from typing import Optional, Type
+
+import boto3
 from botocore.exceptions import ClientError
 
 from app.storage.errors import ItemAlreadyExistsError
 
-from .storage import StorageHandler, StorageModel
+from .storage import ModelTypes, StorageHandler, StorageModel
 
 
 class Dynamodb(StorageHandler):
-    def put(self, model, overwrite=True):
+    def __init__(self, client: boto3.resource) -> None:
+        super().__init__(client)
+
+    def put(self, model: ModelTypes, overwrite: bool = True) -> bool:
         storage_model = StorageModel(model_type=type(model))
         table = self.client.Table(storage_model.table_name)
 
-        put_kwargs = {"Item": storage_model.serialize(model)}
+        put_kwargs: dict = {"Item": storage_model.serialize(model)}
         if not overwrite:
             put_kwargs[
                 "ConditionExpression"
@@ -20,14 +26,15 @@ class Dynamodb(StorageHandler):
             response = table.put_item(**put_kwargs)["ResponseMetadata"][
                 "HTTPStatusCode"
             ]
-            return response == 200
+            succeeded: bool = response == 200
+            return succeeded
         except ClientError as e:
             if e.response["Error"]["Code"] == "ConditionalCheckFailedException":
                 raise ItemAlreadyExistsError() from e
 
             raise  # pragma: no cover
 
-    def get(self, model_type, key_value):
+    def get(self, model_type: Type[ModelTypes], key_value: str) -> Optional[ModelTypes]:
         storage_model = StorageModel(model_type=model_type)
         table = self.client.Table(storage_model.table_name)
         key = {storage_model.key_field: key_value}
@@ -38,12 +45,10 @@ class Dynamodb(StorageHandler):
         if serialized_item:
             return storage_model.deserialize(serialized_item)
 
-    def delete(self, model):
+    def delete(self, model: ModelTypes) -> None:
         storage_model = StorageModel(model_type=type(model))
         table = self.client.Table(storage_model.table_name)
         key_value = getattr(model, storage_model.key_field)
         key = {storage_model.key_field: key_value}
 
-        response = table.delete_item(Key=key)
-        item = response.get("Item")
-        return item
+        table.delete_item(Key=key)
