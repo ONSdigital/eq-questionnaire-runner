@@ -132,8 +132,7 @@ class TestDumpSubmission(IntegrationTestCase):
                     "exercise_sid": "789",
                     "instrument_id": "H",
                     "schema_name": "test_radio_mandatory",
-                    "period": "201604"
-
+                    "period": "201604",
                 },
                 "data": {
                     "answers": [
