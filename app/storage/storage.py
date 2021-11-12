@@ -74,8 +74,8 @@ class StorageModel:
 
     @cached_property
     def table_name(self) -> str:
-        table_name: str = current_app.config[self._config["table_name_key"]]
-        return table_name
+        table: str = current_app.config[self._config["table_name_key"]]
+        return table
 
     def serialize(self, model_to_serialize: ModelTypes) -> dict:
         serialized_data: dict = self._schema.dump(model_to_serialize)
