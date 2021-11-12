@@ -1,9 +1,9 @@
 from collections import Iterable, OrderedDict
 from datetime import datetime, timezone
-from typing import Mapping, Optional, OrderedDict, Union
+from typing import Mapping, Optional, Union
 
 from app.data_models import AnswerStore, ListStore
-from app.data_models.answer import Answer, AnswerValueTypes
+from app.data_models.answer import AnswerValueTypes
 from app.questionnaire import QuestionnaireSchema
 from app.questionnaire.location import Location
 from app.questionnaire.routing_path import RoutingPath
