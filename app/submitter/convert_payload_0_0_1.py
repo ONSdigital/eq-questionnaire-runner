@@ -1,14 +1,23 @@
-from collections import OrderedDict
+from collections import Iterable, OrderedDict
 from datetime import datetime, timezone
+from typing import Mapping, Optional, Union, OrderedDict
 
+from app.data_models import AnswerStore, ListStore
+from app.data_models.answer import Answer, AnswerValueTypes
+from app.questionnaire import QuestionnaireSchema
 from app.questionnaire.location import Location
+from app.questionnaire.routing_path import RoutingPath
 from app.questionnaire.schema_utils import choose_question_to_display
 
 
 # pylint: disable=too-many-locals,too-many-nested-blocks
 def convert_answers_to_payload_0_0_1(
-    metadata, answer_store, list_store, schema, full_routing_path
-):
+    metadata: Mapping[str, Union[str, int, list]],
+    answer_store: AnswerStore,
+    list_store: ListStore,
+    schema: QuestionnaireSchema,
+    full_routing_path: RoutingPath,
+) -> OrderedDict:
     """
     Convert answers into the data format below
     list_item_id bound answers are not currently supported
@@ -52,7 +61,7 @@ def convert_answers_to_payload_0_0_1(
                     if answer["id"] == answer_in_block.answer_id:
                         answer_schema = answer
 
-                value = answer_in_block.value
+                value: AnswerValueTypes = answer_in_block.value
 
                 if answer_schema is not None and value is not None:
                     if answer_schema["type"] == "Checkbox":
@@ -73,60 +82,69 @@ def convert_answers_to_payload_0_0_1(
     return data
 
 
-def _format_downstream_answer(answer_type, answer_value, answer_data):
-    if answer_type == "Date":
-        return (
-            datetime.strptime(answer_value, "%Y-%m-%d")
-            .replace(tzinfo=timezone.utc)
-            .strftime("%d/%m/%Y")
-        )
+def _format_downstream_answer(
+    answer_type: str, answer_value: AnswerValueTypes, answer_data: str
+) -> str:
+    if isinstance(answer_value, str):
+        if answer_type == "Date":
+            return (
+                datetime.strptime(answer_value, "%Y-%m-%d")
+                .replace(tzinfo=timezone.utc)
+                .strftime("%d/%m/%Y")
+            )
 
-    if answer_type == "MonthYearDate":
-        return (
-            datetime.strptime(answer_value, "%Y-%m")
-            .replace(tzinfo=timezone.utc)
-            .strftime("%m/%Y")
-        )
+        if answer_type == "MonthYearDate":
+            return (
+                datetime.strptime(answer_value, "%Y-%m")
+                .replace(tzinfo=timezone.utc)
+                .strftime("%m/%Y")
+            )
 
     return answer_data
 
 
-def _get_checkbox_answer_data(answer_store, answer_schema, value):
+def _get_checkbox_answer_data(
+    answer_store: AnswerStore, answer_schema: Mapping, value: AnswerValueTypes
+) -> dict:
     qcodes_and_values = []
-    for user_answer in value:
-        # find the option in the schema which matches the users answer
-        option = next(
-            (
-                option
-                for option in answer_schema["options"]
-                if option["value"] == user_answer
-            ),
-            None,
-        )
+    if isinstance(value, Iterable) and value:
+        for user_answer in value:
+            # find the option in the schema which matches the users answer
+            option = next(
+                (
+                    option
+                    for option in answer_schema["options"]
+                    if option["value"] == user_answer
+                ),
+                None,
+            )
 
-        if option:
-            if "detail_answer" in option:
-                detail_answer = answer_store.get_answer(option["detail_answer"]["id"])
+            if option:
+                if "detail_answer" in option:
+                    detail_answer = answer_store.get_answer(
+                        option["detail_answer"]["id"]
+                    )
+                    # if the user has selected an option with a detail answer we need to find the detail answer value it refers to.
+                    # the detail answer value can be empty, in this case we just use the main value (e.g. other)
+                    if isinstance(detail_answer, dict):
+                        if isinstance(detail_answer.value, str):
+                            user_answer = detail_answer.value
 
-                # if the user has selected an option with a detail answer we need to find the detail answer value it refers to.
-                # the detail answer value can be empty, in this case we just use the main value (e.g. other)
-                user_answer = detail_answer.value or user_answer
+                qcodes_and_values.append((option.get("q_code"), user_answer))
 
-            qcodes_and_values.append((option.get("q_code"), user_answer))
+        checkbox_answer_data: dict = OrderedDict()
 
-    checkbox_answer_data = OrderedDict()
+        if all(q_code is not None for (q_code, _) in qcodes_and_values):
+            checkbox_answer_data.update(qcodes_and_values)
+        else:
+            checkbox_answer_data[answer_schema["q_code"]] = str(
+                [v for (_, v) in qcodes_and_values]
+            )
 
-    if all(q_code is not None for (q_code, _) in qcodes_and_values):
-        checkbox_answer_data.update(qcodes_and_values)
-    else:
-        checkbox_answer_data[answer_schema["q_code"]] = str(
-            [v for (_, v) in qcodes_and_values]
-        )
-
-    return checkbox_answer_data
+        return checkbox_answer_data
 
 
-def _encode_value(value):
+def _encode_value(value: AnswerValueTypes) -> Optional[str]:
     if isinstance(value, str):
         if value == "":
             return None
