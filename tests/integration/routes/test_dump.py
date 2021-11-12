@@ -83,10 +83,12 @@ class TestDumpSubmission(IntegrationTestCase):
                 "tx_id": actual["submission"]["tx_id"],
                 "submitted_at": actual["submission"]["submitted_at"],
                 "case_id": actual["submission"]["case_id"],
+                "form_type": "H",
                 "collection": {
-                    "period": "201604",
                     "exercise_sid": "789",
+                    "instrument_id": "H",
                     "schema_name": "test_radio_mandatory_with_detail_answer_mandatory",
+                    "period": "201604",
                 },
                 "data": {"answers": [], "lists": []},
                 "metadata": {"ru_ref": "123456789012A", "user_id": "integration-test"},
@@ -94,7 +96,6 @@ class TestDumpSubmission(IntegrationTestCase):
                 "submission_language_code": "en",
             }
         }
-
         assert actual == expected
 
     def test_dump_submission_authenticated_with_role_with_answers(self):
@@ -126,10 +127,13 @@ class TestDumpSubmission(IntegrationTestCase):
                 "started_at": actual["submission"]["started_at"],
                 "submitted_at": actual["submission"]["submitted_at"],
                 "case_id": actual["submission"]["case_id"],
+                "form_type": "H",
                 "collection": {
-                    "period": "201604",
                     "exercise_sid": "789",
+                    "instrument_id": "H",
                     "schema_name": "test_radio_mandatory",
+                    "period": "201604"
+
                 },
                 "data": {
                     "answers": [
@@ -175,10 +179,12 @@ class TestDumpSubmission(IntegrationTestCase):
                 "started_at": actual["submission"]["started_at"],
                 "submitted_at": actual["submission"]["submitted_at"],
                 "case_id": actual["submission"]["case_id"],
+                "form_type": "H",
                 "collection": {
-                    "period": "201604",
                     "exercise_sid": "789",
+                    "instrument_id": "H",
                     "schema_name": "test_relationships",
+                    "period": "201604",
                 },
                 "data": {
                     "answers": [

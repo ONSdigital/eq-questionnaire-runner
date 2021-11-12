@@ -33,6 +33,7 @@ def convert_answers(
         'flushed': true|false
         'collection':{
           'exercise_sid': 'hfjdskf',
+          'instrument_id': 'H',
           'schema_name': 'yui789',
           'period': '2016-02-01'
         },
@@ -104,6 +105,7 @@ def convert_answers(
 def build_collection(metadata) -> Mapping[str, str]:
     return {
         "exercise_sid": metadata["collection_exercise_sid"],
+        "instrument_id": metadata.get("form_type"),
         "schema_name": metadata["schema_name"],
         "period": metadata["period_id"],
     }
