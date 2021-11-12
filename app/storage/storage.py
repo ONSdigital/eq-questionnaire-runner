@@ -1,13 +1,35 @@
+from __future__ import annotations
+
 from abc import ABC, abstractmethod
 from functools import cached_property
+from typing import Any, Optional, Type, TypedDict, Union
 
 from flask import current_app
+from google.cloud import datastore
 
 from app.data_models import app_models
 
+ModelSchemaTypes = Union[
+    app_models.QuestionnaireStateSchema,
+    app_models.EQSessionSchema,
+    app_models.UsedJtiClaimSchema,
+]
+
+ModelTypes = Union[
+    app_models.QuestionnaireState, app_models.EQSession, app_models.UsedJtiClaim
+]
+
+
+class TableConfig(TypedDict, total=False):
+    key_field: str
+    table_name_key: str
+    schema: Type[ModelSchemaTypes]
+    expiry_field: str
+    index_fields: list[str]
+
 
 class StorageModel:
-    TABLE_CONFIG = {
+    TABLE_CONFIG_BY_TYPE: dict[Type[ModelTypes], TableConfig] = {
         app_models.QuestionnaireState: {
             "key_field": "user_id",
             "table_name_key": "EQ_QUESTIONNAIRE_STATE_TABLE_NAME",
@@ -29,50 +51,53 @@ class StorageModel:
         },
     }
 
-    def __init__(self, model_type):
+    def __init__(self, model_type: Type[ModelTypes]) -> None:
         self._model_type = model_type
 
-        if self._model_type not in self.TABLE_CONFIG:
+        if self._model_type not in self.TABLE_CONFIG_BY_TYPE:
             raise KeyError("Invalid model_type provided")
 
-        self._config = self.TABLE_CONFIG[self._model_type]
+        self._config = self.TABLE_CONFIG_BY_TYPE[self._model_type]
         self._schema = self._config["schema"]()
 
     @cached_property
-    def key_field(self):
+    def key_field(self) -> str:
         return self._config["key_field"]
 
     @cached_property
-    def expiry_field(self):
+    def expiry_field(self) -> Optional[str]:
         return self._config.get("expiry_field")
 
     @cached_property
-    def index_fields(self):
+    def index_fields(self) -> list[str]:
         return self._config.get("index_fields", [])
 
     @cached_property
-    def table_name(self):
-        return current_app.config[self._config["table_name_key"]]
+    def table_name(self) -> str:
+        table: str = current_app.config[self._config["table_name_key"]]
+        return table
 
-    def serialize(self, model_to_serialize):
-        return self._schema.dump(model_to_serialize)
+    def serialize(self, model_to_serialize: ModelTypes) -> dict:
+        serialized_data: dict = self._schema.dump(model_to_serialize)
+        return serialized_data
 
-    def deserialize(self, serialized_item):
-        return self._schema.load(serialized_item)
+    def deserialize(self, serialized_item: Union[datastore.Entity]) -> ModelTypes:
+        deserialized_data: ModelTypes = self._schema.load(serialized_item)
+        return deserialized_data
 
 
 class StorageHandler(ABC):
-    def __init__(self, client):
+    def __init__(self, client: Any):
         self.client = client
 
     @abstractmethod
-    def put(self, model, overwrite=True):
+    def put(self, model: ModelTypes, overwrite: bool = True) -> bool:
         pass  # pragma: no cover
 
     @abstractmethod
-    def get(self, model_type, key_value):
+    def get(self, model_type: Type[ModelTypes], key_value: str) -> Optional[ModelTypes]:
         pass  # pragma: no cover
 
     @abstractmethod
-    def delete(self, model):
+    def delete(self, model: ModelTypes) -> None:
         pass  # pragma: no cover

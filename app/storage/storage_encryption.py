@@ -1,4 +1,5 @@
 import hashlib
+from typing import Optional, Union
 
 from jwcrypto import jwe, jwk
 from jwcrypto.common import base64url_encode
@@ -11,7 +12,9 @@ logger = get_logger()
 
 
 class StorageEncryption:
-    def __init__(self, user_id, user_ik, pepper):
+    def __init__(
+        self, user_id: Optional[str], user_ik: Optional[str], pepper: Optional[str]
+    ) -> None:
         if not user_id:
             raise ValueError("user_id not provided")
         if not user_ik:
@@ -22,7 +25,7 @@ class StorageEncryption:
         self.key = self._generate_key(user_id, user_ik, pepper)
 
     @staticmethod
-    def _generate_key(user_id, user_ik, pepper):
+    def _generate_key(user_id: str, user_ik: str, pepper: str) -> jwk.JWK:
         sha256 = hashlib.sha256()
         sha256.update(to_str(user_id).encode("utf-8"))
         sha256.update(to_str(user_ik).encode("utf-8"))
@@ -35,7 +38,7 @@ class StorageEncryption:
 
         return jwk.JWK(**password)
 
-    def encrypt_data(self, data):
+    def encrypt_data(self, data: Union[str, dict]) -> str:
         if isinstance(data, dict):
             data = json_dumps(data)
 
@@ -45,10 +48,12 @@ class StorageEncryption:
             plaintext=data, protected=protected_header, recipient=self.key
         )
 
-        return jwe_token.serialize(compact=True)
+        serialized_token: str = jwe_token.serialize(compact=True)
+        return serialized_token
 
-    def decrypt_data(self, encrypted_token):
+    def decrypt_data(self, encrypted_token: str) -> bytes:
         jwe_token = jwe.JWE(algs=["dir", "A256GCM"])
         jwe_token.deserialize(encrypted_token, self.key)
 
-        return jwe_token.payload
+        payload: bytes = jwe_token.payload
+        return payload

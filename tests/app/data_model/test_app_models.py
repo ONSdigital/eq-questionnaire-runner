@@ -34,7 +34,7 @@ class TestAppModels(AppContextTestCase):
         self._test_model(UsedJtiClaim("claimid", NOW))
 
     def _test_model(self, orig):
-        config = StorageModel.TABLE_CONFIG[type(orig)]
+        config = StorageModel.TABLE_CONFIG_BY_TYPE[type(orig)]
         schema = config["schema"]()
 
         item = schema.dump(orig)
