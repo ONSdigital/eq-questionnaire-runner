@@ -1,6 +1,6 @@
 from collections import Iterable, OrderedDict
 from datetime import datetime, timezone
-from typing import Mapping, Optional, Union, OrderedDict
+from typing import Mapping, Optional, OrderedDict, Union
 
 from app.data_models import AnswerStore, ListStore
 from app.data_models.answer import Answer, AnswerValueTypes

@@ -1,11 +1,11 @@
-from typing import Dict, List, Mapping, Optional, Any, Iterable
+from typing import Any, Dict, Iterable, List, Mapping, Optional
 
 from app.data_models import ListStore
+from app.data_models.answer_store import AnswerStore
 from app.data_models.relationship_store import RelationshipStore
 from app.questionnaire import QuestionnaireSchema
 from app.questionnaire.relationship_router import RelationshipRouter
 from app.questionnaire.routing_path import RoutingPath
-from app.data_models.answer_store import AnswerStore
 
 
 # pylint: disable=too-many-locals
