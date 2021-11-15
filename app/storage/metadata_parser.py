@@ -1,3 +1,4 @@
+from datetime import datetime, timezone
 import functools
 from typing import Dict
 
@@ -16,6 +17,7 @@ from structlog import get_logger
 from app.utilities.schema import get_schema_name_from_params
 
 logger = get_logger()
+ISO_8601_DATETIME = "%Y-%m-%dT%H:%M:%S%z"
 
 
 class RegionCode(validate.Regexp):
@@ -41,10 +43,27 @@ class DateString(fields.DateTime):
     """Currently, runner cannot handle Date objects in metadata
     Since all metadata is serialized and deserialized to JSON.
     This custom field deserializes Dates to strings.
+
+    :param out_format: Output date string format. If falsy, the output
+        format is the same as the input.
     """
 
+    def __init__(self, *args, out_format: str = None, **kwargs):
+        super().__init__(*args, **kwargs)
+        self._out_format = out_format or kwargs.get("format")
+
     def _deserialize(self, *args, **kwargs):  # pylint: disable=arguments-differ
-        return super()._deserialize(*args, **kwargs).strftime("%Y-%m-%d")
+        date = super()._deserialize(*args, **kwargs).strftime(self._out_format)
+
+        if "%z" in self._out_format:
+            dt, tz = date.split("+")
+            # Add a colon separating the timezone offset hours and minutes
+            if ":" not in date.split("+")[-1]:
+                new_tz = f"{tz[:2]}:{tz[2:]}"
+
+            date = f"{dt}+{new_tz}"
+
+        return date
 
 
 VALIDATORS = {
@@ -53,6 +72,9 @@ VALIDATORS = {
     "boolean": functools.partial(fields.Boolean, required=True),
     "string": functools.partial(fields.String, required=True),
     "url": functools.partial(fields.Url, required=True),
+    "iso_8601_datetime": functools.partial(
+        DateString, format=ISO_8601_DATETIME, required=True
+    ),
 }
 
 
@@ -88,6 +110,11 @@ class RunnerMetadataSchema(Schema, StripWhitespaceMixin):
         required=False, validate=validate.Length(min=1)
     )  # type:ignore
     case_type = VALIDATORS["string"](required=False)  # type:ignore
+    response_expires_at = VALIDATORS["iso_8601_datetime"](
+        required=False,
+        validate=lambda x: datetime.strptime(x, ISO_8601_DATETIME)
+        > datetime.now(tz=timezone.utc),
+    )
 
     # Either schema_name OR the three census parameters are required. Should be required after census.
     schema_name = VALIDATORS["string"](required=False)  # type:ignore
