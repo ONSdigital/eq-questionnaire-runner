@@ -48,10 +48,9 @@ def login():
 
     decrypted_token = decrypt_token(request.args.get("token"))
     validate_jti(decrypted_token)
-
     try:
         runner_claims = validate_runner_claims(decrypted_token)
-        print(runner_claims)
+
     except ValidationError as e:
         raise InvalidTokenException("Invalid runner claims") from e
     # pylint: disable=assigning-non-slot
