@@ -1,3 +1,6 @@
+from datetime import datetime
+from typing import Optional, Union
+
 import snappy
 from flask import current_app
 from structlog import get_logger
@@ -10,44 +13,55 @@ logger = get_logger()
 
 
 class EncryptedQuestionnaireStorage:
-    def __init__(self, user_id, user_ik, pepper):
+    def __init__(self, user_id: str, user_ik: str, pepper: str) -> None:
         self._user_id = user_id
         self.encrypter = StorageEncryption(user_id, user_ik, pepper)
 
-    def save(self, data, submitted_at=None):
+    def save(
+        self,
+        data: str,
+        collection_exercise_sid: str,
+        submitted_at: Optional[datetime] = None,
+    ) -> None:
         compressed_data = snappy.compress(data)
         encrypted_data = self.encrypter.encrypt_data(compressed_data)
         questionnaire_state = QuestionnaireState(
             self._user_id,
             encrypted_data,
+            collection_exercise_sid,
             QuestionnaireStore.LATEST_VERSION,
             submitted_at,
         )
 
-        current_app.eq["storage"].put(questionnaire_state)
+        current_app.eq["storage"].put(questionnaire_state)  # type: ignore
 
-    def get_user_data(self):
+    def get_user_data(
+        self,
+    ) -> Union[tuple[None, None, None, None], tuple[str, str, int, Optional[datetime]]]:
         questionnaire_state = self._find_questionnaire_state()
         if questionnaire_state and questionnaire_state.state_data:
             version = questionnaire_state.version
             submitted_at = questionnaire_state.submitted_at
+            collection_exercise_sid = questionnaire_state.collection_exercise_sid
             decrypted_data = self._get_snappy_compressed_data(
                 questionnaire_state.state_data
             )
-            return decrypted_data, version, submitted_at
+            return decrypted_data, collection_exercise_sid, version, submitted_at
 
-        return None, None, None
+        return None, None, None, None
 
-    def delete(self):
+    def delete(self) -> None:
         logger.debug("deleting users data", user_id=self._user_id)
         questionnaire_state = self._find_questionnaire_state()
         if questionnaire_state:
-            current_app.eq["storage"].delete(questionnaire_state)
+            current_app.eq["storage"].delete(questionnaire_state)  # type: ignore
 
-    def _find_questionnaire_state(self):
+    def _find_questionnaire_state(self) -> Optional[QuestionnaireState]:
         logger.debug("getting questionnaire data", user_id=self._user_id)
-        return current_app.eq["storage"].get(QuestionnaireState, self._user_id)
+        state: QuestionnaireState = current_app.eq["storage"].get(QuestionnaireState, self._user_id)  # type: ignore
+        return state
 
-    def _get_snappy_compressed_data(self, data):
+    def _get_snappy_compressed_data(self, data: str) -> str:
         decrypted_data = self.encrypter.decrypt_data(data)
-        return snappy.uncompress(decrypted_data).decode()
+        uncompressed_data: str = snappy.uncompress(decrypted_data).decode()
+        return uncompressed_data

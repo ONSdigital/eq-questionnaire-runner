@@ -19,7 +19,7 @@ class TestDynamo(AppContextTestCase):
         client = boto3.resource("dynamodb", endpoint_url=None)
         self.ddb = Dynamodb(client)
 
-        for config in StorageModel.TABLE_CONFIG.values():
+        for config in StorageModel.TABLE_CONFIG_BY_TYPE.values():
             table_name = current_app.config[config["table_name_key"]]
             if table_name:
                 client.create_table(  # pylint: disable=no-member
@@ -56,7 +56,7 @@ class TestDynamo(AppContextTestCase):
     def test_delete(self):
         self._put_item(1)
         self._assert_item(1)
-        model = QuestionnaireState("someuser", "data", 1)
+        model = QuestionnaireState("someuser", "data", "ce_sid", 1)
         self.ddb.delete(model)
         self._assert_item(None)
 
@@ -66,5 +66,5 @@ class TestDynamo(AppContextTestCase):
         self.assertEqual(actual_version, version)
 
     def _put_item(self, version, overwrite=True):
-        model = QuestionnaireState("someuser", "data", version)
+        model = QuestionnaireState("someuser", "data", "ce_sid", version)
         self.ddb.put(model, overwrite)

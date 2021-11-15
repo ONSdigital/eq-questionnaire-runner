@@ -53,6 +53,10 @@ class TestRouter(RouterTestCase):
 
         self.assertEqual(expected_section_ids, self.router.enabled_section_ids)
 
+        self.schema = load_schema_from_name("test_new_section_enabled_checkbox")
+
+        self.assertEqual(expected_section_ids, self.router.enabled_section_ids)
+
     def test_full_routing_path_without_repeating_sections(self):
         self.schema = load_schema_from_name("test_checkbox")
         routing_path = self.router.full_routing_path()
@@ -268,7 +272,7 @@ class TestRouterLocationValidity(RouterTestCase):
         self.assertFalse(can_access_location)
 
     def test_cant_access_section_disabled(self):
-        self.schema = load_schema_from_name("test_section_enabled_checkbox")
+        self.schema = load_schema_from_name("test_new_section_enabled_checkbox")
 
         current_location = Location(
             section_id="section-2", block_id="section-2-block", list_item_id=None

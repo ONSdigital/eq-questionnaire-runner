@@ -8,7 +8,7 @@ from app.data_models import QuestionnaireStore
 from app.data_models.answer import Answer
 from app.data_models.answer_store import AnswerStore
 from app.questionnaire.questionnaire_schema import QuestionnaireSchema
-from app.storage.metadata_parser import (
+from app.utilities.metadata_parser import (
     validate_questionnaire_claims,
     validate_runner_claims,
 )
@@ -71,7 +71,7 @@ def fake_questionnaire_store(fake_metadata, fake_response_metadata):
     user_answer = Answer(answer_id="GHI", value=0, list_item_id=None)
 
     storage = MagicMock()
-    storage.get_user_data = MagicMock(return_value=("{}", 1, None))
+    storage.get_user_data = MagicMock(return_value=("{}", "ce_sid", 1, None))
     storage.add_or_update = MagicMock()
 
     store = QuestionnaireStore(storage)

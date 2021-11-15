@@ -4,6 +4,7 @@ from mock import MagicMock
 from app.data_models.answer_store import AnswerStore
 from app.data_models.list_store import ListStore
 from app.data_models.progress_store import ProgressStore
+from app.data_models.session_data import SessionData
 from app.forms.questionnaire_form import QuestionnaireForm
 from app.questionnaire.questionnaire_schema import QuestionnaireSchema
 
@@ -185,3 +186,19 @@ def people_answer_store():
 @pytest.fixture
 def people_list_store():
     return ListStore([{"items": ["PlwgoG", "UHPLbX"], "name": "people"}])
+
+
+@pytest.fixture
+def fake_session_data():
+    return SessionData(
+        tx_id="tx_id",
+        schema_name="some_schema_name",
+        language_code=None,
+        launch_language_code=None,
+        survey_url=None,
+        ru_ref="ru_ref",
+        response_id="response_id",
+        case_id="case_id",
+        period_str=None,
+        ru_name=None,
+    )

@@ -1,18 +1,19 @@
+from typing import Mapping, Optional
 from uuid import uuid4
 
 from google.cloud import storage  # type: ignore
 from pika import BasicProperties, BlockingConnection, URLParameters
-from pika.exceptions import AMQPError
+from pika.exceptions import AMQPError, NackError, UnroutableError
 from structlog import get_logger
 
-from app.utilities.json import json_dumps
-
 logger = get_logger()
+
+MetadataType = Mapping[str, str]
 
 
 class LogSubmitter:
     @staticmethod
-    def send_message(message, tx_id, case_id):
+    def send_message(message: str, tx_id: str, case_id: str) -> bool:
         logger.info("sending message")
         logger.info(
             "message payload",
@@ -25,11 +26,11 @@ class LogSubmitter:
 
 
 class GCSSubmitter:
-    def __init__(self, bucket_name):
+    def __init__(self, bucket_name: str) -> None:
         client = storage.Client()
         self.bucket = client.get_bucket(bucket_name)
 
-    def send_message(self, message, tx_id, case_id):
+    def send_message(self, message: str, tx_id: str, case_id: str) -> bool:
         logger.info("sending message")
 
         blob = self.bucket.blob(tx_id)
@@ -40,7 +41,15 @@ class GCSSubmitter:
 
 
 class RabbitMQSubmitter:
-    def __init__(self, host, secondary_host, port, queue, username=None, password=None):
+    def __init__(
+        self,
+        host: str,
+        secondary_host: str,
+        port: int,
+        queue: str,
+        username: Optional[str] = None,
+        password: Optional[str] = None,
+    ) -> None:
         self.queue = queue
         if username and password:
             self.rabbitmq_url = f"amqp://{username}:{password}@{host}:{port}/%2F"
@@ -51,7 +60,7 @@ class RabbitMQSubmitter:
             self.rabbitmq_url = f"amqp://{host}:{port}/%2F"
             self.rabbitmq_secondary_url = f"amqp://{secondary_host}:{port}/%2F"
 
-    def _connect(self):
+    def _connect(self) -> BlockingConnection:
         try:
             logger.info(
                 "attempt to open connection", server="primary", category="rabbitmq"
@@ -81,7 +90,7 @@ class RabbitMQSubmitter:
                 raise err
 
     @staticmethod
-    def _disconnect(connection):
+    def _disconnect(connection: Optional[BlockingConnection]) -> None:
         try:
             if connection:
                 logger.info("attempt to close connection", category="rabbitmq")
@@ -89,7 +98,7 @@ class RabbitMQSubmitter:
         except AMQPError as e:
             logger.error("unable to close connection", exc_info=e, category="rabbitmq")
 
-    def send_message(self, message, tx_id, case_id):
+    def send_message(self, message: str, tx_id: str, case_id: str) -> bool:
         """
         Sends a message to rabbit mq and returns a true or false depending on if it was successful
         :param message: The message to send to the rabbit mq queue
@@ -111,45 +120,42 @@ class RabbitMQSubmitter:
             properties.headers["tx_id"] = tx_id
             properties.headers["case_id"] = case_id
 
-            published = channel.basic_publish(
+            channel.basic_publish(
                 exchange="",
                 routing_key=self.queue,
                 body=message_as_string,
                 mandatory=True,
                 properties=properties,
             )
-            if published:
-                logger.info("sent message", category="rabbitmq")
-            else:
-                logger.error("unable to send message", category="rabbitmq")
-            return published
-        except AMQPError as e:
+
+            logger.info("sent message", category="rabbitmq")
+
+        except (AMQPError, NackError, UnroutableError) as e:
             logger.error("unable to send message", exc_info=e, category="rabbitmq")
             return False
         finally:
             if connection:
                 self._disconnect(connection)
 
+        return True
+
 
 class GCSFeedbackSubmitter:
-    def __init__(self, bucket_name):
+    def __init__(self, bucket_name: str) -> None:
         client = storage.Client()
         self.bucket = client.get_bucket(bucket_name)
 
-    def upload(self, metadata, payload):
-        payload.update(metadata)
+    def upload(self, metadata: MetadataType, payload: str) -> bool:
         blob = self.bucket.blob(str(uuid4()))
         blob.metadata = metadata
-        blob.upload_from_string(
-            json_dumps(payload).encode("utf8"), content_type="application/json"
-        )
+        blob.upload_from_string(payload.encode("utf8"))
 
         return True
 
 
 class LogFeedbackSubmitter:
     @staticmethod
-    def upload(metadata, payload):
+    def upload(metadata: MetadataType, payload: str) -> bool:
         logger.info("uploading feedback")
         logger.info(
             "feedback message",

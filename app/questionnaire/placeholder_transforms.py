@@ -22,6 +22,7 @@ DAYS_OF_WEEK = {
 }
 
 
+# pylint: disable=too-many-public-methods
 class PlaceholderTransforms:
     """
     A class to group the transforms that can be used within placeholders
@@ -32,7 +33,6 @@ class PlaceholderTransforms:
         self.locale = DEFAULT_LOCALE if language in ["en", "eo"] else language
 
     input_date_format = "%Y-%m-%d"
-    input_date_format_month_year_only = "%Y-%m"
 
     def format_currency(self, number: int = None, currency: str = "GBP") -> str:
         formatted_currency: str = format_currency(number, currency, locale=self.locale)
@@ -229,20 +229,22 @@ class PlaceholderTransforms:
         :param date: string representing a date
         :return: datetime of that date
 
-        Convert `date` from string into `datetime` object. `date` can be 'YYYY-MM-DD', 'YYYY-MM'
-        or 'now'. Note that in the shorthand YYYY-MM format, day_of_month is assumed to be 1.
+        Convert `date` from string into `datetime` object. `date` can be 'YYYY-MM-DD', 'YYYY-MM','now' or ISO 8601 format.
+        Note that in the shorthand YYYY-MM format, day_of_month is assumed to be 1.
         """
         if date == "now":
             return datetime.now(tz=timezone.utc)
 
-        try:
-            return datetime.strptime(
-                date, PlaceholderTransforms.input_date_format
-            ).replace(tzinfo=timezone.utc)
-        except ValueError:
-            return datetime.strptime(
-                date, PlaceholderTransforms.input_date_format_month_year_only
-            ).replace(tzinfo=timezone.utc)
+        date_formats = ["%Y-%m-%d", "%Y-%m-%dT%H:%M:%S.%f%z", "%Y-%m"]
+
+        for date_format in date_formats:
+            try:
+                return datetime.strptime(date, date_format).replace(tzinfo=timezone.utc)
+            except ValueError:
+                continue
+        raise ValueError(
+            f"No valid date format for date '{date}', possible formats: {date_formats}"
+        )
 
     @staticmethod
     def add(lhs: Union[int, Decimal], rhs: Union[int, Decimal]) -> Union[int, Decimal]:

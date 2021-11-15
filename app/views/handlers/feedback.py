@@ -4,12 +4,14 @@ from typing import Any, Mapping, Optional, Union
 
 from flask import current_app
 from flask_babel import gettext, lazy_gettext
+from sdc.crypto.encrypter import encrypt
 from werkzeug.datastructures import MultiDict
 
 from app.data_models import QuestionnaireStore
 from app.data_models.session_data import SessionData
 from app.data_models.session_store import SessionStore
 from app.forms.questionnaire_form import QuestionnaireForm, generate_form
+from app.keys import KEY_PURPOSE_SUBMISSION
 from app.questionnaire.questionnaire_schema import (
     DEFAULT_LANGUAGE_CODE,
     QuestionnaireSchema,
@@ -72,6 +74,8 @@ class Feedback:
         return build_feedback_context(self.question_schema, self.form)
 
     def get_page_title(self) -> str:
+        # pylint: disable=no-member
+        # wtforms Form parents are not discoverable in the 2.3.3 implementation
         if self.form.errors:
             title: str = gettext("Error: {page_title}").format(
                 page_title=self.PAGE_TITLE
@@ -88,6 +92,8 @@ class Feedback:
             session_data.tx_id,
         )
 
+        # pylint: disable=no-member
+        # wtforms Form parents are not discoverable in the 2.3.3 implementation
         feedback_message = FeedbackPayload(
             metadata=self._questionnaire_store.metadata,
             response_metadata=self._questionnaire_store.response_metadata,
@@ -97,13 +103,16 @@ class Feedback:
             feedback_count=session_data.feedback_count,
             feedback_text=self.form.data.get("feedback-text"),
             feedback_type=self.form.data.get("feedback-type"),
-            feedback_type_question_category=self.form.data.get(
-                "feedback-type-question-category"
-            ),
+        )
+        message = feedback_message()
+        metadata = feedback_metadata()
+        message.update(metadata)
+        encrypted_message = encrypt(
+            message, current_app.eq["key_store"], KEY_PURPOSE_SUBMISSION  # type: ignore
         )
 
         if not current_app.eq["feedback_submitter"].upload(  # type: ignore
-            feedback_metadata(), feedback_message()
+            metadata, encrypted_message
         ):
             raise FeedbackUploadFailed()
 
@@ -111,37 +120,6 @@ class Feedback:
 
     @cached_property
     def question_schema(self) -> Mapping[str, Union[str, list]]:
-        detail_answers_option_map: Mapping[str, list] = {
-            "C": [
-                lazy_gettext("General"),
-                lazy_gettext("This establishment"),
-                lazy_gettext("People who live here"),
-                lazy_gettext("Visitors"),
-            ],
-            "I": [
-                lazy_gettext("General"),
-                lazy_gettext("Accommodation"),
-                lazy_gettext("Personal details"),
-                lazy_gettext("Health"),
-                lazy_gettext("Qualifications"),
-                lazy_gettext("Employment"),
-            ],
-            "H": [
-                lazy_gettext("General"),
-                lazy_gettext("People who live here"),
-                lazy_gettext("Visitors"),
-                lazy_gettext("Household and accommodation"),
-                lazy_gettext("Personal details"),
-                lazy_gettext("Health"),
-                lazy_gettext("Qualifications"),
-                lazy_gettext("Employment"),
-            ],
-        }
-
-        options = (
-            {"label": value, "value": value}
-            for value in detail_answers_option_map[self._schema.form_type or "H"]
-        )
 
         return {
             "type": "General",
@@ -155,26 +133,11 @@ class Feedback:
                     "label": lazy_gettext("Select what your feedback is about"),
                     "options": [
                         {
-                            "label": lazy_gettext("The census questions"),
-                            "value": lazy_gettext("The census questions"),
+                            "label": lazy_gettext("The survey questions"),
+                            "value": lazy_gettext("The survey questions"),
                             "description": lazy_gettext(
                                 "For example, questions not clear, answer options not relevant"
                             ),
-                            "detail_answer": {
-                                "type": "Dropdown",
-                                "id": "feedback-type-question-category",
-                                "mandatory": True,
-                                "label": lazy_gettext("Question topic"),
-                                "placeholder": lazy_gettext("Select an option"),
-                                "validation": {
-                                    "messages": {
-                                        "MANDATORY_DROPDOWN": lazy_gettext(
-                                            "Select an option"
-                                        )
-                                    }
-                                },
-                                "options": options,
-                            },
                         },
                         {
                             "label": lazy_gettext("Page design and structure"),
@@ -281,7 +244,6 @@ class FeedbackPayload:
     :param feedback_count: Number of feedback submissions attempted by the user
     :param feedback_text: Feedback text input by the user
     :param feedback_type: Type of feedback selected by the user
-    :param feedback_type_question_category: Feedback question category selected by the user
 
 
     :return payload: Feedback payload object
@@ -297,7 +259,6 @@ class FeedbackPayload:
         feedback_count: int,
         feedback_text: str,
         feedback_type: str,
-        feedback_type_question_category: str = None,
     ):
         self.metadata = metadata
         self.response_metadata = response_metadata
@@ -307,7 +268,6 @@ class FeedbackPayload:
         self.feedback_count = feedback_count
         self.feedback_text = feedback_text
         self.feedback_type = feedback_type
-        self.feedback_type_question_category = feedback_type_question_category
 
     def __call__(self) -> dict[str, Any]:
         payload = {
@@ -336,10 +296,5 @@ class FeedbackPayload:
             "feedback_type": self.feedback_type,
             "feedback_count": str(self.feedback_count),
         }
-
-        if self.feedback_type_question_category:
-            payload["data"][
-                "feedback_type_question_category"
-            ] = self.feedback_type_question_category
 
         return payload | optional_properties

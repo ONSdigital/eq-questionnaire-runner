@@ -31,7 +31,7 @@ from tests.app.app_context_test_case import AppContextTestCase
 class TestJinjaFilters(AppContextTestCase):  # pylint: disable=too-many-public-methods
     def setUp(self):
         self.autoescape_context = Mock(autoescape=True)
-        super(TestJinjaFilters, self).setUp()
+        super().setUp()
 
     def test_strip_tags(self):
         self.assertEqual(strip_tags("Hello <b>world</b>"), "Hello world")
@@ -266,44 +266,6 @@ class TestJinjaFilters(AppContextTestCase):  # pylint: disable=too-many-public-m
                 "answers": [{"type": answer_type, "label": "Label"}],
             }
             self.assertFalse(should_wrap_with_fieldset(question))
-
-
-@pytest.fixture
-def answer_schema_dropdown():
-    return {
-        "type": "Dropdown",
-        "id": "mandatory-checkbox-with-mandatory-dropdown-detail-answer",
-        "mandatory": True,
-        "label": "Please specify heat level",
-        "placeholder": "Select heat level",
-        "options": [
-            {"label": "Mild", "value": "Mild"},
-            {"label": "Medium", "value": "Medium"},
-            {"label": "Hot", "value": "Hot"},
-        ],
-    }
-
-
-@pytest.fixture
-def answer_schema_number():
-    return {
-        "mandatory": False,
-        "id": "other-answer",
-        "label": "Please enter a number of items",
-        "type": "Number",
-        "parent_id": "checkbox-question-numeric-detail",
-    }
-
-
-@pytest.fixture
-def answer_schema_textfield():
-    return {
-        "mandatory": False,
-        "id": "other-answer",
-        "label": "Please specify",
-        "type": "TextField",
-        "parent_id": "checkbox-question-textfield-detail",
-    }
 
 
 def test_map_list_collector_config_no_actions():

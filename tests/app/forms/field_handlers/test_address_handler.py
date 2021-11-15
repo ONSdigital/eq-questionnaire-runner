@@ -6,7 +6,9 @@ from app.forms import error_messages
 from app.forms.field_handlers import AddressHandler
 
 
-def get_test_form_class(answer_schema, value_source_resolver, messages=error_messages):
+def get_test_form_class(
+    answer_schema, value_source_resolver, messages=error_messages.copy()
+):
     address_handler = AddressHandler(
         answer_schema, value_source_resolver, error_messages=messages
     )
@@ -50,7 +52,8 @@ def test_no_validation_when_address_not_mandatory(value_source_resolver):
     test_form_class = get_test_form_class(answer_json, value_source_resolver)
     form = test_form_class(MultiDict({"test_field": "1"}), value_source_resolver)
     form.validate()
-
+    # pylint: disable=no-member
+    # wtforms Form parents are not discoverable in the 2.3.3 implementation
     assert not form.errors
 
 
@@ -60,7 +63,8 @@ def test_mandatory_validation_when_address_line_1_missing(value_source_resolver)
     test_form_class = get_test_form_class(answer_json, value_source_resolver)
     form = test_form_class(MultiDict({"test_field": "1"}), value_source_resolver)
     form.validate()
-
+    # pylint: disable=no-member
+    # wtforms Form parents are not discoverable in the 2.3.3 implementation
     assert form.errors["test_field"]["line1"][0] == "Enter an address"
 
 

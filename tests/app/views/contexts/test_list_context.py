@@ -22,9 +22,7 @@ def test_build_list_collector_context(
 
     list_context = list_context(list_collector_block["summary"], for_list="people")
 
-    assert all(
-        keys in list_context["list"].keys() for keys in ["list_items", "editable"]
-    )
+    assert all(keys in list_context["list"] for keys in ["list_items", "editable"])
 
 
 @pytest.mark.usefixtures("app")

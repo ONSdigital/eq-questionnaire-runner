@@ -57,6 +57,7 @@ def test_get_schema_list():
     )
 
 
+# pylint: disable=no-value-for-parameter
 def test_schema_cache_on_function_call():
     _load_schema_from_name.cache_clear()
 

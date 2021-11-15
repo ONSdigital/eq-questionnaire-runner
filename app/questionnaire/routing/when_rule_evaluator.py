@@ -19,10 +19,12 @@ class WhenRuleEvaluator:
     list_store: ListStore
     metadata: Mapping
     response_metadata: Mapping
-    location: Union[Location, RelationshipLocation]
+    location: Union[None, Location, RelationshipLocation]
     routing_path_block_ids: Optional[list] = None
 
+    # pylint: disable=attribute-defined-outside-init
     def __post_init__(self) -> None:
+        list_item_id = self.location.list_item_id if self.location else None
         self.value_source_resolver = ValueSourceResolver(
             answer_store=self.answer_store,
             list_store=self.list_store,
@@ -30,7 +32,7 @@ class WhenRuleEvaluator:
             response_metadata=self.response_metadata,
             schema=self.schema,
             location=self.location,
-            list_item_id=self.location.list_item_id,
+            list_item_id=list_item_id,
             routing_path_block_ids=self.routing_path_block_ids,
             use_default_answer=True,
         )

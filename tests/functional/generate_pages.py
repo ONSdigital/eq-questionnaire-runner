@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 
 import argparse
+import json
 import logging
 import os
 import re
@@ -224,12 +225,13 @@ LIST_SECTION_SUMMARY_ADD_LINK_GETTER = Template(
 """
 )
 
+# pylint: disable=line-too-long
 LIST_SECTION_SUMMARY_EDIT_LINK_GETTER = Template(
     r"""  ${list_name}ListEditLink(listItemInstance) { return `div[data-qa="${list_name}-list-summary"] a[data-qa="list-item-change-` + listItemInstance + `-link"]`; }
 
 """
 )
-
+# pylint: disable=line-too-long
 LIST_SECTION_SUMMARY_REMOVE_LINK_GETTER = Template(
     r"""  ${list_name}ListRemoveLink(listItemInstance) { return `div[data-qa="${list_name}-list-summary"] a[data-qa="list-item-remove-` + listItemInstance + `-link"]`; }
 
@@ -326,6 +328,7 @@ def process_options(answer_id, options, page_spec, base_prefix):
             page_spec.write(ANSWER_GETTER.substitute(option_context))
 
 
+# pylint: disable=too-complex
 def process_answer(answer, page_spec, long_names, page_name):
     answer_name = generate_pascal_case_from_id(answer["id"])
     answer_name = answer_name.replace(page_name, "")
@@ -414,15 +417,13 @@ def process_calculated_summary(answers, page_spec):
         page_spec.write(CALCULATED_SUMMARY_LABEL_GETTER.substitute(answer_context))
 
 
-def process_final_summary(
-    schema_data, require_path, dir_out, spec_file, collapsible, section_summary=False
-):
+def process_final_summary(schema_data, require_path, dir_out, spec_file, collapsible):
     page_filename = "submit.page.js"
     page_path = os.path.join(dir_out, page_filename)
 
     logger.info("creating %s...", page_path)
 
-    with open(page_path, "w") as page_spec:
+    with open(page_path, "w", encoding="utf-8") as page_spec:
         block_context = build_and_get_base_page_context(
             page_dir=dir_out.split("/")[-1],
             page_spec=page_spec,
@@ -454,7 +455,7 @@ def process_view_submitted_response(schema_data, require_path, dir_out, spec_fil
 
     logger.info("creating %s...", page_path)
 
-    with open(page_path, "w") as page_spec:
+    with open(page_path, "w", encoding="utf-8") as page_spec:
         block_context = build_and_get_base_page_context(
             page_dir=dir_out.split("/")[-1],
             page_spec=page_spec,
@@ -607,7 +608,7 @@ def _write_duration_answer(answer_id, units, prefix):
 
 def _write_address_answer(answer_id, prefix):
     resp = []
-    for address_field in {"line1", "line2", "town", "postcode"}:
+    for address_field in ["line1", "line2", "town", "postcode"]:
         resp.append(
             ANSWER_GETTER.substitute(
                 {
@@ -656,6 +657,7 @@ def build_and_get_base_page_context(
     return context
 
 
+# pylint: disable=too-many-branches,too-many-statements,too-many-locals,too-complex
 def process_block(
     block, dir_out, schema_data, spec_file, relative_require="..", page_filename=None
 ):
@@ -700,7 +702,7 @@ def process_block(
 
     logger.info("creating %s...", page_path)
 
-    with open(page_path, "w") as page_spec:
+    with open(page_path, "w", encoding="utf-8") as page_spec:
         page_name = generate_pascal_case_from_id(block["id"])
 
         base_page = "QuestionPage"
@@ -776,9 +778,10 @@ def _has_definitions_in_block_contents(block_contents):
 
 def process_schema(in_schema, out_dir, spec_file, require_path=".."):
     try:
-        data = json_loads(open(in_schema).read())
-    except Exception as ex:
-        logger.error("error reading %s", in_schema)
+        with open(in_schema, encoding="utf-8") as schema:
+            data = json_loads(schema.read())
+    except json.JSONDecodeError:
+        logger.exception("error reading %s", in_schema)
         return
 
     try:
@@ -816,7 +819,6 @@ def process_questionnaire_flow(schema_data, require_path, dir_out, spec_file):
             dir_out,
             spec_file,
             collapsible,
-            section_summary=False,
         )
 
 
@@ -832,7 +834,7 @@ def process_section_summary(
 
     logger.info("creating %s...", page_path)
 
-    with open(page_path, "w") as page_spec:
+    with open(page_path, "w", encoding="utf-8") as page_spec:
 
         section_context = {
             "pageName": generate_pascal_case_from_id(section_id),
@@ -862,7 +864,7 @@ def process_section_summary(
 
 
 def append_spec_page_import(context, spec_file):
-    with open(spec_file, "a") as required_template_spec:
+    with open(spec_file, "a", encoding="utf-8") as required_template_spec:
         required_template_spec.write(SPEC_PAGE_IMPORT.substitute(context))
 
 
@@ -875,7 +877,7 @@ if __name__ == "__main__":
 
     if template_spec_file:
         os.makedirs(os.path.dirname(template_spec_file), exist_ok=True)
-        with open(template_spec_file, "w") as template_spec:
+        with open(template_spec_file, "w", encoding="utf-8") as template_spec:
             template_spec.write(SPEC_PAGE_HEADER)
             template_spec.close()
 
@@ -883,7 +885,7 @@ if __name__ == "__main__":
                 args.SCHEMA, args.OUT_DIRECTORY, template_spec_file, args.require_path
             )
 
-            with open(template_spec_file, "a") as template_spec:
+            with open(template_spec_file, "a", encoding="utf-8") as template_spec:
                 schema_name = {"schema": os.path.basename(args.SCHEMA)}
                 template_spec.write(SPEC_EXAMPLE_TEST.substitute(schema_name))
     else:

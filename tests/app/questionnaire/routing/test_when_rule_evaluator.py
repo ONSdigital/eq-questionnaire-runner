@@ -142,7 +142,7 @@ def test_answer_source_with_list_item_selector_location(answer_value, expected_r
                         "identifier": "some-answer",
                         "list_item_selector": {
                             "source": "location",
-                            "id": "list_item_id",
+                            "identifier": "list_item_id",
                         },
                     },
                     3,
@@ -182,8 +182,8 @@ def test_answer_source_with_list_item_selector_list_first_item(
                         "identifier": "some-answer",
                         "list_item_selector": {
                             "source": "list",
-                            "id": "some-list",
-                            "id_selector": "first",
+                            "identifier": "some-list",
+                            "selector": "first",
                         },
                     },
                     3,
@@ -287,7 +287,12 @@ def test_list_source(list_count, expected_result):
 
     assert (
         when_rule_evaluator.evaluate(
-            rule={Operator.EQUAL: [{"source": "list", "identifier": "some-list"}, 3]}
+            rule={
+                Operator.EQUAL: [
+                    {"source": "list", "identifier": "some-list", "selector": "count"},
+                    3,
+                ]
+            }
         )
         is expected_result
     )
@@ -309,7 +314,7 @@ def test_list_source_with_id_selector_first(list_item_id, expected_result):
                     {
                         "source": "list",
                         "identifier": "some-list",
-                        "id_selector": "first",
+                        "selector": "first",
                     },
                     list_item_id,
                 ]
@@ -344,7 +349,7 @@ def test_list_source_with_id_selector_same_name_items(list_item_id, expected_res
                     {
                         "source": "list",
                         "identifier": "some-list",
-                        "id_selector": "same_name_items",
+                        "selector": "same_name_items",
                     },
                 ]
             }
@@ -388,7 +393,7 @@ def test_list_source_id_selector_primary_person(
                     {
                         "source": "list",
                         "identifier": "some-list",
-                        "id_selector": "primary_person",
+                        "selector": "primary_person",
                     },
                     {"source": "location", "identifier": "list_item_id"},
                 ]
@@ -441,7 +446,7 @@ def test_current_location_source(list_item_id, expected_result):
                             "identifier": "answer-2",
                             "list_item_selector": {
                                 "source": "location",
-                                "id": "list_item_id",
+                                "identifier": "list_item_id",
                             },
                         },
                         9,
@@ -475,12 +480,12 @@ def test_current_location_source(list_item_id, expected_result):
                                         {
                                             "source": "list",
                                             "identifier": "some-list",
-                                            "id_selector": "first",
+                                            "selector": "first",
                                         },
                                         {
                                             "source": "list",
                                             "identifier": "some-list",
-                                            "id_selector": "same_name_items",
+                                            "selector": "same_name_items",
                                         },
                                     ]
                                 },

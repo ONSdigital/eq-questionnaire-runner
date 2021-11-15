@@ -50,8 +50,8 @@ class ConfirmationEmail:
         if self._serialised_email:
             try:
                 email = url_safe_serializer().loads(self._serialised_email)
-            except BadSignature:
-                raise BadRequest
+            except BadSignature as exc:
+                raise BadRequest from exc
             return EmailForm(email=email)
         return EmailForm()
 
@@ -62,6 +62,8 @@ class ConfirmationEmail:
         return url_safe_serializer().dumps(self.form.email.data)
 
     def get_page_title(self):
+        # pylint: disable=no-member
+        # wtforms Form parents are not discoverable in the 2.3.3 implementation
         if self.form.errors:
             return gettext("Error: {page_title}").format(page_title=self.page_title)
         return self.page_title
