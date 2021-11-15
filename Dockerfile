@@ -18,7 +18,8 @@ COPY Pipfile Pipfile
 COPY Pipfile.lock Pipfile.lock
 
 RUN groupadd -r appuser && useradd -r -g appuser -u 9000 appuser && chown -R appuser:appuser .
-RUN pip install pipenv==2018.11.26 && pipenv install --deploy --system && make build
+RUN pip install pipenv==2018.11.26 && pipenv install --deploy --system && \
+    make load-schemas && make build
 
 USER appuser
 
