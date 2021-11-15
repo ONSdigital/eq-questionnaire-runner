@@ -140,9 +140,7 @@ def test_instrument_id_should_be_set_in_payload_collection_if_form_type_in_metad
         fake_questionnaire_schema, fake_questionnaire_store, {}, SUBMITTED_AT
     )
 
-    assert payload["collection"]["instrument_id"], fake_questionnaire_store.metadata[
-        "display_address"
-    ]
+    assert payload["collection"]["instrument_id"], "H"
 
 
 def test_converter_raises_runtime_error_for_unsupported_version(
