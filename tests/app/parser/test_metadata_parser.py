@@ -144,6 +144,28 @@ def test_deserialisation_iso_8601_dates(fake_metadata_runner):
     assert isinstance(claims["birthday"], str)
 
 
+def test_deserialisation_iso_8601_datetime(fake_metadata_runner):
+    claims = validate_runner_claims(fake_metadata_runner)
+
+    assert claims["response_expires_at"] == "2021-11-22T15:34:54+00:00"
+
+
+def test_deserialisation_iso_8601_datetime_past_datetime_raises_ValidationError(
+    fake_metadata_runner,
+):
+    fake_metadata_runner["response_expires_at"] = "1900-11-22T15:34:54+00:00"
+    with pytest.raises(ValidationError):
+        validate_runner_claims(fake_metadata_runner)
+
+
+def test_deserialisation_iso_8601_datetime_bad_datetime_raises_ValidationError(
+    fake_metadata_runner,
+):
+    fake_metadata_runner["response_expires_at"] = "2021-11-22"
+    with pytest.raises(ValidationError):
+        validate_runner_claims(fake_metadata_runner)
+
+
 def test_business_params_without_schema_name(fake_business_metadata_runner):
     claims = validate_runner_claims(fake_business_metadata_runner)
 
