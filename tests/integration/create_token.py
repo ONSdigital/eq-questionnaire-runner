@@ -22,7 +22,6 @@ PAYLOAD = {
     "roles": [],
     "account_service_url": "http://upstream.url",
     "display_address": "68 Abingdon Road, Goathill",
-    "form_type": "H",
 }
 
 

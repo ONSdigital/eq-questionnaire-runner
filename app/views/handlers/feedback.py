@@ -206,7 +206,6 @@ class FeedbackPayload:
     {
         "collection": {
             "exercise_sid": "eedbdf46-adac-49f7-b4c3-2251807381c3",
-            "instrument_id": "H"
             "schema_name": "carbon_0007",
             "period": "3003"
         },
