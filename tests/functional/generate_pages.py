@@ -893,15 +893,19 @@ if __name__ == "__main__":
             for root, dirs, files in os.walk(args.SCHEMA):
                 for file in [os.path.join(root, file) for file in files]:
                     filename = os.path.basename(file)
-                    logger.info("File %s", filename)
-                    if filename[0] == ".":
-                        continue
-                    output_dir = os.path.join(
-                        args.OUT_DIRECTORY, filename.split(".")[0].replace("test_", "")
-                    )
-                    if not os.path.exists(output_dir):
-                        os.makedirs(output_dir)
-                    process_schema(file, output_dir, None, args.require_path)
+                    logger.info(f"File {filename}")
+                    if filename.startswith("test_"):
+                        if filename[0] == ".":
+                            continue
+                        output_dir = os.path.join(
+                            args.OUT_DIRECTORY,
+                            filename.split(".")[0].replace("test_", ""),
+                        )
+                        if not os.path.exists(output_dir):
+                            os.makedirs(output_dir)
+                        process_schema(file, output_dir, None, args.require_path)
+                    else:
+                        logger.info(f"File {filename} is not a test schema")
 
         else:
             process_schema(
