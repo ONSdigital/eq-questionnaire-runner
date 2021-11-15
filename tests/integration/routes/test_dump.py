@@ -94,7 +94,7 @@ class TestDumpSubmission(IntegrationTestCase):
                 "submission_language_code": "en",
             }
         }
-        
+
         assert actual == expected
 
     def test_dump_submission_authenticated_with_role_with_answers(self):
