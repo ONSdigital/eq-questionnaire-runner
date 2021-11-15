@@ -893,7 +893,7 @@ if __name__ == "__main__":
             for root, dirs, files in os.walk(args.SCHEMA):
                 for file in [os.path.join(root, file) for file in files]:
                     filename = os.path.basename(file)
-                    logger.info(f"File {filename}")
+                    logger.info("File %s", filename)
                     if filename.startswith("test_"):
                         if filename[0] == ".":
                             continue
@@ -905,7 +905,7 @@ if __name__ == "__main__":
                             os.makedirs(output_dir)
                         process_schema(file, output_dir, None, args.require_path)
                     else:
-                        logger.info(f"File {filename} is not a test schema")
+                        logger.info("File %s is not a test schema, skipping", filename)
 
         else:
             process_schema(
