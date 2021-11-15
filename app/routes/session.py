@@ -13,7 +13,7 @@ from app.authentication.authenticator import decrypt_token, store_session
 from app.authentication.jti_claim_storage import JtiTokenUsed, use_jti_claim
 from app.globals import get_session_timeout_in_seconds
 from app.helpers.template_helpers import get_survey_config, render_template
-from app.storage.metadata_parser import (
+from app.utilities.metadata_parser import (
     validate_questionnaire_claims,
     validate_runner_claims,
 )

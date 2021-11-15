@@ -1,22 +1,30 @@
 from datetime import datetime, timezone
+from typing import Optional, Type
 
+import redis
 from redis.exceptions import ConnectionError as RedisConnectionError
 from structlog import get_logger
 
 from app.storage.errors import ItemAlreadyExistsError
 from app.utilities.json import json_dumps, json_loads
 
-from .storage import StorageHandler, StorageModel
+from .storage import ModelTypes, StorageHandler, StorageModel
 
 logger = get_logger()
 
 
 class Redis(StorageHandler):
+    def __init__(
+        self,
+        client: redis.Redis,
+    ) -> None:
+        super().__init__(client)
+
     @staticmethod
-    def log_retry(command):
+    def log_retry(command: str) -> None:
         logger.info("retrying redis command", command=command)
 
-    def put(self, model, overwrite=True):
+    def put(self, model: ModelTypes, overwrite: bool = True) -> bool:
         storage_model = StorageModel(model_type=type(model))
         serialized_item = storage_model.serialize(model)
         serialized_item.pop(storage_model.key_field)
@@ -47,7 +55,9 @@ class Redis(StorageHandler):
         if not record_created:
             raise ItemAlreadyExistsError()
 
-    def get(self, model_type, key_value):
+        return True
+
+    def get(self, model_type: Type[ModelTypes], key_value: str) -> Optional[ModelTypes]:
         storage_model = StorageModel(model_type=model_type)
         try:
             item = self.client.get(key_value)
@@ -61,12 +71,12 @@ class Redis(StorageHandler):
 
             return storage_model.deserialize(item_dict)
 
-    def delete(self, model):
+    def delete(self, model: ModelTypes) -> None:
         storage_model = StorageModel(model_type=type(model))
         key_value = getattr(model, storage_model.key_field)
 
         try:
-            return self.client.delete(key_value)
+            self.client.delete(key_value)
         except RedisConnectionError:
             self.log_retry("delete")
-            return self.client.delete(key_value)
+            self.client.delete(key_value)

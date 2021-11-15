@@ -8,7 +8,7 @@ from app.data_models import QuestionnaireStore
 from app.data_models.answer import Answer
 from app.data_models.answer_store import AnswerStore
 from app.questionnaire.questionnaire_schema import QuestionnaireSchema
-from app.storage.metadata_parser import (
+from app.utilities.metadata_parser import (
     validate_questionnaire_claims,
     validate_runner_claims,
 )
