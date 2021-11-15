@@ -126,22 +126,20 @@ def _get_checkbox_answer_data(
                     )
                     # if the user has selected an option with a detail answer we need to find the detail answer value it refers to.
                     # the detail answer value can be empty, in this case we just use the main value (e.g. other)
-                    if isinstance(detail_answer, dict):
-                        if isinstance(detail_answer.value, str):
-                            user_answer = detail_answer.value
+                    user_answer = detail_answer.value or user_answer  # type: ignore
 
                 qcodes_and_values.append((option.get("q_code"), user_answer))
 
-        checkbox_answer_data: dict = OrderedDict()
+    checkbox_answer_data: dict = OrderedDict()
 
-        if all(q_code is not None for (q_code, _) in qcodes_and_values):
-            checkbox_answer_data.update(qcodes_and_values)
-        else:
-            checkbox_answer_data[answer_schema["q_code"]] = str(
-                [v for (_, v) in qcodes_and_values]
-            )
+    if all(q_code is not None for (q_code, _) in qcodes_and_values):
+        checkbox_answer_data.update(qcodes_and_values)
+    else:
+        checkbox_answer_data[answer_schema["q_code"]] = str(
+            [v for (_, v) in qcodes_and_values]
+        )
 
-        return checkbox_answer_data
+    return checkbox_answer_data
 
 
 def _encode_value(value: AnswerValueTypes) -> Optional[str]:

@@ -261,7 +261,7 @@ def test_converter_checkboxes_with_q_codes_and_other_value(fake_questionnaire_st
     # Then
     assert len(answer_object["data"]) == 2
     assert answer_object["data"]["1"] == "Ready salted"
-    assert answer_object["data"]["4"] == "Other"
+    assert answer_object["data"]["4"] == "Bacon"
 
 
 def test_converter_checkboxes_with_q_codes_and_empty_other_value(
