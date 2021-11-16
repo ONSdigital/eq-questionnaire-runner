@@ -22,8 +22,8 @@ class EncryptedQuestionnaireStorage:
         data: str,
         collection_exercise_sid: str,
         submitted_at: Optional[datetime] = None,
-        expires_at: Optional[datetime] = None,
     ) -> None:
+        print(g.schema["response_expires_at"])
         compressed_data = snappy.compress(data)
         encrypted_data = self.encrypter.encrypt_data(compressed_data)
         questionnaire_state = QuestionnaireState(
