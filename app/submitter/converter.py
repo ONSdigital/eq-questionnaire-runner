@@ -114,11 +114,16 @@ def convert_answers(
 
 
 def build_collection(metadata: MetadataType) -> MetadataType:
-    return {
+    collection_metadata = {
         "exercise_sid": metadata["collection_exercise_sid"],
         "schema_name": metadata["schema_name"],
         "period": metadata["period_id"],
     }
+
+    if form_type := metadata.get("form_type"):
+        collection_metadata["instrument_id"] = form_type
+
+    return collection_metadata
 
 
 def build_metadata(metadata: MetadataType) -> MetadataType:
