@@ -17,9 +17,9 @@ logger = get_logger()
 
 SCHEMA_DIR = "schemas/*"
 TEST_SCHEMA_DIR = "schemas/test"
-LANGUAGE_CODES = "en"
+LANGUAGE_CODES = ("en", "cy", "ga")
 
-LANGUAGES_MAP = {"test_language": [["en"]]}
+LANGUAGES_MAP = {"test_language": [["en"], ["en"]]}
 
 
 @lru_cache(maxsize=None)
