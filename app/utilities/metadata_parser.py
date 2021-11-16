@@ -1,5 +1,5 @@
-from datetime import datetime, timezone
 import functools
+from datetime import datetime, timezone
 from typing import Dict
 
 from marshmallow import (
@@ -112,7 +112,7 @@ class RunnerMetadataSchema(Schema, StripWhitespaceMixin):
     case_type = VALIDATORS["string"](required=False)  # type:ignore
     response_expires_at = VALIDATORS["iso_8601_datetime"](
         required=False,
-        validate=lambda x: datetime.strptime(x, ISO_8601_DATETIME)
+        validate=lambda x: datetime.strptime(x, ISO_8601_DATETIME).astimezone()
         > datetime.now(tz=timezone.utc),
     )
 
