@@ -39,7 +39,10 @@ class EncryptedQuestionnaireStorage:
 
     def get_user_data(
         self,
-    ) -> Union[tuple[None, None, None, None], tuple[str, str, int, Optional[datetime]]]:
+    ) -> Union[
+        tuple[None, None, None, None, None],
+        tuple[str, str, int, Optional[datetime], Optional[datetime]],
+    ]:
         questionnaire_state = self._find_questionnaire_state()
         if questionnaire_state and questionnaire_state.state_data:
             version = questionnaire_state.version
