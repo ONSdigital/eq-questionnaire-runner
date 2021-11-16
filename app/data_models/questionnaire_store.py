@@ -27,6 +27,7 @@ class QuestionnaireStore:
             self.collection_exercise_sid,
             version,
             self.submitted_at,
+            self.expires_at,
         ) = self._storage.get_user_data()
 
         if raw_data:

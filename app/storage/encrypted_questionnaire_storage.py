@@ -22,6 +22,7 @@ class EncryptedQuestionnaireStorage:
         data: str,
         collection_exercise_sid: str,
         submitted_at: Optional[datetime] = None,
+        expires_at: Optional[datetime] = None,
     ) -> None:
         compressed_data = snappy.compress(data)
         encrypted_data = self.encrypter.encrypt_data(compressed_data)
@@ -31,6 +32,7 @@ class EncryptedQuestionnaireStorage:
             collection_exercise_sid,
             QuestionnaireStore.LATEST_VERSION,
             submitted_at,
+            expires_at,
         )
 
         current_app.eq["storage"].put(questionnaire_state)  # type: ignore
@@ -43,12 +45,19 @@ class EncryptedQuestionnaireStorage:
             version = questionnaire_state.version
             submitted_at = questionnaire_state.submitted_at
             collection_exercise_sid = questionnaire_state.collection_exercise_sid
+            expires_at = questionnaire_state.expires_at
             decrypted_data = self._get_snappy_compressed_data(
                 questionnaire_state.state_data
             )
-            return decrypted_data, collection_exercise_sid, version, submitted_at
+            return (
+                decrypted_data,
+                collection_exercise_sid,
+                version,
+                submitted_at,
+                expires_at,
+            )
 
-        return None, None, None, None
+        return None, None, None, None, None
 
     def delete(self) -> None:
         logger.debug("deleting users data", user_id=self._user_id)

@@ -34,7 +34,7 @@ class StorageModel:
             "key_field": "user_id",
             "table_name_key": "EQ_QUESTIONNAIRE_STATE_TABLE_NAME",
             "schema": app_models.QuestionnaireStateSchema,
-            "index_fields": ["collection_exercise_sid", "submitted_at"],
+            "index_fields": ["collection_exercise_sid", "submitted_at", "expires_at"],
         },
         app_models.EQSession: {
             "key_field": "eq_session_id",
