@@ -108,8 +108,8 @@ def build_collection(metadata) -> Mapping[str, str]:
         "period": metadata["period_id"],
     }
 
-    if metadata.get("form_type"):
-        collection_metadata["instrument_id"] = metadata["form_type"]
+    if form_type := metadata.get("form_type"):
+        collection_metadata["instrument_id"] = form_type
 
     return collection_metadata
 
