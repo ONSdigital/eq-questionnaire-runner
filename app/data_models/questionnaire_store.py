@@ -82,4 +82,5 @@ class QuestionnaireStore:
             data=data,
             collection_exercise_sid=collection_exercise_sid,
             submitted_at=self.submitted_at,
+            expires_at=self.expires_at,
         )
