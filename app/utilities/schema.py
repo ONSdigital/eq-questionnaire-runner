@@ -15,11 +15,11 @@ from app.utilities.json import json_load, json_loads
 
 logger = get_logger()
 
-SCHEMA_DIR = "schemas"
+SCHEMA_DIR = "schemas/*"
 TEST_SCHEMA_DIR = "schemas/test"
-LANGUAGE_CODES = ("en", "cy", "ga")
+LANGUAGE_CODES = ("en")
 
-LANGUAGES_MAP = {"test_language": [["en", "cy"], ["en", "ga"]]}
+LANGUAGES_MAP = {"test_language": [["en"]]}
 
 
 @lru_cache(maxsize=None)
