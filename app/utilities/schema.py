@@ -17,7 +17,7 @@ logger = get_logger()
 
 SCHEMA_DIR = "schemas/*"
 TEST_SCHEMA_DIR = "schemas/test"
-LANGUAGE_CODES = ("en")
+LANGUAGE_CODES = "en"
 
 LANGUAGES_MAP = {"test_language": [["en"]]}
 
