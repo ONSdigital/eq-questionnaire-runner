@@ -1,4 +1,5 @@
 import functools
+import logging
 from datetime import datetime, timezone
 from typing import Dict
 
@@ -198,4 +199,5 @@ def validate_questionnaire_claims(claims, questionnaire_specific_metadata):
 def validate_runner_claims(claims: Dict):
     """ Validate claims required for runner to function"""
     runner_metadata_schema = RunnerMetadataSchema(unknown=EXCLUDE)
+    logging.debug(runner_metadata_schema)
     return runner_metadata_schema.load(claims)
