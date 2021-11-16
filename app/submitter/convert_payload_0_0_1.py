@@ -17,7 +17,7 @@ def convert_answers_to_payload_0_0_1(
     list_store: ListStore,
     schema: QuestionnaireSchema,
     full_routing_path: RoutingPath,
-) -> OrderedDict:
+) -> OrderedDict[str, Any]:
     """
     Convert answers into the data format below
     list_item_id bound answers are not currently supported
