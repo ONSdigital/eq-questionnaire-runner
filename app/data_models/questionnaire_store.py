@@ -1,5 +1,7 @@
 from types import MappingProxyType
 
+import dateutil
+
 from app.data_models.answer_store import AnswerStore
 from app.data_models.list_store import ListStore
 from app.data_models.progress_store import ProgressStore
@@ -82,5 +84,5 @@ class QuestionnaireStore:
             data=data,
             collection_exercise_sid=collection_exercise_sid,
             submitted_at=self.submitted_at,
-            expires_at=self.expires_at,
+            expires_at=dateutil.parser.parse(self._metadata["response_expires_at"]),
         )
