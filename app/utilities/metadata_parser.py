@@ -114,7 +114,7 @@ class RunnerMetadataSchema(Schema, StripWhitespaceMixin):
         required=False,
         validate=lambda x: datetime.strptime(x, ISO_8601_DATETIME).astimezone()
         > datetime.now(tz=timezone.utc),
-    )
+    )  # type:ignore
 
     # Either schema_name OR the three census parameters are required. Should be required after census.
     schema_name = VALIDATORS["string"](required=False)  # type:ignore
