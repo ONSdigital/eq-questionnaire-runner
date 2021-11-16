@@ -131,7 +131,7 @@ def test_display_address_should_be_set_in_payload_metadata(
     ]
 
 
-def test_instrument_id_is_not_in_output_payload_collection(
+def test_instrument_id_is_not_in_payload_collection_if_form_type_absent_in_metadata(
     fake_questionnaire_schema, fake_questionnaire_store, fake_metadata
 ):
     del fake_metadata["form_type"]
