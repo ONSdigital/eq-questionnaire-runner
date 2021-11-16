@@ -93,9 +93,8 @@ def add_list_collector_answers(
     )
     list_name = list_collector_block["for_list"]
     list_item_ids = list_store[list_name].items
-
-    for list_item_id in list_item_ids:
-        if answers_ids_in_add_block:
+    if answers_ids_in_add_block:
+        for list_item_id in list_item_ids:
             for answer_id in answers_ids_in_add_block:
                 answer = answer_store.get_answer(answer_id, list_item_id)
                 if answer:

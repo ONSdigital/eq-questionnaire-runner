@@ -1,5 +1,5 @@
 from datetime import datetime
-from typing import Mapping, Union
+from typing import Any, Mapping, Union
 
 from structlog import get_logger
 
@@ -32,7 +32,7 @@ def convert_answers(
     routing_path: RoutingPath,
     submitted_at: datetime,
     flushed: bool = False,
-) -> dict[str, Mapping[str, str]]:
+) -> dict[str, Any]:
     """
     Create the JSON answer format for down stream processing in the following format:
     ```
