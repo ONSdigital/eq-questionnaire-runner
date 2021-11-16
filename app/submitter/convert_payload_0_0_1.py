@@ -129,7 +129,7 @@ def _get_checkbox_answer_data(
 
             qcodes_and_values.append((option.get("q_code"), user_answer))
 
-    checkbox_answer_data: dict = OrderedDict()
+    checkbox_answer_data: dict[str, str] = OrderedDict()
 
     if all(q_code is not None for (q_code, _) in qcodes_and_values):
         checkbox_answer_data.update(qcodes_and_values)
