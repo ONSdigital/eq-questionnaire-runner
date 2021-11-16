@@ -2,7 +2,7 @@ from datetime import datetime
 from typing import Optional, Union
 
 import snappy
-from flask import current_app
+from flask import g, current_app
 from structlog import get_logger
 
 from app.data_models import QuestionnaireStore
@@ -32,7 +32,7 @@ class EncryptedQuestionnaireStorage:
             collection_exercise_sid,
             QuestionnaireStore.LATEST_VERSION,
             submitted_at,
-            expires_at,
+            g.schema["response_expires_at"],
         )
 
         current_app.eq["storage"].put(questionnaire_state)  # type: ignore
