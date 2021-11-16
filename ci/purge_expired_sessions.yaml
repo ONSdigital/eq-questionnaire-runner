@@ -1,3 +1,4 @@
+---
 platform: linux
 image_resource:
   type: docker-image
@@ -6,13 +7,13 @@ image_resource:
 params:
   SERVICE_ACCOUNT_JSON: ((gcp.service_account_json))
   PROJECT_ID:
-  DATAFLOW_TEMPLATE_VERSION: '2021-08-02-00_RC00'
+  DATAFLOW_TEMPLATE_VERSION: 2021-08-02-00_RC00
   EXPIRATION_TIME_OFFSET_IN_SECONDS: 10800
 run:
   path: bash
   args:
     - -exc
-    - |
+    - |-
       export GOOGLE_APPLICATION_CREDENTIALS=/root/gcloud-service-key.json
       cat >$GOOGLE_APPLICATION_CREDENTIALS <<EOL
       $SERVICE_ACCOUNT_JSON
@@ -28,7 +29,7 @@ run:
       datastoreReadGqlQuery="SELECT * FROM \`eq-session\` WHERE expires_at < $((`date --utc +%s` - EXPIRATION_TIME_OFFSET_IN_SECONDS))",\
       datastoreReadProjectId="${PROJECT_ID}",\
       datastoreDeleteProjectId="${PROJECT_ID}" \
-     --subnetwork https://www.googleapis.com/compute/v1/projects/eq-ash-staging/regions/europe-west2/subnetworks/eq
+      --subnetwork https://www.googleapis.com/compute/v1/projects/eq-ash-staging/regions/europe-west2/subnetworks/eq \
       --format="value(id.scope())")
 
       DATAFLOW_JOB_STATE=$(gcloud dataflow jobs describe "${DATAFLOW_JOB}" --region europe-west2 --format="value(currentState)")
