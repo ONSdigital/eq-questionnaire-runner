@@ -1,26 +1,38 @@
-from typing import Mapping
+from datetime import datetime
+from typing import Any, Mapping, Union
 
 from structlog import get_logger
 
-from app.questionnaire.questionnaire_schema import DEFAULT_LANGUAGE_CODE
+from app.data_models import QuestionnaireStore
+from app.questionnaire.questionnaire_schema import (
+    DEFAULT_LANGUAGE_CODE,
+    QuestionnaireSchema,
+)
+from app.questionnaire.routing_path import RoutingPath
 from app.submitter.convert_payload_0_0_1 import convert_answers_to_payload_0_0_1
 from app.submitter.convert_payload_0_0_3 import convert_answers_to_payload_0_0_3
 
 logger = get_logger()
 
+MetadataType = Mapping[str, Union[str, int, list]]
+
 
 class DataVersionError(Exception):
-    def __init__(self, version):
+    def __init__(self, version: str):
         super().__init__()
         self.version = version
 
-    def __str__(self):
+    def __str__(self) -> str:
         return f"Data version {self.version} not supported"
 
 
 def convert_answers(
-    schema, questionnaire_store, routing_path, submitted_at, flushed=False
-):
+    schema: QuestionnaireSchema,
+    questionnaire_store: QuestionnaireStore,
+    routing_path: RoutingPath,
+    submitted_at: datetime,
+    flushed: bool = False,
+) -> dict[str, Any]:
     """
     Create the JSON answer format for down stream processing in the following format:
     ```
@@ -101,7 +113,7 @@ def convert_answers(
     return payload | optional_properties
 
 
-def build_collection(metadata) -> Mapping[str, str]:
+def build_collection(metadata: MetadataType) -> MetadataType:
     return {
         "exercise_sid": metadata["collection_exercise_sid"],
         "schema_name": metadata["schema_name"],
@@ -109,7 +121,7 @@ def build_collection(metadata) -> Mapping[str, str]:
     }
 
 
-def build_metadata(metadata) -> Mapping[str, str]:
+def build_metadata(metadata: MetadataType) -> MetadataType:
     downstream_metadata = {"user_id": metadata["user_id"], "ru_ref": metadata["ru_ref"]}
 
     if metadata.get("ref_p_start_date"):
@@ -122,7 +134,9 @@ def build_metadata(metadata) -> Mapping[str, str]:
     return downstream_metadata
 
 
-def get_optional_payload_properties(metadata, response_metadata) -> Mapping[str, str]:
+def get_optional_payload_properties(
+    metadata: MetadataType, response_metadata: Mapping
+) -> MetadataType:
     payload = {}
 
     for key in ["channel", "case_type", "form_type", "region_code", "case_ref"]:
