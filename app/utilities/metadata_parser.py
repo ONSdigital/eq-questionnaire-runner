@@ -48,22 +48,13 @@ class DateString(fields.DateTime):
         format is the same as the input.
     """
 
-    def __init__(self, *args, out_format: str = None, **kwargs):
-        super().__init__(*args, **kwargs)
-        self._out_format = out_format or kwargs.get("format")
-
     def _deserialize(self, *args, **kwargs):  # pylint: disable=arguments-differ
-        date = super()._deserialize(*args, **kwargs).strftime(self._out_format)
+        date = super()._deserialize(*args, **kwargs)
 
-        if "%z" in self._out_format:
-            dt, tz = date.split("+")
-            # Add a colon separating the timezone offset hours and minutes
-            if ":" not in date.split("+")[-1]:
-                new_tz = f"{tz[:2]}:{tz[2:]}"
+        if self.format == "iso8601":
+            return date.isoformat()
 
-            date = f"{dt}+{new_tz}"
-
-        return date
+        return date.strftime(self.format)
 
 
 VALIDATORS = {
@@ -72,8 +63,8 @@ VALIDATORS = {
     "boolean": functools.partial(fields.Boolean, required=True),
     "string": functools.partial(fields.String, required=True),
     "url": functools.partial(fields.Url, required=True),
-    "iso_8601_datetime": functools.partial(
-        DateString, format=ISO_8601_DATETIME, required=True
+    "iso_8601_date_string": functools.partial(
+        DateString, format="iso8601", required=True
     ),
 }
 
@@ -110,7 +101,7 @@ class RunnerMetadataSchema(Schema, StripWhitespaceMixin):
         required=False, validate=validate.Length(min=1)
     )  # type:ignore
     case_type = VALIDATORS["string"](required=False)  # type:ignore
-    response_expires_at = VALIDATORS["iso_8601_datetime"](
+    response_expires_at = VALIDATORS["iso_8601_date_string"](
         required=False,
         validate=lambda x: datetime.strptime(x, ISO_8601_DATETIME).astimezone()
         > datetime.now(tz=timezone.utc),
