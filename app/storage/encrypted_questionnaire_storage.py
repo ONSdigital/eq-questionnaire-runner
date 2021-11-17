@@ -34,7 +34,6 @@ class EncryptedQuestionnaireStorage:
             submitted_at,
             expires_at,
         )
-
         current_app.eq["storage"].put(questionnaire_state)  # type: ignore
 
     def get_user_data(

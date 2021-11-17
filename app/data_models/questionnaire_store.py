@@ -85,5 +85,5 @@ class QuestionnaireStore:
             data=data,
             collection_exercise_sid=collection_exercise_sid,
             submitted_at=self.submitted_at,
-            expires_at=self._metadata["response_expires_at"],
+            expires_at=dateutil.parser.parse(self._metadata["response_expires_at"]),
         )
