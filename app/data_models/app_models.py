@@ -68,7 +68,7 @@ class QuestionnaireStateSchema(Schema, DateTimeSchemaMixin):
     collection_exercise_sid = fields.Str()
     version = fields.Integer()
     submitted_at = Timestamp(allow_none=True)
-    expires_at = Timestamp(allow_none=True)
+    response_expires_at = Timestamp(allow_none=True)
 
     @post_load
     def make_model(self, data, **kwargs):  # pylint: disable=unused-argument
