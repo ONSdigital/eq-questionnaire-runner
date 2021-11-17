@@ -80,10 +80,12 @@ class QuestionnaireStore:
         collection_exercise_sid = (
             self.collection_exercise_sid or self._metadata["collection_exercise_sid"]
         )
-
+        response_expires_at = self._metadata.get("response_expires_at")
         self._storage.save(
             data=data,
             collection_exercise_sid=collection_exercise_sid,
             submitted_at=self.submitted_at,
-            expires_at=dateutil.parser.parse(self._metadata["response_expires_at"]),
+            expires_at=dateutil.parser.parse(response_expires_at)
+            if response_expires_at
+            else None,
         )
