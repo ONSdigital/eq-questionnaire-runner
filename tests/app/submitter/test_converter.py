@@ -131,6 +131,28 @@ def test_display_address_should_be_set_in_payload_metadata(
     ]
 
 
+def test_instrument_id_is_not_in_payload_collection_if_form_type_absent_in_metadata(
+    fake_questionnaire_schema, fake_questionnaire_store, fake_metadata
+):
+    del fake_metadata["form_type"]
+    fake_questionnaire_store.set_metadata(fake_metadata)
+    payload = convert_answers(
+        fake_questionnaire_schema, fake_questionnaire_store, {}, SUBMITTED_AT
+    )
+
+    assert "instrument_id" not in payload["collection"]
+
+
+def test_instrument_id_should_be_set_in_payload_collection_if_form_type_in_metadata(
+    fake_questionnaire_schema, fake_questionnaire_store
+):
+    payload = convert_answers(
+        fake_questionnaire_schema, fake_questionnaire_store, {}, SUBMITTED_AT
+    )
+
+    assert payload["collection"]["instrument_id"], "I"
+
+
 def test_converter_raises_runtime_error_for_unsupported_version(
     fake_questionnaire_store,
 ):
