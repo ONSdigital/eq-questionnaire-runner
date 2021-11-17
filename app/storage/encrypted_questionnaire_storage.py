@@ -32,8 +32,10 @@ class EncryptedQuestionnaireStorage:
             collection_exercise_sid,
             QuestionnaireStore.LATEST_VERSION,
             submitted_at,
-            expires_at,
+            # expires_at,
+            datetime.now(tz=timezone.utc),
         )
+
         current_app.eq["storage"].put(questionnaire_state)  # type: ignore
 
     def get_user_data(
