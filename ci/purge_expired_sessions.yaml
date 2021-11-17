@@ -1,4 +1,3 @@
----
 platform: linux
 image_resource:
   type: docker-image
@@ -7,13 +6,13 @@ image_resource:
 params:
   SERVICE_ACCOUNT_JSON: ((gcp.service_account_json))
   PROJECT_ID:
-  DATAFLOW_TEMPLATE_VERSION: 2021-08-02-00_RC00
+  DATAFLOW_TEMPLATE_VERSION: '2021-08-02-00_RC00'
   EXPIRATION_TIME_OFFSET_IN_SECONDS: 10800
 run:
   path: bash
   args:
     - -exc
-    - |-
+    - |
       export GOOGLE_APPLICATION_CREDENTIALS=/root/gcloud-service-key.json
       cat >$GOOGLE_APPLICATION_CREDENTIALS <<EOL
       $SERVICE_ACCOUNT_JSON
