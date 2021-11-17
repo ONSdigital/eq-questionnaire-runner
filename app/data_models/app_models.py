@@ -20,9 +20,8 @@ class QuestionnaireState:
         self.created_at = datetime.now(tz=timezone.utc)
         self.updated_at = datetime.now(tz=timezone.utc)
         self.submitted_at = submitted_at
-        self.expires_at = (
-            expires_at.replace(tzinfo=timezone.utc) if expires_at else None
-        )
+        self.expires_at = datetime.now(tz=timezone.utc)
+        (expires_at.replace(tzinfo=timezone.utc) if expires_at else None)
 
 
 class EQSession:
