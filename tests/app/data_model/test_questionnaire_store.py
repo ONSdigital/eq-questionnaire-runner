@@ -1,6 +1,8 @@
 from unittest import TestCase
 from unittest.mock import MagicMock
 
+from dateutil import parser
+
 from app.data_models import QuestionnaireStore
 from app.data_models.answer_store import AnswerStore
 from app.data_models.progress_store import CompletionStatus, ProgressStore
@@ -44,12 +46,19 @@ class TestQuestionnaireStore(TestCase):
     def setUp(self):
         def get_user_data():
             """Fake get_user_data implementation for storage"""
-            return self.input_data, "ce_sid", 1, None
+            return (
+                self.input_data,
+                "ce_sid",
+                1,
+                None,
+                parser.parse("2021-11-22T08:54:22+00:00"),
+            )
 
-        def set_output_data(data, collection_exercise_sid, submitted_at):
+        def set_output_data(data, collection_exercise_sid, submitted_at, expires_at):
             self.output_data = data
             self.collection_exercise_sid = collection_exercise_sid
             self.submitted_at = submitted_at
+            self.expires_at = expires_at
 
         # Storage class mocking
         self.storage = MagicMock()
@@ -61,6 +70,7 @@ class TestQuestionnaireStore(TestCase):
         self.collection_exercise_sid = None
         self.submitted_at = None
         self.output_version = None
+        self.expires_at = None
 
     def test_questionnaire_store_json_loads(self):
         # Given

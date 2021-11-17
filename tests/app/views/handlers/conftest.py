@@ -92,13 +92,16 @@ def storage():
 
 
 def set_storage_data(
-    storage_,
-    raw_data="{}",
-    version=1,
-    submitted_at=None,
+    storage_, raw_data="{}", version=1, submitted_at=None, expires_at=None
 ):
     storage_.get_user_data = Mock(
-        return_value=(raw_data, version, collection_exercise_sid, submitted_at)
+        return_value=(
+            raw_data,
+            version,
+            collection_exercise_sid,
+            submitted_at,
+            expires_at,
+        )
     )
 
 

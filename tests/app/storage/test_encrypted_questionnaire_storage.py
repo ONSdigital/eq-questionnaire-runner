@@ -1,5 +1,7 @@
 from datetime import datetime, timezone
 
+from dateutil import parser
+
 from app.data_models import QuestionnaireStore
 from app.storage.encrypted_questionnaire_storage import EncryptedQuestionnaireStorage
 from tests.app.app_context_test_case import AppContextTestCase
@@ -22,10 +24,22 @@ class TestEncryptedQuestionnaireStorage(AppContextTestCase):
         encrypted = EncryptedQuestionnaireStorage(
             user_id="1", user_ik="2", pepper="pepper"
         )
-        encrypted.save(data="test", collection_exercise_sid="ce_sid")
+        encrypted.save(
+            data="test",
+            collection_exercise_sid="ce_sid",
+            expires_at=parser.parse("2021-11-22T08:54:22+00:00").replace(
+                tzinfo=timezone.utc
+            ),
+        )
         # check we can decrypt the data
         self.assertEqual(
-            ("test", "ce_sid", QuestionnaireStore.LATEST_VERSION, None),
+            (
+                "test",
+                "ce_sid",
+                QuestionnaireStore.LATEST_VERSION,
+                None,
+                parser.parse("2021-11-22T08:54:22+00:00").replace(tzinfo=timezone.utc),
+            ),
             encrypted.get_user_data(),
         )
 
@@ -34,10 +48,23 @@ class TestEncryptedQuestionnaireStorage(AppContextTestCase):
         encrypted = EncryptedQuestionnaireStorage(
             user_id="1", user_ik="2", pepper="pepper"
         )
-        encrypted.save(data="test", collection_exercise_sid="ce_sid", submitted_at=now)
+        encrypted.save(
+            data="test",
+            collection_exercise_sid="ce_sid",
+            submitted_at=now,
+            expires_at=parser.parse("2021-11-22T08:54:22+00:00").replace(
+                tzinfo=timezone.utc
+            ),
+        )
 
         self.assertEqual(
-            ("test", "ce_sid", QuestionnaireStore.LATEST_VERSION, now),
+            (
+                "test",
+                "ce_sid",
+                QuestionnaireStore.LATEST_VERSION,
+                now,
+                parser.parse("2021-11-22T08:54:22+00:00").replace(tzinfo=timezone.utc),
+            ),
             encrypted.get_user_data(),
         )
 
@@ -50,20 +77,44 @@ class TestEncryptedQuestionnaireStorage(AppContextTestCase):
 
     def test_get(self):
         data = "test"
-        self.storage.save(data, "ce_sid")
+        self.storage.save(
+            data,
+            "ce_sid",
+            expires_at=parser.parse("2021-11-22T08:54:22+00:00").replace(
+                tzinfo=timezone.utc
+            ),
+        )
         self.assertEqual(
-            (data, "ce_sid", QuestionnaireStore.LATEST_VERSION, None),
+            (
+                data,
+                "ce_sid",
+                QuestionnaireStore.LATEST_VERSION,
+                None,
+                parser.parse("2021-11-22T08:54:22+00:00"),
+            ),
             self.storage.get_user_data(),
         )
 
     def test_delete(self):
         data = "test"
-        self.storage.save(data, "ce_sid")
+        self.storage.save(
+            data,
+            "ce_sid",
+            expires_at=parser.parse("2021-11-22T08:54:22+00:00").replace(
+                tzinfo=timezone.utc
+            ),
+        )
         self.assertEqual(
-            (data, "ce_sid", QuestionnaireStore.LATEST_VERSION, None),
+            (
+                data,
+                "ce_sid",
+                QuestionnaireStore.LATEST_VERSION,
+                None,
+                parser.parse("2021-11-22T08:54:22+00:00"),
+            ),
             self.storage.get_user_data(),
         )
         self.storage.delete()
         self.assertEqual(
-            (None, None, None, None), self.storage.get_user_data()
+            (None, None, None, None, None), self.storage.get_user_data()
         )  # pylint: disable=protected-access

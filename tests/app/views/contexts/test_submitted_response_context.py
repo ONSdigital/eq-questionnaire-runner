@@ -1,6 +1,7 @@
 from datetime import datetime, timedelta, timezone
 from unittest.mock import Mock
 
+from dateutil import parser
 from flask import Flask
 from flask_babel import format_datetime
 
@@ -102,7 +103,15 @@ def test_view_submitted_response_expired(
 
 def fake_questionnaire_store():
     storage = Mock()
-    storage.get_user_data = Mock(return_value=("{}", "ce_sid", 1, None))
+    storage.get_user_data = Mock(
+        return_value=(
+            "{}",
+            "ce_sid",
+            1,
+            None,
+            parser.parse("2021-11-22T08:54:22+00:00").replace(tzinfo=timezone.utc),
+        )
+    )
     questionnaire_store = QuestionnaireStore(storage)
     questionnaire_store.submitted_at = SUBMITTED_AT
     questionnaire_store.metadata = {"tx_id": "123456789", "ru_name": "Apple"}

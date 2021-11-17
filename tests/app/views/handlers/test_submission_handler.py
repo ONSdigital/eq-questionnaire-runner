@@ -1,6 +1,8 @@
 from datetime import datetime, timedelta, timezone
 from unittest.mock import Mock
+import dateutil
 
+from dateutil import parser
 from freezegun import freeze_time
 from mock import patch
 
@@ -78,7 +80,15 @@ class TestSubmissionPayload(AppContextTestCase):
     @staticmethod
     def questionnaire_store_mock():
         storage = Mock()
-        storage.get_user_data = Mock(return_value=("{}", "ce_id", 1, None))
+        storage.get_user_data = Mock(
+            return_value=(
+                "{}",
+                "ce_id",
+                1,
+                None,
+                parser.parse("2021-11-22T08:54:22+00:00").replace(tzinfo=timezone.utc),
+            )
+        )
         questionnaire_store = QuestionnaireStore(storage)
         questionnaire_store.metadata = {"tx_id": "tx_id", "case_id": "case_id"}
         return questionnaire_store
