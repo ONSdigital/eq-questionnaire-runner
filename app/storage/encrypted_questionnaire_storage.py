@@ -1,4 +1,4 @@
-from datetime import datetime, timezone
+from datetime import datetime
 from typing import Optional, Union
 
 import snappy
@@ -32,8 +32,7 @@ class EncryptedQuestionnaireStorage:
             collection_exercise_sid,
             QuestionnaireStore.LATEST_VERSION,
             submitted_at,
-            # expires_at,
-            datetime.now(tz=timezone.utc),
+            expires_at,
         )
 
         current_app.eq["storage"].put(questionnaire_state)  # type: ignore
