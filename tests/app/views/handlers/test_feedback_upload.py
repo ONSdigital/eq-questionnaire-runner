@@ -48,6 +48,7 @@ def test_feedback_payload(
     expected_payload = {
         "collection": {
             "exercise_sid": collection_exercise_sid,
+            "instrument_id": "I",
             "period": period_id,
             "schema_name": schema_name,
         },
