@@ -1,7 +1,10 @@
 # pylint: disable=redefined-outer-name
 import uuid
 
+from freezegun import freeze_time
 import pytest
+
+# RESPONSE_EXPIRY
 
 
 @pytest.fixture
@@ -16,7 +19,6 @@ def fake_metadata_runner():
         "response_id": str(uuid.uuid4()),
         "account_service_url": "https://ras.ons.gov.uk",
         "case_id": str(uuid.uuid4()),
-        "response_expires_at": "2021-11-22T15:34:54+00:00",
     }
 
 

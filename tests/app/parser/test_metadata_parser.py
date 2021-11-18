@@ -1,6 +1,8 @@
 from copy import deepcopy
 
+
 import pytest
+from freezegun import freeze_time
 from marshmallow import ValidationError
 
 from app.utilities.metadata_parser import (
@@ -144,15 +146,18 @@ def test_deserialisation_iso_8601_dates(fake_metadata_runner):
     assert isinstance(claims["birthday"], str)
 
 
+@freeze_time("2021-11-15T15:34:54+00:00")
 def test_deserialisation_iso_8601_datetime(fake_metadata_runner):
+    fake_metadata_runner["response_expires_at"] = "2021-11-22T15:34:54+00:00"
     claims = validate_runner_claims(fake_metadata_runner)
 
     assert claims["response_expires_at"] == "2021-11-22T15:34:54+00:00"
 
 
+@freeze_time("2021-11-15T15:34:54+00:00")
 def test_deserialisation_iso_8601_datetime_with_zulu(fake_metadata_runner):
+    fake_metadata_runner["response_expires_at"] = "2021-11-22T15:34:54Z"
     claims = validate_runner_claims(fake_metadata_runner)
-    fake_metadata_runner["response_expires_at"] = "1900-11-22T15:34:54Z"
 
     assert claims["response_expires_at"] == "2021-11-22T15:34:54+00:00"
 
@@ -165,6 +170,7 @@ def test_deserialisation_iso_8601_datetime_past_datetime_raises_ValidationError(
         validate_runner_claims(fake_metadata_runner)
 
 
+@freeze_time("2021-11-15T15:34:54+00:00")
 def test_deserialisation_iso_8601_datetime_bad_datetime_raises_ValidationError(
     fake_metadata_runner,
 ):
