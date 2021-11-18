@@ -1,6 +1,5 @@
 from copy import deepcopy
 
-
 import pytest
 from freezegun import freeze_time
 from marshmallow import ValidationError

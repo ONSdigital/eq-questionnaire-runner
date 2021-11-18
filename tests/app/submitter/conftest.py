@@ -2,8 +2,8 @@
 import uuid
 from unittest.mock import MagicMock
 
-from dateutil import parser
 import pytest
+from dateutil import parser
 
 from app.data_models import QuestionnaireStore
 from app.data_models.answer import Answer
