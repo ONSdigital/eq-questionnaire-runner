@@ -29,7 +29,7 @@ run:
             datastoreReadProjectId="${PROJECT_ID}",\
             datastoreDeleteProjectId="${PROJECT_ID}" \
             --network redis  \
-            --subnetwork https://www.googleapis.com/compute/v1/projects/"${PROJECT_ID}"/regions/europe-west2/subnetworks/redis \
+            --subnetwork regions/europe-west2/subnetworks/redis \
             --format="value(id.scope())")
 
             DATAFLOW_JOB_STATE=$(gcloud dataflow jobs describe "${DATAFLOW_JOB}" --region europe-west2 --format="value(currentState)")
