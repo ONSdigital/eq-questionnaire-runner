@@ -1,5 +1,5 @@
 from datetime import date
-from typing import Generator, List, Mapping, Optional, Sequence, Tuple, Union
+from typing import Generator, Mapping, Optional, Union
 
 from flask import url_for
 from werkzeug.datastructures import ImmutableDict
@@ -40,7 +40,7 @@ class Router:
         )
 
     @property
-    def enabled_section_ids(self) -> List:
+    def enabled_section_ids(self) -> list:
         return [
             section["id"]
             for section in self._schema.get_sections()
@@ -105,11 +105,16 @@ class Router:
             section_id
         ) and self._progress_store.is_section_complete(section_id, list_item_id)
 
-    def routing_path(self, section_id: str, list_item_id: str = None) -> RoutingPath:
+    def routing_path(
+        self, section_id: str, list_item_id: Optional[str] = None
+    ) -> RoutingPath:
         return self._path_finder.routing_path(section_id, list_item_id)
 
     def get_next_location_url(
-        self, location: Location, routing_path: RoutingPath, return_to: str = None
+        self,
+        location: Location,
+        routing_path: RoutingPath,
+        return_to: Optional[str] = None,
     ) -> str:
         """
         Get the next location in the section. If the section is complete, determine where to go next,
@@ -210,7 +215,7 @@ class Router:
             list_item_id=routing_path.list_item_id,
         )
 
-    def full_routing_path(self) -> List[RoutingPath]:
+    def full_routing_path(self) -> list[RoutingPath]:
         full_routing_path = []
         for section_id in self.enabled_section_ids:
             repeating_list = self._schema.get_repeating_list_for_section(section_id)
@@ -249,7 +254,7 @@ class Router:
                     list_name=routing_path.list_name,
                 )
 
-    def _get_allowable_path(self, routing_path: RoutingPath) -> List:
+    def _get_allowable_path(self, routing_path: RoutingPath) -> list[str]:
         """
         The allowable path is the completed path plus the next location
         """
@@ -266,7 +271,7 @@ class Router:
 
         return allowable_path
 
-    def get_enabled_section_keys(self) -> Generator:
+    def get_enabled_section_keys(self) -> Generator[tuple, None, None]:
         for section_id in self.enabled_section_ids:
             repeating_list = self._schema.get_repeating_list_for_section(section_id)
 
@@ -278,12 +283,12 @@ class Router:
                 section_key = (section_id, None)
                 yield section_key
 
-    def _get_first_incomplete_section_key(self) -> Sequence:
+    def _get_first_incomplete_section_key(self) -> Optional[tuple[str, str]]:
         for section_id, list_item_id in self.get_enabled_section_keys():
             if not self._progress_store.is_section_complete(section_id, list_item_id):
                 return section_id, list_item_id
 
-    def _get_last_complete_section_key(self) -> Tuple[str, Optional[str]]:
+    def _get_last_complete_section_key(self) -> tuple[str, Optional[str]]:
         for section_id, list_item_id in list(self.get_enabled_section_keys())[::-1]:
             if self._progress_store.is_section_complete(section_id, list_item_id):
                 return section_id, list_item_id
