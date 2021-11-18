@@ -100,7 +100,9 @@ class RunnerMetadataSchema(Schema, StripWhitespaceMixin):
     case_type = VALIDATORS["string"](required=False)  # type:ignore
     response_expires_at = VALIDATORS["iso_8601_date_string"](
         required=False,
-        validate=lambda x: datetime.strptime(x, ISO_8601_DATETIME).astimezone()
+        validate=lambda x: datetime.strptime(x, ISO_8601_DATETIME).replace(
+            tzinfo=timezone.utc
+        )
         > datetime.now(tz=timezone.utc),
     )  # type:ignore
 

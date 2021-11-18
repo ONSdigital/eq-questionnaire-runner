@@ -146,18 +146,13 @@ def test_deserialisation_iso_8601_dates(fake_metadata_runner):
 
 
 @freeze_time("2021-11-15T15:34:54+00:00")
-def test_deserialisation_iso_8601_datetime(fake_metadata_runner):
-    fake_metadata_runner["response_expires_at"] = "2021-11-22T15:34:54+00:00"
+@pytest.mark.parametrize(
+    "date_string",
+    ["2021-11-22T15:34:54+00:00", "2021-11-22T15:34:54Z"],
+)
+def test_deserialisation_iso_8601_date(date_string, fake_metadata_runner):
+    fake_metadata_runner["response_expires_at"] = date_string
     claims = validate_runner_claims(fake_metadata_runner)
-
-    assert claims["response_expires_at"] == "2021-11-22T15:34:54+00:00"
-
-
-@freeze_time("2021-11-15T15:34:54+00:00")
-def test_deserialisation_iso_8601_datetime_with_zulu(fake_metadata_runner):
-    fake_metadata_runner["response_expires_at"] = "2021-11-22T15:34:54Z"
-    claims = validate_runner_claims(fake_metadata_runner)
-
     assert claims["response_expires_at"] == "2021-11-22T15:34:54+00:00"
 
 
