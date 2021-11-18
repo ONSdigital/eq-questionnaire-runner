@@ -27,7 +27,7 @@ class TestEncryptedQuestionnaireStorage(AppContextTestCase):
         encrypted.save(
             data="test",
             collection_exercise_sid="ce_sid",
-            expires_at=parser.parse("2021-11-22T08:54:22+00:00").replace(
+            expires_at=parser.parse("2021-11-10T08:54:22+00:00").replace(
                 tzinfo=timezone.utc
             ),
         )
@@ -38,7 +38,7 @@ class TestEncryptedQuestionnaireStorage(AppContextTestCase):
                 "ce_sid",
                 QuestionnaireStore.LATEST_VERSION,
                 None,
-                parser.parse("2021-11-22T08:54:22+00:00").replace(tzinfo=timezone.utc),
+                parser.parse("2021-11-10T08:54:22+00:00").replace(tzinfo=timezone.utc),
             ),
             encrypted.get_user_data(),
         )
@@ -52,7 +52,7 @@ class TestEncryptedQuestionnaireStorage(AppContextTestCase):
             data="test",
             collection_exercise_sid="ce_sid",
             submitted_at=now,
-            expires_at=parser.parse("2021-11-22T08:54:22+00:00").replace(
+            expires_at=parser.parse("2021-11-10T08:54:22+00:00").replace(
                 tzinfo=timezone.utc
             ),
         )
@@ -63,7 +63,7 @@ class TestEncryptedQuestionnaireStorage(AppContextTestCase):
                 "ce_sid",
                 QuestionnaireStore.LATEST_VERSION,
                 now,
-                parser.parse("2021-11-22T08:54:22+00:00").replace(tzinfo=timezone.utc),
+                parser.parse("2021-11-10T08:54:22+00:00").replace(tzinfo=timezone.utc),
             ),
             encrypted.get_user_data(),
         )
@@ -80,7 +80,7 @@ class TestEncryptedQuestionnaireStorage(AppContextTestCase):
         self.storage.save(
             data,
             "ce_sid",
-            expires_at=parser.parse("2021-11-22T08:54:22+00:00").replace(
+            expires_at=parser.parse("2021-11-10T08:54:22+00:00").replace(
                 tzinfo=timezone.utc
             ),
         )
@@ -90,7 +90,7 @@ class TestEncryptedQuestionnaireStorage(AppContextTestCase):
                 "ce_sid",
                 QuestionnaireStore.LATEST_VERSION,
                 None,
-                parser.parse("2021-11-22T08:54:22+00:00"),
+                parser.parse("2021-11-10T08:54:22+00:00"),
             ),
             self.storage.get_user_data(),
         )
@@ -100,7 +100,7 @@ class TestEncryptedQuestionnaireStorage(AppContextTestCase):
         self.storage.save(
             data,
             "ce_sid",
-            expires_at=parser.parse("2021-11-22T08:54:22+00:00").replace(
+            expires_at=parser.parse("2021-11-10T08:54:22+00:00").replace(
                 tzinfo=timezone.utc
             ),
         )
@@ -110,7 +110,7 @@ class TestEncryptedQuestionnaireStorage(AppContextTestCase):
                 "ce_sid",
                 QuestionnaireStore.LATEST_VERSION,
                 None,
-                parser.parse("2021-11-22T08:54:22+00:00"),
+                parser.parse("2021-11-10T08:54:22+00:00"),
             ),
             self.storage.get_user_data(),
         )

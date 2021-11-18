@@ -51,7 +51,7 @@ class TestQuestionnaireStore(TestCase):
                 "ce_sid",
                 1,
                 None,
-                parser.parse("2021-11-22T08:54:22+00:00"),
+                parser.parse("2021-11-10T08:54:22+00:00"),
             )
 
         def set_output_data(data, collection_exercise_sid, submitted_at, expires_at):
