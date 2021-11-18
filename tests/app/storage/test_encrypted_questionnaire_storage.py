@@ -5,6 +5,7 @@ from dateutil import parser
 from app.data_models import QuestionnaireStore
 from app.storage.encrypted_questionnaire_storage import EncryptedQuestionnaireStorage
 from tests.app.app_context_test_case import AppContextTestCase
+from tests.app.conftest import RESPONSE_EXPIRY
 
 
 class TestEncryptedQuestionnaireStorage(AppContextTestCase):
@@ -27,9 +28,7 @@ class TestEncryptedQuestionnaireStorage(AppContextTestCase):
         encrypted.save(
             data="test",
             collection_exercise_sid="ce_sid",
-            expires_at=parser.parse("2021-11-10T08:54:22+00:00").replace(
-                tzinfo=timezone.utc
-            ),
+            expires_at=RESPONSE_EXPIRY,
         )
         # check we can decrypt the data
         self.assertEqual(
@@ -38,7 +37,7 @@ class TestEncryptedQuestionnaireStorage(AppContextTestCase):
                 "ce_sid",
                 QuestionnaireStore.LATEST_VERSION,
                 None,
-                parser.parse("2021-11-10T08:54:22+00:00").replace(tzinfo=timezone.utc),
+                RESPONSE_EXPIRY,
             ),
             encrypted.get_user_data(),
         )
@@ -52,9 +51,7 @@ class TestEncryptedQuestionnaireStorage(AppContextTestCase):
             data="test",
             collection_exercise_sid="ce_sid",
             submitted_at=now,
-            expires_at=parser.parse("2021-11-10T08:54:22+00:00").replace(
-                tzinfo=timezone.utc
-            ),
+            expires_at=RESPONSE_EXPIRY,
         )
 
         self.assertEqual(
@@ -63,7 +60,7 @@ class TestEncryptedQuestionnaireStorage(AppContextTestCase):
                 "ce_sid",
                 QuestionnaireStore.LATEST_VERSION,
                 now,
-                parser.parse("2021-11-10T08:54:22+00:00").replace(tzinfo=timezone.utc),
+                RESPONSE_EXPIRY,
             ),
             encrypted.get_user_data(),
         )
@@ -80,9 +77,7 @@ class TestEncryptedQuestionnaireStorage(AppContextTestCase):
         self.storage.save(
             data,
             "ce_sid",
-            expires_at=parser.parse("2021-11-10T08:54:22+00:00").replace(
-                tzinfo=timezone.utc
-            ),
+            expires_at=RESPONSE_EXPIRY,
         )
         self.assertEqual(
             (
@@ -90,7 +85,7 @@ class TestEncryptedQuestionnaireStorage(AppContextTestCase):
                 "ce_sid",
                 QuestionnaireStore.LATEST_VERSION,
                 None,
-                parser.parse("2021-11-10T08:54:22+00:00"),
+                RESPONSE_EXPIRY,
             ),
             self.storage.get_user_data(),
         )
@@ -100,9 +95,7 @@ class TestEncryptedQuestionnaireStorage(AppContextTestCase):
         self.storage.save(
             data,
             "ce_sid",
-            expires_at=parser.parse("2021-11-10T08:54:22+00:00").replace(
-                tzinfo=timezone.utc
-            ),
+            expires_at=RESPONSE_EXPIRY,
         )
         self.assertEqual(
             (
@@ -110,7 +103,7 @@ class TestEncryptedQuestionnaireStorage(AppContextTestCase):
                 "ce_sid",
                 QuestionnaireStore.LATEST_VERSION,
                 None,
-                parser.parse("2021-11-10T08:54:22+00:00"),
+                RESPONSE_EXPIRY,
             ),
             self.storage.get_user_data(),
         )

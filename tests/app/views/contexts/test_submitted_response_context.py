@@ -1,7 +1,6 @@
 from datetime import datetime, timedelta, timezone
 from unittest.mock import Mock
 
-from dateutil import parser
 from flask import Flask
 from flask_babel import format_datetime
 
@@ -13,6 +12,7 @@ from app.utilities.schema import load_schema_from_name
 from app.views.contexts.view_submitted_response_context import (
     build_view_submitted_response_context,
 )
+from tests.app.conftest import RESPONSE_EXPIRY
 
 SUBMITTED_AT = datetime.now(timezone.utc)
 SCHEMA = load_schema_from_name("test_view_submitted_response", "en")
@@ -109,7 +109,7 @@ def fake_questionnaire_store():
             "ce_sid",
             1,
             None,
-            parser.parse("2021-11-10T08:54:22+00:00").replace(tzinfo=timezone.utc),
+            RESPONSE_EXPIRY,
         )
     )
     questionnaire_store = QuestionnaireStore(storage)

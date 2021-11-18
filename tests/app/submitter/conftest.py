@@ -3,7 +3,6 @@ import uuid
 from unittest.mock import MagicMock
 
 import pytest
-from dateutil import parser
 
 from app.data_models import QuestionnaireStore
 from app.data_models.answer import Answer
@@ -13,6 +12,7 @@ from app.utilities.metadata_parser import (
     validate_questionnaire_claims,
     validate_runner_claims,
 )
+from tests.app.conftest import RESPONSE_EXPIRY
 
 
 @pytest.fixture
@@ -78,7 +78,7 @@ def fake_questionnaire_store(fake_metadata, fake_response_metadata):
             "ce_sid",
             1,
             None,
-            parser.parse("2021-11-10T08:54:22+00:00"),
+            RESPONSE_EXPIRY,
         )
     )
     storage.add_or_update = MagicMock()

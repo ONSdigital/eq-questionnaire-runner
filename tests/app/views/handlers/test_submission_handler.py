@@ -11,6 +11,7 @@ from app.data_models.session_store import SessionStore
 from app.questionnaire.questionnaire_schema import QuestionnaireSchema
 from app.views.handlers.submission import SubmissionHandler
 from tests.app.app_context_test_case import AppContextTestCase
+from tests.app.conftest import RESPONSE_EXPIRY
 
 
 class TestSubmissionPayload(AppContextTestCase):
@@ -85,7 +86,7 @@ class TestSubmissionPayload(AppContextTestCase):
                 "ce_id",
                 1,
                 None,
-                parser.parse("2021-11-10T08:54:22+00:00").replace(tzinfo=timezone.utc),
+                RESPONSE_EXPIRY,
             )
         )
         questionnaire_store = QuestionnaireStore(storage)
