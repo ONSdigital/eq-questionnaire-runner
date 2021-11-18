@@ -1,10 +1,7 @@
 # pylint: disable=redefined-outer-name
 import uuid
 
-from freezegun import freeze_time
 import pytest
-
-# RESPONSE_EXPIRY
 
 
 @pytest.fixture
