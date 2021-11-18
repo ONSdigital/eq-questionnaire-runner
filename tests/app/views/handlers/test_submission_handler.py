@@ -1,7 +1,6 @@
 from datetime import datetime, timedelta, timezone
 from unittest.mock import Mock
 
-from dateutil import parser
 from freezegun import freeze_time
 from mock import patch
 

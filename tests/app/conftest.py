@@ -1,8 +1,8 @@
 from datetime import datetime, timezone
+
 import pytest
 
 from app.setup import create_app
-
 
 RESPONSE_EXPIRY = datetime(2021, 11, 10, 8, 54, 22, tzinfo=timezone.utc)
 

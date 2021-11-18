@@ -1,7 +1,5 @@
 from datetime import datetime, timezone
 
-from dateutil import parser
-
 from app.data_models import QuestionnaireStore
 from app.storage.encrypted_questionnaire_storage import EncryptedQuestionnaireStorage
 from tests.app.app_context_test_case import AppContextTestCase
