@@ -43,9 +43,6 @@ class DateString(fields.DateTime):
     """Currently, runner cannot handle Date objects in metadata
     Since all metadata is serialized and deserialized to JSON.
     This custom field deserializes Dates to strings.
-
-    :param out_format: Output date string format. If falsy, the output
-        format is the same as the input.
     """
 
     def _deserialize(self, *args, **kwargs):  # pylint: disable=arguments-differ
