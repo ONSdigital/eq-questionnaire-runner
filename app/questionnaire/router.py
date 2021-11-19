@@ -2,7 +2,6 @@ from datetime import date
 from typing import Generator, Mapping, Optional, Union
 
 from flask import url_for
-from werkzeug.datastructures import ImmutableDict
 
 from app.data_models import AnswerStore, ListStore, ProgressStore
 from app.questionnaire import QuestionnaireSchema
