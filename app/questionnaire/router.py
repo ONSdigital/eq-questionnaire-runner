@@ -40,7 +40,7 @@ class Router:
         )
 
     @property
-    def enabled_section_ids(self) -> list:
+    def enabled_section_ids(self) -> list[str]:
         return [
             section["id"]
             for section in self._schema.get_sections()
@@ -69,9 +69,7 @@ class Router:
         routing_path = self.routing_path(*self._get_last_complete_section_key())
         return self.get_last_location_in_section(routing_path).url()
 
-    def is_list_item_in_list_store(
-        self, list_item_id: str, list_name: Optional[str]
-    ) -> bool:
+    def is_list_item_in_list_store(self, list_item_id: str, list_name: str) -> bool:
         return list_item_id in self._list_store[list_name]
 
     def can_access_location(
@@ -84,8 +82,12 @@ class Router:
         if location.section_id not in self.enabled_section_ids:
             return False
 
-        if location.list_item_id and not self.is_list_item_in_list_store(
-            location.list_item_id, location.list_name
+        if (
+            location.list_item_id
+            and location.list_name
+            and not self.is_list_item_in_list_store(
+                location.list_item_id, location.list_name
+            )
         ):
             return False
 
@@ -100,9 +102,9 @@ class Router:
 
     def can_display_section_summary(
         self, section_id: str, list_item_id: str = None
-    ) -> Union[ImmutableDict, None, bool]:
-        return self._schema.get_summary_for_section(
-            section_id
+    ) -> bool:
+        return bool(
+            self._schema.get_summary_for_section(section_id)
         ) and self._progress_store.is_section_complete(section_id, list_item_id)
 
     def routing_path(
@@ -271,7 +273,9 @@ class Router:
 
         return allowable_path
 
-    def get_enabled_section_keys(self) -> Generator[tuple, None, None]:
+    def get_enabled_section_keys(
+        self,
+    ) -> Generator[Union[tuple[str, None], tuple[str, str]], None, None]:
         for section_id in self.enabled_section_ids:
             repeating_list = self._schema.get_repeating_list_for_section(section_id)
 
@@ -283,7 +287,7 @@ class Router:
                 section_key = (section_id, None)
                 yield section_key
 
-    def _get_first_incomplete_section_key(self) -> Optional[tuple[str, str]]:
+    def _get_first_incomplete_section_key(self) -> tuple[str, Optional[str]]:
         for section_id, list_item_id in self.get_enabled_section_keys():
             if not self._progress_store.is_section_complete(section_id, list_item_id):
                 return section_id, list_item_id
