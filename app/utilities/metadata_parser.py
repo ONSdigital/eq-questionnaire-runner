@@ -1,4 +1,5 @@
 import functools
+from datetime import datetime, timezone
 from typing import Dict
 
 from marshmallow import (
@@ -16,6 +17,7 @@ from structlog import get_logger
 from app.utilities.schema import get_schema_name_from_params
 
 logger = get_logger()
+ISO_8601_DATETIME = "%Y-%m-%dT%H:%M:%S%z"
 
 
 class RegionCode(validate.Regexp):
@@ -44,7 +46,12 @@ class DateString(fields.DateTime):
     """
 
     def _deserialize(self, *args, **kwargs):  # pylint: disable=arguments-differ
-        return super()._deserialize(*args, **kwargs).strftime("%Y-%m-%d")
+        date = super()._deserialize(*args, **kwargs)
+
+        if self.format == "iso8601":
+            return date.isoformat()
+
+        return date.strftime(self.format)
 
 
 VALIDATORS = {
@@ -53,6 +60,9 @@ VALIDATORS = {
     "boolean": functools.partial(fields.Boolean, required=True),
     "string": functools.partial(fields.String, required=True),
     "url": functools.partial(fields.Url, required=True),
+    "iso_8601_date_string": functools.partial(
+        DateString, format="iso8601", required=True
+    ),
 }
 
 
@@ -88,6 +98,13 @@ class RunnerMetadataSchema(Schema, StripWhitespaceMixin):
         required=False, validate=validate.Length(min=1)
     )  # type:ignore
     case_type = VALIDATORS["string"](required=False)  # type:ignore
+    response_expires_at = VALIDATORS["iso_8601_date_string"](
+        required=False,
+        validate=lambda x: datetime.strptime(x, ISO_8601_DATETIME).replace(
+            tzinfo=timezone.utc
+        )
+        > datetime.now(tz=timezone.utc),
+    )  # type:ignore
 
     # Either schema_name OR the three census parameters are required. Should be required after census.
     schema_name = VALIDATORS["string"](required=False)  # type:ignore
