@@ -2,7 +2,6 @@ from datetime import date
 from typing import Callable, Generator, Iterable, Optional, Sequence, Union
 
 from app.questionnaire.routing.helpers import ValueTypes
-from app.questionnaire.routing.operations import Operations
 
 
 class Operator:
@@ -21,9 +20,9 @@ class Operator:
     COUNT: str = "count"
     DATE: str = "date"
 
-    def __init__(self, name: str) -> None:
+    def __init__(self, name: str, operation: Callable) -> None:
         self.name = name
-        self._operation = OPERATIONS_MAPPINGS[self.name]
+        self._operation = operation
         self._ensure_operands_not_none = self.name in {
             Operator.GREATER_THAN,
             Operator.GREATER_THAN_OR_EQUAL,
@@ -51,23 +50,3 @@ class Operator:
     @staticmethod
     def _any_operands_none(*operands: Union[Sequence, ValueTypes]) -> bool:
         return any(operand is None for operand in operands)
-
-
-operations = Operations()
-
-OPERATIONS_MAPPINGS: dict[str, Callable] = {
-    Operator.NOT: operations.evaluate_not,
-    Operator.AND: operations.evaluate_and,
-    Operator.OR: operations.evaluate_or,
-    Operator.EQUAL: operations.evaluate_equal,
-    Operator.NOT_EQUAL: operations.evaluate_not_equal,
-    Operator.GREATER_THAN: operations.evaluate_greater_than,
-    Operator.LESS_THAN: operations.evaluate_less_than,
-    Operator.GREATER_THAN_OR_EQUAL: operations.evaluate_greater_than_or_equal,
-    Operator.LESS_THAN_OR_EQUAL: operations.evaluate_less_than_or_equal,
-    Operator.IN: operations.evaluate_in,
-    Operator.ALL_IN: operations.evaluate_all_in,
-    Operator.ANY_IN: operations.evaluate_any_in,
-    Operator.COUNT: operations.evaluate_count,
-    Operator.DATE: operations.resolve_date_from_string,
-}

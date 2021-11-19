@@ -1,15 +1,35 @@
 from dataclasses import dataclass
 from datetime import date
-from typing import Generator, Mapping, Optional, Sequence, Union
+from typing import Callable, Generator, Mapping, Optional, Sequence, Union
 
 from app.data_models import AnswerStore, ListStore
 from app.questionnaire import Location, QuestionnaireSchema
 from app.questionnaire.relationship_location import RelationshipLocation
-from app.questionnaire.routing.operator import OPERATIONS_MAPPINGS, Operator
+from app.questionnaire.routing.operations import Operations
+from app.questionnaire.routing.operator import Operator
 from app.questionnaire.value_source_resolver import (
     ValueSourceResolver,
     ValueSourceTypes,
 )
+
+operations = Operations()
+
+OPERATIONS_MAPPINGS: dict[str, Callable] = {
+    Operator.NOT: operations.evaluate_not,
+    Operator.AND: operations.evaluate_and,
+    Operator.OR: operations.evaluate_or,
+    Operator.EQUAL: operations.evaluate_equal,
+    Operator.NOT_EQUAL: operations.evaluate_not_equal,
+    Operator.GREATER_THAN: operations.evaluate_greater_than,
+    Operator.LESS_THAN: operations.evaluate_less_than,
+    Operator.GREATER_THAN_OR_EQUAL: operations.evaluate_greater_than_or_equal,
+    Operator.LESS_THAN_OR_EQUAL: operations.evaluate_less_than_or_equal,
+    Operator.IN: operations.evaluate_in,
+    Operator.ALL_IN: operations.evaluate_all_in,
+    Operator.ANY_IN: operations.evaluate_any_in,
+    Operator.COUNT: operations.evaluate_count,
+    Operator.DATE: operations.resolve_date_from_string,
+}
 
 
 @dataclass
@@ -38,10 +58,11 @@ class WhenRuleEvaluator:
         )
 
     def _evaluate(self, rule: dict[str, Sequence]) -> Union[bool, Optional[date]]:
-        operator = Operator(next(iter(rule)))
-        operands = rule[operator.name]
+        next_rule = next(iter(rule))
+        operator = Operator(next_rule, OPERATIONS_MAPPINGS[next_rule])
+        operands = rule[next_rule]
 
-        if not isinstance(operands, Sequence):
+        if not isinstance(rule[next_rule], Sequence):
             raise TypeError(
                 f"The rule is invalid, operands should be of type Sequence and not {type(operands)}"
             )
