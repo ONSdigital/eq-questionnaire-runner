@@ -28,8 +28,8 @@ run:
       datastoreReadGqlQuery="SELECT * FROM \`eq-session\` WHERE expires_at < $((`date --utc +%s` - EXPIRATION_TIME_OFFSET_IN_SECONDS))",\
       datastoreReadProjectId="${PROJECT_ID}",\
       datastoreDeleteProjectId="${PROJECT_ID}" \
-      --network redis  \
-      --subnetwork regions/europe-west2/subnetworks/redis \
+      --network eq  \
+      --subnetwork regions/europe-west2/subnetworks/eq \
       --format="value(id.scope())")
 
       DATAFLOW_JOB_STATE=$(gcloud dataflow jobs describe "${DATAFLOW_JOB}" --region europe-west2 --format="value(currentState)")
