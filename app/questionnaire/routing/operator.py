@@ -2,22 +2,7 @@ from datetime import date
 from typing import Callable, Generator, Iterable, Optional, Sequence, Union
 
 from app.questionnaire.routing.helpers import ValueTypes
-from app.questionnaire.routing.operations import (
-    evaluate_all_in,
-    evaluate_and,
-    evaluate_any_in,
-    evaluate_count,
-    evaluate_equal,
-    evaluate_greater_than,
-    evaluate_greater_than_or_equal,
-    evaluate_in,
-    evaluate_less_than,
-    evaluate_less_than_or_equal,
-    evaluate_not,
-    evaluate_not_equal,
-    evaluate_or,
-    resolve_date_from_string,
-)
+from app.questionnaire.routing.operations import Operations
 
 
 class Operator:
@@ -38,7 +23,7 @@ class Operator:
 
     def __init__(self, name: str) -> None:
         self.name = name
-        self._operation = OPERATIONS[self.name]
+        self._operation = OPERATIONS_MAPPINGS[self.name]
         self._ensure_operands_not_none = self.name in {
             Operator.GREATER_THAN,
             Operator.GREATER_THAN_OR_EQUAL,
@@ -68,19 +53,21 @@ class Operator:
         return any(operand is None for operand in operands)
 
 
-OPERATIONS: dict[str, Callable] = {
-    Operator.NOT: evaluate_not,
-    Operator.AND: evaluate_and,
-    Operator.OR: evaluate_or,
-    Operator.EQUAL: evaluate_equal,
-    Operator.NOT_EQUAL: evaluate_not_equal,
-    Operator.GREATER_THAN: evaluate_greater_than,
-    Operator.LESS_THAN: evaluate_less_than,
-    Operator.GREATER_THAN_OR_EQUAL: evaluate_greater_than_or_equal,
-    Operator.LESS_THAN_OR_EQUAL: evaluate_less_than_or_equal,
-    Operator.IN: evaluate_in,
-    Operator.ALL_IN: evaluate_all_in,
-    Operator.ANY_IN: evaluate_any_in,
-    Operator.COUNT: evaluate_count,
-    Operator.DATE: resolve_date_from_string,
+operations = Operations()
+
+OPERATIONS_MAPPINGS: dict[str, Callable] = {
+    Operator.NOT: operations.evaluate_not,
+    Operator.AND: operations.evaluate_and,
+    Operator.OR: operations.evaluate_or,
+    Operator.EQUAL: operations.evaluate_equal,
+    Operator.NOT_EQUAL: operations.evaluate_not_equal,
+    Operator.GREATER_THAN: operations.evaluate_greater_than,
+    Operator.LESS_THAN: operations.evaluate_less_than,
+    Operator.GREATER_THAN_OR_EQUAL: operations.evaluate_greater_than_or_equal,
+    Operator.LESS_THAN_OR_EQUAL: operations.evaluate_less_than_or_equal,
+    Operator.IN: operations.evaluate_in,
+    Operator.ALL_IN: operations.evaluate_all_in,
+    Operator.ANY_IN: operations.evaluate_any_in,
+    Operator.COUNT: operations.evaluate_count,
+    Operator.DATE: operations.resolve_date_from_string,
 }

@@ -5,7 +5,7 @@ from typing import Generator, Mapping, Optional, Sequence, Union
 from app.data_models import AnswerStore, ListStore
 from app.questionnaire import Location, QuestionnaireSchema
 from app.questionnaire.relationship_location import RelationshipLocation
-from app.questionnaire.routing.operator import OPERATIONS, Operator
+from app.questionnaire.routing.operator import OPERATIONS_MAPPINGS, Operator
 from app.questionnaire.value_source_resolver import (
     ValueSourceResolver,
     ValueSourceTypes,
@@ -56,7 +56,7 @@ class WhenRuleEvaluator:
             if isinstance(operand, dict) and "source" in operand:
                 yield self.value_source_resolver.resolve(operand)
             elif isinstance(operand, dict) and any(
-                operator in operand for operator in OPERATIONS
+                operator in operand for operator in OPERATIONS_MAPPINGS
             ):
                 yield self._evaluate(operand)
             else:
