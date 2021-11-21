@@ -12,25 +12,6 @@ from app.questionnaire.value_source_resolver import (
     ValueSourceTypes,
 )
 
-operations = Operations()
-
-OPERATIONS_MAPPINGS: dict[str, Callable] = {
-    Operator.NOT: operations.evaluate_not,
-    Operator.AND: operations.evaluate_and,
-    Operator.OR: operations.evaluate_or,
-    Operator.EQUAL: operations.evaluate_equal,
-    Operator.NOT_EQUAL: operations.evaluate_not_equal,
-    Operator.GREATER_THAN: operations.evaluate_greater_than,
-    Operator.LESS_THAN: operations.evaluate_less_than,
-    Operator.GREATER_THAN_OR_EQUAL: operations.evaluate_greater_than_or_equal,
-    Operator.LESS_THAN_OR_EQUAL: operations.evaluate_less_than_or_equal,
-    Operator.IN: operations.evaluate_in,
-    Operator.ALL_IN: operations.evaluate_all_in,
-    Operator.ANY_IN: operations.evaluate_any_in,
-    Operator.COUNT: operations.evaluate_count,
-    Operator.DATE: operations.resolve_date_from_string,
-}
-
 
 @dataclass
 class WhenRuleEvaluator:
@@ -56,10 +37,27 @@ class WhenRuleEvaluator:
             routing_path_block_ids=self.routing_path_block_ids,
             use_default_answer=True,
         )
+        operations = Operations()
+        self.operation_mapping: dict[str, Callable] = {
+            Operator.NOT: operations.evaluate_not,
+            Operator.AND: operations.evaluate_and,
+            Operator.OR: operations.evaluate_or,
+            Operator.EQUAL: operations.evaluate_equal,
+            Operator.NOT_EQUAL: operations.evaluate_not_equal,
+            Operator.GREATER_THAN: operations.evaluate_greater_than,
+            Operator.LESS_THAN: operations.evaluate_less_than,
+            Operator.GREATER_THAN_OR_EQUAL: operations.evaluate_greater_than_or_equal,
+            Operator.LESS_THAN_OR_EQUAL: operations.evaluate_less_than_or_equal,
+            Operator.IN: operations.evaluate_in,
+            Operator.ALL_IN: operations.evaluate_all_in,
+            Operator.ANY_IN: operations.evaluate_any_in,
+            Operator.COUNT: operations.evaluate_count,
+            Operator.DATE: operations.resolve_date_from_string,
+        }
 
     def _evaluate(self, rule: dict[str, Sequence]) -> Union[bool, Optional[date]]:
         next_rule = next(iter(rule))
-        operator = Operator(next_rule, OPERATIONS_MAPPINGS[next_rule])
+        operator = Operator(next_rule, self.operation_mapping[next_rule])
         operands = rule[next_rule]
 
         if not isinstance(rule[next_rule], Sequence):
@@ -77,7 +75,7 @@ class WhenRuleEvaluator:
             if isinstance(operand, dict) and "source" in operand:
                 yield self.value_source_resolver.resolve(operand)
             elif isinstance(operand, dict) and any(
-                operator in operand for operator in OPERATIONS_MAPPINGS
+                operator in operand for operator in self.operation_mapping
             ):
                 yield self._evaluate(operand)
             else:
