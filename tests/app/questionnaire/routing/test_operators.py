@@ -40,7 +40,8 @@ equals_operations = [
     equals_operations,
 )
 def test_operation_equal(operands, expected_result):
-    operator = Operator(Operator.EQUAL, get_operations().evaluate_equal)
+    operation = get_operations(Operator.EQUAL)
+    operator = Operator(Operator.EQUAL, operation)
     assert operator.evaluate(operands) is expected_result
 
 
@@ -49,7 +50,8 @@ def test_operation_equal(operands, expected_result):
     equals_operations,
 )
 def test_operation_not_equal(operands, expected_result):
-    operator = Operator(Operator.NOT_EQUAL, get_operations().evaluate_not_equal)
+    operation = get_operations(Operator.NOT_EQUAL)
+    operator = Operator(Operator.NOT_EQUAL, operation)
     assert operator.evaluate(operands) is not expected_result
 
 
@@ -77,7 +79,8 @@ greater_than_and_less_than_operations_equals = [
     greater_than_and_less_than_operations,
 )
 def test_operation_greater_than(operands, expected_result):
-    operator = Operator(Operator.GREATER_THAN, get_operations().evaluate_greater_than)
+    operation = get_operations(Operator.GREATER_THAN)
+    operator = Operator(Operator.GREATER_THAN, operation)
     assert operator.evaluate(operands) is expected_result
 
 
@@ -86,7 +89,8 @@ def test_operation_greater_than(operands, expected_result):
     greater_than_and_less_than_operations_equals,
 )
 def test_operation_greater_than_same_number(operands, expected_result):
-    operator = Operator(Operator.GREATER_THAN, get_operations().evaluate_greater_than)
+    operation = get_operations(Operator.GREATER_THAN)
+    operator = Operator(Operator.GREATER_THAN, operation)
     assert operator.evaluate(operands) is expected_result
 
 
@@ -95,7 +99,8 @@ def test_operation_greater_than_same_number(operands, expected_result):
     greater_than_and_less_than_operations,
 )
 def test_operation_less_than(operands, expected_result):
-    operator = Operator(Operator.LESS_THAN, get_operations().evaluate_less_than)
+    operation = get_operations(Operator.LESS_THAN)
+    operator = Operator(Operator.LESS_THAN, operation)
     assert operator.evaluate(operands) is not expected_result
 
 
@@ -104,7 +109,8 @@ def test_operation_less_than(operands, expected_result):
     greater_than_and_less_than_operations_equals,
 )
 def test_operation_less_than_same_number(operands, expected_result):
-    operator = Operator(Operator.LESS_THAN, get_operations().evaluate_less_than)
+    operation = get_operations(Operator.LESS_THAN)
+    operator = Operator(Operator.LESS_THAN, operation)
     assert operator.evaluate(operands) is expected_result
 
 
@@ -128,9 +134,8 @@ def test_operation_less_than_same_number(operands, expected_result):
     ],
 )
 def test_operation_less_than_or_equal(operands, expected_result):
-    operator = Operator(
-        Operator.LESS_THAN_OR_EQUAL, get_operations().evaluate_less_than_or_equal
-    )
+    operation = get_operations(Operator.LESS_THAN_OR_EQUAL)
+    operator = Operator(Operator.LESS_THAN_OR_EQUAL, operation)
     assert operator.evaluate(operands) is expected_result
 
 
@@ -154,16 +159,18 @@ def test_operation_less_than_or_equal(operands, expected_result):
     ],
 )
 def test_operation_greater_than_or_equal(operands, expected_result):
+    operation = get_operations(Operator.GREATER_THAN_OR_EQUAL)
     operator = Operator(
         Operator.GREATER_THAN_OR_EQUAL,
-        get_operations().evaluate_greater_than_or_equal,
+        operation,
     )
     assert operator.evaluate(operands) is expected_result
 
 
 @pytest.mark.parametrize("operand, expected_result", [[False, True], [True, False]])
 def test_operation_not(operand, expected_result):
-    operator = Operator(Operator.NOT, get_operations().evaluate_not)
+    operation = get_operations(Operator.NOT)
+    operator = Operator(Operator.NOT, operation)
     assert operator.evaluate([operand]) is expected_result
 
 
@@ -179,7 +186,8 @@ def test_operation_not(operand, expected_result):
     ],
 )
 def test_operation_and(operands, expected_result):
-    operator = Operator(Operator.AND, get_operations().evaluate_and)
+    operation = get_operations(Operator.AND)
+    operator = Operator(Operator.AND, operation)
     assert operator.evaluate(operands) is expected_result
 
 
@@ -196,7 +204,8 @@ def test_operation_and(operands, expected_result):
     ],
 )
 def test_operation_or(operands, expected_result):
-    operator = Operator(Operator.OR, get_operations().evaluate_or)
+    operation = get_operations(Operator.OR)
+    operator = Operator(Operator.OR, operation)
     assert operator.evaluate(operands) is expected_result
 
 
@@ -217,7 +226,8 @@ def test_operation_or(operands, expected_result):
     ],
 )
 def test_operation_in(operands, expected_result):
-    operator = Operator(Operator.IN, get_operations().evaluate_in)
+    operation = get_operations(Operator.IN)
+    operator = Operator(Operator.IN, operation)
     assert operator.evaluate(operands) is expected_result
 
 
@@ -239,7 +249,8 @@ def test_operation_in(operands, expected_result):
     ],
 )
 def test_operation_all_in(operands, expected_result):
-    operator = Operator(Operator.ALL_IN, get_operations().evaluate_all_in)
+    operation = get_operations(Operator.ALL_IN)
+    operator = Operator(Operator.ALL_IN, operation)
     assert operator.evaluate(operands) is expected_result
 
 
@@ -260,7 +271,8 @@ def test_operation_all_in(operands, expected_result):
     ],
 )
 def test_operation_any_in(operands, expected_result):
-    operator = Operator(Operator.ANY_IN, get_operations().evaluate_any_in)
+    operation = get_operations(Operator.ANY_IN)
+    operator = Operator(Operator.ANY_IN, operation)
     assert operator.evaluate(operands) is expected_result
 
 
@@ -284,7 +296,8 @@ def test_operation_any_in(operands, expected_result):
 )
 def test_operation_date(date_string: str, offset):
     operands = (date_string, offset)
-    operator = Operator(Operator.DATE, get_operations().resolve_date_from_string)
+    operation = get_operations(Operator.DATE)
+    operator = Operator(Operator.DATE, operation)
 
     offset = offset or {}
     expected_result = (
@@ -310,15 +323,16 @@ def test_operation_date(date_string: str, offset):
     ],
 )
 @pytest.mark.parametrize(
-    "operator_name, operation",
+    "operator_name",
     [
-        (Operator.GREATER_THAN, Operations().evaluate_greater_than),
-        (Operator.GREATER_THAN_OR_EQUAL, Operations().evaluate_greater_than_or_equal),
-        (Operator.LESS_THAN, Operations().evaluate_less_than),
-        (Operator.LESS_THAN_OR_EQUAL, Operations().evaluate_less_than_or_equal),
+        Operator.GREATER_THAN,
+        Operator.GREATER_THAN_OR_EQUAL,
+        Operator.LESS_THAN,
+        Operator.LESS_THAN_OR_EQUAL,
     ],
 )
-def test_nonetype_operands_for_comparison_operators(operator_name, operands, operation):
+def test_nonetype_operands_for_comparison_operators(operator_name, operands):
+    operation = get_operations(operator_name)
     operator = Operator(operator_name, operation)
     assert operator.evaluate(operands) is False
 
@@ -332,14 +346,15 @@ def test_nonetype_operands_for_comparison_operators(operator_name, operands, ope
     ],
 )
 @pytest.mark.parametrize(
-    "operator_name, operation",
+    "operator_name",
     [
-        (Operator.ALL_IN, Operations().evaluate_all_in),
-        (Operator.ANY_IN, Operations().evaluate_any_in),
-        (Operator.IN, Operations().evaluate_in),
+        Operator.ALL_IN,
+        Operator.ANY_IN,
+        Operator.IN,
     ],
 )
-def test_nonetype_operands_for_array_operators(operator_name, operands, operation):
+def test_nonetype_operands_for_array_operators(operator_name, operands):
+    operation = get_operations(operator_name)
     operator = Operator(operator_name, operation)
     assert operator.evaluate(operands) is False
 
@@ -354,9 +369,27 @@ def test_nonetype_operands_for_array_operators(operator_name, operands, operatio
     ],
 )
 def test_operation_count(operands, expected_result):
-    operator = Operator(Operator.COUNT, get_operations().evaluate_count)
+    operation = get_operations(Operator.COUNT)
+    operator = Operator(Operator.COUNT, operation)
     assert operator.evaluate(operands) is expected_result
 
 
-def get_operations():
-    return Operations()
+def get_operations(operator):
+    operations = Operations()
+    operation_mapping = {
+        Operator.NOT: operations.evaluate_not,
+        Operator.AND: operations.evaluate_and,
+        Operator.OR: operations.evaluate_or,
+        Operator.EQUAL: operations.evaluate_equal,
+        Operator.NOT_EQUAL: operations.evaluate_not_equal,
+        Operator.GREATER_THAN: operations.evaluate_greater_than,
+        Operator.LESS_THAN: operations.evaluate_less_than,
+        Operator.GREATER_THAN_OR_EQUAL: operations.evaluate_greater_than_or_equal,
+        Operator.LESS_THAN_OR_EQUAL: operations.evaluate_less_than_or_equal,
+        Operator.IN: operations.evaluate_in,
+        Operator.ALL_IN: operations.evaluate_all_in,
+        Operator.ANY_IN: operations.evaluate_any_in,
+        Operator.COUNT: operations.evaluate_count,
+        Operator.DATE: operations.resolve_date_from_string,
+    }
+    return operation_mapping[operator]
