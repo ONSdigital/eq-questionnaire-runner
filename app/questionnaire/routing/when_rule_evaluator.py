@@ -60,7 +60,7 @@ class WhenRuleEvaluator:
         operator = Operator(next_rule, self.operation_mapping[next_rule])
         operands = rule[next_rule]
 
-        if not isinstance(rule[next_rule], Sequence):
+        if not isinstance(operands, Sequence):
             raise TypeError(
                 f"The rule is invalid, operands should be of type Sequence and not {type(operands)}"
             )
