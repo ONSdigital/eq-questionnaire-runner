@@ -1,4 +1,3 @@
-from datetime import date
 from typing import Generator, Mapping, Optional, Union
 
 from flask import url_for
@@ -274,7 +273,7 @@ class Router:
 
     def get_enabled_section_keys(
         self,
-    ) -> Generator[Union[tuple[str, None], tuple[str, str]], None, None]:
+    ) -> Generator[tuple[str, Optional[str]], None, None]:
         for section_id in self.enabled_section_ids:
             repeating_list = self._schema.get_repeating_list_for_section(section_id)
 
@@ -296,7 +295,7 @@ class Router:
             if self._progress_store.is_section_complete(section_id, list_item_id):
                 return section_id, list_item_id
 
-    def _is_section_enabled(self, section: Mapping) -> Union[bool, date, None]:
+    def _is_section_enabled(self, section: Mapping) -> bool:
         if "enabled" not in section:
             return True
 
@@ -312,7 +311,7 @@ class Router:
                 routing_path_block_ids=None,
             )
 
-            return when_rule_evaluator.evaluate(enabled["when"])
+            return bool(when_rule_evaluator.evaluate(enabled["when"]))
 
         return any(
             evaluate_when_rules(
