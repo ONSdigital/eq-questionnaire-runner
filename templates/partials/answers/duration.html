@@ -2,7 +2,7 @@
 
 {% set config = {
   "id": answer.id,
-  "dontWrap": not answer.label,
+  "dontWrap": answer.dontWrap,
   "mutuallyExclusive": mutuallyExclusive,
   "error": error,
   "legendOrLabel": answer.label

@@ -509,7 +509,8 @@
                                         "label": "Years and Months",
                                         "mandatory": false,
                                         "units": ["years", "months"],
-                                        "type": "Duration"
+                                        "type": "Duration",
+                                        "dontWrap": true
                                     },
                                     {
                                         "id": "duration-exclusive-answer",
