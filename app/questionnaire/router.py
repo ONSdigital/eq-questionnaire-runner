@@ -158,7 +158,7 @@ class Router:
         if block_id_index != 0:
             previous_block_id = routing_path[block_id_index - 1]
             previous_block = self._schema.get_block(previous_block_id)
-            if previous_block["type"] == "RelationshipCollector":  # type: ignore
+            if previous_block and previous_block["type"] == "RelationshipCollector":
                 return url_for(
                     "questionnaire.relationships",
                     last=True,
