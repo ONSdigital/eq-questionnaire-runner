@@ -44,12 +44,7 @@ class TestQuestionnaireStore(TestCase):
     def setUp(self):
         def get_user_data():
             """Fake get_user_data implementation for storage"""
-            return (
-                self.input_data,
-                "ce_sid",
-                1,
-                None,
-            )
+            return (self.input_data, "ce_sid", 1, None)
 
         def set_output_data(data, collection_exercise_sid, submitted_at, expires_at):
             self.output_data = data

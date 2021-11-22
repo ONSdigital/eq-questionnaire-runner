@@ -78,14 +78,7 @@ class TestSubmissionPayload(AppContextTestCase):
     @staticmethod
     def questionnaire_store_mock():
         storage = Mock()
-        storage.get_user_data = Mock(
-            return_value=(
-                "{}",
-                "ce_id",
-                1,
-                None,
-            )
-        )
+        storage.get_user_data = Mock(return_value=("{}", "ce_id", 1, None))
         questionnaire_store = QuestionnaireStore(storage)
         questionnaire_store.metadata = {"tx_id": "tx_id", "case_id": "case_id"}
         return questionnaire_store

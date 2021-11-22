@@ -71,14 +71,7 @@ def fake_questionnaire_store(fake_metadata, fake_response_metadata):
     user_answer = Answer(answer_id="GHI", value=0, list_item_id=None)
 
     storage = MagicMock()
-    storage.get_user_data = MagicMock(
-        return_value=(
-            "{}",
-            "ce_sid",
-            1,
-            None,
-        )
-    )
+    storage.get_user_data = MagicMock(return_value=("{}", "ce_sid", 1, None))
     storage.add_or_update = MagicMock()
 
     store = QuestionnaireStore(storage)

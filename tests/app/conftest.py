@@ -8,11 +8,6 @@ RESPONSE_EXPIRY = datetime(2021, 11, 10, 8, 54, 22, tzinfo=timezone.utc)
 
 
 @pytest.fixture
-def response_expiry():
-    return RESPONSE_EXPIRY
-
-
-@pytest.fixture
 def app():
     setting_overrides = {"LOGIN_DISABLED": True}
     the_app = create_app(setting_overrides=setting_overrides)

@@ -24,9 +24,7 @@ class TestEncryptedQuestionnaireStorage(AppContextTestCase):
             user_id="1", user_ik="2", pepper="pepper"
         )
         encrypted.save(
-            data="test",
-            collection_exercise_sid="ce_sid",
-            expires_at=RESPONSE_EXPIRY,
+            data="test", collection_exercise_sid="ce_sid", expires_at=RESPONSE_EXPIRY
         )
         # check we can decrypt the data
         self.assertEqual(
@@ -47,12 +45,7 @@ class TestEncryptedQuestionnaireStorage(AppContextTestCase):
         )
 
         self.assertEqual(
-            (
-                "test",
-                "ce_sid",
-                QuestionnaireStore.LATEST_VERSION,
-                now,
-            ),
+            ("test", "ce_sid", QuestionnaireStore.LATEST_VERSION, now),
             encrypted.get_user_data(),
         )
 
@@ -65,35 +58,17 @@ class TestEncryptedQuestionnaireStorage(AppContextTestCase):
 
     def test_get(self):
         data = "test"
-        self.storage.save(
-            data,
-            "ce_sid",
-            expires_at=RESPONSE_EXPIRY,
-        )
+        self.storage.save(data, "ce_sid", expires_at=RESPONSE_EXPIRY)
         self.assertEqual(
-            (
-                data,
-                "ce_sid",
-                QuestionnaireStore.LATEST_VERSION,
-                None,
-            ),
+            (data, "ce_sid", QuestionnaireStore.LATEST_VERSION, None),
             self.storage.get_user_data(),
         )
 
     def test_delete(self):
         data = "test"
-        self.storage.save(
-            data,
-            "ce_sid",
-            expires_at=RESPONSE_EXPIRY,
-        )
+        self.storage.save(data, "ce_sid", expires_at=RESPONSE_EXPIRY)
         self.assertEqual(
-            (
-                data,
-                "ce_sid",
-                QuestionnaireStore.LATEST_VERSION,
-                None,
-            ),
+            (data, "ce_sid", QuestionnaireStore.LATEST_VERSION, None),
             self.storage.get_user_data(),
         )
         self.storage.delete()

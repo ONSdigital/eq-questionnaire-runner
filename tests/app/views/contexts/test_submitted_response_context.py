@@ -102,14 +102,7 @@ def test_view_submitted_response_expired(
 
 def fake_questionnaire_store():
     storage = Mock()
-    storage.get_user_data = Mock(
-        return_value=(
-            "{}",
-            "ce_sid",
-            1,
-            None,
-        )
-    )
+    storage.get_user_data = Mock(return_value=("{}", "ce_sid", 1, None))
     questionnaire_store = QuestionnaireStore(storage)
     questionnaire_store.submitted_at = SUBMITTED_AT
     questionnaire_store.metadata = {"tx_id": "123456789", "ru_name": "Apple"}
