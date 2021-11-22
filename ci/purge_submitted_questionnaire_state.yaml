@@ -7,6 +7,7 @@ params:
     SERVICE_ACCOUNT_JSON: ((gcp.service_account_json))
     PROJECT_ID:
     DATAFLOW_TEMPLATE_VERSION: '2021-11-12-00_RC00'
+    EXPIRATION_TIME_OFFSET_IN_SECONDS: 3600
 run:
     path: bash
     args:
@@ -24,7 +25,7 @@ run:
             --region europe-west2 \
             --gcs-location gs://dataflow-templates/"${DATAFLOW_TEMPLATE_VERSION}"/Firestore_to_Firestore_Delete \
             --parameters \
-            firestoreReadGqlQuery="SELECT * FROM \`questionnaire-state\` WHERE expired_at < $(`date --utc +%s`) AND submitted_at = NULL",\
+            firestoreReadGqlQuery="SELECT * FROM \`questionnaire-state\` WHERE submitted_at < $((`date --utc +%s` - EXPIRATION_TIME_OFFSET_IN_SECONDS)) AND submitted_at > NULL",\
             firestoreReadProjectId="${PROJECT_ID}",\
             firestoreDeleteProjectId="${PROJECT_ID}" \
             --format="value(id.scope())")
