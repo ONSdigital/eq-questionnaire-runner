@@ -99,7 +99,7 @@ class Router:
         )
 
     def can_display_section_summary(
-        self, section_id: str, list_item_id: str = None
+        self, section_id: str, list_item_id: Optional[str] = None
     ) -> bool:
         return bool(
             self._schema.get_summary_for_section(section_id)
